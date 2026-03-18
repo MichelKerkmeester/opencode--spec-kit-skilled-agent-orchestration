@@ -47,7 +47,6 @@ Stateless mode (`node generate-context.js "016-multi-cli-parity"`) is blocked by
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 17** of the Perfect Session Capturing specification.
@@ -55,8 +54,6 @@ This is **Phase 17** of the Perfect Session Capturing specification.
 **Scope Boundary**: Phase 017 shipped the quality-gate and CLI updates in the system-spec-kit scripts workspace so legitimate stateless Claude Code saves no longer depend on the `/tmp/save-context-data.json` workaround.
 **Dependencies**: Phase 016 alignment and metadata fixes remain a prerequisite because Phase 017 builds on the explicit-CLI alignment warning path, technical-context propagation, and string-form decision confidence extraction.
 **Deliverables**: Tiered Gate A, `--stdin` / `--json` CLI flags, source-aware contamination filtering, and targeted regression coverage for the affected workflow lanes.
-<!-- /ANCHOR:phase-context -->
-
 ---
 
 <!-- ANCHOR:problem -->

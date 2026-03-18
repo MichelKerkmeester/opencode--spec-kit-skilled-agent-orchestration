@@ -1,12 +1,10 @@
 ---
 title: "Implementation Summary: Perfect Session Capturing"
-description: "This pass added roadmap phases 018-020 to the parent spec tree and kept the implemented-versus-live-proof boundary explicit."
+description: "Documentation-only follow-through that adds roadmap phases 018-020 under the perfect session capturing parent pack."
 trigger_phrases:
   - "implementation"
   - "summary"
-  - "phase 018"
-  - "phase 019"
-  - "phase 020"
+  - "perfect session capturing"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -34,19 +32,13 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## 2. WHAT WAS BUILT
 
-This pass turned the audit recommendations into a real phase tree. You can now open the parent roadmap and move directly into `018-runtime-contract-and-indexability`, `019-source-capabilities-and-structured-preference`, or `020-live-proof-and-parity-hardening` instead of rediscovering that sequence from the deep-research synthesis.
+This pass extended the documentation tree, not the runtime. The work added three planned roadmap phases under the parent pack:
 
-### Phase 018
+- `018-runtime-contract-and-indexability/`
+- `019-source-capabilities-and-structured-preference/`
+- `020-live-proof-and-parity-hardening/`
 
-Phase `018` now documents the shipped runtime-contract work: validation rule metadata, explicit write/index dispositions, the V10 write-and-index behavior, and the write-only indexing policy for rules like V2.
-
-### Phase 019
-
-Phase `019` now documents the shipped source-capability work: typed source capabilities, capability-driven contamination policy, and the explicit preference for structured `--stdin` / `--json` when curated input is available.
-
-### Phase 020
-
-Phase `020` now documents the remaining gap honestly. Automated parity is strong, but retained live artifacts are still the step that decides whether the system can claim current full CLI proof.
+Each new child phase now has populated markdown for `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md`. The six parent Level 3 docs were then reconciled so the roadmap reads cleanly from `001` through `020` while keeping the earlier audit truth intact.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -54,11 +46,12 @@ Phase `020` now documents the remaining gap honestly. Automated parity is strong
 <!-- ANCHOR:how-delivered -->
 ## 3. HOW IT WAS DELIVERED
 
-The work landed in three steps:
+The work landed in four steps:
 
-1. Scaffold the new child phases, then correct the tool-generated numbering drift so the final tree matches the requested `018`-`020` roadmap.
-2. Replace scaffold placeholders with phase-specific markdown that matches the current runtime truth.
-3. Rewrite the parent Level 3 docs so they point to the new phases and keep the live-proof boundary conservative.
+1. Create the missing `018`, `019`, and `020` child phase folders under the parent pack.
+2. Replace scaffold content in each new child phase with conservative planned-state markdown.
+3. Rewrite the six parent Level 3 markdown files so they reference the new phases consistently.
+4. Run recursive strict validation for the full parent pack.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -68,9 +61,10 @@ The work landed in three steps:
 
 | Decision | Why |
 |----------|-----|
-| Create explicit phases `018`-`020` | The follow-up work is clearer and safer when it lives in the official phase tree |
-| Mark phases `018` and `019` as implemented | Their runtime work already shipped and is backed by focused automated verification |
-| Keep phase `020` open | Retained live proof is still follow-up work and should not be flattened into a completed claim |
+| Keep the parent pack audit-first | The reconciled history through `017` is still the trust anchor |
+| Create phases `018` through `020` as explicit child folders | The roadmap should exist in the tree, not only in parent prose |
+| Keep all new roadmap language conservative | Planned follow-up work should not be confused with runtime completion |
+| Leave live-proof closure explicitly open | Validation-clean docs are not the same as retained multi-CLI proof |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -80,9 +74,10 @@ The work landed in three steps:
 
 | Check | Result |
 |-------|--------|
-| New child phase markdown written for `018`, `019`, and `020` | PASS |
-| Parent roadmap updated to reference only `018`-`020` as the new follow-up phases | PASS |
-| Recursive validation rerun | PENDING in this doc pass |
+| New child phases `018`, `019`, and `020` created | PASS on 2026-03-18 |
+| Parent Level 3 docs reconciled to reference phases `018` through `020` | PASS on 2026-03-18 |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing --strict --recursive` | PASS on 2026-03-18 with 20 phases, 0 errors, and 0 warnings |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing --strict` | Not run in this narrowed documentation pass |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -90,6 +85,7 @@ The work landed in three steps:
 <!-- ANCHOR:limitations -->
 ## 6. KNOWN LIMITATIONS
 
-1. **Phase 020 remains open** Retained live CLI artifacts still need to be refreshed before the parent pack can claim current end-to-end CLI proof.
-2. **This pass is documentation-only** It records shipped runtime work for phases `018` and `019`, but it does not implement new runtime changes itself.
+1. **Phases 018-020 are documented but not claimed complete.** This pass creates the roadmap structure and wording only.
+2. **Strict completion was not rerun in this pass.** The docs are validator-clean, but completion-gate evidence is still pending if a completion claim is needed.
+3. **Live proof remains intentionally open.** The docs still do not claim flawless parity across every CLI and mode.
 <!-- /ANCHOR:limitations -->

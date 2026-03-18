@@ -34,7 +34,6 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 5** of the Perfect Session Capturing specification.
@@ -42,8 +41,6 @@ This is **Phase 5** of the Perfect Session Capturing specification.
 **Scope Boundary**: The single CONFIDENCE field on DecisionRecord conflates two independent dimensions: certainty about the chosen option and certainty about the captured rationale.
 **Dependencies**: 004-type-consolidation
 **Deliverables**: Added CHOICE_CONFIDENCE and RATIONALE_CONFIDENCE to DecisionRecord type; derived legacy CONFIDENCE as Math.min for backward compatibility
-<!-- /ANCHOR:phase-context -->
-
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 

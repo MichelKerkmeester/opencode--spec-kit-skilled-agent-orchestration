@@ -1,10 +1,9 @@
 ---
 title: "Implementation Summary: Live Proof And Parity Hardening"
-description: "Phase 020 now exists as the explicit closeout gate, but the retained live artifacts themselves are still pending."
+description: "Phase 020 is open and tracks the retained live-proof work that still separates automated parity from universal CLI claims."
 trigger_phrases:
-  - "implementation"
-  - "summary"
   - "phase 020"
+  - "implementation summary"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -15,56 +14,65 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 020-live-proof-and-parity-hardening |
-| **Completed** | 2026-03-18 (phase opened) |
+| **Completed** | In Progress |
 | **Level** | 1 |
+<!-- /ANCHOR:metadata -->
 
 ---
 
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase `020` now exists as the explicit closeout gate for the session-capturing roadmap. The phase was opened and documented in this pass so future operators can see exactly what still blocks a truthful “current multi-CLI proof” claim: retained live artifacts, supported save-mode coverage, and final parent-pack closeout.
+Phase 020 is intentionally not closed yet. What shipped in this pass is the boundary: the parent pack, feature catalog, and M-007 playbook now say clearly that automated parity is not enough to claim flawless multi-CLI behavior everywhere. The retained artifact refresh itself remains the work tracked by this phase.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `spec.md` | Created | Define the remaining live-proof work |
-| `plan.md` | Created | Record the closeout plan |
-| `tasks.md` | Created | Track the remaining work |
-| `implementation-summary.md` | Created | Preserve the current open status |
+| `spec.md` | Created | Define the remaining proof scope |
+| `plan.md` | Created | Define the retained-artifact workflow |
+| `tasks.md` | Created | Track the unfinished live-proof work |
+<!-- /ANCHOR:what-built -->
 
 ---
 
+<!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-This phase is intentionally not complete. The work delivered in this pass is the roadmap documentation that makes the remaining live-proof gap explicit and resumable.
+The proof boundary was tightened first so the docs would stop outrunning the current evidence. The actual retained-artifact refresh remains pending because it requires live CLI environments, not just local automated tests.
+<!-- /ANCHOR:how-delivered -->
 
 ---
 
+<!-- ANCHOR:decisions -->
 ## Key Decisions
 
 | Decision | Why |
 |----------|-----|
-| Keep phase `020` in progress | Retained live artifacts still need to be refreshed |
-| Treat automated parity as baseline, not final closure | The parent pack should not over-claim current end-to-end CLI proof |
+| Keep phase 020 open | The repo is not ready to claim flawless parity without refreshed retained artifacts |
+<!-- /ANCHOR:decisions -->
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification
 
 | Check | Result |
 |-------|--------|
-| Phase `020` created and documented | PASS |
-| Retained live artifacts refreshed | PENDING |
-| Parent closeout updated | PENDING |
+| Automated runtime-contract lane | PASS and used as the proof baseline |
+| Retained live artifact refresh | Pending |
+<!-- /ANCHOR:verification -->
 
 ---
 
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **This phase is still open** Fresh retained live CLI artifacts are the remaining blocker.
+1. **The live artifact refresh is still outstanding.** This phase remains open until that evidence exists.
+<!-- /ANCHOR:limitations -->

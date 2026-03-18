@@ -5,6 +5,16 @@
 # Read-only health check for the CocoIndex skill installation.
 #
 # Usage: bash .opencode/skill/mcp-cocoindex-code/scripts/doctor.sh [--json] [--root <path>] [--strict] [--require-config] [--require-daemon] [--expect-config <path>]
+#
+# Exit Codes:
+#   0  - Readiness checks passed, or advisory mode completed
+#   1  - Invalid arguments
+#   20 - Repo-local CocoIndex binary missing
+#   21 - Skill payload missing
+#   22 - Helper-script payload incomplete
+#   23 - Index missing or empty
+#   24 - Required config wiring missing
+#   25 - Required daemon not running
 
 set -euo pipefail
 

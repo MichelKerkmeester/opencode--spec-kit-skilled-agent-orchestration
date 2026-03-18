@@ -1,10 +1,9 @@
 ---
 title: "Implementation Plan: Source Capabilities And Structured Preference [template:level_1/plan.md]"
-description: "Capture the shipped capability model and the preference for structured inputs over stateless transcript fallback."
+description: "Move source-aware behavior onto a typed capability registry and publish structured input as the preferred contract."
 trigger_phrases:
-  - "implementation"
-  - "plan"
   - "phase 019"
+  - "source capabilities"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -15,84 +14,99 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | TypeScript and Markdown |
-| **Framework** | system-spec-kit session-capturing pipeline |
-| **Storage** | Phase-local docs plus feature-catalog/playbook references |
-| **Testing** | Focused contamination and CLI-authority Vitest coverage |
+| **Language/Stack** | TypeScript, Markdown |
+| **Framework** | system-spec-kit session-capturing scripts |
+| **Storage** | Script helpers plus operator docs |
+| **Testing** | Vitest, `tsc --build` |
 
 ### Overview
-Phase `019` documents the current source-capability contract. The plan is to preserve one clear rule: when a caller can provide curated structured session data, `--stdin` or `--json` is preferred, while direct positional mode remains the supported stateless fallback.
+
+Add a shared source-capability registry, route contamination policy through it, and update the CLI help text plus operator docs so structured input is the preferred session-capturing path whenever the caller already has curated data.
+<!-- /ANCHOR:summary -->
 
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Runtime capability model already shipped.
-- [x] Structured-input preference already shipped.
+- [x] Existing source union identified in `input-normalizer.ts`
+- [x] Capability-based behavior scoped narrowly enough to avoid policy creep
 
 ### Definition of Done
-- [x] The phase spec records the capability model and structured preference.
-- [x] The summary records the fallback rule honestly.
+- [x] Capability registry shipped
+- [x] Contamination tests updated
+- [x] Feature catalog and playbook updated
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-Capability-driven source policy with structured-input preference.
+
+Shared runtime capability registry plus docs alignment.
 
 ### Key Components
-- **Source capability registry**: describes each supported source
-- **Contamination policy**: uses capabilities for severity downgrades
-- **CLI help and docs**: describe structured input as preferred
+- **Source capability registry**: defines input mode, transcript expectations, and structured-save preference.
+- **Contamination filter**: consumes capabilities instead of a source-name special case.
+- **Operator docs**: publish one runtime contract across CLI help, the catalog, and M-007.
 
 ### Data Flow
-Caller/source -> capability lookup -> contamination and input-mode policy -> documented save-path guidance.
+
+Source ID -> capability lookup -> contamination severity policy -> CLI/help/playbook guidance.
+<!-- /ANCHOR:architecture -->
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Policy Capture
-- [x] Document the capability registry.
-- [x] Document the contamination-policy change.
+### Phase 1: Setup
+- [x] Add `scripts/utils/source-capabilities.ts`.
 
-### Phase 2: Save-Path Guidance
-- [x] Document the preference for structured `--stdin` / `--json`.
-- [x] Document direct mode as fallback.
+### Phase 2: Implementation
+- [x] Update contamination filtering and CLI help text.
 
-### Phase 3: Documentation Sync
-- [x] Link the feature catalog and manual playbook to the same policy.
+### Phase 3: Verification
+- [x] Update focused tests and operator docs.
+<!-- /ANCHOR:phases -->
 
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Capability lookup and contamination policy | Vitest |
-| CLI parity | `--stdin` / `--json` target resolution | Vitest |
-| Documentation | Feature-catalog and playbook alignment | Parent/phase sync |
+| Unit | Capability-driven contamination behavior | Vitest |
+| Integration | CLI authority parity | Vitest |
+| Build | TypeScript compilation | `npm run build` |
+<!-- /ANCHOR:testing -->
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `source-capabilities.ts` | Internal | Green | Phase would lose its policy anchor |
-| Updated CLI help text | Internal | Green | Structured preference would be under-documented |
+| Existing CLI input surface | Internal | Green | The docs must match the real CLI behavior |
+<!-- /ANCHOR:dependencies -->
 
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: The capability model changes and phase `019` falls out of sync.
-- **Procedure**: Update this phase and the feature catalog/playbook together, then rerun validation.
+- **Trigger**: A capability refactor changes behavior for non-targeted sources or misstates the operator contract.
+- **Procedure**: Revert the capability registry and rerun focused contamination and CLI parity tests.
+<!-- /ANCHOR:rollback -->

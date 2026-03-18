@@ -1,17 +1,16 @@
 ---
 title: "Tasks: Perfect Session Capturing [template:level_3/tasks.md]"
-description: "Task Format: T### [P?] Description (file path)"
+description: "Task Format: T### [P?] Description (file path); current scope is the documentation-only roadmap extension through phases 018-020."
 trigger_phrases:
   - "tasks"
-  - "phase 018"
-  - "phase 019"
-  - "phase 020"
+  - "perfect session capturing"
+  - "roadmap phases 018 019 020"
 importance_tier: "normal"
 contextType: "general"
 ---
 # Tasks: Perfect Session Capturing
 
-This document records the current verified state for this roadmap follow-up. Use [spec.md](spec.md) and [plan.md](plan.md) together.
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace the documentation-only roadmap update.
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -36,9 +35,9 @@ This document records the current verified state for this roadmap follow-up. Use
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Read the current parent roadmap docs and confirm the required child phase names.
-- [x] T002 Create child folders for `018`, `019`, and `020`.
-- [x] T003 Remove scaffold pollution that introduced wrong phase numbering and placeholder rows.
+- [x] T001 Create `018-runtime-contract-and-indexability/`.
+- [x] T002 Create `019-source-capabilities-and-structured-preference/`.
+- [x] T003 Create `020-live-proof-and-parity-hardening/`.
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -46,10 +45,11 @@ This document records the current verified state for this roadmap follow-up. Use
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Write truthful `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md` for phase `018`.
-- [x] T005 Write truthful `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md` for phase `019`.
-- [x] T006 Write truthful `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md` for phase `020`.
-- [x] T007 Update the parent `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` to reference phases `018`-`020`.
+- [x] T004 Populate phase `018` `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md`.
+- [x] T005 Populate phase `019` `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md`.
+- [x] T006 Populate phase `020` `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md`.
+- [x] T007 Extend the parent `spec.md` phase map from `017` to `020`.
+- [x] T008 Rewrite the parent `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` to conservative roadmap language.
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -57,9 +57,10 @@ This document records the current verified state for this roadmap follow-up. Use
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T008 Run recursive strict validation for the parent pack after the new child docs settle.
-- [ ] T009 Run strict completion for the parent pack if the checklist remains fully satisfied.
-- [ ] T010 Confirm no placeholder phase rows or wrong successor chains remain.
+- [x] T009 Run `validate.sh --strict --recursive` on the parent pack.
+- [ ] T010 Run `check-completion.sh --strict` if completion evidence is needed.
+- [x] T011 Confirm the new parent docs and child phase docs are free of `[PLACEHOLDER]` content.
+- [ ] T012 Refresh retained live artifacts only in future phase-020 implementation work.
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -67,9 +68,9 @@ This document records the current verified state for this roadmap follow-up. Use
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Recursive validation passed
+- [x] All P0 tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Recursive validation passed
 <!-- /ANCHOR:completion -->
 
 ---
@@ -80,5 +81,5 @@ This document records the current verified state for this roadmap follow-up. Use
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
-- **Research**: See `research.md`
+- **Decision Record**: See `decision-record.md`
 <!-- /ANCHOR:cross-refs -->

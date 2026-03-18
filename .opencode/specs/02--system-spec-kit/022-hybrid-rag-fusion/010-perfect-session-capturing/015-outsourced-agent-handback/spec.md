@@ -38,7 +38,6 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 15** of the Perfect Session Capturing specification.
@@ -46,8 +45,6 @@ This is **Phase 15** of the Perfect Session Capturing specification.
 **Scope Boundary**: When an external CLI (Codex, Copilot, Gemini, Claude Code) completes delegated work and returns session context, the data must flow through 010's generate-context.js pipeline to produce a memory file.
 **Dependencies**: 014-spec-descriptions
 **Deliverables**: Runtime hard-fail for explicit JSON-mode input errors; nextSteps/next_steps normalization through to NEXT_ACTION
-<!-- /ANCHOR:phase-context -->
-
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 

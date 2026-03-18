@@ -1,6 +1,6 @@
 {
   "specFolder": "03--commands-and-skills/022-mcp-coco-integration",
-  "description": "CocoIndex Code MCP Integration: Phase 1 installation across 6 CLI configs + cross-CLI auto-usage validation proving auto-discovery works without agent routing. Includes daemon concurrency bug root cause analysis and SKILL.md query optimization guidance.",
+  "description": "CocoIndex Code MCP Integration: Phase 1 installation across 6 CLI configs, cross-CLI auto-usage validation proving auto-discovery works without agent routing, Phase 2 hardening, and Phase 3 strict-readiness plus downstream adoption packaging.",
   "keywords": [
     "cocoindex",
     "semantic code search",
@@ -13,9 +13,13 @@
     "daemon concurrency",
     "refresh_index",
     "query optimization",
-    "auto-discovery"
+    "auto-discovery",
+    "strict readiness",
+    "doctor.sh",
+    "ensure_ready.sh",
+    "downstream adoption"
   ],
-  "lastUpdated": "2026-03-18T17:45:00.000Z",
+  "lastUpdated": "2026-03-18T20:30:00.000Z",
   "specId": "022",
   "folderSlug": "022-mcp-coco-integration",
   "parentChain": [

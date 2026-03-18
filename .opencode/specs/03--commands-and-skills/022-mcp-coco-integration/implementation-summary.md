@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: CocoIndex Code MCP Integration"
-description: "Phase 1 installed CocoIndex across the repo; Phase 2 hardened the skill with truthful docs, helper scripts, and advisor-side utilization improvements."
+description: "Phase 1 installed CocoIndex across the repo; Phase 2 hardened the skill; Phase 3 added strict readiness semantics and downstream adoption packaging."
 trigger_phrases:
   - "cocoindex implementation"
   - "cocoindex summary"
@@ -23,9 +23,9 @@ contextType: "implementation"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 022-mcp-coco-integration |
-| **Completed** | 2026-03-18 (Phase 1 + Phase 2) |
+| **Completed** | 2026-03-18 (Phase 1 + Phase 2 + Phase 3) |
 | **Level** | 2 |
-| **Actual Effort** | ~180 minutes across both phases |
+| **Actual Effort** | ~225 minutes across all three phases |
 
 <!-- /ANCHOR:metadata -->
 
@@ -34,7 +34,7 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-OpenCode now has semantic code search plus a hardened skill wrapper around it. Before this change, every code exploration session started from scratch - Grep needed exact identifiers, Glob needed exact paths, and conceptual queries like "find the authentication middleware" returned nothing. Phase 1 installed CocoIndex Code as the 4th MCP server in the OpenCode ecosystem and registered it across all 6 CLI config files, giving every AI assistant a `search` tool that finds code by intent and concept. Phase 2 then hardened the surrounding skill so agents can verify readiness, recover stale setups, and rely on docs that match the installed runtime.
+OpenCode now has semantic code search plus a hardened skill wrapper around it. Before this change, every code exploration session started from scratch - Grep needed exact identifiers, Glob needed exact paths, and conceptual queries like "find the authentication middleware" returned nothing. Phase 1 installed CocoIndex Code as the 4th MCP server in the OpenCode ecosystem and registered it across all 6 CLI config files, giving every AI assistant a `search` tool that finds code by intent and concept. Phase 2 then hardened the surrounding skill so agents could verify readiness, recover stale setups, and rely on docs that match the installed runtime. Phase 3 finished the operational layer by adding strict readiness semantics, standardized failure codes, and a downstream adoption checklist for sibling repos.
 
 ### Installation and Indexing
 
@@ -56,10 +56,11 @@ The `cocoindex_code` MCP server entry is registered in all 6 CLI config files us
 | `.claude/mcp.json` | Modified | Registered `cocoindex_code` server with relative env and `_NOTE_*` docs (Claude Code) |
 | `.codex/config.toml` | Modified | Registered `cocoindex_code` server via `[mcp_servers.cocoindex_code]` section (Codex CLI) |
 | `.opencode/skill/mcp-cocoindex-code/scripts/common.sh` | Added | Shared shell helpers for readiness tooling |
-| `.opencode/skill/mcp-cocoindex-code/scripts/doctor.sh` | Added | Read-only health check with JSON/text modes |
-| `.opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh` | Added | Idempotent bootstrap helper for agents |
+| `.opencode/skill/mcp-cocoindex-code/scripts/doctor.sh` | Added | Read-only health check with strict readiness modes and expected-config validation |
+| `.opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh` | Added | Idempotent bootstrap helper with strict post-bootstrap validation |
 | `.opencode/skill/scripts/skill_advisor.py` | Modified | Prefers repo-local `ccc` and boosts semantic discovery prompts |
 | `.opencode/skill/mcp-cocoindex-code/references/cross_cli_playbook.md` | Added | Canonical operating guide for repeated-query and cross-CLI usage |
+| `.opencode/skill/mcp-cocoindex-code/references/downstream_adoption_checklist.md` | Added | Minimum sibling-repo rollout checklist for payload, config wiring, and gitignore hygiene |
 
 <!-- /ANCHOR:what-built -->
 
@@ -68,7 +69,7 @@ The `cocoindex_code` MCP server entry is registered in all 6 CLI config files us
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Phase 1 was preceded by multi-agent research: 3 Claude Opus 4.6 sub-agents and 3 GPT-5.4 agents investigated CocoIndex Code in parallel, producing a 17-section `research.md` (v1.1). The research identified the PATH collision risk, corrected the cold start estimate to 20-30 seconds (not 3-8), and validated the phased rollout strategy. Phase 2 reused that evidence and the cross-CLI findings to focus on practical hardening instead of new routing rules. The implementation added shell automation entrypoints, corrected doc drift against live `ccc --help` output, and extended the skill advisor so semantic exploration prompts can discover CocoIndex automatically while exact-text prompts still stay text-first.
+Phase 1 was preceded by multi-agent research: 3 Claude Opus 4.6 sub-agents and 3 GPT-5.4 agents investigated CocoIndex Code in parallel, producing a 17-section `research.md` (v1.1). The research identified the PATH collision risk, corrected the cold start estimate to 20-30 seconds (not 3-8), and validated the phased rollout strategy. Phase 2 reused that evidence and the cross-CLI findings to focus on practical hardening instead of new routing rules. Phase 3 then converted the helper scripts from advisory wrappers into stricter readiness boundaries: `doctor.sh` stays read-only, `ensure_ready.sh` remains the bootstrap boundary, and both now share centralized readiness logic from `common.sh`.
 
 <!-- /ANCHOR:how-delivered -->
 
@@ -88,6 +89,9 @@ Phase 1 was preceded by multi-agent research: 3 Claude Opus 4.6 sub-agents and 3
 | Replace planned Phase 2 routing work with hardening | Cross-CLI validation showed discovery already works; docs, readiness helpers, and advisor utilization address the real gaps |
 | Prefer repo-local `ccc` before PATH in advisor | Avoids collisions with unrelated `ccc` binaries and keeps searches bound to the checked-in integration |
 | `doctor.sh` and `ensure_ready.sh` as first-line recovery | Gives agents deterministic health/setup entrypoints without baking setup logic into every caller |
+| Keep `doctor.sh` read-only and `ensure_ready.sh` mutating | Preserves a clean operational boundary for agents and makes failures easier to diagnose |
+| Use stable exit codes `20` through `25` | Lets agents distinguish missing binary, payload, index, required config, and required daemon conditions without string parsing |
+| Ship downstream adoption as docs + strict checks, not auto-config-writing | Sibling repos need deliberate payload/config rollout; silent config mutation would hide missing integration layers |
 
 <!-- /ANCHOR:decisions -->
 
@@ -111,9 +115,9 @@ Phase 1 was preceded by multi-agent research: 3 Claude Opus 4.6 sub-agents and 3
 | `.cocoindex_code/` gitignored | PASS |
 | Peer review score | PASS - 88/100, 0 blockers, 0 P1 issues |
 | `bash -n` on touched CocoIndex shell scripts | PASS |
-| `bash .opencode/skill/mcp-cocoindex-code/scripts/doctor.sh --json` | PASS - clean JSON with readiness details |
-| `bash .opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh --json` | PASS - clean JSON with no-op success in repo root |
-| `bash .opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh --json --root <tmpdir>` | PASS - performs `init` and `index`, returns clean JSON |
+| `bash .opencode/skill/mcp-cocoindex-code/scripts/doctor.sh --json --strict --require-config --expect-config opencode.json` | PASS - reports `status: "ready"`, `expectedConfigs: ["opencode.json"]`, `indexFiles: 5859`, `indexChunks: 78525` after recovery |
+| `bash .opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh --json --strict --require-config --expect-config opencode.json` | PASS - reindexed the shared repo (`actionsPerformed: ["index"]`) and returned `status: "ready"` |
+| `bash .opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh --json --strict --require-config --root <tmpdir>` | PASS - performs `init` and `index`, then exits `24` with `blockingIssues: [24]` when config wiring is still missing |
 | `python3 .opencode/skill/scripts/skill_advisor.py --health` | PASS - reports repo-local `.venv/bin/ccc` |
 | `python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --threshold 0.8` | PASS - routes to `mcp-cocoindex-code` at 0.95 confidence |
 | `python3 .opencode/skill/scripts/skill_advisor.py "find exact string TODO comments" --threshold 0.8 --show-rejections` | PASS - exact-text prompt does not pass threshold for CocoIndex |
@@ -132,6 +136,7 @@ Phase 1 was preceded by multi-agent research: 3 Claude Opus 4.6 sub-agents and 3
 | NFR-R02 | Additive config changes only | Existing MCP servers unaffected | PASS |
 | NFR-R03 | Machine-readable helper output | `doctor.sh --json` and `ensure_ready.sh --json` stay clean | PASS |
 | NFR-R04 | Safer follow-up query guidance | Docs and helper recommendations prefer `refresh_index=false` for unchanged follow-up queries | PASS |
+| NFR-R05 | Stable strict failure codes | `20` through `25` now map to binary, payload, helper payload, index, config, and daemon-required failures | PASS |
 
 **Deviations from Plan**: The planned Phase 2 agent-routing work was intentionally replaced with docs, helper-script, and advisor hardening after cross-CLI validation showed direct tool discovery was already effective.
 
@@ -156,6 +161,8 @@ Phase 1 was preceded by multi-agent research: 3 Claude Opus 4.6 sub-agents and 3
 
 7. **Repeated-query guidance must still be followed** - MCP `refresh_index=true` remains the default for the first query. Follow-up queries should prefer `refresh_index=false` when the codebase has not changed.
 
+8. **Strict config checks do not write config for you** - `--strict --require-config` is intentionally validation-only. If a sibling repo is missing `cocoindex_code` wiring, fix the configs using `../../../skill/mcp-cocoindex-code/references/downstream_adoption_checklist.md` and `../../../skill/mcp-cocoindex-code/assets/config_templates.md`.
+
 <!-- /ANCHOR:limitations -->
 
 ---
@@ -163,11 +170,11 @@ Phase 1 was preceded by multi-agent research: 3 Claude Opus 4.6 sub-agents and 3
 <!-- ANCHOR:cross-cli-findings -->
 ## Cross-CLI Auto-Usage Test Findings (2026-03-18)
 
-A cross-CLI test validated whether AI models spontaneously use CocoIndex MCP without agent routing changes. Three prompts (implicit semantic, explicit mention, SKILL.md trigger phrase) were sent to Claude Code, Codex, Gemini, and Copilot.
+A cross-CLI test validated whether AI models spontaneously use CocoIndex MCP without agent routing changes. Three prompts (implicit semantic, explicit mention, and skill-trigger guidance) were sent to Claude Code, Codex, Gemini, and Copilot.
 
 ### F1: Auto-discovery works -- Phase 2 agent routing is unnecessary
 
-All 3 working CLIs (Claude Code, Gemini, Copilot) chose CocoIndex from the MCP tool description alone. No SKILL.md trigger phrases, skill advisor routing, or agent definition changes were needed. The tool description "Semantic code search across the entire codebase" is sufficient for models to independently select it for concept-based queries.
+All 3 working CLIs (Claude Code, Gemini, Copilot) chose CocoIndex from the MCP tool description alone. No skill-trigger phrases, skill advisor routing, or agent definition changes were needed. The tool description "Semantic code search across the entire codebase" is sufficient for models to independently select it for concept-based queries.
 
 **Implication**: Phase 2's planned @context agent routing adds maintenance without clear benefit. Deprioritize.
 
@@ -206,8 +213,8 @@ When CocoIndex works, it eliminates the Grep-Read-Filter cascade entirely.
 |---|----------------|----------|-----------|
 | R1 | Deprioritize Phase 2 @context agent routing | High | Auto-discovery works; routing adds maintenance without benefit |
 | R2 | Report upstream daemon concurrency bug | High | `refresh_index=true` + concurrent requests crashes `ComponentContext` |
-| R3 | Add `refresh_index: false` guidance to SKILL.md | Medium | Workaround for multi-query sessions |
-| R4 | Add query optimization tips to SKILL.md | Medium | Short natural language queries outperform keyword stuffing |
+| R3 | Add `refresh_index: false` guidance to `../../../skill/mcp-cocoindex-code/SKILL.md` | Medium | Workaround for multi-query sessions |
+| R4 | Add query optimization tips to `../../../skill/mcp-cocoindex-code/SKILL.md` | Medium | Short natural language queries outperform keyword stuffing |
 | R5 | Retest Codex when billing resolved | Low | MCP wiring confirmed correct |
 | R6 | Redefine Phase 2 scope: reliability + query guidance | High | Replace agent routing with concrete fixes |
 

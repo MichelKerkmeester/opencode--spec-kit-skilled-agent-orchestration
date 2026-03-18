@@ -41,7 +41,6 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 16** of the Perfect Session Capturing specification.
@@ -49,8 +48,6 @@ This is **Phase 16** of the Perfect Session Capturing specification.
 **Scope Boundary**: Phase 016 had already landed its runtime behavior in the live code, but the phase folder still claimed completion without direct parity-specific proof.
 **Dependencies**: 015-outsourced-agent-handback
 **Deliverables**: Re-verified existing parity seams in phase-classifier.ts, content-filter.ts, and input-normalizer.ts; added direct regression coverage; retained phase-local parity evidence that Phase 017 extends for stateless quality-gate and structured-input behavior.
-<!-- /ANCHOR:phase-context -->
-
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 

@@ -1,8 +1,16 @@
+---
+title: "MCP-005 -- Combined filters"
+description: "This scenario validates Combined filters for `MCP-005`. It focuses on Verify `languages`, `paths`, and `num_results` work together."
+---
+
 # MCP-005 -- Combined filters
 
 ## 1. OVERVIEW
 
 This scenario validates Combined filters for `MCP-005`. It focuses on Verify `languages`, `paths`, and `num_results` work together.
+
+
+---
 
 ## 2. CURRENT REALITY
 
@@ -13,19 +21,28 @@ Operators run the exact prompt and command sequence for `MCP-005` and confirm th
 - Expected signals: Result count <= 2; all files are `.py`; all paths start with `.opencode/`
 - Pass/fail: PASS if count <= 2 AND all filters satisfied; FAIL if any filter is ignored
 
+
+---
+
 ## 3. TEST EXECUTION
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
 | MCP-005 | Combined filters | Verify `languages`, `paths`, and `num_results` work together | `Search CocoIndex for "config" in Python under src/ with 2 results` | 1. `mcp__cocoindex_code__search({ "query": "configuration loading", "languages": ["python"], "paths": [".opencode/"], "num_results": 2 })` -> 2. Verify results are Python files under `.opencode/` and count <= 2 | Result count <= 2; all files are `.py`; all paths start with `.opencode/` | MCP output showing filtered results | PASS if count <= 2 AND all filters satisfied; FAIL if any filter is ignored | Test filters individually to isolate which one fails; check parameter types (list vs string) |
 
+
+---
+
 ## 4. REFERENCES
 
-- Root playbook: [manual_testing_playbook.md](../../manual_testing_playbook.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+
+
+---
 
 ## 5. SOURCE METADATA
 
 - Group: MCP Search Tool
 - Playbook ID: MCP-005
 - Canonical root source: `manual_testing_playbook.md`
-- Snippet path: `snippets/02--mcp-search-tool/005-combined-filters.md`
+- Feature file path: `02--mcp-search-tool/005-combined-filters.md`

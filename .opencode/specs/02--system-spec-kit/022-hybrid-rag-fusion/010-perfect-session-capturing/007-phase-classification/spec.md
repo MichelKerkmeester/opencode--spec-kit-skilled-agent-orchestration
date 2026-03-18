@@ -35,7 +35,6 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 7** of the Perfect Session Capturing specification.
@@ -43,8 +42,6 @@ This is **Phase 7** of the Perfect Session Capturing specification.
 **Scope Boundary**: Conversation phase handling previously lived in a keyword-precedence ladder that favored early matches over richer context.
 **Dependencies**: 006-description-enrichment
 **Deliverables**: Added scripts/utils/phase-classifier.ts as the single owner of exchange signal building and clustering; expanded ConversationPhase/ConversationData with cluster metadata
-<!-- /ANCHOR:phase-context -->
-
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 

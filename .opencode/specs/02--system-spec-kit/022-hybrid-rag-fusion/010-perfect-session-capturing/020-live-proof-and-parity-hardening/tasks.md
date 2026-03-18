@@ -2,8 +2,8 @@
 title: "Tasks: Live Proof And Parity Hardening [template:level_1/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
-  - "tasks"
   - "phase 020"
+  - "tasks"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -14,6 +14,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -22,42 +23,48 @@ contextType: "general"
 | `[x]` | Completed |
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
-
-**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
 ---
 
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Define the live-proof closeout scope.
-- [x] T002 Record the supported scenario families that still need retained artifacts.
+- [x] T001 Define the stricter proof boundary in the parent pack and M-007.
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T003 Refresh retained live CLI artifacts.
-- [ ] T004 Capture direct, `--stdin`, and `--json` live/manual proof where applicable.
-- [ ] T005 Reconfirm same-minute repeated-save expectations.
+- [ ] T002 Refresh retained live artifacts across supported CLIs and save modes.
+- [ ] T003 Review retained artifacts against the automated runtime contract.
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T006 Update the parent proof boundary only after retained artifacts exist.
-- [ ] T007 Rerun parent recursive validation and completion checks.
+- [ ] T004 Update universal parity claims only if the retained evidence is current.
+<!-- /ANCHOR:phase-3 -->
 
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Retained live-proof artifacts refreshed
+- [x] No `[B]` blocked tasks remaining
+- [ ] Live proof refreshed and reviewed
+<!-- /ANCHOR:completion -->
 
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+<!-- /ANCHOR:cross-refs -->

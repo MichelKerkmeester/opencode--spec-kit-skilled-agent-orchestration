@@ -44,7 +44,6 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 14** of the Perfect Session Capturing specification.
@@ -52,8 +51,6 @@ This is **Phase 14** of the Perfect Session Capturing specification.
 **Scope Boundary**: The centralized specs/descriptions.json stores all spec folder descriptions in a single file, creating three problems.
 **Dependencies**: 013-auto-detection-fixes
 **Deliverables**: Per-folder description.json generation, reading, staleness detection, and atomic write; collision-resistant slug generation via ensureUniqueMemoryFilename()
-<!-- /ANCHOR:phase-context -->
-
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 

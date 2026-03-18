@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: CocoIndex Code MCP Integration"
-description: "Phased plan for CocoIndex integration: Phase 1 installation/config registration plus Phase 2 hardening for docs, helper scripts, and advisor utilization."
+description: "Phased plan for CocoIndex integration: Phase 1 installation/config registration, Phase 2 hardening, and Phase 3 strict-readiness plus downstream adoption packaging."
 trigger_phrases:
   - "cocoindex"
   - "coco-index plan"
@@ -30,7 +30,7 @@ contextType: "implementation"
 
 ### Overview
 
-This plan covers two delivered phases of the CocoIndex integration: Phase 1 installed the `cocoindex-code` Python package via the skill install script into `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv`, initialized and built the code index, and registered the `cocoindex_code` MCP server entry across all 6 CLI config files. Phase 2 hardened the surrounding skill with runtime-truth docs, agent-facing helper scripts, a cross-CLI playbook, and advisor logic that prefers the repo-local binary and semantic exploration prompts.
+This plan covers three delivered phases of the CocoIndex integration: Phase 1 installed the `cocoindex-code` Python package via the skill install script into `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv`, initialized and built the code index, and registered the `cocoindex_code` MCP server entry across all 6 CLI config files. Phase 2 hardened the surrounding skill with runtime-truth docs, agent-facing helper scripts, a cross-CLI playbook, and advisor logic that prefers the repo-local binary and semantic exploration prompts. Phase 3 then tightened readiness semantics and published a concrete downstream adoption checklist so sibling repos can verify CocoIndex before relying on advisor heuristics.
 
 <!-- /ANCHOR:summary -->
 
@@ -42,7 +42,7 @@ This plan covers two delivered phases of the CocoIndex integration: Phase 1 inst
 ### Definition of Ready
 
 - [x] Problem statement clear and scope documented
-- [x] Success criteria measurable (SC-001 through SC-004)
+- [x] Success criteria measurable (SC-001 through SC-009)
 - [x] Dependencies identified (install script, Python 3.11, cocoindex-code v0.2.3)
 - [x] NFRs defined with targets
 
@@ -125,7 +125,7 @@ CLI Agent Query ("find authentication middleware")
 
 ### Phase 5: Cross-CLI Auto-Usage Validation (2026-03-18)
 
-- [x] Run 3 test prompts (implicit semantic, explicit mention, SKILL.md trigger) across 4 CLIs
+- [x] Run 3 test prompts (implicit semantic, explicit mention, skill-trigger guidance) across 4 CLIs
 - [x] Claude Code: All 3 prompts used CocoIndex exclusively (1 call each, 10 results)
 - [x] Gemini: All 3 prompts used CocoIndex (exclusive in P2/P3, hybrid in P1)
 - [x] Copilot: All 3 prompts attempted CocoIndex; P1/P3 MCP returned 0 results or `success:false`
@@ -140,16 +140,25 @@ CLI Agent Query ("find authentication middleware")
 - [x] Retry Codex (still billing-blocked, deferred)
 - [x] Update `scratch/cross-cli-auto-usage-test-results.md` with root cause analysis
 - [x] Update `implementation-summary.md` with findings F1-F4 and recommendations R1-R6
-- [x] Update `SKILL.md` with query optimization tips and `refresh_index=false` guidance
+- [x] Update `../../../skill/mcp-cocoindex-code/SKILL.md` with query optimization tips and `refresh_index=false` guidance
 
 ### Phase 7: Phase 2 Hardening (2026-03-18)
 
-- [x] Align `SKILL.md`, `README.md`, `INSTALL_GUIDE.md`, `references/tool_reference.md`, `references/search_patterns.md`, and `assets/config_templates.md` with the installed CLI/MCP contract
-- [x] Add `references/cross_cli_playbook.md` for safe repeated-query, troubleshooting, and cross-CLI usage guidance
+- [x] Align `../../../skill/mcp-cocoindex-code/SKILL.md`, `../../../skill/mcp-cocoindex-code/README.md`, `../../../skill/mcp-cocoindex-code/INSTALL_GUIDE.md`, `../../../skill/mcp-cocoindex-code/references/tool_reference.md`, `../../../skill/mcp-cocoindex-code/references/search_patterns.md`, and `../../../skill/mcp-cocoindex-code/assets/config_templates.md` with the installed CLI/MCP contract
+- [x] Add `../../../skill/mcp-cocoindex-code/references/cross_cli_playbook.md` for safe repeated-query, troubleshooting, and cross-CLI usage guidance
 - [x] Add `scripts/common.sh`, `scripts/doctor.sh`, and `scripts/ensure_ready.sh` per `sk-code--opencode`
 - [x] Update `scripts/install.sh` and `scripts/update.sh` to reuse shared helpers and support `--root`
 - [x] Update `.opencode/skill/scripts/skill_advisor.py` to prefer the repo-local `ccc` binary and auto-route semantic exploration prompts
 - [x] Validate helper scripts, JSON output cleanliness, and advisor routing behavior
+
+### Phase 8: Phase 3 Strict Readiness & Adoption Packaging (2026-03-18)
+
+- [x] Extend `scripts/common.sh` with centralized readiness state, blocking issue codes `20` through `25`, and shared next-step computation
+- [x] Extend `scripts/doctor.sh` with `--strict`, `--require-config`, `--require-daemon`, and repeatable `--expect-config`
+- [x] Extend `scripts/ensure_ready.sh` with strict post-bootstrap validation and expected-config support
+- [x] Add `../../../skill/mcp-cocoindex-code/references/downstream_adoption_checklist.md` documenting the minimum sibling-repo adoption bundle
+- [x] Update `../../../skill/mcp-cocoindex-code/SKILL.md`, `../../../skill/mcp-cocoindex-code/README.md`, and `../../../skill/mcp-cocoindex-code/references/cross_cli_playbook.md` to route operators to strict modes and the new adoption checklist
+- [x] Verify shared-repo strict readiness passes and temp-project strict config validation fails with exit `24`
 
 <!-- /ANCHOR:phases -->
 
@@ -166,8 +175,9 @@ CLI Agent Query ("find authentication middleware")
 | Manual | End-to-end: install, init, index, search | CLI (`ccc search "test query"`) |
 | Cross-CLI | Auto-discovery across 4 CLIs (3 prompts each) | Claude Code, Codex, Gemini, Copilot |
 | Reproduction | Daemon concurrency bug under concurrent queries | `mcp__cocoindex_code__search` with `refresh_index` true/false |
-| Script smoke | Helper syntax and JSON stability | `bash -n`, `doctor.sh --json`, `ensure_ready.sh --json` |
+| Script smoke | Helper syntax, strict readiness, and JSON stability | `bash -n`, `doctor.sh --json --strict`, `ensure_ready.sh --json --strict` |
 | Advisor behavior | Repo-local binary preference and semantic routing | `skill_advisor.py --health`, semantic vs exact-match prompt checks |
+| Negative-path validation | Required config missing after bootstrap | `ensure_ready.sh --json --strict --require-config --root <tmpdir>` returning exit `24` |
 
 <!-- /ANCHOR:testing -->
 
@@ -185,6 +195,7 @@ CLI Agent Query ("find authentication middleware")
 | sqlite-vec | Transitive dep | Green | Vector search unavailable |
 | all-MiniLM-L6-v2 | Model (auto-downloaded) | Green | Embedding generation unavailable |
 | `sk-code--opencode` | Project skill | Green - available in repo | Shell/Python helper quality expectations would be undefined |
+| Downstream rollout checklist | Project doc | Green - added at `../../../skill/mcp-cocoindex-code/references/downstream_adoption_checklist.md` | Sibling repos would lack a canonical adoption recipe |
 
 <!-- /ANCHOR:dependencies -->
 
@@ -230,7 +241,8 @@ Phase 2 (Index) ─────────┘
 | Config registration (6 files) | Medium | 30-45 minutes |
 | Syntax validation + peer review | Low | 15-20 minutes |
 | Phase 2 hardening (docs, scripts, advisor) | Medium | 60-90 minutes |
-| **Total** | | **120-180 minutes across both phases** |
+| Phase 3 strict readiness and adoption packaging | Medium | 45-60 minutes |
+| **Total** | | **165-240 minutes across all three phases** |
 
 <!-- /ANCHOR:effort -->
 

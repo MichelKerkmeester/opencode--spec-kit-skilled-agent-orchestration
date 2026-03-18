@@ -1,17 +1,16 @@
 ---
 title: "Implementation Plan: Perfect Session Capturing [template:level_3/plan.md]"
-description: "Add and synchronize phases 018-020 so the parent pack tracks the shipped runtime follow-up and the still-open live-proof hardening work."
+description: "Runtime and documentation follow-through for roadmap phases 018-020 under the perfect session capturing parent pack."
 trigger_phrases:
   - "implementation plan"
-  - "phase 018"
-  - "phase 019"
-  - "phase 020"
+  - "spec 010"
+  - "roadmap phases 018 019 020"
 importance_tier: "normal"
 contextType: "general"
 ---
 # Implementation Plan: Perfect Session Capturing
 
-This document records the current verified state for this follow-up. Use [spec.md](spec.md), the child phase folders, and [research.md](research.md) together.
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [tasks.md](tasks.md) to trace the shipped runtime follow-through for phases `018` and `019` plus the open proof work in phase `020`.
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
@@ -25,14 +24,14 @@ This document records the current verified state for this follow-up. Use [spec.m
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown, shell validation commands |
-| **Framework** | system-spec-kit Level 3 parent spec workflow |
-| **Storage** | Parent and child spec folders under `.opencode/specs/.../010-perfect-session-capturing` |
-| **Testing** | Recursive spec validation plus existing focused automated proof lanes |
+| **Language/Stack** | TypeScript, Markdown, shell validation commands |
+| **Framework** | system-spec-kit Level 3 parent/child spec workflow |
+| **Storage** | Parent and child phase folders under `.opencode/specs/.../010-perfect-session-capturing` |
+| **Testing** | Focused Vitest, `npm run build`, `validate.sh --strict --recursive`, and `check-completion.sh --strict` |
 
 ### Overview
 
-This pass extends the post-audit roadmap into official child phases. The plan is simple: create clean docs for phases `018`, `019`, and `020`, correct the parent phase map, and keep the truth boundary conservative by documenting `018` and `019` as implemented runtime work while leaving `020` open for retained live proof.
+This pass implements the runtime and operator-contract follow-through for phases `018` and `019`, then keeps phase `020` explicitly open for retained live proof. The parent pack now reads cleanly from `001` through `020` while preserving the existing audit truth through `017` and keeping universal parity claims conservative.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -41,145 +40,182 @@ This pass extends the post-audit roadmap into official child phases. The plan is
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Parent spec folder already exists and remains the chosen scope.
-- [x] The follow-up roadmap is already defined by the completed audit and current runtime truth.
-- [x] The new child phase names are fixed: `018`, `019`, `020`.
+- [x] Parent spec folder confirmed and in scope.
+- [x] Existing audit baseline through phase `017` already present.
+- [x] Scope narrowed to the roadmap runtime, test, and documentation surfaces for phases `018` through `020`.
 
 ### Definition of Done
-- [x] Child phase docs exist for `018`, `019`, and `020`.
-- [x] The parent pack references only the intended roadmap phases.
-- [x] Implemented/runtime claims remain conservative and evidence-backed.
-- [ ] Recursive validation passes after the final markdown state settles.
+- [x] Child phases `018`, `019`, and `020` exist.
+- [x] Each new child phase has populated markdown rather than placeholder text.
+- [x] The six parent Level 3 markdown files reference the roadmap phases consistently.
+- [x] Pre-Task Checklist documented for the documentation pass.
+- [x] Execution Rules documented for the documentation pass.
+- [x] Status Reporting Format documented for the documentation pass.
+- [x] Blocked Task Protocol documented for the documentation pass.
+- [x] Recursive strict validation passes for the full parent pack.
+- [x] Strict completion is rerun if needed after validation.
+
+### Pre-Task Checklist
+- [x] Parent pack and child phases read before editing.
+- [x] Scope narrowed to spec-folder markdown only.
+- [x] Existing audit truth through phase `017` preserved before extending the roadmap.
+
+### Execution Rules
+
+| Rule | Requirement |
+|------|-------------|
+| Scope Lock | Only edit the session-capturing runtime, focused tests, operator docs, and parent/child roadmap docs needed for phases `018`, `019`, and `020` |
+| Truth Discipline | Keep phases `018` and `019` aligned to shipped runtime work while leaving phase `020` explicitly open for retained live proof |
+| Parent Consistency | Keep all six parent Level 3 docs aligned to the same roadmap story |
+| Verification | Finish with recursive strict validation of the full parent pack |
+
+### Status Reporting Format
+
+`Phase <id>: <status> -> <artifact or validation result>`
+
+### Blocked Task Protocol
+1. Stop if validation reports contradictory parent or child status.
+2. Correct the smallest markdown surface needed to restore alignment.
+3. Re-run validation before claiming completion.
 <!-- /ANCHOR:quality-gates -->
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-Parent roadmap hub with phase-local follow-up documentation.
+Parent roadmap reconciliation with explicit child-phase scaffolding.
 
 ### Key Components
-- **Parent pack**: owns the integrated truth and phase order.
-- **Phase 018**: owns runtime-contract and indexability policy documentation.
-- **Phase 019**: owns source-capability and structured-input preference documentation.
-- **Phase 020**: owns the still-open live-proof and parity-hardening work.
+- **Parent pack**: the six Level 3 root markdown files
+- **Existing audit artifacts**: `research.md` and reconciled earlier phases
+- **New child roadmap phases**:
+  - `018-runtime-contract-and-indexability/`
+  - `019-source-capabilities-and-structured-preference/`
+  - `020-live-proof-and-parity-hardening/`
+- **Verification stack**: recursive strict validation for the full spec tree
 
 ### Data Flow
-Completed audit -> runtime follow-up recommendations -> official phase folders `018`-`020` -> parent roadmap sync -> recursive validation.
+Existing audit baseline -> child phase creation -> child markdown population -> parent doc reconciliation -> recursive validation -> final summary.
+<!-- /ANCHOR:architecture -->
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Child-Phase Creation
-- [x] Create the `018`, `019`, and `020` child folders under the parent pack.
-- [x] Replace scaffold placeholders with truthful phase-specific markdown.
+### Phase 1: Setup
+- [x] Create the three new child phase folders under the parent pack.
+- [x] Ensure each new child phase has the expected markdown structure.
 
-### Phase 2: Parent Sync
-- [x] Rewrite the parent phase map and handoff chain to include only `018`-`020`.
-- [x] Update the parent plan, tasks, checklist, decision record, and summary to reflect the new roadmap.
+### Phase 2: Core Implementation
+- [x] Replace scaffold placeholder content in phases `018`, `019`, and `020`.
+- [x] Implement the runtime contract and source-capability follow-through for phases `018` and `019`.
+- [x] Keep phase `020` documented as open retained live-proof work.
+- [x] Extend the parent phase map and status language through `020`.
+- [x] Rewrite parent plan, tasks, checklist, decision record, and summary to the shipped/open truth.
 
 ### Phase 3: Verification
-- [ ] Run recursive validation on the full parent pack.
-- [ ] Confirm the new child docs introduce no placeholder drift or numbering errors.
+- [x] Run recursive strict validation on the parent pack.
+- [x] Run `check-completion.sh --strict` if validation passes and completion evidence is needed.
+- [x] Fix any remaining validator findings without expanding scope.
+<!-- /ANCHOR:phases -->
 
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Structural validation | Parent pack plus new child phases | `validate.sh --strict --recursive` |
-| Parent completion verification | Parent checklist evidence | `check-completion.sh --strict` |
-| Runtime proof reference | Implemented claims for phases `018` and `019` | Existing rerun-backed automated evidence already recorded outside this doc pass |
+| Structural validation | Parent pack and all child phases | `validate.sh --strict --recursive` |
+| Completion gating | Parent pack after validation | `check-completion.sh --strict` |
+| Placeholder sweep | Parent docs and new child phase docs | `rg "\\[PLACEHOLDER\\]"` |
+<!-- /ANCHOR:testing -->
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Completed audit and `research.md` | Internal | Green | The roadmap would lose its truth anchor |
-| Shipped runtime work for phases `018` and `019` | Internal | Green | Implemented claims would become speculative |
-| Future retained live artifacts for phase `020` | Internal | Yellow | Parent closeout remains intentionally incomplete |
+| Existing parent pack through phase `017` | Internal | Green | The roadmap extension would lose its baseline |
+| Phase scaffolding script output | Internal | Green | Child folders would need manual reconstruction |
+| Recursive validator | Internal | Pending rerun | Completion cannot be claimed until it passes |
+<!-- /ANCHOR:dependencies -->
 
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Placeholder phase rows, wrong numbering, or over-claimed proof language remain after the doc pass.
-- **Procedure**: Revert only the affected parent and new child markdown files, then reapply the minimum edits needed to restore the truthful roadmap.
+- **Trigger**: Parent or child docs imply roadmap completion that has not happened, or validation fails after reconciliation.
+- **Procedure**: Revert only the affected markdown files, restore the prior conservative state, and rerun recursive validation.
+<!-- /ANCHOR:rollback -->
 
 ---
 
-## 8. L2: PHASE DEPENDENCIES
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
 
 ```
-018 Runtime Contract -> 019 Source Capabilities -> 020 Live Proof
+Create Child Phases -> Populate Child Docs -> Reconcile Parent Docs -> Validate Recursively
 ```
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| 018 | 017 shipped baseline | 019 and parent sync |
-| 019 | 018 runtime contract | 020 and parent sync |
-| 020 | 019 shared contract baseline | Parent closeout claims |
+| Create child phases | None | All later work |
+| Populate child docs | Child phases created | Parent reconciliation, validation |
+| Reconcile parent docs | Child docs populated | Validation |
+| Validate recursively | Parent and child docs reconciled | Completion |
+<!-- /ANCHOR:phase-deps -->
 
 ---
 
-## 9. L2: EFFORT ESTIMATION
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Child-phase documentation | Medium | 1-2 hours |
-| Parent roadmap synchronization | Medium | 1 hour |
+| Child folder creation | Low | <1 hour |
+| Child doc population | Medium | 1-2 hours |
+| Parent reconciliation | Medium | 1-2 hours |
 | Validation | Low | <1 hour |
-| **Total** | | **2-4 hours** |
+| **Total** | | **3-5 hours** |
+<!-- /ANCHOR:effort -->
 
 ---
 
-## 10. L2: ENHANCED ROLLBACK
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [x] Child phase numbering fixed to `018`-`020`.
-- [x] Parent roadmap no longer contains append-script placeholder rows.
+- [x] Existing parent docs re-read before editing.
+- [x] Child phases created before parent references were finalized.
 - [ ] Recursive validation rerun after the final markdown state settles.
 
 ### Rollback Procedure
-1. Revert only the parent docs and the new child phase markdown files.
-2. Re-run recursive validation.
-3. Reapply only the roadmap edits needed to restore truthful numbering and status.
+1. Revert only the affected parent or child markdown files.
+2. Restore conservative status language for phases `018` through `020`.
+3. Re-run recursive validation.
 
 ### Data Reversal
 - **Has data migrations?** No
-- **Reversal procedure**: Markdown-only rollback.
+- **Reversal procedure**: Markdown-only rollback within the spec tree
+<!-- /ANCHOR:enhanced-rollback -->
 
 ---
 
-## 11. L3: DEPENDENCY GRAPH
+<!-- ANCHOR:dependency-graph -->
+## L3: DEPENDENCY GRAPH
 
+```mermaid
+graph TD
+  A[Audit baseline through 017] --> B[Create 018-020 folders]
+  B --> C[Populate child markdown]
+  C --> D[Reconcile parent Level 3 docs]
+  D --> E[Recursive validation]
 ```
-┌──────────────┐     ┌──────────────────┐     ┌───────────────────────┐
-│ Phase 018    │────►│ Phase 019        │────►│ Phase 020             │
-│ Contract     │     │ Source Capabs    │     │ Live Proof Hardening  │
-└──────────────┘     └──────────────────┘     └───────────────────────┘
-          \_____________________ Parent roadmap sync __________________/
-```
-
----
-
-## 12. L3: CRITICAL PATH
-
-1. Create truthful child docs for `018`-`020`.
-2. Correct the parent phase map and handoff chain.
-3. Re-run recursive validation.
-
-**Total Critical Path**: dominated by parent/child synchronization, not by runtime implementation.
-
----
-
-## 13. L3: MILESTONES
-
-- **M1**: Child phases `018`-`020` exist with real content.
-- **M2**: Parent docs reference the correct roadmap and proof boundary.
-- **M3**: Recursive validation confirms the tree is clean.
+<!-- /ANCHOR:dependency-graph -->

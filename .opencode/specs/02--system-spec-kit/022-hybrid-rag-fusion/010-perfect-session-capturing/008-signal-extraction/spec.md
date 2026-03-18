@@ -35,7 +35,6 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 8** of the Perfect Session Capturing specification.
@@ -43,8 +42,6 @@ This is **Phase 8** of the Perfect Session Capturing specification.
 **Scope Boundary**: The pipeline uses 3 real extraction engines plus 1 wrapper, each with different stopwords, weighting, and placeholder rules.
 **Dependencies**: 007-phase-classification
 **Deliverables**: Created SemanticSignalExtractor with mode-aware extraction (topics/triggers/summary/all); consolidated 3 divergent stopword lists into a single profile
-<!-- /ANCHOR:phase-context -->
-
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 

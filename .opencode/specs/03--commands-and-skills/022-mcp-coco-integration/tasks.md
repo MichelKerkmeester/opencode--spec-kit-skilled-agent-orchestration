@@ -1,6 +1,6 @@
 ---
 title: "Tasks: CocoIndex Code MCP Integration"
-description: "Phase-based task breakdown for CocoIndex installation, config registration, cross-CLI validation, and Phase 2 hardening."
+description: "Phase-based task breakdown for CocoIndex installation, config registration, cross-CLI validation, Phase 2 hardening, and Phase 3 strict-readiness packaging."
 trigger_phrases:
   - "cocoindex tasks"
   - "coco-index tasks"
@@ -101,7 +101,7 @@ contextType: "implementation"
 
 ### Test Execution
 
-- [x] T028 Design 3 test prompts: implicit semantic, explicit CocoIndex mention, SKILL.md trigger phrase [5m]
+- [x] T028 Design 3 test prompts: implicit semantic, explicit CocoIndex mention, and skill-trigger guidance [5m]
 - [x] T029 Run all 3 prompts on Claude Code (Claude Opus 4.6) and capture results [10m]
 - [x] T030 Run all 3 prompts on Codex (gpt-5.3-codex) -- all failed due to OpenAI billing limit [10m]
 - [x] T031 Run all 3 prompts on Gemini (gemini-3.1-pro-preview) and capture results [10m]
@@ -119,8 +119,8 @@ contextType: "implementation"
 ### Documentation Updates
 
 - [x] T039 Add findings F1-F4 and recommendations R1-R6 to `implementation-summary.md` [15m]
-- [x] T040 Add query optimization tips to `SKILL.md` (short queries > keyword stuffing) [5m]
-- [x] T041 Add `refresh_index=false` concurrent session guidance to `SKILL.md` [5m]
+- [x] T040 Add query optimization tips to `../../../skill/mcp-cocoindex-code/SKILL.md` (short queries > keyword stuffing) [5m]
+- [x] T041 Add `refresh_index=false` concurrent session guidance to `../../../skill/mcp-cocoindex-code/SKILL.md` [5m]
 - [x] T042 Update `spec.md` with cross-CLI test scope, deprioritized Phase 2, resolved questions [5m]
 - [x] T043 Update `plan.md` with Phase 5-6 and testing strategy additions [5m]
 - [x] T044 Update `tasks.md` with Phase 4 tasks (this file) [5m]
@@ -136,10 +136,10 @@ contextType: "implementation"
 
 ### Runtime-Truth Documentation
 
-- [x] T047 Update `SKILL.md` to reflect the current runtime contract and new helper scripts [10m]
-- [x] T048 Update `README.md`, `INSTALL_GUIDE.md`, and `references/tool_reference.md` to match actual CLI/MCP behavior [15m]
-- [x] T049 Update `references/search_patterns.md` and add `references/cross_cli_playbook.md` for repeated-query and cross-CLI guidance [10m]
-- [x] T050 Replace environment-specific `assets/config_templates.md` examples with repo-portable templates [10m]
+- [x] T047 Update `../../../skill/mcp-cocoindex-code/SKILL.md` to reflect the current runtime contract and new helper scripts [10m]
+- [x] T048 Update `../../../skill/mcp-cocoindex-code/README.md`, `../../../skill/mcp-cocoindex-code/INSTALL_GUIDE.md`, and `../../../skill/mcp-cocoindex-code/references/tool_reference.md` to match actual CLI/MCP behavior [15m]
+- [x] T049 Update `../../../skill/mcp-cocoindex-code/references/search_patterns.md` and add `../../../skill/mcp-cocoindex-code/references/cross_cli_playbook.md` for repeated-query and cross-CLI guidance [10m]
+- [x] T050 Replace environment-specific `../../../skill/mcp-cocoindex-code/assets/config_templates.md` examples with repo-portable templates [10m]
 
 ### Agent-Facing Automation
 
@@ -161,6 +161,31 @@ contextType: "implementation"
 - [x] T060 Run advisor health and semantic/exact-match routing checks [5m]
 - [x] T061 Verify touched docs no longer claim nonexistent CLI/MCP behavior [5m]
 
+<!-- /ANCHOR:phase-6 -->
+
+---
+
+<!-- ANCHOR:phase-6 -->
+## Phase 6: Strict Readiness & Adoption Packaging
+
+### Shared Readiness Engine
+
+- [x] T062 Extend `scripts/common.sh` with centralized readiness state, status calculation, and issue codes `20` through `25` [15m]
+- [x] T063 Extend `scripts/doctor.sh` with `--strict`, `--require-config`, `--require-daemon`, and repeatable `--expect-config` [15m]
+- [x] T064 Extend `scripts/ensure_ready.sh` with strict post-bootstrap validation and expected-config support [15m]
+
+### Downstream Adoption Guidance
+
+- [x] T065 Add `../../../skill/mcp-cocoindex-code/references/downstream_adoption_checklist.md` for sibling-repo payload/config/gitignore rollout [10m]
+- [x] T066 Update `../../../skill/mcp-cocoindex-code/SKILL.md`, `../../../skill/mcp-cocoindex-code/README.md`, and `../../../skill/mcp-cocoindex-code/references/cross_cli_playbook.md` to route operators to strict modes and the adoption checklist [10m]
+
+### Verification And Spec Sync
+
+- [x] T067 Run `bash -n` on `common.sh`, `doctor.sh`, and `ensure_ready.sh` after the strict-readiness changes [5m]
+- [x] T068 Verify shared-repo strict readiness with `doctor.sh --json --strict --require-config --expect-config opencode.json` and `ensure_ready.sh --json --strict --require-config --expect-config opencode.json` [10m]
+- [x] T069 Verify temp-project strict config validation fails with exit `24` after bootstrap using `ensure_ready.sh --json --strict --require-config --root <tmpdir>` [10m]
+- [x] T070 Update the spec-folder docs to reflect the Phase 3 strict-readiness and adoption-packaging work [10m]
+
 <!-- /ANCHOR:phase-5 -->
 
 ---
@@ -168,16 +193,17 @@ contextType: "implementation"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]` (T001-T061)
+- [x] All tasks marked `[x]` (T001-T070)
 - [x] No `[B]` blocked tasks remaining
 - [x] All 6 config files pass syntax validation
 - [x] Naming consistent (`cocoindex_code`) across all configs
-- [x] Index built successfully (6,792 files, 105,965 chunks)
+- [x] Index built successfully and strict readiness reports non-zero file/chunk counts
 - [x] Checklist.md fully verified with evidence
 - [x] Cross-CLI auto-usage validated (3/4 CLIs confirmed, 1 billing-blocked)
 - [x] Copilot MCP failure root cause identified and documented
-- [x] SKILL.md updated with query optimization and `refresh_index` guidance
+- [x] `../../../skill/mcp-cocoindex-code/SKILL.md` updated with query optimization and `refresh_index` guidance
 - [x] Helper scripts and advisor hardening validated for Phase 2
+- [x] Strict readiness issue codes, exit behavior, and downstream adoption packaging validated for Phase 3
 
 <!-- /ANCHOR:completion -->
 
@@ -202,5 +228,5 @@ LEVEL 2 TASKS
 - Explicit verification tasks
 - Phase 1-3 (config installation) complete 2026-03-18
 - Phase 4 (cross-CLI validation + root cause + docs) complete 2026-03-18
-- 61 total tasks (T001-T061)
+- 70 total tasks (T001-T070)
 -->

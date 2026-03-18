@@ -40,7 +40,6 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 12** of the Perfect Session Capturing specification.
@@ -48,8 +47,6 @@ This is **Phase 12** of the Perfect Session Capturing specification.
 **Scope Boundary**: The deferred R-12 work still relied on draft assumptions that do not match the current repo.
 **Dependencies**: 011-session-source-validation
 **Deliverables**: Added one shared runtime helper that derives required headers and anchors from templates; promoted TEMPLATE_HEADERS structural failures to normal validator errors
-<!-- /ANCHOR:phase-context -->
-
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 

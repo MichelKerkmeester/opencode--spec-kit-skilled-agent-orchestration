@@ -1,10 +1,9 @@
 ---
 title: "Implementation Plan: Runtime Contract And Indexability [template:level_1/plan.md]"
-description: "Describe the shipped validation-rule metadata and explicit write/index policy without relying on audit prose alone."
+description: "Add explicit rule metadata, write/index dispositions, and focused proof for session-capturing indexability."
 trigger_phrases:
-  - "implementation"
-  - "plan"
   - "phase 018"
+  - "runtime contract"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -22,78 +21,91 @@ contextType: "general"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | TypeScript and Markdown |
-| **Framework** | system-spec-kit session-capturing pipeline |
-| **Storage** | Markdown docs plus metadata.json indexing status |
-| **Testing** | Focused Vitest coverage for workflow/index policy |
+| **Language/Stack** | TypeScript, Markdown |
+| **Framework** | system-spec-kit session-capturing scripts |
+| **Storage** | Memory markdown + metadata.json |
+| **Testing** | Vitest, `tsc --build` |
 
 ### Overview
-Phase `018` captures the shipped runtime contract behind validation and indexing. The plan is to document the rule metadata registry, the explicit write/index dispositions, and the fact that V10-only failures stay indexable while some rules intentionally remain write-only.
+
+Implement explicit validation-rule metadata and one shared disposition contract for session captures. The work should preserve upstream abort gates, let V10-only soft-fails index, and make write-only saves explicit when policy requires them.
 <!-- /ANCHOR:summary -->
 
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Runtime behavior already shipped.
-- [x] Focused automated verification already exists.
+- [x] Runtime seam identified in `validate-memory-quality.ts` and `workflow.ts`
+- [x] Desired write/index contract defined in the parent roadmap
 
 ### Definition of Done
-- [x] The phase spec names the rule metadata and disposition model.
-- [x] The implementation summary records the V10 and V2 policy outcomes.
+- [x] Rule metadata and disposition helpers shipped
+- [x] Workflow E2E proves V10 indexing and write-only index policy
+- [x] Scripts build passed
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-Policy-driven validation and indexing contract.
+
+Policy metadata plus one workflow disposition decision.
 
 ### Key Components
-- **Rule metadata registry**: defines write/index semantics per rule
-- **Workflow disposition logic**: chooses `abort_write`, `write_skip_index`, or `write_and_index`
+- **Rule metadata registry**: owns severity and write/index behavior.
+- **Workflow disposition helper**: decides whether a save aborts, writes without indexing, or writes and indexes.
 
 ### Data Flow
-Rendered memory -> validation rule metadata -> write/index disposition -> saved metadata status.
+
+Rendered memory -> quality validation -> rule metadata lookup -> disposition -> write/index action -> metadata status persistence.
+<!-- /ANCHOR:architecture -->
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Contract Capture
-- [x] Document the validation rule metadata registry.
-- [x] Document the explicit dispositions.
+### Phase 1: Setup
+- [x] Add rule metadata and helper exports.
 
-### Phase 2: Verification Capture
-- [x] Record V10 write-and-index behavior.
-- [x] Record write-only indexing policy for index-blocking rules.
+### Phase 2: Implementation
+- [x] Replace the raw indexing boolean with explicit disposition handling.
 
-### Phase 3: Documentation Sync
-- [x] Link the feature catalog as the authoritative runtime contract surface.
+### Phase 3: Verification
+- [x] Add focused tests and rerun the scripts build.
+<!-- /ANCHOR:phases -->
 
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Unit | Rule metadata helpers | Vitest |
-| Workflow E2E | Write/index disposition behavior | Vitest |
-| Documentation | Runtime-contract wording | Parent/feature-catalog sync |
+| Integration | Workflow write/index behavior | Vitest |
+| Build | TypeScript compilation | `npm run build` |
+<!-- /ANCHOR:testing -->
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `validate-memory-quality.ts` metadata registry | Internal | Green | Phase would lose its contract anchor |
-| `workflow.ts` disposition logic | Internal | Green | Phase would revert to prose-only documentation |
+| Existing quality validation rules | Internal | Green | The new disposition layer depends on stable rule IDs |
+<!-- /ANCHOR:dependencies -->
 
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: The runtime contract changes and phase `018` no longer matches it.
-- **Procedure**: Update phase `018` and the feature catalog together, then rerun validation.
+- **Trigger**: Valid writes start aborting unexpectedly or index metadata becomes misleading.
+- **Procedure**: Revert the disposition-layer changes and rerun focused workflow tests.
+<!-- /ANCHOR:rollback -->

@@ -35,7 +35,6 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 6** of the Perfect Session Capturing specification.
@@ -43,8 +42,6 @@ This is **Phase 6** of the Perfect Session Capturing specification.
 **Scope Boundary**: Two different quality gates validate file descriptions at different pipeline stages with partial overlap and divergent coverage.
 **Dependencies**: 005-confidence-calibration
 **Deliverables**: Established `validateDescription()` as the canonical shared validator, removed `hasMeaningfulDescription()`, and retained `isDescriptionValid()` as a compatibility/local helper path; implemented tiered validation outcomes
-<!-- /ANCHOR:phase-context -->
-
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 

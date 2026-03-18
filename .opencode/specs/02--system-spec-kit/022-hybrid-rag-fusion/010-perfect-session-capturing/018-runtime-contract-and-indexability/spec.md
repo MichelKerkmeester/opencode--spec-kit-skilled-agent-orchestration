@@ -1,25 +1,17 @@
 ---
 title: "Feature Specification: Runtime Contract And Indexability [template:level_1/spec.md]"
-description: "Document the shipped validation-rule metadata and explicit write/index disposition model for session capturing."
+description: "Implement explicit validation-rule metadata and write/index dispositions for the session-capturing pipeline."
 trigger_phrases:
-  - "phase 018"
   - "runtime contract"
   - "indexability"
-  - "write and index"
+  - "phase 018"
 importance_tier: "normal"
 contextType: "general"
 ---
 # Feature Specification: Runtime Contract And Indexability
 
 <!-- SPECKIT_LEVEL: 1 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + phase-child-header | v2.2 -->
-
-| **Parent Spec** | ../spec.md |
-| **Parent Plan** | ../plan.md |
-| **Phase** | 18 of 20 |
-| **Predecessor** | 017-stateless-quality-gates |
-| **Successor** | 019-source-capabilities-and-structured-preference |
-| **Handoff Criteria** | The write/index policy is documented as shipped behavior and the next phase can build on that contract. |
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
@@ -32,7 +24,10 @@ contextType: "general"
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-03-18 |
-| **Branch** | `010-perfect-session-capturing/018-runtime-contract-and-indexability` |
+| **Branch** | `018-runtime-contract-and-indexability` |
+| **Parent Spec** | `../spec.md` |
+| **Predecessor** | `017-stateless-quality-gates` |
+| **Successor** | `019-source-capabilities-and-structured-preference` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -41,10 +36,12 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Before this follow-up, the runtime contract for post-render validation still lived mostly in code and audit prose. Maintainers needed one phase-local spec that explains why write success and index success are no longer governed by a single boolean.
+
+The session-capturing runtime used one broad `qualityValidation.valid` boolean as the last indexing gate. That made it hard to express the intended policy: some failures should abort the write, some should allow a write but skip indexing, and V10-only source-mismatch diagnostics should still be able to write and index when stronger gates pass.
 
 ### Purpose
-Document the shipped rule-metadata registry and the explicit `abort_write`, `write_skip_index`, and `write_and_index` dispositions.
+
+Make write-vs-index behavior explicit by introducing validation-rule metadata and one shared disposition contract for saved memories.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -53,23 +50,24 @@ Document the shipped rule-metadata registry and the explicit `abort_write`, `wri
 ## 3. SCOPE
 
 ### In Scope
-- Validation rule metadata in `scripts/memory/validate-memory-quality.ts`
-- Explicit write/index policy in `scripts/core/workflow.ts`
-- Indexing status persistence in `scripts/core/memory-indexer.ts`
-- Contract documentation updates in the session-capturing feature catalog and manual playbook
+- Add validation-rule metadata and helper exports in `scripts/memory/validate-memory-quality.ts`.
+- Update `scripts/core/workflow.ts` to use `abort_write`, `write_skip_index`, and `write_and_index`.
+- Persist clearer indexing-status reasons in workflow metadata.
+- Add focused regression coverage for the new runtime contract.
 
 ### Out of Scope
-- Typed source-capability policy changes, which belong to phase `019`
-- Retained live artifact refresh, which belongs to phase `020`
+- Refreshing retained live CLI artifacts.
+- Redesigning retrieval weighting or embedding generation.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
 | `.opencode/skill/system-spec-kit/scripts/memory/validate-memory-quality.ts` | Modify | Add rule metadata and disposition helpers |
-| `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | Modify | Replace the old boolean indexing gate with explicit dispositions |
-| `.opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts` | Modify | Persist the new indexing status values |
-| `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md` | Modify | Record the runtime contract clearly |
+| `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | Modify | Enforce explicit write/index policy |
+| `.opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts` | Modify | Persist policy-aware indexing status |
+| `.opencode/skill/system-spec-kit/scripts/tests/validation-rule-metadata.vitest.ts` | Create | Prove rule-metadata behavior |
+| `.opencode/skill/system-spec-kit/scripts/tests/workflow-e2e.vitest.ts` | Modify | Prove V10 indexing and write-only policy |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -81,16 +79,16 @@ Document the shipped rule-metadata registry and the explicit `abort_write`, `wri
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Define first-class validation rule metadata | Each rule has severity, write/index policy, and rationale |
-| REQ-002 | Use explicit write/index dispositions | The workflow uses `abort_write`, `write_skip_index`, or `write_and_index` |
-| REQ-003 | Keep V10 indexable when upstream gates pass | V10-only saves can still write and index |
+| REQ-001 | Validation rules must expose explicit metadata | Rule metadata defines severity, write blocking, index blocking, source applicability, and rationale |
+| REQ-002 | Workflow must resolve one explicit disposition per save | Runtime uses `abort_write`, `write_skip_index`, or `write_and_index` instead of indexing directly from `qualityValidation.valid` |
+| REQ-003 | V10-only failures must write and index | Workflow E2E proves V10-only stateless saves index successfully |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Keep write-only indexing policy explicit | Rules like V2 can write while intentionally skipping semantic indexing |
-| REQ-005 | Persist indexing reason metadata | Metadata explains why indexing was skipped or allowed |
+| REQ-004 | Index-blocking-only failures must stay writeable | Metadata persists a policy-aware skipped-index status and reason |
+| REQ-005 | Operator docs must describe the contract | The parent pack and catalog reference the explicit dispositions honestly |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -98,9 +96,14 @@ Document the shipped rule-metadata registry and the explicit `abort_write`, `wri
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Phase `018` explains the rule-metadata contract in one place.
-- **SC-002**: Phase `018` records that V10-only failures can write and index.
-- **SC-003**: Phase `018` records that some failures can intentionally write but skip indexing.
+- **SC-001**: V10-only soft failures no longer fall into a write-only path.
+- **SC-002**: Write-only indexing policy is explicit in both runtime code and metadata.
+- **SC-003**: Focused regression coverage proves the new contract.
+
+### Acceptance Scenarios
+
+1. **Given** a stateless save fails only `V10`, **when** the workflow completes, **then** the memory is written and indexed.
+2. **Given** a save hits a write-blocking rule such as `V8` or `V9`, **when** the workflow evaluates dispositions, **then** the write is aborted instead of being indexed accidentally.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -110,8 +113,8 @@ Document the shipped rule-metadata registry and the explicit `abort_write`, `wri
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Current shipped runtime behavior | High | Document only what the runtime already does |
-| Risk | Write and index semantics drift apart again | Medium | Keep the disposition model explicit in docs and tests |
+| Dependency | Existing audit baseline from phases `016` and `017` | High | Keep the new policy consistent with the reconciled stateless contract |
+| Risk | Broader validation changes could accidentally block valid writes | High | Keep upstream template, insufficiency, and quality-threshold aborts separate |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -119,5 +122,5 @@ Document the shipped rule-metadata registry and the explicit `abort_write`, `wri
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- None. Live retained proof is handled in phase `020`.
+- Should V2 remain write-only long term, or should it eventually be promoted to either hard block or fully indexable once corpus evidence improves?
 <!-- /ANCHOR:questions -->

@@ -2,8 +2,8 @@
 title: "Tasks: Runtime Contract And Indexability [template:level_1/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
-  - "tasks"
   - "phase 018"
+  - "tasks"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -14,6 +14,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -22,42 +23,50 @@ contextType: "general"
 | `[x]` | Completed |
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
-
-**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
 ---
 
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Read the shipped runtime behavior for validation and indexing.
-- [x] T002 Define the phase scope around rule metadata and dispositions.
+- [x] T001 Confirm the write/index policy gaps from the audit baseline.
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T003 Document the validation rule metadata registry.
-- [x] T004 Document the explicit write/index dispositions.
-- [x] T005 Document V10 write-and-index and V2 write-only behavior.
+- [x] T002 Add rule metadata helpers in `scripts/memory/validate-memory-quality.ts`.
+- [x] T003 Update workflow indexing decisions in `scripts/core/workflow.ts`.
+- [x] T004 Add policy-aware indexing status handling in `scripts/core/memory-indexer.ts`.
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T006 Link this phase to the authoritative feature-catalog contract.
-- [x] T007 Keep the live-proof work deferred to phase `020`.
+- [x] T005 Add rule metadata and workflow E2E coverage.
+- [x] T006 Run the focused scripts lane and `npm run build`.
+<!-- /ANCHOR:phase-3 -->
 
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] Phase scope documented truthfully
+- [x] Focused verification passed
+<!-- /ANCHOR:completion -->
 
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+<!-- /ANCHOR:cross-refs -->

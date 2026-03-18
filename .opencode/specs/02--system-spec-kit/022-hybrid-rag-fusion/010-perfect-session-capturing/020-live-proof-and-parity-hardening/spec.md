@@ -1,27 +1,21 @@
 ---
 title: "Feature Specification: Live Proof And Parity Hardening [template:level_1/spec.md]"
-description: "Define the remaining retained live-proof and parity-hardening work needed before the parent pack can claim current end-to-end CLI closure."
+description: "Track the remaining retained live-proof work after the automated runtime contract was hardened."
 trigger_phrases:
-  - "phase 020"
   - "live proof"
   - "parity hardening"
+  - "phase 020"
 importance_tier: "normal"
 contextType: "general"
 ---
 # Feature Specification: Live Proof And Parity Hardening
 
 <!-- SPECKIT_LEVEL: 1 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + phase-child-header | v2.2 -->
-
-| **Parent Spec** | ../spec.md |
-| **Parent Plan** | ../plan.md |
-| **Phase** | 20 of 20 |
-| **Predecessor** | 019-source-capabilities-and-structured-preference |
-| **Successor** | Parent closeout |
-| **Handoff Criteria** | Retained live artifacts are refreshed and the parent pack can truthfully claim current multi-CLI proof. |
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -30,78 +24,96 @@ contextType: "general"
 | **Priority** | P0 |
 | **Status** | In Progress |
 | **Created** | 2026-03-18 |
-| **Branch** | `010-perfect-session-capturing/020-live-proof-and-parity-hardening` |
+| **Branch** | `020-live-proof-and-parity-hardening` |
+| **Parent Spec** | `../spec.md` |
+| **Predecessor** | `019-source-capabilities-and-structured-preference` |
+| **Successor** | None |
+<!-- /ANCHOR:metadata -->
 
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Automated parity is stronger after phases `018` and `019`, but the repo still does not have the refreshed retained live artifacts needed to claim current end-to-end CLI proof across supported modes. Without a dedicated phase, that gap is easy to understate.
+
+The automated runtime contract is stronger now, but the live-proof boundary is still lagging behind it. The repo still needs refreshed retained artifacts across supported CLIs and save modes before it can honestly claim flawless current parity everywhere.
 
 ### Purpose
-Define the remaining live-proof and parity-hardening work so future operators can close the loop honestly.
+
+Track the remaining retained live-proof and parity-hardening work explicitly so universal multi-CLI claims stay gated on real evidence.
+<!-- /ANCHOR:problem -->
 
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-- Retained live artifacts for supported CLI/runtime paths
-- Direct stateless, structured `--stdin`, and structured `--json` proof scenarios
-- Same-minute repeated-save proof expectations
-- Parent proof-boundary closeout criteria
+- Refresh retained live artifacts for supported CLIs and save modes.
+- Keep the M-007 proof boundary aligned with the current runtime contract.
+- Add any remaining parity hardening that the retained artifact review exposes.
 
 ### Out of Scope
-- Re-describing the already-shipped runtime contract from phases `018` and `019`
-- Reopening earlier audit findings unless the live proof contradicts them
+- Reopening the completed 018/019 runtime code unless retained proof shows a real gap.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/research/live-cli-proof-*.json` | Modify/Create | Refresh retained live proof artifacts |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Keep scenario expectations aligned with the live-proof bar |
-| `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md` | Modify | Upgrade proof status only when retained artifacts exist |
+| `.opencode/specs/.../020-live-proof-and-parity-hardening/*` | Modify | Track the remaining live-proof work |
+| `.opencode/specs/.../research/live-cli-proof-2026-03-17.json` | Modify/Create | Refresh retained proof artifacts when rerun-backed |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Keep the proof claim boundary honest |
+<!-- /ANCHOR:scope -->
 
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Refresh retained live CLI artifacts | Supported CLI/runtime paths have current retained proof |
-| REQ-002 | Cover all supported save modes | Direct stateless, `--stdin`, and `--json` are represented where applicable |
-| REQ-003 | Keep closeout claims conservative until artifacts exist | The parent pack stays in-progress until retained proof is refreshed |
+| REQ-001 | Retained live artifacts must exist for the current contract | One retained artifact exists per supported CLI and supported save mode |
+| REQ-002 | Universal parity claims must stay gated on retained evidence | Docs do not claim flawless multi-CLI parity without refreshed artifacts |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Reconfirm same-minute save hardening in live or manual proof | The proof set includes unique-filename and metadata-stability expectations |
-| REQ-005 | Reconfirm successful flows stay free of template-data warning noise | The retained proof does not rely on noisy “successful” saves |
+| REQ-003 | Automated and live proof surfaces must stay aligned | The playbook and retained artifacts target the same contract that automated tests prove |
+<!-- /ANCHOR:requirements -->
 
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Phase `020` names the exact remaining proof bar.
-- **SC-002**: The parent pack does not claim current full CLI closure until phase `020` is complete.
-- **SC-003**: A future operator can resume the live-proof refresh directly from this phase.
+- **SC-001**: Retained artifacts cover each supported CLI and save mode for the active contract.
+- **SC-002**: Operator docs can make stronger parity claims without overstating the current evidence.
+
+### Acceptance Scenarios
+
+1. **Given** retained live artifacts are refreshed for each supported CLI and mode, **when** reviewers compare them to the automated contract, **then** parity claims can be upgraded with evidence.
+2. **Given** the retained artifact set is incomplete, **when** maintainers review the parent pack and playbook, **then** the docs keep universal multi-CLI claims conservative.
+<!-- /ANCHOR:success-criteria -->
 
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Access to supported CLI/runtime environments | High | Keep the phase open until real artifacts exist |
-| Risk | Automated parity is mistaken for retained live proof | High | Keep the phase and parent pack explicitly in-progress |
+| Dependency | Working CLI environments for each supported client | High | Capture retained artifacts only from real runnable environments |
+| Risk | Docs start claiming more than the retained evidence proves | High | Keep phase `020` open until the artifact set is refreshed |
+<!-- /ANCHOR:risks -->
 
 ---
 
+<!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- Which supported CLI/runtime environments are available for the next live-proof refresh pass?
+- Should the retained live-proof format evolve into one artifact per CLI/mode instead of a single aggregated file?
+<!-- /ANCHOR:questions -->

@@ -32,7 +32,7 @@ contextType: "implementation"
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in spec.md
-  - **Evidence**: `spec.md` documents the multi-phase scope, requirements (REQ-001 to REQ-012), success criteria (SC-001 to SC-007), NFRs, and edge cases
+  - **Evidence**: `spec.md` documents the multi-phase scope, requirements (REQ-001 to REQ-014), success criteria (SC-001 to SC-009), NFRs, and edge cases
 - [x] CHK-002 [P0] Technical approach defined in plan.md
   - **Evidence**: `plan.md` documents the delivered installation, validation, and hardening phases, plus testing strategy, dependencies, and rollback procedures
 - [x] CHK-003 [P1] Dependencies identified and available
@@ -50,7 +50,7 @@ contextType: "implementation"
 - [x] CHK-011 [P0] No console errors or warnings
   - **Evidence**: `ccc index` completed without errors; `doctor.sh`, `doctor.sh --json`, `ensure_ready.sh --json`, and advisor verification commands all exited 0
 - [x] CHK-012 [P1] Error handling implemented
-  - **Evidence**: `doctor.sh` reports readiness and recommended next steps; `ensure_ready.sh` performs idempotent install/init/index actions and returns structured status; `.mcp.json` remains `disabled: true` by default
+  - **Evidence**: `doctor.sh` and `ensure_ready.sh` now expose `ready|degraded|not_ready`, stable issue codes, and recommended next steps; `ensure_ready.sh` performs idempotent install/init/index actions; `.mcp.json` remains `disabled: true` by default
 - [x] CHK-013 [P1] Code follows project patterns
   - **Evidence**: `cocoindex_code` naming follows existing snake_case convention (`spec_kit_memory`, `code_mode`); `_NOTE_*` env var documentation follows existing `opencode.json` and `.claude/mcp.json` pattern
 
@@ -62,7 +62,7 @@ contextType: "implementation"
 ## Testing
 
 - [x] CHK-020 [P0] All acceptance criteria met
-  - **Evidence**: SC-001 - all 6 configs have `cocoindex_code` entry; SC-002 - `.cocoindex_code/` gitignored; SC-003 - 6,792 files indexed, 105,965 chunks; SC-004 - all syntax validations pass
+  - **Evidence**: SC-001 - all 6 configs have `cocoindex_code` entry; SC-002 - `.cocoindex_code/` gitignored; SC-003 - readiness helpers report non-zero file/chunk counts after indexing (`5859` / `78525` in the shared repo validation run); SC-004 - all syntax validations pass; SC-008/SC-009 - strict readiness and downstream adoption packaging are now documented and verified
 - [x] CHK-021 [P0] Manual testing complete
   - **Evidence**: `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/python -c "import importlib.metadata as m; print(m.version('cocoindex-code'))"` prints `0.2.3`; `ccc index` completed; `ccc search "MCP server initialization"` returns relevant TypeScript results with file paths and line numbers
 - [x] CHK-022 [P1] Edge cases tested
@@ -92,11 +92,11 @@ contextType: "implementation"
 ## Documentation
 
 - [x] CHK-040 [P1] Spec/plan/tasks synchronized
-  - **Evidence**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` now reflect both the Phase 1 integration and the Phase 2 hardening pass
+  - **Evidence**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` now reflect the Phase 1 integration, Phase 2 hardening, and the Phase 3 strict-readiness/adoption-packaging pass
 - [x] CHK-041 [P1] Code comments adequate
   - **Evidence**: `_NOTE_1`, `_NOTE_2`, `_NOTE_3` env vars in `opencode.json` and `.claude/mcp.json` document install requirements, embedding model, and gitignore need; inline TOML comments added in `.codex/config.toml`
 - [x] CHK-042 [P2] README updated (if applicable)
-  - **Evidence**: Phase 2 updated the skill README, install guide, tool reference, search patterns, and config templates to match the installed runtime contract
+  - **Evidence**: The skill README, cross-CLI playbook, and downstream adoption checklist now point operators to strict readiness modes and sibling-repo rollout guidance
 
 <!-- /ANCHOR:docs -->
 
@@ -128,7 +128,7 @@ contextType: "implementation"
 - [x] CHK-063 [P1] Root cause documented in test results and implementation summary
   - **Evidence**: Root cause analysis section in `scratch/cross-cli-auto-usage-test-results.md`; findings F1-F4 and recommendations R1-R6 in `implementation-summary.md`
 - [x] CHK-064 [P1] SKILL.md updated with query optimization and `refresh_index` guidance
-  - **Evidence**: "Query Optimization" and "Concurrent Query Sessions" sections added to SKILL.md Rules section
+  - **Evidence**: "Query Optimization" and "Concurrent Query Sessions" sections added to `../../../skill/mcp-cocoindex-code/SKILL.md`
 - [x] CHK-065 [P2] Codex retry attempted
   - **Evidence**: `codex exec "echo hello"` returned `ERROR: You've hit your usage limit`; documented as deferred
 - [x] CHK-066 [P1] Memory saved for session continuity
@@ -156,17 +156,33 @@ contextType: "implementation"
 
 ---
 
+<!-- ANCHOR:phase-3-strict-readiness -->
+## Phase 3 Strict Readiness & Adoption Packaging Verification
+
+- [x] CHK-080 [P0] Strict readiness issue codes and shared state are implemented centrally
+  - **Evidence**: `scripts/common.sh` defines exit codes `20` through `25` and computes shared `status`, `blockingIssues`, `warnings`, `detectedConfigs`, `expectedConfigs`, and `recommendedNextStep`
+- [x] CHK-081 [P0] Shared-repo strict readiness passes after automated recovery
+  - **Evidence**: `doctor.sh --json --strict --require-config --expect-config opencode.json` first surfaced exit `23` with `indexFiles: 0` and `indexChunks: 0`; `ensure_ready.sh --json --strict --require-config --expect-config opencode.json` then ran `actionsPerformed: ["index"]`; rerunning `doctor.sh` returned `status: "ready"` with `indexFiles: 5859`, `indexChunks: 78525`, and `expectedConfigs: ["opencode.json"]`
+- [x] CHK-082 [P1] Strict post-bootstrap config validation fails correctly in a temp project
+  - **Evidence**: `ensure_ready.sh --json --strict --require-config --root <tmpdir>` exited `24` after performing `["init", "index"]`, with `blockingIssues: [24]`, `detectedConfigs: []`, and `recommendedNextStep` pointing to `../../../skill/mcp-cocoindex-code/references/downstream_adoption_checklist.md`
+- [x] CHK-083 [P1] Downstream adoption guidance is published without hidden config-writing automation
+  - **Evidence**: `../../../skill/mcp-cocoindex-code/references/downstream_adoption_checklist.md` documents the minimum sibling-repo payload/config/gitignore bundle, explicitly states the shared helpers verify readiness but do not write config files, and is referenced from `../../../skill/mcp-cocoindex-code/SKILL.md`, `../../../skill/mcp-cocoindex-code/README.md`, and `../../../skill/mcp-cocoindex-code/references/cross_cli_playbook.md`
+
+<!-- /ANCHOR:phase-3-strict-readiness -->
+
+---
+
 <!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 10 | 10/10 |
-| P1 Items | 17 | 17/17 |
+| P0 Items | 14 | 14/14 |
+| P1 Items | 19 | 19/19 |
 | P2 Items | 3 | 3/3 |
 
 **Verification Date**: 2026-03-18
-**Verified By**: AI Assistant (Claude Opus 4.6)
+**Verified By**: AI Assistant (Codex)
 
 <!-- /ANCHOR:summary -->
 

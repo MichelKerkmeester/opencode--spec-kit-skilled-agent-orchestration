@@ -14,7 +14,19 @@ Minimum rollout checklist for enabling CocoIndex in a sibling repo.
 
 ---
 
-## 1. ADOPTION BUNDLE
+## 1. OVERVIEW
+
+Use this checklist when a sibling repo needs real CocoIndex adoption instead of advisor-only heuristics. The key rule is that downstream rollout is a three-layer contract:
+
+- local skill payload
+- repo-specific `cocoindex_code` MCP wiring
+- local runtime hygiene for `.cocoindex_code/`
+
+The shared helper scripts can verify these layers, but they do not create downstream config on the repo's behalf.
+
+---
+
+## 2. ADOPTION BUNDLE
 
 A downstream repo needs all three layers below before advisor-side semantic routing can matter:
 
@@ -26,7 +38,7 @@ This checklist is intentionally documentation-first. The shared helper scripts m
 
 ---
 
-## 2. REQUIRED PAYLOAD
+## 3. REQUIRED PAYLOAD
 
 Verify the repo contains:
 
@@ -40,7 +52,7 @@ If this payload is missing, `skill_advisor.py` cannot discover `mcp-cocoindex-co
 
 ---
 
-## 3. CONFIG WIRING
+## 4. CONFIG WIRING
 
 Add `cocoindex_code` only to the config files the repo already uses.
 
@@ -64,7 +76,7 @@ That means the advisor can attempt semantic behavior, but it still cannot recomm
 
 ---
 
-## 4. READINESS CHECKS
+## 5. READINESS CHECKS
 
 After copying payload and wiring configs:
 
@@ -84,7 +96,7 @@ bash .opencode/skill/mcp-cocoindex-code/scripts/doctor.sh --strict --require-con
 
 ---
 
-## 5. GITIGNORE HYGIENE
+## 6. GITIGNORE HYGIENE
 
 Confirm the repo ignores:
 
@@ -96,7 +108,7 @@ The semantic index is local runtime state and should not be committed.
 
 ---
 
-## 6. DONE CRITERIA
+## 7. DONE CRITERIA
 
 A downstream repo is adoption-ready when:
 

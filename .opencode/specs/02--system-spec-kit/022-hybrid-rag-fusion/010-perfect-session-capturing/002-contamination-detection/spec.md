@@ -35,7 +35,6 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 2** of the Perfect Session Capturing specification.
@@ -43,8 +42,6 @@ This is **Phase 2** of the Perfect Session Capturing specification.
 **Scope Boundary**: Three guard layers exist for contamination detection (lexical scrubber, prompt-quality pipeline, post-render V8/V9), but they run on different payloads and have significant blind spots.
 **Dependencies**: 001-quality-scorer-unification
 **Deliverables**: Extended V8 to inspect frontmatter and detect non-dominant foreign-spec signals; broadened V9 pattern set beyond current 3 generic title patterns
-<!-- /ANCHOR:phase-context -->
-
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 

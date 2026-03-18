@@ -35,7 +35,6 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 1** of the Perfect Session Capturing specification.
@@ -43,8 +42,6 @@ This is **Phase 1** of the Perfect Session Capturing specification.
 **Scope Boundary**: The pipeline runs three quality checks with a split contract: stored/indexed quality uses the 0.0-1.0 scale, but workflow gating uses 0-100.
 **Dependencies**: None
 **Deliverables**: Unified QualityScoreResult interface with score01 (canonical) and score100 (compatibility); contamination penalty added to V2 scorer
-<!-- /ANCHOR:phase-context -->
-
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 

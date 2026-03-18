@@ -15,7 +15,18 @@ Canonical AI usage guide for CocoIndex across Claude, Gemini, Copilot, Codex, an
 
 ---
 
-## 1. DEFAULT FLOW
+## 1. OVERVIEW
+
+Use this reference when an agent or operator needs a stable, cross-CLI operating pattern for CocoIndex search, readiness checks, and troubleshooting. It captures the safe defaults that held up during the shared-repo hardening work:
+
+- start with readiness checks when setup is uncertain
+- use CocoIndex for concept search and Grep for exact text
+- switch follow-up MCP queries to `refresh_index=false` unless code changed
+- treat sibling-repo adoption as payload plus config wiring, not advisor heuristics alone
+
+---
+
+## 2. DEFAULT FLOW
 
 Use this ladder by default:
 
@@ -43,7 +54,7 @@ bash .opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh --strict --requi
 
 ---
 
-## 2. QUERY RECIPE
+## 3. QUERY RECIPE
 
 ### First Query in a Session
 
@@ -68,7 +79,7 @@ bash .opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh --strict --requi
 
 ---
 
-## 3. WHEN TO USE WHAT
+## 4. WHEN TO USE WHAT
 
 | Use Case | Preferred Tool | Why |
 | --- | --- | --- |
@@ -91,7 +102,7 @@ Use `Grep` first when the prompt asks for:
 
 ---
 
-## 4. CROSS-CLI SAFETY NOTES
+## 5. CROSS-CLI SAFETY NOTES
 
 - MCP exposes only `search`.
 - CLI owns `status`, `index`, `reset`, and `daemon`.
@@ -108,7 +119,7 @@ Use `Grep` first when the prompt asks for:
 
 ---
 
-## 5. TROUBLESHOOTING LADDER
+## 6. TROUBLESHOOTING LADDER
 
 ### Binary Missing
 

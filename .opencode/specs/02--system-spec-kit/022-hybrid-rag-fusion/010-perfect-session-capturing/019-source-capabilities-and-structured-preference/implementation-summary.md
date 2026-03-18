@@ -1,10 +1,9 @@
 ---
 title: "Implementation Summary: Source Capabilities And Structured Preference"
-description: "Phase 019 records the shipped capability model so source policy and save-path guidance are no longer hidden in code diffs."
+description: "Phase 019 shipped typed source capabilities and updated the operator contract for structured saves."
 trigger_phrases:
-  - "implementation"
-  - "summary"
   - "phase 019"
+  - "implementation summary"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -15,6 +14,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -22,49 +22,60 @@ contextType: "general"
 | **Spec Folder** | 019-source-capabilities-and-structured-preference |
 | **Completed** | 2026-03-18 |
 | **Level** | 1 |
+<!-- /ANCHOR:metadata -->
 
 ---
 
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase `019` gives the source-policy work a permanent home in the roadmap. You can now inspect one phase that explains the typed capability registry, the capability-driven contamination downgrade, and the rule that structured `--stdin` / `--json` should be preferred whenever curated session data exists.
+Phase 019 moved source-aware policy onto a shared capability registry and aligned the operator docs to match. The contamination downgrade is now capability-driven, the CLI help text calls structured `--stdin` / `--json` the preferred path when curated data exists, and the feature catalog plus the M-007 playbook describe the same runtime contract.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `spec.md` | Created | Define the phase scope and capability contract |
-| `plan.md` | Created | Record the policy-capture approach |
-| `tasks.md` | Created | Track the phase work |
-| `implementation-summary.md` | Created | Preserve the phase outcome |
+| `scripts/utils/source-capabilities.ts` | Created | Define source capabilities once |
+| `scripts/extractors/contamination-filter.ts` | Modified | Use capability-driven policy |
+| `scripts/memory/generate-context.ts` | Modified | Document structured-input preference |
+| `session-capturing feature catalog entry` | Modified | Publish the authoritative contract |
+| `manual testing playbook root` | Modified | Update the M-007 proof boundary |
+<!-- /ANCHOR:what-built -->
 
 ---
 
+<!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-This phase documents already-shipped runtime behavior. The delivery work was documentation synchronization across the phase tree, the feature catalog, and the manual playbook.
+The implementation reused the existing `DataSource` union so the new capability layer stayed small and local. Tests were updated before the docs were rewritten so the catalog and playbook reflect the shipped behavior, not a planned one.
+<!-- /ANCHOR:how-delivered -->
 
 ---
 
+<!-- ANCHOR:decisions -->
 ## Key Decisions
 
 | Decision | Why |
 |----------|-----|
-| Document the capability registry explicitly | The old source-name exception was too easy to misread as the long-term contract |
-| Prefer structured input when curated data exists | Structured input gives the strongest capture surface and should be the default documented path |
+| Reuse the existing source union | Avoid inventing a second source taxonomy |
+| Keep direct positional mode as fallback | The product goal is to prefer structured input, not remove stateless capture |
+<!-- /ANCHOR:decisions -->
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification
 
 | Check | Result |
 |-------|--------|
-| Capability model recorded | PASS |
-| Structured-input preference recorded | PASS |
-| Direct fallback path preserved | PASS |
+| Focused runtime-contract Vitest lane | PASS |
+| `npm run build` | PASS |
+<!-- /ANCHOR:verification -->
 
 ---
 
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **This phase does not refresh retained live proof** That work remains in phase `020`.
+1. **Capability policy is intentionally narrow.** Only the currently proven source behaviors are modeled in the first registry.
+<!-- /ANCHOR:limitations -->

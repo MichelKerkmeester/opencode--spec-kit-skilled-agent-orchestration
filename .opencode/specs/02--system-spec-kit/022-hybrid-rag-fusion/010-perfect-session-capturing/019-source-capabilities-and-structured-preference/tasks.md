@@ -2,8 +2,8 @@
 title: "Tasks: Source Capabilities And Structured Preference [template:level_1/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
-  - "tasks"
   - "phase 019"
+  - "tasks"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -14,6 +14,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -22,42 +23,51 @@ contextType: "general"
 | `[x]` | Completed |
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
-
-**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
 ---
 
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Read the shipped capability policy and save-path guidance.
-- [x] T002 Define the phase scope around source capabilities and structured preference.
+- [x] T001 Confirm the existing source taxonomy and the contamination downgrade boundary.
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
+<!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T003 Document the capability registry.
-- [x] T004 Document the capability-driven contamination behavior.
-- [x] T005 Document the preferred structured-input path and direct fallback path.
+- [x] T002 Add `scripts/utils/source-capabilities.ts`.
+- [x] T003 Update `scripts/extractors/contamination-filter.ts`.
+- [x] T004 Update `scripts/memory/generate-context.ts`.
+- [x] T005 Update the feature catalog and the playbook.
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
+<!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T006 Link this phase to the feature catalog and playbook.
-- [x] T007 Keep retained live proof deferred to phase `020`.
+- [x] T006 Update contamination and CLI authority tests.
+- [x] T007 Re-run the focused scripts lane and build.
+<!-- /ANCHOR:phase-3 -->
 
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] Phase scope documented truthfully
+- [x] Focused verification passed
+<!-- /ANCHOR:completion -->
 
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+<!-- /ANCHOR:cross-refs -->

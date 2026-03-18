@@ -5,6 +5,16 @@
 # Idempotent bootstrap wrapper for AI agents and maintainers.
 #
 # Usage: bash .opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh [--json] [--root <path>] [--refresh-index] [--strict] [--require-config] [--expect-config <path>]
+#
+# Exit Codes:
+#   0  - Bootstrap succeeded, or advisory mode completed
+#   1  - Invalid arguments
+#   20 - Repo-local CocoIndex binary missing after bootstrap
+#   21 - Skill payload missing
+#   22 - Helper-script payload incomplete
+#   23 - Index missing or empty after bootstrap
+#   24 - Required config wiring missing
+#   25 - Required daemon not running
 
 set -euo pipefail
 

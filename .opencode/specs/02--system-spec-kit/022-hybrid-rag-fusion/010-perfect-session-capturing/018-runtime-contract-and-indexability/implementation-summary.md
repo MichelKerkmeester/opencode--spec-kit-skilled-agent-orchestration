@@ -1,10 +1,9 @@
 ---
 title: "Implementation Summary: Runtime Contract And Indexability"
-description: "Phase 018 records the shipped write/index policy so maintainers no longer have to infer it from code alone."
+description: "Phase 018 shipped the explicit write/index contract for session capturing."
 trigger_phrases:
-  - "implementation"
-  - "summary"
   - "phase 018"
+  - "implementation summary"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -15,6 +14,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## Metadata
 
 | Field | Value |
@@ -22,49 +22,60 @@ contextType: "general"
 | **Spec Folder** | 018-runtime-contract-and-indexability |
 | **Completed** | 2026-03-18 |
 | **Level** | 1 |
+<!-- /ANCHOR:metadata -->
 
 ---
 
+<!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase `018` gives the write/index policy a first-class home in the phase tree. You can now see, in one place, that validation rules have explicit metadata, that the workflow resolves into `abort_write`, `write_skip_index`, or `write_and_index`, and that V10-only failures stay indexable when the upstream gates pass.
+Phase 018 shipped the explicit write/index policy for session capturing. The runtime now owns rule metadata in `validate-memory-quality.ts`, resolves `abort_write`, `write_skip_index`, and `write_and_index` in `workflow.ts`, and records policy-aware indexing status in metadata instead of relying on the old generic quality-gate result.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `spec.md` | Created | Define the phase scope and contract |
-| `plan.md` | Created | Record the contract-capture approach |
-| `tasks.md` | Created | Track the phase work |
-| `implementation-summary.md` | Created | Preserve the phase outcome |
+| `scripts/memory/validate-memory-quality.ts` | Modified | Add rule metadata and disposition helpers |
+| `scripts/core/workflow.ts` | Modified | Enforce explicit write/index decisions |
+| `scripts/core/memory-indexer.ts` | Modified | Persist policy-aware indexing status |
+| `scripts/tests/validation-rule-metadata.vitest.ts` | Created | Prove the metadata contract |
+| `scripts/tests/workflow-e2e.vitest.ts` | Modified | Prove V10 indexing and write-only saves |
+<!-- /ANCHOR:what-built -->
 
 ---
 
+<!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-This phase documents already-shipped runtime behavior. The delivery work was documentation synchronization, not a fresh runtime implementation.
+Focused Vitest coverage was added first, then the runtime was updated to satisfy the desired contract without weakening the existing template, sufficiency, or quality-threshold aborts.
+<!-- /ANCHOR:how-delivered -->
 
 ---
 
+<!-- ANCHOR:decisions -->
 ## Key Decisions
 
 | Decision | Why |
 |----------|-----|
-| Document the disposition model explicitly | Write success and index success are no longer the same thing |
-| Keep V10 as indexable when upstream gates pass | The runtime already treats V10 as a soft diagnostic |
+| Keep V10 indexable | The diagnostic should stay visible without forcing write-only saves |
+| Keep V2 write-only | It is useful enough to persist for inspection but still too noisy for automatic indexing |
+<!-- /ANCHOR:decisions -->
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification
 
 | Check | Result |
 |-------|--------|
-| Phase scope matches shipped runtime behavior | PASS |
-| V10 write-and-index behavior recorded | PASS |
-| Write-only indexing policy recorded | PASS |
+| Focused runtime-contract Vitest lane | PASS |
+| `npm run build` | PASS |
+<!-- /ANCHOR:verification -->
 
 ---
 
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Live retained proof is not part of this phase** That work remains in phase `020`.
+1. **Live proof is still separate.** Phase 018 strengthens automated runtime policy, but it does not refresh retained live CLI artifacts.
+<!-- /ANCHOR:limitations -->

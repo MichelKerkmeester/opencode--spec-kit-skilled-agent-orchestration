@@ -551,10 +551,10 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
     expect(result.writtenFiles).toContain(result.contextFilename);
     expect(result.memoryId).toBeNull();
     expect(result.indexingStatus).toMatchObject({
-      status: 'skipped_quality_gate',
+      status: 'skipped_index_policy',
       memoryId: null,
     });
-    expect(metadata.embedding?.status).toBe('skipped_quality_gate');
+    expect(metadata.embedding?.status).toBe('skipped_index_policy');
     expect(metadata.embedding?.reason).toContain('V2');
   });
 
@@ -759,9 +759,8 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
 
     const description = readDescription(harness);
     const metadata = readMetadata(harness) as { embedding?: { status?: string } };
-    const indexerModule = await import('../core/memory-indexer');
 
-    expect(vi.mocked(indexerModule.indexMemory)).toHaveBeenCalledTimes(1);
+    expect(mockedIndexMemory).toHaveBeenCalledTimes(1);
     expect(result.memoryId).toBeNull();
     expect(result.indexingStatus).toMatchObject({
       status: 'failed_embedding',

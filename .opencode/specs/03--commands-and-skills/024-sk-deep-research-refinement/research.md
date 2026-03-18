@@ -10,7 +10,7 @@
 
 The sk-deep-research system is **72% implemented by specification coverage but only 44% by runtime behavior**. The dominant weakness is NOT missing algorithms -- it is the gap between specified algorithms and YAML orchestrator wiring. Of 18 v2 proposals from spec 023, 8 are fully implemented, 5 are specified but not wired, 3 are genuinely unimplemented, 1 is deliberately excluded, and 1 was reclassified.
 
-This research produced **16 consolidated v3 proposals** in 4 priority tiers, with file-level change specifications for the 4 highest-priority items. The single most impactful improvement is closing the spec-code gap (v3-01: Orchestrator Wiring), which requires only YAML changes to unlock capabilities that are already fully specified.
+This research produced **15 consolidated v3 proposals** (after merging v3-16 into v3-08) in 4 priority tiers, with file-level change specifications for the 4 highest-priority items. The single most impactful improvement is closing the spec-code gap (v3-01: Orchestrator Wiring), which requires only YAML changes to unlock capabilities that are already fully specified.
 
 Our system has a **unique competitive advantage**: it is the ONLY autoresearch implementation with algorithmic convergence detection (3-signal composite with MAD noise floor). No reference repo implements statistical convergence -- they use hard caps (pi-autoresearch), human judgment (AGR), or manual sentinels (autoresearch-opencode).
 

@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: CocoIndex Code MCP Integration"
-description: "OpenCode had no semantic code search. This spec now covers Phase 1 installation/config registration and the Phase 2 hardening pass for docs, automation helpers, and advisor utilization."
+description: "OpenCode had no semantic code search. This spec now covers Phase 1 installation/config registration, Phase 2 hardening, and the Phase 3 strict-readiness and adoption-packaging follow-up."
 trigger_phrases:
   - "cocoindex"
   - "semantic code search"
@@ -24,7 +24,7 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Complete (Phase 1 + Phase 2 Hardening) |
+| **Status** | Complete (Phase 1 + Phase 2 Hardening + Phase 3 Strict Readiness) |
 | **Created** | 2026-03-18 |
 | **Branch** | `main` (additive config changes, no separate branch) |
 
@@ -41,7 +41,7 @@ OpenCode had no semantic code search capability. All code exploration relied on 
 
 ### Purpose
 
-Install CocoIndex Code (a Python MCP server providing vector-based semantic code search), register it as the 4th MCP server in all 6 CLI config files, and harden the surrounding skill so every AI assistant can use it consistently through repo-portable docs, readiness helpers, and safer repeated-query guidance.
+Install CocoIndex Code (a Python MCP server providing vector-based semantic code search), register it as the 4th MCP server in all 6 CLI config files, and harden the surrounding skill so every AI assistant can use it consistently through repo-portable docs, readiness helpers, safer repeated-query guidance, and stricter downstream adoption checks.
 
 <!-- /ANCHOR:problem -->
 
@@ -61,6 +61,9 @@ Install CocoIndex Code (a Python MCP server providing vector-based semantic code
 - Add read-only/readiness helper scripts for agents: `doctor.sh` and `ensure_ready.sh`
 - Add a cross-CLI operating guide for safe repeated semantic search usage
 - Update `skill_advisor.py` to prefer the repo-local `ccc` binary and auto-route semantic discovery prompts when exact-text search is not requested
+- Add strict readiness semantics to `common.sh`, `doctor.sh`, and `ensure_ready.sh`, including `ready|degraded|not_ready` state and issue codes `20` through `25`
+- Add strict helper flags for required config and daemon validation: `--strict`, `--require-config`, `--require-daemon`, and repeatable `--expect-config`
+- Add a downstream adoption checklist doc for sibling repos and route operators to it from `../../../skill/mcp-cocoindex-code/SKILL.md`, `../../../skill/mcp-cocoindex-code/README.md`, and `../../../skill/mcp-cocoindex-code/references/cross_cli_playbook.md`
 
 ### Out of Scope
 
@@ -83,16 +86,17 @@ Install CocoIndex Code (a Python MCP server providing vector-based semantic code
 | `.gemini/settings.json` | Modified | Added `cocoindex_code` server entry with repo-relative paths, `cwd`, `trust: true` |
 | `.claude/mcp.json` | Modified | Added `cocoindex_code` server entry with relative env, `_NOTE_*` docs |
 | `.codex/config.toml` | Modified | Added `[mcp_servers.cocoindex_code]` section |
-| `.opencode/skill/mcp-cocoindex-code/SKILL.md` | Modified | Added query optimization tips and `refresh_index=false` concurrent session guidance |
+| `../../../skill/mcp-cocoindex-code/SKILL.md` | Modified | Added query optimization tips and `refresh_index=false` concurrent session guidance |
 | `.opencode/skill/mcp-cocoindex-code/README.md` | Modified | Updated runtime contract, setup guidance, troubleshooting, and helper script guidance |
-| `.opencode/skill/mcp-cocoindex-code/INSTALL_GUIDE.md` | Modified | Corrected MCP/CLI responsibilities and standardized repo-portable config examples |
-| `.opencode/skill/mcp-cocoindex-code/references/tool_reference.md` | Modified | Corrected CLI help parity, daemon subcommands, and refresh guidance |
-| `.opencode/skill/mcp-cocoindex-code/references/search_patterns.md` | Modified | Added query ladder and multi-query refresh guidance |
-| `.opencode/skill/mcp-cocoindex-code/references/cross_cli_playbook.md` | Added | Canonical cross-CLI search/troubleshooting playbook |
-| `.opencode/skill/mcp-cocoindex-code/assets/config_templates.md` | Modified | Replaced environment-specific examples with repo-portable config templates |
-| `.opencode/skill/mcp-cocoindex-code/scripts/common.sh` | Added | Shared shell helpers for binary detection, project-root resolution, and status parsing |
-| `.opencode/skill/mcp-cocoindex-code/scripts/doctor.sh` | Added | Read-only health check with text and JSON output |
-| `.opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh` | Added | Idempotent bootstrap wrapper for agents |
+| `../../../skill/mcp-cocoindex-code/INSTALL_GUIDE.md` | Modified | Corrected MCP/CLI responsibilities and standardized repo-portable config examples |
+| `../../../skill/mcp-cocoindex-code/references/tool_reference.md` | Modified | Corrected CLI help parity, daemon subcommands, and refresh guidance |
+| `../../../skill/mcp-cocoindex-code/references/search_patterns.md` | Modified | Added query ladder and multi-query refresh guidance |
+| `../../../skill/mcp-cocoindex-code/references/cross_cli_playbook.md` | Added | Canonical cross-CLI search/troubleshooting playbook |
+| `../../../skill/mcp-cocoindex-code/references/downstream_adoption_checklist.md` | Added | Minimum sibling-repo rollout checklist for payload, config wiring, and gitignore hygiene |
+| `../../../skill/mcp-cocoindex-code/assets/config_templates.md` | Modified | Replaced environment-specific examples with repo-portable config templates |
+| `.opencode/skill/mcp-cocoindex-code/scripts/common.sh` | Added | Shared shell helpers plus centralized readiness state, issue-code, and next-step computation |
+| `.opencode/skill/mcp-cocoindex-code/scripts/doctor.sh` | Added | Read-only health check with strict readiness validation, config expectations, and JSON/text output |
+| `.opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh` | Added | Idempotent bootstrap wrapper with strict post-bootstrap validation and machine-readable readiness output |
 | `.opencode/skill/mcp-cocoindex-code/scripts/install.sh` | Modified | Added root override support and shared shell helpers |
 | `.opencode/skill/mcp-cocoindex-code/scripts/update.sh` | Modified | Added root override support and post-update index health guidance |
 | `.opencode/skill/scripts/skill_advisor.py` | Modified | Prefers repo-local `ccc` and auto-boosts semantic code-search prompts |
@@ -109,7 +113,7 @@ Install CocoIndex Code (a Python MCP server providing vector-based semantic code
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | `cocoindex-code` installed in the skill-local virtualenv | `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/python -c "import importlib.metadata as m; print(m.version('cocoindex-code'))"` prints `0.2.3` |
-| REQ-002 | Code index builds successfully | `ccc index` completes, 6,792 files indexed into 105,965 chunks |
+| REQ-002 | Code index builds successfully | `ccc index` completes and the readiness helpers report non-zero `indexFiles` and `indexChunks` |
 | REQ-003 | All 6 CLI configs contain valid `cocoindex_code` MCP server entry | Naming is consistent snake_case `cocoindex_code` across all configs |
 | REQ-004 | `.cocoindex_code/` is gitignored | `grep .cocoindex_code .gitignore` returns a match |
 | REQ-005 | All JSON and TOML config files parse cleanly | `python3 json.load` and `python3.11 tomllib.load` exit 0 for all files |
@@ -125,6 +129,8 @@ Install CocoIndex Code (a Python MCP server providing vector-based semantic code
 | REQ-010 | Agent-facing setup and health helpers are available | `doctor.sh` and `ensure_ready.sh` support `--json` and return stable structured output |
 | REQ-011 | Advisor prefers repo-local CocoIndex binary | `skill_advisor.py --health` reports the repo-local `.venv/bin/ccc` when present |
 | REQ-012 | Semantic exploration prompts auto-route to CocoIndex without overriding exact-text requests | Exploration-style prompts pass threshold for `mcp-cocoindex-code`; exact-text prompts remain below threshold by default |
+| REQ-013 | Strict readiness checks use stable issue codes and status fields | `common.sh` defines issue codes `20` through `25`; `doctor.sh` and `ensure_ready.sh` expose `status`, `blockingIssues`, `warnings`, `detectedConfigs`, and `expectedConfigs` |
+| REQ-014 | Downstream rollout guidance is published for sibling repos | `../../../skill/mcp-cocoindex-code/references/downstream_adoption_checklist.md` documents the minimum adoption bundle and points operators to config templates and strict readiness checks |
 
 <!-- /ANCHOR:requirements -->
 
@@ -135,11 +141,13 @@ Install CocoIndex Code (a Python MCP server providing vector-based semantic code
 
 - **SC-001**: All 6 CLI configs contain valid `cocoindex_code` MCP server entry with consistent naming
 - **SC-002**: `.cocoindex_code/` is gitignored and index directory not tracked
-- **SC-003**: Index builds successfully (6,792 files, 105,965 chunks across 14 languages)
+- **SC-003**: Index builds successfully and readiness reports non-zero file/chunk counts
 - **SC-004**: JSON/TOML syntax validation passes for all modified config files
 - **SC-005**: `doctor.sh` and `ensure_ready.sh` provide clean JSON output and actionable next-step guidance
 - **SC-006**: CocoIndex docs reflect actual CLI/MCP defaults and daemon commands
 - **SC-007**: `skill_advisor.py` prefers the repo-local `ccc` binary and routes semantic exploration prompts to `mcp-cocoindex-code`
+- **SC-008**: Strict helper modes surface stable readiness states and issue codes for missing binary, payload, index, config, and daemon requirements
+- **SC-009**: Downstream sibling-repo rollout guidance is published without adding hidden config-writing automation
 
 <!-- /ANCHOR:success-criteria -->
 
@@ -185,6 +193,7 @@ Install CocoIndex Code (a Python MCP server providing vector-based semantic code
 - **NFR-R02**: All config changes are additive - existing MCP servers unaffected
 - **NFR-R03**: `doctor.sh --json` and `ensure_ready.sh --json` return machine-readable output without progress noise
 - **NFR-R04**: Follow-up search guidance defaults to `refresh_index=false` when the codebase has not changed
+- **NFR-R05**: Strict readiness failures use stable exit codes so agents can distinguish missing binary (`20`), payload (`21`/`22`), index (`23`), config (`24`), and daemon (`25`) conditions
 
 <!-- /ANCHOR:nfr -->
 
@@ -212,6 +221,8 @@ Install CocoIndex Code (a Python MCP server providing vector-based semantic code
 - **Daemon not running**: First query triggers cold start (20-30s); subsequent queries are fast
 - **Mixed local vs PATH-installed `ccc` binaries**: Advisor and operators should prefer the repo-local `.opencode/.../.venv/bin/ccc` or the helper scripts
 - **Repeated MCP searches**: Leaving `refresh_index=true` on every query adds extra work and may worsen concurrency issues; use `refresh_index=false` for follow-up queries
+- **Strict config validation**: `--strict --require-config` returns exit `24` when `cocoindex_code` wiring is still missing, even after bootstrap completes
+- **Strict daemon validation**: `--require-daemon` is opt-in; a non-running daemon is advisory by default and only becomes a strict failure when explicitly required
 
 <!-- /ANCHOR:edge-cases -->
 

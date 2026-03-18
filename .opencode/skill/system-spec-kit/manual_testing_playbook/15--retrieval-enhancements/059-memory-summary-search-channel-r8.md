@@ -1,0 +1,45 @@
+---
+title: "NEW-059 -- Memory summary search channel (R8)"
+description: "This scenario validates Memory summary search channel (R8) for `NEW-059`. It focuses on Confirm scale-gated summary channel."
+---
+
+# NEW-059 -- Memory summary search channel (R8)
+
+## 1. OVERVIEW
+
+This scenario validates Memory summary search channel (R8) for `NEW-059`. It focuses on Confirm scale-gated summary channel.
+
+---
+
+## 2. CURRENT REALITY
+
+Operators run the exact prompt and command sequence for `NEW-059` and confirm the expected signals without contradicting evidence.
+
+- Objective: Confirm scale-gated summary channel
+- Prompt: `Verify memory summary search channel (R8).`
+- Expected signals: Summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold
+- Pass/fail: PASS if summary channel activates above threshold and remains inert below it
+
+---
+
+## 3. TEST EXECUTION
+
+| Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
+|---|---|---|---|---|---|---|---|---|
+| NEW-059 | Memory summary search channel (R8) | Confirm scale-gated summary channel | `Verify memory summary search channel (R8).` | 1) check corpus size threshold 2) run stage-1 3) verify channel activation rules | Summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold | Search output showing channel activation status + corpus size count + fusion contribution evidence | PASS if summary channel activates above threshold and remains inert below it | Verify corpus size counting logic; check threshold configuration; inspect channel activation gate in stage-1 pipeline |
+
+---
+
+## 4. REFERENCES
+
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Feature catalog: [15--retrieval-enhancements/05-memory-summary-search-channel.md](../../feature_catalog/15--retrieval-enhancements/05-memory-summary-search-channel.md)
+
+---
+
+## 5. SOURCE METADATA
+
+- Group: Retrieval Enhancements
+- Playbook ID: NEW-059
+- Canonical root source: `manual_testing_playbook.md`
+- Feature file path: `15--retrieval-enhancements/059-memory-summary-search-channel-r8.md`

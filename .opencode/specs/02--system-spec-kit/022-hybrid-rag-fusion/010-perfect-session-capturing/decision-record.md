@@ -1,11 +1,10 @@
 ---
 title: "Decision Record: Perfect Session Capturing [template:level_3/decision-record.md]"
-description: "Record the decision to formalize the post-audit roadmap as phases 018-020 while keeping the live-proof boundary conservative."
+description: "The parent pack remains audit-first and now models phases 018-020 as explicit child phases with truthful shipped/open status."
 trigger_phrases:
   - "decision"
-  - "phase 018"
-  - "phase 019"
-  - "phase 020"
+  - "perfect session capturing"
+  - "roadmap phases 018 019 020"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -17,8 +16,8 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:adr-002 -->
-## ADR-002: Formalize The Follow-Up Roadmap As Phases 018-020
+<!-- ANCHOR:adr-001 -->
+## ADR-001: Treat Runtime Truth As Canonical And Make The Parent Pack Audit-First
 
 ### Metadata
 
@@ -30,84 +29,88 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:adr-001-context -->
 ### Context
 
-The audit pass already identified the remaining work clearly, but that truth only lived in the parent narrative and `research.md`. Without child phases for runtime contract/indexability, source capabilities, and live proof, the follow-up work would remain discoverable only by reading long synthesis docs instead of the actual phase tree.
+The parent `010-perfect-session-capturing` pack had drifted away from runtime truth before the audit pass. The runtime and targeted tests had already moved beyond the published docs, while the parent pack still implied a stronger closure story than the evidence supported. After the audit, the remaining recommendations also needed a durable home so shipped follow-up work and still-open proof work would not be conflated.
 
 ### Constraints
 
-- Do not overstate current live CLI proof.
-- Do not rewrite older child phases in this pass.
-- Use the exact requested phase numbers: `018`, `019`, and `020`.
+- The parent pack must stay structurally clean under recursive strict validation.
+- The reconciled audit baseline through phase `017` must remain visible.
+- Proof language must stay more conservative than the strongest unsupported claim.
+<!-- /ANCHOR:adr-001-context -->
 
 ---
 
+<!-- ANCHOR:adr-001-decision -->
 ### Decision
 
-**We chose**: add three sequential child phases under the parent pack:
+**We chose**: treat the current runtime and existing audit evidence as canonical truth, preserve `research.md` as the detailed synthesis, and keep the parent pack as the main audit entry point.
 
-1. `018-runtime-contract-and-indexability`
-2. `019-source-capabilities-and-structured-preference`
-3. `020-live-proof-and-parity-hardening`
-
-**How it works**:
-- Phase `018` documents the shipped validation-rule metadata and explicit write/index dispositions.
-- Phase `019` documents the shipped typed source-capability model and structured-input preference.
-- Phase `020` documents the still-open retained live-proof work and keeps the parent proof boundary honest.
+**How it works**: the parent spec summarizes the reconciled phase history, the proof boundaries, and the remaining open design work without hiding behind obsolete closure language.
+<!-- /ANCHOR:adr-001-decision -->
 
 ---
 
+<!-- ANCHOR:adr-001-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
 |--------|------|------|-------|
-| **Create phases 018-020 explicitly (chosen)** | Makes the roadmap visible in the phase tree and keeps the parent pack truthful | Requires parent and child doc synchronization | 10/10 |
-| Leave the follow-up work only in `research.md` | Lowest doc effort | Future operators must rediscover the roadmap from long-form audit text | 3/10 |
-| Mark the whole parent pack complete and skip new phases | Simplest status story | False closure; hides the retained live-proof gap | 1/10 |
+| **Audit-first parent pack grounded in runtime truth (chosen)** | Matches the best available evidence and keeps readers aligned | Requires active maintenance of the parent narrative | 10/10 |
+| Preserve the old closure story and only fix validation issues | Minimal doc effort | Leaves readers with the wrong picture of proof closure | 1/10 |
+| Hide the audit in `research.md` only | Keeps the parent pack short | Makes the top-level spec less trustworthy as an entry point | 4/10 |
 
-**Why this one**: the remaining work is phase-shaped. The documentation should reflect that directly.
+**Why this one**: It is the only option that keeps the top-level pack useful after phases `018` and `019` shipped while still keeping phase `020` honest and open.
+<!-- /ANCHOR:adr-001-alternatives -->
 
 ---
 
+<!-- ANCHOR:adr-001-consequences -->
 ### Consequences
 
 **What improves**:
-- The parent pack now has an explicit post-audit roadmap.
-- Implemented runtime work and open live-proof work are separated cleanly.
-- Future operators can resume from phase `020` without rereading the full audit.
+- The parent pack stays trustworthy as the entry point.
+- Earlier shipped phases remain visible as reconciled history.
+- Proof gaps stay explicit.
 
 **What it costs**:
-- The parent pack stays in-progress until retained live proof is refreshed.
+- The root pack needs continued maintenance whenever new roadmap phases are introduced.
 
 **Risks**:
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| Phase numbering drifts again after tooling append operations | Medium | Treat `018`-`020` as canonical and validate recursively |
-| Automated parity is mistaken for full CLI closure | High | Keep phase `020` open until retained artifacts exist |
+| Future edits overclaim parity closure | High | Keep retained live proof as a separate requirement |
+| Parent and child docs drift again | Medium | Re-run recursive validation after roadmap changes |
+<!-- /ANCHOR:adr-001-consequences -->
 
 ---
 
+<!-- ANCHOR:adr-001-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
 |---|-------|--------|----------|
-| 1 | **Necessary?** | PASS | The roadmap needs a first-class place in the phase tree |
-| 2 | **Beyond Local Maxima?** | PASS | We compared research-only notes versus phase docs |
-| 3 | **Sufficient?** | PASS | Parent sync plus child phases captures the remaining work clearly |
-| 4 | **Fits Goal?** | PASS | The user asked for these exact phase folders |
-| 5 | **Open Horizons?** | PASS | Phase `020` keeps the final live-proof work resumable |
-
-**Checks Summary**: 5/5 PASS
+| 1 | **Necessary?** | PASS | The parent pack must remain a reliable entry point |
+| 2 | **Beyond Local Maxima?** | PASS | We compared old closure language and research-only alternatives |
+| 3 | **Sufficient?** | PASS | Audit-first parent docs solve the trust problem without broadening scope |
+| 4 | **Fits Goal?** | PASS | The user asked for truthful roadmap and audit documentation |
+| 5 | **Open Horizons?** | PASS | The parent pack can absorb later roadmap phases cleanly |
+<!-- /ANCHOR:adr-001-five-checks -->
 
 ---
 
+<!-- ANCHOR:adr-001-impl -->
 ### Implementation
 
 **What changes**:
-- Add new child folders `018`, `019`, `020`.
-- Update the parent Level 3 docs to reference the new roadmap.
-- Keep live-proof claims conservative until phase `020` is actually closed.
+- Keep the parent pack centered on the audit truth.
+- Preserve `research.md` as the detailed synthesis.
+- Reconcile future roadmap phases through explicit child folders rather than vague parent-only prose.
+- Record phases `018` and `019` as shipped follow-up work and keep phase `020` open until retained live artifacts are refreshed.
 
-**How to roll back**: revert only the new child phase markdown and the parent roadmap edits, then rerun recursive validation.
-<!-- /ANCHOR:adr-002 -->
+**How to roll back**: revert only the affected runtime/docs files, restore the previous validated parent narrative, and rerun focused verification plus recursive validation.
+<!-- /ANCHOR:adr-001-impl -->
+<!-- /ANCHOR:adr-001 -->

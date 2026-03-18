@@ -35,7 +35,6 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 13** of the Perfect Session Capturing specification.
@@ -43,8 +42,6 @@ This is **Phase 13** of the Perfect Session Capturing specification.
 **Scope Boundary**: Multiple compound failures in auto-detection and memory quality.
 **Dependencies**: 012-template-compliance
 **Deliverables**: Added git-status Priority 2.7 signal to folder detection; fixed decision deduplication bug
-<!-- /ANCHOR:phase-context -->
-
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 

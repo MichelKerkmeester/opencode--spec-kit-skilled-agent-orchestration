@@ -1,10 +1,9 @@
 ---
 title: "Implementation Plan: Live Proof And Parity Hardening [template:level_1/plan.md]"
-description: "Describe the remaining retained live-proof work and the conditions that would let the parent pack close phase 020 honestly."
+description: "Refresh retained live artifacts and keep multi-CLI parity claims tied to current evidence."
 trigger_phrases:
-  - "implementation"
-  - "plan"
   - "phase 020"
+  - "live proof"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -15,85 +14,97 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown, JSON retained artifacts, manual/live proof workflows |
-| **Framework** | system-spec-kit session-capturing verification flow |
-| **Storage** | Retained proof artifacts under the parent research surface |
-| **Testing** | Manual/live CLI evidence plus parent recursive validation |
+| **Language/Stack** | JSON, Markdown, shell verification |
+| **Framework** | system-spec-kit playbook plus retained artifact review |
+| **Storage** | Retained proof artifacts under `research/` |
+| **Testing** | Manual M-007 scenarios plus artifact review |
 
 ### Overview
-Phase `020` is the closeout gate. The plan is to refresh retained live artifacts for the supported CLI/runtime paths, confirm the shared direct/stateless and structured-input scenarios, and only then allow the parent pack to claim current multi-CLI proof.
+
+Use the hardened automated runtime contract as the baseline, then refresh retained live CLI artifacts so parity claims stay grounded in current evidence. This phase remains open until the retained artifact set catches up with the new runtime contract.
+<!-- /ANCHOR:summary -->
 
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Phases `018` and `019` define the shared runtime contract.
-- [x] The parent pack keeps the proof boundary conservative.
+- [x] Automated parity baseline is green.
+- [x] The operator docs already describe the stricter proof boundary.
 
 ### Definition of Done
-- [ ] Retained live artifacts refreshed.
-- [ ] Parent pack updated to reflect the new retained proof.
-- [ ] Recursive validation rerun after closeout edits.
+- [ ] Retained live artifacts refreshed for each supported CLI and mode.
+- [ ] Docs can make stronger universal parity claims honestly.
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-Automated parity baseline followed by retained live-proof refresh.
+
+Automated proof baseline plus retained live evidence.
 
 ### Key Components
-- **Retained artifacts**: the proof files that preserve current CLI evidence
-- **Manual/live scenarios**: direct, `--stdin`, `--json`, and repeated-save expectations
-- **Parent closeout**: only updated after live proof exists
+- **Retained artifact set**: stores current live CLI proof.
+- **M-007 playbook boundary**: defines what the artifact set must prove.
 
 ### Data Flow
-Shared runtime contract -> live/manual scenario execution -> retained artifacts -> parent proof-boundary update.
+
+Automated parity -> retained live capture -> artifact review -> updated proof claim boundary.
+<!-- /ANCHOR:architecture -->
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Artifact Refresh
-- [ ] Refresh retained live CLI artifacts.
-- [ ] Capture supported save modes.
+### Phase 1: Setup
+- [x] Define the stricter proof boundary in the parent pack and M-007.
 
-### Phase 2: Parity Hardening
-- [ ] Reconfirm same-minute save expectations.
-- [ ] Reconfirm warning-free successful flows.
+### Phase 2: Implementation
+- [ ] Capture one retained artifact per supported CLI and save mode.
+- [ ] Compare retained artifacts against the automated contract.
 
-### Phase 3: Parent Closeout
-- [ ] Update parent proof language only after retained artifacts exist.
+### Phase 3: Verification
+- [ ] Tighten docs only after the retained evidence is current.
+<!-- /ANCHOR:phases -->
 
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Manual/live | Supported CLI/runtime flows | Real CLI sessions and retained artifacts |
-| Structural validation | Parent pack after closeout | `validate.sh --strict --recursive` |
-| Completion | Parent closeout checklist | `check-completion.sh --strict` |
+| Manual | Supported CLIs and save modes | M-007 |
+| Artifact review | Retained evidence completeness | JSON plus doc review |
+<!-- /ANCHOR:testing -->
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Access to supported CLIs | External | Yellow | Phase stays open |
-| Current automated parity baseline | Internal | Green | Live proof would lose its contract anchor |
+| Supported CLI environments | External | Yellow | Without them, live proof cannot be refreshed honestly |
+<!-- /ANCHOR:dependencies -->
 
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Retained proof is incomplete or contradictory.
-- **Procedure**: Leave phase `020` open, keep the parent pack conservative, and do not upgrade the proof claim.
+- **Trigger**: Retained artifacts contradict the current docs or expose real parity gaps.
+- **Procedure**: Keep the phase open, downgrade the proof claim boundary, and feed any real runtime gaps back into a new scoped implementation phase.
+<!-- /ANCHOR:rollback -->
