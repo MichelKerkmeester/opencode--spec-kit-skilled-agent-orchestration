@@ -37,7 +37,7 @@ contextType: "implementation"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Analysis & Documentation
 
-- [x] T001 Create spec folder structure (`.opencode/specs/03--commands-and-skills/commands/011-create-command-emoji-enforcement/`)
+- [x] T001 Create spec folder structure (`.opencode/specs/03--commands-and-skills/cmd-011-create-emoji-enforcement/`)
 - [x] T002 Document requirements in spec.md
 - [x] T003 Document technical approach in plan.md
 - [x] T004 Search `.opencode/command/create` for emoji validation functions (grep "emoji", "icon", validation patterns) [Evidence: Analyzed folder_readme.md, skill.md, skill_asset.md]

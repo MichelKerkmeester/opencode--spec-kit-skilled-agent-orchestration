@@ -20,7 +20,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-02-28 |
 | Session ID | session-1772296680578-4e7qzys0u |
-| Spec Folder | 03--commands-and-skills/sk-git/002-superset-worktrees |
+| Spec Folder | 03--commands-and-skills/git-002-superset-worktrees |
 | Channel | main |
 | Importance Tier | critical |
 | Context Type | general |
@@ -107,13 +107,13 @@ quality_flags:
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 03--commands-and-skills/sk-git/002-superset-worktrees
+/spec_kit:resume 03--commands-and-skills/git-002-superset-worktrees
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 03--commands-and-skills/sk-git/002-superset-worktrees
+Spec: 03--commands-and-skills/git-002-superset-worktrees
 Last: Tool: bash
 Next: Continue implementation
 ```
@@ -623,9 +623,9 @@ User initiated conversation
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/sk-git/002-superset-worktrees` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/git-002-superset-worktrees` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/sk-git/002-superset-worktrees" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/git-002-superset-worktrees" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -637,16 +637,16 @@ User initiated conversation
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "03--commands-and-skills/sk-git/002-superset-worktrees", limit: 10 })
+memory_search({ specFolder: "03--commands-and-skills/git-002-superset-worktrees", limit: 10 })
 
 # Verify memory file integrity
-ls -la 03--commands-and-skills/sk-git/002-superset-worktrees/memory/
+ls -la 03--commands-and-skills/git-002-superset-worktrees/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/sk-git/002-superset-worktrees --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/git-002-superset-worktrees --force
 ```
 
 ### Recovery Priority
@@ -718,7 +718,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772296680578-4e7qzys0u"
-spec_folder: "03--commands-and-skills/sk-git/002-superset-worktrees"
+spec_folder: "03--commands-and-skills/git-002-superset-worktrees"
 channel: "main"
 
 # Classification
@@ -803,7 +803,7 @@ key_topics:
 trigger_phrases:
   - "skill graph memory analysis"
   - "sgqs memory integration"
-  - "superset worktrees memory audit"parent_spec: "03--commands-and-skills/sk-git/002-superset-worktrees"
+  - "superset worktrees memory audit"parent_spec: "03--commands-and-skills/git-002-superset-worktrees"
 child_sessions:
 
   []

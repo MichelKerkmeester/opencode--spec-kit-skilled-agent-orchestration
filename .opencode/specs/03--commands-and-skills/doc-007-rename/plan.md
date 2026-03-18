@@ -107,26 +107,26 @@ Preflight artifacts established baseline -> ordered path migration executed -> f
 ### Planned Checks (all must pass)
 
 - **PC-001 Final remnant policy check**
-  - Command: `awk -F ': ' '$2 != 0 {print}' ".opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/final-remnant-counts.txt"`
+  - Command: `awk -F ': ' '$2 != 0 {print}' ".opencode/specs/03--commands-and-skills/doc-007-rename/scratch/final-remnant-counts.txt"`
   - Result: PASS (no non-zero rows).
 - **PC-002 Path migration integrity check**
   - Commands:
     - `test -d "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/sk-doc"`
-      - `wc -l .opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/path-rename-map.tsv .opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/path-rename-log.txt`
+      - `wc -l .opencode/specs/03--commands-and-skills/doc-007-rename/scratch/path-rename-map.tsv .opencode/specs/03--commands-and-skills/doc-007-rename/scratch/path-rename-log.txt`
   - Result: PASS (`sk-doc` path present; map/log parity 17/17; live docs no longer assert a removed visual target).
 - **PC-003 Symlink integrity check**
-  - Command: `cat .opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/post-path-symlinks.txt`
+  - Command: `cat .opencode/specs/03--commands-and-skills/doc-007-rename/scratch/post-path-symlinks.txt`
   - Result: PASS (supported aliases and supported targets only).
 - **PC-004 Content replacement coverage check**
-  - Command: `wc -l .opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/content-replacement-files.txt`
+  - Command: `wc -l .opencode/specs/03--commands-and-skills/doc-007-rename/scratch/content-replacement-files.txt`
   - Result: PASS (330 files processed).
 - **PC-005 Conditional external verification**
   - Command (executed): `rg -n "<legacy-doc-identifier>|<legacy-visual-skill-identifier>" "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Barter/coder/AGENTS.md" || true`
   - Result: PASS (0 matches; no external edit).
 - **PC-006 Documentation validation and completion gates**
   - Commands:
-    - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename`
-    - `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh .opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename --strict`
+    - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/03--commands-and-skills/doc-007-rename`
+    - `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh .opencode/specs/03--commands-and-skills/doc-007-rename --strict`
   - Result: PASS.
 <!-- /ANCHOR:testing -->
 

@@ -18,7 +18,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2025-12-22 |
 | Session ID | session-1766390459131-2u4e3epcd |
-| Spec Folder | 003-commands/002-speckit-leann-integration |
+| Spec Folder | 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -89,7 +89,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 003-commands/002-speckit-leann-integration
+/spec_kit:resume 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration
 ```
 <!-- /ANCHOR:continue-session -->
 
@@ -291,9 +291,9 @@ I have completed the analysis of `malhashemi/opencode-skills` and updated the re
 <!-- ANCHOR:discovery-tool-read-6850ca13-session-1766390459131-2u4e3epcd -->
 ### OBSERVATION: Tool: read
 
-specs/003-commands/001-command-analysis/analysis-report.md
+specs/03--commands-and-skills/z_archive/cmd-001-analysis/analysis-report.md
 
-**Files:** /Users/michelkerkmeester/MEGA/Development/Websites/anobel.com/specs/003-commands/001-command-analysis/analysis-report.md
+**Files:** /Users/michelkerkmeester/MEGA/Development/Websites/anobel.com/specs/03--commands-and-skills/z_archive/cmd-001-analysis/analysis-report.md
 **Details:** Tool: read | Status: completed
 <!-- /ANCHOR:discovery-tool-read-6850ca13-session-1766390459131-2u4e3epcd -->
 
@@ -1156,9 +1156,9 @@ Saving context
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 003-commands/002-speckit-leann-integration` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "003-commands/002-speckit-leann-integration" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration" })` |
 
 ### Recovery Priority
 
@@ -1206,7 +1206,7 @@ This session was migrated from an older format. Learning metrics were not captur
 ```yaml
 # Core Identifiers
 session_id: "session-1766390459131-2u4e3epcd"
-spec_folder: "003-commands/002-speckit-leann-integration"
+spec_folder: "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration"
 channel: "main"
 
 # Classification
@@ -1277,7 +1277,7 @@ related_sessions:
 
   []
 
-parent_spec: "003-commands/002-speckit-leann-integration"
+parent_spec: "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration"
 child_sessions:
 
   []

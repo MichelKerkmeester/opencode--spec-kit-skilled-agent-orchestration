@@ -18,7 +18,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2025-12-21 |
 | Session ID | session-1766312698292-nuy9ysusw |
-| Spec Folder | 003-commands/002-speckit-leann-integration |
+| Spec Folder | 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -89,7 +89,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 003-commands/002-speckit-leann-integration
+/spec_kit:resume 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration
 ```
 <!-- /ANCHOR:continue-session -->
 
@@ -122,7 +122,7 @@ Let me check the `.
 
 **Key Files and Their Roles**:
 
-- `specs/003-commands/002-speckit-leann-integration/spec.md` - Documentation
+- `specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/spec.md` - Documentation
 
 - `.opencode/.../assets/spec_kit_research_auto.yaml` - .opencode/command/spec_kit/assets/spec_kit_research_auto....
 
@@ -182,7 +182,7 @@ Let me check the `.spec-active` marker and v
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `specs/003-commands/002-speckit-leann-integration/spec.md` | Updated spec |
+| `specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/spec.md` | Updated spec |
 | `.opencode/.../assets/spec_kit_research_auto.yaml` | Updated spec kit research auto |
 | `.opencode/.../assets/spec_kit_research_confirm.yaml` | Updated spec kit research confirm |
 | `.opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml` | Updated spec kit plan auto |
@@ -190,7 +190,7 @@ Let me check the `.spec-active` marker and v
 | `.opencode/.../assets/spec_kit_complete_auto.yaml` | Updated spec kit complete auto |
 | `.opencode/.../assets/spec_kit_complete_confirm.yaml` | Updated spec kit complete confirm |
 | `specs/003-commands` | Updated 003 commands |
-| `specs/003-commands/002-speckit-leann-integration` | Updated 002 speckit leann integration |
+| `specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration` | Updated 002 speckit leann integration |
 | `.opencode/skills/system-memory/scripts/generate-context.js` | Updated generate context |
 
 <!-- /ANCHOR:summary -->
@@ -356,9 +356,9 @@ Create spec folder for LEANN integration
 <!-- ANCHOR:integration-tool-write-a2d66653-session-1766312698292-nuy9ysusw -->
 ### IMPLEMENTATION: Tool: write
 
-specs/003-commands/002-speckit-leann-integration/spec.md
+specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/spec.md
 
-**Files:** /Users/michelkerkmeester/MEGA/Development/Websites/anobel.com/specs/003-commands/002-speckit-leann-integration/spec.md
+**Files:** /Users/michelkerkmeester/MEGA/Development/Websites/anobel.com/specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/spec.md
 **Details:** Tool: write | Status: completed
 <!-- /ANCHOR:integration-tool-write-a2d66653-session-1766312698292-nuy9ysusw -->
 
@@ -531,18 +531,18 @@ specs/003-commands/002-speckit-leann-integration/spec.md
 <!-- ANCHOR:integration-tool-read-6562bf2a-session-1766312698292-nuy9ysusw -->
 ### OBSERVATION: Tool: read
 
-specs/003-commands/002-speckit-leann-integration/spec.md
+specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/spec.md
 
-**Files:** /Users/michelkerkmeester/MEGA/Development/Websites/anobel.com/specs/003-commands/002-speckit-leann-integration/spec.md
+**Files:** /Users/michelkerkmeester/MEGA/Development/Websites/anobel.com/specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/spec.md
 **Details:** Tool: read | Status: completed
 <!-- /ANCHOR:integration-tool-read-6562bf2a-session-1766312698292-nuy9ysusw -->
 
 <!-- ANCHOR:integration-tool-edit-462af148-session-1766312698292-nuy9ysusw -->
 ### IMPLEMENTATION: Tool: edit
 
-specs/003-commands/002-speckit-leann-integration/spec.md
+specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/spec.md
 
-**Files:** /Users/michelkerkmeester/MEGA/Development/Websites/anobel.com/specs/003-commands/002-speckit-leann-integration/spec.md
+**Files:** /Users/michelkerkmeester/MEGA/Development/Websites/anobel.com/specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/spec.md
 **Details:** Tool: edit | Status: completed
 <!-- /ANCHOR:integration-tool-edit-462af148-session-1766312698292-nuy9ysusw -->
 
@@ -717,9 +717,9 @@ Generate memory context file
 <!-- ANCHOR:integration-tool-list-436e60d5-session-1766312698292-nuy9ysusw -->
 ### OBSERVATION: Tool: list
 
-specs/003-commands/002-speckit-leann-integration
+specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration
 
-**Files:** /Users/michelkerkmeester/MEGA/Development/Websites/anobel.com/specs/003-commands/002-speckit-leann-integration
+**Files:** /Users/michelkerkmeester/MEGA/Development/Websites/anobel.com/specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration
 **Details:** Tool: list | Status: completed
 <!-- /ANCHOR:integration-tool-list-436e60d5-session-1766312698292-nuy9ysusw -->
 
@@ -1278,9 +1278,9 @@ Saving memory: concise summary task
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 003-commands/002-speckit-leann-integration` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "003-commands/002-speckit-leann-integration" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration" })` |
 
 ### Recovery Priority
 
@@ -1328,7 +1328,7 @@ This session was migrated from an older format. Learning metrics were not captur
 ```yaml
 # Core Identifiers
 session_id: "session-1766312698292-nuy9ysusw"
-spec_folder: "003-commands/002-speckit-leann-integration"
+spec_folder: "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration"
 channel: "main"
 
 # Classification
@@ -1390,7 +1390,7 @@ key_topics:
   - "work"
 
 key_files:
-  - "specs/003-commands/002-speckit-leann-integration/spec.md"
+  - "specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/spec.md"
   - ".opencode/.../assets/spec_kit_research_auto.yaml"
   - ".opencode/.../assets/spec_kit_research_confirm.yaml"
   - ".opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml"
@@ -1398,7 +1398,7 @@ key_files:
   - ".opencode/.../assets/spec_kit_complete_auto.yaml"
   - ".opencode/.../assets/spec_kit_complete_confirm.yaml"
   - "specs/003-commands"
-  - "specs/003-commands/002-speckit-leann-integration"
+  - "specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration"
   - ".opencode/skills/system-memory/scripts/generate-context.js"
 
 # Relationships
@@ -1406,7 +1406,7 @@ related_sessions:
 
   []
 
-parent_spec: "003-commands/002-speckit-leann-integration"
+parent_spec: "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration"
 child_sessions:
 
   []

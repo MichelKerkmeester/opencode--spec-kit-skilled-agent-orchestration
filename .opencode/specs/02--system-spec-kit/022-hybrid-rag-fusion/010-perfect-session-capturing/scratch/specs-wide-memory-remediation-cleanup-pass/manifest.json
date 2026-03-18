@@ -267,97 +267,97 @@
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/commands/013-memory-command-output": {
+    "03--commands-and-skills/cmd-013-memory-output": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/commands/014-create-changelog-command": {
+    "03--commands-and-skills/cmd-014-create-changelog": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/commands/015-create-prompt-command": {
+    "03--commands-and-skills/cmd-015-create-prompt": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/commands/016-create-skill-merger": {
+    "03--commands-and-skills/cmd-016-create-skill-merger": {
       "total": 4,
       "repair_in_place": 4,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/commands/017-create-readme-install-merger": {
+    "03--commands-and-skills/cmd-017-create-readme-install-merger": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/commands/z_archive/002-speckit-leann-integration": {
+    "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration": {
       "total": 4,
       "repair_in_place": 4,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/commands/z_archive/004-command-logic-improvement": {
+    "03--commands-and-skills/z_archive/cmd-004-logic-improvement": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-cli/001-cli-gemini": {
+    "03--commands-and-skills/cli-001-gemini": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-cli/003-cli-claude-code": {
+    "03--commands-and-skills/cli-003-claude-code": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-cli/004-cli-copilot": {
+    "03--commands-and-skills/cli-004-copilot": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-doc/003-h2-emoji-enforcement": {
+    "03--commands-and-skills/z_archive/doc-003-h2-emoji-enforcement": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-doc/004-style-enforcement": {
+    "03--commands-and-skills/z_archive/doc-004-style-enforcement": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-doc/005-remove-emojis-from-docs": {
+    "03--commands-and-skills/z_archive/doc-005-remove-emojis-from-docs": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-doc/008-sk-doc-template-folders": {
+    "03--commands-and-skills/doc-008-template-folders": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-git/002-superset-worktrees": {
+    "03--commands-and-skills/git-002-superset-worktrees": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-prompt-improver/001-initial-creation": {
+    "03--commands-and-skills/prompt-001-initial-creation": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
@@ -1681,8 +1681,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/013-memory-command-output/memory/20-02-26_13-42__memory-command-output.md",
-      "specFolder": "03--commands-and-skills/commands/013-memory-command-output",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-013-memory-output/memory/20-02-26_13-42__memory-command-output.md",
+      "specFolder": "03--commands-and-skills/cmd-013-memory-output",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1693,8 +1693,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/013-memory-command-output/memory/20-02-26_14-44__memory-command-output.md",
-      "specFolder": "03--commands-and-skills/commands/013-memory-command-output",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-013-memory-output/memory/20-02-26_14-44__memory-command-output.md",
+      "specFolder": "03--commands-and-skills/cmd-013-memory-output",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1705,8 +1705,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/014-create-changelog-command/memory/01-03-26_12-53__create-changelog-command.md",
-      "specFolder": "03--commands-and-skills/commands/014-create-changelog-command",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-014-create-changelog/memory/01-03-26_12-53__create-changelog-command.md",
+      "specFolder": "03--commands-and-skills/cmd-014-create-changelog",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1717,8 +1717,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/014-create-changelog-command/memory/01-03-26_14-30__create-changelog-command.md",
-      "specFolder": "03--commands-and-skills/commands/014-create-changelog-command",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-014-create-changelog/memory/01-03-26_14-30__create-changelog-command.md",
+      "specFolder": "03--commands-and-skills/cmd-014-create-changelog",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1729,8 +1729,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/memory/01-03-26_12-48__create-prompt-command.md",
-      "specFolder": "03--commands-and-skills/commands/015-create-prompt-command",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_12-48__create-prompt-command.md",
+      "specFolder": "03--commands-and-skills/cmd-015-create-prompt",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1741,8 +1741,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/memory/01-03-26_14-44__create-prompt-command.md",
-      "specFolder": "03--commands-and-skills/commands/015-create-prompt-command",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_14-44__create-prompt-command.md",
+      "specFolder": "03--commands-and-skills/cmd-015-create-prompt",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1753,8 +1753,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md",
-      "specFolder": "03--commands-and-skills/commands/016-create-skill-merger",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md",
+      "specFolder": "03--commands-and-skills/cmd-016-create-skill-merger",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1765,8 +1765,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-45__create-skill-merger.md",
-      "specFolder": "03--commands-and-skills/commands/016-create-skill-merger",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-45__create-skill-merger.md",
+      "specFolder": "03--commands-and-skills/cmd-016-create-skill-merger",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1777,8 +1777,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-49__create-skill-merger.md",
-      "specFolder": "03--commands-and-skills/commands/016-create-skill-merger",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-49__create-skill-merger.md",
+      "specFolder": "03--commands-and-skills/cmd-016-create-skill-merger",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1789,8 +1789,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md",
-      "specFolder": "03--commands-and-skills/commands/016-create-skill-merger",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md",
+      "specFolder": "03--commands-and-skills/cmd-016-create-skill-merger",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1801,8 +1801,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/memory/03-03-26_13-29__create-readme-install-merger.md",
-      "specFolder": "03--commands-and-skills/commands/017-create-readme-install-merger",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/memory/03-03-26_13-29__create-readme-install-merger.md",
+      "specFolder": "03--commands-and-skills/cmd-017-create-readme-install-merger",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1813,8 +1813,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/002-speckit-leann-integration/memory/21-12-25_11-14__speckit-leann-integration.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/002-speckit-leann-integration",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/memory/21-12-25_11-14__speckit-leann-integration.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1825,8 +1825,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/002-speckit-leann-integration/memory/21-12-25_11-24__speckit-leann-integration.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/002-speckit-leann-integration",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/memory/21-12-25_11-24__speckit-leann-integration.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1837,8 +1837,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/002-speckit-leann-integration/memory/22-12-25_09-00__speckit-leann-integration.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/002-speckit-leann-integration",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/memory/22-12-25_09-00__speckit-leann-integration.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1849,8 +1849,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/002-speckit-leann-integration/memory/22-12-25_09-01__speckit-leann-integration.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/002-speckit-leann-integration",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/memory/22-12-25_09-01__speckit-leann-integration.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1861,8 +1861,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_15-02__command-logic-improvement.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/004-command-logic-improvement",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_15-02__command-logic-improvement.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-004-logic-improvement",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1873,8 +1873,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-07__cli-gemini.md",
-      "specFolder": "03--commands-and-skills/sk-cli/001-cli-gemini",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-07__cli-gemini.md",
+      "specFolder": "03--commands-and-skills/cli-001-gemini",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1885,8 +1885,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md",
-      "specFolder": "03--commands-and-skills/sk-cli/001-cli-gemini",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md",
+      "specFolder": "03--commands-and-skills/cli-001-gemini",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1897,8 +1897,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-cli/003-cli-claude-code/memory/02-03-26_21-14__cli-claude-code.md",
-      "specFolder": "03--commands-and-skills/sk-cli/003-cli-claude-code",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cli-003-claude-code/memory/02-03-26_21-14__cli-claude-code.md",
+      "specFolder": "03--commands-and-skills/cli-003-claude-code",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1909,8 +1909,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-cli/004-cli-copilot/memory/02-03-26_21-14__cli-copilot.md",
-      "specFolder": "03--commands-and-skills/sk-cli/004-cli-copilot",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cli-004-copilot/memory/02-03-26_21-14__cli-copilot.md",
+      "specFolder": "03--commands-and-skills/cli-004-copilot",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1921,8 +1921,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/003-h2-emoji-enforcement/memory/01-01-26_14-53__h2-emoji-enforcement.md",
-      "specFolder": "03--commands-and-skills/sk-doc/003-h2-emoji-enforcement",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-003-h2-emoji-enforcement/memory/01-01-26_14-53__h2-emoji-enforcement.md",
+      "specFolder": "03--commands-and-skills/z_archive/doc-003-h2-emoji-enforcement",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1933,8 +1933,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/004-style-enforcement/memory/03-02-26_17-30__validate-document-rename.md",
-      "specFolder": "03--commands-and-skills/sk-doc/004-style-enforcement",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-004-style-enforcement/memory/03-02-26_17-30__validate-document-rename.md",
+      "specFolder": "03--commands-and-skills/z_archive/doc-004-style-enforcement",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1945,8 +1945,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/005-remove-emojis-from-docs/memory/17-02-26_00-15__remove-emojis-from-docs.md",
-      "specFolder": "03--commands-and-skills/sk-doc/005-remove-emojis-from-docs",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-005-remove-emojis-from-docs/memory/17-02-26_00-15__remove-emojis-from-docs.md",
+      "specFolder": "03--commands-and-skills/z_archive/doc-005-remove-emojis-from-docs",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1957,8 +1957,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/008-sk-doc-template-folders/memory/28-02-26_11-44__sk-doc-template-folders.md",
-      "specFolder": "03--commands-and-skills/sk-doc/008-sk-doc-template-folders",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/doc-008-template-folders/memory/28-02-26_11-44__sk-doc-template-folders.md",
+      "specFolder": "03--commands-and-skills/doc-008-template-folders",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1969,8 +1969,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-git/002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md",
-      "specFolder": "03--commands-and-skills/sk-git/002-superset-worktrees",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/git-002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md",
+      "specFolder": "03--commands-and-skills/git-002-superset-worktrees",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1981,8 +1981,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/01-03-26_11-09__initial-creation.md",
-      "specFolder": "03--commands-and-skills/sk-prompt-improver/001-initial-creation",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/01-03-26_11-09__initial-creation.md",
+      "specFolder": "03--commands-and-skills/prompt-001-initial-creation",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"
@@ -1993,8 +1993,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md",
-      "specFolder": "03--commands-and-skills/sk-prompt-improver/001-initial-creation",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md",
+      "specFolder": "03--commands-and-skills/prompt-001-initial-creation",
       "issues": [
         "legacy_template_banner",
         "duplicate_body_separator"

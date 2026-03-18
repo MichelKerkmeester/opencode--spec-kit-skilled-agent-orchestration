@@ -22,7 +22,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `.opencode/specs/03--commands-and-skills/skill-advisor/001-skill-advisor-refinement/` |
+| **Spec Folder** | `.opencode/specs/03--commands-and-skills/advisor-001-refinement/` |
 | **Completed** | 2026-03-03 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->

@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/sk-cli/002-cli-codex",
+  "specFolder": "03--commands-and-skills/cli-002-codex",
   "description": "Specification: cli-gemini Model Consolidation + cli-codex Skill",
   "keywords": [
     "specification",
@@ -11,10 +11,9 @@
   ],
   "lastUpdated": "2026-03-16T13:20:02.915Z",
   "specId": "002",
-  "folderSlug": "cli-codex",
+  "folderSlug": "cli-002-codex",
   "parentChain": [
-    "03--commands-and-skills",
-    "sk-cli"
+    "03--commands-and-skills"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

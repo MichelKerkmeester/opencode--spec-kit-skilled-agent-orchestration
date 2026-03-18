@@ -77,7 +77,7 @@ User request → Gate 2 skill_advisor.py → cli-gemini SKILL.md loads
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [x] Spec folder created (sk-cli/001-cli-gemini)
+- [x] Spec folder created (cli-001-gemini)
 - [x] Skill directory structure created
 
 ### Phase 2: Core Implementation

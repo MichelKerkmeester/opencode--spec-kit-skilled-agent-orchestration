@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/sk-cli/003-cli-claude-code",
+  "specFolder": "03--commands-and-skills/cli-003-claude-code",
   "description": "Feature Specification: cli-claude-code Skill",
   "keywords": [
     "feature",
@@ -9,10 +9,9 @@
   ],
   "lastUpdated": "2026-03-16T13:20:02.922Z",
   "specId": "003",
-  "folderSlug": "cli-claude-code",
+  "folderSlug": "cli-003-claude-code",
   "parentChain": [
-    "03--commands-and-skills",
-    "sk-cli"
+    "03--commands-and-skills"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

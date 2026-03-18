@@ -145,7 +145,7 @@ cli-gemini/
 | `@debug` | Fresh-perspective debugging | Yes (fixes) |
 | `@handover` | Session state capture | Yes (handover.md) |
 | `@orchestrate` | Multi-agent coordination | Never |
-| `@research` | Evidence gathering + web search | Yes (research.md) |
+| `@deep-research` | Iterative evidence gathering + web search | Yes (research.md) |
 | `@review` | Code review, quality scoring | Never |
 | `@speckit` | Spec folder documentation | Yes (spec docs) |
 | `@ultra-think` | Multi-strategy planning | Never |

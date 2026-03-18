@@ -45,9 +45,9 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in `spec.md`. [Evidence: `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/spec.md:1`]
-- [x] CHK-002 [P0] Technical approach and checks (`PC-001` to `PC-006`) defined in `plan.md`. [Evidence: `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/plan.md:1`]
-- [x] CHK-003 [P1] Dependencies and external conditional scope identified. [Evidence: `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/plan.md:127`]
+- [x] CHK-001 [P0] Requirements documented in `spec.md`. [Evidence: `.opencode/specs/03--commands-and-skills/doc-007-rename/spec.md:1`]
+- [x] CHK-002 [P0] Technical approach and checks (`PC-001` to `PC-006`) defined in `plan.md`. [Evidence: `.opencode/specs/03--commands-and-skills/doc-007-rename/plan.md:1`]
+- [x] CHK-003 [P1] Dependencies and external conditional scope identified. [Evidence: `.opencode/specs/03--commands-and-skills/doc-007-rename/plan.md:127`]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -56,8 +56,8 @@ contextType: "general"
 ## Code Quality
 
 - [x] CHK-010 [P0] Rename operations used ordered map execution with parity validation. [Evidence: `scratch/path-rename-map.tsv:1`, `scratch/path-rename-log.txt:1`, `wc -l .../path-rename-map.tsv .../path-rename-log.txt => 17 + 17`]
-- [x] CHK-011 [P0] No syntax breakage persisted in scoped markdown docs; validation passed. [Evidence: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename => RESULT: PASSED`]
-- [x] CHK-012 [P1] Error-handling path documented for rollback/recovery. [Evidence: `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/plan.md:145`]
+- [x] CHK-011 [P0] No syntax breakage persisted in scoped markdown docs; validation passed. [Evidence: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/03--commands-and-skills/doc-007-rename => RESULT: PASSED`]
+- [x] CHK-012 [P1] Error-handling path documented for rollback/recovery. [Evidence: `.opencode/specs/03--commands-and-skills/doc-007-rename/plan.md:145`]
 - [x] CHK-013 [P1] Naming conventions align with supported aliases and symlink targets. [Evidence: `scratch/post-path-symlinks.txt:1`, `scratch/post-path-symlinks.txt:4`]
 <!-- /ANCHOR:code-quality -->
 
@@ -78,7 +78,7 @@ contextType: "general"
 ## Security
 
 - [x] CHK-030 [P0] No credentials introduced during migration. [Evidence: migration was naming/path-only; no secret artifacts added in `scratch/` inventory]
-- [x] CHK-031 [P0] External update scope constrained to one allowed file path only. [Evidence: `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/spec.md:67`, external check command path points only to `.../Barter/coder/AGENTS.md`]
+- [x] CHK-031 [P0] External update scope constrained to one allowed file path only. [Evidence: `.opencode/specs/03--commands-and-skills/doc-007-rename/spec.md:67`, external check command path points only to `.../Barter/coder/AGENTS.md`]
 - [x] CHK-032 [P1] Shell commands used explicit paths and no unsafe glob-expansion writes. [Evidence: command log in session and artifact generation confined to spec-folder `scratch/`]
 <!-- /ANCHOR:security -->
 
@@ -87,8 +87,8 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] `spec.md`, `plan.md`, and `tasks.md` synchronized on completed scope and checks. [Evidence: `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/spec.md:1`, `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/plan.md:1`, `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/tasks.md:1`]
-- [x] CHK-041 [P1] `implementation-summary.md` updated to executed implementation narrative and verification outcomes. [Evidence: `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/implementation-summary.md:1`]
+- [x] CHK-040 [P1] `spec.md`, `plan.md`, and `tasks.md` synchronized on completed scope and checks. [Evidence: `.opencode/specs/03--commands-and-skills/doc-007-rename/spec.md:1`, `.opencode/specs/03--commands-and-skills/doc-007-rename/plan.md:1`, `.opencode/specs/03--commands-and-skills/doc-007-rename/tasks.md:1`]
+- [x] CHK-041 [P1] `implementation-summary.md` updated to executed implementation narrative and verification outcomes. [Evidence: `.opencode/specs/03--commands-and-skills/doc-007-rename/implementation-summary.md:1`]
 - [x] CHK-042 [P2] Repo references aligned with canonical skill names in generated replacement list. [Evidence: `scratch/content-replacement-files.txt:1`, `wc -l .../content-replacement-files.txt => 330`]
 <!-- /ANCHOR:docs -->
 
@@ -97,7 +97,7 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temporary artifacts are contained under spec-local `scratch/`. [Evidence: `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch` listing]
+- [x] CHK-050 [P1] Temporary artifacts are contained under spec-local `scratch/`. [Evidence: `.opencode/specs/03--commands-and-skills/doc-007-rename/scratch` listing]
 - [x] CHK-051 [P1] `scratch/` was reviewed and intentionally retained as implementation evidence bundle. [Evidence: artifact set includes preflight/map/log/post/final files; no temp files outside spec folder]
 - [x] CHK-052 [P2] Memory save intentionally skipped per fresh-context directive. [Evidence: user requirement states no memory loading context required]
 <!-- /ANCHOR:file-org -->

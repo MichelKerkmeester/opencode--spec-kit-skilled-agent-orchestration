@@ -136,11 +136,11 @@ Validation checklist for sub-agent delegation implementation.
 
 ```bash
 # Test handover with sub-agent
-/spec_kit:handover .opencode/specs/03--commands-and-skills/commands/z_archive/005-subagent-delegation
+/spec_kit:handover .opencode/specs/03--commands-and-skills/z_archive/cmd-005-subagent-delegation
 
 # Test memory save with sub-agent  
 /memory:save 005-subagent-delegation
 
 # Verify files created
-ls -la .opencode/specs/03--commands-and-skills/commands/z_archive/005-subagent-delegation
+ls -la .opencode/specs/03--commands-and-skills/z_archive/cmd-005-subagent-delegation
 ```

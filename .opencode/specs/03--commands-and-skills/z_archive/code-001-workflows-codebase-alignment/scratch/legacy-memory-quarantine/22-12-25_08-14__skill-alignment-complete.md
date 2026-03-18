@@ -24,7 +24,7 @@ contextType: general
 |:--------------|:----------|
 | Session Date | 2025-12-22 |
 | Session ID | session-1766387679605-qd4d7z2hh |
-| Spec Folder | 003-commands/002-speckit-leann-integration |
+| Spec Folder | 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -47,7 +47,7 @@ contextType: general
 
 ---
 
-<!-- ANCHOR:preflight-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:preflight-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -67,11 +67,11 @@ contextType: general
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:preflight-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
 ---
 
-<!-- ANCHOR:continue-session-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:continue-session-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -100,13 +100,13 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 003-commands/002-speckit-leann-integration
+/spec_kit:resume 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration
 ```
-<!-- /ANCHOR:continue-session-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:continue-session-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
 ---
 
-<!-- ANCHOR:task-guide-commands/002-speckit-leann-integration-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:task-guide-cmd-002-speckit-leann-integration-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 ## 1. IMPLEMENTATION GUIDE
 
 **What Was Built**:
@@ -149,11 +149,11 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - **Data Normalization**: Clean and standardize data before use
 
-<!-- /ANCHOR:task-guide-commands/002-speckit-leann-integration-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:task-guide-cmd-002-speckit-leann-integration-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
 ---
 
-<!-- ANCHOR:summary-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:summary-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 ## 2. OVERVIEW
 
 Completed comprehensive alignment analysis between the workflows-code skill documentation and the anobel.com production codebase. Used Sequential Thinking MCP (6 thoughts) to identify 5 major gaps: polling vs Observer patterns, missing IntersectionObserver docs, undocumented Lenis integration, incomplete Webflow/Botpoison form patterns, and missing CSS conventions. Orchestrated 5 parallel Sonnet sub-agents to implement all updates: Agent 1 rewrote wait_patterns.js (651 lines, Observer-based), Agent 2 updated validation_patterns.js (1300 lines, Webflow+Botpoison), Agent 3 created observer_patterns.md and lenis_patterns.js, Agent 4 updated animation_workflows.md, code_quality_standards.md, and quick_reference.md, Agent 5 created hls_patterns.js and third_party_integrations.md. All 9 files completed successfully with 43/43 checklist items verified.
@@ -182,11 +182,11 @@ Completed comprehensive alignment analysis between the workflows-code skill docu
 | `.opencode/.../references/third_party_integrations.md` | 43/43 checklist items verified |
 | `specs/.../001-workflows-code-codebase-alignment/spec.md` | Modified during session |
 
-<!-- /ANCHOR:summary-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:summary-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:detailed-changes-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-completed-comprehensive-alignment-analysis-9345effd-session-1766387679605-qd4d7z2hh -->
@@ -204,11 +204,11 @@ rootCause: Skill documentation used polling-based wait patterns (while loops wit
 
 <!-- /ANCHOR:implementation-technical-implementation-details-d5c0b40b-session-1766387679605-qd4d7z2hh -->
 
-<!-- /ANCHOR:detailed-changes-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:detailed-changes-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:decisions-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 ## 4. DECISIONS
 
 <!-- ANCHOR:decision-replace-polling-patterns-observer-1563efe3-session-1766387679605-qd4d7z2hh -->
@@ -346,9 +346,9 @@ rootCause: Skill documentation used polling-based wait patterns (while loops wit
 
 ---
 
-<!-- /ANCHOR:decisions-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:decisions-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
-<!-- ANCHOR:session-history-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:session-history-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -369,11 +369,11 @@ Completed comprehensive alignment analysis between the workflows-code skill docu
 
 ---
 
-<!-- /ANCHOR:session-history-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:session-history-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:recovery-hints-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -384,9 +384,9 @@ Completed comprehensive alignment analysis between the workflows-code skill docu
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 003-commands/002-speckit-leann-integration` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "003-commands/002-speckit-leann-integration" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration" })` |
 
 ### Recovery Priority
 
@@ -395,10 +395,10 @@ Completed comprehensive alignment analysis between the workflows-code skill docu
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:recovery-hints-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 ---
 
-<!-- ANCHOR:postflight-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:postflight-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -421,19 +421,19 @@ Completed comprehensive alignment analysis between the workflows-code skill docu
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:postflight-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 ---
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:metadata-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
 # Core Identifiers
 session_id: "session-1766387679605-qd4d7z2hh"
-spec_folder: "003-commands/002-speckit-leann-integration"
+spec_folder: "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration"
 channel: "main"
 
 # Classification
@@ -513,7 +513,7 @@ related_sessions:
 
   []
 
-parent_spec: "003-commands/002-speckit-leann-integration"
+parent_spec: "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration"
 child_sessions:
 
   []
@@ -524,7 +524,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1766387679605-qd4d7z2hh-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:metadata-session-1766387679605-qd4d7z2hh-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
 ---
 

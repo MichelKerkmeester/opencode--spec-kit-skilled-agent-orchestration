@@ -52,11 +52,11 @@ contextType: "implementation"
 
 | Path | Description |
 |------|-------------|
-| `.opencode/specs/03--commands-and-skills/sk-code/z_archive/005-skill-bug-fixes/spec.md` | Specification document |
-| `.opencode/specs/03--commands-and-skills/sk-code/z_archive/005-skill-bug-fixes/plan.md` | Implementation plan |
-| `.opencode/specs/03--commands-and-skills/sk-code/z_archive/005-skill-bug-fixes/tasks.md` | Task breakdown |
-| `.opencode/specs/03--commands-and-skills/sk-code/z_archive/005-skill-bug-fixes/checklist.md` | Validation checklist |
-| `.opencode/specs/03--commands-and-skills/sk-code/z_archive/005-skill-bug-fixes/implementation-summary.md` | This document |
+| `.opencode/specs/03--commands-and-skills/z_archive/code-005-skill-bug-fixes/spec.md` | Specification document |
+| `.opencode/specs/03--commands-and-skills/z_archive/code-005-skill-bug-fixes/plan.md` | Implementation plan |
+| `.opencode/specs/03--commands-and-skills/z_archive/code-005-skill-bug-fixes/tasks.md` | Task breakdown |
+| `.opencode/specs/03--commands-and-skills/z_archive/code-005-skill-bug-fixes/checklist.md` | Validation checklist |
+| `.opencode/specs/03--commands-and-skills/z_archive/code-005-skill-bug-fixes/implementation-summary.md` | This document |
 | Context directory (not preserved in archived snapshot) | Note | 
 
 <!-- /ANCHOR:decisions -->
@@ -85,7 +85,7 @@ contextType: "implementation"
 
 ### Spec Folder (NEW)
 ```
-.opencode/specs/03--commands-and-skills/sk-code/z_archive/005-skill-bug-fixes
+.opencode/specs/03--commands-and-skills/z_archive/code-005-skill-bug-fixes
 ├── spec.md
 ├── plan.md
 ├── tasks.md

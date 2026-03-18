@@ -21,7 +21,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-03-01 |
 | Session ID | session-1772371856374-17oed3xwq |
-| Spec Folder | 03--commands-and-skills/commands/014-create-changelog-command |
+| Spec Folder | 03--commands-and-skills/cmd-014-create-changelog |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -110,13 +110,13 @@ quality_flags:
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 03--commands-and-skills/commands/014-create-changelog-command
+/spec_kit:resume 03--commands-and-skills/cmd-014-create-changelog
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 03--commands-and-skills/commands/014-create-changelog-command
+Spec: 03--commands-and-skills/cmd-014-create-changelog
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
@@ -161,7 +161,7 @@ Next: Continue implementation
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 
-**Key Topics:** `changelog` | `decision` | `folder` | `component` | `create` | `commands` | `hardcoded component` | `command` | `commands and skills/commands/014 create changelog command` | `discovery` | `styling` | `unicode` | 
+**Key Topics:** `changelog` | `decision` | `folder` | `component` | `create` | `commands` | `hardcoded component` | `command` | `commands and skills/cmd-014-create-changelog` | `discovery` | `styling` | `unicode` | 
 <!-- /ANCHOR:project-state-snapshot -->
 
 ---
@@ -406,9 +406,9 @@ Continuation session for the create changelog command. Three key improvements: (
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/commands/014-create-changelog-command` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/cmd-014-create-changelog` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/commands/014-create-changelog-command" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/cmd-014-create-changelog" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -420,16 +420,16 @@ Continuation session for the create changelog command. Three key improvements: (
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "03--commands-and-skills/commands/014-create-changelog-command", limit: 10 })
+memory_search({ specFolder: "03--commands-and-skills/cmd-014-create-changelog", limit: 10 })
 
 # Verify memory file integrity
-ls -la 03--commands-and-skills/commands/014-create-changelog-command/memory/
+ls -la 03--commands-and-skills/cmd-014-create-changelog/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/commands/014-create-changelog-command --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/cmd-014-create-changelog --force
 ```
 
 ### Recovery Priority
@@ -501,7 +501,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772371856374-17oed3xwq"
-spec_folder: "03--commands-and-skills/commands/014-create-changelog-command"
+spec_folder: "03--commands-and-skills/cmd-014-create-changelog"
 channel: "main"
 
 # Classification
@@ -577,7 +577,7 @@ key_topics:
   - "commands"
   - "hardcoded component"
   - "command"
-  - "commands and skills/commands/014 create changelog command"
+  - "commands and skills/cmd-014-create-changelog"
   - "discovery"
   - "styling"
   - "unicode"
@@ -587,7 +587,7 @@ trigger_phrases:
   - "create changelog command"
   - "dynamic folder discovery"
   - "unicode changelog styling"
-  - "gemini changelog wrapper"parent_spec: "03--commands-and-skills/commands/014-create-changelog-command"
+  - "gemini changelog wrapper"parent_spec: "03--commands-and-skills/cmd-014-create-changelog"
 child_sessions:
 
   []

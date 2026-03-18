@@ -20,7 +20,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-03-04 |
 | Session ID | session-1772612109726-jcqwlrak1 |
-| Spec Folder | 03--commands-and-skills/sk-prompt-improver/001-initial-creation |
+| Spec Folder | 03--commands-and-skills/prompt-001-initial-creation |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -109,13 +109,13 @@ quality_flags:
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 03--commands-and-skills/sk-prompt-improver/001-initial-creation
+/spec_kit:resume 03--commands-and-skills/prompt-001-initial-creation
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 03--commands-and-skills/sk-prompt-improver/001-initial-creation
+Spec: 03--commands-and-skills/prompt-001-initial-creation
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
@@ -480,9 +480,9 @@ Refocused sk-prompt-improver skill to text-only by removing all visual/creative 
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/sk-prompt-improver/001-initial-creation` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/prompt-001-initial-creation` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/sk-prompt-improver/001-initial-creation" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/prompt-001-initial-creation" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -494,16 +494,16 @@ Refocused sk-prompt-improver skill to text-only by removing all visual/creative 
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "03--commands-and-skills/sk-prompt-improver/001-initial-creation", limit: 10 })
+memory_search({ specFolder: "03--commands-and-skills/prompt-001-initial-creation", limit: 10 })
 
 # Verify memory file integrity
-ls -la 03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/
+ls -la 03--commands-and-skills/prompt-001-initial-creation/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/sk-prompt-improver/001-initial-creation --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/prompt-001-initial-creation --force
 ```
 
 ### Recovery Priority
@@ -575,7 +575,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772612109726-jcqwlrak1"
-spec_folder: "03--commands-and-skills/sk-prompt-improver/001-initial-creation"
+spec_folder: "03--commands-and-skills/prompt-001-initial-creation"
 channel: "main"
 
 # Classification
@@ -660,7 +660,7 @@ key_topics:
 trigger_phrases:
   - "text only refocus"
   - "visual mode removal"
-  - "prompt framework deep dives"parent_spec: "03--commands-and-skills/sk-prompt-improver/001-initial-creation"
+  - "prompt framework deep dives"parent_spec: "03--commands-and-skills/prompt-001-initial-creation"
 child_sessions:
 
   []

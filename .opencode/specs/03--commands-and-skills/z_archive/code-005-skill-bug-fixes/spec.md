@@ -218,7 +218,7 @@ All questions resolved through prior analysis.
 
 - **Analysis Source**: Multi-agent research (10 opus agents)
 - **Skill Location**: `.opencode/skill/sk-code--web/`
-- **Prior Specs**: `.opencode/specs/03--commands-and-skills/sk-code/z_archive/004-code-quality-enforcement/`
+- **Prior Specs**: `.opencode/specs/03--commands-and-skills/z_archive/code-004-quality-enforcement/`
 
 ### Files to Modify
 

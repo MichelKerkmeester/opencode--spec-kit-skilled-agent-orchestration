@@ -507,7 +507,7 @@ Use this template for completion reports:
 | `/spec_kit:plan`      | Planning workflow (7 steps) | `.opencode/command/spec_kit/plan.md`      |
 | `/spec_kit:complete`  | Full workflow (14+ steps)   | `.opencode/command/spec_kit/complete.md`  |
 | `/spec_kit:resume`    | Resume existing spec        | `.opencode/command/spec_kit/resume.md`    |
-| `/spec_kit:research`  | Research workflow           | `.opencode/command/spec_kit/research.md`  |
+| `/spec_kit:deep-research` | Deep research loop      | `.opencode/command/spec_kit/deep-research.md` |
 | `/spec_kit:implement` | Implementation workflow     | `.opencode/command/spec_kit/implement.md` |
 | `/spec_kit:phase`     | Phase decomposition         | `.opencode/command/spec_kit/phase.md`     |
 | `/spec_kit:debug`     | Debug delegation            | `.opencode/command/spec_kit/debug.md`     |

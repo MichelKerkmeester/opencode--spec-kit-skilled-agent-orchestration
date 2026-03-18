@@ -133,7 +133,7 @@ Review baseline + stack overlay contract.
 | Skill packaging | `sk-code--review` package | `python3 .opencode/skill/sk-doc/scripts/package_skill.py .opencode/skill/sk-code--review` |
 | Advisor routing scenarios | review/git/visual prompts | `python3 .opencode/skill/scripts/skill_advisor.py "..." --threshold 0.8` |
 | Contract consistency | command/agent docs across all runtimes | `rg -n "standards_contract|sk-code--review|baseline\+overlay" ...` |
-| Spec validation | Level 2 docs | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/03--commands-and-skills/sk-code/014-code-review-skill` |
+| Spec validation | Level 2 docs | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/03--commands-and-skills/code-014-review-skill` |
 <!-- /ANCHOR:testing -->
 
 ---

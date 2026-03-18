@@ -181,7 +181,7 @@ CONTENT_THRESHOLDS = {
 
 ### 4.1 Test Files Created
 
-**Location:** `.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/scratch/test_dqi`
+**Location:** `.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/scratch/test_dqi`
 
 ```
 test_dqi/
@@ -356,8 +356,8 @@ test_dqi/
 
 ## 9. References
 
-- **Spec folder:** `.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/`
-- **Test suite:** `.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/scratch/test_dqi`
+- **Spec folder:** `.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/`
+- **Test suite:** `.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/scratch/test_dqi`
 - **Main script:** `.opencode/skill/sk-doc/scripts/extract_structure.py`
 - **SKILL.md:** `.opencode/skill/sk-doc/SKILL.md`
 - **Validation reference:** `.opencode/skill/sk-doc/references/validation.md`

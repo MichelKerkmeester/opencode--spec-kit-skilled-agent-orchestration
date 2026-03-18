@@ -67,7 +67,7 @@ Update workflows-code skill files to match production patterns discovered in the
 
 ### Documentation (This Feature)
 ```
-.opencode/specs/03--commands-and-skills/sk-code/z_archive/001-workflows-code-codebase-alignment/
+.opencode/specs/03--commands-and-skills/z_archive/code-001-workflows-codebase-alignment/
   spec.md              # Analysis findings (complete)
   plan.md              # This file
   tasks.md             # Task breakdown

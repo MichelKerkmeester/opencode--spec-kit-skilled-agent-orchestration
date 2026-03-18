@@ -23,7 +23,7 @@ contextType: "implementation"
 |:--------------|:----------|
 | Session Date | 2026-01-01 |
 | Session ID | session-legacy-1770632216856-rd4m8g |
-| Spec Folder | 03--commands-and-skills/commands/005-subagent-delegation |
+| Spec Folder | 03--commands-and-skills/z_archive/cmd-005-subagent-delegation |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -38,7 +38,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:preflight-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/commands/005-subagent-delegation -->
+<!-- ANCHOR:preflight-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/z_archive/cmd-005-subagent-delegation -->
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -58,7 +58,7 @@ contextType: "implementation"
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/commands/005-subagent-delegation -->
+<!-- /ANCHOR:preflight-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/z_archive/cmd-005-subagent-delegation -->
 
 ---
 
@@ -74,7 +74,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:continue-session-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/commands/005-subagent-delegation -->
+<!-- ANCHOR:continue-session-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/z_archive/cmd-005-subagent-delegation -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -103,9 +103,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 03--commands-and-skills/commands/005-subagent-delegation
+/spec_kit:resume 03--commands-and-skills/z_archive/cmd-005-subagent-delegation
 ```
-<!-- /ANCHOR:continue-session-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/commands/005-subagent-delegation -->
+<!-- /ANCHOR:continue-session-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/z_archive/cmd-005-subagent-delegation -->
 
 ---
 
@@ -123,7 +123,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/commands/005-subagent-delegation -->
+<!-- ANCHOR:summary-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/z_archive/cmd-005-subagent-delegation -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -135,7 +135,7 @@ Legacy Memory File
 ---
 title: Sub-Agent Delegation Implementation
 created: 2026-01-01T15:35:00
-spec_folder: specs/03--commands-and-skills/commands/005-subagent-delegation
+spec_folder: specs/03--commands-and-skills/z_archive/cmd-005-subagent-delegation
 importance_tier: important
 trigger_phrases:
   - sub-agent delegation
@@ -182,19 +182,19 @@ Implemented sub-agent delegation for /spec_kit:handover and /memory:save command
 
 - `.opencode/command/spec_kit/handover.md`
 - `.opencode/command/memory/save.md`
-- `specs/03--commands-and-skills/commands/005-subagent-delegation/spec.md`
-- `specs/03--commands-and-skills/commands/005-subagent-delegation/plan.md`
-- `specs/03--commands-and-skills/commands/005-subagent-delegation/checklist.md`
-- `specs/03--commands-and-skills/commands/005-subagent-delegation/implementation-summary.md`
-- `specs/03--commands-and-skills/commands/005-subagent-delegation/handover.md`
+- `specs/03--commands-and-skills/z_archive/cmd-005-subagent-delegation/spec.md`
+- `specs/03--commands-and-skills/z_archive/cmd-005-subagent-delegation/plan.md`
+- `specs/03--commands-and-skills/z_archive/cmd-005-subagent-delegation/checklist.md`
+- `specs/03--commands-and-skills/z_archive/cmd-005-subagent-delegation/implementation-summary.md`
+- `specs/03--commands-and-skills/z_archive/cmd-005-subagent-delegation/handover.md`
 <!-- /ANCHOR:files-modified -->
 
 
-<!-- /ANCHOR:summary-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/commands/005-subagent-delegation -->
+<!-- /ANCHOR:summary-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/z_archive/cmd-005-subagent-delegation -->
 
 ---
 
-<!-- ANCHOR:decisions-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/commands/005-subagent-delegation -->
+<!-- ANCHOR:decisions-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/z_archive/cmd-005-subagent-delegation -->
 <a id="decisions"></a>
 
 ## 2. DECISIONS
@@ -203,9 +203,9 @@ This session did not involve significant architectural or technical decisions. T
 
 ---
 
-<!-- /ANCHOR:decisions-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/commands/005-subagent-delegation -->
+<!-- /ANCHOR:decisions-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/z_archive/cmd-005-subagent-delegation -->
 
-<!-- ANCHOR:session-history-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/commands/005-subagent-delegation -->
+<!-- ANCHOR:session-history-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/z_archive/cmd-005-subagent-delegation -->
 <a id="conversation"></a>
 
 ## 3. CONVERSATION
@@ -225,11 +225,11 @@ No conversation messages were captured. This is a legacy memory file migrated to
 
 ---
 
-<!-- /ANCHOR:session-history-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/commands/005-subagent-delegation -->
+<!-- /ANCHOR:session-history-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/z_archive/cmd-005-subagent-delegation -->
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/commands/005-subagent-delegation -->
+<!-- ANCHOR:recovery-hints-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/z_archive/cmd-005-subagent-delegation -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -240,9 +240,9 @@ No conversation messages were captured. This is a legacy memory file migrated to
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/commands/005-subagent-delegation` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/z_archive/cmd-005-subagent-delegation` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/commands/005-subagent-delegation" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/z_archive/cmd-005-subagent-delegation" })` |
 
 ### Recovery Priority
 
@@ -251,11 +251,11 @@ No conversation messages were captured. This is a legacy memory file migrated to
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/commands/005-subagent-delegation -->
+<!-- /ANCHOR:recovery-hints-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/z_archive/cmd-005-subagent-delegation -->
 
 ---
 
-<!-- ANCHOR:postflight-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/commands/005-subagent-delegation -->
+<!-- ANCHOR:postflight-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/z_archive/cmd-005-subagent-delegation -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -278,7 +278,7 @@ No conversation messages were captured. This is a legacy memory file migrated to
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/commands/005-subagent-delegation -->
+<!-- /ANCHOR:postflight-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/z_archive/cmd-005-subagent-delegation -->
 
 ---
 
@@ -286,14 +286,14 @@ This session was migrated from an older format. Learning metrics were not captur
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/commands/005-subagent-delegation -->
+<!-- ANCHOR:metadata-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/z_archive/cmd-005-subagent-delegation -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
 # Core Identifiers
 session_id: "session-legacy-1770632216856-rd4m8g"
-spec_folder: "03--commands-and-skills/commands/005-subagent-delegation"
+spec_folder: "03--commands-and-skills/z_archive/cmd-005-subagent-delegation"
 channel: "main"
 
 # Classification
@@ -354,7 +354,7 @@ key_files: []
 
 # Relationships
 related_sessions: []
-parent_spec: "03--commands-and-skills/commands/005-subagent-delegation"
+parent_spec: "03--commands-and-skills/z_archive/cmd-005-subagent-delegation"
 child_sessions: []
 
 # Embedding Info (populated by indexer)
@@ -363,7 +363,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/commands/005-subagent-delegation -->
+<!-- /ANCHOR:metadata-session-legacy-1770632216856-rd4m8g-03--commands-and-skills/z_archive/cmd-005-subagent-delegation -->
 
 ---
 

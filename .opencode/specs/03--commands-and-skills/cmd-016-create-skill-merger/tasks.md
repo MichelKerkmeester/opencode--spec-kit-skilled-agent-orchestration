@@ -88,9 +88,9 @@ contextType: "implementation"
 <!-- ANCHOR:phase-6 -->
 ## Phase 6: Memory Save and Indexing
 
-- [x] T020 Save implementation memory in spec-folder memory path (`.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/*.md` via `generate-context.js`)
-- [x] T021 Confirm memory metadata embedding status is indexed (`.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/metadata.json`)
-- [x] T022 Run `memory_index_scan` for spec folder and confirm completion status (spec folder `03--commands-and-skills/commands/016-create-skill-merger`)
+- [x] T020 Save implementation memory in spec-folder memory path (`.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/*.md` via `generate-context.js`)
+- [x] T021 Confirm memory metadata embedding status is indexed (`.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/metadata.json`)
+- [x] T022 Run `memory_index_scan` for spec folder and confirm completion status (spec folder `03--commands-and-skills/cmd-016-create-skill-merger`)
 <!-- /ANCHOR:phase-6 -->
 
 ---

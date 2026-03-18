@@ -53,13 +53,13 @@ This research focused on concrete implementation patterns and directly actionabl
 
 ### Supplemental synthesis inputs
 
-- `.opencode/specs/03--commands-and-skills/sk-code/015-sk-code-opencode-refinement/spec.md`
-- `.opencode/specs/03--commands-and-skills/sk-code/015-sk-code-opencode-refinement/scratch/agent-1-139-code-adjusted.md`
-- `.opencode/specs/03--commands-and-skills/sk-code/015-sk-code-opencode-refinement/scratch/agent-2-139-quality-patterns.md`
-- `.opencode/specs/03--commands-and-skills/sk-code/015-sk-code-opencode-refinement/scratch/agent-3-global-sweep-pattern.md`
-- `.opencode/specs/03--commands-and-skills/sk-code/015-sk-code-opencode-refinement/scratch/agent-4-review-skill-gaps.md`
-- `.opencode/specs/03--commands-and-skills/sk-code/015-sk-code-opencode-refinement/scratch/agent-5-opencode-skill-delta.md`
-- `.opencode/specs/03--commands-and-skills/sk-code/015-sk-code-opencode-refinement/scratch/agent-6-language-matrix.md`
+- `.opencode/specs/03--commands-and-skills/code-015-opencode-refinement/spec.md`
+- `.opencode/specs/03--commands-and-skills/code-015-opencode-refinement/scratch/agent-1-139-code-adjusted.md`
+- `.opencode/specs/03--commands-and-skills/code-015-opencode-refinement/scratch/agent-2-139-quality-patterns.md`
+- `.opencode/specs/03--commands-and-skills/code-015-opencode-refinement/scratch/agent-3-global-sweep-pattern.md`
+- `.opencode/specs/03--commands-and-skills/code-015-opencode-refinement/scratch/agent-4-review-skill-gaps.md`
+- `.opencode/specs/03--commands-and-skills/code-015-opencode-refinement/scratch/agent-5-opencode-skill-delta.md`
+- `.opencode/specs/03--commands-and-skills/code-015-opencode-refinement/scratch/agent-6-language-matrix.md`
 
 ## 2. Concrete Code-Adjusted Patterns from 139
 
@@ -79,7 +79,7 @@ The following patterns are concrete implementation behaviors that can be reused 
 ## 3.1 `sk-code--opencode` gaps relevant to this spec
 
 1. **Inline comment policy is still broad**: current rule is repeated as "Maximum 5 comments per 10 lines" in core and language guides, which allows verbose narration to pass if ratio is respected. [SOURCE: `.opencode/skill/sk-code--opencode/SKILL.md`] [SOURCE: `.opencode/skill/sk-code--opencode/references/shared/universal_patterns.md`] [SOURCE: `.opencode/skill/sk-code--opencode/references/javascript/style_guide.md`] [SOURCE: `.opencode/skill/sk-code--opencode/references/typescript/style_guide.md`] [SOURCE: `.opencode/skill/sk-code--opencode/references/python/style_guide.md`] [SOURCE: `.opencode/skill/sk-code--opencode/references/shell/style_guide.md`]
-2. **Header conventions are strong but not explicitly guarded as non-regression invariant in checklists**: numbered ALL-CAPS sections are present throughout style/checklist docs, but preservation is not a named closure check. [SOURCE: `.opencode/skill/sk-code--opencode/references/javascript/style_guide.md`] [SOURCE: `.opencode/skill/sk-code--opencode/references/typescript/style_guide.md`] [SOURCE: `.opencode/skill/sk-code--opencode/assets/checklists/universal_checklist.md`] [SOURCE: `.opencode/specs/03--commands-and-skills/sk-code/015-sk-code-opencode-refinement/spec.md`]
+2. **Header conventions are strong but not explicitly guarded as non-regression invariant in checklists**: numbered ALL-CAPS sections are present throughout style/checklist docs, but preservation is not a named closure check. [SOURCE: `.opencode/skill/sk-code--opencode/references/javascript/style_guide.md`] [SOURCE: `.opencode/skill/sk-code--opencode/references/typescript/style_guide.md`] [SOURCE: `.opencode/skill/sk-code--opencode/assets/checklists/universal_checklist.md`] [SOURCE: `.opencode/specs/03--commands-and-skills/code-015-opencode-refinement/spec.md`]
 3. **KISS/DRY/SOLID terms are effectively absent in opencode standards/checklists**: search signal is missing from `sk-code--opencode` core references and checklists. [SOURCE: `.opencode/skill/sk-code--opencode/SKILL.md`] [SOURCE: `.opencode/skill/sk-code--opencode/assets/checklists/universal_checklist.md`] [SOURCE: `.opencode/skill/sk-code--opencode/assets/checklists/javascript_checklist.md`] [SOURCE: `.opencode/skill/sk-code--opencode/assets/checklists/typescript_checklist.md`] [SOURCE: `.opencode/skill/sk-code--opencode/assets/checklists/python_checklist.md`] [SOURCE: `.opencode/skill/sk-code--opencode/assets/checklists/shell_checklist.md`] [SOURCE: `.opencode/skill/sk-code--opencode/assets/checklists/config_checklist.md`]
 
 ## 3.2 `sk-code--review` detection gaps (KISS/DRY/SOLID)

@@ -35,8 +35,8 @@ contextType: "implementation"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Planning and Contract Definition
 
-- [x] T001 Capture merge objectives and scope in `spec.md` (`.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/spec.md`)
-- [x] T002 Document canonical naming proposal and routing model in `plan.md` (`.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/plan.md`)
+- [x] T001 Capture merge objectives and scope in `spec.md` (`.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/spec.md`)
+- [x] T002 Document canonical naming proposal and routing model in `plan.md` (`.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/plan.md`)
 - [x] T003 [P] Build evidence baseline table from current command assets (`.opencode/command/create/*.md` and `.opencode/command/create/assets/*.yaml`)
 <!-- /ANCHOR:phase-1 -->
 

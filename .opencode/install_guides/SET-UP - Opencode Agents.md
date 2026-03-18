@@ -177,7 +177,7 @@ User Request
 |  +-> @context: Context retrieval, analysis, exploration       |
 |  +-> @orchestrate: Task decomposition and delegation          |
 |  +-> @write: Documentation with template enforcement          |
-|  +-> @research: Technical investigation and evidence          |
+|  +-> @deep-research: Autonomous iterative research loop       |
 |  +-> @review: Code quality and security assessment            |
 |  +-> @speckit: Spec folder documentation (Level 1-3+)         |
 |  +-> @handover: Session continuation and context preservation |
@@ -572,7 +572,7 @@ opencode
 
 # Invoke subagents via @ mention
 @context find all config files in this project
-@research investigate how authentication is implemented
+@deep-research investigate how authentication is implemented
 @write create a README for the utils folder
 @review check this function for security issues
 ```
@@ -597,7 +597,7 @@ When subagents create child sessions, navigate between them:
 | context        | Subagent | `@context`     | Memory-integrated context retrieval         |
 | orchestrate    | Primary  | `@orchestrate` | Complex multi-step task coordination        |
 | write          | All      | `@write`       | Documentation creation with DQI scoring     |
-| research       | Subagent | `@research`    | Technical investigation with evidence       |
+| deep-research  | Subagent | `@deep-research` | Autonomous iterative research loop        |
 | review         | Subagent | `@review`      | Code quality and security assessment        |
 | speckit        | Subagent | `@speckit`     | Spec folder documentation (Level 1-3+)      |
 | handover       | Subagent | `@handover`    | Session continuation and context export     |
@@ -608,7 +608,7 @@ When subagents create child sessions, navigate between them:
 1. **For development work**: Use **Build** agent (default). Has all tools enabled.
 2. **For planning or analysis**: Press **Tab** to switch to **Plan** agent. Suggests changes without making them.
 3. **For codebase exploration**: Type `@context` for memory-integrated exploration with structured Context Package output. Preferred over raw `@explore`.
-4. **For research tasks**: Type `@general` for general research, or `@research` for structured 9-step technical investigation.
+4. **For research tasks**: Type `@general` for general research, or `@deep-research` for autonomous iterative investigation.
 5. **For documentation tasks**: Type `@write` to invoke the documentation agent with template enforcement.
 6. **For complex multi-step tasks**: Type `@orchestrate` to decompose and delegate work.
 7. **For code reviews**: Type `@review` for quality scoring and security assessment.

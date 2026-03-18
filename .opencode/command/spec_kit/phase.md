@@ -214,7 +214,7 @@ STATUS=FAIL ERROR="[message]"
 ## 7. COMMAND CHAIN
 
 ```
-[/spec_kit:research] -> /spec_kit:phase -> /spec_kit:plan (per child) -> /spec_kit:implement (per child)
+[/spec_kit:deep-research] -> /spec_kit:phase -> /spec_kit:plan (per child) -> /spec_kit:implement (per child)
 ```
 
 ---

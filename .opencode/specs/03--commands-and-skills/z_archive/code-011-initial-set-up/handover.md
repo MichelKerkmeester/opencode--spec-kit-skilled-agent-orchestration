@@ -62,7 +62,7 @@ contextType: "general"
 
 ### 3.1 Recommended Starting Point
 
-- **Command:** `/spec_kit:implement .opencode/specs/03--commands-and-skills/sk-code/z_archive/011-initial-set-up`
+- **Command:** `/spec_kit:implement .opencode/specs/03--commands-and-skills/z_archive/code-011-initial-set-up`
 - **Context:** Execute implementation phases to create **19 skill files**
 - **Strategy:** Use 5 parallel agents (one per workstream W-A through W-E)
 
@@ -153,7 +153,7 @@ Before handover, verify:
 
 ```
 CONTINUATION - Attempt 2
-Spec: .opencode/specs/03--commands-and-skills/sk-code/z_archive/011-initial-set-up
+Spec: .opencode/specs/03--commands-and-skills/z_archive/code-011-initial-set-up
 Last: Multi-language spec update (v2.0) - spec.md, plan.md, checklist.md, decision-record.md
 Next: Implementation phase - create 19 skill files (use 5 parallel agents)
 Files: 19 total (1 SKILL.md + 11 references + 2 shared + 5 checklists)

@@ -24,7 +24,7 @@ Documents the 9 specialized Codex agents in `.codex/agents/` and how any AI assi
 
 - Delegating supplementary implementation or analysis tasks to Codex CLI agents
 - Cross-AI code review or architectural second opinion
-- Web research via `--search` flag (`@research`)
+- Web research via `--search` flag (`@deep-research`)
 - Fresh-perspective debugging after the calling AI's attempts fail (`@debug`)
 - Spec folder documentation generation (`@speckit`)
 - Multi-agent Codex-side workflows (`@orchestrate`)
@@ -239,11 +239,11 @@ codex exec -p orchestrate \
 
 ---
 
-### @research — Technical Investigator
+### @deep-research — Technical Investigator
 
 | Property           | Value                                                           |
 | ------------------ | --------------------------------------------------------------- |
-| **Role**           | Evidence gathering, feasibility analysis, technology comparison |
+| **Role**           | Iterative evidence gathering, feasibility analysis, technology comparison |
 | **Model**          | gpt-5.4 (recommended for synthesis) or gpt-5.3-codex           |
 | **Sandbox Mode**   | workspace-write                                                 |
 | **Modifies Files** | Yes (research.md)                                               |
@@ -356,8 +356,8 @@ codex exec -p write -s workspace-write \
 | ------------------------ | ---------------------- | -------------------- | ------------------------------------ |
 | Codebase exploration     | @context               | (none)               | Read-only, structured exploration    |
 | Cross-AI code review     | @review                | @context             | Second opinion on quality, read-only |
-| Web/API research         | @research (`--search`) | @write               | Live web browsing capability         |
-| Architecture planning    | @ultra-think           | @research            | Multi-lens analysis, no file changes |
+| Web/API research         | @deep-research (`--search`) | @write          | Live web browsing capability         |
+| Architecture planning    | @ultra-think           | @deep-research       | Multi-lens analysis, no file changes |
 | Bug investigation        | @debug                 | @context             | Fresh perspective methodology        |
 | Documentation generation | @write                 | @speckit             | Template-first, web-enrichable       |
 | Spec folder docs         | @speckit               | (none)               | Exclusive spec authority             |

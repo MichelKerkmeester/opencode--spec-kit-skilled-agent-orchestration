@@ -789,175 +789,175 @@
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 9
     },
-    "03--commands-and-skills/commands/013-memory-command-output": {
+    "03--commands-and-skills/cmd-013-memory-output": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/commands/014-create-changelog-command": {
+    "03--commands-and-skills/cmd-014-create-changelog": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/commands/015-create-prompt-command": {
+    "03--commands-and-skills/cmd-015-create-prompt": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/commands/016-create-skill-merger": {
+    "03--commands-and-skills/cmd-016-create-skill-merger": {
       "total": 4,
       "repair_in_place": 4,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/commands/017-create-readme-install-merger": {
+    "03--commands-and-skills/cmd-017-create-readme-install-merger": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/commands/z_archive/001-command-analysis": {
+    "03--commands-and-skills/z_archive/cmd-001-analysis": {
       "total": 1,
       "repair_in_place": 0,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 1
     },
-    "03--commands-and-skills/commands/z_archive/002-speckit-leann-integration": {
+    "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration": {
       "total": 4,
       "repair_in_place": 4,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/commands/z_archive/004-command-logic-improvement": {
+    "03--commands-and-skills/z_archive/cmd-004-logic-improvement": {
       "total": 6,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 5
     },
-    "03--commands-and-skills/commands/z_archive/005-subagent-delegation": {
+    "03--commands-and-skills/z_archive/cmd-005-subagent-delegation": {
       "total": 1,
       "repair_in_place": 0,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 1
     },
-    "03--commands-and-skills/commands/z_archive/007-remove-git-branch-logic": {
+    "03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic": {
       "total": 1,
       "repair_in_place": 0,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 1
     },
-    "03--commands-and-skills/sk-cli/001-cli-gemini": {
+    "03--commands-and-skills/cli-001-gemini": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-cli/003-cli-claude-code": {
+    "03--commands-and-skills/cli-003-claude-code": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-cli/004-cli-copilot": {
+    "03--commands-and-skills/cli-004-copilot": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-code/z_archive/001-workflows-code-codebase-alignment": {
+    "03--commands-and-skills/z_archive/code-001-workflows-codebase-alignment": {
       "total": 2,
       "repair_in_place": 0,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 2
     },
-    "03--commands-and-skills/sk-code/z_archive/002-reference-structure-qa": {
+    "03--commands-and-skills/z_archive/code-002-reference-structure-qa": {
       "total": 2,
       "repair_in_place": 0,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 2
     },
-    "03--commands-and-skills/sk-code/z_archive/004-code-quality-enforcement": {
+    "03--commands-and-skills/z_archive/code-004-quality-enforcement": {
       "total": 2,
       "repair_in_place": 0,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 2
     },
-    "03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/002-remediation": {
+    "03--commands-and-skills/z_archive/code-006-js-codebase-analysis/002-remediation": {
       "total": 1,
       "repair_in_place": 0,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 1
     },
-    "03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis": {
+    "03--commands-and-skills/z_archive/code-006-js-codebase-analysis": {
       "total": 1,
       "repair_in_place": 0,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 1
     },
-    "03--commands-and-skills/sk-code/z_archive/007-performance-patterns-update": {
+    "03--commands-and-skills/z_archive/code-007-performance-patterns-update": {
       "total": 2,
       "repair_in_place": 0,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 2
     },
-    "03--commands-and-skills/sk-code/z_archive/011-initial-set-up": {
+    "03--commands-and-skills/z_archive/code-011-initial-set-up": {
       "total": 1,
       "repair_in_place": 0,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 1
     },
-    "03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment": {
+    "03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment": {
       "total": 2,
       "repair_in_place": 0,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 2
     },
-    "03--commands-and-skills/sk-doc/001-doc-specialist-refactor": {
+    "03--commands-and-skills/z_archive/doc-001-specialist-refactor": {
       "total": 5,
       "repair_in_place": 0,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 5
     },
-    "03--commands-and-skills/sk-doc/002-skill-rename": {
+    "03--commands-and-skills/z_archive/doc-002-skill-rename": {
       "total": 1,
       "repair_in_place": 0,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 1
     },
-    "03--commands-and-skills/sk-doc/003-h2-emoji-enforcement": {
+    "03--commands-and-skills/z_archive/doc-003-h2-emoji-enforcement": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-doc/004-style-enforcement": {
+    "03--commands-and-skills/z_archive/doc-004-style-enforcement": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-doc/005-remove-emojis-from-docs": {
+    "03--commands-and-skills/z_archive/doc-005-remove-emojis-from-docs": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-doc/008-sk-doc-template-folders": {
+    "03--commands-and-skills/doc-008-template-folders": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-git/002-superset-worktrees": {
+    "03--commands-and-skills/git-002-superset-worktrees": {
       "total": 1,
       "repair_in_place": 1,
       "regenerate_from_authoritative_evidence": 0,
       "quarantine": 0
     },
-    "03--commands-and-skills/sk-prompt-improver/001-initial-creation": {
+    "03--commands-and-skills/prompt-001-initial-creation": {
       "total": 2,
       "repair_in_place": 2,
       "regenerate_from_authoritative_evidence": 0,
@@ -4375,8 +4375,8 @@
       "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/scratch/legacy-memory-quarantine/20-02-26_08-04__mcp-working-memory-hybrid-rag.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/013-memory-command-output/memory/20-02-26_13-42__memory-command-output.md",
-      "specFolder": "03--commands-and-skills/commands/013-memory-command-output",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-013-memory-output/memory/20-02-26_13-42__memory-command-output.md",
+      "specFolder": "03--commands-and-skills/cmd-013-memory-output",
       "issues": [
         "legacy_generic_trigger_phrases",
         "corrupted_title"
@@ -4387,8 +4387,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/013-memory-command-output/memory/20-02-26_14-44__memory-command-output.md",
-      "specFolder": "03--commands-and-skills/commands/013-memory-command-output",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-013-memory-output/memory/20-02-26_14-44__memory-command-output.md",
+      "specFolder": "03--commands-and-skills/cmd-013-memory-output",
       "issues": [
         "legacy_generic_trigger_phrases",
         "corrupted_title"
@@ -4399,8 +4399,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/014-create-changelog-command/memory/01-03-26_12-53__create-changelog-command.md",
-      "specFolder": "03--commands-and-skills/commands/014-create-changelog-command",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-014-create-changelog/memory/01-03-26_12-53__create-changelog-command.md",
+      "specFolder": "03--commands-and-skills/cmd-014-create-changelog",
       "issues": [
         "corrupted_title"
       ],
@@ -4410,8 +4410,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/014-create-changelog-command/memory/01-03-26_14-30__create-changelog-command.md",
-      "specFolder": "03--commands-and-skills/commands/014-create-changelog-command",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-014-create-changelog/memory/01-03-26_14-30__create-changelog-command.md",
+      "specFolder": "03--commands-and-skills/cmd-014-create-changelog",
       "issues": [
         "corrupted_title"
       ],
@@ -4421,8 +4421,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/memory/01-03-26_12-48__create-prompt-command.md",
-      "specFolder": "03--commands-and-skills/commands/015-create-prompt-command",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_12-48__create-prompt-command.md",
+      "specFolder": "03--commands-and-skills/cmd-015-create-prompt",
       "issues": [
         "corrupted_title"
       ],
@@ -4432,8 +4432,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/memory/01-03-26_14-44__create-prompt-command.md",
-      "specFolder": "03--commands-and-skills/commands/015-create-prompt-command",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_14-44__create-prompt-command.md",
+      "specFolder": "03--commands-and-skills/cmd-015-create-prompt",
       "issues": [
         "corrupted_title"
       ],
@@ -4443,8 +4443,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md",
-      "specFolder": "03--commands-and-skills/commands/016-create-skill-merger",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md",
+      "specFolder": "03--commands-and-skills/cmd-016-create-skill-merger",
       "issues": [
         "corrupted_title"
       ],
@@ -4454,8 +4454,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-45__create-skill-merger.md",
-      "specFolder": "03--commands-and-skills/commands/016-create-skill-merger",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-45__create-skill-merger.md",
+      "specFolder": "03--commands-and-skills/cmd-016-create-skill-merger",
       "issues": [
         "corrupted_title"
       ],
@@ -4465,8 +4465,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-49__create-skill-merger.md",
-      "specFolder": "03--commands-and-skills/commands/016-create-skill-merger",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-49__create-skill-merger.md",
+      "specFolder": "03--commands-and-skills/cmd-016-create-skill-merger",
       "issues": [
         "corrupted_title"
       ],
@@ -4476,8 +4476,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md",
-      "specFolder": "03--commands-and-skills/commands/016-create-skill-merger",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md",
+      "specFolder": "03--commands-and-skills/cmd-016-create-skill-merger",
       "issues": [
         "corrupted_title"
       ],
@@ -4487,8 +4487,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/memory/03-03-26_13-29__create-readme-install-merger.md",
-      "specFolder": "03--commands-and-skills/commands/017-create-readme-install-merger",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/memory/03-03-26_13-29__create-readme-install-merger.md",
+      "specFolder": "03--commands-and-skills/cmd-017-create-readme-install-merger",
       "issues": [
         "corrupted_title"
       ],
@@ -4498,8 +4498,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/001-command-analysis/memory/15-12-25_00-00__context.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/001-command-analysis",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-001-analysis/memory/15-12-25_00-00__context.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-001-analysis",
       "issues": [
         "corrupted_title",
         "low_signal_content"
@@ -4507,11 +4507,11 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/001-command-analysis/scratch/legacy-memory-quarantine/15-12-25_00-00__context.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-001-analysis/scratch/legacy-memory-quarantine/15-12-25_00-00__context.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/002-speckit-leann-integration/memory/21-12-25_11-14__speckit-leann-integration.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/002-speckit-leann-integration",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/memory/21-12-25_11-14__speckit-leann-integration.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration",
       "issues": [
         "corrupted_title"
       ],
@@ -4521,8 +4521,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/002-speckit-leann-integration/memory/21-12-25_11-24__speckit-leann-integration.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/002-speckit-leann-integration",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/memory/21-12-25_11-24__speckit-leann-integration.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration",
       "issues": [
         "corrupted_title"
       ],
@@ -4532,8 +4532,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/002-speckit-leann-integration/memory/22-12-25_09-00__speckit-leann-integration.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/002-speckit-leann-integration",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/memory/22-12-25_09-00__speckit-leann-integration.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration",
       "issues": [
         "corrupted_title"
       ],
@@ -4543,8 +4543,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/002-speckit-leann-integration/memory/22-12-25_09-01__speckit-leann-integration.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/002-speckit-leann-integration",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/memory/22-12-25_09-01__speckit-leann-integration.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration",
       "issues": [
         "corrupted_title"
       ],
@@ -4554,8 +4554,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_13-25__command-logic-improvement.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/004-command-logic-improvement",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_13-25__command-logic-improvement.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-004-logic-improvement",
       "issues": [
         "corrupted_title",
         "low_signal_content"
@@ -4563,11 +4563,11 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/scratch/legacy-memory-quarantine/01-01-26_13-25__command-logic-improvement.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/scratch/legacy-memory-quarantine/01-01-26_13-25__command-logic-improvement.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_14-06__command-logic-improvement.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/004-command-logic-improvement",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_14-06__command-logic-improvement.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-004-logic-improvement",
       "issues": [
         "corrupted_title",
         "low_signal_content"
@@ -4575,11 +4575,11 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/scratch/legacy-memory-quarantine/01-01-26_14-06__command-logic-improvement.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/scratch/legacy-memory-quarantine/01-01-26_14-06__command-logic-improvement.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_14-12__command-logic-improvement.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/004-command-logic-improvement",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_14-12__command-logic-improvement.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-004-logic-improvement",
       "issues": [
         "corrupted_title",
         "low_signal_content"
@@ -4587,11 +4587,11 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/scratch/legacy-memory-quarantine/01-01-26_14-12__command-logic-improvement.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/scratch/legacy-memory-quarantine/01-01-26_14-12__command-logic-improvement.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_14-25__command-logic-improvement.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/004-command-logic-improvement",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_14-25__command-logic-improvement.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-004-logic-improvement",
       "issues": [
         "corrupted_title",
         "low_signal_content"
@@ -4599,11 +4599,11 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/scratch/legacy-memory-quarantine/01-01-26_14-25__command-logic-improvement.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/scratch/legacy-memory-quarantine/01-01-26_14-25__command-logic-improvement.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_14-29__command-logic-improvement.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/004-command-logic-improvement",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_14-29__command-logic-improvement.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-004-logic-improvement",
       "issues": [
         "corrupted_title",
         "low_signal_content"
@@ -4611,11 +4611,11 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/scratch/legacy-memory-quarantine/01-01-26_14-29__command-logic-improvement.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/scratch/legacy-memory-quarantine/01-01-26_14-29__command-logic-improvement.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_15-02__command-logic-improvement.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/004-command-logic-improvement",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_15-02__command-logic-improvement.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-004-logic-improvement",
       "issues": [
         "corrupted_title"
       ],
@@ -4625,8 +4625,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/005-subagent-delegation/memory/01-01-26_15-35__subagent-delegation.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/005-subagent-delegation",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-005-subagent-delegation/memory/01-01-26_15-35__subagent-delegation.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-005-subagent-delegation",
       "issues": [
         "corrupted_title",
         "low_signal_content"
@@ -4634,11 +4634,11 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/005-subagent-delegation/scratch/legacy-memory-quarantine/01-01-26_15-35__subagent-delegation.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-005-subagent-delegation/scratch/legacy-memory-quarantine/01-01-26_15-35__subagent-delegation.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/007-remove-git-branch-logic/memory/21-01-26_08-56__remove-git-branch-logic.md",
-      "specFolder": "03--commands-and-skills/commands/z_archive/007-remove-git-branch-logic",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic/memory/21-01-26_08-56__remove-git-branch-logic.md",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic",
       "issues": [
         "corrupted_title",
         "low_signal_content"
@@ -4646,11 +4646,11 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/commands/z_archive/007-remove-git-branch-logic/scratch/legacy-memory-quarantine/21-01-26_08-56__remove-git-branch-logic.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic/scratch/legacy-memory-quarantine/21-01-26_08-56__remove-git-branch-logic.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-07__cli-gemini.md",
-      "specFolder": "03--commands-and-skills/sk-cli/001-cli-gemini",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-07__cli-gemini.md",
+      "specFolder": "03--commands-and-skills/cli-001-gemini",
       "issues": [
         "corrupted_title"
       ],
@@ -4660,8 +4660,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md",
-      "specFolder": "03--commands-and-skills/sk-cli/001-cli-gemini",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md",
+      "specFolder": "03--commands-and-skills/cli-001-gemini",
       "issues": [
         "corrupted_title"
       ],
@@ -4671,8 +4671,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-cli/003-cli-claude-code/memory/02-03-26_21-14__cli-claude-code.md",
-      "specFolder": "03--commands-and-skills/sk-cli/003-cli-claude-code",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cli-003-claude-code/memory/02-03-26_21-14__cli-claude-code.md",
+      "specFolder": "03--commands-and-skills/cli-003-claude-code",
       "issues": [
         "corrupted_title"
       ],
@@ -4682,8 +4682,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-cli/004-cli-copilot/memory/02-03-26_21-14__cli-copilot.md",
-      "specFolder": "03--commands-and-skills/sk-cli/004-cli-copilot",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/cli-004-copilot/memory/02-03-26_21-14__cli-copilot.md",
+      "specFolder": "03--commands-and-skills/cli-004-copilot",
       "issues": [
         "corrupted_title"
       ],
@@ -4693,30 +4693,30 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/001-workflows-code-codebase-alignment/memory/22-12-25_08-14__skill-alignment-complete.md",
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/001-workflows-code-codebase-alignment",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-001-workflows-codebase-alignment/memory/22-12-25_08-14__skill-alignment-complete.md",
+      "specFolder": "03--commands-and-skills/z_archive/code-001-workflows-codebase-alignment",
       "issues": [
         "malformed_frontmatter"
       ],
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/001-workflows-code-codebase-alignment/scratch/legacy-memory-quarantine/22-12-25_08-14__skill-alignment-complete.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-001-workflows-codebase-alignment/scratch/legacy-memory-quarantine/22-12-25_08-14__skill-alignment-complete.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/001-workflows-code-codebase-alignment/memory/22-12-25_08-32__workflows-code-alignment-phase2.md",
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/001-workflows-code-codebase-alignment",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-001-workflows-codebase-alignment/memory/22-12-25_08-32__workflows-code-alignment-phase2.md",
+      "specFolder": "03--commands-and-skills/z_archive/code-001-workflows-codebase-alignment",
       "issues": [
         "malformed_frontmatter"
       ],
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/001-workflows-code-codebase-alignment/scratch/legacy-memory-quarantine/22-12-25_08-32__workflows-code-alignment-phase2.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-001-workflows-codebase-alignment/scratch/legacy-memory-quarantine/22-12-25_08-32__workflows-code-alignment-phase2.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/002-reference-structure-qa/memory/16-02-26_14-50__qa-report.md",
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/002-reference-structure-qa",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-002-reference-structure-qa/memory/16-02-26_14-50__qa-report.md",
+      "specFolder": "03--commands-and-skills/z_archive/code-002-reference-structure-qa",
       "issues": [
         "malformed_frontmatter",
         "low_signal_content"
@@ -4724,22 +4724,22 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/002-reference-structure-qa/scratch/legacy-memory-quarantine/16-02-26_14-50__qa-report.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-002-reference-structure-qa/scratch/legacy-memory-quarantine/16-02-26_14-50__qa-report.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/002-reference-structure-qa/memory/22-12-25_09-50__reference-structure-qa.md",
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/002-reference-structure-qa",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-002-reference-structure-qa/memory/22-12-25_09-50__reference-structure-qa.md",
+      "specFolder": "03--commands-and-skills/z_archive/code-002-reference-structure-qa",
       "issues": [
         "malformed_frontmatter"
       ],
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/002-reference-structure-qa/scratch/legacy-memory-quarantine/22-12-25_09-50__reference-structure-qa.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-002-reference-structure-qa/scratch/legacy-memory-quarantine/22-12-25_09-50__reference-structure-qa.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/004-code-quality-enforcement/memory/02-01-26_08-05__code-quality-enforcement.md",
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/004-code-quality-enforcement",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-004-quality-enforcement/memory/02-01-26_08-05__code-quality-enforcement.md",
+      "specFolder": "03--commands-and-skills/z_archive/code-004-quality-enforcement",
       "issues": [
         "malformed_frontmatter",
         "low_signal_content"
@@ -4747,55 +4747,55 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/004-code-quality-enforcement/scratch/legacy-memory-quarantine/02-01-26_08-05__code-quality-enforcement.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-004-quality-enforcement/scratch/legacy-memory-quarantine/02-01-26_08-05__code-quality-enforcement.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/004-code-quality-enforcement/memory/02-01-26_08-30__code-quality-enforcement.md",
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/004-code-quality-enforcement",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-004-quality-enforcement/memory/02-01-26_08-30__code-quality-enforcement.md",
+      "specFolder": "03--commands-and-skills/z_archive/code-004-quality-enforcement",
       "issues": [
         "malformed_frontmatter"
       ],
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/004-code-quality-enforcement/scratch/legacy-memory-quarantine/02-01-26_08-30__code-quality-enforcement.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-004-quality-enforcement/scratch/legacy-memory-quarantine/02-01-26_08-30__code-quality-enforcement.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/002-remediation/memory/25-01-26_11-24__remediation.md",
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/002-remediation",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-006-js-codebase-analysis/002-remediation/memory/25-01-26_11-24__remediation.md",
+      "specFolder": "03--commands-and-skills/z_archive/code-006-js-codebase-analysis/002-remediation",
       "issues": [
         "malformed_frontmatter"
       ],
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/002-remediation/scratch/legacy-memory-quarantine/25-01-26_11-24__remediation.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-006-js-codebase-analysis/002-remediation/scratch/legacy-memory-quarantine/25-01-26_11-24__remediation.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/memory/25-01-26_10-13__js-codebase-analysis.md",
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-006-js-codebase-analysis/memory/25-01-26_10-13__js-codebase-analysis.md",
+      "specFolder": "03--commands-and-skills/z_archive/code-006-js-codebase-analysis",
       "issues": [
         "malformed_frontmatter"
       ],
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/scratch/legacy-memory-quarantine/25-01-26_10-13__js-codebase-analysis.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-006-js-codebase-analysis/scratch/legacy-memory-quarantine/25-01-26_10-13__js-codebase-analysis.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/007-performance-patterns-update/memory/26-01-26_10-48__anobel.com.md",
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/007-performance-patterns-update",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-007-performance-patterns-update/memory/26-01-26_10-48__anobel.com.md",
+      "specFolder": "03--commands-and-skills/z_archive/code-007-performance-patterns-update",
       "issues": [
         "malformed_frontmatter"
       ],
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/007-performance-patterns-update/scratch/legacy-memory-quarantine/26-01-26_10-48__anobel.com.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-007-performance-patterns-update/scratch/legacy-memory-quarantine/26-01-26_10-48__anobel.com.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/007-performance-patterns-update/memory/26-01-26_13-22__performance-patterns-update.md",
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/007-performance-patterns-update",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-007-performance-patterns-update/memory/26-01-26_13-22__performance-patterns-update.md",
+      "specFolder": "03--commands-and-skills/z_archive/code-007-performance-patterns-update",
       "issues": [
         "malformed_frontmatter",
         "low_signal_content"
@@ -4803,44 +4803,44 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/007-performance-patterns-update/scratch/legacy-memory-quarantine/26-01-26_13-22__performance-patterns-update.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-007-performance-patterns-update/scratch/legacy-memory-quarantine/26-01-26_13-22__performance-patterns-update.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/011-initial-set-up/memory/04-02-26_08-12__workflows-code-opencode.md",
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/011-initial-set-up",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-011-initial-set-up/memory/04-02-26_08-12__workflows-code-opencode.md",
+      "specFolder": "03--commands-and-skills/z_archive/code-011-initial-set-up",
       "issues": [
         "malformed_frontmatter"
       ],
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/011-initial-set-up/scratch/legacy-memory-quarantine/04-02-26_08-12__workflows-code-opencode.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-011-initial-set-up/scratch/legacy-memory-quarantine/04-02-26_08-12__workflows-code-opencode.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment/memory/16-02-26_22-35__opencode-codebase-alignment.md",
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment/memory/16-02-26_22-35__opencode-codebase-alignment.md",
+      "specFolder": "03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment",
       "issues": [
         "malformed_frontmatter"
       ],
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment/scratch/legacy-memory-quarantine/16-02-26_22-35__opencode-codebase-alignment.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment/scratch/legacy-memory-quarantine/16-02-26_22-35__opencode-codebase-alignment.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment/memory/17-02-26_08-31__opencode-codebase-alignment.md",
-      "specFolder": "03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment/memory/17-02-26_08-31__opencode-codebase-alignment.md",
+      "specFolder": "03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment",
       "issues": [
         "malformed_frontmatter"
       ],
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment/scratch/legacy-memory-quarantine/17-02-26_08-31__opencode-codebase-alignment.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment/scratch/legacy-memory-quarantine/17-02-26_08-31__opencode-codebase-alignment.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_00-00__header-standardization.md",
-      "specFolder": "03--commands-and-skills/sk-doc/001-doc-specialist-refactor",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_00-00__header-standardization.md",
+      "specFolder": "03--commands-and-skills/z_archive/doc-001-specialist-refactor",
       "issues": [
         "corrupted_title",
         "low_signal_content"
@@ -4848,11 +4848,11 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/scratch/legacy-memory-quarantine/14-12-24_00-00__header-standardization.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/scratch/legacy-memory-quarantine/14-12-24_00-00__header-standardization.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_00-00__honesty-pass.md",
-      "specFolder": "03--commands-and-skills/sk-doc/001-doc-specialist-refactor",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_00-00__honesty-pass.md",
+      "specFolder": "03--commands-and-skills/z_archive/doc-001-specialist-refactor",
       "issues": [
         "corrupted_title",
         "low_signal_content"
@@ -4860,11 +4860,11 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/scratch/legacy-memory-quarantine/14-12-24_00-00__honesty-pass.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/scratch/legacy-memory-quarantine/14-12-24_00-00__honesty-pass.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_00-00__implementation-complete.md",
-      "specFolder": "03--commands-and-skills/sk-doc/001-doc-specialist-refactor",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_00-00__implementation-complete.md",
+      "specFolder": "03--commands-and-skills/z_archive/doc-001-specialist-refactor",
       "issues": [
         "corrupted_title",
         "low_signal_content"
@@ -4872,11 +4872,11 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/scratch/legacy-memory-quarantine/14-12-24_00-00__implementation-complete.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/scratch/legacy-memory-quarantine/14-12-24_00-00__implementation-complete.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_00-00__planning-session.md",
-      "specFolder": "03--commands-and-skills/sk-doc/001-doc-specialist-refactor",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_00-00__planning-session.md",
+      "specFolder": "03--commands-and-skills/z_archive/doc-001-specialist-refactor",
       "issues": [
         "corrupted_title",
         "low_signal_content"
@@ -4884,11 +4884,11 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/scratch/legacy-memory-quarantine/14-12-24_00-00__planning-session.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/scratch/legacy-memory-quarantine/14-12-24_00-00__planning-session.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_00-00__script-enhancements.md",
-      "specFolder": "03--commands-and-skills/sk-doc/001-doc-specialist-refactor",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_00-00__script-enhancements.md",
+      "specFolder": "03--commands-and-skills/z_archive/doc-001-specialist-refactor",
       "issues": [
         "corrupted_title",
         "low_signal_content"
@@ -4896,11 +4896,11 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/scratch/legacy-memory-quarantine/14-12-24_00-00__script-enhancements.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/scratch/legacy-memory-quarantine/14-12-24_00-00__script-enhancements.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/002-skill-rename/memory/17-12-24_00-00__skill-rename-complete.md",
-      "specFolder": "03--commands-and-skills/sk-doc/002-skill-rename",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-002-skill-rename/memory/17-12-24_00-00__skill-rename-complete.md",
+      "specFolder": "03--commands-and-skills/z_archive/doc-002-skill-rename",
       "issues": [
         "corrupted_title",
         "low_signal_content"
@@ -4908,11 +4908,11 @@
       "classification": "quarantine",
       "repairStrategy": "quarantine_move",
       "indexAction": "deindex",
-      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/002-skill-rename/scratch/legacy-memory-quarantine/17-12-24_00-00__skill-rename-complete.md"
+      "quarantinePath": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-002-skill-rename/scratch/legacy-memory-quarantine/17-12-24_00-00__skill-rename-complete.md"
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/003-h2-emoji-enforcement/memory/01-01-26_14-53__h2-emoji-enforcement.md",
-      "specFolder": "03--commands-and-skills/sk-doc/003-h2-emoji-enforcement",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-003-h2-emoji-enforcement/memory/01-01-26_14-53__h2-emoji-enforcement.md",
+      "specFolder": "03--commands-and-skills/z_archive/doc-003-h2-emoji-enforcement",
       "issues": [
         "corrupted_title"
       ],
@@ -4922,8 +4922,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/004-style-enforcement/memory/03-02-26_17-30__validate-document-rename.md",
-      "specFolder": "03--commands-and-skills/sk-doc/004-style-enforcement",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-004-style-enforcement/memory/03-02-26_17-30__validate-document-rename.md",
+      "specFolder": "03--commands-and-skills/z_archive/doc-004-style-enforcement",
       "issues": [
         "corrupted_title"
       ],
@@ -4933,8 +4933,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/005-remove-emojis-from-docs/memory/17-02-26_00-15__remove-emojis-from-docs.md",
-      "specFolder": "03--commands-and-skills/sk-doc/005-remove-emojis-from-docs",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/z_archive/doc-005-remove-emojis-from-docs/memory/17-02-26_00-15__remove-emojis-from-docs.md",
+      "specFolder": "03--commands-and-skills/z_archive/doc-005-remove-emojis-from-docs",
       "issues": [
         "corrupted_title"
       ],
@@ -4944,8 +4944,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/008-sk-doc-template-folders/memory/28-02-26_11-44__sk-doc-template-folders.md",
-      "specFolder": "03--commands-and-skills/sk-doc/008-sk-doc-template-folders",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/doc-008-template-folders/memory/28-02-26_11-44__sk-doc-template-folders.md",
+      "specFolder": "03--commands-and-skills/doc-008-template-folders",
       "issues": [
         "corrupted_title"
       ],
@@ -4955,8 +4955,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-git/002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md",
-      "specFolder": "03--commands-and-skills/sk-git/002-superset-worktrees",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/git-002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md",
+      "specFolder": "03--commands-and-skills/git-002-superset-worktrees",
       "issues": [
         "corrupted_title"
       ],
@@ -4966,8 +4966,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/01-03-26_11-09__initial-creation.md",
-      "specFolder": "03--commands-and-skills/sk-prompt-improver/001-initial-creation",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/01-03-26_11-09__initial-creation.md",
+      "specFolder": "03--commands-and-skills/prompt-001-initial-creation",
       "issues": [
         "corrupted_title"
       ],
@@ -4977,8 +4977,8 @@
       "quarantinePath": null
     },
     {
-      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md",
-      "specFolder": "03--commands-and-skills/sk-prompt-improver/001-initial-creation",
+      "path": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md",
+      "specFolder": "03--commands-and-skills/prompt-001-initial-creation",
       "issues": [
         "corrupted_title"
       ],

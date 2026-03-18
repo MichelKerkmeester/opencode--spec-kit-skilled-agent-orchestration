@@ -21,7 +21,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `03--commands-and-skills/commands/016-create-skill-merger` |
+| **Spec Folder** | `03--commands-and-skills/cmd-016-create-skill-merger` |
 | **Completed** | 2026-03-03 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -65,9 +65,9 @@ Canonical artifacts were aligned closer to the sk-doc command template and neigh
 ### Memory save and indexing completion
 
 Implementation memory was saved under the spec folder and indexed:
-- `.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/*.md` (latest save artifact)
-- `.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/metadata.json` (`embedding.status: indexed`)
-- `memory_index_scan` completed for `03--commands-and-skills/commands/016-create-skill-merger` (status `complete`, `failed = 0`)
+- `.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/*.md` (latest save artifact)
+- `.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/metadata.json` (`embedding.status: indexed`)
+- `memory_index_scan` completed for `03--commands-and-skills/cmd-016-create-skill-merger` (status `complete`, `failed = 0`)
 
 ### Files Changed
 
@@ -94,8 +94,8 @@ Implementation memory was saved under the spec folder and indexed:
 | `README.md` | Modified | Synchronize root docs to canonical `/create:sk-skill` |
 | `.opencode/install_guides/README.md` | Modified | Synchronize install guide docs to canonical `/create:sk-skill` |
 | `.opencode/install_guides/SET-UP - AGENTS.md` | Modified | Synchronize setup guide docs to canonical `/create:sk-skill` |
-| `.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/*.md` | Created | Saved implementation context memory |
-| `.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/metadata.json` | Modified | Recorded indexed embedding metadata for saved memory |
+| `.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/*.md` | Created | Saved implementation context memory |
+| `.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/metadata.json` | Modified | Recorded indexed embedding metadata for saved memory |
 <!-- /ANCHOR:what-built -->
 
 ---

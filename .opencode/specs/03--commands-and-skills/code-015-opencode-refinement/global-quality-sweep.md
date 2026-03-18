@@ -109,7 +109,7 @@ rg -n "KISS|DRY|SOLID|module|adapter|interface|abstraction|responsibility|depend
 
 # Spec folder structure validation
 .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
-  .opencode/specs/03--commands-and-skills/sk-code/015-sk-code-opencode-refinement
+  .opencode/specs/03--commands-and-skills/code-015-opencode-refinement
 ```
 <!-- /ANCHOR:commands -->
 
@@ -120,10 +120,10 @@ rg -n "KISS|DRY|SOLID|module|adapter|interface|abstraction|responsibility|depend
 
 | Evidence ID | Protocol Step | Command / Check | Result Summary | Artifact / Link | Defects (P0/P1/P2) | Owner | Status |
 |-------------|---------------|-----------------|----------------|-----------------|--------------------|-------|--------|
-| EVT-001 | Global Testing Round | Run command bundle sections 1, 2, 3, and spec validation | PASS. Policy semantics assertions, header invariants, and KISS/DRY/SOLID coverage all passed; spec validation passed with one advisory warning (`SECTION_COUNTS`). | `.opencode/specs/03--commands-and-skills/sk-code/015-sk-code-opencode-refinement/scratch/final-quality-evidence-2026-02-22.md` | `0/0/0` | Spec closure owner | Closed |
-| EVT-002 | Global Bug Detection Sweep | Consolidate defects from EVT-001 outputs and scoped diffs | PASS. No defects detected across verification outputs and scoped changed-file audit. | `.opencode/specs/03--commands-and-skills/sk-code/015-sk-code-opencode-refinement/scratch/final-quality-evidence-2026-02-22.md` | `0/0/0` | Spec closure owner | Closed |
-| EVT-003 | `sk-code--opencode` Compliance Audit | Scope check + policy/checklist invariant audit | PASS. Scope audit confirmed changed files remained within declared implementation scope (4 files). | `.opencode/specs/03--commands-and-skills/sk-code/015-sk-code-opencode-refinement/scratch/final-quality-evidence-2026-02-22.md` | `0/0/0` | Spec closure owner | Closed |
-| EVT-004 | Conditional Standards Update Pathway | Review mismatch decision + optional command bundle section 4 | PASS (Applied). Conditional review alignment path executed and assertions passed after minimal scoped review updates. | `.opencode/specs/03--commands-and-skills/sk-code/015-sk-code-opencode-refinement/scratch/final-quality-evidence-2026-02-22.md` | `0/0/0` | Spec closure owner | Closed |
+| EVT-001 | Global Testing Round | Run command bundle sections 1, 2, 3, and spec validation | PASS. Policy semantics assertions, header invariants, and KISS/DRY/SOLID coverage all passed; spec validation passed with one advisory warning (`SECTION_COUNTS`). | `.opencode/specs/03--commands-and-skills/code-015-opencode-refinement/scratch/final-quality-evidence-2026-02-22.md` | `0/0/0` | Spec closure owner | Closed |
+| EVT-002 | Global Bug Detection Sweep | Consolidate defects from EVT-001 outputs and scoped diffs | PASS. No defects detected across verification outputs and scoped changed-file audit. | `.opencode/specs/03--commands-and-skills/code-015-opencode-refinement/scratch/final-quality-evidence-2026-02-22.md` | `0/0/0` | Spec closure owner | Closed |
+| EVT-003 | `sk-code--opencode` Compliance Audit | Scope check + policy/checklist invariant audit | PASS. Scope audit confirmed changed files remained within declared implementation scope (4 files). | `.opencode/specs/03--commands-and-skills/code-015-opencode-refinement/scratch/final-quality-evidence-2026-02-22.md` | `0/0/0` | Spec closure owner | Closed |
+| EVT-004 | Conditional Standards Update Pathway | Review mismatch decision + optional command bundle section 4 | PASS (Applied). Conditional review alignment path executed and assertions passed after minimal scoped review updates. | `.opencode/specs/03--commands-and-skills/code-015-opencode-refinement/scratch/final-quality-evidence-2026-02-22.md` | `0/0/0` | Spec closure owner | Closed |
 <!-- /ANCHOR:evidence-table -->
 
 ---

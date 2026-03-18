@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/sk-code/z_archive/013-sk-code-opencode-alignment-hardening",
+  "specFolder": "03--commands-and-skills/z_archive/code-013-opencode-alignment-hardening",
   "description": "Feature Specification: sk-code--opencode Alignment Hardening",
   "keywords": [
     "feature",
@@ -10,10 +10,9 @@
   ],
   "lastUpdated": "2026-03-16T13:20:03.033Z",
   "specId": "013",
-  "folderSlug": "sk-code-opencode-alignment-hardening",
+  "folderSlug": "code-013-opencode-alignment-hardening",
   "parentChain": [
     "03--commands-and-skills",
-    "sk-code",
     "z_archive"
   ],
   "memorySequence": 0,

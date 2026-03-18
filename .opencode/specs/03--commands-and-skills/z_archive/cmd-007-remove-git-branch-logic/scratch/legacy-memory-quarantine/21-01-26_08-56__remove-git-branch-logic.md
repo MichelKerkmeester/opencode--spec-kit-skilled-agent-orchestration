@@ -45,7 +45,7 @@ contextType: "implementation"
 |:--------------|:----------|
 | Session Date | 2026-01-21 |
 | Session ID | session-1768982184311-jvilnwcqh |
-| Spec Folder | 03--commands-and-skills/commands/007-remove-git-branch-logic |
+| Spec Folder | 03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -60,7 +60,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:preflight-session-1768982184311-jvilnwcqh-03--commands-and-skills/commands/007-remove-git-branch-logic -->
+<!-- ANCHOR:preflight-session-1768982184311-jvilnwcqh-03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic -->
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -80,7 +80,7 @@ contextType: "implementation"
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1768982184311-jvilnwcqh-03--commands-and-skills/commands/007-remove-git-branch-logic -->
+<!-- /ANCHOR:preflight-session-1768982184311-jvilnwcqh-03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic -->
 ---
 
 ## Table of Contents
@@ -95,7 +95,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1768982184311-jvilnwcqh-03--commands-and-skills/commands/007-remove-git-branch-logic -->
+<!-- ANCHOR:continue-session-session-1768982184311-jvilnwcqh-03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -124,9 +124,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 03--commands-and-skills/commands/007-remove-git-branch-logic
+/spec_kit:resume 03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic
 ```
-<!-- /ANCHOR:continue-session-session-1768982184311-jvilnwcqh-03--commands-and-skills/commands/007-remove-git-branch-logic -->
+<!-- /ANCHOR:continue-session-session-1768982184311-jvilnwcqh-03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic -->
 ---
 
 <a id="project-state-snapshot"></a>
@@ -145,7 +145,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1768982184311-jvilnwcqh-03--commands-and-skills/commands/007-remove-git-branch-logic -->
+<!-- ANCHOR:summary-session-1768982184311-jvilnwcqh-03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -155,11 +155,11 @@ Session focused on implementing and testing features.
 **Key Outcomes**:
 - Session in progress
 
-<!-- /ANCHOR:summary-session-1768982184311-jvilnwcqh-03--commands-and-skills/commands/007-remove-git-branch-logic -->
+<!-- /ANCHOR:summary-session-1768982184311-jvilnwcqh-03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1768982184311-jvilnwcqh-03--commands-and-skills/commands/007-remove-git-branch-logic -->
+<!-- ANCHOR:decisions-session-1768982184311-jvilnwcqh-03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic -->
 <a id="decisions"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -187,9 +187,9 @@ This session did not involve significant architectural or technical decisions. T
 
 ---
 
-<!-- /ANCHOR:decisions-session-1768982184311-jvilnwcqh-03--commands-and-skills/commands/007-remove-git-branch-logic -->
+<!-- /ANCHOR:decisions-session-1768982184311-jvilnwcqh-03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic -->
 
-<!-- ANCHOR:session-history-session-1768982184311-jvilnwcqh-03--commands-and-skills/commands/007-remove-git-branch-logic -->
+<!-- ANCHOR:session-history-session-1768982184311-jvilnwcqh-03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic -->
 <a id="conversation"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -217,11 +217,11 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 ---
 
-<!-- /ANCHOR:session-history-session-1768982184311-jvilnwcqh-03--commands-and-skills/commands/007-remove-git-branch-logic -->
+<!-- /ANCHOR:session-history-session-1768982184311-jvilnwcqh-03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic -->
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1768982184311-jvilnwcqh-03--commands-and-skills/commands/007-remove-git-branch-logic -->
+<!-- ANCHOR:recovery-hints-session-1768982184311-jvilnwcqh-03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -232,9 +232,9 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/commands/007-remove-git-branch-logic` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/commands/007-remove-git-branch-logic" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic" })` |
 
 ### Recovery Priority
 
@@ -243,10 +243,10 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1768982184311-jvilnwcqh-03--commands-and-skills/commands/007-remove-git-branch-logic -->
+<!-- /ANCHOR:recovery-hints-session-1768982184311-jvilnwcqh-03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic -->
 ---
 
-<!-- ANCHOR:postflight-session-1768982184311-jvilnwcqh-03--commands-and-skills/commands/007-remove-git-branch-logic -->
+<!-- ANCHOR:postflight-session-1768982184311-jvilnwcqh-03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -269,21 +269,21 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1768982184311-jvilnwcqh-03--commands-and-skills/commands/007-remove-git-branch-logic -->
+<!-- /ANCHOR:postflight-session-1768982184311-jvilnwcqh-03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic -->
 ---
 
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1768982184311-jvilnwcqh-03--commands-and-skills/commands/007-remove-git-branch-logic -->
+<!-- ANCHOR:metadata-session-1768982184311-jvilnwcqh-03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
 # Core Identifiers
 session_id: "session-1768982184311-jvilnwcqh"
-spec_folder: "03--commands-and-skills/commands/007-remove-git-branch-logic"
+spec_folder: "03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic"
 channel: "main"
 
 # Classification
@@ -353,7 +353,7 @@ related_sessions:
 
   []
 
-parent_spec: "03--commands-and-skills/commands/007-remove-git-branch-logic"
+parent_spec: "03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic"
 child_sessions:
 
   []
@@ -364,7 +364,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1768982184311-jvilnwcqh-03--commands-and-skills/commands/007-remove-git-branch-logic -->
+<!-- /ANCHOR:metadata-session-1768982184311-jvilnwcqh-03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic -->
 
 ---
 

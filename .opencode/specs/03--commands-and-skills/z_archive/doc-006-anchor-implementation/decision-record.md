@@ -1,6 +1,6 @@
 ---
 title: "Decision Record: Retrieval Anchors for Skill Documentation [006-anchor-implementation/decision-record]"
-description: "Spec Folder: .opencode/specs/03--commands-and-skills/sk-doc/006-anchor-implementation"
+description: "Spec Folder: .opencode/specs/03--commands-and-skills/z_archive/doc-006-anchor-implementation"
 trigger_phrases:
   - "decision"
   - "record"
@@ -18,7 +18,7 @@ contextType: "decision"
 <!-- ANCHOR:summary -->
 # Decision Record: Retrieval Anchors for Skill Documentation
 
-**Spec Folder**: `.opencode/specs/03--commands-and-skills/sk-doc/006-anchor-implementation`  
+**Spec Folder**: `.opencode/specs/03--commands-and-skills/z_archive/doc-006-anchor-implementation`  
 **Level**: 3+ (Governance + Architecture)  
 **Status**: Planning  
 **Created**: 2026-02-17

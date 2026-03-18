@@ -82,7 +82,7 @@ Promote `sk-code--review` as a first-class, stack-agnostic review baseline that:
 | Review agents/orchestrators | `.opencode/agent/review.md`, `.opencode/agent/chatgpt/review.md`, `.opencode/agent/orchestrate.md`, `.opencode/agent/chatgpt/orchestrate.md`, `.gemini/agents/review.md`, `.gemini/agents/orchestrate.md`, `.claude/agents/review.md`, `.claude/agents/orchestrate.md`, `.codex/agents/review.toml`, `.codex/agents/orchestrate.toml` |
 | Review dispatch commands | 18 YAMLs under `.opencode/command/spec_kit/assets/` and `.opencode/command/create/assets/` (full list in `tasks.md`) |
 | Routing + catalogs | `.opencode/skill/scripts/skill_advisor.py`, `.opencode/skill/README.md`, `.opencode/README.md` |
-| Spec docs | `.opencode/specs/03--commands-and-skills/sk-code/014-code-review-skill/spec.md`, `.opencode/specs/03--commands-and-skills/sk-code/014-code-review-skill/plan.md`, `.opencode/specs/03--commands-and-skills/sk-code/014-code-review-skill/tasks.md`, `.opencode/specs/03--commands-and-skills/sk-code/014-code-review-skill/checklist.md`, `.opencode/specs/03--commands-and-skills/sk-code/014-code-review-skill/implementation-summary.md` |
+| Spec docs | `.opencode/specs/03--commands-and-skills/code-014-review-skill/spec.md`, `.opencode/specs/03--commands-and-skills/code-014-review-skill/plan.md`, `.opencode/specs/03--commands-and-skills/code-014-review-skill/tasks.md`, `.opencode/specs/03--commands-and-skills/code-014-review-skill/checklist.md`, `.opencode/specs/03--commands-and-skills/code-014-review-skill/implementation-summary.md` |
 <!-- /ANCHOR:scope -->
 
 ---

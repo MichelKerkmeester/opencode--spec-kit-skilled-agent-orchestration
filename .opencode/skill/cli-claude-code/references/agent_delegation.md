@@ -215,20 +215,20 @@ claude -p "Coordinate a comprehensive review of the payment module: first explor
 
 ---
 
-### @research — Evidence Gatherer
+### @deep-research — Evidence Gatherer
 
-**Purpose:** Technical investigation, feasibility analysis, best practices research, comparative analysis.
+**Purpose:** Iterative technical investigation, feasibility analysis, best practices research, comparative analysis.
 
 **Best for:** Gathering evidence for architectural decisions, comparing technologies, assessing feasibility.
 
 ```bash
 # Technology comparison
 claude -p "Compare Redis vs Memcached for our session storage needs. Consider: performance, clustering, persistence, data structures." \
-  --agent research --output-format text 2>&1
+  --agent deep-research --output-format text 2>&1
 
 # Feasibility analysis
 claude -p "Assess the feasibility of migrating from REST to GraphQL for @src/api/. Consider codebase size, team impact, and migration path." \
-  --agent research --output-format text 2>&1
+  --agent deep-research --output-format text 2>&1
 ```
 
 ---
@@ -332,7 +332,7 @@ UNDERSTAND CODE       → @context (with --permission-mode plan)
 FIX A BUG            → @debug
 REVIEW CODE          → @review (with --permission-mode plan)
 PLAN ARCHITECTURE    → @ultra-think (with --model claude-opus-4-6)
-RESEARCH A TOPIC     → @research
+RESEARCH A TOPIC     → @deep-research
 GENERATE DOCS        → @write
 CREATE SPEC DOCS     → @speckit
 COORDINATE AGENTS    → @orchestrate (with --permission-mode plan)
@@ -347,7 +347,7 @@ PRESERVE SESSION     → @handover
 | Deep security audit | `review` | `claude-opus-4-6` | `--permission-mode plan --effort high` |
 | Architecture planning | `ultra-think` | `claude-opus-4-6` | `--permission-mode plan --effort high` |
 | Fast codebase scan | `context` | `claude-haiku-4-5-20251001` | `--permission-mode plan` |
-| Research + write | `research` | sonnet (default) | (default) |
+| Research + write | `deep-research` | sonnet (default) | (default) |
 | Emergency debugging | `debug` | `claude-opus-4-6` | `--effort high` |
 
 <!-- /ANCHOR:routing-guide -->

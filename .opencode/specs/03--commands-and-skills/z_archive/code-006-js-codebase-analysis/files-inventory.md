@@ -28,12 +28,12 @@
 
 | File | Path | Purpose |
 |------|------|---------|
-| `spec.md` | `.opencode/specs/03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/spec.md` | Requirements document |
-| `plan.md` | `.opencode/specs/03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/plan.md` | 5-phase analysis plan |
-| `tasks.md` | `.opencode/specs/03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/tasks.md` | Task breakdown |
-| `checklist.md` | `.opencode/specs/03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/checklist.md` | Validation checklist |
-| `decision-record.md` | `.opencode/specs/03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/decision-record.md` | Architecture decisions |
-| `files-inventory.md` | `.opencode/specs/03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/files-inventory.md` | This file |
+| `spec.md` | `.opencode/specs/03--commands-and-skills/z_archive/code-006-js-codebase-analysis/spec.md` | Requirements document |
+| `plan.md` | `.opencode/specs/03--commands-and-skills/z_archive/code-006-js-codebase-analysis/plan.md` | 5-phase analysis plan |
+| `tasks.md` | `.opencode/specs/03--commands-and-skills/z_archive/code-006-js-codebase-analysis/tasks.md` | Task breakdown |
+| `checklist.md` | `.opencode/specs/03--commands-and-skills/z_archive/code-006-js-codebase-analysis/checklist.md` | Validation checklist |
+| `decision-record.md` | `.opencode/specs/03--commands-and-skills/z_archive/code-006-js-codebase-analysis/decision-record.md` | Architecture decisions |
+| `files-inventory.md` | `.opencode/specs/03--commands-and-skills/z_archive/code-006-js-codebase-analysis/files-inventory.md` | This file |
 
 ---
 

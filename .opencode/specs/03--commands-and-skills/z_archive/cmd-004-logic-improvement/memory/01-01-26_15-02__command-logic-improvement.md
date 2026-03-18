@@ -21,7 +21,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-01-01 |
 | Session ID | session-1767276142528-p83tjlxr3 |
-| Spec Folder | 03--commands-and-skills/commands/004-command-logic-improvement |
+| Spec Folder | 03--commands-and-skills/z_archive/cmd-004-logic-improvement |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -103,7 +103,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 03--commands-and-skills/commands/004-command-logic-improvement
+/spec_kit:resume 03--commands-and-skills/z_archive/cmd-004-logic-improvement
 ```
 <!-- /ANCHOR:continue-session -->
 ---
@@ -438,9 +438,9 @@ Completed comprehensive command logic improvement implementation across 29 files
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/commands/004-command-logic-improvement` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/z_archive/cmd-004-logic-improvement` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/commands/004-command-logic-improvement" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/z_archive/cmd-004-logic-improvement" })` |
 
 ### Recovery Priority
 
@@ -489,7 +489,7 @@ This session was migrated from an older format. Learning metrics were not captur
 ```yaml
 # Core Identifiers
 session_id: "session-1767276142528-p83tjlxr3"
-spec_folder: "03--commands-and-skills/commands/004-command-logic-improvement"
+spec_folder: "03--commands-and-skills/z_archive/cmd-004-logic-improvement"
 channel: "main"
 
 # Classification
@@ -562,7 +562,7 @@ related_sessions:
 
   []
 
-parent_spec: "03--commands-and-skills/commands/004-command-logic-improvement"
+parent_spec: "03--commands-and-skills/z_archive/cmd-004-logic-improvement"
 child_sessions:
 
   []

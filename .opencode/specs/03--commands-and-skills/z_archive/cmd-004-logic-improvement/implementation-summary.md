@@ -332,7 +332,7 @@ All changes verified via:
 
 ## References
 
-- **Spec folder**: `.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement`
+- **Spec folder**: `.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement`
 - **Research document**: `research.md` (1,964 lines)
 - **External reference**: https://gist.github.com/Rangizingo/e4623d05faab2011e7011b10120b4dce
-- **Prior work**: `.opencode/specs/03--commands-and-skills/commands/z_archive/001-command-analysis`
+- **Prior work**: `.opencode/specs/03--commands-and-skills/z_archive/cmd-001-analysis`

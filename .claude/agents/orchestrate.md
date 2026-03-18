@@ -773,7 +773,7 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 | `/spec_kit:debug`           | Debug delegation with model selection           | `.opencode/command/spec_kit/debug.md`        |
 | `/spec_kit:handover`        | Session continuation                            | `.opencode/command/spec_kit/handover.md`     |
 | `/spec_kit:complete`        | Verification workflow                           | `.opencode/command/spec_kit/complete.md`     |
-| `/spec_kit:research`        | 9-step investigation                            | `.opencode/command/spec_kit/research.md`     |
+| `/spec_kit:deep-research`   | Autonomous iterative research loop              | `.opencode/command/spec_kit/deep-research.md` |
 | `/memory:save`              | Context preservation                            | `.opencode/command/memory/save.md`           |
 | `system-spec-kit`           | Spec folders, memory, validation                | `.opencode/skill/system-spec-kit/`           |
 | `sk-code`         | Review baseline lifecycle | `.opencode/skill/sk-code/` |

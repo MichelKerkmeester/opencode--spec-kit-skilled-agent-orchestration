@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/commands/017-create-readme-install-merger",
+  "specFolder": "03--commands-and-skills/cmd-017-create-readme-install-merger",
   "description": "Feature Specification: Merge create README and install guide commands",
   "keywords": [
     "feature",
@@ -13,10 +13,9 @@
   ],
   "lastUpdated": "2026-03-16T13:20:02.843Z",
   "specId": "017",
-  "folderSlug": "create-readme-install-merger",
+  "folderSlug": "cmd-017-create-readme-install-merger",
   "parentChain": [
-    "03--commands-and-skills",
-    "commands"
+    "03--commands-and-skills"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

@@ -42,7 +42,7 @@ status: done
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Spec Folder Creation
 
-- [x] T001 Create spec folder structure (`.opencode/specs/03--commands-and-skills/commands/012-create-codex-compatibility/`)
+- [x] T001 Create spec folder structure (`.opencode/specs/03--commands-and-skills/cmd-012-create-codex-compatibility/`)
 
 **Completion Criteria**: Spec folder exists with initial spec.md.
 <!-- /ANCHOR:phase-1 -->

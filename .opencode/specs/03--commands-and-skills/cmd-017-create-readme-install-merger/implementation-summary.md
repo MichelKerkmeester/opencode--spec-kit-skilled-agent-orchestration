@@ -23,7 +23,7 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `03--commands-and-skills/commands/017-create-readme-install-merger` |
+| **Spec Folder** | `03--commands-and-skills/cmd-017-create-readme-install-merger` |
 | **Completed** | 2026-03-03 |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
@@ -58,11 +58,11 @@ The command family now has a canonical entrypoint and compatibility wrappers on 
 | `.opencode/agent/chatgpt/write.md` | Updated | ChatGPT write agent references updated |
 | `.agents/agents/write.md` | Updated | `.agents` write agent references updated |
 | `.codex/agents/write.toml` | Updated | Codex write agent references updated |
-| `.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/spec.md` | Updated | Spec progress/evidence synchronization |
-| `.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/plan.md` | Updated | Plan status/evidence synchronization |
-| `.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/tasks.md` | Updated | Task completion synchronization |
-| `.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/checklist.md` | Updated | Checklist verification synchronization |
-| `.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/implementation-summary.md` | Updated | Current-cycle implementation record |
+| `.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/spec.md` | Updated | Spec progress/evidence synchronization |
+| `.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/plan.md` | Updated | Plan status/evidence synchronization |
+| `.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/tasks.md` | Updated | Task completion synchronization |
+| `.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/checklist.md` | Updated | Checklist verification synchronization |
+| `.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/implementation-summary.md` | Updated | Current-cycle implementation record |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -99,8 +99,8 @@ Implementation followed the approved merge plan: create canonical wrappers first
 | Static parity+safety suite | PASS - 20 checks, 0 failed (`route:readme:auto`, `route:readme:confirm`, `route:install:auto`, `route:install:confirm`, alias-token/source checks, confirm-checkpoints checks, explicit-overwrite-options checks, no-secret-field checks) |
 | Rollback dry-run simulation | PASS - non-destructive; wrappers + canonical command present, simulated rollback commands listed, smoke readiness PASS for `/create:folder_readme` and `/create:install_guide` in `:auto` + `:confirm`, status `ROLLBACK_DRY_RUN_STATUS PASS` |
 | Alias deprecation warnings | PASS - compatibility aliases now emit one-line migration warnings in markdown and TOML wrappers before canonical routing |
-| Memory snapshot generation script | PASS - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger` created `memory/03-03-26_13-29__create-readme-install-merger.md` and `memory/metadata.json` |
-| Memory index refresh (`memory_index_scan`) | PASS - specFolder `03--commands-and-skills/commands/017-create-readme-install-merger` returned `indexed=1 failed=0` |
+| Memory snapshot generation script | PASS - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger` created `memory/03-03-26_13-29__create-readme-install-merger.md` and `memory/metadata.json` |
+| Memory index refresh (`memory_index_scan`) | PASS - specFolder `03--commands-and-skills/cmd-017-create-readme-install-merger` returned `indexed=1 failed=0` |
 | Spec validator (`validate.sh`) on this spec folder | PASSED (0 errors, 0 warnings) |
 <!-- /ANCHOR:verification -->
 

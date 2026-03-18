@@ -19,7 +19,7 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task
 
 ## CONSTRAINTS
 
-- **DO NOT** dispatch any agent (`@review`, `@debug`, `@handover`, `@speckit`, `@context`, `@research`) from this document
+- **DO NOT** dispatch any agent (`@review`, `@debug`, `@handover`, `@speckit`, `@context`, `@deep-research`) from this document
 - **DO NOT** dispatch `@review` to review this workflow or command prompt
 - **DO NOT** dispatch `@handover` unless the user explicitly requests it at the final step (Step 14)
 - **DO NOT** dispatch `@debug` unless `failure_count >= 3` during the Development step (Step 10)
@@ -321,7 +321,7 @@ Required at Planning Gate for Level 3/3+ (optional Level 2). Record in decision-
 - **With Research**: `/spec_kit:complete "feature" :with-research` -- Research + 14 steps
 - **Auto-Debug**: `/spec_kit:complete "feature" :auto-debug` -- 14 steps with auto debug
 - **Full Options**: `/spec_kit:complete "feature" :auto :with-research :auto-debug`
-- **Split workflows**: `/spec_kit:research` -> `/spec_kit:plan` -> `/spec_kit:implement`
+- **Split workflows**: `/spec_kit:deep-research` -> `/spec_kit:plan` -> `/spec_kit:implement`
 
 ---
 

@@ -62,7 +62,7 @@ contextType: "implementation"
 - [x] T015 [P] Update root README.md
 - [x] T016 Run skill_advisor.py confidence test (>= 0.8)
 - [x] T017 Verify symlink resolves
-- [x] T018 Create spec folder documentation (.opencode/specs/03--commands-and-skills/sk-cli/003-cli-claude-code/)
+- [x] T018 Create spec folder documentation (.opencode/specs/03--commands-and-skills/cli-003-claude-code/)
 - [x] T019 Create implementation-summary.md
 <!-- /ANCHOR:phase-3 -->
 

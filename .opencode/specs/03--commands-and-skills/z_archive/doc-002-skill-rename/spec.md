@@ -69,7 +69,7 @@ As a developer, I want the skill to be invocable via the skills system so that A
 | Requirement | Description |
 |-------------|-------------|
 | Skill Path | `.opencode/skills/sk-doc/` |
-| Test Output | `.opencode/specs/03--commands-and-skills/sk-doc/002-skill-rename/scratch/` |
+| Test Output | `.opencode/specs/03--commands-and-skills/z_archive/doc-002-skill-rename/scratch/` |
 | Scripts | Python 3.x required |
 | CLI | Executable permissions on markdown-document-specialist |
 

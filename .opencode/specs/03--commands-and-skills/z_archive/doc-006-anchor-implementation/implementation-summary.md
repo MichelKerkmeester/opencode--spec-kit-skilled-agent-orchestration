@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Retrieval Anchors for Skill Documentation [006-anchor-implementation/implementation-summary]"
-description: "Spec Folder: .opencode/specs/03--commands-and-skills/sk-doc/006-anchor-implementation"
+description: "Spec Folder: .opencode/specs/03--commands-and-skills/z_archive/doc-006-anchor-implementation"
 trigger_phrases:
   - "implementation"
   - "summary"
@@ -18,7 +18,7 @@ contextType: "implementation"
 <!-- ANCHOR:summary -->
 # Implementation Summary: Retrieval Anchors for Skill Documentation
 
-**Spec Folder**: `.opencode/specs/03--commands-and-skills/sk-doc/006-anchor-implementation`  
+**Spec Folder**: `.opencode/specs/03--commands-and-skills/z_archive/doc-006-anchor-implementation`  
 **Level**: 3+ (Governance + Architecture)  
 **Status**: ✅ COMPLETE  
 **Created**: 2026-02-17  
@@ -99,12 +99,12 @@ Given the manual approach deviation, the planned 4-phase timeline was collapsed:
 - ✅ `mcp-chrome-devtools/` - 1 reference (no SKILL.md)
 
 **Documentation Created** [E:spec-folder]:
-- ✅ `.opencode/specs/03--commands-and-skills/sk-doc/006-anchor-implementation/spec.md` (528 lines)
-- ✅ `.opencode/specs/03--commands-and-skills/sk-doc/006-anchor-implementation/plan.md` (1,312 lines)
-- ✅ `.opencode/specs/03--commands-and-skills/sk-doc/006-anchor-implementation/tasks.md` (633 lines)
-- ✅ `.opencode/specs/03--commands-and-skills/sk-doc/006-anchor-implementation/checklist.md` (406 lines)
-- ✅ `.opencode/specs/03--commands-and-skills/sk-doc/006-anchor-implementation/decision-record.md` (816 lines)
-- ✅ `.opencode/specs/03--commands-and-skills/sk-doc/006-anchor-implementation/README.md` (319 lines)
+- ✅ `.opencode/specs/03--commands-and-skills/z_archive/doc-006-anchor-implementation/spec.md` (528 lines)
+- ✅ `.opencode/specs/03--commands-and-skills/z_archive/doc-006-anchor-implementation/plan.md` (1,312 lines)
+- ✅ `.opencode/specs/03--commands-and-skills/z_archive/doc-006-anchor-implementation/tasks.md` (633 lines)
+- ✅ `.opencode/specs/03--commands-and-skills/z_archive/doc-006-anchor-implementation/checklist.md` (406 lines)
+- ✅ `.opencode/specs/03--commands-and-skills/z_archive/doc-006-anchor-implementation/decision-record.md` (816 lines)
+- ✅ `.opencode/specs/03--commands-and-skills/z_archive/doc-006-anchor-implementation/README.md` (319 lines)
 - ✅ Supporting directories: `scratch/`, `memory/`, `evidence/`, `examples/`
 
 ### Statistics [E:anchor-metrics]
@@ -1020,7 +1020,7 @@ All sections filled with actual implementation data. Document is ready for archi
 
 **Key Lesson**: Manual approach delivered faster completion with higher quality than planned automated approach for this scope (185 files, one-time migration)
 
-**Evidence Location**: `.opencode/specs/03--commands-and-skills/sk-doc/006-anchor-implementation/evidence`
+**Evidence Location**: `.opencode/specs/03--commands-and-skills/z_archive/doc-006-anchor-implementation/evidence`
 
 **Related Documents**:
 - `spec.md` - Original requirements and scope

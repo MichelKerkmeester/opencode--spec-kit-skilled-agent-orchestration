@@ -21,7 +21,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-03-01 |
 | Session ID | session-1772372670990-z9ep5k167 |
-| Spec Folder | 03--commands-and-skills/commands/015-create-prompt-command |
+| Spec Folder | 03--commands-and-skills/cmd-015-create-prompt |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -110,13 +110,13 @@ quality_flags:
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 03--commands-and-skills/commands/015-create-prompt-command
+/spec_kit:resume 03--commands-and-skills/cmd-015-create-prompt
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 03--commands-and-skills/commands/015-create-prompt-command
+Spec: 03--commands-and-skills/cmd-015-create-prompt
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
@@ -161,7 +161,7 @@ Next: Continue implementation
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 
-**Key Topics:** `decision` | `command` | `create` | `prompt` | `tomls` | `create prompt` | `prompt command` | `commands` | `commands and skills/commands/015 create prompt command` | `content` | `changelog` | `skills/commands/015` | 
+**Key Topics:** `decision` | `command` | `create` | `prompt` | `tomls` | `create prompt` | `prompt command` | `commands` | `commands and skills/cmd-015-create-prompt` | `content` | `changelog` | `cmd-015` | 
 <!-- /ANCHOR:project-state-snapshot -->
 
 ---
@@ -410,9 +410,9 @@ Completed the /create:prompt command implementation (530 lines) wrapping sk-prom
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/commands/015-create-prompt-command` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/cmd-015-create-prompt` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/commands/015-create-prompt-command" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/cmd-015-create-prompt" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -424,16 +424,16 @@ Completed the /create:prompt command implementation (530 lines) wrapping sk-prom
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "03--commands-and-skills/commands/015-create-prompt-command", limit: 10 })
+memory_search({ specFolder: "03--commands-and-skills/cmd-015-create-prompt", limit: 10 })
 
 # Verify memory file integrity
-ls -la 03--commands-and-skills/commands/015-create-prompt-command/memory/
+ls -la 03--commands-and-skills/cmd-015-create-prompt/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/commands/015-create-prompt-command --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/cmd-015-create-prompt --force
 ```
 
 ### Recovery Priority
@@ -505,7 +505,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772372670990-z9ep5k167"
-spec_folder: "03--commands-and-skills/commands/015-create-prompt-command"
+spec_folder: "03--commands-and-skills/cmd-015-create-prompt"
 channel: "main"
 
 # Classification
@@ -581,17 +581,17 @@ key_topics:
   - "create prompt"
   - "prompt command"
   - "commands"
-  - "commands and skills/commands/015 create prompt command"
+  - "commands and skills/cmd-015-create-prompt"
   - "content"
   - "changelog"
-  - "skills/commands/015"
+  - "cmd-015"
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
   - "create prompt command"
   - "prompt improver wrapper"
   - "gemini toml embedding"
-  - "clear scoring workflow"parent_spec: "03--commands-and-skills/commands/015-create-prompt-command"
+  - "clear scoring workflow"parent_spec: "03--commands-and-skills/cmd-015-create-prompt"
 child_sessions:
 
   []

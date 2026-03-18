@@ -85,7 +85,7 @@ contextType: "decision"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Files in correct locations per project structure [EVIDENCE: changelog.md in command/create/, YAMLs in command/create/assets/, spec files in specs/03--commands-and-skills/commands/014-create-changelog-command/]
+- [x] CHK-050 [P1] Files in correct locations per project structure [EVIDENCE: changelog.md in command/create/, YAMLs in command/create/assets/, spec files in specs/03--commands-and-skills/cmd-014-create-changelog/]
 - [x] CHK-051 [P2] Findings saved to memory [EVIDENCE: Will be saved via generate-context.js at Step 13]
 <!-- /ANCHOR:file-org -->
 

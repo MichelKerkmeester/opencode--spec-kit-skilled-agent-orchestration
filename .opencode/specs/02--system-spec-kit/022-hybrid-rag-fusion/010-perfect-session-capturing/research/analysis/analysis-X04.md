@@ -237,24 +237,24 @@ exec
  succeeded in 52ms:
 Total output lines: 395
 
-.opencode/specs/03--commands-and-skills/sk-git/002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md
-.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/memory/01-03-26_14-44__create-prompt-command.md
-.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/memory/01-03-26_12-48__create-prompt-command.md
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-07__cli-gemini.md
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md
+.opencode/specs/03--commands-and-skills/git-002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md
+.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_14-44__create-prompt-command.md
+.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_12-48__create-prompt-command.md
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-07__cli-gemini.md
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md
 .opencode/specs/01--anobel.com/029-anobel-performance-analysis/memory/01-02-01_performance-analysis-session.md
 .opencode/specs/01--anobel.com/029-anobel-performance-analysis/memory/02-02-26_07-14__anobel-performance-analysis.md
 .opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_11-43__gemini-cli-compatibility.md
 .opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_12-13__gemini-cli-compatibility.md
-.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md
-.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md
-.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-49__create-skill-merger.md
-.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-45__create-skill-merger.md
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/01-03-26_11-09__initial-creation.md
+.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md
+.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md
+.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-49__create-skill-merger.md
+.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-45__create-skill-merger.md
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/01-03-26_11-09__initial-creation.md
 .opencode/specs/01--anobel.com/z_archive/001-finsweet-performance/memory/13-12-25_11-10__finsweet-performance.md
-.opencode/specs/03--commands-and-skills/sk-cli/004-cli-copilot/memory/02-03-26_21-14__cli-copilot.md
-.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_honesty_pass.md
+.opencode/specs/03--commands-and-skills/cli-004-copilot/memory/02-03-26_21-14__cli-copilot.md
+.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_honesty_pass.md
 codex
 The renderer is a custom Mustache-lite implementation, not the real Mustache engine, so I’m now cross-checking its supported syntax against the template’s patterns and then sampling generated memories to see where that mismatch shows up in actual files.
 exec
@@ -404,30 +404,30 @@ exec
 /bin/zsh -lc "rg -l '"'^## MEMORY METADATA'"' .opencode/specs | rg '/memory/.*\\.md"'$'"' | head -n 20" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "rg -l '"'^## CONTINUE SESSION'"' .opencode/specs | rg '/memory/.*\\.md"'$'"' | head -n 20" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "rg -n '\\{\\{["'^}]+'"\\}\\}' .opencode/specs | rg '/memory/.*\\.md:' | head -n 200" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 51ms:
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-07__cli-gemini.md
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md
-.opencode/specs/03--commands-and-skills/sk-git/002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-07__cli-gemini.md
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md
+.opencode/specs/03--commands-and-skills/git-002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md
 .opencode/specs/02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/memory/20-02-26_07-05__readme-and-summary-with-hvr.md
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md
 .opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_11-43__gemini-cli-compatibility.md
 .opencode/specs/02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/memory/19-02-26_21-46__readme-and-summary-with-hvr.md
 .opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_12-13__gemini-cli-compatibility.md
-.opencode/specs/03--commands-and-skills/sk-cli/004-cli-copilot/memory/02-03-26_21-14__cli-copilot.md
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/01-03-26_11-09__initial-creation.md
+.opencode/specs/03--commands-and-skills/cli-004-copilot/memory/02-03-26_21-14__cli-copilot.md
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/01-03-26_11-09__initial-creation.md
 .opencode/specs/05--agent-orchestration/025-codex-cli-agents/memory/01-03-26_10-15__codex-cli-agents.md
 .opencode/specs/02--system-spec-kit/021-spec-kit-phase-system/memory/20-02-26_17-45__spec-kit-phase-system.md
-.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/memory/01-03-26_14-44__create-prompt-command.md
+.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_14-44__create-prompt-command.md
 .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-11__gpt-5-4-agent-model-upgrade.md
-.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/memory/01-03-26_12-48__create-prompt-command.md
+.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_12-48__create-prompt-command.md
 .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md
-.opencode/specs/03--commands-and-skills/sk-cli/003-cli-claude-code/memory/02-03-26_21-14__cli-claude-code.md
+.opencode/specs/03--commands-and-skills/cli-003-claude-code/memory/02-03-26_21-14__cli-claude-code.md
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/20-02-26_16-57__continuation-attempt-3-spec-138.md
 .opencode/specs/02--system-spec-kit/021-spec-kit-phase-system/memory/20-02-26_18-04__spec-kit-phase-system.md
 .opencode/specs/02--system-spec-kit/021-spec-kit-phase-system/memory/20-02-26_16-42__spec-kit-phase-system.md
  succeeded in 51ms:
-.opencode/specs/03--commands-and-skills/sk-git/002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md
-.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/memory/01-03-26_14-44__create-prompt-command.md
-.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/memory/01-03-26_12-48__create-prompt-command.md
+.opencode/specs/03--commands-and-skills/git-002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md
+.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_14-44__create-prompt-command.md
+.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_12-48__create-prompt-command.md
 .opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_11-43__gemini-cli-compatibility.md
 .opencode/specs/05--agent-orchestration/025-codex-cli-agents/memory/01-03-26_10-15__codex-cli-agents.md
 .opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_12-13__gemini-cli-compatibility.md
@@ -435,37 +435,37 @@ exec
 .opencode/specs/02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/memory/19-02-26_21-46__readme-and-summary-with-hvr.md
 .opencode/specs/05--agent-orchestration/026-review-debug-agent-improvement/memory/05-03-26_08-00__review-debug-agent-improvement.md
 .opencode/specs/05--agent-orchestration/020-agent-sonnet-upgrade/memory/18-02-26_08-53__agent-sonnet-upgrade.md
-.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md
-.opencode/specs/03--commands-and-skills/commands/014-create-changelog-command/memory/01-03-26_14-30__create-changelog-command.md
-.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md
+.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md
+.opencode/specs/03--commands-and-skills/cmd-014-create-changelog/memory/01-03-26_14-30__create-changelog-command.md
+.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/06-03-26_20-30__review-13-fixes-applied.md
-.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/memory/03-03-26_13-29__create-readme-install-merger.md
+.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/memory/03-03-26_13-29__create-readme-install-merger.md
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/05-03-26_18-50__ux-hooks-automation-initial.md
-.opencode/specs/03--commands-and-skills/commands/014-create-changelog-command/memory/01-03-26_12-53__create-changelog-command.md
-.opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-49__create-skill-merger.md
+.opencode/specs/03--commands-and-skills/cmd-014-create-changelog/memory/01-03-26_12-53__create-changelog-command.md
+.opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-49__create-skill-merger.md
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md
 .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-11__gpt-5-4-agent-model-upgrade.md
  succeeded in 51ms:
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-07__cli-gemini.md
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md
-.opencode/specs/03--commands-and-skills/sk-git/002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-07__cli-gemini.md
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md
+.opencode/specs/03--commands-and-skills/git-002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md
 .opencode/specs/01--anobel.com/z_archive/001-finsweet-performance/memory/13-12-25_11-10__finsweet-performance.md
 .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md
 .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_10-50__planning-package-remediated-after-ultra-think.md
 .opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_11-43__gemini-cli-compatibility.md
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md
 .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_10-37__doc-package-remediation-completed.md
-.opencode/specs/03--commands-and-skills/sk-cli/004-cli-copilot/memory/02-03-26_21-14__cli-copilot.md
+.opencode/specs/03--commands-and-skills/cli-004-copilot/memory/02-03-26_21-14__cli-copilot.md
 .opencode/specs/02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/memory/20-02-26_07-05__readme-and-summary-with-hvr.md
 .opencode/specs/02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/memory/19-02-26_21-46__readme-and-summary-with-hvr.md
 .opencode/specs/05--agent-orchestration/023-gemini-cli-compatibility/memory/20-02-26_12-13__gemini-cli-compatibility.md
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/01-03-26_11-09__initial-creation.md
-.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/memory/01-03-26_14-44__create-prompt-command.md
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/01-03-26_11-09__initial-creation.md
+.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_14-44__create-prompt-command.md
 .opencode/specs/05--agent-orchestration/025-codex-cli-agents/memory/01-03-26_10-15__codex-cli-agents.md
 .opencode/specs/01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/memory/2024-12-13__research-synthesis.md
-.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/memory/01-03-26_12-48__create-prompt-command.md
+.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_12-48__create-prompt-command.md
 .opencode/specs/01--anobel.com/z_archive/009-security-remediation/memory/25-12-25_14-50__security-remediation.md
-.opencode/specs/03--commands-and-skills/sk-cli/003-cli-claude-code/memory/02-03-26_21-14__cli-claude-code.md
+.opencode/specs/03--commands-and-skills/cli-003-claude-code/memory/02-03-26_21-14__cli-claude-code.md
  succeeded in 78ms:
 
 codex
@@ -474,20 +474,20 @@ exec
 /bin/zsh -lc "for f in \\
   .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md \\
   .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md \\
-  .opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md \\
-  .opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md \\
+  .opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md \\
+  .opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md \\
   .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md \\
-  .opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md; do
+  .opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md; do
     printf '\\nFILE %s\\n' \""'$f"
     rg -n '"'"'^(#|##|###|####|'"\\*\\*Key Topics:|title:|importance_tier:|topics:|trigger_phrases:|similar_memories:)' \""'$f"
   done' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "for f in \\
   .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md \\
   .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md \\
-  .opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md \\
-  .opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md \\
+  .opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md \\
+  .opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md \\
   .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md \\
-  .opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md; do
+  .opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md; do
     printf '\\nFILE %s\\n' \""'$f"
     rg -n '"'\\| "'$|'"\\*\\*Key Topics:\\*\\*.*\\|\\s*"'$|''^## [0-9]*'"\\. |"'^## '"\\.|"'^### $|''^```'"' \""'$f"
   done' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
@@ -533,7 +533,7 @@ FILE .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__
 217:## 3. DETAILED CHANGES
 220:### FEATURE: Here is a review of the work completed according to the `implementation-summary.
 exec
-/bin/zsh -lc "nl -ba .opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md | sed -n '120,215p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba .opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md | sed -n '120,215p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md | sed -n '220,320p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md | sed -n '228,345p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md | sed -n '68,140p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
@@ -572,7 +572,7 @@ exec
    131	
    132	**To continue this work, use:**
    133	```
-   134	/spec_kit:resume 03--commands-and-skills/sk-prompt-improver/001-initial-creation
+   134	/spec_kit:resume 03--commands-and-skills/prompt-001-initial-creation
    135	```
    136	
    137	**Or paste this continuation prompt:**
@@ -621,7 +621,7 @@ exec
     86	/spec_kit:resume 01--anobel.com/034-form-bot-problem
     87	```
 exec
-/bin/zsh -lc "nl -ba .opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md | sed -n '614,768p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba .opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md | sed -n '614,768p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md | sed -n '436,586p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md | sed -n '674,825p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 51ms:
    614	## MEMORY METADATA
@@ -633,7 +633,7 @@ exec
    620	```yaml
    621	# Core Identifiers
    622	session_id: "session-1772612109726-jcqwlrak1"
-   623	spec_folder: "03--commands-and-skills/sk-prompt-improver/001-initial-creation"
+   623	spec_folder: "03--commands-and-skills/prompt-001-initial-creation"
    624	channel: "main"
    625	
    626	# Classification
@@ -758,16 +758,16 @@ codex
 I’ve got evidence for one class of issue already: dead or optional-only metadata placeholders. I’m now checking the opposite side too, where the workflow builds fields that never make it into the template, so we don’t miss data loss in the other direction.
 exec
 /bin/zsh -lc "rg -n 'IMPL_TASK|IMPL_SOLUTION|IMPL_FILES_CREATED|IMPL_FILES_MODIFIED|IMPL_DECISIONS|IMPL_OUTCOMES|HAS_IMPLEMENTATION_SUMMARY|IMPLEMENTATION_SUMMARY|HIGH_CONFIDENCE_COUNT|MEDIUM_CONFIDENCE_COUNT|LOW_CONFIDENCE_COUNT|HAS_AUTO_GENERATED|AUTO_CONVERSATION_FLOWCHART|AUTO_DECISION_TREES|DIAGRAMS' .opencode/skill/system-spec-kit/templates/context_template.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
-/bin/zsh -lc "rg -n '"'^## [0-9]+'"\\. WORKFLOW VISUALIZATION|"'^## [0-9]+'"\\. CONVERSATION|"'^## [0-9]+'"\\. DECISIONS' .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md .opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md .opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "rg -n '"'^## [0-9]+'"\\. WORKFLOW VISUALIZATION|"'^## [0-9]+'"\\. CONVERSATION|"'^## [0-9]+'"\\. DECISIONS' .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md .opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md .opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "rg -n 'PATTERN_TYPE|USE_CASE_TITLE|WORKFLOW_FLOWCHART|HAS_WORKFLOW_DIAGRAM|FEATURES|USE_CASES|PHASES|FLOW_PATTERN' .opencode/skill/system-spec-kit/scripts .opencode/skill/system-spec-kit/templates/context_template.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public exited 1 in 50ms:
 
  succeeded in 51ms:
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md:606:## 4. DECISIONS
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md:622:## 5. CONVERSATION
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md:606:## 4. DECISIONS
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md:622:## 5. CONVERSATION
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md:231:## 4. DECISIONS
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md:351:## 5. CONVERSATION
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md:317:## 4. DECISIONS
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md:491:## 5. CONVERSATION
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md:317:## 4. DECISIONS
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md:491:## 5. CONVERSATION
  succeeded in 51ms:
 .opencode/skill/system-spec-kit/templates/context_template.md:177:{{/HAS_OBSERVATIONS}}{{#HAS_WORKFLOW_DIAGRAM}}- [WORKFLOW VISUALIZATION](#workflow-visualization)
 .opencode/skill/system-spec-kit/templates/context_template.md:178:{{/HAS_WORKFLOW_DIAGRAM}}- [DECISIONS](#decisions)
@@ -822,76 +822,76 @@ exec
 /bin/zsh -lc "rg -l '"'^## 3'"\\. CONVERSATION' .opencode/specs | rg '/memory/.*\\.md"'$'"' | head -n 20" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "rg -l '"'^## 2'"\\. DECISIONS' .opencode/specs | rg '/memory/.*\\.md"'$'"' | head -n 20" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 76ms:
 .opencode/specs/01--anobel.com/029-anobel-performance-analysis/memory/01-02-01_performance-analysis-session.md
-.opencode/specs/03--commands-and-skills/sk-git/002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-07__cli-gemini.md
+.opencode/specs/03--commands-and-skills/git-002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-07__cli-gemini.md
 .opencode/specs/01--anobel.com/029-anobel-performance-analysis/memory/02-02-26_07-14__anobel-performance-analysis.md
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md
-.opencode/specs/03--commands-and-skills/sk-cli/004-cli-copilot/memory/02-03-26_21-14__cli-copilot.md
-.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/memory/01-03-26_14-44__create-prompt-command.md
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md
+.opencode/specs/03--commands-and-skills/cli-004-copilot/memory/02-03-26_21-14__cli-copilot.md
+.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_14-44__create-prompt-command.md
 .opencode/specs/02--system-spec-kit/z_archive/019-readme-and-summary-with-hvr/memory/20-02-26_07-05__readme-and-summary-with-hvr.md
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md
-.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/memory/01-03-26_12-48__create-prompt-command.md
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md
+.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_12-48__create-prompt-command.md
  succeeded in 145ms:
 .opencode/specs/01--anobel.com/z_archive/001-finsweet-performance/memory/13-12-25_11-10__finsweet-performance.md
 .opencode/specs/01--anobel.com/z_archive/018-blog-sort-fix/memory/18-01-26_14-45__blog-sort-fix.md
 .opencode/specs/01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/memory/2024-12-13__research-synthesis.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/007-remove-git-branch-logic/memory/21-01-26_08-56__remove-git-branch-logic.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic/memory/21-01-26_08-56__remove-git-branch-logic.md
 .opencode/specs/01--anobel.com/z_archive/025-load-toggle/memory/01-02-25_12-00__implementation-complete.md
 .opencode/specs/01--anobel.com/z_archive/004-table-of-content/002-tab-main-component/memory/2024-12-13__implementation.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/001-command-analysis/memory/context-2025-12-15.md
-.opencode/specs/03--commands-and-skills/sk-doc/002-skill-rename/memory/17-12-24_skill-rename-complete.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-001-analysis/memory/context-2025-12-15.md
+.opencode/specs/03--commands-and-skills/z_archive/doc-002-skill-rename/memory/17-12-24_skill-rename-complete.md
 .opencode/specs/01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/memory/2024-12-14_toc-scroll-lenis-fix.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/005-subagent-delegation/memory/01-01-26_15-35__subagent-delegation.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-005-subagent-delegation/memory/01-01-26_15-35__subagent-delegation.md
 .opencode/specs/01--anobel.com/z_archive/011-form-input-upload-select/memory/04-01-26_13-51__form-input-components.md
 .opencode/specs/01--anobel.com/z_archive/011-form-input-upload-select/memory/25-01-26_11-09__form-input-upload-select.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_14-12__command-logic-improvement.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_14-29__command-logic-improvement.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_13-25__command-logic-improvement.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_14-12__command-logic-improvement.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_14-29__command-logic-improvement.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_13-25__command-logic-improvement.md
 .opencode/specs/01--anobel.com/z_archive/022-performance-optimization/memory/26-01-26_08-17__performance-optimization.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_14-06__command-logic-improvement.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_14-25__command-logic-improvement.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_14-06__command-logic-improvement.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_14-25__command-logic-improvement.md
 .opencode/specs/01--anobel.com/z_archive/027-download-btn-on-mobile/memory/01-02-26_16-30__download-btn-mobile-fix.md
-.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_honesty_pass.md
+.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_honesty_pass.md
  succeeded in 228ms:
-.opencode/specs/03--commands-and-skills/sk-doc/002-skill-rename/memory/17-12-24_skill-rename-complete.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/001-command-analysis/memory/context-2025-12-15.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/007-remove-git-branch-logic/memory/21-01-26_08-56__remove-git-branch-logic.md
-.opencode/specs/03--commands-and-skills/sk-code/z_archive/011-initial-set-up/memory/04-02-26_08-12__workflows-code-opencode.md
-.opencode/specs/03--commands-and-skills/sk-code/z_archive/011-initial-set-up/memory/03-02-26_11-25__workflows-code-opencode.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_14-12__command-logic-improvement.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_14-29__command-logic-improvement.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_13-25__command-logic-improvement.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_14-06__command-logic-improvement.md
+.opencode/specs/03--commands-and-skills/z_archive/doc-002-skill-rename/memory/17-12-24_skill-rename-complete.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-001-analysis/memory/context-2025-12-15.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic/memory/21-01-26_08-56__remove-git-branch-logic.md
+.opencode/specs/03--commands-and-skills/z_archive/code-011-initial-set-up/memory/04-02-26_08-12__workflows-code-opencode.md
+.opencode/specs/03--commands-and-skills/z_archive/code-011-initial-set-up/memory/03-02-26_11-25__workflows-code-opencode.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_14-12__command-logic-improvement.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_14-29__command-logic-improvement.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_13-25__command-logic-improvement.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_14-06__command-logic-improvement.md
 .opencode/specs/01--anobel.com/z_archive/018-blog-sort-fix/memory/18-01-26_14-45__blog-sort-fix.md
 .opencode/specs/05--agent-orchestration/z_archive/007-explore-sub-agent/memory/10-02-26_21-32__explore-sub-agent.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_14-25__command-logic-improvement.md
-.opencode/specs/03--commands-and-skills/sk-code/z_archive/007-performance-patterns-update/memory/26-01-26_13-22__performance-patterns-update.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_14-25__command-logic-improvement.md
+.opencode/specs/03--commands-and-skills/z_archive/code-007-performance-patterns-update/memory/26-01-26_13-22__performance-patterns-update.md
 .opencode/specs/05--agent-orchestration/z_archive/003-agent-system-upgrade/memory/23-01-26_11-08__agent-system-upgrade.md
 .opencode/specs/01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/memory/2024-12-13__research-synthesis.md
 .opencode/specs/01--anobel.com/029-anobel-performance-analysis/memory/01-02-01_performance-analysis-session.md
 .opencode/specs/01--anobel.com/z_archive/025-load-toggle/memory/01-02-25_12-00__implementation-complete.md
 .opencode/specs/01--anobel.com/z_archive/004-table-of-content/002-tab-main-component/memory/2024-12-13__implementation.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/005-subagent-delegation/memory/01-01-26_15-35__subagent-delegation.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-005-subagent-delegation/memory/01-01-26_15-35__subagent-delegation.md
 .opencode/specs/01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/memory/2024-12-14_toc-scroll-lenis-fix.md
  succeeded in 229ms:
 .opencode/specs/01--anobel.com/z_archive/022-performance-optimization/memory/26-01-26_08-17__performance-optimization.md
 .opencode/specs/01--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy/memory/2024-12-13__research-synthesis.md
-.opencode/specs/03--commands-and-skills/sk-doc/002-skill-rename/memory/17-12-24_skill-rename-complete.md
+.opencode/specs/03--commands-and-skills/z_archive/doc-002-skill-rename/memory/17-12-24_skill-rename-complete.md
 .opencode/specs/01--anobel.com/z_archive/018-blog-sort-fix/memory/18-01-26_14-45__blog-sort-fix.md
 .opencode/specs/01--anobel.com/z_archive/004-table-of-content/002-tab-main-component/memory/2024-12-13__implementation.md
 .opencode/specs/01--anobel.com/z_archive/025-load-toggle/memory/01-02-25_12-00__implementation-complete.md
-.opencode/specs/03--commands-and-skills/sk-code/z_archive/011-initial-set-up/memory/04-02-26_08-12__workflows-code-opencode.md
-.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_honesty_pass.md
+.opencode/specs/03--commands-and-skills/z_archive/code-011-initial-set-up/memory/04-02-26_08-12__workflows-code-opencode.md
+.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_honesty_pass.md
 .opencode/specs/01--anobel.com/z_archive/013-font-performance/memory/03-01-26_10-39__font-performance.md
-.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_header_standardization.md
+.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_header_standardization.md
 .opencode/specs/01--anobel.com/z_archive/004-table-of-content/003-icon-animation-isolation/memory/2024-12-14_toc-scroll-lenis-fix.md
 .opencode/specs/01--anobel.com/z_archive/013-font-performance/memory/03-01-26_10-26__font-performance.md
-.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_script_enhancements.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/007-remove-git-branch-logic/memory/21-01-26_08-56__remove-git-branch-logic.md
-.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_implementation_complete.md
-.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_planning_session.md
-.opencode/specs/03--commands-and-skills/commands/z_archive/001-command-analysis/memory/context-2025-12-15.md
-.opencode/specs/03--commands-and-skills/sk-code/z_archive/011-initial-set-up/memory/03-02-26_11-25__workflows-code-opencode.md
+.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_script_enhancements.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic/memory/21-01-26_08-56__remove-git-branch-logic.md
+.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_implementation_complete.md
+.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_planning_session.md
+.opencode/specs/03--commands-and-skills/z_archive/cmd-001-analysis/memory/context-2025-12-15.md
+.opencode/specs/03--commands-and-skills/z_archive/code-011-initial-set-up/memory/03-02-26_11-25__workflows-code-opencode.md
 .opencode/specs/01--anobel.com/z_archive/011-form-input-upload-select/memory/04-01-26_13-51__form-input-components.md
 .opencode/specs/01--anobel.com/z_archive/011-form-input-upload-select/memory/25-01-26_11-09__form-input-upload-select.md
 exec
@@ -918,7 +918,7 @@ exec
     20	| Context Type | general |
 exec
 /bin/zsh -lc "nl -ba .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md | sed -n '586,612p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
-/bin/zsh -lc "nl -ba .opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md | sed -n '500,525p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba .opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md | sed -n '500,525p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/templates/context_template.md | sed -n '568,592p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 53ms:
    586	### Message Timeline
    587	
@@ -985,12 +985,12 @@ exec
 codex
 I’m also running a quick hygiene pass for plain formatting issues now: trailing whitespace, empty code fences, and any heading/list patterns that would make the rendered markdown or YAML brittle even when placeholders are technically resolved.
 exec
-/bin/zsh -lc "rg -n '[[:blank:]]+"'$'"' .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md .opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md .opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md .opencode/specs/03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
-/bin/zsh -lc "rg -n '"'^'"\\s*\\[\\]"'$|''^'"\\s*memory_type: \"\""'$|''^'"\\s*half_life_days:\\s*"'$|''^'"\\s*memories_surfaced:\\s*#|"'^'"\\s*dedup_savings_tokens:\\s*#|"'^'"\\s*fingerprint_hash: \"\"' .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md .opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "rg -n '[[:blank:]]+"'$'"' .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md .opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md .opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md .opencode/specs/03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "rg -n '"'^'"\\s*\\[\\]"'$|''^'"\\s*memory_type: \"\""'$|''^'"\\s*half_life_days:\\s*"'$|''^'"\\s*memories_surfaced:\\s*#|"'^'"\\s*dedup_savings_tokens:\\s*#|"'^'"\\s*fingerprint_hash: \"\"' .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md .opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "for f in \\
   .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md \\
   .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md \\
-  .opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md; do
+  .opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md; do
     printf '\\nFILE %s\\n' \""'$f"
     awk '"'BEGIN{c=0} /"'^```/{c++} END{print c " code fences"}'"' \""'$f"
   done' in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
@@ -1006,14 +1006,14 @@ exec
 .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:80:- Readiness: 
 .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:165:**Key Topics:** `memory` | `skill graph` | `agent orchestration/027 copilot gpt agents` | `skill` | `graph` | `agent` | `orchestration/027` | `copilot` | `gpt` | `agents` | `sgqs` | `analysis` | 
 .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md:590:  
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md:14:  
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md:17:  
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md:22:     
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md:24:     memory_update({ 
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md:25:       id: <memory_id>, 
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md:29:     
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md:79:- Uncertainty: 
-.opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md:80:- Readiness: 
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md:14:  
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md:17:  
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md:22:     
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md:24:     memory_update({ 
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md:25:       id: <memory_id>, 
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md:29:     
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md:79:- Uncertainty: 
+.opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md:80:- Readiness: 
  succeeded in 52ms:
 
 FILE .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__contact-form-bot-submission-investigation.md
@@ -1022,7 +1022,7 @@ FILE .opencode/specs/01--anobel.com/034-form-bot-problem/memory/07-03-26_11-31__
 FILE .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md
 8 code fences
 
-FILE .opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md
+FILE .opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md
 8 code fences
  succeeded in 52ms:
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md:464:  memories_surfaced:    # count of memories shown this session
@@ -1036,18 +1036,18 @@ FILE .opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-crea
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md:491:    []
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md:569:  []
 .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md:574:  []
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md:642:  memories_surfaced:    # count of memories shown this session
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md:643:  dedup_savings_tokens:    # tokens saved via deduplication
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md:644:  fingerprint_hash: ""         # content hash for dedup detection
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md:647:    []
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md:653:    []
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md:657:    []
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md:661:    []
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md:665:    []
-.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md:669:    []
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md:642:  memories_surfaced:    # count of memories shown this session
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md:643:  dedup_savings_tokens:    # tokens saved via deduplication
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md:644:  fingerprint_hash: ""         # content hash for dedup detection
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md:647:    []
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md:653:    []
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md:657:    []
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md:661:    []
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md:665:    []
+.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md:669:    []
 exec
 /bin/zsh -lc "nl -ba .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md | sed -n '1,32p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
-/bin/zsh -lc "nl -ba .opencode/specs/03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md | sed -n '1,32p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba .opencode/specs/03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md | sed -n '1,32p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/templates/context_template.md | sed -n '1,40p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 53ms:
      1	---
      2	title: "GPT-5.4 Agent Model Upgrade [027-copilot-gpt-5-4-agents/06-03-26_08-22__gpt-5-4-agent-model-upgrade]"
@@ -1071,7 +1071,7 @@ exec
     20	     - Core constraints/rules that should NEVER be forgotten
  succeeded in 53ms:
      1	---
-     2	title: "mcp gemini cli session 28-02-26 [sk-cli/001-cli-gemini/28-02-26_11-26__cli-gemini]"
+     2	title: "mcp gemini cli session 28-02-26 [cli-001-gemini/28-02-26_11-26__cli-gemini]"
      3	description: "Session context memory template for Spec Kit indexing."
      4	trigger_phrases:
      5	  - "memory dashboard"
@@ -1199,7 +1199,7 @@ contextType: "general"
 
 | **Meta Data** | **Value** |
 exec
-/bin/zsh -lc "nl -ba .opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md | sed -n '553,575p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba .opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md | sed -n '553,575p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-ux-hooks-automation/memory/08-03-26_09-42__5-agent-codex-review-synthesis.md | sed -n '412,424p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/templates/context_template.md | sed -n '650,662p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 51ms:
    553	### Recovery Priority
@@ -1254,7 +1254,7 @@ codex
 I’m drilling into tree-thinning now because the rendered files keep surfacing pseudo-paths like `(merged-small-files)`. That’s a strong signal the reducer is preserving content but degrading the identifiers people actually search for later.
 exec
 /bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/scripts/core/workflow.ts | sed -n '580,650p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
-/bin/zsh -lc "nl -ba .opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md | sed -n '740,747p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba .opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md | sed -n '740,747p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba .opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md | sed -n '244,252p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "rg -n \"merged-small-files|thinFileInputs|effectiveFiles|mergedSummary|childPaths\" .opencode/skill/system-spec-kit/scripts/core/workflow.ts .opencode/skill/system-spec-kit/scripts -g '"'!**/dist/**'"'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
    580	    (collectedData?.observations || []) as Parameters<typeof generateImplementationSummary>[1]
@@ -1390,7 +1390,7 @@ exec
 codex
 I don’t want to overstate the YAML issue, so I’m checking one representative metadata block with a real parser. If it still parses, I’ll treat it as a quality problem rather than a hard integrity break.
 exec
-/bin/zsh -lc "ruby -e 'require \"yaml\"; text=File.read(\".opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md\"); yaml=text[/"'```yaml'"\\n(.*?)\\n"'```/m,1]; obj=YAML.safe_load(yaml, permitted_classes: [], aliases: false); puts obj["memory_classification"].inspect; puts obj["session_dedup"].inspect; puts obj["causal_links"].inspect'"'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "ruby -e 'require \"yaml\"; text=File.read(\".opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md\"); yaml=text[/"'```yaml'"\\n(.*?)\\n"'```/m,1]; obj=YAML.safe_load(yaml, permitted_classes: [], aliases: false); puts obj["memory_classification"].inspect; puts obj["session_dedup"].inspect; puts obj["causal_links"].inspect'"'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "ruby -e 'require \"yaml\"; text=File.read(\".opencode/specs/05--agent-orchestration/027-copilot-gpt-5-4-agents/memory/06-03-26_08-22__gpt-5-4-agent-model-upgrade.md\"); yaml=text[/"'```yaml'"\\n(.*?)\\n"'```/m,1]; obj=YAML.safe_load(yaml, permitted_classes: [], aliases: false); puts obj["memory_classification"].inspect; puts obj["session_dedup"].inspect'"'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 1.99s:
 {"memory_type"=>"", "half_life_days"=>nil, "decay_factors"=>{"base_decay_rate"=>nil, "access_boost_factor"=>nil, "recency_weight"=>nil, "importance_multiplier"=>nil}}
 {"memories_surfaced"=>nil, "dedup_savings_tokens"=>nil, "fingerprint_hash"=>"", "similar_memories"=>[]}
@@ -1430,7 +1430,7 @@ codex
 - **Effort:** SMALL (<30 min)
 
 ### FINDING-04: Unimplemented V2.2 Sections Render Blank Scaffolding
-- **File:** [template-renderer.ts:29](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/renderers/template-renderer.ts#L29), [context_template.md:658](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L658), [context_template.md:735](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L735), [initial-creation.md:565](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md#L565), [initial-creation.md:632](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md#L632)
+- **File:** [template-renderer.ts:29](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/renderers/template-renderer.ts#L29), [context_template.md:658](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L658), [context_template.md:735](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L735), [initial-creation.md:565](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md#L565), [initial-creation.md:632](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md#L632)
 - **Severity:** MEDIUM
 - **Category:** QUALITY
 - **Current Behavior:** Session-integrity rows render with empty cells, and YAML blocks render empty strings, null scalars, and blank-line-heavy `[]` stubs for memory classification, dedup, and causal links. I found blank integrity rows in 181 files.
@@ -1440,7 +1440,7 @@ codex
 - **Effort:** SMALL (<30 min)
 
 ### FINDING-05: `Key Topics` Always Ends With a Trailing Separator
-- **File:** [context_template.md:271](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L271), [template-renderer.ts:105](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/renderers/template-renderer.ts#L105), [workflow.ts:653](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts#L653), [initial-creation.md:186](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md#L186)
+- **File:** [context_template.md:271](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L271), [template-renderer.ts:105](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/renderers/template-renderer.ts#L105), [workflow.ts:653](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts#L653), [initial-creation.md:186](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md#L186)
 - **Severity:** LOW
 - **Category:** BUG
 - **Current Behavior:** The template relies on `{{^LAST}}`, but `TOPICS` is passed as a string array, and the renderer only injects `ITEM`/`.` for primitive loop items. Result: trailing ` | ` in `305` memory files.
@@ -1517,7 +1517,7 @@ tokens used
 - **Effort:** SMALL (<30 min)
 
 ### FINDING-04: Unimplemented V2.2 Sections Render Blank Scaffolding
-- **File:** [template-renderer.ts:29](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/renderers/template-renderer.ts#L29), [context_template.md:658](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L658), [context_template.md:735](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L735), [initial-creation.md:565](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md#L565), [initial-creation.md:632](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md#L632)
+- **File:** [template-renderer.ts:29](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/renderers/template-renderer.ts#L29), [context_template.md:658](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L658), [context_template.md:735](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L735), [initial-creation.md:565](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md#L565), [initial-creation.md:632](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md#L632)
 - **Severity:** MEDIUM
 - **Category:** QUALITY
 - **Current Behavior:** Session-integrity rows render with empty cells, and YAML blocks render empty strings, null scalars, and blank-line-heavy `[]` stubs for memory classification, dedup, and causal links. I found blank integrity rows in 181 files.
@@ -1527,7 +1527,7 @@ tokens used
 - **Effort:** SMALL (<30 min)
 
 ### FINDING-05: `Key Topics` Always Ends With a Trailing Separator
-- **File:** [context_template.md:271](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L271), [template-renderer.ts:105](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/renderers/template-renderer.ts#L105), [workflow.ts:653](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts#L653), [initial-creation.md:186](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md#L186)
+- **File:** [context_template.md:271](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/templates/context_template.md#L271), [template-renderer.ts:105](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/renderers/template-renderer.ts#L105), [workflow.ts:653](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts#L653), [initial-creation.md:186](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md#L186)
 - **Severity:** LOW
 - **Category:** BUG
 - **Current Behavior:** The template relies on `{{^LAST}}`, but `TOPICS` is passed as a string array, and the renderer only injects `ITEM`/`.` for primitive loop items. Result: trailing ` | ` in `305` memory files.

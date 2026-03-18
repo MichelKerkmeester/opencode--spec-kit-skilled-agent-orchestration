@@ -44,4 +44,4 @@ Analysis of external command references (GitHub Gist) compared to existing OpenC
 ## References
 - External: https://gist.github.com/Rangizingo/e4623d05faab2011e7011b10120b4dce
 - Internal: .opencode/command/
-- Prior work: .opencode/specs/03--commands-and-skills/commands/z_archive/001-command-analysis
+- Prior work: .opencode/specs/03--commands-and-skills/z_archive/cmd-001-analysis

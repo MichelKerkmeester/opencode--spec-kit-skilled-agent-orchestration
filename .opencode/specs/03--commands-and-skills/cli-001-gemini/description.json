@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/sk-cli/001-cli-gemini",
+  "specFolder": "03--commands-and-skills/cli-001-gemini",
   "description": "Feature Specification: cli-gemini Skill",
   "keywords": [
     "feature",
@@ -9,10 +9,9 @@
   ],
   "lastUpdated": "2026-03-16T13:20:02.909Z",
   "specId": "001",
-  "folderSlug": "cli-gemini",
+  "folderSlug": "cli-001-gemini",
   "parentChain": [
-    "03--commands-and-skills",
-    "sk-cli"
+    "03--commands-and-skills"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

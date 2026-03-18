@@ -22,7 +22,7 @@ status: done
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `.opencode/specs/03--commands-and-skills/commands/014-create-changelog-command` |
+| **Spec Folder** | `.opencode/specs/03--commands-and-skills/cmd-014-create-changelog` |
 | **Completed** | 2026-03-01 |
 | **Level** | 2 |
 

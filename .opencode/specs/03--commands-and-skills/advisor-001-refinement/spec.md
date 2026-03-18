@@ -55,7 +55,7 @@ This spec defines a focused refinement of the skill advisor workflow to improve 
 | **Status** | Implementation Complete |
 | **Created** | 2026-03-03 |
 | **Branch** | `03--commands-and-skills/skill-advisor` |
-| **Spec Folder** | `.opencode/specs/03--commands-and-skills/skill-advisor/001-skill-advisor-refinement/` |
+| **Spec Folder** | `.opencode/specs/03--commands-and-skills/advisor-001-refinement/` |
 <!-- /ANCHOR:metadata -->
 
 ---

@@ -196,7 +196,7 @@ The `workflows-memory` skill needs to be renamed to `system-memory` to align wit
 
 ## References
 
-- Previous rename: `.opencode/specs/03--commands-and-skills/sk-doc/002-skill-rename`
+- Previous rename: `.opencode/specs/03--commands-and-skills/z_archive/doc-002-skill-rename`
 - Previous rename: `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/007-system-spec-kit-rename`
 - Current skill: `.opencode/skills/system-memory/`
 

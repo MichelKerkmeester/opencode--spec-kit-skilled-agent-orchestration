@@ -57,16 +57,16 @@ Execution followed four stages: preflight capture, ordered path migration, post-
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/preflight-counts.txt` | Created | Captured baseline token counts before migration. |
-| `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/path-rename-map.tsv` | Created | Defined concrete source-to-target path migration map. |
-| `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/path-rename-log.txt` | Created | Recorded completed path rename operations. |
-| `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/content-replacement-files.txt` | Created | Recorded all files touched by content replacement. |
-| `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/post-path-symlinks.txt` | Created | Verified canonical runtime symlink state. |
-| `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/scratch/final-remnant-counts.txt` | Created | Proved final remnant counts are zero. |
-| `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/spec.md` | Modified | Updated to completed implementation semantics and corrected drifted mappings. |
-| `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/plan.md` | Modified | Updated with executed checks, concrete commands, and pass outcomes. |
-| `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/tasks.md` | Modified | Marked all implementation tasks complete. |
-| `.opencode/specs/03--commands-and-skills/sk-doc/007-sk-doc-rename/checklist.md` | Modified | Marked all P0/P1/P2 checks complete with evidence. |
+| `.opencode/specs/03--commands-and-skills/doc-007-rename/scratch/preflight-counts.txt` | Created | Captured baseline token counts before migration. |
+| `.opencode/specs/03--commands-and-skills/doc-007-rename/scratch/path-rename-map.tsv` | Created | Defined concrete source-to-target path migration map. |
+| `.opencode/specs/03--commands-and-skills/doc-007-rename/scratch/path-rename-log.txt` | Created | Recorded completed path rename operations. |
+| `.opencode/specs/03--commands-and-skills/doc-007-rename/scratch/content-replacement-files.txt` | Created | Recorded all files touched by content replacement. |
+| `.opencode/specs/03--commands-and-skills/doc-007-rename/scratch/post-path-symlinks.txt` | Created | Verified canonical runtime symlink state. |
+| `.opencode/specs/03--commands-and-skills/doc-007-rename/scratch/final-remnant-counts.txt` | Created | Proved final remnant counts are zero. |
+| `.opencode/specs/03--commands-and-skills/doc-007-rename/spec.md` | Modified | Updated to completed implementation semantics and corrected drifted mappings. |
+| `.opencode/specs/03--commands-and-skills/doc-007-rename/plan.md` | Modified | Updated with executed checks, concrete commands, and pass outcomes. |
+| `.opencode/specs/03--commands-and-skills/doc-007-rename/tasks.md` | Modified | Marked all implementation tasks complete. |
+| `.opencode/specs/03--commands-and-skills/doc-007-rename/checklist.md` | Modified | Marked all P0/P1/P2 checks complete with evidence. |
 <!-- /ANCHOR:what-built -->
 
 ---

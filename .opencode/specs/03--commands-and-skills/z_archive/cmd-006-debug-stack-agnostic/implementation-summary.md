@@ -162,4 +162,4 @@ No actual code execution testing required - changes are documentation and refere
 
 ## Related Spec Folder
 
-`.opencode/specs/03--commands-and-skills/commands/z_archive/006-debug-stack-agnostic`
+`.opencode/specs/03--commands-and-skills/z_archive/cmd-006-debug-stack-agnostic`

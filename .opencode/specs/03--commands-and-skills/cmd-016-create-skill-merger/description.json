@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/commands/016-create-skill-merger",
+  "specFolder": "03--commands-and-skills/cmd-016-create-skill-merger",
   "description": "Feature Specification: Create Skill Merger",
   "keywords": [
     "feature",
@@ -10,10 +10,9 @@
   ],
   "lastUpdated": "2026-03-16T13:20:02.838Z",
   "specId": "016",
-  "folderSlug": "create-skill-merger",
+  "folderSlug": "cmd-016-create-skill-merger",
   "parentChain": [
-    "03--commands-and-skills",
-    "commands"
+    "03--commands-and-skills"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

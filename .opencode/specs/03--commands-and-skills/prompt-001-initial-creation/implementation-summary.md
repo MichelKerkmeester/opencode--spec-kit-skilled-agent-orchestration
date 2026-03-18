@@ -13,7 +13,7 @@ title: "Implementation Summary: sk-prompt-improver Initial Creation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 03--commands-and-skills/sk-prompt-improver/001-initial-creation |
+| **Spec Folder** | 03--commands-and-skills/prompt-001-initial-creation |
 | **Completed** | 2026-03-01 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->

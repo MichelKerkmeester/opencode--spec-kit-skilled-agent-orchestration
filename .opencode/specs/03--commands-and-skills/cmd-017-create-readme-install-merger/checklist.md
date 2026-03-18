@@ -32,8 +32,8 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] `spec.md` documents merge scope, requirements, and constraints [Evidence: `.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/spec.md`]
-- [x] CHK-002 [P0] `plan.md` defines canonical naming, routing, and migration strategy [Evidence: `.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/plan.md`]
+- [x] CHK-001 [P0] `spec.md` documents merge scope, requirements, and constraints [Evidence: `.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/spec.md`]
+- [x] CHK-002 [P0] `plan.md` defines canonical naming, routing, and migration strategy [Evidence: `.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/plan.md`]
 - [x] CHK-003 [P1] Source evidence captured from all six required assets [Evidence: `plan.md` section "Evidence baseline"]
 <!-- /ANCHOR:pre-impl -->
 
@@ -86,7 +86,7 @@ contextType: "general"
 
 - [x] CHK-050 [P1] Level 2 required docs exist in target spec folder [Evidence: five required files present]
 - [x] CHK-051 [P1] No temporary artifacts stored outside spec folder [Evidence: no scratch files created]
-- [x] CHK-052 [P2] Memory snapshot saved after implementation phase starts [Evidence: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger` generated `memory/03-03-26_13-29__create-readme-install-merger.md` and `memory/metadata.json`; `memory_index_scan` for `03--commands-and-skills/commands/017-create-readme-install-merger` returned `indexed=1 failed=0`]
+- [x] CHK-052 [P2] Memory snapshot saved after implementation phase starts [Evidence: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger` generated `memory/03-03-26_13-29__create-readme-install-merger.md` and `memory/metadata.json`; `memory_index_scan` for `03--commands-and-skills/cmd-017-create-readme-install-merger` returned `indexed=1 failed=0`]
 <!-- /ANCHOR:file-org -->
 
 ---

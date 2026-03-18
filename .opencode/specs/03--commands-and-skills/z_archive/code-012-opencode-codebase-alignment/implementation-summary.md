@@ -22,7 +22,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `.opencode/specs/03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment` |
+| **Spec Folder** | `.opencode/specs/03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment` |
 | **Completed** | 2026-02-16 |
 | **Level** | 3+ |
 <!-- /ANCHOR:metadata -->
@@ -37,11 +37,11 @@ Level 3+ spec artifacts were created and refined, baseline audit was completed, 
 ### Exact File Paths Grouped by Language
 
 #### Documentation (Markdown)
-- `.opencode/specs/03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment/spec.md`
-- `.opencode/specs/03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment/plan.md`
-- `.opencode/specs/03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment/tasks.md`
-- `.opencode/specs/03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment/checklist.md`
-- `.opencode/specs/03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment/decision-record.md`
+- `.opencode/specs/03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment/spec.md`
+- `.opencode/specs/03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment/plan.md`
+- `.opencode/specs/03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment/tasks.md`
+- `.opencode/specs/03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment/checklist.md`
+- `.opencode/specs/03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment/decision-record.md`
 
 #### TypeScript (`.ts`)
 - `.opencode/skill/system-spec-kit/mcp_server/context-server.ts`

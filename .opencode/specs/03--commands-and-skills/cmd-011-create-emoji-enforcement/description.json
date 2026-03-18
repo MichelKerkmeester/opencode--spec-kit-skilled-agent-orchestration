@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/commands/011-create-command-emoji-enforcement",
+  "specFolder": "03--commands-and-skills/cmd-011-create-emoji-enforcement",
   "description": "Feature Specification: Remove Emoji Enforcement from /create Command",
   "keywords": [
     "feature",
@@ -12,10 +12,9 @@
   ],
   "lastUpdated": "2026-03-16T13:20:02.812Z",
   "specId": "011",
-  "folderSlug": "create-command-emoji-enforcement",
+  "folderSlug": "cmd-011-create-emoji-enforcement",
   "parentChain": [
-    "03--commands-and-skills",
-    "commands"
+    "03--commands-and-skills"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

@@ -394,5 +394,5 @@ If critical failures occur:
 ## Related Documentation
 
 - Previous successful rename: `.opencode/specs/02--system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/007-system-spec-kit-rename`
-- Skill rename pattern: `.opencode/specs/03--commands-and-skills/sk-doc/002-skill-rename`
+- Skill rename pattern: `.opencode/specs/03--commands-and-skills/z_archive/doc-002-skill-rename`
 - Current skill documentation: `.opencode/skills/workflows-memory/SKILL.md`

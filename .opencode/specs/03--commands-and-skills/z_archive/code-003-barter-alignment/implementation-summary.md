@@ -18,7 +18,7 @@ contextType: "implementation"
 
 <!-- ANCHOR:metadata -->
 **Date:** 2026-01-01
-**Spec Folder:** `.opencode/specs/03--commands-and-skills/sk-code/z_archive/003-barter-alignment`
+**Spec Folder:** `.opencode/specs/03--commands-and-skills/z_archive/code-003-barter-alignment`
 **Target:** `.opencode/skill/workflows-code/`
 
 <!-- /ANCHOR:metadata -->

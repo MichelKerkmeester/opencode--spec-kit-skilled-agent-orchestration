@@ -170,8 +170,8 @@ All patterns cite actual OpenCode codebase files:
 - [x] Evidence citations match research findings
 
 ### Spec Folder Location
-Moved from: `.opencode/specs/03--commands-and-skills/sk-code/z_archive/011-initial-set-up`
-To: `.opencode/specs/03--commands-and-skills/sk-code/z_archive/011-initial-set-up`
+Moved from: `.opencode/specs/03--commands-and-skills/z_archive/code-011-initial-set-up`
+To: `.opencode/specs/03--commands-and-skills/z_archive/code-011-initial-set-up`
 <!-- /ANCHOR:verification -->
 
 ---

@@ -19,9 +19,9 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory
 
 ## CONSTRAINTS
 
-- **DO NOT** dispatch any agent (`@speckit`, `@research`, `@handover`, `@context`) from this document
+- **DO NOT** dispatch any agent (`@speckit`, `@deep-research`, `@handover`, `@context`) from this document
 - **DO NOT** dispatch `@handover` unless the user explicitly requests it at the final step (Step 7)
-- **DO NOT** dispatch `@research` unless confidence < 60% during planning (Step 5)
+- **DO NOT** dispatch `@deep-research` unless confidence < 60% during planning (Step 5)
 - **ALL** agent dispatching is handled by the YAML workflow steps — this document is setup + reference only
 - **FIRST ACTION** is always: load the YAML file, then execute it step by step
 
@@ -331,7 +331,7 @@ Record results in decision-record.md for architectural changes.
 ## 12. COMMAND CHAIN
 
 ```
-[/spec_kit:research] → /spec_kit:plan → [/spec_kit:implement]
+[/spec_kit:deep-research] → /spec_kit:plan → [/spec_kit:implement]
 ```
 
 Next step: `/spec_kit:implement [spec-folder-path]`
@@ -344,7 +344,7 @@ Next step: `/spec_kit:implement [spec-folder-path]`
 | ---------------------------- | ---------------------------------------- | ------------------------- |
 | Ready to implement           | `/spec_kit:implement [spec-folder-path]` | Continue to implementation|
 | Need stakeholder review      | Share `plan.md` for review               | Get approval before coding|
-| Technical uncertainty        | `/spec_kit:research [topic]`             | Investigate first         |
+| Technical uncertainty        | `/spec_kit:deep-research [topic]`        | Investigate first         |
 | Need to pause                | `/spec_kit:handover [spec-folder-path]`  | Save context for later    |
 | Save context                 | `/memory:save [spec-folder-path]`        | Preserve decisions        |
 

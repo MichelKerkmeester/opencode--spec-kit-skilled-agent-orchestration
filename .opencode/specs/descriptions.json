@@ -3173,7 +3173,7 @@
       "lastUpdated": "2026-03-16T13:20:02.808Z"
     },
     {
-      "specFolder": "03--commands-and-skills/commands/011-create-command-emoji-enforcement",
+      "specFolder": "03--commands-and-skills/cmd-011-create-emoji-enforcement",
       "description": "Feature Specification: Remove Emoji Enforcement from /create Command",
       "keywords": [
         "feature",
@@ -3187,7 +3187,7 @@
       "lastUpdated": "2026-03-16T13:20:02.812Z"
     },
     {
-      "specFolder": "03--commands-and-skills/commands/012-create-codex-compatibility",
+      "specFolder": "03--commands-and-skills/cmd-012-create-codex-compatibility",
       "description": "Feature Specification: Create Commands Codex Compatibility",
       "keywords": [
         "feature",
@@ -3200,7 +3200,7 @@
       "lastUpdated": "2026-03-16T13:20:02.817Z"
     },
     {
-      "specFolder": "03--commands-and-skills/commands/013-memory-command-output",
+      "specFolder": "03--commands-and-skills/cmd-013-memory-output",
       "description": "Feature Specification: Memory Command Dashboard Visual Design System",
       "keywords": [
         "feature",
@@ -3215,7 +3215,7 @@
       "lastUpdated": "2026-03-16T13:20:02.823Z"
     },
     {
-      "specFolder": "03--commands-and-skills/commands/014-create-changelog-command",
+      "specFolder": "03--commands-and-skills/cmd-014-create-changelog",
       "description": "Feature Specification: Create Changelog Command",
       "keywords": [
         "feature",
@@ -3227,7 +3227,7 @@
       "lastUpdated": "2026-03-16T13:20:02.828Z"
     },
     {
-      "specFolder": "03--commands-and-skills/commands/015-create-prompt-command",
+      "specFolder": "03--commands-and-skills/cmd-015-create-prompt",
       "description": "Feature Specification: create:prompt Command",
       "keywords": [
         "feature",
@@ -3239,7 +3239,7 @@
       "lastUpdated": "2026-03-16T13:20:02.832Z"
     },
     {
-      "specFolder": "03--commands-and-skills/commands/016-create-skill-merger",
+      "specFolder": "03--commands-and-skills/cmd-016-create-skill-merger",
       "description": "Feature Specification: Create Skill Merger",
       "keywords": [
         "feature",
@@ -3251,7 +3251,7 @@
       "lastUpdated": "2026-03-16T13:20:02.838Z"
     },
     {
-      "specFolder": "03--commands-and-skills/commands/017-create-readme-install-merger",
+      "specFolder": "03--commands-and-skills/cmd-017-create-readme-install-merger",
       "description": "Feature Specification: Merge create README and install guide commands",
       "keywords": [
         "feature",
@@ -3266,7 +3266,7 @@
       "lastUpdated": "2026-03-16T13:20:02.843Z"
     },
     {
-      "specFolder": "03--commands-and-skills/commands/z_archive/002-speckit-leann-integration",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration",
       "description": "SpecKit LEANN Integration",
       "keywords": [
         "speckit",
@@ -3276,7 +3276,7 @@
       "lastUpdated": "2026-03-16T13:20:02.854Z"
     },
     {
-      "specFolder": "03--commands-and-skills/commands/z_archive/003-command-document-refinment",
+      "specFolder": "03--commands-and-skills/z_archive/cmd-003-document-refinment",
       "description": "Command Document Refinement",
       "keywords": [
         "command",

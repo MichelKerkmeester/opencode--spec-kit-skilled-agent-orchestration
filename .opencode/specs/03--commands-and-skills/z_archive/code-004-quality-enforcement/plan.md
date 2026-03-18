@@ -31,7 +31,7 @@ Implementation plan for adding active code quality and style enforcement to the 
 - **Spec**: [spec.md](./spec.md)
 
 ### Input
-Feature specification from `.opencode/specs/03--commands-and-skills/sk-code/z_archive/004-code-quality-enforcement/spec.md`
+Feature specification from `.opencode/specs/03--commands-and-skills/z_archive/code-004-quality-enforcement/spec.md`
 
 ### Summary
 Add active code quality enforcement to the workflows-code skill by creating an actionable validation checklist, an enforcement reference document with examples, and integrating a Code Quality Gate into the workflow phases. The gate will be triggered before completion claims and will block progression until all P0 items pass.
@@ -107,7 +107,7 @@ PHASE 3: Verification (MANDATORY)
 ### Documentation (This Feature)
 
 ```
-.opencode/specs/03--commands-and-skills/sk-code/z_archive/004-code-quality-enforcement
+.opencode/specs/03--commands-and-skills/z_archive/code-004-quality-enforcement
   spec.md              # Feature specification ✓
   plan.md              # This file ✓
   checklist.md         # Implementation validation checklist ✓

@@ -21,7 +21,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-03-03 |
 | Session ID | session-1772540966325-ysam8m7hu |
-| Spec Folder | 03--commands-and-skills/commands/017-create-readme-install-merger |
+| Spec Folder | 03--commands-and-skills/cmd-017-create-readme-install-merger |
 | Channel | main |
 | Importance Tier | critical |
 | Context Type | general |
@@ -108,13 +108,13 @@ quality_flags:
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 03--commands-and-skills/commands/017-create-readme-install-merger
+/spec_kit:resume 03--commands-and-skills/cmd-017-create-readme-install-merger
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 03--commands-and-skills/commands/017-create-readme-install-merger
+Spec: 03--commands-and-skills/cmd-017-create-readme-install-merger
 Last: Tool: bash
 Next: Continue implementation
 ```
@@ -142,7 +142,7 @@ Next: Continue implementation
 | Next Action | Continue implementation |
 | Blockers | opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate. |
 
-**Key Topics:** `memory` | `skill graph` | `commands and skills/commands/017 create readme install merger` | `skill` | `graph` | `commands` | `skills/commands/017` | `create` | `readme` | `install` | `merger` | `sgqs` | 
+**Key Topics:** `memory` | `skill graph` | `commands and skills/cmd-017-create-readme-install-merger` | `skill` | `graph` | `commands` | `cmd-017` | `create` | `readme` | `install` | `merger` | `sgqs` | 
 <!-- /ANCHOR:project-state-snapshot -->
 
 ---
@@ -624,9 +624,9 @@ User initiated conversation
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/commands/017-create-readme-install-merger` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/cmd-017-create-readme-install-merger` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/commands/017-create-readme-install-merger" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/cmd-017-create-readme-install-merger" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -638,16 +638,16 @@ User initiated conversation
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "03--commands-and-skills/commands/017-create-readme-install-merger", limit: 10 })
+memory_search({ specFolder: "03--commands-and-skills/cmd-017-create-readme-install-merger", limit: 10 })
 
 # Verify memory file integrity
-ls -la 03--commands-and-skills/commands/017-create-readme-install-merger/memory/
+ls -la 03--commands-and-skills/cmd-017-create-readme-install-merger/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/commands/017-create-readme-install-merger --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/cmd-017-create-readme-install-merger --force
 ```
 
 ### Recovery Priority
@@ -719,7 +719,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772540966325-ysam8m7hu"
-spec_folder: "03--commands-and-skills/commands/017-create-readme-install-merger"
+spec_folder: "03--commands-and-skills/cmd-017-create-readme-install-merger"
 channel: "main"
 
 # Classification
@@ -789,11 +789,11 @@ relevance_boost: 1  # 1.0 default, increased by access patterns
 key_topics:
   - "memory"
   - "skill graph"
-  - "commands and skills/commands/017 create readme install merger"
+  - "commands and skills/cmd-017-create-readme-install-merger"
   - "skill"
   - "graph"
   - "commands"
-  - "skills/commands/017"
+  - "cmd-017"
   - "create"
   - "readme"
   - "install"
@@ -805,7 +805,7 @@ trigger_phrases:
   - "skill graph query system"
   - "memory mcp integration"
   - "semantic memory pipeline"
-  - "in-memory graph database"parent_spec: "03--commands-and-skills/commands/017-create-readme-install-merger"
+  - "in-memory graph database"parent_spec: "03--commands-and-skills/cmd-017-create-readme-install-merger"
 child_sessions:
 
   []

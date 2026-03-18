@@ -23,7 +23,7 @@ contextType: "research"
 | **Status** | COMPLETE |
 | **Date** | 2026-01-01 |
 | **Researchers** | 5 parallel Opus agents |
-| **Spec Folder** | .opencode/specs/03--commands-and-skills/commands/z_archive/004-command-logic-improvement |
+| **Spec Folder** | .opencode/specs/03--commands-and-skills/z_archive/cmd-004-logic-improvement |
 | **Prior Work** | 001-command-analysis, 002-speckit-leann-integration |
 
 ### Research Scope
@@ -1003,7 +1003,7 @@ Session mode persists until changed or session ends.
 
 ### 001-command-analysis Summary
 
-**Location:** .opencode/specs/03--commands-and-skills/commands/z_archive/001-command-analysis
+**Location:** .opencode/specs/03--commands-and-skills/z_archive/cmd-001-analysis
 
 **Key Findings:**
 - 37-item fix list generated
@@ -1019,7 +1019,7 @@ Session mode persists until changed or session ends.
 
 ### 002-speckit-leann-integration Summary
 
-**Location:** .opencode/specs/03--commands-and-skills/commands/z_archive/002-speckit-leann-integration
+**Location:** .opencode/specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration
 
 **Key Findings:**
 - LEANN references need migration to Narsil

@@ -13,7 +13,7 @@ description: "Summary of /create:prompt command implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/` |
+| **Spec Folder** | `.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/` |
 | **Created** | 2026-03-01 |
 | **Status** | Complete |
 | **LOC** | ~338 lines (command file) |
@@ -26,11 +26,11 @@ description: "Summary of /create:prompt command implementation"
 | File Path | Change Type | LOC | Description |
 |-----------|-------------|-----|-------------|
 | `.opencode/command/create/prompt.md` | Create | 338 | New `/create:prompt` command — mode-based workflow command wrapping sk-prompt-improver skill |
-| `.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/spec.md` | Create | 167 | Feature specification |
-| `.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/plan.md` | Create | 184 | Implementation plan |
-| `.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/tasks.md` | Create | 83 | Task breakdown (10 tasks, all complete) |
-| `.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/checklist.md` | Create | 112 | Verification checklist (19 items, all verified) |
-| `.opencode/specs/03--commands-and-skills/commands/015-create-prompt-command/implementation-summary.md` | Create | -- | This file |
+| `.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/spec.md` | Create | 167 | Feature specification |
+| `.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/plan.md` | Create | 184 | Implementation plan |
+| `.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/tasks.md` | Create | 83 | Task breakdown (10 tasks, all complete) |
+| `.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/checklist.md` | Create | 112 | Verification checklist (19 items, all verified) |
+| `.opencode/specs/03--commands-and-skills/cmd-015-create-prompt/implementation-summary.md` | Create | -- | This file |
 
 ---
 

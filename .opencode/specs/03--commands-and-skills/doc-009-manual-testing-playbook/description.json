@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook",
+  "specFolder": "03--commands-and-skills/doc-009-manual-testing-playbook",
   "description": "Spec: Manual Testing Playbook Template for sk-doc",
   "keywords": [
     "spec",
@@ -11,10 +11,9 @@
   ],
   "lastUpdated": "2026-03-18T16:38:56.034Z",
   "specId": "009",
-  "folderSlug": "sk-doc-manual-testing-playbook",
+  "folderSlug": "doc-009-manual-testing-playbook",
   "parentChain": [
-    "03--commands-and-skills",
-    "sk-doc"
+    "03--commands-and-skills"
   ],
   "memorySequence": 1,
   "memoryNameHistory": [

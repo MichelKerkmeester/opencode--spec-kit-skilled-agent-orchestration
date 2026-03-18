@@ -34,9 +34,9 @@ contextType: "implementation"
 <!-- ANCHOR:phase-0 -->
 ## Phase 0: Analysis Complete (Locked Inputs)
 
-- [x] T000 Confirm active Level 3+ spec folder and scope lock (`.opencode/specs/03--commands-and-skills/sk-code/015-sk-code-opencode-refinement/spec.md`)
-- [x] T001 Read and extract implementation constraints from research (`.opencode/specs/03--commands-and-skills/sk-code/015-sk-code-opencode-refinement/research.md`)
-- [x] T002 Read and map scratch findings into execution signals (`.opencode/specs/03--commands-and-skills/sk-code/015-sk-code-opencode-refinement/scratch*.md`)
+- [x] T000 Confirm active Level 3+ spec folder and scope lock (`.opencode/specs/03--commands-and-skills/code-015-opencode-refinement/spec.md`)
+- [x] T001 Read and extract implementation constraints from research (`.opencode/specs/03--commands-and-skills/code-015-opencode-refinement/research.md`)
+- [x] T002 Read and map scratch findings into execution signals (`.opencode/specs/03--commands-and-skills/code-015-opencode-refinement/scratch*.md`)
 - [x] T003 Create Level 3+ execution docs from templates (`plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `global-quality-sweep.md`)
 <!-- /ANCHOR:phase-0 -->
 

@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/sk-git/002-superset-worktrees",
+  "specFolder": "03--commands-and-skills/git-002-superset-worktrees",
   "description": "Feature Specification: sk-git Superset Worktree Alignment",
   "keywords": [
     "feature",
@@ -11,10 +11,9 @@
   ],
   "lastUpdated": "2026-03-16T13:20:03.100Z",
   "specId": "002",
-  "folderSlug": "superset-worktrees",
+  "folderSlug": "git-002-superset-worktrees",
   "parentChain": [
-    "03--commands-and-skills",
-    "sk-git"
+    "03--commands-and-skills"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

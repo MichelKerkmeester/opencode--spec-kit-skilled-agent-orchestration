@@ -21,7 +21,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-03-01 |
 | Session ID | session-1772365995788-f7jyxf684 |
-| Spec Folder | 03--commands-and-skills/commands/014-create-changelog-command |
+| Spec Folder | 03--commands-and-skills/cmd-014-create-changelog |
 | Channel | main |
 | Importance Tier | critical |
 | Context Type | general |
@@ -108,13 +108,13 @@ quality_flags:
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 03--commands-and-skills/commands/014-create-changelog-command
+/spec_kit:resume 03--commands-and-skills/cmd-014-create-changelog
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 03--commands-and-skills/commands/014-create-changelog-command
+Spec: 03--commands-and-skills/cmd-014-create-changelog
 Last: Tool: bash
 Next: Continue implementation
 ```
@@ -142,7 +142,7 @@ Next: Continue implementation
 | Next Action | Continue implementation |
 | Blockers | opencode/skill/system-spec-kit/mcp_server/tests/prediction-error-gate. |
 
-**Key Topics:** `memory` | `skill graph` | `commands and skills/commands/014 create changelog command` | `skill` | `graph` | `commands` | `skills/commands/014` | `create` | `changelog` | `command` | `sgqs` | `analysis` | 
+**Key Topics:** `memory` | `skill graph` | `commands and skills/cmd-014-create-changelog` | `skill` | `graph` | `commands` | `cmd-014` | `create` | `changelog` | `command` | `sgqs` | `analysis` | 
 <!-- /ANCHOR:project-state-snapshot -->
 
 ---
@@ -624,9 +624,9 @@ User initiated conversation
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/commands/014-create-changelog-command` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/cmd-014-create-changelog` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/commands/014-create-changelog-command" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/cmd-014-create-changelog" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -638,16 +638,16 @@ User initiated conversation
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "03--commands-and-skills/commands/014-create-changelog-command", limit: 10 })
+memory_search({ specFolder: "03--commands-and-skills/cmd-014-create-changelog", limit: 10 })
 
 # Verify memory file integrity
-ls -la 03--commands-and-skills/commands/014-create-changelog-command/memory/
+ls -la 03--commands-and-skills/cmd-014-create-changelog/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/commands/014-create-changelog-command --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/cmd-014-create-changelog --force
 ```
 
 ### Recovery Priority
@@ -719,7 +719,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772365995788-f7jyxf684"
-spec_folder: "03--commands-and-skills/commands/014-create-changelog-command"
+spec_folder: "03--commands-and-skills/cmd-014-create-changelog"
 channel: "main"
 
 # Classification
@@ -789,11 +789,11 @@ relevance_boost: 1  # 1.0 default, increased by access patterns
 key_topics:
   - "memory"
   - "skill graph"
-  - "commands and skills/commands/014 create changelog command"
+  - "commands and skills/cmd-014-create-changelog"
   - "skill"
   - "graph"
   - "commands"
-  - "skills/commands/014"
+  - "cmd-014"
   - "create"
   - "changelog"
   - "command"
@@ -805,7 +805,7 @@ trigger_phrases:
   - "skill graph query system"
   - "memory mcp integration"
   - "semantic memory pipeline"
-  - "in-memory graph database"parent_spec: "03--commands-and-skills/commands/014-create-changelog-command"
+  - "in-memory graph database"parent_spec: "03--commands-and-skills/cmd-014-create-changelog"
 child_sessions:
 
   []

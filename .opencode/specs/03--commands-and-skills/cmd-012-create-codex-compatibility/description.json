@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/commands/012-create-codex-compatibility",
+  "specFolder": "03--commands-and-skills/cmd-012-create-codex-compatibility",
   "description": "Feature Specification: Create Commands Codex Compatibility",
   "keywords": [
     "feature",
@@ -11,10 +11,9 @@
   ],
   "lastUpdated": "2026-03-16T13:20:02.817Z",
   "specId": "012",
-  "folderSlug": "create-codex-compatibility",
+  "folderSlug": "cmd-012-create-codex-compatibility",
   "parentChain": [
-    "03--commands-and-skills",
-    "commands"
+    "03--commands-and-skills"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

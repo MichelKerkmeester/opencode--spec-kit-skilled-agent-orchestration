@@ -24,7 +24,7 @@ contextType: general
 |:--------------|:----------|
 | Session Date | 2025-12-22 |
 | Session ID | session-1766388772283-23rnehwhu |
-| Spec Folder | 003-commands/002-speckit-leann-integration |
+| Spec Folder | 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -41,7 +41,7 @@ contextType: general
 
 ---
 
-<!-- ANCHOR:preflight-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:preflight-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -61,11 +61,11 @@ contextType: general
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:preflight-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
 ---
 
-<!-- ANCHOR:continue-session-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:continue-session-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -94,13 +94,13 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 003-commands/002-speckit-leann-integration
+/spec_kit:resume 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration
 ```
-<!-- /ANCHOR:continue-session-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:continue-session-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
 ---
 
-<!-- ANCHOR:task-guide-commands/002-speckit-leann-integration-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:task-guide-cmd-002-speckit-leann-integration-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 ## 1. IMPLEMENTATION GUIDE
 
 **What Was Built**:
@@ -147,11 +147,11 @@ Using Sequential Thinking, I have performed a forensic analysis of your agent ar
 
 - **Functional Transforms**: Use functional methods for data transformation
 
-<!-- /ANCHOR:task-guide-commands/002-speckit-leann-integration-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:task-guide-cmd-002-speckit-leann-integration-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
 ---
 
-<!-- ANCHOR:summary-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:summary-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 ## 2. OVERVIEW
 
 [response]
@@ -187,11 +187,11 @@ Using **Sequential Thinking**, I have
 | `.opencode` | Updated  |
 | `specs/003-commands` | Updated 003 commands |
 
-<!-- /ANCHOR:summary-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:summary-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
 ---
 
-<!-- ANCHOR:detailed-changes-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:detailed-changes-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:architecture-system-analysis-opencode-triad-79e19a67-session-1766388772283-23rnehwhu -->
@@ -314,9 +314,9 @@ Executed sequential_thinking_sequentialthinking
 <!-- ANCHOR:discovery-tool-read-e7e4a6ac-session-1766388772283-23rnehwhu -->
 ### OBSERVATION: Tool: read
 
-specs/003-commands/001-command-analysis/analysis-report.md
+specs/03--commands-and-skills/z_archive/cmd-001-analysis/analysis-report.md
 
-**Files:** /Users/michelkerkmeester/MEGA/Development/Websites/anobel.com/specs/003-commands/001-command-analysis/analysis-report.md
+**Files:** /Users/michelkerkmeester/MEGA/Development/Websites/anobel.com/specs/03--commands-and-skills/z_archive/cmd-001-analysis/analysis-report.md
 **Details:** Tool: read | Status: completed
 <!-- /ANCHOR:discovery-tool-read-e7e4a6ac-session-1766388772283-23rnehwhu -->
 
@@ -584,20 +584,20 @@ specs/002-skills/007-skill-system-improvements
 **Details:** Tool: list | Status: completed
 <!-- /ANCHOR:implementation-tool-list-117e4a94-7-session-1766388772283-23rnehwhu -->
 
-<!-- /ANCHOR:detailed-changes-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:detailed-changes-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:decisions-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 ## 4. DECISIONS
 
 This session did not involve significant architectural or technical decisions. The work was primarily implementation, bug fixes, documentation, or research.
 
 ---
 
-<!-- /ANCHOR:decisions-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:decisions-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
-<!-- ANCHOR:session-history-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:session-history-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 ## 5. CONVERSATION
 
 Complete timestamped dialogue capturing all user interactions, AI responses, tool executions, and code changes during the session.
@@ -786,11 +786,11 @@ Tool: list
 
 ---
 
-<!-- /ANCHOR:session-history-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:session-history-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:recovery-hints-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -801,9 +801,9 @@ Tool: list
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 003-commands/002-speckit-leann-integration` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "003-commands/002-speckit-leann-integration" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration" })` |
 
 ### Recovery Priority
 
@@ -812,10 +812,10 @@ Tool: list
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:recovery-hints-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 ---
 
-<!-- ANCHOR:postflight-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:postflight-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -838,19 +838,19 @@ Tool: list
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:postflight-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 ---
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- ANCHOR:metadata-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
 # Core Identifiers
 session_id: "session-1766388772283-23rnehwhu"
-spec_folder: "003-commands/002-speckit-leann-integration"
+spec_folder: "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration"
 channel: "main"
 
 # Classification
@@ -921,7 +921,7 @@ related_sessions:
 
   []
 
-parent_spec: "003-commands/002-speckit-leann-integration"
+parent_spec: "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration"
 child_sessions:
 
   []
@@ -932,7 +932,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1766388772283-23rnehwhu-003-commands/002-speckit-leann-integration -->
+<!-- /ANCHOR:metadata-session-1766388772283-23rnehwhu-03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration -->
 
 ---
 

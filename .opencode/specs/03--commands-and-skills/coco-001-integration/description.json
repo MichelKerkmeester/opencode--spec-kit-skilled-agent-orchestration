@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/sk-mcp/001-mcp-coco-index",
+  "specFolder": "03--commands-and-skills/coco-001-integration",
   "description": "CocoIndex Code MCP Integration: Phase 1 installation across 6 CLI configs + cross-CLI auto-usage validation proving auto-discovery works without agent routing. Includes daemon concurrency bug root cause analysis and SKILL.md query optimization guidance.",
   "keywords": [
     "cocoindex",
@@ -17,8 +17,10 @@
   ],
   "lastUpdated": "2026-03-18T17:45:00.000Z",
   "specId": "001",
-  "folderSlug": "mcp-coco-index",
-  "parentChain": [],
+  "folderSlug": "coco-001-integration",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
   "memorySequence": 2,
   "memoryNameHistory": [
     "18-03-26_14-35__next-steps.md",

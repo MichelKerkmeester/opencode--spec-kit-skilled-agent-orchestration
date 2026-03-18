@@ -1,7 +1,7 @@
 # Phase 2: Code Alignment Changes
 
 > Date: 2025-12-22
-> Spec: 03--commands-and-skills/sk-code/z_archive/001-workflows-code-codebase-alignment
+> Spec: 03--commands-and-skills/z_archive/code-001-workflows-codebase-alignment
 
 ---
 

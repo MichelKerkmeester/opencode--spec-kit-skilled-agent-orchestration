@@ -18,7 +18,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2025-12-21 |
 | Session ID | session-1766312062960-n3xdfbupl |
-| Spec Folder | 003-commands/002-speckit-leann-integration |
+| Spec Folder | 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -92,7 +92,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 003-commands/002-speckit-leann-integration
+/spec_kit:resume 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration
 ```
 <!-- /ANCHOR:continue-session -->
 
@@ -123,7 +123,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 - `.opencode/.../assets/spec_kit_complete_confirm.yaml` - Core spec kit complete confirm
 
-- `specs/003-commands/002-speckit-leann-integration/spec.md` - Documentation
+- `specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/spec.md` - Documentation
 
 **How to Extend**:
 
@@ -164,7 +164,7 @@ Added backwards-compatible LEANN semantic discovery to all 6 SpecKit command YAM
 | `.opencode/command/spec_kit/assets/spec_kit_plan_confirm.yaml` | Modified during session |
 | `.opencode/.../assets/spec_kit_complete_auto.yaml` | Modified during session |
 | `.opencode/.../assets/spec_kit_complete_confirm.yaml` | Modified during session |
-| `specs/003-commands/002-speckit-leann-integration/spec.md` | Modified during session |
+| `specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/spec.md` | Modified during session |
 
 <!-- /ANCHOR:summary -->
 
@@ -347,9 +347,9 @@ Added backwards-compatible LEANN semantic discovery to all 6 SpecKit command YAM
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 003-commands/002-speckit-leann-integration` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "003-commands/002-speckit-leann-integration" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration" })` |
 
 ### Recovery Priority
 
@@ -397,7 +397,7 @@ This session was migrated from an older format. Learning metrics were not captur
 ```yaml
 # Core Identifiers
 session_id: "session-1766312062960-n3xdfbupl"
-spec_folder: "003-commands/002-speckit-leann-integration"
+spec_folder: "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration"
 channel: "main"
 
 # Classification
@@ -467,14 +467,14 @@ key_files:
   - ".opencode/command/spec_kit/assets/spec_kit_plan_confirm.yaml"
   - ".opencode/.../assets/spec_kit_complete_auto.yaml"
   - ".opencode/.../assets/spec_kit_complete_confirm.yaml"
-  - "specs/003-commands/002-speckit-leann-integration/spec.md"
+  - "specs/03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/spec.md"
 
 # Relationships
 related_sessions:
 
   []
 
-parent_spec: "003-commands/002-speckit-leann-integration"
+parent_spec: "03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration"
 child_sessions:
 
   []

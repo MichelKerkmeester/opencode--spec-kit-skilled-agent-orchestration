@@ -388,7 +388,6 @@ After research:
 |-------|---------|
 | `@deep-research` | Single iteration executor (LEAF) |
 | `@orchestrate` | Loop coordination (when dispatched externally) |
-| `@research` | Single-pass research (alternative) |
 
 ### Commands
 

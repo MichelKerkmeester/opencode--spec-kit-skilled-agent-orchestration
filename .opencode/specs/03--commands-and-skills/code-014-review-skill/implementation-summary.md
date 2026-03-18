@@ -97,7 +97,7 @@ contextType: "implementation"
 | Live-doc visual-skill claim cleanup in scoped spec files | PASS: removed stale target assertions from completion evidence |
 | `rg -n "sk-code--review|baseline\+overlay|overlay"` across `.opencode/agent/*.md`, `.opencode/agent/chatgpt/*.md`, `.gemini/agents/*.md`, `.claude/agents/*.md`, `.codex/agents/{review,orchestrate}.toml` | PASS: baseline+overlay contract present in all runtime agent locations |
 | `rg -n "standards_contract|baseline: \"sk-code--review\""` across 18 YAML assets | PASS: all target files matched |
-| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/03--commands-and-skills/sk-code/014-code-review-skill` | PASS (exit 0): all rules passed, no warnings |
+| `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/03--commands-and-skills/code-014-review-skill` | PASS (exit 0): all rules passed, no warnings |
 <!-- /ANCHOR:verification -->
 
 ---

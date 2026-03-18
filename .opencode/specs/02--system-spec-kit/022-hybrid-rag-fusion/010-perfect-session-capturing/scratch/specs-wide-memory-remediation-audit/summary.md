@@ -143,35 +143,35 @@ Root: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/sp
 | 02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/001-foundation-phases-0-1-1-5 | 1 | 0 | 0 | 1 |
 | 02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/002-extraction-rollout-phases-2-3 | 1 | 0 | 0 | 1 |
 | 02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/003-memory-quality-qp-0-4 | 1 | 0 | 0 | 1 |
-| 03--commands-and-skills/commands/013-memory-command-output | 2 | 2 | 0 | 0 |
-| 03--commands-and-skills/commands/014-create-changelog-command | 2 | 2 | 0 | 0 |
-| 03--commands-and-skills/commands/015-create-prompt-command | 2 | 2 | 0 | 0 |
-| 03--commands-and-skills/commands/016-create-skill-merger | 4 | 4 | 0 | 0 |
-| 03--commands-and-skills/commands/017-create-readme-install-merger | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/commands/z_archive/001-command-analysis | 1 | 0 | 0 | 1 |
-| 03--commands-and-skills/commands/z_archive/002-speckit-leann-integration | 4 | 4 | 0 | 0 |
-| 03--commands-and-skills/commands/z_archive/004-command-logic-improvement | 6 | 1 | 0 | 5 |
-| 03--commands-and-skills/commands/z_archive/005-subagent-delegation | 1 | 0 | 0 | 1 |
-| 03--commands-and-skills/commands/z_archive/007-remove-git-branch-logic | 1 | 0 | 0 | 1 |
-| 03--commands-and-skills/sk-cli/001-cli-gemini | 2 | 2 | 0 | 0 |
-| 03--commands-and-skills/sk-cli/003-cli-claude-code | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/sk-cli/004-cli-copilot | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/sk-code/z_archive/001-workflows-code-codebase-alignment | 2 | 0 | 0 | 2 |
-| 03--commands-and-skills/sk-code/z_archive/002-reference-structure-qa | 2 | 0 | 0 | 2 |
-| 03--commands-and-skills/sk-code/z_archive/004-code-quality-enforcement | 2 | 0 | 0 | 2 |
-| 03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis | 1 | 0 | 0 | 1 |
-| 03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/002-remediation | 1 | 0 | 0 | 1 |
-| 03--commands-and-skills/sk-code/z_archive/007-performance-patterns-update | 2 | 0 | 0 | 2 |
-| 03--commands-and-skills/sk-code/z_archive/011-initial-set-up | 1 | 0 | 0 | 1 |
-| 03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment | 2 | 0 | 0 | 2 |
-| 03--commands-and-skills/sk-doc/001-doc-specialist-refactor | 5 | 0 | 0 | 5 |
-| 03--commands-and-skills/sk-doc/002-skill-rename | 1 | 0 | 0 | 1 |
-| 03--commands-and-skills/sk-doc/003-h2-emoji-enforcement | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/sk-doc/004-style-enforcement | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/sk-doc/005-remove-emojis-from-docs | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/sk-doc/008-sk-doc-template-folders | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/sk-git/002-superset-worktrees | 1 | 1 | 0 | 0 |
-| 03--commands-and-skills/sk-prompt-improver/001-initial-creation | 2 | 2 | 0 | 0 |
+| 03--commands-and-skills/cmd-013-memory-output | 2 | 2 | 0 | 0 |
+| 03--commands-and-skills/cmd-014-create-changelog | 2 | 2 | 0 | 0 |
+| 03--commands-and-skills/cmd-015-create-prompt | 2 | 2 | 0 | 0 |
+| 03--commands-and-skills/cmd-016-create-skill-merger | 4 | 4 | 0 | 0 |
+| 03--commands-and-skills/cmd-017-create-readme-install-merger | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/z_archive/cmd-001-analysis | 1 | 0 | 0 | 1 |
+| 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration | 4 | 4 | 0 | 0 |
+| 03--commands-and-skills/z_archive/cmd-004-logic-improvement | 6 | 1 | 0 | 5 |
+| 03--commands-and-skills/z_archive/cmd-005-subagent-delegation | 1 | 0 | 0 | 1 |
+| 03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic | 1 | 0 | 0 | 1 |
+| 03--commands-and-skills/cli-001-gemini | 2 | 2 | 0 | 0 |
+| 03--commands-and-skills/cli-003-claude-code | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/cli-004-copilot | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/z_archive/code-001-workflows-codebase-alignment | 2 | 0 | 0 | 2 |
+| 03--commands-and-skills/z_archive/code-002-reference-structure-qa | 2 | 0 | 0 | 2 |
+| 03--commands-and-skills/z_archive/code-004-quality-enforcement | 2 | 0 | 0 | 2 |
+| 03--commands-and-skills/z_archive/code-006-js-codebase-analysis | 1 | 0 | 0 | 1 |
+| 03--commands-and-skills/z_archive/code-006-js-codebase-analysis/002-remediation | 1 | 0 | 0 | 1 |
+| 03--commands-and-skills/z_archive/code-007-performance-patterns-update | 2 | 0 | 0 | 2 |
+| 03--commands-and-skills/z_archive/code-011-initial-set-up | 1 | 0 | 0 | 1 |
+| 03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment | 2 | 0 | 0 | 2 |
+| 03--commands-and-skills/z_archive/doc-001-specialist-refactor | 5 | 0 | 0 | 5 |
+| 03--commands-and-skills/z_archive/doc-002-skill-rename | 1 | 0 | 0 | 1 |
+| 03--commands-and-skills/z_archive/doc-003-h2-emoji-enforcement | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/z_archive/doc-004-style-enforcement | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/z_archive/doc-005-remove-emojis-from-docs | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/doc-008-template-folders | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/git-002-superset-worktrees | 1 | 1 | 0 | 0 |
+| 03--commands-and-skills/prompt-001-initial-creation | 2 | 2 | 0 | 0 |
 | 05--agent-orchestration/019-incorrect-sub-agent-nesting | 2 | 0 | 0 | 2 |
 | 05--agent-orchestration/020-agent-sonnet-upgrade | 1 | 0 | 0 | 1 |
 | 05--agent-orchestration/021-codex-orchestrate | 7 | 0 | 0 | 7 |
@@ -433,60 +433,60 @@ Root: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/sp
 - 02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/memory/19-02-26_09-15__mcp-working-memory-hybrid-rag.md :: quarantine :: malformed_frontmatter
 - 02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/memory/19-02-26_15-19__mcp-working-memory-hybrid-rag.md :: quarantine :: malformed_frontmatter
 - 02--system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag/memory/20-02-26_08-04__mcp-working-memory-hybrid-rag.md :: quarantine :: malformed_frontmatter
-- 03--commands-and-skills/commands/013-memory-command-output/memory/20-02-26_13-42__memory-command-output.md :: repair_in_place :: legacy_generic_trigger_phrases, corrupted_title
-- 03--commands-and-skills/commands/013-memory-command-output/memory/20-02-26_14-44__memory-command-output.md :: repair_in_place :: legacy_generic_trigger_phrases, corrupted_title
-- 03--commands-and-skills/commands/014-create-changelog-command/memory/01-03-26_12-53__create-changelog-command.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/commands/014-create-changelog-command/memory/01-03-26_14-30__create-changelog-command.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/commands/015-create-prompt-command/memory/01-03-26_12-48__create-prompt-command.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/commands/015-create-prompt-command/memory/01-03-26_14-44__create-prompt-command.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-45__create-skill-merger.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-49__create-skill-merger.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/commands/016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/commands/017-create-readme-install-merger/memory/03-03-26_13-29__create-readme-install-merger.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/commands/z_archive/001-command-analysis/memory/15-12-25_00-00__context.md :: quarantine :: corrupted_title, low_signal_content
-- 03--commands-and-skills/commands/z_archive/002-speckit-leann-integration/memory/21-12-25_11-14__speckit-leann-integration.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/commands/z_archive/002-speckit-leann-integration/memory/21-12-25_11-24__speckit-leann-integration.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/commands/z_archive/002-speckit-leann-integration/memory/22-12-25_09-00__speckit-leann-integration.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/commands/z_archive/002-speckit-leann-integration/memory/22-12-25_09-01__speckit-leann-integration.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_13-25__command-logic-improvement.md :: quarantine :: corrupted_title, low_signal_content
-- 03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_14-06__command-logic-improvement.md :: quarantine :: corrupted_title, low_signal_content
-- 03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_14-12__command-logic-improvement.md :: quarantine :: corrupted_title, low_signal_content
-- 03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_14-25__command-logic-improvement.md :: quarantine :: corrupted_title, low_signal_content
-- 03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_14-29__command-logic-improvement.md :: quarantine :: corrupted_title, low_signal_content
-- 03--commands-and-skills/commands/z_archive/004-command-logic-improvement/memory/01-01-26_15-02__command-logic-improvement.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/commands/z_archive/005-subagent-delegation/memory/01-01-26_15-35__subagent-delegation.md :: quarantine :: corrupted_title, low_signal_content
-- 03--commands-and-skills/commands/z_archive/007-remove-git-branch-logic/memory/21-01-26_08-56__remove-git-branch-logic.md :: quarantine :: corrupted_title, low_signal_content
-- 03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-07__cli-gemini.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/sk-cli/001-cli-gemini/memory/28-02-26_11-26__cli-gemini.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/sk-cli/003-cli-claude-code/memory/02-03-26_21-14__cli-claude-code.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/sk-cli/004-cli-copilot/memory/02-03-26_21-14__cli-copilot.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/sk-code/z_archive/001-workflows-code-codebase-alignment/memory/22-12-25_08-14__skill-alignment-complete.md :: quarantine :: malformed_frontmatter
-- 03--commands-and-skills/sk-code/z_archive/001-workflows-code-codebase-alignment/memory/22-12-25_08-32__workflows-code-alignment-phase2.md :: quarantine :: malformed_frontmatter
-- 03--commands-and-skills/sk-code/z_archive/002-reference-structure-qa/memory/16-02-26_14-50__qa-report.md :: quarantine :: malformed_frontmatter, low_signal_content
-- 03--commands-and-skills/sk-code/z_archive/002-reference-structure-qa/memory/22-12-25_09-50__reference-structure-qa.md :: quarantine :: malformed_frontmatter
-- 03--commands-and-skills/sk-code/z_archive/004-code-quality-enforcement/memory/02-01-26_08-05__code-quality-enforcement.md :: quarantine :: malformed_frontmatter, low_signal_content
-- 03--commands-and-skills/sk-code/z_archive/004-code-quality-enforcement/memory/02-01-26_08-30__code-quality-enforcement.md :: quarantine :: malformed_frontmatter
-- 03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/002-remediation/memory/25-01-26_11-24__remediation.md :: quarantine :: malformed_frontmatter
-- 03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/memory/25-01-26_10-13__js-codebase-analysis.md :: quarantine :: malformed_frontmatter
-- 03--commands-and-skills/sk-code/z_archive/007-performance-patterns-update/memory/26-01-26_10-48__anobel.com.md :: quarantine :: malformed_frontmatter
-- 03--commands-and-skills/sk-code/z_archive/007-performance-patterns-update/memory/26-01-26_13-22__performance-patterns-update.md :: quarantine :: malformed_frontmatter, low_signal_content
-- 03--commands-and-skills/sk-code/z_archive/011-initial-set-up/memory/04-02-26_08-12__workflows-code-opencode.md :: quarantine :: malformed_frontmatter
-- 03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment/memory/16-02-26_22-35__opencode-codebase-alignment.md :: quarantine :: malformed_frontmatter
-- 03--commands-and-skills/sk-code/z_archive/012-opencode-codebase-alignment/memory/17-02-26_08-31__opencode-codebase-alignment.md :: quarantine :: malformed_frontmatter
-- 03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_00-00__header-standardization.md :: quarantine :: corrupted_title, low_signal_content
-- 03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_00-00__honesty-pass.md :: quarantine :: corrupted_title, low_signal_content
-- 03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_00-00__implementation-complete.md :: quarantine :: corrupted_title, low_signal_content
-- 03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_00-00__planning-session.md :: quarantine :: corrupted_title, low_signal_content
-- 03--commands-and-skills/sk-doc/001-doc-specialist-refactor/memory/14-12-24_00-00__script-enhancements.md :: quarantine :: corrupted_title, low_signal_content
-- 03--commands-and-skills/sk-doc/002-skill-rename/memory/17-12-24_00-00__skill-rename-complete.md :: quarantine :: corrupted_title, low_signal_content
-- 03--commands-and-skills/sk-doc/003-h2-emoji-enforcement/memory/01-01-26_14-53__h2-emoji-enforcement.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/sk-doc/004-style-enforcement/memory/03-02-26_17-30__validate-document-rename.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/sk-doc/005-remove-emojis-from-docs/memory/17-02-26_00-15__remove-emojis-from-docs.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/sk-doc/008-sk-doc-template-folders/memory/28-02-26_11-44__sk-doc-template-folders.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/sk-git/002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/01-03-26_11-09__initial-creation.md :: repair_in_place :: corrupted_title
-- 03--commands-and-skills/sk-prompt-improver/001-initial-creation/memory/04-03-26_09-15__initial-creation.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/cmd-013-memory-output/memory/20-02-26_13-42__memory-command-output.md :: repair_in_place :: legacy_generic_trigger_phrases, corrupted_title
+- 03--commands-and-skills/cmd-013-memory-output/memory/20-02-26_14-44__memory-command-output.md :: repair_in_place :: legacy_generic_trigger_phrases, corrupted_title
+- 03--commands-and-skills/cmd-014-create-changelog/memory/01-03-26_12-53__create-changelog-command.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/cmd-014-create-changelog/memory/01-03-26_14-30__create-changelog-command.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_12-48__create-prompt-command.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/cmd-015-create-prompt/memory/01-03-26_14-44__create-prompt-command.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_07-49__create-skill-merger.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-45__create-skill-merger.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-49__create-skill-merger.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/cmd-016-create-skill-merger/memory/03-03-26_08-53__create-skill-merger.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/cmd-017-create-readme-install-merger/memory/03-03-26_13-29__create-readme-install-merger.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/z_archive/cmd-001-analysis/memory/15-12-25_00-00__context.md :: quarantine :: corrupted_title, low_signal_content
+- 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/memory/21-12-25_11-14__speckit-leann-integration.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/memory/21-12-25_11-24__speckit-leann-integration.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/memory/22-12-25_09-00__speckit-leann-integration.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/z_archive/cmd-002-speckit-leann-integration/memory/22-12-25_09-01__speckit-leann-integration.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_13-25__command-logic-improvement.md :: quarantine :: corrupted_title, low_signal_content
+- 03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_14-06__command-logic-improvement.md :: quarantine :: corrupted_title, low_signal_content
+- 03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_14-12__command-logic-improvement.md :: quarantine :: corrupted_title, low_signal_content
+- 03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_14-25__command-logic-improvement.md :: quarantine :: corrupted_title, low_signal_content
+- 03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_14-29__command-logic-improvement.md :: quarantine :: corrupted_title, low_signal_content
+- 03--commands-and-skills/z_archive/cmd-004-logic-improvement/memory/01-01-26_15-02__command-logic-improvement.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/z_archive/cmd-005-subagent-delegation/memory/01-01-26_15-35__subagent-delegation.md :: quarantine :: corrupted_title, low_signal_content
+- 03--commands-and-skills/z_archive/cmd-007-remove-git-branch-logic/memory/21-01-26_08-56__remove-git-branch-logic.md :: quarantine :: corrupted_title, low_signal_content
+- 03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-07__cli-gemini.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/cli-001-gemini/memory/28-02-26_11-26__cli-gemini.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/cli-003-claude-code/memory/02-03-26_21-14__cli-claude-code.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/cli-004-copilot/memory/02-03-26_21-14__cli-copilot.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/z_archive/code-001-workflows-codebase-alignment/memory/22-12-25_08-14__skill-alignment-complete.md :: quarantine :: malformed_frontmatter
+- 03--commands-and-skills/z_archive/code-001-workflows-codebase-alignment/memory/22-12-25_08-32__workflows-code-alignment-phase2.md :: quarantine :: malformed_frontmatter
+- 03--commands-and-skills/z_archive/code-002-reference-structure-qa/memory/16-02-26_14-50__qa-report.md :: quarantine :: malformed_frontmatter, low_signal_content
+- 03--commands-and-skills/z_archive/code-002-reference-structure-qa/memory/22-12-25_09-50__reference-structure-qa.md :: quarantine :: malformed_frontmatter
+- 03--commands-and-skills/z_archive/code-004-quality-enforcement/memory/02-01-26_08-05__code-quality-enforcement.md :: quarantine :: malformed_frontmatter, low_signal_content
+- 03--commands-and-skills/z_archive/code-004-quality-enforcement/memory/02-01-26_08-30__code-quality-enforcement.md :: quarantine :: malformed_frontmatter
+- 03--commands-and-skills/z_archive/code-006-js-codebase-analysis/002-remediation/memory/25-01-26_11-24__remediation.md :: quarantine :: malformed_frontmatter
+- 03--commands-and-skills/z_archive/code-006-js-codebase-analysis/memory/25-01-26_10-13__js-codebase-analysis.md :: quarantine :: malformed_frontmatter
+- 03--commands-and-skills/z_archive/code-007-performance-patterns-update/memory/26-01-26_10-48__anobel.com.md :: quarantine :: malformed_frontmatter
+- 03--commands-and-skills/z_archive/code-007-performance-patterns-update/memory/26-01-26_13-22__performance-patterns-update.md :: quarantine :: malformed_frontmatter, low_signal_content
+- 03--commands-and-skills/z_archive/code-011-initial-set-up/memory/04-02-26_08-12__workflows-code-opencode.md :: quarantine :: malformed_frontmatter
+- 03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment/memory/16-02-26_22-35__opencode-codebase-alignment.md :: quarantine :: malformed_frontmatter
+- 03--commands-and-skills/z_archive/code-012-opencode-codebase-alignment/memory/17-02-26_08-31__opencode-codebase-alignment.md :: quarantine :: malformed_frontmatter
+- 03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_00-00__header-standardization.md :: quarantine :: corrupted_title, low_signal_content
+- 03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_00-00__honesty-pass.md :: quarantine :: corrupted_title, low_signal_content
+- 03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_00-00__implementation-complete.md :: quarantine :: corrupted_title, low_signal_content
+- 03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_00-00__planning-session.md :: quarantine :: corrupted_title, low_signal_content
+- 03--commands-and-skills/z_archive/doc-001-specialist-refactor/memory/14-12-24_00-00__script-enhancements.md :: quarantine :: corrupted_title, low_signal_content
+- 03--commands-and-skills/z_archive/doc-002-skill-rename/memory/17-12-24_00-00__skill-rename-complete.md :: quarantine :: corrupted_title, low_signal_content
+- 03--commands-and-skills/z_archive/doc-003-h2-emoji-enforcement/memory/01-01-26_14-53__h2-emoji-enforcement.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/z_archive/doc-004-style-enforcement/memory/03-02-26_17-30__validate-document-rename.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/z_archive/doc-005-remove-emojis-from-docs/memory/17-02-26_00-15__remove-emojis-from-docs.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/doc-008-template-folders/memory/28-02-26_11-44__sk-doc-template-folders.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/git-002-superset-worktrees/memory/28-02-26_17-38__sk-git-superset.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/prompt-001-initial-creation/memory/01-03-26_11-09__initial-creation.md :: repair_in_place :: corrupted_title
+- 03--commands-and-skills/prompt-001-initial-creation/memory/04-03-26_09-15__initial-creation.md :: repair_in_place :: corrupted_title
 - 05--agent-orchestration/019-incorrect-sub-agent-nesting/memory/17-02-26_09-07__incorrect-sub-agent-nesting.md :: quarantine :: malformed_frontmatter
 - 05--agent-orchestration/019-incorrect-sub-agent-nesting/memory/17-02-26_09-22__incorrect-sub-agent-nesting.md :: quarantine :: malformed_frontmatter
 - 05--agent-orchestration/020-agent-sonnet-upgrade/memory/18-02-26_08-53__agent-sonnet-upgrade.md :: quarantine :: malformed_frontmatter

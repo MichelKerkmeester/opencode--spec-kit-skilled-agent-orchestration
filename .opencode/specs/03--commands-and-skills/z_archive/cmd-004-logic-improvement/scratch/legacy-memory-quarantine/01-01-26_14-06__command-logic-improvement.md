@@ -45,7 +45,7 @@ contextType: "general"
 |:--------------|:----------|
 | Session Date | 2026-01-01 |
 | Session ID | session-1767272789259-y6c7fxw4p |
-| Spec Folder | 03--commands-and-skills/commands/004-command-logic-improvement |
+| Spec Folder | 03--commands-and-skills/z_archive/cmd-004-logic-improvement |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -60,7 +60,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:preflight-session-1767272789259-y6c7fxw4p-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- ANCHOR:preflight-session-1767272789259-y6c7fxw4p-03--commands-and-skills/z_archive/cmd-004-logic-improvement -->
 ## PREFLIGHT BASELINE
 
 **Epistemic state captured at session start for learning delta calculation.**
@@ -80,7 +80,7 @@ contextType: "general"
 - Confidence: N/A
 - Uncertainty: N/A
 - Readiness: N/A
-<!-- /ANCHOR:preflight-session-1767272789259-y6c7fxw4p-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:preflight-session-1767272789259-y6c7fxw4p-03--commands-and-skills/z_archive/cmd-004-logic-improvement -->
 ---
 
 ## Table of Contents
@@ -95,7 +95,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:continue-session-session-1767272789259-y6c7fxw4p-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- ANCHOR:continue-session-session-1767272789259-y6c7fxw4p-03--commands-and-skills/z_archive/cmd-004-logic-improvement -->
 <a id="continue-session"></a>
 
 ## CONTINUE SESSION
@@ -124,9 +124,9 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 03--commands-and-skills/commands/004-command-logic-improvement
+/spec_kit:resume 03--commands-and-skills/z_archive/cmd-004-logic-improvement
 ```
-<!-- /ANCHOR:continue-session-session-1767272789259-y6c7fxw4p-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:continue-session-session-1767272789259-y6c7fxw4p-03--commands-and-skills/z_archive/cmd-004-logic-improvement -->
 ---
 
 <a id="project-state-snapshot"></a>
@@ -160,7 +160,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 ---
 
-<!-- ANCHOR:summary-session-1767272789259-y6c7fxw4p-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- ANCHOR:summary-session-1767272789259-y6c7fxw4p-03--commands-and-skills/z_archive/cmd-004-logic-improvement -->
 <a id="overview"></a>
 
 ## 1. OVERVIEW
@@ -170,11 +170,11 @@ Session focused on implementing and testing features.
 **Key Outcomes**:
 - Session in progress
 
-<!-- /ANCHOR:summary-session-1767272789259-y6c7fxw4p-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:summary-session-1767272789259-y6c7fxw4p-03--commands-and-skills/z_archive/cmd-004-logic-improvement -->
 
 ---
 
-<!-- ANCHOR:decisions-session-1767272789259-y6c7fxw4p-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- ANCHOR:decisions-session-1767272789259-y6c7fxw4p-03--commands-and-skills/z_archive/cmd-004-logic-improvement -->
 <a id="decisions"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -202,9 +202,9 @@ This session did not involve significant architectural or technical decisions. T
 
 ---
 
-<!-- /ANCHOR:decisions-session-1767272789259-y6c7fxw4p-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:decisions-session-1767272789259-y6c7fxw4p-03--commands-and-skills/z_archive/cmd-004-logic-improvement -->
 
-<!-- ANCHOR:session-history-session-1767272789259-y6c7fxw4p-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- ANCHOR:session-history-session-1767272789259-y6c7fxw4p-03--commands-and-skills/z_archive/cmd-004-logic-improvement -->
 <a id="conversation"></a>
 
 <!-- DYNAMIC SECTION NUMBERING:
@@ -232,11 +232,11 @@ Manual context save
 
 ---
 
-<!-- /ANCHOR:session-history-session-1767272789259-y6c7fxw4p-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:session-history-session-1767272789259-y6c7fxw4p-03--commands-and-skills/z_archive/cmd-004-logic-improvement -->
 
 ---
 
-<!-- ANCHOR:recovery-hints-session-1767272789259-y6c7fxw4p-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- ANCHOR:recovery-hints-session-1767272789259-y6c7fxw4p-03--commands-and-skills/z_archive/cmd-004-logic-improvement -->
 <a id="recovery-hints"></a>
 
 ## RECOVERY HINTS
@@ -247,9 +247,9 @@ Manual context save
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/commands/004-command-logic-improvement` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/z_archive/cmd-004-logic-improvement` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/commands/004-command-logic-improvement" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/z_archive/cmd-004-logic-improvement" })` |
 
 ### Recovery Priority
 
@@ -258,10 +258,10 @@ Manual context save
 3. **Review last session state** - Check PROJECT STATE SNAPSHOT
 4. **Validate pending tasks** - Review CONTINUE SESSION section
 5. **Resume with handover prompt** - Use continuation template above
-<!-- /ANCHOR:recovery-hints-session-1767272789259-y6c7fxw4p-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:recovery-hints-session-1767272789259-y6c7fxw4p-03--commands-and-skills/z_archive/cmd-004-logic-improvement -->
 ---
 
-<!-- ANCHOR:postflight-session-1767272789259-y6c7fxw4p-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- ANCHOR:postflight-session-1767272789259-y6c7fxw4p-03--commands-and-skills/z_archive/cmd-004-logic-improvement -->
 <a id="postflight-learning-delta"></a>
 
 ## POSTFLIGHT LEARNING DELTA
@@ -284,21 +284,21 @@ Manual context save
 
 **Session Learning Summary:**
 This session was migrated from an older format. Learning metrics were not captured in the original format.
-<!-- /ANCHOR:postflight-session-1767272789259-y6c7fxw4p-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:postflight-session-1767272789259-y6c7fxw4p-03--commands-and-skills/z_archive/cmd-004-logic-improvement -->
 ---
 
 <a id="memory-metadata"></a>
 
 ## MEMORY METADATA
 
-<!-- ANCHOR:metadata-session-1767272789259-y6c7fxw4p-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- ANCHOR:metadata-session-1767272789259-y6c7fxw4p-03--commands-and-skills/z_archive/cmd-004-logic-improvement -->
 
 > **Machine-Readable Section** - This YAML block is parsed by the semantic memory indexer for search optimization and decay calculations.
 
 ```yaml
 # Core Identifiers
 session_id: "session-1767272789259-y6c7fxw4p"
-spec_folder: "03--commands-and-skills/commands/004-command-logic-improvement"
+spec_folder: "03--commands-and-skills/z_archive/cmd-004-logic-improvement"
 channel: "main"
 
 # Classification
@@ -367,7 +367,7 @@ related_sessions:
 
   []
 
-parent_spec: "03--commands-and-skills/commands/004-command-logic-improvement"
+parent_spec: "03--commands-and-skills/z_archive/cmd-004-logic-improvement"
 child_sessions:
 
   []
@@ -378,7 +378,7 @@ embedding_version: "1.0"
 chunk_count: 1
 ```
 
-<!-- /ANCHOR:metadata-session-1767272789259-y6c7fxw4p-03--commands-and-skills/commands/004-command-logic-improvement -->
+<!-- /ANCHOR:metadata-session-1767272789259-y6c7fxw4p-03--commands-and-skills/z_archive/cmd-004-logic-improvement -->
 
 ---
 

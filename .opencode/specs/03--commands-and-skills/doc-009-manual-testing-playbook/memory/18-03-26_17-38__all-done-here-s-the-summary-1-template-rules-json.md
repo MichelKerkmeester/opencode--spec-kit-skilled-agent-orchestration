@@ -45,7 +45,7 @@ spec_folder_health: {"pass":false,"score":0.6,"errors":1,"warnings":5}
 |:--------------|:----------|
 | Session Date | 2026-03-18 |
 | Session ID | session-1773851935916-1a8e1298cf6c |
-| Spec Folder | 03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook |
+| Spec Folder | 03--commands-and-skills/doc-009-manual-testing-playbook |
 | Channel | main |
 | Git Ref | main (`e3881e278a53`) |
 | Importance Tier | normal |
@@ -110,20 +110,20 @@ spec_folder_health: {"pass":false,"score":0.6,"errors":1,"warnings":5}
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook
+/spec_kit:resume 03--commands-and-skills/doc-009-manual-testing-playbook
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook
+Spec: 03--commands-and-skills/doc-009-manual-testing-playbook
 Last: Here's the plan. I need your input on one item: **Scripts to move (5):** | Inst
 Next: Continue implementation
 ```
 
 **Key Context to Review:**
 
-- Files modified: .opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/checklist.md, .opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/implementation-summary.md, .opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/plan.md
+- Files modified: .opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/checklist.md, .opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/implementation-summary.md, .opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/plan.md
 
 - Check: plan.md, tasks.md, checklist.md
 
@@ -141,7 +141,7 @@ Next: Continue implementation
 | Field | Value |
 |-------|-------|
 | Phase | RESEARCH |
-| Active File | .opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/checklist.md |
+| Active File | .opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/checklist.md |
 | Last Action | Here's the plan. I need your input on one item: **Scripts to move (5):** | Inst |
 | Next Action | Continue implementation |
 | Blockers | None |
@@ -182,21 +182,21 @@ Next: Continue implementation
 
 **Key Files and Their Roles**:
 
-- `.opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/checklist.md` - Documentation
+- `.opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/checklist.md` - Documentation
 
-- `.opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/implementation-summary.md` - Documentation
+- `.opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/implementation-summary.md` - Documentation
 
-- `.opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/plan.md` - Documentation
+- `.opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/plan.md` - Documentation
 
-- `.opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/spec.md` - Documentation
+- `.opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/spec.md` - Documentation
 
-- `.opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/tasks.md` - Documentation
+- `.opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/tasks.md` - Documentation
 
-- `.opencode/specs/03--commands-and-skills/sk-doc/009-manual-testing-playbook-template/spec.md` - Template file
+- `.opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/spec.md` - Template file
 
-- `.opencode/specs/03--commands-and-skills/sk-doc/009-manual-testing-playbook-template/plan.md` - Template file
+- `.opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/plan.md` - Template file
 
-- `.opencode/specs/03--commands-and-skills/sk-doc/009-manual-testing-playbook-template/tasks.md` - Template file
+- `.opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/tasks.md` - Template file
 
 **How to Extend**:
 
@@ -238,8 +238,8 @@ No external references. But let me check the internal spec docs and changelog fo
 
 | **File** | **Description** |
 |:---------|:----------------|
-| `.opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/(merged-small-files)` | Tree-thinning merged 5 small files (checklist.md, implementation-summary.md, plan.md, spec.md, tasks.md).  Merged from .opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/checklist.md : Updated checklist | Merged from .opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/implementation-summary.md : Updated implementation summary | Merged from .opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/plan.md : Updated plan | Merged from .opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/spec.md : Updated spec | Merged from .opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/tasks.md : Updated tasks |
-| `.opencode/specs/03--commands-and-skills/sk-doc/009-manual-testing-playbook-template/(merged-small-files)` | Tree-thinning merged 4 small files (spec.md, plan.md, tasks.md, checklist.md).  Merged from .opencode/specs/03--commands-and-skills/sk-doc/009-manual-testing-playbook-template/spec.md : Updated spec | Merged from .opencode/specs/03--commands-and-skills/sk-doc/009-manual-testing-playbook-template/plan.md : Updated plan | Merged from .opencode/specs/03--commands-and-skills/sk-doc/009-manual-testing-playbook-template/tasks.md : Updated tasks | Merged from .opencode/specs/03--commands-and-skills/sk-doc/009-manual-testing-playbook-template/checklist.md : Updated checklist |
+| `.opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/(merged-small-files)` | Tree-thinning merged 5 small files (checklist.md, implementation-summary.md, plan.md, spec.md, tasks.md).  Merged from .opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/checklist.md : Updated checklist | Merged from .opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/implementation-summary.md : Updated implementation summary | Merged from .opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/plan.md : Updated plan | Merged from .opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/spec.md : Updated spec | Merged from .opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/tasks.md : Updated tasks |
+| `.opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/(merged-small-files)` | Tree-thinning merged 4 small files (spec.md, plan.md, tasks.md, checklist.md).  Merged from .opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/spec.md : Updated spec | Merged from .opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/plan.md : Updated plan | Merged from .opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/tasks.md : Updated tasks | Merged from .opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/checklist.md : Updated checklist |
 | `.opencode/skill/sk-doc/assets/documentation/(merged-small-files)` | Tree-thinning merged 1 small files (manual_testing_playbook_template.md).  Merged from .opencode/skill/sk-doc/assets/documentation/manual_testing_playbook_template.md : Updated manual testing playbook template |
 
 <!-- /ANCHOR:summary -->
@@ -399,7 +399,7 @@ Align /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/sk
 
 > **User** | 2026-03-18 @ 17:38:11
 
-Rename /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/sk-doc/009-manual-testing-playbook-template to 009-sk-doc-manual-testing-playbook. Also update all references inside the spec documents. When done save memory in that folder (but not manual)
+Rename /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook to 009-sk-doc-manual-testing-playbook. Also update all references inside the spec documents. When done save memory in that folder (but not manual)
 
 ---
 
@@ -418,9 +418,9 @@ Rename /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/s
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/doc-009-manual-testing-playbook` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/doc-009-manual-testing-playbook" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -432,16 +432,16 @@ Rename /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/s
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook", limit: 10 })
+memory_search({ specFolder: "03--commands-and-skills/doc-009-manual-testing-playbook", limit: 10 })
 
 # Verify memory file integrity
-ls -la 03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/memory/
+ls -la 03--commands-and-skills/doc-009-manual-testing-playbook/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/doc-009-manual-testing-playbook --force
 ```
 
 ### Recovery Priority
@@ -476,7 +476,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03-
 ```yaml
 # Core Identifiers
 session_id: "session-1773851935916-1a8e1298cf6c"
-spec_folder: "03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook"
+spec_folder: "03--commands-and-skills/doc-009-manual-testing-playbook"
 channel: "main"
 
 # Git Provenance (M-007d)
@@ -590,15 +590,15 @@ trigger_phrases:
   - "playbook"
 
 key_files:
-  - ".opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/checklist.md"
-  - ".opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/implementation-summary.md"
-  - ".opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/plan.md"
-  - ".opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/spec.md"
-  - ".opencode/specs/03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook/tasks.md"
-  - ".opencode/specs/03--commands-and-skills/sk-doc/009-manual-testing-playbook-template/spec.md"
-  - ".opencode/specs/03--commands-and-skills/sk-doc/009-manual-testing-playbook-template/plan.md"
-  - ".opencode/specs/03--commands-and-skills/sk-doc/009-manual-testing-playbook-template/tasks.md"
-  - ".opencode/specs/03--commands-and-skills/sk-doc/009-manual-testing-playbook-template/checklist.md"
+  - ".opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/checklist.md"
+  - ".opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/implementation-summary.md"
+  - ".opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/plan.md"
+  - ".opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/spec.md"
+  - ".opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/tasks.md"
+  - ".opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/spec.md"
+  - ".opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/plan.md"
+  - ".opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/tasks.md"
+  - ".opencode/specs/03--commands-and-skills/doc-009-manual-testing-playbook/checklist.md"
   - ".opencode/skill/sk-doc/assets/documentation/manual_testing_playbook_template.md"
 
 # Relationships
@@ -606,7 +606,7 @@ related_sessions:
 
   []
 
-parent_spec: "03--commands-and-skills/sk-doc/009-sk-doc-manual-testing-playbook"
+parent_spec: "03--commands-and-skills/doc-009-manual-testing-playbook"
 child_sessions:
 
   []

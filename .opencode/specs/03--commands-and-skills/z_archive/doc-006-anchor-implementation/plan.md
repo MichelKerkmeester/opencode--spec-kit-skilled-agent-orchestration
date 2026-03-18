@@ -1,6 +1,6 @@
 ---
 title: "Technical Plan: Retrieval Anchors for Skill Documentation [006-anchor-implementation/plan]"
-description: "Spec Folder: .opencode/specs/03--commands-and-skills/sk-doc/006-anchor-implementation"
+description: "Spec Folder: .opencode/specs/03--commands-and-skills/z_archive/doc-006-anchor-implementation"
 trigger_phrases:
   - "technical"
   - "plan"
@@ -17,7 +17,7 @@ contextType: "decision"
 # Technical Plan: Retrieval Anchors for Skill Documentation
 
 <!-- ANCHOR: summary -->
-**Spec Folder**: `.opencode/specs/03--commands-and-skills/sk-doc/006-anchor-implementation`  
+**Spec Folder**: `.opencode/specs/03--commands-and-skills/z_archive/doc-006-anchor-implementation`  
 **Level**: 3+ (Governance + Architecture)  
 **Status**: Planning  
 **Created**: 2026-02-17
@@ -503,7 +503,7 @@ python3 scripts/dist/skill/validate-skill-anchors.py \
 **Objective**: Document the system and enable team to maintain it.
 
 #### Task 4.1: Migration Guide (2 hours)
-**File**: `.opencode/specs/03--commands-and-skills/sk-doc/006-anchor-implementation/README.md`
+**File**: `.opencode/specs/03--commands-and-skills/z_archive/doc-006-anchor-implementation/README.md`
 
 **Contents**:
 - Overview of anchor system
@@ -523,7 +523,7 @@ python3 scripts/dist/skill/validate-skill-anchors.py \
 **Deliverable**: sk-doc skill includes comprehensive anchor guidance
 
 #### Task 4.3: Create Anchor Usage Examples (2 hours)
-**File**: `.opencode/specs/03--commands-and-skills/sk-doc/006-anchor-implementation/examples`
+**File**: `.opencode/specs/03--commands-and-skills/z_archive/doc-006-anchor-implementation/examples`
 
 **Examples**:
 1. `before-after-skill.md` (SKILL.md transformation)

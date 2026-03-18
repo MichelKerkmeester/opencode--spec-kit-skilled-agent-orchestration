@@ -24,7 +24,7 @@ Documents the 9 specialized Gemini agents in `.gemini/agents/` and how any AI as
 
 - Delegating supplementary tasks to Gemini CLI agents
 - Cross-AI code review or architectural second opinion
-- Web research via Google Search grounding (`@research`)
+- Web research via Google Search grounding (`@deep-research`)
 - Fresh-perspective debugging after the calling AI's attempts fail (`@debug`)
 - Multi-agent Gemini-side workflows (`@orchestrate`)
 
@@ -177,11 +177,11 @@ gemini "As @orchestrate agent: Analyze this codebase: explore structure, review 
 
 ---
 
-### @research — Technical Investigator
+### @deep-research — Technical Investigator
 
 | Property | Value |
 |----------|-------|
-| **Role** | Evidence gathering, feasibility analysis, technology comparison |
+| **Role** | Iterative evidence gathering, feasibility analysis, technology comparison |
 | **Model** | gemini-3.1-pro-preview |
 | **Tools** | read_file, write_file, replace, run_shell_command, grep_search, list_directory, google_web_search |
 | **Modifies files** | Yes (research.md) |
@@ -194,7 +194,7 @@ gemini "As @orchestrate agent: Analyze this codebase: explore structure, review 
 **Unique capability:** `google_web_search` tool provides real-time web access.
 
 ```bash
-gemini "As @research agent: Research the latest Next.js 15 App Router migration patterns. Compare with current Remix approach in this codebase." -o text
+gemini "As @deep-research agent: Research the latest Next.js 15 App Router migration patterns. Compare with current Remix approach in this codebase." -o text
 ```
 
 ---
@@ -290,8 +290,8 @@ gemini "As @write agent: Generate a comprehensive README.md for this project bas
 |-----------|---------------|----------|-----------|
 | Codebase exploration | @context | (none) | Read-only, structured Context Packages |
 | Cross-AI code review | @review | @context | Second opinion on quality |
-| Web/API research | @research | @write | Google Search grounding |
-| Architecture planning | @ultra-think | @research | Multi-lens analysis |
+| Web/API research | @deep-research | @write | Google Search grounding |
+| Architecture planning | @ultra-think | @deep-research | Multi-lens analysis |
 | Bug investigation | @debug | @context | Fresh perspective methodology |
 | Documentation generation | @write | @speckit | Template-first, web-enriched |
 | Spec folder docs | @speckit | (none) | Exclusive spec authority |

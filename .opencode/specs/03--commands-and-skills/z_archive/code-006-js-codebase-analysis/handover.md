@@ -77,7 +77,7 @@ Session handover for preserving context and enabling seamless continuation acros
 
 ### 3.1 Recommended Starting Point
 
-- **File:** .opencode/specs/03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis/files-inventory.md
+- **File:** .opencode/specs/03--commands-and-skills/z_archive/code-006-js-codebase-analysis/files-inventory.md
 - **Context:** Review the compliance matrix and prioritized recommendations. The analysis is complete - next steps would be implementing the recommended fixes (P0 issues in 7 files, naming standardization in 19 files)
 
 ### 3.2 Priority Tasks Remaining
@@ -137,7 +137,7 @@ Before handover, verify:
 **Next Session Entry Point:**
 If continuing remediation work, start with:
 ```
-/spec_kit:resume .opencode/specs/03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis
+/spec_kit:resume .opencode/specs/03--commands-and-skills/z_archive/code-006-js-codebase-analysis
 ```
 
 Then review files-inventory.md "Next Steps" section for prioritized actions.
@@ -148,11 +148,11 @@ Then review files-inventory.md "Next Steps" section for prioritized actions.
 
 ```
 CONTINUATION - Attempt 1
-Spec: .opencode/specs/03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis
+Spec: .opencode/specs/03--commands-and-skills/z_archive/code-006-js-codebase-analysis
 Last: Upgraded spec folder to Level 3+ documentation, created implementation-summary.md
 Next: Review compliance matrix and implement P0 fixes if desired, or archive as complete
 
-/spec_kit:resume .opencode/specs/03--commands-and-skills/sk-code/z_archive/006-js-codebase-analysis
+/spec_kit:resume .opencode/specs/03--commands-and-skills/z_archive/code-006-js-codebase-analysis
 ```
 
 ---

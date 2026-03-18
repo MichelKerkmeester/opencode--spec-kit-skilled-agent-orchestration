@@ -97,7 +97,7 @@ The skill currently named `workflows-spec-kit` provides mandatory spec folder wo
 
 ## Reference: Previous Skill Rename
 
-The `create-documentation` → `sk-doc` rename (documented in `.opencode/specs/03--commands-and-skills/sk-doc/002-skill-rename`) established these patterns:
+The `create-documentation` → `sk-doc` rename (documented in `.opencode/specs/03--commands-and-skills/z_archive/doc-002-skill-rename`) established these patterns:
 
 1. **Preserve historical references** in specs/memory files
 2. **Two-tier verification**: Reference grep + Functional testing

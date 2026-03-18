@@ -162,7 +162,7 @@ Verification commands:
 ```bash
 python3 .opencode/skill/sk-doc/scripts/quick_validate.py .opencode/skill/sk-code--review --json
 python3 .opencode/skill/sk-doc/scripts/package_skill.py .opencode/skill/sk-code--review
-bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/03--commands-and-skills/sk-code/014-code-review-skill
+bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/03--commands-and-skills/code-014-review-skill
 ```
 <!-- /ANCHOR:phase-5 -->
 

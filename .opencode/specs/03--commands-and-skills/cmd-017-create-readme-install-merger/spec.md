@@ -78,11 +78,11 @@ Define a canonical merged command/workflow family that consolidates shared orche
 | `.opencode/agent/chatgpt/write.md` | Update | ChatGPT writer references updated |
 | `.agents/agents/write.md` | Update | `.agents` writer references updated |
 | `.codex/agents/write.toml` | Update | Codex writer references updated |
-| `.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/spec.md` | Update | Implementation-progress sync |
-| `.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/plan.md` | Update | Implementation status and evidence sync |
-| `.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/tasks.md` | Update | Task completion state sync |
-| `.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/checklist.md` | Update | Verification progress sync |
-| `.opencode/specs/03--commands-and-skills/commands/017-create-readme-install-merger/implementation-summary.md` | Update | Implementation cycle summary |
+| `.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/spec.md` | Update | Implementation-progress sync |
+| `.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/plan.md` | Update | Implementation status and evidence sync |
+| `.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/tasks.md` | Update | Task completion state sync |
+| `.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/checklist.md` | Update | Verification progress sync |
+| `.opencode/specs/03--commands-and-skills/cmd-017-create-readme-install-merger/implementation-summary.md` | Update | Implementation cycle summary |
 <!-- /ANCHOR:scope -->
 
 ---

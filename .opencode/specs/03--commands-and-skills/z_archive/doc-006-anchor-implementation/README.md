@@ -1,7 +1,7 @@
 # Spec Folder Summary: Anchor Implementation Initiative
 
 <!-- ANCHOR: summary -->
-**Location**: `.opencode/specs/03--commands-and-skills/sk-doc/006-anchor-implementation`  
+**Location**: `.opencode/specs/03--commands-and-skills/z_archive/doc-006-anchor-implementation`  
 **Level**: 3+ (Governance + Architecture)  
 **Status**: ✅ Complete Documentation (Ready for Review)  
 **Created**: 2026-02-17

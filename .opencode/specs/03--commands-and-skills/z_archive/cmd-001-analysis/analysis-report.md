@@ -3,9 +3,9 @@
 > Extended analysis beyond the initial 015 report, focusing on structural issues, parity gaps, and enhancement opportunities not previously identified.
 
 **Generated:** 2025-12-15
-**Spec Folder:** `.opencode/specs/03--commands-and-skills/commands/z_archive/001-command-analysis/`
+**Spec Folder:** `.opencode/specs/03--commands-and-skills/z_archive/cmd-001-analysis/`
 **Analysis Method:** 10 parallel agents with specialized focus areas
-**Previous Report:** `.opencode/specs/03--commands-and-skills/commands/z_archive/001-command-analysis/analysis-report.md`
+**Previous Report:** `.opencode/specs/03--commands-and-skills/z_archive/cmd-001-analysis/analysis-report.md`
 
 ---
 

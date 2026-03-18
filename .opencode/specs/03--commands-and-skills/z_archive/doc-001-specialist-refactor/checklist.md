@@ -32,8 +32,8 @@ contextType: "implementation"
 - [x] CHK008 [P0] Document type detection works (skill, readme, command, spec, etc.) | Evidence: `/tmp/extract_structure.json` has `type: "skill"`
 - [x] CHK009 [P0] Type-specific checklist runs and returns pass/fail results | Evidence: `/tmp/extract_structure.json` includes `checklist.pass_rate` (e.g. `91.7`)
 - [x] CHK010 [P1] Evaluation questions generated based on document type | Evidence: `/tmp/extract_structure.json` includes `evaluation_questions[]`
-- [x] CHK011 [P0] YAML multiline description detected as checklist failure | Evidence: `markdown-document-specialist validate .opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/scratch/bad-multiline --json` exits 1; `/tmp/bad_multiline.json` message mentions multiline description
-- [x] CHK012 [P0] Invalid allowed-tools format detected as checklist failure | Evidence: `markdown-document-specialist validate .opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/scratch/bad-tools --json` exits 1; `/tmp/bad_tools.json` message mentions array format
+- [x] CHK011 [P0] YAML multiline description detected as checklist failure | Evidence: `markdown-document-specialist validate .opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/scratch/bad-multiline --json` exits 1; `/tmp/bad_multiline.json` message mentions multiline description
+- [x] CHK012 [P0] Invalid allowed-tools format detected as checklist failure | Evidence: `markdown-document-specialist validate .opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/scratch/bad-tools --json` exits 1; `/tmp/bad_tools.json` message mentions array format
 
 <!-- /ANCHOR:protocol -->
 
@@ -42,8 +42,8 @@ contextType: "implementation"
 <!-- ANCHOR:code-quality -->
 ## Phase 2: Enhance quick_validate.py
 
-- [x] CHK013 [P0] YAML multiline description detection added | Evidence: Negative test `.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/scratch/bad-multiline` fails validation (exit 1)
-- [x] CHK014 [P1] allowed-tools array format validation added | Evidence: Negative test `.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/scratch/bad-tools` fails validation (exit 1)
+- [x] CHK013 [P0] YAML multiline description detection added | Evidence: Negative test `.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/scratch/bad-multiline` fails validation (exit 1)
+- [x] CHK014 [P1] allowed-tools array format validation added | Evidence: Negative test `.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/scratch/bad-tools` fails validation (exit 1)
 - [x] CHK015 [P1] JSON output option (--json flag) works | Evidence: `python3 .opencode/skills/create-documentation/scripts/quick_validate.py .opencode/skills/create-documentation --json | python3 -m json.tool >/dev/null` exits 0
 - [x] CHK016 [P2] TODO placeholder detection in description | Evidence: Warnings generated for TODO in description
 
@@ -130,7 +130,7 @@ contextType: "implementation"
 - [x] CHK036 [P0] Numeric scoring language removed | Evidence: `grep -r "target 90\|85+\|overall score" .opencode/skills/create-documentation/` returns no matches
 - [x] CHK037 [P0] Pipeline mode terminology replaced | Evidence: `grep -r "Full Pipeline\|Validation Only\|Optimization Only" .opencode/skills/create-documentation/` returns no matches
 - [x] CHK038 [P1] Field renamed score→pass_rate | Evidence: `grep "pass_rate" .opencode/skills/create-documentation/scripts/extract_structure.py` shows line 377
-- [x] CHK039 [P1] Negative test fixtures created | Evidence: `.opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/scratch/bad-multiline` and `bad-tools/` exist and fail validation
+- [x] CHK039 [P1] Negative test fixtures created | Evidence: `.opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/scratch/bad-multiline` and `bad-tools/` exist and fail validation
 
 | Priority | Total | Completed |
 |----------|-------|-----------|

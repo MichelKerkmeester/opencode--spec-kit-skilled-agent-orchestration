@@ -21,7 +21,7 @@ contextType: "general"
 | **Session** | Attempt 1 |
 | **Phase Completed** | Implementation Complete, Runtime Testing Pending |
 | **Timestamp** | 2026-01-01 |
-| **Spec Folder** | `.opencode/specs/03--commands-and-skills/commands/z_archive/005-subagent-delegation` |
+| **Spec Folder** | `.opencode/specs/03--commands-and-skills/z_archive/cmd-005-subagent-delegation` |
 
 ---
 
@@ -83,9 +83,9 @@ Runtime testing phase. All code changes are complete. Need to verify both comman
 
 ```
 CONTINUATION - Attempt 1
-Spec: .opencode/specs/03--commands-and-skills/commands/z_archive/005-subagent-delegation
+Spec: .opencode/specs/03--commands-and-skills/z_archive/cmd-005-subagent-delegation
 Last: Completed code changes for sub-agent delegation in handover.md and save.md
 Next: Runtime testing - verify /spec_kit:handover and /memory:save work with sub-agent delegation
 
-Run /spec_kit:resume .opencode/specs/03--commands-and-skills/commands/z_archive/005-subagent-delegation
+Run /spec_kit:resume .opencode/specs/03--commands-and-skills/z_archive/cmd-005-subagent-delegation
 ```

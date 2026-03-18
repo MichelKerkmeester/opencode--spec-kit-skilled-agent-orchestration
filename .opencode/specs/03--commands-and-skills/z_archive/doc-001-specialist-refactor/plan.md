@@ -24,7 +24,7 @@ contextType: "decision"
 
 | Attribute | Value |
 |-----------|-------|
-| Spec | .opencode/specs/03--commands-and-skills/sk-doc/001-doc-specialist-refactor/spec.md |
+| Spec | .opencode/specs/03--commands-and-skills/z_archive/doc-001-specialist-refactor/spec.md |
 | Target | `.opencode/skills/create-documentation/` |
 | Estimated LOC | ~500 (new) + ~200 (modifications) |
 | Documentation Level | Level 2 (with checklist.md) |

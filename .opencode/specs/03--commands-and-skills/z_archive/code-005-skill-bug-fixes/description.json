@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/sk-code/z_archive/005-skill-bug-fixes",
+  "specFolder": "03--commands-and-skills/z_archive/code-005-skill-bug-fixes",
   "description": "Feature Specification: workflows-code Skill Bug Fixes",
   "keywords": [
     "feature",
@@ -11,10 +11,9 @@
   ],
   "lastUpdated": "2026-03-16T13:20:02.973Z",
   "specId": "005",
-  "folderSlug": "skill-bug-fixes",
+  "folderSlug": "code-005-skill-bug-fixes",
   "parentChain": [
     "03--commands-and-skills",
-    "sk-code",
     "z_archive"
   ],
   "memorySequence": 0,
