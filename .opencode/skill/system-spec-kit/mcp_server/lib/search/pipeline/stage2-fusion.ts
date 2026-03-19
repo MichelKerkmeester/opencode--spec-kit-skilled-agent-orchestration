@@ -51,9 +51,9 @@ import type { Stage2Input, Stage2Output, PipelineRow, IntentWeightsConfig, Artif
 
 import * as sessionBoost from '../session-boost';
 import * as causalBoost from '../causal-boost';
-import { isEnabled as isCoActivationEnabled, spreadActivation, CO_ACTIVATION_CONFIG } from '../../cache/cognitive/co-activation';
-import type { SpreadResult } from '../../cache/cognitive/co-activation';
-import * as fsrsScheduler from '../../cache/cognitive/fsrs-scheduler';
+import { isEnabled as isCoActivationEnabled, spreadActivation, CO_ACTIVATION_CONFIG } from '../../cognitive/co-activation';
+import type { SpreadResult } from '../../cognitive/co-activation';
+import * as fsrsScheduler from '../../cognitive/fsrs-scheduler';
 import { queryLearnedTriggers } from '../learned-feedback';
 import { applyNegativeFeedback, getNegativeFeedbackStats } from '../../scoring/negative-feedback';
 import {

@@ -1,11 +1,21 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/006-sprint-5-pipeline-refactor",
   "description": "Feature Specification: Sprint 5 — Pipeline Refactor",
-  "keywords": ["sprint", "5", "pipeline", "refactor"],
-  "lastUpdated": "2026-03-16T21:00:00.000Z",
+  "keywords": [
+    "feature",
+    "specification",
+    "sprint",
+    "pipeline",
+    "refactor"
+  ],
+  "lastUpdated": "2026-03-19T15:45:43.155Z",
   "specId": "006",
   "folderSlug": "sprint-5-pipeline-refactor",
-  "parentChain": ["02--system-spec-kit", "022-hybrid-rag-fusion", "001-hybrid-rag-fusion-epic"],
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "001-hybrid-rag-fusion-epic"
+  ],
   "memorySequence": 0,
   "memoryNameHistory": []
 }

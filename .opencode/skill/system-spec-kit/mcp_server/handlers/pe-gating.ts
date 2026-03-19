@@ -2,7 +2,7 @@
 // MODULE: Prediction Error Gating Helpers
 // ───────────────────────────────────────────────────────────────
 import * as vectorIndex from '../lib/search/vector-index';
-import * as fsrsScheduler from '../lib/cache/cognitive/fsrs-scheduler';
+import * as fsrsScheduler from '../lib/cognitive/fsrs-scheduler';
 import * as incrementalIndex from '../lib/storage/incremental-index';
 import { recordHistory } from '../lib/storage/history';
 import { recordLineageTransition } from '../lib/storage/lineage-state';

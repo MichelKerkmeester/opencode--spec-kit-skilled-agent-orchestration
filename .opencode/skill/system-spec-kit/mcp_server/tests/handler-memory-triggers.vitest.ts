@@ -5,10 +5,10 @@ import * as handler from '../handlers/memory-triggers';
 import * as core from '../core';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import * as evalLogger from '../lib/eval/eval-logger';
-import * as workingMemory from '../lib/cache/cognitive/working-memory';
-import * as attentionDecay from '../lib/cache/cognitive/attention-decay';
-import * as tierClassifier from '../lib/cache/cognitive/tier-classifier';
-import * as coActivation from '../lib/cache/cognitive/co-activation';
+import * as workingMemory from '../lib/cognitive/working-memory';
+import * as attentionDecay from '../lib/cognitive/attention-decay';
+import * as tierClassifier from '../lib/cognitive/tier-classifier';
+import * as coActivation from '../lib/cognitive/co-activation';
 import * as consumptionLogger from '../lib/telemetry/consumption-logger';
 import type {
   SignalDetection,

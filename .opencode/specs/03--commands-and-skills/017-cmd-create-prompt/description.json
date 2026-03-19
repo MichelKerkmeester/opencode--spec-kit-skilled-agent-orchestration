@@ -8,9 +8,9 @@
     "prompt",
     "command"
   ],
-  "lastUpdated": "2026-03-16T13:20:02.832Z",
+  "lastUpdated": "2026-03-19T15:45:44.623Z",
   "specId": "017",
-  "folderSlug": "017-cmd-create-prompt",
+  "folderSlug": "cmd-create-prompt",
   "parentChain": [
     "03--commands-and-skills"
   ],

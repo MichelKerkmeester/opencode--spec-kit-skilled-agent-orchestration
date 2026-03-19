@@ -11,9 +11,9 @@
     "design",
     "system"
   ],
-  "lastUpdated": "2026-03-16T13:20:02.823Z",
+  "lastUpdated": "2026-03-19T15:45:44.598Z",
   "specId": "014",
-  "folderSlug": "014-cmd-memory-output",
+  "folderSlug": "cmd-memory-output",
   "parentChain": [
     "03--commands-and-skills"
   ],

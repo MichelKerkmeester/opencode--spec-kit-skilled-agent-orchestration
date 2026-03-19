@@ -25,7 +25,7 @@ import {
   calculateCompositeAttention,
   getAttentionBreakdown,
   applyCompositeDecay,
-} from '../lib/cache/cognitive/attention-decay';
+} from '../lib/cognitive/attention-decay';
 
 /* ───────────────────────────────────────────────────────────────
    3. FIVE FACTOR WEIGHTS (T032)

@@ -14,11 +14,11 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. PIPELINE FLOW](#3-pipeline-flow)
-- [4. KEY CONCEPTS](#4-key-concepts)
-- [5. RELATED DOCUMENTS](#5-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. STRUCTURE](#2--structure)
+- [3. PIPELINE FLOW](#3--pipeline-flow)
+- [4. KEY CONCEPTS](#4--key-concepts)
+- [5. RELATED DOCUMENTS](#5--related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
@@ -77,8 +77,8 @@ The barrel `index.ts` re-exports every module so consumers can import from `hand
 - `../memory-crud-utils.ts` -- mutation ledger helpers used by PE orchestration and reconsolidation
 - `../pe-gating.ts` -- PE gate action functions (findSimilarMemories, reinforceExistingMemory, etc.)
 - `../mutation-hooks.ts` -- post-mutation hook runner called during response building
-- `../../lib/cache/cognitive/prediction-error-gate.ts` -- core PE evaluation logic
-- `../../lib/cache/cognitive/fsrs-scheduler.ts` -- FSRS stability/difficulty defaults
+- `../../lib/cognitive/prediction-error-gate.ts` -- core PE evaluation logic
+- `../../lib/cognitive/fsrs-scheduler.ts` -- FSRS stability/difficulty defaults
 - `../../lib/storage/reconsolidation.ts` -- reconsolidation engine
 - `../../lib/search/vector-index.ts` -- vector index operations
 - `../../lib/search/bm25-index.ts` -- BM25 full-text index

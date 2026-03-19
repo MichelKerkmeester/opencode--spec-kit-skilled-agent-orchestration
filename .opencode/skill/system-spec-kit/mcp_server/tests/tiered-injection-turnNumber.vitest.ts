@@ -1,7 +1,7 @@
 // TEST: TIERED INJECTION TURNNUMBER
 import { describe, it, expect } from 'vitest';
 
-import * as tierClassifier from '../lib/cache/cognitive/tier-classifier';
+import * as tierClassifier from '../lib/cognitive/tier-classifier';
 import * as handler from '../handlers/memory-triggers';
 
 describe('T201 + T208: Tiered Injection + Turn Decay [deferred - requires DB test fixtures]', () => {

@@ -7,7 +7,7 @@ import type BetterSqlite3 from 'better-sqlite3';
 import * as vectorIndex from '../lib/search/vector-index';
 import * as embeddings from '../lib/providers/embeddings';
 import * as bm25Index from '../lib/search/bm25-index';
-import * as fsrsScheduler from '../lib/cache/cognitive/fsrs-scheduler';
+import * as fsrsScheduler from '../lib/cognitive/fsrs-scheduler';
 import * as incrementalIndex from '../lib/storage/incremental-index';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import * as toolCache from '../lib/cache/tool-cache';

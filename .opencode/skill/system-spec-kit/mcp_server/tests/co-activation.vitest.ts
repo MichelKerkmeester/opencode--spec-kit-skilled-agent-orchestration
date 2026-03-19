@@ -2,12 +2,12 @@
 // Converted from: co-activation.test.ts (custom runner)
 // Aligned with production co-activation.ts named exports
 import { afterEach, describe, it, expect, vi } from 'vitest';
-import * as coActivation from '../lib/cache/cognitive/co-activation';
+import * as coActivation from '../lib/cognitive/co-activation';
 
 type CoActivationDb = Parameters<typeof coActivation.init>[0];
 const coActivationExports = coActivation as unknown as Record<string, unknown>;
 const CO_ACTIVATION_MODULE_PATHS = [
-  '../lib/cache/cognitive/co-activation',
+  '../lib/cognitive/co-activation',
   '../lib/cognitive/co-activation',
 ] as const;
 const originalCoactivationStrength = process.env.SPECKIT_COACTIVATION_STRENGTH;

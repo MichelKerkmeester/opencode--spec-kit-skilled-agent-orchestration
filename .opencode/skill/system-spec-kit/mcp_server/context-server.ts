@@ -74,12 +74,12 @@ import * as memoryParser from './lib/parsing/memory-parser';
 import { getSpecsBasePaths } from './lib/search/folder-discovery';
 import { isDegreeBoostEnabled, isFileWatcherEnabled } from './lib/search/search-flags';
 import { disposeLocalReranker } from './lib/search/local-reranker';
-import * as workingMemory from './lib/cache/cognitive/working-memory';
-import * as attentionDecay from './lib/cache/cognitive/attention-decay';
-import * as coActivation from './lib/cache/cognitive/co-activation';
+import * as workingMemory from './lib/cognitive/working-memory';
+import * as attentionDecay from './lib/cognitive/attention-decay';
+import * as coActivation from './lib/cognitive/co-activation';
 import { initScoringObservability } from './lib/telemetry/scoring-observability';
 // T059: Archival manager for automatic archival of ARCHIVED state memories
-import * as archivalManager from './lib/cache/cognitive/archival-manager';
+import * as archivalManager from './lib/cognitive/archival-manager';
 // T099: Retry manager for background embedding retry job (REQ-031, CHK-179)
 import * as retryManager from './lib/providers/retry-manager';
 import { buildErrorResponse } from './lib/errors';

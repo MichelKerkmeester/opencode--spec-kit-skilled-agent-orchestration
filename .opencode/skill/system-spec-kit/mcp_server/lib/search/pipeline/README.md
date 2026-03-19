@@ -21,11 +21,11 @@ A four-stage retrieval pipeline that takes a search query through candidate gene
 
 ## Table of Contents
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. PIPELINE STAGES](#3-pipeline-stages)
-- [4. KEY INVARIANTS](#4-key-invariants)
-- [5. RELATED DOCUMENTS](#5-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. STRUCTURE](#2--structure)
+- [3. PIPELINE STAGES](#3--pipeline-stages)
+- [4. KEY INVARIANTS](#4--key-invariants)
+- [5. RELATED DOCUMENTS](#5--related-documents)
 
 ---
 

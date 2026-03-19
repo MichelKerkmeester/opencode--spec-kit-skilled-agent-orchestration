@@ -4,7 +4,7 @@
 // Feature catalog: Feature flag governance
 // Phase-gated capability switches for the memory roadmap.
 // Defaults reflect the fully delivered rollout unless explicitly opted out.
-import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
+import { isFeatureEnabled } from '../cognitive/rollout-policy';
 
 // R6: Derive phase type from the canonical array to keep them in sync.
 const SUPPORTED_PHASES_ARRAY = ['baseline', 'lineage', 'graph', 'adaptive', 'scope-governance', 'shared-rollout'] as const;

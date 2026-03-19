@@ -1,21 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/017-stateless-quality-gates",
-  "description": "Feature Specification: Stateless Quality Gate Fixes — Tier Gate A into hard-block vs. soft-warning rules, add --stdin/--json CLI flags, and make the contamination filter source-aware for Claude Code captures",
+  "description": "Feature Specification: Stateless Quality Gate Fixes",
   "keywords": [
+    "feature",
+    "specification",
     "stateless",
-    "quality-gates",
-    "gate-a",
-    "tiering",
-    "v10",
-    "file-count-divergence",
-    "contamination",
-    "tool-title-with-path",
-    "stdin",
-    "generate-context",
-    "claude-code-capture",
-    "workflow"
+    "quality",
+    "gate",
+    "fixes"
   ],
-  "lastUpdated": "2026-03-18T12:00:00.000Z",
+  "lastUpdated": "2026-03-19T15:45:43.452Z",
   "specId": "017",
   "folderSlug": "stateless-quality-gates",
   "parentChain": [

@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 import type Database from 'better-sqlite3';
 
-import * as predictionErrorGate from '../../lib/cache/cognitive/prediction-error-gate';
+import * as predictionErrorGate from '../../lib/cognitive/prediction-error-gate';
 import type { ParsedMemory } from '../../lib/parsing/memory-parser';
 import { getMemoryHashSnapshot, appendMutationLedgerSafe } from '../memory-crud-utils';
 import {

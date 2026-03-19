@@ -41,8 +41,8 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-010 [P0] NEW-103 vitest suite (`hooks-ux-feedback.vitest.ts`) passes with no failing assertions covering latency/cache-clear booleans and finalized hint payload
-- [ ] CHK-011 [P0] NEW-104 vitest suite (`memory-save-ux-regressions.vitest.ts`) passes and assertions confirm no false `postMutationHooks` on no-op saves and atomic-save parity
+- [ ] CHK-010 [P0] NEW-103 vitest suite (`hooks-ux-feedback.vitest.ts`) passes all 6 tests with no failing assertions covering latency/cache-clear booleans, `errors: string[]` field in mutation feedback data, error propagation hint verification, and finalized hint payload
+- [ ] CHK-011 [P0] NEW-104 vitest suite (`memory-save-ux-regressions.vitest.ts`) passes and assertions confirm no false `postMutationHooks` on duplicate or unchanged saves, FSRS fields preserved on no-op saves, and atomic-save parity
 - [ ] CHK-012 [P0] NEW-105 vitest suite (`context-server.vitest.ts`) passes and assertions cover appended hints, preserved `autoSurfacedContext`, and finalized token metadata
 - [ ] CHK-013 [P1] NEW-106 ripgrep outputs confirm `mutation-feedback`, `response-hints`, `MutationHookResult`, and `postMutationHooks` appear in both the hooks barrel and hooks README file
 <!-- /ANCHOR:code-quality -->
@@ -54,7 +54,7 @@ contextType: "general"
 
 - [ ] CHK-020 [P0] All 5 UX-hooks scenarios have execution evidence tied to the exact documented prompt and command sequence
 - [ ] CHK-021 [P0] Every scenario has a PASS, PARTIAL, or FAIL verdict with rationale using the review protocol acceptance checks
-- [ ] CHK-022 [P0] NEW-107 three-suite run (`handler-checkpoints.vitest.ts`, `tool-input-schema.vitest.ts`, `mcp-input-validation.vitest.ts`) passes and proves missing-`confirmName` rejection plus `safetyConfirmationUsed=true` success
+- [ ] CHK-022 [P0] NEW-107 three-suite run (`handler-checkpoints.vitest.ts`, `tool-input-schema.vitest.ts`, `mcp-input-validation.vitest.ts`) plus `context-server.vitest.ts` Group 13b (T103–T106) passes and proves missing-`confirmName` rejection, `safetyConfirmationUsed=true` success, and structural source-code pattern verification
 - [ ] CHK-023 [P1] Coverage reported as 5/5 scenarios for Phase 018 with no skipped test IDs
 <!-- /ANCHOR:testing -->
 
@@ -76,7 +76,7 @@ contextType: "general"
 - [x] CHK-040 [P1] Spec, plan, tasks, and checklist are synchronized and cross-referenced [EVIDENCE: cross-file section and ID audit]
 - [x] CHK-041 [P1] All feature catalog links in scope table are verified against actual files in `../../feature_catalog/18--ux-hooks/` [EVIDENCE: link check against feature catalog files]
 - [ ] CHK-042 [P2] Evidence artifacts saved to `scratch/` before completion (if applicable)
-- [x] CHK-043 [P1] Playbook scenario rows for NEW-103 through NEW-107 confirmed as source of truth for all prompt and command content in this packet [EVIDENCE: prompt/command copy check against playbook rows]
+- [x] CHK-043 [P1] Playbook scenario rows for NEW-103 through NEW-107 confirmed as source of truth for all prompt and command content in this packet [EVIDENCE: re-aligned in post-096aeab9c verification pass on 2026-03-19]
 <!-- /ANCHOR:docs -->
 
 ---

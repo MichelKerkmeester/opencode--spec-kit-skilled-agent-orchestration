@@ -1,14 +1,14 @@
 {
-  "specFolder": "03--commands-and-skills/003-prompt-initial-creation",
+  "specFolder": "03--commands-and-skills/003-sk-prompt-initial-creation",
   "description": "Feature Specification: sk-prompt-improver",
   "keywords": [
     "feature",
     "specification",
     "sk-prompt-improver"
   ],
-  "lastUpdated": "2026-03-16T13:20:03.116Z",
+  "lastUpdated": "2026-03-19T15:45:44.508Z",
   "specId": "003",
-  "folderSlug": "003-prompt-initial-creation",
+  "folderSlug": "sk-prompt-initial-creation",
   "parentChain": [
     "03--commands-and-skills"
   ],

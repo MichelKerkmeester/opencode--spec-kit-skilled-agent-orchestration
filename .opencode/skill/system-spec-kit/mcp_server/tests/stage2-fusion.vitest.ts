@@ -22,7 +22,7 @@ vi.mock('../lib/graph/community-detection', () => ({
   applyCommunityBoost: <T>(rows: T[]) => rows,
 }));
 
-vi.mock('../lib/cache/cognitive/co-activation', () => ({
+vi.mock('../lib/cognitive/co-activation', () => ({
   isEnabled: () => false,
   spreadActivation: () => [],
   CO_ACTIVATION_CONFIG: { boostFactor: 0 },

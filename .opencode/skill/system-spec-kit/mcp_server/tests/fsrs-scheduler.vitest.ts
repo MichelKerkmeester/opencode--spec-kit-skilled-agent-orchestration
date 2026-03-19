@@ -2,24 +2,24 @@
 // 1. FSRS SCHEDULER TESTS
 // ───────────────────────────────────────────────────────────────
 import { describe, it, expect, beforeAll } from 'vitest';
-import { TIER_MULTIPLIER } from '../lib/cache/cognitive/fsrs-scheduler';
+import { TIER_MULTIPLIER } from '../lib/cognitive/fsrs-scheduler';
 
 // TEST: FSRS SCHEDULER (Vitest)
 // Covers: T016-T020, T034-T037, T048-T050
-type FsrsSchedulerModule = typeof import('../lib/cache/cognitive/fsrs-scheduler');
-type PredictionErrorGateModule = typeof import('../lib/cache/cognitive/prediction-error-gate');
+type FsrsSchedulerModule = typeof import('../lib/cognitive/fsrs-scheduler');
+type PredictionErrorGateModule = typeof import('../lib/cognitive/prediction-error-gate');
 
 let fsrsScheduler: FsrsSchedulerModule | null = null;
 let predictionErrorGate: PredictionErrorGateModule | null = null;
 
 beforeAll(async () => {
   try {
-    fsrsScheduler = await import('../lib/cache/cognitive/fsrs-scheduler');
+    fsrsScheduler = await import('../lib/cognitive/fsrs-scheduler');
   } catch {
     fsrsScheduler = null;
   }
   try {
-    predictionErrorGate = await import('../lib/cache/cognitive/prediction-error-gate');
+    predictionErrorGate = await import('../lib/cognitive/prediction-error-gate');
   } catch {
     predictionErrorGate = null;
   }

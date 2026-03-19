@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/007-cli-claude-code",
+  "specFolder": "03--commands-and-skills/007-cli-claude-code-creation",
   "description": "Feature Specification: cli-claude-code Skill",
   "keywords": [
     "feature",
@@ -7,9 +7,9 @@
     "cli-claude-code",
     "skill"
   ],
-  "lastUpdated": "2026-03-16T13:20:02.922Z",
+  "lastUpdated": "2026-03-19T15:45:44.552Z",
   "specId": "007",
-  "folderSlug": "007-cli-claude-code",
+  "folderSlug": "cli-claude-code-creation",
   "parentChain": [
     "03--commands-and-skills"
   ],

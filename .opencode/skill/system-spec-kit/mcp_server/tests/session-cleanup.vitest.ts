@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
 import * as sm from '../lib/session/session-manager';
-import * as wm from '../lib/cache/cognitive/working-memory';
+import * as wm from '../lib/cognitive/working-memory';
 import BetterSqlite3 from 'better-sqlite3';
 
 describe('T302: Session Cleanup Tests', () => {

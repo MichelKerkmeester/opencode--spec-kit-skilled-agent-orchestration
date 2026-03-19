@@ -7,7 +7,7 @@ import path from 'path';
 
 import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 // Import working-memory for immediate cleanup on session end (GAP 2).
-import * as workingMemory from '../cache/cognitive/working-memory';
+import * as workingMemory from '../cognitive/working-memory';
 
 // Feature catalog: Session-manager transaction gap fixes
 

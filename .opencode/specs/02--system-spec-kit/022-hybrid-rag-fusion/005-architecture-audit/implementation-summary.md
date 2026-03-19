@@ -1,25 +1,25 @@
 ---
-title: "Implementation Summary: Refinement Phase 13 + Boundary Remediation"
-description: "Phase 13 architecture audit and merged boundary-remediation execution summary for scripts vs mcp_server boundary work."
+title: "Implementation Summary: Refinement Phase 15 + Boundary Remediation"
+description: "Phase 15 architecture audit and merged boundary-remediation execution summary for scripts vs mcp_server boundary work."
 SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "020 implementation summary"
-  - "phase 0-13 architecture audit closure"
+  - "phase 0-15 architecture audit closure"
 importance_tier: "normal"
 contextType: "architecture"
 ---
-# Implementation Summary: Refinement Phase 13 + Boundary Remediation
+# Implementation Summary: Refinement Phase 15 + Boundary Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ## Overview
 
-This phase now reflects end-to-end closure through Phase 13: all 126 task entries (T000-T123, with T013 split into T013a/T013b/T013c) are complete. Initial delivery covered T000-T020 (core architecture refinement), follow-up remediation/parity waves closed T021-T073, merged carry-over execution closed T074-T090, strict-pass documentation remediation closed T091-T099, executable naming-regression verification closed T100-T104, direct-save collector-path follow-up closed T105-T109, explicit CLI target authority closure closed T110-T114, explicit phase-folder target-authority closure covered T115-T118, and indexed direct-save render/quality closure completed T119-T123.
+This phase now reflects end-to-end closure through Phase 15: all 142 task entries (T000-T139, with T013 split into T013a/T013b/T013c) are complete. Initial delivery covered T000-T020 (core architecture refinement), follow-up remediation/parity waves closed T021-T073, merged carry-over execution closed T074-T090, strict-pass documentation remediation closed T091-T099, executable naming-regression verification closed T100-T104, direct-save collector-path follow-up closed T105-T109, explicit CLI target authority closure closed T110-T114, explicit phase-folder target-authority closure covered T115-T118, indexed direct-save render/quality closure completed T119-T123, README audit closure completed T124-T129, and internal module boundary remediation completed T130-T139.
 
 > **Note:** Test counts cited below are point-in-time snapshots captured at each phase's closure. Downstream work (e.g., spec 013) may have added tests to the same files, so re-running commands today may yield higher counts.
 
-As of 2026-03-05, former spec `005-architecture-audit` was merged into this phase folder. Its pending work is now completed under Phase 7 (`T074-T090`) with closure evidence captured on 2026-03-06. Phase 8 then closed the remaining non-spec documentation drift and completed the final spec-evidence backfill. Phase 10 preserves the historical note that its direct-save seam was discovered only after Phase 9 had already closed in scope. Phase 11 closed the adjacent explicit-target routing bug by verifying direct CLI save targets remain authoritative. Phase 13 preserves the next follow-up history as well: after Phase 10/11 naming and routing closures, the remaining defect was narrowed to indexed direct-save render/quality output and root-save indexing quality, not another naming-selection regression.
+As of 2026-03-05, former spec `005-architecture-audit` was merged into this phase folder. Its pending work is now completed under Phase 7 (`T074-T090`) with closure evidence captured on 2026-03-06. Phase 8 then closed the remaining non-spec documentation drift and completed the final spec-evidence backfill. Phase 10 preserves the historical note that its direct-save seam was discovered only after Phase 9 had already closed in scope. Phase 11 closed the adjacent explicit-target routing bug by verifying direct CLI save targets remain authoritative. Phase 13 preserves the next follow-up history as well: after Phase 10/11 naming and routing closures, the remaining defect was narrowed to indexed direct-save render/quality output and root-save indexing quality, not another naming-selection regression. Phase 14 then closed the README audit, and Phase 15 completed the internal module boundary remediation plus the source-dist alignment enforcement follow-through.
 
 ## Approach
 
@@ -120,6 +120,8 @@ Originally planned as 10 Codex CLI agent delegations in 2 waves, but Codex agent
 - Phase 13 indexed direct-save render/quality regressions passed on 2026-03-06: from `.opencode/skill/system-spec-kit`, `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` returned PASS `31/31` tests.
 - Phase 13 scripts lint passed on 2026-03-06: `npm run lint --prefix ".opencode/skill/system-spec-kit/scripts"`.
 - Phase 13 indexed root-save proof succeeded on 2026-03-06: `specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/06-03-26_15-07__phase-13-indexed-direct-save-closure.md` was saved with a non-generic filename, indexed as memory `#1201`, and recorded no `QUALITY_GATE_FAIL` plus no skipped indexing.
+- Follow-up audit remediation passed on 2026-03-19: `npm run check --workspace=scripts` now includes `check-source-dist-alignment.ts`, `npx tsc --noEmit` passes, and `npx ts-node --transpile-only scripts/evals/check-source-dist-alignment.ts` reports `148` scanned / `148` aligned / `0` violations.
+- Follow-up documentation remediation passed on 2026-03-19: `python3 .opencode/skill/sk-doc/scripts/validate_document.py` now passes for the Phase 15 feature-catalog and manual-testing additions plus the previously drifted README/playbook docs touched by this remediation.
 
 ## Triple Ultra-Think Cross-AI Review (2026-03-04)
 
@@ -339,6 +341,39 @@ Phase 13 indexed direct-save render/quality follow-up (`T119-T123`) is complete.
 
 No remaining Phase 13 verification gap remains in this spec folder.
 
+## Phase 14 Closure (2026-03-08)
+
+Phase 14 (`T124-T129`) closed the README audit across `mcp_server/`, `scripts/`, and `shared/`.
+
+### What Was Closed
+
+- 14 missing READMEs were added in previously undocumented source folders.
+- 50+ existing READMEs were reviewed for content drift; 26 required updates and 25 passed without changes.
+- Frontmatter, banned-word, and cross-reference expectations were reconciled with the active `sk-doc` validator so the audit trail reflects executable validation rather than agent assertions alone.
+
+### Verification Evidence
+
+- `find` scan confirmed 0 source folders without README.
+- `grep` scan confirmed 0 HVR-banned words in the audited README set.
+- Follow-up `validate_document.py` runs now pass for the README files touched during this remediation, including prior anchor-format drift.
+
+## Phase 15 Closure (2026-03-19)
+
+Phase 15 (`T130-T139`) closed the internal module boundary remediation inside `mcp_server/lib/`.
+
+### What Was Closed
+
+- Removed the `lib/cache/cognitive -> ../cognitive` symlink and migrated all remaining imports to canonical `lib/cognitive/*` paths.
+- Added `scripts/evals/check-source-dist-alignment.ts` and wired it into `npm run check --workspace=scripts` so source-dist drift is enforced in both local and CI baseline checks.
+- Added `mcp_server/lib/MODULE_MAP.md`, updated Phase 15 feature-catalog and testing-playbook entries, and cleaned stale cache/scoring proxy documentation.
+
+### Verification Evidence
+
+- `find mcp_server/lib -type l` returns no results.
+- `npm run check --workspace=scripts` passes with the new source-dist stage included.
+- `npx ts-node --transpile-only scripts/evals/check-source-dist-alignment.ts` reports `148` scanned, `148` aligned, `0` violations.
+- `python3 .opencode/skill/sk-doc/scripts/validate_document.py` passes for `ARCHITECTURE.md`, `MODULE_MAP.md`, the Phase 15 feature-catalog entries, and the Phase 15 manual-testing playbook entries.
+
 ## Post-Review Remediation (2026-03-06)
 
 A 10-agent thorough review (`scratch/review-2026-03-06/`) produced a unified synthesis with verdict **PASS WITH CONCERNS**. All P0 (2) and P1 (4) recommendations plus 8 additional minor findings were fixed in a single remediation pass.
@@ -351,7 +386,7 @@ A 10-agent thorough review (`scratch/review-2026-03-06/`) produced a unified syn
 
 **P1 Fixes (4):**
 - Added "Post-Phase 8 AST Enforcement Addendum" to ADR-006 documenting active CI status and residual risk (`decision-record.md`)
-- Reconciled task count to "126 task entries (124 IDs; T013 split into T013a/b/c)" across `plan.md` and `implementation-summary.md`
+- Reconciled task count to "142 task entries (140 IDs; T013 split into T013a/b/c)" across `plan.md` and `implementation-summary.md`
 - Added Phase 12 to effort table, critical path, L3 list, and milestones in `plan.md`
 - Fixed ADR-004 verb "We propose" → "We chose" (`decision-record.md`)
 
@@ -360,7 +395,7 @@ A 10-agent thorough review (`scratch/review-2026-03-06/`) produced a unified syn
 - Fixed CHK-201 stale exception count (6→2) in `checklist.md`
 - Fixed ADR-002 Five Checks item 5 "Yes" → "Controlled" (`decision-record.md`)
 - Fixed first remediation breakdown 7/8 → 6/9 (`implementation-summary.md`)
-- Updated stale trigger phrase to "phase 0-13 architecture audit closure" (`implementation-summary.md`)
+- Updated closure wording to the active Phase 15 scope in `implementation-summary.md`
 - Resolved Section 12 open questions with ADR references (`spec.md`)
 - Added test count snapshot disclaimer note (`implementation-summary.md`)
 - Fixed Phase 8 task range T091-T096 → T091-T099 (`plan.md`)

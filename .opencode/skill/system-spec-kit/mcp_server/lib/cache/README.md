@@ -59,13 +59,11 @@ The cache module provides in-memory caching for MCP tool outputs to reduce redun
 
 ```
 cache/
-├── tool-cache.ts       # Core tool output caching implementation
-├── embedding-cache.ts  # Persistent SQLite embedding cache with LRU eviction (Sprint 3)
-├── scoring/            # Barrel re-export of composite scoring into cache namespace
-│   ├── composite-scoring.ts  # Re-exports from ../../scoring/composite-scoring
+├── tool-cache.ts          # Core in-memory tool output cache
+├── embedding-cache.ts     # Persistent SQLite embedding cache with LRU eviction
+├── scoring/               # Scoring namespace re-export
 │   └── README.md             # Scoring re-export documentation
-├── cognitive -> ../cognitive  # Symlink to cognitive module
-└── README.md           # This file
+└── README.md              # This file
 ```
 
 ### Key Files
@@ -74,6 +72,7 @@ cache/
 |------|---------|
 | `tool-cache.ts` | Cache implementation with TTL, LRU eviction, invalidation and statistics |
 | `embedding-cache.ts` | Persistent SQLite embedding cache: avoids re-computing embeddings for identical content. Uses content-hash + model-ID keys with LRU eviction (Sprint 3) |
+| `scoring/README.md` | Documentation for cache-scoped scoring re-exports |
 
 <!-- /ANCHOR:structure -->
 
@@ -137,6 +136,10 @@ await withCache(toolName, args, asyncFn, options);
 | `hitRate` | Percentage of hits vs total requests |
 
 **Exported constant:** `CONFIG` (aliased from `TOOL_CACHE_CONFIG`)
+
+### Scoring Subdirectory (`scoring/`)
+
+The `scoring/` subdirectory previously contained a barrel re-export of composite scoring. The re-export proxy was removed in Phase 15 after confirming zero consumers. Import scoring directly from `lib/scoring/`.
 
 ### Embedding Cache (`embedding-cache.ts`)
 
@@ -235,12 +238,13 @@ const stats = getStats();
 
 | Module | Relationship |
 |--------|--------------|
-| `context-server.ts` | Integrates caching for tool operations |
-| `lib/search/` | Search operations benefit from caching |
+| `tool-cache.ts` | In-memory cache lifecycle, invalidation, and stats APIs |
+| `embedding-cache.ts` | Persistent embedding cache keyed by content hash + model |
+| `scoring/` | Re-export surface for composite scoring in cache namespace |
 
 <!-- /ANCHOR:related -->
 
 ---
 
 **Version**: 1.9.0
-**Last Updated**: 2026-02-27
+**Last Updated**: 2026-03-19

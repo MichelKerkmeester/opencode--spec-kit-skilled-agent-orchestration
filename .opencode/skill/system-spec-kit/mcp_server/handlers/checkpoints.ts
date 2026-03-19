@@ -15,7 +15,7 @@ import { executeAutoPromotion } from '../lib/search/auto-promotion';
 import { recordSelection } from '../lib/search/learned-feedback';
 import { recordUserSelection } from '../lib/eval/ground-truth-feedback';
 import { recordNegativeFeedbackEvent } from '../lib/scoring/negative-feedback';
-import { recordAdaptiveSignal } from '../lib/cache/cognitive/adaptive-ranking';
+import { recordAdaptiveSignal } from '../lib/cognitive/adaptive-ranking';
 import { checkDatabaseUpdated } from '../core';
 import { requireDb, toErrorMessage } from '../utils';
 

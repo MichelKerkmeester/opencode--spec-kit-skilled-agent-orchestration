@@ -36,19 +36,19 @@ Canonical source artifacts:
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. GLOBAL PRECONDITIONS](#2-global-preconditions)
-- [3. GLOBAL EVIDENCE REQUIREMENTS](#3-global-evidence-requirements)
-- [4. DETERMINISTIC COMMAND NOTATION](#4-deterministic-command-notation)
-- [5. REVIEW PROTOCOL AND RELEASE READINESS](#5-review-protocol-and-release-readiness)
-- [6. SUB-AGENT ORCHESTRATION AND WAVE PLANNING](#6-sub-agent-orchestration-and-wave-planning)
-- [7. EXISTING FEATURES](#7-existing-features)
-- [8. NEW FEATURES](#8-new-features)
-- [9. PHASE SYSTEM FEATURES](#9-phase-system-features)
-- [10. DEDICATED MEMORY/SPEC-KIT SCENARIOS](#10-dedicated-memoryspec-kit-scenarios-required)
-- [11. AUTOMATED TEST CROSS-REFERENCE](#11-automated-test-cross-reference)
-- [12. FEATURE CATALOG CROSS-REFERENCE INDEX](#12-feature-catalog-cross-reference-index)
-- [13. GEMINI OVERLAY SCENARIO PACKS](#13-gemini-overlay-scenario-packs)
+- [1. OVERVIEW](#1--overview)
+- [2. GLOBAL PRECONDITIONS](#2--global-preconditions)
+- [3. GLOBAL EVIDENCE REQUIREMENTS](#3--global-evidence-requirements)
+- [4. DETERMINISTIC COMMAND NOTATION](#4--deterministic-command-notation)
+- [5. REVIEW PROTOCOL AND RELEASE READINESS](#5--review-protocol-and-release-readiness)
+- [6. SUB-AGENT ORCHESTRATION AND WAVE PLANNING](#6--sub-agent-orchestration-and-wave-planning)
+- [7. EXISTING FEATURES](#7--existing-features)
+- [8. NEW FEATURES](#8--new-features)
+- [9. PHASE SYSTEM FEATURES](#9--phase-system-features)
+- [10. DEDICATED MEMORY/SPEC-KIT SCENARIOS](#10--dedicated-memoryspec-kit-scenarios-required)
+- [11. AUTOMATED TEST CROSS-REFERENCE](#11--automated-test-cross-reference)
+- [12. FEATURE CATALOG CROSS-REFERENCE INDEX](#12--feature-catalog-cross-reference-index)
+- [13. GEMINI OVERLAY SCENARIO PACKS](#13--gemini-overlay-scenario-packs)
 
 ---
 
@@ -2212,9 +2212,10 @@ Context-server suite passes with end-to-end assertions for appended hints, prese
 Confirm hooks index exports and docs cover the finalized modules and contract fields.
 
 #### Current Reality
-Prompt: `Validate hook barrel and README coverage for the finalized UX-hook surface. Capture the evidence needed to prove response-hints" .opencode/skill/system-spec-kit/mcp_server/hooks/index.ts 2) rg "mutation-feedback. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate hook barrel and README coverage for the finalized UX-hook surface. Capture the evidence needed to prove Both barrel and README reference mutation-feedback, response-hints, MutationHookResult, and postMutationHooks. Return a concise user-facing pass/fail verdict with the main reason.`
 
-response-hints" .opencode/skill/system-spec-kit/mcp_server/hooks/index.ts` 2) `rg "mutation-feedback
+Expected signals: Both barrel (`hooks/index.ts`) and README (`hooks/README.md`) reference `mutation-feedback`, `response-hints`, `MutationHookResult`, and `postMutationHooks`
+Pass/fail: PASS if both files reference the new modules and contract fields
 
 #### Test Execution
 > **Feature File:** [NEW-106](18--ux-hooks/106-hooks-barrel-readme-synchronization.md)
@@ -2895,8 +2896,8 @@ These 30 catalog entries are explicitly documented here even when validation is 
 | `16--tooling-and-scripts/02-architecture-boundary-enforcement.md` | Build-time only | Enforced by build/test tooling rather than runtime playbook steps |
 | `16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md` | Automated only | Covered by `mcp_server/tests/file-watcher.vitest.ts`; no dedicated manual operator scenario yet |
 | `18--ux-hooks/01-shared-post-mutation-hook-wiring.md` | Indirect scenario coverage | Covered by NEW-085, NEW-103, and NEW-104 |
-| `18--ux-hooks/02-memory-health-autorepair-metadata.md` | Manual + automated | Covered by EX-013 (health diagnostics) |
-| `18--ux-hooks/04-schema-and-type-contract-synchronization.md` | Build-time only | Verified by NEW-095 and schema/type checks |
+| `18--ux-hooks/02-memory-health-autorepair-metadata.md` | Automated only | Covered by `handler-memory-health-edge.vitest.ts` and `memory-crud-extended.vitest.ts` (autoRepair, confirmation-only, partialSuccess). EX-013 covers basic health diagnostics only |
+| `18--ux-hooks/04-schema-and-type-contract-synchronization.md` | Indirect scenario coverage | Covered by NEW-107 (confirmName enforcement) and hook-contract tests. NEW-095 covers strict-param rejection only |
 | `18--ux-hooks/06-mutation-hook-result-contract-expansion.md` | Indirect scenario coverage | Covered by NEW-103 |
 | `18--ux-hooks/07-mutation-response-ux-payload-exposure.md` | Indirect scenario coverage | Covered by NEW-104 |
 | `18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md` | Indirect scenario coverage | Covered by NEW-104 |
@@ -3208,6 +3209,9 @@ This split playbook keeps automated coverage references in three places:
 | NEW-147 | New Features | Constitutional memory manager command | [NEW-147](16--tooling-and-scripts/147-constitutional-memory-manager-command.md) | [16--tooling-and-scripts/13-constitutional-memory-manager-command.md](../feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md) |
 | NEW-148 | New Features | Shared-memory disabled-by-default and first-run setup | [NEW-148](17--governance/148-shared-memory-disabled-by-default-and-first-run-setup.md) | [17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md](../feature_catalog/17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md) |
 | NEW-149 | New Features | Rendered memory template contract | [NEW-149](16--tooling-and-scripts/149-rendered-memory-template-contract.md) | [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) |
+| NEW-150 | New Features | Source-dist alignment validation | [NEW-150](16--tooling-and-scripts/150-source-dist-alignment-validation.md) | [16--tooling-and-scripts/14-source-dist-alignment-enforcement.md](../feature_catalog/16--tooling-and-scripts/14-source-dist-alignment-enforcement.md) |
+| NEW-151 | New Features | MODULE_MAP.md accuracy validation | [NEW-151](16--tooling-and-scripts/151-module-map-accuracy.md) | [16--tooling-and-scripts/15-module-boundary-map.md](../feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md) |
+| NEW-152 | New Features | No symlinks in lib/ tree | [NEW-152](16--tooling-and-scripts/152-no-symlinks-in-lib-tree.md) | [16--tooling-and-scripts/15-module-boundary-map.md](../feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md) |
 | PHASE-001 | Phase System Features | Phase detection scoring | [PHASE-001](16--tooling-and-scripts/001-phase-detection-scoring.md) |  |
 | PHASE-002 | Phase System Features | Phase folder creation | [PHASE-002](16--tooling-and-scripts/002-phase-folder-creation.md) |  |
 | PHASE-003 | Phase System Features | Recursive phase validation | [PHASE-003](16--tooling-and-scripts/003-recursive-phase-validation.md) |  |

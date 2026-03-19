@@ -29,7 +29,7 @@ Rollback is immediate via feature gating (`SPECKIT_MEMORY_ADAPTIVE_RANKING`). Wh
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/cache/cognitive/adaptive-ranking.ts` | Lib | Adaptive proposal generation and bounded delta logic |
+| `mcp_server/lib/cognitive/adaptive-ranking.ts` | Lib | Adaptive proposal generation and bounded delta logic |
 | `mcp_server/lib/storage/access-tracker.ts` | Lib | Access-signal capture feeding adaptive proposals |
 | `mcp_server/handlers/memory-search.ts` | Handler | Shadow proposal exposure in search responses |
 | `mcp_server/handlers/checkpoints.ts` | Handler | Rollback-compatible checkpoint flow for adaptive rollout operations |

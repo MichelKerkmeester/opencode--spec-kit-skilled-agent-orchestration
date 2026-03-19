@@ -9,9 +9,9 @@
     "codex",
     "compatibility"
   ],
-  "lastUpdated": "2026-03-16T13:20:02.817Z",
+  "lastUpdated": "2026-03-19T15:45:44.592Z",
   "specId": "013",
-  "folderSlug": "013-cmd-create-codex-compatibility",
+  "folderSlug": "cmd-create-codex-compatibility",
   "parentChain": [
     "03--commands-and-skills"
   ],

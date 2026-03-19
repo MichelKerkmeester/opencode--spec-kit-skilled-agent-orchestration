@@ -335,13 +335,13 @@ describe('T003a: Co-Activation Boost Strength', () => {
 
   describe('Default boost strength (0.25)', () => {
     it('DEFAULT_COACTIVATION_STRENGTH is exported and equals 0.25', async () => {
-      const mod = await import('../lib/cache/cognitive/co-activation');
+      const mod = await import('../lib/cognitive/co-activation');
       expect(mod.DEFAULT_COACTIVATION_STRENGTH).toBe(0.25);
     });
 
     it('boostFactor defaults to 0.25 when SPECKIT_COACTIVATION_STRENGTH is not set', async () => {
       // When env var is unset, parseFloat uses DEFAULT_COACTIVATION_STRENGTH
-      const mod = await import('../lib/cache/cognitive/co-activation');
+      const mod = await import('../lib/cognitive/co-activation');
       // The env var may or may not be set in test env.
       // If not set, boostFactor should be 0.25.
       // If set, it should be the parsed value.
@@ -354,7 +354,7 @@ describe('T003a: Co-Activation Boost Strength', () => {
 
   describe('boostScore with higher boost factor', () => {
     it('boostScore applies the configured boostFactor', async () => {
-      const mod = await import('../lib/cache/cognitive/co-activation');
+      const mod = await import('../lib/cognitive/co-activation');
       const { boostScore, CO_ACTIVATION_CONFIG } = mod;
 
       // With boostFactor=0.25, maxRelated=5, relatedCount=5, avgSimilarity=100:
@@ -373,12 +373,12 @@ describe('T003a: Co-Activation Boost Strength', () => {
     });
 
     it('boostScore returns base score when relatedCount is 0', async () => {
-      const { boostScore } = await import('../lib/cache/cognitive/co-activation');
+      const { boostScore } = await import('../lib/cognitive/co-activation');
       expect(boostScore(0.7, 0, 90)).toBe(0.7);
     });
 
     it('boostScore exhibits fan-effect: more relations = less total boost', async () => {
-      const { boostScore } = await import('../lib/cache/cognitive/co-activation');
+      const { boostScore } = await import('../lib/cognitive/co-activation');
       const base = 0.5;
       const avgSim = 80;
 
@@ -395,14 +395,14 @@ describe('T003a: Co-Activation Boost Strength', () => {
 
   describe('Fan-effect divisor still works with higher boost factor', () => {
     it('spreadActivation applies decay per hop', async () => {
-      const mod = await import('../lib/cache/cognitive/co-activation');
+      const mod = await import('../lib/cognitive/co-activation');
       // The spread activation function uses decayPerHop = 0.5
       // This means each hop reduces the score by half
       expect(mod.CO_ACTIVATION_CONFIG.decayPerHop).toBe(0.5);
     });
 
     it('boostScore scales with avgSimilarity (fan-effect interaction)', async () => {
-      const { boostScore } = await import('../lib/cache/cognitive/co-activation');
+      const { boostScore } = await import('../lib/cognitive/co-activation');
       const base = 0.5;
       const count = 3;
 
@@ -417,7 +417,7 @@ describe('T003a: Co-Activation Boost Strength', () => {
     });
 
     it('Higher default boost (0.25) produces stronger boost than old default (0.15)', async () => {
-      const mod = await import('../lib/cache/cognitive/co-activation');
+      const mod = await import('../lib/cognitive/co-activation');
       const { boostScore, CO_ACTIVATION_CONFIG } = mod;
 
       // Calculate what the boost would be with the new factor

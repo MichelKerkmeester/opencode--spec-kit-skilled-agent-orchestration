@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 import * as memorySearchHandler from '../handlers/memory-search.js';
-import * as fsrsScheduler from '../lib/cache/cognitive/fsrs-scheduler.js';
+import * as fsrsScheduler from '../lib/cognitive/fsrs-scheduler.js';
 import * as vectorIndex from '../lib/search/vector-index.js';
 import * as hybridSearch from '../lib/search/hybrid-search.js';
 import * as rrfFusion from '@spec-kit/shared/algorithms/rrf-fusion.js';

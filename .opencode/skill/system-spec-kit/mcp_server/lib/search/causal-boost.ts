@@ -5,7 +5,7 @@
 // Graph-traversal score boosting via causal edge relationships.
 // Walks the causal_edges graph up to MAX_HOPS, amplifying scores
 // For results related to top seed results via weighted CTE.
-import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
+import { isFeatureEnabled } from '../cognitive/rollout-policy';
 
 import type Database from 'better-sqlite3';
 

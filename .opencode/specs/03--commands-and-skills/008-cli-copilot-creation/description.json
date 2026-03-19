@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/008-cli-copilot",
+  "specFolder": "03--commands-and-skills/008-cli-copilot-creation",
   "description": "Feature Specification: cli-copilot Skill",
   "keywords": [
     "feature",
@@ -7,9 +7,9 @@
     "cli-copilot",
     "skill"
   ],
-  "lastUpdated": "2026-03-16T13:20:02.927Z",
+  "lastUpdated": "2026-03-19T15:45:44.558Z",
   "specId": "008",
-  "folderSlug": "008-cli-copilot",
+  "folderSlug": "cli-copilot-creation",
   "parentChain": [
     "03--commands-and-skills"
   ],

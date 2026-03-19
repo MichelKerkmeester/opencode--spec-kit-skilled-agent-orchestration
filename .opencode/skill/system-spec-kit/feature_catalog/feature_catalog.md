@@ -3331,6 +3331,42 @@ See [`16--tooling-and-scripts/13-constitutional-memory-manager-command.md`](16--
 
 ---
 
+### Source-dist alignment enforcement
+
+#### Description
+
+Source-dist alignment enforcement validates that every `.js` file in `mcp_server/dist/lib/` has a corresponding `.ts` source file in `mcp_server/lib/`, detecting orphaned build artifacts that persist after source files are deleted or refactored.
+
+#### Current Reality
+
+`check-source-dist-alignment.ts` maps each `.js` file under `dist/lib/` to its expected `.ts` source under `lib/`, reports mismatches, and exits non-zero on violations. Supports a typed allowlist for intentional exceptions. Added in Phase 15 after discovering orphaned dist artifacts (`retry.js`, `hydra-baseline.js`). Policy documented in `ARCHITECTURE.md` under "Source-Dist Alignment Enforcement".
+
+#### Source Files
+
+See [`16--tooling-and-scripts/14-source-dist-alignment-enforcement.md`](16--tooling-and-scripts/14-source-dist-alignment-enforcement.md) for full implementation and verification file listings.
+
+> **Playbook:** [NEW-150](../manual_testing_playbook/manual_testing_playbook.md)
+
+---
+
+### Module boundary map
+
+#### Description
+
+MODULE_MAP.md documents internal module ownership, dependency directions, feature catalog mapping, and canonical locations for all 26 `lib/` subdirectories. It makes module boundaries explicit for dead-code analysis, refactoring, and dependency enforcement.
+
+#### Current Reality
+
+`mcp_server/lib/MODULE_MAP.md` contains five sections: module inventory (26 entries), feature catalog crosswalk, dependency directions (enforcement deferred), canonical locations, and a no-symlinks policy in `ARCHITECTURE.md`. Created in Phase 15 after discovering symlink-masked dependencies.
+
+#### Source Files
+
+See [`16--tooling-and-scripts/15-module-boundary-map.md`](16--tooling-and-scripts/15-module-boundary-map.md) for full implementation and verification file listings.
+
+> **Playbook:** [NEW-151](../manual_testing_playbook/manual_testing_playbook.md), [NEW-152](../manual_testing_playbook/manual_testing_playbook.md)
+
+---
+
 ### Migration checkpoint scripts
 
 #### Description

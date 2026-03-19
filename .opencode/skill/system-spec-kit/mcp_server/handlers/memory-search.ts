@@ -36,7 +36,7 @@ import type { MCPResponse, IntentClassification } from './types';
 
 // Retrieval trace contracts (C136-08)
 import { createTrace } from '@spec-kit/shared/contracts/retrieval-trace';
-import { buildAdaptiveShadowProposal } from '../lib/cache/cognitive/adaptive-ranking';
+import { buildAdaptiveShadowProposal } from '../lib/cognitive/adaptive-ranking';
 import { normalizeScopeContext } from '../lib/governance/scope-governance';
 import {
   attachSessionTransitionTrace,

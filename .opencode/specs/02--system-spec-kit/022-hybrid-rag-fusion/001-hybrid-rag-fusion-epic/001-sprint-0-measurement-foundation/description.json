@@ -1,11 +1,21 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation",
   "description": "Feature Specification: Sprint 0 — Measurement Foundation",
-  "keywords": ["sprint", "0", "measurement", "foundation", "graph", "eval", "BM25", "baseline"],
-  "lastUpdated": "2026-03-16T21:00:00.000Z",
+  "keywords": [
+    "feature",
+    "specification",
+    "sprint",
+    "measurement",
+    "foundation"
+  ],
+  "lastUpdated": "2026-03-19T15:45:43.102Z",
   "specId": "001",
   "folderSlug": "sprint-0-measurement-foundation",
-  "parentChain": ["02--system-spec-kit", "022-hybrid-rag-fusion", "001-hybrid-rag-fusion-epic"],
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "001-hybrid-rag-fusion-epic"
+  ],
   "memorySequence": 0,
   "memoryNameHistory": []
 }

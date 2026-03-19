@@ -35,7 +35,7 @@ vi.mock('../lib/graph/graph-signals', () => ({
   clearGraphSignalsCache: mockClearGraphSignalsCache,
 }));
 
-vi.mock('../lib/cache/cognitive/co-activation', () => ({
+vi.mock('../lib/cognitive/co-activation', () => ({
   clearRelatedCache: mockClearRelatedCache,
 }));
 

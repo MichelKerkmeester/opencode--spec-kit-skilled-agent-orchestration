@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
 
-import * as mod from '../lib/cache/cognitive/temporal-contiguity';
+import * as mod from '../lib/cognitive/temporal-contiguity';
 import BetterSqlite3 from 'better-sqlite3';
 
 describe('Temporal Contiguity Tests (T502)', () => {

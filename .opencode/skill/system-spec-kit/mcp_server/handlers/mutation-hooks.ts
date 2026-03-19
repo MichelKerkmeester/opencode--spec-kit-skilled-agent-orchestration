@@ -5,7 +5,7 @@ import * as triggerMatcher from '../lib/parsing/trigger-matcher';
 import * as toolCache from '../lib/cache/tool-cache';
 import { clearConstitutionalCache } from '../hooks/memory-surface';
 import { clearGraphSignalsCache } from '../lib/graph/graph-signals';
-import { clearRelatedCache } from '../lib/cache/cognitive/co-activation';
+import { clearRelatedCache } from '../lib/cognitive/co-activation';
 
 import type { MutationHookResult } from './memory-crud-types';
 

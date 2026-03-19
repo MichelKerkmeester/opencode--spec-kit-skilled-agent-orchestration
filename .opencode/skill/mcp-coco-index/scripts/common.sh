@@ -90,7 +90,7 @@ _python_meets_minimum() {
 
 find_python_bin() {
     local candidate
-    for candidate in python3.13 python3.12 python3.11 python3; do
+    for candidate in python3.11 python3.12 python3.13 python3; do
         if command -v "$candidate" >/dev/null 2>&1 && _python_meets_minimum "$candidate"; then
             printf '%s\n' "$candidate"
             return 0

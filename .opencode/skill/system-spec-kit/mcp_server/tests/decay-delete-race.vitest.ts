@@ -3,8 +3,8 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
-import * as wm from '../lib/cache/cognitive/working-memory';
-import { DECAY_FLOOR, DELETE_THRESHOLD } from '../lib/cache/cognitive/working-memory';
+import * as wm from '../lib/cognitive/working-memory';
+import { DECAY_FLOOR, DELETE_THRESHOLD } from '../lib/cognitive/working-memory';
 import BetterSqlite3 from 'better-sqlite3';
 
 describe('T214: Decay/Delete Race Condition', () => {

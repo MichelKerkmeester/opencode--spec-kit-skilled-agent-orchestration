@@ -172,6 +172,22 @@ Each zone has a clear owner and purpose. Cross-zone imports follow strict direct
 
 `dist/` directories under `shared/`, `scripts/` and `mcp_server/` are generated build outputs produced from TypeScript sources via the build process (`tsc --build`). They can run at runtime, but they are not source-of-truth code or documentation and should not be committed to version control. Edit the authored `.ts` and `.md` files in package roots, then rebuild. Scripts or documentation that reference `dist/` files for execution (e.g., `node scripts/dist/memory/generate-context.js`) are referencing the generated runtime entry point, not canonical source.
 
+#### No Symlinks in lib/ Tree
+
+**Policy**: No symlinks are permitted within `mcp_server/lib/`. All import paths must resolve through real filesystem paths.
+
+**Rationale**: Symlinks create invisible indirection that breaks grep, IDE navigation, dead-code analysis, and static dependency tooling.
+
+**Enforcement**: Visual inspection and `find -type l` checks during code review.
+
+#### Source-Dist Alignment Enforcement
+
+**Policy**: Every `.js` file in `mcp_server/dist/lib/` must have a corresponding `.ts` source file.
+
+**Rationale**: Source files can be silently lost while compiled `dist/` output persists, creating orphaned artifacts.
+
+**Enforcement**: `scripts/evals/check-source-dist-alignment.ts` (run via `npm run check --workspace=scripts` and the boundary-enforcement CI workflow).
+
 ### Test Placement Rule
 
 Keep authored tests with the package they verify. Runtime behavior belongs under `mcp_server/tests/`. Do not add hand-written tests under any `dist/` directory. Validate generated output by building from source and running source-owned tests or smoke commands.

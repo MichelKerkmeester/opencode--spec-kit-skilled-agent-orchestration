@@ -5,7 +5,7 @@ import {
   INACTIVE_POLICY_WARNING,
   FOCUSED_THRESHOLD,
   QUICK_THRESHOLD,
-} from '../lib/cache/cognitive/pressure-monitor';
+} from '../lib/cognitive/pressure-monitor';
 
 describe('Pressure Monitor (T016-T017)', () => {
   it('uses caller tokenUsage when provided (55%, 65%, 85%, 95%)', () => {

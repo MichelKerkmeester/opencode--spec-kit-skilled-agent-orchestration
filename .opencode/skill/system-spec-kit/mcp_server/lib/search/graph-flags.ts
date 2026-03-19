@@ -4,7 +4,7 @@
 // Feature catalog: Typed-weighted degree channel
 // Legacy compatibility shim retained for test/runtime imports.
 
-import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
+import { isFeatureEnabled } from '../cognitive/rollout-policy';
 import {
   resolveGraphWalkRolloutState,
   type GraphWalkRolloutState,

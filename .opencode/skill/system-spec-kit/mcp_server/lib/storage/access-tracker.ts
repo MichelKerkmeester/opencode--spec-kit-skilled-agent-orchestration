@@ -4,7 +4,7 @@
 // Feature catalog: Access-driven popularity scoring
 // Batched access tracking with accumulator
 import type Database from 'better-sqlite3';
-import { recordAdaptiveSignal } from '../cache/cognitive/adaptive-ranking';
+import { recordAdaptiveSignal } from '../cognitive/adaptive-ranking';
 
 /* ───────────────────────────────────────────────────────────────
    1. CONSTANTS

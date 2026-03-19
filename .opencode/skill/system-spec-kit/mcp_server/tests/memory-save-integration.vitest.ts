@@ -2,7 +2,7 @@
 import { describe, it, expect } from 'vitest';
 
 import * as memorySaveHandler from '../handlers/memory-save';
-import * as predictionErrorGate from '../lib/cache/cognitive/prediction-error-gate';
+import * as predictionErrorGate from '../lib/cognitive/prediction-error-gate';
 
 function makeCandidate(
   overrides: Partial<{

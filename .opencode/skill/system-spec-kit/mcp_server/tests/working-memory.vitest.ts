@@ -1,7 +1,7 @@
 // TEST: WORKING MEMORY — vitest
 // Aligned with production working-memory.ts named exports
 import { describe, it, expect } from 'vitest';
-import * as workingMemory from '../lib/cache/cognitive/working-memory';
+import * as workingMemory from '../lib/cognitive/working-memory';
 import * as checkpoints from '../lib/storage/checkpoints';
 import BetterSqlite3 from 'better-sqlite3';
 

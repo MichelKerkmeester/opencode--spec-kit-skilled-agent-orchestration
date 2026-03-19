@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/005-cli-codex",
+  "specFolder": "03--commands-and-skills/005-cli-codex-creation",
   "description": "Specification: cli-gemini Model Consolidation + cli-codex Skill",
   "keywords": [
     "specification",
@@ -9,9 +9,9 @@
     "cli-codex",
     "skill"
   ],
-  "lastUpdated": "2026-03-16T13:20:02.915Z",
+  "lastUpdated": "2026-03-19T15:45:44.542Z",
   "specId": "005",
-  "folderSlug": "005-cli-codex",
+  "folderSlug": "cli-codex-creation",
   "parentChain": [
     "03--commands-and-skills"
   ],

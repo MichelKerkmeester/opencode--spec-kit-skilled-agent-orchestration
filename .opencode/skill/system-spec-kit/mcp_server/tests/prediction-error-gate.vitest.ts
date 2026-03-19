@@ -2,7 +2,7 @@
 // Converted from: prediction-error-gate.test.ts (custom runner)
 // Aligned with production prediction-error-gate.ts named exports
 import { describe, it, expect, vi } from 'vitest';
-import * as peGate from '../lib/cache/cognitive/prediction-error-gate';
+import * as peGate from '../lib/cognitive/prediction-error-gate';
 
 const peGateModule = peGate as unknown as Record<string, unknown>;
 const peGateActions = peGate.ACTION as unknown as Record<string, unknown>;

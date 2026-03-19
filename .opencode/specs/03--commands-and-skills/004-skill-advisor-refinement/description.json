@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/004-advisor-refinement",
+  "specFolder": "03--commands-and-skills/004-skill-advisor-refinement",
   "description": "Feature Specification: Skill Advisor Refinement",
   "keywords": [
     "feature",
@@ -8,9 +8,9 @@
     "advisor",
     "refinement"
   ],
-  "lastUpdated": "2026-03-16T13:20:03.123Z",
+  "lastUpdated": "2026-03-19T15:45:44.514Z",
   "specId": "004",
-  "folderSlug": "004-advisor-refinement",
+  "folderSlug": "skill-advisor-refinement",
   "parentChain": [
     "03--commands-and-skills"
   ],

@@ -9,7 +9,7 @@
 import { getIndex } from './bm25-index';
 import { fuseResultsMulti } from '@spec-kit/shared/algorithms/rrf-fusion';
 import { hybridAdaptiveFuse } from '@spec-kit/shared/algorithms/adaptive-fusion';
-import { CO_ACTIVATION_CONFIG, spreadActivation } from '../cache/cognitive/co-activation';
+import { CO_ACTIVATION_CONFIG, spreadActivation } from '../cognitive/co-activation';
 import { applyMMR } from '@spec-kit/shared/algorithms/mmr-reranker';
 import { INTENT_LAMBDA_MAP, classifyIntent } from './intent-classifier';
 import { fts5Bm25Search } from './sqlite-fts';
@@ -47,7 +47,7 @@ import { collapseAndReassembleChunkResults } from '../scoring/mpab-aggregation';
 
 // Type-only
 import type Database from 'better-sqlite3';
-import type { SpreadResult } from '../cache/cognitive/co-activation';
+import type { SpreadResult } from '../cognitive/co-activation';
 import type { MMRCandidate } from '@spec-kit/shared/algorithms/mmr-reranker';
 import type { FusionResult } from '@spec-kit/shared/algorithms/rrf-fusion';
 import type { ChannelName } from './query-router';

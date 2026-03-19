@@ -17,13 +17,13 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 
 - [1. OVERVIEW](#1--overview)
-  - [4-Stage Pipeline Architecture](#4-stage-pipeline-architecture)
+  - [4-STAGE PIPELINE ARCHITECTURE](#4--stage-pipeline-architecture)
 - [2. KEY CONCEPTS](#2--key-concepts)
 - [3. MODULE STRUCTURE](#3--module-structure)
 - [4. FEATURES](#4--features)
-  - [Graph Signal Features](#graph-signal-features)
-  - [Save-Time Processing Pipeline](#save-time-processing-pipeline)
-  - [Scoring Enhancements](#scoring-enhancements)
+  - [GRAPH SIGNAL FEATURES](#graph-signal-features)
+  - [SAVE-TIME PROCESSING PIPELINE](#save-time-processing-pipeline)
+  - [SCORING ENHANCEMENTS](#scoring-enhancements)
 - [5. USAGE EXAMPLES](#5--usage-examples)
 - [6. RECENT CHANGES (SPRINT 8)](#6--recent-changes-sprint-8)
 - [7. RELATED RESOURCES](#7--related-resources)

@@ -16,7 +16,7 @@ import { performance } from 'perf_hooks';
 import Database from 'better-sqlite3';
 import * as sessionBoost from '@spec-kit/mcp-server/lib/search/session-boost';
 import * as causalBoost from '@spec-kit/mcp-server/lib/search/causal-boost';
-import * as workingMemory from '@spec-kit/mcp-server/lib/cache/cognitive/working-memory';
+import * as workingMemory from '@spec-kit/mcp-server/lib/cognitive/working-memory';
 import {
   initExtractionAdapter,
   getExtractionMetrics,

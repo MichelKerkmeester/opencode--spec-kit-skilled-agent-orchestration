@@ -12,7 +12,7 @@ import {
   getClassificationDecayMultiplier,
   applyClassificationDecay,
   calculateRetrievability,
-} from '../lib/cache/cognitive/fsrs-scheduler';
+} from '../lib/cognitive/fsrs-scheduler';
 
 // Helpers
 function withFlag(value: string | undefined, fn: () => void): void {

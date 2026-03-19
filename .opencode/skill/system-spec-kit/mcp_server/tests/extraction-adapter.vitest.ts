@@ -1,7 +1,7 @@
 // TEST: EXTRACTION ADAPTER (T029-T037)
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import Database from 'better-sqlite3';
-import * as workingMemory from '../lib/cache/cognitive/working-memory';
+import * as workingMemory from '../lib/cognitive/working-memory';
 import {
   RULES,
   applySummarizer,

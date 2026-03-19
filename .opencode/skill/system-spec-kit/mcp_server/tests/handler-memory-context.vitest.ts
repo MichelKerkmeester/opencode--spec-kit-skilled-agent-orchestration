@@ -4,7 +4,7 @@
 // TEST: HANDLER MEMORY CONTEXT
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import * as layerDefs from '../lib/architecture/layer-definitions';
-import * as workingMemory from '../lib/cache/cognitive/working-memory';
+import * as workingMemory from '../lib/cognitive/working-memory';
 import { handleMemorySearch } from '../handlers/memory-search';
 
 // Mock core/db-state to prevent real DB operations that cause timeouts.

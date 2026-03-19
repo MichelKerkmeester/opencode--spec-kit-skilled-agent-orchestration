@@ -4,8 +4,8 @@ import { describe, it, expect } from 'vitest';
 import type { MCPResponse } from '../handlers/types';
 import * as triggerHandler from '../handlers/memory-triggers';
 import * as triggerMatcher from '../lib/parsing/trigger-matcher';
-import * as attentionDecay from '../lib/cache/cognitive/attention-decay';
-import * as coActivation from '../lib/cache/cognitive/co-activation';
+import * as attentionDecay from '../lib/cognitive/attention-decay';
+import * as coActivation from '../lib/cognitive/co-activation';
 import type { MCPEnvelope } from '../lib/response/envelope';
 
 interface TriggerEnvelopeData {

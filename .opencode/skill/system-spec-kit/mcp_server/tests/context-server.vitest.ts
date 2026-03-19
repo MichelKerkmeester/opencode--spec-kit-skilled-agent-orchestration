@@ -352,10 +352,10 @@ describe('Context Server', () => {
       '../lib/search/hybrid-search',
       '../lib/search/bm25-index',
       '../lib/parsing/memory-parser',
-      '../lib/cache/cognitive/working-memory',
-      '../lib/cache/cognitive/attention-decay',
-      '../lib/cache/cognitive/co-activation',
-      '../lib/cache/cognitive/archival-manager',
+      '../lib/cognitive/working-memory',
+      '../lib/cognitive/attention-decay',
+      '../lib/cognitive/co-activation',
+      '../lib/cognitive/archival-manager',
       '../lib/providers/retry-manager',
       '../lib/session/session-manager',
       '../lib/storage/incremental-index',
@@ -572,10 +572,10 @@ describe('Context Server', () => {
         verifyFts5Isolation: vi.fn(() => true),
       }))
       vi.doMock('../lib/search/learned-feedback', () => ({ isLearnedFeedbackEnabled: vi.fn(() => false) }))
-      vi.doMock('../lib/cache/cognitive/working-memory', () => ({ init: vi.fn(), isEnabled: vi.fn(() => false) }))
-      vi.doMock('../lib/cache/cognitive/attention-decay', () => ({ init: vi.fn() }))
-      vi.doMock('../lib/cache/cognitive/co-activation', () => ({ init: vi.fn(), isEnabled: vi.fn(() => false) }))
-      vi.doMock('../lib/cache/cognitive/archival-manager', () => ({
+      vi.doMock('../lib/cognitive/working-memory', () => ({ init: vi.fn(), isEnabled: vi.fn(() => false) }))
+      vi.doMock('../lib/cognitive/attention-decay', () => ({ init: vi.fn() }))
+      vi.doMock('../lib/cognitive/co-activation', () => ({ init: vi.fn(), isEnabled: vi.fn(() => false) }))
+      vi.doMock('../lib/cognitive/archival-manager', () => ({
         init: vi.fn(),
         startBackgroundJob: vi.fn(),
         isBackgroundJobRunning: vi.fn(() => false),
@@ -681,7 +681,7 @@ describe('Context Server', () => {
         return toolResult
       })
 
-      const callbackSpy = vi.fn(async () => {
+      const callbackSpy = vi.fn(async (..._args: unknown[]) => {
         events.push('callback')
       })
 
@@ -1875,10 +1875,10 @@ describe('Context Server', () => {
       { module: './lib/search/hybrid-search', name: 'Hybrid search' },
       { module: './lib/search/bm25-index', name: 'BM25 index' },
       { module: './lib/parsing/memory-parser', name: 'Memory parser' },
-      { module: './lib/cache/cognitive/working-memory', name: 'Working memory' },
-      { module: './lib/cache/cognitive/attention-decay', name: 'Attention decay' },
-      { module: './lib/cache/cognitive/co-activation', name: 'Co-activation' },
-      { module: './lib/cache/cognitive/archival-manager', name: 'Archival manager' },
+      { module: './lib/cognitive/working-memory', name: 'Working memory' },
+      { module: './lib/cognitive/attention-decay', name: 'Attention decay' },
+      { module: './lib/cognitive/co-activation', name: 'Co-activation' },
+      { module: './lib/cognitive/archival-manager', name: 'Archival manager' },
       { module: './lib/providers/retry-manager', name: 'Retry manager' },
       { module: './lib/errors', name: 'Error utilities' },
       { module: './lib/session/session-manager', name: 'Session manager' },

@@ -12,7 +12,7 @@
     "lint": "tsc --noEmit",
     "test": "vitest run --config ../mcp_server/vitest.config.ts --root .",
     "check:ast": "npx tsx evals/check-no-mcp-lib-imports-ast.ts && npx tsx evals/check-handler-cycles-ast.ts",
-    "check": "npm run lint && npx tsx evals/check-no-mcp-lib-imports.ts && bash check-api-boundary.sh && npx tsx evals/check-architecture-boundaries.ts && npx tsx evals/check-allowlist-expiry.ts"
+    "check": "npm run lint && npx tsx evals/check-no-mcp-lib-imports.ts && bash check-api-boundary.sh && npx tsx evals/check-architecture-boundaries.ts && npx tsx evals/check-allowlist-expiry.ts && npx tsx evals/check-source-dist-alignment.ts"
   },
   "dependencies": {
     "better-sqlite3": "12.6.2",

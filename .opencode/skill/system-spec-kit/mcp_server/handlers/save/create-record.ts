@@ -6,8 +6,8 @@ import type BetterSqlite3 from 'better-sqlite3';
 
 import * as vectorIndex from '../../lib/search/vector-index';
 import * as bm25Index from '../../lib/search/bm25-index';
-import * as predictionErrorGate from '../../lib/cache/cognitive/prediction-error-gate';
-import * as fsrsScheduler from '../../lib/cache/cognitive/fsrs-scheduler';
+import * as predictionErrorGate from '../../lib/cognitive/prediction-error-gate';
+import * as fsrsScheduler from '../../lib/cognitive/fsrs-scheduler';
 import * as incrementalIndex from '../../lib/storage/incremental-index';
 import type * as memoryParser from '../../lib/parsing/memory-parser';
 import { getCanonicalPathKey } from '../../lib/utils/canonical-path';

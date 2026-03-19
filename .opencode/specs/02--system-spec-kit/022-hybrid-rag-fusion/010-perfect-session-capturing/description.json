@@ -1,17 +1,20 @@
 {
-  "specFolder": "010-perfect-session-capturing",
-  "description": "Perfect Session Capturing Recommendation Roadmap",
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing",
+  "description": "Feature Specification: Perfect Session Capturing",
   "keywords": [
+    "feature",
+    "specification",
     "perfect",
     "session",
-    "capturing",
-    "recommendation",
-    "roadmap"
+    "capturing"
   ],
-  "lastUpdated": "2026-03-18T20:12:03.034Z",
+  "lastUpdated": "2026-03-19T15:45:43.359Z",
   "specId": "010",
   "folderSlug": "perfect-session-capturing",
-  "parentChain": [],
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
   "memorySequence": 40,
   "memoryNameHistory": [
     "15-03-26_12-05__perfect-session-capturing.md",

@@ -5,7 +5,7 @@ import * as os from 'os';
 
 import * as saveHandler from '../handlers/memory-save';
 import * as memoryParser from '../lib/parsing/memory-parser';
-import * as peGate from '../lib/cache/cognitive/prediction-error-gate';
+import * as peGate from '../lib/cognitive/prediction-error-gate';
 
 function getErrorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);

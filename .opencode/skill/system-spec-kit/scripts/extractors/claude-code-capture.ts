@@ -164,6 +164,18 @@ function collectActiveTaskSessionIds(tasksRoot: string): string[] {
         continue;
       }
 
+      // Only treat sessions with recently-modified lock files as "active".
+      // Stale locks from ended sessions must not influence candidate selection.
+      const LOCK_FRESHNESS_MS = 2 * 60 * 60 * 1000; // 2 hours
+      try {
+        const lockStat = fsSync.statSync(fullPath);
+        if (Date.now() - lockStat.mtimeMs > LOCK_FRESHNESS_MS) {
+          continue;
+        }
+      } catch {
+        continue;
+      }
+
       const candidateSessionId = path.basename(path.dirname(fullPath));
       if (candidateSessionId && candidateSessionId !== 'tasks') {
         sessionIds.add(candidateSessionId);
@@ -225,7 +237,7 @@ function candidateMatchesTimeWindow(candidate: TranscriptCandidate, sessionHints
   const lowerBound = typeof sessionHints.sessionStartTs === 'number' && Number.isFinite(sessionHints.sessionStartTs)
     ? sessionHints.sessionStartTs - (5 * 60 * 1000)
     : typeof sessionHints.invocationTs === 'number' && Number.isFinite(sessionHints.invocationTs)
-      ? sessionHints.invocationTs - (12 * 60 * 60 * 1000)
+      ? sessionHints.invocationTs - (3 * 60 * 60 * 1000)
       : null;
   const upperBound = typeof sessionHints.invocationTs === 'number' && Number.isFinite(sessionHints.invocationTs)
     ? sessionHints.invocationTs + (10 * 60 * 1000)

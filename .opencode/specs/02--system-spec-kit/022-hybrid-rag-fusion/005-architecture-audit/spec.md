@@ -1,9 +1,10 @@
 ---
 title: "Architecture Audit"
-status: "complete"
+status: "in-progress"
 level: 3
 created: "2025-12-01"
-updated: "2026-03-08"
+updated: "2026-03-19"
+phase15_status: "complete"
 description: "Audit and remediate ownership boundaries between root scripts (build-time and CLI tooling) and mcp_server (runtime MCP server), including merged follow-up boundary remediation work from former spec 030."
 SPECKIT_TEMPLATE_SOURCE: "spec-core + level2-verify + level3-arch | v2.2"
 trigger_phrases:
@@ -37,7 +38,7 @@ As of 2026-03-05, the follow-up boundary remediation work previously tracked in 
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | Complete |
+| **Status** | In-Progress |
 | **Created** | 2026-03-04 |
 | **Branch** | `022-hybrid-rag-fusion/008-architecture-audit` |
 <!-- /ANCHOR:metadata -->
@@ -114,7 +115,50 @@ Produce a complete inventory, evaluate architecture quality with evidence, and d
 | REQ-008 | Dependency-direction concerns identified | Circular and cross-layer concerns listed with concrete file paths |
 | REQ-009 | Content-aware memory filename generation | Memory filenames reflect task content, not just spec folder name |
 | REQ-010 | Generation-time quality gates (empty + duplicate prevention) | Empty templates and duplicate content rejected before file write |
+
+### P0 - Phase 2: Internal Module Boundary (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-019 | Symlink eliminated, canonical paths restored | Zero symlinks in lib/; all imports use direct paths |
+| REQ-020 | Source-dist alignment enforced | CI check verifies every dist/ .js has a source .ts |
+| REQ-021 | Internal module ownership documented | MODULE_MAP.md exists with 26-dir inventory and consumer policies |
+| REQ-022 | Orphaned dist/ artifacts resolved | All dist/ files trace to source; orphans deleted or source reconstructed |
+| REQ-023 | Module misplacements fixed | No unused proxies, no .js imports in .ts, canonical locations documented |
 <!-- /ANCHOR:requirements -->
+
+## PHASE 2: INTERNAL MODULE BOUNDARY AUDIT
+
+### Discovery Context
+During Hydra DB feature remediation (spec 008, 2026-03-19), implementation revealed
+that mcp_server/lib/ has its own boundary integrity problems — the same class of issue
+the Phase 1 outer boundary audit addressed, but occurring inside the runtime itself.
+
+### Problem Statement
+The 26 subdirectories under mcp_server/lib/ have:
+1. **Symlink indirection** — `lib/cache/cognitive -> ../cognitive` makes 74+ imports
+   resolve through a phantom path. The cognitive subsystem (FSRS, decay, classification)
+   has nothing to do with caching, per both READMEs.
+2. **Source-dist divergence** — Source files can be deleted while compiled dist/ output
+   persists, violating ARCHITECTURE.md section 4 dist policy. adaptive-ranking.ts was lost
+   this way; additional orphans exist (hydra-baseline.js, retry.js).
+3. **No internal dependency map** — 26 lib/ directories with no ownership doc, no
+   allowed-consumer policy, no mapping to the 19-category feature catalog.
+4. **Module misplacement** — Unused re-export proxies, unclear canonical locations
+   (two checkpoints modules), .js imports in .ts source.
+5. **No internal import policy** — Outer boundary has AST checkers and CI enforcement;
+   inner lib/ boundaries have none.
+
+### Evidence Table
+| Finding | Severity | Evidence |
+|---------|----------|----------|
+| Symlink `lib/cache/cognitive -> ../cognitive` | HIGH | `ls -la lib/cache/` shows symlink; deleting target broke 74+ imports |
+| adaptive-ranking.ts source loss | HIGH | Source deleted, only dist/ JS survived; had to reconstruct from git |
+| dist/lib/utils/retry.js — no .ts source | HIGH | 55+ references to compiled JS, zero source files |
+| dist/lib/eval/hydra-baseline.js — orphaned | HIGH | Compiled output with no source |
+| Cache README vs Cognitive README mismatch | MEDIUM | Cache: "tool output caching"; Cognitive: "memory decay engine" |
+| Unused composite-scoring.ts proxy | MEDIUM | 0 imports, re-exports only |
+| .js imports in entity-extractor.ts | MEDIUM | Should be .ts |
 
 ## 4.5 REQUIREMENT-TASK TRACEABILITY (BACKFILL)
 
@@ -138,6 +182,11 @@ Produce a complete inventory, evaluate architecture quality with evidence, and d
 | REQ-008 | Phase 2, Phase 3 | T007-T017 |
 | REQ-009 | Phase 6 | T071, T073 |
 | REQ-010 | Phase 6 | T072 |
+| REQ-019 | Phase 15A | T130, T131 |
+| REQ-020 | Phase 15B | T133, T134 |
+| REQ-021 | Phase 15C | T136, T137 |
+| REQ-022 | Phase 15B | T134, T135 |
+| REQ-023 | Phase 15D | T138 |
 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA

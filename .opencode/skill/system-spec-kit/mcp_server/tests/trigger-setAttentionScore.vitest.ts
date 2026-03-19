@@ -2,7 +2,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as workingMemory from '../lib/cache/cognitive/working-memory';
+import * as workingMemory from '../lib/cognitive/working-memory';
 import * as handler from '../handlers/memory-triggers';
 
 const HANDLERS_PATH = path.join(__dirname, '..', 'handlers');

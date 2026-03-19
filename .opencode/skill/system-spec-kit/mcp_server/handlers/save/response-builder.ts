@@ -4,7 +4,7 @@
 import type BetterSqlite3 from 'better-sqlite3';
 import type * as memoryParser from '../../lib/parsing/memory-parser';
 
-import * as predictionErrorGate from '../../lib/cache/cognitive/prediction-error-gate';
+import * as predictionErrorGate from '../../lib/cognitive/prediction-error-gate';
 import * as retryManager from '../../lib/providers/retry-manager';
 import { runConsolidationCycleIfEnabled } from '../../lib/storage/consolidation';
 import { createMCPErrorResponse, createMCPSuccessResponse } from '../../lib/response/envelope';

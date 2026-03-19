@@ -40,7 +40,7 @@ This plan converts the UX-hooks scenarios in the manual testing playbook into an
 ### Definition of Ready
 - [x] Exact prompts, command sequences, and pass criteria were extracted from [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md).
 - [x] Feature mappings for all 5 UX-hooks tests were confirmed against the cross-reference index and UX-hooks feature files.
-- [x] Verdict rules from [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) were loaded for PASS/PARTIAL/FAIL handling.
+- [x] Verdict rules from playbook review protocol (embedded in playbook §4) were loaded for PASS/PARTIAL/FAIL handling.
 - [x] Test file names and ripgrep target paths were confirmed from the playbook command sequences.
 
 ### Definition of Done
@@ -80,10 +80,10 @@ Manual UX-hooks test execution pipeline with review-gated evidence collection.
 - [ ] Record baseline environment before execution.
 
 ### Phase 2: vitest-Based Tests
-- [ ] Run NEW-103 (`npx vitest run tests/hooks-ux-feedback.vitest.ts`) and capture test transcript with passing assertion count.
-- [ ] Run NEW-104 (`npx vitest run tests/memory-save-ux-regressions.vitest.ts`) and inspect assertions covering duplicate-save no-op suppression and atomic-save parity.
+- [ ] Run NEW-103 (`npx vitest run tests/hooks-ux-feedback.vitest.ts`) and capture test transcript confirming all 6 tests pass, including latency/cache-clear booleans, `errors: string[]` field verification, error propagation hint checks, and finalized hint payload assertions.
+- [ ] Run NEW-104 (`npx vitest run tests/memory-save-ux-regressions.vitest.ts`) and inspect assertions covering duplicate-content and unchanged-content save no-op responses, FSRS field preservation (`review_count`, `last_review` not reset on no-op saves), and atomic-save `postMutationHooks`/hints/partial-indexing guidance parity.
 - [ ] Run NEW-105 (`npx vitest run tests/context-server.vitest.ts`) and inspect assertions for appended hints, preserved `autoSurfacedContext`, and final token metadata.
-- [ ] Run NEW-107 (`npx vitest run tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts`) and inspect missing-`confirmName` rejection and `safetyConfirmationUsed=true` success assertions.
+- [ ] Run NEW-107 (`npx vitest run tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts`) and (`npx vitest run tests/context-server.vitest.ts` Group 13b: T103–T106) — inspect missing-`confirmName` rejection, `safetyConfirmationUsed=true` success assertions, and structural source-code pattern verification.
 
 ### Phase 3: Static Inspection Test
 - [ ] Run NEW-106 ripgrep checks against `../../../../../skill/system-spec-kit/mcp_server/hooks/index.ts` and `../../../../../skill/system-spec-kit/mcp_server/hooks/README.md` and capture output confirming both files reference `mutation-feedback`, `response-hints`, `MutationHookResult`, and `postMutationHooks`.
@@ -101,11 +101,11 @@ Manual UX-hooks test execution pipeline with review-gated evidence collection.
 
 | Test ID | Scenario Name | Exact Prompt | Execution Type (manual/vitest/ripgrep) |
 |---------|---------------|--------------|-----------------------------------------|
-| NEW-103 | UX hook module coverage | `Validate NEW-103 hook module behavior for mutation feedback and response hints.` | vitest |
-| NEW-104 | Mutation save-path UX parity and no-op hardening | `Run save-path UX scenarios and verify duplicate-save no-op behavior plus atomic-save parity.` | vitest |
+| NEW-103 | UX hook module coverage | `Validate NEW-103 hook module behavior for mutation feedback and response hints. Capture the evidence needed to prove Test output shows suite pass (6 tests), including latency/cache-clear booleans, errors field verification, error propagation hints, and finalized hint payload assertions.` | vitest |
+| NEW-104 | Mutation save-path UX parity and no-op hardening | `Run save-path UX scenarios and verify duplicate-save and unchanged-save no-op behavior, FSRS corruption guard, plus atomic-save parity.` | vitest |
 | NEW-105 | Context-server success-envelope finalization | `Validate the finalized context-server success-envelope path, including token metadata recomputation.` | vitest |
 | NEW-106 | Hooks barrel + README synchronization | `Validate hook barrel and README coverage for the finalized UX-hook surface.` | ripgrep |
-| NEW-107 | Checkpoint confirmName and schema enforcement | `Validate checkpoint delete confirmName enforcement across handler and schema layers.` | vitest |
+| NEW-107 | Checkpoint confirmName and schema enforcement | `Validate checkpoint delete confirmName enforcement across handler and schema layers. Capture the evidence needed to prove Validation and handler suites pass with missing-confirmName rejection plus successful delete confirmation reporting, and context-server Group 13b structural tests pass.` | vitest |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -116,7 +116,7 @@ Manual UX-hooks test execution pipeline with review-gated evidence collection.
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Internal | Green | Exact prompts, commands, evidence targets, and pass criteria cannot be verified |
-| [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Internal | Green | Verdicts and coverage rules cannot be applied consistently |
+| Playbook review protocol (embedded in playbook §4) | Internal | Green | Verdicts and coverage rules cannot be applied consistently |
 | [`../../feature_catalog/18--ux-hooks/`](../../feature_catalog/18--ux-hooks/) | Internal | Green | Test-to-feature context and review triage lose their canonical reference |
 | vitest + compiled test suite (`hooks-ux-feedback`, `memory-save-ux-regressions`, `context-server`, `handler-checkpoints`, `tool-input-schema`, `mcp-input-validation`) | Internal | Yellow | NEW-103, NEW-104, NEW-105, and NEW-107 cannot be executed |
 | ripgrep (`rg`) CLI | Internal | Yellow | NEW-106 barrel and README inspection cannot be executed; fall back to `grep -r` |

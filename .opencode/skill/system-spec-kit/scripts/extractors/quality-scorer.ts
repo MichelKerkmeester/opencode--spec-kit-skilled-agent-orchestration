@@ -133,14 +133,11 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
     qualityFlags.add('has_contamination');
     const severity = contaminationSeverity || 'medium';
     if (severity === 'low') {
-      qualityScore -= 0.05;
-      warnings.push('Low-severity contamination detected (preamble only) — minor penalty applied');
+      warnings.push('Low-severity contamination detected (preamble only) — penalty applied post-bonus');
     } else if (severity === 'medium') {
-      qualityScore -= 0.10;
       sufficiencyCap = Math.min(sufficiencyCap ?? 1, 0.85);
       warnings.push('Medium-severity contamination detected (orchestration chatter) — capped at 0.85');
     } else {
-      qualityScore -= PENALTY_PER_FAILED_RULE;
       sufficiencyCap = Math.min(sufficiencyCap ?? 1, 0.6);
       warnings.push('High-severity contamination detected (AI self-reference/tool leaks) — capped at 0.60');
     }
@@ -171,6 +168,18 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
 
   if (decisionCount >= 1) {
     qualityScore += 0.10;
+  }
+
+  // Apply contamination penalty AFTER bonuses so bonuses cannot offset it
+  if (hadContamination) {
+    const severity = contaminationSeverity || 'medium';
+    if (severity === 'low') {
+      qualityScore -= 0.10;
+    } else if (severity === 'medium') {
+      qualityScore -= 0.20;
+    } else {
+      qualityScore -= 0.30;
+    }
   }
 
   if (sufficiencyCap !== null) {

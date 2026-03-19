@@ -2,7 +2,7 @@
 // Validates cast-removal: deprecated MemoryRow → TierInput accepts
 // Partial objects, mixed casing, and extra arbitrary fields.
 import { describe, it, expect } from 'vitest';
-import * as tierClassifier from '../lib/cache/cognitive/tier-classifier';
+import * as tierClassifier from '../lib/cognitive/tier-classifier';
 
 /* ───────────────────────────────────────────────────────────────
    1. classifyTier with TierInput partial objects

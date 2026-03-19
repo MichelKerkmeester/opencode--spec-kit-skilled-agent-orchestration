@@ -439,3 +439,127 @@ These vectors cannot be caught by static analysis and are accepted as inherent l
 - Merged from former scratch/merged-005-architecture-audit/decision-record.md ADR-001.
 - Execution tracked via Phase 7 tasks `T074-T090` and checklist items `CHK-500` through `CHK-522`.
 <!-- /ANCHOR:adr-006 -->
+
+<!-- ANCHOR:adr-007 -->
+## ADR-007: Eliminate lib/cache/cognitive Symlink, Restore Canonical Paths
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-03-19 |
+| **Deciders** | System-spec-kit maintainers |
+| **Source** | Discovered during Hydra DB feature remediation (spec 008) |
+
+### Context
+
+`mcp_server/lib/cache/cognitive` is a symlink to `../cognitive`, making all 74+ imports of cognitive modules (FSRS, decay, classification) resolve through a phantom `cache/cognitive/` path. The cognitive subsystem has nothing to do with caching — both the Cache README ("tool output caching") and Cognitive README ("memory decay engine") confirm these are unrelated concerns. Deleting `lib/cognitive/adaptive-ranking.ts` as apparent dead code (zero direct imports found by grep) broke all 11 cognitive modules because the symlink masked the real dependency graph.
+
+### Constraints
+
+- 74+ import statements must be updated atomically to avoid broken builds.
+- The dist/ tree may also contain symlink artifacts that must be cleaned.
+- No behavioral change — this is purely a path migration.
+
+### Decision
+
+**We chose**: Remove the symlink entirely and update all 74+ imports from `cache/cognitive/X` to `cognitive/X` using direct canonical paths.
+
+**How it works**: Mechanical find-and-replace of import paths, verified by `tsc --noEmit` and vitest. Cache README updated to remove cognitive references.
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Remove symlink, migrate all imports (Chosen)** | Eliminates indirection, canonical paths everywhere | High churn (74+ files) | 9/10 |
+| Keep symlink, document it | Zero code changes | Preserves fragile indirection, grep remains unreliable | 2/10 |
+| Move cognitive into cache as real subdirectory | Reduces churn | Cognitive is not a cache concern; wrong location | 3/10 |
+
+**Why this one**: Symlinks in source trees create invisible dependency graphs. Grep, IDE navigation, and dead-code analysis all fail silently. The churn is mechanical and low-logic-risk.
+
+### Consequences
+
+**What improves**:
+- All imports visible to grep, IDE, and static analysis tools.
+- Dead-code analysis becomes reliable for cognitive modules.
+- Module ownership matches directory location and README descriptions.
+
+**What it costs**:
+- High churn in a single commit (74+ files). Mitigation: path-only changes verified by compiler and test suite.
+
+### Five Checks Evaluation
+
+1. **Necessary now?** Yes — symlink already caused a production incident (adaptive-ranking.ts deletion broke 11 modules).
+2. **Alternatives (>=2)?** Yes — 3 alternatives evaluated in table above.
+3. **Simplest sufficient?** Yes — mechanical path replacement with no behavioral change.
+4. **On critical path?** Yes — prerequisite for reliable source-dist alignment checks and internal dependency mapping.
+5. **No tech debt?** Clean — removes existing tech debt rather than creating new debt.
+
+### Implementation
+
+- Phase 15A tasks T130-T132 in `tasks.md`.
+<!-- /ANCHOR:adr-007 -->
+
+<!-- ANCHOR:adr-008 -->
+## ADR-008: Add Source-Dist Alignment CI Check
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-03-19 |
+| **Deciders** | System-spec-kit maintainers |
+| **Source** | Discovered during Hydra DB feature remediation (spec 008) |
+
+### Context
+
+`adaptive-ranking.ts` source was deleted during a cleanup pass, but its compiled `dist/` output survived indefinitely. The system continued to function because imports resolved through the `cache/cognitive` symlink to the dist/ JS file. This meant source loss was invisible — the only copy of the module logic existed as compiled JavaScript. Additional orphaned dist/ artifacts were discovered: `retry.js` (55+ references, zero source files) and `hydra-baseline.js` (compiled output with no corresponding source).
+
+ARCHITECTURE.md section 4 states dist/ policy, but no automated enforcement exists to verify source-dist alignment.
+
+### Constraints
+
+- Must not break legitimate dist/ outputs from the build pipeline.
+- Check must be fast enough for CI integration (< 5s).
+- Must handle edge cases: generated files, vendor files, legitimate JS-only modules.
+
+### Decision
+
+**We chose**: Create a CI check that verifies every `.js` file in `dist/lib/` has a corresponding `.ts` source file, with an allowlist for known exceptions.
+
+**How it works**: Script iterates `dist/lib/**/*.js`, maps each to expected `.ts` source path, reports orphans. Allowlist covers legitimate exceptions (generated code, vendor files). Integrated into existing CI pipeline.
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **CI alignment check (Chosen)** | Automated, catches orphans at PR time | Needs allowlist maintenance | 9/10 |
+| Manual periodic audit | No tooling investment | Drift between audits, reactive only | 3/10 |
+| Delete all dist/ and rebuild from scratch | Clean slate | Disrupts workflows that depend on dist/ paths | 4/10 |
+
+**Why this one**: Prevents the exact failure mode that caused the adaptive-ranking.ts incident. Automated enforcement catches drift before it becomes invisible.
+
+### Consequences
+
+**What improves**:
+- Source loss is caught at PR time, not months later during unrelated work.
+- Orphaned dist/ artifacts are systematically identified and resolved.
+- ARCHITECTURE.md dist/ policy is enforced, not just documented.
+
+**What it costs**:
+- Allowlist maintenance for legitimate exceptions. Mitigation: governance metadata (owner, reason, date) on each exception.
+
+### Five Checks Evaluation
+
+1. **Necessary now?** Yes — source loss already occurred (adaptive-ranking.ts) and additional orphans exist (retry.js, hydra-baseline.js).
+2. **Alternatives (>=2)?** Yes — 3 alternatives evaluated in table above.
+3. **Simplest sufficient?** Yes — file-path mapping with allowlist, no AST parsing needed.
+4. **On critical path?** Yes — prerequisite for claiming dist/ policy is enforced, not just documented.
+5. **No tech debt?** Clean — enforces existing policy that was previously aspirational.
+
+### Implementation
+
+- Phase 15B tasks T133-T135 in `tasks.md`.
+<!-- /ANCHOR:adr-008 -->

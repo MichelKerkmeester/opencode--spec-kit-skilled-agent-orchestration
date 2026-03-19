@@ -18,10 +18,10 @@ Background processing primitives for file-change detection and sequential job ex
 
 ## Table of Contents
 
-- [1. OVERVIEW](#1-overview)
-- [2. STRUCTURE](#2-structure)
-- [3. KEY CONCEPTS](#3-key-concepts)
-- [4. RELATED DOCUMENTS](#4-related-documents)
+- [1. OVERVIEW](#1--overview)
+- [2. STRUCTURE](#2--structure)
+- [3. KEY CONCEPTS](#3--key-concepts)
+- [4. RELATED DOCUMENTS](#4--related-documents)
 
 ---
 

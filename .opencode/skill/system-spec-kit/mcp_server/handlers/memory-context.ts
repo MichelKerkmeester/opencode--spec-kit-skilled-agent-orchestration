@@ -24,9 +24,9 @@ import { estimateTokens } from '../formatters/token-metrics';
 import {
   getPressureLevel,
   type RuntimeContextStats,
-} from '../lib/cache/cognitive/pressure-monitor';
-import * as workingMemory from '../lib/cache/cognitive/working-memory';
-import { isIdentityInRollout } from '../lib/cache/cognitive/rollout-policy';
+} from '../lib/cognitive/pressure-monitor';
+import * as workingMemory from '../lib/cognitive/working-memory';
+import { isIdentityInRollout } from '../lib/cognitive/rollout-policy';
 
 // Telemetry
 import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';

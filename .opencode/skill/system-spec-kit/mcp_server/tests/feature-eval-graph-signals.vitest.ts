@@ -30,7 +30,7 @@ import {
   boostScore,
   CO_ACTIVATION_CONFIG,
   DEFAULT_COACTIVATION_STRENGTH,
-} from '../lib/cache/cognitive/co-activation';
+} from '../lib/cognitive/co-activation';
 import { applyGraphSignals } from '../lib/graph/graph-signals';
 import { resolveGraphWalkRolloutState } from '../lib/search/search-flags';
 

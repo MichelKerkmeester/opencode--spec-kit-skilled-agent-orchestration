@@ -56,7 +56,7 @@ vi.mock('../../shared/algorithms/adaptive-fusion', () => ({
 }));
 
 // Mock co-activation spreading so it never touches the DB.
-vi.mock('../lib/cache/cognitive/co-activation', () => ({
+vi.mock('../lib/cognitive/co-activation', () => ({
   spreadActivation: vi.fn(() => []),
 }));
 

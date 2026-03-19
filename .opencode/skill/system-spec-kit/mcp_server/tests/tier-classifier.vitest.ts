@@ -4,7 +4,7 @@
 // TEST: TIER CLASSIFIER (5-STATE MODEL) — vitest
 // Aligned with production tier-classifier.ts named exports
 import { describe, it, expect } from 'vitest';
-import * as tierClassifier from '../lib/cache/cognitive/tier-classifier';
+import * as tierClassifier from '../lib/cognitive/tier-classifier';
 
 const tierClassifierModule = tierClassifier as unknown as Record<string, unknown>;
 

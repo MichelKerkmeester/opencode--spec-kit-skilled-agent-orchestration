@@ -61,6 +61,7 @@ Subsequent post-Phase-10 verification then surfaced a separate V6/V7 indexed dir
 - [x] Phase 11 explicit CLI target authority closure confirms direct save targets are not rerouted by session-learning and are verified by regression + smoke tests. (Phase 11 closure verified 2026-03-06)
 - [x] Phase 13 indexed direct-save render/quality closure resolves the post-Phase-10 V6/V7 blocker, adds regression coverage for indexed direct-save quality, and records refreshed closure evidence only after targeted verification passes. (Phase 13 closure verified 2026-03-06: targeted vitest PASS `31/31`, scripts lint PASS, spec validation PASS, indexed root save recorded as memory `#1201` without `QUALITY_GATE_FAIL` or skipped indexing)
 - [x] Phase 14 README documentation audit creates all 14 missing READMEs, verifies and fixes 50+ existing READMEs, and confirms zero HVR-banned words and 83/83 frontmatter coverage. (Phase 14 closure verified 2026-03-08: 25 agents dispatched in 5 waves, 14 READMEs created, 26 existing READMEs updated, 25 passed without changes, automated verification confirms 0 missing source-folder READMEs and 0 banned words)
+- [x] Phase 15 internal module boundary remediation eliminates symlink, migrates imports, creates alignment enforcement script, documents MODULE_MAP.md, and resolves orphaned artifacts. (Phase 15 closure verified 2026-03-19: 5 parallel Codex CLI agents executed T130-T139; ultra-think review found and resolved 1 critical + 4 warnings; `npx tsc --noEmit` passes; `npm run check --workspace=scripts` now includes source-dist alignment enforcement; alignment script currently reports 148/148 clean; zero symlinks; zero stale refs; feature catalog and testing playbook updated)
 <!-- /ANCHOR:quality-gates -->
 
 <!-- ANCHOR:architecture -->
@@ -103,9 +104,10 @@ Contract-first layered architecture.
 | Phase 12: Explicit Phase-Folder Target Authority | T115-T118 | ~60 (tests+docs+verification) | Low (1-2h) | Low |
 | Phase 13: Indexed Direct-Save Render/Quality Closure | T119-T123 | ~100 (investigation+fixes+tests+verification) | Low-Medium (2-4h) | Medium |
 | Phase 14: README Documentation Audit | T124-T129 | ~1500 (docs) | Medium-High (6-10h) | Low |
-| **Total** | **132 task entries (130 IDs; T013 split into T013a/b/c)** | **~3840** | **~52-85h** | **Medium** |
+| Phase 15: Internal Module Boundary Remediation | T130-T139 | ~300 (code+docs+automation) | Medium-High (6-10h) | Medium-High |
+| **Total** | **142 task entries (140 IDs; T013 split into T013a/b/c)** | **~4140** | **~58-95h** | **Medium** |
 
-**Critical path**: Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 6 → Phase 7 → Phase 8 → Phase 9 → Phase 10 → Phase 11 → Phase 12 → Phase 13 → Phase 14 (sequential dependency).
+**Critical path**: Phase 0 → Phase 1 → Phase 2 → Phase 3 → Phase 4 → Phase 6 → Phase 7 → Phase 8 → Phase 9 → Phase 10 → Phase 11 → Phase 12 → Phase 13 → Phase 14 → Phase 15 (sequential dependency).
 Phase 2b can run in parallel with Phase 2 after Phase 1 completes.
 Phase 4 P1/P2 items can run in parallel after P0 blockers are resolved.
 <!-- /ANCHOR:effort -->
@@ -288,6 +290,53 @@ Derived from the 5-agent phase audit of `006-feature-catalog` groups 01-18.
 #### Verification
 - Automated: find all code folders without README, grep for HVR-banned words, verify YAML frontmatter.
 - Manual: spot-check 5-10 READMEs across zones for file listing accuracy and cross-reference validity.
+
+### Phase 15: Internal Module Boundary Remediation (2026-03-19)
+
+Addresses inner-boundary architecture gaps discovered during Hydra DB feature
+remediation (spec 008). Follows the same documentation-first, then mechanical refactoring,
+then enforcement approach that succeeded for outer boundaries in Phases 1-14.
+
+#### Definition of Done
+- [x] Zero symlinks remain in `mcp_server/lib/` tree. [DONE: `find mcp_server/lib -type l` = 0; stale `dist/lib/cache/cognitive/` also cleaned]
+- [x] All imports resolve through canonical direct paths, not phantom symlink paths. [DONE: ~60 .ts files migrated; `grep -r "cache/cognitive" mcp_server/ --include="*.ts"` = 0; also fixed `scripts/evals/run-performance-benchmarks.ts:19` and 2 .md doc paths]
+- [x] CI check validates every `dist/` .js file has a corresponding source .ts file. [DONE: `scripts/evals/check-source-dist-alignment.ts` created and wired into `npm run check --workspace=scripts`; current verification reports 148 scanned, 148 aligned, 0 violations]
+- [x] `MODULE_MAP.md` documents all 26 lib/ subdirectories with purpose, key files, and consumers. [DONE: 38 H3 entries; 5 sections including feature catalog crosswalk and dependency directions]
+- [x] No orphaned dist/ artifacts without source; all resolved or source reconstructed. [DONE: retry.js and hydra-baseline.js removed (git archaeology documented); dist/lib/cache/cognitive/ and dist/lib/cache/scoring/composite-scoring.* cleaned]
+- [x] No unused re-export proxies, no .js imports in .ts source files. [DONE: `cache/scoring/composite-scoring.ts` deleted (0 consumers); `entity-extractor.ts` L7-L8 `.js` extensions removed; `npx tsc --noEmit` passes]
+
+#### 15A: Symlink Elimination + Import Migration (P0)
+- Remove symlink `lib/cache/cognitive -> ../cognitive`
+- Update all 74+ imports from `cache/cognitive/X` to `cognitive/X`
+- Update `lib/cache/README.md` to remove cognitive references
+- Files: 40+ source files in handlers/, lib/, tests/
+- Risk: HIGH churn, LOW logic risk (path-only changes)
+- Effort: ~2 hours mechanical, verified by tsc + vitest
+
+#### 15B: Source-Dist Alignment Enforcement (P0)
+- Create `scripts/evals/check-source-dist-alignment.ts`
+- For each .js in dist/lib/, verify .ts exists at source path
+- Investigate orphans: retry.js (55+ refs), hydra-baseline.js
+- Add to ARCHITECTURE.md: "No symlinks in lib/ tree" policy
+- Effort: ~1 hour
+
+#### 15C: Internal Module Ownership Map (P1)
+- Create `mcp_server/lib/MODULE_MAP.md`
+- Document all 26 lib/ subdirectories: purpose, key files, consumers
+- Map lib/ dirs to feature catalog categories (19->26 mapping)
+- Documentation only, no code changes
+- Effort: ~2 hours
+
+#### 15D: Module Placement Cleanup (P1)
+- Remove unused `lib/cache/scoring/composite-scoring.ts` proxy
+- Document canonical checkpoints location (handlers/ vs lib/storage/)
+- Fix .js imports in entity-extractor.ts
+- Effort: ~30 minutes
+
+#### 15E: Internal Import Policy (P2 — deferred)
+- Define allowed dependency directions between lib/ subdirectories
+- Create AST checker for inner boundaries (modeled on outer boundary checker)
+- Larger effort, can follow as separate spec
 <!-- /ANCHOR:phases -->
 
 <!-- ANCHOR:testing -->
@@ -348,6 +397,7 @@ Contract Docs (Phase 1) -----> Structural Cleanup (Phase 2) -----> Enforcement (
 10. Explicit CLI target authority closure for memory-save routing and smoke verification (critical).
 11. Explicit phase-folder target authority for memory-save routing and validation (critical).
 12. Indexed direct-save render/quality closure for the V6/V7 post-Phase-10 blocker with targeted verification (critical).
+13. Internal module boundary remediation for symlink elimination, source-dist alignment, and MODULE_MAP.md creation (critical).
 
 **Parallel Opportunities**:
 - README alignment can run in parallel with API consumer docs.
@@ -369,6 +419,7 @@ Contract Docs (Phase 1) -----> Structural Cleanup (Phase 2) -----> Enforcement (
 | M10 | Phase-folder authority | Explicit phase-folder CLI targets remain authoritative save destinations with regression and doc evidence | Phase 12 |
 | M11 | Indexed direct-save quality closure | V6/V7 indexed direct-save render/quality blocker is fixed with regression coverage and targeted verification evidence | Phase 13 |
 | M12 | README documentation audit | All 14 missing READMEs created, 50+ existing READMEs verified for alignment, no HVR-banned words | Phase 14 |
+| M13 | Internal module boundary remediation | Symlinks eliminated, source-dist alignment enforced, MODULE_MAP.md created, orphans resolved | Phase 15 |
 
 ## AI Execution Protocol
 

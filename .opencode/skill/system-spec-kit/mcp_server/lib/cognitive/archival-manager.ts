@@ -42,7 +42,7 @@ function getBm25Index(): Bm25IndexModule | null {
     return bm25IndexModule;
   } catch (_error: unknown) {
     try {
-      // Support cache/cognitive symlink import path in some runtime setups.
+      // Support cognitive symlink import path in some runtime setups.
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       bm25IndexModule = require('../../search/bm25-index') as Bm25IndexModule;
       return bm25IndexModule;
@@ -67,7 +67,7 @@ function getEmbeddings(): EmbeddingModule | null {
     return embeddingsModule;
   } catch (_error: unknown) {
     try {
-      // Support cache/cognitive symlink import path in some runtime setups.
+      // Support cognitive symlink import path in some runtime setups.
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       embeddingsModule = require('../../providers/embeddings') as EmbeddingModule;
       return embeddingsModule;

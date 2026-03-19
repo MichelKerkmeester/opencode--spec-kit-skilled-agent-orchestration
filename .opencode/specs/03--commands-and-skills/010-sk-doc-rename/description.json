@@ -1,5 +1,5 @@
 {
-  "specFolder": "03--commands-and-skills/010-doc-rename",
+  "specFolder": "03--commands-and-skills/010-sk-doc-rename",
   "description": "Feature Specification: sk-doc Repo-Wide Rename and Visual Skill Cleanup",
   "keywords": [
     "feature",
@@ -11,9 +11,9 @@
     "skill",
     "cleanup"
   ],
-  "lastUpdated": "2026-03-16T13:20:03.079Z",
+  "lastUpdated": "2026-03-19T15:45:44.563Z",
   "specId": "010",
-  "folderSlug": "010-doc-rename",
+  "folderSlug": "sk-doc-rename",
   "parentChain": [
     "03--commands-and-skills"
   ],

@@ -5,7 +5,7 @@ import {
   getRolloutPercent,
   isFeatureEnabled,
   isIdentityInRollout,
-} from '../lib/cache/cognitive/rollout-policy';
+} from '../lib/cognitive/rollout-policy';
 
 const ROLLOUT_FLAGS = [
   'SPECKIT_ROLLOUT_PERCENT',

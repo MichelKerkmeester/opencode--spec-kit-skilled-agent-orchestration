@@ -3,7 +3,7 @@ title: "Architecture Audit Checklist"
 status: "complete"
 level: 3
 created: "2025-12-01"
-updated: "2026-03-08"
+updated: "2026-03-19"
 description: "Verification checklist for concern separation, boundary clarity, dependency direction, remediation carry-over, and discoverability improvements."
 SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
 trigger_phrases:
@@ -330,7 +330,7 @@ Verifies that all P0 and P1 findings from the 10-agent thorough review (`scratch
 ### P1 Required (complete or approved deferral)
 
 - [x] CHK-710 [P1] ADR-006 documents active AST enforcement status with accurate residual risk scope. [EVIDENCE: `decision-record.md` contains "Post-Phase 8 AST Enforcement Addendum (2026-03-06)" documenting active CI status, 372-line checker, and residual risk limited to computed/interpolated specifiers.]
-- [x] CHK-711 [P1] Task count is reconciled to "126 task entries (124 IDs; T013 split into T013a/b/c)" across plan.md and implementation-summary.md. [EVIDENCE: `plan.md` effort table total and `implementation-summary.md` overview both use the reconciled count; grep for "123 task entries" returns 0 matches in spec docs.]
+- [x] CHK-711 [P1] Task count is reconciled to "142 task entries (140 IDs; T013 split into T013a/b/c)" across plan.md and implementation-summary.md. [EVIDENCE: `plan.md` effort table total and `implementation-summary.md` overview both use the current reconciled count; grep for stale Phase 13-only task totals returns 0 matches in active spec docs.]
 - [x] CHK-712 [P1] Phase 12 is present in effort table, critical path, L3 critical path list, and milestones in plan.md. [EVIDENCE: `plan.md` line 102 (effort table), line 106 (critical path), line 326 (L3 list item 11), line 346 (milestone M10).]
 - [x] CHK-713 [P1] ADR-004 Decision section uses "We chose" (not "We propose"). [EVIDENCE: grep for "We propose" in `decision-record.md` returns 0 matches.]
 
@@ -385,6 +385,35 @@ Verifies that all P0 and P1 findings from the 10-agent thorough review (`scratch
 | P0 Items (Phase 14 README Audit) | 3 | 3/3 | 14 READMEs created, file listings verified, 0 HVR-banned words |
 | P1 Items (Phase 14 README Audit) | 3 | 3/3 | 50+ existing READMEs verified, 26 misaligned fixed, 83/83 frontmatter confirmed |
 | P2 Items (Phase 14 README Audit) | 2 | 2/2 | Cross-references documented (cosmetic gaps noted), 25 audit reports written |
+| P0 Items (Phase 15 Module Boundary) | 5 | 5/5 | Symlink removed, imports migrated, alignment script created, orphans resolved, ARCHITECTURE.md updated |
+| P1 Items (Phase 15 Module Boundary) | 5 | 5/5 | MODULE_MAP.md created, feature catalog crosswalk, dependency directions, proxy deleted, cache README cleaned |
+| P2 Items (Phase 15 Module Boundary) | 3 | 3/3 | Feature catalog entries, testing playbook scenarios, ultra-think review findings resolved |
+
+<!-- ANCHOR:phase-15 -->
+## Internal Module Boundary Remediation (Phase 15)
+
+### P0 Blockers
+
+- [x] CHK-800 [P0] Symlink `lib/cache/cognitive` removed; zero symlinks in lib/ tree. [EVIDENCE: `find mcp_server/lib -type l` returns empty; stale `dist/lib/cache/cognitive/` (44 files) also removed]
+- [x] CHK-801 [P0] All `cache/cognitive` imports migrated to canonical `cognitive` paths. [EVIDENCE: `grep -r "cache/cognitive" mcp_server/ --include="*.ts"` returns 0; `npx tsc --noEmit` passes; ~60 .ts files updated across handlers/, lib/, tests/]
+- [x] CHK-802 [P0] Source-dist alignment script created, wired into the default checks, and passing clean. [EVIDENCE: `scripts/evals/check-source-dist-alignment.ts` exists; `scripts/package.json` includes it in `npm run check --workspace=scripts`; standalone verification via `npx ts-node --transpile-only scripts/evals/check-source-dist-alignment.ts` reports 148 scanned, 148 aligned, 0 violations, exit 0]
+- [x] CHK-803 [P0] Orphaned dist artifacts resolved with documented rationale. [EVIDENCE: `retry.js` (deleted 2026-03-07, commit 5e49e272) and `hydra-baseline.js` (deleted 2026-03-13, commit 8bb6eb62, moved to memory-state-baseline.ts) both removed; findings in script header]
+- [x] CHK-804 [P0] ARCHITECTURE.md updated with no-symlinks and source-dist alignment policies. [EVIDENCE: `ARCHITECTURE.md` lines 175-188 contain "No Symlinks in lib/ Tree" and "Source-Dist Alignment Enforcement" subsections with Policy/Rationale/Enforcement]
+
+### P1 Required
+
+- [x] CHK-810 [P1] MODULE_MAP.md created with 26-directory inventory. [EVIDENCE: `mcp_server/lib/MODULE_MAP.md` exists with 38 H3 entries covering all 26 lib/ subdirectories; includes purpose, key files, consumers per directory]
+- [x] CHK-811 [P1] Feature catalog crosswalk maps lib/ dirs to 19 catalog categories. [EVIDENCE: MODULE_MAP.md Section 3 contains complete crosswalk mapping]
+- [x] CHK-812 [P1] Dependency directions documented with deferred enforcement. [EVIDENCE: MODULE_MAP.md Section 4 defines 5 tiers, per-module rules, forbidden directions, and current exceptions; enforcement noted as DEFERRED]
+- [x] CHK-813 [P1] Unused composite-scoring proxy deleted and .js imports fixed. [EVIDENCE: `cache/scoring/composite-scoring.ts` deleted (0 consumers verified); `entity-extractor.ts` L7-L8 now use extensionless imports; `npx tsc --noEmit` passes]
+- [x] CHK-814 [P1] Cache README cleaned of cognitive/symlink references. [EVIDENCE: `grep -in "cognitive\|fsrs\|decay\|classification\|symlink" mcp_server/lib/cache/README.md` returns 0]
+
+### P2 Nice-to-Have
+
+- [x] CHK-820 [P2] Feature catalog entries added for Phase 15 artifacts. [EVIDENCE: `feature_catalog/16--tooling-and-scripts/14-source-dist-alignment-enforcement.md` and `15-module-boundary-map.md` created; index entries added to `feature_catalog.md`]
+- [x] CHK-821 [P2] Testing playbook scenarios added for Phase 15 enforcement. [EVIDENCE: `manual_testing_playbook/16--tooling-and-scripts/150-source-dist-alignment-validation.md`, `151-module-map-accuracy.md`, `152-no-symlinks-in-lib-tree.md` created; index entries added to `manual_testing_playbook.md`]
+- [x] CHK-822 [P2] Ultra-think review findings resolved. [EVIDENCE: C1 (stale import in benchmarks script) fixed; W1-W4 (stale doc paths, scoring README, cache README) all fixed; final grep returns 0 stale cache/cognitive refs excluding MODULE_MAP.md historical note]
+<!-- /ANCHOR:phase-15 -->
 
 <!-- ANCHOR:readme-audit -->
 ## README Documentation Audit (Phase 14)
@@ -421,4 +450,5 @@ Verifies that all P0 and P1 findings from the 10-agent thorough review (`scratch
 **Phase 13 Closure Completed**: 2026-03-06
 **Post-Review Remediation Completed**: 2026-03-06
 **Phase 14 README Audit Completed**: 2026-03-08
+**Phase 15 Module Boundary Remediation Completed**: 2026-03-19
 <!-- /ANCHOR:summary -->

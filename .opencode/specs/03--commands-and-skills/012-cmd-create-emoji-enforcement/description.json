@@ -10,9 +10,9 @@
     "create",
     "command"
   ],
-  "lastUpdated": "2026-03-16T13:20:02.812Z",
+  "lastUpdated": "2026-03-19T15:45:44.584Z",
   "specId": "012",
-  "folderSlug": "012-cmd-create-emoji-enforcement",
+  "folderSlug": "cmd-create-emoji-enforcement",
   "parentChain": [
     "03--commands-and-skills"
   ],

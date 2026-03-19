@@ -98,3 +98,4 @@ tmp/
 # CocoIndex Code MCP skill venv
 # ───────────────────────────────────────────
 .opencode/skill/mcp-cocoindex-code/mcp_server/.venv/
+.opencode/skill/mcp-coco-index/mcp_server/.venv/

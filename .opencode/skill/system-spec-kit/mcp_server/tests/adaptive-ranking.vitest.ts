@@ -10,7 +10,7 @@ import {
   resetAdaptiveState,
   summarizeAdaptiveSignalQuality,
   tuneAdaptiveThresholdsAfterEvaluation,
-} from '../lib/cache/cognitive/adaptive-ranking';
+} from '../lib/cognitive/adaptive-ranking';
 
 describe('Phase 4 adaptive ranking shadow proposals', () => {
   afterEach(() => {
