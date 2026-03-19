@@ -1,15 +1,13 @@
 ---
-title: "Tasks: [NAME] [template:level_3/tasks.md]"
+title: "Tasks: Create Command YAML Refinement [template:level_3/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
-  - "tasks"
-  - "name"
-  - "template"
-  - "tasks core"
+  - "create yaml refinement tasks"
+  - "create command yaml standardization tasks"
 importance_tier: "normal"
-contextType: "general"
+contextType: "implementation"
 ---
-# Tasks: [NAME]
+# Tasks: Create Command YAML Refinement
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -34,9 +32,9 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [ ] T001 Create project structure
-- [ ] T002 Install dependencies
-- [ ] T003 [P] Configure development tools
+- [x] T001 Audit `.opencode/command/spec_kit/assets/*.yaml` as the style baseline
+- [x] T002 Inspect the create asset suite for missing shared top-level sections
+- [x] T003 Create the new `027-cmd-create-yaml-refinement` spec folder
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -44,10 +42,16 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [ ] T004 [Implement core feature 1]
-- [ ] T005 [Implement core feature 2]
-- [ ] T006 [Implement core feature 3]
-- [ ] T007 [Add error handling]
+- [x] T010 Rewrite `.opencode/command/create/assets/create_feature_catalog_auto.yaml`
+- [x] T011 Rewrite `.opencode/command/create/assets/create_feature_catalog_confirm.yaml`
+- [x] T012 Rewrite `.opencode/command/create/assets/create_testing_playbook_auto.yaml`
+- [x] T013 Rewrite `.opencode/command/create/assets/create_testing_playbook_confirm.yaml`
+- [x] T014 Normalize `.opencode/command/create/assets/create_agent_auto.yaml`
+- [x] T015 Normalize `.opencode/command/create/assets/create_agent_confirm.yaml`
+- [x] T016 Normalize `.opencode/command/create/assets/create_changelog_auto.yaml`
+- [x] T017 Normalize `.opencode/command/create/assets/create_changelog_confirm.yaml`
+- [x] T018 Normalize `.opencode/command/create/assets/create_folder_readme_auto.yaml`
+- [x] T019 Normalize `.opencode/command/create/assets/create_folder_readme_confirm.yaml`
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -55,9 +59,11 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T008 Test happy path manually
-- [ ] T009 Test edge cases
-- [ ] T010 Update documentation
+- [x] T020 Parse every file in `.opencode/command/create/assets/`
+- [x] T021 Re-validate `.opencode/command/create/README.txt`
+- [x] T022 Re-validate `.opencode/command/README.txt`
+- [x] T023 Validate this spec folder with `validate.sh`
+- [x] T024 Update `implementation-summary.md` with the final verification evidence
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -65,9 +71,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed
+- [x] All scoped YAML asset edits complete
+- [x] No validation blockers remain in the spec packet
+- [x] The create asset suite exposes one shared top-level contract
 <!-- /ANCHOR:completion -->
 
 ---
@@ -78,12 +84,3 @@ contextType: "general"
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 <!-- /ANCHOR:cross-refs -->
-
----
-
-<!--
-CORE TEMPLATE (~60 lines)
-- Simple task tracking
-- 3 phases: Setup, Implementation, Verification
-- Add L2/L3 addendums for complexity
--->

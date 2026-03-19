@@ -17,6 +17,8 @@ After the system saves or changes any piece of knowledge, it runs a standard set
 
 Phase 014 introduced a shared post-mutation hook path across mutation handlers. The same hook automation now runs after save, update, delete and bulk-delete flows, including atomic save paths, so cache invalidation and follow-up behavior no longer drift by handler.
 
+All five post-mutation hook catch blocks (save atomic, save standard, update, delete, bulk-delete) now capture and surface actual error messages instead of silently swallowing them with `errors: []`. When a hook throws, the error message is collected into the `errors` array of the hook result and propagated as a hint in the response, giving callers visibility into hook failures.
+
 ---
 
 ## 3. SOURCE FILES

@@ -41,9 +41,9 @@ Implementation is organized around one command family: canonical markdown entryp
 - [x] Runtime surfaces to sync are enumerated in `spec.md`
 
 ### Definition of Done
-- [ ] Canonical command markdown, YAML pair, and `.agents` mirror all exist and agree
-- [ ] Runtime-facing create-command inventories list `/create:feature-catalog` consistently
-- [ ] Validation checks pass or any residual limitation is documented honestly
+- [x] Canonical command markdown, YAML pair, and `.agents` mirror all exist and agree
+- [x] Runtime-facing create-command inventories list `/create:feature-catalog` consistently
+- [x] Validation checks pass or any residual limitation is documented honestly
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -74,27 +74,27 @@ User invokes `/create:feature-catalog` -> command captures target skill path, op
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Contract lock
-- [ ] Reconfirm the command contract against spec `021` and the `sk-doc` feature-catalog creation reference.
-- [ ] Inspect existing create-command patterns for markdown, YAML, and `.agents` mirror structure.
-- [ ] Freeze the naming translation `/create:feature-catalog` -> `feature_catalog/`.
+- [x] Reconfirm the command contract against spec `021` and the `sk-doc` feature-catalog creation reference.
+- [x] Inspect existing create-command patterns for markdown, YAML, and `.agents` mirror structure.
+- [x] Freeze the naming translation `/create:feature-catalog` -> `feature_catalog/`.
 
 ### Phase 2: Command family implementation
-- [ ] Create `.opencode/command/create/feature-catalog.md`.
-- [ ] Create `.opencode/command/create/assets/create_feature_catalog_auto.yaml`.
-- [ ] Create `.opencode/command/create/assets/create_feature_catalog_confirm.yaml`.
-- [ ] Create `.agents/commands/create/feature-catalog.toml`.
+- [x] Create `.opencode/command/create/feature-catalog.md`.
+- [x] Create `.opencode/command/create/assets/create_feature_catalog_auto.yaml`.
+- [x] Create `.opencode/command/create/assets/create_feature_catalog_confirm.yaml`.
+- [x] Create `.agents/commands/create/feature-catalog.toml`.
 
 ### Phase 3: Runtime-discovery sync
-- [ ] Update `.opencode/command/create/README.txt`.
-- [ ] Update `.opencode/command/README.txt`.
-- [ ] Update `.opencode/README.md`.
-- [ ] Update `.opencode/agent/write.md`, `.opencode/agent/chatgpt/write.md`, `.codex/agents/write.toml`, and `.agents/agents/write.md`.
+- [x] Update `.opencode/command/create/README.txt`.
+- [x] Update `.opencode/command/README.txt`.
+- [x] Update `.opencode/README.md`.
+- [x] Update `.opencode/agent/write.md`, `.opencode/agent/chatgpt/write.md`, `.codex/agents/write.toml`, and `.agents/agents/write.md`.
 
 ### Phase 4: Validation and closure
-- [ ] Validate the command markdown doc.
-- [ ] Parse the YAML assets and TOML mirror.
-- [ ] Run stale-path and command-name sweeps across runtime docs.
-- [ ] Validate the spec folder and capture implementation evidence.
+- [x] Validate the command markdown doc.
+- [x] Parse the YAML assets and TOML mirror.
+- [x] Run stale-path and command-name sweeps across runtime docs.
+- [x] Validate the spec folder and capture implementation evidence.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -181,9 +181,9 @@ Contract Lock -> Command Family Implementation -> Runtime-Discovery Sync -> Vali
 ## L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
-- [ ] Canonical command doc drafted before runtime-doc updates
-- [ ] YAML and TOML filenames locked before discovery-doc edits
-- [ ] Validation commands prepared before claiming completion
+- [x] Canonical command doc drafted before runtime-doc updates
+- [x] YAML and TOML filenames locked before discovery-doc edits
+- [x] Validation commands prepared before claiming completion
 
 ### Rollback Procedure
 1. Remove the new command family files.
@@ -243,3 +243,26 @@ spec 021 + sk-doc references/templates
 - Runtime discovery-doc edits can begin once filenames and command names are locked.
 - YAML and TOML syntax checks can run in parallel after the command family files exist.
 <!-- /ANCHOR:critical-path -->
+
+### Pre-Task Checklist
+- [x] Confirm spec `021-sk-doc-feature-catalog-testing-playbook` is the source of truth.
+- [x] Confirm the command loads the feature-catalog creation guide and both templates.
+- [x] Confirm runtime-doc sync stays limited to the scoped create-command surfaces.
+- [x] Confirm validation commands are prepared before claiming completion.
+
+### Execution Rules
+
+| Rule | Requirement |
+|------|-------------|
+| Scope lock | Only touch the command family, runtime inventories, and this spec packet |
+| Source fidelity | Keep `/create:feature-catalog` -> `feature_catalog/` naming explicit everywhere |
+| Validation before close | Re-run command-doc, YAML/TOML, and spec validation before finalizing |
+| Honest residuals | Record follow-up warnings exactly instead of masking them |
+
+### Status Reporting Format
+Use `DONE`, `IN_PROGRESS`, or `BLOCKED`, always paired with the file family touched and the latest validator evidence.
+
+### Blocked Task Protocol
+1. Stop on missing template/reference inputs, validator regressions, or mirror drift.
+2. Record the blocked surface and the failing check.
+3. Resolve the inconsistency before continuing with downstream docs.

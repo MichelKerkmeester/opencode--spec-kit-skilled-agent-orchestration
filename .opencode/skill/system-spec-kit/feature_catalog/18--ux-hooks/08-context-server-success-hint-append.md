@@ -17,6 +17,8 @@ When the system successfully retrieves context for you, it now attaches short gu
 
 The context-server success path now appends UX hints through `appendAutoSurfaceHints` while preserving the existing `autoSurfacedContext` payload. This adds guidance without changing the established context auto-surface contract. The finalized implementation runs that append step before token-budget enforcement and recomputes final token metadata from the completed envelope.
 
+After-tool callbacks now receive a `structuredClone(result)` snapshot of the response object, preventing callbacks from mutating the response before token-budget enforcement and hint injection complete. This isolation ensures the hint-append and token-metadata steps operate on the canonical response rather than a potentially modified copy.
+
 ---
 
 ## 3. SOURCE FILES

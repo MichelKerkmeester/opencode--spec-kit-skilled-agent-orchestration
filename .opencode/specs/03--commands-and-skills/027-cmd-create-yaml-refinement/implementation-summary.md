@@ -1,19 +1,17 @@
 ---
-title: "Implementation Summary [template:level_3/implementation-summary.md]"
-description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
+title: "Implementation Summary: Create Command YAML Refinement [template:level_3/implementation-summary.md]"
+description: "The create-command YAML suite now reads much more like one coherent workflow family instead of a mix of thick and thin schemas."
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "template"
-  - "impl summary core"
-importance_tier: "normal"
-contextType: "general"
+  - "create yaml refinement summary"
+  - "create command yaml standardization summary"
+importance_tier: "important"
+contextType: "implementation"
 ---
 # Implementation Summary
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/global/hvr_rules.md -->
 
 ---
 
@@ -22,9 +20,9 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | [###-feature-name] |
-| **Completed** | [YYYY-MM-DD] |
-| **Level** | [1/2/3/3+] |
+| **Spec Folder** | 027-cmd-create-yaml-refinement |
+| **Completed** | 2026-03-19 |
+| **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,28 +30,15 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-<!-- Voice guide:
-     Open with a hook: what changed and why it matters. One paragraph, impact first.
-     Then use ### subsections per feature. Each subsection: what it does + why it exists.
-     Write "You can now inspect the trace" not "Trace inspection was implemented."
-     NO "Files Changed" table for Level 3/3+. The narrative IS the summary.
-     For Level 1-2, a Files Changed table after the narrative is fine.
-     Reference: specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
+The create-command YAML suite now reads much more like one coherent workflow family instead of a mix of thick and thin schemas. The biggest lift went into the newer feature-catalog and testing-playbook assets, which now carry the same kind of request analysis, gate logic, workflow overview, recovery, termination, and rules sections that the stronger workflows already had.
 
-[Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
+### Stronger Feature and Playbook Assets
 
-### [Feature Name]
+`create_feature_catalog_*` and `create_testing_playbook_*` were rewritten into fuller auto/confirm pairs. Confirm mode no longer drops core setup and reporting structure. It now keeps the same root workflow contract and adds checkpoint behavior on top, which makes those pairs much easier to reason about and much closer to the `spec_kit` style baseline.
 
-[What this feature does and why it exists. 1-2 paragraphs. Use direct address.
-Explain what the user gains, not what files you touched.]
+### Broader Suite Normalization
 
-### Files Changed
-
-<!-- Include for Level 1-2. Omit for Level 3/3+ where the narrative carries. -->
-
-| File | Action | Purpose |
-|------|--------|---------|
-| [path] | [Created/Modified/Deleted] | [What this change accomplishes] |
+`create_agent_*`, `create_changelog_*`, and `create_folder_readme_*` were then normalized with the same shared top-level sections. That keeps their command-specific logic intact, but it makes the suite feel far less custom per file. `create_folder_readme` is still the main structural exception because it remains one unified asset for two operations, but it now has the same top-level workflow framing as the rest of the suite.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -61,13 +46,7 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-<!-- Voice guide:
-     Tell the delivery story. What gave you confidence this works?
-     "All features shipped behind feature flags" not "Feature flags were used."
-     For Level 1: a single sentence is enough.
-     For Level 3+: describe stages (testing, rollout, verification). -->
-
-[How was this tested, verified and shipped? What was the rollout approach?]
+The refinement was delivered as one bounded documentation-asset pass. I compared the create asset suite against the richer `spec_kit` YAMLs, identified the shared top-level sections that were missing, rewrote the thinner feature/testing pairs, then added the same structural contract to the broader create asset set. After the edits, I ran a full YAML parse pass across `.opencode/command/create/assets/` and re-validated the two command README surfaces touched by the suite context.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -75,12 +54,11 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-<!-- Voice guide: "Why" column should read like you're explaining to a colleague.
-     "Chose X because Y" not "X was selected due to Y." -->
-
 | Decision | Why |
 |----------|-----|
-| [What was decided] | [Active-voice rationale with specific reasoning] |
+| Normalize the entire create YAML suite on one shared top-level contract | Fixing only the newest files would have left the broader suite drift in place |
+| Rewrite the feature/testing pairs more heavily | They had the biggest gap relative to `spec_kit` style and their own auto/confirm parity |
+| Keep `create_folder_readme` unified for now | Splitting it would be a larger behavioral follow-up, not a safe cleanup inside this pass |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -88,12 +66,14 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:verification -->
 ## Verification
 
-<!-- Voice guide: Be honest. Show failures alongside passes.
-     "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
-
 | Check | Result |
 |-------|--------|
-| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
+| Full YAML parse across `.opencode/command/create/assets/` | PASS |
+| `validate_document.py .opencode/command/create/README.txt` | PASS |
+| `validate_document.py .opencode/command/README.txt` | PASS |
+| Missing-key sweep for the shared standard section set | PASS |
+| `.gemini/commands/create/*.toml` exact-match check against `.agents/commands/create/*.toml` | PASS |
+| Spec validator for `027-cmd-create-yaml-refinement` | PASS WITH WARNINGS (non-blocking AI protocol and custom-anchor warnings only) |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -101,18 +81,7 @@ Explain what the user gains, not what files you touched.]
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-<!-- Voice guide: Number them. Be specific and actionable.
-     "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
-     not "Some features may require configuration."
-     Write "None identified." if nothing applies. -->
-
-1. **[Limitation]** [Specific detail with workaround if one exists.]
+1. **`create_folder_readme` is still a unified dual-operation asset.** This pass improved its top-level parity, but it did not split README and install-guide workflows into separate command families.
+2. **The spec validator still reports two warnings.** They are non-blocking and match the current Level 3 packet warning pattern: the optional AI protocol block is not populated, and `spec.md` uses the same extra custom anchors (`metadata`, `nfr`) seen in nearby packets.
+3. **No command markdown entrypoints were changed here.** This pass was intentionally limited to the YAML asset family and its spec documentation.
 <!-- /ANCHOR:limitations -->
-
----
-
-<!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
--->

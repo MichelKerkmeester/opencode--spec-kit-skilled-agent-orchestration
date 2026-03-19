@@ -39,6 +39,13 @@ development_philosophy:
   approach: "Understand → Plan → Generate → Validate"
   mandate: "Concrete use cases first, then tools/permissions, then content"
 
+runtime_agent_path_resolution:
+  default: .opencode/agent
+  chatgpt: .opencode/agent/chatgpt
+  claude: .claude/agents
+  codex: .codex/agents
+  gemini: .gemini/agents
+
 # ─────────────────────────────────────────────────────────────────
 # CONFIDENCE & CLARIFICATION FRAMEWORK
 # ─────────────────────────────────────────────────────────────────
@@ -131,6 +138,16 @@ field_handling:
     temperature: 0.1
     spec_path_from_phase: "FROM USER CHOICE IN SETUP PHASE"
 
+input_contract:
+  required:
+    - write_agent_verified
+    - agent_name
+    - agent_path
+    - spec_path
+  optional:
+    - memory_loaded
+    - agent_mode
+
 # ─────────────────────────────────────────────────────────────────
 # DOCUMENTATION LEVEL
 # ─────────────────────────────────────────────────────────────────
@@ -205,6 +222,37 @@ workflow_enforcement:
 # ─────────────────────────────────────────────────────────────────
 # WORKFLOW (6 STEPS WITH CHECKPOINTS)
 # ─────────────────────────────────────────────────────────────────
+gate_logic:
+  hard:
+    H0_write_verified:
+      description: "@write verification must have passed in Phase 0"
+      fail_action: "STOP and return to the command setup phase"
+    H1_required_fields:
+      description: "Required setup fields must be present before generation"
+      fail_action: "STOP and collect missing inputs"
+    H2_generation_contract:
+      description: "Generated agent must follow the sk-doc template and validation contract"
+      fail_action: "Fix the generated output before continuing"
+  soft:
+    S1_existing_agent:
+      description: "Warn when an agent already exists at the target path"
+      fail_action: "Proceed only after explicit update intent"
+
+workflow_overview:
+  steps:
+    - id: step_1_request_analysis
+      purpose: "Normalize inputs, validate naming, and resolve the target path"
+    - id: step_2_understanding
+      purpose: "Capture the agent purpose, use cases, and operating authority"
+    - id: step_3_planning
+      purpose: "Define permissions, tools, and behavioral rules"
+    - id: step_4_generation
+      purpose: "Generate the agent from the canonical template"
+    - id: step_5_validation
+      purpose: "Validate YAML/frontmatter and content structure"
+    - id: step_6_save_context
+      purpose: "Persist spec context and emit completion status"
+
 workflow:
   # ═══════════════════════════════════════════════════════════════
   # PHASE A: PLANNING (Steps 1-3)

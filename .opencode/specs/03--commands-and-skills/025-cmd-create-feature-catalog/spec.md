@@ -26,18 +26,16 @@ This packet defines the implementation contract for a new `/create:feature-catal
 
 ---
 
-<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-19 |
 | **Updated** | 2026-03-19 |
 | **Branch** | `025-cmd-create-feature-catalog` |
-<!-- /ANCHOR:metadata -->
 
 ---
 
@@ -161,7 +159,6 @@ Add `/create:feature-catalog` so authors can generate or update a canonical `fea
 ---
 
 ## 7. NON-FUNCTIONAL REQUIREMENTS
-<!-- ANCHOR:nfr -->
 
 ### Performance
 - **NFR-P01**: Command setup stays lightweight and uses one consolidated prompt instead of repeated clarification rounds.
@@ -174,7 +171,6 @@ Add `/create:feature-catalog` so authors can generate or update a canonical `fea
 ### Reliability
 - **NFR-R01**: The generated root catalog and per-feature files use stable folder and file naming conventions from the shipped contract.
 - **NFR-R02**: All declared command paths and asset references resolve cleanly in documentation validation and path sweeps.
-<!-- /ANCHOR:nfr -->
 
 ---
 

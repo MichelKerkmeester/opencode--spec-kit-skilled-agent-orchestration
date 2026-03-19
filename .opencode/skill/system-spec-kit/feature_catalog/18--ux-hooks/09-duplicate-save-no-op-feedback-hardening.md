@@ -15,7 +15,9 @@ When you try to save something that is already stored exactly as-is, the system 
 
 ## 2. CURRENT REALITY
 
-Duplicate-content save no-op responses no longer emit false `postMutationHooks`, cache-clear booleans, or misleading invalidation hints. They now explain that the save was a no-op and that caches were left unchanged, so callers receive accurate mutation feedback without pretending a hook ran.
+Both `duplicate` and `unchanged` save statuses now suppress post-mutation hooks and no longer emit false `postMutationHooks`, cache-clear booleans, or misleading invalidation hints. They explain that the save was a no-op and that caches were left unchanged, so callers receive accurate mutation feedback without pretending a hook ran.
+
+This suppression applies to both the standard save path (`response-builder.ts`) and the atomic save path (`memory-save.ts`). An FSRS corruption guard also prevents `applyPostInsertMetadata` from running on duplicate or unchanged saves, ensuring that spaced-repetition fields (`review_count`, `last_review`) are not reset to initial values when no actual mutation occurred.
 
 ---
 

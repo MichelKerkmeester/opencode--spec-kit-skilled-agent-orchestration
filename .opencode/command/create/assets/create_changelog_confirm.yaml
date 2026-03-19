@@ -37,6 +37,13 @@ development_philosophy:
   approach: "Analyze -> Resolve -> Calculate -> Generate -> Validate -> Write"
   mandate: "Dynamic detection with human-quality output matching 370+ existing changelogs"
 
+runtime_agent_path_resolution:
+  default: .opencode/agent
+  chatgpt: .opencode/agent/chatgpt
+  claude: .claude/agents
+  codex: .codex/agents
+  gemini: .gemini/agents
+
 # ─────────────────────────────────────────────────────────────────
 # CONFIDENCE & CLARIFICATION FRAMEWORK
 # ─────────────────────────────────────────────────────────────────
@@ -128,6 +135,15 @@ field_handling:
     version_format: "v{MAJOR}.{MINOR}.{PATCH}.{BUILD}"
     initial_version: "v1.0.0.0"
     project_url: "https://github.com/MichelKerkmeester/opencode-spec-kit-framework"
+
+input_contract:
+  required:
+    - write_agent_verified
+    - source_type
+  optional:
+    - spec_folder
+    - component_hint
+    - version_bump
 
 # ─────────────────────────────────────────────────────────────────
 # DOCUMENTATION LEVEL
@@ -280,6 +296,42 @@ workflow_enforcement:
 # ─────────────────────────────────────────────────────────────────
 # WORKFLOW
 # ─────────────────────────────────────────────────────────────────
+gate_logic:
+  hard:
+    H0_write_verified:
+      description: "@write verification must have passed in Phase 0"
+      fail_action: "STOP and return to the command setup phase"
+    H1_required_fields:
+      description: "Source context and resolution inputs must be present"
+      fail_action: "STOP and collect missing inputs"
+    H2_component_resolution:
+      description: "A changelog component folder must resolve before writing"
+      fail_action: "STOP and ask for a clearer source or component hint"
+    H3_version_contract:
+      description: "Version calculation and content format must be valid before write"
+      fail_action: "Fix the version/content plan before continuing"
+  soft:
+    S1_auto_bump:
+      description: "Auto-detected version bump may proceed with logged assumptions"
+      fail_action: "Proceed with rationale"
+
+workflow_overview:
+  steps:
+    - id: step_1_context_analysis
+      purpose: "Resolve the work source and collect changelog context"
+    - id: step_2_component_resolution
+      purpose: "Map the work to the correct changelog component folder"
+    - id: step_3_version_determination
+      purpose: "Calculate the next version and release tier"
+    - id: step_4_content_generation
+      purpose: "Draft the changelog entry using the canonical format"
+    - id: step_5_quality_validation
+      purpose: "Validate structure, versioning, and completeness"
+    - id: step_6_write_file
+      purpose: "Write the changelog entry to the resolved component folder"
+    - id: step_7_save_context
+      purpose: "Persist spec context and emit completion status"
+
 workflow:
 
   step_1_context_analysis:

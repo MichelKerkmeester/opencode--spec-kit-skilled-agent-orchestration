@@ -17,8 +17,8 @@ Operators run the exact prompt and command sequence for `NEW-103` and confirm th
 
 - Objective: Confirm new hook modules return the finalized metadata and hint shape
 - Prompt: `Validate NEW-103 hook module behavior for mutation feedback and response hints. Capture the evidence needed to prove Test output shows suite pass, including latency/cache-clear booleans and finalized hint payload assertions. Return a concise user-facing pass/fail verdict with the main reason.`
-- Expected signals: Test output shows suite pass, including latency/cache-clear booleans and finalized hint payload assertions
-- Pass/fail: PASS if `tests/hooks-ux-feedback.vitest.ts` passes with no failing assertions
+- Expected signals: Test output shows suite pass (6 tests), including latency/cache-clear booleans, `errors: string[]` field in mutation feedback data, error propagation hint verification, and finalized hint payload assertions
+- Pass/fail: PASS if `tests/hooks-ux-feedback.vitest.ts` passes all 6 tests with no failing assertions
 
 ---
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-103` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-103 | UX hook module coverage (`mutation-feedback`, `response-hints`) | Confirm new hook modules return the finalized metadata and hint shape | `Validate NEW-103 hook module behavior for mutation feedback and response hints. Capture the evidence needed to prove Test output shows suite pass, including latency/cache-clear booleans and finalized hint payload assertions. Return a concise user-facing pass/fail verdict with the main reason.` | 1) `npx vitest run tests/hooks-ux-feedback.vitest.ts` | Test output shows suite pass, including latency/cache-clear booleans and finalized hint payload assertions | Test transcript + snippet for passing assertions | PASS if `tests/hooks-ux-feedback.vitest.ts` passes with no failing assertions | Inspect hook exports and fixture payloads if assertion fails |
+| NEW-103 | UX hook module coverage (`mutation-feedback`, `response-hints`) | Confirm new hook modules return the finalized metadata and hint shape | `Validate NEW-103 hook module behavior for mutation feedback and response hints. Capture the evidence needed to prove Test output shows suite pass (6 tests), including latency/cache-clear booleans, errors field verification, error propagation hints, and finalized hint payload assertions. Return a concise user-facing pass/fail verdict with the main reason.` | 1) `npx vitest run tests/hooks-ux-feedback.vitest.ts` | Test output shows suite pass (6 tests), including latency/cache-clear booleans, `errors: string[]` field in mutation feedback data, error propagation hint verification, and finalized hint payload assertions | Test transcript + snippet for passing assertions | PASS if `tests/hooks-ux-feedback.vitest.ts` passes all 6 tests with no failing assertions | Inspect hook exports and fixture payloads if assertion fails |
 
 ---
 

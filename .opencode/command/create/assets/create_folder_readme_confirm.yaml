@@ -70,6 +70,13 @@ development_philosophy:
   approach: "Discover -> Structure -> Generate -> Validate"
   mandate: "Progressive disclosure - Quick Start first, details follow"
 
+runtime_agent_path_resolution:
+  default: .opencode/agent
+  chatgpt: .opencode/agent/chatgpt
+  claude: .claude/agents
+  codex: .codex/agents
+  gemini: .gemini/agents
+
 # ─────────────────────────────────────────────────────────────────
 # CONFIDENCE & CLARIFICATION FRAMEWORK
 # ─────────────────────────────────────────────────────────────────
@@ -119,6 +126,19 @@ request_analysis_framework:
     stop_conditions: ["Any item unchecked", "Path not found"]
     stop_action: "STOP and address before proceeding"
 
+input_contract:
+  required:
+    - write_agent_verified
+    - operation
+    - execution_mode
+  optional:
+    - target_path
+    - project_name
+    - readme_type
+    - install_guide_type_prefix
+    - platforms
+    - spec_path
+
 # ─────────────────────────────────────────────────────────────────
 # CHECKPOINT OPTIONS
 # ─────────────────────────────────────────────────────────────────
@@ -159,6 +179,25 @@ workflow_enforcement:
       enforcement: "MUST verify structure and completeness"
       verification: "DQI score >= 70 before claiming complete"
 
+gate_logic:
+  hard:
+    H0_write_verified:
+      description: "@write verification must have passed in Phase 0"
+      fail_action: "STOP and return to the command setup phase"
+    H1_operation_resolution:
+      description: "The workflow must resolve README vs Install Guide before generation"
+      fail_action: "STOP and correct the operation routing"
+    H2_required_inputs:
+      description: "Required operation-specific inputs must be present"
+      fail_action: "STOP and collect missing inputs"
+    H3_validation_gate:
+      description: "Generated documentation must pass the structural validation path"
+      fail_action: "Fix the generated output before continuing"
+  soft:
+    S1_discovered_context:
+      description: "Discovered project context may proceed with logged assumptions"
+      fail_action: "Proceed with rationale"
+
 # ─────────────────────────────────────────────────────────────────
 # CIRCUIT BREAKER
 # ─────────────────────────────────────────────────────────────────
@@ -194,6 +233,21 @@ quality_standards:
     stage_2: "Content check (code blocks, tables, no placeholders)"
   template_adherence: required
   core_standards_reference: ".opencode/skill/sk-doc/references/global/core_standards.md"
+
+workflow_overview:
+  steps:
+    - id: step_1_request_analysis
+      purpose: "Normalize inputs and resolve the target operation"
+    - id: step_2_content_discovery
+      purpose: "Gather README or install-guide source context"
+    - id: step_3_structure_selection
+      purpose: "Choose the correct template and section contract"
+    - id: step_4_content_generation
+      purpose: "Generate the document content for the selected operation"
+    - id: step_5_validation
+      purpose: "Run structure and quality validation"
+    - id: step_6_save_context
+      purpose: "Persist spec context and emit completion status"
 
 
 # ════════════════════════════════════════════════════════════════
@@ -1668,5 +1722,14 @@ termination:
     - condition: "Need related documentation"
       action: "Run /create:folder_readme for project README"
     # -- Common next steps --
+
+rules:
+  must:
+    - "Resolve README vs Install Guide before generation"
+    - "Use the operation-specific template bundle"
+    - "Validate the generated document before completion"
+  must_not:
+    - "Blend README and install-guide sections into one output file"
+    - "Skip Phase 0 @write verification"
     - condition: "Want to save context"
       action: "Run /memory:save"

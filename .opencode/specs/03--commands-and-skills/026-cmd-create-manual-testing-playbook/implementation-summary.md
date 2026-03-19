@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: /create:testing-playbook Command [template:level_3/implementation-summary.md]"
-description: "Planning-complete summary for the /create:testing-playbook packet. Implementation is pending; this file captures the intended delivery shape and the evidence that must be collected."
+description: "The /create:testing-playbook command is now implemented, validated, and synchronized across command docs, workflow assets, runtime mirrors, and discovery surfaces."
 trigger_phrases:
   - "testing playbook command implementation summary"
   - "/create:testing-playbook summary"
@@ -21,7 +21,7 @@ contextType: "implementation"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 026-cmd-create-manual-testing-playbook |
-| **Completed** | Not yet implemented |
+| **Completed** | 2026-03-19 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
@@ -30,23 +30,29 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This packet is planning-complete, not implementation-complete. The work product created in this turn is the Level 3 decision and execution envelope for `/create:testing-playbook`. It locks the command name, output-folder translation, integrated root-guidance model, no-sidecar rules, runtime-surface scope, required `sk-doc` source inputs, and validation strategy so the implementation phase can proceed without reopening structural decisions.
+`/create:testing-playbook` now exists as a full create-command family. The delivered implementation includes the canonical command entrypoint, the auto/confirm workflow assets, the `.agents` runtime mirror, and the synchronized runtime-facing command menus that advertise the new scaffold.
 
-### Planned Deliverables
+### Delivered Artifacts
 
-The implementation defined by this packet will add:
-- a canonical command at `.opencode/command/create/testing-playbook.md`
-- paired workflow assets at `.opencode/command/create/assets/create_testing_playbook_auto.yaml` and `create_testing_playbook_confirm.yaml`
-- a runtime mirror at `.agents/commands/create/testing-playbook.toml`
-- synchronized create-command and write-agent discovery docs
+The implementation added or updated:
+- `.opencode/command/create/testing-playbook.md`
+- `.opencode/command/create/assets/create_testing_playbook_auto.yaml`
+- `.opencode/command/create/assets/create_testing_playbook_confirm.yaml`
+- `.agents/commands/create/testing-playbook.toml`
+- `.opencode/command/create/README.txt`
+- `.opencode/command/README.txt`
+- `.opencode/README.md`
+- `.opencode/agent/write.md`
+- `.opencode/agent/chatgpt/write.md`
+- `.codex/agents/write.toml`
+- `.agents/agents/write.md`
 
-The generated output contract is also fixed:
-- the root playbook file under each target skill's `manual_testing_playbook/` directory
-- numbered root-level category folders
-- per-feature files generated from the playbook snippet template
-- no canonical review sidecar file
-- no canonical sub-agent ledger sidecar file
-- no `snippets/` subtree
+The generated output contract is now implemented and documented:
+- output lands in each target skill's `manual_testing_playbook/` directory
+- the root playbook file lives at the top of that target `manual_testing_playbook/` package
+- numbered root-level category folders hold the per-feature files
+- review and orchestration guidance lives in the root playbook
+- no legacy review-protocol sidecar, sub-agent ledger sidecar, or `snippets/` subtree is generated
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -54,7 +60,9 @@ The generated output contract is also fixed:
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The packet was prepared from the shipped Level 3 templates and grounded in spec `021-sk-doc-feature-catalog-testing-playbook`, plus the live `sk-doc` manual-testing-playbook creation reference and template bundle. No implementation files outside this spec folder were changed in this turn, so the next execution phase should treat this file as a pre-approved closure target rather than a claim that the command already exists.
+The command was implemented from the Level 3 packet defined here, using spec `021-sk-doc-feature-catalog-testing-playbook` as the playbook-contract source of truth. The command family was built around the live `sk-doc` creation guide and both playbook templates, then propagated through the existing create-command runtime surfaces so discovery and mirror docs stayed in step with the shipped command.
+
+After the command family shipped, the broader create YAML suite was later normalized in spec `027-cmd-create-yaml-refinement` so the testing-playbook workflow assets now also follow the richer shared YAML contract.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -67,6 +75,7 @@ The packet was prepared from the shipped Level 3 templates and grounded in spec 
 | Keep `/create:testing-playbook` while generating `manual_testing_playbook/` | Preserves the shipped package contract and the requested command surface |
 | Keep review and orchestration policy in the root playbook | Matches the live integrated playbook contract and prevents split truth |
 | Require orchestrator-led prompt scaffolding in per-feature files | Preserves the richer manual-testing model instead of regressing to bare command matrices |
+| Keep `.gemini` mirrors as verification-only in this packet | The implementation contract only promised a real `.agents` mirror, but follow-up alignment checks confirmed Gemini parity too |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -76,13 +85,13 @@ The packet was prepared from the shipped Level 3 templates and grounded in spec 
 
 | Check | Result |
 |-------|--------|
-| Level 3 packet files created in `026-cmd-create-manual-testing-playbook/` | PASS |
-| Implementation file creation outside the spec folder | NOT RUN in this turn by design |
-| Command markdown validation | PENDING |
-| YAML/TOML parse checks | PENDING |
-| Runtime discovery-doc sync checks | PENDING |
-| No-sidecar / no-`snippets/` contract checks | PENDING |
-| Spec validator for this folder | PENDING until after final packet write |
+| `validate_document.py .opencode/command/create/testing-playbook.md` | PASS |
+| YAML parse for `create_testing_playbook_auto.yaml` and `create_testing_playbook_confirm.yaml` | PASS |
+| `.agents/commands/create/testing-playbook.toml` mirror check | PASS |
+| Runtime discovery-doc sync checks | PASS |
+| No-sidecar / no-`snippets/` contract checks | PASS |
+| `.gemini/commands/create/testing-playbook.toml` exact-match check against `.agents` | PASS |
+| Spec validator for `026-cmd-create-manual-testing-playbook/` | PASS WITH WARNINGS |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -90,7 +99,7 @@ The packet was prepared from the shipped Level 3 templates and grounded in spec 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Implementation is still pending** This file captures the intended end state and evidence checklist, not a completed command rollout.
-2. **Validation evidence is intentionally incomplete** Command-doc, YAML, TOML, runtime-doc, and no-sidecar checks must be recorded during the implementation phase.
-3. **The packet depends on stable `sk-doc` source paths** If the creation reference or template bundle moves again, the implementation must refresh its paths before execution.
+1. **The spec validator still reports two non-blocking warnings.** They match the current packet pattern: the optional AI protocol block is not filled and `spec.md` keeps the extra custom anchors `metadata` and `nfr`.
+2. **The command scaffolds structure, not finished scenario content.** Authors still need to supply project-specific test categories, scenario coverage, and evidence-backed prompts.
+3. **The implementation depends on stable `sk-doc` source paths.** If the creation guide or template bundle moves again, the command family must be updated in lockstep.
 <!-- /ANCHOR:limitations -->

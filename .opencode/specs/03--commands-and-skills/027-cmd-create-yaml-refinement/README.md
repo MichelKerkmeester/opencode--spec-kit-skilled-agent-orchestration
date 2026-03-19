@@ -88,9 +88,9 @@ See the Phase System in the [main templates README](../README.md#phase-system) f
 ## 7. RELATED
 <!-- ANCHOR:related -->
 
-- `../level_2/README.md`
-- `../level_3+/README.md`
-- `../addendum/level3-arch/`
-- `../../references/templates/level_specifications.md`
+- `../../../skill/system-spec-kit/templates/level_2/README.md`
+- `../../../skill/system-spec-kit/templates/level_3+/README.md`
+- `../../../skill/system-spec-kit/templates/addendum/level3-arch/`
+- `../../../skill/system-spec-kit/templates/README.md`
 
 <!-- /ANCHOR:related -->

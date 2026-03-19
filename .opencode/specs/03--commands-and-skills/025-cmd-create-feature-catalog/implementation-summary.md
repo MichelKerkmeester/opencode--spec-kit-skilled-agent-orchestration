@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: /create:feature-catalog Command [template:level_3/implementation-summary.md]"
-description: "Planning-complete summary for the /create:feature-catalog packet. Implementation is pending; this file captures the intended delivery shape and the evidence that must be collected."
+description: "The /create:feature-catalog command is now implemented, validated, and synchronized across command docs, workflow assets, runtime mirrors, and discovery surfaces."
 trigger_phrases:
   - "feature catalog command implementation summary"
   - "/create:feature-catalog summary"
@@ -21,7 +21,7 @@ contextType: "implementation"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 025-cmd-create-feature-catalog |
-| **Completed** | Not yet implemented |
+| **Completed** | 2026-03-19 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
@@ -30,20 +30,28 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This packet is planning-complete, not implementation-complete. The work product created in this turn is the Level 3 decision and execution envelope for `/create:feature-catalog`. It locks the command name, output-folder translation, runtime-surface scope, required `sk-doc` source inputs, and validation strategy so the implementation phase can proceed without reopening core structural decisions.
+`/create:feature-catalog` now exists as a full create-command family. The delivered implementation includes the canonical command entrypoint, the auto/confirm workflow assets, the `.agents` runtime mirror, and the synchronized runtime-facing command menus that advertise the new scaffold.
 
-### Planned Deliverables
+### Delivered Artifacts
 
-The implementation defined by this packet will add:
-- a canonical command at `.opencode/command/create/feature-catalog.md`
-- paired workflow assets at `.opencode/command/create/assets/create_feature_catalog_auto.yaml` and `create_feature_catalog_confirm.yaml`
-- a runtime mirror at `.agents/commands/create/feature-catalog.toml`
-- synchronized create-command and write-agent discovery docs
+The implementation added or updated:
+- `.opencode/command/create/feature-catalog.md`
+- `.opencode/command/create/assets/create_feature_catalog_auto.yaml`
+- `.opencode/command/create/assets/create_feature_catalog_confirm.yaml`
+- `.agents/commands/create/feature-catalog.toml`
+- `.opencode/command/create/README.txt`
+- `.opencode/command/README.txt`
+- `.opencode/README.md`
+- `.opencode/agent/write.md`
+- `.opencode/agent/chatgpt/write.md`
+- `.codex/agents/write.toml`
+- `.agents/agents/write.md`
 
-The generated output contract is also fixed:
-- the root catalog file under each target skill's `feature_catalog/` directory
-- numbered root-level category folders
-- per-feature files generated from the feature-catalog snippet template
+The generated output contract is now implemented and documented:
+- output lands in each target skill's `feature_catalog/` directory
+- the root catalog file lives at the top of that target `feature_catalog/` package
+- numbered root-level category folders hold the per-feature files
+- the command loads the feature-catalog creation reference plus both feature-catalog templates
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -51,7 +59,9 @@ The generated output contract is also fixed:
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The packet was prepared from the shipped Level 3 templates and grounded in spec `021-sk-doc-feature-catalog-testing-playbook`, plus the live `sk-doc` feature-catalog creation reference and template bundle. No implementation files outside this spec folder were changed in this turn, so the next execution phase should treat this file as a pre-approved closure target rather than a claim that the command already exists.
+The command was implemented from the Level 3 packet defined here, using spec `021-sk-doc-feature-catalog-testing-playbook` as the package-shape source of truth. The command family was built around the live `sk-doc` creation guide and both feature-catalog templates, then propagated through the existing create-command runtime surfaces so discovery and mirror docs stayed in step with the shipped command.
+
+After the command family shipped, the broader create YAML suite was later normalized in spec `027-cmd-create-yaml-refinement` so the feature-catalog workflow assets now also follow the richer shared YAML contract.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -64,6 +74,7 @@ The packet was prepared from the shipped Level 3 templates and grounded in spec 
 | Keep `/create:feature-catalog` while generating `feature_catalog/` | Preserves the shipped package contract and the requested command surface |
 | Require the creation reference and both template files | The command needs both standards guidance and root/per-feature scaffolds |
 | Mirror only real runtime command surfaces | Keeps runtime parity honest and avoids inventing unsupported mirrors |
+| Keep `.gemini` mirrors as verification-only in this packet | The implementation contract only promised a real `.agents` mirror, but follow-up alignment checks confirmed Gemini parity too |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -73,12 +84,12 @@ The packet was prepared from the shipped Level 3 templates and grounded in spec 
 
 | Check | Result |
 |-------|--------|
-| Level 3 packet files created in `025-cmd-create-feature-catalog/` | PASS |
-| Implementation file creation outside the spec folder | NOT RUN in this turn by design |
-| Command markdown validation | PENDING |
-| YAML/TOML parse checks | PENDING |
-| Runtime discovery-doc sync checks | PENDING |
-| Spec validator for this folder | PENDING until after final packet write |
+| `validate_document.py .opencode/command/create/feature-catalog.md` | PASS |
+| YAML parse for `create_feature_catalog_auto.yaml` and `create_feature_catalog_confirm.yaml` | PASS |
+| `.agents/commands/create/feature-catalog.toml` mirror check | PASS |
+| Runtime discovery-doc sync checks | PASS |
+| `.gemini/commands/create/feature-catalog.toml` exact-match check against `.agents` | PASS |
+| Spec validator for `025-cmd-create-feature-catalog/` | PASS WITH WARNINGS |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -86,7 +97,7 @@ The packet was prepared from the shipped Level 3 templates and grounded in spec 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Implementation is still pending** This file captures the intended end state and evidence checklist, not a completed command rollout.
-2. **Validation evidence is intentionally incomplete** Command-doc, YAML, TOML, and runtime-doc checks must be recorded during the implementation phase.
-3. **The packet depends on stable `sk-doc` source paths** If the creation reference or template bundle moves again, the implementation must refresh its paths before execution.
+1. **The spec validator still reports two non-blocking warnings.** They match the current packet pattern: the optional AI protocol block is not filled and `spec.md` keeps the extra custom anchors `metadata` and `nfr`.
+2. **The command scaffolds structure, not finished catalog content.** Authors still need to supply project-specific category design, summaries, and source-backed feature entries.
+3. **The implementation depends on stable `sk-doc` source paths.** If the creation guide or template bundle moves again, the command family must be updated in lockstep.
 <!-- /ANCHOR:limitations -->

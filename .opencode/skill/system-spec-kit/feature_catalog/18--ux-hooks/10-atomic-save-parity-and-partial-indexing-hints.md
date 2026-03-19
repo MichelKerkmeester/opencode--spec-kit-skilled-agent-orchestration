@@ -17,6 +17,8 @@ The system has two ways to save memories: a standard path and a faster "atomic" 
 
 `atomicSaveMemory()` now returns the same `postMutationHooks` envelope shape and UX hint payloads as the primary save path. The finalized follow-up pass also preserved structured partial-indexing guidance so callers can handle atomic-save outcomes with the same parsing and recovery flow used for standard saves.
 
+The atomic path now applies `applyPostInsertMetadata(database, id, {})` for genuinely new saves, guarded by an unchanged/duplicate status check to avoid resetting FSRS spaced-repetition data. Both paths identically filter `unchanged` and `duplicate` statuses for hook suppression. After-tool callbacks in the atomic path receive a `structuredClone` snapshot of the result to prevent mutation before hint injection completes.
+
 ---
 
 ## 3. SOURCE FILES

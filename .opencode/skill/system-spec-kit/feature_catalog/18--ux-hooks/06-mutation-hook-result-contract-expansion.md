@@ -17,6 +17,8 @@ After the system finishes its follow-up tasks on a save, it now reports how long
 
 The shared mutation hook result contract was expanded to include `latencyMs` and cache-clear booleans. Callers now receive explicit timing and cache invalidation signals from post-mutation hook execution.
 
+The result contract also includes an `errors: string[]` field that captures actual error messages from failed hook executions. When errors are present, they are surfaced in the response hints array as `'Post-mutation hook errors: ...'`, giving callers diagnostic visibility into hook failures alongside the timing and cache-clear metadata.
+
 ---
 
 ## 3. SOURCE FILES

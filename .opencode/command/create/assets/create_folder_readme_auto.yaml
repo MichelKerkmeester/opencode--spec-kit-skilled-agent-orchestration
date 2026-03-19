@@ -75,6 +75,13 @@ development_philosophy:
     approach: "Analyze → Discover → Define → Generate → Validate"
     mandate: "Every install guide starts with AI-First section for immediate value"
 
+runtime_agent_path_resolution:
+  default: .opencode/agent
+  chatgpt: .opencode/agent/chatgpt
+  claude: .claude/agents
+  codex: .codex/agents
+  gemini: .gemini/agents
+
 # ─────────────────────────────────────────────────────────────────
 # CONFIDENCE & CLARIFICATION FRAMEWORK
 # ─────────────────────────────────────────────────────────────────
@@ -133,6 +140,19 @@ request_analysis_framework:
         - "Confidence >=80%? (if not: ask)"
       stop_conditions: [ "Any item unchecked", "Unknown project type" ]
       stop_action: "STOP and address before proceeding"
+
+input_contract:
+  required:
+    - write_agent_verified
+    - operation
+    - execution_mode
+  optional:
+    - target_path
+    - project_name
+    - readme_type
+    - install_guide_type_prefix
+    - platforms
+    - spec_path
 
 # ─────────────────────────────────────────────────────────────────
 # CHECKPOINT OPTIONS
@@ -195,6 +215,25 @@ workflow_enforcement:
         enforcement: "MUST verify commands and validate completeness"
         verification: "DQI score >= 70 (Acceptable) before claiming complete"
 
+gate_logic:
+  hard:
+    H0_write_verified:
+      description: "@write verification must have passed in Phase 0"
+      fail_action: "STOP and return to the command setup phase"
+    H1_operation_resolution:
+      description: "The workflow must resolve README vs Install Guide before generation"
+      fail_action: "STOP and correct the operation routing"
+    H2_required_inputs:
+      description: "Required operation-specific inputs must be present"
+      fail_action: "STOP and collect missing inputs"
+    H3_validation_gate:
+      description: "Generated documentation must pass the structural validation path"
+      fail_action: "Fix the generated output before continuing"
+  soft:
+    S1_discovered_context:
+      description: "Discovered project context may proceed with logged assumptions"
+      fail_action: "Proceed with rationale"
+
 # ─────────────────────────────────────────────────────────────────
 # CIRCUIT BREAKER
 # ─────────────────────────────────────────────────────────────────
@@ -241,6 +280,21 @@ quality_standards:
       stage_3: "Check command syntax and platform coverage"
   template_adherence: required
   core_standards_reference: ".opencode/skill/sk-doc/references/global/core_standards.md"
+
+workflow_overview:
+  steps:
+    - id: step_1_request_analysis
+      purpose: "Normalize inputs and resolve the target operation"
+    - id: step_2_content_discovery
+      purpose: "Gather README or install-guide source context"
+    - id: step_3_structure_selection
+      purpose: "Choose the correct template and section contract"
+    - id: step_4_content_generation
+      purpose: "Generate the document content for the selected operation"
+    - id: step_5_validation
+      purpose: "Run structure and quality validation"
+    - id: step_6_save_context
+      purpose: "Persist spec context and emit completion status"
 
 
 # ════════════════════════════════════════════════════════════════
