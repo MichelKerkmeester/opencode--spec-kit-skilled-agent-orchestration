@@ -239,7 +239,7 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
     });
   }
 
-  const shouldEmitPostMutationFeedback = result.status !== 'duplicate';
+  const shouldEmitPostMutationFeedback = result.status !== 'duplicate' && result.status !== 'unchanged';
   let postMutationFeedback: ReturnType<typeof buildMutationHookFeedback> | null = null;
   if (shouldEmitPostMutationFeedback) {
     let postMutationHooks: import('../mutation-hooks').MutationHookResult;
