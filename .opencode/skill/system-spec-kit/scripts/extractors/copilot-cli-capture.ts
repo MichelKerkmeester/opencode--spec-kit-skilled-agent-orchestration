@@ -22,6 +22,10 @@ import {
 } from '../utils';
 import { sanitizeToolDescription, sanitizeToolInputPaths, isApiErrorContent } from '../utils/tool-sanitizer';
 
+/* ───────────────────────────────────────────────────────────────
+   1. INTERFACES
+------------------------------------------------------------------*/
+
 const COPILOT_HOME = path.join(
   process.env.HOME || process.env.USERPROFILE || '',
   '.copilot',
@@ -46,6 +50,10 @@ type PendingPrompt = {
   prompt: string;
   timestamp: string;
 };
+
+/* ───────────────────────────────────────────────────────────────
+   2. UTILITY FUNCTIONS
+------------------------------------------------------------------*/
 
 function transcriptTimestamp(value?: string): number {
   if (!value) {
@@ -134,6 +142,10 @@ function buildSessionTitle(exchanges: CaptureExchange[], sessionId: string): str
   return `Copilot CLI session ${sessionId.slice(0, 8)}`;
 }
 
+/* ───────────────────────────────────────────────────────────────
+   3. WORKSPACE RESOLUTION
+------------------------------------------------------------------*/
+
 async function resolveWorkspace(
   projectRoot: string,
 ): Promise<{ eventsPath: string; workspace: CopilotWorkspace } | null> {
@@ -182,6 +194,10 @@ async function resolveWorkspace(
     workspace: matches[0].workspace,
   };
 }
+
+/* ───────────────────────────────────────────────────────────────
+   4. CONVERSATION CAPTURE
+------------------------------------------------------------------*/
 
 export async function captureCopilotConversation(
   maxExchanges: number = MAX_EXCHANGES_DEFAULT,
@@ -387,6 +403,10 @@ export async function captureCopilotConversation(
     capturedAt: new Date().toISOString(),
   };
 }
+
+/* ───────────────────────────────────────────────────────────────
+   5. EXPORTS
+------------------------------------------------------------------*/
 
 export {
   COPILOT_HOME,

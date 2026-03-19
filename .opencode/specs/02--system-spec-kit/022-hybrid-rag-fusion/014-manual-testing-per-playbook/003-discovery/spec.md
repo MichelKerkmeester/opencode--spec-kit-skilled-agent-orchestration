@@ -11,7 +11,7 @@ contextType: "general"
 ---
 # Feature Specification: manual-testing-per-playbook discovery phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
@@ -21,9 +21,9 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Level** | 1 |
+| **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [`../spec.md`](../spec.md) |
@@ -115,8 +115,8 @@ No P1 items are defined for this phase; all three discovery scenarios are mandat
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- Which spec folder path should be used as the canonical target for EX-011 to produce a representative paginated inventory without polluting production data?
-- Should EX-013 divergent-aliases run be executed against a corpus that is known to have alias conflicts, or is the diagnostic output from a clean corpus sufficient as evidence?
+- Q1 resolved: Target `specFolder` is `02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic` because it has `86` memories and representative pagination. Note: bare `022-hybrid-rag-fusion` returns `0` results because `specFolder` filtering is exact-match, not prefix-match.
+- Q2 resolved: Clean-corpus output is sufficient. EX-013b returned a structurally complete triage payload with `433` rows scanned and `0` divergent groups, so `groups: []` is valid evidence that the tool functions correctly.
 <!-- /ANCHOR:questions -->
 
 ---

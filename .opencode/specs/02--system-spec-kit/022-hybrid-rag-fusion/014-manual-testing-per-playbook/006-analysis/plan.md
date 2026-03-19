@@ -40,7 +40,7 @@ This plan converts the analysis scenarios in the manual testing playbook into an
 ### Definition of Ready
 - [x] Exact prompts, command sequences, and pass criteria were extracted from [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md).
 - [x] Feature mappings for all 7 analysis tests were confirmed against the cross-reference index and analysis feature files.
-- [x] Verdict rules from [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) were loaded for PASS/PARTIAL/FAIL handling.
+- [x] Verdict rules from [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) were loaded for PASS/PARTIAL/FAIL handling.
 - [x] EX-021 destructive scope and sandbox isolation requirements were identified and documented.
 
 ### Definition of Done
@@ -124,7 +124,7 @@ Manual analysis test execution pipeline with review-gated evidence collection an
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Internal | Green | Exact prompts, commands, evidence targets, and pass criteria cannot be verified |
-| [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Internal | Green | Verdicts and coverage rules cannot be applied consistently |
+| [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) (verdict rules) | Internal | Green | Verdicts and coverage rules cannot be applied consistently |
 | [`../../feature_catalog/06--analysis/`](../../feature_catalog/06--analysis/) | Internal | Green | Test-to-feature context and review triage lose their canonical reference |
 | MCP runtime for causal graph and learning tools | Internal | Yellow | Analysis scenarios cannot be executed or compared |
 | Disposable sandbox spec folder and rollback checkpoint | Internal | Yellow | EX-021 cannot run safely without confirmed sandbox isolation |

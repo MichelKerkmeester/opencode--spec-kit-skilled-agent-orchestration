@@ -36,7 +36,7 @@ contextType: "general"
 
 - [x] T001 Extract retrieval prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
 - [x] T002 Confirm feature links for EX-001, EX-002, EX-003, EX-004, EX-005, NEW-086, NEW-109, NEW-142, and NEW-143 in `../../feature_catalog/01--retrieval/`
-- [ ] T003 [P] Prepare sandbox prerequisites and evidence capture checklist for `plan.md`
+- [x] T003 [P] Prepare sandbox prerequisites and evidence capture checklist for `plan.md`
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -46,8 +46,8 @@ contextType: "general"
 
 - [x] T004 Draft `spec.md` with metadata, scope table, and nine playbook-derived requirements
 - [x] T005 Draft `plan.md` with readiness gates, execution phases, and testing strategy table
-- [ ] T006 Add evidence references and verdict outcomes after manual execution
-- [ ] T007 [P] Resolve open questions for NEW-086 sandbox target and NEW-143 graph corpus
+- [x] T006 Add evidence references and verdict outcomes after manual execution
+- [x] T007 [P] Resolve open questions for NEW-086 sandbox target and NEW-143 graph corpus
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -55,9 +55,9 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T008 Run the nine Phase 001 scenarios following `plan.md`
+- [x] T008 Run the nine Phase 001 scenarios following `plan.md`
 - [x] T009 Validate documentation structure and required anchors
-- [ ] T010 Update `implementation-summary.md` when execution and verification are complete
+- [x] T010 Update `implementation-summary.md` when execution and verification are complete
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -65,9 +65,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---

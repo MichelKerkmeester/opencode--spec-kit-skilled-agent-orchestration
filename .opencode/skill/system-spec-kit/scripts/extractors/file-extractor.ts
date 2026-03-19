@@ -36,7 +36,7 @@ import type {
 export type { FileChange, ObservationDetailed };
 
 /* ───────────────────────────────────────────────────────────────
-   INTERFACES
+   1. INTERFACES
 ------------------------------------------------------------------*/
 
 /** Raw observation input used during file extraction. */

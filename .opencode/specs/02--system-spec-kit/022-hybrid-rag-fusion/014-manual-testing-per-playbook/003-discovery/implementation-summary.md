@@ -10,7 +10,7 @@ contextType: "general"
 ---
 # Implementation Summary
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
@@ -21,8 +21,9 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 003-discovery |
-| **Completed** | 2026-03-16 |
-| **Level** | 1 |
+| **Status** | Complete |
+| **Completed** | 2026-03-19 |
+| **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -44,6 +45,10 @@ Four template-aligned files provide structured per-phase test documentation so o
 | plan.md | Created | Execution plan with preconditions, evidence capture, and verdict pipeline |
 | tasks.md | Created | Task tracker for setup, execution, and verification work |
 | checklist.md | Created | QA verification checklist with P0/P1/P2 priority items |
+| implementation-summary.md | Updated | Final completion record with execution results and verification status |
+| scratch/pre-flight.md | Created | Pre-flight resolution of open questions, expected fields, and execution parameters |
+| scratch/evidence-raw.md | Created | Raw MCP evidence for all discovery scenarios |
+| scratch/post-flight.md | Created | Post-flight verdict analysis plus exact drafted replacements for the final doc updates |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -67,6 +72,14 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 
 ---
 
+## Execution Results
+
+| Test ID | Scenario | Verdict | Notes |
+|---------|----------|---------|-------|
+| EX-011 | Folder inventory audit | PASS | Supplementary child-path call resolved exact-match `specFolder` filtering and produced paginated evidence with `26` total memories. |
+| EX-012 | System baseline snapshot | PASS | Composite ranking, tier breakdown, graph metrics, and total folder counts were all present despite a token-budget hint. |
+| EX-013 | Index/FTS integrity check | PASS | Full diagnostics and divergent-alias triage were both structurally complete; clean-corpus `groups: []` output was valid evidence. |
+
 <!-- ANCHOR:verification -->
 ## Verification
 
@@ -84,8 +97,8 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Draft status** — Test scenarios are documented but not yet executed. Final verdicts require manual or MCP-backed execution.
-2. **Coverage audit pending** — Cross-reference validation against the full playbook index has not been run for this individual phase.
+1. **Draft-status limitation resolved** — All three discovery scenarios were executed on 2026-03-19, and final verdicts are now available from MCP-backed evidence.
+2. **Coverage limitation resolved** — Phase 003 now has `3/3` scenario coverage with no skipped test IDs; the only execution caveat was EX-011's supplementary child-path call caused by exact-match `specFolder` filtering.
 <!-- /ANCHOR:limitations -->
 
 ---

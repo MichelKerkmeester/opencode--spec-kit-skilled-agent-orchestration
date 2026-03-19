@@ -65,23 +65,3 @@ args = ["-y", "@modelcontextprotocol/server-github"]
 
 [manual_call_templates.config.mcpServers.github.env]
 GITHUB_PERSONAL_ACCESS_TOKEN = "${GITHUB_PERSONAL_ACCESS_TOKEN}"
-
-[[manual_call_templates]]
-name = "paper"
-call_template_type = "mcp"
-
-[manual_call_templates.config.mcpServers.paper]
-transport = "stdio"
-command = "npx"
-args = ["mcp-remote", "http://127.0.0.1:29979/mcp"]
-env = {}
-
-[[manual_call_templates]]
-name = "webflow"
-call_template_type = "mcp"
-
-[manual_call_templates.config.mcpServers.webflow]
-transport = "stdio"
-command = "npx"
-args = ["mcp-remote", "https://mcp.webflow.com/sse"]
-env = {}

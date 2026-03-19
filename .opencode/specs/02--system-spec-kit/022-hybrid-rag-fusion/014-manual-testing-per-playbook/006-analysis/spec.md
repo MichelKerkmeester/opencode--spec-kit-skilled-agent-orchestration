@@ -23,7 +23,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [`../spec.md`](../spec.md) |
@@ -102,7 +102,7 @@ No P1 items are defined for this phase; all seven analysis scenarios are mandato
 
 - **SC-001**: All 7 analysis tests are documented with exact prompts, exact command sequences, linked feature catalog entries, and playbook-derived pass criteria.
 - **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for EX-019, EX-020, EX-021, EX-022, EX-023, EX-024, and EX-025 will be collected.
-- **SC-003**: Reviewers can audit every Phase 006 scenario using this folder plus the linked playbook (`../../manual_testing_playbook/manual_testing_playbook.md`) and review protocol (`../../manual_testing_playbook/review_protocol.md`).
+- **SC-003**: Reviewers can audit every Phase 006 scenario using this folder plus the linked playbook (`../../manual_testing_playbook/manual_testing_playbook.md`) which includes verdict and coverage rules.
 - **SC-004**: EX-021 is explicitly flagged as destructive and its sandbox isolation requirement is documented in both `spec.md` and `plan.md`.
 - **SC-005**: The phase packet contains no placeholder or template text and is ready for manual execution planning.
 <!-- /ANCHOR:success-criteria -->
@@ -115,7 +115,7 @@ No P1 items are defined for this phase; all seven analysis scenarios are mandato
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth and update this phase packet only from that document |
-| Dependency | [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review and do not invent alternate verdict logic |
+| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) (verdict rules) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review and do not invent alternate verdict logic |
 | Dependency | [`../../feature_catalog/06--analysis/`](../../feature_catalog/06--analysis/) | Supplies feature context for each analysis scenario | Keep every test row linked to its mapped analysis feature file |
 | Dependency | MCP runtime plus causal graph and learning data | Required to execute `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `memory_drift_why`, `task_preflight`, `task_postflight`, and `memory_get_learning_history` scenarios safely | Run stateful and destructive tests in an isolated sandbox and preserve checkpoint instructions in the plan |
 | Risk | EX-021 permanently deletes a causal edge from the graph | High | Restrict `memory_causal_unlink` execution to a disposable sandbox spec folder and record a named checkpoint for rollback evidence before running; abort and mark blocked if sandbox isolation cannot be confirmed |

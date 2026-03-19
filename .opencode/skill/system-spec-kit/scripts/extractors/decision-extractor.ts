@@ -25,7 +25,7 @@ import type {
 export type { DecisionOption, DecisionRecord, DecisionData };
 
 /* ───────────────────────────────────────────────────────────────
-   INTERFACES
+   1. INTERFACES
 ------------------------------------------------------------------*/
 
 // F-32: Word boundaries prevent partial matches (e.g., "undecided" matching "decided")

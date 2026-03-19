@@ -24,6 +24,10 @@ import {
 } from '../utils';
 import { sanitizeToolDescription, sanitizeToolInputPaths } from '../utils/tool-sanitizer';
 
+/* ───────────────────────────────────────────────────────────────
+   1. CONSTANTS
+------------------------------------------------------------------*/
+
 const CLAUDE_HOME = path.join(
   process.env.HOME || process.env.USERPROFILE || '',
   '.claude',
@@ -31,6 +35,10 @@ const CLAUDE_HOME = path.join(
 const CLAUDE_PROJECTS = path.join(CLAUDE_HOME, 'projects');
 const CLAUDE_HISTORY = path.join(CLAUDE_HOME, 'history.jsonl');
 const MAX_EXCHANGES_DEFAULT = 20;
+
+/* ───────────────────────────────────────────────────────────────
+   2. INTERFACES
+------------------------------------------------------------------*/
 
 type ClaudeHistoryEntry = {
   project?: string;
@@ -73,6 +81,10 @@ type TranscriptCandidate = {
   historyTimestamp: number;
 };
 
+/* ───────────────────────────────────────────────────────────────
+   3. UTILITY FUNCTIONS
+------------------------------------------------------------------*/
+
 function sanitizeProjectRoot(projectRoot: string): string {
   return projectRoot.replace(/[^A-Za-z0-9._-]+/g, '-');
 }
@@ -105,6 +117,10 @@ async function readJsonl(filePath: string): Promise<unknown[]> {
     return [];
   }
 }
+
+/* ───────────────────────────────────────────────────────────────
+   4. HISTORY & TRANSCRIPT RESOLUTION
+------------------------------------------------------------------*/
 
 async function readHistoryEntries(projectRoot: string): Promise<ClaudeHistoryEntry[]> {
   if (!fsSync.existsSync(CLAUDE_HISTORY)) {
@@ -328,8 +344,12 @@ function pickBestCandidate(
     .map((sessionId) => sortedByFreshness.find((candidate) => candidate.sessionId === sessionId) || null)
     .filter((candidate): candidate is TranscriptCandidate => candidate !== null);
 
+  // Exact session ID match is deterministic — return immediately without time window filtering
+  if (exactSessionMatches.length > 0) {
+    return exactSessionMatches[0];
+  }
+
   const rankedGroups: TranscriptCandidate[][] = [
-    exactSessionMatches,
     activeTaskMatches,
     sortedByHistory.filter((candidate) => candidate.historyTimestamp > 0),
     sortedByFreshness,
@@ -346,6 +366,20 @@ function pickBestCandidate(
       if (candidateMatchesTimeWindow(candidate, sessionHints)) {
         return candidate;
       }
+    }
+  }
+
+  // P1-5: Ambiguity detection — warn when groups 1-2 produced no match
+  // and groups 3-4 have multiple candidates within 10 minutes of each other
+  const fallbackCandidates = [
+    ...sortedByHistory.filter((c) => c.historyTimestamp > 0),
+    ...sortedByFreshness,
+  ];
+  const uniqueFallback = Array.from(new Map(fallbackCandidates.map((c) => [c.transcriptPath, c])).values());
+  if (uniqueFallback.length >= 2) {
+    const timestamps = uniqueFallback.map((c) => c.sessionUpdated || c.sessionCreated).filter((t) => t > 0).sort((a, b) => b - a);
+    if (timestamps.length >= 2 && (timestamps[0] - timestamps[timestamps.length - 1]) <= 10 * 60 * 1000) {
+      console.warn(`   Warning: MULTI_SESSION_AMBIGUITY: ${uniqueFallback.length} candidates within 10min window. Specify --session-id for deterministic selection.`);
     }
   }
 
@@ -372,6 +406,10 @@ async function resolveTranscript(projectRoot: string, sessionHints?: ClaudeSessi
 
   return pickBestCandidate(candidatePool, sessionHints);
 }
+
+/* ───────────────────────────────────────────────────────────────
+   5. CONTENT EXTRACTION
+------------------------------------------------------------------*/
 
 function extractTextContent(content: unknown): string {
   if (typeof content === 'string') {
@@ -479,6 +517,10 @@ function buildSessionTitle(exchanges: CaptureExchange[], sessionId: string): str
 
   return `Claude Code session ${sessionId.slice(0, 8)}`;
 }
+
+/* ───────────────────────────────────────────────────────────────
+   6. CONVERSATION CAPTURE
+------------------------------------------------------------------*/
 
 export async function captureClaudeConversation(
   maxExchanges: number = MAX_EXCHANGES_DEFAULT,
@@ -676,6 +718,10 @@ export async function captureClaudeConversation(
     capturedAt: new Date().toISOString(),
   };
 }
+
+/* ───────────────────────────────────────────────────────────────
+   7. EXPORTS
+------------------------------------------------------------------*/
 
 export {
   CLAUDE_HISTORY,

@@ -13,6 +13,10 @@ import path from 'path';
 import { CONFIG } from '../core';
 import { toCanonicalRelativePath } from '../utils/file-helpers';
 
+/* ───────────────────────────────────────────────────────────────
+   1. INTERFACES
+------------------------------------------------------------------*/
+
 const SYNTHETIC_TIMESTAMP = new Date(0).toISOString();
 const MAX_SPEC_OBSERVATIONS = 15;
 
@@ -38,6 +42,10 @@ export interface SpecFolderExtraction {
 type Frontmatter = Record<string, string | string[]>;
 type TaskStats = { checked: number; unchecked: number; percent: number } | null;
 type ChecklistStats = { passed: number; total: number; p0: string; p1: string; p2: string } | null;
+
+/* ───────────────────────────────────────────────────────────────
+   2. UTILITY FUNCTIONS
+------------------------------------------------------------------*/
 
 function readDoc(specFolderPath: string, fileName: string): string | null {
   try {
@@ -163,6 +171,10 @@ function dedupe<T>(items: T[]): T[] {
   return Array.from(new Set(items.filter(Boolean))) as T[];
 }
 
+/* ───────────────────────────────────────────────────────────────
+   3. DOCUMENT PARSERS
+------------------------------------------------------------------*/
+
 function parseSpecDoc(content: string | null) {
   const { data, body } = parseFrontmatter(content);
   const files: SpecFolderExtraction['FILES'] = [];
@@ -269,6 +281,10 @@ function parseDecisionDoc(content: string | null): SpecFolderExtraction['decisio
   }).filter((entry): entry is SpecFolderExtraction['decisions'][number] => Boolean(entry));
 }
 
+/* ───────────────────────────────────────────────────────────────
+   4. SESSION PHASE DETECTION
+------------------------------------------------------------------*/
+
 function determineSessionPhase(taskStats: TaskStats, checklistStats: ChecklistStats, planPhase: string, status: string): string {
   if (/complete|done|closed/i.test(status)) return 'complete';
   if (taskStats?.percent === 100 && (!checklistStats || checklistStats.passed === checklistStats.total)) return 'complete';
@@ -277,6 +293,10 @@ function determineSessionPhase(taskStats: TaskStats, checklistStats: ChecklistSt
   if (planPhase) return 'implementing';
   return 'planning';
 }
+
+/* ───────────────────────────────────────────────────────────────
+   5. SPEC FOLDER EXTRACTION
+------------------------------------------------------------------*/
 
 export async function extractSpecFolderContext(specFolderPath: string): Promise<SpecFolderExtraction> {
   const descriptionRaw = readDoc(specFolderPath, 'description.json');

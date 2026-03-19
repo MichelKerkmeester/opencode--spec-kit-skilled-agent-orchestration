@@ -176,6 +176,7 @@ interface LoadOptions {
   dataFile?: string | null;
   specFolderArg?: string | null;
   preferredCaptureSource?: CaptureDataSource | null;
+  sessionId?: string | null;
 }
 
 function parseEpochMs(rawValue: string | undefined): number | null {
@@ -192,14 +193,20 @@ function parseEpochMs(rawValue: string | undefined): number | null {
   return Number.isFinite(parsed) ? parsed : null;
 }
 
-function buildClaudeSessionHints(env: NodeJS.ProcessEnv = process.env): {
+function buildClaudeSessionHints(
+  explicitSessionId?: string | null,
+  env: NodeJS.ProcessEnv = process.env,
+): {
   expectedSessionId?: string | null;
   sessionStartTs?: number | null;
   invocationTs: number;
 } {
-  const expectedSessionId = env.CLAUDE_CODE_SESSION?.trim()
-    || env.CLAUDE_CODE_SESSION_ID?.trim()
-    || null;
+  // Priority: CLI flag → CLAUDE_CODE_SESSION env → CLAUDE_CODE_SESSION_ID env → null
+  // Use `|| null` (not `??`) for each term — empty strings must be treated as "not set"
+  const expectedSessionId = (explicitSessionId?.trim() || null)
+    ?? (env.CLAUDE_CODE_SESSION?.trim() || null)
+    ?? (env.CLAUDE_CODE_SESSION_ID?.trim() || null)
+    ?? null;
   const sessionStartTs = parseEpochMs(env.CLAUDE_CODE_SESSION_STARTED_AT)
     ?? parseEpochMs(env.CLAUDE_CODE_START_TS)
     ?? null;
@@ -315,7 +322,8 @@ function buildNativeCaptureOrder(preferredCaptureSource: CaptureDataSource | nul
 
 async function attemptNativeCapture(
   source: CaptureDataSource,
-  specFolderArg: string | null | undefined
+  specFolderArg: string | null | undefined,
+  sessionId?: string | null,
 ): Promise<LoadedData | null> {
   const projectRoot = CONFIG.PROJECT_ROOT;
 
@@ -361,7 +369,7 @@ async function attemptNativeCapture(
         const conversation = await claudeCodeCapture.captureClaudeConversation(
           20,
           projectRoot,
-          buildClaudeSessionHints(),
+          buildClaudeSessionHints(sessionId),
         );
         if (hasUsableCaptureContent(conversation)) {
           console.log(`   ✓ Captured ${conversation.exchanges.length} exchanges from Claude Code`);
@@ -476,6 +484,7 @@ async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
   const preferredCaptureSource = options?.preferredCaptureSource !== undefined
     ? options.preferredCaptureSource
     : inferPreferredCaptureSourceFromEnv();
+  const sessionId = options?.sessionId ?? null;
 
   // Priority 1: Data file provided via command line
   if (dataFile) {
@@ -551,7 +560,7 @@ async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
   }
 
   for (const source of nativeCaptureOrder) {
-    const loaded = await attemptNativeCapture(source, specFolderArg);
+    const loaded = await attemptNativeCapture(source, specFolderArg, sessionId);
     if (loaded) {
       return loaded;
     }

@@ -127,7 +127,7 @@ Preconditions are established first so each test starts from a known sandbox sta
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Green | Exact prompts, commands, evidence, and PASS rules cannot be reconstructed safely |
-| `../../manual_testing_playbook/review_protocol.md` | Internal | Green | Verdict and evidence handling may drift from review expectations |
+| `../../manual_testing_playbook/manual_testing_playbook.md` §5 Review Protocol | Internal | Green | Verdict and evidence handling may drift from review expectations |
 | `../../feature_catalog/05--lifecycle/` | Internal | Green | Feature traceability for the nine lifecycle scenarios is lost |
 | MCP runtime with checkpoint and ingest tools | Runtime | Green | Lifecycle scenarios cannot be executed or validated as written |
 | Disposable sandbox spec folder and test data | Runtime | Yellow | Destructive tests must pause until isolated fixtures exist |

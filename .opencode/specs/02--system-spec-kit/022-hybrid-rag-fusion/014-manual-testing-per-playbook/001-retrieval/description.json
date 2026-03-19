@@ -1,0 +1,24 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/001-retrieval",
+  "description": "Feature Specification: manual-testing-per-playbook retrieval phase",
+  "keywords": [
+    "feature",
+    "specification",
+    "manual-testing-per-playbook",
+    "retrieval",
+    "phase"
+  ],
+  "lastUpdated": "2026-03-19T19:08:37.118Z",
+  "specId": "001",
+  "folderSlug": "retrieval",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "014-manual-testing-per-playbook"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "19-03-26_20-08__manual-testing-per-playbook-retrieval-phase.md",
+    "19-03-26_20-17__manual-testing-per-playbook-retrieval-phase.md"
+  ]
+}

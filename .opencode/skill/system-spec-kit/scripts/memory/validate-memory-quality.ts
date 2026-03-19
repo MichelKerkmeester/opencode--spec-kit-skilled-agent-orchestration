@@ -14,7 +14,7 @@ import type { ContaminationAuditRecord } from '../lib/content-filter';
 import type { DataSource } from '../utils/input-normalizer';
 import { getSourceCapabilities, type KnownDataSource } from '../utils/source-capabilities';
 
-type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10' | 'V11';
+type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10' | 'V11' | 'V12';
 
 type ValidationRuleSeverity = 'low' | 'medium' | 'high';
 type ValidationDisposition = 'abort_write' | 'write_skip_index' | 'write_and_index';
@@ -123,6 +123,14 @@ const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = 
     blockOnIndex: true,
     appliesToSources: 'all',
     reason: 'API-error-dominated content is not a trustworthy memory surface.',
+  },
+  V12: {
+    ruleId: 'V12',
+    severity: 'medium',
+    blockOnWrite: false,
+    blockOnIndex: true,
+    appliesToSources: 'all',
+    reason: 'Memory content with zero topical overlap with spec trigger_phrases suggests off-target capture.',
   },
 };
 
@@ -594,6 +602,40 @@ function validateMemoryQualityContent(content: string): ValidationResult {
           errorDominatedTriggers ? `trigger_phrases(${errorTriggerCount}/${triggerPhrases.length})` : '',
         ].filter(Boolean).join(', ')}`
       : 'ok',
+  });
+
+  // V12: Topical coherence — check if memory content overlaps with spec's trigger_phrases
+  let v12Failed = false;
+  let v12Message = 'ok';
+  if (specFolder) {
+    // Try to find and read the spec.md file
+    const specMdCandidates = [
+      path.resolve(specFolder, 'spec.md'),
+      // specFolder might be just a relative path or short name
+    ];
+    let specTriggerPhrases: string[] = [];
+    for (const candidate of specMdCandidates) {
+      if (fs.existsSync(candidate)) {
+        try {
+          const specContent = fs.readFileSync(candidate, 'utf-8');
+          specTriggerPhrases = parseYamlListFromContent(specContent, 'trigger_phrases');
+        } catch { /* ignore read errors */ }
+        break;
+      }
+    }
+    if (specTriggerPhrases.length > 0) {
+      const lowerContent = content.toLowerCase();
+      const hasOverlap = specTriggerPhrases.some(phrase => lowerContent.includes(phrase.toLowerCase()));
+      if (!hasOverlap) {
+        v12Failed = true;
+        v12Message = `V12_TOPICAL_MISMATCH: zero of ${specTriggerPhrases.length} spec trigger_phrases found in memory content`;
+      }
+    }
+  }
+  ruleResults.push({
+    ruleId: 'V12',
+    passed: !v12Failed,
+    message: v12Message,
   });
 
   const failedRules = ruleResults.filter((rule) => !rule.passed).map((rule) => rule.ruleId);

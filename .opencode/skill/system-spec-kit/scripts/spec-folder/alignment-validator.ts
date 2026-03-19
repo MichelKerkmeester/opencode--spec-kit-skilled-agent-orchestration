@@ -73,7 +73,7 @@ const ALIGNMENT_CONFIG: AlignmentConfig = {
   STOPWORDS: ['the', 'this', 'that', 'with', 'for', 'and', 'from', 'fix', 'update', 'add', 'remove'],
 
   INFRASTRUCTURE_PATTERNS: {
-    'skill/system-spec-kit': ['memory', 'spec-kit', 'speckit', 'spec', 'opencode'],
+    'skill/system-spec-kit': ['memory', 'spec-kit', 'speckit', 'spec', 'opencode', 'retrieval', 'testing', 'manual', 'playbook', 'mutation', 'maintenance'],
     'skill/': ['skill', 'opencode'],
     'command/memory': ['memory', 'spec-kit', 'speckit', 'opencode'],
     'command/': ['command', 'opencode'],
@@ -454,8 +454,16 @@ function calculateAlignmentScoreWithDomain(
 ------------------------------------------------------------------*/
 
 function parseSpecFolderTopic(folderName: string): string[] {
-  const topic = folderName.replace(/^\d+-/, '');
-  return topic.split(/[-_]/).filter((w) => w.length > 0);
+  // Accept full relative paths (with / separators) and extract topics from ALL segments
+  // e.g., "014-manual-testing-per-playbook/001-retrieval" → ["manual", "testing", "per", "playbook", "retrieval"]
+  const segments = folderName.split('/').filter((s) => s.length > 0);
+  const allTopics: string[] = [];
+  for (const segment of segments) {
+    const topic = segment.replace(/^\d+-/, '');
+    const words = topic.split(/[-_]/).filter((w) => w.length > 0);
+    allTopics.push(...words);
+  }
+  return [...new Set(allTopics)];
 }
 
 function calculateAlignmentScore(conversationTopics: string[], specFolderName: string): number {

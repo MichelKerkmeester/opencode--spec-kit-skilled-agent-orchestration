@@ -1144,13 +1144,20 @@ async function detectSpecFolder(
       console.log(`   Using spec folder from CLI argument: ${path.basename(specFolderPath)}`);
 
       if (collectedData) {
-        const folderName = path.basename(specFolderPath);
+        const activeSpecsDir = specsDir || defaultSpecsDir;
+        // Pass relative path from specs root (multi-segment) instead of just basename
+        // so alignment validator can extract topics from all path segments.
+        // Use path.sep boundary check to avoid matching specs-archive/ against specs/.
+        const specsDirWithSep = activeSpecsDir.endsWith(path.sep) ? activeSpecsDir : activeSpecsDir + path.sep;
+        const folderRelPath = specFolderPath.startsWith(specsDirWithSep)
+          ? path.relative(activeSpecsDir, specFolderPath)
+          : path.basename(specFolderPath);
         const alignmentResult = await validateContentAlignment(
-          collectedData, folderName, specsDir || defaultSpecsDir
+          collectedData, folderRelPath, activeSpecsDir
         );
 
         if (alignmentResult.useAlternative && alignmentResult.selectedFolder) {
-          console.log(`   Note: "${alignmentResult.selectedFolder}" may be a better match, but respecting explicit CLI argument`);
+          console.log(`   ALIGNMENT_BYPASSED (CLI-explicit): "${alignmentResult.selectedFolder}" may be a better match, but respecting explicit CLI argument`);
         }
       }
 

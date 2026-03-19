@@ -119,7 +119,7 @@ export interface ContinueSessionData {
 export interface CollectedDataFull extends CollectedDataBase {}
 
 /* ───────────────────────────────────────────────────────────────
-   1.5. PREFLIGHT/POSTFLIGHT UTILITIES
+   2. PREFLIGHT/POSTFLIGHT UTILITIES
 ------------------------------------------------------------------*/
 
 function getScoreAssessment(score: number | null | undefined, metric: string): string {
@@ -333,7 +333,7 @@ function generateLearningSummary(
 }
 
 /* ───────────────────────────────────────────────────────────────
-   2. CONTINUE SESSION DATA GENERATION (T124)
+   3. CONTINUE SESSION DATA
 ------------------------------------------------------------------*/
 
 function determineSessionStatus(
@@ -614,7 +614,7 @@ function buildContinueSessionData(params: ContinueSessionParams): ContinueSessio
 }
 
 /* ───────────────────────────────────────────────────────────────
-   2.5. LAZY-LOADED DEPENDENCIES
+   4. LAZY-LOADED DEPENDENCIES
 ------------------------------------------------------------------*/
 
 import * as simFactoryModule from '../lib/simulation-factory';
@@ -623,7 +623,7 @@ function getSimFactory(): typeof import('../lib/simulation-factory') {
 }
 
 /* ───────────────────────────────────────────────────────────────
-   3. AUTO-SAVE DETECTION
+   5. AUTO-SAVE DETECTION
 ------------------------------------------------------------------*/
 
 function shouldAutoSave(messageCount: number): boolean {
@@ -631,7 +631,7 @@ function shouldAutoSave(messageCount: number): boolean {
 }
 
 /* ───────────────────────────────────────────────────────────────
-   4. SESSION DATA COLLECTION
+   6. SESSION DATA COLLECTION
 ------------------------------------------------------------------*/
 
 // F-24: Single helper for spec-folder resolution — replaces 3 redundant resolution points
@@ -770,9 +770,18 @@ async function collectSessionData(
   const isErrorContent = /\bAPI\s+Error:\s*\d{3}\b/i.test(rawLearning)
     || /\{"?\s*(?:type|error)"?\s*:\s*"?(?:error|api_error|overloaded_error)/i.test(rawLearning)
     || /internal server error/i.test(rawLearning);
-  const SUMMARY: string = (!isErrorContent && rawLearning.length > 0)
+  // P3-7: Check if rawLearning is topically related to the spec folder before using it as SUMMARY.
+  // Prevents a random last exchange from becoming the memory's entire description.
+  const learningIsTopical = (() => {
+    if (!folderName || rawLearning.length === 0) return rawLearning.length > 0;
+    const segments = folderName.split('/').map(s => s.replace(/^\d+--?/, '').trim().toLowerCase()).filter(s => s.length > 2);
+    const lowerLearning = rawLearning.toLowerCase();
+    return segments.some(segment => lowerLearning.includes(segment));
+  })();
+  const observationFallback = observations.slice(0, 3).map((o) => o.title).filter(Boolean).join('; ');
+  const SUMMARY: string = (!isErrorContent && learningIsTopical && rawLearning.length > 0)
     ? rawLearning
-    : observations.slice(0, 3).map((o) => o.narrative).filter(Boolean).join(' ')
+    : observationFallback
     || 'Session focused on implementing and testing features.';
 
   const { contextType, importanceTier, decisionCount, toolCounts } =
@@ -933,7 +942,7 @@ async function collectSessionData(
 }
 
 /* ───────────────────────────────────────────────────────────────
-   5. EXPORTS
+   7. EXPORTS
 ------------------------------------------------------------------*/
 
 export {

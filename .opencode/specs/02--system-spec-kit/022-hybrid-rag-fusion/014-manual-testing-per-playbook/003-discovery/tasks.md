@@ -11,7 +11,7 @@ contextType: "general"
 ---
 # Tasks: manual-testing-per-playbook discovery phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -36,7 +36,7 @@ contextType: "general"
 
 - [x] T001 Extract discovery prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
 - [x] T002 Confirm feature links for EX-011, EX-012, and EX-013 in `../../feature_catalog/03--discovery/`
-- [ ] T003 [P] Identify target spec folder path for EX-011 pagination and confirm indexed corpus is stable before execution
+- [x] T003 [P] Identify target spec folder path for EX-011 pagination and confirm indexed corpus is stable before execution
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -48,8 +48,8 @@ contextType: "general"
 - [x] T005 Draft `plan.md` with readiness gates, execution phases, and testing strategy table
 - [x] T006 Draft `tasks.md` with phase breakdown and cross-references
 - [x] T007 Draft `checklist.md` with verification protocol and P0/P1/P2 items
-- [ ] T008 Add evidence references and verdict outcomes after manual execution
-- [ ] T009 [P] Resolve open questions for EX-011 spec folder target and EX-013 alias-conflict corpus
+- [x] T008 Add evidence references and verdict outcomes after manual execution
+- [x] T009 [P] Resolve open questions for EX-011 spec folder target and EX-013 alias-conflict corpus
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -57,9 +57,9 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T010 Run the three Phase 003 scenarios following `plan.md`
+- [x] T010 Run the three Phase 003 scenarios following `plan.md`
 - [x] T011 Validate documentation structure and required anchors
-- [ ] T012 Update `implementation-summary.md` when execution and verification are complete
+- [x] T012 Update `implementation-summary.md` when execution and verification are complete
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -67,9 +67,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---

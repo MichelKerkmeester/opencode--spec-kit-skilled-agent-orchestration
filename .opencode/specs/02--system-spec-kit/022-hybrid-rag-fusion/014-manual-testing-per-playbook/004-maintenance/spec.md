@@ -23,7 +23,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [`../spec.md`](../spec.md) |
@@ -58,7 +58,7 @@ Provide a single maintenance-focused specification that maps all Phase 004 test 
 | NEW-101 | memory_delete confirm schema tightening | [`../../feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md`](../../feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md) | `Validate memory_delete confirm:z.literal(true) enforcement.` | 1) verify `confirm:true` accepted 2) verify `confirm:false` rejected 3) verify bulk delete path requires confirm |
 
 ### Out of Scope
-- Executing the two maintenance scenarios and assigning final run verdicts.
+- Modifying the per-feature playbook files or code under test during execution.
 - Modifying the playbook or feature catalog content linked from this packet.
 - Documenting non-maintenance phases from `001-retrieval/` through `019-feature-flag-reference/`.
 

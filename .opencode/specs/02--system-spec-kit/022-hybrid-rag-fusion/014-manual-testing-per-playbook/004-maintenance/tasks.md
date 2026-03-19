@@ -36,7 +36,8 @@ contextType: "general"
 
 - [x] T001 Extract maintenance prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
 - [x] T002 Confirm feature links for EX-014 and EX-035 in `../../feature_catalog/04--maintenance/`
-- [ ] T003 [P] Prepare sandbox spec folder with known changed files for EX-014 and verify Node/npm toolchain for EX-035
+- [x] T003 [P] Prepare sandbox spec folder with known changed files for EX-014 and verify Node/npm toolchain for EX-035
+- [x] T013 Confirm feature context for NEW-100 in `../../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md` and NEW-101 in `../../feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md`
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -44,12 +45,14 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Draft `spec.md` with metadata, scope table, and two playbook-derived requirements
+- [x] T004 Draft `spec.md` with metadata, scope table, and four playbook-derived requirements (EX-014, EX-035, NEW-100, NEW-101)
 - [x] T005 Draft `plan.md` with readiness gates, execution phases, and testing strategy table
 - [x] T006 Draft `tasks.md` with phase breakdown and cross-references
 - [x] T007 Draft `checklist.md` with pre-implementation, code quality, testing, security, docs, and file organization sections
-- [ ] T008 Add evidence references and verdict outcomes after manual execution
-- [ ] T009 [P] Resolve open questions for EX-014 sandbox target and EX-035 mismatch simulation scope
+- [x] T008 Add evidence references and verdict outcomes after manual execution
+- [x] T009 [P] Resolve open questions for EX-014 sandbox target and EX-035 mismatch simulation scope
+- [x] T014 Execute NEW-100 code analysis of `context-server.ts` shutdown logic and capture evidence
+- [x] T015 Execute NEW-101 `memory_delete` confirm schema validation via MCP and capture evidence
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -57,9 +60,10 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T010 Run the two Phase 004 scenarios following `plan.md`
+- [x] T010 Run the four Phase 004 scenarios following `plan.md`
+- [x] T016 Assign PASS/PARTIAL/FAIL verdicts for all four scenarios per review protocol
 - [x] T011 Validate documentation structure and required anchors
-- [ ] T012 Update `implementation-summary.md` when execution and verification are complete
+- [x] T012 Update `implementation-summary.md` when execution and verification are complete
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -67,9 +71,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---

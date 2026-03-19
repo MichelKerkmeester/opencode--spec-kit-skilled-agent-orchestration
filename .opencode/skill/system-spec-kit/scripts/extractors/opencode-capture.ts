@@ -16,7 +16,7 @@ import { CONFIG } from '../core';
 import { buildWorkspaceIdentity, normalizeAbsolutePath } from '../utils';
 
 /* ───────────────────────────────────────────────────────────────
-   INTERFACES
+   1. INTERFACES
 ------------------------------------------------------------------*/
 
 /** A prompt entry captured from a session transcript. */

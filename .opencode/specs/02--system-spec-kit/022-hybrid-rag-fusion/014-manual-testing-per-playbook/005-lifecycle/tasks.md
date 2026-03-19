@@ -37,7 +37,7 @@ contextType: "general"
 
 - [x] T001 Extract lifecycle prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
 - [x] T002 Confirm feature links for EX-015, EX-016, EX-017, EX-018, NEW-097, NEW-114, NEW-124, NEW-134, and NEW-144 in `../../feature_catalog/05--lifecycle/`
-- [ ] T003 [P] Prepare sandbox prerequisites: disposable spec folder, seed markdown files, test database, and checkpoint naming convention `pre-[test-id]-[action]`
+- [x] T003 [P] Prepare sandbox prerequisites: disposable spec folder, seed markdown files, test database, and checkpoint naming convention `pre-[test-id]-[action]`
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -49,7 +49,7 @@ contextType: "general"
 - [x] T005 Draft `plan.md` with readiness gates, execution phases, and testing strategy table
 - [x] T006 Draft `tasks.md` with phase-separated task list covering setup, execution, and verification
 - [x] T007 Draft `checklist.md` with P0/P1/P2 items for scenario documentation quality, sandbox safety, and execution evidence
-- [ ] T008 [P] Resolve open questions: sandbox spec folder path, restart procedure for NEW-097 requeue, and DB parity evidence format for NEW-124
+- [x] T008 [P] Resolve open questions: sandbox spec folder path, restart procedure for NEW-097 requeue, and DB parity evidence format for NEW-124
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -57,17 +57,17 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T009 Run EX-015 and EX-016 (non-destructive checkpoint creation and listing) and capture evidence
-- [ ] T010 Run NEW-097 (async ingest job lifecycle) and capture all five state-transition and cancellation evidence
-- [ ] T011 [P] Run NEW-114 (path traversal validation) and capture rejection and acceptance evidence
-- [ ] T012 [P] Run NEW-134 (startup pending-file recovery) and capture committed-vs-stale divergence evidence
-- [ ] T013 [P] Run NEW-144 (advisory ingest lifecycle forecast) and capture forecast field polling evidence
-- [ ] T014 Run EX-017 (checkpoint restore) inside sandbox, capturing restore and health evidence; roll back sandbox afterward
-- [ ] T015 Run EX-018 (checkpoint deletion — DESTRUCTIVE) inside sandbox only, capturing before/after list evidence; roll back sandbox afterward
-- [ ] T016 Run NEW-124 (automatic archival lifecycle — DESTRUCTIVE) inside sandbox only, capturing archive/unarchive parity and protected-tier evidence; roll back sandbox afterward
+- [x] T009 Run EX-015 and EX-016 (non-destructive checkpoint creation and listing) and capture evidence
+- [x] T010 Run NEW-097 (async ingest job lifecycle) and capture all five state-transition and cancellation evidence
+- [x] T011 [P] Run NEW-114 (path traversal validation) and capture rejection and acceptance evidence
+- [x] T012 [P] Run NEW-134 (startup pending-file recovery) and capture committed-vs-stale divergence evidence
+- [x] T013 [P] Run NEW-144 (advisory ingest lifecycle forecast) and capture forecast field polling evidence
+- [x] T014 Run EX-017 (checkpoint restore) inside sandbox, capturing restore and health evidence; roll back sandbox afterward
+- [x] T015 Run EX-018 (checkpoint deletion — DESTRUCTIVE) inside sandbox only, capturing before/after list evidence; roll back sandbox afterward
+- [x] T016 Run NEW-124 (automatic archival lifecycle — DESTRUCTIVE) inside sandbox only, capturing archive/unarchive parity and protected-tier evidence; roll back sandbox afterward
 - [x] T017 Validate documentation structure and required anchors across all four phase documents
-- [ ] T018 Record PASS, PARTIAL, or FAIL verdict per test ID with review-protocol rationale
-- [ ] T019 Update `implementation-summary.md` when execution and verification are complete
+- [x] T018 Record PASS, PARTIAL, or FAIL verdict per test ID with review-protocol rationale
+- [x] T019 Update `implementation-summary.md` when execution and verification are complete
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -75,11 +75,11 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] All nine lifecycle scenarios executed with captured evidence
-- [ ] PASS/PARTIAL/FAIL verdict recorded for each of the nine test IDs
-- [ ] Destructive tests (EX-018, NEW-124, and the restore step of EX-017) were run sandbox-only only
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] All nine lifecycle scenarios executed with captured evidence
+- [x] PASS/PARTIAL/FAIL verdict recorded for each of the nine test IDs
+- [x] Destructive tests (EX-018, NEW-124, and the restore step of EX-017) were run sandbox-only only
 <!-- /ANCHOR:completion -->
 
 ---

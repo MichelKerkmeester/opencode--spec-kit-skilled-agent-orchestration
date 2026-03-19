@@ -23,7 +23,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [`../spec.md`](../spec.md) |
@@ -127,10 +127,10 @@ No P1 items are defined for this phase; all seven mutation scenarios are mandato
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- Which sandbox fixture or disposable memory record should serve as the canonical EX-008 delete target so the checkpoint and delete evidence remains reproducible across machines?
-- What tier and `olderThanDays` configuration should EX-009 use in the sandbox to ensure a non-empty deletion count while avoiding accidental scope creep?
-- For NEW-085 fault injection, what is the recommended mechanism for injecting a mid-step fault in the current MCP runtime (mock adapter vs. direct DB manipulation)?
-- For NEW-110, which sandbox spec folder should hold the similarity-band test saves, and should the `memory_conflicts` table be cleared before the scenario runs?
+- **OQ-1 (EX-008 fixture) — RESOLVED**: Sandbox fixture `specs/test-sandbox-mutation/memory/fixture-ex008-delete-target.md` (ID 25372) served as the canonical delete target. Template-contract-compliant memory file with 6 mandatory sections and 4+ trigger phrases ensures reproducibility.
+- **OQ-2 (EX-009 config) — RESOLVED**: Tier `deprecated` with no `olderThanDays` filter, scoped to `specFolder:"test-sandbox-mutation"`. Two deprecated fixtures (IDs 25373, 25374) ensured non-empty count. Actual deletion count was 3 (one additional deprecated record from force-resave operations).
+- **OQ-3 (NEW-085 fault injection) — RESOLVED**: Client-side fault injection is **infeasible**. `transaction-manager.ts` uses better-sqlite3's synchronous `database.transaction()` wrapper — no external injection point accessible from MCP client. **Fallback applied**: vitest suite (139/139 tests pass) covers rollback behavior (T192: atomic save wrapping, T194: file cleanup on DB failure, T191a/b: nested transaction handling). Code inspection confirms `runInTransaction()` auto-rolls back on exception.
+- **OQ-4 (NEW-110 sandbox) — RESOLVED**: Sandbox folder `specs/test-sandbox-mutation/` held all similarity-band test saves. The `memory_conflicts` table was not cleared before the scenario — PE gate logs all decisions including no-candidate CREATEs (T-09 audit trail). Base fixture (ID 25377) saved as CREATE; force re-save produced UPDATE (ID 25416). All 5 threshold bands verified via code inspection and vitest; live MCP testing demonstrated CREATE and UPDATE actions.
 <!-- /ANCHOR:questions -->
 
 ---

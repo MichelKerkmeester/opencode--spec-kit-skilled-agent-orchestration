@@ -10,6 +10,10 @@
 
 import type { CollectedDataBase, FactValue, Observation } from '../types/session-types';
 
+/* ───────────────────────────────────────────────────────────────
+   1. INTERFACES & CONSTANTS
+------------------------------------------------------------------*/
+
 export interface SessionActivitySignal {
   toolCallPaths: string[];
   gitChangedFiles: string[];
@@ -112,6 +116,10 @@ function collectObservationPaths(observation: Observation): string[] {
 
   return [...paths];
 }
+
+/* ───────────────────────────────────────────────────────────────
+   2. PATH MATCHING
+------------------------------------------------------------------*/
 
 function buildCandidateMatchers(candidateRelativePath: string): string[] {
   const normalized = normalizePath(candidateRelativePath).toLowerCase();
@@ -224,6 +232,10 @@ function roundBoost(value: number): number {
   return Number(value.toFixed(3));
 }
 
+/* ───────────────────────────────────────────────────────────────
+   3. SIGNAL BUILDING
+------------------------------------------------------------------*/
+
 function buildSessionActivitySignal(
   collectedData: CollectedDataBase | null,
   candidateRelativePath: string,
@@ -291,6 +303,10 @@ function buildSessionActivitySignal(
     confidenceBoost: roundBoost(confidenceBoost),
   };
 }
+
+/* ───────────────────────────────────────────────────────────────
+   4. EXPORTS
+------------------------------------------------------------------*/
 
 export {
   buildSessionActivitySignal,

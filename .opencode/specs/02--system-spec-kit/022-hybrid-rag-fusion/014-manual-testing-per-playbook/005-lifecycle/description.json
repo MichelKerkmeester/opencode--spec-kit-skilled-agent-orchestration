@@ -1,0 +1,24 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/005-lifecycle",
+  "description": "Feature Specification: 005 lifecycle manual testing",
+  "keywords": [
+    "feature",
+    "specification",
+    "005",
+    "lifecycle",
+    "manual",
+    "testing"
+  ],
+  "lastUpdated": "2026-03-19T19:16:20.091Z",
+  "specId": "005",
+  "folderSlug": "lifecycle",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "014-manual-testing-per-playbook"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "19-03-26_20-16__005-lifecycle-manual-testing.md"
+  ]
+}

@@ -32,6 +32,7 @@ interface ParsedCliArguments {
   dataFile: string | null;
   specFolderArg: string | null;
   collectedData: StructuredCollectedData | null;
+  sessionId: string | null;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -60,6 +61,7 @@ Options:
   --help, -h        Show this help message
   --stdin           Read structured JSON from stdin (preferred when a caller already has curated session data)
   --json <string>   Read structured JSON from an inline string (preferred over stateless capture when structured data is available)
+  --session-id <uuid>  Explicit session ID for deterministic Claude Code transcript selection
 
 Examples:
   node generate-context.js /tmp/context-data.json
@@ -354,6 +356,7 @@ async function parseStructuredModeArguments(
       ...payload,
       _source: 'file',
     },
+    sessionId: null,
   };
 }
 
@@ -364,13 +367,26 @@ async function parseArguments(
   argv: string[] = process.argv.slice(2),
   stdinReader: (stdin?: NodeJS.ReadStream) => Promise<string> = readAllStdin,
 ): Promise<ParsedCliArguments> {
-  const [primaryArg, secondaryArg] = argv;
+  // Extract --session-id <uuid> from argv before positional parsing
+  let sessionId: string | null = null;
+  const filteredArgv: string[] = [];
+  for (let i = 0; i < argv.length; i++) {
+    if (argv[i] === '--session-id' && i + 1 < argv.length) {
+      sessionId = argv[i + 1].trim() || null;
+      i++; // skip the value
+    } else {
+      filteredArgv.push(argv[i]);
+    }
+  }
+
+  const [primaryArg, secondaryArg] = filteredArgv;
   if (!primaryArg) {
-    return { dataFile: null, specFolderArg: null, collectedData: null };
+    return { dataFile: null, specFolderArg: null, collectedData: null, sessionId };
   }
 
   if (primaryArg === '--stdin' || primaryArg === '--json') {
-    return await parseStructuredModeArguments(primaryArg, argv, stdinReader);
+    const structured = await parseStructuredModeArguments(primaryArg, filteredArgv, stdinReader);
+    return { ...structured, sessionId };
   }
 
   const resolvedSpecFolder = resolveCliSpecFolderReference(primaryArg);
@@ -384,6 +400,7 @@ async function parseArguments(
       dataFile: null,
       specFolderArg: resolvedSpecFolder,
       collectedData: null,
+      sessionId,
     };
   }
 
@@ -391,6 +408,7 @@ async function parseArguments(
     dataFile: primaryArg,
     specFolderArg: secondaryArg || null,
     collectedData: null,
+    sessionId,
   };
 }
 
@@ -520,7 +538,9 @@ async function main(
       dataFile: parsed.collectedData ? undefined : CONFIG.DATA_FILE ?? undefined,
       specFolderArg: CONFIG.SPEC_FOLDER_ARG ?? undefined,
       collectedData: parsed.collectedData ?? undefined,
-      loadDataFn: parsed.collectedData ? undefined : loadCollectedData,
+      loadDataFn: parsed.collectedData
+        ? undefined
+        : () => loadCollectedData({ sessionId: parsed.sessionId }),
       collectSessionDataFn: collectSessionData,
     });
   } catch (error: unknown) {

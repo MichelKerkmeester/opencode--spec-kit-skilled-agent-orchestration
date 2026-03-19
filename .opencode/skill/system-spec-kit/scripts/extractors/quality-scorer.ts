@@ -14,7 +14,11 @@ import type {
 } from '../core/quality-scorer';
 import type { ContaminationSeverity } from './contamination-filter';
 
-type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10' | 'V11';
+/* ───────────────────────────────────────────────────────────────
+   1. INTERFACES & CONSTANTS
+------------------------------------------------------------------*/
+
+type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10' | 'V11' | 'V12';
 
 interface ValidationSignal {
   ruleId: QualityRuleId;
@@ -33,9 +37,13 @@ interface QualityInputs {
   insufficientContext?: boolean;
 }
 
-const QUALITY_RULE_IDS: QualityRuleId[] = ['V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10', 'V11'];
+const QUALITY_RULE_IDS: QualityRuleId[] = ['V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10', 'V11', 'V12'];
 
 const PENALTY_PER_FAILED_RULE = 0.25;
+
+/* ───────────────────────────────────────────────────────────────
+   2. QUALITY SCORING
+------------------------------------------------------------------*/
 
 function clamp01(value: number): number {
   return Math.max(0, Math.min(1, value));
@@ -158,6 +166,12 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
     qualityScore = Math.min(qualityScore, sufficiencyCap);
   }
 
+  // P3-4: minimum_message_ratio — flag sessions with disproportionately low message count
+  if (toolCount > 10 && messageCount > 0 && (messageCount / toolCount) < 0.05) {
+    qualityFlags.add('insufficient_capture');
+    qualityScore -= 0.15;
+  }
+
   if (messageCount > 0) {
     qualityScore += 0.05;
   }
@@ -204,6 +218,10 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
     } : null,
   };
 }
+
+/* ───────────────────────────────────────────────────────────────
+   3. EXPORTS
+------------------------------------------------------------------*/
 
 export {
   scoreMemoryQuality,

@@ -22,6 +22,10 @@ import {
 } from '../utils';
 import { sanitizeToolDescription, sanitizeToolInputPaths, isApiErrorContent } from '../utils/tool-sanitizer';
 
+/* ───────────────────────────────────────────────────────────────
+   1. INTERFACES
+------------------------------------------------------------------*/
+
 const CODEX_HOME = path.join(
   process.env.HOME || process.env.USERPROFILE || '',
   '.codex',
@@ -79,6 +83,10 @@ type PendingPrompt = {
   prompt: string;
   timestamp: string;
 };
+
+/* ───────────────────────────────────────────────────────────────
+   2. UTILITY FUNCTIONS
+------------------------------------------------------------------*/
 
 function transcriptTimestamp(value?: string): number {
   if (!value) {
@@ -222,6 +230,10 @@ function buildSessionTitle(exchanges: CaptureExchange[], sessionId: string): str
   return `Codex CLI session ${sessionId.slice(0, 8)}`;
 }
 
+/* ───────────────────────────────────────────────────────────────
+   3. TRANSCRIPT RESOLUTION
+------------------------------------------------------------------*/
+
 function listTranscriptCandidates(rootDir: string): string[] {
   if (!fsSync.existsSync(rootDir)) {
     return [];
@@ -287,6 +299,10 @@ async function resolveTranscript(
 
   return null;
 }
+
+/* ───────────────────────────────────────────────────────────────
+   4. CONVERSATION CAPTURE
+------------------------------------------------------------------*/
 
 export async function captureCodexConversation(
   maxExchanges: number = MAX_EXCHANGES_DEFAULT,
@@ -444,6 +460,10 @@ export async function captureCodexConversation(
     capturedAt: new Date().toISOString(),
   };
 }
+
+/* ───────────────────────────────────────────────────────────────
+   5. EXPORTS
+------------------------------------------------------------------*/
 
 export {
   CODEX_HOME,

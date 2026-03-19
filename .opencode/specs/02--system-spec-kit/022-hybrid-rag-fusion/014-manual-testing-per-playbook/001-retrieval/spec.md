@@ -23,7 +23,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [`../spec.md`](../spec.md) |
@@ -61,17 +61,19 @@ Provide a single retrieval-focused specification that maps all nine Phase 001 te
 | NEW-143 | Verify `SPECKIT_GRAPH_WALK_ROLLOUT` changes diagnostics and bounded bonus behavior without destabilizing ordering | [`../../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md`](../../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md) | `Validate bounded graph-walk rollout states and trace diagnostics.` | `1) Prepare a graph-connected sandbox corpus 2) Start runtime with SPECKIT_GRAPH_WALK_ROLLOUT=trace_only and run memory_search({ query:"graph rollout trace check", includeTrace:true, limit:10 }) 3) Verify trace.graphContribution.rolloutState is trace_only and appliedBonus remains 0 while raw/normalized are still visible 4) Restart with SPECKIT_GRAPH_WALK_ROLLOUT=bounded_runtime and repeat 5) Verify appliedBonus is present, bounded at <= 0.03, and capApplied flips to true when the bounded runtime bonus saturates at the Stage 2 cap 6) Restart with SPECKIT_GRAPH_WALK_ROLLOUT=off and verify the graph-walk bonus disappears while the broader graph-signal path stays governed by SPECKIT_GRAPH_SIGNALS and repeated identical runs keep the same ordering` |
 
 ### Out of Scope
-- Executing the nine retrieval scenarios and assigning final run verdicts.
 - Modifying the playbook or feature catalog content linked from this packet.
 - Documenting non-retrieval phases from `002-mutation/` through `019-feature-flag-reference/`.
 
-### Files to Change
+### Files Changed
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `spec.md` | Create | Phase 001 retrieval requirements, test inventory, and acceptance criteria |
-| `plan.md` | Create | Phase 001 retrieval execution plan and review workflow |
-| `tasks.md` | Create | Phase 001 task tracker for setup, execution, and verification work |
+| `spec.md` | Created + Updated | Phase 001 retrieval requirements; status updated to Complete |
+| `plan.md` | Created | Phase 001 retrieval execution plan and review workflow |
+| `tasks.md` | Created + Updated | Task tracker; T003, T006-T010 marked complete |
+| `checklist.md` | Created + Updated | QA checklist; 26/26 P0, 7/7 P1, 2/2 P2 verified |
+| `implementation-summary.md` | Created + Updated | Execution results, verdicts, and verification |
+| `scratch/*.md` | Created | 9 evidence files + verdict-summary.md |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -101,10 +103,11 @@ No P1 items are defined for this phase; all nine retrieval scenarios are mandato
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 9 retrieval tests are documented with exact prompts, exact command sequences, linked feature catalog entries, and playbook-derived pass criteria.
-- **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for EX-001, EX-002, EX-003, EX-004, EX-005, NEW-086, NEW-109, NEW-142, and NEW-143 will be collected.
-- **SC-003**: Reviewers can audit every Phase 001 scenario using this folder plus the linked playbook (`../../manual_testing_playbook/manual_testing_playbook.md`) and review protocol (`../../manual_testing_playbook/review_protocol.md`).
-- **SC-004**: The phase packet contains no placeholder or template text and is ready for manual execution planning.
+- **SC-001**: All 9 retrieval tests are documented with exact prompts, exact command sequences, linked feature catalog entries, and playbook-derived pass criteria. **MET** — scope table in spec.md covers all 9 test IDs.
+- **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for EX-001, EX-002, EX-003, EX-004, EX-005, NEW-086, NEW-109, NEW-142, and NEW-143 will be collected. **MET** — plan.md defines 3-phase execution with evidence capture.
+- **SC-003**: Reviewers can audit every Phase 001 scenario using this folder plus the linked playbook (`../../manual_testing_playbook/manual_testing_playbook.md`) and review protocol (`../../manual_testing_playbook/review_protocol.md`). **MET** — 9 evidence files in scratch/ with per-test signal checklists.
+- **SC-004**: The phase packet contains no placeholder or template text and is ready for manual execution planning. **MET** — all 9 scenarios executed with verdicts assigned.
+- **SC-005**: All 9 scenarios have been executed with evidence captured and verdicts assigned (6 PASS, 3 PARTIAL). **MET** — see `scratch/verdict-summary.md`.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -127,8 +130,8 @@ No P1 items are defined for this phase; all nine retrieval scenarios are mandato
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- Which sandbox fixture or disposable memory record should be treated as the canonical target for NEW-086 trigger-phrase edits?
-- Which graph-connected sandbox corpus should Phase 001 reviewers use for NEW-143 so repeated ordering checks stay reproducible across machines?
+- ~~Which sandbox fixture or disposable memory record should be treated as the canonical target for NEW-086 trigger-phrase edits?~~ **Resolved**: memoryId 25368 (z_archive/013-agent-haiku-compatibility) used with checkpoint/restore.
+- ~~Which graph-connected sandbox corpus should Phase 001 reviewers use for NEW-143 so repeated ordering checks stay reproducible across machines?~~ **Deferred**: Multi-state rollout testing requires a shell-level harness that can restart the MCP server with different env vars. Current execution tested the default bounded_runtime state only.
 <!-- /ANCHOR:questions -->
 
 ---

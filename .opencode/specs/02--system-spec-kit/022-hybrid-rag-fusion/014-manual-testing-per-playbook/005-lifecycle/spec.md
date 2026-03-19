@@ -23,7 +23,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent** | [`../spec.md`](../spec.md) |
@@ -131,7 +131,7 @@ No additional P1 requirements for this phase packet.
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | `../../manual_testing_playbook/manual_testing_playbook.md` | Missing prompt or PASS-rule source blocks accurate scenario documentation | Treat the playbook as the single source of truth for prompts, commands, evidence, and verdict criteria |
-| Dependency | `../../manual_testing_playbook/review_protocol.md` | Verdict language may drift from review expectations | Align evidence and verdict wording to the review protocol acceptance rules |
+| Dependency | `../../manual_testing_playbook/manual_testing_playbook.md` §5 Review Protocol | Verdict language may drift from review expectations | Align evidence and verdict wording to the review protocol acceptance rules |
 | Dependency | `../../feature_catalog/05--lifecycle/` | Lifecycle scenarios would lose feature-level traceability | Link every scoped test ID back to its catalog entry |
 | Dependency | MCP runtime with checkpoint and ingest tools | Execution planning is incomplete without tool availability assumptions | Document tool-specific preconditions and sandbox requirements in `plan.md` |
 | Risk | Destructive lifecycle steps damage non-sandbox data | High | Restrict deletion, restore, and archival mutations to disposable sandbox data and checkpoints only |
@@ -143,9 +143,9 @@ No additional P1 requirements for this phase packet.
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- Which sandbox spec folder path should be treated as the default target for checkpoint and ingest drills in this phase?
-- What local restart procedure should operators use to verify NEW-097 incomplete-job requeue behavior consistently?
-- What evidence format is preferred for NEW-124 DB parity checks when direct SQL output and MCP logs disagree in granularity?
+- ~~Which sandbox spec folder path should be treated as the default target for checkpoint and ingest drills in this phase?~~ **Resolved:** `test-sandbox-lifecycle` — disposable folder with seed files under `.opencode/specs/`.
+- ~~What local restart procedure should operators use to verify NEW-097 incomplete-job requeue behavior consistently?~~ **Resolved:** Server restart triggers `resetIncompleteJobsToQueued()` via `startupScan()`. Cannot be tested in a live MCP session; code analysis + unit tests (T005b-Q8) serve as evidence.
+- ~~What evidence format is preferred for NEW-124 DB parity checks when direct SQL output and MCP logs disagree in granularity?~~ **Resolved:** Code analysis with exact file:line references and unit test citations. Direct SQL is not exposed via MCP tools.
 <!-- /ANCHOR:questions -->
 
 ---

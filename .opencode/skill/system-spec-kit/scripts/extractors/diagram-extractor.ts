@@ -27,6 +27,10 @@ import type {
   DiagramData,
 } from '../types/session-types';
 
+/* ───────────────────────────────────────────────────────────────
+   1. INTERFACES
+------------------------------------------------------------------*/
+
 // Re-export canonical types for backward compatibility
 export type {
   DiagramOutput,

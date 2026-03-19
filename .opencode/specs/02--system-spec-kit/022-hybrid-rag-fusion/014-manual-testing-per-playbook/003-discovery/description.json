@@ -1,0 +1,24 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/003-discovery",
+  "description": "Feature Specification: manual-testing-per-playbook discovery phase",
+  "keywords": [
+    "feature",
+    "specification",
+    "manual-testing-per-playbook",
+    "discovery",
+    "phase"
+  ],
+  "lastUpdated": "2026-03-19T19:19:17.446Z",
+  "specId": "003",
+  "folderSlug": "discovery",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "014-manual-testing-per-playbook"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "19-03-26_20-11__manual-testing-per-playbook-discovery-phase.md",
+    "19-03-26_20-22__next-steps.md"
+  ]
+}

@@ -10,6 +10,10 @@
 import type { DataSource } from '../utils/input-normalizer';
 import { getSourceCapabilities, type SourceCapabilities } from '../utils/source-capabilities';
 
+/* ───────────────────────────────────────────────────────────────
+   1. INTERFACES & CONSTANTS
+------------------------------------------------------------------*/
+
 type ContaminationSeverity = 'low' | 'medium' | 'high';
 
 interface DenylistEntry {
@@ -19,6 +23,10 @@ interface DenylistEntry {
 }
 
 type DenylistPattern = DenylistEntry | RegExp;
+
+/* ───────────────────────────────────────────────────────────────
+   2. DENYLIST PATTERNS
+------------------------------------------------------------------*/
 
 const DEFAULT_DENYLIST: readonly DenylistEntry[] = [
   // Orchestration chatter — medium severity
@@ -77,6 +85,10 @@ interface FilterOptions {
   captureSource?: DataSource;
   sourceCapabilities?: SourceCapabilities;
 }
+
+/* ───────────────────────────────────────────────────────────────
+   3. FILTER LOGIC
+------------------------------------------------------------------*/
 
 function clonePattern(pattern: RegExp): RegExp {
   return new RegExp(pattern.source, pattern.flags);
@@ -166,6 +178,10 @@ function filterContamination(
     maxSeverity: severity,
   };
 }
+
+/* ───────────────────────────────────────────────────────────────
+   4. EXPORTS
+------------------------------------------------------------------*/
 
 export {
   DEFAULT_DENYLIST,

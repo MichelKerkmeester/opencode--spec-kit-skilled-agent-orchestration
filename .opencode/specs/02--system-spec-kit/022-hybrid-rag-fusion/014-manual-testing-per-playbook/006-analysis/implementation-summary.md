@@ -21,7 +21,7 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 006-analysis |
-| **Completed** | 2026-03-16 |
+| **Completed** | 2026-03-19 |
 | **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
@@ -82,9 +82,37 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 ---
 
 <!-- ANCHOR:limitations -->
+## Execution Results
+
+All 7 analysis scenarios executed on 2026-03-19 via direct MCP tool invocation against the Spec Kit Memory server.
+
+| Test ID | Scenario | MCP Tool | Verdict | Key Evidence |
+|---------|----------|----------|---------|-------------|
+| EX-019 | Causal edge creation | `memory_causal_link` | **PASS** | Edge 3687 created (25370→25369, supports, strength 0.8); confirmed in `memory_drift_why` trace |
+| EX-020 | Causal graph statistics | `memory_causal_stats` | **PASS** | 3653 edges, 5.74% coverage, 338 unique sources, 346 unique targets, health: has_orphans |
+| EX-021 | Causal edge deletion [DESTRUCTIVE] | `memory_causal_unlink` | **PASS** | Before-trace: edge 3687 present in supports[]; `memory_causal_unlink({edgeId:3687})` → deleted:true; after-trace: "No causal relationships found". Checkpoint: `pre-ex021-analysis` (ID:2) |
+| EX-022 | Causal chain tracing | `memory_drift_why` | **PASS** | Bidirectional trace from memory 25370, direction:both, maxDepth:4 returned edge 3687 at depth 1 |
+| EX-023 | Epistemic baseline capture | `task_preflight` | **PASS** | Record 2783: specFolder=022-hybrid-rag-fusion/014-manual-testing-per-playbook/006-analysis, taskId=test-analysis-006, baseline K=40/U=60/C=50, 3 knowledge gaps |
+| EX-024 | Post-task learning measurement | `task_postflight` | **PASS** | Same record 2783: final K=75/U=25/C=80, LI=33.75 ("Moderate learning session"), deltas K+35/U-35/C+30, 2 gaps closed, 1 new gap discovered |
+| EX-025 | Learning history | `memory_get_learning_history` | **PASS** | 1 complete cycle returned with onlyComplete:true; taskId=test-analysis-006, avg LI=33.75 |
+
+### Coverage Summary
+
+| Metric | Value |
+|--------|-------|
+| **Scenarios executed** | 7/7 |
+| **PASS** | 7 |
+| **PARTIAL** | 0 |
+| **FAIL** | 0 |
+| **Skipped** | 0 |
+| **Checkpoint** | `pre-ex021-analysis` (ID:2, 679 memories, 4MB snapshot) |
+| **Execution method** | Direct MCP tool invocation (Claude Code session) |
+
+---
+
 ## Known Limitations
 
-1. **Draft status** — Test scenarios are documented but not yet executed. Final verdicts require manual or MCP-backed execution.
+1. **Edge 3687 was test-created and deleted** — The EX-019 edge was purpose-built for testing and consumed by EX-021. No persistent test artifact remains in the causal graph.
 2. **Coverage audit pending** — Cross-reference validation against the full playbook index has not been run for this individual phase.
 <!-- /ANCHOR:limitations -->
 

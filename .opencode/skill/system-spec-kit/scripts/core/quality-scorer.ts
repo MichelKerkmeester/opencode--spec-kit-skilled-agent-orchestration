@@ -59,7 +59,8 @@ export type QualityFlag =
   | 'has_session_source_mismatch'
   | 'has_spec_relevance_mismatch'
   | 'has_contaminated_title'
-  | 'has_error_content';
+  | 'has_error_content'
+  | 'insufficient_capture';
 
 export interface QualityDimensionScore {
   id: string;

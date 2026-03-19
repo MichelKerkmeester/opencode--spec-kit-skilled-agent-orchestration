@@ -22,6 +22,10 @@ import {
 } from '../utils';
 import { sanitizeToolInputPaths, normalizeToolStatus, isApiErrorContent } from '../utils/tool-sanitizer';
 
+/* ───────────────────────────────────────────────────────────────
+   1. INTERFACES
+------------------------------------------------------------------*/
+
 const GEMINI_HOME = path.join(
   process.env.HOME || process.env.USERPROFILE || '',
   '.gemini',
@@ -67,6 +71,10 @@ type PendingPrompt = {
   prompt: string;
   timestamp: string;
 };
+
+/* ───────────────────────────────────────────────────────────────
+   2. UTILITY FUNCTIONS
+------------------------------------------------------------------*/
 
 function transcriptTimestamp(value?: string): number {
   if (!value) {
@@ -170,6 +178,10 @@ function buildSessionTitle(exchanges: CaptureExchange[], sessionId: string): str
   return `Gemini CLI session ${sessionId.slice(0, 8)}`;
 }
 
+/* ───────────────────────────────────────────────────────────────
+   3. SESSION RESOLUTION
+------------------------------------------------------------------*/
+
 function getMatchingProjectDirs(projectRoot: string): string[] {
   if (!fsSync.existsSync(GEMINI_HISTORY)) {
     return [];
@@ -242,6 +254,10 @@ async function resolveSession(projectRoot: string): Promise<{ sessionPath: strin
     ? { sessionPath: newestMatch.sessionPath, session: newestMatch.session }
     : null;
 }
+
+/* ───────────────────────────────────────────────────────────────
+   4. CONVERSATION CAPTURE
+------------------------------------------------------------------*/
 
 export async function captureGeminiConversation(
   maxExchanges: number = MAX_EXCHANGES_DEFAULT,
@@ -366,6 +382,10 @@ export async function captureGeminiConversation(
     capturedAt: new Date().toISOString(),
   };
 }
+
+/* ───────────────────────────────────────────────────────────────
+   5. EXPORTS
+------------------------------------------------------------------*/
 
 export {
   GEMINI_HISTORY,

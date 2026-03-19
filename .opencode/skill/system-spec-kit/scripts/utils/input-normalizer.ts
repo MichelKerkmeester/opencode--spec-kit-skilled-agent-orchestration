@@ -165,6 +165,7 @@ export interface TransformedCapture {
   _sourceSessionId?: string;
   _sourceSessionCreated?: number;
   _sourceSessionUpdated?: number;
+  _relevanceFallback?: boolean;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -680,10 +681,11 @@ function buildToolObservationTitle(tool: CaptureToolCall): string {
   }
 }
 
-// P1-07: Stopwords for single-token spec relevance keywords.
-// These are common in spec folder paths but too generic to filter on alone.
-// Multi-word phrases (e.g., "session capturing") remain because they're specific enough.
-const RELEVANCE_KEYWORD_STOPWORDS = new Set([
+// P3-1: Two-tier stopword lists for spec relevance keywords.
+// RELEVANCE_CONTENT_STOPWORDS (aggressive) — for content-derived keywords; blocks generic tokens.
+// RELEVANCE_PATH_STOPWORDS (permissive) — for spec-path-derived keywords; only blocks truly generic words.
+// Words like 'testing', 'playbook', 'memory', 'session' are meaningful when from a path and should NOT be stopped.
+const RELEVANCE_CONTENT_STOPWORDS = new Set([
   'add', 'analysis', 'and', 'auto', 'base', 'build', 'capture', 'capturing',
   'change', 'changes', 'check', 'cleanup', 'code', 'complete', 'config',
   'configuration', 'core', 'create', 'data', 'debug', 'default', 'detection',
@@ -700,6 +702,11 @@ const RELEVANCE_KEYWORD_STOPWORDS = new Set([
   'step', 'stop', 'system', 'template', 'test', 'testing', 'tool', 'tools',
   'type', 'types', 'update', 'use', 'user', 'utils', 'valid', 'validation',
   'value', 'view', 'work', 'workflow', 'write',
+]);
+const RELEVANCE_PATH_STOPWORDS = new Set([
+  'add', 'and', 'are', 'but', 'can', 'did', 'for', 'get', 'had', 'has',
+  'how', 'its', 'may', 'new', 'not', 'our', 'out', 'own', 'put', 'run',
+  'set', 'the', 'too', 'use', 'was', 'who', 'all', 'any', 'also',
 ]);
 
 function buildSpecRelevanceKeywords(specFolderHint?: string | null): string[] {
@@ -720,7 +727,7 @@ function buildSpecRelevanceKeywords(specFolderHint?: string | null): string[] {
 
     for (const token of normalizedSegment.split(' ')) {
       // P1-07: Skip generic single tokens that cause false-positive relevance matches
-      if (token.length > 2 && !RELEVANCE_KEYWORD_STOPWORDS.has(token)) {
+      if (token.length > 2 && !RELEVANCE_PATH_STOPWORDS.has(token)) {
         keywords.add(token);
       }
     }
@@ -755,13 +762,27 @@ function getCurrentSpecId(specFolderHint?: string | null): string | null {
   return specIds.at(-1) || null;
 }
 
-function isSafeSpecFallback(currentSpecId: string | null, ...parts: Array<string | undefined>): boolean {
-  const discoveredIds = extractSpecIds(parts.filter(Boolean).join(' '));
-  if (discoveredIds.length === 0) {
-    return true;
+function isSafeSpecFallback(
+  currentSpecId: string | null,
+  specFolderHint: string | null | undefined,
+  ...parts: Array<string | undefined>
+): boolean {
+  const text = parts.filter(Boolean).join(' ');
+  const discoveredIds = extractSpecIds(text);
+  // Original check: no foreign spec IDs
+  if (discoveredIds.length > 0) {
+    if (currentSpecId === null || !discoveredIds.every((specId) => specId === currentSpecId)) {
+      return false;
+    }
   }
-
-  return currentSpecId !== null && discoveredIds.every((specId) => specId === currentSpecId);
+  // P3-3: Require at least one topical anchor when a spec hint exists.
+  if (!specFolderHint) return true;
+  const specSegments = specFolderHint
+    .split('/')
+    .map((segment) => segment.replace(/^\d+--?/, '').trim().toLowerCase())
+    .filter((segment) => segment.length > 2);
+  const normalizedText = text.toLowerCase();
+  return specSegments.some((segment) => normalizedText.includes(segment));
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -862,7 +883,7 @@ function transformOpencodeCapture(
       return true;
     }
 
-    const safeToolContext = toolTextParts.some((part) => isSafeSpecFallback(currentSpecId, part));
+    const safeToolContext = toolTextParts.some((part) => isSafeSpecFallback(currentSpecId, specFolderHint, part));
     return safeToolContext && alignedExchangeTexts.length > 0;
   }
 
@@ -895,6 +916,7 @@ function transformOpencodeCapture(
     prompt: ex.userInput || '',
     timestamp: toSafeISOString(ex.timestamp)
   }));
+  let relevanceFallbackUsed = false;
 
   // RC-2: Filter userPrompts by spec-folder relevance — prevents cross-spec
   // Content from leaking into unrelated memory files. When no keyword match
@@ -912,7 +934,7 @@ function transformOpencodeCapture(
 
     const safeFallback = alignedExchangeTexts.length > 0
       ? allUserPrompts.filter((prompt) =>
-      isSafeSpecFallback(currentSpecId, prompt.prompt)
+      isSafeSpecFallback(currentSpecId, specFolderHint, prompt.prompt)
       )
       : [];
     if (safeFallback.length > 0) {
@@ -923,6 +945,7 @@ function transformOpencodeCapture(
         totalUserPrompts: allUserPrompts.length,
         retainedUserPrompts: safeFallback.length,
       });
+      relevanceFallbackUsed = true;
       return safeFallback;
     }
 
@@ -1032,7 +1055,7 @@ function transformOpencodeCapture(
 
     const safeFallback = alignedExchangeTexts.length > 0
       ? exchanges.filter((exchange) =>
-      isSafeSpecFallback(currentSpecId, exchange.userInput, exchange.assistantResponse)
+      isSafeSpecFallback(currentSpecId, specFolderHint, exchange.userInput, exchange.assistantResponse)
       )
       : [];
     if (safeFallback.length > 0) {
@@ -1106,6 +1129,7 @@ function transformOpencodeCapture(
       : typeof metadata?.session_updated === 'number'
         ? metadata.session_updated as number
         : undefined,
+    _relevanceFallback: relevanceFallbackUsed || undefined,
   };
 }
 
