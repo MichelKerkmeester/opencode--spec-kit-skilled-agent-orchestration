@@ -16,7 +16,7 @@ This scenario validates Graph channel ID fix (G1) for `NEW-001`. It focuses on C
 Operators run the exact prompt and command sequence for `NEW-001` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm graph hits are non-zero when edges exist
-- Prompt: `Verify Graph channel ID fix (G1) manually with causal-edge data.`
+- Prompt: `Verify Graph channel ID fix (G1) manually with causal-edge data. Capture the evidence needed to prove Graph channel returns >0 hits; channel attribution includes graph source. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Graph channel returns >0 hits; channel attribution includes graph source
 - Pass/fail: PASS: Graph channel contributes >=1 hit when causal edges exist; FAIL: Graph hits = 0 despite valid edges
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-001` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-001 | Graph channel ID fix (G1) | Confirm graph hits are non-zero when edges exist | `Verify Graph channel ID fix (G1) manually with causal-edge data.` | 1) Create linked memories 2) Run graph-capable query 3) Verify graph hits | Graph channel returns >0 hits; channel attribution includes graph source | Command transcript + search output showing graph channel contribution count | PASS: Graph channel contributes >=1 hit when causal edges exist; FAIL: Graph hits = 0 despite valid edges | Verify causal edges exist via `memory_causal_stats()` → Check graph channel ID matches schema → Inspect channel activation flags |
+| NEW-001 | Graph channel ID fix (G1) | Confirm graph hits are non-zero when edges exist | `Verify Graph channel ID fix (G1) manually with causal-edge data. Capture the evidence needed to prove Graph channel returns >0 hits; channel attribution includes graph source. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Create linked memories 2) Run graph-capable query 3) Verify graph hits | Graph channel returns >0 hits; channel attribution includes graph source | Command transcript + search output showing graph channel contribution count | PASS: Graph channel contributes >=1 hit when causal edges exist; FAIL: Graph hits = 0 despite valid edges | Verify causal edges exist via `memory_causal_stats()` → Check graph channel ID matches schema → Inspect channel activation flags |
 
 ---
 

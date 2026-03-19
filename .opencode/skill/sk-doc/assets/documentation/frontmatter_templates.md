@@ -791,6 +791,6 @@ Document type?
 - [command_template.md](../opencode/command_template.md) - Command file templates
 
 ### Standards
-- [core_standards.md](../../references/core_standards.md) - Document type rules
-- [validation.md](../../references/validation.md) - Quality scoring
+- [core_standards.md](../../references/global/core_standards.md) - Document type rules
+- [validation.md](../../references/global/validation.md) - Quality scoring
 <!-- /ANCHOR:related-resources -->

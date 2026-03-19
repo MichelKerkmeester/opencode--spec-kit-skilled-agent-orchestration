@@ -59,6 +59,7 @@ Focused Vitest coverage was added first, then the runtime was updated to satisfy
 |----------|-----|
 | Keep V10 indexable | The diagnostic should stay visible without forcing write-only saves |
 | Keep V2 write-only | It is useful enough to persist for inspection but still too noisy for automatic indexing |
+| V11 added post-phase | API error content defense rule (commit `01e781ab9`) — detects status codes, JSON error payloads, and `request_id` leaks; `abort_write` disposition with `blockOnWrite: true`, `blockOnIndex: true` |
 <!-- /ANCHOR:decisions -->
 
 ---

@@ -35,8 +35,8 @@ contextType: "implementation"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Install cocoindex-code v0.2.3 via `bash .opencode/skill/mcp-cocoindex-code/scripts/install.sh` (`.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc`) [10m]
-- [x] T002 Verify the installed package version prints `0.2.3` via `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/python -c "import importlib.metadata as m; print(m.version('cocoindex-code'))"` and confirm the binary exists at `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc` [2m]
+- [x] T001 Install cocoindex-code v0.2.3 via `bash .opencode/skill/mcp-coco-index/scripts/install.sh` (`.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc`) [10m]
+- [x] T002 Verify the installed package version prints `0.2.3` via `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/python -c "import importlib.metadata as m; print(m.version('cocoindex-code'))"` and confirm the binary exists at `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc` [2m]
 - [x] T003 Run `ccc init` in project root to initialize `.cocoindex_code/` directory [3m]
 - [x] T004 Add `.cocoindex_code/` entry to `.gitignore` [2m]
 
@@ -119,8 +119,8 @@ contextType: "implementation"
 ### Documentation Updates
 
 - [x] T039 Add findings F1-F4 and recommendations R1-R6 to `implementation-summary.md` [15m]
-- [x] T040 Add query optimization tips to `../../../skill/mcp-cocoindex-code/SKILL.md` (short queries > keyword stuffing) [5m]
-- [x] T041 Add `refresh_index=false` concurrent session guidance to `../../../skill/mcp-cocoindex-code/SKILL.md` [5m]
+- [x] T040 Add query optimization tips to `../../../skill/mcp-coco-index/SKILL.md` (short queries > keyword stuffing) [5m]
+- [x] T041 Add `refresh_index=false` concurrent session guidance to `../../../skill/mcp-coco-index/SKILL.md` [5m]
 - [x] T042 Update `spec.md` with cross-CLI test scope, deprioritized Phase 2, resolved questions [5m]
 - [x] T043 Update `plan.md` with Phase 5-6 and testing strategy additions [5m]
 - [x] T044 Update `tasks.md` with Phase 4 tasks (this file) [5m]
@@ -136,10 +136,10 @@ contextType: "implementation"
 
 ### Runtime-Truth Documentation
 
-- [x] T047 Update `../../../skill/mcp-cocoindex-code/SKILL.md` to reflect the current runtime contract and new helper scripts [10m]
-- [x] T048 Update `../../../skill/mcp-cocoindex-code/README.md`, `../../../skill/mcp-cocoindex-code/INSTALL_GUIDE.md`, and `../../../skill/mcp-cocoindex-code/references/tool_reference.md` to match actual CLI/MCP behavior [15m]
-- [x] T049 Update `../../../skill/mcp-cocoindex-code/references/search_patterns.md` and add `../../../skill/mcp-cocoindex-code/references/cross_cli_playbook.md` for repeated-query and cross-CLI guidance [10m]
-- [x] T050 Replace environment-specific `../../../skill/mcp-cocoindex-code/assets/config_templates.md` examples with repo-portable templates [10m]
+- [x] T047 Update `../../../skill/mcp-coco-index/SKILL.md` to reflect the current runtime contract and new helper scripts [10m]
+- [x] T048 Update `../../../skill/mcp-coco-index/README.md`, `../../../skill/mcp-coco-index/INSTALL_GUIDE.md`, and `../../../skill/mcp-coco-index/references/tool_reference.md` to match actual CLI/MCP behavior [15m]
+- [x] T049 Update `../../../skill/mcp-coco-index/references/search_patterns.md` and add `../../../skill/mcp-coco-index/references/cross_cli_playbook.md` for repeated-query and cross-CLI guidance [10m]
+- [x] T050 Replace environment-specific `../../../skill/mcp-coco-index/assets/config_templates.md` examples with repo-portable templates [10m]
 
 ### Agent-Facing Automation
 
@@ -176,8 +176,8 @@ contextType: "implementation"
 
 ### Downstream Adoption Guidance
 
-- [x] T065 Add `../../../skill/mcp-cocoindex-code/references/downstream_adoption_checklist.md` for sibling-repo payload/config/gitignore rollout [10m]
-- [x] T066 Update `../../../skill/mcp-cocoindex-code/SKILL.md`, `../../../skill/mcp-cocoindex-code/README.md`, and `../../../skill/mcp-cocoindex-code/references/cross_cli_playbook.md` to route operators to strict modes and the adoption checklist [10m]
+- [x] T065 Add `../../../skill/mcp-coco-index/references/downstream_adoption_checklist.md` for sibling-repo payload/config/gitignore rollout [10m]
+- [x] T066 Update `../../../skill/mcp-coco-index/SKILL.md`, `../../../skill/mcp-coco-index/README.md`, and `../../../skill/mcp-coco-index/references/cross_cli_playbook.md` to route operators to strict modes and the adoption checklist [10m]
 
 ### Verification And Spec Sync
 
@@ -201,7 +201,7 @@ contextType: "implementation"
 - [x] Checklist.md fully verified with evidence
 - [x] Cross-CLI auto-usage validated (3/4 CLIs confirmed, 1 billing-blocked)
 - [x] Copilot MCP failure root cause identified and documented
-- [x] `../../../skill/mcp-cocoindex-code/SKILL.md` updated with query optimization and `refresh_index` guidance
+- [x] `../../../skill/mcp-coco-index/SKILL.md` updated with query optimization and `refresh_index` guidance
 - [x] Helper scripts and advisor hardening validated for Phase 2
 - [x] Strict readiness issue codes, exit behavior, and downstream adoption packaging validated for Phase 3
 

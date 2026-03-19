@@ -18,12 +18,14 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. COMMAND GROUPS](#3--command-groups)
-- [4. USAGE](#4--usage)
-- [5. EXECUTION MODES](#5--execution-modes)
-- [6. TROUBLESHOOTING](#6--troubleshooting)
-- [7. RELATED DOCUMENTS](#7--related-documents)
+- [2. PURPOSE](#2--purpose)
+- [3. STRUCTURE](#3--structure)
+- [4. COMMAND GROUPS](#4--command-groups)
+- [5. INSTRUCTIONS](#5--instructions)
+- [6. USAGE](#6--usage)
+- [7. EXECUTION MODES](#7--execution-modes)
+- [8. TROUBLESHOOTING](#8--troubleshooting)
+- [9. RELATED DOCUMENTS](#9--related-documents)
 
 ---
 
@@ -31,15 +33,15 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-Commands are invoked as slash commands (e.g., `/create:skill`, `/memory:save`, `/spec_kit:plan`). Each command is a markdown file with YAML frontmatter that defines its description, argument hints and allowed tools.
+Commands are invoked as slash commands (e.g., `/create:feature-catalog`, `/memory:save`, `/spec_kit:plan`). Each command is a markdown file with YAML frontmatter that defines its description, argument hints and allowed tools.
 
 Commands are organized into three groups:
 
 | Group | Path | Commands | Purpose |
 |-------|------|----------|---------|
-| **create** | `command/create/` | 7 | Scaffold OpenCode components and create unified visual HTML artifacts |
+| **create** | `command/create/` | 8 | Scaffold OpenCode components, documentation packages, prompt artifacts, changelogs, and visual HTML |
 | **memory** | `command/memory/` | 6 | Memory system operations (analyze, save, continue, learn, manage, shared) |
-| **spec_kit** | `command/spec_kit/` | 7 | Spec folder workflows (plan, implement, research, debug, handover, resume, complete) |
+| **spec_kit** | `command/spec_kit/` | 8 | Spec folder workflows (plan, implement, research, debug, handover, resume, complete, phase) |
 
 One standalone command (`agent_router.md`) lives at the root level for routing requests to AI systems.
 
@@ -47,20 +49,32 @@ One standalone command (`agent_router.md`) lives at the root level for routing r
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:structure -->
-## 2. STRUCTURE
+<!-- ANCHOR:purpose -->
+## 2. PURPOSE
+
+Use this document as the top-level routing reference for the OpenCode slash-command surface. It explains which command group owns which workflow and points readers to the canonical sub-index for deeper command-family detail.
+
+This file is descriptive only. The executable contract for any workflow lives in the command entrypoint markdown file itself.
+
+---
+
+<!-- /ANCHOR:purpose -->
+<!-- ANCHOR:structure -->
+## 3. STRUCTURE
 
 ```
 command/
 ├── agent_router.md           # Route requests to AI systems
 ├── create/                   # Component creation commands
 │   ├── agent.md              # Create new agent
+│   ├── changelog.md          # Create changelog entry
+│   ├── feature-catalog.md    # Create or update feature catalog package
 │   ├── folder_readme.md      # Create folder README
-│   ├── install_guide.md      # Create install guide
-│   ├── skill.md              # Create new skill
-│   ├── skill_asset.md        # Create skill asset file
-│   ├── skill_reference.md    # Create skill reference file
+│   ├── prompt.md             # Create or improve prompts
+│   ├── sk-skill.md           # Create or update skill package/files
+│   ├── testing-playbook.md   # Create or update manual testing playbook package
 │   ├── visual_html.md        # Create or verify visual HTML output
-│   └── assets/               # YAML workflow definitions (14 files)
+│   └── assets/               # YAML workflow definitions
 ├── memory/                   # Memory system commands
 │   ├── analyze.md          # Unified retrieval + analysis (intent-aware search, epistemic, causal, eval)
 │   ├── continue.md           # Session recovery
@@ -83,7 +97,7 @@ command/
 
 <!-- /ANCHOR:structure -->
 <!-- ANCHOR:command-groups -->
-## 3. COMMAND GROUPS
+## 4. COMMAND GROUPS
 
 ### Create Commands
 
@@ -92,11 +106,12 @@ Scaffold OpenCode components using the `sk-doc` skill. Each command supports `:a
 | Command | Invocation | Purpose |
 |---------|------------|---------|
 | Agent | `/create:agent <name>` | Create agent with frontmatter, tool permissions, behavioral rules |
-| Folder README | `/create:folder_readme <path>` | Create AI-optimized README with TOC and structure |
-| Install Guide | `/create:install_guide <name>` | Create phase-based installation documentation |
-| Skill | `/create:skill <name>` | Create skill with SKILL.md, references, assets, scripts |
-| Skill Asset | `/create:skill_asset <skill> <type>` | Create asset file for existing skill |
-| Skill Reference | `/create:skill_reference <skill> <type>` | Create reference file for existing skill |
+| Folder README | `/create:folder_readme [readme\|install] <target>` | Unified README and install guide workflow |
+| Feature Catalog | `/create:feature-catalog <skill> [create\|update]` | Create or update a rooted `feature_catalog/` package |
+| Testing Playbook | `/create:testing-playbook <skill> [create\|update]` | Create or update a rooted `manual_testing_playbook/` package |
+| Skill | `/create:sk-skill <name> <operation> [type]` | Unified skill create/update/reference/asset workflow |
+| Prompt | `/create:prompt <prompt-text-or-flags>` | Create or improve prompts through `sk-prompt-improver` |
+| Changelog | `/create:changelog <spec-folder-or-component>` | Create a changelog entry from recent work |
 | Visual HTML | `/create:visual_html <target> --mode <auto\|create\|analyze\|verify\|custom>` | Unified visual command with broad intent-based routing |
 
 ### Memory Commands
@@ -129,13 +144,27 @@ Structured workflows for the spec folder development lifecycle.
 ---
 
 <!-- /ANCHOR:command-groups -->
+<!-- ANCHOR:instructions -->
+## 5. INSTRUCTIONS
+
+1. Choose the command group that matches your intent: `create`, `memory`, or `spec_kit`.
+2. Use the canonical slash-command form `/<group>:<command>` unless the command is a top-level utility such as `/agent_router`.
+3. Prefer the unified commands over historical split commands.
+4. When a command supports `:auto` and `:confirm`, pick the mode that matches how much checkpointing you want.
+5. Follow the family-specific index under `command/<group>/README.txt` when you need detailed routing help.
+
+---
+
+<!-- /ANCHOR:instructions -->
 <!-- ANCHOR:usage -->
-## 4. USAGE
+## 6. USAGE
 
 ### Basic Invocation
 
 ```
-/create:skill my-new-skill "Description of what it does"
+/create:feature-catalog system-spec-kit create :confirm
+/create:testing-playbook system-spec-kit update :auto
+/create:sk-skill my-new-skill full-create :auto
 /create:visual_html "specs/007-auth/plan.md" --mode analyze
 /memory:save specs/007-feature
 /spec_kit:plan "Add user authentication" :auto
@@ -169,7 +198,7 @@ Structured workflows for the spec folder development lifecycle.
 
 <!-- /ANCHOR:usage -->
 <!-- ANCHOR:execution-modes -->
-## 5. EXECUTION MODES
+## 7. EXECUTION MODES
 
 Most commands in `create/` and `spec_kit/` support two execution modes controlled by a suffix argument.
 
@@ -190,7 +219,7 @@ The `spec_kit:complete` command supports two additional modes:
 
 <!-- /ANCHOR:execution-modes -->
 <!-- ANCHOR:troubleshooting -->
-## 6. TROUBLESHOOTING
+## 8. TROUBLESHOOTING
 
 | Problem | Cause | Fix |
 |---------|-------|-----|
@@ -198,6 +227,7 @@ The `spec_kit:complete` command supports two additional modes:
 | Agent router command not found | Used `/agents` or `/agents_router` alias | Use `/agent_router "<request>"` |
 | Missing arguments error | Required argument not provided | Check the `argument-hint` in the command's frontmatter |
 | YAML workflow not found | Missing asset file | Verify `assets/` folder contains the corresponding YAML |
+| `create` vs `update` mismatch | Target package exists/does not exist as expected | Re-run the command with the matching operation |
 | Tool permission denied | Command lacks required tool | Check `allowed-tools` in command frontmatter |
 | Agent router has no request | Empty arguments passed | Provide an explicit request string |
 
@@ -205,7 +235,7 @@ The `spec_kit:complete` command supports two additional modes:
 
 <!-- /ANCHOR:troubleshooting -->
 <!-- ANCHOR:related-documents -->
-## 7. RELATED DOCUMENTS
+## 9. RELATED DOCUMENTS
 
 | Document | Purpose |
 |----------|---------|

@@ -1,0 +1,16 @@
+{
+  "specFolder": "027-cmd-create-yaml-refinement",
+  "description": "cmd create yaml refinement",
+  "keywords": [
+    "cmd",
+    "create",
+    "yaml",
+    "refinement"
+  ],
+  "lastUpdated": "2026-03-19T08:13:24.210Z",
+  "specId": "027",
+  "folderSlug": "cmd-create-yaml-refinement",
+  "parentChain": [],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

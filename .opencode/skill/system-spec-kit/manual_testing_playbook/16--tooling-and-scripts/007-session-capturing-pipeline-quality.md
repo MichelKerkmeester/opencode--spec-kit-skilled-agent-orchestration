@@ -19,7 +19,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `Run full closure verification for spec 010-perfect-session-capturing, including JSON authority, stateless enrichment, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), Phase 017 stateless quality-gate behavior, numeric quality calibration, and indexing readiness.`
+- Prompt: `Run full closure verification for spec 010-perfect-session-capturing, including JSON authority, stateless enrichment, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), Phase 017 stateless quality-gate behavior, numeric quality calibration, and indexing readiness. Return a concise user-facing pass/fail verdict with the main reason.`
 - Canonical workspace rule:
   - Native capture targets the repo-local `.opencode` workspace identity.
   - Backend-native repo-root, `.opencode`, and git-root path forms count as equivalent only when they normalize to the same workspace.

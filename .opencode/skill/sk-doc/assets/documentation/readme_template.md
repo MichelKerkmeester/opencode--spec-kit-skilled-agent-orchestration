@@ -474,7 +474,7 @@ Before finalizing a README, verify all applicable items:
 
 All README content must follow Human Voice Rules. The full ruleset lives in a standalone reference file. This section provides a quick reference for writing.
 
-**Full HVR Reference**: [`hvr_rules.md`](../../references/hvr_rules.md)
+**Full HVR Reference**: [`hvr_rules.md`](../../references/global/hvr_rules.md)
 
 ### Quick Reference
 
@@ -506,7 +506,7 @@ All README content must follow Human Voice Rules. The full ruleset lives in a st
 | cutting-edge | latest, advanced |
 | innovative | new |
 
-For the complete banned words list, banned phrases, banned metaphors and soft deductions, see [`hvr_rules.md`](../../references/hvr_rules.md).
+For the complete banned words list, banned phrases, banned metaphors and soft deductions, see [`hvr_rules.md`](../../references/global/hvr_rules.md).
 
 ---
 
@@ -1080,8 +1080,8 @@ A: [Answer with code if applicable.]
 - [frontmatter_templates.md](./frontmatter_templates.md) - YAML frontmatter examples
 
 ### Standards
-- [core_standards.md](../../references/core_standards.md) - Document formatting rules
-- [validation.md](../../references/validation.md) - Quality scoring (DQI)
+- [core_standards.md](../../references/global/core_standards.md) - Document formatting rules
+- [validation.md](../../references/global/validation.md) - Quality scoring (DQI)
 
 ### Examples
 - Project READMEs in `/specs/` folders

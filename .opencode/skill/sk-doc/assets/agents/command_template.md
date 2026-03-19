@@ -1226,6 +1226,6 @@ OPUS ORCHESTRATOR → Dispatches → SONNET WORKERS (parallel)
 - [skill_md_template.md](./skill_md_template.md) - If converting to skill
 
 ### Standards
-- [core_standards.md](../../references/core_standards.md) - Document type rules
-- [validation.md](../../references/validation.md) - Quality scoring
+- [core_standards.md](../../references/global/core_standards.md) - Document type rules
+- [validation.md](../../references/global/validation.md) - Quality scoring
 <!-- /ANCHOR:related-resources -->

@@ -19,7 +19,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `/memory:continue specs/<target-spec>`
+- Prompt: `/memory:continue specs/<target-spec>. Capture the evidence needed to prove Resume-ready state summary and next steps. Return a concise user-facing pass/fail verdict with the main reason.`
 - Commands:
   - `memory_search({query:"state next-steps blockers decisions", specFolder:"specs/<target-spec>", anchors:["state","next-steps","blockers","decisions"]})`
 - Expected: Resume-ready state summary and next steps.

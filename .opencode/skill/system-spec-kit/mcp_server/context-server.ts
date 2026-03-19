@@ -327,7 +327,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
       throw new Error(`Unknown tool: ${name}`);
     }
 
-    runAfterToolCallbacks(name, callId, result);
+    runAfterToolCallbacks(name, callId, structuredClone(result));
 
     // SK-004: Inject auto-surfaced context into successful responses before
     // Token-budget enforcement so metadata reflects the final envelope.

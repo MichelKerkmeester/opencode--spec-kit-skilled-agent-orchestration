@@ -16,7 +16,7 @@ This scenario validates Quality gate timer persistence for `NEW-073`. It focuses
 Operators run the exact prompt and command sequence for `NEW-073` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm restart persistence
-- Prompt: `Verify quality gate timer persistence.`
+- Prompt: `Verify quality gate timer persistence. Capture the evidence needed to prove Activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart
 - Pass/fail: PASS if activation timestamp persists across restart and quality gate honors the original timer
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-073` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-073 | Quality gate timer persistence | Confirm restart persistence | `Verify quality gate timer persistence.` | 1) set activation timestamp 2) restart service 3) verify persisted timestamp | Activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart | Pre-restart timestamp + post-restart timestamp comparison + quality gate status | PASS if activation timestamp persists across restart and quality gate honors the original timer | Check persistence storage mechanism; verify timer read-on-startup logic; inspect for race conditions during restart |
+| NEW-073 | Quality gate timer persistence | Confirm restart persistence | `Verify quality gate timer persistence. Capture the evidence needed to prove Activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart. Return a concise user-facing pass/fail verdict with the main reason.` | 1) set activation timestamp 2) restart service 3) verify persisted timestamp | Activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart | Pre-restart timestamp + post-restart timestamp comparison + quality gate status | PASS if activation timestamp persists across restart and quality gate honors the original timer | Check persistence storage mechanism; verify timer read-on-startup logic; inspect for race conditions during restart |
 
 ---
 

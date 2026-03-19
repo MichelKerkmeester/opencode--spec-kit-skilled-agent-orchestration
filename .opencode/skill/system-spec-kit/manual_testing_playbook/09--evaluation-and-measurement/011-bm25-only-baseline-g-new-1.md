@@ -16,7 +16,7 @@ This scenario validates BM25-only baseline (G-NEW-1) for `NEW-011`. It focuses o
 Operators run the exact prompt and command sequence for `NEW-011` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm baseline reproducibility
-- Prompt: `Run BM25-only baseline measurement.`
+- Prompt: `Run BM25-only baseline measurement. Capture the evidence needed to prove BM25-only run produces reproducible MRR@5; no non-BM25 channel contributions in trace. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: BM25-only run produces reproducible MRR@5; no non-BM25 channel contributions in trace
 - Pass/fail: PASS: MRR@5 is deterministic across 2 runs and only BM25 channel active; FAIL: Non-BM25 channels contribute or MRR varies
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-011` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-011 | BM25-only baseline (G-NEW-1) | Confirm baseline reproducibility | `Run BM25-only baseline measurement.` | 1) Disable non-BM25 channels 2) Run corpus 3) Record MRR@5 | BM25-only run produces reproducible MRR@5; no non-BM25 channel contributions in trace | BM25 baseline output with MRR@5 value + channel trace showing BM25-only | PASS: MRR@5 is deterministic across 2 runs and only BM25 channel active; FAIL: Non-BM25 channels contribute or MRR varies | Verify all non-BM25 channels disabled → Check BM25 index health → Inspect channel activation flags |
+| NEW-011 | BM25-only baseline (G-NEW-1) | Confirm baseline reproducibility | `Run BM25-only baseline measurement. Capture the evidence needed to prove BM25-only run produces reproducible MRR@5; no non-BM25 channel contributions in trace. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Disable non-BM25 channels 2) Run corpus 3) Record MRR@5 | BM25-only run produces reproducible MRR@5; no non-BM25 channel contributions in trace | BM25 baseline output with MRR@5 value + channel trace showing BM25-only | PASS: MRR@5 is deterministic across 2 runs and only BM25 channel active; FAIL: Non-BM25 channels contribute or MRR varies | Verify all non-BM25 channels disabled → Check BM25 index health → Inspect channel activation flags |
 
 ---
 

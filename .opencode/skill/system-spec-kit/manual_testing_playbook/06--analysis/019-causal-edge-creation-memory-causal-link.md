@@ -16,7 +16,7 @@ This scenario validates Causal edge creation (memory_causal_link) for `EX-019`. 
 Operators run the exact prompt and command sequence for `EX-019` and confirm the expected signals without contradicting evidence.
 
 - Objective: Causal provenance linking
-- Prompt: `Link source->target supports strength 0.8`
+- Prompt: `Link source->target supports strength 0.8. Capture the evidence needed to prove Edge appears in chain trace. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Edge appears in chain trace
 - Pass/fail: PASS if relation visible in trace
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-019` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-019 | Causal edge creation (memory_causal_link) | Causal provenance linking | `Link source->target supports strength 0.8` | `memory_causal_link({ sourceId:"<memory-id-a>", targetId:"<memory-id-b>", relation:"supports", strength:0.8 })` -> `memory_drift_why({ memoryId:"<memory-id-b>", direction:"both", maxDepth:4 })` | Edge appears in chain trace | Link + trace outputs | PASS if relation visible in trace | Validate IDs/relation type |
+| EX-019 | Causal edge creation (memory_causal_link) | Causal provenance linking | `Link source->target supports strength 0.8. Capture the evidence needed to prove Edge appears in chain trace. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_causal_link({ sourceId:"<memory-id-a>", targetId:"<memory-id-b>", relation:"supports", strength:0.8 })` -> `memory_drift_why({ memoryId:"<memory-id-b>", direction:"both", maxDepth:4 })` | Edge appears in chain trace | Link + trace outputs | PASS if relation visible in trace | Validate IDs/relation type |
 
 ---
 

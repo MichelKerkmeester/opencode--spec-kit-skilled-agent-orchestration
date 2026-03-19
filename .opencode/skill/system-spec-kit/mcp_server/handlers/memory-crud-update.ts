@@ -244,12 +244,13 @@ async function handleMemoryUpdate(args: UpdateArgs): Promise<MCPResponse> {
   let postMutationHooks: import('./mutation-hooks').MutationHookResult;
   try {
     postMutationHooks = runPostMutationHooks('update', { memoryId: id });
-  } catch {
+  } catch (hookError: unknown) {
+    const msg = hookError instanceof Error ? hookError.message : String(hookError);
     postMutationHooks = {
       latencyMs: 0, triggerCacheCleared: false,
       constitutionalCacheCleared: false, toolCacheInvalidated: 0,
       graphSignalsCacheCleared: false, coactivationCacheCleared: false,
-      errors: [],
+      errors: [msg],
     };
   }
   const postMutationFeedback = buildMutationHookFeedback('update', postMutationHooks);

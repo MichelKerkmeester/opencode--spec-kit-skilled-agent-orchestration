@@ -16,7 +16,7 @@ This scenario validates Guards and edge cases for `NEW-068`. It focuses on Confi
 Operators run the exact prompt and command sequence for `NEW-068` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm edge-case guard fixes
-- Prompt: `Validate guards and edge-cases bundle.`
+- Prompt: `Validate guards and edge-cases bundle. Capture the evidence needed to prove No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state
 - Pass/fail: PASS if all known edge cases are handled without double-counting or incorrect fallback behavior
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-068` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-068 | Guards and edge cases | Confirm edge-case guard fixes | `Validate guards and edge-cases bundle.` | 1) trigger known edge cases 2) verify no double-count/wrong fallback 3) capture outcomes | No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state | Edge-case trigger output + aggregation verification + fallback path evidence | PASS if all known edge cases are handled without double-counting or incorrect fallback behavior | Identify specific edge cases from Sprint 8 changelog; verify guard condition logic; check aggregation dedup |
+| NEW-068 | Guards and edge cases | Confirm edge-case guard fixes | `Validate guards and edge-cases bundle. Capture the evidence needed to prove No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state. Return a concise user-facing pass/fail verdict with the main reason.` | 1) trigger known edge cases 2) verify no double-count/wrong fallback 3) capture outcomes | No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state | Edge-case trigger output + aggregation verification + fallback path evidence | PASS if all known edge cases are handled without double-counting or incorrect fallback behavior | Identify specific edge cases from Sprint 8 changelog; verify guard condition logic; check aggregation dedup |
 
 ---
 

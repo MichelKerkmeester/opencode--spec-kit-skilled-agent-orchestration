@@ -16,7 +16,7 @@ This scenario validates Cross-AI validation fixes (Tier 4) for `NEW-088`. It foc
 Operators run the exact prompt and command sequence for `NEW-088` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm tier-4 fix pack behavior
-- Prompt: `Validate Phase 018 Tier-4 cross-AI fixes.`
+- Prompt: `Validate Phase 018 Tier-4 cross-AI fixes. Capture the evidence needed to prove Each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality
 - Pass/fail: PASS if all tier-4 fix locations produce corrected behavior and no regressions are observed
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-088` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-088 | Cross-AI validation fixes (Tier 4) | Confirm tier-4 fix pack behavior | `Validate Phase 018 Tier-4 cross-AI fixes.` | 1) inspect each fix location 2) run representative flows 3) record behavior | Each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality | Fix location inspection + representative flow outputs + regression check evidence | PASS if all tier-4 fix locations produce corrected behavior and no regressions are observed | Inspect each fix from Phase 018 tier-4 changelog; run targeted tests for each fix area; check for unintended side effects |
+| NEW-088 | Cross-AI validation fixes (Tier 4) | Confirm tier-4 fix pack behavior | `Validate Phase 018 Tier-4 cross-AI fixes. Capture the evidence needed to prove Each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality. Return a concise user-facing pass/fail verdict with the main reason.` | 1) inspect each fix location 2) run representative flows 3) record behavior | Each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality | Fix location inspection + representative flow outputs + regression check evidence | PASS if all tier-4 fix locations produce corrected behavior and no regressions are observed | Inspect each fix from Phase 018 tier-4 changelog; run targeted tests for each fix area; check for unintended side effects |
 
 ---
 

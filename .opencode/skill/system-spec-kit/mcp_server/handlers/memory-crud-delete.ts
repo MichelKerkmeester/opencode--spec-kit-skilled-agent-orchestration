@@ -18,6 +18,7 @@ import { recordHistory } from '../lib/storage/history';
 import { appendMutationLedgerSafe, getMemoryHashSnapshot } from './memory-crud-utils';
 import { runPostMutationHooks } from './mutation-hooks';
 import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
+import { clearDegreeCache } from '../lib/search/graph-search-fn';
 
 import type { MCPResponse } from './types';
 import type { DeleteArgs, MemoryHashSnapshot } from './memory-crud-types';
@@ -112,6 +113,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
 
         causalEdges.init(database);
         causalEdges.deleteEdgesForMemory(String(numericId));
+        clearDegreeCache();
 
         appendMutationLedgerSafe(database, {
           mutationType: 'delete',
@@ -234,12 +236,13 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
     let postMutationHooks: import('./mutation-hooks').MutationHookResult;
     try {
       postMutationHooks = runPostMutationHooks('delete', { specFolder, deletedCount });
-    } catch (_error: unknown) {
+    } catch (hookError: unknown) {
+      const msg = hookError instanceof Error ? hookError.message : String(hookError);
       postMutationHooks = {
         latencyMs: 0, triggerCacheCleared: false,
         constitutionalCacheCleared: false, toolCacheInvalidated: 0,
         graphSignalsCacheCleared: false, coactivationCacheCleared: false,
-        errors: [],
+        errors: [msg],
       };
     }
     postMutationFeedback = buildMutationHookFeedback('delete', postMutationHooks);

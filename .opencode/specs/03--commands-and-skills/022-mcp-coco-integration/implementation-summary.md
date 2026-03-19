@@ -38,7 +38,7 @@ OpenCode now has semantic code search plus a hardened skill wrapper around it. B
 
 ### Installation and Indexing
 
-`cocoindex-code` v0.2.3 is installed via `bash .opencode/skill/mcp-cocoindex-code/scripts/install.sh`, placing the `ccc` binary at `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc`. The initial index covers 6,792 files across 14 languages, producing 105,965 chunks stored in `.cocoindex_code/` (gitignored). The all-MiniLM-L6-v2 embedding model runs locally - no API key, no code sent to the cloud. Indexing completed in approximately 5 minutes on Apple Silicon.
+`cocoindex-code` v0.2.3 is installed via `bash .opencode/skill/mcp-coco-index/scripts/install.sh`, placing the `ccc` binary at `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc`. The initial index covers 6,792 files across 14 languages, producing 105,965 chunks stored in `.cocoindex_code/` (gitignored). The all-MiniLM-L6-v2 embedding model runs locally - no API key, no code sent to the cloud. Indexing completed in approximately 5 minutes on Apple Silicon.
 
 ### Multi-CLI Config Registration
 
@@ -55,12 +55,12 @@ The `cocoindex_code` MCP server entry is registered in all 6 CLI config files us
 | `.gemini/settings.json` | Modified | Registered `cocoindex_code` server with repo-relative paths and `trust: true` (Gemini CLI) |
 | `.claude/mcp.json` | Modified | Registered `cocoindex_code` server with relative env and `_NOTE_*` docs (Claude Code) |
 | `.codex/config.toml` | Modified | Registered `cocoindex_code` server via `[mcp_servers.cocoindex_code]` section (Codex CLI) |
-| `.opencode/skill/mcp-cocoindex-code/scripts/common.sh` | Added | Shared shell helpers for readiness tooling |
-| `.opencode/skill/mcp-cocoindex-code/scripts/doctor.sh` | Added | Read-only health check with strict readiness modes and expected-config validation |
-| `.opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh` | Added | Idempotent bootstrap helper with strict post-bootstrap validation |
+| `.opencode/skill/mcp-coco-index/scripts/common.sh` | Added | Shared shell helpers for readiness tooling |
+| `.opencode/skill/mcp-coco-index/scripts/doctor.sh` | Added | Read-only health check with strict readiness modes and expected-config validation |
+| `.opencode/skill/mcp-coco-index/scripts/ensure_ready.sh` | Added | Idempotent bootstrap helper with strict post-bootstrap validation |
 | `.opencode/skill/scripts/skill_advisor.py` | Modified | Prefers repo-local `ccc` and boosts semantic discovery prompts |
-| `.opencode/skill/mcp-cocoindex-code/references/cross_cli_playbook.md` | Added | Canonical operating guide for repeated-query and cross-CLI usage |
-| `.opencode/skill/mcp-cocoindex-code/references/downstream_adoption_checklist.md` | Added | Minimum sibling-repo rollout checklist for payload, config wiring, and gitignore hygiene |
+| `.opencode/skill/mcp-coco-index/references/cross_cli_playbook.md` | Added | Canonical operating guide for repeated-query and cross-CLI usage |
+| `.opencode/skill/mcp-coco-index/references/downstream_adoption_checklist.md` | Added | Minimum sibling-repo rollout checklist for payload, config wiring, and gitignore hygiene |
 
 <!-- /ANCHOR:what-built -->
 
@@ -85,7 +85,7 @@ Phase 1 was preceded by multi-agent research: 3 Claude Opus 4.6 sub-agents and 3
 | Snake_case `cocoindex_code` | Matches existing MCP server naming convention (`spec_kit_memory`, `code_mode`); consistent across all 6 configs |
 | Repo-relative command and root paths in all 6 configs | Keeps the integration portable across clone locations while still avoiding `PATH` collisions with unrelated `ccc` binaries |
 | `_NOTE_*` env vars in `opencode.json` and `.claude/mcp.json` | Documents install requirements inline without needing external README; follows existing pattern in both files |
-| `bash .opencode/skill/mcp-cocoindex-code/scripts/install.sh` | Creates a repo-local Python 3.11 environment, avoids PATH collisions, and keeps the MCP binary colocated with the skill |
+| `bash .opencode/skill/mcp-coco-index/scripts/install.sh` | Creates a repo-local Python 3.11 environment, avoids PATH collisions, and keeps the MCP binary colocated with the skill |
 | Replace planned Phase 2 routing work with hardening | Cross-CLI validation showed discovery already works; docs, readiness helpers, and advisor utilization address the real gaps |
 | Prefer repo-local `ccc` before PATH in advisor | Avoids collisions with unrelated `ccc` binaries and keeps searches bound to the checked-in integration |
 | `doctor.sh` and `ensure_ready.sh` as first-line recovery | Gives agents deterministic health/setup entrypoints without baking setup logic into every caller |
@@ -102,7 +102,7 @@ Phase 1 was preceded by multi-agent research: 3 Claude Opus 4.6 sub-agents and 3
 
 | Check | Result |
 |-------|--------|
-| `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/python -c "import importlib.metadata as m; print(m.version('cocoindex-code'))"` | PASS - prints `0.2.3` |
+| `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/python -c "import importlib.metadata as m; print(m.version('cocoindex-code'))"` | PASS - prints `0.2.3` |
 | `ccc index` statistics | PASS - 6,792 files, 105,965 chunks, 14 languages |
 | `ccc search "MCP server initialization"` | PASS - returns TypeScript results with file paths and line numbers |
 | `.mcp.json` syntax (python3 json.load) | PASS |
@@ -115,11 +115,11 @@ Phase 1 was preceded by multi-agent research: 3 Claude Opus 4.6 sub-agents and 3
 | `.cocoindex_code/` gitignored | PASS |
 | Peer review score | PASS - 88/100, 0 blockers, 0 P1 issues |
 | `bash -n` on touched CocoIndex shell scripts | PASS |
-| `bash .opencode/skill/mcp-cocoindex-code/scripts/doctor.sh --json --strict --require-config --expect-config opencode.json` | PASS - reports `status: "ready"`, `expectedConfigs: ["opencode.json"]`, `indexFiles: 5859`, `indexChunks: 78525` after recovery |
-| `bash .opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh --json --strict --require-config --expect-config opencode.json` | PASS - reindexed the shared repo (`actionsPerformed: ["index"]`) and returned `status: "ready"` |
-| `bash .opencode/skill/mcp-cocoindex-code/scripts/ensure_ready.sh --json --strict --require-config --root <tmpdir>` | PASS - performs `init` and `index`, then exits `24` with `blockingIssues: [24]` when config wiring is still missing |
+| `bash .opencode/skill/mcp-coco-index/scripts/doctor.sh --json --strict --require-config --expect-config opencode.json` | PASS - reports `status: "ready"`, `expectedConfigs: ["opencode.json"]`, `indexFiles: 5859`, `indexChunks: 78525` after recovery |
+| `bash .opencode/skill/mcp-coco-index/scripts/ensure_ready.sh --json --strict --require-config --expect-config opencode.json` | PASS - reindexed the shared repo (`actionsPerformed: ["index"]`) and returned `status: "ready"` |
+| `bash .opencode/skill/mcp-coco-index/scripts/ensure_ready.sh --json --strict --require-config --root <tmpdir>` | PASS - performs `init` and `index`, then exits `24` with `blockingIssues: [24]` when config wiring is still missing |
 | `python3 .opencode/skill/scripts/skill_advisor.py --health` | PASS - reports repo-local `.venv/bin/ccc` |
-| `python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --threshold 0.8` | PASS - routes to `mcp-cocoindex-code` at 0.95 confidence |
+| `python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --threshold 0.8` | PASS - routes to `mcp-coco-index` at 0.95 confidence |
 | `python3 .opencode/skill/scripts/skill_advisor.py "find exact string TODO comments" --threshold 0.8 --show-rejections` | PASS - exact-text prompt does not pass threshold for CocoIndex |
 
 **NFR Verification**:
@@ -161,7 +161,7 @@ Phase 1 was preceded by multi-agent research: 3 Claude Opus 4.6 sub-agents and 3
 
 7. **Repeated-query guidance must still be followed** - MCP `refresh_index=true` remains the default for the first query. Follow-up queries should prefer `refresh_index=false` when the codebase has not changed.
 
-8. **Strict config checks do not write config for you** - `--strict --require-config` is intentionally validation-only. If a sibling repo is missing `cocoindex_code` wiring, fix the configs using `../../../skill/mcp-cocoindex-code/references/downstream_adoption_checklist.md` and `../../../skill/mcp-cocoindex-code/assets/config_templates.md`.
+8. **Strict config checks do not write config for you** - `--strict --require-config` is intentionally validation-only. If a sibling repo is missing `cocoindex_code` wiring, fix the configs using `../../../skill/mcp-coco-index/references/downstream_adoption_checklist.md` and `../../../skill/mcp-coco-index/assets/config_templates.md`.
 
 <!-- /ANCHOR:limitations -->
 
@@ -213,8 +213,8 @@ When CocoIndex works, it eliminates the Grep-Read-Filter cascade entirely.
 |---|----------------|----------|-----------|
 | R1 | Deprioritize Phase 2 @context agent routing | High | Auto-discovery works; routing adds maintenance without benefit |
 | R2 | Report upstream daemon concurrency bug | High | `refresh_index=true` + concurrent requests crashes `ComponentContext` |
-| R3 | Add `refresh_index: false` guidance to `../../../skill/mcp-cocoindex-code/SKILL.md` | Medium | Workaround for multi-query sessions |
-| R4 | Add query optimization tips to `../../../skill/mcp-cocoindex-code/SKILL.md` | Medium | Short natural language queries outperform keyword stuffing |
+| R3 | Add `refresh_index: false` guidance to `../../../skill/mcp-coco-index/SKILL.md` | Medium | Workaround for multi-query sessions |
+| R4 | Add query optimization tips to `../../../skill/mcp-coco-index/SKILL.md` | Medium | Short natural language queries outperform keyword stuffing |
 | R5 | Retest Codex when billing resolved | Low | MCP wiring confirmed correct |
 | R6 | Redefine Phase 2 scope: reliability + query guidance | High | Replace agent routing with concrete fixes |
 

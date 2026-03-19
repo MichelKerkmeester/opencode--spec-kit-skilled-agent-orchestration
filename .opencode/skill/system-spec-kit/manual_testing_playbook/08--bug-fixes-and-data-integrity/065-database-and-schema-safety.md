@@ -16,7 +16,7 @@ This scenario validates Database and schema safety for `NEW-065`. It focuses on 
 Operators run the exact prompt and command sequence for `NEW-065` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm Sprint 8 DB safety bundle
-- Prompt: `Validate database and schema safety bundle.`
+- Prompt: `Validate database and schema safety bundle. Capture the evidence needed to prove Mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure
 - Pass/fail: PASS if all mutation paths complete atomically with no partial corruption and schema constraints hold
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-065` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-065 | Database and schema safety | Confirm Sprint 8 DB safety bundle | `Validate database and schema safety bundle.` | 1) run affected mutation paths 2) inspect SQL outcomes 3) confirm no partial corruption | Mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure | Mutation output + SQL inspection results + schema constraint verification | PASS if all mutation paths complete atomically with no partial corruption and schema constraints hold | Inspect transaction wrappers; verify schema migration state; check for incomplete writes in DB |
+| NEW-065 | Database and schema safety | Confirm Sprint 8 DB safety bundle | `Validate database and schema safety bundle. Capture the evidence needed to prove Mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure. Return a concise user-facing pass/fail verdict with the main reason.` | 1) run affected mutation paths 2) inspect SQL outcomes 3) confirm no partial corruption | Mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure | Mutation output + SQL inspection results + schema constraint verification | PASS if all mutation paths complete atomically with no partial corruption and schema constraints hold | Inspect transaction wrappers; verify schema migration state; check for incomplete writes in DB |
 
 ---
 

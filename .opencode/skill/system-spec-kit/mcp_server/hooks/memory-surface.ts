@@ -75,7 +75,8 @@ function extractContextHint(args: Record<string, unknown> | null | undefined): s
 
   // Join concepts array if present
   if (args.concepts && Array.isArray(args.concepts) && args.concepts.length > 0) {
-    return (args.concepts as string[]).join(' ');
+    const strings = args.concepts.filter((c): c is string => typeof c === 'string');
+    if (strings.length > 0) return strings.join(' ');
   }
 
   return null;

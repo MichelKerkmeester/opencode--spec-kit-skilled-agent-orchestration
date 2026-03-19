@@ -243,7 +243,7 @@ The memory generator needs explicit FILES and structured observations to treat a
 Replaced user-specific absolute CocoIndex command paths and project-root env values with repo-relative values across the checked-in MCP configs so the integration no longer depends on Michel's checkout location.
 
 **Files:** .agents/settings.json, .claude/mcp.json, .codex/config.toml, .gemini/settings.json, .mcp.json
-**Details:** Review finding 1 fixed. | The configs now point at.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc and COCOINDEX_CODE_ROOT_PATH='.' instead of /Users/michelkerkmeester/... absolute paths.
+**Details:** Review finding 1 fixed. | The configs now point at.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc and COCOINDEX_CODE_ROOT_PATH='.' instead of /Users/michelkerkmeester/... absolute paths.
 <!-- /ANCHOR:integration-portable-cocoindex-mcp-paths-52de475a -->
 
 <!-- ANCHOR:implementation-spec-docs-aligned-install-bc5f5723 -->

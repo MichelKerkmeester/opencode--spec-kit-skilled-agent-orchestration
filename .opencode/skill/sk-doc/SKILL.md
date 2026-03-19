@@ -1,6 +1,6 @@
 ---
 name: sk-doc
-description: "Unified markdown and OpenCode component specialist providing document quality enforcement, content optimization, component creation workflows (skills, agents, commands), ASCII flowcharts, install guides and manual testing playbooks."
+description: "Unified markdown and OpenCode component specialist providing document quality enforcement, content optimization, component creation workflows (skills, agents, commands), ASCII flowcharts, install guides, feature catalogs, and manual testing playbooks."
 allowed-tools: [Bash, Edit, Glob, Grep, Read, Task, Write]
 version: 1.3.0.0
 ---
@@ -9,7 +9,7 @@ version: 1.3.0.0
 
 # Documentation Creation Specialist - Unified Markdown & Component Management
 
-Unified specialist providing: (1) Document quality pipeline with structure enforcement and content optimization, (2) OpenCode component creation (skills, agents, commands) with scaffolding, validation and packaging, (3) ASCII flowchart creation for visualizing workflows, (4) Install guide creation for setup documentation and (5) Manual testing playbook creation with 9-column scenario tables.
+Unified specialist providing: (1) Document quality pipeline with structure enforcement and content optimization, (2) OpenCode component creation (skills, agents, commands) with scaffolding, validation and packaging, (3) ASCII flowchart creation for visualizing workflows, (4) Install guide creation for setup documentation and (5) Feature catalog and manual testing playbook creation for inventory and validation packages.
 
 **Core Principle**: Structure first, then content, then quality.
 
@@ -48,13 +48,13 @@ Enforce markdown structure, optimize content for AI assistants, validate quality
 Create and manage OpenCode components (skills, agents, commands). Each component type has templates and validation with quality standards.
 
 **Component Types:**
-- **Skills** (.opencode/skill/) - Knowledge bundles with workflows → [skill_creation.md](./references/skill_creation.md)
-- **Agents** (.opencode/agent/) - AI personas with tool permissions → [agent_template.md](./assets/agents/agent_template.md)
+- **Skills** (.opencode/skill/) - Knowledge bundles with workflows → [skill_creation.md](./references/specific/skill_creation.md)
+- **Agents** (.opencode/agent/) - AI personas with tool permissions → [agent_creation.md](./references/specific/agent_creation.md)
 - **Commands** (.opencode/command/) - Slash commands for user invocation → [command_template.md](./assets/agents/command_template.md)
 
-For larger skills, split deep content into focused `references/` files and keep concise navigation in `SKILL.md` or `README.md`.
+For larger skills, split deep content into focused reference files and keep concise navigation in `SKILL.md` or `README.md`. When a skill has both cross-cutting standards and document-family guides, prefer `references/global/` for shared rules and `references/specific/` for creation-specific workflows.
 
-Start with: [skill_creation.md](./references/skill_creation.md) (Section 9)
+Start with: [skill_creation.md](./references/specific/skill_creation.md) (Section 9)
 Primary templates:
 - [skill_md_template.md](./assets/skill/skill_md_template.md)
 - [skill_reference_template.md](./assets/skill/skill_reference_template.md)
@@ -70,7 +70,7 @@ Primary templates:
 
 **Skill Process (6 steps)**: Understanding (examples) → Planning (resources) → Initialization (`init_skill.py`) → Editing (populate) → Packaging (`package_skill.py`) → Iteration (test/improve)
 
-**Agent Process**: Load `agent_template.md` → Define frontmatter (tools, permissions) → Create sections (workflow, capabilities, anti-patterns) → Validate → Test
+**Agent Process**: Load `agent_creation.md` and `agent_template.md` → Define frontmatter (mode, permissions) → Create sections (workflow, capabilities, anti-patterns) → Validate → Test
 
 **Command Process**: Load `command_template.md` → Define frontmatter (name, description) → Create execution logic → Add to command registry → Test
 
@@ -100,20 +100,37 @@ Create and validate installation documentation for MCP servers, plugins and tool
 
 **5-Phase Process**: Overview → Prerequisites → Installation → Configuration → Verification
 
-**See**: [install_guide_standards.md](./references/install_guide_standards.md)
+**See**: [install_guide_creation.md](./references/specific/install_guide_creation.md)
 
 ### Use Case: Manual Testing Playbook Creation
 
 Create manual testing playbooks with deterministic scenarios, structured evidence collection, and multi-agent execution planning.
 
-**Manual Testing Playbook** - Use `manual_testing_playbook_template.md` when:
+**Manual Testing Playbook** - Use `testing_playbook/manual_testing_playbook_template.md` when:
 - Creating manual testing scenarios for a skill
 - Standardizing test evidence and verdict criteria
 - Setting up multi-agent test execution planning
 
-**3-File Package**: Main playbook (scenarios), review protocol (verdicts), sub-agent ledger (wave planning)
+**Canonical Package**: Root `manual_testing_playbook.md` plus numbered category folders with one per-feature file per feature ID.
 
-**See**: [manual_testing_playbook_template.md](./assets/documentation/manual_testing_playbook_template.md)
+**See**:
+- [manual_testing_playbook_creation.md](./references/specific/manual_testing_playbook_creation.md)
+- [manual_testing_playbook_template.md](./assets/documentation/testing_playbook/manual_testing_playbook_template.md)
+
+### Use Case: Feature Catalog Creation
+
+Create feature catalogs with a rooted capability inventory, numbered category sections, and per-feature reference files.
+
+**Feature Catalog** - Use `feature_catalog/feature_catalog_template.md` when:
+- Creating a canonical current-state feature inventory for a skill or system
+- Linking manual playbooks back to a stable capability reference
+- Documenting current behavior with source-file anchors and stable slugs
+
+**Canonical Package**: Root `feature_catalog.md` plus numbered category folders with one per-feature file per catalog entry.
+
+**See**:
+- [feature_catalog_creation.md](./references/specific/feature_catalog_creation.md)
+- [feature_catalog_template.md](./assets/documentation/feature_catalog/feature_catalog_template.md)
 
 ### When NOT to Use (All Modes)
 
@@ -133,7 +150,8 @@ Create manual testing playbooks with deterministic scenarios, structured evidenc
 
 The router discovers markdown resources recursively from `references/` and `assets/` and then applies intent scoring from `RESOURCE_MAP`. Keep this section domain-focused rather than static file inventories.
 
-- `references/` for documentation standards, validation rules, optimization guidance, and execution workflows.
+- `references/global/` for documentation standards, validation rules, optimization guidance, voice rules, and shared execution workflows.
+- `references/specific/` for document-family and component creation guides such as skill creation, agent creation, install guides, feature catalogs, and manual testing playbooks.
 - `assets/documentation/` for README, frontmatter, llms.txt, and install-guide templates.
 - `assets/skill/` for skill creation templates and `assets/agents/` for agent and command creation templates.
 - `assets/flowcharts/` for reusable ASCII flowchart patterns and diagram examples.
@@ -155,7 +173,7 @@ from pathlib import Path
 
 SKILL_ROOT = Path(__file__).resolve().parent
 RESOURCE_BASES = (SKILL_ROOT / "references", SKILL_ROOT / "assets")
-DEFAULT_RESOURCE = "references/quick_reference.md"
+DEFAULT_RESOURCE = "references/global/quick_reference.md"
 
 INTENT_SIGNALS = {
     "DOC_QUALITY": {"weight": 4, "keywords": ["dqi", "quality", "validate", "extract_structure"]},
@@ -166,17 +184,19 @@ INTENT_SIGNALS = {
     "INSTALL_GUIDE": {"weight": 3, "keywords": ["install guide", "setup instructions", "prerequisite"]},
     "HVR": {"weight": 4, "keywords": ["human voice", "hvr", "voice rules", "banned words", "writing style"]},
     "PLAYBOOK": {"weight": 4, "keywords": ["playbook", "manual testing", "test scenarios", "manual test", "testing playbook"]},
+    "FEATURE_CATALOG": {"weight": 4, "keywords": ["feature catalog", "feature inventory", "capability inventory", "catalog snippet"]},
 }
 
 RESOURCE_MAP = {
-    "DOC_QUALITY": ["references/validation.md", "references/workflows.md", "references/core_standards.md"],
-    "OPTIMIZATION": ["references/optimization.md", "assets/documentation/llmstxt_templates.md"],
-    "SKILL_CREATION": ["references/skill_creation.md", "assets/skill/skill_md_template.md", "assets/skill/skill_reference_template.md"],
-    "AGENT_COMMAND": ["assets/agents/agent_template.md", "assets/agents/command_template.md"],
+    "DOC_QUALITY": ["references/global/validation.md", "references/global/workflows.md", "references/global/core_standards.md"],
+    "OPTIMIZATION": ["references/global/optimization.md", "assets/documentation/llmstxt_templates.md"],
+    "SKILL_CREATION": ["references/specific/skill_creation.md", "assets/skill/skill_md_template.md", "assets/skill/skill_reference_template.md"],
+    "AGENT_COMMAND": ["references/specific/agent_creation.md", "assets/agents/agent_template.md", "assets/agents/command_template.md"],
     "FLOWCHART": ["assets/flowcharts/simple_workflow.md", "assets/flowcharts/decision_tree_flow.md"],
-    "INSTALL_GUIDE": ["assets/documentation/install_guide_template.md", "references/install_guide_standards.md"],
-    "HVR": ["references/hvr_rules.md"],
-    "PLAYBOOK": ["assets/documentation/manual_testing_playbook_template.md"],
+    "INSTALL_GUIDE": ["assets/documentation/install_guide_template.md", "references/specific/install_guide_creation.md"],
+    "HVR": ["references/global/hvr_rules.md"],
+    "PLAYBOOK": ["references/specific/manual_testing_playbook_creation.md", "assets/documentation/testing_playbook/manual_testing_playbook_template.md"],
+    "FEATURE_CATALOG": ["references/specific/feature_catalog_creation.md", "assets/documentation/feature_catalog/feature_catalog_template.md"],
 }
 
 LOADING_LEVELS = {
@@ -297,7 +317,7 @@ scripts/extract_structure.py path/to/document.md
 2. SKILL.md body - When skill triggers (<5k words)
 3. Bundled resources - As needed (unlimited)
 
-1. Define scope using [skill_creation.md](./references/skill_creation.md) (Section 9)
+1. Define scope using [skill_creation.md](./references/specific/skill_creation.md) (Section 9)
 4. Use [skill_reference_template.md](./assets/skill/skill_reference_template.md) to keep supplemental docs consistent
 
 **After packaging**: Run `extract_structure.py` on SKILL.md for final quality review.
@@ -378,7 +398,7 @@ Standard Flow:      Branch:           Parallel:         Merge:
 ### Mode 5: Playbook Creation
 
 **Template-First Workflow**:
-1. Load `manual_testing_playbook_template.md` for structure reference
+1. Load `testing_playbook/manual_testing_playbook_template.md` for structure reference
 2. Plan categories and Feature ID prefixes (Section 3 of template)
 3. Create `manual_testing_playbook/` directory in the skill folder
 4. Copy and fill the main playbook scaffold (Section 5 of template)
@@ -389,7 +409,19 @@ Standard Flow:      Branch:           Parallel:         Merge:
 
 **Key Deliverables**: Root directory playbook with integrated review/orchestration sections and a per-feature file tree.
 
-**See**: [manual_testing_playbook_template.md](./assets/documentation/manual_testing_playbook_template.md)
+**See**:
+- [manual_testing_playbook_creation.md](./references/specific/manual_testing_playbook_creation.md)
+- [manual_testing_playbook_template.md](./assets/documentation/testing_playbook/manual_testing_playbook_template.md)
+
+### Companion Pattern: Feature Catalog Creation
+
+Use the feature-catalog reference when the task is to inventory current behavior rather than define manual execution scenarios.
+
+**Workflow**:
+1. Load [feature_catalog_creation.md](./references/specific/feature_catalog_creation.md) for package and content rules
+2. Use [feature_catalog_template.md](./assets/documentation/feature_catalog/feature_catalog_template.md) for the root scaffold
+3. Create numbered category folders and one per-feature file per catalog entry
+4. Keep current-reality inventory in the root catalog and source anchors in the per-feature files
 
 ---
 
@@ -410,7 +442,7 @@ Standard Flow:      Branch:           Parallel:         Merge:
 7. **ALWAYS validate before completion** (structure + content + style)
 8. **ALWAYS provide metrics** (before/after counts from script output)
 9. **ALWAYS run `validate_document.py` before delivery** (exit 0 required for READMEs)
-10. **ALWAYS enforce Human Voice Rules (HVR)** on all documentation output. Full ruleset: [hvr_rules.md](./references/hvr_rules.md). Quick reference: `readme_template.md` §9.
+10. **ALWAYS enforce Human Voice Rules (HVR)** on all documentation output. Full ruleset: [hvr_rules.md](./references/global/hvr_rules.md). Quick reference: `readme_template.md` §9.
 
 #### ❌ NEVER
 
@@ -574,7 +606,7 @@ Standard Flow:      Branch:           Parallel:         Merge:
 2. **NEVER omit step references** in Expected Signals (must reference step numbers)
 3. **NEVER leave Failure Triage empty** (every scenario needs 2+ debugging steps)
 4. **NEVER reuse Feature IDs** across categories
-5. **NEVER claim the current validator traverses snippet files** or verifies cross-file snippet links
+5. **NEVER claim the current validator traverses per-feature files** or verifies cross-file playbook links
 6. **NEVER describe separate review or ledger files as canonical** when documenting the current playbook contract
 
 #### ⚠️ ESCALATE IF
@@ -591,18 +623,31 @@ Standard Flow:      Branch:           Parallel:         Merge:
 
 ### Core References
 
-- [core_standards.md](./references/core_standards.md) - markdown structure standards and naming conventions
-- [validation.md](./references/validation.md) - validation pipeline and blocking criteria
-- [workflows.md](./references/workflows.md) - execution workflows by documentation mode
-- [skill_creation.md](./references/skill_creation.md) - skill lifecycle and packaging guidance
+#### Global
+
+- [core_standards.md](./references/global/core_standards.md) - markdown structure standards and naming conventions
+- [validation.md](./references/global/validation.md) - validation pipeline and blocking criteria
+- [workflows.md](./references/global/workflows.md) - execution workflows by documentation mode
+- [quick_reference.md](./references/global/quick_reference.md) - fast reference for commands, gates, and file layout
+- [hvr_rules.md](./references/global/hvr_rules.md) - Human Voice Rules for all documentation output
+
+#### Specific
+
+- [skill_creation.md](./references/specific/skill_creation.md) - skill lifecycle and packaging guidance
+- [agent_creation.md](./references/specific/agent_creation.md) - agent authority, permissions, and creation workflow
+- [install_guide_creation.md](./references/specific/install_guide_creation.md) - install guide standards and workflow
+- [manual_testing_playbook_creation.md](./references/specific/manual_testing_playbook_creation.md) - playbook standards and workflow
+- [feature_catalog_creation.md](./references/specific/feature_catalog_creation.md) - feature catalog standards and workflow
 
 ### Templates
 
 - [skill_md_template.md](./assets/skill/skill_md_template.md) - canonical SKILL.md template
 - [readme_template.md](./assets/documentation/readme_template.md) - README structure and quality rules
 - [install_guide_template.md](./assets/documentation/install_guide_template.md) - install guide template
-- [manual_testing_playbook_template.md](./assets/documentation/manual_testing_playbook_template.md) - manual testing playbook template
-- [manual_testing_playbook_snippet_template.md](./assets/documentation/manual_testing_playbook_snippet_template.md) - manual testing playbook snippet template
+- [feature_catalog_template.md](./assets/documentation/feature_catalog/feature_catalog_template.md) - feature catalog template
+- [feature_catalog_snippet_template.md](./assets/documentation/feature_catalog/feature_catalog_snippet_template.md) - feature catalog snippet template
+- [manual_testing_playbook_template.md](./assets/documentation/testing_playbook/manual_testing_playbook_template.md) - manual testing playbook template
+- [manual_testing_playbook_snippet_template.md](./assets/documentation/testing_playbook/manual_testing_playbook_snippet_template.md) - manual testing playbook snippet template
 
 ### Validation Scripts
 
@@ -626,7 +671,7 @@ The `extract_structure.py` script computes a **DQI** (0-100) based on measurable
 | **Content**   | 30  | Word count, heading density, code examples, links |
 | **Style**     | 30  | H2 formatting, dividers, intro paragraph, HVR compliance |
 
-**HVR Compliance in DQI**: Human Voice Rules violations count against the Style component. Documents with em dashes, semicolons, banned words or banned phrases receive deductions in the Style score. Full HVR ruleset: [hvr_rules.md](./references/hvr_rules.md).
+**HVR Compliance in DQI**: Human Voice Rules violations count against the Style component. Documents with em dashes, semicolons, banned words or banned phrases receive deductions in the Style score. Full HVR ruleset: [hvr_rules.md](./references/global/hvr_rules.md).
 
 **Quality Bands**:
 
@@ -697,13 +742,14 @@ The `extract_structure.py` script computes a **DQI** (0-100) based on measurable
 - ✅ Commands tested and working
 
 **Playbook Creation Complete**:
-- ✅ Core playbook files exist (main playbook, review protocol, sub-agent ledger)
+- ✅ Root `manual_testing_playbook.md` exists and owns review/orchestration guidance
+- ✅ Numbered category directories exist at the playbook root
 - ✅ All scenario tables use 9-column format
 - ✅ Every Feature ID is unique across the playbook
 - ✅ Feature Catalog Cross-Reference Index matches all scenario rows
-- ✅ Review protocol coverage check regex matches all Feature ID prefixes
+- ✅ Per-feature file links resolve from the root playbook
 - ✅ Destructive scenarios identified and isolated in wave planning
-- ✅ Snippets subtree is only used for reusable prose and remains manually reviewed
+- ✅ Current validator limitations are documented honestly
 
 ### Document-Type Gates
 
@@ -787,22 +833,22 @@ Key integrations:
 
 1. Read Sections 1-4 for activation, routing, workflow and rules.
 2. Use Section 5 for canonical references and templates.
-3. Navigate: [workflows.md](./references/workflows.md) for execution modes.
+3. Navigate: [workflows.md](./references/global/workflows.md) for execution modes.
 4. Run enforcement, optimization, or validation as needed.
 
 ### For Skill Creation
 
 1. Read Sections 1-4 for activation, routing, workflow and rules.
 2. Use Section 5 for canonical references and templates.
-3. Navigate: [skill_creation.md](./references/skill_creation.md) for workflow.
-4. For layered skills, use [skill_creation.md](./references/skill_creation.md) (Section 9).
+3. Navigate: [skill_creation.md](./references/specific/skill_creation.md) for workflow.
+4. For layered skills, use [skill_creation.md](./references/specific/skill_creation.md) (Section 9).
 5. Use templates: [skill_md_template.md](./assets/skill/skill_md_template.md), [skill_reference_template.md](./assets/skill/skill_reference_template.md), [skill_asset_template.md](./assets/skill/skill_asset_template.md).
 6. Use scripts: `init_skill.py` -> edit -> `package_skill.py`.
 7. Validate: run Document Quality validation on SKILL.md.
 
 ### Quick Reference
 
-Need fast navigation? See [quick_reference.md](./references/quick_reference.md)
+Need fast navigation? See [quick_reference.md](./references/global/quick_reference.md)
 
 ---
 

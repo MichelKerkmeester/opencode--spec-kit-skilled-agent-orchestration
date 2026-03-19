@@ -16,7 +16,7 @@ This scenario validates Checkpoint restore (checkpoint_restore) for `EX-017`. It
 Operators run the exact prompt and command sequence for `EX-017` and confirm the expected signals without contradicting evidence.
 
 - Objective: Rollback restore drill
-- Prompt: `Restore checkpoint with merge mode`
+- Prompt: `Restore checkpoint with merge mode. Capture the evidence needed to prove Restored data + healthy state. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Restored data + healthy state
 - Pass/fail: PASS if known record restored
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-017` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-017 | Checkpoint restore (checkpoint_restore) | Rollback restore drill | `Restore checkpoint with merge mode` | `checkpoint_restore(name,clearExisting:false)` -> `memory_health()` | Restored data + healthy state | Restore output + search proof | PASS if known record restored | Retry with clearExisting based on conflict |
+| EX-017 | Checkpoint restore (checkpoint_restore) | Rollback restore drill | `Restore checkpoint with merge mode. Capture the evidence needed to prove Restored data + healthy state. Return a concise user-facing pass/fail verdict with the main reason.` | `checkpoint_restore(name,clearExisting:false)` -> `memory_health()` | Restored data + healthy state | Restore output + search proof | PASS if known record restored | Retry with clearExisting based on conflict |
 
 ---
 

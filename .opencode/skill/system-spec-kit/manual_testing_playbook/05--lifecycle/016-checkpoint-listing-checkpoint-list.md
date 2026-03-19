@@ -16,7 +16,7 @@ This scenario validates Checkpoint listing (checkpoint_list) for `EX-016`. It fo
 Operators run the exact prompt and command sequence for `EX-016` and confirm the expected signals without contradicting evidence.
 
 - Objective: Recovery asset discovery
-- Prompt: `List checkpoints newest first`
+- Prompt: `List checkpoints newest first. Capture the evidence needed to prove Available restore points displayed. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Available restore points displayed
 - Pass/fail: PASS if checkpoints returned
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-016` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-016 | Checkpoint listing (checkpoint_list) | Recovery asset discovery | `List checkpoints newest first` | `checkpoint_list(specFolder,limit)` | Available restore points displayed | List output | PASS if checkpoints returned | Remove spec filter if empty |
+| EX-016 | Checkpoint listing (checkpoint_list) | Recovery asset discovery | `List checkpoints newest first. Capture the evidence needed to prove Available restore points displayed. Return a concise user-facing pass/fail verdict with the main reason.` | `checkpoint_list(specFolder,limit)` | Available restore points displayed | List output | PASS if checkpoints returned | Remove spec filter if empty |
 
 ---
 

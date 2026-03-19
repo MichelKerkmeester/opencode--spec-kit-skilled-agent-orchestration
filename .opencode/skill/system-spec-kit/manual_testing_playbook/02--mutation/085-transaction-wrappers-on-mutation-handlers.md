@@ -16,7 +16,7 @@ This scenario validates Transaction wrappers on mutation handlers for `NEW-085`.
 Operators run the exact prompt and command sequence for `NEW-085` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm atomic wrapper behavior
-- Prompt: `Validate mutation transaction wrappers.`
+- Prompt: `Validate mutation transaction wrappers. Capture the evidence needed to prove Mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist
 - Pass/fail: PASS if injected faults trigger complete rollback and DB state is fully consistent after recovery
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-085` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-085 | Transaction wrappers on mutation handlers | Confirm atomic wrapper behavior | `Validate mutation transaction wrappers.` | 1) inject mid-step fault 2) verify rollback 3) confirm consistent state | Mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist | Fault injection output + rollback trace + post-rollback DB state verification | PASS if injected faults trigger complete rollback and DB state is fully consistent after recovery | Inspect transaction wrapper implementation; verify rollback cleans up all partial writes; check for nested transaction handling |
+| NEW-085 | Transaction wrappers on mutation handlers | Confirm atomic wrapper behavior | `Validate mutation transaction wrappers. Capture the evidence needed to prove Mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist. Return a concise user-facing pass/fail verdict with the main reason.` | 1) inject mid-step fault 2) verify rollback 3) confirm consistent state | Mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist | Fault injection output + rollback trace + post-rollback DB state verification | PASS if injected faults trigger complete rollback and DB state is fully consistent after recovery | Inspect transaction wrapper implementation; verify rollback cleans up all partial writes; check for nested transaction handling |
 
 ---
 

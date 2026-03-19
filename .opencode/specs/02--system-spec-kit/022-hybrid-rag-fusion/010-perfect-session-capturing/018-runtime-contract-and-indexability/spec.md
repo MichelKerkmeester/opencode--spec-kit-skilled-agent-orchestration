@@ -103,7 +103,9 @@ Make write-vs-index behavior explicit by introducing validation-rule metadata an
 ### Acceptance Scenarios
 
 1. **Given** a stateless save fails only `V10`, **when** the workflow completes, **then** the memory is written and indexed.
-2. **Given** a save hits a write-blocking rule such as `V8` or `V9`, **when** the workflow evaluates dispositions, **then** the write is aborted instead of being indexed accidentally.
+2. **Given** a save hits a write-blocking rule such as `V8`, `V9`, or `V11`, **when** the workflow evaluates dispositions, **then** the write is aborted instead of being indexed accidentally.
+
+> **Post-phase addition:** Rule `V11` (API error content defense) was added after phase 018 shipped (commit `01e781ab9`). It detects status codes, JSON error payloads, `request_id` leaks, and error-dominated trigger phrases, producing an `abort_write` disposition with `severity: 'high'`, `blockOnWrite: true`, `blockOnIndex: true`, `appliesToSources: 'all'`. Tests cover it in `workflow-e2e.vitest.ts`.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -115,6 +117,7 @@ Make write-vs-index behavior explicit by introducing validation-rule metadata an
 |------|------|--------|------------|
 | Dependency | Existing audit baseline from phases `016` and `017` | High | Keep the new policy consistent with the reconciled stateless contract |
 | Risk | Broader validation changes could accidentally block valid writes | High | Keep upstream template, insufficiency, and quality-threshold aborts separate |
+| Post-phase | V11 rule added after 018 shipped | Low | V11 follows the same metadata/disposition contract; tests already cover it |
 <!-- /ANCHOR:risks -->
 
 ---

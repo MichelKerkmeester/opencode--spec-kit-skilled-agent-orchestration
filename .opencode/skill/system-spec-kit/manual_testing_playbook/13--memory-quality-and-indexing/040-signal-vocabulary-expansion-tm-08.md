@@ -16,7 +16,7 @@ This scenario validates Signal vocabulary expansion (TM-08) for `NEW-040`. It fo
 Operators run the exact prompt and command sequence for `NEW-040` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm signal category detection
-- Prompt: `Validate signal vocabulary expansion (TM-08).`
+- Prompt: `Validate signal vocabulary expansion (TM-08). Capture the evidence needed to prove Signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary
 - Pass/fail: PASS: >=3 signal categories correctly classified from varied prompts; FAIL: Categories missing or misclassified
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-040` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-040 | Signal vocabulary expansion (TM-08) | Confirm signal category detection | `Validate signal vocabulary expansion (TM-08).` | 1) Use correction/preference prompts 2) Trigger matching 3) Verify categories | Signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary | Trigger match output showing detected signal categories + prompt-to-category mapping | PASS: >=3 signal categories correctly classified from varied prompts; FAIL: Categories missing or misclassified | Verify signal vocabulary dictionary → Check category detection regex/rules → Inspect trigger matching integration |
+| NEW-040 | Signal vocabulary expansion (TM-08) | Confirm signal category detection | `Validate signal vocabulary expansion (TM-08). Capture the evidence needed to prove Signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Use correction/preference prompts 2) Trigger matching 3) Verify categories | Signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary | Trigger match output showing detected signal categories + prompt-to-category mapping | PASS: >=3 signal categories correctly classified from varied prompts; FAIL: Categories missing or misclassified | Verify signal vocabulary dictionary → Check category detection regex/rules → Inspect trigger matching integration |
 
 ---
 

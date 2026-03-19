@@ -16,7 +16,7 @@ This scenario validates Lineage backfill rollback drill for `NEW-130`. It focuse
 Operators run the exact prompt and command sequence for `NEW-130` and confirm the expected signals without contradicting evidence.
 
 - Objective: Verify dry-run planning, idempotent backfill, and checkpoint-backed rollback for Phase 2 lineage rollout
-- Prompt: `Run the lineage backfill + rollback verification suite.`
+- Prompt: `Run the lineage backfill + rollback verification suite. Capture the evidence needed to prove Targeted suite passes; transcript shows dry-run plan counts, successful backfill application, idempotent rerun, and checkpoint restore rollback. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Targeted suite passes; transcript shows dry-run plan counts, successful backfill application, idempotent rerun, and checkpoint restore rollback
 - Pass/fail: PASS if `memory-lineage-backfill.vitest.ts` completes with all tests passing and shows both execution and rollback evidence
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-130` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-130 | Lineage backfill rollback drill | Verify dry-run planning, idempotent backfill, and checkpoint-backed rollback for Phase 2 lineage rollout | `Run the lineage backfill + rollback verification suite.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npm test -- --run tests/memory-lineage-backfill.vitest.ts` 3) Inspect the output for dry-run counts, successful execution, zero-change rerun, and post-restore empty lineage tables | Targeted suite passes; transcript shows dry-run plan counts, successful backfill application, idempotent rerun, and checkpoint restore rollback | Test transcript + suite summary | PASS if `memory-lineage-backfill.vitest.ts` completes with all tests passing and shows both execution and rollback evidence | Re-run `npm test -- --run tests/memory-lineage-backfill.vitest.ts -t rollback`; inspect `lib/storage/lineage-state.ts` and `scripts/migrations/*checkpoint*.ts` if backfill or restore assertions drift |
+| NEW-130 | Lineage backfill rollback drill | Verify dry-run planning, idempotent backfill, and checkpoint-backed rollback for Phase 2 lineage rollout | `Run the lineage backfill + rollback verification suite. Capture the evidence needed to prove Targeted suite passes; transcript shows dry-run plan counts, successful backfill application, idempotent rerun, and checkpoint restore rollback. Return a concise user-facing pass/fail verdict with the main reason.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npm test -- --run tests/memory-lineage-backfill.vitest.ts` 3) Inspect the output for dry-run counts, successful execution, zero-change rerun, and post-restore empty lineage tables | Targeted suite passes; transcript shows dry-run plan counts, successful backfill application, idempotent rerun, and checkpoint restore rollback | Test transcript + suite summary | PASS if `memory-lineage-backfill.vitest.ts` completes with all tests passing and shows both execution and rollback evidence | Re-run `npm test -- --run tests/memory-lineage-backfill.vitest.ts -t rollback`; inspect `lib/storage/lineage-state.ts` and `scripts/migrations/*checkpoint*.ts` if backfill or restore assertions drift |
 
 ---
 

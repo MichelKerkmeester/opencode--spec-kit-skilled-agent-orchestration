@@ -16,7 +16,7 @@ This scenario validates Implemented: auto entity extraction (R10) for `NEW-092`.
 Operators run the exact prompt and command sequence for `NEW-092` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm deferred->implemented status
-- Prompt: `Verify R10 implemented and active.`
+- Prompt: `Verify R10 implemented and active. Capture the evidence needed to prove Entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied
 - Pass/fail: PASS if entity extraction runs automatically on save and produces correctly typed entities with default settings
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-092` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-092 | Implemented: auto entity extraction (R10) | Confirm deferred->implemented status | `Verify R10 implemented and active.` | 1) save entity-rich memory 2) inspect entity outputs 3) verify defaults | Entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied | Save output + entity extraction results + default configuration evidence | PASS if entity extraction runs automatically on save and produces correctly typed entities with default settings | Verify entity extraction pipeline is wired into save handler; check entity type classification; inspect default extraction configuration |
+| NEW-092 | Implemented: auto entity extraction (R10) | Confirm deferred->implemented status | `Verify R10 implemented and active. Capture the evidence needed to prove Entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied. Return a concise user-facing pass/fail verdict with the main reason.` | 1) save entity-rich memory 2) inspect entity outputs 3) verify defaults | Entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied | Save output + entity extraction results + default configuration evidence | PASS if entity extraction runs automatically on save and produces correctly typed entities with default settings | Verify entity extraction pipeline is wired into save handler; check entity type classification; inspect default extraction configuration |
 
 ---
 

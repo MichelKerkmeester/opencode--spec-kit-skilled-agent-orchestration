@@ -12,15 +12,15 @@ Synthesized from 25 code audit agents (analysis-X01..X05, audit-C01..C20) coveri
 | #2 | Temp file concurrency -- predictable `.tmp` suffix allows race conditions | file-writer.ts | DONE |
 | #3 | Batch rollback -- partial output persisted on multi-file failure, no cleanup of prior files | file-writer.ts | DONE |
 
-**Remaining P0 items (from audit, not yet addressed):**
+**P0 items (from audit):**
 
 | ID | Finding | File(s) | Status | Effort |
 |----|---------|---------|--------|--------|
-| P0-01 | Quality gate (`QUALITY_GATE_FAIL`) does not actually block file generation | workflow.ts | REMAINING | SMALL |
-| P0-03 | Quality metadata injection (fenced YAML) and extraction (frontmatter) are incompatible | workflow.ts, memory-indexer.ts | REMAINING | MEDIUM |
-| P0-04 | Security path-validation failures in data-loader swallowed by outer catch | data-loader.ts | REMAINING | TRIVIAL |
-| P0-05 | `userPrompts` and `recentContext` bypass spec-folder relevance filtering | input-normalizer.ts | REMAINING | SMALL |
-| P0-06 | Explicit data-file failures silently fall through to simulation mode | data-loader.ts | REMAINING | SMALL |
+| P0-01 | Quality gate (`QUALITY_GATE_FAIL`) does not actually block file generation | workflow.ts | DONE | SMALL |
+| P0-03 | Quality metadata injection (fenced YAML) and extraction (frontmatter) are incompatible | workflow.ts, memory-indexer.ts | DONE | MEDIUM |
+| P0-04 | Security path-validation failures in data-loader swallowed by outer catch | data-loader.ts | DONE | TRIVIAL |
+| P0-05 | `userPrompts` and `recentContext` bypass spec-folder relevance filtering | input-normalizer.ts | DONE | SMALL |
+| P0-06 | Explicit data-file failures silently fall through to simulation mode | data-loader.ts | DONE | SMALL |
 
 ---
 
@@ -37,23 +37,23 @@ Synthesized from 25 code audit agents (analysis-X01..X05, audit-C01..C20) coveri
 | #10 | Postflight false deltas -- missing scores defaulted to 0, fabricating improvements/regressions | collect-session-data.ts | DONE |
 | #11 | No-tool session phase classification -- `total === 0 && messageCount < 3` guard was too narrow; `total === 0` now always returns RESEARCH | session-extractor.ts | DONE |
 
-**Remaining P1 items (from audit, not yet addressed):**
+**Remaining P1 items (from audit):**
 
 | ID | Finding | File(s) | Status | Effort |
 |----|---------|---------|--------|--------|
-| P1-01 | Prompt history is global, not session-scoped | opencode-capture.ts | REMAINING | MEDIUM |
-| P1-02 | Same prompt reused across multiple exchanges | opencode-capture.ts | REMAINING | SMALL |
+| P1-01 | Prompt history is global, not session-scoped | opencode-capture.ts | DONE | MEDIUM |
+| P1-02 | Same prompt reused across multiple exchanges | opencode-capture.ts | DONE | SMALL |
 | P1-03 | Assistant pairing chooses first child response, not best/final | opencode-capture.ts | REMAINING | MEDIUM |
 | P1-04 | Multi-part assistant text not reassembled | opencode-capture.ts | REMAINING | MEDIUM |
-| P1-05 | One malformed session JSON aborts entire project scan | opencode-capture.ts | REMAINING | SMALL |
-| P1-07 | Relevance keywords are over-broad (false positives on generic segments) | input-normalizer.ts | REMAINING | MEDIUM |
-| P1-08 | Invalid timestamps throw `RangeError` and abort normalization | input-normalizer.ts | REMAINING | SMALL |
-| P1-09 | File-format detection is heuristic and ambiguous | input-normalizer.ts | REMAINING | MEDIUM |
-| P1-10 | Custom renderer is not Mustache-compliant | template-renderer.ts | REMAINING | MEDIUM |
-| P1-11 | No escaping for `{{...}}` variable values -- template injection risk | template-renderer.ts | REMAINING | SMALL |
-| P1-12 | Tree-thinning merged content not carried forward to rendered output | workflow.ts | REMAINING | MEDIUM |
-| P1-15 | Long-path elision can merge distinct files into one dedup key | file-extractor.ts | REMAINING | MEDIUM |
-| P1-17 | `HAS_POSTFLIGHT_DELTA` can be false while delta fields are populated | collect-session-data.ts | REMAINING | SMALL |
+| P1-05 | One malformed session JSON aborts entire project scan | opencode-capture.ts | DONE | SMALL |
+| P1-07 | Relevance keywords are over-broad (false positives on generic segments) | input-normalizer.ts | DONE | MEDIUM |
+| P1-08 | Invalid timestamps throw `RangeError` and abort normalization | input-normalizer.ts | DONE | SMALL |
+| P1-09 | File-format detection is heuristic and ambiguous | input-normalizer.ts | DEFERRED | MEDIUM |
+| P1-10 | Custom renderer is not Mustache-compliant | template-renderer.ts | DONE | MEDIUM |
+| P1-11 | No escaping for `{{...}}` variable values -- template injection risk | template-renderer.ts | DONE | SMALL |
+| P1-12 | Tree-thinning merged content not carried forward to rendered output | workflow.ts | DONE | MEDIUM |
+| P1-15 | Long-path elision can merge distinct files into one dedup key | file-extractor.ts | DONE | MEDIUM |
+| P1-17 | `HAS_POSTFLIGHT_DELTA` can be false while delta fields are populated | collect-session-data.ts | DONE | SMALL |
 
 ---
 
@@ -88,13 +88,13 @@ Synthesized from 25 code audit agents (analysis-X01..X05, audit-C01..C20) coveri
 
 | Severity | Total Findings | Fixed | Remaining |
 |----------|---------------|-------|-----------|
-| P0 -- Critical | 8 | 3 | 5 |
-| P1 -- High | 24 | 8 | 13 (P1-06, P1-13, P1-14, P1-16 addressed by fixes #10, #11, #9) |
+| P0 -- Critical | 8 | 8 | 0 |
+| P1 -- High | 24 | 19 | 3 (P1-03, P1-04, P1-09) |
 | P2 -- Medium | 37 | 7 | 30 |
 | P3 -- Low | 36 | 2 | 34 |
-| **Total** | **~105** | **20** | **~82** |
+| **Total** | **~105** | **36** | **~67** |
 
-Note: Some audit findings (P1-06, P1-13, P1-14, P1-16) overlap with implemented fixes #10, #11, #9 respectively. The "remaining" count accounts for this overlap.
+Note: Wave 1 (2026-03-19) resolved all P0 items and most P1 items. P1-06/P1-13/P1-14/P1-16 overlap with fixes #10/#11/#9. P1-09 deferred (unclear scope). Remaining items are P1-03/P1-04 (opencode-capture pairing) + 30 P2 + 34 P3.
 
 ---
 

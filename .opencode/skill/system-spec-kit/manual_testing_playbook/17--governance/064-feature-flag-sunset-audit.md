@@ -16,7 +16,7 @@ This scenario validates Feature flag sunset audit for `NEW-064`. It focuses on C
 Operators run the exact prompt and command sequence for `NEW-064` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm sunset dispositions
-- Prompt: `Verify feature flag sunset audit outcomes.`
+- Prompt: `Verify feature flag sunset audit outcomes. Capture the evidence needed to prove Documented dispositions match code state; deprecated flags are no-ops; deltas between docs and code identified. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Documented dispositions match code state; deprecated flags are no-ops; deltas between docs and code identified
 - Pass/fail: PASS if all sunset dispositions match runtime behavior and deprecated flags have no side effects
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-064` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-064 | Feature flag sunset audit | Confirm sunset dispositions | `Verify feature flag sunset audit outcomes.` | 1) compare documented disposition vs code 2) verify deprecated/no-op states 3) record deltas | Documented dispositions match code state; deprecated flags are no-ops; deltas between docs and code identified | Disposition comparison report + deprecated flag verification + delta list | PASS if all sunset dispositions match runtime behavior and deprecated flags have no side effects | Verify disposition documentation is current; check deprecated flag code paths; inspect no-op enforcement |
+| NEW-064 | Feature flag sunset audit | Confirm sunset dispositions | `Verify feature flag sunset audit outcomes. Capture the evidence needed to prove Documented dispositions match code state; deprecated flags are no-ops; deltas between docs and code identified. Return a concise user-facing pass/fail verdict with the main reason.` | 1) compare documented disposition vs code 2) verify deprecated/no-op states 3) record deltas | Documented dispositions match code state; deprecated flags are no-ops; deltas between docs and code identified | Disposition comparison report + deprecated flag verification + delta list | PASS if all sunset dispositions match runtime behavior and deprecated flags have no side effects | Verify disposition documentation is current; check deprecated flag code paths; inspect no-op enforcement |
 
 ---
 

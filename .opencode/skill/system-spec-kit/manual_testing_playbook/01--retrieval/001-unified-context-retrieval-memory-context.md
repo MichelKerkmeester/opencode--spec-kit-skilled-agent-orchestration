@@ -16,7 +16,7 @@ This scenario validates Unified context retrieval (memory_context) for `EX-001`.
 Operators run the exact prompt and command sequence for `EX-001` and confirm the expected signals without contradicting evidence.
 
 - Objective: Intent-aware context pull
-- Prompt: `Use memory_context in auto mode for: fix flaky index scan retry logic`
+- Prompt: `Use memory_context in auto mode for: fix flaky index scan retry logic. Capture the evidence needed to prove Relevant bounded context returned; no empty response. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Relevant bounded context returned; no empty response
 - Pass/fail: PASS if relevant context returned in both calls
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-001` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-001 | Unified context retrieval (memory_context) | Intent-aware context pull | `Use memory_context in auto mode for: fix flaky index scan retry logic` | `memory_match_triggers({ prompt:"fix flaky index scan retry logic", sessionId:"ex001" })` -> `memory_context({ mode:"auto", prompt:"fix flaky index scan retry logic", sessionId:"ex001" })` -> `memory_context({ mode:"focused", prompt:"fix flaky index scan retry logic", sessionId:"ex001" })` | Relevant bounded context returned; no empty response | Tool outputs + mode selection | PASS if relevant context returned in both calls | Check specFolder/intent mismatch, retry with explicit intent |
+| EX-001 | Unified context retrieval (memory_context) | Intent-aware context pull | `Use memory_context in auto mode for: fix flaky index scan retry logic. Capture the evidence needed to prove Relevant bounded context returned; no empty response. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_match_triggers({ prompt:"fix flaky index scan retry logic", sessionId:"ex001" })` -> `memory_context({ mode:"auto", prompt:"fix flaky index scan retry logic", sessionId:"ex001" })` -> `memory_context({ mode:"focused", prompt:"fix flaky index scan retry logic", sessionId:"ex001" })` | Relevant bounded context returned; no empty response | Tool outputs + mode selection | PASS if relevant context returned in both calls | Check specFolder/intent mismatch, retry with explicit intent |
 
 ---
 

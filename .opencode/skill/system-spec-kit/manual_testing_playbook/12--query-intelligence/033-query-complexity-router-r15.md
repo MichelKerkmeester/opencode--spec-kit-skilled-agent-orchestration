@@ -16,7 +16,7 @@ This scenario validates Query complexity router (R15) for `NEW-033`. It focuses 
 Operators run the exact prompt and command sequence for `NEW-033` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm query-class routing
-- Prompt: `Verify query complexity router (R15).`
+- Prompt: `Verify query complexity router (R15). Capture the evidence needed to prove Simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing
 - Pass/fail: PASS: Channel count increases with complexity class; disabled flag uses default routing; FAIL: All queries use same channels or flag-disabled produces error
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-033` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-033 | Query complexity router (R15) | Confirm query-class routing | `Verify query complexity router (R15).` | 1) Run simple/moderate/complex 2) Inspect selected channels 3) Disable flag fallback | Simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing | Channel selection trace for simple/moderate/complex queries + flag-disabled fallback behavior | PASS: Channel count increases with complexity class; disabled flag uses default routing; FAIL: All queries use same channels or flag-disabled produces error | Verify complexity classification logic → Check channel mapping per class → Inspect feature flag fallback behavior |
+| NEW-033 | Query complexity router (R15) | Confirm query-class routing | `Verify query complexity router (R15). Capture the evidence needed to prove Simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Run simple/moderate/complex 2) Inspect selected channels 3) Disable flag fallback | Simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing | Channel selection trace for simple/moderate/complex queries + flag-disabled fallback behavior | PASS: Channel count increases with complexity class; disabled flag uses default routing; FAIL: All queries use same channels or flag-disabled produces error | Verify complexity classification logic → Check channel mapping per class → Inspect feature flag fallback behavior |
 
 ---
 

@@ -184,6 +184,10 @@ function buildLogicalKey(row: MemoryIndexRow): string {
   const anchorId = typeof row.anchor_id === 'string' && row.anchor_id.trim().length > 0
     ? row.anchor_id.trim()
     : '_';
+  // R3: Validate that components don't contain the separator to prevent ambiguous keys.
+  if (row.spec_folder.includes('::') || canonicalPath.includes('::') || anchorId.includes('::')) {
+    console.warn(`[lineage-state] Logical key component contains '::' separator — key may be ambiguous: spec_folder=${row.spec_folder}, path=${canonicalPath}, anchor=${anchorId}`);
+  }
   return `${row.spec_folder}::${canonicalPath}::${anchorId}`;
 }
 
@@ -221,6 +225,9 @@ function buildMetadata(
   actor: string,
   historyEvents: HistoryLineageEvent[] = [],
 ): string {
+  // D1: All fields are serialized for archival — only `.snapshot` is read back
+  // during lineage inspection, but the full metadata provides forensic context
+  // for post-mortem analysis and backfill validation.
   const metadata: LineageMetadata = {
     contentHash: typeof row.content_hash === 'string' ? row.content_hash : null,
     filePath: row.file_path,
@@ -382,6 +389,25 @@ function insertAppendOnlyMemoryIndexRow(params: CreateAppendOnlyMemoryRecordPara
   return memoryId;
 }
 
+// R1: Shared early-return helper for lineage functions.
+function getExistingLineageTransition(
+  database: Database.Database,
+  memoryId: number,
+): RecordedLineageTransition | null {
+  const existing = getLineageRow(database, memoryId);
+  if (existing) {
+    return {
+      logicalKey: existing.logical_key,
+      versionNumber: existing.version_number,
+      rootMemoryId: existing.root_memory_id,
+      activeMemoryId: existing.memory_id,
+      predecessorMemoryId: existing.predecessor_memory_id,
+      transitionEvent: existing.transition_event,
+    };
+  }
+  return null;
+}
+
 /**
  * Seed lineage state from an existing memory row when no lineage entry exists yet.
  *
@@ -398,17 +424,8 @@ export function seedLineageFromCurrentState(
   bindHistory(database);
   ensureLineageTables(database);
 
-  const existing = getLineageRow(database, memoryId);
-  if (existing) {
-    return {
-      logicalKey: existing.logical_key,
-      versionNumber: existing.version_number,
-      rootMemoryId: existing.root_memory_id,
-      activeMemoryId: existing.memory_id,
-      predecessorMemoryId: existing.predecessor_memory_id,
-      transitionEvent: existing.transition_event,
-    };
-  }
+  const cached = getExistingLineageTransition(database, memoryId);
+  if (cached) return cached;
 
   const row = getMemoryRow(database, memoryId);
   const logicalKey = buildLogicalKey(row);
@@ -470,90 +487,86 @@ export function recordLineageTransition(
   bindHistory(database);
   ensureLineageTables(database);
 
-  const existing = getLineageRow(database, memoryId);
-  if (existing) {
-    return {
-      logicalKey: existing.logical_key,
-      versionNumber: existing.version_number,
-      rootMemoryId: existing.root_memory_id,
-      activeMemoryId: existing.memory_id,
-      predecessorMemoryId: existing.predecessor_memory_id,
-      transitionEvent: existing.transition_event,
-    };
-  }
+  const cached = getExistingLineageTransition(database, memoryId);
+  if (cached) return cached;
 
-  const row = getMemoryRow(database, memoryId);
-  const actor = options.actor ?? 'system';
-  const transitionEvent = options.transitionEvent ?? 'CREATE';
-  const historyEvents = options.historyEvents ?? getSafeHistoryEvents(database, memoryId);
-  const predecessorMemoryId = options.predecessorMemoryId ?? null;
-  const validFrom = options.validFrom ?? normalizeTimestamp(row.updated_at ?? row.created_at);
+  // A1/B14: Wrap predecessor UPDATE + lineage INSERT + projection UPSERT in a transaction.
+  const recordTransitionTx = database.transaction(() => {
+    const row = getMemoryRow(database, memoryId);
+    const actor = options.actor ?? 'system';
+    const transitionEvent = options.transitionEvent ?? 'CREATE';
+    const historyEvents = options.historyEvents ?? getSafeHistoryEvents(database, memoryId);
+    const predecessorMemoryId = options.predecessorMemoryId ?? null;
+    const validFrom = options.validFrom ?? normalizeTimestamp(row.updated_at ?? row.created_at);
 
-  let logicalKey = buildLogicalKey(row);
-  let rootMemoryId = memoryId;
-  let versionNumber = 1;
+    let logicalKey = buildLogicalKey(row);
+    let rootMemoryId = memoryId;
+    let versionNumber = 1;
 
-  if (predecessorMemoryId != null) {
-    const predecessor = getLineageRow(database, predecessorMemoryId);
-    if (predecessor) {
-      logicalKey = predecessor.logical_key;
-      rootMemoryId = predecessor.root_memory_id;
-      versionNumber = predecessor.version_number + 1;
-    } else {
-      const seeded = seedLineageFromCurrentState(database, predecessorMemoryId, {
-        actor,
-        transitionEvent: 'BACKFILL',
-      });
-      logicalKey = seeded.logicalKey;
-      rootMemoryId = seeded.rootMemoryId;
-      versionNumber = seeded.versionNumber + 1;
+    if (predecessorMemoryId != null) {
+      const predecessor = getLineageRow(database, predecessorMemoryId);
+      if (predecessor) {
+        logicalKey = predecessor.logical_key;
+        rootMemoryId = predecessor.root_memory_id;
+        versionNumber = predecessor.version_number + 1;
+      } else {
+        const seeded = seedLineageFromCurrentState(database, predecessorMemoryId, {
+          actor,
+          transitionEvent: 'BACKFILL',
+        });
+        logicalKey = seeded.logicalKey;
+        rootMemoryId = seeded.rootMemoryId;
+        versionNumber = seeded.versionNumber + 1;
+      }
+
+      database.prepare(`
+        UPDATE memory_lineage
+        SET valid_to = COALESCE(valid_to, ?),
+            superseded_by_memory_id = COALESCE(superseded_by_memory_id, ?)
+        WHERE memory_id = ?
+      `).run(validFrom, memoryId, predecessorMemoryId);
+      markHistoricalPredecessor(database, predecessorMemoryId, validFrom);
     }
 
     database.prepare(`
-      UPDATE memory_lineage
-      SET valid_to = COALESCE(valid_to, ?),
-          superseded_by_memory_id = COALESCE(superseded_by_memory_id, ?)
-      WHERE memory_id = ?
-    `).run(validFrom, memoryId, predecessorMemoryId);
-    markHistoricalPredecessor(database, predecessorMemoryId, validFrom);
-  }
-
-  database.prepare(`
-    INSERT INTO memory_lineage (
-      memory_id,
-      logical_key,
-      version_number,
-      root_memory_id,
-      predecessor_memory_id,
-      superseded_by_memory_id,
-      valid_from,
-      valid_to,
-      transition_event,
+      INSERT INTO memory_lineage (
+        memory_id,
+        logical_key,
+        version_number,
+        root_memory_id,
+        predecessor_memory_id,
+        superseded_by_memory_id,
+        valid_from,
+        valid_to,
+        transition_event,
+        actor,
+        metadata
+      ) VALUES (?, ?, ?, ?, ?, NULL, ?, NULL, ?, ?, ?)
+    `).run(
+      memoryId,
+      logicalKey,
+      versionNumber,
+      rootMemoryId,
+      predecessorMemoryId,
+      validFrom,
+      transitionEvent,
       actor,
-      metadata
-    ) VALUES (?, ?, ?, ?, ?, NULL, ?, NULL, ?, ?, ?)
-  `).run(
-    memoryId,
-    logicalKey,
-    versionNumber,
-    rootMemoryId,
-    predecessorMemoryId,
-    validFrom,
-    transitionEvent,
-    actor,
-    buildMetadata(row, actor, historyEvents),
-  );
+      buildMetadata(row, actor, historyEvents),
+    );
 
-  upsertActiveProjection(database, logicalKey, rootMemoryId, memoryId, validFrom);
+    upsertActiveProjection(database, logicalKey, rootMemoryId, memoryId, validFrom);
 
-  return {
-    logicalKey,
-    versionNumber,
-    rootMemoryId,
-    activeMemoryId: memoryId,
-    predecessorMemoryId,
-    transitionEvent,
-  };
+    return {
+      logicalKey,
+      versionNumber,
+      rootMemoryId,
+      activeMemoryId: memoryId,
+      predecessorMemoryId,
+      transitionEvent,
+    } as RecordedLineageTransition;
+  });
+
+  return recordTransitionTx();
 }
 
 /**
@@ -671,8 +684,13 @@ export function summarizeLineageInspection(
     if (row.version_number !== expectedVersion) {
       hasVersionGaps = true;
     }
-    if (index > 0 && row.predecessor_memory_id !== rows[index - 1]?.memory_id) {
-      hasVersionGaps = true;
+    // B7: Use version_number ordering for predecessor chain validation
+    // rather than assuming sequential array positions match predecessor IDs.
+    if (index > 0) {
+      const prevRow = rows[index - 1];
+      if (prevRow && row.predecessor_memory_id !== prevRow.memory_id && row.version_number === prevRow.version_number + 1) {
+        hasVersionGaps = true;
+      }
     }
     if (row.valid_to == null) {
       activeRows += 1;
@@ -906,7 +924,10 @@ export function backfillLineageState(
       const predecessor = index > 0 ? group[index - 1] : null;
       const successor = index < group.length - 1 ? group[index + 1] : null;
       const existing = getLineageRow(database, row.id);
-      const expectedValidFrom = normalizeTimestamp(row.created_at ?? row.updated_at);
+      // B3: Align dry-run timestamp source with execution path.
+      const historyEventsForDryRun = getSafeHistoryEvents(database, row.id);
+      const expectedValidFrom = historyEventsForDryRun[0]?.timestamp
+        ?? normalizeTimestamp(row.created_at ?? row.updated_at);
       const expectedValidTo = successor
         ? normalizeTimestamp(successor.created_at ?? successor.updated_at)
         : null;
@@ -1069,10 +1090,12 @@ export function recordLineageVersion(
   },
 ): RecordedLineageTransition {
   if (typeof (database as Database.Database & { exec?: unknown }).exec !== 'function') {
+    // B6: Mock path returns memoryId as root — predecessor's root is unavailable
+    // without DB access, and using predecessor ID itself is incorrect.
     return {
       logicalKey: `mock:${params.memoryId}`,
       versionNumber: 1,
-      rootMemoryId: params.predecessorMemoryId ?? params.memoryId,
+      rootMemoryId: params.memoryId,
       activeMemoryId: params.memoryId,
       predecessorMemoryId: params.predecessorMemoryId ?? null,
       transitionEvent: params.transitionEvent ?? 'CREATE',

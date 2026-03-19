@@ -16,7 +16,7 @@ This scenario validates Classification-based decay (TM-03) for `NEW-026`. It foc
 Operators run the exact prompt and command sequence for `NEW-026` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm class+tier decay matrix
-- Prompt: `Verify TM-03 classification-based decay.`
+- Prompt: `Verify TM-03 classification-based decay. Capture the evidence needed to prove Decay multipliers differ by classification and tier; matrix values match documented configuration. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Decay multipliers differ by classification and tier; matrix values match documented configuration
 - Pass/fail: PASS: Each class+tier combination produces distinct documented multiplier; scores decay accordingly; FAIL: Multipliers missing or do not match configuration matrix
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-026` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-026 | Classification-based decay (TM-03) | Confirm class+tier decay matrix | `Verify TM-03 classification-based decay.` | 1) Save tier/class mix 2) Query scoring path 3) Validate multipliers | Decay multipliers differ by classification and tier; matrix values match documented configuration | Scoring path output with per-class/tier decay multipliers + configuration comparison | PASS: Each class+tier combination produces distinct documented multiplier; scores decay accordingly; FAIL: Multipliers missing or do not match configuration matrix | Verify decay matrix configuration → Check classification assignment → Inspect tier resolution logic |
+| NEW-026 | Classification-based decay (TM-03) | Confirm class+tier decay matrix | `Verify TM-03 classification-based decay. Capture the evidence needed to prove Decay multipliers differ by classification and tier; matrix values match documented configuration. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Save tier/class mix 2) Query scoring path 3) Validate multipliers | Decay multipliers differ by classification and tier; matrix values match documented configuration | Scoring path output with per-class/tier decay multipliers + configuration comparison | PASS: Each class+tier combination produces distinct documented multiplier; scores decay accordingly; FAIL: Multipliers missing or do not match configuration matrix | Verify decay matrix configuration → Check classification assignment → Inspect tier resolution logic |
 
 ---
 

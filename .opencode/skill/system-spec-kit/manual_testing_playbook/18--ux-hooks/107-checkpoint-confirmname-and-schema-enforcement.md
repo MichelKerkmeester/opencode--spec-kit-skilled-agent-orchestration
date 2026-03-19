@@ -16,7 +16,7 @@ This scenario validates Checkpoint confirmName and schema enforcement for `NEW-1
 Operators run the exact prompt and command sequence for `NEW-107` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm delete safety is required across handler and validation layers
-- Prompt: `Validate checkpoint delete confirmName enforcement across handler and schema layers.`
+- Prompt: `Validate checkpoint delete confirmName enforcement across handler and schema layers. Capture the evidence needed to prove Validation and handler suites pass with missing-confirmName rejection plus successful delete confirmation reporting. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Validation and handler suites pass with missing-`confirmName` rejection plus successful delete confirmation reporting
 - Pass/fail: PASS if the three suites pass and prove required `confirmName` enforcement end to end
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-107` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-107 | Checkpoint confirmName and schema enforcement | Confirm delete safety is required across handler and validation layers | `Validate checkpoint delete confirmName enforcement across handler and schema layers.` | 1) `npx vitest run tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts` 2) inspect rejection assertions for missing `confirmName` 3) inspect success assertions for `safetyConfirmationUsed=true` | Validation and handler suites pass with missing-`confirmName` rejection plus successful delete confirmation reporting | Test transcript + assertion snippets | PASS if the three suites pass and prove required `confirmName` enforcement end to end | Inspect checkpoint handler, schemas, and tool typing alignment |
+| NEW-107 | Checkpoint confirmName and schema enforcement | Confirm delete safety is required across handler and validation layers | `Validate checkpoint delete confirmName enforcement across handler and schema layers. Capture the evidence needed to prove Validation and handler suites pass with missing-confirmName rejection plus successful delete confirmation reporting. Return a concise user-facing pass/fail verdict with the main reason.` | 1) `npx vitest run tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/mcp-input-validation.vitest.ts` 2) inspect rejection assertions for missing `confirmName` 3) inspect success assertions for `safetyConfirmationUsed=true` | Validation and handler suites pass with missing-`confirmName` rejection plus successful delete confirmation reporting | Test transcript + assertion snippets | PASS if the three suites pass and prove required `confirmName` enforcement end to end | Inspect checkpoint handler, schemas, and tool typing alignment |
 
 ---
 

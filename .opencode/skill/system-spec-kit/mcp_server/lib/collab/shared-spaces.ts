@@ -91,6 +91,14 @@ const HIGH_RISK_CONFLICT_KINDS = new Set([
   'semantic_divergence',
 ]);
 
+// R8: Known conflict strategy union for runtime validation.
+const VALID_CONFLICT_STRATEGIES = new Set([
+  'append_version',
+  'manual_merge',
+  'last_write_wins',
+  'reject',
+]);
+
 function isDefaultOffFlagEnabled(...flagNames: string[]): boolean {
   for (const flagName of flagNames) {
     const rawValue = process.env[flagName]?.trim().toLowerCase();
@@ -111,7 +119,13 @@ function normalizeExplicitStrategy(metadata: Record<string, unknown> | undefined
   const value = metadata?.strategy;
   if (typeof value !== 'string') return null;
   const normalized = value.trim().toLowerCase();
-  return normalized.length > 0 ? normalized : null;
+  if (normalized.length === 0) return null;
+  // R8: Validate strategy against known union type.
+  if (!VALID_CONFLICT_STRATEGIES.has(normalized)) {
+    console.warn(`[shared-spaces] Unknown conflict strategy "${normalized}", ignoring explicit override`);
+    return null;
+  }
+  return normalized;
 }
 
 function resolveSharedConflictStrategy(
@@ -168,7 +182,10 @@ function resolveSharedConflictStrategy(
  * @returns `true` when shared-memory access is allowed at runtime.
  */
 export function isSharedMemoryEnabled(database?: Database.Database): boolean {
-  // Tier 1: Env var override (highest priority)
+  // B1: Tier 1 env var override — honor explicit 'false' to disable.
+  const envRaw = (process.env['SPECKIT_MEMORY_SHARED_MEMORY'] ?? process.env['SPECKIT_HYDRA_SHARED_MEMORY'])?.trim().toLowerCase();
+  if (envRaw === 'false' || envRaw === '0') return false;
+  // Tier 1: Env var enable (highest priority)
   if (isDefaultOffFlagEnabled('SPECKIT_MEMORY_SHARED_MEMORY', 'SPECKIT_HYDRA_SHARED_MEMORY')) {
     return true;
   }
@@ -390,7 +407,7 @@ export function upsertSharedSpace(database: Database.Database, definition: Share
     definition.tenantId,
     definition.name,
     definition.rolloutEnabled ? 1 : 0,
-    definition.rolloutCohort ?? null,
+    definition.rolloutCohort?.trim() || null,
     definition.killSwitch ? 1 : 0,
     definition.metadata ? JSON.stringify(definition.metadata) : null,
   );
@@ -421,6 +438,8 @@ export function upsertSharedMembership(database: Database.Database, membership: 
  * @returns Shared-space identifiers the scope is allowed to see.
  */
 export function getAllowedSharedSpaceIds(database: Database.Database, scope: ScopeContext): Set<string> {
+  // B2: Respect the same disable gate as assertSharedSpaceAccess.
+  if (!isSharedMemoryEnabled(database)) return new Set();
   ensureSharedCollabRuntime(database);
   const normalizedScope = normalizeScopeContext(scope);
   const ids = new Set<string>();
@@ -556,28 +575,33 @@ export function recordSharedConflict(
   }
 ): void {
   ensureSharedCollabRuntime(database);
-  const resolved = resolveSharedConflictStrategy(database, args);
-  database.prepare(`
-    INSERT INTO shared_space_conflicts (
-      space_id, logical_key, existing_memory_id, incoming_memory_id, strategy, actor, metadata
-    ) VALUES (?, ?, ?, ?, ?, ?, ?)
-  `).run(
-    args.spaceId,
-    args.logicalKey,
-    args.existingMemoryId,
-    args.incomingMemoryId,
-    resolved.strategy,
-    args.actor,
-    resolved.metadata ? JSON.stringify(resolved.metadata) : null,
-  );
+  // B5: Wrap strategy resolution (count query) + insert + audit in a transaction
+  // to prevent race between the count read and the conflict insert.
+  const recordConflictTx = database.transaction(() => {
+    const resolved = resolveSharedConflictStrategy(database, args);
+    database.prepare(`
+      INSERT INTO shared_space_conflicts (
+        space_id, logical_key, existing_memory_id, incoming_memory_id, strategy, actor, metadata
+      ) VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      args.spaceId,
+      args.logicalKey,
+      args.existingMemoryId,
+      args.incomingMemoryId,
+      resolved.strategy,
+      args.actor,
+      resolved.metadata ? JSON.stringify(resolved.metadata) : null,
+    );
 
-  recordGovernanceAudit(database, {
-    action: 'shared_conflict',
-    decision: 'conflict',
-    memoryId: args.incomingMemoryId,
-    logicalKey: args.logicalKey,
-    sharedSpaceId: args.spaceId,
-    reason: resolved.strategy,
-    metadata: resolved.metadata,
+    recordGovernanceAudit(database, {
+      action: 'shared_conflict',
+      decision: 'conflict',
+      memoryId: args.incomingMemoryId,
+      logicalKey: args.logicalKey,
+      sharedSpaceId: args.spaceId,
+      reason: resolved.strategy,
+      metadata: resolved.metadata,
+    });
   });
+  recordConflictTx();
 }

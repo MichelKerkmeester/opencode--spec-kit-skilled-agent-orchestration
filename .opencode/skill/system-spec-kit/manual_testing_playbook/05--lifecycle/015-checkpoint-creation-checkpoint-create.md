@@ -16,7 +16,7 @@ This scenario validates Checkpoint creation (checkpoint_create) for `EX-015`. It
 Operators run the exact prompt and command sequence for `EX-015` and confirm the expected signals without contradicting evidence.
 
 - Objective: Pre-destructive backup
-- Prompt: `Create checkpoint pre-bulk-delete`
+- Prompt: `Create checkpoint pre-bulk-delete. Capture the evidence needed to prove New checkpoint listed. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: New checkpoint listed
 - Pass/fail: PASS if checkpoint discoverable
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-015` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-015 | Checkpoint creation (checkpoint_create) | Pre-destructive backup | `Create checkpoint pre-bulk-delete` | `checkpoint_create(name,specFolder)` -> `checkpoint_list()` | New checkpoint listed | Create/list outputs | PASS if checkpoint discoverable | Validate folder and naming rules |
+| EX-015 | Checkpoint creation (checkpoint_create) | Pre-destructive backup | `Create checkpoint pre-bulk-delete. Capture the evidence needed to prove New checkpoint listed. Return a concise user-facing pass/fail verdict with the main reason.` | `checkpoint_create(name,specFolder)` -> `checkpoint_list()` | New checkpoint listed | Create/list outputs | PASS if checkpoint discoverable | Validate folder and naming rules |
 
 ---
 

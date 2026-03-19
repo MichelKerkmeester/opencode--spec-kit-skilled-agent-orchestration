@@ -1051,6 +1051,6 @@ def test_default_mode():
 - [skill_asset_template.md](./skill_asset_template.md) - Asset file creation guide
 
 ### Standards
-- [core_standards.md](../../references/core_standards.md) - Document type rules
-- [skill_creation.md](../../references/skill_creation.md) - Complete skill creation workflow
+- [core_standards.md](../../references/global/core_standards.md) - Document type rules
+- [skill_creation.md](../../references/specific/skill_creation.md) - Complete skill creation workflow
 <!-- /ANCHOR:related-resources -->

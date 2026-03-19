@@ -433,7 +433,7 @@ A guide to installing the MCP server.
 - **Direct instructions**: "Run this command" not "You might want to run"
 - **Specific over vague**: "Python 3.9+" not "recent Python version"
 - **Test everything**: Every command you write should be copy-pasteable and work
-- **Human Voice Rules (HVR)**: Follow the full HVR ruleset in [hvr_rules.md](../../references/hvr_rules.md). Key points: no em dashes (use commas or periods), no semicolons, no banned words (leverage, robust, seamless, utilize, holistic), active voice throughout
+- **Human Voice Rules (HVR)**: Follow the full HVR ruleset in [hvr_rules.md](../../references/global/hvr_rules.md). Key points: no em dashes (use commas or periods), no semicolons, no banned words (leverage, robust, seamless, utilize, holistic), active voice throughout
 
 ### Placeholder Format
 
@@ -1014,8 +1014,8 @@ You now have [TOOL_NAME] installed and configured. [BRIEF_USAGE_INSTRUCTION]
 - [frontmatter_templates.md](./frontmatter_templates.md) - YAML frontmatter examples
 
 ### Standards
-- [install_guide_standards.md](../../references/install_guide_standards.md) - Phase validation rules
-- [core_standards.md](../../references/core_standards.md) - Document formatting standards
+- [install_guide_creation.md](../../references/specific/install_guide_creation.md) - Phase validation rules and creation workflow
+- [core_standards.md](../../references/global/core_standards.md) - Document formatting standards
 
 ### Examples
 - [MCP - Spec Kit Memory.md](../../../../install_guides/MCP%20-%20Spec%20Kit%20Memory.md) - MCP server example

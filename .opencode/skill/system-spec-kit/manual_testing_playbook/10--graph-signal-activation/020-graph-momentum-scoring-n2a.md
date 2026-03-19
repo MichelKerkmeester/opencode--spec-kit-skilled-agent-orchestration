@@ -16,7 +16,7 @@ This scenario validates Graph momentum scoring (N2a) for `NEW-020`. It focuses o
 Operators run the exact prompt and command sequence for `NEW-020` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm 7-day delta bonus
-- Prompt: `Verify graph momentum scoring (N2a).`
+- Prompt: `Verify graph momentum scoring (N2a). Capture the evidence needed to prove 7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: 7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced
 - Pass/fail: PASS: Momentum bonus = capped(current - 7d_ago); zero for no-history nodes; cap enforced; FAIL: Uncapped bonus or non-zero for missing history
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-020` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-020 | Graph momentum scoring (N2a) | Confirm 7-day delta bonus | `Verify graph momentum scoring (N2a).` | 1) Seed snapshots now/7d 2) Query 3) Verify capped bonus | 7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced | Momentum scoring output with delta values + cap verification + zero-history node check | PASS: Momentum bonus = capped(current - 7d_ago); zero for no-history nodes; cap enforced; FAIL: Uncapped bonus or non-zero for missing history | Verify snapshot comparison window → Check cap configuration → Inspect delta computation formula |
+| NEW-020 | Graph momentum scoring (N2a) | Confirm 7-day delta bonus | `Verify graph momentum scoring (N2a). Capture the evidence needed to prove 7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Seed snapshots now/7d 2) Query 3) Verify capped bonus | 7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced | Momentum scoring output with delta values + cap verification + zero-history node check | PASS: Momentum bonus = capped(current - 7d_ago); zero for no-history nodes; cap enforced; FAIL: Uncapped bonus or non-zero for missing history | Verify snapshot comparison window → Check cap configuration → Inspect delta computation formula |
 
 ---
 

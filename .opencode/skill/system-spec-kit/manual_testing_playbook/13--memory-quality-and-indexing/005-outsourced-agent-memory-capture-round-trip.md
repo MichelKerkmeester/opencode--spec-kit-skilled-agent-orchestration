@@ -19,7 +19,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `Dispatch task to external CLI agent and capture memory back to Spec Kit`
+- Prompt: `Dispatch task to external CLI agent and capture memory back to Spec Kit. Capture the evidence needed to prove Agent output contains structured memory section; saved context is discoverable via search. Return a concise user-facing pass/fail verdict with the main reason.`
 - Commands:
   - Dispatch task via `cli-codex` (or any cli-* skill) with memory epilogue in prompt
   - Extract structured memory section from agent stdout

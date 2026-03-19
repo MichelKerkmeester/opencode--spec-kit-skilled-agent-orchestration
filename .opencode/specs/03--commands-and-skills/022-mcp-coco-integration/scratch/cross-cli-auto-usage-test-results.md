@@ -86,7 +86,7 @@ All 3 prompts: Attempted CocoIndex MCP `search`, but MCP returned 0 results in P
 - Always follows framework gates first (memory_match_triggers, skill_advisor.py)
 - P2 (explicit mention): MCP search worked, returned results
 - P1, P3 (implicit): MCP search returned empty/failed, fell back to Grep + direct code reading
-- Also loaded the `mcp-cocoindex-code` skill explicitly in P1
+- Also loaded the `mcp-coco-index` skill explicitly in P1
 - Most thorough investigation but least token-efficient (3.6M input tokens for P1)
 
 **MCP Reliability Issue**: Copilot's CocoIndex MCP `search` returns 0 results or `success:false` for implicit queries that work fine via `ccc` CLI and via Gemini/Claude Code MCP. P2 (explicit mention) worked. This suggests a query format, escaping, or connection issue specific to how Copilot invokes the MCP tool.

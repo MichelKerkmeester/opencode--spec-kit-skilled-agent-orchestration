@@ -36,7 +36,7 @@ contextType: "implementation"
 - [x] CHK-002 [P0] Technical approach defined in plan.md
   - **Evidence**: `plan.md` documents the delivered installation, validation, and hardening phases, plus testing strategy, dependencies, and rollback procedures
 - [x] CHK-003 [P1] Dependencies identified and available
-  - **Evidence**: Install script available at `.opencode/skill/mcp-cocoindex-code/scripts/install.sh`, `python3.11` available at Homebrew path, `cocoindex-code v0.2.3` installed to `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc`
+  - **Evidence**: Install script available at `.opencode/skill/mcp-coco-index/scripts/install.sh`, `python3.11` available at Homebrew path, `cocoindex-code v0.2.3` installed to `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc`
 
 <!-- /ANCHOR:pre-impl -->
 
@@ -64,7 +64,7 @@ contextType: "implementation"
 - [x] CHK-020 [P0] All acceptance criteria met
   - **Evidence**: SC-001 - all 6 configs have `cocoindex_code` entry; SC-002 - `.cocoindex_code/` gitignored; SC-003 - readiness helpers report non-zero file/chunk counts after indexing (`5859` / `78525` in the shared repo validation run); SC-004 - all syntax validations pass; SC-008/SC-009 - strict readiness and downstream adoption packaging are now documented and verified
 - [x] CHK-021 [P0] Manual testing complete
-  - **Evidence**: `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/python -c "import importlib.metadata as m; print(m.version('cocoindex-code'))"` prints `0.2.3`; `ccc index` completed; `ccc search "MCP server initialization"` returns relevant TypeScript results with file paths and line numbers
+  - **Evidence**: `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/python -c "import importlib.metadata as m; print(m.version('cocoindex-code'))"` prints `0.2.3`; `ccc index` completed; `ccc search "MCP server initialization"` returns relevant TypeScript results with file paths and line numbers
 - [x] CHK-022 [P1] Edge cases tested
   - **Evidence**: PATH collision with existing `/opt/homebrew/bin/ccc` identified and mitigated by using repo-relative `.opencode/.../ccc` in configs; repo-relative `COCOINDEX_CODE_ROOT_PATH="."` verified across the 6 config formats
 - [x] CHK-023 [P1] Error scenarios validated
@@ -128,7 +128,7 @@ contextType: "implementation"
 - [x] CHK-063 [P1] Root cause documented in test results and implementation summary
   - **Evidence**: Root cause analysis section in `scratch/cross-cli-auto-usage-test-results.md`; findings F1-F4 and recommendations R1-R6 in `implementation-summary.md`
 - [x] CHK-064 [P1] SKILL.md updated with query optimization and `refresh_index` guidance
-  - **Evidence**: "Query Optimization" and "Concurrent Query Sessions" sections added to `../../../skill/mcp-cocoindex-code/SKILL.md`
+  - **Evidence**: "Query Optimization" and "Concurrent Query Sessions" sections added to `../../../skill/mcp-coco-index/SKILL.md`
 - [x] CHK-065 [P2] Codex retry attempted
   - **Evidence**: `codex exec "echo hello"` returned `ERROR: You've hit your usage limit`; documented as deferred
 - [x] CHK-066 [P1] Memory saved for session continuity
@@ -148,9 +148,9 @@ contextType: "implementation"
 - [x] CHK-072 [P1] Helper scripts are operational in both the main repo and a fresh temp project
   - **Evidence**: `doctor.sh` reported healthy binary/index/daemon/config status in the repo root; `ensure_ready.sh --json --root <tmpdir>` performed `init` and `index` and returned clean JSON with `actionsPerformed` showing both steps
 - [x] CHK-073 [P1] Advisor prefers the repo-local CocoIndex binary
-  - **Evidence**: `python3 .opencode/skill/scripts/skill_advisor.py --health` reports `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc` in `cocoindex_binary`
+  - **Evidence**: `python3 .opencode/skill/scripts/skill_advisor.py --health` reports `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc` in `cocoindex_binary`
 - [x] CHK-074 [P1] Semantic exploration prompts route to CocoIndex without strongly routing exact-text prompts
-  - **Evidence**: `python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --threshold 0.8` returns `mcp-cocoindex-code` at 0.95 confidence; `python3 .opencode/skill/scripts/skill_advisor.py "find exact string TODO comments" --threshold 0.8 --show-rejections` keeps CocoIndex below threshold
+  - **Evidence**: `python3 .opencode/skill/scripts/skill_advisor.py "find code that handles auth" --threshold 0.8` returns `mcp-coco-index` at 0.95 confidence; `python3 .opencode/skill/scripts/skill_advisor.py "find exact string TODO comments" --threshold 0.8 --show-rejections` keeps CocoIndex below threshold
 
 <!-- /ANCHOR:phase-2-hardening -->
 
@@ -164,9 +164,9 @@ contextType: "implementation"
 - [x] CHK-081 [P0] Shared-repo strict readiness passes after automated recovery
   - **Evidence**: `doctor.sh --json --strict --require-config --expect-config opencode.json` first surfaced exit `23` with `indexFiles: 0` and `indexChunks: 0`; `ensure_ready.sh --json --strict --require-config --expect-config opencode.json` then ran `actionsPerformed: ["index"]`; rerunning `doctor.sh` returned `status: "ready"` with `indexFiles: 5859`, `indexChunks: 78525`, and `expectedConfigs: ["opencode.json"]`
 - [x] CHK-082 [P1] Strict post-bootstrap config validation fails correctly in a temp project
-  - **Evidence**: `ensure_ready.sh --json --strict --require-config --root <tmpdir>` exited `24` after performing `["init", "index"]`, with `blockingIssues: [24]`, `detectedConfigs: []`, and `recommendedNextStep` pointing to `../../../skill/mcp-cocoindex-code/references/downstream_adoption_checklist.md`
+  - **Evidence**: `ensure_ready.sh --json --strict --require-config --root <tmpdir>` exited `24` after performing `["init", "index"]`, with `blockingIssues: [24]`, `detectedConfigs: []`, and `recommendedNextStep` pointing to `../../../skill/mcp-coco-index/references/downstream_adoption_checklist.md`
 - [x] CHK-083 [P1] Downstream adoption guidance is published without hidden config-writing automation
-  - **Evidence**: `../../../skill/mcp-cocoindex-code/references/downstream_adoption_checklist.md` documents the minimum sibling-repo payload/config/gitignore bundle, explicitly states the shared helpers verify readiness but do not write config files, and is referenced from `../../../skill/mcp-cocoindex-code/SKILL.md`, `../../../skill/mcp-cocoindex-code/README.md`, and `../../../skill/mcp-cocoindex-code/references/cross_cli_playbook.md`
+  - **Evidence**: `../../../skill/mcp-coco-index/references/downstream_adoption_checklist.md` documents the minimum sibling-repo payload/config/gitignore bundle, explicitly states the shared helpers verify readiness but do not write config files, and is referenced from `../../../skill/mcp-coco-index/SKILL.md`, `../../../skill/mcp-coco-index/README.md`, and `../../../skill/mcp-coco-index/references/cross_cli_playbook.md`
 
 <!-- /ANCHOR:phase-3-strict-readiness -->
 

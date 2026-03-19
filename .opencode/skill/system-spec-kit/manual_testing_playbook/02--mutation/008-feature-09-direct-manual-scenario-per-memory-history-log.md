@@ -19,7 +19,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `Run direct manual verification for per-memory history log behavior (feature 09 gap closure).`
+- Prompt: `Run direct manual verification for per-memory history log behavior (feature 09 gap closure). Capture the evidence needed to prove repeated save/update activity is observable via retrieval output and memory metadata remains coherent for the same memory lineage. Return a concise user-facing pass/fail verdict with the main reason.`
 - Commands:
   - `memory_save({ filePath:"<sandbox-memory-file>", force:true })`
   - `memory_save({ filePath:"<sandbox-memory-file>", force:true })`

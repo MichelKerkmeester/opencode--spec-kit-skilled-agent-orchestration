@@ -23,6 +23,7 @@ describe('Hooks UX feedback', () => {
       graphSignalsCacheCleared: true,
       coactivationCacheCleared: true,
       toolCacheInvalidated: 3,
+      errors: [],
     });
 
     expect(feedback.hints.some((hint) => hint.includes('Post-mutation cache clear'))).toBe(true);
@@ -42,6 +43,21 @@ describe('Hooks UX feedback', () => {
     });
 
     expect(feedback.hints.some((hint) => hint.includes('non-fatal'))).toBe(false);
+  });
+
+  it('buildMutationHookFeedback surfaces error messages in hints and data', () => {
+    const feedback = buildMutationHookFeedback('update', {
+      latencyMs: 2,
+      triggerCacheCleared: true,
+      constitutionalCacheCleared: true,
+      graphSignalsCacheCleared: true,
+      coactivationCacheCleared: true,
+      toolCacheInvalidated: 0,
+      errors: ['hook failed: xyz'],
+    });
+
+    expect(feedback.data.errors).toEqual(['hook failed: xyz']);
+    expect(feedback.hints.some((hint) => hint.includes('Post-mutation hook errors: hook failed: xyz'))).toBe(true);
   });
 
   it('appendAutoSurfaceHints injects hints and sets tokenCount from the final serialized envelope JSON', () => {

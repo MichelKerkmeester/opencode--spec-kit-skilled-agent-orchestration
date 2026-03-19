@@ -16,7 +16,7 @@ This scenario validates Memory roadmap baseline snapshot for `NEW-126`. It focus
 Operators run the exact prompt and command sequence for `NEW-126` and confirm the expected signals without contradicting evidence.
 
 - Objective: Verify Phase 1 readiness baselines capture/persist metrics and handle missing context DBs without throwing
-- Prompt: `Run the memory roadmap baseline snapshot verification suite.`
+- Prompt: `Run the memory roadmap baseline snapshot verification suite. Capture the evidence needed to prove Targeted suite passes; transcript shows persisted snapshot rows and missing-context DB zero fallback coverage. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Targeted suite passes; transcript shows persisted snapshot rows and missing-context DB zero fallback coverage
 - Pass/fail: PASS if `memory-state-baseline.vitest.ts` completes with all tests passing and no failures
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-126` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-126 | Memory roadmap baseline snapshot | Verify Phase 1 readiness baselines capture/persist metrics and handle missing context DBs without throwing | `Run the memory roadmap baseline snapshot verification suite.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npm test -- --run tests/memory-state-baseline.vitest.ts` | Targeted suite passes; transcript shows persisted snapshot rows and missing-context DB zero fallback coverage | Test transcript + suite summary | PASS if `memory-state-baseline.vitest.ts` completes with all tests passing and no failures | Re-run `npm test -- --run tests/memory-state-baseline.vitest.ts -t persist`; inspect `lib/eval/memory-state-baseline.ts` and eval DB path resolution if assertions drift |
+| NEW-126 | Memory roadmap baseline snapshot | Verify Phase 1 readiness baselines capture/persist metrics and handle missing context DBs without throwing | `Run the memory roadmap baseline snapshot verification suite. Capture the evidence needed to prove Targeted suite passes; transcript shows persisted snapshot rows and missing-context DB zero fallback coverage. Return a concise user-facing pass/fail verdict with the main reason.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `npm test -- --run tests/memory-state-baseline.vitest.ts` | Targeted suite passes; transcript shows persisted snapshot rows and missing-context DB zero fallback coverage | Test transcript + suite summary | PASS if `memory-state-baseline.vitest.ts` completes with all tests passing and no failures | Re-run `npm test -- --run tests/memory-state-baseline.vitest.ts -t persist`; inspect `lib/eval/memory-state-baseline.ts` and eval DB path resolution if assertions drift |
 
 ---
 

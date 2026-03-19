@@ -19,8 +19,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt:
-  - `@review findings-first review with severity + verdict APPROVE/CHANGES_REQUESTED`
+- Prompt: `@review findings-first review with severity + verdict APPROVE/CHANGES_REQUESTED. Capture the evidence needed to prove severity-ranked findings and final verdict. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected: severity-ranked findings and final verdict.
 - Evidence: review output with file:line findings.
 - Pass: deterministic verdict issued with rationale.

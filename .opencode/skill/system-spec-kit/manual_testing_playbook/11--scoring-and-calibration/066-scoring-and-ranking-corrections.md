@@ -16,7 +16,7 @@ This scenario validates Scoring and ranking corrections for `NEW-066`. It focuse
 Operators run the exact prompt and command sequence for `NEW-066` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm Sprint 8 scoring fixes
-- Prompt: `Validate scoring and ranking corrections bundle.`
+- Prompt: `Validate scoring and ranking corrections bundle. Capture the evidence needed to prove Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values
 - Pass/fail: PASS if scoring corrections produce expected rank ordering and no anomalous score values
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-066` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-066 | Scoring and ranking corrections | Confirm Sprint 8 scoring fixes | `Validate scoring and ranking corrections bundle.` | 1) run targeted queries 2) inspect score/rank outputs 3) verify corrected behavior | Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values | Query output with score/rank values + before/after comparison where applicable | PASS if scoring corrections produce expected rank ordering and no anomalous score values | Inspect scoring formula changes; verify normalization bounds; check for edge-case inputs that produce NaN |
+| NEW-066 | Scoring and ranking corrections | Confirm Sprint 8 scoring fixes | `Validate scoring and ranking corrections bundle. Capture the evidence needed to prove Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values. Return a concise user-facing pass/fail verdict with the main reason.` | 1) run targeted queries 2) inspect score/rank outputs 3) verify corrected behavior | Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values | Query output with score/rank values + before/after comparison where applicable | PASS if scoring corrections produce expected rank ordering and no anomalous score values | Inspect scoring formula changes; verify normalization bounds; check for edge-case inputs that produce NaN |
 
 ---
 

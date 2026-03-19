@@ -40,9 +40,23 @@ export interface GovernedIngestInput extends ScopeContext {
 /**
  * Result of governed-ingest validation and field normalization.
  */
+// R5: Simplified normalized type — previously a complex intersection.
+export interface GovernanceNormalized {
+  tenantId?: string | null;
+  userId?: string | null;
+  agentId?: string | null;
+  sessionId?: string | null;
+  sharedSpaceId?: string | null;
+  provenanceSource: string | null;
+  provenanceActor: string | null;
+  governedAt: string;
+  retentionPolicy: RetentionPolicy;
+  deleteAfter: string | null;
+}
+
 export interface GovernanceDecision {
   allowed: boolean;
-  normalized: Required<Pick<GovernedIngestInput, 'tenantId' | 'sessionId' | 'provenanceSource' | 'provenanceActor' | 'governedAt' | 'retentionPolicy'>> & ScopeContext & { deleteAfter: string | null };
+  normalized: GovernanceNormalized;
   reason?: string;
   issues: string[];
 }
@@ -134,6 +148,8 @@ function normalizeIsoTimestamp(value: unknown): string | undefined {
   return date.toISOString();
 }
 
+// A6: Returns `true` by default (when no env var is set) — this is intentional
+// for shipped rollout features where governance is ON unless explicitly disabled.
 function isDefaultOnFlagEnabled(...flagNames: string[]): boolean {
   for (const flagName of flagNames) {
     const rawValue = process.env[flagName]?.trim().toLowerCase();
@@ -222,16 +238,18 @@ export function validateGovernedIngest(input: GovernedIngestInput): GovernanceDe
   const provenanceActor = normalizeId(input.provenanceActor) ?? '';
 
   if (!requiresGovernedIngest(input)) {
+    // B8: Return null instead of empty string for optional scope fields
+    // when governance is not required, to avoid persisting false-y placeholders.
     return {
       allowed: true,
       normalized: {
-        tenantId: scope.tenantId ?? '',
-        userId: scope.userId,
-        agentId: scope.agentId,
-        sessionId: scope.sessionId ?? '',
-        sharedSpaceId: scope.sharedSpaceId,
-        provenanceSource,
-        provenanceActor,
+        tenantId: scope.tenantId || null,
+        userId: scope.userId || null,
+        agentId: scope.agentId || null,
+        sessionId: scope.sessionId || null,
+        sharedSpaceId: scope.sharedSpaceId || null,
+        provenanceSource: provenanceSource || null,
+        provenanceActor: provenanceActor || null,
         governedAt,
         retentionPolicy,
         deleteAfter,
@@ -499,31 +517,35 @@ export function reviewGovernanceAudit(
     created_at: string;
   }>;
 
-  const totalMatching = (database.prepare(`
-    SELECT COUNT(*) AS count
-    FROM governance_audit
-    ${whereSql}
-  `).get(...params) as { count: number }).count;
+  // R4: Consolidate 4 separate aggregate queries into a single CTE query.
+  const summaryRow = database.prepare(`
+    WITH filtered AS (
+      SELECT action, decision, created_at
+      FROM governance_audit
+      ${whereSql}
+    )
+    SELECT
+      (SELECT COUNT(*) FROM filtered) AS total_matching,
+      (SELECT MAX(created_at) FROM filtered) AS latest_created_at,
+      (SELECT GROUP_CONCAT(action || ':' || cnt) FROM (SELECT action, COUNT(*) AS cnt FROM filtered GROUP BY action)) AS by_action,
+      (SELECT GROUP_CONCAT(decision || ':' || cnt) FROM (SELECT decision, COUNT(*) AS cnt FROM filtered GROUP BY decision)) AS by_decision
+  `).get(...params) as {
+    total_matching: number;
+    latest_created_at: string | null;
+    by_action: string | null;
+    by_decision: string | null;
+  };
 
-  const byActionRows = database.prepare(`
-    SELECT action, COUNT(*) AS count
-    FROM governance_audit
-    ${whereSql}
-    GROUP BY action
-  `).all(...params) as Array<{ action: string; count: number }>;
-
-  const byDecisionRows = database.prepare(`
-    SELECT decision, COUNT(*) AS count
-    FROM governance_audit
-    ${whereSql}
-    GROUP BY decision
-  `).all(...params) as Array<{ decision: GovernanceAuditEntry['decision']; count: number }>;
-
-  const latestRow = database.prepare(`
-    SELECT MAX(created_at) AS latest_created_at
-    FROM governance_audit
-    ${whereSql}
-  `).get(...params) as { latest_created_at: string | null };
+  const totalMatching = summaryRow.total_matching;
+  const byActionRows = (summaryRow.by_action ?? '').split(',').filter(Boolean).map((entry) => {
+    const [action, count] = entry.split(':');
+    return { action, count: Number(count) };
+  });
+  const byDecisionRows = (summaryRow.by_decision ?? '').split(',').filter(Boolean).map((entry) => {
+    const [decision, count] = entry.split(':');
+    return { decision: decision as GovernanceAuditEntry['decision'], count: Number(count) };
+  });
+  const latestRow = { latest_created_at: summaryRow.latest_created_at };
 
   return {
     rows: rows.map((row) => ({

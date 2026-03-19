@@ -16,7 +16,7 @@ This scenario validates Causal graph statistics (memory_causal_stats) for `EX-02
 Operators run the exact prompt and command sequence for `EX-020` and confirm the expected signals without contradicting evidence.
 
 - Objective: Graph coverage review
-- Prompt: `Return causal stats and coverage`
+- Prompt: `Return causal stats and coverage. Capture the evidence needed to prove Coverage and edge metrics present. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Coverage and edge metrics present
 - Pass/fail: PASS if metrics returned
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-020` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-020 | Causal graph statistics (memory_causal_stats) | Graph coverage review | `Return causal stats and coverage` | `memory_causal_stats()` | Coverage and edge metrics present | Stats output | PASS if metrics returned | Rebuild causal edges if empty |
+| EX-020 | Causal graph statistics (memory_causal_stats) | Graph coverage review | `Return causal stats and coverage. Capture the evidence needed to prove Coverage and edge metrics present. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_causal_stats()` | Coverage and edge metrics present | Stats output | PASS if metrics returned | Rebuild causal edges if empty |
 
 ---
 

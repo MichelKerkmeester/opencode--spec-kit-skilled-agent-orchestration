@@ -16,7 +16,7 @@ This scenario validates Encoding-intent capture at index time (R16) for `NEW-047
 Operators run the exact prompt and command sequence for `NEW-047` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm persisted intent labels
-- Prompt: `Verify encoding-intent capture (R16).`
+- Prompt: `Verify encoding-intent capture (R16). Capture the evidence needed to prove Intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels
 - Pass/fail: PASS: Correct intent label assigned per content type; labels immutable after save; FAIL: Wrong label or label modified post-save
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-047` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-047 | Encoding-intent capture at index time (R16) | Confirm persisted intent labels | `Verify encoding-intent capture (R16).` | 1) Save doc/code/structured examples 2) inspect metadata 3) verify read-only intent field | Intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels | Metadata output showing intent labels per content type + read-only verification | PASS: Correct intent label assigned per content type; labels immutable after save; FAIL: Wrong label or label modified post-save | Verify intent classification rules → Check metadata persistence → Inspect read-only enforcement |
+| NEW-047 | Encoding-intent capture at index time (R16) | Confirm persisted intent labels | `Verify encoding-intent capture (R16). Capture the evidence needed to prove Intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Save doc/code/structured examples 2) inspect metadata 3) verify read-only intent field | Intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels | Metadata output showing intent labels per content type + read-only verification | PASS: Correct intent label assigned per content type; labels immutable after save; FAIL: Wrong label or label modified post-save | Verify intent classification rules → Check metadata persistence → Inspect read-only enforcement |
 
 ---
 

@@ -153,9 +153,9 @@ agent_scripts:
   extract_structure: .opencode/skill/sk-doc/scripts/extract_structure.py
 
 agent_references:
-  agent_creation: .opencode/skill/sk-doc/references/agent_creation.md
-  core_standards: .opencode/skill/sk-doc/references/core_standards.md
-  validation: .opencode/skill/sk-doc/references/validation.md
+  agent_creation: .opencode/skill/sk-doc/references/specific/agent_creation.md
+  core_standards: .opencode/skill/sk-doc/references/global/core_standards.md
+  validation: .opencode/skill/sk-doc/references/global/validation.md
 
 # ─────────────────────────────────────────────────────────────────
 # CHECKPOINT OPTIONS
@@ -725,7 +725,7 @@ quality_standards:
     stage_3: "Mode validation (primary/subagent/all)"
     stage_4: "Permission format validation (unified v1.1.1+)"
   template_adherence: required
-  core_standards_reference: ".opencode/skill/sk-doc/references/core_standards.md"
+  core_standards_reference: ".opencode/skill/sk-doc/references/global/core_standards.md"
 
 # ─────────────────────────────────────────────────────────────────
 # COMPLETION REPORT TEMPLATE

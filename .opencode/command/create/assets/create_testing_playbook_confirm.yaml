@@ -1,0 +1,373 @@
+# ─────────────────────────────────────────────────────────────────
+# OPENCODE CREATE: TESTING PLAYBOOK WORKFLOW (CONFIRM MODE)
+# ─────────────────────────────────────────────────────────────────
+# Mode: interactive execution with checkpoints
+# Entrypoint: /create:testing-playbook
+# Operations: create | update
+# ─────────────────────────────────────────────────────────────────
+role: Testing Playbook Creator using sk-doc
+purpose: Create or update rooted manual testing playbook packages with explicit checkpoints and validation gates
+action: Normalize inputs, confirm taxonomy, load standards, generate the package, validate structure, and report completion
+
+# ─────────────────────────────────────────────────────────────────
+# PREREQUISITE: @write AGENT VERIFICATION
+# ─────────────────────────────────────────────────────────────────
+# This workflow REQUIRES the @write agent for:
+#   - Template-first generation
+#   - sk-doc standards enforcement
+#   - Root document validation
+#
+# PHASE 0 in the command markdown verifies @write agent BEFORE
+# this YAML workflow loads. If you are executing this workflow,
+# @write verification has already passed.
+# ─────────────────────────────────────────────────────────────────
+
+operating_mode:
+  workflow: unified_6_step
+  workflow_compliance: MANDATORY
+  workflow_execution: interactive
+  approvals: step_by_step
+  tracking: checkpoint_decision_log
+  validation: checkpoint_based
+  supports_operations:
+    - create
+    - update
+
+development_philosophy:
+  principle: "Confirm category shape and scenario inventory before writing the playbook"
+  approach: "Normalize -> Discover -> Preview -> Generate -> Validate -> Report"
+  mandate: "Ask for approval at the category/scenario plan and root-playbook preview checkpoints"
+
+runtime_agent_path_resolution:
+  default: .opencode/agent
+  chatgpt: .opencode/agent/chatgpt
+  claude: .claude/agents
+  codex: .codex/agents
+  gemini: .gemini/agents
+
+confidence_framework:
+  thresholds:
+    high: { range: "80-100%", action: "Proceed with checkpoint proposal" }
+    medium: { range: "40-79%", action: "Proceed with caution and note assumptions" }
+    low: { range: "0-39%", action: "STOP and request clarification" }
+  scoring_weights:
+    input_completeness: 0.25
+    routing_clarity: 0.20
+    contract_alignment: 0.35
+    validation_readiness: 0.20
+  low_confidence_behavior:
+    action: "Pause before the next checkpoint and request clarification"
+
+request_analysis_framework:
+  solution_flow:
+    - "Parse command arguments and normalize execution mode"
+    - "Verify create/update semantics against the real target path"
+    - "Load the creation reference and both templates before writing"
+    - "Propose a category and scenario inventory before generation"
+    - "Generate the rooted playbook package after checkpoint approval"
+    - "Validate root structure, linked files, and count consistency"
+  pre_change_validation:
+    items:
+      - "write_agent_verified is true"
+      - "skill_name is present"
+      - "operation is create or update"
+      - "source_strategy is present"
+      - "execution_mode is :confirm"
+    stop_conditions:
+      - "Any required input missing"
+      - "Operation does not match real target existence"
+    stop_action: "STOP and correct setup before generation"
+
+checkpoint_options:
+  proceed:
+    label: "Proceed"
+    description: "Approve and continue"
+  review:
+    label: "Review"
+    description: "Show more detail before deciding"
+  modify:
+    label: "Modify"
+    description: "Adjust the current step before continuing"
+  abort:
+    label: "Abort"
+    description: "Stop the workflow"
+
+input_contract:
+  required:
+    - write_agent_verified
+    - skill_name
+    - operation
+    - source_strategy
+    - execution_mode
+  optional:
+    - skill_path
+    - spec_choice
+    - spec_path
+    - memory_choice
+
+field_handling:
+  skill_name:
+    validation: "hyphen-case folder name"
+    required: true
+  operation:
+    validation: "must be one of: create, update"
+    required: true
+  source_strategy:
+    validation: "must be one of: derive-catalog, manual-scenarios, hybrid"
+    required: true
+  execution_mode:
+    validation: "must be :confirm"
+    required: true
+
+documentation_level:
+  default: "Level 2 (Verification)"
+  required_files:
+    - spec.md
+    - plan.md
+    - tasks.md
+    - checklist.md
+  note: "Testing playbook package creation typically needs verification because it spans root and per-feature docs"
+
+defaults:
+  skill_path: .opencode/skill/
+  playbook_dirname: manual_testing_playbook
+  execution_mode: :confirm
+  dqi_hard_minimum: 75
+
+operation_router:
+  create:
+    requires_existing_playbook: false
+    output_scope:
+      - manual_testing_playbook/manual_testing_playbook.md
+      - manual_testing_playbook/NN--category-name/
+      - manual_testing_playbook/NN--category-name/NNN-feature-name.md
+  update:
+    requires_existing_playbook: true
+    output_scope:
+      - manual_testing_playbook/manual_testing_playbook.md
+      - manual_testing_playbook/NN--category-name/
+      - manual_testing_playbook/NN--category-name/NNN-feature-name.md
+
+reference_sources:
+  specific_creation: .opencode/skill/sk-doc/references/specific/manual_testing_playbook_creation.md
+  core_standards: .opencode/skill/sk-doc/references/global/core_standards.md
+  validation: .opencode/skill/sk-doc/references/global/validation.md
+
+template_sources:
+  root_playbook: .opencode/skill/sk-doc/assets/documentation/testing_playbook/manual_testing_playbook_template.md
+  feature_file: .opencode/skill/sk-doc/assets/documentation/testing_playbook/manual_testing_playbook_snippet_template.md
+
+validation_scripts:
+  validate_document: .opencode/skill/sk-doc/scripts/validate_document.py
+  extract_structure: .opencode/skill/sk-doc/scripts/extract_structure.py
+
+quality_standards:
+  template_first: required
+  frontmatter_required: true
+  root_requirements:
+    - integrated review protocol in root playbook
+    - integrated orchestration guidance in root playbook
+    - unnumbered TABLE OF CONTENTS
+    - numbered all-caps H2 sections
+  feature_file_requirements:
+    - frontmatter
+    - OVERVIEW
+    - CURRENT REALITY
+    - TEST EXECUTION
+    - SOURCE FILES or REFERENCES
+    - SOURCE METADATA
+    - divider lines between numbered sections
+  forbidden_outputs:
+    - review_protocol.md
+    - subagent_utilization_ledger.md
+    - snippets/
+  validation_pipeline:
+    - "python3 .opencode/skill/sk-doc/scripts/validate_document.py [playbook_root]/manual_testing_playbook.md"
+    - "python3 .opencode/skill/sk-doc/scripts/extract_structure.py [playbook_root]/manual_testing_playbook.md"
+
+gate_logic:
+  hard:
+    H0_write_verified:
+      description: "write_agent_verified must be true"
+      fail_action: "STOP and return to setup"
+    H1_required_fields:
+      description: "All required setup fields must be present"
+      fail_action: "STOP and collect missing fields"
+    H2_existence_semantics:
+      description: "create/update must match real playbook existence"
+      fail_action: "STOP and reroute or correct target"
+    H3_contract_shape:
+      description: "Generated package must match integrated root playbook contract"
+      fail_action: "Return to generation before continuing"
+    H4_validation_gate:
+      description: "Root validation and consistency checks must pass"
+      fail_action: "Run fix-and-revalidate loop"
+  soft:
+    S1_source_strategy:
+      description: "Prefer deriving from an existing feature catalog when present"
+      fail_action: "Proceed with logged assumption"
+
+interactive_execution:
+  principle: "Pause at each checkpoint and wait for explicit approval"
+  user_feedback_handling:
+    proceed: "Advance to the next step"
+    review: "Show more detail and remain at the current checkpoint"
+    modify: "Revise the current step and re-present the checkpoint"
+    abort: "Return STATUS=CANCELLED and stop"
+
+workflow_overview:
+  steps:
+    - id: step_1_preflight
+      purpose: "Normalize inputs and enforce H0-H2"
+    - id: step_2_source_discovery
+      purpose: "Resolve scenario inventory and propose category taxonomy"
+    - id: step_3_template_loading
+      purpose: "Load references and both root/per-feature templates"
+    - id: step_4_package_generation
+      purpose: "Create or update rooted playbook artifacts after approval"
+    - id: step_5_validation
+      purpose: "Run root validation and consistency checks"
+    - id: step_6_completion
+      purpose: "Emit deterministic completion report"
+
+workflow:
+  step_1_preflight:
+    purpose: Normalize inputs and existence semantics
+    activities:
+      - Normalize skill_path to default when omitted
+      - Derive playbook_root as "[skill_path]/[skill_name]/manual_testing_playbook"
+      - Validate operation token to supported value
+      - Validate execution_mode is :confirm
+      - Check whether target root exists
+    outputs:
+      - normalized_inputs
+      - target_existence_state
+    checkpoint:
+      question: "Preflight complete for [skill_name] using [operation]. Continue?"
+      options:
+        - proceed
+        - review
+        - modify
+        - abort
+
+  step_2_source_discovery:
+    purpose: Resolve source strategy and propose playbook taxonomy
+    activities:
+      - If source_strategy prefers feature catalog, inspect "[skill_path]/[skill_name]/feature_catalog/"
+      - Otherwise inspect current README/docs and operator-provided scenario list
+      - Build provisional category list and scenario entry list
+      - Preserve stable IDs and file paths if update mode
+    outputs:
+      - category_plan
+      - scenario_entry_plan
+    checkpoint:
+      question: "Review the proposed category and scenario inventory?"
+      options:
+        - proceed
+        - review
+        - modify
+        - abort
+
+  step_3_template_loading:
+    purpose: Load references and both templates
+    activities:
+      - Read manual_testing_playbook_creation.md
+      - Read manual_testing_playbook_template.md
+      - Read manual_testing_playbook_snippet_template.md
+      - Extract the canonical root and feature-file section contracts
+    outputs:
+      - template_contract_loaded
+
+  step_4_package_generation:
+    purpose: Draft root playbook and feature files
+    activities:
+      - Ensure playbook_root exists
+      - Create or update manual_testing_playbook.md
+      - Create or update numbered category folders
+      - Create or update one per-feature file per scenario entry
+      - Keep review and orchestration guidance only in the root playbook
+      - Keep execution truth in per-feature files
+      - Confirm no forbidden sidecar docs are produced
+    outputs:
+      - generated_root_playbook_preview
+      - generated_feature_file_plan
+    checkpoint:
+      question: "Review the root playbook preview and representative feature-file plan?"
+      options:
+        - proceed
+        - review
+        - modify
+        - abort
+
+  step_5_validation:
+    purpose: Validate generated package
+    activities:
+      - Run validate_document.py on manual_testing_playbook.md
+      - Check that each root-linked feature file exists
+      - Check category folder names follow NN--category-name
+      - Check per-feature files contain required section headers and divider lines
+      - Check root scenario count matches per-feature file count
+      - Check forbidden sidecar files and snippets/ subtree are absent
+    outputs:
+      - root_validation_passed
+      - consistency_checks_passed
+
+  step_6_completion:
+    purpose: Emit completion status
+    activities:
+      - Summarize operation, source strategy, and generated paths
+      - Report validation results
+      - Return STATUS=OK PATH=[playbook_root]
+    outputs:
+      - completion_report
+
+error_recovery:
+  checkpoint_rejected:
+    action: "Return to the previous step and revise"
+  missing_playbook_on_update:
+    action: "Offer reroute to create"
+  forbidden_sidecar_detected:
+    action: "Return to generation and fold shared guidance into the root playbook"
+  root_validation_failure:
+    action: "Fix and re-run validation before completion"
+
+circuit_breaker:
+  trigger_threshold: 3
+  reset_condition: "A checkpoint is approved and the validation gate passes"
+  actions:
+    - "Stop the workflow"
+    - "Report the failing step and affected path"
+    - "Return STATUS=CANCELLED or STATUS=FAIL"
+
+completion_report_template: |
+  Testing Playbook Command Complete
+
+  Skill: [skill_name]
+  Operation: [operation]
+  Source strategy: [source_strategy]
+  Mode: :confirm
+  Target: [playbook_root]
+
+  Validation:
+  - Root validation: [passed/failed]
+  - Root/per-feature link checks: [passed/failed]
+  - Root/per-feature count checks: [passed/failed]
+  - Forbidden sidecar check: [passed/failed]
+
+  STATUS=[OK|CANCELLED|FAIL] PATH=[playbook_root]
+
+termination:
+  success_signal: "STATUS=OK PATH=[playbook_root]"
+  cancel_signal: "STATUS=CANCELLED PATH=[playbook_root]"
+  failure_signal: "STATUS=FAIL PATH=[playbook_root]"
+  rule: "Do not claim completion until checkpoint outcomes and validation are included"
+
+rules:
+  must:
+    - "Load the creation reference and both templates before writing"
+    - "Keep shared review and orchestration guidance in the root playbook"
+    - "Use root-level numbered category folders"
+  must_not:
+    - "Generate review_protocol.md or subagent_utilization_ledger.md"
+    - "Use a snippets/ subtree"
+    - "Reduce scenarios to bare command paraphrases"

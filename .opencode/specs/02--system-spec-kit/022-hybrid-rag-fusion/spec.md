@@ -125,7 +125,7 @@ This epic encompasses 16 main phases spanning:
 | 007 | `007-code-audit-per-feature-catalog` | 21 | Complete | 2026-03-14 |
 | 008 | `008-hydra-db-based-features` | 6 | Complete | 2026-03-14 |
 | 009 | `009-skill-alignment` | 0 | Stub | 2026-03-14 |
-| 010 | `010-perfect-session-capturing` | 0 | In Progress | 2026-03-14 |
+| 010 | `010-perfect-session-capturing` | 20 | In Progress | 2026-03-18 |
 | 011 | `011-command-alignment` | 0 | Stub | 2026-03-14 |
 | 012 | `012-agents-alignment` | 0 | Stub | 2026-03-14 |
 | 013 | `013-agents-md-alignment` | 0 | Stub | 2026-03-14 |

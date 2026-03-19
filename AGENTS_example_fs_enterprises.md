@@ -56,7 +56,7 @@
 
 **MANDATORY TOOLS:**
 - **Spec Kit Memory MCP** for research tasks, context recovery, and finding prior work.  **Memory saves MUST use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]`** - NEVER manually create memory files.
-- **CocoIndex Code MCP** for semantic code search. **MUST use** when exploring unfamiliar code, finding implementations by concept/intent, or when Grep/Glob exact matching is insufficient. Skill: `.opencode/skill/mcp-cocoindex-code/`
+- **CocoIndex Code MCP** for semantic code search. **MUST use** when exploring unfamiliar code, finding implementations by concept/intent, or when Grep/Glob exact matching is insufficient. Skill: `.opencode/skill/mcp-coco-index/`
 
 **GIT WORKFLOW:** Full details: `.opencode/skill/sk-git/`
 - Worktree setup, conventional commits, PR creation, branch management

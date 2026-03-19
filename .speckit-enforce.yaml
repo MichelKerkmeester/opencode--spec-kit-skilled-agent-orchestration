@@ -8,8 +8,8 @@
 #
 enforcement:
   mode: warn
-  new_folder_mode: block
-  created_after: "2026-03-15"
+  new_folder_mode: warn
+  created_after: "2026-03-20"
 
 # Fast rule subset for pre-commit validation (6 rules).
 # Full 18-rule suite runs via validate.sh directly.

@@ -16,7 +16,7 @@ This scenario validates Implemented: graph centrality and community detection (N
 Operators run the exact prompt and command sequence for `NEW-091` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm deferred->implemented status
-- Prompt: `Verify N2 implemented and active.`
+- Prompt: `Verify N2 implemented and active. Capture the evidence needed to prove N2 tables exist with data; feature flags show active status; graph queries include centrality/community contributions in scores. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: N2 tables exist with data; feature flags show active status; graph queries include centrality/community contributions in scores
 - Pass/fail: PASS if N2 tables are populated, flags are active, and graph queries include centrality/community scoring
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-091` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-091 | Implemented: graph centrality and community detection (N2) | Confirm deferred->implemented status | `Verify N2 implemented and active.` | 1) inspect tables/flags 2) run graph queries 3) verify N2 contributions | N2 tables exist with data; feature flags show active status; graph queries include centrality/community contributions in scores | Table inspection + flag status + graph query output showing N2 score contributions | PASS if N2 tables are populated, flags are active, and graph queries include centrality/community scoring | Verify N2 migration completed; check feature flag state; inspect graph scoring pipeline for N2 channel integration |
+| NEW-091 | Implemented: graph centrality and community detection (N2) | Confirm deferred->implemented status | `Verify N2 implemented and active. Capture the evidence needed to prove N2 tables exist with data; feature flags show active status; graph queries include centrality/community contributions in scores. Return a concise user-facing pass/fail verdict with the main reason.` | 1) inspect tables/flags 2) run graph queries 3) verify N2 contributions | N2 tables exist with data; feature flags show active status; graph queries include centrality/community contributions in scores | Table inspection + flag status + graph query output showing N2 score contributions | PASS if N2 tables are populated, flags are active, and graph queries include centrality/community scoring | Verify N2 migration completed; check feature flag state; inspect graph scoring pipeline for N2 channel integration |
 
 ---
 

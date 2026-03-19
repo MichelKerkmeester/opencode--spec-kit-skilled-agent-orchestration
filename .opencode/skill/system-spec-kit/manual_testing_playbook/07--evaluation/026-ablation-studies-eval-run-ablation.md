@@ -16,7 +16,7 @@ This scenario validates Ablation studies (eval_run_ablation) for `EX-026`. It fo
 Operators run the exact prompt and command sequence for `EX-026` and confirm the expected signals without contradicting evidence.
 
 - Objective: Channel impact experiment
-- Prompt: `Run ablation on retrieval channels`
+- Prompt: `Run ablation on retrieval channels. Capture the evidence needed to prove Per-channel deltas reported. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Per-channel deltas reported
 - Pass/fail: PASS if run produces metrics/verdict
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-026` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-026 | Ablation studies (eval_run_ablation) | Channel impact experiment | `Run ablation on retrieval channels` | `eval_run_ablation({ dataset:"retrieval-channels-smoke", channels:["semantic","keyword","graph"], storeResults:true })` -> `eval_reporting_dashboard({ format:"json", limit:10 })` | Per-channel deltas reported | Ablation + dashboard outputs | PASS if run produces metrics/verdict | Validate eval dataset setup |
+| EX-026 | Ablation studies (eval_run_ablation) | Channel impact experiment | `Run ablation on retrieval channels. Capture the evidence needed to prove Per-channel deltas reported. Return a concise user-facing pass/fail verdict with the main reason.` | `eval_run_ablation({ dataset:"retrieval-channels-smoke", channels:["semantic","keyword","graph"], storeResults:true })` -> `eval_reporting_dashboard({ format:"json", limit:10 })` | Per-channel deltas reported | Ablation + dashboard outputs | PASS if run produces metrics/verdict | Validate eval dataset setup |
 
 ---
 

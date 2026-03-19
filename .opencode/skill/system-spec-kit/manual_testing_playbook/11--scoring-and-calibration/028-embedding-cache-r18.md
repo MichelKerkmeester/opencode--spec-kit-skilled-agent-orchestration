@@ -16,7 +16,7 @@ This scenario validates Embedding cache (R18) for `NEW-028`. It focuses on Confi
 Operators run the exact prompt and command sequence for `NEW-028` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm cache hit/miss behavior
-- Prompt: `Verify embedding cache (R18).`
+- Prompt: `Verify embedding cache (R18). Capture the evidence needed to prove Cache hit returns instantly without embedding API call; cache miss triggers embedding; metadata timestamps updated on hit. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Cache hit returns instantly without embedding API call; cache miss triggers embedding; metadata timestamps updated on hit
 - Pass/fail: PASS: Cache hit skips embedding call with <10ms latency; miss triggers embedding; hit updates lastAccessed timestamp; FAIL: Cache hit still calls embedding API or timestamps not updated
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-028` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-028 | Embedding cache (R18) | Confirm cache hit/miss behavior | `Verify embedding cache (R18).` | 1) Embed content/model pair 2) Repeat 3) Confirm hit and metadata update | Cache hit returns instantly without embedding API call; cache miss triggers embedding; metadata timestamps updated on hit | Cache hit/miss output + timing comparison + metadata timestamp verification | PASS: Cache hit skips embedding call with <10ms latency; miss triggers embedding; hit updates lastAccessed timestamp; FAIL: Cache hit still calls embedding API or timestamps not updated | Verify cache key computation (content+model) → Check cache storage backend → Inspect TTL/eviction policy |
+| NEW-028 | Embedding cache (R18) | Confirm cache hit/miss behavior | `Verify embedding cache (R18). Capture the evidence needed to prove Cache hit returns instantly without embedding API call; cache miss triggers embedding; metadata timestamps updated on hit. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Embed content/model pair 2) Repeat 3) Confirm hit and metadata update | Cache hit returns instantly without embedding API call; cache miss triggers embedding; metadata timestamps updated on hit | Cache hit/miss output + timing comparison + metadata timestamp verification | PASS: Cache hit skips embedding call with <10ms latency; miss triggers embedding; hit updates lastAccessed timestamp; FAIL: Cache hit still calls embedding API or timestamps not updated | Verify cache key computation (content+model) → Check cache storage backend → Inspect TTL/eviction policy |
 
 ---
 

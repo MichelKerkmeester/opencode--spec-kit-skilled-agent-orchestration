@@ -19,7 +19,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `Find rationale for <specific decision>`
+- Prompt: `Find rationale for <specific decision>. Capture the evidence needed to prove precise fact-level retrieval. Return a concise user-facing pass/fail verdict with the main reason.`
 - Commands:
   - `memory_search({query:"<decision rationale>", specFolder:"specs/<target-spec>", anchors:["decision-record","rationale"]})`
 - Expected: precise fact-level retrieval.

@@ -16,7 +16,7 @@ This scenario validates System statistics (memory_stats) for `EX-012`. It focuse
 Operators run the exact prompt and command sequence for `EX-012` and confirm the expected signals without contradicting evidence.
 
 - Objective: System baseline snapshot
-- Prompt: `Return stats with composite ranking`
+- Prompt: `Return stats with composite ranking. Capture the evidence needed to prove Counts, tiers, folder ranking present. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Counts, tiers, folder ranking present
 - Pass/fail: PASS if dashboard fields populated
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-012` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-012 | System statistics (memory_stats) | System baseline snapshot | `Return stats with composite ranking` | `memory_stats(folderRanking:composite,includeScores:true)` | Counts, tiers, folder ranking present | Stats output | PASS if dashboard fields populated | Retry with default ranking on scoring error |
+| EX-012 | System statistics (memory_stats) | System baseline snapshot | `Return stats with composite ranking. Capture the evidence needed to prove Counts, tiers, folder ranking present. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_stats(folderRanking:composite,includeScores:true)` | Counts, tiers, folder ranking present | Stats output | PASS if dashboard fields populated | Retry with default ranking on scoring error |
 
 ---
 

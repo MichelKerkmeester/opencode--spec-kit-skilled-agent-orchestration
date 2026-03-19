@@ -16,7 +16,7 @@ This scenario validates Channel min-representation (R2) for `NEW-035`. It focuse
 Operators run the exact prompt and command sequence for `NEW-035` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm top-k channel diversity rule
-- Prompt: `Validate channel min-representation (R2).`
+- Prompt: `Validate channel min-representation (R2). Capture the evidence needed to prove Each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection
 - Pass/fail: PASS: All active channels have >=1 representative in top-k; quality floor prevents sub-threshold entries; FAIL: Channel missing from top-k or sub-threshold results injected
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-035` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-035 | Channel min-representation (R2) | Confirm top-k channel diversity rule | `Validate channel min-representation (R2).` | 1) Run dominance query 2) Inspect pre/post representation 3) Verify quality floor | Each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection | Pre/post representation counts per channel + quality floor threshold verification | PASS: All active channels have >=1 representative in top-k; quality floor prevents sub-threshold entries; FAIL: Channel missing from top-k or sub-threshold results injected | Verify min-representation algorithm → Check quality floor threshold → Inspect channel priority ordering |
+| NEW-035 | Channel min-representation (R2) | Confirm top-k channel diversity rule | `Validate channel min-representation (R2). Capture the evidence needed to prove Each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Run dominance query 2) Inspect pre/post representation 3) Verify quality floor | Each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection | Pre/post representation counts per channel + quality floor threshold verification | PASS: All active channels have >=1 representative in top-k; quality floor prevents sub-threshold entries; FAIL: Channel missing from top-k or sub-threshold results injected | Verify min-representation algorithm → Check quality floor threshold → Inspect channel priority ordering |
 
 ---
 

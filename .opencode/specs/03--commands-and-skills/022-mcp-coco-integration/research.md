@@ -87,7 +87,7 @@ Follow-up deep-research iterations after Phase 2 showed that the highest-value n
 
 - `doctor.sh` should remain the read-only inspection boundary and grow explicit strict failure states for binary, skill, index, daemon, and config readiness.
 - `ensure_ready.sh` should remain the mutating bootstrap boundary for install/init/index and may optionally fail on missing config requirements, but should not silently author downstream config.
-- A sibling repo like Barter needs both the local `mcp-cocoindex-code` skill payload and repo-specific `cocoindex_code` MCP wiring in the config files it actually uses; advisor-side CocoIndex heuristics alone are not enough.
+- A sibling repo like Barter needs both the local `mcp-coco-index` skill payload and repo-specific `cocoindex_code` MCP wiring in the config files it actually uses; advisor-side CocoIndex heuristics alone are not enough.
 
 ---
 
@@ -464,7 +464,7 @@ Layer 3: Deep Memory Search (UNCHANGED)
 **Purpose**: Create proper OpenCode skill wrapper for CocoIndex
 
 ```
-.opencode/skill/mcp-cocoindex-code/
+.opencode/skill/mcp-coco-index/
 ├── SKILL.md                     # 8-section documentation
 ├── README.md                    # Quick reference
 ├── references/

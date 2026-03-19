@@ -15,6 +15,8 @@ This snippet preserves the canonical memory/spec-kit operator workflow for `M-00
 
 This scenario remains prose-first because it carries compound operator logic, supplemental checks, or shared closure rules that are clearer than a single-row matrix.
 
+- Prompt: `Save fresh context for the target spec folder, run an index scan immediately after the save, and verify the saved artifacts are discoverable in retrieval results. Capture the save and index evidence, and return a concise user-facing pass/fail verdict with the main reason.`
+
 ---
 
 ## 3. TEST EXECUTION

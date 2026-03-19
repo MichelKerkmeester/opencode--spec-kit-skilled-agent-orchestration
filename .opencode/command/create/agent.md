@@ -383,8 +383,8 @@ permission:
 - Structure extraction: `.opencode/skill/sk-doc/scripts/extract_structure.py`
 
 ### Agent References
-- Core standards: `.opencode/skill/sk-doc/references/core_standards.md`
-- Agent creation guide: `.opencode/skill/sk-doc/references/agent_creation.md`
+- Core standards: `.opencode/skill/sk-doc/references/global/core_standards.md`
+- Agent creation guide: `.opencode/skill/sk-doc/references/specific/agent_creation.md`
 
 ---
 
@@ -505,4 +505,4 @@ FOR WORKFLOW VIOLATIONS:
 | sk-doc skill                                        | `.opencode/skill/sk-doc/SKILL.md`          |
 | system-spec-kit skill                               | `.opencode/skill/system-spec-kit/SKILL.md` |
 | Scripts: validate_document.py, extract_structure.py | `sk-doc/scripts/`                          |
-| Core standards reference                            | `sk-doc/references/core_standards.md`      |
+| Core standards reference                            | `sk-doc/references/global/core_standards.md`      |

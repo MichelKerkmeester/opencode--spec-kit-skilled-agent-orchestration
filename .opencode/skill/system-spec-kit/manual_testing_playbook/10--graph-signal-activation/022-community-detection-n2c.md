@@ -16,7 +16,7 @@ This scenario validates Community detection (N2c) for `NEW-022`. It focuses on C
 Operators run the exact prompt and command sequence for `NEW-022` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm community boost injection
-- Prompt: `Validate community detection (N2c).`
+- Prompt: `Validate community detection (N2c). Capture the evidence needed to prove Community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum
 - Pass/fail: PASS: Cluster IDs assigned; co-members receive boost within cap; non-members get zero boost; FAIL: Missing cluster IDs or boost exceeds cap
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-022` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-022 | Community detection (N2c) | Confirm community boost injection | `Validate community detection (N2c).` | 1) Create communities 2) Recompute 3) Verify co-member injection/caps | Community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum | Community assignment output + co-member boost values + cap verification | PASS: Cluster IDs assigned; co-members receive boost within cap; non-members get zero boost; FAIL: Missing cluster IDs or boost exceeds cap | Verify community detection algorithm → Check boost injection point in pipeline → Inspect cap enforcement |
+| NEW-022 | Community detection (N2c) | Confirm community boost injection | `Validate community detection (N2c). Capture the evidence needed to prove Community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Create communities 2) Recompute 3) Verify co-member injection/caps | Community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum | Community assignment output + co-member boost values + cap verification | PASS: Cluster IDs assigned; co-members receive boost within cap; non-members get zero boost; FAIL: Missing cluster IDs or boost exceeds cap | Verify community detection algorithm → Check boost injection point in pipeline → Inspect cap enforcement |
 
 ---
 

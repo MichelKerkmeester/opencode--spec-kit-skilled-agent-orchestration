@@ -41,14 +41,28 @@ function deleteAncillaryMemoryRows(database: Database.Database, id: number): voi
     'DELETE FROM community_assignments WHERE memory_id = ?',
     'DELETE FROM memory_summaries WHERE memory_id = ?',
     'DELETE FROM memory_entities WHERE memory_id = ?',
+    'DELETE FROM memory_lineage WHERE memory_id = ?',
+    'DELETE FROM shared_space_conflicts WHERE existing_memory_id = ? OR incoming_memory_id = ?',
   ];
 
   for (const sql of ancillaryTables) {
     try {
-      database.prepare(sql).run(id);
+      const paramCount = (sql.match(/\?/g) || []).length;
+      if (paramCount === 2) {
+        database.prepare(sql).run(id, id);
+      } else {
+        database.prepare(sql).run(id);
+      }
     } catch (_error: unknown) {
       // Best-effort for legacy databases that may not have these tables yet.
     }
+  }
+
+  // B10: Clean active_memory_projection rows referencing this memory.
+  try {
+    database.prepare('DELETE FROM active_memory_projection WHERE active_memory_id = ?').run(id);
+  } catch (_error: unknown) {
+    // Best-effort for legacy databases that may not have projection tables yet.
   }
 
   try {
@@ -279,7 +293,9 @@ export function index_memory_deferred(params: IndexMemoryDeferredParams): number
           spec_level = ?,
           content_text = ?,
           quality_score = ?,
-          quality_flags = ?
+          quality_flags = ?,
+          retry_count = 0,
+          last_retry_at = NULL
       WHERE id = ?
     `).run(title, triggers_json, importanceWeight, canonicalFilePath, failureReason, now, encodingIntent, documentType, specLevel, contentText, qualityScore, JSON.stringify(qualityFlags), existing.id);
     try {
@@ -400,9 +416,14 @@ export function update_memory(params: UpdateMemoryParams): number {
 
     values.push(id);
 
-    database.prepare(`
+    const updateResult = database.prepare(`
       UPDATE memory_index SET ${updates.join(', ')} WHERE id = ?
     `).run(...values);
+
+    // B11: Return early if the target row no longer exists.
+    if (updateResult.changes === 0) {
+      return id;
+    }
 
     const sqlite_vec = get_sqlite_vec_available();
     if (embedding && sqlite_vec) {

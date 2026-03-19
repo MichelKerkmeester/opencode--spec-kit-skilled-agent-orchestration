@@ -974,42 +974,47 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     scope: saveScope,
   });
 
-  if (typeof result.id === 'number' && result.id > 0) {
-    applyPostInsertMetadata(database, result.id, buildGovernancePostInsertFields(governanceDecision));
-    recordGovernanceAudit(database, {
-      action: 'memory_save',
-      decision: 'allow',
-      memoryId: result.id,
-      tenantId,
-      userId,
-      agentId,
-      sessionId,
-      sharedSpaceId,
-      reason: sharedSpaceId ? 'shared_space_save' : 'governed_ingest',
-      metadata: { filePath: validatedPath, retentionPolicy: governanceDecision.normalized.retentionPolicy },
-    });
+  if (typeof result.id === 'number' && result.id > 0 && result.status !== 'unchanged' && result.status !== 'duplicate') {
+    // B13: Wrap governance metadata UPDATE + audit + conflict in a transaction
+    // so the memory row is never left without its governance fields.
+    const applyGovernanceTx = database.transaction(() => {
+      applyPostInsertMetadata(database, result.id, buildGovernancePostInsertFields(governanceDecision));
+      recordGovernanceAudit(database, {
+        action: 'memory_save',
+        decision: 'allow',
+        memoryId: result.id,
+        tenantId,
+        userId,
+        agentId,
+        sessionId,
+        sharedSpaceId,
+        reason: sharedSpaceId ? 'shared_space_save' : 'governed_ingest',
+        metadata: { filePath: validatedPath, retentionPolicy: governanceDecision.normalized.retentionPolicy },
+      });
 
-    if (sharedSpaceId) {
-      const existing = database.prepare(`
-        SELECT id
-        FROM memory_index
-        WHERE shared_space_id = ?
-          AND file_path = ?
-          AND id != ?
-        ORDER BY id DESC
-        LIMIT 1
-      `).get(sharedSpaceId, validatedPath, result.id) as { id?: number } | undefined;
-      if (existing?.id) {
-        recordSharedConflict(database, {
-          spaceId: sharedSpaceId,
-          logicalKey: `${result.specFolder || ''}::${validatedPath}`,
-          existingMemoryId: existing.id,
-          incomingMemoryId: result.id,
-          actor: provenanceActor ?? 'mcp:memory_save',
-          metadata: { filePath: validatedPath },
-        });
+      if (sharedSpaceId) {
+        const existing = database.prepare(`
+          SELECT id
+          FROM memory_index
+          WHERE shared_space_id = ?
+            AND file_path = ?
+            AND id != ?
+          ORDER BY id DESC
+          LIMIT 1
+        `).get(sharedSpaceId, validatedPath, result.id) as { id?: number } | undefined;
+        if (existing?.id) {
+          recordSharedConflict(database, {
+            spaceId: sharedSpaceId,
+            logicalKey: `${result.specFolder || ''}::${validatedPath}`,
+            existingMemoryId: existing.id,
+            incomingMemoryId: result.id,
+            actor: provenanceActor ?? 'mcp:memory_save',
+            metadata: { filePath: validatedPath },
+          });
+        }
       }
-    }
+    });
+    applyGovernanceTx();
   }
 
   return buildSaveResponse({ result, filePath: file_path, asyncEmbedding, requestId });
@@ -1162,7 +1167,11 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
     };
   }
 
-  const shouldEmitPostMutationFeedback = indexResult.status !== 'duplicate';
+  if (indexResult.status !== 'unchanged' && indexResult.status !== 'duplicate' && indexResult.id > 0) {
+    applyPostInsertMetadata(database, indexResult.id, {});
+  }
+
+  const shouldEmitPostMutationFeedback = indexResult.status !== 'duplicate' && indexResult.status !== 'unchanged';
   let postMutationFeedback: ReturnType<typeof buildMutationHookFeedback> | null = null;
   if (shouldEmitPostMutationFeedback) {
     let postMutationHooks: import('./mutation-hooks').MutationHookResult;
@@ -1172,12 +1181,13 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
         specFolder: indexResult.specFolder,
         memoryId: indexResult.id,
       });
-    } catch (_error: unknown) {
+    } catch (hookError: unknown) {
+      const msg = hookError instanceof Error ? hookError.message : String(hookError);
       postMutationHooks = {
         latencyMs: 0, triggerCacheCleared: false,
         constitutionalCacheCleared: false, toolCacheInvalidated: 0,
         graphSignalsCacheCleared: false, coactivationCacheCleared: false,
-        errors: [],
+        errors: [msg],
       };
     }
     postMutationFeedback = buildMutationHookFeedback('atomic-save', postMutationHooks);

@@ -16,7 +16,7 @@ This scenario validates Activation window persistence for `NEW-076`. It focuses 
 Operators run the exact prompt and command sequence for `NEW-076` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm warn-only window persistence
-- Prompt: `Verify activation window persistence.`
+- Prompt: `Verify activation window persistence. Capture the evidence needed to prove Activation window timestamp persists across restart; warn-only mode respects persisted window; no timestamp reset on service restart. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Activation window timestamp persists across restart; warn-only mode respects persisted window; no timestamp reset on service restart
 - Pass/fail: PASS if activation window timestamp survives restart and warn-only behavior is maintained
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-076` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-076 | Activation window persistence | Confirm warn-only window persistence | `Verify activation window persistence.` | 1) initialize window timestamp 2) restart 3) confirm no reset | Activation window timestamp persists across restart; warn-only mode respects persisted window; no timestamp reset on service restart | Pre-restart window state + post-restart window state comparison + warn-only behavior evidence | PASS if activation window timestamp survives restart and warn-only behavior is maintained | Check persistence mechanism for activation window; verify read-on-startup logic; inspect for unintentional reset paths |
+| NEW-076 | Activation window persistence | Confirm warn-only window persistence | `Verify activation window persistence. Capture the evidence needed to prove Activation window timestamp persists across restart; warn-only mode respects persisted window; no timestamp reset on service restart. Return a concise user-facing pass/fail verdict with the main reason.` | 1) initialize window timestamp 2) restart 3) confirm no reset | Activation window timestamp persists across restart; warn-only mode respects persisted window; no timestamp reset on service restart | Pre-restart window state + post-restart window state comparison + warn-only behavior evidence | PASS if activation window timestamp survives restart and warn-only behavior is maintained | Check persistence mechanism for activation window; verify read-on-startup logic; inspect for unintentional reset paths |
 
 ---
 

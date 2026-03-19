@@ -6,6 +6,7 @@
 import { requireDb } from '../utils';
 import { createMCPSuccessResponse } from '../lib/response/envelope';
 import type { MCPResponse } from './types';
+import type { SharedSpaceUpsertArgs, SharedSpaceMembershipArgs, SharedMemoryStatusArgs } from '../tools/types';
 import {
   enableSharedMemory,
   ensureSharedCollabRuntime,
@@ -19,29 +20,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 // Feature catalog: Shared-memory rollout, deny-by-default membership, and kill switch
-
-
-interface SharedSpaceUpsertArgs {
-  spaceId: string;
-  tenantId: string;
-  name: string;
-  rolloutEnabled?: boolean;
-  rolloutCohort?: string;
-  killSwitch?: boolean;
-}
-
-interface SharedSpaceMembershipArgs {
-  spaceId: string;
-  subjectType: 'user' | 'agent';
-  subjectId: string;
-  role: 'owner' | 'editor' | 'viewer';
-}
-
-interface SharedMemoryStatusArgs {
-  tenantId?: string;
-  userId?: string;
-  agentId?: string;
-}
 
 /**
  * Persist a shared-space definition for rollout and membership checks.

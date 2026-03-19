@@ -245,12 +245,13 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
     let postMutationHooks: import('../mutation-hooks').MutationHookResult;
     try {
       postMutationHooks = runPostMutationHooks('save', { specFolder: result.specFolder, filePath });
-    } catch (_error: unknown) {
+    } catch (hookError: unknown) {
+      const msg = hookError instanceof Error ? hookError.message : String(hookError);
       postMutationHooks = {
         latencyMs: 0, triggerCacheCleared: false,
         constitutionalCacheCleared: false, toolCacheInvalidated: 0,
         graphSignalsCacheCleared: false, coactivationCacheCleared: false,
-        errors: [],
+        errors: [msg],
       };
     }
     postMutationFeedback = buildMutationHookFeedback('save', postMutationHooks);

@@ -16,7 +16,7 @@ This scenario validates Reporting dashboard (eval_reporting_dashboard) for `EX-0
 Operators run the exact prompt and command sequence for `EX-027` and confirm the expected signals without contradicting evidence.
 
 - Objective: Eval reporting pass
-- Prompt: `Generate the latest dashboard report`
+- Prompt: `Generate the latest dashboard report. Capture the evidence needed to prove Trend/channel/summary data present in supported runtime formats. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Trend/channel/summary data present in supported runtime formats
 - Pass/fail: PASS if report generated without error in supported format
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-027` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-027 | Reporting dashboard (eval_reporting_dashboard) | Eval reporting pass | `Generate the latest dashboard report` | `eval_reporting_dashboard(format:text)` and `eval_reporting_dashboard(format:json)` | Trend/channel/summary data present in supported runtime formats | Dashboard output in text or JSON | PASS if report generated without error in supported format | Retry with `format:json` or `format:text` and inspect dashboard aggregation inputs |
+| EX-027 | Reporting dashboard (eval_reporting_dashboard) | Eval reporting pass | `Generate the latest dashboard report. Capture the evidence needed to prove Trend/channel/summary data present in supported runtime formats. Return a concise user-facing pass/fail verdict with the main reason.` | `eval_reporting_dashboard(format:text)` and `eval_reporting_dashboard(format:json)` | Trend/channel/summary data present in supported runtime formats | Dashboard output in text or JSON | PASS if report generated without error in supported format | Retry with `format:json` or `format:text` and inspect dashboard aggregation inputs |
 
 ---
 

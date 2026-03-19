@@ -16,7 +16,7 @@ This scenario validates RRF K-value sensitivity analysis (FUT-5) for `NEW-030`. 
 Operators run the exact prompt and command sequence for `NEW-030` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm K sensitivity measurements
-- Prompt: `Run RRF K sensitivity analysis.`
+- Prompt: `Run RRF K sensitivity analysis. Capture the evidence needed to prove K-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: K-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns
 - Pass/fail: PASS: Multiple K values tested with per-K metrics; optimal K documented with evidence; FAIL: Single K tested or no comparative analysis
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-030` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-030 | RRF K-value sensitivity analysis (FUT-5) | Confirm K sensitivity measurements | `Run RRF K sensitivity analysis.` | 1) Run K grid 2) Compare metrics 3) Select best K rationale | K-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns | K-grid metric output + sensitivity comparison table + optimal K selection rationale | PASS: Multiple K values tested with per-K metrics; optimal K documented with evidence; FAIL: Single K tested or no comparative analysis | Verify K-grid configuration → Check metric computation per K → Inspect sensitivity analysis methodology |
+| NEW-030 | RRF K-value sensitivity analysis (FUT-5) | Confirm K sensitivity measurements | `Run RRF K sensitivity analysis. Capture the evidence needed to prove K-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Run K grid 2) Compare metrics 3) Select best K rationale | K-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns | K-grid metric output + sensitivity comparison table + optimal K selection rationale | PASS: Multiple K values tested with per-K metrics; optimal K documented with evidence; FAIL: Single K tested or no comparative analysis | Verify K-grid configuration → Check metric computation per K → Inspect sensitivity analysis methodology |
 
 ---
 

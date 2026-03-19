@@ -98,7 +98,7 @@ Rendered memory -> quality validation -> rule metadata lookup -> disposition -> 
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Existing quality validation rules | Internal | Green | The new disposition layer depends on stable rule IDs |
+| Existing quality validation rules (V1-V11) | Internal | Green | The new disposition layer depends on stable rule IDs. V11 was added post-phase but follows the same metadata contract |
 <!-- /ANCHOR:dependencies -->
 
 ---

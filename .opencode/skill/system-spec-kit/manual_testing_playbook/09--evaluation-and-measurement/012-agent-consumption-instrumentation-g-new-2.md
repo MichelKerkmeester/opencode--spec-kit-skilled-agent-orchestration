@@ -16,7 +16,7 @@ This scenario validates Agent consumption instrumentation (G-NEW-2) for `NEW-012
 Operators run the exact prompt and command sequence for `NEW-012` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm wiring with inert runtime
-- Prompt: `Validate G-NEW-2 instrumentation behavior.`
+- Prompt: `Validate G-NEW-2 instrumentation behavior. Capture the evidence needed to prove Logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors
 - Pass/fail: PASS: Handlers execute without error and produce no telemetry output (inert mode); FAIL: Telemetry output produced or handler errors
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-012` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-012 | Agent consumption instrumentation (G-NEW-2) | Confirm wiring with inert runtime | `Validate G-NEW-2 instrumentation behavior.` | 1) Trigger retrieval handlers 2) Inspect logger gate 3) Confirm no-op telemetry | Logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors | Instrumentation trace showing handler wiring + logger gate state + empty telemetry output | PASS: Handlers execute without error and produce no telemetry output (inert mode); FAIL: Telemetry output produced or handler errors | Verify logger gate configuration → Check handler registration → Inspect inert/active mode toggle |
+| NEW-012 | Agent consumption instrumentation (G-NEW-2) | Confirm wiring with inert runtime | `Validate G-NEW-2 instrumentation behavior. Capture the evidence needed to prove Logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Trigger retrieval handlers 2) Inspect logger gate 3) Confirm no-op telemetry | Logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors | Instrumentation trace showing handler wiring + logger gate state + empty telemetry output | PASS: Handlers execute without error and produce no telemetry output (inert mode); FAIL: Telemetry output produced or handler errors | Verify logger gate configuration → Check handler registration → Inspect inert/active mode toggle |
 
 ---
 

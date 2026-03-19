@@ -16,7 +16,7 @@ This scenario validates Constitutional memory as expert knowledge injection (PI-
 Operators run the exact prompt and command sequence for `NEW-056` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm directive enrichment
-- Prompt: `Verify constitutional memory directive injection (PI-A4).`
+- Prompt: `Verify constitutional memory directive injection (PI-A4). Capture the evidence needed to prove Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated
 - Pass/fail: PASS if constitutional directives are injected into retrieval results with correct metadata and tier
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-056` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-056 | Constitutional memory as expert knowledge injection (PI-A4) | Confirm directive enrichment | `Verify constitutional memory directive injection (PI-A4).` | 1) save constitutional directive 2) run retrieval 3) inspect directive metadata | Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated | Save output + retrieval output showing directive metadata + tier classification evidence | PASS if constitutional directives are injected into retrieval results with correct metadata and tier | Verify constitutional/ directory contains valid directives; check tier classification logic; inspect enrichment pipeline for directive handling |
+| NEW-056 | Constitutional memory as expert knowledge injection (PI-A4) | Confirm directive enrichment | `Verify constitutional memory directive injection (PI-A4). Capture the evidence needed to prove Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated. Return a concise user-facing pass/fail verdict with the main reason.` | 1) save constitutional directive 2) run retrieval 3) inspect directive metadata | Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated | Save output + retrieval output showing directive metadata + tier classification evidence | PASS if constitutional directives are injected into retrieval results with correct metadata and tier | Verify constitutional/ directory contains valid directives; check tier classification logic; inspect enrichment pipeline for directive handling |
 
 ---
 

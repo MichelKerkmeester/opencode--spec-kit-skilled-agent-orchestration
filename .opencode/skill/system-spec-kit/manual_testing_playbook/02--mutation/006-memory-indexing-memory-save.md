@@ -16,7 +16,7 @@ This scenario validates Memory indexing (memory_save) for `EX-006`. It focuses o
 Operators run the exact prompt and command sequence for `EX-006` and confirm the expected signals without contradicting evidence.
 
 - Objective: New memory ingestion
-- Prompt: `Index memory file and report action`
+- Prompt: `Index memory file and report action. Capture the evidence needed to prove Save action reported; searchable result appears; no template-contract or insufficiency rejection. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Save action reported; searchable result appears; no template-contract or insufficiency rejection
 - Pass/fail: PASS if indexed and retrievable and the save does not report `INSUFFICIENT_CONTEXT_ABORT` or template-contract failure
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-006` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-006 | Memory indexing (memory_save) | New memory ingestion | `Index memory file and report action` | `memory_save(filePath)` -> `memory_stats()` -> `memory_search(title)` | Save action reported; searchable result appears; no template-contract or insufficiency rejection | Save output + follow-up search | PASS if indexed and retrievable and the save does not report `INSUFFICIENT_CONTEXT_ABORT` or template-contract failure | Validate file path/type, rendered anchor/frontmatter shape, and content quality |
+| EX-006 | Memory indexing (memory_save) | New memory ingestion | `Index memory file and report action. Capture the evidence needed to prove Save action reported; searchable result appears; no template-contract or insufficiency rejection. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_save(filePath)` -> `memory_stats()` -> `memory_search(title)` | Save action reported; searchable result appears; no template-contract or insufficiency rejection | Save output + follow-up search | PASS if indexed and retrievable and the save does not report `INSUFFICIENT_CONTEXT_ABORT` or template-contract failure | Validate file path/type, rendered anchor/frontmatter shape, and content quality |
 
 ---
 

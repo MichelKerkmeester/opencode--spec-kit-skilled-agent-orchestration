@@ -16,7 +16,7 @@ This scenario validates Health diagnostics (memory_health) for `EX-013`. It focu
 Operators run the exact prompt and command sequence for `EX-013` and confirm the expected signals without contradicting evidence.
 
 - Objective: Index/FTS integrity check
-- Prompt: `Run full health and divergent_aliases`
+- Prompt: `Run full health and divergent_aliases. Capture the evidence needed to prove healthy/degraded status and diagnostics. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: healthy/degraded status and diagnostics
 - Pass/fail: PASS if report completes with actionable diagnostics
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-013` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-013 | Health diagnostics (memory_health) | Index/FTS integrity check | `Run full health and divergent_aliases` | `memory_health(reportMode:full)` -> `memory_health(reportMode:divergent_aliases)` | healthy/degraded status and diagnostics | Health outputs | PASS if report completes with actionable diagnostics | Run index_scan(force) if FTS mismatch |
+| EX-013 | Health diagnostics (memory_health) | Index/FTS integrity check | `Run full health and divergent_aliases. Capture the evidence needed to prove healthy/degraded status and diagnostics. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_health(reportMode:full)` -> `memory_health(reportMode:divergent_aliases)` | healthy/degraded status and diagnostics | Health outputs | PASS if report completes with actionable diagnostics | Run index_scan(force) if FTS mismatch |
 
 ---
 

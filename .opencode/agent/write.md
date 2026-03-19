@@ -184,6 +184,8 @@ All template files follow this consistent structure:
 | -------------------------- | ------------------------- | ------------------------------------------- |
 | **Mode 1: README**         | `/create:folder_readme`   | Unified README creation (default operation) |
 | **Mode 2: Skill Creation** | `/create:sk-skill`        | Unified skill create/update/file flows      |
+| **Mode 2: Catalog Creation** | `/create:feature-catalog` | Rooted feature catalog package creation/update |
+| **Mode 2: Playbook Creation** | `/create:testing-playbook` | Rooted manual testing playbook package creation/update |
 | **Mode 4: Install Guides** | `/create:folder_readme install` | Install guide creation via unified command |
 
 **Command → Mode Mapping:**
@@ -191,6 +193,8 @@ All template files follow this consistent structure:
 /create:folder_readme            → Mode 1 (README quality standards, default)
 /create:folder_readme install    → Mode 4 (5-phase install workflow)
 /create:sk-skill                 → Mode 2 (full-create/full-update/reference-only/asset-only)
+/create:feature-catalog          → Mode 2 (rooted feature catalog packages)
+/create:testing-playbook         → Mode 2 (rooted manual testing playbook packages)
 ```
 
 ---
@@ -218,11 +222,13 @@ All template files follow this consistent structure:
 | -------------------------------------- | ------------------------- | --------------------------- |
 | spec.md, plan.md, checklist.md         | `system-spec-kit`         | Spec folder templates       |
 | SKILL.md                               | `sk-doc` | skill_md_template.md        |
-| references/*.md                        | `sk-doc` | skill_reference_template.md |
+| references/**/*.md                     | `sk-doc` | skill_reference_template.md |
 | assets/*.md                            | `sk-doc` | skill_asset_template.md     |
 | README.md (general)                    | `sk-doc` | readme_template.md          |
 | Memory files (memory/*.md)             | `system-spec-kit`         | Auto-generated              |
 | Install guides                         | `sk-doc` | install_guide_template.md   |
+| feature_catalog package docs           | `sk-doc` | feature_catalog templates   |
+| manual_testing_playbook package docs   | `sk-doc` | testing_playbook templates  |
 | Agent files (.opencode/agent/*.md)     | `sk-doc` | agent_template.md           |
 | Command files (.opencode/command/*.md) | `sk-doc` | command_template.md         |
 

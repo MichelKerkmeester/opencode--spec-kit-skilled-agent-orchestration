@@ -19,12 +19,12 @@ _NOTE_6_GET_OPENAI_KEY = "Get OpenAI key: https://platform.openai.com/api-keys"
 _NOTE_7_FEATURE_FLAGS = "Opt-out flags (all default ON): SPECKIT_ADAPTIVE_FUSION, SPECKIT_EXTENDED_TELEMETRY"
 
 [mcp_servers.cocoindex_code]
-command = ".opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc"
+command = ".opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc"
 args = ["mcp"]
 
 [mcp_servers.cocoindex_code.env]
 COCOINDEX_CODE_ROOT_PATH = "."
-_NOTE_1 = "Install: bash .opencode/skill/mcp-cocoindex-code/scripts/install.sh"
+_NOTE_1 = "Install: bash .opencode/skill/mcp-coco-index/scripts/install.sh"
 _NOTE_2 = "Default embedding: all-MiniLM-L6-v2 (local, no API key needed)"
 _NOTE_3 = "Index stored in .cocoindex_code/ (gitignored)"
 

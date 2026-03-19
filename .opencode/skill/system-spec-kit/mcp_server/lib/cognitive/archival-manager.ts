@@ -493,8 +493,12 @@ async function rebuildVectorOnUnarchive(memoryId: number): Promise<void> {
 
   const embeddingBuffer = Buffer.from(embedding.buffer, embedding.byteOffset, embedding.byteLength);
   try {
-    db.prepare('DELETE FROM vec_memories WHERE rowid = ?').run(BigInt(memoryId));
-    db.prepare('INSERT INTO vec_memories (rowid, embedding) VALUES (?, ?)').run(BigInt(memoryId), embeddingBuffer);
+    // Unarchive: Wrap DELETE + INSERT in a transaction to prevent orphan vector rows.
+    const database = db!;
+    database.transaction(() => {
+      database.prepare('DELETE FROM vec_memories WHERE rowid = ?').run(BigInt(memoryId));
+      database.prepare('INSERT INTO vec_memories (rowid, embedding) VALUES (?, ?)').run(BigInt(memoryId), embeddingBuffer);
+    })();
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     if (!msg.includes('no such table') && !msg.includes('no such module')) {

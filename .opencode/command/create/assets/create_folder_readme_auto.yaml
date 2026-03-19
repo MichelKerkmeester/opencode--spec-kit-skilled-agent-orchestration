@@ -240,7 +240,7 @@ quality_standards:
       stage_2: "Validate AI-First prompt completeness"
       stage_3: "Check command syntax and platform coverage"
   template_adherence: required
-  core_standards_reference: ".opencode/skill/sk-doc/references/core_standards.md"
+  core_standards_reference: ".opencode/skill/sk-doc/references/global/core_standards.md"
 
 
 # ════════════════════════════════════════════════════════════════
@@ -378,7 +378,7 @@ readme_reference_templates:
   readme_template: .opencode/skill/sk-doc/assets/documentation/readme_template.md
   speckit_readme: .opencode/skill/system-spec-kit/README.md
   memory_readme: .opencode/skill/system-spec-kit/README.md
-  core_standards: .opencode/skill/sk-doc/references/core_standards.md
+  core_standards: .opencode/skill/sk-doc/references/global/core_standards.md
 
 # ─────────────────────────────────────────────────────────────────
 # README: TEMPLATE EVOLUTION REFERENCES
@@ -851,7 +851,7 @@ install_guide_reference_templates:
   install_guide_template: .opencode/skill/sk-doc/assets/documentation/install_guide_template.md
   mcp_guide: .opencode/install_guides/MCP - Code Mode.md
   cli_guide: .opencode/install_guides/MCP - Chrome Dev Tools.md
-  core_standards: .opencode/skill/sk-doc/references/core_standards.md
+  core_standards: .opencode/skill/sk-doc/references/global/core_standards.md
 
 # ─────────────────────────────────────────────────────────────────
 # INSTALL GUIDE: WORKFLOW (6 STEPS WITH CHECKPOINTS)

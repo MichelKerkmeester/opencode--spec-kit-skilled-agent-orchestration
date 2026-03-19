@@ -16,7 +16,7 @@ This scenario validates Lightweight consolidation (N3-lite) for `NEW-058`. It fo
 Operators run the exact prompt and command sequence for `NEW-058` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm maintenance cycle behavior
-- Prompt: `Run lightweight consolidation cycle (N3-lite).`
+- Prompt: `Run lightweight consolidation cycle (N3-lite). Capture the evidence needed to prove Consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs
 - Pass/fail: PASS if all three consolidation sub-processes execute and produce expected outputs without errors
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-058` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-058 | Lightweight consolidation (N3-lite) | Confirm maintenance cycle behavior | `Run lightweight consolidation cycle (N3-lite).` | 1) trigger cycle 2) inspect contradiction/hebbian/staleness outputs 3) verify logs | Consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs | Consolidation cycle output + log entries for each sub-step (contradiction/hebbian/staleness) | PASS if all three consolidation sub-processes execute and produce expected outputs without errors | Check consolidation trigger mechanism; inspect individual sub-process logs; verify database state before and after cycle |
+| NEW-058 | Lightweight consolidation (N3-lite) | Confirm maintenance cycle behavior | `Run lightweight consolidation cycle (N3-lite). Capture the evidence needed to prove Consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs. Return a concise user-facing pass/fail verdict with the main reason.` | 1) trigger cycle 2) inspect contradiction/hebbian/staleness outputs 3) verify logs | Consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs | Consolidation cycle output + log entries for each sub-step (contradiction/hebbian/staleness) | PASS if all three consolidation sub-processes execute and produce expected outputs without errors | Check consolidation trigger mechanism; inspect individual sub-process logs; verify database state before and after cycle |
 
 ---
 

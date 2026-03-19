@@ -680,6 +680,28 @@ function buildToolObservationTitle(tool: CaptureToolCall): string {
   }
 }
 
+// P1-07: Stopwords for single-token spec relevance keywords.
+// These are common in spec folder paths but too generic to filter on alone.
+// Multi-word phrases (e.g., "session capturing") remain because they're specific enough.
+const RELEVANCE_KEYWORD_STOPWORDS = new Set([
+  'add', 'analysis', 'and', 'auto', 'base', 'build', 'capture', 'capturing',
+  'change', 'changes', 'check', 'cleanup', 'code', 'complete', 'config',
+  'configuration', 'core', 'create', 'data', 'debug', 'default', 'detection',
+  'docs', 'documentation', 'edit', 'error', 'evaluation', 'feature', 'file',
+  'files', 'filter', 'fix', 'fixes', 'flow', 'full', 'gate', 'gates',
+  'guide', 'handling', 'implementation', 'improve', 'index', 'input',
+  'integration', 'issue', 'issues', 'level', 'list', 'live', 'load',
+  'main', 'manual', 'match', 'memory', 'mode', 'model', 'module', 'new',
+  'node', 'output', 'parity', 'path', 'perfect', 'pipeline', 'plan',
+  'playbook', 'process', 'project', 'proof', 'quality', 'query', 'read',
+  'remove', 'research', 'result', 'review', 'rule', 'rules', 'run',
+  'runtime', 'save', 'script', 'scripts', 'search', 'service', 'session',
+  'set', 'setup', 'signal', 'spec', 'stage', 'start', 'state', 'status',
+  'step', 'stop', 'system', 'template', 'test', 'testing', 'tool', 'tools',
+  'type', 'types', 'update', 'use', 'user', 'utils', 'valid', 'validation',
+  'value', 'view', 'work', 'workflow', 'write',
+]);
+
 function buildSpecRelevanceKeywords(specFolderHint?: string | null): string[] {
   if (!specFolderHint) return [];
 
@@ -691,12 +713,14 @@ function buildSpecRelevanceKeywords(specFolderHint?: string | null): string[] {
 
   for (const segment of segments) {
     const normalizedSegment = normalizeText(segment);
-    if (normalizedSegment.length > 2) {
+    // Multi-word phrases are specific enough to keep (e.g., "session capturing")
+    if (normalizedSegment.length > 2 && normalizedSegment.includes(' ')) {
       keywords.add(normalizedSegment);
     }
 
     for (const token of normalizedSegment.split(' ')) {
-      if (token.length > 2) {
+      // P1-07: Skip generic single tokens that cause false-positive relevance matches
+      if (token.length > 2 && !RELEVANCE_KEYWORD_STOPWORDS.has(token)) {
         keywords.add(token);
       }
     }

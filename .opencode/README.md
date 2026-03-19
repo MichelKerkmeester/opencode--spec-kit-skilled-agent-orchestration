@@ -55,9 +55,9 @@ Together, these systems enable context-aware development with traceability, hard
 | MCP Tools | 32 | 25 memory + 7 code mode |
 | Agents | 9 | `.opencode/agent/*.md` files (`@general` and `@explore` are built in) |
 | Skills | 16 | Skill modules in `.opencode/skill/` |
-| Commands | 19 | Markdown command entry points in `.opencode/command/` |
+| Commands | 22 | Markdown command entry points in `.opencode/command/` |
 | Templates | 83 | Spec Kit CORE + ADDENDUM templates |
-| YAML assets | 23 | Command execution YAML files |
+| YAML assets | 27 | Command execution YAML files |
 | Validation rules | 13 | Spec folder validation scripts |
 | Last Verified | 2026-03-11 | Counts refreshed against live repository state |
 
@@ -176,6 +176,8 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 - `/create:changelog`: Generate a changelog entry from recent work
 - `/create:sk-skill`: Unified skill command (full-create, full-update, reference-only, asset-only)
 - `/create:folder_readme`: Unified documentation command (`readme` and `install` operations)
+- `/create:feature-catalog`: Rooted feature catalog package creation/update
+- `/create:testing-playbook`: Rooted manual testing playbook package creation/update
 - `/create:prompt`: Create or improve prompts with framework-based guidance
 
 ### Utility Commands

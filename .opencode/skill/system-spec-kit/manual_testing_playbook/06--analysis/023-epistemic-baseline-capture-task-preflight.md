@@ -16,7 +16,7 @@ This scenario validates Epistemic baseline capture (task_preflight) for `EX-023`
 Operators run the exact prompt and command sequence for `EX-023` and confirm the expected signals without contradicting evidence.
 
 - Objective: Pre-task baseline logging
-- Prompt: `Create preflight for pipeline-v2-audit`
+- Prompt: `Create preflight for pipeline-v2-audit. Capture the evidence needed to prove Baseline record created. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Baseline record created
 - Pass/fail: PASS if baseline persisted
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-023` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-023 | Epistemic baseline capture (task_preflight) | Pre-task baseline logging | `Create preflight for pipeline-v2-audit` | `task_preflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore)` | Baseline record created | Preflight output | PASS if baseline persisted | Retry with complete fields |
+| EX-023 | Epistemic baseline capture (task_preflight) | Pre-task baseline logging | `Create preflight for pipeline-v2-audit. Capture the evidence needed to prove Baseline record created. Return a concise user-facing pass/fail verdict with the main reason.` | `task_preflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore)` | Baseline record created | Preflight output | PASS if baseline persisted | Retry with complete fields |
 
 ---
 

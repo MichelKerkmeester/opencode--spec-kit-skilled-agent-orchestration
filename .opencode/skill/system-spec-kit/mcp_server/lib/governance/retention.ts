@@ -52,21 +52,28 @@ export function runRetentionSweep(database: Database.Database, scope: ScopeConte
   };
 
   for (const row of rows) {
-    const deleted = delete_memory_from_database(database, row.id);
+    // A8: Wrap delete + audit in a per-memory transaction for atomicity.
+    const sweepOne = database.transaction(() => {
+      const deleted = delete_memory_from_database(database, row.id);
+      if (deleted) {
+        recordGovernanceAudit(database, {
+          action: 'retention_sweep',
+          decision: 'delete',
+          memoryId: row.id,
+          tenantId: typeof row.tenant_id === 'string' ? row.tenant_id : scope.tenantId,
+          userId: typeof row.user_id === 'string' ? row.user_id : scope.userId,
+          agentId: typeof row.agent_id === 'string' ? row.agent_id : scope.agentId,
+          sessionId: typeof row.session_id === 'string' ? row.session_id : scope.sessionId,
+          sharedSpaceId: typeof row.shared_space_id === 'string' ? row.shared_space_id : scope.sharedSpaceId,
+          reason: 'delete_after_expired',
+        });
+      }
+      return deleted;
+    });
+    const deleted = sweepOne();
     if (deleted) {
       result.deleted += 1;
       result.deletedIds.push(row.id);
-      recordGovernanceAudit(database, {
-        action: 'retention_sweep',
-        decision: 'delete',
-        memoryId: row.id,
-        tenantId: typeof row.tenant_id === 'string' ? row.tenant_id : scope.tenantId,
-        userId: typeof row.user_id === 'string' ? row.user_id : scope.userId,
-        agentId: typeof row.agent_id === 'string' ? row.agent_id : scope.agentId,
-        sessionId: typeof row.session_id === 'string' ? row.session_id : scope.sessionId,
-        sharedSpaceId: typeof row.shared_space_id === 'string' ? row.shared_space_id : scope.sharedSpaceId,
-        reason: 'delete_after_expired',
-      });
       continue;
     }
 

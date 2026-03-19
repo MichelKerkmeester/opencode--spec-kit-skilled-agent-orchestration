@@ -194,7 +194,7 @@ Create Child Phases -> Populate Child Docs -> Reconcile Parent Docs -> Validate 
 ### Pre-deployment Checklist
 - [x] Existing parent docs re-read before editing.
 - [x] Child phases created before parent references were finalized.
-- [ ] Recursive validation rerun after the final markdown state settles.
+- [x] Recursive validation rerun after the final markdown state settles.
 
 ### Rollback Procedure
 1. Revert only the affected parent or child markdown files.

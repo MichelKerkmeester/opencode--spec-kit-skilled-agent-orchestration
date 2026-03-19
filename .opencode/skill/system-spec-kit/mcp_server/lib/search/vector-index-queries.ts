@@ -27,6 +27,7 @@ import {
   search_weights,
   sqlite_vec_available as get_sqlite_vec_available,
 } from './vector-index-store';
+import { delete_memory_from_database } from './vector-index-mutations';
 
 const logger = createLogger('VectorIndex');
 
@@ -1373,13 +1374,13 @@ export function verify_integrity(options: { autoClean?: boolean } = {}): { total
 
   if (autoClean && orphaned_chunks.length > 0) {
     logger.info(`Auto-cleaning ${orphaned_chunks.length} orphaned chunks...`);
-    const delete_chunk_stmt = database.prepare('DELETE FROM memory_index WHERE id = ?');
     for (const chunk of orphaned_chunks) {
       try {
-        const deleteResult = delete_chunk_stmt.run(chunk.id);
-        if (deleteResult.changes > 0) {
+        // Graph cleanup: Use delete_memory_from_database to clean ancillary rows
+        // (lineage, projections, graph residue) instead of raw DELETE.
+        const deleted = delete_memory_from_database(database, chunk.id);
+        if (deleted) {
           cleaned_chunks++;
-          // Record DELETE history only after confirmed deletion.
           try {
             recordHistory(chunk.id, 'DELETE', null, null, 'mcp:integrity_check', chunk.spec_folder ?? null);
           } catch (error: unknown) {

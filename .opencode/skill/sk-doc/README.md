@@ -1,6 +1,6 @@
 ---
 title: "Workflows Documentation"
-description: "Unified markdown and OpenCode component specialist providing document quality enforcement, content optimization, component creation workflows, ASCII flowcharts, install guides and manual testing playbooks"
+description: "Unified markdown and OpenCode component specialist providing document quality enforcement, content optimization, component creation workflows, ASCII flowcharts, install guides, feature catalogs, and manual testing playbooks"
 trigger_phrases:
   - "documentation quality enforcement"
   - "opencode component creation workflow"
@@ -9,7 +9,7 @@ trigger_phrases:
 
 # Workflows Documentation
 
-> Unified markdown and OpenCode component specialist providing document quality enforcement, content optimization, component creation workflows, ASCII flowcharts, install guides and manual testing playbooks.
+> Unified markdown and OpenCode component specialist providing document quality enforcement, content optimization, component creation workflows, ASCII flowcharts, install guides, feature catalogs, and manual testing playbooks.
 
 ---
 
@@ -31,7 +31,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-This skill is the central documentation engine for OpenCode projects. It operates in five modes: **Document Quality** (structure enforcement, DQI scoring, content optimization), **Component Creation** (skills, agents, commands with templates and validation), **Flowchart Creation** (ASCII diagrams for workflows and decision trees), **Install Guide Creation** (phase-based setup documentation) and **Playbook Creation** (manual testing playbooks with 9-column scenario tables).
+This skill is the central documentation engine for OpenCode projects. It operates in five modes: **Document Quality** (structure enforcement, DQI scoring, content optimization), **Component Creation** (skills, agents, commands with templates and validation), **Flowchart Creation** (ASCII diagrams for workflows and decision trees), **Install Guide Creation** (phase-based setup documentation) and **Catalog/Playbook Creation** (feature catalogs and manual testing playbooks for inventory and validation packages).
 
 The architecture follows a script-assisted AI analysis model: Python scripts handle deterministic parsing and metrics extraction, while the AI handles quality judgment and recommendations. The core principle is **structure first, then content, then quality**.
 
@@ -82,13 +82,15 @@ sk-doc/
 ├── assets/
 │   ├── documentation/                # Document templates
 │   │   ├── frontmatter_templates.md  # Frontmatter validation (11 types)
-│   │   ├── feature_catalog_template.md # root feature catalog template
-│   │   ├── feature_catalog_snippet_template.md # per-feature catalog snippet template
 │   │   ├── install_guide_template.md # 5-phase install guide template
-│   │   ├── manual_testing_playbook_template.md # root directory playbook template
-│   │   ├── manual_testing_playbook_snippet_template.md # per-feature snippet template
 │   │   ├── llmstxt_templates.md      # llms.txt generation templates
-│   │   └── readme_template.md        # README structure (15 sections + HVR)
+│   │   ├── readme_template.md        # README structure (15 sections + HVR)
+│   │   ├── feature_catalog/          # Feature catalog template bundle
+│   │   │   ├── feature_catalog_template.md # root feature catalog template
+│   │   │   └── feature_catalog_snippet_template.md # per-feature catalog snippet template
+│   │   └── testing_playbook/         # Manual testing playbook template bundle
+│   │       ├── manual_testing_playbook_template.md # root directory playbook template
+│   │       └── manual_testing_playbook_snippet_template.md # per-feature snippet template
 │   ├── flowcharts/                   # ASCII flowchart patterns (6 types)
 │   │   ├── simple_workflow.md        # Linear sequential
 │   │   ├── decision_tree_flow.md     # Branching logic
@@ -104,15 +106,20 @@ sk-doc/
 │   │   ├── agent_template.md         # Agent creation template
 │   │   └── command_template.md       # Command creation template
 │   └── template_rules.json           # Template enforcement rules
-├── references/                       # Domain knowledge
-│   ├── core_standards.md             # Filename conventions, structure
-│   ├── hvr_rules.md                  # Human Voice Rules (HVR) full ruleset
-│   ├── optimization.md               # AI-friendly content transforms
-│   ├── validation.md                 # DQI scoring criteria
-│   ├── workflows.md                  # Execution modes
-│   ├── skill_creation.md             # 6-step skill creation workflow
-│   ├── install_guide_standards.md    # Install guide best practices
-│   └── quick_reference.md            # One-page cheat sheet
+├── references/                       # Reference documentation
+│   ├── global/                       # Shared standards and cross-cutting workflow docs
+│   │   ├── core_standards.md         # Filename conventions, structure
+│   │   ├── hvr_rules.md              # Human Voice Rules (HVR) full ruleset
+│   │   ├── optimization.md           # AI-friendly content transforms
+│   │   ├── validation.md             # DQI scoring criteria
+│   │   ├── workflows.md              # Execution modes
+│   │   └── quick_reference.md        # One-page cheat sheet
+│   └── specific/                     # Document-family and component creation guides
+│       ├── skill_creation.md         # 6-step skill creation workflow
+│       ├── agent_creation.md         # Agent authority, permissions, and creation workflow
+│       ├── install_guide_creation.md # Install guide standards and workflow
+│       ├── feature_catalog_creation.md # Feature catalog standards and workflow
+│       └── manual_testing_playbook_creation.md # Playbook standards and workflow
 └── scripts/                          # Automation
     ├── extract_structure.py           # Parse document to JSON + DQI
     ├── validate_document.py           # README format validation
@@ -152,10 +159,10 @@ sk-doc/
 - Platform-specific configurations (OpenCode, Claude Code, Claude Desktop)
 - Phase validation checkpoints
 
-**Mode 5 - Playbook Creation:**
-- Integrated root playbook plus per-feature file tree
-- 9-column scenario table format with deterministic prompts and pass/fail criteria
-- Category/ID design, integrated wave planning guidance, and root-to-feature mapping guidance
+**Mode 5 - Catalog/Playbook Creation:**
+- Feature catalogs with rooted inventory docs and per-feature source anchors
+- Integrated root playbooks plus per-feature file trees
+- Deterministic prompts, category/ID design, and root-to-feature mapping guidance
 
 <!-- /ANCHOR:features -->
 

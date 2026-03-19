@@ -16,7 +16,7 @@ This scenario validates Dead code removal for `NEW-070`. It focuses on Confirm d
 Operators run the exact prompt and command sequence for `NEW-070` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm dead path elimination
-- Prompt: `Audit dead code removal outcomes.`
+- Prompt: `Audit dead code removal outcomes. Capture the evidence needed to prove Removed symbols not found in codebase; representative flows execute without missing-reference errors; no dead imports remain. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Removed symbols not found in codebase; representative flows execute without missing-reference errors; no dead imports remain
 - Pass/fail: PASS if removed symbols have zero references and representative flows execute cleanly
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-070` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-070 | Dead code removal | Confirm dead path elimination | `Audit dead code removal outcomes.` | 1) search removed symbols 2) run representative flows 3) confirm no runtime references | Removed symbols not found in codebase; representative flows execute without missing-reference errors; no dead imports remain | Symbol search output (empty results) + flow execution transcripts + import audit | PASS if removed symbols have zero references and representative flows execute cleanly | Verify symbol removal was complete; check for dynamic references (string-based imports); run full test suite for regression |
+| NEW-070 | Dead code removal | Confirm dead path elimination | `Audit dead code removal outcomes. Capture the evidence needed to prove Removed symbols not found in codebase; representative flows execute without missing-reference errors; no dead imports remain. Return a concise user-facing pass/fail verdict with the main reason.` | 1) search removed symbols 2) run representative flows 3) confirm no runtime references | Removed symbols not found in codebase; representative flows execute without missing-reference errors; no dead imports remain | Symbol search output (empty results) + flow execution transcripts + import audit | PASS if removed symbols have zero references and representative flows execute cleanly | Verify symbol removal was complete; check for dynamic references (string-based imports); run full test suite for regression |
 
 ---
 

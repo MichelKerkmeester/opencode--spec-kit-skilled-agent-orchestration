@@ -16,7 +16,7 @@ This scenario validates Implemented: memory summary generation (R8) for `NEW-093
 Operators run the exact prompt and command sequence for `NEW-093` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm deferred->implemented status
-- Prompt: `Verify R8 implemented and gated.`
+- Prompt: `Verify R8 implemented and gated. Capture the evidence needed to prove Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold
 - Pass/fail: PASS if summaries are generated and persisted for long memories and scale gate correctly controls activation
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-093` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-093 | Implemented: memory summary generation (R8) | Confirm deferred->implemented status | `Verify R8 implemented and gated.` | 1) save long memory 2) inspect summary persistence 3) verify scale-gated usage | Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold | Save output + summary field in DB record + scale gate threshold verification | PASS if summaries are generated and persisted for long memories and scale gate correctly controls activation | Verify summary generation triggers on save; check summary persistence field in schema; inspect scale gate threshold configuration |
+| NEW-093 | Implemented: memory summary generation (R8) | Confirm deferred->implemented status | `Verify R8 implemented and gated. Capture the evidence needed to prove Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold. Return a concise user-facing pass/fail verdict with the main reason.` | 1) save long memory 2) inspect summary persistence 3) verify scale-gated usage | Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold | Save output + summary field in DB record + scale gate threshold verification | PASS if summaries are generated and persisted for long memories and scale gate correctly controls activation | Verify summary generation triggers on save; check summary persistence field in schema; inspect scale gate threshold configuration |
 
 ---
 

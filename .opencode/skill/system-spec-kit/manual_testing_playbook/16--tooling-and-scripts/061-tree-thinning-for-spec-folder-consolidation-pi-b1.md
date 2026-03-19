@@ -16,7 +16,7 @@ This scenario validates Tree thinning for spec folder consolidation (PI-B1) for 
 Operators run the exact prompt and command sequence for `NEW-061` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm small-file merge thinning
-- Prompt: `Validate tree thinning behavior (PI-B1).`
+- Prompt: `Validate tree thinning behavior (PI-B1). Capture the evidence needed to prove Small files merged into consolidated output; token count reduced; large files left untouched; merge preserves content integrity. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Small files merged into consolidated output; token count reduced; large files left untouched; merge preserves content integrity
 - Pass/fail: PASS if small files are merged, token savings are positive, and content integrity is preserved
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-061` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-061 | Tree thinning for spec folder consolidation (PI-B1) | Confirm small-file merge thinning | `Validate tree thinning behavior (PI-B1).` | 1) prepare mixed-size tree 2) run thinning path 3) verify merged output/tokens saved | Small files merged into consolidated output; token count reduced; large files left untouched; merge preserves content integrity | Thinning output showing merged files + before/after token counts + file list comparison | PASS if small files are merged, token savings are positive, and content integrity is preserved | Verify file size thresholds; check merge logic for content preservation; inspect token counting accuracy |
+| NEW-061 | Tree thinning for spec folder consolidation (PI-B1) | Confirm small-file merge thinning | `Validate tree thinning behavior (PI-B1). Capture the evidence needed to prove Small files merged into consolidated output; token count reduced; large files left untouched; merge preserves content integrity. Return a concise user-facing pass/fail verdict with the main reason.` | 1) prepare mixed-size tree 2) run thinning path 3) verify merged output/tokens saved | Small files merged into consolidated output; token count reduced; large files left untouched; merge preserves content integrity | Thinning output showing merged files + before/after token counts + file list comparison | PASS if small files are merged, token savings are positive, and content integrity is preserved | Verify file size thresholds; check merge logic for content preservation; inspect token counting accuracy |
 
 ---
 

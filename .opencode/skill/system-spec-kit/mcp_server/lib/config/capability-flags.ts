@@ -6,14 +6,11 @@
 // Defaults reflect the fully delivered rollout unless explicitly opted out.
 import { isFeatureEnabled } from '../cache/cognitive/rollout-policy';
 
+// R6: Derive phase type from the canonical array to keep them in sync.
+const SUPPORTED_PHASES_ARRAY = ['baseline', 'lineage', 'graph', 'adaptive', 'scope-governance', 'shared-rollout'] as const;
+
 /** Canonical rollout phases used by memory roadmap tracking. */
-type MemoryRoadmapPhase =
-  | 'baseline'
-  | 'lineage'
-  | 'graph'
-  | 'adaptive'
-  | 'scope-governance'
-  | 'shared-rollout';
+type MemoryRoadmapPhase = typeof SUPPORTED_PHASES_ARRAY[number];
 
 /** Capability flags tracked for phased rollout. */
 interface MemoryRoadmapCapabilityFlags {
@@ -56,14 +53,7 @@ const LEGACY_CAPABILITY_ENV = {
   sharedMemory: 'SPECKIT_HYDRA_SHARED_MEMORY',
 } as const;
 
-const SUPPORTED_PHASES: ReadonlySet<MemoryRoadmapPhase> = new Set<MemoryRoadmapPhase>([
-  'baseline',
-  'lineage',
-  'graph',
-  'adaptive',
-  'scope-governance',
-  'shared-rollout',
-]);
+const SUPPORTED_PHASES: ReadonlySet<MemoryRoadmapPhase> = new Set(SUPPORTED_PHASES_ARRAY);
 
 function hasExplicitDisableFlag(flagNames: string | readonly string[]): boolean {
   const candidates = Array.isArray(flagNames) ? flagNames : [flagNames];
@@ -95,9 +85,14 @@ function isMemoryRoadmapCapabilityEnabled(flagNames: string | readonly string[],
 
 /** Resolves the active memory roadmap phase from env, defaulting to shared-rollout. */
 function getMemoryRoadmapPhase(): MemoryRoadmapPhase {
-  const phase = (process.env[PHASE_ENV] ?? process.env[LEGACY_PHASE_ENV])?.trim().toLowerCase() as MemoryRoadmapPhase | undefined;
-  if (phase && SUPPORTED_PHASES.has(phase)) {
-    return phase;
+  // B4: Check canonical env first, then legacy, before falling back to default.
+  const canonicalPhase = process.env[PHASE_ENV]?.trim().toLowerCase();
+  if (canonicalPhase && SUPPORTED_PHASES.has(canonicalPhase as MemoryRoadmapPhase)) {
+    return canonicalPhase as MemoryRoadmapPhase;
+  }
+  const legacyPhase = process.env[LEGACY_PHASE_ENV]?.trim().toLowerCase();
+  if (legacyPhase && SUPPORTED_PHASES.has(legacyPhase as MemoryRoadmapPhase)) {
+    return legacyPhase as MemoryRoadmapPhase;
   }
   return 'shared-rollout';
 }
@@ -142,10 +137,12 @@ function getMemoryRoadmapDefaults(identity?: string): MemoryRoadmapDefaults {
 }
 
 export {
+  /** @internal — test-only, not part of public API */
   CAPABILITY_ENV,
   getMemoryRoadmapCapabilityFlags,
   getMemoryRoadmapDefaults,
   getMemoryRoadmapPhase,
+  /** @internal — exposed for test utilities only */
   isMemoryRoadmapCapabilityEnabled,
 };
 

@@ -30,7 +30,7 @@ contextType: "implementation"
 
 ### Overview
 
-This plan covers three delivered phases of the CocoIndex integration: Phase 1 installed the `cocoindex-code` Python package via the skill install script into `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv`, initialized and built the code index, and registered the `cocoindex_code` MCP server entry across all 6 CLI config files. Phase 2 hardened the surrounding skill with runtime-truth docs, agent-facing helper scripts, a cross-CLI playbook, and advisor logic that prefers the repo-local binary and semantic exploration prompts. Phase 3 then tightened readiness semantics and published a concrete downstream adoption checklist so sibling repos can verify CocoIndex before relying on advisor heuristics.
+This plan covers three delivered phases of the CocoIndex integration: Phase 1 installed the `cocoindex-code` Python package via the skill install script into `.opencode/skill/mcp-coco-index/mcp_server/.venv`, initialized and built the code index, and registered the `cocoindex_code` MCP server entry across all 6 CLI config files. Phase 2 hardened the surrounding skill with runtime-truth docs, agent-facing helper scripts, a cross-CLI playbook, and advisor logic that prefers the repo-local binary and semantic exploration prompts. Phase 3 then tightened readiness semantics and published a concrete downstream adoption checklist so sibling repos can verify CocoIndex before relying on advisor heuristics.
 
 <!-- /ANCHOR:summary -->
 
@@ -96,8 +96,8 @@ CLI Agent Query ("find authentication middleware")
 
 ### Phase 1: Installation
 
-- [x] Install cocoindex-code via `bash .opencode/skill/mcp-cocoindex-code/scripts/install.sh`
-- [x] Verify binary available at `.opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc`
+- [x] Install cocoindex-code via `bash .opencode/skill/mcp-coco-index/scripts/install.sh`
+- [x] Verify binary available at `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc`
 - [x] Run `ccc init` in project root
 
 ### Phase 2: Index Build
@@ -140,12 +140,12 @@ CLI Agent Query ("find authentication middleware")
 - [x] Retry Codex (still billing-blocked, deferred)
 - [x] Update `scratch/cross-cli-auto-usage-test-results.md` with root cause analysis
 - [x] Update `implementation-summary.md` with findings F1-F4 and recommendations R1-R6
-- [x] Update `../../../skill/mcp-cocoindex-code/SKILL.md` with query optimization tips and `refresh_index=false` guidance
+- [x] Update `../../../skill/mcp-coco-index/SKILL.md` with query optimization tips and `refresh_index=false` guidance
 
 ### Phase 7: Phase 2 Hardening (2026-03-18)
 
-- [x] Align `../../../skill/mcp-cocoindex-code/SKILL.md`, `../../../skill/mcp-cocoindex-code/README.md`, `../../../skill/mcp-cocoindex-code/INSTALL_GUIDE.md`, `../../../skill/mcp-cocoindex-code/references/tool_reference.md`, `../../../skill/mcp-cocoindex-code/references/search_patterns.md`, and `../../../skill/mcp-cocoindex-code/assets/config_templates.md` with the installed CLI/MCP contract
-- [x] Add `../../../skill/mcp-cocoindex-code/references/cross_cli_playbook.md` for safe repeated-query, troubleshooting, and cross-CLI usage guidance
+- [x] Align `../../../skill/mcp-coco-index/SKILL.md`, `../../../skill/mcp-coco-index/README.md`, `../../../skill/mcp-coco-index/INSTALL_GUIDE.md`, `../../../skill/mcp-coco-index/references/tool_reference.md`, `../../../skill/mcp-coco-index/references/search_patterns.md`, and `../../../skill/mcp-coco-index/assets/config_templates.md` with the installed CLI/MCP contract
+- [x] Add `../../../skill/mcp-coco-index/references/cross_cli_playbook.md` for safe repeated-query, troubleshooting, and cross-CLI usage guidance
 - [x] Add `scripts/common.sh`, `scripts/doctor.sh`, and `scripts/ensure_ready.sh` per `sk-code--opencode`
 - [x] Update `scripts/install.sh` and `scripts/update.sh` to reuse shared helpers and support `--root`
 - [x] Update `.opencode/skill/scripts/skill_advisor.py` to prefer the repo-local `ccc` binary and auto-route semantic exploration prompts
@@ -156,8 +156,8 @@ CLI Agent Query ("find authentication middleware")
 - [x] Extend `scripts/common.sh` with centralized readiness state, blocking issue codes `20` through `25`, and shared next-step computation
 - [x] Extend `scripts/doctor.sh` with `--strict`, `--require-config`, `--require-daemon`, and repeatable `--expect-config`
 - [x] Extend `scripts/ensure_ready.sh` with strict post-bootstrap validation and expected-config support
-- [x] Add `../../../skill/mcp-cocoindex-code/references/downstream_adoption_checklist.md` documenting the minimum sibling-repo adoption bundle
-- [x] Update `../../../skill/mcp-cocoindex-code/SKILL.md`, `../../../skill/mcp-cocoindex-code/README.md`, and `../../../skill/mcp-cocoindex-code/references/cross_cli_playbook.md` to route operators to strict modes and the new adoption checklist
+- [x] Add `../../../skill/mcp-coco-index/references/downstream_adoption_checklist.md` documenting the minimum sibling-repo adoption bundle
+- [x] Update `../../../skill/mcp-coco-index/SKILL.md`, `../../../skill/mcp-coco-index/README.md`, and `../../../skill/mcp-coco-index/references/cross_cli_playbook.md` to route operators to strict modes and the new adoption checklist
 - [x] Verify shared-repo strict readiness passes and temp-project strict config validation fails with exit `24`
 
 <!-- /ANCHOR:phases -->
@@ -195,7 +195,7 @@ CLI Agent Query ("find authentication middleware")
 | sqlite-vec | Transitive dep | Green | Vector search unavailable |
 | all-MiniLM-L6-v2 | Model (auto-downloaded) | Green | Embedding generation unavailable |
 | `sk-code--opencode` | Project skill | Green - available in repo | Shell/Python helper quality expectations would be undefined |
-| Downstream rollout checklist | Project doc | Green - added at `../../../skill/mcp-cocoindex-code/references/downstream_adoption_checklist.md` | Sibling repos would lack a canonical adoption recipe |
+| Downstream rollout checklist | Project doc | Green - added at `../../../skill/mcp-coco-index/references/downstream_adoption_checklist.md` | Sibling repos would lack a canonical adoption recipe |
 
 <!-- /ANCHOR:dependencies -->
 
@@ -205,7 +205,7 @@ CLI Agent Query ("find authentication middleware")
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: MCP server causes CLI startup failures, or config changes break existing MCP servers
-- **Procedure**: All changes are additive. Remove `cocoindex_code` entries from all 6 configs, remove `.cocoindex_code/` from `.gitignore`, run `rm -rf .cocoindex_code/`, run `rm -rf .opencode/skill/mcp-cocoindex-code/mcp_server/.venv`
+- **Procedure**: All changes are additive. Remove `cocoindex_code` entries from all 6 configs, remove `.cocoindex_code/` from `.gitignore`, run `rm -rf .cocoindex_code/`, run `rm -rf .opencode/skill/mcp-coco-index/mcp_server/.venv`
 
 <!-- /ANCHOR:rollback -->
 
@@ -263,7 +263,7 @@ Phase 2 (Index) ─────────┘
 2. Remove `[mcp_servers.cocoindex_code]` section from `.codex/config.toml`
 3. Remove `.cocoindex_code/` line from `.gitignore`
 4. Run `rm -rf .cocoindex_code/` to delete local index
-5. Run `rm -rf .opencode/skill/mcp-cocoindex-code/mcp_server/.venv` to remove the local binary
+5. Run `rm -rf .opencode/skill/mcp-coco-index/mcp_server/.venv` to remove the local binary
 6. Verify: re-open each CLI to confirm no startup errors
 
 ### Data Reversal

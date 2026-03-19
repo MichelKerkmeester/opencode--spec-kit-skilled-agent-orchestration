@@ -16,7 +16,7 @@ This scenario validates Template anchor optimization (S2) for `NEW-052`. It focu
 Operators run the exact prompt and command sequence for `NEW-052` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm anchor metadata enrichment
-- Prompt: `Verify template anchor optimization (S2).`
+- Prompt: `Verify template anchor optimization (S2). Capture the evidence needed to prove Anchor metadata enriched in pipeline; anchor tags visible in query metadata; no score mutation from anchor presence. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Anchor metadata enriched in pipeline; anchor tags visible in query metadata; no score mutation from anchor presence
 - Pass/fail: PASS: Anchor metadata present; scores identical with/without anchor enrichment; FAIL: Anchor metadata missing or score mutation detected
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-052` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-052 | Template anchor optimization (S2) | Confirm anchor metadata enrichment | `Verify template anchor optimization (S2).` | 1) Save anchored memory 2) query pipeline metadata 3) verify no score mutation | Anchor metadata enriched in pipeline; anchor tags visible in query metadata; no score mutation from anchor presence | Pipeline metadata showing anchor enrichment + score comparison with/without anchors | PASS: Anchor metadata present; scores identical with/without anchor enrichment; FAIL: Anchor metadata missing or score mutation detected | Verify anchor metadata injection point → Check score isolation → Inspect metadata enrichment pipeline |
+| NEW-052 | Template anchor optimization (S2) | Confirm anchor metadata enrichment | `Verify template anchor optimization (S2). Capture the evidence needed to prove Anchor metadata enriched in pipeline; anchor tags visible in query metadata; no score mutation from anchor presence. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Save anchored memory 2) query pipeline metadata 3) verify no score mutation | Anchor metadata enriched in pipeline; anchor tags visible in query metadata; no score mutation from anchor presence | Pipeline metadata showing anchor enrichment + score comparison with/without anchors | PASS: Anchor metadata present; scores identical with/without anchor enrichment; FAIL: Anchor metadata missing or score mutation detected | Verify anchor metadata injection point → Check score isolation → Inspect metadata enrichment pipeline |
 
 ---
 

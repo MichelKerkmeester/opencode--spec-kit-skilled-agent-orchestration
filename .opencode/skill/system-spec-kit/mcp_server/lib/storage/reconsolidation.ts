@@ -17,6 +17,7 @@ import { createHash } from 'crypto';
 import type Database from 'better-sqlite3';
 import { recordHistory } from './history';
 import * as causalEdges from './causal-edges';
+import { delete_memory_from_database } from '../search/vector-index-mutations';
 
 // Feature catalog: Reconsolidation-on-save
 
@@ -512,36 +513,22 @@ export async function reconsolidate(
           // If storeMemory succeeded but executeConflict failed, clean up the orphan
           // Memory so we don't leave dangling rows with no supersedes edge.
           if (conflictMemory.id !== undefined && conflictMemory.id !== newMemory.id) {
-            // F-15 — Clean up related tables in same transaction to prevent
-            // Orphan embedding/artifact rows when memory_index is deleted.
+            // Graph cleanup: Use delete_memory_from_database (includes deleteAncillaryMemoryRows)
+            // instead of raw DELETE to clean lineage, projections, and graph residue.
             try {
-              db.transaction(() => {
-                const deleteResult = db.prepare('DELETE FROM memory_index WHERE id = ?').run(conflictMemory.id);
-                if (deleteResult.changes > 0) {
-                  try {
-                    recordHistory(
-                      conflictMemory.id!,
-                      'DELETE',
-                      null,
-                      null,
-                      'mcp:reconsolidation_cleanup',
-                      conflictMemory.specFolder ?? null,
-                    );
-                  } catch (_histErr: unknown) { /* best-effort */ }
-                }
-                // Clean up vector embedding if vec_memories table exists
+              const deleted = delete_memory_from_database(db, conflictMemory.id);
+              if (deleted) {
                 try {
-                  db.prepare('DELETE FROM vec_memories WHERE rowid = ?').run(conflictMemory.id);
-                } catch (_vecErr: unknown) {
-                  // Vec_memories may not exist if sqlite-vec is unavailable — ignore
-                }
-                // Clean up any artifact references
-                try {
-                  db.prepare('DELETE FROM memory_artifacts WHERE memory_id = ?').run(conflictMemory.id);
-                } catch (_artErr: unknown) {
-                  // Memory_artifacts table may not exist — ignore
-                }
-              })();
+                  recordHistory(
+                    conflictMemory.id!,
+                    'DELETE',
+                    null,
+                    null,
+                    'mcp:reconsolidation_cleanup',
+                    conflictMemory.specFolder ?? null,
+                  );
+                } catch (_histErr: unknown) { /* best-effort */ }
+              }
             } catch (_error: unknown) {
               // Best-effort cleanup
             }

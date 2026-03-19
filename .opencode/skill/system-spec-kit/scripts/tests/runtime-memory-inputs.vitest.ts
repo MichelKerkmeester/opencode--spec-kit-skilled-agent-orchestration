@@ -272,8 +272,8 @@ describe('native CLI fallback handling', () => {
     captureClaudeConversation.mockResolvedValueOnce({
       exchanges: [
         {
-          userInput: 'Use Claude transcript fallback',
-          assistantResponse: 'Loaded the Claude session successfully.',
+          userInput: 'Use Claude transcript for 010-perfect-session-capturing hybrid rag fusion work',
+          assistantResponse: 'Loaded the Claude session for 010-perfect-session-capturing successfully.',
           timestamp: '2026-03-15T10:00:00.000Z',
         },
       ],
@@ -302,7 +302,7 @@ describe('native CLI fallback handling', () => {
     expect(captureCopilotConversation).not.toHaveBeenCalled();
     expect(captureGeminiConversation).not.toHaveBeenCalled();
     expect(result._source).toBe('claude-code-capture');
-    expect(result.userPrompts?.[0]?.prompt).toContain('Use Claude transcript fallback');
+    expect(result.userPrompts?.[0]?.prompt).toContain('010-perfect-session-capturing');
   });
 
   it('falls back to Codex CLI after OpenCode and Claude both return no usable content', async () => {
@@ -311,8 +311,8 @@ describe('native CLI fallback handling', () => {
     captureCodexConversation.mockResolvedValueOnce({
       exchanges: [
         {
-          userInput: 'Capture the current Codex session',
-          assistantResponse: 'Loaded the Codex session successfully.',
+          userInput: 'Capture Codex session for 010-perfect-session-capturing hybrid rag fusion',
+          assistantResponse: 'Loaded Codex session for 010-perfect-session-capturing successfully.',
           timestamp: '2026-03-15T10:10:00.000Z',
         },
       ],
@@ -334,7 +334,7 @@ describe('native CLI fallback handling', () => {
     expect(captureCopilotConversation).not.toHaveBeenCalled();
     expect(captureGeminiConversation).not.toHaveBeenCalled();
     expect(result._source).toBe('codex-cli-capture');
-    expect(result.userPrompts?.[0]?.prompt).toContain('Capture the current Codex session');
+    expect(result.userPrompts?.[0]?.prompt).toContain('010-perfect-session-capturing');
   });
 
   it('falls back to Copilot CLI after Codex also returns no usable content', async () => {

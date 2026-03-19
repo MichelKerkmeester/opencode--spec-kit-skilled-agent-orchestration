@@ -654,7 +654,7 @@ describe('Context Server', () => {
 
     it('T000b: callbacks are triggered after dispatchTool and non-blocking', () => {
       expect(sourceCode).toMatch(/const\s+result\s*=\s*await\s+dispatchTool\(name,\s*args\)/)
-      expect(sourceCode).toMatch(/runAfterToolCallbacks\(name,\s*callId,\s*result\)/)
+      expect(sourceCode).toMatch(/runAfterToolCallbacks\(name,\s*callId,\s*structuredClone\(result\)\)/)
       expect(sourceCode).toMatch(/queueMicrotask\(\(\)\s*=>\s*\{/)
       expect(sourceCode).not.toMatch(/await\s+runAfterToolCallbacks\(/)
     })
@@ -702,7 +702,12 @@ describe('Context Server', () => {
       await new Promise((resolve) => setTimeout(resolve, 0))
 
       expect(callbackSpy).toHaveBeenCalledTimes(1)
-      expect(callbackSpy).toHaveBeenCalledWith('memory_search', 'call-1', toolResult)
+      // structuredClone snapshot: callback receives a deep clone before post-dispatch mutations
+      const callArgs = callbackSpy.mock.calls[0]
+      expect(callArgs[0]).toBe('memory_search')
+      expect(callArgs[1]).toBe('call-1')
+      expect(callArgs[2]).toEqual({ content: [{ type: 'text', text: '{}' }] })
+      expect(callArgs[2]).not.toBe(toolResult) // structuredClone produces a new reference
       expect(events).toEqual(['dispatch:start', 'dispatch:end', 'callback'])
     })
 
@@ -1779,6 +1784,44 @@ describe('Context Server', () => {
       expect(toolSchemasCode).toMatch(/name:\s*'memory_context'[\s\S]*?tokenUsage:\s*\{\s*type:\s*'number'/)
       expect(toolSchemasCode).toMatch(/tokenUsage:[\s\S]*?minimum:\s*0\.0/)
       expect(toolSchemasCode).toMatch(/tokenUsage:[\s\S]*?maximum:\s*1\.0/)
+    })
+  })
+
+  // =================================================================
+  // GROUP 13b: checkpoint_delete confirmName contract
+  // =================================================================
+  describe('Group 13b: checkpoint_delete confirmName safety', () => {
+    it('T103: checkpoint_delete requires confirmName in schema', () => {
+      expect(toolSchemasCode).toMatch(/checkpoint_delete[\s\S]*?required.*confirmName/)
+    })
+
+    it('T104: checkpoint_delete handler rejects missing confirmName', () => {
+      const handlerFile = fs.readFileSync(
+        path.join(SERVER_DIR, 'handlers', 'checkpoints.ts'),
+        'utf8'
+      )
+      expect(handlerFile).toMatch(/confirmName.*required.*must be a string/)
+    })
+
+    it('T105: checkpoint_delete handler rejects mismatched confirmName', () => {
+      const handlerFile = fs.readFileSync(
+        path.join(SERVER_DIR, 'handlers', 'checkpoints.ts'),
+        'utf8'
+      )
+      expect(handlerFile).toMatch(/confirmName must exactly match name/)
+    })
+
+    it('T106: checkpoint_delete proceeds when confirmName matches name', () => {
+      const handlerFile = fs.readFileSync(
+        path.join(SERVER_DIR, 'handlers', 'checkpoints.ts'),
+        'utf8'
+      )
+      // After confirmName validation, deleteCheckpoint is called
+      const confirmCheck = handlerFile.indexOf('confirmName must exactly match name')
+      const deleteCall = handlerFile.indexOf('deleteCheckpoint(name)')
+      expect(confirmCheck).toBeGreaterThan(-1)
+      expect(deleteCall).toBeGreaterThan(-1)
+      expect(deleteCall).toBeGreaterThan(confirmCheck)
     })
   })
 

@@ -20,9 +20,27 @@ tools:
 
 Template-first documentation specialist ensuring 100% alignment with sk-doc standards. Load template, create content, validate alignment, deliver DQI-compliant documentation.
 
-**Path Convention**: Use only `.gemini/agents/*.md` as the canonical runtime path reference.
+**Path Convention**: Use only `.agents/agents/*.md` as the canonical runtime path reference.
 
 > ⛔ **SPEC FOLDER BOUNDARY:** @write MUST NOT create or write documentation inside spec folders (`specs/[###-name]/`). Spec folder documentation is exclusive to @speckit. @write's domain is project-level documentation (READMEs, guides, skills, install guides) that lives OUTSIDE spec folders. If asked to write spec documentation, redirect to @speckit.
+
+---
+
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CORE WORKFLOW](#2--core-workflow)
+- [3. CAPABILITY SCAN](#3--capability-scan)
+- [4. DOCUMENTATION MODES](#4--documentation-modes)
+- [5. DOCUMENT ROUTING](#5--document-routing)
+- [6. DQI SCORING SYSTEM](#6--dqi-scoring-system)
+- [7. WORKFLOW PATTERNS](#7--workflow-patterns)
+
+---
+
+## 1. OVERVIEW
+
+Use this agent for project-level documentation that lives outside spec folders and should follow `sk-doc` template-first rules. The agent owns README, install-guide, command, feature-catalog, and testing-playbook creation/update work when that work is not inside a spec packet.
 
 ---
 
@@ -181,13 +199,17 @@ All template files follow this consistent structure:
 | -------------------------- | ------------------------- | ------------------------------------------- |
 | **Mode 1: README**         | `/create:folder_readme`   | Unified README creation (default operation) |
 | **Mode 2: Skill Creation** | `/create:sk-skill`        | Unified skill create/update/file flows      |
+| **Mode 2: Catalog Creation** | `/create:feature-catalog` | Rooted feature catalog package creation/update |
+| **Mode 2: Playbook Creation** | `/create:testing-playbook` | Rooted manual testing playbook package creation/update |
 | **Mode 4: Install Guides** | `/create:folder_readme install` | Install guide creation via unified command |
 
 **Command → Mode Mapping:**
 ```
 /create:folder_readme            → Mode 1 (README quality standards, default)
-/create:folder_readme install    → Mode 4 (5-phase install workflow)
 /create:sk-skill                 → Mode 2 (full-create/full-update/reference-only/asset-only)
+/create:feature-catalog          → Mode 2 (rooted feature catalog packages)
+/create:testing-playbook         → Mode 2 (rooted manual testing playbook packages)
+/create:folder_readme install    → Mode 4 (5-phase install workflow)
 ```
 
 ---
@@ -220,7 +242,9 @@ All template files follow this consistent structure:
 | README.md (general)                    | `sk-doc` | readme_template.md          |
 | Memory files (memory/*.md)             | `system-spec-kit`         | Auto-generated              |
 | Install guides                         | `sk-doc` | install_guide_template.md   |
-| Agent files (.gemini/agents/*.md)     | `sk-doc` | agent_template.md           |
+| feature_catalog package docs           | `sk-doc` | feature_catalog templates   |
+| manual_testing_playbook package docs   | `sk-doc` | testing_playbook templates  |
+| Agent files (.agents/agents/*.md)      | `sk-doc` | agent_template.md           |
 | Command files (.opencode/command/*.md) | `sk-doc` | command_template.md         |
 
 ---

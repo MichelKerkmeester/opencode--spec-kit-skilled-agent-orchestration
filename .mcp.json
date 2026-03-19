@@ -20,7 +20,7 @@
       "disabled": false
     },
     "cocoindex_code": {
-      "command": ".opencode/skill/mcp-cocoindex-code/mcp_server/.venv/bin/ccc",
+      "command": ".opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc",
       "args": ["mcp"],
       "env": {
         "COCOINDEX_CODE_ROOT_PATH": "."

@@ -12,6 +12,7 @@ function buildMutationHookFeedback(operation: string, hookResult: MutationHookRe
     graphSignalsCacheCleared: boolean;
     coactivationCacheCleared: boolean;
     toolCacheInvalidated: number;
+    errors: string[];
   };
   hints: string[];
 } {
@@ -38,6 +39,10 @@ function buildMutationHookFeedback(operation: string, hookResult: MutationHookRe
     hints.push('Warning (non-fatal): one or more post-mutation cache clear operations failed');
   }
 
+  if (hookResult.errors.length > 0) {
+    hints.push('Post-mutation hook errors: ' + hookResult.errors.join('; '));
+  }
+
   return {
     data: {
       operation,
@@ -47,6 +52,7 @@ function buildMutationHookFeedback(operation: string, hookResult: MutationHookRe
       graphSignalsCacheCleared: hookResult.graphSignalsCacheCleared,
       coactivationCacheCleared: hookResult.coactivationCacheCleared,
       toolCacheInvalidated: hookResult.toolCacheInvalidated,
+      errors: hookResult.errors,
     },
     hints,
   };

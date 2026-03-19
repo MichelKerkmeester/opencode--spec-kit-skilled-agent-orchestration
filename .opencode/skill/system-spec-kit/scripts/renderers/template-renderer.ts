@@ -67,6 +67,13 @@ function cleanupExcessiveNewlines(text: string): string {
   return text.replace(/\n{3,}/g, '\n\n');
 }
 
+// P1-11: Escape mustache delimiters in variable values to prevent template injection.
+// Values containing {{...}} patterns could be re-expanded during recursive section rendering.
+function escapeMustacheValue(value: string): string {
+  if (!value.includes('{{')) return value;
+  return value.replace(/\{\{/g, '\\{\\{').replace(/\}\}/g, '\\}\\}');
+}
+
 function stripTemplateConfigComments(text: string): string {
   let result: string = text.replace(/<!--\s*TEMPLATE:\s*context_template[\s\S]*?-->\s*\n*/g, '');
   result = result.replace(/<!--\s*Template Configuration Comments[\s\S]*?-->\s*\n*/g, '');
@@ -127,6 +134,9 @@ function renderTemplate(template: string, data: TemplateContext, parentData: Tem
     return '';
   });
 
+  // P1-10: Mustache comment syntax — strip {{! ... }} blocks
+  result = result.replace(/\{\{![^}]*\}\}/g, '');
+
   // Simple variable replacement: {{VAR}} or {{.}}
   result = result.replace(/\{\{([\w.]+)\}\}/g, (_match: string, key: string): string => {
     const value: unknown = mergedData[key];
@@ -140,25 +150,25 @@ function renderTemplate(template: string, data: TemplateContext, parentData: Tem
     }
 
     if (Array.isArray(value)) {
-      return value.map((item: TemplateDataItem): string => {
+      return escapeMustacheValue(value.map((item: TemplateDataItem): string => {
         if (typeof item === 'object' && item !== null) {
           const firstKey: string | undefined = Object.keys(item as Record<string, unknown>)[0];
           return firstKey ? String((item as Record<string, unknown>)[firstKey]) : JSON.stringify(item);
         }
         return String(item);
-      }).join(', ');
+      }).join(', '));
     }
 
     if (typeof value === 'object') {
       const firstKey: string | undefined = Object.keys(value as Record<string, unknown>)[0];
-      return firstKey ? String((value as Record<string, unknown>)[firstKey]) : JSON.stringify(value);
+      return escapeMustacheValue(firstKey ? String((value as Record<string, unknown>)[firstKey]) : JSON.stringify(value));
     }
 
     if (typeof value === 'boolean') {
       return value ? 'Yes' : 'No';
     }
 
-    return String(value);
+    return escapeMustacheValue(String(value));
   });
 
   return cleanupExcessiveNewlines(result);

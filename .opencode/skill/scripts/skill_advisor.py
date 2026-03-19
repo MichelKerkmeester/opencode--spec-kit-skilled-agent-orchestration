@@ -36,7 +36,7 @@ SKILLS_DIR = os.path.dirname(SCRIPT_DIR)
 REPO_ROOT = os.path.dirname(os.path.dirname(SKILLS_DIR))
 LOCAL_CCC_BIN = os.path.join(
     SKILLS_DIR,
-    "mcp-cocoindex-code",
+    "mcp-coco-index",
     "mcp_server",
     ".venv",
     "bin",
@@ -1214,8 +1214,8 @@ def analyze_request(
     )
 
     if should_auto_use_semantic_search(prompt):
-        skill_boosts["mcp-cocoindex-code"] = skill_boosts.get("mcp-cocoindex-code", 0.0) + 1.2
-        boost_reasons.setdefault("mcp-cocoindex-code", []).append("!intent:semantic-code-search")
+        skill_boosts["mcp-coco-index"] = skill_boosts.get("mcp-coco-index", 0.0) + 1.2
+        boost_reasons.setdefault("mcp-coco-index", []).append("!intent:semantic-code-search")
 
     # Blend CocoIndex semantic search results when available
     if semantic_hits:

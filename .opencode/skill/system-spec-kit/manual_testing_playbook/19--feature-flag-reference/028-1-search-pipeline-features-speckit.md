@@ -16,7 +16,7 @@ This scenario validates 1. Search Pipeline Features (SPECKIT_*) for `EX-028`. It
 Operators run the exact prompt and command sequence for `EX-028` and confirm the expected signals without contradicting evidence.
 
 - Objective: Flag catalog verification
-- Prompt: `List SPECKIT flags active/inert/deprecated`
+- Prompt: `List SPECKIT flags active/inert/deprecated. Capture the evidence needed to prove Accurate flag classification. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Accurate flag classification
 - Pass/fail: PASS if classifications are internally consistent
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-028` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-028 | 1. Search Pipeline Features (SPECKIT_*) | Flag catalog verification | `List SPECKIT flags active/inert/deprecated` | `memory_search({ query:"SPECKIT flags active inert deprecated", limit:20 })` -> `memory_context({ mode:"deep", prompt:"Classify SPECKIT flags as active, inert, or deprecated", sessionId:"ex028" })` | Accurate flag classification | Search/context outputs | PASS if classifications are internally consistent | Validate against code/config docs |
+| EX-028 | 1. Search Pipeline Features (SPECKIT_*) | Flag catalog verification | `List SPECKIT flags active/inert/deprecated. Capture the evidence needed to prove Accurate flag classification. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_search({ query:"SPECKIT flags active inert deprecated", limit:20 })` -> `memory_context({ mode:"deep", prompt:"Classify SPECKIT flags as active, inert, or deprecated", sessionId:"ex028" })` | Accurate flag classification | Search/context outputs | PASS if classifications are internally consistent | Validate against code/config docs |
 
 ---
 

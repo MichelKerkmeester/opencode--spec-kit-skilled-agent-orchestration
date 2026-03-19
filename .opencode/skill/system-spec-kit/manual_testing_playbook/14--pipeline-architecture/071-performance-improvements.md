@@ -16,7 +16,7 @@ This scenario validates Performance improvements for `NEW-071`. It focuses on Co
 Operators run the exact prompt and command sequence for `NEW-071` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm key perf remediations active
-- Prompt: `Verify performance improvements (Sprint 8).`
+- Prompt: `Verify performance improvements (Sprint 8). Capture the evidence needed to prove Optimized code paths are active (not bypassed); heavy queries complete within acceptable time; no performance regressions. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Optimized code paths are active (not bypassed); heavy queries complete within acceptable time; no performance regressions
 - Pass/fail: PASS if optimized paths are active and heavy query timing shows no regressions compared to baseline
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-071` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-071 | Performance improvements | Confirm key perf remediations active | `Verify performance improvements (Sprint 8).` | 1) inspect optimized code paths 2) run heavy queries 3) capture timing notes | Optimized code paths are active (not bypassed); heavy queries complete within acceptable time; no performance regressions | Code path inspection evidence + timing measurements for heavy queries | PASS if optimized paths are active and heavy query timing shows no regressions compared to baseline | Profile heavy query execution; check for bypassed optimizations; compare timing with pre-optimization baseline |
+| NEW-071 | Performance improvements | Confirm key perf remediations active | `Verify performance improvements (Sprint 8). Capture the evidence needed to prove Optimized code paths are active (not bypassed); heavy queries complete within acceptable time; no performance regressions. Return a concise user-facing pass/fail verdict with the main reason.` | 1) inspect optimized code paths 2) run heavy queries 3) capture timing notes | Optimized code paths are active (not bypassed); heavy queries complete within acceptable time; no performance regressions | Code path inspection evidence + timing measurements for heavy queries | PASS if optimized paths are active and heavy query timing shows no regressions compared to baseline | Profile heavy query execution; check for bypassed optimizations; compare timing with pre-optimization baseline |
 
 ---
 
