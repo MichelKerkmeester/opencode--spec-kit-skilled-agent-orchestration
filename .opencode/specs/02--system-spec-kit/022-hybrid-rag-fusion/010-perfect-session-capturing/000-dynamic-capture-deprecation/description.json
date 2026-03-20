@@ -1,0 +1,55 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/023-dynamic-capture-deprecation",
+  "description": "Consolidation Phase: Dynamic Capture Deprecation — JSON-primary mode, dynamic capture reclassified as recovery-only",
+  "status": "in-progress",
+  "type": "CONSOLIDATION",
+  "supersedes": ["011-session-source-validation", "015-outsourced-agent-handback", "016-multi-cli-parity"],
+  "consolidates": ["019-source-capabilities-and-structured-preference", "020-live-proof-and-parity-hardening"],
+  "archivedPhases": "archive/ contains full spec documentation from all 5 superseded/consolidated phases",
+  "reviewTargets": ["002-contamination-detection", "005-confidence-calibration", "008-signal-extraction", "013-auto-detection-fixes", "019-source-capabilities-and-structured-preference", "020-live-proof-and-parity-hardening"],
+  "reviewOutcomes": {
+    "002-contamination-detection": "keep — pure quality gates (lexical scrubber, V8/V9, post-render), no dynamic-capture dependency",
+    "005-confidence-calibration": "keep — type-system enrichment (dual confidence on DecisionRecord), no dynamic-capture dependency",
+    "008-signal-extraction": "keep — source-agnostic semantic extraction (topics, triggers), no dynamic-capture dependency",
+    "013-auto-detection-fixes": "reframed — Priority 2.7 (git-status) and 3.5 (session-activity) documented as dynamic-capture optimizations that lose primary value under JSON-mode",
+    "019-source-capabilities-and-structured-preference": "reframed — structured-preference framing updated for JSON-primary reality; capability registry infrastructure retained",
+    "020-live-proof-and-parity-hardening": "reframed — narrowed from multi-mode parity proof to JSON-mode verification at scale across 5 CLIs"
+  },
+  "keywords": [
+    "consolidation",
+    "deprecation",
+    "dynamic-capture",
+    "json-primary",
+    "recovery-only",
+    "session-capture",
+    "json-mode",
+    "stateless-deprecation"
+  ],
+  "lastUpdated": "2026-03-20T14:00:00.000Z",
+  "specId": "023",
+  "folderSlug": "dynamic-capture-deprecation",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "010-perfect-session-capturing"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "exitCriteria": {
+    "adoption": ">90% of /memory:save invocations use JSON mode",
+    "fallbackRate": "Near-zero dynamic-capture fallback invocations",
+    "qualityParity": "No critical memory-quality regressions vs capture baseline",
+    "edgeCases": "Interrupted sessions, delegated agents, multi-CLI, partial saves all handled",
+    "phaseConsolidation": "011, 015, 016 marked superseded; 002/005/008/013/019/020 reviewed and dispositioned",
+    "recoveryMechanism": "Crash-recovery break-glass path documented and tested"
+  },
+  "decisions": [
+    {
+      "title": "Drop dynamic capture → JSON-only mode",
+      "chosen": "Option 2: JSON-primary, dynamic capture as recovery-only",
+      "rationale": "AI has strictly better information about its own session than any DB query. 39 agent dispatches + 8 deep-research iterations could not fix the fundamental session-selection heuristic problem. Wrong-session capture just happened in production.",
+      "alternatives": ["Option 1: Drop immediately", "Option 3: Keep investing in capture"],
+      "date": "2026-03-20"
+    }
+  ]
+}

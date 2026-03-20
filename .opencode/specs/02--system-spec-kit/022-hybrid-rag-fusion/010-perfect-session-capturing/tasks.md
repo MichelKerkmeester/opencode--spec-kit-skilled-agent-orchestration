@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Perfect Session Capturing [template:level_3/tasks.md]"
-description: "Task Format: T### [P?] Description (file path); current scope is the documentation-only roadmap extension through phases 018-020."
+description: "Task Format: T### [P?] Description (file path); current scope is the authoritative phase-tree reference realignment pass."
 trigger_phrases:
   - "tasks"
   - "perfect session capturing"
@@ -10,7 +10,7 @@ contextType: "general"
 ---
 # Tasks: Perfect Session Capturing
 
-This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace the documentation-only roadmap update.
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [plan.md](plan.md) to trace the phase-tree alignment repair.
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -35,9 +35,9 @@ This document records the current verified state for this scope. Use [spec.md](s
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Create `018-runtime-contract-and-indexability/`.
-- [x] T002 Create `019-source-capabilities-and-structured-preference/`.
-- [x] T003 Create `020-live-proof-and-parity-hardening/`.
+- [x] T001 Build the old-to-new phase/path mapping table for the in-scope doc set.
+- [x] T002 Confirm `memory/**` and `scratch/**` are out of scope.
+- [x] T003 Confirm which reusable research docs actually act as current navigation.
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -45,11 +45,11 @@ This document records the current verified state for this scope. Use [spec.md](s
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Populate phase `018` `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md`.
-- [x] T005 Populate phase `019` `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md`.
-- [x] T006 Populate phase `020` `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md`.
-- [x] T007 Extend the parent `spec.md` phase map from `017` to `020`.
-- [x] T008 Rewrite the parent `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` to conservative roadmap language.
+- [x] T004 Rewrite the parent `spec.md` phase map to the actual direct-child layout.
+- [x] T005 Rewrite the parent `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` to the current navigation story.
+- [x] T006 Create `000-dynamic-capture-deprecation/spec.md`, `plan.md`, and `tasks.md`.
+- [x] T007 Repair active root-child metadata and link fields.
+- [x] T008 Repair moved branch-child metadata and current-navigation references.
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -58,9 +58,9 @@ This document records the current verified state for this scope. Use [spec.md](s
 ## Phase 3: Verification
 
 - [x] T009 Run `validate.sh --strict --recursive` on the parent pack.
-- [ ] T010 Run `check-completion.sh --strict` if completion evidence is needed.
-- [x] T011 Confirm the new parent docs and child phase docs are free of `[PLACEHOLDER]` content.
-- [ ] T012 Refresh retained live artifacts only in future phase-020 implementation work.
+- [x] T010 Run a targeted stale-reference sweep on in-scope docs.
+- [x] T011 Confirm touched docs are free of `[PLACEHOLDER]` content.
+- [x] T012 Confirm no files under `memory/**` or `scratch/**` were modified.
 <!-- /ANCHOR:phase-3 -->
 
 ---

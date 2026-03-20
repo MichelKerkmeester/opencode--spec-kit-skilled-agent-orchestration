@@ -6,10 +6,12 @@ const {
   generateEmbeddingMock,
   generateDocumentEmbeddingMock,
   indexMemoryMock,
+  extractTriggerPhrasesMock,
 } = vi.hoisted(() => ({
   generateEmbeddingMock: vi.fn(),
   generateDocumentEmbeddingMock: vi.fn(async () => new Float32Array([0.1, 0.2, 0.3])),
   indexMemoryMock: vi.fn(() => 42),
+  extractTriggerPhrasesMock: vi.fn(() => []),
 }));
 
 vi.mock('../lib/embeddings', async () => {
@@ -41,6 +43,10 @@ vi.mock('@spec-kit/shared/config', () => ({
   DB_UPDATED_FILE: '/tmp/spec-kit-test-db-updated',
 }));
 
+vi.mock('../lib/trigger-extractor', () => ({
+  extractTriggerPhrases: extractTriggerPhrasesMock,
+}));
+
 import { indexMemory } from '../core/memory-indexer';
 
 describe('memory-indexer weighting', () => {
@@ -48,6 +54,51 @@ describe('memory-indexer weighting', () => {
     generateEmbeddingMock.mockReset();
     generateDocumentEmbeddingMock.mockClear();
     indexMemoryMock.mockClear();
+    extractTriggerPhrasesMock.mockClear();
+  });
+
+  // TCOV-005: Failure-path tests
+  it('returns null when generateDocumentEmbedding returns null', async () => {
+    generateDocumentEmbeddingMock.mockResolvedValueOnce(null);
+
+    const memoryId = await indexMemory(
+      '/tmp',
+      'test-null-embedding.md',
+      '# content',
+      '010-test-spec',
+    );
+
+    expect(memoryId).toBeNull();
+    expect(indexMemoryMock).not.toHaveBeenCalled();
+  });
+
+  it('returns null when generateDocumentEmbedding throws', async () => {
+    generateDocumentEmbeddingMock.mockRejectedValueOnce(new Error('Embedding service unavailable'));
+
+    const memoryId = await indexMemory(
+      '/tmp',
+      'test-throw-embedding.md',
+      '# content',
+      '010-test-spec',
+    );
+
+    expect(memoryId).toBeNull();
+    expect(indexMemoryMock).not.toHaveBeenCalled();
+  });
+
+  it('returns null when vectorIndex.indexMemory throws', async () => {
+    indexMemoryMock.mockImplementationOnce(() => {
+      throw new Error('Database write failed');
+    });
+
+    const memoryId = await indexMemory(
+      '/tmp',
+      'test-throw-index.md',
+      '# content',
+      '010-test-spec',
+    );
+
+    expect(memoryId).toBeNull();
   });
 
   it('routes scripts indexing through generateDocumentEmbedding with weighted content', async () => {
@@ -75,6 +126,29 @@ describe('memory-indexer weighting', () => {
       specFolder: '009-embedding-optimization',
       title: 'raw markdown content',
       embedding: expect.any(Float32Array),
+    }));
+  });
+
+  it('falls back to manual trigger phrases when extraction throws', async () => {
+    extractTriggerPhrasesMock.mockImplementationOnce(() => {
+      throw new Error('Trigger extraction crashed');
+    });
+
+    const collectedData = {
+      _manualTriggerPhrases: ['manual phrase one', 'manual phrase two'],
+    } as any;
+
+    const memoryId = await indexMemory(
+      '/tmp',
+      'test-trigger-fallback.md',
+      '# content',
+      '010-test-spec',
+      collectedData,
+    );
+
+    expect(memoryId).toBe(42);
+    expect(indexMemoryMock).toHaveBeenCalledWith(expect.objectContaining({
+      triggerPhrases: expect.arrayContaining(['manual phrase one', 'manual phrase two']),
     }));
   });
 });

@@ -68,9 +68,11 @@ Save the current conversation context, including session summary, key decisions,
 
 | Field   | Value                                                                                        |
 | ------- | -------------------------------------------------------------------------------------------- |
-| Input   | Spec folder path (from Gate 3 or `$ARGUMENTS`)                                               |
+| Input   | Spec folder path (from Gate 3 or `$ARGUMENTS`) + AI-composed JSON data                       |
 | Output  | Memory file in `[spec]/memory/` + indexed in MCP                                             |
-| Script  | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]` |
+| Script  | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`               |
+| Primary | **JSON mode:** `generate-context.js /tmp/save-context-data.json` or `--json '<data>'`        |
+| Recovery| **Stateless mode (deprecated):** `generate-context.js [spec-folder]` — crash recovery only   |
 | Trigger | "save context", "save memory", `/memory:save`                                                |
 
 ---
@@ -267,28 +269,39 @@ Content...
     "rootCause": "Description of the problem's root cause",
     "solution": "How it was solved",
     "patterns": "Key patterns or approaches used"
-  }
+  },
+  "toolCalls": [
+    { "tool": "Read", "inputSummary": "Read generate-context.ts", "outputSummary": "612 lines, CLI entry point", "status": "success", "durationEstimate": "fast" },
+    { "tool": "Edit", "inputSummary": "Updated Memory Save Rule in CLAUDE.md", "outputSummary": "Changed JSON-primary wording", "status": "success" }
+  ],
+  "exchanges": [
+    { "userInput": "Implement the JSON-primary plan", "assistantResponse": "Updated CLAUDE.md, SKILL.md, session-types.ts, data-loader.ts with JSON-primary changes", "timestamp": "2026-03-20T12:00:00Z" }
+  ]
 }
 ```
 
 **Field Guidelines:**
 
-| Field              | Min Length | Purpose                             |
-| ------------------ | ---------- | ----------------------------------- |
-| `sessionSummary`   | 100+ chars | Becomes OVERVIEW: be comprehensive  |
-| `keyDecisions`     | 1+ items   | Each decision with rationale        |
-| `filesModified`    | 0+ items   | Actual paths modified               |
-| `triggerPhrases`   | 5-10 items | Keywords for semantic search        |
-| `technicalContext` | Optional   | Additional technical details        |
+| Field              | Min Length | Purpose                                              |
+| ------------------ | ---------- | ---------------------------------------------------- |
+| `sessionSummary`   | 100+ chars | Becomes OVERVIEW: be comprehensive                   |
+| `keyDecisions`     | 1+ items   | Each decision with rationale                         |
+| `filesModified`    | 0+ items   | Actual paths modified                                |
+| `triggerPhrases`   | 5-10 items | Keywords for semantic search                         |
+| `technicalContext` | Optional   | Additional technical details                         |
+| `toolCalls`        | Optional   | AI-summarized tool calls (richer than DB extraction) |
+| `exchanges`        | Optional   | Key user-assistant exchanges during session          |
 
 ### Step 5: Execute Processing Script
 
 **Two Execution Modes:**
 
-| Mode                                | Command                                                           | Use When                                     |
-| ----------------------------------- | ----------------------------------------------------------------- | -------------------------------------------- |
-| **Mode 1: JSON File** (Recommended) | `node generate-context.js ${TMPDIR:-/tmp}/save-context-data.json` | Rich context with decisions, files, triggers |
-| **Mode 2: Direct Path**             | `node generate-context.js specs/005-memory`                       | Minimal/placeholder content only             |
+| Mode                                        | Command                                                           | Use When                                     |
+| ------------------------------------------- | ----------------------------------------------------------------- | -------------------------------------------- |
+| **Mode 1: JSON File** (PREFERRED)           | `node generate-context.js ${TMPDIR:-/tmp}/save-context-data.json` | Rich context with decisions, files, triggers |
+| **Mode 2: Direct Path** (RECOVERY ONLY)     | `node generate-context.js specs/005-memory`                       | Crash recovery, interrupted sessions only    |
+
+> **Why JSON mode is preferred:** The AI has strictly better information about its own session than any database query can reconstruct. JSON mode eliminates wrong-session capture, multi-session ambiguity, and exchange pairing bugs that plague dynamic capture. Stateless mode is **deprecated for routine saves** and triggers a deprecation warning.
 
 > **Cross-Platform Note:** `${TMPDIR:-/tmp}` uses the system temp directory. On macOS/Linux this resolves to `/tmp` or `$TMPDIR`. On Windows (Git Bash/WSL), use `$TEMP` or `%TEMP%`.
 

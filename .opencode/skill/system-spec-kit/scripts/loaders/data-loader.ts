@@ -554,6 +554,21 @@ async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
     }
   }
 
+  // DEPRECATION: Dynamic session capture is deprecated for routine saves.
+  // JSON mode (AI-composed structured data) is strictly preferred because the AI
+  // has better information about its own session than any DB query can reconstruct.
+  // Dynamic capture is retained only as a recovery-only fallback for crash/kill scenarios.
+  console.warn(
+    '   ⚠️  DEPRECATED: Falling back to dynamic session capture (stateless mode). ' +
+    'This path is deprecated for routine saves. Prefer JSON mode: ' +
+    'compose structured JSON and pass via --json, --stdin, or temp file. ' +
+    'Dynamic capture is retained only for crash-recovery scenarios.'
+  );
+  structuredLog('warn', 'Dynamic session capture fallback invoked (deprecated)', {
+    specFolderArg,
+    preferredCaptureSource: preferredCaptureSource || 'auto',
+  });
+
   const nativeCaptureOrder = buildNativeCaptureOrder(preferredCaptureSource);
   if (preferredCaptureSource) {
     console.log(`   ℹ️  Preferred native capture source: ${preferredCaptureSource}`);

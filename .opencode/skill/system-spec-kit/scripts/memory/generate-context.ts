@@ -88,9 +88,11 @@ Preferred native capture override:
     continue in the documented fallback order.
   - Explicit JSON mode remains authoritative and ignores native capture preference.
 
-Preferred save path:
-  - Use --stdin or --json whenever the calling CLI can provide curated structured session data.
-  - Direct positional spec-folder mode remains supported as the stateless fallback path.
+Preferred save path (JSON-PRIMARY):
+  - ALWAYS use --stdin, --json, or a JSON temp file when possible.
+  - The AI has strictly better information about its own session than any DB query can reconstruct.
+  - Direct positional spec-folder mode (stateless) is DEPRECATED for routine saves — retained only for crash-recovery.
+  - Stateless mode triggers a deprecation warning in data-loader.
   - Explicit CLI targets still outrank payload specFolder values in every structured-input mode.
 
 Direct CLI target rule:
@@ -98,11 +100,18 @@ Direct CLI target rule:
   - Session learning, JSON SPEC_FOLDER fields, and auto-detect may inform logging,
     but they must not reroute the save to another folder.
 
-JSON Data Format (with preflight/postflight support):
+JSON Data Format (with preflight/postflight, session/git, and tool/exchange enrichment):
   {
     "user_prompts": [...],
     "observations": [...],
     "recent_context": [...],
+    "toolCalls": [
+      { "tool": "Read", "inputSummary": "Read data-loader.ts", "outputSummary": "585 lines", "status": "success", "durationEstimate": "fast" },
+      { "tool": "Edit", "inputSummary": "Added deprecation warning", "outputSummary": "Inserted 10 lines", "status": "success" }
+    ],
+    "exchanges": [
+      { "userInput": "Implement the JSON-primary plan", "assistantResponse": "Updated 8 files...", "timestamp": "ISO-8601" }
+    ],
     "preflight": {
       "knowledgeScore": 40,
       "uncertaintyScore": 60,
@@ -120,6 +129,11 @@ JSON Data Format (with preflight/postflight support):
       "newGaps": ["new-gap"]
     }
   }
+
+  Tool/Exchange enrichment fields (all optional — JSON-mode only):
+  - toolCalls[]: AI-summarized tool calls with tool name, input/output summaries, status, duration
+  - exchanges[]: Key user-assistant exchanges with timestamps
+  - These provide richer context than DB extraction since the AI filters noise at source
 
   Learning Delta Calculation:
   - Knowledge Delta = postflight.knowledgeScore - preflight.knowledgeScore
@@ -391,10 +405,12 @@ async function parseArguments(
 
   const resolvedSpecFolder = resolveCliSpecFolderReference(primaryArg);
   if (resolvedSpecFolder) {
-    console.log(
-      resolvedSpecFolder !== primaryArg
-        ? '   Stateless mode: Nested spec folder provided directly'
-        : '   Stateless mode: Spec folder provided directly'
+    console.warn(
+      '   ⚠️  Stateless mode (DEPRECATED for routine saves): ' +
+      (resolvedSpecFolder !== primaryArg
+        ? 'Nested spec folder provided directly'
+        : 'Spec folder provided directly') +
+      '. Prefer JSON mode: compose structured JSON and pass via --json, --stdin, or temp file.'
     );
     return {
       dataFile: null,

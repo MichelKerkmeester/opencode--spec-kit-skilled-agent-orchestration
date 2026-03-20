@@ -1539,3 +1539,680 @@ Related evidence:
 - `.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-trace.vitest.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/retrieval-telemetry.vitest.ts`
 
+## Deep Research: Test Coverage Analysis (Iteration 15)
+
+### Test Infrastructure Overview
+- **284 vitest test files** in `mcp_server/tests/`
+- Consistent patterns: in-memory `better-sqlite3`, `vi.mock` isolation, typed helpers, T-prefix test IDs
+- `tests/README.md` with complete file listing and categorization
+
+### Pipeline Stage Coverage
+
+| Stage | Test File(s) | Test Count | Coverage Quality |
+|-------|-------------|-----------|-----------------|
+| Stage 1 (Expansion) | `stage1-expansion.vitest.ts` | 8 | Strong: flag toggling, dedup ordering, simple-query suppression, governance scope |
+| Stage 2 (Fusion) | `stage2-fusion.vitest.ts` | 4 | Moderate: learned-trigger scaling, graph signals, trace diagnostics, bounded bonus |
+| Stage 3 (Rerank) | `stage3-rerank-regression.vitest.ts` | 2 | Minimal: only tests negative score flooring |
+| Stage 4 (Filter) | None dedicated | 0 | GAP: no dedicated test file; tangential coverage in pipeline-v2.vitest.ts |
+| Orchestrator | None dedicated | 0 | GAP: zero error handling in production code = zero tests |
+| End-to-end | `pipeline-integration.vitest.ts`, `pipeline-v2.vitest.ts` | ~20+ | Strong mock-based integration |
+
+### 7 Critical Untested Paths
+
+1. **FSRS write-back lost-update race** -- `decay-delete-race.vitest.ts` tests a DIFFERENT race (working_memory attention score T214, not FSRS stability update). `fsrs-scheduler.vitest.ts` (24K LOC) tests formula correctness but zero concurrent-write tests.
+2. **Score resolution divergence** -- Only 1 test in `mcp-response-envelope.vitest.ts` (T536-4) tests output envelope fallback, NOT the 3 internal resolution chains producing identical results.
+3. **Pipeline orchestrator error cascading** -- 0 tests. No test verifies behavior when a stage throws.
+4. **Cross-encoder circuit breaker** -- 0 tests. Production code has latency tracker + circuit breaker, but only `trigger-extractor.vitest.ts` tests a circuit breaker (different component).
+5. **BM25 spec-folder filter N+1** -- 0 performance tests for the individual-SELECT-per-result pattern.
+6. **RSF shadow-to-production activation** -- 0 tests for the switch path. RSF algorithm itself has 36+ tests.
+7. **Concurrent save dedup race / embedding cache model-swap** -- 0 tests for both iter-9 findings.
+
+### Well-Covered Areas
+- Scoring signals: composite, five-factor, normalization, observability, confidence, intent weights
+- Fusion algorithms: RRF (unit + integration), RSF (36+ tests), adaptive fusion
+- Graph subsystem: search, signals, degree, community detection, flags, scoring integration
+- Cognitive modules: FSRS formula, PE gate, co-activation, working memory, decay, attention
+- Save pipeline: quality-loop, dedup (content-hash), PE gating, save-integration
+- Eval framework: ablation, metrics, dashboard, ground-truth
+- Edge cases: empty results, null inputs, boundary values broadly tested across modules
+
+---
+
+## Deep Research Campaign: Prioritized Recommendation Synthesis (Iteration 19)
+
+*Compiled from 18 research iterations covering pipeline architecture, scoring calibration, error handling, feature flags, eval infrastructure, save pipeline, cognitive subsystem, DX, performance, spec alignment, and test coverage.*
+
+### Top Recommendations by Priority
+
+**P0 -- Critical (fix first):**
+1. **Orchestrator error handling** (B1) -- 79-line orchestrator has zero try/catch. Any stage throw crashes entire pipeline. Effort: M, Impact: 5/5. [CONFIRMED iter-18]
+2. **Weight coherence unification** (B2) -- 3 conflicting channel weight systems; adaptive fusion only applies to 2 of 5 channels. Effort: L, Impact: 5/5.
+3. **Unify 3 score resolution chains** (A1) -- Different fallback orders in types.ts, ranking-contract.ts, stage4-filter.ts; 100x scale mismatch in Stage 4. Effort: S, Impact: 4/5. [CONFIRMED iter-18]
+4. **Orchestrator error cascade tests** (G1) -- Zero tests for stage failure behavior. Effort: S, Impact: 4/5.
+
+**P1 -- Important (sprint-level):**
+5. Eval-to-scoring feedback loop (B3) -- Measurement without calibration for 30+ hardcoded constants. Effort: L, Impact: 5/5.
+6. Feature flag governance (B5) -- 81 flags, no manifest, no sunset dates. Effort: L, Impact: 4/5. [MODIFIED: 81 not 76]
+7. Simplified memory_search tool (E3) -- 31 parameters including duplicate. Effort: M, Impact: 4/5. [MODIFIED: 31 not 28]
+8. Signal failure tri-state metadata (B6) -- Cannot distinguish "feature off" from "feature crashed". Effort: S, Impact: 3/5.
+9. BM25 N+1 query fix (B7) -- 50 results = 50 individual DB queries. Effort: S, Impact: 3/5.
+10. Spec: 5 channels not 4 (D1) -- types.ts:185 lists 5 channels. Effort: S, Impact: 3/5. [CONFIRMED iter-18]
+
+**Cross-validation corrections (iter-18):**
+- Embedding cache ignores model ID: **REFUTED** -- cache has compound PK (content_hash, model_id)
+- Flag count: 81 (not 76) -- flag sprawl worse than originally reported
+- memory_search params: 31 (not 28) -- UX burden worse than originally reported
+- FSRS race: write-back is NOT in fsrs.ts (read-only computation); actual location in trackAccess flow
+
+### Implementation Roadmap
+- **Sprint 1** (1-2 days): Score resolution unification, signal tri-state metadata, BM25 batch query, 3 test suites
+- **Sprint 2** (3-5 days): Orchestrator error handling, spec updates, flag manifest, simplified search tool
+- **Sprint 3** (3-5 days): Deep-mode expansion caching, concurrent save dedup fix, Stage 2 decomposition
+- **Epic** (2-4 weeks): Weight coherence unification, feature flag governance overhaul, eval-to-scoring feedback loop
+
+Full details: `scratch/iteration-019.md` (25 recommendations across 7 categories with effort/impact/priority scoring)
+
+---
+
+## Deep Research Analysis (2026-03-20)
+
+### 1. Executive Summary
+
+A 20-iteration autonomous deep research campaign was conducted on the hybrid-rag-fusion system (Spec Kit Memory MCP server) on 2026-03-20, spanning approximately 9.5 hours. The campaign investigated 18 research questions across the search pipeline, scoring system, cognitive subsystem, eval infrastructure, save pipeline, feature flag landscape, developer UX, performance characteristics, and spec-to-code alignment.
+
+**System scope:** 511 TypeScript files, approximately 190,637 LOC (excluding dist/ and node_modules/), with 284 test files, 28 lib/ subdirectories, and 32 MCP tools.
+
+**Key results:**
+- 18 of 18 research questions answered (100% closure)
+- 25 prioritized recommendations produced across 7 categories (A-G)
+- 10 top findings cross-validated with independent code traces: 6 confirmed, 3 modified, 1 refuted (90% directional accuracy)
+- 29 code-vs-spec and code-vs-standard misalignments cataloged with severity ratings
+- 15 research debt items identified for future campaigns
+- Approximately 42% of lib/ LOC investigated (22K of 52K); 58% remains uninvestigated
+
+The system is architecturally sound with a well-designed 4-stage pipeline (actually 5 channels), robust save pipeline, and production-integrated cognitive subsystem. The primary concerns are: (1) zero error handling at the orchestrator level, (2) three conflicting channel weight systems, (3) 81 ungoverned feature flags, and (4) a measurement infrastructure that cannot feed results back into scoring calibration.
+
+---
+
+### 2. Methodology
+
+#### Campaign Structure
+
+The research was organized into 5 phases across 20 iterations:
+
+| Phase | Iterations | Focus | Approach |
+|-------|-----------|-------|----------|
+| Phase 1: Broad Survey | 1-4 | Pipeline architecture, scoring, graph, alignment | Direct code reading, type contract analysis |
+| Phase 2: Deep Investigation | 5-9 | Fusion, error handling, flags, eval, save | Targeted module deep-dives |
+| Phase 3: Automation and UX | 10-13 | Cognitive, DX, query intelligence, performance | Integration mapping, census methods |
+| Phase 4: Cross-Cutting | 14-17 | Spec reality-check, tests, synthesis | Cross-referencing, claim verification |
+| Phase 5: Synthesis | 18-20 | Cross-validation, recommendations, gaps | Independent code traces, consolidation |
+
+#### Agent Configuration
+
+Each iteration was executed by a single autonomous research agent with:
+- 3-5 research actions per iteration (WebFetch, Grep, Glob, Read, Bash)
+- 8-12 total tool calls including state management
+- Externalized state via JSONL + strategy.md for continuity across iterations
+- Progressive synthesis into research.md after each iteration
+
+#### Anti-Convergence Measures
+
+- Phased question injection at iterations 5 and 10 (adding new questions to prevent premature convergence)
+- Domain rotation across iterations to avoid tunnel vision
+- Iterations 18-20 exempt from convergence threshold (synthesis phase)
+- Cross-validation in iteration 18 to verify reliability of findings
+
+#### Convergence Profile
+
+| Metric | Value |
+|--------|-------|
+| Average newInfoRatio (iterations 1-15) | 0.72 |
+| Average newInfoRatio (synthesis iterations 16-20) | 0.17 |
+| Stop reason | max_iterations_reached |
+| Total findings across 20 iterations | 220+ individual findings |
+| Questions answered | 18/18 (100%) |
+
+---
+
+### 3. Pipeline Architecture Findings
+
+*Primary sources: iterations 1, 5, 16. Cross-validated: iteration 18.*
+
+#### 4-Stage Pipeline (Actually 5 Channels)
+
+The search pipeline consists of 4 processing stages with 5 input channels:
+
+```
+Stage 1: Candidate Generation
+  - 5 channels: Vector (semantic), FTS5, BM25, Graph (typed-degree), Co-activation
+  - Query expansion: rule-based synonyms (deep mode) OR R12 embedding expansion (standard)
+  - Constitutional injection: always-include tier bypasses normal ranking
+  [SOURCE: mcp_server/lib/search/pipeline/stage1-candidate-gen.ts]
+
+Stage 2: Fusion and Scoring (854 LOC, 12 sequential steps)
+  - Steps 1-7: Scoring signals (RRF, FSRS, importance, recency, intent weights, session boost, graph signals)
+  - Steps 8-9: Annotation (anchor metadata, validation metadata)
+  - Steps 10-11: Intent weight application, composite scoring
+  - Step 12: Validation
+  [SOURCE: mcp_server/lib/search/pipeline/stage2-fusion.ts:21, :538]
+
+Stage 3: Reranking
+  - Cross-encoder reranking (3-provider support: local ONNX, Voyage AI, Cohere)
+  - MMR diversity pruning (lambda varies by intent)
+  - Circuit breaker on cross-encoder latency
+  [SOURCE: mcp_server/lib/search/pipeline/stage3-rerank.ts]
+
+Stage 4: Filtering and Output
+  - Token budget enforcement
+  - Evidence gap analysis
+  - Result formatting and metadata assembly
+  [SOURCE: mcp_server/lib/search/pipeline/stage4-filter.ts]
+```
+
+The orchestrator (`orchestrator.ts`, 79 lines) is a pure pass-through that calls all 4 stages sequentially with zero error handling, zero timeout protection, and zero timing instrumentation.
+[SOURCE: mcp_server/lib/search/pipeline/orchestrator.ts]
+
+#### Key Architectural Finding: 5 Channels, Not 4
+
+The spec documents "4 search channels" but `types.ts:185` explicitly lists 5: FTS5, semantic, trigger, graph, and co-activation. Co-activation is treated as a full channel with its own candidates and RRF contribution. This was CONFIRMED in cross-validation (iteration 18).
+[SOURCE: mcp_server/lib/search/pipeline/types.ts:185]
+
+#### Pipeline Contract Issues
+
+- **Unsafe type cast:** Stage 3 mutable output is cast (`as`) to Stage 4 readonly input without actual immutability enforcement
+  [SOURCE: iteration-001 F8]
+- **Constitutional bypass:** Constitutional rows injected via vector search bypass `applyArchiveFilter` which only runs for R8 summary hits
+  [SOURCE: iteration-001 F10]
+- **Score alias synchronization:** `withSyncedScoreAliases()` normalizes score fields, but on error/early-return paths aliases can be unsynced, causing three different score resolution functions to disagree on rank order
+  [SOURCE: iteration-001 F3/F9, iteration-002 F1]
+
+---
+
+### 4. Scoring System Findings
+
+*Primary sources: iterations 2, 5, 12. Cross-validated: iteration 18.*
+
+#### 30+ Hardcoded Constants with No Calibration
+
+All scoring constants are hardcoded. Only two have literature citations:
+- **RRF K=60** -- from Cormack et al., SIGIR 2009
+- **FSRS constants** -- from FSRS v4 spaced repetition literature
+
+No data-driven calibration mechanism exists. No A/B testing framework. No runtime tuning except RRF K and two feature flags. Cross-validation (iteration 18) spot-checked 5 constants and confirmed 4 of 5 are hardcoded with no calibration pathway.
+[SOURCE: mcp_server/lib/scoring/composite-scoring.ts:123-185]
+[SOURCE: mcp_server/lib/search/pipeline/stage3-rerank.ts:55,201]
+
+#### Three Divergent Score Resolution Chains (CONFIRMED)
+
+Three separate functions resolve the "final score" of a memory with different field precedence:
+
+| Function | File | Fallback Order |
+|----------|------|---------------|
+| `resolveEffectiveScore()` | types.ts:49-66 | intentAdjustedScore -> rrfScore -> score -> similarity/100 |
+| `compareDeterministicRows()` | ranking-contract.ts:36-44 | score -> similarity/100 (2 fields only) |
+| `extractScoringValue()` | stage4-filter.ts:205-214 | rrfScore -> intentAdjustedScore -> score -> similarity (RAW, not /100) |
+
+The canonical function in `types.ts` (documented at lines 49-55) was added to address this, but the other two call sites still use their own ad-hoc chains. `extractScoringValue` has a 100x scale mismatch (raw similarity instead of similarity/100) affecting Stage 4 evidence-gap analysis.
+[SOURCE: mcp_server/lib/search/pipeline/types.ts:49-66, ranking-contract.ts:36-44, stage4-filter.ts:205-214]
+
+#### Three Conflicting Weight Systems
+
+| System | Location | Scope | Status |
+|--------|----------|-------|--------|
+| Hardcoded channel weights | hybrid-search.ts | vector=1.0, fts=0.8, bm25=0.6, graph=0.5 | LIVE -- always applied |
+| Adaptive fusion weights | adaptive-fusion.ts | 7 intent-specific profiles for 2 of 5 channels | LIVE -- partial coverage |
+| GRAPH_WEIGHT_BOOST=1.5 | rrf-fusion.ts | Graph channel boost | DEAD -- overridden by explicit weight=0.5 |
+
+Additionally, `FusionWeights.graphWeight` is declared in the interface, set in all 7 intent profiles, but never consumed by `adaptiveFuse()`. This creates a false sense of intent-aware graph weighting.
+[SOURCE: iteration-005 F2/F5/F6/F10]
+
+#### Fusion Algorithms
+
+- **RRF (Reciprocal Rank Fusion):** The only live fusion algorithm. K=60 (literature-backed).
+- **RSF (Reciprocal Score Fusion):** Shadow-only, dormant. Records shadow scores for offline comparison but has no production activation path.
+- **Adaptive Fusion:** Lives in `adaptive-fusion.ts` but only applies to 2 of 5 channels (semantic and keyword weights).
+
+Two parallel scoring models coexist:
+- **Legacy 6-factor:** similarity, importance, recency, popularity, tierBoost, retrievability -- the ONLY live model
+- **5-factor:** temporal, usage, importance, pattern, citation -- complete, tested, but `use_five_factor_model: true` is never passed in production (CONFIRMED, iteration 18)
+
+---
+
+### 5. Graph Channel Findings
+
+*Primary source: iteration 3.*
+
+The graph channel is NOT dead code. It is a complete, default-ON system (controlled by `SPECKIT_GRAPH_UNIFIED`, default-on semantics) with:
+
+- **FTS5-backed causal edge search** with LIKE fallback for non-FTS queries
+- **Typed-degree as 5th RRF channel** -- graph results participate in fusion alongside vector, FTS5, BM25, and co-activation
+- **Three graph signals:** momentum (change rate), causal depth via Tarjan SCC (strongly connected components), and graph-walk 2-hop traversal
+- **Community detection:** BFS for small graphs, escalation to Louvain modularity detection for larger ones
+- **Session caching** for graph traversal results
+- **Constitutional memory exclusion** from graph scoring
+- **Defensive error handling:** try/catch with warn + empty return on all paths
+
+The graph subsystem is 1,216 LOC across 2 core files (`graph-search-fn.ts` and `graph-signals.ts`) and is far more mature than the spec documentation implies.
+[SOURCE: mcp_server/lib/graph/graph-search-fn.ts, mcp_server/lib/search/graph-signals.ts]
+
+---
+
+### 6. Error Handling Findings
+
+*Primary source: iteration 6.*
+
+#### Dominant Pattern: Warn-and-Continue
+
+28 catch blocks across the pipeline follow the same pattern: `console.warn` + silent continue. Distribution:
+- Stage 2: 16 catch blocks
+- Stage 1: 8 catch blocks
+- Stage 3: 4 catch blocks
+- Orchestrator: 0 catch blocks (zero error handling)
+
+[SOURCE: grep `catch\s*\(` across mcp_server/lib/search/pipeline/]
+
+#### Critical Gaps
+
+1. **No failure discrimination:** All 9 signal steps use `*Applied: false` / `true`. Catch blocks leave the flag as `false`. Callers cannot distinguish "feature off by config" from "feature crashed with DB error."
+   [SOURCE: iteration-006 F2/F10]
+
+2. **Zero orchestrator error handling (CONFIRMED):** The 79-line orchestrator calls all 4 stages with bare `await`. Any unhandled exception crashes the entire pipeline with an unstructured error. The structured error infrastructure (`MemoryError`, `buildErrorResponse`, `withTimeout`) exists in `errors/core.ts` (1,221 LOC) but is never used by the pipeline.
+   [SOURCE: mcp_server/lib/search/pipeline/orchestrator.ts -- 79 lines, zero try/catch/throw/error]
+
+3. **Redundant DB access:** Up to 4 Stage 2 steps independently call `requireDb()`. If the DB is unavailable, each discovers this separately and logs a separate warning.
+   [SOURCE: iteration-006 F9]
+
+4. **FSRS race condition:** `strengthenOnAccess` performs read-then-write (SELECT stability, compute, UPDATE stability) without transaction isolation. Note: the write-back path is NOT in `fsrs.ts` (which is read-only computation); the actual location is in the `trackAccess` parameter flow (cross-validation correction from iteration 18).
+   [SOURCE: iteration-006 F5, iteration-018 Finding 5]
+
+5. **Silent quality degradation:** The dominant failure mode. All 9 signal steps can fail without caller awareness. The pipeline always returns results, but result quality may be severely degraded without any indication.
+   [SOURCE: iteration-006 F2]
+
+---
+
+### 7. Feature Flag Findings
+
+*Primary source: iteration 7. Cross-validated: iteration 18.*
+
+#### 81 Feature Flags with No Governance
+
+81 unique `SPECKIT_*` environment variable names exist across lib/ (corrected upward from 76 in cross-validation). There is:
+- No central registry or manifest
+- No sunset dates or expiry mechanisms
+- No version gates
+- No categorization documentation
+- Only one `@deprecated` annotation (`PIPELINE_V2`, always returns true)
+
+[SOURCE: grep -roh 'SPECKIT_[A-Z_0-9]*' mcp_server/lib/ | sort -u -- 83 lines, minus 2 partial patterns = 81]
+
+#### Three Distinct Flag Semantics
+
+| Semantic | Implementation | Examples |
+|----------|---------------|----------|
+| Default-ON (graduated) | `isFeatureEnabled()` returns true unless explicitly `=false` | SPECKIT_MMR, SPECKIT_GRAPH_SIGNALS |
+| Default-OFF (opt-in) | Explicit `=== 'true'` check | SPECKIT_RECONSOLIDATION, SPECKIT_FILE_WATCHER |
+| Multi-state | String comparison with 3+ values | SPECKIT_GRAPH_WALK_ROLLOUT: 'off', 'trace_only', 'bounded_runtime' |
+
+No documentation maps which flags use which semantics.
+[SOURCE: mcp_server/lib/search/search-flags.ts:93-95, :156-169, :230-233]
+
+#### Legacy Aliases
+
+12 flags are legacy `HYDRA_*` aliases (the system was renamed from "Hydra" to "Speckit Memory Roadmap"). Both prefixes are honored at runtime, creating confusion about which is authoritative.
+[SOURCE: mcp_server/lib/cache/cognitive/capability-flags.ts:38-54]
+
+---
+
+### 8. Eval Infrastructure Findings
+
+*Primary source: iteration 8.*
+
+The eval system is structurally complete and correctly connected to the pipeline:
+
+- **Ablation framework:** 773 LOC implementing one-at-a-time channel ablation with 9-metric breakdown, sign-test statistical significance, and channel contribution ranking. Bidirectional connection: ablation calls `search`, search respects disabled channel flags.
+  [SOURCE: mcp_server/lib/eval/ablation-framework.ts]
+
+- **Ground truth corpus:** 2,591-line JSON with 7 intent types, 7 query categories, 4-point relevance scale.
+
+- **12 metrics:** 7 core + 5 diagnostic, implemented as pure functions.
+
+- **Separate eval DB:** 5 tables, WAL mode, isolates eval from production.
+
+- **MCP accessibility:** `eval_run_ablation` and `eval_reporting_dashboard` tools, gated behind `SPECKIT_ABLATION=true`.
+
+**Critical gap:** No feedback loop. Eval measures quality but cannot calibrate scoring weights. Ablation results go into `eval_metric_snapshots` but no pipeline code reads from that table. `token_usage` metric is a stub (always 0). Ground truth `memoryIds` are hardcoded and may become stale if the database is rebuilt.
+[SOURCE: iteration-008 F7]
+
+---
+
+### 9. Save Pipeline Findings
+
+*Primary source: iteration 9.*
+
+The save pipeline is architecturally robust with a 7-module decomposition:
+
+#### Three-Layer Dedup
+
+| Layer | Mechanism | File |
+|-------|-----------|------|
+| 1. Same-path hash | SHA-256 content hash comparison for same file path | dedup.ts |
+| 2. Cross-path hash | SHA-256 content hash comparison across all paths | dedup.ts |
+| 3. Semantic PE gate | Prediction Error gating via embedding similarity | pe-gating.ts |
+
+Note: the spec claims "cosine dedup" but code uses SHA-256 hash (layers 1-2). Only the PE gate (layer 3) uses semantic comparison.
+[SOURCE: mcp_server/handlers/save/dedup.ts:9-11, :105-252]
+
+#### Quality Loop
+
+4-dimension quality scoring (triggers, anchors, budget, coherence) with threshold 0.6 and 2 auto-fix retries. 5-action PE arbitration: CREATE, REINFORCE, SUPERSEDE, UPDATE, CREATE_LINKED. Append-only versioning for updates.
+[SOURCE: mcp_server/handlers/save/quality-loop.ts -- 700 LOC]
+
+#### Save Pipeline Gaps
+
+1. **Embedding cache key ignores model ID:** REFUTED in cross-validation (iteration 18). Cache has compound PK `(content_hash, model_id)`. This finding was incorrect.
+   [SOURCE: mcp_server/lib/cache/embedding-cache.ts:38-48]
+
+2. **No transaction isolation for concurrent dedup:** Dedup check-then-insert has no serializable transaction. Two concurrent saves of similar content can both pass the dedup check and create duplicates.
+   [SOURCE: iteration-009]
+
+3. **Quality loop content mutations:** The auto-fix feature mutates content (`fixedContent`). Callers MUST consume the fixed content or `content_hash` will mismatch. This is an implicit contract that is neither enforced nor documented.
+   [SOURCE: iteration-009]
+
+---
+
+### 10. Cognitive Subsystem Findings
+
+*Primary source: iteration 10.*
+
+#### NOT Over-Engineered
+
+4,644 LOC across 11 modules; 10 of 11 are production-integrated (4,463 LOC). The subsystem has a clear 4-layer architecture:
+
+| Layer | Modules | LOC | Role |
+|-------|---------|-----|------|
+| Foundation | rollout-policy (64 LOC, 6 consumers), fsrs-scheduler (395 LOC) | 459 | Feature gating, spaced repetition |
+| Session | working-memory (765 LOC, Miller's Law capacity, LRU eviction, event decay) | 765 | Session state management |
+| Quality | prediction-error-gate, tier-classifier, pressure-monitor | ~1,200 | Quality control gates |
+| Enhancement | co-activation, adaptive-ranking (shadow-mode), archival-manager, attention-decay (facade) | ~2,000 | Retrieval quality features |
+
+**Only unused module:** `temporal-contiguity.ts` (181 LOC) -- zero production callers. The only module in the 11-file cognitive subsystem with no integration.
+
+**Key insight:** Co-activation is a core retrieval quality feature, not optional. It is deeply integrated into `hybrid-search.ts` and `stage2-fusion.ts`. The shadow-mode adaptive ranking creates an observe-propose-evaluate loop without automated feedback.
+[SOURCE: grep across mcp_server/lib/ for cognitive/ imports -- 10/11 modules have production callers]
+
+---
+
+### 11. Developer UX Findings
+
+*Primary source: iteration 11.*
+
+#### 32 MCP Tools with UX Issues
+
+- **Flat listing:** All 32 tools appear flat with no grouping. Developers must scan the full list to find the right tool.
+- **Consistent naming:** `{domain}_{action}` pattern is generally followed.
+- **Two naming issues:**
+  1. `memory_drift_why` should be `memory_causal_trace` (misfiled outside the causal tool group: `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`)
+  2. `TriggerArgs` uses `snake_case` (`session_id`, `include_cognitive`) while all other interfaces use `camelCase`
+
+#### memory_search: 31 Parameters (MODIFIED)
+
+The `SearchArgs` interface has 31 fields (corrected upward from 28 in cross-validation). Includes a duplicate: `minQualityScore` (camelCase) and `min_quality_score` (snake_case) for the same parameter. No "simple search" variant exists for common use cases.
+[SOURCE: mcp_server/tools/types.ts -- SearchArgs interface]
+
+---
+
+### 12. Automation Gaps
+
+*Primary sources: iterations 11, 14.*
+
+| Gap | Current State | Impact |
+|-----|--------------|--------|
+| File-watcher is opt-in | Mature implementation (417 LOC, chokidar, debounce, SHA256 dedup, bounded concurrency, SQLITE_BUSY retry) but gated behind `SPECKIT_FILE_WATCHER` feature flag | Most common DX friction: "forgot to reindex" |
+| No scheduled stale cleanup | File-watcher handles individual unlink events; incremental index detects deleted files during scan; no automated bulk cleanup | DB accumulates orphaned entries over time |
+| No self-tuning | Eval measures quality but cannot auto-calibrate weights | Manual weight tuning is the only path |
+| No progress feedback | Post-save async operations (enrichment, embedding generation) run with no progress indication | Callers have no visibility into save completion |
+
+[SOURCE: iteration-011, iteration-014]
+
+---
+
+### 13. Query Intelligence Findings
+
+*Primary source: iteration 12.*
+
+#### Two Expansion Systems in Mutual Exclusion
+
+| System | Mode | Mechanism | Latency Cost | Eval Coverage |
+|--------|------|-----------|-------------|---------------|
+| Rule-based synonym expansion | Deep mode only | 27-entry vocab map, max 3 variants, each triggers FULL hybrid search | 3x multiplier (sequential, no caching) | None |
+| R12 embedding expansion | Standard (non-simple queries) | Mines terms from top-5 similar memories, runs parallel 2nd hybrid search | 2x multiplier | None |
+
+R12/R15 mutual exclusion correctly suppresses expansion on simple queries (3 or fewer terms).
+[SOURCE: mcp_server/lib/search/pipeline/stage1-candidate-gen.ts]
+
+#### Critical Gaps
+
+- **Neither system has metrics or eval hooks** to measure whether expansion improves recall. The eval/ablation framework tests channels but not expansion variants.
+- **Deep mode expansion has unbounded latency cost** (no timeout, no budget).
+- **R12 expansion mines from the same semantic neighborhood** already found by vector search -- narrow improvement window.
+- **Query classifier confidence field** is computed but never consumed by any caller (dead data).
+  [SOURCE: iteration-012]
+
+---
+
+### 14. Performance Findings
+
+*Primary source: iteration 13.*
+
+#### Five Performance Concerns
+
+| Concern | Pattern | Severity | Evidence Type |
+|---------|---------|----------|--------------|
+| BM25 spec-folder filter N+1 | Each result triggers individual `SELECT spec_folder FROM memory_index WHERE id = ?` inside `.filter()` loop | MEDIUM | Code path analysis (no profiling) |
+| Deep-mode 3x expansion | Sequential full hybrid searches per synonym variant, no embedding cache | MEDIUM | Code path analysis |
+| R12 doubles pipeline cost | Parallel 2nd hybrid search for non-simple queries | LOW | Code path analysis |
+| MMR re-fetches embeddings | Stage 3 re-reads from Vec0 what Stage 1 already loaded | LOW | Code path analysis |
+| Sequential local reranker | Candidates processed sequentially (PERF CHK-113) | LOW | Code path analysis |
+
+**Important caveat:** All 5 concerns are based on code path analysis, not empirical profiling. For the BM25 N+1 pattern, overhead may be negligible with SQLite prepared statements. For the expansion systems, actual wall-clock cost depends on embedding generation latency which was not measured.
+[SOURCE: iteration-013, iteration-020 section 2a]
+
+#### Timing Instrumentation Gaps
+
+Timing exists in:
+- Cross-encoder: circuit breaker + latency tracker
+- Stage 4: `durationMs` field
+- Vector index queries: timing instrumentation
+
+Missing: The orchestrator has zero timing code. No end-to-end pipeline latency metric exists.
+[SOURCE: iteration-013]
+
+---
+
+### 15. Cross-Validation Results
+
+*Primary source: iteration 18.*
+
+10 top findings were independently re-verified with fresh code traces:
+
+| # | Finding | Verdict | Correction |
+|---|---------|---------|------------|
+| 1 | 3 divergent score resolution chains | CONFIRMED | All 3 still exist with different fallback orders |
+| 2 | 30+ hardcoded scoring constants | CONFIRMED | 4/5 spot-checks positive |
+| 3 | 76 SPECKIT_ feature flags | MODIFIED | Actual count is 81, not 76 |
+| 4 | Orchestrator 0 error handling | CONFIRMED | 79 lines, zero try/catch/throw/error |
+| 5 | FSRS write-back race condition | MODIFIED | fsrs.ts is read-only; write-back lives in trackAccess flow |
+| 6 | Embedding cache ignores model ID | REFUTED | Cache has compound PK (content_hash, model_id) |
+| 7 | memory_search 28 parameters | MODIFIED | Actual count is 31, not 28 |
+| 8 | 5 channels not 4 | CONFIRMED | types.ts:185 explicitly lists 5 |
+| 9 | 5-factor model never activated | CONFIRMED | Zero production callers |
+| 10 | Dead applyIntentWeights export | CONFIRMED | Zero imports outside intent-classifier.ts |
+
+**Reliability score: 6 CONFIRMED, 3 MODIFIED, 1 REFUTED = 90% directionally correct (9/10)**
+
+The REFUTED finding (embedding cache) was removed from all recommendations. The 3 MODIFIED findings were corrected upward (flag count 81, parameter count 31) or corrected in location (FSRS race).
+[SOURCE: iteration-018]
+
+---
+
+### 16. Prioritized Recommendations
+
+*Primary source: iteration 19. Full details in `scratch/iteration-019.md`.*
+
+25 recommendations across 7 categories, scored by Priority (P0/P1/P2), Effort (S/M/L), and Impact (1-5):
+
+#### P0 -- Critical (Fix First)
+
+| Rank | ID | Category | Recommendation | Effort | Impact | Cross-Val |
+|------|-----|----------|---------------|--------|--------|-----------|
+| 1 | B1 | Architecture | Orchestrator error handling + timeouts | M | 5/5 | CONFIRMED |
+| 2 | B2 | Architecture | Weight coherence unification (3 systems to 1) | L | 5/5 | Partial |
+| 3 | A1 | Correctness | Unify 3 score resolution chains | S | 4/5 | CONFIRMED |
+| 4 | G1 | Testing | Orchestrator error cascade tests | S | 4/5 | N/A |
+
+#### P1 -- Important (Sprint-Level)
+
+| Rank | ID | Category | Recommendation | Effort | Impact | Cross-Val |
+|------|-----|----------|---------------|--------|--------|-----------|
+| 5 | B3 | Architecture | Eval-to-scoring feedback loop | L | 5/5 | CONFIRMED |
+| 6 | B5 | Architecture | Feature flag governance overhaul (81 flags) | L | 4/5 | MODIFIED |
+| 7 | E3 | DX | Simplified memory_search tool (31 params) | M | 4/5 | MODIFIED |
+| 8 | B6 | Architecture | Signal failure tri-state metadata | S | 3/5 | N/A |
+| 9 | B7 | Architecture | Batch BM25 spec-folder N+1 query | S | 3/5 | Indirect |
+| 10 | A4 | Correctness | Concurrent save dedup transaction isolation | M | 3/5 | N/A |
+| 11 | B4 | Architecture | Stage 2 monolith decomposition | M | 3/5 | N/A |
+| 12 | D1 | Documentation | Update spec: 5 channels not 4 | S | 3/5 | CONFIRMED |
+| 13 | D4 | Documentation | Feature flag manifest creation | M | 3/5 | MODIFIED |
+| 14 | F1 | Performance | Deep-mode expansion caching + parallelization | M | 3/5 | N/A |
+| 15 | G2 | Testing | Score resolution consistency tests | S | 3/5 | N/A |
+| 16 | G3 | Testing | Cross-encoder circuit breaker tests | S | 3/5 | N/A |
+| 17 | G5 | Testing | Concurrent save dedup race tests | M | 3/5 | N/A |
+
+#### P2 -- Improvement (Opportunistic)
+
+| Rank | ID | Category | Items |
+|------|-----|----------|-------|
+| 18 | E1 | DX | File-watcher default-ON |
+| 19-20 | D2-D3 | Documentation | Spec corrections (12 steps not 15+; SHA-256 dedup not cosine) |
+| 21-22 | C5-C6 | Dead Code | 5-factor model: activate or remove; RSF: test activation or remove |
+| 23 | F2 | Performance | R12 expansion: add metrics to measure recall delta |
+| 24 | A2 | Correctness | FSRS write-back transaction isolation |
+| 25 | C1-C4, C7-C9 | Dead Code | 7 dead code items (applyIntentWeights, detectIntent, GRAPH_WEIGHT_BOOST, graphWeight fields, temporal-contiguity, PIPELINE_V2, classifier confidence) |
+
+#### Implementation Roadmap
+
+| Sprint | Duration | Items | Description |
+|--------|----------|-------|-------------|
+| Sprint 1: Quick Wins | 1-2 days | A1, B6, B7, G1, G2, G3 | Score unification, tri-state metadata, BM25 batch, 3 test suites |
+| Sprint 2: Critical Architecture | 3-5 days | B1, D1, D4, E3 | Orchestrator error handling, spec updates, flag manifest, simplified search |
+| Sprint 3: Performance + Testing | 3-5 days | F1, A4+G5, B4 | Expansion caching, concurrent save fix + tests, Stage 2 decomposition |
+| Epic: Strategic Initiatives | 2-4 weeks | B2, B5, B3 | Weight unification (1w), flag governance (1w), eval feedback loop (2w) |
+
+---
+
+### 17. Research Gaps and Debt
+
+*Primary source: iteration 20.*
+
+#### Codebase Coverage
+
+| Category | Files | LOC | Status |
+|----------|-------|-----|--------|
+| Investigated (search, cognitive, eval, graph, save) | ~50 | ~22,000 | DEEP to MODERATE coverage |
+| NOT investigated (storage, handlers, parsing, telemetry, etc.) | ~100 | ~30,000 | Zero coverage |
+| **Total lib/** | ~150 | ~52,000 | ~42% investigated |
+
+#### Top 5 Research Debt Items (Next Campaign)
+
+| ID | Topic | LOC | Expected Value | Rationale |
+|----|-------|-----|---------------|-----------|
+| RD-01 | storage/ layer deep dive | 7,148 | 5/5 | Largest uninvestigated subsystem. All correctness and performance findings rest on storage assumptions. |
+| RD-02 | handlers/ layer audit (non-save) | 11,280 | 4/5 | MCP-to-lib bridge layer. Tool validation, error propagation, authorization. |
+| RD-03 | Performance benchmarking | N/A | 4/5 | All 5 performance recommendations based on code path analysis, not measurement. |
+| RD-04 | Tenant isolation security audit | ~1,310 | 4/5 | governance/ (710 LOC) + collab/ not examined. Multi-tenant isolation is a critical security property. |
+| RD-05 | Cognitive impact measurement | 4,644 | 3/5 | 10 production modules with no metrics proving they improve retrieval quality. |
+
+#### Claims Requiring Empirical Validation
+
+**Performance claims without measurement:**
+- BM25 N+1 query latency impact (may be negligible with prepared statements)
+- Deep-mode 3x expansion cost (depends on embedding generation latency)
+- R12 expansion doubling (parallel execution may reduce actual cost)
+- MMR embedding re-fetch cost (may be cached at SQLite page level)
+
+**Correctness claims without test reproduction:**
+- Score resolution divergence causing wrong results on error paths (may be fully masked by `withSyncedScoreAliases`)
+- FSRS write-back race losing updates (SQLite single-writer serialization may prevent it)
+- Concurrent save dedup creating duplicates (file-based invocation patterns may make concurrent saves rare)
+
+**Architectural claims without baseline comparison:**
+- 81 flags as "massive sprawl" (no baseline for 190K LOC system)
+- 31 parameters as "too many" (many have sensible defaults; typical use may be 2-3)
+- 28 warn-and-continue catch blocks as "excessive" (may be accepted pattern for optional enrichment)
+
+#### Security Areas NOT Reviewed
+
+| Area | Risk Level | Description |
+|------|-----------|-------------|
+| SQL injection in flag-driven queries | MEDIUM | 81 env vars used in SQL queries; parameterization not verified |
+| Tenant isolation enforcement | HIGH | governance/ (710 LOC) not examined |
+| Embedding API key handling | MEDIUM | providers/ (621 LOC) not examined |
+| MCP tool input validation | MEDIUM | validation/ (1,457 LOC) not examined |
+| File path traversal in memory save | MEDIUM | Path traversal prevention not verified |
+
+---
+
+### Convergence Report
+
+| Metric | Value |
+|--------|-------|
+| Total iterations | 20 |
+| Questions asked | 18 |
+| Questions answered | 18/18 (100%) |
+| Stop reason | max_iterations_reached |
+| Campaign duration | ~9.5 hours (2026-03-20T09:49Z to 2026-03-20T19:30Z) |
+| Total findings | 220+ individual findings across 20 iterations |
+| Recommendations produced | 25 across 7 categories (A-G) |
+| Cross-validation score | 90% directionally correct (6 confirmed, 3 modified, 1 refuted) |
+| Codebase coverage | ~42% of lib/ LOC (22K/52K), ~12% of total (22K/190K) |
+| Research debt identified | 15 items for future campaigns |
+
+#### What This Campaign Definitively Established
+
+1. The 4-stage pipeline architecture is structurally sound but has zero orchestrator-level error handling
+2. Three distinct score resolution chains create a latent correctness risk (cross-validated, CONFIRMED)
+3. 81 feature flags lack governance infrastructure (cross-validated, corrected upward from 76)
+4. The eval system measures but cannot calibrate (cross-validated, CONFIRMED)
+5. The cognitive subsystem is production-integrated but unmeasured (10/11 modules live, 0 impact metrics)
+6. 9 dead code items can be safely removed (3 cross-validated and confirmed)
+7. The save pipeline is architecturally robust with 3 concurrency caveats
+8. 7 critical test paths are missing (G1-G7)
+
+#### What This Campaign Could NOT Establish
+
+1. Whether any correctness bug has EVER manifested in production
+2. Whether performance concerns cause measurable latency degradation
+3. Whether the 30+ hardcoded scoring constants are near-optimal or arbitrarily chosen
+4. Whether the cognitive subsystem measurably improves retrieval quality
+5. Whether tenant isolation is properly enforced
+6. Whether the storage layer has correctness or scalability issues
+7. Whether MCP tool inputs are properly validated
+
+#### newInfoRatio Trajectory
+
+| Iterations | Avg newInfoRatio | Phase |
+|-----------|-----------------|-------|
+| 1-4 (Broad Survey) | 0.95 | High discovery rate -- fresh codebase analysis |
+| 5-9 (Deep Investigation) | 0.89 | Sustained discovery -- targeted deep dives |
+| 10-13 (Automation/UX) | 0.87 | Continued strong returns -- new domains |
+| 14-15 (Cross-Cutting) | 0.64 | Declining -- increasingly overlapping with prior findings |
+| 16-20 (Synthesis) | 0.24 | Low raw novelty, high synthesis value |
+
+#### Iteration-by-Iteration Source Files
+
+All iteration files are located in `scratch/` within this spec folder:
+- `scratch/iteration-001.md` through `scratch/iteration-020.md`
+- `scratch/deep-research-strategy.md` (answered questions, approach history)
+- `scratch/deep-research-state.jsonl` (convergence data, iteration records)
+- `scratch/deep-research-config.json` (campaign configuration)

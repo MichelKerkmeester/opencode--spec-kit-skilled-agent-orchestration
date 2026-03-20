@@ -1,6 +1,6 @@
 ---
 title: "Decision Record: Perfect Session Capturing [template:level_3/decision-record.md]"
-description: "The parent pack remains audit-first and now models phases 018-020 as explicit child phases with truthful shipped/open status."
+description: "The parent pack remains audit-first and now treats the current on-disk phase layout as canonical navigation truth."
 trigger_phrases:
   - "decision"
   - "perfect session capturing"
@@ -32,7 +32,7 @@ contextType: "general"
 <!-- ANCHOR:adr-001-context -->
 ### Context
 
-The parent `010-perfect-session-capturing` pack had drifted away from runtime truth before the audit pass. The runtime and targeted tests had already moved beyond the published docs, while the parent pack still implied a stronger closure story than the evidence supported. After the audit, the remaining recommendations also needed a durable home so shipped follow-up work and still-open proof work would not be conflated.
+The parent `010-perfect-session-capturing` pack had drifted away from on-disk truth. The runtime and targeted tests had already moved beyond the published docs, several direct-child folders had been renamed or moved into `000-dynamic-capture-deprecation/`, and the parent pack still pointed at folders that no longer existed. The pack needed a durable way to keep authoritative navigation current without rewriting provenance-heavy history.
 
 ### Constraints
 
@@ -62,7 +62,7 @@ The parent `010-perfect-session-capturing` pack had drifted away from runtime tr
 | Preserve the old closure story and only fix validation issues | Minimal doc effort | Leaves readers with the wrong picture of proof closure | 1/10 |
 | Hide the audit in `research.md` only | Keeps the parent pack short | Makes the top-level spec less trustworthy as an entry point | 4/10 |
 
-**Why this one**: It is the only option that keeps the top-level pack useful after phases `018` and `019` shipped while still keeping phase `020` honest and open.
+**Why this one**: It is the only option that keeps the top-level pack useful after the folder moves and renames while still preserving historical evidence as history.
 <!-- /ANCHOR:adr-001-alternatives -->
 
 ---

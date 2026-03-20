@@ -7,7 +7,7 @@ description: "Canonical synthesis of the deep-research audit for phases 001-017,
 
 ## Executive Summary
 
-This deep-research pass found that the **runtime is materially ahead of the published docs**. The most urgent problem is not that the core save pipeline is still broadly broken; it is that the parent `010-perfect-session-capturing` pack still publishes a historical 16-phase clean-closure story that is no longer true after phase `017-stateless-quality-gates` and the latest runtime changes.
+This deep-research pass found that the **runtime is materially ahead of the published docs**. The most urgent problem is not that the core save pipeline is still broadly broken; it is that the parent `010-perfect-session-capturing` pack still publishes a historical 16-phase clean-closure story that is no longer true after phase `014-stateless-quality-gates` and the latest runtime changes.
 
 The audit converged on three top conclusions:
 

@@ -166,9 +166,9 @@ describe('validation pipeline integration', () => {
 
 describe('cognitive memory export parity', () => {
   it('keeps the working-memory and attention-decay export contracts intact', () => {
-    const workingMemoryPath = path.join(MCP_SERVER_DIR, 'dist', 'lib', 'cache', 'cognitive', 'working-memory.js');
-    const attentionDecayPath = path.join(MCP_SERVER_DIR, 'dist', 'lib', 'cache', 'cognitive', 'attention-decay.js');
-    const coActivationPath = path.join(MCP_SERVER_DIR, 'dist', 'lib', 'cache', 'cognitive', 'co-activation.js');
+    const workingMemoryPath = path.join(MCP_SERVER_DIR, 'dist', 'lib', 'cognitive', 'working-memory.js');
+    const attentionDecayPath = path.join(MCP_SERVER_DIR, 'dist', 'lib', 'cognitive', 'attention-decay.js');
+    const coActivationPath = path.join(MCP_SERVER_DIR, 'dist', 'lib', 'cognitive', 'co-activation.js');
 
     expect(fs.existsSync(workingMemoryPath)).toBe(true);
     expect(fs.existsSync(attentionDecayPath)).toBe(true);

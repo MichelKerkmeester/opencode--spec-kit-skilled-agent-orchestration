@@ -317,19 +317,22 @@ async function importWorkflowForHarness(
   captureCopilotConversation.mockResolvedValue(null);
   captureGeminiConversation.mockResolvedValue(null);
   mockedIndexMemory.mockReset();
+  let nextMemoryId = 1;
+  mockedIndexMemory.mockImplementation(async () => nextMemoryId++);
 
   if (options.failEmbedding) {
     mockedIndexMemory.mockImplementation(async () => {
       throw new Error('forced embedding failure for workflow E2E');
     });
-    vi.doMock('../core/memory-indexer', async (importOriginal) => {
-      const actual = await importOriginal<typeof import('../core/memory-indexer')>();
-      return {
-        ...actual,
-        indexMemory: mockedIndexMemory,
-      };
-    });
   }
+
+  vi.doMock('../core/memory-indexer', async (importOriginal) => {
+    const actual = await importOriginal<typeof import('../core/memory-indexer')>();
+    return {
+      ...actual,
+      indexMemory: mockedIndexMemory,
+    };
+  });
 
   const coreModule = await import('../core');
   coreModule.CONFIG.PROJECT_ROOT = harness.repoRoot;

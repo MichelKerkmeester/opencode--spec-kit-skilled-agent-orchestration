@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/018-research-remediation",
+  "description": "Spec: Research Remediation - merged Wave 1 + Wave 2",
+  "keywords": [
+    "spec",
+    "research",
+    "remediation",
+    "wave"
+  ],
+  "lastUpdated": "2026-03-20T09:47:42.964Z",
+  "specId": "018",
+  "folderSlug": "research-remediation",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "010-perfect-session-capturing"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "20-03-26_10-47__implemented-all-phase-1b-json-mode-hybrid.md"
+  ]
+}

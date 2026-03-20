@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/013-auto-detection-fixes",
+  "description": "Feature Specification: Auto-Detection Fixes",
+  "keywords": [
+    "feature",
+    "specification",
+    "auto-detection",
+    "fixes",
+    "reframed-json-primary"
+  ],
+  "jsonPrimaryNote": "Priority 2.7 (git-status) and 3.5 (session-activity) signals are dynamic-capture optimizations that lose primary value under JSON-mode. The rest of the auto-detection cascade (Priority 1.x structural signals, 2.x heuristic signals excluding 2.7, 3.x contextual signals excluding 3.5) remains fully relevant for JSON-mode enrichment.",
+  "lastUpdated": "2026-03-20T14:00:00.000Z",
+  "specId": "013",
+  "folderSlug": "auto-detection-fixes",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "010-perfect-session-capturing"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -61,12 +61,16 @@ describe('generate-context CLI authority', () => {
     await main();
 
     expect(harness.runWorkflow).toHaveBeenCalledTimes(1);
-    expect(harness.runWorkflow).toHaveBeenCalledWith(expect.objectContaining({
+    const workflowCall = harness.runWorkflow.mock.calls[0]?.[0];
+    expect(workflowCall).toMatchObject({
       dataFile: undefined,
       specFolderArg: resolvedSpecFolder,
-      loadDataFn: harness.loadCollectedData,
+      loadDataFn: expect.any(Function),
       collectSessionDataFn: harness.collectSessionData,
-    }));
+      collectedData: undefined,
+    });
+    await workflowCall?.loadDataFn?.();
+    expect(harness.loadCollectedData).toHaveBeenCalledWith({ sessionId: null });
   });
 
   it('passes JSON-mode data and explicit CLI spec-folder override through main()', async () => {
@@ -78,12 +82,16 @@ describe('generate-context CLI authority', () => {
     await main();
 
     expect(harness.runWorkflow).toHaveBeenCalledTimes(1);
-    expect(harness.runWorkflow).toHaveBeenCalledWith(expect.objectContaining({
+    const workflowCall = harness.runWorkflow.mock.calls[0]?.[0];
+    expect(workflowCall).toMatchObject({
       dataFile,
       specFolderArg: explicitSpecFolder,
-      loadDataFn: harness.loadCollectedData,
+      loadDataFn: expect.any(Function),
       collectSessionDataFn: harness.collectSessionData,
-    }));
+      collectedData: undefined,
+    });
+    await workflowCall?.loadDataFn?.();
+    expect(harness.loadCollectedData).toHaveBeenCalledWith({ sessionId: null });
   });
 
   it('passes an explicit phase-folder CLI target through main() as an authoritative workflow target', async () => {
@@ -95,12 +103,16 @@ describe('generate-context CLI authority', () => {
     await main();
 
     expect(harness.runWorkflow).toHaveBeenCalledTimes(1);
-    expect(harness.runWorkflow).toHaveBeenCalledWith(expect.objectContaining({
+    const workflowCall = harness.runWorkflow.mock.calls[0]?.[0];
+    expect(workflowCall).toMatchObject({
       dataFile: undefined,
       specFolderArg: resolvedPhaseFolder,
-      loadDataFn: harness.loadCollectedData,
+      loadDataFn: expect.any(Function),
       collectSessionDataFn: harness.collectSessionData,
-    }));
+      collectedData: undefined,
+    });
+    await workflowCall?.loadDataFn?.();
+    expect(harness.loadCollectedData).toHaveBeenCalledWith({ sessionId: null });
   });
 
   it('passes stdin JSON as preloaded collectedData and preserves an explicit CLI spec-folder override', async () => {

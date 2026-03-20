@@ -92,5 +92,5 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-- **Handoff**: 001 adds `hadContamination` parameter. 011-session-source-validation calls it (OQ-001)
+- **Handoff**: 001 adds `hadContamination` parameter. `000-dynamic-capture-deprecation/001-session-source-validation` calls it (OQ-001)
 <!-- /ANCHOR:cross-refs -->

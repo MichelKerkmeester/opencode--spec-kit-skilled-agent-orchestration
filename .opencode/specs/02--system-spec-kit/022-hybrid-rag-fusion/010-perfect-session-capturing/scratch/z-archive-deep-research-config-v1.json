@@ -1,0 +1,19 @@
+{
+  "topic": "Rigorous deep-research audit of 010-perfect-session-capturing and all sub-phases: reconcile spec truth vs runtime truth, identify remaining bugs, proof gaps, and design risks, and determine what is required for flawless multi-CLI context saving with less stateless fallback and consistently formatted, useful, indexable memories.",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing",
+  "createdAt": "2026-03-18T19:31:52Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "iteration-*.md": "write-once",
+    "research.md": "mutable"
+  }
+}

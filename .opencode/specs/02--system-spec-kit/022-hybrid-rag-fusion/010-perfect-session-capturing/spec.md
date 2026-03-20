@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Perfect Session Capturing [template:level_3/spec.md]"
-description: "Phase roadmap and implementation truth for phases 001-020, with phases 018 and 019 shipped and phase 020 still open for retained live proof."
+description: "Authoritative phase-tree alignment for the current parent pack, including the archived dynamic-capture branch, active root phases 011-018, and the merged research-remediation successor."
 trigger_phrases:
   - "perfect session capturing"
   - "spec 010"
@@ -18,14 +18,15 @@ contextType: "general"
 
 ## EXECUTIVE SUMMARY
 
-This parent pack now carries one stable audit baseline and one partially completed recommendation roadmap.
+This parent pack now carries one stable audit baseline and one repaired direct-child phase map.
 
-1. Phases `001` through `017` remain the reconciled audit story captured in the existing parent pack and `research.md`.
-2. Phases `018` and `019` are now shipped in runtime, tests, and operator docs, while phase `020` remains open until retained live artifacts catch up with the hardened contract.
+1. Direct child folders under `010-perfect-session-capturing` are the canonical navigation layer for this pack.
+2. The retired dynamic-capture follow-up phases now live under `000-dynamic-capture-deprecation/001` through `/005` and need to stay reachable through current parent/child references.
+3. The active root continuation after the audit baseline is `011` through `018`, with the merged research-remediation successor now living at `018-research-remediation/`.
 
-**Key Decisions**: Treat runtime truth as canonical, keep the parent pack audit-first, and keep live-proof closure gated on retained evidence.
+**Key Decisions**: Treat the on-disk folder layout as canonical, keep the parent pack audit-first, preserve provenance-heavy `memory/` and `scratch/` artifacts, and repair only authoritative docs plus reusable research guidance.
 
-**Critical Dependencies**: Focused session-capturing test coverage, `npm run build`, and recursive spec-pack validation.
+**Critical Dependencies**: Recursive spec-pack validation, current child-phase metadata, and the direct-child branch layout under `010-perfect-session-capturing`.
 
 ---
 
@@ -60,45 +61,38 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 ## 3. SCOPE
 
 ### In Scope
-- Keep the existing audit baseline for phases `001` through `017` intact.
-- Extend the parent phase map and roadmap narrative from `017` to `020`.
-- Create and populate the child phase folders:
-  - `018-runtime-contract-and-indexability/`
-  - `019-source-capabilities-and-structured-preference/`
-  - `020-live-proof-and-parity-hardening/`
-- Ship the phase-018 runtime contract and phase-019 source-capability work in the session-capturing scripts.
-- Update focused Vitest coverage, the feature catalog, and the manual testing playbook for the shipped contract.
-- Update the six parent Level 3 markdown files so they reference the new phases consistently and truthfully.
-- Revalidate the parent pack recursively after the implementation and documentation settle.
+- Keep the existing feature/audit content intact while repairing stale current-navigation references.
+- Reconcile the six parent Level 3 docs to the actual direct-child layout under `010-perfect-session-capturing/`.
+- Add a minimal parent pack for `000-dynamic-capture-deprecation/` so its authoritative child phases have a real recursive-validation parent.
+- Update active child metadata and relative links where they still point at removed or moved folders.
+- Update reusable research guidance only if it presents stale current-navigation paths.
+- Revalidate the parent pack recursively after the documentation repair settles.
 
 ### Out of Scope
-- Claiming retained live CLI proof is already refreshed for phase `020`.
-- Reclassifying phase `020` as complete before retained live artifacts are refreshed.
-- Rewriting older child phases beyond the parent references needed to explain the shipped/open roadmap truth.
+- Editing `memory/**` or `scratch/**` provenance artifacts.
+- Rewriting evidence-heavy research subfolders that are not live navigation docs.
+- Reclassifying runtime completion, live-proof closure, or historical implementation truth beyond what the current folder layout already proves.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/skill/system-spec-kit/scripts/memory/validate-memory-quality.ts` | Modify | Add validation-rule metadata and explicit disposition helpers |
-| `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | Modify | Resolve write/index dispositions from the new validation contract |
-| `.opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts` | Modify | Persist policy-aware indexing status |
-| `.opencode/skill/system-spec-kit/scripts/utils/source-capabilities.ts` | Create | Define typed source capabilities for structured/stateless policy |
-| `.opencode/skill/system-spec-kit/scripts/extractors/contamination-filter.ts` | Modify | Replace source-name branching with capability-driven policy |
-| `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | Modify | Prefer structured `--stdin` and `--json` in the operator contract |
-| `.opencode/skill/system-spec-kit/scripts/renderers/template-renderer.ts` | Modify | Prevent false-positive template-data warnings in successful flows |
-| `.opencode/skill/system-spec-kit/scripts/tests/*.vitest.ts` | Modify/Create | Prove the new runtime contract and parity behavior |
-| `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md` | Modify | Publish the authoritative session-capturing contract |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modify | Publish the refreshed proof boundary and parity scenarios |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/spec.md` | Modify | Extend the parent roadmap from `017` to `020` with truthful runtime/proof boundaries |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/plan.md` | Modify | Align the parent plan to the shipped runtime follow-up and open proof work |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/tasks.md` | Modify | Track shipped `018`/`019` work and open `020` proof follow-up |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/checklist.md` | Modify | Record runtime, doc, and validation evidence for the roadmap extension |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/decision-record.md` | Modify | Record the shipped/open roadmap decision |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/implementation-summary.md` | Modify | Summarize the shipped follow-up truthfully |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/018-runtime-contract-and-indexability/*.md` | Create/Modify | Document the phase-018 shipped runtime contract work |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/019-source-capabilities-and-structured-preference/*.md` | Create/Modify | Document the phase-019 shipped source-capability work |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/020-live-proof-and-parity-hardening/*.md` | Create/Modify | Track the still-open retained-proof work |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/000-dynamic-capture-deprecation/{spec,plan,tasks}.md` | Create | Add the missing parent spec docs for the archived dynamic-capture branch |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/011-template-compliance/*.md` | Modify | Align predecessor/successor references to the current root phase chain |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/012-auto-detection-fixes/*.md` | Modify | Align predecessor/successor references to the current root phase chain |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/013-spec-descriptions/*.md` | Modify | Align predecessor/successor references to the current root phase chain |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/014-stateless-quality-gates/*.md` | Modify | Replace stale `017-*` identity references and dead validation paths |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/015-runtime-contract-and-indexability/*.md` | Modify | Replace stale `018-*` identity references with the current phase path |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/016-json-mode-hybrid-enrichment/{spec,research}.md` | Modify | Restore current spec-folder identity and parent back-references |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/017-json-primary-deprecation/*.md` | Modify | Add current parent/predecessor/successor metadata |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/018-research-remediation/*.md` | Modify | Renumber the merged remediation successor from `022` to `018` and align current-navigation metadata |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/000-dynamic-capture-deprecation/001-005/*.md` | Modify | Align moved child-phase identity fields and current-navigation references |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -109,6 +103,7 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 
 | Phase | Folder | Theme | Current State | Recommendation |
 |-------|--------|-------|---------------|----------------|
+| 000 | `000-dynamic-capture-deprecation/` | Archived dynamic-capture follow-up branch | Active parent branch for moved phases `001` through `005` | `keep` |
 | 001 | `001-quality-scorer-unification/` | Quality score normalization and scorer ownership | Shipped and retained in audit history | `keep` |
 | 002 | `002-contamination-detection/` | Contamination detection and scoring penalties | Shipped and retained in audit history | `keep` |
 | 003 | `003-data-fidelity/` | Normalization and data-loss visibility | Shipped and retained in audit history | `keep` |
@@ -119,31 +114,30 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 | 008 | `008-signal-extraction/` | Signal extraction and evidence quality | Shipped and retained in audit history | `keep` |
 | 009 | `009-embedding-optimization/` | Embedding prep and retrieval weighting | Shipped and retained in audit history | `keep` |
 | 010 | `010-integration-testing/` | End-to-end workflow integration | Shipped and retained in audit history | `keep` |
-| 011 | `011-session-source-validation/` | Native session-source capture across CLIs | Shipped, but live-proof refresh remains desirable | `add verification` |
-| 012 | `012-template-compliance/` | Template and validator compliance | Shipped, but compliance can regress when docs drift | `add verification` |
-| 013 | `013-auto-detection-fixes/` | Auto-detection corrections | Shipped and retained in audit history | `keep` |
-| 014 | `014-spec-descriptions/` | Description infrastructure and filename/indexability | Shipped, with parity and collision proof still worth refreshing | `add verification` |
-| 015 | `015-outsourced-agent-handback/` | Delegated-agent handback contract | Shipped, with live proof still thinner than desired | `add verification` |
-| 016 | `016-multi-cli-parity/` | Multi-CLI parity proof | Runtime shipped; docs previously reconciled | `keep` |
-| 017 | `017-stateless-quality-gates/` | Stateless quality gates and structured-input parity | Runtime shipped; docs previously reconciled | `keep` |
-| 018 | `018-runtime-contract-and-indexability/` | Validation rule metadata and write/index disposition policy | Runtime shipped and phase docs reconciled | `keep` |
-| 019 | `019-source-capabilities-and-structured-preference/` | Typed source capabilities and structured-input preference | Runtime shipped and phase docs reconciled | `keep` |
-| 020 | `020-live-proof-and-parity-hardening/` | Retained live proof refresh and parity hardening | Open follow-up phase tracking live-proof closure | `add verification` |
+| 011 | `011-template-compliance/` | Template and validator compliance | Shipped, but compliance can regress when docs drift | `add verification` |
+| 012 | `012-auto-detection-fixes/` | Auto-detection corrections | Shipped and retained in audit history | `keep` |
+| 013 | `013-spec-descriptions/` | Description infrastructure and filename/indexability | Shipped, with parity and collision proof still worth refreshing | `add verification` |
+| 014 | `014-stateless-quality-gates/` | Stateless quality gates and structured-input parity | Runtime shipped and current docs retained | `keep` |
+| 015 | `015-runtime-contract-and-indexability/` | Validation rule metadata and write/index disposition policy | Runtime shipped and phase docs reconciled | `keep` |
+| 016 | `016-json-mode-hybrid-enrichment/` | JSON-mode hybrid enrichment | Runtime shipped and phase docs reconciled | `keep` |
+| 017 | `017-json-primary-deprecation/` | JSON-primary deprecation and dynamic-capture recovery posture | Runtime shipped and phase docs reconciled | `keep` |
+| 018 | `018-research-remediation/` | Research-remediation merged Wave 1 + Wave 2 | Canonical merged remediation successor phase | `keep` |
 
 ### Phase Transition Rules
 
 - The parent pack remains the integrated roadmap and audit entry point.
 - Shipped runtime claims belong only to phases with direct code, test, and documentation evidence.
-- Phases `018` and `019` are implemented follow-up work, while phase `020` remains an open roadmap phase.
+- `000-dynamic-capture-deprecation/` groups the moved child phases that no longer live as direct children of the parent pack.
+- Active direct-child navigation now proceeds `010` -> `011` -> `012` -> `013` -> `014` -> `015` -> `016` -> `017` -> `018`.
 - Recursive validation proves structural integrity of the spec tree, not universal live parity across all CLIs.
 
 ### Phase Handoff Criteria
 
 | From | To | Criteria | Verification |
 |------|----|----------|--------------|
-| 017 | 018 | The shipped runtime needs first-class write/index policy and indexability rules | Runtime tests and phase docs agree on the phase-018 implementation boundary |
-| 018 | 019 | Source-policy refinement should build on the shipped runtime-contract phase | Runtime tests and phase docs agree on the phase-019 implementation boundary |
-| 019 | 020 | Live retained proof remains a separate acceptance bar after design and policy work | Parent and child docs agree on the phase-020 proof boundary |
+| 014 | 015 | The stateless quality-gate hardening now feeds the explicit write/index contract phase | Runtime tests and phase docs agree on the current root-phase boundary |
+| 015 | 016 | JSON-mode enrichment builds on the shipped runtime-contract phase | Runtime tests and phase docs agree on the current root-phase boundary |
+| 017 | 018 | The merged research-remediation successor continues after the JSON-primary deprecation baseline settles | Parent and child docs agree on the merged remediation boundary |
 
 ---
 
@@ -154,20 +148,20 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | The parent phase map must extend cleanly from `017` to `020` | `spec.md` names phases `018`, `019`, and `020` with truthful shipped/open status |
-| REQ-002 | The three new child folders must exist with template-compliant markdown | Each child phase contains populated `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md` |
-| REQ-003 | Runtime follow-up for phases `018` and `019` must ship | Code, tests, and operator docs prove the new contract and structured-preference behavior |
-| REQ-004 | Parent roadmap language must stay conservative about live proof | No parent document claims phase `020` or universal CLI parity is complete |
-| REQ-005 | Recursive strict validation must pass for the full parent pack | `validate.sh --strict --recursive` passes after the implementation and doc updates |
+| REQ-001 | The parent phase map must reflect the actual direct-child folder layout | `spec.md` names `000`, `001`-`018`, and the archived branch with truthful status language |
+| REQ-002 | The archived dynamic-capture branch must have a valid parent pack | `000-dynamic-capture-deprecation/` contains template-compliant `spec.md`, `plan.md`, and `tasks.md` |
+| REQ-003 | Active child specs must resolve current identity and navigation fields | In-scope child docs use the current `Spec Folder`, `Branch`, predecessor/successor, and parent references |
+| REQ-004 | Reusable research guidance must avoid stale current-navigation paths | Top-level research guidance is either already current or updated selectively |
+| REQ-005 | Recursive strict validation must pass for the full parent pack | `validate.sh --strict --recursive` passes after the documentation updates |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-006 | The six parent Level 3 docs must reference the roadmap phases consistently | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` tell the same shipped/open story |
-| REQ-007 | Live-proof claims must remain intentionally conservative | The docs state that retained artifacts are still required before "flawless across every CLI" can be claimed |
-| REQ-008 | Existing audit truth must remain intact | Phases `001` through `017` still read as the reconciled baseline rather than being overwritten by the new roadmap language |
-| REQ-009 | The parent pack must point future implementation toward the correct child phases | The roadmap language maps runtime-contract work to `018`, source-capability work to `019`, and live-proof hardening to `020` |
+| REQ-006 | The six parent Level 3 docs must reference the current phase tree consistently | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` tell the same navigation story |
+| REQ-007 | Live-proof claims must remain intentionally conservative | The docs do not overclaim parity closure while the archived branch and retained proof remain historical |
+| REQ-008 | Existing audit truth must remain intact | Earlier phases still read as reconciled history rather than being rewritten as new implementation work |
+| REQ-009 | The parent pack must point readers toward the correct direct-child and branch-parent docs | Root docs link readers to the current root phases and the `000-dynamic-capture-deprecation/` parent |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -175,22 +169,22 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 <!-- ANCHOR:success-criteria -->
 ## 6. SUCCESS CRITERIA
 
-- **SC-001**: Given a maintainer opens the parent pack, they can see phases `001` through `020` in one continuous phase map.
-- **SC-002**: Given a maintainer opens phases `018` and `019`, they see implemented runtime follow-up with verification evidence.
-- **SC-003**: Given a maintainer opens phase `020`, they see that retained live proof is still pending.
-- **SC-004**: Given a reviewer asks whether multi-CLI proof is fully closed, the docs still answer "not yet" unless retained live proof exists.
-- **SC-005**: Given focused runtime tests and the scripts build are rerun, the new contract still passes.
-- **SC-006**: Given recursive strict validation is rerun, the parent pack validates cleanly.
-- **SC-007**: Given future implementation or proof work resumes, maintainers can tell which child phase owns runtime contract, source capabilities, and live-proof follow-up.
+- **SC-001**: Given a maintainer opens the parent pack, they see the actual direct-child tree rather than dead `018`/`019`/`020` paths.
+- **SC-002**: Given a maintainer opens `000-dynamic-capture-deprecation/`, they can navigate to the moved child phases through a valid branch parent.
+- **SC-003**: Given a reviewer opens any updated child spec, its identity fields and parent/predecessor/successor references match the on-disk layout.
+- **SC-004**: Given a reviewer asks whether multi-CLI proof is fully closed, the docs still answer conservatively.
+- **SC-005**: Given recursive strict validation is rerun, the parent pack validates cleanly.
+- **SC-006**: Given a stale-reference sweep is rerun on in-scope docs, only intentional historical mentions remain.
+- **SC-007**: Given future work resumes, maintainers can tell which direct child or archived branch phase owns the next relevant document trail.
 
 ### Acceptance Scenarios
 
-1. **Given** the parent pack after this pass, **when** a maintainer reads the phase map, **then** phases `018`, `019`, and `020` appear in sequence with truthful status language.
-2. **Given** the root docs after this pass, **when** a reviewer compares their claims, **then** they all describe phases `018` and `019` as implemented runtime follow-up.
-3. **Given** phase `020`, **when** a reviewer checks proof posture, **then** retained live CLI artifacts are still described as required before universal parity claims can strengthen.
-4. **Given** the new child phase folders, **when** they are opened, **then** each contains populated template-compliant markdown rather than placeholder scaffolding.
-5. **Given** the updated parent pack, **when** focused runtime checks rerun, **then** the session-capturing contract still passes.
-6. **Given** the updated parent pack, **when** recursive strict validation runs, **then** the tree passes without numbering drift or missing required sections.
+1. **Given** the parent pack after this pass, **when** a maintainer reads the phase map, **then** the direct-child folders shown in `spec.md` exist on disk.
+2. **Given** the updated root docs, **when** a reviewer compares their claims, **then** they describe the same current branch/root navigation story.
+3. **Given** `000-dynamic-capture-deprecation/`, **when** a reviewer opens its parent docs, **then** the moved child phases resolve under a valid parent.
+4. **Given** an updated child phase doc, **when** a reviewer checks identity metadata and adjacent links, **then** they point to existing current docs.
+5. **Given** reusable research guidance, **when** a reviewer opens it, **then** it does not present stale current-navigation paths.
+6. **Given** the updated parent pack, **when** recursive strict validation runs, **then** the tree passes without dead current-navigation references or missing branch-parent docs.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -296,8 +290,9 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 ## RELATED DOCUMENTS
 
 - **Research Synthesis**: `research.md`
-- **Phase 016**: `016-multi-cli-parity/spec.md`
-- **Phase 017**: `017-stateless-quality-gates/spec.md`
-- **Phase 018**: `018-runtime-contract-and-indexability/spec.md`
-- **Phase 019**: `019-source-capabilities-and-structured-preference/spec.md`
-- **Phase 020**: `020-live-proof-and-parity-hardening/spec.md`
+- **Archived Branch Parent**: `000-dynamic-capture-deprecation/spec.md`
+- **Phase 014**: `014-stateless-quality-gates/spec.md`
+- **Phase 015**: `015-runtime-contract-and-indexability/spec.md`
+- **Phase 016**: `016-json-mode-hybrid-enrichment/spec.md`
+- **Phase 017**: `017-json-primary-deprecation/spec.md`
+- **Phase 018**: `018-research-remediation/spec.md`

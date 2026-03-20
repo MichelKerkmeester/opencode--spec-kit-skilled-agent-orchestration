@@ -47,6 +47,15 @@ function notifyDatabaseUpdated(): void {
   }
 }
 
+// STD-014: Named constants for importance weighting formula
+const IMPORTANCE_LENGTH_CAP = 10000;
+const IMPORTANCE_LENGTH_WEIGHT = 0.3;
+const IMPORTANCE_ANCHOR_CAP = 10;
+const IMPORTANCE_ANCHOR_WEIGHT = 0.3;
+const IMPORTANCE_RECENCY_WEIGHT = 0.2;
+const IMPORTANCE_BASE_WEIGHT = 0.2;
+const EMBEDDING_PERF_WARN_MS = 500;
+
 /* ───────────────────────────────────────────────────────────────
    MEMORY INDEXING
 ------------------------------------------------------------------*/
@@ -67,7 +76,20 @@ async function indexMemory(
       general: content,
     }
   );
-  const embedding = await generateDocumentEmbedding(weightedEmbeddingInput);
+  // ERR-001: Wrap embedding generation in try/catch
+  let embedding: Float32Array | null;
+  try {
+    embedding = await generateDocumentEmbedding(weightedEmbeddingInput);
+  } catch (embeddingError: unknown) {
+    const errMsg = embeddingError instanceof Error ? embeddingError.message : String(embeddingError);
+    structuredLog('error', 'Embedding generation threw', {
+      error: errMsg,
+      specFolder: specFolderName,
+      file: contextFilename,
+    });
+    console.warn(`   Warning: Embedding generation failed: ${errMsg}`);
+    return null;
+  }
 
   if (!embedding) {
     console.warn('   Warning: Embedding generation returned null - skipping indexing');
@@ -116,29 +138,42 @@ async function indexMemory(
 
   const contentLength = content.length;
   const anchorCount = (content.match(/<!-- (?:ANCHOR|anchor):/gi) || []).length;
-  const lengthFactor = Math.min(contentLength / 10000, 1) * 0.3;
-  const anchorFactor = Math.min(anchorCount / 10, 1) * 0.3;
-  const recencyFactor = 0.2;
-  const importanceWeight = Math.round((lengthFactor + anchorFactor + recencyFactor + 0.2) * 100) / 100;
+  const lengthFactor = Math.min(contentLength / IMPORTANCE_LENGTH_CAP, 1) * IMPORTANCE_LENGTH_WEIGHT;
+  const anchorFactor = Math.min(anchorCount / IMPORTANCE_ANCHOR_CAP, 1) * IMPORTANCE_ANCHOR_WEIGHT;
+  const recencyFactor = IMPORTANCE_RECENCY_WEIGHT;
+  const importanceWeight = Math.round((lengthFactor + anchorFactor + recencyFactor + IMPORTANCE_BASE_WEIGHT) * 100) / 100;
   const qualityScore = extractQualityScore(content);
   const qualityFlags = extractQualityFlags(content);
 
-  const memoryId: number = vectorIndex.indexMemory({
-    specFolder: specFolderName,
-    filePath: path.join(contextDir, contextFilename),
-    anchorId: null,
-    title: title,
-    triggerPhrases: triggerPhrases,
-    importanceWeight: importanceWeight,
-    embedding: embedding,
-    qualityScore,
-    qualityFlags,
-  });
+  // ERR-001: Wrap vector index write in try/catch
+  let memoryId: number;
+  try {
+    memoryId = vectorIndex.indexMemory({
+      specFolder: specFolderName,
+      filePath: path.join(contextDir, contextFilename),
+      anchorId: null,
+      title: title,
+      triggerPhrases: triggerPhrases,
+      importanceWeight: importanceWeight,
+      embedding: embedding,
+      qualityScore,
+      qualityFlags,
+    });
+  } catch (indexError: unknown) {
+    const errMsg = indexError instanceof Error ? indexError.message : String(indexError);
+    structuredLog('error', 'Vector index write failed', {
+      error: errMsg,
+      specFolder: specFolderName,
+      file: contextFilename,
+    });
+    console.warn(`   Warning: Vector index write failed: ${errMsg}`);
+    return null;
+  }
 
   console.log(`   Embedding generated in ${embeddingTime}ms`);
 
-  if (embeddingTime > 500) {
-    console.warn(`   Warning: Embedding took ${embeddingTime}ms (target <500ms)`);
+  if (embeddingTime > EMBEDDING_PERF_WARN_MS) {
+    console.warn(`   Warning: Embedding took ${embeddingTime}ms (target <${EMBEDDING_PERF_WARN_MS}ms)`);
   }
 
   notifyDatabaseUpdated();

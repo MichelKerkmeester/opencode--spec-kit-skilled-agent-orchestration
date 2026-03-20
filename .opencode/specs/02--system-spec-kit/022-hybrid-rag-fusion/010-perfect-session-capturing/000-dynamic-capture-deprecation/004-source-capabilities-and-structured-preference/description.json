@@ -1,0 +1,23 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/019-source-capabilities-and-structured-preference",
+  "description": "Feature Specification: Source Capabilities and Structured Preference",
+  "keywords": [
+    "feature",
+    "specification",
+    "source-capabilities",
+    "structured-preference",
+    "capability-registry",
+    "reframed-json-primary"
+  ],
+  "jsonPrimaryNote": "The capability registry infrastructure remains relevant for policy-driven source handling, but the 'structured preference' framing is now moot — JSON is the primary contract, not the preferred alternative. The phase successfully established capability-driven policy; future work should treat JSON as the baseline, not a preference to encourage.",
+  "lastUpdated": "2026-03-20T14:00:00.000Z",
+  "specId": "019",
+  "folderSlug": "source-capabilities-and-structured-preference",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "010-perfect-session-capturing"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

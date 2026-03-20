@@ -1,0 +1,23 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/020-live-proof-and-parity-hardening",
+  "description": "Feature Specification: Live Proof and Parity Hardening",
+  "keywords": [
+    "feature",
+    "specification",
+    "live-proof",
+    "parity-hardening",
+    "multi-cli",
+    "reframed-json-primary"
+  ],
+  "jsonPrimaryNote": "Reframed from 'multi-mode parity proof' to 'JSON-mode verification at scale.' The artifact-capture scope narrows from (dynamic + JSON) x 5 CLIs to JSON x 5 CLIs. Phase remains open but the proof boundary simplifies significantly — no need to demonstrate dynamic/JSON equivalence.",
+  "lastUpdated": "2026-03-20T14:00:00.000Z",
+  "specId": "020",
+  "folderSlug": "live-proof-and-parity-hardening",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "010-perfect-session-capturing"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

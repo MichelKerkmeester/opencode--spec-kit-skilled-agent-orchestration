@@ -116,6 +116,7 @@ export interface NormalizedData {
   _manualTriggerPhrases?: string[];
   _manualDecisions?: Array<string | DecisionItemObject>;
   TECHNICAL_CONTEXT?: Array<{ KEY: string; VALUE: string }>;
+  importanceTier?: string;
   [key: string]: unknown;
 }
 
@@ -348,29 +349,43 @@ function cloneInputData<T>(data: T): T {
   return JSON.parse(JSON.stringify(data)) as T;
 }
 
+function safeString(value: unknown, fallback: string): string {
+  if (typeof value === 'string') return value;
+  if (value != null && typeof value !== 'object') return String(value);
+  return fallback;
+}
+
+const VALID_MAGNITUDES = new Set(['trivial', 'small', 'medium', 'large', 'unknown']);
+
 function normalizeFileEntryLike(file: Record<string, unknown>): FileEntry {
-  const action = typeof file.ACTION === 'string'
+  // BUG-003: Trim and capitalize ACTION
+  const rawAction = typeof file.ACTION === 'string'
     ? file.ACTION
     : (typeof file.action === 'string' ? file.action : undefined);
+  const action = rawAction ? rawAction.trim().charAt(0).toUpperCase() + rawAction.trim().slice(1) : undefined;
+
   const provenance = file._provenance === 'git' || file._provenance === 'spec-folder' || file._provenance === 'tool'
     ? file._provenance
     : undefined;
-  const modificationMagnitude = (
-    file.MODIFICATION_MAGNITUDE === 'trivial'
-    || file.MODIFICATION_MAGNITUDE === 'small'
-    || file.MODIFICATION_MAGNITUDE === 'medium'
-    || file.MODIFICATION_MAGNITUDE === 'large'
-    || file.MODIFICATION_MAGNITUDE === 'unknown'
-  )
-    ? file.MODIFICATION_MAGNITUDE
-    : undefined;
+
+  // BUG-003: Default invalid MAGNITUDE to 'unknown' only when a value was provided but invalid
+  const rawMagnitude = file.MODIFICATION_MAGNITUDE;
+  const modificationMagnitude: FileEntry['MODIFICATION_MAGNITUDE'] =
+    (typeof rawMagnitude === 'string' && VALID_MAGNITUDES.has(rawMagnitude))
+      ? rawMagnitude as FileEntry['MODIFICATION_MAGNITUDE']
+      : (rawMagnitude != null ? 'unknown' : undefined);
+
   const synthetic = typeof file._synthetic === 'boolean'
     ? file._synthetic
     : undefined;
 
+  // BUG-001: Safe coercion via safeString — rejects objects/arrays, coerces primitives
+  const filePath = safeString(file.FILE_PATH ?? file.path, '');
+  const description = safeString(file.DESCRIPTION ?? file.description, 'Modified during session');
+
   return {
-    FILE_PATH: (file.FILE_PATH || file.path || '') as string,
-    DESCRIPTION: (file.DESCRIPTION || file.description || 'Modified during session') as string,
+    FILE_PATH: filePath,
+    DESCRIPTION: description,
     ...(action ? { ACTION: action } : {}),
     ...(modificationMagnitude ? { MODIFICATION_MAGNITUDE: modificationMagnitude } : {}),
     ...(provenance ? { _provenance: provenance } : {}),
@@ -428,6 +443,11 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     // Q3: Backfill TECHNICAL_CONTEXT for fast-path data
     if (data.technicalContext && typeof data.technicalContext === 'object' && !cloned.TECHNICAL_CONTEXT) {
       cloned.TECHNICAL_CONTEXT = mapTechnicalContext(data.technicalContext);
+    }
+    // BUG-006: Propagate importanceTier through fast-path
+    const fastPathTier = data.importanceTier || data.importance_tier;
+    if (typeof fastPathTier === 'string' && fastPathTier.length > 0) {
+      cloned.importanceTier = fastPathTier;
     }
 
     return cloned;
@@ -533,6 +553,12 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
 
   if (keyDecisions.length > 0) {
     normalized._manualDecisions = keyDecisions.map((decision) => cloneInputData(decision));
+  }
+
+  // BUG-006: Propagate importanceTier through slow-path
+  const slowPathTier = data.importanceTier || data.importance_tier;
+  if (typeof slowPathTier === 'string' && slowPathTier.length > 0) {
+    normalized.importanceTier = slowPathTier;
   }
 
   console.log('   \u2713 Transformed manual format to MCP-compatible structure');

@@ -1,0 +1,35 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/017-json-primary-deprecation",
+  "description": "Feature Specification: JSON-Primary Deprecation — reclassify dynamic capture as recovery-only, implement JSON-primary save contract",
+  "status": "complete",
+  "keywords": [
+    "feature",
+    "json-primary",
+    "deprecation",
+    "dynamic-capture",
+    "recovery-only",
+    "generate-context",
+    "save-protocol",
+    "operator-contract"
+  ],
+  "lastUpdated": "2026-03-20T14:00:00.000Z",
+  "specId": "017",
+  "folderSlug": "json-primary-deprecation",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "010-perfect-session-capturing"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "decisions": [
+    {
+      "title": "Drop dynamic capture, adopt JSON-primary mode",
+      "chosen": "Option 2: JSON-primary, dynamic capture as recovery-only",
+      "rationale": "AI has strictly better information about its own session than any DB query. 39 agent dispatches + 8 deep-research iterations could not fix the fundamental session-selection heuristic problem. Wrong-session capture happened in production.",
+      "alternatives": ["Option 1: Drop immediately", "Option 3: Keep investing in capture"],
+      "date": "2026-03-20"
+    }
+  ],
+  "consolidationRef": "000-dynamic-capture-deprecation"
+}

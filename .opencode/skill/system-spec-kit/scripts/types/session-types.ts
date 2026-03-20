@@ -100,6 +100,22 @@ export interface PostflightData {
   newGaps?: string[];
 }
 
+/** Summary of a tool call made during the session (JSON-mode enrichment). */
+export interface ToolCallSummary {
+  tool: string;
+  inputSummary?: string;
+  outputSummary?: string;
+  status?: 'success' | 'error' | 'timeout';
+  durationEstimate?: string;
+}
+
+/** Summary of a user-assistant exchange during the session (JSON-mode enrichment). */
+export interface ExchangeSummary {
+  userInput: string;
+  assistantResponse: string;
+  timestamp?: string;
+}
+
 /** Shared collected-data contract reused by extractor entrypoints. */
 export interface CollectedDataBase {
   recentContext?: RecentContextEntry[];
@@ -114,6 +130,10 @@ export interface CollectedDataBase {
   _isSimulation?: boolean;
   preflight?: PreflightData;
   postflight?: PostflightData;
+  /** JSON-mode tool call summaries (AI-composed, richer than DB extraction) */
+  toolCalls?: ToolCallSummary[];
+  /** JSON-mode exchange summaries (AI-composed conversation highlights) */
+  exchanges?: ExchangeSummary[];
   [key: string]: unknown;
 }
 

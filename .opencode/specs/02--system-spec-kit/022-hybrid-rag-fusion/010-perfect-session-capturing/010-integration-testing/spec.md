@@ -26,7 +26,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Plan** | ../plan.md |
 | **Phase** | 10 of 16 |
 | **Predecessor** | 009-embedding-optimization |
-| **Successor** | 011-session-source-validation |
+| **Successor** | 011-template-compliance |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-10 |
 | **Sequence** | A4, D3 |

@@ -193,3 +193,56 @@ Deferred/Non-Applicable Notes:
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 <!-- /ANCHOR:cross-refs -->
+
+---
+
+## P0+P1 Remediation Pass (2026-03-20)
+
+Deep-research audit: 3 iterations, 14 agent runs, 73 findings. All 5 P0 and 6 P1 recommendations implemented across four streams. GPT-5.4 cross-AI review identified 2 additional findings, both addressed before merge.
+
+<!-- ANCHOR:remediation-stream-a -->
+### Stream A: input-normalizer.ts
+
+- [x] R-A001 [P0] Replace unsafe `as string` casts with `safeString()` helper — rejects objects/arrays, coerces primitives, falls back for null/undefined (`scripts/utils/input-normalizer.ts`) [EVIDENCE: BUG-001 — `safeString()` helper implemented and exercised by 21 unit tests in `input-normalizer-unit.vitest.ts`]
+- [x] R-A002 [P0] Trim and capitalize ACTION before use; default invalid `MODIFICATION_MAGNITUDE` to `'unknown'` only when a value was provided but invalid (`scripts/utils/input-normalizer.ts`) [EVIDENCE: BUG-003 — ACTION normalization and MAGNITUDE defaulting covered by dedicated test cases in `input-normalizer-unit.vitest.ts`]
+- [x] R-A003 [P0] Add `importanceTier` to `NormalizedData` interface and `CollectedDataBase`; propagate through fast/slow paths; honor in `collectSessionData` (`scripts/utils/input-normalizer.ts`, `scripts/types/session-types.ts`, `scripts/extractors/collect-session-data.ts`) [EVIDENCE: BUG-006 — interface updated, propagation verified, `importanceTier` precedence test added in `input-normalizer-unit.vitest.ts`]
+<!-- /ANCHOR:remediation-stream-a -->
+
+<!-- ANCHOR:remediation-stream-b -->
+### Stream B: spec-affinity.ts
+
+- [x] R-B001 [P1] Filter single-word trigger phrases matching stopwords from `exactPhrases` (`scripts/utils/spec-affinity.ts`) [EVIDENCE: AFFINITY-001 — stopword filter applied before phrase registration]
+- [x] R-B002 [P1] Replace `.includes()` substring matching with `containsWordBoundary()` word-boundary matching (`scripts/utils/spec-affinity.ts`) [EVIDENCE: AFFINITY-002 — false-positive prevention validated]
+- [x] R-B003 [P1] Add 6 new stopwords: `configuration`, `documentation`, `management`, `processing`, `requirements`, `specification` (`scripts/utils/spec-affinity.ts`) [EVIDENCE: AFFINITY-003 — stopword list extended]
+<!-- /ANCHOR:remediation-stream-b -->
+
+<!-- ANCHOR:remediation-stream-c -->
+### Stream C: memory-indexer.ts
+
+- [x] R-C001 [P1] Extract 7 named constants for importance weighting formula (`scripts/core/memory-indexer.ts`) [EVIDENCE: STD-014 — magic numbers replaced with named constants]
+- [x] R-C002 [P0] Wrap `generateDocumentEmbedding()` and `vectorIndex.indexMemory()` in try/catch with structured logging (`scripts/core/memory-indexer.ts`) [EVIDENCE: ERR-001 — 4 failure-path tests in `memory-indexer-weighting.vitest.ts` cover null embedding, throw from embedding, throw from index, and trigger extraction throw]
+<!-- /ANCHOR:remediation-stream-c -->
+
+<!-- ANCHOR:remediation-stream-d -->
+### Stream D: verify_alignment_drift.py
+
+- [x] R-D001 [P1] Document exit code model gap (script 0/1 vs validate.sh 0/1/2); add `--fail-on-warn` flag (`sk-code--opencode/scripts/verify_alignment_drift.py`) [EVIDENCE: ALIGN-001 — gap documented, flag added]
+<!-- /ANCHOR:remediation-stream-d -->
+
+<!-- ANCHOR:remediation-tests -->
+### Test Coverage (Remediation)
+
+- [x] R-T001 [P0] Add 21 unit tests for `normalizeFileEntryLike` via `normalizeInputData` — empty objects, non-string coercion, null/undefined, object/array rejection, field precedence, ACTION normalization, MAGNITUDE defaulting, provenance validation, `importanceTier` propagation (`scripts/tests/input-normalizer-unit.vitest.ts`) [EVIDENCE: TCOV-001 — new file, 21 tests pass]
+- [x] R-T002 [P0] Add 4 failure-path tests for `memory-indexer`: null embedding, throw embedding, throw index, trigger extraction throw with mock (`scripts/tests/memory-indexer-weighting.vitest.ts`) [EVIDENCE: TCOV-005 — 4 tests pass]
+- [x] R-T003 [P1] Update ACTION test in `runtime-memory-inputs.vitest.ts` to align with new normalization behavior (`scripts/tests/runtime-memory-inputs.vitest.ts`) [EVIDENCE: ACTION test updated, passes in 59/60 targeted run]
+<!-- /ANCHOR:remediation-tests -->
+
+<!-- ANCHOR:remediation-completion -->
+### Remediation Completion Criteria
+
+- [x] All P0 remediation tasks marked `[x]`
+- [x] All P1 remediation tasks marked `[x]`
+- [x] 59/60 targeted tests pass (1 pre-existing failure outside remediation scope)
+- [x] GPT-5.4 cross-AI review findings addressed
+- [x] `implementation-summary.md` updated with evidence
+<!-- /ANCHOR:remediation-completion -->

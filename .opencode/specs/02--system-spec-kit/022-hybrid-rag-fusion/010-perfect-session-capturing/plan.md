@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: Perfect Session Capturing [template:level_3/plan.md]"
-description: "Runtime and documentation follow-through for roadmap phases 018-020 under the perfect session capturing parent pack."
+description: "Documentation integrity repair for the current direct-child phase tree under the perfect session capturing parent pack."
 trigger_phrases:
   - "implementation plan"
   - "spec 010"
@@ -31,7 +31,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ### Overview
 
-This pass implements the runtime and operator-contract follow-through for phases `018` and `019`, then keeps phase `020` explicitly open for retained live proof. The parent pack now reads cleanly from `001` through `020` while preserving the existing audit truth through `017` and keeping universal parity claims conservative.
+This pass repairs stale current-navigation references across the authoritative docs. The parent pack now points at the actual direct-child folders, the archived dynamic-capture branch gets a proper parent spec pack, and active child metadata/links stop claiming folders that no longer exist.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -41,13 +41,13 @@ This pass implements the runtime and operator-contract follow-through for phases
 
 ### Definition of Ready
 - [x] Parent spec folder confirmed and in scope.
-- [x] Existing audit baseline through phase `017` already present.
-- [x] Scope narrowed to the roadmap runtime, test, and documentation surfaces for phases `018` through `020`.
+- [x] Existing audit baseline and current child-folder layout already present.
+- [x] Scope narrowed to authoritative docs plus reusable research guidance.
 
 ### Definition of Done
-- [x] Child phases `018`, `019`, and `020` exist.
-- [x] Each new child phase has populated markdown rather than placeholder text.
-- [x] The six parent Level 3 markdown files reference the roadmap phases consistently.
+- [x] `000-dynamic-capture-deprecation/` has a valid parent spec pack.
+- [x] Current child phases and branch children expose valid identity and navigation metadata.
+- [x] The six parent Level 3 markdown files reference the current phase tree consistently.
 - [x] Pre-Task Checklist documented for the documentation pass.
 - [x] Execution Rules documented for the documentation pass.
 - [x] Status Reporting Format documented for the documentation pass.
@@ -58,15 +58,15 @@ This pass implements the runtime and operator-contract follow-through for phases
 ### Pre-Task Checklist
 - [x] Parent pack and child phases read before editing.
 - [x] Scope narrowed to spec-folder markdown only.
-- [x] Existing audit truth through phase `017` preserved before extending the roadmap.
+- [x] Existing audit truth preserved before rewriting navigation fields.
 
 ### Execution Rules
 
 | Rule | Requirement |
 |------|-------------|
-| Scope Lock | Only edit the session-capturing runtime, focused tests, operator docs, and parent/child roadmap docs needed for phases `018`, `019`, and `020` |
-| Truth Discipline | Keep phases `018` and `019` aligned to shipped runtime work while leaving phase `020` explicitly open for retained live proof |
-| Parent Consistency | Keep all six parent Level 3 docs aligned to the same roadmap story |
+| Scope Lock | Only edit authoritative spec docs and reusable research guidance needed to repair current-navigation references |
+| Truth Discipline | Use the on-disk folder layout as canonical current truth while preserving historical narrative text where it is clearly historical |
+| Parent Consistency | Keep all six parent Level 3 docs aligned to the same current phase-tree story |
 | Verification | Finish with recursive strict validation of the full parent pack |
 
 ### Status Reporting Format
@@ -85,19 +85,25 @@ This pass implements the runtime and operator-contract follow-through for phases
 ## 3. ARCHITECTURE
 
 ### Pattern
-Parent roadmap reconciliation with explicit child-phase scaffolding.
+Parent/child phase-tree reconciliation with explicit branch-parent documentation.
 
 ### Key Components
 - **Parent pack**: the six Level 3 root markdown files
 - **Existing audit artifacts**: `research.md` and reconciled earlier phases
-- **New child roadmap phases**:
-  - `018-runtime-contract-and-indexability/`
-  - `019-source-capabilities-and-structured-preference/`
-  - `020-live-proof-and-parity-hardening/`
+- **Archived branch parent**: `000-dynamic-capture-deprecation/`
+- **Current direct-child continuation**:
+  - `011-template-compliance/`
+  - `012-auto-detection-fixes/`
+  - `013-spec-descriptions/`
+  - `014-stateless-quality-gates/`
+  - `015-runtime-contract-and-indexability/`
+  - `016-json-mode-hybrid-enrichment/`
+  - `017-json-primary-deprecation/`
+  - `018-research-remediation/`
 - **Verification stack**: recursive strict validation for the full spec tree
 
 ### Data Flow
-Existing audit baseline -> child phase creation -> child markdown population -> parent doc reconciliation -> recursive validation -> final summary.
+Mapping table -> root doc reconciliation -> branch-parent creation -> child metadata/link repair -> recursive validation -> stale-reference sweep.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -106,15 +112,15 @@ Existing audit baseline -> child phase creation -> child markdown population -> 
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [x] Create the three new child phase folders under the parent pack.
-- [x] Ensure each new child phase has the expected markdown structure.
+- [x] Build the old-to-new mapping table from the current folder layout.
+- [x] Confirm the in-scope authoring set excludes `memory/**` and `scratch/**`.
 
 ### Phase 2: Core Implementation
-- [x] Replace scaffold placeholder content in phases `018`, `019`, and `020`.
-- [x] Implement the runtime contract and source-capability follow-through for phases `018` and `019`.
-- [x] Keep phase `020` documented as open retained live-proof work.
-- [x] Extend the parent phase map and status language through `020`.
-- [x] Rewrite parent plan, tasks, checklist, decision record, and summary to the shipped/open truth.
+- [x] Rewrite the root Level 3 docs to the actual direct-child phase tree.
+- [x] Create the missing `000-dynamic-capture-deprecation/{spec,plan,tasks}.md` parent pack.
+- [x] Repair active child `Spec Folder`, `Branch`, predecessor/successor, and parent references.
+- [x] Repair moved branch-child identity fields and current-navigation references.
+- [x] Update reusable research guidance only if it presents stale current-navigation paths.
 
 ### Phase 3: Verification
 - [x] Run recursive strict validation on the parent pack.
@@ -130,8 +136,8 @@ Existing audit baseline -> child phase creation -> child markdown population -> 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Structural validation | Parent pack and all child phases | `validate.sh --strict --recursive` |
-| Completion gating | Parent pack after validation | `check-completion.sh --strict` |
-| Placeholder sweep | Parent docs and new child phase docs | `rg "\\[PLACEHOLDER\\]"` |
+| Stale-reference sweep | In-scope docs only | `rg` for moved/removed phase paths |
+| Placeholder sweep | Parent docs and touched child phase docs | `rg "\\[PLACEHOLDER\\]"` |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -141,8 +147,8 @@ Existing audit baseline -> child phase creation -> child markdown population -> 
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Existing parent pack through phase `017` | Internal | Green | The roadmap extension would lose its baseline |
-| Phase scaffolding script output | Internal | Green | Child folders would need manual reconstruction |
+| Existing parent pack and child layout | Internal | Green | The repair would lose its source of truth |
+| Branch child docs under `000-dynamic-capture-deprecation/` | Internal | Green | The moved branch could not be reattached cleanly |
 | Recursive validator | Internal | Pending rerun | Completion cannot be claimed until it passes |
 <!-- /ANCHOR:dependencies -->
 
@@ -151,8 +157,8 @@ Existing audit baseline -> child phase creation -> child markdown population -> 
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Parent or child docs imply roadmap completion that has not happened, or validation fails after reconciliation.
-- **Procedure**: Revert only the affected markdown files, restore the prior conservative state, and rerun recursive validation.
+- **Trigger**: Any repaired doc points at a non-existent current path, or recursive validation still reports integrity/link failures.
+- **Procedure**: Revert only the affected markdown files, restore the last known-valid navigation state, and rerun recursive validation.
 <!-- /ANCHOR:rollback -->
 
 ---
@@ -161,14 +167,15 @@ Existing audit baseline -> child phase creation -> child markdown population -> 
 ## L2: PHASE DEPENDENCIES
 
 ```
-Create Child Phases -> Populate Child Docs -> Reconcile Parent Docs -> Validate Recursively
+Build Mapping -> Reconcile Parent Docs -> Create Branch Parent Docs -> Repair Child Links -> Validate Recursively
 ```
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Create child phases | None | All later work |
-| Populate child docs | Child phases created | Parent reconciliation, validation |
-| Reconcile parent docs | Child docs populated | Validation |
+| Build mapping | None | All later work |
+| Reconcile parent docs | Mapping complete | Branch parent creation, child repair, validation |
+| Create branch parent docs | Parent docs reconciled | Child repair, validation |
+| Repair child links | Parent and branch-parent docs ready | Validation |
 | Validate recursively | Parent and child docs reconciled | Completion |
 <!-- /ANCHOR:phase-deps -->
 
@@ -179,9 +186,10 @@ Create Child Phases -> Populate Child Docs -> Reconcile Parent Docs -> Validate 
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Child folder creation | Low | <1 hour |
-| Child doc population | Medium | 1-2 hours |
+| Mapping and scope audit | Low | <1 hour |
 | Parent reconciliation | Medium | 1-2 hours |
+| Branch parent creation | Low | <1 hour |
+| Child metadata/link repair | Medium | 1-2 hours |
 | Validation | Low | <1 hour |
 | **Total** | | **3-5 hours** |
 <!-- /ANCHOR:effort -->
@@ -213,9 +221,10 @@ Create Child Phases -> Populate Child Docs -> Reconcile Parent Docs -> Validate 
 
 ```mermaid
 graph TD
-  A[Audit baseline through 017] --> B[Create 018-020 folders]
-  B --> C[Populate child markdown]
-  C --> D[Reconcile parent Level 3 docs]
-  D --> E[Recursive validation]
+  A[Current folder layout] --> B[Build mapping table]
+  B --> C[Reconcile parent Level 3 docs]
+  C --> D[Create 000 branch parent docs]
+  D --> E[Repair child metadata and links]
+  E --> F[Recursive validation]
 ```
 <!-- /ANCHOR:dependency-graph -->

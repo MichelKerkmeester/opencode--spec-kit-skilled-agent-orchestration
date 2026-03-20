@@ -778,7 +778,13 @@ async function collectSessionData(
     const lowerLearning = rawLearning.toLowerCase();
     return segments.some(segment => lowerLearning.includes(segment));
   })();
-  const observationFallback = observations.slice(0, 3).map((o) => o.title).filter(Boolean).join('; ');
+  const nonFollowupObservationTitles = observations
+    .filter((observation) => observation.type !== 'followup')
+    .slice(0, 3)
+    .map((observation) => observation.title)
+    .filter(Boolean);
+  const observationFallback = nonFollowupObservationTitles.join('; ')
+    || observations.slice(0, 3).map((o) => o.title).filter(Boolean).join('; ');
   const SUMMARY: string = (!isErrorContent && learningIsTopical && rawLearning.length > 0)
     ? rawLearning
     : observationFallback

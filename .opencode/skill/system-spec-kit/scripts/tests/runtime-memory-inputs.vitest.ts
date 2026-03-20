@@ -612,7 +612,7 @@ describe('FILES field transformation', () => {
       {
         FILE_PATH: 'src/index.ts',
         DESCRIPTION: 'Entry point',
-        ACTION: 'modify',
+        ACTION: 'Modify',
         _provenance: 'git',
         _synthetic: false,
       },

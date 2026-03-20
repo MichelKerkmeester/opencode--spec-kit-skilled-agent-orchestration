@@ -60,6 +60,59 @@ This consolidated spec combined two delivered streams: canonical-path deduplicat
 
 ## Completion Status
 
-**Status:** Closed out on 2026-03-08.
+**Status:** Closed out on 2026-03-08. Remediation pass completed on 2026-03-20.
 
 Functional implementation for both consolidated child specs is complete: canonical deduplication, tier normalization, frontmatter normalization, migration tooling, and reindex verification are all delivered and evidenced in the spec artifacts. Remaining items are non-functional or operational deferrals tracked at epic level rather than blockers for this spec.
+
+---
+
+## P0+P1 Remediation Pass (2026-03-20)
+
+### Overview
+
+A deep-research audit (3 iterations, 14 agent runs, 73 findings) was conducted against the indexing-normalization subsystem. This remediation pass implemented all 5 P0 and 6 P1 recommendations across four streams: input normalization, spec-affinity filtering, memory-indexer hardening, and alignment-drift tooling. A cross-AI review (GPT-5.4) validated 2 additional findings that were addressed before merge.
+
+### Changes Made
+
+**Stream A: input-normalizer.ts**
+- `BUG-001` — Replaced unsafe `as string` casts with `safeString()` helper: rejects objects/arrays, coerces primitives, falls back gracefully for null/undefined.
+- `BUG-003` — ACTION value is now trimmed and capitalized before use; invalid `MODIFICATION_MAGNITUDE` values default to `'unknown'` only when a value was provided but did not match the allowed set.
+- `BUG-006` — `importanceTier` added to `NormalizedData` interface and `CollectedDataBase`; propagated through both fast and slow normalization paths; honored in `collectSessionData` over the auto-detected value.
+
+**Stream B: spec-affinity.ts**
+- `AFFINITY-001` — Single-word trigger phrases that match the stopword list are filtered from `exactPhrases` before use.
+- `AFFINITY-002` — Replaced `.includes()` substring matching with word-boundary matching via `containsWordBoundary()` to prevent false positives.
+- `AFFINITY-003` — Added 6 new stopwords: `configuration`, `documentation`, `management`, `processing`, `requirements`, `specification`.
+
+**Stream C: memory-indexer.ts**
+- `STD-014` — Extracted 7 named constants for the importance weighting formula; removes magic numbers from the scoring path.
+- `ERR-001` — Wrapped `generateDocumentEmbedding()` and `vectorIndex.indexMemory()` in try/catch with structured logging; indexing failures are now non-fatal.
+
+**Stream D: verify_alignment_drift.py**
+- `ALIGN-001` — Documented the exit code model gap between the script (0/1) and `validate.sh` (0/1/2); added `--fail-on-warn` flag to opt into stricter exit behavior.
+
+### Files Changed
+
+| File | Finding(s) |
+|------|------------|
+| `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts` | BUG-001, BUG-003, BUG-006 |
+| `.opencode/skill/system-spec-kit/scripts/utils/spec-affinity.ts` | AFFINITY-001, AFFINITY-002, AFFINITY-003 |
+| `.opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts` | STD-014, ERR-001 |
+| `.opencode/skill/system-spec-kit/scripts/types/session-types.ts` | BUG-006 (interface update) |
+| `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts` | BUG-006 (propagation) |
+| `.opencode/skill/system-spec-kit/scripts/tests/input-normalizer-unit.vitest.ts` | TCOV-001 (new file, 21 tests) |
+| `.opencode/skill/system-spec-kit/scripts/tests/memory-indexer-weighting.vitest.ts` | TCOV-005 (4 failure-path tests) |
+| `.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts` | ACTION test update |
+| `.opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py` | ALIGN-001 |
+
+### Testing Status
+
+- PASS — 59/60 targeted tests pass. The 1 remaining failure is a pre-existing issue unrelated to this remediation.
+- PASS — `input-normalizer-unit.vitest.ts`: 21 new unit tests cover `normalizeFileEntryLike` via `normalizeInputData` — empty objects, non-string coercion, null/undefined handling, object/array rejection, field precedence, ACTION normalization, MAGNITUDE defaulting, provenance validation, and `importanceTier` propagation.
+- PASS — `memory-indexer-weighting.vitest.ts`: 4 failure-path tests cover null embedding, throw from embedding, throw from index, and trigger extraction throw with mock.
+- PASS — GPT-5.4 cross-AI review validated all changes; 2 additional findings (safeString object guard, trigger extractor mock) were identified and addressed.
+
+### Known Issues / Deferred Items (Remediation Pass)
+
+- The 1 pre-existing test failure is outside the scope of this remediation and is tracked separately at epic level.
+- `verify_alignment_drift.py` exit code alignment (`ALIGN-001`) is documented; full parity with the 3-state `validate.sh` model is deferred pending broader CLI refactor.

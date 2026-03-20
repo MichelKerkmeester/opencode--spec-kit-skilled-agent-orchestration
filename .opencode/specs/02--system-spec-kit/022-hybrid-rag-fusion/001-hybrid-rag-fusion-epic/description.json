@@ -12,6 +12,8 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "20-03-26_12-22__hybrid-rag-fusion-epic.md"
+  ]
 }

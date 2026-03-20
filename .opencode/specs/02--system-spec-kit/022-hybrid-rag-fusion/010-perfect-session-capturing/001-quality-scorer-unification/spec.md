@@ -138,5 +138,5 @@ Make `score01` (0.0-1.0) the canonical quality scale across the entire pipeline,
 <!-- ANCHOR:questions -->
 ## 7. OPEN QUESTIONS
 
-- **OQ-001**: Contamination penalty implementation is shared with 011-session-source-validation. 001 owns the unified scorer interface; 011 owns the session-validation trigger. Handoff: 001 adds the `hadContamination` parameter to both scorers, 011 calls it.
+- **OQ-001**: Contamination penalty implementation is shared with `000-dynamic-capture-deprecation/001-session-source-validation`. 001 owns the unified scorer interface; the archived branch phase owns the session-validation trigger. Handoff: 001 adds the `hadContamination` parameter to both scorers, and the branch phase calls it.
 <!-- /ANCHOR:questions -->
