@@ -8,7 +8,7 @@
 #
 enforcement:
   mode: warn
-  new_folder_mode: warn
+  new_folder_mode: block
   created_after: "2026-03-21"
 
 # Fast rule subset for pre-commit validation (6 rules).
