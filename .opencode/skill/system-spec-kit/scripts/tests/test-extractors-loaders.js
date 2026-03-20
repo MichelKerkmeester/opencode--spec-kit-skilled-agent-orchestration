@@ -1347,7 +1347,11 @@ async function testDataLoader() {
       }
     } catch (loadError) {
       // This is acceptable in test environment where OpenCode storage may not exist
-      if (loadError.message.includes('Security') || loadError.message.includes('Invalid')) {
+      if (
+        loadError.message.includes('Security')
+        || loadError.message.includes('Invalid')
+        || loadError.message.includes('RECOVERY_MODE_REQUIRED')
+      ) {
         pass('LOAD-002: Security validation working', loadError.message.substring(0, 50));
       } else {
         skip('LOAD-002: Data loading', `Expected in test env: ${loadError.message.substring(0, 50)}`);

@@ -3,7 +3,7 @@ title: "Tasks: Stateless Quality Gate Fixes"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "stateless quality gates tasks"
-  - "phase 017 tasks"
+  - "phase 014 tasks"
   - "gate a tiering tasks"
   - "stdin tasks"
 importance_tier: "normal"

@@ -11,16 +11,17 @@
     "boundary",
     "remediation"
   ],
-  "lastUpdated": "2026-03-17T13:52:20.424Z",
+  "lastUpdated": "2026-03-20T18:30:00.000Z",
   "specId": "005",
   "folderSlug": "architecture-audit",
   "parentChain": [
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 2,
+  "memorySequence": 3,
   "memoryNameHistory": [
     "19-03-26_15-09__architecture-audit.md",
-    "19-03-26_18-44__architecture-audit.md"
+    "19-03-26_18-44__architecture-audit.md",
+    "20-03-26_15-26__architecture-audit.md"
   ]
 }

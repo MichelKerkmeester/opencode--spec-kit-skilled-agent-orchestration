@@ -180,10 +180,10 @@ scripts/dist/spec-folder/
 # Check available spec folders
 ls -la specs/
 
-# Use correct format: ###-feature-name
-node scripts/dist/memory/generate-context.js specs/<###-feature-name>/
-# Or use the full path
-node scripts/dist/memory/generate-context.js .opencode/specs/<###-feature-name>/
+# Use structured JSON for routine saves
+node scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-feature-name>/
+# Or use explicit recovery mode for crash recovery
+node scripts/dist/memory/generate-context.js --recovery .opencode/specs/<###-feature-name>/
 ```
 
 #### Alignment score is low despite correct folder

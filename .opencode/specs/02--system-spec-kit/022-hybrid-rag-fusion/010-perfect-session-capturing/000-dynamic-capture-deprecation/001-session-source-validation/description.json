@@ -1,25 +1,21 @@
 {
-  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/011-session-source-validation",
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/000-dynamic-capture-deprecation/001-session-source-validation",
   "description": "Feature Specification: Session Source Validation",
-  "status": "superseded",
-  "supersededBy": "023-dynamic-capture-deprecation",
-  "supersededReason": "Dynamic session capture deprecated in favor of JSON-primary mode. Session source validation is no longer needed when the AI composes structured data directly.",
   "keywords": [
     "feature",
     "specification",
     "session",
     "source",
-    "validation",
-    "superseded",
-    "dynamic-capture"
+    "validation"
   ],
-  "lastUpdated": "2026-03-20T12:00:00.000Z",
-  "specId": "011",
+  "lastUpdated": "2026-03-20T13:22:44.195Z",
+  "specId": "001",
   "folderSlug": "session-source-validation",
   "parentChain": [
     "02--system-spec-kit",
     "022-hybrid-rag-fusion",
-    "010-perfect-session-capturing"
+    "010-perfect-session-capturing",
+    "000-dynamic-capture-deprecation"
   ],
   "memorySequence": 2,
   "memoryNameHistory": [

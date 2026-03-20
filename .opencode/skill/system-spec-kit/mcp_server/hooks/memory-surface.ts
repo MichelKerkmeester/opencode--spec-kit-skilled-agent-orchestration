@@ -42,6 +42,7 @@ interface AutoSurfaceResult {
 const MEMORY_AWARE_TOOLS: Set<string> = new Set([
   'memory_context',
   'memory_search',
+  'memory_quick_search',
   'memory_match_triggers',
   'memory_list',
   'memory_save',

@@ -448,7 +448,7 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
     ).toBe(false);
   });
 
-  it('warns but proceeds for stateless saves with explicit CLI spec folder that do not align to the target', async () => {
+  it('warns but proceeds for explicit recovery-mode saves that do not align to the target', async () => {
     const harness = createHarness();
     configureHarnessEnvironment(harness, {
       SYSTEM_SPEC_KIT_CAPTURE_SOURCE: 'opencode-capture',
@@ -479,6 +479,7 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
     // The workflow should complete successfully.
     const result = await workflowModule.runWorkflow({
       specFolderArg: harness.specRelativePath,
+      allowRecovery: true,
       silent: true,
     });
 
@@ -487,7 +488,7 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
     expect(description.memorySequence).toBe(1);
   });
 
-  it('warns but proceeds for stateless saves when only V10 fails validation', async () => {
+  it('warns but proceeds for explicit recovery-mode saves when only V10 fails validation', async () => {
     const harness = createHarness();
     configureHarnessEnvironment(harness, {
       SYSTEM_SPEC_KIT_CAPTURE_SOURCE: 'opencode-capture',
@@ -517,6 +518,7 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
 
     const result = await workflowModule.runWorkflow({
       specFolderArg: harness.specRelativePath,
+      allowRecovery: true,
     });
     const metadata = readMetadata(harness) as { embedding?: { status?: string; reason?: string } };
 
@@ -561,7 +563,7 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
     expect(metadata.embedding?.reason).toContain('V2');
   });
 
-  it('aborts stateless saves when V8 fails validation', async () => {
+  it('aborts explicit recovery-mode saves when V8 fails validation', async () => {
     const harness = createHarness();
     configureHarnessEnvironment(harness, {
       SYSTEM_SPEC_KIT_CAPTURE_SOURCE: 'opencode-capture',
@@ -590,11 +592,12 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
 
     await expect(workflowModule.runWorkflow({
       specFolderArg: harness.specRelativePath,
+      allowRecovery: true,
       silent: true,
     })).rejects.toThrow(/CONTAMINATION_GATE_ABORT: Critical contamination rules failed: \[V8\]/);
   });
 
-  it('aborts stateless saves when V8 and V10 both fail validation', async () => {
+  it('aborts explicit recovery-mode saves when V8 and V10 both fail validation', async () => {
     const harness = createHarness();
     configureHarnessEnvironment(harness, {
       SYSTEM_SPEC_KIT_CAPTURE_SOURCE: 'opencode-capture',
@@ -623,6 +626,7 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
 
     await expect(workflowModule.runWorkflow({
       specFolderArg: harness.specRelativePath,
+      allowRecovery: true,
       silent: true,
     })).rejects.toThrow(/CONTAMINATION_GATE_ABORT: Critical contamination rules failed: \[V8\]/);
   });

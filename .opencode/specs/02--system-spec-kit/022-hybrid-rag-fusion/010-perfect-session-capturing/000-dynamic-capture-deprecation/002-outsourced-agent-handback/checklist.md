@@ -67,7 +67,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 - [x] CHK-030 [P0] Redact-and-scrub guidance is reflected in the CLI handback docs [Evidence: `outsourced-agent-handback-docs.vitest.ts`]
 - [x] CHK-031 [P1] Accepted next-step field names are documented as `nextSteps` or `next_steps` [Evidence: `outsourced-agent-handback-docs.vitest.ts`]
-- [x] CHK-032 [P1] Path wording uses `.opencode/skill/cli-*` rather than `.opencode/skill/sk-cli/` in the reconciled spec docs [Evidence: reconciled spec artifacts]
+- [x] CHK-032 [P1] Path wording uses `.opencode/skill/cli-*` rather than `.opencode/skill/cli-copilot/` in the reconciled spec docs [Evidence: reconciled spec artifacts]
 - [x] CHK-033 [P1] Rejection-code wording covers both `INSUFFICIENT_CONTEXT_ABORT` and `CONTAMINATION_GATE_ABORT` across the caller-facing docs [Evidence: `outsourced-agent-handback-docs.vitest.ts`]
 - [x] CHK-034 [P1] Payload-richness wording recommends `DESCRIPTION`, `ACTION`, `MODIFICATION_MAGNITUDE`, and `_provenance` for `FILES` entries [Evidence: `outsourced-agent-handback-docs.vitest.ts`]
 <!-- /ANCHOR:security -->

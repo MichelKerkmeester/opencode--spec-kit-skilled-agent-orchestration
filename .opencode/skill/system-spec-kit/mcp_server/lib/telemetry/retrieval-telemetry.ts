@@ -11,6 +11,8 @@ import {
 import type {
   TelemetryTracePayload,
 } from './trace-schema';
+// F6.06 fix: Import canonical quality proxy from eval module
+import { computeQualityProxy as computeQualityProxyCanonical } from '../eval/eval-quality-proxy';
 import {
   getMemoryRoadmapDefaults,
 } from '../config/capability-flags';
@@ -474,30 +476,20 @@ function recordAdaptiveEvaluation(
 /**
  * Compute a 0-1 quality proxy score from the telemetry record.
  *
- * Weights:
- *   avgRelevance (40%) + topResult (25%) + resultCount saturation (20%) +
- *   latency penalty (15%, inversely proportional, capped at 5s)
- *
- * The score is always clamped to [0, 1].
+ * F6.06 fix: Delegates to the canonical eval-quality-proxy implementation
+ * so eval metrics and live telemetry use the same formula. Telemetry-specific
+ * constants (latency ceiling, count saturation) are passed as parameters.
  */
 function computeQualityProxy(t: RetrievalTelemetry): number {
-  const avgNorm = Math.max(0, Math.min(1, t.quality.avgRelevanceScore));
-  const topNorm = Math.max(0, Math.min(1, t.quality.topResultScore));
-
-  // Result count saturation: reaches 1.0 at QUALITY_PROXY_COUNT_SATURATION_THRESHOLD results
-  const countNorm = Math.min(1, t.quality.resultCount / QUALITY_PROXY_COUNT_SATURATION_THRESHOLD);
-
-  // Latency component: 0ms = 1.0, QUALITY_PROXY_LATENCY_CEILING_MS+ = 0.0
-  const latencyClamped = Math.max(0, Math.min(QUALITY_PROXY_LATENCY_CEILING_MS, t.latency.totalLatencyMs));
-  const latencyNorm = 1 - latencyClamped / QUALITY_PROXY_LATENCY_CEILING_MS;
-
-  const raw =
-    avgNorm * 0.40 +
-    topNorm * 0.25 +
-    countNorm * 0.20 +
-    latencyNorm * 0.15;
-
-  return Math.max(0, Math.min(1, raw));
+  const result = computeQualityProxyCanonical({
+    avgRelevance: Math.max(0, Math.min(1, t.quality.avgRelevanceScore)),
+    topResultRelevance: Math.max(0, Math.min(1, t.quality.topResultScore)),
+    resultCount: t.quality.resultCount,
+    expectedCount: QUALITY_PROXY_COUNT_SATURATION_THRESHOLD,
+    latencyMs: t.latency.totalLatencyMs,
+    latencyTargetMs: QUALITY_PROXY_LATENCY_CEILING_MS,
+  });
+  return result.score;
 }
 
 /* ───────────────────────────────────────────────────────────────

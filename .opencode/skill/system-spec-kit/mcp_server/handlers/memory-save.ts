@@ -607,45 +607,69 @@ async function processPreparedMemory(
       await fs.promises.writeFile(filePath, parsed.content, 'utf-8');
     }
 
-    // CREATE NEW MEMORY
-    const existing = findSamePathExistingMemory(
-      database,
-      parsed.specFolder,
-      canonicalFilePath,
-      filePath,
-      scope,
-    ) as { id: number; content_hash: string } | undefined;
+    // A4 FIX: Wrap dedup-check + insert in BEGIN IMMEDIATE transaction for
+    // DB-level atomicity. withSpecFolderLock handles in-process serialization;
+    // this transaction provides defense-in-depth against multi-process races.
+    let id: number;
+    let existing: { id: number; content_hash: string } | undefined;
 
-    const id = existing && existing.content_hash !== parsed.contentHash
-      ? createAppendOnlyMemoryRecord({
-          database,
-          parsed,
-          filePath,
-          embedding,
-          embeddingFailureReason,
-          predecessorMemoryId: existing.id,
-          actor: 'mcp:memory_save',
-        })
-      : createMemoryRecord(
-          database,
-          parsed,
-          filePath,
-          embedding,
-          embeddingFailureReason,
-          peResult.decision,
-          scope,
-        );
+    const useTx = typeof database.exec === 'function';
+    if (useTx) database.exec('BEGIN IMMEDIATE');
+    try {
+      // CREATE NEW MEMORY
+      existing = findSamePathExistingMemory(
+        database,
+        parsed.specFolder,
+        canonicalFilePath,
+        filePath,
+        scope,
+      ) as { id: number; content_hash: string } | undefined;
 
-    recordLineageVersion(database, {
-      memoryId: id,
-      predecessorMemoryId: existing && existing.content_hash !== parsed.contentHash
-        ? existing.id
-        : null,
-      actor: 'mcp:memory_save',
-      transitionEvent: existing && existing.content_hash !== parsed.contentHash
-        ? 'SUPERSEDE'
-        : 'CREATE',
-    });
+      id = existing && existing.content_hash !== parsed.contentHash
+        ? createAppendOnlyMemoryRecord({
+            database,
+            parsed,
+            filePath,
+            embedding,
+            embeddingFailureReason,
+            predecessorMemoryId: existing.id,
+            actor: 'mcp:memory_save',
+          })
+        : createMemoryRecord(
+            database,
+            parsed,
+            filePath,
+            embedding,
+            embeddingFailureReason,
+            peResult.decision,
+            scope,
+          );
+
+      // F1.01 fix: Mark superseded memory AFTER new record creation, inside
+      // the same transaction, so a creation failure rolls back both operations.
+      if (peResult.supersededId != null) {
+        const superseded = markMemorySuperseded(peResult.supersededId);
+        if (!superseded) {
+          console.warn(`[PE-Gate] Failed to mark memory ${peResult.supersededId} as superseded (post-create)`);
+        }
+      }
+
+      recordLineageVersion(database, {
+        memoryId: id,
+        predecessorMemoryId: existing && existing.content_hash !== parsed.contentHash
+          ? existing.id
+          : null,
+        actor: 'mcp:memory_save',
+        transitionEvent: existing && existing.content_hash !== parsed.contentHash
+          ? 'SUPERSEDE'
+          : 'CREATE',
+      });
+
+      if (useTx) database.exec('COMMIT');
+    } catch (txErr) {
+      if (useTx) try { database.exec('ROLLBACK'); } catch { /* best-effort rollback */ }
+      throw txErr;
+    }
 
     // POST-INSERT ENRICHMENT: causal links, entities, summaries, entity linking
     const { causalLinksResult } = await runPostInsertEnrichment(database, id, parsed);

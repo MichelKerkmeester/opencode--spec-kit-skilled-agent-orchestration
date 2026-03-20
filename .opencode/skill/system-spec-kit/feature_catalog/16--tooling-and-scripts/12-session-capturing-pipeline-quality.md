@@ -1,6 +1,6 @@
 ---
 title: "Session Capturing Pipeline Quality"
-description: "Session capturing pipeline quality is the closure feature for spec `010-perfect-session-capturing`. It now covers the full shipped session-capture path for `generate-context.js`:"
+description: "Session capturing pipeline quality is the closure feature for spec `010-perfect-session-capturing`. It now covers the shipped JSON-primary save path for `generate-context.js` plus explicit recovery-only fallback behavior:"
 ---
 
 # Session Capturing Pipeline Quality
@@ -20,9 +20,9 @@ description: "Session capturing pipeline quality is the closure feature for spec
 Session capturing pipeline quality is the closure feature for spec `010-perfect-session-capturing`. It now covers the full shipped session-capture path for `generate-context.js`:
 
 1. Part I hardening across session extraction, file writing, contamination filtering, alignment blocking, and config-driven limits.
-2. Stateless enrichment from spec-folder and git context.
-3. Numeric quality-score calibration so thin stateless saves score lower than rich saves.
-4. Native stateless fallback support for all supported local CLI ecosystems:
+2. Recovery-mode stateless enrichment from spec-folder and git context.
+3. Numeric quality-score calibration so thin recovery captures score lower than rich saves.
+4. Explicit recovery-mode native fallback support for all supported local CLI ecosystems:
    - `OpenCode`
    - `Claude Code`
    - `Codex CLI`
@@ -44,14 +44,14 @@ The shipped session-capture pipeline enforces the following behavior:
 3. `workflow.ts` keeps alignment enforcement, insufficiency blocking, low-quality abort behavior, and an explicit write/index disposition contract in place for every save.
 4. `spec-folder-extractor.ts` and `git-context-extractor.ts` provide relevance-aware stateless enrichment.
 5. `quality-scorer.ts` penalizes generic file descriptions, generic summaries, and repetitive observation titles more aggressively without changing boolean `qualityValidation`.
-6. `data-loader.ts` now tries native capture in this order:
+6. `data-loader.ts` tries native capture only when `--recovery` is explicitly enabled, in this order:
    - `OpenCode`
    - `Claude Code`
    - `Codex CLI`
    - `Copilot CLI`
    - `Gemini CLI`
    - explicit `NO_DATA_AVAILABLE`
-7. Every native backend remains stateless-only and must exactly match the active workspace identity before its transcript can be used.
+7. Every native backend remains recovery-only and must exactly match the active workspace identity before its transcript can be used.
 8. The active workspace identity is the nearest repo-local `.opencode` directory.
 9. Backend-native repo-root, `.opencode`, and git-root path forms are accepted only when they normalize to that same workspace.
 10. Native thought/reasoning content is stripped where applicable:
@@ -72,9 +72,9 @@ The shipped session-capture pipeline enforces the following behavior:
 18. `generate-context.js` diagnostic scores now reflect insufficiency explicitly instead of letting thin memories look healthy.
 19. Rendered memory files preserve `<!-- ANCHOR:id -->` and `<!-- /ANCHOR:id -->` comments through post-render cleanup while still stripping non-anchor workflow comments.
 20. Frontmatter `trigger_phrases` now render the same session-specific values as the trailing metadata block and fall back to `[]` instead of generic placeholders.
-21. Direct-path mode can prefer the calling CLI's native capture source with `SYSTEM_SPEC_KIT_CAPTURE_SOURCE=opencode|claude|codex|copilot|gemini`, then resume the documented fallback order if that hinted source is empty.
+21. Recovery mode can prefer the calling CLI's native capture source with `SYSTEM_SPEC_KIT_CAPTURE_SOURCE=opencode|claude|codex|copilot|gemini`, then resume the documented fallback order if that hinted source is empty.
 22. Explicit JSON mode accepts the documented snake_case save contract as well as the existing camelCase fields.
-23. Structured JSON mode now accepts both `generate-context.js --stdin` and `generate-context.js --json <string>`, and those structured paths are the preferred integration contract whenever a caller already has curated session data.
+23. Structured JSON mode now accepts both `generate-context.js --stdin` and `generate-context.js --json <string>`, and those structured paths are the only routine-save contract.
 24. In those structured-input modes, an explicit CLI target still outranks payload `specFolder`, and the payload target is used only when no explicit override is present.
 25. `validate-memory-quality.ts` now owns a first-class rule metadata registry with per-rule severity, write blocking, index blocking, source applicability, and rationale.
 26. The workflow now resolves every save into one explicit disposition:
@@ -110,20 +110,20 @@ The closure feature consists of these distinct shipped capabilities:
 ### 3.1 JSON-mode authority
 
 - Explicit JSON input still wins immediately.
-- Native capture is enrichment-oriented fallback behavior, not an authoritative replacement for structured input.
+- Native capture is explicit recovery behavior, not an authoritative replacement for structured input.
 - This preserves compatibility with existing save flows and keeps caller intent unambiguous.
 - `--stdin` and `--json` are the documented preferred paths whenever a caller can provide curated session data directly.
 - JSON-mode now accepts the documented snake_case fields such as `user_prompts`, `recent_context`, and `trigger_phrases` in addition to the existing camelCase keys.
 
-### 3.2 OpenCode precedence
+### 3.2 OpenCode recovery precedence
 
-- `OpenCode` remains the first native fallback source.
+- `OpenCode` remains the first native recovery source.
 - When a usable OpenCode capture exists, later native backends are not consulted.
-- This preserves the original stateless behavior while keeping later sources additive.
+- This preserves explicit recovery behavior while keeping later sources additive.
 
-### 3.2a Caller-aware direct-mode preference
+### 3.2a Caller-aware recovery-mode preference
 
-- Direct-path mode can prefer the calling CLI's backend before the standard fallback chain.
+- Recovery mode can prefer the calling CLI's backend before the standard fallback chain.
 - `SYSTEM_SPEC_KIT_CAPTURE_SOURCE=opencode|claude|codex|copilot|gemini` is the explicit override for that preference.
 - If the hinted backend yields no usable content, the loader resumes the documented fallback order instead of failing early.
 - Explicit JSON input remains authoritative and bypasses native selection entirely.
@@ -161,9 +161,9 @@ The closure feature consists of these distinct shipped capabilities:
 - Only project-root mappings that resolve to the active workspace identity are accepted.
 - `thoughts` are excluded while assistant text and tool-call telemetry remain available for normalization.
 
-### 3.8 Shared stateless safety rules
+### 3.8 Shared recovery-only safety rules
 
-- All native backends remain stateless-only.
+- All native backends remain recovery-only.
 - All native backends normalize into the same `OpencodeCapture`-compatible shape.
 - Out-of-workspace file hints are dropped before downstream `FILES` and observation generation.
 - Workspace identity is necessary for backend discovery, but not sufficient for save-path alignment.
@@ -194,13 +194,13 @@ The closure feature consists of these distinct shipped capabilities:
   - concrete decisions, blockers, next actions, or outcomes
   - substantive observations with non-generic titles and useful narrative
 
-### 3.9a Phase 017 stateless quality-gate fixes
+### 3.9a Phase 017 recovery-only quality-gate fixes
 
 - `generate-context.js --stdin` reads structured JSON from stdin and routes it through the same workflow contract as file input.
 - `generate-context.js --json <string>` does the same for inline structured JSON payloads.
 - Explicit CLI target authority still outranks payload `specFolder` in those structured-input modes.
 - `workflow.ts` now resolves validation outcomes into explicit `abort_write`, `write_skip_index`, and `write_and_index` dispositions instead of treating `qualityValidation.valid` as the only indexing gate.
-- `QUALITY_GATE_WARN` preserves V10 diagnostic visibility without turning V10-only stateless saves into false-positive aborts or write-only saves.
+- `QUALITY_GATE_WARN` preserves V10 diagnostic visibility without turning V10-only recovery-mode saves into false-positive aborts or write-only saves.
 - `contamination-filter.ts` now uses typed source capabilities, so the `tool title with path` downgrade is driven by capability policy rather than a hardcoded source-name special case.
 
 ### 3.11 Render-quality hardening
@@ -214,7 +214,7 @@ The closure feature consists of these distinct shipped capabilities:
 ### 3.10 Operator expectations
 
 - Backend discovery order does not guarantee save success.
-- Structured `--stdin` / `--json` input is preferred over stateless transcript fallback whenever the calling CLI can provide curated session payloads.
+- Structured `--stdin` / `--json` input is the required routine-save path; transcript fallback exists only for explicit recovery.
 - `OpenCode` may still be selected first and then either warn on missing spec anchors, fail later on file-overlap alignment, fail on hard-block contamination, or fail on insufficiency.
 - `Claude`, `Codex`, `Copilot`, or `Gemini` may be selected correctly and still fail later if the captured content is foreign-spec dominated, too thin to preserve durable evidence, or blocked by a hard stateless quality rule.
 - A successful save now means all of the following were satisfied:

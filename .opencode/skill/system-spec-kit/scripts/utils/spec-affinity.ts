@@ -25,7 +25,9 @@ const KEYWORD_STOPWORDS = new Set([
   'change',
   'changes',
   'closure',
+  'configuration',
   'context',
+  'documentation',
   'feature',
   'file',
   'files',
@@ -35,6 +37,7 @@ const KEYWORD_STOPWORDS = new Set([
   'implementation',
   'improve',
   'into',
+  'management',
   'mode',
   'native',
   'note',
@@ -44,10 +47,13 @@ const KEYWORD_STOPWORDS = new Set([
   'paths',
   'phase',
   'plan',
+  'processing',
   'quality',
+  'requirements',
   'save',
   'session',
   'spec',
+  'specification',
   'state',
   'system',
   'task',
@@ -120,6 +126,24 @@ function uniqueStrings(values: Array<string | null | undefined>): string[] {
   }
 
   return ordered;
+}
+
+function escapeRegex(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function containsWordBoundary(normalizedText: string, phrase: string): boolean {
+  if (!normalizedText || !phrase) {
+    return false;
+  }
+
+  const normalizedPhrase = phrase.trim();
+  if (!normalizedPhrase) {
+    return false;
+  }
+
+  const pattern = new RegExp(`(^| )${escapeRegex(normalizedPhrase)}(?= |$)`);
+  return pattern.test(normalizedText);
 }
 
 function extractSpecIds(value: string): string[] {
@@ -311,14 +335,27 @@ export function buildSpecAffinityTargets(specFolderHint?: string | null): SpecAf
       };
 
   const slugCandidates = safeHint ? buildSlugCandidates(safeHint) : [];
-  const exactPhrases = uniqueStrings([
-    specId,
-    ...slugCandidates,
-    ...metadata.titleCandidates,
-    ...metadata.triggerPhraseCandidates,
-  ])
-    .map((value) => normalizeText(value))
-    .filter((value) => value.length >= 6);
+  const exactPhrases = uniqueStrings(
+    [
+      specId,
+      ...slugCandidates,
+      ...metadata.titleCandidates,
+      ...metadata.triggerPhraseCandidates,
+    ]
+      .filter((value): value is string => typeof value === 'string')
+      .map((value) => normalizeText(value))
+  ).filter((value) => {
+    if (value.length < 6) {
+      return false;
+    }
+
+    const words = value.split(' ').filter(Boolean);
+    if (words.length === 1 && KEYWORD_STOPWORDS.has(words[0])) {
+      return false;
+    }
+
+    return true;
+  });
 
   return {
     specFolderHint: safeHint,
@@ -348,7 +385,7 @@ export function matchesSpecAffinityFilePath(filePath: string, targets: SpecAffin
 }
 
 function countKeywordMatches(normalizedText: string, strongKeywordTokens: string[]): string[] {
-  return strongKeywordTokens.filter((token) => normalizedText.includes(token));
+  return strongKeywordTokens.filter((token) => containsWordBoundary(normalizedText, token));
 }
 
 export function evaluateSpecAffinityText(text: string, targets: SpecAffinityTargets): {
@@ -366,7 +403,7 @@ export function evaluateSpecAffinityText(text: string, targets: SpecAffinityTarg
     normalizedPathText.includes(target)
     || normalizedPathText.endsWith(`/${target}`)
   ));
-  const matchedPhrases = targets.exactPhrases.filter((phrase) => normalizedText.includes(phrase));
+  const matchedPhrases = targets.exactPhrases.filter((phrase) => containsWordBoundary(normalizedText, phrase));
   const matchedKeywordTokens = countKeywordMatches(normalizedText, targets.strongKeywordTokens);
   const discoveredIds = extractSpecIds(rawText);
   const matchedSpecId = Boolean(targets.specId && discoveredIds.includes(targets.specId));

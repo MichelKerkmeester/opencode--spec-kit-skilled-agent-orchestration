@@ -148,6 +148,30 @@ function detectImportanceTier(filesModified: string[], contextType: string): str
   return 'normal';
 }
 
+const VALID_IMPORTANCE_TIERS = new Set([
+  'constitutional',
+  'critical',
+  'important',
+  'normal',
+  'temporary',
+  'deprecated',
+]);
+
+function resolveImportanceTier(
+  filesModified: string[],
+  contextType: string,
+  explicitImportanceTier?: string | null
+): string {
+  if (typeof explicitImportanceTier === 'string') {
+    const normalizedTier = explicitImportanceTier.trim().toLowerCase();
+    if (VALID_IMPORTANCE_TIERS.has(normalizedTier)) {
+      return normalizedTier;
+    }
+  }
+
+  return detectImportanceTier(filesModified, contextType);
+}
+
 /* ───────────────────────────────────────────────────────────────
    4. PROJECT PHASE & STATE
 ------------------------------------------------------------------*/
@@ -276,13 +300,24 @@ function extractNextAction(
  * @returns A trimmed blocker sentence (max 100 chars), or `'None'` if no blockers found.
  */
 function extractBlockers(observations: Observation[]): string {
-  const blockerKeywords = /\b(?:block(?:ed|er|ing)?|stuck|issue|problem|error|fail(?:ed|ing)?|cannot|can't)\b/i;
+  // Fix 3: Require blocker-specific sentence structure, not just keyword presence.
+  // Broad keywords like "error", "problem", "failed" match normal technical discussion
+  // (e.g., "error handling", "the problem was X", "this test failed").
+  const blockerPatterns = [
+    /\b(?:blocked|blocking)\s+(?:on|by)\b/i,         // "blocked on/by X"
+    /\bcannot\s+(?:proceed|continue|progress)\b/i,    // "cannot proceed"
+    /\bcan't\s+(?:proceed|continue|progress)\b/i,     // "can't proceed"
+    /\bstuck\s+(?:on|at|with)\b/i,                    // "stuck on X"
+    /\bwaiting\s+(?:on|for)\b/i,                      // "waiting for X"
+    /\bblocker:\s/i,                                   // explicit "blocker:" prefix
+    /\bblocking\s+issue\b/i,                           // "blocking issue"
+  ];
   for (const obs of observations) {
     const narrative = obs.narrative || '';
-    if (blockerKeywords.test(narrative)) {
+    if (blockerPatterns.some(pattern => pattern.test(narrative))) {
       const sentences = splitBlockerCandidates(narrative);
       for (const sentence of sentences) {
-        if (!blockerKeywords.test(sentence)) {
+        if (!blockerPatterns.some(pattern => pattern.test(sentence))) {
           continue;
         }
 
@@ -498,19 +533,25 @@ function extractKeyTopics(summary: string | undefined, decisions: DecisionForTop
  * @param observations - Session observations used for tool counting and decision detection.
  * @param userPrompts - User prompts passed through to tool counting.
  * @param FILES - File entries whose paths determine the importance tier.
+ * @param explicitImportanceTier - Optional caller-provided tier override from structured input.
  * @returns Composite characteristics including context type, importance tier, decision count, and tool counts.
  */
 function detectSessionCharacteristics(
   observations: Observation[],
   userPrompts: UserPrompt[],
-  FILES: FileEntry[]
+  FILES: FileEntry[],
+  explicitImportanceTier?: string | null
 ): SessionCharacteristics {
   const toolCounts = countToolsByType(observations, userPrompts);
   const decisionCount = observations.filter((obs) =>
     obs.type === 'decision' || obs.title?.toLowerCase().includes('decision')
   ).length;
   const contextType = detectContextType(toolCounts, decisionCount);
-  const importanceTier = detectImportanceTier(FILES.map((f) => f.FILE_PATH), contextType);
+  const importanceTier = resolveImportanceTier(
+    FILES.map((f) => f.FILE_PATH),
+    contextType,
+    explicitImportanceTier
+  );
   return { contextType, importanceTier, decisionCount, toolCounts };
 }
 

@@ -514,11 +514,36 @@ export function deduplicateSubstrings(candidates: ScoredNgram[]): ScoredNgram[] 
   return result;
 }
 
-/** Filter out phrases composed entirely of tech stop words */
+// Fix 5: Known short technical terms that should NOT be filtered.
+// Includes acronyms AND common 3-letter technical verbs/nouns.
+const TECHNICAL_SHORT_WORDS: Set<string> = new Set([
+  // Acronyms
+  'api', 'sql', 'css', 'dom', 'rrf', 'bm25', 'mmr', 'trm', 'mcp', 'llm',
+  'rag', 'jwt', 'url', 'cli', 'npm', 'git', 'jsx', 'tsx', 'rpc', 'sdk',
+  'e2e', 'ci', 'cd', 'dns', 'tcp', 'tls', 'ssh', 'aws', 'gcp',
+  // Common technical verbs/nouns
+  'bug', 'fix', 'hot', 'new', 'key', 'log', 'add', 'run', 'set', 'get',
+  'map', 'raw', 'dry', 'pub', 'sub', 'env', 'dev', 'ops', 'tab', 'tag',
+  'row', 'col', 'ref', 'var', 'doc', 'app', 'err', 'req', 'res', 'cmd',
+  'arg', 'opt', 'src', 'bin', 'lib', 'pkg', 'mod', 'cfg', 'tmp',
+  // Programming keywords (prevent filtering "try catch", "for loop", etc.)
+  'try', 'for', 'if', 'do', 'io', 'fs', 'os', 'db', 'id', 'ip',
+]);
+
+/** Filter out phrases composed entirely of tech stop words or too-short generic bigrams */
 export function filterTechStopWords(candidates: ScoredNgram[]): ScoredNgram[] {
   return candidates.filter((candidate: ScoredNgram) => {
     const words = candidate.phrase.split(' ');
-    return !words.every((word: string) => STOP_WORDS_TECH.has(word));
+    // Existing: remove if ALL words are stopwords
+    if (words.every((word: string) => STOP_WORDS_TECH.has(word))) return false;
+    // Fix 5A: Remove 2-word phrases where any word is too short and generic
+    if (words.length === 2) {
+      const hasShortGeneric = words.some(
+        (w: string) => w.length < 4 && !TECHNICAL_SHORT_WORDS.has(w)
+      );
+      if (hasShortGeneric) return false;
+    }
+    return true;
   });
 }
 
@@ -602,8 +627,9 @@ export function extractTriggerPhrases(text: string): string[] {
     .map(item => item.phrase.toLowerCase().trim())
     .filter((phrase, index, arr) => arr.indexOf(phrase) === index);
 
+  // Fix 5B: Still apply filterTechStopWords in relaxed mode (previously bypassed entirely)
   if (topPhrases.length < CONFIG.MIN_PHRASE_COUNT && deduplicated.length > 0) {
-    const relaxed = deduplicated
+    const relaxed = filterTechStopWords(deduplicated)
       .sort((a, b) => b.score - a.score)
       .slice(0, CONFIG.MAX_PHRASE_COUNT)
       .map(item => item.phrase.toLowerCase().trim())

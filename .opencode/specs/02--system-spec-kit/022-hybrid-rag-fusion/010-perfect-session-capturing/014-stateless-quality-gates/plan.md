@@ -3,7 +3,7 @@ title: "Implementation Plan: Stateless Quality Gate Fixes"
 description: "Three targeted, independently deployable changes: tier Gate A into hard-block vs. soft-warning rule sets, add --stdin/--json CLI flags to generate-context.ts, and make the contamination filter source-aware for Claude Code captures."
 trigger_phrases:
   - "stateless quality gates plan"
-  - "phase 017 plan"
+  - "phase 014 plan"
   - "gate a tiering implementation"
   - "stdin flag implementation"
   - "source-aware contamination plan"

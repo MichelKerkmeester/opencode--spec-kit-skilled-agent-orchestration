@@ -154,12 +154,12 @@ Trigger manual context save:
 Say: "save context" or "save conversation"
 ```
 
-**Required Argument:** Spec folder path is MANDATORY
+**Required Inputs:** Structured JSON is mandatory for routine saves, and the target spec folder is still required
 ```
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/007-feature/
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/007-feature/
 ```
 
-Context saved to `specs/###-folder/memory/` or `memory/` (fallback).
+Recovery-only direct mode remains available with `--recovery specs/###-folder/`.
 
 ❌ DO NOT use Write/Edit tools to create memory files directly.
 
@@ -475,7 +475,12 @@ Before presenting documentation to user:
 
 **MANDATORY:** Use generate-context.ts (source) for memory save:
 ```
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/###-folder/
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/###-folder/
+```
+
+**Recovery only:**
+```
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery specs/###-folder/
 ```
 
 ❌ DO NOT use Write/Edit tools to create memory files directly.

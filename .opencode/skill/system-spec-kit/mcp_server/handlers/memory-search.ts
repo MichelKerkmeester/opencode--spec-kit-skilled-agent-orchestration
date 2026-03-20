@@ -995,7 +995,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
           extraData.artifact_routing = artifactRouting;
         }
 
-        if (pipelineResult.metadata.stage2.feedbackSignalsApplied) {
+        if (pipelineResult.metadata.stage2.feedbackSignalsApplied === 'applied') {
           extraData.feedbackSignals = { applied: true };
           extraData.feedback_signals = { applied: true };
         }

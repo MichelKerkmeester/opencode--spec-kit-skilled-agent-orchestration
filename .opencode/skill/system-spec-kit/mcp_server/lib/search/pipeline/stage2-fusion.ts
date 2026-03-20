@@ -67,6 +67,8 @@ import { requireDb } from '../../../utils/db-helpers';
 import { computeRecencyScore } from '../../scoring/folder-scoring';
 import { enrichResultsWithAnchorMetadata } from '../anchor-metadata';
 import { enrichResultsWithValidationMetadata } from '../validation-metadata';
+// B4: Stage 2b enrichment extracted for decomposition clarity
+import { executeStage2bEnrichment } from './stage2b-enrichment';
 import { applyCommunityBoost } from '../../graph/community-detection';
 import { applyGraphSignals } from '../../graph/graph-signals';
 import { isGraphUnifiedEnabled } from '../graph-flags';
@@ -163,21 +165,26 @@ function applyValidationSignalScoring(results: PipelineRow[]): PipelineRow[] {
 const resolveBaseScore = resolveEffectiveScore;
 
 function withSyncedScoreAliases(row: PipelineRow, score: number): PipelineRow {
+  // F2.03 fix: Clamp to [0,1] so downstream consumers never see raw boosted values > 1.
+  const clamped = Math.max(0, Math.min(1, score));
   return {
     ...row,
-    score,
-    rrfScore: score,
-    intentAdjustedScore: score,
-    attentionScore: score,
+    score: clamped,
+    rrfScore: clamped,
+    intentAdjustedScore: clamped,
+    attentionScore: clamped,
   };
 }
 
 function syncScoreAliasesInPlace(rows: PipelineRow[]): void {
   for (const row of rows) {
     if (typeof row.score !== 'number' || !Number.isFinite(row.score)) continue;
-    row.rrfScore = row.score;
-    row.intentAdjustedScore = row.score;
-    row.attentionScore = row.score;
+    // F2.03 fix: Clamp to [0,1] during in-place sync.
+    const clamped = Math.max(0, Math.min(1, row.score));
+    row.score = clamped;
+    row.rrfScore = clamped;
+    row.intentAdjustedScore = clamped;
+    row.attentionScore = clamped;
   }
 }
 
@@ -557,11 +564,11 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
   const start = Date.now();
 
   const metadata: Stage2Output['metadata'] & { communityBoostApplied?: boolean; graphSignalsApplied?: boolean } = {
-    sessionBoostApplied: false,
-    causalBoostApplied: false,
-    intentWeightsApplied: false,
-    artifactRoutingApplied: false,
-    feedbackSignalsApplied: false,
+    sessionBoostApplied: 'off',
+    causalBoostApplied: 'off',
+    intentWeightsApplied: 'off',
+    artifactRoutingApplied: 'off',
+    feedbackSignalsApplied: 'off',
     graphContribution: {
       killSwitchActive: !isGraphUnifiedEnabled(),
       causalBoosted: 0,
@@ -588,10 +595,11 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
         config.sessionId
       );
       results = boosted as PipelineRow[];
-      metadata.sessionBoostApplied = sbMeta.applied;
+      metadata.sessionBoostApplied = sbMeta.applied ? 'applied' : 'off';
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       console.warn(`[stage2-fusion] session boost failed: ${message}`);
+      metadata.sessionBoostApplied = 'failed';
     }
   }
 
@@ -609,10 +617,11 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
           ? withGraphContribution(row, 'causalDelta', next - previous, 'causal', row.injectedByCausalBoost === true)
           : row;
       });
-      metadata.causalBoostApplied = cbMeta.applied;
+      metadata.causalBoostApplied = cbMeta.applied ? 'applied' : 'off';
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       console.warn(`[stage2-fusion] causal boost failed: ${message}`);
+      metadata.causalBoostApplied = 'failed';
     }
   }
 
@@ -722,10 +731,11 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
           ? withSyncedScoreAliases(result, result.intentAdjustedScore)
           : result
       );
-      metadata.intentWeightsApplied = true;
+      metadata.intentWeightsApplied = 'applied';
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       console.warn(`[stage2-fusion] intent weights failed: ${message}`);
+      metadata.intentWeightsApplied = 'failed';
     }
   }
 
@@ -734,10 +744,11 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     try {
       const routed = applyArtifactRouting(results, config.artifactRouting);
       results = routed;
-      metadata.artifactRoutingApplied = true;
+      metadata.artifactRoutingApplied = 'applied';
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       console.warn(`[stage2-fusion] artifact routing failed: ${message}`);
+      metadata.artifactRoutingApplied = 'failed';
     }
   }
 
@@ -748,11 +759,12 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     const changed = withFeedback.some((r, i) => r !== results[i]);
     if (changed) {
       results = withFeedback;
-      metadata.feedbackSignalsApplied = true;
+      metadata.feedbackSignalsApplied = 'applied';
     }
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
     console.warn(`[stage2-fusion] feedback signals failed: ${message}`);
+    metadata.feedbackSignalsApplied = 'failed';
   }
 
   // -- 7. Artifact-based result limiting --
@@ -770,27 +782,16 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     results = results.slice(0, config.artifactRouting.strategy.maxResults);
   }
 
-  // -- 8. Anchor metadata annotation --
-  // Pure annotation: attach AnchorMetadata[] to rows that contain ANCHOR tags.
-  // No scores are changed — this satisfies the Stage 4 score-immutability
-  // Invariant and does not conflict with the G2 double-weighting guard.
+  // -- Steps 8-9: Enrichment (B4 decomposition → stage2b-enrichment.ts) --
+  // Pure annotation: anchor metadata + validation metadata.
+  // Validation signal SCORING (applyValidationSignalScoring) stays here
+  // because it's a scoring step, not a pure enrichment.
+  results = executeStage2bEnrichment(results);
   try {
-    results = enrichResultsWithAnchorMetadata(results);
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : String(err);
-    console.warn(`[stage2-fusion] anchor metadata enrichment failed: ${message}`);
-  }
-
-  // -- 9. Validation metadata enrichment + scoring --
-  // Extract spec quality signals (SPECKIT_LEVEL, quality_score,
-  // Importance_tier, completion markers) and attach as `validationMetadata` key,
-  // Then apply bounded quality scoring multipliers at this single scoring point.
-  try {
-    results = enrichResultsWithValidationMetadata(results);
     results = applyValidationSignalScoring(results);
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : String(err);
-    console.warn(`[stage2-fusion] validation metadata enrichment failed: ${message}`);
+    console.warn(`[stage2-fusion] validation signal scoring failed: ${message}`);
   }
 
   // Keep all score aliases aligned after late-stage score mutations.

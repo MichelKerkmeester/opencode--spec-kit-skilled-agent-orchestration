@@ -172,7 +172,7 @@
         "failed_rules:none"
       ],
       "passedThrough": [
-        "current_spec:021-json-mode-hybrid-enrichment",
+        "current_spec:016-json-mode-hybrid-enrichment",
         "trigger_phrases:32",
         "key_topics:12",
         "captured_file_count:4",

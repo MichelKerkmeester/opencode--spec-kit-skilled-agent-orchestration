@@ -53,13 +53,13 @@ Runtime files are compiled into `../dist/memory/`.
 ## 3. MEMORY SAVE RULE COMMANDS
 
 
-Direct spec-folder mode:
+Routine JSON mode:
 
 ```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<###-spec-name>
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-spec-name>
 ```
 
-Explicit CLI targets are authoritative, including policy-defined phase folders. Direct saves write into the targeted folder's `memory/` directory instead of being rerouted elsewhere.
+Explicit CLI targets are authoritative, including policy-defined phase folders. Recovery-only direct saves remain available with `--recovery <spec-folder>`.
 
 JSON input mode:
 

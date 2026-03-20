@@ -1,10 +1,11 @@
 ---
-title: "Implementation Summary: Refinement Phase 15 + Boundary Remediation"
-description: "Phase 15 architecture audit and merged boundary-remediation execution summary for scripts vs mcp_server boundary work."
+title: "Implementation Summary: Refinement Phase 16 + Architecture Audit v2 Remediation"
+description: "Phase 16 architecture audit v2 remediation — 13 validated findings fixed across 4 sprints, plus checkpoint completeness implementation."
 SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
 trigger_phrases:
   - "020 implementation summary"
-  - "phase 0-15 architecture audit closure"
+  - "phase 0-16 architecture audit closure"
+  - "architecture audit v2 remediation"
 importance_tier: "normal"
 contextType: "architecture"
 ---
@@ -15,7 +16,7 @@ contextType: "architecture"
 
 ## Overview
 
-This phase now reflects end-to-end closure through Phase 15: all 142 task entries (T000-T139, with T013 split into T013a/T013b/T013c) are complete. Initial delivery covered T000-T020 (core architecture refinement), follow-up remediation/parity waves closed T021-T073, merged carry-over execution closed T074-T090, strict-pass documentation remediation closed T091-T099, executable naming-regression verification closed T100-T104, direct-save collector-path follow-up closed T105-T109, explicit CLI target authority closure closed T110-T114, explicit phase-folder target-authority closure covered T115-T118, indexed direct-save render/quality closure completed T119-T123, README audit closure completed T124-T129, and internal module boundary remediation completed T130-T139.
+This phase now reflects end-to-end closure through Phase 16: all 155 task entries (T000-T152, with T013 split into T013a/T013b/T013c) are complete. Phase 16 addressed the architecture audit v2 findings (deep research: 10 iterations, 30 agent runs, GPT-5.4) with 13 validated CRITICAL/HIGH fixes across 4 sprints plus checkpoint completeness implementation. Initial delivery covered T000-T020 (core architecture refinement), follow-up remediation/parity waves closed T021-T073, merged carry-over execution closed T074-T090, strict-pass documentation remediation closed T091-T099, executable naming-regression verification closed T100-T104, direct-save collector-path follow-up closed T105-T109, explicit CLI target authority closure closed T110-T114, explicit phase-folder target-authority closure covered T115-T118, indexed direct-save render/quality closure completed T119-T123, README audit closure completed T124-T129, and internal module boundary remediation completed T130-T139.
 
 > **Note:** Test counts cited below are point-in-time snapshots captured at each phase's closure. Downstream work (e.g., spec 013) may have added tests to the same files, so re-running commands today may yield higher counts.
 
@@ -414,3 +415,34 @@ A 10-agent thorough review (`scratch/review-2026-03-06/`) produced a unified syn
 - Archived source materials are preserved at `scratch/merged-005-architecture-audit/`.
 - Decision history from former 030 ADR-001 is now canonicalized as ADR-006 in `decision-record.md`.
 - Carry-over implementation closure is tracked in `tasks.md` (Phase 7, `T074-T090`) and `checklist.md` (Phase 7 checks `CHK-500` through `CHK-522`; P2 now has CHK-521 and CHK-522 completed, with CHK-520 intentionally optional/pending).
+
+## Phase 16: Architecture Audit v2 Remediation (2026-03-20)
+
+### Source
+- `research.md` (990+ lines) — deep research output from 10 iterations, 30 agent runs (GPT-5.4)
+- `scratch/ultra-think-review.md` (420 lines) — expert validation against source code
+- ~120 deduplicated findings: 5 CRITICAL, 48 HIGH, 55 MEDIUM, 12 LOW
+
+### Approach
+Claude Opus 4.6 implemented Sprints 1-3 directly with test-driven verification. Sprint 4 design delegated to GPT-5.4 via Codex CLI (`codex exec`); checkpoint implementation by GPT-5.4 with regression fixes by Claude.
+
+### Changes (Phase 16)
+
+| Sprint | Tasks | Files Modified | Key Findings Addressed |
+|--------|-------|----------------|----------------------|
+| Sprint 1 (Quick Wins) | T140-T141 | `tests/feature-flag-reference-docs.vitest.ts`, `cli.ts` | F8.13, F9.01 |
+| Sprint 2 (Data Integrity) | T142-T146 | `scripts/core/workflow.ts`, `pe-orchestration.ts`, `memory-save.ts`, `tool-input-schemas.ts`, `core/config.ts`, `vector-index-store.ts`, `memory-crud-utils.ts` | F1.02, F1.01, F3.04, F4.04, F8.02, F1.10 |
+| Sprint 3 (Search Scoring) | T147-T150 | `stage3-rerank.ts`, `stage2-fusion.ts`, `retrieval-telemetry.ts`, `vector-index-store.ts` | F2.02, F2.03, F6.06, F9.09-F9.13 |
+| Sprint 4 (Architecture) | T151-T152 | `checkpoints.ts` (+663/-253), design docs | F2.01 (design), F1.16 (implemented) |
+
+### New Files (Phase 16)
+| File | Purpose |
+|------|---------|
+| `scratch/s4-1-pipeline-boundary-design.md` | Pipeline stage boundary cleanup design (249 lines, GPT-5.4) |
+| `scratch/s4-2-checkpoint-completeness-design.md` | Checkpoint restore completeness design (339 lines, GPT-5.4) |
+| `tests/checkpoint-completeness.vitest.ts` | Checkpoint completeness regression tests (GPT-5.4) |
+
+### Verification
+- MCP server: 289/290 test files pass, 7860/7862 tests pass
+- 2 pre-existing failures in `hydra-spec-pack-consistency.vitest.ts` (doc alignment, not code)
+- 0 regressions introduced by Phase 16 changes

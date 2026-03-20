@@ -154,10 +154,11 @@ describe('Context Server', () => {
   // =================================================================
   // GROUP 2: Tool Definition Completeness
   // =================================================================
-  describe('Group 2: Tool Definitions (32 tools)', () => {
+  describe('Group 2: Tool Definitions (33 tools)', () => {
     const EXPECTED_TOOLS = [
       'memory_context',
       'memory_search',
+      'memory_quick_search',
       'memory_match_triggers',
       'memory_save',
       'memory_list',

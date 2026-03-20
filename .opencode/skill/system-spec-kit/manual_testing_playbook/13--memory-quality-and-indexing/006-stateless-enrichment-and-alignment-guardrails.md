@@ -19,9 +19,9 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `Run a stateless memory save for a spec that edits generic code paths and verify enrichment/guard behavior. Capture the evidence needed to prove the save uses spec-folder and git enrichment, keeps natural-language prompt variants of the spec slug, records git snapshot metadata (headRef, commitRef, repositoryState, isDetachedHead), and does not raise ALIGNMENT_BLOCK when captured files match the spec's files-to-change table. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `Run an explicit recovery-mode memory save for a spec that edits generic code paths and verify enrichment/guard behavior. Capture the evidence needed to prove the save uses spec-folder and git enrichment, keeps natural-language prompt variants of the spec slug, records git snapshot metadata (headRef, commitRef, repositoryState, isDetachedHead), and does not raise ALIGNMENT_BLOCK when captured files match the spec's files-to-change table. Return a concise user-facing pass/fail verdict with the main reason.`
 - Commands:
-  - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<target-spec>`
+  - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery specs/<target-spec>`
   - `memory_search({ query: "stateless enrichment alignment", specFolder: "specs/<target-spec>" })`
 - Expected: the save uses spec-folder and git enrichment, keeps natural-language prompt variants of the spec slug, records git snapshot metadata (`headRef`, `commitRef`, `repositoryState`, `isDetachedHead`), and does not raise `ALIGNMENT_BLOCK` when captured files match the spec's files-to-change table.
 - Evidence: save stdout showing Step 3.5 enrichment, absence of false alignment aborts for matching code files, and saved memory content/search hits reflecting spec/git-derived context.

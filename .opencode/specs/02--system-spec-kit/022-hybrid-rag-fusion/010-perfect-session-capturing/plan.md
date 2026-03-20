@@ -99,7 +99,7 @@ Parent/child phase-tree reconciliation with explicit branch-parent documentation
   - `015-runtime-contract-and-indexability/`
   - `016-json-mode-hybrid-enrichment/`
   - `017-json-primary-deprecation/`
-  - `018-research-remediation/`
+  - `018-memory-save-quality-fixes/`
 - **Verification stack**: recursive strict validation for the full spec tree
 
 ### Data Flow

@@ -324,6 +324,10 @@ async function applyCrossEncoderReranking(
           score: rerankScore,
           similarity: original?.similarity ?? row.similarity,
           rerankerScore: rerankScore,
+          // F2.02 fix: Sync all score aliases for local reranker path too.
+          rrfScore: rerankScore,
+          intentAdjustedScore: rerankScore,
+          attentionScore: rerankScore,
         };
       });
 
@@ -377,6 +381,11 @@ async function applyCrossEncoderReranking(
         score: rerankScore,
         similarity: original.similarity,
         rerankerScore: rerankScore,
+        // F2.02 fix: Sync all score aliases so resolveEffectiveScore() returns
+        // the reranked value instead of stale Stage 2 values.
+        rrfScore: rerankScore,
+        intentAdjustedScore: rerankScore,
+        attentionScore: rerankScore,
       });
     }
 

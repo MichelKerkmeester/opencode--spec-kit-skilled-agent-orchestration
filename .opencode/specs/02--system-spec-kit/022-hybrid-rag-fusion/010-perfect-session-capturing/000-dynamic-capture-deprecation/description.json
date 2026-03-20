@@ -1,7 +1,7 @@
 {
-  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/023-dynamic-capture-deprecation",
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/000-dynamic-capture-deprecation",
   "description": "Consolidation Phase: Dynamic Capture Deprecation — JSON-primary mode, dynamic capture reclassified as recovery-only",
-  "status": "in-progress",
+  "status": "done",
   "type": "CONSOLIDATION",
   "supersedes": ["011-session-source-validation", "015-outsourced-agent-handback", "016-multi-cli-parity"],
   "consolidates": ["019-source-capabilities-and-structured-preference", "020-live-proof-and-parity-hardening"],
@@ -26,7 +26,7 @@
     "stateless-deprecation"
   ],
   "lastUpdated": "2026-03-20T14:00:00.000Z",
-  "specId": "023",
+  "specId": "000",
   "folderSlug": "dynamic-capture-deprecation",
   "parentChain": [
     "02--system-spec-kit",

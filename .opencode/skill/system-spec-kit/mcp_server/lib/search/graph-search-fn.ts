@@ -158,9 +158,13 @@ function queryCausalEdgesFTS5(
   // Pipeline (MMR reranking filters with typeof id === 'number').
   const candidates: Array<Record<string, unknown>> = [];
   for (const row of rows) {
-    const score = typeof row.strength === 'number'
+    const edgeStrength = typeof row.strength === 'number'
       ? Math.min(1, Math.max(0, row.strength))
       : 0;
+    const ftsScore = typeof row.fts_score === 'number' && Number.isFinite(row.fts_score)
+      ? row.fts_score
+      : 0;
+    const score = edgeStrength * ftsScore;
     const title = `${row.source_id} -> ${row.target_id}`;
 
     const sourceNum = Number(row.source_id);
@@ -168,6 +172,8 @@ function queryCausalEdgesFTS5(
       candidates.push({
         id: sourceNum,
         score,
+        edgeStrength,
+        ftsScore,
         source: 'graph' as const,
         title,
         relation: row.relation,
@@ -181,6 +187,8 @@ function queryCausalEdgesFTS5(
       candidates.push({
         id: targetNum,
         score,
+        edgeStrength,
+        ftsScore,
         source: 'graph' as const,
         title,
         relation: row.relation,

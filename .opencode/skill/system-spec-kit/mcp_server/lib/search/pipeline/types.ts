@@ -204,6 +204,14 @@ export interface Stage1Output {
 }
 
 /**
+ * Tri-state for signal application metadata.
+ * B6 FIX: Replaces boolean flags so callers can distinguish "feature disabled
+ * by config" ('off') from "feature crashed" ('failed') from "feature applied
+ * successfully" ('applied').
+ */
+export type SignalStatus = 'off' | 'applied' | 'failed';
+
+/**
  * Stage 2: Fusion + Signal Integration
  * Single point for ALL scoring signals: RRF/RSF, causal boost, co-activation,
  * composite, intent weights (applied ONCE — prevents G2 recurrence).
@@ -221,11 +229,11 @@ export interface Stage2Input {
 export interface Stage2Output {
   scored: PipelineRow[];
   metadata: {
-    sessionBoostApplied: boolean;
-    causalBoostApplied: boolean;
-    intentWeightsApplied: boolean;
-    artifactRoutingApplied: boolean;
-    feedbackSignalsApplied: boolean;
+    sessionBoostApplied: SignalStatus;
+    causalBoostApplied: SignalStatus;
+    intentWeightsApplied: SignalStatus;
+    artifactRoutingApplied: SignalStatus;
+    feedbackSignalsApplied: SignalStatus;
     graphContribution?: {
       killSwitchActive: boolean;
       causalBoosted: number;
@@ -313,6 +321,10 @@ export interface PipelineResult {
     stage2: Stage2Output['metadata'];
     stage3: Stage3Output['metadata'];
     stage4: Stage4Output['metadata'];
+    /** B1: Per-stage and total timing in milliseconds for latency observability. */
+    timing?: Record<string, number>;
+    /** B1: True when one or more stages fell back to degraded output. */
+    degraded?: boolean;
   };
   annotations: Stage4Output['annotations'];
   trace?: RetrievalTrace;

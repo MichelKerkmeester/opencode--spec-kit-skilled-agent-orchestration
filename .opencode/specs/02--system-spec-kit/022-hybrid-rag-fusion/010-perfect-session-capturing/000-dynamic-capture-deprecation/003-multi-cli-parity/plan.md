@@ -86,7 +86,7 @@ Additive regression-hardening on existing seams
 ### Phase 3: Verification
 - [x] Run focused Vitest coverage for the parity seams plus provenance scoring safety nets.
 - [x] Run `test-extractors-loaders.js`, `npm run typecheck`, and `npm run build`.
-- [x] Run `./scripts/spec/validate.sh` on the phase-016 folder and reconcile any remaining validator findings.
+- [x] Run `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` on the phase-016 folder and reconcile any remaining validator findings.
 <!-- /ANCHOR:phases -->
 
 ---

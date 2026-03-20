@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: 008-hydra-db-based-features"
-description: "Verification Date: 2026-03-17"
+description: "Verification Date: 2026-03-20"
 trigger_phrases:
   - "verification"
   - "checklist"
@@ -43,7 +43,7 @@ contextType: "decision"
 
 - [x] CHK-010 [P0] Parent pack and six phase packs now match active template structure and required anchors [EVIDENCE:implementation-summary.md]
 - [x] CHK-011 [P0] Absorbed `017-markovian-architectures` content and dead references were removed from the Hydra closure surfaces [EVIDENCE:implementation-summary.md]
-- [x] CHK-012 [P1] Shared-space owner enforcement now rejects non-owner access for owner-only operations [EVIDENCE:implementation-summary.md]
+- [x] CHK-012 [P1] Shared-space admin mutations now require explicit actor identity, owner authorization, and creator auto-bootstrap on first create [EVIDENCE:implementation-summary.md]
 - [x] CHK-013 [P1] Retention sweeps now delete through the passed database handle rather than a global default path [EVIDENCE:implementation-summary.md]
 <!-- /ANCHOR:code-quality -->
 
@@ -54,7 +54,7 @@ contextType: "decision"
 
 - [x] CHK-020 [P0] Root and phase `validate.sh` runs now pass for the Hydra pack structure [EVIDENCE:implementation-summary.md]
 - [x] CHK-021 [P0] `npx tsc --noEmit`, `npm run build`, `npm run test:hydra:phase1`, and full `npm test` passed in `mcp_server` [EVIDENCE:implementation-summary.md]
-- [x] CHK-022 [P1] Shared-space and retention regression suites passed after the runtime fixes [EVIDENCE:implementation-summary.md]
+- [x] CHK-022 [P1] Governed retrieval, shared-space admin, graph ranking, and retention regression suites passed after the runtime fixes [EVIDENCE:implementation-summary.md]
 - [x] CHK-023 [P1] Scripts-side type, build, and targeted multi-CLI capture suites passed [EVIDENCE:implementation-summary.md]
 <!-- /ANCHOR:testing -->
 
@@ -65,7 +65,7 @@ contextType: "decision"
 
 - [x] CHK-030 [P0] Root docs no longer imply a standalone public lineage or `asOf` MCP query tool [EVIDENCE:spec.md]
 - [x] CHK-031 [P0] Shared memory remains documented as shipped with opt-in live access rather than universally enabled [EVIDENCE:spec.md|implementation-summary.md]
-- [x] CHK-032 [P1] Governance and collaboration claims remain bounded to the runtime and test surfaces that were rerun [EVIDENCE:implementation-summary.md]
+- [x] CHK-032 [P1] Governance and collaboration claims remain bounded to the runtime and test surfaces that were rerun, including governed retrieval entrypoints and shared-space admin tools [EVIDENCE:implementation-summary.md]
 <!-- /ANCHOR:security -->
 
 ---
@@ -99,8 +99,8 @@ contextType: "decision"
 | P1 Items | 20 | 20/20 |
 | P2 Items | 10 | 10/10 |
 
-**Verification Date**: 2026-03-17
-**Status**: Hydra closure verification passed across parent and phase validation, targeted runtime regressions, full `mcp_server` verification, scripts multi-CLI capture suites, live five-CLI prompt proof, and alignment-drift checks. The authoritative `mcp_server` rerun set recorded `283` passed files, `7790` passed tests, `11` skipped, and `28` todo.
+**Verification Date**: 2026-03-20
+**Status**: Hydra follow-up verification passed across targeted governed-retrieval, shared-space admin, graph-ranking, and retention regressions plus `npx tsc --noEmit`. The March 17 2026 full `mcp_server` closure rerun remains the authoritative broad baseline at `283` passed files, `7790` passed tests, `11` skipped, and `28` todo.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -166,7 +166,7 @@ contextType: "decision"
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
-| AI Agent (Codex GPT-5) | Closure Implementation | [x] Verified | 2026-03-17 |
+| AI Agent (Codex GPT-5) | Closure Implementation | [x] Verified | 2026-03-20 |
 | Unassigned | Product Owner | [ ] Pending | |
 | Unassigned | Security/Compliance | [ ] Pending | |
 <!-- /ANCHOR:sign-off -->

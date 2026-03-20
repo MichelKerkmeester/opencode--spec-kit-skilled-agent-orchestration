@@ -18,6 +18,7 @@ function makeCausalRow(
     target_id: string;
     relation: string;
     strength: number;
+    fts_score: number;
   }> = {}
 ) {
   return {
@@ -26,6 +27,7 @@ function makeCausalRow(
     target_id: '20',
     relation: 'causes',
     strength: 0.85,
+    fts_score: 1,
     ...overrides,
   };
 }
@@ -189,7 +191,38 @@ describe('createUnifiedGraphSearchFn', () => {
     expect(results.some(r => r['relation'] === 'hierarchy')).toBe(true);
   });
 
-  it('sorts results by score descending and clamps scores to [0, 1]', () => {
+  it('preserves BM25-aware composite scores in the FTS5 path', () => {
+    mockGet.mockReturnValue({ name: 'memory_fts' });
+    mockAll.mockReturnValue([
+      makeCausalRow({ source_id: '1', target_id: '2', strength: 0.5, fts_score: 4 }),
+      makeCausalRow({ source_id: '3', target_id: '4', strength: 0.5, fts_score: 1 }),
+    ]);
+
+    const searchFn = createUnifiedGraphSearchFn(mockDb);
+    const results = searchFn('memory', { limit: 20 });
+
+    expect(results.slice(0, 2).map((row) => row['id'])).toEqual([1, 2]);
+    expect(results[0]?.['score']).toBe(2);
+    expect(results[0]?.['edgeStrength']).toBe(0.5);
+    expect(results[0]?.['ftsScore']).toBe(4);
+  });
+
+  it('deduplicates FTS results using the highest composite score', () => {
+    mockGet.mockReturnValue({ name: 'memory_fts' });
+    mockAll.mockReturnValue([
+      makeCausalRow({ source_id: '9', target_id: '10', strength: 0.8, fts_score: 1 }),
+      makeCausalRow({ source_id: '9', target_id: '11', strength: 0.5, fts_score: 3 }),
+    ]);
+
+    const searchFn = createUnifiedGraphSearchFn(mockDb);
+    const results = searchFn('memory', { limit: 20 });
+
+    const sharedNode = results.find((row) => row['id'] === 9);
+    expect(sharedNode?.['score']).toBe(1.5);
+    expect(sharedNode?.['targetId']).toBe('11');
+  });
+
+  it('LIKE fallback sorts results by clamped strength descending', () => {
     mockAll.mockReturnValue([
       makeCausalRow({ source_id: '1', target_id: '2', strength: 1.5 }),
       makeCausalRow({ source_id: '3', target_id: '4', strength: -0.2 }),
@@ -200,16 +233,12 @@ describe('createUnifiedGraphSearchFn', () => {
     const results = searchFn('memory', { limit: 20 });
 
     const scores = results.map(r => (typeof r['score'] === 'number' ? r['score'] : 0));
-    // Clamped: 1.5→1, 1.5→1, -0.2→0, -0.2→0, 0.7, 0.7
-    // Sorted descending
     for (let i = 0; i < scores.length - 1; i++) {
       expect(scores[i]!).toBeGreaterThanOrEqual(scores[i + 1]!);
     }
-    // All within [0, 1]
     for (const s of scores) {
       expect(s).toBeGreaterThanOrEqual(0);
       expect(s).toBeLessThanOrEqual(1);
     }
   });
 });
-

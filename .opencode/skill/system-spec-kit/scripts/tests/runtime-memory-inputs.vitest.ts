@@ -267,6 +267,20 @@ describe('native CLI fallback handling', () => {
     clearNativeCaptureHintEnv();
   });
 
+  it('rejects stateless fallback unless recovery mode is explicitly enabled', async () => {
+    const { loadCollectedData } = await import('../loaders/data-loader');
+
+    await expect(loadCollectedData({
+      specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+    })).rejects.toThrow(/RECOVERY_MODE_REQUIRED/);
+
+    expect(captureConversation).not.toHaveBeenCalled();
+    expect(captureClaudeConversation).not.toHaveBeenCalled();
+    expect(captureCodexConversation).not.toHaveBeenCalled();
+    expect(captureCopilotConversation).not.toHaveBeenCalled();
+    expect(captureGeminiConversation).not.toHaveBeenCalled();
+  });
+
   it('falls back to Claude Code capture when OpenCode capture returns no usable content', async () => {
     captureConversation.mockResolvedValueOnce(null);
     captureClaudeConversation.mockResolvedValueOnce({
@@ -287,6 +301,7 @@ describe('native CLI fallback handling', () => {
     const { loadCollectedData } = await import('../loaders/data-loader');
     const result = await loadCollectedData({
       specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      allowRecovery: true,
     });
 
     expect(captureConversation).toHaveBeenCalledTimes(1);
@@ -326,6 +341,7 @@ describe('native CLI fallback handling', () => {
     const { loadCollectedData } = await import('../loaders/data-loader');
     const result = await loadCollectedData({
       specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      allowRecovery: true,
     });
 
     expect(captureConversation).toHaveBeenCalledTimes(1);
@@ -359,6 +375,7 @@ describe('native CLI fallback handling', () => {
     const { loadCollectedData } = await import('../loaders/data-loader');
     const result = await loadCollectedData({
       specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      allowRecovery: true,
     });
 
     expect(captureConversation).toHaveBeenCalledTimes(1);
@@ -392,6 +409,7 @@ describe('native CLI fallback handling', () => {
     const { loadCollectedData } = await import('../loaders/data-loader');
     const result = await loadCollectedData({
       specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      allowRecovery: true,
     });
 
     expect(captureConversation).toHaveBeenCalledTimes(1);
@@ -413,6 +431,7 @@ describe('native CLI fallback handling', () => {
 
     await expect(loadCollectedData({
       specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      allowRecovery: true,
     })).rejects.toThrow(/NO_DATA_AVAILABLE/);
 
     expect(captureConversation).toHaveBeenCalledTimes(1);
@@ -463,6 +482,7 @@ describe('native CLI fallback handling', () => {
     const { loadCollectedData } = await import('../loaders/data-loader');
     const result = await loadCollectedData({
       specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      allowRecovery: true,
     });
 
     expect(result._source).toBe(expectedSource);
@@ -492,6 +512,7 @@ describe('native CLI fallback handling', () => {
     const { loadCollectedData } = await import('../loaders/data-loader');
     const result = await loadCollectedData({
       specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      allowRecovery: true,
     });
 
     expect(result._source).toBe('opencode-capture');
@@ -774,6 +795,54 @@ describe('manual next-steps normalization', () => {
       title: 'Next Steps',
       facts: ['Next: ', 'Follow-up: Second step is real.'],
     });
+  });
+
+  it('honors explicit importanceTier through collectSessionData for non-expiring memories', async () => {
+    const normalized = normalizeInputData({
+      specFolder: '022-hybrid-rag-fusion/002-indexing-normalization',
+      sessionSummary: 'Critical save should keep the caller-provided tier.',
+      importanceTier: 'critical',
+    });
+
+    const sessionData = await collectSessionData(
+      normalized,
+      '022-hybrid-rag-fusion/002-indexing-normalization'
+    );
+
+    expect(sessionData.IMPORTANCE_TIER).toBe('critical');
+    expect(sessionData.EXPIRES_AT_EPOCH).toBe(0);
+  });
+
+  it('honors explicit importance_tier through collectSessionData for temporary memories', async () => {
+    const normalized = normalizeInputData({
+      specFolder: '022-hybrid-rag-fusion/002-indexing-normalization',
+      sessionSummary: 'Temporary save should retain the snake_case override.',
+      importance_tier: 'temporary',
+    });
+
+    const sessionData = await collectSessionData(
+      normalized,
+      '022-hybrid-rag-fusion/002-indexing-normalization'
+    );
+
+    expect(sessionData.IMPORTANCE_TIER).toBe('temporary');
+    expect(sessionData.EXPIRES_AT_EPOCH).toBeGreaterThan(sessionData.CREATED_AT_EPOCH);
+  });
+
+  it('keeps auto-detected importanceTier behavior when no explicit tier is provided', async () => {
+    const normalized = normalizeInputData({
+      specFolder: '022-hybrid-rag-fusion/002-indexing-normalization',
+      sessionSummary: 'Architecture work should still auto-detect as critical.',
+      filesModified: ['scripts/core/workflow.ts'],
+    });
+
+    const sessionData = await collectSessionData(
+      normalized,
+      '022-hybrid-rag-fusion/002-indexing-normalization'
+    );
+
+    expect(sessionData.IMPORTANCE_TIER).toBe('critical');
+    expect(sessionData.EXPIRES_AT_EPOCH).toBe(0);
   });
 });
 

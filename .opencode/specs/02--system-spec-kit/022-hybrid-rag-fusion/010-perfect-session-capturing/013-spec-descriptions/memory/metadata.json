@@ -169,7 +169,7 @@
         "failed_rules:none"
       ],
       "passedThrough": [
-        "current_spec:014-spec-descriptions",
+        "current_spec:013-spec-descriptions",
         "trigger_phrases:21",
         "key_topics:12",
         "captured_file_count:0",

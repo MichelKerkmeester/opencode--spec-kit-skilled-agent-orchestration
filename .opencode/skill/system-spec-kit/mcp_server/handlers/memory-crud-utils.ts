@@ -40,10 +40,13 @@ function getMemoryHashSnapshot(database: DatabaseExtended | null, memoryId: numb
   }
 }
 
-/** Safely append a mutation to the ledger. Swallows errors to avoid disrupting the caller. */
-function appendMutationLedgerSafe(database: DatabaseExtended | null, input: MutationLedgerInput): void {
+/**
+ * Safely append a mutation to the ledger. Returns false on failure so callers
+ * can surface warnings in their MCP responses (F1.10 fix).
+ */
+function appendMutationLedgerSafe(database: DatabaseExtended | null, input: MutationLedgerInput): boolean {
   if (!database) {
-    return;
+    return false;
   }
 
   try {
@@ -58,9 +61,11 @@ function appendMutationLedgerSafe(database: DatabaseExtended | null, input: Muta
       actor: input.actor,
       session_id: input.sessionId ?? null,
     });
+    return true;
   } catch (err: unknown) {
     const message = toErrorMessage(err);
     console.warn(`[memory-crud] mutation ledger append failed: ${message}`);
+    return false;
   }
 }
 

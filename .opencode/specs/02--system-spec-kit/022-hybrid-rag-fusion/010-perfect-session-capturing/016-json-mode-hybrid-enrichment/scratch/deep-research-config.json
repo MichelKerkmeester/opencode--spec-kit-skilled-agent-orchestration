@@ -5,7 +5,7 @@
   "stuckThreshold": 3,
   "maxDurationMinutes": 90,
   "progressiveSynthesis": true,
-  "specFolder": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/021-json-mode-hybrid-enrichment",
+  "specFolder": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/016-json-mode-hybrid-enrichment",
   "createdAt": "2026-03-20T07:56:53Z",
   "status": "initialized",
   "executionMode": "auto",

@@ -12,8 +12,11 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 1,
+  "memorySequence": 4,
   "memoryNameHistory": [
-    "20-03-26_12-22__hybrid-rag-fusion-epic.md"
+    "20-03-26_12-22__hybrid-rag-fusion-epic.md",
+    "20-03-26_15-24__sprint-1-quick-wins-implemented-6-p0-p1-fixes-for.md",
+    "20-03-26_16-06__implemented-full-hybrid-rag-fusion-pipeline.md",
+    "20-03-26_16-36__implemented-full-hybrid-rag-fusion-pipeline.md"
   ]
 }

@@ -1,8 +1,8 @@
 ---
-title: "Implementation Plan: Runtime Contract And Indexability [template:level_1/plan.md]"
+title: "Implementation Plan: Runtime Contract and Indexability"
 description: "Add explicit rule metadata, write/index dispositions, and focused proof for session-capturing indexability."
 trigger_phrases:
-  - "phase 018"
+  - "phase 015"
   - "runtime contract"
 importance_tier: "normal"
 contextType: "general"

@@ -33,9 +33,9 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Define `SessionMetadata` and `GitMetadata` in `scripts/types/session-types.ts`
-- [x] T002 Extend `CollectedDataBase` with optional `session`, `git`, `sessionSummary`, `keyDecisions`, and `nextSteps`
-- [x] T003 Confirm all new fields are optional for backward compatibility
+- [x] T001 Define shipped structured-summary fields such as `toolCalls` and `exchanges` in `scripts/types/session-types.ts`
+- [x] T002 Confirm file-backed JSON remains authoritative in `scripts/core/workflow.ts`
+- [x] T003 Confirm the new structured fields remain optional for backward compatibility
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -43,16 +43,12 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Add `enrichFileSourceData()` in `scripts/core/workflow.ts`
-- [x] T005 Replace the file-source early return with the safe enrichment path
-- [x] T006 Merge git provenance and spec-folder context without injecting observations or `FILES`
-- [x] T007 Apply explicit `session.*` and `git.*` overrides in `scripts/extractors/collect-session-data.ts`
-- [x] T008 Update `generate-context.ts` help text for the new JSON contract
-- [x] T009 Validate `session` and `git` block shapes in `scripts/utils/input-normalizer.ts`
-- [x] T010 Add explicit decision confidence normalization support
-- [x] T011 Fix truncated outcomes to prefer narrative text when titles are shortened
-- [x] T012 Add `git.changedFileCount` and `_gitChangedFileCount` priority handling
-- [x] T013 Preserve explicit message and tool counts during template assembly
+- [x] T004 Carry structured summary support through the shared JSON contract and help text
+- [x] T005 Preserve file-backed JSON authority instead of introducing a dedicated hybrid branch
+- [x] T006 Record Wave 2 fixes for decision confidence, outcomes truncation, changed-file counts, and template-level count overrides
+- [x] T007 Correct the phase docs so they no longer claim `enrichFileSourceData()` shipped in phase 016
+- [x] T008 Reframe the research artifact as archival analysis of the non-shipped design
+- [x] T009 Synchronize checklist evidence with the corrected plan, spec, ADR, and implementation summary
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -62,9 +58,9 @@ contextType: "general"
 
 - [x] T014 Run `npx tsc --noEmit`
 - [x] T015 Run `npx tsc -b`
-- [x] T016 Verify V8 safety by confirming observations and `FILES` stay excluded from the file-source path
-- [x] T017 Verify JSON-mode outputs honor explicit status, percent, counts, and git metadata
-- [x] T018 Update phase documentation and implementation summary
+- [x] T016 Verify file-backed JSON remains on the authoritative structured path
+- [x] T017 Verify structured summary fields and Wave 2 fixes remain documented and tested accurately
+- [x] T018 Update phase documentation, implementation summary, and research framing
 <!-- /ANCHOR:phase-3 -->
 
 ---

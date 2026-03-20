@@ -101,7 +101,7 @@ Prove the shipped multi-CLI parity behavior with direct regression tests and rec
 | REQ-001 | Copilot `view` aliases must drive canonical research scoring. | `phase-classification.vitest.ts` proves `View` classifies as `Research` through the public classifier APIs. |
 | REQ-002 | Built-in multi-CLI noise markers must be filtered through the shared noise path. | `content-filter-parity.vitest.ts` proves `tool.execution_start`, `tool.execution_complete`, `reasoning`, `<reasoning>...</reasoning>`, and empty XML wrapper tags all register as noise through `isNoiseContent()` / `NOISE_PATTERNS`. |
 | REQ-003 | CLI-derived file entries must retain tool provenance and `view` titles. | `runtime-memory-inputs.vitest.ts` proves `transformOpencodeCapture()` emits `Read loaders/data-loader.ts` for `view` and applies `_provenance: 'tool'` to CLI-derived `FILES`. |
-| REQ-004 | Phase-016 spec artifacts must validate cleanly as Level 2 docs. | `./scripts/spec/validate.sh` passes this phase folder with zero errors and zero warnings. |
+| REQ-004 | Phase-016 spec artifacts must validate cleanly as Level 2 docs. | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` passes this phase folder with zero errors and zero warnings. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
@@ -119,7 +119,7 @@ Prove the shipped multi-CLI parity behavior with direct regression tests and rec
 - **SC-001**: **Given** a low-signal exchange that only uses Copilot `View`, **Then** the classifier resolves the phase as `Research` instead of `Discussion`.
 - **SC-002**: **Given** Copilot lifecycle markers, Codex reasoning markers, and empty XML wrappers, **Then** the shared content filter treats them as built-in noise without a parallel parity filter.
 - **SC-003**: **Given** a CLI capture with `view` and `edit` tool calls, **Then** `transformOpencodeCapture()` renders `Read ...` titles and stores CLI-derived `FILES` with `_provenance: 'tool'`.
-- **SC-004**: **Given** the rewritten phase-016 spec folder and updated test evidence, **Then** focused Vitest, `test-extractors-loaders.js`, `npm run typecheck`, `npm run build`, and the retained proof artifact at `../research/live-cli-proof-2026-03-17.json` all support the published March 17, 2026 parity claim.
+- **SC-004**: **Given** the rewritten phase-016 spec folder and updated test evidence, **Then** focused Vitest, `test-extractors-loaders.js`, `npm run typecheck`, `npm run build`, and the retained proof artifact at `../../research/live-cli-proof-2026-03-17.json` all support the published March 17, 2026 parity claim.
 <!-- /ANCHOR:success-criteria -->
 
 ---

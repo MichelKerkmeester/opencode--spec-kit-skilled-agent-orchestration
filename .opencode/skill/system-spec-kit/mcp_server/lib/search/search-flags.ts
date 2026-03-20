@@ -104,15 +104,9 @@ export function isNegativeFeedbackEnabled(): boolean {
 
 // -- Pipeline Refactor flags --
 
-/**
- * R6: 4-stage pipeline architecture (Stage 1-4 with Stage 4 invariant).
- * @deprecated Always returns true. Legacy V1 pipeline was removed in
- * the runtime pipeline update. The SPECKIT_PIPELINE_V2 env var is
- * still accepted but ignored — V2 is the only code path.
- */
-export function isPipelineV2Enabled(): boolean {
-  return true;
-}
+// C8 CLEANUP: isPipelineV2Enabled() removed — always returned true.
+// The V1 pipeline was removed and V2 is the only code path.
+// SPECKIT_PIPELINE_V2 env var is no longer consumed.
 
 /**
  * R12: Query expansion for embedding-based retrieval.

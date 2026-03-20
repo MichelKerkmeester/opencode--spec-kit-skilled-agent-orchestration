@@ -4,7 +4,7 @@
 // MCP handler layer for shared-space CRUD, membership assignment,
 // and rollout status reporting with deny-by-default access.
 import { requireDb } from '../utils';
-import { createMCPSuccessResponse } from '../lib/response/envelope';
+import { createMCPErrorResponse, createMCPSuccessResponse } from '../lib/response/envelope';
 import type { MCPResponse } from './types';
 import type { SharedSpaceUpsertArgs, SharedSpaceMembershipArgs, SharedMemoryStatusArgs } from '../tools/types';
 import {
@@ -21,6 +21,94 @@ import * as path from 'path';
 
 // Feature catalog: Shared-memory rollout, deny-by-default membership, and kill switch
 
+type SharedAdminActor = {
+  subjectType: 'user' | 'agent';
+  subjectId: string;
+};
+
+function resolveAdminActor(
+  tool: 'shared_space_upsert' | 'shared_space_membership_set',
+  actorUserId?: string,
+  actorAgentId?: string,
+): SharedAdminActor | MCPResponse {
+  const normalizedUserId = typeof actorUserId === 'string' ? actorUserId.trim() : '';
+  const normalizedAgentId = typeof actorAgentId === 'string' ? actorAgentId.trim() : '';
+  const hasUser = normalizedUserId.length > 0;
+  const hasAgent = normalizedAgentId.length > 0;
+
+  if (!hasUser && !hasAgent) {
+    return createMCPErrorResponse({
+      tool,
+      error: 'Exactly one actor identity is required.',
+      code: 'E_VALIDATION',
+      details: { reason: 'actor_identity_required' },
+      recovery: {
+        hint: 'Provide actorUserId or actorAgentId.',
+      },
+    });
+  }
+
+  if (hasUser && hasAgent) {
+    return createMCPErrorResponse({
+      tool,
+      error: 'Provide only one actor identity.',
+      code: 'E_VALIDATION',
+      details: { reason: 'actor_identity_ambiguous' },
+      recovery: {
+        hint: 'Send only actorUserId or actorAgentId, not both.',
+      },
+    });
+  }
+
+  return hasUser
+    ? { subjectType: 'user', subjectId: normalizedUserId }
+    : { subjectType: 'agent', subjectId: normalizedAgentId };
+}
+
+function findSharedSpaceTenant(database: ReturnType<typeof requireDb>, spaceId: string): string | null {
+  const row = database.prepare(`
+    SELECT tenant_id
+    FROM shared_spaces
+    WHERE space_id = ?
+    LIMIT 1
+  `).get(spaceId) as { tenant_id?: string | null } | undefined;
+  return typeof row?.tenant_id === 'string' ? row.tenant_id : null;
+}
+
+function actorOwnsSharedSpace(
+  database: ReturnType<typeof requireDb>,
+  spaceId: string,
+  actor: SharedAdminActor,
+): boolean {
+  const row = database.prepare(`
+    SELECT role
+    FROM shared_space_members
+    WHERE space_id = ?
+      AND subject_type = ?
+      AND subject_id = ?
+    LIMIT 1
+  `).get(spaceId, actor.subjectType, actor.subjectId) as { role?: string } | undefined;
+  return row?.role === 'owner';
+}
+
+function createSharedSpaceAuthError(
+  tool: 'shared_space_upsert' | 'shared_space_membership_set',
+  reason: string,
+  error: string,
+): MCPResponse {
+  return createMCPErrorResponse({
+    tool,
+    error,
+    code: reason === 'shared_space_not_found' ? 'E_NOT_FOUND' : 'E_AUTHORIZATION',
+    details: { reason },
+    recovery: {
+      hint: reason === 'shared_space_not_found'
+        ? 'Create the space first with shared_space_upsert.'
+        : 'Use the tenant owner identity for this shared space.',
+    },
+  });
+}
+
 /**
  * Persist a shared-space definition for rollout and membership checks.
  *
@@ -29,13 +117,58 @@ import * as path from 'path';
  */
 export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Promise<MCPResponse> {
   const db = requireDb();
-  upsertSharedSpace(db, args);
+  ensureSharedCollabRuntime(db);
+
+  const actor = resolveAdminActor('shared_space_upsert', args.actorUserId, args.actorAgentId);
+  if ('content' in actor) {
+    return actor;
+  }
+
+  const existingTenantId = findSharedSpaceTenant(db, args.spaceId);
+  if (existingTenantId && existingTenantId !== args.tenantId) {
+    return createSharedSpaceAuthError(
+      'shared_space_upsert',
+      'shared_space_tenant_mismatch',
+      `Shared space "${args.spaceId}" belongs to a different tenant.`,
+    );
+  }
+  if (existingTenantId && !actorOwnsSharedSpace(db, args.spaceId, actor)) {
+    return createSharedSpaceAuthError(
+      'shared_space_upsert',
+      'shared_space_owner_required',
+      `Only a shared-space owner can update "${args.spaceId}".`,
+    );
+  }
+
+  upsertSharedSpace(db, {
+    spaceId: args.spaceId,
+    tenantId: args.tenantId,
+    name: args.name,
+    rolloutEnabled: args.rolloutEnabled,
+    rolloutCohort: args.rolloutCohort,
+    killSwitch: args.killSwitch,
+  });
+
+  const created = existingTenantId === null;
+  if (created) {
+    upsertSharedMembership(db, {
+      spaceId: args.spaceId,
+      subjectType: actor.subjectType,
+      subjectId: actor.subjectId,
+      role: 'owner',
+    });
+  }
+
   return createMCPSuccessResponse({
     tool: 'shared_space_upsert',
     summary: `Shared space "${args.spaceId}" saved`,
     data: {
       spaceId: args.spaceId,
       tenantId: args.tenantId,
+      actorSubjectType: actor.subjectType,
+      actorSubjectId: actor.subjectId,
+      created,
+      ownerBootstrap: created,
       rolloutEnabled: args.rolloutEnabled === true,
       killSwitch: args.killSwitch === true,
     },
@@ -50,12 +183,50 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
  */
 export async function handleSharedSpaceMembershipSet(args: SharedSpaceMembershipArgs): Promise<MCPResponse> {
   const db = requireDb();
-  upsertSharedMembership(db, args);
+  ensureSharedCollabRuntime(db);
+
+  const actor = resolveAdminActor('shared_space_membership_set', args.actorUserId, args.actorAgentId);
+  if ('content' in actor) {
+    return actor;
+  }
+
+  const existingTenantId = findSharedSpaceTenant(db, args.spaceId);
+  if (!existingTenantId) {
+    return createSharedSpaceAuthError(
+      'shared_space_membership_set',
+      'shared_space_not_found',
+      `Shared space "${args.spaceId}" was not found.`,
+    );
+  }
+  if (existingTenantId !== args.tenantId) {
+    return createSharedSpaceAuthError(
+      'shared_space_membership_set',
+      'shared_space_tenant_mismatch',
+      `Shared space "${args.spaceId}" belongs to a different tenant.`,
+    );
+  }
+  if (!actorOwnsSharedSpace(db, args.spaceId, actor)) {
+    return createSharedSpaceAuthError(
+      'shared_space_membership_set',
+      'shared_space_owner_required',
+      `Only a shared-space owner can update membership for "${args.spaceId}".`,
+    );
+  }
+
+  upsertSharedMembership(db, {
+    spaceId: args.spaceId,
+    subjectType: args.subjectType,
+    subjectId: args.subjectId,
+    role: args.role,
+  });
   return createMCPSuccessResponse({
     tool: 'shared_space_membership_set',
     summary: `Membership updated for ${args.subjectType} "${args.subjectId}"`,
     data: {
       spaceId: args.spaceId,
+      tenantId: args.tenantId,
+      actorSubjectType: actor.subjectType,
+      actorSubjectId: actor.subjectId,
       subjectType: args.subjectType,
       subjectId: args.subjectId,
       role: args.role,
@@ -166,8 +337,8 @@ Shared memory has been **enabled** for this workspace.
 | Command | Description |
 |---------|-------------|
 | \`/memory:shared status\` | View rollout state and accessible spaces |
-| \`/memory:shared create <spaceId> <tenantId> <name>\` | Create or update a shared space |
-| \`/memory:shared member <spaceId> <type> <id> <role>\` | Set membership |
+| \`/memory:shared create <spaceId> <tenantId> <name>\` | Create or update a shared space; first creator becomes owner |
+| \`/memory:shared member <spaceId> <type> <id> <role>\` | Set membership; caller must already own the space |
 | \`/memory:shared enable\` | Re-run first-time setup (idempotent) |
 
 ## Environment Overrides

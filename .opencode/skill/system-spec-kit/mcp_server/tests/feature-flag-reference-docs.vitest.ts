@@ -112,7 +112,7 @@ describe('Hydra roadmap flag documentation', () => {
     const featureFilePath = path.join(
       SKILL_ROOT,
       'manual_testing_playbook',
-      '02--new-features',
+      '19--feature-flag-reference',
       '125-hydra-roadmap-capability-flags.md',
     );
     const playbookContent = fs.readFileSync(playbookPath, 'utf8');

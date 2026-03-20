@@ -1,8 +1,8 @@
 ---
-title: "Tasks: Runtime Contract And Indexability [template:level_1/tasks.md]"
+title: "Tasks: Runtime Contract and Indexability"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
-  - "phase 018"
+  - "phase 015"
   - "tasks"
 importance_tier: "normal"
 contextType: "general"

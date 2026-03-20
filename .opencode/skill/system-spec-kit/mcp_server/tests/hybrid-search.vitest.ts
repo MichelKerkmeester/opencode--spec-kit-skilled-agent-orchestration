@@ -192,7 +192,11 @@ describe('Hybrid Search Unit Tests (T031+)', () => {
         bm25.addDocument(String(doc.id), doc.content);
       }
       const results = hybridSearch.bm25Search('module', { limit: 10, specFolder: 'specs/auth' });
-      const allMatch = results.every((r: Record<string, unknown>) => !r.id || String(r.id).includes('specs/auth'));
+      // B7 FIX: Batch query correctly resolves spec_folder via DB.
+      // Only docs with spec_folder='specs/auth' (IDs 1, 2) should survive.
+      // The mock DB returns MOCK_DOCS which populates the batch map.
+      const authDocIds = MOCK_DOCS.filter(d => d.spec_folder === 'specs/auth').map(d => String(d.id));
+      const allMatch = results.every((r: Record<string, unknown>) => authDocIds.includes(String(r.id)));
       expect(allMatch).toBe(true);
     });
   });

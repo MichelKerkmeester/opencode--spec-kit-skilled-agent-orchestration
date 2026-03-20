@@ -1,26 +1,22 @@
 {
-  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/015-outsourced-agent-handback",
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/000-dynamic-capture-deprecation/002-outsourced-agent-handback",
   "description": "Feature Specification: Outsourced Agent Handback Protocol",
-  "status": "superseded",
-  "supersededBy": "023-dynamic-capture-deprecation",
-  "supersededReason": "Dynamic session capture deprecated in favor of JSON-primary mode. Outsourced agents now compose structured JSON directly instead of relying on runtime DB handback protocols.",
   "keywords": [
     "feature",
     "specification",
     "outsourced",
     "agent",
     "handback",
-    "protocol",
-    "superseded",
-    "dynamic-capture"
+    "protocol"
   ],
-  "lastUpdated": "2026-03-20T12:00:00.000Z",
-  "specId": "015",
+  "lastUpdated": "2026-03-20T13:22:44.200Z",
+  "specId": "002",
   "folderSlug": "outsourced-agent-handback",
   "parentChain": [
     "02--system-spec-kit",
     "022-hybrid-rag-fusion",
-    "010-perfect-session-capturing"
+    "010-perfect-session-capturing",
+    "000-dynamic-capture-deprecation"
   ],
   "memorySequence": 6,
   "memoryNameHistory": [

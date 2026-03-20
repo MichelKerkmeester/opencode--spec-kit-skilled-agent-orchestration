@@ -2675,9 +2675,9 @@ verify_alignment_drift.py reports PASS with 0 TS-MODULE-HEADER findings
 Canonical coverage sourced from M-007 session-capturing closure verification.
 
 #### Current Reality
-Prompt: `Run the canonical M-007 session-capturing closure verification scenario. Capture the evidence needed to prove Coverage is sourced from the M-007 closure suite, including JSON authority, stateless enrichment, runtime fallback ordering, Phase 017 stateless quality-gate behavior, insufficiency rejection, and indexing readiness. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Run the canonical M-007 session-capturing closure verification scenario. Capture the evidence needed to prove Coverage is sourced from the M-007 closure suite, including JSON authority, recovery-mode stateless enrichment, explicit recovery fallback ordering, Phase 017 recovery-only quality-gate behavior, insufficiency rejection, and indexing readiness. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Coverage is sourced from the M-007 closure suite, including JSON authority, stateless enrichment, runtime fallback ordering, Phase 017 stateless quality-gate behavior, insufficiency rejection, and indexing readiness.
+Coverage is sourced from the M-007 closure suite, including JSON authority, recovery-mode stateless enrichment, explicit recovery fallback ordering, Phase 017 recovery-only quality-gate behavior, insufficiency rejection, and indexing readiness.
 
 Current claim boundary:
 - Automated parity proves the shared runtime contract.
@@ -2987,11 +2987,11 @@ Canonical memory/spec-kit workflow.
 Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
 
 Minimum scenario family now required for M-007:
-- direct positional save against a target spec folder
+- direct positional recovery save against a target spec folder using `--recovery`
 - structured `--stdin` save with explicit CLI target precedence
 - structured `--json` save with payload-target fallback when no explicit CLI override exists
-- stateless V10-only soft-fail that still writes and indexes
-- stateless hard-block contamination failure that aborts before write
+- recovery-mode V10-only soft-fail that still writes and indexes
+- recovery-mode hard-block contamination failure that aborts before write
 - same-minute repeated saves that prove unique filenames and stable `description.json` tracking
 
 Proof rule:

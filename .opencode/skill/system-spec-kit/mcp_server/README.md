@@ -264,6 +264,10 @@ Unified entry point for context retrieval. Start here for most memory operations
 | `mode` | string | `auto` (default), `quick`, `deep`, `focused`, `resume` |
 | `intent` | string | Override auto-detected intent: `add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision` |
 | `specFolder` | string | Scope results to a spec folder (e.g., `specs/022-hybrid-rag-fusion`) |
+| `tenantId` | string | Governed retrieval tenant boundary forwarded to routed searches |
+| `userId` | string | Governed retrieval user boundary forwarded to routed searches |
+| `agentId` | string | Governed retrieval agent boundary forwarded to routed searches |
+| `sharedSpaceId` | string | Governed shared-space boundary forwarded to routed searches |
 | `limit` | number | Max results to return (default varies by mode) |
 | `sessionId` | string | Session ID for deduplication across turns |
 | `anchors` | string[] | Retrieve specific ANCHOR sections: `["state", "next-steps"]` |
@@ -286,7 +290,7 @@ Unified entry point for context retrieval. Start here for most memory operations
 
 ---
 
-### L2: Core (3 tools, token budget: 1500)
+### L2: Core (4 tools, token budget: 1500)
 
 #### `memory_search`
 
@@ -297,6 +301,10 @@ Semantic search using vector similarity with optional BM25, FTS5 and graph chann
 | `query` | string | Free-text search query (use `query` OR `concepts`, not both) |
 | `concepts` | string[] | AND search: 2-5 strings that must all match |
 | `specFolder` | string | Scope to a folder |
+| `tenantId` | string | Governed retrieval tenant boundary |
+| `userId` | string | Governed retrieval user boundary |
+| `agentId` | string | Governed retrieval agent boundary |
+| `sharedSpaceId` | string | Governed shared-memory boundary |
 | `limit` | number | 1-100 results (default 10) |
 | `tier` | string | Filter by importance tier |
 | `minState` | string | Minimum memory state: `HOT`, `WARM`, `COLD`, `DORMANT`, `ARCHIVED` |
@@ -317,6 +325,22 @@ Semantic search using vector similarity with optional BM25, FTS5 and graph chann
   }
 }
 ```
+
+---
+
+#### `memory_quick_search`
+
+Fast delegated search that forwards directly to `memory_search` with sensible defaults. Use this when you want a lightweight surface but still need governed retrieval boundaries.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `query` | string | **Required.** Free-text search query |
+| `specFolder` | string | Scope to a folder |
+| `tenantId` | string | Governed retrieval tenant boundary |
+| `userId` | string | Governed retrieval user boundary |
+| `agentId` | string | Governed retrieval agent boundary |
+| `sharedSpaceId` | string | Governed shared-memory boundary |
+| `limit` | number | 1-100 results (default 10) |
 
 ---
 
@@ -358,9 +382,14 @@ Index a memory file into the database. Reads the file, extracts metadata, valida
 | `asyncEmbedding` | boolean | Return immediately, generate embedding in background |
 | `retentionPolicy` | string | `keep` (default), `ephemeral`, `shared` |
 | `deleteAfter` | string | ISO date for automatic deletion |
+| `sessionId` | string | Optional session attribution |
 | `tenantId` | string | Governance: tenant scope |
 | `userId` | string | Governance: user attribution |
 | `agentId` | string | Governance: agent attribution |
+| `sharedSpaceId` | string | Governance: shared-space target for collaborative ingest |
+| `provenanceSource` | string | Governance audit source label |
+| `provenanceActor` | string | Governance audit actor label |
+| `governedAt` | string | ISO timestamp used for governed ingest audit |
 
 ```json
 {
@@ -524,13 +553,15 @@ Delete a checkpoint. Requires the `confirmName` field to match `name` as a safet
 
 #### `shared_space_upsert`
 
-Create or update a shared-memory space. Shared spaces start deny-by-default: no agent or user can read or write until explicit membership is added via `shared_space_membership_set`.
+Create or update a shared-memory space. Shared spaces start deny-by-default: no agent or user can read or write until explicit membership is added via `shared_space_membership_set`. The first successful creator is auto-granted the `owner` role; later updates require an existing owner identity.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
 | `spaceId` | string | **Required.** Unique identifier for the space. |
 | `tenantId` | string | **Required.** Tenant scope. |
 | `name` | string | **Required.** Human-readable name. |
+| `actorUserId` | string | Caller identity for a user admin operation. Provide exactly one actor identity. |
+| `actorAgentId` | string | Caller identity for an agent admin operation. Provide exactly one actor identity. |
 | `rolloutEnabled` | boolean | Enable or disable this space |
 | `rolloutCohort` | string | Limit access to a specific cohort ID |
 | `killSwitch` | boolean | Hard disable for emergency shutoff |
@@ -539,11 +570,14 @@ Create or update a shared-memory space. Shared spaces start deny-by-default: no 
 
 #### `shared_space_membership_set`
 
-Set deny-by-default membership for a user or agent in a shared space. Assign `owner`, `editor` or `viewer` roles.
+Set deny-by-default membership for a user or agent in a shared space. Assign `owner`, `editor` or `viewer` roles. Caller must already be an `owner` of the target space.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
 | `spaceId` | string | **Required.** Space to configure. |
+| `tenantId` | string | **Required.** Tenant boundary for the mutation. |
+| `actorUserId` | string | Caller identity for a user admin operation. Provide exactly one actor identity. |
+| `actorAgentId` | string | Caller identity for an agent admin operation. Provide exactly one actor identity. |
 | `subjectType` | string | **Required.** `user` or `agent` |
 | `subjectId` | string | **Required.** User or agent identifier. |
 | `role` | string | **Required.** `owner`, `editor` or `viewer` |
@@ -946,7 +980,7 @@ After making an architectural decision, save it for future retrieval:
 
 ```bash
 # 1. Generate the memory file using the CLI script
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/005-auth
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/005-auth
 
 # 2. Index it via MCP
 ```
@@ -1240,7 +1274,7 @@ node -e "require('./dist/context-server.js')" 2>&1 | head -20
 | BM25 index out of date | Set `ENABLE_BM25=false` to fall back to FTS5 |
 | Slow responses on large index | Set `ENABLE_TOOL_CACHE=true` and check `SESSION_CACHE_TTL` |
 | Embedding API rate limit | Add retry delay with `SPECKIT_EMBEDDING_RETRY_DELAY_MS=1000` |
-| Shared memory not working | Call `shared_memory_enable` first, then `shared_space_upsert` |
+| Shared memory not working | Call `shared_memory_enable` first, then `shared_space_upsert` with an actor identity |
 
 ### Diagnostic Commands
 
@@ -1308,7 +1342,7 @@ A: A typical project with a few hundred memory files uses 10-50 MB. The `vec_mem
 
 **Q: Can multiple AI agents share the same memory space?**
 
-A: Yes, through the shared memory subsystem. Call `shared_memory_enable`, create a space with `shared_space_upsert`, and grant access with `shared_space_membership_set`. Spaces are deny-by-default: no agent can read or write until you explicitly add membership.
+A: Yes, through the shared memory subsystem. Call `shared_memory_enable`, create a space with `shared_space_upsert`, and grant access with `shared_space_membership_set`. Spaces are deny-by-default, the first creator becomes `owner`, and later admin mutations require an owner identity on the request.
 
 ---
 

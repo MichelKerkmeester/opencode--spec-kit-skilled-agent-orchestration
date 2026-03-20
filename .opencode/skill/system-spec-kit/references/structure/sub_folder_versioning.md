@@ -87,7 +87,7 @@ If creating a sub-folder, the user (with AI guidance):
 
 ### Step 4: Path Tracking
 
-Spec folder path passed via CLI argument to generate-context.js (stateless - no marker file).
+Routine saves pass the target spec folder alongside structured JSON. Positional `generate-context.js` routing is reserved for explicit `--recovery` mode.
 
 ---
 
@@ -106,11 +106,11 @@ Spec folder path passed via CLI argument to generate-context.js (stateless - no 
 <!-- ANCHOR:memory-context-routing -->
 ## 5. MEMORY CONTEXT ROUTING
 
-- Spec folder path passed explicitly via CLI argument (stateless)
+- Spec folder path passed explicitly alongside structured JSON for routine saves, or via `--recovery` for crash recovery
 - Writes to specified sub-folder's `memory/` directory
 - Each iteration has isolated conversation history
 - Sub-folder creation also provisions isolated `scratch/` directories
-- Root `memory/` preserved for legacy saves (backward compatibility)
+- Root `memory/` preserved for historical compatibility, but routine saves should target the intended folder with structured JSON
 
 ---
 

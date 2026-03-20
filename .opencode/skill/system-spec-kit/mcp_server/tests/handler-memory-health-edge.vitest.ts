@@ -110,6 +110,7 @@ describe('handleMemoryHealth Edge Cases (T007b)', () => {
       autoRepairRequested: true,
       needsConfirmation: true,
     });
+    expect(parsed.data.actions).not.toContain('temp_fixture_memory_cleanup');
     expect(parsed.hints).toEqual(
       expect.arrayContaining([
         'Re-run memory_health with autoRepair:true and confirmed:true to execute repair actions.',

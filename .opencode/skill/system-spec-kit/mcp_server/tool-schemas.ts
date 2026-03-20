@@ -40,7 +40,7 @@ export interface ToolDefinition {
 const memoryContext: ToolDefinition = {
   name: 'memory_context',
   description: '[L1:Orchestration] Unified entry point for context retrieval with intent-aware routing. START HERE for most memory operations. Automatically detects task intent (add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision) and routes to optimal retrieval strategy. Modes: auto (default), quick (trigger-based), deep (comprehensive), focused (intent-optimized), resume (session recovery). Token Budget: 2000.',
-  inputSchema: { type: 'object', additionalProperties: false, properties: { input: { type: 'string', description: 'The query, prompt, or context description (required)' }, mode: { type: 'string', enum: ['auto', 'quick', 'deep', 'focused', 'resume'], default: 'auto', description: 'Context retrieval mode: auto (detect intent), quick (fast triggers), deep (comprehensive search), focused (intent-optimized), resume (session recovery)' }, intent: { type: 'string', enum: ['add_feature', 'fix_bug', 'refactor', 'security_audit', 'understand', 'find_spec', 'find_decision'], description: 'Explicit task intent. If not provided and mode=auto, intent is auto-detected from input.' }, specFolder: { type: 'string', description: 'Limit context to specific spec folder' }, limit: { type: 'number', description: 'Maximum results (mode-specific defaults apply)' }, sessionId: { type: 'string', description: 'Caller-supplied session identifier. If omitted, server generates an ephemeral UUID for this call only (not persisted across requests).' }, enableDedup: { type: 'boolean', default: true, description: 'Enable session deduplication' }, includeContent: { type: 'boolean', default: false, description: 'Include full file content in results' }, includeTrace: { type: 'boolean', default: false, description: 'Include provenance-rich trace data (scores, source, trace) in results when underlying memory_search is called' }, tokenUsage: { type: 'number', minimum: 0.0, maximum: 1.0, description: "Optional caller token usage ratio (0.0-1.0)" }, anchors: { type: 'array', items: { type: 'string' }, description: 'Filter content to specific anchors (e.g., ["state", "next-steps"] for resume mode)' } }, required: ['input'] },
+  inputSchema: { type: 'object', additionalProperties: false, properties: { input: { type: 'string', description: 'The query, prompt, or context description (required)' }, mode: { type: 'string', enum: ['auto', 'quick', 'deep', 'focused', 'resume'], default: 'auto', description: 'Context retrieval mode: auto (detect intent), quick (fast triggers), deep (comprehensive search), focused (intent-optimized), resume (session recovery)' }, intent: { type: 'string', enum: ['add_feature', 'fix_bug', 'refactor', 'security_audit', 'understand', 'find_spec', 'find_decision'], description: 'Explicit task intent. If not provided and mode=auto, intent is auto-detected from input.' }, specFolder: { type: 'string', description: 'Limit context to specific spec folder' }, tenantId: { type: 'string', description: 'Tenant boundary for governed retrieval when memory_context routes to memory_search.' }, userId: { type: 'string', description: 'User boundary for governed retrieval when memory_context routes to memory_search.' }, agentId: { type: 'string', description: 'Agent boundary for governed retrieval when memory_context routes to memory_search.' }, sharedSpaceId: { type: 'string', description: 'Shared-space boundary for governed retrieval when memory_context routes to memory_search.' }, limit: { type: 'number', description: 'Maximum results (mode-specific defaults apply)' }, sessionId: { type: 'string', description: 'Caller-supplied session identifier. If omitted, server generates an ephemeral UUID for this call only (not persisted across requests).' }, enableDedup: { type: 'boolean', default: true, description: 'Enable session deduplication' }, includeContent: { type: 'boolean', default: false, description: 'Include full file content in results' }, includeTrace: { type: 'boolean', default: false, description: 'Include provenance-rich trace data (scores, source, trace) in results when underlying memory_search is called' }, tokenUsage: { type: 'number', minimum: 0.0, maximum: 1.0, description: "Optional caller token usage ratio (0.0-1.0)" }, anchors: { type: 'array', items: { type: 'string' }, description: 'Filter content to specific anchors (e.g., ["state", "next-steps"] for resume mode)' } }, required: ['input'] },
 };
 
 // L2: Core - Primary operations (Token Budget: 1500)
@@ -173,6 +173,26 @@ const memorySearch: ToolDefinition = {
         description: 'When true (or when SPECKIT_RESPONSE_TRACE=true), include provenance-rich scores/source/trace envelope fields in each result.'
       }
     }
+  },
+};
+
+// E3: Simplified search — 3 params, sensible defaults, delegates to memory_search
+const memoryQuickSearch: ToolDefinition = {
+  name: 'memory_quick_search',
+  description: '[L2:Core] Simplified search — query + optional limit + optional spec folder. Delegates to memory_search with sensible defaults (intent auto-detect ON, dedup ON, content included, limit 10). Use this when you want fast search without configuring 31 parameters.',
+  inputSchema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      query: { type: 'string', minLength: 2, maxLength: 1000, description: 'Natural language search query' },
+      limit: { type: 'number', default: 10, minimum: 1, maximum: 100, description: 'Maximum results (default 10)' },
+      specFolder: { type: 'string', description: 'Restrict to spec folder' },
+      tenantId: { type: 'string', description: 'Tenant boundary for governed retrieval.' },
+      userId: { type: 'string', description: 'User boundary for governed retrieval.' },
+      agentId: { type: 'string', description: 'Agent boundary for governed retrieval.' },
+      sharedSpaceId: { type: 'string', description: 'Shared-space boundary for governed retrieval.' },
+    },
+    required: ['query'],
   },
 };
 
@@ -327,14 +347,17 @@ const checkpointDelete: ToolDefinition = {
 
 const sharedSpaceUpsert: ToolDefinition = {
   name: 'shared_space_upsert',
-  description: '[L5:Lifecycle] Create or update a shared-memory space. Shared rollout stays opt-in and deny-by-default until memberships are added.',
+  description: '[L5:Lifecycle] Create or update a shared-memory space. First create auto-grants the caller owner access. Later updates require an existing owner identity.',
   inputSchema: {
     type: 'object',
     additionalProperties: false,
+    'x-requiredAnyOf': [['actorUserId'], ['actorAgentId']],
     properties: {
       spaceId: { type: 'string', description: 'Stable shared-space identifier.' },
       tenantId: { type: 'string', description: 'Owning tenant for the shared space.' },
       name: { type: 'string', description: 'Display name for the shared space.' },
+      actorUserId: { type: 'string', description: 'Caller identity for a user-initiated admin mutation. Provide exactly one actor identity.' },
+      actorAgentId: { type: 'string', description: 'Caller identity for an agent-initiated admin mutation. Provide exactly one actor identity.' },
       rolloutEnabled: { type: 'boolean', default: false, description: 'Enable this space for rollout.' },
       rolloutCohort: { type: 'string', description: 'Optional rollout cohort label.' },
       killSwitch: { type: 'boolean', default: false, description: 'Immediately disable access for this space.' },
@@ -345,17 +368,21 @@ const sharedSpaceUpsert: ToolDefinition = {
 
 const sharedSpaceMembershipSet: ToolDefinition = {
   name: 'shared_space_membership_set',
-  description: '[L5:Lifecycle] Set deny-by-default shared-space membership for a user or agent.',
+  description: '[L5:Lifecycle] Set deny-by-default shared-space membership for a user or agent. Caller must already own the shared space.',
   inputSchema: {
     type: 'object',
     additionalProperties: false,
+    'x-requiredAnyOf': [['actorUserId'], ['actorAgentId']],
     properties: {
       spaceId: { type: 'string', description: 'Shared-space identifier.' },
+      tenantId: { type: 'string', description: 'Tenant boundary for the membership mutation.' },
+      actorUserId: { type: 'string', description: 'Caller identity for a user-initiated admin mutation. Provide exactly one actor identity.' },
+      actorAgentId: { type: 'string', description: 'Caller identity for an agent-initiated admin mutation. Provide exactly one actor identity.' },
       subjectType: { type: 'string', enum: ['user', 'agent'], description: 'Membership subject type.' },
       subjectId: { type: 'string', description: 'Membership subject identifier.' },
       role: { type: 'string', enum: ['owner', 'editor', 'viewer'], description: 'Access role inside the shared space.' },
     },
-    required: ['spaceId', 'subjectType', 'subjectId', 'role'],
+    required: ['spaceId', 'tenantId', 'subjectType', 'subjectId', 'role'],
   },
 };
 
@@ -539,6 +566,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   memoryContext,
   // L2: Core
   memorySearch,
+  memoryQuickSearch,
   memoryMatchTriggers,
   memorySave,
   // L3: Discovery

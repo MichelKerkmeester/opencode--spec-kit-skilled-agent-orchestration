@@ -246,7 +246,7 @@ Content...
 
 ### Step 4: Create JSON Data (AI CONSTRUCTS THIS)
 
-**CRITICAL:** The AI MUST construct this JSON from Step 2 analysis. Without proper JSON, the script falls back to stateless mode: automatic extraction from the spec folder rather than rich conversation context.
+**CRITICAL:** The AI MUST construct this JSON from Step 2 analysis. Without proper JSON, routine saves now fail fast instead of silently falling back to stateless capture. Use `--recovery` only for explicit crash recovery.
 
 **Required JSON Structure:**
 ```json
@@ -299,9 +299,9 @@ Content...
 | Mode                                        | Command                                                           | Use When                                     |
 | ------------------------------------------- | ----------------------------------------------------------------- | -------------------------------------------- |
 | **Mode 1: JSON File** (PREFERRED)           | `node generate-context.js ${TMPDIR:-/tmp}/save-context-data.json` | Rich context with decisions, files, triggers |
-| **Mode 2: Direct Path** (RECOVERY ONLY)     | `node generate-context.js specs/005-memory`                       | Crash recovery, interrupted sessions only    |
+| **Mode 2: Direct Path** (RECOVERY ONLY)     | `node generate-context.js --recovery specs/005-memory`            | Crash recovery, interrupted sessions only    |
 
-> **Why JSON mode is preferred:** The AI has strictly better information about its own session than any database query can reconstruct. JSON mode eliminates wrong-session capture, multi-session ambiguity, and exchange pairing bugs that plague dynamic capture. Stateless mode is **deprecated for routine saves** and triggers a deprecation warning.
+> **Why JSON mode is preferred:** The AI has strictly better information about its own session than any database query can reconstruct. JSON mode eliminates wrong-session capture, multi-session ambiguity, and exchange pairing bugs that plague dynamic capture. Stateless mode is **not a routine-save contract anymore**; it runs only when `--recovery` is supplied.
 
 > **Cross-Platform Note:** `${TMPDIR:-/tmp}` uses the system temp directory. On macOS/Linux this resolves to `/tmp` or `$TMPDIR`. On Windows (Git Bash/WSL), use `$TEMP` or `%TEMP%`.
 
@@ -332,14 +332,14 @@ rm "$TEMP_FILE"
 ✓ Indexed as memory #NN
 ```
 
-**If you see "stateless mode" warnings, the JSON was not loaded correctly.**
+**If you see a recovery-mode warning, the command entered the explicit crash-recovery path instead of the routine JSON path.**
 
-**Mode 2 (Direct Path):** Minimal save:
+**Mode 2 (Direct Path):** Explicit recovery save:
 ```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/005-memory
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery specs/005-memory
 ```
 
-When to use: Quick saves without rich context, testing, or when Mode 1 fails.
+When to use: Crash recovery or interrupted-session rescue only. Do not use this path for normal saves.
 
 ### File Output
 

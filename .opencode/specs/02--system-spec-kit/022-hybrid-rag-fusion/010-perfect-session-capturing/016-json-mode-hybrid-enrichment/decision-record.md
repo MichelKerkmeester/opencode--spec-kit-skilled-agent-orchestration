@@ -1,6 +1,6 @@
 ---
 title: "Decision Record: JSON Mode Hybrid Enrichment (Phase 1B)"
-description: "Captures the accepted architecture for restoring file-backed JSON metadata without reopening contamination."
+description: "Captures the corrected decision record for phase 016: document the narrower JSON-mode work that shipped and stop claiming the unimplemented file-backed hybrid enrichment path."
 trigger_phrases:
   - "decision"
   - "record"
@@ -32,13 +32,13 @@ contextType: "general"
 <!-- ANCHOR:adr-001-context -->
 ### Context
 
-File-backed JSON saves were safe but incomplete because the workflow returned before any enrichment ran. Session status, git provenance, changed-file counts, and higher-quality descriptions could all degrade even when the caller or local repo state had enough information to fill them in.
+The original phase design targeted broader file-backed JSON enrichment than what actually shipped. The live code in this tree keeps file-backed JSON authoritative and adds narrower structured-summary support, but it does not include the dedicated `enrichFileSourceData()` branch described in the first draft of this phase pack.
 
 ### Constraints
 
-- The fix could not reintroduce observation or `FILES` leakage into V8-sensitive output.
+- The corrected record must match the code that actually shipped.
 - The solution had to stay backward compatible with existing JSON payloads.
-- The final output needed to honor caller-supplied metadata when it was more authoritative than heuristics.
+- Routine saves must stay structured-first rather than silently reopening stateless reconstruction.
 <!-- /ANCHOR:adr-001-context -->
 
 ---
@@ -46,9 +46,9 @@ File-backed JSON saves were safe but incomplete because the workflow returned be
 <!-- ANCHOR:adr-001-decision -->
 ### Decision
 
-**We chose**: Restore metadata through a safe file-source enrichment path plus explicit JSON-first priority rules.
+**We chose**: Correct the phase record to the narrower structured-JSON work that shipped, instead of continuing to describe an unimplemented hybrid enrichment path as completed.
 
-**How it works**: `enrichFileSourceData()` now merges safe provenance, trigger, and description data for file-backed inputs while explicitly skipping observations and `FILES`. The pipeline treats explicit `session` and `git` fields as authoritative, preserves those values through final template assembly, and resolves `git_changed_file_count` through an explicit > enrichment > provenance priority chain.
+**How it works**: The shipped code adds structured JSON summary fields such as `toolCalls` and `exchanges`, keeps file-backed JSON on the authoritative structured path, and preserves later hardening around count/confidence behavior. The phase record is corrected to stop asserting a shipped `enrichFileSourceData()` branch.
 <!-- /ANCHOR:adr-001-decision -->
 
 ---
@@ -58,11 +58,11 @@ File-backed JSON saves were safe but incomplete because the workflow returned be
 
 | Option | Pros | Cons | Score |
 |--------|------|------|-------|
-| **Safe hybrid enrichment with JSON-first priority** | Restores useful metadata, preserves contamination safety, stays backward compatible | Requires a documented priority chain and one file-source branch | 9/10 |
-| Full enrichment for file-backed JSON mode | Simplest control flow | Reopens observation leakage and contamination risk | 3/10 |
-| Keep the old early return and accept degraded metadata | No implementation complexity | Leaves JSON mode materially incomplete and untrustworthy | 2/10 |
+| **Correct docs to shipped JSON-mode scope** | Restores truthfulness, avoids silent scope expansion, stays backward compatible | Does not deliver the originally imagined hybrid enrichment branch | 9/10 |
+| Implement the original hybrid path now | Would align docs to the old design | Broadens this phase beyond what is currently shipped and verified | 4/10 |
+| Keep the old inaccurate record | No immediate doc work | Leaves the phase pack materially misleading | 1/10 |
 
-**Why this one**: It solved the real correctness gap without sacrificing the safety guarantee that made JSON mode necessary in the first place.
+**Why this one**: The immediate problem is documentation drift. Correcting the record avoids claiming capabilities the codebase does not actually ship.
 <!-- /ANCHOR:adr-001-alternatives -->
 
 ---
@@ -72,22 +72,22 @@ File-backed JSON saves were safe but incomplete because the workflow returned be
 
 **What improves**:
 
-- File-backed JSON saves regain session status, git provenance, better descriptions, and more realistic counts.
-- Explicit caller metadata survives to the final output instead of being overwritten by weaker heuristics.
-- Wave 2 hardening gives the path stable behavior for confidence values, truncated outcomes, and changed-file counts.
+- The phase pack now matches the code that actually shipped.
+- Structured JSON summary support remains documented without overstating file-backed enrichment.
+- Later JSON-primary cleanup can build on truthful documentation rather than inherited misstatements.
 
 **What it costs**:
 
-- The workflow now carries a file-source-specific enrichment branch. Mitigation: keep it narrow and metadata-only.
-- Count handling and precedence are more correctness-sensitive. Mitigation: document the priority chain in the spec set and verify it through targeted examples.
+- The original broader design is no longer represented as completed work.
+- Any future hybrid enrichment work now needs its own explicit follow-up and verification.
 
 **Risks**:
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| A future refactor removes the contamination boundary | H | Keep the explicit skip of observations and `FILES` documented and verified |
-| A later spread overwrites explicit session counts again | M | Preserve the RC-9-style reassertion step in final template assembly |
-| Callers send malformed nested metadata | M | Reject invalid `session`, `git`, and changed-file-count input during normalization |
+| Future readers assume phase 016 already shipped hybrid enrichment | H | Correct the spec pack now and reference any future enrichment as new work |
+| Later phases build on inaccurate premises | M | Keep 017+ docs aligned to the corrected JSON-primary contract |
+| A future follow-up broadens scope without verification | M | Require a new spec if full file-backed enrichment is revived |
 <!-- /ANCHOR:adr-001-consequences -->
 
 ---
@@ -97,11 +97,11 @@ File-backed JSON saves were safe but incomplete because the workflow returned be
 
 | # | Check | Result | Evidence |
 |---|-------|--------|----------|
-| 1 | **Necessary?** | PASS | JSON mode was losing metadata needed for trustworthy saved context |
-| 2 | **Beyond Local Maxima?** | PASS | Compared against full enrichment and no-change options |
-| 3 | **Sufficient?** | PASS | A narrow metadata-only branch solved the gap without reopening contamination |
-| 4 | **Fits Goal?** | PASS | The phase goal was accurate JSON-mode metadata with preserved safety |
-| 5 | **Open Horizons?** | PASS | The pattern can support future safe enrichments without changing the contract shape |
+| 1 | **Necessary?** | PASS | The phase pack was materially overstating shipped behavior |
+| 2 | **Beyond Local Maxima?** | PASS | Compared doc correction against silent scope expansion and no-change options |
+| 3 | **Sufficient?** | PASS | Correcting the record resolves the immediate truthfulness gap |
+| 4 | **Fits Goal?** | PASS | The corrected goal is accurate documentation of shipped JSON-mode behavior |
+| 5 | **Open Horizons?** | PASS | Future enrichment can still be pursued in a dedicated follow-up |
 
 **Checks Summary**: 5/5 PASS
 <!-- /ANCHOR:adr-001-five-checks -->
@@ -113,12 +113,11 @@ File-backed JSON saves were safe but incomplete because the workflow returned be
 
 **What changes**:
 
-- `session-types.ts` adds optional `SessionMetadata`, `GitMetadata`, and changed-file-count support.
-- `workflow.ts` routes file-backed inputs into `enrichFileSourceData()` and preserves explicit counts during template assembly.
-- `collect-session-data.ts` applies explicit-first session and git priority rules.
-- `input-normalizer.ts` validates the nested JSON blocks and explicit confidence values.
-- `generate-context.ts` documents the expanded JSON contract.
+- `session-types.ts` adds shipped structured-summary fields such as `toolCalls` and `exchanges`.
+- `workflow.ts` keeps file-backed JSON authoritative rather than routing it through a dedicated hybrid enrichment branch.
+- `input-normalizer.ts` and related JSON handling preserve the structured contract that actually shipped.
+- The phase docs are corrected so they no longer describe unimplemented enrichment behavior as completed work.
 
-**How to roll back**: Remove the file-source enrichment helper, revert the explicit-first priority chain, and restore the previous file-source early return and legacy count logic.
+**How to roll back**: Revert the documentation correction and restore the inaccurate earlier narrative. This is not recommended.
 <!-- /ANCHOR:adr-001-impl -->
 <!-- /ANCHOR:adr-001 -->

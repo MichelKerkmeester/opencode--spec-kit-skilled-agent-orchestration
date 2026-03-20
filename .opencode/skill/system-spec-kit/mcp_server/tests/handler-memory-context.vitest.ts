@@ -52,6 +52,8 @@ vi.mock('../handlers/memory-triggers', () => ({
 // DB-dependent imports - commented out for deferred test suite
 import * as handler from '../handlers/memory-context';
 
+const mockedHandleMemorySearch = vi.mocked(handleMemorySearch);
+
 async function withTimeout<T>(promise: Promise<T>, ms: number, name: string): Promise<T> {
   return Promise.race([
     promise,
@@ -194,6 +196,53 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         (parsed.data?.strategy === 'focused' ? 'focused' : undefined);
 
       expect(mode).toBe('focused');
+    });
+  });
+
+  describe('Governed scope forwarding', () => {
+    it('forwards governed scope fields through deep-mode search routing', async () => {
+      await withTimeout(
+        handler.handleMemoryContext({
+          input: 'trace auth context',
+          mode: 'deep',
+          tenantId: 'tenant-a',
+          userId: 'user-1',
+          agentId: 'agent-1',
+          sharedSpaceId: 'shared-1',
+        }),
+        5000,
+        'scope-forward-deep'
+      );
+
+      expect(mockedHandleMemorySearch).toHaveBeenCalledWith(expect.objectContaining({
+        query: 'trace auth context',
+        tenantId: 'tenant-a',
+        userId: 'user-1',
+        agentId: 'agent-1',
+        sharedSpaceId: 'shared-1',
+      }));
+    });
+
+    it('forwards governed scope fields through resume-mode search routing', async () => {
+      await withTimeout(
+        handler.handleMemoryContext({
+          input: 'resume session',
+          mode: 'resume',
+          tenantId: 'tenant-a',
+          userId: 'user-1',
+          agentId: 'agent-1',
+          sharedSpaceId: 'shared-1',
+        }),
+        5000,
+        'scope-forward-resume'
+      );
+
+      expect(mockedHandleMemorySearch).toHaveBeenCalledWith(expect.objectContaining({
+        tenantId: 'tenant-a',
+        userId: 'user-1',
+        agentId: 'agent-1',
+        sharedSpaceId: 'shared-1',
+      }));
     });
   });
 

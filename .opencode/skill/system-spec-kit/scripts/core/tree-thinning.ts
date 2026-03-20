@@ -31,7 +31,7 @@ export interface ThinningConfig {
 export const DEFAULT_THINNING_CONFIG: ThinningConfig = {
   mergeThreshold: 200,
   contentAsTextThreshold: 500,
-  memoryThinThreshold: 300,
+  memoryThinThreshold: 150,    // Fix 7: was 300 — too aggressive, merged substantial files
   memoryTextThreshold: 100,
 };
 
@@ -234,6 +234,7 @@ export function applyTreeThinning(
   }
 
   // Pass 2: build merged entries grouped by parent (bottom-up)
+  // Fix 7: Cap at 3 children per parent — keep subsequent files separate
   const merged: MergedFileEntry[] = [];
   const byParent = groupByParent(toMerge);
 
@@ -241,11 +242,20 @@ export function applyTreeThinning(
     if (children.length === 0) {
       continue;
     }
+    const toMergeChildren = children.slice(0, 3);
+    const toKeepChildren = children.slice(3);
     merged.push({
       parentPath,
-      childPaths: children.map((c) => c.path),
-      mergedSummary: buildMergedSummary(children),
+      childPaths: toMergeChildren.map((c) => c.path),
+      mergedSummary: buildMergedSummary(toMergeChildren),
     });
+    // Upgrade overflow children back to 'keep' so they aren't lost
+    for (const kept of toKeepChildren) {
+      const entry = thinned.find((t) => t.path === kept.path);
+      if (entry) {
+        entry.action = 'keep';
+      }
+    }
   }
 
   // Stats

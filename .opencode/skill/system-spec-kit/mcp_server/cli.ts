@@ -350,7 +350,7 @@ function runBulkDelete(): void {
 
   console.log(`\n  Deleted:     ${deletedCount} memories`);
   if (checkpointName) {
-    console.log(`  Restore:     spec-kit-cli checkpoint restore ${checkpointName}`);
+    console.log(`  Restore:     Use checkpoint_restore MCP tool with name: ${checkpointName}`);
   } else if (skipCheckpoint) {
     console.log(`  Restore:     unavailable (checkpoint skipped)`);
   }

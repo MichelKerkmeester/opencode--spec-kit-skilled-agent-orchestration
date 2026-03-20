@@ -316,6 +316,8 @@ function extractCodePatterns(observations: ObservationInput[], files: FileInput[
   const patterns: CodePattern[] = [];
   const seen = new Set<string>();
 
+  // Fix 4: Removed ultra-generic matchers ("Module Pattern", "Functional Transforms")
+  // that match virtually all TypeScript code. Require >=2 keyword matches per pattern.
   const patternMatchers: PatternMatcher[] = [
     { keywords: ['helper', 'util', 'utility'], name: 'Helper Functions', usage: 'Encapsulate reusable logic in dedicated utility functions' },
     { keywords: ['validation', 'validate', 'validator'], name: 'Validation', usage: 'Input validation before processing' },
@@ -325,26 +327,23 @@ function extractCodePatterns(observations: ObservationInput[], files: FileInput[
     { keywords: ['normalize', 'normalization', 'clean'], name: 'Data Normalization', usage: 'Clean and standardize data before use' },
     { keywords: ['cache', 'caching', 'memoize'], name: 'Caching', usage: 'Cache expensive computations or fetches' },
     { keywords: ['async', 'await', 'promise'], name: 'Async/Await', usage: 'Handle asynchronous operations cleanly' },
-    { keywords: ['map', 'reduce', 'filter', 'transform'], name: 'Functional Transforms', usage: 'Use functional methods for data transformation' },
-    { keywords: ['export', 'module', 'import'], name: 'Module Pattern', usage: 'Organize code into importable modules' }
   ];
 
+  // Fix 4: Only match against observation text (not file names) to avoid false positives
   const allText = observations
     .map((o) => `${o.title || ''} ${o.narrative || ''}`)
     .join(' ')
     .toLowerCase();
 
-  const fileNames = files
-    .map((f) => (f.FILE_PATH || f.path || '').toLowerCase())
-    .join(' ');
-
-  const combinedText = allText + ' ' + fileNames;
-
   for (const matcher of patternMatchers) {
     if (seen.has(matcher.name)) continue;
 
-    const hasKeyword = matcher.keywords.some((kw) => combinedText.includes(kw));
-    if (hasKeyword) {
+    // Fix 4: Require at least 2 keyword matches from the same matcher for specificity.
+    // Use word-boundary regex to prevent "caching" counting as both "cache" and "caching".
+    const matchCount = matcher.keywords.filter((kw) =>
+      new RegExp(`\\b${kw}\\b`).test(allText)
+    ).length;
+    if (matchCount >= 2) {
       patterns.push({
         PATTERN_NAME: matcher.name,
         USAGE: matcher.usage

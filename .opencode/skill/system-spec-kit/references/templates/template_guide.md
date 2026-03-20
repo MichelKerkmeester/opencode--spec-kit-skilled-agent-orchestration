@@ -600,7 +600,7 @@ Memory files in the `memory/` folder are NOT created from templates. They are au
 
 **Example creation:**
 ```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/007-feature
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/007-feature
 ```
 
 **Sections (auto-generated with ANCHOR format):**

@@ -31,7 +31,7 @@ contextType: "general"
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in `spec.md` with the shipped problem, scope, and success criteria [Evidence: `spec.md` sections 2 through 6 reflect the delivered phase behavior.]
-- [x] CHK-002 [P0] Technical approach defined in `plan.md` [Evidence: `plan.md` sections 1 through 4 describe the additive hybrid-enrichment design and delivery phases.]
+- [x] CHK-002 [P0] Technical approach defined in `plan.md` [Evidence: `plan.md` sections 1 through 4 now describe the narrower shipped structured-JSON scope and the documentation-correction pass.]
 - [x] CHK-003 [P1] Dependencies identified and available [Evidence: `plan.md` section 6 records the workflow, extractor, and normalization dependencies.]
 <!-- /ANCHOR:pre-impl -->
 
@@ -42,8 +42,8 @@ contextType: "general"
 
 - [x] CHK-010 [P0] TypeScript checks pass [Evidence: `npx tsc --noEmit` completed clean for the phase implementation.]
 - [x] CHK-011 [P0] Build output compiles [Evidence: `npx tsc -b` generated the expected dist output for the scripts workspace.]
-- [x] CHK-012 [P1] Safe enrichment avoids V8 contamination paths [Evidence: `enrichFileSourceData()` explicitly skips observations and `FILES` for file-backed inputs.]
-- [x] CHK-013 [P1] New fields preserve backward compatibility [Evidence: the added `session`, `git`, and count fields remain optional in the documented implementation.]
+- [x] CHK-012 [P1] File-backed JSON authority remains intact [Evidence: `workflow.ts` still returns early for `_source: 'file'`, keeping file-backed payloads on the structured path.]
+- [x] CHK-013 [P1] New fields preserve backward compatibility [Evidence: the shipped `toolCalls` and `exchanges` fields remain optional in the documented implementation.]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -51,9 +51,9 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] Explicit session status and completion overrides work [Evidence: the documented JSON-mode examples show caller-supplied session values overriding heuristic output.]
-- [x] CHK-021 [P0] Explicit git fields and source session ID propagate to output [Evidence: the phase summary records propagation of explicit git metadata and `SOURCE_SESSION_ID`.]
-- [x] CHK-022 [P1] File-backed enrichment still works without explicit session/git blocks [Evidence: the spec and implementation summary both describe the fallback chain for absent JSON metadata.]
+- [x] CHK-020 [P0] Structured summary fields remain supported [Evidence: the implementation summary and CLI help both document shipped `toolCalls` and `exchanges` support.]
+- [x] CHK-021 [P0] File-backed JSON stays on the authoritative structured path [Evidence: the implementation summary records that `_source: 'file'` does not enter stateless enrichment.]
+- [x] CHK-022 [P1] Historical hybrid-enrichment research is clearly marked as archival [Evidence: `research.md` now states it analyzed the non-shipped design and should not be read as the live phase behavior.]
 - [x] CHK-023 [P1] Wave 2 fixes cover counts, confidence, and outcomes behavior [Evidence: Wave 2 delivery explicitly covers confidence, counts, and truncated outcome handling.]
 <!-- /ANCHOR:testing -->
 
@@ -63,8 +63,8 @@ contextType: "general"
 ## Security
 
 - [x] CHK-030 [P0] No hardcoded secrets were introduced [Evidence: the scoped implementation touches runtime metadata handling only and introduces no secret-bearing configuration.]
-- [x] CHK-031 [P0] Input validation covers the new JSON blocks [Evidence: `input-normalizer.ts` rejects malformed `session`, `git`, and changed-file-count values.]
-- [x] CHK-032 [P1] Contamination boundary remains enforced [Evidence: the file-source path still blocks risky observation injection by design.]
+- [x] CHK-031 [P0] Input validation and operator guidance match the shipped JSON contract [Evidence: `generate-context.ts` documents the structured summary fields the live contract actually accepts.]
+- [x] CHK-032 [P1] Structured/file authority boundary remains enforced [Evidence: the file-source path stays authoritative rather than reopening stateless enrichment.]
 <!-- /ANCHOR:security -->
 
 ---
@@ -72,7 +72,7 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec, plan, tasks, checklist, decision record, and summary are synchronized [Evidence: the six phase-016 docs were normalized together in one pass.]
+- [x] CHK-040 [P1] Spec, plan, tasks, checklist, decision record, summary, and research note are synchronized [Evidence: the phase-016 pack now consistently describes the narrower shipped scope and archives the non-shipped design analysis explicitly.]
 - [x] CHK-041 [P1] Operator-facing JSON contract is documented [Evidence: the implementation summary and scope sections reference the updated `generate-context.ts` help text.]
 - [x] CHK-042 [P2] Parent/child navigation remains accurate [Evidence: `spec.md` metadata still points to the current parent, predecessor, and successor.]
 <!-- /ANCHOR:docs -->
@@ -82,7 +82,7 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] No temporary files were added outside the scoped phase folder [Evidence: this normalization pass edited only the six canonical phase docs.]
+- [x] CHK-050 [P1] No temporary files were added outside the scoped phase folder [Evidence: this remediation pass edited only the canonical phase docs inside phase 016.]
 - [x] CHK-051 [P1] `memory/` and `scratch/` remain untouched [Evidence: no edits were made under `memory/` or `scratch/` for phase 016.]
 - [x] CHK-052 [P2] Findings can be saved via normal spec-kit workflow if needed [Evidence: no memory save was required for this documentation-only pass.]
 <!-- /ANCHOR:file-org -->
@@ -106,9 +106,9 @@ contextType: "general"
 <!-- ANCHOR:arch-verify -->
 ## L3+: ARCHITECTURE VERIFICATION
 
-- [x] CHK-100 [P0] Architecture decisions are documented in `decision-record.md` [Evidence: ADR-001 records the accepted hybrid-enrichment strategy and its supporting sub-decisions.]
+- [x] CHK-100 [P0] Architecture decisions are documented in `decision-record.md` [Evidence: ADR-001 records the accepted documentation correction and the narrower shipped JSON-mode scope.]
 - [x] CHK-101 [P1] The accepted decision status is explicit [Evidence: ADR-001 metadata marks the decision as accepted.]
-- [x] CHK-102 [P1] Alternatives are documented with rationale [Evidence: ADR-001 compares the chosen approach against full enrichment and fallback-only behavior.]
+- [x] CHK-102 [P1] Alternatives are documented with rationale [Evidence: ADR-001 compares the documentation correction against implementing the old hybrid branch now and leaving the inaccurate record untouched.]
 - [x] CHK-103 [P2] Rollback path is documented [Evidence: `plan.md` section 7 records the rollback trigger and procedure.]
 <!-- /ANCHOR:arch-verify -->
 
@@ -117,7 +117,7 @@ contextType: "general"
 <!-- ANCHOR:perf-verify -->
 ## L3+: PERFORMANCE VERIFICATION
 
-- [x] CHK-110 [P1] The phase stays additive and avoids new heavy scans [Evidence: the design reuses existing git and spec-folder extractors rather than adding new collection passes.]
+- [x] CHK-110 [P1] The phase stays additive and avoids new heavy scans [Evidence: the corrected scope preserves the existing structured path and Wave 2 hardening without introducing a new enrichment branch.]
 - [x] CHK-111 [P1] Explicit count overrides avoid repeated heuristic recalculation at output time [Evidence: the plan documents one priority chain from session aggregation through final assembly.]
 - [x] CHK-112 [P2] Performance regressions are out of scope for this documentation phase [Evidence: no new benchmark obligation is part of the shipped phase scope.]
 - [x] CHK-113 [P2] Performance expectations are captured in `spec.md` [Evidence: `spec.md` records NFR-P01 for additive enrichment only.]
@@ -128,7 +128,7 @@ contextType: "general"
 <!-- ANCHOR:deploy-ready -->
 ## L3+: DEPLOYMENT READINESS
 
-- [x] CHK-120 [P0] Rollback procedure is documented [Evidence: `plan.md` sections 7 and L2 rollback describe how to revert the hybrid path.]
+- [x] CHK-120 [P0] Rollback procedure is documented [Evidence: `plan.md` sections 7 and L2 rollback describe how to revert the structured-summary and documentation-correction changes.]
 - [x] CHK-121 [P0] Feature-flag work is not required for this internal script path [Evidence: the implementation is a direct runtime-script change with no rollout flag.]
 - [x] CHK-122 [P1] Verification gates are documented before completion [Evidence: the plan and checklist both record the phase verification gates.]
 - [x] CHK-123 [P1] Operator-facing guidance is updated in the implementation narrative [Evidence: the summary and scope sections reference the updated JSON contract guidance.]

@@ -19,11 +19,11 @@ function requireInteractiveMode(operation: string): never {
   console.error('ERROR: This operation requires user input but running in non-interactive mode.');
   console.error(`Operation: ${operation}`);
   console.error('');
-  console.error('Please specify the spec folder explicitly using:');
-  console.error('  node generate-context.js <spec-folder-path>');
+  console.error('Please specify structured JSON for routine saves or use explicit recovery mode:');
+  console.error('  node generate-context.js /tmp/save-context-data.json <spec-folder-path>');
   console.error('');
   console.error('Example:');
-  console.error('  node generate-context.js specs/003-memory-and-spec-kit/054-remaining-bugs-remediation');
+  console.error('  node generate-context.js --recovery specs/003-memory-and-spec-kit/054-remaining-bugs-remediation');
   process.exit(1);
   // Process.exit never returns, but TypeScript needs the unreachable annotation
   throw new Error('Unreachable');

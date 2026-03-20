@@ -32,7 +32,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 - [x] T001 Define `TopicCluster`, `ConversationPhaseLabel`, and `PhaseScoreMap` in `session-types.ts` (REQ-001) (`scripts/types/session-types.ts`)
 - [x] T002 [P] Expand `ConversationPhase` / `ConversationData` with cluster metadata, `TOPIC_CLUSTERS`, and `UNIQUE_PHASE_COUNT` (REQ-001) (`scripts/types/session-types.ts`)
 - [x] T003 [P] Update observation classification logic to recognize `test`, `documentation`, and `performance` (REQ-003) (`scripts/extractors/file-extractor.ts`)
-- [x] T004 [P] Update conversation summary wording for phase segments and unique phase count (REQ-005) (`templates/context_template`)
+- [x] T004 [P] Update conversation summary wording for phase segments and unique phase count (REQ-005) (`.opencode/skill/system-spec-kit/templates/context_template.md`)
 <!-- /ANCHOR:phase-1 -->
 
 ---

@@ -100,15 +100,21 @@ npm run build
 Memory save entrypoint (required by Memory Save Rule):
 
 ```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/<###-spec-name>
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-spec-name>
 ```
 
-Direct saves may target either a root spec folder or a phase folder. Explicit CLI targets remain authoritative, and phase-folder saves write into that selected phase folder's `memory/` directory.
+Direct positional saves are now recovery-only and require `--recovery`. Explicit CLI targets remain authoritative, and phase-folder saves write into that selected phase folder's `memory/` directory.
 
 JSON mode is also supported:
 
 ```bash
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-spec-name>
+```
+
+Recovery-only positional mode:
+
+```bash
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery specs/<###-spec-name>
 ```
 
 Generated memories are now blocked before write/index when they violate the rendered-memory contract:

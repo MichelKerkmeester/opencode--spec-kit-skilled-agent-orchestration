@@ -1,8 +1,8 @@
 ---
 title: "Implementation Summary: Runtime Contract And Indexability"
-description: "Phase 018 shipped the explicit write/index contract for session capturing."
+description: "Phase 015 shipped the explicit write/index contract for session capturing."
 trigger_phrases:
-  - "phase 018"
+  - "phase 015"
   - "implementation summary"
 importance_tier: "normal"
 contextType: "general"
@@ -29,7 +29,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase 018 shipped the explicit write/index policy for session capturing. The runtime now owns rule metadata in `validate-memory-quality.ts`, resolves `abort_write`, `write_skip_index`, and `write_and_index` in `workflow.ts`, and records policy-aware indexing status in metadata instead of relying on the old generic quality-gate result.
+Phase 015 shipped the explicit write/index policy for session capturing. The runtime now owns rule metadata in `validate-memory-quality.ts`, resolves `abort_write`, `write_skip_index`, and `write_and_index` in `workflow.ts`, and records policy-aware indexing status in metadata instead of relying on the old generic quality-gate result.
 
 ### Files Changed
 
@@ -78,5 +78,5 @@ Focused Vitest coverage was added first, then the runtime was updated to satisfy
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Live proof is still separate.** Phase 018 strengthens automated runtime policy, but it does not refresh retained live CLI artifacts.
+1. **Live proof is still separate.** Phase 015 strengthens automated runtime policy, but it does not refresh retained live CLI artifacts.
 <!-- /ANCHOR:limitations -->

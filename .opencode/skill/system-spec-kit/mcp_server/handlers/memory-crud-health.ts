@@ -8,7 +8,6 @@
 
 import { randomUUID } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
-import { tmpdir } from 'node:os';
 import { resolve } from 'node:path';
 
 import { checkDatabaseUpdated } from '../core';
@@ -117,25 +116,6 @@ interface DivergentAliasBucket {
 
 function toNormalizedPath(filePath: string): string {
   return filePath.replace(/\\/g, '/');
-}
-
-function isTempFixturePath(filePath: string): boolean {
-  if (!filePath) {
-    return false;
-  }
-
-  try {
-    const normalizedPath = toNormalizedPath(resolve(filePath));
-    const tempRoots = new Set([
-      toNormalizedPath(resolve(tmpdir())),
-      toNormalizedPath(resolve('/tmp')),
-    ]);
-    return Array.from(tempRoots).some((tempRoot) => (
-      normalizedPath === tempRoot || normalizedPath.startsWith(`${tempRoot}/`)
-    ));
-  } catch {
-    return false;
-  }
 }
 
 function toSpecAliasKey(filePath: string): string {
@@ -438,7 +418,6 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
     'trigger_cache_refresh',
     'orphan_edges_cleanup',
     'orphan_vector_cleanup',
-    'temp_fixture_memory_cleanup',
   ];
 
   if (autoRepair && !confirmed) {
@@ -550,36 +529,6 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
         trackRepairOutcome(true);
         repair.actions.push(`orphan_chunks_cleaned:${cleanedChunks}`);
         hints.push(`Auto-repair: removed ${cleanedChunks} orphaned chunk(s)`);
-      }
-
-      const tempFixtureOrphans = integrityReport.orphanedFiles.filter((entry) => isTempFixturePath(entry.file_path));
-      let tempFixtureDeletes = 0;
-      let tempFixtureDeleteFailures = 0;
-
-      for (const orphan of tempFixtureOrphans) {
-        try {
-          if (vectorIndex.deleteMemory(orphan.id)) {
-            tempFixtureDeletes += 1;
-          } else {
-            tempFixtureDeleteFailures += 1;
-          }
-        } catch (cleanupError: unknown) {
-          tempFixtureDeleteFailures += 1;
-          repair.errors.push(`Temp fixture cleanup failed for ${orphan.id}: ${sanitizeErrorForHint(toErrorMessage(cleanupError))}`);
-        }
-      }
-
-      if (tempFixtureDeletes > 0) {
-        trackRepairOutcome(true);
-        repair.actions.push(`temp_fixture_memories_deleted:${tempFixtureDeletes}`);
-        hints.push(`Auto-repair: removed ${tempFixtureDeletes} temp fixture memory row(s)`);
-      }
-
-      if (tempFixtureDeleteFailures > 0) {
-        trackRepairOutcome(false);
-        const warning = `${tempFixtureDeleteFailures} temp fixture memory row(s) could not be deleted`;
-        repair.warnings.push(warning);
-        hints.push(`Auto-repair warning: ${warning}`);
       }
 
       const postRepairReport = vectorIndex.verifyIntegrity({ autoClean: false });

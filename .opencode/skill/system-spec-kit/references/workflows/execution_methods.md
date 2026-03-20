@@ -80,8 +80,8 @@ Generates memory files from conversation context for future session recovery.
 
 **Usage:**
 ```bash
-# Direct mode - pass spec folder path
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/001-feature/
+# Recovery mode - pass spec folder path explicitly
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery specs/001-feature/
 
 # JSON mode - pass data file
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/context-data.json

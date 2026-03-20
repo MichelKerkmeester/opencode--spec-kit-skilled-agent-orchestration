@@ -279,19 +279,33 @@ function bm25Search(
     // BM25 document IDs are stringified
     // Numeric memory IDs (e.g., "42"), not spec folder paths. The old filter compared
     // R.id against specFolder which never matched. Use DB lookup to resolve spec_folder.
+
+    // B7 FIX: Batch-resolve spec folders for all result IDs (was N+1 individual queries)
+    let specFolderMap: Map<number, string | null> | null = null;
+    if (specFolder && db) {
+      try {
+        const ids = results.map((r: { id: string }) => Number(r.id));
+        const placeholders = ids.map(() => '?').join(',');
+        const rows = db.prepare(
+          `SELECT id, spec_folder FROM memory_index WHERE id IN (${placeholders})`
+        ).all(...ids) as Array<{ id: number; spec_folder: string | null }>;
+        specFolderMap = new Map();
+        for (const row of rows) {
+          specFolderMap.set(row.id, row.spec_folder);
+        }
+      } catch (_error: unknown) {
+        // Fail open — return all results unfiltered
+        specFolderMap = null;
+      }
+    }
+
     return results
       .filter((r: { id: string }) => {
         if (!specFolder) return true;
-        if (!db) return true;
-        try {
-          const row = db.prepare(
-            'SELECT spec_folder FROM memory_index WHERE id = ?'
-          ).get(Number(r.id)) as { spec_folder: string | null } | undefined;
-          if (!row?.spec_folder) return false;
-          return row.spec_folder === specFolder || row.spec_folder.startsWith(specFolder + '/');
-        } catch (_error: unknown) {
-          return true; // Fail open on DB errors
-        }
+        if (specFolderMap === null) return true; // no DB or query failed
+        const folder = specFolderMap.get(Number(r.id));
+        if (!folder) return false;
+        return folder === specFolder || folder.startsWith(specFolder + '/');
       })
       .map((r: { id: string; score: number }) => ({
         ...r,

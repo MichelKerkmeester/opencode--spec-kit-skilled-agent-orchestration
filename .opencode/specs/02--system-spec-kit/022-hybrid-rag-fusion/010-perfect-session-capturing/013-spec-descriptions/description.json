@@ -1,5 +1,5 @@
 {
-  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/014-spec-descriptions",
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/013-spec-descriptions",
   "description": "Feature Specification: Per-Folder Description Infrastructure",
   "keywords": [
     "feature",
@@ -8,8 +8,8 @@
     "description",
     "infrastructure"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.435Z",
-  "specId": "014",
+  "lastUpdated": "2026-03-20T13:22:44.246Z",
+  "specId": "013",
   "folderSlug": "spec-descriptions",
   "parentChain": [
     "02--system-spec-kit",

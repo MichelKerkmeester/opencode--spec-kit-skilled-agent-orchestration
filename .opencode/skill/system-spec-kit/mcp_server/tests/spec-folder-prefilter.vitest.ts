@@ -86,7 +86,6 @@ vi.mock('../lib/search/search-flags', () => ({
   isMultiQueryEnabled: vi.fn(() => false),
   isEmbeddingExpansionEnabled: vi.fn(() => false),
   isSearchFallbackEnabled: vi.fn(() => false),
-  isPipelineV2Enabled: vi.fn(() => false),
   isTRMEnabled: vi.fn(() => false),
   isNegativeFeedbackEnabled: vi.fn(() => false),
   isMemorySummariesEnabled: vi.fn(() => false),

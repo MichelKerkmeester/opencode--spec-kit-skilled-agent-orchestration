@@ -351,7 +351,9 @@ function determineSessionStatus(
     const hasSessionSummary = !!(collectedData as Record<string, unknown>).sessionSummary;
     const hasKeyDecisions = Array.isArray((collectedData as Record<string, unknown>).keyDecisions) &&
       ((collectedData as Record<string, unknown>).keyDecisions as unknown[]).length > 0;
-    const hasNextSteps = !!(collectedData as Record<string, unknown>).nextSteps;
+    // Fix 2: Also check observations for "Next Steps" title (normalizer may consume the field)
+    const hasNextSteps = !!(collectedData as Record<string, unknown>).nextSteps
+      || observations.some(obs => /^next\s*steps?\b/i.test(obs.title || ''));
     const isFileSource = (collectedData as Record<string, unknown>)._source === 'file';
 
     // If explicit JSON data has summary + decisions + next steps, session is complete
@@ -790,8 +792,16 @@ async function collectSessionData(
     : observationFallback
     || 'Session focused on implementing and testing features.';
 
+  const explicitImportanceTier = typeof data.importanceTier === 'string'
+    ? data.importanceTier
+    : (typeof data.importance_tier === 'string' ? data.importance_tier : null);
   const { contextType, importanceTier, decisionCount, toolCounts } =
-    detectSessionCharacteristics(observations, userPrompts, FILES as FileEntry[]);
+    detectSessionCharacteristics(
+      observations,
+      userPrompts,
+      FILES as FileEntry[],
+      explicitImportanceTier
+    );
 
   const TOOL_COUNT: number = Object.values(toolCounts).reduce((sum, count) => sum + count, 0);
 

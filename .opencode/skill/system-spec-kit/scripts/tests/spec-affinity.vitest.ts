@@ -128,4 +128,52 @@ describe('spec affinity evaluation', () => {
     expect(result.matchedFileTargets).toEqual([]);
     expect(result.matchedPhrases).toEqual([]);
   });
+
+  it('filters single-word stopword trigger phrases from exact phrase anchors', () => {
+    const specRoot = path.join(makeTempSpecRoot(), '010-generic-processing');
+    fs.mkdirSync(specRoot, { recursive: true });
+    fs.writeFileSync(
+      path.join(specRoot, 'spec.md'),
+      [
+        '---',
+        'title: "Generic Processing"',
+        'trigger_phrases:',
+        '  - "processing"',
+        '---',
+      ].join('\n'),
+      'utf-8',
+    );
+
+    const targets = buildSpecAffinityTargets(specRoot);
+    const result = evaluateCollectedDataSpecAffinity({
+      userPrompts: [{ prompt: 'We are postprocessing images for export.' }],
+      observations: [],
+      FILES: [],
+    }, specRoot);
+
+    expect(targets.exactPhrases).not.toContain('processing');
+    expect(result.hasAnchor).toBe(false);
+    expect(result.matchedPhrases).toEqual([]);
+  });
+
+  it('uses whole-phrase boundaries for exact phrase matches', () => {
+    const specRoot = path.join(makeTempSpecRoot(), '011-processing-task');
+    fs.mkdirSync(specRoot, { recursive: true });
+    fs.writeFileSync(
+      path.join(specRoot, 'spec.md'),
+      [
+        '---',
+        'title: "Processing Task"',
+        'trigger_phrases:',
+        '  - "processing task"',
+        '---',
+      ].join('\n'),
+      'utf-8',
+    );
+
+    const targets = buildSpecAffinityTargets(specRoot);
+
+    expect(matchesSpecAffinityText('The processing task is queued for tonight.', targets)).toBe(true);
+    expect(matchesSpecAffinityText('The postprocessing task is queued for tonight.', targets)).toBe(false);
+  });
 });

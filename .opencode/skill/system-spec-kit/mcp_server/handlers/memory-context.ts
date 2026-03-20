@@ -66,6 +66,10 @@ interface ContextMode {
 
 interface ContextOptions {
   specFolder?: string;
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
+  sharedSpaceId?: string;
   limit?: number;
   sessionId?: string;
   enableDedup?: boolean;
@@ -98,6 +102,10 @@ interface ContextArgs {
   mode?: string;
   intent?: string;
   specFolder?: string;
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
+  sharedSpaceId?: string;
   limit?: number;
   sessionId?: string;
   enableDedup?: boolean;
@@ -468,6 +476,10 @@ async function executeDeepStrategy(input: string, options: ContextOptions): Prom
   const result = await handleMemorySearch({
     query: input,
     specFolder: options.specFolder,
+    tenantId: options.tenantId,
+    userId: options.userId,
+    agentId: options.agentId,
+    sharedSpaceId: options.sharedSpaceId,
     limit: options.limit || 10,
     includeConstitutional: true,
     includeContent: options.includeContent || false,
@@ -491,6 +503,10 @@ async function executeFocusedStrategy(input: string, intent: string | null, opti
   const result = await handleMemorySearch({
     query: input,
     specFolder: options.specFolder,
+    tenantId: options.tenantId,
+    userId: options.userId,
+    agentId: options.agentId,
+    sharedSpaceId: options.sharedSpaceId,
     limit: options.limit || 8,
     includeConstitutional: true,
     includeContent: options.includeContent || false,
@@ -519,6 +535,10 @@ async function executeResumeStrategy(input: string, options: ContextOptions): Pr
   const result = await handleMemorySearch({
     query: input || 'resume work continue session',
     specFolder: options.specFolder,
+    tenantId: options.tenantId,
+    userId: options.userId,
+    agentId: options.agentId,
+    sharedSpaceId: options.sharedSpaceId,
     limit: options.limit || 5,
     includeConstitutional: false,
     includeContent: true,
@@ -648,6 +668,10 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   // Build options object for strategy executors
   const options: ContextOptions = {
     specFolder: spec_folder,
+    tenantId: args.tenantId,
+    userId: args.userId,
+    agentId: args.agentId,
+    sharedSpaceId: args.sharedSpaceId,
     limit,
     sessionId: effectiveSessionId,
     enableDedup: enableDedup,

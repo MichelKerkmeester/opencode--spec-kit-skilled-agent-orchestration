@@ -476,11 +476,12 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
       let filePath: string;
       let changesSummary: string;
       if (typeof entry === 'string') {
-        // P0-2: Parse "path - description" compound format
-        const sepIdx = entry.indexOf(' - ');
-        if (sepIdx > 0 && (entry.substring(0, sepIdx).includes('.') || entry.substring(0, sepIdx).includes('/'))) {
-          filePath = entry.substring(0, sepIdx).trim();
-          changesSummary = entry.substring(sepIdx + 3).trim();
+        // Fix 6: Parse "path <separator> description" compound format
+        // Support: " - ", " — " (em dash), " – " (en dash), " : "
+        const sepMatch = entry.match(/^(.+?)\s+(?:[-\u2013\u2014]|:)\s+(.+)$/);
+        if (sepMatch && (sepMatch[1].includes('.') || sepMatch[1].includes('/'))) {
+          filePath = sepMatch[1].trim();
+          changesSummary = sepMatch[2].trim();
         } else {
           filePath = entry;
           changesSummary = '';

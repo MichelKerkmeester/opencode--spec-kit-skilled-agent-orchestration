@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: 008-hydra-db-based-features"
-description: "Hydra closure summary covering parent and phase template normalization, runtime hardening fixes, and March 17 2026 full re-verification with live 5-CLI proof."
+description: "Hydra closure summary covering parent and phase template normalization, runtime hardening fixes, and the March 20 2026 targeted follow-up rerun layered on top of the March 17 2026 baseline."
 importance_tier: "critical"
 contextType: "implementation"
 ---
@@ -17,7 +17,7 @@ contextType: "implementation"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 008-hydra-db-based-features |
-| **Completed** | 2026-03-17 |
+| **Completed** | 2026-03-20 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
@@ -34,7 +34,7 @@ The parent pack and each phase pack were normalized back onto the active `system
 
 ### Runtime Corrections
 
-Two reviewed runtime defects were fixed while closing the pack. Owner-only shared-space operations now enforce the `owner` role correctly, and retention sweeps now delete through the database handle that was actually scanned instead of falling back to a global default path.
+The March 20 2026 follow-up fixed three more reviewed runtime gaps in the shipped MCP surface. Governed retrieval scope now survives the MCP boundary end-to-end across `memory_search`, `memory_context`, and `memory_quick_search`; shared-space admin mutations now require explicit actor identity plus owner authorization, with first-create auto-bootstrapping the creator as `owner`; and the FTS-backed graph channel now returns the same BM25-aware composite score it uses for SQL ranking instead of collapsing back to edge strength only. The earlier retention sweep database-handle fix remains in place.
 
 ### Truth-Sync Guarding
 
@@ -46,7 +46,7 @@ The Hydra closure surfaces were re-synced to the current rerun set and the truth
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-This pass combined documentation normalization and code correction instead of treating them as separate cleanup tracks. Parent and phase validation gaps were reproduced first, then the root pack and six phase folders were normalized to template shape, then the two runtime regressions were fixed and covered by passing tests, and finally the broader runtime, scripts, and alignment verification suites were rerun to confirm the closure pack matches the shipped system.
+This pass combined documentation normalization and code correction instead of treating them as separate cleanup tracks. Parent and phase validation gaps were reproduced first, then the root pack and six phase folders were normalized to template shape, then the original runtime regressions were fixed and covered by passing tests, and finally a March 20 2026 follow-up patched the governed retrieval boundary, shared-space admin auth path, and graph ranking score propagation with targeted reruns to keep the closure pack truthful.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -57,7 +57,7 @@ This pass combined documentation normalization and code correction instead of tr
 | Decision | Why |
 |----------|-----|
 | Keep the root pack as a coordination layer and the phase folders as the detailed delivery record. | That prevents the parent pack from drifting back into a second implementation log. |
-| Fix the two runtime defects as part of closure rather than documenting them as future work. | The review findings were correctness issues, so “truth-sync only” would have left the pack claiming clean behavior while known bugs remained. |
+| Fix reviewed runtime defects as part of closure rather than documenting them as future work. | The review findings were correctness issues, so “truth-sync only” would have left the pack claiming clean behavior while known bugs remained. |
 | Require live prompt proof for all five CLIs before closure sign-off. | A strict live matrix removes ambiguity between automated suite coverage and real CLI execution readiness. |
 | Use the March 17 2026 rerun set as the authoritative evidence baseline. | That gives one dated source for counts, pass/fail status, and doc wording across the Hydra closure pack. |
 <!-- /ANCHOR:decisions -->
@@ -69,13 +69,14 @@ This pass combined documentation normalization and code correction instead of tr
 
 | Check | Result |
 |-------|--------|
+| `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts tests/tool-input-schema.vitest.ts tests/handler-memory-context.vitest.ts tests/memory-tools.vitest.ts tests/shared-memory-handlers.vitest.ts tests/graph-search-fn.vitest.ts` | PASS (`7` files, `112` tests) |
+| `cd .opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit` | PASS |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features` | PASS after parent/phase normalization and decision-record anchor cleanup |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features --recursive --json` | PASS (`errors: 0`, `warnings: 0`, parent + six phases validated) |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/quality-audit.sh --json --root .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features` | PASS (`7/7` folders pass) |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh <parent+phase-folders> --json` | PASS (`7/7` folders complete, `0` quality-gate misses) |
 | `cd . && /usr/bin/python3 .opencode/skill/sk-doc/scripts/validate_document.py <README/spec/plan/tasks/checklist/decision-record/implementation-summary across parent+phases> --json` | PASS (`49` documents validated) |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts` | PASS (`22` tests) |
-| `cd .opencode/skill/system-spec-kit/mcp_server && npx tsc --noEmit` | PASS |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run build` | PASS |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npm run test:hydra:phase1` | PASS |
 | `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/hydra-spec-pack-consistency.vitest.ts tests/shared-spaces.vitest.ts tests/memory-governance.vitest.ts tests/memory-lineage-state.vitest.ts tests/memory-lineage-backfill.vitest.ts tests/adaptive-ranking.vitest.ts tests/graph-roadmap-finalization.vitest.ts` | PASS (`53` tests) |

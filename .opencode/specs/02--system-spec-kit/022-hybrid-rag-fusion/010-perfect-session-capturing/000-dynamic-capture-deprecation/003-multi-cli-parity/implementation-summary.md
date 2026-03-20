@@ -30,7 +30,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## 2. WHAT WAS BUILT
 
-Phase 016 now proves the parity behavior that was already present in the runtime. You can point at a direct regression for each reopened question: Copilot `view` aliases score as canonical `read`, shared noise filtering catches Copilot and Codex artifacts without a side path, and CLI-derived `FILES` keep the `_provenance: 'tool'` metadata that earlier scoring work now depends on. The phase folder itself also moved from a validator-failing "assumed complete" state to a real Level 2 completion record with a focused parity stack of `45` tests, and the retained live proof remains cited at `../research/live-cli-proof-2026-03-17.json`.
+Phase 016 now proves the parity behavior that was already present in the runtime. You can point at a direct regression for each reopened question: Copilot `view` aliases score as canonical `read`, shared noise filtering catches Copilot and Codex artifacts without a side path, and CLI-derived `FILES` keep the `_provenance: 'tool'` metadata that earlier scoring work now depends on. The phase folder itself also moved from a validator-failing "assumed complete" state to a real Level 2 completion record with a focused parity stack of `45` tests, and the retained live proof remains cited at `../../research/live-cli-proof-2026-03-17.json`.
 
 ### Focused parity regressions
 

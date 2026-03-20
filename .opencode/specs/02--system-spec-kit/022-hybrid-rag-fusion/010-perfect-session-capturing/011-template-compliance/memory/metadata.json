@@ -169,7 +169,7 @@
         "failed_rules:none"
       ],
       "passedThrough": [
-        "current_spec:012-template-compliance",
+        "current_spec:011-template-compliance",
         "trigger_phrases:22",
         "key_topics:12",
         "captured_file_count:0",

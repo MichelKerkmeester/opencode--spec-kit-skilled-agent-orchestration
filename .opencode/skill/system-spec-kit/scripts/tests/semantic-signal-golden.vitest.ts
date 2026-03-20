@@ -29,7 +29,7 @@ const GOLDEN_CASES = [
     name: 'debugging',
     text: 'Debugging failing Vitest suite. Grep output showed the error path, then fixed the null pointer bug in the memory parser and verified the patch with tests.',
     expected: [
-      'the error',
+      // Fix 5: "the error" was filtered — "the" is a generic stopword, not a meaningful trigger
       'pointer bug',
       'debugging failing vitest suite',
       'grep output showed error',
@@ -37,6 +37,7 @@ const GOLDEN_CASES = [
       'showed error path fixed',
       'error path fixed null',
       'path fixed null pointer',
+      'fixed null pointer memory',
     ],
   },
   {

@@ -25,7 +25,7 @@ import type {
 } from '../lib/search/pipeline/types';
 
 // Feature flags
-import { isPipelineV2Enabled, isEmbeddingExpansionEnabled } from '../lib/search/search-flags';
+import { isEmbeddingExpansionEnabled } from '../lib/search/search-flags';
 
 // Stage testables
 import { __testables as stage4Testables } from '../lib/search/pipeline/stage4-filter';
@@ -286,22 +286,7 @@ describe('R6: Feature Flags', () => {
     process.env = originalEnv;
   });
 
-  it('R6-T18: SPECKIT_PIPELINE_V2 defaults to true (graduated)', () => {
-    delete process.env.SPECKIT_PIPELINE_V2;
-    expect(isPipelineV2Enabled()).toBe(true);
-  });
-
-  it('R6-T19: SPECKIT_PIPELINE_V2=true enables pipeline V2', () => {
-    process.env.SPECKIT_PIPELINE_V2 = 'true';
-    expect(isPipelineV2Enabled()).toBe(true);
-  });
-
-  it('R6-T20: SPECKIT_PIPELINE_V2=false still returns true (deprecated, V2 always on)', () => {
-    process.env.SPECKIT_PIPELINE_V2 = 'false';
-    // Legacy V1 pipeline removed in 017-refinement-phase-6.
-    // IsPipelineV2Enabled() now always returns true regardless of env var.
-    expect(isPipelineV2Enabled()).toBe(true);
-  });
+  // C8: R6-T18/T19/T20 removed — isPipelineV2Enabled() was always true and has been deleted.
 
   it('R6-T21: SPECKIT_EMBEDDING_EXPANSION defaults to true (graduated)', () => {
     delete process.env.SPECKIT_EMBEDDING_EXPANSION;
@@ -336,17 +321,17 @@ describe('R6: Stage Interface Contracts', () => {
     const output: Stage2Output = {
       scored: [{ id: 1, similarity: 85, intentAdjustedScore: 0.72 }],
       metadata: {
-        sessionBoostApplied: false,
-        causalBoostApplied: false,
-        intentWeightsApplied: true,
-        artifactRoutingApplied: false,
-        feedbackSignalsApplied: false,
+        sessionBoostApplied: 'off',
+        causalBoostApplied: 'off',
+        intentWeightsApplied: 'applied',
+        artifactRoutingApplied: 'off',
+        feedbackSignalsApplied: 'off',
         qualityFiltered: 0,
         durationMs: 15,
       },
     };
     // G2 prevention: intentWeightsApplied is tracked
-    expect(output.metadata.intentWeightsApplied).toBe(true);
+    expect(output.metadata.intentWeightsApplied).toBe('applied');
   });
 
   it('R6-T25: Stage3Output preserves MPAB stats', () => {

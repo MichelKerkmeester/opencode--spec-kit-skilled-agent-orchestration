@@ -1,17 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing",
-  "description": "Feature Specification: Perfect Session Capturing — JSON-primary mode (dynamic capture deprecated to recovery-only)",
+  "description": "Feature Specification: Perfect Session Capturing",
   "keywords": [
     "feature",
     "specification",
     "perfect",
     "session",
-    "capturing",
-    "json-primary",
-    "dynamic-capture-deprecated"
+    "capturing"
   ],
-  "strategicDirection": "JSON-primary: AI composes structured data. Dynamic capture retained as recovery-only break-glass mechanism for crash/kill scenarios. Phases 011, 015, 016 superseded by 023.",
-  "lastUpdated": "2026-03-20T12:00:00.000Z",
+  "lastUpdated": "2026-03-20T13:22:44.188Z",
   "specId": "010",
   "folderSlug": "perfect-session-capturing",
   "parentChain": [

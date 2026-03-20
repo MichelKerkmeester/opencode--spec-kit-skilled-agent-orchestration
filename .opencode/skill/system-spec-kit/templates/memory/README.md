@@ -45,14 +45,14 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <sp
 <!-- ANCHOR:creation -->
 
 ```bash
-# Direct spec folder mode
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js specs/02--system-spec-kit
+# Routine JSON mode
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/02--system-spec-kit
 
-# Subfolder / phase mode (parent/child)
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 003-parent/001-child
+# Recovery subfolder / phase mode (parent/child)
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery 003-parent/001-child
 
-# Bare child (auto-searches all parents for unique match)
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 001-child-name
+# Recovery bare child (auto-searches all parents for unique match)
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery 001-child-name
 
 # JSON payload mode
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json

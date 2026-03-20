@@ -312,7 +312,7 @@ To add a sixth CLI:
 
 ## 16. Acknowledgements
 
-- Live proof artifact: `../research/live-cli-proof-2026-03-17.json` -- all 5 CLIs captured same-day with exchanges and tool calls
+- Live proof artifact: `../../research/live-cli-proof-2026-03-17.json` -- all 5 CLIs captured same-day with exchanges and tool calls
 - Phase 016 spec and implementation documentation
 - Phase 011 session-source validation spec
 

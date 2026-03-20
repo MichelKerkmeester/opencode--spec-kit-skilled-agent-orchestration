@@ -1,18 +1,18 @@
 ---
 title: Folder Routing & Alignment
-description: Stateless spec folder routing with alignment scoring for context preservation.
+description: Structured-first spec folder routing with explicit recovery-only stateless handling for context preservation.
 ---
 
 # Folder Routing & Alignment
 
-Stateless spec folder routing with alignment scoring for context preservation.
+Structured-first spec folder routing with alignment scoring for context preservation.
 
 ---
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The memory system uses a **stateless CLI-first architecture**. The spec folder path is passed directly to `generate-context.ts` as an argument, then validated with alignment scoring.
+The memory system uses a **structured-first architecture**. Routine saves pass structured JSON plus an explicit target spec folder; direct positional capture is reserved for `--recovery` crash-recovery flows and still goes through alignment scoring.
 
 ### Core Principle
 
@@ -20,13 +20,13 @@ Spec folder is passed explicitly as a CLI argument with alignment validation to 
 
 ### Architecture
 
-| Aspect                  | Stateless (Current)         |
-| ----------------------- | --------------------------- |
-| **Spec folder source**  | CLI argument                |
-| **State persistence**   | None                        |
-| **Session isolation**   | Automatic (no shared state) |
-| **Concurrent sessions** | No conflicts possible       |
-| **Cleanup required**    | None                        |
+| Aspect                  | Structured-First (Current)              |
+| ----------------------- | --------------------------------------- |
+| **Spec folder source**  | Explicit CLI target or payload override |
+| **State persistence**   | JSON payload authored by the caller     |
+| **Routine save mode**   | Structured input only                   |
+| **Recovery mode**       | Positional `--recovery <spec-folder>`   |
+| **Cleanup required**    | Temp JSON cleanup when used             |
 
 ### Key Benefits
 
@@ -233,7 +233,7 @@ only, own, same, so, than, too, very, just, also
 ### Command Format
 
 ```bash
-# Explicit spec folder (recommended)
+# Explicit spec folder with JSON input (recommended)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js data.json "006-opencode/014-stateless-alignment"
 
 # With sub-folder
@@ -249,6 +249,12 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js dat
    node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/context.json "014-stateless-alignment"
    ```
 4. Memory file written to `specs/014-stateless-alignment/memory/`
+
+### Recovery-Only Direct Mode
+
+```bash
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery specs/014-stateless-alignment
+```
 
 ### Fallback Detection
 

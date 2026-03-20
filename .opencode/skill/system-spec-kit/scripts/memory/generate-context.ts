@@ -33,6 +33,7 @@ interface ParsedCliArguments {
   specFolderArg: string | null;
   collectedData: StructuredCollectedData | null;
   sessionId: string | null;
+  allowRecovery: boolean;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -52,30 +53,31 @@ const HELP_TEXT = `
 Usage: node generate-context.js [options] <input>
 
 Arguments:
-  <input>           Either a JSON data file path OR a spec folder path
+  <input>           Either a JSON data file path OR a recovery-mode spec folder path
                     - JSON mode: node generate-context.js data.json [spec-folder]
-                    - Direct mode: node generate-context.js specs/001-feature/
-                    - Direct mode: node generate-context.js .opencode/specs/001-feature/
+                    - Recovery mode: node generate-context.js --recovery specs/001-feature/
+                    - Recovery mode: node generate-context.js --recovery .opencode/specs/001-feature/
 
 Options:
   --help, -h        Show this help message
   --stdin           Read structured JSON from stdin (preferred when a caller already has curated session data)
   --json <string>   Read structured JSON from an inline string (preferred over stateless capture when structured data is available)
+  --recovery        Allow direct positional spec-folder capture for crash recovery only
   --session-id <uuid>  Explicit session ID for deterministic Claude Code transcript selection
 
 Examples:
   node generate-context.js /tmp/context-data.json
   node generate-context.js /tmp/context-data.json specs/001-feature/
   node generate-context.js /tmp/context-data.json .opencode/specs/001-feature/
-  node generate-context.js specs/001-feature/
-  node generate-context.js .opencode/specs/001-feature/
+  node generate-context.js --recovery specs/001-feature/
+  node generate-context.js --recovery .opencode/specs/001-feature/
   echo '{"specFolder":"specs/001-feature/"}' | node generate-context.js --stdin
   node generate-context.js --json '{"specFolder":"specs/001-feature/"}'
 
 Subfolder examples:
-  node generate-context.js 003-parent/121-child
-  node generate-context.js 121-child          (auto-searches all parents)
-  node generate-context.js specs/003-parent/121-child
+  node generate-context.js --recovery 003-parent/121-child
+  node generate-context.js --recovery 121-child          (auto-searches all parents)
+  node generate-context.js --recovery specs/003-parent/121-child
 
 Output:
   Creates a memory file in <spec-folder>/memory/ with ANCHOR format
@@ -89,10 +91,10 @@ Preferred native capture override:
   - Explicit JSON mode remains authoritative and ignores native capture preference.
 
 Preferred save path (JSON-PRIMARY):
-  - ALWAYS use --stdin, --json, or a JSON temp file when possible.
+  - ALWAYS use --stdin, --json, or a JSON temp file for routine saves.
   - The AI has strictly better information about its own session than any DB query can reconstruct.
-  - Direct positional spec-folder mode (stateless) is DEPRECATED for routine saves — retained only for crash-recovery.
-  - Stateless mode triggers a deprecation warning in data-loader.
+  - Direct positional spec-folder mode requires --recovery and is retained only for crash recovery.
+  - Recovery mode triggers a recovery-only warning in data-loader.
   - Explicit CLI targets still outrank payload specFolder values in every structured-input mode.
 
 Direct CLI target rule:
@@ -148,15 +150,25 @@ if (process.argv.includes('--help') || process.argv.includes('-h')) {
 }
 
 // 2.1 SIGNAL HANDLERS
-process.on('SIGTERM', () => {
-  console.log('\nWarning: Received SIGTERM signal, shutting down gracefully...');
-  process.exit(0);
-});
+let signalHandlersInstalled = false;
 
-process.on('SIGINT', () => {
-  console.log('\nWarning: Received SIGINT signal, shutting down gracefully...');
-  process.exit(0);
-});
+function installSignalHandlers(): void {
+  if (signalHandlersInstalled) {
+    return;
+  }
+
+  process.on('SIGTERM', () => {
+    console.log('\nWarning: Received SIGTERM signal, shutting down gracefully...');
+    process.exit(0);
+  });
+
+  process.on('SIGINT', () => {
+    console.log('\nWarning: Received SIGINT signal, shutting down gracefully...');
+    process.exit(0);
+  });
+
+  signalHandlersInstalled = true;
+}
 
 // ───────────────────────────────────────────────────────────────
 // 4. SPEC FOLDER VALIDATION
@@ -371,6 +383,7 @@ async function parseStructuredModeArguments(
       _source: 'file',
     },
     sessionId: null,
+    allowRecovery: false,
   };
 }
 
@@ -383,11 +396,14 @@ async function parseArguments(
 ): Promise<ParsedCliArguments> {
   // Extract --session-id <uuid> from argv before positional parsing
   let sessionId: string | null = null;
+  let allowRecovery = false;
   const filteredArgv: string[] = [];
   for (let i = 0; i < argv.length; i++) {
     if (argv[i] === '--session-id' && i + 1 < argv.length) {
       sessionId = argv[i + 1].trim() || null;
       i++; // skip the value
+    } else if (argv[i] === '--recovery') {
+      allowRecovery = true;
     } else {
       filteredArgv.push(argv[i]);
     }
@@ -395,29 +411,47 @@ async function parseArguments(
 
   const [primaryArg, secondaryArg] = filteredArgv;
   if (!primaryArg) {
-    return { dataFile: null, specFolderArg: null, collectedData: null, sessionId };
+    if (allowRecovery) {
+      throw new Error('--recovery requires a direct spec folder target');
+    }
+    return { dataFile: null, specFolderArg: null, collectedData: null, sessionId, allowRecovery: false };
   }
 
   if (primaryArg === '--stdin' || primaryArg === '--json') {
+    if (allowRecovery) {
+      throw new Error('--recovery cannot be combined with structured JSON input');
+    }
     const structured = await parseStructuredModeArguments(primaryArg, filteredArgv, stdinReader);
     return { ...structured, sessionId };
   }
 
   const resolvedSpecFolder = resolveCliSpecFolderReference(primaryArg);
   if (resolvedSpecFolder) {
+    if (!allowRecovery) {
+      throw new Error(
+        'RECOVERY_MODE_REQUIRED: Direct positional spec-folder mode is recovery-only. ' +
+        'For routine saves, pass structured JSON via --stdin, --json, or a JSON file. ' +
+        'For crash recovery, re-run with --recovery <spec-folder>.'
+      );
+    }
     console.warn(
-      '   ⚠️  Stateless mode (DEPRECATED for routine saves): ' +
+      '   ⚠️  Recovery mode: ' +
       (resolvedSpecFolder !== primaryArg
         ? 'Nested spec folder provided directly'
         : 'Spec folder provided directly') +
-      '. Prefer JSON mode: compose structured JSON and pass via --json, --stdin, or temp file.'
+      '. Dynamic session capture is allowed only for crash recovery. Prefer structured JSON for routine saves.'
     );
     return {
       dataFile: null,
       specFolderArg: resolvedSpecFolder,
       collectedData: null,
       sessionId,
+      allowRecovery: true,
     };
+  }
+
+  if (allowRecovery) {
+    throw new Error('--recovery requires a direct spec folder target and cannot be combined with JSON file input');
   }
 
   return {
@@ -425,6 +459,7 @@ async function parseArguments(
     specFolderArg: secondaryArg || null,
     collectedData: null,
     sessionId,
+    allowRecovery: false,
   };
 }
 
@@ -531,7 +566,7 @@ function validateArguments(): void {
       console.error('[generate-context] Failed to list spec folders:', errMsg);
     }
   }
-  console.error('\nUsage: node generate-context.js [--stdin [spec-folder-name] | --json <json> [spec-folder-name] | <data-file> [spec-folder-name]]\n');
+  console.error('\nUsage: node generate-context.js [--stdin [spec-folder-name] | --json <json> [spec-folder-name] | <data-file> [spec-folder-name] | --recovery <spec-folder-name>]\n');
   process.exit(1);
 }
 
@@ -556,12 +591,13 @@ async function main(
       collectedData: parsed.collectedData ?? undefined,
       loadDataFn: parsed.collectedData
         ? undefined
-        : () => loadCollectedData({ sessionId: parsed.sessionId }),
+        : () => loadCollectedData({ sessionId: parsed.sessionId, allowRecovery: parsed.allowRecovery }),
       collectSessionDataFn: collectSessionData,
+      allowRecovery: parsed.allowRecovery,
     });
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : String(error);
-    const isExpected = /Spec folder not found|No spec folders|specs\/ directory|retry attempts|Expected|Invalid JSON provided|requires a target spec folder|requires an inline JSON string|required a non-empty JSON object|JSON object payload/.test(errMsg);
+    const isExpected = /Spec folder not found|No spec folders|specs\/ directory|retry attempts|Expected|Invalid JSON provided|requires a target spec folder|requires an inline JSON string|required a non-empty JSON object|JSON object payload|RECOVERY_MODE_REQUIRED|--recovery/.test(errMsg);
 
     if (isExpected) {
       console.error(`\nError: ${errMsg}`);
@@ -579,6 +615,7 @@ async function main(
 // 7. EXPORTS
 // ───────────────────────────────────────────────────────────────
 if (require.main === module) {
+  installSignalHandlers();
   main().catch((error: unknown) => {
     const errMsg = error instanceof Error ? error.message : String(error);
     console.error(`Fatal error: ${errMsg}`);

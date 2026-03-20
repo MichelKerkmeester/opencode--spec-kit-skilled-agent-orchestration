@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: JSON Mode Hybrid Enrichment (Phase 1B)"
-description: "This phase adds a safe file-source enrichment path and explicit JSON metadata overrides so JSON-mode saves stay both accurate and contamination-safe."
+description: "This corrected plan reflects the narrower phase-016 scope that actually shipped: structured JSON summary support, downstream hardening, and documentation alignment rather than a dedicated file-backed hybrid enrichment branch."
 trigger_phrases:
   - "implementation"
   - "json mode"
@@ -29,7 +29,7 @@ contextType: "general"
 
 ### Overview
 
-The implementation keeps JSON mode as the safe default for multi-spec sessions while restoring the metadata that was lost when file-backed inputs skipped all enrichment. The plan stays additive: extend types, enrich only safe metadata, honor explicit JSON overrides, and harden the path with Wave 2 quality fixes.
+This corrected plan keeps phase 016 aligned to the code that actually shipped in this tree. The delivered work expanded the structured JSON contract with summary fields such as `toolCalls` and `exchanges`, preserved file-backed JSON authority, and added Wave 2 hardening around counts, confidence, and operator guidance.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -40,13 +40,13 @@ The implementation keeps JSON mode as the safe default for multi-spec sessions w
 ### Definition of Ready
 
 - [x] Problem statement and contamination boundary are documented in `spec.md`.
-- [x] Success criteria cover status, git provenance, counts, and backward compatibility.
+- [x] Success criteria cover structured summary support, file-backed JSON authority, and backward compatibility.
 - [x] Dependencies across workflow, session extraction, and input normalization are identified.
 
 ### Definition of Done
 
-- [x] File-backed JSON mode enriches only safe metadata.
-- [x] Explicit `session` and `git` fields override heuristics where intended.
+- [x] File-backed JSON remains on the authoritative structured path.
+- [x] Structured JSON summary fields and Wave 2 hardening are documented truthfully.
 - [x] Validation, build checks, and phase documentation all pass for this phase.
 
 ### AI Execution Protocol
@@ -84,18 +84,18 @@ The implementation keeps JSON mode as the safe default for multi-spec sessions w
 
 ### Pattern
 
-Additive pipeline hardening with a split enrichment path.
+Structured JSON contract hardening with a documentation-correction pass.
 
 ### Key Components
 
-- **`workflow.ts`**: Routes file-backed inputs through `enrichFileSourceData()` instead of short-circuiting all enrichment.
-- **`collect-session-data.ts`**: Converts explicit JSON metadata into final session fields and count outputs.
-- **`input-normalizer.ts`**: Rejects malformed new fields before they can affect the save pipeline.
-- **`generate-context.ts`**: Documents the operator-facing JSON contract.
+- **`session-types.ts`**: Adds shipped structured-summary fields such as `toolCalls` and `exchanges`.
+- **`workflow.ts`**: Keeps file-backed JSON authoritative instead of routing it into a dedicated hybrid branch.
+- **`generate-context.ts`**: Documents the structured JSON contract and structured-first operator workflow.
+- **Phase docs**: Record the narrower shipped scope and retire claims about an unimplemented branch.
 
 ### Data Flow
 
-The caller submits JSON data. Normalization validates optional `session` and `git` blocks, workflow enrichment merges safe provenance for file-backed inputs, and session collection applies explicit priority rules so the final template output reflects the caller’s authoritative metadata instead of falling back too early.
+The caller submits structured JSON data. The shared contract accepts richer summary fields, file-backed payloads stay on the authoritative structured path, and later assembly logic preserves the Wave 2 fixes for counts, confidence, and operator-facing guidance.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -105,14 +105,14 @@ The caller submits JSON data. Normalization validates optional `session` and `gi
 
 ### Phase 1: Setup
 
-- [x] Extend runtime types with `SessionMetadata`, `GitMetadata`, and supporting optional fields.
-- [x] Confirm backward compatibility by keeping all new fields optional.
+- [x] Extend runtime types with shipped structured-summary fields such as `toolCalls` and `exchanges`.
+- [x] Confirm backward compatibility by keeping new structured fields optional.
 
 ### Phase 2: Core Implementation
 
-- [x] Add `enrichFileSourceData()` and route file-backed sources into the safe enrichment path.
-- [x] Apply session and git priority rules in `collectSessionData()`.
-- [x] Update help text and input validation for the new JSON contract.
+- [x] Preserve file-backed JSON authority in `workflow.ts`.
+- [x] Carry shipped structured-summary support through the shared contract and help text.
+- [x] Document the real JSON contract and the Wave 2 count/confidence fixes.
 - [x] Ship Wave 2 fixes for decision confidence, outcomes truncation, changed-file counts, and template-level count overrides.
 
 ### Phase 3: Verification
@@ -131,7 +131,7 @@ The caller submits JSON data. Normalization validates optional `session` and `gi
 |-----------|-------|-------|
 | Static | Type correctness across new fields and call sites | `npx tsc --noEmit` |
 | Build | Dist output generation for the updated script set | `npx tsc -b` |
-| Manual | JSON-mode examples covering session/git override behavior | Targeted end-to-end payload checks |
+| Manual | JSON-mode examples covering structured summary fields and authoritative file-backed behavior | Targeted end-to-end payload checks |
 | Regression | Wave 2 count, confidence, and outcome behavior | Existing runtime-memory validation flows |
 <!-- /ANCHOR:testing -->
 
@@ -142,10 +142,10 @@ The caller submits JSON data. Normalization validates optional `session` and `gi
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `extractGitContext()` | Internal | Green | Git provenance and description enhancement fall back to explicit JSON input only |
-| `extractSpecFolderContext()` | Internal | Green | Trigger phrases and decisions stop enriching file-backed inputs |
-| `collectSessionData()` template assembly | Internal | Green | Counts and status could regress if override ordering is wrong |
-| Input normalization pipeline | Internal | Green | Malformed JSON blocks could bypass validation |
+| `session-types.ts` shared contract | Internal | Green | Structured-summary fields would disappear from the JSON path if it regressed |
+| `workflow.ts` file-backed authority check | Internal | Green | File-backed JSON could accidentally re-enter stateless flow if it regressed |
+| `collectSessionData()` template assembly | Internal | Green | Counts and confidence could regress if Wave 2 ordering changed |
+| Operator help text and phase docs | Internal | Green | Users and maintainers would be misled if contract docs drifted again |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -153,8 +153,8 @@ The caller submits JSON data. Normalization validates optional `session` and `gi
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: File-backed JSON saves start leaking observations, or explicit metadata overrides stop working.
-- **Procedure**: Revert the phase-specific changes in `workflow.ts`, `collect-session-data.ts`, `session-types.ts`, `input-normalizer.ts`, and `generate-context.ts`, then rerun TypeScript validation and sample save flows.
+- **Trigger**: The structured-summary contract or Wave 2 hardening regress, or the phase docs drift away from shipped behavior again.
+- **Procedure**: Revert the phase-specific updates in `session-types.ts`, `workflow.ts`, `generate-context.ts`, and the phase-016 markdown pack, then rerun TypeScript validation and the targeted runtime-memory tests.
 <!-- /ANCHOR:rollback -->
 
 ---
@@ -163,8 +163,7 @@ The caller submits JSON data. Normalization validates optional `session` and `gi
 ## L2: PHASE DEPENDENCIES
 
 ```
-Types ───► Safe Enrichment ───► Session Aggregation ───► Validation and Docs
-                    └────────► Wave 2 Fixes ────────────┘
+Types ───► Structured JSON Contract ───► Wave 2 Hardening ───► Validation and Docs
 ```
 
 | Phase | Depends On | Blocks |
@@ -183,7 +182,7 @@ Types ───► Safe Enrichment ───► Session Aggregation ───►
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
 | Setup | Medium | ~1 hour |
-| Core Implementation | High | ~4-6 hours |
+| Core Implementation | Medium | ~2-4 hours |
 | Wave 2 Fixes | Medium | ~1-2 hours |
 | Verification | Medium | ~1 hour |
 | **Total** | | **~7-10 hours** |
@@ -198,14 +197,14 @@ Types ───► Safe Enrichment ───► Session Aggregation ───►
 
 - [x] Backward compatibility maintained through optional fields.
 - [x] Verification commands identified before rollout.
-- [x] V8-safety boundary explicitly documented.
+- [x] Structured-first authority boundary explicitly documented.
 
 ### Rollback Procedure
 
-1. Revert the phase-specific code changes.
+1. Revert the phase-specific code and documentation changes.
 2. Re-run TypeScript validation.
-3. Re-test file-backed JSON save scenarios.
-4. Confirm counts, provenance, and safety behavior match pre-change expectations.
+3. Re-test structured JSON save scenarios.
+4. Confirm summary-field support, count handling, and authority behavior match pre-change expectations.
 
 ### Data Reversal
 
@@ -220,12 +219,12 @@ Types ───► Safe Enrichment ───► Session Aggregation ───►
 
 ```
 ┌──────────────┐     ┌────────────────────┐     ┌──────────────────────┐
-│ Type Support │────►│ Safe File Enrich   │────►│ Session Data Output  │
+│ Type Support │────►│ Structured Contract│────►│ Session Data Output  │
 └──────────────┘     └─────────┬──────────┘     └──────────┬───────────┘
                                │                           │
                                ▼                           ▼
                       ┌────────────────────┐      ┌──────────────────────┐
-                      │ Input Validation   │─────►│ Docs and Verification │
+                      │ Wave 2 Hardening   │─────►│ Docs and Verification │
                       └────────────────────┘      └──────────────────────┘
 ```
 
@@ -233,10 +232,10 @@ Types ───► Safe Enrichment ───► Session Aggregation ───►
 
 | Component | Depends On | Produces | Blocks |
 |-----------|------------|----------|--------|
-| Types | None | New field contracts | Enrichment, validation |
-| Safe enrichment | Types | Provenance, descriptions, merged context | Session output |
-| Session output | Safe enrichment | Final status, counts, git fields | Verification |
-| Validation/docs | Types, session output | Usable operator contract and confidence | Completion |
+| Types | None | New structured-summary contracts | Structured path, docs |
+| Structured contract | Types | Authoritative file-backed JSON behavior | Session output |
+| Session output | Structured contract | Final counts, confidence, and outcomes behavior | Verification |
+| Validation/docs | Types, session output | Truthful operator contract and phase record | Completion |
 <!-- /ANCHOR:dependency-graph -->
 
 ---
@@ -244,15 +243,15 @@ Types ───► Safe Enrichment ───► Session Aggregation ───►
 <!-- ANCHOR:critical-path -->
 ## L3: CRITICAL PATH
 
-1. **Add optional type support** - short critical path starter because all later stages depend on the shape.
-2. **Route file-backed JSON mode through safe enrichment** - critical because it restores provenance without reopening contamination.
-3. **Apply explicit session/git priority rules and template count fixes** - critical because incorrect ordering would negate the feature.
-4. **Validate builds and sample save behavior** - critical because the path is correctness-sensitive.
+1. **Add optional structured-summary type support** - short critical path starter because the later contract docs depend on the shape.
+2. **Preserve file-backed JSON authority** - critical because phase 016 did not ship a dedicated hybrid branch.
+3. **Document the Wave 2 count/confidence fixes accurately** - critical because incorrect descriptions would recreate the truthfulness gap.
+4. **Validate builds and phase-pack consistency** - critical because both the scripts and the docs are correctness-sensitive.
 
-**Total Critical Path**: Setup -> safe enrichment -> session aggregation -> verification
+**Total Critical Path**: Setup -> structured contract -> Wave 2 hardening -> verification
 
 **Parallel Opportunities**:
 
-- Help text and validation updates can proceed once the JSON field shape is finalized.
-- Wave 2 fixes can land in parallel after the base safe-enrichment path is stable.
+- Help text and implementation-summary updates can proceed once the structured field shape is finalized.
+- Research archival framing can land in parallel after the corrected phase scope is settled.
 <!-- /ANCHOR:critical-path -->

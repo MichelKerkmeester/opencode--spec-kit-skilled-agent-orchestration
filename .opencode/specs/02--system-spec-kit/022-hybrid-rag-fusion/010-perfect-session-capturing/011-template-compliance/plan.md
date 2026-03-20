@@ -47,7 +47,7 @@ The implementation replaces the draft sidecar-fingerprint idea with one runtime 
 - [x] Header and anchor validators enforce live structural requirements
 - [x] Runtime speckit prompts include inline scaffold guidance and strict post-write validation
 - [x] Targeted fixture, shell, and Vitest coverage added
-- [x] `012-template-compliance` docs updated to reflect the shipped design
+- [x] `011-template-compliance` docs updated to reflect the shipped design
 <!-- /ANCHOR:quality-gates -->
 
 ---

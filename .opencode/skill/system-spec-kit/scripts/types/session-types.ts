@@ -124,6 +124,8 @@ export interface CollectedDataBase {
   SPEC_FOLDER?: string;
   FILES?: CollectedFileEntry[];
   SUMMARY?: string;
+  importanceTier?: string;
+  importance_tier?: string;
   filesModified?: Array<{ path: string; changes_summary?: string }>;
   _manualDecisions?: Array<string | Record<string, unknown>>;
   _manualTriggerPhrases?: string[];

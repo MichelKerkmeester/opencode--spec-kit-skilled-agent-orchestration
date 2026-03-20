@@ -1,8 +1,8 @@
 ---
 title: "Implementation Summary: Stateless Quality Gate Fixes"
-description: "Phase 017 closes the stateless false-positive gap by splitting Gate A severity, adding structured JSON CLI input, and making contamination severity source-aware for Claude Code."
+description: "Phase 014 closes the stateless false-positive gap by splitting Gate A severity, adding structured JSON CLI input, and making contamination severity source-aware for Claude Code."
 trigger_phrases:
-  - "phase 017 implementation summary"
+  - "phase 014 implementation summary"
   - "stateless quality gate summary"
   - "gate a split summary"
 importance_tier: "normal"
@@ -32,7 +32,7 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase 017 removed the last big false-positive trap in stateless session capture. You can now feed structured JSON directly to `generate-context.js`, let V10 stay diagnostic instead of fatal, and keep Claude Code tool-path narration from being misclassified as high-severity contamination. That closes the old `/tmp/save-context-data.json` workaround loop and keeps the save pipeline strict where it matters.
+Phase 014 removed the last big false-positive trap in stateless session capture. You can now feed structured JSON directly to `generate-context.js`, let V10 stay diagnostic instead of fatal, and keep Claude Code tool-path narration from being misclassified as high-severity contamination. That closes the old `/tmp/save-context-data.json` workaround loop and keeps the save pipeline strict where it matters.
 
 ### Tiered stateless quality gating
 
@@ -52,7 +52,7 @@ The contamination filter now understands that Claude Code often documents tool a
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The shipped Phase 017 code was already present in the scripts workspace, so this closeout pass focused on truth reconciliation and regression proof. I re-read the workflow, CLI, contamination, and test seams, fixed the `workflow-e2e` failed-embedding harness so it reliably mocks `indexMemory()` before importing `workflow.ts`, reran the targeted Phase 017 scripts lane, and then rewrote the phase pack plus downstream catalog and playbook docs to match the shipped behavior. The broader scripts and MCP closure evidence remains inherited from the parent pack and phase-016 continuation, while the affected Phase 017 lane now has a fresh 2026-03-18 rerun.
+The shipped Phase 014 code was already present in the scripts workspace, so this closeout pass focused on truth reconciliation and regression proof. I re-read the workflow, CLI, contamination, and test seams, fixed the `workflow-e2e` failed-embedding harness so it reliably mocks `indexMemory()` before importing `workflow.ts`, reran the targeted Phase 014 scripts lane, and then rewrote the phase pack plus downstream catalog and playbook docs to match the shipped behavior. The broader scripts and MCP closure evidence remains inherited from the parent pack and phase-016 continuation, while the affected Phase 014 lane now has a fresh 2026-03-18 rerun.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -86,6 +86,6 @@ The shipped Phase 017 code was already present in the scripts workspace, so this
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Broader validation is inherited** This pass reran the Phase 017 targeted lane directly, but it relies on retained parent closure evidence for the broader scripts and MCP package baselines.
-2. **Live parity proof remains a parent-level obligation** Phase 017 proves the shipped stateless gate and structured-input contract, but retained same-day live CLI artifacts still belong in the parent audit and parity-proof workflow.
+1. **Broader validation is inherited** This pass reran the Phase 014 targeted lane directly, but it relies on retained parent closure evidence for the broader scripts and MCP package baselines.
+2. **Live parity proof remains a parent-level obligation** Phase 014 proves the shipped stateless gate and structured-input contract, but retained same-day live CLI artifacts still belong in the parent audit and parity-proof workflow.
 <!-- /ANCHOR:limitations -->

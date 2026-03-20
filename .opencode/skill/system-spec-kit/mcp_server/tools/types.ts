@@ -43,6 +43,10 @@ export interface ContextArgs {
   mode?: string;
   intent?: string;
   specFolder?: string;
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
+  sharedSpaceId?: string;
   limit?: number;
   sessionId?: string;
   enableDedup?: boolean;
@@ -189,6 +193,8 @@ export interface SharedSpaceUpsertArgs {
   spaceId: string;
   tenantId: string;
   name: string;
+  actorUserId?: string;
+  actorAgentId?: string;
   rolloutEnabled?: boolean;
   rolloutCohort?: string;
   killSwitch?: boolean;
@@ -196,6 +202,9 @@ export interface SharedSpaceUpsertArgs {
 
 export interface SharedSpaceMembershipArgs {
   spaceId: string;
+  tenantId: string;
+  actorUserId?: string;
+  actorAgentId?: string;
   subjectType: 'user' | 'agent';
   subjectId: string;
   role: 'owner' | 'editor' | 'viewer';

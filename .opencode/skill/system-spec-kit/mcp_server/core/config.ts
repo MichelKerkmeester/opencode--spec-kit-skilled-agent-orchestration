@@ -3,7 +3,9 @@
 // ────────────────────────────────────────────────────────────────
 
 import path from 'path';
+import fs from 'fs';
 import os from 'os';
+import { getDbDir } from '../../shared/config';
 import { loadCognitiveConfigFromEnv } from '../configs/cognitive';
 import type { CognitiveConfig } from '../configs/cognitive';
 
@@ -40,13 +42,34 @@ export interface DatabasePaths {
 }
 
 export function resolveDatabasePaths(): DatabasePaths {
-  const databaseDir = process.env.SPEC_KIT_DB_DIR
-    ? path.resolve(process.cwd(), process.env.SPEC_KIT_DB_DIR)
+  // F4.04/F8.02 fix: Use shared getDbDir() for consistent env var resolution
+  // (supports both SPEC_KIT_DB_DIR and SPECKIT_DB_DIR).
+  const configuredDir = getDbDir();
+  const databaseDir = configuredDir
+    ? path.resolve(process.cwd(), configuredDir)
     : path.join(SERVER_DIR, 'database');
+
+  // F4.04: Reject paths that escape the project root (allow homedir and tmpdir for tests).
+  // Use realpathSync to handle macOS /var -> /private/var symlinks.
+  const resolved = path.resolve(databaseDir);
+  const cwd = process.cwd();
+  const allowedPrefixes = [cwd, os.homedir()];
+  try {
+    const tmpDir = os.tmpdir();
+    allowedPrefixes.push(tmpDir);
+    try { allowedPrefixes.push(fs.realpathSync(tmpDir)); } catch { /* ignore */ }
+  } catch { /* os.tmpdir may be unavailable in test environments */ }
+  if (!allowedPrefixes.some(prefix => resolved.startsWith(prefix))) {
+    throw new Error(
+      `Database directory "${resolved}" is outside the project root and home directory. ` +
+      `Set SPEC_KIT_DB_DIR to a path within your project or home directory.`
+    );
+  }
+
   return {
-    databaseDir,
-    databasePath: path.join(databaseDir, 'context-index.sqlite'),
-    dbUpdatedFile: path.join(databaseDir, '.db-updated')
+    databaseDir: resolved,
+    databasePath: path.join(resolved, 'context-index.sqlite'),
+    dbUpdatedFile: path.join(resolved, '.db-updated')
   };
 }
 

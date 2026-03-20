@@ -539,3 +539,17 @@ export type {
   RerankerStatus,
   ProviderConfigEntry,
 };
+
+/**
+ * G3: Internal circuit breaker functions exposed for unit testing.
+ * Not intended for production use outside the test harness.
+ */
+export const __testables = {
+  getCircuit,
+  isCircuitOpen,
+  recordSuccess,
+  recordFailure,
+  circuitBreakers,
+  CIRCUIT_FAILURE_THRESHOLD,
+  CIRCUIT_COOLDOWN_MS,
+};

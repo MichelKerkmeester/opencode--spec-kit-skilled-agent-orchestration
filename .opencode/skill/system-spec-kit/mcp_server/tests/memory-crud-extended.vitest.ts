@@ -1590,7 +1590,7 @@ describe('handleMemoryHealth - Happy Path', () => {
     expect(parsed?.data?.repair?.actions).toContain('orphan_edges_cleaned:2');
   });
 
-  it('EXT-H15: autoRepair cleans orphaned vectors and temp fixture rows', async (ctx) => {
+  it('EXT-H15: autoRepair cleans orphaned vectors but preserves orphaned files under temp-root workspaces', async (ctx) => {
     if (
       !handler?.handleMemoryHealth ||
       !vectorIndex ||
@@ -1625,35 +1625,45 @@ describe('handleMemoryHealth - Happy Path', () => {
         missingVectors: 2,
         orphanedFiles: [
           { id: 101, file_path: '/tmp/specs/123-scratch/a.md', reason: 'File no longer exists on filesystem' },
-          { id: 102, file_path: '/tmp/specs/123-keep/b.md', reason: 'File no longer exists on filesystem' },
+          { id: 102, file_path: '/tmp/workspaces/client-repo/specs/123-keep/b.md', reason: 'File no longer exists on filesystem' },
         ],
         orphanedChunks: 0,
         isConsistent: false,
         cleaned: { vectors: 3, chunks: 0 },
       })
       .mockReturnValueOnce({
-        totalMemories: 40,
+        totalMemories: 42,
         totalVectors: 42,
         orphanedVectors: 0,
         missingVectors: 0,
-        orphanedFiles: [],
+        orphanedFiles: [
+          { id: 101, file_path: '/tmp/specs/123-scratch/a.md', reason: 'File no longer exists on filesystem' },
+          { id: 102, file_path: '/tmp/workspaces/client-repo/specs/123-keep/b.md', reason: 'File no longer exists on filesystem' },
+        ],
         orphanedChunks: 0,
-        isConsistent: true,
+        isConsistent: false,
       });
     vi.mocked(vectorIndex.deleteMemory).mockClear();
 
     const result = await handler.handleMemoryHealth({ autoRepair: true, confirmed: true });
     const parsed = parseResponse(result);
 
-    expect(vi.mocked(vectorIndex.deleteMemory)).toHaveBeenCalledTimes(2);
+    expect(vi.mocked(vectorIndex.deleteMemory)).not.toHaveBeenCalled();
     expect(parsed?.data?.repair?.repaired).toBe(true);
     expect(parsed?.data?.repair?.actions).toContain('orphan_vectors_cleaned:3');
-    expect(parsed?.data?.repair?.actions).toContain('temp_fixture_memories_deleted:2');
+    expect(parsed?.data?.repair?.actions).not.toEqual(
+      expect.arrayContaining([expect.stringMatching(/^temp_fixture_memories_deleted:/)])
+    );
     expect(parsed?.hints).toEqual(
       expect.arrayContaining([
         expect.stringContaining('removed 3 orphaned vector'),
-        expect.stringContaining('removed 2 temp fixture memory row'),
       ])
+    );
+    expect(parsed?.hints).not.toEqual(
+      expect.arrayContaining([expect.stringContaining('temp fixture memory row')])
+    );
+    expect(parsed?.data?.repair?.warnings).toEqual(
+      expect.arrayContaining([expect.stringContaining('orphanedFiles=2')])
     );
   });
 });

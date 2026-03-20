@@ -34,8 +34,8 @@
 // NOT in Stage 4: session dedup — that happens after cache in the
 // Main handler to avoid double-counting and cache pollution.
 
-import type { Stage4Input, Stage4Output, Stage4ReadonlyRow } from './types';
-import { captureScoreSnapshot, verifyScoreInvariant } from './types';
+import type { Stage4Input, Stage4Output, Stage4ReadonlyRow, PipelineRow } from './types';
+import { captureScoreSnapshot, verifyScoreInvariant, resolveEffectiveScore } from './types';
 import { isTRMEnabled, isMultiQueryEnabled } from '../search-flags';
 import { detectEvidenceGap, formatEvidenceGapWarning } from '../evidence-gap-detector';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
@@ -202,18 +202,18 @@ export function filterByMemoryState(
 
 /**
  * Extract the best available numeric score from a row for evidence-gap
- * analysis. Preference order: rrfScore → intentAdjustedScore → score →
- * similarity. Returns 0 when no score field is present.
+ * analysis. Delegates to resolveEffectiveScore (canonical chain in types.ts)
+ * so scoring, sorting, and filtering all agree on precedence and normalization.
+ *
+ * A1 FIX: Previously used a different precedence order (rrfScore first) and
+ * did NOT divide similarity by 100, causing a 100x scale mismatch on rows
+ * that only had the similarity field set.
  *
  * @param row - A Stage4ReadonlyRow to inspect.
- * @returns The best available numeric score, or 0.
+ * @returns The best available numeric score clamped to [0,1], or 0.
  */
 export function extractScoringValue(row: Stage4ReadonlyRow): number {
-  if (typeof row.rrfScore === 'number' && isFinite(row.rrfScore)) return row.rrfScore;
-  if (typeof row.intentAdjustedScore === 'number' && isFinite(row.intentAdjustedScore)) return row.intentAdjustedScore;
-  if (typeof row.score === 'number' && isFinite(row.score)) return row.score;
-  if (typeof row.similarity === 'number' && isFinite(row.similarity)) return row.similarity;
-  return 0;
+  return resolveEffectiveScore(row as unknown as PipelineRow);
 }
 
 /* ───────────────────────────────────────────────────────────────

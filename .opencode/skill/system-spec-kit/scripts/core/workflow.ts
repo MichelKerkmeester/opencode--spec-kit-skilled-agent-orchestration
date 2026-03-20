@@ -86,6 +86,30 @@ import type { FileEntry as ThinningFileEntry, ThinningResult } from './tree-thin
 import { getSourceCapabilities } from '../utils/source-capabilities';
 
 // ───────────────────────────────────────────────────────────────
+// 0. HELPERS
+// ───────────────────────────────────────────────────────────────
+
+/**
+ * Insert content after YAML frontmatter, preserving frontmatter at byte 0.
+ * Frontmatter is a block delimited by `---\n` at position 0 and a closing `---\n`.
+ * If no frontmatter is found, prepends the content (original behavior).
+ */
+function insertAfterFrontmatter(content: string, insertion: string): string {
+  if (!content.startsWith('---')) {
+    return insertion + content;
+  }
+  // Find the closing --- (skip the opening ---)
+  const closingIdx = content.indexOf('\n---', 3);
+  if (closingIdx === -1) {
+    return insertion + content;
+  }
+  // Find the end of the closing --- line
+  const afterClosing = content.indexOf('\n', closingIdx + 4);
+  const insertionPoint = afterClosing === -1 ? content.length : afterClosing + 1;
+  return content.slice(0, insertionPoint) + insertion + content.slice(insertionPoint);
+}
+
+// ───────────────────────────────────────────────────────────────
 // 1. INTERFACES
 // ───────────────────────────────────────────────────────────────
 
@@ -106,6 +130,8 @@ export interface WorkflowOptions {
   ) => Promise<SessionData>;
   /** When true, suppresses non-error console output during execution. */
   silent?: boolean;
+  /** When true, explicitly allows recovery-mode stateless capture. */
+  allowRecovery?: boolean;
 }
 
 /** Result object returned after a successful workflow execution. */
@@ -1286,7 +1312,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       collectedData: preloadedData,
       loadDataFn,
       collectSessionDataFn,
-      silent = false
+      silent = false,
+      allowRecovery = false,
     } = options;
 
     const hasDirectDataContext = (
@@ -1314,7 +1341,11 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       collectedData = (await loadDataFn()) || null;
       log('   Loaded via custom function');
     } else {
-      collectedData = await loadCollectedDataFromLoader({ dataFile: activeDataFile, specFolderArg: activeSpecFolderArg });
+      collectedData = await loadCollectedDataFromLoader({
+        dataFile: activeDataFile,
+        specFolderArg: activeSpecFolderArg,
+        allowRecovery,
+      });
       log(`   Loaded from ${collectedData?._isSimulation ? 'simulation' : 'data source'}`);
     }
 
@@ -1322,11 +1353,19 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       throw new Error('No data available - provide dataFile, collectedData, or loadDataFn');
     }
 
+    if (collectedData._source !== 'file' && collectedData._isSimulation !== true && !allowRecovery) {
+      throw new Error(
+        'RECOVERY_MODE_REQUIRED: Stateless capture is recovery-only. ' +
+        'Pass structured JSON via dataFile/collectedData for routine saves, ' +
+        'or set allowRecovery: true for explicit crash-recovery flows.'
+      );
+    }
+
     // Step 1.5: Stateless mode alignment check
     // When no JSON data file was provided, data comes from the active OpenCode session.
     // Verify the captured content relates to the target spec folder to prevent
     // Cross-spec contamination (e.g., session working on spec A saved to spec B).
-    const isStatelessMode = !activeDataFile && !preloadedData;
+    const isStatelessMode = collectedData._source !== 'file' && collectedData._isSimulation !== true;
     if (isStatelessMode && activeSpecFolderArg && (collectedData.observations || collectedData.FILES)) {
       const alignmentTargets = await resolveAlignmentTargets(activeSpecFolderArg);
       const specAffinityTargets = buildSpecAffinityTargets(activeSpecFolderArg);
@@ -2081,13 +2120,13 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   if (filterStats.qualityScore < 20) {
     const warningHeader = `> **Note:** This session had limited actionable content (quality score: ${filterStats.qualityScore}/100). ${filterStats.noiseFiltered} noise entries and ${filterStats.duplicatesRemoved} duplicates were filtered.\n\n`;
-    files[ctxFilename] = warningHeader + files[ctxFilename];
+    files[ctxFilename] = insertAfterFrontmatter(files[ctxFilename], warningHeader);
     log(`   Warning: Low quality session (${filterStats.qualityScore}/100) - warning header added`);
   }
 
   if (isSimulation) {
     const simWarning = `<!-- WARNING: This is simulated/placeholder content - NOT from a real session -->\n\n`;
-    files[ctxFilename] = simWarning + files[ctxFilename];
+    files[ctxFilename] = insertAfterFrontmatter(files[ctxFilename], simWarning);
     log('   Warning: Simulation mode: placeholder content warning added');
   }
 
@@ -2165,7 +2204,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // CG-07: Add warning banner for medium-quality scores (0.30-0.60 legacy 30-60)
   if (qualityResult.score01 < 0.6 && qualityResult.score01 >= QUALITY_ABORT_THRESHOLD) {
     const mediumQualityWarning = `> **Warning:** Memory quality score is ${qualityResult.score100}/100 (${qualityResult.score01.toFixed(2)}), which is below the recommended threshold of 0.60. Content may have issues with: ${qualityResult.warnings.slice(0, 3).join('; ')}.\n\n`;
-    files[ctxFilename] = mediumQualityWarning + files[ctxFilename];
+    files[ctxFilename] = insertAfterFrontmatter(files[ctxFilename], mediumQualityWarning);
     log(`   Medium quality warning added (score: ${qualityResult.score100}/100)`);
   }
 

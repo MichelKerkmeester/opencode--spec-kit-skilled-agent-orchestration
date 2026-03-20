@@ -85,7 +85,7 @@ Ship a conversation-phase classifier that builds exchange-level semantic signals
 | `scripts/extractors/file-extractor.ts` | Modify | Add test, documentation, performance observation types to observation classification |
 | `scripts/types/session-types.ts` | Modify | Add `TopicCluster`, phase-score types, and richer conversation metadata |
 | `scripts/lib/simulation-factory.ts` | Modify | Keep simulation fallback aligned with the expanded conversation contract |
-| `templates/context_template` | Modify | Update conversation summary wording for phase segments and unique phase count |
+| `.opencode/skill/system-spec-kit/templates/context_template.md` | Modify | Update conversation summary wording for phase segments and unique phase count |
 | `scripts/tests/phase-classification.vitest.ts` | Add | Lock regression coverage for scoring, clustering, observation types, and flow patterns |
 | `scripts/tests/test-extractors-loaders.js` | Modify | Verify repeated phase returns, new flow-pattern values, and new conversation fields |
 | `scripts/tests/test-scripts-modules.js` | Modify | Verify the compatibility wrapper and the new classifier module |

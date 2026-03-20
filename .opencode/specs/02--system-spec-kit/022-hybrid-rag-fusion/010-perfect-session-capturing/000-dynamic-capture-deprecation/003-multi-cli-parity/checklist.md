@@ -80,9 +80,9 @@ This document records the current verified state for this scope. Use [spec.md](s
 <!-- ANCHOR:docs -->
 ## 6. DOCUMENTATION
 
-- [x] CHK-040 [P1] Spec/plan/tasks synchronized [Evidence: All five phase-016 markdown artifacts were rewritten on 2026-03-17 to describe the reopened parity-proof pass, cite `../research/live-cli-proof-2026-03-17.json`, and record the final verified state.]
+- [x] CHK-040 [P1] Spec/plan/tasks synchronized [Evidence: All five phase-016 markdown artifacts were rewritten on 2026-03-17 to describe the reopened parity-proof pass, cite `../../research/live-cli-proof-2026-03-17.json`, and record the final verified state.]
 - [x] CHK-041 [P1] Code comments adequate [Evidence: No new production code paths were added. Existing inline comments on the parity seams remain unchanged and sufficient.]
-- [x] CHK-042 [P2] Phase completion evidence recorded in `implementation-summary.md` [Evidence: `implementation-summary.md` now includes anchored metadata, delivery story, decisions, verification table, limitations, and the retained live-proof citation `../research/live-cli-proof-2026-03-17.json`.]
+- [x] CHK-042 [P2] Phase completion evidence recorded in `implementation-summary.md` [Evidence: `implementation-summary.md` now includes anchored metadata, delivery story, decisions, verification table, limitations, and the retained live-proof citation `../../research/live-cli-proof-2026-03-17.json`.]
 - [x] CHK-043 [P1] The continuation fixes are folded into the canonical Level 2 sections instead of custom addendum headings [Evidence: continuation tasks and checks now live under the standard implementation, testing, and documentation sections.]
 <!-- /ANCHOR:docs -->
 

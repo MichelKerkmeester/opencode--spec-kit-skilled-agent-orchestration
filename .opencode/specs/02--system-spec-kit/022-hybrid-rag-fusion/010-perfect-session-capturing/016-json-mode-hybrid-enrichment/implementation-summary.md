@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary"
-description: "JSON mode now keeps the metadata that file-backed saves were dropping, and it does so without reopening the contamination path that JSON mode was meant to avoid."
+description: "This summary now reflects the narrower JSON-mode work that actually shipped: structured summary-field support and normalization hardening, not the full file-backed hybrid enrichment path originally described in phase 016."
 trigger_phrases:
   - "implementation"
   - "summary"
@@ -31,15 +31,11 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-JSON mode no longer has to choose between safety and usable metadata for file-backed saves. This phase added a safe hybrid enrichment path that restores session status, git provenance, and more realistic counts while keeping observations and raw `FILES` data out of the V8-sensitive output. Wave 2 then tightened the path so confidence values, changed-file counts, and template-level message and tool counts all reflect the real session instead of a degraded fallback.
+The shipped work in this tree is narrower than the original phase write-up. Phase 016 did land richer structured JSON summary support and follow-up normalization hardening, but it did not land the full file-backed hybrid enrichment path that this pack originally claimed.
 
-### Safe File-Source Enrichment
+### Shipped Structured JSON Hardening
 
-You can now send file-backed JSON input and still get meaningful provenance back. `enrichFileSourceData()` restores git metadata, spec-folder triggers, and description improvements, but it deliberately stops short of observation injection so the contamination boundary remains intact.
-
-### Explicit Session and Git Overrides
-
-You can now provide authoritative `session` and `git` blocks in the JSON payload and expect them to win over heuristics. That fixes the cases where the pipeline previously emitted incomplete session status, empty git fields, or implausibly low message and tool counts even though the caller already knew the right values.
+The concrete runtime changes in this tree add JSON-mode summary fields such as `toolCalls` and `exchanges`, keep file-backed JSON authoritative, and tighten related normalization and downstream count handling.
 
 ### Wave 2 Hardening
 
@@ -51,7 +47,7 @@ Wave 2 closed the follow-up correctness gaps that showed up after the base imple
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The delivery happened in two passes. Wave 1 introduced the hybrid enrichment path and the new JSON contract. Wave 2 then hardened the path after deeper review identified count, confidence, and outcome quality gaps. Verification relied on TypeScript checks, build output generation, and targeted JSON-mode examples that exercised the new priority rules and the contamination boundary.
+The delivery happened in two passes. Wave 1 expanded the structured JSON contract that actually shipped. Wave 2 then hardened count, confidence, and outcome handling. This summary has been corrected so it no longer reports an unshipped file-backed enrichment path as completed work.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -61,9 +57,9 @@ The delivery happened in two passes. Wave 1 introduced the hybrid enrichment pat
 
 | Decision | Why |
 |----------|-----|
-| Use `enrichFileSourceData()` instead of full enrichment | It restores safe metadata without reopening observation leakage |
-| Let explicit JSON fields override enrichment and heuristics | The caller knows the session state directly, so their data should win |
-| Keep `session` and `git` as nested payload blocks | The contract stays readable while the internal pipeline remains backward compatible |
+| Keep file-backed JSON authoritative | Routine JSON input should not silently fall back into stateless enrichment |
+| Ship summary-field support first | `toolCalls` and `exchanges` improve saved context without reopening transcript reconstruction complexity |
+| Correct the spec pack to shipped truth | The documentation should not claim a hybrid enrichment path that is absent from the live code |
 | Reassert explicit counts during final template assembly | The overwrite bug happened at the assembly layer, so the fix belongs there |
 | Use explicit > enrichment > provenance for changed-file counts | That order matches the relative confidence of the available data sources |
 <!-- /ANCHOR:decisions -->
@@ -77,8 +73,8 @@ The delivery happened in two passes. Wave 1 introduced the hybrid enrichment pat
 |-------|--------|
 | TypeScript validation | PASS, `npx tsc --noEmit` |
 | Build output | PASS, `npx tsc -b` |
-| File-source contamination boundary | PASS, observations and `FILES` remain excluded from the safe enrichment path |
-| Session/git priority rules | PASS, explicit JSON fields override heuristic values in the documented examples |
+| File-backed JSON authority | PASS, `_source: 'file'` remains the structured path and does not enter stateless enrichment |
+| Structured summary fields | PASS, `toolCalls` and `exchanges` exist in the shared JSON contract |
 | Wave 2 fixes | PASS, confidence, changed-file count, and explicit message/tool counts follow the corrected priority rules |
 <!-- /ANCHOR:verification -->
 
@@ -87,6 +83,6 @@ The delivery happened in two passes. Wave 1 introduced the hybrid enrichment pat
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **No observation enrichment for file-backed JSON mode.** This phase intentionally keeps that path blocked to avoid contamination.
-2. **Count and provenance quality still depend on caller quality when explicit JSON metadata is missing.** The fallback chain helps, but explicit input remains the most accurate source.
+1. **No file-backed hybrid enrichment shipped here.** The earlier draft narrative overstated what landed in the live code.
+2. **If fuller file-backed enrichment is still desired, it needs a fresh follow-up phase.** It should not be inferred from this corrected implementation summary.
 <!-- /ANCHOR:limitations -->

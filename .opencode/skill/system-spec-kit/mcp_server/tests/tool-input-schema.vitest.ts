@@ -246,6 +246,87 @@ describe('memory_search limit contract', () => {
       validateToolArgs('memory_search', { query: 'valid query', unexpected: true } as Record<string, unknown>);
     }).toThrow(/Unknown parameter/);
   });
+
+  it('runtime accepts governed scope fields for memory_search', () => {
+    expect(() => {
+      validateToolArgs('memory_search', {
+        query: 'valid query',
+        tenantId: 'tenant-a',
+        userId: 'user-1',
+        agentId: 'agent-1',
+        sharedSpaceId: 'shared-1',
+      });
+    }).not.toThrow();
+  });
+});
+
+describe('governed retrieval schema propagation', () => {
+  it('public and runtime schemas accept governed scope fields for memory_context', () => {
+    const args = {
+      input: 'resume auth work',
+      tenantId: 'tenant-a',
+      userId: 'user-1',
+      agentId: 'agent-1',
+      sharedSpaceId: 'shared-1',
+    };
+
+    expect(() => {
+      validateToolInputSchema('memory_context', args, TOOL_DEFINITIONS);
+    }).not.toThrow();
+    expect(validateToolArgs('memory_context', args)).toEqual(args);
+  });
+
+  it('public and runtime schemas accept governed scope fields for memory_quick_search', () => {
+    const args = {
+      query: 'auth design',
+      tenantId: 'tenant-a',
+      userId: 'user-1',
+      agentId: 'agent-1',
+      sharedSpaceId: 'shared-1',
+    };
+
+    expect(() => {
+      validateToolInputSchema('memory_quick_search', args, TOOL_DEFINITIONS);
+    }).not.toThrow();
+    expect(validateToolArgs('memory_quick_search', args)).toEqual(args);
+  });
+});
+
+describe('shared-memory admin actor schema', () => {
+  it('runtime accepts exactly one actor identity for shared_space_upsert', () => {
+    expect(() => {
+      validateToolArgs('shared_space_upsert', {
+        spaceId: 'space-1',
+        tenantId: 'tenant-a',
+        name: 'Alpha',
+        actorUserId: 'user-1',
+      });
+    }).not.toThrow();
+  });
+
+  it('runtime rejects shared_space_upsert when actor identity is missing', () => {
+    expect(() => {
+      validateToolArgs('shared_space_upsert', {
+        spaceId: 'space-1',
+        tenantId: 'tenant-a',
+        name: 'Alpha',
+      });
+    }).toThrow(/Exactly one of "actorUserId" or "actorAgentId" is required/);
+  });
+
+  it('runtime rejects shared_space_membership_set when both actor identities are provided', () => {
+    expect(() => {
+      validateToolArgs('shared_space_membership_set', {
+        spaceId: 'space-1',
+        tenantId: 'tenant-a',
+        actorUserId: 'user-1',
+        actorAgentId: 'agent-1',
+        subjectType: 'user',
+        subjectId: 'user-2',
+        role: 'viewer',
+      });
+    }).toThrow(/Provide only one actor identity/);
+  });
 });
 
 describe('memory_health schema', () => {

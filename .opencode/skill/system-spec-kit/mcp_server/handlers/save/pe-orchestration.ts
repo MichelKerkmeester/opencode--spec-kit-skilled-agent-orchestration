@@ -101,23 +101,9 @@ export function evaluateAndApplyPeDecision(
       case predictionErrorGate.ACTION.SUPERSEDE: {
         const existingId = peDecision.existingMemoryId as number;
         console.error(`[PE-Gate] SUPERSEDE: Contradiction detected with memory ${existingId}`);
-        const superseded = markMemorySuperseded(existingId);
-        if (!superseded) {
-          const error = `Failed to mark memory ${existingId} as superseded`;
-          console.warn(`[PE-Gate] ${error}`);
-          return {
-            decision: peDecision,
-            earlyReturn: {
-              status: 'error',
-              id: existingId,
-              specFolder: parsed.specFolder,
-              title: parsed.title ?? '',
-              superseded: false,
-              error,
-            },
-            supersededId: null,
-          };
-        }
+        // Defer markMemorySuperseded() to caller — it must run AFTER the new
+        // record is created, inside the same transaction, to avoid orphaning
+        // the old record if new-record creation fails (F1.01).
         supersededId = existingId;
         break;
       }

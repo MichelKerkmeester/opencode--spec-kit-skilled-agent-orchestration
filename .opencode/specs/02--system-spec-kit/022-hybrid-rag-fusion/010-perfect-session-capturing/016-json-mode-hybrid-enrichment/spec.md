@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: JSON Mode Hybrid Enrichment (Phase 1B)"
-description: "JSON-mode memory saves were dropping session and git metadata because file-backed inputs skipped all enrichment. This phase restores safe metadata enrichment without reintroducing V8 contamination risk."
+description: "This phase documented a broader hybrid-enrichment design, but the shipped implementation in this tree is narrower: JSON-mode type and normalization hardening landed, while the full file-backed hybrid enrichment path did not."
 trigger_phrases:
   - "json mode"
   - "hybrid enrichment"
@@ -18,9 +18,9 @@ contextType: "general"
 
 ## EXECUTIVE SUMMARY
 
-JSON-mode saves became the safe path for multi-spec sessions, but that safety came with a metadata blind spot: file-backed inputs skipped all enrichment and lost session status, git provenance, and realistic tool and message counts. This phase restores the missing metadata through a selective hybrid path that keeps risky observation injection disabled.
+JSON-mode saves became the safe path for multi-spec sessions, but the implementation that actually shipped in this tree is narrower than the original phase design. The code now accepts richer structured JSON summaries such as `toolCalls` and `exchanges`, but it does not ship the full file-backed hybrid enrichment path originally described here.
 
-**Key Decisions**: Split file-source enrichment into a safe `enrichFileSourceData()` path, and let explicit JSON `session` and `git` fields override heuristics when callers know better than the pipeline.
+**Key Decisions**: Preserve the structured JSON contract improvements that shipped, and correct this spec pack so it no longer claims unshipped file-backed enrichment behavior.
 
 **Critical Dependencies**: Existing git/spec-folder extractors, session aggregation logic, and input normalization all had to stay backward compatible with older JSON payloads.
 
@@ -48,11 +48,11 @@ JSON-mode saves became the safe path for multi-spec sessions, but that safety ca
 
 ### Problem Statement
 
-JSON-mode memory saves for file-backed inputs were shipping incomplete metadata. Session state stayed stuck at heuristic defaults, git fields often came back empty, `_sourceSessionId` was missing, counts were understated, and short file descriptions stayed generic because `workflow.ts` returned early for `_source: 'file'`.
+The original phase-016 pack had drifted away from the code that actually shipped. It described a broader file-backed hybrid enrichment path, while the live implementation in this tree only landed structured-summary support, file-backed JSON authority preservation, and later Wave 2 hardening.
 
 ### Purpose
 
-Restore safe metadata enrichment for JSON mode so saved context is complete enough to be useful, while still blocking the observation and `FILES` injection paths that risk V8 contamination.
+Correct the phase record so it matches the shipped implementation, preserve the useful structured JSON contract additions that did land, and keep the Wave 2 hardening documented without implying an unimplemented hybrid branch exists.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -62,15 +62,14 @@ Restore safe metadata enrichment for JSON mode so saved context is complete enou
 
 ### In Scope
 
-- Add `SessionMetadata` and `GitMetadata` support to the JSON-mode data model.
-- Introduce `enrichFileSourceData()` to enrich file-backed inputs without injecting observations.
-- Let explicit `session.*` and `git.*` fields override heuristic session aggregation.
+- Add richer structured JSON support for caller-authored session summaries such as `toolCalls` and `exchanges`.
+- Harden JSON-mode normalization and help text for the shipped structured-input contract.
 - Update input validation and `generate-context` help text for the new JSON shape.
 - Ship Wave 2 fixes for decision confidence, truncated outcomes, `git_changed_file_count`, and count override behavior.
 
 ### Out of Scope
 
-- Full observation enrichment for file-backed JSON mode, because that would reopen the contamination path.
+- Full file-backed hybrid enrichment for JSON mode; that design did not ship in this tree.
 - Quality scorer redesign or broader retrieval-scoring changes.
 - Replacing stateless or JSON-primary save contracts outside this phase.
 
@@ -78,11 +77,12 @@ Restore safe metadata enrichment for JSON mode so saved context is complete enou
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/skill/system-spec-kit/scripts/types/session-types.ts` | Modify | Add `SessionMetadata`, `GitMetadata`, and supporting optional fields |
-| `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | Modify | Add file-source enrichment path and Wave 2 count fixes |
-| `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts` | Modify | Consume explicit session and git metadata with priority rules |
-| `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts` | Modify | Validate new JSON blocks and decision confidence input |
-| `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | Modify | Document the `session` and `git` JSON blocks |
+| `.opencode/skill/system-spec-kit/scripts/types/session-types.ts` | Modify | Add shipped structured JSON summary types such as `toolCalls` and `exchanges` |
+| `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` | Modify | Keep existing JSON/file authority behavior; no file-source enrichment path shipped here |
+| `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts` | Modify | Preserve the shipped Wave 2 count, confidence, and outcome handling |
+| `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts` | Modify | Normalize structured JSON inputs without inventing an unshipped nested metadata contract |
+| `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | Modify | Document the shipped structured JSON fields and structured-first save workflow |
+| `016-json-mode-hybrid-enrichment/*.md` | Modify | Correct the phase pack so it matches the live code and archives the non-shipped design analysis clearly |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -94,21 +94,21 @@ Restore safe metadata enrichment for JSON mode so saved context is complete enou
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | File-backed JSON saves preserve explicit session status and completion metadata | `session.status` and `session.completionPercent` override heuristic values in generated output |
-| REQ-002 | File-backed JSON saves preserve explicit git metadata | `git.headRef`, `git.commitRef`, and related fields flow into output when provided |
-| REQ-003 | Hybrid enrichment keeps V8 safety intact | `enrichFileSourceData()` skips observations and `FILES` injection for file-backed inputs |
-| REQ-004 | Existing JSON payloads remain backward compatible | Payloads without `session` or `git` blocks still produce valid output through fallback behavior |
-| REQ-005 | Input validation rejects malformed `session` and `git` blocks | Arrays, primitives, and invalid numeric fields are rejected before save-time processing |
+| REQ-001 | Structured JSON summaries remain supported | `toolCalls` and `exchanges` are accepted by the shared JSON contract |
+| REQ-002 | JSON mode remains authoritative for file-backed input | File-backed JSON stays on the structured path instead of entering implicit stateless enrichment |
+| REQ-003 | The spec pack must not claim unshipped hybrid enrichment behavior | This spec and its addenda describe the narrower shipped contract accurately |
+| REQ-004 | Existing JSON payloads remain backward compatible | Payloads that omit the newer structured-summary fields still produce valid output |
+| REQ-005 | Operator-facing documentation matches the shipped JSON contract | CLI help text, spec docs, and implementation summary describe the same structured fields and authority rules |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-006 | File descriptions improve when git context is available | Short descriptions can be upgraded from git commit subjects |
-| REQ-007 | Spec-folder triggers and decisions still merge into file-backed context | Trigger phrases and decisions appear in enriched output without observation leakage |
-| REQ-008 | Decision confidence can be caller-controlled | Explicit confidence values normalize to the stored confidence format |
-| REQ-009 | `git_changed_file_count` reflects real changed-file information | Explicit counts, enrichment counts, and provenance fallback follow a stable priority chain |
-| REQ-010 | Template output honors explicit message and tool counts | Session-level overrides survive template assembly for JSON mode |
+| REQ-006 | Wave 2 decision confidence behavior remains documented accurately | Explicit confidence handling is preserved in the implementation narrative and verification notes |
+| REQ-007 | Wave 2 changed-file count behavior remains documented accurately | The stable priority chain for `git_changed_file_count` is preserved in the implementation narrative and verification notes |
+| REQ-008 | Template output honors explicit message and tool counts | Session-level overrides survive template assembly for JSON mode |
+| REQ-009 | Research artifacts that target the abandoned design are explicitly marked archival | `research.md` makes its historical/non-shipped scope unambiguous |
+| REQ-010 | The phase pack validates as a truthful record of shipped work | Plan, tasks, checklist, ADR, summary, and research note no longer conflict about what landed |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -116,21 +116,20 @@ Restore safe metadata enrichment for JSON mode so saved context is complete enou
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: JSON-mode saves can emit `COMPLETED` and `100%` when the caller provides explicit session completion data.
-- **SC-002**: Git fields and source session ID are present for file-backed JSON saves when either the caller or enrichment path can supply them.
-- **SC-003**: No file-backed JSON path injects observations or raw `FILES` arrays into the V8-sensitive memory payload.
+- **SC-001**: Structured JSON fields such as `toolCalls` and `exchanges` flow through the JSON contract.
+- **SC-002**: File-backed JSON remains on the structured path and does not implicitly enter stateless enrichment.
+- **SC-003**: This spec pack no longer claims unshipped `enrichFileSourceData()` behavior.
 - **SC-004**: Older JSON payloads still succeed without adding the new fields.
 - **SC-005**: Wave 2 fixes preserve accurate decision confidence, outcomes text, changed-file counts, and session counts.
 - **SC-006**: The phase documentation validates cleanly under strict level-3 rules.
 
 ### Acceptance Scenarios
 
-1. **Given** a file-backed JSON payload with explicit `session.status` and `session.completionPercent`, **when** save-time processing runs, **then** the generated output reflects those caller-supplied values.
-2. **Given** a file-backed JSON payload with explicit git metadata, **when** the hybrid path runs, **then** the generated output keeps those git fields instead of falling back to empty defaults.
-3. **Given** file-backed JSON input without explicit session or git blocks, **when** the hybrid path runs, **then** safe enrichment restores provenance and descriptions without breaking legacy fallback behavior.
-4. **Given** file-backed JSON input, **when** `enrichFileSourceData()` runs, **then** observations and raw `FILES` arrays remain excluded from the final memory payload.
-5. **Given** explicit confidence, changed-file counts, and session counts in the payload, **when** Wave 2 hardening logic runs, **then** those values survive normalization and final template assembly.
-6. **Given** an older JSON payload that omits the new fields, **when** the save pipeline runs, **then** it still succeeds through backward-compatible defaults.
+1. **Given** a structured JSON payload with `toolCalls` and `exchanges`, **when** save-time processing runs, **then** the shared contract accepts those fields and the docs describe them consistently.
+2. **Given** a file-backed JSON payload, **when** save-time processing runs, **then** it stays on the authoritative structured path and does not enter implicit stateless enrichment.
+3. **Given** the phase-016 doc pack, **when** a maintainer reads spec, plan, tasks, checklist, ADR, summary, and research, **then** they see one consistent story about the narrower shipped scope.
+4. **Given** Wave 2 hardening notes for confidence, changed-file counts, and explicit counts, **when** the phase documentation is reviewed, **then** those behaviors are described without inventing a non-shipped branch.
+5. **Given** an older JSON payload that omits the newer structured fields, **when** the save pipeline runs, **then** it still succeeds through backward-compatible defaults.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -140,10 +139,10 @@ Restore safe metadata enrichment for JSON mode so saved context is complete enou
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `extractGitContext()` and `extractSpecFolderContext()` remain reusable and stable | Hybrid enrichment would lose automatic provenance if they break | Keep the new path additive and allow explicit JSON metadata to override missing enrichment |
-| Dependency | `collectSessionData()` still drives template assembly | Incorrect priority ordering would reintroduce bad counts or stale status | Apply explicit override ordering before heuristics and again during template assembly |
-| Risk | Hybrid enrichment accidentally reintroduces observation leakage | High | Explicitly skip `gitContext.observations` and `gitContext.FILES` in the file-source path |
-| Risk | Callers send partial or malformed JSON blocks | Medium | Validate object shape and numeric boundaries before processing |
+| Dependency | `session-types.ts` shared contract remains stable | Structured-summary support would drift out of the save path if it regressed | Keep the shipped `toolCalls` and `exchanges` fields optional and documented |
+| Dependency | `workflow.ts` file-backed authority check remains stable | File-backed JSON could accidentally re-enter stateless flow | Keep `_source: 'file'` authoritative and test it explicitly |
+| Risk | Phase docs drift back toward the abandoned hybrid design | High | Keep the pack synchronized and archive non-shipped research clearly |
+| Risk | Operator guidance diverges from the live JSON contract | Medium | Keep `generate-context.ts` help text and the phase summary aligned |
 | Risk | Type additions break existing callers | Medium | Keep all new fields optional and preserve legacy fallback behavior |
 <!-- /ANCHOR:risks -->
 
@@ -154,15 +153,15 @@ Restore safe metadata enrichment for JSON mode so saved context is complete enou
 
 ### Performance
 
-- **NFR-P01**: Hybrid enrichment must stay additive and avoid expensive new scans beyond the existing git/spec-folder extraction calls.
+- **NFR-P01**: The corrected structured path must stay additive and avoid introducing a new enrichment branch or extra heavy scans.
 
 ### Security
 
-- **NFR-S01**: Input validation must reject malformed `session` and `git` blocks before they can influence generated context.
+- **NFR-S01**: The shipped structured contract must be documented truthfully so operators do not rely on fields the live code does not actually support in this phase.
 
 ### Reliability
 
-- **NFR-R01**: File-backed JSON saves must continue to work even when git extraction fails, falling back to explicit JSON metadata or legacy heuristics.
+- **NFR-R01**: File-backed JSON saves must continue to work on the authoritative structured path without silently reopening stateless reconstruction.
 
 ---
 
@@ -170,14 +169,14 @@ Restore safe metadata enrichment for JSON mode so saved context is complete enou
 
 ### Data Boundaries
 
-- Empty `session` or `git` blocks: accept the object shape and fall back to heuristics for missing fields.
+- Older payloads without `toolCalls` or `exchanges`: continue to succeed through backward-compatible defaults.
 - Confidence input as `85` or `0.85`: normalize both to the same stored confidence value.
-- Missing changed-file counts: fall back from explicit JSON to enrichment-derived `_gitChangedFileCount`, then to provenance counting.
+- Missing changed-file counts: preserve the documented Wave 2 fallback chain without implying a non-shipped enrichment branch.
 
 ### Error Scenarios
 
-- `session` or `git` provided as arrays or primitives: reject during normalization.
-- Git extraction failure in hybrid mode: degrade gracefully and keep JSON-provided git metadata if present.
+- Phase readers infer a shipped `enrichFileSourceData()` branch from stale docs: prevent this by keeping the pack synchronized.
+- Research findings from the abandoned design are mistaken for current regressions: prevent this with explicit archival framing.
 - Truncated observation titles ending with `...`: use the longer narrative where available to avoid losing meaning.
 
 ---
@@ -199,32 +198,32 @@ Restore safe metadata enrichment for JSON mode so saved context is complete enou
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
 |---------|-------------|--------|------------|------------|
-| R-001 | File-backed JSON mode leaks observations into saved context | High | Low | Hard-block observation and `FILES` injection in `enrichFileSourceData()` |
-| R-002 | Explicit session counts are overwritten during template assembly | Medium | Medium | Reassert session-derived counts after conversation-derived spreads |
-| R-003 | Git metadata remains empty when enrichment fails | Medium | Medium | Let explicit JSON metadata win before fallback logic runs |
-| R-004 | New validation rejects valid legacy payloads | Medium | Low | Restrict validation to new optional blocks and keep absent fields backward compatible |
+| R-001 | Phase 016 is read as shipping an unimplemented hybrid branch | High | Medium | Keep the phase pack synchronized and explicit about the narrower shipped scope |
+| R-002 | Explicit message and tool counts are overwritten during template assembly | Medium | Medium | Preserve the documented Wave 2 reassertion step |
+| R-003 | Operator guidance diverges from the live JSON contract | Medium | Medium | Keep CLI help text, implementation summary, and spec pack aligned |
+| R-004 | New structured-summary fields break legacy payloads | Medium | Low | Keep them optional and preserve backward-compatible defaults |
 
 ---
 
 ## 11. USER STORIES
 
-### US-001: Accurate JSON Save Metadata (Priority: P0)
+### US-001: Truthful Phase Record (Priority: P0)
 
-**As a** calling AI composing JSON save input, **I want** my explicit session and git metadata to flow into the saved memory, **so that** the saved context matches the real session instead of a weak heuristic guess.
+**As a** maintainer reading phase 016, **I want** the spec pack to describe only the behavior that actually shipped, **so that** later phases do not build on a false premise.
 
 **Acceptance Criteria**:
-1. Given a JSON payload with `session.status` and `session.completionPercent`, when save-time processing runs, then the output reflects those values.
-2. Given a JSON payload with explicit git metadata, when save-time processing runs, then the output uses those values instead of empty defaults.
+1. Given the phase docs, when I review them end to end, then they consistently describe structured-summary support rather than a non-shipped hybrid branch.
+2. Given the archival research note, when I read it, then it is obvious that it analyzed the abandoned design rather than the live phase behavior.
 
 ---
 
-### US-002: Safe File-Backed Enrichment (Priority: P0)
+### US-002: Structured JSON Contract Support (Priority: P0)
 
-**As a** maintainer of the session-capture pipeline, **I want** file-backed JSON mode to enrich only safe metadata, **so that** we regain useful provenance without reintroducing contamination.
+**As a** calling AI composing JSON save input, **I want** the shipped structured-summary fields to remain supported, **so that** saved context can include curated `toolCalls` and `exchanges` without reopening transcript reconstruction.
 
 **Acceptance Criteria**:
-1. Given file-backed JSON input, when hybrid enrichment runs, then it can merge safe provenance and description improvements.
-2. Given file-backed JSON input, when hybrid enrichment runs, then observations and raw `FILES` arrays are not injected.
+1. Given a structured JSON payload with `toolCalls` and `exchanges`, when save-time processing runs, then the shared contract accepts those fields.
+2. Given file-backed JSON input, when save-time processing runs, then it remains on the authoritative structured path.
 
 ---
 

@@ -2,6 +2,9 @@
 // MODULE: Ranking Contract
 // ───────────────────────────────────────────────────────────────
 
+import { resolveEffectiveScore } from './types';
+import type { PipelineRow } from './types';
+
 /**
  * Stage 2 graph-walk additive bonus cap.
  *
@@ -25,6 +28,10 @@ export function clampStage2GraphBonus(value: number): number {
 /**
  * Compare rows deterministically so ties resolve the same way across runs.
  *
+ * A1 FIX: Primary score now delegates to resolveEffectiveScore (canonical chain
+ * in types.ts) so sorting, filtering, and score resolution always agree.
+ * Tiebreaker on raw similarity is preserved (different purpose than score resolution).
+ *
  * @param a - First ranked row.
  * @param b - Second ranked row.
  * @returns Negative when `a` should sort before `b`.
@@ -33,23 +40,12 @@ export function compareDeterministicRows(
   a: Record<string, unknown> & { id: number },
   b: Record<string, unknown> & { id: number },
 ): number {
-  const aScore = typeof a.score === 'number' && Number.isFinite(a.score)
-    ? a.score
-    : (typeof a.intentAdjustedScore === 'number' && Number.isFinite(a.intentAdjustedScore)
-      ? a.intentAdjustedScore
-      : (typeof a.rrfScore === 'number' && Number.isFinite(a.rrfScore)
-        ? a.rrfScore
-        : (typeof a.similarity === 'number' && Number.isFinite(a.similarity) ? a.similarity / 100 : 0)));
-  const bScore = typeof b.score === 'number' && Number.isFinite(b.score)
-    ? b.score
-    : (typeof b.intentAdjustedScore === 'number' && Number.isFinite(b.intentAdjustedScore)
-      ? b.intentAdjustedScore
-      : (typeof b.rrfScore === 'number' && Number.isFinite(b.rrfScore)
-        ? b.rrfScore
-        : (typeof b.similarity === 'number' && Number.isFinite(b.similarity) ? b.similarity / 100 : 0)));
+  const aScore = resolveEffectiveScore(a as PipelineRow);
+  const bScore = resolveEffectiveScore(b as PipelineRow);
 
   if (bScore !== aScore) return bScore - aScore;
 
+  // Tiebreaker: raw similarity (preserve existing behavior)
   const aSimilarity = typeof a.similarity === 'number' && Number.isFinite(a.similarity) ? a.similarity : 0;
   const bSimilarity = typeof b.similarity === 'number' && Number.isFinite(b.similarity) ? b.similarity : 0;
   if (bSimilarity !== aSimilarity) return bSimilarity - aSimilarity;

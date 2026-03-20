@@ -101,6 +101,10 @@ const memoryContextSchema = getSchema({
   mode: z.enum(['auto', 'quick', 'deep', 'focused', 'resume']).optional(),
   intent: intentEnum.optional(),
   specFolder: optionalPathString(),
+  tenantId: z.string().optional(),
+  userId: z.string().optional(),
+  agentId: z.string().optional(),
+  sharedSpaceId: z.string().optional(),
   limit: positiveIntMax(100).optional(),
   sessionId: z.string().optional(),
   enableDedup: z.boolean().optional(),
@@ -114,6 +118,10 @@ const memorySearchSchema = getSchema({
   query: z.string().min(2).max(1000).optional(),
   concepts: z.array(z.string().min(1)).min(2).max(5).optional(),
   specFolder: optionalPathString(),
+  tenantId: z.string().optional(),
+  userId: z.string().optional(),
+  agentId: z.string().optional(),
+  sharedSpaceId: z.string().optional(),
   limit: positiveIntMax(100).optional(),
   sessionId: z.string().optional(),
   enableDedup: z.boolean().optional(),
@@ -151,6 +159,17 @@ const memorySearchSchema = getSchema({
   }
 });
 
+// E3: Simplified search schema — 3 params only
+const memoryQuickSearchSchema = getSchema({
+  query: z.string().min(2).max(1000),
+  limit: positiveIntMax(100).optional(),
+  specFolder: optionalPathString(),
+  tenantId: z.string().optional(),
+  userId: z.string().optional(),
+  agentId: z.string().optional(),
+  sharedSpaceId: z.string().optional(),
+});
+
 const memoryMatchTriggersSchema = getSchema({
   prompt: z.string().min(1),
   limit: positiveIntMax(100).optional(),
@@ -165,6 +184,18 @@ const memorySaveSchema = getSchema({
   dryRun: z.boolean().optional(),
   skipPreflight: z.boolean().optional(),
   asyncEmbedding: z.boolean().optional(),
+  // Governance args — accepted by tool-schemas.ts tool definition and
+  // validated at runtime by scope-governance.ts (F3.04 fix).
+  tenantId: z.string().optional(),
+  userId: z.string().optional(),
+  agentId: z.string().optional(),
+  sessionId: z.string().optional(),
+  sharedSpaceId: z.string().optional(),
+  provenanceSource: z.string().optional(),
+  provenanceActor: z.string().optional(),
+  governedAt: z.string().optional(),
+  retentionPolicy: z.enum(['keep', 'ephemeral', 'shared']).optional(),
+  deleteAfter: z.string().optional(),
 });
 
 // Discriminated delete: branch 1 requires `id` (single-record delete).
@@ -354,6 +385,7 @@ const memoryIngestCancelSchema = getSchema({
 export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
   memory_context: memoryContextSchema as unknown as ToolInputSchema,
   memory_search: memorySearchSchema as unknown as ToolInputSchema,
+  memory_quick_search: memoryQuickSearchSchema as unknown as ToolInputSchema,
   memory_match_triggers: memoryMatchTriggersSchema as unknown as ToolInputSchema,
   memory_save: memorySaveSchema as unknown as ToolInputSchema,
   memory_list: memoryListSchema as unknown as ToolInputSchema,
@@ -384,15 +416,56 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
     spaceId: z.string(),
     tenantId: z.string(),
     name: z.string(),
+    actorUserId: z.string().optional(),
+    actorAgentId: z.string().optional(),
     rolloutEnabled: z.boolean().optional(),
     rolloutCohort: z.string().optional(),
     killSwitch: z.boolean().optional(),
+  }).superRefine((value, ctx) => {
+    const hasActorUser = typeof value.actorUserId === 'string' && value.actorUserId.trim().length > 0;
+    const hasActorAgent = typeof value.actorAgentId === 'string' && value.actorAgentId.trim().length > 0;
+    if (!hasActorUser && !hasActorAgent) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Exactly one of "actorUserId" or "actorAgentId" is required.',
+        path: ['actorUserId'],
+      });
+      return;
+    }
+    if (hasActorUser && hasActorAgent) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Provide only one actor identity: "actorUserId" or "actorAgentId".',
+        path: ['actorAgentId'],
+      });
+    }
   }) as unknown as ToolInputSchema,
   shared_space_membership_set: getSchema({
     spaceId: z.string(),
+    tenantId: z.string(),
+    actorUserId: z.string().optional(),
+    actorAgentId: z.string().optional(),
     subjectType: z.enum(['user', 'agent']),
     subjectId: z.string(),
     role: z.enum(['owner', 'editor', 'viewer']),
+  }).superRefine((value, ctx) => {
+    const hasActorUser = typeof value.actorUserId === 'string' && value.actorUserId.trim().length > 0;
+    const hasActorAgent = typeof value.actorAgentId === 'string' && value.actorAgentId.trim().length > 0;
+    if (!hasActorUser && !hasActorAgent) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Exactly one of "actorUserId" or "actorAgentId" is required.',
+        path: ['actorUserId'],
+      });
+      return;
+    }
+    if (hasActorUser && hasActorAgent) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Provide only one actor identity: "actorUserId" or "actorAgentId".',
+        path: ['actorAgentId'],
+      });
+    }
   }) as unknown as ToolInputSchema,
   shared_memory_status: getSchema({
     tenantId: z.string().optional(),
@@ -403,10 +476,11 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
 };
 
 const ALLOWED_PARAMETERS: Record<string, string[]> = {
-  memory_context: ['input', 'mode', 'intent', 'specFolder', 'limit', 'sessionId', 'enableDedup', 'includeContent', 'includeTrace', 'tokenUsage', 'anchors'],
-  memory_search: ['query', 'concepts', 'specFolder', 'limit', 'sessionId', 'enableDedup', 'tier', 'contextType', 'useDecay', 'includeContiguity', 'includeConstitutional', 'enableSessionBoost', 'enableCausalBoost', 'includeContent', 'anchors', 'min_quality_score', 'minQualityScore', 'bypassCache', 'rerank', 'applyLengthPenalty', 'applyStateLimits', 'minState', 'intent', 'autoDetectIntent', 'trackAccess', 'includeArchived', 'mode', 'includeTrace'],
+  memory_context: ['input', 'mode', 'intent', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'limit', 'sessionId', 'enableDedup', 'includeContent', 'includeTrace', 'tokenUsage', 'anchors'],
+  memory_search: ['query', 'concepts', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'limit', 'sessionId', 'enableDedup', 'tier', 'contextType', 'useDecay', 'includeContiguity', 'includeConstitutional', 'enableSessionBoost', 'enableCausalBoost', 'includeContent', 'anchors', 'min_quality_score', 'minQualityScore', 'bypassCache', 'rerank', 'applyLengthPenalty', 'applyStateLimits', 'minState', 'intent', 'autoDetectIntent', 'trackAccess', 'includeArchived', 'mode', 'includeTrace'],
+  memory_quick_search: ['query', 'limit', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId'],
   memory_match_triggers: ['prompt', 'limit', 'session_id', 'turnNumber', 'include_cognitive'],
-  memory_save: ['filePath', 'force', 'dryRun', 'skipPreflight', 'asyncEmbedding'],
+  memory_save: ['filePath', 'force', 'dryRun', 'skipPreflight', 'asyncEmbedding', 'tenantId', 'userId', 'agentId', 'sessionId', 'sharedSpaceId', 'provenanceSource', 'provenanceActor', 'governedAt', 'retentionPolicy', 'deleteAfter'],
   memory_list: ['limit', 'offset', 'specFolder', 'sortBy', 'includeChunks'],
   memory_stats: ['folderRanking', 'excludePatterns', 'includeScores', 'includeArchived', 'limit'],
   memory_health: ['reportMode', 'limit', 'specFolder', 'autoRepair', 'confirmed'],
@@ -431,8 +505,8 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_ingest_start: ['paths', 'specFolder'],
   memory_ingest_status: ['jobId'],
   memory_ingest_cancel: ['jobId'],
-  shared_space_upsert: ['spaceId', 'tenantId', 'name', 'rolloutEnabled', 'rolloutCohort', 'killSwitch'],
-  shared_space_membership_set: ['spaceId', 'subjectType', 'subjectId', 'role'],
+  shared_space_upsert: ['spaceId', 'tenantId', 'name', 'actorUserId', 'actorAgentId', 'rolloutEnabled', 'rolloutCohort', 'killSwitch'],
+  shared_space_membership_set: ['spaceId', 'tenantId', 'actorUserId', 'actorAgentId', 'subjectType', 'subjectId', 'role'],
   shared_memory_status: ['tenantId', 'userId', 'agentId'],
   shared_memory_enable: [],
 };

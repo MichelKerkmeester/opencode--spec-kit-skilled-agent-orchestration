@@ -177,6 +177,7 @@ interface LoadOptions {
   specFolderArg?: string | null;
   preferredCaptureSource?: CaptureDataSource | null;
   sessionId?: string | null;
+  allowRecovery?: boolean;
 }
 
 function parseEpochMs(rawValue: string | undefined): number | null {
@@ -485,6 +486,7 @@ async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
     ? options.preferredCaptureSource
     : inferPreferredCaptureSourceFromEnv();
   const sessionId = options?.sessionId ?? null;
+  const allowRecovery = options?.allowRecovery ?? false;
 
   // Priority 1: Data file provided via command line
   if (dataFile) {
@@ -554,17 +556,23 @@ async function loadCollectedData(options?: LoadOptions): Promise<LoadedData> {
     }
   }
 
+  if (!allowRecovery) {
+    throw new Error(
+      'RECOVERY_MODE_REQUIRED: Routine saves require structured JSON input via --stdin, --json, or a JSON file. ' +
+      'Use --recovery <spec-folder> only for explicit crash recovery.'
+    );
+  }
+
   // DEPRECATION: Dynamic session capture is deprecated for routine saves.
   // JSON mode (AI-composed structured data) is strictly preferred because the AI
   // has better information about its own session than any DB query can reconstruct.
   // Dynamic capture is retained only as a recovery-only fallback for crash/kill scenarios.
   console.warn(
-    '   ⚠️  DEPRECATED: Falling back to dynamic session capture (stateless mode). ' +
-    'This path is deprecated for routine saves. Prefer JSON mode: ' +
-    'compose structured JSON and pass via --json, --stdin, or temp file. ' +
-    'Dynamic capture is retained only for crash-recovery scenarios.'
+    '   ⚠️  RECOVERY ONLY: Falling back to dynamic session capture (stateless mode). ' +
+    'Routine saves must use structured JSON via --json, --stdin, or temp file. ' +
+    'Dynamic capture is allowed here only because --recovery was explicitly requested.'
   );
-  structuredLog('warn', 'Dynamic session capture fallback invoked (deprecated)', {
+  structuredLog('warn', 'Dynamic session capture fallback invoked (recovery-only)', {
     specFolderArg,
     preferredCaptureSource: preferredCaptureSource || 'auto',
   });

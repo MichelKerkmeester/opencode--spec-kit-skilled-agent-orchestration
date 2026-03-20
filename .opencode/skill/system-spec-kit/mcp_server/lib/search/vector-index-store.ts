@@ -19,7 +19,7 @@ import * as path from 'path';
 import * as os from 'os';
 import * as fs from 'fs';
 import { validateFilePath } from '../utils/path-security';
-import { SERVER_DIR } from '../../core/config';
+import { SERVER_DIR, DATABASE_PATH, DATABASE_DIR } from '../../core/config';
 import { IVectorStore } from '../interfaces/vector-store';
 import * as embeddingsProvider from '../providers/embeddings';
 import { computeInterferenceScoresBatch } from '../scoring/interference-scoring';
@@ -122,6 +122,12 @@ export const EMBEDDING_DIM = 768;
  * @returns The embedding dimension.
  */
 export function get_embedding_dim(): number {
+  // F9.11 fix: Honor explicit EMBEDDING_DIM env var first
+  if (process.env.EMBEDDING_DIM) {
+    const explicit = parseInt(process.env.EMBEDDING_DIM, 10);
+    if (Number.isFinite(explicit) && explicit > 0) return explicit;
+  }
+
   try {
     const embeddings = embeddingsProvider;
 
@@ -210,13 +216,12 @@ export function validate_embedding_dimension(): { valid: boolean; stored: number
    2. DATABASE PATH AND SECURITY
 ----------------------------------------------------------------*/
 
-// P1-05 FIX: Unified env var precedence
-const DEFAULT_DB_DIR = process.env.SPEC_KIT_DB_DIR ||
-  process.env.MEMORY_DB_DIR ||
-  path.resolve(__dirname, '../../database');
+// F4.04/F8.02 fix: Use centralized DB path from core/config.ts
+// Legacy env vars (MEMORY_DB_DIR, MEMORY_DB_PATH) are still honored as overrides
+// for backward compatibility, but the canonical source is resolveDatabasePaths().
+const DEFAULT_DB_DIR = DATABASE_DIR;
 /** Default path for the vector-index database file. */
-export const DEFAULT_DB_PATH = process.env.MEMORY_DB_PATH ||
-  path.join(DEFAULT_DB_DIR, 'context-index.sqlite');
+export const DEFAULT_DB_PATH = process.env.MEMORY_DB_PATH || DATABASE_PATH;
 const DB_PERMISSIONS = 0o600;
 
 function resolve_database_path() {
@@ -627,6 +632,17 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
 
   create_schema(db, { sqlite_vec_available: sqlite_vec_available_flag, get_embedding_dim });
   ensure_schema_version(db);
+
+  // F9.09-F9.13 fix: Validate embedding dimension matches DB at init time.
+  // Reject mismatches early instead of silently producing corrupted search results.
+  if (sqlite_vec_available_flag) {
+    const dimCheck = validate_embedding_dimension();
+    if (!dimCheck.valid && dimCheck.stored != null) {
+      const msg = dimCheck.warning || `Dimension mismatch: DB=${dimCheck.stored}, provider=${dimCheck.current}`;
+      console.error(`[vector-index] FATAL: ${msg}`);
+      throw new Error(msg);
+    }
+  }
 
   if (!custom_path) {
     try {

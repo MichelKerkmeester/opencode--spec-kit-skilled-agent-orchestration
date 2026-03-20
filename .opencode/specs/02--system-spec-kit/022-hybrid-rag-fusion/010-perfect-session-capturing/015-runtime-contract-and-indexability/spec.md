@@ -1,10 +1,10 @@
 ---
-title: "Feature Specification: Runtime Contract And Indexability [template:level_1/spec.md]"
+title: "Feature Specification: Runtime Contract and Indexability"
 description: "Implement explicit validation-rule metadata and write/index dispositions for the session-capturing pipeline."
 trigger_phrases:
   - "runtime contract"
   - "indexability"
-  - "phase 018"
+  - "phase 015"
 importance_tier: "normal"
 contextType: "general"
 ---

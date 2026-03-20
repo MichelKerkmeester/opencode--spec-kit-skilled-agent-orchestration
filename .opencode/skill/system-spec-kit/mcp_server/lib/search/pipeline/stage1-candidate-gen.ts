@@ -43,6 +43,7 @@ import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/db-helpers';
 import { filterRowsByScope } from '../../governance/scope-governance';
 import { getAllowedSharedSpaceIds } from '../../collab/shared-spaces';
+import { withTimeout } from '../../errors/core';
 
 // Feature catalog: 4-stage pipeline architecture
 // Feature catalog: Hybrid search pipeline
@@ -52,6 +53,9 @@ import { getAllowedSharedSpaceIds } from '../../collab/shared-spaces';
 
 /** Maximum number of deep-mode query variants to generate (original + expanded). */
 const MAX_DEEP_QUERY_VARIANTS = 3;
+
+/** F1: Deep-mode expansion timeout — fall back to base query if variants take too long. */
+const DEEP_EXPANSION_TIMEOUT_MS = 5000;
 
 /** Minimum cosine similarity for multi-concept search. */
 const MULTI_CONCEPT_MIN_SIMILARITY = 0.5;
@@ -274,17 +278,23 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
 
       if (queryVariants.length > 1) {
         try {
-          const variantResultSets: PipelineRow[][] = await Promise.all(
-            queryVariants.map(async (variant): Promise<PipelineRow[]> => {
-              const variantEmbedding = await embeddings.generateQueryEmbedding(variant);
-              if (!variantEmbedding) return [];
-              const variantResults = await hybridSearch.searchWithFallback(
-                variant,
-                variantEmbedding,
-                { limit, specFolder, includeArchived }
-              );
-              return variantResults as PipelineRow[];
-            })
+          // F1: Wrap parallel variant searches with latency budget.
+          // If variants exceed DEEP_EXPANSION_TIMEOUT_MS, fall back to base query.
+          const variantResultSets: PipelineRow[][] = await withTimeout(
+            Promise.all(
+              queryVariants.map(async (variant): Promise<PipelineRow[]> => {
+                const variantEmbedding = await embeddings.generateQueryEmbedding(variant);
+                if (!variantEmbedding) return [];
+                const variantResults = await hybridSearch.searchWithFallback(
+                  variant,
+                  variantEmbedding,
+                  { limit, specFolder, includeArchived }
+                );
+                return variantResults as PipelineRow[];
+              })
+            ),
+            DEEP_EXPANSION_TIMEOUT_MS,
+            'Deep-mode query expansion',
           );
 
           channelCount = queryVariants.length;

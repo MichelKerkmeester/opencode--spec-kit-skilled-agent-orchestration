@@ -30,11 +30,11 @@ vi.mock('../lib/search/pipeline', () => ({
     metadata: {
       stage1: { searchType: 'hybrid', channelCount: 2, candidateCount: 2, constitutionalInjected: 0, durationMs: 1 },
       stage2: {
-        sessionBoostApplied: false,
-        causalBoostApplied: false,
-        intentWeightsApplied: false,
-        artifactRoutingApplied: false,
-        feedbackSignalsApplied: false,
+        sessionBoostApplied: 'off',
+        causalBoostApplied: 'off',
+        intentWeightsApplied: 'off',
+        artifactRoutingApplied: 'off',
+        feedbackSignalsApplied: 'off',
         qualityFiltered: 0,
         durationMs: 1,
       },

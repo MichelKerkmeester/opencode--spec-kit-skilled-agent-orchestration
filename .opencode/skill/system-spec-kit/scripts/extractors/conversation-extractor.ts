@@ -74,6 +74,36 @@ async function extractConversations(
   }
 
   const MESSAGES: ConversationMessage[] = [];
+
+  // Fix 8: Synthesize conversation from JSON mode structured data when prompts are sparse
+  const dataRecord = collectedData as Record<string, unknown>;
+  if (userPrompts.length <= 1 && dataRecord.sessionSummary) {
+    const timestamp = formatTimestamp(undefined, 'readable');
+    MESSAGES.push({
+      TIMESTAMP: timestamp,
+      ROLE: 'Assistant',
+      CONTENT: String(dataRecord.sessionSummary),
+      TOOL_CALLS: [],
+    });
+    const keyDecisions = dataRecord.keyDecisions;
+    if (Array.isArray(keyDecisions) && keyDecisions.length > 0) {
+      MESSAGES.push({
+        TIMESTAMP: timestamp,
+        ROLE: 'Assistant',
+        CONTENT: `Key decisions: ${keyDecisions.map((d: unknown) => typeof d === 'string' ? d : (d as Record<string, unknown>)?.title || JSON.stringify(d)).join('; ')}`,
+        TOOL_CALLS: [],
+      });
+    }
+    const nextSteps = dataRecord.nextSteps;
+    if (Array.isArray(nextSteps) && nextSteps.length > 0) {
+      MESSAGES.push({
+        TIMESTAMP: timestamp,
+        ROLE: 'Assistant',
+        CONTENT: `Next steps: ${nextSteps.map((s: unknown) => String(s)).join('; ')}`,
+        TOOL_CALLS: [],
+      });
+    }
+  }
   const tempMessages: TempConversationMessage[] = [];
   const exchangeInputs: PendingExchangeInput[] = [];
   const consumedObservationIndexes = new Set<number>();

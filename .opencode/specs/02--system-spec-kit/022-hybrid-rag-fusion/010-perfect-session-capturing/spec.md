@@ -22,7 +22,7 @@ This parent pack now carries one stable audit baseline and one repaired direct-c
 
 1. Direct child folders under `010-perfect-session-capturing` are the canonical navigation layer for this pack.
 2. The retired dynamic-capture follow-up phases now live under `000-dynamic-capture-deprecation/001` through `/005` and need to stay reachable through current parent/child references.
-3. The active root continuation after the audit baseline is `011` through `018`, with the merged research-remediation successor now living at `018-research-remediation/`.
+3. The active root continuation after the audit baseline is `011` through `018`, with the merged research-remediation successor now living at `018-memory-save-quality-fixes/`.
 
 **Key Decisions**: Treat the on-disk folder layout as canonical, keep the parent pack audit-first, preserve provenance-heavy `memory/` and `scratch/` artifacts, and repair only authoritative docs plus reusable research guidance.
 
@@ -91,7 +91,7 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/015-runtime-contract-and-indexability/*.md` | Modify | Replace stale `018-*` identity references with the current phase path |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/016-json-mode-hybrid-enrichment/{spec,research}.md` | Modify | Restore current spec-folder identity and parent back-references |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/017-json-primary-deprecation/*.md` | Modify | Add current parent/predecessor/successor metadata |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/018-research-remediation/*.md` | Modify | Renumber the merged remediation successor from `022` to `018` and align current-navigation metadata |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/018-memory-save-quality-fixes/*.md` | Modify | Renumber the merged remediation successor from `022` to `018` and align current-navigation metadata |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/000-dynamic-capture-deprecation/001-005/*.md` | Modify | Align moved child-phase identity fields and current-navigation references |
 <!-- /ANCHOR:scope -->
 
@@ -121,7 +121,7 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 | 015 | `015-runtime-contract-and-indexability/` | Validation rule metadata and write/index disposition policy | Runtime shipped and phase docs reconciled | `keep` |
 | 016 | `016-json-mode-hybrid-enrichment/` | JSON-mode hybrid enrichment | Runtime shipped and phase docs reconciled | `keep` |
 | 017 | `017-json-primary-deprecation/` | JSON-primary deprecation and dynamic-capture recovery posture | Runtime shipped and phase docs reconciled | `keep` |
-| 018 | `018-research-remediation/` | Research-remediation merged Wave 1 + Wave 2 | Canonical merged remediation successor phase | `keep` |
+| 018 | `018-memory-save-quality-fixes/` | Research-remediation merged Wave 1 + Wave 2 | Canonical merged remediation successor phase | `keep` |
 
 ### Phase Transition Rules
 
@@ -295,4 +295,4 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 - **Phase 015**: `015-runtime-contract-and-indexability/spec.md`
 - **Phase 016**: `016-json-mode-hybrid-enrichment/spec.md`
 - **Phase 017**: `017-json-primary-deprecation/spec.md`
-- **Phase 018**: `018-research-remediation/spec.md`
+- **Phase 018**: `018-memory-save-quality-fixes/spec.md`

@@ -1,5 +1,5 @@
 {
-  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/012-template-compliance",
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/011-template-compliance",
   "description": "Feature Specification: Template Compliance",
   "keywords": [
     "feature",
@@ -7,8 +7,8 @@
     "template",
     "compliance"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.424Z",
-  "specId": "012",
+  "lastUpdated": "2026-03-20T13:22:44.235Z",
+  "specId": "011",
   "folderSlug": "template-compliance",
   "parentChain": [
     "02--system-spec-kit",

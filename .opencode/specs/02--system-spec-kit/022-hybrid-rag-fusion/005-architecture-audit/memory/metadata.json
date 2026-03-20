@@ -1,19 +1,19 @@
 {
-  "timestamp": "19-03-26 18-44",
-  "messageCount": 1,
+  "timestamp": "20-03-26 15-26",
+  "messageCount": 4,
   "decisionCount": 8,
-  "diagramCount": 0,
+  "diagramCount": 1,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 1,
+    "totalProcessed": 4,
     "noiseFiltered": 0,
-    "duplicatesRemoved": 0,
-    "qualityScore": 90,
+    "duplicatesRemoved": 3,
+    "qualityScore": 60,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-03-19T17:44:59.316Z",
+        "timestamp": "2026-03-20T14:26:51.927Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -50,15 +50,15 @@
           "stripped_wrappers:0"
         ],
         "passedThrough": [
-          "input_items:1",
-          "kept_items:1"
+          "input_items:4",
+          "kept_items:4"
         ]
       }
     ],
     "filtered": {
       "noise": 0,
       "empty": 0,
-      "duplicate": 0,
+      "duplicate": 3,
       "lowQuality": 0
     },
     "_note": "qualityScore is 0-100 scale (legacy scorer); frontmatter quality_score is 0.0-1.0 (v2 scorer)"
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-03-19T17:44:58.974Z",
+      "timestamp": "2026-03-20T14:26:51.381Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -102,18 +102,20 @@
         "json error payload",
         "request id leak"
       ],
-      "matchesFound": [],
+      "matchesFound": [
+        "read preamble x2"
+      ],
       "actionsTaken": [
-        "cleaned_fields:0",
-        "removed_phrases:0"
+        "cleaned_fields:2",
+        "removed_phrases:2"
       ],
       "passedThrough": [
-        "processed_fields:69"
+        "processed_fields:164"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-03-19T17:44:59.316Z",
+      "timestamp": "2026-03-20T14:26:51.927Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -150,13 +152,13 @@
         "stripped_wrappers:0"
       ],
       "passedThrough": [
-        "input_items:1",
-        "kept_items:1"
+        "input_items:4",
+        "kept_items:4"
       ]
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-03-19T17:44:59.369Z",
+      "timestamp": "2026-03-20T14:26:52.061Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -183,13 +185,13 @@
   "semanticSummary": {
     "task": "Development session",
     "filesCreated": 0,
-    "filesModified": 9,
+    "filesModified": 230,
     "decisions": 0,
     "messageStats": {
       "intent": 0,
       "plan": 0,
-      "implementation": 1,
-      "result": 0,
+      "implementation": 0,
+      "result": 1,
       "decision": 0,
       "total": 1
     }
@@ -201,18 +203,18 @@
     "gitChangedFileCount": 0
   },
   "sourceProvenance": {
-    "transcriptPath": "/Users/michelkerkmeester/.claude/projects/-Users-michelkerkmeester-MEGA-Development-Opencode-Env-Public/a2dc8c2b-c6d4-4aa6-85c3-6abfea094016.jsonl",
-    "sessionId": "a2dc8c2b-c6d4-4aa6-85c3-6abfea094016",
-    "sessionCreated": 1773936176052,
-    "sessionUpdated": 1773942291673
+    "transcriptPath": "/Users/michelkerkmeester/.claude/projects/-Users-michelkerkmeester-MEGA-Development-Opencode-Env-Public/531b2480-c984-41bb-8bdb-dabff61186ba.jsonl",
+    "sessionId": "531b2480-c984-41bb-8bdb-dabff61186ba",
+    "sessionCreated": 1774012588614,
+    "sessionUpdated": 1774016786518
   },
   "embedding": {
     "status": "indexed",
     "model": "nomic-ai/nomic-embed-text-v1.5",
     "dimensions": 768,
-    "memoryId": 4412,
-    "updatedAt": "2026-03-19T17:45:00.005Z",
-    "generatedAt": "2026-03-19T17:45:00.005Z",
+    "memoryId": 4436,
+    "updatedAt": "2026-03-20T14:26:52.812Z",
+    "generatedAt": "2026-03-20T14:26:52.812Z",
     "reason": "Indexed after all write and semantic-index gates passed."
   }
 }

@@ -210,9 +210,15 @@ async function extractDecisions(
           decisionText = `Decision ${index + 1}`;
         }
 
+        // Fix 1: Split string-form decisions at first separator to extract title vs rationale
         const titleMatch = decisionText.match(/^(?:Decision\s*(?:\d+\s*)?:\s*)?(.+?)(?:\s+(?:--|[\u2013\u2014])\s+(.+))?$/i);
         const title: string = titleMatch?.[1]?.trim() || `Decision ${index + 1}`;
-        const fallbackRationale: string = titleMatch?.[2]?.trim() || decisionText;
+        const fallbackRationale: string = titleMatch?.[2]?.trim() || '';
+        // For plain strings without separator, try splitting at first sentence boundary
+        const sentenceSplitRationale: string = fallbackRationale || (() => {
+          const sentenceEnd = decisionText.match(/^([^.!?]+[.!?])\s+(.+)/);
+          return sentenceEnd?.[2]?.trim() || '';
+        })();
 
         const rawAlternatives = manualObj && Array.isArray(manualObj.alternatives)
           ? manualObj.alternatives
@@ -264,14 +270,14 @@ async function extractDecisions(
           : [{
             OPTION_NUMBER: 1,
             LABEL: 'Chosen Approach',
-            DESCRIPTION: title,
+            DESCRIPTION: title.length > 60 ? title.substring(0, 57) + '...' : title,
             HAS_PROS_CONS: false,
             PROS: [],
             CONS: []
           }];
 
         const rationaleFromInput = toText(manualObj?.rationale) || toText(manualObj?.reasoning);
-        const rationale: string = rationaleFromInput || fallbackRationale;
+        const rationale: string = rationaleFromInput || sentenceSplitRationale || decisionText;
         const hasAlternatives = rawAlternatives.length >= 2;
         const chosenLabel = toText(manualObj?.chosen) || toText(manualObj?.choice) || toText(manualObj?.selected)
           || OPTIONS[0]?.DESCRIPTION || OPTIONS[0]?.LABEL || 'Chosen Approach';
@@ -320,11 +326,16 @@ async function extractDecisions(
           explicitConfidence,
         });
 
+        // Fix 1: CONTEXT = brief "why this decision mattered", not the full rationale
+        const contextText: string = rationaleFromInput
+          ? `${title} — ${rationaleFromInput.substring(0, 120)}`
+          : title;
+
         // Anchor ID assigned in the unified pass at line ~562 (avoids double-assignment)
         return {
           INDEX: index + 1,
           TITLE: title,
-          CONTEXT: rationale,
+          CONTEXT: contextText,
           TIMESTAMP: formatTimestamp(),
           OPTIONS,
           CHOSEN: chosenLabel,

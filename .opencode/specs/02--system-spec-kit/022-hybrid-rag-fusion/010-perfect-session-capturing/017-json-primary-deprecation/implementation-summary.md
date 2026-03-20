@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
+title: "Implementation Summary: JSON-Primary Deprecation"
 description: "This phase made JSON the preferred routine-save contract, kept stateless mode as recovery-only, and moved obsolete dynamic-capture follow-ups under the archived branch parent."
 trigger_phrases:
   - "implementation summary"

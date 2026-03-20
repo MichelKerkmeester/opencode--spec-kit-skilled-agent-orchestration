@@ -1,19 +1,19 @@
 {
-  "timestamp": "20-03-26 12-22",
-  "messageCount": 0,
-  "decisionCount": 18,
-  "diagramCount": 1,
+  "timestamp": "20-03-26 16-36",
+  "messageCount": 1,
+  "decisionCount": 8,
+  "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 0,
+    "totalProcessed": 1,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 0,
+    "qualityScore": 30,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-03-20T11:22:11.000Z",
+        "timestamp": "2026-03-20T15:36:06.930Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -50,8 +50,8 @@
           "stripped_wrappers:0"
         ],
         "passedThrough": [
-          "input_items:0",
-          "kept_items:0"
+          "input_items:1",
+          "kept_items:1"
         ]
       }
     ],
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-03-20T11:22:10.516Z",
+      "timestamp": "2026-03-20T15:36:06.884Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -108,12 +108,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:593"
+        "processed_fields:48"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-03-20T11:22:11.000Z",
+      "timestamp": "2026-03-20T15:36:06.930Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -150,13 +150,13 @@
         "stripped_wrappers:0"
       ],
       "passedThrough": [
-        "input_items:0",
-        "kept_items:0"
+        "input_items:1",
+        "kept_items:1"
       ]
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-03-20T11:22:11.085Z",
+      "timestamp": "2026-03-20T15:36:06.947Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -175,7 +175,7 @@
         "current_spec:001-hybrid-rag-fusion-epic",
         "trigger_phrases:29",
         "key_topics:12",
-        "captured_file_count:0",
+        "captured_file_count:10",
         "filesystem_file_count:10"
       ]
     }
@@ -183,36 +183,36 @@
   "semanticSummary": {
     "task": "Development session",
     "filesCreated": 0,
-    "filesModified": 59,
+    "filesModified": 0,
     "decisions": 0,
     "messageStats": {
       "intent": 0,
       "plan": 0,
       "implementation": 0,
-      "result": 0,
+      "result": 1,
       "decision": 0,
-      "total": 0
+      "total": 1
     }
   },
   "fileCounts": {
     "fileCount": 10,
-    "capturedFileCount": 0,
+    "capturedFileCount": 10,
     "filesystemFileCount": 10,
-    "gitChangedFileCount": 8
+    "gitChangedFileCount": 0
   },
   "sourceProvenance": {
-    "transcriptPath": "/Users/michelkerkmeester/.claude/projects/-Users-michelkerkmeester-MEGA-Development-Opencode-Env-Public/05069a5b-a5c9-42bb-88ea-f92b2b3c5fb2.jsonl",
-    "sessionId": "05069a5b-a5c9-42bb-88ea-f92b2b3c5fb2",
-    "sessionCreated": 1773996424462,
-    "sessionUpdated": 1774005721409
+    "transcriptPath": "",
+    "sessionId": "",
+    "sessionCreated": 0,
+    "sessionUpdated": 0
   },
   "embedding": {
     "status": "indexed",
     "model": "nomic-ai/nomic-embed-text-v1.5",
     "dimensions": 768,
-    "memoryId": 4434,
-    "updatedAt": "2026-03-20T11:22:11.938Z",
-    "generatedAt": "2026-03-20T11:22:11.938Z",
+    "memoryId": 4438,
+    "updatedAt": "2026-03-20T15:36:07.571Z",
+    "generatedAt": "2026-03-20T15:36:07.571Z",
     "reason": "Indexed after all write and semantic-index gates passed."
   }
 }

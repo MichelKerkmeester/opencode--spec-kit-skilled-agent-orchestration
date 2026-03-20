@@ -19,11 +19,11 @@ contextType: "decision"
 
 ## EXECUTIVE SUMMARY
 
-This parent spec-pack now acts as the Level 3 coordination record for the delivered Hydra roadmap. It summarizes the shipped six-phase runtime, points readers to the authoritative child phase folders for detailed implementation history, and keeps the root documentation aligned with the most recent recorded verification evidence dated 2026-03-17.
+This parent spec-pack now acts as the Level 3 coordination record for the delivered Hydra roadmap. It summarizes the shipped six-phase runtime, points readers to the authoritative child phase folders for detailed implementation history, and records the March 20 2026 follow-up hardening pass on top of the March 17 2026 broad verification baseline.
 
 **Key Decisions**: keep the root pack as a coordination layer instead of a second implementation log; document lineage and `asOf` as internal storage and integration surfaces rather than a standalone public MCP query tool; describe shared-memory rollout as shipped but live access as opt-in.
 
-**Critical Dependencies**: the six child phase folders in this spec-pack, `decision-record.md`, the Hydra runtime modules in `mcp_server/`, and the recorded 2026-03-17 verification totals.
+**Critical Dependencies**: the six child phase folders in this spec-pack, `decision-record.md`, the Hydra runtime modules in `mcp_server/`, the recorded 2026-03-17 verification totals, and the 2026-03-20 targeted regression rerun for governed retrieval, shared-space admin auth, and graph ranking.
 
 ---
 
@@ -35,7 +35,7 @@ This parent spec-pack now acts as the Level 3 coordination record for the delive
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-03-13 |
-| **Updated** | 2026-03-17 |
+| **Updated** | 2026-03-20 |
 | **Branch** | `022-hybrid-rag-fusion` |
 
 ---
@@ -256,7 +256,7 @@ Keep the root Hydra pack truthful, template-aligned, and easy to audit while pre
 
 ### Acceptance Scenario 3: Runtime Correction Coverage
 
-**Given** owner-only shared-space and retention sweep flows, **when** targeted regressions run, **then** the reviewed defects stay fixed.
+**Given** governed retrieval, owner-only shared-space admin flows, graph ranking, and retention sweep flows, **when** targeted regressions run, **then** the reviewed defects stay fixed.
 
 ### Acceptance Scenario 4: Evidence Consistency
 

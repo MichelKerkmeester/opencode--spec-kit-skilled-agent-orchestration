@@ -343,6 +343,47 @@ Addresses inner-boundary architecture gaps discovered during Hydra DB feature re
 - [x] Phase 15 internal module boundary remediation completed (T130-T139). Symlink eliminated, source-dist alignment enforced, MODULE_MAP.md created, orphans resolved, misplacements fixed. [DONE: 5 parallel Codex CLI agents (GPT-5.4 + GPT-5.3-Codex) executed T130-T139; ultra-think review found 1 critical + 4 warnings, all fixed; feature catalog entries (14, 15) and testing playbook scenarios (NEW-150, NEW-151, NEW-152) created; `npx tsc --noEmit` passes; `npm run check --workspace=scripts` now includes the alignment checker; current alignment verification reports 148/148 clean; zero symlinks; zero stale cache/cognitive refs]
 <!-- /ANCHOR:completion -->
 
+<!-- ANCHOR:phase-16 -->
+## Phase 16: Architecture Audit v2 Remediation (2026-03-20)
+
+Deep-research-driven remediation of ~120 findings from the architecture audit v2 (10 iterations, 30 agent runs, GPT-5.4). Findings validated by expert review against source code. Organized into 4 implementation sprints by Priority = Impact / Effort.
+
+### Sprint 1: Quick Wins (Effort 1, Priority 3.0)
+
+- [x] T140 Fix feature-flag docs test path from `02--new-features` to `19--feature-flag-reference` (F8.13) - WHY: test references nonexistent directory, causing `npm test` failure - Acceptance: `vitest run tests/feature-flag-reference-docs.vitest.ts` passes (11/11). [DONE: path fixed in `tests/feature-flag-reference-docs.vitest.ts:114`]
+- [x] T141 Fix CLI help advertising nonexistent `checkpoint restore` command (F9.01) - WHY: `cli.ts:353` suggests `spec-kit-cli checkpoint restore` which doesn't exist in dispatcher - Acceptance: CLI output references actual `checkpoint_restore` MCP tool. [DONE: `cli.ts:353` updated]
+
+### Sprint 2: Critical Data Integrity (Effort 2, Priority 2.5)
+
+- [x] T142 Preserve frontmatter at byte 0 after warning banner insertion (F1.02 CRITICAL) - WHY: `workflow.ts` prepends banners before YAML frontmatter, breaking downstream parsers - Acceptance: memory files always start with `---` after banner insertion. [DONE: added `insertAfterFrontmatter()` helper; 3 banner insertion sites updated in `scripts/core/workflow.ts`]
+- [x] T143 Atomic supersede-and-replace in PE save pipeline (F1.01 CRITICAL) - WHY: `markMemorySuperseded()` runs before new record creation; creation failure orphans old record - Acceptance: supersede marking deferred into caller's DB transaction. [DONE: deferred in `pe-orchestration.ts:101-122`; caller marks inside transaction in `memory-save.ts`]
+- [x] T144 Add governance args to `memory_save` Zod schema and ALLOWED_PARAMETERS (F3.04 HIGH) - WHY: tool-schemas.ts advertises 10 governance params but Zod strict mode rejects them - Acceptance: `memory_save` with governance args passes validation. [DONE: 10 params added to `memorySaveSchema` and `ALLOWED_PARAMETERS` in `tool-input-schemas.ts`]
+- [x] T145 Centralize DB path resolution with containment (F4.04/F8.02 HIGH) - WHY: 3 modules resolve DB paths differently; `SPEC_KIT_DB_DIR=/etc` escapes project root - Acceptance: `core/config.ts` uses shared `getDbDir()`, rejects paths outside project/home/tmp. [DONE: `core/config.ts` imports `getDbDir()` from shared; `vector-index-store.ts` uses centralized `DATABASE_PATH`/`DATABASE_DIR`]
+- [x] T146 Surface mutation ledger write failures (F1.10 HIGH) - WHY: `appendMutationLedgerSafe()` silently swallows all errors - Acceptance: function returns boolean so callers can include warnings. [DONE: return type changed to `boolean` in `memory-crud-utils.ts`]
+
+### Sprint 3: Search Pipeline Scoring (Effort 2-3, Priority 2.0-2.5)
+
+- [x] T147 Sync score aliases after Stage 3 rerank (F2.02 CRITICAL) - WHY: Stage 3 updates `score`/`rerankerScore` but not `rrfScore`/`intentAdjustedScore`; `resolveEffectiveScore()` returns stale Stage 2 values - Acceptance: all score aliases synced in both cross-encoder and local reranker paths. [DONE: `rrfScore`, `intentAdjustedScore`, `attentionScore` synced in `stage3-rerank.ts` (both paths)]
+- [x] T148 Clamp scores to [0,1] in Stage 2 sync helpers (F2.03 CRITICAL) - WHY: `withSyncedScoreAliases` copies raw boosted values without clamping; direct access returns >1.0 - Acceptance: all score sync functions clamp to [0,1]. [DONE: clamping added to `withSyncedScoreAliases()` and `syncScoreAliasesInPlace()` in `stage2-fusion.ts`]
+- [x] T149 Unify quality-proxy metric (F6.06 HIGH) - WHY: eval and telemetry implement same formula with different hardcoded thresholds - Acceptance: telemetry delegates to canonical `eval-quality-proxy.ts`. [DONE: `retrieval-telemetry.ts` now imports and calls `computeQualityProxyCanonical()` with telemetry-specific parameters]
+- [x] T150 Validate embedding dimension at DB init (F9.09-F9.13 HIGH) - WHY: dimension mismatches silently corrupt search results - Acceptance: `initialize_db()` rejects mismatched dimensions; `EMBEDDING_DIM` env var honored. [DONE: dimension validation after schema init in `vector-index-store.ts`; `get_embedding_dim()` checks `EMBEDDING_DIM` env var first]
+
+### Sprint 4: Architecture & Design Track (Effort 5, Priority 1.0)
+
+- [x] T151 Pipeline stage boundary design document (F2.01 CRITICAL — design only) - WHY: biggest architecture issue; Stage 1 wraps legacy mini-pipeline that duplicates Stages 2/3 - Acceptance: design doc with function map, migration plan, risk analysis, shadow scoring strategy. [DONE: GPT-5.4 produced 249-line design at `scratch/s4-1-pipeline-boundary-design.md`]
+- [x] T152 Checkpoint restore completeness design + implementation (F1.16 HIGH) - WHY: only 4 tables snapshotted; `active_memory_projection` omission makes restored data invisible to queries - Acceptance: authoritative tables snapshotted, derived tables rebuilt post-restore. [DONE: GPT-5.4 design (339 lines) at `scratch/s4-2-checkpoint-completeness-design.md`; implementation in `checkpoints.ts` (+663/-253 lines); manifest, generic table restore, fault-tolerant post-restore rebuilds; 115/115 checkpoint tests pass]
+<!-- /ANCHOR:phase-16 -->
+
+<!-- ANCHOR:completion-v2 -->
+## Completion Evidence (Phase 16)
+
+- [x] Sprint 1: 17/17 tests pass (feature-flag-reference-docs + cli)
+- [x] Sprint 2: 346/346 context-server tests pass; 12/12 review-fixes tests pass
+- [x] Sprint 3: 27/27 pipeline tests pass; 73/73 hybrid-search tests pass
+- [x] Sprint 4: 115/115 checkpoint tests pass (including 2 new completeness tests)
+- [x] Full suite: 289/290 test files pass, 7860/7862 tests pass (2 failures are pre-existing `hydra-spec-pack-consistency` doc tests unrelated to this work)
+<!-- /ANCHOR:completion-v2 -->
+
 ## Cross-References
 
 - **Specification**: `spec.md`
