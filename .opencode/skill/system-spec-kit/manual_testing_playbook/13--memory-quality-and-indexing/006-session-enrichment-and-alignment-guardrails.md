@@ -1,9 +1,9 @@
 ---
-title: "M-006 -- Stateless Enrichment and Alignment Guardrails"
+title: "M-006 -- Session Enrichment and Alignment Guardrails"
 description: "This snippet preserves the canonical memory/spec-kit operator workflow for `M-006`."
 ---
 
-# M-006 -- Stateless Enrichment and Alignment Guardrails
+# M-006 -- Session Enrichment and Alignment Guardrails
 
 ## 1. OVERVIEW
 
@@ -21,10 +21,10 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 - Prompt: `Run a memory save for a spec that edits generic code paths and verify enrichment/guard behavior. Capture the evidence needed to prove the save uses spec-folder and git enrichment, keeps natural-language prompt variants of the spec slug, records git snapshot metadata (headRef, commitRef, repositoryState, isDetachedHead), and does not raise ALIGNMENT_BLOCK when captured files match the spec's files-to-change table. Return a concise user-facing pass/fail verdict with the main reason.`
 - Commands:
-  - `memory_search({ query: "stateless enrichment alignment", specFolder: "specs/<target-spec>" })`
+  - `memory_search({ query: "session enrichment alignment", specFolder: "specs/<target-spec>" })`
 - Expected: the save uses spec-folder and git enrichment, keeps natural-language prompt variants of the spec slug, records git snapshot metadata (`headRef`, `commitRef`, `repositoryState`, `isDetachedHead`), and does not raise `ALIGNMENT_BLOCK` when captured files match the spec's files-to-change table.
 - Evidence: save stdout showing Step 3.5 enrichment, absence of false alignment aborts for matching code files, and saved memory content/search hits reflecting spec/git-derived context.
-- Pass: stateless save succeeds for matching files, emits provenance-backed context, and still blocks unrelated captures when overlap is genuinely low.
+- Pass: captured-session save succeeds for matching files, emits provenance-backed context, and still blocks unrelated captures when overlap is genuinely low.
 - Fail triage: inspect `input-normalizer.ts` relevance filtering, compare captured file paths to the spec's files-to-change table, verify git scope includes the declared code paths, then rerun.
 
 #### M-006a: Unborn-HEAD and dirty snapshot fallback
@@ -58,7 +58,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 ## 4. REFERENCES
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
-- Feature catalog: [13--memory-quality-and-indexing/18-stateless-enrichment-and-alignment-guards.md](../../feature_catalog/13--memory-quality-and-indexing/18-stateless-enrichment-and-alignment-guards.md)
+- Feature catalog: [13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md](../../feature_catalog/13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md)
 
 ---
 
@@ -67,4 +67,4 @@ This scenario remains prose-first because it carries compound operator logic, su
 - Group: Memory Quality and Indexing
 - Playbook ID: M-006
 - Canonical root source: `manual_testing_playbook.md`
-- Feature file path: `13--memory-quality-and-indexing/006-stateless-enrichment-and-alignment-guardrails.md`
+- Feature file path: `13--memory-quality-and-indexing/006-session-enrichment-and-alignment-guardrails.md`

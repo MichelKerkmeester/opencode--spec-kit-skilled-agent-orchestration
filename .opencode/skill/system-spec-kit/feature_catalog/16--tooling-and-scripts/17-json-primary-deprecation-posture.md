@@ -16,9 +16,9 @@ description: "Routine saves require --json or --stdin structured input; direct p
 
 ## 1. OVERVIEW
 
-Phase 017 established the JSON-only save contract for `generate-context.js`. Dynamic session capture (which reconstructs context from runtime databases after the fact) proved unreliable for routine saves — wrong-session selection, contamination, and thin-evidence failures persisted across multiple research and fix rounds. The resolution: AI-composed JSON via `--json` or `--stdin` is now the sole save contract. Stateless capture from runtime databases has been removed, not merely deprecated.
+Phase 017 established the JSON-only save contract for `generate-context.js`. Runtime-derived capture for routine saves proved unreliable: wrong-session selection, contamination, and thin-evidence failures persisted across multiple research and fix rounds. The resolution: AI-composed JSON via `--json` or `--stdin` is now the sole save contract for routine use.
 
-The obsolete dynamic-capture follow-up phases are archived under `000-dynamic-capture-deprecation/`.
+The obsolete follow-up phases now live in the archived branch for this workstream.
 
 ---
 
@@ -29,7 +29,7 @@ The shipped posture enforces the following behavior:
 1. Direct positional saves now exit non-zero with operator-facing migration guidance to the structured JSON contract.
 2. `generate-context.js --json '<data>'` and `generate-context.js --stdin` are the documented routine-save paths.
 3. Operator-facing guidance in SKILL.md and the save command documents JSON mode as the sole save contract.
-4. The obsolete dynamic-capture follow-up phases (001-session-source-validation, 002-outsourced-agent-handback, 003-multi-cli-parity) are archived under `000-dynamic-capture-deprecation/`.
+4. The obsolete follow-up phases (001-session-source-validation, 002-outsourced-agent-handback, 003-multi-cli-parity) are archived under the retired branch for this workstream.
 
 ---
 
@@ -38,7 +38,7 @@ The shipped posture enforces the following behavior:
 ### 3.1 JSON-only enforcement
 
 - Direct positional mode (no `--json` or `--stdin`) now rejects with a non-zero exit and migration guidance.
-- This removes the unreliable stateless capture path entirely. There is no flag to re-enable it.
+- This removes the unreliable direct runtime-capture path from routine CLI use. There is no flag to re-enable it.
 
 ### 3.2 Structured JSON as primary contract
 
@@ -53,10 +53,10 @@ The shipped posture enforces the following behavior:
 - The save command (`/memory:save`) updated to document the JSON-only posture.
 - CLAUDE.md and equivalent agent instructions updated to reflect the single-mode contract: JSON only.
 
-### 3.4 Dynamic-capture deprecation archival
+### 3.4 Follow-up phase archival
 
-- Phases 001 (session-source-validation), 002 (outsourced-agent-handback), and 003 (multi-cli-parity) moved under `000-dynamic-capture-deprecation/`.
-- These phases were originally designed to improve dynamic capture quality but became obsolete when the JSON-only posture removed routine stateless capture entirely.
+- Phases 001 (session-source-validation), 002 (outsourced-agent-handback), and 003 (multi-cli-parity) moved under the archived follow-up branch.
+- These phases were originally designed to improve runtime-capture quality but became obsolete when the JSON-only posture removed direct routine capture entirely.
 
 ---
 

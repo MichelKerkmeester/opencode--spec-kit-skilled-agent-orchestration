@@ -55,7 +55,7 @@ The shipped session-capture pipeline enforces the following behavior:
 22. Structured JSON mode accepts both `generate-context.js --stdin` and `generate-context.js --json <string>`. These are the only save paths.
 22a. Direct positional saves now exit non-zero with operator-facing migration guidance to the structured JSON contract.
 24. The structured JSON contract explicitly preserves summary fields such as `toolCalls` and `exchanges`, while older payloads that omit them remain backward compatible.
-25. File-backed JSON remains on the authoritative structured path and does not reopen the abandoned hybrid/stateless enrichment branch.
+25. File-backed JSON remains on the authoritative structured path and does not reopen the abandoned runtime-derived enrichment branch.
 25a. Decision confidence and truncated outcome handling respect explicit input values; template assembly preserves explicit session-level message and tool counts when conversation arrays are sparse.
 25b. `git_changed_file_count` follows a stable 3-tier priority chain: explicit count > enrichment-derived count > provenance-based count.
 26. In structured-input modes, an explicit CLI target still outranks payload `specFolder`, and the payload target is used only when no explicit override is present.
@@ -235,7 +235,7 @@ The closure feature consists of these distinct shipped capabilities:
 - `cd .opencode/skill/system-spec-kit/mcp_server && npm run test`
 - `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts`
 - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing`
-- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/014-stateless-quality-gates --json`
+- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing --json`
 
 ### Latest verification snapshot
 

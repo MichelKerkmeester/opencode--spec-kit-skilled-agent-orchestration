@@ -1,9 +1,9 @@
 ---
-title: "JSON mode hybrid enrichment"
+title: "JSON mode structured summary hardening"
 description: "Structured JSON summary support for generate-context.js, including toolCalls/exchanges fields, file-backed JSON authority, and Wave 2 hardening for decision confidence, truncated titles, git_changed_file_count stability, and template count preservation."
 ---
 
-# JSON mode hybrid enrichment
+# JSON mode structured summary hardening
 
 ## TABLE OF CONTENTS
 
@@ -16,9 +16,9 @@ description: "Structured JSON summary support for generate-context.js, including
 
 ## 1. OVERVIEW
 
-Phase 016 added structured JSON summary support to the session capturing pipeline. The shipped implementation accepts richer caller-authored session data via `--json` and `--stdin` inputs, including fields like `toolCalls` and `exchanges`. It also preserves file-backed JSON authority (preventing silent fallback into stateless reconstruction) and ships Wave 2 hardening fixes for decision confidence, truncated outcome titles, `git_changed_file_count` stability, and template count preservation.
+Phase 016 added structured JSON summary support to the session capturing pipeline. The shipped implementation accepts richer caller-authored session data via `--json` and `--stdin` inputs, including fields like `toolCalls` and `exchanges`. It also preserves file-backed JSON authority and ships Wave 2 hardening fixes for decision confidence, truncated outcome titles, `git_changed_file_count` stability, and template count preservation.
 
-The original phase design described a broader file-backed hybrid enrichment path, but only the narrower structured-summary contract and hardening fixes shipped.
+The original phase design described a broader file-backed enrichment path, but only the narrower structured-summary contract and hardening fixes shipped.
 
 ---
 
@@ -27,7 +27,7 @@ The original phase design described a broader file-backed hybrid enrichment path
 The session capturing pipeline now handles structured JSON summaries as follows:
 
 1. `generate-context.js --json '<data>'` and `generate-context.js --stdin` accept structured JSON with fields like `toolCalls`, `exchanges`, `sessionSummary`, and the documented snake_case contract (`user_prompts`, `recent_context`, `trigger_phrases`).
-2. File-backed JSON (passed as a file path argument) stays on the structured path and does not silently fall back into hybrid/stateless reconstruction.
+2. File-backed JSON (passed as a file path argument) stays on the structured path and does not silently fall back into runtime-derived reconstruction.
 3. Older JSON payloads that omit the newer structured-summary fields remain backward compatible.
 4. Decision confidence values from explicit input are preserved rather than overwritten by heuristics.
 5. Truncated outcome/title handling respects explicit input values instead of silently replacing them.
@@ -49,7 +49,7 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 ### 3.2 File-backed JSON authority
 
 - When a file path is provided as input, the content is treated as structured JSON.
-- The workflow does not reopen the abandoned hybrid/stateless enrichment branch for file-backed inputs.
+- The workflow does not reopen the abandoned runtime-derived enrichment branch for file-backed inputs.
 - This keeps caller intent unambiguous: structured input means structured processing.
 
 ### 3.3 Wave 2 hardening
@@ -110,6 +110,6 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 ## 6. SOURCE METADATA
 
 - Group: Tooling and scripts
-- Source feature title: JSON mode hybrid enrichment
+- Source feature title: JSON mode structured summary hardening
 - Source spec: `009-perfect-session-capturing/016-json-mode-hybrid-enrichment`
 - Phase: 016

@@ -2563,10 +2563,10 @@ Stateless `generate-context.js` saves now enrich thin OpenCode-derived session d
 
 Current behavior is enforced in three slices:
 1. `transformOpencodeCapture()` normalizes snake_case OpenCode metadata and filters prompts, exchanges and tool calls by spec relevance using both slug-form and natural-language keyword variants.
-2. `enrichStatelessData()` appends `_provenance: 'spec-folder'` and `_provenance: 'git'` signals after the contamination-cleaning pass and before downstream extraction.
-3. Pre- and post-enrichment alignment gates allow stateless saves only when captured file paths overlap with the target spec's declared work surface. The overlap check now uses both spec-folder keywords and files declared in the spec's files-to-change table, which prevents false blocks for legitimate code paths like `scripts/core/workflow.ts`.
+2. `enrichCapturedSessionData()` appends `_provenance: 'spec-folder'` and `_provenance: 'git'` signals after the contamination-cleaning pass and before downstream extraction.
+3. Pre- and post-enrichment alignment gates allow captured-session saves only when captured file paths overlap with the target spec's declared work surface. The overlap check now uses both spec-folder keywords and files declared in the spec's files-to-change table, which prevents false blocks for legitimate code paths like `scripts/core/workflow.ts`.
 
-Git enrichment no longer scopes only to the spec folder path itself. It uses files declared by the spec to detect recent committed and uncommitted changes, commit observations retain only the scope-filtered touched file list for downstream reasoning, and the extractor now exposes an explicit repository snapshot through `headRef`, `commitRef`, `repositoryState`, and `isDetachedHead`. The workflow still hard-aborts on `ALIGNMENT_BLOCK`, `POST_ENRICHMENT_ALIGNMENT_BLOCK`, or failed stateless validation rules when the capture clearly belongs to another task.
+Git enrichment no longer scopes only to the spec folder path itself. It uses files declared by the spec to detect recent committed and uncommitted changes, commit observations retain only the scope-filtered touched file list for downstream reasoning, and the extractor now exposes an explicit repository snapshot through `headRef`, `commitRef`, `repositoryState`, and `isDetachedHead`. The workflow still hard-aborts on `ALIGNMENT_BLOCK`, `POST_ENRICHMENT_ALIGNMENT_BLOCK`, or failed captured-session validation rules when the capture clearly belongs to another task.
 
 Git extraction also preserves uncommitted file context in freshly initialized repositories that do not have a `HEAD` commit yet, survives detached-HEAD saves without dropping commit identity, and parses multi-commit history without leaking similarly named foreign spec folders into the target result.
 
@@ -2576,7 +2576,7 @@ Status: Implemented and covered by targeted Vitest regressions.
 
 #### Source Files
 
-See [`13--memory-quality-and-indexing/18-stateless-enrichment-and-alignment-guards.md`](13--memory-quality-and-indexing/18-stateless-enrichment-and-alignment-guards.md) for full implementation and test file listings.
+See [`13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md`](13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md) for full implementation and test file listings.
 
 > **Playbook:** [M-006](../manual_testing_playbook/manual_testing_playbook.md)
 
@@ -3412,7 +3412,7 @@ See [`16--tooling-and-scripts/15-module-boundary-map.md`](16--tooling-and-script
 
 ---
 
-### JSON mode hybrid enrichment
+### JSON mode structured summary hardening
 
 #### Description
 
@@ -3420,7 +3420,7 @@ Phase 016 added structured JSON summary support to `generate-context.js`, includ
 
 #### Current Reality
 
-The session capturing pipeline accepts richer structured JSON summaries via `--json` and `--stdin` inputs. File-backed JSON remains on the structured path and does not fall back into stateless reconstruction. Wave 2 hardening ensures decision confidence, truncated outcomes, `git_changed_file_count`, and template counts are stable across different input sources.
+The session capturing pipeline accepts richer structured JSON summaries via `--json` and `--stdin` inputs. File-backed JSON remains on the structured path and does not fall back into runtime-derived reconstruction. Wave 2 hardening ensures decision confidence, truncated outcomes, `git_changed_file_count`, and template counts are stable across different input sources.
 
 #### Source Files
 
@@ -3438,7 +3438,7 @@ Phase 017 established the JSON-only save contract for `generate-context.js`. Dyn
 
 #### Current Reality
 
-Direct positional saves exit non-zero with migration guidance. `--json` and `--stdin` are the only save paths. The obsolete dynamic-capture follow-up phases are archived under `000-dynamic-capture-deprecation/`.
+Direct positional saves exit non-zero with migration guidance. `--json` and `--stdin` are the only save paths. The obsolete follow-up phases are archived under the retired branch for this workstream.
 
 #### Source Files
 

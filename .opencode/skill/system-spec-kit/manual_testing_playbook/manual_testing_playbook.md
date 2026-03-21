@@ -2800,7 +2800,7 @@ Dry-run surfaces template-contract violations; non-dry-run rejects malformed fil
 > **Feature File:** [149](16--tooling-and-scripts/149-rendered-memory-template-contract.md)
 > **Catalog:** [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md)
 
-### 153 | JSON mode hybrid enrichment
+### 153 | JSON mode structured summary hardening
 
 #### Description
 Verify the structured JSON summary contract for `generate-context.js`, including `toolCalls`/`exchanges` fields, file-backed JSON authority, and Wave 2 hardening.
@@ -2808,7 +2808,7 @@ Verify the structured JSON summary contract for `generate-context.js`, including
 #### Current Reality
 Prompt: `Save a memory using generate-context.js --json with a payload containing toolCalls, exchanges, and snake_case fields. Verify the rendered output preserves all structured fields, decision confidence, and explicit counts. Return a concise user-facing pass/fail verdict.`
 
-Structured fields preserved in rendered output, counts match explicit input, no fallback into stateless reconstruction
+Structured fields preserved in rendered output, counts match explicit input, file-backed JSON stays on the structured path
 
 #### Test Execution
 > **Feature File:** [153](16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md)
@@ -3019,7 +3019,7 @@ Canonical prose workflow retained in the snippet because the scenario includes m
 Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
 
 #### Test Execution
-> **Feature File:** [M-006](13--memory-quality-and-indexing/006-stateless-enrichment-and-alignment-guardrails.md)
+> **Feature File:** [M-006](13--memory-quality-and-indexing/006-session-enrichment-and-alignment-guardrails.md)
 
 ### M-007 | Session Capturing Pipeline Quality
 
@@ -3253,7 +3253,7 @@ This split playbook keeps automated coverage references in three places:
 | 150 | Features | Source-dist alignment validation | [150](16--tooling-and-scripts/150-source-dist-alignment-validation.md) | [16--tooling-and-scripts/14-source-dist-alignment-enforcement.md](../feature_catalog/16--tooling-and-scripts/14-source-dist-alignment-enforcement.md) |
 | 151 | Features | MODULE_MAP.md accuracy validation | [151](16--tooling-and-scripts/151-module-map-accuracy.md) | [16--tooling-and-scripts/15-module-boundary-map.md](../feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md) |
 | 152 | Features | No symlinks in lib/ tree | [152](16--tooling-and-scripts/152-no-symlinks-in-lib-tree.md) | [16--tooling-and-scripts/15-module-boundary-map.md](../feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md) |
-| 153 | Features | JSON mode hybrid enrichment | [153](16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md) | [16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md](../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
+| 153 | Features | JSON mode structured summary hardening | [153](16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md) | [16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md](../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
 | 154 | Features | JSON-primary deprecation posture | [154](16--tooling-and-scripts/154-json-primary-deprecation-posture.md) | [16--tooling-and-scripts/17-json-primary-deprecation-posture.md](../feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md) |
 | 155 | Features | Post-save quality review | [155](13--memory-quality-and-indexing/155-post-save-quality-review.md) | [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md) |
 | PHASE-001 | Phase System Features | Phase detection scoring | [PHASE-001](16--tooling-and-scripts/001-phase-detection-scoring.md) |  |
@@ -3266,7 +3266,7 @@ This split playbook keeps automated coverage references in three places:
 | M-003 | Dedicated Memory/Spec-Kit Scenarios | Context Save + Index Update | [M-003](13--memory-quality-and-indexing/003-context-save-index-update.md) |  |
 | M-004 | Dedicated Memory/Spec-Kit Scenarios | Main-Agent Review and Verdict Handoff | [M-004](16--tooling-and-scripts/004-main-agent-review-and-verdict-handoff.md) |  |
 | M-005 | Dedicated Memory/Spec-Kit Scenarios | Outsourced Agent Memory Capture Round-Trip | [M-005](13--memory-quality-and-indexing/005-outsourced-agent-memory-capture-round-trip.md) |  |
-| M-006 | Dedicated Memory/Spec-Kit Scenarios | Stateless Enrichment and Alignment Guardrails | [M-006](13--memory-quality-and-indexing/006-stateless-enrichment-and-alignment-guardrails.md) |  |
+| M-006 | Dedicated Memory/Spec-Kit Scenarios | Session Enrichment and Alignment Guardrails | [M-006](13--memory-quality-and-indexing/006-session-enrichment-and-alignment-guardrails.md) |  |
 | M-007 | Dedicated Memory/Spec-Kit Scenarios | Session Capturing Pipeline Quality | [M-007](16--tooling-and-scripts/007-session-capturing-pipeline-quality.md) |  |
 | M-008 | Dedicated Memory/Spec-Kit Scenarios | Feature 09 Direct Manual Scenario (Per-memory History Log) | [M-008](02--mutation/008-feature-09-direct-manual-scenario-per-memory-history-log.md) |  |
 
