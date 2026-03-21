@@ -156,7 +156,7 @@ export interface CollectedDataBase {
   repositoryState?: string | null;
   isDetachedHead?: boolean | null;
   TECHNICAL_CONTEXT?: Array<{ KEY: string; VALUE: string }>;
-  // Fields surfaced during O3-6 index signature removal (stateless enrichment + capture pipeline)
+  // Fields surfaced during O3-6 index signature removal (captured-session enrichment + capture pipeline)
   /** Snake-case variant for raw JSON compatibility. Prefer importanceTier (camelCase) in new code. */
   importance_tier?: string;
   _toolCallCount?: number;

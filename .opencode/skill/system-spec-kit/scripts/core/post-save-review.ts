@@ -209,7 +209,7 @@ export function reviewPostSaveQuality(input: PostSaveReviewInput): PostSaveRevie
     return { status: 'SKIPPED', issues: [], skipReason: 'No collected data to compare against' };
   }
 
-  if (inputMode === 'stateless' || inputMode === 'recovery') {
+  if (inputMode === 'captured') {
     return { status: 'SKIPPED', issues: [], skipReason: `Input mode is ${inputMode} — no JSON payload to compare` };
   }
 

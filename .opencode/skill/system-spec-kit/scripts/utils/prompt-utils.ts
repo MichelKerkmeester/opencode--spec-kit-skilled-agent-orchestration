@@ -19,7 +19,7 @@ function requireInteractiveMode(operation: string): never {
   console.error('ERROR: This operation requires user input but running in non-interactive mode.');
   console.error(`Operation: ${operation}`);
   console.error('');
-  console.error('Please specify structured JSON for routine saves or use explicit recovery mode:');
+  console.error('Please specify structured JSON for saves:');
   console.error('  node generate-context.js /tmp/save-context-data.json <spec-folder-path>');
   console.error('');
   console.error('Example:');

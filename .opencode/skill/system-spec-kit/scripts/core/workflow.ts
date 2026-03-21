@@ -262,15 +262,15 @@ async function withWorkflowRunLock<TResult>(operation: () => Promise<TResult>): 
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. STATELESS ENRICHMENT
+// 3. CAPTURED-SESSION ENRICHMENT
 // ───────────────────────────────────────────────────────────────
 
-async function enrichStatelessData(
+async function enrichCapturedSessionData(
   collectedData: CollectedDataFull,
   specFolder: string,
   projectRoot: string
 ): Promise<CollectedDataFull> {
-  // Only enrich stateless mode — file-backed JSON is authoritative
+  // Only enrich runtime-captured inputs — file-backed JSON is authoritative
   if (collectedData._source === 'file') return collectedData;
 
   const enriched: CollectedDataFull = { ...collectedData };
@@ -447,12 +447,12 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       throw new Error('No data available - provide dataFile, collectedData, or loadDataFn');
     }
 
-    // Step 1.5: Stateless mode alignment check
+    // Step 1.5: Captured-session alignment check
     // When no JSON data file was provided, data comes from the active OpenCode session.
     // Verify the captured content relates to the target spec folder to prevent
     // Cross-spec contamination (e.g., session working on spec A saved to spec B).
-    const isStatelessMode = collectedData._source !== 'file' && collectedData._isSimulation !== true;
-    if (isStatelessMode && activeSpecFolderArg && (collectedData.observations || collectedData.FILES)) {
+    const isCapturedSessionMode = collectedData._source !== 'file' && collectedData._isSimulation !== true;
+    if (isCapturedSessionMode && activeSpecFolderArg && (collectedData.observations || collectedData.FILES)) {
       const alignmentTargets = await resolveAlignmentTargets(activeSpecFolderArg);
       const specAffinityTargets = buildSpecAffinityTargets(activeSpecFolderArg);
       const specAffinity = evaluateCollectedDataSpecAffinity(collectedData, specAffinityTargets);
@@ -461,7 +461,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         // Q1: Downgrade Block A from hard abort to warning when spec folder was explicitly
         // provided via CLI argument. The user's explicit intent overrides the anchor check.
         // Blocks B and C (file-path overlap) remain as hard blocks for safety.
-        const alignMsg = `ALIGNMENT_WARNING: Captured stateless content matched the workspace but not the target spec folder "${activeSpecFolderArg}". ` +
+        const alignMsg = `ALIGNMENT_WARNING: Captured-session content matched the workspace but not the target spec folder "${activeSpecFolderArg}". ` +
           `No spec-specific anchors were found beyond workspace identity (matched files: ${specAffinity.matchedFileTargets.length}, ` +
           `matched phrases: ${specAffinity.matchedPhrases.length}, matched spec id: ${specAffinity.matchedSpecId ? 'yes' : 'no'}). ` +
           `Proceeding because spec folder was explicitly provided via CLI argument.`;
@@ -627,10 +627,10 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       }
     }
 
-    // Step 3.5: Enrich stateless data with spec folder and git context
-    if (isStatelessMode) {
-      log('Step 3.5: Enriching stateless data...');
-      collectedData = await enrichStatelessData(collectedData, specFolder, CONFIG.PROJECT_ROOT);
+    // Step 3.5: Enrich captured-session data with spec folder and git context
+    if (isCapturedSessionMode) {
+      log('Step 3.5: Enriching captured-session data...');
+      collectedData = await enrichCapturedSessionData(collectedData, specFolder, CONFIG.PROJECT_ROOT);
       log('   Enrichment complete');
 
       // RC-4: Post-enrichment alignment re-check — enrichment can introduce
@@ -803,7 +803,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     log('\n   All extraction complete (parallel execution)\n');
 
   // O1-4: Use local variable instead of mutating extractor result in-place
-  // Patch TOOL_COUNT for enriched stateless saves so V7 does not flag
+  // Patch TOOL_COUNT for enriched captured-session saves so V7 does not flag
   // Synthetic file paths as contradictory with zero tool usage.
   // RC-9 fix: Guard against NaN/undefined TOOL_COUNT before any comparison.
   let patchedToolCount = Number.isFinite(sessionData.TOOL_COUNT) ? sessionData.TOOL_COUNT : 0;
@@ -813,7 +813,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     ? collectedData._toolCallCount
     : 0;
   const inferredToolCount = Math.max(enrichedFileCount, captureToolEvidenceCount);
-  if (isStatelessMode && patchedToolCount === 0 && inferredToolCount > 0) {
+  if (isCapturedSessionMode && patchedToolCount === 0 && inferredToolCount > 0) {
     patchedToolCount = inferredToolCount;
   }
 
@@ -1033,11 +1033,11 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       ...conversations,
       ...workflowData,
       // RC-9: Re-assert TOOL_COUNT after spreading conversations ONLY in
-      // Stateless mode, because conversations object contains TOOL_COUNT: 0
-      // Which overwrites the patched value from stateless enrichment.
-      // Non-stateless flows should keep conversations.TOOL_COUNT as-is.
+      // Captured-session mode, because conversations object contains TOOL_COUNT: 0
+      // Which overwrites the patched value from captured-session enrichment.
+      // Non-captured flows should keep conversations.TOOL_COUNT as-is.
       // O1-4: Uses patchedToolCount (local variable) instead of mutated sessionData.
-      ...(isStatelessMode ? { TOOL_COUNT: patchedToolCount } : {}),
+      ...(isCapturedSessionMode ? { TOOL_COUNT: patchedToolCount } : {}),
       FILES: effectiveFiles,
       HAS_FILES: effectiveFiles.length > 0,
       MESSAGE_COUNT: conversations.MESSAGES.length,
@@ -1289,7 +1289,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     const abortMsg = `QUALITY_GATE_ABORT: Memory quality score ${qualityResult.score100}/100 (${qualityResult.score01.toFixed(2)}) ` +
       `is below minimum threshold (${QUALITY_ABORT_THRESHOLD.toFixed(2)}). ` +
       `This typically means the captured session data does not contain meaningful content for this spec folder. ` +
-      `To force save, pass data via JSON file instead of stateless mode.`;
+      `To force save, pass data via JSON file instead of runtime capture.`;
     warn(abortMsg);
     throw new Error(abortMsg);
   }
@@ -1315,8 +1315,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
         `QUALITY_GATE_WARN: Save continuing, but semantic indexing will be skipped due to validation rules: ` +
         `${validationDisposition.indexBlockingRuleIds.join(', ')}`
       );
-    } else if (captureCapabilities.inputMode === 'stateless') {
-      warn(`QUALITY_GATE_WARN: Stateless save continuing despite soft validation failures: ${qualityValidation.failedRules.join(', ')}`);
+    } else if (captureCapabilities.inputMode === 'captured') {
+      warn(`QUALITY_GATE_WARN: Captured-session save continuing despite soft validation failures: ${qualityValidation.failedRules.join(', ')}`);
     } else {
       warn(`QUALITY_GATE_WARN: Structured save continuing despite soft validation failures: ${qualityValidation.failedRules.join(', ')}`);
     }
@@ -1418,7 +1418,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   log(`  - Session duration: ${sessionData.DURATION}\n`);
 
   // Step 10.5: Post-save quality review (JSON mode only)
-  if (ctxFileWritten && captureCapabilities.inputMode !== 'stateless') {
+  if (ctxFileWritten && captureCapabilities.inputMode !== 'captured') {
     const savedFilePath = path.join(contextDir, ctxFilename);
     const reviewResult = reviewPostSaveQuality({
       savedFilePath,

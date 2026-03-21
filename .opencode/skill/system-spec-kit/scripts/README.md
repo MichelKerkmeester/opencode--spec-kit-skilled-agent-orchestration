@@ -103,7 +103,7 @@ Memory save entrypoint (required by Memory Save Rule):
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-spec-name>
 ```
 
-Direct positional saves are now recovery-only and require `--recovery`. Explicit CLI targets remain authoritative, and phase-folder saves write into that selected phase folder's `memory/` directory.
+Direct positional saves are no longer supported. Explicit CLI targets remain authoritative in structured-input modes, and phase-folder saves write into that selected phase folder's `memory/` directory.
 
 JSON mode is also supported:
 
@@ -111,11 +111,7 @@ JSON mode is also supported:
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-spec-name>
 ```
 
-Recovery-only positional mode:
-
-```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery specs/<###-spec-name>
-```
+Direct positional mode now exits non-zero with migration guidance to `--json`, `--stdin`, or a JSON temp file.
 
 Generated memories are now blocked before write/index when they violate the rendered-memory contract:
 - missing required frontmatter keys

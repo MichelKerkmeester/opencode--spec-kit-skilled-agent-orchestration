@@ -4,7 +4,7 @@
 
 import type { DataSource } from './input-normalizer';
 
-export type SourceInputMode = 'structured' | 'stateless';
+export type SourceInputMode = 'structured' | 'captured';
 export type KnownDataSource = DataSource;
 
 export interface SourceCapabilities {
@@ -23,31 +23,31 @@ const SOURCE_CAPABILITIES: Record<DataSource, SourceCapabilities> = {
   },
   'opencode-capture': {
     source: 'opencode-capture',
-    inputMode: 'stateless',
+    inputMode: 'captured',
     toolTitleWithPathExpected: false,
     prefersStructuredSave: true,
   },
   'claude-code-capture': {
     source: 'claude-code-capture',
-    inputMode: 'stateless',
+    inputMode: 'captured',
     toolTitleWithPathExpected: true,
     prefersStructuredSave: true,
   },
   'codex-cli-capture': {
     source: 'codex-cli-capture',
-    inputMode: 'stateless',
+    inputMode: 'captured',
     toolTitleWithPathExpected: false,
     prefersStructuredSave: true,
   },
   'copilot-cli-capture': {
     source: 'copilot-cli-capture',
-    inputMode: 'stateless',
+    inputMode: 'captured',
     toolTitleWithPathExpected: true,
-    prefersStructuredSave: true, // NOTE: aspirational — most sources operate in stateless mode. See O4-12.
+    prefersStructuredSave: true, // NOTE: aspirational — most sources still rely on runtime capture. See O4-12.
   },
   'gemini-cli-capture': {
     source: 'gemini-cli-capture',
-    inputMode: 'stateless',
+    inputMode: 'captured',
     toolTitleWithPathExpected: false,
     prefersStructuredSave: true,
   },

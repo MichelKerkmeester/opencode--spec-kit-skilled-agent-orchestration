@@ -5,7 +5,7 @@
 // ───────────────────────────────────────────────────────────────
 // 1. SPEC FOLDER EXTRACTOR
 // ───────────────────────────────────────────────────────────────
-// Extracts structured context from spec folder documents for stateless enrichment
+// Extracts structured context from spec folder documents for captured-session enrichment
 
 import fs from 'fs';
 import path from 'path';

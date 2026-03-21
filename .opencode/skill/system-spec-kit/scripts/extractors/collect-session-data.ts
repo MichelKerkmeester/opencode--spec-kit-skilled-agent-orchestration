@@ -1020,7 +1020,7 @@ async function collectSessionData(
     SOURCE_SESSION_ID: sourceSessionId,
     SOURCE_SESSION_CREATED: sourceSessionCreated,
     SOURCE_SESSION_UPDATED: sourceSessionUpdated,
-    // Git provenance metadata (M-007d) — surfaced from stateless enrichment
+    // Git provenance metadata (M-007d) — surfaced from captured-session enrichment
     HEAD_REF: typeof data.headRef === 'string' ? data.headRef : null,
     COMMIT_REF: typeof data.commitRef === 'string' ? data.commitRef : null,
     REPOSITORY_STATE: typeof data.repositoryState === 'string' ? data.repositoryState : 'unavailable',

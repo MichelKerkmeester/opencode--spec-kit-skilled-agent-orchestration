@@ -58,7 +58,7 @@ Routine JSON mode:
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-spec-name>
 ```
 
-Explicit CLI targets are authoritative, including policy-defined phase folders. Recovery-only direct saves remain available with `--recovery <spec-folder>`.
+Explicit CLI targets are authoritative, including policy-defined phase folders. Direct positional saves now reject and must be replaced with structured JSON input.
 
 JSON input mode:
 

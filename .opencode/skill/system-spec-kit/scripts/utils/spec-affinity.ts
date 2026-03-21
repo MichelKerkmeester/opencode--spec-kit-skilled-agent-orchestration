@@ -6,7 +6,7 @@
 // 1. SPEC AFFINITY
 // ───────────────────────────────────────────────────────────────
 // Builds spec-specific anchors from a target spec folder and evaluates
-// whether captured stateless content is actually about that spec rather
+// whether captured-session content is actually about that spec rather
 // than merely coming from the same workspace.
 
 import * as fs from 'fs';

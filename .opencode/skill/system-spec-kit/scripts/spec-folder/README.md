@@ -182,8 +182,8 @@ ls -la specs/
 
 # Use structured JSON for routine saves
 node scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-feature-name>/
-# Or use explicit recovery mode for crash recovery
-node scripts/dist/memory/generate-context.js --recovery .opencode/specs/<###-feature-name>/
+# Direct positional mode is no longer supported; use structured JSON instead
+node scripts/dist/memory/generate-context.js /tmp/save-context-data.json .opencode/specs/<###-feature-name>/
 ```
 
 #### Alignment score is low despite correct folder

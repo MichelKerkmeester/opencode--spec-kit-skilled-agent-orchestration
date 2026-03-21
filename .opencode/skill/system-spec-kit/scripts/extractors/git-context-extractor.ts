@@ -5,7 +5,7 @@
 // ───────────────────────────────────────────────────────────────
 // 1. GIT CONTEXT EXTRACTOR
 // ───────────────────────────────────────────────────────────────
-// Mines git history for file changes and observations for stateless enrichment
+// Mines git history for file changes and observations for captured-session enrichment
 
 import { execFileSync } from 'child_process';
 import path from 'path';

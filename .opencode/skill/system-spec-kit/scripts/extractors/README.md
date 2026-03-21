@@ -40,13 +40,13 @@ The `extractors/` directory converts collected session input into structured dat
 - `diagram-extractor.ts`
 - `file-extractor.ts`
 - `gemini-cli-capture.ts` - Gemini CLI session capture
-- `git-context-extractor.ts` - Mines git history for stateless enrichment (spec 013)
+- `git-context-extractor.ts` - Mines git history for captured-session enrichment (spec 013)
 - `implementation-guide-extractor.ts`
 - `opencode-capture.ts`
 - `quality-scorer.ts` - Scores extraction quality for validation
 - `../lib/session-activity-signal.ts` - Detects session activity signals for capture gating (re-exported from barrel)
 - `session-extractor.ts`
-- `spec-folder-extractor.ts` - Parses spec folder docs for stateless enrichment (spec 013)
+- `spec-folder-extractor.ts` - Parses spec folder docs for captured-session enrichment (spec 013)
 - `index.ts`
 
 
@@ -67,7 +67,7 @@ The `extractors/` directory converts collected session input into structured dat
 
 - Decision tree generation logic is provided by `lib/decision-tree-generator.ts` and used by extractor flow.
 - Runtime imports use compiled files under `dist/extractors/`.
-- The extractor barrel now re-exports the stateless enrichment helpers `extractSpecFolderContext()` and `extractGitContext()` alongside the existing extraction surface.
+- The extractor barrel now re-exports the captured-session enrichment helpers `extractSpecFolderContext()` and `extractGitContext()` alongside the existing extraction surface.
 
 
 <!-- /ANCHOR:notes -->
