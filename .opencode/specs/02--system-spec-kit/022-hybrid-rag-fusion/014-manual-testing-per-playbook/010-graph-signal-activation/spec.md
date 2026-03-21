@@ -1,12 +1,16 @@
 ---
 title: "Feature Specification: Phase 010 Graph Signal Activation Manual Testing"
-description: "Structured manual test documentation for the graph-signal-activation phase of the Spec Kit Memory playbook. This packet maps ten assigned NEW scenarios to their feature catalog entries and records the acceptance criteria reviewers will apply during execution."
+description: "Structured manual test documentation for the graph-signal-activation phase of the Spec Kit Memory playbook. This packet maps thirteen assigned scenarios to their feature catalog entries and records the acceptance criteria reviewers will apply during execution."
 trigger_phrases:
   - "phase 010 manual testing"
   - "graph signal activation tests"
   - "016 017 018"
   - "019 020 021 022"
   - "081 120"
+  - "156 157 158"
+  - "graph refresh mode"
+  - "llm graph backfill"
+  - "graph calibration profile"
 importance_tier: "important"
 contextType: "general"
 ---
@@ -38,10 +42,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual test scenarios for graph-signal-activation need structured per-phase documentation. The canonical playbook defines the prompts, commands, evidence, and pass or fail rules, but operators still need a focused phase packet that isolates the ten graph-signal scenarios assigned to Phase 010.
+Manual test scenarios for graph-signal-activation need structured per-phase documentation. The canonical playbook defines the prompts, commands, evidence, and pass or fail rules, but operators still need a focused phase packet that isolates the thirteen graph-signal scenarios assigned to Phase 010, including Wave 2-4 additions for graph refresh mode, LLM graph backfill, and graph calibration profiles.
 
 ### Purpose
-Create a phase-local specification that links each assigned test to its feature catalog entry and preserves the review-ready acceptance criteria for 016, 017, 018, 019, 020, 021, 022, 081, 091, and 120.
+Create a phase-local specification that links each assigned test to its feature catalog entry and preserves the review-ready acceptance criteria for 016, 017, 018, 019, 020, 021, 022, 081, 091, 120, 156, 157, and 158.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -50,7 +54,7 @@ Create a phase-local specification that links each assigned test to its feature 
 ## 3. SCOPE
 
 ### In Scope
-- Document the ten Phase 010 scenarios from the manual testing playbook.
+- Document the thirteen Phase 010 scenarios from the manual testing playbook.
 - Link each scenario to the matching graph-signal-activation feature catalog entry.
 - Preserve the acceptance criteria reviewers will use when issuing PASS, PARTIAL, or FAIL verdicts.
 
@@ -73,6 +77,9 @@ Create a phase-local specification that links each assigned test to its feature 
 | `081` | Graph and cognitive memory fixes | [`../../feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`](../../feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md) |
 | `091` | Implemented: graph centrality and community detection (N2) | [`../../feature_catalog/10--graph-signal-activation/07-community-detection.md`](../../feature_catalog/10--graph-signal-activation/07-community-detection.md) |
 | `120` | Unified graph rollback and explainability (Phase 3) | [`../../feature_catalog/10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md`](../../feature_catalog/10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md) |
+| `156` | Graph Refresh Mode | [`../../feature_catalog/10--graph-signal-activation/13-graph-refresh-mode.md`](../../feature_catalog/10--graph-signal-activation/13-graph-refresh-mode.md) |
+| `157` | LLM Graph Backfill | [`../../feature_catalog/10--graph-signal-activation/14-llm-graph-backfill.md`](../../feature_catalog/10--graph-signal-activation/14-llm-graph-backfill.md) |
+| `158` | Graph Calibration Profile | [`../../feature_catalog/10--graph-signal-activation/15-graph-calibration-profile.md`](../../feature_catalog/10--graph-signal-activation/15-graph-calibration-profile.md) |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -94,6 +101,9 @@ Create a phase-local specification that links each assigned test to its feature 
 | `REQ-081` | Document the graph and cognitive memory fixes bundle and its guardrail expectations. | PASS when self-loops are blocked, depth remains inside the clamped bounds, and cache invalidation occurs correctly after mutation. FAIL when any guard or invalidation path is missing. |
 | `REQ-091` | Document the implemented graph centrality and community detection status scenario and its activation expectations. | PASS when N2 tables are populated, feature flags are active, and graph queries include centrality or community score contributions. FAIL when any implementation signal is missing. |
 | `REQ-120` | Document the unified graph rollback and explainability scenario and its kill-switch expectations. | PASS when enabled runs show graph contribution trace data, disabled runs remove graph-side effects while keeping deterministic baseline order, and repeated runs preserve exact ordering. FAIL when graph effects remain after disable or identical runs reorder ties. |
+| `REQ-156` | Document the graph refresh mode scenario and its `SPECKIT_GRAPH_REFRESH_MODE` feature flag behavior. | PASS when `write_local` mode updates the local graph store on each mutation and `scheduled` mode defers updates to the configured interval; default (flag OFF or unset) keeps the existing synchronous write behavior. FAIL when `write_local` skips the local store, `scheduled` writes immediately, or disabling the flag still triggers the new refresh pathway. |
+| `REQ-157` | Document the LLM graph backfill scenario and its `SPECKIT_LLM_GRAPH_BACKFILL` feature flag behavior. | PASS when enabling the flag triggers an async backfill job that populates missing graph edges from existing memory records, backfill progress is logged, and the live retrieval path is unblocked during backfill; default (flag OFF) performs no backfill. FAIL when backfill blocks retrieval, runs synchronously, or proceeds when the flag is disabled. |
+| `REQ-158` | Document the graph calibration profile scenario and its `SPECKIT_GRAPH_CALIBRATION_PROFILE` feature flag behavior. | PASS when enabling the flag applies the named profile's weight caps and Louvain community detection thresholds, profile switching takes effect on the next query, and disabling the flag reverts to the default calibration values. FAIL when weight caps are ignored, Louvain thresholds do not change with the profile, or disabling the flag retains the custom profile values. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -101,7 +111,7 @@ Create a phase-local specification that links each assigned test to its feature 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All ten assigned test IDs are documented with their exact prompt source, feature link, evidence target, and verdict expectations.
+- **SC-001**: All thirteen assigned test IDs are documented with their exact prompt source, feature link, evidence target, and verdict expectations.
 - **SC-002**: The paired plan documents the exact playbook command sequences by reference and tells operators to execute them verbatim.
 - **SC-003**: Stateful scenarios identify sandbox, checkpoint, or rollback handling before execution begins.
 - **SC-004**: Reviewers can apply the review protocol verdict rules without consulting any other phase packet.
@@ -119,7 +129,10 @@ Create a phase-local specification that links each assigned test to its feature 
 | Dependency | Graph-signal feature catalog files | Provide current-reality context for each assigned scenario. | Link every test to its category file and keep category scope limited to `10--graph-signal-activation`. |
 | Dependency | MCP runtime with graph features enabled | Required to execute graph, causal, cache, and trace scenarios. | Confirm tool access and graph-related flags before running the packet. |
 | Risk | Stateful scenarios mutate graph data or rollout flags | Shared environments can drift and invalidate later evidence. | Run rollback-sensitive checks in a disposable sandbox with checkpoints and isolated flag changes. |
-| Risk | Scenario overlap with adjacent graph features | Operators might mix Phase 010 work with `F-10`, `F-11`, or deferred anchor-node work. | Keep this packet scoped to the nine listed NEW scenarios only. |
+| Dependency | `SPECKIT_GRAPH_REFRESH_MODE` feature flag | Required for 156; controls whether graph refresh uses `write_local` or `scheduled` mode | Confirm flag support in the runtime before running 156; default OFF preserves existing behavior |
+| Dependency | `SPECKIT_LLM_GRAPH_BACKFILL` feature flag | Required for 157; controls the async backfill pathway | Confirm flag support and verify backfill job infrastructure before running 157 |
+| Dependency | `SPECKIT_GRAPH_CALIBRATION_PROFILE` feature flag | Required for 158; controls weight caps and Louvain thresholds | Confirm named profiles are configured and verify fallback to defaults when flag is OFF |
+| Risk | Scenario overlap with adjacent graph features | Operators might mix Phase 010 work with `F-10`, `F-11`, or deferred anchor-node work. | Keep this packet scoped to the thirteen listed scenarios only. |
 <!-- /ANCHOR:risks -->
 
 ---

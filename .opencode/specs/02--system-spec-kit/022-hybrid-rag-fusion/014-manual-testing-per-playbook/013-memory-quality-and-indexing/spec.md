@@ -1,11 +1,14 @@
 ---
 title: "Feature Specification: manual-testing-per-playbook memory quality and indexing phase [template:level_1/spec.md]"
-description: "Phase 013 documents the memory-quality-and-indexing manual test packet for the Spec Kit Memory system. It now tracks 44 exact scenario IDs by expanding the dedicated memory-section sub-scenarios alongside the original top-level inventory."
+description: "Phase 013 documents the memory-quality-and-indexing manual test packet for the Spec Kit Memory system. It now tracks 46 exact scenario IDs by expanding the dedicated memory-section sub-scenarios alongside the original top-level inventory plus Wave 3-4 additions."
 trigger_phrases:
   - "memory quality manual testing"
   - "phase 013 indexing tests"
   - "manual testing playbook memory phase"
   - "hybrid rag fusion memory quality"
+  - "164 165"
+  - "batch learned feedback"
+  - "assistive reconsolidation"
 importance_tier: "high"
 contextType: "general"
 ---
@@ -37,10 +40,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual test scenarios for memory-quality-and-indexing currently live in the central playbook and need structured per-phase documentation that preserves exact prompts, command sequences, evidence expectations, and review-protocol verdict rules. The earlier Phase 013 packet only modeled `26` top-level scenarios and collapsed the dedicated memory-section sub-scenarios, which meant active exact IDs such as `M-005a`, `M-006b`, and `M-007g` were not represented literally in the phase documentation.
+Manual test scenarios for memory-quality-and-indexing currently live in the central playbook and need structured per-phase documentation that preserves exact prompts, command sequences, evidence expectations, and review-protocol verdict rules. The earlier Phase 013 packet only modeled `26` top-level scenarios and collapsed the dedicated memory-section sub-scenarios, which meant active exact IDs such as `M-005a`, `M-006b`, and `M-007g` were not represented literally in the phase documentation. Wave 3-4 additions introduce batch learned feedback aggregation and assistive reconsolidation threshold tiers.
 
 ### Purpose
-Provide a single memory-quality-and-indexing specification that maps all `44` exact Phase 013 scenario IDs to canonical feature context and playbook-derived acceptance criteria so execution and review remain consistent with the current manual testing playbook.
+Provide a single memory-quality-and-indexing specification that maps all `46` exact Phase 013 scenario IDs to canonical feature context and playbook-derived acceptance criteria so execution and review remain consistent with the current manual testing playbook.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -96,9 +99,11 @@ Provide a single memory-quality-and-indexing specification that maps all `44` ex
 | M-008 | Feature 09 Direct Manual Scenario (Per-memory History Log) | [`../../../../../skill/system-spec-kit/feature_catalog/02--mutation/10-per-memory-history-log.md`](../../../../../skill/system-spec-kit/feature_catalog/02--mutation/10-per-memory-history-log.md) | Direct cross-category mapping for per-memory history behavior. |
 | 155 | Post-save quality review | [`../../../../../skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md`](../../../../../skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md) | Direct category match for post-save quality review output and HIGH/MEDIUM/PASSED classification. |
 | 155-F | Score penalty advisory logging | [`../../../../../skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md`](../../../../../skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md) | Explicit child scenario for score penalty advisory log entries emitted during post-save quality review. |
+| 164 | Batch Learned Feedback | [`../../../../../skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/20-batch-learned-feedback.md`](../../../../../skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/20-batch-learned-feedback.md) | Validates `SPECKIT_BATCH_LEARNED_FEEDBACK` weekly aggregation of implicit and explicit feedback signals into memory quality scores. |
+| 165 | Assistive Reconsolidation | [`../../../../../skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/21-assistive-reconsolidation.md`](../../../../../skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/21-assistive-reconsolidation.md) | Validates `SPECKIT_ASSISTIVE_RECONSOLIDATION` threshold tiers for automated memory reconsolidation suggestions. |
 
 ### Out of Scope
-- Executing the 44 exact scenario IDs and assigning final run verdicts.
+- Executing the 46 exact scenario IDs and assigning final run verdicts.
 - Modifying the review protocol or feature catalog source files.
 - Documenting manual testing phases outside `013-memory-quality-and-indexing/`.
 
@@ -166,8 +171,10 @@ Provide a single memory-quality-and-indexing specification that maps all `44` ex
 | REQ-042 | Document M-008 with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS: Direct operator run confirms per-memory history behavior without relying only on automated suites |
 | REQ-043 | Document 155 with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS: Post-save quality review output is present, findings are categorized as HIGH, MEDIUM, or PASSED, and HIGH findings produce actionable patch guidance |
 | REQ-044 | Document 155-F with its exact playbook command sequence and acceptance rule. | PASS: Score penalty advisory log entries are emitted with the penalty amount and reason during post-save quality review when a penalty is applied |
+| REQ-045 | Document 164 (Batch Learned Feedback) with its exact playbook prompt, command sequence, evidence target, and mapped feature link. Feature flag: `SPECKIT_BATCH_LEARNED_FEEDBACK` (default: OFF). | PASS when flag ON: weekly aggregation job collects implicit and explicit feedback signals, aggregated scores are written to the memory quality store, the job completes within the configured schedule window, and individual memory records reflect updated quality scores after aggregation; PASS when flag OFF: no aggregation job runs and quality scores remain unchanged. FAIL when aggregation runs outside the scheduled window, feedback signals are lost during aggregation, quality scores are corrupted, or the job runs when the flag is disabled. |
+| REQ-046 | Document 165 (Assistive Reconsolidation) with its exact playbook prompt, command sequence, evidence target, and mapped feature link. Feature flag: `SPECKIT_ASSISTIVE_RECONSOLIDATION` (default: OFF). | PASS when flag ON: reconsolidation suggestions are generated for memory records that exceed the configured similarity threshold tiers, suggestions include the target records and proposed merge/supersede action, and suggestions are advisory-only (no automatic mutation); PASS when flag OFF: no reconsolidation suggestions are generated. FAIL when suggestions trigger automatic mutations, when suggestions are generated below the threshold tier, or when disabling the flag still produces suggestions. |
 
-No P1 items are defined for this phase; all 44 exact scenario IDs are required for Phase 013 coverage.
+No P1 items are defined for this phase; all 46 exact scenario IDs are required for Phase 013 coverage.
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -175,10 +182,10 @@ No P1 items are defined for this phase; all 44 exact scenario IDs are required f
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 44 exact Phase 013 scenario IDs are documented with exact prompts, command sequences, evidence expectations, and review-protocol verdict language.
-- **SC-002**: Every exact scenario ID in this phase links to a feature-catalog file, including explicit source-backed mappings for `M-005a..c`, `M-006a..c`, `M-007a..j`, and `155`/`155-F`.
+- **SC-001**: All 46 exact Phase 013 scenario IDs are documented with exact prompts, command sequences, evidence expectations, and review-protocol verdict language.
+- **SC-002**: Every exact scenario ID in this phase links to a feature-catalog file, including explicit source-backed mappings for `M-005a..c`, `M-006a..c`, `M-007a..j`, `155`/`155-F`, `164`, and `165`.
 - **SC-003**: `plan.md` defines a preconditions -> execute -> evidence -> verdict pipeline for both non-destructive and sandboxed destructive scenarios.
-- **SC-004**: Reviewers can assess the phase as 44/44 documented exact IDs with no omitted dedicated-memory sub-scenarios and no shorthand-only `M-007` coverage.
+- **SC-004**: Reviewers can assess the phase as 46/46 documented exact IDs with no omitted dedicated-memory sub-scenarios and no shorthand-only `M-007` coverage.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -194,7 +201,11 @@ No P1 items are defined for this phase; all 44 exact scenario IDs are required f
 | Dependency | MCP runtime, CLI scripts, disposable sandbox spec folders, and restart-safe test environment | Many scenarios require saves, reindex, service restart, file corruption tests, or dry-run inspection | Run destructive cases only in sandboxes, create checkpoints before mutation, and restore runtime state after each destructive block |
 | Risk | `042`, `119`, `131`, and `132` mutate or repair description metadata and can taint shared spec folders | High | Use disposable spec folders, isolate description.json corruption tests, and verify cleanup before proceeding |
 | Risk | `M-007` now spans 11 exact IDs (umbrella + 10 sub-scenarios) and can overclaim if evidence is reused loosely | High | Track each exact `M-007*` ID separately so parent umbrella coverage never substitutes for child evidence |
+| Dependency | `SPECKIT_BATCH_LEARNED_FEEDBACK` feature flag | Required for 164; controls weekly feedback aggregation into quality scores | Confirm flag support and schedule configuration before running 164; default OFF preserves existing quality scores |
+| Dependency | `SPECKIT_ASSISTIVE_RECONSOLIDATION` feature flag | Required for 165; controls assistive reconsolidation threshold tiers | Confirm flag support and threshold configuration before running 165; default OFF disables suggestions |
 | Risk | `155` and `155-F` reference a feature catalog file (`19-post-save-quality-review.md`) that may not yet exist | Medium | Create the feature catalog entry before execution or note the missing link explicitly in the phase plan |
+| Risk | 164 weekly aggregation depends on accumulated feedback data; insufficient data may produce no-op runs | Medium | Seed the sandbox with at least 10 explicit and implicit feedback events before triggering the aggregation job |
+| Risk | 165 reconsolidation suggestions depend on having sufficiently similar memory records in the test corpus | Medium | Prepare fixture records with known cosine similarity above and below each threshold tier |
 <!-- /ANCHOR:risks -->
 
 ---

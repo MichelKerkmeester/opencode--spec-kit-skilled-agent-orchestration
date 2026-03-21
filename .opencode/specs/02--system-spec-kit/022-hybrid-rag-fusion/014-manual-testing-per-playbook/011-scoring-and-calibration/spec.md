@@ -1,12 +1,15 @@
 ---
 title: "Feature Specification: scoring-and-calibration manual testing [template:level_1/spec.md]"
-description: "Phase 011 documents the 17 manual testing scenarios for scoring and calibration features in the Spec Kit Memory system. It maps each playbook scenario to the matching feature catalog entry and preserves the required acceptance language for verdict review."
+description: "Phase 011 documents the 19 manual testing scenarios for scoring and calibration features in the Spec Kit Memory system. It maps each playbook scenario to the matching feature catalog entry and preserves the required acceptance language for verdict review."
 trigger_phrases:
   - "manual testing"
   - "scoring and calibration"
   - "phase 011"
   - "playbook"
   - "spec kit memory"
+  - "159 160"
+  - "learned stage 2 combiner"
+  - "shadow feedback holdout"
 importance_tier: "high"
 contextType: "general"
 ---
@@ -38,10 +41,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual test scenarios for scoring-and-calibration need structured per-phase documentation instead of a single playbook table buried inside the hybrid RAG fusion packet. Phase 011 must capture the exact test prompts, execution steps, evidence expectations, and verdict rules for the 17 scoring-focused scenarios so operators can run them consistently and reviewers can score them against the review protocol.
+Manual test scenarios for scoring-and-calibration need structured per-phase documentation instead of a single playbook table buried inside the hybrid RAG fusion packet. Phase 011 must capture the exact test prompts, execution steps, evidence expectations, and verdict rules for the 19 scoring-focused scenarios so operators can run them consistently and reviewers can score them against the review protocol.
 
 ### Purpose
-Provide a canonical phase packet that maps every assigned scoring-and-calibration test ID to its feature catalog source and preserves the pass/fail acceptance language needed for PASS, PARTIAL, or FAIL verdicts.
+Provide a canonical phase packet that maps every assigned scoring-and-calibration test ID to its feature catalog source and preserves the pass/fail acceptance language needed for PASS, PARTIAL, or FAIL verdicts. Wave 2-4 additions include learned Stage 2 combiner shadow scoring and shadow feedback holdout evaluation.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -50,7 +53,7 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 ## 3. SCOPE
 
 ### In Scope
-- Phase 011 documentation for all 17 assigned scoring-and-calibration playbook scenarios.
+- Phase 011 documentation for all 19 assigned scoring-and-calibration playbook scenarios.
 - Exact linkage from each test ID to the matching feature catalog file under `11--scoring-and-calibration/`.
 - Manual-testing execution guidance covering prompts, evidence expectations, and review-protocol verdict inputs.
 
@@ -80,6 +83,8 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 | 102 | node-llama-cpp optionalDependencies | [`../../feature_catalog/11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md`](../../feature_catalog/11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md) | Verifies optional dependency installation and dynamic import fallback behavior for local reranker support. |
 | 118 | Stage-2 score field synchronization (P0-8) | [`../../feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md`](../../feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md) | Depends on includeTrace output from the active non-hybrid pipeline. |
 | 121 | Adaptive shadow proposal and rollback (Phase 4) | [`../../feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md`](../../feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md) | Mutates adaptive signals and feature flags, so it needs rollback-safe isolation. |
+| 159 | Learned Stage 2 Combiner | [`../../feature_catalog/11--scoring-and-calibration/19-learned-stage2-combiner.md`](../../feature_catalog/11--scoring-and-calibration/19-learned-stage2-combiner.md) | Validates `SPECKIT_LEARNED_STAGE2_COMBINER` shadow scoring output alongside the live combiner. |
+| 160 | Shadow Feedback Holdout | [`../../feature_catalog/11--scoring-and-calibration/20-shadow-feedback-holdout.md`](../../feature_catalog/11--scoring-and-calibration/20-shadow-feedback-holdout.md) | Validates `SPECKIT_SHADOW_FEEDBACK` holdout evaluation pipeline for offline scoring comparison. |
 
 ### Files to Change
 
@@ -115,6 +120,8 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 | REQ-102 | Document 102 (node-llama-cpp optionalDependencies) with the exact prompt, execution sequence, evidence target, and feature link. | PASS if `node-llama-cpp` remains in optionalDependencies, installs cleanly without native build tools, and dynamic import degrades gracefully when module is absent |
 | REQ-118 | Document 118 (Stage-2 score field synchronization (P0-8)) with the exact prompt, execution sequence, evidence target, and feature link. | PASS if intentAdjustedScore is synchronized with score via Math.max and resolveEffectiveScore returns the correct final value |
 | REQ-121 | Document 121 (Adaptive shadow proposal and rollback (Phase 4)) with the exact prompt, execution sequence, evidence target, and feature link. | PASS: Shadow proposal emitted without mutating live order; disable flag removes proposal cleanly; FAIL: Live order changes under shadow mode or proposal persists after disable |
+| REQ-159 | Document 159 (Learned Stage 2 Combiner) with its exact prompt, execution sequence, evidence target, and feature link. Feature flag: `SPECKIT_LEARNED_STAGE2_COMBINER` (default: OFF). | PASS when flag ON: shadow scoring output is emitted alongside the live Stage 2 combiner, shadow weights are logged, and the live ranking is not affected by shadow output; PASS when flag OFF: no shadow scoring output appears and the live combiner behaves identically to baseline. FAIL when shadow output mutates live ranking or when disabling the flag still produces shadow logs. |
+| REQ-160 | Document 160 (Shadow Feedback Holdout) with its exact prompt, execution sequence, evidence target, and feature link. Feature flag: `SPECKIT_SHADOW_FEEDBACK` (default: OFF). | PASS when flag ON: holdout evaluation pipeline runs on a configured percentage of queries, holdout results are logged separately from live results, and live retrieval quality is unaffected; PASS when flag OFF: no holdout pipeline runs and no holdout log entries appear. FAIL when holdout affects live results, runs on all queries regardless of configured percentage, or holdout logging occurs when the flag is disabled. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -122,7 +129,7 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 17 assigned test IDs are documented in this phase packet with exact prompts, execution steps, evidence targets, and verdict criteria.
+- **SC-001**: All 19 assigned test IDs are documented in this phase packet with exact prompts, execution steps, evidence targets, and verdict criteria.
 - **SC-002**: Every test row links to the correct scoring-and-calibration feature catalog file by relative path.
 - **SC-003**: The paired `plan.md` defines the execution pipeline from preconditions through evidence capture and verdict assignment.
 - **SC-004**: Reviewers can apply the review protocol without reopening the monolithic playbook for missing scenario details.
@@ -139,7 +146,9 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 | Dependency | `../../feature_catalog/11--scoring-and-calibration/` | Missing or moved feature files would break traceability from scenario to feature. | Keep relative links aligned with the catalog and re-run a link audit after renames. |
 | Dependency | `../../manual_testing_playbook/review_protocol.md` | Verdicts could be inconsistent if reviewers do not apply the same PASS/PARTIAL/FAIL rules. | Use the review protocol as the final verdict rubric for every executed scenario. |
 | Dependency | MCP runtime, flags, and sandbox fixture data | Several tests depend on trace output, toggled flags, or state-mutating validation flows. | Run destructive scenarios in an isolated sandbox and reset state between tests. |
-| Risk | Playbook rows with abbreviated cross-reference entries (`066`, `074`, `079`, `098`, `118`, `121`) | The cross-reference table alone does not carry full acceptance detail. | Preserve the full scenario rows from the main playbook table inside `plan.md` and this spec. |
+| Dependency | `SPECKIT_LEARNED_STAGE2_COMBINER` feature flag | Required for 159; controls shadow scoring output alongside the live combiner | Confirm flag support in the runtime before running 159; default OFF preserves existing combiner behavior |
+| Dependency | `SPECKIT_SHADOW_FEEDBACK` feature flag | Required for 160; controls the holdout evaluation pipeline | Confirm flag support and holdout percentage configuration before running 160; default OFF disables holdout |
+| Risk | Playbook rows with abbreviated cross-reference entries (`066`, `074`, `079`, `098`, `118`, `121`, `159`, `160`) | The cross-reference table alone does not carry full acceptance detail. | Preserve the full scenario rows from the main playbook table inside `plan.md` and this spec. |
 | Risk | Host-specific prerequisites for `098` local reranker checks | Missing model files or insufficient memory can block the reranker scenario. | Record blocked status with evidence, or use a prepared host that satisfies the model-path and memory thresholds. |
 <!-- /ANCHOR:risks -->
 
