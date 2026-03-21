@@ -33,14 +33,18 @@ contextType: "implementation"
 <!-- ANCHOR:wave-1 -->
 ## Wave 1: Foundations (Parallel)
 
-- [ ] T004 [P] Execute D4 Phase A — Event ledger, FSRS hybrid, quality gate exception (#2, #3, #7)
+- [x] T004 [P] Execute D4 Phase A — Event ledger, FSRS hybrid, quality gate exception (#2, #3, #7)
   - See: `004-feedback-quality-learning/tasks.md`
-- [ ] T005 [P] Execute D3 Phase A — Sparse-first policy, intent-aware traversal (#4, #5)
+  - Evidence: feedback-ledger.ts created, fsrs-scheduler.ts extended, save-quality-gate.ts extended, 3 feature flags, 101 tests
+- [x] T005 [P] Execute D3 Phase A — Sparse-first policy, intent-aware traversal (#4, #5)
   - See: `003-graph-augmented-retrieval/tasks.md`
-- [ ] T006 [P] Execute D1 Phase A — Calibrated overlap, K-optimization (#1, #9)
+  - Evidence: causal-boost.ts extended with sparse-first + intent-aware traversal, 113 tests passing
+- [x] T006 [P] Execute D1 Phase A — Calibrated overlap, K-optimization (#1, #9)
   - See: `001-fusion-scoring-intelligence/tasks.md`
-- [ ] T007 [P] Execute D5 Phase A — Recovery UX, per-result confidence (#6, #18)
+  - Evidence: rrf-fusion.ts modified, k-value-analysis.ts created, 128 tests passing
+- [x] T007 [P] Execute D5 Phase A — Recovery UX, per-result confidence (#6, #18)
   - See: `005-retrieval-ux-presentation/tasks.md`
+  - Evidence: recovery-payload.ts + confidence-scoring.ts created, formatters + handlers extended, 74 tests
 - [ ] T008 Run eval after Wave 1 — compare MRR@5/NDCG@10 vs baseline
 - [ ] T009 Run latency regression — verify simple-query p95 < 1s
 <!-- /ANCHOR:wave-1 -->
@@ -48,8 +52,9 @@ contextType: "implementation"
 <!-- ANCHOR:wave-2 -->
 ## Wave 2: Core Improvements (After Wave 1)
 
-- [ ] T010 [P] Execute D2 Phase A — Query decomposition, graph concept routing (#10, #11)
+- [x] T010 [P] Execute D2 Phase A — Query decomposition, graph concept routing (#10, #11)
   - See: `002-query-intelligence-reformulation/tasks.md`
+  - Evidence: query-decomposer.ts created, entity-linker.ts + stage1-candidate-gen.ts extended, 65 tests
 - [ ] T011 [P] Execute D3 Phase B — Graph refresh, save-time enrichment (#13, #14)
   - See: `003-graph-augmented-retrieval/tasks.md`
 - [ ] T012 [P] Execute D4 Phase B — Batch learning, reconsolidation (#19, #20)

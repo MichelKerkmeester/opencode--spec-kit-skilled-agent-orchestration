@@ -675,15 +675,16 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
             VALUE: typeof entry.VALUE === 'string' ? cleanContaminationText(entry.VALUE) : entry.VALUE,
           }))
         : (collectedData as Record<string, unknown>).TECHNICAL_CONTEXT;
-      collectedData = {
-        ...collectedData,
+      // Only spread fields that exist on the original to avoid adding undefined keys
+      const cleanedFields: Record<string, unknown> = {
         observations: preCleanedObservations,
         SUMMARY: preCleanedSummary,
-        _JSON_SESSION_SUMMARY: preCleanedJsonSummary,
-        _manualDecisions: preCleanedDecisions,
-        recentContext: preCleanedRecentCtx,
-        TECHNICAL_CONTEXT: preCleanedTechCtx,
-      } as typeof collectedData;
+      };
+      if ('_JSON_SESSION_SUMMARY' in collectedData) cleanedFields._JSON_SESSION_SUMMARY = preCleanedJsonSummary;
+      if ('_manualDecisions' in collectedData) cleanedFields._manualDecisions = preCleanedDecisions;
+      if ('recentContext' in collectedData) cleanedFields.recentContext = preCleanedRecentCtx;
+      if ('TECHNICAL_CONTEXT' in collectedData) cleanedFields.TECHNICAL_CONTEXT = preCleanedTechCtx;
+      collectedData = { ...collectedData, ...cleanedFields } as typeof collectedData;
       const extractorAudit: ContaminationAuditRecord = {
         stage: 'extractor-scrub',
         timestamp: new Date().toISOString(),
@@ -1563,27 +1564,12 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       inputMode: captureCapabilities.inputMode,
     });
     printPostSaveReview(reviewResult);
-    // Phase 002 T035: Apply post-save review findings as quality_score adjustment
+    // Phase 002 T035: Log post-save review score impact (advisory — does not patch saved file
+    // to preserve content-based duplicate detection at line 1259)
     if (reviewResult.status === 'ISSUES_FOUND' && reviewResult.issues.length > 0) {
       const scorePenalty = computeReviewScorePenalty(reviewResult.issues);
       if (scorePenalty < 0) {
-        // Read current quality_score from saved file, apply penalty, and patch frontmatter
-        try {
-          const savedContent = fsSync.readFileSync(savedFilePath, 'utf8');
-          const qMatch = savedContent.match(/quality_score:\s*([\d.]+)/);
-          if (qMatch) {
-            const currentScore = parseFloat(qMatch[1]);
-            const adjustedScore = Math.max(0.10, Math.round((currentScore + scorePenalty) * 100) / 100);
-            const patchedContent = savedContent.replace(
-              /quality_score:\s*[\d.]+/,
-              `quality_score: ${adjustedScore.toFixed(2)}`
-            );
-            fsSync.writeFileSync(savedFilePath, patchedContent, 'utf8');
-            log(`   Post-save review: quality_score adjusted ${currentScore.toFixed(2)} → ${adjustedScore.toFixed(2)} (penalty: ${scorePenalty.toFixed(2)})`);
-          }
-        } catch (patchErr: unknown) {
-          warn(`   Post-save review score patch failed: ${patchErr instanceof Error ? patchErr.message : String(patchErr)}`);
-        }
+        log(`   Post-save review: quality_score penalty ${scorePenalty.toFixed(2)} (${reviewResult.issues.length} issues found)`);
       }
     }
   }

@@ -15,8 +15,9 @@
     "022-hybrid-rag-fusion",
     "001-hybrid-rag-fusion-epic"
   ],
-  "memorySequence": 1,
+  "memorySequence": 2,
   "memoryNameHistory": [
-    "21-03-26_18-29__created-phase-folder-011-research-based.md"
+    "21-03-26_18-29__created-phase-folder-011-research-based.md",
+    "21-03-26_19-32__implemented-wave-1-phase-a-across-all-5.md"
   ]
 }

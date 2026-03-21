@@ -1,5 +1,5 @@
 {
-  "timestamp": "21-03-26 18-29",
+  "timestamp": "21-03-26 19-32",
   "messageCount": 1,
   "decisionCount": 0,
   "diagramCount": 0,
@@ -13,7 +13,7 @@
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-03-21T17:29:23.045Z",
+        "timestamp": "2026-03-21T18:32:54.217Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-03-21T17:29:23.013Z",
+      "timestamp": "2026-03-21T18:32:54.185Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -108,12 +108,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:2"
+        "processed_fields:8"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-03-21T17:29:23.045Z",
+      "timestamp": "2026-03-21T18:32:54.217Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -156,7 +156,7 @@
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-03-21T17:29:23.059Z",
+      "timestamp": "2026-03-21T18:32:54.227Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -173,7 +173,7 @@
       ],
       "passedThrough": [
         "current_spec:011-research-based-refinement",
-        "trigger_phrases:31",
+        "trigger_phrases:22",
         "key_topics:12",
         "captured_file_count:0",
         "filesystem_file_count:0"
@@ -182,13 +182,13 @@
   ],
   "semanticSummary": {
     "task": "Development session",
-    "filesCreated": 3,
+    "filesCreated": 0,
     "filesModified": 0,
     "decisions": 0,
     "messageStats": {
-      "intent": 0,
+      "intent": 1,
       "plan": 0,
-      "implementation": 1,
+      "implementation": 0,
       "result": 0,
       "decision": 0,
       "total": 1
@@ -210,9 +210,9 @@
     "status": "indexed",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 4444,
-    "updatedAt": "2026-03-21T17:29:23.791Z",
-    "generatedAt": "2026-03-21T17:29:23.791Z",
+    "memoryId": 4446,
+    "updatedAt": "2026-03-21T18:32:54.782Z",
+    "generatedAt": "2026-03-21T18:32:54.782Z",
     "reason": "Indexed after all write and semantic-index gates passed."
   }
 }
