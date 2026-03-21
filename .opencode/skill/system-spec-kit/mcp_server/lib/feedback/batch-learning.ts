@@ -124,7 +124,7 @@ export interface BatchLearningResult {
  */
 export function isBatchLearnedFeedbackEnabled(): boolean {
   const val = process.env.SPECKIT_BATCH_LEARNED_FEEDBACK?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return val !== 'false' && val !== '0';
 }
 
 /* ───────────────────────────────────────────────────────────────

@@ -384,11 +384,11 @@ const HYBRID_NO_DECAY_CONTEXT_TYPES: ReadonlySet<string> = new Set([
 
 /**
  * REQ-D4-002: Check whether the hybrid decay policy feature flag is enabled.
- * Default: FALSE (off). Set SPECKIT_HYBRID_DECAY_POLICY=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_HYBRID_DECAY_POLICY=false to disable.
  */
 function isHybridDecayPolicyEnabled(): boolean {
   const val = process.env.SPECKIT_HYBRID_DECAY_POLICY?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return val !== 'false' && val !== '0';
 }
 
 /**

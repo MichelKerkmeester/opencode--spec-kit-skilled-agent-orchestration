@@ -36,9 +36,9 @@ describe('isResultConfidenceEnabled() — feature flag', () => {
     else process.env.SPECKIT_RESULT_CONFIDENCE_V1 = ORIGINAL;
   });
 
-  it('defaults to false when env var is not set', () => {
+  it('defaults to true when env var is not set (graduated)', () => {
     delete process.env.SPECKIT_RESULT_CONFIDENCE_V1;
-    expect(isResultConfidenceEnabled()).toBe(false);
+    expect(isResultConfidenceEnabled()).toBe(true);
   });
 
   it('returns true when set to "true"', () => {
@@ -56,9 +56,9 @@ describe('isResultConfidenceEnabled() — feature flag', () => {
     expect(isResultConfidenceEnabled()).toBe(false);
   });
 
-  it('returns false for "1" (not opt-in compatible)', () => {
+  it('returns true for "1" (graduated — any non-false value is ON)', () => {
     process.env.SPECKIT_RESULT_CONFIDENCE_V1 = '1';
-    expect(isResultConfidenceEnabled()).toBe(false);
+    expect(isResultConfidenceEnabled()).toBe(true);
   });
 });
 

@@ -47,9 +47,9 @@ describe('Feedback Event Ledger — Feature Flag', () => {
     vi.unstubAllEnvs();
   });
 
-  it('isImplicitFeedbackLogEnabled returns false by default', () => {
+  it('isImplicitFeedbackLogEnabled returns true by default (graduated)', () => {
     vi.stubEnv('SPECKIT_IMPLICIT_FEEDBACK_LOG', '');
-    expect(isImplicitFeedbackLogEnabled()).toBe(false);
+    expect(isImplicitFeedbackLogEnabled()).toBe(true);
   });
 
   it('isImplicitFeedbackLogEnabled returns true when set to "true"', () => {
@@ -68,7 +68,7 @@ describe('Feedback Event Ledger — Feature Flag', () => {
   });
 
   it('logFeedbackEvent returns null when flag is OFF', () => {
-    vi.stubEnv('SPECKIT_IMPLICIT_FEEDBACK_LOG', '');
+    vi.stubEnv('SPECKIT_IMPLICIT_FEEDBACK_LOG', 'false');
     const db = createTestDb();
     const result = logFeedbackEvent(db, makeEvent());
     expect(result).toBeNull();
@@ -276,7 +276,7 @@ describe('Feedback Event Ledger — logFeedbackEvents (batch)', () => {
   });
 
   it('returns 0 when flag is OFF', () => {
-    vi.stubEnv('SPECKIT_IMPLICIT_FEEDBACK_LOG', '');
+    vi.stubEnv('SPECKIT_IMPLICIT_FEEDBACK_LOG', 'false');
     const db = createTestDb();
     const inserted = logFeedbackEvents(db, [makeEvent(), makeEvent()]);
     expect(inserted).toBe(0);

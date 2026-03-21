@@ -34,9 +34,9 @@ describe('Short-Critical Gate Exception — Feature Flag', () => {
     vi.unstubAllEnvs();
   });
 
-  it('isSaveQualityGateExceptionsEnabled returns false by default', () => {
+  it('isSaveQualityGateExceptionsEnabled returns true by default (graduated)', () => {
     vi.stubEnv('SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS', '');
-    expect(isSaveQualityGateExceptionsEnabled()).toBe(false);
+    expect(isSaveQualityGateExceptionsEnabled()).toBe(true);
   });
 
   it('isSaveQualityGateExceptionsEnabled returns true when set to "true"', () => {

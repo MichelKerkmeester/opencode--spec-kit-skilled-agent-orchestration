@@ -137,9 +137,9 @@ describe('Batch Learning — Feature Flag', () => {
     vi.unstubAllEnvs();
   });
 
-  it('isBatchLearnedFeedbackEnabled returns false by default', () => {
+  it('isBatchLearnedFeedbackEnabled returns true by default (graduated)', () => {
     vi.stubEnv('SPECKIT_BATCH_LEARNED_FEEDBACK', '');
-    expect(isBatchLearnedFeedbackEnabled()).toBe(false);
+    expect(isBatchLearnedFeedbackEnabled()).toBe(true);
   });
 
   it('isBatchLearnedFeedbackEnabled returns true for "true"', () => {
@@ -515,7 +515,7 @@ describe('Batch Learning — runBatchLearning (integration)', () => {
   });
 
   it('returns zero-count result when feature flag is OFF', () => {
-    delete process.env.SPECKIT_BATCH_LEARNED_FEEDBACK;
+    process.env.SPECKIT_BATCH_LEARNED_FEEDBACK = 'false';
     const db = createTestDb();
     const result = runBatchLearning(db, { runAt: BASE_TS });
     expect(result.shadowApplied).toBe(0);

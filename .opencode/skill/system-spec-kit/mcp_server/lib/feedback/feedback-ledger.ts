@@ -105,7 +105,7 @@ export function resolveConfidence(
  */
 export function isImplicitFeedbackLogEnabled(): boolean {
   const val = process.env.SPECKIT_IMPLICIT_FEEDBACK_LOG?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return val !== 'false' && val !== '0';
 }
 
 /* ───────────────────────────────────────────────────────────────

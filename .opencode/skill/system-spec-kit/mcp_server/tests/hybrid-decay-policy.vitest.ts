@@ -29,9 +29,9 @@ describe('Hybrid Decay Policy — Feature Flag', () => {
     vi.unstubAllEnvs();
   });
 
-  it('isHybridDecayPolicyEnabled returns false by default (flag absent)', () => {
+  it('isHybridDecayPolicyEnabled returns true by default (graduated)', () => {
     vi.stubEnv('SPECKIT_HYBRID_DECAY_POLICY', '');
-    expect(isHybridDecayPolicyEnabled()).toBe(false);
+    expect(isHybridDecayPolicyEnabled()).toBe(true);
   });
 
   it('isHybridDecayPolicyEnabled returns true when set to "true"', () => {
@@ -178,12 +178,11 @@ describe('Hybrid Decay Policy — applyHybridDecayPolicy', () => {
     expect(r30).toBeLessThan(1.0);
   });
 
-  it('no-decay policy does not apply when flag is absent from env', () => {
+  it('no-decay policy applies when flag is absent from env (graduated default ON)', () => {
     vi.stubEnv('SPECKIT_HYBRID_DECAY_POLICY', '');
-    const stability = 2.5;
-    // Flag is off → stability unchanged for all types
-    expect(applyHybridDecayPolicy(stability, 'decision')).toBe(stability);
-    expect(applyHybridDecayPolicy(stability, 'critical')).toBe(stability);
+    // Flag is now ON by default → no-decay applies to decision/critical
+    expect(applyHybridDecayPolicy(2.5, 'decision')).toBe(Infinity);
+    expect(applyHybridDecayPolicy(2.5, 'critical')).toBe(Infinity);
   });
 });
 

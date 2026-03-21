@@ -59,9 +59,9 @@ describe('isProgressiveDisclosureEnabled() — feature flag', () => {
     else process.env.SPECKIT_PROGRESSIVE_DISCLOSURE_V1 = ORIGINAL;
   });
 
-  it('defaults to false when env var is not set', () => {
+  it('defaults to true when env var is not set (graduated)', () => {
     delete process.env.SPECKIT_PROGRESSIVE_DISCLOSURE_V1;
-    expect(isProgressiveDisclosureEnabled()).toBe(false);
+    expect(isProgressiveDisclosureEnabled()).toBe(true);
   });
 
   it('returns true when set to "true"', () => {
@@ -79,9 +79,9 @@ describe('isProgressiveDisclosureEnabled() — feature flag', () => {
     expect(isProgressiveDisclosureEnabled()).toBe(false);
   });
 
-  it('returns false for "1" (only "true" is accepted by strict check)', () => {
+  it('returns true for "1" (graduated — any non-false value is ON)', () => {
     process.env.SPECKIT_PROGRESSIVE_DISCLOSURE_V1 = '1';
-    expect(isProgressiveDisclosureEnabled()).toBe(false);
+    expect(isProgressiveDisclosureEnabled()).toBe(true);
   });
 });
 
@@ -399,7 +399,7 @@ describe('buildProgressiveResponse()', () => {
   });
 
   it('when flag OFF: returns all results as snippets, no cursor', () => {
-    delete process.env.SPECKIT_PROGRESSIVE_DISCLOSURE_V1;
+    process.env.SPECKIT_PROGRESSIVE_DISCLOSURE_V1 = 'false';
     const results = makeResults(10);
     const response = buildProgressiveResponse(results, 5, 'test');
     // All 10 results returned as snippets (no pagination when flag OFF)

@@ -170,7 +170,8 @@ function resolveRrfK(rawK: number | undefined): number {
  * @returns True when SPECKIT_CALIBRATED_OVERLAP_BONUS is set to 'true'.
  */
 function isCalibratedOverlapBonusEnabled(): boolean {
-  return process.env.SPECKIT_CALIBRATED_OVERLAP_BONUS === 'true';
+  const val = process.env.SPECKIT_CALIBRATED_OVERLAP_BONUS?.toLowerCase().trim();
+  return val !== 'false' && val !== '0';
 }
 
 /**

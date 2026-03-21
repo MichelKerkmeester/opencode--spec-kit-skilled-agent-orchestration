@@ -472,7 +472,8 @@ function computeMrr5Judged(
  * @returns True when SPECKIT_RRF_K_EXPERIMENTAL is set to 'true'.
  */
 function isKExperimentalEnabled(): boolean {
-  return process.env.SPECKIT_RRF_K_EXPERIMENTAL === 'true';
+  const val = process.env.SPECKIT_RRF_K_EXPERIMENTAL?.toLowerCase().trim();
+  return val !== 'false' && val !== '0';
 }
 
 /**

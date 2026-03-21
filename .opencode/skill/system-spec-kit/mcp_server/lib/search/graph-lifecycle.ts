@@ -52,9 +52,9 @@ export type GraphRefreshMode = 'off' | 'write_local' | 'scheduled';
  */
 export function resolveGraphRefreshMode(): GraphRefreshMode {
   const raw = process.env.SPECKIT_GRAPH_REFRESH_MODE?.trim().toLowerCase();
-  if (raw === 'write_local' || raw === 'write-local') return 'write_local';
+  if (raw === 'off') return 'off';
   if (raw === 'scheduled') return 'scheduled';
-  return 'off';
+  return 'write_local';
 }
 
 /** Whether graph refresh is active (any non-off mode). */
@@ -69,7 +69,7 @@ export function isGraphRefreshEnabled(): boolean {
  */
 export function isLlmGraphBackfillEnabled(): boolean {
   const val = process.env.SPECKIT_LLM_GRAPH_BACKFILL?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return val !== 'false' && val !== '0';
 }
 
 // ───────────────────────────────────────────────────────────────

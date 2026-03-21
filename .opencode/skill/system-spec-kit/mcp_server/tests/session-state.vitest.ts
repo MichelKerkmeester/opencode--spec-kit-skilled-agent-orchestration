@@ -48,9 +48,9 @@ describe('isSessionRetrievalStateEnabled() — feature flag', () => {
     else process.env.SPECKIT_SESSION_RETRIEVAL_STATE_V1 = ORIGINAL;
   });
 
-  it('defaults to false when env var is not set', () => {
+  it('defaults to true when env var is not set (graduated)', () => {
     delete process.env.SPECKIT_SESSION_RETRIEVAL_STATE_V1;
-    expect(isSessionRetrievalStateEnabled()).toBe(false);
+    expect(isSessionRetrievalStateEnabled()).toBe(true);
   });
 
   it('returns true when set to "true"', () => {
@@ -68,9 +68,9 @@ describe('isSessionRetrievalStateEnabled() — feature flag', () => {
     expect(isSessionRetrievalStateEnabled()).toBe(false);
   });
 
-  it('returns false for "1" (only "true" is accepted)', () => {
+  it('returns true for "1" (graduated — any non-false value is ON)', () => {
     process.env.SPECKIT_SESSION_RETRIEVAL_STATE_V1 = '1';
-    expect(isSessionRetrievalStateEnabled()).toBe(false);
+    expect(isSessionRetrievalStateEnabled()).toBe(true);
   });
 });
 
@@ -332,7 +332,7 @@ describe('deduplicateResults()', () => {
   });
 
   it('returns unchanged when feature flag is OFF', () => {
-    delete process.env.SPECKIT_SESSION_RETRIEVAL_STATE_V1;
+    process.env.SPECKIT_SESSION_RETRIEVAL_STATE_V1 = 'false';
     manager.markSeen('sess-1', [1, 2]);
     const results = makeResults(3);
     const { results: deduped, metadata } = deduplicateResults(results, 'sess-1');
@@ -399,7 +399,7 @@ describe('refineForGoal()', () => {
   });
 
   it('returns unchanged when feature flag is OFF', () => {
-    delete process.env.SPECKIT_SESSION_RETRIEVAL_STATE_V1;
+    process.env.SPECKIT_SESSION_RETRIEVAL_STATE_V1 = 'false';
     manager.updateGoal('sess-1', 'some goal');
     const results = makeResults(3);
     const { results: refined, metadata } = refineForGoal(results, 'sess-1');

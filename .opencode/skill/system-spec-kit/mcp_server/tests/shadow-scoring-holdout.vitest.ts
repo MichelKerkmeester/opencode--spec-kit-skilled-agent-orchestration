@@ -103,9 +103,9 @@ describe('Feature Flag: SPECKIT_SHADOW_FEEDBACK', () => {
   const flag = envGuard('SPECKIT_SHADOW_FEEDBACK');
   afterEach(() => flag.restore());
 
-  it('returns false when env var is unset', () => {
+  it('returns true when env var is unset (graduated)', () => {
     flag.delete();
-    expect(isShadowFeedbackEnabled()).toBe(false);
+    expect(isShadowFeedbackEnabled()).toBe(true);
   });
 
   it('returns false when env var is "false"', () => {

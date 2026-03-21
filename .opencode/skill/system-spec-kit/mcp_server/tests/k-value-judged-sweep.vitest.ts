@@ -98,9 +98,9 @@ describe('REQ-D1-003 Constants', () => {
    ────────────────────────────────────────────────────────────── */
 
 describe('REQ-D1-003 Feature Flag (SPECKIT_RRF_K_EXPERIMENTAL)', () => {
-  it('D3-FF-1: flag is OFF by default', () => {
+  it('D3-FF-1: flag is ON by default (graduated)', () => {
     delete process.env.SPECKIT_RRF_K_EXPERIMENTAL;
-    expect(isKExperimentalEnabled()).toBe(false);
+    expect(isKExperimentalEnabled()).toBe(true);
   });
 
   it('D3-FF-2: flag is OFF when set to "false"', () => {
@@ -331,11 +331,11 @@ describe('REQ-D1-003 runJudgedKSweep — Flag OFF (default K=60)', () => {
     expect(Object.keys(result.byIntent)).toHaveLength(0);
   });
 
-  it('D3-SWEEP-OFF-3: flag unset behaves identically to flag OFF', () => {
+  it('D3-SWEEP-OFF-3: flag unset now defaults to ON (graduated)', () => {
     delete process.env.SPECKIT_RRF_K_EXPERIMENTAL;
     const result = runJudgedKSweep([]);
     expect(result.globalBestK).toBe(BASELINE_K);
-    expect(result.experimentalMode).toBe(false);
+    expect(result.experimentalMode).toBe(true);
   });
 });
 

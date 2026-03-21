@@ -251,31 +251,30 @@ export function isQualityLoopEnabled(): boolean {
 /**
  * D2 REQ-D2-001: Query decomposition — bounded facet detection.
  * Deep-mode only: multi-faceted queries split into up to 3 sub-queries.
- * Default: FALSE (opt-in). Set SPECKIT_QUERY_DECOMPOSITION=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_QUERY_DECOMPOSITION=false to disable.
  */
 export function isQueryDecompositionEnabled(): boolean {
-  return process.env.SPECKIT_QUERY_DECOMPOSITION?.toLowerCase().trim() === 'true';
+  return isFeatureEnabled('SPECKIT_QUERY_DECOMPOSITION');
 }
 
 /**
  * D2 REQ-D2-002: Graph concept routing — query-time alias matching.
  * Extracts noun phrases from the query and matches against concept alias table,
  * activating the graph channel for matched concepts.
- * Default: FALSE (opt-in). Set SPECKIT_GRAPH_CONCEPT_ROUTING=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_GRAPH_CONCEPT_ROUTING=false to disable.
  */
 export function isGraphConceptRoutingEnabled(): boolean {
-  return process.env.SPECKIT_GRAPH_CONCEPT_ROUTING?.toLowerCase().trim() === 'true';
+  return isFeatureEnabled('SPECKIT_GRAPH_CONCEPT_ROUTING');
 }
 
 /**
  * D2 REQ-D2-005: Index-time surrogates for recall improvement.
  * Generates surrogate metadata (aliases, headings, summary, questions)
  * at index time; matched at query time with no LLM calls.
- * Default: FALSE (opt-in). Set SPECKIT_QUERY_SURROGATES=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_QUERY_SURROGATES=false to disable.
  */
 export function isQuerySurrogatesEnabled(): boolean {
-  const val = process.env.SPECKIT_QUERY_SURROGATES?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return isFeatureEnabled('SPECKIT_QUERY_SURROGATES');
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -284,35 +283,31 @@ export function isQuerySurrogatesEnabled(): boolean {
 
 /**
  * REQ-D4-001: Implicit feedback event ledger.
- * Shadow-only — no ranking side effects. Default: FALSE (opt-in).
- * Set SPECKIT_IMPLICIT_FEEDBACK_LOG=true to enable.
+ * Shadow-only — no ranking side effects.
+ * Default: TRUE (graduated). Set SPECKIT_IMPLICIT_FEEDBACK_LOG=false to disable.
  */
 export function isImplicitFeedbackLogEnabled(): boolean {
-  const val = process.env.SPECKIT_IMPLICIT_FEEDBACK_LOG?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return isFeatureEnabled('SPECKIT_IMPLICIT_FEEDBACK_LOG');
 }
 
 /**
  * REQ-D4-002: Hybrid decay policy — type-aware no-decay for permanent artifacts.
- * Default: FALSE (opt-in). Set SPECKIT_HYBRID_DECAY_POLICY=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_HYBRID_DECAY_POLICY=false to disable.
  * When enabled: decision/constitutional/critical context types receive Infinity
  * stability (no decay). All other types follow the standard FSRS schedule.
  */
 export function isHybridDecayPolicyEnabled(): boolean {
-  const val = process.env.SPECKIT_HYBRID_DECAY_POLICY?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return isFeatureEnabled('SPECKIT_HYBRID_DECAY_POLICY');
 }
 
 /**
  * REQ-D4-003: Short-critical quality gate exception.
- * Warn-only initially. Default: FALSE (opt-in).
- * Set SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=false to disable.
  * When enabled: decision context_type documents with >= 2 structural signals
  * bypass the 50-character minimum content length check.
  */
 export function isSaveQualityGateExceptionsEnabled(): boolean {
-  const val = process.env.SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return isFeatureEnabled('SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS');
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -322,23 +317,20 @@ export function isSaveQualityGateExceptionsEnabled(): boolean {
 /**
  * D2 REQ-D2-003: Corpus-grounded LLM query reformulation.
  * Step-back abstraction + corpus seed grounding. Deep-mode only.
- * Default: FALSE (opt-in). Set SPECKIT_LLM_REFORMULATION=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_LLM_REFORMULATION=false to disable.
  * Requires an OpenAI-compatible LLM endpoint (LLM_REFORMULATION_ENDPOINT).
  */
 export function isLlmReformulationEnabled(): boolean {
-  const val = process.env.SPECKIT_LLM_REFORMULATION?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return isFeatureEnabled('SPECKIT_LLM_REFORMULATION');
 }
 
 /**
- * D2 REQ-D2-004: HyDE (Hypothetical Document Embeddings) shadow mode.
+ * D2 REQ-D2-004: HyDE (Hypothetical Document Embeddings).
  * Generates a pseudo-document for low-confidence deep queries.
- * Default: FALSE (opt-in). Set SPECKIT_HYDE=true to enable.
- * Shadow-only until SPECKIT_HYDE_ACTIVE=true graduates it to full merge.
+ * Default: TRUE (graduated). Set SPECKIT_HYDE=false to disable.
  */
 export function isHyDEEnabled(): boolean {
-  const val = process.env.SPECKIT_HYDE?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return isFeatureEnabled('SPECKIT_HYDE');
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -348,21 +340,20 @@ export function isHyDEEnabled(): boolean {
 /**
  * REQ-D3-003: Graph refresh mode.
  * Controls when dirty-node recomputation runs after write operations.
- * Default: 'off'. Values: off | write_local | scheduled.
- * Delegated to graph-lifecycle.ts — imported here for unified flag discovery.
+ * Default: 'write_local' (graduated). Set SPECKIT_GRAPH_REFRESH_MODE=off to disable.
+ * Values: off | write_local | scheduled.
  */
 export function getGraphRefreshMode(): string {
-  return process.env.SPECKIT_GRAPH_REFRESH_MODE?.trim().toLowerCase() ?? 'off';
+  return process.env.SPECKIT_GRAPH_REFRESH_MODE?.trim().toLowerCase() ?? 'write_local';
 }
 
 /**
  * REQ-D3-004: Async LLM graph backfill for high-value documents.
  * Runs after deterministic extraction; adds probabilistic edges via LLM.
- * Default: FALSE (opt-in). Set SPECKIT_LLM_GRAPH_BACKFILL=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_LLM_GRAPH_BACKFILL=false to disable.
  */
 export function isLlmGraphBackfillEnabled(): boolean {
-  const val = process.env.SPECKIT_LLM_GRAPH_BACKFILL?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return isFeatureEnabled('SPECKIT_LLM_GRAPH_BACKFILL');
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -373,11 +364,10 @@ export function isLlmGraphBackfillEnabled(): boolean {
  * REQ-D3-005 / REQ-D3-006: Graph calibration profiles and community thresholds.
  * Enables calibration profile enforcement, Louvain activation gates, and
  * community score capping (secondary-only).
- * Default: FALSE (opt-in). Set SPECKIT_GRAPH_CALIBRATION_PROFILE=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_GRAPH_CALIBRATION_PROFILE=false to disable.
  */
 export function isGraphCalibrationProfileEnabled(): boolean {
-  const val = process.env.SPECKIT_GRAPH_CALIBRATION_PROFILE?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return isFeatureEnabled('SPECKIT_GRAPH_CALIBRATION_PROFILE');
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -388,11 +378,10 @@ export function isGraphCalibrationProfileEnabled(): boolean {
  * REQ-D1-006: Learned Stage 2 weight combiner (shadow mode).
  * Runs the learned linear ranker in parallel with manual weights.
  * Scores are computed but NOT used for ranking (shadow-only).
- * Default: FALSE (opt-in). Set SPECKIT_LEARNED_STAGE2_COMBINER=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_LEARNED_STAGE2_COMBINER=false to disable.
  */
 export function isLearnedStage2CombinerEnabled(): boolean {
-  const val = process.env.SPECKIT_LEARNED_STAGE2_COMBINER?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return isFeatureEnabled('SPECKIT_LEARNED_STAGE2_COMBINER');
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -403,11 +392,10 @@ export function isLearnedStage2CombinerEnabled(): boolean {
  * REQ-D4-006: Shadow scoring with holdout evaluation.
  * Compares would-have-changed rankings vs live rankings on a holdout
  * slice of queries. Shadow-only — no ranking side effects.
- * Default: FALSE (opt-in). Set SPECKIT_SHADOW_FEEDBACK=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_SHADOW_FEEDBACK=false to disable.
  */
 export function isShadowFeedbackEnabled(): boolean {
-  const val = process.env.SPECKIT_SHADOW_FEEDBACK?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return isFeatureEnabled('SPECKIT_SHADOW_FEEDBACK');
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -417,19 +405,17 @@ export function isShadowFeedbackEnabled(): boolean {
 /**
  * REQ-D5-005: Progressive disclosure for search results.
  * Replaces hard tail-truncation with summary layer + snippet + cursor pagination.
- * Default: FALSE (opt-in). Set SPECKIT_PROGRESSIVE_DISCLOSURE_V1=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_PROGRESSIVE_DISCLOSURE_V1=false to disable.
  */
 export function isProgressiveDisclosureEnabled(): boolean {
-  const val = process.env.SPECKIT_PROGRESSIVE_DISCLOSURE_V1?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return isFeatureEnabled('SPECKIT_PROGRESSIVE_DISCLOSURE_V1');
 }
 
 /**
  * REQ-D5-006: Retrieval session state for cross-turn context.
  * Enables cross-turn dedup and goal-aware refinement of search results.
- * Default: FALSE (opt-in). Set SPECKIT_SESSION_RETRIEVAL_STATE_V1=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_SESSION_RETRIEVAL_STATE_V1=false to disable.
  */
 export function isSessionRetrievalStateEnabled(): boolean {
-  const val = process.env.SPECKIT_SESSION_RETRIEVAL_STATE_V1?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return isFeatureEnabled('SPECKIT_SESSION_RETRIEVAL_STATE_V1');
 }

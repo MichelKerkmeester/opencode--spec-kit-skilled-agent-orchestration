@@ -17,8 +17,7 @@ describe('FSRS hybrid decay policy', () => {
   });
 
   it('assigns NO_DECAY to decision, constitutional, and critical context types', () => {
-    process.env.SPECKIT_HYBRID_DECAY_POLICY = 'true';
-
+    // Flag is now ON by default (graduated), explicit set kept for clarity
     expect(HYBRID_NO_DECAY_CONTEXT_TYPES.has('decision')).toBe(true);
     expect(HYBRID_NO_DECAY_CONTEXT_TYPES.has('constitutional')).toBe(true);
     expect(HYBRID_NO_DECAY_CONTEXT_TYPES.has('critical')).toBe(true);
@@ -29,8 +28,7 @@ describe('FSRS hybrid decay policy', () => {
   });
 
   it('routes session, scratch, and transient documents through standard FSRS scheduling', () => {
-    process.env.SPECKIT_HYBRID_DECAY_POLICY = 'true';
-
+    // Flag is now ON by default (graduated), explicit set kept for clarity
     expect(HYBRID_FSRS_CONTEXT_TYPES.has('session')).toBe(true);
     expect(HYBRID_FSRS_CONTEXT_TYPES.has('scratch')).toBe(true);
     expect(HYBRID_FSRS_CONTEXT_TYPES.has('transient')).toBe(true);
@@ -40,7 +38,7 @@ describe('FSRS hybrid decay policy', () => {
   });
 
   it('makes applyClassificationDecay honor the hybrid no-decay override when enabled', () => {
-    process.env.SPECKIT_HYBRID_DECAY_POLICY = '1';
+    // Flag is now ON by default (graduated); SPECKIT_CLASSIFICATION_DECAY=false to isolate test
     process.env.SPECKIT_CLASSIFICATION_DECAY = 'false';
 
     expect(applyClassificationDecay(2.5, 'critical', 'temporary')).toBe(NO_DECAY);
@@ -48,13 +46,15 @@ describe('FSRS hybrid decay policy', () => {
   });
 
   it('gates hybrid behavior behind SPECKIT_HYBRID_DECAY_POLICY', () => {
-    expect(isHybridDecayPolicyEnabled()).toBe(false);
-    expect(getHybridDecayMultiplier('decision', 'normal')).toBe(1);
-    expect(applyHybridDecayPolicy(3, 'decision', 'normal')).toBe(3);
-
-    process.env.SPECKIT_HYBRID_DECAY_POLICY = 'true';
-
+    // Flag is now ON by default (graduated)
     expect(isHybridDecayPolicyEnabled()).toBe(true);
     expect(getHybridDecayMultiplier('decision', 'normal')).toBe(NO_DECAY);
+    expect(applyHybridDecayPolicy(3, 'decision', 'normal')).toBe(NO_DECAY);
+
+    // Explicitly disable
+    process.env.SPECKIT_HYBRID_DECAY_POLICY = 'false';
+
+    expect(isHybridDecayPolicyEnabled()).toBe(false);
+    expect(getHybridDecayMultiplier('decision', 'normal')).toBe(1);
   });
 });

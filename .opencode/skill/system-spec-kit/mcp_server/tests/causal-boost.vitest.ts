@@ -124,6 +124,9 @@ describe('T008 — Seed cap and multiplier precedence', () => {
   it('seed cap limits number of seed nodes used for graph walk', () => {
     const localDb = createDb();
     process.env.SPECKIT_CAUSAL_BOOST = 'true';
+    // Disable typed traversal to test classic boost values (SPECKIT_TYPED_TRAVERSAL now defaults ON)
+    const prevTyped = process.env.SPECKIT_TYPED_TRAVERSAL;
+    process.env.SPECKIT_TYPED_TRAVERSAL = 'false';
     localDb.prepare(`
       INSERT INTO memory_index (id, spec_folder, file_path, title, importance_tier, trigger_phrases)
       VALUES
@@ -158,6 +161,10 @@ describe('T008 — Seed cap and multiplier precedence', () => {
 
     const injectedResult = results.find((item) => item.id === 31);
     expect(injectedResult?.causalBoost).toBeCloseTo(0.05, 6);
+
+    // Restore SPECKIT_TYPED_TRAVERSAL
+    if (prevTyped === undefined) delete process.env.SPECKIT_TYPED_TRAVERSAL;
+    else process.env.SPECKIT_TYPED_TRAVERSAL = prevTyped;
   });
 
   it('relation multipliers change boost precedence behavior', () => {

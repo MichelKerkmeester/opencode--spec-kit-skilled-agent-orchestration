@@ -72,9 +72,9 @@ describe('isGraphCalibrationEnabled', () => {
 
   afterEach(() => restore());
 
-  it('returns false when env var is unset', () => {
+  it('returns true when env var is unset (graduated)', () => {
     delete process.env.SPECKIT_GRAPH_CALIBRATION_PROFILE;
-    expect(isGraphCalibrationEnabled()).toBe(false);
+    expect(isGraphCalibrationEnabled()).toBe(true);
   });
 
   it('returns false when env var is "false"', () => {
@@ -497,7 +497,7 @@ describe('applyCalibrationProfile', () => {
   afterEach(() => restore());
 
   it('returns context unchanged when flag is OFF', () => {
-    delete process.env.SPECKIT_GRAPH_CALIBRATION_PROFILE;
+    process.env.SPECKIT_GRAPH_CALIBRATION_PROFILE = 'false';
     const context: ScoringContext = {
       graphWeightBoost: 0.50,
       n2aScore: 0.50,

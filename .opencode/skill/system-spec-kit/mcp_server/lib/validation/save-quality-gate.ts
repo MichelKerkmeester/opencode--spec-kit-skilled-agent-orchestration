@@ -300,7 +300,7 @@ function ensureActivationTimestampInitialized(): void {
 
 /**
  * REQ-D4-003: Check whether the save quality gate exceptions feature is enabled.
- * Default: FALSE (off). Set SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=false to disable.
  *
  * When enabled, decision documents with sufficient structural signals may bypass
  * the 50-character minimum content length check. All other gates (0.4 density,
@@ -308,7 +308,7 @@ function ensureActivationTimestampInitialized(): void {
  */
 export function isSaveQualityGateExceptionsEnabled(): boolean {
   const val = process.env.SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return val !== 'false' && val !== '0';
 }
 
 /**

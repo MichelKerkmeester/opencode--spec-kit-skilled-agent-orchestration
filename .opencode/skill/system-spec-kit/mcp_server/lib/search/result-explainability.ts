@@ -77,7 +77,8 @@ export interface ExplainabilityOptions {
  * Default: OFF (opt-in).
  */
 export function isResultExplainEnabled(): boolean {
-  return process.env.SPECKIT_RESULT_EXPLAIN_V1?.toLowerCase().trim() === 'true';
+  const val = process.env.SPECKIT_RESULT_EXPLAIN_V1?.toLowerCase().trim();
+  return val !== 'false' && val !== '0';
 }
 
 // ── Internal helpers ──────────────────────────────────────────

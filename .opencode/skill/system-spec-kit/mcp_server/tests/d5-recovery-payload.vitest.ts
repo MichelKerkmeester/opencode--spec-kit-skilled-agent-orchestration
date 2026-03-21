@@ -34,9 +34,9 @@ describe('isEmptyResultRecoveryEnabled() — feature flag', () => {
     else process.env.SPECKIT_EMPTY_RESULT_RECOVERY_V1 = ORIGINAL;
   });
 
-  it('defaults to false when env var is not set', () => {
+  it('defaults to true when env var is not set (graduated)', () => {
     delete process.env.SPECKIT_EMPTY_RESULT_RECOVERY_V1;
-    expect(isEmptyResultRecoveryEnabled()).toBe(false);
+    expect(isEmptyResultRecoveryEnabled()).toBe(true);
   });
 
   it('returns true when set to "true"', () => {
@@ -54,9 +54,9 @@ describe('isEmptyResultRecoveryEnabled() — feature flag', () => {
     expect(isEmptyResultRecoveryEnabled()).toBe(false);
   });
 
-  it('returns false when set to "1" (only "true" is accepted)', () => {
+  it('returns true for "1" (graduated — any non-false value is ON)', () => {
     process.env.SPECKIT_EMPTY_RESULT_RECOVERY_V1 = '1';
-    expect(isEmptyResultRecoveryEnabled()).toBe(false);
+    expect(isEmptyResultRecoveryEnabled()).toBe(true);
   });
 });
 

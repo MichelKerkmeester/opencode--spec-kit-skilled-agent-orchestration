@@ -131,7 +131,7 @@ export interface ShadowEvaluationReport {
  */
 export function isShadowFeedbackEnabled(): boolean {
   const val = process.env.SPECKIT_SHADOW_FEEDBACK?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return val !== 'false' && val !== '0';
 }
 
 /* ───────────────────────────────────────────────────────────────

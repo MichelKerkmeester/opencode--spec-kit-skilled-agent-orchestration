@@ -38,7 +38,7 @@ function enableFlag(): void {
 }
 
 function disableFlag(): void {
-  delete process.env[FLAG_NAME];
+  process.env[FLAG_NAME] = 'false';
 }
 
 /**
@@ -103,9 +103,9 @@ describe('isQuerySurrogatesEnabled', () => {
     expect(isQuerySurrogatesEnabled()).toBe(true);
   });
 
-  it('returns false when unset', () => {
+  it('returns true when unset (graduated)', () => {
     delete process.env[FLAG_NAME];
-    expect(isQuerySurrogatesEnabled()).toBe(false);
+    expect(isQuerySurrogatesEnabled()).toBe(true);
   });
 
   it('returns false when set to false', () => {
@@ -113,9 +113,9 @@ describe('isQuerySurrogatesEnabled', () => {
     expect(isQuerySurrogatesEnabled()).toBe(false);
   });
 
-  it('returns false for arbitrary string', () => {
+  it('returns true for arbitrary string (graduated — any non-false value is ON)', () => {
     process.env[FLAG_NAME] = 'yes';
-    expect(isQuerySurrogatesEnabled()).toBe(false);
+    expect(isQuerySurrogatesEnabled()).toBe(true);
   });
 });
 

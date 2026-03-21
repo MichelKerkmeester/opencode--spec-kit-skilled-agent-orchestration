@@ -664,9 +664,9 @@ describe('REQ-D1-006 Learned Stage 2 Combiner', () => {
   /* ─── Feature Flag ─── */
 
   describe('SPECKIT_LEARNED_STAGE2_COMBINER flag', () => {
-    it('is OFF by default', () => {
+    it('is ON by default (graduated)', () => {
       delete process.env.SPECKIT_LEARNED_STAGE2_COMBINER;
-      expect(isLearnedStage2CombinerEnabled()).toBe(false);
+      expect(isLearnedStage2CombinerEnabled()).toBe(true);
     });
 
     it('is OFF when set to false', () => {
@@ -684,9 +684,9 @@ describe('REQ-D1-006 Learned Stage 2 Combiner', () => {
       expect(isLearnedStage2CombinerEnabled()).toBe(true);
     });
 
-    it('is OFF for empty string', () => {
+    it('is ON for empty string (graduated — any non-false value is ON)', () => {
       setEnv('SPECKIT_LEARNED_STAGE2_COMBINER', '');
-      expect(isLearnedStage2CombinerEnabled()).toBe(false);
+      expect(isLearnedStage2CombinerEnabled()).toBe(true);
     });
 
     it('shadowScore returns null when flag OFF (no overhead)', () => {

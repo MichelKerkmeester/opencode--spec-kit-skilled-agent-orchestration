@@ -106,17 +106,16 @@ const HYDE_TIMEOUT_MS = 8000;
  */
 export function isHyDEEnabled(): boolean {
   const val = process.env.SPECKIT_HYDE?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return val !== 'false' && val !== '0';
 }
 
 /**
  * HyDE active mode (graduate from shadow to full merge).
- * Default: FALSE (shadow-only).
- * Set SPECKIT_HYDE_ACTIVE=true to enable candidate merging.
+ * Default: TRUE (graduated). Set SPECKIT_HYDE_ACTIVE=false to disable merging.
  */
 export function isHyDEActive(): boolean {
   const val = process.env.SPECKIT_HYDE_ACTIVE?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return val !== 'false' && val !== '0';
 }
 
 /* ───────────────────────────────────────────────────────────────

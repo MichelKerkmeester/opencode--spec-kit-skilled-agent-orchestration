@@ -83,7 +83,7 @@ const MIN_OUTPUT_LENGTH = 5;
  */
 export function isLlmReformulationEnabled(): boolean {
   const val = process.env.SPECKIT_LLM_REFORMULATION?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return val !== 'false' && val !== '0';
 }
 
 /* ───────────────────────────────────────────────────────────────

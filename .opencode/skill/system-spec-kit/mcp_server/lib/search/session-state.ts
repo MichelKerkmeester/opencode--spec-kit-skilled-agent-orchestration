@@ -229,7 +229,8 @@ const manager = new SessionStateManager();
  * Default: FALSE (opt-in). Set SPECKIT_SESSION_RETRIEVAL_STATE_V1=true to enable.
  */
 function isSessionRetrievalStateEnabled(): boolean {
-  return process.env.SPECKIT_SESSION_RETRIEVAL_STATE_V1?.toLowerCase().trim() === 'true';
+  const val = process.env.SPECKIT_SESSION_RETRIEVAL_STATE_V1?.toLowerCase().trim();
+  return val !== 'false' && val !== '0';
 }
 
 // -- Cross-Turn Deduplication --

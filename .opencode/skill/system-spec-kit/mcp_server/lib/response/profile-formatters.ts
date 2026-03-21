@@ -115,7 +115,8 @@ export type FormattedProfile =
  * Default: OFF (opt-in).
  */
 export function isResponseProfileEnabled(): boolean {
-  return process.env.SPECKIT_RESPONSE_PROFILE_V1?.toLowerCase().trim() === 'true';
+  const val = process.env.SPECKIT_RESPONSE_PROFILE_V1?.toLowerCase().trim();
+  return val !== 'false' && val !== '0';
 }
 
 // ── Internal helpers ──────────────────────────────────────────

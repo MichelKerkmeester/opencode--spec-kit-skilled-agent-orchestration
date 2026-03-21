@@ -217,10 +217,10 @@ describe('feature flag: isGraphConceptRoutingEnabled()', () => {
     }
   });
 
-  it('is disabled by default (no env var set)', async () => {
+  it('is enabled by default (graduated — no env var set)', async () => {
     delete process.env.SPECKIT_GRAPH_CONCEPT_ROUTING;
     const { isGraphConceptRoutingEnabled } = await import('../lib/search/search-flags');
-    expect(isGraphConceptRoutingEnabled()).toBe(false);
+    expect(isGraphConceptRoutingEnabled()).toBe(true);
   });
 
   it('is enabled when env var is "true"', async () => {

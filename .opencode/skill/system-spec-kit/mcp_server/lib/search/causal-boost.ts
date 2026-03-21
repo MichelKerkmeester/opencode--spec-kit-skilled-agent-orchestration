@@ -141,7 +141,7 @@ function isEnabled(): boolean {
  */
 function isTypedTraversalEnabled(): boolean {
   const rawFlag = process.env.SPECKIT_TYPED_TRAVERSAL?.toLowerCase()?.trim();
-  return rawFlag === 'true' || rawFlag === '1';
+  return rawFlag !== 'false' && rawFlag !== '0';
 }
 
 /** Store the database reference used by causal edge traversal queries. */

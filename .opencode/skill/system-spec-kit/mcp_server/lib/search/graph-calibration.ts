@@ -169,7 +169,7 @@ export const AGGRESSIVE_PROFILE: CalibrationProfile = {
  */
 export function isGraphCalibrationEnabled(): boolean {
   const val = process.env.SPECKIT_GRAPH_CALIBRATION_PROFILE?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return val !== 'false' && val !== '0';
 }
 
 /* ---------------------------------------------------------------

@@ -218,5 +218,6 @@ export function shouldTriggerRecovery(ctx: RecoveryContext): boolean {
  * Default: FALSE (opt-in). Set SPECKIT_EMPTY_RESULT_RECOVERY_V1=true to enable.
  */
 export function isEmptyResultRecoveryEnabled(): boolean {
-  return process.env.SPECKIT_EMPTY_RESULT_RECOVERY_V1?.toLowerCase().trim() === 'true';
+  const val = process.env.SPECKIT_EMPTY_RESULT_RECOVERY_V1?.toLowerCase().trim();
+  return val !== 'false' && val !== '0';
 }

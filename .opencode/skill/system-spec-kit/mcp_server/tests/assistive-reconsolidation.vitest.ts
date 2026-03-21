@@ -19,9 +19,9 @@ describe('Assistive Reconsolidation — Feature Flag', () => {
     vi.unstubAllEnvs();
   });
 
-  it('isAssistiveReconsolidationEnabled returns false by default', () => {
+  it('isAssistiveReconsolidationEnabled returns true by default (graduated)', () => {
     vi.stubEnv('SPECKIT_ASSISTIVE_RECONSOLIDATION', '');
-    expect(isAssistiveReconsolidationEnabled()).toBe(false);
+    expect(isAssistiveReconsolidationEnabled()).toBe(true);
   });
 
   it('isAssistiveReconsolidationEnabled returns true for "true"', () => {

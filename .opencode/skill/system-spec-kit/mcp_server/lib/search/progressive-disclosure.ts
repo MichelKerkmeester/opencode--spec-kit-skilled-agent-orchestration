@@ -163,7 +163,8 @@ function buildDigest(classification: { high: number; medium: number; low: number
  * Default: FALSE (opt-in). Set SPECKIT_PROGRESSIVE_DISCLOSURE_V1=true to enable.
  */
 function isProgressiveDisclosureEnabled(): boolean {
-  return process.env.SPECKIT_PROGRESSIVE_DISCLOSURE_V1?.toLowerCase().trim() === 'true';
+  const val = process.env.SPECKIT_PROGRESSIVE_DISCLOSURE_V1?.toLowerCase().trim();
+  return val !== 'false' && val !== '0';
 }
 
 // -- Public API --

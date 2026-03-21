@@ -126,8 +126,8 @@ describe('Graph Lifecycle — Feature Flags', () => {
     delete process.env.SPECKIT_LLM_GRAPH_BACKFILL;
   });
 
-  it('resolveGraphRefreshMode returns off by default', () => {
-    expect(resolveGraphRefreshMode()).toBe('off');
+  it('resolveGraphRefreshMode returns write_local by default (graduated)', () => {
+    expect(resolveGraphRefreshMode()).toBe('write_local');
   });
 
   it('resolveGraphRefreshMode returns write_local for write_local', () => {
@@ -145,13 +145,13 @@ describe('Graph Lifecycle — Feature Flags', () => {
     expect(resolveGraphRefreshMode()).toBe('scheduled');
   });
 
-  it('resolveGraphRefreshMode falls back to off for unknown value', () => {
+  it('resolveGraphRefreshMode falls back to write_local for unknown value (graduated)', () => {
     process.env.SPECKIT_GRAPH_REFRESH_MODE = 'invalid_value';
-    expect(resolveGraphRefreshMode()).toBe('off');
+    expect(resolveGraphRefreshMode()).toBe('write_local');
   });
 
-  it('isGraphRefreshEnabled returns false when mode is off', () => {
-    expect(isGraphRefreshEnabled()).toBe(false);
+  it('isGraphRefreshEnabled returns true when mode is write_local (graduated default)', () => {
+    expect(isGraphRefreshEnabled()).toBe(true);
   });
 
   it('isGraphRefreshEnabled returns true when mode is write_local', () => {
@@ -159,8 +159,8 @@ describe('Graph Lifecycle — Feature Flags', () => {
     expect(isGraphRefreshEnabled()).toBe(true);
   });
 
-  it('isLlmGraphBackfillEnabled returns false by default', () => {
-    expect(isLlmGraphBackfillEnabled()).toBe(false);
+  it('isLlmGraphBackfillEnabled returns true by default (graduated)', () => {
+    expect(isLlmGraphBackfillEnabled()).toBe(true);
   });
 
   it('isLlmGraphBackfillEnabled returns true when set to true', () => {
@@ -191,7 +191,7 @@ describe('Dirty-Node Tracking', () => {
   });
 
   it('markDirty returns 0 when graph refresh is off', () => {
-    delete process.env.SPECKIT_GRAPH_REFRESH_MODE;
+    process.env.SPECKIT_GRAPH_REFRESH_MODE = 'off';
     const added = markDirty(['1', '2', '3']);
     expect(added).toBe(0);
   });
@@ -394,6 +394,7 @@ describe('onWrite', () => {
   });
 
   it('returns skipped=true when mode is off', () => {
+    process.env.SPECKIT_GRAPH_REFRESH_MODE = 'off';
     const result = onWrite(db, { nodeIds: ['1', '2'] });
     expect(result.skipped).toBe(true);
     expect(result.mode).toBe('off');

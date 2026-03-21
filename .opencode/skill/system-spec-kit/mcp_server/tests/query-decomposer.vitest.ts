@@ -249,10 +249,10 @@ describe('feature flag: isQueryDecompositionEnabled()', () => {
     }
   });
 
-  it('is disabled by default (no env var set)', async () => {
+  it('is enabled by default (graduated — no env var set)', async () => {
     delete process.env.SPECKIT_QUERY_DECOMPOSITION;
     const { isQueryDecompositionEnabled } = await import('../lib/search/search-flags');
-    expect(isQueryDecompositionEnabled()).toBe(false);
+    expect(isQueryDecompositionEnabled()).toBe(true);
   });
 
   it('is enabled when env var is "true"', async () => {

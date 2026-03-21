@@ -92,7 +92,7 @@ const MIN_MATCH_THRESHOLD = 0.15;
  */
 export function isQuerySurrogatesEnabled(): boolean {
   const val = process.env.SPECKIT_QUERY_SURROGATES?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return val !== 'false' && val !== '0';
 }
 
 /* ───────────────────────────────────────────────────────────────

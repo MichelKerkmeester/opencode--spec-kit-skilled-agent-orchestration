@@ -294,5 +294,6 @@ export function assessRequestQuality(
  * Default: FALSE (opt-in). Set SPECKIT_RESULT_CONFIDENCE_V1=true to enable.
  */
 export function isResultConfidenceEnabled(): boolean {
-  return process.env.SPECKIT_RESULT_CONFIDENCE_V1?.toLowerCase().trim() === 'true';
+  const val = process.env.SPECKIT_RESULT_CONFIDENCE_V1?.toLowerCase().trim();
+  return val !== 'false' && val !== '0';
 }

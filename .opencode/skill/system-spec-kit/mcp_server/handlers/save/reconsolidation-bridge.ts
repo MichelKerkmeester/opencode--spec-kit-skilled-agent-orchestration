@@ -71,7 +71,7 @@ export interface AssistiveRecommendation {
  */
 export function isAssistiveReconsolidationEnabled(): boolean {
   const val = process.env.SPECKIT_ASSISTIVE_RECONSOLIDATION?.toLowerCase().trim();
-  return val === 'true' || val === '1';
+  return val !== 'false' && val !== '0';
 }
 
 /**
