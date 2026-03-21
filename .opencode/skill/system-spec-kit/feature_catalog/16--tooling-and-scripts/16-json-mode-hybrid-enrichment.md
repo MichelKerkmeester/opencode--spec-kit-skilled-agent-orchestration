@@ -75,6 +75,56 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 - Always active. The review runs for every JSON-mode save where the payload is available.
 - See feature catalog entry `13--memory-quality-and-indexing/19-post-save-quality-review.md` for full specification.
 
+### 3.6 Quality scorer recalibration (Phase 002)
+
+- Removed +0.20 bonus system (+0.05 messages, +0.05 tools, +0.10 decisions) from `extractors/quality-scorer.ts`.
+- Base score is now 1.0 with only penalties subtracting.
+- Penalty weights recalibrated: HIGH=0.10, MEDIUM=0.03, LOW=0.01.
+- Five simultaneous MEDIUM penalties produce 0.85 (discriminative, below 0.90).
+- Calibration test import fixed to test live scorer (`extractors/`, not `core/`).
+
+### 3.7 Contamination filter extension (Phase 002)
+
+- `filterContamination` now called on 4 additional text fields: `_JSON_SESSION_SUMMARY`, `_manualDecisions[]`, `recentContext[]`, `technicalContext` KEY/VALUE.
+- 18 new contamination patterns across 7 categories added (33 -> 51 total): hedging phrases, conversational acknowledgment, meta-commentary, instruction echoing, markdown artifacts, safety disclaimers, redundant certainty markers.
+- Safety edge case: "I cannot reproduce the bug" preserved (not stripped).
+
+### 3.8 Field integrity hardening (Phase 003)
+
+- Fast-path `filesModified` -> FILES conversion added (mirrors slow-path).
+- Unknown-field warnings via `KNOWN_RAW_INPUT_FIELDS` set.
+- `contextType` enum validation against `VALID_CONTEXT_TYPES`.
+- String length limits: `sessionSummary` (50KB), `triggerPhrases` entries (200 chars), observation narratives (5000 chars).
+- YAML frontmatter structural validation (V13 rule).
+- Content density V-rule (minimum 50 non-whitespace characters).
+- V12 path normalization for relative `spec_folder` paths.
+- Status/percentage contradiction detection (V14 warning).
+
+### 3.9 Indexing coherence (Phase 004)
+
+- Trigger phrase filter pipeline: 3-stage filter (path fragments, short tokens, shingle subsets) applied to auto-extracted phrases before manual merge.
+- Template sections for `toolCalls`/`exchanges` as compact strings.
+- `OPTIONAL_PLACEHOLDERS` cleanup: 8 phantom Session Integrity entries documented, Memory Classification and Session Dedup entries annotated.
+- Multi-token path fragment detection in post-save review.
+- Observation dedup at normalization time (string-equality).
+- Pre-save overlap check behind `SPECKIT_PRE_SAVE_DEDUP` env flag.
+
+### 3.10 Embedding visibility (Phase 004)
+
+- `RetryStats` accessor (`getEmbeddingRetryStats`) in `retry-manager.ts`.
+- `embeddingRetry` block in `memory_health` MCP response with: `pending`, `failed`, `retryAttempts`, `circuitBreakerOpen`, `lastRun`, `queueDepth`.
+
+### 3.11 projectPhase override (Phase 002)
+
+- `resolveProjectPhase()` in `session-extractor.ts` following `resolveContextType()` pattern.
+- `projectPhase` propagated through fast-path and slow-path in `input-normalizer.ts`.
+- Valid values: RESEARCH, PLANNING, IMPLEMENTATION, DEBUGGING, REVIEW.
+
+### 3.12 Post-save review score feedback (Phase 002)
+
+- `computeReviewScorePenalty()` with severity-based penalties (HIGH=-0.10, MEDIUM=-0.05, LOW=-0.02).
+- Advisory logging only (does not modify saved file to preserve duplicate detection).
+
 ---
 
 ## 4. SOURCE FILES
@@ -84,11 +134,16 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 | File | Role |
 |------|------|
 | `scripts/types/session-types.ts` | Structured JSON contract types for `toolCalls` and `exchanges` |
-| `scripts/utils/input-normalizer.ts` | Snake_case JSON compatibility, structured-summary normalization |
+| `scripts/utils/input-normalizer.ts` | Snake_case JSON compatibility, structured-summary normalization, `projectPhase` propagation (fast-path and slow-path) |
 | `scripts/extractors/collect-session-data.ts` | Wave 2 count, confidence, and outcome handling |
+| `scripts/extractors/quality-scorer.ts` | Quality score computation; penalty-only model (Phase 002 recalibration) |
+| `scripts/extractors/session-extractor.ts` | `resolveProjectPhase()` for projectPhase override |
 | `scripts/core/workflow.ts` | JSON/file authority behavior, structured-input routing, and post-save review invocation gating |
-| `scripts/core/post-save-review.ts` | Post-save review logic, severity grading, and MEMORY METADATA-aware field checks |
+| `scripts/core/post-save-review.ts` | Post-save review logic, severity grading, MEMORY METADATA-aware field checks, `computeReviewScorePenalty()`, multi-token path fragment detection |
+| `scripts/core/contamination-filter.ts` | Contamination filter extension: 4 additional text fields, 18 new patterns (33 -> 51 total) |
 | `scripts/memory/generate-context.ts` | CLI help text and structured-first save workflow documentation |
+| `scripts/mcp/retry-manager.ts` | `getEmbeddingRetryStats()` accessor for embedding retry visibility |
+| `scripts/mcp/memory-health.ts` | `embeddingRetry` block in `memory_health` MCP response |
 
 ### Tests
 

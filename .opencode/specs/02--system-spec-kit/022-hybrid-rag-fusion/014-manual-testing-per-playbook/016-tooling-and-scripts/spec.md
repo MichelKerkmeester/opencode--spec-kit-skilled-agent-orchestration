@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: 016-tooling-and-scripts manual testing"
-description: "Manual test scenarios for tooling-and-scripts are distributed across the hybrid-rag-fusion playbook and related feature sources. This phase packet consolidates the 23 assigned scenarios into one structured spec with exact coverage, links, and acceptance criteria."
+description: "Manual test scenarios for tooling-and-scripts are distributed across the hybrid-rag-fusion playbook and related feature sources. This phase packet consolidates the 35 assigned scenarios into one structured spec with exact coverage, links, and acceptance criteria."
 trigger_phrases:
   - "manual testing"
   - "tooling and scripts"
@@ -38,7 +38,7 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual test scenarios for tooling-and-scripts need structured per-phase documentation instead of remaining spread across the monolithic playbook and mixed feature references. Operators need one canonical packet that preserves exact prompts, command sequences, evidence expectations, and verdict criteria for all 23 phase-016 scenarios.
+Manual test scenarios for tooling-and-scripts need structured per-phase documentation instead of remaining spread across the monolithic playbook and mixed feature references. Operators need one canonical packet that preserves exact prompts, command sequences, evidence expectations, and verdict criteria for all 35 phase-016 scenarios.
 
 ### Purpose
 Create a phase-specific specification for tooling-and-scripts so every assigned test can be executed, evidenced, and reviewed consistently under the manual testing playbook and review protocol.
@@ -50,7 +50,7 @@ Create a phase-specific specification for tooling-and-scripts so every assigned 
 ## 3. SCOPE
 
 ### In Scope
-- Consolidate all 23 phase-016 scenarios: `061`, `062`, `070`, `089`, `099`, `108`, `113`, `127`, `128`, `135`, `136`, `137`, `138`, `139`, `147`, `149`, `153`, `154`, `PHASE-001`, `PHASE-002`, `PHASE-003`, `PHASE-004`, and `PHASE-005`.
+- Consolidate all 35 phase-016 scenarios: `061`, `062`, `070`, `089`, `099`, `108`, `113`, `127`, `128`, `135`, `136`, `137`, `138`, `139`, `147`, `149`, `153`, `153-A`, `153-B`, `153-C`, `153-D`, `153-E`, `153-F`, `153-G`, `153-H`, `153-I`, `153-J`, `153-K`, `153-L`, `154`, `PHASE-001`, `PHASE-002`, `PHASE-003`, `PHASE-004`, and `PHASE-005`.
 - Preserve exact playbook-derived prompts, command flows, evidence expectations, and pass/fail verdict rules.
 - Link each scenario to its feature catalog source or, for cross-cutting phase work, to the canonical phase-system catalog section.
 - Capture source-aware caveats where the playbook index and detailed scenario text are not perfectly aligned.
@@ -81,6 +81,18 @@ Create a phase-specific specification for tooling-and-scripts so every assigned 
 | `147` | Constitutional memory manager command | [13-constitutional-memory-manager-command.md](../../feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md) |
 | `149` | Rendered memory template contract | [12-session-capturing-pipeline-quality.md](../../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) |
 | `153` | JSON mode hybrid enrichment | [16-json-mode-hybrid-enrichment.md](../../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
+| `153-A` | Post-save quality review output verification | [16-json-mode-hybrid-enrichment.md](../../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
+| `153-B` | sessionSummary propagates to frontmatter title | [16-json-mode-hybrid-enrichment.md](../../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
+| `153-C` | triggerPhrases propagate to frontmatter | [16-json-mode-hybrid-enrichment.md](../../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
+| `153-D` | keyDecisions propagate to decision_count | [16-json-mode-hybrid-enrichment.md](../../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
+| `153-E` | importanceTier propagates to frontmatter | [16-json-mode-hybrid-enrichment.md](../../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
+| `153-F` | contextType propagates to frontmatter | [16-json-mode-hybrid-enrichment.md](../../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
+| `153-G` | Contamination filter cleans hedging | [16-json-mode-hybrid-enrichment.md](../../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
+| `153-H` | Fast-path filesModified to FILES conversion | [16-json-mode-hybrid-enrichment.md](../../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
+| `153-I` | Unknown field warning for typos | [16-json-mode-hybrid-enrichment.md](../../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
+| `153-J` | contextType enum rejection | [16-json-mode-hybrid-enrichment.md](../../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
+| `153-K` | Quality score discriminates contaminated vs clean | [16-json-mode-hybrid-enrichment.md](../../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
+| `153-L` | Trigger phrase filter removes path fragments | [16-json-mode-hybrid-enrichment.md](../../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
 | `154` | JSON-primary deprecation posture | [17-json-primary-deprecation-posture.md](../../feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md) |
 | `PHASE-001` | Phase detection scoring | [feature_catalog.md#phase-detection-and-scoring-recommend-levelsh---recommend-phases](../../feature_catalog/feature_catalog.md#phase-detection-and-scoring-recommend-levelsh---recommend-phases) |
 | `PHASE-002` | Phase folder creation | [feature_catalog.md#phase-folder-creation-createsh---phase](../../feature_catalog/feature_catalog.md#phase-folder-creation-createsh---phase) |
@@ -122,6 +134,18 @@ Create a phase-specific specification for tooling-and-scripts so every assigned 
 | `REQ-147` | Document `147` `/memory:learn` constitutional manager workflow and doc-alignment checks. | PASS if all command flows match the constitutional contract and no active docs advertise the legacy learning/corrections behavior. |
 | `REQ-149` | Document `149` rendered-memory contract enforcement and remediation coverage. | PASS if malformed files are rejected before write/index, apply-mode final reports are validator-clean for repairable sandbox cases, and the active audit reports no remaining structural violations. |
 | `REQ-153` | Document `153` JSON mode hybrid enrichment validation covering structured JSON summary contract for `generate-context.js`, including `toolCalls`/`exchanges` fields, file-backed JSON authority, and Wave 2 hardening. | PASS if JSON summary output includes all required fields, file-backed authority is preserved, and Wave 2 hardening validations pass. |
+| `REQ-153-A` | Document `153-A` post-save quality review output verification. | PASS if the post-save quality review section is present in generate-context.js output and correctly categorizes findings as HIGH, MEDIUM, or PASSED. |
+| `REQ-153-B` | Document `153-B` sessionSummary propagation to frontmatter title. | PASS if the frontmatter `title` field reflects the value provided in `sessionSummary`. |
+| `REQ-153-C` | Document `153-C` triggerPhrases propagation to frontmatter. | PASS if all provided `triggerPhrases` appear verbatim in the saved memory frontmatter. |
+| `REQ-153-D` | Document `153-D` keyDecisions propagation to decision_count. | PASS if `decision_count` in the saved record equals the count of `keyDecisions` entries supplied. |
+| `REQ-153-E` | Document `153-E` importanceTier propagation to frontmatter. | PASS if the frontmatter `importance_tier` field reflects the value provided in `importanceTier`. |
+| `REQ-153-F` | Document `153-F` contextType propagation to frontmatter. | PASS if the frontmatter `contextType` field reflects the value provided in the JSON input. |
+| `REQ-153-G` | Document `153-G` contamination filter cleaning of hedging language. | PASS if hedging phrases such as "I think", "might be", and "probably" are removed or flagged before indexing. |
+| `REQ-153-H` | Document `153-H` fast-path conversion of `filesModified` to `FILES`. | PASS if the fast-path input key `filesModified` is correctly converted to the canonical `FILES` field in the saved record. |
+| `REQ-153-I` | Document `153-I` unknown field warning for JSON typos. | PASS if an unrecognised input key produces a WARNING-level advisory in the post-save quality review output without aborting the save. |
+| `REQ-153-J` | Document `153-J` contextType enum rejection for invalid values. | PASS if an out-of-enum `contextType` value causes a validation error before write. |
+| `REQ-153-K` | Document `153-K` quality score discrimination between contaminated and clean input. | PASS if a contaminated payload receives a materially lower quality score than an equivalent clean payload. |
+| `REQ-153-L` | Document `153-L` trigger phrase filter removal of path fragments. | PASS if trigger phrases containing file path fragments (e.g., `/some/path/`) are stripped or flagged before indexing. |
 | `REQ-154` | Document `154` JSON-primary deprecation posture validation covering routine saves requiring `--json`/`--stdin`, direct positional mode being rejected with clear error directing to JSON mode, and operator guidance reflecting the JSON-only contract. | PASS if routine saves require JSON mode, direct positional mode is correctly rejected with migration guidance, and operator-facing docs reflect the JSON-only contract. |
 | `REQ-PHASE-001` | Document `PHASE-001` phase-detection scoring validation. | PASS if all three top-level fields are present and correctly typed, 5 dimensions are scored, and simple vs complex specs produce differentiated results. |
 | `REQ-PHASE-002` | Document `PHASE-002` phase-folder creation validation. | PASS if parent contains Phase Documentation Map listing all 3 children, each child has parent back-reference, middle child has both predecessor and successor links, and all folders contain Level 3 templates. |
@@ -139,7 +163,7 @@ All requested phase-016 scenarios are treated as blocking coverage items for thi
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 23 assigned scenarios are documented with source-linked scope entries and per-test acceptance criteria.
+- **SC-001**: All 35 assigned scenarios are documented with source-linked scope entries and per-test acceptance criteria.
 - **SC-002**: The paired `plan.md` includes the exact prompt for every scenario in the testing-strategy table.
 - **SC-003**: The documentation explicitly captures expected commands, evidence artifacts, and review-protocol verdict handling (`PASS`, `PARTIAL`, `FAIL`).
 - **SC-004**: Cross-cutting exceptions are transparent, including the session-capturing playbook-row gap for `139` and the phase-system catalog anchors used for `PHASE-001` through `PHASE-005`.

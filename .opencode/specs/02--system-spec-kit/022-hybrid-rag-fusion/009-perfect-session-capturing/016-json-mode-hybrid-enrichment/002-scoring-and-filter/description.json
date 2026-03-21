@@ -1,15 +1,35 @@
 {
   "specFolder": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/002-scoring-and-filter",
   "description": "Phase 002: Quality Scorer Recalibration and Contamination Filter Expansion — removes bonus system from extractors/quality-scorer.ts to restore discriminative power, extends filterContamination to 4 uncleaned text fields, adds 7 missing contamination categories, and adds resolveProjectPhase() override. Covers Domains C + E from Round 2 research.",
-  "keywords": ["quality scorer", "recalibration", "contamination filter", "bonus system", "discriminative power", "filterContamination", "projectPhase", "post-save review", "domain C", "domain E", "hallucination prevention"],
+  "keywords": [
+    "quality scorer",
+    "recalibration",
+    "contamination filter",
+    "bonus system",
+    "discriminative power",
+    "filterContamination",
+    "projectPhase",
+    "post-save review",
+    "domain C",
+    "domain E",
+    "hallucination prevention"
+  ],
   "lastUpdated": "2026-03-21T00:00:00.000Z",
   "specId": "002",
   "folderSlug": "scoring-and-filter",
-  "parentChain": ["02--system-spec-kit", "022-hybrid-rag-fusion", "009-perfect-session-capturing", "016-json-mode-hybrid-enrichment"],
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "009-perfect-session-capturing",
+    "016-json-mode-hybrid-enrichment"
+  ],
   "level": 3,
   "status": "Draft",
   "priority": "P0",
-  "domains": ["C", "E"],
+  "domains": [
+    "C",
+    "E"
+  ],
   "filesModified": [
     "scripts/extractors/quality-scorer.ts",
     "scripts/core/workflow.ts",
@@ -18,5 +38,10 @@
     "scripts/utils/input-normalizer.ts",
     "scripts/core/post-save-review.ts",
     "scripts/tests/quality-scorer-calibration.vitest.ts"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "21-03-26_19-45__phase-002-scoring-and-filter-changes.md",
+    "21-03-26_19-45__phase-002-scoring-and-filter-changes-1.md"
   ]
 }

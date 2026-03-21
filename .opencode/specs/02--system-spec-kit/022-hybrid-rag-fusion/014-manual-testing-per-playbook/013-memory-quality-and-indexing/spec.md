@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: manual-testing-per-playbook memory quality and indexing phase [template:level_1/spec.md]"
-description: "Phase 013 documents the memory-quality-and-indexing manual test packet for the Spec Kit Memory system. It now tracks 42 exact scenario IDs by expanding the dedicated memory-section sub-scenarios alongside the original top-level inventory."
+description: "Phase 013 documents the memory-quality-and-indexing manual test packet for the Spec Kit Memory system. It now tracks 44 exact scenario IDs by expanding the dedicated memory-section sub-scenarios alongside the original top-level inventory."
 trigger_phrases:
   - "memory quality manual testing"
   - "phase 013 indexing tests"
@@ -40,7 +40,7 @@ contextType: "general"
 Manual test scenarios for memory-quality-and-indexing currently live in the central playbook and need structured per-phase documentation that preserves exact prompts, command sequences, evidence expectations, and review-protocol verdict rules. The earlier Phase 013 packet only modeled `26` top-level scenarios and collapsed the dedicated memory-section sub-scenarios, which meant active exact IDs such as `M-005a`, `M-006b`, and `M-007g` were not represented literally in the phase documentation.
 
 ### Purpose
-Provide a single memory-quality-and-indexing specification that maps all `42` exact Phase 013 scenario IDs to canonical feature context and playbook-derived acceptance criteria so execution and review remain consistent with the current manual testing playbook.
+Provide a single memory-quality-and-indexing specification that maps all `44` exact Phase 013 scenario IDs to canonical feature context and playbook-derived acceptance criteria so execution and review remain consistent with the current manual testing playbook.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -94,9 +94,11 @@ Provide a single memory-quality-and-indexing specification that maps all `42` ex
 | M-007i | Gemini fallback | [`../../../../../skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md`](../../../../../skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) | Explicit child scenario for Gemini fallback under canonical workspace identity. |
 | M-007j | Final `NO_DATA_AVAILABLE` hard-fail | [`../../../../../skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md`](../../../../../skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) | Explicit child scenario for the final no-data hard-fail. |
 | M-008 | Feature 09 Direct Manual Scenario (Per-memory History Log) | [`../../../../../skill/system-spec-kit/feature_catalog/02--mutation/10-per-memory-history-log.md`](../../../../../skill/system-spec-kit/feature_catalog/02--mutation/10-per-memory-history-log.md) | Direct cross-category mapping for per-memory history behavior. |
+| 155 | Post-save quality review | [`../../../../../skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md`](../../../../../skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md) | Direct category match for post-save quality review output and HIGH/MEDIUM/PASSED classification. |
+| 155-F | Score penalty advisory logging | [`../../../../../skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md`](../../../../../skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md) | Explicit child scenario for score penalty advisory log entries emitted during post-save quality review. |
 
 ### Out of Scope
-- Executing the 42 exact scenario IDs and assigning final run verdicts.
+- Executing the 44 exact scenario IDs and assigning final run verdicts.
 - Modifying the review protocol or feature catalog source files.
 - Documenting manual testing phases outside `013-memory-quality-and-indexing/`.
 
@@ -162,8 +164,10 @@ Provide a single memory-quality-and-indexing specification that maps all `42` ex
 | REQ-040 | Document M-007i with its exact playbook command sequence and acceptance rule. | PASS: Gemini fallback uses canonical workspace identity and still requires durable evidence for save success |
 | REQ-041 | Document M-007j with its exact playbook command sequence and acceptance rule. | PASS: Final hard-fail returns explicit `NO_DATA_AVAILABLE` |
 | REQ-042 | Document M-008 with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS: Direct operator run confirms per-memory history behavior without relying only on automated suites |
+| REQ-043 | Document 155 with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS: Post-save quality review output is present, findings are categorized as HIGH, MEDIUM, or PASSED, and HIGH findings produce actionable patch guidance |
+| REQ-044 | Document 155-F with its exact playbook command sequence and acceptance rule. | PASS: Score penalty advisory log entries are emitted with the penalty amount and reason during post-save quality review when a penalty is applied |
 
-No P1 items are defined for this phase; all 42 exact scenario IDs are required for Phase 013 coverage.
+No P1 items are defined for this phase; all 44 exact scenario IDs are required for Phase 013 coverage.
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -171,10 +175,10 @@ No P1 items are defined for this phase; all 42 exact scenario IDs are required f
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 42 exact Phase 013 scenario IDs are documented with exact prompts, command sequences, evidence expectations, and review-protocol verdict language.
-- **SC-002**: Every exact scenario ID in this phase links to a feature-catalog file, including explicit source-backed mappings for `M-005a..c`, `M-006a..c`, and `M-007a..j`.
+- **SC-001**: All 44 exact Phase 013 scenario IDs are documented with exact prompts, command sequences, evidence expectations, and review-protocol verdict language.
+- **SC-002**: Every exact scenario ID in this phase links to a feature-catalog file, including explicit source-backed mappings for `M-005a..c`, `M-006a..c`, `M-007a..j`, and `155`/`155-F`.
 - **SC-003**: `plan.md` defines a preconditions -> execute -> evidence -> verdict pipeline for both non-destructive and sandboxed destructive scenarios.
-- **SC-004**: Reviewers can assess the phase as 42/42 documented exact IDs with no omitted dedicated-memory sub-scenarios and no shorthand-only `M-007` coverage.
+- **SC-004**: Reviewers can assess the phase as 44/44 documented exact IDs with no omitted dedicated-memory sub-scenarios and no shorthand-only `M-007` coverage.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -190,6 +194,7 @@ No P1 items are defined for this phase; all 42 exact scenario IDs are required f
 | Dependency | MCP runtime, CLI scripts, disposable sandbox spec folders, and restart-safe test environment | Many scenarios require saves, reindex, service restart, file corruption tests, or dry-run inspection | Run destructive cases only in sandboxes, create checkpoints before mutation, and restore runtime state after each destructive block |
 | Risk | `042`, `119`, `131`, and `132` mutate or repair description metadata and can taint shared spec folders | High | Use disposable spec folders, isolate description.json corruption tests, and verify cleanup before proceeding |
 | Risk | `M-007` now spans 11 exact IDs (umbrella + 10 sub-scenarios) and can overclaim if evidence is reused loosely | High | Track each exact `M-007*` ID separately so parent umbrella coverage never substitutes for child evidence |
+| Risk | `155` and `155-F` reference a feature catalog file (`19-post-save-quality-review.md`) that may not yet exist | Medium | Create the feature catalog entry before execution or note the missing link explicitly in the phase plan |
 <!-- /ANCHOR:risks -->
 
 ---

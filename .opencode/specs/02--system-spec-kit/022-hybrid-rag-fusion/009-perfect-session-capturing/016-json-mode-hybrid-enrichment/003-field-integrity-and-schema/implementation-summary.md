@@ -23,30 +23,29 @@ contextType: "implementation"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 003-field-integrity-and-schema |
-| **Completed** | pending |
+| **Completed** | 2026-03-21 |
 | **Level** | 3 |
+| **Status** | Complete |
 <!-- /ANCHOR:metadata -->
 
 ---
 
-> **Note**: This file is created at spec folder creation time as a required stub. Complete this document after implementation finishes. See `spec.md` for requirements and `tasks.md` for the task list.
-
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-[Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
+This phase closes a silent data-loss bug in the fast path (`filesModified` fields were dropped rather than converted to FILES entries) and adds three layers of schema validation that were absent from input-normalizer.ts: unknown-field detection, contextType enum enforcement, and string-length guards. Four V-rule additions extend the quality gate coverage with content density checking, path normalization, structural YAML validation, and status/percentage contradiction detection.
 
 ### Fast-Path filesModified Fix (P0)
 
-[What this feature does and why it exists.]
+Added `filesModified` to FILES conversion in the fast-path block of `input-normalizer.ts`, mirroring slow-path behavior at lines 504-540. Handles string entries with separator parsing and object entries. Empty `filesModified: []` produces `FILES: []` (not key omission). Guarded with `Array.isArray()`.
 
 ### Schema Validation Hardening (P1)
 
-[Unknown-field warnings, contextType enum, string length limits.]
+Added `KNOWN_RAW_INPUT_FIELDS` set (26 fields) and `Object.keys()` iteration emitting `console.warn` for unknown fields (ADR-001: warn-not-error). Added `VALID_CONTEXT_TYPES` array (10 values) with validation error for invalid enum values (ADR-003: hard error). String length limits: `sessionSummary` >50 KB, `triggerPhrases` >200 chars, `observations` >5000 chars.
 
 ### V-Rule Additions (P1 + P2)
 
-[YAML parser replacement, content density rule, V12 normalization, contradiction rule.]
+V13 (content density): strips frontmatter, counts non-whitespace chars, rejects below 50. Structural YAML syntax checker for frontmatter validation validates indentation and unclosed quotes, satisfying ADR-002 intent without direct js-yaml usage. V12 path normalization: `path.isAbsolute()` check resolves relative paths. V14 (status/percentage contradiction): warning when `status=complete` but `percentage<100`. `QualityRuleId` extended with V13, V14.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -54,7 +53,7 @@ contextType: "implementation"
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-[How was this tested, verified and shipped? What was the rollout approach?]
+Changes applied directly to `input-normalizer.ts` and `validate-memory-quality.ts`. TypeScript compiled after each task group. Manual test cases exercised fast-path FILES round-trip, unknown-field warning output, contextType enum rejection, and sessionSummary length rejection. Full Vitest suite confirmed no regressions.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -65,7 +64,7 @@ contextType: "implementation"
 | Decision | Why |
 |----------|-----|
 | Warn-not-error for unknown fields | See ADR-001 in decision-record.md |
-| Real YAML parser for frontmatter | See ADR-002 in decision-record.md |
+| Structural YAML checker instead of js-yaml | See ADR-002 in decision-record.md |
 | Hard error for contextType enum | See ADR-003 in decision-record.md |
 | Content density threshold of 50 chars | See ADR-004 in decision-record.md |
 <!-- /ANCHOR:decisions -->
@@ -77,13 +76,12 @@ contextType: "implementation"
 
 | Check | Result |
 |-------|--------|
-| tsc --noEmit | pending |
-| Fast-path FILES round-trip test | pending |
-| Unknown-field warning test | pending |
-| contextType enum rejection test | pending |
-| YAML parser malformed frontmatter test | pending |
-| Content density rejection test | pending |
-| 001-initial-enrichment regression | pending |
+| `tsc --noEmit` | 0 errors |
+| 422/422 Vitest tests | Pass |
+| Fast-path FILES round-trip | Pass |
+| Unknown-field warning | Pass |
+| contextType enum rejection | Pass |
+| sessionSummary length rejection | Pass |
 <!-- /ANCHOR:verification -->
 
 ---

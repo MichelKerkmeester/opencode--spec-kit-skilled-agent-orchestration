@@ -61,6 +61,13 @@ The review output is machine-readable so callers and downstream quality monitors
 - Complements the **verify-fix-verify memory quality loop** (entry `01-verify-fix-verify-memory-quality-loop.md`) which handles iterative quality improvement. The post-save review is a single-pass snapshot check, not an iterative loop.
 - The RC1–RC5 propagation fixes documented in `16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md` address the root causes that this review detects.
 
+### 3.5 Score penalty computation (Phase 002)
+
+- `computeReviewScorePenalty()` computes a numeric `quality_score` adjustment from review findings.
+- Penalty per severity: HIGH=-0.10, MEDIUM=-0.05, LOW=-0.02, capped at -0.30 total.
+- Advisory logging — the penalty is logged to stdout but does NOT modify the saved file.
+- This preserves content-hash-based duplicate detection at the file-write level.
+
 ---
 
 ## 4. SOURCE FILES
@@ -69,7 +76,7 @@ The review output is machine-readable so callers and downstream quality monitors
 
 | File | Layer | Role |
 |------|-------|------|
-| `scripts/core/post-save-review.ts` | Script | Post-save review logic: frontmatter comparison, severity classification, machine-readable output |
+| `scripts/core/post-save-review.ts` | Script | Post-save review logic: frontmatter comparison, severity classification, machine-readable output, `computeReviewScorePenalty()` export |
 | `scripts/core/workflow.ts` | Script | Invokes post-save review at Step 10.5, passes original JSON payload and saved file path |
 | `scripts/memory/generate-context.ts` | Script | CLI entrypoint; delegates save workflow to `workflow.ts` |
 | `scripts/utils/input-normalizer.ts` | Script | Normalizes JSON payload fields before comparison (snake_case/camelCase parity) |
