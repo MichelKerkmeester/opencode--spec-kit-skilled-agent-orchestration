@@ -16,13 +16,23 @@
 // Feature flags:
 //   SPECKIT_QUERY_SURROGATES — enable surrogate generation + matching (default: FALSE)
 
-'use strict';
-
 /* ───────────────────────────────────────────────────────────────
    1. IMPORTS
 ──────────────────────────────────────────────────────────────── */
 
 import type Database from 'better-sqlite3';
+import { storeSurrogates as _storeSurrogatesRaw } from './surrogate-storage';
+import type { StorableSurrogateMetadata } from './surrogate-storage';
+
+// Re-export surrogate-storage for backward compatibility
+export { initSurrogateTable, loadSurrogates, loadSurrogatesBatch } from './surrogate-storage';
+export type { SurrogateRow, StorableSurrogateMetadata } from './surrogate-storage';
+
+/** Backward-compatible wrapper preserving the original feature flag guard. */
+export function storeSurrogates(db: Database.Database, memoryId: number, surrogates: StorableSurrogateMetadata): void {
+  if (!isQuerySurrogatesEnabled()) return;
+  _storeSurrogatesRaw(db, memoryId, surrogates);
+}
 
 /* ───────────────────────────────────────────────────────────────
    2. TYPES
@@ -525,182 +535,7 @@ export function matchSurrogates(
 }
 
 /* ───────────────────────────────────────────────────────────────
-   11. STORAGE INTEGRATION
-──────────────────────────────────────────────────────────────── */
-
-/**
- * Initialize the memory_surrogates table if it does not exist.
- *
- * Schema:
- *   memory_id      — FK to memory_index.id (unique)
- *   aliases_json   — JSON array of alias strings
- *   headings_json  — JSON array of heading strings
- *   summary        — extractive summary text
- *   questions_json — JSON array of surrogate question strings
- *   generated_at   — timestamp (epoch ms)
- *
- * @param db - SQLite database instance.
- */
-export function initSurrogateTable(db: Database.Database): void {
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS memory_surrogates (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      memory_id INTEGER NOT NULL UNIQUE,
-      aliases_json TEXT NOT NULL DEFAULT '[]',
-      headings_json TEXT NOT NULL DEFAULT '[]',
-      summary TEXT NOT NULL DEFAULT '',
-      questions_json TEXT NOT NULL DEFAULT '[]',
-      generated_at INTEGER NOT NULL DEFAULT 0
-    )
-  `);
-}
-
-/**
- * Store surrogate metadata for a memory document.
- *
- * Uses INSERT OR REPLACE to handle re-indexing gracefully.
- *
- * @param db        - SQLite database instance.
- * @param memoryId  - ID of the memory document.
- * @param surrogates - Generated surrogate metadata.
- */
-export function storeSurrogates(
-  db: Database.Database,
-  memoryId: number,
-  surrogates: SurrogateMetadata,
-): void {
-  if (!isQuerySurrogatesEnabled()) return;
-
-  try {
-    initSurrogateTable(db);
-
-    const stmt = db.prepare(`
-      INSERT OR REPLACE INTO memory_surrogates
-        (memory_id, aliases_json, headings_json, summary, questions_json, generated_at)
-      VALUES
-        (?, ?, ?, ?, ?, ?)
-    `);
-
-    stmt.run(
-      memoryId,
-      JSON.stringify(surrogates.aliases),
-      JSON.stringify(surrogates.headings),
-      surrogates.summary,
-      JSON.stringify(surrogates.surrogateQuestions),
-      surrogates.generatedAt,
-    );
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.warn(`[query-surrogates] Failed to store surrogates for memory ${memoryId}: ${msg}`);
-  }
-}
-
-/**
- * Load surrogate metadata for a memory document.
- *
- * Returns null when surrogates are not found or the table does not exist.
- * Backward compatible: missing surrogates = no boost (no errors).
- *
- * @param db       - SQLite database instance.
- * @param memoryId - ID of the memory document.
- * @returns SurrogateMetadata or null.
- */
-export function loadSurrogates(
-  db: Database.Database,
-  memoryId: number,
-): SurrogateMetadata | null {
-  try {
-    // Check if table exists to avoid errors on older databases
-    const tableCheck = db.prepare(
-      `SELECT name FROM sqlite_master WHERE type='table' AND name='memory_surrogates'`,
-    ).get() as { name: string } | undefined;
-
-    if (!tableCheck) return null;
-
-    const row = db.prepare(
-      `SELECT aliases_json, headings_json, summary, questions_json, generated_at
-       FROM memory_surrogates WHERE memory_id = ?`,
-    ).get(memoryId) as {
-      aliases_json: string;
-      headings_json: string;
-      summary: string;
-      questions_json: string;
-      generated_at: number;
-    } | undefined;
-
-    if (!row) return null;
-
-    return {
-      aliases: JSON.parse(row.aliases_json) as string[],
-      headings: JSON.parse(row.headings_json) as string[],
-      summary: row.summary,
-      surrogateQuestions: JSON.parse(row.questions_json) as string[],
-      generatedAt: row.generated_at,
-    };
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.warn(`[query-surrogates] Failed to load surrogates for memory ${memoryId}: ${msg}`);
-    return null;
-  }
-}
-
-/**
- * Batch-load surrogate metadata for multiple memory documents.
- *
- * Efficient single-query approach for query-time matching across
- * a candidate set.
- *
- * @param db        - SQLite database instance.
- * @param memoryIds - Array of memory IDs to load surrogates for.
- * @returns Map of memoryId → SurrogateMetadata.
- */
-export function loadSurrogatesBatch(
-  db: Database.Database,
-  memoryIds: number[],
-): Map<number, SurrogateMetadata> {
-  const result = new Map<number, SurrogateMetadata>();
-  if (memoryIds.length === 0) return result;
-
-  try {
-    // Check if table exists
-    const tableCheck = db.prepare(
-      `SELECT name FROM sqlite_master WHERE type='table' AND name='memory_surrogates'`,
-    ).get() as { name: string } | undefined;
-
-    if (!tableCheck) return result;
-
-    const placeholders = memoryIds.map(() => '?').join(', ');
-    const rows = db.prepare(
-      `SELECT memory_id, aliases_json, headings_json, summary, questions_json, generated_at
-       FROM memory_surrogates WHERE memory_id IN (${placeholders})`,
-    ).all(...memoryIds) as Array<{
-      memory_id: number;
-      aliases_json: string;
-      headings_json: string;
-      summary: string;
-      questions_json: string;
-      generated_at: number;
-    }>;
-
-    for (const row of rows) {
-      result.set(row.memory_id, {
-        aliases: JSON.parse(row.aliases_json) as string[],
-        headings: JSON.parse(row.headings_json) as string[],
-        summary: row.summary,
-        surrogateQuestions: JSON.parse(row.questions_json) as string[],
-        generatedAt: row.generated_at,
-      });
-    }
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.warn(`[query-surrogates] Failed to batch-load surrogates: ${msg}`);
-  }
-
-  return result;
-}
-
-/* ───────────────────────────────────────────────────────────────
-   12. TEST EXPORTS
+   11. TEST EXPORTS
 ──────────────────────────────────────────────────────────────── */
 
 /**

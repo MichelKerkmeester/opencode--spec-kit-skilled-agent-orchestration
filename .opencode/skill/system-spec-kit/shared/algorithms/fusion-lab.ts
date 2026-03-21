@@ -79,7 +79,8 @@ type PolicyFn = (channels: ScoredRankedList[], options?: FuseMultiOptions) => Fu
  * @returns True when SPECKIT_FUSION_POLICY_SHADOW_V2 is set to 'true'.
  */
 function isShadowFusionV2Enabled(): boolean {
-  return process.env.SPECKIT_FUSION_POLICY_SHADOW_V2 === 'true';
+  const val = process.env.SPECKIT_FUSION_POLICY_SHADOW_V2?.toLowerCase().trim();
+  return val === 'true' || val === '1';
 }
 
 /* --- 4. NORMALIZATION UTILITIES --- */

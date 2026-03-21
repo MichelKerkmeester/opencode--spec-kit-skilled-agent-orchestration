@@ -23,8 +23,6 @@
 //   SPECKIT_HYDE        — enable the HyDE feature (default: FALSE, opt-in)
 //   SPECKIT_HYDE_ACTIVE — graduate from shadow to full merge (default: FALSE)
 
-'use strict';
-
 /* ───────────────────────────────────────────────────────────────
    1. IMPORTS
 ──────────────────────────────────────────────────────────────── */

@@ -14,8 +14,6 @@
 //   - Lazy TTL cleanup on get() — no background sweep needed
 //   - Thread-safety is not required (Node.js single-threaded event loop)
 
-'use strict';
-
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
 ──────────────────────────────────────────────────────────────── */

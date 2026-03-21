@@ -17,8 +17,6 @@
 // Feature flag: SPECKIT_LLM_REFORMULATION (default: FALSE, opt-in).
 // Set to 'true' to enable. Only fires in deep mode.
 
-'use strict';
-
 /* ───────────────────────────────────────────────────────────────
    1. IMPORTS
 ──────────────────────────────────────────────────────────────── */
