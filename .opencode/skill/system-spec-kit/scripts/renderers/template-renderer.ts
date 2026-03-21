@@ -30,6 +30,8 @@ type TemplateDataItem = Record<string, unknown> | string | number | boolean;
 // 084-fix: V2.2 placeholders that are spec'd but not yet implemented
 // Suppress warnings for these to reduce noise until features are built
 const OPTIONAL_PLACEHOLDERS: Set<string> = new Set([
+  // @planned(V2.2) — These placeholders suppress warnings for template sections not yet populated.
+  // Remove these entries when the corresponding template sections are either populated or removed.
   // Session Integrity Checks (V2.2)
   'MEMORY_FILE_EXISTS', 'MEMORY_FILE_PATH', 'INDEX_ENTRY_VALID', 'LAST_INDEXED',
   'CHECKSUMS_MATCH', 'CHECKSUM_DETAILS', 'NO_DEDUP_CONFLICTS', 'DEDUP_CONFLICT_DETAILS',

@@ -268,6 +268,7 @@ describe.sequential('phase 013 auto-detection fixes', () => {
     expect(signal.confidenceBoost).toBeCloseTo(0.95, 3);
   });
 
+  // Covers: F-12 (Return empty decisions for null input; merge manual + observation decisions)
   it('suppresses observation-derived decision duplicates when manual decisions exist (SC-002: 4+4 → 4)', async () => {
     const manualTitles = [
       'Use git-status as a ranking signal for auto-detection.',
@@ -292,6 +293,7 @@ describe.sequential('phase 013 auto-detection fixes', () => {
     expect(result.DECISIONS).toHaveLength(4);
   });
 
+  // Covers: F-12 (Merge manual decisions with observation-extracted decisions)
   it('preserves observation decisions when no manual decisions exist', async () => {
     const result = await extractDecisions({
       SPEC_FOLDER: '013-auto-detection-fixes',

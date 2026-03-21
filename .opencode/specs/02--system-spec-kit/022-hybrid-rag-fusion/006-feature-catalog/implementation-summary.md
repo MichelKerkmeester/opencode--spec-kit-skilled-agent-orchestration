@@ -132,8 +132,8 @@ Cross-validation: 124 unique annotation names in code, 0 invalid (all match cata
 - Added H3 entry "Feature catalog code references" in main `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` under Tooling section
 - Added Code Conventions section (MODULE: header + Feature catalog annotation) to `.opencode/skill/system-spec-kit/mcp_server/README.md`
 - Added traceability mention to `.opencode/skill/system-spec-kit/README.md` component description
-- Added playbook scenarios NEW-135 (grep traceability), NEW-136 (name validity), NEW-137 (multi-feature coverage), NEW-138 (MODULE: compliance)
-- Updated playbook TOC range to NEW-001..NEW-138 with coverage mappings
+- Added playbook scenarios 135 (grep traceability), 136 (name validity), 137 (multi-feature coverage), 138 (MODULE: compliance)
+- Updated playbook TOC range to 001..138 with coverage mappings
 
 ### Phase C Verification
 
@@ -143,5 +143,39 @@ Cross-validation: 124 unique annotation names in code, 0 invalid (all match cata
 | `verify_alignment_drift.py --root system-spec-kit` | PASS (0 TS-MODULE-HEADER findings) |
 | Annotation name cross-validation | PASS (124 unique names, 0 invalid) |
 | New catalog snippet exists | PASS |
-| Playbook scenarios NEW-135..NEW-138 exist | PASS |
+| Playbook scenarios 135..138 exist | PASS |
 <!-- /ANCHOR:phase-c -->
+
+---
+
+<!-- ANCHOR:phase-g -->
+## Phase G: Normalization & Phase 016/017 Coverage (2026-03-21)
+
+### What Was Done
+
+All provisional `NEW-NNN` markers were removed from both the feature catalog (194 files) and manual testing playbook (200 files), normalizing every entry to standard numbering. Two new feature catalog entries and two new playbook entries were created for phases 016 (JSON Mode Hybrid Enrichment) and 017 (JSON-Primary Deprecation).
+
+### Files Changed
+
+| File | Action | Purpose |
+|------|--------|---------|
+| `feature_catalog/feature_catalog.md` | Modified | Removed 14 `[NEW-NNN]` playbook references, added entries for features 16/17 |
+| `manual_testing_playbook/manual_testing_playbook.md` | Modified | Removed ~458 `NEW-` prefixes, renamed section 8, added entries 153/154 with cross-reference rows |
+| `feature_catalog/01--*/` through `17--*/*.md` | Modified | Removed `NEW-NNN` from playbook cross-references (31 files modified) |
+| `manual_testing_playbook/01--*/` through `19--*/*.md` | Modified | Removed `NEW-NNN` from titles, frontmatter, headings, table rows, metadata (~75 files modified) |
+| `feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md` | Created | Phase 016 feature catalog entry |
+| `feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md` | Created | Phase 017 feature catalog entry |
+| `manual_testing_playbook/16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md` | Created | Phase 016 playbook test scenarios |
+| `manual_testing_playbook/16--tooling-and-scripts/154-json-primary-deprecation-posture.md` | Created | Phase 017 playbook test scenarios |
+
+### Phase G Verification
+
+| Check | Result |
+|-------|--------|
+| Feature catalog `NEW-NNN` grep (excl G-NEW-) | PASS (0 matches across 194 files) |
+| Playbook `NEW-NNN` grep (excl G-NEW-) | PASS (0 matches across 200 files) |
+| New catalog entries indexed in feature_catalog.md | PASS (lines 3370 and 3388) |
+| New playbook entries in section body + cross-ref table | PASS (lines 2802/2816 + 3244/3245) |
+| G-NEW-* proper nouns preserved | PASS (25 occurrences intact) |
+| Spot-check of previously-marked files | PASS (all sampled files clean) |
+<!-- /ANCHOR:phase-g -->

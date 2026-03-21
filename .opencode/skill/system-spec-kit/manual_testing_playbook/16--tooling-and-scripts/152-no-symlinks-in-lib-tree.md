@@ -1,9 +1,9 @@
 ---
-title: "NEW-152 -- No symlinks in lib/ tree"
+title: "152 -- No symlinks in lib/ tree"
 description: "This scenario validates the no-symlinks policy by confirming zero symlinks exist under mcp_server/lib/. It enforces the ARCHITECTURE.md 'No Symlinks in lib/ Tree' policy."
 ---
 
-# NEW-152 -- No symlinks in lib/ tree
+# 152 -- No symlinks in lib/ tree
 
 ## TABLE OF CONTENTS
 
@@ -15,7 +15,7 @@ description: "This scenario validates the no-symlinks policy by confirming zero 
 
 ## 1. OVERVIEW
 
-This scenario validates the no-symlinks-in-lib policy for `NEW-152`. It focuses on confirming that `find mcp_server/lib -type l` returns zero results, enforcing the ARCHITECTURE.md policy.
+This scenario validates the no-symlinks-in-lib policy for `152`. It focuses on confirming that `find mcp_server/lib -type l` returns zero results, enforcing the ARCHITECTURE.md policy.
 
 ---
 
@@ -34,7 +34,7 @@ Operators run a symlink scan and confirm the lib/ tree contains no symlinks. The
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-152 | No symlinks in lib/ tree | Verify zero symlinks under mcp_server/lib/ | `Check for symlinks in the lib/ tree. Run find mcp_server/lib -type l and confirm zero results. Return a pass/fail verdict.` | 1) `cd .opencode/skill/system-spec-kit` 2) `find mcp_server/lib -type l` 3) Verify output is empty 4) `echo $?` to confirm exit 0 | Zero symlinks found | find command output (should be empty) | PASS if find returns no output | Identify symlink -> determine if intentional -> replace with canonical import path -> remove symlink -> update imports -> re-verify |
+| 152 | No symlinks in lib/ tree | Verify zero symlinks under mcp_server/lib/ | `Check for symlinks in the lib/ tree. Run find mcp_server/lib -type l and confirm zero results. Return a pass/fail verdict.` | 1) `cd .opencode/skill/system-spec-kit` 2) `find mcp_server/lib -type l` 3) Verify output is empty 4) `echo $?` to confirm exit 0 | Zero symlinks found | find command output (should be empty) | PASS if find returns no output | Identify symlink -> determine if intentional -> replace with canonical import path -> remove symlink -> update imports -> re-verify |
 
 ---
 
@@ -49,6 +49,6 @@ Operators run a symlink scan and confirm the lib/ tree contains no symlinks. The
 ## 5. SOURCE METADATA
 
 - Group: Tooling and Scripts
-- Playbook ID: NEW-152
+- Playbook ID: 152
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/152-no-symlinks-in-lib-tree.md`

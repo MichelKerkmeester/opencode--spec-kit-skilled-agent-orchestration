@@ -25,13 +25,14 @@ export type DiagramPatternName =
 /** Complexity level for diagrams */
 export type ComplexityLevel = 'Low' | 'Medium' | 'High';
 
-/** A workflow phase with activities */
+/** A workflow phase with activities.
+ * Structural interface satisfied by both PhaseEntry (diagram-extractor) and
+ * ConversationPhase (conversation-extractor) without requiring an index signature. */
 export interface Phase {
   PHASE_NAME?: string;
   DURATION?: string;
   ACTIVITIES?: string[];
   TRANSITION_TRIGGER?: string;
-  [key: string]: unknown;
 }
 
 /** Detailed phase with computed fields */

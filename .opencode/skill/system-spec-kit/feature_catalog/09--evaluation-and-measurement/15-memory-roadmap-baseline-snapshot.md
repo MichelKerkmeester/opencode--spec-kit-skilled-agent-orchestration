@@ -51,4 +51,4 @@ The baseline path now initializes the eval database beside the context database 
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenario NEW-126
+- Mapped to manual testing playbook scenario 126

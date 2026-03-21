@@ -35,7 +35,7 @@ contextType: "general"
 ## Phase 1: Setup
 
 - [x] T001 Extract retrieval prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] T002 Confirm feature links for EX-001, EX-002, EX-003, EX-004, EX-005, NEW-086, NEW-109, NEW-142, and NEW-143 in `../../feature_catalog/01--retrieval/`
+- [x] T002 Confirm feature links for EX-001, EX-002, EX-003, EX-004, EX-005, 086, 109, 142, and 143 in `../../feature_catalog/01--retrieval/`
 - [x] T003 [P] Prepare sandbox prerequisites and evidence capture checklist for `plan.md`
 <!-- /ANCHOR:phase-1 -->
 
@@ -47,7 +47,7 @@ contextType: "general"
 - [x] T004 Draft `spec.md` with metadata, scope table, and nine playbook-derived requirements
 - [x] T005 Draft `plan.md` with readiness gates, execution phases, and testing strategy table
 - [x] T006 Add evidence references and verdict outcomes after manual execution
-- [x] T007 [P] Resolve open questions for NEW-086 sandbox target and NEW-143 graph corpus
+- [x] T007 [P] Resolve open questions for 086 sandbox target and 143 graph corpus
 <!-- /ANCHOR:phase-2 -->
 
 ---

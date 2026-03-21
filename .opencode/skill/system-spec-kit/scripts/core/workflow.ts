@@ -22,7 +22,6 @@ import {
 } from '../extractors';
 import { detectSpecFolder, setupContextDirectory } from '../spec-folder';
 import { populateTemplate } from '../renderers';
-import { scoreMemoryQuality } from './quality-scorer';
 import { extractKeyTopics } from './topic-extractor';
 import type { DecisionForTopics } from './topic-extractor';
 import { writeFilesAtomically } from './file-writer';
@@ -45,7 +44,7 @@ import {
   determineValidationDisposition,
   validateMemoryQualityContent,
   type ValidationDispositionResult,
-} from '../memory/validate-memory-quality';
+} from '../lib/validate-memory-quality';
 import { extractSpecFolderContext } from '../extractors/spec-folder-extractor';
 import { extractGitContext } from '../extractors/git-context-extractor';
 
@@ -78,11 +77,12 @@ import {
   type WorkflowIndexingStatus,
 } from './memory-indexer';
 import * as simFactory from '../lib/simulation-factory';
+import { reviewPostSaveQuality, printPostSaveReview } from './post-save-review';
 import { loadCollectedData as loadCollectedDataFromLoader } from '../loaders/data-loader';
 import { applyTreeThinning } from './tree-thinning';
 import { structuredLog } from '../utils/logger';
 import type { FileChange, SessionData } from '../types/session-types';
-import type { FileEntry as ThinningFileEntry, ThinningResult } from './tree-thinning';
+import type { ThinFileInput, ThinningResult } from './tree-thinning';
 import { getSourceCapabilities } from '../utils/source-capabilities';
 
 // ───────────────────────────────────────────────────────────────
@@ -150,6 +150,8 @@ export interface WorkflowResult {
   memoryId: number | null;
   /** Explicit indexing outcome for this workflow run. */
   indexingStatus: WorkflowIndexingStatus;
+  /** Non-fatal warnings encountered while persisting workflow artifacts. */
+  warnings: string[];
   /** Summary statistics for the generated memory. */
   stats: {
     /** Number of conversation messages processed. */
@@ -731,13 +733,18 @@ function buildKeyFiles(effectiveFiles: FileChange[], specFolderPath: string): Ar
   return listSpecFolderKeyFiles(specFolderPath);
 }
 
-function readNamedObject(source: Record<string, unknown> | null | undefined, ...keys: string[]): Record<string, unknown> | null {
+/** Accepts both Record<string, unknown> (readNamedObject results) and typed interfaces
+ * (CollectedDataFull) without requiring an index signature on the typed interface.
+ * Each helper casts to Record internally — safe because all values are runtime-checked. */
+
+function readNamedObject(source: object | null | undefined, ...keys: string[]): Record<string, unknown> | null {
   if (!source) {
     return null;
   }
+  const src = source as Record<string, unknown>;
 
   for (const key of keys) {
-    const value = source[key];
+    const value = src[key];
     if (value && typeof value === 'object' && !Array.isArray(value)) {
       return value as Record<string, unknown>;
     }
@@ -746,13 +753,14 @@ function readNamedObject(source: Record<string, unknown> | null | undefined, ...
   return null;
 }
 
-function readStringArray(source: Record<string, unknown> | null | undefined, ...keys: string[]): string[] {
+function readStringArray(source: object | null | undefined, ...keys: string[]): string[] {
   if (!source) {
     return [];
   }
+  const src = source as Record<string, unknown>;
 
   for (const key of keys) {
-    const value = source[key];
+    const value = src[key];
     if (Array.isArray(value)) {
       return value
         .map((entry) => (typeof entry === 'string' ? entry.trim() : ''))
@@ -763,13 +771,14 @@ function readStringArray(source: Record<string, unknown> | null | undefined, ...
   return [];
 }
 
-function readNumber(source: Record<string, unknown> | null | undefined, fallback: number, ...keys: string[]): number {
+function readNumber(source: object | null | undefined, fallback: number, ...keys: string[]): number {
   if (!source) {
     return fallback;
   }
+  const src = source as Record<string, unknown>;
 
   for (const key of keys) {
-    const value = source[key];
+    const value = src[key];
     if (typeof value === 'number' && Number.isFinite(value)) {
       return value;
     }
@@ -778,13 +787,14 @@ function readNumber(source: Record<string, unknown> | null | undefined, fallback
   return fallback;
 }
 
-function readString(source: Record<string, unknown> | null | undefined, fallback: string, ...keys: string[]): string {
+function readString(source: object | null | undefined, fallback: string, ...keys: string[]): string {
   if (!source) {
     return fallback;
   }
+  const src = source as Record<string, unknown>;
 
   for (const key of keys) {
-    const value = source[key];
+    const value = src[key];
     if (typeof value === 'string' && value.trim().length > 0) {
       return value.trim();
     }
@@ -1198,6 +1208,10 @@ async function enrichStatelessData(
       }),
     ]);
 
+    // O1-11: Track which enrichment sources were available
+    enriched._specContextLoaded = specContext !== null;
+    enriched._gitContextLoaded = gitContext !== null;
+
     // Merge spec-folder observations (provenance-tagged, won't conflict with live data)
     if (specContext) {
       const existingObs = enriched.observations || [];
@@ -1535,6 +1549,10 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       if (hadContamination && contaminationMaxSeverity === 'low' && extractorRemovedPhraseCount >= 10) {
         contaminationMaxSeverity = 'medium';
       }
+      // O4-6: Escalate medium to high for pervasive contamination
+      if (hadContamination && contaminationMaxSeverity === 'medium' && extractorRemovedPhraseCount >= 20) {
+        contaminationMaxSeverity = 'high';
+      }
     }
 
     // Step 3.5: Enrich stateless data with spec folder and git context
@@ -1711,20 +1729,19 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   ]);
     log('\n   All extraction complete (parallel execution)\n');
 
+  // O1-4: Use local variable instead of mutating extractor result in-place
   // Patch TOOL_COUNT for enriched stateless saves so V7 does not flag
   // Synthetic file paths as contradictory with zero tool usage.
   // RC-9 fix: Guard against NaN/undefined TOOL_COUNT before any comparison.
-  if (!Number.isFinite(sessionData.TOOL_COUNT)) {
-    sessionData.TOOL_COUNT = 0;
-  }
+  let patchedToolCount = Number.isFinite(sessionData.TOOL_COUNT) ? sessionData.TOOL_COUNT : 0;
   const enrichedFileCount = collectedData.FILES?.length ?? 0;
   const captureToolEvidenceCount = typeof collectedData._toolCallCount === 'number'
     && Number.isFinite(collectedData._toolCallCount)
     ? collectedData._toolCallCount
     : 0;
   const inferredToolCount = Math.max(enrichedFileCount, captureToolEvidenceCount);
-  if (isStatelessMode && sessionData.TOOL_COUNT === 0 && inferredToolCount > 0) {
-    sessionData.TOOL_COUNT = inferredToolCount;
+  if (isStatelessMode && patchedToolCount === 0 && inferredToolCount > 0) {
+    patchedToolCount = inferredToolCount;
   }
 
   // Step 7.5: Generate semantic implementation summary
@@ -1785,7 +1802,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // Operates on spec folder files BEFORE pipeline stages and scoring.
   // Bottom-up merging of small files reduces token overhead in the retrieval pipeline.
   log('Step 7.6: Applying tree thinning...');
-  const thinFileInputs: ThinningFileEntry[] = enhancedFiles.map((f) => ({
+  const thinFileInputs: ThinFileInput[] = enhancedFiles.map((f) => ({
     path: f.FILE_PATH,
     content: resolveTreeThinningContent(f, specFolder),
   }));
@@ -1825,6 +1842,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     specTitle,
     folderBase,
     [
+      sessionData._JSON_SESSION_SUMMARY || '',  // RC1: raw JSON sessionSummary as first candidate
       sessionData.QUICK_SUMMARY || '',
       sessionData.TITLE || '',
       sessionData.SUMMARY || '',
@@ -1841,7 +1859,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     if (pfDesc?.memoryNameHistory) {
       memoryNameHistoryForSlug = pfDesc.memoryNameHistory;
     }
-  } catch (_error: unknown) { /* Expected: description.json may not exist yet, or mcp_server module unavailable */ }
+  } catch (_error: unknown) { /* Expected: description.json may not exist yet */ }
   const contentSlug: string = generateContentSlug(preferredMemoryTask, folderBase, memoryNameHistoryForSlug);
   const rawCtxFilename: string = `${sessionData.DATE}_${sessionData.TIME}__${contentSlug}.md`;
   const ctxFilename: string = ensureUniqueMemoryFilename(contextDir, rawCtxFilename);
@@ -1883,6 +1901,18 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
     const triggerSource = triggerSourceParts.join('\n');
     preExtractedTriggers = extractTriggerPhrases(triggerSource);
+
+    // RC2: Merge manual trigger phrases from JSON into frontmatter triggers.
+    // Previously these only went into vector indexing (memory-indexer.ts) but NOT frontmatter.
+    if (collectedData?._manualTriggerPhrases && Array.isArray(collectedData._manualTriggerPhrases) && collectedData._manualTriggerPhrases.length > 0) {
+      const seen = new Set(preExtractedTriggers.map(p => p.toLowerCase()));
+      for (const phrase of collectedData._manualTriggerPhrases) {
+        if (typeof phrase === 'string' && phrase.trim().length > 0 && !seen.has(phrase.trim().toLowerCase())) {
+          preExtractedTriggers.unshift(phrase.trim());
+          seen.add(phrase.trim().toLowerCase());
+        }
+      }
+    }
 
     // Also add spec folder name-derived phrases if not already present
     const folderTokens = folderNameForTriggers.split(/\s+/).filter(t => t.length >= 3);
@@ -1932,7 +1962,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       // Stateless mode, because conversations object contains TOOL_COUNT: 0
       // Which overwrites the patched value from stateless enrichment.
       // Non-stateless flows should keep conversations.TOOL_COUNT as-is.
-      ...(isStatelessMode ? { TOOL_COUNT: sessionData.TOOL_COUNT } : {}),
+      // O1-4: Uses patchedToolCount (local variable) instead of mutated sessionData.
+      ...(isStatelessMode ? { TOOL_COUNT: patchedToolCount } : {}),
       FILES: effectiveFiles,
       HAS_FILES: effectiveFiles.length > 0,
       MESSAGE_COUNT: conversations.MESSAGES.length,
@@ -2083,7 +2114,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     hadContamination,
     contaminationSeverity: contaminationMaxSeverity,
     messageCount: conversations.MESSAGES.length,
-    toolCount: sessionData.TOOL_COUNT,
+    toolCount: patchedToolCount,
     decisionCount: decisions.DECISIONS.length,
     sufficiencyScore: sufficiencyResult.score,
     insufficientContext: !sufficiencyResult.pass,
@@ -2133,28 +2164,24 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   if (!qualityValidation.valid) {
     warn(`QUALITY_GATE_FAIL: ${qualityValidation.failedRules.join(', ')}`);
   }
-  const qualityResult = scoreMemoryQuality(
-    files[ctxFilename],
-    preExtractedTriggers,
-    keyTopics,
-    effectiveFiles,
-    sessionData.OBSERVATIONS || [],
-    sufficiencyResult,
-    hadContamination,
-    contaminationMaxSeverity,
-  );
+  // Unified quality scoring: use v2 scorer for all decisions (abort, index, metadata)
+  const qualityResult = qualityV2;
   log(
-    `   Memory quality score: ${qualityResult.score100}/100 (${qualityResult.score01.toFixed(2)}) ` +
-    `canonical, ${qualityV2.score100}/100 (${qualityV2.score01.toFixed(2)}) (v2)`
+    `   Memory quality score: ${qualityResult.score100}/100 (${qualityResult.score01.toFixed(2)})`
   );
   if (qualityResult.warnings.length > 0) {
     for (const warning of qualityResult.warnings) {
       warn(`   Quality warning: ${warning}`);
     }
   }
-  if (qualityResult.breakdown) {
-    const qualityBreakdown = qualityResult.breakdown;
-    log(`   Breakdown: triggers=${qualityBreakdown.triggerPhrases}/20, topics=${qualityBreakdown.keyTopics}/15, fileDesc=${qualityBreakdown.fileDescriptions}/20, length=${qualityBreakdown.contentLength}/15, html=${qualityBreakdown.noLeakedTags}/15, dedup=${qualityBreakdown.observationDedup}/15`);
+  if (qualityResult.dimensions && qualityResult.dimensions.length > 0) {
+    const dimSummary = qualityResult.dimensions
+      .filter((d) => !d.passed)
+      .map((d) => d.id)
+      .join(', ');
+    if (dimSummary) {
+      log(`   Failed dimensions: ${dimSummary}`);
+    }
   }
 
   if (!sufficiencyResult.pass) {
@@ -2201,7 +2228,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     }
   }
 
-  // CG-07: Add warning banner for medium-quality scores (0.30-0.60 legacy 30-60)
+  // CG-07: Add warning banner for medium-quality scores (0.30-0.60)
   if (qualityResult.score01 < 0.6 && qualityResult.score01 >= QUALITY_ABORT_THRESHOLD) {
     const mediumQualityWarning = `> **Warning:** Memory quality score is ${qualityResult.score100}/100 (${qualityResult.score01.toFixed(2)}), which is below the recommended threshold of 0.60. Content may have issues with: ${qualityResult.warnings.slice(0, 3).join('; ')}.\n\n`;
     files[ctxFilename] = insertAfterFrontmatter(files[ctxFilename], mediumQualityWarning);
@@ -2277,9 +2304,6 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   }
   log();
 
-  // Step 9.5: State embedded in memory file
-  log('Step 9.5: State embedded in memory file (V13.0)');
-
   // Step 10: Success confirmation
   log('Context saved successfully!\n');
   log(`Location: ${contextDir}\n`);
@@ -2295,11 +2319,23 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   log(`  - ${diagrams.DIAGRAMS.length} diagrams preserved`);
   log(`  - Session duration: ${sessionData.DURATION}\n`);
 
+  // Step 10.5: Post-save quality review (JSON mode only)
+  if (ctxFileWritten && captureCapabilities.inputMode !== 'stateless') {
+    const savedFilePath = path.join(contextDir, ctxFilename);
+    const reviewResult = reviewPostSaveQuality({
+      savedFilePath,
+      collectedData,
+      inputMode: captureCapabilities.inputMode,
+    });
+    printPostSaveReview(reviewResult);
+  }
+
   // Step 11: Semantic memory indexing
   log('Step 11: Indexing semantic memory...');
 
   let memoryId: number | null = null;
   let indexingStatus: WorkflowIndexingStatus | null = null;
+  const workflowWarnings: string[] = [];
   const persistIndexingStatus = async (
     status: IndexingStatusValue,
     reason?: string,
@@ -2311,7 +2347,12 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       ...(reason ? { reason } : {}),
       ...(errorMessage ? { errorMessage } : {}),
     };
-    await updateMetadataEmbeddingStatus(contextDir, indexingStatus);
+    const persisted = await updateMetadataEmbeddingStatus(contextDir, indexingStatus);
+    if (!persisted) {
+      const warning = `Failed to persist embedding metadata status to ${path.join(contextDir, 'metadata.json')}.`;
+      workflowWarnings.push(warning);
+      warn(`   Warning: ${warning}`);
+    }
   };
 
   // RC-6 fix: Only index if the context file was actually written (not a duplicate skip)
@@ -2409,6 +2450,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
           memoryId,
           reason: 'Indexing status was not finalized before workflow completion.',
         },
+        warnings: workflowWarnings,
         stats: {
           messageCount: conversations.MESSAGES.length,
           decisionCount: decisions.DECISIONS.length,

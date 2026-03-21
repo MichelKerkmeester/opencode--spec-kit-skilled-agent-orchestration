@@ -65,12 +65,47 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:wave-3 -->
+## Wave 3: JSON Payload Field Propagation Fixes + Post-Save Review
+
+- [x] T019 RC5: Move `decisionCount` check before `total===0` early return in `detectContextType()` (`session-extractor.ts`)
+- [x] T020 RC5: Add `explicitContextType` parameter to `detectSessionCharacteristics()` (`session-extractor.ts`)
+- [x] T021 RC5: Add `contextType`/`context_type` to `RawInputData`, `NormalizedData`, and `CollectedDataBase` interfaces
+- [x] T022 RC5: Propagate `contextType` through both fast-path and slow-path in `normalizeInputData()` (`input-normalizer.ts`)
+- [x] T023 RC5: Extract and thread `explicitContextType` in `collectSessionData()` (`collect-session-data.ts`)
+- [x] T024 RC3: Propagate `keyDecisions` through fast-path — create `_manualDecisions` + decision-type observations (`input-normalizer.ts`)
+- [x] T025 RC2: Merge `_manualTriggerPhrases` into `preExtractedTriggers` before folder token dedup (`workflow.ts`)
+- [x] T026 RC1: Add `_JSON_SESSION_SUMMARY` to `SessionData` interface (`session-types.ts`)
+- [x] T027 RC1: Pass through `data.sessionSummary` as `_JSON_SESSION_SUMMARY` in `collectSessionData()` (`collect-session-data.ts`)
+- [x] T028 RC1: Add `sessionData._JSON_SESSION_SUMMARY` as first candidate in `pickPreferredMemoryTask()` (`workflow.ts`)
+- [x] T029 Create post-save quality review module (`scripts/core/post-save-review.ts`)
+- [x] T030 Integrate Step 10.5 post-save review in workflow after file write, before indexing (`workflow.ts`)
+- [x] T031 Add post-save review instructions to all 5 instruction files (CLAUDE.md, AGENTS.md, GEMINI.md, AGENTS_example, Barter/coder/AGENTS.md)
+- [x] T032 Update feature catalog entry `16-json-mode-hybrid-enrichment.md` with RC fixes and post-save review
+- [x] T033 Create feature catalog entry `13--memory-quality-and-indexing/19-post-save-quality-review.md`
+- [x] T034 Update manual testing playbook `153-json-mode-hybrid-enrichment.md` with field propagation tests
+- [x] T035 Create manual testing playbook `13--memory-quality-and-indexing/155-post-save-quality-review.md`
+<!-- /ANCHOR:wave-3 -->
+
+---
+
+<!-- ANCHOR:wave-3-verification -->
+## Wave 3: Verification
+
+- [x] T036 Run `npx tsc --noEmit` — clean compilation
+- [x] T037 Run `npx tsc` (scripts project) — dist files generated including `post-save-review.js`
+<!-- /ANCHOR:wave-3-verification -->
+
+---
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All implementation tasks are marked `[x]`
 - [x] No blocked tasks remain for this phase
 - [x] Validation evidence exists for the new JSON metadata path and Wave 2 hardening fixes
+- [x] Wave 3 RC fixes resolve all 5 JSON payload field propagation bugs (RC1-RC5)
+- [x] Post-save quality review module detects silent field overrides
 <!-- /ANCHOR:completion -->
 
 ---

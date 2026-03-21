@@ -41,7 +41,7 @@ This plan converts the retrieval-enhancements scenarios in the manual testing pl
 - [x] Exact prompts, command sequences, and pass criteria were extracted from [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md).
 - [x] Feature mappings for all 9 retrieval-enhancements tests were confirmed against the cross-reference index and retrieval-enhancements feature files.
 - [x] Verdict rules from [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) were loaded for PASS/PARTIAL/FAIL handling.
-- [x] Sandbox expectations were identified for stateful scenarios NEW-058 (consolidation cycle) and NEW-060 (entity linking).
+- [x] Sandbox expectations were identified for stateful scenarios 058 (consolidation cycle) and 060 (entity linking).
 
 ### Definition of Done
 - [ ] All 9 retrieval-enhancements scenarios have execution evidence tied to the exact documented prompt and command sequence.
@@ -77,21 +77,21 @@ Manual retrieval-enhancements test execution pipeline with review-gated evidence
 - [ ] Verify source documents are open: playbook, review protocol, and linked retrieval-enhancements feature files.
 - [ ] Confirm MCP runtime access for `memory_search` and `memory_context`.
 - [ ] Record baseline environment flags (`SPECKIT_RESPONSE_TRACE`, `SPECKIT_CONTEXT_HEADERS`, `SPECKIT_CONSOLIDATION`, `SPECKIT_ENTITY_LINKING`, `SPECKIT_MEMORY_SUMMARIES`) before any scenario execution.
-- [ ] Capture corpus size count to determine whether the summary channel (NEW-059) threshold is satisfied.
-- [ ] Prepare disposable sandbox data for consolidation (NEW-058) and a corpus with shared cross-document entities for entity linking (NEW-060).
+- [ ] Capture corpus size count to determine whether the summary channel (059) threshold is satisfied.
+- [ ] Prepare disposable sandbox data for consolidation (058) and a corpus with shared cross-document entities for entity linking (060).
 
 ### Phase 2: Non-Stateful Tests
-- [ ] Run NEW-056 to verify constitutional directive metadata appears in retrieval results with correct tier classification.
-- [ ] Run NEW-057 to verify hierarchy-aware retrieval scores self > parent > sibling for nested spec folder structures.
-- [ ] Run NEW-077 to verify tier-2 fallback sets `forceAllChannels=true` and results contain multi-channel contributions.
-- [ ] Run NEW-096 to compare `includeTrace` on/off responses and confirm all 7 score sub-fields appear only when trace is requested.
-- [ ] Run NEW-145 to compare header-injected and header-suppressed search results under `SPECKIT_CONTEXT_HEADERS` toggle.
+- [ ] Run 056 to verify constitutional directive metadata appears in retrieval results with correct tier classification.
+- [ ] Run 057 to verify hierarchy-aware retrieval scores self > parent > sibling for nested spec folder structures.
+- [ ] Run 077 to verify tier-2 fallback sets `forceAllChannels=true` and results contain multi-channel contributions.
+- [ ] Run 096 to compare `includeTrace` on/off responses and confirm all 7 score sub-fields appear only when trace is requested.
+- [ ] Run 145 to compare header-injected and header-suppressed search results under `SPECKIT_CONTEXT_HEADERS` toggle.
 
 ### Phase 3: Stateful and Flag-Dependent Tests
-- [ ] Run NEW-055 by invoking a non-memory-aware tool path and then triggering compaction; confirm auto-surface hook fires and surfaces context-relevant memories at both lifecycle points.
-- [ ] Run NEW-058 only against disposable sandbox memories; checkpoint original edge weights before triggering the N3-lite cycle and capture contradiction/Hebbian/staleness sub-outputs immediately after.
-- [ ] Run NEW-059 against a corpus verified to exceed the 5,000-memory threshold; confirm summary channel appears in Stage 1 and confirm the channel is skipped below the threshold.
-- [ ] Run NEW-060 by verifying shared entities exist across distinct spec folders, running the entity linker, and confirming supports-edges are created within density guard limits.
+- [ ] Run 055 by invoking a non-memory-aware tool path and then triggering compaction; confirm auto-surface hook fires and surfaces context-relevant memories at both lifecycle points.
+- [ ] Run 058 only against disposable sandbox memories; checkpoint original edge weights before triggering the N3-lite cycle and capture contradiction/Hebbian/staleness sub-outputs immediately after.
+- [ ] Run 059 against a corpus verified to exceed the 5,000-memory threshold; confirm summary channel appears in Stage 1 and confirm the channel is skipped below the threshold.
+- [ ] Run 060 by verifying shared entities exist across distinct spec folders, running the entity linker, and confirming supports-edges are created within density guard limits.
 - [ ] If sandbox isolation fails or shared data would be mutated unexpectedly, stop execution and mark the scenario blocked instead of proceeding.
 
 ### Phase 4: Evidence Collection and Verdict
@@ -107,15 +107,15 @@ Manual retrieval-enhancements test execution pipeline with review-gated evidence
 
 | Test ID | Scenario Name | Exact Prompt | Execution Type (manual/MCP) |
 |---------|---------------|--------------|-----------------------------|
-| NEW-055 | Dual-scope memory auto-surface | `Validate dual-scope auto-surface (TM-05).` | manual |
-| NEW-056 | Constitutional memory as expert knowledge injection | `Verify constitutional memory directive injection (PI-A4).` | MCP |
-| NEW-057 | Spec folder hierarchy as retrieval structure | `Validate spec-folder hierarchy retrieval (S4).` | MCP |
-| NEW-058 | Lightweight consolidation | `Run lightweight consolidation cycle (N3-lite).` | manual |
-| NEW-059 | Memory summary search channel | `Verify memory summary search channel (R8).` | MCP |
-| NEW-060 | Cross-document entity linking | `Validate cross-document entity linking (S5).` | manual |
-| NEW-077 | Tier-2 fallback channel forcing | `Validate tier-2 fallback channel forcing.` | MCP |
-| NEW-096 | Provenance-rich response envelopes | `Validate SPECKIT_RESPONSE_TRACE includeTrace behavior.` | MCP |
-| NEW-145 | Contextual tree injection | `Validate contextual tree injection header format and flag toggle.` | MCP |
+| 055 | Dual-scope memory auto-surface | `Validate dual-scope auto-surface (TM-05).` | manual |
+| 056 | Constitutional memory as expert knowledge injection | `Verify constitutional memory directive injection (PI-A4).` | MCP |
+| 057 | Spec folder hierarchy as retrieval structure | `Validate spec-folder hierarchy retrieval (S4).` | MCP |
+| 058 | Lightweight consolidation | `Run lightweight consolidation cycle (N3-lite).` | manual |
+| 059 | Memory summary search channel | `Verify memory summary search channel (R8).` | MCP |
+| 060 | Cross-document entity linking | `Validate cross-document entity linking (S5).` | manual |
+| 077 | Tier-2 fallback channel forcing | `Validate tier-2 fallback channel forcing.` | MCP |
+| 096 | Provenance-rich response envelopes | `Validate SPECKIT_RESPONSE_TRACE includeTrace behavior.` | MCP |
+| 145 | Contextual tree injection | `Validate contextual tree injection header format and flag toggle.` | MCP |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -129,8 +129,8 @@ Manual retrieval-enhancements test execution pipeline with review-gated evidence
 | [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Internal | Green | Verdicts and coverage rules cannot be applied consistently |
 | [`../../feature_catalog/15--retrieval-enhancements/`](../../feature_catalog/15--retrieval-enhancements/) | Internal | Green | Test-to-feature context and review triage lose their canonical reference |
 | MCP runtime for `memory_search` and `memory_context` | Internal | Yellow | Retrieval and provenance scenarios cannot be executed or compared |
-| Disposable sandbox corpus and rollback checkpoint for NEW-058 and NEW-060 | Internal | Yellow | Stateful consolidation and entity-linking tests cannot run safely |
-| Corpus exceeding 5,000 indexed memories for NEW-059 | Internal | Yellow | Summary channel threshold cannot be crossed; scale-gate behavior cannot be verified |
+| Disposable sandbox corpus and rollback checkpoint for 058 and 060 | Internal | Yellow | Stateful consolidation and entity-linking tests cannot run safely |
+| Corpus exceeding 5,000 indexed memories for 059 | Internal | Yellow | Summary channel threshold cannot be crossed; scale-gate behavior cannot be verified |
 <!-- /ANCHOR:dependencies -->
 
 ---

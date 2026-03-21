@@ -34,7 +34,7 @@ const DEFAULT_DENYLIST: readonly DenylistEntry[] = [
   { label: 'analysis preamble', pattern: /\bLet me analyze (?:this|the|your)\b/gi, severity: 'medium' },
   { label: 'progress narration', pattern: /\bI'll now\b/gi, severity: 'medium' },
   // F-11: Tighten "Step N:" to require orchestration context (not docs/headings)
-  { label: 'step narration', pattern: /^(?:\s*)Step\s+\d+:\s+(?:I'll|Let me|I need to|I will|Now)\b/gim, severity: 'medium' },
+  { label: 'step narration', pattern: /^(?:\s*)Step\s+\d+:\s+(?:I'll|Let me|I need to|I will)\b/gim, severity: 'medium' },
   // Preamble phrases — low severity
   { label: 'check preamble', pattern: /\bLet me check\b/gi, severity: 'low' },
   { label: 'start-by preamble', pattern: /\bI'll start by\b/gi, severity: 'low' },
@@ -48,7 +48,7 @@ const DEFAULT_DENYLIST: readonly DenylistEntry[] = [
   // Orchestration headings/transitions — medium severity
   { label: 'analysis heading', pattern: /\bHere is my analysis\b/gi, severity: 'medium' },
   { label: 'review heading', pattern: /\bBased on my review\b/gi, severity: 'medium' },
-  { label: 'transition phrase', pattern: /\bMoving on to\b/gi, severity: 'medium' },
+  { label: 'transition phrase', pattern: /\bMoving on to\b/gi, severity: 'low' },
   { label: 'close-reading transition', pattern: /\bLooking at this more closely\b/gi, severity: 'medium' },
   { label: 'first-step narration', pattern: /\bFirst,?\s+(?:let me|I'll|I need to)\b/gi, severity: 'medium' },
   { label: 'now-step narration', pattern: /\bNow(?:,?\s+| )(?:let me|I'll|I need to)\b/gi, severity: 'medium' },
@@ -66,7 +66,7 @@ const DEFAULT_DENYLIST: readonly DenylistEntry[] = [
   { label: 'tool usage narration active', pattern: /\bUsing the \w+ tool\b/gi, severity: 'high' },
   { label: 'tool usage preamble', pattern: /\bLet me use the \w+ tool\b/gi, severity: 'high' },
   // F-10: Tool titles with path arguments (Read/Edit/Write/Grep/Glob/Bash) — high severity
-  { label: 'tool title with path', pattern: /\b(?:Read|Edit|Write|Grep|Glob|Bash)\s+(?:tool\s+)?(?:on\s+)?[\/\.][^\s]+/gi, severity: 'high' },
+  { label: 'tool title with path', pattern: /\b(?:Read|Edit|Write|Grep|Glob|Bash)\s+tool\s+(?:on\s+)?[\/\.][^\s]+/gi, severity: 'high' },
   // API/service error leakage — high severity
   { label: 'api error prefix', pattern: /\bAPI\s+Error:\s*\d{3}\b/gi, severity: 'high' },
   { label: 'json error payload', pattern: /\{"\s*(?:type|error)"\s*:\s*"\s*(?:error|api_error|overloaded_error|rate_limit_error|server_error|invalid_request_error)\b/gi, severity: 'high' },
@@ -145,7 +145,7 @@ function filterContamination(
   // F-10: Pre-normalize — NFKC Unicode, collapse whitespace, strip zero-width chars
   let cleaned = input
     .normalize('NFKC')
-    .replace(/[\u200B-\u200F\u2028-\u202F\uFEFF]/g, '')
+    .replace(/[\u00AD\u034F\u061C\u200B-\u200F\u2028-\u202F\uFEFF]/g, '')
     .replace(/[ \t]+/g, ' ');
 
   const removedPhrases: string[] = [];

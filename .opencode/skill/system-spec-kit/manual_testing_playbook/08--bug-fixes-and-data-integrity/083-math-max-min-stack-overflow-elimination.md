@@ -1,19 +1,19 @@
 ---
-title: "NEW-083 -- Math.max/min stack overflow elimination"
-description: "This scenario validates Math.max/min stack overflow elimination for `NEW-083`. It focuses on Confirm large-array safety."
+title: "083 -- Math.max/min stack overflow elimination"
+description: "This scenario validates Math.max/min stack overflow elimination for `083`. It focuses on Confirm large-array safety."
 ---
 
-# NEW-083 -- Math.max/min stack overflow elimination
+# 083 -- Math.max/min stack overflow elimination
 
 ## 1. OVERVIEW
 
-This scenario validates Math.max/min stack overflow elimination for `NEW-083`. It focuses on Confirm large-array safety.
+This scenario validates Math.max/min stack overflow elimination for `083`. It focuses on Confirm large-array safety.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Operators run the exact prompt and command sequence for `NEW-083` and confirm the expected signals without contradicting evidence.
+Operators run the exact prompt and command sequence for `083` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm large-array safety
 - Prompt: `Validate Math.max/min stack overflow elimination. Capture the evidence needed to prove Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path. Return a concise user-facing pass/fail verdict with the main reason.`
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-083` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-083 | Math.max/min stack overflow elimination | Confirm large-array safety | `Validate Math.max/min stack overflow elimination. Capture the evidence needed to prove Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path. Return a concise user-facing pass/fail verdict with the main reason.` | 1) run large-array paths 2) verify no RangeError 3) compare numeric outputs | Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path | Large-array test output + numeric comparison evidence + error-free execution proof | PASS if large arrays process without RangeError and produce correct min/max values | Verify all Math.max/min spread calls have been replaced; check array size at all call sites; test with progressively larger arrays |
+| 083 | Math.max/min stack overflow elimination | Confirm large-array safety | `Validate Math.max/min stack overflow elimination. Capture the evidence needed to prove Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path. Return a concise user-facing pass/fail verdict with the main reason.` | 1) run large-array paths 2) verify no RangeError 3) compare numeric outputs | Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path | Large-array test output + numeric comparison evidence + error-free execution proof | PASS if large arrays process without RangeError and produce correct min/max values | Verify all Math.max/min spread calls have been replaced; check array size at all call sites; test with progressively larger arrays |
 
 ---
 
@@ -40,6 +40,6 @@ Operators run the exact prompt and command sequence for `NEW-083` and confirm th
 ## 5. SOURCE METADATA
 
 - Group: Bug Fixes and Data Integrity
-- Playbook ID: NEW-083
+- Playbook ID: 083
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `08--bug-fixes-and-data-integrity/083-math-max-min-stack-overflow-elimination.md`

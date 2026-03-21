@@ -49,17 +49,6 @@ describe('Lazy Loading Startup Behavior (T016-T019)', () => {
     expect(embeddings.shouldEagerWarmup()).toBe(false);
   });
 
-  it('T017: shouldEagerWarmup always returns false (REMOVED flag)', async () => {
-    process.env.SPECKIT_EAGER_WARMUP = 'true';
-    let embeddings = await loadEmbeddingsModule();
-    expect(embeddings.shouldEagerWarmup()).toBe(false); // REMOVED — always false
-
-    delete process.env.SPECKIT_EAGER_WARMUP;
-    process.env.SPECKIT_LAZY_LOADING = 'false';
-    embeddings = await loadEmbeddingsModule();
-    expect(embeddings.shouldEagerWarmup()).toBe(false); // REMOVED — always false
-  });
-
   it('T018: empty inputs return null without triggering provider init', async () => {
     const embeddings = await loadEmbeddingsModule();
 

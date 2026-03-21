@@ -1,17 +1,17 @@
 ---
-title: "NEW-125: Hydra roadmap capability flags"
+title: "125: Hydra roadmap capability flags"
 description: "Manual-testing reference for validating that prefixed Hydra roadmap flags remain default-on unless explicitly opted out, without changing the live runtime flag contract."
 ---
 
-# NEW-125: Hydra roadmap capability flags
+# 125: Hydra roadmap capability flags
 
-This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for the NEW-125 Hydra roadmap capability flags scenario.
+This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for the 125 Hydra roadmap capability flags scenario.
 
 ---
 
 ## 1. OVERVIEW
 
-This scenario validates Hydra roadmap capability flags for `NEW-125`. It focuses on Verify prefixed Hydra roadmap flags stay distinct from live runtime flags while remaining default-on unless explicitly opted out.
+This scenario validates Hydra roadmap capability flags for `125`. It focuses on Verify prefixed Hydra roadmap flags stay distinct from live runtime flags while remaining default-on unless explicitly opted out.
 
 ### Why This Matters
 
@@ -21,7 +21,7 @@ A real user does not ask for raw environment-variable proofs. They ask the orche
 
 ## 2. CURRENT REALITY
 
-Operators run the exact prompt and command sequence for `NEW-125` and confirm the expected signals without contradicting evidence.
+Operators run the exact prompt and command sequence for `125` and confirm the expected signals without contradicting evidence.
 
 - Objective: Verify prefixed Hydra roadmap flags stay distinct from live runtime flags while remaining default-on unless explicitly opted out
 - Real user request: `Check whether the Hydra roadmap flags are still default-on by default, and prove that opting out with the prefixed flags does not accidentally change the live runtime defaults.`
@@ -45,7 +45,7 @@ Operators run the exact prompt and command sequence for `NEW-125` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-125 | Hydra roadmap capability flags | Verify prefixed Hydra roadmap flags stay distinct from live runtime flags while remaining default-on unless explicitly opted out | `Validate memory roadmap flag snapshots without changing live graph-channel defaults. Work locally in the system-spec-kit mcp_server package, capture the exact commands and outputs, and summarize the result in user language. Capture the evidence needed to prove First snapshot remains phase:"shared-rollout" with capabilities.graphUnified:true; second snapshot reports phase:"graph" with capabilities.graphUnified:false. Return a concise user-facing pass/fail verdict with the main reason.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `SPECKIT_GRAPH_UNIFIED=false node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-a')))"` 3) `SPECKIT_HYDRA_PHASE=graph SPECKIT_HYDRA_GRAPH_UNIFIED=false node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-b')))"` | First snapshot remains `phase:\"shared-rollout\"` with `capabilities.graphUnified:true`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false` | Two JSON snapshots from the dist build | PASS if the runtime `SPECKIT_GRAPH_UNIFIED` flag does not flip roadmap metadata and the prefixed Hydra compatibility flag can explicitly opt out of the roadmap snapshot | Inspect `capability-flags.ts`; verify dist build is fresh; confirm only `SPECKIT_HYDRA_*` env vars are set in the second run |
+| 125 | Hydra roadmap capability flags | Verify prefixed Hydra roadmap flags stay distinct from live runtime flags while remaining default-on unless explicitly opted out | `Validate memory roadmap flag snapshots without changing live graph-channel defaults. Work locally in the system-spec-kit mcp_server package, capture the exact commands and outputs, and summarize the result in user language. Capture the evidence needed to prove First snapshot remains phase:"shared-rollout" with capabilities.graphUnified:true; second snapshot reports phase:"graph" with capabilities.graphUnified:false. Return a concise user-facing pass/fail verdict with the main reason.` | 1) `cd .opencode/skill/system-spec-kit/mcp_server` 2) `SPECKIT_GRAPH_UNIFIED=false node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-a')))"` 3) `SPECKIT_HYDRA_PHASE=graph SPECKIT_HYDRA_GRAPH_UNIFIED=false node -e "const { getMemoryRoadmapDefaults } = require('./dist/lib/config/capability-flags.js'); console.log(JSON.stringify(getMemoryRoadmapDefaults('manual-125-b')))"` | First snapshot remains `phase:\"shared-rollout\"` with `capabilities.graphUnified:true`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false` | Two JSON snapshots from the dist build | PASS if the runtime `SPECKIT_GRAPH_UNIFIED` flag does not flip roadmap metadata and the prefixed Hydra compatibility flag can explicitly opt out of the roadmap snapshot | Inspect `capability-flags.ts`; verify dist build is fresh; confirm only `SPECKIT_HYDRA_*` env vars are set in the second run |
 
 ---
 
@@ -70,6 +70,6 @@ Operators run the exact prompt and command sequence for `NEW-125` and confirm th
 ## 5. SOURCE METADATA
 
 - Group: Feature Flag Reference
-- Playbook ID: NEW-125
+- Playbook ID: 125
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `19--feature-flag-reference/125-hydra-roadmap-capability-flags.md`

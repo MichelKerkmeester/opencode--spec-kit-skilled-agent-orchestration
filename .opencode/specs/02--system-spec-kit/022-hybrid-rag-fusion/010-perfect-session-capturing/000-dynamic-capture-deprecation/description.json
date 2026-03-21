@@ -1,11 +1,11 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/000-dynamic-capture-deprecation",
   "description": "Consolidation Phase: Dynamic Capture Deprecation — JSON-primary mode, dynamic capture reclassified as recovery-only",
-  "status": "done",
+  "status": "in-progress",
   "type": "CONSOLIDATION",
-  "supersedes": ["011-session-source-validation", "015-outsourced-agent-handback", "016-multi-cli-parity"],
-  "consolidates": ["019-source-capabilities-and-structured-preference", "020-live-proof-and-parity-hardening"],
-  "archivedPhases": "archive/ contains full spec documentation from all 5 superseded/consolidated phases",
+  "supersedes": ["001-session-source-validation", "002-outsourced-agent-handback", "003-multi-cli-parity"],
+  "consolidates": ["004-source-capabilities-and-structured-preference", "005-live-proof-and-parity-hardening"],
+  "archivedPhases": "Child folders 001-005 contain full spec documentation from all 5 superseded/consolidated phases",
   "reviewTargets": ["002-contamination-detection", "005-confidence-calibration", "008-signal-extraction", "013-auto-detection-fixes", "019-source-capabilities-and-structured-preference", "020-live-proof-and-parity-hardening"],
   "reviewOutcomes": {
     "002-contamination-detection": "keep — pure quality gates (lexical scrubber, V8/V9, post-render), no dynamic-capture dependency",

@@ -82,15 +82,15 @@ Operators first confirm the correct fixture state and runtime flags. They then e
 - [ ] Confirm the playbook, review protocol, and feature catalog are open to the Phase 011 rows.
 - [ ] Prepare a sandbox dataset or checkpointed SQLite copy for scenarios that write cache, validation, access, or tier state.
 - [ ] Verify trace capture is enabled where required (`includeTrace:true`, telemetry visibility, or log access).
-- [ ] Confirm whether the host can satisfy `NEW-098` reranker prerequisites before starting that scenario.
+- [ ] Confirm whether the host can satisfy `098` reranker prerequisites before starting that scenario.
 
 ### Phase 2: Non-Destructive Tests
-- [ ] Run read-only or analysis-first scenarios: `NEW-023`, `NEW-024`, `NEW-027`, `NEW-029`, `NEW-030`, `NEW-066`, `NEW-074`, `NEW-079`, `NEW-098`, and `NEW-118`.
+- [ ] Run read-only or analysis-first scenarios: `023`, `024`, `027`, `029`, `030`, `066`, `074`, `079`, `098`, and `118`.
 - [ ] Capture score ranges, traces, sensitivity comparisons, or log output immediately after each run.
 - [ ] Confirm no unintended state mutation occurred before continuing to the destructive phase.
 
 ### Phase 3: Destructive Tests
-- [ ] Run sandboxed scenarios that write or mutate state: `NEW-025`, `NEW-026`, `NEW-028`, `NEW-031`, `NEW-032`, and `NEW-121`.
+- [ ] Run sandboxed scenarios that write or mutate state: `025`, `026`, `028`, `031`, `032`, and `121`.
 - [ ] Sandbox rules: use isolated fixture data, restore a checkpoint or fresh DB copy between scenarios, and revert toggled feature flags after each test.
 - [ ] Record any audit rows, cache timestamps, validation counters, or adaptive-signal deltas before the sandbox is reset.
 
@@ -107,22 +107,22 @@ Operators first confirm the correct fixture state and runtime flags. They then e
 
 | Test ID | Scenario Name | Exact Prompt | Execution Type |
 |---------|---------------|--------------|----------------|
-| NEW-023 | Score normalization | `Verify score normalization output ranges.` | MCP |
-| NEW-024 | Cold-start novelty boost (N4) | `Confirm N4 novelty hot-path removal.` | manual |
-| NEW-025 | Interference scoring (TM-01) | `Validate interference scoring (TM-01).` | MCP |
-| NEW-026 | Classification-based decay (TM-03) | `Verify TM-03 classification-based decay.` | MCP |
-| NEW-027 | Folder-level relevance scoring (PI-A1) | `Validate folder-level relevance scoring (PI-A1).` | MCP |
-| NEW-028 | Embedding cache (R18) | `Verify embedding cache (R18).` | MCP |
-| NEW-029 | Double intent weighting investigation (G2) | `Validate G2 guard in active pipeline.` | MCP |
-| NEW-030 | RRF K-value sensitivity analysis (FUT-5) | `Run RRF K sensitivity analysis.` | MCP |
-| NEW-031 | Negative feedback confidence signal (A4) | `Verify negative feedback confidence (A4).` | MCP |
-| NEW-032 | Auto-promotion on validation (T002a) | `Validate auto-promotion on validation (T002a).` | MCP |
-| NEW-066 | Scoring and ranking corrections | `Validate scoring and ranking corrections bundle.` | manual |
-| NEW-074 | Stage 3 effectiveScore fallback chain | `Validate Stage 3 effectiveScore fallback chain.` | manual |
-| NEW-079 | Scoring and fusion corrections | `Validate phase-017 scoring and fusion corrections.` | manual |
-| NEW-098 | Local GGUF reranker via node-llama-cpp (P1-5) | `Validate RERANKER_LOCAL strict check and memory thresholds.` | manual |
-| NEW-118 | Stage-2 score field synchronization (P0-8) | `Run a non-hybrid search with intent weighting and verify score fields stay synchronized.` | MCP |
-| NEW-121 | Adaptive shadow proposal and rollback (Phase 4) | `Validate Phase 4 adaptive shadow proposal flow.` | MCP |
+| 023 | Score normalization | `Verify score normalization output ranges.` | MCP |
+| 024 | Cold-start novelty boost (N4) | `Confirm N4 novelty hot-path removal.` | manual |
+| 025 | Interference scoring (TM-01) | `Validate interference scoring (TM-01).` | MCP |
+| 026 | Classification-based decay (TM-03) | `Verify TM-03 classification-based decay.` | MCP |
+| 027 | Folder-level relevance scoring (PI-A1) | `Validate folder-level relevance scoring (PI-A1).` | MCP |
+| 028 | Embedding cache (R18) | `Verify embedding cache (R18).` | MCP |
+| 029 | Double intent weighting investigation (G2) | `Validate G2 guard in active pipeline.` | MCP |
+| 030 | RRF K-value sensitivity analysis (FUT-5) | `Run RRF K sensitivity analysis.` | MCP |
+| 031 | Negative feedback confidence signal (A4) | `Verify negative feedback confidence (A4).` | MCP |
+| 032 | Auto-promotion on validation (T002a) | `Validate auto-promotion on validation (T002a).` | MCP |
+| 066 | Scoring and ranking corrections | `Validate scoring and ranking corrections bundle.` | manual |
+| 074 | Stage 3 effectiveScore fallback chain | `Validate Stage 3 effectiveScore fallback chain.` | manual |
+| 079 | Scoring and fusion corrections | `Validate phase-017 scoring and fusion corrections.` | manual |
+| 098 | Local GGUF reranker via node-llama-cpp (P1-5) | `Validate RERANKER_LOCAL strict check and memory thresholds.` | manual |
+| 118 | Stage-2 score field synchronization (P0-8) | `Run a non-hybrid search with intent weighting and verify score fields stay synchronized.` | MCP |
+| 121 | Adaptive shadow proposal and rollback (Phase 4) | `Validate Phase 4 adaptive shadow proposal flow.` | MCP |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -137,7 +137,7 @@ Operators first confirm the correct fixture state and runtime flags. They then e
 | Review protocol (`../../manual_testing_playbook/review_protocol.md`) | Internal | Green | Verdicts may drift because PASS, PARTIAL, and FAIL rules are no longer standardized. |
 | MCP runtime and trace/log access | Internal runtime | Green | MCP scenarios cannot produce the score traces and evidence required for review. |
 | Sandbox/reset mechanism for mutating scenarios | Internal runtime | Yellow | Destructive tests risk contaminating later runs and invalidating evidence. |
-| Local GGUF reranker asset for `NEW-098` | Optional runtime | Yellow | The reranker scenario may need to be marked blocked if the model path or memory threshold cannot be satisfied. |
+| Local GGUF reranker asset for `098` | Optional runtime | Yellow | The reranker scenario may need to be marked blocked if the model path or memory threshold cannot be satisfied. |
 <!-- /ANCHOR:dependencies -->
 
 ---

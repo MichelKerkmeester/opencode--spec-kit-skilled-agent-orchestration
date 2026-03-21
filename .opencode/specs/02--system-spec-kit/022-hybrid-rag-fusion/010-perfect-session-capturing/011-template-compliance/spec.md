@@ -30,7 +30,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 12 of 16 |
+| **Phase** | 11 |
 | **Predecessor** | 010-integration-testing |
 | **Successor** | 012-auto-detection-fixes |
 | **Handoff Criteria** | validate.sh + test suite passing |

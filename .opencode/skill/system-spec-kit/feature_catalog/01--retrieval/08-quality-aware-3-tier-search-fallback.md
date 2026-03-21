@@ -43,4 +43,4 @@ Adaptive search degradation chain in `searchWithFallbackTiered()`. Tier 1: enhan
 - Group: Undocumented feature gap scan
 - Source feature title: Quality-aware 3-tier search fallback
 - Current reality source: 10-agent feature gap scan
-- Playbook reference: NEW-109
+- Playbook reference: 109

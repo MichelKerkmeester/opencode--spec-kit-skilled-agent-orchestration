@@ -24,11 +24,11 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 11 of 16 |
+| **Phase** | 1 of 3 (000-dynamic-capture-deprecation branch) |
 | **Predecessor** | 010-integration-testing |
 | **Successor** | 002-outsourced-agent-handback |
 | **Handoff Criteria** | validate.sh + test suite passing |
-| **R-Item** | R-11 |
+| **R-Item** | R-001 |
 | **Sequence** | A0.1-A0.5 |
 <!-- /ANCHOR:metadata -->
 
@@ -36,7 +36,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ### Phase Context
 
-This is **Phase 11** of the Perfect Session Capturing specification.
+This is **Phase 001** of the dynamic-capture-deprecation branch.
 
 **Scope Boundary**: Transcript selection uses filesystem mtime as a proxy for "current session."
 **Dependencies**: 010-integration-testing

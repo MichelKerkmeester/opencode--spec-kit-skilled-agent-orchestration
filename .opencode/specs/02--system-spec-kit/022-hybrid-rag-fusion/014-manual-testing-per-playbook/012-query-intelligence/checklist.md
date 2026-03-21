@@ -41,12 +41,12 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-010 [P0] NEW-033: channel selection trace confirms simple=2, moderate=3, complex=5 channels; disabled flag produces "complex" fallback routing [EVIDENCE: pending manual execution]
-- [ ] CHK-011 [P0] NEW-034: code-path inspection confirms no live RSF branch in hybrid-search ranking path; RRF is the sole fusion method in returned results [EVIDENCE: pending manual execution]
-- [ ] CHK-012 [P0] NEW-035: post-fusion channel representation output confirms >=1 result per active channel in top-k; quality floor at 0.005 filters sub-threshold promotions [EVIDENCE: pending manual execution]
-- [ ] CHK-013 [P0] NEW-036: truncation metadata in trace shows cliff detection at first gap > 2x median; minimum 3 results always returned; all-equal scores pass through unchanged [EVIDENCE: pending manual execution]
-- [ ] CHK-014 [P0] NEW-037: budget allocation log confirms 1500/2500/4000 token tiers per complexity class; disabled flag returns 4000-token default for all queries [EVIDENCE: pending manual execution]
-- [ ] CHK-015 [P0] NEW-038: expansion produces >=2 variants for complex query; baseline-first dedup removes duplicates; simple query returns no expansion variants [EVIDENCE: pending manual execution]
+- [ ] CHK-010 [P0] 033: channel selection trace confirms simple=2, moderate=3, complex=5 channels; disabled flag produces "complex" fallback routing [EVIDENCE: pending manual execution]
+- [ ] CHK-011 [P0] 034: code-path inspection confirms no live RSF branch in hybrid-search ranking path; RRF is the sole fusion method in returned results [EVIDENCE: pending manual execution]
+- [ ] CHK-012 [P0] 035: post-fusion channel representation output confirms >=1 result per active channel in top-k; quality floor at 0.005 filters sub-threshold promotions [EVIDENCE: pending manual execution]
+- [ ] CHK-013 [P0] 036: truncation metadata in trace shows cliff detection at first gap > 2x median; minimum 3 results always returned; all-equal scores pass through unchanged [EVIDENCE: pending manual execution]
+- [ ] CHK-014 [P0] 037: budget allocation log confirms 1500/2500/4000 token tiers per complexity class; disabled flag returns 4000-token default for all queries [EVIDENCE: pending manual execution]
+- [ ] CHK-015 [P0] 038: expansion produces >=2 variants for complex query; baseline-first dedup removes duplicates; simple query returns no expansion variants [EVIDENCE: pending manual execution]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -57,8 +57,8 @@ contextType: "general"
 - [ ] CHK-020 [P0] All 6 query-intelligence scenarios executed with exact prompts and command sequences from the playbook [EVIDENCE: pending manual execution]
 - [ ] CHK-021 [P0] Every scenario has an assigned verdict (PASS/PARTIAL/FAIL) with rationale using review protocol acceptance rules [EVIDENCE: pending manual execution]
 - [ ] CHK-022 [P0] Coverage reported as 6/6 scenarios with no skipped test IDs [EVIDENCE: pending manual execution]
-- [ ] CHK-023 [P1] Feature flags restored to default-enabled state after NEW-033 and NEW-037 flag-toggle tests [EVIDENCE: pending manual execution]
-- [ ] CHK-024 [P1] Sandbox corpus used for NEW-035 dominance test documented for reproducibility [EVIDENCE: pending manual execution]
+- [ ] CHK-023 [P1] Feature flags restored to default-enabled state after 033 and 037 flag-toggle tests [EVIDENCE: pending manual execution]
+- [ ] CHK-024 [P1] Sandbox corpus used for 035 dominance test documented for reproducibility [EVIDENCE: pending manual execution]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -78,7 +78,7 @@ contextType: "general"
 
 - [x] CHK-040 [P1] All four Level 2 artifacts created: `spec.md`, `plan.md`, `tasks.md`, `checklist.md` [EVIDENCE: All four files written to `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/012-query-intelligence/` on 2026-03-16]
 - [ ] CHK-041 [P1] `implementation-summary.md` created after execution and verification are complete [EVIDENCE: pending — to be created after Phase 3 task T012]
-- [x] CHK-042 [P2] Playbook rows NEW-033 through NEW-038 cross-referenced in scope table with exact prompts and catalog links [EVIDENCE: `spec.md` scope table row per test ID with relative catalog links and playbook-derived prompts]
+- [x] CHK-042 [P2] Playbook rows 033 through 038 cross-referenced in scope table with exact prompts and catalog links [EVIDENCE: `spec.md` scope table row per test ID with relative catalog links and playbook-derived prompts]
 <!-- /ANCHOR:docs -->
 
 ---

@@ -88,5 +88,4 @@ function logAnchorValidation(content: string, filename: string): void {
 export {
   validateNoLeakedPlaceholders,
   validateAnchors,
-  logAnchorValidation,
 };

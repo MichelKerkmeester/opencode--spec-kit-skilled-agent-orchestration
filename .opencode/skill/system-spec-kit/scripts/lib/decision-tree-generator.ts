@@ -9,6 +9,7 @@
 // 2. IMPORTS
 // ───────────────────────────────────────────────────────────────
 import type { OptionRecord, EvidenceRecord, CaveatRecord, FollowUpRecord } from './ascii-boxes';
+import type { DecisionRecord } from '../types/session-types';
 import { structuredLog } from '../utils/logger';
 
 // NOTE: require() is intentionally kept here instead of dynamic import().
@@ -59,22 +60,30 @@ try {
 // ───────────────────────────────────────────────────────────────
 // 3. TYPES
 // ───────────────────────────────────────────────────────────────
-/** Decision node data for tree generation */
-export interface DecisionNode {
-  TITLE?: string;
-  CONTEXT?: string;
-  CONFIDENCE?: number;
-  CHOICE_CONFIDENCE?: number;
-  RATIONALE_CONFIDENCE?: number;
-  TIMESTAMP?: string;
+/**
+ * Decision node data for tree generation.
+ *
+ * Scalar fields are derived from DecisionRecord (session-types.ts) via
+ * Partial<Pick<…>> so they stay in sync with the canonical type.
+ * Array fields use the wider ascii-boxes rendering types (OptionRecord,
+ * EvidenceRecord, etc.) because the formatting functions accept both
+ * structured records and plain strings.
+ */
+export type DecisionNode = Partial<Pick<DecisionRecord,
+  | 'TITLE'
+  | 'CONTEXT'
+  | 'CONFIDENCE'
+  | 'CHOICE_CONFIDENCE'
+  | 'RATIONALE_CONFIDENCE'
+  | 'TIMESTAMP'
+  | 'CHOSEN'
+  | 'RATIONALE'
+>> & {
   OPTIONS?: OptionRecord[];
-  CHOSEN?: string;
-  RATIONALE?: string;
   EVIDENCE?: Array<EvidenceRecord | string>;
   CAVEATS?: Array<CaveatRecord | string>;
   FOLLOWUP?: Array<FollowUpRecord | string>;
-  [key: string]: unknown;
-}
+};
 
 // ───────────────────────────────────────────────────────────────
 // 4. DECISION TREE GENERATION
@@ -83,8 +92,10 @@ function generateDecisionTree(decisionData: DecisionNode | string, ...args: unkn
   // Handle legacy format (simple parameters) for backwards compatibility
   if (typeof decisionData === 'string') {
     const title: string = decisionData;
-    const options: unknown[] = (args[0] as unknown[]) || [];
-    const chosen: string = (args[1] as string) || '';
+    if (!Array.isArray(args[0])) {
+      return formatDecisionHeader(title, '', 75, new Date().toISOString());
+    }
+    const chosen: string = typeof args[1] === 'string' ? args[1] : '';
 
     const pad = (text: string, length: number): string => text.substring(0, length).padEnd(length);
     return `\u250C\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510

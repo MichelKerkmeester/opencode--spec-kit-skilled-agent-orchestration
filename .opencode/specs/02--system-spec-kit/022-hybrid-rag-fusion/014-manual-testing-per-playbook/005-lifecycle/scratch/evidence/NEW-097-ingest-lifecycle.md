@@ -1,4 +1,4 @@
-# NEW-097 — Async Ingestion Job Lifecycle Evidence
+# 097 — Async Ingestion Job Lifecycle Evidence
 
 ## Preconditions
 - MCP server healthy (v1.7.2)

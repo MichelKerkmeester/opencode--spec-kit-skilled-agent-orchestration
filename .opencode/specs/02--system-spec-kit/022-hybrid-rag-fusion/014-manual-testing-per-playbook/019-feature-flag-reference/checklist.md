@@ -31,8 +31,8 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented for eight-scenario feature-flag-reference scope [EVIDENCE: `spec.md` scope and requirements cover EX-028, EX-029, EX-030, EX-031, EX-032, EX-033, EX-034, and NEW-125 with exact playbook prompts, command sequences, and acceptance criteria.]
-- [x] CHK-002 [P0] Technical approach defines ordered retrieval check plus Hydra snapshot workflow [EVIDENCE: `plan.md` architecture and phases sequence read-only MCP tests first, then the dist-build-dependent NEW-125 snapshot comparison.]
+- [x] CHK-001 [P0] Requirements documented for eight-scenario feature-flag-reference scope [EVIDENCE: `spec.md` scope and requirements cover EX-028, EX-029, EX-030, EX-031, EX-032, EX-033, EX-034, and 125 with exact playbook prompts, command sequences, and acceptance criteria.]
+- [x] CHK-002 [P0] Technical approach defines ordered retrieval check plus Hydra snapshot workflow [EVIDENCE: `plan.md` architecture and phases sequence read-only MCP tests first, then the dist-build-dependent 125 snapshot comparison.]
 - [x] CHK-003 [P1] Dependencies identified: flag catalog docs, MCP runtime, and capability-flags.js dist build [EVIDENCE: `plan.md` dependencies section lists all required internal dependencies and their current status.]
 <!-- /ANCHOR:pre-impl -->
 
@@ -42,7 +42,7 @@ contextType: "general"
 ## Code Quality
 
 - [ ] CHK-010 [P0] EX-028 through EX-034 flag retrieval scenarios are executable and produce internally consistent classifications [EVIDENCE: pending execution]
-- [ ] CHK-011 [P0] NEW-125 Hydra snapshot comparison confirms prefixed SPECKIT_HYDRA_* flags are isolated from live SPECKIT_GRAPH_UNIFIED behavior [EVIDENCE: pending execution]
+- [ ] CHK-011 [P0] 125 Hydra snapshot comparison confirms prefixed SPECKIT_HYDRA_* flags are isolated from live SPECKIT_GRAPH_UNIFIED behavior [EVIDENCE: pending execution]
 - [ ] CHK-012 [P1] EX-031 storage precedence chain is unambiguous across all three env var tiers (SPEC_KIT_DB_DIR > SPECKIT_DB_DIR > default) [EVIDENCE: pending execution]
 - [ ] CHK-013 [P1] EX-033 correctly separates opt-in flags (DEBUG_TRIGGER_MATCHER, SPECKIT_EXTENDED_TELEMETRY, SPECKIT_EVAL_LOGGING) from inert flags (SPECKIT_CONSUMPTION_LOG) [EVIDENCE: pending execution]
 <!-- /ANCHOR:code-quality -->
@@ -54,7 +54,7 @@ contextType: "general"
 
 - [ ] CHK-020 [P0] All 8/8 Phase 019 scenarios are executed and have verdicts [EVIDENCE: pending execution]
 - [ ] CHK-021 [P0] Coverage reported as 8/8 with no skipped test IDs [EVIDENCE: pending execution]
-- [ ] CHK-022 [P1] NEW-125 dist build is confirmed fresh before snapshot runs (npm run build output captured) [EVIDENCE: pending execution]
+- [ ] CHK-022 [P1] 125 dist build is confirmed fresh before snapshot runs (npm run build output captured) [EVIDENCE: pending execution]
 - [ ] CHK-023 [P1] EX-028 deep-mode memory_context output is captured alongside the initial memory_search to confirm classification is internally consistent [EVIDENCE: pending execution]
 <!-- /ANCHOR:testing -->
 
@@ -73,7 +73,7 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` synchronized to current playbook truth for all 8 test IDs [EVIDENCE: All four docs derived from `../../manual_testing_playbook/manual_testing_playbook.md` rows EX-028 through EX-034 and NEW-125 with cross-reference index confirmed.]
+- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` synchronized to current playbook truth for all 8 test IDs [EVIDENCE: All four docs derived from `../../manual_testing_playbook/manual_testing_playbook.md` rows EX-028 through EX-034 and 125 with cross-reference index confirmed.]
 - [x] CHK-041 [P1] Relative links to all 7 feature-flag-reference catalog files are present in the scope table [EVIDENCE: `spec.md` scope table includes relative links to all files under `../../feature_catalog/19--feature-flag-reference/`.]
 - [ ] CHK-042 [P2] README updates not required for this phase-local closeout
 <!-- /ANCHOR:docs -->

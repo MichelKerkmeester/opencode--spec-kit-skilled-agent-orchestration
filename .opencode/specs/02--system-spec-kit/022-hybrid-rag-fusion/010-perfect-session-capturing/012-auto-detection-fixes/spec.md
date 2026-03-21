@@ -25,7 +25,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 13 of 16 |
+| **Phase** | 12 |
 | **Predecessor** | 011-template-compliance |
 | **Successor** | 013-spec-descriptions |
 | **Handoff Criteria** | validate.sh + test suite passing |

@@ -130,6 +130,12 @@ The MCP server supports multiple embedding providers for semantic search. Provid
 # Enable debug logging for recovery mode
 DEBUG=1 node scripts/dist/memory/generate-context.js --recovery specs/001-feature/
 
+# JSON mode (preferred for routine saves)
+node scripts/dist/memory/generate-context.js --json '{"specFolder":"001-feature","sessionSummary":"..."}' specs/001-feature/
+
+# Stdin mode with debug logging
+DEBUG=1 echo '{"specFolder":"001-feature","sessionSummary":"..."}' | node scripts/dist/memory/generate-context.js --stdin
+
 # Use custom database location
 MEMORY_DB_PATH=/tmp/test-db.sqlite node mcp_server/context-server.ts
 

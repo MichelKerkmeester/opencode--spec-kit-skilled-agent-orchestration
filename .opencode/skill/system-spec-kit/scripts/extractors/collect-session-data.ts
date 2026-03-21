@@ -12,7 +12,7 @@ import * as path from 'path';
 import * as fsSync from 'fs';
 
 // Internal modules
-import { CONFIG, findActiveSpecsDir, getSpecsDirectories } from '../core';
+import { CONFIG, findActiveSpecsDir, getSpecsDirectories } from '../config';
 import { formatTimestamp } from '../utils/message-utils';
 import { pickBestContentName } from '../utils/slug-utils';
 import { structuredLog } from '../utils/logger';
@@ -241,10 +241,9 @@ function extractPreflightPostflightData(collectedData: CollectedDataFull | null)
   };
 
   if (hasPostflightDelta) {
-    // Non-null safe: hasPostflightDelta guards all six score fields via Number.isFinite()
-    const deltaKnow = postflight!.knowledgeScore! - preflight!.knowledgeScore!;
-    const deltaUncert = preflight!.uncertaintyScore! - postflight!.uncertaintyScore!;
-    const deltaContext = postflight!.contextScore! - preflight!.contextScore!;
+    const deltaKnow = (postflight?.knowledgeScore ?? 0) - (preflight?.knowledgeScore ?? 0);
+    const deltaUncert = (preflight?.uncertaintyScore ?? 0) - (postflight?.uncertaintyScore ?? 0);
+    const deltaContext = (postflight?.contextScore ?? 0) - (preflight?.contextScore ?? 0);
 
     const learningIndex = calculateLearningIndex(deltaKnow, deltaUncert, deltaContext);
 
@@ -347,14 +346,15 @@ function determineSessionStatus(
   const lastObs = observations[observations.length - 1];
 
   // CG-03: Detect completion from explicit JSON-mode data
+  // O5-3: Access fields directly via CollectedDataBase instead of Record casts
   if (collectedData) {
-    const hasSessionSummary = !!(collectedData as Record<string, unknown>).sessionSummary;
-    const hasKeyDecisions = Array.isArray((collectedData as Record<string, unknown>).keyDecisions) &&
-      ((collectedData as Record<string, unknown>).keyDecisions as unknown[]).length > 0;
+    const hasSessionSummary = !!collectedData.sessionSummary;
+    const hasKeyDecisions = Array.isArray(collectedData.keyDecisions) &&
+      collectedData.keyDecisions.length > 0;
     // Fix 2: Also check observations for "Next Steps" title (normalizer may consume the field)
-    const hasNextSteps = !!(collectedData as Record<string, unknown>).nextSteps
+    const hasNextSteps = !!collectedData.nextSteps
       || observations.some(obs => /^next\s*steps?\b/i.test(obs.title || ''));
-    const isFileSource = (collectedData as Record<string, unknown>)._source === 'file';
+    const isFileSource = collectedData._source === 'file';
 
     // If explicit JSON data has summary + decisions + next steps, session is complete
     if (isFileSource && hasSessionSummary && (hasKeyDecisions || hasNextSteps)) {
@@ -363,15 +363,33 @@ function determineSessionStatus(
   }
 
   if (blockers && blockers !== 'None') {
-    // F-25: Reconciliation pass — check if later observations show resolution after blocker
-    const blockerResolved = observations.some((obs) => {
+    // O5-13: Scope F-25 resolution to observations AFTER the blocker was detected
+    const blockerKeywordsLocal = /\b(?:blocked|stuck|can't proceed|cannot proceed|waiting on|depends on|broken|fails?)\b/i;
+    const blockerIdx = observations.findIndex((obs) => {
       const text = `${obs.title || ''} ${obs.narrative || ''}`;
-      return resolutionKeywords.test(text);
+      return blockerKeywordsLocal.test(text);
     });
-    if (!blockerResolved) {
-      return 'BLOCKED';
+    if (blockerIdx >= 0) {
+      const laterObs = observations.slice(blockerIdx + 1);
+      const blockerResolved = laterObs.some((obs) => {
+        const text = `${obs.title || ''} ${obs.narrative || ''}`;
+        return resolutionKeywords.test(text);
+      });
+      if (!blockerResolved) {
+        return 'BLOCKED';
+      }
+      // Blocker was resolved by a later observation — fall through to check completion
+    } else {
+      // Blocker string was set but no matching observation found in narratives;
+      // check ALL observations for resolution (blocker came from summary/external source)
+      const blockerResolved = observations.some((obs) => {
+        const text = `${obs.title || ''} ${obs.narrative || ''}`;
+        return resolutionKeywords.test(text);
+      });
+      if (!blockerResolved) {
+        return 'BLOCKED';
+      }
     }
-    // Blocker was resolved — fall through to check completion
   }
 
   if (lastObs) {
@@ -399,9 +417,10 @@ function estimateCompletionPercent(
   if (sessionStatus === 'BLOCKED') return Math.min(90, messageCount * 5);
 
   // CG-03: JSON-mode explicit data with sessionSummary → high completion
+  // O5-3: Access fields directly via CollectedDataBase instead of Record casts
   if (collectedData) {
-    const hasSessionSummary = !!(collectedData as Record<string, unknown>).sessionSummary;
-    const isFileSource = (collectedData as Record<string, unknown>)._source === 'file';
+    const hasSessionSummary = !!collectedData.sessionSummary;
+    const isFileSource = collectedData._source === 'file';
     if (isFileSource && hasSessionSummary) {
       return 95;
     }
@@ -628,6 +647,7 @@ function getSimFactory(): typeof import('../lib/simulation-factory') {
    5. AUTO-SAVE DETECTION
 ------------------------------------------------------------------*/
 
+/** @deprecated Legacy auto-save concept from dynamic capture era. In JSON-primary mode, saves are AI-initiated. */
 function shouldAutoSave(messageCount: number): boolean {
   return messageCount > 0 && messageCount % CONFIG.MESSAGE_COUNT_TRIGGER === 0;
 }
@@ -637,7 +657,14 @@ function shouldAutoSave(messageCount: number): boolean {
 ------------------------------------------------------------------*/
 
 // F-24: Single helper for spec-folder resolution — replaces 3 redundant resolution points
-function resolveSpecFolderRelative(normalizedDetected: string, candidateSpecsDirs: string[]): string {
+// CODEX2-004: Returns both the relative folder name AND the matched specs root
+//             so callers can reuse the winning root without re-calling findActiveSpecsDir().
+interface SpecFolderResolution {
+  relative: string;
+  matchedRoot: string | null;
+}
+
+function resolveSpecFolderRelative(normalizedDetected: string, candidateSpecsDirs: string[]): SpecFolderResolution {
   for (const candidateRoot of candidateSpecsDirs) {
     const normalizedRoot = path.resolve(candidateRoot).replace(/\\/g, '/');
     const relative = path.relative(normalizedRoot, normalizedDetected).replace(/\\/g, '/');
@@ -648,10 +675,10 @@ function resolveSpecFolderRelative(normalizedDetected: string, candidateSpecsDir
       !relative.startsWith('../') &&
       !path.isAbsolute(relative)
     ) {
-      return relative;
+      return { relative, matchedRoot: candidateRoot };
     }
   }
-  return path.basename(normalizedDetected);
+  return { relative: path.basename(normalizedDetected), matchedRoot: null };
 }
 
 function countDistinctFilePaths(
@@ -681,7 +708,9 @@ async function collectSessionData(
   const now = new Date();
 
   // F-24: Consolidated spec-folder resolution helper
+  // CODEX2-004: Preserve the winning specs root from phase 1 for use in phase 2
   let folderName: string = specFolderName || '';
+  let resolvedSpecsRoot: string | null = null;
   if (!folderName) {
     const detectedFolder = await detectSpecFolder();
     const normalizedDetected = path.resolve(detectedFolder).replace(/\\/g, '/');
@@ -693,11 +722,14 @@ async function collectSessionData(
       path.join(CONFIG.PROJECT_ROOT, '.opencode', 'specs'),
     ]));
 
-    folderName = resolveSpecFolderRelative(normalizedDetected, candidateSpecsDirs);
+    const resolution = resolveSpecFolderRelative(normalizedDetected, candidateSpecsDirs);
+    folderName = resolution.relative;
+    resolvedSpecsRoot = resolution.matchedRoot;
   }
   const dateOnly: string = formatTimestamp(now, 'date-dutch');
   const timeOnly: string = formatTimestamp(now, 'time-short');
 
+  // RECOVERY-ONLY: This fallback is unreachable in JSON-primary mode (data-loader throws before reaching here).
   if (!collectedData) {
     console.log('   Warning: Using simulation data');
     return getSimFactory().createSessionData({
@@ -795,12 +827,17 @@ async function collectSessionData(
   const explicitImportanceTier = typeof data.importanceTier === 'string'
     ? data.importanceTier
     : (typeof data.importance_tier === 'string' ? data.importance_tier : null);
+  // RC5: Extract explicit contextType from JSON payload
+  const explicitContextType = typeof data.contextType === 'string'
+    ? data.contextType
+    : (typeof data.context_type === 'string' ? data.context_type : null);
   const { contextType, importanceTier, decisionCount, toolCounts } =
     detectSessionCharacteristics(
       observations,
       userPrompts,
       FILES as FileEntry[],
-      explicitImportanceTier
+      explicitImportanceTier,
+      explicitContextType
     );
 
   const TOOL_COUNT: number = Object.values(toolCounts).reduce((sum, count) => sum + count, 0);
@@ -828,7 +865,12 @@ async function collectSessionData(
   const createdAtEpoch: number = Math.floor(Date.now() / 1000);
 
   let SPEC_FILES: SpecFileEntry[] = [];
-  const activeSpecsDir = findActiveSpecsDir() || path.join(CONFIG.PROJECT_ROOT, 'specs');
+  // CODEX2-004: Reuse the specs root that phase 1 matched instead of re-calling
+  // findActiveSpecsDir(), which always prefers PROJECT_ROOT/specs and can point
+  // at the wrong tree when specs exist in both locations.
+  const activeSpecsDir = resolvedSpecsRoot
+    || findActiveSpecsDir()
+    || path.join(CONFIG.PROJECT_ROOT, 'specs');
   // Backfill SPEC_FOLDER from CLI-known folder name
   if (!data.SPEC_FOLDER && folderName) {
     data.SPEC_FOLDER = folderName;
@@ -915,6 +957,8 @@ async function collectSessionData(
     TOOL_COUNT,
     MESSAGE_COUNT: messageCount,
     QUICK_SUMMARY: quickSummary,
+    // RC1: Pass through raw sessionSummary from JSON payload for title candidate
+    _JSON_SESSION_SUMMARY: typeof data.sessionSummary === 'string' ? data.sessionSummary : null,
     SKILL_VERSION: CONFIG.SKILL_VERSION,
     OBSERVATIONS: OBSERVATIONS_DETAILED,
     HAS_OBSERVATIONS: OBSERVATIONS_DETAILED.length > 0,

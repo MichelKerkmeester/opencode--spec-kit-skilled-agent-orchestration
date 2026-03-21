@@ -606,5 +606,5 @@ find . -name ".spec-active*" -type f 2>/dev/null
 
 ---
 
-*Last Updated: 2025-12-25 | Architecture: Stateless CLI-First with Alignment Scoring*
+*Last Updated: 2025-12-25 | Architecture: Structured-First with Recovery Fallback and Alignment Scoring*
 <!-- /ANCHOR:related-resources -->

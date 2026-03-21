@@ -14,7 +14,7 @@ import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 
 // Internal modules
-import { CONFIG } from '../core';
+import { CONFIG } from '../config';
 import { SemanticSignalExtractor } from '../lib/semantic-signal-extractor';
 import type {
   FileEntry,
@@ -117,14 +117,16 @@ function getChannel(): string {
  * @returns One of `'decision'`, `'discovery'`, `'research'`, `'implementation'`, or `'general'`.
  */
 function detectContextType(toolCounts: ToolCounts, decisionCount: number): string {
+  // RC5: Check decision count BEFORE total===0 early return.
+  // In JSON mode tool counts are always 0, so decisions were never checked.
+  if (decisionCount > 0) return 'decision';
+
   const total = Object.values(toolCounts).reduce((a, b) => a + b, 0);
   if (total === 0) return 'general';
 
-  const readTools = (toolCounts.Read || 0) + (toolCounts.Grep || 0) + (toolCounts.Glob || 0);
+  const readTools = (toolCounts.Read || 0) + (toolCounts.Grep || 0) + (toolCounts.Glob || 0) + (toolCounts.View || 0);
   const writeTools = (toolCounts.Write || 0) + (toolCounts.Edit || 0);
   const webTools = (toolCounts.WebSearch || 0) + (toolCounts.WebFetch || 0);
-
-  if (decisionCount > 0) return 'decision';
   if (webTools / total > 0.3) return 'discovery';
   if (readTools / total > 0.5 && writeTools / total < 0.1) return 'research';
   if (writeTools / total > 0.3) return 'implementation';
@@ -191,7 +193,7 @@ function detectProjectPhase(
   const total = Object.values(toolCounts).reduce((a, b) => a + b, 0);
   if (total === 0) return 'RESEARCH';
 
-  const readTools = (toolCounts.Read || 0) + (toolCounts.Grep || 0) + (toolCounts.Glob || 0);
+  const readTools = (toolCounts.Read || 0) + (toolCounts.Grep || 0) + (toolCounts.Glob || 0) + (toolCounts.View || 0);
   const writeTools = (toolCounts.Write || 0) + (toolCounts.Edit || 0);
   const obsTypes = observations.map((o) => o.type || 'observation');
   const hasDecisions = obsTypes.includes('decision');
@@ -350,6 +352,11 @@ function buildFileProgress(specFiles: SpecFileEntry[] | undefined): FileProgress
 ------------------------------------------------------------------*/
 
 /**
+ * @deprecated RECOVERY-ONLY — Reconstructs tool counts by parsing observation text via regex.
+ * In JSON-primary mode, tool counts should derive from the structured toolCalls array directly.
+ * This lossy round-trip (structured data -> observation text -> regex extraction) is only
+ * needed for --recovery mode.
+ *
  * Count tool invocations by type from observation facts.
  * @param observations - Session observations containing tool-usage facts.
  * @param userPrompts - User prompts (reserved for future use; not counted to avoid false positives).
@@ -536,17 +543,28 @@ function extractKeyTopics(summary: string | undefined, decisions: DecisionForTop
  * @param explicitImportanceTier - Optional caller-provided tier override from structured input.
  * @returns Composite characteristics including context type, importance tier, decision count, and tool counts.
  */
+const VALID_CONTEXT_TYPES = new Set([
+  'decision', 'discovery', 'research', 'implementation', 'general',
+]);
+
 function detectSessionCharacteristics(
   observations: Observation[],
   userPrompts: UserPrompt[],
   FILES: FileEntry[],
-  explicitImportanceTier?: string | null
+  explicitImportanceTier?: string | null,
+  explicitContextType?: string | null
 ): SessionCharacteristics {
   const toolCounts = countToolsByType(observations, userPrompts);
   const decisionCount = observations.filter((obs) =>
     obs.type === 'decision' || obs.title?.toLowerCase().includes('decision')
   ).length;
-  const contextType = detectContextType(toolCounts, decisionCount);
+  // RC5: Honor explicit contextType from JSON payload when valid
+  const contextType = (
+    typeof explicitContextType === 'string' &&
+    VALID_CONTEXT_TYPES.has(explicitContextType.trim().toLowerCase())
+  )
+    ? explicitContextType.trim().toLowerCase()
+    : detectContextType(toolCounts, decisionCount);
   const importanceTier = resolveImportanceTier(
     FILES.map((f) => f.FILE_PATH),
     contextType,

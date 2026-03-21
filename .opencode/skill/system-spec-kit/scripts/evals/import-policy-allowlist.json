@@ -12,16 +12,6 @@
       "expiresAt": "2026-06-04"
     },
     {
-      "file": "scripts/evals/run-chk210-quality-backfill.ts",
-      "import": "@spec-kit/mcp-server/lib/*",
-      "owner": "spec-kit-maintainers",
-      "reason": "Quality backfill accesses internal parsing",
-      "removeWhen": "quality API exposed via api/",
-      "createdAt": "2026-02-21",
-      "lastReviewedAt": "2026-03-05",
-      "expiresAt": "2026-06-04"
-    },
-    {
       "file": "scripts/spec-folder/generate-description.ts",
       "import": "@spec-kit/mcp-server/lib/search/folder-discovery",
       "owner": "spec-kit-maintainers",

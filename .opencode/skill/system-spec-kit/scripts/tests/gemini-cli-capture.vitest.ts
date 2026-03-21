@@ -42,6 +42,53 @@ describe('captureGeminiConversation', () => {
     expect(result).toBeNull();
   });
 
+  it('handles malformed session JSON gracefully', async () => {
+    const tempHome = makeTempRoot('speckit-gemini-home-');
+    process.env.HOME = tempHome;
+
+    const projectRoot = '/tmp/spec-kit-project';
+    const historyDir = path.join(tempHome, '.gemini', 'history', 'malformed-project');
+    fs.mkdirSync(historyDir, { recursive: true });
+    fs.writeFileSync(path.join(historyDir, '.project_root'), `${projectRoot}\n`, 'utf-8');
+
+    const chatsDir = path.join(tempHome, '.gemini', 'tmp', 'malformed-project', 'chats');
+    fs.mkdirSync(chatsDir, { recursive: true });
+    fs.writeFileSync(
+      path.join(chatsDir, 'session-2026-03-16T09-00-malformed.json'),
+      '{"sessionId":"broken-session","messages":[',
+      'utf-8',
+    );
+
+    const { captureGeminiConversation } = await import('../extractors/gemini-cli-capture');
+    const result = await captureGeminiConversation(20, projectRoot);
+
+    expect(result).toBeNull();
+  });
+
+  it('returns null for an empty session', async () => {
+    const tempHome = makeTempRoot('speckit-gemini-home-');
+    process.env.HOME = tempHome;
+
+    const projectRoot = '/tmp/spec-kit-project';
+    const historyDir = path.join(tempHome, '.gemini', 'history', 'empty-project');
+    fs.mkdirSync(historyDir, { recursive: true });
+    fs.writeFileSync(path.join(historyDir, '.project_root'), `${projectRoot}\n`, 'utf-8');
+
+    const chatsDir = path.join(tempHome, '.gemini', 'tmp', 'empty-project', 'chats');
+    const sessionPath = path.join(chatsDir, 'session-2026-03-16T09-30-empty.json');
+    writeJson(sessionPath, {
+      sessionId: 'empty-session',
+      startTime: '2026-03-16T09:30:00.000Z',
+      lastUpdated: '2026-03-16T09:30:01.000Z',
+      messages: [],
+    });
+
+    const { captureGeminiConversation } = await import('../extractors/gemini-cli-capture');
+    const result = await captureGeminiConversation(20, projectRoot);
+
+    expect(result).toBeNull();
+  });
+
   it('uses the mapped project directory, ignores thoughts, and extracts tool calls', async () => {
     const tempHome = makeTempRoot('speckit-gemini-home-');
     process.env.HOME = tempHome;

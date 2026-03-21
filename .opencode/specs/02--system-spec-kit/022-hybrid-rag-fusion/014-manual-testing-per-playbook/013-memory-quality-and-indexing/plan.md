@@ -80,12 +80,12 @@ Manual memory-quality test execution pipeline with review-gated evidence collect
 - [ ] Record baseline environment variables, API-key state, DB path context, and checkpoint availability before stateful execution.
 
 ### Phase 2: Non-Destructive Tests
-- [ ] Run inspection and dry-run-first scenarios before mutation-heavy cases: `NEW-039`, `NEW-040`, `NEW-041`, `NEW-045`, `NEW-046`, `NEW-047`, `NEW-048`, `NEW-069`, `NEW-073`, `NEW-131`, `NEW-133`, `M-001`, `M-002`, `M-004`, `M-005c`, `M-006a`, `M-006b`, `M-006c`, and the non-mutating `M-007*` proof lanes where safe.
+- [ ] Run inspection and dry-run-first scenarios before mutation-heavy cases: `039`, `040`, `041`, `045`, `046`, `047`, `048`, `069`, `073`, `131`, `133`, `M-001`, `M-002`, `M-004`, `M-005c`, `M-006a`, `M-006b`, `M-006c`, and the non-mutating `M-007*` proof lanes where safe.
 - [ ] Capture the exact prompt, commands, expected signals, and evidence targets for each scenario before collecting verdict notes.
 - [ ] Keep a running list of reusable sandbox inputs so later destructive scenarios can reference the same baseline files where appropriate.
 
 ### Phase 3: Destructive Tests
-- [ ] Restrict `NEW-042`, `NEW-043`, `NEW-044`, `NEW-111`, `NEW-119`, `NEW-132`, `M-003`, `M-005`, `M-005a`, `M-005b`, `M-006`, `M-007`, `M-007a`, `M-007b`, `M-007c`, `M-007e`, `M-007f`, `M-007g`, `M-007h`, `M-007i`, `M-007j`, and `M-008` to disposable sandboxes, checkpoints, or isolated runtime sessions.
+- [ ] Restrict `042`, `043`, `044`, `111`, `119`, `132`, `M-003`, `M-005`, `M-005a`, `M-005b`, `M-006`, `M-007`, `M-007a`, `M-007b`, `M-007c`, `M-007e`, `M-007f`, `M-007g`, `M-007h`, `M-007i`, `M-007j`, and `M-008` to disposable sandboxes, checkpoints, or isolated runtime sessions.
 - [ ] For metadata-corruption tests, snapshot `spec.md`, `description.json`, and generated memory files before corruption or regeneration steps, then restore or discard the sandbox afterward.
 - [ ] For save/reindex/restart scenarios, separate baseline, failure-path, and recovery-path evidence so no state leak carries into the next test.
 - [ ] If a destructive scenario cannot be isolated safely, stop that scenario and mark it blocked rather than mutating shared workspace state.
@@ -103,24 +103,24 @@ Manual memory-quality test execution pipeline with review-gated evidence collect
 
 | Test ID | Scenario Name | Exact Prompt | Execution Type |
 |---------|---------------|--------------|----------------|
-| NEW-039 | Confirm retry then reject path | `Verify PI-A5 quality loop behavior.` | MCP |
-| NEW-040 | Confirm signal category detection | `Validate signal vocabulary expansion (TM-08).` | manual + MCP |
-| NEW-041 | Confirm save-time preflight warn/fail behavior | `Verify pre-flight token budget validation (PI-A3).` | MCP |
-| NEW-042 | Confirm per-folder plus aggregated routing | `Validate PI-B3 folder description discovery.` | manual + MCP |
-| NEW-043 | Confirm 3-layer gate behavior | `Verify pre-storage quality gate (TM-04).` | MCP |
-| NEW-044 | Confirm merge/deprecate thresholds | `Validate reconsolidation-on-save (TM-06).` | MCP |
-| NEW-045 | Confirm quality and structure output | `Assess smarter memory content generation (S1).` | manual |
-| NEW-046 | Confirm anchor-priority thinning | `Validate anchor-aware chunk thinning (R7).` | manual |
-| NEW-047 | Confirm persisted intent labels | `Verify encoding-intent capture (R16).` | manual |
-| NEW-048 | Confirm entity pipeline persistence | `Validate auto entity extraction (R10).` | manual |
-| NEW-069 | Confirm shared normalization path | `Validate entity normalization consolidation.` | manual |
-| NEW-073 | Confirm restart persistence | `Verify quality gate timer persistence.` | manual |
-| NEW-092 | Confirm implemented auto entity extraction | `Validate implemented auto entity extraction (R10).` | manual |
-| NEW-111 | Confirm embedding-failure fallback and BM25 searchability | `Validate deferred lexical-only indexing fallback.` | manual + MCP |
-| NEW-119 | Confirm collision resolution | `Validate memory filename collision prevention.` | manual + MCP |
-| NEW-131 | Confirm batch-generated folder descriptions exist and conform to schema | `Validate PI-B3 batch backfill results.` | manual |
-| NEW-132 | Confirm per-folder description metadata matches schema contract | `Validate description.json required fields and types.` | manual + MCP |
-| NEW-133 | Confirm dry-run preview behavior | `Validate memory_save dryRun preview behavior, including insufficiency detection.` | MCP |
+| 039 | Confirm retry then reject path | `Verify PI-A5 quality loop behavior.` | MCP |
+| 040 | Confirm signal category detection | `Validate signal vocabulary expansion (TM-08).` | manual + MCP |
+| 041 | Confirm save-time preflight warn/fail behavior | `Verify pre-flight token budget validation (PI-A3).` | MCP |
+| 042 | Confirm per-folder plus aggregated routing | `Validate PI-B3 folder description discovery.` | manual + MCP |
+| 043 | Confirm 3-layer gate behavior | `Verify pre-storage quality gate (TM-04).` | MCP |
+| 044 | Confirm merge/deprecate thresholds | `Validate reconsolidation-on-save (TM-06).` | MCP |
+| 045 | Confirm quality and structure output | `Assess smarter memory content generation (S1).` | manual |
+| 046 | Confirm anchor-priority thinning | `Validate anchor-aware chunk thinning (R7).` | manual |
+| 047 | Confirm persisted intent labels | `Verify encoding-intent capture (R16).` | manual |
+| 048 | Confirm entity pipeline persistence | `Validate auto entity extraction (R10).` | manual |
+| 069 | Confirm shared normalization path | `Validate entity normalization consolidation.` | manual |
+| 073 | Confirm restart persistence | `Verify quality gate timer persistence.` | manual |
+| 092 | Confirm implemented auto entity extraction | `Validate implemented auto entity extraction (R10).` | manual |
+| 111 | Confirm embedding-failure fallback and BM25 searchability | `Validate deferred lexical-only indexing fallback.` | manual + MCP |
+| 119 | Confirm collision resolution | `Validate memory filename collision prevention.` | manual + MCP |
+| 131 | Confirm batch-generated folder descriptions exist and conform to schema | `Validate PI-B3 batch backfill results.` | manual |
+| 132 | Confirm per-folder description metadata matches schema contract | `Validate description.json required fields and types.` | manual + MCP |
+| 133 | Confirm dry-run preview behavior | `Validate memory_save dryRun preview behavior, including insufficiency detection.` | MCP |
 | M-001 | Context Recovery and Continuation | `/memory:continue specs/<target-spec>` | MCP |
 | M-002 | Targeted Memory Lookup | `Find rationale for <specific decision>` | MCP |
 | M-003 | Context Save + Index Update | `No explicit prompt; command-driven scenario in playbook.` | manual + MCP |

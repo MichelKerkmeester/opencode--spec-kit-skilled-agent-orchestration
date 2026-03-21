@@ -445,43 +445,13 @@ async function testUtilsMessage() {
   log('\n🔬 UTILS: message-utils.js');
 
   try {
+    const messageUtils = require(path.join(SCRIPTS_DIR, 'utils', 'message-utils'));
     const {
-      formatTimestamp,
       truncateToolOutput,
-      summarizeExchange,
-      extractKeyArtifacts
-    } = require(path.join(SCRIPTS_DIR, 'utils', 'message-utils'));
+      summarizeExchange
+    } = messageUtils;
 
-    // Test 1: formatTimestamp with different formats
-    const now = new Date('2024-01-15T10:30:00Z');
-
-    const isoResult = formatTimestamp(now, 'iso');
-    if (isoResult.includes('2024-01-15') && isoResult.endsWith('Z')) {
-      pass('T-007a: formatTimestamp ISO format', isoResult);
-    } else {
-      fail('T-007a: formatTimestamp ISO format', isoResult);
-    }
-
-    const dateResult = formatTimestamp(now, 'date');
-    assertEqual(dateResult, '2024-01-15', 'T-007b: formatTimestamp date format');
-
-    const timeResult = formatTimestamp(now, 'time');
-    // Note: formatTimestamp converts to UTC, so the time may differ from local
-    if (/^\d{2}:\d{2}:\d{2}$/.test(timeResult)) {
-      pass('T-007c: formatTimestamp time format', timeResult);
-    } else {
-      fail('T-007c: formatTimestamp time format', `Invalid format: ${timeResult}`);
-    }
-
-    // Test 2: formatTimestamp handles invalid date
-    const invalidResult = formatTimestamp('not-a-date', 'date');
-    if (typeof invalidResult === 'string' && invalidResult.length > 0) {
-      pass('T-007d: formatTimestamp handles invalid date', 'Returns fallback');
-    } else {
-      fail('T-007d: formatTimestamp handles invalid date', 'No fallback');
-    }
-
-    // Test 3: truncateToolOutput respects max lines
+    // Test 1: truncateToolOutput respects max lines
     const longOutput = Array(200).fill('line').join('\n');
     const truncated = truncateToolOutput(longOutput, 50);
     if (truncated.includes('Truncated')) {
@@ -490,12 +460,12 @@ async function testUtilsMessage() {
       fail('T-007e: truncateToolOutput truncates long output', 'No truncation');
     }
 
-    // Test 4: truncateToolOutput preserves short output
+    // Test 2: truncateToolOutput preserves short output
     const shortOutput = 'short output';
     const preserved = truncateToolOutput(shortOutput, 100);
     assertEqual(preserved, shortOutput, 'T-007f: truncateToolOutput preserves short output');
 
-    // Test 5: summarizeExchange creates summary
+    // Test 3: summarizeExchange creates summary
     const summary = summarizeExchange('User question', 'Assistant response with details', []);
     if (summary.userIntent && summary.outcome && summary.fullSummary) {
       pass('T-007g: summarizeExchange creates complete summary', 'All fields present');
@@ -503,16 +473,11 @@ async function testUtilsMessage() {
       fail('T-007g: summarizeExchange creates complete summary', 'Missing fields');
     }
 
-    // Test 6: extractKeyArtifacts finds files
-    const messages = [
-      { toolCalls: [{ tool: 'Write', file_path: '/test/file.js' }], timestamp: '2024-01-01' },
-      { toolCalls: [{ tool: 'Edit', file_path: '/test/other.js' }], timestamp: '2024-01-01' }
-    ];
-    const artifacts = extractKeyArtifacts(messages);
-    if (artifacts.filesCreated.length === 1 && artifacts.filesModified.length === 1) {
-      pass('T-007h: extractKeyArtifacts finds files', 'Created and modified tracked');
+    // Test 4: deprecated artifact extractor stays removed from the public surface
+    if (!Object.prototype.hasOwnProperty.call(messageUtils, 'extractKeyArtifacts')) {
+      pass('T-007h: extractKeyArtifacts export removed', 'Public surface matches TypeScript source');
     } else {
-      fail('T-007h: extractKeyArtifacts finds files', `Created: ${artifacts.filesCreated.length}, Modified: ${artifacts.filesModified.length}`);
+      fail('T-007h: extractKeyArtifacts export removed', 'Deprecated export still present');
     }
 
   } catch (error) {
@@ -676,14 +641,9 @@ async function testLibAnchorGenerator() {
   try {
     const {
       generateAnchorId,
-      generateSemanticSlug,
-      generateShortHash,
       categorizeSection,
       validateAnchorUniqueness,
-      extractKeywords,
-      slugify,
-      STOP_WORDS,
-      ACTION_VERBS
+      slugify
     } = require(path.join(SCRIPTS_DIR, 'lib', 'anchor-generator'));
 
     // Test 1: generate_anchor_id creates valid format
@@ -694,23 +654,7 @@ async function testLibAnchorGenerator() {
       fail('T-009a: generate_anchor_id format', anchorId);
     }
 
-    // Test 2: generate_semantic_slug filters stop words
-    const slug = generateSemanticSlug('The quick brown fox jumps');
-    if (!slug.includes('the') && slug.length > 0) {
-      pass('T-009b: generate_semantic_slug filters stop words', slug);
-    } else {
-      fail('T-009b: generate_semantic_slug filters stop words', slug);
-    }
-
-    // Test 3: generate_short_hash creates 8-char hash
-    const hash = generateShortHash('test content');
-    if (hash.length === 8) {
-      pass('T-009c: generate_short_hash creates 8-char hash', hash);
-    } else {
-      fail('T-009c: generate_short_hash creates 8-char hash', `Length: ${hash.length}`);
-    }
-
-    // Test 4: categorize_section detects decision
+    // Test 2: categorize_section detects decision
     const category = categorizeSection('Decision: Use JWT', 'We decided to use JWT');
     if (category === 'decision') {
       pass('T-009d: categorize_section detects decision', category);
@@ -718,7 +662,7 @@ async function testLibAnchorGenerator() {
       fail('T-009d: categorize_section detects decision', category);
     }
 
-    // Test 5: validate_anchor_uniqueness handles collisions
+    // Test 3: validate_anchor_uniqueness handles collisions
     const existing = ['test-anchor-abc12345'];
     const unique = validateAnchorUniqueness('test-anchor-abc12345', existing);
     if (unique.endsWith('-2')) {
@@ -727,25 +671,13 @@ async function testLibAnchorGenerator() {
       fail('T-009e: validate_anchor_uniqueness handles collisions', unique);
     }
 
-    // Test 6: extract_keywords extracts meaningful words
-    const keywords = extractKeywords('Implemented OAuth2 authentication with Google');
-    if (keywords.length > 0 && !keywords.includes('with')) {
-      pass('T-009f: extract_keywords extracts meaningful words', keywords.join(', '));
-    } else {
-      fail('T-009f: extract_keywords extracts meaningful words', keywords.join(', '));
-    }
-
-    // Test 7: slugify creates valid slug
+    // Test 4: slugify creates valid slug
     const slugified = slugify(['oauth', 'authentication']);
     if (slugified === 'oauth-authentication') {
       pass('T-009g: slugify creates valid slug', slugified);
     } else {
       fail('T-009g: slugify creates valid slug', slugified);
     }
-
-    // Test 8: Constants exist
-    assertExists(STOP_WORDS, 'T-009h: STOP_WORDS constant exists', `${STOP_WORDS.size} words`);
-    assertExists(ACTION_VERBS, 'T-009i: ACTION_VERBS constant exists', `${ACTION_VERBS.size} verbs`);
 
   } catch (error) {
     fail('T-009: Anchor generator module', error.message);
@@ -759,10 +691,6 @@ async function testLibContentFilter() {
     const {
       createFilterPipeline,
       isNoiseContent,
-      getFilterStats,
-      resetStats,
-      generateContentHash,
-      calculateSimilarity,
       NOISE_PATTERNS
     } = require(path.join(SCRIPTS_DIR, 'lib', 'content-filter'));
 
@@ -795,33 +723,7 @@ async function testLibContentFilter() {
       fail('T-010e: Pipeline filters noise prompts', `Got ${filtered.length} items`);
     }
 
-    // Test 5: generate_content_hash produces consistent hash
-    const hash1 = generateContentHash('test content');
-    const hash2 = generateContentHash('test content');
-    assertEqual(hash1, hash2, 'T-010f: generate_content_hash is consistent');
-
-    // Test 6: calculate_similarity detects identical content
-    const sim = calculateSimilarity('test content', 'test content');
-    assertEqual(sim, 1, 'T-010g: calculate_similarity returns 1 for identical');
-
-    // Test 7: get_filter_stats returns stats object
-    const stats = getFilterStats();
-    if (typeof stats.totalProcessed === 'number' && typeof stats.qualityScore === 'number') {
-      pass('T-010h: get_filter_stats returns stats', `Quality: ${stats.qualityScore}`);
-    } else {
-      fail('T-010h: get_filter_stats returns stats', 'Missing fields');
-    }
-
-    // Test 8: reset_stats clears stats
-    resetStats();
-    const clearedStats = getFilterStats();
-    if (clearedStats.totalProcessed === 0) {
-      pass('T-010i: reset_stats clears stats', 'Stats cleared');
-    } else {
-      fail('T-010i: reset_stats clears stats', `total_processed: ${clearedStats.totalProcessed}`);
-    }
-
-    // Test 9: NOISE_PATTERNS exists
+    // Test 5: NOISE_PATTERNS exists
     if (Array.isArray(NOISE_PATTERNS) && NOISE_PATTERNS.length > 0) {
       pass('T-010j: NOISE_PATTERNS constant exists', `${NOISE_PATTERNS.length} patterns`);
     } else {
@@ -1008,11 +910,7 @@ async function testLibSimulationFactory() {
       createConversationData,
       createDecisionData,
       createDiagramData,
-      createFullSimulation,
-      requiresSimulation,
-      formatTimestamp,
-      generateSessionId,
-      addSimulationWarning
+      requiresSimulation
     } = require(path.join(SCRIPTS_DIR, 'lib', 'simulation-factory'));
 
     // Test 1: create_session_data creates valid structure
@@ -1047,36 +945,10 @@ async function testLibSimulationFactory() {
       fail('T-013d: create_diagram_data creates diagrams', 'No diagrams');
     }
 
-    // Test 5: create_full_simulation creates all components
-    const full = createFullSimulation({ specFolder: 'full-test' });
-    if (full.session && full.conversations && full.decisions && full.diagrams && full.phases) {
-      pass('T-013e: create_full_simulation creates all components', 'All components present');
-    } else {
-      fail('T-013e: create_full_simulation creates all components', 'Missing components');
-    }
-
-    // Test 6: requires_simulation detects empty data
+    // Test 5: requires_simulation detects empty data
     assertEqual(requiresSimulation(null), true, 'T-013f: requires_simulation detects null');
     assertEqual(requiresSimulation({ _isSimulation: true }), true, 'T-013g: requires_simulation detects simulation flag');
     assertEqual(requiresSimulation({ userPrompts: [{ prompt: 'test' }] }), false, 'T-013h: requires_simulation allows real data');
-
-    // Test 7: generate_session_id creates unique IDs
-    const id1 = generateSessionId();
-    const id2 = generateSessionId();
-    if (id1.startsWith('session-') && id1 !== id2) {
-      pass('T-013i: generate_session_id creates unique IDs', 'IDs are different');
-    } else {
-      fail('T-013i: generate_session_id creates unique IDs', 'IDs match or wrong format');
-    }
-
-    // Test 8: add_simulation_warning adds warning
-    const content = 'Test content';
-    const warned = addSimulationWarning(content);
-    if (warned.includes('WARNING') && warned.includes(content)) {
-      pass('T-013j: add_simulation_warning adds warning', 'Warning prepended');
-    } else {
-      fail('T-013j: add_simulation_warning adds warning', 'Warning missing');
-    }
 
   } catch (error) {
     fail('T-013: Simulation factory module', error.message);
@@ -1472,7 +1344,6 @@ async function testExtractorsSession() {
 
   try {
     const {
-      generateSessionId,
       getChannel,
       detectContextType,
       detectImportanceTier,
@@ -1482,16 +1353,7 @@ async function testExtractorsSession() {
       extractKeyTopics
     } = require(path.join(SCRIPTS_DIR, 'extractors', 'session-extractor'));
 
-    // Test 1: generateSessionId creates unique IDs
-    const id1 = generateSessionId();
-    const id2 = generateSessionId();
-    if (id1.startsWith('session-') && id1 !== id2) {
-      pass('T-022a: generateSessionId creates unique IDs', 'IDs differ');
-    } else {
-      fail('T-022a: generateSessionId creates unique IDs', 'IDs match');
-    }
-
-    // Test 2: getChannel returns string
+    // Test 1: getChannel returns string
     const channel = getChannel();
     if (typeof channel === 'string' && channel.length > 0) {
       pass('T-022b: getChannel returns string', channel);
@@ -1499,7 +1361,7 @@ async function testExtractorsSession() {
       fail('T-022b: getChannel returns string', typeof channel);
     }
 
-    // Test 3: detectContextType classifies by tool counts
+    // Test 2: detectContextType classifies by tool counts
     const implType = detectContextType({ Write: 5, Edit: 3, Read: 2 }, 0);
     if (implType === 'implementation') {
       pass('T-022c: detectContextType classifies implementation', implType);
@@ -1507,7 +1369,7 @@ async function testExtractorsSession() {
       fail('T-022c: detectContextType classifies implementation', implType);
     }
 
-    // Test 4: detectContextType classifies research
+    // Test 3: detectContextType classifies research
     const researchType = detectContextType({ Read: 10, Grep: 5, Write: 1 }, 0);
     if (researchType === 'research') {
       pass('T-022d: detectContextType classifies research', researchType);
@@ -1515,7 +1377,7 @@ async function testExtractorsSession() {
       fail('T-022d: detectContextType classifies research', researchType);
     }
 
-    // Test 5: detectImportanceTier detects critical paths
+    // Test 4: detectImportanceTier detects critical paths
     const criticalTier = detectImportanceTier(['/core/auth.js'], 'implementation');
     if (criticalTier === 'critical') {
       pass('T-022e: detectImportanceTier detects critical', criticalTier);
@@ -1523,7 +1385,7 @@ async function testExtractorsSession() {
       fail('T-022e: detectImportanceTier detects critical', criticalTier);
     }
 
-    // Test 6: detectProjectPhase classifies phases
+    // Test 5: detectProjectPhase classifies phases
     const phase = detectProjectPhase({ Read: 10, Grep: 5 }, [], 5);
     if (phase === 'RESEARCH') {
       pass('T-022f: detectProjectPhase classifies phase', phase);
@@ -1531,7 +1393,7 @@ async function testExtractorsSession() {
       fail('T-022f: detectProjectPhase classifies phase', phase);
     }
 
-    // Test 7: countToolsByType counts tools
+    // Test 6: countToolsByType counts tools
     const observations = [{ facts: ['Tool: Read file.js', 'Tool: Edit file.js'] }];
     const counts = countToolsByType(observations, []);
     if (counts.Read >= 0 && counts.Edit >= 0) {
@@ -1540,7 +1402,7 @@ async function testExtractorsSession() {
       fail('T-022g: countToolsByType counts tools', 'Invalid counts');
     }
 
-    // Test 8: calculateSessionDuration computes duration
+    // Test 7: calculateSessionDuration computes duration
     const prompts = [
       { timestamp: '2024-01-15T10:00:00Z' },
       { timestamp: '2024-01-15T10:30:00Z' }
@@ -1552,7 +1414,7 @@ async function testExtractorsSession() {
       fail('T-022h: calculateSessionDuration computes duration', duration);
     }
 
-    // Test 9: extractKeyTopics extracts topics
+    // Test 8: extractKeyTopics extracts topics
     const topics = extractKeyTopics('Implemented OAuth authentication with JWT');
     if (Array.isArray(topics) && topics.length > 0) {
       pass('T-022i: extractKeyTopics extracts topics', topics.slice(0, 3).join(', '));
@@ -1627,10 +1489,7 @@ async function testCoreWorkflowAdditional() {
     // Test 3: indexMemory is exported from memory-indexer module
     assertType(memoryIndexer.indexMemory, 'function', 'T-024c: indexMemory exported via memory-indexer');
 
-    // Test 4: updateMetadataWithEmbedding is exported from memory-indexer module
-    assertType(memoryIndexer.updateMetadataWithEmbedding, 'function', 'T-024d: updateMetadataWithEmbedding exported via memory-indexer');
-
-    // Test 5: notifyDatabaseUpdated remains private to preserve module boundaries
+    // Test 4: notifyDatabaseUpdated remains private to preserve module boundaries
     if (memoryIndexer.notifyDatabaseUpdated === undefined) {
       pass('T-024e: notifyDatabaseUpdated remains private', 'Not exported from memory-indexer');
     } else {
@@ -1664,13 +1523,6 @@ async function testCoreWorkflowAdditional() {
       pass('T-024h: indexMemory is async function', 'AsyncFunction confirmed');
     } else {
       fail('T-024h: indexMemory is async function', 'Not an async function');
-    }
-
-    // Test 8: updateMetadataWithEmbedding signature check (async function)
-    if (memoryIndexer.updateMetadataWithEmbedding.constructor.name === 'AsyncFunction') {
-      pass('T-024i: updateMetadataWithEmbedding is async function', 'AsyncFunction confirmed');
-    } else {
-      fail('T-024i: updateMetadataWithEmbedding is async function', 'Not an async function');
     }
 
   } catch (error) {
@@ -2105,141 +1957,13 @@ async function testExtractorsSessionAdditional() {
 ────────────────────────────────────────────────────────────────
 */
 
-async function testLibContentFilterAdditional() {
-  log('\n🔬 LIB: content-filter.js (additional functions)');
-
-  try {
-    const {
-      stripNoiseWrappers,
-      meetsMinimumRequirements,
-      calculateQualityScore,
-      filterContent
-    } = require(path.join(SCRIPTS_DIR, 'lib', 'content-filter'));
-
-    // Test 1: strip_noise_wrappers removes caveat prefix
-    const withCaveat = 'Caveat: Some note here\n\nActual content';
-    const strippedCaveat = stripNoiseWrappers(withCaveat);
-    if (!strippedCaveat.includes('Caveat:') && strippedCaveat.includes('Actual content')) {
-      pass('T-028a: strip_noise_wrappers removes caveat prefix', 'Caveat stripped');
-    } else {
-      fail('T-028a: strip_noise_wrappers removes caveat prefix', strippedCaveat);
-    }
-
-    // Test 2: strip_noise_wrappers converts command-name tags
-    const withCommandTag = '<command-name>test</command-name>';
-    const strippedCommand = stripNoiseWrappers(withCommandTag);
-    if (strippedCommand.includes('Command:') && strippedCommand.includes('test')) {
-      pass('T-028b: strip_noise_wrappers converts command-name tags', strippedCommand);
-    } else {
-      fail('T-028b: strip_noise_wrappers converts command-name tags', strippedCommand);
-    }
-
-    // Test 3: strip_noise_wrappers removes system-reminder tags
-    const withSystemReminder = '<system-reminder>internal</system-reminder>content here';
-    const strippedReminder = stripNoiseWrappers(withSystemReminder);
-    if (!strippedReminder.includes('system-reminder') && strippedReminder.includes('content here')) {
-      pass('T-028c: strip_noise_wrappers removes system-reminder tags', 'Tag removed');
-    } else {
-      fail('T-028c: strip_noise_wrappers removes system-reminder tags', strippedReminder);
-    }
-
-    // Test 4: strip_noise_wrappers handles null/empty input
-    assertEqual(stripNoiseWrappers(null), '', 'T-028d: strip_noise_wrappers handles null');
-    assertEqual(stripNoiseWrappers(''), '', 'T-028e: strip_noise_wrappers handles empty string');
-
-    // Test 5: meets_minimum_requirements accepts valid content
-    const validContent = 'This is valid content with enough words';
-    const defaultConfig = { noise: { minContentLength: 5, minUniqueWords: 2 } };
-    if (meetsMinimumRequirements(validContent, defaultConfig)) {
-      pass('T-028f: meets_minimum_requirements accepts valid content', 'Accepted');
-    } else {
-      fail('T-028f: meets_minimum_requirements accepts valid content', 'Rejected');
-    }
-
-    // Test 6: meets_minimum_requirements rejects short content
-    const shortContent = 'Hi';
-    if (!meetsMinimumRequirements(shortContent, defaultConfig)) {
-      pass('T-028g: meets_minimum_requirements rejects short content', 'Rejected');
-    } else {
-      fail('T-028g: meets_minimum_requirements rejects short content', 'Accepted');
-    }
-
-    // Test 7: meets_minimum_requirements rejects content with few unique words
-    const repetitiveContent = 'test test test test test';
-    if (!meetsMinimumRequirements(repetitiveContent, defaultConfig)) {
-      pass('T-028h: meets_minimum_requirements rejects repetitive content', 'Rejected');
-    } else {
-      fail('T-028h: meets_minimum_requirements rejects repetitive content', 'Accepted');
-    }
-
-    // Test 8: meets_minimum_requirements handles null content
-    if (!meetsMinimumRequirements(null, defaultConfig)) {
-      pass('T-028i: meets_minimum_requirements handles null', 'Returns false');
-    } else {
-      fail('T-028i: meets_minimum_requirements handles null', 'Did not return false');
-    }
-
-    // Test 9: calculate_quality_score returns number between 0-100
-    const qualityItems = [
-      { prompt: 'Implemented feature X in file.js' },
-      { prompt: 'Fixed bug in module.ts with new approach' },
-      { prompt: 'Decided to use pattern Y because of performance' }
-    ];
-    const qualityConfig = { quality: { factors: { uniqueness: 0.30, density: 0.30, fileRefs: 0.20, decisions: 0.20 } } };
-    const qualityScore = calculateQualityScore(qualityItems, qualityConfig);
-    if (typeof qualityScore === 'number' && qualityScore >= 0 && qualityScore <= 100) {
-      pass('T-028j: calculate_quality_score returns valid score', `Score: ${qualityScore}`);
-    } else {
-      fail('T-028j: calculate_quality_score returns valid score', `Invalid: ${qualityScore}`);
-    }
-
-    // Test 10: calculate_quality_score returns 0 for empty array
-    const emptyScore = calculateQualityScore([], qualityConfig);
-    assertEqual(emptyScore, 0, 'T-028k: calculate_quality_score returns 0 for empty array');
-
-    // Test 11: calculate_quality_score handles string items
-    const stringItems = ['Implemented OAuth', 'Fixed authentication.js bug'];
-    const stringScore = calculateQualityScore(stringItems, qualityConfig);
-    if (typeof stringScore === 'number' && stringScore >= 0) {
-      pass('T-028l: calculate_quality_score handles string items', `Score: ${stringScore}`);
-    } else {
-      fail('T-028l: calculate_quality_score handles string items', `Invalid: ${stringScore}`);
-    }
-
-    // Test 12: filter_content is a shorthand that works
-    const prompts = [
-      { prompt: 'Valid implementation of feature' },
-      { prompt: 'User message' },  // Should be filtered as noise
-      { prompt: 'Another valid prompt with details' }
-    ];
-    const filtered = filterContent(prompts);
-    if (Array.isArray(filtered) && filtered.length <= prompts.length) {
-      pass('T-028m: filter_content filters array', `Filtered to ${filtered.length} items`);
-    } else {
-      fail('T-028m: filter_content filters array', `Got ${filtered.length} items`);
-    }
-
-    // Test 13: filter_content handles empty array
-    const emptyFiltered = filterContent([]);
-    if (Array.isArray(emptyFiltered) && emptyFiltered.length === 0) {
-      pass('T-028n: filter_content handles empty array', 'Returns empty array');
-    } else {
-      fail('T-028n: filter_content handles empty array', `Got ${emptyFiltered.length} items`);
-    }
-
-  } catch (error) {
-    fail('T-028: Content filter additional functions', error.message);
-  }
-}
-
 async function testLibSimulationFactoryAdditional() {
   log('\n🔬 LIB: simulation-factory.js (additional functions)');
 
   try {
     const {
       createSimulationPhases,
-      createSimulationFlowchart,
-      markAsSimulated
+      createSimulationFlowchart
     } = require(path.join(SCRIPTS_DIR, 'lib', 'simulation-factory'));
 
     // Test 1: create_simulation_phases returns array of phases
@@ -2289,37 +2013,6 @@ async function testLibSimulationFactoryAdditional() {
       fail('T-029f: create_simulation_flowchart accepts custom request', 'Custom text not found');
     }
 
-    // Test 7: mark_as_simulated adds simulation flag
-    const metadata = { title: 'Test', date: '2024-01-15' };
-    const marked = markAsSimulated(metadata);
-    if (marked.isSimulated === true) {
-      pass('T-029g: mark_as_simulated adds isSimulated flag', 'Flag added');
-    } else {
-      fail('T-029g: mark_as_simulated adds isSimulated flag', `isSimulated: ${marked.isSimulated}`);
-    }
-
-    // Test 8: mark_as_simulated adds warning message
-    if (marked._simulationWarning && marked._simulationWarning.includes('placeholder')) {
-      pass('T-029h: mark_as_simulated adds warning message', 'Warning present');
-    } else {
-      fail('T-029h: mark_as_simulated adds warning message', 'Warning missing');
-    }
-
-    // Test 9: mark_as_simulated preserves original data
-    if (marked.title === 'Test' && marked.date === '2024-01-15') {
-      pass('T-029i: mark_as_simulated preserves original data', 'Original data intact');
-    } else {
-      fail('T-029i: mark_as_simulated preserves original data', 'Data lost');
-    }
-
-    // Test 10: mark_as_simulated handles empty object
-    const emptyMarked = markAsSimulated({});
-    if (emptyMarked.isSimulated === true && emptyMarked._simulationWarning) {
-      pass('T-029j: mark_as_simulated handles empty object', 'Flags added to empty');
-    } else {
-      fail('T-029j: mark_as_simulated handles empty object', 'Flags missing');
-    }
-
   } catch (error) {
     fail('T-029: Simulation factory additional functions', error.message);
   }
@@ -2330,8 +2023,7 @@ async function testLibAnchorGeneratorAdditional() {
 
   try {
     const {
-      extractSpecNumber,
-      getCurrentDate
+      extractSpecNumber
     } = require(path.join(SCRIPTS_DIR, 'lib', 'anchor-generator'));
 
     // Test 1: extract_spec_number extracts 3-digit prefix
@@ -2353,40 +2045,6 @@ async function testLibAnchorGeneratorAdditional() {
     // Test 5: extract_spec_number handles leading zeros
     const specNum5 = extractSpecNumber('001-first-spec');
     assertEqual(specNum5, '001', 'T-030e: extract_spec_number preserves leading zeros');
-
-    // Test 6: get_current_date returns YYYY-MM-DD format
-    const currentDate = getCurrentDate();
-    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
-    if (datePattern.test(currentDate)) {
-      pass('T-030f: get_current_date returns YYYY-MM-DD format', currentDate);
-    } else {
-      fail('T-030f: get_current_date returns YYYY-MM-DD format', currentDate);
-    }
-
-    // Test 7: get_current_date returns today's date
-    const today = new Date();
-    const expectedYear = today.getFullYear().toString();
-    if (currentDate.startsWith(expectedYear)) {
-      pass('T-030g: get_current_date returns current year', currentDate);
-    } else {
-      fail('T-030g: get_current_date returns current year', `Expected ${expectedYear}, got ${currentDate}`);
-    }
-
-    // Test 8: get_current_date month is valid (01-12)
-    const month = parseInt(currentDate.split('-')[1], 10);
-    if (month >= 1 && month <= 12) {
-      pass('T-030h: get_current_date has valid month', `Month: ${month}`);
-    } else {
-      fail('T-030h: get_current_date has valid month', `Invalid month: ${month}`);
-    }
-
-    // Test 9: get_current_date day is valid (01-31)
-    const day = parseInt(currentDate.split('-')[2], 10);
-    if (day >= 1 && day <= 31) {
-      pass('T-030i: get_current_date has valid day', `Day: ${day}`);
-    } else {
-      fail('T-030i: get_current_date has valid day', `Invalid day: ${day}`);
-    }
 
   } catch (error) {
     fail('T-030: Anchor generator additional functions', error.message);
@@ -2589,21 +2247,17 @@ async function testUtilsPromptUtils() {
 
   try {
     const {
-      requireInteractiveMode,
       promptUser,
       promptUserChoice
     } = require(path.join(SCRIPTS_DIR, 'utils', 'prompt-utils'));
 
-    // Test 1: requireInteractiveMode is a function
-    assertType(requireInteractiveMode, 'function', 'T-033a: requireInteractiveMode is a function');
-
-    // Test 2: promptUser is a function
+    // Test 1: promptUser is a function
     assertType(promptUser, 'function', 'T-033b: promptUser is a function');
 
-    // Test 3: promptUserChoice is a function
+    // Test 2: promptUserChoice is a function
     assertType(promptUserChoice, 'function', 'T-033c: promptUserChoice is a function');
 
-    // Test 4: promptUser returns Promise
+    // Test 3: promptUser returns Promise
     const promptResult = promptUser('Test?', 'default', false);
     if (promptResult instanceof Promise) {
       pass('T-033d: promptUser returns a Promise', 'Promise returned');
@@ -2611,7 +2265,7 @@ async function testUtilsPromptUtils() {
       fail('T-033d: promptUser returns a Promise', `Got: ${typeof promptResult}`);
     }
 
-    // Test 5: promptUser in non-interactive mode returns default value
+    // Test 4: promptUser in non-interactive mode returns default value
     const defaultResult = await promptUser('Test question?', 'defaultValue', false);
     if (defaultResult === 'defaultValue') {
       pass('T-033e: promptUser returns default in non-interactive mode', `Got: ${defaultResult}`);
@@ -2619,7 +2273,7 @@ async function testUtilsPromptUtils() {
       fail('T-033e: promptUser returns default in non-interactive mode', `Got: ${defaultResult}`);
     }
 
-    // Test 6: promptUserChoice in non-interactive mode returns 1
+    // Test 5: promptUserChoice in non-interactive mode returns 1
     const choiceResult = await promptUserChoice('Select?', 3, 3, false);
     if (choiceResult === 1) {
       pass('T-033f: promptUserChoice returns 1 in non-interactive mode', `Got: ${choiceResult}`);
@@ -2733,8 +2387,7 @@ async function testUtilsValidationUtils() {
   try {
     const {
       validateNoLeakedPlaceholders,
-      validateAnchors,
-      logAnchorValidation
+      validateAnchors
     } = require(path.join(SCRIPTS_DIR, 'utils', 'validation-utils'));
 
     // Test 1: validateNoLeakedPlaceholders throws on leaked placeholders
@@ -2784,13 +2437,6 @@ async function testUtilsValidationUtils() {
     } else {
       fail('T-035g: validateAnchors handles multiple valid anchors', `Got ${multiWarnings.length} warnings`);
     }
-
-    // Test 8: logAnchorValidation is a function
-    assertType(logAnchorValidation, 'function', 'T-035h: logAnchorValidation is a function');
-
-    // Test 9: logAnchorValidation does not throw
-    assertDoesNotThrow(() => logAnchorValidation(validContent, 'test.md'),
-      'T-035i: logAnchorValidation does not throw for valid content');
 
   } catch (error) {
     fail('T-035: Validation utils module', error.message);
@@ -3555,7 +3201,6 @@ async function main() {
   await testExtractorsSessionAdditional();
 
   // LOW priority additional function tests
-  await testLibContentFilterAdditional();
   await testLibSimulationFactoryAdditional();
   await testLibAnchorGeneratorAdditional();
   await testLibSemanticSummarizerAdditional();

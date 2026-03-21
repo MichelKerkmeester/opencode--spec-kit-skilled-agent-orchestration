@@ -43,12 +43,16 @@ export interface ManualDecisionInfo {
   confidence?: number;
 }
 
-/** Fact item captured on an observation. */
+/** Fact item captured on an observation.
+ * The object variant uses an index signature because facts originate from
+ * JSON-parsed session data whose shape is not fully controlled at compile time.
+ */
 export type FactValue =
   | string
   | {
     text?: string;
     files?: string[];
+    /** @warn Index signature retained: facts may carry arbitrary JSON keys from external data. */
     [key: string]: unknown;
   };
 
@@ -116,7 +120,9 @@ export interface ExchangeSummary {
   timestamp?: string;
 }
 
-/** Shared collected-data contract reused by extractor entrypoints. */
+/** Shared collected-data contract reused by extractor entrypoints.
+ * Index signature removed: workflow.ts read helpers now accept `object` and cast internally.
+ * SimCollectedData (simulation-factory.ts) extends Partial<CollectedDataBase> directly. */
 export interface CollectedDataBase {
   recentContext?: RecentContextEntry[];
   observations?: Observation[];
@@ -125,7 +131,6 @@ export interface CollectedDataBase {
   FILES?: CollectedFileEntry[];
   SUMMARY?: string;
   importanceTier?: string;
-  importance_tier?: string;
   filesModified?: Array<{ path: string; changes_summary?: string }>;
   _manualDecisions?: Array<string | Record<string, unknown>>;
   _manualTriggerPhrases?: string[];
@@ -136,7 +141,48 @@ export interface CollectedDataBase {
   toolCalls?: ToolCallSummary[];
   /** JSON-mode exchange summaries (AI-composed conversation highlights) */
   exchanges?: ExchangeSummary[];
-  [key: string]: unknown;
+  // Explicitly declared fields previously accessed via index signature (O3-6)
+  sessionSummary?: string;
+  keyDecisions?: Array<Record<string, unknown>>;
+  nextSteps?: Array<Record<string, unknown>>;
+  _source?: string;
+  _sourceTranscriptPath?: string;
+  _sourceSessionId?: string;
+  _sessionId?: string;
+  _sourceSessionCreated?: number;
+  _sourceSessionUpdated?: number;
+  headRef?: string | null;
+  commitRef?: string | null;
+  repositoryState?: string | null;
+  isDetachedHead?: boolean | null;
+  TECHNICAL_CONTEXT?: Array<{ KEY: string; VALUE: string }>;
+  // Fields surfaced during O3-6 index signature removal (stateless enrichment + capture pipeline)
+  /** @deprecated Use importanceTier (camelCase). Snake-case variant kept for raw JSON compatibility. */
+  importance_tier?: string;
+  _toolCallCount?: number;
+  _narrativeObservations?: Observation[];
+  _specContextLoaded?: boolean;
+  _gitContextLoaded?: boolean;
+  _relevanceFallback?: boolean;
+  _capturedAt?: string;
+  // Fields accessed by workflow.ts read helpers for memory classification, dedup, and causal links
+  // (AI-composed JSON data from generate-context.js input)
+  /** @deprecated Use memoryClassification (camelCase). Snake-case variant for raw JSON compatibility. */
+  memory_classification?: Record<string, unknown>;
+  memoryClassification?: Record<string, unknown>;
+  /** @deprecated Use memoryType (camelCase). Snake-case variant for raw JSON compatibility. */
+  memory_type?: string;
+  memoryType?: string;
+  /** @deprecated Use sessionDedup (camelCase). Snake-case variant for raw JSON compatibility. */
+  session_dedup?: Record<string, unknown>;
+  sessionDedup?: Record<string, unknown>;
+  /** @deprecated Use causalLinks (camelCase). Snake-case variant for raw JSON compatibility. */
+  causal_links?: Record<string, unknown>;
+  causalLinks?: Record<string, unknown>;
+  // RC5: Explicit contextType from JSON payload (mirrors importanceTier pattern)
+  contextType?: string;
+  /** @deprecated Use contextType (camelCase). Snake-case variant for raw JSON compatibility. */
+  context_type?: string;
 }
 
 /** Reusable collected-data subset helper derived from the canonical base contract. */
@@ -155,7 +201,10 @@ export interface ObservationDetailed {
   IS_DECISION: boolean;
 }
 
-/** Counts tool usage by category within a session. */
+/** Counts tool usage by category within a session.
+ * @warn Index signature retained: tool names are iterated as string variables
+ * in `countToolsByType()` (session-extractor.ts) via `counts[tool]++`.
+ */
 export interface ToolCounts {
   Read: number;
   Edit: number;
@@ -231,9 +280,73 @@ export interface CodePattern {
 }
 
 // ───────────────────────────────────────────────────────────────
+// 1b. QUALITY TYPES (shared between core/ and extractors/)
+// ───────────────────────────────────────────────────────────────
+
+export type QualityFlag =
+  | 'has_contamination'
+  | 'has_insufficient_context'
+  | 'missing_trigger_phrases'
+  | 'missing_key_topics'
+  | 'missing_file_context'
+  | 'generic_title'
+  | 'short_content'
+  | 'leaked_html'
+  | 'duplicate_observations'
+  | 'has_placeholders'
+  | 'has_fallback_decision'
+  | 'sparse_semantic_fields'
+  | 'has_tool_state_mismatch'
+  | 'has_session_source_mismatch'
+  | 'has_spec_relevance_mismatch'
+  | 'has_contaminated_title'
+  | 'has_error_content'
+  | 'insufficient_capture'
+  | 'has_malformed_spec_folder'
+  | 'has_topical_mismatch';
+
+export interface QualityDimensionScore {
+  id: string;
+  score01: number;
+  score100: number;
+  maxScore100: number;
+  passed?: boolean;
+}
+
+export interface QualityInsufficiencySummary {
+  pass: boolean;
+  score01: number | null;
+  reasons: string[];
+}
+
+/** Represents quality score. */
+export interface QualityScoreResult {
+  /** @deprecated Use score100 instead */
+  score: number;
+  score01: number;
+  score100: number;
+  /** @deprecated Use score01 instead */
+  qualityScore: number;
+  warnings: string[];
+  qualityFlags: QualityFlag[];
+  hadContamination: boolean;
+  dimensions: QualityDimensionScore[];
+  breakdown?: {
+    triggerPhrases: number;
+    keyTopics: number;
+    fileDescriptions: number;
+    contentLength: number;
+    noLeakedTags: number;
+    observationDedup: number;
+  };
+  insufficiency: QualityInsufficiencySummary | null;
+}
+
+// ───────────────────────────────────────────────────────────────
 // 2. DECISION TYPES
 // ───────────────────────────────────────────────────────────────
-/** Option within a decision — canonical type */
+/** Option within a decision — canonical type.
+ * Index signature removed: validateDataStructure() now accepts generic T extends Record. */
 export interface DecisionOption {
   OPTION_NUMBER: number;
   LABEL: string;
@@ -241,10 +354,10 @@ export interface DecisionOption {
   HAS_PROS_CONS: boolean;
   PROS: Array<{ PRO: string }>;
   CONS: Array<{ CON: string }>;
-  [key: string]: unknown;
 }
 
-/** A single decision record — canonical type */
+/** A single decision record — canonical type.
+ * Index signature removed: validateDataStructure() now accepts generic T extends Record. */
 export interface DecisionRecord {
   INDEX: number;
   TITLE: string;
@@ -270,7 +383,6 @@ export interface DecisionRecord {
   HAS_DECISION_TREE: boolean;
   DECISION_ANCHOR_ID: string;
   DECISION_IMPORTANCE: string;
-  [key: string]: unknown;
 }
 
 /** Decision data structure — canonical type */
@@ -286,22 +398,22 @@ export interface DecisionData {
 // ───────────────────────────────────────────────────────────────
 // 3. PHASE / CONVERSATION TYPES
 // ───────────────────────────────────────────────────────────────
-/** Phase entry — canonical type (used by diagram + conversation extractors) */
+/** Phase entry — canonical type (used by diagram + conversation extractors). */
 export interface PhaseEntry {
   PHASE_NAME: string;
   DURATION: string;
   ACTIVITIES: string[];
-  [key: string]: unknown;
 }
 
-/** Tool call entry in a message — canonical type */
+/** Tool call entry in a message — canonical type.
+ * message-utils.ts ToolCall is now a type alias for ToolCallEntry.
+ * Index signature removed: all construction sites (conversation-extractor.ts) produce only declared fields. */
 export interface ToolCallEntry {
   TOOL_NAME: string;
   DESCRIPTION: string;
   HAS_RESULT: boolean;
   RESULT_PREVIEW: string;
   HAS_MORE: boolean;
-  [key: string]: unknown;
 }
 
 /** Message entry in conversation data — canonical type */
@@ -340,7 +452,7 @@ export interface TopicCluster {
   confidence: number;
 }
 
-/** Conversation phase — canonical type */
+/** Conversation phase — canonical type. */
 export interface ConversationPhase {
   PHASE_NAME: string;
   DURATION: string;
@@ -349,7 +461,6 @@ export interface ConversationPhase {
   START_MESSAGE_INDEX?: number;
   END_MESSAGE_INDEX?: number;
   DOMINANT_TERMS?: string[];
-  [key: string]: unknown;
 }
 
 /** Conversation data structure — canonical type */
@@ -370,7 +481,8 @@ export interface ConversationData {
 // ───────────────────────────────────────────────────────────────
 // 4. DIAGRAM TYPES
 // ───────────────────────────────────────────────────────────────
-/** Diagram output entry — canonical type */
+/** Diagram output entry — canonical type.
+ * Index signature removed: validateDataStructure() now accepts generic T extends Record. */
 export interface DiagramOutput {
   TITLE: string;
   TIMESTAMP: string;
@@ -384,7 +496,6 @@ export interface DiagramOutput {
   NOTES: unknown[];
   HAS_RELATED_FILES: boolean;
   RELATED_FILES: Array<{ FILE_PATH: string }>;
-  [key: string]: unknown;
 }
 
 /** Auto-generated decision tree — canonical type */
@@ -447,6 +558,8 @@ export interface SessionData {
   TOOL_COUNT: number;
   MESSAGE_COUNT: number;
   QUICK_SUMMARY: string;
+  /** RC1: Raw sessionSummary from JSON payload, used as preferred title candidate */
+  _JSON_SESSION_SUMMARY?: string | null;
   SKILL_VERSION: string;
   OBSERVATIONS: ObservationDetailed[];
   HAS_OBSERVATIONS: boolean;

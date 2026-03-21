@@ -38,8 +38,8 @@ Phase 001 (retrieval) manual testing execution and documentation. All 9 retrieva
 
 | Verdict | Count | Tests |
 |---------|-------|-------|
-| PASS | 6 | EX-001, EX-002, EX-003, EX-004, EX-005, NEW-086 |
-| PARTIAL | 3 | NEW-109, NEW-142, NEW-143 |
+| PASS | 6 | EX-001, EX-002, EX-003, EX-004, EX-005, 086 |
+| PARTIAL | 3 | 109, 142, 143 |
 | FAIL | 0 | — |
 
 Coverage: **9/9 scenarios executed**, 0 skipped.
@@ -57,10 +57,10 @@ Coverage: **9/9 scenarios executed**, 0 skipped.
 | scratch/EX-003-evidence.md | Created | Fast recall path evidence |
 | scratch/EX-004-evidence.md | Created | Channel fusion sanity evidence |
 | scratch/EX-005-evidence.md | Created | Stage invariant verification evidence |
-| scratch/NEW-086-evidence.md | Created | BM25 trigger re-index gate evidence |
-| scratch/NEW-109-evidence.md | Created | 3-tier search fallback evidence |
-| scratch/NEW-142-evidence.md | Created | Session trace contract evidence |
-| scratch/NEW-143-evidence.md | Created | Bounded graph-walk rollout evidence |
+| scratch/086-evidence.md | Created | BM25 trigger re-index gate evidence |
+| scratch/109-evidence.md | Created | 3-tier search fallback evidence |
+| scratch/142-evidence.md | Created | Session trace contract evidence |
+| scratch/143-evidence.md | Created | Bounded graph-walk rollout evidence |
 | scratch/verdict-summary.md | Created | Per-test verdicts with 5-point protocol |
 <!-- /ANCHOR:what-built -->
 
@@ -69,7 +69,7 @@ Coverage: **9/9 scenarios executed**, 0 skipped.
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-All 9 retrieval scenarios were executed sequentially via native MCP tool calls (memory_context, memory_search, memory_match_triggers, checkpoint_create/restore, memory_update) in a single Claude Opus 4.6 session. Evidence was captured per-test in structured markdown files under `scratch/`. Verdicts were assigned using the 5-point review protocol (preconditions, commands, signals, evidence readability, outcome rationale). Destructive test NEW-086 used checkpoint/restore for safe rollback.
+All 9 retrieval scenarios were executed sequentially via native MCP tool calls (memory_context, memory_search, memory_match_triggers, checkpoint_create/restore, memory_update) in a single Claude Opus 4.6 session. Evidence was captured per-test in structured markdown files under `scratch/`. Verdicts were assigned using the 5-point review protocol (preconditions, commands, signals, evidence readability, outcome rationale). Destructive test 086 used checkpoint/restore for safe rollback.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -82,8 +82,8 @@ All 9 retrieval scenarios were executed sequentially via native MCP tool calls (
 | Level 1 spec with checklist | Documentation-only packet needs structured tracking but not full Level 2 architecture sections |
 | Template alignment post-generation | Agents produced 4 structural variants for checklist.md; batch alignment ensured 100% template compliance |
 | Native MCP execution (not shell harness) | Direct tool calls provide structured JSON evidence; trade-off: cannot change MCP server env vars (causes 3 PARTIAL) |
-| memoryId 25368 as NEW-086 target | Archived record (z_archive/013-agent-haiku-compatibility) is safe to mutate; checkpoint/restore ensures clean rollback |
-| PARTIAL verdict for env-gated tests | NEW-109/142/143 require MCP server restart with different env vars — documented as limitation, not failure |
+| memoryId 25368 as 086 target | Archived record (z_archive/013-agent-haiku-compatibility) is safe to mutate; checkpoint/restore ensures clean rollback |
+| PARTIAL verdict for env-gated tests | 109/142/143 require MCP server restart with different env vars — documented as limitation, not failure |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -107,7 +107,7 @@ All 9 retrieval scenarios were executed sequentially via native MCP tool calls (
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **3 PARTIAL verdicts** — NEW-109, NEW-142, NEW-143 are PARTIAL due to MCP server environment isolation. Testing alternative flag states (SPECKIT_SEARCH_FALLBACK=false, SPECKIT_GRAPH_WALK_ROLLOUT=trace_only/off) and established session transitions requires a shell-level test harness that can restart the MCP server with different environment variables.
+1. **3 PARTIAL verdicts** — 109, 142, 143 are PARTIAL due to MCP server environment isolation. Testing alternative flag states (SPECKIT_SEARCH_FALLBACK=false, SPECKIT_GRAPH_WALK_ROLLOUT=trace_only/off) and established session transitions requires a shell-level test harness that can restart the MCP server with different environment variables.
 2. **Token budget truncation** — Some MCP responses were truncated to fit token budgets (1200-1500 tokens). Full pipeline metadata may contain additional fields not captured in evidence.
 <!-- /ANCHOR:limitations -->
 

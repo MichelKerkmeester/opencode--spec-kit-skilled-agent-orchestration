@@ -9,9 +9,6 @@
 export {
   populateTemplate,
   renderTemplate,
-  cleanupExcessiveNewlines,
-  stripTemplateConfigComments,
-  isFalsy,
 } from './template-renderer';
 
 export type { TemplateContext } from './template-renderer';

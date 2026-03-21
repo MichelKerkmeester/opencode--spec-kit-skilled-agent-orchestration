@@ -1,4 +1,4 @@
-# NEW-142: Session transition trace contract
+# 142: Session transition trace contract
 
 ## Preconditions
 - MCP server running with default flags

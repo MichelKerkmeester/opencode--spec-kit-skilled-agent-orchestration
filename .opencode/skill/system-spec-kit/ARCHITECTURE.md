@@ -201,7 +201,6 @@ All exceptions must be registered in `scripts/evals/import-policy-allowlist.json
 | File | Import | Reason |
 |------|--------|--------|
 | `scripts/evals/run-performance-benchmarks.ts` | `@spec-kit/mcp-server/lib/*` (multiple) | Benchmark needs direct access to internal metrics |
-| `scripts/evals/run-chk210-quality-backfill.ts` | `@spec-kit/mcp-server/lib/*` | Quality backfill accesses internal parsing |
 | `scripts/spec-folder/generate-description.ts` | `@spec-kit/mcp-server/lib/search/folder-discovery` | CLI tool needs folder-discovery internals for description generation |
 | `scripts/core/workflow.ts` | `@spec-kit/mcp-server/lib/search/folder-discovery` | Workflow memory-save updates per-folder description.json via dynamic import |
 

@@ -1,19 +1,19 @@
 ---
-title: "NEW-048 -- Auto entity extraction (R10)"
-description: "This scenario validates Auto entity extraction (R10) for `NEW-048`. It focuses on Confirm entity pipeline persistence."
+title: "048 -- Auto entity extraction (R10)"
+description: "This scenario validates Auto entity extraction (R10) for `048`. It focuses on Confirm entity pipeline persistence."
 ---
 
-# NEW-048 -- Auto entity extraction (R10)
+# 048 -- Auto entity extraction (R10)
 
 ## 1. OVERVIEW
 
-This scenario validates Auto entity extraction (R10) for `NEW-048`. It focuses on Confirm entity pipeline persistence.
+This scenario validates Auto entity extraction (R10) for `048`. It focuses on Confirm entity pipeline persistence.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Operators run the exact prompt and command sequence for `NEW-048` and confirm the expected signals without contradicting evidence.
+Operators run the exact prompt and command sequence for `048` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm entity pipeline persistence
 - Prompt: `Validate auto entity extraction (R10). Capture the evidence needed to prove Entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded. Return a concise user-facing pass/fail verdict with the main reason.`
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-048` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-048 | Auto entity extraction (R10) | Confirm entity pipeline persistence | `Validate auto entity extraction (R10). Capture the evidence needed to prove Entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Save entity-rich content 2) inspect entity tables 3) verify normalization/denylist | Entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded | Entity table contents + normalization examples + denylist exclusion verification | PASS: Entities extracted, normalized, persisted; denylist items absent; FAIL: Missing entities, denormalized values, or denylist items present | Verify entity extraction pipeline → Check normalization rules → Inspect denylist configuration |
+| 048 | Auto entity extraction (R10) | Confirm entity pipeline persistence | `Validate auto entity extraction (R10). Capture the evidence needed to prove Entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Save entity-rich content 2) inspect entity tables 3) verify normalization/denylist | Entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded | Entity table contents + normalization examples + denylist exclusion verification | PASS: Entities extracted, normalized, persisted; denylist items absent; FAIL: Missing entities, denormalized values, or denylist items present | Verify entity extraction pipeline → Check normalization rules → Inspect denylist configuration |
 
 ---
 
@@ -40,6 +40,6 @@ Operators run the exact prompt and command sequence for `NEW-048` and confirm th
 ## 5. SOURCE METADATA
 
 - Group: Memory Quality and Indexing
-- Playbook ID: NEW-048
+- Playbook ID: 048
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `13--memory-quality-and-indexing/048-auto-entity-extraction-r10.md`

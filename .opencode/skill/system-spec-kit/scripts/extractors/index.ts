@@ -11,7 +11,7 @@ export * from './diagram-extractor';
 export * from './conversation-extractor';
 export * from './decision-extractor';
 export * from './session-extractor';
-export * from './session-activity-signal';
+export * from '../lib/session-activity-signal';
 /** Re-export extractor functions and helpers. */
 export {
   buildImplementationGuideData,
@@ -21,9 +21,6 @@ export {
   extractKeyFilesWithRoles,
   generateExtensionGuide,
   extractCodePatterns,
-  hasImplementationWork as has_implementation_work,
-  extractMainTopic as extract_main_topic,
-  extractWhatBuilt as extract_what_built,
 } from './implementation-guide-extractor';
 /** Re-export shared extractor types. */
 export type {
@@ -35,11 +32,6 @@ export type {
   FileInput,
 } from './implementation-guide-extractor';
 export * from './collect-session-data';
-export * from './opencode-capture';
-export * from './claude-code-capture';
-export * from './codex-cli-capture';
-export * from './copilot-cli-capture';
-export * from './gemini-cli-capture';
 export * from './contamination-filter';
 export * from './quality-scorer';
 export * from './spec-folder-extractor';

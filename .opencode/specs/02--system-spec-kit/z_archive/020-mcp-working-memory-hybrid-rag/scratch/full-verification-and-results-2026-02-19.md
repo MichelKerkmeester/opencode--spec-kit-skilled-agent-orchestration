@@ -45,7 +45,7 @@ Observed result:
 Command:
 
 ```bash
-npx tsx scripts/evals/run-phase1-5-shadow-eval.ts "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag"
+npx tsx scripts/evals/deleted-phase1-5-shadow-eval-script "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag"
 ```
 
 Run location:
@@ -79,7 +79,7 @@ Observed result:
 Command:
 
 ```bash
-npx tsx scripts/evals/run-phase3-telemetry-dashboard.ts "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag"
+npx tsx scripts/evals/deleted-phase3-telemetry-dashboard-script "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag"
 ```
 
 Run location:

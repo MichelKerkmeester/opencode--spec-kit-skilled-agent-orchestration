@@ -1,19 +1,19 @@
 ---
-title: "NEW-018 -- Edge density measurement"
-description: "This scenario validates Edge density measurement for `NEW-018`. It focuses on Confirm edges-per-node thresholding."
+title: "018 -- Edge density measurement"
+description: "This scenario validates Edge density measurement for `018`. It focuses on Confirm edges-per-node thresholding."
 ---
 
-# NEW-018 -- Edge density measurement
+# 018 -- Edge density measurement
 
 ## 1. OVERVIEW
 
-This scenario validates Edge density measurement for `NEW-018`. It focuses on Confirm edges-per-node thresholding.
+This scenario validates Edge density measurement for `018`. It focuses on Confirm edges-per-node thresholding.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Operators run the exact prompt and command sequence for `NEW-018` and confirm the expected signals without contradicting evidence.
+Operators run the exact prompt and command sequence for `018` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm edges-per-node thresholding
 - Prompt: `Verify edge density measurement and gate behavior. Capture the evidence needed to prove Edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary. Return a concise user-facing pass/fail verdict with the main reason.`
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-018` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-018 | Edge density measurement | Confirm edges-per-node thresholding | `Verify edge density measurement and gate behavior. Capture the evidence needed to prove Edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Query edge+node counts 2) Compute ratio 3) Check threshold handling | Edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary | Edge+node counts + computed ratio + threshold gate activation state | PASS: Ratio = edges/nodes matches manual calculation; gate state correct at boundary; FAIL: Ratio miscalculated or gate ignores threshold | Verify edge/node count queries → Check threshold configuration → Inspect gate activation logic |
+| 018 | Edge density measurement | Confirm edges-per-node thresholding | `Verify edge density measurement and gate behavior. Capture the evidence needed to prove Edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Query edge+node counts 2) Compute ratio 3) Check threshold handling | Edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary | Edge+node counts + computed ratio + threshold gate activation state | PASS: Ratio = edges/nodes matches manual calculation; gate state correct at boundary; FAIL: Ratio miscalculated or gate ignores threshold | Verify edge/node count queries → Check threshold configuration → Inspect gate activation logic |
 
 ---
 
@@ -40,6 +40,6 @@ Operators run the exact prompt and command sequence for `NEW-018` and confirm th
 ## 5. SOURCE METADATA
 
 - Group: Graph Signal Activation
-- Playbook ID: NEW-018
+- Playbook ID: 018
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `10--graph-signal-activation/018-edge-density-measurement.md`

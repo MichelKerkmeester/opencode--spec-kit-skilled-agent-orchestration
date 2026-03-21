@@ -122,7 +122,7 @@ Priority-based checklists for each phase of the SpecKit workflow.
 **Before Claiming Complete:**
 - [ ] All P0 items verified with evidence
 - [ ] Browser tested if frontend (Completion Verification Rule requirement)
-- [ ] Save context if significant progress: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]`
+- [ ] Save context if significant progress: `/memory:save` or `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' specs/###-folder/`
 
 ### Debug Escalation Protocol
 
@@ -155,7 +155,7 @@ When debugging becomes prolonged or repetitive:
 - [ ] All tests passing
 - [ ] Code reviewed
 - [ ] No blockers remaining
-- [ ] Memory context saved: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]`
+- [ ] Memory context saved: `/memory:save` or `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' specs/###-folder/`
 
 ### P1 - Must Complete
 

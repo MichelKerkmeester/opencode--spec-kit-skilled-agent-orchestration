@@ -41,4 +41,4 @@ Process-lifetime DB connection manager via marker file (`DB_UPDATED_FILE`). When
 - Group: Undocumented feature gap scan
 - Source feature title: Cross-process DB hot rebinding
 - Current reality source: 10-agent feature gap scan
-- Playbook reference: NEW-112
+- Playbook reference: 112

@@ -3,7 +3,7 @@ title: "Feature Catalog Comprehensive Audit & Remediation"
 status: "in-progress"
 level: 3
 created: "2025-12-01"
-updated: "2026-03-16"
+updated: "2026-03-21"
 ---
 # Feature Catalog Comprehensive Audit & Remediation
 
@@ -14,7 +14,7 @@ updated: "2026-03-16"
 
 ## EXECUTIVE SUMMARY
 
-The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 historical snapshot** of 180 snippet files across 20 categories. That snapshot captured documentation drift: inaccurate descriptions, invalid code paths, and 55 undocumented capabilities discovered by a prior 10-agent scan. A **2026-03-16 current-state addendum** now tracks live-tree drift to 189 snippet files and explicitly classifies 14 omitted current snippets.
+The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 historical snapshot** of 180 snippet files across 20 categories. That snapshot captured documentation drift: inaccurate descriptions, invalid code paths, and 55 undocumented capabilities discovered by a prior 10-agent scan. A **2026-03-16 current-state addendum** tracks live-tree drift to 189 snippet files and classifies 14 omitted current snippets. A **2026-03-21 normalization addendum** removes all provisional `NEW-NNN` markers, adds phase 016/017 coverage, and brings the catalog to 194 files and the playbook to 200 files.
 
 **Key Decisions**: 30-agent partitioned research (20 verification + 10 gap investigation), 3-tier significance classification
 
@@ -30,6 +30,17 @@ The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 his
   - 12 appear structurally current with no immediate remediation.
   - 2 require follow-up (`.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md`, `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md`) for source-path normalization/correction.
 - Tooling narrative is clarified as planned-vs-executed: some plan text says Copilot for Stream 1, but execution artifacts are Codex-based.
+
+## NORMALIZATION ADDENDUM (2026-03-21)
+
+- **Feature catalog**: 194 snippet files (net +5 since 2026-03-16 addendum). Two new entries added for phases 016/017.
+- **Manual testing playbook**: 200 scenario files. Two new entries added (153, 154) for phases 016/017.
+- All `NEW-NNN` provisional markers removed from both catalog and playbook individual files and index files.
+- Playbook section renamed from "8. NEW FEATURES" to "8. FEATURES".
+- `G-NEW-1`, `G-NEW-2`, `G-NEW-3` proper nouns preserved (evaluation framework feature IDs).
+- New feature catalog entries: `16-json-mode-hybrid-enrichment.md` (phase 016), `17-json-primary-deprecation-posture.md` (phase 017).
+- New playbook entries: `153-json-mode-hybrid-enrichment.md`, `154-json-primary-deprecation-posture.md`.
+- Both index files updated with new entries and cross-reference table rows.
 
 ---
 

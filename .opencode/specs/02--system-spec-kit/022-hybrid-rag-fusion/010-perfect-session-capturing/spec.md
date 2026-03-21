@@ -5,7 +5,7 @@ trigger_phrases:
   - "perfect session capturing"
   - "spec 010"
   - "truth reconciliation"
-  - "roadmap phases 018 019 020"
+  - "roadmap phases 000 018"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -52,7 +52,7 @@ The parent `010-perfect-session-capturing` pack had already been reconciled thro
 
 ### Purpose
 
-Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pack should tell readers what is already reconciled, what is now shipped in runtime, and why universal "flawless across every CLI" language is still blocked on retained live proof.
+Extend the pack truthfully through phase `018`, with `019` serving as an architecture remediation audit. The parent pack should tell readers what is already reconciled, what is now shipped in runtime, and why universal "flawless across every CLI" language is still blocked on retained live proof.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -77,9 +77,9 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/spec.md` | Modify | Extend the parent roadmap from `017` to `020` with truthful runtime/proof boundaries |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/spec.md` | Modify | Extend the parent roadmap through `018`, with `019` as an architecture audit |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/plan.md` | Modify | Align the parent plan to the shipped runtime follow-up and open proof work |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/tasks.md` | Modify | Track shipped `018`/`019` work and open `020` proof follow-up |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/tasks.md` | Modify | Track shipped `018` work and `019` architecture audit |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/checklist.md` | Modify | Record runtime, doc, and validation evidence for the roadmap extension |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/decision-record.md` | Modify | Record the shipped/open roadmap decision |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/implementation-summary.md` | Modify | Summarize the shipped follow-up truthfully |
@@ -104,6 +104,9 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 | Phase | Folder | Theme | Current State | Recommendation |
 |-------|--------|-------|---------------|----------------|
 | 000 | `000-dynamic-capture-deprecation/` | Archived dynamic-capture follow-up branch | Active parent branch for moved phases `001` through `005` | `keep` |
+
+**Note:** Phase 000 contains its own child phases (001-session-source-validation through 005-live-proof-and-parity-hardening) which are distinct from root-level phases 001-005.
+
 | 001 | `001-quality-scorer-unification/` | Quality score normalization and scorer ownership | Shipped and retained in audit history | `keep` |
 | 002 | `002-contamination-detection/` | Contamination detection and scoring penalties | Shipped and retained in audit history | `keep` |
 | 003 | `003-data-fidelity/` | Normalization and data-loss visibility | Shipped and retained in audit history | `keep` |
@@ -128,15 +131,18 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 - The parent pack remains the integrated roadmap and audit entry point.
 - Shipped runtime claims belong only to phases with direct code, test, and documentation evidence.
 - `000-dynamic-capture-deprecation/` groups the moved child phases that no longer live as direct children of the parent pack.
-- Active direct-child navigation now proceeds `010` -> `011` -> `012` -> `013` -> `014` -> `015` -> `016` -> `017` -> `018`.
+- All phases 000-018 are direct children of this parent pack. The historical audit chain covers 001-010. The active continuation chain covers 011-018. Phase 019 is an architecture audit.
 - Recursive validation proves structural integrity of the spec tree, not universal live parity across all CLIs.
 
 ### Phase Handoff Criteria
 
 | From | To | Criteria | Verification |
 |------|----|----------|--------------|
+| 010 | 011 | Integration testing complete, template compliance needed | Validation passes |
+| 013 | 014 | Spec descriptions settled, quality gates needed | Description infrastructure validated |
 | 014 | 015 | The stateless quality-gate hardening now feeds the explicit write/index contract phase | Runtime tests and phase docs agree on the current root-phase boundary |
 | 015 | 016 | JSON-mode enrichment builds on the shipped runtime-contract phase | Runtime tests and phase docs agree on the current root-phase boundary |
+| 016 | 017 | JSON-mode hybrid enrichment shipped, deprecation needed | Runtime tests pass |
 | 017 | 018 | The merged research-remediation successor continues after the JSON-primary deprecation baseline settles | Parent and child docs agree on the merged remediation boundary |
 
 ---
@@ -169,7 +175,7 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 <!-- ANCHOR:success-criteria -->
 ## 6. SUCCESS CRITERIA
 
-- **SC-001**: Given a maintainer opens the parent pack, they see the actual direct-child tree rather than dead `018`/`019`/`020` paths.
+- **SC-001**: Given a maintainer opens the parent pack, they see the actual direct-child tree through `018`, with `019` as an architecture audit.
 - **SC-002**: Given a maintainer opens `000-dynamic-capture-deprecation/`, they can navigate to the moved child phases through a valid branch parent.
 - **SC-003**: Given a reviewer opens any updated child spec, its identity fields and parent/predecessor/successor references match the on-disk layout.
 - **SC-004**: Given a reviewer asks whether multi-CLI proof is fully closed, the docs still answer conservatively.
@@ -195,10 +201,10 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Existing audit narrative and `research.md` | High | Treat them as the preserved truth baseline while extending the phase map |
-| Dependency | Focused session-capturing tests and build | High | Use them as the evidence base for phases `018` and `019` |
-| Risk | Parent docs flatten implemented and open work into one status | High | Keep `018` and `019` implemented while leaving phase `020` explicitly open |
+| Dependency | Focused session-capturing tests and build | High | Use them as the evidence base for phase `018` |
+| Risk | Parent docs flatten implemented and open work into one status | High | Keep `018` as the last implementation phase. Phase `019` is an architecture audit. |
 | Risk | Child folders exist but parent docs stay inconsistent | High | Reconcile all six root markdown files in the same pass |
-| Risk | Validation passes while wording still implies universal parity closure | Medium | Keep live-proof caveats explicit in parent and phase-020 docs |
+| Risk | Validation passes while wording still implies universal parity closure | Medium | Keep live-proof caveats explicit in parent docs |
 <!-- /ANCHOR:risks -->
 
 ---
@@ -212,7 +218,7 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 - **NFR-S01**: The shipped runtime and doc changes must not weaken published contamination, save-path, or foreign-spec safety language.
 
 ### Reliability
-- **NFR-R01**: Every implementation-status statement for phases `018` through `020` must be traceable to shipped code, tests, or retained-proof evidence and must remain conservative about live proof.
+- **NFR-R01**: Every implementation-status statement for phase `018` must be traceable to shipped code, tests, or retained-proof evidence and must remain conservative about live proof. Phase `019` is analysis-only.
 
 ---
 
@@ -224,7 +230,7 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 - The parent pack must preserve prior audit truth while still adding new forward-looking proof work.
 
 ### Error Scenarios
-- The parent phase map could extend to `020` while one or more child docs still contain contradictory shipped/open status language.
+- The parent phase map could extend beyond `018` while one or more child docs still contain contradictory shipped/open status language.
 - The roadmap could quietly slip back into all-planned or all-complete language if the parent docs are only partially reconciled.
 - Live proof could still be missing even if all documentation validates cleanly.
 
@@ -245,7 +251,7 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
 |---------|-------------|--------|------------|------------|
-| R-001 | Parent docs blur the difference between shipped runtime work and open proof work | H | M | Keep `018` and `019` implemented, and keep `020` explicitly open |
+| R-001 | Parent docs blur the difference between shipped runtime work and open proof work | H | M | Keep `018` as the last implementation phase; `019` is an architecture audit |
 | R-002 | Child docs are created but parent roadmap still ends at `017` in some files | H | M | Update all six root markdown files together |
 | R-003 | Validator passes while live-proof wording becomes too strong | M | M | Keep proof closure limited to retained artifacts |
 | R-004 | New roadmap phases obscure the previous audit baseline | M | L | Preserve `001` through `017` as the reconciled history in the phase map |
@@ -256,18 +262,18 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 
 ### US-001: See The Full Roadmap (Priority: P0)
 
-**As a** maintainer, **I want** one parent pack that runs from phase `001` through `020`, **so that** I can see both the audited history and the current shipped/open follow-up work in one place.
+**As a** maintainer, **I want** one parent pack that runs from phase `001` through `018`, **so that** I can see both the audited history and the shipped follow-up work in one place, with `019` as the architecture audit.
 
 **Acceptance Criteria**:
-1. Given the parent pack, when reviewed, then phases `018`, `019`, and `020` appear in the phase map with truthful shipped/open status.
+1. Given the parent pack, when reviewed, then phases through `018` appear in the phase map with truthful shipped status, and `019` is documented as an architecture audit.
 
 ### US-002: Trust The Phase Status (Priority: P0)
 
 **As a** maintainer, **I want** runtime and proof work to be labeled accurately, **so that** I do not mistake shipped automation work for retained live-proof closure.
 
 **Acceptance Criteria**:
-1. Given phases `018` and `019`, when opened, then they are clearly documented as implemented runtime follow-up.
-2. Given phase `020`, when opened, then it is clearly documented as still in progress for retained live proof.
+1. Given phase `018`, when opened, then it is clearly documented as the last implemented runtime follow-up.
+2. Given phase `019`, when opened, then it is clearly documented as an architecture remediation audit (analysis-only, not implementation).
 
 ### US-003: Keep Proof Claims Honest (Priority: P1)
 
@@ -282,7 +288,7 @@ Extend the pack truthfully through phases `018`, `019`, and `020`. The parent pa
 ## 13. OPEN QUESTIONS
 
 - Should future parent-pack updates require a retained-artifact refresh before any phase that touches CLI parity can be marked complete?
-- Should phase `020` eventually split retained live artifacts into one artifact per CLI and mode instead of one shared proof bundle?
+- Should future retained live-proof work split artifacts into one artifact per CLI and mode instead of one shared proof bundle?
 <!-- /ANCHOR:questions -->
 
 ---

@@ -1,19 +1,19 @@
 ---
-title: "NEW-023 -- Score normalization"
-description: "This scenario validates Score normalization for `NEW-023`. It focuses on Confirm batch min-max behavior."
+title: "023 -- Score normalization"
+description: "This scenario validates Score normalization for `023`. It focuses on Confirm batch min-max behavior."
 ---
 
-# NEW-023 -- Score normalization
+# 023 -- Score normalization
 
 ## 1. OVERVIEW
 
-This scenario validates Score normalization for `NEW-023`. It focuses on Confirm batch min-max behavior.
+This scenario validates Score normalization for `023`. It focuses on Confirm batch min-max behavior.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Operators run the exact prompt and command sequence for `NEW-023` and confirm the expected signals without contradicting evidence.
+Operators run the exact prompt and command sequence for `023` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm batch min-max behavior
 - Prompt: `Verify score normalization output ranges. Capture the evidence needed to prove Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled. Return a concise user-facing pass/fail verdict with the main reason.`
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-023` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-023 | Score normalization | Confirm batch min-max behavior | `Verify score normalization output ranges. Capture the evidence needed to prove Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Run varied-score query 2) Inspect normalized range 3) Check equal/single cases | Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled | Normalized output with range verification + edge case test results | PASS: All normalized scores in [0,1]; equal scores produce uniform output; single result = 1.0; FAIL: Out-of-range values or division-by-zero on equal scores | Verify min-max formula → Check edge case guards (single result, all-equal) → Inspect batch processing order |
+| 023 | Score normalization | Confirm batch min-max behavior | `Verify score normalization output ranges. Capture the evidence needed to prove Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Run varied-score query 2) Inspect normalized range 3) Check equal/single cases | Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled | Normalized output with range verification + edge case test results | PASS: All normalized scores in [0,1]; equal scores produce uniform output; single result = 1.0; FAIL: Out-of-range values or division-by-zero on equal scores | Verify min-max formula → Check edge case guards (single result, all-equal) → Inspect batch processing order |
 
 ---
 
@@ -40,6 +40,6 @@ Operators run the exact prompt and command sequence for `NEW-023` and confirm th
 ## 5. SOURCE METADATA
 
 - Group: Scoring and Calibration
-- Playbook ID: NEW-023
+- Playbook ID: 023
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `11--scoring-and-calibration/023-score-normalization.md`

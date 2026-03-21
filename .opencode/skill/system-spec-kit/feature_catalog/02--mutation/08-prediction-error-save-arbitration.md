@@ -46,4 +46,4 @@ When you save new information, the system checks whether it already knows someth
 - Group: Undocumented feature gap scan
 - Source feature title: Prediction-error save arbitration
 - Current reality source: 10-agent feature gap scan
-- Playbook reference: NEW-110
+- Playbook reference: 110

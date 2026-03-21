@@ -10,33 +10,21 @@
 import { createHash } from 'node:crypto';
 import { detectObservationType } from './file-extractor';
 import { slugify } from '../utils/slug-utils';
+// O3-2: Use canonical types from session-types (no local duplicates)
+import type {
+  Observation,
+  ImplementationStep,
+  KeyFileWithRole,
+  ExtensionGuide,
+  CodePattern,
+} from '../types/session-types';
+
+// Re-export so downstream consumers keep working
+export type { ImplementationStep, KeyFileWithRole, ExtensionGuide, CodePattern };
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES
 ------------------------------------------------------------------*/
-
-/** Describes a concrete implementation step for the guide output. */
-export interface ImplementationStep {
-  FEATURE_NAME: string;
-  DESCRIPTION: string;
-}
-
-/** Associates an important file with its role in the implementation. */
-export interface KeyFileWithRole {
-  FILE_PATH: string;
-  ROLE: string;
-}
-
-/** Describes how the implementation can be extended safely. */
-export interface ExtensionGuide {
-  GUIDE_TEXT: string;
-}
-
-/** Summarizes a reusable code pattern identified in the implementation. */
-export interface CodePattern {
-  PATTERN_NAME: string;
-  USAGE: string;
-}
 
 /** Output payload for the implementation guide extractor. */
 export interface ImplementationGuideData {
@@ -48,14 +36,8 @@ export interface ImplementationGuideData {
   PATTERNS: CodePattern[];
 }
 
-/** Observation input used by the implementation guide extractor. */
-export interface ObservationInput {
-  type?: string;
-  title?: string;
-  narrative?: string;
-  facts?: Array<string | { text?: string; files?: string[] }>;
-  files?: string[];
-}
+// O3-2: ObservationInput replaced by canonical Observation type
+type ObservationInput = Observation;
 
 /** File input used by the implementation guide extractor. */
 export interface FileInput {
@@ -399,8 +381,4 @@ export {
   generateExtensionGuide,
   extractCodePatterns,
   buildImplementationGuideData,
-  // Backward-compatible aliases (snake_case)
-  hasImplementationWork as has_implementation_work,
-  extractMainTopic as extract_main_topic,
-  extractWhatBuilt as extract_what_built,
 };

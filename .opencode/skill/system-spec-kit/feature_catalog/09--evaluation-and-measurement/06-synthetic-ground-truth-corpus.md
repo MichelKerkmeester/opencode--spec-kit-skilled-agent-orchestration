@@ -50,4 +50,4 @@ Hard negative queries are included to verify that irrelevant memories rank low. 
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenario NEW-010
+- Mapped to manual testing playbook scenario 010

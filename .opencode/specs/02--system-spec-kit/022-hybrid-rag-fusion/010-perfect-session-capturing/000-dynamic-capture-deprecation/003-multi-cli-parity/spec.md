@@ -32,18 +32,18 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Branch** | `003-multi-cli-parity` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 16 of 17 |
+| **Phase** | 3 of 3 (000-dynamic-capture-deprecation branch) |
 | **Predecessor** | 002-outsourced-agent-handback |
 | **Successor** | 004-source-capabilities-and-structured-preference |
 | **Handoff Criteria** | validate.sh + test suite passing |
-| **R-Item** | R-16 |
+| **R-Item** | R-003 |
 <!-- /ANCHOR:metadata -->
 
 ---
 
 ### Phase Context
 
-This is **Phase 16** of the Perfect Session Capturing specification.
+This is **Phase 003** of the dynamic-capture-deprecation branch.
 
 **Scope Boundary**: Phase 016 had already landed its runtime behavior in the live code, but the phase folder still claimed completion without direct parity-specific proof.
 **Dependencies**: 002-outsourced-agent-handback

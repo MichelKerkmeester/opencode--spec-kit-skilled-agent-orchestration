@@ -21,10 +21,11 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-16 |
+| **Completed** | 2026-03-16 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 5 of 16 |
+| **Phase** | 5 |
 | **Predecessor** | 004-type-consolidation |
 | **Successor** | 006-description-enrichment |
 | **Handoff Criteria** | validate.sh + test suite passing |

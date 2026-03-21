@@ -35,11 +35,14 @@ export const DEFAULT_THINNING_CONFIG: ThinningConfig = {
   memoryTextThreshold: 100,
 };
 
-/** Represents file entry. */
-export interface FileEntry {
+/** Represents a file input for the thinning pipeline (path + content only). */
+export interface ThinFileInput {
   path: string;
   content: string;
 }
+
+/** @deprecated Use ThinFileInput — kept for backward compatibility */
+export type FileEntry = ThinFileInput;
 
 /** Represents thin file entry. */
 export interface ThinFileEntry {
@@ -74,6 +77,7 @@ export interface ThinningResult {
 
 // Canonical shared implementation — imported and re-exported for backward compatibility
 import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
+/** @deprecated Import estimateTokenCount from @spec-kit/shared/utils/token-estimate directly */
 export { estimateTokenCount };
 
 /**
@@ -103,8 +107,8 @@ export function deriveParentPath(filePath: string): string | null {
  * Group file entries by their parent directory path.
  * Files without a parent are stored under the special key ''.
  */
-function groupByParent(files: FileEntry[]): Map<string, FileEntry[]> {
-  const groups = new Map<string, FileEntry[]>();
+function groupByParent(files: ThinFileInput[]): Map<string, ThinFileInput[]> {
+  const groups = new Map<string, ThinFileInput[]>();
   for (const file of files) {
     const parent = deriveParentPath(file.path) ?? '';
     const list = groups.get(parent) ?? [];
@@ -118,7 +122,7 @@ function groupByParent(files: FileEntry[]): Map<string, FileEntry[]> {
  * Generate a brief description from merged child file entries.
  * CG-06: Replace "description pending" with actual file-based descriptions.
  */
-export function generateMergedDescription(children: FileEntry[]): string {
+export function generateMergedDescription(children: ThinFileInput[]): string {
   const count = children.length;
   const fileNames = children
     .map((child) => {
@@ -149,7 +153,7 @@ export function generateMergedDescription(children: FileEntry[]): string {
  * Build a merged summary string from a set of child file entries.
  * Preserves all content with path headers to prevent content loss.
  */
-function buildMergedSummary(children: FileEntry[]): string {
+function buildMergedSummary(children: ThinFileInput[]): string {
   const description = generateMergedDescription(children);
   const descHeader = `<!-- description: ${description} -->\n`;
   return descHeader + children
@@ -212,13 +216,13 @@ function resolveAction(
  * It does NOT modify pipeline stages or scoring.
  */
 export function applyTreeThinning(
-  files: FileEntry[],
+  files: ThinFileInput[],
   config?: Partial<ThinningConfig>
 ): ThinningResult {
   const cfg: ThinningConfig = { ...DEFAULT_THINNING_CONFIG, ...config };
 
   const thinned: ThinFileEntry[] = [];
-  const toMerge: FileEntry[] = [];
+  const toMerge: ThinFileInput[] = [];
 
   // Pass 1: classify each file
   for (const file of files) {

@@ -77,11 +77,11 @@ Totals:
 |   |   |-- map-ground-truth-ids.ts
 |   |   |-- run-ablation.ts
 |   |   |-- run-bm25-baseline.ts
-|   |   |-- run-chk210-quality-backfill.ts
+|   |   |-- deleted-chk210-quality-backfill-script
 |   |   |-- run-performance-benchmarks.ts
-|   |   |-- run-phase1-5-shadow-eval.ts
+|   |   |-- deleted-phase1-5-shadow-eval-script
 |   |   |-- run-phase2-closure-metrics.mjs
-|   |   |-- run-phase3-telemetry-dashboard.ts
+|   |   |-- deleted-phase3-telemetry-dashboard-script
 |   |   |-- run-quality-legacy-remediation.ts
 |   |   `-- run-redaction-calibration.ts
 |   |-- extractors/

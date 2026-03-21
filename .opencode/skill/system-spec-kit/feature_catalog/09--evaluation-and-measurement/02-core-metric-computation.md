@@ -49,4 +49,4 @@ This battery of metrics means you can diagnose where the pipeline fails, not jus
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenario NEW-006
+- Mapped to manual testing playbook scenario 006

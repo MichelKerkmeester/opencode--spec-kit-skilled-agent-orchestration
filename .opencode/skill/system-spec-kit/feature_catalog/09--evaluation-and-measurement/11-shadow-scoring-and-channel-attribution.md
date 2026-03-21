@@ -54,4 +54,4 @@ Shadow scoring completed its evaluation purpose and has been fully removed. The 
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenario NEW-015
+- Mapped to manual testing playbook scenario 015

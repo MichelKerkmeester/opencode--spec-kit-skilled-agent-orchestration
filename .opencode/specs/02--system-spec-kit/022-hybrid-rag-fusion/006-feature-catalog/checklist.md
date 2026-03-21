@@ -97,6 +97,22 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 
 ---
 
+## Phase G: Normalization & Phase 016/017 Coverage (2026-03-21)
+
+- [x] CHK-200 [P0] All `NEW-NNN` markers removed from feature catalog files — [Evidence: grep returns 0 matches excluding G-NEW- proper nouns, verified by E1 agent]
+- [x] CHK-201 [P0] All `NEW-NNN` markers removed from playbook files — [Evidence: grep returns 0 matches excluding G-NEW- proper nouns, verified by E2 agent]
+- [x] CHK-202 [P0] Feature catalog index cleaned and consistent — [Evidence: E1 agent confirmed 194 files indexed, 0 NEW- markers, both new entries present at lines 3370 and 3388]
+- [x] CHK-203 [P0] Playbook index cleaned and consistent — [Evidence: E2 agent confirmed 200 files indexed, 0 NEW- markers, entries 153/154 in section body and cross-reference table]
+- [x] CHK-204 [P1] Phase 016 catalog entry created with proper frontmatter — [Evidence: 16-json-mode-hybrid-enrichment.md with title and description fields]
+- [x] CHK-205 [P1] Phase 017 catalog entry created with proper frontmatter — [Evidence: 17-json-primary-deprecation-posture.md with title and description fields]
+- [x] CHK-206 [P1] Phase 016 playbook entry created with test scenarios — [Evidence: 153-json-mode-hybrid-enrichment.md with test execution table]
+- [x] CHK-207 [P1] Phase 017 playbook entry created with test scenarios — [Evidence: 154-json-primary-deprecation-posture.md with test execution table]
+- [x] CHK-208 [P1] G-NEW-* proper nouns preserved — [Evidence: 25 occurrences of G-NEW-1/2/3 remain intact across catalog and playbook]
+- [x] CHK-209 [P1] Playbook section renamed "8. NEW FEATURES" → "8. FEATURES" — [Evidence: E2 agent confirmed "NEW FEATURES" returns 0 matches, "FEATURES" at line 735]
+- [x] CHK-210 [P2] Spot-check verification of previously-marked files — [Evidence: E3 agent confirmed 028, 023, 109, 010 files all clean]
+
+---
+
 ## Merged Section: 016-feature-catalog-code-references Checklist
 
 > **Merge note (2026-03-14)**: Originally the 016 checklist document in the prior folder layout.

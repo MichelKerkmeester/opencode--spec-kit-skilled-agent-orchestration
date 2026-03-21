@@ -24,12 +24,12 @@
 - **File(s)**: shared/parsing/spec-doc-health.ts:78-80, 116-119, 136-139, 159-162, 207-209, 259-261
 - **Description**: Health evaluator swallows filesystem exceptions, making unreadable files or permission issues look healthy. Correctness problem for auditing API.
 
-### [BUG] run-chk210-quality-backfill.ts: Malformed metadata injection (A1)
-- **File(s)**: scripts/evals/run-chk210-quality-backfill.ts:40
+### [BUG] deleted-chk210-quality-backfill-script: Malformed metadata injection (A1)
+- **File(s)**: scripts/evals/deleted-chk210-quality-backfill-script:40
 - **Description**: Writes quality metadata into fenced yaml block with `quality_flags:` on separate line, while shared workflow writes `quality_flags: []` correctly. Backfill can write malformed metadata while updating DB.
 
-### [BUG] run-phase3-telemetry-dashboard.ts: CLI contract drift (A1)
-- **File(s)**: scripts/evals/run-phase3-telemetry-dashboard.ts:69
+### [BUG] deleted-phase3-telemetry-dashboard-script: CLI contract drift (A1)
+- **File(s)**: scripts/evals/deleted-phase3-telemetry-dashboard-script:69
 - **Description**: Only accepts positional specFolder, but repair workflow calls with `--check`, `--sync`, `--verify` flags. Treats flags as folder paths.
 
 ### [BUG] collect-redaction-calibration-inputs.ts: False-green exits (A1)

@@ -71,6 +71,12 @@ import {
   DEFAULT_TOKEN_BUDGET,
   DEFAULT_CHAR_BUDGET,
 } from './quality-loop';
+
+// O2-5/O2-12: V-rule validation (previously only in workflow path)
+import {
+  validateMemoryQualityContent,
+  determineValidationDisposition,
+} from './v-rule-bridge';
 import type {
   QualityScore,
   QualityScoreBreakdown,
@@ -400,6 +406,46 @@ function prepareParsedMemoryForIndexing(
     validation.warnings.forEach((warning: string) => console.warn(`[memory]   - ${warning}`));
   }
 
+  // O2-5/O2-12: Run V-rule validation (previously only in workflow path)
+  const vRuleResult = validateMemoryQualityContent(parsed.content);
+  if (vRuleResult && !vRuleResult.valid) {
+    const vRuleDisposition = determineValidationDisposition(
+      vRuleResult.failedRules,
+      parsed.memoryTypeSource || null,
+    );
+    if (vRuleDisposition && vRuleDisposition.disposition === 'abort_write') {
+      const failedRuleIds = vRuleDisposition.blockingRuleIds;
+      console.error(`[memory-save] V-rule hard block for ${path.basename(parsed.filePath)}: ${failedRuleIds.join(', ')}`);
+      // Return early with a rejected quality loop result so callers see the block
+      const rejectScore = { total: 0, breakdown: { triggers: 0, anchors: 0, budget: 0, coherence: 0 }, issues: [`V-rule hard block: ${failedRuleIds.join(', ')}`] };
+      return {
+        parsed,
+        validation,
+        qualityLoopResult: {
+          passed: false,
+          score: rejectScore,
+          attempts: 0,
+          fixes: [],
+          rejected: true,
+          rejectionReason: `V-rule hard block: ${failedRuleIds.join(', ')}`,
+        },
+        sufficiencyResult: {
+          pass: false,
+          rejectionCode: MEMORY_SUFFICIENCY_REJECTION_CODE,
+          score: 0,
+          reasons: [`V-rule hard block: ${failedRuleIds.join(', ')}`],
+          evidenceCounts: { primary: 0, support: 0, total: 0, semanticChars: 0, uniqueWords: 0, anchors: 0, triggerPhrases: 0 },
+        },
+        templateContract: { valid: false, violations: [], missingAnchors: [], unexpectedTemplateArtifacts: [] } as MemoryTemplateContractResult,
+        specDocHealth: null,
+      };
+    }
+    if (vRuleDisposition && vRuleDisposition.disposition === 'write_skip_index') {
+      console.warn(`[memory-save] V-rule index block for ${path.basename(parsed.filePath)}: ${vRuleDisposition.indexBlockingRuleIds.join(', ')}`);
+      validation.warnings.push(`V-rule index block: ${vRuleDisposition.indexBlockingRuleIds.join(', ')}`);
+    }
+  }
+
   const qualityLoopResult = runQualityLoop(parsed.content, buildQualityLoopMetadata(parsed, database));
   parsed.qualityScore = qualityLoopResult.score.total;
   parsed.qualityFlags = qualityLoopResult.score.issues;
@@ -506,16 +552,12 @@ async function processPreparedMemory(
     );
     if (existingResult) return existingResult;
 
-    // DEDUP: Check content hash across spec folder (T054)
-    const dupResult = checkContentHashDedup(database, parsed, force, validation.warnings, {
-      canonicalFilePath,
-      filePath,
-    }, scope);
-    if (dupResult) return dupResult;
+    // NOTE: Content-hash dedup (C5-1) moved inside BEGIN IMMEDIATE transaction
+    // to eliminate TOCTOU race between check and insert.
 
     // CHUNKING BRANCH: Large files get split into parent + child records
     // Must be inside withSpecFolderLock to serialize chunked saves too.
-    // Dedup checks above must run first so duplicate content exits before chunking.
+    // Existing-row dedup above must run first so duplicate content exits before chunking.
     if (needsChunking(parsed.content)) {
       console.error(`[memory-save] File exceeds chunking threshold (${parsed.content.length} chars), using chunked indexing`);
       const chunkedResult = await indexChunkedMemoryFile(filePath, parsed, { force, applyPostInsertMetadata });
@@ -603,10 +645,6 @@ async function processPreparedMemory(
     const reconResult = await runReconsolidationIfEnabled(database, parsed, filePath, force, embedding);
     if (reconResult.earlyReturn) return reconResult.earlyReturn;
 
-    if (persistQualityLoopContent && qualityLoopResult.passed && qualityLoopResult.fixedContent) {
-      await fs.promises.writeFile(filePath, parsed.content, 'utf-8');
-    }
-
     // A4 FIX: Wrap dedup-check + insert in BEGIN IMMEDIATE transaction for
     // DB-level atomicity. withSpecFolderLock handles in-process serialization;
     // this transaction provides defense-in-depth against multi-process races.
@@ -616,6 +654,16 @@ async function processPreparedMemory(
     const useTx = typeof database.exec === 'function';
     if (useTx) database.exec('BEGIN IMMEDIATE');
     try {
+      // C5-1: Content-hash dedup moved inside transaction to prevent TOCTOU race
+      const dupResult = checkContentHashDedup(database, parsed, force, validation.warnings, {
+        canonicalFilePath,
+        filePath,
+      }, scope);
+      if (dupResult) {
+        if (useTx) database.exec('ROLLBACK');
+        return dupResult;
+      }
+
       // CREATE NEW MEMORY
       existing = findSamePathExistingMemory(
         database,
@@ -648,9 +696,10 @@ async function processPreparedMemory(
       // F1.01 fix: Mark superseded memory AFTER new record creation, inside
       // the same transaction, so a creation failure rolls back both operations.
       if (peResult.supersededId != null) {
-        const superseded = markMemorySuperseded(peResult.supersededId);
-        if (!superseded) {
-          console.warn(`[PE-Gate] Failed to mark memory ${peResult.supersededId} as superseded (post-create)`);
+        const supersededOk = markMemorySuperseded(peResult.supersededId);
+        // C5-3: Supersede failure should abort the transaction
+        if (!supersededOk) {
+          throw new Error(`Failed to mark predecessor ${peResult.supersededId} as superseded`);
         }
       }
 
@@ -671,8 +720,14 @@ async function processPreparedMemory(
       throw txErr;
     }
 
+    // C5-2: File write moved AFTER successful DB commit to prevent
+    // disk state diverging from DB state on transaction failure.
+    if (persistQualityLoopContent && qualityLoopResult.passed && qualityLoopResult.fixedContent) {
+      await fs.promises.writeFile(filePath, parsed.content, 'utf-8');
+    }
+
     // POST-INSERT ENRICHMENT: causal links, entities, summaries, entity linking
-    const { causalLinksResult } = await runPostInsertEnrichment(database, id, parsed);
+    const { causalLinksResult, enrichmentStatus } = await runPostInsertEnrichment(database, id, parsed);
 
     // BUILD RESULT
     return buildIndexResult({
@@ -687,6 +742,7 @@ async function processPreparedMemory(
       embeddingFailureReason,
       asyncEmbedding,
       causalLinksResult,
+      enrichmentStatus,
       filePath,
     });
   });

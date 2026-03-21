@@ -2,7 +2,7 @@
 // Validates progressive-validate.sh stage behavior and compatibility
 // Against validate.sh baselines, auto-fix reporting, and JSON contract outputs.
 // T-PB2-01..T-PB2-15: progressive validation pipeline conformance suite.
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, test, expect, beforeEach, afterEach } from 'vitest';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as os from 'os';
@@ -16,7 +16,18 @@ const FIXTURES_DIR = path.join(SCRIPTS_DIR, 'tests', 'test-fixtures');
 const VALID_L1_FIXTURE = path.join(FIXTURES_DIR, '002-valid-level1');
 
 // Stable date fixture used by auto-fix assertions.
-const TODAY = new Date().toISOString().split('T')[0];
+function getLocalToday(): string {
+  const result = spawnSync('date', ['+%F'], { encoding: 'utf8' });
+  const today = result.stdout?.trim();
+
+  if (result.status !== 0 || !today) {
+    throw new Error(`Failed to resolve local date: ${result.stderr ?? 'no output'}`);
+  }
+
+  return today;
+}
+
+const TODAY = getLocalToday();
 
 // HELPERS
 /**
@@ -165,7 +176,10 @@ describe('Progressive Validation Pipeline', () => {
   });
 
   it('T-PB2-00c: --help flag exits 0 and prints usage', () => {
-    if (!SCRIPT_EXISTS) return;
+    if (!SCRIPT_EXISTS) {
+      test.skip('Script not found');
+      return;
+    }
     const { stdout, exitCode } = runProgressiveValidate('', ['--help']);
     expect(exitCode).toBe(0);
     expect(stdout).toContain('progressive-validate.sh');
@@ -174,7 +188,10 @@ describe('Progressive Validation Pipeline', () => {
   });
 
   it('T-PB2-00d: --version flag exits 0', () => {
-    if (!SCRIPT_EXISTS) return;
+    if (!SCRIPT_EXISTS) {
+      test.skip('Script not found');
+      return;
+    }
     const { stdout, exitCode } = runProgressiveValidate('', ['--version']);
     expect(exitCode).toBe(0);
     expect(stdout).toContain('progressive-validate.sh');
@@ -230,7 +247,10 @@ describe('Progressive Validation Pipeline', () => {
     });
 
     it('T-PB2-02a: YYYY-MM-DD placeholder replaced with today\'s date', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       const specContent = MINIMAL_SPEC_MD.replace(TODAY, 'YYYY-MM-DD');
       tmpDir = createTempSpecDir({
@@ -248,7 +268,10 @@ describe('Progressive Validation Pipeline', () => {
     });
 
     it('T-PB2-02b: [DATE] placeholder replaced with today\'s date', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       const specContent = MINIMAL_SPEC_MD.replace(TODAY, '[DATE]');
       tmpDir = createTempSpecDir({
@@ -266,7 +289,10 @@ describe('Progressive Validation Pipeline', () => {
     });
 
     it('T-PB2-02c: date: TBD replaced with today\'s date', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       const specContent = `
 # Feature Spec
@@ -298,7 +324,10 @@ Test.
     });
 
     it('T-PB2-02d: files without date placeholders are left unchanged', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       tmpDir = createTempSpecDir({
         'spec.md': MINIMAL_SPEC_MD,       // already has today
@@ -328,7 +357,10 @@ Test.
     });
 
     it('T-PB2-03a: document starting at H2 is shifted so H2 becomes H1', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       const specContent = `## Feature Spec\n\nLevel: 1\n\n### Problem Statement\n\nTest.\n`;
       tmpDir = createTempSpecDir({
@@ -347,7 +379,10 @@ Test.
     });
 
     it('T-PB2-03b: document already starting at H1 is not modified (heading-wise)', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       const specContent = `# Feature Spec\n\nLevel: 1\n\n## Problem Statement\n\nTest.\n`;
       tmpDir = createTempSpecDir({
@@ -368,7 +403,10 @@ Test.
     });
 
     it('T-PB2-03c: heading fix is logged in script output', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       const specContent = `## Feature Spec\n\nLevel: 1\n\n### Problem Statement\n\nTest.\n`;
       tmpDir = createTempSpecDir({
@@ -398,7 +436,10 @@ Test.
     });
 
     it('T-PB2-04a: trailing whitespace removed from lines', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       const contentWithTrailingSpaces = `# Spec   \n\nLevel: 1   \n\n## Section   \n\nContent here.   \n`;
       tmpDir = createTempSpecDir({
@@ -419,7 +460,10 @@ Test.
     });
 
     it('T-PB2-04b: CRLF line endings normalized to LF', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       const contentWithCRLF = `# Spec\r\n\r\nLevel: 1\r\n\r\n## Section\r\n\r\nContent.\r\n`;
       tmpDir = createTempSpecDir({
@@ -437,7 +481,10 @@ Test.
     });
 
     it('T-PB2-04c: file without whitespace issues is left unchanged', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       const cleanContent = `# Spec\n\nLevel: 1\n\n## Section\n\nClean content.\n`;
       tmpDir = createTempSpecDir({
@@ -455,7 +502,10 @@ Test.
     });
 
     it('T-PB2-04d: whitespace fix is logged in script output', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       const contentWithTrailingSpaces = `# Spec   \n\nLevel: 1   \n\n## Section   \n\nContent.   \n`;
       tmpDir = createTempSpecDir({
@@ -484,7 +534,10 @@ Test.
     });
 
     it('T-PB2-05a: [FIX] marker appears in output for each applied fix', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       // File with trailing spaces → triggers WHITESPACE fix
       const dirtySpec = `# Spec   \n\nLevel: 1   \n\n## Problem Statement   \n\nTest.   \n`;
@@ -501,7 +554,10 @@ Test.
     });
 
     it('T-PB2-05b: diff output present in --verbose mode', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       const dirtySpec = `# Spec   \n\nLevel: 1   \n\n## Problem Statement   \n\nTest.   \n`;
       tmpDir = createTempSpecDir({
@@ -523,7 +579,10 @@ Test.
     });
 
     it('T-PB2-05c: --json output includes autoFixes array with fix records', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       // File with trailing spaces → will trigger WHITESPACE fix
       const dirtySpec = `# Spec   \n\nLevel: 1   \n\n## Problem Statement   \n\nTest.   \n`;
@@ -554,7 +613,10 @@ Test.
     });
 
     it('T-PB2-05d: no [FIX] markers when no fixes are needed', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       // Perfectly clean fixture — no fixes needed
       tmpDir = createTempSpecDir({
@@ -626,14 +688,8 @@ Test.
 
       const { stdout } = runProgressiveValidate(emptyFixture, ['--level', '4', '--json']);
 
-      let parsed: ProgressiveValidateReport;
-      try {
-        parsed = JSON.parse(stdout) as ProgressiveValidateReport;
-      } catch {
-        // If JSON parsing fails, the test is inconclusive but not a hard failure
-        // Because the script may not emit pure JSON at --level 3/4 when erroring
-        return;
-      }
+      expect(() => JSON.parse(stdout)).not.toThrow();
+      const parsed = JSON.parse(stdout) as ProgressiveValidateReport;
 
       expect(parsed).toHaveProperty('suggestions');
       expect(parsed.suggestions).toHaveProperty('items');
@@ -720,7 +776,10 @@ Test.
     });
 
     it('T-PB2-08a: file contents unchanged when --dry-run used', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       // Use a file with date placeholder — would normally be fixed
       const specContent = MINIMAL_SPEC_MD.replace(TODAY, 'YYYY-MM-DD');
@@ -740,7 +799,10 @@ Test.
     });
 
     it('T-PB2-08b: [DRY-RUN] marker appears in output', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       const specContent = MINIMAL_SPEC_MD.replace(TODAY, 'YYYY-MM-DD');
       tmpDir = createTempSpecDir({
@@ -756,7 +818,10 @@ Test.
     });
 
     it('T-PB2-08c: dry-run summary mentions how many fixes would be applied', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       const specContent = MINIMAL_SPEC_MD.replace(TODAY, 'YYYY-MM-DD');
       tmpDir = createTempSpecDir({
@@ -954,7 +1019,10 @@ Test.
     });
 
     it('T-PB2-14: invalid --level value (0 or 5) causes exit 2', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       const result0 = runProgressiveValidate('', ['--level', '0']);
       expect(result0.exitCode).toBe(2);
@@ -969,7 +1037,10 @@ Test.
   describe('T-PB2-15: Edge cases', () => {
 
     it('T-PB2-15a: missing folder argument exits 2 with error message', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       const { exitCode, stderr } = runProgressiveValidate('');
       expect(exitCode).toBe(2);
@@ -977,7 +1048,10 @@ Test.
     });
 
     it('T-PB2-15b: non-existent folder exits 2 with error message', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       const { exitCode, stderr } = runProgressiveValidate('/tmp/does-not-exist-progressive-validation-test');
       expect(exitCode).toBe(2);
@@ -992,7 +1066,10 @@ Test.
     });
 
     it('T-PB2-15d: multiple .md files in folder all processed by auto-fix', () => {
-      if (!SCRIPT_EXISTS) return;
+      if (!SCRIPT_EXISTS) {
+        test.skip('Script not found');
+        return;
+      }
 
       let tmpDir: string | null = null;
       try {

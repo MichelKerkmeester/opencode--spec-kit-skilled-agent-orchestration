@@ -1,0 +1,9 @@
+Applied the five requested memory-script fixes:
+
+- TOCTOU cleanup is now transactional in [cleanup-orphaned-vectors.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/memory/cleanup-orphaned-vectors.ts#L72), with orphan predicates moved into `DELETE ... NOT IN (SELECT id FROM memory_index)` statements inside the transaction.
+- Silent `spec.md` read failures now emit a structured warning in [validate-memory-quality.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/memory/validate-memory-quality.ts#L617).
+- Missing scan content now warns and exits `1` in [reindex-embeddings.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/memory/reindex-embeddings.ts#L81).
+- Parsed JSON shape is now validated in [rank-memories.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/memory/rank-memories.ts#L384) so only an array or `{ results: [] }` is accepted.
+- `--stdin` now rejects interactive TTY use in [generate-context.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts#L354).
+
+Verification: `npm run lint --workspace=scripts` passed, and `git diff --check` passed. `npm run build --workspace=scripts` is currently blocked by pre-existing `TS18048` errors in [shared-memory-handlers.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/shared-memory-handlers.vitest.ts), and `npm run test --workspace=scripts` is already red in unrelated suites and did not return cleanly after reporting those failures. `reindex-embeddings.ts` also had unrelated local worktree changes before this fix; I preserved them.

@@ -19,7 +19,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `Run full closure verification for spec 010-perfect-session-capturing, including JSON authority, stateless enrichment, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), Phase 017 stateless quality-gate behavior, numeric quality calibration, and indexing readiness. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `Run full closure verification for spec 010-perfect-session-capturing, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, stateless enrichment, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), Phase 017 stateless quality-gate behavior, Phase 018 output-quality hardening, numeric quality calibration, and indexing readiness. Return a concise user-facing pass/fail verdict with the main reason.`
 - Canonical workspace rule:
   - Native capture targets the repo-local `.opencode` workspace identity.
   - Backend-native repo-root, `.opencode`, and git-root path forms count as equivalent only when they normalize to the same workspace.
@@ -48,8 +48,11 @@ This scenario remains prose-first because it carries compound operator logic, su
   - `M-007m` `--stdin` structured JSON with explicit CLI target precedence
   - `M-007n` `--json` structured JSON with payload-target fallback
   - `M-007o` Claude tool-path downgrade vs non-Claude capped path
-  - `NEW-133` cross-reference for MCP `memory_save` dry-run and insufficiency preview
-  - `NEW-149` cross-reference for rendered-memory contract enforcement and historical remediation
+  - `M-007p` Structured-summary JSON coverage and file-backed authority
+  - `M-007q` Phase 018 output-quality hardening
+  - `M-007r` Direct positional save without `--recovery` rejects with migration guidance
+  - `133` cross-reference for MCP `memory_save` dry-run and insufficiency preview
+  - `149` cross-reference for rendered-memory contract enforcement
 - Latest automated baseline refresh:
   - On 2026-03-17, root `typecheck`, scripts `check` and `build`, `test-scripts-modules.js` (`384` passed, `5` skipped, `389` total), and `test-extractors-loaders.js` (`307` passing) reran cleanly.
   - On 2026-03-17, the focused proof lanes reran cleanly as separate canonical checks: `task-enrichment.vitest.ts` (`47` tests), `runtime-memory-inputs.vitest.ts` (`29` tests), the phase-016 parity lane (`45` tests), the phase-010 integration lane (`70` tests across `test-integration.vitest.ts` and `workflow-e2e.vitest.ts`), and the phase-011 session-source lane (`66` tests).
@@ -68,7 +71,7 @@ This scenario remains prose-first because it carries compound operator logic, su
   - Targeted automated closure suite:
     - `cd .opencode/skill/system-spec-kit/scripts && npm run check`
     - `cd .opencode/skill/system-spec-kit/scripts && npm run build`
-    - `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/spec-affinity.vitest.ts tests/claude-code-capture.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/stateless-enrichment.vitest.ts tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/memory-sufficiency.vitest.ts tests/memory-template-contract.vitest.ts tests/historical-memory-remediation.vitest.ts`
+    - `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/spec-affinity.vitest.ts tests/claude-code-capture.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/stateless-enrichment.vitest.ts tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/memory-sufficiency.vitest.ts tests/memory-template-contract.vitest.ts`
   - JS verification suites:
     - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-extractors-loaders.js`
     - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-bug-fixes.js`
@@ -96,9 +99,12 @@ This scenario remains prose-first because it carries compound operator logic, su
     - `M-007j` Full hard-fail: ensure no usable JSON input or native backend is available and verify the loader returns explicit `NO_DATA_AVAILABLE` rather than partial or contaminated output.
     - `M-007k` V10-only stateless quality warning: verify a stateless capture whose only failed validation rule is V10 now continues with `QUALITY_GATE_WARN` and can still complete the save path.
     - `M-007l` V8/V9 hard-block retention: verify a stateless capture with foreign-spec contamination still aborts with `QUALITY_GATE_ABORT`.
-    - `M-007m` `--stdin` structured input: pipe valid structured JSON into `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin 017-stateless-quality-gates` and confirm the explicit CLI target wins over any payload `specFolder`.
-    - `M-007n` `--json` structured input: run `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '<payload>'` and confirm the payload target is used when no explicit CLI target is provided.
+    - `M-007m` `--stdin` structured input: pipe valid structured JSON into `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin 014-stateless-quality-gates` and confirm the explicit CLI target wins over any payload `specFolder`, while `toolCalls` and `exchanges` survive into the generated output.
+    - `M-007n` `--json` structured input: run `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '<payload>'` and confirm the payload target is used when no explicit CLI target is provided, while file-backed JSON remains on the authoritative structured path instead of entering hybrid/stateless reconstruction.
     - `M-007o` Claude contamination downgrade: compare a Claude structured/stateless capture containing `tool title with path` content against a non-Claude source with the same text and verify Claude avoids the old 0.60 cap while the non-Claude path remains capped.
+    - `M-007p` Structured-summary and file-authority verification: run a rich structured JSON save and confirm `toolCalls` and `exchanges` are accepted and preserved, then verify a file-backed payload remains on the structured path rather than reopening hybrid enrichment. Also run a structured JSON save with a legacy payload that omits `toolCalls` and `exchanges` entirely and confirm it still succeeds through backward-compatible defaults.
+    - `M-007q` Phase 018 output-quality hardening: inspect a generated memory or targeted regression evidence and confirm decision fields are no longer duplicated, completion status can recover from normalized `Next Steps`, blocker extraction ignores generic failure words, trigger/code-pattern filler is suppressed, `key_files` parsing accepts em dash/en dash/colon separators, tree thinning uses the `150`-token and `3`-child safeguards, and structured-data conversation synthesis adds assistant content when prompts are sparse.
+    - `M-007r` Recovery-flag enforcement: run `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 010-perfect-session-capturing` without `--recovery` and verify it exits non-zero with operator-facing migration guidance to structured JSON. Then rerun with `--recovery` and confirm the save path proceeds normally.
 - Expected:
   - Part I hardening remains active.
   - Stateless enrichment remains active.
@@ -110,8 +116,11 @@ This scenario remains prose-first because it carries compound operator logic, su
   - Rich saves score materially above thin saves.
   - Thin aligned saves fail explicitly with `INSUFFICIENT_CONTEXT_ABORT`.
   - V10-only stateless validation failures warn and continue, while V8/V9 hard-block contamination still aborts.
-  - `--stdin` and `--json` preserve file-mode structured-input semantics with the documented target-authority rules.
+  - `--stdin` and `--json` preserve file-mode structured-input semantics with the documented target-authority rules, including `toolCalls` / `exchanges` preservation.
+  - File-backed JSON remains on the authoritative structured path and does not reopen the abandoned hybrid-enrichment branch.
   - Claude `tool title with path` content no longer forces the 0.60 cap, while non-Claude sources still follow the capped path.
+  - Phase 018 output-quality fixes keep decision rendering distinct, status recovery accurate, blocker detection specific, trigger/code-pattern noise lower, separator parsing broader, tree thinning bounded, and structured-data conversation output richer.
+  - Direct positional saves without `--recovery` exit non-zero with clear migration guidance to the structured JSON contract.
   - Rendered files preserve ANCHOR tags and frontmatter trigger phrases are session-specific.
   - Indexing succeeds when validation passes.
 - Evidence:
@@ -123,7 +132,7 @@ This scenario remains prose-first because it carries compound operator logic, su
   - Passing `spec/validate.sh` output.
   - Inspection of `research/live-cli-proof-2026-03-17.json`, confirming the retained artifact path and same-day entries for OpenCode, Claude Code, Codex CLI, Copilot CLI, and Gemini CLI.
   - `generate-context.js` output or capture logs showing results for `M-007a` through `M-007j`.
-  - `generate-context.js` output or targeted Vitest evidence showing results for `M-007k` through `M-007o`.
+  - `generate-context.js` output or targeted Vitest evidence showing results for `M-007k` through `M-007q`.
 - Pass:
   - All automated commands pass.
   - Package-clean MCP verification passes alongside the scripts-side closure suite.
@@ -135,7 +144,8 @@ This scenario remains prose-first because it carries compound operator logic, su
   - `M-007e` proves OpenCode precedence does not override the later save-path gates.
   - `M-007f` through `M-007i` prove per-backend native capture selection and save-gate behavior under canonical `.opencode` workspace identity, the direct-mode caller hint, and the tightened alignment plus insufficiency gates without malformed trigger rendering or `V5` corruption. They are not, by themselves, full Hydra end-to-end proof for those CLIs.
   - `M-007j` proves final `NO_DATA_AVAILABLE` behavior.
-  - `M-007k` through `M-007o` prove the Phase 017 stateless soft-warning vs hard-block split, structured-input authority, and Claude-only contamination downgrade.
+  - `M-007k` through `M-007q` prove the Phase 017 stateless soft-warning vs hard-block split, structured-input authority, shipped `toolCalls` / `exchanges` support, file-backed JSON authority, Claude-only contamination downgrade, and the Phase 018 output-quality hardening.
+  - `M-007r` proves the Phase 017 `--recovery` rejection path exits cleanly with migration guidance and that adding `--recovery` restores the stateless save path.
 - Fail triage:
   - Check `data-loader.ts` fallback ordering.
   - Check project-matching logic inside the relevant native extractor.

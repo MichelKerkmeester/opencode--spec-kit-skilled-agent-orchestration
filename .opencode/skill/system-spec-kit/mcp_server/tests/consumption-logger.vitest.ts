@@ -536,21 +536,6 @@ describe('T005: fail-safe behavior — logging errors never propagate', () => {
     }
   });
 
-  it('T005-E: isConsumptionLogEnabled returns false (REMOVED flag)', () => {
-    const prevFlag = process.env.SPECKIT_CONSUMPTION_LOG;
-    delete process.env.SPECKIT_CONSUMPTION_LOG;
-
-    try {
-      expect(isConsumptionLogEnabled()).toBe(false); // REMOVED — always false
-    } finally {
-      if (prevFlag === undefined) {
-        delete process.env.SPECKIT_CONSUMPTION_LOG;
-      } else {
-        process.env.SPECKIT_CONSUMPTION_LOG = prevFlag;
-      }
-    }
-  });
-
   it('T005-F: isConsumptionLogEnabled returns false when flag is "0"', () => {
     const prevFlag = process.env.SPECKIT_CONSUMPTION_LOG;
     process.env.SPECKIT_CONSUMPTION_LOG = '0';

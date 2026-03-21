@@ -22,14 +22,6 @@ interface CountResult {
   count: number;
 }
 
-interface OrphanedEntry {
-  memory_id: number;
-}
-
-interface OrphanedVector {
-  rowid: number | bigint;
-}
-
 /* ───────────────────────────────────────────────────────────────
    2. CONFIGURATION
 ------------------------------------------------------------------*/
@@ -78,18 +70,20 @@ async function main(): Promise<void> {
 
     // STEP 1: Discover orphaned entries across all tables
     console.log('\n[Step 1] Finding orphaned memory_history entries...');
-    let orphanedHistory: OrphanedEntry[] = [];
+    let orphanedHistoryCount = 0;
     let hasHistoryTable = true;
     try {
-      orphanedHistory = database.prepare(`
-        SELECT h.memory_id
+      const orphanedHistory = database.prepare(`
+        SELECT COUNT(*) as count
         FROM memory_history h
         LEFT JOIN memory_index m ON h.memory_id = m.id
         WHERE m.id IS NULL
-      `).all() as OrphanedEntry[];
+      `).get() as CountResult;
 
-      if (orphanedHistory.length > 0) {
-        console.log(`Found ${orphanedHistory.length} orphaned history entries`);
+      orphanedHistoryCount = orphanedHistory.count;
+
+      if (orphanedHistoryCount > 0) {
+        console.log(`Found ${orphanedHistoryCount} orphaned history entries`);
       } else {
         console.log('No orphaned history entries found');
       }
@@ -103,54 +97,56 @@ async function main(): Promise<void> {
     }
 
     console.log('\n[Step 2] Finding orphaned vector entries...');
-    const orphanedVectors: OrphanedVector[] = database.prepare(`
-      SELECT v.rowid
+    const orphanedVectors = database.prepare(`
+      SELECT COUNT(*) as count
       FROM vec_memories v
       LEFT JOIN memory_index m ON v.rowid = m.id
       WHERE m.id IS NULL
-    `).all() as OrphanedVector[];
+    `).get() as CountResult;
 
-    console.log(`Found ${orphanedVectors.length} orphaned vectors`);
+    const orphanedVectorCount = orphanedVectors.count;
+    console.log(`Found ${orphanedVectorCount} orphaned vectors`);
 
     // STEP 2: Delete all orphans in a single atomic transaction
     // ISS-B04-002 fix — wrapping history + vector cleanup in one
     // Transaction prevents partial commits on mid-run failure.
     if (dryRun) {
-      if (orphanedHistory.length > 0) {
-        console.log(`[DRY-RUN] Would delete ${orphanedHistory.length} orphaned history entries`);
-        totalCleaned += orphanedHistory.length;
+      if (orphanedHistoryCount > 0) {
+        console.log(`[DRY-RUN] Would delete ${orphanedHistoryCount} orphaned history entries`);
+        totalCleaned += orphanedHistoryCount;
       }
-      if (orphanedVectors.length > 0) {
-        console.log(`[DRY-RUN] Would delete ${orphanedVectors.length} orphaned vectors`);
-        totalCleaned += orphanedVectors.length;
+      if (orphanedVectorCount > 0) {
+        console.log(`[DRY-RUN] Would delete ${orphanedVectorCount} orphaned vectors`);
+        totalCleaned += orphanedVectorCount;
       }
-    } else if (orphanedHistory.length > 0 || orphanedVectors.length > 0) {
+    } else if (orphanedHistoryCount > 0 || orphanedVectorCount > 0) {
       console.log('\n[Step 3] Deleting all orphans in a single atomic transaction...');
 
       const atomicCleanup = database.transaction(() => {
         if (!database) throw new Error('Database connection lost');
 
         // Delete orphaned history entries
-        if (hasHistoryTable && orphanedHistory.length > 0) {
-          const deleteHistoryStmt = database.prepare('DELETE FROM memory_history WHERE memory_id = ?');
-          for (const { memory_id } of orphanedHistory) {
-            deleteHistoryStmt.run(memory_id);
-          }
-          console.log(`Deleted ${orphanedHistory.length} orphaned history entries`);
+        if (hasHistoryTable && orphanedHistoryCount > 0) {
+          const historyDeleteResult = database.prepare(`
+            DELETE FROM memory_history
+            WHERE memory_id NOT IN (SELECT id FROM memory_index)
+          `).run();
+          console.log(`Deleted ${historyDeleteResult.changes} orphaned history entries`);
+          totalCleaned += historyDeleteResult.changes;
         }
 
         // Delete orphaned vector entries
-        if (orphanedVectors.length > 0) {
-          const deleteVectorStmt = database.prepare('DELETE FROM vec_memories WHERE rowid = ?');
-          for (const row of orphanedVectors) {
-            deleteVectorStmt.run(BigInt(row.rowid));
-          }
-          console.log(`Deleted ${orphanedVectors.length} orphaned vectors`);
+        if (orphanedVectorCount > 0) {
+          const vectorDeleteResult = database.prepare(`
+            DELETE FROM vec_memories
+            WHERE rowid NOT IN (SELECT id FROM memory_index)
+          `).run();
+          console.log(`Deleted ${vectorDeleteResult.changes} orphaned vectors`);
+          totalCleaned += vectorDeleteResult.changes;
         }
       });
 
       atomicCleanup();
-      totalCleaned += orphanedHistory.length + orphanedVectors.length;
       console.log(`Atomic cleanup committed: ${totalCleaned} total entries removed`);
     }
 

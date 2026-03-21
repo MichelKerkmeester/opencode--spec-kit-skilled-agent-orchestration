@@ -12,7 +12,7 @@ import {
   deriveParentPath,
   DEFAULT_THINNING_CONFIG,
 } from '../core/tree-thinning';
-import type { FileEntry, ThinningConfig } from '../core/tree-thinning';
+import type { ThinFileInput, ThinningConfig } from '../core/tree-thinning';
 
 /* ───────────────────────────────────────────────────────────────
    Helpers
@@ -23,13 +23,13 @@ function makeContent(tokens: number): string {
   return 'abcd'.repeat(tokens);
 }
 
-/** Build a FileEntry for a non-memory spec folder file. */
-function specFile(name: string, tokens: number): FileEntry {
+/** Build a ThinFileInput for a non-memory spec folder file. */
+function specFile(name: string, tokens: number): ThinFileInput {
   return { path: `specs/001-feature/${name}`, content: makeContent(tokens) };
 }
 
-/** Build a FileEntry for a memory file. */
-function memFile(name: string, tokens: number): FileEntry {
+/** Build a ThinFileInput for a memory file. */
+function memFile(name: string, tokens: number): ThinFileInput {
   return { path: `specs/001-feature/memory/${name}`, content: makeContent(tokens) };
 }
 
@@ -170,30 +170,30 @@ describe('Content-as-summary threshold (500 tokens) — standard files', () => {
 });
 
 /* ───────────────────────────────────────────────────────────────
-   T6: Memory-specific thresholds (300/100 tokens)
+   T6: Memory-specific thresholds (150/100 tokens)
 ------------------------------------------------------------------*/
 
-describe('Memory-specific thresholds (300/100 tokens)', () => {
+describe('Memory-specific thresholds (150/100 tokens)', () => {
   it('T6-A: memory file with 99 tokens is content-as-summary (text IS the summary)', () => {
     const files: FileEntry[] = [memFile('ctx.md', 99)];
     const result = applyTreeThinning(files);
     expect(result.thinned[0].action).toBe('content-as-summary');
   });
 
-  it('T6-B: memory file with exactly 100 tokens is merged-into-parent (boundary: >= 100, < 300)', () => {
+  it('T6-B: memory file with exactly 100 tokens is merged-into-parent (boundary: >= 100, < 150)', () => {
     const files: FileEntry[] = [memFile('ctx.md', 100)];
     const result = applyTreeThinning(files);
     expect(result.thinned[0].action).toBe('merged-into-parent');
   });
 
-  it('T6-C: memory file with 299 tokens is merged-into-parent', () => {
-    const files: FileEntry[] = [memFile('ctx.md', 299)];
+  it('T6-C: memory file with 149 tokens is merged-into-parent', () => {
+    const files: FileEntry[] = [memFile('ctx.md', 149)];
     const result = applyTreeThinning(files);
     expect(result.thinned[0].action).toBe('merged-into-parent');
   });
 
-  it('T6-D: memory file with exactly 300 tokens is kept (boundary: >= memoryThinThreshold)', () => {
-    const files: FileEntry[] = [memFile('ctx.md', 300)];
+  it('T6-D: memory file with exactly 150 tokens is kept (boundary: >= memoryThinThreshold)', () => {
+    const files: FileEntry[] = [memFile('ctx.md', 150)];
     const result = applyTreeThinning(files);
     expect(result.thinned[0].action).toBe('keep');
   });
@@ -376,9 +376,9 @@ describe('Mixed memory and non-memory files', () => {
   it('T10-A: each file uses its own threshold independently', () => {
     const files: FileEntry[] = [
       specFile('spec.md', 150),      // 150 < 200 → merged-into-parent
-      memFile('ctx.md', 150),        // 100 <= 150 < 300 → merged-into-parent (memory)
+      memFile('ctx.md', 149),        // 100 <= 149 < 150 → merged-into-parent (memory)
       specFile('plan.md', 350),      // 200 <= 350 < 500 → content-as-summary
-      memFile('big-ctx.md', 350),    // >= 300 → keep (memory)
+      memFile('big-ctx.md', 350),    // >= 150 → keep (memory)
     ];
     const result = applyTreeThinning(files);
     const actionMap = Object.fromEntries(
@@ -393,7 +393,7 @@ describe('Mixed memory and non-memory files', () => {
   it('T10-B: DEFAULT_THINNING_CONFIG matches documented thresholds', () => {
     expect(DEFAULT_THINNING_CONFIG.mergeThreshold).toBe(200);
     expect(DEFAULT_THINNING_CONFIG.contentAsTextThreshold).toBe(500);
-    expect(DEFAULT_THINNING_CONFIG.memoryThinThreshold).toBe(300);
+    expect(DEFAULT_THINNING_CONFIG.memoryThinThreshold).toBe(150);
     expect(DEFAULT_THINNING_CONFIG.memoryTextThreshold).toBe(100);
   });
 });

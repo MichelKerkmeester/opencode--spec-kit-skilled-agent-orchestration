@@ -447,12 +447,8 @@ function attemptAutoFix(
     }
   }
 
-  // Fix #2 : Close unclosed ANCHOR tags
-  const hasAnchorIssue = issues.some(i => /unclosed anchor/i.test(i));
-  if (hasAnchorIssue) {
-    fixedContent = normalizeAnchors(fixedContent);
-    fixed.push('Normalized unclosed ANCHOR tags');
-  }
+  // O2-6: Fix #3 (trim) runs BEFORE Fix #2 (anchors) to prevent trim from
+  // removing anchor closing tags that were just appended by Fix #2.
 
   // Fix #3 : Trim content to budget
   const hasBudgetIssue = issues.some(i => /token budget/i.test(i));
@@ -466,14 +462,28 @@ function attemptAutoFix(
     }
   }
 
+  // Fix #2 : Close unclosed ANCHOR tags
+  const hasAnchorIssue = issues.some(i => /unclosed anchor/i.test(i));
+  if (hasAnchorIssue) {
+    fixedContent = normalizeAnchors(fixedContent);
+    fixed.push('Normalized unclosed ANCHOR tags');
+  }
+
   return { content: fixedContent, metadata: fixedMetadata, fixed };
 }
 
 /**
  * Extract trigger phrases from content by scanning headings and the title.
  */
+// O2-10: Contamination patterns to filter from extracted headings
+const CONTAM_HEADING_PATTERNS = [
+  /\b(?:step|task|phase)\s+\d+/i,
+  /\b(?:I'll|let me|I need to|I will)\b/i,
+  /\b(?:as an AI|AI assistant)\b/i,
+];
+
 function extractTriggersFromContent(content: string, title?: string): string[] {
-  const triggers: string[] = [];
+  let triggers: string[] = [];
 
   // Add title as a trigger if present
   if (title && title.trim().length > 0) {
@@ -489,6 +499,11 @@ function extractTriggersFromContent(content: string, title?: string): string[] {
       triggers.push(heading);
     }
   }
+
+  // O2-10: Filter out headings that match contamination patterns
+  triggers = triggers.filter(t =>
+    !CONTAM_HEADING_PATTERNS.some(p => p.test(t))
+  );
 
   return triggers.slice(0, 8); // Cap at 8 triggers
 }

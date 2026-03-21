@@ -8,6 +8,12 @@
 // Captures Gemini transcript data from ~/.gemini/tmp for
 // stateless memory-save enrichment.
 
+/**
+ * @deprecated RECOVERY-ONLY — This module is part of the stateless dynamic capture path,
+ * which is deprecated for routine saves (Phase 017). In JSON-primary mode, the AI provides
+ * structured data directly. This module only executes when --recovery is explicitly passed.
+ */
+
 import * as fs from 'fs/promises';
 import * as fsSync from 'fs';
 import * as path from 'path';

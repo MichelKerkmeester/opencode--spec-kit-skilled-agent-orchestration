@@ -93,7 +93,6 @@ async function promptUserChoice(question: string, maxChoice: number, maxAttempts
 // 5. EXPORTS
 // ───────────────────────────────────────────────────────────────
 export {
-  requireInteractiveMode,
   promptUser,
   promptUserChoice,
 };

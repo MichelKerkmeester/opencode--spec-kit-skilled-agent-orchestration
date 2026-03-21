@@ -1,4 +1,4 @@
-# NEW-086: BM25 trigger phrase re-index gate
+# 086: BM25 trigger phrase re-index gate
 
 ## Preconditions
 - Checkpoint "pre-new086" created (679 memories, 4MB snapshot)

@@ -61,7 +61,7 @@ These files contain ARCHITECTURE_BOUNDARIES.md references but are historical aud
 - **Count: 4 entries**
 - Entries:
   1. `scripts/evals/run-performance-benchmarks.ts` — `@spec-kit/mcp-server/lib/*` (multiple)
-  2. `scripts/evals/run-chk210-quality-backfill.ts` — `@spec-kit/mcp-server/lib/*`
+  2. `scripts/evals/deleted-chk210-quality-backfill-script` — `@spec-kit/mcp-server/lib/*`
   3. `scripts/spec-folder/generate-description.ts` — `@spec-kit/mcp-server/lib/search/folder-discovery`
   4. `scripts/core/workflow.ts` — `@spec-kit/mcp-server/lib/search/folder-discovery`
 
@@ -70,7 +70,7 @@ These files contain ARCHITECTURE_BOUNDARIES.md references but are historical aud
 - **Count: 4 entries**
 - Entries:
   1. `scripts/evals/run-performance-benchmarks.ts` — `@spec-kit/mcp-server/lib/*`
-  2. `scripts/evals/run-chk210-quality-backfill.ts` — `@spec-kit/mcp-server/lib/*`
+  2. `scripts/evals/deleted-chk210-quality-backfill-script` — `@spec-kit/mcp-server/lib/*`
   3. `scripts/spec-folder/generate-description.ts` — `@spec-kit/mcp-server/lib/search/folder-discovery`
   4. `scripts/core/workflow.ts` — `@spec-kit/mcp-server/lib/search/folder-discovery`
 

@@ -53,4 +53,4 @@ Stale references to "Sprint N", "Phase NNN", or "spec NNN" in non-test comments 
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenarios NEW-135, NEW-136, NEW-137, NEW-138
+- Mapped to manual testing playbook scenarios 135, 136, 137, 138

@@ -1,19 +1,19 @@
 ---
-title: "NEW-037 -- Dynamic token budget allocation (FUT-7)"
-description: "This scenario validates Dynamic token budget allocation (FUT-7) for `NEW-037`. It focuses on Confirm complexity-tier budgets."
+title: "037 -- Dynamic token budget allocation (FUT-7)"
+description: "This scenario validates Dynamic token budget allocation (FUT-7) for `037`. It focuses on Confirm complexity-tier budgets."
 ---
 
-# NEW-037 -- Dynamic token budget allocation (FUT-7)
+# 037 -- Dynamic token budget allocation (FUT-7)
 
 ## 1. OVERVIEW
 
-This scenario validates Dynamic token budget allocation (FUT-7) for `NEW-037`. It focuses on Confirm complexity-tier budgets.
+This scenario validates Dynamic token budget allocation (FUT-7) for `037`. It focuses on Confirm complexity-tier budgets.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Operators run the exact prompt and command sequence for `NEW-037` and confirm the expected signals without contradicting evidence.
+Operators run the exact prompt and command sequence for `037` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm complexity-tier budgets
 - Prompt: `Verify dynamic token budgets (FUT-7). Capture the evidence needed to prove Token budget scales with query complexity tier; simple queries get smaller budgets; disabled flag falls back to default budget. Return a concise user-facing pass/fail verdict with the main reason.`
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-037` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-037 | Dynamic token budget allocation (FUT-7) | Confirm complexity-tier budgets | `Verify dynamic token budgets (FUT-7). Capture the evidence needed to prove Token budget scales with query complexity tier; simple queries get smaller budgets; disabled flag falls back to default budget. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Run classed queries 2) Inspect budgets 3) Disable flag fallback | Token budget scales with query complexity tier; simple queries get smaller budgets; disabled flag falls back to default budget | Budget allocation per complexity tier + default fallback budget verification | PASS: Budget proportional to complexity tier; disabled flag uses default; total budget within system limits; FAIL: All tiers get same budget or flag-disabled produces error | Verify budget allocation formula → Check complexity tier detection → Inspect system budget limits |
+| 037 | Dynamic token budget allocation (FUT-7) | Confirm complexity-tier budgets | `Verify dynamic token budgets (FUT-7). Capture the evidence needed to prove Token budget scales with query complexity tier; simple queries get smaller budgets; disabled flag falls back to default budget. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Run classed queries 2) Inspect budgets 3) Disable flag fallback | Token budget scales with query complexity tier; simple queries get smaller budgets; disabled flag falls back to default budget | Budget allocation per complexity tier + default fallback budget verification | PASS: Budget proportional to complexity tier; disabled flag uses default; total budget within system limits; FAIL: All tiers get same budget or flag-disabled produces error | Verify budget allocation formula → Check complexity tier detection → Inspect system budget limits |
 
 ---
 
@@ -40,6 +40,6 @@ Operators run the exact prompt and command sequence for `NEW-037` and confirm th
 ## 5. SOURCE METADATA
 
 - Group: Query Intelligence
-- Playbook ID: NEW-037
+- Playbook ID: 037
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `12--query-intelligence/037-dynamic-token-budget-allocation-fut-7.md`

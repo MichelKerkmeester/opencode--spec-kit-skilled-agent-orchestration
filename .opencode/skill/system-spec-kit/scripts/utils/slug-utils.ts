@@ -177,7 +177,7 @@ export function pickBestContentName(candidates: readonly string[]): string {
  * @param max - Maximum allowed length (defaults to DEFAULT_SLUG_MAX_LENGTH).
  * @returns The truncated slug, or the original if already within bounds.
  */
-export function truncateSlugAtWordBoundary(slug: string, max: number = DEFAULT_SLUG_MAX_LENGTH): string {
+function truncateSlugAtWordBoundary(slug: string, max: number = DEFAULT_SLUG_MAX_LENGTH): string {
   if (slug.length <= max) return slug;
   const truncated = slug.slice(0, max);
   const lastHyphen = truncated.lastIndexOf('-');
@@ -267,6 +267,9 @@ export function generateContentSlug(task: string, fallback: string, alternatives
 
   const fallbackSlug = slugify(fallback);
   if (fallbackSlug.length > 0) {
+    if (isGenericContentTask(fallback)) {
+      return hashFallbackSlug(`${task}::${fallback}`);
+    }
     return truncateSlugAtWordBoundary(fallbackSlug);
   }
   return hashFallbackSlug(`${task}::${fallback}`);

@@ -66,6 +66,10 @@ Correct the phase record so it matches the shipped implementation, preserve the 
 - Harden JSON-mode normalization and help text for the shipped structured-input contract.
 - Update input validation and `generate-context` help text for the new JSON shape.
 - Ship Wave 2 fixes for decision confidence, truncated outcomes, `git_changed_file_count`, and count override behavior.
+- Fix 5 root cause bugs (RC1-RC5) where JSON payload fields (`sessionSummary`, `triggerPhrases`, `keyDecisions`, `importanceTier`, `contextType`) were silently discarded or overridden.
+- Add post-save quality review module (Step 10.5) that compares saved frontmatter against original JSON payload.
+- Update all instruction files with post-save review guidance.
+- Update feature catalog and manual testing playbook with RC fixes and post-save review coverage.
 
 ### Out of Scope
 
@@ -83,6 +87,10 @@ Correct the phase record so it matches the shipped implementation, preserve the 
 | `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts` | Modify | Normalize structured JSON inputs without inventing an unshipped nested metadata contract |
 | `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | Modify | Document the shipped structured JSON fields and structured-first save workflow |
 | `016-json-mode-hybrid-enrichment/*.md` | Modify | Correct the phase pack so it matches the live code and archives the non-shipped design analysis clearly |
+| `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts` | Modify | RC5: Move `decisionCount` check, add `explicitContextType` param |
+| `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts` | Modify | RC3: fast-path keyDecisions; RC5: contextType extraction |
+| `.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts` | Create | Post-save quality review module |
+| `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `AGENTS_example_fs_enterprises.md`, `Barter/coder/AGENTS.md` | Modify | Post-save review instructions |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -109,6 +117,16 @@ Correct the phase record so it matches the shipped implementation, preserve the 
 | REQ-008 | Template output honors explicit message and tool counts | Session-level overrides survive template assembly for JSON mode |
 | REQ-009 | Research artifacts that target the abandoned design are explicitly marked archival | `research.md` makes its historical/non-shipped scope unambiguous |
 | REQ-010 | The phase pack validates as a truthful record of shipped work | Plan, tasks, checklist, ADR, summary, and research note no longer conflict about what landed |
+
+### P0 - Wave 3 (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-011 | JSON `sessionSummary` must appear as the preferred title candidate | `_JSON_SESSION_SUMMARY` is first in `pickPreferredMemoryTask()` candidates |
+| REQ-012 | JSON `triggerPhrases` must appear in frontmatter `trigger_phrases` | Manual phrases are merged into `preExtractedTriggers` before folder token dedup |
+| REQ-013 | JSON `keyDecisions` must propagate through both fast-path and slow-path | Fast-path creates `_manualDecisions` and decision-type observations |
+| REQ-014 | JSON `contextType` must be honored when valid | `detectSessionCharacteristics()` accepts and validates `explicitContextType` |
+| REQ-015 | Post-save quality review must detect silent field overrides | Step 10.5 compares saved frontmatter against JSON payload with severity grading |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -122,6 +140,9 @@ Correct the phase record so it matches the shipped implementation, preserve the 
 - **SC-004**: Older JSON payloads still succeed without adding the new fields.
 - **SC-005**: Wave 2 fixes preserve accurate decision confidence, outcomes text, changed-file counts, and session counts.
 - **SC-006**: The phase documentation validates cleanly under strict level-3 rules.
+- **SC-007**: JSON payload fields (`sessionSummary`, `triggerPhrases`, `keyDecisions`, `importanceTier`, `contextType`) all propagate to frontmatter correctly.
+- **SC-008**: Post-save quality review reports PASSED (0 issues) when all JSON fields are correctly propagated.
+- **SC-009**: Post-save quality review detects and reports silent field overrides with fix instructions.
 
 ### Acceptance Scenarios
 

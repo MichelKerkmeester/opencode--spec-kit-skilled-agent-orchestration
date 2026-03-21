@@ -1,9 +1,14 @@
 // TEST: Architecture Boundary Enforcement
+import { spawnSync } from 'node:child_process';
 import { afterEach, describe, expect, it } from 'vitest';
 import * as fs from 'node:fs';
 import * as os from 'node:os';
 import * as path from 'node:path';
 import { checkSharedNeutrality, checkWrapperOnly } from '../evals/check-architecture-boundaries';
+
+const ARCHITECTURE_CHECK_SCRIPT = path.resolve(process.cwd(), 'evals', 'check-architecture-boundaries.ts');
+const TSX_LOADER = path.resolve(process.cwd(), 'node_modules', 'tsx', 'dist', 'loader.mjs');
+const SPEC_KIT_NODE_MODULES = path.resolve(process.cwd(), '..', 'node_modules');
 
 describe('Architecture Boundary Enforcement', () => {
   const fixtureRoots: string[] = [];
@@ -69,6 +74,34 @@ describe('Architecture Boundary Enforcement', () => {
       '../mcp_server/dynamic-runtime',
     ]));
     expect(violations.length).toBe(4);
+  });
+
+  it('parses export-from, import type, and require() forms when checking shared neutrality', () => {
+    const root = createFixtureRoot();
+
+    writeFixtureFile(root, 'shared/export-from.ts', [
+      "export { runtimeA } from '../mcp_server/runtime';",
+    ].join('\n'));
+
+    writeFixtureFile(root, 'shared/import-type.ts', [
+      "import type { RuntimeConfig } from '../scripts/types';",
+      'export type { RuntimeConfig };',
+    ].join('\n'));
+
+    writeFixtureFile(root, 'shared/require-call.ts', [
+      "const runtime = require('../scripts/legacy-loader');",
+      'export { runtime };',
+    ].join('\n'));
+
+    const violations = checkSharedNeutrality(root);
+    const importPaths = violations.map((v) => v.importPath);
+
+    expect(importPaths).toEqual(expect.arrayContaining([
+      '../mcp_server/runtime',
+      '../scripts/types',
+      '../scripts/legacy-loader',
+    ]));
+    expect(violations.length).toBe(3);
   });
 
   it('T40: GAP B flags wrappers exceeding 50 substantive lines', () => {
@@ -164,6 +197,39 @@ describe('Architecture Boundary Enforcement', () => {
 
     const violations = checkWrapperOnly(root);
     expect(violations).toEqual([]);
+  });
+
+  it('exits 0 from the CLI when all architecture boundaries pass', () => {
+    const root = createFixtureRoot();
+    const copiedScript = path.join(root, 'evals', 'check-architecture-boundaries.ts');
+
+    writeFixtureFile(root, 'package.json', JSON.stringify({ type: 'commonjs' }, null, 2));
+
+    writeFixtureFile(root, 'shared/utils.ts', [
+      'export const sharedValue = 42;',
+    ].join('\n'));
+
+    writeFixtureFile(root, 'mcp_server/scripts/valid-wrapper.ts', [
+      "import { spawnSync } from 'child_process';",
+      "import path from 'path';",
+      "const targetScript = path.resolve(__dirname, '../../scripts/dist/memory/reindex-embeddings.js');",
+      "const result = spawnSync(process.execPath, [targetScript, ...process.argv.slice(2)], { stdio: 'inherit' });",
+      "if (typeof result.status === 'number') {",
+      '  process.exit(result.status);',
+      '}',
+      'process.exit(1);',
+    ].join('\n'));
+
+    writeFixtureFile(root, 'evals/check-architecture-boundaries.ts', fs.readFileSync(ARCHITECTURE_CHECK_SCRIPT, 'utf-8'));
+    fs.symlinkSync(SPEC_KIT_NODE_MODULES, path.join(root, 'node_modules'), 'dir');
+
+    const result = spawnSync(process.execPath, ['--import', TSX_LOADER, copiedScript], {
+      cwd: root,
+      encoding: 'utf-8',
+    });
+
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain('Architecture boundary check passed');
   });
 
   it('T45: valid mcp_server/scripts -> shared imports are not false positives', () => {

@@ -78,7 +78,7 @@ Full ADR text with alternatives analysis, consequences, and implementation patte
 - **Evidence**: `extraction-adapter.vitest.ts`, `redaction-gate.vitest.ts`, `causal-boost.vitest.ts`, `phase2-integration.vitest.ts`, `scratch/phase2-extraction-metrics.md`
 
 ### Phase 3: Monitoring + Rollout (Complete)
-- **Telemetry dashboard**: `scripts/evals/run-phase3-telemetry-dashboard.ts` generating JSON + human-readable metrics
+- **Telemetry dashboard**: `scripts/evals/deleted-phase3-telemetry-dashboard-script` generating JSON + human-readable metrics
 - **Response metadata**: `applied_boosts`, `pressure_level`, `extraction_count`, `redaction_count` fields
 - **Logging**: Extraction matches, pressure overrides, boost calculations, redaction events
 - **Rollback runbook**: `references/workflows/rollback-runbook.md`

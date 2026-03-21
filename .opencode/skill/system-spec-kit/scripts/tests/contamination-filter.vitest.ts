@@ -48,6 +48,7 @@ describe('filterContamination severity tracking', () => {
     expect(result.maxSeverity).toBe('medium');
   });
 
+  // Covers: F-31 (Post-cleanup — orphaned punctuation, double-spaces, leading conjunctions)
   it('cleans git-like subjects containing medium-severity contamination', () => {
     const result = filterContamination("Modified via: I'll now handle the edge case");
 
@@ -80,6 +81,7 @@ describe('filterContamination severity tracking', () => {
     expect(result.matchedPatterns).toContain('request id leak');
   });
 
+  // Covers: F-10 (Unicode normalization + tool-path pattern)
   it('downgrades tool title with path severity for sources whose capabilities expect transcript-style tool titles', () => {
     const result = filterContamination(
       'Read tool on /src/file.ts',

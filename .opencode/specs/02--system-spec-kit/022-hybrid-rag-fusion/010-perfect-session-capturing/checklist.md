@@ -4,7 +4,7 @@ description: "Verification date: 2026-03-20; current scope is the authoritative 
 trigger_phrases:
   - "verification"
   - "perfect session capturing"
-  - "roadmap phases 018 019 020"
+  - "roadmap phases 000 018"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -45,7 +45,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 - [x] CHK-010 [P0] The archived branch parent pack exists [Evidence: `spec.md`, `plan.md`, and `tasks.md` now exist under `000-dynamic-capture-deprecation/`.]
 - [x] CHK-011 [P0] Active child identity fields were reconciled [Evidence: touched child specs now use current `Spec Folder`, `Branch`, predecessor/successor, and parent references.]
 - [x] CHK-012 [P0] Moved branch-child navigation was reconciled [Evidence: branch children under `000-dynamic-capture-deprecation/001` through `/005` now point at their current locations.]
-- [x] CHK-013 [P1] Parent phase map now reflects the current direct-child layout [Evidence: parent `spec.md` lists `000`, `001`-`017`, `021`, and `022` as the direct-child navigation layer.]
+- [x] CHK-013 [P1] Parent phase map now reflects the current direct-child layout [Evidence: parent spec.md lists 000, 001-018 as the direct-child navigation layer.]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -95,9 +95,9 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
-| P1 Items | 9 | 8/9 |
-| P2 Items | 1 | 1/1 |
+| P0 Items | 11 | 11/11 |
+| P1 Items | 19 | 19/19 |
+| P2 Items | 6 | 6/6 |
 
 **Verification Date**: 2026-03-20
 <!-- /ANCHOR:summary -->

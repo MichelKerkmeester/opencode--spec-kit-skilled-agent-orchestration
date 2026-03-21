@@ -1,8 +1,8 @@
-# NEW-124 — Automatic Archival Lifecycle Evidence
+# 124 — Automatic Archival Lifecycle Evidence
 
 ## Preconditions
 - MCP server healthy (v1.7.2)
-- Pre-test checkpoint `pre-NEW-124-archival` created (id: 8, sandbox-scoped)
+- Pre-test checkpoint `pre-124-archival` created (id: 8, sandbox-scoped)
 - Archival subsystem exists in `lib/cognitive/archival-manager.ts`
 - No MCP tool exposes archive/unarchive directly (internal background operation)
 

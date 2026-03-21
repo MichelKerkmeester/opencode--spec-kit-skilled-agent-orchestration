@@ -418,6 +418,8 @@ afterEach(() => {
 // Sequential-only: tests mutate process.cwd() and process.env, which
 // prevents safe parallel execution within this file.
 describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
+  // Covers: F-21 (strict frontmatter detection), F-22 (null guard on loadDataFn),
+  // F-23 (pre-enrichment contamination cleaning), F-26 (description.json slug candidates)
   it('writes markdown and metadata, then updates memorySequence and memoryNameHistory', async () => {
     const harness = createHarness();
     configureHarnessEnvironment(harness);

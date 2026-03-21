@@ -45,8 +45,8 @@ contextType: "general"
 - [x] CHK-007 [P0] Disposable sandbox spec folder (`specs/test-sandbox-mutation/`) has been created and confirmed to contain only test fixtures. — 6 fixture memories + memory/ and scratch/ directories.
 - [x] CHK-008 [P0] No active checkpoints named `pre-ex008-delete` or `pre-ex009-bulk-delete` exist from a previous run. — checkpoint_list confirmed only `pre-merge-022-023` existed at start.
 - [x] CHK-009 [P0] Sandbox fixture memories for EX-008 (ID 25372) and EX-009 (IDs 25373, 25374 deprecated-tier) are in place. — All indexed successfully.
-- [x] CHK-010 [P1] Sandbox fixture memories for NEW-110 similarity-band saves are in place (ID 25377). — Base content indexed, memory_conflicts table baseline recorded via PE gate.
-- [x] CHK-011 [P1] Fault injection mechanism for NEW-085 is confirmed infeasible from MCP client. Vitest fallback applied (139/139 tests pass). — Does not touch main project database.
+- [x] CHK-010 [P1] Sandbox fixture memories for 110 similarity-band saves are in place (ID 25377). — Base content indexed, memory_conflicts table baseline recorded via PE gate.
+- [x] CHK-011 [P1] Fault injection mechanism for 085 is confirmed infeasible from MCP client. Vitest fallback applied (139/139 tests pass). — Does not touch main project database.
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -58,7 +58,7 @@ contextType: "general"
 - [x] CHK-012 [P0] Each scenario is executed with the exact prompt from the playbook — no paraphrasing or shorthand substitutions. — Tool calls match documented command sequences.
 - [x] CHK-013 [P0] Each command sequence is executed exactly as documented — parameters, argument names, and ordering match the playbook. — EX-006: save→stats→search; EX-007: update→search; EX-008: checkpoint→delete→search; EX-009: checkpoint→bulk_delete→list; EX-010: validate.
 - [x] CHK-014 [P0] For EX-008 and EX-009: the `checkpoint_create` step is confirmed complete (checkpoint visible in `checkpoint_list()`) before the destructive step runs. — pre-ex008-delete (ID 10), pre-ex009-bulk-delete (ID 11) both confirmed.
-- [x] CHK-015 [P0] For NEW-085: vitest suite provides rollback evidence (T192, T194). Not "no-fault" output. — 139/139 tests pass including explicit rollback test cases.
+- [x] CHK-015 [P0] For 085: vitest suite provides rollback evidence (T192, T194). Not "no-fault" output. — 139/139 tests pass including explicit rollback test cases.
 
 ### Evidence Capture
 - [x] CHK-016 [P0] Raw tool output is captured for every command in every scenario. — All MCP tool responses recorded in conversation transcript.
@@ -67,8 +67,8 @@ contextType: "general"
 - [x] CHK-019 [P0] For EX-008: `memory_search("EX-008 Delete Target")` after delete returns results with IDs 25373/25374/25375/25371/25377 — ID 25372 absent, confirming removal.
 - [x] CHK-020 [P0] For EX-009: `checkpoint_list(specFolder:"test-sandbox-mutation")` shows pre-ex009-bulk-delete (ID 11) + auto-checkpoint (ID 12). Bulk delete response: deleted=3.
 - [x] CHK-021 [P0] For EX-010: `memory_validate` response includes confidence: 0.60, autoPromotion: {attempted: true, promoted: false, reason: "below_threshold: positive_validation_count=1/5"}.
-- [x] CHK-022 [P0] For NEW-085: vitest output captured (139/139 pass). Rollback behavior verified via T192 (atomic save wrapping), T194 (file cleanup on DB failure). MCP runtime healthy throughout.
-- [x] CHK-023 [P0] For NEW-110: CREATE demonstrated (base fixture ID 25377), UPDATE demonstrated (force re-save ID 25416). All 5 PE actions verified via code inspection (prediction-error-gate.ts thresholds) + vitest suite. force:true produces "updated" status.
+- [x] CHK-022 [P0] For 085: vitest output captured (139/139 pass). Rollback behavior verified via T192 (atomic save wrapping), T194 (file cleanup on DB failure). MCP runtime healthy throughout.
+- [x] CHK-023 [P0] For 110: CREATE demonstrated (base fixture ID 25377), UPDATE demonstrated (force re-save ID 25416). All 5 PE actions verified via code inspection (prediction-error-gate.ts thresholds) + vitest suite. force:true produces "updated" status.
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -82,15 +82,15 @@ contextType: "general"
 - [x] CHK-026 [P0] EX-008 verdict: **PASS** — Deleted item absent from retrieval, checkpoint exists (ID 10).
 - [x] CHK-027 [P0] EX-009 verdict: **PASS** — Scoped deletions in sandbox (count=3), checkpoint present (IDs 11, 12).
 - [x] CHK-028 [P0] EX-010 verdict: **PASS** — Feedback persisted, confidence/promotion metadata returned.
-- [x] CHK-029 [P0] NEW-085 verdict: **PARTIAL** — Fault injection infeasible; vitest fallback (139/139) + code inspection confirms rollback behavior.
-- [x] CHK-030 [P0] NEW-110 verdict: **PARTIAL** — Code + vitest confirm all 5 thresholds; live MCP demonstrated CREATE + UPDATE; embedding similarity not precisely controllable for all 5 bands.
+- [x] CHK-029 [P0] 085 verdict: **PARTIAL** — Fault injection infeasible; vitest fallback (139/139) + code inspection confirms rollback behavior.
+- [x] CHK-030 [P0] 110 verdict: **PARTIAL** — Code + vitest confirm all 5 thresholds; live MCP demonstrated CREATE + UPDATE; embedding similarity not precisely controllable for all 5 bands.
 
 ### Coverage
-- [x] CHK-031 [P0] Phase 002 coverage confirmed as 7/7 with no skipped test IDs. — EX-006, EX-007, EX-008, EX-009, EX-010, NEW-085, NEW-110 all executed.
+- [x] CHK-031 [P0] Phase 002 coverage confirmed as 7/7 with no skipped test IDs. — EX-006, EX-007, EX-008, EX-009, EX-010, 085, 110 all executed.
 - [x] CHK-032 [P0] Review protocol acceptance checks applied to all seven scenarios. — Preconditions satisfied, prompts/commands executed as documented, expected signals present, evidence readable, outcome rationale explicit.
 - [x] CHK-033 [P1] PARTIAL verdicts triaged:
-  - **NEW-085**: Root cause: better-sqlite3 synchronous transactions prevent external fault injection. Remediation: implement server-side test harness with injectable fault callback for future testing.
-  - **NEW-110**: Root cause: embedding similarity scores depend on model output and cannot be precisely controlled from MCP client. Remediation: add server-side PE gate integration tests with mock embeddings at exact threshold boundaries.
+  - **085**: Root cause: better-sqlite3 synchronous transactions prevent external fault injection. Remediation: implement server-side test harness with injectable fault callback for future testing.
+  - **110**: Root cause: embedding similarity scores depend on model output and cannot be precisely controlled from MCP client. Remediation: add server-side PE gate integration tests with mock embeddings at exact threshold boundaries.
 <!-- /ANCHOR:testing -->
 
 ---
@@ -109,7 +109,7 @@ contextType: "general"
 - [x] CHK-039 [P0] `specFolder` parameter explicitly set to `test-sandbox-mutation` — unscoped bulk delete not permitted.
 - [x] CHK-040 [P1] Post-execution: sandbox folder explicitly marked as consumed. Auto-checkpoint (ID 12) available for restore.
 
-### NEW-085 Fault Injection
+### 085 Fault Injection
 - [x] CHK-041 [P0] Vitest suite runs against isolated in-memory/temp databases — confirmed no writes to main project database.
 - [x] CHK-042 [P1] Post-execution: `memory_health()` confirms database healthy. No fault artifacts — vitest uses temp databases that are cleaned up automatically.
 <!-- /ANCHOR:security -->
@@ -120,7 +120,7 @@ contextType: "general"
 ## Documentation
 
 - [x] CHK-043 [P0] `spec.md` contains YAML frontmatter, all seven scope table rows with exact prompts and feature catalog links, all seven REQ items, and success criteria SC-001 through SC-005.
-- [x] CHK-044 [P0] `plan.md` contains YAML frontmatter, five execution phases, a testing strategy table with all seven test IDs, rollback procedures for EX-008, EX-009, and NEW-085, and dependency table.
+- [x] CHK-044 [P0] `plan.md` contains YAML frontmatter, five execution phases, a testing strategy table with all seven test IDs, rollback procedures for EX-008, EX-009, and 085, and dependency table.
 - [x] CHK-045 [P0] `tasks.md` contains YAML frontmatter, all task phases with T001-T015, completion criteria, and cross-references.
 - [x] CHK-046 [P0] `checklist.md` (this file) contains YAML frontmatter and all anchor blocks.
 - [x] CHK-047 [P1] Open questions from `spec.md` section 7 are resolved (OQ-1 through OQ-4 with detailed answers).

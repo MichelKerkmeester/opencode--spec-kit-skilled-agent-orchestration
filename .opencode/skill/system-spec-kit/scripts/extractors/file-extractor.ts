@@ -7,7 +7,7 @@
 // ───────────────────────────────────────────────────────────────
 // Extracts file references, descriptions, and observation types from session data
 
-import { CONFIG } from '../core';
+import { CONFIG } from '../config';
 import { coerceFactToText, coerceFactsToText } from '../utils/fact-coercion';
 import {
   toCanonicalRelativePath,

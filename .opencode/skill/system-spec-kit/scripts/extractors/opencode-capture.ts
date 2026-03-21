@@ -7,12 +7,18 @@
 // ───────────────────────────────────────────────────────────────
 // Captures and parses OpenCode session data from JSONL conversation logs
 
+/**
+ * @deprecated RECOVERY-ONLY — This module is part of the stateless dynamic capture path,
+ * which is deprecated for routine saves (Phase 017). In JSON-primary mode, the AI provides
+ * structured data directly. This module only executes when --recovery is explicitly passed.
+ */
+
 import * as fs from 'fs/promises';
 import * as fsSync from 'fs';
 import * as path from 'path';
 import * as readline from 'readline';
 import { execFileSync } from 'node:child_process';
-import { CONFIG } from '../core';
+import { CONFIG } from '../config';
 import { buildWorkspaceIdentity, normalizeAbsolutePath } from '../utils';
 
 /* ───────────────────────────────────────────────────────────────

@@ -412,11 +412,3 @@ export class SemanticSignalExtractor {
     }).topics;
   }
 }
-
-export {
-  AGGRESSIVE_STOP_WORDS,
-  PLACEHOLDER_INDICATORS,
-  clampNgramDepth,
-  filterStopWordsByProfile,
-  getStopwordSet,
-};

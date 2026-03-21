@@ -27,11 +27,11 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Completed** | 2026-03-16 |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 15 of 16 |
+| **Phase** | 2 of 3 (000-dynamic-capture-deprecation branch) |
 | **Predecessor** | 001-session-source-validation |
 | **Successor** | 003-multi-cli-parity |
 | **Handoff Criteria** | validate.sh + test suite passing |
-| **R-Item** | R-15 |
+| **R-Item** | R-002 |
 | **Sequence** | B5 (after 011) |
 | **Origin** | Evolved from `022-hybrid-rag-fusion/013-outsourced-agent-memory/` |
 <!-- /ANCHOR:metadata -->
@@ -40,7 +40,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 ### Phase Context
 
-This is **Phase 15** of the Perfect Session Capturing specification.
+This is **Phase 002** of the dynamic-capture-deprecation branch.
 
 **Scope Boundary**: When an external CLI (Codex, Copilot, Gemini, Claude Code) completes delegated work and returns session context, the data must flow through 010's generate-context.js pipeline to produce a memory file.
 **Dependencies**: 014-spec-descriptions

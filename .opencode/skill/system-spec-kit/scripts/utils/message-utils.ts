@@ -12,6 +12,7 @@
 // ───────────────────────────────────────────────────────────────
 import { CONFIG } from '../core';
 import { structuredLog } from './logger';
+import type { ToolCallEntry } from '../types/session-types';
 
 // ───────────────────────────────────────────────────────────────
 // 3. TYPES
@@ -19,15 +20,8 @@ import { structuredLog } from './logger';
 /** Supported timestamp formats */
 export type TimestampFormat = 'iso' | 'readable' | 'date' | 'date-dutch' | 'time' | 'time-short' | 'filename';
 
-/** Tool call record within a message */
-export interface ToolCall {
-  tool?: string;
-  TOOL_NAME?: string;
-  command?: string;
-  file_path?: string;
-  result?: string;
-  [key: string]: unknown;
-}
+/** Tool call record within a message — alias for the canonical ToolCallEntry. */
+export type ToolCall = ToolCallEntry;
 
 /** Message record for artifact extraction */
 export interface Message {
@@ -38,13 +32,16 @@ export interface Message {
   [key: string]: unknown;
 }
 
-/** Summary of a conversation exchange */
-export interface ExchangeSummary {
+/** Summary of a conversation exchange (artifact-level, differs from session-types ExchangeSummary) */
+export interface ExchangeArtifactSummary {
   userIntent: string;
   outcome: string;
   toolSummary: string;
   fullSummary: string;
 }
+
+/** @deprecated Use ExchangeArtifactSummary — kept for backward compatibility */
+export type ExchangeSummary = ExchangeArtifactSummary;
 
 /** File artifact entry */
 export interface FileArtifact {
@@ -64,14 +61,6 @@ export interface ErrorArtifact {
   timestamp?: string;
 }
 
-/** Extracted artifacts from messages */
-export interface KeyArtifacts {
-  filesCreated: FileArtifact[];
-  filesModified: FileArtifact[];
-  commandsExecuted: CommandArtifact[];
-  errorsEncountered: ErrorArtifact[];
-}
-
 // ───────────────────────────────────────────────────────────────
 // 4. TIMESTAMP FORMATTING
 // ───────────────────────────────────────────────────────────────
@@ -87,6 +76,10 @@ function formatTimestamp(date: Date | string | number = new Date(), format: Time
     return formatTimestamp(new Date(), format);
   }
 
+  if (format === 'iso') {
+    return d.toISOString();
+  }
+
   const offsetMs: number = CONFIG.TIMEZONE_OFFSET_HOURS * 60 * 60 * 1000;
   const adjustedDate: Date = new Date(d.getTime() + offsetMs);
 
@@ -95,9 +88,6 @@ function formatTimestamp(date: Date | string | number = new Date(), format: Time
   const timeWithoutMs: string = timePart.split('.')[0];
 
   switch (format) {
-    case 'iso':
-      return isoString.split('.')[0] + 'Z';
-
     case 'readable':
       return `${datePart} @ ${timeWithoutMs}`;
 
@@ -123,7 +113,7 @@ function formatTimestamp(date: Date | string | number = new Date(), format: Time
 
     default:
       structuredLog('warn', `Unknown timestamp format "${format}", using ISO`);
-      return isoString;
+      return d.toISOString();
   }
 }
 
@@ -158,7 +148,7 @@ function truncateToolOutput(output: string, maxLines: number = CONFIG.MAX_TOOL_O
 // ───────────────────────────────────────────────────────────────
 // 6. EXCHANGE SUMMARIZATION
 // ───────────────────────────────────────────────────────────────
-function summarizeExchange(userMessage: string, assistantResponse: string, toolCalls: ToolCall[] = []): ExchangeSummary {
+function summarizeExchange(userMessage: string, assistantResponse: string, toolCalls: ToolCallEntry[] = []): ExchangeArtifactSummary {
   let userIntent: string;
   if (userMessage.length <= 200) {
     userIntent = userMessage;
@@ -167,7 +157,7 @@ function summarizeExchange(userMessage: string, assistantResponse: string, toolC
     userIntent = sentenceEnd ? sentenceEnd[1] : userMessage.substring(0, 200) + '...';
   }
 
-  const mainTools: string = toolCalls.slice(0, 3).map((t: ToolCall) => t.tool || t.TOOL_NAME).join(', ');
+  const mainTools: string = toolCalls.slice(0, 3).map((t: ToolCallEntry) => t.TOOL_NAME).join(', ');
   const toolSummary: string = toolCalls.length > 0
     ? ` Used tools: ${mainTools}${toolCalls.length > 3 ? ` and ${toolCalls.length - 3} more` : ''}.`
     : '';
@@ -186,59 +176,10 @@ function summarizeExchange(userMessage: string, assistantResponse: string, toolC
 }
 
 // ───────────────────────────────────────────────────────────────
-// 7. ARTIFACT EXTRACTION
-// ───────────────────────────────────────────────────────────────
-function extractKeyArtifacts(messages: Message[]): KeyArtifacts {
-  const artifacts: KeyArtifacts = {
-    filesCreated: [],
-    filesModified: [],
-    commandsExecuted: [],
-    errorsEncountered: []
-  };
-
-  for (const msg of messages) {
-    if (!msg.toolCalls) continue;
-
-    for (const tool of msg.toolCalls) {
-      const toolName: string = (tool.tool || tool.TOOL_NAME || '').toLowerCase();
-
-      if (toolName === 'write') {
-        artifacts.filesCreated.push({
-          path: tool.file_path || 'unknown',
-          timestamp: msg.timestamp
-        });
-      } else if (toolName === 'edit') {
-        artifacts.filesModified.push({
-          path: tool.file_path || 'unknown',
-          timestamp: msg.timestamp
-        });
-      } else if (toolName === 'bash') {
-        artifacts.commandsExecuted.push({
-          command: tool.command || 'unknown',
-          timestamp: msg.timestamp
-        });
-      }
-
-      if (tool.result && typeof tool.result === 'string') {
-        if (tool.result.includes('Error:') || tool.result.includes('error:')) {
-          artifacts.errorsEncountered.push({
-            error: tool.result.substring(0, 200),
-            timestamp: msg.timestamp
-          });
-        }
-      }
-    }
-  }
-
-  return artifacts;
-}
-
-// ───────────────────────────────────────────────────────────────
-// 8. EXPORTS
+// 7. EXPORTS
 // ───────────────────────────────────────────────────────────────
 export {
   formatTimestamp,
   truncateToolOutput,
   summarizeExchange,
-  extractKeyArtifacts,
 };

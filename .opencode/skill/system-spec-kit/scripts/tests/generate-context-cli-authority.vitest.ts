@@ -140,6 +140,35 @@ describe('generate-context CLI authority', () => {
     expect(harness.loadCollectedData).toHaveBeenCalledWith({ sessionId: null, allowRecovery: false });
   });
 
+  it('forwards explicit --session-id to workflow', async () => {
+    const dataFile = '/tmp/save-context-data.json';
+    const explicitSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
+    const sessionId = 'test-session-123';
+    process.argv = [
+      'node',
+      path.join('scripts', 'dist', 'memory', 'generate-context.js'),
+      '--session-id',
+      sessionId,
+      dataFile,
+      explicitSpecFolder,
+    ];
+
+    const { main } = await import('../memory/generate-context');
+    await main();
+
+    expect(harness.runWorkflow).toHaveBeenCalledTimes(1);
+    const workflowCall = harness.runWorkflow.mock.calls[0]?.[0];
+    expect(workflowCall).toMatchObject({
+      dataFile,
+      specFolderArg: explicitSpecFolder,
+      loadDataFn: expect.any(Function),
+      collectSessionDataFn: harness.collectSessionData,
+      collectedData: undefined,
+    });
+    await workflowCall?.loadDataFn?.();
+    expect(harness.loadCollectedData).toHaveBeenCalledWith({ sessionId, allowRecovery: false });
+  });
+
   it('passes an explicit phase-folder CLI target through main() as an authoritative workflow target only in recovery mode', async () => {
     const explicitPhaseFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/021-remediation-revalidation';
     const resolvedPhaseFolder = path.resolve(REPO_ROOT, explicitPhaseFolder);

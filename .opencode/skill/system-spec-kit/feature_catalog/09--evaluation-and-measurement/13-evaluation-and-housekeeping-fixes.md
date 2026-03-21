@@ -56,4 +56,4 @@ Six fixes addressed evaluation framework reliability and protocol-boundary safet
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenario NEW-082
+- Mapped to manual testing playbook scenario 082

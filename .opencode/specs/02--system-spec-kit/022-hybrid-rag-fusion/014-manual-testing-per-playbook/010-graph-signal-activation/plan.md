@@ -5,7 +5,7 @@ trigger_phrases:
   - "phase 010 execution plan"
   - "graph signal activation manual tests"
   - "manual plus MCP verification"
-  - "NEW-016 NEW-120 plan"
+  - "016 120 plan"
 importance_tier: "important"
 contextType: "general"
 ---
@@ -29,7 +29,7 @@ contextType: "general"
 | **Testing** | manual + MCP |
 
 ### Overview
-This plan turns the playbook rows for NEW-016 through NEW-022, NEW-081, and NEW-120 into an operator-ready execution packet. It keeps the exact prompts from the playbook, groups read-mostly and stateful scenarios, and routes final verdicts through the review protocol's PASS, PARTIAL, and FAIL rules.
+This plan turns the playbook rows for 016 through 022, 081, and 120 into an operator-ready execution packet. It keeps the exact prompts from the playbook, groups read-mostly and stateful scenarios, and routes final verdicts through the review protocol's PASS, PARTIAL, and FAIL rules.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -82,15 +82,15 @@ Manual test execution pipeline
 - [ ] Set aside a disposable sandbox or checkpoint path for mutation-heavy scenarios.
 
 ### Phase 2: Non-Destructive Tests
-- [ ] Run `NEW-016`, `NEW-017`, and `NEW-018` to verify bounded typed-degree, co-activation delta, and edge-density gating behavior.
-- [ ] Run `NEW-020`, `NEW-021`, and `NEW-022` to verify momentum, normalized depth, and community assignment behavior.
+- [ ] Run `016`, `017`, and `018` to verify bounded typed-degree, co-activation delta, and edge-density gating behavior.
+- [ ] Run `020`, `021`, and `022` to verify momentum, normalized depth, and community assignment behavior.
 - [ ] Execute the exact command sequence from the playbook for each row and preserve the related evidence snapshot.
 
 ### Phase 3: Destructive Tests
-- [ ] Run `NEW-019` in a disposable sandbox because it mutates edge strengths and then rolls them back through audit history.
-- [ ] Run `NEW-081` in a disposable sandbox when self-loop attempts, depth clamp checks, or cache invalidation checks would alter shared graph state.
-- [ ] Run `NEW-120` in an isolated runtime or sandbox session because it toggles `SPECKIT_GRAPH_UNIFIED` and compares enabled and disabled behavior across repeated queries.
-- [ ] If snapshot seeding or community recomputation changes persistent data, move `NEW-020` or `NEW-022` into the same sandbox flow.
+- [ ] Run `019` in a disposable sandbox because it mutates edge strengths and then rolls them back through audit history.
+- [ ] Run `081` in a disposable sandbox when self-loop attempts, depth clamp checks, or cache invalidation checks would alter shared graph state.
+- [ ] Run `120` in an isolated runtime or sandbox session because it toggles `SPECKIT_GRAPH_UNIFIED` and compares enabled and disabled behavior across repeated queries.
+- [ ] If snapshot seeding or community recomputation changes persistent data, move `020` or `022` into the same sandbox flow.
 
 ### Phase 4: Evidence Collection and Verdict
 - [ ] For every scenario, capture the exact prompt used, the command transcript, the key output snippets, and any artifact or trace payload reference.
@@ -107,15 +107,15 @@ Run the exact command sequence from [`../../manual_testing_playbook/manual_testi
 
 | Test ID | Scenario Name | Exact Prompt | Execution Type |
 |---------|---------------|--------------|----------------|
-| `NEW-016` | Confirm bounded typed-degree boost | `Test typed-weighted degree channel (R4).` | `manual/MCP` |
-| `NEW-017` | Confirm multiplier impact | `Compare co-activation strength values for A7.` | `manual/MCP` |
-| `NEW-018` | Confirm edges-per-node thresholding | `Verify edge density measurement and gate behavior.` | `manual/MCP` |
-| `NEW-019` | Confirm edge change logging and rollback | `Validate weight history audit tracking.` | `manual/MCP` |
-| `NEW-020` | Confirm 7-day delta bonus | `Verify graph momentum scoring (N2a).` | `manual/MCP` |
-| `NEW-021` | Confirm normalized depth scoring | `Test causal depth signal (N2b).` | `manual/MCP` |
-| `NEW-022` | Confirm community boost injection | `Validate community detection (N2c).` | `manual/MCP` |
-| `NEW-081` | Confirm graph and cognitive fix bundle | `Validate graph and cognitive memory fixes.` | `manual/MCP` |
-| `NEW-120` | Confirm graph kill switch, explainability, and deterministic ordering | `Validate Phase 3 graph rollback and explainability.` | `manual/MCP` |
+| `016` | Confirm bounded typed-degree boost | `Test typed-weighted degree channel (R4).` | `manual/MCP` |
+| `017` | Confirm multiplier impact | `Compare co-activation strength values for A7.` | `manual/MCP` |
+| `018` | Confirm edges-per-node thresholding | `Verify edge density measurement and gate behavior.` | `manual/MCP` |
+| `019` | Confirm edge change logging and rollback | `Validate weight history audit tracking.` | `manual/MCP` |
+| `020` | Confirm 7-day delta bonus | `Verify graph momentum scoring (N2a).` | `manual/MCP` |
+| `021` | Confirm normalized depth scoring | `Test causal depth signal (N2b).` | `manual/MCP` |
+| `022` | Confirm community boost injection | `Validate community detection (N2c).` | `manual/MCP` |
+| `081` | Confirm graph and cognitive fix bundle | `Validate graph and cognitive memory fixes.` | `manual/MCP` |
+| `120` | Confirm graph kill switch, explainability, and deterministic ordering | `Validate Phase 3 graph rollback and explainability.` | `manual/MCP` |
 <!-- /ANCHOR:testing -->
 
 ---

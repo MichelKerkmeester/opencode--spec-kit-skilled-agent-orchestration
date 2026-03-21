@@ -16,6 +16,7 @@
   ],
   "include": [
     "*.ts",
+    "config/**/*.ts",
     "core/**/*.ts",
     "evals/**/*.ts",
     "extractors/**/*.ts",

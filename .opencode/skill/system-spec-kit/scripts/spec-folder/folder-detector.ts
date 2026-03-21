@@ -29,7 +29,7 @@ import {
   validateFolderAlignment,
 } from './alignment-validator';
 import type { AlignmentCollectedData } from './alignment-validator';
-import { buildSessionActivitySignal } from '../extractors/session-activity-signal';
+import { buildSessionActivitySignal } from '../lib/session-activity-signal';
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES
@@ -39,6 +39,12 @@ interface SessionLearningRow {
   spec_folder?: unknown;
   created_at?: unknown;
   updated_at?: unknown;
+}
+
+interface SessionRow {
+  spec_folder: string;
+  created_at: string;
+  updated_at: string;
 }
 
 interface FolderQualityAssessment {
@@ -767,7 +773,7 @@ async function resolveSessionSpecFolderPaths(
 }
 
 async function buildSessionCandidates(
-  rows: unknown[],
+  rows: SessionRow[],
   specsDirs: string[]
 ): Promise<SessionCandidate[]> {
   const parentCache = await collectSpecParentCache(specsDirs);
@@ -788,8 +794,7 @@ async function buildSessionCandidates(
       }
     }
 
-    const typedRow = (row || {}) as SessionLearningRow;
-    const recencyMs = getSessionTimestamp(typedRow);
+    const recencyMs = getSessionTimestamp(row);
     const recencyIso = recencyMs > 0 ? new Date(recencyMs).toISOString() : 'unknown';
     const resolvedPaths = await resolveSessionSpecFolderPaths(trimmedSpecFolder, specsDirs, parentCache);
 
@@ -1343,7 +1348,7 @@ async function detectSpecFolder(
          WHERE created_at > datetime('now', '-' || ? || ' hours')
          ORDER BY created_at DESC
          LIMIT ?`
-      ).all(SESSION_LOOKBACK_HOURS, SESSION_ROW_LIMIT) as unknown[];
+      ).all(SESSION_LOOKBACK_HOURS, SESSION_ROW_LIMIT) as SessionRow[];
 
       const sessionCandidates = await buildSessionCandidates(rows, specsDirsForDetection);
       const rankedSessionCandidates = rankSessionCandidates(sessionCandidates);
@@ -1618,7 +1623,4 @@ export {
   TEST_HELPERS,
   detectSpecFolder,
   filterArchiveFolders,
-  // Backwards compatibility aliases
-  detectSpecFolder as detect_spec_folder,
-  filterArchiveFolders as filter_archive_folders,
 };

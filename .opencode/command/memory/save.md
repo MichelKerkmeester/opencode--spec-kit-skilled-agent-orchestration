@@ -72,7 +72,7 @@ Save the current conversation context, including session summary, key decisions,
 | Output  | Memory file in `[spec]/memory/` + indexed in MCP                                             |
 | Script  | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`               |
 | Primary | **JSON mode:** `generate-context.js /tmp/save-context-data.json` or `--json '<data>'`        |
-| Recovery| **Stateless mode (deprecated):** `generate-context.js [spec-folder]` — crash recovery only   |
+| Recovery| **Recovery mode (deprecated):** `generate-context.js --recovery [spec-folder]` — crash recovery only |
 | Trigger | "save context", "save memory", `/memory:save`                                                |
 
 ---

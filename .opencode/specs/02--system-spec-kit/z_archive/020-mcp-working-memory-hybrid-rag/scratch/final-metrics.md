@@ -13,5 +13,5 @@ Date: 2026-02-19
 
 ## Notes
 
-- SC-002 now closes after evaluator remediation: `scripts/evals/run-phase1-5-shadow-eval.ts` computes context-error metrics from pressure-simulation telemetry and writes `scratch/phase1-5-context-error-telemetry.json`.
-- Re-run command: `npx tsx scripts/evals/run-phase1-5-shadow-eval.ts ../../specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag`.
+- SC-002 now closes after evaluator remediation: `scripts/evals/deleted-phase1-5-shadow-eval-script` computes context-error metrics from pressure-simulation telemetry and writes `scratch/phase1-5-context-error-telemetry.json`.
+- Re-run command: `npx tsx scripts/evals/deleted-phase1-5-shadow-eval-script ../../specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag`.

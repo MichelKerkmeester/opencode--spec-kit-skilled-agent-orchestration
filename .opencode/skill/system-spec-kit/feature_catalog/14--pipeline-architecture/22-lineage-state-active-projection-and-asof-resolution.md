@@ -52,4 +52,4 @@ Schema support is now part of vector index setup, and save handlers integrate li
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenarios NEW-129 and NEW-130
+- Mapped to manual testing playbook scenarios 129 and 130

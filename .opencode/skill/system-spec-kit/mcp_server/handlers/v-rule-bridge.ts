@@ -1,0 +1,77 @@
+// ---------------------------------------------------------------
+// MODULE: V-Rule Bridge
+// ---------------------------------------------------------------
+// O2-5/O2-12: Runtime bridge to scripts/memory/validate-memory-quality
+// Uses compiled JS output to avoid cross-project TypeScript rootDir issues.
+// Falls back gracefully if the module is not available.
+
+import path from 'path';
+
+// ───────────────────────────────────────────────────────────────
+// 1. TYPES (mirrored from validate-memory-quality.ts)
+// ───────────────────────────────────────────────────────────────
+
+type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10' | 'V11' | 'V12';
+type ValidationDisposition = 'abort_write' | 'write_skip_index' | 'write_and_index';
+
+interface RuleResult {
+  ruleId: QualityRuleId;
+  passed: boolean;
+  message: string;
+}
+
+interface ValidationResult {
+  valid: boolean;
+  failedRules: QualityRuleId[];
+  ruleResults: RuleResult[];
+}
+
+interface ValidationDispositionResult {
+  disposition: ValidationDisposition;
+  blockingRuleIds: QualityRuleId[];
+  indexBlockingRuleIds: QualityRuleId[];
+  softRuleIds: QualityRuleId[];
+}
+
+// ───────────────────────────────────────────────────────────────
+// 2. MODULE LOADING
+// ───────────────────────────────────────────────────────────────
+
+let _validateMemoryQualityContent: ((content: string) => ValidationResult) | null = null;
+let _determineValidationDisposition: ((failedRules: readonly QualityRuleId[], source?: string | null) => ValidationDispositionResult) | null = null;
+let _loadAttempted = false;
+
+function loadModule(): void {
+  if (_loadAttempted) return;
+  _loadAttempted = true;
+  try {
+    const distPath = path.resolve(__dirname, '../../scripts/dist/memory/validate-memory-quality.js');
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const mod = require(distPath);
+    _validateMemoryQualityContent = mod.validateMemoryQualityContent;
+    _determineValidationDisposition = mod.determineValidationDisposition;
+  } catch {
+    console.warn('[v-rule-bridge] Could not load validate-memory-quality from scripts/dist — V-rule checks disabled');
+  }
+}
+
+// ───────────────────────────────────────────────────────────────
+// 3. EXPORTS
+// ───────────────────────────────────────────────────────────────
+
+export function validateMemoryQualityContent(content: string): ValidationResult | null {
+  loadModule();
+  if (!_validateMemoryQualityContent) return null;
+  return _validateMemoryQualityContent(content);
+}
+
+export function determineValidationDisposition(
+  failedRules: readonly QualityRuleId[],
+  source?: string | null,
+): ValidationDispositionResult | null {
+  loadModule();
+  if (!_determineValidationDisposition) return null;
+  return _determineValidationDisposition(failedRules, source);
+}
+
+export type { ValidationResult, ValidationDispositionResult, QualityRuleId };

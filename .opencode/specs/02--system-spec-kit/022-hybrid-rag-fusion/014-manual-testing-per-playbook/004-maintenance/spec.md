@@ -54,8 +54,8 @@ Provide a single maintenance-focused specification that maps all Phase 004 test 
 |---------|---------------|-----------------|--------------|------------------------|
 | EX-014 | Incremental sync run | [`../../feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md`](../../feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md) | `Run index scan for changed docs` | `memory_index_scan(force:false)` -> `memory_stats()` |
 | EX-035 | Startup diagnostics verification | [`../../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md`](../../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md) | `Run the dedicated startup guard validation suite` | `cd .opencode/skill/system-spec-kit/mcp_server` -> `npm test -- --run tests/startup-checks.vitest.ts` |
-| NEW-100 | Async shutdown with deadline (server lifecycle) | [`../../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md`](../../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md) | `Validate server shutdown deadline behavior.` | 1) start server with file watcher and local reranker enabled 2) send SIGTERM 3) verify watcher/reranker/vector-index cleanup 4) verify shutdown completes within 5s |
-| NEW-101 | memory_delete confirm schema tightening | [`../../feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md`](../../feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md) | `Validate memory_delete confirm:z.literal(true) enforcement.` | 1) verify `confirm:true` accepted 2) verify `confirm:false` rejected 3) verify bulk delete path requires confirm |
+| 100 | Async shutdown with deadline (server lifecycle) | [`../../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md`](../../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md) | `Validate server shutdown deadline behavior.` | 1) start server with file watcher and local reranker enabled 2) send SIGTERM 3) verify watcher/reranker/vector-index cleanup 4) verify shutdown completes within 5s |
+| 101 | memory_delete confirm schema tightening | [`../../feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md`](../../feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md) | `Validate memory_delete confirm:z.literal(true) enforcement.` | 1) verify `confirm:true` accepted 2) verify `confirm:false` rejected 3) verify bulk delete path requires confirm |
 
 ### Out of Scope
 - Modifying the per-feature playbook files or code under test during execution.
@@ -83,8 +83,8 @@ Provide a single maintenance-focused specification that maps all Phase 004 test 
 |----|-------------|---------------------|
 | REQ-001 | Document EX-014 incremental sync run with its exact playbook prompt, command sequence, evidence target, and feature link. | PASS if changed files reflected in scan summary and updated index state after `memory_index_scan(force:false)` -> `memory_stats()` |
 | REQ-002 | Document EX-035 startup diagnostics verification with its exact playbook prompt, command sequence, evidence target, and feature link. | PASS if `startup-checks.vitest.ts` completes with all tests passing covering runtime mismatch, marker creation, and SQLite diagnostics |
-| REQ-003 | Document NEW-100 async shutdown with deadline with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS if watcher/reranker/vector-index cleanup completes within the 5-second shutdown deadline and no hang occurs |
-| REQ-004 | Document NEW-101 memory_delete confirm-schema tightening with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS if only `confirm:true` is accepted while `confirm:false` or missing confirm are rejected by schema validation |
+| REQ-003 | Document 100 async shutdown with deadline with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS if watcher/reranker/vector-index cleanup completes within the 5-second shutdown deadline and no hang occurs |
+| REQ-004 | Document 101 memory_delete confirm-schema tightening with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS if only `confirm:true` is accepted while `confirm:false` or missing confirm are rejected by schema validation |
 
 No P1 items are defined for this phase; all four maintenance scenarios are mandatory for coverage.
 <!-- /ANCHOR:requirements -->
@@ -95,7 +95,7 @@ No P1 items are defined for this phase; all four maintenance scenarios are manda
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: All four maintenance tests are documented with exact prompts, exact command sequences, linked feature catalog entries, and playbook-derived pass criteria.
-- **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for EX-014, EX-035, NEW-100, and NEW-101 will be collected.
+- **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for EX-014, EX-035, 100, and 101 will be collected.
 - **SC-003**: Reviewers can audit every Phase 004 scenario using this folder plus the linked playbook (`../../manual_testing_playbook/manual_testing_playbook.md`) and review protocol (`../../manual_testing_playbook/review_protocol.md`).
 - **SC-004**: The phase packet contains no placeholder or template text and is ready for manual execution planning.
 <!-- /ANCHOR:success-criteria -->

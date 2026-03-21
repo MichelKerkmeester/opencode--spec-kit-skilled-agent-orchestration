@@ -35,7 +35,7 @@ contextType: "general"
 ## Phase 1: Setup
 
 - [x] T001 Extract UX-hooks prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] T002 Confirm feature links for NEW-103, NEW-104, NEW-105, NEW-106, and NEW-107 in `../../feature_catalog/18--ux-hooks/`
+- [x] T002 Confirm feature links for 103, 104, 105, 106, and 107 in `../../feature_catalog/18--ux-hooks/`
 - [ ] T003 [P] Verify vitest test files exist and ripgrep is available per `plan.md` preconditions
 <!-- /ANCHOR:phase-1 -->
 
@@ -49,7 +49,7 @@ contextType: "general"
 - [x] T006 Draft `tasks.md` with setup, execution, and verification task tracker
 - [x] T007 Draft `checklist.md` with protocol, pre-impl, code-quality, testing, security, docs, file-org, and summary sections
 - [ ] T008 Add evidence references and verdict outcomes after manual execution
-- [ ] T009 [P] Resolve open questions for NEW-106 `rg` path scope and NEW-107 vitest alias
+- [ ] T009 [P] Resolve open questions for 106 `rg` path scope and 107 vitest alias
 <!-- /ANCHOR:phase-2 -->
 
 ---

@@ -47,4 +47,4 @@ How good could retrieval be if the system had perfect recall? To answer that, an
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenario NEW-008
+- Mapped to manual testing playbook scenario 008

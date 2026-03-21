@@ -1,19 +1,19 @@
 {
-  "timestamp": "18-03-26 19-06",
-  "messageCount": 2,
+  "timestamp": "21-03-26 07-41",
+  "messageCount": 0,
   "decisionCount": 0,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
   "filtering": {
-    "totalProcessed": 2,
+    "totalProcessed": 0,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 30,
+    "qualityScore": 0,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-03-18T18:06:51.672Z",
+        "timestamp": "2026-03-21T06:41:28.029Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -50,8 +50,8 @@
           "stripped_wrappers:0"
         ],
         "passedThrough": [
-          "input_items:2",
-          "kept_items:2"
+          "input_items:0",
+          "kept_items:0"
         ]
       }
     ],
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-03-18T18:06:51.644Z",
+      "timestamp": "2026-03-21T06:41:28.006Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -102,20 +102,18 @@
         "json error payload",
         "request id leak"
       ],
-      "matchesFound": [
-        "tool title with path x1"
-      ],
+      "matchesFound": [],
       "actionsTaken": [
-        "cleaned_fields:1",
-        "removed_phrases:1"
+        "cleaned_fields:0",
+        "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:11"
+        "processed_fields:5"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-03-18T18:06:51.672Z",
+      "timestamp": "2026-03-21T06:41:28.029Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -152,13 +150,13 @@
         "stripped_wrappers:0"
       ],
       "passedThrough": [
-        "input_items:2",
-        "kept_items:2"
+        "input_items:0",
+        "kept_items:0"
       ]
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-03-18T18:06:51.686Z",
+      "timestamp": "2026-03-21T06:41:28.040Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -175,8 +173,8 @@
       ],
       "passedThrough": [
         "current_spec:022-mcp-coco-integration",
-        "trigger_phrases:18",
-        "key_topics:12",
+        "trigger_phrases:6",
+        "key_topics:5",
         "captured_file_count:10",
         "filesystem_file_count:10"
       ]
@@ -185,15 +183,15 @@
   "semanticSummary": {
     "task": "Development session",
     "filesCreated": 0,
-    "filesModified": 10,
+    "filesModified": 0,
     "decisions": 0,
     "messageStats": {
       "intent": 0,
       "plan": 0,
       "implementation": 0,
-      "result": 1,
+      "result": 0,
       "decision": 0,
-      "total": 2
+      "total": 0
     }
   },
   "fileCounts": {
@@ -209,13 +207,12 @@
     "sessionUpdated": 0
   },
   "embedding": {
-    "status": "failed_embedding",
+    "status": "indexed",
     "model": "nomic-ai/nomic-embed-text-v1.5",
     "dimensions": 768,
-    "memoryId": null,
-    "updatedAt": "2026-03-18T18:06:58.775Z",
-    "lastAttemptedAt": "2026-03-18T18:06:58.775Z",
-    "reason": "Embedding generation or semantic indexing failed after the memory file was written.",
-    "errorMessage": "voyage-embedding failed after 4 attempts: fetch failed"
+    "memoryId": 4439,
+    "updatedAt": "2026-03-21T06:41:28.814Z",
+    "generatedAt": "2026-03-21T06:41:28.814Z",
+    "reason": "Indexed after all write and semantic-index gates passed."
   }
 }

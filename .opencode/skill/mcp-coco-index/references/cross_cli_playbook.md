@@ -111,11 +111,32 @@ Use `Grep` first when the prompt asks for:
 - Do not assume continuous file-watch reindexing. For major refactors or branch switches, run `ccc index`.
 - Do not assume sibling repos inherit CocoIndex from advisor heuristics alone. Downstream repos need the local skill payload plus `cocoindex_code` config wiring. See `references/downstream_adoption_checklist.md`.
 
-### Provider Notes
+### Provider-Specific Activation Recipes
 
-- Claude and Gemini already tend to choose CocoIndex correctly for concept search.
-- Copilot/OpenCode benefit most from sequential queries and `refresh_index=false` after the first search.
-- Codex should use the same skill docs and helper scripts; no special agent routing is required in this phase.
+#### Claude Code
+- **MCP tool**: `mcp__cocoindex_code__search`
+- **Auto-activation**: CLAUDE.md MANDATORY TOOLS says MUST use for concept search
+- **Best practice**: Use MCP `search` tool directly; set `refresh_index=false` after first query
+
+#### Codex CLI
+- **MCP config**: `.codex/config.toml` under `[mcp_servers.cocoindex_code]`
+- **Auto-activation**: AGENTS.md Code Search Protocol section
+- **Best practice**: Use CLI `ccc search` via Bash or MCP `search` tool
+
+#### Gemini CLI
+- **MCP config**: `.gemini/settings.json` under `mcpServers.cocoindex_code`
+- **Auto-activation**: GEMINI.md Code Search Protocol section
+- **Best practice**: Combine with Google Search for external + CocoIndex for codebase context
+
+#### GitHub Copilot
+- **MCP config**: `.agents/settings.json` under `mcpServers.cocoindex_code`
+- **Auto-activation**: AGENTS.md Code Search Protocol section
+- **Known issue**: Use `refresh_index=false` for follow-up queries to avoid daemon concurrency crashes
+
+#### OpenCode
+- **MCP config**: `opencode.json` under `mcpServers.cocoindex_code`
+- **Auto-activation**: AGENTS.md + skill_advisor.py routing
+- **Best practice**: skill_advisor.py auto-routes semantic prompts; CLI or MCP interchangeable
 
 ---
 

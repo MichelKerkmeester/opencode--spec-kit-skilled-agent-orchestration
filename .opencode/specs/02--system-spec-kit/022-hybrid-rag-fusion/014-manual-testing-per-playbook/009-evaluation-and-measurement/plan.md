@@ -82,9 +82,9 @@ The pipeline stays consistent across all measurement scenarios: establish the ta
 - [ ] Decide which scenarios are inspection-only versus command-driven before execution starts.
 
 ### Phase 2: Non-Destructive Tests
-- [ ] Run inspection-oriented scenarios first: NEW-009, NEW-010, NEW-072, NEW-088, NEW-090.
-- [ ] Run reproducible runtime scenarios next: NEW-006, NEW-007, NEW-008, NEW-011, NEW-012, NEW-013, NEW-014, NEW-015.
-- [ ] Reserve NEW-005, NEW-082, and NEW-126 for isolated runs where writes and persisted snapshots can be inspected clearly.
+- [ ] Run inspection-oriented scenarios first: 009, 010, 072, 088, 090.
+- [ ] Run reproducible runtime scenarios next: 006, 007, 008, 011, 012, 013, 014, 015.
+- [ ] Reserve 005, 082, and 126 for isolated runs where writes and persisted snapshots can be inspected clearly.
 
 ### Phase 3: Destructive Tests
 - [ ] No dedicated destructive scenarios are defined for Phase 009.
@@ -104,22 +104,22 @@ The pipeline stays consistent across all measurement scenarios: establish the ta
 
 | Test ID | Scenario Name | Exact Prompt | Execution Type (manual/MCP) |
 |---------|---------------|--------------|-----------------------------|
-| NEW-005 | Evaluation database and schema | `Verify evaluation DB/schema writes.` | MCP |
-| NEW-006 | Core metric computation | `Validate core metric computation (R13-S1).` | MCP |
-| NEW-007 | Observer effect mitigation | `Check observer effect mitigation (D4).` | MCP |
-| NEW-008 | Full-context ceiling evaluation | `Run full-context ceiling evaluation (A2).` | MCP |
-| NEW-009 | Quality proxy formula | `Compute and verify quality proxy formula (B7).` | manual |
-| NEW-010 | Synthetic ground truth corpus | `Audit synthetic ground-truth corpus coverage.` | manual |
-| NEW-011 | BM25-only baseline | `Run BM25-only baseline measurement.` | MCP |
-| NEW-012 | Agent consumption instrumentation | `Validate G-NEW-2 instrumentation behavior.` | MCP |
-| NEW-013 | Scoring observability | `Verify scoring observability (T010).` | MCP |
-| NEW-014 | Full reporting and ablation study framework | `Execute manual ablation run (R13-S3).` | MCP |
-| NEW-015 | Shadow scoring and channel attribution | `Verify shadow scoring deactivation and attribution continuity.` | MCP |
-| NEW-072 | Test quality improvements | `Audit test quality improvements.` | manual |
-| NEW-082 | Evaluation and housekeeping fixes | `Validate evaluation and housekeeping fixes.` | MCP |
-| NEW-088 | Cross-AI validation fixes | `Validate Phase 018 Tier-4 cross-AI fixes.` | manual |
-| NEW-090 | INT8 quantization evaluation | `Re-evaluate INT8 quantization decision criteria.` | manual |
-| NEW-126 | Memory roadmap baseline snapshot | `Run the memory roadmap baseline snapshot verification suite.` | MCP |
+| 005 | Evaluation database and schema | `Verify evaluation DB/schema writes.` | MCP |
+| 006 | Core metric computation | `Validate core metric computation (R13-S1).` | MCP |
+| 007 | Observer effect mitigation | `Check observer effect mitigation (D4).` | MCP |
+| 008 | Full-context ceiling evaluation | `Run full-context ceiling evaluation (A2).` | MCP |
+| 009 | Quality proxy formula | `Compute and verify quality proxy formula (B7).` | manual |
+| 010 | Synthetic ground truth corpus | `Audit synthetic ground-truth corpus coverage.` | manual |
+| 011 | BM25-only baseline | `Run BM25-only baseline measurement.` | MCP |
+| 012 | Agent consumption instrumentation | `Validate G-NEW-2 instrumentation behavior.` | MCP |
+| 013 | Scoring observability | `Verify scoring observability (T010).` | MCP |
+| 014 | Full reporting and ablation study framework | `Execute manual ablation run (R13-S3).` | MCP |
+| 015 | Shadow scoring and channel attribution | `Verify shadow scoring deactivation and attribution continuity.` | MCP |
+| 072 | Test quality improvements | `Audit test quality improvements.` | manual |
+| 082 | Evaluation and housekeeping fixes | `Validate evaluation and housekeeping fixes.` | MCP |
+| 088 | Cross-AI validation fixes | `Validate Phase 018 Tier-4 cross-AI fixes.` | manual |
+| 090 | INT8 quantization evaluation | `Re-evaluate INT8 quantization decision criteria.` | manual |
+| 126 | Memory roadmap baseline snapshot | `Run the memory roadmap baseline snapshot verification suite.` | MCP |
 <!-- /ANCHOR:testing -->
 
 ---

@@ -1,19 +1,19 @@
 ---
-title: "NEW-005 -- Evaluation database and schema (R13-S1)"
-description: "This scenario validates Evaluation database and schema (R13-S1) for `NEW-005`. It focuses on Confirm eval data isolation."
+title: "005 -- Evaluation database and schema (R13-S1)"
+description: "This scenario validates Evaluation database and schema (R13-S1) for `005`. It focuses on Confirm eval data isolation."
 ---
 
-# NEW-005 -- Evaluation database and schema (R13-S1)
+# 005 -- Evaluation database and schema (R13-S1)
 
 ## 1. OVERVIEW
 
-This scenario validates Evaluation database and schema (R13-S1) for `NEW-005`. It focuses on Confirm eval data isolation.
+This scenario validates Evaluation database and schema (R13-S1) for `005`. It focuses on Confirm eval data isolation.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Operators run the exact prompt and command sequence for `NEW-005` and confirm the expected signals without contradicting evidence.
+Operators run the exact prompt and command sequence for `005` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm eval data isolation
 - Prompt: `Verify evaluation DB/schema writes. Capture the evidence needed to prove Eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB. Return a concise user-facing pass/fail verdict with the main reason.`
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-005` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-005 | Evaluation database and schema (R13-S1) | Confirm eval data isolation | `Verify evaluation DB/schema writes. Capture the evidence needed to prove Eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Trigger retrieval events 2) Query eval DB tables 3) Confirm isolation | Eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB | Eval DB schema dump + retrieval event rows + main DB integrity check | PASS: Eval data isolated in dedicated tables; main DB unaffected; FAIL: Eval writes pollute main memory tables | Check eval DB path configuration → Verify schema migration ran → Inspect table isolation boundaries |
+| 005 | Evaluation database and schema (R13-S1) | Confirm eval data isolation | `Verify evaluation DB/schema writes. Capture the evidence needed to prove Eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Trigger retrieval events 2) Query eval DB tables 3) Confirm isolation | Eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB | Eval DB schema dump + retrieval event rows + main DB integrity check | PASS: Eval data isolated in dedicated tables; main DB unaffected; FAIL: Eval writes pollute main memory tables | Check eval DB path configuration → Verify schema migration ran → Inspect table isolation boundaries |
 
 ---
 
@@ -40,6 +40,6 @@ Operators run the exact prompt and command sequence for `NEW-005` and confirm th
 ## 5. SOURCE METADATA
 
 - Group: Evaluation and Measurement
-- Playbook ID: NEW-005
+- Playbook ID: 005
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `09--evaluation-and-measurement/005-evaluation-database-and-schema-r13-s1.md`

@@ -35,8 +35,8 @@ contextType: "general"
 ## Phase 1: Setup
 
 - [x] T001 Extract retrieval-enhancements prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] T002 Confirm feature links for NEW-055, NEW-056, NEW-057, NEW-058, NEW-059, NEW-060, NEW-077, NEW-096, and NEW-145 in `../../feature_catalog/15--retrieval-enhancements/`
-- [ ] T003 [P] Prepare sandbox prerequisites and evidence capture checklist for `plan.md` (corpus size check for NEW-059, edge-weight backup for NEW-058, cross-document entity fixture for NEW-060)
+- [x] T002 Confirm feature links for 055, 056, 057, 058, 059, 060, 077, 096, and 145 in `../../feature_catalog/15--retrieval-enhancements/`
+- [ ] T003 [P] Prepare sandbox prerequisites and evidence capture checklist for `plan.md` (corpus size check for 059, edge-weight backup for 058, cross-document entity fixture for 060)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -49,7 +49,7 @@ contextType: "general"
 - [x] T006 Draft `tasks.md` with phase breakdown and cross-references
 - [x] T007 Draft `checklist.md` with L2 verification items scoped to retrieval-enhancements scenarios
 - [ ] T008 [P] Add evidence references and verdict outcomes after manual execution
-- [ ] T009 [P] Resolve open questions for NEW-058 sandbox corpus and NEW-059 threshold corpus size
+- [ ] T009 [P] Resolve open questions for 058 sandbox corpus and 059 threshold corpus size
 <!-- /ANCHOR:phase-2 -->
 
 ---

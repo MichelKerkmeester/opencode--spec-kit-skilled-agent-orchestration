@@ -215,8 +215,8 @@ I’m on the script side now. The key question there is whether the scripts are 
   │ .opencode/skill/system-spec-kit/scripts/evals/check-architecture-boundaries.ts
   └ L1:220 (220 lines read)
 
-● Read run-phase3-telemetry-dashboard.ts
-  │ .opencode/skill/system-spec-kit/scripts/evals/run-phase3-telemetry-dashboard.ts
+● Read deleted-phase3-telemetry-dashboard-script
+  │ .opencode/skill/system-spec-kit/scripts/evals/deleted-phase3-telemetry-dashboard-script
   └ L1:240 (240 lines read)
 
 ● Read memory-state-baseline.ts
@@ -385,8 +385,8 @@ I’ve got enough static evidence for the architecture, but I’m doing one more
   │ .opencode/skill/system-spec-kit/mcp_server/lib/telemetry/retrieval-telemetry.ts
   └ L35:50 (16 lines read)
 
-● Read run-phase3-telemetry-dashboard.ts
-  │ .opencode/skill/system-spec-kit/scripts/evals/run-phase3-telemetry-dashboard.ts
+● Read deleted-phase3-telemetry-dashboard-script
+  │ .opencode/skill/system-spec-kit/scripts/evals/deleted-phase3-telemetry-dashboard-script
   └ L95:160 (66 lines read)
 
 ● Search (grep)
@@ -434,8 +434,8 @@ Core IR math in `eval-metrics.ts` looks standard and solid. The weaker areas are
 
 ### P2 - The Phase 3 telemetry dashboard script is simulated, not measured
 
-- `scripts/evals/run-phase3-telemetry-dashboard.ts:100-129` derives boost/pressure rates from query length, modulo arithmetic, and synthetic token usage.
-- It does disclose that at `run-phase3-telemetry-dashboard.ts:200`, but the artifact still looks dashboard-like and quantitative.
+- `scripts/evals/deleted-phase3-telemetry-dashboard-script:100-129` derives boost/pressure rates from query length, modulo arithmetic, and synthetic token usage.
+- It does disclose that at `deleted-phase3-telemetry-dashboard-script:200`, but the artifact still looks dashboard-like and quantitative.
 - Impact: useful as a placeholder, weak as rollout evidence.
 
 ## What is good

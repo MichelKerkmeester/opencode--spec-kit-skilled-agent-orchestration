@@ -210,7 +210,7 @@ The most impactful findings cluster around: (1) the search pipeline's "V2 wraps 
 
 #### F1.21 -- Malformed metadata injection by quality backfill
 - **Severity:** HIGH
-- **File(s):** `scripts/evals/run-chk210-quality-backfill.ts:40`
+- **File(s):** `scripts/evals/deleted-chk210-quality-backfill-script:40`
 - **Description:** Writes quality metadata into fenced yaml block with `quality_flags:` on separate line, while shared workflow writes `quality_flags: []` correctly. Backfill can write malformed metadata while updating DB.
 - **Impact:** Malformed YAML in memory files.
 - **Recommendation:** Use the shared workflow's format, or validate output.
@@ -460,7 +460,7 @@ The most impactful findings cluster around: (1) the search pipeline's "V2 wraps 
 
 #### F4.08 -- Eval script uses string concatenation for SQL
 - **Severity:** LOW
-- **File(s):** `scripts/evals/run-chk210-quality-backfill.ts:83, 89, 118`
+- **File(s):** `scripts/evals/deleted-chk210-quality-backfill-script:83, 89, 118`
 - **Description:** Values interpolated directly into SQL strings passed to `sqlite3` shell. Quote-doubling reduces risk but is brittle.
 - **Impact:** Potential SQL injection in maintenance scripts.
 - **Recommendation:** Use parameterized queries via `better-sqlite3`.

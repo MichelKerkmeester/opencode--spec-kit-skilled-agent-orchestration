@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: manual-testing-per-playbook governance phase [template:level_2/checklist.md]"
-description: "Verification checklist for Phase 017 governance manual test packet covering NEW-063, NEW-064, NEW-122, NEW-123, and NEW-148."
+description: "Verification checklist for Phase 017 governance manual test packet covering 063, 064, 122, 123, and 148."
 trigger_phrases:
   - "governance verification checklist"
   - "phase 017 checklist"
@@ -45,11 +45,11 @@ contextType: "general"
 ## Code Quality
 
 - [ ] CHK-010 [P0] Code passes lint/format checks
-  - **Evidence**: _Pending — governance scenarios NEW-063 and NEW-064 are process audits against `search-flags.ts`; confirm no TypeScript or Markdown lint errors are introduced by any doc corrections made during execution._
+  - **Evidence**: _Pending — governance scenarios 063 and 064 are process audits against `search-flags.ts`; confirm no TypeScript or Markdown lint errors are introduced by any doc corrections made during execution._
 - [ ] CHK-011 [P0] No console errors or warnings
-  - **Evidence**: _Pending — verify MCP tool calls for NEW-122, NEW-123, and NEW-148 produce no unexpected runtime warnings or unhandled errors._
+  - **Evidence**: _Pending — verify MCP tool calls for 122, 123, and 148 produce no unexpected runtime warnings or unhandled errors._
 - [ ] CHK-012 [P1] Error handling implemented
-  - **Evidence**: _Pending — confirm NEW-122 provenance-rejection path and NEW-123 kill-switch path each produce well-formed error responses, not unhandled exceptions._
+  - **Evidence**: _Pending — confirm 122 provenance-rejection path and 123 kill-switch path each produce well-formed error responses, not unhandled exceptions._
 - [ ] CHK-013 [P1] Code follows project patterns
   - **Evidence**: _Pending — confirm governance checks in `scope-governance.ts`, `retention.ts`, and `shared-spaces.ts` follow existing lib patterns and no new anti-patterns were introduced._
 <!-- /ANCHOR:code-quality -->
@@ -61,17 +61,17 @@ contextType: "general"
 
 - [ ] CHK-020 [P0] All acceptance criteria met
   - **Evidence**: _Pending — verify all five scenarios reach a PASS verdict per the review protocol:_
-    - _NEW-063 Feature flag governance: all SPECKIT_ flags enumerated, B8 governance targets reviewed, compliance gaps recorded._
-    - _NEW-064 Feature flag sunset audit: 27 graduate/9 dead/3 active dispositions confirmed in code, `isPipelineV2Enabled()` always-true no-op confirmed, deltas logged._
-    - _NEW-122 Governed ingest and scope isolation: missing provenance rejected, valid scoped save persists, cross-scope retrieval blocked, `governance_audit` rows present._
-    - _NEW-123 Shared-space deny-by-default rollout: non-member denied, member allowed, kill switch blocks existing member._
-    - _NEW-148 Shared-memory default-off and first-run setup: default off, enable persists to DB, idempotent, README created, restart persistence confirmed, env-var override works, command gate triggers._
+    - _063 Feature flag governance: all SPECKIT_ flags enumerated, B8 governance targets reviewed, compliance gaps recorded._
+    - _064 Feature flag sunset audit: 27 graduate/9 dead/3 active dispositions confirmed in code, `isPipelineV2Enabled()` always-true no-op confirmed, deltas logged._
+    - _122 Governed ingest and scope isolation: missing provenance rejected, valid scoped save persists, cross-scope retrieval blocked, `governance_audit` rows present._
+    - _123 Shared-space deny-by-default rollout: non-member denied, member allowed, kill switch blocks existing member._
+    - _148 Shared-memory default-off and first-run setup: default off, enable persists to DB, idempotent, README created, restart persistence confirmed, env-var override works, command gate triggers._
 - [ ] CHK-021 [P0] Manual testing complete
   - **Evidence**: _Pending — all five scenario prompts executed as written with evidence captured per the review protocol acceptance rules._
 - [ ] CHK-022 [P1] Edge cases tested
-  - **Evidence**: _Pending — confirm NEW-122 tests both missing-provenance-with-scope and valid-provenance paths; confirm NEW-148 tests both first-run and idempotent-enable paths._
+  - **Evidence**: _Pending — confirm 122 tests both missing-provenance-with-scope and valid-provenance paths; confirm 148 tests both first-run and idempotent-enable paths._
 - [ ] CHK-023 [P1] Error scenarios validated
-  - **Evidence**: _Pending — confirm NEW-122 rejection output is a structured error (not a silent no-op), and NEW-123 kill-switch blocks even a previously authorized member._
+  - **Evidence**: _Pending — confirm 122 rejection output is a structured error (not a silent no-op), and 123 kill-switch blocks even a previously authorized member._
 <!-- /ANCHOR:testing -->
 
 ---
@@ -82,9 +82,9 @@ contextType: "general"
 - [ ] CHK-030 [P0] No hardcoded secrets
   - **Evidence**: _Pending — confirm no tenant IDs, user credentials, or environment tokens are embedded in evidence artifacts or documentation._
 - [ ] CHK-031 [P0] Input validation implemented
-  - **Evidence**: _Pending — verify NEW-122 confirms that `provenanceSource` and `provenanceActor` are required when scope fields are present, and that the handler rejects ambiguous writes rather than silently accepting them._
+  - **Evidence**: _Pending — verify 122 confirms that `provenanceSource` and `provenanceActor` are required when scope fields are present, and that the handler rejects ambiguous writes rather than silently accepting them._
 - [ ] CHK-032 [P1] Auth/authz working correctly
-  - **Evidence**: _Pending — verify NEW-123 membership model: `shared_space_membership_set()` grants access and removal (or kill switch) immediately revokes it with no residual access window._
+  - **Evidence**: _Pending — verify 123 membership model: `shared_space_membership_set()` grants access and removal (or kill switch) immediately revokes it with no residual access window._
 <!-- /ANCHOR:security -->
 
 ---

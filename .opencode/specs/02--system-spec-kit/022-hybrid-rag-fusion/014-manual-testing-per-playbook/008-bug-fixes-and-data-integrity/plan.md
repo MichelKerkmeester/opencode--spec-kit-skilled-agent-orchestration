@@ -72,17 +72,17 @@ The execution pipeline starts with preconditions, then runs the exact manual pro
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1 Preconditions
-- [ ] Confirm NEW-001, NEW-002, NEW-003, NEW-004, NEW-065, NEW-068, NEW-075, NEW-083, NEW-084, NEW-116, and NEW-117 are mapped to this folder and remain unchanged in the source playbook
+- [ ] Confirm 001, 002, 003, 004, 065, 068, 075, 083, 084, 116, and 117 are mapped to this folder and remain unchanged in the source playbook
 - [ ] Verify access to the MCP runtime, safe seed data, and the feature catalog files linked from `spec.md`
 - [ ] Decide which scenarios require sandboxed or checkpointed state before execution begins
 
 ### Phase 2 Non-Destructive Tests
-- [ ] Prepare execution notes for NEW-001, NEW-002, NEW-003, NEW-004, NEW-068, NEW-075, and NEW-083 as the non-destructive subset
+- [ ] Prepare execution notes for 001, 002, 003, 004, 068, 075, and 083 as the non-destructive subset
 - [ ] Preserve the exact prompt text while capturing query, save, dedup, and scoring evidence through manual + MCP execution
 - [ ] Confirm expected signals are observable before moving to rollback-sensitive scenarios
 
 ### Phase 3 Destructive Tests (if any with sandbox rules)
-- [ ] Run NEW-065, NEW-084, NEW-116, and NEW-117 only in sandboxed or checkpointed environments because they exercise atomicity, cleanup, or failure behavior
+- [ ] Run 065, 084, 116, and 117 only in sandboxed or checkpointed environments because they exercise atomicity, cleanup, or failure behavior
 - [ ] Apply reset, checkpoint, or disposable-database rules before inducing concurrency, indexing failure, or cleanup side effects
 - [ ] Restore sandbox state after each destructive scenario so later evidence remains attributable and reversible
 
@@ -99,17 +99,17 @@ The execution pipeline starts with preconditions, then runs the exact manual pro
 
 | Test ID | Scenario Name | Exact Prompt | Execution Type (manual/MCP) |
 |---------|---------------|--------------|-----------------------------|
-| NEW-001 | Confirm graph hits are non-zero when edges exist | `Verify Graph channel ID fix (G1) manually with causal-edge data.` | manual + MCP |
-| NEW-002 | Confirm dedup in default mode | `Validate chunk collapse deduplication (G3) in default search mode.` | manual + MCP |
-| NEW-003 | Confirm hub dampening | `Verify co-activation fan-effect divisor (R17).` | manual + MCP |
-| NEW-004 | Confirm identical re-save skips embedding | `Check SHA-256 dedup (TM-02) on re-save.` | manual + MCP |
-| NEW-065 | Confirm Sprint 8 DB safety bundle | `Validate database and schema safety bundle.` | manual + MCP |
-| NEW-068 | Confirm edge-case guard fixes | `Validate guards and edge-cases bundle.` | manual + MCP |
-| NEW-075 | Confirm mixed-format ID dedup | `Verify canonical ID dedup hardening.` | manual + MCP |
-| NEW-083 | Confirm large-array safety | `Validate Math.max/min stack overflow elimination.` | manual + MCP |
-| NEW-084 | Confirm transactional limit enforcement | `Validate session-manager transaction gap fixes.` | manual + MCP |
-| NEW-116 | Verify re-chunking indexes new chunks before deleting old ones, and old chunks survive if new indexing fails | `Re-chunk a parent memory and verify old children survive indexing failure` | manual + MCP |
-| NEW-117 | Verify cleanupOldSessions() correctly identifies expired sessions using SQLite-native datetime comparison regardless of timestamp format | `Create sessions with known timestamps and verify cleanup deletes only expired ones` | manual + MCP |
+| 001 | Confirm graph hits are non-zero when edges exist | `Verify Graph channel ID fix (G1) manually with causal-edge data.` | manual + MCP |
+| 002 | Confirm dedup in default mode | `Validate chunk collapse deduplication (G3) in default search mode.` | manual + MCP |
+| 003 | Confirm hub dampening | `Verify co-activation fan-effect divisor (R17).` | manual + MCP |
+| 004 | Confirm identical re-save skips embedding | `Check SHA-256 dedup (TM-02) on re-save.` | manual + MCP |
+| 065 | Confirm Sprint 8 DB safety bundle | `Validate database and schema safety bundle.` | manual + MCP |
+| 068 | Confirm edge-case guard fixes | `Validate guards and edge-cases bundle.` | manual + MCP |
+| 075 | Confirm mixed-format ID dedup | `Verify canonical ID dedup hardening.` | manual + MCP |
+| 083 | Confirm large-array safety | `Validate Math.max/min stack overflow elimination.` | manual + MCP |
+| 084 | Confirm transactional limit enforcement | `Validate session-manager transaction gap fixes.` | manual + MCP |
+| 116 | Verify re-chunking indexes new chunks before deleting old ones, and old chunks survive if new indexing fails | `Re-chunk a parent memory and verify old children survive indexing failure` | manual + MCP |
+| 117 | Verify cleanupOldSessions() correctly identifies expired sessions using SQLite-native datetime comparison regardless of timestamp format | `Create sessions with known timestamps and verify cleanup deletes only expired ones` | manual + MCP |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -131,7 +131,7 @@ The execution pipeline starts with preconditions, then runs the exact manual pro
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Roll back if any prompt, acceptance criterion, or destructive-test guard is found to be misaligned with the playbook, review protocol, or safe sandbox requirements.
-- **Procedure**: Revert `spec.md` and `plan.md` to the last known good git revision, pause execution of NEW-065/084/116/117 until sandbox controls are re-confirmed, then regenerate the phase packet from the playbook sources before resuming.
+- **Procedure**: Revert `spec.md` and `plan.md` to the last known good git revision, pause execution of 065/084/116/117 until sandbox controls are re-confirmed, then regenerate the phase packet from the playbook sources before resuming.
 <!-- /ANCHOR:rollback -->
 
 ---

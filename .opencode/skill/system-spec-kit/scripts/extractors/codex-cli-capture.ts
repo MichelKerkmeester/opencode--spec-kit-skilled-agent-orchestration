@@ -8,6 +8,12 @@
 // Captures Codex transcript data from ~/.codex/sessions for
 // stateless memory-save enrichment.
 
+/**
+ * @deprecated RECOVERY-ONLY — This module is part of the stateless dynamic capture path,
+ * which is deprecated for routine saves (Phase 017). In JSON-primary mode, the AI provides
+ * structured data directly. This module only executes when --recovery is explicitly passed.
+ */
+
 import * as fs from 'fs/promises';
 import * as fsSync from 'fs';
 import * as path from 'path';
@@ -267,6 +273,7 @@ function listTranscriptCandidates(rootDir: string): string[] {
 
 async function resolveTranscript(
   projectRoot: string,
+  sessionId?: string,
 ): Promise<{ transcriptPath: string; transcriptLines: unknown[] } | null> {
   const candidates = listTranscriptCandidates(CODEX_SESSIONS);
   if (candidates.length === 0) {
@@ -292,9 +299,17 @@ async function resolveTranscript(
       .map((line) => normalizeCodexEntry(line))
       .find((entry) => entry?.type === 'session_meta') as CodexSessionMetaEntry | undefined;
 
-    if (isSameWorkspacePath(projectRoot, sessionMeta?.payload?.cwd)) {
-      return { transcriptPath: candidatePath, transcriptLines };
+    if (!isSameWorkspacePath(projectRoot, sessionMeta?.payload?.cwd)) {
+      continue;
     }
+
+    // When a sessionId hint is provided, only match transcripts whose
+    // session meta ID matches — mirrors claude-code-capture's session hints.
+    if (sessionId && sessionMeta?.payload?.id !== sessionId) {
+      continue;
+    }
+
+    return { transcriptPath: candidatePath, transcriptLines };
   }
 
   return null;
@@ -307,8 +322,9 @@ async function resolveTranscript(
 export async function captureCodexConversation(
   maxExchanges: number = MAX_EXCHANGES_DEFAULT,
   projectRoot: string,
+  sessionId?: string,
 ): Promise<OpencodeCapture | null> {
-  const resolved = await resolveTranscript(projectRoot);
+  const resolved = await resolveTranscript(projectRoot, sessionId);
   if (!resolved) {
     return null;
   }

@@ -97,6 +97,7 @@ function isProseContext(text: string, matchStartIndex: number): boolean {
 // ───────────────────────────────────────────────────────────────
 // 5. CONVERSATION PHASE CLASSIFICATION
 // ───────────────────────────────────────────────────────────────
+/** @deprecated Use classifyPhaseViaSignals from phase-classifier.ts directly. This is a pass-through wrapper. */
 function classifyConversationPhase(toolCalls: ToolCallRecord[], messageContent: string): ConversationPhase {
   return classifyPhaseViaSignals(toolCalls, messageContent);
 }

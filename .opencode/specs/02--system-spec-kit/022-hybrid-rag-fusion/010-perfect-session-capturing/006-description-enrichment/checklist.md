@@ -84,7 +84,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 
 - [x] CHK-050 [P1] Temp files in scratch/ only [Evidence: no repo temp files were added for this phase.]
 - [x] CHK-051 [P1] scratch/ cleaned before completion [Evidence: no scratch artifacts left behind.]
-- [x] CHK-052 [P2] Findings saved to memory/ [Evidence: JSON-mode save ran successfully on 2026-03-17 via `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-006.json .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/006-description-enrichment` (exit 0), creating `memory/17-03-26_15-40__next-steps.md` and `memory/metadata.json`.]
+- [x] CHK-052 [P2] Findings saved to memory/ [Evidence: JSON-mode save ran on 2026-03-17 (exit 0). Original memory file deleted as generic boilerplate during quality cleanup; metadata.json retained.]
 <!-- /ANCHOR:file-org -->
 
 ---

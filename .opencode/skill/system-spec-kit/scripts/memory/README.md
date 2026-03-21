@@ -42,7 +42,6 @@ Other locations point here: `mcp_server/scripts/README.md`, `mcp_server/database
 - `reindex-embeddings.ts` - force full embedding reindex across memory/spec documents
 - `ast-parser.ts` - parse markdown into heading/code/table-aware sections
 - `backfill-frontmatter.ts` - bulk frontmatter normalization for templates, spec docs, and memory files
-- `historical-memory-remediation.ts` - audit, repair, or quarantine historical memories against the current rendered-memory contract
 - `rebuild-auto-entities.ts` - rebuild auto-entity metadata from indexed content
 
 Runtime files are compiled into `../dist/memory/`.
@@ -95,7 +94,6 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js
 - Derives `MEMORY_TITLE` from the content slug via `slugToTitle(contentSlug)` and writes it into the H1 heading. A blank line separates the frontmatter close `---` from the `# H1`.
 - Writes `MEMORY_DASHBOARD_TITLE` into context template frontmatter so dashboard titles stay disambiguated.
 - Runs post-render memory quality validation so contaminated headings or fallback-decision leaks are caught after template population.
-- Historical remediation uses that same contract to keep active `memory/` folders structurally clean.
 - Retroactive title refresh for existing memories: run `memory_index_scan({ force: true })` after parser/template updates.
 <!-- /ANCHOR:workflow-alignment -->
 
@@ -124,16 +122,6 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js
 
 # Reindex embeddings so dashboard/search reflects updated metadata
 node .opencode/skill/system-spec-kit/scripts/dist/memory/reindex-embeddings.js
-
-# Audit and repair active memories against the current rendered-memory contract
-node .opencode/skill/system-spec-kit/scripts/dist/memory/historical-memory-remediation.js \
-  --root ./.opencode/specs --report-dir /tmp/memory-remediation-audit
-```
-
-When `historical-memory-remediation.js` runs with `--apply`, the canonical
-`manifest.json` and `summary.md` in `--report-dir` now describe the final
-post-apply state. The pre-apply audit is preserved alongside them as
-`manifest.pre-apply.json` and `summary.pre-apply.md`.
 
 To target specific roots, pass `--roots`:
 

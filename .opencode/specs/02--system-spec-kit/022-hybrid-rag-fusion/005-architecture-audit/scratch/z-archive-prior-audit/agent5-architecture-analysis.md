@@ -22,7 +22,7 @@ Assessment: reindex ownership is split across two entrypoint families (scripts +
 
 ### C. Eval overlap
 - Scripts eval runners consume MCP eval/search API (`scripts/evals/run-ablation.ts:21-27`, `scripts/evals/run-bm25-baseline.ts:23-29`).
-- Some scripts eval runners bypass stable API and import MCP internals directly (`scripts/evals/run-performance-benchmarks.ts:16-25`, `scripts/evals/run-chk210-quality-backfill.ts:8`).
+- Some scripts eval runners bypass stable API and import MCP internals directly (`scripts/evals/run-performance-benchmarks.ts:16-25`, `scripts/evals/deleted-chk210-quality-backfill-script:8`).
 - MCP server also exposes eval tools (`mcp_server/tool-schemas.ts:314-320`) and has eval library modules (`mcp_server/api/eval.ts:9-30`).
 
 Assessment: eval is deliberately shared, but boundary discipline is inconsistent (public API usage + private lib coupling both present).
@@ -109,7 +109,7 @@ This amplifies boundary ambiguity for retry ownership (scripts vs MCP provider r
 Primary runtime coupling:
 - `scripts -> mcp_server` is heavy and direct:
   - TS project reference/path alias: `scripts/tsconfig.json:10-16`.
-  - Internal imports in scripts core/evals: `scripts/core/memory-indexer.ts:13-14`, `scripts/core/workflow.ts:44`, `scripts/evals/run-performance-benchmarks.ts:16-25`, `scripts/evals/run-chk210-quality-backfill.ts:8`.
+  - Internal imports in scripts core/evals: `scripts/core/memory-indexer.ts:13-14`, `scripts/core/workflow.ts:44`, `scripts/evals/run-performance-benchmarks.ts:16-25`, `scripts/evals/deleted-chk210-quality-backfill-script:8`.
 
 Reverse coupling exists too (not purely one-way architecture):
 - `mcp_server/scripts/reindex-embeddings.ts` calls `../../scripts/dist/memory/reindex-embeddings.js` (`mcp_server/scripts/reindex-embeddings.ts:9-12`).

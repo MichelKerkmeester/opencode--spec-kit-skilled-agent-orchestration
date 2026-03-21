@@ -15,6 +15,7 @@ import { runPostMutationHooks } from '../mutation-hooks';
 import type { MCPResponse } from '../types';
 import { buildMutationHookFeedback } from '../../hooks/mutation-feedback';
 import type { IndexResult } from './types';
+import type { EnrichmentStatus } from './post-insert';
 import { MEMORY_SUFFICIENCY_REJECTION_CODE } from '@spec-kit/shared/parsing/memory-sufficiency';
 
 // Feature catalog: Mutation response UX payload exposure
@@ -56,6 +57,7 @@ interface BuildIndexResultParams {
   embeddingFailureReason: string | null;
   asyncEmbedding: boolean;
   causalLinksResult: CausalLinksResult | null;
+  enrichmentStatus?: EnrichmentStatus;
   filePath: string;
 }
 
@@ -78,6 +80,7 @@ export function buildIndexResult({
   embeddingFailureReason,
   asyncEmbedding,
   causalLinksResult,
+  enrichmentStatus,
   filePath,
 }: BuildIndexResultParams): IndexResult {
   let resultStatus: string;
@@ -170,6 +173,15 @@ export function buildIndexResult({
     if (causalLinksResult.errors.length > 0) {
       (result.causalLinks as Record<string, unknown>).errors = causalLinksResult.errors;
     }
+  }
+
+  // C5-6: Surface enrichment gaps when any step failed
+  if (enrichmentStatus && Object.values(enrichmentStatus).some(v => !v)) {
+    const failed = Object.entries(enrichmentStatus)
+      .filter(([, v]) => !v)
+      .map(([k]) => k);
+    result.warnings = result.warnings || [];
+    result.warnings.push(`Partial enrichment: ${failed.join(', ')} failed`);
   }
 
   return result;

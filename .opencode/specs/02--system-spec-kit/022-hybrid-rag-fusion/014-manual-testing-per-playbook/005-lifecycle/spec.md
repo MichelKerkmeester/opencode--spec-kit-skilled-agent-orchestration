@@ -53,11 +53,11 @@ Provide a canonical phase 005 lifecycle spec that documents exactly nine lifecyc
 - **EX-016 — Checkpoint listing**: [02-checkpoint-listing-checkpointlist.md](../../feature_catalog/05--lifecycle/02-checkpoint-listing-checkpointlist.md)
 - **EX-017 — Checkpoint restore**: [03-checkpoint-restore-checkpointrestore.md](../../feature_catalog/05--lifecycle/03-checkpoint-restore-checkpointrestore.md)
 - **EX-018 — Checkpoint deletion**: [04-checkpoint-deletion-checkpointdelete.md](../../feature_catalog/05--lifecycle/04-checkpoint-deletion-checkpointdelete.md)
-- **NEW-097 — Async ingestion job lifecycle**: [05-async-ingestion-job-lifecycle.md](../../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md)
-- **NEW-114 — Path traversal validation**: [05-async-ingestion-job-lifecycle.md](../../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md)
-- **NEW-124 — Automatic archival lifecycle coverage**: [07-automatic-archival-subsystem.md](../../feature_catalog/05--lifecycle/07-automatic-archival-subsystem.md)
-- **NEW-134 — Startup pending-file recovery lifecycle coverage**: [06-startup-pending-file-recovery.md](../../feature_catalog/05--lifecycle/06-startup-pending-file-recovery.md)
-- **NEW-144 — Advisory ingest lifecycle forecast**: [05-async-ingestion-job-lifecycle.md](../../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md)
+- **097 — Async ingestion job lifecycle**: [05-async-ingestion-job-lifecycle.md](../../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md)
+- **114 — Path traversal validation**: [05-async-ingestion-job-lifecycle.md](../../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md)
+- **124 — Automatic archival lifecycle coverage**: [07-automatic-archival-subsystem.md](../../feature_catalog/05--lifecycle/07-automatic-archival-subsystem.md)
+- **134 — Startup pending-file recovery lifecycle coverage**: [06-startup-pending-file-recovery.md](../../feature_catalog/05--lifecycle/06-startup-pending-file-recovery.md)
+- **144 — Advisory ingest lifecycle forecast**: [05-async-ingestion-job-lifecycle.md](../../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md)
 
 ### Acceptance Scenarios
 
@@ -67,15 +67,15 @@ Provide a canonical phase 005 lifecycle spec that documents exactly nine lifecyc
 | EX-016 | Verify checkpoint listing surfaces usable recovery assets in newest-first order. |
 | EX-017 | Verify checkpoint restore returns a known record and healthy runtime state. |
 | EX-018 | Verify stale checkpoint deletion removes the named sandbox snapshot safely. |
-| NEW-097 | Verify ingest job lifecycle state transitions, cancellation, and restart requeue behavior. |
-| NEW-114 | Verify ingest path validation rejects traversal and out-of-base inputs while allowing valid sandbox paths. |
-| NEW-124 | Verify archive and unarchive keep metadata, BM25, and vector behavior in sync while protecting high-tier memories. |
-| NEW-134 | Verify startup recovery handles committed and stale pending files differently across allowed scan roots. |
-| NEW-144 | Verify ingest forecast fields stay present, advisory, and safe during early and progressing states. |
+| 097 | Verify ingest job lifecycle state transitions, cancellation, and restart requeue behavior. |
+| 114 | Verify ingest path validation rejects traversal and out-of-base inputs while allowing valid sandbox paths. |
+| 124 | Verify archive and unarchive keep metadata, BM25, and vector behavior in sync while protecting high-tier memories. |
+| 134 | Verify startup recovery handles committed and stale pending files differently across allowed scan roots. |
+| 144 | Verify ingest forecast fields stay present, advisory, and safe during early and progressing states. |
 
 - **Given** a disposable sandbox with seed lifecycle data, **when** EX-015 through EX-018 are documented and executed in order, **then** checkpoint creation, listing, restore, and deletion can be reviewed against clear evidence and PASS rules.
-- **Given** valid and invalid ingest inputs, **when** NEW-097, NEW-114, and NEW-144 are run through the MCP runtime, **then** lifecycle state transitions, validation failures, and advisory forecast fields can be verified without ambiguity.
-- **Given** dormant, archived, committed, and stale sandbox artifacts, **when** NEW-124 and NEW-134 are exercised, **then** archival parity and startup recovery behavior can be judged against explicit filesystem, DB, and log evidence.
+- **Given** valid and invalid ingest inputs, **when** 097, 114, and 144 are run through the MCP runtime, **then** lifecycle state transitions, validation failures, and advisory forecast fields can be verified without ambiguity.
+- **Given** dormant, archived, committed, and stale sandbox artifacts, **when** 124 and 134 are exercised, **then** archival parity and startup recovery behavior can be judged against explicit filesystem, DB, and log evidence.
 
 ### Out of Scope
 - Executing the lifecycle tests and recording final pass/fail outcomes.
@@ -103,11 +103,11 @@ Provide a canonical phase 005 lifecycle spec that documents exactly nine lifecyc
 | REQ-002 | Document EX-016 checkpoint listing coverage. | Includes prompt `List checkpoints newest first`, command `checkpoint_list(specFolder,limit)`, required list output evidence, and PASS condition `checkpoints returned`. |
 | REQ-003 | Document EX-017 checkpoint restore coverage. | Includes prompt `Restore checkpoint with merge mode`, command flow `checkpoint_restore(name,clearExisting:false) -> memory_health()`, required restore and health evidence, and PASS condition `known record restored`. |
 | REQ-004 | Document EX-018 checkpoint deletion coverage. | Includes prompt `Delete stale checkpoint by name`, sandbox-only list/delete/list command chain, before/after list evidence, and PASS condition `checkpoint removed from sandbox list`. |
-| REQ-005 | Document NEW-097 async ingestion lifecycle coverage. | Captures start/status/cancel plus restart verification, state sequence `queued -> parsing -> embedding -> indexing -> complete`, cancellation evidence, and PASS condition that all five states transition correctly and cancel works. |
-| REQ-006 | Document NEW-114 path traversal validation coverage. | Captures traversal and out-of-base rejection attempts plus one valid ingest attempt, includes E_VALIDATION evidence, and PASS condition that invalid paths are rejected while valid paths create jobs successfully. |
-| REQ-007 | Document NEW-124 automatic archival lifecycle coverage. | Captures archive/unarchive checks for metadata, BM25, and vector parity, protected-tier safeguards, required DB/log evidence, and PASS condition that archive/unarchive parity holds with deferred vector rebuild behavior explicit on unarchive. |
-| REQ-008 | Document NEW-134 startup pending-file recovery coverage. | Captures committed-versus-stale pending file setup, startup recovery scan behavior, filesystem/log evidence, and PASS condition that committed/stale paths diverge correctly and the startup scan root set matches expected allowed locations. |
-| REQ-009 | Document NEW-144 advisory ingest lifecycle forecast coverage. | Captures forecast field checks across sparse and progressing states, status polling evidence, and PASS condition that forecast fields remain present, degrade safely, and update advisory values without handler failure. |
+| REQ-005 | Document 097 async ingestion lifecycle coverage. | Captures start/status/cancel plus restart verification, state sequence `queued -> parsing -> embedding -> indexing -> complete`, cancellation evidence, and PASS condition that all five states transition correctly and cancel works. |
+| REQ-006 | Document 114 path traversal validation coverage. | Captures traversal and out-of-base rejection attempts plus one valid ingest attempt, includes E_VALIDATION evidence, and PASS condition that invalid paths are rejected while valid paths create jobs successfully. |
+| REQ-007 | Document 124 automatic archival lifecycle coverage. | Captures archive/unarchive checks for metadata, BM25, and vector parity, protected-tier safeguards, required DB/log evidence, and PASS condition that archive/unarchive parity holds with deferred vector rebuild behavior explicit on unarchive. |
+| REQ-008 | Document 134 startup pending-file recovery coverage. | Captures committed-versus-stale pending file setup, startup recovery scan behavior, filesystem/log evidence, and PASS condition that committed/stale paths diverge correctly and the startup scan root set matches expected allowed locations. |
+| REQ-009 | Document 144 advisory ingest lifecycle forecast coverage. | Captures forecast field checks across sparse and progressing states, status polling evidence, and PASS condition that forecast fields remain present, degrade safely, and update advisory values without handler failure. |
 
 ### P1 - Required (complete OR user-approved deferral)
 No additional P1 requirements for this phase packet.
@@ -144,8 +144,8 @@ No additional P1 requirements for this phase packet.
 ## 7. OPEN QUESTIONS
 
 - ~~Which sandbox spec folder path should be treated as the default target for checkpoint and ingest drills in this phase?~~ **Resolved:** `test-sandbox-lifecycle` — disposable folder with seed files under `.opencode/specs/`.
-- ~~What local restart procedure should operators use to verify NEW-097 incomplete-job requeue behavior consistently?~~ **Resolved:** Server restart triggers `resetIncompleteJobsToQueued()` via `startupScan()`. Cannot be tested in a live MCP session; code analysis + unit tests (T005b-Q8) serve as evidence.
-- ~~What evidence format is preferred for NEW-124 DB parity checks when direct SQL output and MCP logs disagree in granularity?~~ **Resolved:** Code analysis with exact file:line references and unit test citations. Direct SQL is not exposed via MCP tools.
+- ~~What local restart procedure should operators use to verify 097 incomplete-job requeue behavior consistently?~~ **Resolved:** Server restart triggers `resetIncompleteJobsToQueued()` via `startupScan()`. Cannot be tested in a live MCP session; code analysis + unit tests (T005b-Q8) serve as evidence.
+- ~~What evidence format is preferred for 124 DB parity checks when direct SQL output and MCP logs disagree in granularity?~~ **Resolved:** Code analysis with exact file:line references and unit test citations. Direct SQL is not exposed via MCP tools.
 <!-- /ANCHOR:questions -->
 
 ---

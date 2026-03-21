@@ -1,9 +1,9 @@
 ---
-title: "NEW-151 -- MODULE_MAP.md accuracy validation"
+title: "151 -- MODULE_MAP.md accuracy validation"
 description: "This scenario validates MODULE_MAP.md content accuracy by spot-checking module entries against actual code structure. It focuses on verifying listed files exist and consumers are correct."
 ---
 
-# NEW-151 -- MODULE_MAP.md accuracy validation
+# 151 -- MODULE_MAP.md accuracy validation
 
 ## TABLE OF CONTENTS
 
@@ -15,7 +15,7 @@ description: "This scenario validates MODULE_MAP.md content accuracy by spot-che
 
 ## 1. OVERVIEW
 
-This scenario validates MODULE_MAP.md content accuracy for `NEW-151`. It focuses on verifying that the module inventory, file listings, and consumer mappings match the actual codebase.
+This scenario validates MODULE_MAP.md content accuracy for `151`. It focuses on verifying that the module inventory, file listings, and consumer mappings match the actual codebase.
 
 ---
 
@@ -34,7 +34,7 @@ Operators spot-check 5 representative modules from MODULE_MAP.md and verify thei
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-151 | MODULE_MAP.md accuracy | Verify 5 module entries match actual code | `Validate MODULE_MAP.md accuracy by spot-checking 5 modules (config, cognitive, search, storage, scoring). For each: verify listed key files exist, verify primary consumers are accurate via grep. Return a pass/fail verdict per module.` | 1) `cd .opencode/skill/system-spec-kit` 2) Read MODULE_MAP.md entries for config, cognitive, search, storage, scoring 3) For each module: `ls mcp_server/lib/{module}/` to verify key files exist 4) For each module: `grep -r "from.*/{module}/" mcp_server/ --include="*.ts" -l` to verify consumers 5) Compare against MODULE_MAP.md listings | All 5 modules have accurate file lists and consumer mappings | ls output + grep output per module vs MODULE_MAP.md entries | PASS if all 5 sampled modules are accurate | Identify stale entry -> update MODULE_MAP.md -> re-verify |
+| 151 | MODULE_MAP.md accuracy | Verify 5 module entries match actual code | `Validate MODULE_MAP.md accuracy by spot-checking 5 modules (config, cognitive, search, storage, scoring). For each: verify listed key files exist, verify primary consumers are accurate via grep. Return a pass/fail verdict per module.` | 1) `cd .opencode/skill/system-spec-kit` 2) Read MODULE_MAP.md entries for config, cognitive, search, storage, scoring 3) For each module: `ls mcp_server/lib/{module}/` to verify key files exist 4) For each module: `grep -r "from.*/{module}/" mcp_server/ --include="*.ts" -l` to verify consumers 5) Compare against MODULE_MAP.md listings | All 5 modules have accurate file lists and consumer mappings | ls output + grep output per module vs MODULE_MAP.md entries | PASS if all 5 sampled modules are accurate | Identify stale entry -> update MODULE_MAP.md -> re-verify |
 
 ---
 
@@ -48,6 +48,6 @@ Operators spot-check 5 representative modules from MODULE_MAP.md and verify thei
 ## 5. SOURCE METADATA
 
 - Group: Tooling and Scripts
-- Playbook ID: NEW-151
+- Playbook ID: 151
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/151-module-map-accuracy.md`

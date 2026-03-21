@@ -44,6 +44,11 @@ interface FailureEntry {
   category?: 'error' | 'malformed_frontmatter';
 }
 
+interface SkippedDirEntry {
+  dirPath: string;
+  error: string;
+}
+
 interface MigrationReport {
   generatedAt: string;
   mode: 'dry-run' | 'apply';
@@ -59,10 +64,12 @@ interface MigrationReport {
     unchanged: number;
     failed: number;
     malformedSkipped: number;
+    skippedDirs: number;
   };
   byKind: Record<string, { total: number; changed: number }>;
   changedFiles: ChangeEntry[];
   failedFiles: FailureEntry[];
+  skippedDirs: SkippedDirEntry[];
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -216,7 +223,15 @@ function normalizePath(filePath: string): string {
   return filePath.replace(/\\/g, '/');
 }
 
-function discoverSpecsRoots(baseDir: string): string[] {
+function recordSkippedDir(skippedDirs: SkippedDirEntry[], dirPath: string, error: unknown): void {
+  const message = error instanceof Error ? error.message : String(error);
+  skippedDirs.push({
+    dirPath,
+    error: message,
+  });
+}
+
+function discoverSpecsRoots(baseDir: string, skippedDirs: SkippedDirEntry[] = []): string[] {
   const roots: string[] = [];
   const queue: string[] = [baseDir];
 
@@ -241,9 +256,7 @@ function discoverSpecsRoots(baseDir: string): string[] {
     try {
       entries = fs.readdirSync(current, { withFileTypes: true });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        continue;
-      }
+      recordSkippedDir(skippedDirs, current, error);
       continue;
     }
 
@@ -287,7 +300,7 @@ function discoverSpecsRoots(baseDir: string): string[] {
   return Array.from(deduped.values()).sort();
 }
 
-function collectTemplateFiles(rootPath: string): string[] {
+function collectTemplateFiles(rootPath: string, skippedDirs: SkippedDirEntry[] = []): string[] {
   if (!fs.existsSync(rootPath)) {
     return [];
   }
@@ -305,9 +318,7 @@ function collectTemplateFiles(rootPath: string): string[] {
     try {
       entries = fs.readdirSync(current, { withFileTypes: true });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        continue;
-      }
+      recordSkippedDir(skippedDirs, current, error);
       continue;
     }
 
@@ -327,7 +338,7 @@ function collectTemplateFiles(rootPath: string): string[] {
   return files.sort();
 }
 
-function collectSpecFiles(rootPath: string, includeArchive: boolean): string[] {
+function collectSpecFiles(rootPath: string, includeArchive: boolean, skippedDirs: SkippedDirEntry[] = []): string[] {
   if (!fs.existsSync(rootPath)) {
     return [];
   }
@@ -345,9 +356,7 @@ function collectSpecFiles(rootPath: string, includeArchive: boolean): string[] {
     try {
       entries = fs.readdirSync(current, { withFileTypes: true });
     } catch (error: unknown) {
-      if (error instanceof Error) {
-        continue;
-      }
+      recordSkippedDir(skippedDirs, current, error);
       continue;
     }
 
@@ -403,10 +412,12 @@ function initializeReport(options: CliOptions): MigrationReport {
       unchanged: 0,
       failed: 0,
       malformedSkipped: 0,
+      skippedDirs: 0,
     },
     byKind: {},
     changedFiles: [],
     failedFiles: [],
+    skippedDirs: [],
   };
 }
 
@@ -439,6 +450,7 @@ function printSummary(report: MigrationReport): void {
   console.log(`Unchanged: ${report.summary.unchanged}`);
   console.log(`Failed:    ${report.summary.failed}`);
   console.log(`Malformed: ${report.summary.malformedSkipped}`);
+  console.log(`Skipped:   ${report.summary.skippedDirs}`);
 
   console.log('\nBy kind:');
   const keys = Object.keys(report.byKind).sort();
@@ -457,14 +469,26 @@ function printSummary(report: MigrationReport): void {
       console.log(`  ... and ${report.failedFiles.length - 20} more`);
     }
   }
+
+  if (report.summary.skippedDirs > 0) {
+    console.log('\nSkipped directories:');
+    for (const skipped of report.skippedDirs.slice(0, 20)) {
+      console.log(`  ${skipped.dirPath}`);
+      console.log(`    ${skipped.error}`);
+    }
+    if (report.skippedDirs.length > 20) {
+      console.log(`  ... and ${report.skippedDirs.length - 20} more`);
+    }
+  }
 }
 
 function run(): void {
   const options = parseArgs(process.argv.slice(2));
+  const skippedDirs: SkippedDirEntry[] = [];
 
   const roots = options.roots.length > 0
     ? options.roots
-    : discoverSpecsRoots(PROJECT_ROOT);
+    : discoverSpecsRoots(PROJECT_ROOT, skippedDirs);
 
   options.roots = roots;
 
@@ -475,16 +499,18 @@ function run(): void {
   const allTargets: string[] = [];
 
   if (!options.skipTemplates) {
-    allTargets.push(...collectTemplateFiles(TEMPLATES_ROOT));
+    allTargets.push(...collectTemplateFiles(TEMPLATES_ROOT, skippedDirs));
   }
 
   for (const root of roots) {
-    allTargets.push(...collectSpecFiles(root, options.includeArchive));
+    allTargets.push(...collectSpecFiles(root, options.includeArchive, skippedDirs));
   }
 
   const deduped = Array.from(new Set(allTargets.map((entry) => path.resolve(entry)))).sort();
 
   const report = initializeReport(options);
+  report.skippedDirs.push(...skippedDirs);
+  report.summary.skippedDirs = report.skippedDirs.length;
 
   for (const filePath of deduped) {
     report.summary.total += 1;

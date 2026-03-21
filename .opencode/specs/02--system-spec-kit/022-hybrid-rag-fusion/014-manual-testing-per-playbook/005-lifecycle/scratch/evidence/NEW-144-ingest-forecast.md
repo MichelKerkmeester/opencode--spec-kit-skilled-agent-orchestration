@@ -1,4 +1,4 @@
-# NEW-144 — Advisory Ingest Lifecycle Forecast Evidence
+# 144 — Advisory Ingest Lifecycle Forecast Evidence
 
 ## Preconditions
 - MCP server healthy (v1.7.2)

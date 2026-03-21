@@ -61,7 +61,7 @@ exec
 .opencode/skill/system-spec-kit/scripts/extractors/quality-scorer.ts
 .opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh
 .opencode/skill/system-spec-kit/scripts/memory/validate-memory-quality.ts
-.opencode/skill/system-spec-kit/scripts/evals/run-chk210-quality-backfill.ts
+.opencode/skill/system-spec-kit/scripts/evals/deleted-chk210-quality-backfill-script
 .opencode/skill/system-spec-kit/scripts/evals/run-quality-legacy-remediation.ts
 .opencode/skill/system-spec-kit/scripts/core/quality-scorer.ts
 .opencode/skill/system-spec-kit/scripts/tests/test-memory-quality-lane.js
@@ -366,7 +366,7 @@ exec
    108	    };
    109	  }),
 exec
-/bin/zsh -lc "nl -ba '.opencode/skill/system-spec-kit/scripts/evals/run-chk210-quality-backfill.ts' | sed -n '1,130p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
+/bin/zsh -lc "nl -ba '.opencode/skill/system-spec-kit/scripts/evals/deleted-chk210-quality-backfill-script' | sed -n '1,130p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 52ms:
      1	// ---------------------------------------------------------------
      2	// MODULE: Run CHK-210 Quality Backfill
      3	// ---------------------------------------------------------------
@@ -384,7 +384,7 @@ exec
     15	function parseArgs() {
     16	  const [, , specFolderPrefix, dbPath] = process.argv;
     17	  if (!specFolderPrefix || !dbPath) {
-    18	    throw new Error('Usage: npx tsx scripts/evals/run-chk210-quality-backfill.ts <spec-folder-prefix> <sqlite-db-path>');
+    18	    throw new Error('Usage: npx tsx scripts/evals/deleted-chk210-quality-backfill-script <spec-folder-prefix> <sqlite-db-path>');
     19	  }
     20	  return { specFolderPrefix, dbPath };
 exec

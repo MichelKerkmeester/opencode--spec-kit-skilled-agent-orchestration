@@ -62,17 +62,17 @@ Provide a phase-specific specification that maps all 11 bug-fix and data-integri
 
 | Test ID | Scenario | Feature Catalog |
 |---------|----------|-----------------|
-| NEW-001 | Confirm graph hits are non-zero when edges exist | [01-graph-channel-id-fix.md](../../feature_catalog/08--bug-fixes-and-data-integrity/01-graph-channel-id-fix.md) |
-| NEW-002 | Confirm dedup in default mode | [02-chunk-collapse-deduplication.md](../../feature_catalog/08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md) |
-| NEW-003 | Confirm hub dampening | [03-co-activation-fan-effect-divisor.md](../../feature_catalog/08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md) |
-| NEW-004 | Confirm identical re-save skips embedding | [04-sha-256-content-hash-deduplication.md](../../feature_catalog/08--bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md) |
-| NEW-065 | Confirm Sprint 8 DB safety bundle | [05-database-and-schema-safety.md](../../feature_catalog/08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md) |
-| NEW-068 | Confirm edge-case guard fixes | [06-guards-and-edge-cases.md](../../feature_catalog/08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md) |
-| NEW-075 | Confirm mixed-format ID dedup | [07-canonical-id-dedup-hardening.md](../../feature_catalog/08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md) |
-| NEW-083 | Confirm large-array safety | [08-mathmax-min-stack-overflow-elimination.md](../../feature_catalog/08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md) |
-| NEW-084 | Confirm transactional limit enforcement | [09-session-manager-transaction-gap-fixes.md](../../feature_catalog/08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md) |
-| NEW-116 | Verify re-chunking indexes new chunks before deleting old ones, and old chunks survive if new indexing fails | [10-chunking-orchestrator-safe-swap.md](../../feature_catalog/08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md) |
-| NEW-117 | Verify cleanupOldSessions() correctly identifies expired sessions using SQLite-native datetime comparison regardless of timestamp format | [11-working-memory-timestamp-fix.md](../../feature_catalog/08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md) |
+| 001 | Confirm graph hits are non-zero when edges exist | [01-graph-channel-id-fix.md](../../feature_catalog/08--bug-fixes-and-data-integrity/01-graph-channel-id-fix.md) |
+| 002 | Confirm dedup in default mode | [02-chunk-collapse-deduplication.md](../../feature_catalog/08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md) |
+| 003 | Confirm hub dampening | [03-co-activation-fan-effect-divisor.md](../../feature_catalog/08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md) |
+| 004 | Confirm identical re-save skips embedding | [04-sha-256-content-hash-deduplication.md](../../feature_catalog/08--bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md) |
+| 065 | Confirm Sprint 8 DB safety bundle | [05-database-and-schema-safety.md](../../feature_catalog/08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md) |
+| 068 | Confirm edge-case guard fixes | [06-guards-and-edge-cases.md](../../feature_catalog/08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md) |
+| 075 | Confirm mixed-format ID dedup | [07-canonical-id-dedup-hardening.md](../../feature_catalog/08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md) |
+| 083 | Confirm large-array safety | [08-mathmax-min-stack-overflow-elimination.md](../../feature_catalog/08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md) |
+| 084 | Confirm transactional limit enforcement | [09-session-manager-transaction-gap-fixes.md](../../feature_catalog/08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md) |
+| 116 | Verify re-chunking indexes new chunks before deleting old ones, and old chunks survive if new indexing fails | [10-chunking-orchestrator-safe-swap.md](../../feature_catalog/08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md) |
+| 117 | Verify cleanupOldSessions() correctly identifies expired sessions using SQLite-native datetime comparison regardless of timestamp format | [11-working-memory-timestamp-fix.md](../../feature_catalog/08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md) |
 
 ### Files to Change
 
@@ -91,22 +91,22 @@ Provide a phase-specific specification that maps all 11 bug-fix and data-integri
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Document NEW-001 Graph channel ID fix (G1) in this phase packet. | The documented verdict rule states PASS only when graph channel contributes >=1 hit when causal edges exist, with command transcript and search output captured as evidence. |
-| REQ-002 | Document NEW-004 SHA-256 content-hash deduplication (TM-02) in this phase packet. | The documented verdict rule states PASS only when re-save skips embedding and reports duplicate, with save outputs and DB evidence showing no duplicate embedding row. |
-| REQ-003 | Document NEW-065 Database and schema safety in this phase packet. | The documented verdict rule states PASS only when all mutation paths complete atomically with no partial corruption and schema constraints hold, supported by mutation output, SQL inspection, and constraint verification. |
-| REQ-004 | Document NEW-084 Session-manager transaction gap fixes in this phase packet. | The documented verdict rule states PASS only when concurrent writes are serialized, session limits hold, and no corruption occurs, supported by concurrent write simulation and transaction evidence. |
-| REQ-005 | Document NEW-116 Chunking safe swap atomicity in this phase packet. | The documented verdict rule states PASS only when new chunks are staged before old deletion and old children survive when new indexing fails, with re-chunk output and failure-survival evidence captured. |
-| REQ-006 | Document NEW-117 SQLite datetime session cleanup in this phase packet. | The documented verdict rule states PASS only when only expired sessions are deleted regardless of timestamp format and active sessions are preserved, with before/after session evidence recorded. |
+| REQ-001 | Document 001 Graph channel ID fix (G1) in this phase packet. | The documented verdict rule states PASS only when graph channel contributes >=1 hit when causal edges exist, with command transcript and search output captured as evidence. |
+| REQ-002 | Document 004 SHA-256 content-hash deduplication (TM-02) in this phase packet. | The documented verdict rule states PASS only when re-save skips embedding and reports duplicate, with save outputs and DB evidence showing no duplicate embedding row. |
+| REQ-003 | Document 065 Database and schema safety in this phase packet. | The documented verdict rule states PASS only when all mutation paths complete atomically with no partial corruption and schema constraints hold, supported by mutation output, SQL inspection, and constraint verification. |
+| REQ-004 | Document 084 Session-manager transaction gap fixes in this phase packet. | The documented verdict rule states PASS only when concurrent writes are serialized, session limits hold, and no corruption occurs, supported by concurrent write simulation and transaction evidence. |
+| REQ-005 | Document 116 Chunking safe swap atomicity in this phase packet. | The documented verdict rule states PASS only when new chunks are staged before old deletion and old children survive when new indexing fails, with re-chunk output and failure-survival evidence captured. |
+| REQ-006 | Document 117 SQLite datetime session cleanup in this phase packet. | The documented verdict rule states PASS only when only expired sessions are deleted regardless of timestamp format and active sessions are preserved, with before/after session evidence recorded. |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-007 | Document NEW-002 Chunk collapse deduplication (G3) in this phase packet. | The documented verdict rule states PASS only when zero duplicate parent IDs appear in collapsed results, with result IDs and dedup evidence attached. |
-| REQ-008 | Document NEW-003 Co-activation fan-effect divisor (R17) in this phase packet. | The documented verdict rule states PASS only when hub contribution decreases as degree increases and no single hub dominates >50% of the top-5 results, with comparative query evidence captured. |
-| REQ-009 | Document NEW-068 Guards and edge cases in this phase packet. | The documented verdict rule states PASS only when known edge cases are handled without double-counting or incorrect fallback behavior, with trigger output and fallback evidence attached. |
-| REQ-010 | Document NEW-075 Canonical ID dedup hardening in this phase packet. | The documented verdict rule states PASS only when mixed-format IDs for the same entity resolve to one canonical ID with no duplicates, with mixed-ID input and canonicalized output recorded. |
-| REQ-011 | Document NEW-083 Math.max/min stack overflow elimination in this phase packet. | The documented verdict rule states PASS only when large arrays process without RangeError and produce correct min/max values, with large-array execution output and numeric comparisons attached. |
+| REQ-007 | Document 002 Chunk collapse deduplication (G3) in this phase packet. | The documented verdict rule states PASS only when zero duplicate parent IDs appear in collapsed results, with result IDs and dedup evidence attached. |
+| REQ-008 | Document 003 Co-activation fan-effect divisor (R17) in this phase packet. | The documented verdict rule states PASS only when hub contribution decreases as degree increases and no single hub dominates >50% of the top-5 results, with comparative query evidence captured. |
+| REQ-009 | Document 068 Guards and edge cases in this phase packet. | The documented verdict rule states PASS only when known edge cases are handled without double-counting or incorrect fallback behavior, with trigger output and fallback evidence attached. |
+| REQ-010 | Document 075 Canonical ID dedup hardening in this phase packet. | The documented verdict rule states PASS only when mixed-format IDs for the same entity resolve to one canonical ID with no duplicates, with mixed-ID input and canonicalized output recorded. |
+| REQ-011 | Document 083 Math.max/min stack overflow elimination in this phase packet. | The documented verdict rule states PASS only when large arrays process without RangeError and produce correct min/max values, with large-array execution output and numeric comparisons attached. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -130,7 +130,7 @@ Provide a phase-specific specification that maps all 11 bug-fix and data-integri
 | Dependency | [review_protocol.md](../../manual_testing_playbook/review_protocol.md) | Verdicts may become inconsistent across phases | Apply the shared PASS/PARTIAL/FAIL rules and 100% coverage requirement during execution review |
 | Dependency | `../../feature_catalog/08--bug-fixes-and-data-integrity/*.md` | Feature context and traceability would be incomplete | Maintain a one-to-one link for all 11 tests in the scope table |
 | Dependency | MCP runtime and sandboxable data stores | Manual scenarios cannot be exercised or evidenced safely without runtime access | Confirm runtime availability before execution and isolate destructive scenarios to sandbox/checkpointed data |
-| Risk | Destructive or transactional scenarios could be run against the wrong environment | High | Restrict NEW-065, NEW-084, NEW-116, and NEW-117 to sandbox or checkpointed environments only |
+| Risk | Destructive or transactional scenarios could be run against the wrong environment | High | Restrict 065, 084, 116, and 117 to sandbox or checkpointed environments only |
 | Risk | Incomplete evidence may force PARTIAL or FAIL verdicts even when behavior is correct | Med | Require prompt, command transcript, output, and explicit rationale for every scenario |
 <!-- /ANCHOR:risks -->
 

@@ -57,4 +57,4 @@ Non-MCP `spec-kit-cli` entry point (`cli.ts`) for database maintenance. Four com
 - Group: Undocumented feature gap scan
 - Source feature title: Standalone admin CLI
 - Current reality source: 10-agent feature gap scan
-- Playbook reference: NEW-113
+- Playbook reference: 113

@@ -44,4 +44,4 @@ Async embedding fallback via `index_memory_deferred()`. When embedding generatio
 - Group: Undocumented feature gap scan
 - Source feature title: Deferred lexical-only indexing
 - Current reality source: 10-agent feature gap scan
-- Playbook reference: NEW-111
+- Playbook reference: 111

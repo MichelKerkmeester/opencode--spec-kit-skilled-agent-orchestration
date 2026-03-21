@@ -51,4 +51,4 @@ If BM25 had been competitive, the entire multi-channel approach would be questio
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenario NEW-011
+- Mapped to manual testing playbook scenario 011

@@ -356,6 +356,11 @@ async function parseStructuredModeArguments(
   args: string[],
   stdinReader: (stdin?: NodeJS.ReadStream) => Promise<string>,
 ): Promise<ParsedCliArguments> {
+  if (mode === '--stdin' && process.stdin.isTTY) {
+    console.error('--stdin requires piped input');
+    process.exit(1);
+  }
+
   const rawJson = mode === '--stdin'
     ? await stdinReader()
     : args[1];
@@ -464,9 +469,10 @@ async function parseArguments(
 }
 
 function validateArguments(): void {
-  if (!CONFIG.SPEC_FOLDER_ARG) return;
+  const specFolderArg = CONFIG.SPEC_FOLDER_ARG;
+  if (!specFolderArg) return;
 
-  const validation = isValidSpecFolder(CONFIG.SPEC_FOLDER_ARG);
+  const validation = isValidSpecFolder(specFolderArg);
 
   if (validation.warning) {
     console.warn(`   Warning: ${validation.warning}`);
@@ -475,7 +481,7 @@ function validateArguments(): void {
   if (validation.valid) return;
 
   // --- Subfolder support: before failing, try to find the folder as a child ---
-  const inputBaseName = path.basename(CONFIG.SPEC_FOLDER_ARG);
+  const inputBaseName = path.basename(specFolderArg);
   if (SPEC_FOLDER_PATTERN.test(inputBaseName)) {
     // Input looks like a valid spec folder name but wasn't found at top level.
     // Try finding it as a child folder inside any parent.
@@ -488,7 +494,7 @@ function validateArguments(): void {
     // FindChildFolder logs its own error for ambiguous matches
   }
 
-  console.error(`\nError: Invalid spec folder format: ${CONFIG.SPEC_FOLDER_ARG}`);
+  console.error(`\nError: Invalid spec folder format: ${specFolderArg}`);
   console.error(`   Reason: ${validation.reason}`);
   console.error('Expected format: ###-feature-name (e.g., "122-skill-standardization")\n');
 
@@ -496,7 +502,7 @@ function validateArguments(): void {
   if (fsSync.existsSync(specsDir)) {
     try {
       const available = fsSync.readdirSync(specsDir);
-      const matches = available.filter((n) => n.includes(path.basename(CONFIG.SPEC_FOLDER_ARG!)) && SPEC_FOLDER_PATTERN.test(n));
+      const matches = available.filter((n) => n.includes(path.basename(specFolderArg)) && SPEC_FOLDER_PATTERN.test(n));
 
       if (matches.length > 0) {
         console.error('Did you mean:');
@@ -504,7 +510,7 @@ function validateArguments(): void {
       } else {
         // --- Subfolder support: multi-level deep scan as fallback ---
         let deepMatches: string[] = [];
-        const targetBase = path.basename(CONFIG.SPEC_FOLDER_ARG!);
+        const targetBase = path.basename(specFolderArg);
 
         for (const topEntry of available) {
           const isSpec = SPEC_FOLDER_PATTERN.test(topEntry);

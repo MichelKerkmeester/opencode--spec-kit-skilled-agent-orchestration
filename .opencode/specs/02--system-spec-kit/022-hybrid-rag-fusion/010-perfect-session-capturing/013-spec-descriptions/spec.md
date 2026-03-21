@@ -33,7 +33,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Completed** | 2026-03-17 |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 14 of 16 |
+| **Phase** | 13 |
 | **Predecessor** | 012-auto-detection-fixes |
 | **Successor** | 014-stateless-quality-gates |
 | **Handoff Criteria** | validate.sh + test suite passing |

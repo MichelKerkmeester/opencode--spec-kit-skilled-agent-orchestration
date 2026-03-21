@@ -47,4 +47,4 @@ The earlier pattern-analysis outcome from this workstream still informed ground-
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenario NEW-012
+- Mapped to manual testing playbook scenario 012

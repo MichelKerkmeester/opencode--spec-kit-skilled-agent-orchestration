@@ -1,7 +1,7 @@
 // TCOV-001: Focused unit tests for normalizeFileEntryLike via normalizeInputData
 import { describe, expect, it } from 'vitest';
 import { normalizeInputData } from '../utils/input-normalizer';
-import type { RawInputData, NormalizedData, FileEntry } from '../utils/input-normalizer';
+import type { RawInputData, NormalizedData, NormalizedFileEntry } from '../utils/input-normalizer';
 
 /**
  * Helper: create minimal RawInputData with FILES array that routes through
@@ -14,10 +14,11 @@ function makeInputWithFiles(files: Array<Record<string, unknown>>): RawInputData
   };
 }
 
-function getFiles(result: NormalizedData | RawInputData): FileEntry[] {
+function getFiles(result: NormalizedData | RawInputData): NormalizedFileEntry[] {
   return (result as NormalizedData).FILES || [];
 }
 
+// Covers: F-16 (Ensure FILES uses FileEntry format via normalizeFileEntryLike)
 describe('normalizeFileEntryLike via normalizeInputData', () => {
   it('normalizes an empty object to defaults', () => {
     const result = normalizeInputData(makeInputWithFiles([{}]));
@@ -158,6 +159,7 @@ describe('normalizeFileEntryLike via normalizeInputData', () => {
   });
 });
 
+// Covers: F-15 (Field-by-field completion instead of early return — backfill missing arrays)
 describe('normalizeInputData importanceTier propagation (BUG-006)', () => {
   it('propagates importanceTier through slow path', () => {
     const result = normalizeInputData({

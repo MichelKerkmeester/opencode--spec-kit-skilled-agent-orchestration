@@ -39,25 +39,21 @@ export interface OptionRecord {
   LABEL?: string;
   PROS?: Array<{ PRO?: string } | string>;
   CONS?: Array<{ CON?: string } | string>;
-  [key: string]: unknown;
 }
 
 /** Caveat record for decision tree formatting */
 export interface CaveatRecord {
   CAVEAT_ITEM?: string;
-  [key: string]: unknown;
 }
 
 /** Follow-up action record */
 export interface FollowUpRecord {
   FOLLOWUP_ITEM?: string;
-  [key: string]: unknown;
 }
 
 /** Evidence record for decision tree formatting */
 export interface EvidenceRecord {
   EVIDENCE_ITEM?: string;
-  [key: string]: unknown;
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -133,7 +129,8 @@ function formatDecisionHeader(
 
 function formatOptionBox(option: OptionRecord, isChosen: boolean, maxWidth: number = 20): string {
   let box: string = `\u250C${'\u2500'.repeat(maxWidth)}\u2510\n`;
-  box += `\u2502  ${padText(option.LABEL || 'Option', maxWidth - 4)}  \u2502\n`;
+  const headerPrefix = isChosen ? '>> ' : '';
+  box += `\u2502  ${padText(`${headerPrefix}${option.LABEL || 'Option'}`, maxWidth - 4)}  \u2502\n`;
 
   if (option.PROS && option.PROS.length > 0) {
     for (const pro of option.PROS.slice(0, 2)) {
@@ -226,7 +223,6 @@ function formatFollowUpBox(followup: Array<FollowUpRecord | string>): string {
 // 6. EXPORTS
 // ───────────────────────────────────────────────────────────────
 export {
-  BOX,
   padText,
   formatDecisionHeader,
   formatOptionBox,

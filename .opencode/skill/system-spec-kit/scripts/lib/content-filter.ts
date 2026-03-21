@@ -115,33 +115,42 @@ function compileNoisePatterns(patterns: unknown): RegExp[] {
     return [];
   }
 
-  const compiled: RegExp[] = [];
-  for (const entry of patterns) {
+  const tryCompilePattern = (source: string, flags: string = ''): RegExp | null => {
     try {
-      if (entry instanceof RegExp) {
-        compiled.push(cloneRegExp(entry));
-        continue;
-      }
-
-      if (typeof entry === 'string') {
-        const literalMatch = entry.match(/^\/(.+)\/([a-z]*)$/i);
-        compiled.push(
-          literalMatch
-            ? new RegExp(literalMatch[1], literalMatch[2])
-            : new RegExp(entry)
-        );
-        continue;
-      }
-
-      if (entry && typeof entry === 'object' && typeof (entry as NoisePatternConfig).pattern === 'string') {
-        compiled.push(new RegExp(
-          (entry as NoisePatternConfig).pattern,
-          typeof (entry as NoisePatternConfig).flags === 'string' ? (entry as NoisePatternConfig).flags : ''
-        ));
-      }
+      return new RegExp(source, flags);
     } catch (error: unknown) {
       const errMsg = error instanceof Error ? error.message : String(error);
       structuredLog('warn', `Skipping invalid noise pattern: ${errMsg}`);
+      return null;
+    }
+  };
+
+  const compiled: RegExp[] = [];
+  for (const entry of patterns) {
+    if (entry instanceof RegExp) {
+      compiled.push(cloneRegExp(entry));
+      continue;
+    }
+
+    if (typeof entry === 'string') {
+      const literalMatch = entry.match(/^\/(.+)\/([a-z]*)$/i);
+      const compiledPattern = literalMatch
+        ? tryCompilePattern(literalMatch[1], literalMatch[2])
+        : tryCompilePattern(entry);
+      if (compiledPattern) {
+        compiled.push(compiledPattern);
+      }
+      continue;
+    }
+
+    if (entry && typeof entry === 'object' && typeof (entry as NoisePatternConfig).pattern === 'string') {
+      const compiledPattern = tryCompilePattern(
+        (entry as NoisePatternConfig).pattern,
+        typeof (entry as NoisePatternConfig).flags === 'string' ? (entry as NoisePatternConfig).flags : ''
+      );
+      if (compiledPattern) {
+        compiled.push(compiledPattern);
+      }
     }
   }
 
@@ -362,39 +371,53 @@ function meetsMinimumRequirements(content: string, config: FilterConfig): boolea
 }
 
 /** MD5 hash for deduplication (normalized: lowercase, collapsed whitespace, no timestamps) */
-function generateContentHash(content: string, length: number = 200): string {
+function normalizeContentForHash(content: string, length?: number): string {
   if (!content) return '';
   const normalized: string = content
     .toLowerCase()
     .replace(/\d{4}-\d{2}-\d{2}[T\s]\d{2}:\d{2}:\d{2}/g, '')
     .replace(/\s+/g, ' ')
-    .trim()
-    .slice(0, length);
+    .trim();
+  return typeof length === 'number' && length > 0 ? normalized.slice(0, length) : normalized;
+}
+
+/** MD5 hash for deduplication (normalized: lowercase, collapsed whitespace, no timestamps) */
+function generateContentHash(content: string, length: number = 200): string {
+  const normalized: string = normalizeContentForHash(content, length);
+  if (!normalized) return '';
   return crypto.createHash('md5').update(normalized).digest('hex');
 }
 
 function calculateSimilarity(a: string, b: string): number {
+  if (!a && !b) return 1;
   if (!a || !b) return 0;
   if (a === b) return 1;
 
-  const hashA: string = generateContentHash(a, 100);
-  const hashB: string = generateContentHash(b, 100);
-  if (hashA === hashB) return 1;
+  const shingleSize: number = 2;
+  const getShingles = (value: string): Set<string> => {
+    const words: string[] = value.toLowerCase().split(/\s+/).filter((word: string) => word.length > 0);
+    const shingles: Set<string> = new Set();
 
-  const maxLen: number = Math.max(a.length, b.length);
-  if (maxLen === 0) return 1;
+    for (let i = 0; i <= words.length - shingleSize; i++) {
+      shingles.add(words.slice(i, i + shingleSize).join(' '));
+    }
 
-  const aLower: string = a.toLowerCase().slice(0, 200);
-  const bLower: string = b.toLowerCase().slice(0, 200);
-  let matches: number = 0;
-  const shorter: string = aLower.length < bLower.length ? aLower : bLower;
-  const longer: string = aLower.length < bLower.length ? bLower : aLower;
+    return shingles;
+  };
 
-  for (let i = 0; i < shorter.length; i++) {
-    if (shorter[i] === longer[i]) matches++;
+  const shinglesA: Set<string> = getShingles(a);
+  const shinglesB: Set<string> = getShingles(b);
+
+  if (shinglesA.size === 0 && shinglesB.size === 0) return 1;
+  if (shinglesA.size === 0 || shinglesB.size === 0) return 0;
+
+  let intersection: number = 0;
+  for (const shingle of shinglesA) {
+    if (shinglesB.has(shingle)) intersection++;
   }
 
-  return matches / longer.length;
+  const unionSize: number = shinglesA.size + shinglesB.size - intersection;
+  return unionSize === 0 ? 1 : intersection / unionSize;
 }
 
 function calculateQualityScore(items: PromptItem[], config: FilterConfig): number {
@@ -578,15 +601,17 @@ function createFilterPipeline(customConfig: Partial<FilterConfig> = {}): FilterP
     },
 
     deduplicate(prompts: PromptItem[]): PromptItem[] {
-      const seenHashes: Map<string, number> = new Map();
+      const seenHashes: Map<string, Set<string>> = new Map();
       const seenContent: string[] = [];
       const result: PromptItem[] = [];
 
       for (let i = 0; i < prompts.length; i++) {
         const content: string = prompts[i].prompt || prompts[i].content || '';
+        const normalizedContent: string = normalizeContentForHash(content);
         const hash: string = generateContentHash(content, config.dedupe?.hashLength || 200);
+        const exactMatches: Set<string> | undefined = seenHashes.get(hash);
 
-        if (seenHashes.has(hash)) {
+        if (exactMatches?.has(normalizedContent)) {
           filterStats.filtered.duplicate++;
           filterStats.duplicatesRemoved++;
           continue;
@@ -603,7 +628,11 @@ function createFilterPipeline(customConfig: Partial<FilterConfig> = {}): FilterP
         }
 
         if (!isDuplicate) {
-          seenHashes.set(hash, result.length);
+          if (!exactMatches) {
+            seenHashes.set(hash, new Set([normalizedContent]));
+          } else {
+            exactMatches.add(normalizedContent);
+          }
           seenContent.push(content);
           result.push(prompts[i]);
         }
@@ -640,14 +669,6 @@ function filterContent(prompts: PromptItem[], options: Partial<FilterConfig> = {
 // ───────────────────────────────────────────────────────────────
 export {
   createFilterPipeline,
-  filterContent,
-  getFilterStats,
-  resetStats,
   isNoiseContent,
-  stripNoiseWrappers,
-  meetsMinimumRequirements,
-  generateContentHash,
-  calculateSimilarity,
-  calculateQualityScore,
   NOISE_PATTERNS,
 };

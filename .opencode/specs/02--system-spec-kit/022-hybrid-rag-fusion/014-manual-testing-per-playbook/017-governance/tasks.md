@@ -35,7 +35,7 @@ contextType: "general"
 ## Phase 1: Setup
 
 - [x] T001 Extract governance prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] T002 Confirm feature links for NEW-063, NEW-064, NEW-122, NEW-123, and NEW-148 in `../../feature_catalog/17--governance/`
+- [x] T002 Confirm feature links for 063, 064, 122, 123, and 148 in `../../feature_catalog/17--governance/`
 - [ ] T003 [P] Prepare sandbox prerequisites, baseline DB config snapshot, and evidence capture checklist for `plan.md`
 <!-- /ANCHOR:phase-1 -->
 
@@ -48,7 +48,7 @@ contextType: "general"
 - [x] T005 Draft `plan.md` with readiness gates, execution phases, and testing strategy table
 - [x] T006 Draft `checklist.md` with pre-implementation, testing, security, documentation, and file-org checks
 - [ ] T007 Add evidence references and verdict outcomes after manual execution
-- [ ] T008 [P] Resolve open questions for NEW-122 disposable tenant IDs and NEW-148 MCP restart isolation strategy
+- [ ] T008 [P] Resolve open questions for 122 disposable tenant IDs and 148 MCP restart isolation strategy
 <!-- /ANCHOR:phase-2 -->
 
 ---

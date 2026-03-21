@@ -103,7 +103,7 @@ Six-tier system for prioritizing memory relevance:
 
 > **Note:** MCP tool names use the format `spec_kit_memory_<tool_name>`. In documentation, shorthand names like `memory_search()` refer to the full `spec_kit_memory_memory_search()` tool.
 
-### Tool Reference (23 tools)
+### Tool Reference (32 tools)
 
 | Layer | Tool | Purpose | Example Use |
 |-------|------|---------|-------------|
@@ -117,17 +117,28 @@ Six-tier system for prioritizing memory relevance:
 | L4: Mutation | `memory_delete()` | Delete memory by ID or bulk delete by spec folder | Remove outdated memories |
 | L4: Mutation | `memory_update()` | Update memory metadata (title, tier, triggers) | Correct memory properties |
 | L4: Mutation | `memory_validate()` | Mark memory as useful/not useful | Confidence scoring |
+| L4: Mutation | `memory_bulk_delete()` | Bulk delete memories by spec folder with confirmation | Clean up entire spec folder memories |
 | L5: Lifecycle | `checkpoint_create()` | Save named state snapshot | Before risky changes |
 | L5: Lifecycle | `checkpoint_list()` | List available checkpoints | Find restore points |
 | L5: Lifecycle | `checkpoint_restore()` | Restore from checkpoint | Rollback if needed |
 | L5: Lifecycle | `checkpoint_delete()` | Delete a checkpoint | Clean up old snapshots |
+| L5: Shared | `shared_space_upsert()` | Create or update a shared memory space | Set up team shared memory |
+| L5: Shared | `shared_space_membership_set()` | Add or remove members from shared space | Manage space access |
+| L5: Shared | `shared_memory_status()` | Get status of shared memory spaces | Check shared memory health |
+| L5: Shared | `shared_memory_enable()` | Enable or disable shared memory for a space | Toggle shared memory |
 | L6: Analysis | `task_preflight()` | Capture epistemic baseline before task execution | Start of implementation work |
 | L6: Analysis | `task_postflight()` | Capture epistemic state after task, calculate Learning Index | After completing implementation |
 | L6: Analysis | `memory_drift_why()` | Trace causal chain for a memory ("why was this decided?") | Understand decision lineage |
 | L6: Analysis | `memory_causal_link()` | Create causal relationship between two memories | Link decision to its cause |
 | L6: Analysis | `memory_causal_stats()` | Get statistics about the causal memory graph | Check causal coverage |
 | L6: Analysis | `memory_causal_unlink()` | Remove a causal relationship by edge ID | Clean up incorrect links |
+| L6: Analysis | `eval_run_ablation()` | Run ablation study on memory scoring components | Compare scoring strategies |
+| L6: Analysis | `eval_reporting_dashboard()` | Generate evaluation and reporting dashboard data | Review system metrics |
 | L7: Maintenance | `memory_index_scan()` | Bulk scan and index memory files | After creating multiple files |
+| L7: Maintenance | `memory_ingest_start()` | Start async bulk memory ingestion | Import large memory sets |
+| L7: Maintenance | `memory_ingest_status()` | Check status of running ingestion job | Monitor import progress |
+| L7: Maintenance | `memory_ingest_cancel()` | Cancel a running ingestion job | Stop runaway imports |
+| L7: Maintenance | `memory_get_learning_history()` | Get learning history (preflight/postflight records) | Analyze learning patterns |
 
 ### memory_index_scan() Parameters
 
@@ -138,8 +149,6 @@ Six-tier system for prioritizing memory relevance:
 | `includeConstitutional` | boolean | true | Scan `.opencode/skill/*/constitutional/` directories |
 | `includeSpecDocs` | boolean | true | Scan for spec folder documents in `.opencode/specs/`. When true, discovers and indexes specs, plans, tasks, decision records, etc. with document-type scoring multipliers (11 types). Also controllable via `SPECKIT_INDEX_SPEC_DOCS` env var. |
 | `incremental` | boolean | true | Skip files whose mtime and content hash are unchanged since last index |
-
-| L7: Maintenance | `memory_get_learning_history()` | Get learning history (preflight/postflight records) | Analyze learning patterns |
 
 ---
 

@@ -19,7 +19,13 @@ import {
   validateDescription,
 } from '../utils/file-helpers';
 import type { MemorySufficiencyResult } from '@spec-kit/shared/parsing/memory-sufficiency';
-import type { DescriptionProvenance } from '../types/session-types';
+import type {
+  DescriptionProvenance,
+  QualityDimensionScore,
+  QualityFlag,
+  QualityInsufficiencySummary,
+  QualityScoreResult,
+} from '../types/session-types';
 import type { ContaminationSeverity } from '../extractors/contamination-filter';
 
 interface FileWithDescription {
@@ -42,55 +48,8 @@ interface QualityBreakdown {
   observationDedup: number;
 }
 
-export type QualityFlag =
-  | 'has_contamination'
-  | 'has_insufficient_context'
-  | 'missing_trigger_phrases'
-  | 'missing_key_topics'
-  | 'missing_file_context'
-  | 'generic_title'
-  | 'short_content'
-  | 'leaked_html'
-  | 'duplicate_observations'
-  | 'has_placeholders'
-  | 'has_fallback_decision'
-  | 'sparse_semantic_fields'
-  | 'has_tool_state_mismatch'
-  | 'has_session_source_mismatch'
-  | 'has_spec_relevance_mismatch'
-  | 'has_contaminated_title'
-  | 'has_error_content'
-  | 'insufficient_capture';
-
-export interface QualityDimensionScore {
-  id: string;
-  score01: number;
-  score100: number;
-  maxScore100: number;
-  passed?: boolean;
-}
-
-export interface QualityInsufficiencySummary {
-  pass: boolean;
-  score01: number | null;
-  reasons: string[];
-}
-
-/** Represents quality score. */
-export interface QualityScoreResult {
-  score: number;
-  score01: number;
-  score100: number;
-  qualityScore: number;
-  warnings: string[];
-  qualityFlags: QualityFlag[];
-  hadContamination: boolean;
-  dimensions: QualityDimensionScore[];
-  breakdown?: QualityBreakdown;
-  insufficiency: QualityInsufficiencySummary | null;
-}
-
-export type QualityScore = QualityScoreResult;
+// Re-export quality types from canonical location for backward compatibility
+export type { QualityFlag, QualityDimensionScore, QualityInsufficiencySummary, QualityScoreResult } from '../types/session-types';
 
 function clamp01(value: number): number {
   return Math.max(0, Math.min(1, value));
@@ -160,6 +119,12 @@ function hasMeaningfulObservationTitle(title?: string): boolean {
  * Score the quality of a generated memory file.
  * Runs after template rendering, before file writing.
  * Returns canonical score01 plus a score100 compatibility alias and a per-criterion breakdown.
+ *
+ * @deprecated Use `scoreMemoryQuality` from `extractors/quality-scorer.ts` instead.
+ * The extractors v2 scorer accepts a single `QualityInputs` object, uses
+ * validation-rule-based scoring (V1-V12), and is the canonical scorer for
+ * all abort/index/metadata decisions in the workflow. This legacy 8-parameter
+ * variant is retained only for backward compatibility with existing tests.
  */
 export function scoreMemoryQuality(
   content: string,
@@ -296,19 +261,20 @@ export function scoreMemoryQuality(
   let scoreCap: number | null = null;
   const effectiveSeverity: ContaminationSeverity = contaminationSeverity || 'medium';
 
+  // O2-4: Contamination penalties aligned with extractors scorer
   if (hadContamination) {
     qualityFlags.add('has_contamination');
     const severity = effectiveSeverity;
     if (severity === 'low') {
-      score01 -= 0.05;
-      warnings.push('Low-severity contamination detected (preamble only) — minor penalty applied');
-    } else if (severity === 'medium') {
       score01 -= 0.10;
+      warnings.push('Low-severity contamination detected (preamble only) — penalty applied');
+    } else if (severity === 'medium') {
+      score01 -= 0.15;
       scoreCap = Math.min(scoreCap ?? 1, 0.85);
       warnings.push('Medium-severity contamination detected (orchestration chatter) — capped at 0.85');
     } else {
-      score01 -= 0.25;
-      scoreCap = Math.min(scoreCap ?? 1, 0.6);
+      score01 -= 0.30;
+      scoreCap = Math.min(scoreCap ?? 1, 0.60);
       warnings.push('High-severity contamination detected (AI self-reference/tool leaks) — capped at 0.60');
     }
   }

@@ -47,4 +47,4 @@ Logging hooks in the search, context and trigger handlers are best-effort and fa
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenario NEW-005
+- Mapped to manual testing playbook scenario 005

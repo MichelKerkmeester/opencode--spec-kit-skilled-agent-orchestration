@@ -20,13 +20,11 @@ export interface PresenceFlagMappings {
   readonly [key: string]: string;
 }
 
-/** Validated data structure with dynamic fields and flags */
-export interface ValidatedData {
-  [key: string]: unknown;
-  PROS?: Array<Record<string, string>>;
-  CONS?: Array<Record<string, string>>;
-  HAS_PROS_CONS?: boolean;
-}
+/** Generic constraint for data passed to validateDataStructure.
+ * Callers pass their own typed objects (DecisionRecord, DiagramOutput, etc.)
+ * without needing [key: string]: unknown index signatures.
+ * Kept as a type alias for backward-compatible re-exports. */
+export type ValidatedData = Record<string, unknown>;
 
 /** Item within an array that can be a primitive or object */
 type ArrayItem = string | number | boolean | Record<string, unknown>;
@@ -73,13 +71,11 @@ function hasArrayContent(value: unknown): boolean {
 // ───────────────────────────────────────────────────────────────
 // 5. VALIDATION
 // ───────────────────────────────────────────────────────────────
-function validateDataStructure(data: ValidatedData): ValidatedData {
-  const validated: ValidatedData = { ...data };
+function validateDataStructure<T extends object>(data: T): T {
+  const validated: Record<string, unknown> = { ...data } as Record<string, unknown>;
 
   for (const [field, flagField] of Object.entries(ARRAY_FLAG_MAPPINGS)) {
-    if (validated[field] !== undefined) {
-      validated[flagField] = hasArrayContent(validated[field]);
-    }
+    validated[flagField] = hasArrayContent(validated[field]);
   }
 
   for (const [field, flagField] of Object.entries(PRESENCE_FLAG_MAPPINGS)) {
@@ -101,23 +97,19 @@ function validateDataStructure(data: ValidatedData): ValidatedData {
     if (Array.isArray(validated[key])) {
       validated[key] = (validated[key] as ArrayItem[]).map((item: ArrayItem) => {
         if (typeof item === 'object' && item !== null) {
-          return validateDataStructure(item as ValidatedData);
+          return validateDataStructure(item as Record<string, unknown>);
         }
         return item;
       });
     }
   }
 
-  return validated;
+  return validated as T;
 }
 
 // ───────────────────────────────────────────────────────────────
 // 6. EXPORTS
 // ───────────────────────────────────────────────────────────────
 export {
-  ARRAY_FLAG_MAPPINGS,
-  PRESENCE_FLAG_MAPPINGS,
-  ensureArrayOfObjects,
-  hasArrayContent,
   validateDataStructure,
 };

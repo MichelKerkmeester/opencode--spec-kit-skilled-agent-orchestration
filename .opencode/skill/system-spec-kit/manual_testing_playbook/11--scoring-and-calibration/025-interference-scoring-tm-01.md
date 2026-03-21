@@ -1,19 +1,19 @@
 ---
-title: "NEW-025 -- Interference scoring (TM-01)"
-description: "This scenario validates Interference scoring (TM-01) for `NEW-025`. It focuses on Confirm cluster penalty."
+title: "025 -- Interference scoring (TM-01)"
+description: "This scenario validates Interference scoring (TM-01) for `025`. It focuses on Confirm cluster penalty."
 ---
 
-# NEW-025 -- Interference scoring (TM-01)
+# 025 -- Interference scoring (TM-01)
 
 ## 1. OVERVIEW
 
-This scenario validates Interference scoring (TM-01) for `NEW-025`. It focuses on Confirm cluster penalty.
+This scenario validates Interference scoring (TM-01) for `025`. It focuses on Confirm cluster penalty.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Operators run the exact prompt and command sequence for `NEW-025` and confirm the expected signals without contradicting evidence.
+Operators run the exact prompt and command sequence for `025` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm cluster penalty
 - Prompt: `Validate interference scoring (TM-01). Capture the evidence needed to prove Near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected. Return a concise user-facing pass/fail verdict with the main reason.`
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-025` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-025 | Interference scoring (TM-01) | Confirm cluster penalty | `Validate interference scoring (TM-01). Capture the evidence needed to prove Near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Save near-duplicates 2) Query 3) Verify penalty impact | Near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected | Query output showing penalized vs unpenalized scores + cluster membership verification | PASS: Duplicates penalized with lower effective score; non-duplicates retain original scores; FAIL: No penalty applied or false positive penalties | Verify similarity threshold for clustering → Check penalty formula → Inspect near-duplicate detection algorithm |
+| 025 | Interference scoring (TM-01) | Confirm cluster penalty | `Validate interference scoring (TM-01). Capture the evidence needed to prove Near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Save near-duplicates 2) Query 3) Verify penalty impact | Near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected | Query output showing penalized vs unpenalized scores + cluster membership verification | PASS: Duplicates penalized with lower effective score; non-duplicates retain original scores; FAIL: No penalty applied or false positive penalties | Verify similarity threshold for clustering → Check penalty formula → Inspect near-duplicate detection algorithm |
 
 ---
 
@@ -40,6 +40,6 @@ Operators run the exact prompt and command sequence for `NEW-025` and confirm th
 ## 5. SOURCE METADATA
 
 - Group: Scoring and Calibration
-- Playbook ID: NEW-025
+- Playbook ID: 025
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `11--scoring-and-calibration/025-interference-scoring-tm-01.md`

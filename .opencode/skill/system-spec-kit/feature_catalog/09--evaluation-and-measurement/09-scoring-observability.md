@@ -50,4 +50,4 @@ Failures are fail-safe but not silent. Initialization, insert and stats-query er
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenario NEW-013
+- Mapped to manual testing playbook scenario 013

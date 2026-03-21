@@ -1,19 +1,19 @@
 ---
-title: "NEW-035 -- Channel min-representation (R2)"
-description: "This scenario validates Channel min-representation (R2) for `NEW-035`. It focuses on Confirm top-k channel diversity rule."
+title: "035 -- Channel min-representation (R2)"
+description: "This scenario validates Channel min-representation (R2) for `035`. It focuses on Confirm top-k channel diversity rule."
 ---
 
-# NEW-035 -- Channel min-representation (R2)
+# 035 -- Channel min-representation (R2)
 
 ## 1. OVERVIEW
 
-This scenario validates Channel min-representation (R2) for `NEW-035`. It focuses on Confirm top-k channel diversity rule.
+This scenario validates Channel min-representation (R2) for `035`. It focuses on Confirm top-k channel diversity rule.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Operators run the exact prompt and command sequence for `NEW-035` and confirm the expected signals without contradicting evidence.
+Operators run the exact prompt and command sequence for `035` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm top-k channel diversity rule
 - Prompt: `Validate channel min-representation (R2). Capture the evidence needed to prove Each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection. Return a concise user-facing pass/fail verdict with the main reason.`
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-035` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-035 | Channel min-representation (R2) | Confirm top-k channel diversity rule | `Validate channel min-representation (R2). Capture the evidence needed to prove Each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Run dominance query 2) Inspect pre/post representation 3) Verify quality floor | Each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection | Pre/post representation counts per channel + quality floor threshold verification | PASS: All active channels have >=1 representative in top-k; quality floor prevents sub-threshold entries; FAIL: Channel missing from top-k or sub-threshold results injected | Verify min-representation algorithm → Check quality floor threshold → Inspect channel priority ordering |
+| 035 | Channel min-representation (R2) | Confirm top-k channel diversity rule | `Validate channel min-representation (R2). Capture the evidence needed to prove Each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Run dominance query 2) Inspect pre/post representation 3) Verify quality floor | Each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection | Pre/post representation counts per channel + quality floor threshold verification | PASS: All active channels have >=1 representative in top-k; quality floor prevents sub-threshold entries; FAIL: Channel missing from top-k or sub-threshold results injected | Verify min-representation algorithm → Check quality floor threshold → Inspect channel priority ordering |
 
 ---
 
@@ -40,6 +40,6 @@ Operators run the exact prompt and command sequence for `NEW-035` and confirm th
 ## 5. SOURCE METADATA
 
 - Group: Query Intelligence
-- Playbook ID: NEW-035
+- Playbook ID: 035
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `12--query-intelligence/035-channel-min-representation-r2.md`

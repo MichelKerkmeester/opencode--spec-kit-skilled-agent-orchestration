@@ -44,7 +44,7 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T010 Update parent `spec.md` to use the `211` exact-ID model, fix stale phase counts, and record current validator truth.
+- [x] T010 Update parent `spec.md` to use the `213` exact-ID model, fix stale phase counts, and record current validator truth.
 - [x] T011 Update parent `plan.md` to describe the alignment pass instead of the original generation wave.
 - [x] T012 Update parent `tasks.md`, `checklist.md`, and `implementation-summary.md` to the exact-ID and validator-truth model.
 - [x] T013 Expand `013-memory-quality-and-indexing/spec.md` from `26` top-level scenarios to `42` exact IDs.
@@ -59,11 +59,24 @@ contextType: "general"
 ## Phase 3: Verification
 
 - [x] T020 Run an exact-ID ownership audit across all 19 child `spec.md` files.
-- [x] T021 Verify the audit result is `211` exact scenario IDs with `0` missing IDs and `0` duplicate owners.
+- [x] T021 Verify the audit result is `213` exact scenario IDs with `0` missing IDs and `0` duplicate owners.
 - [x] T022 Re-run `validate.sh --recursive` on the parent `014-manual-testing-per-playbook/` tree and record the current `0`-error, `19`-warning result.
 - [x] T023 Re-run `validate.sh` on the touched `013-memory-quality-and-indexing/` child packet.
 - [x] T024 Spot-check the parent/child/docs surface for `M-005a..c`, `M-006a..c`, `M-007a..j`, and the `010` validator-support narrative.
 <!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:phase-h -->
+## Phase H: Normalization Alignment (2026-03-21)
+
+- [x] T030 Bulk-replace all `NEW-NNN` provisional markers with bare `NNN` IDs across 80 files in the spec folder.
+- [x] T031 Update all root-level count references from `211` to `213` exact scenario IDs.
+- [x] T032 Add scenarios `153` (JSON mode hybrid enrichment) and `154` (JSON-primary deprecation posture) to Phase 016 test inventory.
+- [x] T033 Update Phase 016 exact-ID count from `21` to `23` in root phase map and sub-phase docs.
+- [x] T034 Add normalization addendum to `spec.md` and `implementation-summary.md`.
+- [x] T035 Verify zero stale `NEW-NNN` markers remain (excluding `G-NEW-` proper nouns).
+<!-- /ANCHOR:phase-h -->
 
 ---
 
@@ -72,7 +85,7 @@ contextType: "general"
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] Parent packet uses the `211` exact-ID model as the authoritative coverage unit
+- [x] Parent packet uses the `213` exact-ID model as the authoritative coverage unit
 - [x] Recursive validation truth is recorded honestly for the parent packet
 - [x] Manual verification passed
 <!-- /ANCHOR:completion -->

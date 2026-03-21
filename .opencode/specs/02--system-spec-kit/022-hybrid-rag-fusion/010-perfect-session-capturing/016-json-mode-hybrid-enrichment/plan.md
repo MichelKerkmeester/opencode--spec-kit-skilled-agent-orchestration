@@ -91,11 +91,15 @@ Structured JSON contract hardening with a documentation-correction pass.
 - **`session-types.ts`**: Adds shipped structured-summary fields such as `toolCalls` and `exchanges`.
 - **`workflow.ts`**: Keeps file-backed JSON authoritative instead of routing it into a dedicated hybrid branch.
 - **`generate-context.ts`**: Documents the structured JSON contract and structured-first operator workflow.
+- **`session-extractor.ts`**: RC5 — `detectContextType()` fix and `explicitContextType` parameter.
+- **`input-normalizer.ts`**: RC3/RC5 — fast-path keyDecisions + contextType propagation.
+- **`collect-session-data.ts`**: RC1/RC5 — `_JSON_SESSION_SUMMARY` passthrough and `explicitContextType` threading.
+- **`post-save-review.ts`**: New module — reads saved frontmatter, compares against JSON payload, reports issues.
 - **Phase docs**: Record the narrower shipped scope and retire claims about an unimplemented branch.
 
 ### Data Flow
 
-The caller submits structured JSON data. The shared contract accepts richer summary fields, file-backed payloads stay on the authoritative structured path, and later assembly logic preserves the Wave 2 fixes for counts, confidence, and operator-facing guidance.
+The caller submits structured JSON data. The shared contract accepts richer summary fields, file-backed payloads stay on the authoritative structured path, and later assembly logic preserves the Wave 2 fixes for counts, confidence, and operator-facing guidance. Wave 3 ensures all JSON payload fields (`sessionSummary`, `triggerPhrases`, `keyDecisions`, `importanceTier`, `contextType`) propagate correctly through the normalization and extraction pipeline to frontmatter, with a post-save review step as a safety net.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -120,6 +124,18 @@ The caller submits structured JSON data. The shared contract accepts richer summ
 - [x] Run TypeScript verification.
 - [x] Confirm V8 safety guard behavior remains intact.
 - [x] Confirm documentation and implementation summary reflect the delivered behavior.
+
+### Wave 3: JSON Payload Field Propagation Fixes + Post-Save Review
+
+- [x] RC5: Fix `detectContextType()` ordering and add `explicitContextType` threading through session-extractor, input-normalizer, collect-session-data.
+- [x] RC3: Fix fast-path `keyDecisions` propagation in input-normalizer (create `_manualDecisions` + decision observations).
+- [x] RC2: Merge `_manualTriggerPhrases` into `preExtractedTriggers` in workflow.ts before folder token dedup.
+- [x] RC1: Thread `_JSON_SESSION_SUMMARY` through session-types, collect-session-data, and workflow.ts as first title candidate.
+- [x] Create `scripts/core/post-save-review.ts` — 6-check quality review module with severity grading.
+- [x] Integrate Step 10.5 in workflow.ts (after file write, before indexing).
+- [x] Update 5 instruction files (CLAUDE.md, AGENTS.md, GEMINI.md, AGENTS_example, Barter/coder/AGENTS.md).
+- [x] Update feature catalog and manual testing playbook.
+- [x] TypeScript verification passes cleanly.
 <!-- /ANCHOR:phases -->
 
 ---

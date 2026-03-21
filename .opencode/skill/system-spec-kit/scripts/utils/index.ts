@@ -15,7 +15,6 @@ export {
   getWorkspacePathVariants,
   isSameWorkspacePath,
   toWorkspaceRelativePath,
-  findNearestOpencodeDirectory,
   normalizeAbsolutePath,
 } from './workspace-identity';
 export type { WorkspaceIdentity } from './workspace-identity';
@@ -23,12 +22,6 @@ export type { WorkspaceIdentity } from './workspace-identity';
 export {
   buildSpecAffinityTargets,
   evaluateCollectedDataSpecAffinity,
-  evaluateSpecAffinityText,
-  matchesSpecAffinityFilePath,
-  matchesSpecAffinityText,
-  extractSpecIds,
-  normalizePathLike,
-  normalizeText,
 } from './spec-affinity';
 export type {
   SpecAffinityTargets,
@@ -36,10 +29,6 @@ export type {
 } from './spec-affinity';
 
 export {
-  ARRAY_FLAG_MAPPINGS,
-  PRESENCE_FLAG_MAPPINGS,
-  ensureArrayOfObjects,
-  hasArrayContent,
   validateDataStructure,
 } from './data-validator';
 export type { ValidatedData } from './data-validator';
@@ -55,8 +44,10 @@ export {
 } from './input-normalizer';
 export type {
   Observation,
+  NormalizedUserPrompt,
   UserPrompt,
   RecentContext,
+  NormalizedFileEntry,
   FileEntry,
   RawInputData,
   DecisionItemObject,
@@ -78,7 +69,6 @@ export type {
 } from './fact-coercion';
 
 export {
-  requireInteractiveMode,
   promptUser,
   promptUserChoice,
 } from './prompt-utils';
@@ -102,23 +92,11 @@ export {
   formatTimestamp,
   truncateToolOutput,
   summarizeExchange,
-  extractKeyArtifacts,
-} from './message-utils';
-export type {
-  TimestampFormat,
-  ToolCall,
-  Message,
-  ExchangeSummary,
-  FileArtifact,
-  CommandArtifact,
-  ErrorArtifact,
-  KeyArtifacts,
 } from './message-utils';
 
 export {
   validateNoLeakedPlaceholders,
   validateAnchors,
-  logAnchorValidation,
 } from './validation-utils';
 
 export {
@@ -130,11 +108,20 @@ export {
 export type { ToolStatus } from './tool-sanitizer';
 
 export {
-  GENERIC_MEMORY_DESCRIPTION,
-  LEGACY_GENERIC_MEMORY_TRIGGER_PHRASES,
-  hasLegacyGenericTriggerPhrases,
-  hasGenericMemoryDescription,
-  sanitizeMemoryFrontmatterTitle,
-  deriveMemoryDescription,
-  deriveMemoryTriggerPhrases,
-} from './memory-frontmatter';
+  normalizeMemoryNameCandidate,
+  slugify,
+  isContaminatedMemoryName,
+  isGenericContentTask,
+  pickBestContentName,
+  ensureUniqueMemoryFilename,
+  generateContentSlug,
+} from './slug-utils';
+
+export {
+  getSourceCapabilities,
+} from './source-capabilities';
+export type {
+  SourceInputMode,
+  KnownDataSource,
+  SourceCapabilities,
+} from './source-capabilities';

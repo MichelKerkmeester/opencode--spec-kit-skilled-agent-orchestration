@@ -1,4 +1,4 @@
-# NEW-143: Bounded graph-walk rollout and diagnostics
+# 143: Bounded graph-walk rollout and diagnostics
 
 ## Preconditions
 - MCP server running with default flags

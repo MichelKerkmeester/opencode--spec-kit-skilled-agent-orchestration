@@ -114,20 +114,27 @@ async function reindex(): Promise<void> {
       console.log('');
       console.log('='.repeat(60));
       console.log('STATUS=OK');
+    } else {
+      console.warn('WARNING: Memory index scan returned no content to summarize');
+      process.exit(1);
     }
   } finally {
     closeIndexingRuntime();
   }
 }
 
+export { reindex };
+
 /* ───────────────────────────────────────────────────────────────
    4. ENTRY POINT
 ──────────────────────────────────────────────────────────────── */
 
-reindex().catch((err: unknown) => {
-  const message = err instanceof Error ? err.message : String(err);
-  const stack = err instanceof Error ? err.stack : '';
-  console.error('FATAL:', message);
-  if (stack) console.error(stack);
-  process.exit(1);
-});
+if (require.main === module) {
+  reindex().catch((err: unknown) => {
+    const message = err instanceof Error ? err.message : String(err);
+    const stack = err instanceof Error ? err.stack : '';
+    console.error('FATAL:', message);
+    if (stack) console.error(stack);
+    process.exit(1);
+  });
+}

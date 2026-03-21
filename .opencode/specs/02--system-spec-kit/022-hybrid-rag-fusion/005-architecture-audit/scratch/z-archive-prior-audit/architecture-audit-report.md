@@ -81,7 +81,7 @@ Artifacts:
 | Criterion | Rating (1-5) | Evidence (violations or weaknesses) |
 |---|---:|---|
 | Concern Separation | 2 | Overlap in memory/index/eval between `scripts/*` and `mcp_server/*`; duplicate helper responsibilities (`scripts/core/memory-indexer.ts`, `mcp_server/lib/parsing/memory-parser.ts`) |
-| Boundary Clarity | 2 | Intent exists in `mcp_server/api/index.ts`, but scripts still import `@spec-kit/mcp-server/lib/*` (`scripts/core/workflow.ts`, `scripts/evals/run-performance-benchmarks.ts`, `scripts/evals/run-chk210-quality-backfill.ts`) |
+| Boundary Clarity | 2 | Intent exists in `mcp_server/api/index.ts`, but scripts still import `@spec-kit/mcp-server/lib/*` (`scripts/core/workflow.ts`, `scripts/evals/run-performance-benchmarks.ts`, `scripts/evals/deleted-chk210-quality-backfill-script`) |
 | Dependency Direction | 2 | Back-edge wrapper `mcp_server/scripts/reindex-embeddings.ts -> ../../scripts/dist/...`; documented handler cycle (`causal-links-processor -> chunking-orchestrator -> memory-save -> pe-gating -> causal-links-processor`) |
 | Naming Consistency | 3 | Most directories consistent; ambiguity remains in `mcp_server/scripts/README.md` (looks general, actually compatibility-only) |
 | Discoverability | 3 | Many READMEs exist but no single cross-boundary contract doc; runtime-vs-CLI ownership requires code reading |

@@ -121,9 +121,20 @@ function extractPhasesFromData(collectedData: CollectedDataSubset<'observations'
 async function extractDiagrams(
   collectedData: CollectedDataSubset<'observations' | 'userPrompts'> | null
 ): Promise<DiagramData> {
+  // O5-9: Return empty data instead of simulation fallback
   if (!collectedData) {
-    console.log('   Warning: Using simulation data for diagrams');
-    return simFactory.createDiagramData();
+    return {
+      DIAGRAMS: [],
+      DIAGRAM_COUNT: 0,
+      HAS_AUTO_GENERATED: false,
+      FLOW_TYPE: '',
+      AUTO_CONVERSATION_FLOWCHART: '',
+      AUTO_DECISION_TREES: [],
+      AUTO_FLOW_COUNT: 0,
+      AUTO_DECISION_COUNT: 0,
+      DIAGRAM_TYPES: [],
+      PATTERN_SUMMARY: [],
+    };
   }
 
   const observations = collectedData.observations || [];
@@ -216,8 +227,5 @@ async function extractDiagrams(
 
 export {
   extractPhasesFromData,
-  extractDiagrams,
-  // Legacy aliases — retained for backward compatibility with external callers
-  extractPhasesFromData as extractPhasesFromData_alias,
-  extractDiagrams as extractDiagrams_alias
+  extractDiagrams
 };

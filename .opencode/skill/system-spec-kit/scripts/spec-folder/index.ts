@@ -39,15 +39,3 @@ export {
   validateFolderAlignment,
 };
 
-/* ───────────────────────────────────────────────────────────────
-   EXPORTS - Backwards compatibility aliases (snake_case)
-------------------------------------------------------------------*/
-
-export {
-  detectSpecFolder as detect_spec_folder,
-  filterArchiveFolders as filter_archive_folders,
-  setupContextDirectory as setup_context_directory,
-  extractObservationKeywords as extract_observation_keywords,
-  validateContentAlignment as validate_content_alignment,
-  validateTelemetrySchemaDocsDrift as validate_telemetry_schema_docs_drift,
-};

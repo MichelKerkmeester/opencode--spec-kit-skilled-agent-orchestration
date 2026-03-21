@@ -40,19 +40,19 @@ Phase 005 (lifecycle) manual testing — complete execution of 9 lifecycle scena
 | EX-016 | Checkpoint listing | **PASS** | MCP execution |
 | EX-017 | Checkpoint restore | **PASS** | MCP execution (sandbox) |
 | EX-018 | Checkpoint deletion | **PASS** | MCP execution (sandbox) |
-| NEW-097 | Async ingest lifecycle | **PARTIAL** | MCP execution + code analysis |
-| NEW-114 | Path traversal validation | **PASS** | MCP execution |
-| NEW-124 | Archival lifecycle | **PARTIAL** | Code analysis + unit tests |
-| NEW-134 | Startup recovery | **PARTIAL** | Code analysis + unit tests |
-| NEW-144 | Ingest forecast | **PASS** | MCP execution + code analysis |
+| 097 | Async ingest lifecycle | **PARTIAL** | MCP execution + code analysis |
+| 114 | Path traversal validation | **PASS** | MCP execution |
+| 124 | Archival lifecycle | **PARTIAL** | Code analysis + unit tests |
+| 134 | Startup recovery | **PARTIAL** | Code analysis + unit tests |
+| 144 | Ingest forecast | **PASS** | MCP execution + code analysis |
 
 **Coverage:** 9/9 scenarios (6 PASS, 3 PARTIAL, 0 FAIL)
 
 ### PARTIAL Verdicts Rationale
 
-- **NEW-097**: Core state machine works (queued→complete via MCP). Intermediate states (parsing/embedding/indexing), cancelled state, and restart requeue confirmed only via code analysis — MCP round-trip faster than pipeline processing.
-- **NEW-124**: Archival is an internal background process (1h scan interval) with no MCP trigger. Code analysis + unit tests confirm archive/unarchive parity, vector deletion, deferred rebuild, and protected tier safeguards.
-- **NEW-134**: Startup recovery runs at server boot only. Code analysis + unit tests confirm committed/stale divergence, scan root configuration, and stale file preservation for manual review.
+- **097**: Core state machine works (queued→complete via MCP). Intermediate states (parsing/embedding/indexing), cancelled state, and restart requeue confirmed only via code analysis — MCP round-trip faster than pipeline processing.
+- **124**: Archival is an internal background process (1h scan interval) with no MCP trigger. Code analysis + unit tests confirm archive/unarchive parity, vector deletion, deferred rebuild, and protected tier safeguards.
+- **134**: Startup recovery runs at server boot only. Code analysis + unit tests confirm committed/stale divergence, scan root configuration, and stale file preservation for manual review.
 
 ### Files Changed
 
@@ -74,8 +74,8 @@ Phase 005 (lifecycle) manual testing — complete execution of 9 lifecycle scena
 ## How It Was Delivered
 
 1. **Environment setup**: MCP server verified healthy (v1.7.2, 679 memories), sandbox spec folder `test-sandbox-lifecycle` created with 20 seed files, 3 open questions resolved.
-2. **Phase A — Non-destructive tests**: EX-015, EX-016, NEW-097, NEW-114, NEW-144 executed via MCP tools. NEW-134 evidenced via code analysis (startup-only operation).
-3. **Phase B — Destructive tests**: Pre-test checkpoints created for EX-017, EX-018, NEW-124. Checkpoint restore and deletion executed in sandbox with rollback. NEW-124 evidenced via code analysis (background process).
+2. **Phase A — Non-destructive tests**: EX-015, EX-016, 097, 114, 144 executed via MCP tools. 134 evidenced via code analysis (startup-only operation).
+3. **Phase B — Destructive tests**: Pre-test checkpoints created for EX-017, EX-018, 124. Checkpoint restore and deletion executed in sandbox with rollback. 124 evidenced via code analysis (background process).
 4. **Verdict assessment**: All 9 scenarios assessed against review protocol 5 acceptance checks.
 5. **Closeout**: Tasks, checklist, implementation-summary, and spec.md updated; memory saved.
 <!-- /ANCHOR:how-delivered -->
@@ -87,7 +87,7 @@ Phase 005 (lifecycle) manual testing — complete execution of 9 lifecycle scena
 
 | Decision | Why |
 |----------|-----|
-| Code analysis for NEW-097/NEW-124/NEW-134 | Internal server operations not exposed via MCP tools — code analysis with unit test citations provides equivalent evidence |
+| Code analysis for 097/124/134 | Internal server operations not exposed via MCP tools — code analysis with unit test citations provides equivalent evidence |
 | PARTIAL (not FAIL) for code-analysis scenarios | Core behavior confirmed in implementation; limitation is observability, not functionality |
 | Sandbox at `test-sandbox-lifecycle` | Disposable folder scoped to lifecycle tests, per playbook section 2 guidance |
 | Checkpoint naming `pre-[test-id]-[action]` | Consistent rollback targets per plan.md Phase 3 |
@@ -113,9 +113,9 @@ Phase 005 (lifecycle) manual testing — complete execution of 9 lifecycle scena
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **NEW-097 intermediate states**: MCP polling cannot observe parsing/embedding/indexing states because pipeline processing completes faster than MCP round-trip (~2-4ms per file).
-2. **NEW-124/NEW-134 runtime observation**: Archival scans and startup recovery are internal background operations with no MCP trigger — code analysis serves as evidence.
-3. **Restart requeue**: NEW-097 restart-requeue behavior (`resetIncompleteJobsToQueued`) requires server restart, not testable in a live session.
+1. **097 intermediate states**: MCP polling cannot observe parsing/embedding/indexing states because pipeline processing completes faster than MCP round-trip (~2-4ms per file).
+2. **124/134 runtime observation**: Archival scans and startup recovery are internal background operations with no MCP trigger — code analysis serves as evidence.
+3. **Restart requeue**: 097 restart-requeue behavior (`resetIncompleteJobsToQueued`) requires server restart, not testable in a live session.
 <!-- /ANCHOR:limitations -->
 
 ---

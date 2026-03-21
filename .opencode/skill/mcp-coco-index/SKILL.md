@@ -25,12 +25,20 @@ Natural language code search through two complementary approaches: CLI (ccc) for
 - User mentions "semantic search", "code search", "find similar code"
 - User needs to locate logic handling a specific concern (e.g., "where is the retry logic")
 - User wants to understand how a concept is implemented across multiple files
+- User asks "how is X implemented" or "what handles Y"
+- User wants to understand architecture or module relationships
+- Starting work on an unfamiliar part of the codebase (onboarding queries)
+- @context agent is exploring code structure and needs concept-based discovery
+- Any exploration task where the exact function/class name is unknown
 
 **Automatic Triggers**:
 - "semantic search", "find code that", "search for implementations"
 - "similar code", "code that handles", "where is the logic for"
 - "cocoindex", "ccc", "vector search"
 - "find similar", "code search", "search codebase"
+- "how is", "what handles", "where does", "understand the"
+- "explore", "architecture", "module relationships"
+- "onboarding", "unfamiliar code", "new to this"
 
 ### When NOT to Use
 

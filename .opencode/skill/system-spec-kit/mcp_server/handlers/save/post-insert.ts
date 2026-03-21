@@ -28,8 +28,17 @@ interface CausalLinksResult {
   errors: { type: string; reference: string; error: string }[];
 }
 
+// C5-4: Track which enrichment steps succeeded
+export interface EnrichmentStatus {
+  causalLinks: boolean;
+  entityExtraction: boolean;
+  summaries: boolean;
+  entityLinking: boolean;
+}
+
 export interface PostInsertEnrichmentResult {
   causalLinksResult: CausalLinksResult | null;
+  enrichmentStatus: EnrichmentStatus;
 }
 
 /**
@@ -50,11 +59,20 @@ export async function runPostInsertEnrichment(
   id: number,
   parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
 ): Promise<PostInsertEnrichmentResult> {
+  // C5-4: Track enrichment step outcomes
+  const enrichmentStatus: EnrichmentStatus = {
+    causalLinks: false,
+    entityExtraction: false,
+    summaries: false,
+    entityLinking: false,
+  };
+
   // CAUSAL LINKS PROCESSING
   let causalLinksResult: CausalLinksResult | null = null;
   if (parsed.hasCausalLinks && parsed.causalLinks) {
     try {
       causalLinksResult = processCausalLinks(database, id, parsed.causalLinks);
+      enrichmentStatus.causalLinks = true;
       if (causalLinksResult.inserted > 0) {
         console.error(`[causal-links] Processed ${causalLinksResult.inserted} causal edges for memory #${id}`);
       }
@@ -65,6 +83,9 @@ export async function runPostInsertEnrichment(
       const message = toErrorMessage(causal_err);
       console.warn(`[memory-save] Causal links processing failed: ${message}`);
     }
+  } else {
+    // No causal links to process — not a failure
+    enrichmentStatus.causalLinks = true;
   }
 
   // -- Auto Entity Extraction --
@@ -77,10 +98,14 @@ export async function runPostInsertEnrichment(
         updateEntityCatalog(database, filtered);
         console.error(`[entity-extraction] Extracted ${entityResult.stored} entities for memory #${id}`);
       }
+      enrichmentStatus.entityExtraction = true;
     } catch (entityErr: unknown) {
       const message = toErrorMessage(entityErr);
       console.warn(`[memory-save] R10 entity extraction failed: ${message}`);
     }
+  } else {
+    // Feature disabled — not a failure
+    enrichmentStatus.entityExtraction = true;
   }
 
   // -- R8: Memory Summary Generation --
@@ -95,10 +120,14 @@ export async function runPostInsertEnrichment(
       if (summaryResult.stored) {
         console.error(`[memory-summaries] Generated summary for memory #${id}`);
       }
+      enrichmentStatus.summaries = true;
     } catch (summaryErr: unknown) {
       const message = toErrorMessage(summaryErr);
       console.warn(`[memory-save] R8 summary generation failed: ${message}`);
     }
+  } else {
+    // Feature disabled — not a failure
+    enrichmentStatus.summaries = true;
   }
 
   // -- S5: Cross-Document Entity Linking --
@@ -117,11 +146,15 @@ export async function runPostInsertEnrichment(
           : 'unknown';
         console.error(`[entity-linking] Skipped by density guard (density=${density}, threshold=${threshold})`);
       }
+      enrichmentStatus.entityLinking = true;
     } catch (linkErr: unknown) {
       const message = toErrorMessage(linkErr);
       console.warn(`[memory-save] S5 entity linking failed: ${message}`);
     }
+  } else {
+    // Feature disabled — not a failure
+    enrichmentStatus.entityLinking = true;
   }
 
-  return { causalLinksResult };
+  return { causalLinksResult, enrichmentStatus };
 }

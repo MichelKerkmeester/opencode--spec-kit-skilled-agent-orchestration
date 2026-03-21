@@ -60,4 +60,4 @@ Shared-memory handlers and lifecycle tools use the same membership and rollout c
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenarios NEW-123, NEW-148
+- Mapped to manual testing playbook scenarios 123, 148

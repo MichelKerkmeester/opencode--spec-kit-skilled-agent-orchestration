@@ -88,6 +88,43 @@
 | **Analysis/evaluation**   | `/memory:analyze` → preflight, postflight, causal graph, ablation, dashboard, history                                            |
 | **Shared memory**         | `/memory:shared` → create, member, status (deny-by-default governance)                                                             |
 
+### Code Search Protocol
+
+**When exploring code by concept or intent, ALWAYS try CocoIndex BEFORE falling back to Grep/Glob.**
+
+```text
+Need to find code?
+  |
+  +-- Know the exact text/token/symbol?
+  |     YES --> Grep (exact match)
+  |
+  +-- Know the file name or path?
+  |     YES --> Glob (pattern match)
+  |
+  +-- Searching by concept, intent, or "how does X work"?
+  |     YES --> CocoIndex search (semantic)
+  |             +-- Verify hits with Read
+  |             +-- Confirm with Grep if needed
+  |
+  +-- Exploring unfamiliar code?
+        YES --> CocoIndex search FIRST, then Grep/Glob to fill gaps
+```
+
+**CocoIndex Activation Triggers** (use CocoIndex when you see these patterns):
+- "find code that does X", "how is X implemented", "where is the logic for X"
+- "similar code", "find patterns", "search codebase for"
+- Exploring unfamiliar modules or understanding architecture
+- Any intent-based query where exact tokens are unknown
+
+**Quick Reference:**
+
+| Approach | Command | When |
+| --- | --- | --- |
+| **MCP tool** | `search(query, languages, paths, num_results, refresh_index)` | AI agent integration |
+| **CLI** | `ccc search "query" --lang X --path Y --limit N` | Direct terminal use |
+
+**Follow-up queries**: Set `refresh_index=false` after the first search in a session unless the codebase changed.
+
 ### Coding Analysis Lenses
 
 | Lens               | Focus            | Detection Questions                                                                |
@@ -162,6 +199,10 @@ Trigger: "save context", "save memory", `/memory:save`, memory file creation
   - Subfolder: `003-parent/121-child` or bare `121-child` (auto-searches parents)
 - **Indexing:** For immediate MCP visibility after save: `memory_index_scan({ specFolder })` or `memory_save()`
 - **Violation:** Write tool on `memory/` path → DELETE and re-run via script
+- **Post-Save Review:** After `generate-context.js` completes, check the POST-SAVE QUALITY REVIEW output.
+  - **HIGH** issues: MUST manually patch via Edit tool (fix title, trigger_phrases, importance_tier)
+  - **MEDIUM** issues: patch when practical
+  - **PASSED/SKIPPED**: no action needed
 
 #### COMPLETION VERIFICATION RULE [HARD] BLOCK
 Trigger: Claiming "done", "complete", "finished", "works"

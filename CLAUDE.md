@@ -34,7 +34,7 @@
 **MANDATORY TOOLS:**
 - **Spec Kit Memory MCP** for research tasks, context recovery, and finding prior work.  **Memory saves MUST use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`** — NEVER manually create memory files.
   - **Primary (JSON mode):** AI composes structured JSON → `generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' [spec-folder]` or writes to `/tmp/save-context-data.json` and passes as first arg.
-  - **Recovery-only (stateless mode):** `generate-context.js [spec-folder-path]` — dynamic session capture. Use ONLY when JSON composition is not possible (crash recovery, interrupted sessions). This mode is **deprecated for routine saves**.
+  - **Recovery-only (requires `--recovery` flag):** `generate-context.js --recovery [spec-folder-path]` — dynamic session capture. Use ONLY when JSON composition is not possible (crash recovery, interrupted sessions). This mode is **deprecated for routine saves**.
 - **CocoIndex Code MCP** for semantic code search. **MUST use** when exploring unfamiliar code, finding implementations by concept/intent, or when Grep/Glob exact matching is insufficient. Skill: `.opencode/skill/mcp-coco-index/`
 
 **GIT WORKFLOW:** 
@@ -50,7 +50,7 @@ Full details: `.opencode/skill/sk-git/`
 | **Research/exploration**  | `memory_match_triggers()` → `memory_context()` (unified) OR `memory_search()` (targeted) → Document findings                       |
 | **Code search**           | `CocoIndex search` for semantic/intent queries → `Grep()` for exact text → `Glob()` for file paths → `Read()` for contents         |
 | **Resume prior work**     | `/memory:continue` OR `memory_search({ query, specFolder, anchors: ['state', 'next-steps'] })` → Review checklist → Continue       |
-| **Save context**          | `/memory:save` OR compose JSON → `generate-context.js --json '<data>' [spec-folder]` (preferred) OR `generate-context.js [spec-folder]` (recovery-only) → Auto-indexed |
+| **Save context**          | `/memory:save` OR compose JSON → `generate-context.js --json '<data>' [spec-folder]` (preferred) OR `generate-context.js --recovery [spec-folder]` (recovery-only) → Auto-indexed |
 | **Claim completion**      | Validation runs automatically → Load `checklist.md` → Verify ALL items → Mark with evidence                                        |
 | **End session**           | `/spec_kit:handover` → Save context → Provide continuation prompt                                                                  |
 | **New spec folder**       | Option B (Gate 3) → Research via Task tool → Evidence-based plan → Approval → Implement                                            |
@@ -134,10 +134,14 @@ Trigger: "save context", "save memory", `/memory:save`, memory file creation
 - If NO folder and Gate 3 never answered → HARD BLOCK → Ask user
 - **Script:** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
   - **Mode 1 (JSON — PREFERRED):** AI composes structured JSON with session context, writes to `/tmp/save-context-data.json`, passes as first arg. Alternatively use `--json '<inline-json>'` or `--stdin`. The AI has strictly better information about its own session than any DB extraction.
-  - **Mode 2 (Stateless — RECOVERY ONLY):** Pass bare spec folder path (e.g., `specs/005-memory`). Triggers dynamic session capture from runtime databases. **Deprecated for routine saves** — use only for crash recovery or when JSON composition is impossible.
+  - **Mode 2 (Recovery — `--recovery` flag REQUIRED):** `generate-context.js --recovery [spec-folder-path]` (e.g., `--recovery specs/005-memory`). Triggers dynamic session capture from runtime databases. **Deprecated for routine saves** — use only for crash recovery or when JSON composition is impossible.
   - Subfolder: `003-parent/121-child` or bare `121-child` (auto-searches parents)
 - **Indexing:** For immediate MCP visibility after save: `memory_index_scan({ specFolder })` or `memory_save()`
 - **Violation:** Write tool on `memory/` path → DELETE and re-run via script
+- **Post-Save Review:** After `generate-context.js` completes, check the POST-SAVE QUALITY REVIEW output.
+  - **HIGH** issues: MUST manually patch via Edit tool (fix title, trigger_phrases, importance_tier)
+  - **MEDIUM** issues: patch when practical
+  - **PASSED/SKIPPED**: no action needed
 
 #### COMPLETION VERIFICATION RULE [HARD] BLOCK
 Trigger: Claiming "done", "complete", "finished", "works"

@@ -11,7 +11,7 @@ import { posix as pathPosix } from 'node:path';
 
 export type DescriptionTier = 'placeholder' | 'activity-only' | 'semantic' | 'high-confidence';
 
-export interface DescriptionValidationResult {
+interface DescriptionValidationResult {
   tier: DescriptionTier;
   normalized: string;
 }

@@ -160,6 +160,18 @@ CLI Agent Query ("find authentication middleware")
 - [x] Update `../../../skill/mcp-coco-index/SKILL.md`, `../../../skill/mcp-coco-index/README.md`, and `../../../skill/mcp-coco-index/references/cross_cli_playbook.md` to route operators to strict modes and the new adoption checklist
 - [x] Verify shared-repo strict readiness passes and temp-project strict config validation fails with exit `24`
 
+### Phase 7: Cross-CLI Adoption Boosting
+
+**Goal**: Increase CocoIndex usage frequency across all 5 CLI environments.
+
+**Approach**: Four-layer strategy:
+1. **Routing Layer** (`skill_advisor.py`): Direct `INTENT_BOOSTERS` for semantic keywords
+2. **Instruction Layer** (`AGENTS.md`, `GEMINI.md`): Code Search Protocol section
+3. **Agent Layer** (`@context`): CocoIndex as first-class exploration tool
+4. **Playbook Layer** (`../../../skill/mcp-coco-index/references/cross_cli_playbook.md`, `../../../skill/mcp-coco-index/SKILL.md`): Per-provider activation recipes
+
+**Key Insight**: `@context` had zero CocoIndex references despite being the exclusive codebase exploration entry point.
+
 <!-- /ANCHOR:phases -->
 
 ---

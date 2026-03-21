@@ -111,6 +111,22 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 
 ---
 
+## Phase G: Normalization & Phase 016/017 Coverage (2026-03-21) — COMPLETE
+
+- [x] T180 Remove all `NEW-NNN` markers from individual feature catalog files (194 files across 19 categories)
+- [x] T181 Remove all `NEW-NNN` markers from individual playbook files (200 files across 19 categories)
+- [x] T182 Clean `feature_catalog.md` index: remove `[NEW-NNN]` playbook references, add 016/017 entries
+- [x] T183 Clean `manual_testing_playbook.md` index: remove ~458 `NEW-` prefixes, rename section header, add 153/154 entries + cross-reference table rows
+- [x] T184 Create `feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md` (phase 016 coverage)
+- [x] T185 Create `feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md` (phase 017 coverage)
+- [x] T186 Create `manual_testing_playbook/16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md` (phase 016 test scenarios)
+- [x] T187 Create `manual_testing_playbook/16--tooling-and-scripts/154-json-primary-deprecation-posture.md` (phase 017 test scenarios)
+- [x] T188 Verification: E1 — catalog file-to-index consistency (194 files, 0 NEW- markers)
+- [x] T189 Verification: E2 — playbook file-to-index consistency (200 files, 0 NEW- markers)
+- [x] T190 Verification: E3 — spot-check targeted files for marker remnants (all clean)
+
+---
+
 ## Phase F: Remediation Execution (FUTURE — from manifest)
 
 ### E1: Batch Fixes (P0 — Scriptable)

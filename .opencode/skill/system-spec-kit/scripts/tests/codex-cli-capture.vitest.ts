@@ -46,6 +46,117 @@ describe('captureCodexConversation', () => {
     expect(result).toBeNull();
   });
 
+  it('skips malformed JSONL lines without crashing', async () => {
+    const tempHome = makeTempRoot('speckit-codex-home-');
+    process.env.HOME = tempHome;
+
+    const projectRoot = '/tmp/spec-kit-project';
+    const sessionsRoot = path.join(tempHome, '.codex', 'sessions', '2026', '03', '16');
+    const transcriptPath = path.join(sessionsRoot, 'rollout-2026-03-16T09-00-00-malformed.jsonl');
+    fs.mkdirSync(path.dirname(transcriptPath), { recursive: true });
+    fs.writeFileSync(transcriptPath, [
+      JSON.stringify({
+        timestamp: '2026-03-16T09:00:00.000Z',
+        type: 'response_item',
+        payload: {
+          type: 'session_meta',
+          id: 'malformed-session',
+          cwd: projectRoot,
+          timestamp: '2026-03-16T09:00:00.000Z',
+        },
+      }),
+      '{"timestamp":"2026-03-16T09:00:00.500Z","type":"response_item",',
+      JSON.stringify({
+        timestamp: '2026-03-16T09:00:01.000Z',
+        type: 'response_item',
+        payload: {
+          type: 'message',
+          role: 'user',
+          content: [{ type: 'input_text', text: 'Recover after malformed transcript content.' }],
+        },
+      }),
+      JSON.stringify({
+        timestamp: '2026-03-16T09:00:02.000Z',
+        type: 'response_item',
+        payload: {
+          type: 'message',
+          role: 'assistant',
+          content: [{ type: 'output_text', text: 'Malformed lines were skipped safely.' }],
+        },
+      }),
+      '',
+    ].join('\n'), 'utf-8');
+
+    const { captureCodexConversation } = await import('../extractors/codex-cli-capture');
+    const result = await captureCodexConversation(20, projectRoot);
+
+    expect(result).not.toBeNull();
+    expect(result?.sessionId).toBe('malformed-session');
+    expect(result?.exchanges).toEqual([
+      expect.objectContaining({
+        userInput: 'Recover after malformed transcript content.',
+        assistantResponse: 'Malformed lines were skipped safely.',
+      }),
+    ]);
+  });
+
+  it('returns null for an empty transcript file', async () => {
+    const tempHome = makeTempRoot('speckit-codex-home-');
+    process.env.HOME = tempHome;
+
+    const sessionsRoot = path.join(tempHome, '.codex', 'sessions', '2026', '03', '16');
+    const transcriptPath = path.join(sessionsRoot, 'rollout-2026-03-16T09-30-00-empty.jsonl');
+    fs.mkdirSync(path.dirname(transcriptPath), { recursive: true });
+    fs.writeFileSync(transcriptPath, '', 'utf-8');
+
+    const { captureCodexConversation } = await import('../extractors/codex-cli-capture');
+    const result = await captureCodexConversation(20, '/tmp/spec-kit-project');
+
+    expect(result).toBeNull();
+  });
+
+  it('preserves orphaned pending prompts when no assistant response arrives', async () => {
+    const tempHome = makeTempRoot('speckit-codex-home-');
+    process.env.HOME = tempHome;
+
+    const projectRoot = '/tmp/spec-kit-project';
+    const sessionsRoot = path.join(tempHome, '.codex', 'sessions', '2026', '03', '16');
+    const transcriptPath = path.join(sessionsRoot, 'rollout-2026-03-16T10-00-00-orphan.jsonl');
+
+    writeJsonl(transcriptPath, [
+      {
+        timestamp: '2026-03-16T10:00:00.000Z',
+        type: 'response_item',
+        payload: {
+          type: 'session_meta',
+          id: 'orphaned-session',
+          cwd: projectRoot,
+          timestamp: '2026-03-16T10:00:00.000Z',
+        },
+      },
+      {
+        timestamp: '2026-03-16T10:00:01.000Z',
+        type: 'response_item',
+        payload: {
+          type: 'message',
+          role: 'user',
+          content: [{ type: 'input_text', text: 'Remember the prompt even without a reply.' }],
+        },
+      },
+    ]);
+
+    const { captureCodexConversation } = await import('../extractors/codex-cli-capture');
+    const result = await captureCodexConversation(20, projectRoot);
+
+    expect(result).not.toBeNull();
+    expect(result?.exchanges).toEqual([
+      expect.objectContaining({
+        userInput: 'Remember the prompt even without a reply.',
+        assistantResponse: '',
+      }),
+    ]);
+  });
+
   it('selects the newest project-matching transcript and ignores reasoning-only content', async () => {
     const tempHome = makeTempRoot('speckit-codex-home-');
     process.env.HOME = tempHome;

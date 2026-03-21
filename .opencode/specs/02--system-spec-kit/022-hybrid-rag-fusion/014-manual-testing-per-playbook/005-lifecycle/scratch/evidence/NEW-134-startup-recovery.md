@@ -1,4 +1,4 @@
-# NEW-134 — Startup Pending-File Recovery Evidence
+# 134 — Startup Pending-File Recovery Evidence
 
 ## Preconditions
 - MCP server healthy (v1.7.2)

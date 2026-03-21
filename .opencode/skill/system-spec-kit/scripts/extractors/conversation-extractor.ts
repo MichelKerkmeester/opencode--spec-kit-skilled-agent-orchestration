@@ -7,13 +7,12 @@
 // ───────────────────────────────────────────────────────────────
 // Extracts structured conversation data — exchanges, tool calls, phases, and flowcharts
 
-import { CONFIG } from '../core';
+import { CONFIG } from '../config';
 import { formatTimestamp, truncateToolOutput, summarizeExchange } from '../utils/message-utils';
 import { detectToolCall, isProseContext } from '../utils/tool-detection';
 import { classifyConversationExchanges } from '../utils/phase-classifier';
 import { coerceFactsToText } from '../utils/fact-coercion';
 import { detectObservationType } from './file-extractor';
-import * as simFactory from '../lib/simulation-factory';
 import * as flowchartGen from '../lib/flowchart-generator';
 import type {
   CollectedDataSubset,
@@ -50,11 +49,23 @@ type PendingExchangeInput = Parameters<typeof classifyConversationExchanges>[0][
 ------------------------------------------------------------------*/
 
 async function extractConversations(
-  collectedData: CollectedDataSubset<'userPrompts' | 'observations'> | null
+  collectedData: CollectedDataSubset<'userPrompts' | 'observations' | 'sessionSummary' | 'keyDecisions' | 'nextSteps'> | null
 ): Promise<ConversationData> {
+  // O5-9: Return empty data instead of simulation fallback
   if (!collectedData) {
-    console.log('   Warning: Using simulation data for conversations');
-    return simFactory.createConversationData();
+    return {
+      MESSAGES: [],
+      MESSAGE_COUNT: 0,
+      DURATION: 'N/A',
+      FLOW_PATTERN: 'empty',
+      PHASE_COUNT: 0,
+      UNIQUE_PHASE_COUNT: 0,
+      PHASES: [],
+      TOPIC_CLUSTERS: [],
+      AUTO_GENERATED_FLOW: '',
+      TOOL_COUNT: 0,
+      DATE: new Date().toISOString().split('T')[0],
+    };
   }
 
   const userPrompts = collectedData.userPrompts || [];
@@ -75,35 +86,6 @@ async function extractConversations(
 
   const MESSAGES: ConversationMessage[] = [];
 
-  // Fix 8: Synthesize conversation from JSON mode structured data when prompts are sparse
-  const dataRecord = collectedData as Record<string, unknown>;
-  if (userPrompts.length <= 1 && dataRecord.sessionSummary) {
-    const timestamp = formatTimestamp(undefined, 'readable');
-    MESSAGES.push({
-      TIMESTAMP: timestamp,
-      ROLE: 'Assistant',
-      CONTENT: String(dataRecord.sessionSummary),
-      TOOL_CALLS: [],
-    });
-    const keyDecisions = dataRecord.keyDecisions;
-    if (Array.isArray(keyDecisions) && keyDecisions.length > 0) {
-      MESSAGES.push({
-        TIMESTAMP: timestamp,
-        ROLE: 'Assistant',
-        CONTENT: `Key decisions: ${keyDecisions.map((d: unknown) => typeof d === 'string' ? d : (d as Record<string, unknown>)?.title || JSON.stringify(d)).join('; ')}`,
-        TOOL_CALLS: [],
-      });
-    }
-    const nextSteps = dataRecord.nextSteps;
-    if (Array.isArray(nextSteps) && nextSteps.length > 0) {
-      MESSAGES.push({
-        TIMESTAMP: timestamp,
-        ROLE: 'Assistant',
-        CONTENT: `Next steps: ${nextSteps.map((s: unknown) => String(s)).join('; ')}`,
-        TOOL_CALLS: [],
-      });
-    }
-  }
   const tempMessages: TempConversationMessage[] = [];
   const exchangeInputs: PendingExchangeInput[] = [];
   const consumedObservationIndexes = new Set<number>();
@@ -254,6 +236,36 @@ async function extractConversations(
     MESSAGES.push(entry.message);
   });
 
+  // O5-14: Fix 8 synthesis moved AFTER prompt-processing loop so messages sort correctly
+  // O5-2: Access fields directly via CollectedDataBase instead of double-cast
+  if (userPrompts.length <= 1 && collectedData.sessionSummary) {
+    const timestamp = formatTimestamp(undefined, 'readable');
+    MESSAGES.push({
+      TIMESTAMP: timestamp,
+      ROLE: 'Assistant',
+      CONTENT: String(collectedData.sessionSummary),
+      TOOL_CALLS: [],
+    });
+    const keyDecisions = collectedData.keyDecisions;
+    if (Array.isArray(keyDecisions) && keyDecisions.length > 0) {
+      MESSAGES.push({
+        TIMESTAMP: timestamp,
+        ROLE: 'Assistant',
+        CONTENT: `Key decisions: ${keyDecisions.map((d: Record<string, unknown>) => typeof d === 'string' ? d : d?.title || JSON.stringify(d)).join('; ')}`,
+        TOOL_CALLS: [],
+      });
+    }
+    const nextSteps = collectedData.nextSteps;
+    if (Array.isArray(nextSteps) && nextSteps.length > 0) {
+      MESSAGES.push({
+        TIMESTAMP: timestamp,
+        ROLE: 'Assistant',
+        CONTENT: `Next steps: ${nextSteps.map((s: Record<string, unknown>) => String(s)).join('; ')}`,
+        TOOL_CALLS: [],
+      });
+    }
+  }
+
   for (let i = 0; i < exchangeInputs.length; i++) {
     exchangeInputs[i].messageIndexes = exchangeInputs[i].tempMessageIds
       .map((tempId) => messageIndexByTempId.get(tempId))
@@ -300,6 +312,4 @@ async function extractConversations(
 
 export {
   extractConversations,
-  // Legacy alias — retained for backward compatibility with external callers
-  extractConversations as extractConversations_alias,
 };

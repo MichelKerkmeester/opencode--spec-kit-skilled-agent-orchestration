@@ -7,6 +7,12 @@
 // ───────────────────────────────────────────────────────────────
 // Mines git history for file changes and observations for stateless enrichment
 
+/**
+ * @deprecated RECOVERY-ONLY — This module is part of the stateless dynamic capture path,
+ * which is deprecated for routine saves (Phase 017). In JSON-primary mode, the AI provides
+ * structured data directly. This module only executes when --recovery is explicitly passed.
+ */
+
 import { execFileSync } from 'child_process';
 import path from 'path';
 

@@ -51,6 +51,7 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 | ----------------------- | ----------- | ------------------------- | ------------------------------------ |
 | `Glob`                  | Codebase    | File discovery by pattern | Find files matching name/extension   |
 | `Grep`                  | Codebase    | Text/code pattern search  | Find keywords, function calls, usage |
+| `CocoIndex search`      | Semantic    | Concept-based code discovery | Find code by intent, not exact text |
 | `Read`                  | Codebase    | File content inspection   | Examine implementations, configs     |
 | `List`                  | Codebase    | Directory listing         | Explore folder structure             |
 | `memory_match_triggers` | Memory (L2) | Trigger phrase matching   | Quick context surfacing (Layer 1)    |
@@ -69,6 +70,9 @@ What do you need?
     │
     ├─► CODE PATTERNS ("where is X used?")
     │   └─► Grep → search for text patterns
+    │
+    ├─► CONCEPT/INTENT SEARCH ("how is X implemented?")
+    │   └─► CocoIndex search → find code by meaning
     │
     ├─► FILE CONTENTS ("what does X contain?")
     │   └─► Read → inspect file content
@@ -100,7 +104,7 @@ This agent operates in **thorough mode only** — every exploration uses all 3 r
 
 > **Nesting Rule:** Nested sub-agent dispatch is illegal for this profile.
 
-**Tool Sequence**: `memory_match_triggers` → `memory_context(deep)` → `memory_search(includeContent)` → `Glob` (5-10 patterns) → `Grep` (3-5 patterns) → `Read` (5-8 key files) → spec folder analysis → `memory_list(specFolder)`
+**Tool Sequence**: `memory_match_triggers` → `memory_context(deep)` → `memory_search(includeContent)` → `CocoIndex search` (1-3 concept queries) → `Glob` (5-10 patterns) → `Grep` (3-5 patterns) → `Read` (5-8 key files) → spec folder analysis → `memory_list(specFolder)`
 
 **Returns**: Full memory context (prior decisions, patterns, session history), comprehensive file map with dependency relationships, detailed code pattern analysis, spec folder status (documentation state, task completion), related spec folders, cross-references between memory and codebase findings.
 
@@ -129,6 +133,7 @@ Every exploration traverses all 3 layers for comprehensive context.
 **Tools**: `Glob`, `Grep`, `Read`
 
 **Strategy**: Start broad, narrow progressively:
+- **CocoIndex** — Semantic search for concept-based discovery. Use 1-3 short queries (3-5 words). Examples: `ccc search "authentication middleware"`, `ccc search "error handling patterns"`. Set `refresh_index=false` after first query.
 - **Glob** — Cast a wide net for file discovery. Use 5-10 patterns. Examples: `src/**/*auth*`, `**/*.config.*`, `*.md`
 - **Grep** — Find specific usage within discovered paths. Use file paths from Glob to narrow search scope. Examples: `authenticate(`, `import.*auth`
 - **Read** — Inspect 5-8 key files. SUMMARIZE contents — never return raw file dumps
@@ -367,6 +372,7 @@ When the orchestrator specifies `Output Size: summary-only` or `minimal`, compre
 | Skill             | Purpose                                           |
 | ----------------- | ------------------------------------------------- |
 | `system-spec-kit` | Spec folders, memory system, context preservation |
+| `mcp-coco-index`  | Semantic code search via vector embeddings          |
 
 ---
 

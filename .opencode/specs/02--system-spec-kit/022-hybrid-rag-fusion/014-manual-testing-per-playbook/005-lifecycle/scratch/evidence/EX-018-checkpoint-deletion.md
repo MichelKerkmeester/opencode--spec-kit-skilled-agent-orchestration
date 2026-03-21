@@ -13,7 +13,7 @@
 checkpoint_list({ specFolder: "test-sandbox-lifecycle" })
 ```
 **Response:** Found 5 checkpoint(s)
-- id:8 `pre-NEW-124-archival` (19:03:48)
+- id:8 `pre-124-archival` (19:03:48)
 - id:7 `pre-EX-018-delete` (19:03:47)
 - id:6 `pre-EX-017-restore` (19:03:47)
 - id:4 `pre-EX-016-ordering-test` (19:00:36) **<-- target**
@@ -41,7 +41,7 @@ checkpoint_delete({ name: "pre-EX-016-ordering-test", confirmName: "pre-EX-016-o
 checkpoint_list({ specFolder: "test-sandbox-lifecycle" })
 ```
 **Response:** Found 4 checkpoint(s)
-- id:8 `pre-NEW-124-archival` (19:03:48)
+- id:8 `pre-124-archival` (19:03:48)
 - id:7 `pre-EX-018-delete` (19:03:47)
 - id:6 `pre-EX-017-restore` (19:03:47)
 - id:3 `pre-bulk-delete` (19:00:26)

@@ -11,7 +11,7 @@
 1. Requirement source: `spec.md` (SC-002: context errors <= 25% baseline).
 2. Verification gate: `checklist.md` CHK-181.
 3. Consolidated status: `scratch/final-metrics.md`.
-4. Metric producer: `.opencode/skill/system-spec-kit/scripts/evals/run-phase1-5-shadow-eval.ts`.
+4. Metric producer: `.opencode/skill/system-spec-kit/scripts/evals/deleted-phase1-5-shadow-eval-script`.
 5. Input dataset: `scratch/eval-dataset-1000.json`.
 6. Output artifacts: `scratch/phase1-5-eval-results.md`, `scratch/phase1-5-context-error-telemetry.json`.
 
@@ -23,7 +23,7 @@
 
 ## Technical Changes Implemented
 
-- Replaced fixed SC-002 constant with computed telemetry model in `run-phase1-5-shadow-eval.ts`.
+- Replaced fixed SC-002 constant with computed telemetry model in `deleted-phase1-5-shadow-eval-script`.
 - Added pressure-step simulation (50%-95%), intent-to-mode mapping, pressure-policy override application, and context-exceeded counting rule.
 - Added machine-readable telemetry artifact output: `scratch/phase1-5-context-error-telemetry.json`.
 - Updated markdown report output to include:
@@ -39,7 +39,7 @@
 
 ## Commands Executed
 
-- `npx tsx scripts/evals/run-phase1-5-shadow-eval.ts ../../specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag`
+- `npx tsx scripts/evals/deleted-phase1-5-shadow-eval-script ../../specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag`
 - `.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag`
 
 ## Validation Notes

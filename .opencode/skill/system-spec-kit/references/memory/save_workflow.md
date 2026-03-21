@@ -207,13 +207,22 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
   /tmp/test-save-context.json \
   "049-anchor-context-retrieval"
 
-# Direct root-target mode (authoritative)
+# Inline JSON mode (preferred for routine saves)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
-  ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion"
+  --json '{"specFolder":"049-anchor-context-retrieval","sessionSummary":"Implemented anchor retrieval..."}' \
+  "049-anchor-context-retrieval"
 
-# Direct phase target mode (authoritative; saves to the selected phase folder's own memory/ directory)
+# Stdin mode (preferred for routine saves)
+echo '{"specFolder":"049-anchor-context-retrieval","sessionSummary":"..."}' | \
+  node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin
+
+# Direct root-target mode (recovery only — requires --recovery flag)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
-  ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/021-remediation-revalidation"
+  --recovery ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion"
+
+# Direct phase target mode (recovery only; saves to the selected phase folder's own memory/ directory)
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
+  --recovery ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/021-remediation-revalidation"
 ```
 
 ### Required JSON Fields

@@ -39,7 +39,7 @@ Translate the lifecycle playbook rows into a single phase 005 execution plan tha
 
 ### Definition of Ready
 - [x] Parent `../spec.md` and `../plan.md` reviewed for phase 005 scope.
-- [x] Playbook rows for EX-015, EX-016, EX-017, EX-018, NEW-097, NEW-114, NEW-124, NEW-134, and NEW-144 identified.
+- [x] Playbook rows for EX-015, EX-016, EX-017, EX-018, 097, 114, 124, 134, and 144 identified.
 - [x] Review protocol acceptance rules available for evidence and verdict formatting.
 - [x] Feature catalog links confirmed for all nine lifecycle scenarios.
 - [x] Sandbox-only requirement acknowledged for destructive tests.
@@ -84,14 +84,14 @@ Preconditions are established first so each test starts from a known sandbox sta
 
 ### Phase 2 Non-Destructive Tests
 - [ ] Run EX-015 and EX-016 first to confirm checkpoint creation and listing on clean sandbox state.
-- [ ] Execute NEW-097, NEW-114, NEW-134, and NEW-144 with evidence capture focused on state transitions, validation errors, recovery roots, and advisory forecast fields.
+- [ ] Execute 097, 114, 134, and 144 with evidence capture focused on state transitions, validation errors, recovery roots, and advisory forecast fields.
 - [ ] Treat outputs from these scenarios as baseline evidence for later destructive drills.
 - [ ] Stop and reset the sandbox if any non-destructive prerequisite fails, rather than continuing into restore, delete, or archival changes.
 
 ### Phase 3 Destructive Tests
-- [ ] Run EX-017, EX-018, and NEW-124 only inside a disposable sandbox backed by a fresh test database or checkpoint; never run destructive lifecycle tests against production data.
+- [ ] Run EX-017, EX-018, and 124 only inside a disposable sandbox backed by a fresh test database or checkpoint; never run destructive lifecycle tests against production data.
 - [ ] Create a pre-test checkpoint named `pre-[test-id]-[action]` before each destructive scenario so restore or cleanup starts from a known point.
-- [ ] Treat EX-018 as destructive by definition, and keep restore or archival mutations sandbox-only when validating EX-017 or NEW-124.
+- [ ] Treat EX-018 as destructive by definition, and keep restore or archival mutations sandbox-only when validating EX-017 or 124.
 - [ ] After each destructive test, roll back by restoring the pre-test checkpoint or rebuilding the sandbox fixture before starting the next scenario.
 
 ### Phase 4 Evidence Collection and Verdict
@@ -112,11 +112,11 @@ Preconditions are established first so each test starts from a known sandbox sta
 | EX-016 | Checkpoint listing | `List checkpoints newest first` | manual/MCP |
 | EX-017 | Checkpoint restore | `Restore checkpoint with merge mode` | manual/MCP |
 | EX-018 | Checkpoint deletion | `Delete stale checkpoint by name` | manual/MCP |
-| NEW-097 | Async ingestion job lifecycle | `Validate memory_ingest_start/status/cancel lifecycle.` | manual/MCP |
-| NEW-114 | Path traversal validation | `Ingest a file using a path with ../ segments and verify rejection` | manual/MCP |
-| NEW-124 | Automatic archival lifecycle coverage | `Validate automatic archival subsystem vector/BM25 parity and protected tier behavior.` | manual/MCP |
-| NEW-134 | Startup pending-file recovery lifecycle coverage | `Validate startup pending-file recovery behavior across committed and stale files.` | manual/MCP |
-| NEW-144 | Advisory ingest lifecycle forecast | `Validate ingest forecast contract and early-progress caveats.` | manual/MCP |
+| 097 | Async ingestion job lifecycle | `Validate memory_ingest_start/status/cancel lifecycle.` | manual/MCP |
+| 114 | Path traversal validation | `Ingest a file using a path with ../ segments and verify rejection` | manual/MCP |
+| 124 | Automatic archival lifecycle coverage | `Validate automatic archival subsystem vector/BM25 parity and protected tier behavior.` | manual/MCP |
+| 134 | Startup pending-file recovery lifecycle coverage | `Validate startup pending-file recovery behavior across committed and stale files.` | manual/MCP |
+| 144 | Advisory ingest lifecycle forecast | `Validate ingest forecast contract and early-progress caveats.` | manual/MCP |
 <!-- /ANCHOR:testing -->
 
 ---

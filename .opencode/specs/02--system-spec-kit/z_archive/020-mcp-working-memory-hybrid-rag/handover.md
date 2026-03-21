@@ -64,7 +64,7 @@ The previous handover (Attempt 2) recorded the spec as implementation-complete w
 | Script | Purpose |
 |--------|---------|
 | `scripts/evals/run-phase2-closure-metrics.mjs` | Deterministic 50-session Phase 2 closure metrics |
-| `scripts/evals/run-phase3-telemetry-dashboard.ts` | Session boost, causal boost, pressure activation, extraction telemetry |
+| `scripts/evals/deleted-phase3-telemetry-dashboard-script` | Session boost, causal boost, pressure activation, extraction telemetry |
 | `scripts/evals/run-performance-benchmarks.ts` | Benchmark harness for NFR-P01/P02/P03, 1000-concurrency load |
 | `scripts/evals/run-quality-legacy-remediation.ts` | QP-4 legacy quality remediation eval (MRR ratio gate ≥ 0.98) |
 | `references/workflows/rollback-runbook.md` | Added rollback runbook with flag controls and smoke test commands (T067) |
@@ -156,7 +156,7 @@ npm test
 
 ```bash
 # Run from: .opencode/skill/system-spec-kit
-npx tsx scripts/evals/run-phase1-5-shadow-eval.ts \
+npx tsx scripts/evals/deleted-phase1-5-shadow-eval-script \
   "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag"
 ```
 
@@ -186,7 +186,7 @@ node scripts/evals/run-phase2-closure-metrics.mjs \
 
 ```bash
 # Run from: .opencode/skill/system-spec-kit
-npx tsx scripts/evals/run-phase3-telemetry-dashboard.ts \
+npx tsx scripts/evals/deleted-phase3-telemetry-dashboard-script \
   "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag"
 ```
 
@@ -270,13 +270,13 @@ Expected: 133 passed files, 4271 passed tests; validator PASSED.
 
 ```bash
 # From: .opencode/skill/system-spec-kit
-npx tsx scripts/evals/run-phase1-5-shadow-eval.ts \
+npx tsx scripts/evals/deleted-phase1-5-shadow-eval-script \
   "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag"
 
 node scripts/evals/run-phase2-closure-metrics.mjs \
   "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag"
 
-npx tsx scripts/evals/run-phase3-telemetry-dashboard.ts \
+npx tsx scripts/evals/deleted-phase3-telemetry-dashboard-script \
   "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag"
 ```
 

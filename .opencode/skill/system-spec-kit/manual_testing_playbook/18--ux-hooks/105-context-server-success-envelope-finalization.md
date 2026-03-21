@@ -1,19 +1,19 @@
 ---
-title: "NEW-105 -- Context-server success-envelope finalization"
-description: "This scenario validates Context-server success-envelope finalization for `NEW-105`. It focuses on Confirm `appendAutoSurfaceHints()` runs before budget enforcement and preserves the finalized envelope contract."
+title: "105 -- Context-server success-envelope finalization"
+description: "This scenario validates Context-server success-envelope finalization for `105`. It focuses on Confirm `appendAutoSurfaceHints()` runs before budget enforcement and preserves the finalized envelope contract."
 ---
 
-# NEW-105 -- Context-server success-envelope finalization
+# 105 -- Context-server success-envelope finalization
 
 ## 1. OVERVIEW
 
-This scenario validates Context-server success-envelope finalization for `NEW-105`. It focuses on Confirm `appendAutoSurfaceHints()` runs before budget enforcement and preserves the finalized envelope contract.
+This scenario validates Context-server success-envelope finalization for `105`. It focuses on Confirm `appendAutoSurfaceHints()` runs before budget enforcement and preserves the finalized envelope contract.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Operators run the exact prompt and command sequence for `NEW-105` and confirm the expected signals without contradicting evidence.
+Operators run the exact prompt and command sequence for `105` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm `appendAutoSurfaceHints()` runs before budget enforcement and preserves the finalized envelope contract
 - Prompt: `Validate the finalized context-server success-envelope path, including token metadata recomputation. Capture the evidence needed to prove Context-server suite passes with end-to-end assertions for appended hints, preserved autoSurfacedContext, and finalized token metadata. Return a concise user-facing pass/fail verdict with the main reason.`
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `NEW-105` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| NEW-105 | Context-server success-envelope finalization | Confirm `appendAutoSurfaceHints()` runs before budget enforcement and preserves the finalized envelope contract | `Validate the finalized context-server success-envelope path, including token metadata recomputation. Capture the evidence needed to prove Context-server suite passes with end-to-end assertions for appended hints, preserved autoSurfacedContext, and finalized token metadata. Return a concise user-facing pass/fail verdict with the main reason.` | 1) `npx vitest run tests/context-server.vitest.ts` 2) inspect assertions covering appended success hints 3) inspect assertions covering preserved `autoSurfacedContext` 4) inspect assertions covering final token metadata after hint append and before budget enforcement | Context-server suite passes with end-to-end assertions for appended hints, preserved `autoSurfacedContext`, and finalized token metadata | Test transcript + key assertion output | PASS if `tests/context-server.vitest.ts` passes and the assertions cover the final success-envelope path end to end | Inspect `context-server.ts` success-path assembly and expected envelope fields |
+| 105 | Context-server success-envelope finalization | Confirm `appendAutoSurfaceHints()` runs before budget enforcement and preserves the finalized envelope contract | `Validate the finalized context-server success-envelope path, including token metadata recomputation. Capture the evidence needed to prove Context-server suite passes with end-to-end assertions for appended hints, preserved autoSurfacedContext, and finalized token metadata. Return a concise user-facing pass/fail verdict with the main reason.` | 1) `npx vitest run tests/context-server.vitest.ts` 2) inspect assertions covering appended success hints 3) inspect assertions covering preserved `autoSurfacedContext` 4) inspect assertions covering final token metadata after hint append and before budget enforcement | Context-server suite passes with end-to-end assertions for appended hints, preserved `autoSurfacedContext`, and finalized token metadata | Test transcript + key assertion output | PASS if `tests/context-server.vitest.ts` passes and the assertions cover the final success-envelope path end to end | Inspect `context-server.ts` success-path assembly and expected envelope fields |
 
 ---
 
@@ -40,6 +40,6 @@ Operators run the exact prompt and command sequence for `NEW-105` and confirm th
 ## 5. SOURCE METADATA
 
 - Group: UX Hooks
-- Playbook ID: NEW-105
+- Playbook ID: 105
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `18--ux-hooks/105-context-server-success-envelope-finalization.md`

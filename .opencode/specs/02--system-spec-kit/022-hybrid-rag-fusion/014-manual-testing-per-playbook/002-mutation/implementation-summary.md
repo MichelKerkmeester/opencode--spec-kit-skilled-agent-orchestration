@@ -41,8 +41,8 @@ Phase 002 (mutation) manual testing execution — all 7 mutation scenarios from 
 | EX-008 | Atomic single delete | **PASS** | Checkpoint pre-ex008-delete (ID 10), ID 25372 deleted, absent from search |
 | EX-009 | Tier cleanup with safety | **PASS** | Checkpoint pre-ex009-bulk-delete (ID 11), auto-checkpoint (ID 12), 3 deprecated deleted in sandbox |
 | EX-010 | Feedback learning loop | **PASS** | Confidence 0.60, validationCount 1, autoPromotion metadata returned (below_threshold: 1/5) |
-| NEW-085 | Atomic wrapper behavior | **PARTIAL** | Fault injection infeasible; vitest 139/139 pass (T192/T194/T191a/b); code inspection confirms rollback |
-| NEW-110 | 5-action PE decision engine | **PARTIAL** | Code confirms thresholds (0.95/0.85/0.70/0.50); vitest 139/139; live: CREATE + UPDATE; force:true tested |
+| 085 | Atomic wrapper behavior | **PARTIAL** | Fault injection infeasible; vitest 139/139 pass (T192/T194/T191a/b); code inspection confirms rollback |
+| 110 | 5-action PE decision engine | **PARTIAL** | Code confirms thresholds (0.95/0.85/0.70/0.50); vitest 139/139; live: CREATE + UPDATE; force:true tested |
 
 **Coverage**: 7/7 scenarios — 5 PASS, 2 PARTIAL, 0 FAIL, 0 SKIP.
 
@@ -73,7 +73,7 @@ Phase 002 (mutation) manual testing execution — all 7 mutation scenarios from 
 
 Direct execution via Claude Opus 4.6 with MCP tool calls against the Spec Kit Memory system. Sandbox-isolated destructive tests with checkpoint-gated safety. Vitest fallback for transaction integrity testing where client-side fault injection was infeasible.
 
-**Execution sequence**: Pre-flight (MCP health + stats + checkpoint verification) → Sandbox creation (6 fixtures with template-contract format) → Baseline checkpoint → Non-destructive tests (EX-006, EX-007, EX-010, NEW-110) → Transaction integrity (NEW-085 via vitest) → Destructive tests (EX-008, EX-009 with checkpoints) → Evidence collection → Verdict assignment → Documentation update.
+**Execution sequence**: Pre-flight (MCP health + stats + checkpoint verification) → Sandbox creation (6 fixtures with template-contract format) → Baseline checkpoint → Non-destructive tests (EX-006, EX-007, EX-010, 110) → Transaction integrity (085 via vitest) → Destructive tests (EX-008, EX-009 with checkpoints) → Evidence collection → Verdict assignment → Documentation update.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -84,8 +84,8 @@ Direct execution via Claude Opus 4.6 with MCP tool calls against the Spec Kit Me
 | Decision | Why |
 |----------|-----|
 | Template-contract-compliant fixtures | Initial fixture saves rejected with INSUFFICIENT_CONTEXT_ABORT and template-contract violations; rewritten with 6 mandatory sections (CONTINUE SESSION, PROJECT STATE SNAPSHOT, DECISIONS, CONVERSATION, RECOVERY HINTS, MEMORY METADATA) and proper anchor/HTML ID scaffolding |
-| Vitest fallback for NEW-085 | `transaction-manager.ts` uses better-sqlite3 synchronous `database.transaction()` — no external fault injection point; vitest 139/139 provides comprehensive rollback coverage |
-| PARTIAL for NEW-110 | Embedding similarity depends on model output; cannot precisely target all 5 threshold bands (0.95/0.85/0.70) in live MCP; code inspection + vitest verify all bands |
+| Vitest fallback for 085 | `transaction-manager.ts` uses better-sqlite3 synchronous `database.transaction()` — no external fault injection point; vitest 139/139 provides comprehensive rollback coverage |
+| PARTIAL for 110 | Embedding similarity depends on model output; cannot precisely target all 5 threshold bands (0.95/0.85/0.70) in live MCP; code inspection + vitest verify all bands |
 | Sequential fixture saves | Parallel `memory_save()` caused UNIQUE constraint errors on `active_memory_projection`; sequential saves with `force:true` retry resolved |
 | Sandbox scoped to `test-sandbox-mutation` | Distinct from existing `999-test-sandbox` to avoid cross-contamination |
 <!-- /ANCHOR:decisions -->
@@ -111,8 +111,8 @@ Direct execution via Claude Opus 4.6 with MCP tool calls against the Spec Kit Me
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **NEW-085 PARTIAL** — Transaction rollback cannot be tested via live MCP fault injection. Root cause: better-sqlite3's synchronous transaction model has no external injection point. Remediation: implement a server-side test harness with injectable fault callbacks for future testing cycles.
-2. **NEW-110 PARTIAL** — All 5 PE similarity bands cannot be individually triggered in live MCP because embedding similarity is a function of content + model output. Root cause: no API to set mock similarity scores during live saves. Remediation: add server-side PE gate integration tests with mock embeddings at exact threshold boundaries.
+1. **085 PARTIAL** — Transaction rollback cannot be tested via live MCP fault injection. Root cause: better-sqlite3's synchronous transaction model has no external injection point. Remediation: implement a server-side test harness with injectable fault callbacks for future testing cycles.
+2. **110 PARTIAL** — All 5 PE similarity bands cannot be individually triggered in live MCP because embedding similarity is a function of content + model output. Root cause: no API to set mock similarity scores during live saves. Remediation: add server-side PE gate integration tests with mock embeddings at exact threshold boundaries.
 3. **EX-009 deletion count** — Expected 2 deprecated fixtures, got 3. The extra deprecated record likely originated from a partially-created entry during the initial parallel save batch that hit UNIQUE constraint errors.
 4. **Voyage embedding intermittent** — One search call failed with "fetch failed" during EX-007 verification; succeeded on retry. Transient network issue, not a system defect.
 <!-- /ANCHOR:limitations -->

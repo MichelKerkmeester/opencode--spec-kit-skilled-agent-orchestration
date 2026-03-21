@@ -16,15 +16,6 @@ export {
   getAllExistingSpecsDirs,
 } from './config';
 
-export type {
-  WorkflowConfig,
-  SpecKitConfig,
-} from './config';
-
-export {
-  writeFilesAtomically,
-} from './file-writer';
-
 export {
   SPEC_FOLDER_PATTERN,
   SPEC_FOLDER_BASIC_PATTERN,
@@ -34,6 +25,3 @@ export {
   findChildFolderAsync,
 } from './subfolder-utils';
 
-export type {
-  FindChildOptions,
-} from './subfolder-utils';

@@ -6,7 +6,7 @@ trigger_phrases:
   - "manual testing"
   - "pipeline architecture"
   - "phase 014"
-  - "NEW-146"
+  - "146"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -39,8 +39,8 @@ This plan covers the 19 pipeline-architecture scenarios assigned to phase 014 of
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] The canonical playbook rows for `NEW-049`, `NEW-050`, `NEW-051`, `NEW-052`, `NEW-053`, `NEW-054`, `NEW-067`, `NEW-071`, `NEW-076`, `NEW-078`, `NEW-080`, `NEW-087`, `NEW-095`, `NEW-112`, `NEW-115`, `NEW-129`, `NEW-130`, and `NEW-146` have been extracted.
-- [ ] Every scenario is mapped to a `14--pipeline-architecture` feature file, including shared lineage coverage for `NEW-129` and `NEW-130`.
+- [ ] The canonical playbook rows for `049`, `050`, `051`, `052`, `053`, `054`, `067`, `071`, `076`, `078`, `080`, `087`, `095`, `112`, `115`, `129`, `130`, and `146` have been extracted.
+- [ ] Every scenario is mapped to a `14--pipeline-architecture` feature file, including shared lineage coverage for `129` and `130`.
 - [ ] The review protocol has been loaded so scenario, feature, and release verdicts use the same PASS/PARTIAL/FAIL rubric.
 - [ ] Operators know which scenarios require restart control, checkpoints, or disposable sandboxes before execution begins.
 
@@ -80,19 +80,19 @@ Preconditions -> execute the exact scenario prompt and command sequence -> colle
 - [ ] Establish a disposable sandbox or checkpoint-backed environment for any scenario that mutates DB state or simulates save failures.
 
 ### Phase 2: Non-Destructive Tests
-- [ ] Execute pipeline-flow, scoring, metadata, and prompt-validation scenarios: `NEW-049`, `NEW-050`, `NEW-051`, `NEW-052`, `NEW-053`, `NEW-054`, `NEW-067`, `NEW-071`, `NEW-076`, `NEW-078`, `NEW-087`, `NEW-095`, `NEW-129`, and `NEW-146`.
+- [ ] Execute pipeline-flow, scoring, metadata, and prompt-validation scenarios: `049`, `050`, `051`, `052`, `053`, `054`, `067`, `071`, `076`, `078`, `087`, `095`, `129`, and `146`.
 - [ ] Use targeted MCP calls or read-only shell/test commands to gather evidence without changing durable state outside approved fixtures.
 - [ ] Verify each scenario against its explicit PASS criteria before moving on.
 
 ### Phase 3: Destructive Tests
-- [ ] Treat `NEW-080`, `NEW-112`, `NEW-115`, and `NEW-130` as state-changing or rollback-sensitive scenarios.
+- [ ] Treat `080`, `112`, `115`, and `130` as state-changing or rollback-sensitive scenarios.
 - [ ] Run these scenarios only in disposable sandboxes, isolated worktrees, or checkpoint-backed environments with clear restore points.
 - [ ] Record the checkpoint name, mutated resource, and rollback evidence for each destructive drill before closing the scenario.
 
 ### Phase 4: Evidence Collection and Verdict
 - [ ] Attach the exact prompt, command transcript, key output snippets, and artifact references for every scenario.
 - [ ] Apply PASS/PARTIAL/FAIL at the scenario level using the playbook, then roll up feature verdicts with the review protocol.
-- [ ] Confirm coverage remains 19/19 for the resolved phase scope, including the recovered `NEW-146` mapping.
+- [ ] Confirm coverage remains 19/19 for the resolved phase scope, including the recovered `146` mapping.
 <!-- /ANCHOR:phases -->
 
 ---
@@ -102,24 +102,24 @@ Preconditions -> execute the exact scenario prompt and command sequence -> colle
 
 | Test ID | Scenario Name | Exact Prompt | Execution Type (manual/MCP) |
 |-----------|-------|-------|-------|
-| NEW-049 | 4-stage pipeline refactor | `Trace one query through all 4 stages.` | MCP |
-| NEW-050 | MPAB chunk-to-memory aggregation | `Verify MPAB chunk aggregation (R1).` | MCP |
-| NEW-051 | Chunk ordering preservation | `Validate chunk ordering preservation (B2).` | MCP |
-| NEW-052 | Template anchor optimization | `Verify template anchor optimization (S2).` | MCP |
-| NEW-053 | Validation signals as retrieval metadata | `Validate S3 retrieval metadata weighting.` | MCP |
-| NEW-054 | Learned relevance feedback | `Verify learned relevance feedback (R11).` | MCP |
-| NEW-067 | Search pipeline safety | `Validate search pipeline safety bundle.` | MCP |
-| NEW-071 | Performance improvements | `Verify performance improvements (Sprint 8).` | manual |
-| NEW-076 | Activation window persistence | `Verify activation window persistence.` | manual |
-| NEW-078 | Legacy V1 pipeline removal | `Verify legacy V1 removal.` | manual |
-| NEW-080 | Pipeline and mutation hardening | `Validate phase-017 pipeline and mutation hardening.` | manual |
-| NEW-087 | DB_PATH extraction and import standardization | `Validate DB_PATH extraction/import standardization.` | manual |
-| NEW-095 | Strict Zod schema validation | `Validate SPECKIT_STRICT_SCHEMAS enforcement.` | MCP |
-| NEW-112 | Cross-process DB hot rebinding | `Validate cross-process DB hot rebinding via marker file.` | manual |
-| NEW-115 | Transaction atomicity on rename failure | `Simulate rename failure after DB commit and verify pending file survives` | manual |
-| NEW-129 | Lineage state active projection and asOf resolution | `Run the lineage state verification suite.` | manual |
-| NEW-130 | Lineage backfill rollback drill | `Run the lineage backfill + rollback verification suite.` | manual |
-| NEW-146 | Dynamic server instructions at MCP initialization | `Validate dynamic server instructions at MCP initialization.` | manual |
+| 049 | 4-stage pipeline refactor | `Trace one query through all 4 stages.` | MCP |
+| 050 | MPAB chunk-to-memory aggregation | `Verify MPAB chunk aggregation (R1).` | MCP |
+| 051 | Chunk ordering preservation | `Validate chunk ordering preservation (B2).` | MCP |
+| 052 | Template anchor optimization | `Verify template anchor optimization (S2).` | MCP |
+| 053 | Validation signals as retrieval metadata | `Validate S3 retrieval metadata weighting.` | MCP |
+| 054 | Learned relevance feedback | `Verify learned relevance feedback (R11).` | MCP |
+| 067 | Search pipeline safety | `Validate search pipeline safety bundle.` | MCP |
+| 071 | Performance improvements | `Verify performance improvements (Sprint 8).` | manual |
+| 076 | Activation window persistence | `Verify activation window persistence.` | manual |
+| 078 | Legacy V1 pipeline removal | `Verify legacy V1 removal.` | manual |
+| 080 | Pipeline and mutation hardening | `Validate phase-017 pipeline and mutation hardening.` | manual |
+| 087 | DB_PATH extraction and import standardization | `Validate DB_PATH extraction/import standardization.` | manual |
+| 095 | Strict Zod schema validation | `Validate SPECKIT_STRICT_SCHEMAS enforcement.` | MCP |
+| 112 | Cross-process DB hot rebinding | `Validate cross-process DB hot rebinding via marker file.` | manual |
+| 115 | Transaction atomicity on rename failure | `Simulate rename failure after DB commit and verify pending file survives` | manual |
+| 129 | Lineage state active projection and asOf resolution | `Run the lineage state verification suite.` | manual |
+| 130 | Lineage backfill rollback drill | `Run the lineage backfill + rollback verification suite.` | manual |
+| 146 | Dynamic server instructions at MCP initialization | `Validate dynamic server instructions at MCP initialization.` | manual |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -144,7 +144,7 @@ Preconditions -> execute the exact scenario prompt and command sequence -> colle
 
 - **Trigger**: The playbook, cross-reference index, or feature catalog changes in a way that invalidates the documented prompt set, mappings, or scenario count.
 - **Procedure**: Re-read the canonical sources, update the phase docs to match the latest mapped IDs, and re-run the structural validation checks before reuse.
-- **Operational rollback for execution**: For `NEW-080`, `NEW-112`, `NEW-115`, and `NEW-130`, restore the recorded checkpoint or dispose of the sandbox/worktree immediately after evidence capture.
+- **Operational rollback for execution**: For `080`, `112`, `115`, and `130`, restore the recorded checkpoint or dispose of the sandbox/worktree immediately after evidence capture.
 <!-- /ANCHOR:rollback -->
 
 ---

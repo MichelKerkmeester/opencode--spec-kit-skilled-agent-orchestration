@@ -29,7 +29,7 @@ contextType: "general"
 | **Testing** | manual + MCP |
 
 ### Overview
-This plan converts the feature-flag-reference scenarios in the manual testing playbook into an ordered execution workflow for Phase 019. The phase covers read-only flag retrieval checks first (EX-028 through EX-034), verifying that six distinct flag groups can be surfaced and classified via memory_search and memory_context, and then the Hydra roadmap capability isolation scenario (NEW-125), which requires a compiled dist build and targeted env-var injection to verify that prefixed SPECKIT_HYDRA_* flags remain distinct from live runtime flags.
+This plan converts the feature-flag-reference scenarios in the manual testing playbook into an ordered execution workflow for Phase 019. The phase covers read-only flag retrieval checks first (EX-028 through EX-034), verifying that six distinct flag groups can be surfaced and classified via memory_search and memory_context, and then the Hydra roadmap capability isolation scenario (125), which requires a compiled dist build and targeted env-var injection to verify that prefixed SPECKIT_HYDRA_* flags remain distinct from live runtime flags.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -41,13 +41,13 @@ This plan converts the feature-flag-reference scenarios in the manual testing pl
 - [x] Exact prompts, command sequences, and pass criteria were extracted from [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md).
 - [x] Feature mappings for all 8 feature-flag-reference tests were confirmed against the cross-reference index and feature-flag-reference catalog files.
 - [x] Verdict rules from [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) were loaded for PASS/PARTIAL/FAIL handling.
-- [x] NEW-125 dist build requirement and env-var isolation expectations were identified.
+- [x] 125 dist build requirement and env-var isolation expectations were identified.
 
 ### Definition of Done
 - [ ] All 8 feature-flag-reference scenarios have execution evidence tied to the exact documented prompt and command sequence.
 - [ ] Every scenario has a verdict and rationale using the review protocol acceptance rules.
 - [ ] Coverage is reported as 8/8 scenarios for Phase 019 with no skipped test IDs.
-- [ ] NEW-125 snapshot comparison outputs are captured before any env cleanup.
+- [ ] 125 snapshot comparison outputs are captured before any env cleanup.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -59,8 +59,8 @@ This plan converts the feature-flag-reference scenarios in the manual testing pl
 Manual feature-flag-reference test execution pipeline with review-gated evidence collection.
 
 ### Key Components
-- **Preconditions pack**: Playbook, review protocol, feature-flag-reference catalog links, indexed flag documentation corpus, and dist build for NEW-125.
-- **Execution layer**: Manual operator actions plus MCP calls to `memory_search` and `memory_context`, and direct node invocations for NEW-125 snapshots.
+- **Preconditions pack**: Playbook, review protocol, feature-flag-reference catalog links, indexed flag documentation corpus, and dist build for 125.
+- **Execution layer**: Manual operator actions plus MCP calls to `memory_search` and `memory_context`, and direct node invocations for 125 snapshots.
 - **Evidence bundle**: Tool outputs, JSON snapshots from capability-flags.js, and reviewer notes captured per scenario.
 - **Verdict layer**: Review protocol checks that classify each scenario as PASS, PARTIAL, or FAIL.
 
@@ -77,7 +77,7 @@ Manual feature-flag-reference test execution pipeline with review-gated evidence
 - [ ] Verify source documents are open: playbook, review protocol, and all linked feature-flag-reference catalog files.
 - [ ] Confirm MCP runtime access for `memory_search` and `memory_context`.
 - [ ] Verify that flag reference documentation is indexed (run `memory_index_scan(force:true)` if flag docs are absent from search results).
-- [ ] Confirm the dist build at `.opencode/skill/system-spec-kit/mcp_server/dist/lib/config/capability-flags.js` is current for NEW-125.
+- [ ] Confirm the dist build at `.opencode/skill/system-spec-kit/mcp_server/dist/lib/config/capability-flags.js` is current for 125.
 
 ### Phase 2: Non-Destructive Read-Only Tests
 - [ ] Run EX-028 to classify SPECKIT flags as active, inert, or deprecated using memory_search and memory_context deep mode.
@@ -89,8 +89,8 @@ Manual feature-flag-reference test execution pipeline with review-gated evidence
 - [ ] Run EX-034 to surface branch env vars used in checkpoint metadata via memory_search.
 
 ### Phase 3: Hydra Snapshot Test
-- [ ] Run NEW-125 step 1 with `SPECKIT_GRAPH_UNIFIED=false` to obtain the first roadmap snapshot and confirm `phase:"shared-rollout"` with `capabilities.graphUnified:true`.
-- [ ] Run NEW-125 step 2 with `SPECKIT_HYDRA_PHASE=graph SPECKIT_HYDRA_GRAPH_UNIFIED=false` to obtain the second roadmap snapshot and confirm `phase:"graph"` with `capabilities.graphUnified:false`.
+- [ ] Run 125 step 1 with `SPECKIT_GRAPH_UNIFIED=false` to obtain the first roadmap snapshot and confirm `phase:"shared-rollout"` with `capabilities.graphUnified:true`.
+- [ ] Run 125 step 2 with `SPECKIT_HYDRA_PHASE=graph SPECKIT_HYDRA_GRAPH_UNIFIED=false` to obtain the second roadmap snapshot and confirm `phase:"graph"` with `capabilities.graphUnified:false`.
 - [ ] Confirm that the live runtime `SPECKIT_GRAPH_UNIFIED` flag does not alter roadmap metadata and that only `SPECKIT_HYDRA_*` vars override snapshot values.
 
 ### Phase 4: Evidence Collection and Verdict
@@ -113,7 +113,7 @@ Manual feature-flag-reference test execution pipeline with review-gated evidence
 | EX-032 | Provider selection audit | `Retrieve embedding provider selection rules` | MCP |
 | EX-033 | Observability toggle check | `List telemetry/debug vars and separate opt-in flags from inert flags` | MCP |
 | EX-034 | Branch metadata source audit | `Find branch env vars used in checkpoint metadata` | MCP |
-| NEW-125 | Hydra roadmap capability flags | `Validate memory roadmap flag snapshots without changing live graph-channel defaults.` | manual |
+| 125 | Hydra roadmap capability flags | `Validate memory roadmap flag snapshots without changing live graph-channel defaults.` | manual |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -127,7 +127,7 @@ Manual feature-flag-reference test execution pipeline with review-gated evidence
 | [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Internal | Green | Verdicts and coverage rules cannot be applied consistently |
 | [`../../feature_catalog/19--feature-flag-reference/`](../../feature_catalog/19--feature-flag-reference/) | Internal | Green | Test-to-feature context and review triage lose their canonical reference |
 | MCP runtime for `memory_search` and `memory_context` | Internal | Yellow | EX-028 through EX-034 cannot be executed |
-| Dist build at `.opencode/skill/system-spec-kit/mcp_server/dist/lib/config/capability-flags.js` | Internal | Yellow | NEW-125 cannot produce valid snapshot comparisons |
+| Dist build at `.opencode/skill/system-spec-kit/mcp_server/dist/lib/config/capability-flags.js` | Internal | Yellow | 125 cannot produce valid snapshot comparisons |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -135,8 +135,8 @@ Manual feature-flag-reference test execution pipeline with review-gated evidence
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: NEW-125 env-var injection leaves the shell environment in a state that could affect subsequent scenarios, or an unexpectedly stale dist build produces incorrect snapshot data.
-- **Procedure**: Unset all injected `SPECKIT_*` env vars after NEW-125 completes, rebuild the dist target with `npm run build` if snapshot values are inconsistent with expectations, discard compromised evidence, and rerun only NEW-125 after the environment is clean. For read-only MCP scenarios EX-028 through EX-034, re-run `memory_index_scan(force:true)` if search results remain sparse after the first attempt.
+- **Trigger**: 125 env-var injection leaves the shell environment in a state that could affect subsequent scenarios, or an unexpectedly stale dist build produces incorrect snapshot data.
+- **Procedure**: Unset all injected `SPECKIT_*` env vars after 125 completes, rebuild the dist target with `npm run build` if snapshot values are inconsistent with expectations, discard compromised evidence, and rerun only 125 after the environment is clean. For read-only MCP scenarios EX-028 through EX-034, re-run `memory_index_scan(force:true)` if search results remain sparse after the first attempt.
 <!-- /ANCHOR:rollback -->
 
 ---

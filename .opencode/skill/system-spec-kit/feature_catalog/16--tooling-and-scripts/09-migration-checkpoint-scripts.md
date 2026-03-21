@@ -53,4 +53,4 @@ Both scripts now expose testable helpers (`parseArgs`, `main`, `runCreateCheckpo
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenario NEW-127
+- Mapped to manual testing playbook scenario 127

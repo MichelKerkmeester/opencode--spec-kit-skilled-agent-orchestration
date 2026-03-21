@@ -381,17 +381,34 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  let memories: RawMemory[];
+  let parsedMemories: RawMemory[] | null = null;
   try {
-    const parsed = JSON.parse(inputData) as RawMemory[] | { results?: RawMemory[] };
-    memories = Array.isArray(parsed) ? parsed : ((parsed as { results?: RawMemory[] }).results || []);
+    const parsed = JSON.parse(inputData) as unknown;
+    if (Array.isArray(parsed)) {
+      parsedMemories = parsed as RawMemory[];
+    } else if (
+      typeof parsed === 'object' &&
+      parsed !== null &&
+      'results' in parsed &&
+      Array.isArray((parsed as { results?: unknown }).results)
+    ) {
+      parsedMemories = (parsed as { results: RawMemory[] }).results;
+    } else {
+      throw new Error('Input JSON must be an array or an object with a results array');
+    }
   } catch (err: unknown) {
     const errMsg = err instanceof Error ? err.message : String(err);
     console.error(`Error parsing JSON: ${errMsg}`);
     process.exit(1);
+    return;
   }
 
-  const result = processMemories(memories!, {
+  if (!parsedMemories) {
+    return;
+  }
+
+  const memories = parsedMemories;
+  const result = processMemories(memories, {
     showArchived: options.showArchived,
     folderLimit: options.folderLimit,
     memoryLimit: options.memoryLimit

@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: manual-testing-per-playbook retrieval-enhancements phase [template:level_2/checklist.md]"
-description: "Verification checklist for Phase 015 retrieval-enhancements manual test packet covering NEW-055, NEW-056, NEW-057, NEW-058, NEW-059, NEW-060, NEW-077, NEW-096, and NEW-145."
+description: "Verification checklist for Phase 015 retrieval-enhancements manual test packet covering 055, 056, 057, 058, 059, 060, 077, 096, and 145."
 trigger_phrases:
   - "retrieval enhancements checklist"
   - "phase 015 verification checklist"
@@ -55,15 +55,15 @@ contextType: "general"
 - [ ] CHK-020 [P0] All 9 retrieval-enhancements scenarios have execution evidence tied to the exact documented prompt and command sequence
 - [ ] CHK-021 [P0] Every scenario has a verdict (PASS / PARTIAL / FAIL) with rationale per the review protocol acceptance rules
 - [ ] CHK-022 [P0] Coverage reported as 9/9 scenarios for Phase 015 with no skipped test IDs
-- [ ] CHK-023 [P1] NEW-055 auto-surface hook evidence captures both lifecycle points: non-memory-aware tool dispatch and compaction event
-- [ ] CHK-024 [P1] NEW-056 evidence shows directive metadata fields present in retrieval results with constitutional tier classification confirmed
-- [ ] CHK-025 [P1] NEW-057 evidence shows folder hierarchy ranking with self > parent > sibling score ordering verified
-- [ ] CHK-026 [P1] NEW-058 evidence captures all three consolidation sub-outputs: contradiction detection, Hebbian edge strengthening, and staleness decay
-- [ ] CHK-027 [P1] NEW-059 evidence captures corpus size count and confirms summary channel is active above and inert below the 5,000-memory threshold
-- [ ] CHK-028 [P1] NEW-060 evidence shows supports-edges created between cross-document entities and density guard metrics recorded
-- [ ] CHK-029 [P1] NEW-077 evidence shows `forceAllChannels=true` in tier-2 fallback options and multi-channel contribution in results
-- [ ] CHK-030 [P0] NEW-096 evidence covers all four sub-steps: includeTrace=true, no includeTrace with env unset, env override active, and all 7 score sub-fields verified
-- [ ] CHK-031 [P0] NEW-145 evidence covers both flag states: header-injected results with `[parent > child — desc]` format truncated at 100 chars, and suppressed results with no headers
+- [ ] CHK-023 [P1] 055 auto-surface hook evidence captures both lifecycle points: non-memory-aware tool dispatch and compaction event
+- [ ] CHK-024 [P1] 056 evidence shows directive metadata fields present in retrieval results with constitutional tier classification confirmed
+- [ ] CHK-025 [P1] 057 evidence shows folder hierarchy ranking with self > parent > sibling score ordering verified
+- [ ] CHK-026 [P1] 058 evidence captures all three consolidation sub-outputs: contradiction detection, Hebbian edge strengthening, and staleness decay
+- [ ] CHK-027 [P1] 059 evidence captures corpus size count and confirms summary channel is active above and inert below the 5,000-memory threshold
+- [ ] CHK-028 [P1] 060 evidence shows supports-edges created between cross-document entities and density guard metrics recorded
+- [ ] CHK-029 [P1] 077 evidence shows `forceAllChannels=true` in tier-2 fallback options and multi-channel contribution in results
+- [ ] CHK-030 [P0] 096 evidence covers all four sub-steps: includeTrace=true, no includeTrace with env unset, env override active, and all 7 score sub-fields verified
+- [ ] CHK-031 [P0] 145 evidence covers both flag states: header-injected results with `[parent > child — desc]` format truncated at 100 chars, and suppressed results with no headers
 <!-- /ANCHOR:testing -->
 
 ---
@@ -72,9 +72,9 @@ contextType: "general"
 ## Security
 
 - [ ] CHK-040 [P0] No hardcoded secrets, tokens, or credentials in any phase 015 document
-- [ ] CHK-041 [P0] Sandbox corpus used for NEW-058 and NEW-060 does not contain real production memory data
-- [ ] CHK-042 [P1] Env var changes for NEW-096 and NEW-145 are restored to baseline values after evidence capture
-- [ ] CHK-043 [P1] NEW-060 entity linker density guard prevents runaway edge creation — density metrics captured and within configured threshold
+- [ ] CHK-041 [P0] Sandbox corpus used for 058 and 060 does not contain real production memory data
+- [ ] CHK-042 [P1] Env var changes for 096 and 145 are restored to baseline values after evidence capture
+- [ ] CHK-043 [P1] 060 entity linker density guard prevents runaway edge creation — density metrics captured and within configured threshold
 <!-- /ANCHOR:security -->
 
 ---

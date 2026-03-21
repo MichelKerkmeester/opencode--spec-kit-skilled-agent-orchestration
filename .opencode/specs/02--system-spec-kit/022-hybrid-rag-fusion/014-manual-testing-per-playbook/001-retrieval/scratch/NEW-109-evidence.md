@@ -1,4 +1,4 @@
-# NEW-109: Quality-aware 3-tier search fallback
+# 109: Quality-aware 3-tier search fallback
 
 ## Preconditions
 - MCP server running with default flags

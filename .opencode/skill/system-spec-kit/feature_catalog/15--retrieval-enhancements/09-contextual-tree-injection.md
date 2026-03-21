@@ -163,7 +163,7 @@ When search results come back, each piece of information now carries a short lab
 
 | Scenario | Role |
 |----------|------|
-| `NEW-145` | Direct manual validation for enabled/disabled contextual header injection behavior |
+| `145` | Direct manual validation for enabled/disabled contextual header injection behavior |
 
 ---
 

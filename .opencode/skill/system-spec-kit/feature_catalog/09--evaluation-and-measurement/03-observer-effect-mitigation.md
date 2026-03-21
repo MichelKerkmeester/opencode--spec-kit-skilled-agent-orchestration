@@ -50,4 +50,4 @@ A formal p95 latency comparison (eval logging enabled vs disabled) and an automa
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenario NEW-007
+- Mapped to manual testing playbook scenario 007

@@ -80,11 +80,17 @@ Generates memory files from conversation context for future session recovery.
 
 **Usage:**
 ```bash
-# Recovery mode - pass spec folder path explicitly
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery specs/001-feature/
+# JSON file mode (preferred) - pass structured JSON data file
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/context-data.json specs/001-feature/
 
-# JSON mode - pass data file
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/context-data.json
+# Inline JSON mode - pass structured JSON directly
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"001-feature","sessionSummary":"..."}' specs/001-feature/
+
+# Stdin mode - pipe structured JSON
+echo '{"specFolder":"001-feature","sessionSummary":"..."}' | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin
+
+# Recovery mode (crash recovery only) - pass spec folder with --recovery flag
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery specs/001-feature/
 ```
 
 **Environment Variables:**

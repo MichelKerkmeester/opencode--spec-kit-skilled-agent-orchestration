@@ -24,7 +24,7 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Complete (Phase 1 + Phase 2 Hardening + Phase 3 Strict Readiness) |
+| **Status** | Complete (Phases 1-7 Cross-CLI Adoption Boosting) |
 | **Created** | 2026-03-18 |
 | **Branch** | `main` (additive config changes, no separate branch) |
 
@@ -64,6 +64,11 @@ Install CocoIndex Code (a Python MCP server providing vector-based semantic code
 - Add strict readiness semantics to `common.sh`, `doctor.sh`, and `ensure_ready.sh`, including `ready|degraded|not_ready` state and issue codes `20` through `25`
 - Add strict helper flags for required config and daemon validation: `--strict`, `--require-config`, `--require-daemon`, and repeatable `--expect-config`
 - Add a downstream adoption checklist doc for sibling repos and route operators to it from `../../../skill/mcp-coco-index/SKILL.md`, `../../../skill/mcp-coco-index/README.md`, and `../../../skill/mcp-coco-index/references/cross_cli_playbook.md`
+- Add `mcp-coco-index` `INTENT_BOOSTERS` to `skill_advisor.py` for direct routing
+- Add Code Search Protocol section to `AGENTS.md` and `GEMINI.md`
+- Add CocoIndex MCP to `@context` agent as first-class exploration tool
+- Strengthen `../../../skill/mcp-coco-index/references/cross_cli_playbook.md` with per-provider activation recipes
+- Expand `../../../skill/mcp-coco-index/SKILL.md` activation triggers for onboarding and architecture queries
 
 ### Out of Scope
 
@@ -100,6 +105,12 @@ Install CocoIndex Code (a Python MCP server providing vector-based semantic code
 | `.opencode/skill/mcp-coco-index/scripts/install.sh` | Modified | Added root override support and shared shell helpers |
 | `.opencode/skill/mcp-coco-index/scripts/update.sh` | Modified | Added root override support and post-update index health guidance |
 | `.opencode/skill/scripts/skill_advisor.py` | Modified | Prefers repo-local `ccc` and auto-boosts semantic code-search prompts |
+| `.opencode/skill/scripts/skill_advisor.py` | Modified | Added `mcp-coco-index` `INTENT_BOOSTERS`, `PHRASE_INTENT_BOOSTERS` entries |
+| `AGENTS.md` | Modified | Added Code Search Protocol section |
+| `GEMINI.md` | Modified | Added Code Search Protocol section |
+| `.opencode/agent/context.md` | Modified | Added CocoIndex as first-class exploration tool |
+| `.opencode/skill/mcp-coco-index/references/cross_cli_playbook.md` | Modified | Per-CLI activation recipes |
+| `.opencode/skill/mcp-coco-index/SKILL.md` | Modified | Expanded activation triggers |
 
 <!-- /ANCHOR:scope -->
 

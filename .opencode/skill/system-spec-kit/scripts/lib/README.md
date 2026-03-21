@@ -40,7 +40,6 @@ TypeScript modules:
 - ~~`retry-manager.ts`~~ — moved to `mcp_server/lib/providers/retry-manager.ts`
 - `semantic-summarizer.ts`
 - `simulation-factory.ts`
-- `structure-aware-chunker.ts`
 - `topic-keywords.ts` - shared lexical helpers for topic extraction
 - `trigger-extractor.ts`
 

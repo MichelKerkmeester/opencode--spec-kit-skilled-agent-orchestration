@@ -635,55 +635,6 @@ describe('T010-7: No Scoring Behavior Change When Observability Active', () => {
   });
 });
 
-// 8. N4 calculateNoveltyBoost unit tests
-describe('T010-8: N4 calculateNoveltyBoost', () => {
-  afterEach(() => {
-    delete process.env.SPECKIT_NOVELTY_BOOST;
-  });
-
-  it('T010-8a: returns 0 always (REMOVED — SPECKIT_NOVELTY_BOOST is inert)', () => {
-    delete process.env.SPECKIT_NOVELTY_BOOST;
-    expect(calculateNoveltyBoost(hoursAgo(1))).toBe(0);
-  });
-
-  it('T010-8b: returns 0 always regardless of input (REMOVED)', () => {
-    process.env.SPECKIT_NOVELTY_BOOST = 'true'; // inert
-    expect(calculateNoveltyBoost(undefined)).toBe(0);
-  });
-
-  it('T010-8c: boost at 0h returns 0 (REMOVED — flag is inert)', () => {
-    process.env.SPECKIT_NOVELTY_BOOST = 'true'; // inert
-    const boost = calculateNoveltyBoost(hoursAgo(0));
-    expect(boost).toBe(0); // REMOVED — always returns 0
-  });
-
-  it('T010-8d: boost at 12h returns 0 (REMOVED — flag is inert)', () => {
-    process.env.SPECKIT_NOVELTY_BOOST = 'true'; // inert
-    const boost = calculateNoveltyBoost(hoursAgo(12));
-    expect(boost).toBe(0); // REMOVED — always returns 0
-  });
-
-  it('T010-8e: boost at 24h returns 0 (REMOVED — flag is inert)', () => {
-    process.env.SPECKIT_NOVELTY_BOOST = 'true'; // inert
-    const boost = calculateNoveltyBoost(hoursAgo(24));
-    expect(boost).toBe(0); // REMOVED — always returns 0
-  });
-
-  it('T010-8f: boost at 48h returns 0 (REMOVED — flag is inert)', () => {
-    process.env.SPECKIT_NOVELTY_BOOST = 'true'; // inert
-    const boost = calculateNoveltyBoost(hoursAgo(48));
-    expect(boost).toBe(0); // REMOVED — always returns 0
-  });
-
-  it('T010-8g: all boost values are 0 regardless of age (REMOVED)', () => {
-    process.env.SPECKIT_NOVELTY_BOOST = 'true'; // inert
-    const boosts = [0, 6, 12, 24, 47].map(h => calculateNoveltyBoost(hoursAgo(h)));
-    for (const boost of boosts) {
-      expect(boost).toBe(0); // REMOVED — always returns 0
-    }
-  });
-});
-
 // 9. TM-01 applyInterferencePenalty unit tests
 describe('T010-9: TM-01 applyInterferencePenalty', () => {
   afterEach(() => {

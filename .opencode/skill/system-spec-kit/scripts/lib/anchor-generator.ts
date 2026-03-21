@@ -229,6 +229,7 @@ function wrapSectionsWithAnchors(
   
   const result: string[] = [];
   let i = 0;
+  let sectionIndex = 0;
   
   while (i < lines.length) {
     const line = lines[i];
@@ -236,12 +237,16 @@ function wrapSectionsWithAnchors(
     // Detect ## headings (not # or ### or more)
     const headingMatch = line.match(/^##\s+(.+)$/);
     
+    if (headingMatch) {
+      sectionIndex++;
+    }
+
     if (headingMatch && !isAlreadyWrapped(lines, i)) {
       const headingText = headingMatch[1];
       const category = categorizeSection(headingText);
       
       // Generate anchor ID
-      let anchorId = generateSemanticSlug(headingText);
+      let anchorId = `${generateSemanticSlug(headingText)}-${sectionIndex}`;
       
       // Detect collision
       if (usedAnchors.includes(anchorId)) {
@@ -288,16 +293,8 @@ function wrapSectionsWithAnchors(
 // ───────────────────────────────────────────────────────────────
 export {
   generateAnchorId,
-  generateSemanticSlug,
-  generateShortHash,
   categorizeSection,
   validateAnchorUniqueness,
-  extractKeywords,
-  slugify,
   extractSpecNumber,
-  getCurrentDate,
   wrapSectionsWithAnchors,
-  // Constants
-  STOP_WORDS,
-  ACTION_VERBS,
 };

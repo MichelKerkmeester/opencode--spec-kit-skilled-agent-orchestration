@@ -1,4 +1,4 @@
-# NEW-114 — Path Traversal Validation Evidence
+# 114 — Path Traversal Validation Evidence
 
 ## Preconditions
 - MCP server healthy (v1.7.2)

@@ -216,7 +216,7 @@ contextType: "implementation"
 
 ### P1
 
-- [x] CHK-122 [P1] Monitoring/alerting configured (telemetry dashboard for boost metrics) [Evidence: `.opencode/skill/system-spec-kit/scripts/evals/run-phase3-telemetry-dashboard.ts` (threshold-based alert statuses for session/causal/pressure/extraction telemetry); `scratch/phase3-telemetry-dashboard.json`; `scratch/phase3-telemetry-dashboard.md`; `npx tsx .opencode/skill/system-spec-kit/scripts/evals/run-phase3-telemetry-dashboard.ts .opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag`]
+- [x] CHK-122 [P1] Monitoring/alerting configured (telemetry dashboard for boost metrics) [Evidence: `.opencode/skill/system-spec-kit/scripts/evals/deleted-phase3-telemetry-dashboard-script` (threshold-based alert statuses for session/causal/pressure/extraction telemetry); `scratch/phase3-telemetry-dashboard.json`; `scratch/phase3-telemetry-dashboard.md`; `npx tsx .opencode/skill/system-spec-kit/scripts/evals/deleted-phase3-telemetry-dashboard-script .opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag`]
 - [x] CHK-123 [P1] Runbook created (rollback steps, smoke test commands, troubleshooting) [Evidence: `.opencode/skill/system-spec-kit/references/workflows/rollback-runbook.md`; `.opencode/skill/system-spec-kit/mcp_server/README.md` Rollback Runbook section]
 
 ### P2
@@ -314,7 +314,7 @@ contextType: "implementation"
 
 ### P0
 
-- [x] CHK-160 [P0] Telemetry dashboard live (boost rates, pressure activation, extraction counts) [Evidence: `scratch/phase3-telemetry-dashboard.json` (sessionBoostRate, causalBoostRate, pressureActivationRate, extractionCount); `scratch/phase3-telemetry-dashboard.md`; `.opencode/skill/system-spec-kit/scripts/evals/run-phase3-telemetry-dashboard.ts`; `npx tsx .opencode/skill/system-spec-kit/scripts/evals/run-phase3-telemetry-dashboard.ts .opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag` (generatedAt timestamp confirms current run)]
+- [x] CHK-160 [P0] Telemetry dashboard live (boost rates, pressure activation, extraction counts) [Evidence: `scratch/phase3-telemetry-dashboard.json` (sessionBoostRate, causalBoostRate, pressureActivationRate, extractionCount); `scratch/phase3-telemetry-dashboard.md`; `.opencode/skill/system-spec-kit/scripts/evals/deleted-phase3-telemetry-dashboard-script`; `npx tsx .opencode/skill/system-spec-kit/scripts/evals/deleted-phase3-telemetry-dashboard-script .opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag` (generatedAt timestamp confirms current run)]
 - [x] CHK-161 [P0] Response metadata fields added (applied_boosts, pressure_level, extraction_count) [Evidence: `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`; `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts`]
 
 ### P1

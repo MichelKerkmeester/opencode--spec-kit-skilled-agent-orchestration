@@ -1,6 +1,7 @@
 // ---------------------------------------------------------------
 // MODULE: Simulation Factory
 // ---------------------------------------------------------------
+/** @deprecated RECOVERY-ONLY — Simulation fallbacks only execute in stateless/recovery mode. In JSON-primary mode, the AI provides structured data directly. */
 
 // ───────────────────────────────────────────────────────────────
 // 1. SIMULATION FACTORY
@@ -9,6 +10,7 @@ import crypto from 'crypto';
 
 // Canonical shared types — single source of truth (resolves TECH-DEBT P6-05)
 import type {
+  CollectedDataBase,
   DecisionOption,
   DecisionRecord,
   DecisionData,
@@ -64,14 +66,10 @@ export interface FullSimulation {
   phases: PhaseEntry[];
 }
 
-/** Collected data that might need simulation */
-export interface CollectedData {
-  _isSimulation?: boolean;
-  userPrompts?: unknown[];
-  observations?: unknown[];
-  recentContext?: unknown[];
-  [key: string]: unknown;
-}
+/** Collected data that might need simulation.
+ * Extends CollectedDataBase (all fields optional via Partial) so the simulation
+ * detector shares the same property types as the real pipeline. */
+export interface SimCollectedData extends Partial<CollectedDataBase> {}
 
 /** Simulation metadata */
 export interface SimulationMetadata {
@@ -509,7 +507,7 @@ function createFullSimulation(config: SessionConfig = {}): FullSimulation {
   };
 }
 
-function requiresSimulation(collectedData: CollectedData | null): boolean {
+function requiresSimulation(collectedData: SimCollectedData | null): boolean {
   if (!collectedData) return true;
   if (collectedData._isSimulation) return true;
 
@@ -540,16 +538,10 @@ function markAsSimulated(metadata: SimulationMetadata): SimulationMetadata {
 // 10. EXPORTS
 // ───────────────────────────────────────────────────────────────
 export {
-  createSessionData,
   createConversationData,
-  createDecisionData,
-  createDiagramData,
   createSimulationPhases,
-  createSimulationFlowchart,
-  createFullSimulation,
+  createDiagramData,
+  createSessionData,
   requiresSimulation,
-  formatTimestamp,
-  generateSessionId,
-  addSimulationWarning,
-  markAsSimulated,
+  createDecisionData,
 };

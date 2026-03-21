@@ -473,8 +473,10 @@ function calculateAlignmentScore(conversationTopics: string[], specFolderName: s
 
   let matches = 0;
   for (const specTopic of specTopics) {
+    // O4-7: Use word-boundary matching instead of substring inclusion
+    const topicRegex = new RegExp(`\\b${escapeRegExp(specTopic)}\\b`, 'i');
     if (conversationTopics.some((ct) =>
-      ct.includes(specTopic) || specTopic.includes(ct)
+      topicRegex.test(ct) || new RegExp(`\\b${escapeRegExp(ct)}\\b`, 'i').test(specTopic)
     )) {
       matches++;
     }
@@ -562,6 +564,11 @@ async function validateContentAlignment(
           console.log(`   ALIGNMENT_HARD_BLOCK: Non-interactive mode with 0% alignment and infrastructure mismatch — refusing to proceed with "${specFolderName}".`);
           return { proceed: false, useAlternative: false };
         }
+        // O4-8: Block in non-interactive mode when alignment is critically low
+        if (finalScore < 20) {
+          console.log(`   ALIGNMENT_HARD_BLOCK: ${finalScore}% alignment is below minimum non-interactive threshold (20%)`);
+          return { proceed: false, useAlternative: false };
+        }
         console.log('   Warning: Non-interactive mode - proceeding with specified folder');
         return { proceed: true, useAlternative: false };
       }
@@ -596,6 +603,11 @@ async function validateContentAlignment(
 
   if (finalScore === 0 && isInfrastructureMismatch && (!process.stdout.isTTY || !process.stdin.isTTY)) {
     console.log(`   ALIGNMENT_HARD_BLOCK: 0% alignment with infrastructure mismatch and no alternatives — refusing to proceed with "${specFolderName}".`);
+    return { proceed: false, useAlternative: false };
+  }
+  // O4-8: Block in non-interactive mode when alignment is critically low
+  if (finalScore < 20 && (!process.stdout.isTTY || !process.stdin.isTTY)) {
+    console.log(`   ALIGNMENT_HARD_BLOCK: ${finalScore}% alignment is below minimum non-interactive threshold (20%)`);
     return { proceed: false, useAlternative: false };
   }
   console.log(`   Warning: No better alternatives found - proceeding with "${specFolderName}"`);

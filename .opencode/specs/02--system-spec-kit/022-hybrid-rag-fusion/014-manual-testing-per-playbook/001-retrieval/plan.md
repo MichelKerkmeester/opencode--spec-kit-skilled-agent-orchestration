@@ -41,7 +41,7 @@ This plan converts the retrieval scenarios in the manual testing playbook into a
 - [x] Exact prompts, command sequences, and pass criteria were extracted from [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md).
 - [x] Feature mappings for all 9 retrieval tests were confirmed against the cross-reference index and retrieval feature files.
 - [x] Verdict rules from [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) were loaded for PASS/PARTIAL/FAIL handling.
-- [x] Sandbox expectations were identified for stateful scenarios NEW-086 and NEW-143.
+- [x] Sandbox expectations were identified for stateful scenarios 086 and 143.
 
 ### Definition of Done
 - [ ] All 9 retrieval scenarios have execution evidence tied to the exact documented prompt and command sequence.
@@ -81,12 +81,12 @@ Manual retrieval test execution pipeline with review-gated evidence collection.
 
 ### Phase 2: Non-Destructive Tests
 - [ ] Run EX-001, EX-002, EX-003, EX-004, and EX-005 in order to cover orchestration, search, trigger, hybrid, and pipeline-baseline retrieval behavior.
-- [ ] Run NEW-109 after baseline retrieval tests to inspect tiered degradation behavior and fallback-disabled comparison without mutating corpus content.
-- [ ] Run NEW-142 to compare trace-enabled versus non-trace `memory_context` responses and confirm no session-transition leakage.
+- [ ] Run 109 after baseline retrieval tests to inspect tiered degradation behavior and fallback-disabled comparison without mutating corpus content.
+- [ ] Run 142 to compare trace-enabled versus non-trace `memory_context` responses and confirm no session-transition leakage.
 
 ### Phase 3: Destructive Tests
-- [ ] Run NEW-086 only against disposable sandbox memories; checkpoint the original trigger phrases before editing and capture re-index evidence immediately after mutation.
-- [ ] Run NEW-143 in an isolated runtime with the same sandbox corpus across `trace_only`, `bounded_runtime`, and `off`; restart between rollout states and restore default flags after comparison capture.
+- [ ] Run 086 only against disposable sandbox memories; checkpoint the original trigger phrases before editing and capture re-index evidence immediately after mutation.
+- [ ] Run 143 in an isolated runtime with the same sandbox corpus across `trace_only`, `bounded_runtime`, and `off`; restart between rollout states and restore default flags after comparison capture.
 - [ ] If sandbox isolation fails or shared data would be modified, stop execution and mark the scenario blocked instead of proceeding.
 
 ### Phase 4: Evidence Collection and Verdict
@@ -107,10 +107,10 @@ Manual retrieval test execution pipeline with review-gated evidence collection.
 | EX-003 | Fast recall path | `Run trigger matching for resume previous session blockers with cognitive=true` | MCP |
 | EX-004 | Channel fusion sanity | `Validate graph search fallback tiers behavior` | MCP |
 | EX-005 | Stage invariant verification | `Search Stage4Invariant score snapshot verifyScoreInvariant` | MCP |
-| NEW-086 | Confirm trigger edit causes re-index | `Validate BM25 trigger phrase re-index gate.` | manual |
-| NEW-109 | Confirm 3-tier degradation chain triggers correctly | `Validate SPECKIT_SEARCH_FALLBACK tiered degradation.` | manual |
-| NEW-142 | Session transition trace contract | `Validate Markovian session transition tracing for memory_context.` | MCP |
-| NEW-143 | Bounded graph-walk rollout and diagnostics | `Validate bounded graph-walk rollout states and trace diagnostics.` | manual |
+| 086 | Confirm trigger edit causes re-index | `Validate BM25 trigger phrase re-index gate.` | manual |
+| 109 | Confirm 3-tier degradation chain triggers correctly | `Validate SPECKIT_SEARCH_FALLBACK tiered degradation.` | manual |
+| 142 | Session transition trace contract | `Validate Markovian session transition tracing for memory_context.` | MCP |
+| 143 | Bounded graph-walk rollout and diagnostics | `Validate bounded graph-walk rollout states and trace diagnostics.` | manual |
 <!-- /ANCHOR:testing -->
 
 ---

@@ -288,22 +288,27 @@ function readSpecMetadata(specFolderHint: string): {
 }
 
 function buildSlugCandidates(specFolderHint: string): string[] {
-  const lastSegment = specFolderHint
+  // O4-11: Extract slug candidates from ALL path segments, not just the last one
+  const segments = specFolderHint
     .replace(/\\/g, '/')
     .split('/')
-    .filter(Boolean)
-    .at(-1) || '';
-  const slug = lastSegment.replace(/^\d{3}-/, '').trim();
-  if (!slug) {
-    return [];
+    .filter(Boolean);
+
+  const slugCandidates: string[] = [];
+  for (const segment of segments) {
+    const slug = segment.replace(/^\d{3}-/, '').trim();
+    if (slug.length >= 6) {
+      slugCandidates.push(slug);
+    }
   }
 
-  const normalizedSlug = normalizeText(slug);
-  return uniqueStrings([
-    slug,
-    slug.replace(/-/g, ' '),
-    normalizedSlug,
-  ]).filter((value) => normalizeText(value).length >= 6);
+  const allCandidates: string[] = [];
+  for (const slug of slugCandidates) {
+    const normalizedSlug = normalizeText(slug);
+    allCandidates.push(slug, slug.replace(/-/g, ' '), normalizedSlug);
+  }
+
+  return uniqueStrings(allCandidates).filter((value) => normalizeText(value).length >= 6);
 }
 
 function buildStrongKeywordTokens(values: string[]): string[] {
@@ -424,7 +429,7 @@ export function matchesSpecAffinityText(text: string, targets: SpecAffinityTarge
     evaluation.matchedFileTargets.length > 0
     || evaluation.matchedPhrases.length > 0
     || evaluation.matchedSpecId
-    || evaluation.matchedKeywordTokens.length >= 2
+    || evaluation.matchedKeywordTokens.length >= 3
   );
 }
 
@@ -501,6 +506,7 @@ function gatherCollectedDataPaths(data: SpecAffinityCollectedData): string[] {
   return paths;
 }
 
+/** @deprecated RECOVERY-ONLY — This function evaluates spec affinity from stateless CollectedDataSubset. In JSON-primary mode, the AI provides specFolder directly. */
 export function evaluateCollectedDataSpecAffinity(
   data: SpecAffinityCollectedData,
   targetsOrHint: SpecAffinityTargets | string,

@@ -23,7 +23,7 @@ const BASE_VALID_SHORT_TERMS = [
 ];
 
 /** Tokenize topic words. */
-export function tokenizeTopicWords(text: string): string[] {
+function tokenizeTopicWords(text: string): string[] {
   return text.toLowerCase().match(WORD_PATTERN) || [];
 }
 

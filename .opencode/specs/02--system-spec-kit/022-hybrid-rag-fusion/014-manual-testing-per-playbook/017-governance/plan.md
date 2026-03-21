@@ -29,7 +29,7 @@ contextType: "general"
 | **Testing** | manual + MCP |
 
 ### Overview
-This plan converts the governance scenarios in the manual testing playbook into an ordered execution workflow for Phase 017. The phase covers process-oriented flag governance and audit verification first (NEW-063 and NEW-064), then stateful governed-ingest and scope-isolation testing (NEW-122), and finally shared-memory rollout controls and first-run setup (NEW-123 and NEW-148) which require MCP restarts and DB state management before verdict review.
+This plan converts the governance scenarios in the manual testing playbook into an ordered execution workflow for Phase 017. The phase covers process-oriented flag governance and audit verification first (063 and 064), then stateful governed-ingest and scope-isolation testing (122), and finally shared-memory rollout controls and first-run setup (123 and 148) which require MCP restarts and DB state management before verdict review.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -41,7 +41,7 @@ This plan converts the governance scenarios in the manual testing playbook into 
 - [x] Exact prompts, command sequences, and pass criteria were extracted from [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md).
 - [x] Feature mappings for all 5 governance tests were confirmed against the cross-reference index and governance feature files.
 - [x] Verdict rules from [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) were loaded for PASS/PARTIAL/FAIL handling.
-- [x] Sandbox expectations were identified for stateful scenarios NEW-122, NEW-123, and NEW-148.
+- [x] Sandbox expectations were identified for stateful scenarios 122, 123, and 148.
 
 ### Definition of Done
 - [ ] All 5 governance scenarios have execution evidence tied to the exact documented prompt and command sequence.
@@ -80,13 +80,13 @@ Manual governance test execution pipeline with review-gated evidence collection.
 - [ ] Prepare disposable sandbox tenant and user/agent IDs for scoped-ingest tests and a clean DB config state for shared-memory enablement tests.
 
 ### Phase 2: Non-Destructive Tests
-- [ ] Run NEW-063 to audit feature flag governance conformance: enumerate all `SPECKIT_` flags, verify age and review cadence against the B8 governance targets, and capture any compliance gaps.
-- [ ] Run NEW-064 to verify sunset audit outcomes: compare documented dispositions (27 graduate, 9 dead, 3 active) against current `search-flags.ts` exports, confirm `isPipelineV2Enabled()` always returns `true`, and record deltas.
+- [ ] Run 063 to audit feature flag governance conformance: enumerate all `SPECKIT_` flags, verify age and review cadence against the B8 governance targets, and capture any compliance gaps.
+- [ ] Run 064 to verify sunset audit outcomes: compare documented dispositions (27 graduate, 9 dead, 3 active) against current `search-flags.ts` exports, confirm `isPipelineV2Enabled()` always returns `true`, and record deltas.
 
 ### Phase 3: Stateful Tests
-- [ ] Run NEW-122 only against disposable sandbox scope identifiers; attempt a save missing provenance fields and capture the rejection, then complete a valid governed save and verify `governance_audit` rows for both allow and deny outcomes before inspecting cross-scope retrieval filtering.
-- [ ] Run NEW-123 in sequence: create a shared space with `rolloutEnabled:true`, verify non-member denial, grant membership, verify access, then flip `killSwitch:true` and verify denial again. Capture DB state for `shared_space_members` and `shared_spaces` tables at each step.
-- [ ] Run NEW-148 from a clean shared-memory state: verify default-off, enable and confirm idempotency, check the generated shared-spaces README artifact on disk, restart MCP and confirm DB persistence, then verify env-var override. Finally, run `/memory:shared` with the feature disabled and capture the first-run setup prompt. Restore DB to pre-test state after all seven steps are complete.
+- [ ] Run 122 only against disposable sandbox scope identifiers; attempt a save missing provenance fields and capture the rejection, then complete a valid governed save and verify `governance_audit` rows for both allow and deny outcomes before inspecting cross-scope retrieval filtering.
+- [ ] Run 123 in sequence: create a shared space with `rolloutEnabled:true`, verify non-member denial, grant membership, verify access, then flip `killSwitch:true` and verify denial again. Capture DB state for `shared_space_members` and `shared_spaces` tables at each step.
+- [ ] Run 148 from a clean shared-memory state: verify default-off, enable and confirm idempotency, check the generated shared-spaces README artifact on disk, restart MCP and confirm DB persistence, then verify env-var override. Finally, run `/memory:shared` with the feature disabled and capture the first-run setup prompt. Restore DB to pre-test state after all seven steps are complete.
 - [ ] If sandbox isolation fails or DB state from a prior scenario would contaminate the next, stop execution and mark the scenario blocked instead of proceeding.
 
 ### Phase 4: Evidence Collection and Verdict
@@ -102,11 +102,11 @@ Manual governance test execution pipeline with review-gated evidence collection.
 
 | Test ID | Scenario Name | Exact Prompt | Execution Type (manual/MCP) |
 |---------|---------------|--------------|-----------------------------|
-| NEW-063 | Feature flag governance | `Audit feature flag governance conformance.` | manual |
-| NEW-064 | Feature flag sunset audit | `Verify feature flag sunset audit outcomes.` | manual |
-| NEW-122 | Governed ingest and scope isolation | `Validate Phase 5 governed ingest and retrieval isolation.` | MCP |
-| NEW-123 | Shared-space deny-by-default rollout | `Validate Phase 6 shared-memory rollout controls.` | MCP |
-| NEW-148 | Shared-memory disabled-by-default and first-run setup | `Validate shared-memory default-off enablement and first-run setup.` | MCP |
+| 063 | Feature flag governance | `Audit feature flag governance conformance.` | manual |
+| 064 | Feature flag sunset audit | `Verify feature flag sunset audit outcomes.` | manual |
+| 122 | Governed ingest and scope isolation | `Validate Phase 5 governed ingest and retrieval isolation.` | MCP |
+| 123 | Shared-space deny-by-default rollout | `Validate Phase 6 shared-memory rollout controls.` | MCP |
+| 148 | Shared-memory disabled-by-default and first-run setup | `Validate shared-memory default-off enablement and first-run setup.` | MCP |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -128,7 +128,7 @@ Manual governance test execution pipeline with review-gated evidence collection.
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Scoped memory writes, DB config mutations, or shared-space state from NEW-122/NEW-123/NEW-148 leave the governance environment in a state that could taint later scenarios or other test phases.
+- **Trigger**: Scoped memory writes, DB config mutations, or shared-space state from 122/123/148 leave the governance environment in a state that could taint later scenarios or other test phases.
 - **Procedure**: Delete disposable sandbox scoped memory records, reset `shared_memory_enabled` to its pre-test value in the DB `config` table, remove any test-created rows from `shared_spaces` and `shared_space_members`, restart the MCP runtime with default env var values, discard compromised evidence, and rerun only the affected scenarios after the baseline is clean again.
 <!-- /ANCHOR:rollback -->
 

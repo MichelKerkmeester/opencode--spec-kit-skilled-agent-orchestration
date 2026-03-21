@@ -10,10 +10,12 @@ import { structuredLog } from './logger';
 import {
   buildSpecAffinityTargets,
   evaluateSpecAffinityText,
+  extractSpecIds,
   matchesSpecAffinityFilePath,
   matchesSpecAffinityText,
   normalizeText,
 } from './spec-affinity';
+import type { Observation, RecentContextEntry } from '../types/session-types';
 
 // ───────────────────────────────────────────────────────────────
 // 2. TYPES
@@ -30,35 +32,28 @@ export type DataSource =
 
 export type CaptureDataSource = Exclude<DataSource, 'file' | 'simulation'>;
 
-/** A single observation record produced by transformation */
-export interface Observation {
+// O3-1: Re-export canonical Observation from session-types
+export type { Observation };
+
+/** Observation with required fields as produced by the normalizer pipeline */
+export type NormalizedObservation = Observation & {
   type: string;
   title: string;
   narrative: string;
   facts: string[];
-  timestamp?: string;
-  files?: string[];
-  _manualDecision?: {
-    fullText: string;
-    chosenApproach: string;
-    confidence: number;
-  };
-}
+};
 
-/** A user prompt record */
-export interface UserPrompt {
+/** A user prompt record with required timestamp (stricter than session-types UserPrompt) */
+export interface NormalizedUserPrompt {
   prompt: string;
   timestamp: string;
 }
 
-/** A recent context entry */
-export interface RecentContext {
-  request: string;
-  learning: string;
-}
+// O3-7: Use canonical RecentContextEntry and create required-field alias
+export type RecentContext = Required<Pick<RecentContextEntry, 'request' | 'learning'>>;
 
-/** A file entry in the FILES array */
-export interface FileEntry {
+/** A file entry in the FILES array (normalizer-specific shape, not session-types FileEntry) */
+export interface NormalizedFileEntry {
   FILE_PATH: string;
   DESCRIPTION: string;
   ACTION?: string;
@@ -67,6 +62,11 @@ export interface FileEntry {
   _provenance?: 'git' | 'spec-folder' | 'tool';
   _synthetic?: boolean;
 }
+
+/** @deprecated Use NormalizedUserPrompt — kept for backward compatibility */
+export type UserPrompt = NormalizedUserPrompt;
+/** @deprecated Use NormalizedFileEntry — kept for backward compatibility */
+export type FileEntry = NormalizedFileEntry;
 
 /** Raw input data that may be in manual or MCP-compatible format */
 export interface RawInputData {
@@ -86,10 +86,12 @@ export interface RawInputData {
   trigger_phrases?: string[];
   importanceTier?: string;
   importance_tier?: string;
-  FILES?: Array<FileEntry | Record<string, unknown>>;
+  contextType?: string;
+  context_type?: string;
+  FILES?: Array<NormalizedFileEntry | Record<string, unknown>>;
   observations?: Observation[];
-  userPrompts?: UserPrompt[];
-  user_prompts?: UserPrompt[];
+  userPrompts?: NormalizedUserPrompt[];
+  user_prompts?: NormalizedUserPrompt[];
   recentContext?: RecentContext[];
   recent_context?: RecentContext[];
   [key: string]: unknown;
@@ -109,14 +111,16 @@ export interface DecisionItemObject {
 /** Normalized data in MCP-compatible format */
 export interface NormalizedData {
   SPEC_FOLDER?: string;
-  FILES?: FileEntry[];
+  FILES?: NormalizedFileEntry[];
   observations: Observation[];
-  userPrompts: UserPrompt[];
+  userPrompts: NormalizedUserPrompt[];
   recentContext: RecentContext[];
   _manualTriggerPhrases?: string[];
   _manualDecisions?: Array<string | DecisionItemObject>;
   TECHNICAL_CONTEXT?: Array<{ KEY: string; VALUE: string }>;
   importanceTier?: string;
+  contextType?: string;
+  // TODO(O3-12): Remove index signature once all dynamic fields are explicitly declared
   [key: string]: unknown;
 }
 
@@ -154,10 +158,10 @@ export interface OpencodeCapture {
 
 /** Transformed OpenCode capture result */
 export interface TransformedCapture {
-  userPrompts: UserPrompt[];
+  userPrompts: NormalizedUserPrompt[];
   observations: Observation[];
   recentContext: RecentContext[];
-  FILES: FileEntry[];
+  FILES: NormalizedFileEntry[];
   _source: DataSource;
   _sessionId?: string;
   _capturedAt?: string;
@@ -204,7 +208,9 @@ function transformKeyDecision(decisionItem: string | DecisionItemObject | null):
     decisionText = decisionItem.decision || decisionItem.title || 'Unknown decision';
     chosenApproach = decisionItem.chosenOption || decisionItem.chosen || decisionItem.decision || null;
     rationale = decisionItem.rationale || decisionItem.reason || decisionText;
-    alternatives = (decisionItem.alternatives || []).map(extractAlternativeLabel);
+    alternatives = Array.isArray(decisionItem.alternatives)
+      ? decisionItem.alternatives.map(extractAlternativeLabel)
+      : [];
 
     if (decisionItem.rationale) {
       decisionText = `${decisionText} - ${decisionItem.rationale}`;
@@ -357,31 +363,38 @@ function safeString(value: unknown, fallback: string): string {
 
 const VALID_MAGNITUDES = new Set(['trivial', 'small', 'medium', 'large', 'unknown']);
 
-function normalizeFileEntryLike(file: Record<string, unknown>): FileEntry {
+function normalizeFileEntryLike(file: NormalizedFileEntry | Record<string, unknown>): NormalizedFileEntry {
   // BUG-003: Trim and capitalize ACTION
-  const rawAction = typeof file.ACTION === 'string'
+  const rawActionValue = 'ACTION' in file
     ? file.ACTION
-    : (typeof file.action === 'string' ? file.action : undefined);
+    : ('action' in file ? file.action : undefined);
+  const rawAction = typeof rawActionValue === 'string' ? rawActionValue : undefined;
   const action = rawAction ? rawAction.trim().charAt(0).toUpperCase() + rawAction.trim().slice(1) : undefined;
 
-  const provenance = file._provenance === 'git' || file._provenance === 'spec-folder' || file._provenance === 'tool'
-    ? file._provenance
+  const rawProvenance = '_provenance' in file ? file._provenance : undefined;
+  const provenance = rawProvenance === 'git' || rawProvenance === 'spec-folder' || rawProvenance === 'tool'
+    ? rawProvenance
     : undefined;
 
   // BUG-003: Default invalid MAGNITUDE to 'unknown' only when a value was provided but invalid
-  const rawMagnitude = file.MODIFICATION_MAGNITUDE;
-  const modificationMagnitude: FileEntry['MODIFICATION_MAGNITUDE'] =
+  const rawMagnitude = 'MODIFICATION_MAGNITUDE' in file ? file.MODIFICATION_MAGNITUDE : undefined;
+  const modificationMagnitude: NormalizedFileEntry['MODIFICATION_MAGNITUDE'] =
     (typeof rawMagnitude === 'string' && VALID_MAGNITUDES.has(rawMagnitude))
-      ? rawMagnitude as FileEntry['MODIFICATION_MAGNITUDE']
+      ? rawMagnitude as NormalizedFileEntry['MODIFICATION_MAGNITUDE']
       : (rawMagnitude != null ? 'unknown' : undefined);
 
-  const synthetic = typeof file._synthetic === 'boolean'
-    ? file._synthetic
+  const rawSynthetic = '_synthetic' in file ? file._synthetic : undefined;
+  const synthetic = typeof rawSynthetic === 'boolean'
+    ? rawSynthetic
     : undefined;
 
   // BUG-001: Safe coercion via safeString — rejects objects/arrays, coerces primitives
-  const filePath = safeString(file.FILE_PATH ?? file.path, '');
-  const description = safeString(file.DESCRIPTION ?? file.description, 'Modified during session');
+  const rawFilePath = ('FILE_PATH' in file ? file.FILE_PATH : undefined)
+    ?? ('path' in file ? file.path : undefined);
+  const rawDescription = ('DESCRIPTION' in file ? file.DESCRIPTION : undefined)
+    ?? ('description' in file ? file.description : undefined);
+  const filePath = safeString(rawFilePath, '');
+  const description = safeString(rawDescription, 'Modified during session');
 
   return {
     FILE_PATH: filePath,
@@ -428,7 +441,7 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     if (!Array.isArray(cloned.observations)) cloned.observations = [];
     // F-16: Ensure FILES uses FileEntry format
     if (cloned.FILES && Array.isArray(cloned.FILES)) {
-      cloned.FILES = cloned.FILES.map((f) => normalizeFileEntryLike(f as unknown as Record<string, unknown>));
+      cloned.FILES = cloned.FILES.map((f) => normalizeFileEntryLike(f));
     }
 
     if (nextSteps.length > 0 && !hasPersistedNextStepsObservation(cloned.observations)) {
@@ -448,6 +461,31 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     const fastPathTier = data.importanceTier || data.importance_tier;
     if (typeof fastPathTier === 'string' && fastPathTier.length > 0) {
       cloned.importanceTier = fastPathTier;
+    }
+    // RC5: Propagate contextType through fast-path (mirrors importanceTier pattern)
+    const fastPathContextType = data.contextType || data.context_type;
+    if (typeof fastPathContextType === 'string' && fastPathContextType.length > 0) {
+      cloned.contextType = fastPathContextType;
+    }
+    // RC3: Propagate keyDecisions through fast-path
+    const keyDecisions = Array.isArray(data.keyDecisions)
+      ? data.keyDecisions
+      : Array.isArray(data.key_decisions)
+        ? data.key_decisions
+        : [];
+    if (keyDecisions.length > 0 && !cloned._manualDecisions) {
+      cloned._manualDecisions = keyDecisions.map((d) => cloneInputData(d));
+    }
+    if (keyDecisions.length > 0) {
+      const hasDecisionObs = (cloned.observations || []).some(
+        (obs: Observation) => obs.type === 'decision'
+      );
+      if (!hasDecisionObs) {
+        for (const item of keyDecisions) {
+          const obs = transformKeyDecision(item);
+          if (obs) cloned.observations.push(obs);
+        }
+      }
     }
 
     return cloned;
@@ -470,7 +508,7 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
       ? data.files_modified
       : [];
   if (Array.isArray(data.FILES) && data.FILES.length > 0) {
-    normalized.FILES = data.FILES.map((entry) => normalizeFileEntryLike(entry as unknown as Record<string, unknown>));
+    normalized.FILES = data.FILES.map((entry) => normalizeFileEntryLike(entry));
   } else if (filesModified.length > 0) {
     normalized.FILES = filesModified.map((entry: string | { path?: string; changes_summary?: string }) => {
       let filePath: string;
@@ -561,6 +599,11 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
   if (typeof slowPathTier === 'string' && slowPathTier.length > 0) {
     normalized.importanceTier = slowPathTier;
   }
+  // RC5: Propagate contextType through slow-path (mirrors importanceTier pattern)
+  const slowPathContextType = data.contextType || data.context_type;
+  if (typeof slowPathContextType === 'string' && slowPathContextType.length > 0) {
+    normalized.contextType = slowPathContextType;
+  }
 
   console.log('   \u2713 Transformed manual format to MCP-compatible structure');
   return normalized;
@@ -633,7 +676,7 @@ function validateInputData(data: RawInputData, specFolderArg: string | null = nu
         const file = data.FILES[i];
         if (typeof file !== 'object' || file === null) {
           errors.push(`FILES[${i}] must be an object`);
-        } else if (!(file as FileEntry).FILE_PATH && !(file as Record<string, unknown>).path) {
+        } else if (!(file as NormalizedFileEntry).FILE_PATH && !(file as Record<string, unknown>).path) {
           errors.push(`FILES[${i}] missing required FILE_PATH or path field`);
         }
       }
@@ -708,28 +751,9 @@ function buildToolObservationTitle(tool: CaptureToolCall): string {
   }
 }
 
-// P3-1: Two-tier stopword lists for spec relevance keywords.
-// RELEVANCE_CONTENT_STOPWORDS (aggressive) — for content-derived keywords; blocks generic tokens.
+// P3-1: Stopword list for spec relevance keywords.
 // RELEVANCE_PATH_STOPWORDS (permissive) — for spec-path-derived keywords; only blocks truly generic words.
 // Words like 'testing', 'playbook', 'memory', 'session' are meaningful when from a path and should NOT be stopped.
-const RELEVANCE_CONTENT_STOPWORDS = new Set([
-  'add', 'analysis', 'and', 'auto', 'base', 'build', 'capture', 'capturing',
-  'change', 'changes', 'check', 'cleanup', 'code', 'complete', 'config',
-  'configuration', 'core', 'create', 'data', 'debug', 'default', 'detection',
-  'docs', 'documentation', 'edit', 'error', 'evaluation', 'feature', 'file',
-  'files', 'filter', 'fix', 'fixes', 'flow', 'full', 'gate', 'gates',
-  'guide', 'handling', 'implementation', 'improve', 'index', 'input',
-  'integration', 'issue', 'issues', 'level', 'list', 'live', 'load',
-  'main', 'manual', 'match', 'memory', 'mode', 'model', 'module', 'new',
-  'node', 'output', 'parity', 'path', 'perfect', 'pipeline', 'plan',
-  'playbook', 'process', 'project', 'proof', 'quality', 'query', 'read',
-  'remove', 'research', 'result', 'review', 'rule', 'rules', 'run',
-  'runtime', 'save', 'script', 'scripts', 'search', 'service', 'session',
-  'set', 'setup', 'signal', 'spec', 'stage', 'start', 'state', 'status',
-  'step', 'stop', 'system', 'template', 'test', 'testing', 'tool', 'tools',
-  'type', 'types', 'update', 'use', 'user', 'utils', 'valid', 'validation',
-  'value', 'view', 'work', 'workflow', 'write',
-]);
 const RELEVANCE_PATH_STOPWORDS = new Set([
   'add', 'and', 'are', 'but', 'can', 'did', 'for', 'get', 'had', 'has',
   'how', 'its', 'may', 'new', 'not', 'our', 'out', 'own', 'put', 'run',
@@ -772,12 +796,6 @@ function containsRelevantKeyword(keywords: string[], ...parts: Array<string | un
   if (keywords.length === 0) return true;
   const normalized = normalizeText(parts.filter(Boolean).join(' '));
   return keywords.some((keyword) => normalized.includes(keyword));
-}
-
-const SPEC_ID_REGEX = /\b\d{3}-[a-z0-9][a-z0-9-]*\b/g;
-
-function extractSpecIds(value: string): string[] {
-  return Array.from(new Set((value.match(SPEC_ID_REGEX) || []).map((specId) => specId.toLowerCase())));
 }
 
 function getCurrentSpecId(specFolderHint?: string | null): string | null {
@@ -939,7 +957,7 @@ function transformOpencodeCapture(
     return new Date(captureBaseTime + monotonicCounter++).toISOString();
   };
 
-  const allUserPrompts: UserPrompt[] = exchanges.map((ex: CaptureExchange): UserPrompt => ({
+  const allUserPrompts: NormalizedUserPrompt[] = exchanges.map((ex: CaptureExchange): NormalizedUserPrompt => ({
     prompt: ex.userInput || '',
     timestamp: toSafeISOString(ex.timestamp)
   }));
@@ -949,7 +967,7 @@ function transformOpencodeCapture(
   // Content from leaking into unrelated memory files. When no keyword match
   // exists, keep only generic/current-spec prompts instead of re-including
   // obviously foreign-spec content.
-  const userPrompts: UserPrompt[] = (() => {
+  const userPrompts: NormalizedUserPrompt[] = (() => {
     if (!specFolderHint || relevanceKeywords.length === 0) return allUserPrompts;
     const filtered = allUserPrompts.filter(p => {
       return containsRelevantKeyword(relevanceKeywords, p.prompt)
@@ -1109,7 +1127,7 @@ function transformOpencodeCapture(
     learning: contextExchanges[contextExchanges.length - 1]?.assistantResponse || ''
   }] : [];
 
-  const FILES: FileEntry[] = [];
+  const FILES: NormalizedFileEntry[] = [];
   const seenPaths: Set<string> = new Set();
 
   for (const tool of filteredToolCalls) {
@@ -1140,9 +1158,14 @@ function transformOpencodeCapture(
     _sessionId: normalizedCapture.sessionId,
     _capturedAt: normalizedCapture.capturedAt,
     _toolCallCount: filteredToolCalls.length,
-    _sourceTranscriptPath: typeof metadata?.file_summary === 'object' && metadata?.file_summary !== null
-      ? (metadata.file_summary as Record<string, unknown>).transcriptPath as string | undefined
-      : undefined,
+    _sourceTranscriptPath: (() => {
+      if (typeof metadata?.file_summary === 'object' && metadata?.file_summary !== null) {
+        const summary = metadata.file_summary as Record<string, unknown>;
+        const candidate = summary.transcriptPath ?? summary.eventsPath ?? summary.sessionPath;
+        if (typeof candidate === 'string') return candidate;
+      }
+      return undefined;
+    })(),
     _sourceSessionId: typeof metadata?._sourceSessionId === 'string'
       ? metadata._sourceSessionId as string
       : normalizedCapture.sessionId,

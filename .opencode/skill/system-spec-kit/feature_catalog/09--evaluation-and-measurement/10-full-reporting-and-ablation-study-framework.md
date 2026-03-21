@@ -57,4 +57,4 @@ The reporting dashboard aggregates per-sprint metric summaries (mean, min, max, 
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenario NEW-014
+- Mapped to manual testing playbook scenario 014

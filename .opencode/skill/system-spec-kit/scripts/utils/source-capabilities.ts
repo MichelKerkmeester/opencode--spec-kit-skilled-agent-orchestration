@@ -38,8 +38,8 @@ const SOURCE_CAPABILITIES: Record<DataSource, SourceCapabilities> = {
   'copilot-cli-capture': {
     source: 'copilot-cli-capture',
     inputMode: 'stateless',
-    toolTitleWithPathExpected: false,
-    prefersStructuredSave: true,
+    toolTitleWithPathExpected: true,
+    prefersStructuredSave: true, // NOTE: aspirational — most sources operate in stateless mode. See O4-12.
   },
   'gemini-cli-capture': {
     source: 'gemini-cli-capture',
@@ -76,7 +76,5 @@ function getSourceCapabilities(source: DataSource | string | null | undefined): 
 }
 
 export {
-  SOURCE_CAPABILITIES,
   getSourceCapabilities,
-  isKnownDataSource,
 };

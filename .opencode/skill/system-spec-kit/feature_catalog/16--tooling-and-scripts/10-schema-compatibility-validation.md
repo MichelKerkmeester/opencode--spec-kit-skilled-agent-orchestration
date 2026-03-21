@@ -49,4 +49,4 @@ The function is exported in both snake_case and camelCase form from `vector-inde
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenario NEW-128
+- Mapped to manual testing playbook scenario 128

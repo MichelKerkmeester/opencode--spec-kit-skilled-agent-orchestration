@@ -48,7 +48,6 @@ If a script requires direct internal runtime access:
 ### Current Exceptions
 
 - `run-performance-benchmarks.ts` — allowlisted internal runtime imports for benchmark-specific metrics
-- `run-chk210-quality-backfill.ts` — allowlisted internal runtime import for quality backfill parsing
 
 <!-- /ANCHOR:import-policy -->
 <!-- ANCHOR:script-inventory -->
@@ -66,12 +65,8 @@ If a script requires direct internal runtime access:
 | `map-ground-truth-ids.ts` | Map ground truth identifiers for evaluation datasets |
 | `run-ablation.ts` | Run channel ablation studies (disable channels to measure impact) |
 | `run-bm25-baseline.ts` | Run BM25 baseline benchmarks for search comparison |
-| `run-chk210-quality-backfill.ts` | Backfill CHK-210 quality scores for existing memories |
 | `run-performance-benchmarks.ts` | Run performance benchmarks across memory operations |
-| `run-phase1-5-shadow-eval.ts` | Run Phase 1.5 shadow evaluation pipeline |
 | `run-phase2-closure-metrics.mjs` | Collect Phase 2 closure metrics for evaluation reporting |
-| `run-phase3-telemetry-dashboard.ts` | Generate Phase 3 telemetry dashboard data |
-| `run-quality-legacy-remediation.ts` | Remediate legacy quality issues in memory entries |
 | `run-redaction-calibration.ts` | Calibrate redaction thresholds for sensitive content filtering |
 
 **Supporting data:**

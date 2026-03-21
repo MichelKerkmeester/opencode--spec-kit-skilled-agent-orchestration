@@ -13,7 +13,7 @@ import { coerceFactsToText } from '../utils/fact-coercion';
 import { generateAnchorId, validateAnchorUniqueness, extractSpecNumber } from '../lib/anchor-generator';
 import { generateDecisionTree } from '../lib/decision-tree-generator';
 import type { DecisionNode } from '../lib/decision-tree-generator';
-import * as simFactory from '../lib/simulation-factory';
+// O5-4: Removed dead simFactory import (F-12 eliminated simulation fallback path)
 import type {
   CollectedDataSubset,
   DecisionOption,
@@ -619,7 +619,5 @@ async function extractDecisions(
 ------------------------------------------------------------------*/
 
 export {
-  extractDecisions,
-  // Legacy alias — retained for backward compatibility with external callers
-  extractDecisions as extractDecisions_alias
+  extractDecisions
 };

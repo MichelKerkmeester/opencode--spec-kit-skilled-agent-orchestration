@@ -122,7 +122,7 @@ exec
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/tests/test-memory-quality-lane.js
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/tests/test-extractors-loaders.js
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/tests/test-alignment-validator.js
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/evals/run-chk210-quality-backfill.ts
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/evals/deleted-chk210-quality-backfill-script
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/evals/run-quality-legacy-remediation.ts
  succeeded in 51ms:
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/extractors/quality-scorer.ts:17:interface ValidationSignal {
@@ -235,7 +235,7 @@ exec
     20	\`\`\`yaml
 exec
 /bin/zsh -lc "nl -ba '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts' | sed -n '1,190p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
-/bin/zsh -lc "nl -ba '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/evals/run-chk210-quality-backfill.ts' | sed -n '1,170p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
+/bin/zsh -lc "nl -ba '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/evals/deleted-chk210-quality-backfill-script' | sed -n '1,170p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Publicexec
 /bin/zsh -lc "nl -ba '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/extractors/README.md' | sed -n '1,140p'" in /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public succeeded in 51ms:
      1	// ---------------------------------------------------------------
      2	// MODULE: Memory Indexer
@@ -275,7 +275,7 @@ exec
     15	function parseArgs() {
     16	  const [, , specFolderPrefix, dbPath] = process.argv;
     17	  if (!specFolderPrefix || !dbPath) {
-    18	    throw new Error('Usage: npx tsx scripts/evals/run-chk210-quality-backfill.ts <spec-folder-prefix> <sqlite-db-path>');
+    18	    throw new Error('Usage: npx tsx scripts/evals/deleted-chk210-quality-backfill-script <spec-folder-prefix> <sqlite-db-path>');
     19	  }
     20	  return { specFolderPrefix, dbPath };
  succeeded in 51ms:
@@ -433,9 +433,9 @@ rg: /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skil
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts:755:      decisionCount: decisions.DECISIONS.length,
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts:820:    decisionCount: decisions.DECISIONS.length,
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/core/workflow.ts:935:          decisionCount: decisions.DECISIONS.length,
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/evals/run-chk210-quality-backfill.ts:62:  const decisionCount = Number(content.match(/\ndecision_count:\s*(\d+)/i)?.[1] ?? '0');
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/evals/run-chk210-quality-backfill.ts:70:    decisionCount,
-/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/evals/run-phase3-telemetry-dashboard.ts:131:      status: sessionBoostRate >= 0.25 ? 'ok' : 'warn',
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/evals/deleted-chk210-quality-backfill-script:62:  const decisionCount = Number(content.match(/\ndecision_count:\s*(\d+)/i)?.[1] ?? '0');
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/evals/deleted-chk210-quality-backfill-script:70:    decisionCount,
+/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/evals/deleted-phase3-telemetry-dashboard-script:131:      status: sessionBoostRate >= 0.25 ? 'ok' : 'warn',
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:194:  const index = (dk * 0.4) + (du * 0.35) + (dc * 0.25);
  succeeded in 50ms:
 /Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/create-record.ts:67:          qualityFlags: parsed.qualityFlags,

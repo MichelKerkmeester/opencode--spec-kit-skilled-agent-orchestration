@@ -100,9 +100,6 @@ main() {
     ops_run_step "$FAILURE_CLASS" "replay-ledger" "$MAX_ATTEMPTS" "$BACKOFF_SECONDS" "$REPAIR_FAILURES" "$OWNER" \
         "node dist/memory/cleanup-orphaned-vectors.js --repair-ledger --replay" || exit 1
 
-    ops_run_step "$FAILURE_CLASS" "verify-rpo-zero" "$MAX_ATTEMPTS" "$BACKOFF_SECONDS" "$VERIFY_FAILURES" "$OWNER" \
-        "node dist/evals/run-quality-legacy-remediation.js --check ledger-consistency" || exit 1
-
     ops_emit_success "$FAILURE_CLASS" "$OWNER" "ledger replay consistency restored"
 }
 

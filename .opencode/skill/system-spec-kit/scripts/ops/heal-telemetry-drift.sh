@@ -94,16 +94,8 @@ main() {
 
     ops_log "STATE" "class=${FAILURE_CLASS} scenario=${SCENARIO} max_attempts=${MAX_ATTEMPTS}"
 
-    ops_run_step "$FAILURE_CLASS" "detect-schema-doc-drift" "$MAX_ATTEMPTS" "$BACKOFF_SECONDS" "$DETECT_FAILURES" "$OWNER" \
-        "node dist/evals/run-phase3-telemetry-dashboard.js --check schema-doc-parity" || exit 1
-
-    ops_run_step "$FAILURE_CLASS" "sync-schema-and-docs" "$MAX_ATTEMPTS" "$BACKOFF_SECONDS" "$REPAIR_FAILURES" "$OWNER" \
-        "node dist/evals/run-phase3-telemetry-dashboard.js --sync schema-doc" || exit 1
-
-    ops_run_step "$FAILURE_CLASS" "verify-release-gate" "$MAX_ATTEMPTS" "$BACKOFF_SECONDS" "$VERIFY_FAILURES" "$OWNER" \
-        "node dist/evals/run-phase3-telemetry-dashboard.js --verify release-gate" || exit 1
-
-    ops_emit_success "$FAILURE_CLASS" "$OWNER" "telemetry schema/docs parity restored"
+    ops_log "ERROR" "Deprecated telemetry drift runner was removed; wire a supported schema-doc parity workflow before using this remediation script"
+    exit 1
 }
 
 main "$@"

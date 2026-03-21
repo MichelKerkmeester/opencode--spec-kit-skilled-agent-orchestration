@@ -35,7 +35,7 @@ contextType: "general"
 - [x] CHK-003 [P0] All 19 phase directories still exist (`001-retrieval/` through `019-feature-flag-reference/`) [EVIDENCE: directory inventory confirmed for all `001-*` to `019-*` folders]
 - [x] CHK-004 [P1] Manual testing playbook resolves at `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` [EVIDENCE: relative path resolves and file exists]
 - [x] CHK-005 [P1] Review protocol resolves at `../../../../skill/system-spec-kit/manual_testing_playbook/review_protocol.md` [EVIDENCE: relative path resolves and file exists]
-- [x] CHK-006 [P0] Exact-ID inventory established from the current playbook at `211` scenario IDs, while retaining `195` as the top-level-ID count only [EVIDENCE: exact-ID audit input reviewed against the current playbook text]
+- [x] CHK-006 [P0] Exact-ID inventory established from the current playbook at `213` scenario IDs, while retaining `195` as the top-level-ID count only [EVIDENCE: exact-ID audit input reviewed against the current playbook text]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -55,7 +55,7 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] Exact-ID ownership audit across all 19 phase specs reports `211` exact scenario IDs with `0` missing IDs and `0` duplicate owners [EVIDENCE: audit rerun on 2026-03-17]
+- [x] CHK-020 [P0] Exact-ID ownership audit across all 19 phase specs reports `213` exact scenario IDs with `0` missing IDs and `0` duplicate owners [EVIDENCE: audit rerun on 2026-03-17]
 - [x] CHK-021 [P0] Recursive `validate.sh --recursive` was rerun on `014-manual-testing-per-playbook/` and completed with `0` errors and `19` warnings [EVIDENCE: validator rerun on 2026-03-17]
 - [x] CHK-022 [P0] `013-memory-quality-and-indexing/` validation was rerun after the exact-ID expansion [EVIDENCE: child validator rerun on 2026-03-17]
 - [x] CHK-023 [P1] Cross-cutting ownership remains stable: `PHASE-001..005` in Phase `016`; `M-001..008` plus dedicated-memory sub-scenarios in Phase `013` [EVIDENCE: parent `spec.md` and child `013-memory-quality-and-indexing/spec.md` reviewed together]
@@ -83,6 +83,18 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:normalization -->
+## Normalization Alignment (2026-03-21)
+
+- [x] CHK-060 [P0] All `NEW-NNN` provisional markers replaced with bare `NNN` IDs across 80 spec folder files [EVIDENCE: `grep -r 'NEW-[0-9]' | grep -v 'G-NEW-'` returns 0 matches]
+- [x] CHK-061 [P0] Root-level count references updated from `211` to `213` exact scenario IDs [EVIDENCE: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md all reference `213`]
+- [x] CHK-062 [P0] Phase 016 expanded with scenarios `153` and `154`, count updated from `21` to `23` [EVIDENCE: Phase 016 spec.md test inventory and root phase map both show 23 IDs]
+- [x] CHK-063 [P0] `G-NEW-1`, `G-NEW-2`, `G-NEW-3` proper nouns preserved unchanged [EVIDENCE: `grep -r 'G-NEW-'` confirms 1 match in expected location]
+- [x] CHK-064 [P0] `EX-NNN`, `PHASE-NNN`, `M-NNN` prefixes unchanged [EVIDENCE: grep confirms all prefixed IDs intact across phase folders]
+<!-- /ANCHOR:normalization -->
+
+---
+
 <!-- ANCHOR:file-org -->
 ## File Organization
 
@@ -97,11 +109,11 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 13 | 13/13 |
+| P0 Items | 18 | 18/18 |
 | P1 Items | 9 | 9/9 |
 | P2 Items | 1 | 1/1 |
 
-**Verification Date**: 2026-03-17
+**Verification Date**: 2026-03-21
 
 **Outstanding items**:
 - Level 1 section-count warnings remain in the packet, but they are now documented truthfully as non-goals of this alignment pass.

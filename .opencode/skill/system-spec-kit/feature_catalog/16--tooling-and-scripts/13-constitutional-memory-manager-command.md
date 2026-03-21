@@ -67,4 +67,4 @@ The supporting command indexes and operator-facing docs now consistently describ
 
 ## 5. PLAYBOOK COVERAGE
 
-- Mapped to manual testing playbook scenario NEW-147
+- Mapped to manual testing playbook scenario 147

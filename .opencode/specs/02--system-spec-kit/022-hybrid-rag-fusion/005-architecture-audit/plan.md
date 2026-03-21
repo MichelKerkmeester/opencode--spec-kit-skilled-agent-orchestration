@@ -147,7 +147,7 @@ Addresses findings from the triple ultra-think cross-AI review (Claude Opus 4.6 
 - [x] Update `.opencode/skill/system-spec-kit/shared/README.md` structure tree with Phase 8 modules.
 - [x] Add allowlist governance fields (`approvedBy`, `createdAt`, `expiresAt`).
 - [x] Ban or sunset wildcard exceptions with explicit module lists.
-- [x] Update `.opencode/skill/system-spec-kit/scripts/evals/README.md` with missing `run-chk210-quality-backfill.ts` exception.
+- [x] Update `.opencode/skill/system-spec-kit/scripts/evals/README.md` with missing `deleted-chk210-quality-backfill-script` exception.
 
 #### P2 Nice-to-Have
 - [x] Add block comment tracking to import checker.

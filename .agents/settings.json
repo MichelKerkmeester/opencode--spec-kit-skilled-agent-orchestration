@@ -4,7 +4,7 @@
     "codebaseInvestigatorSettings": {
       "enabled": true,
       "maxNumTurns": 20,
-      "model": "gemini-2.5-pro"
+      "model": "gemini-3.1-pro-preview"
     }
   },
   "skills": {
@@ -31,12 +31,12 @@
     "spec_kit_memory": {
       "command": "node",
       "args": [
-        "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"
+        ".opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"
       ],
       "cwd": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public",
       "env": {
         "EMBEDDINGS_PROVIDER": "auto",
-        "MEMORY_DB_PATH": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite"
+        "MEMORY_DB_PATH": ".opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite"
       },
       "trust": true
     },
@@ -54,26 +54,13 @@
     "code_mode": {
       "command": "node",
       "args": [
-        "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/mcp-code-mode/mcp_server/dist/index.js"
+        ".opencode/skill/mcp-code-mode/mcp_server/dist/index.js"
       ],
-      "cwd": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public",
+      "cwd": ".",
       "env": {
-        "UTCP_CONFIG_FILE": "/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.utcp_config.json"
+        "UTCP_CONFIG_FILE": ".utcp_config.json"
       },
       "trust": true
-    }
-  },
-  "agents": {
-    "overrides": {
-      "codebase_investigator": {
-        "enabled": true,
-        "runConfig": {
-          "maxTurns": 20
-        },
-        "modelConfig": {
-          "model": "gemini-2.5-pro"
-        }
-      }
     }
   }
 }

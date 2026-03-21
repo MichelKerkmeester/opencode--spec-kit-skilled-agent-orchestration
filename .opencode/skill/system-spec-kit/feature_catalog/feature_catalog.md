@@ -211,7 +211,7 @@ Adaptive search degradation chain in `searchWithFallbackTiered()`. Tier 1: enhan
 
 See [`01--retrieval/08-quality-aware-3-tier-search-fallback.md`](01--retrieval/08-quality-aware-3-tier-search-fallback.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-109](../manual_testing_playbook/manual_testing_playbook.md)
+> **Playbook:** [109](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -449,7 +449,7 @@ The history log is written by mutation handlers (`memory_save`, `memory_update`,
 
 See [`02--mutation/10-per-memory-history-log.md`](02--mutation/10-per-memory-history-log.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-110](../manual_testing_playbook/manual_testing_playbook.md)
+> **Playbook:** [110](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -1664,7 +1664,7 @@ Rollback is controlled by the runtime graph gate (`SPECKIT_GRAPH_UNIFIED`). Disa
 
 See [`10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md`](10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-120](../manual_testing_playbook/manual_testing_playbook.md)
+> **Playbook:** [120](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -2021,7 +2021,7 @@ Rollback is immediate via feature gating (`SPECKIT_MEMORY_ADAPTIVE_RANKING`). Wh
 
 See [`11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md`](11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-121](../manual_testing_playbook/manual_testing_playbook.md)
+> **Playbook:** [121](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -2481,7 +2481,7 @@ Async embedding fallback via `index_memory_deferred()`. When embedding generatio
 
 See [`13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md`](13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-111](../manual_testing_playbook/manual_testing_playbook.md)
+> **Playbook:** [111](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -2501,7 +2501,7 @@ This allows agents to preview validation outcomes before committing while still 
 
 See [`13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md`](13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-122](../manual_testing_playbook/manual_testing_playbook.md)
+> **Playbook:** [122](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -2884,7 +2884,7 @@ Process-lifetime DB connection manager via marker file (`DB_UPDATED_FILE`). When
 
 See [`14--pipeline-architecture/17-cross-process-db-hot-rebinding.md`](14--pipeline-architecture/17-cross-process-db-hot-rebinding.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-112](../manual_testing_playbook/manual_testing_playbook.md)
+> **Playbook:** [112](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -2978,7 +2978,7 @@ Schema support is now part of vector index setup, and save handlers integrate li
 
 See [`14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md`](14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-129](../manual_testing_playbook/manual_testing_playbook.md), [NEW-130](../manual_testing_playbook/manual_testing_playbook.md)
+> **Playbook:** [129](../manual_testing_playbook/manual_testing_playbook.md), [130](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -3307,7 +3307,7 @@ Non-MCP `spec-kit-cli` entry point (`cli.ts`) for database maintenance. Four com
 
 See [`16--tooling-and-scripts/07-standalone-admin-cli.md`](16--tooling-and-scripts/07-standalone-admin-cli.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-113](../manual_testing_playbook/manual_testing_playbook.md)
+> **Playbook:** [113](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -3327,7 +3327,7 @@ Verification also closed active documentation drift outside the original spec fi
 
 See [`16--tooling-and-scripts/13-constitutional-memory-manager-command.md`](16--tooling-and-scripts/13-constitutional-memory-manager-command.md) for full implementation and verification file listings.
 
-> **Playbook:** [NEW-147](../manual_testing_playbook/manual_testing_playbook.md)
+> **Playbook:** [147](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -3345,7 +3345,7 @@ Source-dist alignment enforcement validates that every `.js` file in `mcp_server
 
 See [`16--tooling-and-scripts/14-source-dist-alignment-enforcement.md`](16--tooling-and-scripts/14-source-dist-alignment-enforcement.md) for full implementation and verification file listings.
 
-> **Playbook:** [NEW-150](../manual_testing_playbook/manual_testing_playbook.md)
+> **Playbook:** [150](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -3363,7 +3363,43 @@ MODULE_MAP.md documents internal module ownership, dependency directions, featur
 
 See [`16--tooling-and-scripts/15-module-boundary-map.md`](16--tooling-and-scripts/15-module-boundary-map.md) for full implementation and verification file listings.
 
-> **Playbook:** [NEW-151](../manual_testing_playbook/manual_testing_playbook.md), [NEW-152](../manual_testing_playbook/manual_testing_playbook.md)
+> **Playbook:** [151](../manual_testing_playbook/manual_testing_playbook.md), [152](../manual_testing_playbook/manual_testing_playbook.md)
+
+---
+
+### JSON mode hybrid enrichment
+
+#### Description
+
+Phase 016 added structured JSON summary support to `generate-context.js`, including `toolCalls` and `exchanges` fields, file-backed JSON authority preservation, and Wave 2 hardening for decision confidence, truncated titles, `git_changed_file_count` stability, and template count preservation.
+
+#### Current Reality
+
+The session capturing pipeline accepts richer structured JSON summaries via `--json` and `--stdin` inputs. File-backed JSON remains on the structured path and does not fall back into stateless reconstruction. Wave 2 hardening ensures decision confidence, truncated outcomes, `git_changed_file_count`, and template counts are stable across different input sources.
+
+#### Source Files
+
+See [`16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md`](16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) for full implementation and test file listings.
+
+> **Playbook:** [153](../manual_testing_playbook/manual_testing_playbook.md)
+
+---
+
+### JSON-primary deprecation posture
+
+#### Description
+
+Phase 017 established the JSON-primary deprecation posture: routine saves require `--json` or `--stdin` structured input, direct positional stateless capture requires `--recovery`, and operator guidance documents JSON as the primary save contract.
+
+#### Current Reality
+
+Direct positional saves without `--recovery` exit non-zero with migration guidance. `--json` and `--stdin` are the documented routine-save paths. `--recovery` is the only way to invoke stateless capture. The obsolete dynamic-capture follow-up phases are archived under `000-dynamic-capture-deprecation/`.
+
+#### Source Files
+
+See [`16--tooling-and-scripts/17-json-primary-deprecation-posture.md`](16--tooling-and-scripts/17-json-primary-deprecation-posture.md) for full implementation and test file listings.
+
+> **Playbook:** [154](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -3449,11 +3485,11 @@ See [`16--tooling-and-scripts/11-feature-catalog-code-references.md`](16--toolin
 
 #### Description
 
-Session capturing pipeline quality is the closure feature for spec `010-perfect-session-capturing`. It covers the full shipped session-capture path for `generate-context.js`: (1) Part I hardening across session extraction, file writing, contamination filtering, alignment blocking, and config-driven limits; (2) stateless enrichment from spec-folder and git context; (3) numeric quality-score calibration so thin stateless saves score lower than rich saves; (4) native stateless fallback support for all supported local CLI ecosystems (OpenCode, Claude Code, Codex CLI, Copilot CLI, Gemini CLI); (5) one shared semantic sufficiency gate so aligned but under-evidenced memories fail explicitly instead of indexing; (6) one shared rendered-memory template contract so malformed ANCHOR/frontmatter output fails before write/index; (7) a fully refreshed canonical verification, remediation, and manual-testing record.
+Session capturing pipeline quality is the closure feature for spec `010-perfect-session-capturing`. It covers the full shipped session-capture path for `generate-context.js`: (1) Part I hardening across session extraction, file writing, contamination filtering, alignment blocking, and config-driven limits; (2) stateless enrichment from spec-folder and git context; (3) numeric quality-score calibration so thin stateless saves score lower than rich saves; (4) native stateless fallback support for all supported local CLI ecosystems (OpenCode, Claude Code, Codex CLI, Copilot CLI, Gemini CLI); (5) one shared semantic sufficiency gate so aligned but under-evidenced memories fail explicitly instead of indexing; (6) one shared rendered-memory template contract so malformed ANCHOR/frontmatter output fails before write/index; (7) a fully refreshed canonical verification and manual-testing record; (8) JSON-primary routine-save contract with runtime deprecation of unguarded stateless saves; (9) Wave 2 count/confidence hardening for decision confidence, truncated outcomes, and stable `git_changed_file_count` priority.
 
 #### Current Reality
 
-The shipped session-capture pipeline enforces crypto session IDs, atomic batch writes with rollback, contamination filtering, quality abort thresholds, alignment blocking, and configurable pipeline constants. It tries native capture across five CLI backends (OpenCode, Claude Code, Codex CLI, Copilot CLI, Gemini CLI) in order and requires each to match the active workspace identity before accepting its transcript. A semantic sufficiency gate rejects aligned but under-evidenced saves with `INSUFFICIENT_CONTEXT_ABORT`. Rendered memory files preserve ANCHOR comments through post-render cleanup, render session-specific trigger phrases, and accept both camelCase and snake_case save contracts. The shared rendered-memory template contract validates structural output before write/index, and the same contract is used by the historical remediation tooling.
+The shipped session-capture pipeline enforces crypto session IDs, atomic batch writes with rollback, contamination filtering, quality abort thresholds, alignment blocking, and configurable pipeline constants. It tries native capture across five CLI backends (OpenCode, Claude Code, Codex CLI, Copilot CLI, Gemini CLI) in order and requires each to match the active workspace identity before accepting its transcript. A semantic sufficiency gate rejects aligned but under-evidenced saves with `INSUFFICIENT_CONTEXT_ABORT`. Rendered memory files preserve ANCHOR comments through post-render cleanup, render session-specific trigger phrases, and accept both camelCase and snake_case save contracts. The shared rendered-memory template contract validates structural output before write/index so routine saves stay structurally clean. Structured `--stdin` / `--json` input is the only routine-save contract; direct positional saves without `--recovery` now exit non-zero with migration guidance. Decision confidence, truncated outcome handling, and `git_changed_file_count` follow stable priority chains that respect explicit input values.
 
 #### Source Files
 
@@ -3523,7 +3559,7 @@ Retention policy logic is integrated with governance controls, and allow/deny ou
 
 See [`17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md`](17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-122](../manual_testing_playbook/manual_testing_playbook.md)
+> **Playbook:** [122](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 
@@ -3545,7 +3581,7 @@ Shared-memory handlers and lifecycle tools use the same membership and rollout c
 
 See [`17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md`](17--governance/04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md) for full implementation and test file listings.
 
-> **Playbook:** [NEW-123](../manual_testing_playbook/manual_testing_playbook.md), [NEW-148](../manual_testing_playbook/manual_testing_playbook.md)
+> **Playbook:** [123](../manual_testing_playbook/manual_testing_playbook.md), [148](../manual_testing_playbook/manual_testing_playbook.md)
 
 ---
 

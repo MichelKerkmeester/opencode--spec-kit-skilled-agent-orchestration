@@ -100,10 +100,8 @@ main() {
     ops_run_step "$FAILURE_CLASS" "refresh-session-candidates" "$MAX_ATTEMPTS" "$BACKOFF_SECONDS" "$REPAIR_FAILURES" "$OWNER" \
         "node dist/core/workflow.js --session-reconcile --refresh-candidates" || exit 1
 
-    ops_run_step "$FAILURE_CLASS" "verify-latency-and-route" "$MAX_ATTEMPTS" "$BACKOFF_SECONDS" "$VERIFY_FAILURES" "$OWNER" \
-        "node dist/evals/run-phase1-5-shadow-eval.js --check session-quality" || exit 1
-
-    ops_emit_success "$FAILURE_CLASS" "$OWNER" "session routing ambiguity reduced to policy threshold"
+    ops_log "ERROR" "Deprecated session-quality verifier was removed; wire a supported verification command before using this remediation script"
+    exit 1
 }
 
 main "$@"

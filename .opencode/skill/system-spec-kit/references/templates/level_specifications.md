@@ -763,7 +763,7 @@ Some templates are not level-specific but can be used at any documentation level
 
 **Important:**
 - Memory files are auto-generated and should NOT be created manually
-- Use `/memory:save` or `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]`
+- Use `/memory:save` or `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' specs/###-folder/`
 - Scratch folder contents are temporary and should be cleaned up after work completes
 
 ---

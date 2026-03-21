@@ -190,10 +190,50 @@ contextType: "implementation"
 
 ---
 
+## Phase 7: Cross-CLI Adoption Boosting
+
+### Skill Advisor Routing
+
+- [x] T071 Add `mcp-coco-index` `INTENT_BOOSTERS` entries [10m]
+- [x] T072 Add `PHRASE_INTENT_BOOSTERS` entries [10m]
+- [x] T073 Add `MULTI_SKILL_BOOSTERS` entries [5m]
+- [x] T074 Increase auto-semantic-search boost from 1.2 to 1.8 [2m]
+
+### Instruction File Updates
+
+- [x] T075 Add Code Search Protocol to `AGENTS.md` [10m]
+- [x] T076 Add Code Search Protocol to `GEMINI.md` [10m]
+
+### @context Agent Integration
+
+- [x] T077 Add `cocoindex_code` to `@context` `mcpServers` [2m]
+- [x] T078 Add CocoIndex to Capability Scan tools table [3m]
+- [x] T079 Add concept search branch to Tool Selection Guide [3m]
+- [x] T080 Add CocoIndex as first tool in Layer 2 strategy [5m]
+- [x] T081 Update Tool Sequence [2m]
+
+### Cross-CLI Playbook
+
+- [x] T082 Per-CLI activation recipes in `../../../skill/mcp-coco-index/references/cross_cli_playbook.md` [15m]
+- [x] T083 Expand `../../../skill/mcp-coco-index/SKILL.md` activation triggers [10m]
+
+### Spec Documentation
+
+- [x] T084 Update `spec.md` [10m]
+- [x] T085 Update `tasks.md` [10m]
+- [x] T086 Update `plan.md` [10m]
+
+### Multi-Runtime Agent Rollout
+
+- [x] T087 Apply CocoIndex integration to `.agents/agents/context.md` (Copilot) [5m]
+- [x] T088 Apply CocoIndex integration to `.claude/agents/context.md`, `.codex/agents/context.toml`, `.opencode/agent/chatgpt/context.md` [10m]
+- [x] T089 Apply Code Search Protocol + skill_advisor changes to Barter codebase and `AGENTS_example_fs_enterprises.md` [10m]
+- [x] T090 Create changelog `v1.2.0.0.md` documenting Phase 7 work [10m]
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]` (T001-T070)
+- [x] All tasks marked `[x]` (T001-T090)
 - [x] No `[B]` blocked tasks remaining
 - [x] All 6 config files pass syntax validation
 - [x] Naming consistent (`cocoindex_code`) across all configs
@@ -204,6 +244,11 @@ contextType: "implementation"
 - [x] `../../../skill/mcp-coco-index/SKILL.md` updated with query optimization and `refresh_index` guidance
 - [x] Helper scripts and advisor hardening validated for Phase 2
 - [x] Strict readiness issue codes, exit behavior, and downstream adoption packaging validated for Phase 3
+- [x] Skill advisor routing boosters, phrase matching, and semantic-search weighting updated for Phase 7
+- [x] `AGENTS.md`, `GEMINI.md`, `@context`, `../../../skill/mcp-coco-index/references/cross_cli_playbook.md`, and `../../../skill/mcp-coco-index/SKILL.md` updated for cross-CLI CocoIndex adoption boosting
+- [x] All 5 @context agent runtimes updated (`.opencode/agent/`, `.opencode/agent/chatgpt/`, `.agents/agents/`, `.claude/agents/`, `.codex/agents/`)
+- [x] Barter codebase and `AGENTS_example_fs_enterprises.md` updated with Code Search Protocol and skill_advisor changes
+- [x] Changelog `v1.2.0.0` created
 
 <!-- /ANCHOR:completion -->
 
@@ -228,5 +273,6 @@ LEVEL 2 TASKS
 - Explicit verification tasks
 - Phase 1-3 (config installation) complete 2026-03-18
 - Phase 4 (cross-CLI validation + root cause + docs) complete 2026-03-18
-- 70 total tasks (T001-T070)
+- Phase 7 (cross-CLI adoption boosting) documented 2026-03-20
+- 86 total tasks (T001-T086)
 -->

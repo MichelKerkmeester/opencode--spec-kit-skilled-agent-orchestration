@@ -181,17 +181,10 @@ async function indexMemory(
   return memoryId;
 }
 
-async function updateMetadataWithEmbedding(contextDir: string, memoryId: number): Promise<void> {
-  await updateMetadataEmbeddingStatus(contextDir, {
-    status: 'indexed',
-    memoryId,
-  });
-}
-
 async function updateMetadataEmbeddingStatus(
   contextDir: string,
   indexingStatus: WorkflowIndexingStatus
-): Promise<void> {
+): Promise<boolean> {
   try {
     const metadataPath = path.join(contextDir, 'metadata.json');
     const metadataContent = await fs.readFile(metadataPath, 'utf-8');
@@ -212,6 +205,7 @@ async function updateMetadataEmbeddingStatus(
     };
 
     await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2));
+    return true;
   } catch (metaError: unknown) {
     const errMsg = metaError instanceof Error ? metaError.message : String(metaError);
     structuredLog('warn', 'Failed to update metadata.json', {
@@ -220,6 +214,7 @@ async function updateMetadataEmbeddingStatus(
       error: errMsg
     });
     console.warn(`   Warning: Could not update metadata.json: ${errMsg}`);
+    return false;
   }
 }
 
@@ -230,7 +225,6 @@ async function updateMetadataEmbeddingStatus(
 export {
   indexMemory,
   updateMetadataEmbeddingStatus,
-  updateMetadataWithEmbedding,
 };
 
 export type {

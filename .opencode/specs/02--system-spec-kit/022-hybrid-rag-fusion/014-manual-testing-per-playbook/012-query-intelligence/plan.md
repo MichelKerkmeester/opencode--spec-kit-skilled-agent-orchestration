@@ -29,7 +29,7 @@ contextType: "general"
 | **Testing** | manual + MCP |
 
 ### Overview
-This plan converts the six query-intelligence scenarios in the manual testing playbook into an ordered execution workflow for Phase 012. The phase covers flag-gated routing and budget behavior first (NEW-033, NEW-037), then shadow-mode and diversity verification (NEW-034, NEW-035), then score-processing scenarios (NEW-036, NEW-038). All scenarios are non-destructive; none require corpus mutations or irreversible state changes.
+This plan converts the six query-intelligence scenarios in the manual testing playbook into an ordered execution workflow for Phase 012. The phase covers flag-gated routing and budget behavior first (033, 037), then shadow-mode and diversity verification (034, 035), then score-processing scenarios (036, 038). All scenarios are non-destructive; none require corpus mutations or irreversible state changes.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -80,12 +80,12 @@ Manual query-intelligence test execution pipeline with review-gated evidence col
 - [ ] Prepare a varied-complexity sandbox corpus to drive simple, moderate, and complex query classification across all scenarios.
 
 ### Phase 2: Non-Destructive Tests
-- [ ] Run NEW-033 to verify query complexity routing: confirm simple queries select 2 channels, moderate 3, complex 5; then disable SPECKIT_COMPLEXITY_ROUTER and confirm fallback to "complex" default routing.
-- [ ] Run NEW-034 to confirm RSF shadow-mode status: inspect branch conditions in code path, run queries, and confirm RRF remains the sole live fusion method with no runtime RSF branch affecting returned results.
-- [ ] Run NEW-035 to validate channel min-representation: execute a dominance query where one channel would monopolize top-k; confirm every active channel has at least one representative above the 0.005 quality floor.
-- [ ] Run NEW-036 to verify confidence-based truncation: execute a long-tail query; confirm results are trimmed at the relevance cliff (first gap exceeding 2x median gap); confirm minimum 3 results are always returned; confirm cutoff metadata is visible in the trace.
-- [ ] Run NEW-037 to verify dynamic token budget allocation: run queries at each complexity tier; confirm budgets of 1500/2500/4000 tokens respectively; then disable SPECKIT_EMBEDDING_EXPANSION (the token-budget flag) and confirm fallback to 4000-token default.
-- [ ] Run NEW-038 to validate query expansion: run a complex query and confirm >=2 expansion variants produced; confirm baseline+expanded results are deduplicated with baseline-first ordering; run a simple query and confirm expansion is suppressed.
+- [ ] Run 033 to verify query complexity routing: confirm simple queries select 2 channels, moderate 3, complex 5; then disable SPECKIT_COMPLEXITY_ROUTER and confirm fallback to "complex" default routing.
+- [ ] Run 034 to confirm RSF shadow-mode status: inspect branch conditions in code path, run queries, and confirm RRF remains the sole live fusion method with no runtime RSF branch affecting returned results.
+- [ ] Run 035 to validate channel min-representation: execute a dominance query where one channel would monopolize top-k; confirm every active channel has at least one representative above the 0.005 quality floor.
+- [ ] Run 036 to verify confidence-based truncation: execute a long-tail query; confirm results are trimmed at the relevance cliff (first gap exceeding 2x median gap); confirm minimum 3 results are always returned; confirm cutoff metadata is visible in the trace.
+- [ ] Run 037 to verify dynamic token budget allocation: run queries at each complexity tier; confirm budgets of 1500/2500/4000 tokens respectively; then disable SPECKIT_EMBEDDING_EXPANSION (the token-budget flag) and confirm fallback to 4000-token default.
+- [ ] Run 038 to validate query expansion: run a complex query and confirm >=2 expansion variants produced; confirm baseline+expanded results are deduplicated with baseline-first ordering; run a simple query and confirm expansion is suppressed.
 
 ### Phase 3: Evidence Collection and Verdict
 - [ ] For each scenario, capture prompt, exact command sequence, raw output, expected signals, and reviewer notes.
@@ -100,12 +100,12 @@ Manual query-intelligence test execution pipeline with review-gated evidence col
 
 | Test ID | Scenario Name | Exact Prompt | Execution Type (manual/MCP) |
 |---------|---------------|--------------|-----------------------------|
-| NEW-033 | Query complexity router (R15) | `Verify query complexity router (R15).` | manual |
-| NEW-034 | Relative score fusion in shadow mode (R14/N1) | `Check RSF shadow behavior post-cleanup.` | manual |
-| NEW-035 | Channel min-representation (R2) | `Validate channel min-representation (R2).` | MCP |
-| NEW-036 | Confidence-based result truncation (R15-ext) | `Verify confidence-based truncation (R15-ext).` | MCP |
-| NEW-037 | Dynamic token budget allocation (FUT-7) | `Verify dynamic token budgets (FUT-7).` | manual |
-| NEW-038 | Query expansion (R12) | `Validate query expansion (R12).` | MCP |
+| 033 | Query complexity router (R15) | `Verify query complexity router (R15).` | manual |
+| 034 | Relative score fusion in shadow mode (R14/N1) | `Check RSF shadow behavior post-cleanup.` | manual |
+| 035 | Channel min-representation (R2) | `Validate channel min-representation (R2).` | MCP |
+| 036 | Confidence-based result truncation (R15-ext) | `Verify confidence-based truncation (R15-ext).` | MCP |
+| 037 | Dynamic token budget allocation (FUT-7) | `Verify dynamic token budgets (FUT-7).` | manual |
+| 038 | Query expansion (R12) | `Validate query expansion (R12).` | MCP |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -119,7 +119,7 @@ Manual query-intelligence test execution pipeline with review-gated evidence col
 | [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Internal | Green | Verdicts and coverage rules cannot be applied consistently |
 | [`../../feature_catalog/12--query-intelligence/`](../../feature_catalog/12--query-intelligence/) | Internal | Green | Test-to-feature context and review triage lose their canonical reference |
 | MCP runtime for `memory_search` with trace enabled | Internal | Yellow | Query-intelligence scenarios cannot be executed or compared |
-| Varied-complexity sandbox corpus for routing tier tests | Internal | Yellow | NEW-033, NEW-037, and NEW-038 cannot produce reliable tier-classification evidence |
+| Varied-complexity sandbox corpus for routing tier tests | Internal | Yellow | 033, 037, and 038 cannot produce reliable tier-classification evidence |
 <!-- /ANCHOR:dependencies -->
 
 ---

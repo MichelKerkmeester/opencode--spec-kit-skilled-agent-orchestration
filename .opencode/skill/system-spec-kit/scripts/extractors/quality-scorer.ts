@@ -11,8 +11,9 @@ import type {
   QualityDimensionScore,
   QualityFlag,
   QualityScoreResult,
-} from '../core/quality-scorer';
+} from '../types/session-types';
 import type { ContaminationSeverity } from './contamination-filter';
+import { VALIDATION_RULE_METADATA, type ValidationRuleSeverity } from '../lib/validate-memory-quality';
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES & CONSTANTS
@@ -39,7 +40,12 @@ interface QualityInputs {
 
 const QUALITY_RULE_IDS: QualityRuleId[] = ['V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10', 'V11', 'V12'];
 
-const PENALTY_PER_FAILED_RULE = 0.25;
+// O2-9: Weight penalties by V-rule severity instead of flat rate
+const PENALTY_BY_SEVERITY: Record<ValidationRuleSeverity, number> = {
+  high: 0.25,
+  medium: 0.15,
+  low: 0.05,
+};
 
 /* ───────────────────────────────────────────────────────────────
    2. QUALITY SCORING
@@ -105,7 +111,13 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
   let sufficiencyCap: number | null = null;
 
   const failedRules = validatorSignals.filter((signal) => !signal.passed);
-  qualityScore -= failedRules.length * PENALTY_PER_FAILED_RULE;
+  // O2-9: Sum severity-weighted penalties instead of flat rate
+  const totalPenalty = failedRules.reduce((sum, failed) => {
+    const metadata = VALIDATION_RULE_METADATA[failed.ruleId as keyof typeof VALIDATION_RULE_METADATA];
+    const severity: ValidationRuleSeverity = metadata?.severity ?? 'medium';
+    return sum + (PENALTY_BY_SEVERITY[severity] ?? PENALTY_BY_SEVERITY.medium);
+  }, 0);
+  qualityScore -= totalPenalty;
 
   for (const failed of failedRules) {
     if (failed.ruleId === 'V1' || failed.ruleId === 'V2') {
@@ -135,6 +147,13 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
     if (failed.ruleId === 'V11') {
       qualityFlags.add('has_error_content');
     }
+    // O2-2: Add V3 and V12 flag mappings
+    if (failed.ruleId === 'V3') {
+      qualityFlags.add('has_malformed_spec_folder');
+    }
+    if (failed.ruleId === 'V12') {
+      qualityFlags.add('has_topical_mismatch');
+    }
   }
 
   if (hadContamination) {
@@ -162,7 +181,8 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
 
   if (insufficientContext) {
     qualityFlags.add('has_insufficient_context');
-    sufficiencyCap = normalizedSufficiencyScore !== null ? normalizedSufficiencyScore * 0.6 : 0.35;
+    // O2-7: Use Math.min to preserve any stricter existing cap (e.g. contamination 0.6)
+    sufficiencyCap = Math.min(sufficiencyCap ?? 1, normalizedSufficiencyScore !== null ? normalizedSufficiencyScore * 0.6 : 0.35);
     qualityScore = Math.min(qualityScore, sufficiencyCap);
   }
 
@@ -184,17 +204,8 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
     qualityScore += 0.10;
   }
 
-  // Apply contamination penalty AFTER bonuses so bonuses cannot offset it
-  if (hadContamination) {
-    const severity = contaminationSeverity || 'medium';
-    if (severity === 'low') {
-      qualityScore -= 0.10;
-    } else if (severity === 'medium') {
-      qualityScore -= 0.20;
-    } else {
-      qualityScore -= 0.30;
-    }
-  }
+  // O2-3: Contamination penalty uses cap only (not cap + subtraction)
+  // The cap at the contamination block above is sufficient; double-counting removed
 
   if (sufficiencyCap !== null) {
     qualityScore = Math.min(qualityScore, sufficiencyCap);

@@ -428,6 +428,18 @@ INTENT_BOOSTERS = {
     "depth": ("sk-prompt-improver", 1.5),
     "ricce": ("sk-prompt-improver", 1.5),
     "scoring": ("sk-prompt-improver", 0.8),
+
+    # ─────────────────────────────────────────────────────────────────
+    # MCP-COCO-INDEX: Semantic code search via vector embeddings
+    # ─────────────────────────────────────────────────────────────────
+    "cocoindex": ("mcp-coco-index", 2.5),
+    "ccc": ("mcp-coco-index", 2.0),
+    "semantic": ("mcp-coco-index", 1.5),
+    "vector search": ("mcp-coco-index", 2.0),
+    "similar code": ("mcp-coco-index", 1.8),
+    "concept search": ("mcp-coco-index", 2.0),
+    "discover": ("mcp-coco-index", 0.6),
+    "implementation": ("mcp-coco-index", 0.5),
 }
 
 # Ambiguous keywords that should boost MULTIPLE skills
@@ -437,6 +449,7 @@ MULTI_SKILL_BOOSTERS = {
     "audit": [("sk-code--review", 0.6), ("system-spec-kit", 0.3), ("mcp-chrome-devtools", 0.3), ("sk-code--web", 0.2)],
     "chain": [("mcp-code-mode", 0.3)],
     "changes": [("sk-git", 0.4), ("system-spec-kit", 0.2)],
+    "discover": [("mcp-coco-index", 0.5)],
     "css": [("sk-code--web", 0.6), ("mcp-chrome-devtools", 0.3)],
     "code": [("sk-code--web", 0.2), ("sk-code--opencode", 0.1)],
     "context": [("system-spec-kit", 0.4)],
@@ -501,6 +514,17 @@ PHRASE_INTENT_BOOSTERS = {
     "iterative research": [("sk-deep-research", 2.5)],
     "multi-round research": [("sk-deep-research", 2.0)],
     "overnight research": [("sk-deep-research", 2.0)],
+    # --- CocoIndex semantic code search ---
+    "find code that": [("mcp-coco-index", 1.8)],
+    "similar code": [("mcp-coco-index", 2.0)],
+    "where is the logic": [("mcp-coco-index", 1.5)],
+    "search codebase": [("mcp-coco-index", 2.2)],
+    "code that handles": [("mcp-coco-index", 1.5)],
+    "find implementations": [("mcp-coco-index", 2.0)],
+    "find similar": [("mcp-coco-index", 1.8)],
+    "semantic code search": [("mcp-coco-index", 2.5)],
+    "how is.*implemented": [("mcp-coco-index", 1.2)],
+    "how does.*work": [("mcp-coco-index", 1.0)],
     "convergence detection": [("sk-deep-research", 2.0)],
     "figma css": [("mcp-figma", 0.8), ("sk-code--web", 0.4)],
     "full stack typescript": [("sk-code--opencode", 0.8)],
@@ -1214,7 +1238,7 @@ def analyze_request(
     )
 
     if should_auto_use_semantic_search(prompt):
-        skill_boosts["mcp-coco-index"] = skill_boosts.get("mcp-coco-index", 0.0) + 1.2
+        skill_boosts["mcp-coco-index"] = skill_boosts.get("mcp-coco-index", 0.0) + 1.8
         boost_reasons.setdefault("mcp-coco-index", []).append("!intent:semantic-code-search")
 
     # Blend CocoIndex semantic search results when available

@@ -1,0 +1,12 @@
+{
+  "id": "001-post-session-capturing-alignment",
+  "parentId": "010-skill-alignment",
+  "title": "Post Session Capturing Alignment",
+  "description": "Propagate changes from specs 016, 017, 018, 011, 012, 013 into SKILL.md, references, and assets",
+  "status": "in-progress",
+  "priority": "P1",
+  "level": 2,
+  "created": "2026-03-20",
+  "updated": "2026-03-20",
+  "memorySequence": 0
+}

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-03-20T13:22:44.930Z",
+  "generated": "2026-03-20T18:07:10.322Z",
   "folders": [
     {
       "specFolder": "00--ai-systems-non-dev/001-global-shared/001-hvr-refinement-repo-analysis",
@@ -583,7 +583,7 @@
         "specification",
         "022-hybrid-rag-fusion"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
@@ -716,7 +716,7 @@
         "operational",
         "tooling"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization",
@@ -765,7 +765,7 @@
         "boundary",
         "remediation"
       ],
-      "lastUpdated": "2026-03-17T13:52:20.424Z"
+      "lastUpdated": "2026-03-20T18:30:00.000Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog",
@@ -1001,7 +1001,7 @@
         "specification",
         "remediation-revalidation"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
@@ -1011,7 +1011,7 @@
         "specification",
         "008-hydra-db-based-features"
       ],
-      "lastUpdated": "2026-03-19T15:45:43.318Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails",
@@ -1095,7 +1095,7 @@
         "session",
         "capturing"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.188Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/000-dynamic-capture-deprecation",
@@ -1147,7 +1147,7 @@
         "parity",
         "hardening"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.206Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/000-dynamic-capture-deprecation/004-source-capabilities-and-structured-preference",
@@ -1251,7 +1251,7 @@
         "phase",
         "classification"
       ],
-      "lastUpdated": "2026-03-19T15:45:43.397Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/008-signal-extraction",
@@ -1343,7 +1343,7 @@
         "contract",
         "indexability"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/016-json-mode-hybrid-enrichment",
@@ -1357,7 +1357,7 @@
         "enrichment",
         "phase"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.257Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/017-json-primary-deprecation",
@@ -1368,23 +1368,22 @@
         "json-primary",
         "deprecation"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.263Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/018-memory-save-quality-fixes",
-      "description": "Memory Save Quality — 8 root cause fixes in generate-context extractors",
+      "description": "Feature Specification: Memory Save Quality Root Cause Fixes",
       "keywords": [
+        "feature",
+        "specification",
         "memory",
         "save",
         "quality",
-        "generate-context",
-        "decision-dedup",
-        "blocker",
-        "trigger-phrases",
-        "tree-thinning",
-        "extractors"
+        "root",
+        "cause",
+        "fixes"
       ],
-      "lastUpdated": "2026-03-20T15:30:00.000Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment",
@@ -1415,7 +1414,7 @@
         "specification",
         "013-agents-md-alignment"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook",
@@ -1473,7 +1472,7 @@
         "maintenance",
         "phase"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/005-lifecycle",
@@ -1510,7 +1509,7 @@
         "evaluation",
         "phase"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/008-bug-fixes-and-data-integrity",
@@ -1522,7 +1521,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/009-evaluation-and-measurement",
@@ -1532,7 +1531,7 @@
         "specification",
         "evaluation-and-measurement"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/010-graph-signal-activation",
@@ -1548,7 +1547,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/011-scoring-and-calibration",
@@ -1560,7 +1559,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/012-query-intelligence",
@@ -1572,7 +1571,7 @@
         "query-intelligence",
         "phase"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/013-memory-quality-and-indexing",
@@ -1586,7 +1585,7 @@
         "indexing",
         "phase"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/014-pipeline-architecture",
@@ -1602,7 +1601,7 @@
         "pipeline",
         "architecture"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/015-retrieval-enhancements",
@@ -1614,7 +1613,7 @@
         "retrieval-enhancements",
         "phase"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/016-tooling-and-scripts",
@@ -1626,7 +1625,7 @@
         "manual",
         "testing"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/017-governance",
@@ -1638,7 +1637,7 @@
         "governance",
         "phase"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/018-ux-hooks",
@@ -1650,7 +1649,7 @@
         "ux-hooks",
         "phase"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/019-feature-flag-reference",
@@ -1662,7 +1661,7 @@
         "feature-flag-reference",
         "phase"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-rewrite-memory-mcp-readme",
@@ -3360,7 +3359,7 @@
         "self-invocation",
         "guards"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "03--commands-and-skills/010-sk-doc-rename",
@@ -3517,7 +3516,7 @@
         "playbook",
         "alignment"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "03--commands-and-skills/022-mcp-coco-integration",
@@ -3568,7 +3567,7 @@
         "feature-catalog",
         "command"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "03--commands-and-skills/026-cmd-create-manual-testing-playbook",
@@ -3580,7 +3579,7 @@
         "testing-playbook",
         "command"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "03--commands-and-skills/027-cmd-create-yaml-refinement",
@@ -3606,7 +3605,7 @@
         "testing",
         "playbook"
       ],
-      "lastUpdated": "2026-03-20T13:22:44.930Z"
+      "lastUpdated": "2026-03-20T18:07:10.322Z"
     },
     {
       "specFolder": "04--agent-orchestration/018-opencode-agent-path-only",
