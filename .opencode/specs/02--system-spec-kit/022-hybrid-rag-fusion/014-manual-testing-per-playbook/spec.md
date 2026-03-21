@@ -98,6 +98,8 @@ Provide a canonical parent packet with phase linkage across 19 child folders, us
 | 014 | `014-pipeline-architecture/` | Pipeline architecture tests | 18 exact IDs (049..054, 067, 071, 076, 078, 080, 087, 095, 112, 115, 129, 130, 146) | Draft |
 | 015 | `015-retrieval-enhancements/` | Retrieval enhancement tests | 11 exact IDs (055..060, 077, 093, 094, 096, 145) | Draft |
 | 016 | `016-tooling-and-scripts/` | Tooling/script tests | 23 exact IDs (061, 062, 070, 089, 099, 108, 113, 127, 128, 135..139, 147, 149, 153, 154, PHASE-001..005) | Draft |
+
+> **Note (2026-03-21):** Scenario 154 updated to reflect JSON-only contract after full removal of recovery mode (`--recovery` flag) in commit `705ac0fa6`.
 | 017 | `017-governance/` | Governance tests | 5 exact IDs (063, 064, 122, 123, 148) | Draft |
 | 018 | `018-ux-hooks/` | UX hook tests | 5 exact IDs (103..107) | Draft |
 | 019 | `019-feature-flag-reference/` | Feature-flag reference tests | 8 exact IDs (EX-028..034, 125) | Draft |

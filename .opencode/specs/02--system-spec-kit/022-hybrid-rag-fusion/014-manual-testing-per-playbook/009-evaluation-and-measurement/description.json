@@ -15,5 +15,9 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Manual Testing: Evaluation and Measurement",
+  "status": "Complete",
+  "importance_tier": "medium",
+  "short_description": "Manual testing for evaluation and measurement scoring features"
 }

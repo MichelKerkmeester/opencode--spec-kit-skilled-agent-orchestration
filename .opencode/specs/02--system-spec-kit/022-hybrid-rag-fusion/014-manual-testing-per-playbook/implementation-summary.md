@@ -110,3 +110,16 @@ The `M-007` manual testing playbook block now reflects the `010` closure evidenc
 <!-- /ANCHOR:limitations -->
 
 ---
+
+## Post-Completion Updates
+
+### Recovery Mode Removal Alignment (2026-03-21)
+
+Recovery mode (`--recovery` flag) was fully removed from `generate-context.js` in commit `705ac0fa6`. The following updates were made to align this spec folder:
+
+- **016/spec.md**: Scenario REQ-154 reframed from `--recovery` enforcement to JSON-only contract enforcement
+- **016/plan.md**: Scenario 154 prompt updated to reflect JSON-only validation
+- **016/checklist.md**: CHK-034 evidence updated to reflect new error message
+- **013/scratch/execution-evidence-partB.md**: Historical annotation added for M-007r evidence
+- **016/scratch/execution-evidence.md**: Historical annotation added for scenarios 139/154
+- **14 description.json files**: Missing title/status/importance_tier/short_description fields added

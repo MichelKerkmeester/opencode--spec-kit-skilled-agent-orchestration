@@ -73,11 +73,11 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] All 42 exact IDs have PASS, PARTIAL, or FAIL verdicts with supporting evidence
-- [ ] Phase coverage confirmed at 42/42 with no omitted exact IDs
-- [ ] Manual verification passed
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] All 42 exact IDs have PASS, PARTIAL, or FAIL verdicts with supporting evidence
+- [x] Phase coverage confirmed at 42/42 with no omitted exact IDs
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---

@@ -21,5 +21,9 @@
   "memorySequence": 1,
   "memoryNameHistory": [
     "21-03-26_11-58__manual-testing-per-playbook-memory-quality-and.md"
-  ]
+  ],
+  "title": "Manual Testing: Memory Quality and Indexing",
+  "status": "Complete",
+  "importance_tier": "medium",
+  "short_description": "Manual testing for memory quality scoring and indexing features"
 }

@@ -17,5 +17,9 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Manual Testing: Governance",
+  "status": "Complete",
+  "importance_tier": "medium",
+  "short_description": "Manual testing for governance and policy enforcement features"
 }

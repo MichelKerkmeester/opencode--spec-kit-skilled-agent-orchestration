@@ -17,5 +17,9 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Manual Testing: Scoring and Calibration",
+  "status": "Complete",
+  "importance_tier": "medium",
+  "short_description": "Manual testing for scoring and calibration pipeline features"
 }

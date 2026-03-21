@@ -17,5 +17,9 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Manual Testing: Feature Flag Reference",
+  "status": "Complete",
+  "importance_tier": "medium",
+  "short_description": "Manual testing for feature flag reference and toggle management features"
 }

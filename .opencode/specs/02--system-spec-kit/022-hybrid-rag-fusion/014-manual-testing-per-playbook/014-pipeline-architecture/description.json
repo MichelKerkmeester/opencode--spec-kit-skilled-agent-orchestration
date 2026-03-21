@@ -21,5 +21,9 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Manual Testing: Pipeline Architecture",
+  "status": "Complete",
+  "importance_tier": "medium",
+  "short_description": "Manual testing for pipeline architecture and stage orchestration features"
 }

@@ -140,6 +140,8 @@ NO_DATA_AVAILABLE: No session data found. Neither JSON data file, OpenCode sessi
 Live execution not possible when active session exists (system correctly picks up current Claude session).
 Verdict: PARTIAL for live execution, but code path confirmed by inspection.
 
+> **Post-removal note (2026-03-21):** Recovery mode (`--recovery` flag) was fully removed from `generate-context.js` in commit `705ac0fa6`. The M-007r evidence below reflects pre-removal behavior and is retained for historical audit purposes. Scenario 154 now validates JSON-only enforcement (bare positional mode rejected).
+
 ### M-007r: --recovery Flag Enforcement
 CLI execution:
 ```

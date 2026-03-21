@@ -129,7 +129,7 @@ The phase packet should be used as an operator checklist: establish safe prerequ
 | `PHASE-003` | Recursive phase validation | `Run recursive validation on a phase parent and verify aggregated per-phase results.` | manual |
 | `PHASE-004` | Phase link validation | `Validate phase link integrity across parent and child folders.` | manual |
 | `153` | JSON mode hybrid enrichment | `Validate the structured JSON summary contract for generate-context.js including toolCalls/exchanges fields and file-backed JSON authority.` | manual |
-| `154` | JSON-primary deprecation posture | `Validate that routine saves require --json/--stdin, direct positional capture requires --recovery, and operator guidance reflects the two-mode contract.` | manual |
+| `154` | JSON-primary deprecation posture | `Validate that routine saves require --json/--stdin, direct positional mode is rejected with migration guidance to --json/--stdin, and operator guidance reflects the JSON-only contract.` | manual |
 | `PHASE-005` | Phase command workflow | `Run the spec_kit:phase command end-to-end and verify all 7 workflow steps complete.` | manual |
 <!-- /ANCHOR:testing -->
 
