@@ -103,7 +103,7 @@ Changes distributed across `retry-manager.ts`, `trigger-filter.ts` (new file), `
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Pre-save dedup is opt-in** — `SPECKIT_PRE_SAVE_DEDUP` must be set; the check is skipped by default to avoid latency impact on the common path.
+1. **Pre-save dedup is opt-out** — `SPECKIT_PRE_SAVE_DEDUP` defaults to enabled; set to `false` to disable. Adds ~50-200ms per save for fingerprint comparison.
 2. **Memory Classification and Session Dedup placeholders remain suppressed** — These 9 OPTIONAL_PLACEHOLDERS entries are annotated for future un-suppression but require their backing extractors to be implemented first.
 <!-- /ANCHOR:limitations -->
 

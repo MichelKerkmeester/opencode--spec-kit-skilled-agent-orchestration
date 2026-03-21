@@ -107,7 +107,7 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 - `OPTIONAL_PLACEHOLDERS` cleanup: 8 phantom Session Integrity entries documented, Memory Classification and Session Dedup entries annotated.
 - Multi-token path fragment detection in post-save review.
 - Observation dedup at normalization time (string-equality).
-- Pre-save overlap check behind `SPECKIT_PRE_SAVE_DEDUP` env flag.
+- Pre-save overlap check enabled by default (set `SPECKIT_PRE_SAVE_DEDUP=false` to disable).
 
 ### 3.10 Embedding visibility (Phase 004)
 

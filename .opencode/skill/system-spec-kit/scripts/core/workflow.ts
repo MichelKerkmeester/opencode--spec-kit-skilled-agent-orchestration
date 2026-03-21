@@ -1440,8 +1440,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     log(`   Medium quality warning added (score: ${qualityResult.score100}/100)`);
   }
 
-  // Phase 004 T035-T036: Pre-save overlap check (advisory, behind env flag)
-  if (process.env.SPECKIT_PRE_SAVE_DEDUP === 'true' || process.env.SPECKIT_PRE_SAVE_DEDUP === '1') {
+  // Phase 004 T035-T036: Pre-save overlap check (advisory, enabled by default — set SPECKIT_PRE_SAVE_DEDUP=false to disable)
+  if (process.env.SPECKIT_PRE_SAVE_DEDUP !== 'false' && process.env.SPECKIT_PRE_SAVE_DEDUP !== '0') {
     try {
       const crypto = await import('node:crypto');
       const contentForHash = files[ctxFilename] || '';
