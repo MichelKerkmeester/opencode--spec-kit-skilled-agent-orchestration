@@ -303,3 +303,53 @@ export function isSaveQualityGateExceptionsEnabled(): boolean {
   const val = process.env.SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS?.toLowerCase().trim();
   return val === 'true' || val === '1';
 }
+
+/* ───────────────────────────────────────────────────────────────
+   7. D2 PHASE B FLAGS (LLM Query Intelligence)
+──────────────────────────────────────────────────────────────── */
+
+/**
+ * D2 REQ-D2-003: Corpus-grounded LLM query reformulation.
+ * Step-back abstraction + corpus seed grounding. Deep-mode only.
+ * Default: FALSE (opt-in). Set SPECKIT_LLM_REFORMULATION=true to enable.
+ * Requires an OpenAI-compatible LLM endpoint (LLM_REFORMULATION_ENDPOINT).
+ */
+export function isLlmReformulationEnabled(): boolean {
+  const val = process.env.SPECKIT_LLM_REFORMULATION?.toLowerCase().trim();
+  return val === 'true' || val === '1';
+}
+
+/**
+ * D2 REQ-D2-004: HyDE (Hypothetical Document Embeddings) shadow mode.
+ * Generates a pseudo-document for low-confidence deep queries.
+ * Default: FALSE (opt-in). Set SPECKIT_HYDE=true to enable.
+ * Shadow-only until SPECKIT_HYDE_ACTIVE=true graduates it to full merge.
+ */
+export function isHyDEEnabled(): boolean {
+  const val = process.env.SPECKIT_HYDE?.toLowerCase().trim();
+  return val === 'true' || val === '1';
+}
+
+/* ───────────────────────────────────────────────────────────────
+   8. D3 PHASE B FLAGS (Graph Lifecycle)
+──────────────────────────────────────────────────────────────── */
+
+/**
+ * REQ-D3-003: Graph refresh mode.
+ * Controls when dirty-node recomputation runs after write operations.
+ * Default: 'off'. Values: off | write_local | scheduled.
+ * Delegated to graph-lifecycle.ts — imported here for unified flag discovery.
+ */
+export function getGraphRefreshMode(): string {
+  return process.env.SPECKIT_GRAPH_REFRESH_MODE?.trim().toLowerCase() ?? 'off';
+}
+
+/**
+ * REQ-D3-004: Async LLM graph backfill for high-value documents.
+ * Runs after deterministic extraction; adds probabilistic edges via LLM.
+ * Default: FALSE (opt-in). Set SPECKIT_LLM_GRAPH_BACKFILL=true to enable.
+ */
+export function isLlmGraphBackfillEnabled(): boolean {
+  const val = process.env.SPECKIT_LLM_GRAPH_BACKFILL?.toLowerCase().trim();
+  return val === 'true' || val === '1';
+}

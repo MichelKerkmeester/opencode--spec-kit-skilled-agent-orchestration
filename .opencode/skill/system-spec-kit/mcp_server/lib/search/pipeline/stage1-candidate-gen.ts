@@ -35,7 +35,7 @@ import type { Stage1Input, Stage1Output, PipelineRow } from './types';
 import * as vectorIndex from '../vector-index';
 import * as embeddings from '../../providers/embeddings';
 import * as hybridSearch from '../hybrid-search';
-import { isMultiQueryEnabled, isEmbeddingExpansionEnabled, isMemorySummariesEnabled, isQueryDecompositionEnabled, isGraphConceptRoutingEnabled } from '../search-flags';
+import { isMultiQueryEnabled, isEmbeddingExpansionEnabled, isMemorySummariesEnabled, isQueryDecompositionEnabled, isGraphConceptRoutingEnabled, isLlmReformulationEnabled, isHyDEEnabled } from '../search-flags';
 import { expandQuery } from '../query-expander';
 import { expandQueryWithEmbeddings, isExpansionActive } from '../embedding-expansion';
 import { querySummaryEmbeddings, checkScaleGate } from '../memory-summaries';
@@ -46,6 +46,8 @@ import { getAllowedSharedSpaceIds } from '../../collab/shared-spaces';
 import { withTimeout } from '../../errors/core';
 import { isMultiFacet, decompose, mergeByFacetCoverage } from '../query-decomposer';
 import { routeQueryConcepts } from '../entity-linker';
+import { cheapSeedRetrieve, llm, fanout } from '../llm-reformulation';
+import { runHyDE } from '../hyde';
 
 // Feature catalog: 4-stage pipeline architecture
 // Feature catalog: Hybrid search pipeline
@@ -699,6 +701,106 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
   // -- Quality Score Filtering ------------------------------------------------
 
   candidates = filterByMinQualityScore(candidates, qualityThreshold);
+
+  // -- D2 REQ-D2-003: Corpus-Grounded LLM Reformulation ----------------------
+  //
+  // When SPECKIT_LLM_REFORMULATION is enabled and mode === 'deep':
+  //   1. Retrieve top-3 seed results via fast BM25/FTS5 (no embedding call).
+  //   2. Ask the LLM to produce a step-back abstraction + corpus-grounded variants.
+  //   3. Fan-out [original, abstract, ...variants] as additional hybrid search channels.
+  //   4. Deduplicate and merge into candidates.
+  //
+  // Budget: 1 LLM call per cache miss (0 on cache hit).
+  // Fail-open: any error leaves candidates unchanged.
+
+  if (mode === 'deep' && isLlmReformulationEnabled() && searchType === 'hybrid') {
+    try {
+      const seeds = cheapSeedRetrieve(query, { limit: 3 });
+      const reform = await llm.rewrite({ q: query, seeds, mode: 'step_back+corpus' });
+      const allQueries = fanout([query, reform.abstract, ...reform.variants]);
+
+      if (allQueries.length > 1) {
+        const reformEmbedding: Float32Array | number[] | null =
+          cachedEmbedding ?? queryEmbedding ?? (await embeddings.generateQueryEmbedding(query));
+
+        if (reformEmbedding) {
+          const reformResultSets = await Promise.all(
+            allQueries.map(async (q, idx): Promise<PipelineRow[]> => {
+              // Reuse cached embedding for original query (idx 0); generate fresh for variants
+              const emb = idx === 0 ? reformEmbedding : await embeddings.generateQueryEmbedding(q);
+              if (!emb) return [];
+              return hybridSearch.searchWithFallback(
+                q,
+                emb,
+                { limit, specFolder, includeArchived }
+              ) as Promise<PipelineRow[]>;
+            })
+          ).catch((): PipelineRow[][] => []);
+
+          if (reformResultSets.length > 0) {
+            const seenIds = new Set(candidates.map((r) => r.id));
+            const reformMerged: PipelineRow[] = [];
+            for (const resultSet of reformResultSets) {
+              for (const row of resultSet) {
+                if (!seenIds.has(row.id)) {
+                  seenIds.add(row.id);
+                  reformMerged.push(row);
+                }
+              }
+            }
+            candidates = [...candidates, ...reformMerged];
+            channelCount += allQueries.length - 1; // discount original (already counted)
+
+            if (trace) {
+              addTraceEntry(trace, 'candidate', allQueries.length - 1, reformMerged.length, 0, {
+                channel: 'd2-llm-reformulation',
+                abstract: reform.abstract,
+                variantCount: reform.variants.length,
+                fanoutCount: allQueries.length,
+              });
+            }
+          }
+        }
+      }
+    } catch (reformErr: unknown) {
+      const reformMsg = reformErr instanceof Error ? reformErr.message : String(reformErr);
+      console.warn(`[stage1-candidate-gen] D2 LLM reformulation failed: ${reformMsg}`);
+    }
+  }
+
+  // -- D2 REQ-D2-004: HyDE Shadow Mode ----------------------------------------
+  //
+  // When SPECKIT_HYDE is enabled and mode === 'deep':
+  //   - Check if the current baseline has low confidence.
+  //   - If so, generate a HyDE pseudo-document and embed it.
+  //   - Run a vector-only search with the pseudo-document embedding.
+  //   - Shadow mode (SPECKIT_HYDE_ACTIVE=false): log results, do NOT merge.
+  //   - Active mode (SPECKIT_HYDE_ACTIVE=true): merge into candidates.
+  //
+  // Budget: 1 LLM call per cache miss (shared cache with reformulation → ≤2 total).
+  // Fail-open: any error leaves candidates unchanged.
+
+  if (mode === 'deep' && isHyDEEnabled() && searchType === 'hybrid') {
+    try {
+      const hydeCandidates = await runHyDE(query, candidates, limit, specFolder);
+      if (hydeCandidates.length > 0) {
+        const seenIds = new Set(candidates.map((r) => r.id));
+        const newHydeCandidates = hydeCandidates.filter((r) => !seenIds.has(r.id));
+        candidates = [...candidates, ...newHydeCandidates];
+        channelCount++;
+
+        if (trace) {
+          addTraceEntry(trace, 'candidate', 1, newHydeCandidates.length, 0, {
+            channel: 'd2-hyde',
+            hydeCandidates: newHydeCandidates.length,
+          });
+        }
+      }
+    } catch (hydeErr: unknown) {
+      const hydeMsg = hydeErr instanceof Error ? hydeErr.message : String(hydeErr);
+      console.warn(`[stage1-candidate-gen] D2 HyDE failed: ${hydeMsg}`);
+    }
+  }
 
   // -- R8: Summary Embedding Channel ---------------------------------------
   // When SPECKIT_MEMORY_SUMMARIES is enabled (default-ON) and scale gate is

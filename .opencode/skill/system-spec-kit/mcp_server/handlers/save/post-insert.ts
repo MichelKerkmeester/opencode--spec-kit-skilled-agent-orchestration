@@ -14,6 +14,7 @@ import {
 import { extractEntities, filterEntities, storeEntities, updateEntityCatalog } from '../../lib/extraction/entity-extractor';
 import { generateAndStoreSummary } from '../../lib/search/memory-summaries';
 import { runEntityLinking } from '../../lib/search/entity-linker';
+import { onIndex, isGraphRefreshEnabled } from '../../lib/search/graph-lifecycle';
 import { toErrorMessage } from '../../utils';
 
 // Feature catalog: Memory indexing (memory_save)
@@ -34,6 +35,7 @@ export interface EnrichmentStatus {
   entityExtraction: boolean;
   summaries: boolean;
   entityLinking: boolean;
+  graphLifecycle: boolean;
 }
 
 export interface PostInsertEnrichmentResult {
@@ -65,6 +67,7 @@ export async function runPostInsertEnrichment(
     entityExtraction: false,
     summaries: false,
     entityLinking: false,
+    graphLifecycle: false,
   };
 
   // CAUSAL LINKS PROCESSING
@@ -154,6 +157,33 @@ export async function runPostInsertEnrichment(
   } else {
     // Feature disabled — not a failure
     enrichmentStatus.entityLinking = true;
+  }
+
+  // -- D3 REQ-D3-004: Graph Lifecycle — deterministic save-time enrichment --
+  // Runs last; relies on entity extraction having completed above.
+  // Gated via isGraphRefreshEnabled() OR SPECKIT_ENTITY_LINKING (any active graph flag).
+  // Default-OFF: no-op unless SPECKIT_GRAPH_REFRESH_MODE != 'off' or SPECKIT_ENTITY_LINKING active.
+  if (isGraphRefreshEnabled() || isEntityLinkingEnabled()) {
+    try {
+      const indexResult = onIndex(database, id, parsed.content, {
+        qualityScore: typeof parsed.qualityScore === 'number' ? parsed.qualityScore : 0,
+      });
+      if (!indexResult.skipped) {
+        if (indexResult.edgesCreated > 0) {
+          console.error(`[graph-lifecycle] Created ${indexResult.edgesCreated} typed edges for memory #${id}`);
+        }
+        if (indexResult.llmBackfillScheduled) {
+          console.error(`[graph-lifecycle] LLM backfill scheduled for memory #${id}`);
+        }
+      }
+      enrichmentStatus.graphLifecycle = true;
+    } catch (glErr: unknown) {
+      const message = toErrorMessage(glErr);
+      console.warn(`[memory-save] D3 graph-lifecycle enrichment failed: ${message}`);
+    }
+  } else {
+    // Feature disabled — not a failure
+    enrichmentStatus.graphLifecycle = true;
   }
 
   return { causalLinksResult, enrichmentStatus };

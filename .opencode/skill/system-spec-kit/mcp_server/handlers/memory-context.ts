@@ -113,6 +113,8 @@ interface ContextArgs {
   includeTrace?: boolean; // CHK-040: Forward to internal memory_search calls
   tokenUsage?: number;
   anchors?: string[];
+  /** REQ-D5-003: Presentation profile ('quick'|'research'|'resume'|'debug'). Default: full response. */
+  profile?: string;
 }
 
 /** T205: Token budget enforcement metadata */

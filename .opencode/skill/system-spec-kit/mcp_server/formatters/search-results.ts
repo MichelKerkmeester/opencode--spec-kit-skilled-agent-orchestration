@@ -41,6 +41,13 @@ import {
   type ScoredResult,
 } from '../lib/search/confidence-scoring';
 
+// REQ-D5-002: Two-Tier Explainability
+import {
+  attachExplainabilityToResults,
+  isResultExplainEnabled,
+  type ExplainabilityOptions,
+} from '../lib/search/result-explainability';
+
 // Consolidated path validation from core/config.js (single source of truth)
 import { ALLOWED_BASE_PATHS } from '../core/config';
 
@@ -628,12 +635,25 @@ export async function formatSearchResults(
     }
   );
 
+  // REQ-D5-002: Attach explainability (slim tier) to every result when flag is ON.
+  // Pass results as PipelineRow-compatible — they share the same Record<string,unknown> base.
+  // Debug tier is opt-in via SPECKIT_RESULT_EXPLAIN_DEBUG env var.
+  const explainOptions: ExplainabilityOptions = {
+    debugEnabled: process.env.SPECKIT_RESULT_EXPLAIN_DEBUG?.toLowerCase().trim() === 'true',
+  };
+  const resultsWithExplain = isResultExplainEnabled()
+    ? attachExplainabilityToResults(
+        resultsWithConfidence as Parameters<typeof attachExplainabilityToResults>[0],
+        explainOptions
+      ) as Array<Record<string, unknown>>
+    : resultsWithConfidence;
+
   // REQ-019: Use standardized success response envelope
   const responseData: Record<string, unknown> = {
     searchType: searchType,
     count: formatted.length,
     constitutionalCount: constitutionalCount,
-    results: resultsWithConfidence,
+    results: resultsWithExplain,
     // REQ-D5-004: Request-level quality assessment (additive)
     ...(requestQualityData !== null ? requestQualityData : {}),
     // REQ-D5-001: Recovery payload for weak/partial results (additive)

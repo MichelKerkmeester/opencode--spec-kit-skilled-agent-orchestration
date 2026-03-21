@@ -67,6 +67,12 @@ import {
   type SessionTransitionTrace,
 } from '../lib/search/session-transition';
 
+// REQ-D5-003: Mode-Aware Response Shape
+import {
+  applyProfileToEnvelope,
+  isResponseProfileEnabled,
+} from '../lib/response/profile-formatters';
+
 // Type imports for casting
 import type { IntentType, IntentWeights as IntentClassifierWeights } from '../lib/search/intent-classifier';
 import type { RawSearchResult } from '../formatters';
@@ -175,6 +181,8 @@ interface SearchArgs {
   mode?: string; // "deep" mode enables query expansion for multi-query RAG
   includeTrace?: boolean;
   sessionTransition?: SessionTransitionTrace;
+  /** REQ-D5-003: Presentation profile ('quick'|'research'|'resume'|'debug'). Default: full response. */
+  profile?: string;
 }
 
 // resolveRowContextType — now imported from lib/search/search-utils.ts
@@ -363,6 +371,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     mode,
     includeTrace: includeTraceArg = false,
     sessionTransition,
+    profile,
   } = args;
   const includeTraceByFlag = process.env.SPECKIT_RESPONSE_TRACE === 'true';
   const includeTrace = includeTraceByFlag || includeTraceArg === true;
@@ -871,6 +880,24 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       }
     }
   } catch (_error: unknown) { /* feedback logging must never break search */ }
+
+  // REQ-D5-003: Apply presentation profile when flag is enabled and profile is specified
+  if (profile && typeof profile === 'string' && isResponseProfileEnabled()) {
+    const firstEntry = responseToReturn?.content?.[0];
+    if (firstEntry && typeof firstEntry.text === 'string') {
+      try {
+        const profiled = applyProfileToEnvelope(profile, firstEntry.text);
+        if (profiled !== firstEntry.text) {
+          responseToReturn = {
+            ...responseToReturn,
+            content: [{ ...firstEntry, text: profiled }],
+          } as MCPResponse;
+        }
+      } catch (_profileError: unknown) {
+        // Profile formatting is best-effort — never breaks search
+      }
+    }
+  }
 
   return responseToReturn;
 }

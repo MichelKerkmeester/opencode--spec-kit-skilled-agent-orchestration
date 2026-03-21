@@ -28,7 +28,110 @@ import type { IndexResult } from './types';
 
 // Feature catalog: Reconsolidation-on-save
 // Feature catalog: Memory indexing (memory_save)
+// Feature catalog: Assistive reconsolidation (REQ-D4-005)
 
+// ───────────────────────────────────────────────────────────────
+// ASSISTIVE RECONSOLIDATION CONSTANTS (REQ-D4-005)
+// ───────────────────────────────────────────────────────────────
+
+/**
+ * Similarity threshold above which two memories are considered near-duplicates
+ * and auto-merged.  Requires SPECKIT_ASSISTIVE_RECONSOLIDATION=true.
+ */
+export const ASSISTIVE_AUTO_MERGE_THRESHOLD = 0.96;
+
+/**
+ * Similarity threshold above which two memories are considered borderline
+ * (possible supersede/complement).  A recommendation is logged but no
+ * destructive action is taken.
+ */
+export const ASSISTIVE_REVIEW_THRESHOLD = 0.88;
+
+/**
+ * Classification for a borderline pair in the assistive reconsolidation tier.
+ *
+ * - 'supersede': newer memory clearly replaces the older one
+ * - 'complement': newer memory adds distinct information
+ * - 'keep_separate': memories are sufficiently different
+ */
+export type AssistiveClassification = 'supersede' | 'complement' | 'keep_separate';
+
+/** A recommendation record written when similarity is in the review tier. */
+export interface AssistiveRecommendation {
+  olderMemoryId: number;
+  newerMemoryId: number;
+  similarity: number;
+  classification: AssistiveClassification;
+  recommendedAt: number;
+}
+
+/**
+ * Check whether the assistive reconsolidation feature is enabled.
+ * Default: FALSE (off). Set SPECKIT_ASSISTIVE_RECONSOLIDATION=true to enable.
+ */
+export function isAssistiveReconsolidationEnabled(): boolean {
+  const val = process.env.SPECKIT_ASSISTIVE_RECONSOLIDATION?.toLowerCase().trim();
+  return val === 'true' || val === '1';
+}
+
+/**
+ * Determine the assistive reconsolidation classification for a pair of memories
+ * based on their similarity score.
+ *
+ * Tiers:
+ *   similarity >= 0.96  → auto-merge (near-duplicate)
+ *   0.88 <= sim < 0.96  → review (supersede or complement recommendation)
+ *   sim < 0.88          → keep separate (complement)
+ *
+ * @param similarity - Cosine similarity in [0, 1]
+ * @returns Classification string
+ */
+export function classifyAssistiveSimilarity(
+  similarity: number
+): 'auto_merge' | 'review' | 'keep_separate' {
+  if (similarity >= ASSISTIVE_AUTO_MERGE_THRESHOLD) return 'auto_merge';
+  if (similarity >= ASSISTIVE_REVIEW_THRESHOLD)     return 'review';
+  return 'keep_separate';
+}
+
+/**
+ * Classify whether a borderline (review-tier) memory pair should be
+ * superseded or complemented.
+ *
+ * Heuristic: if the newer memory's content is longer than the older one,
+ * it likely adds information (complement); otherwise it likely replaces it
+ * (supersede).  Callers may override with domain-specific logic.
+ *
+ * @param olderContent - Content text of the older memory
+ * @param newerContent - Content text of the newer memory
+ * @returns 'supersede' or 'complement'
+ */
+export function classifySupersededOrComplement(
+  olderContent: string,
+  newerContent: string
+): 'supersede' | 'complement' {
+  const olderLen = (olderContent ?? '').length;
+  const newerLen = (newerContent ?? '').length;
+  // Newer is substantially longer → it complements rather than replaces
+  return newerLen > olderLen * 1.2 ? 'complement' : 'supersede';
+}
+
+/**
+ * Log a borderline recommendation to the console (shadow-only).
+ * No database writes are performed — this is purely observational.
+ *
+ * @param recommendation - The recommendation payload
+ */
+export function logAssistiveRecommendation(
+  recommendation: AssistiveRecommendation
+): void {
+  console.warn(
+    `[reconsolidation-bridge] assistive recommendation: ` +
+    `${recommendation.classification} — ` +
+    `older=${recommendation.olderMemoryId} newer=${recommendation.newerMemoryId} ` +
+    `similarity=${recommendation.similarity.toFixed(3)}`
+  );
+}
 
 /**
  * Result payload from reconsolidation pre-checks during memory_save.
@@ -36,6 +139,9 @@ import type { IndexResult } from './types';
 export interface ReconsolidationBridgeResult {
   earlyReturn: IndexResult | null;
   warnings: string[];
+  /** Populated when SPECKIT_ASSISTIVE_RECONSOLIDATION is enabled and a
+   *  borderline pair is detected (review tier). */
+  assistiveRecommendation?: AssistiveRecommendation | null;
 }
 
 /**
@@ -224,8 +330,81 @@ export async function runReconsolidationIfEnabled(
     }
   }
 
+  // ─────────────────────────────────────────────────────────────
+  // ASSISTIVE RECONSOLIDATION (REQ-D4-005)
+  // Runs independently of the TM-06 flag.  Requires embedding.
+  // Does NOT block normal save — all actions are advisory or
+  // shadow-only (auto-merge at >= 0.96 only archives old record).
+  // ─────────────────────────────────────────────────────────────
+  let assistiveRecommendation: AssistiveRecommendation | null = null;
+
+  if (!force && isAssistiveReconsolidationEnabled() && embedding) {
+    try {
+      // Find the top similar memory using the existing vector search
+      const searchEmb = embedding instanceof Float32Array ? embedding : new Float32Array(embedding as number[]);
+      const candidateResults = vectorIndex.vectorSearch(searchEmb, {
+        limit: 3,
+        specFolder: parsed.specFolder,
+        minSimilarity: Math.round(ASSISTIVE_REVIEW_THRESHOLD * 100), // convert to 0-100 scale
+        includeConstitutional: false,
+      });
+
+      if (candidateResults.length > 0) {
+        const top = candidateResults[0] as Record<string, unknown>;
+        // vectorSearch returns similarity in [0, 100], normalise to [0, 1]
+        const rawSimilarity = typeof top.similarity === 'number' ? top.similarity : 0;
+        const similarity = rawSimilarity > 1 ? rawSimilarity / 100 : rawSimilarity;
+        const topId = typeof top.id === 'number' ? top.id : 0;
+        const topContent = typeof top.content_text === 'string' ? top.content_text :
+                          (typeof top.content === 'string' ? top.content : '');
+
+        const tier = classifyAssistiveSimilarity(similarity);
+
+        if (tier === 'auto_merge') {
+          // Auto-merge: archive the older memory record (shadow operation —
+          // we mark is_archived so it is excluded from future search results
+          // but NOT physically deleted).
+          try {
+            database.prepare(`
+              UPDATE memory_index
+              SET is_archived = 1,
+                  updated_at = datetime('now')
+              WHERE id = ?
+            `).run(topId);
+            console.warn(
+              `[reconsolidation-bridge] assistive auto-merge: archived older=${topId} ` +
+              `(similarity=${similarity.toFixed(3)}) — newer memory continues normal save`
+            );
+          } catch (mergeErr: unknown) {
+            const msg = mergeErr instanceof Error ? mergeErr.message : String(mergeErr);
+            console.warn(`[reconsolidation-bridge] assistive auto-merge archive failed: ${msg}`);
+          }
+        } else if (tier === 'review') {
+          // Review tier: classify and surface as recommendation (no mutations)
+          const classification = classifySupersededOrComplement(topContent, parsed.content);
+          assistiveRecommendation = {
+            olderMemoryId: topId,
+            newerMemoryId: 0, // Not yet inserted; caller owns create
+            similarity,
+            classification,
+            recommendedAt: Date.now(),
+          };
+          logAssistiveRecommendation(assistiveRecommendation);
+        }
+        // 'keep_separate' → no action, fall through to normal save
+      }
+    } catch (assistiveErr: unknown) {
+      const message = toErrorMessage(assistiveErr);
+      console.warn(
+        `[reconsolidation-bridge] assistive reconsolidation error (proceeding with normal save): ${message}`
+      );
+      // Errors must not block saves
+    }
+  }
+
   return {
     earlyReturn: null,
     warnings: reconWarnings,
+    assistiveRecommendation,
   };
 }

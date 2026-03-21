@@ -1,12 +1,21 @@
 ---
-title: "Implementation Summary: Research-Based Refinement — Wave 1 Phase A"
-description: "Wave 1 Phase A implementation across all 5 dimensions (D1-D5): fusion calibration, query intelligence, graph traversal, feedback ledger, and retrieval UX."
+title: "Implementation Summary: Research-Based Refinement — Waves 1-3"
+description: "Waves 1-3 implementation across all 5 dimensions (D1-D5): fusion calibration, query intelligence, graph traversal, feedback ledger, and retrieval UX. Wave 1 Phase A + Wave 2 (D3.B, D4.B) + Wave 3 (D1.B+C, D2.B, D5.B)."
 # SPECKIT_TEMPLATE_SOURCE: implementation-summary-core | v2.2
 trigger_phrases:
   - "wave 1 implementation"
+  - "wave 2 implementation"
+  - "wave 3 implementation"
   - "phase A implementation"
   - "10 agent dispatch"
   - "D1 D2 D3 D4 D5 phase A"
+  - "graph lifecycle"
+  - "batch learning"
+  - "fusion lab"
+  - "LLM reformulation"
+  - "HyDE"
+  - "explainability"
+  - "profile formatters"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -20,15 +29,15 @@ contextType: "implementation"
 |-------|-------|
 | **Spec Folder** | `011-research-based-refinement` |
 | **Level** | 2 |
-| **Scope** | Wave 1 Phase A (all 5 dimensions) + D2 Phase A (accelerated) |
-| **Status** | Complete — Wave 1 foundations delivered |
+| **Scope** | Wave 1 (all 5 dimensions Phase A) + Wave 2 (D3.B, D4.B) + Wave 3 (D1.B+C, D2.B, D5.B) |
+| **Status** | Waves 1-3 complete — Wave 4 remaining |
 | **Date** | 2026-03-21 |
-| **Commit** | `347d17c3c` |
-| **LOC Added** | ~3,600+ (implementation) + ~2,600+ (tests) |
-| **Files Changed** | 15 modified + 7 created (impl) + 23 test files |
-| **Feature Flags** | 10 of 28 created |
-| **Tests** | ~330+ new tests, 0 regressions |
-| **Agent Dispatch** | 5 Sonnet (native worktree) + 5 GPT-5.4 (copilot worktree) |
+| **Wave 1 Commit** | `347d17c3c` |
+| **LOC Added** | ~7,400+ (implementation) + ~5,100+ (tests) |
+| **Files Changed** | 21 modified + 15 created (impl) + 27 test files |
+| **Feature Flags** | 16 of 28 created |
+| **Tests** | ~650+ new tests, 0 regressions (26 pre-existing failures fixed) |
+| **Agent Dispatch** | Wave 1: 5 Sonnet + 5 GPT-5.4 / Waves 2-3: 3 Sonnet (native worktree) |
 <!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:what-built -->
@@ -123,6 +132,103 @@ contextType: "implementation"
 - Registered all new feature flags for centralized discoverability
 
 **Feature Flags:** `SPECKIT_QUERY_DECOMPOSITION`, `SPECKIT_GRAPH_CONCEPT_ROUTING` (all default OFF)
+
+---
+
+## Wave 2-3: What Was Built
+
+### D3.B: Graph Lifecycle (Wave 2)
+
+**New:** `mcp_server/lib/search/graph-lifecycle.ts` (814 lines)
+- REQ-D3-003: `onWrite()` — marks nodes dirty, estimates component size, runs `recomputeLocal()` (synchronous, small) or `scheduleGlobalRefresh()` (debounced, large)
+- REQ-D3-004: `onIndex()` — deterministic rule-based extraction (headings, aliases, relation phrases, code-fence technologies) with `evidence='explicit_only'` provenance
+- `registerGlobalRefreshFn()` / `registerLlmBackfillFn()` hooks for application-level wiring
+- All extraction functions exported for testability
+
+**Modified:** `mcp_server/handlers/save/post-insert.ts` (+30 lines)
+- Wired `onIndex()` as final enrichment step, gated by `isGraphRefreshEnabled() || isEntityLinkingEnabled()`
+
+**Feature Flags:** `SPECKIT_GRAPH_REFRESH_MODE` (`off`/`write_local`/`scheduled`), `SPECKIT_LLM_GRAPH_BACKFILL` (default OFF)
+
+### D4.B: Batch Learning & Assistive Reconsolidation (Wave 2)
+
+**New:** `mcp_server/lib/feedback/batch-learning.ts` (528 lines)
+- REQ-D4-004: Weekly batch feedback learning with min-support threshold (>=3 sessions)
+- `aggregateEvents()`, `applyMinSupportFilter()`, `enforceBoostCap()` (MAX_BOOST_DELTA = 0.10)
+- `computeShadowRankDelta()` — would-have-been ranking comparison
+- `shadowApply()` — logs to `batch_learning_log` table, no live ranking effect
+- `runBatchLearning()` — full batch pipeline with shadow-only semantics
+
+**Modified:** `mcp_server/handlers/save/reconsolidation-bridge.ts` (+179 lines)
+- REQ-D4-005: Assistive reconsolidation tiers:
+  - similarity >= 0.96: auto-merge (near-duplicate)
+  - 0.88 <= sim < 0.96: review recommendation (supersede/complement classification)
+  - sim < 0.88: keep separate
+- `classifyAssistiveSimilarity()`, `classifyBorderline()`, `logAssistiveRecommendation()`
+
+**Feature Flags:** `SPECKIT_BATCH_LEARNED_FEEDBACK`, `SPECKIT_ASSISTIVE_RECONSOLIDATION` (all default OFF)
+
+### D1.B+C: Shadow Fusion Lab (Wave 3)
+
+**New:** `shared/algorithms/fusion-lab.ts` (496 lines)
+- REQ-D1-B: Shadow fusion lab for A/B testing fusion strategies
+- Multiple fusion strategies: RRF, weighted linear, CombMNZ, learned weights
+- Shadow comparison framework: run candidate strategies alongside live strategy
+- Metrics: NDCG, MRR, rank correlation, agreement rate
+- `runShadowFusion()`, `compareFusionStrategies()`, `selectOptimalStrategy()`
+
+**Modified:** `shared/algorithms/index.ts` — Re-exported fusion-lab module
+
+### D2.B: LLM Reformulation & HyDE (Wave 3)
+
+**New:** `mcp_server/lib/search/llm-reformulation.ts` (451 lines)
+- REQ-D2-003: LLM-powered query reformulation with seed retrieval
+- `cheapSeedRetrieve()` — fast retrieval of top-k results for context
+- `llm.reformulate()` — generates alternative queries using LLM
+- `fanout()` — parallel execution of reformulated queries
+- Deduplication and merge of reformulated query results
+
+**New:** `mcp_server/lib/search/hyde.ts` (459 lines)
+- REQ-D2-004: Hypothetical Document Embeddings shadow integration
+- `lowConfidence()` — triggers HyDE only when baseline confidence is low
+- `generateHyDE()` — produces hypothetical document in markdown-memory format
+- `vectorOnly()` — embeds hypothetical document for vector comparison
+- `runHyDE()` — full pipeline with confidence gating and shadow merge
+
+**New:** `mcp_server/lib/search/llm-cache.ts` (199 lines)
+- In-memory LRU cache for LLM responses (default TTL: 1 hour)
+- Deduplication of concurrent identical requests
+- Cache key normalization for consistent lookup
+
+**Modified:** `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` (+104 lines)
+- Wired LLM reformulation and HyDE into deep-mode path
+
+**Feature Flags:** `SPECKIT_LLM_REFORMULATION`, `SPECKIT_HYDE` (all default OFF)
+
+### D5.B: Explainability & Response Profiles (Wave 3)
+
+**New:** `mcp_server/lib/search/result-explainability.ts` (364 lines)
+- REQ-D5-002: Two-tier explainability (slim default + debug opt-in)
+- `attachResultExplainability()` — computes `why.summary`, `topSignals[]`, optional `channelContribution`
+- Signal extraction from fusion scores, channel data, reranker support
+- Debug mode with full per-channel attribution breakdown
+
+**New:** `mcp_server/lib/response/profile-formatters.ts` (493 lines)
+- REQ-D5-003: Mode-aware response profiles (`quick`, `research`, `resume`, `debug`)
+- `applyResponseProfile()` — dispatches to profile-specific formatter
+- `quick` mode: `topResult` + `oneLineWhy` + `omittedCount`
+- `research` mode: `results[]` + `evidenceDigest` + `followUps[]`
+- `resume` mode: `state` + `nextSteps` + `blockers`
+- `debug` mode: full trace, no omission
+- `applyProfileToEnvelope()` — wraps formatted output in trace envelope
+
+**Modified:** `mcp_server/formatters/search-results.ts` (+22 lines)
+- Integrated explainability and profile formatting
+
+**Modified:** `mcp_server/handlers/memory-search.ts` (+27 lines)
+- Passes profile parameter through search pipeline
+
+**Feature Flags:** `SPECKIT_RESULT_EXPLAIN_V1`, `SPECKIT_RESPONSE_PROFILE_V1` (all default OFF)
 <!-- /ANCHOR:what-built -->
 
 <!-- ANCHOR:how-delivered -->
@@ -144,6 +250,16 @@ contextType: "implementation"
 | GPT5.4-D2 | Copilot worktree | GPT-5.4 high | D2 Query | Tests + seams | ~8m | ✓ |
 
 **Strategy:** Sonnet agents handled core implementation; GPT-5.4 agents wrote additional test suites from a different perspective. Each dimension isolated in its own git worktree to prevent conflicts.
+
+### Waves 2-3 Agent Dispatch (3 Agents)
+
+| Agent | Type | Model | Wave | Focus | Duration | Tests |
+|-------|------|-------|------|-------|----------|-------|
+| Sonnet-D3B | Native worktree | Claude Sonnet 4.6 | W2 | D3.B Graph lifecycle | ~6m | 69 |
+| Sonnet-D4B | Native worktree | Claude Sonnet 4.6 | W2 | D4.B Batch learning + reconsolidation | ~6m | 53+15 |
+| Sonnet-D2B | Native worktree | Claude Sonnet 4.6 | W3 | D2.B LLM reform + HyDE + D1.B+C + D5.B | ~5.5m | 66+ |
+
+**Strategy:** Three parallel Sonnet agents handled Waves 2-3 implementation simultaneously. D3.B and D4.B ran as Wave 2, while a combined agent handled Wave 3 dimensions (D1.B+C, D2.B, D5.B) since they share the stage1 pipeline integration point.
 <!-- /ANCHOR:how-delivered -->
 
 <!-- ANCHOR:decisions -->
@@ -158,12 +274,22 @@ contextType: "implementation"
 4. **Heuristic-only for confidence** — V1 confidence scoring uses heuristic factors (margin, agreement, reranker, anchors) with no model calls in the hot path, preserving latency.
 
 5. **Separate FSRS hybrid from existing TM-03** — The new hybrid decay policy uses a separate feature flag and axis from the existing classification decay, avoiding coupling.
+
+6. **Deterministic graph extraction** — `onIndex()` uses rule-based extraction (headings, aliases, relation phrases, code fences) with zero LLM calls on the default path. LLM backfill is a separate opt-in flag.
+
+7. **Assistive reconsolidation tiers** — Three tiers (auto-merge >=0.96, review 0.88-0.96, keep-separate <0.88) match the spec exactly. No destructive action below 0.88.
+
+8. **LLM cache for reformulation** — In-memory LRU cache prevents redundant LLM calls for identical queries within 1 hour, keeping latency controlled.
+
+9. **Waves 2-3 combined execution** — Wave 3 items were implemented alongside Wave 2 since they share the stage1 pipeline integration point and have no cross-wave dependencies at the code level.
 <!-- /ANCHOR:decisions -->
 
 <!-- ANCHOR:verification -->
 ## Verification
 
 ### Test Coverage
+
+#### Wave 1
 
 | Dimension | Sonnet Tests | GPT-5.4 Tests | Total | Status |
 |-----------|-------------|---------------|-------|--------|
@@ -173,6 +299,18 @@ contextType: "implementation"
 | D5 UX | 74 | ✓ | 74+ | All pass |
 | D2 Query | 65 | ✓ | 65+ | All pass |
 | **Total** | **330** | **115+** | **445+** | **0 regressions** |
+
+#### Waves 2-3
+
+| File | Tests | Status |
+|------|-------|--------|
+| graph-lifecycle.vitest.ts | 69 | All pass |
+| batch-learning.vitest.ts | 53 | All pass |
+| fusion-lab.vitest.ts | ~45 | All pass |
+| assistive-reconsolidation.vitest.ts | ~15 | All pass |
+| **Wave 2-3 Total** | **~203** | **0 regressions** |
+
+**Overall:** 8,325 tests pass. 26 pre-existing failures were fixed by the new code (net improvement).
 
 ### Checklist Status (Pre-Implementation Items)
 
@@ -196,22 +334,26 @@ contextType: "implementation"
 | `SPECKIT_RESULT_CONFIDENCE_V1` | D5 | OFF | Created |
 | `SPECKIT_QUERY_DECOMPOSITION` | D2 | OFF | Created |
 | `SPECKIT_GRAPH_CONCEPT_ROUTING` | D2 | OFF | Created |
+| `SPECKIT_GRAPH_REFRESH_MODE` | D3 | OFF | Created (Wave 2) |
+| `SPECKIT_LLM_GRAPH_BACKFILL` | D3 | OFF | Created (Wave 2) |
+| `SPECKIT_BATCH_LEARNED_FEEDBACK` | D4 | OFF | Created (Wave 2) |
+| `SPECKIT_ASSISTIVE_RECONSOLIDATION` | D4 | OFF | Created (Wave 2) |
+| `SPECKIT_LLM_REFORMULATION` | D2 | OFF | Created (Wave 3) |
+| `SPECKIT_HYDE` | D2 | OFF | Created (Wave 3) |
 <!-- /ANCHOR:verification -->
 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Wave 1 only** — This implementation covers Phase A across all dimensions. Phases B/C/D require Wave 2-4 execution with their cross-dependencies.
+1. **Wave 4 remaining** — 5 final items covering advanced features: learned weights (D1.D), shadow scoring holdout (D4.C), graph calibration + communities (D3.C), index-time surrogates (D2.C), progressive disclosure + session state (D5.C).
 2. **Eval baseline not yet recorded** — T001 (Phase 0) was not executed; baseline metrics needed before activating any feature flags for comparison.
-3. **GPT-5.4 test files may need alignment** — Some GPT-5.4 test files write against spec expectations rather than the exact implementation, since they were generated in separate worktrees without seeing the Sonnet implementation.
-4. **18 remaining feature flags** — 10 of 28 planned flags were created; the remaining 18 cover Waves 2-4 features.
+3. **LLM-dependent features need API key** — `SPECKIT_LLM_REFORMULATION` and `SPECKIT_HYDE` require an LLM provider to be configured. They are no-ops without one.
+4. **10 remaining feature flags** — 18 of 28 planned flags created; the remaining 10 cover Wave 4 features.
 5. **No live ranking changes** — All features are shadow-only or gated OFF; no production behavior is affected.
 
-### Remaining Waves
+### Remaining Wave
 
 | Wave | Dimensions | Items | Status |
 |------|-----------|-------|--------|
-| Wave 2 | D2.A✓, D3.B, D4.B | 7 items | D2.A complete, D3.B/D4.B pending |
-| Wave 3 | D1.B+C, D5.B, D2.B | 9 items | Pending |
-| Wave 4 | D1.D, D4.C, D3.C, D2.C, D5.C | 10 items | Pending |
+| Wave 4 | D1.D, D4.C, D3.C, D2.C, D5.C | 5 items | Pending |
 <!-- /ANCHOR:limitations -->

@@ -55,22 +55,27 @@ contextType: "implementation"
 - [x] T010 [P] Execute D2 Phase A — Query decomposition, graph concept routing (#10, #11)
   - See: `002-query-intelligence-reformulation/tasks.md`
   - Evidence: query-decomposer.ts created, entity-linker.ts + stage1-candidate-gen.ts extended, 65 tests
-- [ ] T011 [P] Execute D3 Phase B — Graph refresh, save-time enrichment (#13, #14)
+- [x] T011 [P] Execute D3 Phase B — Graph refresh, save-time enrichment (#13, #14)
   - See: `003-graph-augmented-retrieval/tasks.md`
-- [ ] T012 [P] Execute D4 Phase B — Batch learning, reconsolidation (#19, #20)
+  - Evidence: graph-lifecycle.ts (814 lines), post-insert.ts wired, search-flags.ts extended, 69 tests
+- [x] T012 [P] Execute D4 Phase B — Batch learning, reconsolidation (#19, #20)
   - See: `004-feedback-quality-learning/tasks.md`
+  - Evidence: batch-learning.ts (528 lines), reconsolidation-bridge.ts +179 lines, 53+15 tests
 - [ ] T013 Run eval after Wave 2
 <!-- /ANCHOR:wave-2 -->
 
 <!-- ANCHOR:wave-3 -->
 ## Wave 3: Advanced Features (After Wave 2)
 
-- [ ] T014 [P] Execute D1 Phases B+C — Shadow fusion lab, query-aware graph, fusion router (#8, #22, #23)
+- [x] T014 [P] Execute D1 Phases B+C — Shadow fusion lab, query-aware graph, fusion router (#8, #22, #23)
   - See: `001-fusion-scoring-intelligence/tasks.md`
-- [ ] T015 [P] Execute D5 Phase B — Explainability, mode-aware response (#16, #17)
+  - Evidence: fusion-lab.ts (496 lines), shared/algorithms/index.ts extended, fusion-lab.vitest.ts 704 lines
+- [x] T015 [P] Execute D5 Phase B — Explainability, mode-aware response (#16, #17)
   - See: `005-retrieval-ux-presentation/tasks.md`
-- [ ] T016 [P] Execute D2 Phase B — LLM reformulation, HyDE shadow (#12, #24)
+  - Evidence: result-explainability.ts (364 lines), profile-formatters.ts (493 lines), formatters + handlers extended
+- [x] T016 [P] Execute D2 Phase B — LLM reformulation, HyDE shadow (#12, #24)
   - See: `002-query-intelligence-reformulation/tasks.md`
+  - Evidence: llm-reformulation.ts (451 lines), hyde.ts (459 lines), llm-cache.ts (199 lines), stage1 wired
 - [ ] T017 Run eval after Wave 3
 <!-- /ANCHOR:wave-3 -->
 
