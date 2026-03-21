@@ -23,7 +23,7 @@ function requireInteractiveMode(operation: string): never {
   console.error('  node generate-context.js /tmp/save-context-data.json <spec-folder-path>');
   console.error('');
   console.error('Example:');
-  console.error('  node generate-context.js --recovery specs/003-memory-and-spec-kit/054-remaining-bugs-remediation');
+  console.error('  node generate-context.js --json \'{"specFolder":"specs/003-memory-and-spec-kit/054-remaining-bugs-remediation"}\' specs/003-memory-and-spec-kit/054-remaining-bugs-remedation');
   process.exit(1);
   // Process.exit never returns, but TypeScript needs the unreachable annotation
   throw new Error('Unreachable');

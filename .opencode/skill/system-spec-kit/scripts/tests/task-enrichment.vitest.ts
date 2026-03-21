@@ -1121,7 +1121,6 @@ describe('workflow seam guardrail', () => {
       const result = await runWorkflow({
         specFolderArg: specFolderPath,
         collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '009-perfect-session-capturing'),
-        allowRecovery: true,
         silent: true,
       });
 
@@ -1183,7 +1182,6 @@ describe('workflow seam guardrail', () => {
       await expect(runWorkflow({
         specFolderArg: specFolderPath,
         collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '009-perfect-session-capturing'),
-        allowRecovery: true,
         silent: true,
       })).rejects.toThrow(/ALIGNMENT_BLOCK.*% of captured file paths/);
 
@@ -1420,7 +1418,6 @@ describe('workflow seam guardrail', () => {
     });
     const statelessResult = await runWorkflow({
       collectSessionDataFn,
-      allowRecovery: true,
       silent: true,
     });
 
@@ -1558,7 +1555,6 @@ describe('workflow seam guardrail', () => {
       const result = await runWorkflow({
         collectedData,
         specFolderArg: 'specs/02--system-spec-kit/022-hybrid-rag-fusion',
-        allowRecovery: true,
         silent: true,
       });
 

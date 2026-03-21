@@ -19,7 +19,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `Run full closure verification for spec 009-perfect-session-capturing, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, recovery-mode stateless enrichment, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), Phase 017 recovery-only quality-gate behavior, Phase 018 output-quality hardening, numeric quality calibration, and indexing readiness. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `Run full closure verification for spec 009-perfect-session-capturing, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), Phase 018 output-quality hardening, numeric quality calibration, and indexing readiness. Return a concise user-facing pass/fail verdict with the main reason.`
 - Canonical workspace rule:
   - Native capture targets the repo-local `.opencode` workspace identity.
   - Backend-native repo-root, `.opencode`, and git-root path forms count as equivalent only when they normalize to the same workspace.
@@ -50,7 +50,6 @@ This scenario remains prose-first because it carries compound operator logic, su
   - `M-007o` Claude tool-path downgrade vs non-Claude capped path
   - `M-007p` Structured-summary JSON coverage and file-backed authority
   - `M-007q` Phase 018 output-quality hardening
-  - `M-007r` Direct positional save without `--recovery` rejects with migration guidance
   - `133` cross-reference for MCP `memory_save` dry-run and insufficiency preview
   - `149` cross-reference for rendered-memory contract enforcement
 - Latest automated baseline refresh:
@@ -102,10 +101,8 @@ This scenario remains prose-first because it carries compound operator logic, su
     - `M-007o` Claude contamination downgrade: compare a Claude structured/stateless capture containing `tool title with path` content against a non-Claude source with the same text and verify Claude avoids the old 0.60 cap while the non-Claude path remains capped.
     - `M-007p` Structured-summary and file-authority verification: run a rich structured JSON save and confirm `toolCalls` and `exchanges` are accepted and preserved, then verify a file-backed payload remains on the structured path rather than reopening hybrid enrichment. Also run a structured JSON save with a legacy payload that omits `toolCalls` and `exchanges` entirely and confirm it still succeeds through backward-compatible defaults.
     - `M-007q` Phase 018 output-quality hardening: inspect a generated memory or targeted regression evidence and confirm decision fields are no longer duplicated, completion status can recover from normalized `Next Steps`, blocker extraction ignores generic failure words, trigger/code-pattern filler is suppressed, `key_files` parsing accepts em dash/en dash/colon separators, tree thinning uses the `150`-token and `3`-child safeguards, and structured-data conversation synthesis adds assistant content when prompts are sparse.
-    - `M-007r` Recovery-flag enforcement: run `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 009-perfect-session-capturing` without `--recovery` and verify it exits non-zero with operator-facing migration guidance to structured JSON. Then rerun with `--recovery` and confirm the save path proceeds normally.
 - Expected:
   - Part I hardening remains active.
-  - Stateless enrichment remains active.
   - Native fallback ordering behaves deterministically across all five configured capture backends.
   - Direct-mode caller preference can reorder the first attempt without changing JSON authority or the rest of the fallback chain.
   - Native discovery uses canonical `.opencode` workspace identity rather than raw path equality.
@@ -118,7 +115,7 @@ This scenario remains prose-first because it carries compound operator logic, su
   - File-backed JSON remains on the authoritative structured path and does not reopen the abandoned hybrid-enrichment branch.
   - Claude `tool title with path` content no longer forces the 0.60 cap, while non-Claude sources still follow the capped path.
   - Phase 018 output-quality fixes keep decision rendering distinct, status recovery accurate, blocker detection specific, trigger/code-pattern noise lower, separator parsing broader, tree thinning bounded, and structured-data conversation output richer.
-  - Direct positional saves without `--recovery` exit non-zero with clear migration guidance to the structured JSON contract.
+  - Direct positional saves exit non-zero with clear migration guidance to the structured JSON contract.
   - Rendered files preserve ANCHOR tags and frontmatter trigger phrases are session-specific.
   - Indexing succeeds when validation passes.
 - Evidence:
@@ -143,7 +140,6 @@ This scenario remains prose-first because it carries compound operator logic, su
   - `M-007f` through `M-007i` prove per-backend native capture selection and save-gate behavior under canonical `.opencode` workspace identity, the direct-mode caller hint, and the tightened alignment plus insufficiency gates without malformed trigger rendering or `V5` corruption. They are not, by themselves, full Hydra end-to-end proof for those CLIs.
   - `M-007j` proves final `NO_DATA_AVAILABLE` behavior.
   - `M-007k` through `M-007q` prove the Phase 017 stateless soft-warning vs hard-block split, structured-input authority, shipped `toolCalls` / `exchanges` support, file-backed JSON authority, Claude-only contamination downgrade, and the Phase 018 output-quality hardening.
-  - `M-007r` proves the Phase 017 `--recovery` rejection path exits cleanly with migration guidance and that adding `--recovery` restores the stateless save path.
 - Fail triage:
   - Check `data-loader.ts` fallback ordering.
   - Check project-matching logic inside the relevant native extractor.

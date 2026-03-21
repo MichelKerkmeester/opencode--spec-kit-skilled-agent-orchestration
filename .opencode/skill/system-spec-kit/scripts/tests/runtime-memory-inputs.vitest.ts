@@ -12,65 +12,12 @@ import { normalizeQualityAbortThreshold } from '../core/config';
 import { collectSessionData } from '../extractors/collect-session-data';
 import { normalizeInputData, transformOpencodeCapture } from '../utils/input-normalizer';
 
-const captureConversation = vi.fn(async () => null);
-const captureClaudeConversation = vi.fn(async () => null);
-const captureCodexConversation = vi.fn(async () => null);
-const captureCopilotConversation = vi.fn(async () => null);
-const captureGeminiConversation = vi.fn(async () => null);
-
-vi.mock('../extractors/opencode-capture', () => ({
-  captureConversation,
-}));
-
-vi.mock('../extractors/claude-code-capture', () => ({
-  captureClaudeConversation,
-}));
-
-vi.mock('../extractors/codex-cli-capture', () => ({
-  captureCodexConversation,
-}));
-
-vi.mock('../extractors/copilot-cli-capture', () => ({
-  captureCopilotConversation,
-}));
-
-vi.mock('../extractors/gemini-cli-capture', () => ({
-  captureGeminiConversation,
-}));
-
-function resetCaptureMocks(): void {
-  for (const mock of [captureConversation, captureClaudeConversation, captureCodexConversation, captureCopilotConversation, captureGeminiConversation]) {
-    mock.mockReset();
-    mock.mockResolvedValue(null);
-  }
-}
-
-function clearNativeCaptureHintEnv(): void {
-  vi.stubEnv('SYSTEM_SPEC_KIT_CAPTURE_SOURCE', '');
-  vi.stubEnv('CODEX_SHELL', '');
-  vi.stubEnv('CODEX_CI', '');
-  vi.stubEnv('CODEX_INTERNAL_ORIGINATOR_OVERRIDE', '');
-  vi.stubEnv('COPILOT_SESSION', '');
-  vi.stubEnv('CLAUDECODE', '');
-  vi.stubEnv('CLAUDE_CODE', '');
-  vi.stubEnv('CLAUDE_CODE_SESSION', '');
-  vi.stubEnv('CLAUDE_CODE_SESSION_ID', '');
-  vi.stubEnv('CLAUDE_CODE_ENTRYPOINT', '');
-  vi.stubEnv('CLAUDE_CODE_SESSION_STARTED_AT', '');
-  vi.stubEnv('CLAUDE_CODE_START_TS', '');
-  vi.stubEnv('GEMINI_CLI', '');
-  vi.stubEnv('GEMINI_SESSION_ID', '');
-  vi.stubEnv('OPENCODE_SESSION_ID', '');
-  vi.stubEnv('OPENCODE_RUNTIME', '');
-}
-
 describe('loadCollectedData explicit data-file handling', () => {
   beforeEach(() => {
     vi.resetModules();
-    resetCaptureMocks();
   });
 
-  it('rejects a missing explicit dataFile instead of falling back to OpenCode capture', async () => {
+  it('rejects a missing explicit dataFile', async () => {
     const missingFile = path.join(os.tmpdir(), `missing-${Date.now()}.json`);
     const { loadCollectedData } = await import('../loaders/data-loader');
 
@@ -78,15 +25,9 @@ describe('loadCollectedData explicit data-file handling', () => {
       dataFile: missingFile,
       specFolderArg: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
       })).rejects.toThrow(/EXPLICIT_DATA_FILE_LOAD_FAILED: Data file not found/);
-
-      expect(captureConversation).not.toHaveBeenCalled();
-      expect(captureClaudeConversation).not.toHaveBeenCalled();
-      expect(captureCodexConversation).not.toHaveBeenCalled();
-      expect(captureCopilotConversation).not.toHaveBeenCalled();
-      expect(captureGeminiConversation).not.toHaveBeenCalled();
     });
 
-  it('rejects invalid JSON from an explicit dataFile instead of falling back to OpenCode capture', async () => {
+  it('rejects invalid JSON from an explicit dataFile', async () => {
     const invalidFile = path.join(os.tmpdir(), `invalid-${Date.now()}.json`);
     await fs.writeFile(invalidFile, '{invalid json', 'utf-8');
 
@@ -97,18 +38,12 @@ describe('loadCollectedData explicit data-file handling', () => {
         dataFile: invalidFile,
         specFolderArg: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
       })).rejects.toThrow(/EXPLICIT_DATA_FILE_LOAD_FAILED: Invalid JSON in data file/);
-
-      expect(captureConversation).not.toHaveBeenCalled();
-      expect(captureClaudeConversation).not.toHaveBeenCalled();
-      expect(captureCodexConversation).not.toHaveBeenCalled();
-      expect(captureCopilotConversation).not.toHaveBeenCalled();
-      expect(captureGeminiConversation).not.toHaveBeenCalled();
     } finally {
       await fs.rm(invalidFile, { force: true });
     }
   });
 
-  it('rejects validation failures from an explicit dataFile instead of falling back to OpenCode capture', async () => {
+  it('rejects validation failures from an explicit dataFile', async () => {
     const invalidShapeFile = path.join(os.tmpdir(), `invalid-shape-${Date.now()}.json`);
     await fs.writeFile(invalidShapeFile, JSON.stringify({
       specFolder: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
@@ -122,18 +57,12 @@ describe('loadCollectedData explicit data-file handling', () => {
         dataFile: invalidShapeFile,
         specFolderArg: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
       })).rejects.toThrow(/EXPLICIT_DATA_FILE_LOAD_FAILED: Failed to load data file/);
-
-      expect(captureConversation).not.toHaveBeenCalled();
-      expect(captureClaudeConversation).not.toHaveBeenCalled();
-      expect(captureCodexConversation).not.toHaveBeenCalled();
-      expect(captureCopilotConversation).not.toHaveBeenCalled();
-      expect(captureGeminiConversation).not.toHaveBeenCalled();
     } finally {
       await fs.rm(invalidShapeFile, { force: true });
     }
   });
 
-  (process.getuid?.() === 0 ? it.skip : it)('rejects an EACCES permission error from an explicit dataFile instead of falling back to capture', async () => {
+  (process.getuid?.() === 0 ? it.skip : it)('rejects an EACCES permission error from an explicit dataFile', async () => {
     const permFile = path.join(os.tmpdir(), `perm-denied-${Date.now()}.json`);
     await fs.writeFile(permFile, JSON.stringify({ specFolder: 'test' }), 'utf-8');
     await fs.chmod(permFile, 0o000);
@@ -145,12 +74,6 @@ describe('loadCollectedData explicit data-file handling', () => {
         dataFile: permFile,
         specFolderArg: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
       })).rejects.toThrow(/EXPLICIT_DATA_FILE_LOAD_FAILED: Permission denied/);
-
-      expect(captureConversation).not.toHaveBeenCalled();
-      expect(captureClaudeConversation).not.toHaveBeenCalled();
-      expect(captureCodexConversation).not.toHaveBeenCalled();
-      expect(captureCopilotConversation).not.toHaveBeenCalled();
-      expect(captureGeminiConversation).not.toHaveBeenCalled();
     } finally {
       await fs.chmod(permFile, 0o644);
       await fs.rm(permFile, { force: true });
@@ -161,7 +84,6 @@ describe('loadCollectedData explicit data-file handling', () => {
 describe('valid explicit dataFile happy path', () => {
   beforeEach(() => {
     vi.resetModules();
-    resetCaptureMocks();
   });
 
   it('loads and normalizes a valid explicit dataFile successfully', async () => {
@@ -182,11 +104,6 @@ describe('valid explicit dataFile happy path', () => {
       expect(result._source).toBe('file');
       expect(result.observations).toBeDefined();
       expect(Array.isArray(result.observations)).toBe(true);
-      expect(captureConversation).not.toHaveBeenCalled();
-      expect(captureClaudeConversation).not.toHaveBeenCalled();
-      expect(captureCodexConversation).not.toHaveBeenCalled();
-      expect(captureCopilotConversation).not.toHaveBeenCalled();
-      expect(captureGeminiConversation).not.toHaveBeenCalled();
     } finally {
       await fs.rm(validFile, { force: true });
     }
@@ -227,11 +144,6 @@ describe('valid explicit dataFile happy path', () => {
         'render quality',
         'trigger phrases',
       ]);
-      expect(captureConversation).not.toHaveBeenCalled();
-      expect(captureClaudeConversation).not.toHaveBeenCalled();
-      expect(captureCodexConversation).not.toHaveBeenCalled();
-      expect(captureCopilotConversation).not.toHaveBeenCalled();
-      expect(captureGeminiConversation).not.toHaveBeenCalled();
     } finally {
       await fs.rm(validFile, { force: true });
     }
@@ -241,7 +153,6 @@ describe('valid explicit dataFile happy path', () => {
 describe('path traversal security', () => {
   beforeEach(() => {
     vi.resetModules();
-    resetCaptureMocks();
   });
 
   it('rejects a dataFile path that attempts directory traversal', async () => {
@@ -251,274 +162,6 @@ describe('path traversal security', () => {
       dataFile: '../../etc/passwd',
       specFolderArg: '022-hybrid-rag-fusion/015-outsourced-agent-handback',
     })).rejects.toThrow(/Security|Path outside allowed directories/);
-
-    expect(captureConversation).not.toHaveBeenCalled();
-    expect(captureClaudeConversation).not.toHaveBeenCalled();
-    expect(captureCodexConversation).not.toHaveBeenCalled();
-    expect(captureCopilotConversation).not.toHaveBeenCalled();
-    expect(captureGeminiConversation).not.toHaveBeenCalled();
-  });
-});
-
-describe('native CLI fallback handling', () => {
-  beforeEach(() => {
-    vi.resetModules();
-    resetCaptureMocks();
-    clearNativeCaptureHintEnv();
-  });
-
-  it('rejects stateless fallback unless recovery mode is explicitly enabled', async () => {
-    const { loadCollectedData } = await import('../loaders/data-loader');
-
-    await expect(loadCollectedData({
-      specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
-    })).rejects.toThrow(/RECOVERY_MODE_REQUIRED/);
-
-    expect(captureConversation).not.toHaveBeenCalled();
-    expect(captureClaudeConversation).not.toHaveBeenCalled();
-    expect(captureCodexConversation).not.toHaveBeenCalled();
-    expect(captureCopilotConversation).not.toHaveBeenCalled();
-    expect(captureGeminiConversation).not.toHaveBeenCalled();
-  });
-
-  it('falls back to Claude Code capture when OpenCode capture returns no usable content', async () => {
-    captureConversation.mockResolvedValueOnce(null);
-    captureClaudeConversation.mockResolvedValueOnce({
-      exchanges: [
-        {
-          userInput: 'Use Claude transcript for 009-perfect-session-capturing hybrid rag fusion work',
-          assistantResponse: 'Loaded the Claude session for 009-perfect-session-capturing successfully.',
-          timestamp: '2026-03-15T10:00:00.000Z',
-        },
-      ],
-      toolCalls: [],
-      metadata: {},
-      sessionTitle: 'Claude transcript fallback',
-      sessionId: 'claude-session',
-      capturedAt: '2026-03-15T10:00:01.000Z',
-    });
-
-    const { loadCollectedData } = await import('../loaders/data-loader');
-    const result = await loadCollectedData({
-      specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
-      allowRecovery: true,
-    });
-
-    expect(captureConversation).toHaveBeenCalledTimes(1);
-    expect(captureClaudeConversation).toHaveBeenCalledTimes(1);
-    expect(captureClaudeConversation).toHaveBeenCalledWith(
-      20,
-      expect.any(String),
-      expect.objectContaining({
-        invocationTs: expect.any(Number),
-      }),
-    );
-    expect(captureCodexConversation).not.toHaveBeenCalled();
-    expect(captureCopilotConversation).not.toHaveBeenCalled();
-    expect(captureGeminiConversation).not.toHaveBeenCalled();
-    expect(result._source).toBe('claude-code-capture');
-    expect(result.userPrompts?.[0]?.prompt).toContain('009-perfect-session-capturing');
-  });
-
-  it('falls back to Codex CLI after OpenCode and Claude both return no usable content', async () => {
-    captureConversation.mockResolvedValueOnce(null);
-    captureClaudeConversation.mockResolvedValueOnce(null);
-    captureCodexConversation.mockResolvedValueOnce({
-      exchanges: [
-        {
-          userInput: 'Capture Codex session for 009-perfect-session-capturing hybrid rag fusion',
-          assistantResponse: 'Loaded Codex session for 009-perfect-session-capturing successfully.',
-          timestamp: '2026-03-15T10:10:00.000Z',
-        },
-      ],
-      toolCalls: [],
-      metadata: {},
-      sessionTitle: 'Codex transcript fallback',
-      sessionId: 'codex-session',
-      capturedAt: '2026-03-15T10:10:01.000Z',
-    });
-
-    const { loadCollectedData } = await import('../loaders/data-loader');
-    const result = await loadCollectedData({
-      specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
-      allowRecovery: true,
-    });
-
-    expect(captureConversation).toHaveBeenCalledTimes(1);
-    expect(captureClaudeConversation).toHaveBeenCalledTimes(1);
-    expect(captureCodexConversation).toHaveBeenCalledTimes(1);
-    expect(captureCopilotConversation).not.toHaveBeenCalled();
-    expect(captureGeminiConversation).not.toHaveBeenCalled();
-    expect(result._source).toBe('codex-cli-capture');
-    expect(result.userPrompts?.[0]?.prompt).toContain('009-perfect-session-capturing');
-  });
-
-  it('falls back to Copilot CLI after Codex also returns no usable content', async () => {
-    captureConversation.mockResolvedValueOnce(null);
-    captureClaudeConversation.mockResolvedValueOnce(null);
-    captureCodexConversation.mockResolvedValueOnce(null);
-    captureCopilotConversation.mockResolvedValueOnce({
-      exchanges: [
-        {
-          userInput: 'Capture the current Copilot session',
-          assistantResponse: 'Loaded the Copilot session successfully.',
-          timestamp: '2026-03-15T10:20:00.000Z',
-        },
-      ],
-      toolCalls: [],
-      metadata: {},
-      sessionTitle: 'Copilot transcript fallback',
-      sessionId: 'copilot-session',
-      capturedAt: '2026-03-15T10:20:01.000Z',
-    });
-
-    const { loadCollectedData } = await import('../loaders/data-loader');
-    const result = await loadCollectedData({
-      specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
-      allowRecovery: true,
-    });
-
-    expect(captureConversation).toHaveBeenCalledTimes(1);
-    expect(captureClaudeConversation).toHaveBeenCalledTimes(1);
-    expect(captureCodexConversation).toHaveBeenCalledTimes(1);
-    expect(captureCopilotConversation).toHaveBeenCalledTimes(1);
-    expect(captureGeminiConversation).not.toHaveBeenCalled();
-    expect(result._source).toBe('copilot-cli-capture');
-  });
-
-  it('falls back to Gemini CLI when it is the only usable native capture source', async () => {
-    captureConversation.mockResolvedValueOnce(null);
-    captureClaudeConversation.mockResolvedValueOnce(null);
-    captureCodexConversation.mockResolvedValueOnce(null);
-    captureCopilotConversation.mockResolvedValueOnce(null);
-    captureGeminiConversation.mockResolvedValueOnce({
-      exchanges: [
-        {
-          userInput: 'Capture the current Gemini session',
-          assistantResponse: 'Loaded the Gemini session successfully.',
-          timestamp: '2026-03-15T10:30:00.000Z',
-        },
-      ],
-      toolCalls: [],
-      metadata: {},
-      sessionTitle: 'Gemini transcript fallback',
-      sessionId: 'gemini-session',
-      capturedAt: '2026-03-15T10:30:01.000Z',
-    });
-
-    const { loadCollectedData } = await import('../loaders/data-loader');
-    const result = await loadCollectedData({
-      specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
-      allowRecovery: true,
-    });
-
-    expect(captureConversation).toHaveBeenCalledTimes(1);
-    expect(captureClaudeConversation).toHaveBeenCalledTimes(1);
-    expect(captureCodexConversation).toHaveBeenCalledTimes(1);
-    expect(captureCopilotConversation).toHaveBeenCalledTimes(1);
-    expect(captureGeminiConversation).toHaveBeenCalledTimes(1);
-    expect(result._source).toBe('gemini-cli-capture');
-  });
-
-  it('keeps the NO_DATA_AVAILABLE hard-fail when no native capture source returns content', async () => {
-    captureConversation.mockResolvedValueOnce(null);
-    captureClaudeConversation.mockResolvedValueOnce(null);
-    captureCodexConversation.mockResolvedValueOnce(null);
-    captureCopilotConversation.mockResolvedValueOnce(null);
-    captureGeminiConversation.mockResolvedValueOnce(null);
-
-    const { loadCollectedData } = await import('../loaders/data-loader');
-
-    await expect(loadCollectedData({
-      specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
-      allowRecovery: true,
-    })).rejects.toThrow(/NO_DATA_AVAILABLE/);
-
-    expect(captureConversation).toHaveBeenCalledTimes(1);
-    expect(captureClaudeConversation).toHaveBeenCalledTimes(1);
-    expect(captureCodexConversation).toHaveBeenCalledTimes(1);
-    expect(captureCopilotConversation).toHaveBeenCalledTimes(1);
-    expect(captureGeminiConversation).toHaveBeenCalledTimes(1);
-  });
-
-  it.each([
-    ['claude', 'claude-code-capture', captureClaudeConversation],
-    ['codex', 'codex-cli-capture', captureCodexConversation],
-    ['copilot', 'copilot-cli-capture', captureCopilotConversation],
-    ['gemini', 'gemini-cli-capture', captureGeminiConversation],
-  ] as const)('prefers %s when SYSTEM_SPEC_KIT_CAPTURE_SOURCE is set', async (hint, expectedSource, preferredMock) => {
-    vi.stubEnv('SYSTEM_SPEC_KIT_CAPTURE_SOURCE', hint);
-
-    captureConversation.mockResolvedValueOnce({
-      exchanges: [
-        {
-          userInput: 'OpenCode should be skipped when a preferred source is available.',
-          assistantResponse: 'OpenCode response',
-          timestamp: '2026-03-15T12:00:00.000Z',
-        },
-      ],
-      toolCalls: [],
-      metadata: {},
-      sessionTitle: 'OpenCode default fallback',
-      sessionId: 'opencode-default',
-      capturedAt: '2026-03-15T12:00:01.000Z',
-    });
-
-    preferredMock.mockResolvedValueOnce({
-      exchanges: [
-        {
-          userInput: `Use ${hint} as the preferred direct-mode capture source.`,
-          assistantResponse: `Loaded ${hint} successfully.`,
-          timestamp: '2026-03-15T12:00:00.000Z',
-        },
-      ],
-      toolCalls: [],
-      metadata: {},
-      sessionTitle: `${hint} preferred source`,
-      sessionId: `${hint}-preferred`,
-      capturedAt: '2026-03-15T12:00:01.000Z',
-    });
-
-    const { loadCollectedData } = await import('../loaders/data-loader');
-    const result = await loadCollectedData({
-      specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
-      allowRecovery: true,
-    });
-
-    expect(result._source).toBe(expectedSource);
-    expect(preferredMock).toHaveBeenCalledTimes(1);
-    expect(captureConversation).not.toHaveBeenCalled();
-  });
-
-  it('tries the hinted source first, then resumes the documented fallback order', async () => {
-    vi.stubEnv('SYSTEM_SPEC_KIT_CAPTURE_SOURCE', 'codex');
-
-    captureCodexConversation.mockResolvedValueOnce(null);
-    captureConversation.mockResolvedValueOnce({
-      exchanges: [
-        {
-          userInput: 'Fallback to OpenCode after the preferred Codex source is empty.',
-          assistantResponse: 'Loaded OpenCode after trying Codex first.',
-          timestamp: '2026-03-15T12:10:00.000Z',
-        },
-      ],
-      toolCalls: [],
-      metadata: {},
-      sessionTitle: 'OpenCode after preferred Codex miss',
-      sessionId: 'opencode-after-codex',
-      capturedAt: '2026-03-15T12:10:01.000Z',
-    });
-
-    const { loadCollectedData } = await import('../loaders/data-loader');
-    const result = await loadCollectedData({
-      specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
-      allowRecovery: true,
-    });
-
-    expect(result._source).toBe('opencode-capture');
-    expect(captureCodexConversation).toHaveBeenCalledTimes(1);
-    expect(captureConversation).toHaveBeenCalledTimes(1);
-    expect(captureClaudeConversation).not.toHaveBeenCalled();
   });
 });
 

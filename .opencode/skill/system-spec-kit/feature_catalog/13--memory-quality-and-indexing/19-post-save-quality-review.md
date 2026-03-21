@@ -15,7 +15,7 @@ This is a verification step that catches cases where the rendering pipeline sile
 
 ## 2. CURRENT REALITY
 
-The post-save quality review runs as Step 10.5 in the save workflow, between file write and indexing. It is active for all JSON-mode saves and skipped for recovery and stateless modes where no authoritative JSON payload is available.
+The post-save quality review runs as Step 10.5 in the save workflow, between file write and indexing. It is always active.
 
 Current detection checks:
 
@@ -50,11 +50,10 @@ The review output is machine-readable so callers and downstream quality monitors
 - **MEDIUM**: `importance_tier` or `decision_count` drift that should be fixed before trusting indexing quality.
 - **LOW**: `context_type` or `description` drift that is worth tightening but is not treated as a blocking propagation failure.
 
-### 3.3 Mode gating
+### 3.3 Activation
 
-- **JSON mode**: Full review runs. The original JSON payload is available as the authoritative source for comparison.
-- **Recovery mode** (`--recovery` flag): Review skipped. No authoritative JSON payload; dynamic session capture does not guarantee a comparable source of truth.
-- **Stateless mode**: Review skipped. No JSON payload available.
+- The review always runs after a successful file write.
+- The original JSON payload is the authoritative source for all comparisons.
 
 ### 3.4 Cross-references
 
@@ -79,7 +78,7 @@ The review output is machine-readable so callers and downstream quality monitors
 
 | File | Focus |
 |------|-------|
-| `scripts/tests/post-save-review.vitest.ts` | Severity classification, detection checks, mode-gating (recovery/stateless skip), machine-readable output shape _(planned — not yet created)_ |
+| `scripts/tests/post-save-review.vitest.ts` | Severity classification, detection checks, machine-readable output shape _(planned — not yet created)_ |
 | `scripts/tests/workflow-e2e.vitest.ts` | End-to-end coverage of Step 10.5 placement within the save workflow |
 
 ---

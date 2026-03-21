@@ -472,7 +472,7 @@ When reusing spec folders with existing content:
 - Trigger: Option A selected + root-level content exists
 - Pattern: `001-original/`, `002-new-work/`, `003-another/`
 - Memory: Each sub-folder has independent `memory/` directory
-- Tracking: Routine saves pass the target spec folder alongside structured JSON; positional CLI capture is reserved for explicit recovery mode
+- Tracking: Saves pass the target spec folder alongside structured JSON via the generate-context script
 
 **Example structure:**
 ```
@@ -499,7 +499,6 @@ specs/007-auth-system/
 - **MUST use:** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
 - **NEVER:** Create memory files manually via Write/Edit (AGENTS.md Memory Save Rule)
 - **JSON mode (PREFERRED):** AI composes structured JSON → pass via `--json`, `--stdin`, or temp file. The AI has strictly better information about its own session than any DB query.
-- **Stateless mode (RECOVERY ONLY):** Pass `--recovery <spec-folder>`. Dynamic session capture is unavailable for routine saves and exists only for crash recovery.
 - **Structured JSON fields:** The JSON payload supports optional structured summary fields that improve memory quality:
   - `toolCalls[]` — AI-composed tool call records (`tool`, `inputSummary`, `outputSummary`, `status`)
   - `exchanges[]` — Key conversation turns (`userInput`, `assistantResponse`, `timestamp`)
@@ -515,17 +514,17 @@ specs/007-auth-system/
 The generate-context script supports nested spec folder paths (parent/child format):
 
 ```bash
-# Full nested path (parent/child, recovery only)
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery 02--system-spec-kit/121-script-audit
+# Full nested path (parent/child)
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"02--system-spec-kit/121-script-audit","sessionSummary":"..."}' 02--system-spec-kit/121-script-audit
 
-# Bare child name (auto-searches all parents for unique match, recovery only)
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery 121-script-audit
+# Bare child name (auto-searches all parents for unique match)
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"121-script-audit","sessionSummary":"..."}' 121-script-audit
 
-# With specs/ prefix (recovery only)
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery specs/02--system-spec-kit/121-script-audit
+# With specs/ prefix
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"specs/02--system-spec-kit/121-script-audit","sessionSummary":"..."}' specs/02--system-spec-kit/121-script-audit
 
-# Flat folder (recovery only)
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery 02--system-spec-kit
+# Flat folder
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"02--system-spec-kit","sessionSummary":"..."}' 02--system-spec-kit
 ```
 
 Memory files are always saved to the child folder's `memory/` directory (e.g., `specs/02--system-spec-kit/121-script-audit/memory/`). If a bare child name matches multiple parents, the script reports an error and requires the full `parent/child` path.

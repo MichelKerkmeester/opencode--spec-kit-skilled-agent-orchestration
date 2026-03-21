@@ -2424,7 +2424,7 @@ Previously, every saved memory in the same folder got nearly the same filename, 
 
 #### Current Reality
 
-Memory filenames were previously derived solely from the spec folder name, producing identical slugs like `hybrid-rag-fusion-refinement.md` for every save in the same folder. The workflow now builds a `preferredMemoryTask` and uses it for slug/title generation in `generateContentSlug()`, with candidate precedence `task -> specTitle -> sessionCandidates (QUICK_SUMMARY/TITLE/SUMMARY) -> folderBase`. In stateless mode, generic task strings can be enriched from the `spec.md` frontmatter title before candidate selection. In JSON/file-backed mode, that enrichment override remains disabled, but candidate precedence still prefers stronger session-derived names before folder fallback. Generic detection used by selection/enrichment includes `implementation-and-updates`, and slug fallback still uses the generic terms list (`development-session`, `session-summary`, `session-context`, `session`, `context`, `implementation`, `work-session`).
+Memory filenames were previously derived solely from the spec folder name, producing identical slugs like `hybrid-rag-fusion-refinement.md` for every save in the same folder. The workflow now builds a `preferredMemoryTask` and uses it for slug/title generation in `generateContentSlug()`, with candidate precedence `task -> specTitle -> sessionCandidates (QUICK_SUMMARY/TITLE/SUMMARY) -> folderBase`. Candidate precedence prefers stronger session-derived names before folder fallback. Generic detection used by selection/enrichment includes `implementation-and-updates`, and slug fallback still uses the generic terms list (`development-session`, `session-summary`, `session-context`, `session`, `context`, `implementation`, `work-session`).
 
 The slug is lowercased, non-alphanumeric characters replaced with hyphens, collapsed and truncated at a word boundary (hyphen) to a maximum of 50 characters. A minimum length of 8 characters ensures slugs are meaningful. This produces filenames like `04-03-26_17-25__sprint-019-impl-3-phases-81-files.md` instead of `04-03-26_17-25__hybrid-rag-fusion-refinement.md`. Always active with no feature flag.
 
@@ -2590,7 +2590,7 @@ After the system saves a memory file, it runs a quick proof-reading step to chec
 
 #### Current Reality
 
-The post-save quality review runs as Step 10.5 in the save workflow, between file write and indexing. It is active for all JSON-mode saves and skipped for recovery and stateless modes where no authoritative JSON payload is available.
+The post-save quality review runs as Step 10.5 in the save workflow, between file write and indexing. It is always active.
 
 Current detection checks: generic title, path-fragment trigger phrases, importance_tier mismatch, decision_count = 0 when keyDecisions are present, contextType mismatch, and generic description. Each finding is emitted with a severity level: HIGH (data loss or explicit caller intent overridden), MEDIUM (degraded quality that reduces retrieval accuracy), or LOW (advisory observation). The review output is machine-readable so callers and downstream quality monitors can surface actionable per-field failures without parsing prose. Failure findings are reported back to the caller in the save response but do not abort the save unless a HIGH severity finding triggers the configured abort threshold.
 
@@ -3434,11 +3434,11 @@ See [`16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md`](16--tooling-an
 
 #### Description
 
-Phase 017 established the JSON-primary deprecation posture: routine saves require `--json` or `--stdin` structured input, direct positional stateless capture requires `--recovery`, and operator guidance documents JSON as the primary save contract.
+Phase 017 established the JSON-only save contract for `generate-context.js`. Dynamic session capture proved unreliable and has been removed. `--json` and `--stdin` are now the sole save paths.
 
 #### Current Reality
 
-Direct positional saves without `--recovery` exit non-zero with migration guidance. `--json` and `--stdin` are the documented routine-save paths. `--recovery` is the only way to invoke stateless capture. The obsolete dynamic-capture follow-up phases are archived under `000-dynamic-capture-deprecation/`.
+Direct positional saves exit non-zero with migration guidance. `--json` and `--stdin` are the only save paths. The obsolete dynamic-capture follow-up phases are archived under `000-dynamic-capture-deprecation/`.
 
 #### Source Files
 
@@ -3530,11 +3530,11 @@ See [`16--tooling-and-scripts/11-feature-catalog-code-references.md`](16--toolin
 
 #### Description
 
-Session capturing pipeline quality is the current reality-alignment feature for `009-perfect-session-capturing`. It covers the full shipped session-capture path for `generate-context.js`: (1) Part I hardening across session extraction, file writing, contamination filtering, alignment blocking, and config-driven limits; (2) recovery-mode stateless enrichment from spec-folder and git context; (3) numeric quality-score calibration so thin recovery captures score lower than rich saves; (4) native recovery-only fallback support for all supported local CLI ecosystems (OpenCode, Claude Code, Codex CLI, Copilot CLI, Gemini CLI); (5) one shared semantic sufficiency gate so aligned but under-evidenced memories fail explicitly instead of indexing; (6) one shared rendered-memory template contract so malformed ANCHOR/frontmatter output fails before write/index; (7) a fully refreshed canonical verification and manual-testing record; (8) JSON-primary routine-save contract with runtime deprecation of unguarded stateless saves; (9) Wave 2 count/confidence hardening for decision confidence, truncated outcomes, and stable `git_changed_file_count` priority.
+Session capturing pipeline quality is the current reality-alignment feature for `009-perfect-session-capturing`. It covers the full shipped session-capture path for `generate-context.js`: (1) Part I hardening across session extraction, file writing, contamination filtering, alignment blocking, and config-driven limits; (2) spec-folder and git context enrichment for JSON-mode saves; (3) numeric quality-score calibration so thin saves score lower than rich ones; (4) one shared semantic sufficiency gate so aligned but under-evidenced memories fail explicitly instead of indexing; (5) one shared rendered-memory template contract so malformed ANCHOR/frontmatter output fails before write/index; (6) a fully refreshed canonical verification and manual-testing record; (7) JSON-only routine-save contract; (8) Wave 2 count/confidence hardening for decision confidence, truncated outcomes, and stable `git_changed_file_count` priority.
 
 #### Current Reality
 
-The shipped session-capture pipeline enforces crypto session IDs, atomic batch writes with rollback, contamination filtering, quality abort thresholds, alignment blocking, and configurable pipeline constants. It tries native capture across five CLI backends (OpenCode, Claude Code, Codex CLI, Copilot CLI, Gemini CLI) in order and requires each to match the active workspace identity before accepting its transcript. A semantic sufficiency gate rejects aligned but under-evidenced saves with `INSUFFICIENT_CONTEXT_ABORT`. Rendered memory files preserve ANCHOR comments through post-render cleanup, render session-specific trigger phrases, and accept both camelCase and snake_case save contracts. The shared rendered-memory template contract validates structural output before write/index so routine saves stay structurally clean. Structured `--stdin` / `--json` input is the only routine-save contract; direct positional saves without `--recovery` now exit non-zero with migration guidance. Decision confidence, truncated outcome handling, and `git_changed_file_count` follow stable priority chains that respect explicit input values.
+The shipped session-capture pipeline enforces crypto session IDs, atomic batch writes with rollback, contamination filtering, quality abort thresholds, alignment blocking, and configurable pipeline constants. Structured `--stdin` / `--json` input is the only save path; direct positional saves exit non-zero with migration guidance. A semantic sufficiency gate rejects aligned but under-evidenced saves with `INSUFFICIENT_CONTEXT_ABORT`. Rendered memory files preserve ANCHOR comments through post-render cleanup, render session-specific trigger phrases, and accept both camelCase and snake_case save contracts. The shared rendered-memory template contract validates structural output before write/index so routine saves stay structurally clean. Decision confidence, truncated outcome handling, and `git_changed_file_count` follow stable priority chains that respect explicit input values.
 
 #### Source Files
 

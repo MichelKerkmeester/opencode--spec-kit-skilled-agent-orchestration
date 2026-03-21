@@ -222,13 +222,6 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
 echo '{"specFolder":"049-anchor-context-retrieval","sessionSummary":"..."}' | \
   node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin
 
-# Direct root-target mode (recovery only — requires --recovery flag)
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
-  --recovery ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion"
-
-# Direct phase target mode (recovery only; saves to the selected phase folder's own memory/ directory)
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
-  --recovery ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/021-remediation-revalidation"
 ```
 
 ### Required JSON Fields

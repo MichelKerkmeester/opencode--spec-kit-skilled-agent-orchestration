@@ -72,7 +72,6 @@ Save the current conversation context, including session summary, key decisions,
 | Output  | Memory file in `[spec]/memory/` + indexed in MCP                                             |
 | Script  | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`               |
 | Primary | **JSON mode:** `generate-context.js /tmp/save-context-data.json` or `--json '<data>'`        |
-| Recovery| **Recovery mode (deprecated):** `generate-context.js --recovery [spec-folder]` — crash recovery only |
 | Trigger | "save context", "save memory", `/memory:save`                                                |
 
 ---
@@ -246,7 +245,7 @@ Content...
 
 ### Step 4: Create JSON Data (AI CONSTRUCTS THIS)
 
-**CRITICAL:** The AI MUST construct this JSON from Step 2 analysis. Without proper JSON, routine saves now fail fast instead of silently falling back to stateless capture. Use `--recovery` only for explicit crash recovery.
+**CRITICAL:** The AI MUST construct this JSON from Step 2 analysis. The script requires proper JSON input to produce high-quality memory files.
 
 **Required JSON Structure:**
 ```json
@@ -263,7 +262,7 @@ Content...
   ],
   "triggerPhrases": [
     "generate-context", "memory save", "JSON input",
-    "stateless mode", "context preservation"
+    "context preservation", "session capture"
   ],
   "technicalContext": {
     "rootCause": "Description of the problem's root cause",
@@ -294,18 +293,15 @@ Content...
 
 ### Step 5: Execute Processing Script
 
-**Two Execution Modes:**
+| Mode                              | Command                                                           | Use When                                     |
+| --------------------------------- | ----------------------------------------------------------------- | -------------------------------------------- |
+| **JSON File** (standard)          | `node generate-context.js ${TMPDIR:-/tmp}/save-context-data.json` | Rich context with decisions, files, triggers |
 
-| Mode                                        | Command                                                           | Use When                                     |
-| ------------------------------------------- | ----------------------------------------------------------------- | -------------------------------------------- |
-| **Mode 1: JSON File** (PREFERRED)           | `node generate-context.js ${TMPDIR:-/tmp}/save-context-data.json` | Rich context with decisions, files, triggers |
-| **Mode 2: Direct Path** (RECOVERY ONLY)     | `node generate-context.js --recovery specs/005-memory`            | Crash recovery, interrupted sessions only    |
-
-> **Why JSON mode is preferred:** The AI has strictly better information about its own session than any database query can reconstruct. JSON mode eliminates wrong-session capture, multi-session ambiguity, and exchange pairing bugs that plague dynamic capture. Stateless mode is **not a routine-save contract anymore**; it runs only when `--recovery` is supplied.
+> **Why JSON mode:** The AI has strictly better information about its own session than any database query can reconstruct. JSON mode eliminates wrong-session capture, multi-session ambiguity, and exchange pairing bugs.
 
 > **Cross-Platform Note:** `${TMPDIR:-/tmp}` uses the system temp directory. On macOS/Linux this resolves to `/tmp` or `$TMPDIR`. On Windows (Git Bash/WSL), use `$TEMP` or `%TEMP%`.
 
-**Mode 1 (Recommended):** Write JSON to temp file, then execute:
+Write JSON to temp file, then execute:
 ```bash
 TEMP_FILE="${TMPDIR:-/tmp}/save-context-data.json"
 
@@ -331,15 +327,6 @@ rm "$TEMP_FILE"
 ✓ {filename}.md (300+ lines)
 ✓ Indexed as memory #NN
 ```
-
-**If you see a recovery-mode warning, the command entered the explicit crash-recovery path instead of the routine JSON path.**
-
-**Mode 2 (Direct Path):** Explicit recovery save:
-```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery specs/005-memory
-```
-
-When to use: Crash recovery or interrupted-session rescue only. Do not use this path for normal saves.
 
 ### File Output
 
@@ -461,7 +448,7 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 | Embedding fails         | File saved, will auto-index on MCP restart      |
 | MCP unavailable         | File saved, indexing deferred to restart        |
 | Duplicate session (<1h) | Warn, offer: Overwrite / Append / New / Cancel  |
-| "Stateless mode"        | JSON not loaded: check temp file path/content   |
+| JSON not loaded         | Check temp file path and content format          |
 
 ---
 

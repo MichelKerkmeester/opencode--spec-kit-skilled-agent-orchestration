@@ -52,73 +52,6 @@ describe('generate-context CLI authority', () => {
     await resetGenerateContextConfig();
   });
 
-  it('requires --recovery for direct CLI spec-folder mode', async () => {
-    const exitSpy = mockProcessExit();
-    const explicitSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
-    process.argv = ['node', path.join('scripts', 'dist', 'memory', 'generate-context.js'), explicitSpecFolder];
-
-    const { main } = await import('../memory/generate-context');
-    await expect(main()).rejects.toThrow('EXIT:1');
-
-    expect(harness.runWorkflow).not.toHaveBeenCalled();
-    expect(harness.loadCollectedData).not.toHaveBeenCalled();
-    exitSpy.mockRestore();
-  });
-
-  it('parses --recovery direct spec-folder mode as an explicit recovery-only target', async () => {
-    const explicitSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
-    const resolvedSpecFolder = path.resolve(REPO_ROOT, explicitSpecFolder);
-
-    const { parseArguments } = await import('../memory/generate-context');
-    const parsed = await parseArguments(['--recovery', explicitSpecFolder], async () => '');
-
-    expect(parsed).toEqual({
-      dataFile: null,
-      specFolderArg: resolvedSpecFolder,
-      collectedData: null,
-      sessionId: null,
-      allowRecovery: true,
-    });
-  });
-
-  it('rejects --recovery when no direct spec-folder target is provided during argument parsing', async () => {
-    const { parseArguments } = await import('../memory/generate-context');
-
-    await expect(parseArguments(['--recovery'], async () => '')).rejects.toThrow(
-      '--recovery requires a direct spec folder target'
-    );
-  });
-
-  it('rejects --recovery when combined with a JSON data file during argument parsing', async () => {
-    const { parseArguments } = await import('../memory/generate-context');
-
-    await expect(parseArguments(['--recovery', '/tmp/save-context-data.json'], async () => '')).rejects.toThrow(
-      '--recovery requires a direct spec folder target and cannot be combined with JSON file input'
-    );
-  });
-
-  it('passes direct CLI spec-folder mode through main() only when --recovery is present', async () => {
-    const explicitSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
-    const resolvedSpecFolder = path.resolve(REPO_ROOT, explicitSpecFolder);
-    process.argv = ['node', path.join('scripts', 'dist', 'memory', 'generate-context.js'), '--recovery', explicitSpecFolder];
-
-    const { main } = await import('../memory/generate-context');
-    await main();
-
-    expect(harness.runWorkflow).toHaveBeenCalledTimes(1);
-    const workflowCall = harness.runWorkflow.mock.calls[0]?.[0];
-    expect(workflowCall).toMatchObject({
-      dataFile: undefined,
-      specFolderArg: resolvedSpecFolder,
-      loadDataFn: expect.any(Function),
-      collectSessionDataFn: harness.collectSessionData,
-      collectedData: undefined,
-      allowRecovery: true,
-    });
-    await workflowCall?.loadDataFn?.();
-    expect(harness.loadCollectedData).toHaveBeenCalledWith({ sessionId: null, allowRecovery: true });
-  });
-
   it('passes JSON-mode data and explicit CLI spec-folder override through main()', async () => {
     const dataFile = '/tmp/save-context-data.json';
     const explicitSpecFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion';
@@ -137,7 +70,7 @@ describe('generate-context CLI authority', () => {
       collectedData: undefined,
     });
     await workflowCall?.loadDataFn?.();
-    expect(harness.loadCollectedData).toHaveBeenCalledWith({ sessionId: null, allowRecovery: false });
+    expect(harness.loadCollectedData).toHaveBeenCalledWith({});
   });
 
   it('forwards explicit --session-id to workflow', async () => {
@@ -166,43 +99,7 @@ describe('generate-context CLI authority', () => {
       collectedData: undefined,
     });
     await workflowCall?.loadDataFn?.();
-    expect(harness.loadCollectedData).toHaveBeenCalledWith({ sessionId, allowRecovery: false });
-  });
-
-  it('passes an explicit phase-folder CLI target through main() as an authoritative workflow target only in recovery mode', async () => {
-    const explicitPhaseFolder = '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-code-audit-per-feature-catalog/021-remediation-revalidation';
-    const resolvedPhaseFolder = path.resolve(REPO_ROOT, explicitPhaseFolder);
-    process.argv = ['node', path.join('scripts', 'dist', 'memory', 'generate-context.js'), '--recovery', explicitPhaseFolder];
-
-    const { main } = await import('../memory/generate-context');
-    await main();
-
-    expect(harness.runWorkflow).toHaveBeenCalledTimes(1);
-    const workflowCall = harness.runWorkflow.mock.calls[0]?.[0];
-    expect(workflowCall).toMatchObject({
-      dataFile: undefined,
-      specFolderArg: resolvedPhaseFolder,
-      loadDataFn: expect.any(Function),
-      collectSessionDataFn: harness.collectSessionData,
-      collectedData: undefined,
-      allowRecovery: true,
-    });
-    await workflowCall?.loadDataFn?.();
-    expect(harness.loadCollectedData).toHaveBeenCalledWith({ sessionId: null, allowRecovery: true });
-  });
-
-  it('rejects --recovery when combined with structured JSON input', async () => {
-    const exitSpy = mockProcessExit();
-    const payload = JSON.stringify({
-      specFolder: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion',
-      sessionSummary: 'Recovery flag should be invalid with structured JSON.',
-    });
-
-    const { main } = await import('../memory/generate-context');
-
-    await expect(main(['--recovery', '--json', payload])).rejects.toThrow('EXIT:1');
-    expect(harness.runWorkflow).not.toHaveBeenCalled();
-    exitSpy.mockRestore();
+    expect(harness.loadCollectedData).toHaveBeenCalledWith({ });
   });
 
   it('passes stdin JSON as preloaded collectedData and preserves an explicit CLI spec-folder override', async () => {

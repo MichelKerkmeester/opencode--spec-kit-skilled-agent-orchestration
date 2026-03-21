@@ -127,9 +127,6 @@ The MCP server supports multiple embedding providers for semantic search. Provid
 ## 7. USAGE EXAMPLES
 
 ```bash
-# Enable debug logging for recovery mode
-DEBUG=1 node scripts/dist/memory/generate-context.js --recovery specs/001-feature/
-
 # JSON mode (preferred for routine saves)
 node scripts/dist/memory/generate-context.js --json '{"specFolder":"001-feature","sessionSummary":"..."}' specs/001-feature/
 
@@ -300,9 +297,6 @@ SPECKIT_COACTIVATION_STRENGTH=0.3 SPECKIT_FOLDER_TOP_K=10 node mcp_server/contex
 
 # Disable deduplication for testing
 SPEC_KIT_ENABLE_DEDUP=false node mcp_server/context-server.ts
-
-# Verbose logging for recovery-mode debugging
-SPEC_KIT_VERBOSE_LOGGING=true node scripts/dist/memory/generate-context.js --recovery specs/001/
 
 # Offline mode (no API calls, local embeddings only)
 SPEC_KIT_OFFLINE_MODE=true EMBEDDINGS_PROVIDER=hf-local node mcp_server/context-server.ts

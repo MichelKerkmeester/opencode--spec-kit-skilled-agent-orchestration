@@ -1,9 +1,9 @@
 ---
-title: "JSON-primary deprecation posture"
-description: "Routine saves require --json or --stdin structured input; direct positional stateless capture moved to --recovery only; operator guidance updated to document JSON as the primary save contract."
+title: "JSON-only save contract"
+description: "Routine saves require --json or --stdin structured input; direct positional saves are rejected; operator guidance documents JSON as the sole save contract."
 ---
 
-# JSON-primary deprecation posture
+# JSON-only save contract
 
 ## TABLE OF CONTENTS
 
@@ -16,9 +16,9 @@ description: "Routine saves require --json or --stdin structured input; direct p
 
 ## 1. OVERVIEW
 
-Phase 017 established the JSON-primary deprecation posture for `generate-context.js`. Dynamic session capture (which reconstructs context from runtime databases after the fact) proved unreliable for routine saves — wrong-session selection, contamination, and thin-evidence failures persisted across multiple research and fix rounds. The resolution: AI-composed JSON via `--json` or `--stdin` is now the required routine-save contract. Stateless capture is preserved only behind the explicit `--recovery` flag for crash recovery or situations where JSON composition is impossible.
+Phase 017 established the JSON-only save contract for `generate-context.js`. Dynamic session capture (which reconstructs context from runtime databases after the fact) proved unreliable for routine saves — wrong-session selection, contamination, and thin-evidence failures persisted across multiple research and fix rounds. The resolution: AI-composed JSON via `--json` or `--stdin` is now the sole save contract. Stateless capture from runtime databases has been removed, not merely deprecated.
 
-This phase also archived the obsolete dynamic-capture follow-up phases under `000-dynamic-capture-deprecation/`.
+The obsolete dynamic-capture follow-up phases are archived under `000-dynamic-capture-deprecation/`.
 
 ---
 
@@ -26,21 +26,19 @@ This phase also archived the obsolete dynamic-capture follow-up phases under `00
 
 The shipped posture enforces the following behavior:
 
-1. Direct positional saves without `--recovery` now exit non-zero with operator-facing migration guidance to the structured JSON contract.
+1. Direct positional saves now exit non-zero with operator-facing migration guidance to the structured JSON contract.
 2. `generate-context.js --json '<data>'` and `generate-context.js --stdin` are the documented routine-save paths.
-3. `generate-context.js --recovery [spec-folder]` is the only way to invoke stateless capture from runtime databases.
-4. Operator-facing guidance in SKILL.md and the save command documents JSON mode as preferred and stateless mode as recovery-only.
-5. The obsolete dynamic-capture follow-up phases (001-session-source-validation, 002-outsourced-agent-handback, 003-multi-cli-parity) are archived under `000-dynamic-capture-deprecation/`.
+3. Operator-facing guidance in SKILL.md and the save command documents JSON mode as the sole save contract.
+4. The obsolete dynamic-capture follow-up phases (001-session-source-validation, 002-outsourced-agent-handback, 003-multi-cli-parity) are archived under `000-dynamic-capture-deprecation/`.
 
 ---
 
 ## 3. FEATURE BREAKDOWN
 
-### 3.1 Recovery-only gating
+### 3.1 JSON-only enforcement
 
-- Direct positional mode (no `--json`, `--stdin`, or `--recovery`) now rejects with a non-zero exit and migration guidance.
-- This prevents accidental use of the unreliable stateless capture path for routine saves.
-- The `--recovery` flag explicitly opts into stateless capture for crash recovery scenarios.
+- Direct positional mode (no `--json` or `--stdin`) now rejects with a non-zero exit and migration guidance.
+- This removes the unreliable stateless capture path entirely. There is no flag to re-enable it.
 
 ### 3.2 Structured JSON as primary contract
 
@@ -51,14 +49,14 @@ The shipped posture enforces the following behavior:
 
 ### 3.3 Operator guidance updates
 
-- SKILL.md updated to describe JSON mode as the preferred routine-save contract.
-- The save command (`/memory:save`) updated to document JSON-primary posture.
-- CLAUDE.md and equivalent agent instructions updated with the two-mode contract: JSON (preferred) vs recovery-only.
+- SKILL.md updated to describe JSON mode as the sole routine-save contract.
+- The save command (`/memory:save`) updated to document the JSON-only posture.
+- CLAUDE.md and equivalent agent instructions updated to reflect the single-mode contract: JSON only.
 
 ### 3.4 Dynamic-capture deprecation archival
 
 - Phases 001 (session-source-validation), 002 (outsourced-agent-handback), and 003 (multi-cli-parity) moved under `000-dynamic-capture-deprecation/`.
-- These phases were originally designed to improve dynamic capture quality but became obsolete when the JSON-primary posture eliminated routine stateless capture.
+- These phases were originally designed to improve dynamic capture quality but became obsolete when the JSON-only posture removed routine stateless capture entirely.
 
 ---
 
@@ -68,18 +66,18 @@ The shipped posture enforces the following behavior:
 
 | File | Role |
 |------|------|
-| `scripts/memory/generate-context.ts` | CLI argument parsing, `--recovery` gating, migration guidance |
-| `scripts/loaders/data-loader.ts` | Recovery-only fallback enforcement |
+| `scripts/memory/generate-context.ts` | CLI argument parsing, JSON-only enforcement, migration guidance |
+| `scripts/loaders/data-loader.ts` | Structured-input routing enforcement |
 | `scripts/types/session-types.ts` | Structured JSON enrichment types |
-| `SKILL.md` | Operator guidance: JSON-primary, recovery-only posture |
-| `.opencode/command/memory/save.md` | Save command alignment with JSON-primary contract |
+| `SKILL.md` | Operator guidance: JSON-only save contract |
+| `.opencode/command/memory/save.md` | Save command alignment with JSON-only contract |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
 | `scripts/tests/generate-context-cli-authority.vitest.ts` | `--stdin` / `--json` structured-input precedence, positional rejection |
-| `scripts/tests/generate-context-cli-authority.vitest.ts` | Recovery-only enforcement (`--recovery` flag parsing, direct-mode rejection) |
+| `scripts/tests/generate-context-cli-authority.vitest.ts` | Direct-mode rejection enforcement |
 
 ---
 

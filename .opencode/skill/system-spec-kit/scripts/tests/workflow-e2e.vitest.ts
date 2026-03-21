@@ -15,32 +15,7 @@ import { buildRichSessionData, buildSparseSessionData, buildTreeThinningSessionD
    1. CAPTURE MOCKS
 ──────────────────────────────────────────────────────────────── */
 
-const captureConversation = vi.hoisted(() => vi.fn(async () => null));
-const captureClaudeConversation = vi.hoisted(() => vi.fn(async () => null));
-const captureCodexConversation = vi.hoisted(() => vi.fn(async () => null));
-const captureCopilotConversation = vi.hoisted(() => vi.fn(async () => null));
-const captureGeminiConversation = vi.hoisted(() => vi.fn(async () => null));
 const mockedIndexMemory = vi.hoisted(() => vi.fn());
-
-vi.mock('../extractors/opencode-capture', () => ({
-  captureConversation,
-}));
-
-vi.mock('../extractors/claude-code-capture', () => ({
-  captureClaudeConversation,
-}));
-
-vi.mock('../extractors/codex-cli-capture', () => ({
-  captureCodexConversation,
-}));
-
-vi.mock('../extractors/copilot-cli-capture', () => ({
-  captureCopilotConversation,
-}));
-
-vi.mock('../extractors/gemini-cli-capture', () => ({
-  captureGeminiConversation,
-}));
 
 vi.mock('../core/memory-indexer', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../core/memory-indexer')>();
@@ -304,7 +279,6 @@ function configureHarnessEnvironment(harness: WorkflowHarness, extraEnv: Record<
 async function importWorkflowForHarness(
   harness: WorkflowHarness,
   options: {
-    statelessCapture?: Record<string, unknown> | null;
     failEmbedding?: boolean;
     validationOverride?: ValidationOverride | null;
   } = {},
@@ -313,16 +287,6 @@ async function importWorkflowForHarness(
   vi.resetModules();
   vi.doUnmock('../lib/validate-memory-quality');
 
-  captureConversation.mockReset();
-  captureClaudeConversation.mockReset();
-  captureCodexConversation.mockReset();
-  captureCopilotConversation.mockReset();
-  captureGeminiConversation.mockReset();
-  captureConversation.mockResolvedValue(options.statelessCapture ?? null);
-  captureClaudeConversation.mockResolvedValue(null);
-  captureCodexConversation.mockResolvedValue(null);
-  captureCopilotConversation.mockResolvedValue(null);
-  captureGeminiConversation.mockResolvedValue(null);
   mockedIndexMemory.mockReset();
   let nextMemoryId = 1;
   mockedIndexMemory.mockImplementation(async () => nextMemoryId++);
@@ -366,11 +330,6 @@ afterEach(() => {
   vi.resetModules();
   vi.useRealTimers();
   vi.unstubAllEnvs();
-  captureConversation.mockReset();
-  captureClaudeConversation.mockReset();
-  captureCodexConversation.mockReset();
-  captureCopilotConversation.mockReset();
-  captureGeminiConversation.mockReset();
   mockedIndexMemory.mockReset();
 
   if (originalEnv.MEMORY_DB_PATH === undefined) {
@@ -448,92 +407,6 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
     ).toBe(false);
   });
 
-  it('warns but proceeds for explicit recovery-mode saves that do not align to the target', async () => {
-    const harness = createHarness();
-    configureHarnessEnvironment(harness, {
-      SYSTEM_SPEC_KIT_CAPTURE_SOURCE: 'opencode-capture',
-    });
-
-    const workflowModule = await importWorkflowForHarness(harness, {
-      statelessCapture: {
-        exchanges: [],
-        toolCalls: [
-          {
-            tool: 'bash',
-            status: 'completed',
-            timestamp: '2026-03-16T10:46:00.000Z',
-            input: {
-              command: "sed -n '1,80p' .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-outsourced-agent-memory/spec.md",
-            },
-            output: 'Inspected a foreign spec for a different phase.',
-          },
-        ],
-        metadata: {},
-        sessionTitle: 'Foreign spec capture',
-        sessionId: 'foreign-spec-session',
-        capturedAt: '2026-03-16T10:46:30.000Z',
-      },
-    });
-
-    // Q1: Block A now warns instead of throwing when spec folder is explicitly provided via CLI.
-    // The workflow should complete successfully.
-    const result = await workflowModule.runWorkflow({
-      specFolderArg: harness.specRelativePath,
-      allowRecovery: true,
-      silent: true,
-    });
-
-    expect(result.writtenFiles.length).toBeGreaterThan(0);
-    const description = readDescription(harness);
-    expect(description.memorySequence).toBe(1);
-  });
-
-  it('warns but proceeds for explicit recovery-mode saves when only V10 fails validation', async () => {
-    const harness = createHarness();
-    configureHarnessEnvironment(harness, {
-      SYSTEM_SPEC_KIT_CAPTURE_SOURCE: 'opencode-capture',
-    });
-    const workflowModule = await importWorkflowForHarness(harness, {
-      statelessCapture: {
-        exchanges: [],
-        toolCalls: [
-          {
-            tool: 'read',
-            status: 'completed',
-            timestamp: '2026-03-16T10:46:00.000Z',
-            input: {
-              filePath: '.opencode/skill/system-spec-kit/scripts/core/workflow.ts',
-            },
-            output: 'Inspected workflow gating behavior for validation testing.',
-          },
-        ],
-        metadata: {},
-        sessionTitle: 'Soft validation capture',
-        sessionId: 'soft-validation-session',
-        capturedAt: '2026-03-16T10:46:30.000Z',
-      },
-      validationOverride: createValidationOverride(['V10']),
-    });
-    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
-
-    const result = await workflowModule.runWorkflow({
-      specFolderArg: harness.specRelativePath,
-      allowRecovery: true,
-    });
-    const metadata = readMetadata(harness) as { embedding?: { status?: string; reason?: string } };
-
-    expect(result.writtenFiles.length).toBeGreaterThan(0);
-    expect(result.memoryId).not.toBeNull();
-    expect(result.indexingStatus).toMatchObject({
-      status: 'indexed',
-      reason: expect.stringContaining('Indexed despite soft validation failures: V10'),
-    });
-    expect(metadata.embedding?.status).toBe('indexed');
-    expect(metadata.embedding?.reason).toContain('V10');
-    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining('QUALITY_GATE_WARN: Stateless save continuing despite soft validation failures: V10'));
-    expect(warnSpy).not.toHaveBeenCalledWith(expect.stringContaining('QUALITY_GATE_ABORT'));
-  });
-
   it('writes but skips indexing when validation metadata marks a failure as index-blocking only', async () => {
     const harness = createHarness();
     configureHarnessEnvironment(harness);
@@ -561,74 +434,6 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
     });
     expect(metadata.embedding?.status).toBe('skipped_index_policy');
     expect(metadata.embedding?.reason).toContain('V2');
-  });
-
-  it('aborts explicit recovery-mode saves when V8 fails validation', async () => {
-    const harness = createHarness();
-    configureHarnessEnvironment(harness, {
-      SYSTEM_SPEC_KIT_CAPTURE_SOURCE: 'opencode-capture',
-    });
-    const workflowModule = await importWorkflowForHarness(harness, {
-      statelessCapture: {
-        exchanges: [],
-        toolCalls: [
-          {
-            tool: 'read',
-            status: 'completed',
-            timestamp: '2026-03-16T10:46:00.000Z',
-            input: {
-              filePath: '.opencode/skill/system-spec-kit/scripts/core/workflow.ts',
-            },
-            output: 'Inspected workflow gating behavior for validation testing.',
-          },
-        ],
-        metadata: {},
-        sessionTitle: 'V8 failure capture',
-        sessionId: 'v8-failure-session',
-        capturedAt: '2026-03-16T10:46:30.000Z',
-      },
-      validationOverride: createValidationOverride(['V8']),
-    });
-
-    await expect(workflowModule.runWorkflow({
-      specFolderArg: harness.specRelativePath,
-      allowRecovery: true,
-      silent: true,
-    })).rejects.toThrow(/CONTAMINATION_GATE_ABORT: Critical contamination rules failed: \[V8\]/);
-  });
-
-  it('aborts explicit recovery-mode saves when V8 and V10 both fail validation', async () => {
-    const harness = createHarness();
-    configureHarnessEnvironment(harness, {
-      SYSTEM_SPEC_KIT_CAPTURE_SOURCE: 'opencode-capture',
-    });
-    const workflowModule = await importWorkflowForHarness(harness, {
-      statelessCapture: {
-        exchanges: [],
-        toolCalls: [
-          {
-            tool: 'read',
-            status: 'completed',
-            timestamp: '2026-03-16T10:46:00.000Z',
-            input: {
-              filePath: '.opencode/skill/system-spec-kit/scripts/core/workflow.ts',
-            },
-            output: 'Inspected workflow gating behavior for validation testing.',
-          },
-        ],
-        metadata: {},
-        sessionTitle: 'Mixed validation capture',
-        sessionId: 'mixed-validation-session',
-        capturedAt: '2026-03-16T10:46:30.000Z',
-      },
-      validationOverride: createValidationOverride(['V8', 'V10']),
-    });
-
-    await expect(workflowModule.runWorkflow({
-      specFolderArg: harness.specRelativePath,
-      allowRecovery: true,
-      silent: true,
-    })).rejects.toThrow(/CONTAMINATION_GATE_ABORT: Critical contamination rules failed: \[V8\]/);
   });
 
   it('skips duplicate markdown content on a second identical save without bumping description tracking', async () => {

@@ -594,8 +594,6 @@ Memory files in the `memory/` folder are NOT created from templates. They are au
 
 **Creation (JSON mode — preferred):** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"###-name","sessionSummary":"..."}' specs/###-name/`
 
-**Creation (recovery only):** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery specs/###-name/`
-
 **Format:** `DD-MM-YY_HH-MM__topic.md` (auto-generated filename)
 
 **Location:** `specs/###-name/memory/` subfolder
@@ -916,7 +914,7 @@ There are **two distinct sub-folder systems**:
 2. Prompts user for new sub-folder name (lowercase, hyphens, 2-3 words)
 3. Automatically creates numbered archive: `001-original-work/`
 4. Creates new numbered sub-folder: `002-{user-name}/`
-5. Spec folder path passed via explicit CLI target (recovery-only, requires `--recovery`)
+5. Spec folder path passed via explicit CLI target
 6. Each sub-folder gets independent `memory/` context
 
 **Example:**

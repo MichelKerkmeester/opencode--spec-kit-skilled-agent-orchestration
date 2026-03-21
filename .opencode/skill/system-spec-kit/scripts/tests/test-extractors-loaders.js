@@ -1217,8 +1217,11 @@ async function testDiagramExtractor() {
 */
 
 async function testOpencodeCapture() {
-  log('\n=== OPENCODE-CAPTURE.JS (P1) ===');
+  log('\n=== OPENCODE-CAPTURE.JS (REMOVED — recovery mode deprecated) ===');
+  skip('EXT-OC: Module removed', 'Recovery mode fully deprecated');
+  return;
 
+  /* eslint-disable no-unreachable */
   try {
     const opencodeCapture = require(path.join(EXTRACTORS_DIR, 'opencode-capture'));
 
@@ -1298,23 +1301,8 @@ async function testOpencodeCapture() {
 */
 
 async function testAdditionalCliCaptures() {
-  log('\n=== ADDITIONAL CLI CAPTURES (P1) ===');
-
-  try {
-    const codexCapture = require(path.join(EXTRACTORS_DIR, 'codex-cli-capture'));
-    assertType(codexCapture.captureCodexConversation, 'function', 'EXT-CODEX-001: captureCodexConversation exported');
-    assertExists(codexCapture.CODEX_SESSIONS, 'EXT-CODEX-002: CODEX_SESSIONS constant exported');
-
-    const copilotCapture = require(path.join(EXTRACTORS_DIR, 'copilot-cli-capture'));
-    assertType(copilotCapture.captureCopilotConversation, 'function', 'EXT-COPILOT-001: captureCopilotConversation exported');
-    assertExists(copilotCapture.COPILOT_SESSION_STATE, 'EXT-COPILOT-002: COPILOT_SESSION_STATE constant exported');
-
-    const geminiCapture = require(path.join(EXTRACTORS_DIR, 'gemini-cli-capture'));
-    assertType(geminiCapture.captureGeminiConversation, 'function', 'EXT-GEMINI-001: captureGeminiConversation exported');
-    assertExists(geminiCapture.GEMINI_TMP, 'EXT-GEMINI-002: GEMINI_TMP constant exported');
-  } catch (error) {
-    fail('EXT-CLI: Module load/test', error.message);
-  }
+  log('\n=== ADDITIONAL CLI CAPTURES (REMOVED — recovery mode deprecated) ===');
+  skip('EXT-CLI: Modules removed', 'Recovery mode fully deprecated — codex/copilot/gemini captures deleted');
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -1350,7 +1338,7 @@ async function testDataLoader() {
       if (
         loadError.message.includes('Security')
         || loadError.message.includes('Invalid')
-        || loadError.message.includes('RECOVERY_MODE_REQUIRED')
+        || loadError.message.includes('no longer supported')
       ) {
         pass('LOAD-002: Security validation working', loadError.message.substring(0, 50));
       } else {
@@ -1385,9 +1373,10 @@ async function testExtractorsIndex() {
     assertType(extractors.generateSessionId, 'function', 'EXT-IDX-008: generateSessionId re-exported');
     assertType(extractors.getChannel, 'function', 'EXT-IDX-009: getChannel re-exported');
     assertType(extractors.buildImplementationGuideData, 'function', 'EXT-IDX-010: buildImplementationGuideData re-exported');
-    assertType(extractors.captureCodexConversation, 'function', 'EXT-IDX-011: captureCodexConversation re-exported');
-    assertType(extractors.captureCopilotConversation, 'function', 'EXT-IDX-012: captureCopilotConversation re-exported');
-    assertType(extractors.captureGeminiConversation, 'function', 'EXT-IDX-013: captureGeminiConversation re-exported');
+    // EXT-IDX-011..013: capture module re-exports removed (recovery mode deprecated)
+    skip('EXT-IDX-011: captureCodexConversation', 'Recovery mode deprecated');
+    skip('EXT-IDX-012: captureCopilotConversation', 'Recovery mode deprecated');
+    skip('EXT-IDX-013: captureGeminiConversation', 'Recovery mode deprecated');
 
   } catch (error) {
     fail('EXT-IDX: Module load/test', error.message);

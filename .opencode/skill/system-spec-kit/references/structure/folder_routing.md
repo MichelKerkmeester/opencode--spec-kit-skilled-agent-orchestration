@@ -1,6 +1,6 @@
 ---
 title: Folder Routing & Alignment
-description: Structured-first spec folder routing with explicit recovery-only stateless handling for context preservation.
+description: Structured-first spec folder routing with alignment scoring for context preservation.
 ---
 
 # Folder Routing & Alignment
@@ -12,7 +12,7 @@ Structured-first spec folder routing with alignment scoring for context preserva
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The memory system uses a **structured-first architecture**. Routine saves pass structured JSON plus an explicit target spec folder; direct positional capture is reserved for `--recovery` crash-recovery flows and still goes through alignment scoring.
+The memory system uses a **structured-first architecture**. Routine saves pass structured JSON plus an explicit target spec folder, and all saves go through alignment scoring.
 
 ### Core Principle
 
@@ -25,7 +25,6 @@ Spec folder is passed explicitly as a CLI argument with alignment validation to 
 | **Spec folder source**  | Explicit CLI target or payload override |
 | **State persistence**   | JSON payload authored by the caller     |
 | **Routine save mode**   | Structured input only                   |
-| **Recovery mode**       | Positional `--recovery <spec-folder>`   |
 | **Cleanup required**    | Temp JSON cleanup when used             |
 
 ### Key Benefits
@@ -249,12 +248,6 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js dat
    node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/context.json "014-stateless-alignment"
    ```
 4. Memory file written to `specs/014-stateless-alignment/memory/`
-
-### Recovery-Only Direct Mode
-
-```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery specs/014-stateless-alignment
-```
 
 ### Fallback Detection
 
@@ -606,5 +599,5 @@ find . -name ".spec-active*" -type f 2>/dev/null
 
 ---
 
-*Last Updated: 2025-12-25 | Architecture: Structured-First with Recovery Fallback and Alignment Scoring*
+*Last Updated: 2025-12-25 | Architecture: Structured-First with Alignment Scoring*
 <!-- /ANCHOR:related-resources -->

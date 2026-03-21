@@ -2676,9 +2676,9 @@ verify_alignment_drift.py reports PASS with 0 TS-MODULE-HEADER findings
 Canonical coverage sourced from M-007 session-capturing closure verification.
 
 #### Current Reality
-Prompt: `Run the canonical M-007 session-capturing closure verification scenario. Capture the evidence needed to prove Coverage is sourced from the M-007 closure suite, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, recovery-mode stateless enrichment, explicit recovery fallback ordering, Phase 017 recovery-only quality-gate behavior, Phase 018 output-quality hardening, insufficiency rejection, and indexing readiness. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Run the canonical M-007 session-capturing closure verification scenario. Capture the evidence needed to prove Coverage is sourced from the M-007 closure suite, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, Phase 018 output-quality hardening, insufficiency rejection, and indexing readiness. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Coverage is sourced from the M-007 closure suite, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, recovery-mode stateless enrichment, explicit recovery fallback ordering, Phase 017 recovery-only quality-gate behavior, Phase 018 output-quality hardening, insufficiency rejection, and indexing readiness.
+Coverage is sourced from the M-007 closure suite, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, Phase 018 output-quality hardening, insufficiency rejection, and indexing readiness.
 
 Current claim boundary:
 - Automated parity proves the shared runtime contract.
@@ -2817,12 +2817,12 @@ Structured fields preserved in rendered output, counts match explicit input, no 
 ### 154 | JSON-primary deprecation posture
 
 #### Description
-Verify the three-path save contract: `--json` succeeds, direct positional rejects, `--recovery` enables stateless capture.
+Verify the JSON-only save contract: `--json` succeeds, direct positional rejects.
 
 #### Current Reality
-Prompt: `Test the three generate-context.js save paths: (1) --json with valid structured payload should succeed, (2) direct positional without --recovery should reject with migration guidance, (3) --recovery with a spec folder should enable stateless capture. Return a pass/fail verdict for each path.`
+Prompt: `Test the two generate-context.js save paths: (1) --json with valid structured payload should succeed, (2) direct positional without --json/--stdin should reject with migration guidance. Return a pass/fail verdict for each path.`
 
-Path 1 exits 0, Path 2 exits non-zero with guidance text, Path 3 enters stateless capture
+Path 1 exits 0, Path 2 exits non-zero with guidance text
 
 #### Test Execution
 > **Feature File:** [154](16--tooling-and-scripts/154-json-primary-deprecation-posture.md)
@@ -2836,7 +2836,7 @@ Confirm the POST-SAVE QUALITY REVIEW hook fires after JSON mode saves, surfaces 
 #### Current Reality
 Prompt: `Run generate-context.js --json with varied payloads to exercise the post-save quality review hook. For each scenario confirm whether the review reports PASSED, SKIPPED, or specific issues at the correct severity. Return a pass/fail verdict for each scenario.`
 
-REVIEW block present in stdout; issue count and severity match the scenario; fix instructions are actionable; SKIPPED reported when running with --recovery
+REVIEW block present in stdout; issue count and severity match the scenario; fix instructions are actionable
 
 #### Test Execution
 > **Feature File:** [155](13--memory-quality-and-indexing/155-post-save-quality-review.md)
@@ -3030,13 +3030,10 @@ Canonical memory/spec-kit workflow.
 Canonical prose workflow retained in the snippet because the scenario includes multi-step operator logic, supplemental checks, or shared closure rules.
 
 Minimum scenario family now required for M-007:
-- direct positional recovery save against a target spec folder using `--recovery`
 - structured `--stdin` save with explicit CLI target precedence
 - structured `--json` save with payload-target fallback when no explicit CLI override exists
-- recovery-mode V10-only soft-fail that still writes and indexes
-- recovery-mode hard-block contamination failure that aborts before write
 - same-minute repeated saves that prove unique filenames and stable `description.json` tracking
-- direct positional save without `--recovery` that rejects with migration guidance to structured JSON
+- direct positional save without `--json`/`--stdin` that rejects with migration guidance to structured JSON
 
 Proof rule:
 - Treat automated M-007 parity as the runtime contract baseline.

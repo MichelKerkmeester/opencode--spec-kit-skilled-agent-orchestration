@@ -88,9 +88,6 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --j
 
 # Stdin mode - pipe structured JSON
 echo '{"specFolder":"001-feature","sessionSummary":"..."}' | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin
-
-# Recovery mode (crash recovery only) - pass spec folder with --recovery flag
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery specs/001-feature/
 ```
 
 **Environment Variables:**

@@ -72,7 +72,7 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 - Detects propagation failures including generic titles, path-fragment trigger phrases, importance_tier mismatch, decision_count of zero, contextType mismatch, and generic descriptions.
 - Reads authoritative `decision_count` from either frontmatter or `## MEMORY METADATA`, matching the shipped runtime parser.
 - Emits a machine-readable review with severity levels (HIGH/MEDIUM/LOW) so callers can surface actionable field-level failures.
-- Skipped automatically in recovery mode and stateless mode where no authoritative JSON payload is available.
+- Always active. The review runs for every JSON-mode save where the payload is available.
 - See feature catalog entry `13--memory-quality-and-indexing/19-post-save-quality-review.md` for full specification.
 
 ---

@@ -36,6 +36,3 @@ export * from './contamination-filter';
 export * from './quality-scorer';
 export * from './spec-folder-extractor';
 export * from './git-context-extractor';
-export * from './codex-cli-capture';
-export * from './copilot-cli-capture';
-export * from './gemini-cli-capture';

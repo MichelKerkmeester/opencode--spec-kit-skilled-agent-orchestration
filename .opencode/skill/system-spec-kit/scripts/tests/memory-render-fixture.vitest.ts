@@ -212,7 +212,6 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
-        allowRecovery: true,
         collectedData,
         collectSessionDataFn: async (_input, specFolderName) => createSessionData(specFolderName || '014-rendered-memory-regression'),
         silent: true,
@@ -282,7 +281,6 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
-        allowRecovery: true,
         collectedData: {
           _source: 'opencode-capture',
           userPrompts: [{ prompt: 'Development session', timestamp: '2026-03-06T09:25:00Z' }],
@@ -350,7 +348,6 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
-        allowRecovery: true,
         collectedData: {
           _source: 'file',
           userPrompts: [{ prompt: 'Validate session source provenance', timestamp: '2026-03-16T12:00:00Z' }],
@@ -459,7 +456,6 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
-        allowRecovery: true,
         collectedData: {
           SPEC_FOLDER: '022-hybrid-rag-fusion',
           userPrompts: [
@@ -528,7 +524,6 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
-        allowRecovery: true,
         collectedData: {
           _source: 'codex-cli-capture',
           userPrompts: [
@@ -592,7 +587,6 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
-        allowRecovery: true,
         collectedData: {
           _source: 'codex-cli-capture',
           _toolCallCount: 2,
@@ -678,7 +672,6 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
-        allowRecovery: true,
         collectedData: {
           _source: 'opencode-capture',
           userPrompts: [
@@ -747,7 +740,6 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
-        allowRecovery: true,
         collectedData: {
           _source: 'opencode-capture',
           userPrompts: [
@@ -847,7 +839,6 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
-        allowRecovery: true,
         collectedData,
         collectSessionDataFn: async (_input, specFolderName) => createSessionData(
           specFolderName || '016-decision-confidence-render',

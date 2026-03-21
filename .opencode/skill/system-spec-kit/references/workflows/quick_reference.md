@@ -159,8 +159,6 @@ Say: "save context" or "save conversation"
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/007-feature/
 ```
 
-Recovery-only direct mode remains available with `--recovery specs/###-folder/`.
-
 ❌ DO NOT use Write/Edit tools to create memory files directly.
 
 ---
@@ -476,11 +474,6 @@ Before presenting documentation to user:
 **MANDATORY:** Use generate-context.ts (source) for memory save:
 ```
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/###-folder/
-```
-
-**Recovery only:**
-```
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery specs/###-folder/
 ```
 
 ❌ DO NOT use Write/Edit tools to create memory files directly.

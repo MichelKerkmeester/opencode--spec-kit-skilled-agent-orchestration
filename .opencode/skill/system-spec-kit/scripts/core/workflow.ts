@@ -157,8 +157,6 @@ export interface WorkflowOptions {
   ) => Promise<SessionData>;
   /** When true, suppresses non-error console output during execution. */
   silent?: boolean;
-  /** When true, explicitly allows recovery-mode stateless capture. */
-  allowRecovery?: boolean;
 }
 
 /** Result object returned after a successful workflow execution. */
@@ -411,7 +409,6 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       loadDataFn,
       collectSessionDataFn,
       silent = false,
-      allowRecovery = false,
     } = options;
 
     const hasDirectDataContext = (
@@ -442,21 +439,12 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       collectedData = await loadCollectedDataFromLoader({
         dataFile: activeDataFile,
         specFolderArg: activeSpecFolderArg,
-        allowRecovery,
       });
       log(`   Loaded from ${collectedData?._isSimulation ? 'simulation' : 'data source'}`);
     }
 
     if (!collectedData) {
       throw new Error('No data available - provide dataFile, collectedData, or loadDataFn');
-    }
-
-    if (collectedData._source !== 'file' && collectedData._isSimulation !== true && !allowRecovery) {
-      throw new Error(
-        'RECOVERY_MODE_REQUIRED: Stateless capture is recovery-only. ' +
-        'Pass structured JSON via dataFile/collectedData for routine saves, ' +
-        'or set allowRecovery: true for explicit crash-recovery flows.'
-      );
     }
 
     // Step 1.5: Stateless mode alignment check
