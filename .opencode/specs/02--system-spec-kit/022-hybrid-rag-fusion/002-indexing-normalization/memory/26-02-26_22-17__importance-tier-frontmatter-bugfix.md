@@ -14,7 +14,7 @@ trigger_phrases:
   - "frontmatter fields hardcoded importance"
   - "fields hardcoded importance tier"
   - "hardcoded importance tier value"
-importance_tier: "normal"
+importance_tier: "important"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
@@ -516,11 +516,11 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772140655565-ofy1lytph"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization"
 channel: "main"
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)

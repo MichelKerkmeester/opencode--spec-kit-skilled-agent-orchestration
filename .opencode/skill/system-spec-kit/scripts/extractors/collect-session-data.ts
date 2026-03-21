@@ -647,7 +647,7 @@ function getSimFactory(): typeof import('../lib/simulation-factory') {
    5. AUTO-SAVE DETECTION
 ------------------------------------------------------------------*/
 
-/** @deprecated Legacy auto-save concept from dynamic capture era. In JSON-primary mode, saves are AI-initiated. */
+/** Auto-save detection based on message count threshold. */
 function shouldAutoSave(messageCount: number): boolean {
   return messageCount > 0 && messageCount % CONFIG.MESSAGE_COUNT_TRIGGER === 0;
 }

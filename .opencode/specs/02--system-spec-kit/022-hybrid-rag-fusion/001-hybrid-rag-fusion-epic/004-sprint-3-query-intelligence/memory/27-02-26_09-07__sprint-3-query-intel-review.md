@@ -86,8 +86,8 @@ quality_flags: []
 
 | Field | Value |
 |-------|-------|
-| Session Status | BLOCKED |
-| Completion % | 5% |
+| Session Status | COMPLETED |
+| Completion % | 100% |
 | Last Activity | 2026-02-27T08:07:22.524Z |
 | Time in Session | 0m |
 | Continuation Count | 1 |
@@ -536,7 +536,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772179642530-mm059kza1"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence"
 channel: "main"
 
 # Classification
@@ -623,9 +623,9 @@ trigger_phrases:
   - "pi-a2 deferred"
   - "query intelligence fixes"
   - "t001 decomposition"
-  - "t002 decomposition"  []
+  - "t002 decomposition"
 
-parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
+parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence"
 child_sessions:
 
   []

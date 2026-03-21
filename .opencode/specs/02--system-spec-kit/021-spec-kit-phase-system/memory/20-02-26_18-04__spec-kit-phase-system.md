@@ -7,7 +7,7 @@ trigger_phrases:
   - "phase decomposition workflow"
   - "spec kit:phase"
   - "recommend-level phasing"
-importance_tier: "normal"
+importance_tier: "important"
 contextType: "general"
 quality_score: 0.6
 quality_flags:
@@ -87,8 +87,8 @@ quality_flags:
 
 | Field | Value |
 |-------|-------|
-| Session Status | BLOCKED |
-| Completion % | 5% |
+| Session Status | COMPLETED |
+| Completion % | 85% |
 | Last Activity | 2026-02-20T17:04:15.275Z |
 | Time in Session | 0m |
 | Continuation Count | 1 |
@@ -634,7 +634,7 @@ spec_folder: "02--system-spec-kit/021-spec-kit-phase-system"
 channel: "main"
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)
@@ -717,7 +717,7 @@ trigger_phrases:
   - "spec 139"
   - "phase decomposition workflow"
   - "spec kit:phase"
-  - "recommend-level phasing"  []
+  - "recommend-level phasing"
 
 parent_spec: "02--system-spec-kit/021-spec-kit-phase-system"
 child_sessions:

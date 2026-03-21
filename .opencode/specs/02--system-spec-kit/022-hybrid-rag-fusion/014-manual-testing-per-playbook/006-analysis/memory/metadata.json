@@ -195,9 +195,9 @@
     }
   },
   "fileCounts": {
-    "fileCount": 5,
-    "capturedFileCount": 5,
-    "filesystemFileCount": 5,
+    "fileCount": 0,
+    "capturedFileCount": 0,
+    "filesystemFileCount": 0,
     "gitChangedFileCount": 0
   },
   "sourceProvenance": {

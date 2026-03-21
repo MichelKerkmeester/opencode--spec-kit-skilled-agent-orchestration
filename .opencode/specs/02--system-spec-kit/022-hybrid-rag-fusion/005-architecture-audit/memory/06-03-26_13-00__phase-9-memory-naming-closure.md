@@ -7,7 +7,7 @@ trigger_phrases:
   - "task-enrichment"
   - "quick summary"
   - "vitest validation"
-importance_tier: "critical"
+importance_tier: "important"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
@@ -381,11 +381,11 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1772798429338-r1ojj9n0c"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit"
 channel: "main"
 
 # Classification
-importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)

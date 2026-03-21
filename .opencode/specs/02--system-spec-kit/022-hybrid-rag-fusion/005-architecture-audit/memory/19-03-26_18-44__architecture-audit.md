@@ -1,5 +1,5 @@
 ---
-title: "Architecture Audit [005-architecture-audit/19-03-26_18-44__architecture-audit]"
+title: "Architecture Audit"
 description: "Now I have full context on both files. Let me implement all three fixes. Fix 1 : Lock freshness check in collectActiveTaskSessionIds() — line 163-169"
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/005 architecture audit"

@@ -16,8 +16,6 @@
     "022-hybrid-rag-fusion",
     "014-manual-testing-per-playbook"
   ],
-  "memorySequence": 1,
-  "memoryNameHistory": [
-    "19-03-26_20-17__next-steps.md"
-  ]
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

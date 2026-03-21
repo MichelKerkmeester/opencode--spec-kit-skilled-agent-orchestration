@@ -96,7 +96,7 @@ This epic encompasses 16 main phases spanning:
 | 007 | Code Audit per Feature Catalog | **Complete** (parent) | 1 | 21 children, all audited |
 | 008 | Hydra DB-Based Features | **Complete** | 3 | 6 children, all verified |
 | 009 | Skill Alignment | Stub | - | Empty scaffold |
-| 010 | Perfect Session Capturing | In Progress | 3 | 375 tests, 67 deferred |
+| 009 | Perfect Session Capturing | In Progress | 3 | 375 tests, 67 deferred |
 | 011 | Command Alignment | Stub | - | Empty scaffold |
 | 012 | Agents Alignment | Stub | - | Empty scaffold |
 | 013 | Agents MD Alignment | Stub | - | Empty scaffold |
@@ -125,7 +125,7 @@ This epic encompasses 16 main phases spanning:
 | 007 | `007-code-audit-per-feature-catalog` | 21 | Complete | 2026-03-14 |
 | 008 | `008-hydra-db-based-features` | 6 | Complete | 2026-03-14 |
 | 009 | `009-skill-alignment` | 0 | Stub | 2026-03-14 |
-| 010 | `010-perfect-session-capturing` | 20 | In Progress | 2026-03-18 |
+| 009 | `009-perfect-session-capturing` | 20 | In Progress | 2026-03-18 |
 | 011 | `011-command-alignment` | 0 | Stub | 2026-03-14 |
 | 012 | `012-agents-alignment` | 0 | Stub | 2026-03-14 |
 | 013 | `013-agents-md-alignment` | 0 | Stub | 2026-03-14 |

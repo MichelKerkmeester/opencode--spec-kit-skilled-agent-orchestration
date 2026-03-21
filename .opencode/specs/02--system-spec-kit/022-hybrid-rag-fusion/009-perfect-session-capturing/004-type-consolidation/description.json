@@ -1,0 +1,23 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/004-type-consolidation",
+  "description": "Feature Specification: Type Consolidation",
+  "keywords": [
+    "feature",
+    "specification",
+    "type",
+    "consolidation"
+  ],
+  "lastUpdated": "2026-03-19T15:45:43.380Z",
+  "specId": "004",
+  "folderSlug": "type-consolidation",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "009-perfect-session-capturing"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "17-03-26_14-47__canonical-subset-typing-completed.md",
+    "17-03-26_16-44__strict-closeout-evidence-refreshed.md"
+  ]
+}

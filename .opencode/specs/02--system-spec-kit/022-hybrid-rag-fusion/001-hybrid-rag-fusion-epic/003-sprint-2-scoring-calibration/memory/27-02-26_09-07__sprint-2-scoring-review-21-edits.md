@@ -86,8 +86,8 @@ quality_flags: []
 
 | Field | Value |
 |-------|-------|
-| Session Status | BLOCKED |
-| Completion % | 5% |
+| Session Status | COMPLETED |
+| Completion % | 100% |
 | Last Activity | 2026-02-27T08:07:51.919Z |
 | Time in Session | 0m |
 | Continuation Count | 1 |
@@ -619,7 +619,7 @@ trigger_phrases:
   - "scoring calibration review"
   - "rec-s2 recommendations"
   - "tm-01 calibration values"
-  - "n4 cap clipping"  []
+  - "n4 cap clipping"
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration"
 child_sessions:

@@ -133,7 +133,7 @@ Manual memory-quality test execution pipeline with review-gated evidence collect
 | M-006a | Unborn-HEAD and dirty snapshot fallback | `Validate unborn-HEAD and dirty snapshot fallback.` | manual |
 | M-006b | Detached-HEAD snapshot preservation | `Validate detached-HEAD snapshot preservation.` | manual |
 | M-006c | Similar-folder boundary protection | `Validate similar-folder boundary protection.` | manual |
-| M-007 | Session Capturing Pipeline Quality | `Run full closure verification for spec 010-perfect-session-capturing, including JSON authority, stateless enrichment, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), numeric quality calibration, and indexing readiness.` | manual + MCP |
+| M-007 | Session Capturing Pipeline Quality | `Run full closure verification for spec 009-perfect-session-capturing, including JSON authority, stateless enrichment, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), numeric quality calibration, and indexing readiness.` | manual + MCP |
 | M-007a | JSON authority and successful indexing | `Validate rich JSON authority and successful indexing.` | manual + MCP |
 | M-007b | Thin JSON insufficiency rejection | `Validate thin JSON insufficiency rejection and lower-score behavior.` | manual + MCP |
 | M-007c | Mis-scoped stateless rejection | `Validate mis-scoped stateless save rejection.` | manual + MCP |

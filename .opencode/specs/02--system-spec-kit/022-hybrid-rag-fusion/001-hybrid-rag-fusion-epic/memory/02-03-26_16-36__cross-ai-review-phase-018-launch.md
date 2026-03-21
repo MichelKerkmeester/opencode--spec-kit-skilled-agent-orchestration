@@ -7,7 +7,7 @@ trigger_phrases:
   - "summary of existing features"
   - "cross ai"
   - "gemini 3"
-importance_tier: "critical"
+importance_tier: "normal"
 contextType: "research"
 quality_score: 1.00
 quality_flags: []
@@ -653,7 +653,7 @@ trigger_phrases:
   - "bug detection"
   - "summary of existing features"
   - "cross ai"
-  - "gemini 3"  []
+  - "gemini 3"
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
 child_sessions:

@@ -6,7 +6,7 @@ trigger_phrases:
   - "verbose template variants"
   - "compose sh maintenance flow"
   - "template architecture refinement"
-importance_tier: "critical"
+importance_tier: "important"
 contextType: "general"
 quality_score: 0.60
 quality_flags:
@@ -520,7 +520,7 @@ spec_folder: "003-memory-and-spec-kit/074-speckit-template-optimization-refineme
 channel: "main"
 
 # Classification
-importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)
@@ -584,7 +584,9 @@ trigger_phrases:
   - "speckit template optimization"
   - "verbose template variants"
   - "compose sh maintenance flow"
-  - "template architecture refinement"related_sessions:
+  - "template architecture refinement"
+
+related_sessions:
 
   []
 

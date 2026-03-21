@@ -1,5 +1,5 @@
 ---
-title: "2026-03-13 verification"
+title: "Phase 4 Adaptive Retrieval Loops — Rollback Reset Helper + Verification Pass"
 description: "2026-03-13 verification pass confirmed Phase 4 adaptive retrieval loops are implemented with bounded shadow proposals, rollback reset, and audit evidence."
 trigger_phrases:
   - "verification pass confirmed phase"

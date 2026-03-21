@@ -138,7 +138,7 @@ Exact call: `memory_stats(folderRanking: "composite", includeScores: true)`
     "newestMemory": "2026-03-18T20:21:02.064Z",
     "topFolders": [
       {
-        "folder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/002-contamination-detection",
+        "folder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection",
         "simplified": "002-contamination-detection",
         "count": 13,
         "score": 0.874,
@@ -151,7 +151,7 @@ Exact call: `memory_stats(folderRanking: "composite", includeScores: true)`
         "topTier": "critical"
       },
       {
-        "folder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/001-quality-scorer-unification",
+        "folder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/001-quality-scorer-unification",
         "simplified": "001-quality-scorer-unification",
         "count": 12,
         "score": 0.874,
@@ -164,7 +164,7 @@ Exact call: `memory_stats(folderRanking: "composite", includeScores: true)`
         "topTier": "critical"
       },
       {
-        "folder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/005-confidence-calibration",
+        "folder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/005-confidence-calibration",
         "simplified": "005-confidence-calibration",
         "count": 14,
         "score": 0.874,
@@ -177,7 +177,7 @@ Exact call: `memory_stats(folderRanking: "composite", includeScores: true)`
         "topTier": "critical"
       },
       {
-        "folder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/008-signal-extraction",
+        "folder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction",
         "simplified": "008-signal-extraction",
         "count": 13,
         "score": 0.874,
@@ -203,8 +203,8 @@ Exact call: `memory_stats(folderRanking: "composite", includeScores: true)`
         "topTier": "critical"
       },
       {
-        "folder": "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing",
-        "simplified": "010-perfect-session-capturing",
+        "folder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+        "simplified": "009-perfect-session-capturing",
         "count": 4,
         "score": 0.833,
         "recencyScore": 0.994,

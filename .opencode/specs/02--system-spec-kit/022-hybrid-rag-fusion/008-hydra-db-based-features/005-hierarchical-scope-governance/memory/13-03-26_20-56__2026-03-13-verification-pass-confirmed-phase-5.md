@@ -1,5 +1,5 @@
 ---
-title: "2026-03-13 verification"
+title: "Phase 5 Governance — causal_edges Cascade Deletion Bug Fixed + Verification Pass"
 description: "2026-03-13 verification pass confirmed Phase 5 hierarchical scope governance is implemented with governed ingest, retention audit, and cascade deletion coverage."
 trigger_phrases:
   - "with governed ingest"

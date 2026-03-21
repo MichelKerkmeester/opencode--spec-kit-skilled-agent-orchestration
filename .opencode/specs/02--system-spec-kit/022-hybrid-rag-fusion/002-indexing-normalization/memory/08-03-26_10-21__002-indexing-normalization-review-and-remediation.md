@@ -281,7 +281,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 ```yaml
 # Core Identifiers
 session_id: "session-1772961693206-5i3390lb0"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization"
 channel: "main"
 
 # Classification

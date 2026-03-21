@@ -591,7 +591,7 @@ trigger_phrases:
   - "ut-9 review"
   - "s5 scale gate"
   - "entity linking threshold"
-  - "conditional effort scenarios"  []
+  - "conditional effort scenarios"
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon"
 child_sessions:

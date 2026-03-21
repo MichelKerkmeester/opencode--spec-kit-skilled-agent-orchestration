@@ -7,7 +7,7 @@ trigger_phrases:
   - "pro preview"
   - "claude opus 4 6"
   - "ultra think"
-importance_tier: "critical"
+importance_tier: "important"
 contextType: "research"
 quality_score: 1.00
 quality_flags: []
@@ -596,7 +596,7 @@ spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-ep
 channel: "main"
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)
@@ -679,7 +679,7 @@ trigger_phrases:
   - "gemini 3"
   - "pro preview"
   - "claude opus 4 6"
-  - "ultra think"  []
+  - "ultra think"
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
 child_sessions:

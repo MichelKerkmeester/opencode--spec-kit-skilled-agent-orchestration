@@ -69,7 +69,7 @@ quality_flags:
 
 | Field | Value |
 |-------|-------|
-| Session Status | BLOCKED |
+| Session Status | COMPLETED |
 | Completion % | 5% |
 | Last Activity | 2026-03-13T06:29:20.918Z |
 | Time in Session | 0m |

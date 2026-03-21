@@ -5,9 +5,9 @@ trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
   - "case insensitive"
   - "tree thinning"
-  - "merged-small-files tree-thinning merged small"
-  - "tree-thinning merged small files"
-importance_tier: "critical"
+  - "preflight block gating"
+  - "direct save indexing"
+importance_tier: "normal"
 contextType: "implementation"
 quality_score: 1.00
 quality_flags: []
@@ -436,8 +436,8 @@ trigger_phrases:
   - "system spec kit/022 hybrid rag fusion"
   - "case insensitive"
   - "tree thinning"
-  - "merged-small-files tree-thinning merged small"
-  - "tree-thinning merged small files"  []
+  - "preflight block gating"
+  - "direct save indexing"
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
 child_sessions:

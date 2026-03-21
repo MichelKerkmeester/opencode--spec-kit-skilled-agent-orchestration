@@ -556,7 +556,9 @@ trigger_phrases:
   - "speckit bug remediation"
   - "mcp server test failures"
   - "remaining bug fixes"
-  - "documentation remediation pass"# Relationships
+  - "documentation remediation pass"
+
+# Relationships
 related_sessions:
 
   []

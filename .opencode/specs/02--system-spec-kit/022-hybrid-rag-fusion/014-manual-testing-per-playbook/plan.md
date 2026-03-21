@@ -113,7 +113,7 @@ Documentation reconciliation with exact-ID audit and validator-truth refresh.
 | Manual testing playbook | Internal | Green | Exact-ID inventory and `M-007` wording cannot be aligned |
 | Feature catalog | Internal | Green | Test-to-feature mappings cannot be verified |
 | `validate.sh` | Internal | Green | Current packet truth cannot be recorded honestly |
-| `010-perfect-session-capturing` closure docs | Internal | Green | `M-007` proof-lane wording cannot be aligned to the latest closure evidence |
+| `009-perfect-session-capturing` closure docs | Internal | Green | `M-007` proof-lane wording cannot be aligned to the latest closure evidence |
 <!-- /ANCHOR:dependencies -->
 
 ---

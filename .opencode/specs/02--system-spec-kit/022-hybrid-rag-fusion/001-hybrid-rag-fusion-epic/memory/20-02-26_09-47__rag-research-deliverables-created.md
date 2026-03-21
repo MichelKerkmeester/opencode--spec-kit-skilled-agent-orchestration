@@ -2,7 +2,7 @@
 title: "Hybrid RAG research deliverables created and indexed"
 description: "Saved and indexed the completed hybrid RAG research deliverables after producing analysis and recommendation documents for the memory MCP architecture."
 trigger_phrases:
-  - "memory saved"
+  - "rag deliverables created"
   - "hybrid rag fusion"
   - "analysis-hybrid-rag-fusion-systems"
   - "recommendations-speckit-memory-mcp"
@@ -810,11 +810,11 @@ key_topics:
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
-  - "memory saved"
+  - "rag deliverables created"
   - "hybrid rag fusion"
   - "analysis-hybrid-rag-fusion-systems"
   - "recommendations-speckit-memory-mcp"
-  - "sqlite fts5"  []
+  - "sqlite fts5"
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
 child_sessions:

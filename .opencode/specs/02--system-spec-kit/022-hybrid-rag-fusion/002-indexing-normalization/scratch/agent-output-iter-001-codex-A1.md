@@ -580,7 +580,7 @@ exec
    902	
    903	    const sessionData = await collectSessionData(
    904	      normalized,
-   905	      '022-hybrid-rag-fusion/010-perfect-session-capturing',
+   905	      '022-hybrid-rag-fusion/009-perfect-session-capturing',
    906	    );
    907	
    908	    // MAX_OBSERVATIONS is 3, so total observations in output must not exceed 3.

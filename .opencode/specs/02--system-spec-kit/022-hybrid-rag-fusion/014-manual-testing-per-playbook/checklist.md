@@ -78,7 +78,7 @@ contextType: "general"
 - [x] CHK-040 [P0] Phase `013` explicitly documents `M-005a..c`, `M-006a..c`, and `M-007a..j` as literal scenario IDs [EVIDENCE: `013-memory-quality-and-indexing/spec.md` exact-ID scope and requirements]
 - [x] CHK-041 [P0] The `M-007` playbook block now includes `tests/workflow-e2e.vitest.ts` in the JS verification suite list [EVIDENCE: `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` command block]
 - [x] CHK-042 [P1] The `M-007` playbook baseline wording now uses the focused proof-lane framing from the `010` closure docs instead of the old compressed aggregate buckets [EVIDENCE: `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` latest automated baseline refresh]
-- [x] CHK-043 [P1] The parent `010` packet no longer contradicts itself about whether validator support was implemented in this closure pass [EVIDENCE: sibling `010-perfect-session-capturing/` packet reviewed after cleanup]
+- [x] CHK-043 [P1] The parent `009` packet no longer contradicts itself about whether validator support was implemented in this closure pass [EVIDENCE: sibling `009-perfect-session-capturing/` packet reviewed after cleanup]
 <!-- /ANCHOR:docs -->
 
 ---

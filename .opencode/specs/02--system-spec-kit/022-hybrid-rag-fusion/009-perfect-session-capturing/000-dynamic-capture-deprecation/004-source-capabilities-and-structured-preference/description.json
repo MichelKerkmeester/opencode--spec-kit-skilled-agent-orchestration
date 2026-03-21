@@ -1,0 +1,23 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation/004-source-capabilities-and-structured-preference",
+  "description": "Feature Specification: Source Capabilities And Structured Preference",
+  "keywords": [
+    "feature",
+    "specification",
+    "source",
+    "capabilities",
+    "structured",
+    "preference"
+  ],
+  "lastUpdated": "2026-03-20T13:22:44.212Z",
+  "specId": "004",
+  "folderSlug": "source-capabilities-and-structured-preference",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "009-perfect-session-capturing",
+    "000-dynamic-capture-deprecation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

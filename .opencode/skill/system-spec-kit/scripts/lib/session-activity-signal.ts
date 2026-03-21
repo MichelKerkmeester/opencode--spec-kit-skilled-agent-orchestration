@@ -8,13 +8,6 @@
 // Aggregates spec-relevant session activity that can help spec-folder
 // auto-detection prefer the folder that is actually being worked on.
 
-/**
- * @deprecated RECOVERY-ONLY — This module supports spec-folder auto-detection for
- * stateless/recovery capture. In JSON-primary mode, the AI provides specFolder directly.
- * The heuristic matching in this module was historically the source of wrong-session
- * contamination.
- */
-
 import type { CollectedDataBase, FactValue, Observation } from '../types/session-types';
 
 /* ───────────────────────────────────────────────────────────────

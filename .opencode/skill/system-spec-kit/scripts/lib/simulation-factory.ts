@@ -1,7 +1,6 @@
 // ---------------------------------------------------------------
 // MODULE: Simulation Factory
 // ---------------------------------------------------------------
-/** @deprecated RECOVERY-ONLY — Simulation fallbacks only execute in stateless/recovery mode. In JSON-primary mode, the AI provides structured data directly. */
 
 // ───────────────────────────────────────────────────────────────
 // 1. SIMULATION FACTORY

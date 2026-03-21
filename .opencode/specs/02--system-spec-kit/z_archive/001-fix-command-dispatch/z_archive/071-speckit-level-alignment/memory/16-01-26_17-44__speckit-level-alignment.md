@@ -6,7 +6,7 @@ trigger_phrases:
   - "level based template architecture"
   - "script and library alignment"
   - "template architecture migration"
-importance_tier: "normal"
+importance_tier: "important"
 contextType: "general"
 quality_score: 0.60
 quality_flags:
@@ -444,7 +444,9 @@ trigger_phrases:
   - "speckit level alignment"
   - "level based template architecture"
   - "script and library alignment"
-  - "template architecture migration"related_sessions:
+  - "template architecture migration"
+
+related_sessions:
 
   []
 

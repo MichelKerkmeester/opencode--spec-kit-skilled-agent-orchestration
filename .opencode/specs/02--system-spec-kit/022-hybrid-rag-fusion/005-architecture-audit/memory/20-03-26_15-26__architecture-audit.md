@@ -1,5 +1,5 @@
 ---
-title: "Architecture Audit [005-architecture-audit/20-03-26_15-26__architecture-audit]"
+title: "Architecture Audit"
 description: "Deep Research implementation complete. All deliverables verified: 7/7 PASSED. ; All background tasks completed. The parallel dispatch script (brnc8wfc6) exited; All..."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/005 architecture audit"

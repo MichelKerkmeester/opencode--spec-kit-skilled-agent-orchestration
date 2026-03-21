@@ -1295,7 +1295,7 @@ trigger_phrases:
   - "handover"
   - "research final"
   - "feature flags"
-  - "spec kit memory"  []
+  - "spec kit memory"
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic"
 child_sessions:

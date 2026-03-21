@@ -30,16 +30,16 @@ The `extractors/` directory converts collected session input into structured dat
 ## 2. CURRENT INVENTORY
 
 
-- `claude-code-capture.ts` - Claude Code CLI session capture (deprecated -- recovery-only)
-- `codex-cli-capture.ts` - Codex CLI session capture (deprecated -- recovery-only)
+- `claude-code-capture.ts` - Claude Code CLI session capture
+- `codex-cli-capture.ts` - Codex CLI session capture
 - `collect-session-data.ts`
 - `contamination-filter.ts` - Filters contamination from extraction pipeline outputs
 - `conversation-extractor.ts`
-- `copilot-cli-capture.ts` - Copilot CLI session capture (deprecated -- recovery-only)
+- `copilot-cli-capture.ts` - Copilot CLI session capture
 - `decision-extractor.ts`
 - `diagram-extractor.ts`
 - `file-extractor.ts`
-- `gemini-cli-capture.ts` - Gemini CLI session capture (deprecated -- recovery-only)
+- `gemini-cli-capture.ts` - Gemini CLI session capture
 - `git-context-extractor.ts` - Mines git history for stateless enrichment (spec 013)
 - `implementation-guide-extractor.ts`
 - `opencode-capture.ts`

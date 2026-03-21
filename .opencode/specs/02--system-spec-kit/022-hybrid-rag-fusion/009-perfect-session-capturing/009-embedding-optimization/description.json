@@ -1,0 +1,23 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization",
+  "description": "Feature Specification: Embedding Optimization",
+  "keywords": [
+    "feature",
+    "specification",
+    "embedding",
+    "optimization"
+  ],
+  "lastUpdated": "2026-03-19T15:45:43.408Z",
+  "specId": "009",
+  "folderSlug": "embedding-optimization",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "009-perfect-session-capturing"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "16-03-26_20-38__implemented-weighted-document-embedding-input-for.md",
+    "17-03-26_16-44__strict-closeout-evidence-refreshed.md"
+  ]
+}

@@ -506,7 +506,6 @@ function gatherCollectedDataPaths(data: SpecAffinityCollectedData): string[] {
   return paths;
 }
 
-/** @deprecated RECOVERY-ONLY — This function evaluates spec affinity from stateless CollectedDataSubset. In JSON-primary mode, the AI provides specFolder directly. */
 export function evaluateCollectedDataSpecAffinity(
   data: SpecAffinityCollectedData,
   targetsOrHint: SpecAffinityTargets | string,

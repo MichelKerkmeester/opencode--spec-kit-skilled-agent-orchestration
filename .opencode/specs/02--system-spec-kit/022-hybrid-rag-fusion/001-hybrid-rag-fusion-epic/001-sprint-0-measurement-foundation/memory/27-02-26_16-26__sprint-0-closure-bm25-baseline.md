@@ -7,7 +7,7 @@ trigger_phrases:
   - "contingency decision proceed"
   - "mrr@5 0.2083"
   - "ground truth id mapping"
-importance_tier: "critical"
+importance_tier: "important"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
@@ -86,8 +86,8 @@ quality_flags: []
 
 | Field | Value |
 |-------|-------|
-| Session Status | BLOCKED |
-| Completion % | 5% |
+| Session Status | COMPLETED |
+| Completion % | 100% |
 | Last Activity | 2026-02-27T15:26:23.012Z |
 | Time in Session | 0m |
 | Continuation Count | 1 |
@@ -553,7 +553,7 @@ spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-ep
 channel: "main"
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)
@@ -636,7 +636,7 @@ trigger_phrases:
   - "bm25 baseline"
   - "contingency decision proceed"
   - "mrr@5 0.2083"
-  - "ground truth id mapping"  []
+  - "ground truth id mapping"
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation"
 child_sessions:

@@ -6,7 +6,7 @@ trigger_phrases:
   - "folder ranking formula"
   - "constitutional decay exemption"
   - "level 3 ranking spec"
-importance_tier: "normal"
+importance_tier: "important"
 contextType: "general"
 quality_score: 0.60
 quality_flags:
@@ -316,11 +316,11 @@ This session was migrated from an older format. Learning metrics were not captur
 ```yaml
 # Core Identifiers
 session_id: "session-1768562878943-pqvza91mv"
-spec_folder: "003-memory-and-spec-kit/071-memory-ranking"
+spec_folder: "003-memory-and-spec-kit/070-memory-ranking"
 channel: "main"
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)
@@ -381,11 +381,13 @@ trigger_phrases:
   - "memory ranking documentation review"
   - "folder ranking formula"
   - "constitutional decay exemption"
-  - "level 3 ranking spec"related_sessions:
+  - "level 3 ranking spec"
+
+related_sessions:
 
   []
 
-parent_spec: "003-memory-and-spec-kit/071-memory-ranking"
+parent_spec: "003-memory-and-spec-kit/070-memory-ranking"
 child_sessions:
 
   []

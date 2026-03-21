@@ -7,7 +7,7 @@ trigger_phrases:
   - "graduated-on semantics"
   - "speckit environment variables"
   - "classification decay alignment"
-importance_tier: "critical"
+importance_tier: "important"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
@@ -577,7 +577,7 @@ spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion"
 channel: "main"
 
 # Classification
-importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)
@@ -660,7 +660,7 @@ trigger_phrases:
   - "feature flag graduation"
   - "graduated-on semantics"
   - "speckit environment variables"
-  - "classification decay alignment"  []
+  - "classification decay alignment"
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
 child_sessions:

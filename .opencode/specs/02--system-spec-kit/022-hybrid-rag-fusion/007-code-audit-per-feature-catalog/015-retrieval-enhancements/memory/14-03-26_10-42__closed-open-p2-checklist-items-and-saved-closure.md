@@ -68,7 +68,7 @@ quality_flags:
 
 | Field | Value |
 |-------|-------|
-| Session Status | IN_PROGRESS |
+| Session Status | COMPLETED |
 | Completion % | 14% |
 | Last Activity | 2026-03-14T09:42:23.549Z |
 | Time in Session | 0m |

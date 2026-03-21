@@ -1,5 +1,5 @@
 ---
-title: "2026-03-13 verification"
+title: "Phase 6 Shared Memory Rollout Verification Pass — 2026-03-13"
 description: "2026-03-13 verification pass confirmed Phase 6 shared memory rollout is implemented with deny-by-default access, rollout gating, conflict audit, and kill-switch behavior."
 trigger_phrases:
   - "deny by default"

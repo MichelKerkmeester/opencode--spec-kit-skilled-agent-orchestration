@@ -352,11 +352,6 @@ function buildFileProgress(specFiles: SpecFileEntry[] | undefined): FileProgress
 ------------------------------------------------------------------*/
 
 /**
- * @deprecated RECOVERY-ONLY — Reconstructs tool counts by parsing observation text via regex.
- * In JSON-primary mode, tool counts should derive from the structured toolCalls array directly.
- * This lossy round-trip (structured data -> observation text -> regex extraction) is only
- * needed for --recovery mode.
- *
  * Count tool invocations by type from observation facts.
  * @param observations - Session observations containing tool-usage facts.
  * @param userPrompts - User prompts (reserved for future use; not counted to avoid false positives).

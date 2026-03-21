@@ -81,8 +81,10 @@ load_enforcement_config() {
 
 get_staged_spec_files() {
     # Get staged .md files under specs/ or .opencode/specs/ paths
+    # Exclude scratch/ directories — these contain quarantined/WIP content not subject to validation
     git diff --cached --name-only --diff-filter=ACMR 2>/dev/null | \
-        grep -E '(^|/)specs?/.*\.md$' || true
+        grep -E '(^|/)specs?/.*\.md$' | \
+        grep -v '/scratch/' || true
 }
 
 # Walk up from a file path to find the spec folder (directory containing spec.md)

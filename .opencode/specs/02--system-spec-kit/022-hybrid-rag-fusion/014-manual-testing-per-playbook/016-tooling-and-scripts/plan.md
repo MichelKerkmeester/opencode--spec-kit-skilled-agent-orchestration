@@ -121,7 +121,7 @@ The phase packet should be used as an operator checklist: establish safe prerequ
 | `136` | Feature catalog annotation name validity | `Validate all Feature catalog annotation names against catalog.` | manual |
 | `137` | Multi-feature annotation coverage | `Validate multi-feature files carry all applicable annotations.` | manual |
 | `138` | MODULE: header compliance via `verify_alignment_drift.py` | `Validate MODULE: header compliance across all non-test .ts files.` | manual |
-| `139` | Session capturing pipeline quality | `Run full closure verification for spec 010-perfect-session-capturing, including JSON authority, stateless enrichment, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), numeric quality calibration, and indexing readiness.` | manual |
+| `139` | Session capturing pipeline quality | `Run full closure verification for spec 009-perfect-session-capturing, including JSON authority, stateless enrichment, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), numeric quality calibration, and indexing readiness.` | manual |
 | `147` | Constitutional memory manager command | `Validate /memory:learn constitutional manager flow and documentation consistency.` | manual |
 | `149` | Rendered memory template contract | `Validate the rendered-memory template contract for memory_save, generate-context, and historical remediation.` | MCP |
 | `PHASE-001` | Phase detection scoring | `Verify phase detection scoring produces valid 5-dimension output for a complex spec folder.` | manual |

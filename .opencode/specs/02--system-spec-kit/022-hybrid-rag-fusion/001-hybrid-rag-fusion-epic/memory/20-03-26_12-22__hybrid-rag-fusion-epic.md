@@ -374,8 +374,8 @@ read
 
 read
 
-**Files:** .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/scratch/deep-research-config.json
-**Details:** Tool: read | Status: completed | Result: 1→{ 2→ "topic": "Comprehensive deep research on 010-perfect-session-capturing: evaluate 67 remaining remediation items, assess phase-020 live proof gaps,
+**Files:** .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/scratch/deep-research-config.json
+**Details:** Tool: read | Status: completed | Result: 1→{ 2→ "topic": "Comprehensive deep research on 009-perfect-session-capturing: evaluate 67 remaining remediation items, assess phase-020 live proof gaps,
 <!-- /ANCHOR:discovery-read-scratchdeepresearchconfigjson-bd0ebda8-2 -->
 
 <!-- ANCHOR:architecture-count-list-typescript-source-67b8daa8 -->

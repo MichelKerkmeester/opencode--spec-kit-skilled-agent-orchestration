@@ -71,7 +71,7 @@ I found the search module surface area. Next I’m narrowing to the hybrid-RAG s
 ● Search (glob)
   │ ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/{001-hybrid-rag-fusion-epic,007-code-
   │ audit-per-feature-catalog/014-pipeline-architecture,007-code-audit-per-feature-catalog/001-retri
-  │ eval,010-perfect-session-capturing}/**/*"
+  │ eval,009-perfect-session-capturing}/**/*"
   └ 5 files found
 
 I’ve got the root epic and pipeline docs. Now I’m reading the concrete sprint and stage implementations to compare promised behavior with the actual control flow.

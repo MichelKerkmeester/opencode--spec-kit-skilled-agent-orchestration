@@ -4,7 +4,6 @@ description: "Completed 018-ux-hooks code audit remediation: 17 tasks executed v
 trigger_phrases:
   - "confirm name"
   - "ux hooks"
-  - "gpt 5"
   - "mixed outcome"
   - "completed 018-ux-hooks code audit"
   - "018-ux-hooks code audit remediation"
@@ -964,7 +963,6 @@ key_topics:
 trigger_phrases:
   - "confirm name"
   - "ux hooks"
-  - "gpt 5"
   - "mixed outcome"
   - "completed 018-ux-hooks code audit"
   - "018-ux-hooks code audit remediation"

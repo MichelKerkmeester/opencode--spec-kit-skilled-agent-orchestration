@@ -118,7 +118,7 @@ I’ve confirmed there’s existing embedding infrastructure in the workspace, w
 I found a strong signal already: the current target construction appears to inherit very generic trigger phrases from spec metadata, which can turn phrase-matching into “match almost any spec doc.” I’m verifying that with a concrete example from a real spec folder rather than relying on the simulation alone.
 
 ● Read description.json
-  │ specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/description.json
+  │ specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/description.json
   └ 41 lines read
 
 ● Read description.json
@@ -130,7 +130,7 @@ I found a strong signal already: the current target construction appears to inhe
   └ L1:120 (120 lines read)
 
 ● Read spec.md
-  │ specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/spec.md
+  │ specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/spec.md
   └ L1:80 (79 lines read)
 
 ● Verify real false positive example (shell)

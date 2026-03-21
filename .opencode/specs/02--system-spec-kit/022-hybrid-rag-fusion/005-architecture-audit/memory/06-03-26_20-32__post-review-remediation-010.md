@@ -61,7 +61,7 @@ quality_flags: []
 
 | Field | Value |
 |-------|-------|
-| Session Status | IN_PROGRESS |
+| Session Status | COMPLETED |
 | Completion % | 25% |
 | Last Activity | 2026-03-06T19:32:54.331Z |
 | Time in Session | 0m |
@@ -457,11 +457,11 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 ```yaml
 # Core Identifiers
 session_id: "session-1772825574337-bbp93bf80"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit"
 channel: "main"
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)

@@ -6,7 +6,6 @@
 import { extractTriggerPhrases } from './trigger-extractor';
 
 export const GENERIC_MEMORY_DESCRIPTION = 'Session context memory template for Spec Kit indexing.';
-/** @deprecated Historical remediation only. */
 export const LEGACY_GENERIC_MEMORY_TRIGGER_PHRASES = [
   'memory dashboard',
   'session summary',
@@ -69,7 +68,6 @@ export function hasLegacyGenericTriggerPhrases(triggerPhrases: string[]): boolea
   return generic.every((phrase, index) => normalized[index] === phrase);
 }
 
-/** @deprecated Historical remediation only — new JSON-primary saves never produce legacy generic trigger phrases. */
 export function containsLegacyGenericTriggerPhrase(triggerPhrases: string[]): boolean {
   const normalized = triggerPhrases
     .map((phrase) => normalizeForComparison(phrase))
