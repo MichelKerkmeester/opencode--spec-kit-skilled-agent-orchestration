@@ -120,11 +120,9 @@ function hasMeaningfulObservationTitle(title?: string): boolean {
  * Runs after template rendering, before file writing.
  * Returns canonical score01 plus a score100 compatibility alias and a per-criterion breakdown.
  *
- * @deprecated Use `scoreMemoryQuality` from `extractors/quality-scorer.ts` instead.
- * The extractors v2 scorer accepts a single `QualityInputs` object, uses
- * validation-rule-based scoring (V1-V12), and is the canonical scorer for
- * all abort/index/metadata decisions in the workflow. This legacy 8-parameter
- * variant is retained only for backward compatibility with existing tests.
+ * Legacy 8-parameter variant retained for backward compatibility.
+ * Prefer `scoreMemoryQuality` from `extractors/quality-scorer.ts` which accepts
+ * a single `QualityInputs` object and uses validation-rule-based scoring (V1-V12).
  */
 export function scoreMemoryQuality(
   content: string,

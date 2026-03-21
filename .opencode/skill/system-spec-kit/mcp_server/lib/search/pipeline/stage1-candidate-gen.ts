@@ -615,20 +615,29 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
             const existingIds = new Set(candidates.map((r) => String(r.id)));
             const newSummaryHits: PipelineRow[] = [];
 
-            for (const sr of summaryResults) {
-              if (!existingIds.has(String(sr.memoryId))) {
-                // Fetch full memory row for the summary match
-                const memRow = db.prepare(
-                  'SELECT id, title, spec_folder, file_path, importance_tier, importance_weight, quality_score, created_at, is_archived, context_type, tenant_id, user_id, agent_id, session_id, shared_space_id FROM memory_index WHERE id = ?'
-                ).get(sr.memoryId) as PipelineRow | undefined;
+            // F02-003: Batch-fetch instead of N+1 per-item queries
+            const newSummaryIds = summaryResults
+              .filter((sr) => !existingIds.has(String(sr.memoryId)))
+              .map((sr) => sr.memoryId);
 
-                if (memRow) {
-                  newSummaryHits.push({
-                    ...memRow,
-                    similarity: sr.similarity * 100,
-                    score: sr.similarity,
-                  });
-                  existingIds.add(String(sr.memoryId));
+            if (newSummaryIds.length > 0) {
+              const placeholders = newSummaryIds.map(() => '?').join(', ');
+              const memRows = db.prepare(
+                `SELECT id, title, spec_folder, file_path, importance_tier, importance_weight, quality_score, created_at, is_archived, context_type, tenant_id, user_id, agent_id, session_id, shared_space_id FROM memory_index WHERE id IN (${placeholders})`
+              ).all(...newSummaryIds) as PipelineRow[];
+
+              const memRowMap = new Map(memRows.map((r) => [r.id, r]));
+              for (const sr of summaryResults) {
+                if (!existingIds.has(String(sr.memoryId))) {
+                  const memRow = memRowMap.get(sr.memoryId);
+                  if (memRow) {
+                    newSummaryHits.push({
+                      ...memRow,
+                      similarity: sr.similarity * 100,
+                      score: sr.similarity,
+                    });
+                    existingIds.add(String(sr.memoryId));
+                  }
                 }
               }
             }

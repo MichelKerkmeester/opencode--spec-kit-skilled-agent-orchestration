@@ -29,8 +29,8 @@ contextType: "implementation"
 ## Phase 1: Setup
 
 - [x] T001 Read the current root packet
-- [x] T002 Read the Level 3+ templates needed for the missing companion docs
-- [x] T003 Inventory direct child packets `002-018`
+- [x] T002 Read the Level 3+ template expectations needed for the parent packet
+- [x] T003 Inventory direct child packets `001-018`
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -38,13 +38,11 @@ contextType: "implementation"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Rewrite root `spec.md` into a concise Level 3+ coordination packet
-- [x] T005 Create root `plan.md`
-- [x] T006 Create root `tasks.md`
-- [x] T007 Create root `checklist.md`
-- [x] T008 Create root `decision-record.md`
-- [x] T009 Replace root `implementation-summary.md`
-- [x] T010 Normalize direct-child phase-navigation references in `002-018/spec.md`
+- [x] T004 Rewrite the root `spec.md` into a concise coordination packet
+- [x] T005 Normalize the root `plan.md`
+- [x] T006 Keep root `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` aligned with the current pass
+- [x] T007 Normalize direct-child phase-navigation references in the direct child packet specs
+- [x] T008 Remove stale root wording that pointed at broken or misleading markdown targets
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -52,9 +50,9 @@ contextType: "implementation"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T011 Skip formal validation in this pass per user direction
-- [ ] T012 Run focused root validation in a later pass
-- [ ] T013 Normalize nested packet families (`001`, `007`, `008`, `009`, `014`) in follow-up work
+- [x] T009 Run focused root validation
+- [x] T010 Record residual subtree blockers if they remain after the parent pass
+- [x] T011 Continue nested packet-family normalization where needed
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -62,10 +60,10 @@ contextType: "implementation"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] Requested root docs exist
-- [x] Root spec is replaced
-- [x] Child phase links are normalized at the direct-child layer
-- [ ] Full-tree validation deferred
+- [x] Root packet docs are concise and current-state focused
+- [x] Direct-child phase links are normalized at the root-facing layer
+- [x] Parent validation is rerun and recorded
+- [x] Remaining subtree debt is clearly tracked
 <!-- /ANCHOR:completion -->
 
 ---

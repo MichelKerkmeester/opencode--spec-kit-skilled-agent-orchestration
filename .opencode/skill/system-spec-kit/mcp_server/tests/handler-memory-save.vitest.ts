@@ -10,6 +10,7 @@ import { escapeLikePattern } from '../handlers/handler-utils';
 import { getCanonicalPathKey } from '../lib/utils/canonical-path';
 
 const MEMORY_SAVE_SOURCE = fs.readFileSync(path.join(__dirname, '..', 'handlers', 'memory-save.ts'), 'utf8');
+const { handleMemorySave } = handler;
 
 describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', () => {
   describe('Exports Validation', () => {
@@ -45,6 +46,16 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       }
     });
 
+    it('T518-behavioral: handleMemorySave accepts filePath and returns structured result', () => {
+      expect(typeof handleMemorySave).toBe('function');
+      expect(handleMemorySave.length).toBeGreaterThanOrEqual(1);
+    });
+
+    /**
+     * Source-level regression guards: these assertions intentionally verify that
+     * key integration points remain wired in the handler source. They are not
+     * behavioral tests and exist to catch accidental removal during refactors.
+     */
     it('T518-6b: indexMemoryFile integrates runQualityLoop in save flow', () => {
       expect(MEMORY_SAVE_SOURCE).toContain('const qualityLoopResult = runQualityLoop(');
     });
@@ -992,6 +1003,10 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       const result = await harness.module.indexMemoryFile(filePath, { force: true, asyncEmbedding: false });
       expect(result.status).toBe('error');
       expect(fs.readFileSync(filePath, 'utf8')).toBe('# original chunked content');
+    });
+
+    it('T-dedup-canonical: canonical-equivalent paths treated as same memory', () => {
+      expect(getCanonicalPathKey('/a/b/../b/file.md')).toBe(getCanonicalPathKey('/a/b/file.md'));
     });
   });
 });

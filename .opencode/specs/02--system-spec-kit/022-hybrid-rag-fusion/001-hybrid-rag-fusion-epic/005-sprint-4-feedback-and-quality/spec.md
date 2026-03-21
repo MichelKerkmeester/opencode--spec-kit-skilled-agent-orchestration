@@ -27,11 +27,11 @@ contextType: "implementation"
 | **Priority** | P1 |
 | **Status** | Draft |
 | **Created** | 2026-02-26 |
-| **Parent Spec** | ../000-feature-overview/spec.md |
-| **Parent Plan** | ../000-feature-overview/plan.md |
-| **Phase** | 5 of 8 |
-| **Predecessor** | ../013-query-intelligence/ |
-| **Successor** | ../015-pipeline-refactor/ |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 5 of 10 |
+| **Predecessor** | ../004-sprint-3-query-intelligence/spec.md |
+| **Successor** | ../006-sprint-5-pipeline-refactor/spec.md |
 | **Handoff Criteria** | R1 MRR@5 within 2%, R11 noise <5%, R13-S2 operational |
 <!-- /ANCHOR:metadata -->
 

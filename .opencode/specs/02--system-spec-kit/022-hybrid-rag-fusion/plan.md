@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: 022-hybrid-rag-fusion"
-description: "Root packet normalization plan for the 022 direct-child layer."
+description: "Root packet normalization plan for the 022 coordination layer and direct-child navigation."
 trigger_phrases:
   - "022 root plan"
   - "packet normalization plan"
@@ -21,13 +21,13 @@ contextType: "implementation"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown, shell-based validation |
+| **Language/Stack** | Markdown and shell-based validation |
 | **Framework** | system-spec-kit packet templates |
-| **Storage** | Spec folder markdown only |
-| **Testing** | Deferred in this pass by request |
+| **Storage** | Spec-folder markdown only |
+| **Testing** | Focused spec validation |
 
 ### Overview
-This pass normalizes only the 022 root packet and the root-facing phase-navigation layer for direct child packets `002-018`. It creates the missing companion docs, replaces the oversized root spec with a concise 3+ packet, and standardizes direct-child links back to the root and neighboring phases.
+This pass normalizes the 022 root packet and its direct-child navigation layer. It keeps the root packet concise, syncs counts and status to the live tree, and leaves deeper subtree rewrites explicit rather than implicit.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -37,14 +37,41 @@ This pass normalizes only the 022 root packet and the root-facing phase-navigati
 
 ### Definition of Ready
 - [x] Root scope confirmed
-- [x] Verified count and status facts already established
-- [x] Target child phase list identified
+- [x] Verified count and status facts available
+- [x] Direct child phase inventory identified
 
 ### Definition of Done
-- [ ] Root companion docs exist
-- [ ] Root spec is concise and template-compatible
-- [ ] Child `spec.md` files `002-018` include normalized phase-navigation tables
+- [x] Root packet validates at the parent level with warnings only
+- [x] Direct-child navigation remains validator-friendly
+- [x] Residual subtree debt is documented truthfully
 <!-- /ANCHOR:quality-gates -->
+
+---
+
+### AI Execution Protocol
+
+### Pre-Task Checklist
+- Confirm the edit scope is limited to the 022 packet family and requested child packet layers.
+- Read the touched packet docs before rewriting them.
+- Re-check live phase counts and statuses before summarizing them in the root packet.
+- Run focused validation after structural packet edits.
+
+### Execution Rules
+
+| Rule ID | Rule | Why |
+|---------|------|-----|
+| ROOT-SEQ-001 | Rewrite the root packet before final validation | Validation should reflect the current packet shape |
+| ROOT-SCOPE-001 | Keep changes inside the 022 packet family | The task is packet-family normalization, not runtime code work |
+| ROOT-TRUTH-001 | Use live child packet metadata as the source of truth | Root summaries must not flatten or invent packet state |
+
+### Status Reporting Format
+- Report the root and child packet files changed.
+- Report the focused validator results for the root and `001` parent packets.
+- Separate root-level closure from remaining subtree debt.
+
+### Blocked Task Protocol
+- If validation reports parent-level structural errors, patch the parent docs and re-run validation.
+- If validation reports deeper child drift, record it explicitly and keep the root packet truthful about the residual work.
 
 ---
 
@@ -56,10 +83,10 @@ Coordination-layer documentation normalization
 
 ### Key Components
 - **Root packet docs**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`
-- **Direct child packets**: `002-018/spec.md`
+- **Direct child packets**: direct child packet specs for phases `002` through `018`
 
 ### Data Flow
-Read current root truths -> write concise root docs -> append or replace child phase-navigation blocks -> return touched-file inventory without validation in this pass.
+Read the live tree -> reconcile root facts -> normalize root docs -> preserve direct-child navigation truth -> validate the parent packet.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -67,18 +94,18 @@ Read current root truths -> write concise root docs -> append or replace child p
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Root Packet
-- [x] Rewrite root `spec.md`
-- [x] Add missing companion docs
-- [x] Replace stale implementation summary
+### Phase 1: Root Packet Truth
+- [x] Reconcile counts and direct-phase statuses against the live tree
+- [x] Keep the root spec concise and template-compatible
+- [x] Remove broken doc references created by historical wording
 
 ### Phase 2: Direct Child Navigation
-- [x] Map neighboring folders for `002-018`
-- [x] Normalize `Parent Spec`, `Previous Phase`, and `Next Phase` rows
+- [x] Normalize root-facing phase navigation for direct child packets
+- [x] Keep neighboring direct-phase references consistent
 
-### Phase 3: Handoff
-- [ ] Return touched-file list
-- [ ] Record residual blockers without running validation
+### Phase 3: Verification
+- [x] Re-run focused root validation
+- [x] Record residual subtree blockers if they remain
 <!-- /ANCHOR:phases -->
 
 ---
@@ -88,8 +115,10 @@ Read current root truths -> write concise root docs -> append or replace child p
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Manual readback | Root docs and child phase tables | `sed`, `tail`, `rg` |
-| Formal validation | Deferred by user request | Not run |
+| Focused parent validation | Root packet only | `validate.sh --no-recursive` |
+| Spot readback | Root and direct child docs | `sed`, `rg` |
+
+Acceptance rule: the root packet must pass without structural errors, and any remaining warnings must describe real residual work rather than stale metadata drift.
 <!-- /ANCHOR:testing -->
 
 ---
@@ -100,8 +129,8 @@ Read current root truths -> write concise root docs -> append or replace child p
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | Existing child packet status truth | Internal | Green | Root facts could drift if wrong |
-| Direct child folder names `002-018` | Internal | Green | Navigation rows would be wrong |
-| Deeper subtree cleanup | Deferred | Yellow | Full-tree validation still expected to fail later |
+| Direct child folder names and order | Internal | Green | Navigation rows would be wrong |
+| Deeper subtree cleanup | Deferred | Yellow | Full-tree normalization remains incomplete |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -109,31 +138,14 @@ Read current root truths -> write concise root docs -> append or replace child p
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Root packet rewrite misstates counts or phase neighbors.
-- **Procedure**: Restore the affected markdown files from git and reapply only the verified facts.
+- **Trigger**: Root packet rewrite misstates counts, status, or direct-child navigation.
+- **Procedure**: Restore the affected markdown files from git, then reapply only the verified tree facts.
 <!-- /ANCHOR:rollback -->
 
 ---
 
-## AI Execution Protocol
+## 8. COMMUNICATION PLAN
 
-### Pre-Task Checklist
-- Confirm the file is in the allowed root or direct-child scope.
-- Read the existing markdown before editing.
-- Preserve the verified 107-count and direct-child count facts.
-
-### Execution Rules
-| Rule | Action |
-|------|--------|
-| AI-001 | Do not touch nested subtree files |
-| AI-002 | Use explicit relative links in child phase navigation |
-| AI-003 | Keep root docs concise and coordination-focused |
-
-### Status Reporting Format
-- `DONE`: markdown edit landed
-- `PENDING`: follow-up validation or subtree cleanup still needed
-
-### Blocked Task Protocol
-1. Record the blocker in `tasks.md`.
-2. Return the blocker explicitly in the completion summary.
-3. Do not broaden scope inside this pass.
+- Record root validator results in the root packet checklist and implementation summary.
+- Keep residual subtree warnings scoped to the affected child packet family instead of inflating the root status.
+- Use the root packet as the entry point for future normalization passes in `001`, `009`, and `014`.

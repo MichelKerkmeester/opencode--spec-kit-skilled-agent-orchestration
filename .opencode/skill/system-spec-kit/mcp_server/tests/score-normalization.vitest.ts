@@ -530,4 +530,22 @@ describe('MRR@5 (statistical helper)', () => {
     expect(result).toBeGreaterThan(0);
     expect(result).toBeLessThan(1);
   });
+
+  it('T-composite-nan: NaN/Infinity inputs normalize to finite values', () => {
+    const original = process.env.SPECKIT_SCORE_NORMALIZATION;
+
+    try {
+      process.env.SPECKIT_SCORE_NORMALIZATION = 'true';
+      const result = normalizeCompositeScores([Number.NaN, Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, 0.5]);
+      for (const value of result) {
+        expect(Number.isFinite(value)).toBe(true);
+      }
+    } finally {
+      if (original === undefined) {
+        delete process.env.SPECKIT_SCORE_NORMALIZATION;
+      } else {
+        process.env.SPECKIT_SCORE_NORMALIZATION = original;
+      }
+    }
+  });
 });

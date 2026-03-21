@@ -79,7 +79,7 @@ The shipped posture enforces the following behavior:
 | File | Focus |
 |------|-------|
 | `scripts/tests/generate-context-cli-authority.vitest.ts` | `--stdin` / `--json` structured-input precedence, positional rejection |
-| `scripts/tests/workflow-e2e.vitest.ts` | Gate A tiering for recovery-only enforcement |
+| `scripts/tests/generate-context-cli-authority.vitest.ts` | Recovery-only enforcement (`--recovery` flag parsing, direct-mode rejection) |
 
 ---
 

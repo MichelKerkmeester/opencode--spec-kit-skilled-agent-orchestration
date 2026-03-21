@@ -103,27 +103,37 @@ function isSpecDocumentType(documentType?: string): boolean {
 }
 
 /** Find memories with similar embeddings for PE gating deduplication */
-function findSimilarMemories(embedding: Float32Array | null, options: { limit?: number; specFolder?: string | null } = {}): SimilarMemory[] {
-  const { limit = 5, specFolder = null } = options;
+function findSimilarMemories(embedding: Float32Array | null, options: { limit?: number; specFolder?: string | null; tenantId?: string | null; userId?: string | null; agentId?: string | null; sessionId?: string | null; sharedSpaceId?: string | null } = {}): SimilarMemory[] {
+  const { limit = 5, specFolder = null, tenantId = null, userId = null, agentId = null, sessionId = null, sharedSpaceId = null } = options;
 
   if (!embedding) {
     return [];
   }
 
   try {
+    // Fetch extra candidates then post-filter by governance scope
     const results = vectorIndex.vectorSearch(embedding, {
-      limit: limit,
+      limit: limit * 3, // Over-fetch to compensate for post-filter reduction
       specFolder: specFolder,
       minSimilarity: 50,
       includeConstitutional: false
     });
 
-    return results.map((r: Record<string, unknown>) => {
+    // Post-filter by governance scope to prevent cross-tenant PE decisions
+    const scopeFiltered = results.filter((r: Record<string, unknown>) => {
+      if (tenantId && r.tenant_id && r.tenant_id !== tenantId) return false;
+      if (userId && r.user_id && r.user_id !== userId) return false;
+      if (agentId && r.agent_id && r.agent_id !== agentId) return false;
+      if (sharedSpaceId && r.shared_space_id && r.shared_space_id !== sharedSpaceId) return false;
+      return true;
+    }).slice(0, limit);
+
+    return scopeFiltered.map((r: Record<string, unknown>) => {
       const rawSim = typeof r.similarity === 'number' ? r.similarity / 100 : 0;
       return {
         id: r.id as number,
         similarity: Number.isFinite(rawSim) ? Math.min(1, Math.max(0, rawSim)) : 0,
-        content: (r.content as string) || '',
+        content: (r.content_text as string) || (r.content as string) || '',
         stability: (r.stability as number) || fsrsScheduler.DEFAULT_INITIAL_STABILITY,
         difficulty: (r.difficulty as number) || fsrsScheduler.DEFAULT_INITIAL_DIFFICULTY,
         file_path: r.file_path as string,

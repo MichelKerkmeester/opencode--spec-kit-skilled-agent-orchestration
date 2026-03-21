@@ -498,6 +498,16 @@ async function indexChunkedMemoryFile(
         JSON.stringify(parsed.qualityFlags ?? []),
         parentId
       );
+
+      if (oldChildIds.length > 0) {
+        const archivePlaceholders = oldChildIds.map(() => '?').join(', ');
+        database.prepare(`
+          UPDATE memory_index
+          SET is_archived = 1,
+              updated_at = datetime('now')
+          WHERE id IN (${archivePlaceholders})
+        `).run(...oldChildIds);
+      }
     });
 
     try {

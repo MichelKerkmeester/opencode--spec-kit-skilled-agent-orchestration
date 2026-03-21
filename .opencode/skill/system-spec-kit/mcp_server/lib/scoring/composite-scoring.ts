@@ -380,8 +380,8 @@ export function calculatePatternScore(row: ScoringInput, options: ScoringOptions
   const similarity = (Number(row.similarity ?? 0) || 0) / 100;
   score = similarity * 0.5;
 
-  if (row.title && queryLower) {
-    const titleLower = (row.title as string).toLowerCase();
+  if (row.title && typeof row.title === 'string' && queryLower) {
+    const titleLower = row.title.toLowerCase();
     if (titleLower.includes(queryLower) || queryLower.includes(titleLower)) {
       score += PATTERN_ALIGNMENT_BONUSES.exact_match;
     } else {
@@ -464,21 +464,21 @@ export function calculateRecencyScore(timestamp: string | undefined, tier: strin
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3a. NOVELTY BOOST
+// 3a. NOVELTY BOOST (test-only exports, not consumed by production scoring)
 // ───────────────────────────────────────────────────────────────
 /**
  * N4: Cold-start boost constants (exported for observability tests).
- * @deprecated Novelty boost disabled. Retained for test compatibility.
+ * Novelty boost disabled. Retained for test compatibility.
  */
 export const NOVELTY_BOOST_MAX = 0.15;
-/** @deprecated Novelty boost disabled. Retained for test compatibility. */
+/** Novelty boost disabled. Retained for test compatibility. */
 export const NOVELTY_BOOST_HALF_LIFE_HOURS = 12;
-/** @deprecated Novelty boost disabled. Retained for test compatibility. */
+/** Novelty boost disabled. Retained for test compatibility. */
 export const NOVELTY_BOOST_SCORE_CAP = 0.95;
 
 /**
  * N4: Calculate cold-start novelty boost with exponential decay.
- * @deprecated Eval complete. Marginal value confirmed.
+ * Eval complete. Marginal value confirmed.
  * SPECKIT_NOVELTY_BOOST env var is inert. Always returns 0.
  *
  * @param createdAt - ISO creation timestamp

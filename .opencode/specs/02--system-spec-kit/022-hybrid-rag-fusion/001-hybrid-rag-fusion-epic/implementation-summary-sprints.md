@@ -410,7 +410,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 005-core-rag-sprints-0-to-8 |
+| **Spec Folder** | 001-hybrid-rag-fusion-epic |
 | **Completed** | 2026-02-28 |
 | **Level** | 2 |
 | **Total New Tests** | 315 |
@@ -1233,7 +1233,7 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 005-core-rag-sprints-0-to-8 |
+| **Spec Folder** | 001-hybrid-rag-fusion-epic |
 | **Completed** | 2026-03-01 |
 | **Level** | 1 |
 | **Status** | In Progress |
@@ -1314,7 +1314,7 @@ Source: 019-extra-features/implementation-summary.md
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 006-extra-features |
+| **Spec Folder** | 010-sprint-9-extra-features |
 | **Implementation Completed** | 2026-03-04 |
 | **Level** | 3+ |
 | **Status** | Implementation complete; verification in progress. Orphan-remediation follow-up evidence was refreshed on 2026-03-13 (targeted suites, compile gate, live DB integrity cleanup, runtime smoke), while full-workspace and live MCP/manual/eval verification remain open. |

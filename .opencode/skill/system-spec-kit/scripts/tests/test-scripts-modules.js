@@ -566,7 +566,7 @@ async function testUtilsPhaseClassifier() {
     const {
       classifyConversationExchanges,
       classifyConversationPhase,
-    } = require(path.join(SCRIPTS_DIR, 'utils', 'phase-classifier'));
+    } = require(path.join(SCRIPTS_DIR, 'lib', 'phase-classifier')); // Tests canonical lib/ location
 
     const compatibilityPhase = classifyConversationPhase([{ tool: 'Grep' }], 'fixing the error in debug output');
     if (compatibilityPhase === 'Debugging') {
@@ -594,7 +594,7 @@ async function testUtilsPhaseClassifier() {
         observationIndexes: [1],
         prompt: 'Implement the phase classifier',
         narratives: ['Implemented the classifier module'],
-        factTexts: ['Tool: Edit scripts/utils/phase-classifier.ts'],
+        factTexts: ['Tool: Edit scripts/lib/phase-classifier.ts'],
         toolNames: ['Edit', 'Write'],
         observationTypes: ['feature'],
         startTimestamp: '2026-03-16T10:06:00.000Z',

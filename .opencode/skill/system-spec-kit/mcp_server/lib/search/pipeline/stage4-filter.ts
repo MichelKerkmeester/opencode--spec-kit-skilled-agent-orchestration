@@ -303,6 +303,12 @@ export async function executeStage4(input: Stage4Input): Promise<Stage4Output> {
     featureFlags,
   };
 
+  // -- Step 4b: Final limit cap --
+  // Enforce caller's limit after all filtering to prevent degraded paths exceeding requested count
+  if (typeof config.limit === 'number' && config.limit > 0 && workingResults.length > config.limit) {
+    workingResults = workingResults.slice(0, config.limit);
+  }
+
   // -- Step 5: Verify score invariant (defence-in-depth) --
   //
   // VerifyScoreInvariant checks every row that survived filtering.

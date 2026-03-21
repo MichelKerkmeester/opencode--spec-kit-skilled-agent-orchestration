@@ -280,6 +280,28 @@ export function compareShadowResults(
   algorithmName: string,
   metadata?: Record<string, unknown>,
 ): ShadowComparison {
+  try {
+    return _compareShadowResultsImpl(query, production, shadow, algorithmName, metadata);
+  } catch (err: unknown) {
+    console.warn('[shadow-scoring] compareShadowResults failed (non-fatal):', err instanceof Error ? err.message : String(err));
+    return {
+      timestamp: new Date().toISOString(),
+      query,
+      algorithmName,
+      deltas: [],
+      summary: { productionCount: production.length, shadowCount: shadow.length, overlapCount: 0, meanAbsScoreDelta: 0, meanAbsRankDelta: 0, rankCorrelation: 0, productionOnlyIds: [], shadowOnlyIds: [] },
+      metadata,
+    };
+  }
+}
+
+function _compareShadowResultsImpl(
+  query: string,
+  production: ScoredResult[],
+  shadow: ScoredResult[],
+  algorithmName: string,
+  metadata?: Record<string, unknown>,
+): ShadowComparison {
   const prodMap = buildResultMap(production);
   const shadowMap = buildResultMap(shadow);
 
@@ -293,14 +315,18 @@ export function compareShadowResults(
     if (!p) continue;
     const s = shadowMap.get(memoryId);
     if (s) {
+      const pScore = Number.isFinite(p.score) ? p.score : 0;
+      const sScore = Number.isFinite(s.score) ? s.score : 0;
+      const pRank = Number.isFinite(p.rank) ? p.rank : 0;
+      const sRank = Number.isFinite(s.rank) ? s.rank : 0;
       deltas.push({
         memoryId,
-        productionScore: p.score,
-        productionRank: p.rank,
-        shadowScore: s.score,
-        shadowRank: s.rank,
-        scoreDelta: s.score - p.score,
-        rankDelta: s.rank - p.rank,
+        productionScore: pScore,
+        productionRank: pRank,
+        shadowScore: sScore,
+        shadowRank: sRank,
+        scoreDelta: sScore - pScore,
+        rankDelta: sRank - pRank,
       });
     }
   }

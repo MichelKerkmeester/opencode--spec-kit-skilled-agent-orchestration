@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
 // MODULE: Gemini CLI Capture
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
 
 // ───────────────────────────────────────────────────────────────
 // 1. GEMINI CLI CAPTURE
@@ -33,6 +33,8 @@ const GEMINI_HOME = path.join(
 const GEMINI_HISTORY = path.join(GEMINI_HOME, 'history');
 const GEMINI_TMP = path.join(GEMINI_HOME, 'tmp');
 const MAX_EXCHANGES_DEFAULT = 20;
+const MAX_SCAN_DEPTH = 5;
+const MAX_SCAN_COUNT = 10000;
 
 type GeminiMessageContentBlock = {
   text?: string;
@@ -83,6 +85,11 @@ function transcriptTimestamp(value?: string): number {
 
   const parsed = new Date(value).getTime();
   return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function logScanWarning(scanPath: string, error: unknown): void {
+  const message = error instanceof Error ? error.message : String(error);
+  console.warn(`   Warning: Failed to scan ${scanPath}: ${message}`);
 }
 
 function extractTextContent(content: unknown): string {
@@ -188,23 +195,56 @@ function getMatchingProjectDirs(projectRoot: string): string[] {
   }
 
   const matches: string[] = [];
-  const entries = fsSync.readdirSync(GEMINI_HISTORY, { withFileTypes: true });
-  for (const entry of entries) {
-    if (!entry.isDirectory()) {
+  const seenMatches = new Set<string>();
+  const stack: Array<[string, number]> = [[GEMINI_HISTORY, 0]];
+  let scannedCount = 0;
+
+  while (stack.length > 0 && scannedCount < MAX_SCAN_COUNT) {
+    const next = stack.pop();
+    if (!next) {
       continue;
     }
 
-    const projectRootPath = path.join(GEMINI_HISTORY, entry.name, '.project_root');
-    if (!fsSync.existsSync(projectRootPath)) {
+    const [currentDir, depth] = next;
+    if (depth > MAX_SCAN_DEPTH) {
       continue;
     }
 
     try {
-      const value = fsSync.readFileSync(projectRootPath, 'utf-8').trim();
-      if (isSameWorkspacePath(projectRoot, value)) {
-        matches.push(entry.name);
+      const entries = fsSync.readdirSync(currentDir, { withFileTypes: true });
+      for (const entry of entries) {
+        if (scannedCount >= MAX_SCAN_COUNT) {
+          break;
+        }
+
+        const entryPath = path.join(currentDir, entry.name);
+        scannedCount += 1;
+
+        try {
+          if (!entry.isDirectory()) {
+            continue;
+          }
+
+          stack.push([entryPath, depth + 1]);
+
+          const projectRootPath = path.join(entryPath, '.project_root');
+          if (!fsSync.existsSync(projectRootPath)) {
+            continue;
+          }
+
+          const value = fsSync.readFileSync(projectRootPath, 'utf-8').trim();
+          const relativeDir = path.relative(GEMINI_HISTORY, entryPath);
+          if (isSameWorkspacePath(projectRoot, value) && !seenMatches.has(relativeDir)) {
+            seenMatches.add(relativeDir);
+            matches.push(relativeDir);
+          }
+        } catch (error) {
+          logScanWarning(entryPath, error);
+          continue;
+        }
       }
-    } catch {
+    } catch (error) {
+      logScanWarning(currentDir, error);
       continue;
     }
   }
@@ -226,9 +266,52 @@ async function resolveSession(projectRoot: string): Promise<{ sessionPath: strin
       continue;
     }
 
-    const sessionFiles = fsSync.readdirSync(chatsDir)
-      .filter((entry) => entry.startsWith('session-') && entry.endsWith('.json'))
-      .map((entry) => path.join(chatsDir, entry));
+    const sessionFiles: string[] = [];
+    const stack: Array<[string, number]> = [[chatsDir, 0]];
+    let scannedCount = 0;
+
+    while (stack.length > 0 && scannedCount < MAX_SCAN_COUNT) {
+      const next = stack.pop();
+      if (!next) {
+        continue;
+      }
+
+      const [currentDir, depth] = next;
+      if (depth > MAX_SCAN_DEPTH) {
+        continue;
+      }
+
+      let entries: fsSync.Dirent[];
+      try {
+        entries = fsSync.readdirSync(currentDir, { withFileTypes: true });
+      } catch (error) {
+        logScanWarning(currentDir, error);
+        continue;
+      }
+
+      for (const entry of entries) {
+        if (scannedCount >= MAX_SCAN_COUNT) {
+          break;
+        }
+
+        const entryPath = path.join(currentDir, entry.name);
+        scannedCount += 1;
+
+        try {
+          if (entry.isDirectory()) {
+            stack.push([entryPath, depth + 1]);
+            continue;
+          }
+
+          if (entry.isFile() && entry.name.startsWith('session-') && entry.name.endsWith('.json')) {
+            sessionFiles.push(entryPath);
+          }
+        } catch (error) {
+          logScanWarning(entryPath, error);
+          continue;
+        }
+      }
+    }
 
     for (const sessionPath of sessionFiles) {
       try {
@@ -244,7 +327,8 @@ async function resolveSession(projectRoot: string): Promise<{ sessionPath: strin
             sortTimestamp,
           };
         }
-      } catch {
+      } catch (error) {
+        logScanWarning(sessionPath, error);
         continue;
       }
     }

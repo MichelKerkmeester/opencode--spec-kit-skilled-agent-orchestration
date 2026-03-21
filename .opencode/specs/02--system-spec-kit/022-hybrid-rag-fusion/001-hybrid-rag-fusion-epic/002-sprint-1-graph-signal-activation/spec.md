@@ -26,11 +26,11 @@ contextType: "implementation"
 | **Priority** | P0 |
 | **Status** | Complete (Conditional Proceed) |
 | **Created** | 2026-02-26 |
-| **Parent Spec** | ../000-feature-overview/spec.md |
-| **Parent Plan** | ../000-feature-overview/plan.md |
-| **Phase** | 2 of 8 |
-| **Predecessor** | ../006-measurement-foundation/ |
-| **Successor** | ../013-query-intelligence/ |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 2 of 10 |
+| **Predecessor** | ../001-sprint-0-measurement-foundation/spec.md |
+| **Successor** | ../003-sprint-2-scoring-calibration/spec.md |
 | **Handoff Criteria** | R4 MRR@5 delta >+2% absolute, edge density measured, no single memory >60% presence |
 <!-- /ANCHOR:metadata -->
 

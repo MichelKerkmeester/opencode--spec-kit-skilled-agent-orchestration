@@ -7,7 +7,7 @@ description: "After a memory file is written, a post-save quality review compare
 
 ## 1. OVERVIEW
 
-The post-save quality review runs after the memory file is written (Step 10.5 in the save workflow) and before indexing starts (Step 11). It compares the saved frontmatter against the original JSON payload to detect propagation failures and field-level quality issues.
+The post-save quality review runs after the memory file is written (Step 10.5 in the save workflow) and before indexing starts (Step 11). It compares the saved frontmatter and MEMORY METADATA block against the original JSON payload to detect propagation failures and field-level quality issues.
 
 This is a verification step that catches cases where the rendering pipeline silently dropped or degraded caller-supplied fields — generic titles, path-fragment trigger phrases, missing decisions, wrong contextType — before those problems become permanent in the index. Think of it as a proof-reader who checks the printed form against the original application to make sure nothing was lost in transcription.
 
@@ -42,7 +42,7 @@ The review output is machine-readable so callers and downstream quality monitors
 
 - Runs after `writeMemoryFile()` confirms the file exists on disk.
 - Runs before `indexMemoryFile()` embeds and persists the entry.
-- Failure findings are reported back to the caller in the save response but do not abort the save unless a HIGH severity finding triggers the configured abort threshold.
+- Failure findings are reported back to the caller in the save response. The save always proceeds to indexing — findings are advisory, not blocking.
 
 ### 3.2 Severity model
 
@@ -72,14 +72,14 @@ The review output is machine-readable so callers and downstream quality monitors
 |------|-------|------|
 | `scripts/core/post-save-review.ts` | Script | Post-save review logic: frontmatter comparison, severity classification, machine-readable output |
 | `scripts/core/workflow.ts` | Script | Invokes post-save review at Step 10.5, passes original JSON payload and saved file path |
-| `scripts/memory/generate-context.ts` | Script | Surfaces post-save review findings in the CLI save response |
+| `scripts/memory/generate-context.ts` | Script | CLI entrypoint; delegates save workflow to `workflow.ts` |
 | `scripts/utils/input-normalizer.ts` | Script | Normalizes JSON payload fields before comparison (snake_case/camelCase parity) |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `scripts/tests/post-save-review.vitest.ts` | Severity classification, detection checks, mode-gating (recovery/stateless skip), machine-readable output shape _(planned — file not yet created)_ |
+| `scripts/tests/post-save-review.vitest.ts` | Severity classification, detection checks, mode-gating (recovery/stateless skip), machine-readable output shape _(planned — not yet created)_ |
 | `scripts/tests/workflow-e2e.vitest.ts` | End-to-end coverage of Step 10.5 placement within the save workflow |
 
 ---

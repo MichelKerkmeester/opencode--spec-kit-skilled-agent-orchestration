@@ -18,7 +18,7 @@ Operators run the exact prompt and command sequence for `023` and confirm the ex
 - Objective: Confirm batch min-max behavior
 - Prompt: `Verify score normalization output ranges. Capture the evidence needed to prove Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected signals: Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled
-- Pass/fail: PASS: All normalized scores in [0,1]; equal scores produce uniform output; single result = 1.0; FAIL: Out-of-range values or division-by-zero on equal scores
+- Pass/fail: PASS: All normalized scores in [0,1]; equal scores produce uniform output; single result = 0.0 (composite min-max with zero range returns 0); FAIL: Out-of-range values or division-by-zero on equal scores
 
 ---
 

@@ -26,11 +26,11 @@ contextType: "implementation"
 | **Priority** | P1 |
 | **Status** | Complete (Conditional Proceed) |
 | **Created** | 2026-02-26 |
-| **Parent Spec** | ../000-feature-overview/spec.md |
-| **Parent Plan** | ../000-feature-overview/plan.md |
-| **Phase** | 3 of 8 |
-| **Predecessor** | ../006-measurement-foundation/ (direct dependency — Sprint 1 is a parallel sibling, not a predecessor) |
-| **Successor** | ../013-query-intelligence/ |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 3 of 10 |
+| **Predecessor** | ../002-sprint-1-graph-signal-activation/spec.md |
+| **Successor** | ../004-sprint-3-query-intelligence/spec.md |
 | **Handoff Criteria** | Cache hit >90%, N4 dark-run passes, G2 resolved, score distributions normalized to [0,1] |
 <!-- /ANCHOR:metadata -->
 

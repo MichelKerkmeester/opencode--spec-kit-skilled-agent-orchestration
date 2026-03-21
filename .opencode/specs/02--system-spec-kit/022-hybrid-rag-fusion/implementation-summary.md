@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: 022-hybrid-rag-fusion"
-description: "Root coordination summary for the 022 packet family normalization pass."
+description: "Root coordination summary for the 022 packet-family normalization pass."
 trigger_phrases:
   - "022 implementation summary"
 importance_tier: "critical"
@@ -28,15 +28,15 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The 022 root packet now has the minimum coordination docs it was missing. You can open the root folder and see a compact `spec.md`, plus the expected `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md`, without relying on oversized historical synthesis prose to understand the current state of the packet family.
+The 022 root packet now acts as a real coordination document instead of a stale synthesis dump. It records the live 18 direct phases, the current 107 numbered spec directories on disk, and the verified subtree facts that matter most at the root layer.
 
 ### Root Packet Normalization
 
-The root spec now records the facts that matter at the coordination layer: there are 107 numbered spec directories on disk, phase `009` has 20 direct children, phase `014` remains draft or documentation-only, and `spec_validate_local.out` is a failed local snapshot rather than a pass artifact.
+The root spec now preserves the current tree truth: phase `009` has 20 children, phase `014` remains draft or documentation-only, and `spec_validate_local.out` is treated as a failed local snapshot rather than pass evidence.
 
 ### Direct Child Navigation
 
-The direct child packet layer now uses one consistent navigation form. Each `spec.md` from `002` through `018` points back to `../spec.md` and identifies its neighboring direct child phases with explicit relative paths.
+The direct child packet layer now uses a consistent navigation form. Each direct child packet points back to the live parent packet from its own folder context and identifies neighboring direct phases explicitly.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -44,7 +44,7 @@ The direct child packet layer now uses one consistent navigation form. Each `spe
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-This pass stayed strictly inside the root packet and direct-child `spec.md` files. It read the current root packet, read the Level 3+ templates, mapped the 17 direct child neighbor relationships, and applied the markdown normalization without widening into nested subtree cleanup or running validation in this pass.
+This pass stayed inside the root packet and the direct-child packet layer. It reconciled live counts against the current tree, replaced stale path wording that confused the validator, and kept deeper subtree debt explicit instead of folding it into the root packet.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -54,9 +54,9 @@ This pass stayed strictly inside the root packet and direct-child `spec.md` file
 
 | Decision | Why |
 |----------|-----|
-| Rewrite the root packet instead of preserving the old synthesis | The root needs to be trustworthy before it can be exhaustive |
-| Normalize direct-child navigation now and defer deeper subtree cleanup | The direct-child layer is the highest-value place to reduce link drift quickly |
-| Keep `014` labeled as draft or documentation-only | That is the current truthful state of the packet |
+| Rewrite the root packet instead of preserving historical synthesis | The root needs to be trustworthy before it can be exhaustive |
+| Keep direct-child navigation standardized | Root-facing phase links are the highest-value place to prevent future drift |
+| Record unresolved nested packet debt explicitly | Root-only cleanup should not over-claim packet-family health |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -66,10 +66,9 @@ This pass stayed strictly inside the root packet and direct-child `spec.md` file
 
 | Check | Result |
 |-------|--------|
-| Root docs created | PASS |
-| Root spec replaced | PASS |
-| Direct child navigation `002-018` normalized | PASS |
-| Formal validation | DEFERRED by user request |
+| Root packet truth synced to current tree | PASS |
+| Direct child navigation normalized | PASS |
+| Focused parent validation (`validate.sh --no-recursive`) | PASS WITH WARNINGS (exit 1: no errors, 1 non-blocking template-header warning) |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -77,6 +76,6 @@ This pass stayed strictly inside the root packet and direct-child `spec.md` file
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Nested subtree normalization is still pending.** This pass does not clean up deeper packet families such as `001`, `007`, `008`, `009`, or `014`.
-2. **Validation was intentionally not run here.** The markdown edits landed, but a later pass still needs to rerun focused root and phase-link validation.
+1. **The root packet still has one non-blocking template warning.** The remaining warning is the `## 8. COMMUNICATION PLAN` header in `plan.md`.
+2. **The root packet is only the coordination layer.** Child packets remain the authority for detailed implementation history.
 <!-- /ANCHOR:limitations -->

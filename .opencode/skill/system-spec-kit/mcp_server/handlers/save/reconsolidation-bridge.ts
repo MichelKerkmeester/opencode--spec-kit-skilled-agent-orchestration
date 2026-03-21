@@ -48,6 +48,7 @@ export async function runReconsolidationIfEnabled(
   filePath: string,
   force: boolean,
   embedding: Float32Array | null,
+  scope?: { tenantId?: string | null; userId?: string | null; agentId?: string | null; sessionId?: string | null; sharedSpaceId?: string | null },
 ): Promise<ReconsolidationBridgeResult> {
   // BUG-2 fix: Track reconsolidation warnings for structured MCP response (not just console.warn)
   const reconWarnings: string[] = [];
@@ -77,21 +78,30 @@ export async function runReconsolidationIfEnabled(
           database,
           {
             findSimilar: (emb, opts) => {
-              const results = vectorIndex.vectorSearch(emb as Float32Array, {
-                limit: opts.limit,
+              const searchEmb = emb instanceof Float32Array ? emb : new Float32Array(emb as number[]);
+              const results = vectorIndex.vectorSearch(searchEmb, {
+                limit: (opts.limit ?? 3) * 3, // Over-fetch for post-scope-filter
                 specFolder: opts.specFolder,
                 minSimilarity: 50,
                 includeConstitutional: false,
               });
-              return results.map((r: Record<string, unknown>) => ({
-                id: r.id as number,
-                file_path: r.file_path as string,
-                title: (r.title as string) ?? null,
-                content_text: (r.content as string) ?? null,
-                similarity: ((r.similarity as number) ?? 0) / 100,
+              // Post-filter by governance scope to prevent cross-tenant reconsolidation
+              const scopeFiltered = results.filter((r: Record<string, unknown>) => {
+                if (scope?.tenantId && r.tenant_id && r.tenant_id !== scope.tenantId) return false;
+                if (scope?.userId && r.user_id && r.user_id !== scope.userId) return false;
+                if (scope?.agentId && r.agent_id && r.agent_id !== scope.agentId) return false;
+                if (scope?.sharedSpaceId && r.shared_space_id && r.shared_space_id !== scope.sharedSpaceId) return false;
+                return true;
+              }).slice(0, opts.limit ?? 3);
+              return scopeFiltered.map((r: Record<string, unknown>) => ({
+                id: typeof r.id === 'number' ? r.id : 0,
+                file_path: typeof r.file_path === 'string' ? r.file_path : '',
+                title: typeof r.title === 'string' ? r.title : null,
+                content_text: typeof r.content_text === 'string' ? r.content_text : (typeof r.content === 'string' ? r.content : null),
+                similarity: (typeof r.similarity === 'number' ? r.similarity : 0) / 100,
                 spec_folder: parsed.specFolder,
-                importance_weight: typeof (r.importance_weight as unknown) === 'number'
-                  ? (r.importance_weight as number)
+                importance_weight: typeof r.importance_weight === 'number'
+                  ? r.importance_weight
                   : 0.5,
               }));
             },

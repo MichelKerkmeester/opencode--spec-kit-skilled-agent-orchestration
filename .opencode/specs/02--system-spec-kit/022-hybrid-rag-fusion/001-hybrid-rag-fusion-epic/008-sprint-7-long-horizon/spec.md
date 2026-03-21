@@ -27,11 +27,11 @@ contextType: "implementation"
 | **Priority** | P1-P3 |
 | **Status** | Completed |
 | **Created** | 2026-02-26 |
-| **Parent Spec** | ../000-feature-overview/spec.md |
-| **Parent Plan** | ../000-feature-overview/plan.md |
-| **Phase** | 8 of 8 |
-| **Predecessor** | ../016-indexing-and-graph/ |
-| **Successor** | None (final phase) |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 8 of 10 |
+| **Predecessor** | ../007-sprint-6-indexing-and-graph/spec.md |
+| **Successor** | ../009-sprint-8-deferred-features/spec.md |
 | **Handoff Criteria** | N/A (program completion) |
 <!-- /ANCHOR:metadata -->
 

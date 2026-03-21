@@ -51,8 +51,9 @@ function loadModule(): void {
     const mod = runtimeRequire(distPath);
     _validateMemoryQualityContent = mod.validateMemoryQualityContent;
     _determineValidationDisposition = mod.determineValidationDisposition;
-  } catch {
-    console.warn('[v-rule-bridge] Could not load validate-memory-quality from scripts/dist — V-rule checks disabled');
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.error(`[v-rule-bridge] Failed to load validate-memory-quality: ${msg} — V-rule checks unavailable`);
   }
 }
 
@@ -62,7 +63,12 @@ function loadModule(): void {
 
 export function validateMemoryQualityContent(content: string): ValidationResult | null {
   loadModule();
-  if (!_validateMemoryQualityContent) return null;
+  if (!_validateMemoryQualityContent) {
+    // Return a structured "unavailable" signal instead of null so callers can distinguish
+    // "no validation issues" from "validator not loaded"
+    console.warn('[v-rule-bridge] validateMemoryQualityContent called but module not loaded');
+    return null;
+  }
   return _validateMemoryQualityContent(content);
 }
 

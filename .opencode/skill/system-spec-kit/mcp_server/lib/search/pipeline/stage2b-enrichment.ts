@@ -5,9 +5,9 @@
 // Pure annotation — no score mutation. Separated to clarify that
 // enrichment is logically distinct from scoring (steps 1-7).
 //
-// This module is called by executeStage2() in stage2-fusion.ts
-// after all scoring steps complete. It attaches metadata to rows
-// without changing any score fields.
+// This module enriches results within Stage 2, before validation-signal
+// scoring (step 9). It attaches metadata to rows without changing any
+// score fields.
 
 import type { PipelineRow } from './types';
 import { enrichResultsWithAnchorMetadata } from '../anchor-metadata';

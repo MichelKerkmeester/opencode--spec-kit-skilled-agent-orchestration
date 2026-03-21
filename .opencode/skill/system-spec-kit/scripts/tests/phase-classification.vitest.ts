@@ -65,7 +65,7 @@ describe('phase classification', () => {
         observationIndexes: [1],
         prompt: 'Implement phase classifier',
         narratives: ['Implemented the clustering logic'],
-        factTexts: ['Tool: Edit scripts/utils/phase-classifier.ts'],
+        factTexts: ['Tool: Edit scripts/lib/phase-classifier.ts'],
         toolNames: ['Edit', 'Write'],
         observationTypes: ['feature'],
         startTimestamp: '2026-03-16T10:06:00.000Z',
@@ -256,7 +256,7 @@ describe('phase classification', () => {
         {
           timestamp: '2026-03-16T10:06:30.000Z',
           narrative: 'Implemented the classifier with Edit and Write tools.',
-          facts: ['Tool: Edit scripts/utils/phase-classifier.ts', 'Tool: Write scripts/extractors/conversation-extractor.ts'],
+          facts: ['Tool: Edit scripts/lib/phase-classifier.ts', 'Tool: Write scripts/extractors/conversation-extractor.ts'],
           type: 'feature',
         },
         {

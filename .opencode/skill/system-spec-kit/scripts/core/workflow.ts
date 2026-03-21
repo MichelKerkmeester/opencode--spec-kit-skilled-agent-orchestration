@@ -719,7 +719,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       );
     }
 
-    const rawUserPrompts = collectedData?.userPrompts || [];
+    const rawUserPrompts = Array.isArray(collectedData?.userPrompts) ? collectedData.userPrompts : [];
+    // F06-002: Type assertion with documented contract — CollectedDataFull is the canonical shape
     const collectedDataWithNarrative = collectedData as CollectedDataFull & {
       _narrativeObservations?: CollectedDataFull['observations'];
     };

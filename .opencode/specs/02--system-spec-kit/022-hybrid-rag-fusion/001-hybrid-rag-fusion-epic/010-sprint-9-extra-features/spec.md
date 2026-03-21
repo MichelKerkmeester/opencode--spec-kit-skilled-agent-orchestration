@@ -25,7 +25,11 @@ The 023 refinement program built a sophisticated 5-channel hybrid retrieval pipe
 | **Priority** | P0 (foundation items) through P2 (innovation) |
 | **Status** | Complete |
 | **Created** | 2026-03-03 |
-| **Parent** | `022-hybrid-rag-fusion` |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 10 of 10 |
+| **Predecessor** | ../009-sprint-8-deferred-features/spec.md |
+| **Successor** | None (final phase) |
 | **Research** | `006-extra-features/research/` (16 files) |
 <!-- /ANCHOR:metadata -->
 

@@ -586,4 +586,31 @@ describe('isQualityLoopEnabled', () => {
     process.env.SPECKIT_QUALITY_LOOP = '1';
     expect(isQualityLoopEnabled()).toBe(false);
   });
+
+  it('T-eval-logging: quality loop handles eval logging enabled', () => {
+    const originalQualityLoop = process.env.SPECKIT_QUALITY_LOOP;
+    const originalEvalLogging = process.env.SPECKIT_EVAL_LOGGING;
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    try {
+      vi.stubEnv('SPECKIT_QUALITY_LOOP', 'true');
+      vi.stubEnv('SPECKIT_EVAL_LOGGING', 'true');
+
+      expect(() => runQualityLoop(GOOD_CONTENT, GOOD_METADATA)).not.toThrow();
+      expect(runQualityLoop(GOOD_CONTENT, GOOD_METADATA).passed).toBe(true);
+    } finally {
+      warnSpy.mockRestore();
+      if (originalQualityLoop === undefined) {
+        delete process.env.SPECKIT_QUALITY_LOOP;
+      } else {
+        process.env.SPECKIT_QUALITY_LOOP = originalQualityLoop;
+      }
+      if (originalEvalLogging === undefined) {
+        delete process.env.SPECKIT_EVAL_LOGGING;
+      } else {
+        process.env.SPECKIT_EVAL_LOGGING = originalEvalLogging;
+      }
+      vi.unstubAllEnvs();
+    }
+  });
 });

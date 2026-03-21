@@ -177,6 +177,9 @@ function prepareParsedMemoryForIndexing(
     if (vRuleDisposition && vRuleDisposition.disposition === 'write_skip_index') {
       console.warn(`[memory-save] V-rule index block for ${path.basename(parsed.filePath)}: ${vRuleDisposition.indexBlockingRuleIds.join(', ')}`);
       validation.warnings.push(`V-rule index block: ${vRuleDisposition.indexBlockingRuleIds.join(', ')}`);
+      // F07-002: Flag to skip indexing for write_skip_index disposition
+      (parsed as unknown as Record<string, unknown>)._skipIndex = true;
+      (parsed as unknown as Record<string, unknown>)._vRuleIndexBlockIds = vRuleDisposition.indexBlockingRuleIds;
     }
   }
 
@@ -390,6 +393,11 @@ async function processPreparedMemory(
     // A4 FIX: Wrap dedup-check + insert in BEGIN IMMEDIATE transaction for
     // DB-level atomicity. withSpecFolderLock handles in-process serialization;
     // this transaction provides defense-in-depth against multi-process races.
+    // F01-004 NOTE: PE and reconsolidation run before this transaction. Their
+    // similarity decisions may become stale if another save completes between
+    // evaluation and BEGIN IMMEDIATE. The content-hash dedup inside the
+    // transaction (C5-1) catches the most common race. For PE/recon staleness,
+    // scope filtering (F01-001/F01-002) limits cross-tenant races.
     let id: number;
     let existing: { id: number; content_hash: string } | undefined;
 
@@ -456,16 +464,21 @@ async function processPreparedMemory(
           : 'CREATE',
       });
 
+      // F01-005: Write auto-fixed content BEFORE commit so failure triggers rollback
+      if (persistQualityLoopContent && qualityLoopResult.passed && qualityLoopResult.fixedContent) {
+        try {
+          await fs.promises.writeFile(filePath, parsed.content, 'utf-8');
+        } catch (writeErr) {
+          console.error('[memory-save] Auto-fix file write failed, rolling back:', writeErr instanceof Error ? writeErr.message : String(writeErr));
+          if (useTx) database.exec('ROLLBACK');
+          throw writeErr;
+        }
+      }
+
       if (useTx) database.exec('COMMIT');
     } catch (txErr) {
-      if (useTx) try { database.exec('ROLLBACK'); } catch { /* best-effort rollback */ }
+      if (useTx) try { database.exec('ROLLBACK'); } catch (rbErr) { console.warn('[memory-save] ROLLBACK failed after transaction error:', rbErr instanceof Error ? rbErr.message : String(rbErr)); }
       throw txErr;
-    }
-
-    // C5-2: File write moved AFTER successful DB commit to prevent
-    // disk state diverging from DB state on transaction failure.
-    if (persistQualityLoopContent && qualityLoopResult.passed && qualityLoopResult.fixedContent) {
-      await fs.promises.writeFile(filePath, parsed.content, 'utf-8');
     }
 
     // POST-INSERT ENRICHMENT: causal links, entities, summaries, entity linking
@@ -859,7 +872,9 @@ async function atomicSaveMemory(params: AtomicSaveParams, options: AtomicSaveOpt
   const { file_path, content } = params;
   const { force = false } = options;
   const database = requireDb();
-  const pendingPath = transactionManager.getPendingPath(file_path);
+  // Use unique suffix to prevent concurrent pending-file race (F01-003)
+  const basePendingPath = transactionManager.getPendingPath(file_path);
+  const pendingPath = `${basePendingPath}.${randomUUID().slice(0, 8)}`;
 
   let indexResult: IndexResult | null = null;
   let indexError: Error | null = null;

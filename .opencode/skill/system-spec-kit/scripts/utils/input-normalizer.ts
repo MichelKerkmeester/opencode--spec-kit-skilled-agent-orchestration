@@ -63,9 +63,9 @@ export interface NormalizedFileEntry {
   _synthetic?: boolean;
 }
 
-/** @deprecated Use NormalizedUserPrompt — kept for backward compatibility */
+/** Compat alias for NormalizedUserPrompt. */
 export type UserPrompt = NormalizedUserPrompt;
-/** @deprecated Use NormalizedFileEntry — kept for backward compatibility */
+/** Compat alias for NormalizedFileEntry. */
 export type FileEntry = NormalizedFileEntry;
 
 /** Raw input data that may be in manual or MCP-compatible format */

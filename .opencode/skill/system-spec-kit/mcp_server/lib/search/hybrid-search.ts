@@ -461,7 +461,7 @@ function combinedLexicalSearch(
 
 /**
  * Run multi-channel hybrid search combining vector, FTS, BM25, and graph results with per-source normalization.
- * @deprecated Use hybridSearchEnhanced() or searchWithFallback() instead. This function uses naive per-source
+ * Prefer hybridSearchEnhanced() or searchWithFallback() instead. This function uses naive per-source
  * min-max normalization which produces different orderings than the RRF pipeline in hybridSearchEnhanced().
  * Retained as internal fallback only.
  */

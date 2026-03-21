@@ -1,6 +1,8 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Index
 // ───────────────────────────────────────────────────────────────
+// Re-export barrel consumed by test suites. Production code imports
+// from concrete sub-modules (./dedup, ./embedding-pipeline, etc.).
 
 // Feature catalog: Memory indexing (memory_save)
 // Feature catalog: Atomic-save parity and partial-indexing hints

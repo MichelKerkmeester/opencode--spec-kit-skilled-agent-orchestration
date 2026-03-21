@@ -328,6 +328,10 @@ function recoverPendingFile(
   databasePathOverride?: string
 ): RecoveryResult {
   try {
+    // Guard: verify pending file still exists before attempting recovery
+    if (!fs.existsSync(pendingPath)) {
+      return { path: pendingPath, recovered: false, error: 'Pending file no longer exists' };
+    }
     const originalPath = getOriginalPath(pendingPath);
     const originalExists = fs.existsSync(originalPath);
     let committedInDb: boolean | null = null;

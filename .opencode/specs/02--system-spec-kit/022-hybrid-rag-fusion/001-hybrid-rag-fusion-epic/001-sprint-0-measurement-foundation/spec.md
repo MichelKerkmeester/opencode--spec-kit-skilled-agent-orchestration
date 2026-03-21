@@ -26,11 +26,11 @@ contextType: "implementation"
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-02-26 |
-| **Parent Spec** | ../000-feature-overview/spec.md |
-| **Parent Plan** | ../000-feature-overview/plan.md |
-| **Phase** | 1 of 8 |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 1 of 10 |
 | **Predecessor** | None (first phase) |
-| **Successor** | ../011-graph-signal-activation/ |
+| **Successor** | ../002-sprint-1-graph-signal-activation/spec.md |
 | **Handoff Criteria** | Sprint 0 exit gate — graph hit rate >0%, chunk dedup verified, BM25 baseline MRR@5 recorded, baseline metrics for 100+ queries with diversity requirement (>=5 per intent type, >=3 complexity tiers, >=30 manually curated), active feature flags <=6 |
 <!-- /ANCHOR:metadata -->
 

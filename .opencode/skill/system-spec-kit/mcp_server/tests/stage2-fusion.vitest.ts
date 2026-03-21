@@ -233,4 +233,23 @@ describe('Stage 2 fusion regression coverage', () => {
     expect((boosted.graphContribution as Record<string, unknown>).capApplied).toBe(true);
     expect((boosted.graphContribution as Record<string, unknown>).rolloutState).toBe('bounded_runtime');
   });
+
+  it('T-degradation: fusion continues when DB unavailable', async () => {
+    mockRequireDb.mockImplementation(() => {
+      throw new Error('db unavailable');
+    });
+
+    const { executeStage2 } = await import('../lib/search/pipeline/stage2-fusion');
+    const result = await executeStage2(createStage2Input([
+      { id: 1, score: 0.9, similarity: 90 },
+      { id: 2, score: 0.8, similarity: 80 },
+    ]));
+
+    expect(mockApplyGraphSignals).not.toHaveBeenCalled();
+    expect(mockQueryLearnedTriggers).not.toHaveBeenCalled();
+    expect(result.scored.map((row) => ({ id: row.id, score: row.score }))).toEqual([
+      { id: 1, score: 0.9 },
+      { id: 2, score: 0.8 },
+    ]);
+  });
 });

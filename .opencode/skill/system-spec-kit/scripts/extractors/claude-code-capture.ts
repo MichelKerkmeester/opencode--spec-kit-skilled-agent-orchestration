@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
 // MODULE: Claude Code Capture
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
 
 // ───────────────────────────────────────────────────────────────
 // 1. CLAUDE CODE CAPTURE
@@ -35,6 +35,8 @@ const CLAUDE_HOME = path.join(
 const CLAUDE_PROJECTS = path.join(CLAUDE_HOME, 'projects');
 const CLAUDE_HISTORY = path.join(CLAUDE_HOME, 'history.jsonl');
 const MAX_EXCHANGES_DEFAULT = 20;
+const MAX_SCAN_DEPTH = 5;
+const MAX_SCAN_COUNT = 10000;
 
 /* ───────────────────────────────────────────────────────────────
    2. INTERFACES
@@ -98,6 +100,11 @@ function transcriptTimestamp(value?: string): number {
   return Number.isFinite(parsed) ? parsed : 0;
 }
 
+function logScanWarning(scanPath: string, error: unknown): void {
+  const message = error instanceof Error ? error.message : String(error);
+  console.warn(`   Warning: Failed to scan ${scanPath}: ${message}`);
+}
+
 async function readJsonl(filePath: string): Promise<unknown[]> {
   try {
     const content = await fs.readFile(filePath, 'utf-8');
@@ -154,47 +161,66 @@ function collectActiveTaskSessionIds(tasksRoot: string): string[] {
   }
 
   const sessionIds = new Set<string>();
-  const queue: string[] = [tasksRoot];
+  const queue: Array<[string, number]> = [[tasksRoot, 0]];
+  let scannedCount = 0;
 
-  while (queue.length > 0) {
-    const currentDir = queue.pop();
-    if (!currentDir) {
+  while (queue.length > 0 && scannedCount < MAX_SCAN_COUNT) {
+    const next = queue.pop();
+    if (!next) {
+      continue;
+    }
+
+    const [currentDir, depth] = next;
+    if (depth > MAX_SCAN_DEPTH) {
       continue;
     }
 
     let entries: fsSync.Dirent[];
     try {
       entries = fsSync.readdirSync(currentDir, { withFileTypes: true });
-    } catch {
+    } catch (error) {
+      logScanWarning(currentDir, error);
       continue;
     }
 
     for (const entry of entries) {
+      if (scannedCount >= MAX_SCAN_COUNT) {
+        break;
+      }
+
       const fullPath = path.join(currentDir, entry.name);
-      if (entry.isDirectory()) {
-        queue.push(fullPath);
-        continue;
-      }
+      scannedCount += 1;
 
-      if (!entry.isFile() || entry.name !== '.lock') {
-        continue;
-      }
-
-      // Only treat sessions with recently-modified lock files as "active".
-      // Stale locks from ended sessions must not influence candidate selection.
-      const LOCK_FRESHNESS_MS = 2 * 60 * 60 * 1000; // 2 hours
       try {
-        const lockStat = fsSync.statSync(fullPath);
-        if (Date.now() - lockStat.mtimeMs > LOCK_FRESHNESS_MS) {
+        if (entry.isDirectory()) {
+          queue.push([fullPath, depth + 1]);
           continue;
         }
-      } catch {
-        continue;
-      }
 
-      const candidateSessionId = path.basename(path.dirname(fullPath));
-      if (candidateSessionId && candidateSessionId !== 'tasks') {
-        sessionIds.add(candidateSessionId);
+        if (!entry.isFile() || entry.name !== '.lock') {
+          continue;
+        }
+
+        // Only treat sessions with recently-modified lock files as "active".
+        // Stale locks from ended sessions must not influence candidate selection.
+        const LOCK_FRESHNESS_MS = 2 * 60 * 60 * 1000; // 2 hours
+        try {
+          const lockStat = fsSync.statSync(fullPath);
+          if (Date.now() - lockStat.mtimeMs > LOCK_FRESHNESS_MS) {
+            continue;
+          }
+        } catch (error) {
+          logScanWarning(fullPath, error);
+          continue;
+        }
+
+        const candidateSessionId = path.basename(path.dirname(fullPath));
+        if (candidateSessionId && candidateSessionId !== 'tasks') {
+          sessionIds.add(candidateSessionId);
+        }
+      } catch (error) {
+        logScanWarning(fullPath, error);
+        continue;
       }
     }
   }
@@ -289,13 +315,52 @@ async function buildTranscriptCandidates(
     }
   }
 
-  const transcriptPaths = (await Promise.all(
-    projectDirs.map(async (projectDir) =>
-      (await fs.readdir(projectDir))
-        .filter((entry) => entry.endsWith('.jsonl'))
-        .map((entry) => path.join(projectDir, entry))
-    )
-  )).flat();
+  const transcriptPaths: string[] = [];
+  const queue: Array<[string, number]> = projectDirs.map((projectDir) => [projectDir, 0]);
+  let scannedCount = 0;
+
+  while (queue.length > 0 && scannedCount < MAX_SCAN_COUNT) {
+    const next = queue.pop();
+    if (!next) {
+      continue;
+    }
+
+    const [currentDir, depth] = next;
+    if (depth > MAX_SCAN_DEPTH) {
+      continue;
+    }
+
+    let entries: fsSync.Dirent[];
+    try {
+      entries = await fs.readdir(currentDir, { withFileTypes: true });
+    } catch (error) {
+      logScanWarning(currentDir, error);
+      continue;
+    }
+
+    for (const entry of entries) {
+      if (scannedCount >= MAX_SCAN_COUNT) {
+        break;
+      }
+
+      const entryPath = path.join(currentDir, entry.name);
+      scannedCount += 1;
+
+      try {
+        if (entry.isDirectory()) {
+          queue.push([entryPath, depth + 1]);
+          continue;
+        }
+
+        if (entry.isFile() && entry.name.endsWith('.jsonl')) {
+          transcriptPaths.push(entryPath);
+        }
+      } catch (error) {
+        logScanWarning(entryPath, error);
+        continue;
+      }
+    }
+  }
 
   const candidates: TranscriptCandidate[] = [];
   for (const transcriptPath of transcriptPaths) {

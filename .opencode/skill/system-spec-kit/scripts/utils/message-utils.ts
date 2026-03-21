@@ -40,7 +40,7 @@ export interface ExchangeArtifactSummary {
   fullSummary: string;
 }
 
-/** @deprecated Use ExchangeArtifactSummary — kept for backward compatibility */
+/** Compat alias for ExchangeArtifactSummary. */
 export type ExchangeSummary = ExchangeArtifactSummary;
 
 /** File artifact entry */

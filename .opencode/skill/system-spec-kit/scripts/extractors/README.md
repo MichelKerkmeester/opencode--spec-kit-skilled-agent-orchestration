@@ -44,7 +44,7 @@ The `extractors/` directory converts collected session input into structured dat
 - `implementation-guide-extractor.ts`
 - `opencode-capture.ts`
 - `quality-scorer.ts` - Scores extraction quality for validation
-- `session-activity-signal.ts` - Detects session activity signals for capture gating
+- `../lib/session-activity-signal.ts` - Detects session activity signals for capture gating (re-exported from barrel)
 - `session-extractor.ts`
 - `spec-folder-extractor.ts` - Parses spec folder docs for stateless enrichment (spec 013)
 - `index.ts`

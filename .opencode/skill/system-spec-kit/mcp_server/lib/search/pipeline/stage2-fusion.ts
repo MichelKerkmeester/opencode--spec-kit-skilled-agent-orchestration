@@ -37,12 +37,12 @@
 // Therefore ONLY applied for non-hybrid search types (vector,
 // Multi-concept). Applying it to hybrid results would double-count.
 //
-// SCORE IMMUTABILITY INVARIANT: Once a score field is written during
-// Fusion (steps 1–7 above), it must not be overwritten by later stages.
-// Stage 3 (rerank) and Stage 4 (post-processing) MUST introduce new
-// Score fields (e.g. rerankScore, finalScore) rather than mutating the
-// Existing `score` produced here. This preserves auditability and
-// Prevents silent ranking regressions caused by in-place score mutation.
+// SCORE AUDIT CONTRACT: Stage 2 writes the fused `score` field (steps 1-7).
+// Stage 3 (rerank) MAY overwrite `score` with the reranked value and MUST
+// preserve the original in `stage2Score` for auditability (see F2.02 fix).
+// Stage 4 (filter) MUST NOT mutate any score fields — it is read-only.
+// The canonical reranker output is `rerankerScore`; `score` is synced to it
+// for downstream consumer compatibility.
 
 import type Database from 'better-sqlite3';
 

@@ -5,11 +5,10 @@
 //
 // After embedding generation, check top-3 most similar memories
 // In the spec folder:
-// - similarity >= 0.88: MERGE (duplicate - merge content,
-// Boost importance_weight)
-// - similarity 0.75-0.88: CONFLICT (supersede prior memory via causal
-// 'supersedes' edge)
-// - similarity < 0.75: COMPLEMENT (store new memory unchanged)
+// - similarity in [0.88, 1.0]: MERGE (duplicate — merge content, boost importance_weight)
+// - similarity in [0.75, 0.88): CONFLICT (supersede prior memory via causal 'supersedes' edge)
+// - similarity in [0, 0.75): COMPLEMENT (store new memory unchanged)
+// Note: cosine similarity, normalized [0,1]. Thresholds defined by MERGE_THRESHOLD and CONFLICT_THRESHOLD constants.
 //
 // Behind SPECKIT_RECONSOLIDATION opt-in flag (default OFF)
 // REQUIRES: checkpoint created before first enable
@@ -226,26 +225,44 @@ export async function executeMerge(
       }
     }
 
-    // Atomic transaction: update content + embedding together so they stay in sync.
+    // F04-001: Append-only merge — mark old as superseded, create new record
     db.transaction(() => {
-      const mergeResult = db.prepare(`
+      // Mark existing memory as archived (superseded)
+      db.prepare(`
         UPDATE memory_index
-        SET content_text = ?,
-            importance_weight = ?,
-            content_hash = ?,
+        SET is_archived = 1,
             updated_at = datetime('now')
         WHERE id = ?
-      `).run(mergedContent, boostedWeight, mergedHash, existingMemory.id);
+      `).run(existingMemory.id);
 
-      if (mergeResult.changes === 0) {
-        throw new Error(`executeMerge: target memory ${existingMemory.id} no longer exists`);
-      }
+      // Insert merged content as a new memory record
+      const insertResult = db.prepare(`
+        INSERT INTO memory_index (
+          spec_folder, file_path, title, content_text, importance_weight,
+          content_hash, created_at, updated_at
+        ) VALUES (?, ?, ?, ?, ?, ?, datetime('now'), datetime('now'))
+      `).run(
+        existingMemory.spec_folder,
+        existingMemory.file_path,
+        existingMemory.title ?? '',
+        mergedContent,
+        boostedWeight,
+        mergedHash,
+      );
+
+      const newId = Number(insertResult.lastInsertRowid);
+
+      // Create supersedes causal edge
+      db.prepare(`
+        INSERT OR IGNORE INTO causal_edges (source_id, target_id, relation_type, strength, created_at)
+        VALUES (?, ?, 'supersedes', 1.0, datetime('now'))
+      `).run(newId, existingMemory.id);
 
       if (newEmbedding) {
         const buffer = embeddingToBuffer(newEmbedding);
         db.prepare(
-          'UPDATE vec_memories SET embedding = ? WHERE rowid = ?'
-        ).run(buffer, existingMemory.id);
+          'INSERT INTO vec_memories (rowid, embedding) VALUES (?, ?)'
+        ).run(newId, buffer);
       }
     })();
 
@@ -493,27 +510,24 @@ export async function reconsolidate(
       {
         let conflictMemory = newMemory;
 
-        // TM-06 live-save path: materialize a distinct memory ID before conflict
-        // So supersedes edges can be created deterministically.
-        if (conflictMemory.id === undefined) {
-          try {
-            const storedId = storeMemory(newMemory);
-            if (
-              typeof storedId === 'number' &&
-              Number.isFinite(storedId) &&
-              storedId > 0 &&
-              storedId !== topMatch.id
-            ) {
-              conflictMemory = { ...newMemory, id: storedId };
-            }
-          } catch (err: unknown) {
-            const message = err instanceof Error ? err.message : String(err);
-            console.warn('[reconsolidation] conflict pre-store failed, falling back to in-place conflict:', message);
-          }
-        }
-
+        // F04-002: Wrap store + conflict in single transaction for atomicity
+        // TM-06 live-save path: materialize memory + supersede edge together
         try {
-          return executeConflict(topMatch, conflictMemory, db);
+          const conflictTx = db.transaction(() => {
+            if (conflictMemory.id === undefined) {
+              const storedId = storeMemory(newMemory);
+              if (
+                typeof storedId === 'number' &&
+                Number.isFinite(storedId) &&
+                storedId > 0 &&
+                storedId !== topMatch.id
+              ) {
+                conflictMemory = { ...newMemory, id: storedId };
+              }
+            }
+            return executeConflict(topMatch, conflictMemory, db);
+          });
+          return conflictTx();
         } catch (conflictErr: unknown) {
           // If storeMemory succeeded but executeConflict failed, clean up the orphan
           // Memory so we don't leave dangling rows with no supersedes edge.

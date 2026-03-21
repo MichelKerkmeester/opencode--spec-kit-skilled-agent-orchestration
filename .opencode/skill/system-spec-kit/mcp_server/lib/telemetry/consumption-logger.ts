@@ -78,8 +78,8 @@ export interface ConsumptionPatternsOptions {
 ──────────────────────────────────────────────────────────────── */
 
 /**
- * @deprecated Eval complete. Telemetry is baked into core.
- * SPECKIT_CONSUMPTION_LOG env var is inert. Hardcoded to false.
+ * Eval complete. Telemetry is baked into core.
+ * SPECKIT_CONSUMPTION_LOG env var is inert. Always returns false.
  */
 function isConsumptionLogEnabled(): boolean {
   return false;

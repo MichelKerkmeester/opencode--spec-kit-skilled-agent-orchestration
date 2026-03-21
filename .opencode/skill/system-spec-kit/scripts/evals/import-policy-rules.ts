@@ -22,7 +22,8 @@ function normalizeRelativeImportPath(importPath: string): string {
     return importPath;
   }
 
-  const normalizedPath = path.posix.normalize(importPath);
+  // Normalize Windows backslashes before POSIX normalization
+  const normalizedPath = path.posix.normalize(importPath.replace(/\\/g, '/'));
 
   if (normalizedPath === '.') {
     return './';

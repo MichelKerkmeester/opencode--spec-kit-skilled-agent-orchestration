@@ -41,7 +41,7 @@ export interface ThinFileInput {
   content: string;
 }
 
-/** @deprecated Use ThinFileInput — kept for backward compatibility */
+/** Compat alias for ThinFileInput. */
 export type FileEntry = ThinFileInput;
 
 /** Represents thin file entry. */
@@ -77,7 +77,7 @@ export interface ThinningResult {
 
 // Canonical shared implementation — imported and re-exported for backward compatibility
 import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
-/** @deprecated Import estimateTokenCount from @spec-kit/shared/utils/token-estimate directly */
+/** Re-export for backward compatibility. Prefer direct import from @spec-kit/shared/utils/token-estimate. */
 export { estimateTokenCount };
 
 /**

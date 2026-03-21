@@ -154,8 +154,15 @@ function resolveLocalImportTarget(importingFile: string, importPath: string): st
     if (!fs.existsSync(candidate) || !fs.statSync(candidate).isFile()) {
       continue;
     }
-    if (candidate.startsWith(SCRIPTS_ROOT)) {
-      return candidate;
+    // Use real path for containment check to prevent symlink bypass
+    try {
+      const realCandidate = fs.realpathSync(candidate);
+      const realScriptsRoot = fs.realpathSync(SCRIPTS_ROOT);
+      if (realCandidate.startsWith(realScriptsRoot)) {
+        return candidate;
+      }
+    } catch {
+      // realpathSync failed — candidate may not exist or be inaccessible
     }
     return null;
   }
@@ -279,6 +286,7 @@ function findTsFiles(dir: string): string[] {
       const fullPath = path.join(currentDir, entry.name);
       if (entry.isDirectory()) {
         if (entry.name === 'node_modules' || entry.name === 'dist') continue;
+        if (entry.isSymbolicLink()) continue; // Skip symlinked directories to prevent out-of-scope traversal
         walk(fullPath);
       } else if (entry.name.endsWith('.ts') && !entry.name.endsWith('.d.ts')) {
         files.push(fullPath);

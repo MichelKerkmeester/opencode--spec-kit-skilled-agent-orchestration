@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
 // MODULE: Codex CLI Capture
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
 
 // ───────────────────────────────────────────────────────────────
 // 1. CODEX CLI CAPTURE
@@ -32,6 +32,8 @@ const CODEX_HOME = path.join(
 );
 const CODEX_SESSIONS = path.join(CODEX_HOME, 'sessions');
 const MAX_EXCHANGES_DEFAULT = 20;
+const MAX_SCAN_DEPTH = 5;
+const MAX_SCAN_COUNT = 10000;
 
 type CodexSessionMetaPayload = {
   id?: string;
@@ -95,6 +97,11 @@ function transcriptTimestamp(value?: string): number {
 
   const parsed = new Date(value).getTime();
   return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function logScanWarning(scanPath: string, error: unknown): void {
+  const message = error instanceof Error ? error.message : String(error);
+  console.warn(`   Warning: Failed to scan ${scanPath}: ${message}`);
 }
 
 async function readJsonl(filePath: string): Promise<unknown[]> {
@@ -240,24 +247,48 @@ function listTranscriptCandidates(rootDir: string): string[] {
   }
 
   const candidates: string[] = [];
-  const stack: string[] = [rootDir];
+  const stack: Array<[string, number]> = [[rootDir, 0]];
+  let scannedCount = 0;
 
-  while (stack.length > 0) {
-    const currentDir = stack.pop();
-    if (!currentDir) {
+  while (stack.length > 0 && scannedCount < MAX_SCAN_COUNT) {
+    const next = stack.pop();
+    if (!next) {
       continue;
     }
 
-    const entries = fsSync.readdirSync(currentDir, { withFileTypes: true });
+    const [currentDir, depth] = next;
+    if (depth > MAX_SCAN_DEPTH) {
+      continue;
+    }
+
+    let entries: fsSync.Dirent[];
+    try {
+      entries = fsSync.readdirSync(currentDir, { withFileTypes: true });
+    } catch (error) {
+      logScanWarning(currentDir, error);
+      continue;
+    }
+
     for (const entry of entries) {
-      const entryPath = path.join(currentDir, entry.name);
-      if (entry.isDirectory()) {
-        stack.push(entryPath);
-        continue;
+      if (scannedCount >= MAX_SCAN_COUNT) {
+        break;
       }
 
-      if (entry.isFile() && entry.name.startsWith('rollout-') && entry.name.endsWith('.jsonl')) {
-        candidates.push(entryPath);
+      const entryPath = path.join(currentDir, entry.name);
+      scannedCount += 1;
+
+      try {
+        if (entry.isDirectory()) {
+          stack.push([entryPath, depth + 1]);
+          continue;
+        }
+
+        if (entry.isFile() && entry.name.startsWith('rollout-') && entry.name.endsWith('.jsonl')) {
+          candidates.push(entryPath);
+        }
+      } catch (error) {
+        logScanWarning(entryPath, error);
+        continue;
       }
     }
   }

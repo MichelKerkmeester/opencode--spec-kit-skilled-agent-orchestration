@@ -26,11 +26,11 @@ contextType: "implementation"
 | **Priority** | P1 |
 | **Status** | In Progress |
 | **Created** | 2026-03-01 |
-| **Parent Spec** | ../000-feature-overview/spec.md |
-| **Parent Plan** | ../000-feature-overview/plan.md |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
 | **Phase** | 9 of 10 |
-| **Predecessor** | ../017-long-horizon/ |
-| **Successor** | ../004-skill-command-alignment/ |
+| **Predecessor** | ../008-sprint-7-long-horizon/spec.md |
+| **Successor** | ../010-sprint-9-extra-features/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

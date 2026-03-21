@@ -27,11 +27,11 @@ contextType: "implementation"
 | **Priority** | P2 |
 | **Status** | Draft |
 | **Created** | 2026-02-26 |
-| **Parent Spec** | ../000-feature-overview/spec.md |
+| **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../000-feature-overview/plan.md |
 | **Phase** | 7 of 8 |
-| **Predecessor** | ../015-pipeline-refactor/ |
-| **Successor** | ../017-long-horizon/ |
+| **Predecessor** | ../006-sprint-5-pipeline-refactor/spec.md |
+| **Successor** | ../008-sprint-7-long-horizon/spec.md |
 | **Handoff Criteria** | Sprint 6a gate: R7, R16, S4, N3-lite, weight_history verified; Sprint 6b gate (if executed): N2 attribution >10% or density-conditional deferral, R10 FP <20%; flag count <=6 |
 <!-- /ANCHOR:metadata -->
 

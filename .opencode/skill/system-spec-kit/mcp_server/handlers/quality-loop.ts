@@ -594,6 +594,11 @@ function runQualityLoop(
     };
   }
 
+  // F07-005: Track best state across auto-fix iterations
+  let bestScore = score;
+  let bestContent = currentContent;
+  let bestAttempt = 0;
+
   // Auto-fix loop
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     autoFixAttemptsUsed = attempt;
@@ -605,6 +610,13 @@ function runQualityLoop(
     // Re-evaluate after fix
     score = computeMemoryQualityScore(currentContent, currentMetadata);
     attemptsUsed = attempt + 1;
+
+    // Track best state — revert if fix made things worse
+    if (score.total > bestScore.total) {
+      bestScore = score;
+      bestContent = currentContent;
+      bestAttempt = attempt;
+    }
 
     if (score.total >= threshold) {
       logQualityMetrics(score, attemptsUsed, true, false);

@@ -87,7 +87,8 @@ export function hasReconsolidationCheckpoint(database: Database.Database, specFo
     `).get(specFolder) as { count?: number } | undefined;
 
     return (row?.count ?? 0) > 0;
-  } catch (_error: unknown) {
+  } catch (error: unknown) {
+    console.warn('[db-helpers] hasReconsolidationCheckpoint lookup failed:', error instanceof Error ? error.message : String(error));
     return false;
   }
 }

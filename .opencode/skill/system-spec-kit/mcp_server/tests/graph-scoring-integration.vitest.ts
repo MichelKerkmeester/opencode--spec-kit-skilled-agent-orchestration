@@ -379,4 +379,17 @@ describe('E. Feature Flag Independence', () => {
     const tokens = estimateResultTokens(result);
     expect(tokens).toBeGreaterThan(0);
   });
+
+  it('T-budget-boundary: exact budget fit handled correctly', () => {
+    const results = [
+      { id: 1, score: 0.9, source: 'vector', title: 'Exact fit A' },
+      { id: 2, score: 0.8, source: 'fts', title: 'Exact fit B' },
+    ];
+    const budget = results.reduce((sum, result) => sum + estimateResultTokens(result), 0);
+
+    const { results: output, truncated } = truncateToBudget(results, budget);
+
+    expect(truncated).toBe(false);
+    expect(output.map((result) => result.id)).toEqual([1, 2]);
+  });
 });

@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
 // MODULE: Copilot CLI Capture
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
 
 // ───────────────────────────────────────────────────────────────
 // 1. COPILOT CLI CAPTURE
@@ -32,6 +32,8 @@ const COPILOT_HOME = path.join(
 );
 const COPILOT_SESSION_STATE = path.join(COPILOT_HOME, 'session-state');
 const MAX_EXCHANGES_DEFAULT = 20;
+const MAX_SCAN_DEPTH = 5;
+const MAX_SCAN_COUNT = 10000;
 
 type CopilotWorkspace = {
   id?: string;
@@ -62,6 +64,11 @@ function transcriptTimestamp(value?: string): number {
 
   const parsed = new Date(value).getTime();
   return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function logScanWarning(scanPath: string, error: unknown): void {
+  const message = error instanceof Error ? error.message : String(error);
+  console.warn(`   Warning: Failed to scan ${scanPath}: ${message}`);
 }
 
 async function readJsonl(filePath: string): Promise<unknown[]> {
@@ -153,35 +160,84 @@ async function resolveWorkspace(
     return null;
   }
 
-  const candidates = fsSync.readdirSync(COPILOT_SESSION_STATE, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => entry.name);
-
   const matches: Array<{ eventsPath: string; workspace: CopilotWorkspace; sortTimestamp: number }> = [];
+  const sessionDirs: string[] = [];
+  const stack: Array<[string, number]> = [[COPILOT_SESSION_STATE, 0]];
+  let scannedCount = 0;
 
-  for (const candidate of candidates) {
-    const sessionDir = path.join(COPILOT_SESSION_STATE, candidate);
+  while (stack.length > 0 && scannedCount < MAX_SCAN_COUNT) {
+    const next = stack.pop();
+    if (!next) {
+      continue;
+    }
+
+    const [currentDir, depth] = next;
+    if (depth > MAX_SCAN_DEPTH) {
+      continue;
+    }
+
+    let entries: fsSync.Dirent[];
+    try {
+      entries = fsSync.readdirSync(currentDir, { withFileTypes: true });
+    } catch (error) {
+      logScanWarning(currentDir, error);
+      continue;
+    }
+
+    for (const entry of entries) {
+      if (scannedCount >= MAX_SCAN_COUNT) {
+        break;
+      }
+
+      const entryPath = path.join(currentDir, entry.name);
+      scannedCount += 1;
+
+      try {
+        if (!entry.isDirectory()) {
+          continue;
+        }
+
+        stack.push([entryPath, depth + 1]);
+
+        const workspacePath = path.join(entryPath, 'workspace.yaml');
+        const eventsPath = path.join(entryPath, 'events.jsonl');
+        if (fsSync.existsSync(workspacePath) && fsSync.existsSync(eventsPath)) {
+          sessionDirs.push(entryPath);
+        }
+      } catch (error) {
+        logScanWarning(entryPath, error);
+        continue;
+      }
+    }
+  }
+
+  for (const sessionDir of sessionDirs) {
     const workspacePath = path.join(sessionDir, 'workspace.yaml');
     const eventsPath = path.join(sessionDir, 'events.jsonl');
 
-    if (!fsSync.existsSync(workspacePath) || !fsSync.existsSync(eventsPath)) {
+    try {
+      if (!fsSync.existsSync(workspacePath) || !fsSync.existsSync(eventsPath)) {
+        continue;
+      }
+
+      const workspaceContent = await fs.readFile(workspacePath, 'utf-8');
+      const workspace = parseWorkspaceYaml(workspaceContent);
+      const exactMatch = isSameWorkspacePath(projectRoot, workspace.cwd)
+        || isSameWorkspacePath(projectRoot, workspace.git_root);
+      if (!exactMatch) {
+        continue;
+      }
+
+      const eventStats = await fs.stat(eventsPath);
+      matches.push({
+        eventsPath,
+        workspace,
+        sortTimestamp: transcriptTimestamp(workspace.updated_at) || eventStats.mtimeMs,
+      });
+    } catch (error) {
+      logScanWarning(sessionDir, error);
       continue;
     }
-
-    const workspaceContent = await fs.readFile(workspacePath, 'utf-8');
-    const workspace = parseWorkspaceYaml(workspaceContent);
-    const exactMatch = isSameWorkspacePath(projectRoot, workspace.cwd)
-      || isSameWorkspacePath(projectRoot, workspace.git_root);
-    if (!exactMatch) {
-      continue;
-    }
-
-    const eventStats = await fs.stat(eventsPath);
-    matches.push({
-      eventsPath,
-      workspace,
-      sortTimestamp: transcriptTimestamp(workspace.updated_at) || eventStats.mtimeMs,
-    });
   }
 
   if (matches.length === 0) {

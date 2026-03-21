@@ -18,6 +18,35 @@ import { snapshotDegrees } from '../graph/graph-signals';
 import { deleteEdgesForMemory } from './causal-edges';
 import { runLineageBackfill } from './lineage-state';
 
+function batchedInQuery<T>(db: Database.Database, sql: string, ids: (number | string)[], batchSize = 500): T[] {
+  const results: T[] = [];
+  for (let i = 0; i < ids.length; i += batchSize) {
+    const batch = ids.slice(i, i + batchSize);
+    const placeholders = batch.map(() => '?').join(', ');
+    const batchSql = sql.replace('__PLACEHOLDERS__', placeholders);
+    results.push(...(db.prepare(batchSql).all(...batch) as T[]));
+  }
+  return results;
+}
+
+function dedupeRowsById<T extends Record<string, unknown>>(rows: T[]): T[] {
+  const results: T[] = [];
+  const seenIds = new Set<number | string>();
+
+  for (const row of rows) {
+    const id = row.id;
+    if (typeof id === 'number' || typeof id === 'string') {
+      if (seenIds.has(id)) {
+        continue;
+      }
+      seenIds.add(id);
+    }
+    results.push(row);
+  }
+
+  return results;
+}
+
 /* ───────────────────────────────────────────────────────────────
    1. CONSTANTS
 ----------------------------------------------------------------*/
@@ -215,9 +244,25 @@ function tableExists(database: Database.Database, tableName: string): boolean {
   }
 }
 
+// F04-005: Static allowlist for dynamic table name interpolation
+const ALLOWED_TABLE_NAMES = new Set([
+  'memory_index', 'memory_fts', 'vec_memories', 'causal_edges', 'memory_conflicts',
+  'memory_lineage', 'active_memory_projection', 'auto_entities', 'community_assignments',
+  'degree_snapshots', 'checkpoints', 'checkpoint_items', 'deletion_log',
+  'shared_spaces', 'shared_space_members', 'eval_shadow_comparisons',
+  'learned_trigger_scores', 'learned_trigger_feedback', 'consumption_log',
+]);
+
+function validateTableName(tableName: string): void {
+  if (!ALLOWED_TABLE_NAMES.has(tableName)) {
+    throw new Error(`[checkpoints] Table name "${tableName}" not in allowlist`);
+  }
+}
+
 function getTableColumns(database: Database.Database, tableName: string): string[] {
+  validateTableName(tableName);
   try {
-    return (database.prepare(`PRAGMA table_info(${tableName})`).all() as Array<{ name: string }>)
+    return (database.prepare(`PRAGMA table_info("${tableName}")`).all() as Array<{ name: string }>)
       .map((column) => column.name)
       .filter((name) => typeof name === 'string' && name.length > 0);
   } catch (_error: unknown) {
@@ -320,10 +365,12 @@ function deleteRowsByIds(
     return;
   }
 
-  const placeholders = ids.map(() => '?').join(', ');
-  database.prepare(
-    `DELETE FROM ${tableName} WHERE ${columnName} IN (${placeholders})`
-  ).run(...ids);
+  const sql = `DELETE FROM ${tableName} WHERE ${columnName} IN (__PLACEHOLDERS__)`;
+  for (let i = 0; i < ids.length; i += 500) {
+    const batch = ids.slice(i, i + 500);
+    const placeholders = batch.map(() => '?').join(', ');
+    database.prepare(sql.replace('__PLACEHOLDERS__', placeholders)).run(...batch);
+  }
 }
 
 function deleteRowsByStringIds(
@@ -336,10 +383,12 @@ function deleteRowsByStringIds(
     return;
   }
 
-  const placeholders = ids.map(() => '?').join(', ');
-  database.prepare(
-    `DELETE FROM ${tableName} WHERE ${columnName} IN (${placeholders})`
-  ).run(...ids);
+  const sql = `DELETE FROM ${tableName} WHERE ${columnName} IN (__PLACEHOLDERS__)`;
+  for (let i = 0; i < ids.length; i += 500) {
+    const batch = ids.slice(i, i + 500);
+    const placeholders = batch.map(() => '?').join(', ');
+    database.prepare(sql.replace('__PLACEHOLDERS__', placeholders)).run(...batch);
+  }
 }
 
 function deleteRowsByClauses(
@@ -367,14 +416,24 @@ function snapshotCausalEdgesForMemoryIds(
 
   try {
     const edgeIds = memoryIds.map((id) => String(id));
-    const placeholders = edgeIds.map(() => '?').join(', ');
-    return database.prepare(
-      `
-        SELECT * FROM causal_edges
-        WHERE source_id IN (${placeholders})
-           OR target_id IN (${placeholders})
-      `
-    ).all(...edgeIds, ...edgeIds) as Array<Record<string, unknown>>;
+    return dedupeRowsById([
+      ...batchedInQuery<Record<string, unknown>>(
+        database,
+        `
+          SELECT * FROM causal_edges
+          WHERE source_id IN (__PLACEHOLDERS__)
+        `,
+        edgeIds,
+      ),
+      ...batchedInQuery<Record<string, unknown>>(
+        database,
+        `
+          SELECT * FROM causal_edges
+          WHERE target_id IN (__PLACEHOLDERS__)
+        `,
+        edgeIds,
+      ),
+    ]);
   } catch (_error: unknown) {
     return [];
   }
@@ -449,36 +508,62 @@ function selectTableRows(
   }
 
   if (memoryIds.length > 0 && columns.has('memory_id')) {
-    const placeholders = memoryIds.map(() => '?').join(', ');
-    return database.prepare(
-      `SELECT * FROM ${tableName} WHERE memory_id IN (${placeholders})`
-    ).all(...memoryIds) as Array<Record<string, unknown>>;
+    return batchedInQuery<Record<string, unknown>>(
+      database,
+      `SELECT * FROM ${tableName} WHERE memory_id IN (__PLACEHOLDERS__)`,
+      memoryIds,
+    );
   }
 
   if (memoryIds.length > 0 && tableName === 'memory_corrections') {
-    const placeholders = memoryIds.map(() => '?').join(', ');
-    return database.prepare(`
-      SELECT * FROM memory_corrections
-      WHERE original_memory_id IN (${placeholders})
-         OR correction_memory_id IN (${placeholders})
-    `).all(...memoryIds, ...memoryIds) as Array<Record<string, unknown>>;
+    return dedupeRowsById([
+      ...batchedInQuery<Record<string, unknown>>(
+        database,
+        `
+          SELECT * FROM memory_corrections
+          WHERE original_memory_id IN (__PLACEHOLDERS__)
+        `,
+        memoryIds,
+      ),
+      ...batchedInQuery<Record<string, unknown>>(
+        database,
+        `
+          SELECT * FROM memory_corrections
+          WHERE correction_memory_id IN (__PLACEHOLDERS__)
+        `,
+        memoryIds,
+      ),
+    ]);
   }
 
   if (memoryIds.length > 0 && tableName === 'shared_space_conflicts') {
-    const placeholders = memoryIds.map(() => '?').join(', ');
-    return database.prepare(`
-      SELECT * FROM shared_space_conflicts
-      WHERE existing_memory_id IN (${placeholders})
-         OR incoming_memory_id IN (${placeholders})
-    `).all(...memoryIds, ...memoryIds) as Array<Record<string, unknown>>;
+    return dedupeRowsById([
+      ...batchedInQuery<Record<string, unknown>>(
+        database,
+        `
+          SELECT * FROM shared_space_conflicts
+          WHERE existing_memory_id IN (__PLACEHOLDERS__)
+        `,
+        memoryIds,
+      ),
+      ...batchedInQuery<Record<string, unknown>>(
+        database,
+        `
+          SELECT * FROM shared_space_conflicts
+          WHERE incoming_memory_id IN (__PLACEHOLDERS__)
+        `,
+        memoryIds,
+      ),
+    ]);
   }
 
   if (sharedSpaceIds.length > 0 && (tableName === 'shared_spaces' || tableName === 'shared_space_members')) {
     const columnName = tableName === 'shared_spaces' ? 'space_id' : 'space_id';
-    const placeholders = sharedSpaceIds.map(() => '?').join(', ');
-    return database.prepare(
-      `SELECT * FROM ${tableName} WHERE ${columnName} IN (${placeholders})`
-    ).all(...sharedSpaceIds) as Array<Record<string, unknown>>;
+    return batchedInQuery<Record<string, unknown>>(
+      database,
+      `SELECT * FROM ${tableName} WHERE ${columnName} IN (__PLACEHOLDERS__)`,
+      sharedSpaceIds,
+    );
   }
 
   return database.prepare(`SELECT * FROM ${tableName}`).all() as Array<Record<string, unknown>>;
@@ -626,19 +711,13 @@ function clearTableForRestoreScope(
   }
 
   if (tableName === 'shared_space_conflicts') {
-    const clauses: string[] = [];
-    const params: unknown[] = [];
     if (sharedSpaceIds.length > 0) {
-      clauses.push(`space_id IN (${sharedSpaceIds.map(() => '?').join(', ')})`);
-      params.push(...sharedSpaceIds);
+      deleteRowsByStringIds(database, tableName, 'space_id', sharedSpaceIds);
     }
     if (memoryIds.length > 0) {
-      clauses.push(`existing_memory_id IN (${memoryIds.map(() => '?').join(', ')})`);
-      params.push(...memoryIds);
-      clauses.push(`incoming_memory_id IN (${memoryIds.map(() => '?').join(', ')})`);
-      params.push(...memoryIds);
+      deleteRowsByIds(database, tableName, 'existing_memory_id', memoryIds);
+      deleteRowsByIds(database, tableName, 'incoming_memory_id', memoryIds);
     }
-    deleteRowsByClauses(database, tableName, clauses, params);
     return;
   }
 
@@ -646,10 +725,8 @@ function clearTableForRestoreScope(
     if (memoryIds.length === 0) {
       return;
     }
-    deleteRowsByClauses(database, tableName, [
-      `original_memory_id IN (${memoryIds.map(() => '?').join(', ')})`,
-      `correction_memory_id IN (${memoryIds.map(() => '?').join(', ')})`,
-    ], [...memoryIds, ...memoryIds]);
+    deleteRowsByIds(database, tableName, 'original_memory_id', memoryIds);
+    deleteRowsByIds(database, tableName, 'correction_memory_id', memoryIds);
     return;
   }
 
@@ -806,31 +883,65 @@ function runPostRestoreRebuilds(
   const hasMemoryParentId = tableHasColumn(database, 'memory_index', 'parent_id');
 
   // Each rebuild is best-effort — failures must not block restore success.
-  const rebuildSteps: Array<[string, () => void]> = [
-    ['auto-entities', () => rebuildAutoEntities(database, { specFolder: checkpointSpecFolder ?? undefined })],
-    ['degree-snapshots', () => snapshotDegrees(database)],
-    ['community-assignments', () => storeCommunityAssignments(database, detectCommunities(database))],
-    ['fts-rebuild', () => {
-      if (tableExists(database, 'memory_fts')) {
-        database.exec(`INSERT INTO memory_fts(memory_fts) VALUES('rebuild')`);
-      }
-    }],
+  const rebuildSteps: Array<{ name: string; deps: string[]; run: () => void }> = [
+    {
+      name: 'auto-entities',
+      deps: ['lineage-backfill'],
+      run: () => rebuildAutoEntities(database, { specFolder: checkpointSpecFolder ?? undefined }),
+    },
+    {
+      name: 'degree-snapshots',
+      deps: ['lineage-backfill'],
+      run: () => snapshotDegrees(database),
+    },
+    {
+      name: 'community-assignments',
+      deps: ['degree-snapshots'],
+      run: () => storeCommunityAssignments(database, detectCommunities(database)),
+    },
+    {
+      name: 'fts-rebuild',
+      deps: ['lineage-backfill', 'auto-entities'],
+      run: () => {
+        if (tableExists(database, 'memory_fts')) {
+          database.exec(`INSERT INTO memory_fts(memory_fts) VALUES('rebuild')`);
+        }
+      },
+    },
   ];
 
   if (hasMemoryParentId) {
-    rebuildSteps.unshift([
-      'lineage-backfill',
-      () => runLineageBackfill(database, { actor: 'mcp:checkpoint_restore' }),
-    ]);
+    rebuildSteps.unshift({
+      name: 'lineage-backfill',
+      deps: [],
+      run: () => runLineageBackfill(database, { actor: 'mcp:checkpoint_restore' }),
+    });
   }
 
-  for (const [name, fn] of rebuildSteps) {
+  const completed = new Set<string>();
+  const skipped = new Set<string>();
+
+  for (const { name, deps, run } of rebuildSteps) {
+    const missingDeps = deps.filter((dependency) => !completed.has(dependency));
+    if (missingDeps.length > 0) {
+      skipped.add(name);
+      console.warn(
+        `[checkpoints] Skipping post-restore rebuild "${name}" because dependencies did not complete: ${missingDeps.join(', ')}`,
+      );
+      continue;
+    }
+
     try {
-      fn();
+      run();
+      completed.add(name);
     } catch (err: unknown) {
       console.warn(`[checkpoints] Post-restore rebuild "${name}" failed (non-fatal): ${toErrorMessage(err)}`);
     }
   }
+
+  console.info(
+    `[checkpoints] Post-restore rebuild summary: completed=${[...completed].join(', ') || 'none'}; skipped=${[...skipped].join(', ') || 'none'}`,
+  );
 }
 
 function normalizeMemoryColumnValue(column: string, value: unknown): unknown {

@@ -75,7 +75,7 @@ export function computeConfidenceMultiplier(
   negativeCount: number,
   lastNegativeAt?: number | null
 ): number {
-  if (negativeCount <= 0) {
+  if (!Number.isFinite(negativeCount) || negativeCount <= 0) {
     return CONFIDENCE_MULTIPLIER_BASE;
   }
 

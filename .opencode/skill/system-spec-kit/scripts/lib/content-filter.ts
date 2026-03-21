@@ -323,12 +323,12 @@ function createFilterStats(): FilterStats {
   };
 }
 
-/** @deprecated Use createFilterStats() — kept for backward compatibility */
+/** Compat wrapper — prefer createFilterStats(). */
 function resetStats(): void {
   // No-op: stats are now per-pipeline, not global
 }
 
-/** @deprecated Stats are now per-pipeline. Use pipeline.getQualityScore() instead. */
+/** Compat wrapper — prefer pipeline.getQualityScore(). */
 function getFilterStats(): FilterStats {
   // Return empty stats for backward compatibility
   return createFilterStats();

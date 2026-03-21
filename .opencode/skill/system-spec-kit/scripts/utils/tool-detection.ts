@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
 // MODULE: Tool Detection
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
 
 // ───────────────────────────────────────────────────────────────
 // 1. TOOL DETECTION
@@ -97,7 +97,7 @@ function isProseContext(text: string, matchStartIndex: number): boolean {
 // ───────────────────────────────────────────────────────────────
 // 5. CONVERSATION PHASE CLASSIFICATION
 // ───────────────────────────────────────────────────────────────
-/** @deprecated Use classifyPhaseViaSignals from phase-classifier.ts directly. This is a pass-through wrapper. */
+/** Pass-through wrapper. Prefer classifyPhaseViaSignals from phase-classifier.ts directly. */
 function classifyConversationPhase(toolCalls: ToolCallRecord[], messageContent: string): ConversationPhase {
   return classifyPhaseViaSignals(toolCalls, messageContent);
 }

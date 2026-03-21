@@ -25,11 +25,11 @@ contextType: "implementation" # SPECKIT_TEMPLATE_SOURCE: spec-core + level2-veri
 | **Priority** | P1 (elevated from P2 — safety-critical NFRs: Stage 4 invariant, pipeline integrity) |
 | **Status** | Implemented |
 | **Created** | 2026-02-26 |
-| **Parent Spec** | ../000-feature-overview/spec.md |
-| **Parent Plan** | ../000-feature-overview/plan.md |
-| **Phase** | 6 of 8 |
-| **Predecessor** | ../014-feedback-and-quality/ |
-| **Successor** | ../016-indexing-and-graph/ |
+| **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 6 of 10 |
+| **Predecessor** | ../005-sprint-4-feedback-and-quality/spec.md |
+| **Successor** | ../007-sprint-6-indexing-and-graph/spec.md |
 | **Handoff Criteria** | R6 0 ordering differences, 158+ tests pass, R9 cross-folder equivalent, R12 no latency degradation |
 <!-- /ANCHOR:metadata -->
 

@@ -92,7 +92,8 @@ export const MEMORY_FILE_PATTERN: RegExp = /specs\/([^/]+)(?:\/[^/]+)*\/memory\/
 /**
  * Defines the MAX_CONTENT_LENGTH constant.
  */
-export const MAX_CONTENT_LENGTH: number = parseInt(process.env.MCP_MAX_CONTENT_LENGTH || '250000', 10);
+const _parsedMaxLen = parseInt(process.env.MCP_MAX_CONTENT_LENGTH || '250000', 10);
+export const MAX_CONTENT_LENGTH: number = Number.isFinite(_parsedMaxLen) && _parsedMaxLen > 0 ? _parsedMaxLen : 250000;
 
 /**
  * Defines the CONTEXT_TYPE_MAP constant.

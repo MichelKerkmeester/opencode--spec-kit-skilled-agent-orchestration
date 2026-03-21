@@ -157,7 +157,7 @@ export interface CollectedDataBase {
   isDetachedHead?: boolean | null;
   TECHNICAL_CONTEXT?: Array<{ KEY: string; VALUE: string }>;
   // Fields surfaced during O3-6 index signature removal (stateless enrichment + capture pipeline)
-  /** @deprecated Use importanceTier (camelCase). Snake-case variant kept for raw JSON compatibility. */
+  /** Snake-case variant for raw JSON compatibility. Prefer importanceTier (camelCase) in new code. */
   importance_tier?: string;
   _toolCallCount?: number;
   _narrativeObservations?: Observation[];
@@ -167,21 +167,21 @@ export interface CollectedDataBase {
   _capturedAt?: string;
   // Fields accessed by workflow.ts read helpers for memory classification, dedup, and causal links
   // (AI-composed JSON data from generate-context.js input)
-  /** @deprecated Use memoryClassification (camelCase). Snake-case variant for raw JSON compatibility. */
+  /** Snake-case variant for raw JSON compatibility. Prefer memoryClassification (camelCase) in new code. */
   memory_classification?: Record<string, unknown>;
   memoryClassification?: Record<string, unknown>;
-  /** @deprecated Use memoryType (camelCase). Snake-case variant for raw JSON compatibility. */
+  /** Snake-case variant for raw JSON compatibility. Prefer memoryType (camelCase) in new code. */
   memory_type?: string;
   memoryType?: string;
-  /** @deprecated Use sessionDedup (camelCase). Snake-case variant for raw JSON compatibility. */
+  /** Snake-case variant for raw JSON compatibility. Prefer sessionDedup (camelCase) in new code. */
   session_dedup?: Record<string, unknown>;
   sessionDedup?: Record<string, unknown>;
-  /** @deprecated Use causalLinks (camelCase). Snake-case variant for raw JSON compatibility. */
+  /** Snake-case variant for raw JSON compatibility. Prefer causalLinks (camelCase) in new code. */
   causal_links?: Record<string, unknown>;
   causalLinks?: Record<string, unknown>;
   // RC5: Explicit contextType from JSON payload (mirrors importanceTier pattern)
   contextType?: string;
-  /** @deprecated Use contextType (camelCase). Snake-case variant for raw JSON compatibility. */
+  /** Snake-case variant for raw JSON compatibility. Prefer contextType (camelCase) in new code. */
   context_type?: string;
 }
 
@@ -321,11 +321,11 @@ export interface QualityInsufficiencySummary {
 
 /** Represents quality score. */
 export interface QualityScoreResult {
-  /** @deprecated Use score100 instead */
+  /** Legacy alias. Prefer score100. */
   score: number;
   score01: number;
   score100: number;
-  /** @deprecated Use score01 instead */
+  /** Legacy alias. Prefer score01. */
   qualityScore: number;
   warnings: string[];
   qualityFlags: QualityFlag[];
