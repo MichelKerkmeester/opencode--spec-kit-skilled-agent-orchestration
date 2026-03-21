@@ -1,0 +1,25 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/019-deep-research-rag-improvement",
+  "description": "Spec: Deep Research — Hybrid RAG Fusion System Improvement",
+  "keywords": [
+    "spec",
+    "deep",
+    "research",
+    "hybrid",
+    "rag",
+    "fusion",
+    "system",
+    "improvement"
+  ],
+  "lastUpdated": "2026-03-21T17:01:41.666Z",
+  "specId": "019",
+  "folderSlug": "deep-research-rag-improvement",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "21-03-26_18-01__5-dimensional-deep-research-on-hybrid-rag-fusion.md"
+  ]
+}

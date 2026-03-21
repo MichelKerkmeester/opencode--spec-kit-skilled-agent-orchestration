@@ -100,6 +100,7 @@ Provide a concise parent packet for the 10-sprint epic so the sprint subtree can
 | 008 | `008-sprint-7-long-horizon/` | Long-horizon evaluation | Completed |
 | 009 | `009-sprint-8-deferred-features/` | Deferred and follow-on features | In Progress |
 | 010 | `010-sprint-9-extra-features/` | Productization and operational tooling | Complete |
+| 011 | `011-research-based-refinement/` | Research-based calibration & improvements (5 sub-phases: D1 Fusion, D2 Query, D3 Graph, D4 Feedback, D5 UX) | Draft |
 
 ---
 
