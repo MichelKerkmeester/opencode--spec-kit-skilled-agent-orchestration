@@ -206,6 +206,39 @@ function detectProjectPhase(
   return 'IMPLEMENTATION';
 }
 
+const VALID_PROJECT_PHASES = new Set([
+  'RESEARCH',
+  'PLANNING',
+  'IMPLEMENTATION',
+  'DEBUGGING',
+  'REVIEW',
+]);
+
+/**
+ * Resolve the project phase, honouring an explicit caller-provided override when valid.
+ * Follows the same explicit-override pattern as `resolveImportanceTier`.
+ * @param toolCounts - Aggregated counts of each tool type used in the session.
+ * @param observations - Session observations containing type and fact data.
+ * @param messageCount - Total number of messages in the conversation.
+ * @param explicitProjectPhase - Optional caller-provided phase override from structured input.
+ * @returns One of `'RESEARCH'`, `'PLANNING'`, `'IMPLEMENTATION'`, `'DEBUGGING'`, or `'REVIEW'`.
+ */
+export function resolveProjectPhase(
+  toolCounts: ToolCounts,
+  observations: Observation[],
+  messageCount: number,
+  explicitProjectPhase?: string | null
+): string {
+  if (typeof explicitProjectPhase === 'string') {
+    const normalizedPhase = explicitProjectPhase.trim().toUpperCase();
+    if (VALID_PROJECT_PHASES.has(normalizedPhase)) {
+      return normalizedPhase;
+    }
+  }
+
+  return detectProjectPhase(toolCounts, observations, messageCount);
+}
+
 /**
  * Identify the most recently active file from observations, preferring non-synthetic entries.
  * @param observations - Session observations that may reference files.

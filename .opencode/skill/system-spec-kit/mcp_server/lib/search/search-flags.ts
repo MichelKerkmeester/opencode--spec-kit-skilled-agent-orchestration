@@ -243,3 +243,63 @@ export function isLocalRerankerEnabled(): boolean {
 export function isQualityLoopEnabled(): boolean {
   return process.env.SPECKIT_QUALITY_LOOP?.toLowerCase().trim() === 'true';
 }
+
+/* ───────────────────────────────────────────────────────────────
+   5. D2 QUERY INTELLIGENCE FLAGS
+──────────────────────────────────────────────────────────────── */
+
+/**
+ * D2 REQ-D2-001: Query decomposition — bounded facet detection.
+ * Deep-mode only: multi-faceted queries split into up to 3 sub-queries.
+ * Default: FALSE (opt-in). Set SPECKIT_QUERY_DECOMPOSITION=true to enable.
+ */
+export function isQueryDecompositionEnabled(): boolean {
+  return process.env.SPECKIT_QUERY_DECOMPOSITION?.toLowerCase().trim() === 'true';
+}
+
+/**
+ * D2 REQ-D2-002: Graph concept routing — query-time alias matching.
+ * Extracts noun phrases from the query and matches against concept alias table,
+ * activating the graph channel for matched concepts.
+ * Default: FALSE (opt-in). Set SPECKIT_GRAPH_CONCEPT_ROUTING=true to enable.
+ */
+export function isGraphConceptRoutingEnabled(): boolean {
+  return process.env.SPECKIT_GRAPH_CONCEPT_ROUTING?.toLowerCase().trim() === 'true';
+}
+
+/* ───────────────────────────────────────────────────────────────
+   6. D4 PHASE A FLAGS (Feedback & Quality Learning)
+──────────────────────────────────────────────────────────────── */
+
+/**
+ * REQ-D4-001: Implicit feedback event ledger.
+ * Shadow-only — no ranking side effects. Default: FALSE (opt-in).
+ * Set SPECKIT_IMPLICIT_FEEDBACK_LOG=true to enable.
+ */
+export function isImplicitFeedbackLogEnabled(): boolean {
+  const val = process.env.SPECKIT_IMPLICIT_FEEDBACK_LOG?.toLowerCase().trim();
+  return val === 'true' || val === '1';
+}
+
+/**
+ * REQ-D4-002: Hybrid decay policy — type-aware no-decay for permanent artifacts.
+ * Default: FALSE (opt-in). Set SPECKIT_HYBRID_DECAY_POLICY=true to enable.
+ * When enabled: decision/constitutional/critical context types receive Infinity
+ * stability (no decay). All other types follow the standard FSRS schedule.
+ */
+export function isHybridDecayPolicyEnabled(): boolean {
+  const val = process.env.SPECKIT_HYBRID_DECAY_POLICY?.toLowerCase().trim();
+  return val === 'true' || val === '1';
+}
+
+/**
+ * REQ-D4-003: Short-critical quality gate exception.
+ * Warn-only initially. Default: FALSE (opt-in).
+ * Set SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=true to enable.
+ * When enabled: decision context_type documents with >= 2 structural signals
+ * bypass the 50-character minimum content length check.
+ */
+export function isSaveQualityGateExceptionsEnabled(): boolean {
+  const val = process.env.SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS?.toLowerCase().trim();
+  return val === 'true' || val === '1';
+}

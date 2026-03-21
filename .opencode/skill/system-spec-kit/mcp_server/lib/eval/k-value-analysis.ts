@@ -313,7 +313,298 @@ function formatKValueReport(analysis: KValueAnalysisResult): KValueReport {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. EXPORTS
+// 5. JUDGED RELEVANCE EVALUATION (REQ-D1-003)
+
+// ───────────────────────────────────────────────────────────────
+
+/**
+ * Intent classes aligned with adaptive-fusion.ts weight profiles.
+ * Used for per-intent K-sweep segmentation.
+ */
+type IntentClass =
+  | 'understand'
+  | 'find_spec'
+  | 'fix_bug'
+  | 'add_feature'
+  | 'refactor'
+  | 'security_audit'
+  | 'find_decision'
+  | 'unknown';
+
+/**
+ * A judged query with explicit relevance labels for NDCG/MRR evaluation.
+ * REQ-D1-003: Judged query set for per-intent K sweep.
+ */
+interface JudgedQuery {
+  /** The query string */
+  query: string;
+  /** Intent class for segmentation */
+  intent: IntentClass;
+  /** IDs considered relevant (binary relevance for MRR computation) */
+  relevantIds: string[];
+  /**
+   * Graded relevance labels: id -> score (0=not relevant, 1=relevant, 2=highly relevant, 3=perfect).
+   * Used for NDCG computation.
+   */
+  labels: Map<string, number>;
+  /** Pre-computed ranked lists for fusion (one per retrieval channel) */
+  channels: RankedList[];
+}
+
+/**
+ * Per-K metrics computed against judged relevance labels.
+ */
+interface JudgedKMetrics {
+  /** Normalized Discounted Cumulative Gain at cutoff 10 */
+  ndcg10: number;
+  /** Mean Reciprocal Rank at cutoff 5 (binary relevance) */
+  mrr5Judged: number;
+  /** Number of queries evaluated */
+  queryCount: number;
+}
+
+/** Per-intent best-K selection result. */
+interface BestKPerIntent {
+  /** The selected K value (argmax of ndcg10, tie-broken by lower K) */
+  bestK: number;
+  /** NDCG@10 at the selected K */
+  bestNdcg10: number;
+  /** Full metrics for each K in the sweep */
+  metricsPerK: Record<number, JudgedKMetrics>;
+  /** Number of queries for this intent */
+  queryCount: number;
+}
+
+/** Result of a full judged K sweep across all intents. */
+interface JudgedKSweepResult {
+  /** Per-intent best-K selections */
+  byIntent: Partial<Record<IntentClass, BestKPerIntent>>;
+  /** Global best-K (across all intents combined) */
+  globalBestK: number;
+  /** Whether SPECKIT_RRF_K_EXPERIMENTAL was enabled */
+  experimentalMode: boolean;
+}
+
+// ───────────────────────────────────────────────────────────────
+// 5.1 NDCG@10 IMPLEMENTATION
+
+// ───────────────────────────────────────────────────────────────
+
+/** K-values for the judged relevance sweep (REQ-D1-003). */
+const JUDGED_K_SWEEP_VALUES = [10, 20, 40, 60, 80, 100, 120] as const;
+
+/**
+ * Compute NDCG@10 for a single result ranking against judged labels.
+ *
+ * NDCG = DCG / IDCG where:
+ *   DCG@n  = Σ (rel_i / log2(i+2)) for i in 0..n-1
+ *   IDCG@n = DCG of ideal (sorted by relevance) ranking
+ *
+ * @param rankedIds - Ordered list of candidate IDs (descending by score)
+ * @param labels - Map of id -> relevance grade (0-3)
+ * @returns NDCG@10 in [0, 1]; returns 0 for empty/unlabeled rankings
+ */
+function computeNdcg10(
+  rankedIds: (string | number)[],
+  labels: Map<string, number>
+): number {
+  const cutoff = 10;
+
+  function getLabel(id: string | number): number {
+    return labels.get(String(id)) ?? 0;
+  }
+
+  // DCG@10
+  let dcg = 0;
+  const topN = rankedIds.slice(0, cutoff);
+  for (let i = 0; i < topN.length; i++) {
+    const rel = getLabel(topN[i]);
+    if (rel > 0) {
+      dcg += rel / Math.log2(i + 2); // log2(rank+1), rank is 1-indexed
+    }
+  }
+
+  // IDCG@10 — ideal ordering of all labeled items
+  const allRelevances = Array.from(labels.values())
+    .filter(v => v > 0)
+    .sort((a, b) => b - a);
+
+  let idcg = 0;
+  const idealTop = allRelevances.slice(0, cutoff);
+  for (let i = 0; i < idealTop.length; i++) {
+    idcg += idealTop[i] / Math.log2(i + 2);
+  }
+
+  if (idcg === 0) return 0;
+  return dcg / idcg;
+}
+
+/**
+ * Compute MRR@5 against judged relevant IDs (binary relevance).
+ *
+ * @param rankedIds - Ordered list of candidate IDs (descending by score)
+ * @param relevantIds - Set of IDs considered relevant
+ * @returns MRR@5 in [0, 1]
+ */
+function computeMrr5Judged(
+  rankedIds: (string | number)[],
+  relevantIds: string[]
+): number {
+  const relevantSet = new Set(relevantIds);
+  const top5 = rankedIds.slice(0, 5);
+  for (let i = 0; i < top5.length; i++) {
+    if (relevantSet.has(String(top5[i]))) {
+      return 1 / (i + 1); // 1-indexed rank
+    }
+  }
+  return 0;
+}
+
+// ───────────────────────────────────────────────────────────────
+// 5.2 PER-INTENT K SWEEP
+
+// ───────────────────────────────────────────────────────────────
+
+/**
+ * Check if experimental K selection is enabled (REQ-D1-003).
+ * When OFF (default), per-intent K selection is skipped and K=60 is used.
+ * When ON, NDCG@10-maximizing K is selected per intent.
+ * @returns True when SPECKIT_RRF_K_EXPERIMENTAL is set to 'true'.
+ */
+function isKExperimentalEnabled(): boolean {
+  return process.env.SPECKIT_RRF_K_EXPERIMENTAL === 'true';
+}
+
+/**
+ * Evaluate a set of judged queries at a given K, returning aggregate metrics.
+ *
+ * @param queries - Judged queries with channels, labels, and relevantIds
+ * @param k - RRF smoothing constant to use for fusion
+ * @returns Aggregate NDCG@10 and MRR@5 metrics across the query set
+ */
+function evalQueriesAtK(queries: JudgedQuery[], k: number): JudgedKMetrics {
+  if (queries.length === 0) {
+    return { ndcg10: 0, mrr5Judged: 0, queryCount: 0 };
+  }
+
+  let sumNdcg = 0;
+  let sumMrr = 0;
+
+  for (const q of queries) {
+    const fused = fuseResultsMulti(q.channels, { k });
+    const rankedIds = fused.map((r: FusionResult) => r.id);
+    sumNdcg += computeNdcg10(rankedIds, q.labels);
+    sumMrr += computeMrr5Judged(rankedIds, q.relevantIds);
+  }
+
+  return {
+    ndcg10: sumNdcg / queries.length,
+    mrr5Judged: sumMrr / queries.length,
+    queryCount: queries.length,
+  };
+}
+
+/**
+ * Select best K for an intent via argmax(NDCG@10), tie-broken by lower K.
+ *
+ * @param metricsPerK - Metrics keyed by K value
+ * @returns The K value that maximizes NDCG@10 (lower K wins ties)
+ */
+function argmaxNdcg10(metricsPerK: Record<number, JudgedKMetrics>): number {
+  let bestK = JUDGED_K_SWEEP_VALUES[0] as number;
+  let bestNdcg = -Infinity;
+
+  for (const kStr of Object.keys(metricsPerK)) {
+    const k = Number(kStr);
+    const metrics = metricsPerK[k];
+    if (
+      metrics.ndcg10 > bestNdcg ||
+      (metrics.ndcg10 === bestNdcg && k < bestK)
+    ) {
+      bestNdcg = metrics.ndcg10;
+      bestK = k;
+    }
+  }
+
+  return bestK;
+}
+
+/**
+ * Run a per-intent K sweep over JUDGED_K_SWEEP_VALUES and select the best K
+ * per intent via argmax(NDCG@10).
+ *
+ * Feature flag: SPECKIT_RRF_K_EXPERIMENTAL (default OFF).
+ * When OFF, returns K=60 for all intents without running the sweep.
+ *
+ * @param queries - Judged queries to evaluate
+ * @returns Per-intent best-K selections and global best-K
+ */
+function runJudgedKSweep(queries: JudgedQuery[]): JudgedKSweepResult {
+  const experimentalMode = isKExperimentalEnabled();
+
+  // Feature flag OFF: return K=60 defaults without evaluation
+  if (!experimentalMode) {
+    const fallbackResult: JudgedKSweepResult = {
+      byIntent: {},
+      globalBestK: BASELINE_K,
+      experimentalMode: false,
+    };
+    return fallbackResult;
+  }
+
+  // Group queries by intent
+  const byIntent = new Map<IntentClass, JudgedQuery[]>();
+  for (const q of queries) {
+    const bucket = byIntent.get(q.intent) ?? [];
+    bucket.push(q);
+    byIntent.set(q.intent, bucket);
+  }
+
+  const resultByIntent: Partial<Record<IntentClass, BestKPerIntent>> = {};
+  let globalSumNdcg: Record<number, number> = {};
+  let globalQueryCount = 0;
+
+  for (const [intent, intentQueries] of byIntent) {
+    const metricsPerK: Record<number, JudgedKMetrics> = {};
+
+    for (const k of JUDGED_K_SWEEP_VALUES) {
+      metricsPerK[k] = evalQueriesAtK(intentQueries, k);
+      globalSumNdcg[k] = (globalSumNdcg[k] ?? 0) + metricsPerK[k].ndcg10 * intentQueries.length;
+    }
+    globalQueryCount += intentQueries.length;
+
+    const bestK = argmaxNdcg10(metricsPerK);
+    resultByIntent[intent] = {
+      bestK,
+      bestNdcg10: metricsPerK[bestK].ndcg10,
+      metricsPerK,
+      queryCount: intentQueries.length,
+    };
+  }
+
+  // Global best-K: argmax of weighted-average NDCG@10 across all intents
+  let globalBestK = BASELINE_K;
+  if (globalQueryCount > 0) {
+    const globalAvgNdcg: Record<number, number> = {};
+    for (const k of JUDGED_K_SWEEP_VALUES) {
+      globalAvgNdcg[k] = (globalSumNdcg[k] ?? 0) / globalQueryCount;
+    }
+    const globalMetrics: Record<number, JudgedKMetrics> = {};
+    for (const k of JUDGED_K_SWEEP_VALUES) {
+      globalMetrics[k] = { ndcg10: globalAvgNdcg[k], mrr5Judged: 0, queryCount: globalQueryCount };
+    }
+    globalBestK = argmaxNdcg10(globalMetrics);
+  }
+
+  return {
+    byIntent: resultByIntent,
+    globalBestK,
+    experimentalMode: true,
+  };
+}
+
+// ───────────────────────────────────────────────────────────────
+// 6. EXPORTS
 
 // ───────────────────────────────────────────────────────────────
 export {
@@ -324,10 +615,24 @@ export {
   mrr5,
   K_VALUES,
   BASELINE_K,
+  // REQ-D1-003: Judged relevance K-optimization
+  JUDGED_K_SWEEP_VALUES,
+  computeNdcg10,
+  computeMrr5Judged,
+  evalQueriesAtK,
+  argmaxNdcg10,
+  runJudgedKSweep,
+  isKExperimentalEnabled,
 };
 
 export type {
   KValueMetrics,
   KValueAnalysisResult,
   KValueReport,
+  // REQ-D1-003: Judged relevance types
+  IntentClass,
+  JudgedQuery,
+  JudgedKMetrics,
+  BestKPerIntent,
+  JudgedKSweepResult,
 };

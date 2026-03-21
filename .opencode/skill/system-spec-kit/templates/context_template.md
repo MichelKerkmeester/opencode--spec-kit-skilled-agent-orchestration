@@ -274,6 +274,14 @@ Next: {{NEXT_ACTION}}
 {{#HAS_KEY_TOPICS}}
 **Key Topics:** {{#TOPICS}}`{{.}}`{{^LAST}} | {{/LAST}}{{/TOPICS}}
 {{/HAS_KEY_TOPICS}}
+{{#hasToolCalls}}
+
+**Tool Calls:** {{TOOL_CALLS_COMPACT}}
+{{/hasToolCalls}}
+{{#hasExchanges}}
+
+**Exchanges:** {{EXCHANGES_COMPACT}}
+{{/hasExchanges}}
 <!-- /ANCHOR:project-state-snapshot -->
 
 ---

@@ -41,6 +41,11 @@ import type { EvalChannelPayload } from '../lib/telemetry/eval-channel-tracking'
 
 // Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
 import { logSearchQuery, logChannelResult, logFinalResult } from '../lib/eval/eval-logger';
+import {
+  logFeedbackEvents,
+  isImplicitFeedbackLogEnabled,
+} from '../lib/feedback/feedback-ledger';
+import type { FeedbackEvent } from '../lib/feedback/feedback-ledger';
 
 // Core utilities
 import { checkDatabaseUpdated, isEmbeddingModelReady, waitForEmbeddingModel } from '../core';
@@ -653,7 +658,9 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       null,
       null,
       extraData,
-      includeTrace
+      includeTrace,
+      normalizedQuery,   // REQ-D5-001/D5-004: pass query for recovery + confidence context
+      specFolder ?? null // REQ-D5-001: pass specFolder for recovery narrowing detection
     );
 
     // Prepend evidence gap warning if present
@@ -832,6 +839,38 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       }
     }
   } catch (_error: unknown) { /* eval logging must never break search */ }
+
+  // REQ-D4-001: Implicit feedback — log search_shown events for returned results
+  // Shadow-only: no ranking side effects. Fail-safe, never throws.
+  try {
+    if (isImplicitFeedbackLogEnabled()) {
+      const db = (() => { try { return requireDb(); } catch (_error: unknown) { return null; } })();
+      if (db) {
+        let shownMemoryIds: number[] = [];
+        try {
+          if (responseToReturn?.content?.[0]?.text) {
+            const parsed = JSON.parse(responseToReturn.content[0].text) as Record<string, unknown>;
+            const data = parsed?.data as Record<string, unknown> | undefined;
+            const results = Array.isArray(data?.results) ? data.results as Array<Record<string, unknown>> : [];
+            shownMemoryIds = results.map(r => r.id as number).filter(id => typeof id === 'number');
+          }
+        } catch (_error: unknown) { /* ignore parse errors */ }
+
+        if (shownMemoryIds.length > 0) {
+          const queryId = _evalQueryId ? String(_evalQueryId) : String(_searchStartTime);
+          const feedbackEvents: FeedbackEvent[] = shownMemoryIds.map(memId => ({
+            type: 'search_shown',
+            memoryId: String(memId),
+            queryId,
+            confidence: 'weak',
+            timestamp: _searchStartTime,
+            sessionId: sessionId ?? null,
+          }));
+          logFeedbackEvents(db, feedbackEvents);
+        }
+      }
+    }
+  } catch (_error: unknown) { /* feedback logging must never break search */ }
 
   return responseToReturn;
 }

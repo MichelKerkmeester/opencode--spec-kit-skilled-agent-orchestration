@@ -35,7 +35,7 @@ import type { Stage1Input, Stage1Output, PipelineRow } from './types';
 import * as vectorIndex from '../vector-index';
 import * as embeddings from '../../providers/embeddings';
 import * as hybridSearch from '../hybrid-search';
-import { isMultiQueryEnabled, isEmbeddingExpansionEnabled, isMemorySummariesEnabled } from '../search-flags';
+import { isMultiQueryEnabled, isEmbeddingExpansionEnabled, isMemorySummariesEnabled, isQueryDecompositionEnabled, isGraphConceptRoutingEnabled } from '../search-flags';
 import { expandQuery } from '../query-expander';
 import { expandQueryWithEmbeddings, isExpansionActive } from '../embedding-expansion';
 import { querySummaryEmbeddings, checkScaleGate } from '../memory-summaries';
@@ -44,6 +44,8 @@ import { requireDb } from '../../../utils/db-helpers';
 import { filterRowsByScope } from '../../governance/scope-governance';
 import { getAllowedSharedSpaceIds } from '../../collab/shared-spaces';
 import { withTimeout } from '../../errors/core';
+import { isMultiFacet, decompose, mergeByFacetCoverage } from '../query-decomposer';
+import { routeQueryConcepts } from '../entity-linker';
 
 // Feature catalog: 4-stage pipeline architecture
 // Feature catalog: Hybrid search pipeline
@@ -65,6 +67,9 @@ const CONSTITUTIONAL_INJECT_LIMIT = 5;
 
 /** Number of similar memories to mine for R12 embedding-based query expansion terms. */
 const DEFAULT_EXPANSION_CANDIDATE_LIMIT = 5;
+
+/** D2: Timeout for facet decomposition parallel searches (ms). */
+const DECOMPOSITION_TIMEOUT_MS = 5000;
 
 // -- Helper Functions --
 
@@ -223,6 +228,39 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
   let candidates: PipelineRow[] = [];
   let channelCount = 0;
 
+  // -- D2 REQ-D2-002: Graph Concept Routing -----------------------------------
+  //
+  // When SPECKIT_GRAPH_CONCEPT_ROUTING is enabled, extract noun phrases from
+  // the query and match them against the concept alias table. If concepts are
+  // matched, log them to the trace for downstream use (graph channel activation
+  // is surfaced via trace metadata; actual graph channel is handled in Stage 2).
+  //
+  // Fail-open: any error leaves candidates unchanged.
+
+  if (isGraphConceptRoutingEnabled() && searchType === 'hybrid') {
+    try {
+      let routingDb: Parameters<typeof routeQueryConcepts>[1];
+      try {
+        routingDb = requireDb();
+      } catch (_dbErr: unknown) {
+        routingDb = undefined;
+      }
+      const routing = routeQueryConcepts(query, routingDb);
+      if (routing.graphActivated && routing.concepts.length > 0) {
+        if (trace) {
+          addTraceEntry(trace, 'candidate', 0, 0, 0, {
+            channel: 'd2-concept-routing',
+            matchedConcepts: routing.concepts,
+            graphActivated: true,
+          });
+        }
+      }
+    } catch (routingErr: unknown) {
+      const routingMsg = routingErr instanceof Error ? routingErr.message : String(routingErr);
+      console.warn(`[stage1-candidate-gen] D2 concept routing failed: ${routingMsg}`);
+    }
+  }
+
   // -- Channel: Multi-Concept --------------------------------------------------
 
   if (searchType === 'multi-concept' && Array.isArray(concepts) && concepts.length >= 2) {
@@ -274,6 +312,69 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
 
     // Deep mode: expand query into variants and run hybrid for each, then dedup
     if (mode === 'deep' && isMultiQueryEnabled()) {
+      // -- D2 REQ-D2-001: Query Decomposition (SPECKIT_QUERY_DECOMPOSITION) ---
+      //
+      // When enabled and the query is multi-faceted, decompose into up to 3
+      // sub-query facets and run hybrid search per facet. Results are merged
+      // by facet coverage (items appearing in multiple facets rank higher).
+      //
+      // This block takes the place of the synonym-expansion path below when
+      // decomposition fires. If decomposition is disabled, not applicable, or
+      // fails, execution falls through to the existing expansion logic.
+
+      if (isQueryDecompositionEnabled() && isMultiFacet(query)) {
+        try {
+          const facets = decompose(query).slice(0, 3); // cap at 3
+          if (facets.length > 0) {
+            // Run hybrid for the original query plus each facet, in parallel
+            const allQueries = [query, ...facets];
+            const facetResultSets = await withTimeout(
+              Promise.all(
+                allQueries.map(async (q): Promise<PipelineRow[]> => {
+                  const facetEmbedding = await embeddings.generateQueryEmbedding(q);
+                  if (!facetEmbedding) return [];
+                  return hybridSearch.searchWithFallback(
+                    q,
+                    facetEmbedding,
+                    { limit, specFolder, includeArchived }
+                  ) as Promise<PipelineRow[]>;
+                })
+              ),
+              DECOMPOSITION_TIMEOUT_MS,
+              'D2 facet decomposition',
+            );
+
+            channelCount = allQueries.length;
+            const pools = allQueries.map((q, i) => ({
+              query: q,
+              results: facetResultSets[i] ?? [],
+            }));
+            candidates = mergeByFacetCoverage(pools);
+
+            if (trace) {
+              addTraceEntry(trace, 'candidate', channelCount, candidates.length, 0, {
+                channel: 'd2-query-decomposition',
+                originalQuery: query,
+                facets,
+                facetCount: facets.length,
+              });
+            }
+
+            // Skip the standard deep-mode expansion path below
+            // (jump to post-channel processing via the else-if chain)
+          }
+        } catch (decompErr: unknown) {
+          const decompMsg = decompErr instanceof Error ? decompErr.message : String(decompErr);
+          console.warn(
+            `[stage1-candidate-gen] D2 query decomposition failed, falling through to expansion: ${decompMsg}`
+          );
+          // Fall through to standard deep expansion path below (candidates is empty)
+        }
+      }
+
+      // Only run existing expansion logic when decomposition did not produce results
+      if (candidates.length === 0) {
+
       const queryVariants = await buildDeepQueryVariants(query);
 
       if (queryVariants.length > 1) {
@@ -334,6 +435,8 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
           { limit, specFolder, includeArchived }
         )) as PipelineRow[];
       }
+
+      } // end: if (candidates.length === 0)
     } else {
       // -- R12: Embedding-based query expansion (SPECKIT_EMBEDDING_EXPANSION) --
       //

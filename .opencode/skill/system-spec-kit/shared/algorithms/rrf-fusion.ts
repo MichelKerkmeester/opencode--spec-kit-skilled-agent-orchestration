@@ -39,6 +39,19 @@ const CONVERGENCE_BONUS = 0.10;
 // graph edges encode curated human decisions (causal links) that are high-signal.
 const GRAPH_WEIGHT_BOOST = 1.5;
 
+/**
+ * Default beta scaling factor for calibrated overlap bonus (REQ-D1-001).
+ * Controls the magnitude of the query-aware overlap bonus relative to
+ * the mean normalized top score. Lower values produce smaller bonuses.
+ */
+const CALIBRATED_OVERLAP_BETA = 0.15;
+
+/**
+ * Maximum overlap bonus when calibrated overlap is enabled (REQ-D1-001).
+ * Clamped to prevent a single overlap bonus from dominating RRF scores.
+ */
+const CALIBRATED_OVERLAP_MAX = 0.06;
+
 /** Minimum character length for a query term to be considered for term matching. */
 const MIN_QUERY_TERM_LENGTH = 2;
 
@@ -76,6 +89,12 @@ interface FuseMultiOptions {
   k?: number;
   convergenceBonus?: number;
   graphWeightBoost?: number;
+  /**
+   * Beta scaling factor for calibrated overlap bonus (REQ-D1-001).
+   * Only used when SPECKIT_CALIBRATED_OVERLAP_BONUS is enabled.
+   * Default: 0.15
+   */
+  calibratedOverlapBeta?: number;
 }
 
 /** Configuration options for advanced score fusion with term matching. */
@@ -142,7 +161,26 @@ function resolveRrfK(rawK: number | undefined): number {
   return Number.isFinite(rawK) ? rawK : fallbackK;
 }
 
-/* --- 3. CORE FUNCTIONS --- */
+/* --- 3. FEATURE FLAG HELPERS --- */
+
+/**
+ * Check if calibrated overlap bonus is enabled (REQ-D1-001).
+ * When OFF (default), the flat CONVERGENCE_BONUS is used.
+ * When ON, a query-aware scaled overlap bonus is computed.
+ * @returns True when SPECKIT_CALIBRATED_OVERLAP_BONUS is set to 'true'.
+ */
+function isCalibratedOverlapBonusEnabled(): boolean {
+  return process.env.SPECKIT_CALIBRATED_OVERLAP_BONUS === 'true';
+}
+
+/**
+ * Clamp a value to [min, max].
+ */
+function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
+}
+
+/* --- 4. CORE FUNCTIONS --- */
 
 /**
  * Fuse two ranked result lists using Reciprocal Rank Fusion.
@@ -217,7 +255,7 @@ function fuseResults(
 /**
  * Fuse multiple ranked result lists with optional source weights.
  * @param lists - Array of ranked lists, each with a source label and optional weight.
- * @param options - Optional k value, convergence bonus, and graph weight boost overrides.
+ * @param options - Optional k value, convergence bonus, graph weight boost, and calibrated overlap overrides.
  * @returns Fused results sorted by descending RRF score, optionally normalized to [0,1].
  */
 function fuseResultsMulti(
@@ -234,6 +272,15 @@ function fuseResultsMulti(
     ? rawGraphWeightBoost
     : GRAPH_WEIGHT_BOOST;
 
+  // REQ-D1-001: Resolve beta for calibrated overlap bonus
+  const rawBeta = options.calibratedOverlapBeta;
+  const beta = typeof rawBeta === 'number' && Number.isFinite(rawBeta) && rawBeta >= 0
+    ? rawBeta
+    : CALIBRATED_OVERLAP_BETA;
+
+  // Track per-candidate raw (pre-convergence) RRF scores per source for meanTopNormScore
+  // Maps canonical id -> Map<source, rawRrfScore>
+  const rawScoresBySource = new Map<string, Map<string, number>>();
   const scoreMap = new Map<string, FusionResult>();
 
   for (const list of lists) {
@@ -260,18 +307,67 @@ function fuseResultsMulti(
           convergenceBonus: 0,
         });
       }
+      // Track raw score for calibrated overlap computation
+      let srcMap = rawScoresBySource.get(key);
+      if (!srcMap) {
+        srcMap = new Map<string, number>();
+        rawScoresBySource.set(key, srcMap);
+      }
+      // Accumulate score per source (in case same source appears twice)
+      srcMap.set(list.source, (srcMap.get(list.source) ?? 0) + rrfScore);
     }
   }
 
-  // Apply convergence bonus for multi-source matches
+  // Compute max raw score across all candidates (for normalization in calibrated overlap)
+  // AI-WHY: We normalize per-candidate scores against the global max so the bonus
+  // is proportional to the candidate's strength relative to the pool.
+  let globalMaxRawScore = 0;
   for (const result of scoreMap.values()) {
+    if (result.rrfScore > globalMaxRawScore) globalMaxRawScore = result.rrfScore;
+  }
+
+  const totalChannels = lists.length;
+  const calibratedMode = isCalibratedOverlapBonusEnabled();
+
+  // Apply convergence bonus for multi-source matches
+  for (const [id, result] of scoreMap) {
     // AI-WHY: Deduplicate sources before counting — a source can appear multiple
     // times when the same channel contributes via different code paths.
-    const uniqueSourceCount = new Set(result.sources).size;
+    const uniqueSources = new Set(result.sources);
+    const uniqueSourceCount = uniqueSources.size;
     if (uniqueSourceCount >= 2) {
-      const bonus = convergenceBonus * (uniqueSourceCount - 1);
-      result.convergenceBonus = bonus;
-      result.rrfScore += bonus;
+      if (calibratedMode) {
+        // REQ-D1-001: Calibrated overlap bonus — query-aware, bounded to [0, 0.06]
+        // channelsHit = number of unique channels this candidate appeared in
+        // overlapRatio = fraction of possible additional channels that hit (0 when 1 channel, 1 when all channels)
+        const channelsHit = uniqueSourceCount;
+        const overlapRatio = (channelsHit - 1) / Math.max(1, totalChannels - 1);
+
+        // meanTopNormScore: mean normalized raw score across channels that hit this candidate
+        const srcScores = rawScoresBySource.get(id);
+        let meanNorm = 0;
+        if (srcScores && globalMaxRawScore > 0) {
+          let sumNorm = 0;
+          let count = 0;
+          for (const [src, rawScore] of srcScores) {
+            if (uniqueSources.has(src)) {
+              sumNorm += rawScore / globalMaxRawScore;
+              count++;
+            }
+          }
+          meanNorm = count > 0 ? sumNorm / count : 0;
+        }
+
+        const overlapScore = beta * overlapRatio * meanNorm;
+        const bonus = clamp(overlapScore, 0, CALIBRATED_OVERLAP_MAX);
+        result.convergenceBonus = bonus;
+        result.rrfScore += bonus;
+      } else {
+        // Default flat convergence bonus (backwards compatible)
+        const bonus = convergenceBonus * (uniqueSourceCount - 1);
+        result.convergenceBonus = bonus;
+        result.rrfScore += bonus;
+      }
     }
   }
 
@@ -517,6 +613,8 @@ export {
   DEFAULT_K,
   CONVERGENCE_BONUS,
   GRAPH_WEIGHT_BOOST,
+  CALIBRATED_OVERLAP_BETA,
+  CALIBRATED_OVERLAP_MAX,
 
   fuseResults,
   fuseResultsMulti,
@@ -526,7 +624,9 @@ export {
   unifiedSearch,
   isRrfEnabled,
   isScoreNormalizationEnabled,
+  isCalibratedOverlapBonusEnabled,
   normalizeRrfScores,
+  clamp,
 };
 
 export type {

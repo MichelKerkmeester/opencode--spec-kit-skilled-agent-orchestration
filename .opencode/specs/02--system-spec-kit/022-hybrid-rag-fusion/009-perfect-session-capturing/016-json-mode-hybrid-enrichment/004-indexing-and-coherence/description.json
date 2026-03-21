@@ -1,0 +1,54 @@
+{
+  "specFolder": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/004-indexing-and-coherence",
+  "description": "Phase 004 of 004 in json-mode-hybrid-enrichment: Domains D (Indexing & Crawlability) + F (Semantic Quality & Cross-Session Coherence). Fixes embedding visibility (RetryStats in memory_health), trigger phrase noise (path fragments, n-gram shingles), template consumption gaps (toolCalls, exchanges silently discarded), phantom OPTIONAL_PLACEHOLDERs, and cross-session dedup safeguards.",
+  "keywords": [
+    "embedding", "retry stats", "memory health", "circuit breaker",
+    "trigger phrase", "filter", "path fragment", "n-gram", "shingle",
+    "toolCalls", "exchanges", "mustache template", "OPTIONAL_PLACEHOLDERS",
+    "phantom placeholders", "cross-session coherence", "observation dedup",
+    "pre-save overlap", "post-save review", "indexing", "coherence"
+  ],
+  "lastUpdated": "2026-03-21T00:00:00.000Z",
+  "specId": "004",
+  "folderSlug": "indexing-and-coherence",
+  "level": 3,
+  "status": "draft",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "009-perfect-session-capturing",
+    "016-json-mode-hybrid-enrichment"
+  ],
+  "researchSource": "../research.md",
+  "researchRound": 2,
+  "researchDomains": ["D", "F"],
+  "findings": 74,
+  "complexityScore": 60,
+  "priorityItems": {
+    "P0": ["Surface RetryStats through memory_health MCP tool"],
+    "P1": [
+      "Add trigger phrase quality filtering",
+      "Add template sections for toolCalls and exchanges fields"
+    ],
+    "P2": [
+      "Remove 8 phantom V2.2 placeholders",
+      "Un-suppress 9 OPTIONAL_PLACEHOLDERs with active data sources",
+      "Add multi-token path fragment detection to post-save review",
+      "Add pre-save MCP query for overlapping memories",
+      "Add observation dedup at normalization time"
+    ]
+  },
+  "filesToModify": [
+    "mcp_server/handlers/tools/memory-health.ts",
+    "scripts/core/workflow.ts",
+    "scripts/renderers/template-renderer.ts",
+    "scripts/core/post-save-review.ts",
+    "scripts/utils/input-normalizer.ts"
+  ],
+  "siblingPhases": [
+    "001-initial-enrichment",
+    "002-scoring-and-filter",
+    "003-field-integrity-and-schema"
+  ],
+  "coordinationNote": "Phase 4 (OPTIONAL_PLACEHOLDERS cleanup) must land after sibling 003-field-integrity-and-schema to avoid merge conflicts on template-renderer.ts"
+}

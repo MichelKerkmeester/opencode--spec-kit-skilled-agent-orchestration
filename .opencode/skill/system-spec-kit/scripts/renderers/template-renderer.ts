@@ -32,15 +32,14 @@ type TemplateDataItem = Record<string, unknown> | string | number | boolean;
 const OPTIONAL_PLACEHOLDERS: Set<string> = new Set([
   // @planned(V2.2) — These placeholders suppress warnings for template sections not yet populated.
   // Remove these entries when the corresponding template sections are either populated or removed.
-  // Session Integrity Checks (V2.2)
-  'MEMORY_FILE_EXISTS', 'MEMORY_FILE_PATH', 'INDEX_ENTRY_VALID', 'LAST_INDEXED',
-  'CHECKSUMS_MATCH', 'CHECKSUM_DETAILS', 'NO_DEDUP_CONFLICTS', 'DEDUP_CONFLICT_DETAILS',
-  // Memory Classification (V2.2)
-  'MEMORY_TYPE', 'HALF_LIFE_DAYS', 'BASE_DECAY_RATE', 'ACCESS_BOOST_FACTOR',
-  'RECENCY_WEIGHT', 'IMPORTANCE_MULTIPLIER',
-  // Session Deduplication (V2.2)
-  'MEMORIES_SURFACED_COUNT', 'DEDUP_SAVINGS_TOKENS', 'FINGERPRINT_HASH',
-  // Postflight Learning Delta (V2.2)
+  // Phase 004 T026: DELETED 8 phantom Session Integrity entries (zero construction sites):
+  // MEMORY_FILE_EXISTS, MEMORY_FILE_PATH, INDEX_ENTRY_VALID, LAST_INDEXED,
+  // CHECKSUMS_MATCH, CHECKSUM_DETAILS, NO_DEDUP_CONFLICTS, DEDUP_CONFLICT_DETAILS
+  // Phase 004 T028: UN-SUPPRESSED 6 Memory Classification entries (active via buildMemoryClassificationContext):
+  // MEMORY_TYPE, HALF_LIFE_DAYS, BASE_DECAY_RATE, ACCESS_BOOST_FACTOR, RECENCY_WEIGHT, IMPORTANCE_MULTIPLIER
+  // Phase 004 T028: UN-SUPPRESSED 3 Session Deduplication entries (active via buildSessionDedupContext):
+  // MEMORIES_SURFACED_COUNT, DEDUP_SAVINGS_TOKENS, FINGERPRINT_HASH
+  // Postflight Learning Delta (V2.2) — intentionally nullable; suppress until postflight flow is stable
   'PREFLIGHT_KNOW_SCORE', 'POSTFLIGHT_KNOW_SCORE', 'DELTA_KNOW_SCORE', 'DELTA_KNOW_TREND',
   'PREFLIGHT_UNCERTAINTY_SCORE', 'POSTFLIGHT_UNCERTAINTY_SCORE', 'DELTA_UNCERTAINTY_SCORE', 'DELTA_UNCERTAINTY_TREND',
   'PREFLIGHT_CONTEXT_SCORE', 'POSTFLIGHT_CONTEXT_SCORE', 'DELTA_CONTEXT_SCORE', 'DELTA_CONTEXT_TREND',
@@ -50,6 +49,8 @@ const OPTIONAL_PLACEHOLDERS: Set<string> = new Set([
   'ANCHOR_ID', 'TYPE', 'NARRATIVE', 'FILES_LIST',
   'CAPTURED_FILE_COUNT', 'FILESYSTEM_FILE_COUNT', 'GIT_CHANGED_FILE_COUNT',
   'HEAD_REF', 'COMMIT_REF',
+  // Phase 004: toolCalls/exchanges compact strings — empty when no data present
+  'TOOL_CALLS_COMPACT', 'EXCHANGES_COMPACT', 'hasToolCalls', 'hasExchanges',
 ]);
 
 // ───────────────────────────────────────────────────────────────

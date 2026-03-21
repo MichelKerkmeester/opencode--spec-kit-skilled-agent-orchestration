@@ -25,6 +25,22 @@ import {
   type MCPResponse,
 } from '../lib/response/envelope';
 
+// REQ-D5-001: Empty/Weak Result Recovery UX
+import {
+  buildRecoveryPayload,
+  shouldTriggerRecovery,
+  isEmptyResultRecoveryEnabled,
+  type RecoveryPayload,
+} from '../lib/search/recovery-payload';
+
+// REQ-D5-004: Per-Result Calibrated Confidence
+import {
+  computeResultConfidence,
+  assessRequestQuality,
+  isResultConfidenceEnabled,
+  type ScoredResult,
+} from '../lib/search/confidence-scoring';
+
 // Consolidated path validation from core/config.js (single source of truth)
 import { ALLOWED_BASE_PATHS } from '../core/config';
 
@@ -361,12 +377,24 @@ export async function formatSearchResults(
   parserOverride: MemoryParserLike | null = null,
   startTime: number | null = null,
   extraData: Record<string, unknown> = {},
-  includeTrace: boolean = false
+  includeTrace: boolean = false,
+  query: string | null = null,
+  specFolder: string | null = null
 ): Promise<MCPResponse> {
   const startMs = startTime || Date.now();
   const includeContent = include_content;
 
   if (!results || results.length === 0) {
+    // REQ-D5-001: Attach recovery payload when flag is enabled
+    let recoveryPayload: RecoveryPayload | null = null;
+    if (isEmptyResultRecoveryEnabled()) {
+      recoveryPayload = buildRecoveryPayload({
+        query,
+        hasSpecFolderFilter: specFolder !== null && specFolder.length > 0,
+        resultCount: 0,
+      });
+    }
+
     // REQ-019: Use standardized empty response envelope
     return createMCPEmptyResponse({
       tool: 'memory_search',
@@ -376,6 +404,8 @@ export async function formatSearchResults(
         constitutionalCount: 0,
         // Always spread caller-provided extraData (pipeline trace, timing, evidence gaps, etc.)
         ...(extraData ?? {}),
+        // REQ-D5-001: Attach recovery payload (additive, only when flag enabled)
+        ...(recoveryPayload !== null ? { recovery: recoveryPayload } : {}),
       },
       hints: [
         'Try broadening your search query',
@@ -538,6 +568,39 @@ export async function formatSearchResults(
     return formattedResult;
   }));
 
+  // REQ-D5-004: Compute per-result confidence when flag is enabled (additive, no side-effects)
+  const confidenceEnabled = isResultConfidenceEnabled();
+  let confidenceData: ReturnType<typeof computeResultConfidence> | null = null;
+  let requestQualityData: ReturnType<typeof assessRequestQuality> | null = null;
+  if (confidenceEnabled) {
+    // Cast to ScoredResult — RawSearchResult extends Record<string,unknown> and has the same shape
+    const scoredResults = results as unknown as ScoredResult[];
+    confidenceData = computeResultConfidence(scoredResults);
+    requestQualityData = assessRequestQuality(scoredResults, confidenceData);
+  }
+
+  // REQ-D5-001: Compute recovery payload for weak/partial results when flag is enabled
+  let recoveryPayload: RecoveryPayload | null = null;
+  if (isEmptyResultRecoveryEnabled() && formatted.length > 0) {
+    // Compute average confidence for recovery decision
+    let avgConfidence: number | undefined;
+    if (confidenceData && confidenceData.length > 0) {
+      const sum = confidenceData.reduce((acc, c) => acc + c.confidence.value, 0);
+      avgConfidence = sum / confidenceData.length;
+    }
+
+    const recoveryCtx = {
+      query,
+      hasSpecFolderFilter: specFolder !== null && specFolder.length > 0,
+      resultCount: formatted.length,
+      avgConfidence,
+    };
+
+    if (shouldTriggerRecovery(recoveryCtx)) {
+      recoveryPayload = buildRecoveryPayload(recoveryCtx);
+    }
+  }
+
   // REQ-019: Build summary based on result characteristics
   const summary = constitutionalCount > 0
     ? `Found ${formatted.length} memories (${constitutionalCount} constitutional)`
@@ -555,12 +618,26 @@ export async function formatSearchResults(
     hints.push('Some files could not be read - check file paths');
   }
 
+  // Merge per-result confidence into the formatted result array (additive)
+  const resultsWithConfidence: Array<Record<string, unknown>> = formatted.map(
+    (r, i): Record<string, unknown> => {
+      if (!confidenceData) return r as unknown as Record<string, unknown>;
+      const conf = confidenceData[i];
+      if (!conf) return r as unknown as Record<string, unknown>;
+      return { ...(r as unknown as Record<string, unknown>), ...conf };
+    }
+  );
+
   // REQ-019: Use standardized success response envelope
   const responseData: Record<string, unknown> = {
     searchType: searchType,
     count: formatted.length,
     constitutionalCount: constitutionalCount,
-    results: formatted,
+    results: resultsWithConfidence,
+    // REQ-D5-004: Request-level quality assessment (additive)
+    ...(requestQualityData !== null ? requestQualityData : {}),
+    // REQ-D5-001: Recovery payload for weak/partial results (additive)
+    ...(recoveryPayload !== null ? { recovery: recoveryPayload } : {}),
   };
   // Always spread caller-provided extraData (pipeline trace, timing, evidence gaps, etc.).
   // Spread extraData first, then re-assert canonical keys to prevent overwrites.

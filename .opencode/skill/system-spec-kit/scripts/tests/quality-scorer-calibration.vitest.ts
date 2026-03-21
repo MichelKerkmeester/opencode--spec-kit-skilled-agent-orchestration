@@ -1,222 +1,211 @@
-// TEST: Legacy Quality Scorer Calibration
-// Ensures thin generic memories score materially lower than rich specific memories
+// TEST: Live Quality Scorer Calibration (extractors/quality-scorer.ts)
+// Ensures the scorer has discriminative power: clean sessions score high, penalised sessions score low.
+// Phase 002: import fixed from core/quality-scorer → extractors/quality-scorer (live scorer).
 import { describe, expect, it } from 'vitest';
 
-import { scoreMemoryQuality } from '../core/quality-scorer';
+import { scoreMemoryQuality } from '../extractors/quality-scorer';
 
-function buildContent(title: string, bodyLines: string[]): string {
-  return [
-    '---',
-    `title: "${title}"`,
-    '---',
-    '',
-    `# ${title}`,
-    '',
-    ...bodyLines,
-  ].join('\n');
-}
+const RICH_CONTENT = [
+  '---',
+  'title: "Claude Capture Fallback Hardening"',
+  '---',
+  '',
+  '# Claude Capture Fallback Hardening',
+  '',
+  ...Array.from({ length: 80 }, (_, index) => (
+    `Line ${index + 1}: Detailed fallback behavior, provenance checks, and transcript parsing evidence.`
+  )),
+].join('\n');
 
-describe('scoreMemoryQuality calibration', () => {
-  it('scores rich specific memories higher than thin generic memories', () => {
-    const richContent = buildContent(
-      'Claude Capture Fallback Hardening',
-      Array.from({ length: 80 }, (_, index) => (
-        `Line ${index + 1}: Detailed fallback behavior, provenance checks, and transcript parsing evidence.`
-      )),
-    );
-    const thinContent = buildContent(
-      'Development session',
-      ['Done.', 'Updated stuff.', 'More work later.'],
-    );
+const THIN_CONTENT = [
+  '---',
+  'title: "Development session"',
+  '---',
+  '',
+  '# Development session',
+  '',
+  'Done.',
+  'Updated stuff.',
+  'More work later.',
+].join('\n');
 
-    const richResult = scoreMemoryQuality(
-      richContent,
-      ['claude capture', 'stateless fallback', 'quality scoring', 'transcript parser', 'history matching', 'memory save', 'alignment blocking', 'provenance'],
-      ['claude', 'capture', 'fallback', 'quality', 'alignment'],
-      [
-        { DESCRIPTION: 'Integrates Claude transcript fallback into the stateless data loader with exact session matching.', _provenance: 'git' as const },
-        { DESCRIPTION: 'Calibrates numeric quality scoring so generic summaries and weak observations do not look healthy.', _provenance: 'git' as const },
-      ],
-      [
-        { TITLE: 'Inspect scripts/loaders/data-loader.ts', NARRATIVE: 'Mapped the missing fallback seam in the loader.' },
-        { TITLE: 'Implement scripts/extractors/claude-code-capture.ts', NARRATIVE: 'Added bounded transcript selection and tool parsing.' },
-        { TITLE: 'Calibrate core quality scorer', NARRATIVE: 'Reduced false-positive scores for thin generic output.' },
-      ],
-    );
+describe('scoreMemoryQuality calibration — live scorer (extractors/quality-scorer.ts)', () => {
+  it('scores a clean session at 1.0 (no V-rule failures)', () => {
+    const result = scoreMemoryQuality({
+      content: RICH_CONTENT,
+      validatorSignals: [],
+    });
 
-    const thinResult = scoreMemoryQuality(
-      thinContent,
-      ['session'],
-      ['session'],
-      [],
-      [
-        { TITLE: 'Tool: Read', NARRATIVE: 'Read a file.' },
-        { TITLE: 'Tool: Read', NARRATIVE: 'Read another file.' },
-        { TITLE: 'Tool: Read', NARRATIVE: 'Read one more file.' },
-      ],
-    );
-
-    expect(richResult.score).toBeGreaterThan(thinResult.score);
-    expect(richResult.score01).toBeCloseTo(richResult.score100 / 100, 5);
-    expect(thinResult.score01).toBeCloseTo(thinResult.score100 / 100, 5);
-    expect(richResult.score).toBeGreaterThanOrEqual(85);
-    expect(thinResult.score).toBeLessThan(60);
-    expect(thinResult.warnings).toEqual(expect.arrayContaining([
-      expect.stringMatching(/generic/i),
-      expect.stringMatching(/duplicate|diversity/i),
-    ]));
+    expect(result.score01).toBe(1.0);
+    expect(result.score100).toBe(100);
+    expect(result.score).toBe(100);
+    expect(result.score01).toBeCloseTo(result.score100 / 100, 5);
   });
 
-  it('treats generic file descriptions and generic observation titles as low semantic density', () => {
-    const result = scoreMemoryQuality(
-      buildContent(
-        'Implementation and updates',
-        Array.from({ length: 25 }, (_, index) => `Generic line ${index + 1}.`),
-      ),
-      ['memory save', 'quality'],
-      ['memory', 'quality'],
-      [
-        { DESCRIPTION: 'Modified during session' },
-        { DESCRIPTION: 'Tracked file history snapshot' },
+  it('scores a session with five MEDIUM V-rule failures meaningfully below 0.90', () => {
+    // V2 and V12 are the two MEDIUM-severity rules that do not block writes.
+    // We simulate 5 failures via repeated signals (scorer sums all failures).
+    // With MEDIUM penalty = 0.03: 5 × 0.03 = 0.15 → score = 0.85.
+    const result = scoreMemoryQuality({
+      content: THIN_CONTENT,
+      validatorSignals: [
+        { ruleId: 'V2', passed: false },
+        { ruleId: 'V2', passed: false },
+        { ruleId: 'V2', passed: false },
+        { ruleId: 'V2', passed: false },
+        { ruleId: 'V12', passed: false },
       ],
-      [
-        { TITLE: 'Read src/index.ts', NARRATIVE: 'Looked at source.' },
-        { TITLE: 'Read src/index.ts', NARRATIVE: 'Looked again.' },
-      ],
-    );
+    });
 
-    expect(result.breakdown.fileDescriptions).toBe(0);
-    expect(result.breakdown.observationDedup).toBeLessThanOrEqual(5);
-    expect(result.warnings).toEqual(expect.arrayContaining([
-      expect.stringMatching(/files missing descriptions/i),
-      expect.stringMatching(/generic/i),
-    ]));
+    expect(result.score01).toBeLessThan(0.90);
+    expect(result.score01).toBeGreaterThan(0.60);
+    expect(result.score01).toBeCloseTo(0.85, 2);
   });
 
-  it('applies high-severity contamination penalty by default (null severity)', () => {
-    const clean = scoreMemoryQuality(
-      buildContent(
-        'Quality scorer unification seam',
-        Array.from({ length: 30 }, (_, index) => `Evidence line ${index + 1} for contamination penalty coverage.`),
-      ),
-      ['quality scorer', 'contamination penalty', 'workflow threshold', 'canonical score'],
-      ['quality', 'contamination', 'threshold'],
-      [
-        { DESCRIPTION: 'Captures the scorer contract change for the canonical 0.0-1.0 scale.' },
-      ],
-      [
-        { TITLE: 'Implement score01 contract', NARRATIVE: 'Unified the scorer return shape and legacy aliases.' },
-      ],
-      undefined,
-      false,
-    );
+  it('scores a clean session higher than one with multiple V-rule failures', () => {
+    const clean = scoreMemoryQuality({
+      content: RICH_CONTENT,
+      validatorSignals: [],
+    });
 
-    const contaminated = scoreMemoryQuality(
-      buildContent(
-        'Quality scorer unification seam',
-        Array.from({ length: 30 }, (_, index) => `Evidence line ${index + 1} for contamination penalty coverage.`),
-      ),
-      ['quality scorer', 'contamination penalty', 'workflow threshold', 'canonical score'],
-      ['quality', 'contamination', 'threshold'],
-      [
-        { DESCRIPTION: 'Captures the scorer contract change for the canonical 0.0-1.0 scale.' },
+    const penalised = scoreMemoryQuality({
+      content: THIN_CONTENT,
+      validatorSignals: [
+        { ruleId: 'V2', passed: false },
+        { ruleId: 'V4', passed: false },
+        { ruleId: 'V5', passed: false },
+        { ruleId: 'V7', passed: false },
+        { ruleId: 'V12', passed: false },
       ],
-      [
-        { TITLE: 'Implement score01 contract', NARRATIVE: 'Unified the scorer return shape and legacy aliases.' },
-      ],
-      undefined,
-      true,
-    );
+    });
 
-    expect(contaminated.score01).toBeLessThanOrEqual(0.6);
-    expect(contaminated.score01).toBeLessThan(clean.score01);
-    expect(contaminated.score100).toBe(Math.round(contaminated.score01 * 100));
-    expect(contaminated.qualityFlags).toContain('has_contamination');
+    // 2 MEDIUM (0.03 each) + 3 LOW (0.01 each) = 0.09 penalty → score ≈ 0.91
+    // The clean session (1.0) is clearly above the penalised one, demonstrating discriminative power.
+    expect(clean.score01).toBeGreaterThan(penalised.score01);
+    expect(clean.score01).toBe(1.0);
+    expect(penalised.score01).toBeLessThan(1.0);
+    expect(penalised.score01).toBeLessThan(0.95);
+  });
+
+  it('applies high-severity contamination cap at 0.60', () => {
+    const clean = scoreMemoryQuality({
+      content: RICH_CONTENT,
+      validatorSignals: [],
+      hadContamination: false,
+    });
+
+    const contaminated = scoreMemoryQuality({
+      content: RICH_CONTENT,
+      validatorSignals: [],
+      hadContamination: true,
+      contaminationSeverity: null, // null defaults to medium → cap 0.85
+    });
+
+    const highContaminated = scoreMemoryQuality({
+      content: RICH_CONTENT,
+      validatorSignals: [],
+      hadContamination: true,
+      contaminationSeverity: 'high',
+    });
+
+    expect(highContaminated.score01).toBeLessThanOrEqual(0.60);
+    expect(highContaminated.score01).toBeLessThan(clean.score01);
+    expect(highContaminated.score100).toBe(Math.round(highContaminated.score01 * 100));
+    expect(highContaminated.qualityFlags).toContain('has_contamination');
+
+    // null severity treated as medium: capped at 0.85
+    expect(contaminated.score01).toBeLessThanOrEqual(0.85);
+    expect(contaminated.score01).toBeGreaterThan(highContaminated.score01);
   });
 
   describe('contamination severity tiers', () => {
-    function buildRichContent(): string {
-      return buildContent(
-        'Contamination severity tier calibration',
-        Array.from({ length: 80 }, (_, index) => (
-          `Line ${index + 1}: Detailed evidence for severity tier testing with provenance checks.`
-        )),
-      );
-    }
+    it('applies a small penalty for low severity contamination (no cap applied)', () => {
+      const result = scoreMemoryQuality({
+        content: RICH_CONTENT,
+        validatorSignals: [],
+        hadContamination: true,
+        contaminationSeverity: 'low',
+      });
 
-    const richTriggers = ['claude capture', 'stateless fallback', 'quality scoring', 'transcript parser', 'history matching', 'memory save', 'alignment blocking', 'provenance'];
-    const richTopics = ['claude', 'capture', 'fallback', 'quality', 'alignment'];
-    const richFiles = [{ DESCRIPTION: 'Integrates Claude transcript fallback into the stateless data loader.', _provenance: 'git' as const }];
-    const richObservations = [
-      { TITLE: 'Inspect scripts/core/workflow.ts', NARRATIVE: 'Mapped the contamination flow.' },
-      { TITLE: 'Calibrate severity tiers', NARRATIVE: 'Validated tiered penalty behavior.' },
-      { TITLE: 'Verify score boundaries', NARRATIVE: 'Checked cap enforcement per severity level.' },
-    ];
-
-    it('applies a small penalty for low severity contamination', () => {
-      const result = scoreMemoryQuality(
-        buildRichContent(), richTriggers, richTopics, richFiles, richObservations,
-        undefined, true, 'low',
-      );
-
+      // Low severity: warning added but no cap → score stays at 1.0 (no V-rule failures)
       expect(result.score01).toBeGreaterThan(0.60);
-      const contaminationDim = result.dimensions.find((d) => d.id === 'contamination');
-      expect(contaminationDim?.score01).toBe(0.95);
+      expect(result.qualityFlags).toContain('has_contamination');
     });
 
     it('caps medium severity contamination at 0.85', () => {
-      const result = scoreMemoryQuality(
-        buildRichContent(), richTriggers, richTopics, richFiles, richObservations,
-        undefined, true, 'medium',
-      );
+      const result = scoreMemoryQuality({
+        content: RICH_CONTENT,
+        validatorSignals: [],
+        hadContamination: true,
+        contaminationSeverity: 'medium',
+      });
 
       expect(result.score01).toBeLessThanOrEqual(0.85);
-      const contaminationDim = result.dimensions.find((d) => d.id === 'contamination');
-      expect(contaminationDim?.score01).toBe(0.85);
+      expect(result.qualityFlags).toContain('has_contamination');
     });
 
     it('caps high severity contamination at 0.60', () => {
-      const result = scoreMemoryQuality(
-        buildRichContent(), richTriggers, richTopics, richFiles, richObservations,
-        undefined, true, 'high',
-      );
+      const result = scoreMemoryQuality({
+        content: RICH_CONTENT,
+        validatorSignals: [],
+        hadContamination: true,
+        contaminationSeverity: 'high',
+      });
 
       expect(result.score01).toBeLessThanOrEqual(0.60);
-      const contaminationDim = result.dimensions.find((d) => d.id === 'contamination');
-      expect(contaminationDim?.score01).toBe(0.60);
+      expect(result.qualityFlags).toContain('has_contamination');
     });
 
-    it('keeps capability-downgraded contamination above the 0.60 cap while non-downgraded sources stay capped', () => {
-      const downgradedSource = scoreMemoryQuality(
-        buildRichContent(), richTriggers, richTopics, richFiles, richObservations,
-        undefined, true, 'low',
-      );
-      const nonDowngradedSource = scoreMemoryQuality(
-        buildRichContent(), richTriggers, richTopics, richFiles, richObservations,
-        undefined, true, 'high',
-      );
+    it('keeps low severity score above the 0.60 cap used for high severity', () => {
+      const lowSeverity = scoreMemoryQuality({
+        content: RICH_CONTENT,
+        validatorSignals: [],
+        hadContamination: true,
+        contaminationSeverity: 'low',
+      });
 
-      expect(downgradedSource.score01).toBeGreaterThan(0.60);
-      expect(nonDowngradedSource.score01).toBeLessThanOrEqual(0.60);
-      expect(downgradedSource.score01).toBeGreaterThan(nonDowngradedSource.score01);
-      const downgradedDim = downgradedSource.dimensions.find((d) => d.id === 'contamination');
-      const highDim = nonDowngradedSource.dimensions.find((d) => d.id === 'contamination');
-      expect(downgradedDim?.score01).toBe(0.95);
-      expect(highDim?.score01).toBe(0.60);
+      const highSeverity = scoreMemoryQuality({
+        content: RICH_CONTENT,
+        validatorSignals: [],
+        hadContamination: true,
+        contaminationSeverity: 'high',
+      });
+
+      expect(lowSeverity.score01).toBeGreaterThan(highSeverity.score01);
+      expect(lowSeverity.score01).toBeGreaterThan(0.60);
+      expect(highSeverity.score01).toBeLessThanOrEqual(0.60);
     });
 
     it('treats null severity as medium (default behavior)', () => {
-      const withNull = scoreMemoryQuality(
-        buildRichContent(), richTriggers, richTopics, richFiles, richObservations,
-        undefined, true, null,
-      );
-      const withMedium = scoreMemoryQuality(
-        buildRichContent(), richTriggers, richTopics, richFiles, richObservations,
-        undefined, true, 'medium',
-      );
+      const withNull = scoreMemoryQuality({
+        content: RICH_CONTENT,
+        validatorSignals: [],
+        hadContamination: true,
+        contaminationSeverity: null,
+      });
+
+      const withMedium = scoreMemoryQuality({
+        content: RICH_CONTENT,
+        validatorSignals: [],
+        hadContamination: true,
+        contaminationSeverity: 'medium',
+      });
 
       expect(withNull.score01).toBe(withMedium.score01);
-      expect(withNull.dimensions).toEqual(withMedium.dimensions);
     });
+  });
+
+  it('returns correct score01/score100 relationship for all result shapes', () => {
+    const cases = [
+      { validatorSignals: [] as Array<{ ruleId: 'V2'; passed: boolean }>, hadContamination: false as const },
+      { validatorSignals: [{ ruleId: 'V2' as const, passed: false }], hadContamination: false as const },
+      { validatorSignals: [] as Array<{ ruleId: 'V2'; passed: boolean }>, hadContamination: true as const, contaminationSeverity: 'high' as const },
+    ];
+
+    for (const params of cases) {
+      const result = scoreMemoryQuality({ content: RICH_CONTENT, ...params });
+      expect(result.score01).toBeCloseTo(result.score100 / 100, 5);
+      expect(result.score100).toBe(Math.round(result.score01 * 100));
+    }
   });
 });

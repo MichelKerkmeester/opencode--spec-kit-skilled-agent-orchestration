@@ -81,6 +81,8 @@ export interface QualityGateParams {
   anchors?: string[];
   embedding?: Float32Array | number[] | null;
   findSimilar?: FindSimilarFn | null;
+  /** REQ-D4-003: context_type for short-critical exception evaluation */
+  contextType?: string | null;
 }
 
 /** Callback for finding similar memories by embedding */
@@ -104,6 +106,13 @@ const MIN_CONTENT_LENGTH = 50;
 
 /** Warn-only period duration in milliseconds (14 days) */
 const WARN_ONLY_PERIOD_MS = 14 * 24 * 60 * 60 * 1000;
+
+// ───────────────────────────────────────────────────────────────
+// REQ-D4-003: Short-critical quality gate exception
+// ───────────────────────────────────────────────────────────────
+
+/** Minimum number of structural signals required for short-critical exception. */
+const SHORT_CRITICAL_MIN_STRUCTURAL_SIGNALS = 2;
 
 /** Layer 2 dimension weights for weighted average signal density */
 const DIMENSION_WEIGHTS: Record<keyof ContentQualityDimensions, number> = {
@@ -286,6 +295,69 @@ function ensureActivationTimestampInitialized(): void {
 }
 
 /* ───────────────────────────────────────────────────────────────
+   3b. REQ-D4-003: SAVE QUALITY GATE EXCEPTIONS
+   ──────────────────────────────────────────────────────────────── */
+
+/**
+ * REQ-D4-003: Check whether the save quality gate exceptions feature is enabled.
+ * Default: FALSE (off). Set SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=true to enable.
+ *
+ * When enabled, decision documents with sufficient structural signals may bypass
+ * the 50-character minimum content length check. All other gates (0.4 density,
+ * 0.92 dedup) remain enforced.
+ */
+export function isSaveQualityGateExceptionsEnabled(): boolean {
+  const val = process.env.SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS?.toLowerCase().trim();
+  return val === 'true' || val === '1';
+}
+
+/**
+ * REQ-D4-003: Count structural signals present in a document.
+ *
+ * Structural signals: title, specFolder (non-empty), anchor (non-empty string).
+ * A decision document with >= 2 signals qualifies for the short-critical exception.
+ */
+export function countStructuralSignals(params: {
+  title: string | null;
+  specFolder: string | null | undefined;
+  anchor?: string | null;
+}): number {
+  let count = 0;
+  if (params.title && params.title.trim().length > 0) count++;
+  if (params.specFolder && params.specFolder.trim().length > 0) count++;
+  if (params.anchor && params.anchor.trim().length > 0) count++;
+  return count;
+}
+
+/**
+ * REQ-D4-003: Determine whether the short-critical exception applies.
+ *
+ * Returns true when ALL conditions hold:
+ *   1. SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS is enabled
+ *   2. context_type === 'decision'
+ *   3. At least SHORT_CRITICAL_MIN_STRUCTURAL_SIGNALS (2) structural signals present
+ *
+ * This is warn-only initially — callers must log bypass events.
+ */
+export function isShortCriticalException(params: {
+  contextType: string | null | undefined;
+  title: string | null;
+  specFolder: string | null | undefined;
+  anchor?: string | null;
+}): boolean {
+  if (!isSaveQualityGateExceptionsEnabled()) return false;
+  if (params.contextType !== 'decision') return false;
+
+  const signals = countStructuralSignals({
+    title: params.title,
+    specFolder: params.specFolder,
+    anchor: params.anchor,
+  });
+
+  return signals >= SHORT_CRITICAL_MIN_STRUCTURAL_SIGNALS;
+}
+
+/* ───────────────────────────────────────────────────────────────
    4. LAYER 1: STRUCTURAL VALIDATION
    ──────────────────────────────────────────────────────────────── */
 
@@ -297,6 +369,11 @@ function ensureActivationTimestampInitialized(): void {
  * - Content is non-empty and meets minimum length
  * - Spec folder path is valid format
  *
+ * REQ-D4-003: When SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS is enabled, the
+ * minimum content length check is bypassed for `decision` context_type
+ * documents that have >= 2 structural signals (title + specFolder + anchor).
+ * Bypass events are logged as warnings (warn-only initially).
+ *
  * @param params - The memory parameters to validate
  * @returns StructuralValidationResult with pass/fail and reasons
  */
@@ -304,6 +381,8 @@ export function validateStructural(params: {
   title: string | null;
   content: string;
   specFolder: string;
+  contextType?: string | null;
+  anchor?: string | null;
 }): StructuralValidationResult {
   const reasons: string[] = [];
 
@@ -314,9 +393,24 @@ export function validateStructural(params: {
   if (!params.content || params.content.trim().length === 0) {
     reasons.push('Content is empty');
   } else if (params.content.trim().length < MIN_CONTENT_LENGTH) {
-    reasons.push(
-      `Content too short: ${params.content.trim().length} chars (min: ${MIN_CONTENT_LENGTH})`
-    );
+    // REQ-D4-003: Check for short-critical exception before adding rejection reason
+    const exceptionApplies = isShortCriticalException({
+      contextType: params.contextType,
+      title: params.title,
+      specFolder: params.specFolder,
+      anchor: params.anchor,
+    });
+
+    if (exceptionApplies) {
+      // Warn-only: log bypass event but do not add rejection reason
+      console.warn(
+        `[QUALITY-GATE] short-critical-exception | context_type=decision | content_length=${params.content.trim().length} | bypassing min-length check`
+      );
+    } else {
+      reasons.push(
+        `Content too short: ${params.content.trim().length} chars (min: ${MIN_CONTENT_LENGTH})`
+      );
+    }
   }
 
   if (!params.specFolder || params.specFolder.trim().length === 0) {
@@ -653,10 +747,12 @@ export function runQualityGate(params: QualityGateParams): QualityGateResult {
   const allReasons: string[] = [];
 
   // Layer 1: Structural validation
+  // REQ-D4-003: Pass contextType so validateStructural can apply the short-critical exception
   const structural = validateStructural({
     title: params.title,
     content: params.content,
     specFolder: params.specFolder,
+    contextType: params.contextType,
   });
   allReasons.push(...structural.reasons);
 
@@ -719,6 +815,7 @@ export {
   SEMANTIC_DEDUP_THRESHOLD,
   MIN_CONTENT_LENGTH,
   WARN_ONLY_PERIOD_MS,
+  SHORT_CRITICAL_MIN_STRUCTURAL_SIGNALS,
 };
 
 /**

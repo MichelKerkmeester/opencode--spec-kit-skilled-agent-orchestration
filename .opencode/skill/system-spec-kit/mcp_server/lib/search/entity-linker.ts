@@ -4,6 +4,11 @@
 // Feature catalog: Cross-document entity linking
 // Gated via SPECKIT_ENTITY_LINKING
 // Creates causal edges between memories sharing entities across spec folders.
+//
+// Also provides query-time concept routing (D2 REQ-D2-002):
+// Gated via SPECKIT_GRAPH_CONCEPT_ROUTING
+// Extracts noun phrases from a query and matches them against a concept alias
+// table, returning the matched canonical concept names for graph channel routing.
 import type Database from 'better-sqlite3';
 import { isEntityLinkingEnabled } from './search-flags';
 import { createLogger } from '../utils/logger';
@@ -54,7 +59,280 @@ export interface EntityLinkStats {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. HELPERS
+// 3. CONCEPT ROUTING (D2 REQ-D2-002)
+
+// ───────────────────────────────────────────────────────────────
+
+/**
+ * Concept alias table: maps alias/synonym strings to their canonical concept name.
+ *
+ * Built-in domain aliases for the Spec Kit memory system. Extended at query
+ * time with aliases loaded from the `entity_catalog` database table when
+ * concept routing is active.
+ *
+ * Keys are lowercase normalized aliases; values are canonical names used to
+ * activate the graph channel.
+ */
+const BUILTIN_CONCEPT_ALIASES: Record<string, string> = {
+  // Memory / search domain
+  'memory': 'memory',
+  'memories': 'memory',
+  'knowledge': 'memory',
+  'context': 'memory',
+  'retrieval': 'search',
+  'search': 'search',
+  'query': 'search',
+  'queries': 'search',
+  'lookup': 'search',
+  'embedding': 'embedding',
+  'embeddings': 'embedding',
+  'vector': 'embedding',
+  'vectors': 'embedding',
+  'representation': 'embedding',
+  // Spec system domain
+  'spec': 'spec',
+  'specification': 'spec',
+  'specs': 'spec',
+  'requirements': 'spec',
+  'requirement': 'spec',
+  'plan': 'spec',
+  'plans': 'spec',
+  // Graph / causality domain
+  'causal': 'causal',
+  'causality': 'causal',
+  'graph': 'graph',
+  'edges': 'graph',
+  'edge': 'graph',
+  'nodes': 'graph',
+  'node': 'graph',
+  'relationship': 'causal',
+  'relationships': 'causal',
+  'dependency': 'causal',
+  'dependencies': 'causal',
+  // Pipeline / indexing domain
+  'pipeline': 'pipeline',
+  'indexing': 'indexing',
+  'ingestion': 'indexing',
+  'index': 'indexing',
+  'stage': 'pipeline',
+  'stages': 'pipeline',
+  // Session / checkpoint domain
+  'session': 'session',
+  'sessions': 'session',
+  'checkpoint': 'checkpoint',
+  'checkpoints': 'checkpoint',
+  'snapshot': 'checkpoint',
+  'snapshots': 'checkpoint',
+};
+
+/**
+ * Minimum number of characters a noun phrase token must have to be considered.
+ * Avoids single-letter tokens matching alias table entries.
+ */
+const MIN_NOUN_PHRASE_TOKEN_LENGTH = 3;
+
+/**
+ * Maximum number of concept aliases to resolve per query (bounding latency).
+ */
+const MAX_CONCEPTS_PER_QUERY = 5;
+
+/**
+ * Extract candidate noun phrase tokens from a query string using simple
+ * heuristics: split on whitespace and punctuation, filter stop-words and
+ * very short tokens, and return unique lowercase tokens.
+ *
+ * This is intentionally rule-based (no POS tagging or NLP library) to avoid
+ * latency and external dependencies.
+ *
+ * @param query - The search query string.
+ * @returns Array of candidate noun phrase tokens (lowercase, deduplicated).
+ */
+export function nounPhrases(query: string): string[] {
+  if (typeof query !== 'string' || query.trim().length === 0) return [];
+
+  // Tokenize: split on whitespace and common punctuation
+  const raw = query
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s-]/gu, ' ')
+    .split(/\s+/)
+    .filter(Boolean);
+
+  // Filter out stop-words and short tokens
+  const stopWords = new Set([
+    'a', 'an', 'the', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
+    'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'shall',
+    'should', 'may', 'might', 'can', 'could', 'must', 'need',
+    'i', 'you', 'he', 'she', 'it', 'we', 'they', 'me', 'him', 'her',
+    'us', 'them', 'my', 'your', 'his', 'its', 'our', 'their',
+    'this', 'that', 'these', 'those', 'here', 'there',
+    'in', 'on', 'at', 'to', 'for', 'of', 'with', 'by', 'from',
+    'up', 'about', 'into', 'through', 'during', 'including',
+    'and', 'or', 'but', 'nor', 'so', 'yet',
+    'not', 'no', 'nor', 'all', 'both', 'each', 'few', 'more', 'most',
+    'how', 'what', 'which', 'who', 'where', 'when', 'why',
+  ]);
+
+  const seen = new Set<string>();
+  const tokens: string[] = [];
+
+  for (const token of raw) {
+    if (token.length < MIN_NOUN_PHRASE_TOKEN_LENGTH) continue;
+    if (stopWords.has(token)) continue;
+    if (!seen.has(token)) {
+      seen.add(token);
+      tokens.push(token);
+    }
+  }
+
+  return tokens;
+}
+
+/**
+ * Match noun phrase tokens against a concept alias table, returning the
+ * canonical concept names for any matched aliases.
+ *
+ * Matching is done against the built-in alias table first, then against any
+ * additional aliases supplied via the `extraAliases` parameter.
+ *
+ * @param tokens - Noun phrase tokens (from `nounPhrases()`).
+ * @param extraAliases - Optional additional alias map (alias -> canonical).
+ * @returns Array of matched canonical concept names (unique, max MAX_CONCEPTS_PER_QUERY).
+ */
+export function matchAliases(
+  tokens: string[],
+  extraAliases?: Record<string, string>,
+): string[] {
+  const combined: Record<string, string> = extraAliases
+    ? { ...BUILTIN_CONCEPT_ALIASES, ...extraAliases }
+    : BUILTIN_CONCEPT_ALIASES;
+
+  const matched = new Set<string>();
+
+  for (const token of tokens) {
+    if (matched.size >= MAX_CONCEPTS_PER_QUERY) break;
+    const canonical = combined[token];
+    if (canonical) {
+      matched.add(canonical);
+    }
+  }
+
+  return Array.from(matched);
+}
+
+/**
+ * Load concept aliases from the `entity_catalog` database table, if available.
+ *
+ * Returns an alias map { alias_text -> canonical_name } for use in
+ * `matchAliases()`. Returns an empty object when the table is missing or
+ * empty (fail-open: concept routing proceeds with built-in aliases only).
+ *
+ * @param db - SQLite database instance.
+ * @returns Alias map from the entity_catalog table.
+ */
+export function loadConceptAliasTable(
+  db: Database.Database,
+): Record<string, string> {
+  try {
+    // entity_catalog may not have an alias column — check schema first
+    const tableInfo = (db.prepare(
+      `PRAGMA table_info(entity_catalog)`,
+    ) as Database.Statement).all() as Array<{ name: string }>;
+
+    const hasAlias = tableInfo.some((col) => col.name === 'alias_text');
+    const hasCanonical = tableInfo.some((col) => col.name === 'canonical_name');
+
+    if (!hasAlias || !hasCanonical) {
+      // Fall back to entity_text as both alias and canonical when schema differs
+      const altHasEntityText = tableInfo.some((col) => col.name === 'entity_text');
+      if (!altHasEntityText) return {};
+
+      const rows = (db.prepare(
+        `SELECT entity_text FROM entity_catalog LIMIT 500`,
+      ) as Database.Statement).all() as Array<{ entity_text: string }>;
+
+      const result: Record<string, string> = {};
+      for (const row of rows) {
+        if (row.entity_text) {
+          const normalized = row.entity_text.toLowerCase().trim();
+          if (normalized.length >= MIN_NOUN_PHRASE_TOKEN_LENGTH) {
+            result[normalized] = normalized;
+          }
+        }
+      }
+      return result;
+    }
+
+    const rows = (db.prepare(
+      `SELECT alias_text, canonical_name FROM entity_catalog LIMIT 500`,
+    ) as Database.Statement).all() as Array<{ alias_text: string; canonical_name: string }>;
+
+    const result: Record<string, string> = {};
+    for (const row of rows) {
+      if (row.alias_text && row.canonical_name) {
+        result[row.alias_text.toLowerCase().trim()] = row.canonical_name;
+      }
+    }
+    return result;
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`[entity-linker] loadConceptAliasTable failed: ${message}`);
+    return {};
+  }
+}
+
+/**
+ * Query-time concept routing result.
+ *
+ * Contains the matched concepts and the activation state for the graph channel.
+ */
+export interface ConceptRoutingResult {
+  /** Canonical concept names matched from the query. */
+  concepts: string[];
+  /** True when at least one concept was matched and graph routing is active. */
+  graphActivated: boolean;
+}
+
+/**
+ * Run query-time concept routing:
+ *   1. Extract noun phrases from the query.
+ *   2. Load concept aliases from the database (supplementing built-ins).
+ *   3. Match aliases against noun phrases.
+ *   4. Return matched concepts and graph activation state.
+ *
+ * Returns `graphActivated: false` with empty concepts when:
+ *   - No noun phrases extracted
+ *   - No alias matches found
+ *   - Any internal error occurs (fail-open)
+ *
+ * @param query - The search query string.
+ * @param db    - Optional SQLite database instance for alias table loading.
+ * @returns ConceptRoutingResult with matched concepts and activation state.
+ */
+export function routeQueryConcepts(
+  query: string,
+  db?: Database.Database,
+): ConceptRoutingResult {
+  const empty: ConceptRoutingResult = { concepts: [], graphActivated: false };
+
+  try {
+    const tokens = nounPhrases(query);
+    if (tokens.length === 0) return empty;
+
+    const extraAliases = db ? loadConceptAliasTable(db) : {};
+    const concepts = matchAliases(tokens, extraAliases);
+
+    if (concepts.length === 0) return empty;
+
+    return { concepts, graphActivated: true };
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`[entity-linker] routeQueryConcepts failed: ${message}`);
+    return empty;
+  }
+}
+
+// ───────────────────────────────────────────────────────────────
+// 4. HELPERS (entity linking core)
 
 // ───────────────────────────────────────────────────────────────
 /**
@@ -73,7 +351,7 @@ export function normalizeEntityName(name: string): string {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 4. CORE FUNCTIONS
+// 5. CORE FUNCTIONS (entity linking)
 
 // ───────────────────────────────────────────────────────────────
 /**
@@ -527,7 +805,7 @@ export function runEntityLinking(db: Database.Database): EntityLinkResult {
 }
 
 // ───────────────────────────────────────────────────────────────
-// 5. TEST EXPORTS
+// 6. TEST EXPORTS
 
 // ───────────────────────────────────────────────────────────────
 /**
@@ -545,4 +823,8 @@ export const __testables = {
   normalizeEntityName,
   getEdgeCount,
   getSpecFolder,
+  // D2 REQ-D2-002 concept routing internals
+  BUILTIN_CONCEPT_ALIASES,
+  MIN_NOUN_PHRASE_TOKEN_LENGTH,
+  MAX_CONCEPTS_PER_QUERY,
 };

@@ -71,7 +71,7 @@ import {
   type WorkflowIndexingStatus,
 } from './memory-indexer';
 import * as simFactory from '../lib/simulation-factory';
-import { reviewPostSaveQuality, printPostSaveReview } from './post-save-review';
+import { reviewPostSaveQuality, printPostSaveReview, computeReviewScorePenalty } from './post-save-review';
 import { loadCollectedData as loadCollectedDataFromLoader } from '../loaders/data-loader';
 import { applyTreeThinning } from './tree-thinning';
 import { structuredLog } from '../utils/logger';
@@ -115,6 +115,48 @@ import {
 // ───────────────────────────────────────────────────────────────
 // 0. HELPERS
 // ───────────────────────────────────────────────────────────────
+
+// Phase 004 T011: Trigger phrase filter — suppresses path fragments, short tokens, and shingle subsets
+const TRIGGER_ALLOW_LIST = new Set(['rag', 'bm25', 'mcp', 'adr', 'jwt', 'api', 'cli', 'llm', 'ai']);
+
+function filterTriggerPhrases(phrases: string[]): string[] {
+  // Stage 1: Remove entries containing path separators (forward/backslash, multi-word path segments)
+  let filtered = phrases.filter(p => {
+    const trimmed = p.trim();
+    if (trimmed.includes('/') || trimmed.includes('\\')) return false;
+    // Multi-word path segment pattern: sequences like "system spec kit" that look like folder paths
+    if (/^\d{1,3}\s/.test(trimmed)) return false; // Leading number prefix (e.g., "022 hybrid rag")
+    return true;
+  });
+
+  // Stage 2: Remove entries where every word is under 3 characters (unless in allow-list)
+  filtered = filtered.filter(p => {
+    const words = p.trim().split(/\s+/);
+    if (words.length === 1 && words[0].length < 3 && !TRIGGER_ALLOW_LIST.has(words[0].toLowerCase())) {
+      return false;
+    }
+    // Multi-word: keep if at least one word >= 3 chars or any word is in allow-list
+    if (words.every(w => w.length < 3) && !words.some(w => TRIGGER_ALLOW_LIST.has(w.toLowerCase()))) {
+      return false;
+    }
+    return true;
+  });
+
+  // Stage 3: Remove n-gram shingle phrases that are substrings of longer retained phrases
+  const lowerPhrases = filtered.map(p => p.toLowerCase());
+  filtered = filtered.filter((p, idx) => {
+    const lower = lowerPhrases[idx];
+    // Check if this phrase is a substring of any other (longer) phrase
+    for (let j = 0; j < lowerPhrases.length; j++) {
+      if (j !== idx && lowerPhrases[j].length > lower.length && lowerPhrases[j].includes(lower)) {
+        return false;
+      }
+    }
+    return true;
+  });
+
+  return filtered;
+}
 
 /**
  * Insert content after YAML frontmatter, preserving frontmatter at byte 0.
@@ -599,7 +641,49 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       const preCleanedObservations = cleanObservations(collectedData.observations);
       const preCleanedSummary = (typeof collectedData.SUMMARY === 'string' && collectedData.SUMMARY.length > 0)
         ? cleanContaminationText(collectedData.SUMMARY) : collectedData.SUMMARY;
-      collectedData = { ...collectedData, observations: preCleanedObservations, SUMMARY: preCleanedSummary };
+      // Phase 002 T010: Clean _JSON_SESSION_SUMMARY (raw sessionSummary title candidate)
+      const preCleanedJsonSummary = (typeof (collectedData as Record<string, unknown>)._JSON_SESSION_SUMMARY === 'string' &&
+        ((collectedData as Record<string, unknown>)._JSON_SESSION_SUMMARY as string).length > 0)
+        ? cleanContaminationText((collectedData as Record<string, unknown>)._JSON_SESSION_SUMMARY as string)
+        : (collectedData as Record<string, unknown>)._JSON_SESSION_SUMMARY;
+      // Phase 002 T011: Clean _manualDecisions array entries
+      const preCleanedDecisions = Array.isArray((collectedData as Record<string, unknown>)._manualDecisions)
+        ? ((collectedData as Record<string, unknown>)._manualDecisions as unknown[]).map((d: unknown) => {
+            if (typeof d === 'string') return cleanContaminationText(d);
+            if (d && typeof d === 'object') {
+              const obj = { ...(d as Record<string, unknown>) };
+              for (const key of Object.keys(obj)) {
+                if (typeof obj[key] === 'string') obj[key] = cleanContaminationText(obj[key] as string);
+              }
+              return obj;
+            }
+            return d;
+          })
+        : (collectedData as Record<string, unknown>)._manualDecisions;
+      // Phase 002 T012: Clean recentContext array entries
+      const preCleanedRecentCtx = Array.isArray(collectedData.recentContext)
+        ? collectedData.recentContext.map((entry) => ({
+            ...entry,
+            request: typeof entry.request === 'string' ? cleanContaminationText(entry.request) : entry.request,
+            learning: typeof entry.learning === 'string' ? cleanContaminationText(entry.learning) : entry.learning,
+          }))
+        : collectedData.recentContext;
+      // Phase 002 T013-T014: Clean technicalContext KEY and VALUE strings
+      const preCleanedTechCtx = Array.isArray((collectedData as Record<string, unknown>).TECHNICAL_CONTEXT)
+        ? ((collectedData as Record<string, unknown>).TECHNICAL_CONTEXT as Array<{ KEY: string; VALUE: string }>).map((entry) => ({
+            KEY: typeof entry.KEY === 'string' ? cleanContaminationText(entry.KEY) : entry.KEY,
+            VALUE: typeof entry.VALUE === 'string' ? cleanContaminationText(entry.VALUE) : entry.VALUE,
+          }))
+        : (collectedData as Record<string, unknown>).TECHNICAL_CONTEXT;
+      collectedData = {
+        ...collectedData,
+        observations: preCleanedObservations,
+        SUMMARY: preCleanedSummary,
+        _JSON_SESSION_SUMMARY: preCleanedJsonSummary,
+        _manualDecisions: preCleanedDecisions,
+        recentContext: preCleanedRecentCtx,
+        TECHNICAL_CONTEXT: preCleanedTechCtx,
+      } as typeof collectedData;
       const extractorAudit: ContaminationAuditRecord = {
         stage: 'extractor-scrub',
         timestamp: new Date().toISOString(),
@@ -975,6 +1059,10 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     const triggerSource = triggerSourceParts.join('\n');
     preExtractedTriggers = extractTriggerPhrases(triggerSource);
 
+    // Phase 004 T011-T013: Filter auto-extracted trigger phrases before merge
+    // Applied to auto-extracted set only — manual phrases bypass the filter
+    preExtractedTriggers = filterTriggerPhrases(preExtractedTriggers);
+
     // RC2: Merge manual trigger phrases from JSON into frontmatter triggers.
     // Previously these only went into vector indexing (memory-indexer.ts) but NOT frontmatter.
     if (collectedData?._manualTriggerPhrases && Array.isArray(collectedData._manualTriggerPhrases) && collectedData._manualTriggerPhrases.length > 0) {
@@ -1098,7 +1186,29 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       MEMORY_DASHBOARD_TITLE: memoryDashboardTitle,
       MEMORY_DESCRIPTION: memoryDescription,
       GRAPH_CONTEXT: '',
-      HAS_GRAPH_CONTEXT: false
+      HAS_GRAPH_CONTEXT: false,
+      // Phase 004 T020: Bind toolCalls and exchanges from CollectedDataBase to template context
+      hasToolCalls: Array.isArray((collectedData as Record<string, unknown>).toolCalls) &&
+        ((collectedData as Record<string, unknown>).toolCalls as unknown[]).length > 0,
+      TOOL_CALLS_COMPACT: Array.isArray((collectedData as Record<string, unknown>).toolCalls)
+        ? ((collectedData as Record<string, unknown>).toolCalls as Array<Record<string, unknown>>)
+            .slice(0, 3)
+            .map(tc => `\`${tc.tool || tc.name || 'unknown'}\` (${tc.count || 1})`)
+            .join(' | ')
+        : '',
+      hasExchanges: Array.isArray((collectedData as Record<string, unknown>).exchanges) &&
+        ((collectedData as Record<string, unknown>).exchanges as unknown[]).length > 0,
+      EXCHANGES_COMPACT: (() => {
+        const exchanges = (collectedData as Record<string, unknown>).exchanges;
+        if (!Array.isArray(exchanges) || exchanges.length === 0) return '';
+        const topics = (exchanges as Array<Record<string, unknown>>)
+          .slice(0, 3)
+          .map(ex => ex.topic || ex.userInput || 'exchange')
+          .filter(Boolean)
+          .map(t => `\`${t}\``)
+          .join(', ');
+        return `${exchanges.length} exchanges${topics ? ` \u2014 ${topics}` : ''}`;
+      })(),
     }),
     'metadata.json': JSON.stringify({
       timestamp: `${sessionData.DATE} ${sessionData.TIME}`,
@@ -1329,6 +1439,33 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     log(`   Medium quality warning added (score: ${qualityResult.score100}/100)`);
   }
 
+  // Phase 004 T035-T036: Pre-save overlap check (advisory, behind env flag)
+  if (process.env.SPECKIT_PRE_SAVE_DEDUP === 'true' || process.env.SPECKIT_PRE_SAVE_DEDUP === '1') {
+    try {
+      const crypto = await import('node:crypto');
+      const contentForHash = files[ctxFilename] || '';
+      const fingerprint = crypto.createHash('sha1').update(contentForHash).digest('hex');
+      // Query last 20 memories for this spec folder to detect overlaps
+      const existingFiles = fsSync.readdirSync(contextDir)
+        .filter((f: string) => f.endsWith('.md') && f !== ctxFilename)
+        .sort()
+        .slice(-20);
+      for (const existingFile of existingFiles) {
+        try {
+          const existingContent = fsSync.readFileSync(path.join(contextDir, existingFile), 'utf8');
+          const existingHash = crypto.createHash('sha1').update(existingContent).digest('hex');
+          if (existingHash === fingerprint) {
+            warn(`   [PRE-SAVE OVERLAP] Memory content matches existing "${existingFile}" — possible duplicate save`);
+            break;
+          }
+        } catch { /* skip unreadable files */ }
+      }
+    } catch (overlapErr: unknown) {
+      // Fail open — overlap detection is advisory, must not block save
+      warn(`   Pre-save overlap check failed (advisory): ${overlapErr instanceof Error ? overlapErr.message : String(overlapErr)}`);
+    }
+  }
+
   // Step 9: Write files with atomic writes and rollback on failure
   log('Step 9: Writing files...');
   if (duplicateExistingFilename) {
@@ -1426,6 +1563,29 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       inputMode: captureCapabilities.inputMode,
     });
     printPostSaveReview(reviewResult);
+    // Phase 002 T035: Apply post-save review findings as quality_score adjustment
+    if (reviewResult.status === 'ISSUES_FOUND' && reviewResult.issues.length > 0) {
+      const scorePenalty = computeReviewScorePenalty(reviewResult.issues);
+      if (scorePenalty < 0) {
+        // Read current quality_score from saved file, apply penalty, and patch frontmatter
+        try {
+          const savedContent = fsSync.readFileSync(savedFilePath, 'utf8');
+          const qMatch = savedContent.match(/quality_score:\s*([\d.]+)/);
+          if (qMatch) {
+            const currentScore = parseFloat(qMatch[1]);
+            const adjustedScore = Math.max(0.10, Math.round((currentScore + scorePenalty) * 100) / 100);
+            const patchedContent = savedContent.replace(
+              /quality_score:\s*[\d.]+/,
+              `quality_score: ${adjustedScore.toFixed(2)}`
+            );
+            fsSync.writeFileSync(savedFilePath, patchedContent, 'utf8');
+            log(`   Post-save review: quality_score adjusted ${currentScore.toFixed(2)} → ${adjustedScore.toFixed(2)} (penalty: ${scorePenalty.toFixed(2)})`);
+          }
+        } catch (patchErr: unknown) {
+          warn(`   Post-save review score patch failed: ${patchErr instanceof Error ? patchErr.message : String(patchErr)}`);
+        }
+      }
+    }
   }
 
   // Step 11: Semantic memory indexing

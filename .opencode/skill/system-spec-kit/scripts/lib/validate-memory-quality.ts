@@ -18,7 +18,7 @@ import type { ContaminationAuditRecord } from './content-filter';
 import type { DataSource } from '../utils/input-normalizer';
 import { getSourceCapabilities, type KnownDataSource } from '../utils/source-capabilities';
 
-type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10' | 'V11' | 'V12';
+type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10' | 'V11' | 'V12' | 'V13' | 'V14';
 
 type ValidationRuleSeverity = 'low' | 'medium' | 'high';
 type ValidationDisposition = 'abort_write' | 'write_skip_index' | 'write_and_index';
@@ -136,6 +136,22 @@ const VALIDATION_RULE_METADATA: Record<QualityRuleId, ValidationRuleMetadata> = 
     appliesToSources: 'all',
     reason: 'Memory content with zero topical overlap with spec trigger_phrases suggests off-target capture.',
   },
+  V13: {
+    ruleId: 'V13',
+    severity: 'high',
+    blockOnWrite: true,
+    blockOnIndex: true,
+    appliesToSources: 'all',
+    reason: 'Malformed frontmatter YAML or near-empty body content renders the memory unindexable and untrustworthy.',
+  },
+  V14: {
+    ruleId: 'V14',
+    severity: 'low',
+    blockOnWrite: false,
+    blockOnIndex: false,
+    appliesToSources: 'all',
+    reason: 'A status/percentage contradiction (status=complete but percentage<100) is a soft diagnostic signal.',
+  },
 };
 
 const HARD_BLOCK_RULES: readonly QualityRuleId[] = Object.values(VALIDATION_RULE_METADATA)
@@ -180,6 +196,53 @@ const TITLE_CONTAMINATION_PATTERNS: Array<{ pattern: RegExp; label: string }> = 
   { pattern: /^\d{3}(?:-[a-z0-9][a-z0-9-]*)?$/i, label: 'spec-id-only title' },
 ];
 
+/**
+ * Perform lightweight YAML syntax validation on a raw frontmatter string.
+ * Returns an error description string if a structural problem is detected,
+ * or null when the frontmatter appears well-formed.
+ *
+ * This is intentionally conservative: it only flags unambiguous errors
+ * (unclosed quoted strings, hard tab indentation) rather than attempting
+ * full YAML parsing without a dedicated library.
+ */
+function validateFrontMatterSyntax(raw: string): string | null {
+  try {
+    const lines = raw.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+
+      // Hard tabs are not valid YAML indentation
+      if (/^\t/.test(line)) {
+        return `line ${i + 1}: hard tab indentation is not valid YAML`;
+      }
+
+      // Detect unclosed single-quoted string: odd number of unescaped ' on a line
+      // that starts with a key: 'value pattern
+      const singleQuoteMatch = line.match(/:\s*'([^']*)$/);
+      if (singleQuoteMatch) {
+        // Check if the quote is closed on the same or a subsequent line (multi-line scalar)
+        const rest = lines.slice(i + 1).join('\n');
+        if (!rest.includes("'")) {
+          return `line ${i + 1}: unclosed single-quoted string`;
+        }
+      }
+
+      // Detect unclosed double-quoted string
+      const doubleQuoteMatch = line.match(/:\s*"([^"\\]*(\\.[^"\\]*)*)$/);
+      if (doubleQuoteMatch) {
+        const rest = lines.slice(i + 1).join('\n');
+        if (!rest.includes('"')) {
+          return `line ${i + 1}: unclosed double-quoted string`;
+        }
+      }
+    }
+    return null;
+  } catch (err: unknown) {
+    // Defensive catch — syntax validation must never throw
+    return `syntax check error: ${err instanceof Error ? err.message : String(err)}`;
+  }
+}
+
 function extractFrontMatter(content: string): string {
   const frontMatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
   if (frontMatterMatch) {
@@ -188,6 +251,27 @@ function extractFrontMatter(content: string): string {
 
   const fencedYamlMatch = content.match(/```yaml\n([\s\S]*?)\n```/i);
   return fencedYamlMatch ? fencedYamlMatch[1] : '';
+}
+
+/**
+ * Extract frontmatter and validate its YAML syntax in a single pass.
+ * Returns { raw, parseError } where parseError is non-null when malformed YAML
+ * is detected. The parse error is meant to be surfaced as a V13 rule failure,
+ * not thrown as an exception (T018).
+ */
+function extractAndValidateFrontMatter(content: string): { raw: string; parseError: string | null } {
+  const raw = extractFrontMatter(content);
+  if (!raw) {
+    return { raw: '', parseError: null };
+  }
+  try {
+    const parseError = validateFrontMatterSyntax(raw);
+    return { raw, parseError };
+  } catch (err: unknown) {
+    // Convert any unexpected exception into a structured failure (T018)
+    const parseError = `unexpected parse error: ${err instanceof Error ? err.message : String(err)}`;
+    return { raw, parseError };
+  }
 }
 
 function stripCodeSegments(content: string): string {
@@ -454,7 +538,7 @@ function hasExecutionSignals(content: string): boolean {
 }
 
 function validateMemoryQualityContent(content: string): ValidationResult {
-  const frontMatter = extractFrontMatter(content);
+  const { parseError: frontMatterParseError } = extractAndValidateFrontMatter(content);
   const toolCount = parseToolCount(content);
   const specFolder = extractYamlValueFromContent(content, 'spec_folder') || '';
 
@@ -612,9 +696,16 @@ function validateMemoryQualityContent(content: string): ValidationResult {
   let v12Failed = false;
   let v12Message = 'ok';
   if (specFolder) {
+    // T023: Normalize specFolder to an absolute path before resolving spec.md.
+    // If specFolder is already absolute, use it as-is; otherwise resolve relative
+    // to the current working directory.
+    const resolvedSpecFolder = path.isAbsolute(specFolder)
+      ? specFolder
+      : path.resolve(process.cwd(), specFolder);
+
     // Try to find and read the spec.md file
     const specMdCandidates = [
-      path.resolve(specFolder, 'spec.md'),
+      path.resolve(resolvedSpecFolder, 'spec.md'),
       // specFolder might be just a relative path or short name
     ];
     let specTriggerPhrases: string[] = [];
@@ -647,6 +738,50 @@ function validateMemoryQualityContent(content: string): ValidationResult {
     ruleId: 'V12',
     passed: !v12Failed,
     message: v12Message,
+  });
+
+  // V13: Frontmatter YAML integrity and content density
+  // Sub-check 1: YAML syntax errors in frontmatter (T017-T018)
+  // Sub-check 2: Content density — strip frontmatter block, count non-whitespace chars (T020)
+  let v13Failed = false;
+  let v13Message = 'ok';
+  if (frontMatterParseError) {
+    v13Failed = true;
+    v13Message = `malformed frontmatter YAML: ${frontMatterParseError}`;
+  } else {
+    // Content density check: strip the leading frontmatter block then count non-whitespace chars
+    const bodyText = content.replace(/^---\n[\s\S]*?\n---\n?/, '').replace(/```yaml\n[\s\S]*?\n```/gi, '');
+    const nonWhitespaceCount = (bodyText.match(/\S/g) ?? []).length;
+    if (nonWhitespaceCount < 50) {
+      v13Failed = true;
+      v13Message = `content density too low: ${nonWhitespaceCount} non-whitespace characters in body (minimum 50)`;
+    }
+  }
+  ruleResults.push({
+    ruleId: 'V13',
+    passed: !v13Failed,
+    message: v13Message,
+  });
+
+  // V14: Status/percentage contradiction — status=complete but percentage < 100 (T025)
+  // Emitted as a soft warning (blockOnWrite: false, blockOnIndex: false)
+  let v14Failed = false;
+  let v14Message = 'ok';
+  const statusValue = extractYamlValueFromContent(content, 'status');
+  const percentageValue = parseYamlIntegerFromContent(content, 'percentage');
+  if (
+    statusValue !== null &&
+    statusValue.toLowerCase() === 'complete' &&
+    percentageValue !== null &&
+    percentageValue < 100
+  ) {
+    v14Failed = true;
+    v14Message = `status/percentage contradiction: status=complete but percentage=${percentageValue}`;
+  }
+  ruleResults.push({
+    ruleId: 'V14',
+    passed: !v14Failed,
+    message: v14Message,
   });
 
   const failedRules = ruleResults.filter((rule) => !rule.passed).map((rule) => rule.ruleId);

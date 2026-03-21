@@ -355,6 +355,84 @@ function applyClassificationDecay(
   return stability * multiplier;
 }
 
+/* --- 4b. HYBRID DECAY POLICY (REQ-D4-002) ---
+   Gated by SPECKIT_HYBRID_DECAY_POLICY env var (default OFF).
+   Distinguishes two classes of memory:
+
+   1. NO-DECAY documents — context_type in {decision, constitutional, critical}
+      These represent permanent knowledge artifacts. Their stability is treated as
+      Infinity so R(t) = 1.0 at all times.
+
+   2. ENGAGEMENT-SENSITIVE documents — all other context_types (session, scratch,
+      transient, implementation, discovery, research, general)
+      Normal FSRS schedule applies without modification.
+
+   This is intentionally SEPARATE from TM-03 (applyClassificationDecay) which
+   uses a combined context_type × importance_tier multiplier and is default-ON.
+   SPECKIT_HYBRID_DECAY_POLICY is default-OFF and must be opted into explicitly.
+   DO NOT combine both policies on the same memory. */
+
+/**
+ * Context types that should never decay under the hybrid decay policy.
+ * Classified as permanent knowledge artifacts.
+ */
+const HYBRID_NO_DECAY_CONTEXT_TYPES: ReadonlySet<string> = new Set([
+  'decision',
+  'constitutional',
+  'critical',
+]);
+
+/**
+ * REQ-D4-002: Check whether the hybrid decay policy feature flag is enabled.
+ * Default: FALSE (off). Set SPECKIT_HYBRID_DECAY_POLICY=true to enable.
+ */
+function isHybridDecayPolicyEnabled(): boolean {
+  const val = process.env.SPECKIT_HYBRID_DECAY_POLICY?.toLowerCase().trim();
+  return val === 'true' || val === '1';
+}
+
+/**
+ * REQ-D4-002: Classify a memory's decay behaviour under the hybrid policy.
+ *
+ * Returns:
+ *   - 'no_decay'       for decision / constitutional / critical context types
+ *   - 'fsrs_schedule'  for all engagement-sensitive types (session, scratch, etc.)
+ */
+type HybridDecayClass = 'no_decay' | 'fsrs_schedule';
+
+function classifyHybridDecay(contextType: string): HybridDecayClass {
+  if (HYBRID_NO_DECAY_CONTEXT_TYPES.has(contextType)) {
+    return 'no_decay';
+  }
+  return 'fsrs_schedule';
+}
+
+/**
+ * REQ-D4-002: Apply the hybrid decay policy to a stability value.
+ *
+ * When SPECKIT_HYBRID_DECAY_POLICY is OFF (default), returns stability unchanged.
+ * When ON:
+ *   - decision / constitutional / critical → returns Infinity (no decay)
+ *   - all others → returns stability unchanged (normal FSRS schedule)
+ *
+ * @param stability    Base FSRS stability value
+ * @param contextType  Memory context_type field (classified at save time)
+ * @returns Adjusted stability: Infinity for no-decay types, original otherwise
+ */
+function applyHybridDecayPolicy(stability: number, contextType: string): number {
+  if (!isHybridDecayPolicyEnabled()) {
+    return stability;
+  }
+
+  const decayClass = classifyHybridDecay(contextType);
+  if (decayClass === 'no_decay') {
+    return Infinity;
+  }
+
+  // Engagement-sensitive: apply normal FSRS schedule unchanged
+  return stability;
+}
+
 export {
   // Constants
   FSRS_FACTOR,
@@ -378,6 +456,12 @@ export {
   getClassificationDecayMultiplier,
   applyClassificationDecay,
 
+  // REQ-D4-002: Hybrid decay policy
+  HYBRID_NO_DECAY_CONTEXT_TYPES,
+  isHybridDecayPolicyEnabled,
+  classifyHybridDecay,
+  applyHybridDecayPolicy,
+
   // Core functions
   calculateRetrievability,
   updateStability,
@@ -392,4 +476,5 @@ export {
 export type {
   FsrsParams,
   ReviewResult,
+  HybridDecayClass,
 };

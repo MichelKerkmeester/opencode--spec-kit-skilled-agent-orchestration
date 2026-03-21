@@ -186,6 +186,10 @@ const PATH_FRAGMENT_PATTERNS = [
   /^(?:and|the|for|with|from|into|this|that|then)$/i, // Stopwords
   /^(?:src|lib|dist|node_modules|scripts|utils|core|config)$/i, // Directory names
   /^(?:index|main|app|server|client|test|spec)$/i, // Generic file stems
+  // Phase 004 T031: Multi-token path fragment patterns (e.g., "system spec kit/022")
+  /\w+[\s/\\-]+\w+[\s/\\-]+\d{2,3}/, // Multi-word path with trailing number (folder prefix)
+  /^\d{1,3}[\s-]+\w+/, // Leading number-dash-word pattern (e.g., "022-hybrid")
+  /[/\\]/, // Any phrase containing path separators
 ];
 
 function isPathFragment(phrase: string): boolean {
@@ -343,6 +347,31 @@ export function reviewPostSaveQuality(input: PostSaveReviewInput): PostSaveRevie
   }
 
   return { status: 'ISSUES_FOUND', issues };
+}
+
+/* ───────────────────────────────────────────────────────────────
+   5b. SCORE FEEDBACK FROM REVIEW FINDINGS (Phase 002 T034-T035)
+------------------------------------------------------------------*/
+
+// ADR-003: Penalty values per finding severity
+const REVIEW_SEVERITY_PENALTIES: Record<IssueSeverity, number> = {
+  HIGH: -0.10,
+  MEDIUM: -0.05,
+  LOW: -0.02,
+};
+
+/**
+ * Compute a quality score penalty based on post-save review findings.
+ * Returns a negative number (penalty) to be added to the quality_score.
+ * The penalty is capped at -0.30 to prevent the score from going below a floor.
+ */
+export function computeReviewScorePenalty(issues: ReviewIssue[]): number {
+  let penalty = 0;
+  for (const issue of issues) {
+    penalty += REVIEW_SEVERITY_PENALTIES[issue.severity] || 0;
+  }
+  // Cap penalty at -0.30 to keep score in meaningful range
+  return Math.max(penalty, -0.30);
 }
 
 /* ───────────────────────────────────────────────────────────────

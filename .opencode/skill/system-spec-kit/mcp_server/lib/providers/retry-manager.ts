@@ -33,6 +33,16 @@ interface RetryStats {
   queue_size: number;
 }
 
+/** In-memory-only snapshot of embedding retry health — no DB access. */
+export interface EmbeddingRetryStats {
+  pending: number;
+  failed: number;
+  retryAttempts: number;
+  circuitBreakerOpen: boolean;
+  lastRun: string | null;
+  queueDepth: number;
+}
+
 interface RetryResult {
   success: boolean;
   id?: number;
@@ -101,6 +111,10 @@ const BACKGROUND_JOB_CONFIG: BackgroundJobConfig = {
 // Background job state
 let backgroundJobInterval: ReturnType<typeof setInterval> | null = null;
 let backgroundJobRunning = false;
+
+// In-memory retry telemetry (never persisted to DB — read by getEmbeddingRetryStats)
+let lastBackgroundRunAt: string | null = null;
+let totalRetryAttempts = 0;
 
 // T3-15 circuit breaker — prevents the background retry job from
 // Hammering the embedding API when the provider is entirely down. After
@@ -232,6 +246,23 @@ function getRetryStats(): RetryStats {
   };
 }
 
+/**
+ * Return a lightweight in-memory snapshot of embedding retry health.
+ * PULL accessor — synchronous, zero DB access, always safe to call.
+ * Returns zero-state when the retry manager has not yet been initialized.
+ */
+function getEmbeddingRetryStats(): EmbeddingRetryStats {
+  const dbStats = getRetryStats();
+  return {
+    pending: dbStats.pending,
+    failed: dbStats.failed,
+    retryAttempts: totalRetryAttempts,
+    circuitBreakerOpen: isProviderCircuitOpen(),
+    lastRun: lastBackgroundRunAt,
+    queueDepth: dbStats.queue_size,
+  };
+}
+
 /* ───────────────────────────────────────────────────────────────
    4. RETRY OPERATIONS
 ──────────────────────────────────────────────────────────────── */
@@ -330,6 +361,7 @@ async function retryEmbedding(id: number, content: string): Promise<RetryResult>
 }
 
 function incrementRetryCount(id: number, reason: string): void {
+  totalRetryAttempts++;
   const db = vectorIndex.getDb();
   if (!db) return;
 
@@ -524,6 +556,7 @@ async function runBackgroundJob(batchSize: number = BACKGROUND_JOB_CONFIG.batchS
     console.error('[retry-manager] Background job error:', message);
     return { error: message };
   } finally {
+    lastBackgroundRunAt = new Date().toISOString();
     backgroundJobRunning = false;
   }
 }
@@ -559,6 +592,7 @@ export {
   getRetryQueue,
   getFailedEmbeddings,
   getRetryStats,
+  getEmbeddingRetryStats,
   retryEmbedding,
   markAsFailed,
   resetForRetry,

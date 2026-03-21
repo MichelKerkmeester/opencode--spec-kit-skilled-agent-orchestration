@@ -443,6 +443,46 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     if (cloned.FILES && Array.isArray(cloned.FILES)) {
       cloned.FILES = cloned.FILES.map((f) => normalizeFileEntryLike(f));
     }
+    // P0: Convert filesModified to FILES on fast-path (mirrors slow-path at lines 504-540)
+    if (!cloned.FILES || (Array.isArray(cloned.FILES) && cloned.FILES.length === 0)) {
+      const fmFast = Array.isArray(data.filesModified)
+        ? data.filesModified
+        : Array.isArray(data.files_modified)
+          ? data.files_modified
+          : undefined;
+      if (fmFast !== undefined) {
+        if (fmFast.length > 0) {
+          cloned.FILES = fmFast.map((entry: string | { path?: string; changes_summary?: string }) => {
+            let filePath: string;
+            let changesSummary: string;
+            if (typeof entry === 'string') {
+              const sepMatch = entry.match(/^(.+?)\s+(?:[-\u2013\u2014]|:)\s+(.+)$/);
+              if (sepMatch && (sepMatch[1].includes('.') || sepMatch[1].includes('/'))) {
+                filePath = sepMatch[1].trim();
+                changesSummary = sepMatch[2].trim();
+              } else {
+                filePath = entry;
+                changesSummary = '';
+              }
+            } else {
+              filePath = entry.path || '';
+              changesSummary = entry.changes_summary || '';
+            }
+            let description = changesSummary;
+            if (!description) {
+              const basename = filePath.replace(/\\/g, '/').split('/').pop()?.replace(/\.[^.]+$/, '') || '';
+              description = basename
+                ? `Modified ${basename.replace(/[-_]/g, ' ')}`
+                : 'File modified';
+            }
+            return { FILE_PATH: filePath, DESCRIPTION: description, ACTION: 'Modified' };
+          });
+        } else {
+          // T004: Empty filesModified: [] produces FILES: [], not key omission
+          cloned.FILES = [];
+        }
+      }
+    }
 
     if (nextSteps.length > 0 && !hasPersistedNextStepsObservation(cloned.observations)) {
       cloned.observations.push(buildNextStepsObservation(nextSteps));
@@ -466,6 +506,11 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     const fastPathContextType = data.contextType || data.context_type;
     if (typeof fastPathContextType === 'string' && fastPathContextType.length > 0) {
       cloned.contextType = fastPathContextType;
+    }
+    // Phase 002 T028: Propagate projectPhase through fast-path (mirrors contextType pattern)
+    const fastPathProjectPhase = (data as Record<string, unknown>).projectPhase || (data as Record<string, unknown>).project_phase;
+    if (typeof fastPathProjectPhase === 'string' && fastPathProjectPhase.length > 0) {
+      (cloned as Record<string, unknown>).projectPhase = fastPathProjectPhase;
     }
     // RC3: Propagate keyDecisions through fast-path
     const keyDecisions = Array.isArray(data.keyDecisions)
@@ -574,7 +619,19 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
     observations.push(buildNextStepsObservation(nextSteps));
   }
 
-  normalized.observations = observations;
+  // Phase 004 T033: Observation dedup at normalization time — string-equality dedup
+  const seenNarratives = new Set<string>();
+  const dedupedObservations: Observation[] = [];
+  for (const obs of observations) {
+    const key = typeof obs === 'object' && obs !== null && typeof (obs as Record<string, unknown>).narrative === 'string'
+      ? (obs as Record<string, unknown>).narrative as string
+      : JSON.stringify(obs);
+    if (!seenNarratives.has(key)) {
+      seenNarratives.add(key);
+      dedupedObservations.push(obs);
+    }
+  }
+  normalized.observations = dedupedObservations;
 
   normalized.userPrompts = [{
     prompt: sessionSummary || 'Manual context save',
@@ -604,6 +661,11 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
   if (typeof slowPathContextType === 'string' && slowPathContextType.length > 0) {
     normalized.contextType = slowPathContextType;
   }
+  // Phase 002 T029: Propagate projectPhase through slow-path (mirrors contextType pattern)
+  const slowPathProjectPhase = (data as Record<string, unknown>).projectPhase || (data as Record<string, unknown>).project_phase;
+  if (typeof slowPathProjectPhase === 'string' && slowPathProjectPhase.length > 0) {
+    (normalized as Record<string, unknown>).projectPhase = slowPathProjectPhase;
+  }
 
   console.log('   \u2713 Transformed manual format to MCP-compatible structure');
   return normalized;
@@ -618,6 +680,29 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
  * @param specFolderArg - Optional spec folder path from CLI argument; when provided, the specFolder field in data is not required.
  * @returns Nothing on success; throws an Error with concatenated validation messages on failure.
  */
+// P1: Known fields for unknown-field detection (T007)
+const KNOWN_RAW_INPUT_FIELDS: Set<string> = new Set([
+  'specFolder', 'spec_folder', 'SPEC_FOLDER',
+  'filesModified', 'files_modified',
+  'sessionSummary', 'session_summary',
+  'keyDecisions', 'key_decisions',
+  'nextSteps', 'next_steps',
+  'technicalContext',
+  'triggerPhrases', 'trigger_phrases',
+  'importanceTier', 'importance_tier',
+  'contextType', 'context_type',
+  'projectPhase', 'project_phase',
+  'FILES', 'observations',
+  'userPrompts', 'user_prompts',
+  'recentContext', 'recent_context',
+]);
+
+// P1: Valid contextType values for enum validation (T009)
+const VALID_CONTEXT_TYPES: string[] = [
+  'implementation', 'research', 'debugging', 'review', 'planning',
+  'decision', 'architecture', 'configuration', 'documentation', 'general',
+];
+
 function validateInputData(data: RawInputData, specFolderArg: string | null = null): void {
   const errors: string[] = [];
 
@@ -625,9 +710,57 @@ function validateInputData(data: RawInputData, specFolderArg: string | null = nu
     throw new Error('Input validation failed: data must be a non-null object');
   }
 
+  // P1: Warn on unknown fields for typo detection (T008)
+  for (const key of Object.keys(data)) {
+    if (!KNOWN_RAW_INPUT_FIELDS.has(key)) {
+      console.warn(`[WARN] Unknown field in input data: "${key}" — this field will be ignored`);
+    }
+  }
+
   if (specFolderArg === null && !data.specFolder && !data.spec_folder && !data.SPEC_FOLDER) {
     if (!data.userPrompts && !data.user_prompts && !data.observations && !data.recentContext && !data.recent_context) {
       errors.push('Missing required field: specFolder (or use CLI argument)');
+    }
+  }
+
+  // P1: contextType enum validation (T010)
+  if (data.contextType !== undefined && typeof data.contextType === 'string' && !VALID_CONTEXT_TYPES.includes(data.contextType)) {
+    errors.push(`Invalid contextType: "${data.contextType}". Valid values: ${VALID_CONTEXT_TYPES.join(', ')}`);
+  }
+  if (data.context_type !== undefined && typeof data.context_type === 'string' && !VALID_CONTEXT_TYPES.includes(data.context_type)) {
+    errors.push(`Invalid context_type: "${data.context_type}". Valid values: ${VALID_CONTEXT_TYPES.join(', ')}`);
+  }
+
+  // P1: String length limits (T011-T013)
+  if (typeof data.sessionSummary === 'string' && data.sessionSummary.length > 50000) {
+    errors.push(`sessionSummary exceeds maximum length of 50000 characters (got ${data.sessionSummary.length})`);
+  }
+  if (typeof data.session_summary === 'string' && data.session_summary.length > 50000) {
+    errors.push(`session_summary exceeds maximum length of 50000 characters (got ${data.session_summary.length})`);
+  }
+  if (Array.isArray(data.triggerPhrases)) {
+    for (let i = 0; i < data.triggerPhrases.length; i++) {
+      if (typeof data.triggerPhrases[i] === 'string' && (data.triggerPhrases[i] as string).length > 200) {
+        errors.push(`triggerPhrases[${i}] exceeds maximum length of 200 characters`);
+      }
+    }
+  }
+  if (Array.isArray(data.trigger_phrases)) {
+    for (let i = 0; i < data.trigger_phrases.length; i++) {
+      if (typeof data.trigger_phrases[i] === 'string' && (data.trigger_phrases[i] as string).length > 200) {
+        errors.push(`trigger_phrases[${i}] exceeds maximum length of 200 characters`);
+      }
+    }
+  }
+  if (Array.isArray(data.observations)) {
+    for (let i = 0; i < data.observations.length; i++) {
+      const obs = data.observations[i];
+      if (obs && typeof obs === 'object' && typeof (obs as Record<string, unknown>).narrative === 'string') {
+        const narrative = (obs as Record<string, unknown>).narrative as string;
+        if (narrative.length > 5000) {
+          errors.push(`observations[${i}].narrative exceeds maximum length of 5000 characters`);
+        }
+      }
     }
   }
 

@@ -20,6 +20,7 @@ import { toErrorMessage } from '../utils';
 import { isEmbeddingModelReady } from '../core';
 import { summarizeAliasConflicts } from './memory-index';
 import * as causalEdges from '../lib/storage/causal-edges';
+import { getEmbeddingRetryStats } from '../lib/providers/retry-manager';
 
 import type { MCPResponse, EmbeddingProfile } from './types';
 import type { HealthArgs, PartialProviderMetadata } from './memory-crud-types';
@@ -583,6 +584,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
         healthy: providerMetadata.healthy !== false,
         databasePath: redactPath(vectorIndex.getDbPath() ?? ''),
       },
+      embeddingRetry: getEmbeddingRetryStats(),
     },
     hints,
     startTime,

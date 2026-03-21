@@ -13,13 +13,11 @@ import type {
   QualityScoreResult,
 } from '../types/session-types';
 import type { ContaminationSeverity } from './contamination-filter';
-import { VALIDATION_RULE_METADATA, type ValidationRuleSeverity } from '../lib/validate-memory-quality';
+import { VALIDATION_RULE_METADATA, type QualityRuleId, type ValidationRuleSeverity } from '../lib/validate-memory-quality';
 
 /* ───────────────────────────────────────────────────────────────
    1. INTERFACES & CONSTANTS
 ------------------------------------------------------------------*/
-
-type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10' | 'V11' | 'V12';
 
 interface ValidationSignal {
   ruleId: QualityRuleId;
@@ -38,13 +36,16 @@ interface QualityInputs {
   insufficientContext?: boolean;
 }
 
-const QUALITY_RULE_IDS: QualityRuleId[] = ['V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10', 'V11', 'V12'];
+const QUALITY_RULE_IDS: QualityRuleId[] = ['V1', 'V2', 'V3', 'V4', 'V5', 'V6', 'V7', 'V8', 'V9', 'V10', 'V11', 'V12', 'V13', 'V14'];
 
 // O2-9: Weight penalties by V-rule severity instead of flat rate
+// Recalibrated (Phase 002): five simultaneous MEDIUM failures → ~0.85 (meaningfully below 0.90).
+// HIGH rules (V1, V3, V8, V9, V11, V13) block writes upstream so rarely reach the scorer;
+// they carry a larger penalty to reflect their critical nature when they do.
 const PENALTY_BY_SEVERITY: Record<ValidationRuleSeverity, number> = {
-  high: 0.25,
-  medium: 0.15,
-  low: 0.05,
+  high: 0.10,
+  medium: 0.03,
+  low: 0.01,
 };
 
 /* ───────────────────────────────────────────────────────────────
@@ -192,17 +193,9 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
     qualityScore -= 0.15;
   }
 
-  if (messageCount > 0) {
-    qualityScore += 0.05;
-  }
-
-  if (toolCount > 0) {
-    qualityScore += 0.05;
-  }
-
-  if (decisionCount >= 1) {
-    qualityScore += 0.10;
-  }
+  // Phase 002: Bonus additions removed. Base score is 1.0; only penalties and caps apply.
+  // Prior bonuses (+0.05 messages, +0.05 tools, +0.10 decisions) masked up to 5 simultaneous
+  // soft failures, making quality_score effectively binary. Removed to restore discriminative power.
 
   // O2-3: Contamination penalty uses cap only (not cap + subtraction)
   // The cap at the contamination block above is sufficient; double-counting removed
