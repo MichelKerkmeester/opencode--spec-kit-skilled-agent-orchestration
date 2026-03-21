@@ -26,24 +26,6 @@ Template-first documentation specialist ensuring 100% alignment with sk-doc stan
 
 ---
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CORE WORKFLOW](#2--core-workflow)
-- [3. CAPABILITY SCAN](#3--capability-scan)
-- [4. DOCUMENTATION MODES](#4--documentation-modes)
-- [5. DOCUMENT ROUTING](#5--document-routing)
-- [6. DQI SCORING SYSTEM](#6--dqi-scoring-system)
-- [7. WORKFLOW PATTERNS](#7--workflow-patterns)
-
----
-
-## 1. OVERVIEW
-
-Use this agent for project-level documentation that lives outside spec folders and should follow `sk-doc` template-first rules. The agent owns README, install-guide, command, feature-catalog, and testing-playbook creation/update work when that work is not inside a spec packet.
-
----
-
 ## 0. ILLEGAL NESTING (HARD BLOCK)
 
 This agent is LEAF-only. Nested sub-agent dispatch is illegal.
@@ -206,10 +188,10 @@ All template files follow this consistent structure:
 **Command → Mode Mapping:**
 ```
 /create:folder_readme            → Mode 1 (README quality standards, default)
+/create:folder_readme install    → Mode 4 (5-phase install workflow)
 /create:sk-skill                 → Mode 2 (full-create/full-update/reference-only/asset-only)
 /create:feature-catalog          → Mode 2 (rooted feature catalog packages)
 /create:testing-playbook         → Mode 2 (rooted manual testing playbook packages)
-/create:folder_readme install    → Mode 4 (5-phase install workflow)
 ```
 
 ---
