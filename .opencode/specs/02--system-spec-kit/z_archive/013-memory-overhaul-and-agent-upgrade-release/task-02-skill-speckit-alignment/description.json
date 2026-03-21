@@ -16,5 +16,9 @@
     "013-memory-overhaul-and-agent-upgrade-release"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Task 02 — SKILL.md & References Audit [task-02-skill-speckit-alignment/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Task 02 — SKILL.md & References Audit"
 }

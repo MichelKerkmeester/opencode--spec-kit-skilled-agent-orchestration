@@ -19,5 +19,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Comprehensive Skills & MCP Server Bug Fix [029-comprehensive-bug-fix/spec]",
+  "importance_tier": "important",
+  "short_description": "Comprehensive Skills & MCP Server Bug Fix"
 }

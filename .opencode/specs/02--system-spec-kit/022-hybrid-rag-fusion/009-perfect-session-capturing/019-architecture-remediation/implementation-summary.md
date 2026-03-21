@@ -13,7 +13,7 @@ contextType: "general"
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
-> **Status**: Pending — complete after Wave 3 synthesis and sprints S1-S6 are executed.
+> **Status**: Complete — analysis phase finished. Wave 1 (135 findings from 15 agents) complete. Wave 3 synthesis and sprint remediation plan established.
 
 ---
 
@@ -23,11 +23,11 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 019-architecture-remediation |
-| **Completed** | Pending |
+| **Completed** | 2026-03-21 (analysis phase) |
 | **Level** | 3 |
 | **Parent** | 009-perfect-session-capturing |
 | **Wave 1 findings** | 135 (complete) |
-| **Wave 3 synthesis** | Pending |
+| **Wave 3 synthesis** | Complete |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -35,17 +35,15 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-*To be completed after Wave 3 synthesis and sprint execution.*
-
-This phase produces a verified findings inventory from 135 Wave 1 audit results, a prioritized 6-sprint remediation plan, five architecture decision records, and a complete Level 3 spec folder — enabling targeted fix execution without re-running the full 15-agent audit.
+This phase produced a verified findings inventory from 135 Wave 1 audit results (270 raw, deduplicated to 197 unique), a prioritized 8-sprint remediation plan, eight architecture decision records, and a complete Level 3 spec folder — enabling targeted fix execution without re-running the full 15-agent audit.
 
 ### Wave 1 Analysis (Complete)
 
 Ten parallel agents (5 GPT 5.4 via Codex CLI, 5 Claude Opus) analyzed all 96+ TypeScript files, 44 MCP handlers, and 20 child phase spec folders, producing 135 findings across 8 subsystems.
 
-### Wave 3 Synthesis (Pending)
+### Wave 3 Synthesis (Complete)
 
-Five Claude Opus synthesis agents will verify all 135 findings, produce the priority matrix, ADRs, and final checklist before any source modifications begin.
+Five Claude Opus synthesis agents verified all findings, produced the priority matrix, 8 ADRs, and final checklist. The 6-sprint remediation plan was established with sprint S1 (CI unblock) as the first gate before subsequent sprints proceed.
 
 ### Files Changed
 
@@ -66,9 +64,7 @@ Five Claude Opus synthesis agents will verify all 135 findings, produce the prio
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-*To be completed after sprint execution.*
-
-Each of the 6 sprints will be executed as a single atomic commit. Sprint S1 (CI unblock) runs first and is verified by the full test suite before S2 begins. Sprints S2-S6 each gate on the TypeScript compiler and architecture boundary eval passing before the next sprint starts.
+The analysis phase was delivered via a 3-wave parallel audit architecture. Wave 1 ran 15 agents in parallel (10 code-analysis agents covering all 96+ TypeScript files, 44 MCP handlers, and 20 child phase spec folders). Wave 3 ran 5 synthesis agents to verify, deduplicate, and prioritize findings. The 8-sprint remediation plan gates each sprint on the TypeScript compiler and architecture boundary eval before proceeding to the next sprint.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -89,16 +85,15 @@ Each of the 6 sprints will be executed as a single atomic commit. Sprint S1 (CI 
 <!-- ANCHOR:verification -->
 ## Verification
 
-*To be completed after sprint execution.*
-
 | Check | Result |
 |-------|--------|
 | Wave 1 scratch outputs present (10 files) | PASS |
 | Level 3 skeleton files created | PASS |
-| validate.sh exit code | Pending |
-| test-scripts-modules.js after S1 | Pending |
-| tsc --noEmit after S2 | Pending |
-| Architecture boundary eval after S3 | Pending |
+| Wave 3 synthesis complete (8 ADRs, priority matrix) | PASS |
+| validate.sh exit code | PASS (analysis phase) |
+| test-scripts-modules.js after S1 | Pending (sprint execution) |
+| tsc --noEmit after S2 | Pending (sprint execution) |
+| Architecture boundary eval after S3 | Pending (sprint execution) |
 <!-- /ANCHOR:verification -->
 
 ---

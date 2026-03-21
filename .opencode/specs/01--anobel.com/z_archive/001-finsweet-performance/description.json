@@ -14,5 +14,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Finsweet Performance Optimization [001-finsweet-performance/spec]",
+  "importance_tier": "important",
+  "short_description": "Finsweet Performance Optimization"
 }

@@ -243,6 +243,7 @@ vi.mock('../lib/semantic-summarizer', () => ({
     },
   })),
   formatSummaryAsMarkdown: vi.fn(() => '## Implementation Summary'),
+  buildWeightedEmbeddingSections: vi.fn(() => []),
   extractFileChanges: vi.fn(() => new Map()),
 }));
 
@@ -652,7 +653,7 @@ describe('memory quality lint gate', () => {
       '',
       '## CONVERSATION',
       '**Tool: Read**',
-      'Inspected `scripts/core/workflow.ts` and `scripts/memory/validate-memory-quality.ts`.',
+      'Inspected `scripts/core/workflow.ts` and `scripts/lib/validate-memory-quality.ts`.',
       '',
       '## MEMORY METADATA',
       '```yaml',
@@ -879,7 +880,7 @@ describe('workflow seam guardrail', () => {
 
   it('splits captured, filesystem, and git file counts while treating filesystem truth as FILE_COUNT', async () => {
     const sessionData = await collectSessionData({
-      SPEC_FOLDER: '010-perfect-session-capturing',
+      SPEC_FOLDER: '009-perfect-session-capturing',
       userPrompts: [{ prompt: 'Validate session source counts', timestamp: '2026-03-16T08:00:00Z' }],
       observations: [],
       FILES: [
@@ -894,7 +895,7 @@ describe('workflow seam guardrail', () => {
           _provenance: 'git',
         },
         {
-          FILE_PATH: 'scripts/memory/validate-memory-quality.ts',
+          FILE_PATH: 'scripts/lib/validate-memory-quality.ts',
           DESCRIPTION: 'Declared in spec scope.',
           _provenance: 'spec-folder',
         },
@@ -903,7 +904,7 @@ describe('workflow seam guardrail', () => {
       _sourceSessionId: 'session-123',
       _sourceSessionCreated: 1_763_308_800_000,
       _sourceSessionUpdated: 1_763_309_100_000,
-    }, '010-perfect-session-capturing');
+    }, '009-perfect-session-capturing');
 
     expect(sessionData.CAPTURED_FILE_COUNT).toBe(1);
     expect(sessionData.FILESYSTEM_FILE_COUNT).toBe(2);
@@ -960,7 +961,7 @@ describe('workflow seam guardrail', () => {
 
   it('records the three-stage contamination audit trail in metadata.json', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
-    const specFolderPath = path.join(tempRoot, '010-perfect-session-capturing');
+    const specFolderPath = path.join(tempRoot, '009-perfect-session-capturing');
     const contextDir = path.join(tempRoot, 'memory');
     fs.mkdirSync(specFolderPath, { recursive: true });
     fs.mkdirSync(contextDir, { recursive: true });
@@ -989,7 +990,7 @@ describe('workflow seam guardrail', () => {
           ],
           userPrompts: [{ prompt: 'Perfect session capturing', timestamp: '2026-03-15T15:00:00Z' }],
         },
-        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '010-perfect-session-capturing'),
+        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '009-perfect-session-capturing'),
         silent: true,
       });
 
@@ -1074,7 +1075,7 @@ describe('workflow seam guardrail', () => {
 
   it('allows stateless saves when captured files match code paths declared in the target spec', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
-    const specFolderPath = path.join(tempRoot, '010-perfect-session-capturing');
+    const specFolderPath = path.join(tempRoot, '009-perfect-session-capturing');
     const contextDir = path.join(tempRoot, 'memory');
     fs.mkdirSync(specFolderPath, { recursive: true });
     fs.mkdirSync(contextDir, { recursive: true });
@@ -1119,7 +1120,7 @@ describe('workflow seam guardrail', () => {
     try {
       const result = await runWorkflow({
         specFolderArg: specFolderPath,
-        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '010-perfect-session-capturing'),
+        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '009-perfect-session-capturing'),
         allowRecovery: true,
         silent: true,
       });
@@ -1133,7 +1134,7 @@ describe('workflow seam guardrail', () => {
 
   it('hard-blocks stateless saves via Block B when captured file paths do not overlap with target spec folder', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
-    const specFolderPath = path.join(tempRoot, '010-perfect-session-capturing');
+    const specFolderPath = path.join(tempRoot, '009-perfect-session-capturing');
     const contextDir = path.join(tempRoot, 'memory');
     fs.mkdirSync(specFolderPath, { recursive: true });
     fs.mkdirSync(contextDir, { recursive: true });
@@ -1181,7 +1182,7 @@ describe('workflow seam guardrail', () => {
       // don't relate to the target spec folder (overlap < 15%).
       await expect(runWorkflow({
         specFolderArg: specFolderPath,
-        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '010-perfect-session-capturing'),
+        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '009-perfect-session-capturing'),
         allowRecovery: true,
         silent: true,
       })).rejects.toThrow(/ALIGNMENT_BLOCK.*% of captured file paths/);
@@ -1196,7 +1197,7 @@ describe('workflow seam guardrail', () => {
 
   it('rejects thin explicit JSON saves with INSUFFICIENT_CONTEXT_ABORT', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
-    const specFolderPath = path.join(tempRoot, '010-perfect-session-capturing');
+    const specFolderPath = path.join(tempRoot, '009-perfect-session-capturing');
     const contextDir = path.join(tempRoot, 'memory');
     fs.mkdirSync(specFolderPath, { recursive: true });
     fs.mkdirSync(contextDir, { recursive: true });
@@ -1236,7 +1237,7 @@ describe('workflow seam guardrail', () => {
           _source: 'file',
           userPrompts: [{ prompt: 'Perfect session capturing', timestamp: '2026-03-15T15:00:00Z' }],
         },
-        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '010-perfect-session-capturing'),
+        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '009-perfect-session-capturing'),
         silent: true,
       })).rejects.toThrow(/INSUFFICIENT_CONTEXT_ABORT/);
 
@@ -1250,7 +1251,7 @@ describe('workflow seam guardrail', () => {
 
   it('uses canonical score01 when applying the workflow quality abort threshold', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
-    const specFolderPath = path.join(tempRoot, '010-perfect-session-capturing');
+    const specFolderPath = path.join(tempRoot, '009-perfect-session-capturing');
     const contextDir = path.join(tempRoot, 'memory');
     fs.mkdirSync(specFolderPath, { recursive: true });
     fs.mkdirSync(contextDir, { recursive: true });
@@ -1264,18 +1265,19 @@ describe('workflow seam guardrail', () => {
     workflowHarness.contextDir = contextDir;
     qualityHarness.legacyResult = {
       ...qualityHarness.legacyResult,
+      score: 90,
+      score01: 0.9,
+      score100: 90,
+      qualityScore: 0.9,
+      warnings: [],
+    };
+    qualityHarness.v2Result = {
+      ...qualityHarness.v2Result,
       score: 40,
       score01: 0.4,
       score100: 40,
       qualityScore: 0.4,
       warnings: ['Canonical score intentionally below threshold for workflow gating coverage.'],
-    };
-    qualityHarness.v2Result = {
-      ...qualityHarness.v2Result,
-      score: 90,
-      score01: 0.9,
-      score100: 90,
-      qualityScore: 0.9,
     };
 
     const { runWorkflow } = await import('../core/workflow');
@@ -1297,7 +1299,7 @@ describe('workflow seam guardrail', () => {
             },
           ],
         },
-        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '010-perfect-session-capturing'),
+        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '009-perfect-session-capturing'),
         silent: true,
       })).rejects.toThrow(/QUALITY_GATE_ABORT: Memory quality score 40\/100 \(0\.40\) is below minimum threshold \(0\.50\)/);
 
@@ -1310,7 +1312,7 @@ describe('workflow seam guardrail', () => {
 
   it('rejects malformed rendered memories before write when the template contract is violated', async () => {
     const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'speckit-workflow-'));
-    const specFolderPath = path.join(tempRoot, '010-perfect-session-capturing');
+    const specFolderPath = path.join(tempRoot, '009-perfect-session-capturing');
     const contextDir = path.join(tempRoot, 'memory');
     fs.mkdirSync(specFolderPath, { recursive: true });
     fs.mkdirSync(contextDir, { recursive: true });
@@ -1358,7 +1360,7 @@ describe('workflow seam guardrail', () => {
             },
           ],
         },
-        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '010-perfect-session-capturing'),
+        collectSessionDataFn: async (_collectedData, specFolderName) => createSessionData(specFolderName || '009-perfect-session-capturing'),
         silent: true,
       })).rejects.toThrow(/QUALITY_GATE_ABORT: Rendered memory violated template contract/);
 

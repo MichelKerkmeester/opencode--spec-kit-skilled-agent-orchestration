@@ -34,7 +34,7 @@ Operators verify the three-path contract: structured JSON succeeds, direct posit
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 154 | JSON-primary deprecation posture | Verify three-path save contract | `Test the three generate-context.js save paths: (1) --json with valid structured payload should succeed, (2) direct positional without --recovery should reject with migration guidance, (3) --recovery with a spec folder should enable stateless capture. Return a pass/fail verdict for each path.` | 1) `node scripts/dist/memory/generate-context.js --json '{"specFolder":"test","sessionSummary":"test"}' <spec-folder>` → expect exit 0 2) `node scripts/dist/memory/generate-context.js <spec-folder>` → expect non-zero exit with migration message 3) `node scripts/dist/memory/generate-context.js --recovery <spec-folder>` → expect stateless capture attempt | Path 1: exit 0, Path 2: non-zero with guidance, Path 3: stateless capture | CLI exit codes and stdout/stderr output | PASS if all three paths match documented behavior | Check generate-context.ts argument parsing, --recovery flag detection, and migration guidance text |
+| 154 | JSON-primary deprecation posture | Verify three-path save contract | `Test the three generate-context.js save paths: (1) --json with valid structured payload should succeed, (2) direct positional without --recovery should reject with migration guidance, (3) --recovery with a spec folder should enable stateless capture. Return a pass/fail verdict for each path.` | 1) `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"test","sessionSummary":"test"}' <spec-folder>` → expect exit 0 2) `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <spec-folder>` → expect non-zero exit with migration message 3) `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --recovery <spec-folder>` → expect stateless capture attempt | Path 1: exit 0, Path 2: non-zero with guidance, Path 3: stateless capture | CLI exit codes and stdout/stderr output | PASS if all three paths match documented behavior | Check generate-context.ts argument parsing, --recovery flag detection, and migration guidance text |
 
 ---
 
@@ -42,7 +42,7 @@ Operators verify the three-path contract: structured JSON succeeds, direct posit
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/17-json-primary-deprecation-posture.md](../../feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md)
-- Source spec: [017-json-primary-deprecation/spec.md](../../../specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/017-json-primary-deprecation/spec.md)
+- Source spec: [017-json-primary-deprecation/spec.md](../../../specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation/spec.md)
 
 ---
 

@@ -19,5 +19,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Post-SpecKit Template Upgrade Testing [075-post-speckit-template-upgrade-testing/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Post-SpecKit Template Upgrade Testing"
 }

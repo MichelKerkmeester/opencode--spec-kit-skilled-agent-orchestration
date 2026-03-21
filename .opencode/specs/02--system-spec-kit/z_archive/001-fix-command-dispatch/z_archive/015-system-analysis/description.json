@@ -19,5 +19,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: SpecKit System Architecture Analysis [015-system-analysis/spec]",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: SpecKit System Architecture Analysis"
 }

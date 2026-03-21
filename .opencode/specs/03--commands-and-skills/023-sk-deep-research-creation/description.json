@@ -16,5 +16,9 @@
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Autonomous Deep Research Loop",
+  "status": "v1 Complete (incl. Phase 5.5 legacy removal), v2 Planned",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Autonomous Deep Research Loop"
 }

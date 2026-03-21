@@ -570,13 +570,18 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
           (r) => !existingIds.has(r.id)
         );
 
-        // F-05 — Re-apply contextType filter after injection.
-        // Constitutional rows fetched via vector search bypass the earlier
-        // ContextType filter. Without this guard, injected rows with a
-        // Different contextType leak into the caller's result set.
-        const filteredConstitutional = contextType
+        // Re-apply filters after injection because constitutional rows fetched
+        // via vector search bypass the earlier governance/context gate.
+        const contextFilteredConstitutional = contextType
           ? uniqueConstitutional.filter((r) => resolveRowContextType(r) === contextType)
           : uniqueConstitutional;
+        const filteredConstitutional = hasGovernanceScope
+          ? filterRowsByScope(
+            contextFilteredConstitutional,
+            scopeFilter,
+            allowedSharedSpaceIds,
+          )
+          : contextFilteredConstitutional;
         candidates = [...candidates, ...filteredConstitutional];
         constitutionalInjectedCount = filteredConstitutional.length;
       }

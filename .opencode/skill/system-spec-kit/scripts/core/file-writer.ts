@@ -16,6 +16,21 @@ import { validateNoLeakedPlaceholders, validateAnchors } from '../utils/validati
 const MIN_SUBSTANCE_CHARS = 200;
 const FRONTMATTER_BLOCK_RE = /^---\r?\n[\s\S]*?\r?\n---(?:\r?\n|$)/;
 
+function canonicalizeForDuplicateComparison(content: string): string {
+  return content
+    .replace(/^(title:\s*".*?) \[[^"\]]+\]"$/gm, '$1"')
+    .replace(/^(# .+?) \[[^\]]+\]$/gm, '$1')
+    .replace(/^session_id:\s*".*"$/gm, 'session_id: "<normalized>"')
+    .replace(/^(created_at|created_at_epoch|last_accessed_epoch|expires_at_epoch):.*$/gm, '$1: <normalized>')
+    .replace(/^access_count:\s*\d+$/gm, 'access_count: <normalized>')
+    .replace(/^fingerprint_hash:\s*".*"$/gm, 'fingerprint_hash: "<normalized>"')
+    .replace(/^memories_surfaced:\s*\d+$/gm, 'memories_surfaced: <normalized>')
+    .replace(/^dedup_savings_tokens:\s*\d+$/gm, 'dedup_savings_tokens: <normalized>')
+    .replace(/^\*\*Timestamp\*\*:\s+.*$/gm, '**Timestamp**: <normalized>')
+    .replace(/^\s+- id:\s*".*"$/gm, '    - id: "<normalized>"')
+    .replace(/^\s+similarity:\s*.+$/gm, '      similarity: <normalized>');
+}
+
 function verifyResolvedWriteTarget(
   resolvedContextDir: string,
   filePath: string,
@@ -83,7 +98,9 @@ function validateContentSubstance(content: string, filename: string): void {
 async function checkForDuplicateContent(
   contextDir: string, content: string, filename: string
 ): Promise<string | null> {
-  const hash = crypto.createHash('sha256').update(content).digest('hex');
+  const hash = crypto.createHash('sha256')
+    .update(canonicalizeForDuplicateComparison(content))
+    .digest('hex');
   let entries: string[];
   try {
     const dirEntries = await fs.readdir(contextDir);
@@ -96,7 +113,9 @@ async function checkForDuplicateContent(
   for (const existing of entries) {
     try {
       const existingContent = await fs.readFile(path.join(contextDir, existing), 'utf-8');
-      const existingHash = crypto.createHash('sha256').update(existingContent).digest('hex');
+      const existingHash = crypto.createHash('sha256')
+        .update(canonicalizeForDuplicateComparison(existingContent))
+        .digest('hex');
       if (hash === existingHash) {
         return existing; // duplicate found — return the matching filename
       }

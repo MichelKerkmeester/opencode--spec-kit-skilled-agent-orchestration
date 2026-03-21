@@ -1,0 +1,21 @@
+{
+  "specFolder": "03--commands-and-skills/021-sk-doc-feature-catalog-testing-playbook",
+  "description": "Feature Specification: sk-doc Feature Catalog + Testing Playbook Alignment",
+  "keywords": [
+    "feature",
+    "specification",
+    "sk-doc",
+    "catalog",
+    "testing",
+    "playbook",
+    "alignment"
+  ],
+  "lastUpdated": "2026-03-21T10:31:35.151Z",
+  "specId": "021",
+  "folderSlug": "sk-doc-feature-catalog-testing-playbook",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

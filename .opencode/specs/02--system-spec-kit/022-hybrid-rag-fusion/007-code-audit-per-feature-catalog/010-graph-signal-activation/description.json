@@ -21,5 +21,9 @@
     "12-03-26_13-52__graph-signal-activation.md",
     "12-03-26_13-53__closed-graph-signal-activation-backlog-to.md",
     "12-03-26_13-55__rejected-non-finite-causal-edge-strengths-before.md"
-  ]
+  ],
+  "title": "Feature Specification: graph-signal-activation [template:level_2/spec.md]",
+  "status": "Complete",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: graph-signal-activation"
 }

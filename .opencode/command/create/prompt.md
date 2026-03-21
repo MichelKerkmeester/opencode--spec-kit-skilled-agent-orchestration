@@ -550,7 +550,7 @@ STATUS=OK SCORE=44/50 FRAMEWORK=RCAF SAVED=specs/012-onboarding/prompts/api-auth
 | ------------------------- | ------------------------------------------------------------------------------------ |
 | `/create:sk-skill ... full-create` | Create a new OpenCode skill (if the enhanced prompt should become a skill) |
 | `/create:sk-skill ... reference-only` | Create reference documentation (if prompt engineering patterns should be documented) |
-| `/create:visual_html`     | Create visual HTML artifact (if prompt results should be visualized)                 |
+| `/create:folder_readme`   | Create supporting documentation artifact (if prompt results should be packaged)      |
 
 ---
 

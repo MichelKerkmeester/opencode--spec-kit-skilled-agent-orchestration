@@ -1000,4 +1000,23 @@ describe('T201-T220: Token Budget Enforcement (T205) [deferred - requires DB tes
     expect(enforcement.truncated).toBe(false);
     expect(enforcement.budgetTokens).toBe(100000);
   });
+
+  it('T211: Parse-failed fallback still returns valid nested JSON', () => {
+    const malformedNestedResult: ContextResult = {
+      strategy: 'deep',
+      mode: 'deep',
+      content: [{ type: 'text', text: '{"data":{"results":[{"id":1}' }],
+    };
+
+    const { result: truncated, enforcement } = enforceTokenBudget(malformedNestedResult, 5);
+    const contentArr = (truncated as Record<string, unknown>).content as Array<{ type: string; text: string }>;
+
+    expect(enforcement.enforced).toBe(true);
+    expect(() => JSON.parse(contentArr[0].text)).not.toThrow();
+
+    const parsed = JSON.parse(contentArr[0].text) as Record<string, unknown>;
+    const data = parsed.data as Record<string, unknown>;
+    expect(Array.isArray(data.results)).toBe(true);
+    expect(data.count).toBe(0);
+  });
 });

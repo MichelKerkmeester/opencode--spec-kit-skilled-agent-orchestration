@@ -17,5 +17,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: @write Agent Enforcement for /create Commands [002-write-agent-enforcement/spec]",
+  "importance_tier": "important",
+  "short_description": "Spec: @write Agent Enforcement for /create Commands"
 }

@@ -107,11 +107,11 @@ Everything above the `---` divider is for users. Appendices below are AI agent r
 | Subcommand | Invocation | Description |
 |------------|------------|-------------|
 | enable | `/memory:shared enable` | Enable shared memory (first-time setup, required) |
-| create | `/memory:shared create <spaceId> <tenantId> <name>` | Create or update shared space |
-| member | `/memory:shared member <spaceId> <type> <id> <role>` | Set membership |
+| create | `/memory:shared create <spaceId> <tenantId> <name> (--actor-user <id> \| --actor-agent <id>)` | Create or update shared space; first create auto-grants owner access to the actor |
+| member | `/memory:shared member <spaceId> <tenantId> <type> <id> <role> (--actor-user <id> \| --actor-agent <id>)` | Set membership as an existing owner |
 | status | `/memory:shared status [--tenant <id>] [--user <id>] [--agent <id>]` | Inspect rollout status |
 
-> **Note:** Shared memory is disabled by default. Run `/memory:shared` or `/memory:shared enable` to complete first-time setup before using other subcommands.
+> **Note:** Shared memory is disabled by default. Run `/memory:shared` or `/memory:shared enable` to complete first-time setup before using other subcommands. Shared spaces stay deny-by-default after bootstrap: the first successful `create` auto-grants `owner` to the acting caller, and later access changes still require explicit membership updates.
 
 ---
 
@@ -199,11 +199,11 @@ No `assets/` folder exists for memory commands. Workflows are defined inline wit
 # View reporting dashboard
 /memory:analyze dashboard
 
-# Create a shared-memory space
-/memory:shared create team-alpha tenant-1 "Team Alpha"
+# Create a shared-memory space and bootstrap owner access for the acting user
+/memory:shared create team-alpha tenant-1 "Team Alpha" --actor-user user-1
 
-# Set membership for a user
-/memory:shared member team-alpha user user-42 editor
+# Set membership for a user as an existing owner
+/memory:shared member team-alpha tenant-1 user user-42 editor --actor-user user-1
 
 # View rollout status
 /memory:shared status
@@ -246,54 +246,55 @@ The `/memory:manage` command accepts these subcommands:
 <!-- ANCHOR:tool-coverage -->
 ## 6. TOOL COVERAGE MATRIX
 
-All 32 MCP tools mapped to their primary command home:
+All 33 MCP tools mapped to their primary command home:
 
 | # | Tool | Layer | Primary Command |
 |---|------|-------|-----------------|
 | 1 | `memory_context` | L1 | `/memory:analyze` |
-| 2 | `memory_search` | L2 | `/memory:analyze` |
-| 3 | `memory_match_triggers` | L2 | `/memory:analyze` |
-| 4 | `memory_save` | L2 | `/memory:save` |
-| 5 | `memory_list` | L3 | `/memory:manage` |
-| 6 | `memory_stats` | L3 | `/memory:manage` |
-| 7 | `memory_health` | L3 | `/memory:manage` |
-| 8 | `memory_delete` | L4 | `/memory:manage` |
-| 9 | `memory_update` | L4 | `/memory:manage` |
-| 10 | `memory_validate` | L4 | `/memory:manage` |
-| 11 | `memory_bulk_delete` | L4 | `/memory:manage` |
-| 12 | `checkpoint_create` | L5 | `/memory:manage` |
-| 13 | `checkpoint_list` | L5 | `/memory:manage` |
-| 14 | `checkpoint_restore` | L5 | `/memory:manage` |
-| 15 | `checkpoint_delete` | L5 | `/memory:manage` |
-| 16 | `shared_space_upsert` | L5 | `/memory:shared` |
-| 17 | `shared_space_membership_set` | L5 | `/memory:shared` |
-| 18 | `shared_memory_status` | L5 | `/memory:shared` |
-| 19 | `shared_memory_enable` | L5 | `/memory:shared` |
-| 20 | `task_preflight` | L6 | `/memory:analyze` |
-| 21 | `task_postflight` | L6 | `/memory:analyze` |
-| 22 | `memory_drift_why` | L6 | `/memory:analyze` |
-| 23 | `memory_causal_link` | L6 | `/memory:analyze` |
-| 24 | `memory_causal_stats` | L6 | `/memory:analyze` |
-| 25 | `memory_causal_unlink` | L6 | `/memory:analyze` |
-| 26 | `eval_run_ablation` | L6 | `/memory:analyze` |
-| 27 | `eval_reporting_dashboard` | L6 | `/memory:analyze` |
-| 28 | `memory_index_scan` | L7 | `/memory:manage` |
-| 29 | `memory_get_learning_history` | L7 | `/memory:analyze` |
-| 30 | `memory_ingest_start` | L7 | `/memory:manage ingest` |
-| 31 | `memory_ingest_status` | L7 | `/memory:manage ingest` |
-| 32 | `memory_ingest_cancel` | L7 | `/memory:manage ingest` |
+| 2 | `memory_quick_search` | L2 | `/memory:analyze` |
+| 3 | `memory_search` | L2 | `/memory:analyze` |
+| 4 | `memory_match_triggers` | L2 | `/memory:analyze` |
+| 5 | `memory_save` | L2 | `/memory:save` |
+| 6 | `memory_list` | L3 | `/memory:manage` |
+| 7 | `memory_stats` | L3 | `/memory:manage` |
+| 8 | `memory_health` | L3 | `/memory:manage` |
+| 9 | `memory_delete` | L4 | `/memory:manage` |
+| 10 | `memory_update` | L4 | `/memory:manage` |
+| 11 | `memory_validate` | L4 | `/memory:manage` |
+| 12 | `memory_bulk_delete` | L4 | `/memory:manage` |
+| 13 | `checkpoint_create` | L5 | `/memory:manage` |
+| 14 | `checkpoint_list` | L5 | `/memory:manage` |
+| 15 | `checkpoint_restore` | L5 | `/memory:manage` |
+| 16 | `checkpoint_delete` | L5 | `/memory:manage` |
+| 17 | `shared_space_upsert` | L5 | `/memory:shared` |
+| 18 | `shared_space_membership_set` | L5 | `/memory:shared` |
+| 19 | `shared_memory_status` | L5 | `/memory:shared` |
+| 20 | `shared_memory_enable` | L5 | `/memory:shared` |
+| 21 | `task_preflight` | L6 | `/memory:analyze` |
+| 22 | `task_postflight` | L6 | `/memory:analyze` |
+| 23 | `memory_drift_why` | L6 | `/memory:analyze` |
+| 24 | `memory_causal_link` | L6 | `/memory:analyze` |
+| 25 | `memory_causal_stats` | L6 | `/memory:analyze` |
+| 26 | `memory_causal_unlink` | L6 | `/memory:analyze` |
+| 27 | `eval_run_ablation` | L6 | `/memory:analyze` |
+| 28 | `eval_reporting_dashboard` | L6 | `/memory:analyze` |
+| 29 | `memory_index_scan` | L7 | `/memory:manage` |
+| 30 | `memory_get_learning_history` | L7 | `/memory:analyze` |
+| 31 | `memory_ingest_start` | L7 | `/memory:manage ingest` |
+| 32 | `memory_ingest_status` | L7 | `/memory:manage ingest` |
+| 33 | `memory_ingest_cancel` | L7 | `/memory:manage ingest` |
 
 ### Coverage by Command
 
 | Command | Tools Owned | Layers |
 |---------|-------------|--------|
-| `/memory:analyze` | 12 | L1, L2, L6, L7 |
+| `/memory:analyze` | 13 | L1, L2, L6, L7 |
 | `/memory:save` | 1 | L2 |
 | `/memory:manage` | 15 | L3, L4, L5, L7 |
 | `/memory:learn` | 0 (uses manage/save tools) | — |
 | `/memory:continue` | 0 (uses context/manage tools) | — |
 | `/memory:shared` | 4 | L5 |
-| **Total** | **32** | **L1-L7** |
+| **Total** | **33** | **L1-L7** |
 
 ---
 
@@ -324,6 +325,6 @@ All 32 MCP tools mapped to their primary command home:
 | [Parent: OpenCode Commands](../README.txt) | Overview of all command groups |
 | [system-spec-kit SKILL.md](../../skill/system-spec-kit/SKILL.md) | Memory system architecture and spec folder workflow |
 | [Spec Kit Memory MCP](../../skill/system-spec-kit/mcp_server/) | MCP server implementation for memory operations |
-| [Tool Schemas](../../skill/system-spec-kit/mcp_server/tool-schemas.ts) | Canonical 32-tool inventory and property definitions |
+| [Tool Schemas](../../skill/system-spec-kit/mcp_server/tool-schemas.ts) | Canonical 33-tool inventory and property definitions |
 | [Tool Input Schemas](../../skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts) | Zod validation schemas and ALLOWED_PARAMETERS |
 <!-- /ANCHOR:related-documents -->

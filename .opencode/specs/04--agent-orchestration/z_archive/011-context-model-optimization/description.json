@@ -17,5 +17,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Context Agent Model Optimization [011-context-model-optimization/spec]",
+  "status": "Implementing",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Context Agent Model Optimization"
 }

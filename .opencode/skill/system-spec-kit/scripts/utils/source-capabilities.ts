@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Source Capabilities
+// ───────────────────────────────────────────────────────────────
+
 import type { DataSource } from './input-normalizer';
 
 export type SourceInputMode = 'structured' | 'stateless';

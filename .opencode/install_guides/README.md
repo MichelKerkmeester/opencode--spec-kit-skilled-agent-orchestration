@@ -1190,7 +1190,7 @@ The Agent System provides specialized AI personas with defined authorities, tool
 
 **Quick Verification:**
 ```bash
-ls .opencode/agent/*.md 2>/dev/null && echo "✅ PASS" || echo "❌ FAIL"
+ls .opencode/agent/*.md .opencode/agent/chatgpt/*.md 2>/dev/null && echo "✅ PASS" || echo "❌ FAIL"
 ```
 
 **Detailed Guide**: [SET-UP - Opencode Agents.md](./SET-UP%20-%20Opencode%20Agents.md)
@@ -1233,13 +1233,14 @@ You have completed the installation. Here is your roadmap for getting started.
 | **Git Operations**       | sk-git skill           | Commit, PR creation workflows                             |
 | **Implementation**       | sk-code--web or sk-code--full-stack | 3-phase implementation lifecycle                          |
 
-### 16.3 Available Commands (17 total)
+### 16.3 Available Commands (22 total)
 
 | Category | Commands                                                                                                |
 | -------- | ------------------------------------------------------------------------------------------------------- |
-| Create   | `/create:agent`, `/create:folder_readme`, `/create:sk-skill` |
-| Memory   | `/memory:analyze`, `/memory:continue`, `/memory:learn`, `/memory:manage`, `/memory:save`              |
-| SpecKit  | `/spec_kit:complete`, `/spec_kit:debug`, `/spec_kit:deep-research`, `/spec_kit:handover`, `/spec_kit:implement`, `/spec_kit:plan`, `/spec_kit:resume` |
+| Create   | `/create:agent`, `/create:changelog`, `/create:feature-catalog`, `/create:folder_readme`, `/create:prompt`, `/create:sk-skill`, `/create:testing-playbook` |
+| Memory   | `/memory:analyze`, `/memory:continue`, `/memory:learn`, `/memory:manage`, `/memory:save`, `/memory:shared` |
+| SpecKit  | `/spec_kit:complete`, `/spec_kit:debug`, `/spec_kit:deep-research`, `/spec_kit:handover`, `/spec_kit:implement`, `/spec_kit:phase`, `/spec_kit:plan`, `/spec_kit:resume` |
+| Utility  | `/agent_router` |
 
 ### 16.4 Learning Resources
 
@@ -1415,10 +1416,10 @@ sudo chown -R $(whoami) /usr/local/lib/node_modules
 
 | File                        | Purpose                                       |
 | --------------------------- | --------------------------------------------- |
-| `opencode.json`             | OpenCode MCP server config (3 native servers) |
+| `opencode.json`             | OpenCode MCP server config (4 native servers) |
 | `.utcp_config.json`         | Code Mode external tools config               |
-| `.opencode/skill/`          | Skill definitions (16 skills)                 |
-| `.opencode/agent/`          | Agent definitions (9 agents)                  |
+| `.opencode/skill/`          | Skill definitions (18 skills)                 |
+| `.opencode/agent/`          | Base and ChatGPT agent source definitions     |
 | `.opencode/install_guides/` | Installation documentation                    |
 | `~/.opencode-backup/`       | Configuration backups                         |
 | `AGENTS.md`                 | AI agent behavior configuration               |
@@ -1428,8 +1429,8 @@ sudo chown -R $(whoami) /usr/local/lib/node_modules
 | Category           | Count | Items                                                                                                                    |
 | ------------------ | ----- | ------------------------------------------------------------------------------------------------------------------------ |
 | Native MCP Servers | 3     | code_mode, spec_kit_memory, sequential_thinking                                                                          |
-| Skills             | 16    | mcp-code-mode, mcp-figma, system-spec-kit, mcp-chrome-devtools, mcp-clickup, cli-codex, cli-copilot, cli-claude-code, cli-gemini, sk-code--full-stack, sk-code--opencode, sk-code--review, sk-code--web, sk-doc, sk-git, sk-prompt-improver |
-| Commands           | 19    | /create:* (6), /memory:* (5), /spec_kit:* (7), agent_router (1)                                                         |
+| Skills             | 18    | mcp-chrome-devtools, mcp-clickup, mcp-coco-index, mcp-code-mode, mcp-figma, system-spec-kit, cli-codex, cli-copilot, cli-claude-code, cli-gemini, sk-code--full-stack, sk-code--opencode, sk-code--review, sk-code--web, sk-deep-research, sk-doc, sk-git, sk-prompt-improver |
+| Commands           | 22    | /create:* (7), /memory:* (6), /spec_kit:* (8), agent_router (1)                                                         |
 | CLI Tools          | 1     | Chrome DevTools (bdg)                                                                                                    |
 | Plugins            | 2     | Antigravity Auth, OpenAI Codex Auth                                                                                      |
 

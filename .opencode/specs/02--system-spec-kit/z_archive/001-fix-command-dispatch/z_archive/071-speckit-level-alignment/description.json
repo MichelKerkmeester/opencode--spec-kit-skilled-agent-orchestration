@@ -19,5 +19,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: SpecKit Level-Based Template Alignment [071-speckit-level-alignment/spec]",
+  "status": "Impact if Blocked",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: SpecKit Level-Based Template Alignment"
 }

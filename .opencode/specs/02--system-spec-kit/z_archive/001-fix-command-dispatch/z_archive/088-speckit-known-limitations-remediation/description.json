@@ -19,5 +19,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: System-Spec-Kit Known Limitations Remediation [088-speckit-known-limitations-remediation/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: System-Spec-Kit Known Limitations Remediation"
 }

@@ -51,7 +51,7 @@ Wave 3 fixed 5 root cause bugs where structured JSON payload fields (`sessionSum
 - **RC4 (importance tier)**: Cascading fix — resolved by RC3 (decisions propagate) + RC5 (contextType honored), so auto-detection returns correct tier.
 - **RC5 (context type)**: `detectContextType()` now checks `decisionCount > 0` before `total === 0` early return; explicit `contextType` from JSON is honored via new `explicitContextType` parameter.
 
-Additionally, a **post-save quality review** (`scripts/core/post-save-review.ts`) was added as Step 10.5 in the workflow. After writing the memory file, it reads back the frontmatter and compares against the original JSON payload, reporting HIGH/MEDIUM/LOW severity issues for silent field overrides. All 5 instruction files (CLAUDE.md, AGENTS.md, GEMINI.md, AGENTS_example_fs_enterprises.md, Barter/coder/AGENTS) were updated to instruct AIs to act on the review output.
+Additionally, a **post-save quality review** (`scripts/core/post-save-review.ts`) was added as Step 10.5 in the workflow. After writing the memory file, it reads back the frontmatter and compares against the original JSON payload, reporting HIGH/MEDIUM/LOW severity issues for silent field overrides. The 4 tracked instruction files present in this repo `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, and `AGENTS_example_fs_enterprises.md` were updated to instruct AIs to act on the review output.
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -93,7 +93,7 @@ The delivery happened in three passes. Wave 1 expanded the structured JSON contr
 | Wave 2 fixes | PASS, confidence, changed-file count, and explicit message/tool counts follow the corrected priority rules |
 | Wave 3 RC fixes | PASS, all 5 JSON payload fields propagate correctly through pipeline |
 | Post-save review | PASS, `scripts/core/post-save-review.ts` compiles and integrates at Step 10.5 |
-| Instruction layer | PASS, 5 instruction files updated with post-save review guidance |
+| Instruction layer | PASS, the 4 tracked instruction files present in this repo were updated with post-save review guidance |
 <!-- /ANCHOR:verification -->
 
 ---

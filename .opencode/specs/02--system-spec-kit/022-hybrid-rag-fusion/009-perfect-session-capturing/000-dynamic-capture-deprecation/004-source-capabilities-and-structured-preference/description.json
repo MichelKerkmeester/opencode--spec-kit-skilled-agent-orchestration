@@ -19,5 +19,9 @@
     "000-dynamic-capture-deprecation"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Source Capabilities And Structured Preference [template:level_1/spec.md]",
+  "status": "Complete",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: Source Capabilities And Structured Preference"
 }

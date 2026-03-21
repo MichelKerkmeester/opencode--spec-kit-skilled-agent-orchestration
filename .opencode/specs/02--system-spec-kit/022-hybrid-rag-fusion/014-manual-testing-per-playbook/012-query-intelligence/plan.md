@@ -44,10 +44,10 @@ This plan converts the six query-intelligence scenarios in the manual testing pl
 - [x] Feature flag baseline state (SPECKIT_COMPLEXITY_ROUTER, SPECKIT_CHANNEL_MIN_REP, SPECKIT_CONFIDENCE_TRUNCATION, SPECKIT_RSF_FUSION, SPECKIT_EMBEDDING_EXPANSION) identified for fallback comparison scenarios.
 
 ### Definition of Done
-- [ ] All 6 query-intelligence scenarios have execution evidence tied to the exact documented prompt and command sequence.
-- [ ] Every scenario has a verdict and rationale using the review protocol acceptance rules.
-- [ ] Coverage is reported as 6/6 scenarios for Phase 012 with no skipped test IDs.
-- [ ] Any feature-flag changes are restored or explicitly documented before closeout.
+- [x] All 6 query-intelligence scenarios have execution evidence tied to the exact documented prompt and command sequence.
+- [x] Every scenario has a verdict and rationale using the review protocol acceptance rules.
+- [x] Coverage is reported as 6/6 scenarios for Phase 012 with no skipped test IDs.
+- [x] Any feature-flag changes are restored or explicitly documented before closeout.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -74,23 +74,23 @@ Manual query-intelligence test execution pipeline with review-gated evidence col
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Preconditions
-- [ ] Verify source documents are open: playbook, review protocol, and linked query-intelligence feature files.
-- [ ] Confirm MCP runtime access for `memory_search` with `includeTrace: true`.
-- [ ] Record baseline feature flag state for SPECKIT_COMPLEXITY_ROUTER, SPECKIT_CHANNEL_MIN_REP, SPECKIT_CONFIDENCE_TRUNCATION, SPECKIT_RSF_FUSION, and SPECKIT_EMBEDDING_EXPANSION before any flag-toggle testing.
-- [ ] Prepare a varied-complexity sandbox corpus to drive simple, moderate, and complex query classification across all scenarios.
+- [x] Verify source documents are open: playbook, review protocol, and linked query-intelligence feature files.
+- [x] Confirm MCP runtime access for `memory_search` with `includeTrace: true`.
+- [x] Record baseline feature flag state for SPECKIT_COMPLEXITY_ROUTER, SPECKIT_CHANNEL_MIN_REP, SPECKIT_CONFIDENCE_TRUNCATION, SPECKIT_RSF_FUSION, and SPECKIT_EMBEDDING_EXPANSION before any flag-toggle testing.
+- [x] Prepare a varied-complexity sandbox corpus to drive simple, moderate, and complex query classification across all scenarios.
 
 ### Phase 2: Non-Destructive Tests
-- [ ] Run 033 to verify query complexity routing: confirm simple queries select 2 channels, moderate 3, complex 5; then disable SPECKIT_COMPLEXITY_ROUTER and confirm fallback to "complex" default routing.
-- [ ] Run 034 to confirm RSF shadow-mode status: inspect branch conditions in code path, run queries, and confirm RRF remains the sole live fusion method with no runtime RSF branch affecting returned results.
-- [ ] Run 035 to validate channel min-representation: execute a dominance query where one channel would monopolize top-k; confirm every active channel has at least one representative above the 0.005 quality floor.
-- [ ] Run 036 to verify confidence-based truncation: execute a long-tail query; confirm results are trimmed at the relevance cliff (first gap exceeding 2x median gap); confirm minimum 3 results are always returned; confirm cutoff metadata is visible in the trace.
-- [ ] Run 037 to verify dynamic token budget allocation: run queries at each complexity tier; confirm budgets of 1500/2500/4000 tokens respectively; then disable SPECKIT_EMBEDDING_EXPANSION (the token-budget flag) and confirm fallback to 4000-token default.
-- [ ] Run 038 to validate query expansion: run a complex query and confirm >=2 expansion variants produced; confirm baseline+expanded results are deduplicated with baseline-first ordering; run a simple query and confirm expansion is suppressed.
+- [x] Run 033 to verify query complexity routing: confirm simple queries select 2 channels, moderate 3, complex 5; then disable SPECKIT_COMPLEXITY_ROUTER and confirm fallback to "complex" default routing.
+- [x] Run 034 to confirm RSF shadow-mode status: inspect branch conditions in code path, run queries, and confirm RRF remains the sole live fusion method with no runtime RSF branch affecting returned results.
+- [x] Run 035 to validate channel min-representation: execute a dominance query where one channel would monopolize top-k; confirm every active channel has at least one representative above the 0.005 quality floor.
+- [x] Run 036 to verify confidence-based truncation: execute a long-tail query; confirm results are trimmed at the relevance cliff (first gap exceeding 2x median gap); confirm minimum 3 results are always returned; confirm cutoff metadata is visible in the trace.
+- [x] Run 037 to verify dynamic token budget allocation: run queries at each complexity tier; confirm budgets of 1500/2500/4000 tokens respectively; then disable SPECKIT_EMBEDDING_EXPANSION (the token-budget flag) and confirm fallback to 4000-token default.
+- [x] Run 038 to validate query expansion: run a complex query and confirm >=2 expansion variants produced; confirm baseline+expanded results are deduplicated with baseline-first ordering; run a simple query and confirm expansion is suppressed.
 
 ### Phase 3: Evidence Collection and Verdict
-- [ ] For each scenario, capture prompt, exact command sequence, raw output, expected signals, and reviewer notes.
-- [ ] Apply the review protocol acceptance checks: preconditions satisfied, prompt/commands executed as written, expected signals present, evidence readable, outcome rationale explicit.
-- [ ] Assign PASS, PARTIAL, or FAIL per scenario and summarize phase coverage as 6/6 scenarios with linked evidence references.
+- [x] For each scenario, capture prompt, exact command sequence, raw output, expected signals, and reviewer notes.
+- [x] Apply the review protocol acceptance checks: preconditions satisfied, prompt/commands executed as written, expected signals present, evidence readable, outcome rationale explicit.
+- [x] Assign PASS, PARTIAL, or FAIL per scenario and summarize phase coverage as 6/6 scenarios with linked evidence references.
 <!-- /ANCHOR:phases -->
 
 ---

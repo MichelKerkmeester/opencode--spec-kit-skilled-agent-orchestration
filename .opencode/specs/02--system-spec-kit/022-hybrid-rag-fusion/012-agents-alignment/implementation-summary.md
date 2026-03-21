@@ -1,69 +1,90 @@
 ---
 title: "Implementation Summary: 012 — Agent Alignment"
+description: "Truth-reconciled summary of the 012 agent-alignment packet against the live multi-runtime lineage model."
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 2 -->
 # Implementation Summary: 012 — Agent Alignment
-
-**Completed:** 2026-03-15
-**LOC changed:** ~18 files updated (body content sync + path directives)
+<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary-core | v2.2 -->
 
 ---
 
-## What Was Done
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-Synchronized 18 stale agent definition files across 2 runtime locations (Claude, Gemini) with the canonical `.opencode/agent/` source of truth. All 9 agents × 2 runtimes = 18 files updated.
+| Field | Value |
+|-------|-------|
+| Scope | Canonical 012 packet only |
+| Date | 2026-03-21 |
+| Status | Complete (truth-reconciled) |
+| Type | Documentation reconciliation |
+<!-- /ANCHOR:metadata -->
 
-### Files Changed
+---
 
-**Claude Runtime (`.claude/agents/` in anobel.com repo):**
+<!-- ANCHOR:what-built -->
+## 2. WHAT WAS BUILT
 
-| File | Key Frontmatter Preserved | Body Source |
-| ---- | ------------------------- | ----------- |
-| context.md | `tools: [Read, Grep, Glob]`, `model: sonnet` | canonical |
-| debug.md | `tools: [Read, Write, Edit, Bash, Grep, Glob]`, `model: opus` | canonical |
-| handover.md | `tools: [Read, Write, Edit, Bash, Grep, Glob]`, `model: sonnet` | canonical |
-| orchestrate.md | `tools: [Read, Task]`, `model: opus` | canonical |
-| research.md | `tools: [Read, Write, Edit, Bash, Grep, Glob, WebFetch]`, `model: opus` | canonical |
-| review.md | `tools: [Read, Bash, Grep, Glob]`, `model: opus`, `permissionMode: plan` | canonical |
-| speckit.md | `tools: [Read, Write, Edit, Bash, Grep, Glob]`, `model: sonnet` | canonical |
-| ultra-think.md | `tools: [Read, Grep, Glob, WebFetch, Task]`, `model: opus` | canonical |
-| write.md | `tools: [Read, Write, Edit, Bash, Grep, Glob, WebFetch]`, `model: sonnet` | canonical |
+This pass did not perform a fresh runtime bulk sync. It reconciled the `012-agents-alignment` packet and the scoped runtime-facing delegation/write docs so they now accurately describe the current runtime lineage:
 
-**Gemini Runtime (`.gemini/agents/` in anobel.com repo):**
+- base markdown family: `.opencode/agent/*.md`
+- ChatGPT markdown family: `.opencode/agent/chatgpt/*.md`
+- Codex runtime derived from the ChatGPT family: `.codex/agents/*.toml`
+- Gemini runtime-facing path: `.gemini/agents/*.md`
+- Gemini storage detail: `.gemini -> .agents`, with backing files in `.agents/agents/*.md`
+<!-- /ANCHOR:what-built -->
 
-| File | Key Frontmatter Preserved | Body Source |
-| ---- | ------------------------- | ----------- |
-| context.md | `kind: local`, `model: gemini-3.1-pro-preview`, `max_turns: 10` | canonical |
-| debug.md | `max_turns: 20`, `timeout_mins: 15` | canonical |
-| handover.md | `max_turns: 10`, `timeout_mins: 5` | canonical |
-| orchestrate.md | `max_turns: 25`, `timeout_mins: 15` | canonical |
-| research.md | `max_turns: 20`, `timeout_mins: 15`, `google_web_search` | canonical |
-| review.md | `max_turns: 15`, `timeout_mins: 5` | canonical |
-| speckit.md | `max_turns: 20`, `timeout_mins: 10` | canonical |
-| ultra-think.md | `max_turns: 30`, `timeout_mins: 20` | canonical |
-| write.md | `max_turns: 15`, `timeout_mins: 10`, `google_web_search` | canonical |
+---
 
-### Sync Pattern
+<!-- ANCHOR:how-delivered -->
+## 3. HOW IT WAS DELIVERED
 
-For each file:
-1. Extracted runtime-specific YAML frontmatter (preserved verbatim)
-2. Copied body content (post-frontmatter) from canonical `.opencode/agent/X.md`
-3. Updated path convention directive to match runtime (`.claude/agents/*.md` or `.gemini/agents/*.md`)
+| File | Change |
+|------|--------|
+| `spec.md` | Replaced the old single-source sync narrative with the live dual-source lineage model |
+| `plan.md` | Reframed the work as a documentation-only reconciliation pass |
+| `tasks.md` | Replaced historical sync tasks with audit, rewrite, and verification tasks |
+| `checklist.md` | Rewrote verification around lineage, naming, path, and scope accuracy |
+| `implementation-summary.md` | Replaced the old bulk-sync summary with a truth-reconciled lineage summary |
+| Scoped runtime docs | Fixed Gemini delegation pathing and aligned the writer projections with the verified lineage model |
+<!-- /ANCHOR:how-delivered -->
 
-## Verification Results
+---
+
+<!-- ANCHOR:decisions -->
+## 4. DECISIONS
+
+1. The repo is modeled as **two source families**, not one flat canonical source.
+2. Codex is downstream from the ChatGPT family, not from the base markdown family.
+3. Gemini should be documented by the runtime-facing `.gemini/agents/*.md` path first.
+4. The `.gemini -> .agents` relationship is a storage detail that still needs to be documented for repo truth.
+5. `deep-research.md` is the only accepted active naming in this packet.
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
+## 5. VERIFICATION
 
 | Check | Result |
-| ----- | ------ |
-| File count (45 across 5 runtimes) | PASS |
-| Body content parity (3 representative agents) | PASS |
-| Claude frontmatter integrity | PASS |
-| Gemini frontmatter integrity | PASS |
-| File size variance (max 7.6%) | PASS |
-| ChatGPT/Codex spot check | PASS |
+|-------|--------|
+| Base family count (`.opencode/agent/*.md`) | PASS |
+| ChatGPT family count (`.opencode/agent/chatgpt/*.md`) | PASS |
+| Claude runtime count (`.claude/agents/*.md`) | PASS |
+| Codex runtime count (`.codex/agents/*.toml`) | PASS |
+| Gemini runtime count (`find -L .gemini/agents`) | PASS |
+| Gemini symlink/runtime-path verification | PASS |
+| Stale `research.md` naming removed from packet docs | PASS |
+| Strict spec validation | PASS |
+<!-- /ANCHOR:verification -->
 
-## What Was NOT Changed
+---
 
-- Canonical `.opencode/agent/*.md` — untouched (source of truth)
-- ChatGPT `.opencode/agent/chatgpt/*.md` — already in sync
-- Codex `.codex/agents/*.toml` — already in sync
-- No behavioral/instructional changes to any agent — sync only
+<!-- ANCHOR:limitations -->
+## 6. LIMITATIONS & FOLLOW-UP
+
+- This pass does not claim that runtime agent bodies were freshly synchronized beyond the scoped delegation/write closeout.
+- If a future bulk runtime-sync pass is needed, it should be tracked separately from this truth-reconciliation packet.
+- Packet verification is scoped to the canonical `012` docs plus the intended live path/count and scoped runtime-doc checks.
+<!-- /ANCHOR:limitations -->
+
+---

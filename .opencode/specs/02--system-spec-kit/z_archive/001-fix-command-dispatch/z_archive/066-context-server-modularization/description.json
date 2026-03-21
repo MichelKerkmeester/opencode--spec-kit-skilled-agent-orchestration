@@ -20,5 +20,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Context-Server Modularization - Requirements & User [066-context-server-modularization/spec]",
+  "status": "Impact if Blocked",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Context-Server Modularization - Requirements & User Stories"
 }

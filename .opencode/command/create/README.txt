@@ -39,9 +39,9 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `create` command group scaffolds OpenCode components and unifies visual HTML creation under a single command entrypoint. Each command follows a structured YAML workflow and supports `:auto` (no approval prompts) and `:confirm` (pause at each step) execution modes.
+The `create` command group scaffolds OpenCode components, documentation packages, prompt artifacts, and changelog entries. Most commands follow a structured YAML workflow and support `:auto` (no approval prompts) and `:confirm` (pause at each step) execution modes.
 
-Most commands run Phase 0 (@write agent self-verification). The `visual_html` command runs Phase 0 with @general agent verification.
+Most shipped `create` commands run Phase 0 (@write agent self-verification). `/create:prompt` is the notable exception and uses an inline `@general` workflow instead of `@write` + YAML assets.
 
 ---
 
@@ -68,7 +68,6 @@ This document is a routing/reference surface only. Run the command entrypoint it
 | **sk-skill** | `/create:sk-skill <name> <operation> [type] [--chained] [:auto\|:confirm]` | Unified skill workflow (full-create, full-update, reference-only, asset-only) |
 | **prompt** | `/create:prompt <prompt-text-or-flags> [:auto\|:confirm]` | Create or improve prompts through the `sk-prompt-improver` workflow |
 | **changelog** | `/create:changelog <spec-folder-or-component> [--bump <major\|minor\|patch\|build>] [:auto\|:confirm]` | Create a changelog entry by dynamically detecting recent work, resolving the target component folder, and generating a formatted changelog file |
-| **visual_html** | `/create:visual_html <target-or-source> [--mode <auto\|create\|analyze\|verify\|custom>] [:auto\|:confirm]` | Unified visual HTML command with broad intent-based routing |
 | **phase (via spec_kit)** | `/spec_kit:phase <feature> [--phases N] [--phase-names list] [:auto\|:confirm]` | Phase-aware parent/child spec decomposition used when create workflows detect large multi-domain scope |
 
 ### README Types
@@ -97,7 +96,6 @@ create/
 ├── prompt.md             # /create:prompt command
 ├── sk-skill.md           # /create:sk-skill command
 ├── testing-playbook.md   # /create:testing-playbook command
-├── visual_html.md        # /create:visual_html command
 └── assets/               # YAML workflow definitions
     ├── create_agent_auto.yaml
     ├── create_agent_confirm.yaml
@@ -107,14 +105,10 @@ create/
     ├── create_feature_catalog_confirm.yaml
     ├── create_folder_readme_auto.yaml
     ├── create_folder_readme_confirm.yaml
-    ├── create_prompt_auto.yaml
-    ├── create_prompt_confirm.yaml
     ├── create_sk_skill_auto.yaml
     ├── create_sk_skill_confirm.yaml
     ├── create_testing_playbook_auto.yaml
-    ├── create_testing_playbook_confirm.yaml
-    ├── create_visual_html_auto.yaml
-    └── create_visual_html_confirm.yaml
+    └── create_testing_playbook_confirm.yaml
 ```
 
 ---
@@ -140,9 +134,11 @@ create/
 | **Auto** | `:auto` | Execute all steps without approval prompts |
 | **Confirm** | `:confirm` | Pause at each step and wait for user approval |
 
-Each mode loads a separate YAML workflow from `assets/`:
+Each mode loads a separate YAML workflow from `assets/` when that command ships YAML assets:
 - Auto: `create_<command>_auto.yaml`
 - Confirm: `create_<command>_confirm.yaml`
+
+`/create:prompt` is an inline command document and does not currently have companion YAML workflow files in `assets/`.
 
 The `--chained` flag on `/create:sk-skill` doc-only operations indicates parent workflow handoff.
 
@@ -187,8 +183,6 @@ The new documentation-package commands preserve the live `sk-doc` contracts:
 # Create a changelog for a specific component
 /create:changelog sk-doc --bump minor :confirm
 
-# Generate a visual HTML artifact from a spec plan
-/create:visual_html specs/007-auth/plan.md --mode analyze :auto
 ```
 
 ---
@@ -199,8 +193,7 @@ The new documentation-package commands preserve the live `sk-doc` contracts:
 
 | Problem | Cause | Fix |
 |---------|-------|-----|
-| Phase 0 fails | @write agent not available | Verify agent files exist in the runtime path (`.opencode/agent/`, `.opencode/agent/chatgpt/`, or `.opencode/agent/claude/`) |
-| `visual_html` Phase 0 fails | @general agent routing unavailable | Re-run as `@general /create:visual_html ...` |
+| Phase 0 fails | @write agent not available | Verify agent files exist in the runtime path (`.opencode/agent/`, `.opencode/agent/chatgpt/`, `.claude/agents/`, `.codex/agents/`, or `.gemini/agents/`) |
 | YAML workflow not found | Missing asset file | Check `assets/` contains the matching YAML for operation + mode |
 | Skill not found for sk-skill operation | Wrong skill name | Use the exact folder name from `.opencode/skill/` |
 | Catalog or playbook update target missing | `update` used before the package exists | Re-run with `create` or point to the correct skill root |

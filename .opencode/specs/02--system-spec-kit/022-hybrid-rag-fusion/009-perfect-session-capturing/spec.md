@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Perfect Session Capturing [template:level_3/spec.md]"
-description: "Authoritative phase-tree alignment for the current parent pack, including the archived dynamic-capture branch, active root phases 011-018, and the merged research-remediation successor."
+description: "Authoritative phase-tree alignment for the current parent pack, including the archived dynamic-capture branch, the shipped/current 011-018 continuation, and the analysis-only architecture audit at 019."
 trigger_phrases:
   - "perfect session capturing"
   - "spec 009"
@@ -22,7 +22,7 @@ This parent pack now carries one stable audit baseline and one repaired direct-c
 
 1. Direct child folders under `009-perfect-session-capturing` are the canonical navigation layer for this pack.
 2. The retired dynamic-capture follow-up phases now live under `000-dynamic-capture-deprecation/001` through `/005` and need to stay reachable through current parent/child references.
-3. The active root continuation after the audit baseline is `011` through `018`, with the merged research-remediation successor now living at `018-memory-save-quality-fixes/`.
+3. The active root continuation after the audit baseline is `011` through `018`, with phases `017` and `018` acting as the live contract/output baseline, `016` retained as historical research context, and `019` reserved for analysis-only architecture work.
 
 **Key Decisions**: Treat the on-disk folder layout as canonical, keep the parent pack audit-first, preserve provenance-heavy `memory/` and `scratch/` artifacts, and repair only authoritative docs plus reusable research guidance.
 
@@ -40,6 +40,9 @@ This parent pack now carries one stable audit baseline and one repaired direct-c
 | **Created** | 2026-03-08 |
 | **Updated** | 2026-03-18 |
 | **Branch** | `022-hybrid-rag-fusion/009-perfect-session-capturing` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../008-hydra-db-based-features/spec.md |
+| **Successor** | ../010-skill-alignment/spec.md |
 
 ---
 
@@ -48,11 +51,11 @@ This parent pack now carries one stable audit baseline and one repaired direct-c
 
 ### Problem Statement
 
-The parent `009-perfect-session-capturing` pack had already been reconciled through phase `017`, but the recommendation follow-through after that audit needed both implementation work and spec-pack follow-through. The runtime now includes explicit write/index dispositions and typed source capabilities, yet the parent pack still needs to distinguish those shipped changes from the still-open retained live-proof work.
+The parent `009-perfect-session-capturing` pack had already been reconciled through phase `017`, but the recommendation follow-through after that audit needed both implementation work and spec-pack follow-through. The runtime now includes explicit write/index dispositions and typed source capabilities, yet the parent pack still needs to distinguish the current `017`/`018` baseline from archival research context (`016`), archived navigation history (`000`), and still-open retained live-proof work.
 
 ### Purpose
 
-Extend the pack truthfully through phase `018`, with `019` serving as an architecture remediation audit. The parent pack should tell readers what is already reconciled, what is now shipped in runtime, and why universal "flawless across every CLI" language is still blocked on retained live proof.
+Extend the pack truthfully through phase `018`, with `019` serving as an architecture remediation audit only. The parent pack should tell readers what is already reconciled, what is now shipped in runtime, which artifacts are archival context only, and why universal "flawless across every CLI" language is still blocked on retained live proof.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -122,16 +125,17 @@ Extend the pack truthfully through phase `018`, with `019` serving as an archite
 | 013 | `013-spec-descriptions/` | Description infrastructure and filename/indexability | Shipped, with parity and collision proof still worth refreshing | `add verification` |
 | 014 | `014-stateless-quality-gates/` | Stateless quality gates and structured-input parity | Runtime shipped and current docs retained | `keep` |
 | 015 | `015-runtime-contract-and-indexability/` | Validation rule metadata and write/index disposition policy | Runtime shipped and phase docs reconciled | `keep` |
-| 016 | `016-json-mode-hybrid-enrichment/` | JSON-mode hybrid enrichment | Runtime shipped and phase docs reconciled | `keep` |
-| 017 | `017-json-primary-deprecation/` | JSON-primary deprecation and dynamic-capture recovery posture | Runtime shipped and phase docs reconciled | `keep` |
-| 018 | `018-memory-save-quality-fixes/` | Research-remediation merged Wave 1 + Wave 2 | Canonical merged remediation successor phase | `keep` |
+| 016 | `016-json-mode-hybrid-enrichment/` | JSON-mode hybrid enrichment | Runtime phase shipped; `research.md` is archival context, not the live contract baseline | `keep` |
+| 017 | `017-json-primary-deprecation/` | JSON-primary deprecation and dynamic-capture recovery posture | Runtime shipped; current contract baseline | `keep` |
+| 018 | `018-memory-save-quality-fixes/` | Research-remediation merged Wave 1 + Wave 2 | Runtime shipped; current output baseline | `keep` |
+| 019 | `019-architecture-remediation/` | Architecture remediation audit (analysis-only) | Active architecture audit | `keep` |
 
 ### Phase Transition Rules
 
 - The parent pack remains the integrated roadmap and audit entry point.
 - Shipped runtime claims belong only to phases with direct code, test, and documentation evidence.
 - `000-dynamic-capture-deprecation/` groups the moved child phases that no longer live as direct children of the parent pack.
-- All phases 000-018 are direct children of this parent pack. The historical audit chain covers 001-010. The active continuation chain covers 011-018. Phase 019 is an architecture audit.
+- All phases 000-019 are direct children of this parent pack. The historical audit chain covers 001-010. The active continuation chain covers 011-018. Phase 019 is an architecture audit only.
 - Recursive validation proves structural integrity of the spec tree, not universal live parity across all CLIs.
 
 ### Phase Handoff Criteria
@@ -302,3 +306,14 @@ Extend the pack truthfully through phase `018`, with `019` serving as an archite
 - **Phase 016**: `016-json-mode-hybrid-enrichment/spec.md`
 - **Phase 017**: `017-json-primary-deprecation/spec.md`
 - **Phase 018**: `018-memory-save-quality-fixes/spec.md`
+- **Phase 019**: `019-architecture-remediation/spec.md`
+
+---
+
+## Phase Navigation
+
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../008-hydra-db-based-features/spec.md |
+| **Next Phase** | ../010-skill-alignment/spec.md |

@@ -1,12 +1,12 @@
 ---
 title: "Command Alignment: Memory Commands vs MCP Tool Schemas"
-description: "Align the memory command documentation set with the current 32-tool Spec Kit Memory MCP surface across L1-L7."
+description: "Truth-reconcile the 011 command-alignment spec pack to the live 33-tool, 6-command Spec Kit Memory surface."
 trigger_phrases:
   - "command alignment"
   - "memory commands"
-  - "016 command alignment"
+  - "011 command alignment"
   - "tool schema alignment"
-  - "MCP command gap"
+  - "MCP command reality"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -19,15 +19,17 @@ contextType: "implementation"
 
 ## EXECUTIVE SUMMARY
 
-The Spec Kit Memory MCP server now exposes **32 tools** across 7 architectural layers (L1-L7). The memory command suite still documents only the original 5 commands and does not cover 16 tools at all, leaving the command surface incomplete and several existing docs stale against the live schema. This spec aligns the command docs with the current repo truth by updating the 5 existing command files, adding 2 new command files (ingest folded into manage), and refreshing the memory command README.
+The live Spec Kit Memory command surface no longer matches the original 011 planning story. The repo now ships **33 MCP tools** across L1-L7 and a **6-command** memory suite: `analyze`, `continue`, `learn`, `manage`, `save`, and `shared`. Retrieval is no longer owned by a standalone `context.md`; that responsibility now lives inside `/memory:analyze`, which also documents `memory_quick_search`, analysis/eval tooling, and learning history.
+
+This spec-pack update is documentation-only. Its job is to reconcile `spec.md`, `plan.md`, and `tasks.md` with the repo as it exists today, preserve the historical implementation decisions that still hold, and narrow the remaining gap list to issues that are still real.
 
 **Key Metrics**
-- 32 MCP tools in `TOOL_DEFINITIONS`
-- 16 tools currently have zero command coverage (50% uncovered)
-- 7-command target surface after alignment (ingest folded into manage)
-- Learning history owned by `/memory:analyze history <specFolder>`
-- Live documentation source of truth is the combined command-facing surface from `tool-schemas.ts` and `schemas/tool-input-schemas.ts`
-- `shared_memory_enable` (tool #32) added as part of the default-off enablement feature
+- 33 MCP tools in `TOOL_DEFINITIONS`
+- 6 live memory command files in `.opencode/command/memory/`
+- 0 uncovered tools in the live README coverage matrix
+- `/memory:analyze` is the documented home for retrieval, `memory_quick_search`, analysis/eval tooling, and `memory_get_learning_history`
+- `/memory:manage ingest` is the documented home for async ingest workflows
+- The last visible runtime-doc drift cluster for this phase is concentrated in `analyze.md` and `shared.md`: the `analyze.md` Appendix A 12-vs-13 mismatch, governed retrieval parameter under-documentation, and stale `shared.md` create/member contract wording
 
 ---
 
@@ -38,12 +40,15 @@ The Spec Kit Memory MCP server now exposes **32 tools** across 7 architectural l
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Complete |
+| **Status** | Complete (truth-reconciled) |
 | **Created** | 2026-03-14 |
-| **Updated** | 2026-03-15 |
-| **Branch** | `017-markovian-architectures` |
-| **Complexity** | 58/100 |
-| **Parent** | `022-hybrid-rag-fusion` (Phase 016) |
+| **Updated** | 2026-03-21 |
+| **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../010-skill-alignment/spec.md |
+| **Successor** | ../012-agents-alignment/spec.md |
+| **Complexity** | 42/100 |
+| **Parent** | `022-hybrid-rag-fusion` |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -53,31 +58,31 @@ The Spec Kit Memory MCP server now exposes **32 tools** across 7 architectural l
 
 ### Problem Statement
 
-The 5 command docs in `.opencode/command/memory/` were written against an earlier MCP surface and now lag the live server in three ways:
+The 011 spec pack still describes an older transition state that is no longer true on disk:
 
-1. **Uncovered tools:** 16 tools have no command home today.
-   - L5 lifecycle/shared memory: `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable`
-   - L6 analysis: `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, `eval_reporting_dashboard`
-   - L7 maintenance: `memory_get_learning_history`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel`
+1. **Historical count drift**
+   - The spec pack still says the memory MCP surface has 32 tools.
+   - The live tool inventory in `tool-schemas.ts` now contains 33 tools.
 
-2. **Stale parameter docs:** existing command docs do not describe the full current retrieval, mutation, compatibility, and telemetry surface.
-   - `context.md` is missing advanced `memory_search` controls, the deprecated `minQualityScore` alias, and `memory_match_triggers` cognitive parameters.
-   - `save.md` is missing governance/provenance/retention details present in the live tool definition.
-   - `manage.md` is missing current stats/health/list/update/validate/bulk-delete/history details.
+2. **Structural drift**
+   - The spec pack still assumes a 7-command target surface.
+   - The live command suite is already a 6-command surface because retrieval was merged into `analyze.md` and `context.md` no longer exists.
 
-3. **Structural drift:** the docs still contain stale command naming and incomplete workflow ownership.
-   - `manage.md` still has the `## 189. RELATED COMMANDS` numbering error.
-   - `checkpoint_delete` still lacks required `confirmName` documentation.
-   - The README still describes a 5-command suite instead of the 7-command surface.
-   - The history workflow is not yet locked to `/memory:analyze history <specFolder>`.
+3. **Ownership drift**
+   - The spec pack still treats retrieval as a `context.md` concern.
+   - The live docs place `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, L6 analysis/eval tools, and `memory_get_learning_history` under `/memory:analyze`.
+
+4. **Remaining-gap drift**
+   - The earlier spec pack still frames many items as missing even though `shared.md`, `analyze.md`, `/memory:manage ingest`, and the README coverage matrix already exist.
+   - The remaining gap list should now be narrow and factual: most command-alignment work has shipped, with only the last observable runtime-doc drift cluster still requiring closeout.
 
 ### Purpose
 
-Bring the memory command docs into full alignment with the current MCP tool schemas so that:
-- every live tool has a documented command home
-- every live command-facing property and compatibility alias is documented
-- shared memory, analysis, and ingest workflows are discoverable from commands
-- the README is an accurate index of the final 7-command memory suite
+Bring the 011 planning docs into line with live repo truth so that:
+- the spec pack describes the current 33-tool, 6-command memory surface
+- `/memory:analyze` is recorded as the command home for retrieval plus `memory_quick_search`
+- the spec distinguishes completed alignment work from the last runtime-doc drift cluster that this pass closes
+- later audits can use 011 as a reliable source instead of re-litigating already-shipped command changes
 <!-- /ANCHOR:problem -->
 
 ---
@@ -89,32 +94,27 @@ Bring the memory command docs into full alignment with the current MCP tool sche
 
 | Category | Items |
 |----------|-------|
-| **Update existing commands** | `context.md`, `save.md`, `manage.md`, `learn.md`, `continue.md` |
-| **Create new commands** | `/memory:analyze`, `/memory:shared` (ingest folded into `/memory:manage ingest`) |
-| **Update README.txt** | Reflect final 7-command structure, examples, and tool coverage |
-| **History ownership** | Reserve `memory_get_learning_history` under `/memory:analyze history <specFolder>` |
-| **Parameter alignment** | Document the live command-facing surface defined by `tool-schemas.ts` plus `ALLOWED_PARAMETERS` in `schemas/tool-input-schemas.ts` |
+| **Spec-pack reconciliation** | `spec.md`, `plan.md`, and `tasks.md` only |
+| **Live-surface alignment** | Update all count, ownership, and command-structure claims to match the current repo |
+| **Truthful gap recording** | Keep only gaps that are still observable in live command docs |
+| **Source-of-truth references** | Reassert `tool-schemas.ts` plus `schemas/tool-input-schemas.ts` as the validation baseline |
 
 ### Out of Scope
 
+- Editing runtime command docs such as `.opencode/command/memory/analyze.md`
 - MCP server implementation changes
-- SKILL.md updates
-- CLAUDE.md / AGENTS.md updates
 - New MCP tool creation
-- Spec-folder artifacts outside `spec.md`, `plan.md`, and `tasks.md` for this refinement pass
+- Cross-runtime command or agent docs
+- Spec-folder artifacts outside `spec.md`, `plan.md`, and `tasks.md`
 
 ### Deliverables
 
 | # | Deliverable | Description |
 |---|-------------|-------------|
-| D1 | Updated `context.md` | Add missing `memory_context`, `memory_search`, and `memory_match_triggers` docs, including the `minQualityScore` compatibility alias |
-| D2 | Updated `save.md` | Add governance/provenance/retention coverage and `/memory:manage ingest` cross-reference |
-| D3 | Updated `manage.md` | Add missing mutation/health/history docs, fix numbering, and document `confirmName` |
-| D4 | Updated `learn.md` | Verify current schema references and checkpoint-delete behavior notes |
-| D5 | Updated `continue.md` | Add history reference and refresh recovery tool signatures |
-| D6 | New `analyze.md` | Command home for all L6 analysis and eval tools + learning history |
-| D7 | New `shared.md` | Command home for all L5 shared-memory tools |
-| D8 | Updated `README.txt` | Accurate 7-command index, examples, and tool coverage matrix |
+| D1 | Updated `spec.md` | Reflect the live 33-tool, 6-command memory-command reality |
+| D2 | Updated `plan.md` | Rebase the plan from "implement missing commands" to "reconcile planning docs against shipped state" |
+| D3 | Updated `tasks.md` | Replace stale implementation tasks with reconciliation and verification tasks |
+| D4 | Drift closeout record | Explicitly record and close the remaining `analyze.md` and `shared.md` documentation drift without overstating broader gaps |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -126,148 +126,121 @@ Bring the memory command docs into full alignment with the current MCP tool sche
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|-------------------|
-| CA-001 | All 32 live MCP tools have a command home | Every tool in `TOOL_DEFINITIONS` is documented in exactly one primary command home, with cross-references where helpful |
-| CA-002 | All live command-facing properties and aliases are documented | Every property listed in `tool-schemas.ts` and every allowed parameter listed in `ALLOWED_PARAMETERS` has a corresponding documentation entry, including compatibility aliases such as `minQualityScore` |
-| CA-003 | `manage.md` numbering error is fixed | `## 189. RELATED COMMANDS` is corrected to the proper section number |
-| CA-004 | `checkpoint_delete` safety contract is documented | `manage.md` states that `confirmName` is required and must exactly match `name` |
+| CA-001 | The spec pack uses the live 33-tool inventory | `spec.md`, `plan.md`, and `tasks.md` no longer claim a 32-tool surface |
+| CA-002 | The spec pack uses the live 6-command suite | The pack no longer claims a 7-command target surface |
+| CA-003 | The spec pack removes the standalone `context.md` assumption | Retrieval ownership is documented under `/memory:analyze`, not under a missing command file |
+| CA-004 | `/memory:analyze` is documented as the command home for retrieval plus `memory_quick_search` | The pack explicitly assigns `memory_context`, `memory_quick_search`, `memory_search`, and `memory_match_triggers` to `/memory:analyze` |
 
 ### P1 - Required
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|-------------------|
-| CA-005 | New `/memory:analyze` command covers all L6 analysis tools | `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, and `eval_reporting_dashboard` are documented there |
-| CA-006 | New `/memory:shared` command covers all L5 shared-memory tools | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, and `shared_memory_enable` are documented there |
-| CA-007 | Ingest tools covered under `/memory:manage ingest` | `memory_ingest_start`, `memory_ingest_status`, and `memory_ingest_cancel` are documented in `manage.md` |
-| CA-008 | `context.md` documents the current retrieval surface | Includes `includeTrace`, `tokenUsage`, advanced `memory_search` parameters, deprecated `minQualityScore`, and `memory_match_triggers` cognitive parameters (`session_id`, `turnNumber`, `include_cognitive`) |
-| CA-009 | `save.md` documents the current save surface | Includes governance/provenance/retention details and explicit routing to `/memory:manage ingest` for async bulk ingestion |
-| CA-010 | `analyze.md` owns learning history | `/memory:analyze history <specFolder>` is documented as the command home for `memory_get_learning_history` |
-| CA-011 | `manage.md` documents all missing mutation/discovery parameters | Includes `includeChunks`, `allowPartialUpdate`, current stats/health parameters, validation telemetry fields, and `skipCheckpoint` |
-| CA-012 | README reflects the final 7-command suite | Commands, examples, and coverage table are internally consistent and use the final `history` subcommand name everywhere |
+| CA-005 | The pack distinguishes shipped work from remaining drift | `shared.md`, `analyze.md`, `/memory:manage ingest`, and README coverage are treated as existing, not planned |
+| CA-006 | The pack preserves true ownership decisions | `/memory:analyze history <specFolder>` remains the documented home for `memory_get_learning_history`; `/memory:manage ingest` remains the async ingest home |
+| CA-007 | Source-of-truth guidance remains explicit | The pack names both `tool-schemas.ts` and `schemas/tool-input-schemas.ts` as validation inputs |
+| CA-008 | Residual runtime drift is recorded and closed narrowly | The pack records the observed `analyze.md` and `shared.md` mismatches as the final runtime-doc drift cluster and reflects their closeout in this pass |
 
 ### P2 - Desired
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|-------------------|
-| CA-013 | Command docs include layer annotations | MCP tool references clearly indicate their L1-L7 layer where helpful |
-| CA-014 | README includes a command-to-tool coverage matrix | Every tool is mapped to its primary command home |
-| CA-015 | Feature-flag notes are decision-safe | Commands mention feature flags only where they still materially change command behavior in the current codebase |
+| CA-009 | Historical context remains understandable | The pack explains that 011 originally targeted a 7-command transition before retrieval was merged into `analyze.md` |
+| CA-010 | Verification guidance is grep-friendly | The pack includes concrete stale-string checks for `32`, `7 commands`, and `context.md` assumptions |
 <!-- /ANCHOR:requirements -->
 
 ---
 
-<!-- ANCHOR:acceptance-scenarios -->
-## 5. ACCEPTANCE SCENARIOS
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
 
-### Scenario A: Coverage Audit
+- **SC-001**: The 011 pack describes the live 33-tool inventory and does not repeat the older 32-tool count as present-day truth.
+- **SC-002**: The 011 pack describes the live 6-command memory suite and does not treat `context.md` as an existing command file.
+- **SC-003**: `/memory:analyze` is documented as the command home for retrieval, `memory_quick_search`, analysis/eval tooling, and learning history.
+- **SC-004**: The pack records the last runtime-doc drift cluster accurately and no longer treats it as open after the live command docs are reconciled.
 
-Given the current `TOOL_DEFINITIONS` list,
-when the command docs are audited,
-then all 32 tools have a documented home and no uncovered tools remain.
+### Acceptance Scenarios
 
-### Scenario B: Retrieval Compatibility Audit
+### Scenario A: Count Audit
 
-Given `context.md`,
-when a reviewer compares it against the current retrieval schemas,
-then advanced `memory_search`, `memory_match_triggers`, and `minQualityScore` compatibility behavior are all documented.
+Given the live schema sources,
+when a reviewer compares 011 against `tool-schemas.ts`,
+then the pack describes a 33-tool surface and does not repeat the older 32-tool count.
 
-### Scenario C: History & Checkpoint Audit
+### Scenario B: Command-Surface Audit
 
-Given `analyze.md` and `manage.md`,
-when a reviewer looks up learning history and checkpoint deletion workflows,
-then `analyze.md` uses `/memory:analyze history <specFolder>` for learning history and `manage.md` documents `confirmName` as required for checkpoint deletion.
+Given `.opencode/command/memory/`,
+when a reviewer compares 011 against the live command directory,
+then the pack describes a 6-command suite and does not assume a standalone `context.md`.
 
-### Scenario D: README Index Audit
+### Scenario C: Ownership Audit
 
-Given `README.txt`,
-when a reviewer compares it against the final command suite,
-then it shows 7 commands, current examples, and a complete tool coverage table.
-<!-- /ANCHOR:acceptance-scenarios -->
+Given `analyze.md` and `README.txt`,
+when a reviewer checks retrieval ownership,
+then `/memory:analyze` is documented as the command home for retrieval, `memory_quick_search`, analysis/eval tooling, and learning history.
+
+### Scenario D: Remaining-Gap Audit
+
+Given the live memory command docs,
+when a reviewer compares them against the reconciled 011 pack,
+then already-shipped alignment work is not restated as missing and only still-observable drift remains on the gap list.
+<!-- /ANCHOR:success-criteria -->
 
 ---
 
 <!-- ANCHOR:gap-analysis -->
 ## 6. GAP ANALYSIS
 
-### 6.1 Current Tool Coverage Matrix
+### 6.1 Live Command-Surface Snapshot
 
-| Layer | Tool | Current Command | Status | Gap |
-|-------|------|----------------|--------|-----|
-| L1 | `memory_context` | `context.md`, `continue.md` | PARTIAL | Missing `includeTrace` / `tokenUsage` coverage in command docs |
-| L2 | `memory_search` | `context.md`, `manage.md`, `learn.md`, `continue.md` | PARTIAL | Advanced params, compatibility alias, and governance docs incomplete |
-| L2 | `memory_match_triggers` | `context.md` | PARTIAL | Missing `session_id`, `turnNumber`, `include_cognitive` docs |
-| L2 | `memory_save` | `save.md`, `learn.md` | PARTIAL | Governance/provenance/retention docs missing from command set |
-| L3 | `memory_list` | `manage.md`, `learn.md`, `continue.md` | PARTIAL | Missing `includeChunks` docs |
-| L3 | `memory_stats` | `manage.md`, `save.md`, `learn.md`, `continue.md` | PARTIAL | Missing ranking/filter parameter docs |
-| L3 | `memory_health` | `manage.md` | PARTIAL | Missing current health/report params |
-| L4 | `memory_delete` | `manage.md`, `learn.md` | PARTIAL | Dual-mode contract needs clearer explanation |
-| L4 | `memory_update` | `manage.md`, `save.md` | PARTIAL | Missing `allowPartialUpdate` docs |
-| L4 | `memory_validate` | `manage.md` | PARTIAL | Missing feedback telemetry parameter docs |
-| L4 | `memory_bulk_delete` | `manage.md` | PARTIAL | Missing `skipCheckpoint` docs |
-| L5 | `checkpoint_create` | `manage.md` | COVERED | Keep aligned |
-| L5 | `checkpoint_list` | `manage.md` | COVERED | Keep aligned |
-| L5 | `checkpoint_restore` | `manage.md` | COVERED | Keep aligned |
-| L5 | `checkpoint_delete` | `manage.md` | PARTIAL | Missing required `confirmName` docs |
-| L5 | `shared_space_upsert` | NONE | UNCOVERED | New `/memory:shared` command needed |
-| L5 | `shared_space_membership_set` | NONE | UNCOVERED | New `/memory:shared` command needed |
-| L5 | `shared_memory_status` | NONE | UNCOVERED | New `/memory:shared` command needed |
-| L5 | `shared_memory_enable` | NONE | UNCOVERED | New `/memory:shared` command needed |
-| L6 | `task_preflight` | NONE | UNCOVERED | New `/memory:analyze` command needed |
-| L6 | `task_postflight` | NONE | UNCOVERED | New `/memory:analyze` command needed |
-| L6 | `memory_drift_why` | NONE | UNCOVERED | New `/memory:analyze` command needed |
-| L6 | `memory_causal_link` | NONE | UNCOVERED | New `/memory:analyze` command needed |
-| L6 | `memory_causal_stats` | NONE | UNCOVERED | New `/memory:analyze` command needed |
-| L6 | `memory_causal_unlink` | NONE | UNCOVERED | New `/memory:analyze` command needed |
-| L6 | `eval_run_ablation` | NONE | UNCOVERED | New `/memory:analyze` command needed |
-| L6 | `eval_reporting_dashboard` | NONE | UNCOVERED | New `/memory:analyze` command needed |
-| L7 | `memory_index_scan` | `manage.md`, `save.md`, `learn.md` | COVERED | Keep aligned |
-| L7 | `memory_get_learning_history` | NONE | UNCOVERED | Add to `/memory:analyze history <specFolder>` |
-| L7 | `memory_ingest_start` | NONE | UNCOVERED | Add to `/memory:manage ingest` |
-| L7 | `memory_ingest_status` | NONE | UNCOVERED | Add to `/memory:manage ingest` |
-| L7 | `memory_ingest_cancel` | NONE | UNCOVERED | Add to `/memory:manage ingest` |
+| Command | Live Status | Notes |
+|---------|-------------|-------|
+| `/memory:analyze` | PRESENT | Unified retrieval + analysis command; owns retrieval, `memory_quick_search`, L6 tools, and learning history |
+| `/memory:continue` | PRESENT | Recovery workflow command |
+| `/memory:learn` | PRESENT | Constitutional-memory workflow wrapper |
+| `/memory:manage` | PRESENT | Maintenance, mutation, checkpoint, and ingest workflows |
+| `/memory:save` | PRESENT | Save workflow command |
+| `/memory:shared` | PRESENT | Shared-memory lifecycle command |
+| `context.md` | ABSENT BY DESIGN | Retrieval was merged into `analyze.md`; do not treat this as a missing file |
 
-**Summary:** 32 tools total, 16 uncovered, 16 already documented somewhere but still requiring partial-alignment work.
+### 6.2 Current Tool-Ownership Reality
 
-### 6.2 Document-Specific Gaps
+| Surface | Current Reality | Reconciliation Outcome |
+|---------|-----------------|------------------------|
+| Tool inventory | 33 tools in `TOOL_DEFINITIONS` | 011 must use 33 everywhere |
+| Retrieval home | `/memory:analyze` | 011 must stop assigning retrieval to `context.md` |
+| Quick search home | `/memory:analyze` | 011 must explicitly name `memory_quick_search` there |
+| Learning history home | `/memory:analyze history <specFolder>` | Keep current ownership decision |
+| Shared-memory home | `/memory:shared` | Treat as already shipped |
+| Async ingest home | `/memory:manage ingest` | Treat as already shipped |
+| README coverage matrix | Present and already maps 33 tools | Treat as existing evidence, not future work |
 
-| Document | Gap Summary |
-|----------|-------------|
-| `context.md` | Missing `memory_context` trace/budget params, advanced `memory_search` controls, deprecated `minQualityScore`, and `memory_match_triggers` cognitive parameters |
-| `save.md` | Missing governance/provenance/retention details and async ingest routing guidance |
-| `manage.md` | Missing history subcommand, current stats/health/mutation telemetry params, and checkpoint-delete safety docs |
-| `learn.md` | Needs schema-sync verification against current delete/search/save references |
-| `continue.md` | Needs current retrieval signature verification and explicit history enrichment reference |
-| `README.txt` | Still describes a 5-command suite and omits current tool ownership |
+### 6.3 Remaining Observable Drift
 
-### 6.3 Behavioral Documentation Gaps
-
-| Feature | Command Impact |
-|---------|----------------|
-| Deep retrieval fallback | `context.md` must state that `mode: "deep"` does not guarantee query expansion for simple queries |
-| Learned feedback extraction | `manage.md` validate docs must explain that telemetry params support learned feedback and promotion behavior |
-| Deny-by-default shared spaces | `/memory:shared` must state that membership is required before access |
-| Governance boundaries | Commands should explain that tenant/user/agent scoping matters only when scope enforcement is active |
+| Location | Residual Drift | Why It Still Matters |
+|----------|----------------|----------------------|
+| `.opencode/command/memory/analyze.md` Appendix A and retrieval notes | Intro sentence says the command owns 12 tools, while the tool-coverage table lists 13 and includes `memory_quick_search`; governed retrieval parameters are under-documented | `/memory:analyze` is the live retrieval home, so count and parameter drift there misstates the command contract |
+| `.opencode/command/memory/shared.md` create/member contract | Create/member docs omit required `tenantId` and actor identity, and still deny the first-create owner auto-grant behavior in the live schema | `/memory:shared` is the live shared-memory home, so schema-contract drift here misstates access and ownership behavior |
 
 ### 6.4 Source-of-Truth Notes
 
-- `tool-schemas.ts` is the canonical ordered tool inventory and property definition source.
-- `schemas/tool-input-schemas.ts` is the validation/allowed-parameter mirror and must be checked for aliases and command-facing parameter parity.
-- The refinement assumes command docs must describe the live command-facing surface exposed by those files, not older draft counts or earlier sprint-era summaries.
+- `tool-schemas.ts` is the canonical ordered tool inventory and property-definition source.
+- `schemas/tool-input-schemas.ts` is the command-facing validation mirror and should be consulted for alias/parameter parity.
+- `README.txt` is current evidence for 33-tool command ownership, but 011 should still defer to the schema files when counts change.
 <!-- /ANCHOR:gap-analysis -->
 
 ---
 
 <!-- ANCHOR:implementation-decisions -->
-## 7. IMPLEMENTATION DECISIONS
+## 7. RECONCILED DECISIONS
 
-The following decisions are locked for implementation:
+The following decisions remain authoritative after truth reconciliation:
 
-1. `memory_get_learning_history` belongs to `/memory:analyze history <specFolder>` (moved from planned `/memory:manage` to co-locate with other epistemic measurement tools).
-2. Eval tools remain inside `/memory:analyze`; no `/memory:eval` command is introduced.
-3. Shared-memory lifecycle tools belong to `/memory:shared`.
-4. Async ingestion tools belong to `/memory:manage ingest` (folded into manage instead of a separate `/memory:ingest` command, reducing command count from 8 to 7).
-5. `context.md` must treat `minQualityScore` as a deprecated alias of `min_quality_score`, not a separate capability.
-6. Feature flags should be documented only where they materially affect command behavior in the current repo.
-7. Verification must produce a generated 32-tool coverage table so implementation can prove nothing was missed.
+1. `memory_get_learning_history` belongs to `/memory:analyze history <specFolder>`.
+2. Retrieval ownership lives in `/memory:analyze`; no standalone `context.md` command exists anymore.
+3. `memory_quick_search` belongs with the rest of the retrieval surface under `/memory:analyze`.
+4. Shared-memory lifecycle tools belong to `/memory:shared`.
+5. Async ingestion tools belong to `/memory:manage ingest`.
+6. The spec pack should describe already-shipped command docs as existing and reserve the gap list for real residual drift only.
 <!-- /ANCHOR:implementation-decisions -->
 
 ---
@@ -275,25 +248,21 @@ The following decisions are locked for implementation:
 <!-- ANCHOR:approach -->
 ## 8. APPROACH
 
-### Phase 0: Schema Sync
+### Phase 0: Verify Live Reality
 
-Start implementation by comparing `TOOL_DEFINITIONS` in `tool-schemas.ts` with `ALLOWED_PARAMETERS` in `schemas/tool-input-schemas.ts` and generating a tool-to-command coverage baseline.
+Confirm the current tool count, command-file count, command ownership, and the absence of `context.md`.
 
-### Phase 1: Update Existing Commands
+### Phase 1: Rewrite 011 as a Reconciliation Record
 
-Update `context.md`, `save.md`, `manage.md`, `learn.md`, and `continue.md` to match the current surface, reserve `/memory:analyze history`, and remove stale legacy history naming.
+Update `spec.md`, `plan.md`, and `tasks.md` so they describe the shipped 6-command memory suite and the current 33-tool schema surface.
 
-### Phase 2: Create New Commands
+### Phase 2: Record Only Remaining Drift
 
-Create `/memory:analyze` and `/memory:shared` using the established command pattern and the implementation decisions above (ingest folded into `/memory:manage ingest`).
+Reduce the old "missing command" narrative to the small amount of drift that is still observable, specifically the `analyze.md` appendix count mismatch.
 
-### Phase 3: Update the README
+### Phase 3: Verify the Reconciled Pack
 
-Refresh the memory README to reflect the final 7-command structure, current examples, and a complete tool coverage matrix.
-
-### Phase 4: Verify Coverage and Consistency
-
-Confirm that every live tool and every live parameter has a documented home, command names are internally consistent, and README/index references match the final command structure.
+Run targeted stale-string checks and spec validation so the 011 pack no longer reintroduces 32-tool, 7-command, or `context.md` assumptions.
 <!-- /ANCHOR:approach -->
 
 ---
@@ -303,11 +272,19 @@ Confirm that every live tool and every live parameter has a documented home, com
 
 | Risk | Impact | Mitigation |
 |------|--------|------------|
-| Command docs become too large | Medium | Group advanced parameters into dedicated subsections and keep primary workflows readable |
-| Shared/governance features confuse single-agent readers | Low | Label those sections as advanced or rollout-dependent rather than presenting them as always-on |
-| Schema files drift again before implementation | Medium | Phase 0 schema sync is mandatory and should be rerun before command edits start |
-| README and per-command docs diverge | Medium | Verification must include command-name, subcommand-name, and tool-home consistency checks |
+| Historical notes get mistaken for current gaps | Medium | Reword every gap section around present-tense repo state |
+| Future schema changes make 011 stale again | Medium | Keep schema files as the explicit source of truth |
+| Residual runtime-doc drift gets overstated | Low | Record only directly verified drift, not inferred gaps |
+| Old memory files inside the spec folder still mention older counts | Low | Keep this pass scoped to `spec.md`, `plan.md`, and `tasks.md` only |
 <!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+- None for this reconciliation pass. The only follow-up surfaced by the audit is a runtime-doc cleanup: update `.opencode/command/memory/analyze.md` Appendix A so its intro count matches the 13-tool matrix.
+<!-- /ANCHOR:questions -->
 
 ---
 
@@ -316,15 +293,24 @@ Confirm that every live tool and every live parameter has a documented home, com
 - **Parent Epic**: `022-hybrid-rag-fusion/spec.md`
 - **Tool Inventory**: `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`
 - **Parameter Mirror**: `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts`
-- **Command Directory**: `.opencode/command/memory/`
-- **Hydra Source Context**: `008-hydra-db-based-features/`
-- **RAG Sprint Source Context**: `001-hybrid-rag-fusion-epic/` (merged from 005-core-rag-sprints-0-to-9)
+- **Memory Command Directory**: `.opencode/command/memory/`
+- **Current Coverage Index**: `.opencode/command/memory/README.txt`
 
 ---
 
 <!--
 SPEC: 011-command-alignment
-Level 2 — Complete (2026-03-15)
-Actual: 5 command updates + 2 new commands + 1 README update + sk-doc DQI pass
-Source of truth: tool-schemas.ts + schemas/tool-input-schemas.ts (32 tools)
+Level 2 - Complete (truth-reconciled 2026-03-21)
+Current reality: 33-tool schema surface, 6-command memory suite, retrieval merged into analyze
+Residual drift still observed: analyze.md Appendix A says 12 tools while its matrix lists 13
 -->
+
+---
+
+## Phase Navigation
+
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../010-skill-alignment/spec.md |
+| **Next Phase** | ../012-agents-alignment/spec.md |

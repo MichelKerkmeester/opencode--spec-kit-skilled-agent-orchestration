@@ -27,7 +27,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Plan** | ../plan.md |
 | **Phase** | 7 |
 | **Predecessor** | 006-description-enrichment |
-| **Successor** | 008-signal-extraction |
+| **Successor** | 009-embedding-optimization |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-07 |
 | **Sequence** | C2-C3 |
@@ -40,7 +40,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 This is **Phase 7** of the Perfect Session Capturing specification.
 
 **Scope Boundary**: Conversation phase handling previously lived in a keyword-precedence ladder that favored early matches over richer context.
-**Dependencies**: 006-description-enrichment
+**Dependencies**: 008-signal-extraction
 **Deliverables**: Added scripts/utils/phase-classifier.ts as the single owner of exchange signal building and clustering; expanded ConversationPhase/ConversationData with cluster metadata
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE

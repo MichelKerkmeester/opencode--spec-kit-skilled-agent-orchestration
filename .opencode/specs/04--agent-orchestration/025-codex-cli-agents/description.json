@@ -16,5 +16,9 @@
     "04--agent-orchestration"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Codex CLI Agent Definitions",
+  "status": "Complete",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: Codex CLI Agent Definitions"
 }

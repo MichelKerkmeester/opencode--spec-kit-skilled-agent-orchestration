@@ -19,5 +19,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Naming Convention Test Suite [091-naming-convention-test-suite/spec]",
+  "status": "Planning",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Naming Convention Test Suite"
 }

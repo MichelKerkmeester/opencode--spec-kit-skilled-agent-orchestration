@@ -18,7 +18,7 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | In Progress |
+| **Status** | Stalled |
 | **Created** | 2026-03-06 |
 <!-- /ANCHOR:metadata -->
 
@@ -81,6 +81,8 @@ Move the requested agent surfaces to GPT-5.4 with the correct configuration form
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.codex/agents/ultra-think.toml` | Modify | Add explicit `model = "gpt-5.4"` |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.codex/agents/write.toml` | Modify | Add explicit `model = "gpt-5.4"` |
 | `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.codex/config.toml` | Modify | Set default Codex session model to `gpt-5.4` |
+
+> **Note (2026-03-21):** The `model:` and `reasoningEffort:` frontmatter fields were never added to the `.opencode/agent/*.md` files, and `model = "gpt-5.4"` was never added to `.codex/config.toml`. The implementation-summary records a completed state but the actual file changes are absent. Status updated to "Stalled".
 <!-- /ANCHOR:scope -->
 
 ---

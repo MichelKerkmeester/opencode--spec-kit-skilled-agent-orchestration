@@ -20,5 +20,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec 076: Post-SpecKit Template Upgrade - Command Alignment [075-post-speckit-template-upgrade-command-allignment/spec]",
+  "importance_tier": "important",
+  "short_description": "Spec 076: Post-SpecKit Template Upgrade - Command Alignment"
 }

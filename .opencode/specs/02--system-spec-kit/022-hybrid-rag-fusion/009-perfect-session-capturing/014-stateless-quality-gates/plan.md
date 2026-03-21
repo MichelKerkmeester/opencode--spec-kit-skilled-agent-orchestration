@@ -40,13 +40,13 @@ Three targeted changes fix stateless mode quality gate failures. Phase 1 refacto
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Phase 016 merged and its continuation fixes verified [Evidence: phase-016 checklist records explicit-CLI alignment warning, technical-context flow, decision-confidence parsing, and green scripts/MCP baselines on 2026-03-18.]
-- [x] Root cause locations confirmed in `workflow.ts`, `generate-context.ts`, and `contamination-filter.ts` [Evidence: shipped Phase 017 implementation lives in the scripts workspace and was re-read during this remediation pass.]
+- [x] Surrounding runtime semantics and shared scripts/MCP baselines verified [Evidence: the later phase-016 documentation sweep records the explicit-CLI alignment warning, technical-context flow, decision-confidence parsing, and green scripts/MCP baselines captured on 2026-03-18.]
+- [x] Root cause locations confirmed in `workflow.ts`, `generate-context.ts`, and `contamination-filter.ts` [Evidence: shipped Phase 014 implementation lives in the scripts workspace and was re-read during this remediation pass.]
 - [x] REQ-001 through REQ-007 documented and accepted [Evidence: `spec.md` now reflects the shipped contract and verification scope.]
 
 ### Definition of Done
 - [x] All acceptance criteria in REQ-001 through REQ-007 met [Evidence: shipped code paths and targeted regression coverage now match the documented contract.]
-- [x] Full Vitest suite passes (385+ script tests) [Evidence: inherited broader closure baseline remains recorded in the parent pack; this remediation reran the affected Phase 017 lane.]
+- [x] Full Vitest suite passes (385+ script tests) [Evidence: inherited broader closure baseline remains recorded in the parent pack; this remediation reran the affected Phase 014 lane.]
 - [x] MCP server tests pass (20+ tests) [Evidence: phase-016 continuation and parent closure docs retain the 2026-03-18 green MCP baseline.]
 - [x] SC-001 through SC-006 verified with direct or inherited closure evidence [Evidence: targeted phase-017 rerun plus retained broader closure evidence.]
 - [x] Spec/plan/tasks/checklist synchronized and `validate.sh` passes without errors or warnings [Evidence: this phase pack is updated to shipped-state truth and its template drift was folded back into the canonical sections.]
@@ -58,7 +58,7 @@ Three targeted changes fix stateless mode quality gate failures. Phase 1 refacto
 
 ### Pre-Task Checklist
 - Re-read `spec.md` requirements before starting any implementation task.
-- Confirm Phase 016 is merged and the current scripts/MCP baselines are green before writing code.
+- Confirm the current scripts/MCP baselines are green and the surrounding runtime semantics are already present before writing code.
 - Read each target file at the identified line ranges before modifying it.
 - Keep changes inside the files listed in `spec.md` section 3.
 
@@ -167,8 +167,8 @@ Memory file written
 
 ### Phase 4: Verification
 
-- [x] Run the broader scripts and MCP closure baselines retained in the parent pack — verify they remain applicable to the shipped Phase 017 implementation.
-- [x] Run the targeted Phase 017 scripts lane — `npm test -- --run tests/workflow-e2e.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/contamination-filter.vitest.ts tests/quality-scorer-calibration.vitest.ts`.
+- [x] Run the broader scripts and MCP closure baselines retained in the parent pack — verify they remain applicable to the shipped Phase 014 implementation.
+- [x] Run the targeted Phase 014 scripts lane — `npm test -- --run tests/workflow-e2e.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/contamination-filter.vitest.ts tests/quality-scorer-calibration.vitest.ts`.
 - [x] Confirm the failed-embedding regression harness now mocks `indexMemory()` before `workflow.ts` import and returns `result.memoryId === null`.
 - [x] Revalidate the current phase with `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/014-stateless-quality-gates --json`.
 <!-- /ANCHOR:phases -->
@@ -199,7 +199,7 @@ Memory file written
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Phase 016 (ALIGNMENT_BLOCK, technicalContext, confidence) | Internal | Must be merged | Phase 017 cannot start; merge 016 first |
+| Later phase-016 documentation sweep | Internal | Captured | Shared scripts/MCP evidence remains available for this phase without changing chronology |
 | `validate-memory-quality.ts` rule definitions | Internal | Green | Phase 1 reads these; no blocking risk |
 | `runWorkflow()` `options.collectedData` path | Internal | Green | Already supported; Phase 2 reuses it once CLI mode selects the preloaded-data path |
 | CLI authority tests in `generate-context-cli-authority.vitest.ts` | Internal | Green | Phase 2 extends these to cover stdin/json mode semantics |
@@ -230,9 +230,9 @@ Phase 3 (Source-aware filter) ────┘
 
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
-| Phase 1 | Phase 016 merged | Phase 4 |
-| Phase 2 | Phase 016 merged | Phase 4 |
-| Phase 3 | Phase 016 merged | Phase 4 |
+| Phase 1 | Shared baseline confirmed | Phase 4 |
+| Phase 2 | Shared baseline confirmed | Phase 4 |
+| Phase 3 | Shared baseline confirmed | Phase 4 |
 | Phase 4 | Phase 1, 2, 3 | None |
 <!-- /ANCHOR:phase-deps -->
 
@@ -296,9 +296,9 @@ Phase 3 (Source-aware filter) ────┘
 
 | Component | Depends On | Produces | Blocks |
 |-----------|------------|----------|--------|
-| Phase 1 (Gate A) | Phase 016 merge | Hard/soft tier logic | Phase 4 |
-| Phase 2 (--stdin) | Phase 016 merge | stdin/json CLI path | Phase 4 |
-| Phase 3 (contamination) | Phase 016 merge | Source-aware severity | Phase 4 |
+| Phase 1 (Gate A) | Shared baseline confirmed | Hard/soft tier logic | Phase 4 |
+| Phase 2 (--stdin) | Shared baseline confirmed | stdin/json CLI path | Phase 4 |
+| Phase 3 (contamination) | Shared baseline confirmed | Source-aware severity | Phase 4 |
 | Phase 4 (Verification) | Phase 1, 2, 3 | Green test suite | None |
 <!-- /ANCHOR:dependency-graph -->
 
@@ -307,14 +307,14 @@ Phase 3 (Source-aware filter) ────┘
 <!-- ANCHOR:critical-path -->
 ## L3: CRITICAL PATH
 
-1. **Phase 016 merge** - Pre-condition - CRITICAL
+1. **Shared baseline confirmation** - Pre-condition - CRITICAL
 2. **Phase 1: Tiered Gate A** - 45 min - CRITICAL (touches the most central pipeline code)
 3. **Phase 4: Verification** - 30 min - CRITICAL (gates all three changes together)
 
 **Total Critical Path**: ~75 min (Phases 1 + 4, plus pre-condition)
 
 **Parallel Opportunities**:
-- Phase 2 (--stdin) and Phase 3 (contamination filter) can run simultaneously with Phase 1 after 016 merge.
+- Phase 2 (--stdin) and Phase 3 (contamination filter) can run simultaneously with Phase 1 after the shared baseline is confirmed.
 - All three implementation phases can be developed in parallel by different workstreams.
 <!-- /ANCHOR:critical-path -->
 
@@ -325,7 +325,7 @@ Phase 3 (Source-aware filter) ────┘
 
 | Milestone | Description | Success Criteria | Target |
 |-----------|-------------|------------------|--------|
-| M1 | Phase 016 merged | Test suite green with 016 changes | Before Phase 017 starts |
+| M1 | Shared baseline confirmed | Test suite green and surrounding runtime semantics present | Before Phase 014 starts |
 | M2 | Phase 1 complete | V10-only stateless save passes; V8 still blocks | End of Phase 1 |
 | M3 | Phase 2 complete | `--stdin` piped JSON produces memory file | End of Phase 2 |
 | M4 | Phase 3 complete | Claude Code tool-title-with-path scores > 0.60 | End of Phase 3 |

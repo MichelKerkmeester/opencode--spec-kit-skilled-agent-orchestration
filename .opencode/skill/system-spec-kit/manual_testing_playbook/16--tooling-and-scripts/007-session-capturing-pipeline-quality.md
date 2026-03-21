@@ -19,7 +19,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 3. TEST EXECUTION
 
-- Prompt: `Run full closure verification for spec 010-perfect-session-capturing, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, stateless enrichment, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), Phase 017 stateless quality-gate behavior, Phase 018 output-quality hardening, numeric quality calibration, and indexing readiness. Return a concise user-facing pass/fail verdict with the main reason.`
+- Prompt: `Run full closure verification for spec 009-perfect-session-capturing, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, recovery-mode stateless enrichment, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), Phase 017 recovery-only quality-gate behavior, Phase 018 output-quality hardening, numeric quality calibration, and indexing readiness. Return a concise user-facing pass/fail verdict with the main reason.`
 - Canonical workspace rule:
   - Native capture targets the repo-local `.opencode` workspace identity.
   - Backend-native repo-root, `.opencode`, and git-root path forms count as equivalent only when they normalize to the same workspace.
@@ -54,12 +54,11 @@ This scenario remains prose-first because it carries compound operator logic, su
   - `133` cross-reference for MCP `memory_save` dry-run and insufficiency preview
   - `149` cross-reference for rendered-memory contract enforcement
 - Latest automated baseline refresh:
-  - On 2026-03-17, root `typecheck`, scripts `check` and `build`, `test-scripts-modules.js` (`384` passed, `5` skipped, `389` total), and `test-extractors-loaders.js` (`307` passing) reran cleanly.
-  - On 2026-03-17, the focused proof lanes reran cleanly as separate canonical checks: `task-enrichment.vitest.ts` (`47` tests), `runtime-memory-inputs.vitest.ts` (`29` tests), the phase-016 parity lane (`45` tests), the phase-010 integration lane (`70` tests across `test-integration.vitest.ts` and `workflow-e2e.vitest.ts`), and the phase-011 session-source lane (`66` tests).
-  - On 2026-03-17, package-clean MCP `lint`/`build`/full `test` reran cleanly with the MCP package suite at `7822` total tests, and the focused MCP save-quality lane remained part of that refreshed package-clean verification stack.
-  - The latest alignment-drift support run remains the 2026-03-16 snapshot with `229` scanned files and `0` findings; it was not part of the March 17 rerun set.
-  - This automated baseline is not sufficient evidence by itself for "all five CLIs proven live"; verify the retained artifact at `research/live-cli-proof-2026-03-17.json` and its March 17, 2026 per-CLI records before making that claim, and refresh equivalent primary evidence for any future live-proof assertion.
-  - On 2026-03-18, the affected Phase 017 scripts lane reran cleanly with `4` files and `39` passing tests: `workflow-e2e.vitest.ts`, `generate-context-cli-authority.vitest.ts`, `contamination-filter.vitest.ts`, and `quality-scorer-calibration.vitest.ts`.
+  - Re-run the commands in this scenario during the current verification window and capture fresh output; do not rely on historical totals or dated rerun counts.
+  - Treat the scripts-side baseline as `npm run check`, `npm run build`, the focused Vitest lanes in this scenario, and `npm run test:legacy` after build.
+  - Treat the MCP-side baseline as the targeted save-quality lanes plus package-level `npm run check`.
+  - Require the source/dist alignment lane to report zero violations for both `mcp_server/dist/lib` and `scripts/dist`.
+  - Automated parity is not, by itself, proof that every supported CLI has been exercised live. Universal live-proof claims require fresh per-CLI and per-save-mode artifacts generated during this run.
 - Commands:
   - Part I hardening spot checks:
     - `grep -n 'crypto.randomBytes' .opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`
@@ -73,8 +72,7 @@ This scenario remains prose-first because it carries compound operator logic, su
     - `cd .opencode/skill/system-spec-kit/scripts && npm run build`
     - `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/spec-affinity.vitest.ts tests/claude-code-capture.vitest.ts tests/codex-cli-capture.vitest.ts tests/copilot-cli-capture.vitest.ts tests/gemini-cli-capture.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/runtime-memory-inputs.vitest.ts tests/stateless-enrichment.vitest.ts tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/memory-sufficiency.vitest.ts tests/memory-template-contract.vitest.ts`
   - JS verification suites:
-    - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-extractors-loaders.js`
-    - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-bug-fixes.js`
+    - `cd .opencode/skill/system-spec-kit/scripts && npm run test:legacy`
     - `cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/test-integration.vitest.ts tests/workflow-e2e.vitest.ts`
     - `cd .opencode/skill/system-spec-kit/scripts/tests && node test-memory-quality-lane.js`
     - `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/workflow-e2e.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/contamination-filter.vitest.ts tests/quality-scorer-calibration.vitest.ts`
@@ -84,9 +82,9 @@ This scenario remains prose-first because it carries compound operator logic, su
     - `cd .opencode/skill/system-spec-kit/mcp_server && npm run test:core -- tests/handler-memory-save.vitest.ts tests/recovery-hints.vitest.ts tests/quality-loop.vitest.ts tests/save-quality-gate.vitest.ts tests/preflight.vitest.ts tests/integration-save-pipeline.vitest.ts`
     - `cd .opencode/skill/system-spec-kit/mcp_server && npm run test`
     - `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts`
-    - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing`
+    - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing`
   - Manual/e2e scenarios:
-    - `M-007a` Rich JSON-mode save: run `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <json-data-file> 010-perfect-session-capturing` with a populated synthetic or sandbox JSON file and verify `qualityValidation.valid === true`, indexing succeeds, and a memory ID is returned.
+    - `M-007a` Rich JSON-mode save: run `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <json-data-file> 009-perfect-session-capturing` with a populated synthetic or sandbox JSON file and verify `qualityValidation.valid === true`, indexing succeeds, and a memory ID is returned.
     - `M-007a` Rich JSON-mode save: use the documented snake_case JSON contract or camelCase equivalent, then verify `qualityValidation.valid === true`, indexing succeeds, and a memory ID is returned.
     - `M-007b` Thin JSON insufficiency: rerun `generate-context.js` with intentionally thin JSON input using the documented snake_case contract and verify it now fails `INSUFFICIENT_CONTEXT_ABORT` before file write, with a materially lower diagnostic score than `M-007a`.
     - `M-007c` Explicit-CLI mis-scoped stateless warning: run a same-workspace stateless save whose prompts, tool metadata, and file hints do not contain any target-spec anchor and verify it emits `ALIGNMENT_WARNING`. If the file-path overlap remains below the hard threshold, verify the run still fails `ALIGNMENT_BLOCK`.
@@ -104,7 +102,7 @@ This scenario remains prose-first because it carries compound operator logic, su
     - `M-007o` Claude contamination downgrade: compare a Claude structured/stateless capture containing `tool title with path` content against a non-Claude source with the same text and verify Claude avoids the old 0.60 cap while the non-Claude path remains capped.
     - `M-007p` Structured-summary and file-authority verification: run a rich structured JSON save and confirm `toolCalls` and `exchanges` are accepted and preserved, then verify a file-backed payload remains on the structured path rather than reopening hybrid enrichment. Also run a structured JSON save with a legacy payload that omits `toolCalls` and `exchanges` entirely and confirm it still succeeds through backward-compatible defaults.
     - `M-007q` Phase 018 output-quality hardening: inspect a generated memory or targeted regression evidence and confirm decision fields are no longer duplicated, completion status can recover from normalized `Next Steps`, blocker extraction ignores generic failure words, trigger/code-pattern filler is suppressed, `key_files` parsing accepts em dash/en dash/colon separators, tree thinning uses the `150`-token and `3`-child safeguards, and structured-data conversation synthesis adds assistant content when prompts are sparse.
-    - `M-007r` Recovery-flag enforcement: run `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 010-perfect-session-capturing` without `--recovery` and verify it exits non-zero with operator-facing migration guidance to structured JSON. Then rerun with `--recovery` and confirm the save path proceeds normally.
+    - `M-007r` Recovery-flag enforcement: run `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 009-perfect-session-capturing` without `--recovery` and verify it exits non-zero with operator-facing migration guidance to structured JSON. Then rerun with `--recovery` and confirm the save path proceeds normally.
 - Expected:
   - Part I hardening remains active.
   - Stateless enrichment remains active.
@@ -130,7 +128,7 @@ This scenario remains prose-first because it carries compound operator logic, su
   - Passing `mcp_server` lint/build/targeted/full-test output for the package-clean closure bar.
   - Passing alignment drift output.
   - Passing `spec/validate.sh` output.
-  - Inspection of `research/live-cli-proof-2026-03-17.json`, confirming the retained artifact path and same-day entries for OpenCode, Claude Code, Codex CLI, Copilot CLI, and Gemini CLI.
+  - Fresh per-CLI transcripts or artifacts generated during this run for OpenCode, Claude Code, Codex CLI, Copilot CLI, and Gemini CLI whenever a universal live-proof claim is made.
   - `generate-context.js` output or capture logs showing results for `M-007a` through `M-007j`.
   - `generate-context.js` output or targeted Vitest evidence showing results for `M-007k` through `M-007q`.
 - Pass:

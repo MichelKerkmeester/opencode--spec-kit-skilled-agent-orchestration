@@ -334,7 +334,9 @@ const memoryCausalUnlinkSchema = getSchema({
 });
 
 const evalRunAblationSchema = getSchema({
+  mode: z.enum(['ablation', 'k_sensitivity']).optional(),
   channels: z.array(z.enum(['vector', 'bm25', 'fts5', 'graph', 'trigger'])).optional(),
+  queries: z.array(z.string()).optional(),
   groundTruthQueryIds: z.array(positiveInt).optional(),
   recallK: positiveIntMax(100).optional(),
   storeResults: z.boolean().optional(),
@@ -498,7 +500,7 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_causal_link: ['sourceId', 'targetId', 'relation', 'strength', 'evidence'],
   memory_causal_stats: [],
   memory_causal_unlink: ['edgeId'],
-  eval_run_ablation: ['channels', 'groundTruthQueryIds', 'recallK', 'storeResults', 'includeFormattedReport'],
+  eval_run_ablation: ['mode', 'channels', 'queries', 'groundTruthQueryIds', 'recallK', 'storeResults', 'includeFormattedReport'],
   eval_reporting_dashboard: ['sprintFilter', 'channelFilter', 'metricFilter', 'limit', 'format'],
   memory_index_scan: ['specFolder', 'force', 'includeConstitutional', 'includeSpecDocs', 'incremental'],
   memory_get_learning_history: ['specFolder', 'sessionId', 'limit', 'onlyComplete', 'includeSummary'],

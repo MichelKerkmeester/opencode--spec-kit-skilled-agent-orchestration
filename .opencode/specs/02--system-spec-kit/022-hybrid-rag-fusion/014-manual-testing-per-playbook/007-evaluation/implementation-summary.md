@@ -21,8 +21,11 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 007-evaluation |
-| **Completed** | 2026-03-16 |
+| **Completed** | 2026-03-21 |
 | **Level** | 1 |
+| **Scenarios** | 2/2 verdicted |
+| **EX-026 Verdict** | PARTIAL |
+| **EX-027 Verdict** | PASS |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -77,6 +80,9 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 | checklist.md anchor count | PASS — exactly 8 anchors |
 | checklist.md no overview section | PASS — no ANCHOR:overview |
 | checklist.md no standalone P0/P1 headers | PASS — priority is per-item only |
+| EX-026 MCP execution | PARTIAL — SPECKIT_ABLATION=false; tool structure valid; channel alias mismatch found |
+| EX-027 MCP execution | PASS — both format:text and format:json succeed without error |
+| Evidence captured | PASS — scratch/execution-evidence.md with 5 MCP response artifacts |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -84,8 +90,10 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Draft status** — Test scenarios are documented but not yet executed. Final verdicts require manual or MCP-backed execution.
-2. **Coverage audit pending** — Cross-reference validation against the full playbook index has not been run for this individual phase.
+1. **EX-026 PARTIAL** — `SPECKIT_ABLATION=true` must be set to enable ablation execution. The tool infrastructure is confirmed valid; channel enum mapping corrected (`semantic`→`vector`, `keyword`→`bm25`). Re-run with flag enabled to achieve PASS.
+2. **EX-027 empty DB** — Dashboard executes correctly but returns 0 eval runs. Trend/channel data will populate after a successful EX-026 ablation run.
+3. **Playbook alias mismatch** — EX-026 playbook specifies `["semantic","keyword","graph"]`; MCP schema requires `["vector","bm25","graph"]`. Playbook documentation should be corrected.
+4. **Coverage audit pending** — Cross-reference validation against the full playbook index has not been run for this individual phase.
 <!-- /ANCHOR:limitations -->
 
 ---

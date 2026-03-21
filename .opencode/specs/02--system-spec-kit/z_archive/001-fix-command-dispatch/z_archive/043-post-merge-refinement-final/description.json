@@ -17,5 +17,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Specification: Post-Merge Refinement Final [043-post-merge-refinement-final/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Specification: Post-Merge Refinement Final"
 }

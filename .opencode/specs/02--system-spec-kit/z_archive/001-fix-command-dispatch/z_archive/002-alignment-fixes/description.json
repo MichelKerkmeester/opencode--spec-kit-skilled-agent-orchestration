@@ -17,5 +17,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Memory Command Alignment Fixes [002-alignment-fixes/spec]",
+  "importance_tier": "important",
+  "short_description": "Memory Command Alignment Fixes"
 }

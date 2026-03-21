@@ -15,5 +15,8 @@
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "GitHub MCP Integration for sk-git Skill [001-github-mcp-integration/spec]",
+  "importance_tier": "important",
+  "short_description": "GitHub MCP Integration for sk-git Skill"
 }

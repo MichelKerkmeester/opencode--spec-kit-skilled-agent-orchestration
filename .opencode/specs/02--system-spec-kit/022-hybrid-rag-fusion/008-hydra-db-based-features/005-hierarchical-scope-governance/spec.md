@@ -37,11 +37,11 @@ Phase 5 makes the Hydra roadmap safe enough for collaboration. It enforces tenan
 | **Created** | 2026-03-13 |
 | **Updated** | 2026-03-13 |
 | **Branch** | `022-hybrid-rag-fusion` |
-| **Parent Spec** | `../spec.md` |
+| **Parent Spec** | ../spec.md |
 | **Parent Plan** | `../plan.md` |
 | **Phase** | 5 of 6 |
-| **Predecessor** | `004-adaptive-retrieval-loops` |
-| **Successor** | `006-shared-memory-rollout` |
+| **Predecessor** | ../004-adaptive-retrieval-loops/spec.md |
+| **Successor** | ../006-shared-memory-rollout/spec.md |
 | **Handoff Criteria** | Scope enforcement, provenance gates, retention/deletion lifecycle, and audit evidence verified |
 
 ### Phase Context

@@ -18,5 +18,9 @@
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: sk-doc Repo-Wide Rename and Visual Skill Cleanup [template:level_2/spec.md]",
+  "status": "Complete",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: sk-doc Repo-Wide Rename and Visual Skill Cleanup"
 }

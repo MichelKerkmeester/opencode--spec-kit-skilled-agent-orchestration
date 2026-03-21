@@ -46,6 +46,8 @@ The command family now has a canonical entrypoint and compatibility wrappers on 
 | `.opencode/command/create/folder_readme.md` | Updated | Preferred unified user-facing merged command wrapper (README/install; defaults to README) |
 | `.opencode/command/create/doc.md` | Updated | Compatibility/internal workflow kernel entrypoint |
 | `.opencode/command/create/install_guide.md` | Updated | Converted to compatibility alias wrapper |
+
+> **Note:** Files `doc.md` and `install_guide.md` no longer exist — they were removed after implementation.
 | `.agents/commands/create/folder_readme.toml` | Updated | Preferred unified `.agents` wrapper |
 | `.agents/commands/create/doc.toml` | Updated | Compatibility/internal `.agents` wrapper |
 | `.agents/commands/create/install_guide.toml` | Updated | Converted to compatibility alias wrapper |

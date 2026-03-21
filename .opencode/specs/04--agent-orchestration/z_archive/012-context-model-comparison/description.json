@@ -19,5 +19,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec 012: Context Agent Model Comparison (Haiku vs Sonnet) [012-context-model-comparison/spec]",
+  "status": "|-----------",
+  "importance_tier": "important",
+  "short_description": "Spec 012: Context Agent Model Comparison (Haiku vs Sonnet)"
 }

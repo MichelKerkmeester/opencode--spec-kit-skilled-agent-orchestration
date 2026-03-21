@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Full Spec Folder Document Indexing [126-full-spec-doc-indexing/spec]"
+title: "Feature Specification: Full Spec Folder Document Indexing [009-full-spec-doc-indexing/spec]"
 description: "The MCP server's memory index currently only indexes 3 document types: memory files (specs/*/memory/*.md), READMEs, and constitutional files. This misses the most valuable proje..."
 trigger_phrases:
   - "feature"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "full"
   - "spec"
   - "folder"
-  - "126"
+  - "009"
 importance_tier: "important"
 contextType: "decision"
 ---

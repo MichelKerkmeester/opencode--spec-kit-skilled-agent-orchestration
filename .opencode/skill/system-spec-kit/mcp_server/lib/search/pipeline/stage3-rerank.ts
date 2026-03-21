@@ -327,7 +327,7 @@ async function applyCrossEncoderReranking(
           // F2.02 fix: Sync all score aliases for local reranker path too.
           rrfScore: rerankScore,
           intentAdjustedScore: rerankScore,
-          attentionScore: rerankScore,
+          attentionScore: original?.attentionScore ?? row.attentionScore,
         };
       });
 
@@ -385,7 +385,7 @@ async function applyCrossEncoderReranking(
         // the reranked value instead of stale Stage 2 values.
         rrfScore: rerankScore,
         intentAdjustedScore: rerankScore,
-        attentionScore: rerankScore,
+        attentionScore: original.attentionScore,
       });
     }
 

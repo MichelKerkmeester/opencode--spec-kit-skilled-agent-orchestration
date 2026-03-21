@@ -16,5 +16,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Security & Documentation Remediation [050-security-doc-remediation/spec]",
+  "importance_tier": "important",
+  "short_description": "Security & Documentation Remediation"
 }

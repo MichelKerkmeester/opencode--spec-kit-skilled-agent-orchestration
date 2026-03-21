@@ -2,7 +2,7 @@
 title: "Tasks: Live Proof And Parity Hardening [template:level_1/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
-  - "phase 020"
+  - "retained live proof"
   - "tasks"
 importance_tier: "normal"
 contextType: "general"

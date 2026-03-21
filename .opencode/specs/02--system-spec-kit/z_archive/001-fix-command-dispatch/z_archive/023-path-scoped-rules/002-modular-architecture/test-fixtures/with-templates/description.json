@@ -20,5 +20,9 @@
     "test-fixtures"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: Template Test Fixture [with-templates/spec]",
+  "status": "Complete",
+  "importance_tier": "important",
+  "short_description": "Spec: Template Test Fixture"
 }

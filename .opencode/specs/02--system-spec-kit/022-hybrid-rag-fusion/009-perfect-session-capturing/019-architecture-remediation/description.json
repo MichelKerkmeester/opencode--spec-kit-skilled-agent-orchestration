@@ -1,20 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-architecture-remediation",
-  "description": "Level 3 upgrade: global architecture audit with 197 unique findings (270 raw) from 15 agents across 3 waves. 8-sprint remediation plan, 8 ADRs. Analysis phase complete. Covers 96+ TS files, 44 MCP handlers, 20 child phases.",
+  "description": "Feature Specification: Architecture Remediation Deep Dive",
   "keywords": [
+    "feature",
+    "specification",
     "architecture",
     "remediation",
-    "audit",
-    "deep-dive",
-    "bug-fix",
-    "alignment",
-    "level-3",
-    "15-agent",
-    "197-findings",
-    "8-sprints",
-    "wave-3-complete"
+    "deep",
+    "dive"
   ],
-  "lastUpdated": "2026-03-21T00:00:00.000Z",
+  "lastUpdated": "2026-03-21T13:24:03.952Z",
   "specId": "019",
   "folderSlug": "architecture-remediation",
   "parentChain": [

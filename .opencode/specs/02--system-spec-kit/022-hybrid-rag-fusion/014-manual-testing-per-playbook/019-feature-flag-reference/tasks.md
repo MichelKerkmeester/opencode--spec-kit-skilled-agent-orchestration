@@ -36,7 +36,7 @@ contextType: "general"
 
 - [x] T001 Extract feature-flag-reference prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
 - [x] T002 Confirm feature links for EX-028, EX-029, EX-030, EX-031, EX-032, EX-033, EX-034, and 125 in `../../feature_catalog/19--feature-flag-reference/`
-- [ ] T003 [P] Verify indexed flag documentation corpus and dist build prerequisites for `plan.md` preconditions
+- [x] T003 [P] Verify indexed flag documentation corpus and dist build prerequisites for `plan.md` preconditions
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -46,8 +46,8 @@ contextType: "general"
 
 - [x] T004 Draft `spec.md` with metadata, scope table, and eight playbook-derived requirements
 - [x] T005 Draft `plan.md` with readiness gates, execution phases, and testing strategy table
-- [ ] T006 Add evidence references and verdict outcomes after manual execution
-- [ ] T007 [P] Resolve open questions for indexed flag corpus prerequisite and 125 dist build environment
+- [x] T006 Add evidence references and verdict outcomes after manual execution
+- [x] T007 [P] Resolve open questions for indexed flag corpus prerequisite and 125 dist build environment
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -55,9 +55,9 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T008 Run the eight Phase 019 scenarios following `plan.md`
+- [x] T008 Run the eight Phase 019 scenarios following `plan.md`
 - [x] T009 Validate documentation structure and required anchors
-- [ ] T010 Update `implementation-summary.md` when execution and verification are complete
+- [x] T010 Update `implementation-summary.md` when execution and verification are complete
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -65,9 +65,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---

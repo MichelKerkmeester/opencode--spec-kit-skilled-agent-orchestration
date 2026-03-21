@@ -17,5 +17,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "System-Spec-Kit Bug Analysis and Remediation [049-system-analysis-bugs/spec]",
+  "importance_tier": "important",
+  "short_description": "System-Spec-Kit Bug Analysis and Remediation"
 }

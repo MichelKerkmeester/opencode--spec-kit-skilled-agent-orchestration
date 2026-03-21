@@ -8,7 +8,7 @@ trigger_phrases:
   - "cognitive memory"
   - "memory_context"
   - "memory_search"
-  - "32 tools"
+  - "33 tools"
   - "FSRS decay"
 ---
 
@@ -43,7 +43,7 @@ trigger_phrases:
 
 `@spec-kit/mcp-server` is a Model Context Protocol server that gives AI assistants persistent memory. It stores decisions, code context and project history in a local SQLite database, then retrieves exactly what is relevant using a 5-channel hybrid search pipeline. Context works across sessions, models and tools without re-explaining everything every conversation.
 
-The server exposes **32 MCP tools** organized across 7 architecture layers, from a single unified entry point (`memory_context`) down to async ingestion jobs and causal graph operations. A newcomer uses two or three tools. A power user has full control over decay rates, retention policies, shared spaces and evaluation metrics.
+The server exposes **33 MCP tools** organized across 7 architecture layers, from a single unified entry point (`memory_context`) down to async ingestion jobs and causal graph operations. A newcomer uses two or three tools. A power user has full control over decay rates, retention policies, shared spaces and evaluation metrics.
 
 Your AI assistant has amnesia. Every conversation starts fresh. You explain your architecture Monday, by Wednesday it is a blank slate. This server fixes that by storing what matters, decaying what does not, and routing retrieval through a search pipeline that understands query intent, not just keyword overlap.
 
@@ -51,7 +51,7 @@ Your AI assistant has amnesia. Every conversation starts fresh. You explain your
 
 | Metric | Value | Details |
 |--------|-------|---------|
-| **MCP tools** | 32 | Across 7 layers (L1-L7) |
+| **MCP tools** | 33 | Across 7 layers (L1-L7) |
 | **Search channels** | 5 | Vector, FTS5, BM25, Skill Graph, Degree |
 | **Pipeline stages** | 4 | Candidate Generation, Fusion+Signals, Rerank+Aggregate, Filter+Annotate |
 | **Importance tiers** | 6 | constitutional through deprecated |
@@ -188,7 +188,7 @@ Save your first memory file to the index:
 ```
 mcp_server/
 ├── context-server.ts          # MCP server entry point, tool registration
-├── tool-schemas.ts            # All 32 tool definitions (Zod schemas)
+├── tool-schemas.ts            # All 33 tool definitions (Zod schemas)
 ├── handlers/                  # Per-tool request handlers
 │   ├── memory-save.ts         # Save handler with pre-flight validation
 │   ├── memory-search.ts       # Core search handler
@@ -220,7 +220,7 @@ mcp_server/
 
 | File | Purpose |
 |------|---------|
-| `context-server.ts` | Server entry point. Registers all 32 tools and starts the MCP listener. |
+| `context-server.ts` | Server entry point. Registers all 33 tools and starts the MCP listener. |
 | `tool-schemas.ts` | Single source of truth for all tool names, descriptions and Zod parameter schemas. |
 | `handlers/memory-save.ts` | Save handler with 3-layer pre-flight quality gate, duplicate detection and embedding. |
 | `lib/search/README.md` | Detailed per-stage module mapping for the 4-stage search pipeline. |
@@ -232,7 +232,7 @@ mcp_server/
 | Layer | Name | Tool Count | Token Budget | Purpose |
 |-------|------|-----------|--------------|---------|
 | L1 | Orchestration | 1 | 2000 | Unified entry point with intent-aware routing |
-| L2 | Core | 3 | 1500 | Search, trigger matching and memory save |
+| L2 | Core | 4 | 1500 | Search, trigger matching and memory save |
 | L3 | Discovery | 3 | 800 | Browse, statistics and health diagnostics |
 | L4 | Mutation | 4 | 500 | Update, delete, validate and bulk operations |
 | L5 | Lifecycle | 8 | 600 | Checkpoints, shared spaces and enable |
@@ -246,7 +246,7 @@ mcp_server/
 <!-- ANCHOR:mcp-tools -->
 ## 4. MCP TOOLS
 
-All 32 tools are listed below, organized by architecture layer. Each entry shows the tool name, a short description and the key parameters to know. For full parameter schemas with types and defaults, see `tool-schemas.ts`.
+All 33 tools are listed below, organized by architecture layer. Each entry shows the tool name, a short description and the key parameters to know. For full parameter schemas with types and defaults, see `tool-schemas.ts`.
 
 **Start here for most operations**: `memory_context` (L1) automatically routes to the right retrieval strategy. Use the lower-level tools when you need precise control.
 

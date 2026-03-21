@@ -37,7 +37,7 @@ import {
 // Phase 5: Indexing pipeline
 import {
   calculateDocumentWeight,
-} from '../handlers/memory-save';
+} from '../handlers/pe-gating';
 
 // Phase 6: Scoring & priority
 import {

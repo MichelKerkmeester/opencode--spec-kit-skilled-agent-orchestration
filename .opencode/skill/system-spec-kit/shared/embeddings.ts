@@ -314,6 +314,7 @@ function shouldEagerWarmup(): boolean {
  */
 async function getProvider(): Promise<IEmbeddingProvider> {
   if (providerInstance) {
+    MODEL_NAME = getProviderModelName(providerInstance);
     return providerInstance;
   }
 
@@ -328,6 +329,7 @@ async function getProvider(): Promise<IEmbeddingProvider> {
       providerInstance = await createEmbeddingsProvider({
         warmup: false, // T017: No warmup at creation; model loads on first embed call
       });
+      MODEL_NAME = getProviderModelName(providerInstance);
       providerInitCompleteTime = Date.now();
       const initTime = providerInitCompleteTime - (providerInitStartTime as number);
       console.error(`[embeddings] Provider created lazily (${initTime}ms)`);
@@ -639,19 +641,45 @@ function getEmbeddingDimension(): number {
 
 function getModelName(): string {
   if (providerInstance) {
-    return providerInstance.getProfile().model;
+    return getProviderModelName(providerInstance);
   }
 
+  return detectConfiguredModelName();
+}
+
+function detectConfiguredModelName(): string {
   const providerInfo = getProviderInfo();
   switch (providerInfo.provider) {
     case 'voyage':
-      return providerInfo.config.VOYAGE_EMBEDDINGS_MODEL || 'voyage-4';
+      return providerInfo.config.VOYAGE_EMBEDDINGS_MODEL
+        || (process.env.VOYAGE_API_KEY ? 'voyage-4' : DEFAULT_MODEL_NAME);
     case 'openai':
-      return providerInfo.config.OPENAI_EMBEDDINGS_MODEL || 'text-embedding-3-small';
+      return providerInfo.config.OPENAI_EMBEDDINGS_MODEL
+        || (process.env.OPENAI_API_KEY ? 'text-embedding-3-small' : DEFAULT_MODEL_NAME);
     case 'hf-local':
     default:
+      if (process.env.VOYAGE_API_KEY && !process.env.OPENAI_API_KEY) {
+        return process.env.VOYAGE_EMBEDDINGS_MODEL || 'voyage-4';
+      }
+      if (process.env.OPENAI_API_KEY && !process.env.VOYAGE_API_KEY) {
+        return process.env.OPENAI_EMBEDDINGS_MODEL || 'text-embedding-3-small';
+      }
       return providerInfo.config.HF_EMBEDDINGS_MODEL || DEFAULT_MODEL_NAME;
   }
+}
+
+function getProviderModelName(provider: IEmbeddingProvider): string {
+  const profile = provider.getProfile();
+  if (profile && typeof profile.model === 'string' && profile.model.trim().length > 0) {
+    return profile.model;
+  }
+
+  const metadata = provider.getMetadata();
+  if (metadata && typeof metadata.model === 'string' && metadata.model.trim().length > 0) {
+    return metadata.model;
+  }
+
+  return detectConfiguredModelName();
 }
 
 function isModelLoaded(): boolean {
@@ -733,9 +761,9 @@ const EMBEDDING_DIM: number = 768;
 const EMBEDDING_TIMEOUT: number = 30000;
 // MAX_TEXT_LENGTH is imported from chunking.ts (single source of truth)
 // DEFAULT_MODEL_NAME is the fallback; use get_model_name() for the actual active model
-const DEFAULT_MODEL_NAME: string = 'nomic-ai/nomic-embed-text-v1.5';
+export const DEFAULT_MODEL_NAME: string = 'nomic-ai/nomic-embed-text-v1.5';
 // Legacy alias for backwards compatibility
-const MODEL_NAME: string = DEFAULT_MODEL_NAME;
+export let MODEL_NAME: string = detectConfiguredModelName();
 const BATCH_RATE_LIMIT_DELAY: number = BATCH_DELAY_MS; // Alias for export
 
 const TASK_PREFIX: TaskPrefixMap = {
@@ -785,8 +813,6 @@ export {
   EMBEDDING_DIM,
   EMBEDDING_TIMEOUT,
   MAX_TEXT_LENGTH,
-  MODEL_NAME,
-  DEFAULT_MODEL_NAME,
   TASK_PREFIX,
   BATCH_DELAY_MS,
   BATCH_RATE_LIMIT_DELAY,

@@ -2598,7 +2598,10 @@ async function testLibTriggerExtractor() {
     }
 
     // Test 6: CONFIG is exported
-    assertExists(triggerModule.CONFIG, 'T-037f: CONFIG is exported', JSON.stringify(triggerModule.CONFIG).substring(0, 50));
+    const configPreview = triggerModule.CONFIG
+      ? JSON.stringify(triggerModule.CONFIG).substring(0, 50)
+      : 'missing';
+    assertExists(triggerModule.CONFIG, 'T-037f: CONFIG is exported', configPreview);
 
     // Test 7: STOP_WORDS_ENGLISH is exported
     if (triggerModule.STOP_WORDS_ENGLISH instanceof Set) {

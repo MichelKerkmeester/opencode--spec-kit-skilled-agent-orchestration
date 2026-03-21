@@ -9,7 +9,6 @@ import { getMemoryHashSnapshot, appendMutationLedgerSafe } from '../memory-crud-
 import {
   findSimilarMemories,
   reinforceExistingMemory,
-  markMemorySuperseded,
   updateExistingMemory,
   logPeDecision,
 } from '../pe-gating';

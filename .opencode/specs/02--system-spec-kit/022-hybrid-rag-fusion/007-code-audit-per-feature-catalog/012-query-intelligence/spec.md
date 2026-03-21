@@ -32,8 +32,8 @@ contextType: "general"
 | **Created** | 2026-03-10 |
 | **Branch** | `012-query-intelligence` |
 | **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../011-scoring-and-calibration/spec.md |
-| **Next Phase** | ../013-memory-quality-and-indexing/spec.md |
+| **Predecessor** | ../011-scoring-and-calibration/spec.md |
+| **Successor** | ../013-memory-quality-and-indexing/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

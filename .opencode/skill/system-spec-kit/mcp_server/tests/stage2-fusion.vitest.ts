@@ -174,7 +174,8 @@ describe('Stage 2 fusion regression coverage', () => {
     for (const row of result.scored) {
       expect(row.score).toBe(row.rrfScore);
       expect(row.score).toBe(row.intentAdjustedScore);
-      expect(row.score).toBe(row.attentionScore);
+      // attentionScore is now independent and not set by stage2 fusion
+      expect(row.attentionScore).toBeUndefined();
       expect((row.graphContribution as Record<string, unknown>).rolloutState).toBe('trace_only');
       expect((row.graphContribution as Record<string, unknown>).appliedBonus).toBe(0);
     }
@@ -226,7 +227,8 @@ describe('Stage 2 fusion regression coverage', () => {
     expect(boosted.score).toBe(0.63);
     expect(boosted.score).toBe(boosted.rrfScore);
     expect(boosted.score).toBe(boosted.intentAdjustedScore);
-    expect(boosted.score).toBe(boosted.attentionScore);
+    // attentionScore is now independent and not set by stage2 fusion
+    expect(boosted.attentionScore).toBeUndefined();
     expect((boosted.graphContribution as Record<string, unknown>).appliedBonus).toBe(0.03);
     expect((boosted.graphContribution as Record<string, unknown>).capApplied).toBe(true);
     expect((boosted.graphContribution as Record<string, unknown>).rolloutState).toBe('bounded_runtime');

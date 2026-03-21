@@ -101,7 +101,7 @@ Perform 3-5 research actions using available tools:
 | memory_search | Check prior research findings | Find related spec folder work |
 | Bash | Run commands for data gathering | `wc -l`, `jq` for JSON parsing |
 
-**Budget**: Target 3-5 research actions within an overall budget of 8-11 tool calls per iteration. Hard max: 12 total tool calls (including state reads/writes). If approaching the limit, prioritize writing findings over additional research.
+**Budget**: Target 3-5 research actions. Recommended overall budget: 8-11 tool calls per iteration. Hard max: 12 total tool calls (including state reads/writes). If approaching the limit, prioritize writing findings over additional research.
 
 **Quality Rule**: Every finding must cite a source:
 - `[SOURCE: https://url]` for web sources

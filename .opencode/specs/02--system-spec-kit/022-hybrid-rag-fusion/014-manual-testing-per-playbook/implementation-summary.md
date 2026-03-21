@@ -21,7 +21,7 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 014-manual-testing-per-playbook |
-| **Completed** | 2026-03-17 |
+| **Completed** | 2026-03-21 (execution + remediation) |
 | **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
@@ -88,6 +88,14 @@ The `M-007` manual testing playbook block now reflects the `010` closure evidenc
 | `010` parent validator-support wording is internally consistent after cleanup | PASS |
 | `NEW-NNN` → `NNN` normalization (excluding `G-NEW-`) across 80 files | PASS: 0 stale markers remain |
 | Phase 016 expanded with scenarios `153` and `154` | PASS: 23 exact IDs confirmed |
+| **Execution (2026-03-21)** | |
+| 209/209 scenarios verdicted across 19 phases | PASS: 153 PASS, 52 PARTIAL, 4 FAIL |
+| 2 FAIL root causes fixed (graph FTS5 regression + pe-gating export) | PASS: 76 targeted tests pass |
+| GPT-5.4 ultra-think review: 5 findings fixed | PASS: 264 tests pass |
+| FUT-5 K-sensitivity endpoint implemented | PASS: score-normalization tests pass |
+| Sprint 3 trace enrichment implemented | PASS: type-check clean |
+| 4 playbook doc errors corrected | PASS: grep confirms no stale references |
+| 7 memory generation script fixes applied + dist rebuilt | PASS: workspace tests pass |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -95,9 +103,10 @@ The `M-007` manual testing playbook block now reflects the `010` closure evidenc
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Draft execution state** - All 19 phase specs remain documentation packets; scenario execution has not started.
-2. **Level 1 warning backlog remains** - Recursive validation still reports non-blocking section-count warnings across the packet.
-3. **Feature catalog unchanged by design** - This pass found no content drift in the catalog that required edits.
+1. **SPECKIT_ABLATION=false** — 10+ scenarios across phases 007/009 returned PARTIAL because ablation feature is disabled in current environment.
+2. **Zero indexed memories** — Phase 010 (9 scenarios) all PARTIAL due to no indexed memories in the spec folder.
+3. **Sandbox fixtures missing** — Phase 015 scenarios 058/060 blocked (no disposable sandbox entity fixtures).
+4. **Level 1 warning backlog** — Recursive validation still reports non-blocking section-count warnings.
 <!-- /ANCHOR:limitations -->
 
 ---

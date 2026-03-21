@@ -19,5 +19,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: Fix SQLite Transaction Nesting Issue [057-transaction-nesting-fix/spec]",
+  "status": "Implementation Complete (Pending Verification)",
+  "importance_tier": "important",
+  "short_description": "Spec: Fix SQLite Transaction Nesting Issue"
 }

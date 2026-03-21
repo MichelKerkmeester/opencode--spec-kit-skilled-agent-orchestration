@@ -112,6 +112,24 @@ describe('Tool Input Schema Validation', () => {
     expect(errorSpy).toHaveBeenCalled();
     expect(errorSpy.mock.calls.some((call) => String(call[0]).includes('[schema-validation] memory_search:'))).toBe(true);
   });
+
+  it('accepts eval_run_ablation mode and custom queries', () => {
+    expect(() => {
+      validateToolArgs('eval_run_ablation', {
+        mode: 'k_sensitivity',
+        queries: ['graph retrieval regression', 'rrf fusion stability'],
+        recallK: 20,
+      });
+    }).not.toThrow();
+  });
+
+  it('rejects unknown eval_run_ablation modes', () => {
+    expect(() => {
+      validateToolArgs('eval_run_ablation', {
+        mode: 'not-a-real-mode',
+      } as Record<string, unknown>);
+    }).toThrow();
+  });
 });
 
 /* ───────────────────────────────────────────────────────────────

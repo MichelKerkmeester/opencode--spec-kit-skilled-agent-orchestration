@@ -19,5 +19,9 @@
     "019-speckit-refinement"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "State Simplification: Integrate State into Memory Files [001-state-simplification/spec]",
+  "status": "Planning",
+  "importance_tier": "important",
+  "short_description": "State Simplification: Integrate State into Memory Files"
 }

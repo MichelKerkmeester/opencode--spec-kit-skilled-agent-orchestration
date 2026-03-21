@@ -4,7 +4,7 @@ description: "Task Format: T### [P?] Description (file path); current scope is t
 trigger_phrases:
   - "tasks"
   - "perfect session capturing"
-  - "roadmap phases 018 019 020"
+  - "roadmap phases 018 019"
 importance_tier: "normal"
 contextType: "general"
 ---

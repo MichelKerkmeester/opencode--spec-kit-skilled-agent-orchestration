@@ -71,7 +71,7 @@ A multi-agent verification campaign was executed on 2026-03-08 using GPT-5.4 (12
 
 Cross-spec inventory identified 237 unchecked items across 8 folders. Folder-specific assessments completed:
 - **006:** 47 items classified by runtime-testability (CHK groups identified for Waves 4-5).
-- **009:** 2 actionable stale references found (ARCHITECTURE_BOUNDARIES.md refs pointing to renamed ARCHITECTURE.md).
+- **009:** 2 actionable stale references found (architecture-boundaries refs pointing to the renamed architecture overview).
 - **007:** Evidence quality audit completed; 7/10 items had verifiable file:line evidence.
 - **010:** Phase 3-4 readiness confirmed (slug uniqueness and memory aggregation already implemented).
 
@@ -83,9 +83,9 @@ Cross-spec inventory identified 237 unchecked items across 8 folders. Folder-spe
 
 ### Wave 3 — Architecture Remediation (2 agents)
 
-- **009:** 2 stale `ARCHITECTURE_BOUNDARIES.md` references fixed to `ARCHITECTURE.md`.
-- **009:** Exception reconciliation verified (4/4 exceptions match between allowlist.json and ARCHITECTURE.md).
-- **009:** `dist/` policy section added to ARCHITECTURE.md.
+- **009:** 2 stale architecture-boundary references fixed to the current architecture overview.
+- **009:** Exception reconciliation verified (4/4 exceptions match between the allowlist and the architecture overview).
+- **009:** `dist/` policy section added to the architecture overview.
 - **006:** Test execution plan created (3 groups: schema validation, response envelope, async ingestion).
 - **006:** Regression baseline captured: 7,153 pass, 4 known failures.
 
@@ -686,4 +686,3 @@ Delivery used the existing Level 3+ spec workflow and consolidated verification 
 IMPLEMENTATION SUMMARY
 Final closure snapshot for 006 implementation and verification evidence.
 -->
-

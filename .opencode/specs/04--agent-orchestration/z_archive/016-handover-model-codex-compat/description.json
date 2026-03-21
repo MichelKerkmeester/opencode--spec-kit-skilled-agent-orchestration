@@ -19,5 +19,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec 016: Handover Model Downgrade + Codex Agent Compatibility [016-handover-model-codex-compat/spec]",
+  "importance_tier": "important",
+  "short_description": "Spec 016: Handover Model Downgrade + Codex Agent Compatibility"
 }

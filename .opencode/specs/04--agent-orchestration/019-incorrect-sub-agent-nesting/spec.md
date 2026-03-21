@@ -39,7 +39,7 @@ The orchestrator agent (Codex/ChatGPT provider) creates deeply nested sub-agent 
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | Complete |
+| **Status** | Partially Reverted |
 | **Created** | 2026-02-17 |
 <!-- /ANCHOR:metadata -->
 
@@ -89,6 +89,8 @@ Every sub-agent dispatch must include explicit depth tracking, and no agent chai
 | `.opencode/agent/orchestrate.md` | Modify | Add NDP section, update Section 4/10/24 |
 | `.opencode/agent/chatgpt/orchestrate.md` | Modify | Same changes as base |
 | `.opencode/agent/copilot/orchestrate.md` | Modify | Same changes + fix Section 11 conflict |
+
+> **Note (2026-03-21):** The `.opencode/agent/copilot/` directory no longer exists — removed after implementation. Changes to `copilot/orchestrate.md` and `copilot/review.md` are therefore no longer present in the repository. Status updated to "Partially Reverted".
 <!-- /ANCHOR:scope -->
 
 ---

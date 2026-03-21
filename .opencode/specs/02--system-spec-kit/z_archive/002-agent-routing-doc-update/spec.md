@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Agent Routing Documentation Update [119-agent-routing-doc-update/spec]"
+title: "Feature Specification: Agent Routing Documentation Update [002-agent-routing-doc-update/spec]"
 description: "Spec 014 (Command Agent Utilization Audit) added formal agent routing to all spec_kit commands — @debug at failure >= 3, @research at confidence < 60%, dual-phase @review (Mode ..."
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "routing"
   - "documentation"
   - "spec"
-  - "119"
+  - "002"
 importance_tier: "important"
 contextType: "decision"
 ---

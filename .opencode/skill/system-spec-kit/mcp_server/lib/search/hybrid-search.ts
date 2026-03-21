@@ -31,9 +31,19 @@ import type { GraphSearchFn } from './search-types';
 export type { GraphSearchFn } from './search-types';
 
 import { routeQuery } from './query-router';
+import { isComplexityRouterEnabled } from './query-classifier';
 import { enforceChannelRepresentation } from './channel-enforcement';
-import { truncateByConfidence } from './confidence-truncation';
-import { getDynamicTokenBudget, isDynamicTokenBudgetEnabled } from './dynamic-token-budget';
+import {
+  truncateByConfidence,
+  isConfidenceTruncationEnabled,
+  DEFAULT_MIN_RESULTS,
+  GAP_THRESHOLD_MULTIPLIER,
+} from './confidence-truncation';
+import {
+  getDynamicTokenBudget,
+  isDynamicTokenBudgetEnabled,
+  DEFAULT_TOKEN_BUDGET_CONFIG,
+} from './dynamic-token-budget';
 import { ensureDescriptionCache, getSpecsBasePaths } from './folder-discovery';
 import {
   isFolderScoringEnabled,
@@ -129,15 +139,40 @@ function toHybridResult(result: FusionResult): HybridSearchResult {
  */
 interface Sprint3PipelineMeta {
   /** Query complexity routing result (SPECKIT_COMPLEXITY_ROUTER). */
-  routing?: { tier: string; channels: string[]; skippedChannels: string[] };
+  routing?: {
+    tier: string;
+    channels: string[];
+    skippedChannels: string[];
+    featureFlagEnabled: boolean;
+    confidence: string;
+    features: Record<string, unknown>;
+  };
   /** RSF shadow fusion result (SPECKIT_RSF_FUSION) — shadow-mode only, not used for ranking. */
   rsfShadow?: { resultCount: number; topRsfScore: number };
   /** Channel enforcement result (SPECKIT_CHANNEL_MIN_REP). */
   enforcement?: { applied: boolean; promotedCount: number; underRepresentedChannels: string[] };
   /** Confidence truncation result (SPECKIT_CONFIDENCE_TRUNCATION). */
-  truncation?: { truncated: boolean; originalCount: number; truncatedCount: number };
+  truncation?: {
+    truncated: boolean;
+    originalCount: number;
+    truncatedCount: number;
+    medianGap: number;
+    cutoffGap: number;
+    cutoffIndex: number;
+    thresholdMultiplier: number;
+    minResultsGuaranteed: number;
+    featureFlagEnabled: boolean;
+  };
   /** Dynamic token budget result (SPECKIT_DYNAMIC_TOKEN_BUDGET). */
-  tokenBudget?: { tier: string; budget: number; applied: boolean };
+  tokenBudget?: {
+    tier: string;
+    budget: number;
+    applied: boolean;
+    featureFlagEnabled: boolean;
+    configValues: Record<string, number>;
+    headerOverhead: number;
+    adjustedBudget: number;
+  };
 }
 
 /* --- 4. PI-A2: DEGRADATION TYPES --- */
@@ -593,6 +628,9 @@ async function hybridSearchEnhanced(
         tier: routeResult.tier,
         channels: routeResult.channels,
         skippedChannels,
+        featureFlagEnabled: isComplexityRouterEnabled(),
+        confidence: routeResult.classification.confidence,
+        features: routeResult.classification.features as Record<string, unknown>,
       };
     }
 
@@ -605,6 +643,11 @@ async function hybridSearchEnhanced(
         tier: budgetResult.tier,
         budget: budgetResult.budget,
         applied: budgetResult.applied,
+        featureFlagEnabled: isDynamicTokenBudgetEnabled(),
+        configValues: DEFAULT_TOKEN_BUDGET_CONFIG as unknown as Record<string, number>,
+        // headerOverhead and adjustedBudget are patched in below after they are computed
+        headerOverhead: 0,
+        adjustedBudget: budgetResult.budget,
       };
     }
 
@@ -747,16 +790,30 @@ async function hybridSearchEnhanced(
       const intent = options.intent || classifyIntent(query).intent;
       const adaptiveResult = hybridAdaptiveFuse(semanticResults, keywordResults, intent);
       const { semanticWeight, keywordWeight } = adaptiveResult.weights;
+      const lexicalChannelCount = [
+        ftsChannelResults.length > 0,
+        bm25ChannelResults.length > 0,
+      ].filter(Boolean).length;
+      const perLexicalWeight = lexicalChannelCount > 1
+        ? keywordWeight / lexicalChannelCount
+        : keywordWeight;
 
       // Apply adaptive weights to the fusion lists (update in place)
       const { graphWeight: adaptiveGraphWeight } = adaptiveResult.weights;
       for (const list of lists) {
         if (list.source === 'vector') list.weight = semanticWeight;
-        else if (list.source === 'fts' || list.source === 'bm25') list.weight = keywordWeight;
+        else if (list.source === 'fts' || list.source === 'bm25') list.weight = perLexicalWeight;
         else if (list.source === 'graph' && typeof adaptiveGraphWeight === 'number') list.weight = adaptiveGraphWeight;
       }
 
-      const fused = fuseResultsMulti(lists);
+      // Only short-circuit to adaptive fusion when the live fusion set contains
+      // exactly the channels adaptive fusion already modeled. Extra channels like
+      // degree must still flow through fuseResultsMulti even when graph is absent.
+      const useAdaptiveResultsDirectly = adaptiveResult.results.length > 0
+        && lists.every((list) => list.source === 'vector' || list.source === 'fts' || list.source === 'bm25');
+      const fused = useAdaptiveResultsDirectly
+        ? adaptiveResult.results
+        : fuseResultsMulti(lists);
 
       let fusedHybridResults: HybridSearchResult[] = fused.map(toHybridResult);
       const limit = options.limit || DEFAULT_LIMIT;
@@ -864,6 +921,12 @@ async function hybridSearchEnhanced(
             truncated: true,
             originalCount: truncationResult.originalCount,
             truncatedCount: truncationResult.truncatedCount,
+            medianGap: truncationResult.medianGap,
+            cutoffGap: truncationResult.cutoffGap,
+            cutoffIndex: truncationResult.cutoffIndex,
+            thresholdMultiplier: GAP_THRESHOLD_MULTIPLIER,
+            minResultsGuaranteed: DEFAULT_MIN_RESULTS,
+            featureFlagEnabled: isConfidenceTruncationEnabled(),
           };
         }
       } catch (_truncErr: unknown) {
@@ -1006,6 +1069,13 @@ async function hybridSearchEnhanced(
         ? reranked.length * CONTEXT_HEADER_TOKEN_OVERHEAD
         : 0;
       const adjustedBudget = Math.max(budgetResult.budget - headerOverhead, 200);
+
+      // Patch computed overhead values into tokenBudget trace now that they are known
+      if (s3meta.tokenBudget) {
+        s3meta.tokenBudget.headerOverhead = headerOverhead;
+        s3meta.tokenBudget.adjustedBudget = adjustedBudget;
+      }
+
       const budgeted = truncateToBudget(reranked, adjustedBudget, {
         includeContent: options.includeContent ?? false,
         queryId: `hybrid-${Date.now()}`,

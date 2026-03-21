@@ -19,5 +19,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "085: Alignment Validator File Path Analysis [085-alignment-file-paths/spec]",
+  "importance_tier": "important",
+  "short_description": "085: Alignment Validator File Path Analysis"
 }

@@ -1,0 +1,17 @@
+{
+  "specFolder": "001-memory-pipeline-fixes",
+  "description": "Feature Specification: Memory Pipeline Fixes",
+  "keywords": [
+    "feature",
+    "specification",
+    "memory",
+    "pipeline",
+    "fixes"
+  ],
+  "lastUpdated": "2026-03-21T13:24:03.738Z",
+  "specId": "001",
+  "folderSlug": "memory-pipeline-fixes",
+  "parentChain": [],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -23,7 +23,7 @@ permission:
 
 Session handover specialist responsible for creating continuation documents that enable seamless session branching. Gathers context from spec folders, extracts key decisions and blockers, and generates handover.md files for future sessions.
 
-**Path Convention**: Use only `.opencode/agent/*.md` as the canonical runtime path reference.
+**Path Convention**: Use only `.opencode/agent/chatgpt/*.md` as the canonical runtime path reference.
 
 > ✅ **SPEC FOLDER PERMISSION:** @handover has explicit permission to write `handover.md` inside spec folders. This is an exception to the @speckit exclusivity rule because handover documents are session-continuation artifacts with a specialized 5-section format, not spec template documentation.
 

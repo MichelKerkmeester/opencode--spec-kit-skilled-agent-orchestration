@@ -73,17 +73,14 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Documentation
+### Phase 4: Documentation
 
 - [x] T018 Populate Level 3 docs from Wave 3 output — update plan.md, decision-record.md, checklist.md, spec.md, tasks.md, description.json
 - [ ] T019 Run validate.sh on spec folder and resolve any errors
-<!-- /ANCHOR:phase-4 -->
 
 ---
 
-<!-- ANCHOR:phase-5 -->
-## Phase 5: Remediation
+### Phase 5: Remediation
 
 *Sprint-organized remediation tasks — derived from Wave 3 OPUS-B2 priority matrix.*
 
@@ -95,7 +92,6 @@ contextType: "general"
 - [ ] T025 [P] Sprint S6: Dead Code Deletion & Consolidation — delete deprecated eval script refs from READMEs, delete deprecated ops scripts, delete dead exports, snake_case alias cleanup, renderer internal exports (28 findings, 6-8h, MEDIUM)
 - [ ] T026 [P] Sprint S7: Test Coverage Gaps — add tests for untested memory modules and helpers, fix SessionData fixture, add architecture-boundary test cases, fix silent test skips, add malformed transcript cases (26 findings, 6-8h, LOW)
 - [ ] T027 [P] Sprint S8: Extractor Parity & Quality Gates — standardize session targeting, thread structured JSON fields, fix contamination filter gaps, add quality-loop dimension floors, fix KEY_FILES list, fix recency factor (26 findings, 6-8h, LOW)
-<!-- /ANCHOR:phase-5 -->
 
 ---
 

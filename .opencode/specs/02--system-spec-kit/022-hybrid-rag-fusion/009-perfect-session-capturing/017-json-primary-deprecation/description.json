@@ -15,6 +15,10 @@
     "022-hybrid-rag-fusion",
     "009-perfect-session-capturing"
   ],
+  "status": "Complete",
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: JSON-Primary Deprecation [template:level_2/spec.md]",
+  "importance_tier": "high",
+  "short_description": "Feature Specification: JSON-Primary Deprecation"
 }

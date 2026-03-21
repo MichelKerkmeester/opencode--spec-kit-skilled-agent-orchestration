@@ -1,5 +1,5 @@
 ---
-title: "005 Lifecycle Manual Testing [005-lifecycle/19-03-26_20-16__005-lifecycle-manual-testing]"
+title: "005 Lifecycle Manual Testing"
 description: "Agent 2 background task confirmed complete (exit 0). All work was already applied from the output I retrieved earlier — the full pipeline is finished. No further action needed."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/014 manual testing per playbook/005 lifecycle"

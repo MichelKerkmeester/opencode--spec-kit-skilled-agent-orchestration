@@ -20,5 +20,9 @@
     "test-fixtures"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: Missing Evidence Fixture [missing-evidence/spec]",
+  "status": "In Progress",
+  "importance_tier": "important",
+  "short_description": "Spec: Missing Evidence Fixture"
 }

@@ -10,7 +10,7 @@
 import { CONFIG } from '../config';
 import { formatTimestamp, truncateToolOutput, summarizeExchange } from '../utils/message-utils';
 import { detectToolCall, isProseContext } from '../utils/tool-detection';
-import { classifyConversationExchanges } from '../utils/phase-classifier';
+import { classifyConversationExchanges } from '../lib/phase-classifier';
 import { coerceFactsToText } from '../utils/fact-coercion';
 import { detectObservationType } from './file-extractor';
 import * as flowchartGen from '../lib/flowchart-generator';

@@ -385,7 +385,7 @@ FOR WORKFLOW VIOLATIONS:
 
 | Condition               | Suggested Command                       | Reason                            |
 | ----------------------- | --------------------------------------- | --------------------------------- |
-| After changelog created | `/create:visual_html`                   | Generate visual changelog summary |
+| After changelog created | `/create:folder_readme`                 | Generate a release summary or supporting documentation artifact |
 | Need spec folder first  | `/spec_kit:complete`                    | Create spec with implementation   |
 | Umbrella release        | Manual `00--opencode-environment` entry | Aggregates component changelogs   |
 | Save context            | `/memory:save`                          | Preserve decisions                |

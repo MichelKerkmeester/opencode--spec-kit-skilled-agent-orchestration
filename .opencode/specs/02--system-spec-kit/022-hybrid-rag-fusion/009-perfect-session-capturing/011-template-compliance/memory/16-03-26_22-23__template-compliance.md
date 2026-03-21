@@ -1,5 +1,3 @@
-> **Warning:** Memory quality score is 55/100 (0.55), which is below the recommended threshold of 0.60. Content may have issues with: 0/7 files missing descriptions; Observation titles remain too generic — semantic diversity reduced; Contamination detected — quality score penalized and capped at 0.60.
-
 ---
 title: "Template Compliance [011-template-compliance/16-03-26_22-23__template-compliance]"
 description: "Let me identify all remaining deferred/outstanding items and fix them all. Outstanding items: 1. Level 1 + Level 3 compliant fixtures (P2 #10 — deferred as "future work") 2...."
@@ -49,6 +47,8 @@ quality_flags:
   - "has_contamination"
 spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 ---
+
+> **Warning:** Memory quality score is 55/100 (0.55), which is below the recommended threshold of 0.60. Content may have issues with: 0/7 files missing descriptions; Observation titles remain too generic — semantic diversity reduced; Contamination detected — quality score penalized and capped at 0.60.
 
 # Template Compliance
 

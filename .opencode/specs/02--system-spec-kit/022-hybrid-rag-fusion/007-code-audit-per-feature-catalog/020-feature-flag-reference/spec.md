@@ -28,8 +28,8 @@ contextType: "general"
 | **Created** | 2026-03-14 |
 | **Branch** | `020-feature-flag-reference` |
 | **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../019-decisions-and-deferrals/spec.md |
-| **Next Phase** | ../021-remediation-revalidation/spec.md |
+| **Predecessor** | ../019-decisions-and-deferrals/spec.md |
+| **Successor** | ../021-remediation-revalidation/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

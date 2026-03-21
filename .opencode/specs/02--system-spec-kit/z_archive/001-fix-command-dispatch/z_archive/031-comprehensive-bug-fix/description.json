@@ -18,5 +18,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Memory System Comprehensive Bug Fix [031-comprehensive-bug-fix/spec]",
+  "importance_tier": "important",
+  "short_description": "Memory System Comprehensive Bug Fix"
 }

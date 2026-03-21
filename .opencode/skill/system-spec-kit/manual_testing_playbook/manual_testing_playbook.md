@@ -12,25 +12,25 @@ This document combines the full manual-validation contract for the Spec Kit Memo
 This playbook package adopts the Feature Catalog split-document pattern for canonical Spec Kit operator validation. The root document acts as the directory, review surface, and orchestration guide, while per-feature execution detail now lives in the numbered category folders at the playbook root.
 
 Canonical source artifacts:
-- `.claude/skills/system-spec-kit/manual_testing_playbook/01--retrieval/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/02--mutation/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/03--discovery/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/04--maintenance/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/05--lifecycle/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/06--analysis/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/07--evaluation/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/08--bug-fixes-and-data-integrity/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/09--evaluation-and-measurement/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/10--graph-signal-activation/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/11--scoring-and-calibration/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/12--query-intelligence/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/14--pipeline-architecture/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/15--retrieval-enhancements/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/16--tooling-and-scripts/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/17--governance/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/18--ux-hooks/`
-- `.claude/skills/system-spec-kit/manual_testing_playbook/19--feature-flag-reference/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/02--mutation/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/04--maintenance/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/05--lifecycle/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/06--analysis/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/07--evaluation/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/08--bug-fixes-and-data-integrity/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/09--evaluation-and-measurement/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/10--graph-signal-activation/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/11--scoring-and-calibration/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/12--query-intelligence/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/14--pipeline-architecture/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/15--retrieval-enhancements/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/16--tooling-and-scripts/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/17--governance/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/18--ux-hooks/`
+- `.opencode/skill/system-spec-kit/manual_testing_playbook/19--feature-flag-reference/`
 
 ---
 
@@ -146,8 +146,9 @@ Release is `READY` only when:
 
 1. No feature verdict is `FAIL`.
 2. All critical scenarios are `PASS`.
-3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-feature files (`COVERED_FEATURES == TOTAL_FEATURES`).
-4. No unresolved blocking triage item remains.
+3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-scenario files (`COVERED_SCENARIOS == TOTAL_SCENARIOS`).
+4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 201 scenario files while the feature catalog contains 194 feature files.
+5. No unresolved blocking triage item remains.
 
 Otherwise release is `NOT READY`.
 
@@ -157,7 +158,7 @@ Deterministic coverage check (run from repository root):
 TOTAL_FEATURES=$(python3 - <<'PY'
 from pathlib import Path
 
-root = Path('.claude/skills/system-spec-kit/manual_testing_playbook')
+root = Path('.opencode/skill/system-spec-kit/manual_testing_playbook')
 count = sum(
     1
     for path in root.glob('[0-9][0-9]--*/*.md')
@@ -168,7 +169,7 @@ PY
 )
 ```
 
-Final verdict report must include `COVERED_FEATURES/TOTAL_FEATURES`.
+Final verdict report must include `COVERED_SCENARIOS/TOTAL_SCENARIOS` and should call out any remaining feature-catalog entries that are automated-only, indirect, or intentionally operator-only.
 
 ### Destructive Scenario Rules
 
@@ -2827,6 +2828,20 @@ Path 1 exits 0, Path 2 exits non-zero with guidance text, Path 3 enters stateles
 > **Feature File:** [154](16--tooling-and-scripts/154-json-primary-deprecation-posture.md)
 > **Catalog:** [16--tooling-and-scripts/17-json-primary-deprecation-posture.md](../feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md)
 
+### 155 | Post-save quality review
+
+#### Description
+Confirm the POST-SAVE QUALITY REVIEW hook fires after JSON mode saves, surfaces field-propagation failures with severity-graded instructions, and guides AI remediation.
+
+#### Current Reality
+Prompt: `Run generate-context.js --json with varied payloads to exercise the post-save quality review hook. For each scenario confirm whether the review reports PASSED, SKIPPED, or specific issues at the correct severity. Return a pass/fail verdict for each scenario.`
+
+REVIEW block present in stdout; issue count and severity match the scenario; fix instructions are actionable; SKIPPED reported when running with --recovery
+
+#### Test Execution
+> **Feature File:** [155](13--memory-quality-and-indexing/155-post-save-quality-review.md)
+> **Catalog:** [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md)
+
 ---
 
 ## 9. PHASE SYSTEM FEATURES
@@ -2837,9 +2852,9 @@ Path 1 exits 0, Path 2 exits non-zero with guidance text, Path 3 enters stateles
 Run `recommend-level.sh --recommend-phases --json` on a high-complexity spec and verify scoring output.
 
 #### Current Reality
-Prompt: `Verify phase detection scoring produces valid 5-dimension output for a complex spec folder. Capture the evidence needed to prove JSON output contains phase_recommended (boolean), phase_score (number), suggested_phase_count (number), and 5 dimension scores; simple specs score low. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Verify phase detection scoring produces valid 4-dimension output for a complex spec folder. Capture the evidence needed to prove JSON output contains recommended_phases (boolean), phase_score (number), suggested_phase_count (number), and 4 dimension scores (LOC Factor 35%, File Count 20%, Risk Factors 25%, Complexity 20%); simple specs score low. Return a concise user-facing pass/fail verdict with the main reason.`
 
-JSON output contains `phase_recommended` (boolean), `phase_score` (number), `suggested_phase_count` (number), and 5 dimension scores; simple specs score low
+JSON output contains `recommended_phases` (boolean), `phase_score` (number), `suggested_phase_count` (number), and 4 dimension scores: LOC Factor (35%), File Count (20%), Risk Factors (25%), Complexity (20%); simple specs score low
 
 #### Test Execution
 > **Feature File:** [PHASE-001](16--tooling-and-scripts/001-phase-detection-scoring.md)
@@ -3025,7 +3040,7 @@ Minimum scenario family now required for M-007:
 
 Proof rule:
 - Treat automated M-007 parity as the runtime contract baseline.
-- Only claim “flawless across every CLI” when retained live artifacts exist for each supported CLI and each supported save mode covered by the current contract.
+- Only claim “flawless across every CLI” when the current verification run captures fresh live artifacts for each supported CLI and each supported save mode covered by the current contract.
 
 #### Test Execution
 > **Feature File:** [M-007](16--tooling-and-scripts/007-session-capturing-pipeline-quality.md)
@@ -3243,6 +3258,7 @@ This split playbook keeps automated coverage references in three places:
 | 152 | Features | No symlinks in lib/ tree | [152](16--tooling-and-scripts/152-no-symlinks-in-lib-tree.md) | [16--tooling-and-scripts/15-module-boundary-map.md](../feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md) |
 | 153 | Features | JSON mode hybrid enrichment | [153](16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md) | [16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md](../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
 | 154 | Features | JSON-primary deprecation posture | [154](16--tooling-and-scripts/154-json-primary-deprecation-posture.md) | [16--tooling-and-scripts/17-json-primary-deprecation-posture.md](../feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md) |
+| 155 | Features | Post-save quality review | [155](13--memory-quality-and-indexing/155-post-save-quality-review.md) | [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md) |
 | PHASE-001 | Phase System Features | Phase detection scoring | [PHASE-001](16--tooling-and-scripts/001-phase-detection-scoring.md) |  |
 | PHASE-002 | Phase System Features | Phase folder creation | [PHASE-002](16--tooling-and-scripts/002-phase-folder-creation.md) |  |
 | PHASE-003 | Phase System Features | Recursive phase validation | [PHASE-003](16--tooling-and-scripts/003-recursive-phase-validation.md) |  |

@@ -19,5 +19,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Gate 3 Enforcement - Preventing Spec Folder Bypass [030-gate3-enforcement/spec]",
+  "status": "COMPLETE - All 31 checklist items verified, 24 tests passed",
+  "importance_tier": "important",
+  "short_description": "Gate 3 Enforcement - Preventing Spec Folder Bypass"
 }

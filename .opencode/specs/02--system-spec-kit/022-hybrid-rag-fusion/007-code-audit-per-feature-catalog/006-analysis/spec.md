@@ -29,8 +29,8 @@ contextType: "general"
 | **Created** | 2026-03-10 |
 | **Branch** | `006-analysis` |
 | **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../005-lifecycle/spec.md |
-| **Next Phase** | ../007-evaluation/spec.md |
+| **Predecessor** | ../005-lifecycle/spec.md |
+| **Successor** | ../007-evaluation/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

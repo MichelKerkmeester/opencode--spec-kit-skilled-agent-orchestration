@@ -20,5 +20,9 @@
     "test-fixtures"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: Valid Evidence Fixture [valid-evidence/spec]",
+  "status": "In Progress",
+  "importance_tier": "important",
+  "short_description": "Spec: Valid Evidence Fixture"
 }

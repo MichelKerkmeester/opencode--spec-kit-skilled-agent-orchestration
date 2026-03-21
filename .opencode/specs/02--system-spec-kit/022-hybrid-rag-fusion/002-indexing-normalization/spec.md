@@ -65,6 +65,9 @@ The same workflow also shows tier inconsistencies when parsed metadata and docum
 | **Priority** | P0 |
 | **Status** | Completed |
 | **Created** | 2026-02-22 |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../001-hybrid-rag-fusion-epic/spec.md |
+| **Successor** | ../003-constitutional-learn-refactor/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -286,6 +289,16 @@ Make indexing deterministic by deduplicating canonical file paths before indexin
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
+
+---
+
+## Phase Navigation
+
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../001-hybrid-rag-fusion-epic/spec.md |
+| **Next Phase** | ../003-constitutional-learn-refactor/spec.md |
 
 ---
 

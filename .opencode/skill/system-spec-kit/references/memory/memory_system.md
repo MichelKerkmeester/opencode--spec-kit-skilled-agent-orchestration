@@ -103,7 +103,7 @@ Six-tier system for prioritizing memory relevance:
 
 > **Note:** MCP tool names use the format `spec_kit_memory_<tool_name>`. In documentation, shorthand names like `memory_search()` refer to the full `spec_kit_memory_memory_search()` tool.
 
-### Tool Reference (32 tools)
+### Tool Reference (33 tools)
 
 | Layer | Tool | Purpose | Example Use |
 |-------|------|---------|-------------|

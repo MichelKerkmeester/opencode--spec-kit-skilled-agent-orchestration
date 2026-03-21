@@ -34,7 +34,7 @@ contextType: "implementation"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Confirm Phase 016 is merged and test suite is green before starting any implementation work
+- [x] T001 Confirm the surrounding runtime semantics are already present and the shared test baselines are green before starting any implementation work
 - [x] T002 Read `workflow.ts` lines 2050–2100 to confirm Gate A structure and V8/V9 hard block positions
 - [x] T003 Read `validate-memory-quality.ts` to confirm V1-V11 rule definitions and failure return shape
 - [x] T004 Read `generate-context.ts` lines 195–220 to confirm CLI argument parsing and `runWorkflow()` call site
@@ -87,10 +87,10 @@ contextType: "implementation"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T050 Retain the broader scripts closure baseline from the parent pack and phase-016 continuation as inherited evidence for the shipped Phase 017 surface
-- [x] T051 Retain the broader MCP closure baseline from the parent pack and phase-016 continuation as inherited evidence for the shipped Phase 017 surface
+- [x] T050 Retain the broader scripts closure baseline from the parent pack and the later phase-016 documentation sweep as inherited evidence for the shipped Phase 014 surface
+- [x] T051 Retain the broader MCP closure baseline from the parent pack and the later phase-016 documentation sweep as inherited evidence for the shipped Phase 014 surface
 - [x] T052 Re-read the affected TypeScript seams and confirm the implementation still matches the intended contract
-- [x] T053 Rerun the targeted scripts lane that exercises the affected Phase 017 seams
+- [x] T053 Rerun the targeted scripts lane that exercises the affected Phase 014 seams
 - [x] T054 Confirm the `workflow-e2e.vitest.ts` failed-embedding regression now exercises the mocked `indexMemory()` failure path
 - [x] T055 Confirm `generate-context-cli-authority.vitest.ts` still covers `--stdin` / `--json` target-authority behavior
 - [x] T056 Confirm `quality-scorer-calibration.vitest.ts` and `contamination-filter.vitest.ts` still cover the Claude-only downgrade and non-Claude cap

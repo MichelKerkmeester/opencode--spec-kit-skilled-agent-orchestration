@@ -17,5 +17,9 @@
   "memorySequence": 1,
   "memoryNameHistory": [
     "13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-1.md"
-  ]
+  ],
+  "title": "Feature Specification: 001-baseline-and-safety-rails",
+  "status": "Complete",
+  "importance_tier": "critical",
+  "short_description": "Feature Specification: 001-baseline-and-safety-rails"
 }

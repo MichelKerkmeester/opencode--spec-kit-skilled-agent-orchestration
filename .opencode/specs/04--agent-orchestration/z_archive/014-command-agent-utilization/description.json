@@ -17,5 +17,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Command Agent Utilization Audit [014-command-agent-utilization/spec]",
+  "status": "Complete",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Command Agent Utilization Audit"
 }

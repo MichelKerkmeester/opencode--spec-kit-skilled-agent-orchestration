@@ -126,7 +126,7 @@ describe('shared-memory admin handlers', () => {
 
     const envelope = parseEnvelope(response);
     expect(response.isError).toBe(true);
-    expect(envelope.data.details.reason).toBe('shared_space_owner_required');
+    expect(envelope.data.details?.reason).toBe('shared_space_owner_required');
   });
 
   it('allows an owner to change membership', async () => {
@@ -176,7 +176,7 @@ describe('shared-memory admin handlers', () => {
 
     const envelope = parseEnvelope(response);
     expect(response.isError).toBe(true);
-    expect(envelope.data.details.reason).toBe('shared_space_owner_required');
+    expect(envelope.data.details?.reason).toBe('shared_space_owner_required');
   });
 
   it('rejects missing actor identity', async () => {
@@ -188,7 +188,7 @@ describe('shared-memory admin handlers', () => {
 
     const envelope = parseEnvelope(response);
     expect(response.isError).toBe(true);
-    expect(envelope.data.details.reason).toBe('actor_identity_required');
+    expect(envelope.data.details?.reason).toBe('actor_identity_required');
   });
 
   it('rejects ambiguous actor identity', async () => {
@@ -202,7 +202,7 @@ describe('shared-memory admin handlers', () => {
 
     const envelope = parseEnvelope(response);
     expect(response.isError).toBe(true);
-    expect(envelope.data.details.reason).toBe('actor_identity_ambiguous');
+    expect(envelope.data.details?.reason).toBe('actor_identity_ambiguous');
   });
 
   it('rejects tenant mismatch on membership mutation', async () => {
@@ -224,6 +224,6 @@ describe('shared-memory admin handlers', () => {
 
     const envelope = parseEnvelope(response);
     expect(response.isError).toBe(true);
-    expect(envelope.data.details.reason).toBe('shared_space_tenant_mismatch');
+    expect(envelope.data.details?.reason).toBe('shared_space_tenant_mismatch');
   });
 });

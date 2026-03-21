@@ -19,5 +19,9 @@
     "020-mcp-working-memory-hybrid-rag"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Phase Package Spec: Memory Quality (QP-0 through QP-4) [003-memory-quality-qp-0-4/spec]",
+  "status": "Complete",
+  "importance_tier": "important",
+  "short_description": "Phase Package Spec: Memory Quality (QP-0 through QP-4)"
 }

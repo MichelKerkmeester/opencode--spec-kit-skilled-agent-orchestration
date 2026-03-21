@@ -27,6 +27,9 @@ contextType: "implementation"
 | **Created** | 2026-03-15 |
 | **Branch** | `main` |
 | **Parent** | `022-hybrid-rag-fusion` (Phase 020) |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../015-rewrite-memory-mcp-readme/spec.md |
+| **Successor** | ../017-rewrite-system-speckit-readme/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -133,3 +136,13 @@ SPEC: 016-update-install-guide
 Level 1 — In Progress (2026-03-15)
 Target: Update (not rewrite) the install guide against current deps
 -->
+
+---
+
+## Phase Navigation
+
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../015-rewrite-memory-mcp-readme/spec.md |
+| **Next Phase** | ../017-rewrite-system-speckit-readme/spec.md |

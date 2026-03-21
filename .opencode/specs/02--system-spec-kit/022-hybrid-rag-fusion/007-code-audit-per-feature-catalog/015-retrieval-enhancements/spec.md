@@ -29,8 +29,8 @@ contextType: "general"
 | **Created** | 2026-03-10 |
 | **Branch** | `015-retrieval-enhancements` |
 | **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../014-pipeline-architecture/spec.md |
-| **Next Phase** | ../016-tooling-and-scripts/spec.md |
+| **Predecessor** | ../014-pipeline-architecture/spec.md |
+| **Successor** | ../016-tooling-and-scripts/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

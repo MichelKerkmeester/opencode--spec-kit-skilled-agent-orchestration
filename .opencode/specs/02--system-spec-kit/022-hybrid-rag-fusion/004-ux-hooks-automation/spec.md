@@ -32,6 +32,9 @@ contextType: "general"
 | **Status** | Implemented |
 | **Created** | 2026-03-05 |
 | **Branch** | `006-ux-hooks-automation` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../003-constitutional-learn-refactor/spec.md |
+| **Successor** | ../005-architecture-audit/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -218,3 +221,13 @@ CORE TEMPLATE (~80 lines)
 - No boilerplate sections
 - Add L2/L3 addendums for complexity
 -->
+
+---
+
+## Phase Navigation
+
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../003-constitutional-learn-refactor/spec.md |
+| **Next Phase** | ../005-architecture-audit/spec.md |

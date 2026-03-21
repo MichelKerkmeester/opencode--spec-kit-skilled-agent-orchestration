@@ -18,5 +18,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: Rename /memory Command to /memory:check [008-rename-memory-check/spec]",
+  "importance_tier": "important",
+  "short_description": "Spec: Rename `/memory` Command to `/memory:check`"
 }

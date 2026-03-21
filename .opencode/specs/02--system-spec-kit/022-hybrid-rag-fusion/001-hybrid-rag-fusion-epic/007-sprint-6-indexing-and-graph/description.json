@@ -17,5 +17,9 @@
     "001-hybrid-rag-fusion-epic"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Sprint 6 — Indexing and Graph",
+  "status": "Draft",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: Sprint 6 — Indexing and Graph"
 }

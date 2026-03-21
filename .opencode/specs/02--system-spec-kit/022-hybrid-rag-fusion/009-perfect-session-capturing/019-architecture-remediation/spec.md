@@ -41,8 +41,6 @@ Global architecture, bug fix, and alignment deep dive across the entire `009-per
 
 ## 1. METADATA
 
-<!-- ANCHOR:metadata -->
-
 | Field | Value |
 |-------|-------|
 | **Level** | 3 |
@@ -55,8 +53,6 @@ Global architecture, bug fix, and alignment deep dive across the entire `009-per
 | **Parent Plan** | ../plan.md |
 | **Predecessor** | `018-memory-save-quality-fixes` |
 | **Successor** | None |
-
-<!-- /ANCHOR:metadata -->
 
 ---
 
@@ -98,6 +94,24 @@ Produce a prioritized findings report that identifies every actionable bug, misa
 ## 4. REQUIREMENTS
 
 <!-- ANCHOR:requirements -->
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Complete Wave 1 audit coverage across the targeted subsystem | Ten Wave 1 workstreams complete and collectively cover core, extractors, lib, utils, memory, renderers, spec-folder, tests, metadata, and git-diff analysis |
+| REQ-002 | Verify the inherited findings inventory against current HEAD | Wave 3 OPUS-B1 classifies every prior finding as persist, fixed, superseded, or new |
+| REQ-003 | Produce a remediation priority matrix with explicit sprint assignments | `plan.md` captures S1-S8 sequencing with priority, effort, and risk context |
+| REQ-004 | Record the governing remediation decisions for downstream execution | `decision-record.md` contains accepted or proposed ADRs with alternatives, consequences, and rollback guidance |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-005 | Keep this phase analysis-only and avoid implementing source fixes here | Scope, tasks, and checklist remain documentation and synthesis focused |
+| REQ-006 | Preserve traceability from findings to sprints, ADRs, and checklist items | Maintainers can map each remediation area back to validated source findings or synthesis artifacts |
+| REQ-007 | Keep parent/child packet navigation aligned with `009-perfect-session-capturing` | Strict spec integrity checks resolve parent metadata and document references cleanly |
+| REQ-008 | Maintain Level 3 template compliance while retaining Wave 3 substance | Strict validation passes without section, anchor, header, or evidence warnings |
 
 ### Wave 1: Parallel Analysis (10 agents)
 
@@ -143,11 +157,12 @@ Each workstream produces findings in this format:
 
 Raw findings go to `scratch/`, synthesis goes to `plan.md`.
 
-### Success Criteria
-- All 197 unique findings verified (109 persist, 7 fixed, 53 new) [COMPLETE]
-- Priority matrix covers all non-LOW findings with sprint assignment across 8 sprints [COMPLETE]
-- Decision record has 8 ADRs with alternatives and rationale [COMPLETE]
-- All Level 3 skeleton files populated and validated [COMPLETE]
+- **SC-001**: **Given** the Wave 1 scratch outputs are complete, **When** Wave 3 verification runs, **Then** all inherited findings are classified as persist, fixed, superseded, or new.
+- **SC-002**: **Given** the verified findings inventory, **When** remediation planning completes, **Then** every non-LOW finding is assigned to Sprint S1-S8 or explicitly deferred.
+- **SC-003**: **Given** later remediation depends on architectural direction, **When** `decision-record.md` is reviewed, **Then** eight ADRs with status, alternatives, and rationale are present.
+- **SC-004**: **Given** the packet rename to `009-perfect-session-capturing`, **When** spec integrity checks run, **Then** parent links and packet references resolve cleanly.
+- **SC-005**: **Given** this phase is documentation-first, **When** strict validation runs, **Then** the Level 3 doc set passes without structural or evidence warnings.
+- **SC-006**: **Given** a maintainer starts Sprint S1-S8 work from this phase, **When** they read the plan, checklist, and ADR summary, **Then** they can trace each sprint back to validated findings.
 
 <!-- /ANCHOR:success-criteria -->
 
@@ -245,7 +260,7 @@ Raw findings go to `scratch/`, synthesis goes to `plan.md`.
 
 ---
 
-## 13. AI EXECUTION PROTOCOL
+### AI Execution Protocol
 
 ### Pre-Task Checklist
 

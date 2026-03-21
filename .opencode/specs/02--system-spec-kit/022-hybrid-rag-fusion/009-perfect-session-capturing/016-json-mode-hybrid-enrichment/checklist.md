@@ -44,6 +44,13 @@ contextType: "general"
 - [x] CHK-011 [P0] Build output compiles [Evidence: `npx tsc -b` generated the expected dist output for the scripts workspace.]
 - [x] CHK-012 [P1] File-backed JSON authority remains intact [Evidence: `workflow.ts` still returns early for `_source: 'file'`, keeping file-backed payloads on the structured path.]
 - [x] CHK-013 [P1] New fields preserve backward compatibility [Evidence: the shipped `toolCalls` and `exchanges` fields remain optional in the documented implementation.]
+- [x] CHK-060 [P0] RC5 fix: `detectContextType()` checks `decisionCount > 0` before `total === 0` early return [Evidence: `session-extractor.ts` line 120 — decision check moved above total check]
+- [x] CHK-061 [P0] RC5 fix: `detectSessionCharacteristics()` accepts and honors `explicitContextType` parameter [Evidence: `session-extractor.ts` — new `VALID_CONTEXT_TYPES` set validates and passes through explicit value]
+- [x] CHK-062 [P0] RC5 fix: `contextType`/`context_type` propagated through both fast-path and slow-path in `input-normalizer.ts` [Evidence: mirroring the `importanceTier` pattern at both paths]
+- [x] CHK-063 [P0] RC3 fix: Fast-path propagates `keyDecisions` into `_manualDecisions` AND creates decision-type observations [Evidence: `input-normalizer.ts` fast-path block now matches slow-path behavior]
+- [x] CHK-065 [P0] RC1 fix: `_JSON_SESSION_SUMMARY` added to `SessionData` and passed through from `collectSessionData()` [Evidence: `session-types.ts` and `collect-session-data.ts` threading]
+- [x] CHK-066 [P0] RC1 fix: `sessionData._JSON_SESSION_SUMMARY` is first candidate in `pickPreferredMemoryTask()` [Evidence: `workflow.ts` line 1844]
+- [x] CHK-070 [P1] TypeScript compilation passes cleanly after all changes [Evidence: `npx tsc --noEmit` and `npx tsc` both pass with 0 errors]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -55,6 +62,9 @@ contextType: "general"
 - [x] CHK-021 [P0] File-backed JSON stays on the authoritative structured path [Evidence: the implementation summary records that `_source: 'file'` does not enter stateless enrichment.]
 - [x] CHK-022 [P1] Historical hybrid-enrichment research is clearly marked as archival [Evidence: `research.md` now states it analyzed the non-shipped design and should not be read as the live phase behavior.]
 - [x] CHK-023 [P1] Wave 2 fixes cover counts, confidence, and outcomes behavior [Evidence: Wave 2 delivery explicitly covers confidence, counts, and truncated outcome handling.]
+- [x] CHK-064 [P0] RC2 fix: Manual trigger phrases merged into `preExtractedTriggers` before folder token dedup [Evidence: `workflow.ts` — `collectedData._manualTriggerPhrases` unshifted with dedup]
+- [x] CHK-068 [P0] Post-save review integrated at Step 10.5 in workflow [Evidence: `workflow.ts` — runs after file write, before indexing, skips for stateless mode]
+- [x] CHK-073 [P2] RC4 (`importance_tier = "normal"`) resolved by cascading fix from RC3 + RC5 [Evidence: no direct code change needed — decisions now propagate and `contextType` is honored]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -75,6 +85,9 @@ contextType: "general"
 - [x] CHK-040 [P1] Spec, plan, tasks, checklist, decision record, summary, and research note are synchronized [Evidence: the phase-016 pack now consistently describes the narrower shipped scope and archives the non-shipped design analysis explicitly.]
 - [x] CHK-041 [P1] Operator-facing JSON contract is documented [Evidence: the implementation summary and scope sections reference the updated `generate-context.ts` help text.]
 - [x] CHK-042 [P2] Parent/child navigation remains accurate [Evidence: `spec.md` metadata still points to the current parent, predecessor, and successor.]
+- [x] CHK-069 [P1] Post-save review instructions added to the 4 tracked instruction files present in this repo [Evidence: CLAUDE.md, AGENTS.md, GEMINI.md, and AGENTS_example_fs_enterprises.md now document the review step]
+- [x] CHK-071 [P1] Feature catalog updated (phase-016 entry plus new post-save quality review entry) [Evidence: both catalog entries created or updated]
+- [x] CHK-072 [P1] Manual testing playbook updated (phase-153 entry plus new post-save quality review entry) [Evidence: both playbook entries created or updated]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -89,34 +102,13 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:wave-3 -->
-## Wave 3: JSON Payload Field Propagation & Post-Save Review
-
-- [x] CHK-060 [P0] RC5 fix: `detectContextType()` checks `decisionCount > 0` before `total === 0` early return [Evidence: `session-extractor.ts` line 120 — decision check moved above total check]
-- [x] CHK-061 [P0] RC5 fix: `detectSessionCharacteristics()` accepts and honors `explicitContextType` parameter [Evidence: `session-extractor.ts` — new `VALID_CONTEXT_TYPES` set validates and passes through explicit value]
-- [x] CHK-062 [P0] RC5 fix: `contextType`/`context_type` propagated through both fast-path and slow-path in `input-normalizer.ts` [Evidence: mirroring the `importanceTier` pattern at both paths]
-- [x] CHK-063 [P0] RC3 fix: Fast-path propagates `keyDecisions` into `_manualDecisions` AND creates decision-type observations [Evidence: `input-normalizer.ts` fast-path block now matches slow-path behavior]
-- [x] CHK-064 [P0] RC2 fix: Manual trigger phrases merged into `preExtractedTriggers` before folder token dedup [Evidence: `workflow.ts` — `collectedData._manualTriggerPhrases` unshifted with dedup]
-- [x] CHK-065 [P0] RC1 fix: `_JSON_SESSION_SUMMARY` added to `SessionData` and passed through from `collectSessionData()` [Evidence: `session-types.ts` and `collect-session-data.ts` threading]
-- [x] CHK-066 [P0] RC1 fix: `sessionData._JSON_SESSION_SUMMARY` is first candidate in `pickPreferredMemoryTask()` [Evidence: `workflow.ts` line 1844]
-- [x] CHK-067 [P0] Post-save quality review module created with 6 checks (title, triggers, importance_tier, decision_count, context_type, description) [Evidence: `scripts/core/post-save-review.ts` — ~275 lines]
-- [x] CHK-068 [P0] Post-save review integrated at Step 10.5 in workflow [Evidence: `workflow.ts` — runs after file write, before indexing, skips for stateless mode]
-- [x] CHK-069 [P1] Post-save review instructions added to all 5 instruction files [Evidence: CLAUDE.md, AGENTS.md, GEMINI.md, AGENTS_example_fs_enterprises.md, Barter/coder/AGENTS]
-- [x] CHK-070 [P1] TypeScript compilation passes cleanly after all changes [Evidence: `npx tsc --noEmit` and `npx tsc` both pass with 0 errors]
-- [x] CHK-071 [P1] Feature catalog updated (phase-016 entry plus new post-save quality review entry) [Evidence: both catalog entries created/updated]
-- [x] CHK-072 [P1] Manual testing playbook updated (phase-153 entry plus new post-save quality review entry) [Evidence: both playbook entries created/updated]
-- [x] CHK-073 [P2] RC4 (importance_tier = "normal") resolved by cascading fix from RC3 + RC5 [Evidence: no direct code change needed — decisions now propagate and contextType is honored]
-<!-- /ANCHOR:wave-3 -->
-
----
-
 <!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 17 | 17/17 |
-| P1 Items | 12 | 12/12 |
+| P0 Items | 24 | 24/24 |
+| P1 Items | 15 | 15/15 |
 | P2 Items | 3 | 3/3 |
 
 **Verification Date**: 2026-03-21

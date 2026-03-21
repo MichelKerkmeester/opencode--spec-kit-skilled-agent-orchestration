@@ -35,6 +35,7 @@ import {
 } from '../lib/scoring/composite-scoring';
 import {
   analyzeKValueSensitivity,
+  analyzeKValueSensitivityBatch,
   kendallTau,
   mrr5,
   K_VALUES,
@@ -344,22 +345,22 @@ describe('Composite Score Normalization (T004)', () => {
     expect(normalizeCompositeScores([])).toEqual([]);
   });
 
-  it('equal scores normalize to 1.0', () => {
+  it('equal scores normalize to 0.0', () => {
     process.env.SPECKIT_SCORE_NORMALIZATION = 'true';
 
     const scores = [0.5, 0.5, 0.5];
     const normalized = normalizeCompositeScores(scores);
 
     for (const s of normalized) {
-      expect(s).toBe(1.0);
+      expect(s).toBe(0.0);
     }
   });
 
-  it('single score normalizes to 1.0', () => {
+  it('single score normalizes to 0.0', () => {
     process.env.SPECKIT_SCORE_NORMALIZATION = 'true';
 
     const normalized = normalizeCompositeScores([0.42]);
-    expect(normalized).toEqual([1.0]);
+    expect(normalized).toEqual([0.0]);
   });
 });
 
@@ -448,6 +449,34 @@ describe('K-Value Sensitivity Analysis (T004a)', () => {
       expect(analysis.results[k].avgScore).toBe(0);
     }
     expect(analysis.totalItems).toBe(0);
+  });
+
+  it('aggregates multi-query sensitivity per query instead of cross-query fusion', () => {
+    const queryOne: RankedList[] = [
+      makeList('vector', [1, 2]),
+      makeList('bm25', [1, 2]),
+    ];
+    const queryTwo: RankedList[] = [
+      makeList('vector', [3, 4]),
+      makeList('bm25', [4, 3]),
+    ];
+
+    const perQueryAverage = K_VALUES.reduce<Record<number, number>>((accumulator, k) => {
+      const first = analyzeKValueSensitivity(queryOne, 1);
+      const second = analyzeKValueSensitivity(queryTwo, 1);
+      accumulator[k] = (first.results[k].mrr5 + second.results[k].mrr5) / 2;
+      return accumulator;
+    }, {});
+    const aggregated = analyzeKValueSensitivityBatch([queryOne, queryTwo]);
+    const naive = analyzeKValueSensitivity([...queryOne, ...queryTwo], 2);
+
+    expect(aggregated.totalItems).toBe(4);
+    for (const k of K_VALUES) {
+      expect(aggregated.results[k].mrr5).toBeCloseTo(perQueryAverage[k], 10);
+    }
+
+    expect(aggregated.results[20].mrr5).not.toBeCloseTo(naive.results[20].mrr5, 10);
+    expect(aggregated.results[60].avgScore).not.toBeCloseTo(naive.results[60].avgScore, 10);
   });
 });
 

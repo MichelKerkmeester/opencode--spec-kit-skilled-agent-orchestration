@@ -13,5 +13,9 @@
     "022-hybrid-rag-fusion"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Rewrite Memory MCP README",
+  "status": "In Progress",
+  "importance_tier": "important",
+  "short_description": "Specification: 015-rewrite-memory-mcp-readme"
 }

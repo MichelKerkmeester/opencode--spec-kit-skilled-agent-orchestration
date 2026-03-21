@@ -22,5 +22,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Spec Kit & Memory System Post-Merge Refinement (Phase 5) [042-post-merge-refinement-5/spec]",
+  "status": "Impact if Blocked",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Spec Kit & Memory System Post-Merge Refinement (Phase 5)"
 }

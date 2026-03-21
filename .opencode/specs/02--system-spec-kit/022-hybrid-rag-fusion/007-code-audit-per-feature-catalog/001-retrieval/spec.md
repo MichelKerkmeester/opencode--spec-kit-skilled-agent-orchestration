@@ -22,8 +22,8 @@ contextType: "general"
 | **Created** | 2026-03-10 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
-| **Previous Phase** | N/A |
-| **Next Phase** | ../002-mutation/spec.md |
+| **Predecessor** | None |
+| **Successor** | ../002-mutation/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

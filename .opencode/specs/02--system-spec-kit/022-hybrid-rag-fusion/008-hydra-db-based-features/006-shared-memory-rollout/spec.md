@@ -37,10 +37,10 @@ Phase 6 is the final rollout phase for the Hydra roadmap. It introduces shared-m
 | **Created** | 2026-03-13 |
 | **Updated** | 2026-03-13 |
 | **Branch** | `022-hybrid-rag-fusion` |
-| **Parent Spec** | `../spec.md` |
+| **Parent Spec** | ../spec.md |
 | **Parent Plan** | `../plan.md` |
 | **Phase** | 6 of 6 |
-| **Predecessor** | `005-hierarchical-scope-governance` |
+| **Predecessor** | ../005-hierarchical-scope-governance/spec.md |
 | **Successor** | None |
 | **Handoff Criteria** | Shared spaces, membership policy, conflict handling, staged rollout, and kill switches all verified |
 

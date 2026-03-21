@@ -17,5 +17,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: Spec Kit Bug Remediation [080-speckit-bug-remediation/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Spec: Spec Kit Bug Remediation"
 }

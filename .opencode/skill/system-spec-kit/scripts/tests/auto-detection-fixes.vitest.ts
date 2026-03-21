@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { buildSessionActivitySignal } from '../extractors/session-activity-signal';
+import { buildSessionActivitySignal } from '../lib/session-activity-signal';
 import { extractDecisions } from '../extractors/decision-extractor';
 import { extractBlockers } from '../extractors/session-extractor';
 import { TEST_HELPERS } from '../spec-folder/folder-detector';

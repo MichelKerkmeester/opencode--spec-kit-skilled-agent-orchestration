@@ -231,6 +231,30 @@ Closed graph-signal-activation backlog to verified completion: fixed causal-edge
 **Details:** graph signal activation closure | causal edges rollback | non-finite strength guard | playbook sk-doc validation | feature catalog F-10 F-11 alignment | spec checklist evidence reconciliation
 <!-- /ANCHOR:implementation-closed-graphsignalactivation-backlog-verified-af44c515 -->
 
+<!-- ANCHOR:implementation-rejected-nonfinite-causal-edge-f0b9f5ae -->
+### IMPLEMENTATION: Rejected non-finite causal edge strengths before writes
+
+insertEdge and updateEdge now reject NaN/Infinity strengths, preventing invalid values from entering causal graph storage.
+
+**Details:** Added clampStrength + finite guard path | Rejected non-finite writes with explicit warning | Covered by updated causal-edges tests
+<!-- /ANCHOR:implementation-rejected-nonfinite-causal-edge-f0b9f5ae -->
+
+<!-- ANCHOR:implementation-propagated-weighthistory-persistence-failures-1192bc8f -->
+### IMPLEMENTATION: Propagated weight-history persistence failures
+
+logWeightChange no longer swallows write errors, so transactional callers can rollback deterministically when weight_history writes fail.
+
+**Details:** Rollback behavior verified for update and insert-upsert paths | Regression tests drop weight_history table and assert rollback
+<!-- /ANCHOR:implementation-propagated-weighthistory-persistence-failures-1192bc8f -->
+
+<!-- ANCHOR:implementation-closure-verification-stack-passed-e051b617 -->
+### VERIFICATION: Closure verification stack passed
+
+Ran TypeScript, targeted Vitest, alignment drift, spec validation, and sk-doc validation for playbook/feature docs/READMEs.
+
+**Details:** Vitest: 6 files / 185 tests passed | TypeScript: npx tsc --noEmit passed | Alignment drift: 0 findings | Spec validation: 0 warnings/errors | sk-doc validation: all targeted docs valid
+<!-- /ANCHOR:implementation-closure-verification-stack-passed-e051b617 -->
+
 <!-- /ANCHOR:detailed-changes -->
 
 ---

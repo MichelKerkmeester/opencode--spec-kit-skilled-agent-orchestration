@@ -26,7 +26,7 @@ contextType: "decision"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Complete |
+| **Status** | Partially Reverted |
 | **Created** | 2026-02-18 |
 <!-- /ANCHOR:metadata -->
 
@@ -76,6 +76,8 @@ Upgrade all agent model assignments to `claude-sonnet-4-6` as the standard fleet
 | `.claude/agents/context.md` | Modify | `haiku` → `sonnet` |
 | `.claude/agents/handover.md` | Modify | `haiku` → `sonnet` |
 | `.claude/agents/review.md` | Modify | `opus` → `sonnet` |
+
+> **Note (2026-03-21):** The `.opencode/agent/copilot/` directory no longer exists — removed after implementation. The seven files listed above under `.opencode/agent/copilot/` are therefore no longer present in the repository. Status updated to "Partially Reverted".
 <!-- /ANCHOR:scope -->
 
 ---

@@ -17,5 +17,9 @@
   "memorySequence": 1,
   "memoryNameHistory": [
     "14-03-26_10-42__closed-open-p2-checklist-items-and-saved-closure.md"
-  ]
+  ],
+  "title": "Feature Specification: retrieval-enhancements [template:level_2/spec.md]",
+  "status": "Complete",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: retrieval-enhancements"
 }

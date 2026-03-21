@@ -25,6 +25,7 @@ contextType: "implementation"
 | **Spec Folder** | `04--agent-orchestration/020-agent-sonnet-upgrade` |
 | **Completed** | 2026-02-18 |
 | **Level** | 2 |
+| **Status** | Partially Reverted |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -83,6 +84,7 @@ All agent model fields across the Copilot and Claude Code agent systems were upg
 
 - The `sonnet` alias for Claude Code agents resolves to the current latest sonnet at runtime; if Anthropic releases a `sonnet-4.7` in future, these agents will remain on `sonnet-4-6` only if the alias is updated or the field explicitly set. This is a future maintenance concern, not a defect.
 - No automated test confirms that the GitHub Copilot platform resolves `github-copilot/claude-sonnet-4-6` correctly — this was verified against documentation only.
+- **Partial revert (2026-03-21):** The `.opencode/agent/copilot/` directory no longer exists — removed after implementation. The seven Copilot agent upgrades (context, handover, review, speckit, write, research, debug) are therefore no longer present in the repository. Only the three `.claude/agents/` changes remain in effect.
 <!-- /ANCHOR:limitations -->
 
 ---

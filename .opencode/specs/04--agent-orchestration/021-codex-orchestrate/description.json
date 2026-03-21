@@ -17,5 +17,9 @@
     "04--agent-orchestration"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: ChatGPT Agent Suite Codex Optimization [021-codex-orchestrate/spec]",
+  "status": "Complete",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: ChatGPT Agent Suite Codex Optimization"
 }

@@ -18,5 +18,8 @@
     "009-perfect-session-capturing"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Runtime Contract and Indexability",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: Runtime Contract And Indexability"
 }

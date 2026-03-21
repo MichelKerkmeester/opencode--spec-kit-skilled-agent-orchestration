@@ -1,6 +1,6 @@
 ---
 title: "Architecture Audit"
-description: "Now I have full context on both files. Let me implement all three fixes. Fix 1 : Lock freshness check in collectActiveTaskSessionIds() — line 163-169"
+description: "Fixed memory save wrong-session selection bug: locked freshness check in collectActiveTaskSessionIds(), hardened extractQualityScore frontmatter scope, and escaped backslash in escapeLikePattern."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/005 architecture audit"
   - "and missing"
@@ -106,11 +106,9 @@ spec_folder_health: {"pass":true,"score":0.75,"errors":0,"warnings":5}
 
 **Phase:** RESEARCH
 
-**Recent:** Now I have full context on both files. Let me implement all three fixes. **Fix, Read extractors/claude-code-capture.ts, Read extractors/quality-scorer.ts
+**Recent:** Implemented three fixes: lock freshness check in collectActiveTaskSessionIds(), harden extractQualityScore frontmatter scope, escape backslash in escapeLikePattern.
 
-**Summary:** Now I have full context on both files. Let me implement all three fixes.
-
-**Fix 1**: Lock freshness check in `collectActiveTaskSessionIds()` — line 163-169
+**Summary:** Applied Phase 15 quality fixes to scripts/extractors (quality-scorer.ts) and scripts/memory (generate-context.js) to resolve wrong-session selection bug and quality extraction issues.
 
 ### Pending Work
 
@@ -137,7 +135,7 @@ Next: Continue implementation
 
 - Check: plan.md, tasks.md, checklist.md
 
-- Last: Now I have full context on both files. Let me implement all three fixes. **Fix
+- Last: Implemented three quality fixes in extractors and memory pipeline scripts
 
 <!-- /ANCHOR:continue-session -->
 
@@ -186,7 +184,7 @@ Next: Continue implementation
 
 **What Was Built**:
 
-- **Now I have full context on both files. Let me implement all three fixes. **Fix** - Now I have full context on both files.
+- **Phase 15 quality fixes: collectActiveTaskSessionIds, extractQualityScore, escapeLikePattern** - Applied three targeted fixes to quality-scorer.ts and generate-context.js.
 
 **Key Files and Their Roles**:
 
@@ -223,14 +221,12 @@ Next: Continue implementation
 
 ## 2. OVERVIEW
 
-Now I have full context on both files. Let me implement all three fixes.
-
-**Fix 1**: Lock freshness check in `collectActiveTaskSessionIds()` — line 163-169
+Applied three Phase 15 quality fixes to the architecture audit follow-up work: (1) locked freshness check in `collectActiveTaskSessionIds()` to prevent wrong-session selection, (2) hardened `extractQualityScore` to be frontmatter-scoped only, (3) escaped backslash in `escapeLikePattern` to prevent LIKE semantics corruption.
 
 **Key Outcomes**:
-- Now I have full context on both files. Let me implement all three fixes. **Fix
-- Read extractors/claude-code-capture.ts
-- Read extractors/quality-scorer.ts
+- Lock freshness check in collectActiveTaskSessionIds() applied (line 163-169)
+- extractQualityScore hardened to frontmatter scope only
+- escapeLikePattern backslash escape fix applied
 
 **Key Files:**
 
@@ -249,9 +245,9 @@ Now I have full context on both files. Let me implement all three fixes.
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-now-full-context-both-a65c4ba4 -->
-### FEATURE: Now I have full context on both files. Let me implement all three fixes. **Fix
+### FEATURE: Phase 15 quality fixes applied to scripts/extractors and memory pipeline
 
-Now I have full context on both files. Let me implement all three fixes. **Fix 1**: Lock freshness check in `collectActiveTaskSessionIds()` — line 163-169
+Applied three quality fixes: (1) lock freshness check in `collectActiveTaskSessionIds()` — line 163-169 to prevent wrong-session selection, (2) harden `extractQualityScore` to be frontmatter-scoped, (3) escape backslash in `escapeLikePattern` to prevent LIKE semantics corruption.
 
 <!-- /ANCHOR:implementation-now-full-context-both-a65c4ba4 -->
 

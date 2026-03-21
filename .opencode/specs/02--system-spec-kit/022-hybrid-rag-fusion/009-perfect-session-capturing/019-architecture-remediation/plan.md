@@ -52,7 +52,7 @@ Wave 3 synthesis is complete. All 197 unique findings have been verified, sprint
 
 ---
 
-## 1.5. TECHNICAL CONTEXT
+### Technical Context
 
 This plan synthesizes findings across the `009-perfect-session-capturing` subsystem rather than implementing code changes directly. The main technical inputs are the Wave 1 and Wave 3 scratch artifacts, the current parent phase tree, and the live TypeScript/runtime surfaces under `.opencode/skill/system-spec-kit/scripts/`.
 
@@ -80,8 +80,7 @@ Key constraints:
 
 ---
 
-<!-- ANCHOR:wave3-synthesis -->
-## 2.5. WAVE 3 SYNTHESIS
+### Wave 3 Synthesis
 
 Wave 3 (5 synthesis agents, OPUS-B1 through OPUS-B5) completed on 2026-03-21. Key results:
 
@@ -143,11 +142,9 @@ ADR-005 (Metadata)         ──independent
 ADR-007 (JSON Flow)        ──depends──> ADR-002 (narrowed nextSteps type)
 ADR-008 (Dead Code)        ──depends──> ADR-004 (stale dist/ deletion)
 ```
-<!-- /ANCHOR:wave3-synthesis -->
-
 ---
 
-## AI Execution Protocol
+### AI Execution Protocol
 
 ### Pre-Task Checklist
 
@@ -224,6 +221,10 @@ ADR-008 (Dead Code)        ──depends──> ADR-004 (stale dist/ deletion)
 **Total estimated effort:** 45-65 hours
 **Net LOC change:** +1,200 / -2,800 (net -1,600 lines)
 
+### Phase 1: Stabilize the Baseline
+
+This phase removes build drift and data-loss risk before deeper structural remediation begins.
+
 ### SPRINT S1: Critical/Blocking Fixes
 
 **22 findings. Priority: CRITICAL. Risk: HIGH.**
@@ -247,6 +248,8 @@ Fix race conditions in concurrent save paths, data loss from non-atomic post-com
 
 Key issues: `atomicSaveMemory()` deterministic pending path causes write collisions; post-commit file rewrites use plain `writeFile()` exposing crash window; V-rule bridge swallows load errors and silently disables quality gates.
 
+### Phase 2: Restore Architecture and Metadata Integrity
+
 ### SPRINT S3: Type System Cleanup
 
 **24 findings. Priority: HIGH. Risk: MEDIUM.**
@@ -263,6 +266,8 @@ Four circular dependency cycles via `../core` barrel; `utils/` imports from `lib
 
 **30 findings. Priority: MEDIUM. Risk: LOW.**
 15 of 20 phases missing `status` in description.json; phase number labels in 011-014 don't match folder IDs; `019-architecture-remediation` absent from root `descriptions.json`; parent checklist count wrong (claims 36, has 39). See ADR-005.
+
+### Phase 3: Close Coverage and Hardening Gaps
 
 ### SPRINT S6: Dead Code Deletion & Consolidation
 
@@ -333,6 +338,18 @@ All raw findings are in `scratch/`:
 - `scratch/opus-4-git-diff.md` — Git diff analysis (26 findings)
 - `scratch/opus-5-type-system.md` — Type system verification (20 findings)
 <!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:milestones -->
+## L3: MILESTONES
+
+| Milestone | Description | Success Criteria | Target |
+|-----------|-------------|------------------|--------|
+| M1 | Wave 3 audit pack finalized | Plan, checklist, and decision record are strict-validator clean | Phase 019 completion |
+| M2 | Baseline remediation stabilized | Sprint S1 and S2 remove stale-artifact and save-pipeline blockers | Sprint S2 |
+| M3 | Architecture remediation ready for closure | Sprint S3 through S8 have validated execution and verification guidance | Sprint S8 |
+<!-- /ANCHOR:milestones -->
 
 ---
 

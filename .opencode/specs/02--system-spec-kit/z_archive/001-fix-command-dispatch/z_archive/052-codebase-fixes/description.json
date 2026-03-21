@@ -19,5 +19,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: Codebase Fixes - Embedding Dimension & Performance [052-codebase-fixes/spec]",
+  "importance_tier": "important",
+  "short_description": "Spec: Codebase Fixes - Embedding Dimension & Performance"
 }

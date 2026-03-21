@@ -12,12 +12,13 @@
 // - Exclusive Contribution Rate metric
 //
 // CRITICAL: Shadow scoring must NEVER affect production search results.
-// Every public function is wrapped in try-catch. The shadow write path
-// (runShadowScoring, logShadowComparison) was permanently disabled in the rollout.
+// Every public function is wrapped in try-catch. The legacy compatibility flag
+// SPECKIT_SHADOW_SCORING is retained for tests/docs, but the write path remains disabled.
 import { initEvalDb, getEvalDb } from './eval-db';
 
 // Feature catalog: Shadow scoring and channel attribution
 
+/* --- 1. ENV VAR GATE --- */
 
 /* --- 2. TYPES --- */
 
@@ -238,29 +239,32 @@ function computeRankCorrelation(
 /**
  * Run an alternative scoring algorithm in shadow mode alongside production results.
  *
- * @deprecated Shadow scoring was permanently disabled in the rollout. This function
- * always returns null. Retained for interface compatibility.
+ * Shadow scoring runtime is retired. The SPECKIT_SHADOW_SCORING flag is retained
+ * for compatibility only, so this returns null without running the shadow function.
+ *
+ * CRITICAL: Shadow scoring must NEVER affect production search results.
  *
  * @param query - The search query.
  * @param productionResults - The production scoring results (will NOT be modified).
  * @param shadowConfig - Configuration including the shadow scoring function.
- * @returns Always null (shadow scoring disabled).
+ * @returns ShadowComparison when enabled and successful, null when disabled or on error.
  */
 export async function runShadowScoring(
-  _query: string,
-  _productionResults: ScoredResult[],
-  _shadowConfig: ShadowConfig,
+  query: string,
+  productionResults: ScoredResult[],
+  shadowConfig: ShadowConfig,
 ): Promise<ShadowComparison | null> {
-  // Shadow scoring eval complete  — permanently disabled.
+  void query;
+  void productionResults;
+  void shadowConfig;
   return null;
 }
 
 /**
  * Compute comparison metrics between production and shadow results.
  *
- * @deprecated Shadow scoring was permanently disabled in the rollout. This
- * comparison function still works but has no production callers. Retained
- * for interface compatibility. Use channel-attribution.ts instead.
+ * This comparison function is always available (not gated by SPECKIT_SHADOW_SCORING)
+ * since it is a pure computation with no side effects.
  *
  * @param query - The original search query.
  * @param production - Production scored results.
@@ -340,24 +344,22 @@ export function compareShadowResults(
 /**
  * Persist a shadow comparison to the eval database.
  *
- * @deprecated Shadow scoring write path was permanently disabled in the rollout.
- * This function always returns false. Retained for interface compatibility.
+ * Shadow scoring runtime is retired. The SPECKIT_SHADOW_SCORING flag is retained
+ * for compatibility only, so this returns false immediately without writing.
  *
  * @param comparison - The ShadowComparison to persist.
- * @returns Always false (logging disabled).
+ * @returns true if persisted, false if disabled or on error.
  */
-export function logShadowComparison(_comparison: ShadowComparison): boolean {
-  // Shadow scoring eval complete  — permanently disabled.
+export function logShadowComparison(comparison: ShadowComparison): boolean {
+  void comparison;
   return false;
 }
 
 /**
  * Retrieve aggregated shadow scoring statistics over an optional time range.
  *
- * @deprecated Shadow scoring write path (logShadowComparison) was permanently
- * disabled in the rollout. The eval_shadow_comparisons table is always empty,
- * so this function always returns the zero-case object. Retained for interface
- * compatibility. Use channel-attribution.ts for scoring observability instead.
+ * The retired SPECKIT_SHADOW_SCORING flag no longer enables write paths, so the
+ * zero-case object is returned unless historical rows already exist in the table.
  *
  * @param timeRange - Optional ISO timestamp bounds. Omit for all data.
  * @returns ShadowStats with aggregated metrics, or null on error.

@@ -17,5 +17,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "MCP Embedding Failure Investigation [086-mcp-embedding-failure/spec]",
+  "importance_tier": "important",
+  "short_description": "MCP Embedding Failure Investigation"
 }

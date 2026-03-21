@@ -18,5 +18,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Notification System - Requirements & User Stories [007-notification-system/spec]",
+  "status": "Impact if Blocked",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Notification System - Requirements & User Stories"
 }

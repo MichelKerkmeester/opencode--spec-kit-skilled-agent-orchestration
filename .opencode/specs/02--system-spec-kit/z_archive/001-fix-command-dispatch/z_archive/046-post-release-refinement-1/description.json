@@ -18,5 +18,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Post-Release Refinement 1: Infrastructure Bug Fixes [046-post-release-refinement-1/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Post-Release Refinement 1: Infrastructure Bug Fixes"
 }

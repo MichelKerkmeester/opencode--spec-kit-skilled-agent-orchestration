@@ -16,7 +16,7 @@ description: "Create a /create:prompt command wrapping sk-prompt-improver skill"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-01 |
 <!-- /ANCHOR:metadata -->
 

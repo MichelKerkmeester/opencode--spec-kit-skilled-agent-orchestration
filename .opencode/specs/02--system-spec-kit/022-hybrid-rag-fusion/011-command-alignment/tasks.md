@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Command Alignment"
-description: "Executable task breakdown for aligning the memory command docs with the current 32-tool MCP schema surface."
+description: "Documentation reconciliation tasks for updating the 011 spec pack to the live 33-tool, 6-command memory-command surface."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Tasks: 011-command-alignment
@@ -9,378 +9,175 @@ description: "Executable task breakdown for aligning the memory command docs wit
 
 ---
 
-<!-- ANCHOR:task-summary -->
-## TASK SUMMARY
+<!-- ANCHOR:notation -->
+## Task Notation
 
-| Metric | Value |
-|--------|-------|
-| Total Tasks | 28 |
-| Phase 0 (Schema Sync) | 3 tasks (T00-T02) |
-| Phase 1 (Update Existing) | 8 tasks (T03-T10) |
-| Phase 2 (New Commands) | 6 tasks (T11-T16) |
-| Phase 3 (README Update) | 2 tasks (T17-T18) |
-| Phase 4 (Verification) | 5 tasks (T19-T23) |
-| Phase 5 (Context/Analyze Merge) | 4 tasks (T24-T27) |
-| Estimated LOC | ~900 |
-| Parallelizable | Phase 1 and Phase 2 are mostly parallel after Phase 0 |
-<!-- /ANCHOR:task-summary -->
+| Prefix | Meaning |
+|--------|---------|
+| `[x]` | Completed |
+| `[ ]` | Pending |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
+
+**Task Format**: `T##: Description`
+<!-- /ANCHOR:notation -->
 
 ---
 
-<!-- ANCHOR:phase-0 -->
-## PHASE 0: SCHEMA SYNC
+### Task Summary
 
-### T00: Recount live tool inventory
-- **Priority:** P0
-- **Files:** `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`
-- **Action:** Count `TOOL_DEFINITIONS` and record the live total as 32 in the implementation notes and verification outputs.
-- **Acceptance:** The implementation pass uses 32 as the only valid tool count and removes any stale older count references.
-- **Covers:** CA-001
-- [x] Done
-
-### T01: Build command-facing parameter baseline
-- **Priority:** P0
-- **Files:** `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`, `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts`
-- **Action:** Compare tool properties against `ALLOWED_PARAMETERS` to create the parameter and alias baseline used for command-doc updates.
-- **Acceptance:** A current list exists for every tool showing the parameters and aliases that the command docs must cover.
-- **Covers:** CA-002
-- [x] Done
-
-### T02: Generate pre-change coverage table
-- **Priority:** P0
-- **Files:** `.opencode/command/memory/*.md`, `.opencode/command/memory/README.txt`
-- **Action:** Generate a tool-to-command coverage table for the current docs to confirm which tools are uncovered and which are partial.
-- **Acceptance:** The implementation pass starts from a generated 32-row coverage baseline with 16 uncovered tools identified.
-- **Covers:** CA-001, CA-014
-- [x] Done
-<!-- /ANCHOR:phase-0 -->
+| Metric | Value |
+|--------|-------|
+| Total Tasks | 10 |
+| Phase 1 (Setup) | 3 tasks (T00-T02) |
+| Phase 2 (Implementation) | 4 tasks (T03-T06) |
+| Phase 3 (Verification) | 3 tasks (T07-T09) |
+| Estimated LOC | ~250 |
+| Parallelizable | Phase 1 checks can run in parallel; rewrites depend on Phase 1 |
 
 ---
 
 <!-- ANCHOR:phase-1 -->
-## PHASE 1: UPDATE EXISTING COMMANDS
+## Phase 1: Setup
 
-### T03: Update `context.md` for `memory_context`
-- **Priority:** P1
-- **File:** `.opencode/command/memory/context.md`
-- **Action:** Add missing `memory_context` parameters to the primary tool signature and workflow sections.
-- **Parameters to document:**
-  - `includeTrace`
-  - `tokenUsage`
-- **Acceptance:** Both parameters appear in the main tool signature and in workflow guidance that explains when they matter.
-- **Covers:** CA-008
-- [x] Done
-
-### T04: Update `context.md` for advanced retrieval and trigger cognition
-- **Priority:** P1
-- **File:** `.opencode/command/memory/context.md`
-- **Action:** Expand retrieval docs to cover the current `memory_search` and `memory_match_triggers` surface.
-- **Parameters and compatibility items to document:**
-  - `concepts`
-  - `tenantId`, `userId`, `agentId`, `sharedSpaceId`
-  - `enableSessionBoost`, `enableCausalBoost`
-  - `min_quality_score`
-  - `minQualityScore` as a deprecated alias of `min_quality_score`
-  - `bypassCache`, `rerank`, `applyLengthPenalty`, `applyStateLimits`, `minState`
-  - `autoDetectIntent`, `trackAccess`, `includeArchived`, `includeContiguity`, `includeConstitutional`, `includeTrace`
-  - `session_id`, `turnNumber`, `include_cognitive`
-- **Acceptance:** `context.md` fully documents the advanced retrieval surface, including the deprecated alias and trigger-cognition parameters.
-- **Covers:** CA-002, CA-008
-- [x] Done
-
-### T05: Update `save.md` for governance/provenance/retention
-- **Priority:** P1
-- **File:** `.opencode/command/memory/save.md`
-- **Action:** Add the current governance, provenance, and retention parameter docs to the save command.
-- **Parameters to document:**
-  - `tenantId`, `userId`, `agentId`, `sessionId`, `sharedSpaceId`
-  - `provenanceSource`, `provenanceActor`, `governedAt`
-  - `retentionPolicy`, `deleteAfter`
-- **Acceptance:** `save.md` contains a dedicated section for these parameters and explains that they are rollout-dependent advanced behavior.
-- **Covers:** CA-002, CA-009
-- [x] Done
-
-### T06: Update `save.md` routing and behavioral notes
-- **Priority:** P1
-- **File:** `.opencode/command/memory/save.md`
-- **Action:** Add explicit `/memory:manage ingest` routing for async bulk ingestion and retain only behavior notes that still change the command contract in the current repo.
-- **Acceptance:** `save.md` clearly distinguishes synchronous save/indexing from async ingest workflows and references `/memory:manage ingest` in the correct sections.
-- **Covers:** CA-009, CA-015
-- [x] Done
-
-### T07: Update `manage.md` for numbering and checkpoint safety
+### T00: Recount live tool inventory
 - **Priority:** P0
-- **File:** `.opencode/command/memory/manage.md`
-- **Action:** Fix the `## 189. RELATED COMMANDS` numbering error and document `confirmName` as required for checkpoint deletion.
-- **Acceptance:** The section numbering is corrected and `checkpoint_delete` explicitly requires `confirmName` to exactly match `name`.
-- **Covers:** CA-003, CA-004
+- **Files:** `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`
+- **Action:** Count `TOOL_DEFINITIONS` and confirm the live total is 33.
+- **Acceptance:** The reconciled 011 pack uses 33 as the only valid tool count.
+- **Covers:** CA-001
 - [x] Done
 
-### T08: Update `manage.md` for current mutation/discovery parameters
-- **Priority:** P1
-- **File:** `.opencode/command/memory/manage.md`
-- **Action:** Add all currently missing stats, health, list, update, validate, and bulk-delete docs.
-- **Parameters to document:**
-  - `memory_stats`: `folderRanking`, `excludePatterns`, `includeScores`, `includeArchived`, `limit`
-  - `memory_health`: `reportMode`, `limit`, `specFolder`, `autoRepair`, `confirmed`
-  - `memory_list`: `includeChunks`
-  - `memory_update`: `allowPartialUpdate`
-  - `memory_validate`: `queryId`, `queryTerms`, `resultRank`, `totalResultsShown`, `searchMode`, `intent`, `sessionId`, `notes`
-  - `memory_bulk_delete`: `skipCheckpoint`
-- **Acceptance:** `manage.md` documents every currently missing parameter listed above and explains dual-mode delete behavior where relevant.
-- **Covers:** CA-002, CA-011
+### T01: Verify live memory command surface
+- **Priority:** P0
+- **Files:** `.opencode/command/memory/`
+- **Action:** Confirm the live suite contains `analyze`, `continue`, `learn`, `manage`, `save`, and `shared`, and confirm that no standalone `context` command file exists.
+- **Acceptance:** The reconciled 011 pack uses a 6-command model and removes the standalone `context` command assumption.
+- **Covers:** CA-002, CA-003
 - [x] Done
 
-### T09: Add `/memory:analyze history <specFolder>`
-- **Priority:** P1
-- **File:** `.opencode/command/memory/analyze.md`
-- **Action:** Add a dedicated history section to analyze.md and lock the subcommand name to `history` (co-located with other epistemic measurement tools).
-- **Tool to document:** `spec_kit_memory_memory_get_learning_history`
-- **Parameters to document:** `specFolder`, `sessionId`, `limit`, `onlyComplete`, `includeSummary`
-- **Acceptance:** `analyze.md` uses `/memory:analyze history <specFolder>` consistently and does not use any legacy hyphenated history name.
-- **Covers:** CA-010
-- [x] Done
-
-### T10: Refresh `learn.md` and `continue.md`
-- **Priority:** P2
-- **Files:** `.opencode/command/memory/learn.md`, `.opencode/command/memory/continue.md`
-- **Action:** Verify current schema references in both files and add the history workflow reference where needed.
-- **Acceptance:** Both files remain aligned with current tool signatures, and `continue.md` references `/memory:analyze history <specFolder>` for richer recovery context.
-- **Covers:** CA-002
+### T02: Verify retrieval ownership
+- **Priority:** P0
+- **Files:** `.opencode/command/memory/analyze.md`, `.opencode/command/memory/README.txt`
+- **Action:** Confirm `/memory:analyze` is the documented home for retrieval, `memory_quick_search`, analysis/eval tooling, and learning history.
+- **Acceptance:** The reconciled 011 pack assigns retrieval ownership to `/memory:analyze`.
+- **Covers:** CA-004, CA-006
 - [x] Done
 <!-- /ANCHOR:phase-1 -->
 
 ---
 
 <!-- ANCHOR:phase-2 -->
-## PHASE 2: CREATE NEW COMMANDS
+## Phase 2: Implementation
 
-### T11: Create `analyze.md` structure and routing
-- **Priority:** P1
-- **File:** `.opencode/command/memory/analyze.md`
-- **Action:** Create the new command with frontmatter, mandatory first action, contract, routing, enforcement, and related-command sections.
-- **Subcommands to reserve:**
-  - `preflight`
-  - `postflight`
-  - `causal`
-  - `link`
-  - `unlink`
-  - `causal-stats`
-  - `ablation`
-  - `dashboard`
-- **Acceptance:** `analyze.md` exists with the complete routing skeleton and the correct tool ownership.
-- **Covers:** CA-005
+### T03: Rewrite `spec.md` counts and structure
+- **Priority:** P0
+- **File:** `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment/spec.md`
+- **Action:** Replace stale 32-tool, 7-command, and standalone `context` command planning language with live repo truth.
+- **Acceptance:** `spec.md` describes a 33-tool surface, a 6-command suite, and retrieval merged into `.opencode/command/memory/analyze.md`.
+- **Covers:** CA-001, CA-002, CA-003, CA-004
 - [x] Done
 
-### T12: Implement `analyze.md` tool workflows
+### T04: Rewrite `spec.md` gap analysis around what is still real
 - **Priority:** P1
-- **File:** `.opencode/command/memory/analyze.md`
-- **Action:** Document all L6 analysis/eval tool signatures, workflows, dashboards, and error handling.
-- **Tools to document:**
-  - `task_preflight`
-  - `task_postflight`
-  - `memory_drift_why`
-  - `memory_causal_link`
-  - `memory_causal_stats`
-  - `memory_causal_unlink`
-  - `eval_run_ablation`
-  - `eval_reporting_dashboard`
-- **Acceptance:** `analyze.md` is the clear command home for all 8 L6 tools.
-- **Covers:** CA-005, CA-013, CA-015
+- **File:** `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment/spec.md`
+- **Action:** Remove already-shipped items from the missing-work list and record only the directly observed runtime-doc drift cluster.
+- **Acceptance:** The spec treats `.opencode/command/memory/shared.md`, `.opencode/command/memory/analyze.md`, `/memory:manage ingest`, and README coverage as existing, and records the `analyze.md` plus `shared.md` drift that this pass resolves.
+- **Covers:** CA-005, CA-008
 - [x] Done
 
-### T13: Create `shared.md`
-- **Priority:** P1
-- **File:** `.opencode/command/memory/shared.md`
-- **Action:** Create the shared-memory command with enable/create/member/status flows and deny-by-default rollout notes.
-- **Tools to document:**
-  - `shared_space_upsert`
-  - `shared_space_membership_set`
-  - `shared_memory_status`
-  - `shared_memory_enable`
-- **Acceptance:** `shared.md` exists and fully documents shared-space enablement, creation, membership, and status inspection.
-- **Covers:** CA-006, CA-013, CA-015
+### T05: Rebase `plan.md` to a reconciliation plan
+- **Priority:** P0
+- **File:** `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment/plan.md`
+- **Action:** Replace the old implementation roadmap with a documentation-only reconciliation plan grounded in live repo state.
+- **Acceptance:** `plan.md` describes verification, rewrite, and validation steps instead of future command creation work.
+- **Covers:** CA-005, CA-007, CA-010
 - [x] Done
 
-### T14: Add ingest to `manage.md`
-- **Priority:** P1
-- **File:** `.opencode/command/memory/manage.md`
-- **Action:** Add async ingest subcommand to manage.md (folded from planned standalone `ingest.md`).
-- **Tools to document:**
-  - `memory_ingest_start`
-  - `memory_ingest_status`
-  - `memory_ingest_cancel`
-- **Acceptance:** `manage.md` includes `/memory:manage ingest` section and clearly differentiates async ingest from `/memory:save` and `/memory:manage scan`.
-- **Covers:** CA-007, CA-013
-- [x] Done
-
-### T15: Verify command registration assumptions
-- **Priority:** P1
-- **Files:** `.opencode/command/memory/`
-- **Action:** Confirm whether directory presence is sufficient for new command discovery and document any additional registration steps if they exist.
-- **Acceptance:** The implementation pass knows whether any explicit registration beyond file creation is required.
-- **Covers:** CA-005, CA-006, CA-007
-- [x] Done
-
-### T16: Add related-command cross-links
-- **Priority:** P2
-- **Files:** All 7 command files
-- **Action:** Update related-command sections so the final suite cross-links correctly.
-- **Acceptance:** Every command references the correct adjacent commands and uses the final `history` name consistently.
-- **Covers:** CA-012, CA-013
+### T06: Rebase `tasks.md` to reconciliation tasks
+- **Priority:** P0
+- **File:** `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment/tasks.md`
+- **Action:** Replace stale implementation tasks with a compact task list covering live-state verification, pack rewrites, and validation.
+- **Acceptance:** `tasks.md` is internally consistent with the reconciled `spec.md` and `plan.md`.
+- **Covers:** CA-005, CA-007, CA-010
 - [x] Done
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
-## PHASE 3: UPDATE README
+## Phase 3: Verification
 
-### T17: Refresh README structure and examples
+### T07: Grep the 011 pack for stale assumptions
 - **Priority:** P1
-- **File:** `.opencode/command/memory/README.txt`
-- **Action:** Expand the README from 5 commands to 7 and refresh the usage examples.
-- **Required updates:**
-  - command table
-  - directory tree
-  - usage examples
-  - manage subcommand list using `history`
-  - troubleshooting notes for the new commands
-- **Acceptance:** README describes the final 7-command suite and uses only final subcommand names.
-- **Covers:** CA-012
+- **Files:** `spec.md`, `plan.md`, `tasks.md`
+- **Action:** Search the reconciled pack for stale `32`, `7-command`, `7 commands`, and standalone `context` command assumptions.
+- **Acceptance:** No stale live-state claims remain in the edited files.
+- **Covers:** CA-001, CA-002, CA-003, CA-010
 - [x] Done
 
-### T18: Add README coverage matrix
+### T08: Run spec validation
 - **Priority:** P1
-- **File:** `.opencode/command/memory/README.txt`
-- **Action:** Add a complete tool-to-command coverage table for all 32 tools.
-- **Acceptance:** Every live tool is mapped to its primary command home in the README.
-- **Covers:** CA-012, CA-014
+- **Files:** Spec folder
+- **Action:** Run the spec validator after the rewrite.
+- **Acceptance:** Validation completes successfully or any remaining issue is reported honestly as outside this edit scope.
+- **Covers:** CA-007
+- [x] Done
+
+### T09: Preserve the residual follow-up note
+- **Priority:** P1
+- **Files:** `spec.md`, `plan.md`
+- **Action:** Record the observed `.opencode/command/memory/analyze.md` and `.opencode/command/memory/shared.md` mismatches so the pack stays truthful about the last live-doc drift this pass closes.
+- **Acceptance:** The pack contains a narrow drift-closeout note instead of a broad stale-missing-work narrative.
+- **Covers:** CA-008
 - [x] Done
 <!-- /ANCHOR:phase-3 -->
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## PHASE 4: VERIFICATION
+<!-- ANCHOR:completion -->
+## Completion Criteria
 
-### T19: Generate post-change 32-tool coverage table
-- **Priority:** P0
-- **Files:** Command docs + live schema files
-- **Action:** Generate a post-change coverage table from the live 32-tool inventory and store or report it as verification evidence.
-- **Acceptance:** The generated table shows 32/32 tools mapped with zero uncovered tools.
-- **Covers:** CA-001, CA-014
-- [x] Done
-
-### T20: Run parameter and alias completeness audit
-- **Priority:** P0
-- **Files:** Command docs + live schema files
-- **Action:** Compare every documented command home against the combined property surface from `tool-schemas.ts` and `ALLOWED_PARAMETERS`.
-- **Acceptance:** All live properties and aliases, including `minQualityScore`, are documented.
-- **Covers:** CA-002
-- [x] Done
-
-### T21: Grep stale strings and naming drift
-- **Priority:** P1
-- **Files:** Command docs, README, planning docs
-- **Action:** Search for stale older-count text, legacy hyphenated history naming, and unresolved open-question phrasing.
-- **Acceptance:** No stale counts, stale subcommand names, or unresolved open-question text remain.
-- **Covers:** CA-012
-- [x] Done
-
-### T22: Verify requirement-to-task traceability
-- **Priority:** P1
-- **Files:** `spec.md`, `tasks.md`
-- **Action:** Check that each acceptance requirement in `spec.md` maps cleanly to at least one concrete task.
-- **Acceptance:** No requirement is left without an owning task.
-- **Covers:** CA-001, CA-002, CA-003, CA-004, CA-005, CA-006, CA-007, CA-008, CA-009, CA-010, CA-011, CA-012, CA-013, CA-014, CA-015
-- [x] Done
-
-### T23: Run spec validation and record known out-of-scope result
-- **Priority:** P1
-- **Files:** Spec folder
-- **Action:** Run the spec validator after the doc edits and record that missing `checklist.md` is a known out-of-scope artifact for this refinement pass.
-- **Acceptance:** Validation is rerun, and any remaining failure caused only by missing `checklist.md` is explicitly noted.
-- **Covers:** CA-012
-- [x] Done
-<!-- /ANCHOR:phase-4 -->
+- [x] All reconciliation tasks are marked complete
+- [x] The pack preserves the live 33-tool / 6-command / `/memory:analyze` ownership story
+- [x] Strict validation has been run and its result recorded
+<!-- /ANCHOR:completion -->
 
 ---
 
-<!-- ANCHOR:dependencies -->
-## TASK DEPENDENCY GRAPH
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: `spec.md`
+- **Plan**: `plan.md`
+- **Checklist**: `checklist.md`
+- **Implementation Summary**: `implementation-summary.md`
+
+### Dependency Graph
 
 ```text
 Phase 0:
-  T00 -> T01 -> T02
+  T00 ─┐
+  T01 ─┼─> T02
+  T02 ─┘
 
 Phase 1:
-  T03 ─┐
-  T04 ─┤
-  T05 ─┤
-  T06 ─┤
-  T07 ─┤── start after T02
-  T08 ─┤
-  T09 ─┤
-  T10 ─┘
+  T03 -> T04
+  T03 -> T05
+  T03 -> T06
 
 Phase 2:
-  T11 -> T12
-  T13 ─┐
-  T14 ─┤── start after T02
-  T15 ─┤
-  T16 ─┘ (depends on T11-T15)
-
-Phase 3:
-  T17 -> T18
-
-Phase 4:
-  T19 ─┐
-  T20 ─┤
-  T21 ─┤── start after T18
-  T22 ─┤
-  T23 ─┘
+  T04 ─┐
+  T05 ─┼─> T07 -> T08
+  T06 ─┘
+  T04 -----> T09
 ```
-<!-- /ANCHOR:dependencies -->
-
----
-
-<!-- ANCHOR:phase-5 -->
-## PHASE 5: CONTEXT/ANALYZE MERGE (v2.4.0.0)
-
-### T24: Merge context.md into analyze.md
-- **Priority:** P0
-- **Files:** `.opencode/command/memory/analyze.md`, `.opencode/command/memory/context.md`
-- **Action:** Rewrite analyze.md as unified command with retrieval (default) + analysis (subcommand) modes. Delete context.md.
-- **Acceptance:** analyze.md contains all retrieval content (intent types, weights, anchors, token budget, deduplication) plus all analysis content (epistemic, causal, eval). 926 lines, 12 tools.
-- [x] Done
-
-### T25: Update all cross-references (7-to-6 command suite)
-- **Priority:** P0
-- **Files:** 5 sibling commands, README.txt, 4 agent definitions, 9 framework docs, 8 active spec files
-- **Action:** Replace `/memory:context` with `/memory:analyze` in all non-archived documentation.
-- **Acceptance:** Zero dangling `/memory:context` or `/memory:knowledge` references in active docs.
-- [x] Done
-
-### T26: Align cross-runtime TOML files
-- **Priority:** P1
-- **Files:** `.agents/commands/memory/`, `.gemini/commands/memory/`, `.codex/agents/speckit.toml`
-- **Action:** Delete context.toml, regenerate analyze.toml, update sibling TOML cross-references.
-- **Acceptance:** Zero `/memory:context` references across `.codex/`, `.agents/`, `.claude/`, `.gemini/`.
-- [x] Done
-
-### T27: Create changelog and update spec docs
-- **Priority:** P1
-- **Files:** `.opencode/changelog/04--commands/v2.4.0.0.md`, spec folder docs
-- **Action:** Create changelog entry, add addendum to implementation-summary, update checklist.
-- **Acceptance:** Changelog exists, spec folder reflects the merge.
-- [x] Done
-<!-- /ANCHOR:phase-5 -->
+<!-- /ANCHOR:cross-refs -->
 
 ---
 
 <!--
 TASKS: 011-command-alignment
-28/28 tasks complete -- finalized 2026-03-15, addendum 2026-03-16
-6-command suite (context merged into analyze, ingest in manage, history in analyze) + sk-doc DQI pass
+10/10 tasks complete - truth-reconciled 2026-03-21
+Current reality: 33 tools, 6 commands, retrieval merged into analyze
 -->

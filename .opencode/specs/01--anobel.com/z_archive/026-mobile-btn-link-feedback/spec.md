@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Mobile Button/Link Tap Feedback [028-mobile-btn-link-feedback/spec]"
+title: "Feature Specification: Mobile Button/Link Tap Feedback [026-mobile-btn-link-feedback/spec]"
 description: "On mobile/touch devices, the CSS :active pseudo-class fires on touchstart BEFORE the browser has determined whether the user is tapping or scrolling. This causes unwanted visual..."
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "button"
   - "link"
   - "spec"
-  - "028"
+  - "026"
 importance_tier: "important"
 contextType: "decision"
 ---

@@ -13,5 +13,9 @@
     "02--system-spec-kit"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "SQLite-to-Turso Migration Research",
+  "status": "In Progress",
+  "importance_tier": "normal",
+  "short_description": "SQLite-to-Turso Migration Research"
 }

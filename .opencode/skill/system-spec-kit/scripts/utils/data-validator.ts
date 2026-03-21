@@ -111,5 +111,9 @@ function validateDataStructure<T extends object>(data: T): T {
 // 6. EXPORTS
 // ───────────────────────────────────────────────────────────────
 export {
+  ARRAY_FLAG_MAPPINGS,
+  PRESENCE_FLAG_MAPPINGS,
+  ensureArrayOfObjects,
+  hasArrayContent,
   validateDataStructure,
 };

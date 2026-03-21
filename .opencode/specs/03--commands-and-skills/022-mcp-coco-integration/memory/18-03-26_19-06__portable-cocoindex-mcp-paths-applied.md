@@ -1,5 +1,5 @@
 ---
-title: "Portable Cocoindex Mcp Paths Applied [022-mcp-coco-integration/18-03-26_19-06__portable-cocoindex-mcp-paths-applied]"
+title: "Portable Cocoindex Mcp Paths Applied"
 description: "The memory generator needs explicit FILES and structured observations to treat a JSON-mode save as primary evidence."
 trigger_phrases:
   - "commands and skills/022 mcp coco integration"

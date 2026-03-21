@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Anchor Enforcement Automation [132-anchor-enforcement-automation/implementation-summary]"
+title: "Implementation Summary: Anchor Enforcement Automation [015-anchor-enforcement-automation/implementation-summary]"
 description: "This implementation delivers a 3-layer defense-in-depth enforcement system to ensure all spec folder documentation follows template structure and uses proper ANCHOR tags for str..."
 trigger_phrases:
   - "implementation"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "enforcement"
   - "automation"
   - "implementation summary"
-  - "132"
+  - "015"
 importance_tier: "normal"
 contextType: "implementation"
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Documentation Alignment for Spec 126 [127-documentation-alignment/spec]"
+title: "Feature Specification: Documentation Alignment for Spec 126 [010-documentation-alignment/spec]"
 description: "Spec 126 added the largest single MCP server feature since the memory system was created: full spec folder document indexing with schema v13, 11 document types, scoring multipli..."
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "alignment"
   - "for"
   - "spec"
-  - "127"
+  - "010"
 importance_tier: "important"
 contextType: "decision"
 ---

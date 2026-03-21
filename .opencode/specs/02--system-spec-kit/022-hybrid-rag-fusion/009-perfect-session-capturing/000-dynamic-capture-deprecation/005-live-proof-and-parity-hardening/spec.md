@@ -4,7 +4,7 @@ description: "Track the remaining retained live-proof work after the automated r
 trigger_phrases:
   - "live proof"
   - "parity hardening"
-  - "phase 020"
+  - "retained live proof"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -107,13 +107,28 @@ Track the remaining retained live-proof and parity-hardening work explicitly so 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Working CLI environments for each supported client | High | Capture retained artifacts only from real runnable environments |
-| Risk | Docs start claiming more than the retained evidence proves | High | Keep phase `020` open until the artifact set is refreshed |
+| Risk | Docs start claiming more than the retained evidence proves | High | Keep this retained live-proof branch open until the artifact set is refreshed |
 <!-- /ANCHOR:risks -->
 
 ---
 
+## 7. CURRENT STATUS — BLOCKER NOTE (2026-03-21)
+
+> **Status: Blocked / Incomplete.**
+>
+> This spec remains "In Progress" but no retained live-proof artifacts have been produced yet. The blocker is practical, not technical: refreshing retained artifacts requires running each supported CLI in a real environment with the current runtime contract, and that manual work has not been scheduled.
+>
+> **Consequence:** Until this work completes, all universal multi-CLI parity claims in operator docs and the manual testing playbook must remain **conservative** — the automated test suite proves contract correctness, but live proof across CLI environments is still missing.
+>
+> **What is needed to unblock:**
+> 1. A working environment for each supported CLI (Claude Code, Copilot, Codex, Gemini, ChatGPT).
+> 2. Manual execution of save-mode scenarios per CLI against the current contract.
+> 3. Retained artifact capture in `research/live-cli-proof-*.json`.
+
+---
+
 <!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS
+## 8. OPEN QUESTIONS
 
 - Should the retained live-proof format evolve into one artifact per CLI/mode instead of a single aggregated file?
 <!-- /ANCHOR:questions -->

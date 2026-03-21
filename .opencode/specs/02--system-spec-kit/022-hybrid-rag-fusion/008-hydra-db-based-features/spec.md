@@ -37,6 +37,9 @@ This parent spec-pack now acts as the Level 3 coordination record for the delive
 | **Created** | 2026-03-13 |
 | **Updated** | 2026-03-20 |
 | **Branch** | `022-hybrid-rag-fusion` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../007-code-audit-per-feature-catalog/spec.md |
+| **Successor** | ../009-perfect-session-capturing/spec.md |
 
 ---
 
@@ -82,6 +85,8 @@ Keep the root Hydra pack truthful, template-aligned, and easy to audit while pre
 | 5 | `005-hierarchical-scope-governance/` | Scope isolation, governed ingest, retention, deletion, and auditability | Complete |
 | 6 | `006-shared-memory-rollout/` | Shared spaces, deny-by-default membership, conflict handling, and staged rollout | Complete |
 <!-- /ANCHOR:phase-map -->
+
+> **Note:** "Complete" above means *code and documentation delivered*, not necessarily *active in production*. Shadow scoring (Phase 4) is disabled, `asOf` queries (Phase 2) are internal-only, and the phased rollout was a development methodology. See **§12 Current Status — Reality Check** for details.
 
 ### Representative Runtime Surfaces
 
@@ -272,6 +277,19 @@ Keep the root Hydra pack truthful, template-aligned, and easy to audit while pre
 
 ---
 
+**Current status reality check (2026-03-21):** Prevent readers from mistaking documented *design intent* for *production reality*. The Hydra roadmap phases are complete as documentation and code artifacts, but several advertised capabilities are dormant or internal-only.
+
+| Capability | Documented Claim | Actual Status |
+|------------|-----------------|---------------|
+| **Shadow scoring (Phase 4)** | Adaptive ranking captures signals and runs in shadow mode before promotion | **Disabled.** Shadow scoring code exists but is not active in production. The capability-flag default keeps it off. No promotion to live scoring has occurred. |
+| **`asOf` temporal queries (Phase 2)** | Append-first lineage with `asOf` resolution for point-in-time state | **Internal-only.** `asOf` resolution is used within `lineage-state.ts` for internal storage operations. It is **not** exposed through the MCP API as a user-facing query tool. |
+| **Phased rollout (Phases 1-6)** | Six-phase rollout from baseline through shared-memory | **Development methodology, not deployment strategy.** The phases describe the order in which code was designed, written, and documented. They do not represent a staged production deployment with progressive feature activation. |
+| **Shared-memory rollout (Phase 6)** | Deny-by-default membership, conflict handling, staged rollout | **Opt-in and inert by default.** Shared spaces must be explicitly enabled per workspace. No workspace has shared memory active unless a human administrator turns it on. |
+
+These caveats do not invalidate the design work; they clarify the gap between *shipped code* and *active production behavior*.
+
+---
+
 <!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
@@ -294,3 +312,13 @@ Keep the root Hydra pack truthful, template-aligned, and easy to audit while pre
 - **Phase 4**: `004-adaptive-retrieval-loops/spec.md`
 - **Phase 5**: `005-hierarchical-scope-governance/spec.md`
 - **Phase 6**: `006-shared-memory-rollout/spec.md`
+
+---
+
+## Phase Navigation
+
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../007-code-audit-per-feature-catalog/spec.md |
+| **Next Phase** | ../009-perfect-session-capturing/spec.md |

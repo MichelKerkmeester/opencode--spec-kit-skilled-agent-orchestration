@@ -4,13 +4,13 @@ description: "Documentation integrity repair for the current direct-child phase 
 trigger_phrases:
   - "implementation plan"
   - "spec 009"
-  - "roadmap phases 018 019 020"
+  - "roadmap phases 018 019"
 importance_tier: "normal"
 contextType: "general"
 ---
 # Implementation Plan: Perfect Session Capturing
 
-This document records the current verified state for this scope. Use [spec.md](spec.md) and [tasks.md](tasks.md) to trace the shipped runtime follow-through for phases `018` and `019` plus the open proof work in phase `020`.
+This document records the current verified state for this scope. Use [spec.md](spec.md) and [tasks.md](tasks.md) to trace the shipped runtime follow-through for phases `018` and `019`.
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
@@ -206,7 +206,7 @@ Build Mapping -> Reconcile Parent Docs -> Create Branch Parent Docs -> Repair Ch
 
 ### Rollback Procedure
 1. Revert only the affected parent or child markdown files.
-2. Restore conservative status language for phases `018` through `020`.
+2. Restore conservative status language for phases `018` and `019`.
 3. Re-run recursive validation.
 
 ### Data Reversal

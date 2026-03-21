@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: sk-code--review Promotion [014-code-review-skill/spec]"
+title: "Feature Specification: sk-code--review Promotion [016-sk-code-review-creation/spec]"
 description: "Level 2 specification for promoting sk-code--review to a first-class stack-agnostic review skill with baseline+overlay routing across agents, commands, and advisor logic."
 SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
 trigger_phrases:
@@ -70,7 +70,7 @@ Promote `sk-code--review` as a first-class, stack-agnostic review baseline that:
 
 ### Out of Scope
 
-- Editing preserved context source under `014-code-review-skill/context/`.
+- Editing preserved context source under `016-sk-code-review-creation/context/`.
 - Refactoring unrelated commands, agents, or skills outside listed scope.
 - Modifying memory files for this run.
 
@@ -82,7 +82,7 @@ Promote `sk-code--review` as a first-class, stack-agnostic review baseline that:
 | Review agents/orchestrators | `.opencode/agent/review.md`, `.opencode/agent/chatgpt/review.md`, `.opencode/agent/orchestrate.md`, `.opencode/agent/chatgpt/orchestrate.md`, `.gemini/agents/review.md`, `.gemini/agents/orchestrate.md`, `.claude/agents/review.md`, `.claude/agents/orchestrate.md`, `.codex/agents/review.toml`, `.codex/agents/orchestrate.toml` |
 | Review dispatch commands | 18 YAMLs under `.opencode/command/spec_kit/assets/` and `.opencode/command/create/assets/` (full list in `tasks.md`) |
 | Routing + catalogs | `.opencode/skill/scripts/skill_advisor.py`, `.opencode/skill/README.md`, `.opencode/README.md` |
-| Spec docs | `.opencode/specs/03--commands-and-skills/016-code-review-skill/spec.md`, `.opencode/specs/03--commands-and-skills/016-code-review-skill/plan.md`, `.opencode/specs/03--commands-and-skills/016-code-review-skill/tasks.md`, `.opencode/specs/03--commands-and-skills/016-code-review-skill/checklist.md`, `.opencode/specs/03--commands-and-skills/016-code-review-skill/implementation-summary.md` |
+| Spec docs | `.opencode/specs/03--commands-and-skills/016-sk-code-review-creation/spec.md`, `.opencode/specs/03--commands-and-skills/016-sk-code-review-creation/plan.md`, `.opencode/specs/03--commands-and-skills/016-sk-code-review-creation/tasks.md`, `.opencode/specs/03--commands-and-skills/016-sk-code-review-creation/checklist.md`, `.opencode/specs/03--commands-and-skills/016-sk-code-review-creation/implementation-summary.md` |
 <!-- /ANCHOR:scope -->
 
 ---

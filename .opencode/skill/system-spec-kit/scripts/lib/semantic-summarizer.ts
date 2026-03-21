@@ -552,6 +552,15 @@ function generateImplementationSummary(messages: SemanticMessage[], observations
   }
 
   const outcomes: string[] = [];
+  const trimOutcomeToWordBoundary = (outcome: string, maxLength: number = 80): string => {
+    const trimmed = outcome.trim();
+    if (trimmed.length < maxLength) {
+      return trimmed;
+    }
+
+    const lastSpace = trimmed.lastIndexOf(' ');
+    return lastSpace > 0 ? trimmed.slice(0, lastSpace).trim() : trimmed;
+  };
 
   for (const msg of resultMessages.slice(0, 5)) {
     const content: string = msg.prompt || msg.content || '';
@@ -564,7 +573,7 @@ function generateImplementationSummary(messages: SemanticMessage[], observations
     for (const pattern of outcomePatterns) {
       let match: RegExpExecArray | null;
       while ((match = pattern.exec(content)) !== null) {
-        const outcome: string = match[1].trim();
+        const outcome: string = trimOutcomeToWordBoundary(match[1]);
         if (outcome.length > 10 && !outcomes.includes(outcome)) {
           outcomes.push(outcome);
           if (outcomes.length >= 5) break;

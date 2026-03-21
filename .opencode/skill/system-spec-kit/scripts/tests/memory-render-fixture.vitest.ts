@@ -205,13 +205,14 @@ describe('rendered memory fixture regression', () => {
             facts: [
               'Tool: Read File: scripts/core/workflow.ts Result: inspected naming pipeline',
             ],
-            files: ['scripts/core/workflow.ts'],
+            files: [path.join(specFolderPath, 'spec.md')],
           },
         ],
       };
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
+        allowRecovery: true,
         collectedData,
         collectSessionDataFn: async (_input, specFolderName) => createSessionData(specFolderName || '014-rendered-memory-regression'),
         silent: true,
@@ -281,6 +282,7 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
+        allowRecovery: true,
         collectedData: {
           _source: 'opencode-capture',
           userPrompts: [{ prompt: 'Development session', timestamp: '2026-03-06T09:25:00Z' }],
@@ -348,6 +350,7 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
+        allowRecovery: true,
         collectedData: {
           _source: 'file',
           userPrompts: [{ prompt: 'Validate session source provenance', timestamp: '2026-03-16T12:00:00Z' }],
@@ -456,6 +459,7 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
+        allowRecovery: true,
         collectedData: {
           SPEC_FOLDER: '022-hybrid-rag-fusion',
           userPrompts: [
@@ -524,6 +528,7 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
+        allowRecovery: true,
         collectedData: {
           _source: 'codex-cli-capture',
           userPrompts: [
@@ -537,7 +542,7 @@ describe('rendered memory fixture regression', () => {
               title: 'Escaped anchor example in captured prompt',
               narrative: 'Verified that literal anchor examples from the session render as escaped text instead of malformed real anchors.',
               facts: ['Tool: Read File: scripts/core/workflow.ts Result: escaped literal anchor examples before template render'],
-              files: ['scripts/core/workflow.ts'],
+              files: [path.join(specFolderPath, 'spec.md')],
               timestamp: '2026-03-15T12:41:00Z',
             },
           ],
@@ -587,6 +592,7 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
+        allowRecovery: true,
         collectedData: {
           _source: 'codex-cli-capture',
           _toolCallCount: 2,
@@ -672,6 +678,7 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
+        allowRecovery: true,
         collectedData: {
           _source: 'opencode-capture',
           userPrompts: [
@@ -685,7 +692,7 @@ describe('rendered memory fixture regression', () => {
               title: 'Git provenance render validation',
               narrative: 'Verified git metadata flows through to rendered memory.',
               facts: ['Tool: Read File: scripts/core/workflow.ts Result: inspected enrichment pipeline'],
-              files: ['scripts/core/workflow.ts'],
+              files: [path.join(specFolderPath, 'spec.md')],
               timestamp: '2026-03-17T10:00:30Z',
             },
           ],
@@ -740,6 +747,7 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
+        allowRecovery: true,
         collectedData: {
           _source: 'opencode-capture',
           userPrompts: [
@@ -839,6 +847,7 @@ describe('rendered memory fixture regression', () => {
 
       const { runWorkflow } = await import('../core/workflow');
       const result = await runWorkflow({
+        allowRecovery: true,
         collectedData,
         collectSessionDataFn: async (_input, specFolderName) => createSessionData(
           specFolderName || '016-decision-confidence-render',
@@ -858,8 +867,8 @@ describe('rendered memory fixture regression', () => {
       const renderedPath = path.join(result.contextDir, result.contextFilename);
       const rendered = fs.readFileSync(renderedPath, 'utf-8');
 
-      expect(rendered).toContain('Choice: 85% / Rationale: 50%');
-      expect(rendered).toContain('**Confidence**: 50%');
+      expect(rendered).toContain('Choice: 95% / Rationale: 70%');
+      expect(rendered).toContain('**Confidence**: 70%');
     } finally {
       CONFIG.TEMPLATE_DIR = previousTemplateDir;
       fs.rmSync(tempRoot, { recursive: true, force: true });

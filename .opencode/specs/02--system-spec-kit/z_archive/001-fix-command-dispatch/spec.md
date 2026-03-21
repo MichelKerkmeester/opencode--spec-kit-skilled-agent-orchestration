@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Fix Command Dispatch Vulnerability [118-fix-command-dispatch/spec]"
+title: "Feature Specification: Fix Command Dispatch Vulnerability [001-fix-command-dispatch/spec]"
 description: "During a security audit of the OpenCode command system, a critical vulnerability was discovered in 7 command .md files: phantom dispatch text and missing guardrails that cause c..."
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "command"
   - "dispatch"
   - "spec"
-  - "118"
+  - "001"
 importance_tier: "important"
 contextType: "decision"
 ---

@@ -1,8 +1,8 @@
 ---
 title: "Implementation Summary: Live Proof And Parity Hardening"
-description: "Phase 020 is open and tracks the retained live-proof work that still separates automated parity from universal CLI claims."
+description: "This archived live-proof branch remains open and tracks the retained evidence work that still separates automated parity from universal CLI claims."
 trigger_phrases:
-  - "phase 020"
+  - "retained live proof"
   - "implementation summary"
 importance_tier: "normal"
 contextType: "general"
@@ -28,7 +28,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase 020 is intentionally not closed yet. What shipped in this pass is the boundary: the parent pack, feature catalog, and M-007 playbook now say clearly that automated parity is not enough to claim flawless multi-CLI behavior everywhere. The retained artifact refresh itself remains the work tracked by this phase.
+This archived live-proof branch is intentionally not closed yet. What shipped in this pass is the boundary: the parent pack, feature catalog, and M-007 playbook now say clearly that automated parity is not enough to claim flawless multi-CLI behavior everywhere. The retained artifact refresh itself remains the work tracked by this phase.
 
 ### Files Changed
 
@@ -54,7 +54,7 @@ The proof boundary was tightened first so the docs would stop outrunning the cur
 
 | Decision | Why |
 |----------|-----|
-| Keep phase 020 open | The repo is not ready to claim flawless parity without refreshed retained artifacts |
+| Keep the archived live-proof branch open | The repo is not ready to claim flawless parity without refreshed retained artifacts |
 <!-- /ANCHOR:decisions -->
 
 ---

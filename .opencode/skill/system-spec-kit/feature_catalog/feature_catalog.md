@@ -5,7 +5,7 @@ description: "Unified reference combining the complete system feature inventory 
 
 # Spec Kit Memory: Feature Catalog
 
-This document combines two complementary views of the Spec Kit Memory MCP server into a single reference. The **System Reference** section describes what the system is today: every tool, pipeline stage and capability organized by MCP layer. The **Refinement Program** section describes what was changed and why: every improvement delivered across the refinement program, with ticket IDs and implementation details.
+This document combines two complementary views of the Spec Kit Memory system into a single reference. The **System Reference** sections describe what the runtime and adjacent Spec Kit workflows are today: live MCP tools, pipeline stages, verification surfaces, and the supporting phase-workflow scripts that ship with the same skill package. The **Refinement Program** section describes what was changed and why: every improvement delivered across the refinement program, with ticket IDs and implementation details.
 
 ---
 
@@ -30,7 +30,7 @@ This document combines two complementary views of the Spec Kit Memory MCP server
 - [17. TOOLING AND SCRIPTS](#17--tooling-and-scripts)
 - [18. GOVERNANCE](#18--governance)
 - [19. UX HOOKS](#19--ux-hooks)
-- [20. PHASE SYSTEM](#20--phase-system)
+- [20. SPEC KIT PHASE WORKFLOWS](#20--spec-kit-phase-workflows)
 - [21. FEATURE FLAG REFERENCE](#21--feature-flag-reference)
 
 ---
@@ -79,7 +79,7 @@ This is the main search tool. You type what you are looking for in plain languag
 
 This is the primary search tool, and it does a lot. You give it a natural language query (or a multi-concept array of 2-5 strings where all concepts must match), and it runs the full hybrid retrieval pipeline.
 
-The search path is the 4-stage pipeline architecture (V2 is the sole runtime path, and `SPECKIT_PIPELINE_V2` is deprecated/inert). The pipeline starts with Stage 1 candidate generation, which selects search channels based on query type: multi-concept queries run per-concept embeddings, deep mode expands into up to 3 query variants, and when embedding expansion is active a baseline plus expanded-query search run in parallel. Constitutional memories are injected if none appear in the initial candidate set. Stage 2 applies all scoring signals in a single pass: session boost, causal boost, co-activation spreading, community co-retrieval from precomputed `community_assignments`, graph signals (N2a+N2b), FSRS testing effect, intent weights (for non-hybrid only, preventing G2 double-weighting), artifact routing, feedback signals (learned trigger boosts and negative feedback demotions), artifact result limiting, anchor metadata annotation and validation metadata enrichment. Stage 3 handles cross-encoder reranking and MPAB chunk-to-memory aggregation with document-order reassembly. Stage 4 filters by memory state, runs TRM evidence gap detection and enforces a score immutability invariant that prevents any score modifications after reranking.
+The search path is the 4-stage pipeline architecture, which is the sole runtime path. The pipeline starts with Stage 1 candidate generation, which selects search channels based on query type: multi-concept queries run per-concept embeddings, deep mode expands into up to 3 query variants, and when embedding expansion is active a baseline plus expanded-query search run in parallel. Constitutional memories are injected if none appear in the initial candidate set. Stage 2 applies all scoring signals in a single pass: session boost, causal boost, co-activation spreading, community co-retrieval from precomputed `community_assignments`, graph signals (N2a+N2b), FSRS testing effect, intent weights (for non-hybrid only, preventing G2 double-weighting), artifact routing, feedback signals (learned trigger boosts and negative feedback demotions), artifact result limiting, anchor metadata annotation and validation metadata enrichment. Stage 3 handles cross-encoder reranking and MPAB chunk-to-memory aggregation with document-order reassembly. Stage 4 filters by memory state, runs TRM evidence gap detection and enforces a score immutability invariant that prevents any score modifications after reranking.
 
 A deep mode expands the query into up to 3 variants using `expandQuery()`, runs hybrid search for each variant in parallel and merges results with deduplication. Results are cached per parameter combination via `toolCache.withCache()`, and session deduplication runs after cache so that cache hits still respect session state.
 
@@ -88,6 +88,25 @@ The parameter surface is wide. You control result count (`limit`, 1-100), spec f
 #### Source Files
 
 See [`01--retrieval/02-semantic-and-lexical-search-memorysearch.md`](01--retrieval/02-semantic-and-lexical-search-memorysearch.md) for full implementation and test file listings.
+
+---
+
+### Fast delegated search (memory_quick_search)
+
+#### Description
+
+This is the lightweight search entry point for callers that want the main semantic search behavior without having to set a large option surface themselves. It works like a preset: you provide a query and optional governed-scope boundaries, and the server forwards the request to the full search tool using sensible retrieval defaults.
+
+#### Current Reality
+
+`memory_quick_search` is a live MCP tool, not just a README alias. The dispatcher in `tools/memory-tools.ts` validates the tool's narrowed input schema and forwards the call to `memory_search` with a fixed profile: `autoDetectIntent=true`, `enableDedup=true`, `includeContent=true`, `includeConstitutional=true`, and `rerank=true`. The public arguments are intentionally narrow: `query`, `limit`, `specFolder`, `tenantId`, `userId`, `agentId`, and `sharedSpaceId`. That makes it useful for fast governed retrieval while keeping the heavyweight search configuration surface on `memory_search`.
+
+#### Source Files
+
+- `mcp_server/tools/memory-tools.ts`
+- `mcp_server/tool-schemas.ts`
+- `mcp_server/schemas/tool-input-schemas.ts`
+- `mcp_server/README.md`
 
 ---
 
@@ -157,7 +176,7 @@ Stage 3 (Rerank and Aggregate) handles cross-encoder reranking (optional, gated 
 
 Stage 4 (Filter and Annotate) enforces a "no score changes" invariant through dual enforcement. At compile time, `Stage4ReadonlyRow` declares all six score fields as `Readonly`, making assignment a TypeScript error. At runtime, `captureScoreSnapshot()` records all scores before operations and `verifyScoreInvariant()` checks them afterward, throwing a `[Stage4Invariant]` error on any mismatch. Within this invariant, Stage 4 applies memory state filtering (removing rows below `config.minState` with optional per-tier hard limits), evidence gap detection via TRM Z-score analysis and annotation metadata for feature flags and state statistics. Session deduplication is explicitly excluded from Stage 4 and runs post-cache in the handler to avoid double-counting.
 
-The pipeline is the sole runtime path. `SPECKIT_PIPELINE_V2` is deprecated. `isPipelineV2Enabled()` is hardcoded to `true` and the legacy `postSearchPipeline` was removed in Phase 017.
+The pipeline is the sole runtime path. The legacy `postSearchPipeline` was removed in Phase 017, and `SPECKIT_PIPELINE_V2` is no longer consumed by runtime code.
 
 #### Source Files
 
@@ -189,11 +208,13 @@ This planned feature would let you pull out a single section from a large docume
 
 #### Current Reality
 
-**PLANNED (Sprint 019): DEFERRED.** `read_spec_section(filePath, heading)` via Markdown AST parsing (`remark`) is deferred until spec docs routinely exceed ~1000 lines. Existing R7 anchor-aware thinning remains the current approach. Estimated effort: M (5-7 days).
+**ROADMAP ONLY.** `read_spec_section(filePath, heading)` via Markdown AST parsing (`remark`) is still deferred until spec docs routinely exceed ~1000 lines. Existing anchor-aware thinning remains the current approach, so this is not part of the current runtime surface.
 
 #### Source Files
 
 No source files yet. This feature is planned but not yet implemented.
+
+See [`01--retrieval/07-ast-level-section-retrieval-tool.md`](01--retrieval/07-ast-level-section-retrieval-tool.md) for full feature details.
 
 ---
 
@@ -2561,6 +2582,24 @@ See [`13--memory-quality-and-indexing/18-stateless-enrichment-and-alignment-guar
 
 ---
 
+### Post-save quality review
+
+#### Description
+
+After the system saves a memory file, it runs a quick proof-reading step to check that nothing was lost in transcription. It compares the saved file against the original JSON payload to catch cases where the rendering pipeline silently dropped or degraded caller-supplied fields — like a generic title replacing a meaningful one, or trigger phrases that are file paths instead of natural-language keywords. Think of it as a proof-reader who checks the printed form against the original application before it goes into the filing cabinet.
+
+#### Current Reality
+
+The post-save quality review runs as Step 10.5 in the save workflow, between file write and indexing. It is active for all JSON-mode saves and skipped for recovery and stateless modes where no authoritative JSON payload is available.
+
+Current detection checks: generic title, path-fragment trigger phrases, importance_tier mismatch, decision_count = 0 when keyDecisions are present, contextType mismatch, and generic description. Each finding is emitted with a severity level: HIGH (data loss or explicit caller intent overridden), MEDIUM (degraded quality that reduces retrieval accuracy), or LOW (advisory observation). The review output is machine-readable so callers and downstream quality monitors can surface actionable per-field failures without parsing prose. Failure findings are reported back to the caller in the save response but do not abort the save unless a HIGH severity finding triggers the configured abort threshold.
+
+#### Source Files
+
+See [`13--memory-quality-and-indexing/19-post-save-quality-review.md`](13--memory-quality-and-indexing/19-post-save-quality-review.md) for full implementation and test file listings.
+
+---
+
 ## 15. PIPELINE ARCHITECTURE
 
 ### 4-stage pipeline refactor
@@ -2585,7 +2624,7 @@ Stage 3 (Rerank and Aggregate) handles optional cross-encoder reranking (gated b
 
 Stage 4 (Filter and Annotate) enforces the "no score changes" invariant via dual enforcement: compile-time `Stage4ReadonlyRow` readonly fields plus runtime `verifyScoreInvariant()` assertion checking all six score fields. Within this invariant, it applies memory state filtering, TRM evidence gap detection and annotation metadata.
 
-**Phase 017 update:** The legacy `postSearchPipeline` path  was removed entirely. `isPipelineV2Enabled()` now always returns `true` regardless of the `SPECKIT_PIPELINE_V2` env var (deprecated). The V2 4-stage pipeline is the only code path. A shared `resolveEffectiveScore()` function in `pipeline/types.ts` replaced both Stage 2's `resolveBaseScore()` and Stage 3's local `effectiveScore()`, ensuring a consistent fallback chain (`intentAdjustedScore -> rrfScore -> score -> similarity/100`, all clamped [0,1]) across all stages.
+**Phase 017 update:** The legacy `postSearchPipeline` path was removed entirely, leaving the 4-stage pipeline as the only code path. A shared `resolveEffectiveScore()` function in `pipeline/types.ts` replaced both Stage 2's `resolveBaseScore()` and Stage 3's local `effectiveScore()`, ensuring a consistent fallback chain (`intentAdjustedScore -> rrfScore -> score -> similarity/100`, all clamped [0,1]) across all stages.
 
 #### Source Files
 
@@ -2814,7 +2853,7 @@ AI assistants sometimes invent parameters that do not exist when calling tools. 
 
 #### Current Reality
 
-**IMPLEMENTED (Sprint 019).** All 28 MCP tool inputs (L1-L7) have Zod runtime schemas defined in `mcp_server/schemas/tool-input-schemas.ts` (re-exported via `tool-schemas.ts`), controlled by `SPECKIT_STRICT_SCHEMAS` (`.strict()` vs `.passthrough()`). Hallucinated parameters from calling LLMs are rejected with clear Zod errors and logged to stderr for audit trail (CHK-029). Adds `zod` dependency.
+**IMPLEMENTED (Sprint 019).** All 33 live MCP tool definitions (L1-L7) have Zod runtime schemas defined in `mcp_server/schemas/tool-input-schemas.ts` (re-exported via `tool-schemas.ts`), controlled by `SPECKIT_STRICT_SCHEMAS` (`.strict()` vs `.passthrough()`). Hallucinated parameters from calling LLMs are rejected with clear Zod errors and logged to stderr for audit trail (CHK-029). Adds `zod` dependency.
 
 #### Source Files
 
@@ -3221,6 +3260,8 @@ Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--v
 
 No dedicated source files. This is a cross-cutting meta-improvement applied across multiple modules.
 
+See [`16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md`](16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md) for full implementation and test file listings.
+
 ---
 
 ### Dead code removal
@@ -3247,6 +3288,8 @@ Approximately 360 lines of dead code were removed across four categories:
 
 No dedicated source files. This is a cross-cutting meta-improvement applied across multiple modules.
 
+See [`16--tooling-and-scripts/04-dead-code-removal.md`](16--tooling-and-scripts/04-dead-code-removal.md) for full source evidence and change accounting.
+
 ---
 
 ### Code standards alignment
@@ -3262,6 +3305,8 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
 #### Source Files
 
 No dedicated source files. This is a cross-cutting meta-improvement applied across multiple modules.
+
+See [`16--tooling-and-scripts/05-code-standards-alignment.md`](16--tooling-and-scripts/05-code-standards-alignment.md) for full source evidence and violation accounting.
 
 ---
 
@@ -3485,7 +3530,7 @@ See [`16--tooling-and-scripts/11-feature-catalog-code-references.md`](16--toolin
 
 #### Description
 
-Session capturing pipeline quality is the closure feature for spec `010-perfect-session-capturing`. It covers the full shipped session-capture path for `generate-context.js`: (1) Part I hardening across session extraction, file writing, contamination filtering, alignment blocking, and config-driven limits; (2) stateless enrichment from spec-folder and git context; (3) numeric quality-score calibration so thin stateless saves score lower than rich saves; (4) native stateless fallback support for all supported local CLI ecosystems (OpenCode, Claude Code, Codex CLI, Copilot CLI, Gemini CLI); (5) one shared semantic sufficiency gate so aligned but under-evidenced memories fail explicitly instead of indexing; (6) one shared rendered-memory template contract so malformed ANCHOR/frontmatter output fails before write/index; (7) a fully refreshed canonical verification and manual-testing record; (8) JSON-primary routine-save contract with runtime deprecation of unguarded stateless saves; (9) Wave 2 count/confidence hardening for decision confidence, truncated outcomes, and stable `git_changed_file_count` priority.
+Session capturing pipeline quality is the current reality-alignment feature for `009-perfect-session-capturing`. It covers the full shipped session-capture path for `generate-context.js`: (1) Part I hardening across session extraction, file writing, contamination filtering, alignment blocking, and config-driven limits; (2) recovery-mode stateless enrichment from spec-folder and git context; (3) numeric quality-score calibration so thin recovery captures score lower than rich saves; (4) native recovery-only fallback support for all supported local CLI ecosystems (OpenCode, Claude Code, Codex CLI, Copilot CLI, Gemini CLI); (5) one shared semantic sufficiency gate so aligned but under-evidenced memories fail explicitly instead of indexing; (6) one shared rendered-memory template contract so malformed ANCHOR/frontmatter output fails before write/index; (7) a fully refreshed canonical verification and manual-testing record; (8) JSON-primary routine-save contract with runtime deprecation of unguarded stateless saves; (9) Wave 2 count/confidence hardening for decision confidence, truncated outcomes, and stable `git_changed_file_count` priority.
 
 #### Current Reality
 
@@ -3517,6 +3562,8 @@ The B8 signal ceiling ("12 active scoring signals") is a governance target, not 
 
 No dedicated source files. This describes governance process controls.
 
+See [`17--governance/01-feature-flag-governance.md`](17--governance/01-feature-flag-governance.md) for full governance details.
+
 ---
 
 ### Feature flag sunset audit
@@ -3531,13 +3578,15 @@ A comprehensive audit at Sprint 7 exit found 79 unique `SPECKIT_` flags across t
 
 The current active flag-helper inventory in `search-flags.ts` is 24 exported `is*` functions (including the deprecated `isPipelineV2Enabled()` compatibility shim and the newly added `isQualityLoopEnabled()`). Sprint 0 core flags remain default ON, sprint-graduated flags from Sprints 3-6 remain default ON and deferred-feature flags (including GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES and ENTITY_LINKING) are now default ON. `SPECKIT_ABLATION` remains default OFF as an opt-in evaluation tool.
 
-**Phase 017 update:** `SPECKIT_PIPELINE_V2` is now deprecated. `isPipelineV2Enabled()` always returns `true` regardless of the env var. The legacy V1 pipeline code was removed, making the env var a no-op.
+**Phase 017 update:** The legacy V1 pipeline code was removed, leaving the 4-stage pipeline as the only supported path. `SPECKIT_PIPELINE_V2` remains part of historical audit context but is no longer consumed by runtime code.
 
 **Sprint 8 update:** Flag graduation and dead code removal have been completed. The Sprint 8 comprehensive remediation removed a large dead-code slice including: dead feature flag branches in `hybrid-search.ts` (RSF and shadow-scoring), dead feature flag functions (`isShadowScoringEnabled`, `isRsfEnabled`), dead module-level state (`stmtCache`, `lastComputedAt`, `activeProvider`, `flushCount`, 3 dead config fields in `working-memory.ts`) and dead functions/exports (`computeCausalDepth` single-node variant, `getSubgraphWeights`, `RECOVERY_HALF_LIFE_DAYS`, `logCoActivationEvent`). `isInShadowPeriod` in learned feedback remains active as Safeguard #6. See [Comprehensive remediation (Sprint 8)](#comprehensive-remediation-sprint-8) for the full accounting.
 
 #### Source Files
 
 No dedicated source files. This describes governance process controls.
+
+See [`17--governance/02-feature-flag-sunset-audit.md`](17--governance/02-feature-flag-sunset-audit.md) for full audit details and flag disposition table.
 
 ---
 
@@ -3806,17 +3855,17 @@ See [`18--ux-hooks/13-end-to-end-success-envelope-verification.md`](18--ux-hooks
 
 ---
 
-## 20. PHASE SYSTEM
+## 20. SPEC KIT PHASE WORKFLOWS
 
 ### Phase detection and scoring (recommend-level.sh --recommend-phases)
 
 #### Description
 
-The five scoring dimensions evaluate distinct aspects of specification complexity. Each dimension contributes a weighted score to the composite result. High scores on multiple dimensions produce a strong phase recommendation, while specs that score low across all dimensions receive a recommendation against phasing. The `--json` flag outputs the full scoring breakdown as structured JSON for programmatic consumption.
+The four scoring dimensions evaluate distinct aspects of specification complexity. Each dimension contributes a weighted score to the composite result. High scores on multiple dimensions produce a strong phase recommendation, while specs that score low across all dimensions receive a recommendation against phasing. The `--json` flag outputs the full scoring breakdown as structured JSON for programmatic consumption.
 
 #### Current Reality
 
-The phase recommendation system uses a 5-dimension scoring algorithm to evaluate whether a specification benefits from decomposition into sequential phases. When invoked with `--recommend-phases`, `recommend-level.sh` analyzes the spec folder context and produces three outputs: `phase_recommended` (boolean indicating whether phase decomposition is advisable), `phase_score` (a composite numeric score reflecting the degree of benefit from phasing), and `suggested_phase_count` (the recommended number of child phases).
+The phase recommendation system uses a 4-dimension scoring algorithm to evaluate whether a specification benefits from decomposition into sequential phases. When invoked with `--recommend-phases`, `recommend-level.sh` analyzes the spec folder context and produces three outputs: `recommended_phases` (boolean indicating whether phase decomposition is advisable), `phase_score` (a composite numeric score reflecting the degree of benefit from phasing), and `suggested_phase_count` (the recommended number of child phases).
 
 #### Source Files
 
@@ -3874,7 +3923,7 @@ Shell script: `.opencode/skill/system-spec-kit/scripts/rules/check-phase-links.s
 
 ## 21. FEATURE FLAG REFERENCE
 
-Every runtime behavior in the MCP server is controlled by environment variables. The tables below catalogue all known flags grouped by category. The "Default" column reflects the value in effect when the variable is absent from the environment.
+The tables below catalogue the documented environment-variable surface that is still read by code or intentionally retained as a live compatibility shim. The "Default" column reflects the value in effect when the variable is absent from the environment.
 
 For SPECKIT_* flags that use `isFeatureEnabled()`: the function returns `true` when the variable is absent, empty or set to `'true'`. It returns `false` when explicitly set to `'false'` or `'0'`. This means almost all graduated search-pipeline features are **ON by default** and require an explicit opt-out.
 
@@ -3945,7 +3994,6 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_MULTI_QUERY` | `true` | boolean | `lib/search/search-flags.ts` | Enables multi-query expansion for deep-mode retrieval. The query is expanded into up to 3 variants via `expandQuery()`, each variant runs hybrid search in parallel, and results merge with deduplication. |
 | `SPECKIT_NEGATIVE_FEEDBACK` | `true` | boolean | `lib/search/search-flags.ts` | T002b/A4 negative-feedback confidence demotion. Applies a confidence multiplier (starts at 1.0, decreases 0.1 per negative validation, floors at 0.3) with 30-day half-life recovery. |
 | `SPECKIT_NOVELTY_BOOST` | inert | boolean | `lib/scoring/composite-scoring.ts` | **Inert.** N4 cold-start novelty boost was evaluated and removed. The env var is read in tests only; the production function always returns 0. |
-| `SPECKIT_PIPELINE_V2` | `true` | boolean | `lib/search/search-flags.ts` | **Deprecated (always true).** `isPipelineV2Enabled()` is hardcoded to `return true` at `search-flags.ts:101`. The V2 pipeline is the only pipeline. The legacy `postSearchPipeline` was removed in Phase 017. This flag is retained for backward compatibility but has no effect. |
 | `SPECKIT_PRESSURE_POLICY` | `true` | boolean | `handlers/memory-context.ts` | Enables context-pressure-based mode downgrading in `memory_context`. Above 0.60 token usage ratio, switches to focused mode. Above 0.80, switches to quick mode. Also subject to `SPECKIT_ROLLOUT_PERCENT`. |
 | `SPECKIT_QUALITY_LOOP` | `false` | boolean | `lib/search/search-flags.ts` | **Default OFF.** Enables the verify-fix-verify loop for `memory_save`. When enabled, low-quality saves get an initial evaluation plus up to 2 immediate auto-fix retries by default; rejected saves return `status: 'rejected'`, and atomic save rolls the file back instead of retrying indexing again. |
 | `SPECKIT_RECONSOLIDATION` | `false` | boolean | `lib/search/search-flags.ts` | TM-06 reconsolidation-on-save. Opt-in only: set `SPECKIT_RECONSOLIDATION=true` to enable merge/supersede behavior after embedding generation. Requires a checkpoint to exist for the spec folder. |
@@ -3961,13 +4009,15 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_SHADOW_SCORING` | inert | boolean | `lib/eval/shadow-scoring.ts` | **Deprecated.** Shadow scoring runtime is permanently disabled: `runShadowScoring()` returns `null` and `logShadowComparison()` returns `false`. The env var is retained for compatibility/testing context but does not enable production scoring paths. |
 | `SPECKIT_SIGNAL_VOCAB` | `true` | boolean | `lib/parsing/trigger-matcher.ts` | Enables signal vocabulary expansion in the trigger matcher. Augments the trigger phrase vocabulary with derived signal terms during matching. Disabled with explicit `'false'`. |
 | `SPECKIT_SKIP_API_VALIDATION` | `false` | boolean | `context-server.ts` | When `'true'`, skips API key validation at startup. Useful for testing without a real embedding provider. Default is to validate API credentials. |
-| `SPECKIT_STRICT_SCHEMAS` | `true` | boolean | `schemas/tool-input-schemas.ts` | **IMPLEMENTED (Sprint 019).** P0-1: Controls Zod schema enforcement mode for all 28 MCP tool inputs. When `true`, `.strict()` rejects unexpected parameters with stderr logging (CHK-029). When `false`, `.passthrough()` allows undocumented parameters for backward compatibility. Validation runs per-tool in the handler layer. |
+| `SPECKIT_STRICT_SCHEMAS` | `true` | boolean | `schemas/tool-input-schemas.ts` | **IMPLEMENTED (Sprint 019).** P0-1: Controls Zod schema enforcement mode for all 33 live MCP tool definitions. When `true`, `.strict()` rejects unexpected parameters with stderr logging (CHK-029). When `false`, `.passthrough()` allows undocumented parameters for backward compatibility. Validation runs per-tool in the handler layer. |
 | `SPECKIT_TRM` | `true` | boolean | `lib/search/search-flags.ts` | Enables the Transparent Reasoning Module (evidence-gap detection). Stage 4 runs a TRM Z-score analysis to detect evidence gaps and annotate results accordingly. |
 | `SPECKIT_WORKING_MEMORY` | `true` | boolean | `lib/cognitive/working-memory.ts` | Enables the working memory system which tracks attention scores for memories seen in the current session. Working memory context is injected during resume mode and influences session-boost scoring. |
 
 #### Source Files
 
 Source file references are included in the flag table above.
+
+See [`19--feature-flag-reference/01-1-search-pipeline-features-speckit.md`](19--feature-flag-reference/01-1-search-pipeline-features-speckit.md) for full flag reference details.
 
 ---
 
@@ -3997,6 +4047,8 @@ These settings control short-term memory and caching behavior. They decide how l
 
 Source file references are included in the flag table above.
 
+See [`19--feature-flag-reference/02-2-session-and-cache.md`](19--feature-flag-reference/02-2-session-and-cache.md) for full flag reference details.
+
 ---
 
 ### 3. MCP Configuration
@@ -4020,6 +4072,8 @@ These are guardrail settings for save-time validation. They define size limits, 
 #### Source Files
 
 Source file references are included in the flag table above.
+
+See [`19--feature-flag-reference/03-3-mcp-configuration.md`](19--feature-flag-reference/03-3-mcp-configuration.md) for full flag reference details.
 
 ---
 
@@ -4046,6 +4100,8 @@ These variables define where memory files and databases live and how indexing ba
 
 Source file references are included in the flag table above.
 
+See [`19--feature-flag-reference/04-4-memory-and-storage.md`](19--feature-flag-reference/04-4-memory-and-storage.md) for full flag reference details.
+
 ---
 
 ### 5. Embedding and API
@@ -4068,6 +4124,8 @@ These settings pick which embedding and reranking providers the system uses and 
 #### Source Files
 
 Source file references are included in the flag table above.
+
+See [`19--feature-flag-reference/05-5-embedding-and-api.md`](19--feature-flag-reference/05-5-embedding-and-api.md) for full flag reference details.
 
 ---
 
@@ -4099,6 +4157,8 @@ These settings control diagnostic visibility. They adjust log verbosity and opti
 
 Source file references are included in the flag table above.
 
+See [`19--feature-flag-reference/06-6-debug-and-telemetry.md`](19--feature-flag-reference/06-6-debug-and-telemetry.md) for full flag reference details.
+
 ---
 
 ### 7. CI and Build (informational)
@@ -4121,3 +4181,5 @@ These variables are read at runtime to annotate checkpoint and evaluation record
 #### Source Files
 
 Source file references are included in the flag table above.
+
+See [`19--feature-flag-reference/07-7-ci-and-build-informational.md`](19--feature-flag-reference/07-7-ci-and-build-informational.md) for full flag reference details.

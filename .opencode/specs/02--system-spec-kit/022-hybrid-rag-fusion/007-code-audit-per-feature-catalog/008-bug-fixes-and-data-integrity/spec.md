@@ -30,8 +30,8 @@ contextType: "general"
 | **Updated** | 2026-03-13 |
 | **Branch** | `008-bug-fixes-and-data-integrity` |
 | **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../007-evaluation/spec.md |
-| **Next Phase** | ../009-evaluation-and-measurement/spec.md |
+| **Predecessor** | ../007-evaluation/spec.md |
+| **Successor** | ../009-evaluation-and-measurement/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

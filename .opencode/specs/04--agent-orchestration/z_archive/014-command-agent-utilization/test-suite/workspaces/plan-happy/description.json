@@ -20,5 +20,9 @@
     "workspaces"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: JWT Authentication with RS256 Signing [plan-happy/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: JWT Authentication with RS256 Signing"
 }

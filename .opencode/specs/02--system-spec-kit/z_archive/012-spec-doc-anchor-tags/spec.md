@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Spec Document Anchor Tags [129-spec-doc-anchor-tags/spec]"
+title: "Feature Specification: Spec Document Anchor Tags [012-spec-doc-anchor-tags/spec]"
 description: "Spec 126 made all spec documents searchable by indexing them as whole documents. But unlike Memory files and READMEs — which use &lt;!-- ANCHOR:name --&gt; tags for section-leve..."
 trigger_phrases:
   - "feature"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "spec"
   - "document"
   - "anchor"
-  - "129"
+  - "012"
 importance_tier: "important"
 contextType: "decision"
 ---

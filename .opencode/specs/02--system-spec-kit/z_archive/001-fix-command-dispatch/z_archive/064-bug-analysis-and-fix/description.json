@@ -22,5 +22,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: System-Spec-Kit Bug Analysis and Fix - Requirements & User [064-bug-analysis-and-fix/spec]",
+  "status": "Impact if Blocked",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: System-Spec-Kit Bug Analysis and Fix - Requirements & User Stories"
 }

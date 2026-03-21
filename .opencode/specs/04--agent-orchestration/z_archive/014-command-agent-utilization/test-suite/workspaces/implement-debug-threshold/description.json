@@ -18,5 +18,9 @@
     "workspaces"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: JWT Authentication [implement-debug-threshold/spec]",
+  "status": "In Progress",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: JWT Authentication"
 }

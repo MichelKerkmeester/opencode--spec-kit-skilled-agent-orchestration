@@ -1,0 +1,17 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion",
+  "description": "Epic Specification: 022-hybrid-rag-fusion",
+  "keywords": [
+    "epic",
+    "specification",
+    "022-hybrid-rag-fusion"
+  ],
+  "lastUpdated": "2026-03-21T13:24:03.872Z",
+  "specId": "022",
+  "folderSlug": "hybrid-rag-fusion",
+  "parentChain": [
+    "02--system-spec-kit"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

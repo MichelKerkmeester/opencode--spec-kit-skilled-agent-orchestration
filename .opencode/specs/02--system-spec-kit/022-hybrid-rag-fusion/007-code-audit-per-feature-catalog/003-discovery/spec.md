@@ -30,8 +30,8 @@ contextType: "general"
 | **Updated** | 2026-03-12 |
 | **Branch** | `003-discovery` |
 | **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../002-mutation/spec.md |
-| **Next Phase** | ../004-maintenance/spec.md |
+| **Predecessor** | ../002-mutation/spec.md |
+| **Successor** | ../004-maintenance/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

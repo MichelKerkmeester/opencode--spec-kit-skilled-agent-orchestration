@@ -13,7 +13,6 @@ import { validateFilePath } from '@spec-kit/shared/utils/path-security';
 import {
   evaluateMemorySufficiency,
   MEMORY_SUFFICIENCY_REJECTION_CODE,
-  type MemoryEvidenceSnapshot,
   type MemorySufficiencyResult,
 } from '@spec-kit/shared/parsing/memory-sufficiency';
 import {
@@ -56,20 +55,10 @@ import {
   recordSharedConflict,
 } from '../lib/collab/shared-spaces';
 import {
-  computeMemoryQualityScore,
-  attemptAutoFix,
   runQualityLoop,
-  isQualityLoopEnabled,
-  logQualityMetrics,
-  scoreTriggerPhrases,
-  scoreAnchorFormat,
-  scoreTokenBudget,
-  scoreCoherence,
-  extractTriggersFromContent,
-  normalizeAnchors,
-  QUALITY_WEIGHTS,
-  DEFAULT_TOKEN_BUDGET,
-  DEFAULT_CHAR_BUDGET,
+} from './quality-loop';
+import type {
+  QualityLoopResult,
 } from './quality-loop';
 
 // O2-5/O2-12: V-rule validation (previously only in workflow path)
@@ -77,11 +66,6 @@ import {
   validateMemoryQualityContent,
   determineValidationDisposition,
 } from './v-rule-bridge';
-import type {
-  QualityScore,
-  QualityScoreBreakdown,
-  QualityLoopResult,
-} from './quality-loop';
 
 // Save pipeline modules (CR-P2-4 decomposition)
 import type {
@@ -98,20 +82,18 @@ import { runReconsolidationIfEnabled } from './save/reconsolidation-bridge';
 import { runPostInsertEnrichment } from './save/post-insert';
 import { buildIndexResult, buildSaveResponse } from './save/response-builder';
 
-// Re-exports used by other modules
+// Extracted sub-modules
+import { withSpecFolderLock } from './save/spec-folder-mutex';
+import { buildParsedMemoryEvidenceSnapshot } from './save/markdown-evidence-builder';
 import {
-  calculateDocumentWeight,
-  reinforceExistingMemory,
-  markMemorySuperseded,
-  updateExistingMemory,
-  logPeDecision,
-} from './pe-gating';
-import {
-  processCausalLinks,
-  resolveMemoryReference,
-  CAUSAL_LINK_MAPPINGS,
-} from './causal-links-processor';
-import { escapeLikePattern } from './handler-utils';
+  applyInsufficiencyMetadata,
+  buildInsufficiencyRejectionResult,
+  buildTemplateContractRejectionResult,
+  buildDryRunSummary,
+} from './save/validation-responses';
+
+import { markMemorySuperseded } from './pe-gating';
+import { resolveMemoryReference } from './causal-links-processor';
 
 // Feature catalog: Memory indexing (memory_save)
 // Feature catalog: Verify-fix-verify memory quality loop
@@ -122,24 +104,6 @@ import { escapeLikePattern } from './handler-utils';
 // Create local path validator
 const validateFilePathLocal = createFilePathValidator(ALLOWED_BASE_PATHS, validateFilePath);
 
-/** Per-spec-folder save mutex to prevent concurrent indexing races (TOCTOU) */
-const SPEC_FOLDER_LOCKS = new Map<string, Promise<unknown>>();
-
-async function withSpecFolderLock<T>(specFolder: string, fn: () => Promise<T>): Promise<T> {
-  const normalizedFolder = specFolder || '__global__';
-  const chain = (SPEC_FOLDER_LOCKS.get(normalizedFolder) ?? Promise.resolve())
-    .catch((_error: unknown) => {})
-    .then(() => fn());
-  SPEC_FOLDER_LOCKS.set(normalizedFolder, chain);
-  try {
-    return await chain;
-  } finally {
-    if (SPEC_FOLDER_LOCKS.get(normalizedFolder) === chain) {
-      SPEC_FOLDER_LOCKS.delete(normalizedFolder);
-    }
-  }
-}
-
 interface PreparedParsedMemory {
   parsed: ReturnType<typeof memoryParser.parseMemoryFile>;
   validation: ReturnType<typeof memoryParser.validateParsedMemory>;
@@ -147,236 +111,6 @@ interface PreparedParsedMemory {
   sufficiencyResult: MemorySufficiencyResult;
   templateContract: MemoryTemplateContractResult;
   specDocHealth: SpecDocHealthResult | null;
-}
-
-const MARKDOWN_HEADING_RE = /^(#{2,6})\s+(.+?)\s*$/;
-const MARKDOWN_BULLET_RE = /^\s*(?:[-*]|\d+\.)\s+(.*)$/;
-
-function stripMarkdownDecorators(value: string): string {
-  return value
-    .replace(/`+/g, '')
-    .replace(/\*\*/g, '')
-    .replace(/\[(.*?)\]\((.*?)\)/g, '$1 $2')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function extractMarkdownSections(content: string): Array<{ heading: string; body: string }> {
-  const sections: Array<{ heading: string; body: string }> = [];
-  const lines = content.split(/\r?\n/);
-  let currentHeading = '';
-  let currentBody: string[] = [];
-
-  const flush = (): void => {
-    const body = currentBody.join('\n').trim();
-    if (body.length > 0) {
-      sections.push({ heading: currentHeading, body });
-    }
-    currentBody = [];
-  };
-
-  for (const line of lines) {
-    const headingMatch = line.match(MARKDOWN_HEADING_RE);
-    if (headingMatch) {
-      flush();
-      currentHeading = stripMarkdownDecorators(headingMatch[2]);
-      continue;
-    }
-
-    currentBody.push(line);
-  }
-
-  flush();
-  return sections;
-}
-
-function extractMarkdownListItems(body: string): string[] {
-  return body
-    .split(/\r?\n/)
-    .map((line) => line.match(MARKDOWN_BULLET_RE)?.[1] ?? '')
-    .map(stripMarkdownDecorators)
-    .filter(Boolean);
-}
-
-function extractMarkdownTableFiles(body: string): Array<{ path?: string; description?: string }> {
-  const files: Array<{ path?: string; description?: string }> = [];
-
-  for (const line of body.split(/\r?\n/)) {
-    const trimmed = line.trim();
-    if (!trimmed.startsWith('|')) {
-      continue;
-    }
-    if (/^\|[:\-|\s]+\|?$/.test(trimmed)) {
-      continue;
-    }
-
-    const cells = trimmed
-      .split('|')
-      .slice(1, -1)
-      .map((cell) => stripMarkdownDecorators(cell));
-
-    if (cells.length < 2 || /^file$/i.test(cells[0])) {
-      continue;
-    }
-
-    files.push({
-      path: cells[0],
-      description: cells[1],
-    });
-  }
-
-  return files;
-}
-
-function buildParsedMemoryEvidenceSnapshot(
-  parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
-): MemoryEvidenceSnapshot {
-  const sections = extractMarkdownSections(parsed.content);
-  const files: Array<{ path?: string; description?: string }> = [];
-  const observations: Array<{ title?: string; narrative?: string }> = [];
-  const decisions: string[] = [];
-  const nextActions: string[] = [];
-  const blockers: string[] = [];
-  const outcomes: string[] = [];
-  const recentContext: Array<{ request?: string; learning?: string }> = [];
-
-  for (const section of sections) {
-    const heading = section.heading.toLowerCase();
-    const listItems = extractMarkdownListItems(section.body);
-
-    if (
-      heading.includes('key files')
-      || heading.includes('files changed')
-      || heading.includes('files and their roles')
-      || heading === 'files'
-    ) {
-      files.push(...extractMarkdownTableFiles(section.body));
-      continue;
-    }
-
-    if (/^(?:feature|implementation|observation|read|write|edit|bash|grep|glob|search|tool)\s*:/.test(heading)) {
-      observations.push({
-        title: section.heading,
-        narrative: stripMarkdownDecorators(section.body),
-      });
-      continue;
-    }
-
-    if (heading === 'decisions' || /^decision\s+\d+:/i.test(section.heading)) {
-      decisions.push(stripMarkdownDecorators(section.body));
-      continue;
-    }
-
-    if (heading.includes('next steps') || heading.includes('pending work') || heading.includes('follow-up actions')) {
-      nextActions.push(...(listItems.length > 0 ? listItems : [stripMarkdownDecorators(section.body)]));
-      continue;
-    }
-
-    if (heading.includes('blockers')) {
-      blockers.push(...(listItems.length > 0 ? listItems : [stripMarkdownDecorators(section.body)]));
-      continue;
-    }
-
-    if (heading.includes('key outcomes') || heading === 'outcomes' || heading === 'outcome') {
-      outcomes.push(...(listItems.length > 0 ? listItems : [stripMarkdownDecorators(section.body)]));
-      continue;
-    }
-
-    if (heading.includes('context summary') || heading.includes('session summary') || heading === 'overview') {
-      recentContext.push({
-        request: section.heading,
-        learning: stripMarkdownDecorators(section.body),
-      });
-    }
-  }
-
-  return {
-    title: parsed.title,
-    content: parsed.content,
-    triggerPhrases: parsed.triggerPhrases,
-    files,
-    observations,
-    decisions,
-    nextActions,
-    blockers,
-    outcomes,
-    recentContext,
-  };
-}
-
-function applyInsufficiencyMetadata(
-  parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
-  sufficiencyResult: MemorySufficiencyResult,
-): void {
-  if (!sufficiencyResult.pass) {
-    parsed.qualityScore = Math.min(parsed.qualityScore ?? 1, sufficiencyResult.score * 0.6);
-    parsed.qualityFlags = Array.from(new Set([...(parsed.qualityFlags || []), 'has_insufficient_context']));
-  }
-}
-
-function buildInsufficiencyRejectionResult(
-  parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
-  validation: ReturnType<typeof memoryParser.validateParsedMemory>,
-  sufficiencyResult: MemorySufficiencyResult,
-): IndexResult {
-  return {
-    status: 'rejected',
-    id: 0,
-    specFolder: parsed.specFolder,
-    title: parsed.title ?? '',
-    triggerPhrases: parsed.triggerPhrases,
-    contextType: parsed.contextType,
-    importanceTier: parsed.importanceTier,
-    qualityScore: parsed.qualityScore,
-    qualityFlags: parsed.qualityFlags,
-    warnings: validation.warnings,
-    rejectionCode: MEMORY_SUFFICIENCY_REJECTION_CODE,
-    rejectionReason: `${MEMORY_SUFFICIENCY_REJECTION_CODE}: ${sufficiencyResult.reasons.join(' ')}`,
-    message: 'Not enough context for a proper memory.',
-    sufficiency: sufficiencyResult,
-  };
-}
-
-function buildTemplateContractRejectionResult(
-  parsed: ReturnType<typeof memoryParser.parseMemoryFile>,
-  validation: ReturnType<typeof memoryParser.validateParsedMemory>,
-  templateContract: MemoryTemplateContractResult,
-): IndexResult {
-  const violationSummary = templateContract.violations.map((violation) => violation.code).join(', ');
-  return {
-    status: 'rejected',
-    id: 0,
-    specFolder: parsed.specFolder,
-    title: parsed.title ?? '',
-    triggerPhrases: parsed.triggerPhrases,
-    contextType: parsed.contextType,
-    importanceTier: parsed.importanceTier,
-    qualityScore: parsed.qualityScore,
-    qualityFlags: Array.from(new Set([...(parsed.qualityFlags || []), 'violates_template_contract'])),
-    warnings: validation.warnings,
-    rejectionReason: `Template contract validation failed: ${violationSummary}`,
-    message: 'Memory file does not match the required template contract.',
-  };
-}
-
-function buildDryRunSummary(
-  sufficiencyResult: MemorySufficiencyResult,
-  qualityLoopResult: QualityLoopResult,
-  templateContract: MemoryTemplateContractResult,
-): string {
-  if (!qualityLoopResult.passed && qualityLoopResult.rejected) {
-    return qualityLoopResult.rejectionReason ?? 'Quality loop rejected the save';
-  }
-
-  if (!templateContract.valid) {
-    return 'Dry-run detected structural template-contract violations';
-  }
-
-  if (!sufficiencyResult.pass) {
-    return 'Dry-run detected insufficient context for a durable memory';
-  }
-
-  return 'Dry-run validation passed';
 }
 
 function buildQualityLoopMetadata(
@@ -631,6 +365,14 @@ async function processPreparedMemory(
         console.warn(`[memory-save] TM-04: Quality gate error (proceeding with save): ${message}`);
         // Quality gate errors must not block saves
       }
+    }
+
+    const duplicatePrecheck = checkContentHashDedup(database, parsed, force, validation.warnings, {
+      canonicalFilePath,
+      filePath,
+    }, scope);
+    if (duplicatePrecheck) {
+      return duplicatePrecheck;
     }
 
     persistPendingEmbeddingCacheWrite(database, pendingCacheWrite, filePath);
@@ -1315,88 +1057,25 @@ function getAtomicityMetrics(): Record<string, unknown> {
 /* --- 12. EXPORTS --- */
 
 export {
-  // Primary exports
+  // Primary exports (defined in this module)
   indexMemoryFile,
   indexChunkedMemoryFile,
   handleMemorySave,
   atomicSaveMemory,
   getAtomicityMetrics,
-
-  // PE gating helper functions
-  calculateDocumentWeight,
-  findSimilarMemories,
-  reinforceExistingMemory,
-  markMemorySuperseded,
-  updateExistingMemory,
-  logPeDecision,
-
-  // Causal links helper functions
-  processCausalLinks,
-  resolveMemoryReference,
-  escapeLikePattern,
-  CAUSAL_LINK_MAPPINGS,
-
-  // Quality Loop (T008)
-  computeMemoryQualityScore,
-  attemptAutoFix,
-  runQualityLoop,
-  isQualityLoopEnabled,
-  logQualityMetrics,
-
-  // Quality Loop internals (exported for testing)
-  scoreTriggerPhrases,
-  scoreAnchorFormat,
-  scoreTokenBudget,
-  scoreCoherence,
-  extractTriggersFromContent,
-  normalizeAnchors,
-  QUALITY_WEIGHTS,
-  DEFAULT_TOKEN_BUDGET,
-  DEFAULT_CHAR_BUDGET,
 };
 
-// Quality Loop type exports
-export type {
-  QualityScore,
-  QualityScoreBreakdown,
-  QualityLoopResult,
-};
-
-// Backward-compatible aliases (snake_case)
+// Backward-compatible aliases (snake_case) — only for symbols defined in this module
 const index_memory_file = indexMemoryFile;
+const index_chunked_memory_file = indexChunkedMemoryFile;
 const handle_memory_save = handleMemorySave;
 const atomic_save_memory = atomicSaveMemory;
 const get_atomicity_metrics = getAtomicityMetrics;
-const calculate_document_weight = calculateDocumentWeight;
-const find_similar_memories = findSimilarMemories;
-const reinforce_existing_memory = reinforceExistingMemory;
-const mark_memory_superseded = markMemorySuperseded;
-const update_existing_memory = updateExistingMemory;
-const log_pe_decision = logPeDecision;
-const process_causal_links = processCausalLinks;
-const resolve_memory_reference = resolveMemoryReference;
-const compute_memory_quality_score = computeMemoryQualityScore;
-const attempt_auto_fix = attemptAutoFix;
-const run_quality_loop = runQualityLoop;
-const is_quality_loop_enabled = isQualityLoopEnabled;
-const log_quality_metrics = logQualityMetrics;
 
 export {
   index_memory_file,
+  index_chunked_memory_file,
   handle_memory_save,
   atomic_save_memory,
   get_atomicity_metrics,
-  calculate_document_weight,
-  find_similar_memories,
-  reinforce_existing_memory,
-  mark_memory_superseded,
-  update_existing_memory,
-  log_pe_decision,
-  process_causal_links,
-  resolve_memory_reference,
-  compute_memory_quality_score,
-  attempt_auto_fix,
-  run_quality_loop,
-  is_quality_loop_enabled,
-  log_quality_metrics,
 };

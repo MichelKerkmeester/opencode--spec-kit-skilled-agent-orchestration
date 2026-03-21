@@ -39,9 +39,9 @@ Commands are organized into three groups:
 
 | Group | Path | Commands | Purpose |
 |-------|------|----------|---------|
-| **create** | `command/create/` | 8 | Scaffold OpenCode components, documentation packages, prompt artifacts, changelogs, and visual HTML |
+| **create** | `command/create/` | 7 | Scaffold OpenCode components, documentation packages, prompt artifacts, and changelogs |
 | **memory** | `command/memory/` | 6 | Memory system operations (analyze, save, continue, learn, manage, shared) |
-| **spec_kit** | `command/spec_kit/` | 8 | Spec folder workflows (plan, implement, research, debug, handover, resume, complete, phase) |
+| **spec_kit** | `command/spec_kit/` | 8 | Spec folder workflows (plan, implement, deep-research, debug, handover, resume, complete, phase) |
 
 One standalone command (`agent_router.md`) lives at the root level for routing requests to AI systems.
 
@@ -73,10 +73,9 @@ command/
 │   ├── prompt.md             # Create or improve prompts
 │   ├── sk-skill.md           # Create or update skill package/files
 │   ├── testing-playbook.md   # Create or update manual testing playbook package
-│   ├── visual_html.md        # Create or verify visual HTML output
 │   └── assets/               # YAML workflow definitions
 ├── memory/                   # Memory system commands
-│   ├── analyze.md          # Unified retrieval + analysis (intent-aware search, epistemic, causal, eval)
+│   ├── analyze.md            # Unified retrieval + analysis (intent-aware search, epistemic, causal, eval)
 │   ├── continue.md           # Session recovery
 │   ├── learn.md              # Constitutional memory manager
 │   ├── manage.md             # Database management operations
@@ -87,10 +86,11 @@ command/
     ├── debug.md              # Debug delegation
     ├── handover.md           # Session handover
     ├── implement.md          # Execute pre-planned work
+    ├── deep-research.md      # Iterative deep research workflow
+    ├── phase.md              # Parent/child phase decomposition
     ├── plan.md               # Spec through plan only
-    ├── research.md           # Technical investigation
     ├── resume.md             # Resume existing spec work
-    └── assets/               # YAML workflow definitions (13 files)
+    └── assets/               # YAML workflow definitions (15 files)
 ```
 
 ---
@@ -112,7 +112,6 @@ Scaffold OpenCode components using the `sk-doc` skill. Each command supports `:a
 | Skill | `/create:sk-skill <name> <operation> [type]` | Unified skill create/update/reference/asset workflow |
 | Prompt | `/create:prompt <prompt-text-or-flags>` | Create or improve prompts through `sk-prompt-improver` |
 | Changelog | `/create:changelog <spec-folder-or-component>` | Create a changelog entry from recent work |
-| Visual HTML | `/create:visual_html <target> --mode <auto\|create\|analyze\|verify\|custom>` | Unified visual command with broad intent-based routing |
 
 ### Memory Commands
 
@@ -138,7 +137,8 @@ Structured workflows for the spec folder development lifecycle.
 | Handover | `/spec_kit:handover [spec-folder]` | Create session handover for continuation |
 | Implement | `/spec_kit:implement <spec-folder>` | Execute pre-planned work (requires plan.md) |
 | Plan | `/spec_kit:plan <description>` | Planning workflow (spec through plan only) |
-| Research | `/spec_kit:research <topic>` | Technical investigation and documentation |
+| Deep Research | `/spec_kit:deep-research <topic>` | Technical investigation with iterative convergence |
+| Phase | `/spec_kit:phase <description> [--phases N]` | Parent/child phase decomposition for complex work |
 | Resume | `/spec_kit:resume [spec-folder]` | Resume work on existing spec folder |
 
 ---
@@ -165,7 +165,6 @@ Structured workflows for the spec folder development lifecycle.
 /create:feature-catalog system-spec-kit create :confirm
 /create:testing-playbook system-spec-kit update :auto
 /create:sk-skill my-new-skill full-create :auto
-/create:visual_html "specs/007-auth/plan.md" --mode analyze
 /memory:save specs/007-feature
 /spec_kit:plan "Add user authentication" :auto
 ```

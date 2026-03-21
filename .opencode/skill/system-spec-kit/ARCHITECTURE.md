@@ -47,7 +47,7 @@ See ADR-001 in the spec folder for the full decision rationale.
 |--------|-------|---------|
 | Ownership zones | 3 | Scripts, MCP Server, Shared |
 | Public boundary | 1 | `mcp_server/api/` |
-| Enforcement tools | 6 | AST checkers, CI workflow, boundary scripts |
+| Enforcement tools | 9 | AST checkers, CI workflow, boundary scripts |
 | Active exceptions | 4 | Registered in allowlist with expiry tracking |
 
 ### Key Features
@@ -203,6 +203,7 @@ All exceptions must be registered in `scripts/evals/import-policy-allowlist.json
 | `scripts/evals/run-performance-benchmarks.ts` | `@spec-kit/mcp-server/lib/*` (multiple) | Benchmark needs direct access to internal metrics |
 | `scripts/spec-folder/generate-description.ts` | `@spec-kit/mcp-server/lib/search/folder-discovery` | CLI tool needs folder-discovery internals for description generation |
 | `scripts/core/workflow.ts` | `@spec-kit/mcp-server/lib/search/folder-discovery` | Workflow memory-save updates per-folder description.json via dynamic import |
+| `scripts/memory/rebuild-auto-entities.ts` | `@spec-kit/mcp-server/lib/*` | Entity rebuilder needs direct access to internal storage and indexing modules |
 
 **Removal criteria:** Remove an allowlist entry when its `removeWhen` condition has been satisfied or its `expiresAt` date has passed.
 

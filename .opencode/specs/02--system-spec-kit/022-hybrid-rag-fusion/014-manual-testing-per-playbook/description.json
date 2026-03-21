@@ -13,9 +13,14 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 2,
+  "memorySequence": 3,
   "memoryNameHistory": [
     "16-03-26_14-30__manual-testing-per-playbook.md",
-    "16-03-26_15-31__aligned-all-38-document-files-19-spec-md-19.md"
-  ]
+    "16-03-26_15-31__aligned-all-38-document-files-19-spec-md-19.md",
+    "21-03-26_13-39__executed-spec-kit-implement-across-all-19-phase.md"
+  ],
+  "title": "Feature Specification: manual-testing-per-playbook [template:level_1/spec.md]",
+  "status": "Draft",
+  "importance_tier": "high",
+  "short_description": "Feature Specification: manual-testing-per-playbook"
 }

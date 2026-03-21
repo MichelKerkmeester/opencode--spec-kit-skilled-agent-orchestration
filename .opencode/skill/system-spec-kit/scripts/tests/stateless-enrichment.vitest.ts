@@ -57,7 +57,7 @@ describe('stateless enrichment guardrails', () => {
       sessionTitle: 'Perfect Session Capturing',
       sessionId: 'session-test',
       capturedAt: '2026-03-09T10:01:00Z',
-    }, '02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing');
+    }, '02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing');
 
     expect(transformed.userPrompts).toHaveLength(1);
     expect(transformed.observations).toHaveLength(1);
@@ -83,7 +83,7 @@ describe('stateless enrichment guardrails', () => {
       sessionTitle: 'Perfect Session Capturing',
       sessionId: 'session-test',
       capturedAt: '2026-03-09T10:06:00Z',
-    }, '02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing');
+    }, '02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing');
 
     expect(transformed.userPrompts).toHaveLength(1);
     expect(transformed.userPrompts[0]?.prompt).toContain('Perfect session capturing');
@@ -105,7 +105,7 @@ describe('stateless enrichment guardrails', () => {
       sessionTitle: 'Foreign Spec Session',
       sessionId: 'foreign-session',
       capturedAt: '2026-03-09T10:11:00Z',
-    }, '02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing');
+    }, '02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing');
 
     expect(transformed.userPrompts).toEqual([]);
     expect(transformed.observations).toEqual([]);
@@ -129,14 +129,14 @@ describe('stateless enrichment guardrails', () => {
           input: {
             command: "sed -n '680,760p' .opencode/skill/system-spec-kit/scripts/core/workflow.ts",
           },
-          output: 'Confirmed scripts/core/workflow.ts still blocks mis-scoped 010-perfect-session-capturing saves.',
+          output: 'Confirmed scripts/core/workflow.ts still blocks mis-scoped 009-perfect-session-capturing saves.',
         },
       ],
       metadata: {},
       sessionTitle: 'Codex stateless evidence preservation',
       sessionId: 'codex-evidence',
       capturedAt: '2026-03-15T12:00:30Z',
-    }, '02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing', 'codex-cli-capture');
+    }, '02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing', 'codex-cli-capture');
 
     expect(transformed._toolCallCount).toBe(1);
     expect(transformed.observations).toEqual(expect.arrayContaining([
@@ -174,7 +174,7 @@ describe('stateless enrichment guardrails', () => {
       sessionTitle: 'Generic infrastructure session',
       sessionId: 'generic-infra',
       capturedAt: '2026-03-15T12:10:30Z',
-    }, '02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing');
+    }, '02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing');
 
     expect(transformed._toolCallCount).toBe(0);
     expect(transformed.observations).toEqual([]);
@@ -225,7 +225,7 @@ describe('stateless enrichment guardrails', () => {
   it('extracts task progress and decisions from spec-folder docs without crashing on sparse inputs', async () => {
     const specRoot = makeTempRoot('speckit-spec-folder-sparse-');
     fs.writeFileSync(path.join(specRoot, 'description.json'), JSON.stringify({
-      id: '010-perfect-session-capturing',
+      id: '009-perfect-session-capturing',
       title: 'Perfect Session Capturing',
       status: 'in-progress',
       level: 3,
@@ -347,7 +347,7 @@ describe('stateless enrichment guardrails', () => {
 
   it('uses spec-declared file targets to scope git context beyond the spec folder path itself', async () => {
     const repoRoot = makeTempRoot('speckit-git-context-');
-    const specFolderPath = path.join(repoRoot, '.opencode', 'specs', '02--system-spec-kit', '022-hybrid-rag-fusion', '010-perfect-session-capturing');
+    const specFolderPath = path.join(repoRoot, '.opencode', 'specs', '02--system-spec-kit', '022-hybrid-rag-fusion', '009-perfect-session-capturing');
     const workflowPath = path.join(repoRoot, '.opencode', 'skill', 'system-spec-kit', 'scripts', 'core', 'workflow.ts');
 
     fs.mkdirSync(specFolderPath, { recursive: true });
@@ -483,7 +483,7 @@ describe('stateless enrichment guardrails', () => {
 
   it('keeps the full capped diff window when history exceeds the recent-commit limit', async () => {
     const repoRoot = makeTempRoot('speckit-git-window-');
-    const targetSpecFolder = path.join(repoRoot, '.opencode', 'specs', '02--system-spec-kit', '022-hybrid-rag-fusion', '010-perfect-session-capturing');
+    const targetSpecFolder = path.join(repoRoot, '.opencode', 'specs', '02--system-spec-kit', '022-hybrid-rag-fusion', '009-perfect-session-capturing');
 
     fs.mkdirSync(targetSpecFolder, { recursive: true });
     fs.writeFileSync(path.join(targetSpecFolder, 'spec.md'), '# Spec\n', 'utf-8');
@@ -503,22 +503,22 @@ describe('stateless enrichment guardrails', () => {
     expect(gitContext.FILES).toHaveLength(5);
     expect(gitContext.FILES).toEqual(expect.arrayContaining([
       expect.objectContaining({
-        FILE_PATH: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/note-2.md',
+        FILE_PATH: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/note-2.md',
       }),
       expect.objectContaining({
-        FILE_PATH: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/note-6.md',
+        FILE_PATH: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/note-6.md',
       }),
     ]));
     expect(gitContext.FILES).toEqual(expect.not.arrayContaining([
       expect.objectContaining({
-        FILE_PATH: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/note-1.md',
+        FILE_PATH: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/note-1.md',
       }),
     ]));
   });
 
   it('does not over-match similarly named spec folders when file targets do not overlap', async () => {
     const repoRoot = makeTempRoot('speckit-git-boundary-');
-    const targetSpecFolder = path.join(repoRoot, '.opencode', 'specs', '02--system-spec-kit', '022-hybrid-rag-fusion', '010-perfect-session-capturing');
+    const targetSpecFolder = path.join(repoRoot, '.opencode', 'specs', '02--system-spec-kit', '022-hybrid-rag-fusion', '009-perfect-session-capturing');
     const foreignSpecFolder = `${targetSpecFolder}-archive`;
 
     fs.mkdirSync(targetSpecFolder, { recursive: true });
@@ -538,18 +538,18 @@ describe('stateless enrichment guardrails', () => {
     expect(gitContext.commitCount).toBe(1);
     expect(gitContext.FILES).toEqual(expect.arrayContaining([
       expect.objectContaining({
-        FILE_PATH: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/spec.md',
+        FILE_PATH: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/spec.md',
       }),
     ]));
     expect(gitContext.observations).toEqual(expect.arrayContaining([
       expect.objectContaining({
         title: 'docs: add target spec shell',
-        files: ['.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/spec.md'],
+        files: ['.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/spec.md'],
       }),
     ]));
     expect(gitContext.FILES).toEqual(expect.not.arrayContaining([
       expect.objectContaining({
-        FILE_PATH: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing-archive/notes.md',
+        FILE_PATH: '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing-archive/notes.md',
       }),
     ]));
   });

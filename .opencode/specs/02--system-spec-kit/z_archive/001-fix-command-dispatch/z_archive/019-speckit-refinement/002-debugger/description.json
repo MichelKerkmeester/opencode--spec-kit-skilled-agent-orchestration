@@ -17,5 +17,8 @@
     "019-speckit-refinement"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Debug Delegation Integration [002-debugger/spec]",
+  "importance_tier": "important",
+  "short_description": "Debug Delegation Integration"
 }

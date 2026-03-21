@@ -35,8 +35,8 @@ contextType: "general"
 | **Created** | 2026-03-10 |
 | **Branch** | `010-graph-signal-activation` |
 | **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../009-evaluation-and-measurement/spec.md |
-| **Next Phase** | ../011-scoring-and-calibration/spec.md |
+| **Predecessor** | ../009-evaluation-and-measurement/spec.md |
+| **Successor** | ../011-scoring-and-calibration/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

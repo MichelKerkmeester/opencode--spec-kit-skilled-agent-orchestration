@@ -18,6 +18,9 @@
   "exclude": [
     "node_modules",
     "dist",
+    "tests/**/*.vitest.ts",
+    "tests/**/*.test.ts",
+    "tests/**/*.vitest.js",
     "tests/chunk-thinning.vitest.ts",
     "tests/layer-definitions.vitest.ts",
     "tests/dead-code-regression.vitest.ts"

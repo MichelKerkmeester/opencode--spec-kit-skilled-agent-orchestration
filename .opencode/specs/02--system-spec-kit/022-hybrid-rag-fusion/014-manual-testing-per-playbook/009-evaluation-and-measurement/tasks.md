@@ -37,8 +37,8 @@ contextType: "general"
 - [x] T001 Extract prompts, execution methods, evidence expectations, and pass criteria for all 16 scenarios from `../../manual_testing_playbook/manual_testing_playbook.md`
 - [x] T002 Confirm feature catalog links for 005 through 015, 072, 082, 088, 090, and 126 in `../../feature_catalog/09--evaluation-and-measurement/`
 - [x] T003 Identify which scenarios are inspection-only (009, 010, 072, 088, 090) versus MCP-backed command-driven (005, 006, 007, 008, 011, 012, 013, 014, 015, 082, 126)
-- [ ] T004 [P] Prepare isolated eval/context DB paths and confirm MCP runtime access for command-driven scenarios
-- [ ] T005 [P] Verify baseline corpus and fixture prerequisites for 008, 011, and 014 comparison scenarios
+- [x] T004 [P] Prepare isolated eval/context DB paths and confirm MCP runtime access for command-driven scenarios
+- [x] T005 [P] Verify baseline corpus and fixture prerequisites for 008, 011, and 014 comparison scenarios
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -48,10 +48,10 @@ contextType: "general"
 
 - [x] T006 Draft `spec.md` with metadata, 16-row scenario mapping table, 16 P0 requirements, and acceptance scenarios A and B
 - [x] T007 Draft `plan.md` with readiness gates, four execution phases, and testing strategy table covering all 16 test IDs
-- [ ] T008 Run inspection-oriented scenarios: 009 (quality proxy), 010 (corpus audit), 072 (test quality review), 088 (cross-AI fix verification), 090 (INT8 decision re-evaluation)
-- [ ] T009 [P] Run reproducible runtime scenarios: 006, 007, 008, 011, 012, 013, 014, 015
-- [ ] T010 Run isolated write-heavy scenarios: 005 (eval DB schema), 082 (housekeeping fixes), 126 (baseline snapshot suite)
-- [ ] T011 [P] Resolve open questions for shared-vs-disposable sandbox decision (005, 082, 126) and canonical fixture baseline (008, 011, 014)
+- [x] T008 Run inspection-oriented scenarios: 009 (quality proxy), 010 (corpus audit), 072 (test quality review), 088 (cross-AI fix verification), 090 (INT8 decision re-evaluation)
+- [x] T009 [P] Run reproducible runtime scenarios: 006, 007, 008, 011, 012, 013, 014, 015
+- [x] T010 Run isolated write-heavy scenarios: 005 (eval DB schema), 082 (housekeeping fixes), 126 (baseline snapshot suite)
+- [x] T011 [P] Resolve open questions for shared-vs-disposable sandbox decision (005, 082, 126) and canonical fixture baseline (008, 011, 014)
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -59,11 +59,11 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T012 Capture command transcripts, inspection notes, DB/log extracts, dashboard output, and test-suite results for all 16 scenarios
-- [ ] T013 Compare evidence against playbook PASS/FAIL criteria and assign PASS, PARTIAL, or FAIL verdict with rationale for each scenario
+- [x] T012 Capture command transcripts, inspection notes, DB/log extracts, dashboard output, and test-suite results for all 16 scenarios
+- [x] T013 Compare evidence against playbook PASS/FAIL criteria and assign PASS, PARTIAL, or FAIL verdict with rationale for each scenario
 - [x] T014 Validate documentation structure: confirm all required anchors, SPECKIT_LEVEL headers, and YAML frontmatter are intact across spec.md, plan.md, tasks.md, checklist.md
-- [ ] T015 Confirm coverage is 16/16 with no missing test IDs against the parent phase map
-- [ ] T016 Update `implementation-summary.md` when all 16 scenarios are executed and verdicts are recorded
+- [x] T015 Confirm coverage is 16/16 with no missing test IDs against the parent phase map
+- [x] T016 Update `implementation-summary.md` when all 16 scenarios are executed and verdicts are recorded
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -71,9 +71,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---

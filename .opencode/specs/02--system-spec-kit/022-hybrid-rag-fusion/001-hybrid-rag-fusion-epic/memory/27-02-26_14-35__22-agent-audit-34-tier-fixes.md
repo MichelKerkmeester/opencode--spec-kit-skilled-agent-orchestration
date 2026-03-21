@@ -7,7 +7,7 @@ trigger_phrases:
   - "req 062"
   - "phase sprint"
   - "child only"
-importance_tier: "critical"
+importance_tier: "important"
 contextType: "implementation"
 quality_score: 1.00
 quality_flags: []
@@ -584,7 +584,7 @@ spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion"
 channel: "main"
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)
@@ -667,7 +667,7 @@ trigger_phrases:
   - "pi b3"
   - "req 062"
   - "phase sprint"
-  - "child only"  []
+  - "child only"
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion"
 child_sessions:

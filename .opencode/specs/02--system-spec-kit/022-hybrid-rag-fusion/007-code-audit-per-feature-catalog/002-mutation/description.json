@@ -21,5 +21,9 @@
     "10-03-26_16-52__review-spec-folder-context.md",
     "10-03-26_17-13__review-spec-folder-context.md",
     "10-03-26_18-59__review-spec-folder-context.md"
-  ]
+  ],
+  "title": "Feature Specification: 002-Mutation Code Audit",
+  "status": "Complete",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: 002-Mutation Code Audit"
 }

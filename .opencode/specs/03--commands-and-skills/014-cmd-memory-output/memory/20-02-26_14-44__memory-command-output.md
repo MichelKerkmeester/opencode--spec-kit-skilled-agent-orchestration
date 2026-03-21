@@ -1,5 +1,5 @@
 ---
-title: "Unified memory dashboard rollout for 013-memory-command-output 2026-02-20"
+title: "Unified memory dashboard rollout for 014-cmd-memory-output 2026-02-20"
 description: "This session completed the Unified Memory Dashboard Visual Design System for the 013-memory-command-output spec. It standardized shared components and templates across all..."
 trigger_phrases:
   - "unified memory dashboard rollout"
@@ -21,7 +21,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-02-20 |
 | Session ID | session-1771595080985-xyti6xj7j |
-| Spec Folder | 03--commands-and-skills/013-memory-command-output |
+| Spec Folder | 03--commands-and-skills/014-cmd-memory-output |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -110,13 +110,13 @@ quality_flags:
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 03--commands-and-skills/013-memory-command-output
+/spec_kit:resume 03--commands-and-skills/014-cmd-memory-output
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 03--commands-and-skills/013-memory-command-output
+Spec: 03--commands-and-skills/014-cmd-memory-output
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
@@ -464,9 +464,9 @@ Completed the Unified Memory Dashboard Visual Design System (v2.2.27.0) across a
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/013-memory-command-output` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/014-cmd-memory-output` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/013-memory-command-output" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/014-cmd-memory-output" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -478,16 +478,16 @@ Completed the Unified Memory Dashboard Visual Design System (v2.2.27.0) across a
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "03--commands-and-skills/013-memory-command-output", limit: 10 })
+memory_search({ specFolder: "03--commands-and-skills/014-cmd-memory-output", limit: 10 })
 
 # Verify memory file integrity
-ls -la 03--commands-and-skills/013-memory-command-output/memory/
+ls -la 03--commands-and-skills/014-cmd-memory-output/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/013-memory-command-output --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/014-cmd-memory-output --force
 ```
 
 ### Recovery Priority
@@ -559,7 +559,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1771595080985-xyti6xj7j"
-spec_folder: "03--commands-and-skills/013-memory-command-output"
+spec_folder: "03--commands-and-skills/014-cmd-memory-output"
 channel: "main"
 
 # Classification
@@ -645,7 +645,7 @@ trigger_phrases:
   - "unified memory dashboard rollout"
   - "shared output components"
   - "memory command templates"
-  - "workflow documentation review"parent_spec: "03--commands-and-skills/013-memory-command-output"
+  - "workflow documentation review"parent_spec: "03--commands-and-skills/014-cmd-memory-output"
 child_sessions:
 
   []

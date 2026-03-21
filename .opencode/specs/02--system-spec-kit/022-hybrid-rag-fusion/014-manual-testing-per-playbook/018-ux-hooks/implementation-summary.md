@@ -77,6 +77,20 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 | checklist.md anchor count | PASS — exactly 8 anchors |
 | checklist.md no overview section | PASS — no ANCHOR:overview |
 | checklist.md no standalone P0/P1 headers | PASS — priority is per-item only |
+
+### Phase 018 Execution Verdicts (2026-03-21)
+
+| Test ID | Scenario | Verdict | Evidence |
+|---------|----------|---------|----------|
+| 103 | UX hook module coverage | PASS | `hooks-ux-feedback.vitest.ts` 6/6 tests |
+| 104 | Mutation save-path UX parity | FAIL | `ReferenceError: calculateDocumentWeight` not defined at `handlers/memory-save.ts:1335` — import crash, 0 tests run |
+| 105 | Context-server success-envelope | PASS | `context-server.vitest.ts` 346/346 tests; T000i + T000j confirmed |
+| 106 | Hooks barrel + README sync | PASS | All 4 terms present in `hooks/index.ts` and `hooks/README.md` |
+| 107 | Checkpoint confirmName enforcement | PARTIAL | handler-checkpoints (37) + tool-input-schema (42) + Group 13b T103-T106 pass; mcp-input-validation blocked by same `calculateDocumentWeight` defect |
+
+**Coverage**: 5/5 scenarios verdicted — 3 PASS, 1 FAIL, 1 PARTIAL
+
+**Blocking defect**: `calculateDocumentWeight` undefined at `handlers/memory-save.ts:1335` blocks tests 104 and 107 (mcp-input-validation suite only).
 <!-- /ANCHOR:verification -->
 
 ---
@@ -84,8 +98,9 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Draft status** — Test scenarios are documented but not yet executed. Final verdicts require manual or MCP-backed execution.
-2. **Coverage audit pending** — Cross-reference validation against the full playbook index has not been run for this individual phase.
+1. **Test 104 FAIL** — `memory-save-ux-regressions.vitest.ts` fails at import due to `ReferenceError: calculateDocumentWeight is not defined` at `handlers/memory-save.ts:1335`. No regression assertions were executed.
+2. **Test 107 PARTIAL** — `mcp-input-validation.vitest.ts` blocked by the same `calculateDocumentWeight` defect (imports via `handlers/index.ts`). Core confirmName enforcement is verified via the other 3 suites.
+3. **Coverage audit** — Cross-reference validation against the full playbook index has not been run for this individual phase.
 <!-- /ANCHOR:limitations -->
 
 ---

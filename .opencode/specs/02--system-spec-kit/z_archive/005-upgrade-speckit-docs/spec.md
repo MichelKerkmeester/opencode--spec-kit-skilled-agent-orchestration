@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: OpenCode Documentation Quality Upgrade [122-upgrade-speckit-docs/spec]"
+title: "Feature Specification: OpenCode Documentation Quality Upgrade [005-upgrade-speckit-docs/spec]"
 description: "OpenCode system documentation across 85 files contained superlatives, marketing language, unnecessary verbiage, and style inconsistencies that reduced professional clarity. Docu..."
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "documentation"
   - "quality"
   - "spec"
-  - "122"
+  - "005"
   - "upgrade"
 importance_tier: "important"
 contextType: "decision"

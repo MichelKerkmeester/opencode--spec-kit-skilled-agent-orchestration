@@ -18,5 +18,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Orchestrate Agent Context Window Protection [006-orchestrate-context-window/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Orchestrate Agent Context Window Protection"
 }

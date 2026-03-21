@@ -21,5 +21,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Memory Command Separation - Requirements & User Stories [068-memory-index-commands/spec]",
+  "status": "Impact if Blocked",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Memory Command Separation - Requirements & User Stories"
 }

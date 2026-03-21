@@ -27,6 +27,9 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-14 |
 | **Branch** | `007-code-audit-per-feature-catalog` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../006-feature-catalog/spec.md |
+| **Successor** | ../008-hydra-db-based-features/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -130,11 +133,11 @@ Provide a canonical parent packet for phase linkage and closure truth, so recurs
 
 ---
 
-## 6. ACCEPTANCE SCENARIOS
+**Validation scenarios tracked by this umbrella packet:**
 
-1. **Given** the umbrella packet is validated recursively, **When** the validator checks root required files, **Then** `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md` are present.
-2. **Given** phase 020 references feature-catalog source docs, **When** spec-doc integrity checks run, **Then** all referenced markdown targets resolve to `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/*.md`.
-3. **Given** phase 021 verification claims are reviewed, **When** compared to session command outputs, **Then** no stale runtime snapshot counts are presented as current-session evidence.
+1. **Given** the umbrella packet is validated recursively, **when** the validator checks root required files, **then** `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md` are present.
+2. **Given** phase 020 references feature-catalog source docs, **when** spec-doc integrity checks run, **then** all referenced markdown targets resolve to `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/*.md`.
+3. **Given** phase 021 verification claims are reviewed, **when** compared to session command outputs, **then** no stale runtime snapshot counts are presented as current-session evidence.
 
 ---
 
@@ -164,3 +167,13 @@ CORE TEMPLATE (~80 lines)
 - No boilerplate sections
 - Add L2/L3 addendums for complexity
 -->
+
+---
+
+## Phase Navigation
+
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../006-feature-catalog/spec.md |
+| **Next Phase** | ../008-hydra-db-based-features/spec.md |

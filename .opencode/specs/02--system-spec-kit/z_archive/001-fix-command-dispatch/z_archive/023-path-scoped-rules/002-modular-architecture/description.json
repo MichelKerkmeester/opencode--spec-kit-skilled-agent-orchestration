@@ -17,5 +17,9 @@
     "023-path-scoped-rules"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Modular Validation Architecture [002-modular-architecture/spec]",
+  "status": "In Progress",
+  "importance_tier": "important",
+  "short_description": "Modular Validation Architecture"
 }

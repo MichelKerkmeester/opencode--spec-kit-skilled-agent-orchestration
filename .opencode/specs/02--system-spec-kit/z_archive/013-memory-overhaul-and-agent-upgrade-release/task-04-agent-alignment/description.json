@@ -16,5 +16,9 @@
     "013-memory-overhaul-and-agent-upgrade-release"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Task 04 — Agent Configs Audit [task-04-agent-alignment/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Task 04 — Agent Configs Audit"
 }

@@ -85,6 +85,40 @@ function createMockDb(): Database.Database {
   } as unknown as Database.Database;
 }
 
+function createDegreeAwareMockDb(): Database.Database {
+  return {
+    prepare(sql: string) {
+      return {
+        get() {
+          if (sql.includes('memory_fts')) {
+            return { count: 1 };
+          }
+          return null;
+        },
+        all(...params: unknown[]) {
+          if (sql.includes('memory_index') && sql.includes('constitutional')) {
+            return [];
+          }
+
+          if (sql.includes('SELECT DISTINCT node_id')) {
+            return [{ node_id: '2' }];
+          }
+
+          if (sql.includes('SELECT relation, strength FROM causal_edges WHERE source_id = ?')) {
+            const id = String(params[0]);
+            if (id === '2') {
+              return [{ relation: 'caused', strength: 1 }];
+            }
+            return [];
+          }
+
+          return [];
+        },
+      };
+    },
+  } as unknown as Database.Database;
+}
+
 function approxEqual(a: number, b: number, epsilon: number = 0.0001): boolean {
   return Math.abs(a - b) < epsilon;
 }
@@ -728,6 +762,34 @@ describe('C138-P0: Adaptive Fallback in searchWithFallback', () => {
         process.env.SPECKIT_COMPLEXITY_ROUTER = savedRouter;
       }
     }
+  });
+});
+
+describe('Degree channel fusion regression coverage', () => {
+  it('keeps degree ranking in the final fusion when graph returns no results', async () => {
+    const degreeAwareDb = createDegreeAwareMockDb();
+    const vectorOnlySearch: VectorSearchFn = () => ([
+      { id: 1, similarity: 0.9, title: 'vector-first' },
+      { id: 2, similarity: 0.8, title: 'degree-promoted' },
+    ]);
+
+    hybridSearch.init(degreeAwareDb, vectorOnlySearch, () => []);
+    bm25Index.resetIndex();
+
+    const results = await hybridSearch.hybridSearchEnhanced(
+      'fix auth bug',
+      new Float32Array(384).fill(0.1),
+      {
+        limit: 5,
+        useFts: false,
+        useBm25: false,
+        forceAllChannels: true,
+        intent: 'fix_bug',
+      }
+    );
+
+    expect(results[0]?.id).toBe(2);
+    expect((results[0] as Record<string, unknown>).sources).toContain('degree');
   });
 });
 

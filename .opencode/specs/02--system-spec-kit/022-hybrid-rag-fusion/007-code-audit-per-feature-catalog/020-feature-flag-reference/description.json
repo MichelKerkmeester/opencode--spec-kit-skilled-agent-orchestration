@@ -15,5 +15,9 @@
     "007-code-audit-per-feature-catalog"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: feature-flag-reference [template:level_2/spec.md]",
+  "status": "Complete",
+  "importance_tier": "high",
+  "short_description": "Feature Specification: feature-flag-reference"
 }

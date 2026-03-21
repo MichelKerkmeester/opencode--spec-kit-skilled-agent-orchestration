@@ -42,11 +42,19 @@ vi.mock('../extractors/gemini-cli-capture', () => ({
   captureGeminiConversation,
 }));
 
+vi.mock('../core/memory-indexer', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../core/memory-indexer')>();
+  return {
+    ...actual,
+    indexMemory: mockedIndexMemory,
+  };
+});
+
 /* ───────────────────────────────────────────────────────────────
    2. CONSTANTS
 ──────────────────────────────────────────────────────────────── */
 
-const SPEC_RELATIVE_PATH = '02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/010-integration-testing';
+const SPEC_RELATIVE_PATH = '02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/010-integration-testing';
 const TEST_TEMPLATES_DIR = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   '..',
@@ -303,8 +311,7 @@ async function importWorkflowForHarness(
 ): Promise<typeof import('../core/workflow')> {
   vi.restoreAllMocks();
   vi.resetModules();
-  vi.doUnmock('../core/memory-indexer');
-  vi.doUnmock('../memory/validate-memory-quality');
+  vi.doUnmock('../lib/validate-memory-quality');
 
   captureConversation.mockReset();
   captureClaudeConversation.mockReset();
@@ -326,14 +333,6 @@ async function importWorkflowForHarness(
     });
   }
 
-  vi.doMock('../core/memory-indexer', async (importOriginal) => {
-    const actual = await importOriginal<typeof import('../core/memory-indexer')>();
-    return {
-      ...actual,
-      indexMemory: mockedIndexMemory,
-    };
-  });
-
   const coreModule = await import('../core');
   coreModule.CONFIG.PROJECT_ROOT = harness.repoRoot;
   coreModule.CONFIG.TEMPLATE_DIR = TEST_TEMPLATES_DIR;
@@ -341,7 +340,7 @@ async function importWorkflowForHarness(
   coreModule.CONFIG.SPEC_FOLDER_ARG = null;
 
   if (options.validationOverride) {
-    const validationModule = await import('../memory/validate-memory-quality');
+    const validationModule = await import('../lib/validate-memory-quality');
     vi.spyOn(validationModule, 'validateMemoryQualityContent').mockReturnValue({
       ...options.validationOverride,
       contaminationAudit: {
@@ -367,7 +366,6 @@ afterEach(() => {
   vi.resetModules();
   vi.useRealTimers();
   vi.unstubAllEnvs();
-  vi.doUnmock('../core/memory-indexer');
   captureConversation.mockReset();
   captureClaudeConversation.mockReset();
   captureCodexConversation.mockReset();

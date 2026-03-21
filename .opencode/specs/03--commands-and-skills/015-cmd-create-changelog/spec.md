@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Create Changelog Command [014-create-changelog-command/spec]"
+title: "Feature Specification: Create Changelog Command [015-cmd-create-changelog/spec]"
 description: "No automated way to create changelog entries — developers must manually determine the component, version number, and format each time, leading to inconsistent entries and forgotten changelogs."
 trigger_phrases:
   - "feature"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "changelog"
   - "create changelog"
   - "command"
-  - "014"
+  - "015"
 importance_tier: "important"
 contextType: "decision"
 ---

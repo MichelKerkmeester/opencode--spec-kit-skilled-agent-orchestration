@@ -3,7 +3,7 @@ title: "Verification Checklist: Stateless Quality Gate Fixes"
 description: "Verification Date: 2026-03-18"
 trigger_phrases:
   - "stateless quality gates checklist"
-  - "phase 017 checklist"
+  - "phase 014 checklist"
   - "gate a verification"
   - "stateless save verification"
 importance_tier: "normal"
@@ -11,7 +11,7 @@ contextType: "implementation"
 ---
 # Verification Checklist: Stateless Quality Gate Fixes
 
-This document records the current verified state for Phase 017. Use [spec.md](spec.md), [plan.md](plan.md), and [implementation-summary.md](implementation-summary.md) together so the shipped code, reruns, and parent closure evidence stay in sync.
+This document records the current verified state for Phase 014. Use [spec.md](spec.md), [plan.md](plan.md), and [implementation-summary.md](implementation-summary.md) together so the shipped code, reruns, and parent closure evidence stay in sync.
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
@@ -35,7 +35,7 @@ This document records the current verified state for Phase 017. Use [spec.md](sp
 
 - [x] CHK-001 [P0] Requirements documented in `spec.md` with all P0/P1 REQs [Evidence: `spec.md` now records the shipped Gate A split, CLI contract, Claude-only downgrade, and current verification scope.]
 - [x] CHK-002 [P0] Technical approach defined in `plan.md` and the bundled stateless-save decision recorded in `decision-record.md` [Evidence: `plan.md` and `decision-record.md` both describe the shipped implementation under `.opencode/skill/system-spec-kit/scripts/...`.]
-- [x] CHK-003 [P0] Phase 016 merged and test suite green before implementation starts [Evidence: phase-016 checklist continuation records the 2026-03-18 green scripts and MCP baselines that Phase 017 builds on.]
+- [x] CHK-003 [P0] Surrounding runtime semantics were already present and the shared test baselines were green before implementation started [Evidence: the later phase-016 documentation sweep records the 2026-03-18 green scripts and MCP baselines that phase `014` inherits as evidence.]
 - [x] CHK-004 [P1] Root cause locations confirmed by reading `workflow.ts`, `generate-context.ts`, and `contamination-filter.ts` [Evidence: the affected seams were re-read during this remediation pass.]
 <!-- /ANCHOR:pre-impl -->
 
@@ -50,7 +50,7 @@ This document records the current verified state for Phase 017. Use [spec.md](sp
 - [x] CHK-013 [P0] `--stdin` / `--json` resolve and validate the target spec folder before `runWorkflow()` executes [Evidence: `generate-context-cli-authority.vitest.ts` remains part of the green targeted lane.]
 - [x] CHK-014 [P0] stdin/json mode passes preloaded `collectedData` into `runWorkflow()` instead of falling through the loader path [Evidence: targeted CLI-authority tests passed on 2026-03-18.]
 - [x] CHK-015 [P0] `filterContamination()` signature change is backward-compatible [Evidence: `.opencode/skill/system-spec-kit/scripts/extractors/contamination-filter.ts` keeps the denylist parameter in second position and adds an optional third options object.]
-- [x] CHK-016 [P0] No TypeScript drift in the affected seams [Evidence: Phase 017 touched existing TypeScript surfaces only, and the inherited broader scripts baseline remains green.]
+- [x] CHK-016 [P0] No TypeScript drift in the affected seams [Evidence: Phase 014 touched existing TypeScript surfaces only, and the inherited broader scripts baseline remains green.]
 - [x] CHK-017 [P0] No build drift in the affected seams [Evidence: the parent closure baseline and phase-016 continuation retain clean scripts and MCP build evidence.]
 - [x] CHK-018 [P1] Error handling exists for `--stdin` / `--json` edge cases [Evidence: `generate-context.ts` rejects empty or malformed structured input and the CLI-authority tests remain green.]
 - [x] CHK-019 [P1] `HARD_BLOCK_RULES` is explicitly maintained [Evidence: the export is now documented in `spec.md`, `plan.md`, and `decision-record.md`.]
@@ -77,7 +77,7 @@ This document records the current verified state for Phase 017. Use [spec.md](sp
 - [x] CHK-050 [P0] Stateless Gate A tiering is verified for the shipped soft-warning and hard-block split [Evidence: `tests/workflow-e2e.vitest.ts` passed in the 2026-03-18 targeted rerun.]
 - [x] CHK-051 [P0] Structured JSON mode is verified for both `--stdin` and `--json`, including target-authority precedence [Evidence: `tests/generate-context-cli-authority.vitest.ts` passed in the 2026-03-18 targeted rerun.]
 - [x] CHK-052 [P0] Claude Code stateless captures are verified to avoid the old 0.60 cap for tool-title-with-path content [Evidence: `tests/contamination-filter.vitest.ts` and `tests/quality-scorer-calibration.vitest.ts` passed in the 2026-03-18 targeted rerun.]
-- [x] CHK-053 [P0] Hard-block contamination still aborts even after the Phase 017 changes [Evidence: `tests/workflow-e2e.vitest.ts` passed in the 2026-03-18 targeted rerun.]
+- [x] CHK-053 [P0] Hard-block contamination still aborts even after the Phase 014 changes [Evidence: `tests/workflow-e2e.vitest.ts` passed in the 2026-03-18 targeted rerun.]
 - [x] CHK-054 [P0] V10-only stateless failures proceed with a warning rather than an abort [Evidence: `workflow.ts` emits `QUALITY_GATE_WARN` and the targeted workflow lane passed.]
 - [x] CHK-055 [P0] Non-Claude captures retain the original capped score behavior [Evidence: the non-Claude severity and cap regressions passed in the 2026-03-18 targeted rerun.]
 <!-- /ANCHOR:testing -->
@@ -154,8 +154,8 @@ This document records the current verified state for Phase 017. Use [spec.md](sp
 ## L3+: DEPLOYMENT READINESS
 
 - [x] CHK-120 [P0] Rollback procedure remains documented in `plan.md` sections 7 and 10 [Evidence: `plan.md` still records targeted rollback guidance per phase.]
-- [x] CHK-121 [P1] Phase 016 remains recorded as the pre-condition for deployment [Evidence: `spec.md` and `plan.md` both identify the phase-016 dependency.]
-- [x] CHK-122 [P1] No feature flags are required for the shipped Phase 017 behavior [Evidence: the implementation remains direct code, not flag-gated behavior.]
+- [x] CHK-121 [P1] Chronology remains explicit: phase `016` is evidence context, not a deployment pre-condition [Evidence: `spec.md` and `plan.md` now describe the later phase-016 sweep as inherited evidence rather than a prerequisite.]
+- [x] CHK-122 [P1] No feature flags are required for the shipped Phase 014 behavior [Evidence: the implementation remains direct code, not flag-gated behavior.]
 <!-- /ANCHOR:deploy-ready -->
 
 ---

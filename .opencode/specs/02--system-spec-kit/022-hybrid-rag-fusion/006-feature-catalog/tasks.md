@@ -130,7 +130,7 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 ## Phase F: Remediation Execution (FUTURE — from manifest)
 
 ### E1: Batch Fixes (P0 — Scriptable)
-- [ ] T100 Global replace `retry.vitest.ts` → `retry-manager.vitest.ts` (52 snippets)
+- [x] T100 Global replace `retry.vitest.ts` → `retry-manager.vitest.ts` (52 snippets)
 - [ ] T101 Remove `slug-utils.ts` reference (2 snippets: 13-memory-quality/04, 11)
 - [ ] T102 Remove `check-architecture-boundaries.ts` reference (1 snippet: 16-tooling/02)
 - [ ] T103 Run `replace-monolith-source-files.mjs` to sync monolith

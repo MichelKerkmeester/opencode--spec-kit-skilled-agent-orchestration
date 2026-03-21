@@ -17,5 +17,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: SpecKit Reimagined [082-speckit-reimagined/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: SpecKit Reimagined"
 }

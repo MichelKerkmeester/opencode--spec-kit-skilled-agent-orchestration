@@ -58,4 +58,4 @@ Status: Implemented and covered by targeted Vitest regressions.
 
 - Group: Memory quality and indexing
 - Source feature title: Stateless enrichment and alignment guards
-- Current reality source: spec 010-perfect-session-capturing
+- Current reality source: spec 009-perfect-session-capturing / `014-stateless-quality-gates`

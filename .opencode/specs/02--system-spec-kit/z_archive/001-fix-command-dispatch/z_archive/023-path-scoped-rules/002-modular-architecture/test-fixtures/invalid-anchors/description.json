@@ -20,5 +20,9 @@
     "test-fixtures"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: Invalid Anchors Fixture [invalid-anchors/spec]",
+  "status": "In Progress",
+  "importance_tier": "important",
+  "short_description": "Spec: Invalid Anchors Fixture"
 }

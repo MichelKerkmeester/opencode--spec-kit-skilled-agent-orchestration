@@ -63,6 +63,19 @@ describe('determineSessionStatus', () => {
     expect(status).toBe('COMPLETED');
   });
 
+  it('returns COMPLETED when an earlier observation indicates completion', () => {
+    const status = determineSessionStatus(
+      'None',
+      [
+        makeObservation({ narrative: 'All requested work is complete and verified.' }),
+        makeObservation({ narrative: 'Shared the final summary for handoff.' }),
+      ],
+      10,
+    );
+
+    expect(status).toBe('COMPLETED');
+  });
+
   it('returns IN_PROGRESS for a short session with no blockers', () => {
     const status = determineSessionStatus(
       'None',
@@ -98,6 +111,31 @@ describe('determineSessionStatus', () => {
     // cleared but the final observation doesn't have a completion keyword → IN_PROGRESS
     // unless the last observation also matches completion.
     expect(['COMPLETED', 'IN_PROGRESS']).toContain(status);
+  });
+
+  it('returns COMPLETED for high-activity sessions with no blockers or pending work', () => {
+    const status = determineSessionStatus(
+      'None',
+      [
+        makeObservation({ narrative: 'Implemented the requested updates.' }),
+        makeObservation({ narrative: 'Verified final output with the existing checks.' }),
+      ],
+      5,
+      {
+        sessionSummary: 'Verified final output and captured the final session summary.',
+        toolCalls: [
+          { tool: 'Read' },
+          { tool: 'Edit' },
+          { tool: 'Bash' },
+        ],
+        exchanges: [
+          { userInput: 'Fix the pipeline issues', assistantResponse: 'Done.' },
+          { userInput: 'Rebuild and verify', assistantResponse: 'Verified.' },
+        ],
+      },
+    );
+
+    expect(status).toBe('COMPLETED');
   });
 });
 

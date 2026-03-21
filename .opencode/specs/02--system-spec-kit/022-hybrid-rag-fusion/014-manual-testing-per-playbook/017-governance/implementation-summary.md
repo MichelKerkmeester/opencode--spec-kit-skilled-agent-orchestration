@@ -21,7 +21,7 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 017-governance |
-| **Completed** | 2026-03-16 |
+| **Completed** | 2026-03-21 |
 | **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
@@ -42,8 +42,9 @@ Four template-aligned files provide structured per-phase test documentation so o
 |------|--------|---------|
 | spec.md | Created | Phase requirements, test inventory, feature catalog links, and acceptance criteria |
 | plan.md | Created | Execution plan with preconditions, evidence capture, and verdict pipeline |
-| tasks.md | Created | Task tracker for setup, execution, and verification work |
-| checklist.md | Created | QA verification checklist with P0/P1/P2 priority items |
+| tasks.md | Created + Updated | Task tracker — all tasks marked complete after execution |
+| checklist.md | Created + Updated | QA verification checklist — 8/8 P0, 7/7 P1 verified with evidence |
+| scratch/execution-evidence.md | Created | Full execution evidence for all 5 scenarios with verdicts |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -77,6 +78,12 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 | checklist.md anchor count | PASS — exactly 8 anchors |
 | checklist.md no overview section | PASS — no ANCHOR:overview |
 | checklist.md no standalone P0/P1 headers | PASS — priority is per-item only |
+| 063 Feature flag governance | PASS — 24 flags enumerated, B8 target acknowledged, no undocumented flags |
+| 064 Feature flag sunset audit | PASS — isPipelineV2Enabled() removed, Sprint 8 dead code matches catalog |
+| 122 Governed ingest and scope isolation | PASS — provenance rejection E040, governed save ID 25420, scope isolation at stage1 |
+| 123 Shared-space deny-by-default rollout | PASS — non-member denied, member allowed, kill switch blocks immediately |
+| 148 Shared-memory default-off first-run | PASS — default off, enable persists, idempotent, README on disk, DB persistence |
+| Aggregate result | 5/5 scenarios: 5 PASS |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -84,8 +91,9 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Draft status** — Test scenarios are documented but not yet executed. Final verdicts require manual or MCP-backed execution.
-2. **Coverage audit pending** — Cross-reference validation against the full playbook index has not been run for this individual phase.
+1. **Checkpoint restore failed** — The pre-stateful checkpoint (`phase-017-governance-pre-stateful`, ID 15) failed to restore with "database disk image is malformed". Test state (1 governed memory at ID 25420 under tenant `tenant-phase017-governed-test`, 1 shared space under `tenant-phase017-test`) persists in DB. Isolated by sandbox tenant IDs — no production memory contamination.
+2. **Steps 6-7 of 148 code-audited** — Env var override and `/memory:shared` command gate confirmed by code audit of `shared-spaces.ts` (isSharedMemoryEnabled Tier 1) and feature catalog documentation. Cannot be triggered via in-session MCP calls without env var mutation.
+3. **CHK-052 deferred** — Memory save via generate-context.js not yet run. Findings documented in scratch/ only.
 <!-- /ANCHOR:limitations -->
 
 ---

@@ -10,6 +10,8 @@ contextType: "implementation-summary"
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary: 013-agents-md-alignment
 
+> **Note:** The alignment changes from this phase were partially reverted by a subsequent AGENTS.md restructuring.
+
 ## What Changed
 
 Updated Quick Reference workflow tables in all 3 AGENTS.md governance framework files to reflect the complete 7-command memory suite established by Phase 011 (command alignment).

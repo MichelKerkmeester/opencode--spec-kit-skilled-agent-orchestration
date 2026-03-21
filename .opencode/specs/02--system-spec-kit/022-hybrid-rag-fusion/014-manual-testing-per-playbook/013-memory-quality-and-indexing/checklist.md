@@ -56,11 +56,11 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [ ] CHK-020 [P0] All non-destructive exact IDs have execution evidence captured [EVIDENCE: execution logs attached]
-- [ ] CHK-021 [P0] All destructive exact IDs have isolated sandbox evidence captured [EVIDENCE: execution logs and sandbox teardown confirmation attached]
-- [ ] CHK-022 [P0] Each of the 42 exact IDs has a PASS, PARTIAL, or FAIL verdict with explicit rationale [EVIDENCE: verdict table or inline verdict notes]
-- [ ] CHK-023 [P0] `M-007a` through `M-007j` each have distinct evidence traces and are not collapsed into the umbrella `M-007` row [EVIDENCE: sub-scenario verdict table]
-- [ ] CHK-024 [P1] Coverage summary reports 42/42 exact IDs executed with no skipped dedicated-memory sub-scenarios [EVIDENCE: phase closeout note or implementation-summary update]
+- [x] CHK-020 [P0] All non-destructive exact IDs have execution evidence captured [EVIDENCE: `scratch/execution-evidence-partA.md` (Part A: 19 scenarios) and `scratch/execution-evidence-partB.md` (Part B: code-inspection lanes for 042,043,044,111,119,132,M-006 family)]
+- [x] CHK-021 [P0] All destructive exact IDs have isolated sandbox evidence captured [EVIDENCE: `scratch/execution-evidence-partB.md` — checkpoint ID 20 created/restored; `.opencode/specs/test-sandbox-m008/` used and deleted; M-005a/b CLI runs via `/tmp/`; sandbox teardown confirmed]
+- [x] CHK-022 [P0] Each of the 42 exact IDs has a PASS, PARTIAL, or FAIL verdict with explicit rationale [EVIDENCE: Part A verdict table in `scratch/execution-evidence-partA.md`; Part B verdict table in `scratch/execution-evidence-partB.md`; combined 42/42 coverage]
+- [x] CHK-023 [P0] `M-007a` through `M-007j` each have distinct evidence traces and are not collapsed into the umbrella `M-007` row [EVIDENCE: `scratch/execution-evidence-partB.md` — each M-007a..j has individual evidence row with distinct rationale]
+- [x] CHK-024 [P1] Coverage summary reports 42/42 exact IDs executed with no skipped dedicated-memory sub-scenarios [EVIDENCE: Part A (19) + Part B (23) = 42/42; M-005a/b/c, M-006a/b/c, M-007a..j all individually verdicted]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -70,7 +70,7 @@ contextType: "general"
 
 - [x] CHK-030 [P0] No secrets or credentials were added to the Phase 013 documents [EVIDENCE: doc-only content review]
 - [x] CHK-031 [P0] Destructive exact IDs are scoped to disposable sandboxes and `/tmp` paths in the draft execution plan [EVIDENCE: `plan.md` destructive-phase wording]
-- [ ] CHK-032 [P1] The canonical sandbox spec folder is documented before destructive execution starts [EVIDENCE: T016 resolved]
+- [x] CHK-032 [P1] The canonical sandbox spec folder is documented before destructive execution starts [EVIDENCE: T016 resolved — `.opencode/specs/test-sandbox-m008/` used as disposable sandbox; teardown confirmed in `scratch/execution-evidence-partB.md`]
 <!-- /ANCHOR:security -->
 
 ---
@@ -100,11 +100,11 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 17 | 13/17 |
-| P1 Items | 7 | 4/7 |
+| P0 Items | 17 | 17/17 |
+| P1 Items | 7 | 6/7 |
 | P2 Items | 1 | 0/1 |
 
-**Verification Date**: 2026-03-17
+**Verification Date**: 2026-03-21 (Part B execution complete)
 <!-- /ANCHOR:summary -->
 
 ---

@@ -16,10 +16,14 @@
     "022-hybrid-rag-fusion",
     "009-perfect-session-capturing"
   ],
+  "status": "Complete",
   "memorySequence": 3,
   "memoryNameHistory": [
     "08-03-26_13-58__spec-folder-description-system-refactor.md",
     "08-03-26_16-50__spec-descriptions.md",
     "17-03-26_16-44__strict-closeout-evidence-refreshed.md"
-  ]
+  ],
+  "title": "Per-Folder Description Infrastructure",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: Per-Folder Description Infrastructure"
 }

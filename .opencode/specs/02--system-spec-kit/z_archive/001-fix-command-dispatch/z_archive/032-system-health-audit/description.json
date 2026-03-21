@@ -19,5 +19,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "System Health Audit - Comprehensive Bug Fix [032-system-health-audit/spec]",
+  "status": "Critical Issues",
+  "importance_tier": "important",
+  "short_description": "System Health Audit - Comprehensive Bug Fix"
 }

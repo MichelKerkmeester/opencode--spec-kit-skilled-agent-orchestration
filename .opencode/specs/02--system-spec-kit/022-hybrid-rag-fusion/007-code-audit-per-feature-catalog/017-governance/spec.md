@@ -30,8 +30,8 @@ contextType: "general"
 | **Created** | 2026-03-10 |
 | **Branch** | `017-governance` |
 | **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../016-tooling-and-scripts/spec.md |
-| **Next Phase** | ../018-ux-hooks/spec.md |
+| **Predecessor** | ../016-tooling-and-scripts/spec.md |
+| **Successor** | ../018-ux-hooks/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

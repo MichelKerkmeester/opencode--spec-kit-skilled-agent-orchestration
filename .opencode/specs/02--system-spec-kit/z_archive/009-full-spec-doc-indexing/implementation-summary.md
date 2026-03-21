@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Full Spec Folder Document Indexing [126-full-spec-doc-indexing/implementation-summary]"
+title: "Implementation Summary: Full Spec Folder Document Indexing [009-full-spec-doc-indexing/implementation-summary]"
 description: "Status: Implemented -- Fully Verified"
 trigger_phrases:
   - "implementation"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "spec"
   - "folder"
   - "implementation summary"
-  - "126"
+  - "009"
 importance_tier: "normal"
 contextType: "implementation"
 ---

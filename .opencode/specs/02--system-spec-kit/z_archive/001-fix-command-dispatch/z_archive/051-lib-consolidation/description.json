@@ -18,5 +18,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Lib Consolidation - Shared Module Unification [051-lib-consolidation/spec]",
+  "importance_tier": "important",
+  "short_description": "Lib Consolidation - Shared Module Unification"
 }

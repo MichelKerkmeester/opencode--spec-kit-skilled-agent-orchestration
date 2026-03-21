@@ -17,5 +17,9 @@
   "memorySequence": 1,
   "memoryNameHistory": [
     "19-03-26_08-35__ux-hooks-automation.md"
-  ]
+  ],
+  "title": "UX Hooks Automation",
+  "status": "Implemented",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: UX Hooks Automation"
 }

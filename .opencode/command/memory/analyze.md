@@ -1,7 +1,7 @@
 ---
 description: Unified knowledge retrieval and analysis — intent-aware context search, epistemic baselines, causal graph, ablation studies, and dashboards
 argument-hint: "<query> [--intent:<type>] | preflight <specFolder> <taskId> | postflight <specFolder> <taskId> | history <specFolder> | causal <memoryId> | link <sourceId> <targetId> <relation> | unlink <edgeId> | causal-stats | ablation | dashboard"
-allowed-tools: Read, spec_kit_memory_memory_context, spec_kit_memory_memory_search, spec_kit_memory_memory_match_triggers, spec_kit_memory_task_preflight, spec_kit_memory_task_postflight, spec_kit_memory_memory_drift_why, spec_kit_memory_memory_causal_link, spec_kit_memory_memory_causal_stats, spec_kit_memory_memory_causal_unlink, spec_kit_memory_eval_run_ablation, spec_kit_memory_eval_reporting_dashboard, spec_kit_memory_memory_get_learning_history
+allowed-tools: Read, spec_kit_memory_memory_context, spec_kit_memory_memory_quick_search, spec_kit_memory_memory_search, spec_kit_memory_memory_match_triggers, spec_kit_memory_task_preflight, spec_kit_memory_task_postflight, spec_kit_memory_memory_drift_why, spec_kit_memory_memory_causal_link, spec_kit_memory_memory_causal_stats, spec_kit_memory_memory_causal_unlink, spec_kit_memory_eval_run_ablation, spec_kit_memory_eval_reporting_dashboard, spec_kit_memory_memory_get_learning_history
 ---
 
 # 🚨 MANDATORY FIRST ACTION - DO NOT SKIP
@@ -745,7 +745,7 @@ STATUS=OK ACTION=dashboard
 
 ## APPENDIX A: MCP TOOL REFERENCE
 
-**CRITICAL:** Use the correct MCP tools for each step. This command owns 12 tools across L1, L2, L6, and L7 layers.
+**CRITICAL:** Use the correct MCP tools for each step. This command owns 13 tools across L1, L2, L6, and L7 layers.
 
 ### Enforcement Matrix
 
@@ -754,6 +754,7 @@ STATUS=OK ACTION=dashboard
 | RETRIEVAL (default) | | | |
 | Intent detect | Parse query, match keywords | LOCAL | Default to 'understand' |
 | Context (preferred) | `spec_kit_memory_memory_context({ input, ... })` | SINGLE | Fall back to manual search |
+| Quick search (optional) | `spec_kit_memory_memory_quick_search({ query, ... })` | SINGLE | Fall back to preferred/manual retrieval |
 | Trigger check | `spec_kit_memory_memory_match_triggers({ prompt: query })` | OPTIONAL | Continue without |
 | Search (manual) | `spec_kit_memory_memory_search({ query, anchors, includeContent: true })` | SINGLE | Show error msg |
 | ANALYSIS | | | |
@@ -769,7 +770,7 @@ STATUS=OK ACTION=dashboard
 
 ### Tool Signatures
 
-> **Note:** The dedicated `spec_kit_memory_memory_context()` tool provides unified intent-aware retrieval server-side. It accepts `input`, `mode`, `intent`, `specFolder`, `limit`, `sessionId`, `enableDedup`, `includeContent`, and `anchors` params. This is the recommended unified approach. The manual orchestration below is for advanced use cases requiring fine-grained control.
+> **Note:** The dedicated `spec_kit_memory_memory_context()` tool provides unified intent-aware retrieval server-side. It accepts `input`, `mode`, `intent`, `specFolder`, governed retrieval params (`tenantId`, `userId`, `agentId`, `sharedSpaceId`), `limit`, `sessionId`, `enableDedup`, `includeContent`, `includeTrace`, `tokenUsage`, and `anchors`. `spec_kit_memory_memory_quick_search()` also supports governed retrieval via `tenantId`, `userId`, `agentId`, and `sharedSpaceId`. This is the recommended unified approach. The manual orchestration below is for advanced use cases requiring fine-grained control.
 
 > **Adaptive Fusion, Hybrid Routing & Telemetry:** Retrieval combines vector, FTS5/BM25, and graph channels, then applies intent-adaptive fusion and reranking. Results may be routed through artifact-class classification before scoring. When `SPECKIT_ADAPTIVE_FUSION` is enabled, weights adapt dynamically by intent. When `SPECKIT_EXTENDED_TELEMETRY` is enabled, extended telemetry is captured (query timing, score distributions, fusion decisions) and written to the telemetry log.
 >
@@ -783,11 +784,26 @@ spec_kit_memory_memory_context({
   input: "<query>",
   intent: "<add_feature|fix_bug|refactor|security_audit|understand|find_spec|find_decision>",  // Optional, auto-detected if omitted
   specFolder: "<folder>",  // Optional
+  tenantId: "<tenant-id>", // Optional governed retrieval boundary
+  userId: "<user-id>",     // Optional governed retrieval boundary
+  agentId: "<agent-id>",   // Optional governed retrieval boundary
+  sharedSpaceId: "<space-id>", // Optional governed retrieval boundary
   includeContent: true,
   anchors: ["<anchor1>", "<anchor2>"],  // Intent-specific
 })
 
-// Option 2: Manual search with anchors (advanced — fine-grained control)
+// Option 2: Simplified search for fast query-only retrieval
+spec_kit_memory_memory_quick_search({
+  query: "<query>",
+  limit: 10,                // Optional
+  specFolder: "<folder>",   // Optional
+  tenantId: "<tenant-id>",  // Optional governed retrieval boundary
+  userId: "<user-id>",      // Optional governed retrieval boundary
+  agentId: "<agent-id>",    // Optional governed retrieval boundary
+  sharedSpaceId: "<space-id>", // Optional governed retrieval boundary
+})
+
+// Option 3: Manual search with anchors (advanced — fine-grained control)
 spec_kit_memory_memory_search({
   query: "<query>",
   anchors: ["<anchor1>", "<anchor2>", ...],  // Intent-specific
@@ -820,17 +836,18 @@ spec_kit_memory_memory_get_learning_history({ specFolder, sessionId, limit, only
 | # | Tool | Layer | Mode | Subcommand |
 |---|------|-------|------|------------|
 | 1 | `memory_context` | L1 | Retrieval | (default) |
-| 2 | `memory_search` | L2 | Retrieval | (default) |
-| 3 | `memory_match_triggers` | L2 | Retrieval | (default) |
-| 4 | `task_preflight` | L6 | Analysis | `preflight` |
-| 5 | `task_postflight` | L6 | Analysis | `postflight` |
-| 6 | `memory_drift_why` | L6 | Analysis | `causal` |
-| 7 | `memory_causal_link` | L6 | Analysis | `link` |
-| 8 | `memory_causal_stats` | L6 | Analysis | `causal-stats` |
-| 9 | `memory_causal_unlink` | L6 | Analysis | `unlink` |
-| 10 | `eval_run_ablation` | L6 | Analysis | `ablation` |
-| 11 | `eval_reporting_dashboard` | L6 | Analysis | `dashboard` |
-| 12 | `memory_get_learning_history` | L7 | Analysis | `history` |
+| 2 | `memory_quick_search` | L2 | Retrieval | (default) |
+| 3 | `memory_search` | L2 | Retrieval | (default) |
+| 4 | `memory_match_triggers` | L2 | Retrieval | (default) |
+| 5 | `task_preflight` | L6 | Analysis | `preflight` |
+| 6 | `task_postflight` | L6 | Analysis | `postflight` |
+| 7 | `memory_drift_why` | L6 | Analysis | `causal` |
+| 8 | `memory_causal_link` | L6 | Analysis | `link` |
+| 9 | `memory_causal_stats` | L6 | Analysis | `causal-stats` |
+| 10 | `memory_causal_unlink` | L6 | Analysis | `unlink` |
+| 11 | `eval_run_ablation` | L6 | Analysis | `ablation` |
+| 12 | `eval_reporting_dashboard` | L6 | Analysis | `dashboard` |
+| 13 | `memory_get_learning_history` | L7 | Analysis | `history` |
 
 ---
 

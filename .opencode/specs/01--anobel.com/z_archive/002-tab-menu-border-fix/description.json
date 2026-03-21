@@ -16,5 +16,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Tab Menu Border Color Fix [002-tab-menu-border-fix/spec]",
+  "importance_tier": "important",
+  "short_description": "Tab Menu Border Color Fix"
 }

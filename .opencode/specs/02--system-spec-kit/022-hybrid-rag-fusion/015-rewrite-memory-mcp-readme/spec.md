@@ -27,6 +27,9 @@ contextType: "implementation"
 | **Created** | 2026-03-15 |
 | **Branch** | `main` |
 | **Parent** | `022-hybrid-rag-fusion` (Phase 020) |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../014-manual-testing-per-playbook/spec.md |
+| **Successor** | ../016-update-install-guide/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -136,3 +139,13 @@ Level 1 — In Progress (2026-03-15)
 Target: Complete rewrite of MCP README covering all 32 tools
 Source: feature_catalog.md + tool-schemas.ts
 -->
+
+---
+
+## Phase Navigation
+
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../014-manual-testing-per-playbook/spec.md |
+| **Next Phase** | ../016-update-install-guide/spec.md |

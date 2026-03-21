@@ -16,5 +16,9 @@
     "013-memory-overhaul-and-agent-upgrade-release"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Task 06 — Root README Update [task-06-global-readme-update/spec]",
+  "status": "Complete",
+  "importance_tier": "important",
+  "short_description": "Task 06 — Root README Update"
 }

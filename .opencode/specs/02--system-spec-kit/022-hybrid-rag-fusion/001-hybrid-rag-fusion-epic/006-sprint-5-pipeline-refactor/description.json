@@ -17,5 +17,9 @@
     "001-hybrid-rag-fusion-epic"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Sprint 5 — Pipeline Refactor",
+  "status": "Implemented",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: Sprint 5 — Pipeline Refactor"
 }

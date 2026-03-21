@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Memory Index TXT File Support [131-memory-index-txt-support/implementation-summary]"
+title: "Implementation Summary: Memory Index TXT File Support [014-memory-index-txt-support/implementation-summary]"
 description: "Status: ✅ COMPLETED"
 trigger_phrases:
   - "implementation"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "index"
   - "txt"
   - "implementation summary"
-  - "131"
+  - "014"
 importance_tier: "normal"
 contextType: "implementation"
 ---

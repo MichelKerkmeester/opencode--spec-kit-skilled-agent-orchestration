@@ -37,11 +37,11 @@ Phase 4 introduces bounded retrieval learning without letting the system self-mo
 | **Created** | 2026-03-13 |
 | **Updated** | 2026-03-13 |
 | **Branch** | `022-hybrid-rag-fusion` |
-| **Parent Spec** | `../spec.md` |
+| **Parent Spec** | ../spec.md |
 | **Parent Plan** | `../plan.md` |
 | **Phase** | 4 of 6 |
-| **Predecessor** | `003-unified-graph-retrieval` |
-| **Successor** | `005-hierarchical-scope-governance` |
+| **Predecessor** | ../003-unified-graph-retrieval/spec.md |
+| **Successor** | ../005-hierarchical-scope-governance/spec.md |
 | **Handoff Criteria** | Signal capture, shadow-mode learning, guardrail metrics, and rollback controls verified |
 
 ### Phase Context
@@ -309,4 +309,3 @@ Create a safe adaptive-retrieval layer that can learn from feedback in shadow mo
 - **Task Breakdown**: `tasks.md`
 - **Verification Checklist**: `checklist.md`
 - **Decision Records**: `decision-record.md`
-

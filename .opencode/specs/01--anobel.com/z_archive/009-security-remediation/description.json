@@ -14,5 +14,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Security Vulnerability Remediation [009-security-remediation/spec]",
+  "importance_tier": "important",
+  "short_description": "Security Vulnerability Remediation"
 }

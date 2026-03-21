@@ -3,7 +3,7 @@ title: "Hybrid RAG Fusion Epic"
 status: "in-progress"
 level: 3
 created: "2025-12-01"
-updated: "2026-03-08"
+updated: "2026-03-21"
 ---
 <!-- SPECKIT_LEVEL: 3 -->
 # Consolidated spec
@@ -72,6 +72,7 @@ The spec-kit memory MCP server's graph channel produces a 0% hit rate due to an 
   Deleted folders: 006, 016, 017, 018, 025
 AUDIT-2026-03-16: 005-core-rag-sprints-0-to-9 merged into 001-hybrid-rag-fusion-epic.
   Sprint children (001-sprint-0-measurement-foundation through 010-sprint-9-extra-features) now live directly under 001-hybrid-rag-fusion-epic/.
+AUDIT-2026-03-21: Added phases 014-018 to dashboard (manual-testing-per-playbook, rewrite-memory-mcp-readme, update-install-guide, rewrite-system-speckit-readme, rewrite-repo-readme). Total active phases: 18 (001-018).
 -->
 
 | Folder | Name | Status | Last Updated |
@@ -83,13 +84,18 @@ AUDIT-2026-03-16: 005-core-rag-sprints-0-to-9 merged into 001-hybrid-rag-fusion-
 | 005 | `005-architecture-audit` | Complete | 2026-03-08 |
 | 005 | *(merged)* | Sprint children (001-010) now live directly under `001-hybrid-rag-fusion-epic/` (merged from former `005-core-rag-sprints-0-to-9` on 2026-03-16) | 2026-03-16 |
 | 006 | `006-feature-catalog` | In Progress (absorbed 016-feature-catalog-code-references) | 2026-03-14 |
-| 007 | `007-code-audit-per-feature-catalog` | In Progress (structural umbrella with 21 child phases) | 2026-03-14 |
+| 007 | `007-code-audit-per-feature-catalog` | Complete (structural umbrella with 21 child phases) | 2026-03-21 |
 | 008 | `008-hydra-db-based-features` | Complete (absorbed 017-markovian-architectures) | 2026-03-14 |
-| 009 | `009-skill-alignment` | Complete | 2026-03-16 |
+| 010 | `010-skill-alignment` | Complete | 2026-03-21 |
 | 009 | `009-perfect-session-capturing` | In Progress (absorbed 018-git-context-extractor) | 2026-03-14 |
 | 011 | `011-command-alignment` | Complete | 2026-03-16 |
 | 012 | `012-agents-alignment` | Complete | 2026-03-16 |
 | 013 | `013-agents-md-alignment` | Complete | 2026-03-16 |
+| 014 | `014-manual-testing-per-playbook` | Draft (documentation coverage only) | 2026-03-21 |
+| 015 | `015-rewrite-memory-mcp-readme` | In Progress | 2026-03-19 |
+| 016 | `016-update-install-guide` | In Progress | 2026-03-19 |
+| 017 | `017-rewrite-system-speckit-readme` | In Progress | 2026-03-19 |
+| 018 | `018-rewrite-repo-readme` | In Progress | 2026-03-19 |
 | *(deleted)* | `003-speckit-quality-and-standards` | *(deleted)* | — |
 | *(deleted)* | `007-combined-bug-fixes` | *(deleted)* | — |
 | *(deleted)* | `009-spec-descriptions` | *(deleted)* | — |

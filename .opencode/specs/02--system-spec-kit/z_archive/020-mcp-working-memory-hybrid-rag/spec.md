@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Working Memory + Hybrid RAG Automation [136-mcp-working-memory-hybrid-rag/spec]"
+title: "Feature Specification: Working Memory + Hybrid RAG Automation [020-mcp-working-memory-hybrid-rag/spec]"
 description: "Add session-cognitive automation to Spec Kit Memory MCP via selective pattern adoption from opencode-working-memory and graphrag-hybrid systems. Implements automatic context ext..."
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "memory"
   - "hybrid"
   - "spec"
-  - "136"
+  - "020"
   - "mcp"
 importance_tier: "important"
 contextType: "decision"

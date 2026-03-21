@@ -16,5 +16,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "MCP Server Rename: semantic_memory → spec_kit_memory [040-mcp-server-rename/spec]",
+  "importance_tier": "important",
+  "short_description": "MCP Server Rename: semantic_memory → spec_kit_memory"
 }

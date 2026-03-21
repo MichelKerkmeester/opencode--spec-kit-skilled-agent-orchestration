@@ -22,5 +22,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Memory Hook Cleanup - Remove Claude Code Hook References [004-memory-hook-cleanup/spec]",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Memory Hook Cleanup - Remove Claude Code Hook References"
 }

@@ -32,6 +32,12 @@ interface OrphanedDistFile {
   allowlistEntry?: AllowlistException;
 }
 
+interface DistTarget {
+  label: string;
+  distRoot: string;
+  sourceRoot: string;
+}
+
 const REQUIRED_ROOT_DIRS = ['mcp_server', 'scripts'] as const;
 const ALLOWLIST_EXCEPTIONS: AllowlistException[] = [];
 
@@ -83,11 +89,25 @@ function findJsFiles(dir: string): string[] {
   return results.sort((left, right) => left.localeCompare(right));
 }
 
-function mapDistFileToSource(packageRoot: string, distFile: string): OrphanedDistFile {
-  const distRoot = path.join(packageRoot, 'mcp_server', 'dist', 'lib');
-  const relativeDistPath = toPosix(path.relative(path.join(packageRoot, 'mcp_server'), distFile));
-  const sourceRelativePath = path.relative(distRoot, distFile).replace(/\.js$/, '.ts');
-  const expectedSource = path.join(packageRoot, 'mcp_server', 'lib', sourceRelativePath);
+const DIST_TARGETS: DistTarget[] = [
+  {
+    label: 'mcp_server',
+    distRoot: path.join('mcp_server', 'dist', 'lib'),
+    sourceRoot: path.join('mcp_server', 'lib'),
+  },
+  {
+    label: 'scripts',
+    distRoot: path.join('scripts', 'dist'),
+    sourceRoot: 'scripts',
+  },
+];
+
+function mapDistFileToSource(packageRoot: string, target: DistTarget, distFile: string): OrphanedDistFile {
+  const absoluteDistRoot = path.join(packageRoot, target.distRoot);
+  const packageSegment = target.label === 'mcp_server' ? 'mcp_server' : 'scripts';
+  const relativeDistPath = toPosix(path.relative(path.join(packageRoot, packageSegment), distFile));
+  const sourceRelativePath = path.relative(absoluteDistRoot, distFile).replace(/\.js$/, '.ts');
+  const expectedSource = path.join(packageRoot, target.sourceRoot, sourceRelativePath);
 
   return {
     distFile: relativeDistPath,
@@ -101,35 +121,39 @@ function findAllowlistEntry(distFile: string): AllowlistException | undefined {
 
 function main(): void {
   const packageRoot = resolvePackageRoot(__dirname);
-  const distRoot = path.join(packageRoot, 'mcp_server', 'dist', 'lib');
-
-  if (!fs.existsSync(distRoot)) {
-    console.error(`Source/dist alignment check FAILED: dist root not found: ${toPosix(path.relative(packageRoot, distRoot))}`);
-    process.exit(2);
-  }
-
-  const distFiles = findJsFiles(distRoot);
   const allowlistedOrphans: OrphanedDistFile[] = [];
   const violations: OrphanedDistFile[] = [];
+  let scannedCount = 0;
 
-  for (const distFile of distFiles) {
-    const mapped = mapDistFileToSource(packageRoot, distFile);
-    const absoluteExpectedSource = path.join(packageRoot, mapped.expectedSource);
-
-    if (fs.existsSync(absoluteExpectedSource)) {
-      continue;
+  for (const target of DIST_TARGETS) {
+    const absoluteDistRoot = path.join(packageRoot, target.distRoot);
+    if (!fs.existsSync(absoluteDistRoot)) {
+      console.error(`Source/dist alignment check FAILED: dist root not found: ${toPosix(path.relative(packageRoot, absoluteDistRoot))}`);
+      process.exit(2);
     }
 
-    const allowlistEntry = findAllowlistEntry(mapped.distFile);
-    if (allowlistEntry) {
-      allowlistedOrphans.push({ ...mapped, allowlistEntry });
-      continue;
-    }
+    const distFiles = findJsFiles(absoluteDistRoot);
+    scannedCount += distFiles.length;
 
-    violations.push(mapped);
+    for (const distFile of distFiles) {
+      const mapped = mapDistFileToSource(packageRoot, target, distFile);
+      const absoluteExpectedSource = path.join(packageRoot, mapped.expectedSource);
+
+      if (fs.existsSync(absoluteExpectedSource)) {
+        continue;
+      }
+
+      const allowlistEntry = findAllowlistEntry(mapped.distFile);
+      if (allowlistEntry) {
+        allowlistedOrphans.push({ ...mapped, allowlistEntry });
+        continue;
+      }
+
+      violations.push(mapped);
+    }
   }
 
-  const alignedCount = distFiles.length - allowlistedOrphans.length - violations.length;
+  const alignedCount = scannedCount - allowlistedOrphans.length - violations.length;
 
   if (allowlistedOrphans.length > 0) {
     console.warn(`Source/dist alignment warning: ${allowlistedOrphans.length} allowlisted orphan(s):\n`);
@@ -143,7 +167,7 @@ function main(): void {
   }
 
   console.log('Source/dist alignment summary:');
-  console.log(`  dist JS files scanned: ${distFiles.length}`);
+  console.log(`  dist JS files scanned: ${scannedCount}`);
   console.log(`  aligned files: ${alignedCount}`);
   console.log(`  allowlisted orphans: ${allowlistedOrphans.length}`);
   console.log(`  violations: ${violations.length}`);
@@ -158,7 +182,7 @@ function main(): void {
     process.exit(1);
   }
 
-  console.log('\nSource/dist alignment check passed: every dist/lib/*.js file maps to a source .ts file.');
+  console.log('\nSource/dist alignment check passed: every scanned dist *.js file maps to a source .ts file.');
   process.exit(0);
 }
 

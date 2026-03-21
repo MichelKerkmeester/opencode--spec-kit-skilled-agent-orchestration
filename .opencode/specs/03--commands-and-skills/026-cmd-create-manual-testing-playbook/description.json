@@ -1,0 +1,19 @@
+{
+  "specFolder": "03--commands-and-skills/026-cmd-create-manual-testing-playbook",
+  "description": "Feature Specification: /create:testing-playbook Command",
+  "keywords": [
+    "feature",
+    "specification",
+    "create",
+    "testing-playbook",
+    "command"
+  ],
+  "lastUpdated": "2026-03-21T10:31:35.166Z",
+  "specId": "026",
+  "folderSlug": "cmd-create-manual-testing-playbook",
+  "parentChain": [
+    "03--commands-and-skills"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

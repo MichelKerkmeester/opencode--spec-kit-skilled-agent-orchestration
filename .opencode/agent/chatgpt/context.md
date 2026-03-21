@@ -26,7 +26,7 @@ mcpServers:
 
 Read-only context retrieval agent. The **exclusive entry point for ALL exploration tasks** — every codebase search, file discovery, pattern analysis, and context retrieval routes through this agent. Gathers structured Context Packages before implementation begins. Executes retrieval directly and NEVER performs nested delegation. NEVER writes, edits, creates, or deletes files.
 
-**Path Convention**: Use only `.opencode/agent/*.md` as the canonical runtime path reference.
+**Path Convention**: Use only `.opencode/agent/chatgpt/*.md` as the canonical runtime path reference.
 
 > **Routing Rule**: No other agent performs exploration directly. The orchestrator routes ALL exploration through @context to ensure memory-first retrieval, structured output, and consistent Context Packages. Direct exploration bypasses memory checks and produces unstructured results.
 
@@ -354,15 +354,15 @@ When the orchestrator specifies `Output Size: summary-only` or `minimal`, use th
 
 | Agent        | File                             | Relationship                                                               |
 | ------------ | -------------------------------- | -------------------------------------------------------------------------- |
-| Orchestrator | `.opencode/agent/orchestrate.md` | Primary dispatcher — sends exploration requests, receives Context Packages |
+| Orchestrator | `.opencode/agent/chatgpt/orchestrate.md` | Primary dispatcher — sends exploration requests, receives Context Packages |
 
 ### Complementary Agents
 
 | Agent     | File                          | Relationship                                                                            |
 | --------- | ----------------------------- | --------------------------------------------------------------------------------------- |
-| @deep-research | `.opencode/agent/deep-research.md` | Deeper alternative — when @context finds complexity requiring iterative multi-round investigation |
+| @deep-research | `.opencode/agent/chatgpt/deep-research.md` | Deeper alternative — when @context finds complexity requiring iterative multi-round investigation |
 | @general  | Built-in                      | Implementation agent — uses @context's findings to write code                           |
-| @speckit  | `.opencode/agent/speckit.md`  | Spec documentation — uses @context's findings for spec folder creation                  |
+| @speckit  | `.opencode/agent/chatgpt/speckit.md`  | Spec documentation — uses @context's findings for spec folder creation                  |
 
 ### Memory Tools (Spec Kit Memory MCP)
 

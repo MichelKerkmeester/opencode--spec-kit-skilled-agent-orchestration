@@ -1,5 +1,5 @@
 ---
-title: "Completed Phase 015 By [015-outsourced-agent-handback/16-03-26_22-31__completed-phase-015-by-aligning-the-outsourced]"
+title: "Completed Phase 002 By"
 description: "Completed phase 015 by aligning the outsourced-agent handback docs, feature catalog, regression coverage, and phase artifacts to the current post-010 save contract."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/010 perfect session capturing/015 outsourced agent handback"
@@ -447,7 +447,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 ```yaml
 # Core Identifiers
 session_id: "session-1773696711806-b812ee0bc88f"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/015-outsourced-agent-handback"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/000-dynamic-capture-deprecation/002-outsourced-agent-handback"
 channel: "main"
 
 # Classification

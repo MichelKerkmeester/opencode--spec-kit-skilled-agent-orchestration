@@ -26,6 +26,9 @@ contextType: "general"
 | **Status** | Draft |
 | **Created** | 2026-03-16 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../013-agents-md-alignment/spec.md |
+| **Successor** | ../015-rewrite-memory-mcp-readme/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -103,6 +106,7 @@ Provide a canonical parent packet with phase linkage across 19 child folders, us
 - **PHASE-001..005** -> appended to `016-tooling-and-scripts/` as pipeline-tooling validation.
 - **M-001..008** -> appended to `013-memory-quality-and-indexing/` as the top-level memory-maintenance scenarios.
 - **`M-005a..c`, `M-006a..c`, and `M-007a..j`** -> explicitly documented in `013-memory-quality-and-indexing/` as exact-ID sub-scenarios under the dedicated memory section.
+- **Normalization carried forward** -> the packet now uses bare numeric `NNN` IDs instead of provisional `NEW-NNN` markers, and Phase `016` includes scenarios `153` and `154`, bringing the exact-ID total to `213`.
 
 ---
 
@@ -163,15 +167,17 @@ Provide a canonical parent packet with phase linkage across 19 child folders, us
 
 ---
 
-## 8. NORMALIZATION ADDENDUM (2026-03-21)
-
-All `NEW-NNN` provisional scenario ID markers across this spec folder have been normalized to bare numeric IDs (`NNN`), aligning with the 2026-03-21 catalog/playbook normalization pass that removed `NEW-` prefixes from 194 feature catalog files and 200 playbook files. Section "8. NEW FEATURES" in the catalog was renamed to "8. FEATURES". Two new playbook entries — `153` (JSON mode hybrid enrichment) and `154` (JSON-primary deprecation posture) — were added to Phase 016, bringing the total exact-ID count from `211` to `213`.
-
----
-
 <!--
 CORE TEMPLATE (~80 lines)
 - Essential what/why/how only
 - No boilerplate sections
 - Add L2/L3 addendums for complexity
 -->
+
+## Phase Navigation
+
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../013-agents-md-alignment/spec.md |
+| **Next Phase** | ../015-rewrite-memory-mcp-readme/spec.md |

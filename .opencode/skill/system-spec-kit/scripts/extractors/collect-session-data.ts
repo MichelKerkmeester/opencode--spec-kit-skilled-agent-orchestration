@@ -343,7 +343,10 @@ function determineSessionStatus(
 ): string {
   const completionKeywords = /\b(?:done|complete[d]?|finish(?:ed)?|success(?:ful(?:ly)?)?)\b/i;
   const resolutionKeywords = /\b(?:resolved|fixed|unblocked|works?\s+now|workaround)\b/i;
-  const lastObs = observations[observations.length - 1];
+  const pendingWorkKeywords = /\b(?:todo|remaining|pending|left to do|follow-?up|next(?:\s+step|\s+action)?|need(?:s)? to|still need(?:s)?|still pending)\b/i;
+  const observationTexts = observations
+    .map((obs) => `${obs.title || ''} ${obs.narrative || ''}`.trim())
+    .filter(Boolean);
 
   // CG-03: Detect completion from explicit JSON-mode data
   // O5-3: Access fields directly via CollectedDataBase instead of Record casts
@@ -392,11 +395,33 @@ function determineSessionStatus(
     }
   }
 
-  if (lastObs) {
-    const narrative = lastObs.narrative || '';
-    if (completionKeywords.test(narrative) || completionKeywords.test(lastObs.title || '')) {
-      return 'COMPLETED';
-    }
+  if (observationTexts.some((text) => completionKeywords.test(text))) {
+    return 'COMPLETED';
+  }
+
+  const toolCallCount = Array.isArray(collectedData?.toolCalls)
+    ? collectedData.toolCalls.length
+    : (collectedData?._toolCallCount ?? 0);
+  const exchangeCount = Array.isArray(collectedData?.exchanges)
+    ? collectedData.exchanges.length
+    : 0;
+  const nextStepsText = Array.isArray(collectedData?.nextSteps)
+    ? collectedData.nextSteps.map((step) => JSON.stringify(step)).join(' ')
+    : '';
+  const summaryText = collectedData?.sessionSummary || '';
+  const combinedActivityCount = messageCount + toolCallCount + exchangeCount + observations.length;
+  const highActivity = (
+    toolCallCount >= 6 ||
+    (messageCount >= 3 && toolCallCount >= 3) ||
+    (messageCount >= 5 && (toolCallCount >= 2 || exchangeCount >= 2 || observations.length >= 4)) ||
+    (combinedActivityCount >= 10 && (toolCallCount > 0 || exchangeCount > 0))
+  );
+  const hasPendingWorkIndicators = [summaryText, nextStepsText, ...observationTexts]
+    .some((text) => pendingWorkKeywords.test(text));
+  const hasNoBlockers = !blockers || blockers === 'None';
+
+  if (hasNoBlockers && highActivity && !hasPendingWorkIndicators) {
+    return 'COMPLETED';
   }
 
   if (messageCount < 3) {
@@ -839,6 +864,10 @@ async function collectSessionData(
       explicitImportanceTier,
       explicitContextType
     );
+  const manualDecisionCount = Array.isArray(data._manualDecisions)
+    ? data._manualDecisions.length
+    : (Array.isArray(data.keyDecisions) ? data.keyDecisions.length : 0);
+  const effectiveDecisionCount = Math.max(decisionCount, manualDecisionCount);
 
   const TOOL_COUNT: number = Object.values(toolCounts).reduce((sum, count) => sum + count, 0);
 
@@ -936,7 +965,7 @@ async function collectSessionData(
     nextAction,
     blockers,
     duration,
-    decisionCount,
+    decisionCount: effectiveDecisionCount,
     collectedData: data
   });
 
@@ -976,7 +1005,7 @@ async function collectSessionData(
     LAST_ACCESSED_EPOCH: createdAtEpoch,
     EXPIRES_AT_EPOCH: expiresAtEpoch,
     TOOL_COUNTS: toolCounts,
-    DECISION_COUNT: decisionCount,
+    DECISION_COUNT: effectiveDecisionCount,
     ACCESS_COUNT: 1,
     LAST_SEARCH_QUERY: '',
     RELEVANCE_BOOST: 1.0,

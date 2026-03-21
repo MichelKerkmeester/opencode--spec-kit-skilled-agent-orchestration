@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode-spec-kit-framework?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode-spec-kit-framework?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode-spec-kit-framework/releases)
 
-> Multi-agent AI development framework with cognitive memory, structured documentation and 21 commands — built for OpenCode, Claude Code, ChatGPT and Gemini CLI.
+> Multi-agent AI development framework with cognitive memory, structured documentation and 22 commands — built for OpenCode, Claude Code, ChatGPT and Gemini CLI.
 >
 > 99.999% of people won't try this system. Beat the odds?
 > Don't reward me with unwanted coffee: https://buymeacoffee.com/michelkerkmeester
@@ -45,7 +45,7 @@
 
 AI coding assistants have amnesia. Every session starts from zero. You explain your architecture Monday. By Wednesday, it's gone. This framework fixes that.
 
-OpenCode is a multi-agent AI development framework built on top of the [OpenCode](https://github.com/sst/opencode) platform. It adds structured documentation (Spec Kit), a cognitive memory engine (MCP server), 11 coordinated agents, 21 commands and 16 specialized skills. Every session is documented, searchable, recoverable and auditable — across four AI runtimes.
+OpenCode is a multi-agent AI development framework built on top of the [OpenCode](https://github.com/sst/opencode) platform. It adds structured documentation (Spec Kit), a cognitive memory engine (MCP server), 11 coordinated agents, 22 commands and 18 specialized skills. Every session is documented, searchable, recoverable and auditable — across four AI runtimes.
 
 **Who it's for:** Developers using AI assistants who are tired of re-explaining context every session and watching decisions disappear into chat history.
 
@@ -54,9 +54,9 @@ OpenCode is a multi-agent AI development framework built on top of the [OpenCode
 | Category | Count | Details |
 |----------|-------|---------|
 | Agents | 11 | 2 built-in + 9 custom (multi-runtime) |
-| Skills | 16 | Code, docs, git, prompts, MCP, cross-AI |
-| Commands | 21 | 8 spec_kit + 7 memory + 5 create + 1 utility |
-| MCP tools | 39 | 32 memory + 7 code mode |
+| Skills | 18 | Code, docs, git, prompts, MCP, research, cross-AI |
+| Commands | 22 | 8 spec_kit + 6 memory + 7 create + 1 utility |
+| MCP tools | 40 | 33 memory + 7 code mode |
 | Gates | 3 | Understanding, Skill Routing, Spec Folder |
 | Runtimes | 4 | OpenCode, Claude Code, ChatGPT, Gemini CLI |
 | Templates | 81 | CORE + ADDENDUM v2.2 |
@@ -80,16 +80,16 @@ OpenCode is a multi-agent AI development framework built on top of the [OpenCode
          ▼                            ▼
 ┌─────────────────┐        ┌─────────────────────┐
 │  AGENT NETWORK  │        │  SKILLS LIBRARY     │
-│  11 specialized │        │  16 domain skills   │
+│  11 specialized │        │  18 domain skills   │
 │  agents with    │◄──────►│  auto-loaded by     │
 │  routing logic  │        │  task keywords      │
 └────────┬────────┘        └──────────┬──────────┘
          │                            │
          ▼                            ▼
 ┌──────────────────────────────────────────────────────────────┐
-│  MEMORY ENGINE (32 MCP tools: 32 memory + 7 code mode)       │
+│  MEMORY ENGINE (40 MCP tools: 33 memory + 7 code mode)       │
 │  Cognitive tiers ─ Causal graphs ─ Unified Context Engine    │
-│  3-channel hybrid: Vector + BM25 + FTS5 (RRF)               │
+│  5-channel hybrid: Vector + BM25 + FTS5 + Graph + Degree     │
 │  MMR diversity ─ TRM confidence gating ─ query expansion     │
 │  Sources: spec memory + constitutional + spec documents      │
 │  Embeddings: Voyage | OpenAI | HuggingFace Local (free)     │
@@ -170,7 +170,7 @@ export OPENAI_API_KEY="your-key-here"
 
 ```bash
 # Check that the memory server builds correctly
-node .opencode/skill/system-spec-kit/mcp_server/dist/index.js --help
+node .opencode/skill/system-spec-kit/mcp_server/dist/context-server.js --help
 
 # Expected: help output with available options
 ```
@@ -196,15 +196,15 @@ This creates a spec folder, runs research, builds a plan and begins implementati
 opencode-spec-kit-framework/
 ├── .opencode/                    # OpenCode runtime (source of truth)
 │   ├── agent/                   # Agent definitions (OpenCode + ChatGPT)
-│   ├── command/                 # 21 commands (.md entry points)
+│   ├── command/                 # 22 commands (.md entry points)
 │   │   ├── spec_kit/            # 8 spec workflow commands
 │   │   ├── memory/              # 7 memory commands
 │   │   └── create/              # 5 creation commands
-│   ├── skill/                   # 16 skills
+│   ├── skill/                   # 18 skills
 │   │   ├── system-spec-kit/     # Documentation + memory MCP server
 │   │   ├── sk-doc/              # Markdown quality and templates
 │   │   ├── sk-code--*/          # Code workflow skills (3)
-│   │   ├── mcp-*/               # MCP integration skills (3)
+│   │   ├── mcp-*/               # MCP integration skills (5)
 │   │   └── cli-*/               # Cross-AI CLI skills (4)
 │   └── specs/                   # Active spec folders
 │       ├── 01--[project]/       # Project-specific specs
@@ -282,7 +282,9 @@ The Memory Engine is a local-first cognitive memory system built as an MCP serve
 | Vector | Semantic similarity (Voyage/OpenAI/HuggingFace) | Conceptual matches |
 | BM25 | Term frequency ranking | Keyword precision |
 | FTS5 | SQLite full-text search | Exact phrase matching |
-| Fusion | RRF + MMR diversity + TRM confidence gating | Best of all three |
+| Graph | Causal graph traversal | Relationship-aware retrieval |
+| Degree | Node connectivity ranking | Hub and authority detection |
+| Fusion | RRF + MMR diversity + TRM confidence gating | Best of all five |
 
 ### Embedding Providers
 
@@ -295,7 +297,7 @@ The Memory Engine is a local-first cognitive memory system built as an MCP serve
 
 **Local-first:** The memory database runs on your machine at `.opencode/skill/system-spec-kit/shared/mcp_server/database/`. No data leaves your system unless you configure a cloud embedding provider.
 
-For the complete memory API (32 tools), pipeline architecture and retrieval configuration, see the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
+For the complete memory API (33 tools), pipeline architecture and retrieval configuration, see the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
 <!-- /ANCHOR:memory-engine -->
 
@@ -338,7 +340,7 @@ For the complete memory API (32 tools), pipeline architecture and retrieval conf
 <!-- ANCHOR:command-architecture -->
 ## 7. COMMAND ARCHITECTURE
 
-21 commands across 4 namespaces. Each command is a two-layer system: a Markdown entry point (`.opencode/command/*.md`) for input collection and routing, backed by a behavioral execution spec.
+22 commands across 4 namespaces. Each command is a two-layer system: a Markdown entry point (`.opencode/command/*.md`) for input collection and routing, backed by a behavioral execution spec.
 
 ### spec_kit/ — 8 Commands
 
@@ -350,6 +352,7 @@ For the complete memory API (32 tools), pipeline architecture and retrieval conf
 | `/spec_kit:phase` | Decompose a spec into phased child folders |
 | `/spec_kit:debug` | Delegate debugging to fresh-perspective sub-agent |
 | `/spec_kit:resume` | Continue a previous session (auto-loads memory) |
+| `/spec_kit:deep-research` | Autonomous deep research loop with iterative investigation and convergence detection |
 | `/spec_kit:handover` | Create session handover (`:quick` or `:full` variants) |
 
 ### memory/ — 6 Commands
@@ -363,7 +366,7 @@ For the complete memory API (32 tools), pipeline architecture and retrieval conf
 | `/memory:manage` | Database operations: stats, health, cleanup, checkpoints |
 | `/memory:shared` | Shared memory: create, member, status (deny-by-default governance) |
 
-### create/ — 5 Commands
+### create/ — 7 Commands
 
 | Command | Purpose |
 |---------|---------|
@@ -372,6 +375,8 @@ For the complete memory API (32 tools), pipeline architecture and retrieval conf
 | `/create:folder_readme` | Unified README and install guide creation |
 | `/create:changelog` | Create changelog entry from recent work |
 | `/create:prompt` | Create or improve AI prompts with structured frameworks |
+| `/create:feature-catalog` | Create or update feature catalog packages |
+| `/create:testing-playbook` | Create or update manual testing playbook packages |
 
 ### Utility — 1 Command
 
@@ -386,7 +391,7 @@ For the complete memory API (32 tools), pipeline architecture and retrieval conf
 <!-- ANCHOR:skills-library -->
 ## 8. SKILLS LIBRARY
 
-16 skills in `.opencode/skill/`. Skills are on-demand capabilities loaded when a task matches. Gate 2 runs `skill_advisor.py` to recommend the right skill (confidence >= 0.8 means it must be loaded).
+18 skills in `.opencode/skill/`. Skills are on-demand capabilities loaded when a task matches. Gate 2 runs `skill_advisor.py` to recommend the right skill (confidence >= 0.8 means it must be loaded).
 
 ### Documentation Skills (2)
 
@@ -404,11 +409,12 @@ For the complete memory API (32 tools), pipeline architecture and retrieval conf
 | `sk-code--web` | v1.1.0.0 | Frontend development orchestrator with 6 specialized code quality sub-skills |
 | `sk-code--review` | v1.2.0.0 | Stack-agnostic code review baseline with findings-first severity analysis and mandatory security/correctness minimums |
 
-### MCP Integration Skills (4)
+### MCP Integration Skills (5)
 
 | Skill | Version | Description |
 |-------|---------|-------------|
 | `mcp-code-mode` | v1.0.7.0 | MCP orchestration via TypeScript execution for multi-tool workflows. 200+ tools through progressive disclosure. 98.7% context reduction |
+| `mcp-coco-index` | v1.0.0 | Semantic code search via vector embeddings. Natural-language discovery of relevant code, patterns and implementations. CLI for direct use; MCP exposes a single `search` tool for AI agent integration |
 | `mcp-figma` | v1.0.7.0 | Figma design file access via MCP. 18 tools for file retrieval, image export, component/style extraction and team management |
 | `mcp-chrome-devtools` | v1.0.7.0 | Chrome DevTools orchestrator. CLI-first (bdg) for speed, MCP fallback for multi-tool integration |
 | `mcp-clickup` | v1.0.0 | ClickUp project management. CLI-first (cu) for speed, MCP for enterprise features like docs, goals and webhooks |
@@ -422,10 +428,11 @@ For the complete memory API (32 tools), pipeline architecture and retrieval conf
 | `cli-claude-code` | v1.1.1 | Claude Code CLI orchestrator for deep reasoning, extended thinking, code editing and structured output |
 | `cli-copilot` | v1.3.1 | Copilot CLI orchestrator for multi-model tasks, cloud delegation, collaborative planning and autopilot mode |
 
-### Other Skills (2)
+### Other Skills (3)
 
 | Skill | Version | Description |
 |-------|---------|-------------|
+| `sk-deep-research` | v1.0.0 | Autonomous deep research loop protocol with iterative investigation, externalized state, convergence detection and fresh context per iteration |
 | `sk-git` | v1.1.0.0 | Git workflow orchestrator: workspace setup (worktrees), clean conventional commits and pull request workflows |
 | `sk-prompt-improver` | v1.2.0.0 | Prompt engineering specialist with 7 frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT), DEPTH methodology and CLEAR scoring |
 
@@ -483,7 +490,7 @@ Defined in `opencode.json`:
 
 | Server | Tools | Purpose |
 |--------|-------|---------|
-| `spec_kit_memory` | 32 | Cognitive memory system — the memory engine |
+| `spec_kit_memory` | 33 | Cognitive memory system — the memory engine |
 | `code_mode` | 7 | External tool orchestration via TypeScript execution |
 | `sequential_thinking` | — | Structured multi-step reasoning for complex problems |
 
@@ -563,7 +570,7 @@ If no API key is set, the memory engine auto-detects HuggingFace Local embedding
     "spec_kit_memory": {
       "type": "local",
       "command": "node",
-      "args": [".opencode/skill/system-spec-kit/mcp_server/dist/index.js"]
+      "args": [".opencode/skill/system-spec-kit/mcp_server/dist/context-server.js"]
     },
     "code_mode": {
       "type": "local",
@@ -719,7 +726,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/validate-memory-quality
 ls .opencode/specs/
 
 # Verify MCP server is running
-node .opencode/skill/system-spec-kit/mcp_server/dist/index.js --version
+node .opencode/skill/system-spec-kit/mcp_server/dist/context-server.js --version
 
 # Check skill advisor output for a query
 python3 .opencode/skill/scripts/skill_advisor.py "your task description" --threshold 0.8
@@ -734,7 +741,7 @@ python3 .opencode/skill/scripts/skill_advisor.py "your task description" --thres
 
 ### General Questions
 
-**Q: Do I need all 16 skills installed to use the framework?**
+**Q: Do I need all 18 skills installed to use the framework?**
 
 A: No. Skills are loaded on demand by Gate 2. You only need the ones relevant to your work. The two core skills — `system-spec-kit` and `sk-doc` — cover most documentation workflows. The MCP and cross-AI CLI skills require additional API keys or tools.
 
@@ -754,7 +761,7 @@ A: Gate 3 blocks file modifications until a spec folder answer is provided. You 
 
 **Q: How does the memory system know what is relevant to my current task?**
 
-A: Every memory file has YAML frontmatter with tags, context type and trigger phrases. When you start a session, `memory_match_triggers()` runs a hybrid search (vector + BM25 + FTS5) across all indexed memory files and returns the top matches. The Gate 1 soft block then surfaces those results before any work begins.
+A: Every memory file has YAML frontmatter with tags, context type and trigger phrases. When you start a session, `memory_match_triggers()` runs a 5-channel hybrid search (vector + BM25 + FTS5 + graph + degree) across all indexed memory files and returns the top matches. The Gate 1 soft block then surfaces those results before any work begins.
 
 ---
 
@@ -793,9 +800,9 @@ A: Define the agent in `.opencode/agent/` (the source of truth), then copy the a
 |----------|---------|
 | [AGENTS.md](AGENTS.md) | Complete agent routing reference, gate definitions and behavior rules for all runtimes |
 | [Spec Kit README](.opencode/skill/system-spec-kit/README.md) | Full spec folder workflow, template architecture, validation rules and memory pipeline |
-| [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md) | Complete memory API reference (32 tools), retrieval architecture and configuration |
+| [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md) | Complete memory API reference (33 tools), retrieval architecture and configuration |
 | [sk-doc SKILL.md](.opencode/skill/sk-doc/SKILL.md) | Documentation standards, DQI scoring, templates and HVR writing rules |
-| [Skills README](.opencode/skill/README.md) | Index of all 16 skills with descriptions and invocation patterns |
+| [Skills README](.opencode/skill/README.md) | Index of all 18 skills with descriptions and invocation patterns |
 | [AGENTS_example_fs_enterprises.md](AGENTS_example_fs_enterprises.md) | Example AGENTS.md for a full-stack enterprise project (runtime-neutral) |
 
 ### External Resources
@@ -810,4 +817,4 @@ A: Define the agent in `.opencode/agent/` (the source of truth), then copy the a
 
 ---
 
-*Documentation version: 3.0 | Last updated: 2026-03-15 | Framework: 11 agents, 16 skills, 21 commands, 32 MCP tools*
+*Documentation version: 3.0 | Last updated: 2026-03-15 | Framework: 11 agents, 18 skills, 22 commands, 33 MCP tools*

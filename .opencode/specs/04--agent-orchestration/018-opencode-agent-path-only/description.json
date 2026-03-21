@@ -16,5 +16,9 @@
     "04--agent-orchestration"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: OpenCode Agent Path Only [018-opencode-agent-path-only/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: OpenCode Agent Path Only"
 }

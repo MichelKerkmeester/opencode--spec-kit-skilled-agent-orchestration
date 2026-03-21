@@ -14,5 +14,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: Aggressive @context_loader Enforcement [008-context-loader-enforcement/spec]",
+  "importance_tier": "important",
+  "short_description": "Spec: Aggressive @context_loader Enforcement"
 }

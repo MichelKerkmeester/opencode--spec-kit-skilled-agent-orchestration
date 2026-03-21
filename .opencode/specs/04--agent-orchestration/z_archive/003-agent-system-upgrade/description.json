@@ -15,5 +15,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Specification: Agent System Upgrade [003-agent-system-upgrade/spec]",
+  "status": "Complete (Consolidated)",
+  "importance_tier": "important",
+  "short_description": "Specification: Agent System Upgrade"
 }

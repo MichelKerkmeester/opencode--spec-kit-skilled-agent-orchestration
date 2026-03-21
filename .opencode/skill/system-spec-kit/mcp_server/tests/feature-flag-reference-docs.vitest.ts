@@ -107,7 +107,7 @@ describe('Hydra roadmap flag documentation', () => {
     });
   }
 
-  it('manual playbook NEW-125 matches the runtime default-on plus explicit opt-out contract', () => {
+  it('manual playbook 125 matches the runtime default-on plus explicit opt-out contract', () => {
     const playbookPath = path.join(SKILL_ROOT, 'manual_testing_playbook', 'manual_testing_playbook.md');
     const featureFilePath = path.join(
       SKILL_ROOT,
@@ -118,7 +118,7 @@ describe('Hydra roadmap flag documentation', () => {
     const playbookContent = fs.readFileSync(playbookPath, 'utf8');
     const featureFileContent = fs.readFileSync(featureFilePath, 'utf8');
 
-    expect(playbookContent).toContain('NEW-125');
+    expect(playbookContent).toContain('### 125 | Hydra roadmap capability flags');
     expect(playbookContent).toContain('default-on unless explicitly opted out');
     expect(playbookContent).toContain('capabilities.graphUnified:true');
 

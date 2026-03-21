@@ -49,25 +49,6 @@ contextType: "general"
 - [x] T007 Correct the phase docs so they no longer claim `enrichFileSourceData()` shipped in phase 016
 - [x] T008 Reframe the research artifact as archival analysis of the non-shipped design
 - [x] T009 Synchronize checklist evidence with the corrected plan, spec, ADR, and implementation summary
-<!-- /ANCHOR:phase-2 -->
-
----
-
-<!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
-
-- [x] T014 Run `npx tsc --noEmit`
-- [x] T015 Run `npx tsc -b`
-- [x] T016 Verify file-backed JSON remains on the authoritative structured path
-- [x] T017 Verify structured summary fields and Wave 2 fixes remain documented and tested accurately
-- [x] T018 Update phase documentation, implementation summary, and research framing
-<!-- /ANCHOR:phase-3 -->
-
----
-
-<!-- ANCHOR:wave-3 -->
-## Wave 3: JSON Payload Field Propagation Fixes + Post-Save Review
-
 - [x] T019 RC5: Move `decisionCount` check before `total===0` early return in `detectContextType()` (`session-extractor.ts`)
 - [x] T020 RC5: Add `explicitContextType` parameter to `detectSessionCharacteristics()` (`session-extractor.ts`)
 - [x] T021 RC5: Add `contextType`/`context_type` to `RawInputData`, `NormalizedData`, and `CollectedDataBase` interfaces
@@ -80,21 +61,26 @@ contextType: "general"
 - [x] T028 RC1: Add `sessionData._JSON_SESSION_SUMMARY` as first candidate in `pickPreferredMemoryTask()` (`workflow.ts`)
 - [x] T029 Create post-save quality review module (`scripts/core/post-save-review.ts`)
 - [x] T030 Integrate Step 10.5 post-save review in workflow after file write, before indexing (`workflow.ts`)
-- [x] T031 Add post-save review instructions to all 5 instruction files (CLAUDE.md, AGENTS.md, GEMINI.md, AGENTS_example_fs_enterprises.md, Barter/coder/AGENTS)
+- [x] T031 Add post-save review instructions to the 4 tracked instruction files present in this repo (CLAUDE.md, AGENTS.md, GEMINI.md, AGENTS_example_fs_enterprises.md)
 - [x] T032 Update the phase-016 feature catalog entry with RC fixes and post-save review coverage
 - [x] T033 Create the post-save quality review feature catalog entry under the memory-quality-and-indexing catalog
 - [x] T034 Update the phase-153 manual testing playbook entry with field propagation tests
 - [x] T035 Create the post-save quality review manual testing playbook entry under the memory-quality-and-indexing playbook set
-<!-- /ANCHOR:wave-3 -->
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
-<!-- ANCHOR:wave-3-verification -->
-## Wave 3: Verification
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
+- [x] T014 Run `npx tsc --noEmit`
+- [x] T015 Run `npx tsc -b`
+- [x] T016 Verify file-backed JSON remains on the authoritative structured path
+- [x] T017 Verify structured summary fields and Wave 2 fixes remain documented and tested accurately
+- [x] T018 Update phase documentation, implementation summary, and research framing
 - [x] T036 Run `npx tsc --noEmit` — clean compilation
 - [x] T037 Run `npx tsc` (scripts project) — dist files generated including `post-save-review.js`
-<!-- /ANCHOR:wave-3-verification -->
+<!-- /ANCHOR:phase-3 -->
 
 ---
 

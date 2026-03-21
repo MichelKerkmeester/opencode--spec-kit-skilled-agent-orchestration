@@ -295,6 +295,7 @@ export {
   generateAnchorId,
   categorizeSection,
   validateAnchorUniqueness,
+  slugify,
   extractSpecNumber,
   wrapSectionsWithAnchors,
 };

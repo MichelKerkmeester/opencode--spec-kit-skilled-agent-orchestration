@@ -2,6 +2,7 @@
 import { describe, it, expect } from 'vitest';
 
 import * as memorySaveHandler from '../handlers/memory-save';
+import * as peGating from '../handlers/pe-gating';
 import * as predictionErrorGate from '../lib/cognitive/prediction-error-gate';
 
 function makeCandidate(
@@ -127,12 +128,12 @@ describe('Memory Save Integration (T501-T550)', () => {
   });
 
   describe('Save-handler wiring', () => {
-    it('T508: save handler re-exports PE helpers and snake_case aliases', () => {
-      expect(memorySaveHandler.find_similar_memories).toBe(memorySaveHandler.findSimilarMemories);
-      expect(memorySaveHandler.reinforce_existing_memory).toBe(memorySaveHandler.reinforceExistingMemory);
-      expect(memorySaveHandler.mark_memory_superseded).toBe(memorySaveHandler.markMemorySuperseded);
-      expect(memorySaveHandler.update_existing_memory).toBe(memorySaveHandler.updateExistingMemory);
-      expect(memorySaveHandler.log_pe_decision).toBe(memorySaveHandler.logPeDecision);
+    it('T508: PE helpers exported from canonical pe-gating module', () => {
+      expect(typeof peGating.findSimilarMemories).toBe('function');
+      expect(typeof peGating.reinforceExistingMemory).toBe('function');
+      expect(typeof peGating.markMemorySuperseded).toBe('function');
+      expect(typeof peGating.updateExistingMemory).toBe('function');
+      expect(typeof peGating.logPeDecision).toBe('function');
     });
 
     it('T509: exported thresholds remain ordered to preserve PE routing', () => {

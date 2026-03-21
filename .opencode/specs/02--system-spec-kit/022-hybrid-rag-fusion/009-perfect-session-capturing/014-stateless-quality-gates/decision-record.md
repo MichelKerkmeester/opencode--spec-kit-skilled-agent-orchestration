@@ -1,6 +1,6 @@
 ---
 title: "Decision Record: Stateless Quality Gate Fixes"
-description: "The shipped Phase 017 contract bundles hard-block stateless rules, structured stdin/json input, and narrow source-aware contamination severity."
+description: "The shipped Phase 014 contract bundles hard-block stateless rules, structured stdin/json input, and narrow source-aware contamination severity."
 trigger_phrases:
   - "stateless quality gates decisions"
   - "gate a tiering decision"
@@ -26,14 +26,14 @@ contextType: "implementation"
 |-------|-------|
 | **Status** | Accepted |
 | **Date** | 2026-03-18 |
-| **Deciders** | Phase 017 author |
+| **Deciders** | Phase 014 author |
 
 ---
 
 <!-- ANCHOR:adr-001-context -->
 ### Context
 
-Phase 017 had three coupled failures in the stateless save path. Gate A in `workflow.ts` treated every V1-V11 validation failure as fatal for non-file sources, even though V10 file-count divergence is diagnostic rather than unsafe. The only practical workaround was writing curated JSON to `/tmp/save-context-data.json`, which bypassed stateless mode but added manual scaffolding. Claude Code sessions were also capped by the tool-title-with-path contamination rule even when they were faithfully describing real tool activity.
+Phase 014 had three coupled failures in the stateless save path. Gate A in `workflow.ts` treated every V1-V11 validation failure as fatal for non-file sources, even though V10 file-count divergence is diagnostic rather than unsafe. The only practical workaround was writing curated JSON to `/tmp/save-context-data.json`, which bypassed stateless mode but added manual scaffolding. Claude Code sessions were also capped by the tool-title-with-path contamination rule even when they were faithfully describing real tool activity.
 
 ### Constraints
 
@@ -78,7 +78,7 @@ Phase 017 had three coupled failures in the stateless save path. Gate A in `work
 - Source-aware contamination policy stays narrow: Claude Code gets the exception, other sources keep the old severity.
 
 **What it costs**:
-- The hard-block allowlist and source-policy rules now need one authoritative owner. Mitigation: keep the bundled contract documented here and revalidate it with the targeted phase-017 lane.
+- The hard-block allowlist and source-policy rules now need one authoritative owner. Mitigation: keep the bundled contract documented here and revalidate it with the targeted phase-014 lane.
 
 **Risks**:
 
@@ -116,13 +116,13 @@ Phase 017 had three coupled failures in the stateless save path. Gate A in `work
 - `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts`: support `--stdin` and `--json`, resolve the authoritative target, and hand curated payloads to `runWorkflow({ collectedData })`.
 - `.opencode/skill/system-spec-kit/scripts/extractors/contamination-filter.ts`: accept optional `captureSource` and narrow the tool-title-with-path downgrade to Claude Code captures.
 
-**How to roll back**: restore the old Gate A abort line in `workflow.ts`, remove `HARD_BLOCK_RULES` from `validate-memory-quality.ts`, remove `--stdin` / `--json` handling from `generate-context.ts`, and drop the `captureSource` option from `contamination-filter.ts`, then rerun the targeted phase-017 lane plus the broader scripts baseline.
+**How to roll back**: restore the old Gate A abort line in `workflow.ts`, remove `HARD_BLOCK_RULES` from `validate-memory-quality.ts`, remove `--stdin` / `--json` handling from `generate-context.ts`, and drop the `captureSource` option from `contamination-filter.ts`, then rerun the targeted phase-014 lane plus the broader scripts baseline.
 <!-- /ANCHOR:adr-001-impl -->
 <!-- /ANCHOR:adr-001 -->
 
 ---
 
 <!--
-Level 3 Decision Record (Phase 017): one bundled ADR keeps the template clean while preserving the three shipped stateless-save decisions.
+Level 3 Decision Record (Phase 014): one bundled ADR keeps the template clean while preserving the three shipped stateless-save decisions.
 Written in active voice per HVR rules.
 -->

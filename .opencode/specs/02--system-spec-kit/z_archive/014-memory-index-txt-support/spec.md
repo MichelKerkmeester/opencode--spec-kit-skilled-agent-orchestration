@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Memory Index TXT File Support [131-memory-index-txt-support/spec]"
+title: "Feature Specification: Memory Index TXT File Support [014-memory-index-txt-support/spec]"
 description: "Add .txt file indexing support to the Spec Kit Memory memory_index_scan tool to enable command folder documentation (e.g., README.txt) to be discoverable via memory search, whil..."
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "index"
   - "txt"
   - "spec"
-  - "131"
+  - "014"
 importance_tier: "important"
 contextType: "decision"
 ---

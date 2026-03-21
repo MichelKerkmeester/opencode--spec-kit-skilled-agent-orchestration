@@ -17,5 +17,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: Rename workflows-memory → system-memory [025-system-memory-rename/spec]",
+  "status": "✅ Complete",
+  "importance_tier": "important",
+  "short_description": "Spec: Rename workflows-memory → system-memory"
 }

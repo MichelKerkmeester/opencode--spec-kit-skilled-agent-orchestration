@@ -18,5 +18,9 @@
   "memoryNameHistory": [
     "11-03-26_09-04__lifecycle.md",
     "11-03-26_09-40__lifecycle.md"
-  ]
+  ],
+  "title": "Feature Specification: lifecycle [template:level_2/spec.md]",
+  "status": "Complete",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: lifecycle"
 }

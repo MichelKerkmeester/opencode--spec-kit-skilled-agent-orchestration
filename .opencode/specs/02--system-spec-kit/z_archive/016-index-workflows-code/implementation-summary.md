@@ -1,11 +1,11 @@
 ---
-title: "Implementation Summary [133-index-workflows-code/implementation-summary]"
+title: "Implementation Summary [016-index-workflows-code/implementation-summary]"
 description: "A configurable skill reference indexing system that extends the Spec Kit Memory pipeline with a 6th indexing source. The system allows selective indexing of references/ and asse..."
 trigger_phrases:
   - "implementation"
   - "summary"
   - "implementation summary"
-  - "133"
+  - "016"
   - "index"
 importance_tier: "normal"
 contextType: "implementation"
@@ -31,6 +31,8 @@ contextType: "implementation"
 
 <!-- ANCHOR:what-built -->
 ## What Was Built
+
+> **NOTE: No code was ever implemented. All claimed files and configurations do not exist. This spec was reverted. The files listed below (`skill-ref-config.ts`, `skillReferenceIndexing` config section, `includeSkillRefs` param, `findSkillReferenceFiles()`, and all associated test files) were never created or committed.**
 
 A configurable skill reference indexing system that extends the Spec Kit Memory pipeline with a 6th indexing source. The system allows selective indexing of `references/` and `assets/` content from user-configured `workflows-code--*` skills, enabling agents to discover skill-specific checklists, guides, and workflow documentation via memory search. The implementation uses a triple feature gate (MCP param + env var + config) with three new document types (skill_reference, skill_checklist, skill_asset) and config-driven skill selection.
 

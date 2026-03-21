@@ -208,7 +208,7 @@ All template files follow this consistent structure:
 | -------------------------------------- | ------------------------- | --------------------------- |
 | spec.md, plan.md, checklist.md         | `system-spec-kit`         | Spec folder templates       |
 | SKILL.md                               | `sk-doc` | skill_md_template.md        |
-| references/*.md                        | `sk-doc` | skill_reference_template.md |
+| references/**/*.md                     | `sk-doc` | skill_reference_template.md |
 | assets/*.md                            | `sk-doc` | skill_asset_template.md     |
 | README.md (general)                    | `sk-doc` | readme_template.md          |
 | Memory files (memory/*.md)             | `system-spec-kit`         | Auto-generated              |

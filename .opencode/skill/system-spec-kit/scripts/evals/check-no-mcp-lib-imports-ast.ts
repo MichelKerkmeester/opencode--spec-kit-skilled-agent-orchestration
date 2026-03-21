@@ -223,6 +223,24 @@ function parseFile(filePath: string, allowlist: Allowlist): ParsedFileResult {
       }
     }
 
+    // import Foo = require("module") — ImportEqualsDeclaration
+    if (ts.isImportEqualsDeclaration(node) && ts.isExternalModuleReference(node.moduleReference)) {
+      const importPath = getModuleSpecifierText(node.moduleReference.expression);
+      if (importPath) {
+        const line = getNodeLine(sourceFile, node.moduleReference.expression);
+        registerLocalDependency(importPath, line, false);
+        registerProhibitedImport(importPath, line, false);
+      }
+    }
+
+    // import("module") as type — ImportTypeNode (e.g., type Foo = import("module").Bar)
+    if (ts.isImportTypeNode(node) && ts.isLiteralTypeNode(node.argument) && ts.isStringLiteral(node.argument.literal)) {
+      const importPath = node.argument.literal.text;
+      const line = getNodeLine(sourceFile, node.argument.literal);
+      registerLocalDependency(importPath, line, false);
+      registerProhibitedImport(importPath, line, false);
+    }
+
     if (ts.isCallExpression(node) && node.arguments.length > 0) {
       const firstArg = node.arguments[0];
 

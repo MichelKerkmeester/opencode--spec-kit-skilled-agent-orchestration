@@ -6,6 +6,7 @@ import os from 'os';
 
 // DB-dependent imports - commented out for deferred test suite
 import * as handler from '../handlers/memory-save';
+import { escapeLikePattern } from '../handlers/handler-utils';
 import { getCanonicalPathKey } from '../lib/utils/canonical-path';
 
 const MEMORY_SAVE_SOURCE = fs.readFileSync(path.join(__dirname, '..', 'handlers', 'memory-save.ts'), 'utf8');
@@ -28,8 +29,8 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(typeof handler.getAtomicityMetrics).toBe('function');
     });
 
-    it('T518-5: escapeLikePattern exported', () => {
-      expect(typeof handler.escapeLikePattern).toBe('function');
+    it('T518-5: escapeLikePattern exported from handler-utils', () => {
+      expect(typeof escapeLikePattern).toBe('function');
     });
 
     it('T518-6: All snake_case aliases exported', () => {
@@ -38,13 +39,6 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         'index_memory_file',
         'atomic_save_memory',
         'get_atomicity_metrics',
-        'find_similar_memories',
-        'reinforce_existing_memory',
-        'mark_memory_superseded',
-        'update_existing_memory',
-        'log_pe_decision',
-        'process_causal_links',
-        'resolve_memory_reference',
       ] as const satisfies readonly (keyof typeof handler)[];
       for (const alias of aliases) {
         expect(typeof handler[alias]).toBe('function');
@@ -94,7 +88,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
 
   describe('escapeLikePattern Helper', () => {
     it('T518-12: Escapes % character', () => {
-      const result = handler.escapeLikePattern('100% done');
+      const result = escapeLikePattern('100% done');
       expect(result).toBe('100\\% done');
     });
   });
@@ -614,7 +608,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         isSaveQualityGateEnabledMock: vi.fn(() => true),
         embeddingPipelineModuleFactory: () => ({
           generateOrCacheEmbedding: vi.fn(async () => ({
-            embedding: new Float32Array([0.1, 0.2, 0.3]),
+            embedding: new Float32Array(1024).fill(0.1),
             status: 'success',
             failureReason: null,
             pendingCacheWrite: null,
@@ -667,7 +661,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
     it('passes same-path exclusion into content-hash dedup after unchanged miss', async () => {
       const runQualityGateMock = vi.fn(() => ({ pass: true, warnOnly: false, reasons: [], layers: {} }));
       const checkExistingRowMock = vi.fn(() => null);
-      const checkContentHashDedupMock = vi.fn(() => null);
+      const checkContentHashDedupMock = vi.fn(() => buildIndexResult({ status: 'duplicate', id: 779 }));
 
       const harness = await loadAtomicSaveHarness({
         checkExistingRowMock,
@@ -676,7 +670,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         isSaveQualityGateEnabledMock: vi.fn(() => true),
         embeddingPipelineModuleFactory: () => ({
           generateOrCacheEmbedding: vi.fn(async () => ({
-            embedding: new Float32Array([0.1, 0.2, 0.3]),
+            embedding: new Float32Array(1024).fill(0.1),
             status: 'success',
             failureReason: null,
             pendingCacheWrite: null,
@@ -686,7 +680,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         peOrchestrationModuleFactory: () => ({
           evaluateAndApplyPeDecision: vi.fn(() => ({
             decision: { action: 'CREATE', similarity: 0 },
-            earlyReturn: buildIndexResult({ status: 'indexed', id: 778 }),
+            earlyReturn: null,
           })),
         }),
       });

@@ -1,6 +1,6 @@
 ---
 title: "Session Capturing Pipeline Quality"
-description: "Session capturing pipeline quality is the closure feature for spec `010-perfect-session-capturing`. It now covers the shipped JSON-primary save path for `generate-context.js` plus explicit recovery-only fallback behavior:"
+description: "Session capturing pipeline quality is the current reality-alignment feature for `009-perfect-session-capturing`. It now covers the shipped JSON-primary save path for `generate-context.js` plus explicit recovery-only fallback behavior:"
 ---
 
 # Session Capturing Pipeline Quality
@@ -17,7 +17,7 @@ description: "Session capturing pipeline quality is the closure feature for spec
 
 ## 1. OVERVIEW
 
-Session capturing pipeline quality is the closure feature for spec `010-perfect-session-capturing`. It now covers the full shipped session-capture path for `generate-context.js`:
+Session capturing pipeline quality is the current reality-alignment feature for `009-perfect-session-capturing`. It now covers the full shipped session-capture path for `generate-context.js`:
 
 1. Part I hardening across session extraction, file writing, contamination filtering, alignment blocking, and config-driven limits.
 2. Recovery-mode stateless enrichment from spec-folder and git context.
@@ -29,7 +29,7 @@ Session capturing pipeline quality is the closure feature for spec `010-perfect-
    - `Copilot CLI`
    - `Gemini CLI`
 5. One shared semantic sufficiency gate so aligned but under-evidenced memories fail explicitly instead of indexing.
-6. Phase 017-020 runtime-contract hardening, including metadata-driven write/index dispositions, preferred `--stdin` / `--json` structured input, and typed source capabilities for contamination policy.
+6. Phase 017-018 runtime-contract hardening plus Phase 019 reality-alignment follow-through, including metadata-driven write/index dispositions, preferred `--stdin` / `--json` structured input, and typed source capabilities for contamination policy.
 7. Phase 018 output-quality hardening, including decision-field deduplication, completion-status recovery, blocker tightening, trigger cleanup, separator parsing, tree-thinning safeguards, and structured-data conversation synthesis.
 8. One shared rendered-memory template contract so malformed ANCHOR/frontmatter output fails before write/index, while successful flows stay free of template-data warning noise.
 9. A refreshed canonical verification, remediation, and manual-testing record that separates automated parity from retained live CLI proof.
@@ -106,7 +106,7 @@ The shipped session-capture pipeline enforces the following behavior:
    - `collect-session-data.ts` guards SUMMARY derivation against error text in the `learning` field
    - `validate-memory-quality.ts` V11 rule rejects memories with error-dominated descriptions, titles, or trigger phrases
 
-Status: Implemented and strongly verified for the runtime contract as of 2026-03-18, but not yet eligible for a blanket “flawless across every CLI” claim. The automated scripts lane now covers rule metadata, capability-driven contamination handling, structured-input parity, V10 write-and-index behavior, write-only indexing policy, same-minute filename stability, and renderer-noise suppression. Retained live proof still exists at `research/live-cli-proof-2026-03-17.json`, but per-CLI/per-mode artifacts should be refreshed before any universal live-verification claim is made.
+Status: Implemented and strongly verified for the shared runtime contract, but not eligible for a blanket “flawless across every CLI” claim without fresh live per-CLI evidence. The automated scripts lane covers rule metadata, capability-driven contamination handling, structured-input parity, V10 write-and-index behavior, write-only indexing policy, same-minute filename stability, renderer-noise suppression, and the currently supported legacy JS compatibility suites.
 
 ---
 
@@ -253,8 +253,8 @@ The closure feature consists of these distinct shipped capabilities:
   - V10-only write-and-index
   - write-only indexing policy
   - same-minute filename uniqueness
-- Retained live proof remains a separate bar from automated parity.
-- Do not claim “flawless across every CLI” until retained artifacts cover each supported CLI and each supported save mode for the current contract.
+- Fresh live proof remains a separate bar from automated parity.
+- Do not claim “flawless across every CLI” until the current verification run captures per-CLI and per-save-mode evidence for the shipped contract.
 
 ## 4. SOURCE FILES
 
@@ -336,23 +336,16 @@ The closure feature consists of these distinct shipped capabilities:
 - `cd .opencode/skill/system-spec-kit/mcp_server && npm run test:core -- tests/handler-memory-save.vitest.ts tests/recovery-hints.vitest.ts tests/quality-loop.vitest.ts tests/save-quality-gate.vitest.ts tests/preflight.vitest.ts tests/integration-save-pipeline.vitest.ts`
 - `cd .opencode/skill/system-spec-kit/mcp_server && npm run test`
 - `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts`
-- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing`
-- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/014-stateless-quality-gates --json`
+- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing`
+- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/014-stateless-quality-gates --json`
 
 ### Latest verification snapshot
 
-- On 2026-03-17, the root `system-spec-kit` `typecheck` plus scripts `check` and `build` reran cleanly.
-- On 2026-03-17, the targeted scripts closure suite reran cleanly with `14` files and `150` tests.
-- On 2026-03-17, `test-scripts-modules.js` reran cleanly with `384` passed, `5` skipped, and `389` total.
-- On 2026-03-17, `test-extractors-loaders.js` reran cleanly with `307` passing tests.
-- On 2026-03-17, the phase-016 parity lane reran cleanly with `45` tests.
-- On 2026-03-17, the targeted MCP save-quality lane reran cleanly with `6` files and `298` tests.
-- On 2026-03-17, package-clean MCP verification reran cleanly for `npm run lint`, `npm run build`, and `npm run test`, with the full MCP package suite reporting `283` files and `7822` total tests including skips and todo coverage.
-- Alignment drift remains supported by the 2026-03-16 rerun, which reported `229` scanned files and `0` findings; it was not part of the March 17 rerun set.
-- The March 17 automated reruns are not, by themselves, the live-proof evidence for every CLI; that proof comes from the retained artifact at `research/live-cli-proof-2026-03-17.json`, and any future universal live-verification claim should refresh equivalent primary evidence.
-- On 2026-03-18, API error content defense was added: V11 validation rule in `validate-memory-quality.ts`, 3 contamination denylist patterns in `contamination-filter.ts`, 6 placeholder patterns in `input-normalizer.ts`, SUMMARY error guard in `collect-session-data.ts`, and `isApiErrorMessage` skip in `claude-code-capture.ts`. Test coverage expanded with `contamination-filter.vitest.ts`.
-- On 2026-03-18, the affected Phase 017 scripts lane reran cleanly with `4` files and `39` passing tests after the `workflow-e2e.vitest.ts` failed-embedding harness was corrected.
-- On 2026-03-18, phase-local spec validation for `014-stateless-quality-gates` was rerun with `0` errors and `2` warning-only template deviations so the phase pack and this downstream catalog could be reconciled to the shipped state.
+- Treat the commands in this section as the canonical reproducible baseline and capture fresh output each time; do not reuse historical test counts as evidence.
+- The current supported scripts baseline for this feature is: `npm run check`, `npm run build`, the targeted Vitest lanes above, and `npm run test:legacy` after build.
+- The current supported MCP baseline for this feature is the targeted `memory_save` quality lanes plus the package-level `npm run check`.
+- Source/dist alignment should report zero violations for both `mcp_server/dist/lib` and `scripts/dist`.
+- Universal live-proof claims require fresh per-CLI and per-save-mode artifacts generated during the same verification run. No retained `research/` artifact is currently treated as canonical by this catalog.
 
 ---
 
@@ -389,5 +382,5 @@ Manual coverage lives in `M-007` and is expected to explicitly cover:
 
 - Group: Tooling and scripts
 - Source feature title: Session capturing pipeline quality
-- Source spec: `010-perfect-session-capturing`
+- Source spec: `009-perfect-session-capturing`
 - Manual playbook cross-reference: `M-007`

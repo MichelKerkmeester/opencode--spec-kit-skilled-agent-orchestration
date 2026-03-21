@@ -19,5 +19,9 @@
   "memorySequence": 1,
   "memoryNameHistory": [
     "19-03-26_20-11__manual-testing-per-playbook-discovery-phase.md"
-  ]
+  ],
+  "title": "Feature Specification: manual-testing-per-playbook discovery phase [template:level_1/spec.md]",
+  "status": "Complete",
+  "importance_tier": "high",
+  "short_description": "Feature Specification: manual-testing-per-playbook discovery phase"
 }

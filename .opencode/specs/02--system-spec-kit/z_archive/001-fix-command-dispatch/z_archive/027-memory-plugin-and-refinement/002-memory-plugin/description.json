@@ -23,5 +23,9 @@
     "027-memory-plugin-and-refinement"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Memory Plugin Dashboard Optimization - Requirements & User Stories [002-memory-plugin/spec]",
+  "status": "Impact if Blocked",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Memory Plugin Dashboard Optimization - Requirements & User Stories"
 }

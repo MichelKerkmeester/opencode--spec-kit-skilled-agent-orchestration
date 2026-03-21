@@ -15,5 +15,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Agent Architecture Analysis: oh-my-opencode [001-agents-from-oh-my-opencode/spec]",
+  "importance_tier": "important",
+  "short_description": "Agent Architecture Analysis: oh-my-opencode"
 }

@@ -619,10 +619,10 @@ describe('Cross-Sprint Integration', () => {
       expect(singleTrunc.results.length).toBe(1);
       expect(singleTrunc.truncated).toBe(false);
 
-      // Normalization with single score — single item normalizes to 1.0 (range=0)
+      // Normalization with single score — single item normalizes to 0.0 (range=0)
       setEnv('SPECKIT_SCORE_NORMALIZATION', 'true');
       const singleNorm = normalizeCompositeScores([0.5]);
-      expect(singleNorm[0]).toBe(1.0);
+      expect(singleNorm[0]).toBe(0.0);
 
       // Single RRF result normalization
       const singleFusion: FusionResult[] = [{
@@ -654,9 +654,9 @@ describe('Cross-Sprint Integration', () => {
       setEnv('SPECKIT_SCORE_NORMALIZATION', 'true');
       const tiedScores = [0.5, 0.5, 0.5, 0.5];
       const normalized = normalizeCompositeScores(tiedScores);
-      // All equal → all normalize to 1.0
+      // All equal → all normalize to 0.0
       for (const n of normalized) {
-        expect(n).toBe(1.0);
+        expect(n).toBe(0.0);
       }
 
       // RRF normalization of identical scores

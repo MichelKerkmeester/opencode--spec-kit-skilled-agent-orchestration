@@ -17,5 +17,8 @@
     "04--agent-orchestration"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: Adversarial Self-Check for Review, Debug, Ultra-Think Agents",
+  "importance_tier": "normal",
+  "short_description": "Spec: Adversarial Self-Check for Review, Debug, Ultra-Think Agents"
 }

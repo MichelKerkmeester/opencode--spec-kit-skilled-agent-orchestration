@@ -116,8 +116,7 @@ The perfect-session-capturing subsystem grew to 96+ TypeScript files and 20 chil
 
 ---
 
-<!-- ANCHOR:adr-002 -->
-## ADR-002: Type System Deduplication Strategy
+### ADR-002: Type System Deduplication Strategy
 
 ### Metadata
 
@@ -129,7 +128,6 @@ The perfect-session-capturing subsystem grew to 96+ TypeScript files and 20 chil
 
 ---
 
-<!-- ANCHOR:adr-002-context -->
 ### Context
 
 Wave 1 agents CODEX-A3 and OPUS-A5 independently identified pervasive type naming collisions across the scripts subsystem. Three collision clusters cause the most damage:
@@ -148,11 +146,9 @@ Additionally, CODEX-A3 found `ToolCounts` (session-types.ts:204) uses an open `[
 - TypeScript strict mode must pass after all renames
 - Re-export shims may be needed temporarily for backward compatibility with test fixtures
 - The `utils/index.ts` barrel narrowing (Wave 2, OPUS-A4) already removed some deprecated type aliases -- renames should align with the narrowed surface
-<!-- /ANCHOR:adr-002-context -->
 
 ---
 
-<!-- ANCHOR:adr-002-decision -->
 ### Decision
 
 **We chose**: Rename to disambiguate, combined with closing open index signatures on the highest-impact interfaces.
@@ -166,11 +162,9 @@ Additionally, CODEX-A3 found `ToolCounts` (session-types.ts:204) uses an open `[
 3. **Temporary re-export shims.** Deprecated aliases (`export type FileEntry = NormalizedFileEntry`) stay in `utils/input-normalizer.ts` for one sprint to give external consumers migration time, then are removed.
 
 4. **Migrate call sites.** Update all importers to use the new canonical names. The extractors barrel and utils barrel already re-export the new names from the Wave 2 narrowing.
-<!-- /ANCHOR:adr-002-decision -->
 
 ---
 
-<!-- ANCHOR:adr-002-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -180,11 +174,9 @@ Additionally, CODEX-A3 found `ToolCounts` (session-types.ts:204) uses an open `[
 | Namespace collision only (prefix module name) | Minimal diff; no shape changes | Does not fix structural incompatibility; still requires aliased imports in workflow.ts | 4/10 |
 
 **Why this one**: The three `FileEntry` shapes represent genuinely different domain concepts (metadata record, normalized change record, content pair). Merging them into one union would require every consumer to narrow at runtime, adding code without removing ambiguity. Renaming makes each shape self-documenting and lets TypeScript's structural matching detect misuse at compile time.
-<!-- /ANCHOR:adr-002-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-002-consequences -->
 ### Consequences
 
 **What improves**:
@@ -204,11 +196,9 @@ Additionally, CODEX-A3 found `ToolCounts` (session-types.ts:204) uses an open `[
 | External MCP handler consumers import old `FileEntry` name | M | Re-export shims provide one-sprint grace period; handler imports are barrel-only and will pick up renamed types |
 | `ToolName` union misses a new CLI tool name | L | Add the name to the union when the capture module is added; TypeScript will error on the missing key |
 | Test fixtures use `as any` to bypass renamed types | M | Sprint S3 includes test fixture migration; CODEX-A3-014 tracks `as any` removal |
-<!-- /ANCHOR:adr-002-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-002-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -220,11 +210,9 @@ Additionally, CODEX-A3 found `ToolCounts` (session-types.ts:204) uses an open `[
 | 5 | **Open Horizons?** | PASS | Discriminated union pattern for LoadedData/NormalizedData is extensible to new data source types |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-002-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-002-impl -->
 ### Implementation
 
 **What changes**:
@@ -237,13 +225,10 @@ Additionally, CODEX-A3 found `ToolCounts` (session-types.ts:204) uses an open `[
 - Sprint S4 cleanup: Remove all deprecated re-export aliases
 
 **How to roll back**: Revert Sprint S3 commit. Type errors will re-emerge but callers remain functional.
-<!-- /ANCHOR:adr-002-impl -->
-<!-- /ANCHOR:adr-002 -->
 
 ---
 
-<!-- ANCHOR:adr-003 -->
-## ADR-003: Architecture Boundary Enforcement
+### ADR-003: Architecture Boundary Enforcement
 
 ### Metadata
 
@@ -255,7 +240,6 @@ Additionally, CODEX-A3 found `ToolCounts` (session-types.ts:204) uses an open `[
 
 ---
 
-<!-- ANCHOR:adr-003-context -->
 ### Context
 
 Wave 2 agent OPUS-A1 produced a complete dependency matrix across all 11 subsystems (95+ files). The analysis found 4 circular dependencies, 5 layer violations, 3 cross-boundary coupling issues, and 3 barrel export gaps. The key violations are:
@@ -274,11 +258,9 @@ Wave 2 agent OPUS-A1 produced a complete dependency matrix across all 11 subsyst
 - Sprint S4 is the designated window for boundary restoration
 - The `config/` facade module already exists and re-exports `CONFIG`, `findActiveSpecsDir`, `getSpecsDirectories`, and `getAllExistingSpecsDirs` -- it just needs to be used consistently
 - MCP handlers must remain decoupled from `scripts/` (confirmed: zero direct imports found)
-<!-- /ANCHOR:adr-003-context -->
 
 ---
 
-<!-- ANCHOR:adr-003-decision -->
 ### Decision
 
 **We chose**: A three-pronged approach: (1) redirect CONFIG imports through the existing `config/` facade, (2) move shared quality types to `types/session-types.ts`, and (3) remove re-export shims by migrating their consumers to canonical `lib/` paths.
@@ -290,11 +272,9 @@ Wave 2 agent OPUS-A1 produced a complete dependency matrix across all 11 subsyst
 **Prong 2 -- Move shared types (P2 priority, ~30 min):** Move `QualityDimensionScore`, `QualityFlag`, `QualityScoreResult` from `core/quality-scorer.ts` to `types/session-types.ts`. Update the 3 importers (`extractors/quality-scorer.ts`, `core/quality-scorer.ts`, tests).
 
 **Prong 3 -- Remove shims (P5 priority, ~15 min):** Update `extractors/conversation-extractor.ts` to import from `../lib/phase-classifier` directly, then delete `utils/phase-classifier.ts`. Update `core/workflow.ts` to import from `../lib/memory-frontmatter`, then delete `utils/memory-frontmatter.ts`. Remove `extractors/session-activity-signal.ts` shim and update its 1 test importer. Remove the cross-subsystem re-export from `extractors/index.ts:14` (`export * from '../lib/session-activity-signal'`).
-<!-- /ANCHOR:adr-003-decision -->
 
 ---
 
-<!-- ANCHOR:adr-003-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -304,11 +284,9 @@ Wave 2 agent OPUS-A1 produced a complete dependency matrix across all 11 subsyst
 | Merge violating modules | Eliminates cross-module import | Creates oversized module; contradicts modular architecture goal | 2/10 |
 
 **Why this one**: The `config/` facade was specifically designed to break these upward dependencies (OPUS-A1 confirmed 6 extractor files already use it correctly). The fix is to make the remaining 4 files follow the same established pattern. Moving shared types to `types/` follows the existing convention where `types/session-types.ts` is the canonical location for cross-subsystem type definitions.
-<!-- /ANCHOR:adr-003-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-003-consequences -->
 ### Consequences
 
 **What improves**:
@@ -330,11 +308,9 @@ Wave 2 agent OPUS-A1 produced a complete dependency matrix across all 11 subsyst
 | Consumer outside sprint scope still imports via deleted shim | M | Barrel exports remain stable; only direct-path importers break. Run `tsc --noEmit` to verify |
 | `config/` facade becomes a new God module | L | Facade only re-exports; no logic. Size stays proportional to config surface |
 | Barrel consolidation in `core/workflow.ts` (OPUS-A1-008) deferred | L | Tracked separately; import-path correctness is more important than barrel-vs-direct |
-<!-- /ANCHOR:adr-003-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-003-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -346,11 +322,9 @@ Wave 2 agent OPUS-A1 produced a complete dependency matrix across all 11 subsyst
 | 5 | **Open Horizons?** | PASS | `config/` facade pattern is reusable for any new cross-cutting utility; architecture checker enforces ongoing compliance |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-003-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-003-impl -->
 ### Implementation
 
 **What changes**:
@@ -365,13 +339,10 @@ Wave 2 agent OPUS-A1 produced a complete dependency matrix across all 11 subsyst
 - `core/workflow.ts`: Update 1 import path from utils shim to lib canonical
 
 **How to roll back**: Revert Sprint S4 commit. Architecture violations re-emerge but functionality is restored.
-<!-- /ANCHOR:adr-003-impl -->
-<!-- /ANCHOR:adr-003 -->
 
 ---
 
-<!-- ANCHOR:adr-004 -->
-## ADR-004: Build Artifact Management
+### ADR-004: Build Artifact Management
 
 ### Metadata
 
@@ -383,7 +354,6 @@ Wave 2 agent OPUS-A1 produced a complete dependency matrix across all 11 subsyst
 
 ---
 
-<!-- ANCHOR:adr-004-context -->
 ### Context
 
 Wave 1 agent CODEX-A1 found that `tree-thinning.js` in the source tree has `memoryThinThreshold: 300` while the TS source has `150`, meaning JS consumers execute different tree-thinning behavior than TS callers. Wave 2 agent OPUS-A4 conducted a comprehensive inventory and found:
@@ -400,11 +370,9 @@ The `dist/evals/run-quality-legacy-remediation.js` stale artifact is actively da
 - Git status shows source-tree artifacts as deleted-staged, confirming they are not intentionally kept
 - The `scripts/dist/` directory is not `.gitignore`d, meaning stale artifacts persist across clones
 - No CI step currently verifies `dist/` freshness against source
-<!-- /ANCHOR:adr-004-context -->
 
 ---
 
-<!-- ANCHOR:adr-004-decision -->
 ### Decision
 
 **We chose**: Delete all stale artifacts (both source-tree and dist/), rebuild dist/ from current TS source, and add a `.gitignore` entry plus CI check to prevent recurrence.
@@ -420,11 +388,9 @@ The `dist/evals/run-quality-legacy-remediation.js` stale artifact is actively da
 4. **Add .gitignore for source-tree build artifacts** -- Add `scripts/core/*.js`, `scripts/core/*.d.ts`, `scripts/core/*.map`, `scripts/evals/*.js`, `scripts/evals/*.d.ts`, `scripts/evals/*.map` to `.gitignore` to prevent future source-tree artifact commits. The `dist/` directory remains tracked (intentional, since it ships to consumers).
 
 5. **Add CI freshness check** -- A build-verify step that runs `tsc --noEmit` and compares `dist/` checksum before and after rebuild. If they differ, the build fails. This prevents future source/dist drift.
-<!-- /ANCHOR:adr-004-decision -->
 
 ---
 
-<!-- ANCHOR:adr-004-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -434,11 +400,9 @@ The `dist/evals/run-quality-legacy-remediation.js` stale artifact is actively da
 | Keep artifacts with version pin | No code changes | Perpetuates source/build drift; `heal-ledger-mismatch.sh` still runs stale code | 2/10 |
 
 **Why this one**: The `memoryThinThreshold: 300 vs 150` divergence proves drift is not hypothetical -- it already caused different runtime behavior depending on whether a consumer loaded the `.ts` or `.js` version. Deleting without a CI guard would allow the same drift to recur within one sprint cycle.
-<!-- /ANCHOR:adr-004-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-004-consequences -->
 ### Consequences
 
 **What improves**:
@@ -458,11 +422,9 @@ The `dist/evals/run-quality-legacy-remediation.js` stale artifact is actively da
 | Runtime consumer loads from source-tree `.js` path instead of `dist/` | M | `.gitignore` prevents new source-tree artifacts; existing imports verified to use TS or dist paths |
 | dist/ rebuild introduces new TypeScript compilation errors | L | `tsc --noEmit` as pre-check before rebuild; any errors are real and need fixing |
 | CI freshness check flaky due to timestamp-only changes in `.map` files | L | Compare content hash only, exclude `.map` metadata fields |
-<!-- /ANCHOR:adr-004-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-004-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -474,11 +436,9 @@ The `dist/evals/run-quality-legacy-remediation.js` stale artifact is actively da
 | 5 | **Open Horizons?** | PASS | CI freshness check prevents any future source/dist drift, not just the current batch |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-004-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-004-impl -->
 ### Implementation
 
 **What changes**:
@@ -490,13 +450,10 @@ The `dist/evals/run-quality-legacy-remediation.js` stale artifact is actively da
 - Update `scripts/ops/heal-ledger-mismatch.sh` to remove the `node dist/evals/run-quality-legacy-remediation.js` call
 
 **How to roll back**: `git restore` the deleted artifact files. Drift re-emerges but no runtime breakage.
-<!-- /ANCHOR:adr-004-impl -->
-<!-- /ANCHOR:adr-004 -->
 
 ---
 
-<!-- ANCHOR:adr-005 -->
-## ADR-005: Spec Phase Metadata Governance
+### ADR-005: Spec Phase Metadata Governance
 
 ### Metadata
 
@@ -508,7 +465,6 @@ The `dist/evals/run-quality-legacy-remediation.js` stale artifact is actively da
 
 ---
 
-<!-- ANCHOR:adr-005-context -->
 ### Context
 
 Wave 2 agent OPUS-A3 performed a systematic inventory of all 20 child phases (000-019) plus 5 sub-children under 000. The findings reveal three categories of metadata inconsistency:
@@ -527,11 +483,9 @@ Wave 2 agent OPUS-A2 independently confirmed the same phase numbering inconsiste
 - Manual correction of 20+ phase files is error-prone; automation preferred
 - The `descriptions.json` root index must be regenerated or manually updated when phases are added
 - R-Item numbering is historical and used for cross-referencing; changing it has cascading documentation effects
-<!-- /ANCHOR:adr-005-context -->
 
 ---
 
-<!-- ANCHOR:adr-005-decision -->
 ### Decision
 
 **We chose**: A two-track approach -- (1) immediate manual backfill of critical metadata gaps (Sprint S5), and (2) an automated lint script that enforces description.json consistency going forward.
@@ -557,11 +511,9 @@ Wave 2 agent OPUS-A2 independently confirmed the same phase numbering inconsiste
   - Verifies all phase folders appear in `descriptions.json` root index
   - Reports stale R-Item cross-references (informational, not blocking)
 - Run as part of the existing `progressive-validate.sh` pipeline
-<!-- /ANCHOR:adr-005-decision -->
 
 ---
 
-<!-- ANCHOR:adr-005-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -570,12 +522,10 @@ Wave 2 agent OPUS-A2 independently confirmed the same phase numbering inconsiste
 | Manual correction in Sprint S5 only | No new tooling | Will drift again on next phase addition without enforcement | 5/10 |
 | Schema validation via JSON Schema | Catches structural errors (missing required fields) | Does not catch semantic inconsistencies (status vs spec.md, denominator vs sibling count) | 4/10 |
 
-**Why this one**: The metadata gaps are a systemic pattern (15 of 20 phases missing status), not a one-off error. Manual correction fixes the current state but the linter prevents the same gap from appearing when phase 020+ is added. JSON Schema alone cannot validate cross-file semantic consistency.
-<!-- /ANCHOR:adr-005-alternatives -->
+**Why this one**: The metadata gaps are a systemic pattern (15 of 20 phases missing status), not a one-off error. Manual correction fixes the current state but the linter prevents the same gap from appearing when future phases are added. JSON Schema alone cannot validate cross-file semantic consistency.
 
 ---
 
-<!-- ANCHOR:adr-005-consequences -->
 ### Consequences
 
 **What improves**:
@@ -596,11 +546,9 @@ Wave 2 agent OPUS-A2 independently confirmed the same phase numbering inconsiste
 | Lint script false-positives on intentionally divergent status (e.g., 000 parent "in-progress" while children are complete) | M | Add `statusOverride` field to description.json for documented exceptions; lint recognizes it |
 | R-Item renumbering breaks external references | L | R-Items are NOT renumbered; only spec.md "Phase X" labels are aligned to folder IDs. Historical R-Items stay as-is with informational lint warnings |
 | Changing checklist counts triggers re-verification | L | Only the summary table values change; actual checklist items are unchanged |
-<!-- /ANCHOR:adr-005-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-005-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -612,11 +560,9 @@ Wave 2 agent OPUS-A2 independently confirmed the same phase numbering inconsiste
 | 5 | **Open Horizons?** | PASS | Lint script extensible to future metadata fields (e.g., keywords quality check from OPUS-A3-008) |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-005-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-005-impl -->
 ### Implementation
 
 **What changes**:
@@ -624,13 +570,10 @@ Wave 2 agent OPUS-A2 independently confirmed the same phase numbering inconsiste
 - Sprint S5: New file `scripts/evals/check-phase-metadata.ts` (~100 LOC); integrate into `progressive-validate.sh`
 
 **How to roll back**: Remove the linter from CI pipeline. Manual governance resumes.
-<!-- /ANCHOR:adr-005-impl -->
-<!-- /ANCHOR:adr-005 -->
 
 ---
 
-<!-- ANCHOR:adr-006 -->
-## ADR-006: Memory Save Pipeline Safety
+### ADR-006: Memory Save Pipeline Safety
 
 ### Metadata
 
@@ -642,7 +585,6 @@ Wave 2 agent OPUS-A2 independently confirmed the same phase numbering inconsiste
 
 ---
 
-<!-- ANCHOR:adr-006-context -->
 ### Context
 
 Wave 1 agent CODEX-A5 found three independent safety defects in the memory save pipeline:
@@ -661,11 +603,9 @@ Additionally, CODEX-A1-005 found the workflow lock only serializes runs inside o
 - MCP handlers run in a long-lived server process; file locks must be released even on unhandled exceptions
 - Cross-process locking must work on macOS and Linux (no Windows requirement)
 - V-rule validation rules are loaded from `dist/` which may be stale (see ADR-004)
-<!-- /ANCHOR:adr-006-context -->
 
 ---
 
-<!-- ANCHOR:adr-006-decision -->
 ### Decision
 
 **We chose**: Three targeted fixes corresponding to each defect, with fail-closed as the default posture.
@@ -679,11 +619,9 @@ Additionally, CODEX-A1-005 found the workflow lock only serializes runs inside o
 3. **Fail-closed V-rule bridge.** Change the bridge's error handler from `return null` (disables enforcement) to `throw new Error('V-rule validation unavailable')`. The `memory-save` handler must surface this as a save failure, not a silent pass. Add an eagerness check at MCP server startup: attempt to load the V-rule module and report a startup warning if it fails, rather than discovering the failure at save time.
 
 4. **Cross-process workflow lock for `description.json`.** Replace the in-memory promise queue with a filesystem lockfile (`${specFolder}/.workflow.lock`) using `proper-lockfile` with stale detection. Hold the lock for the read-modify-write cycle of `description.json` updates only, not the entire workflow.
-<!-- /ANCHOR:adr-006-decision -->
 
 ---
 
-<!-- ANCHOR:adr-006-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -694,11 +632,9 @@ Additionally, CODEX-A1-005 found the workflow lock only serializes runs inside o
 | Queue all saves through single worker thread | Eliminates all concurrency issues | Serializes saves globally; unacceptable latency for multi-spec-folder workflows | 3/10 |
 
 **Why this one**: Each defect has an independent fix with a clear mechanism. Unique pending files and atomic rename are established patterns for safe concurrent file writes. Fail-closed is the correct default for a quality gate -- the alternative (fail-open) means the gate provides no protection when it is most needed (during build/deploy issues).
-<!-- /ANCHOR:adr-006-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-006-consequences -->
 ### Consequences
 
 **What improves**:
@@ -719,11 +655,9 @@ Additionally, CODEX-A1-005 found the workflow lock only serializes runs inside o
 | Lockfile not released after crash (stale lock) | H | `proper-lockfile` has built-in stale detection (configurable, default 5 minutes); startup cleanup sweep |
 | Fail-closed V-rules block saves when dist/ is legitimately stale during development | M | Add `--skip-vrules` CLI flag for development-only use; flag is not available in production MCP handler |
 | Orphaned `_pending_*` files accumulate | L | Cleanup sweep on startup and after each save attempt |
-<!-- /ANCHOR:adr-006-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-006-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -735,11 +669,9 @@ Additionally, CODEX-A1-005 found the workflow lock only serializes runs inside o
 | 5 | **Open Horizons?** | PASS | Lockfile pattern reusable for any future cross-process coordination; fail-closed pattern applicable to other validation bridges |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-006-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-006-impl -->
 ### Implementation
 
 **What changes**:
@@ -752,13 +684,10 @@ Additionally, CODEX-A1-005 found the workflow lock only serializes runs inside o
 - New file: `mcp_server/lib/pending-file-cleanup.ts` for orphan sweep
 
 **How to roll back**: Revert the save-handler changes. Race condition and non-atomic writes re-emerge but single-process saves continue to work. V-rule bridge reverts to fail-open.
-<!-- /ANCHOR:adr-006-impl -->
-<!-- /ANCHOR:adr-006 -->
 
 ---
 
-<!-- ANCHOR:adr-007 -->
-## ADR-007: JSON-Primary Data Flow Integrity
+### ADR-007: JSON-Primary Data Flow Integrity
 
 ### Metadata
 
@@ -770,7 +699,6 @@ Additionally, CODEX-A1-005 found the workflow lock only serializes runs inside o
 
 ---
 
-<!-- ANCHOR:adr-007-context -->
 ### Context
 
 Wave 1 agent CODEX-A2 found that the JSON-primary data flow (the documented preferred mode for memory saves) has systematic integrity gaps where structured fields are dropped or bypassed during normalization:
@@ -791,11 +719,9 @@ These findings mean the JSON-primary mode -- documented as the preferred routine
 - Both snake_case (documented examples) and camelCase (runtime expectations) must be supported during migration
 - Normalization must run on JSON-mode payloads without double-processing fields that are already in canonical form
 - Backward compatibility with recovery-mode (`--recovery`) payloads must be preserved
-<!-- /ANCHOR:adr-007-context -->
 
 ---
 
-<!-- ANCHOR:adr-007-decision -->
 ### Decision
 
 **We chose**: Thread JSON-primary payloads through the same `validateInputData()` and `normalizeInputData()` pipeline as all other modes, and make downstream extractors prefer structured fields over text reconstruction.
@@ -811,11 +737,9 @@ These findings mean the JSON-primary mode -- documented as the preferred routine
 4. **Thread structured `toolCalls`/`exchanges` through normalization.** Make `session-extractor.ts` prefer `collectedData.toolCalls` when present, falling back to regex-based observation counting only when the structured array is empty. Same pattern for `conversation-extractor.ts` and `exchanges`.
 
 5. **Support both snake_case and camelCase.** In `normalizeInputData()`, add a snake-to-camelCase mapping for documented JSON fields (`user_prompts` -> `userPrompts`, `recent_context` -> `recentContext`, etc.). Apply this mapping before validation so the validator sees canonical field names.
-<!-- /ANCHOR:adr-007-decision -->
 
 ---
 
-<!-- ANCHOR:adr-007-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -825,11 +749,9 @@ These findings mean the JSON-primary mode -- documented as the preferred routine
 | Document camelCase as the only supported format | Simplest; no normalization needed | Breaks existing JSON payloads using documented snake_case examples; bad UX | 2/10 |
 
 **Why this one**: The JSON-primary mode was introduced as the preferred save method precisely because the AI has better context than dynamic capture. Silently dropping that context defeats the purpose. Running through the same pipeline ensures all modes produce memories with the same structural guarantees.
-<!-- /ANCHOR:adr-007-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-007-consequences -->
 ### Consequences
 
 **What improves**:
@@ -851,11 +773,9 @@ These findings mean the JSON-primary mode -- documented as the preferred routine
 | Normalization double-processes already-normalized JSON-mode fields | M | `_isPreNormalized` flag skips redundant transformations; idempotent field assignments prevent data corruption |
 | snake_case mapping introduces ambiguity for fields with both forms | L | Canonical camelCase always wins; snake_case is mapped only when camelCase is absent |
 | `nextSteps` type narrowing breaks callers passing object arrays | M | Coercion logic extracts `description`/`text` fields gracefully; JSON.stringify is the last fallback |
-<!-- /ANCHOR:adr-007-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-007-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -867,11 +787,9 @@ These findings mean the JSON-primary mode -- documented as the preferred routine
 | 5 | **Open Horizons?** | PASS | snake-to-camelCase mapping extensible to new fields; structured-field preference pattern applicable to future data sources |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-007-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-007-impl -->
 ### Implementation
 
 **What changes**:
@@ -883,13 +801,10 @@ These findings mean the JSON-primary mode -- documented as the preferred routine
 - Update 3-4 test files for narrowed `nextSteps` type and new validation behavior
 
 **How to roll back**: Revert the generate-context.ts and input-normalizer.ts changes. JSON-mode saves return to the unvalidated path. Structured fields are again dropped.
-<!-- /ANCHOR:adr-007-impl -->
-<!-- /ANCHOR:adr-007 -->
 
 ---
 
-<!-- ANCHOR:adr-008 -->
-## ADR-008: Dead Code and Deprecated Module Deletion Policy
+### ADR-008: Dead Code and Deprecated Module Deletion Policy
 
 ### Metadata
 
@@ -901,7 +816,6 @@ These findings mean the JSON-primary mode -- documented as the preferred routine
 
 ---
 
-<!-- ANCHOR:adr-008-context -->
 ### Context
 
 Multiple Wave 1 and Wave 2 agents independently identified dead code, unwired modules, and deprecated-but-retained code across the codebase. The findings consolidate into four clusters:
@@ -920,11 +834,9 @@ Multiple Wave 1 and Wave 2 agents independently identified dead code, unwired mo
 - The `@deprecated` tag on `core/quality-scorer.ts` is documentation-only; TypeScript does not enforce it
 - Ops scripts are sometimes run manually by operators who may not track source changes
 - The `lib/cli-capture-shared.ts` module was intentionally created -- the question is whether to wire it in or delete it
-<!-- /ANCHOR:adr-008-context -->
 
 ---
 
-<!-- ANCHOR:adr-008-decision -->
 ### Decision
 
 **We chose**: DELETE completely. No `@deprecated` tags, no re-export shims, no "keep for future use." Dead code is deleted; unwired modules are either wired in (cli-capture-shared) or deleted within the sprint they are identified.
@@ -946,11 +858,9 @@ Multiple Wave 1 and Wave 2 agents independently identified dead code, unwired mo
 3. **Ops scripts**: DELETE `heal-session-ambiguity.sh` and `heal-telemetry-drift.sh` (they already exit with deprecation errors and serve no purpose). UPDATE `heal-ledger-mismatch.sh` to remove the `run-quality-legacy-remediation.js` step and add an explicit "ledger verification not yet replaced" error.
 
 4. **Dead exports**: Remove `extractKeyArtifacts()` export, remove `formatOptionBox` `isChosen` parameter, remove `generateMergedDescription` export, remove `toolCallIndexById` map, remove null-data simulation fallback branch.
-<!-- /ANCHOR:adr-008-decision -->
 
 ---
 
-<!-- ANCHOR:adr-008-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -961,11 +871,9 @@ Multiple Wave 1 and Wave 2 agents independently identified dead code, unwired mo
 | Delete dead code but keep cli-capture-shared unwired | Partial cleanup | The largest source of duplication (~200 lines across 4 files) remains | 5/10 |
 
 **Why this one**: Dead code has a compounding maintenance cost -- every audit, every refactor, and every new contributor must evaluate whether dead code is intentionally retained. The git history provides recovery if deletion is premature. The one exception to "delete" is `lib/cli-capture-shared.ts`, which represents intentional design work that should be completed, not discarded.
-<!-- /ANCHOR:adr-008-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-008-consequences -->
 ### Consequences
 
 **What improves**:
@@ -989,11 +897,9 @@ Multiple Wave 1 and Wave 2 agents independently identified dead code, unwired mo
 | Legacy quality scorer removal breaks calibration test expectations | M | Re-calibrate tests against extractor scorer; both scorers were running in parallel so extractor scores are known |
 | Operator runs deleted ops script from cached shell history | L | Scripts already exit with error messages; deletion adds a clear "file not found" signal |
 | Dead export removal breaks an undiscovered external consumer | L | Barrel narrowing (Wave 2) already removed these from public surface; direct-path imports verified to have zero consumers via grep |
-<!-- /ANCHOR:adr-008-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-008-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -1005,11 +911,9 @@ Multiple Wave 1 and Wave 2 agents independently identified dead code, unwired mo
 | 5 | **Open Horizons?** | PASS | "Delete, don't deprecate" policy applies to all future dead code; 1-sprint deprecation window is a reusable governance rule |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-008-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-008-impl -->
 ### Implementation
 
 **What changes**:
@@ -1020,12 +924,10 @@ Multiple Wave 1 and Wave 2 agents independently identified dead code, unwired mo
 - Sprint S1: Delete stale `dist/` artifacts for 4 removed eval scripts (per ADR-004)
 
 **How to roll back**: `git restore` deleted files. Dead code returns but no runtime behavior changes.
-<!-- /ANCHOR:adr-008-impl -->
-<!-- /ANCHOR:adr-008 -->
 
 ---
 
-## Cross-ADR Dependency Map
+### Cross-ADR Dependency Map
 
 ```
 ADR-004 (Build Artifacts)  ──blocks──>  ADR-006 (Save Safety: V-rule bridge needs valid dist/)

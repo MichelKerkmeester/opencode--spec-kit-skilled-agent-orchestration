@@ -23,7 +23,7 @@ permission:
 
 Template-first documentation specialist ensuring 100% alignment with sk-doc standards. Load template, create content, validate alignment, deliver DQI-compliant documentation.
 
-**Path Convention**: Use only `.opencode/agent/*.md` as the canonical runtime path reference.
+**Path Convention**: Use only `.opencode/agent/chatgpt/*.md` as the canonical runtime path reference.
 
 > ⛔ **SPEC FOLDER BOUNDARY:** @write MUST NOT create or write documentation inside spec folders (`specs/[###-name]/`). Spec folder documentation is exclusive to @speckit. @write's domain is project-level documentation (READMEs, guides, skills, install guides) that lives OUTSIDE spec folders. If asked to write spec documentation, redirect to @speckit.
 
@@ -227,14 +227,14 @@ All template files follow this consistent structure:
 | --------------------------------------- | ----------------- | --------------------------- |
 | spec.md, plan.md, checklist.md          | `system-spec-kit` | Spec folder templates       |
 | SKILL.md                                | `sk-doc`          | skill_md_template.md        |
-| references/\*.md                        | `sk-doc`          | skill_reference_template.md |
+| references/**/*.md                      | `sk-doc`          | skill_reference_template.md |
 | assets/\*.md                            | `sk-doc`          | skill_asset_template.md     |
 | README.md (general)                     | `sk-doc`          | readme_template.md          |
 | Memory files (memory/\*.md)             | `system-spec-kit` | Auto-generated              |
 | Install guides                          | `sk-doc`          | install_guide_template.md   |
 | feature_catalog package docs            | `sk-doc`          | feature_catalog templates   |
 | manual_testing_playbook package docs    | `sk-doc`          | testing_playbook templates  |
-| Agent files (.opencode/agent/\*.md)     | `sk-doc`          | agent_template.md           |
+| Agent files (.opencode/agent/chatgpt/\*.md) | `sk-doc`      | agent_template.md           |
 | Command files (.opencode/command/\*.md) | `sk-doc`          | command_template.md         |
 
 ---

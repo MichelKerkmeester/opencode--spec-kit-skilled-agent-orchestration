@@ -42,7 +42,7 @@ This directory serves as the configuration backbone of the OpenCode AI Assistant
 
 The framework is built on two core systems:
 
-1. **Memory Engine**: 25 memory MCP tools across 7 layers (32 MCP tools total with 7 Code Mode tools), with 3-source indexing, 7-intent retrieval routing, schema v15 metadata (`document_type`, `spec_level`), document-type scoring, causal lineage tracking, typed-weighted degree channel, persistent embedding cache, query complexity routing, RSF fusion and confidence truncation
+1. **Memory Engine**: 33 memory MCP tools across 7 layers, with 3-source indexing, 7-intent retrieval routing, schema v15 metadata (`document_type`, `spec_level`), document-type scoring, causal lineage tracking, typed-weighted degree channel, persistent embedding cache, query complexity routing, RSF fusion and confidence truncation
 2. **Spec Kit Documentation Framework**: Structured documentation with 83 templates, 13 validation rules and Level 1-3+ CORE + ADDENDUM architecture
 
 Together, these systems enable context-aware development with traceability, hardened retrieval behavior and session continuity through quality gates.
@@ -51,15 +51,15 @@ Together, these systems enable context-aware development with traceability, hard
 
 | Category | Count | Details |
 |---|---:|---|
-| MCP Servers | 3 | Memory Engine, Code Mode, Sequential Thinking |
-| MCP Tools | 32 | 25 memory + 7 code mode |
-| Agents | 9 | `.opencode/agent/*.md` files (`@general` and `@explore` are built in) |
-| Skills | 16 | Skill modules in `.opencode/skill/` |
+| MCP Servers | 4 | Spec Kit Memory, CocoIndex Code, Code Mode, Sequential Thinking |
+| MCP Tools | 40 | 33 memory + 7 code mode tools |
+| Agents | 9 | Base agent definitions in `.opencode/agent/*.md`; ChatGPT runtime sources in `.opencode/agent/chatgpt/*.md` |
+| Skills | 18 | Skill modules in `.opencode/skill/` (excluding `skill/scripts/`) |
 | Commands | 22 | Markdown command entry points in `.opencode/command/` |
 | Templates | 83 | Spec Kit CORE + ADDENDUM templates |
 | YAML assets | 27 | Command execution YAML files |
 | Validation rules | 13 | Spec folder validation scripts |
-| Last Verified | 2026-03-11 | Counts refreshed against live repository state |
+| Last Verified | 2026-03-21 | Counts refreshed against live repository state |
 
 <!-- /ANCHOR:overview -->
 
@@ -71,10 +71,10 @@ Together, these systems enable context-aware development with traceability, hard
 ```
 .opencode/
 ├── agent/           — 9 specialized AI agent definitions for task delegation
-├── command/         — 19 slash command entry points for workflow automation (spec_kit, memory, create, agent_router)
+├── command/         — 22 slash command entry points for workflow automation (spec_kit, memory, create, agent_router)
 ├── install_guides/  — Setup and configuration guides for framework installation
 ├── skill/scripts/   — Skill routing scripts (skill_advisor.py) and setup guides
-├── skill/           — 16 domain expertise skill modules with bundled resources
+├── skill/           — 18 domain expertise skill modules with bundled resources
 └── specs/           — Spec folder storage for documentation and memory files
 ```
 
@@ -96,7 +96,7 @@ Together, these systems enable context-aware development with traceability, hard
 
 The framework includes 9 specialized agents plus 2 built-in agents:
 
-This is an 11-agent / 3-platform model (OpenCode, Claude Code, Codex) with aligned role definitions.
+This is an 11-agent / 5-runtime model (OpenCode, ChatGPT, Claude, Codex, Gemini) with aligned role definitions.
 
 | Agent | Description | When to Use |
 |-------|-------------|-------------|
@@ -133,12 +133,15 @@ Skills are specialized, on-demand capabilities invoked for complex workflows:
 | `sk-code--review` | Stack-agnostic findings-first review baseline that layers with stack-specific code standards (v1.2.0.0) |
 | `sk-code--opencode` | OpenCode system code standards for JS, TS, Python, Shell with language routing (v1.1.0.0) |
 | `mcp-chrome-devtools` | Chrome DevTools orchestrator with CLI (bdg) and MCP (Code Mode) routing (v2.1) |
+| `mcp-clickup` | ClickUp project-management orchestrator with CLI and Code Mode routing (v1.0) |
 | `mcp-code-mode` | MCP orchestration via TypeScript execution for external tools (ClickUp, Figma, etc.) (v1.1) |
+| `mcp-coco-index` | Semantic code search via vector embeddings for concept-first code discovery (v1.0) |
 | `mcp-figma` | Figma design file access with 18 tools for components, styles, exports (v1.1) |
 | `cli-gemini` | Gemini CLI orchestration for cross-AI tasks, web research via Google Search, architecture analysis (v1.1) |
 | `cli-codex` | Codex CLI orchestration for cross-AI task delegation via OpenAI Codex, parallel code generation, and multi-agent task dispatch (v1.2.0) |
 | `cli-claude-code` | Claude Code CLI orchestration enabling external AIs to invoke Claude Code for deep reasoning, extended thinking, code editing, and structured output (v1.0) |
 | `cli-copilot` | Copilot CLI orchestration for multi-model tasks, cloud delegation, plan mode, autopilot, and repository memory (v1.2.0) |
+| `sk-deep-research` | Autonomous deep-research loop protocol with iterative investigation and convergence handling (v1.0) |
 | `sk-prompt-improver` | Prompt optimization with 7 frameworks (RCAF, CoSTAR, TIDD-EC, CRISPE, CRAFT, DEPTH, RICCE) and CLEAR scoring (v1.0) |
 
 **Skill Structure:** Each skill contains `SKILL.md` (entry point), `references/` (documentation), `scripts/` (automation) and `assets/` (templates/checklists).
@@ -157,6 +160,7 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 - `/spec_kit:plan`: 7-step planning workflow from research to task breakdown
 - `/spec_kit:implement`: Implementation workflow with quality gates
 - `/spec_kit:complete`: Full 14+ step workflow from research to completion
+- `/spec_kit:deep-research`: Autonomous iterative research workflow with convergence tracking
 - `/spec_kit:debug`: Debug delegation with model selection and task dispatch
 - `/spec_kit:handover`: Session continuation with context preservation
 - `/spec_kit:resume`: Resume existing spec folder work with context loading
@@ -169,6 +173,7 @@ Commands are invoked with `/command_name` syntax in the chat interface.
 - `/memory:manage`: Memory database maintenance (stats, health, cleanup, checkpoints)
 - `/memory:learn`: Constitutional memory manager for durable always-surface rules
 - `/memory:analyze`: Unified retrieval + analysis: intent-aware search, epistemic baselines, causal graph, evaluation
+- `/memory:shared`: Shared-memory space lifecycle and rollout status
 
 ### Create Commands (`/create:*`)
 
@@ -322,7 +327,7 @@ All AI interactions pass through 3 mandatory gates to ensure quality and traceab
 
 ### Further Reading
 
-- **Agents:** Individual `.md` files in `.opencode/agent/`
+- **Agents:** Runtime sources in `.opencode/agent/` and `.opencode/agent/chatgpt/`, with generated/runtime copies under `.claude/agents/`, `.codex/agents/`, and `.gemini/agents/`
 - **Skills:** `SKILL.md` in each `.opencode/skill/[skill-name]/` directory
 - **Commands:** `.md` files in `.opencode/command/[domain]/[command-name].md`
 - **Setup:** `.opencode/install_guides/` for installation and configuration

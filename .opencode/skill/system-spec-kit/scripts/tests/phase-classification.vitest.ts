@@ -8,7 +8,7 @@ import { detectObservationType } from '../extractors/file-extractor';
 import {
   classifyConversationExchanges,
   classifyConversationPhase,
-} from '../utils/phase-classifier';
+} from '../lib/phase-classifier';
 
 describe('phase classification', () => {
   it('resolves grep in debug output to Debugging', () => {
@@ -34,6 +34,15 @@ describe('phase classification', () => {
     ]);
 
     expect(result.phases[0]?.PHASE_NAME).toBe('Research');
+  });
+
+  it('prefers Implementation when edit/write tools are present despite research-heavy wording', () => {
+    expect(
+      classifyConversationPhase(
+        [{ tool: 'Edit' }, { tool: 'Write' }],
+        'Research explore analyze compare the implementation details and update the files',
+      ),
+    ).toBe('Implementation');
   });
 
   it('keeps non-contiguous phase returns as separate timeline segments', () => {

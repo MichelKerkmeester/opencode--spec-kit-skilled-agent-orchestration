@@ -1,6 +1,6 @@
 ---
 title: "Plan: Command Alignment"
-description: "Implementation plan for aligning the memory command docs with the current 32-tool MCP surface."
+description: "Documentation-only reconciliation plan for updating the 011 spec pack to the live 33-tool, 6-command memory-command surface."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Plan: 011-command-alignment
@@ -9,208 +9,205 @@ description: "Implementation plan for aligning the memory command docs with the 
 
 ---
 
-<!-- ANCHOR:overview -->
-## 1. OVERVIEW
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-Align the memory command documentation set with the current Spec Kit Memory MCP surface. The implementation stays scoped to command docs and the memory README, but it must start with a schema-sync pass so the work is grounded in the live 32-tool surface rather than the older 29-tool draft.
+### Technical Context
 
-**Effort Estimate:** ~900 LOC across 8 command-doc deliverables plus verification artifacts
-<!-- /ANCHOR:overview -->
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown documentation for the OpenCode system-spec-kit workflow |
+| **Framework** | Level 2 spec-pack templates with strict validator enforcement |
+| **Storage** | Repo markdown under `.opencode/specs/.../011-command-alignment/` |
+| **Testing** | `validate.sh --strict`, targeted grep, and live file-count verification |
+
+### Overview
+
+This pass does not implement memory-command features. It reconciles the 011 planning docs with what the repo already ships today: a 33-tool Spec Kit Memory MCP surface and a 6-command memory suite with retrieval merged into `/memory:analyze`.
+
+**Effort Estimate:** Small documentation rewrite limited to the five canonical 011 markdown files.
+<!-- /ANCHOR:summary -->
 
 ---
 
-<!-- ANCHOR:technical-context -->
-## 2. TECHNICAL CONTEXT
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-### Source of Truth
+### Definition of Ready
+- [x] Live schema count verified from `tool-schemas.ts`
+- [x] Live command-surface count verified from `.opencode/command/memory/`
+- [x] Retrieval ownership verified from `.opencode/command/memory/analyze.md` and `.opencode/command/memory/README.txt`
 
-- Tool inventory: `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`
-- Allowed/validated parameter mirror: `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts`
-- Current command docs: `.opencode/command/memory/*.md`
-- README index: `.opencode/command/memory/README.txt`
-
-### Current Repo Truth
-
-- `TOOL_DEFINITIONS` contains **32** tools.
-- 16 tools currently have no command home in the memory command suite.
-- Existing command docs still use stale counts, stale naming, and incomplete parameter coverage.
-- `memory_get_learning_history` is currently undocumented and must be owned by `/memory:analyze history <specFolder>`.
-
-### Documentation Constraints
-
-- This phase edits only `spec.md`, `plan.md`, and `tasks.md`.
-- The later implementation pass must still update the actual command docs and README.
-- `checklist.md` remains intentionally out of scope for this refinement pass.
-<!-- /ANCHOR:technical-context -->
+### Definition of Done
+- [ ] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` satisfy required Level 2 anchors and sections
+- [ ] The pack preserves the 33-tool / 6-command / `/memory:analyze` ownership story
+- [ ] Strict validation passes with no errors or warnings
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
 <!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
-These decisions are fixed for the implementation pass:
+### Pattern
+Documentation-only truth reconciliation against live repo sources.
 
-1. `/memory:analyze history <specFolder>` is the command home for `memory_get_learning_history`.
-2. `/memory:analyze` owns both analysis and eval tools.
-3. `/memory:shared` owns all shared-memory lifecycle tools.
-4. `/memory:manage ingest` owns async ingest start/status/cancel workflows (folded into manage).
-5. `context.md` must document `minQualityScore` as a deprecated alias of `min_quality_score`.
-6. `context.md` must document `memory_match_triggers` cognitive parameters if they remain missing.
-7. Feature-flag notes should appear only when they materially change command behavior in the current repo.
-8. Verification must use both `tool-schemas.ts` and `tool-input-schemas.ts`, not just one file.
+### Key Components
+- **Schema inventory**: `tool-schemas.ts` and `schemas/tool-input-schemas.ts` define the canonical 33-tool surface.
+- **Runtime command docs**: `.opencode/command/memory/*.md` plus `README.txt` define the live 6-command ownership model.
+- **Spec pack**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` carry the reconciled narrative.
+
+### Data Flow
+Read live schema and command-doc evidence, update the five scoped planning documents so their counts and ownership claims match, then run strict validation on the spec pack.
 <!-- /ANCHOR:architecture -->
 
 ---
 
 <!-- ANCHOR:phases -->
-## 4. PHASES
+## 4. IMPLEMENTATION PHASES
 
-### Phase 0: Schema Sync Pre-Pass
-
-Before editing command docs, generate a current baseline from the live 32-tool surface.
+### Phase 0: Validate the Live Baseline
 
 | Step | Action | Output | Priority |
 |------|--------|--------|----------|
-| 0.1 | Recount `TOOL_DEFINITIONS` and verify the total is 32 | Verified tool inventory baseline | P0 |
-| 0.2 | Compare `tool-schemas.ts` properties with `ALLOWED_PARAMETERS` | Current parameter/alias baseline | P0 |
-| 0.3 | Generate a tool-to-command coverage table for the current docs | Uncovered/partial coverage list | P0 |
+| 0.1 | Recount `TOOL_DEFINITIONS` | Confirm 33-tool baseline | P0 |
+| 0.2 | Count live memory command files | Confirm 6-command suite and no standalone `context` command file | P0 |
+| 0.3 | Verify command ownership in `.opencode/command/memory/analyze.md` and `.opencode/command/memory/README.txt` | Confirm retrieval plus `memory_quick_search` ownership | P0 |
 
-### Phase 1: Update Existing Commands
-
-Update the 5 existing command files to match the current surface and fixed ownership decisions.
+### Phase 1: Reconcile the 011 Spec Pack
 
 | Step | File | Changes | Priority |
 |------|------|---------|----------|
-| 1.1 | `context.md` | Add `memory_context` trace/budget params, advanced `memory_search` controls, `minQualityScore`, and `memory_match_triggers` cognitive parameters | P1 |
-| 1.2 | `save.md` | Add governance/provenance/retention docs and route async bulk ingestion to `/memory:manage ingest` | P1 |
-| 1.3 | `manage.md` | Fix section numbering, add `confirmName`, document current stats/health/mutation params, and add `/memory:manage ingest` subcommand | P0 |
-| 1.4 | `learn.md` | Refresh tool signatures and checkpoint-delete references against current schemas | P2 |
-| 1.5 | `continue.md` | Refresh retrieval signatures and reference `/memory:analyze history <specFolder>` for session enrichment | P2 |
+| 1.1 | `spec.md` | Preserve the live 33-tool / 6-command current-state story and restore required success-criteria anchor coverage | P0 |
+| 1.2 | `plan.md` | Restore required Level 2 plan anchors while keeping the reconciliation scope narrow | P0 |
+| 1.3 | `tasks.md` | Restore required Level 2 task anchors and phase structure | P0 |
+| 1.4 | `checklist.md`, `implementation-summary.md` | Keep verification evidence aligned with the updated pack and validator contract | P1 |
 
-### Phase 2: Create New Commands
-
-Create 2 new command files (analyze.md, shared.md) using the established command pattern and the ownership decisions above (ingest folded into manage).
-
-| Step | File | Scope | Priority |
-|------|------|-------|----------|
-| 2.1 | `analyze.md` | `task_preflight`, `task_postflight`, causal graph tools, and eval/reporting tools | P1 |
-| 2.2 | `shared.md` | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` | P1 |
-| 2.3 | ~~`ingest.md`~~ | Ingest folded into `/memory:manage ingest` (see Step 1.3) | — |
-
-### Phase 3: Update the README
-
-| Step | File | Changes | Priority |
-|------|------|---------|----------|
-| 3.1 | `README.txt` | Expand from 5 to 7 commands, update usage examples, and normalize all history references to the final `history` name | P1 |
-| 3.2 | `README.txt` | Add a full tool-coverage table mapping each of the 32 tools to its primary command home | P1 |
-
-### Phase 4: Verification
+### Phase 2: Verification
 
 | Step | Action | Success Criteria |
 |------|--------|-----------------|
-| 4.1 | Generate post-change coverage table | All 32 tools mapped to a command home |
-| 4.2 | Run parameter completeness audit | All live properties and aliases documented |
-| 4.3 | Verify command/index naming consistency | README, command docs, and related-command sections all agree |
-| 4.4 | Verify quick-reference and workflow routing | Examples and subcommand names match the intended command contract |
-| 4.5 | Run spec validation for the planning docs | Validation passes except for the known out-of-scope `checklist.md` gap |
+| 2.1 | Grep 011 for stale count and structure strings | No stale live-state claims remain in canonical docs |
+| 2.2 | Run strict validation | Validation passes with no errors or warnings |
+| 2.3 | Record and close the final runtime-doc drift cluster | `analyze.md` and `shared.md` mismatches are documented accurately and reflected as resolved in this pass |
 <!-- /ANCHOR:phases -->
 
 ---
 
-<!-- ANCHOR:implementation-details -->
-## 5. IMPLEMENTATION DETAILS
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
 
-### Existing Command Update Pattern
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural validation | Required Level 2 anchors and sections in the five scoped files | `validate.sh --strict` |
+| Drift checks | Stale `32`, `7 commands`, and standalone `context` command assumptions in canonical docs | `rg` |
+| Manual truth audit | Count verification and ownership spot-checks against live command docs and schema files | `sed`, `ls`, `node` |
 
-For each existing command update:
+### Verification Focus
 
-1. Read the command file plus both schema sources.
-2. Compare the documented surface against the current tool inventory and allowed-parameter mirror.
-3. Add missing parameters using the command's existing documentation style.
-4. Update workflow sections only where parameter behavior changes the command contract.
-5. Remove stale naming and make command ownership explicit.
-
-### New Command Pattern
-
-Each new command should follow the existing memory-command structure:
-
-```text
-Frontmatter
-MANDATORY FIRST ACTION
-Purpose / Contract
-Argument Routing
-MCP Enforcement Matrix
-Workflow Sections
-Error Handling
-Quick Reference
-Related Commands
-```
-
-### Command Ownership Model
-
-- `context.md`: L1-L2 retrieval entry points and advanced retrieval controls
-- `save.md`: synchronous save/index flows and save-related advanced parameters
-- `manage.md`: maintenance, mutations, checkpoints, and async ingest (via `/memory:manage ingest`)
-- `analyze.md`: analysis, causal graph, eval, reporting, and learning history (via `/memory:analyze history`)
-- `shared.md`: shared-space lifecycle and rollout status
-<!-- /ANCHOR:implementation-details -->
+- 011 now describes a 33-tool surface.
+- 011 now describes a 6-command suite.
+- 011 no longer assumes a standalone `context` command file.
+- 011 explicitly assigns retrieval plus `memory_quick_search` to `/memory:analyze`.
+- 011 keeps the drift list narrow and factual, then reflects its live-doc closeout accurately.
+<!-- /ANCHOR:testing -->
 
 ---
 
-<!-- ANCHOR:verification -->
-## 6. VERIFICATION STRATEGY
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
 
-Verification must prove:
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` | Internal | Green | Tool-count truth source would be unavailable |
+| `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts` | Internal | Green | Parameter-parity verification would be incomplete |
+| `.opencode/command/memory/analyze.md` | Internal | Green | Retrieval ownership and governed-parameter drift could not be verified |
+| `.opencode/command/memory/shared.md` | Internal | Green | Shared-memory schema-contract drift could not be verified |
+| `.opencode/command/memory/README.txt` | Internal | Green | Command-home coverage matrix could not be verified |
+| `validate.sh` | Internal | Green | Pack completion could not be claimed honestly |
+<!-- /ANCHOR:dependencies -->
 
-- every tool in `TOOL_DEFINITIONS` (32 total) has a command home
-- every current property and alias in the command-facing schemas is documented
-- `README.txt` describes the final 7-command surface
-- the command suite consistently uses the final `history` subcommand name
-- all open questions from the earlier draft have been resolved in the docs
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Strict validation fails after the reconciliation rewrite or the pack loses the current truth-reconciled ownership story.
+- **Procedure**: Revert the scoped markdown files to the last validator-passing revision, then re-apply only the minimal anchor and section fixes required by the template.
+
+### Documentation Rollback Notes
+
+- No runtime behavior changes are part of this pass.
+- Rollback is limited to the five scoped markdown files.
+- If rollback is needed, preserve the current repo-truth counts and ownership notes rather than restoring older 32-tool / 7-command wording.
+<!-- /ANCHOR:rollback -->
+
+---
+
+### Implementation Details
+
+### Reconciliation Pattern
+
+For each planning document:
+
+1. Remove stale historical-state claims that conflict with live files.
+2. Rebase counts on the current schema and directory state.
+3. Convert "planned/missing" language into "already shipped" language where supported by files on disk.
+4. Keep only directly verified residual issues in the gap list.
+
+### Truth Boundaries
+
+- Use `tool-schemas.ts` for canonical tool count.
+- Use the live command directory to determine command-surface shape.
+- Use `.opencode/command/memory/README.txt` and `.opencode/command/memory/analyze.md` as evidence for command ownership.
+- Do not infer missing work if the command/docs already exist.
+
+---
+
+### Verification Commands
 
 Recommended checks:
 
 ```bash
-python3 - <<'PY'
-# Count tools and generate coverage table from TOOL_DEFINITIONS
-PY
+node - <<'NODE'
+const fs = require('fs');
+const text = fs.readFileSync('.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts', 'utf8');
+console.log((text.match(/name:\s*'/g) || []).length);
+NODE
 
-rg -n "<stale-count-or-open-question-pattern>" \
-  .opencode/command/memory .opencode/command/memory/README.txt
+ls .opencode/command/memory
+
+rg -n "32-tool|32 tools|7-command|7 commands|context" \
+  .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment
 
 bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
-  .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment
+  .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-command-alignment --strict
 ```
-<!-- /ANCHOR:verification -->
 
 ---
 
-<!-- ANCHOR:risks -->
-## 7. RISKS & MITIGATIONS
+### Risks & Mitigations
 
 | Risk | Probability | Impact | Mitigation |
 |------|-------------|--------|------------|
-| Schema files diverge from each other | Medium | High | Phase 0 must compare both schema sources before command edits begin |
-| New commands fragment discoverability | Low | Medium | README coverage matrix and related-command sections must provide the unified index |
-| Shared/governance docs are overexplained for basic users | Low | Low | Keep rollout-dependent behavior in advanced callouts rather than the primary happy path |
-| Validation still reports spec-folder hygiene issues | High | Low | Treat missing `checklist.md` as a known out-of-scope artifact for this pass |
-<!-- /ANCHOR:risks -->
+| Old implementation language survives in one section | Medium | Medium | Run targeted stale-string grep after edits |
+| Future schema changes make 011 stale again | Medium | Medium | Keep schema files as the explicit source of truth |
+| Residual runtime-doc drift is missed | Low | Medium | Record and verify the observed `analyze.md` and `shared.md` mismatches before closing the pass |
+| Validation reports unrelated legacy issues | Low | Low | Note them honestly if they appear, but do not widen scope |
 
 ---
 
-<!-- ANCHOR:assumptions -->
-## 8. ASSUMPTIONS
+### Assumptions
 
-- The implementation pass will edit the actual command docs and README after this refinement lands.
-- The command set after implementation is fixed at 7 commands.
-- The planning docs should reflect current repo truth even if earlier research drafts used older counts.
-- This pass should remove ambiguity, not perform any MCP or command implementation changes.
-<!-- /ANCHOR:assumptions -->
+- Live repo state wins when it conflicts with older 011 draft text.
+- The 6-command suite is the canonical current memory-command surface.
+- `README.txt` already provides a complete 33-tool ownership map.
+- This pass includes the scoped runtime-doc patch needed to clear the final `analyze.md` and `shared.md` drift.
 
 ---
 
 <!--
 PLAN: 011-command-alignment
-Complete (2026-03-15)
-32-tool schema baseline, 7-command final suite (ingest in manage, history in analyze)
+Reconciled 2026-03-21
+Current baseline: 33 tools, 6 commands, retrieval merged into analyze
 -->

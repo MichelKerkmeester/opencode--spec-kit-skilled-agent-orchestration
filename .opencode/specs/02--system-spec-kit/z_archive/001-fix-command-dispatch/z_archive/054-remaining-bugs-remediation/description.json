@@ -17,5 +17,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: Remaining Bugs Remediation [054-remaining-bugs-remediation/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Spec: Remaining Bugs Remediation"
 }

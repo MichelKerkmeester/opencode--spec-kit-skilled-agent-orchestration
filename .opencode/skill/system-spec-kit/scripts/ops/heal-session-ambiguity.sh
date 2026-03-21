@@ -1,7 +1,14 @@
 #!/usr/bin/env bash
 # ───────────────────────────────────────────────────────────────
 # COMPONENT: Heal Session Ambiguity
+# STATUS:    DEPRECATED — session ambiguity is now handled by
+#            the memory-save pipeline (generate-context.js).
 # ───────────────────────────────────────────────────────────────
+
+echo "[DEPRECATED] heal-session-ambiguity.sh is deprecated. Session ambiguity is now handled by the memory-save pipeline." >&2
+exit 0
+
+# ── Original implementation below (retained for reference) ────
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

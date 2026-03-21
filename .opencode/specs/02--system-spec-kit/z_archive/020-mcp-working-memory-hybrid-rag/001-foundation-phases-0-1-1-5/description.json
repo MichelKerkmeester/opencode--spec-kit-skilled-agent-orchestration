@@ -16,5 +16,9 @@
     "020-mcp-working-memory-hybrid-rag"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Phase Package Spec: Foundation (Phase 0, Phase 1, Phase 1.5) [001-foundation-phases-0-1-1-5/spec]",
+  "status": "Draft (planning-only)",
+  "importance_tier": "important",
+  "short_description": "Phase Package Spec: Foundation (Phase 0, Phase 1, Phase 1.5)"
 }

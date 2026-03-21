@@ -45,3 +45,22 @@ export type { PostInsertEnrichmentResult } from './post-insert';
 export { runPostInsertEnrichment } from './post-insert';
 
 export { buildIndexResult, buildSaveResponse } from './response-builder';
+
+export { SPEC_FOLDER_LOCKS, withSpecFolderLock } from './spec-folder-mutex';
+
+export {
+  MARKDOWN_HEADING_RE,
+  MARKDOWN_BULLET_RE,
+  stripMarkdownDecorators,
+  extractMarkdownSections,
+  extractMarkdownListItems,
+  extractMarkdownTableFiles,
+  buildParsedMemoryEvidenceSnapshot,
+} from './markdown-evidence-builder';
+
+export {
+  applyInsufficiencyMetadata,
+  buildInsufficiencyRejectionResult,
+  buildTemplateContractRejectionResult,
+  buildDryRunSummary,
+} from './validation-responses';

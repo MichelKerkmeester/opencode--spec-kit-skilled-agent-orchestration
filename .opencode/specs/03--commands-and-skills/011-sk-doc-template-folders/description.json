@@ -16,5 +16,9 @@
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: sk-doc Template Folder Reorganization",
+  "status": "Complete",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: sk-doc Template Folder Reorganization"
 }

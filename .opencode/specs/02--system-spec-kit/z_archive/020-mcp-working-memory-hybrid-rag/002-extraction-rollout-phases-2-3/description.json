@@ -17,5 +17,9 @@
     "020-mcp-working-memory-hybrid-rag"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Phase Package Spec: Extraction and Rollout (Phase 2, Phase 3) [002-extraction-rollout-phases-2-3/spec]",
+  "status": "Phase 2/3 closed; post-research transition active",
+  "importance_tier": "important",
+  "short_description": "Phase Package Spec: Extraction and Rollout (Phase 2, Phase 3)"
 }

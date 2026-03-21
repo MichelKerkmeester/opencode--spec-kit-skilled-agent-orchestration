@@ -1,6 +1,7 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/004-type-consolidation",
   "description": "Feature Specification: Type Consolidation",
+  "status": "Complete",
   "keywords": [
     "feature",
     "specification",
@@ -19,5 +20,8 @@
   "memoryNameHistory": [
     "17-03-26_14-47__canonical-subset-typing-completed.md",
     "17-03-26_16-44__strict-closeout-evidence-refreshed.md"
-  ]
+  ],
+  "title": "Feature Specification: Type Consolidation",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: Type Consolidation"
 }

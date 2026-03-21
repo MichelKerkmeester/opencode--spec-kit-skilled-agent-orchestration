@@ -68,7 +68,7 @@ Correct the phase record so it matches the shipped implementation, preserve the 
 - Ship Wave 2 fixes for decision confidence, truncated outcomes, `git_changed_file_count`, and count override behavior.
 - Fix 5 root cause bugs (RC1-RC5) where JSON payload fields (`sessionSummary`, `triggerPhrases`, `keyDecisions`, `importanceTier`, `contextType`) were silently discarded or overridden.
 - Add post-save quality review module (Step 10.5) that compares saved frontmatter against original JSON payload.
-- Update all instruction files with post-save review guidance.
+- Update the 4 tracked instruction files present in this repo (`CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `AGENTS_example_fs_enterprises.md`) with post-save review guidance.
 - Update feature catalog and manual testing playbook with RC fixes and post-save review coverage.
 
 ### Out of Scope
@@ -90,7 +90,7 @@ Correct the phase record so it matches the shipped implementation, preserve the 
 | `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts` | Modify | RC5: Move `decisionCount` check, add `explicitContextType` param |
 | `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts` | Modify | RC3: fast-path keyDecisions; RC5: contextType extraction |
 | `.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts` | Create | Post-save quality review module |
-| `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `AGENTS_example_fs_enterprises.md`, `Barter/coder/AGENTS` | Modify | Post-save review instructions |
+| `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `AGENTS_example_fs_enterprises.md` | Modify | Post-save review instructions in the 4 tracked instruction files present in this repo |
 <!-- /ANCHOR:scope -->
 
 ---

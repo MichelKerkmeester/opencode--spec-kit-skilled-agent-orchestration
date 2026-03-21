@@ -19,5 +19,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: OpenCode Naming Convention Alignment [090-opencode-naming-conventions/spec]",
+  "status": "In Progress",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: OpenCode Naming Convention Alignment"
 }

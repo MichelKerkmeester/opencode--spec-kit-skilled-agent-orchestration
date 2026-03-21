@@ -589,42 +589,43 @@ Gate 2 routes tasks to skills via `skill_advisor.py`. When confidence > 0.8, you
 
 ### 4.4 Commands
 
-#### All Available Commands (17 total)
+#### All Available Commands (22 total)
 
 Commands are slash-prefixed shortcuts for common workflows.
 
-**Create Commands (3)**
+**Create Commands (7)**
 
 | Command                   | Description                         | Output                            |
 | ------------------------- | ----------------------------------- | --------------------------------- |
-| `/create:agent`           | Create new agent                    | Agent file in .opencode/agent/    |
+| `/create:agent`           | Create new agent                    | Agent file in the active runtime agent path |
+| `/create:changelog`       | Create changelog entry              | Versioned changelog markdown      |
+| `/create:feature-catalog` | Create or update feature catalog    | Rooted `feature_catalog/` package |
 | `/create:folder_readme`   | Unified README + install guide      | README.md or install guide output |
+| `/create:prompt`          | Create or improve prompt artifact   | Prompt markdown                   |
 | `/create:sk-skill`        | Unified skill command               | Skill create/update/file flows    |
+| `/create:testing-playbook` | Create or update testing playbook | Rooted `manual_testing_playbook/` package |
 
-**Memory Commands (4)**
+**Memory Commands (6)**
 
-| Command              | Description                | Output                     |
-| -------------------- | -------------------------- | -------------------------- |
-| `/memory:checkpoint` | Create context checkpoint  | Checkpoint for restoration |
-| `/memory:database`   | Manage memory database     | Database operations        |
-| `/memory:save`       | Save current context       | Memory file in spec folder |
-| `/memory:search`     | Search saved memories      | Matching memories list     |
+| Command            | Description                             | Output                          |
+| ------------------ | --------------------------------------- | ------------------------------- |
+| `/memory:analyze`  | Unified retrieval and analysis          | Context, epistemic, causal data |
+| `/memory:continue` | Recover prior session state             | Continued working context       |
+| `/memory:learn`    | Manage constitutional memories          | Memory rule files and budget    |
+| `/memory:manage`   | Manage database, checkpoints, ingest    | Operational status or mutations |
+| `/memory:save`     | Save current context                    | Memory file in spec folder      |
+| `/memory:shared`   | Manage shared-memory lifecycle          | Shared-space status and changes |
 
-**Search Commands (2)**
-
-| Command         | Description               | Output                 |
-| --------------- | ------------------------- | ---------------------- |
-| `/search:code`  | Semantic code search      | Matching code snippets |
-| `/search:index` | Build/manage search index | Index status/results   |
-
-**SpecKit Commands (7)**
+**SpecKit Commands (8)**
 
 | Command               | Description                           | Output                      |
 | --------------------- | ------------------------------------- | --------------------------- |
 | `/spec_kit:complete`  | Full spec workflow (plan + implement) | Complete implementation     |
 | `/spec_kit:debug`     | Debug mode for troubleshooting        | Debug session               |
+| `/spec_kit:deep-research` | Iterative deep research workflow | Research findings and state |
 | `/spec_kit:handover`  | Session handover documentation        | Handover document           |
 | `/spec_kit:implement` | Execute pre-planned work              | Implementation from plan    |
+| `/spec_kit:phase`     | Decompose complex work into phases    | Parent and child spec packs |
 | `/spec_kit:plan`      | Planning phase only                   | Plan without implementation |
 | `/spec_kit:resume`    | Resume previous session               | Continued work              |
 
@@ -640,7 +641,7 @@ Commands are slash-prefixed shortcuts for common workflows.
 - `/search:*` - Code discovery
 - `/spec_kit:*` - Full workflow
 
-Remove commands by not referencing them in your AGENTS.md. Commands are defined in `.opencode/commands/`.
+Remove commands by not referencing them in your AGENTS.md. Commands are defined in `.opencode/command/`.
 
 ---
 
@@ -767,7 +768,7 @@ ls .opencode/skill/
 - [ ] Native MCP Tools Reference reflects installed tools only?
 - [ ] Code Mode Tools Reference reflects `.utcp_config.json` contents?
 - [ ] Skills table updated (removed skills not in `.opencode/skill/`)?
-- [ ] Commands list reflects `.opencode/commands/` directory?
+- [ ] Commands list reflects `.opencode/command/` directory?
 - [ ] Project-specific conventions or patterns added?
 
 ❌ **STOP if validation fails** - Review each checklist item and fix mismatches between AGENTS.md references and your actual installed tools before continuing.
@@ -796,7 +797,7 @@ cat opencode.json | jq '.mcp.servers | keys'
 ls .opencode/skill/
 
 # Verify commands directory
-ls .opencode/commands/
+ls .opencode/command/
 ```
 
 ### Validation: `phase_4_complete`
@@ -1163,22 +1164,22 @@ If gates are missing, restore from `AGENTS (Template).md` and re-apply your cust
 
 **Error:** `/memory:save` or other slash commands return "command not found".
 
-**Cause:** The command file does not exist in `.opencode/commands/`, or the command path is incorrect.
+**Cause:** The command file does not exist in `.opencode/command/`, or the command path is incorrect.
 
 **Fix:**
 
 ```bash
 # List all available commands
-ls .opencode/commands/
+ls .opencode/command/
 
 # Check a specific command exists
-ls .opencode/commands/memory/save.md
+ls .opencode/command/memory/save.md
 
 # Verify the commands directory structure
 find .opencode/commands -name "*.md" | head -20
 ```
 
-Update AGENTS.md to reference only the commands that exist in your `.opencode/commands/` directory.
+Update AGENTS.md to reference only the commands that exist in your `.opencode/command/` directory.
 
 ---
 
@@ -1188,9 +1189,9 @@ Update AGENTS.md to reference only the commands that exist in your `.opencode/co
 
 | Category          | Count  | Items                                                                                                                       |
 | ----------------- | ------ | --------------------------------------------------------------------------------------------------------------------------- |
-| **Skills**        | 9      | mcp-figma, mcp-code-mode, system-spec-kit, mcp-chrome-devtools, sk-code--full-stack, sk-code--opencode, sk-code--web, sk-doc, sk-git |
+| **Skills**        | 18     | mcp-chrome-devtools, mcp-clickup, mcp-coco-index, mcp-code-mode, mcp-figma, system-spec-kit, cli-codex, cli-copilot, cli-claude-code, cli-gemini, sk-code--full-stack, sk-code--opencode, sk-code--review, sk-code--web, sk-deep-research, sk-doc, sk-git, sk-prompt-improver |
 | **MCP Servers**   | 3      | sequential-thinking, spec-kit-memory, code-mode                                                                             |
-| **Commands**      | 19     | /create:* (6), /memory:* (5), /spec_kit:* (7), agent_router (1)                                                             |
+| **Commands**      | 22     | /create:* (7), /memory:* (6), /spec_kit:* (8), agent_router (1)                                                             |
 | **Gates + Rules** | 3 + 3  | Gate 1-3 (Understanding, Skill Routing, Spec Folder) + Behavioral Rules (Memory Context Loading, Memory Save Rule, Completion Verification) |
 
 ### File Size Guidelines
@@ -1225,7 +1226,7 @@ Update AGENTS.md to reference only the commands that exist in your `.opencode/co
 | `opencode.json`                               | Native MCP server configuration          |
 | `.utcp_config.json`                           | Code Mode external tools configuration   |
 | `.opencode/skill/`                            | Installed skills directory               |
-| `.opencode/commands/`                         | Available slash commands directory       |
+| `.opencode/command/`                          | Available slash commands directory       |
 | `.opencode/skill/scripts/skill_advisor.py`    | Gate 2 skill routing script              |
 
 ### External Links

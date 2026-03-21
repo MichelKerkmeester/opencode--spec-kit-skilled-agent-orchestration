@@ -1,5 +1,5 @@
 ---
-title: "Create changelog command refinements for 014-create-changelog-command 2026-03-01"
+title: "Create changelog command refinements for 015-cmd-create-changelog 2026-03-01"
 description: "This continuation session refined the create changelog command implementation. It fixed Unicode styling in changelog output, replaced a hardcoded component list with runtime..."
 trigger_phrases:
   - "create changelog command"

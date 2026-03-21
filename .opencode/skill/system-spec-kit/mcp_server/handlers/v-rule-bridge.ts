@@ -6,6 +6,7 @@
 // Falls back gracefully if the module is not available.
 
 import path from 'path';
+import { createRequire } from 'module';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES (mirrored from validate-memory-quality.ts)
@@ -40,14 +41,14 @@ interface ValidationDispositionResult {
 let _validateMemoryQualityContent: ((content: string) => ValidationResult) | null = null;
 let _determineValidationDisposition: ((failedRules: readonly QualityRuleId[], source?: string | null) => ValidationDispositionResult) | null = null;
 let _loadAttempted = false;
+const runtimeRequire = createRequire(__filename);
 
 function loadModule(): void {
   if (_loadAttempted) return;
   _loadAttempted = true;
   try {
     const distPath = path.resolve(__dirname, '../../scripts/dist/memory/validate-memory-quality.js');
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const mod = require(distPath);
+    const mod = runtimeRequire(distPath);
     _validateMemoryQualityContent = mod.validateMemoryQualityContent;
     _determineValidationDisposition = mod.determineValidationDisposition;
   } catch {

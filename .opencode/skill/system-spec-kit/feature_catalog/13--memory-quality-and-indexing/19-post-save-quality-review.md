@@ -28,9 +28,9 @@ Current detection checks:
 
 Each finding is emitted with a severity level:
 
-- **HIGH** — Field is missing or contradicts the caller's explicit input (e.g., importance_tier mismatch, decision_count = 0 with keyDecisions present).
-- **MEDIUM** — Field value is degraded but not completely wrong (e.g., generic description, path-fragment trigger phrases).
-- **LOW** — Advisory signal that a field could be improved but does not represent a data loss (e.g., title is acceptably generic for the session type).
+- **HIGH** — Title and `trigger_phrases` propagation failures that would materially mislabel the saved memory.
+- **MEDIUM** — `importance_tier` mismatch or `decision_count = 0` when the payload carried `keyDecisions`.
+- **LOW** — Advisory `context_type` or `description` degradation that does not block the save path.
 
 The review output is machine-readable so callers and downstream quality monitors can surface actionable per-field failures without parsing prose.
 
@@ -46,9 +46,9 @@ The review output is machine-readable so callers and downstream quality monitors
 
 ### 3.2 Severity model
 
-- **HIGH**: Data loss or explicit caller intent overridden — treated as a blocking signal when abort-on-high is configured.
-- **MEDIUM**: Degraded quality that reduces retrieval accuracy but does not represent outright data loss.
-- **LOW**: Advisory observation that the caller may want to address in a follow-up save.
+- **HIGH**: Title or `trigger_phrases` drift that materially misstates the saved memory.
+- **MEDIUM**: `importance_tier` or `decision_count` drift that should be fixed before trusting indexing quality.
+- **LOW**: `context_type` or `description` drift that is worth tightening but is not treated as a blocking propagation failure.
 
 ### 3.3 Mode gating
 
@@ -79,7 +79,7 @@ The review output is machine-readable so callers and downstream quality monitors
 
 | File | Focus |
 |------|-------|
-| `scripts/tests/post-save-review.vitest.ts` | Severity classification, detection checks, mode-gating (recovery/stateless skip), machine-readable output shape |
+| `scripts/tests/post-save-review.vitest.ts` | Severity classification, detection checks, mode-gating (recovery/stateless skip), machine-readable output shape _(planned — file not yet created)_ |
 | `scripts/tests/workflow-e2e.vitest.ts` | End-to-end coverage of Step 10.5 placement within the save workflow |
 
 ---
@@ -88,4 +88,4 @@ The review output is machine-readable so callers and downstream quality monitors
 
 - Group: Memory quality and indexing
 - Source feature title: Post-save quality review
-- Current reality source: spec 010-perfect-session-capturing / RC1–RC5 propagation fixes
+- Current reality source: spec 009-perfect-session-capturing / RC1-RC5 propagation fixes in `scripts/core/post-save-review.ts`

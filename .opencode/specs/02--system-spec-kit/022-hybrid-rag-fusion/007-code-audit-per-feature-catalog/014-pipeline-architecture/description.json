@@ -18,5 +18,9 @@
   "memoryNameHistory": [
     "11-03-26_18-33__t008-lastdbcheck-advancement-deferred-until.md",
     "11-03-26_18-36__repaired-the-level-2-pipeline-architecture-spec.md"
-  ]
+  ],
+  "title": "Feature Specification: pipeline-architecture [template:level_2/spec.md]",
+  "status": "Complete",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: pipeline-architecture"
 }

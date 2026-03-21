@@ -75,6 +75,39 @@ function parseFrontmatter(content: string): Record<string, string> {
 }
 
 /**
+ * Extract key-value pairs from the fenced YAML block under
+ * `## MEMORY METADATA`. Some authoritative runtime fields, including
+ * `decision_count`, are recorded there instead of in the top frontmatter.
+ */
+function parseMemoryMetadataBlock(content: string): Record<string, string> {
+  const match = content.match(/## MEMORY METADATA[\s\S]*?```yaml\s*([\s\S]*?)```/);
+  if (!match || !match[1]) {
+    return {};
+  }
+
+  const result: Record<string, string> = {};
+  for (const rawLine of match[1].split('\n')) {
+    const line = rawLine.trim();
+    if (line.length === 0 || line.startsWith('#')) {
+      continue;
+    }
+
+    const colonIdx = line.indexOf(':');
+    if (colonIdx <= 0) {
+      continue;
+    }
+
+    const key = line.substring(0, colonIdx).trim();
+    const value = line.substring(colonIdx + 1).trim();
+    if (key.length > 0 && value.length > 0) {
+      result[key] = value;
+    }
+  }
+
+  return result;
+}
+
+/**
  * Parse a YAML array field from frontmatter.
  * Handles both inline `[a, b]` and multiline `- a\n- b` formats.
  */
@@ -193,6 +226,7 @@ export function reviewPostSaveQuality(input: PostSaveReviewInput): PostSaveRevie
   }
 
   const frontmatter = parseFrontmatter(fileContent);
+  const memoryMetadata = parseMemoryMetadataBlock(fileContent);
   const issues: ReviewIssue[] = [];
 
   // Check 1: Title quality
@@ -255,7 +289,10 @@ export function reviewPostSaveQuality(input: PostSaveReviewInput): PostSaveRevie
   // Check 4: decision_count = 0 when payload has keyDecisions
   const payloadDecisions = collectedData.keyDecisions || collectedData._manualDecisions || [];
   if (payloadDecisions.length > 0) {
-    const savedDecisionCount = parseInt(frontmatter['decision_count'] || '0', 10);
+    const savedDecisionCount = parseInt(
+      frontmatter['decision_count'] || memoryMetadata['decision_count'] || '0',
+      10
+    );
     if (savedDecisionCount === 0) {
       issues.push({
         severity: 'MEDIUM',

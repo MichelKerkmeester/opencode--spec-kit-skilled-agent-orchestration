@@ -18,5 +18,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "SpecKit Refinement: ECP Analysis & Improvements [019-speckit-refinement/spec]",
+  "status": "Research Complete",
+  "importance_tier": "important",
+  "short_description": "SpecKit Refinement: ECP Analysis & Improvements"
 }

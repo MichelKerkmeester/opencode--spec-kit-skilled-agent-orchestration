@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Label Product Content Attribute [032-label-product-content-attr/spec]"
+title: "Feature Specification: Label Product Content Attribute [030-label-product-content-attr/spec]"
 description: "The label_main.css defines a data-label-content attribute for controlling text/icon color on labels (Black, Blue, White), but label_product.js never applies this attribute. Prod..."
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "product"
   - "content"
   - "spec"
-  - "032"
+  - "030"
 importance_tier: "important"
 contextType: "decision"
 ---

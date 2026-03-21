@@ -14,5 +14,9 @@
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: cli-gemini Skill",
+  "status": "Complete",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: cli-gemini Skill"
 }

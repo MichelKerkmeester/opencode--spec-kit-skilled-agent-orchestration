@@ -31,8 +31,8 @@ contextType: "general"
 | **Created** | 2026-03-10 |
 | **Branch** | `019-decisions-and-deferrals` |
 | **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../018-ux-hooks/spec.md |
-| **Next Phase** | ../020-feature-flag-reference/spec.md |
+| **Predecessor** | ../018-ux-hooks/spec.md |
+| **Successor** | ../020-feature-flag-reference/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

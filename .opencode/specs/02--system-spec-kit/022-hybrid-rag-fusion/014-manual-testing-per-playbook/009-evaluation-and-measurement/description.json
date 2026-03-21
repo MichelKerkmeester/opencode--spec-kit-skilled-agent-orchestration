@@ -1,0 +1,19 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/009-evaluation-and-measurement",
+  "description": "Feature Specification: evaluation-and-measurement",
+  "keywords": [
+    "feature",
+    "specification",
+    "evaluation-and-measurement"
+  ],
+  "lastUpdated": "2026-03-21T10:31:34.851Z",
+  "specId": "009",
+  "folderSlug": "evaluation-and-measurement",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "014-manual-testing-per-playbook"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

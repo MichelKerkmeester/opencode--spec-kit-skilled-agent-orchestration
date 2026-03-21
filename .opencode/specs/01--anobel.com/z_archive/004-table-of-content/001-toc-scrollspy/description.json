@@ -20,5 +20,9 @@
     "004-table-of-content"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Custom TOC ScrollSpy - Requirements & User Stories [001-toc-scrollspy/spec]",
+  "status": "Impact if Blocked",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Custom TOC ScrollSpy - Requirements & User Stories"
 }

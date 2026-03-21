@@ -195,41 +195,74 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
   let originalResultCount: number | undefined;
   let returnedResultCount: number | undefined;
 
-  const fallbackToCharacterBudget = (baseResult: ContextResult): ContextResult => {
+  const fallbackToStructuredBudget = (
+    baseResult: ContextResult,
+    parseFailedInnerText?: string,
+  ): ContextResult => {
     const fallbackResult = { ...baseResult } as ContextResult;
-    const fallbackContent = (fallbackResult as Record<string, unknown>).content;
+    const fallbackContent = Array.isArray((fallbackResult as Record<string, unknown>).content)
+      ? ((fallbackResult as Record<string, unknown>).content as Array<Record<string, unknown>>)
+      : [];
+    const contentClone = fallbackContent.map((entry) => ({ ...entry }));
+    const candidateInnerStates: Array<Record<string, unknown>> = [
+      {
+        summary: 'Context truncated to fit token budget',
+        data: {
+          count: 0,
+          results: [],
+        },
+        meta: {
+          tool: 'memory_search',
+          truncated: true,
+          parseFailed: Boolean(parseFailedInnerText),
+        },
+      },
+      {
+        data: {
+          count: 0,
+          results: [],
+        },
+        meta: {
+          tool: 'memory_search',
+          truncated: true,
+        },
+      },
+      {
+        data: {
+          count: 0,
+          results: [],
+        },
+      },
+    ];
 
-    if (Array.isArray(fallbackContent) && fallbackContent.length > 0) {
-      const firstEntry = fallbackContent[0] as Record<string, unknown> | undefined;
-      const originalText = typeof firstEntry?.text === 'string' ? firstEntry.text : null;
+    if (parseFailedInnerText) {
+      const meta = candidateInnerStates[0].meta as Record<string, unknown>;
+      meta.parseFailedPreview = parseFailedInnerText.slice(0, 120);
+    }
 
-      if (originalText !== null) {
-        const contentClone = fallbackContent.map((entry) => ({ ...(entry as Record<string, unknown>) }));
-        let bestText = '';
-        let low = 0;
-        let high = originalText.length;
-
-        while (low <= high) {
-          const mid = Math.floor((low + high) / 2);
-          const candidateText = originalText.slice(0, mid);
-          contentClone[0] = { ...contentClone[0], text: candidateText };
-          (fallbackResult as Record<string, unknown>).content = contentClone;
-
-          const candidateTokens = estimateTokens(JSON.stringify(fallbackResult));
-          if (candidateTokens <= budgetTokens) {
-            bestText = candidateText;
-            low = mid + 1;
-          } else {
-            high = mid - 1;
-          }
-        }
-
-        contentClone[0] = { ...contentClone[0], text: bestText };
+    for (const innerEnvelope of candidateInnerStates) {
+      if (contentClone.length > 0) {
+        contentClone[0] = { ...contentClone[0], text: JSON.stringify(innerEnvelope) };
         (fallbackResult as Record<string, unknown>).content = contentClone;
+      } else {
+        (fallbackResult as Record<string, unknown>).content = [
+          { type: 'text', text: JSON.stringify(innerEnvelope) },
+        ];
+      }
+
+      if (estimateTokens(JSON.stringify(fallbackResult)) <= budgetTokens) {
+        return fallbackResult;
       }
     }
 
-    return fallbackResult;
+    return {
+      strategy: baseResult.strategy,
+      mode: baseResult.mode,
+      content: [{
+        type: 'text',
+        text: JSON.stringify({ data: { count: 0, results: [] } }),
+      }],
+    };
   };
 
   const compactStructuredResult = (
@@ -305,6 +338,7 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
 
   // Try to find and truncate the inner results array
   const contentArr = (truncatedResult as Record<string, unknown>).content as Array<{ type: string; text: string }> | undefined;
+  let parseFailedInnerText: string | undefined;
   if (contentArr && Array.isArray(contentArr) && contentArr.length > 0 && contentArr[0]?.text) {
     try {
       const innerEnvelope = JSON.parse(contentArr[0].text);
@@ -368,16 +402,17 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
       }
     } catch {
       parseFailed = true;
-      // JSON parse failed — fall through to character-level truncation
+      parseFailedInnerText = contentArr[0].text;
+      // JSON parse failed — fall through to structural truncation
     }
   }
 
-  // Fallback when parsing fails or a structured response still exceeds budget
-  // After result-array truncation. Character-level binary search guarantees the
-  // Returned payload is as large as possible while respecting the budget.
-  const fallbackResult = parseFailed
-    ? fallbackToCharacterBudget(result)
-    : fallbackToCharacterBudget(truncatedResult);
+  // Fallback when parsing fails or a structured response still exceeds budget.
+  // Always emit valid nested JSON rather than raw character slices.
+  const fallbackResult = fallbackToStructuredBudget(
+    parseFailed ? result : truncatedResult,
+    parseFailedInnerText,
+  );
 
   const fallbackTokens = estimateTokens(JSON.stringify(fallbackResult));
 

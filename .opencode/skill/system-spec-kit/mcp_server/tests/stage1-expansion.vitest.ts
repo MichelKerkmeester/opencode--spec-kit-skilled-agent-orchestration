@@ -128,6 +128,7 @@ vi.mock('../lib/collab/shared-spaces', () => ({
 
 import { executeStage1 } from '../lib/search/pipeline/stage1-candidate-gen';
 import { searchWithFallback } from '../lib/search/hybrid-search';
+import * as vectorIndex from '../lib/search/vector-index';
 import type { PipelineConfig } from '../lib/search/pipeline/types';
 
 function makeConfig(overrides: Partial<PipelineConfig> = {}): PipelineConfig {
@@ -438,5 +439,48 @@ describe('Stage-1: Expansion & Dedup', () => {
     expect(result.candidates).toHaveLength(1);
     expect(result.candidates[0]?.id).toBe(8);
     expect(result.candidates[0]?.title).toBe('allowed-summary');
+  });
+
+  it('T9: constitutional injection re-applies governance scope after vector fetch', async () => {
+    const mockSearch = searchWithFallback as ReturnType<typeof vi.fn>;
+    const mockVectorSearch = vectorIndex.vectorSearch as ReturnType<typeof vi.fn>;
+
+    mockSearch.mockResolvedValueOnce([
+      {
+        id: 1,
+        title: 'baseline',
+        importance_tier: 'normal',
+        tenant_id: 'tenant-a',
+        shared_space_id: 'allowed-space',
+      },
+    ]);
+    mockVectorSearch.mockReturnValue([
+      {
+        id: 2,
+        title: 'constitutional allowed',
+        importance_tier: 'constitutional',
+        tenant_id: 'tenant-a',
+        shared_space_id: 'allowed-space',
+      },
+      {
+        id: 3,
+        title: 'constitutional blocked',
+        importance_tier: 'constitutional',
+        tenant_id: 'tenant-a',
+        shared_space_id: 'blocked-space',
+      },
+    ]);
+    mockGetAllowedSharedSpaceIds.mockReturnValue(new Set(['allowed-space']));
+
+    const result = await executeStage1({
+      config: makeConfig({
+        includeConstitutional: true,
+        tenantId: 'tenant-a',
+        sharedSpaceId: 'allowed-space',
+      }),
+    });
+
+    expect(result.candidates.map((row) => row.id)).toEqual([1, 2]);
+    expect(result.candidates.find((row) => row.id === 3)).toBeUndefined();
   });
 });

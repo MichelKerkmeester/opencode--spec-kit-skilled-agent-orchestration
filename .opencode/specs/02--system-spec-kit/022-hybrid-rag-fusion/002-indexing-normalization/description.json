@@ -13,5 +13,9 @@
     "022-hybrid-rag-fusion"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Indexing Normalization",
+  "status": "Complete",
+  "importance_tier": "important",
+  "short_description": "Consolidated spec.md"
 }

@@ -18,5 +18,9 @@
   "memoryNameHistory": [
     "13-03-26_20-55__2026-03-13-verification-pass-confirmed-phase-3.md",
     "13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-3.md"
-  ]
+  ],
+  "title": "Feature Specification: 003-unified-graph-retrieval",
+  "status": "Complete",
+  "importance_tier": "critical",
+  "short_description": "Feature Specification: 003-unified-graph-retrieval"
 }

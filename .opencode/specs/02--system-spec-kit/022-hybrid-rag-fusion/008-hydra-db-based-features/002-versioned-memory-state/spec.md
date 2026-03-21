@@ -37,11 +37,11 @@ Phase 2 is the first true Hydra data-plane phase. It introduces append-first mem
 | **Created** | 2026-03-13 |
 | **Updated** | 2026-03-13 |
 | **Branch** | `022-hybrid-rag-fusion` |
-| **Parent Spec** | `../spec.md` |
+| **Parent Spec** | ../spec.md |
 | **Parent Plan** | `../plan.md` |
 | **Phase** | 2 of 6 |
-| **Predecessor** | `001-baseline-and-safety-rails` |
-| **Successor** | `003-unified-graph-retrieval` |
+| **Predecessor** | ../001-baseline-and-safety-rails/spec.md |
+| **Successor** | ../003-unified-graph-retrieval/spec.md |
 | **Handoff Criteria** | Append-first lineage, active projection, `asOf` semantics, backfill coverage, and rollback drills verified |
 
 ### Phase Context
@@ -311,4 +311,3 @@ Introduce a durable lineage contract that makes temporal state resolution explic
 - **Task Breakdown**: `tasks.md`
 - **Verification Checklist**: `checklist.md`
 - **Decision Records**: `decision-record.md`
-

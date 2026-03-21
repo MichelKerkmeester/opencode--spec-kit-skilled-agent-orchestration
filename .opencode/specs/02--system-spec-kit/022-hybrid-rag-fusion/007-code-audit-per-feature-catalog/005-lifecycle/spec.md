@@ -29,8 +29,8 @@ contextType: "general"
 | **Created** | 2026-03-10 |
 | **Branch** | `007-code-audit-per-feature-catalog/005-lifecycle` |
 | **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../004-maintenance/spec.md |
-| **Next Phase** | ../006-analysis/spec.md |
+| **Predecessor** | ../004-maintenance/spec.md |
+| **Successor** | ../006-analysis/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

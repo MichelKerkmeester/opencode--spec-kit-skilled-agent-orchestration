@@ -355,6 +355,11 @@ export function executeConflict(
           1.0,
           `TM-06 reconsolidation conflict: similarity ${(existingMemory.similarity * 100).toFixed(1)}%`
         );
+        if (edgeId == null) {
+          throw new Error(
+            `Failed to insert supersedes edge (${sourceId} -> ${targetId}) — aborting reconsolidation`
+          );
+        }
       })();
     } else {
       // Atomic transaction: content + embedding + hash update together.

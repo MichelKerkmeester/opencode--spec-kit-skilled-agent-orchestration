@@ -15,5 +15,9 @@
     "02--system-spec-kit"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: SpecKit Phase System [021-spec-kit-phase-system/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: SpecKit Phase System"
 }

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Spec Folder Level Upgrade Script [124-upgrade-level-script/spec]"
+title: "Feature Specification: Spec Folder Level Upgrade Script [007-upgrade-level-script/spec]"
 description: "Currently, create.sh only creates new spec folders at a specific level from scratch, and compose.sh builds clean templates. No tooling exists to upgrade an existing, user-popula..."
 trigger_phrases:
   - "feature"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "spec"
   - "folder"
   - "level"
-  - "124"
+  - "007"
   - "upgrade"
 importance_tier: "important"
 contextType: "decision"

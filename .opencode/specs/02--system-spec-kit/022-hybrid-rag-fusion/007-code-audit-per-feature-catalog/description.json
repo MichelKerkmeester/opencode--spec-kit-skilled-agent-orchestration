@@ -18,5 +18,9 @@
     "10-03-26_11-16__code-audit-per-feature-catalog.md",
     "13-03-26_07-28__completed-the-feature-centric-code-audit-for-spec.md",
     "13-03-26_07-29__completed-feature-centric-audit-across-20-phases.md"
-  ]
+  ],
+  "title": "Feature Specification: code-audit-per-feature-catalog [template:level_1/spec.md]",
+  "status": "Complete",
+  "importance_tier": "high",
+  "short_description": "Feature Specification: code-audit-per-feature-catalog"
 }

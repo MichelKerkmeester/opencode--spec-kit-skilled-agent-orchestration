@@ -22,8 +22,8 @@ contextType: "general"
 | **Created** | 2026-03-10 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../001-retrieval/spec.md |
-| **Next Phase** | ../003-discovery/spec.md |
+| **Predecessor** | ../001-retrieval/spec.md |
+| **Successor** | ../003-discovery/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

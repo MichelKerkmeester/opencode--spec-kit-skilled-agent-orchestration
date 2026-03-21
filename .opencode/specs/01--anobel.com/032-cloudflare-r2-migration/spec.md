@@ -1,12 +1,12 @@
 ---
-title: "Spec: Cloudflare R2 + Worker Migration [034-cloudflare-r2-migration/spec]"
+title: "Spec: Cloudflare R2 + Worker Migration [032-cloudflare-r2-migration/spec]"
 description: "Created: 2026-02-14"
 trigger_phrases:
   - "spec"
   - "cloudflare"
   - "worker"
   - "migration"
-  - "034"
+  - "032"
 importance_tier: "important"
 contextType: "decision"
 ---

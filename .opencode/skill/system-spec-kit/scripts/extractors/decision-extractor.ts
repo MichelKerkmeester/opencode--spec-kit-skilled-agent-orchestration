@@ -74,26 +74,26 @@ function buildDecisionConfidence(params: {
     };
   }
 
-  let choiceConfidence = 0.5;
+  let choiceConfidence = 0.7;
   if (params.hasAlternatives) {
-    choiceConfidence += 0.15;
+    choiceConfidence += 0.1;
   }
   if (params.hasExplicitChoice) {
-    choiceConfidence += 0.10;
+    choiceConfidence += 0.08;
   }
   if (isSpecificChoice(params.chosen)) {
-    choiceConfidence += 0.10;
+    choiceConfidence += 0.07;
   }
 
-  let rationaleConfidence = 0.5;
+  let rationaleConfidence = 0.7;
   if (params.hasExplicitRationale) {
-    rationaleConfidence += 0.15;
+    rationaleConfidence += 0.1;
   }
   if (params.hasTradeoffs) {
-    rationaleConfidence += 0.10;
+    rationaleConfidence += 0.08;
   }
   if (params.hasEvidence) {
-    rationaleConfidence += 0.10;
+    rationaleConfidence += 0.07;
   }
 
   const normalizedChoice = normalizeConfidence(choiceConfidence);

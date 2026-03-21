@@ -53,6 +53,9 @@ The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 his
 | **Status** | In Progress |
 | **Created** | 2025-12-01 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../005-architecture-audit/spec.md |
+| **Successor** | ../007-code-audit-per-feature-catalog/spec.md |
 
 ---
 
@@ -447,3 +450,13 @@ Analysis required to build the full file list. The scope covers all `.ts` files 
 
 - None.
 <!-- /ANCHOR:questions -->
+
+---
+
+## Phase Navigation
+
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../005-architecture-audit/spec.md |
+| **Next Phase** | ../007-code-audit-per-feature-catalog/spec.md |

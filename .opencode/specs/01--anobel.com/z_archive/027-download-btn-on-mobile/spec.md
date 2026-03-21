@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Download Button Mobile Fix [029-download-btn-on-mobile/spec]"
+title: "Feature Specification: Download Button Mobile Fix [027-download-btn-on-mobile/spec]"
 description: "Download buttons on anobel.com were not working on mobile devices (especially iOS). Users would tap the download button but nothing would happen - the file wouldn't download and..."
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "button"
   - "mobile"
   - "spec"
-  - "029"
+  - "027"
 importance_tier: "important"
 contextType: "decision"
 ---

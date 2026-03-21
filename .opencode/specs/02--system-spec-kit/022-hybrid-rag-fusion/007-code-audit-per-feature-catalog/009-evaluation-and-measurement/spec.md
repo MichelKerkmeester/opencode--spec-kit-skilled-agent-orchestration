@@ -31,8 +31,8 @@ contextType: "general"
 | **Created** | 2026-03-10 |
 | **Branch** | `009-evaluation-and-measurement` |
 | **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../008-bug-fixes-and-data-integrity/spec.md |
-| **Next Phase** | ../010-graph-signal-activation/spec.md |
+| **Predecessor** | ../008-bug-fixes-and-data-integrity/spec.md |
+| **Successor** | ../010-graph-signal-activation/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

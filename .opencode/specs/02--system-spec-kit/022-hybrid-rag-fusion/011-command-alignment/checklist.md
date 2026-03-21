@@ -1,11 +1,11 @@
 ---
 title: "Verification Checklist: 011-command-alignment"
-description: "Verification Date: 2026-03-15"
+description: "Verification Date: 2026-03-21"
 trigger_phrases:
   - "verification"
   - "checklist"
   - "command alignment"
-  - "016"
+  - "011"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -31,9 +31,9 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md — 15 requirements (CA-001 through CA-015) across P0/P1/P2
-- [x] CHK-002 [P0] Technical approach defined in plan.md — 5-phase plan with schema sync, command updates, new commands, README, verification
-- [x] CHK-003 [P1] Dependencies identified and available — tool-schemas.ts and tool-input-schemas.ts as source of truth
+- [x] CHK-001 [P0] Canonical pack scope confirmed — reconciliation limited to `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` [EVIDENCE: scoped edits remain inside the canonical 011 packet]
+- [x] CHK-002 [P0] Source of truth identified — `tool-schemas.ts` and `schemas/tool-input-schemas.ts` used together with live memory command docs [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` and `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts` were used as count and parameter baselines]
+- [x] CHK-003 [P1] Live runtime evidence loaded before writing — `README.txt`, `.opencode/command/memory/analyze.md`, and the memory command directory were read first [EVIDENCE: live command docs and the memory command directory were re-read before reconciliation edits]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -41,10 +41,10 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] All command files pass markdown lint — no bare code blocks, no prose em dashes (sk-doc DQI aligned)
-- [x] CHK-011 [P0] No structural errors in command docs — all routing tables, parameter tables, and tool signatures are well-formed
-- [x] CHK-012 [P1] Error handling documented — all 7 command files include error handling sections
-- [x] CHK-013 [P1] Code follows project patterns — all commands use the established memory-command structure (frontmatter, mandatory gate, contract, routing, workflows, errors, related commands, appendix)
+- [x] CHK-010 [P0] Pack no longer states a 32-tool current surface — canonical docs now describe the live 33-tool inventory [EVIDENCE: `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md` all use 33 as the live count]
+- [x] CHK-011 [P0] Pack no longer states a 7-command current surface — canonical docs now describe the live 6-command memory suite [EVIDENCE: the reconciled pack uses the six live commands under `.opencode/command/memory/`]
+- [x] CHK-012 [P0] Pack no longer assumes a standalone `context` command file — retrieval is documented under `/memory:analyze` [EVIDENCE: retrieval ownership is assigned to `/memory:analyze` throughout the pack]
+- [x] CHK-013 [P1] Command ownership model is internally consistent — `/memory:analyze` owns retrieval, `memory_quick_search`, and `history`; `/memory:manage ingest` owns async ingest [EVIDENCE: ownership tables and prose align across `spec.md`, `plan.md`, and `implementation-summary.md`]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -52,10 +52,11 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All acceptance criteria met — CA-001 through CA-015 verified (see implementation-summary.md Section 3)
-- [x] CHK-021 [P0] Coverage audit complete — 32/32 MCP tools have documented command homes (README Section 6)
-- [x] CHK-022 [P1] Parameter completeness verified — all ALLOWED_PARAMETERS entries and compatibility aliases documented
-- [x] CHK-023 [P1] Naming consistency verified — no stale counts, legacy names, or numbering errors remain
+- [x] CHK-020 [P0] Live tool count verified — `tool-schemas.ts` count confirmed 33 tools [EVIDENCE: direct count from `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`]
+- [x] CHK-021 [P0] Live command count verified — `.opencode/command/memory/` confirmed 6 commands plus `README.txt` [EVIDENCE: live directory listing shows `analyze`, `continue`, `learn`, `manage`, `save`, `shared`, plus `README.txt`]
+- [x] CHK-022 [P1] README ownership verified — README coverage matrix maps all 33 tools and assigns `memory_quick_search` to `/memory:analyze` [EVIDENCE: `.opencode/command/memory/README.txt` remains the live ownership matrix]
+- [x] CHK-023 [P1] Runtime-doc drift kept narrow and factual — only the observed `analyze.md` and `shared.md` mismatches were treated as in-scope closeout items [EVIDENCE: the drift list is limited to retrieval-count/parameter wording plus shared-memory schema-contract wording]
+- [x] CHK-024 [P1] Strict spec validation executed — validator run with `--strict` after reconciliation [EVIDENCE: `validate.sh --strict` rerun after pack alignment]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -63,9 +64,9 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No hardcoded secrets — documentation-only changes, no credentials
-- [x] CHK-031 [P0] Input validation documented — all commands document argument validation and error states
-- [x] CHK-032 [P1] Auth/authz documented — shared-memory deny-by-default model and governance scoping documented as rollout-dependent
+- [x] CHK-030 [P0] No runtime behavior changed — this pass edits only spec-pack markdown [EVIDENCE: all edits are confined to the five scoped markdown files]
+- [x] CHK-031 [P0] No credentials or secrets introduced — documentation-only edits [EVIDENCE: no config, env, or secret-bearing files were touched]
+- [x] CHK-032 [P1] Other collaborators' work respected — no unrelated files were reverted or rewritten [EVIDENCE: only the canonical 011 packet plus the intended live command docs were modified in this pass]
 <!-- /ANCHOR:security -->
 
 ---
@@ -73,9 +74,9 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec/plan/tasks synchronized — all 24 tasks complete, spec/plan/implementation-summary reflect actual outcome
-- [x] CHK-041 [P1] sk-doc DQI compliance — all code blocks tagged, prose em dashes removed per HVR rules
-- [x] CHK-042 [P1] README updated — expanded from 5 to 7 commands with full tool coverage matrix
+- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` now tell one consistent current-state story [EVIDENCE: all five files describe the live 33-tool / 6-command / `/memory:analyze` ownership model]
+- [x] CHK-041 [P1] Historical transition context preserved — the pack explains that earlier 7-command planning preceded the retrieval merge into `.opencode/command/memory/analyze.md` [EVIDENCE: historical context is retained as background, not present-state truth]
+- [x] CHK-042 [P1] Drift closeout documented without scope creep — the pack records the `analyze.md` and `shared.md` mismatches without reopening already-shipped command work [EVIDENCE: only retrieval-count/parameter wording and shared-memory contract wording were treated as live follow-up in this pass]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -83,24 +84,10 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temp files in scratch/ only — scratch/ contains no temp artifacts
-- [x] CHK-051 [P1] scratch/ cleaned before completion — verified clean
-- [x] CHK-052 [P1] Session context saved to memory/ — memory file exists with implementation context
+- [x] CHK-050 [P1] Write scope respected — only canonical files inside `011-command-alignment` were edited in this pass [EVIDENCE: scoped file list remains limited to the five canonical 011 docs]
+- [x] CHK-051 [P1] Live evidence remains externalized — command/runtime proof points are referenced from live files, not duplicated as fake implementation detail [EVIDENCE: command and schema proof stays tied to live repo paths]
+- [x] CHK-052 [P1] Verification evidence recorded in `implementation-summary.md` — counts, ownership, and validation results captured there [EVIDENCE: `implementation-summary.md` records live counts, ownership, and validator status]
 <!-- /ANCHOR:file-org -->
-
----
-
-<!-- ANCHOR:addendum -->
-## Addendum: v2.4.0.0 Context/Analyze Merge (2026-03-16)
-
-- [x] CHK-060 [P0] Old command files deleted -- `context.md` removed, `context.toml` removed from `.agents/` and `.gemini/`
-- [x] CHK-061 [P0] New unified `analyze.md` exists -- 926 lines, 12 tools (L1/L2/L6/L7)
-- [x] CHK-062 [P0] Zero dangling `/memory:context` refs in active docs -- Grep across `.opencode/command/`, `.opencode/agent/`, `.claude/agents/`, `.agents/agents/`, root `*.md` returns 0 results (excluded: `z_archive/`, `changelog/`, `memory/`, `scratch/`)
-- [x] CHK-063 [P0] Zero dangling `/memory:knowledge` refs -- Intermediate name fully replaced with `/memory:analyze`
-- [x] CHK-064 [P1] Tool coverage matrix updated -- README.txt maps all 12 tools to `/memory:analyze`, total 32/32 unchanged
-- [x] CHK-065 [P1] Cross-runtime aligned -- `.codex/agents/speckit.toml`, `.agents/commands/memory/*.toml`, `.gemini/commands/memory/*.toml` all updated
-- [x] CHK-066 [P1] Changelog created -- `.opencode/changelog/04--commands/v2.4.0.0.md`
-<!-- /ANCHOR:addendum -->
 
 ---
 
@@ -109,17 +96,17 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 7 + 4 | 11/11 |
-| P1 Items | 10 + 3 | 13/13 |
+| P0 Items | 8 | 8/8 |
+| P1 Items | 10 | 10/10 |
 | P2 Items | 0 | 0/0 |
 
-**Verification Date**: 2026-03-15 (initial), 2026-03-16 (addendum)
+**Verification Date**: 2026-03-21
 <!-- /ANCHOR:summary -->
 
 ---
 
 <!--
 Level 2 checklist - Verification focus
-All items verified with evidence
-011-command-alignment finalized 2026-03-15
+Truth-reconciled to 33 tools, 6 commands, analyze-owned retrieval
+Strict validation executed 2026-03-21
 -->

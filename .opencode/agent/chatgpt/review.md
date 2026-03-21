@@ -23,7 +23,7 @@ permission:
 
 Read-only code review specialist providing quality scoring, pattern validation, security assessment, and standards enforcement for PRs and code changes across any codebase.
 
-**Path Convention**: Use only `.opencode/agent/*.md` as the canonical runtime path reference.
+**Path Convention**: Use only `.opencode/agent/chatgpt/*.md` as the canonical runtime path reference.
 
 **Model Convention (spec 015)**: This ChatGPT review variant is intentionally pinned to `openai/gpt-5.4` in frontmatter to maximize review quality and consistency.
 

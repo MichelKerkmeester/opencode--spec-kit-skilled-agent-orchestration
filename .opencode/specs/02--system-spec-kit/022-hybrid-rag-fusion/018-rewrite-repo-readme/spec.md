@@ -27,6 +27,9 @@ contextType: "implementation"
 | **Created** | 2026-03-15 |
 | **Branch** | `main` |
 | **Parent** | `022-hybrid-rag-fusion` (Phase 022) |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../017-rewrite-system-speckit-readme/spec.md |
+| **Successor** | None |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -137,3 +140,13 @@ SPEC: 018-rewrite-repo-readme
 Level 1 — In Progress (2026-03-15)
 Target: Complete rewrite of root README as system overview
 -->
+
+---
+
+## Phase Navigation
+
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../017-rewrite-system-speckit-readme/spec.md |
+| **Next Phase** | None |

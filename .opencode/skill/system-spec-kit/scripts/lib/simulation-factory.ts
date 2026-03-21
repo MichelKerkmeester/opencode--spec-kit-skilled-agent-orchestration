@@ -538,6 +538,7 @@ function markAsSimulated(metadata: SimulationMetadata): SimulationMetadata {
 // ───────────────────────────────────────────────────────────────
 export {
   createConversationData,
+  createSimulationFlowchart,
   createSimulationPhases,
   createDiagramData,
   createSessionData,

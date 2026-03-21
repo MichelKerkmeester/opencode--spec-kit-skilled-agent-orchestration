@@ -15,5 +15,9 @@
     "04--agent-orchestration"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Context Overload Prevention [022-context-overload-prevention/spec]",
+  "status": "Complete",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Context Overload Prevention"
 }

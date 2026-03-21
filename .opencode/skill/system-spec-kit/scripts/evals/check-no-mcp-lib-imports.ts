@@ -52,7 +52,15 @@ interface ScanFileResult {
   localImports: LocalImport[];
 }
 
-const SCRIPTS_ROOT = path.resolve(__dirname, '..');
+// When running from dist/evals/, __dirname resolves to dist/ which is wrong.
+// Detect compiled mode and go up one additional level to reach the source scripts/ root.
+const SCRIPTS_ROOT = (() => {
+  const candidate = path.resolve(__dirname, '..');
+  if (candidate.includes(`${path.sep}dist`) || candidate.endsWith(`${path.sep}dist`)) {
+    return path.resolve(candidate, '..');
+  }
+  return candidate;
+})();
 
 function resolveAllowlistPath(): string | null {
   const candidates = [

@@ -21,5 +21,8 @@
     "009-perfect-session-capturing"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Memory Save Quality Root Cause Fixes",
+  "importance_tier": "high",
+  "short_description": "Feature Specification: Memory Save Quality Root Cause Fixes"
 }

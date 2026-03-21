@@ -1,11 +1,11 @@
 ---
-title: "Implementation Summary [135-mcp-issues-after-update/implementation-summary]"
+title: "Implementation Summary [018-mcp-issues-after-update/implementation-summary]"
 description: "Resolved MCP server failure issues after system updates through comprehensive investigation, documentation rewrite, and verification. The solution focuses on improving user reco..."
 trigger_phrases:
   - "implementation"
   - "summary"
   - "implementation summary"
-  - "135"
+  - "018"
   - "mcp"
 importance_tier: "normal"
 contextType: "implementation"

@@ -728,9 +728,9 @@ async function testDecisionExtractor() {
     });
 
     if (
-      Math.abs(splitConfidenceResult.DECISIONS[0]?.CHOICE_CONFIDENCE - 0.85) < 0.001
-      && Math.abs(splitConfidenceResult.DECISIONS[0]?.RATIONALE_CONFIDENCE - 0.5) < 0.001
-      && Math.abs(splitConfidenceResult.DECISIONS[0]?.CONFIDENCE - 0.5) < 0.001
+      Math.abs(splitConfidenceResult.DECISIONS[0]?.CHOICE_CONFIDENCE - 0.95) < 0.001
+      && Math.abs(splitConfidenceResult.DECISIONS[0]?.RATIONALE_CONFIDENCE - 0.7) < 0.001
+      && Math.abs(splitConfidenceResult.DECISIONS[0]?.CONFIDENCE - 0.7) < 0.001
     ) {
       pass('EXT-Decision-028: split confidence derives legacy confidence conservatively', `${splitConfidenceResult.DECISIONS[0].CHOICE_CONFIDENCE}/${splitConfidenceResult.DECISIONS[0].RATIONALE_CONFIDENCE}`);
     } else {

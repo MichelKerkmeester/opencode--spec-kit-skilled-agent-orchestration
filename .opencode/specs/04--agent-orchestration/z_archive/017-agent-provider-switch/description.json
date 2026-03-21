@@ -19,5 +19,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec 017: Agent Provider Switching with Primary Runtime Path [017-agent-provider-switch/spec]",
+  "status": "In Progress",
+  "importance_tier": "important",
+  "short_description": "Spec 017: Agent Provider Switching with Primary Runtime Path"
 }

@@ -1,8 +1,9 @@
 // TEST: CRASH RECOVERY
 import { describe, it, expect } from 'vitest';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
-// DB-dependent imports (commented out - requires better-sqlite3)
-import Database from 'better-sqlite3';
 import * as sessionManager from '../lib/session/session-manager.js';
 
 describe('Crash Recovery (T009-T016, T071-T075) [deferred - requires DB test fixtures]', () => {
@@ -32,12 +33,44 @@ describe('Crash Recovery (T009-T016, T071-T075) [deferred - requires DB test fix
   });
 
   describe('T071 - Generate CONTINUE_SESSION.md', () => {
-    it.todo('should generate content with required sections — needs fixture session payload and markdown section assertions');
+    it('should generate content with required sections', () => {
+      const content = sessionManager.generateContinueSessionMd({
+        sessionId: 'session-123',
+        specFolder: 'specs/022-hybrid-rag-fusion',
+        currentTask: 'Recover interrupted save pipeline audit',
+        lastAction: 'Finished targeted verification',
+        contextSummary: 'Need to resume from the saved recovery packet.',
+        pendingWork: 'Re-run final workspace verification and summarize results.',
+        data: { cacheHit: false, stage: 'verification' },
+      });
+
+      expect(content).toContain('# CONTINUE SESSION');
+      expect(content).toContain('## Session State');
+      expect(content).toContain('## Context Summary');
+      expect(content).toContain('## Pending Work');
+      expect(content).toContain('session-123');
+      expect(content).toContain('/spec_kit:resume specs/022-hybrid-rag-fusion');
+    });
     it.todo('should include session data in content — needs deterministic session-state fixture to snapshot generated markdown');
   });
 
   describe('T072 - Write CONTINUE_SESSION.md on Checkpoint', () => {
-    it.todo('should write CONTINUE_SESSION.md to spec folder — needs temp spec folder fixture and filesystem assertions');
+    it('should write CONTINUE_SESSION.md to spec folder even when SQLite recovery is unavailable', () => {
+      const specFolderPath = fs.mkdtempSync(path.join(os.tmpdir(), 'crash-recovery-'));
+
+      try {
+        const result = sessionManager.writeContinueSessionMd('session-fallback', specFolderPath);
+        expect(result.success).toBe(true);
+        expect(result.filePath).toBe(path.join(specFolderPath, 'CONTINUE_SESSION.md'));
+
+        const written = fs.readFileSync(result.filePath!, 'utf8');
+        expect(written).toContain('# CONTINUE SESSION');
+        expect(written).toContain('session-fallback');
+        expect(written).toContain(specFolderPath);
+      } finally {
+        fs.rmSync(specFolderPath, { recursive: true, force: true });
+      }
+    });
     it.todo('should checkpoint session (save + generate md) — needs temp spec folder plus SQLite fixture for end-to-end assertions');
   });
 

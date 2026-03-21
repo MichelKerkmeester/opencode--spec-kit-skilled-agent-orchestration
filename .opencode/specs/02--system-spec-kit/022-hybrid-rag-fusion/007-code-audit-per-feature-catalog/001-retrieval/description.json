@@ -21,5 +21,9 @@
     "10-03-26_14-43__review-spec-folder-context.md",
     "10-03-26_15-57__review-spec-folder-context.md",
     "10-03-26_15-58__manual-context-save.md"
-  ]
+  ],
+  "title": "Feature Specification: 001-Retrieval Code Audit",
+  "status": "Complete",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: 001-Retrieval Code Audit"
 }

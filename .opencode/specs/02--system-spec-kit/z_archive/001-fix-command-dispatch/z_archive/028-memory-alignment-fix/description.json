@@ -19,5 +19,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Memory Alignment Fix - Three-Layer Defense System [028-memory-alignment-fix/spec]",
+  "importance_tier": "important",
+  "short_description": "Memory Alignment Fix - Three-Layer Defense System"
 }

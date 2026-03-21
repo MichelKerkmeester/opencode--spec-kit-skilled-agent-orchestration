@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Create Commands Codex Compatibility [012-create-codex-compatibility/spec]"
+title: "Feature Specification: Create Commands Codex Compatibility [013-cmd-create-codex-compatibility/spec]"
 description: "level: 3"
 trigger_phrases:
   - "feature"
@@ -262,8 +262,8 @@ None. All questions resolved during implementation:
 - **Verification Checklist**: See `checklist.md`
 - **Decision Records**: See `decision-record.md`
 - **Implementation Summary**: See `implementation-summary.md`
-- **Related Spec (spec_kit)**: See `../010-speckit-codex-compatibility/`
-- **Related Spec (emoji)**: See `../011-create-command-emoji-enforcement/`
+- **Related Spec (spec_kit Codex compatibility)**: `010-speckit-codex-compatibility` — this folder does not exist in `03--commands-and-skills/`; the three-pronged approach originated in `02--system-spec-kit` (spec_kit command infrastructure). No local predecessor folder applies.
+- **Related Spec (emoji enforcement)**: See `../012-cmd-create-emoji-enforcement/`
 
 ---
 

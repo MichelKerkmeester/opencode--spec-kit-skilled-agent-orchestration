@@ -17,5 +17,9 @@
     "001-hybrid-rag-fusion-epic"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Sprint 3 — Query Intelligence",
+  "status": "Complete (5 PASS / 2 Conditional)",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Sprint 3 — Query Intelligence"
 }

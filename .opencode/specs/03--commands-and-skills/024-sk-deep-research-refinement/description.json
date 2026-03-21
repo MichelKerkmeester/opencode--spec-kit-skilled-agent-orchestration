@@ -19,5 +19,9 @@
   "memoryNameHistory": [
     "18-03-26_20-18__speckit-plan-setup-no-feature-description-or-mode.md",
     "18-03-26_21-24__the-current-state-of-the-repository.md"
-  ]
+  ],
+  "title": "Feature Specification: sk-deep-research Refinement via Self-Research",
+  "status": "Draft",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: sk-deep-research Refinement via Self-Research"
 }

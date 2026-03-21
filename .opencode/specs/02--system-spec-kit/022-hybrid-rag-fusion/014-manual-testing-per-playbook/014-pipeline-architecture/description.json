@@ -1,0 +1,25 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/014-pipeline-architecture",
+  "description": "Feature Specification: Manual Testing Playbook Phase 014 Pipeline Architecture",
+  "keywords": [
+    "feature",
+    "specification",
+    "manual",
+    "testing",
+    "playbook",
+    "phase",
+    "014",
+    "pipeline",
+    "architecture"
+  ],
+  "lastUpdated": "2026-03-21T13:24:04.028Z",
+  "specId": "014",
+  "folderSlug": "pipeline-architecture",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "014-manual-testing-per-playbook"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

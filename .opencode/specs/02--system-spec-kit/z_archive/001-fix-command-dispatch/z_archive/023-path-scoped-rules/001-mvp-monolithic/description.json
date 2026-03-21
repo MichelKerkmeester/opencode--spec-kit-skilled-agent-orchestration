@@ -17,5 +17,9 @@
     "023-path-scoped-rules"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Path-Scoped Validation Rules [001-mvp-monolithic/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Path-Scoped Validation Rules"
 }

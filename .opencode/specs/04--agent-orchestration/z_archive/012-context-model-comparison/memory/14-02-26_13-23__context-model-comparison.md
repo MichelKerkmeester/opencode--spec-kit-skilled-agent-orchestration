@@ -44,19 +44,19 @@ quality_flags:
 
 | Metric | Value | Assessment |
 |--------|-------|------------|
-| Knowledge Score | [TBD]/100 | [Not assessed] |
-| Uncertainty Score | [TBD]/100 | [Not assessed] |
-| Context Score | [TBD]/100 | [Not assessed] |
-| Timestamp | [TBD] | Session start |
+| Knowledge Score | N/A | Not assessed — migrated from older format |
+| Uncertainty Score | N/A | Not assessed — migrated from older format |
+| Context Score | N/A | Not assessed — migrated from older format |
+| Timestamp | 2026-02-14 | Session start |
 
 **Initial Gaps Identified:**
 
-- No significant gaps identified at session start
+- Not assessed (migrated from older format)
 
 **Dual-Threshold Status at Start:**
-- Confidence: [TBD]%
-- Uncertainty: [TBD]
-- Readiness: [TBD]
+- Confidence: N/A
+- Uncertainty: N/A
+- Readiness: N/A
 <!-- /ANCHOR:preflight -->
 
 ---
@@ -527,11 +527,11 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js ../
 
 | Metric | Before | After | Delta | Trend |
 |--------|--------|-------|-------|-------|
-| Knowledge | [TBD] | [TBD] | [TBD] | → |
-| Uncertainty | [TBD] | [TBD] | [TBD] | → |
-| Context | [TBD] | [TBD] | [TBD] | → |
+| Knowledge | N/A | N/A | N/A | - |
+| Uncertainty | N/A | N/A | N/A | - |
+| Context | N/A | N/A | N/A | - |
 
-**Learning Index:** [TBD]/100
+**Learning Index:** N/A (not assessed - migrated from older format)
 
 > Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (Context Improvement × 0.25)
 > Higher is better. Target: ≥25 for productive sessions.
@@ -560,7 +560,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1771071834261-334molya9"
-spec_folder: "../.opencode/specs/04--agent-orchestration/z_archive/012-context-model-comparison"
+spec_folder: "04--agent-orchestration/z_archive/012-context-model-comparison"
 channel: "main"
 
 # Classification

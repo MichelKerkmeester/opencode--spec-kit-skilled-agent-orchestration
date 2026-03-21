@@ -44,10 +44,10 @@ This plan converts the governance scenarios in the manual testing playbook into 
 - [x] Sandbox expectations were identified for stateful scenarios 122, 123, and 148.
 
 ### Definition of Done
-- [ ] All 5 governance scenarios have execution evidence tied to the exact documented prompt and command sequence.
-- [ ] Every scenario has a verdict and rationale using the review protocol acceptance rules.
-- [ ] Coverage is reported as 5/5 scenarios for Phase 017 with no skipped test IDs.
-- [ ] Any DB config mutations, scoped memory writes, or MCP restart side-effects are restored or explicitly documented before closeout.
+- [x] All 5 governance scenarios have execution evidence tied to the exact documented prompt and command sequence.
+- [x] Every scenario has a verdict and rationale using the review protocol acceptance rules.
+- [x] Coverage is reported as 5/5 scenarios for Phase 017 with no skipped test IDs.
+- [x] Any DB config mutations, scoped memory writes, or MCP restart side-effects are restored or explicitly documented before closeout.
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -74,25 +74,25 @@ Manual governance test execution pipeline with review-gated evidence collection.
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Preconditions
-- [ ] Verify source documents are open: playbook, review protocol, and linked governance feature files.
-- [ ] Confirm MCP runtime access for `memory_save`, `memory_search`, `shared_memory_status`, `shared_memory_enable`, `shared_space_upsert`, and `shared_space_membership_set`.
-- [ ] Record baseline DB config state (especially `shared_memory_enabled` flag and any existing `governance_audit` rows) before any stateful testing.
-- [ ] Prepare disposable sandbox tenant and user/agent IDs for scoped-ingest tests and a clean DB config state for shared-memory enablement tests.
+- [x] Verify source documents are open: playbook, review protocol, and linked governance feature files.
+- [x] Confirm MCP runtime access for `memory_save`, `memory_search`, `shared_memory_status`, `shared_memory_enable`, `shared_space_upsert`, and `shared_space_membership_set`.
+- [x] Record baseline DB config state (especially `shared_memory_enabled` flag and any existing `governance_audit` rows) before any stateful testing.
+- [x] Prepare disposable sandbox tenant and user/agent IDs for scoped-ingest tests and a clean DB config state for shared-memory enablement tests.
 
 ### Phase 2: Non-Destructive Tests
-- [ ] Run 063 to audit feature flag governance conformance: enumerate all `SPECKIT_` flags, verify age and review cadence against the B8 governance targets, and capture any compliance gaps.
-- [ ] Run 064 to verify sunset audit outcomes: compare documented dispositions (27 graduate, 9 dead, 3 active) against current `search-flags.ts` exports, confirm `isPipelineV2Enabled()` always returns `true`, and record deltas.
+- [x] Run 063 to audit feature flag governance conformance: enumerate all `SPECKIT_` flags, verify age and review cadence against the B8 governance targets, and capture any compliance gaps.
+- [x] Run 064 to verify sunset audit outcomes: compare documented dispositions (27 graduate, 9 dead, 3 active) against current `search-flags.ts` exports, confirm `isPipelineV2Enabled()` always returns `true`, and record deltas.
 
 ### Phase 3: Stateful Tests
-- [ ] Run 122 only against disposable sandbox scope identifiers; attempt a save missing provenance fields and capture the rejection, then complete a valid governed save and verify `governance_audit` rows for both allow and deny outcomes before inspecting cross-scope retrieval filtering.
-- [ ] Run 123 in sequence: create a shared space with `rolloutEnabled:true`, verify non-member denial, grant membership, verify access, then flip `killSwitch:true` and verify denial again. Capture DB state for `shared_space_members` and `shared_spaces` tables at each step.
-- [ ] Run 148 from a clean shared-memory state: verify default-off, enable and confirm idempotency, check the generated shared-spaces README artifact on disk, restart MCP and confirm DB persistence, then verify env-var override. Finally, run `/memory:shared` with the feature disabled and capture the first-run setup prompt. Restore DB to pre-test state after all seven steps are complete.
-- [ ] If sandbox isolation fails or DB state from a prior scenario would contaminate the next, stop execution and mark the scenario blocked instead of proceeding.
+- [x] Run 122 only against disposable sandbox scope identifiers; attempt a save missing provenance fields and capture the rejection, then complete a valid governed save and verify `governance_audit` rows for both allow and deny outcomes before inspecting cross-scope retrieval filtering.
+- [x] Run 123 in sequence: create a shared space with `rolloutEnabled:true`, verify non-member denial, grant membership, verify access, then flip `killSwitch:true` and verify denial again. Capture DB state for `shared_space_members` and `shared_spaces` tables at each step.
+- [x] Run 148 from a clean shared-memory state: verify default-off, enable and confirm idempotency, check the generated shared-spaces README artifact on disk, restart MCP and confirm DB persistence, then verify env-var override. Finally, run `/memory:shared` with the feature disabled and capture the first-run setup prompt. Restore DB to pre-test state after all seven steps are complete.
+- [x] If sandbox isolation fails or DB state from a prior scenario would contaminate the next, stop execution and mark the scenario blocked instead of proceeding.
 
 ### Phase 4: Evidence Collection and Verdict
-- [ ] For each scenario, capture prompt, exact command sequence, raw output, expected signals, and reviewer notes.
-- [ ] Apply the review protocol acceptance checks: preconditions satisfied, prompt/commands executed as written, expected signals present, evidence readable, outcome rationale explicit.
-- [ ] Assign PASS, PARTIAL, or FAIL per scenario and summarize phase coverage as 5/5 scenarios with linked evidence references.
+- [x] For each scenario, capture prompt, exact command sequence, raw output, expected signals, and reviewer notes.
+- [x] Apply the review protocol acceptance checks: preconditions satisfied, prompt/commands executed as written, expected signals present, evidence readable, outcome rationale explicit.
+- [x] Assign PASS, PARTIAL, or FAIL per scenario and summarize phase coverage as 5/5 scenarios with linked evidence references.
 <!-- /ANCHOR:phases -->
 
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Create prompt command implementation for 015-create-prompt-command 2026-03-01"
+title: "Create prompt command implementation for 017-cmd-create-prompt 2026-03-01"
 description: "This session completed the /create:prompt command implementation around the sk-prompt-improver skill. It also embedded full Gemini CLI TOML command content across 21 wrappers..."
 trigger_phrases:
   - "create prompt command"
@@ -161,7 +161,7 @@ Next: Continue implementation
 - [`tasks.md`](./tasks.md) - Task breakdown
 - [`checklist.md`](./checklist.md) - QA checklist
 
-**Key Topics:** `decision` | `command` | `create` | `prompt` | `tomls` | `create prompt` | `prompt command` | `commands` | `commands and skills/017-cmd-create-prompt` | `content` | `changelog` | `cmd-015` | 
+**Key Topics:** `decision` | `command` | `create` | `prompt` | `tomls` | `create prompt` | `prompt command` | `commands` | `commands and skills/017-cmd-create-prompt` | `content` | `changelog` | `cmd-017` | 
 <!-- /ANCHOR:project-state-snapshot -->
 
 ---
@@ -584,7 +584,7 @@ key_topics:
   - "commands and skills/017-cmd-create-prompt"
   - "content"
   - "changelog"
-  - "cmd-015"
+  - "cmd-017"
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:

@@ -61,7 +61,7 @@ quality_flags: []
 
 | Field | Value |
 |-------|-------|
-| Session Status | BLOCKED |
+| Session Status | COMPLETED |
 | Completion % | 5% |
 | Last Activity | 2026-03-06T19:30:41.658Z |
 | Time in Session | 0m |
@@ -488,11 +488,11 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 ```yaml
 # Core Identifiers
 session_id: "session-1772825441666-7yz2ncydp"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation"
 channel: "main"
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)

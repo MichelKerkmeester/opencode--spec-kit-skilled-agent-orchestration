@@ -16,5 +16,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Memory Command Consolidation [083-memory-command-consolidation/spec]",
+  "importance_tier": "important",
+  "short_description": "Memory Command Consolidation"
 }

@@ -18,5 +18,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Stateless Spec Passing & System Alignment [017-stateless-spec-passing/spec]",
+  "importance_tier": "important",
+  "short_description": "Stateless Spec Passing & System Alignment"
 }

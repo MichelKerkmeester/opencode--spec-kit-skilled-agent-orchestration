@@ -21,7 +21,7 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 010-graph-signal-activation |
-| **Completed** | 2026-03-16 |
+| **Completed** | 2026-03-21 |
 | **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
@@ -42,8 +42,9 @@ Four template-aligned files provide structured per-phase test documentation so o
 |------|--------|---------|
 | spec.md | Created | Phase requirements, test inventory, feature catalog links, and acceptance criteria |
 | plan.md | Created | Execution plan with preconditions, evidence capture, and verdict pipeline |
-| tasks.md | Created | Task tracker for setup, execution, and verification work |
-| checklist.md | Created | QA verification checklist with P0/P1/P2 priority items |
+| tasks.md | Updated | All 17 tasks completed [x] including T008-T015 (execution and verification) |
+| checklist.md | Updated | 27/29 items verified; execution transcripts and verdicts attached |
+| scratch/execution-evidence.md | Created | Full MCP execution transcripts, trace IDs, verdicts, and triage notes for all 9 scenarios |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -77,6 +78,10 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 | checklist.md anchor count | PASS — exactly 8 anchors |
 | checklist.md no overview section | PASS — no ANCHOR:overview |
 | checklist.md no standalone P0/P1 headers | PASS — priority is per-item only |
+| 9/9 scenarios executed | PASS — all scenarios executed via MCP with trace IDs |
+| Destructive sandbox isolation | PASS — checkpoints 13, 16, 17 created and restored (0 errors each) |
+| Verdict coverage | PASS — 9/9 PARTIAL verdicts with explicit rationale |
+| Checklist P0 items | PASS — 20/20 verified |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -84,8 +89,9 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Draft status** — Test scenarios are documented but not yet executed. Final verdicts require manual or MCP-backed execution.
-2. **Coverage audit pending** — Cross-reference validation against the full playbook index has not been run for this individual phase.
+1. **All PARTIAL verdicts** — 9/9 scenarios returned PARTIAL. Root cause: zero indexed memories in the `022-hybrid-rag-fusion` spec folder. Graph signal infrastructure is confirmed active and correctly wired, but boost/inject/score/audit paths require seeded content to produce behavioral evidence.
+2. **SPECKIT_GRAPH_UNIFIED toggle** — Scenario 120 full kill-switch test requires environment-level flag access not available in MCP search-only context. Bounded runtime (`rolloutState: "bounded_runtime"`) observed instead.
+3. **Re-test preconditions** — To achieve PASS on all 9 scenarios: ingest 10-20 memories, create causal links, assign community cluster IDs, seed 7-day momentum snapshots, trigger edge mutations, and configure `SPECKIT_GRAPH_UNIFIED` in an instrumented runtime. See scratch/execution-evidence.md triage note.
 <!-- /ANCHOR:limitations -->
 
 ---

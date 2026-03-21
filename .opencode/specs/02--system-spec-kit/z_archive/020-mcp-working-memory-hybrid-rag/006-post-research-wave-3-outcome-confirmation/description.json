@@ -19,5 +19,9 @@
     "020-mcp-working-memory-hybrid-rag"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Phase Package Spec: Post-Research Wave 3 (Outcome Confirmation) [006-post-research-wave-3-outcome-confirmation/spec]",
+  "status": "Planned (post-research wave package)",
+  "importance_tier": "important",
+  "short_description": "Phase Package Spec: Post-Research Wave 3 (Outcome Confirmation)"
 }

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: MCP Server Failures After Updates [135-mcp-issues-after-update/spec]"
+title: "Feature Specification: MCP Server Failures After Updates [018-mcp-issues-after-update/spec]"
 description: "Users report MCP server failures and errors after major system updates. The working hypothesis is that these failures may be related to the recent node_modules relocation, but t..."
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "server"
   - "failures"
   - "spec"
-  - "135"
+  - "018"
 importance_tier: "important"
 contextType: "decision"
 ---

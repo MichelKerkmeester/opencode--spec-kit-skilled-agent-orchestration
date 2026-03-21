@@ -17,5 +17,9 @@
     "020-mcp-working-memory-hybrid-rag"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Phase Package Spec: Documentation Alignment [007-documentation-alignment/spec]",
+  "status": "Complete",
+  "importance_tier": "important",
+  "short_description": "Phase Package Spec: Documentation Alignment"
 }

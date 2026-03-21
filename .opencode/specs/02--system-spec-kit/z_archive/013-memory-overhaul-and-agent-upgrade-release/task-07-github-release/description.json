@@ -15,5 +15,9 @@
     "013-memory-overhaul-and-agent-upgrade-release"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Task 07 — Tagged Release [task-07-github-release/spec]",
+  "status": "In Progress (release notes prepared; publication blocked)",
+  "importance_tier": "important",
+  "short_description": "Task 07 — Tagged Release"
 }

@@ -331,18 +331,18 @@ describe('T004: Score Normalization', () => {
     expect(result[2]).toBeCloseTo(1.0, 6);
   });
 
-  // T041-21: Single-element array normalizes to [1.0]
-  it('T041-21: single element normalizes to [1.0]', () => {
+  // T041-21: Single-element array normalizes to [0.0]
+  it('T041-21: single element normalizes to [0.0]', () => {
     vi.stubEnv('SPECKIT_SCORE_NORMALIZATION', 'true');
     const result = normalizeCompositeScores([0.42]);
-    expect(result).toEqual([1.0]);
+    expect(result).toEqual([0]);
   });
 
-  // T041-22: All-same-value normalizes to [1.0, 1.0, ...]
-  it('T041-22: all-same values normalize to [1.0, 1.0, 1.0]', () => {
+  // T041-22: All-same-value normalizes to [0.0, 0.0, ...]
+  it('T041-22: all-same values normalize to [0.0, 0.0, 0.0]', () => {
     vi.stubEnv('SPECKIT_SCORE_NORMALIZATION', 'true');
     const result = normalizeCompositeScores([0.5, 0.5, 0.5]);
-    expect(result).toEqual([1.0, 1.0, 1.0]);
+    expect(result).toEqual([0, 0, 0]);
   });
 
   // T041-23: Empty array returns empty

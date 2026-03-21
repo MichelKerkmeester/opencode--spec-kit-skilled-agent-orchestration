@@ -843,8 +843,8 @@ export function isCompositeNormalizationEnabled(): boolean {
  * Apply min-max normalization to composite scores, mapping to [0,1].
  * Gated behind SPECKIT_SCORE_NORMALIZATION env var — returns unchanged when disabled.
  *
- * - If all scores are equal, they normalize to 1.0.
- * - If a single result, it normalizes to 1.0.
+ * - If all scores are equal, they normalize to 0.0 (no meaningful differentiation).
+ * - If a single result, it normalizes to 0.0.
  * - Returns empty array when given empty array.
  *
  * @param scores - Array of raw composite scores
@@ -872,6 +872,6 @@ export function normalizeCompositeScores(scores: number[]): number[] {
   if (range > 0) {
     return scores.map(s => Number.isFinite(s) ? (s - minScore) / range : 0);
   } else {
-    return scores.map(s => Number.isFinite(s) ? 1.0 : 0);
+    return scores.map(s => Number.isFinite(s) ? 0.0 : 0);
   }
 }

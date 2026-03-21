@@ -1,6 +1,6 @@
 ---
 title: "Architecture Audit"
-status: "in-progress"
+status: "complete"
 level: 3
 created: "2025-12-01"
 updated: "2026-03-19"
@@ -38,9 +38,12 @@ As of 2026-03-05, the follow-up boundary remediation work previously tracked in 
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | In-Progress |
+| **Status** | Complete |
 | **Created** | 2026-03-04 |
 | **Branch** | `022-hybrid-rag-fusion/008-architecture-audit` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../004-ux-hooks-automation/spec.md |
+| **Successor** | ../006-feature-catalog/spec.md |
 <!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:problem -->
@@ -368,8 +371,11 @@ Former spec `005-architecture-audit` is consolidated into this spec folder to ke
 
 ## Phase Navigation
 
+| Field | Value |
+|-------|-------|
 | **Parent Spec** | ../spec.md |
-- Predecessor: `006-extra-features`
+| **Previous Phase** | ../004-ux-hooks-automation/spec.md |
+| **Next Phase** | ../006-feature-catalog/spec.md |
 
 ## Acceptance Scenarios (Validator Coverage)
 1. **Given** a filesystem scan of root scripts scope, **When** the source file inventory is compared, **Then** the count matches the actual file total (REQ-001) and every file appears in the inventory artifact.

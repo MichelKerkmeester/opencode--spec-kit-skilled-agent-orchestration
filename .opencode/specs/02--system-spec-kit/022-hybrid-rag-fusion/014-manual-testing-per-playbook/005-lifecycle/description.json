@@ -20,5 +20,9 @@
   "memorySequence": 1,
   "memoryNameHistory": [
     "19-03-26_20-16__005-lifecycle-manual-testing.md"
-  ]
+  ],
+  "title": "Feature Specification: 005 lifecycle manual testing",
+  "status": "Complete",
+  "importance_tier": "high",
+  "short_description": "Feature Specification: 005 lifecycle manual testing"
 }

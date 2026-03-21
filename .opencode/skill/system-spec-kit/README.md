@@ -48,8 +48,8 @@ Every time an AI assistant modifies files, Spec Kit ensures the work is document
 
 | Category | Count | Details |
 |----------|-------|---------|
-| MCP Tools | 32 | Across 7 layers (L1-L7) |
-| Commands | 15 | 8 spec_kit + 7 memory |
+| MCP Tools | 33 | Across 7 layers (L1-L7) |
+| Commands | 14 | 8 spec_kit + 6 memory |
 | Documentation Levels | 4 | Levels 1, 2, 3 and 3+ |
 | Script Modules | 11 spec + 8 memory | TypeScript and Bash |
 | Feature Entries | 189 | Across 19 categories in feature catalog |
@@ -62,7 +62,7 @@ Every time an AI assistant modifies files, Spec Kit ensures the work is document
 |---------|-------------|
 | **Spec Folder Workflow** | Mandatory documentation for all file modifications, scaled to 4 levels based on scope and risk |
 | **CORE + ADDENDUM Templates** | Composable template architecture where each level inherits from lower levels |
-| **Spec Kit Memory MCP** | 32 MCP tools providing hybrid multi-channel retrieval (Vector, FTS5/BM25, Graph, Degree) |
+| **Spec Kit Memory MCP** | 33 MCP tools providing hybrid multi-channel retrieval (Vector, FTS5/BM25, Graph, Degree) |
 | **Session Continuity** | Context preserved across session boundaries via `generate-context.js` and semantic indexing |
 | **Validation Scripts** | 13-rule validation orchestrator, completeness checks and placeholder detection |
 | **Hybrid RAG Fusion** | Intent-weighted adaptive RRF with co-activation, causal lineage and FSRS spaced repetition |
@@ -157,7 +157,7 @@ The response should return relevant memory entries. If it returns an error, see 
 │   ├── renderers/              # Output rendering
 │   └── dist/                   # Compiled JavaScript output
 ├── mcp_server/                 # Spec Kit Memory MCP (TypeScript)
-│   ├── context-server.ts       # MCP server entry (~682 lines, 32 tools)
+│   ├── context-server.ts       # MCP server entry (~682 lines, 33 tools)
 │   ├── handlers/               # Tool handlers (9 functional + 2 infra)
 │   ├── lib/                    # cognitive/, search/, cache/, storage/, providers/
 │   ├── tests/                  # MCP test suite
@@ -179,7 +179,7 @@ The response should return relevant memory entries. If it returns an error, see 
 | `scripts/spec/create.sh` | Create spec folders with level-appropriate template files |
 | `scripts/spec/validate.sh` | Run 13-rule validation on any spec folder |
 | `scripts/memory/generate-context.ts` | Primary workflow for saving session context to memory |
-| `mcp_server/context-server.ts` | MCP server entry point exposing 32 tools |
+| `mcp_server/context-server.ts` | MCP server entry point exposing 33 tools |
 | `feature_catalog/feature_catalog.md` | Complete catalog of 189 implemented features |
 | `references/memory/memory_system.md` | Detailed memory system reference |
 
@@ -287,7 +287,7 @@ Active memories are now also checked against a rendered-memory contract before w
 
 ### MCP Tools
 
-The Spec Kit Memory MCP exposes **32 tools** across 7 functional groups. All tools use the `spec_kit_memory_` prefix in MCP calls.
+The Spec Kit Memory MCP exposes **33 tools** across 7 functional groups. All tools use the `spec_kit_memory_` prefix in MCP calls.
 
 | Group | Tools | Count |
 |-------|-------|-------|
@@ -326,7 +326,7 @@ For full API reference including parameters, return types and configuration, see
 | `:with-research` | Dispatch `@deep-research` before verification (`/spec_kit:complete` only) |
 | `:auto-debug` | Auto-dispatch `@debug` on 3+ failures (`/spec_kit:complete` only) |
 
-**Memory Commands (7):**
+**Memory Commands (6):**
 
 | Command | Purpose |
 |---------|---------|
@@ -664,7 +664,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
 |----------|---------|
 | [`SKILL.md`](./SKILL.md) | AI agent instructions: routing, gates, validation, template application |
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md) | API boundary contract between `scripts/` and `mcp_server/` |
-| [`mcp_server/README.md`](./mcp_server/README.md) | Full MCP architecture, 32-tool API reference, search system, cognitive memory, configuration |
+| [`mcp_server/README.md`](./mcp_server/README.md) | Full MCP architecture, 33-tool API reference, search system, cognitive memory, configuration |
 | [`references/memory/memory_system.md`](./references/memory/memory_system.md) | Detailed memory system reference |
 | [`references/validation/validation_rules.md`](./references/validation/validation_rules.md) | All 13 validation rules and their fixes |
 | [`references/validation/five_checks.md`](./references/validation/five_checks.md) | Five Checks evaluation framework |

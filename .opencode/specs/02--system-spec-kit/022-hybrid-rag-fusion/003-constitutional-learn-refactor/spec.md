@@ -40,8 +40,9 @@ Refactor `/memory:learn` from a generic learning capture command (pattern, mista
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-02-23 |
-| **Parent Spec** | Parent spec document |
-| **Predecessor Phase** | `../008-spec-kit-code-quality` (Complete) |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../002-indexing-normalization/spec.md |
+| **Successor** | ../004-ux-hooks-automation/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -145,3 +146,13 @@ Complete rewrite of `.opencode/command/memory/learn.md` with:
 | `CLAUDE.md` | Edit | ~5 |
 | `.opencode/skill/system-spec-kit/README.md` | Edit | ~3 |
 <!-- /ANCHOR:files -->
+
+---
+
+## Phase Navigation
+
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../002-indexing-normalization/spec.md |
+| **Next Phase** | ../004-ux-hooks-automation/spec.md |

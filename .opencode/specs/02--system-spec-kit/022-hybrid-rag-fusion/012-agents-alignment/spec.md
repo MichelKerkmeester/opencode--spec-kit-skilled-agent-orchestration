@@ -1,152 +1,143 @@
 ---
-title: "012 — Agent Alignment: Sync Runtime Agent Definitions"
+title: "012 — Agent Alignment: Runtime Lineage Truth Reconciliation"
+description: "Reconcile the 012 agents-alignment packet and the last runtime-facing agent-doc drift to the live multi-runtime lineage used by OpenCode, ChatGPT, Claude, Codex, and Gemini."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# 012 — Agent Alignment: Sync Runtime Agent Definitions
-
-| Field       | Value                                                    |
-| ----------- | -------------------------------------------------------- |
-| **Level**   | 2                                                        |
-| **Status**  | Complete                                                 |
-| **Priority**| P1                                                       |
-| **Parent**  | 022-hybrid-rag-fusion                                    |
-| **Created** | 2026-03-15                                               |
-| **Updated** | 2026-03-16                                               |
+# 012 — Agent Alignment: Runtime Lineage Truth Reconciliation
 
 ---
 
 <!-- ANCHOR:metadata -->
-## Problem
+## 1. METADATA
 
-Runtime agent copies at `.claude/agents/` (10–17 days stale, last updated Feb 26 – Mar 5) and `.gemini/agents/` (10–13 days stale, last updated Mar 2 – Mar 5) have drifted from the canonical `.opencode/agent/` definitions (last updated Mar 14–15).
-
-The canonical source was refreshed on Mar 14 (8 agents) and Mar 15 (speckit.md), but the Claude and Gemini runtime copies were not updated, creating behavioral drift where those runtimes execute outdated agent instructions.
-
-### Drift Summary
-
-| Runtime            | Path                          | Last Update    | Drift        | Status      |
-| ------------------ | ----------------------------- | -------------- | ------------ | ----------- |
-| Base (canonical)   | `.opencode/agent/*.md`        | Mar 14–15      | —            | Source      |
-| ChatGPT            | `.opencode/agent/chatgpt/*.md`| Mar 14–15      | In sync      | ✓           |
-| Codex              | `.codex/agents/*.toml`        | Mar 15         | In sync      | ✓           |
-| **Claude**         | **`.claude/agents/*.md`**     | **Feb 26–Mar 5** | **10–17 days** | **Stale** |
-| **Gemini**         | **`.gemini/agents/*.md`**     | **Mar 2–Mar 5**  | **10–13 days** | **Stale** |
-
----
-
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | Complete (truth-reconciled) |
+| **Created** | 2026-03-15 |
+| **Updated** | 2026-03-21 |
+| **Parent** | `022-hybrid-rag-fusion` |
+| **Complexity** | 42/70 |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../011-command-alignment/spec.md |
+| **Successor** | ../013-agents-md-alignment/spec.md |
 <!-- /ANCHOR:metadata -->
-## Scope
-
-**In scope:** Sync body content from canonical `.opencode/agent/*.md` to `.claude/agents/*.md` and `.gemini/agents/*.md` for all 9 agents, preserving runtime-specific frontmatter.
-
-**9 agents × 2 stale runtimes = 18 files to update:**
-
-| Agent          | `.claude/agents/` | `.gemini/agents/` |
-| -------------- | ------------------ | ------------------ |
-| context.md     | Sync               | Sync               |
-| debug.md       | Sync               | Sync               |
-| handover.md    | Sync               | Sync               |
-| orchestrate.md | Sync               | Sync               |
-| research.md    | Sync               | Sync               |
-| review.md      | Sync               | Sync               |
-| speckit.md     | Sync               | Sync               |
-| ultra-think.md | Sync               | Sync               |
-| write.md       | Sync               | Sync               |
-
-**Out of scope:**
-- Agent behavioral/content changes (sync only, no modifications)
-- ChatGPT runtime (already in sync)
-- Codex TOML runtime (already in sync)
-- MCP server or skill changes
 
 ---
 
-## Requirements
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
-| ID     | Priority | Requirement                                                           |
-| ------ | -------- | --------------------------------------------------------------------- |
-| AA-001 | P0       | Body content (post-frontmatter) identical across canonical, Claude, Gemini |
-| AA-002 | P0       | Claude frontmatter preserved: `tools:` list, `model:` field, `mcpServers:` |
-| AA-003 | P0       | Gemini frontmatter preserved: `kind:`, `model:`, `tools:`, `max_turns:`, `timeout_mins:` |
-| AA-004 | P0       | Path convention directive updated per runtime (`.claude/agents/`, `.gemini/agents/`) |
-| AA-005 | P0       | No behavioral modifications — sync operation only                      |
-| AA-006 | P1       | File sizes within ±500 bytes of canonical (frontmatter differences)    |
-| AA-007 | P1       | All 9 agents present in all 5 runtimes (45 files total)               |
-| AA-008 | P1       | Nesting rules (§0 ILLEGAL NESTING, LEAF NESTING CONSTRAINT) preserved |
-| AA-009 | P2       | ChatGPT and Codex verified still in sync (spot check)                  |
+### Problem Statement
 
----
+The original `012-agents-alignment` packet described a simpler runtime model than the repository now uses. It treated `.opencode/agent/*.md` as a single canonical source copied directly to every runtime, but the live repo has split lineage:
 
-## Frontmatter Format Reference
+- `.opencode/agent/*.md` is the base markdown family for the default OpenCode or Copilot profile and the closest markdown lineage for Claude and Gemini.
+- `.opencode/agent/chatgpt/*.md` is a distinct ChatGPT markdown family.
+- `.codex/agents/*.toml` is generated from the ChatGPT family, not from the base markdown family.
+- `.gemini/agents/*.md` is the runtime-facing Gemini path, while `.gemini -> .agents` exposes the backing storage at `.agents/agents/*.md`.
 
-### Canonical (`.opencode/agent/`)
-```yaml
-name: [agent-name]
-description: "[description]"
-mode: subagent|all|primary
-temperature: 0.1|0.2
-permission:
-  read: allow
-  write: allow|deny
-  ...
-mcpServers:
-  - spec_kit_memory
-```
-
-### Claude (`.claude/agents/`)
-```yaml
-name: [agent-name]
-description: "[description]"
-tools:
-  - Read
-  - Grep
-  - Glob
-  ...
-model: sonnet|opus
-mcpServers:
-  - spec_kit_memory
-  - code_mode
-```
-
-### Gemini (`.gemini/agents/`)
-```yaml
-kind: local
-model: gemini-3.1-pro-preview
-temperature: 0.1|0.2
-max_turns: 10|20
-timeout_mins: 5|15
-tools:
-  - read_file
-  - grep_search
-  - list_directory
-  ...
-```
+The older packet also carried stale naming (`research.md`), a bulk-runtime-sync story that no longer matches the state of the repo, and it did not account for the remaining runtime-facing drift in `.gemini/workflows/delegate_agent.md` and the write-agent projections.
 
 ---
 
-## Files to Change
+## Phase Navigation
 
-All files in the anobel.com repository:
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../011-command-alignment/spec.md |
+| **Next Phase** | ../013-agents-md-alignment/spec.md |
 
-### Claude Runtime (9 files)
-- `.claude/agents/context.md` — sync from `.opencode/agent/context.md`
-- `.claude/agents/debug.md` — sync from `.opencode/agent/debug.md`
-- `.claude/agents/handover.md` — sync from `.opencode/agent/handover.md`
-- `.claude/agents/orchestrate.md` — sync from `.opencode/agent/orchestrate.md`
-- `.claude/agents/research.md` — sync from `.opencode/agent/research.md`
-- `.claude/agents/review.md` — sync from `.opencode/agent/review.md`
-- `.claude/agents/speckit.md` — sync from `.opencode/agent/speckit.md`
-- `.claude/agents/ultra-think.md` — sync from `.opencode/agent/ultra-think.md`
-- `.claude/agents/write.md` — sync from `.opencode/agent/write.md`
+### Purpose
 
-### Gemini Runtime (9 files)
-- `.gemini/agents/context.md` — sync from `.opencode/agent/context.md`
-- `.gemini/agents/debug.md` — sync from `.opencode/agent/debug.md`
-- `.gemini/agents/handover.md` — sync from `.opencode/agent/handover.md`
-- `.gemini/agents/orchestrate.md` — sync from `.opencode/agent/orchestrate.md`
-- `.gemini/agents/research.md` — sync from `.opencode/agent/research.md`
-- `.gemini/agents/review.md` — sync from `.opencode/agent/review.md`
-- `.gemini/agents/speckit.md` — sync from `.opencode/agent/speckit.md`
-- `.gemini/agents/ultra-think.md` — sync from `.opencode/agent/ultra-think.md`
-- `.gemini/agents/write.md` — sync from `.opencode/agent/write.md`
+Reconcile the `012` packet so it accurately documents the current runtime lineage, path conventions, and naming rules, while also closing the last runtime-facing agent-doc drift without claiming a full bulk sync.
+<!-- /ANCHOR:problem -->
+
+---
+
+<!-- ANCHOR:scope -->
+## 3. SCOPE
+
+### In Scope
+
+- Rewrite the canonical `012` packet to reflect the live runtime lineage.
+- Document the two markdown source families and their downstream runtime targets.
+- Record Codex generation from the ChatGPT family.
+- Document Gemini's runtime-facing path together with the `.gemini -> .agents` storage detail.
+- Normalize the packet on `deep-research.md` naming.
+- Fix the remaining runtime-facing path and writer-surface drift in the scoped Gemini, Claude, ChatGPT, and Codex docs.
+
+### Out of Scope
+
+- Bulk-resynchronizing every runtime agent body
+- Rewriting unrelated agent personas outside the scoped delegation/write surfaces
+- MCP server, command, or skill changes
+- Re-running historical bulk sync work
+
+### Deliverables
+
+| Deliverable | Description |
+|-------------|-------------|
+| `spec.md` | Reframed around the live lineage model |
+| `plan.md` | Documents the reconciliation approach and verification |
+| `tasks.md` | Records the audit, rewrite, and verification work |
+| `checklist.md` | Verifies lineage, naming, path, and scope integrity |
+| `implementation-summary.md` | Summarizes the truth-reconciled packet and verification |
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+| ID | Priority | Requirement |
+|----|----------|-------------|
+| AA-001 | P0 | The packet must describe **two source families**, not one |
+| AA-002 | P0 | The packet must document `.opencode/agent/*.md` as the base markdown family for OpenCode/Copilot and the closest markdown lineage for Claude/Gemini |
+| AA-003 | P0 | The packet must document `.opencode/agent/chatgpt/*.md` as the ChatGPT family that feeds `.codex/agents/*.toml` |
+| AA-004 | P0 | The packet must use `deep-research.md` naming consistently |
+| AA-005 | P0 | The packet must document `.gemini/agents/*.md` as the runtime-facing path and `.gemini -> .agents` as the storage detail |
+| AA-006 | P1 | The packet must normalize runtime path-convention guidance |
+| AA-007 | P1 | The packet must distinguish scoped runtime-doc closeout from bulk runtime sync work |
+| AA-008 | P1 | The packet must verify the 9-file family counts across base, ChatGPT, Claude, Codex, and Gemini runtimes |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The packet consistently models dual-source lineage rather than a single canonical copy model.
+- **SC-002**: The packet uses `deep-research.md` naming throughout its active docs.
+- **SC-003**: Codex lineage from ChatGPT markdown is explicit.
+- **SC-004**: Gemini runtime-facing and storage-facing paths are both documented without ambiguity.
+- **SC-005**: The packet avoids claiming bulk runtime sync work while accurately recording the scoped runtime-doc closeout performed in this pass.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Risk | Old sync language survives in one canonical file | Mixed lineage story | Grep the full packet for stale naming and copy-model language |
+| Risk | Gemini path wording stays ambiguous | Runtime docs remain confusing | Always pair `.gemini/agents/*.md` with the `.gemini -> .agents` storage note |
+| Dependency | Live runtime directories | Needed to confirm counts and path conventions | Verify file counts across base, ChatGPT, Claude, Codex, and Gemini |
+| Dependency | Current agent docs | Needed to confirm path-convention drift | Spot-check live runtime-facing docs before closing |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. IMPLEMENTATION NOTES
+
+- This packet is a truth-reconciliation pass, not a runtime synchronization pass.
+- Path conventions should be documented from the runtime reader's perspective first.
+- Runtime lineage should be described in terms of families and downstream targets rather than one flat "canonical copy" story.
+<!-- /ANCHOR:questions -->
+
+---

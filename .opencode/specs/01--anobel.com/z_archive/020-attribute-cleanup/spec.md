@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Attribute Cleanup Deepdive [021-attribute-cleanup/spec]"
+title: "Feature Specification: Attribute Cleanup Deepdive [020-attribute-cleanup/spec]"
 description: "Level 1 (Core) is appropriate when"
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "cleanup"
   - "deepdive"
   - "spec"
-  - "021"
+  - "020"
 importance_tier: "important"
 contextType: "decision"
 ---

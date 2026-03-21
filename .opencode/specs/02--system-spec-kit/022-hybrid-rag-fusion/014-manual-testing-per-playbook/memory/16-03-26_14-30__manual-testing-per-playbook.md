@@ -1,5 +1,5 @@
 ---
-title: "Manual Testing Per Playbook [014-manual-testing-per-playbook/16-03-26_14-30__manual-testing-per-playbook]"
+title: "Manual Testing Per Playbook"
 description: "Excellent research. Now I have a complete picture. Let me design the plan using native sonnet agents."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/014 manual testing per playbook"

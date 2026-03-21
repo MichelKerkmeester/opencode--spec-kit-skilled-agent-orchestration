@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Memory Overhaul & Agent [130-memory-overhaul-and-agent-upgrade-release/implementation-summary]"
+title: "Implementation Summary: Memory Overhaul & Agent [013-memory-overhaul-and-agent-upgrade-release/implementation-summary]"
 description: "Execution Method: Parallel 20-agent dispatch (A01-A20) for docs-only updates"
 trigger_phrases:
   - "implementation"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "overhaul"
   - "agent"
   - "implementation summary"
-  - "130"
+  - "013"
 importance_tier: "normal"
 contextType: "implementation"
 ---

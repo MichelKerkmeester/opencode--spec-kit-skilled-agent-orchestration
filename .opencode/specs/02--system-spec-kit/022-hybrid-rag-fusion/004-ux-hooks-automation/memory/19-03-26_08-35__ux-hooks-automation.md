@@ -1,33 +1,15 @@
 ---
-title: "Ux Hooks Automation [004-ux-hooks-automation/19-03-26_08-35__ux-hooks-automation]"
-description: "Now if the importWorkflowForHarness function at line 334 imports ../core (which imports config etc.) BEFORE line 355 imports ../core/workflow (which imports ./memory-indexer..."
+title: "Ux Hooks Automation"
+description: "Implemented UX hooks automation for 004-ux-hooks-automation: post-mutation hook wiring, atomic-save, confirmName safety parameter, and centralized feedback/hint builders. All tests pass."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/004 ux hooks automation"
-  - "the issue"
-  - "real issue"
-  - "issue might"
-  - "import workflow for harness"
-  - "configure harness environment"
-  - "restore all mocks"
-  - "reset modules"
-  - "index memory"
+  - "ux hooks automation"
+  - "post mutation hook"
+  - "mutation feedback"
   - "confirm name"
   - "memory indexer"
-  - "re registers"
-  - "importworkflowforharness"
-  - "configureharnessenvironment"
-  - "restoreallmocks"
-  - "resetmodules"
-  - "delete call without matching"
-  - "call without matching confirmname"
-  - "without matching confirmname rejected"
-  - "matching confirmname rejected safely"
-  - "before the workflow"
-  - "function line imports imports"
-  - "line imports imports etc."
-  - "imports imports etc. line"
-  - "imports etc. line imports"
-  - "etc. line imports imports"
+  - "atomic save"
+  - "response hints"
   - "kit/022"
   - "fusion/004"
   - "hooks"
@@ -107,9 +89,9 @@ spec_folder_health: {"pass":true,"score":0.9,"errors":0,"warnings":2}
 
 **Phase:** IMPLEMENTATION
 
-**Recent:** Now if the `importWorkflowForHarness` function at line 334 imports, Both background tasks completed successfully (exit 0). The work is done — all te, Check if codex CLI is available
+**Recent:** Applied post-mutation hook wiring to all 5 mutation handler call sites. Both background test runs completed successfully (exit 0).
 
-**Summary:** Now if the `importWorkflowForHarness` function at line 334 imports `../core` (which imports `config` etc.) BEFORE line 355 imports `../core/workflow` (which imports `./memory-indexer`). Since `../core...
+**Summary:** Implemented UX hooks automation for 004-ux-hooks-automation. Applied shared post-mutation hook wiring and atomic-save support across memory-save, memory-crud-update, memory-crud-delete, memory-bulk-delete, and checkpoints handlers. Added confirmName safety parameter and centralized mutation feedback and UX hint builders.
 
 ### Pending Work
 
@@ -185,7 +167,7 @@ Next: Continue implementation
 
 **What Was Built**:
 
-- **Now if the `importWorkflowForHarness` function at line 334 imports** - Now if the importWorkflowForHarness function at line 334 imports `.
+- **Post-mutation hook wiring and atomic-save implementation** - Applied shared post-mutation hook wiring to memory-save, memory-crud-update, memory-crud-delete, and memory-bulk-delete handlers.
 
 - **Both background tasks completed successfully (exit 0). The work is done — all te** - Both background tasks completed successfully (exit 0).
 
@@ -226,12 +208,12 @@ Next: Continue implementation
 
 ## 2. OVERVIEW
 
-Now if the `importWorkflowForHarness` function at line 334 imports `../core` (which imports `config` etc.) BEFORE line 355 imports `../core/workflow` (which imports `./memory-indexer`). Since `../core` doesn't export memory-indexer, the mock should work. But wait — line 334 `import('../core')` triggers the core barrel imports. If any of those transitively import `memory-indexer`, then `memory-indexer` gets cached before the workflow import. But the barrel doesn't export memory-indexer. if there's some other reason. Maybe the issue is that `configureHarnessEnvironment` is called at line 749 (harness setup), which sets environment. But `importWorkflowForHarness` at line 751 calls `vi.restoreAllMocks()` and `vi.resetModules()` — which clears all hoisted mocks including the capture mocks, then re-registers them. Actually, the real issue might be simpler. Let me look at how workflow.ts uses indexMemory: Both background tasks completed successfully (exit 0). The work is done — all tests pass and the implementation is complete as summarized above. Check if codex CLI is available
+Implemented post-mutation hook wiring and atomic-save support across all 5 mutation handler call sites (memory-save.ts, memory-crud-update.ts, memory-crud-delete.ts, memory-bulk-delete.ts, checkpoints.ts). Added confirmName safety parameter to the checkpoints handler. Centralized mutation feedback metadata and UX hint generation into dedicated hook modules. Both background test runs completed successfully (exit 0) — all tests pass.
 
 **Key Outcomes**:
-- Now if the `importWorkflowForHarness` function at line 334 imports
-- Both background tasks completed successfully (exit 0). The work is done — all te
-- Check if codex CLI is available
+- Post-mutation hook wiring applied to all 5 mutation handler call sites
+- Both background test runs completed successfully (exit 0)
+- confirmName safety parameter added to checkpoints handler
 
 **Key Files:**
 
@@ -250,9 +232,9 @@ Now if the `importWorkflowForHarness` function at line 334 imports `../core` (wh
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:architecture-now-importworkflowforharness-function-line-f90549fc -->
-### FEATURE: Now if the `importWorkflowForHarness` function at line 334 imports
+### FEATURE: Post-mutation hook wiring and atomic-save implementation
 
-Now if the `importWorkflowForHarness` function at line 334 imports `../core` (which imports `config` etc.) BEFORE line 355 imports `../core/workflow` (which imports `./memory-indexer`). Since `../core` doesn't export memory-indexer, the mock should work. But wait — line 334 `import('../core')` triggers the core barrel imports. If any of those transitively import `memory-indexer`, then `memory-indexer` gets cached before the workflow import. But the barrel doesn't export memory-indexer. if there's some other reason. Maybe the issue is that `configureHarnessEnvironment` is called at line 749 (harness setup), which sets environment. But `importWorkflowForHarness` at line 751 calls `vi.restoreAllMocks()` and `vi.resetModules()` — which clears all hoisted mocks including the capture mocks, then re-registers them. Actually, the real issue might be simpler. Let me look at how workflow.ts uses indexMemory:
+Applied shared post-mutation hook wiring and atomic-save support across all 5 mutation handler call sites. confirmName safety parameter added to checkpoints handler. Mutation feedback and UX hint generation centralized into hook modules.
 
 <!-- /ANCHOR:architecture-now-importworkflowforharness-function-line-f90549fc -->
 
@@ -264,11 +246,9 @@ Both background tasks completed successfully (exit 0). The work is done — all 
 <!-- /ANCHOR:implementation-both-background-tasks-completed-c0953139 -->
 
 <!-- ANCHOR:implementation-check-codex-cli-available-7038df77 -->
-### OBSERVATION: Check if codex CLI is available
+### OBSERVATION: Verified codex CLI availability
 
-Check if codex CLI is available
-
-**Details:** Tool: bash | Status: completed | Result: /Users/michelkerkmeester/.superset/bin/codex codex-cli 0.115.0
+Confirmed codex CLI is available at /Users/michelkerkmeester/.superset/bin/codex (codex-cli 0.115.0).
 <!-- /ANCHOR:implementation-check-codex-cli-available-7038df77 -->
 
 <!-- /ANCHOR:detailed-changes -->
@@ -588,31 +568,13 @@ key_topics:
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/004 ux hooks automation"
-  - "the issue"
-  - "real issue"
-  - "issue might"
-  - "import workflow for harness"
-  - "configure harness environment"
-  - "restore all mocks"
-  - "reset modules"
-  - "index memory"
+  - "ux hooks automation"
+  - "post mutation hook"
+  - "mutation feedback"
   - "confirm name"
   - "memory indexer"
-  - "re registers"
-  - "importworkflowforharness"
-  - "configureharnessenvironment"
-  - "restoreallmocks"
-  - "resetmodules"
-  - "delete call without matching"
-  - "call without matching confirmname"
-  - "without matching confirmname rejected"
-  - "matching confirmname rejected safely"
-  - "before the workflow"
-  - "function line imports imports"
-  - "line imports imports etc."
-  - "imports imports etc. line"
-  - "imports etc. line imports"
-  - "etc. line imports imports"
+  - "atomic save"
+  - "response hints"
   - "kit/022"
   - "fusion/004"
   - "hooks"

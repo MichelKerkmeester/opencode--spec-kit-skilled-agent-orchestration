@@ -311,12 +311,17 @@ function scoreCluster(cluster: InternalTopicCluster, combinedText: string, toolN
   }
 
   const hasResearchTool = toolNames.some((toolName) => RESEARCH_TOOLS.has(toolName));
+  const hasImplementationTool = toolNames.some((toolName) => IMPLEMENTATION_TOOLS.has(toolName));
   const hasDebugSignal = /\b(error|fix|fixed|bug|failing|debug|stack|null)\b/.test(combinedText)
     || observationTypes.includes('bugfix');
 
   if (hasResearchTool && hasDebugSignal) {
     scores.Debugging += 4;
     scores.Research *= 0.5;
+  }
+
+  if (hasImplementationTool && scores.Research >= scores.Implementation) {
+    scores.Research = Math.max(0, scores.Implementation - 0.01);
   }
 
   return scores;

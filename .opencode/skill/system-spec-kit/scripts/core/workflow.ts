@@ -9,7 +9,6 @@
 // Node stdlib
 import * as path from 'node:path';
 import * as fsSync from 'node:fs';
-import * as crypto from 'node:crypto';
 
 // Internal modules
 import { CONFIG, findActiveSpecsDir, getSpecsDirectories } from './config';
@@ -25,13 +24,13 @@ import { populateTemplate } from '../renderers';
 import { extractKeyTopics } from './topic-extractor';
 import type { DecisionForTopics } from './topic-extractor';
 import { writeFilesAtomically } from './file-writer';
-import { generateContentSlug, pickBestContentName, ensureUniqueMemoryFilename } from '../utils/slug-utils';
-import { normalizeSpecTitleForMemory, pickPreferredMemoryTask, shouldEnrichTaskFromSpecTitle } from '../utils/task-enrichment';
+import { generateContentSlug, ensureUniqueMemoryFilename } from '../utils/slug-utils';
+import { pickPreferredMemoryTask, shouldEnrichTaskFromSpecTitle } from '../utils/task-enrichment';
 import {
   buildSpecAffinityTargets,
   evaluateCollectedDataSpecAffinity,
 } from '../utils/spec-affinity';
-import { deriveMemoryDescription } from '../utils/memory-frontmatter';
+import { deriveMemoryDescription } from '../lib/memory-frontmatter';
 import { shouldAutoSave, collectSessionData } from '../extractors/collect-session-data';
 import type { CollectedDataFull } from '../extractors/collect-session-data';
 import type { SemanticFileInfo } from '../extractors/file-extractor';
@@ -43,7 +42,6 @@ import {
 import {
   determineValidationDisposition,
   validateMemoryQualityContent,
-  type ValidationDispositionResult,
 } from '../lib/validate-memory-quality';
 import { extractSpecFolderContext } from '../extractors/spec-folder-extractor';
 import { extractGitContext } from '../extractors/git-context-extractor';
@@ -62,13 +60,9 @@ import { EMBEDDING_DIM, MODEL_NAME } from '../lib/embeddings';
 import { retryManager } from '@spec-kit/mcp-server/api/providers';
 import {
   evaluateMemorySufficiency,
-  MEMORY_SUFFICIENCY_REJECTION_CODE,
-  type MemoryEvidenceSnapshot,
-  type MemorySufficiencyResult,
 } from '@spec-kit/shared/parsing/memory-sufficiency';
-import { validateFilePath } from '@spec-kit/shared/utils/path-security';
 import { validateMemoryTemplateContract } from '@spec-kit/shared/parsing/memory-template-contract';
-import { evaluateSpecDocHealth, type SpecDocHealthResult } from '@spec-kit/shared/parsing/spec-doc-health';
+import { evaluateSpecDocHealth } from '@spec-kit/shared/parsing/spec-doc-health';
 import { extractTriggerPhrases } from '../lib/trigger-extractor';
 import {
   indexMemory,
@@ -84,6 +78,39 @@ import { structuredLog } from '../utils/logger';
 import type { FileChange, SessionData } from '../types/session-types';
 import type { ThinFileInput, ThinningResult } from './tree-thinning';
 import { getSourceCapabilities } from '../utils/source-capabilities';
+
+// Extracted modules
+import { stripWorkflowHtmlOutsideCodeFences, escapeLiteralAnchorExamples } from './content-cleaner';
+import {
+  buildMemoryTitle,
+  buildMemoryDashboardTitle,
+  extractSpecTitle,
+} from './title-builder';
+import {
+  normalizeFilePath,
+  resolveTreeThinningContent,
+  buildKeyFiles,
+} from './workflow-path-utils';
+import {
+  buildMemoryClassificationContext,
+  buildSessionDedupContext,
+  buildCausalLinksContext,
+  buildWorkflowMemoryEvidenceSnapshot,
+} from './memory-metadata';
+import {
+  injectQualityMetadata,
+  injectSpecDocHealthMetadata,
+  renderTriggerPhrasesYaml,
+  ensureMinTriggerPhrases,
+  ensureMinSemanticTopics,
+} from './frontmatter-editor';
+import { shouldIndexMemory, formatSufficiencyAbort } from './quality-gates';
+import { summarizeAuditCounts } from './workflow-accessors';
+import {
+  resolveAlignmentTargets,
+  matchesAlignmentTarget,
+  applyThinningToFileChanges,
+} from './alignment-validator';
 
 // ───────────────────────────────────────────────────────────────
 // 0. HELPERS
@@ -167,816 +194,54 @@ export interface WorkflowResult {
   };
 }
 
-const CODE_FENCE_SEGMENT_RE = /(```[\s\S]*?```)/g;
-const WORKFLOW_HTML_COMMENT_RE = /<!--(?!\s*\/?ANCHOR:)[\s\S]*?-->/g;
-const WORKFLOW_DANGEROUS_HTML_BLOCK_RE = /<(?:iframe|math|noscript|object|script|style|svg|template)\b[^>]*>[\s\S]*?<\/(?:iframe|math|noscript|object|script|style|svg|template)>/gi;
-const WORKFLOW_BLOCK_HTML_TAG_RE = /<\/?(?:article|aside|blockquote|body|br|dd|details|div|dl|dt|figcaption|figure|footer|h[1-6]|header|hr|li|main|nav|ol|p|pre|section|summary|table|tbody|td|th|thead|tr|ul)\b[^>]*\/?>/gi;
-const WORKFLOW_INLINE_HTML_TAG_RE = /<\/?(?:code|em|i|kbd|small|span|strong|sub|sup|u)\b[^>]*\/?>/gi;
-const WORKFLOW_PRESERVED_ANCHOR_ID_RE = /<a id="[^"]+"><\/a>/gi;
-const WORKFLOW_ANY_HTML_TAG_RE = /<\/?\s*[A-Za-z][\w:-]*(?:\s[^<>]*?)?\s*\/?>/g;
-
-function shouldIndexMemory(options: {
-  ctxFileWritten: boolean;
-  validationDisposition: ValidationDispositionResult;
-  templateContractValid: boolean;
-  sufficiencyPass: boolean;
-  qualityScore01: number;
-  qualityAbortThreshold: number;
-}): { shouldIndex: boolean; reason?: string } {
-  if (!options.ctxFileWritten) {
-    return {
-      shouldIndex: false,
-      reason: 'Context file content matched an existing memory file, so semantic indexing was skipped.',
-    };
-  }
-
-  if (!options.templateContractValid) {
-    return {
-      shouldIndex: false,
-      reason: 'Rendered memory failed the template contract, so semantic indexing was skipped.',
-    };
-  }
-
-  if (!options.sufficiencyPass) {
-    return {
-      shouldIndex: false,
-      reason: 'Rendered memory failed semantic sufficiency, so semantic indexing was skipped.',
-    };
-  }
-
-  if (options.qualityScore01 < options.qualityAbortThreshold) {
-    return {
-      shouldIndex: false,
-      reason: 'Rendered memory fell below the minimum quality threshold, so semantic indexing was skipped.',
-    };
-  }
-
-  if (options.validationDisposition.disposition === 'write_skip_index') {
-    return {
-      shouldIndex: false,
-      reason: `Validation rules require write-only persistence without semantic indexing: ${options.validationDisposition.indexBlockingRuleIds.join(', ')}`,
-    };
-  }
-
-  if (options.validationDisposition.disposition === 'abort_write') {
-    return {
-      shouldIndex: false,
-      reason: `Validation rules block writing and indexing: ${options.validationDisposition.blockingRuleIds.join(', ')}`,
-    };
-  }
-
-  return { shouldIndex: true };
-}
-
-function ensureMinSemanticTopics(existing: string[], enhancedFiles: FileChange[], specFolderName: string): string[] {
-  if (existing.length >= 1) {
-    return existing;
-  }
-
-  const topicFromFolder = specFolderName.replace(/^\d{1,3}-/, '');
-  const folderTokens = topicFromFolder
-    .split(/[-_]/)
-    .map((token) => token.trim().toLowerCase())
-    .filter((token) => token.length >= 3);
-
-  const fileTokens = enhancedFiles
-    .flatMap((file) => path.basename(file.FILE_PATH).replace(/\.[^.]+$/, '').split(/[-_]/))
-    .map((token) => token.trim().toLowerCase())
-    .filter((token) => token.length >= 3);
-
-  const combined = [...new Set([...folderTokens, ...fileTokens])];
-  return combined.length > 0 ? [combined[0]] : ['session'];
-}
-
-function ensureMinTriggerPhrases(existing: string[], enhancedFiles: FileChange[], specFolderName: string): string[] {
-  if (existing.length >= 2) {
-    return existing;
-  }
-
-  const topicFromFolder = specFolderName.replace(/^\d{1,3}-/, '');
-  const folderTokens = topicFromFolder
-    .split(/[-_]/)
-    .map((token) => token.trim().toLowerCase())
-    .filter((token) => token.length >= 3);
-  const combined = [...new Set([...existing, ...folderTokens])];
-  if (combined.length >= 2) {
-    return combined;
-  }
-
-  if (combined.length === 1) {
-    return [combined[0], topicFromFolder.replace(/-/g, ' ').toLowerCase() || 'session'];
-  }
-
-  return ['session', 'context'];
-}
-
-function renderTriggerPhrasesYaml(triggerPhrases: string[]): string {
-  if (!Array.isArray(triggerPhrases) || triggerPhrases.length === 0) {
-    return 'trigger_phrases: []';
-  }
-
-  const escapedPhrases = triggerPhrases.map((phrase) => {
-    const normalized = String(phrase).trim();
-    return `  - "${normalized.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`;
-  });
-
-  return ['trigger_phrases:', ...escapedPhrases].join('\n');
-}
-
-function stripWorkflowHtmlOutsideCodeFences(rawContent: string): string {
-  const segments = rawContent.split(CODE_FENCE_SEGMENT_RE);
-
-  return segments.map((segment) => {
-    if (segment.startsWith('```')) {
-      return segment;
-    }
-
-    const preservedAnchorIds: string[] = [];
-    const protectedSegment = segment.replace(WORKFLOW_PRESERVED_ANCHOR_ID_RE, (match: string) => {
-      const token = `__WORKFLOW_ANCHOR_ID_${preservedAnchorIds.length}__`;
-      preservedAnchorIds.push(match);
-      return token;
-    });
-
-    let cleaned = protectedSegment
-      .replace(WORKFLOW_HTML_COMMENT_RE, '')
-      .replace(WORKFLOW_DANGEROUS_HTML_BLOCK_RE, '\n')
-      .replace(WORKFLOW_BLOCK_HTML_TAG_RE, '\n')
-      .replace(WORKFLOW_INLINE_HTML_TAG_RE, '')
-      .replace(WORKFLOW_ANY_HTML_TAG_RE, '')
-      .replace(/[ \t]+\n/g, '\n')
-      .replace(/\n{3,}/g, '\n\n');
-
-    preservedAnchorIds.forEach((anchor, index) => {
-      cleaned = cleaned.replace(`__WORKFLOW_ANCHOR_ID_${index}__`, anchor);
-    });
-
-    return cleaned;
-  }).join('');
-}
-
-function escapeLiteralAnchorExamples(input: string): string {
-  return input.replace(/<!--\s*(\/?ANCHOR:[^>]+?)\s*-->/g, (_match: string, anchor: string) => (
-    `&lt;!-- ${anchor.trim()} --&gt;`
-  ));
-}
-
-const PREFERRED_PARENT_FILES = new Set([
-  'spec.md',
-  'plan.md',
-  'tasks.md',
-  'checklist.md',
-  'readme.md',
-]);
-
-function normalizeFilePath(rawPath: string): string {
-  return rawPath
-    .replace(/\\/g, '/')
-    .replace(/^\.\//, '')
-    .replace(/\/+/g, '/')
-    .replace(/\/$/, '');
-}
-
-function getParentDirectory(filePath: string): string {
-  const normalized = normalizeFilePath(filePath);
-  const idx = normalized.lastIndexOf('/');
-  return idx >= 0 ? normalized.slice(0, idx) : '';
-}
-
-function capText(value: string, maxLength: number): string {
-  if (value.length <= maxLength) {
-    return value;
-  }
-
-  const truncated = value.slice(0, maxLength - 3).trim();
-  return `${truncated}...`;
-}
-
-function summarizeAuditCounts(counts: Map<string, number>): string[] {
-  return [...counts.entries()].map(([label, count]) => `${label} x${count}`);
-}
-
-function pickCarrierIndex(indices: number[], files: FileChange[]): number {
-  for (const idx of indices) {
-    const filename = path.basename(files[idx].FILE_PATH).toLowerCase();
-    if (PREFERRED_PARENT_FILES.has(filename)) {
-      return idx;
-    }
-  }
-  return indices[0];
-}
-
-function compactMergedContent(value: string): string {
-  return value
-    .replace(/<!--\s*merged from:\s*([^>]+)\s*-->/gi, 'Merged from $1:')
-    .replace(/\n\s*---\s*\n/g, ' | ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-type AlignmentTargets = {
-  fileTargets: string[];
-  keywordTargets: string[];
-};
-
-const ALIGNMENT_STOPWORDS = new Set(['ops', 'app', 'api', 'cli', 'lib', 'src', 'dev', 'hub', 'log', 'run']);
-
-function buildAlignmentKeywords(specFolderPath: string): string[] {
-  const keywords = new Set<string>();
-  const segments = specFolderPath
-    .replace(/\\/g, '/')
-    .split('/')
-    .map((segment) => segment.replace(/^\d+--?/, '').trim().toLowerCase())
-    .filter(Boolean);
-
-  for (const segment of segments) {
-    if (segment.length >= 2) {
-      keywords.add(segment);
-    }
-
-    for (const token of segment.split(/[-_]/)) {
-      if (token.length >= 3 && !ALIGNMENT_STOPWORDS.has(token)) {
-        keywords.add(token);
-      }
-    }
-  }
-
-  return Array.from(keywords);
-}
-
-async function resolveAlignmentTargets(specFolderPath: string): Promise<AlignmentTargets> {
-  const keywordTargets = buildAlignmentKeywords(specFolderPath);
-  const fileTargets = new Set<string>();
-
-  try {
-    const specContext = await extractSpecFolderContext(path.resolve(specFolderPath));
-    for (const entry of specContext.FILES) {
-      const normalized = normalizeFilePath(entry.FILE_PATH).toLowerCase();
-      if (normalized) {
-        fileTargets.add(normalized);
-      }
-    }
-  } catch (_error: unknown) {
-    // Fall back to keyword-only alignment when spec docs are unavailable.
-  }
-
-  return {
-    fileTargets: Array.from(fileTargets),
-    keywordTargets,
-  };
-}
-
-function matchesAlignmentTarget(filePath: string, alignmentTargets: AlignmentTargets): boolean {
-  const normalizedPath = normalizeFilePath(filePath).toLowerCase();
-
-  if (alignmentTargets.fileTargets.some((target) => (
-    normalizedPath === target
-    || normalizedPath.endsWith(`/${target}`)
-    || normalizedPath.includes(`/${target}/`)
-  ))) {
-    return true;
-  }
-
-  return alignmentTargets.keywordTargets.some((keyword) => normalizedPath.includes(keyword));
-}
-
-/**
- * Apply tree-thinning decisions to the semantic file-change list that feeds
- * context template rendering.
- *
- * Behavior:
- * - `keep` and `content-as-summary` rows remain as individual entries.
- * - `merged-into-parent` rows are removed as standalone entries.
- * - Each merged group contributes a compact merge note to a carrier file in the
- *   same parent directory (or to a synthetic merged entry when no carrier exists).
- *
- * This makes tree thinning effective in the generated context output (instead of
- * only being computed/logged), while preserving merge provenance for recoverability.
- */
-function applyThinningToFileChanges(
-  files: FileChange[],
-  thinningResult: ThinningResult
-): FileChange[] {
-  if (!Array.isArray(files) || files.length === 0) {
-    return files;
-  }
-
-  const actionByPath = new Map<string, string>(
-    thinningResult.thinned.map((entry) => [normalizeFilePath(entry.path), entry.action])
-  );
-
-  const originalByPath = new Map<string, FileChange>();
-  for (const file of files) {
-    originalByPath.set(normalizeFilePath(file.FILE_PATH), file);
-  }
-
-  const reducedFiles: FileChange[] = files
-    .filter((file) => {
-      const action = actionByPath.get(normalizeFilePath(file.FILE_PATH)) ?? 'keep';
-      return action !== 'merged-into-parent';
-    })
-    .map((file) => ({ ...file }));
-
-  const indicesByParent = new Map<string, number[]>();
-  for (let i = 0; i < reducedFiles.length; i++) {
-    const parent = getParentDirectory(reducedFiles[i].FILE_PATH);
-    const existing = indicesByParent.get(parent) ?? [];
-    existing.push(i);
-    indicesByParent.set(parent, existing);
-  }
-
-  for (const mergedGroup of thinningResult.merged) {
-    const normalizedChildren = mergedGroup.childPaths.map(normalizeFilePath);
-    const childFiles = normalizedChildren
-      .map((childPath) => originalByPath.get(childPath))
-      .filter((f): f is FileChange => !!f);
-
-    if (childFiles.length === 0) {
-      continue;
-    }
-
-    const childNames = childFiles.map((f) => path.basename(f.FILE_PATH));
-    const mergedContent = compactMergedContent(mergedGroup.mergedSummary);
-
-    const mergeNote = capText(
-      `Tree-thinning merged ${childFiles.length} small files (${childNames.join(', ')}). ${mergedContent}`,
-      900,
-    );
-
-    const parentDir = normalizeFilePath(mergedGroup.parentPath || '');
-    const carrierIndices = indicesByParent.get(parentDir) ?? [];
-
-    if (carrierIndices.length > 0) {
-      const carrierIdx = pickCarrierIndex(carrierIndices, reducedFiles);
-      const existingDescription = reducedFiles[carrierIdx].DESCRIPTION || '';
-      const mergedDescription = existingDescription.includes(mergeNote)
-        ? existingDescription
-        : (existingDescription.length > 0 ? `${existingDescription} | ${mergeNote}` : mergeNote);
-      reducedFiles[carrierIdx].DESCRIPTION = capText(
-        mergedDescription,
-        900,
-      );
-      continue;
-    }
-
-    const syntheticPath = parentDir.length > 0
-      ? `${parentDir}/(merged-small-files)`
-      : '(merged-small-files)';
-
-    const syntheticEntry: FileChange = {
-      FILE_PATH: syntheticPath,
-      DESCRIPTION: mergeNote,
-      ACTION: 'Merged',
-      _synthetic: true,
-    };
-
-    const idx = reducedFiles.push(syntheticEntry) - 1;
-    const updatedIndices = indicesByParent.get(parentDir) ?? [];
-    updatedIndices.push(idx);
-    indicesByParent.set(parentDir, updatedIndices);
-  }
-
-  return reducedFiles;
-}
-
-function normalizeMemoryTitleCandidate(raw: string): string {
-  return raw
-    .replace(/\s+/g, ' ')
-    .trim()
-    .replace(/[\s\-:;,]+$/, '');
-}
-
-function truncateMemoryTitle(title: string, maxLength: number = 110): string {
-  if (title.length <= maxLength) {
-    return title;
-  }
-
-  const truncated = title.slice(0, maxLength).trim();
-  const lastSpace = truncated.lastIndexOf(' ');
-  if (lastSpace >= Math.floor(maxLength * 0.6)) {
-    return `${truncated.slice(0, lastSpace)}...`;
-  }
-
-  return `${truncated}...`;
-}
-
-function slugToTitle(slug: string): string {
-  return slug
-    .replace(/(?<=\d)-(?=\d)/g, '\x00')   // protect digit-digit hyphens (dates like 2026-03-13)
-    .replace(/-/g, ' ')
-    .replace(/\x00/g, '-')                 // restore digit-digit hyphens
-    .replace(/\s{2,}/g, ' ')              // collapse consecutive spaces
-    .replace(/\b\w/g, (ch) => ch.toUpperCase());
-}
-
-function buildMemoryTitle(_implementationTask: string, _specFolderName: string, _date: string, contentSlug?: string): string {
-  if (contentSlug && contentSlug.length > 0) {
-    return truncateMemoryTitle(slugToTitle(contentSlug));
-  }
-
-  // Fallback (should not happen — contentSlug is always available at call site)
-  const preferredTitle = pickBestContentName([_implementationTask]);
-  if (preferredTitle.length > 0) {
-    return truncateMemoryTitle(normalizeMemoryTitleCandidate(preferredTitle));
-  }
-
-  const folderLeaf = _specFolderName.split('/').filter(Boolean).pop() || _specFolderName;
-  const readableFolder = normalizeMemoryTitleCandidate(folderLeaf.replace(/^\d+-/, '').replace(/-/g, ' '));
-  const fallback = readableFolder.length > 0 ? `${readableFolder} session ${_date}` : `Session ${_date}`;
-  return truncateMemoryTitle(fallback);
-}
-
-function buildMemoryDashboardTitle(memoryTitle: string, specFolderName: string, contextFilename: string): string {
-  const specLeaf = specFolderName.split('/').filter(Boolean).pop() || specFolderName;
-  const fileStem = path.basename(contextFilename, path.extname(contextFilename));
-  const suffix = `[${specLeaf}/${fileStem}]`;
-
-  if (memoryTitle.endsWith(suffix)) {
-    return memoryTitle;
-  }
-
-  const maxLength = 120;
-  const maxBaseLength = Math.max(24, maxLength - suffix.length - 1);
-  let base = memoryTitle.trim();
-
-  if (base.length > maxBaseLength) {
-    const hardCut = base.slice(0, maxBaseLength).trim();
-    const lastSpace = hardCut.lastIndexOf(' ');
-    if (lastSpace >= Math.floor(maxBaseLength * 0.6)) {
-      base = hardCut.slice(0, lastSpace);
-    } else {
-      base = hardCut;
-    }
-  }
-
-  return `${base} ${suffix}`;
-}
-
-function extractSpecTitle(specFolderPath: string): string {
-  try {
-    const specPath = path.join(specFolderPath, 'spec.md');
-    const content = fsSync.readFileSync(specPath, 'utf-8');
-    const fmMatch = content.match(/^---\s*\n([\s\S]*?)\n---/);
-    if (!fmMatch) return '';
-    const titleMatch = fmMatch[1].match(/^title:\s*["']?(.+?)["']?\s*$/m);
-    if (!titleMatch || !titleMatch[1]) return '';
-    return normalizeSpecTitleForMemory(titleMatch[1]);
-  } catch (_error: unknown) {
-    if (_error instanceof Error) {
-      void _error.message;
-    }
-    return '';
-  }
-}
-
-type MemoryClassificationContext = {
-  MEMORY_TYPE: string;
-  HALF_LIFE_DAYS: number;
-  BASE_DECAY_RATE: number;
-  ACCESS_BOOST_FACTOR: number;
-  RECENCY_WEIGHT: number;
-  IMPORTANCE_MULTIPLIER: number;
-};
-
-type SessionDedupContext = {
-  MEMORIES_SURFACED_COUNT: number;
-  DEDUP_SAVINGS_TOKENS: number;
-  FINGERPRINT_HASH: string;
-  SIMILAR_MEMORIES: Array<{ MEMORY_ID: string; SIMILARITY_SCORE: number }>;
-};
-
-type CausalLinksContext = {
-  CAUSED_BY: string[];
-  SUPERSEDES: string[];
-  DERIVED_FROM: string[];
-  BLOCKS: string[];
-  RELATED_TO: string[];
-};
-
-function isWithinDirectory(parentDir: string, candidatePath: string): boolean {
-  return validateFilePath(candidatePath, [parentDir]) !== null;
-}
-
-function resolveTreeThinningContent(file: FileChange, specFolderPath: string): string {
-  const rawPath = typeof file.FILE_PATH === 'string' ? file.FILE_PATH.trim() : '';
-  if (rawPath.length === 0) {
-    return file.DESCRIPTION || '';
-  }
-
-  const candidatePath = path.isAbsolute(rawPath)
-    ? rawPath
-    : path.resolve(specFolderPath, rawPath);
-
-  if (!isWithinDirectory(path.resolve(specFolderPath), path.resolve(candidatePath))) {
-    return file.DESCRIPTION || '';
-  }
-
-  try {
-    const stat = fsSync.statSync(candidatePath);
-    if (!stat.isFile()) {
-      return file.DESCRIPTION || '';
-    }
-
-    return fsSync.readFileSync(candidatePath, 'utf8').slice(0, 500) || file.DESCRIPTION || '';
-  } catch (_error: unknown) {
-    return file.DESCRIPTION || '';
-  }
-}
-
-function listSpecFolderKeyFiles(specFolderPath: string): Array<{ FILE_PATH: string }> {
-  const collected: string[] = [];
-  const ignoredDirs = new Set(['memory', 'scratch', '.git', 'node_modules']);
-
-  const visit = (currentDir: string, relativeDir: string): void => {
-    const entries = fsSync.readdirSync(currentDir, { withFileTypes: true });
-    for (const entry of entries) {
-      if (entry.isSymbolicLink()) {
-        continue;
-      }
-      if (entry.isDirectory()) {
-        if (ignoredDirs.has(entry.name)) {
-          continue;
-        }
-
-        visit(path.join(currentDir, entry.name), path.join(relativeDir, entry.name));
-        continue;
-      }
-
-      if (!entry.isFile() || !/\.(?:md|json)$/i.test(entry.name)) {
-        continue;
-      }
-
-      collected.push(normalizeFilePath(path.join(relativeDir, entry.name)));
-    }
-  };
-
-  try {
-    visit(specFolderPath, '');
-  } catch (_error: unknown) {
-    return [];
-  }
-
-  return collected
-    .sort((a, b) => a.localeCompare(b))
-    .map((filePath) => ({ FILE_PATH: filePath }));
-}
-
-function buildKeyFiles(effectiveFiles: FileChange[], specFolderPath: string): Array<{ FILE_PATH: string }> {
-  const explicitKeyFiles = effectiveFiles
-    .filter((file) => !file.FILE_PATH.includes('(merged-small-files)'))
-    .map((file) => ({ FILE_PATH: file.FILE_PATH }));
-
-  if (explicitKeyFiles.length > 0) {
-    return explicitKeyFiles;
-  }
-
-  return listSpecFolderKeyFiles(specFolderPath);
-}
-
-/** Accepts both Record<string, unknown> (readNamedObject results) and typed interfaces
- * (CollectedDataFull) without requiring an index signature on the typed interface.
- * Each helper casts to Record internally — safe because all values are runtime-checked. */
-
-function readNamedObject(source: object | null | undefined, ...keys: string[]): Record<string, unknown> | null {
-  if (!source) {
-    return null;
-  }
-  const src = source as Record<string, unknown>;
-
-  for (const key of keys) {
-    const value = src[key];
-    if (value && typeof value === 'object' && !Array.isArray(value)) {
-      return value as Record<string, unknown>;
-    }
-  }
-
-  return null;
-}
-
-function readStringArray(source: object | null | undefined, ...keys: string[]): string[] {
-  if (!source) {
-    return [];
-  }
-  const src = source as Record<string, unknown>;
-
-  for (const key of keys) {
-    const value = src[key];
-    if (Array.isArray(value)) {
-      return value
-        .map((entry) => (typeof entry === 'string' ? entry.trim() : ''))
-        .filter(Boolean);
-    }
-  }
-
-  return [];
-}
-
-function readNumber(source: object | null | undefined, fallback: number, ...keys: string[]): number {
-  if (!source) {
-    return fallback;
-  }
-  const src = source as Record<string, unknown>;
-
-  for (const key of keys) {
-    const value = src[key];
-    if (typeof value === 'number' && Number.isFinite(value)) {
-      return value;
-    }
-  }
-
-  return fallback;
-}
-
-function readString(source: object | null | undefined, fallback: string, ...keys: string[]): string {
-  if (!source) {
-    return fallback;
-  }
-  const src = source as Record<string, unknown>;
-
-  for (const key of keys) {
-    const value = src[key];
-    if (typeof value === 'string' && value.trim().length > 0) {
-      return value.trim();
-    }
-  }
-
-  return fallback;
-}
-
-function inferMemoryType(contextType: string, importanceTier: string): string {
-  if (importanceTier === 'constitutional') {
-    return 'constitutional';
-  }
-  if (contextType === 'implementation') {
-    return 'procedural';
-  }
-  if (contextType === 'decision' || contextType === 'research' || contextType === 'discovery') {
-    return 'semantic';
-  }
-  return 'episodic';
-}
-
-function defaultHalfLifeDays(memoryType: string): number {
-  switch (memoryType) {
-    case 'constitutional':
-      return 0;
-    case 'procedural':
-      return 180;
-    case 'semantic':
-      return 365;
-    case 'episodic':
-    default:
-      return 30;
-  }
-}
-
-function baseDecayRateFromHalfLife(halfLifeDays: number): number {
-  if (halfLifeDays <= 0) {
-    return 0;
-  }
-
-  return Number(Math.pow(0.5, 1 / halfLifeDays).toFixed(4));
-}
-
-function importanceMultiplier(importanceTier: string): number {
-  switch (importanceTier) {
-    case 'constitutional':
-      return 2;
-    case 'critical':
-      return 1.6;
-    case 'important':
-      return 1.3;
-    case 'temporary':
-      return 0.6;
-    case 'deprecated':
-      return 0.2;
-    case 'normal':
-    default:
-      return 1;
-  }
-}
-
-function buildMemoryClassificationContext(
-  collectedData: CollectedDataFull,
-  sessionData: { CONTEXT_TYPE: string; IMPORTANCE_TIER: string },
-): MemoryClassificationContext {
-  const rawClassification = readNamedObject(collectedData, 'memory_classification', 'memoryClassification');
-  const rawDecayFactors = readNamedObject(rawClassification, 'decay_factors', 'decayFactors');
-  const fallbackType = inferMemoryType(sessionData.CONTEXT_TYPE, sessionData.IMPORTANCE_TIER);
-  const memoryType = readString(
-    rawClassification,
-    readString(collectedData, fallbackType, 'memory_type', 'memoryType'),
-    'memory_type',
-    'memoryType',
-  );
-  const halfLifeDays = readNumber(
-    rawClassification,
-    defaultHalfLifeDays(memoryType),
-    'half_life_days',
-    'halfLifeDays',
-  );
-
-  return {
-    MEMORY_TYPE: memoryType,
-    HALF_LIFE_DAYS: halfLifeDays,
-    BASE_DECAY_RATE: readNumber(
-      rawDecayFactors || rawClassification,
-      baseDecayRateFromHalfLife(halfLifeDays),
-      'base_decay_rate',
-      'baseDecayRate',
-    ),
-    ACCESS_BOOST_FACTOR: readNumber(
-      rawDecayFactors || rawClassification,
-      0.1,
-      'access_boost_factor',
-      'accessBoostFactor',
-    ),
-    RECENCY_WEIGHT: readNumber(
-      rawDecayFactors || rawClassification,
-      0.5,
-      'recency_weight',
-      'recencyWeight',
-    ),
-    IMPORTANCE_MULTIPLIER: readNumber(
-      rawDecayFactors || rawClassification,
-      importanceMultiplier(sessionData.IMPORTANCE_TIER),
-      'importance_multiplier',
-      'importanceMultiplier',
-    ),
-  };
-}
-
-function buildSessionDedupContext(
-  collectedData: CollectedDataFull,
-  sessionData: { SESSION_ID: string; SUMMARY: string },
-  memoryTitle: string,
-): SessionDedupContext {
-  const rawDedup = readNamedObject(collectedData, 'session_dedup', 'sessionDedup');
-  const rawSimilarMemories = rawDedup?.['similar_memories'] ?? rawDedup?.['similarMemories'];
-  const similarMemories = Array.isArray(rawSimilarMemories)
-    ? rawSimilarMemories.flatMap((entry) => {
-      if (typeof entry === 'string' && entry.trim().length > 0) {
-        return [{ MEMORY_ID: entry.trim(), SIMILARITY_SCORE: 0 }];
-      }
-      if (entry && typeof entry === 'object') {
-        const item = entry as Record<string, unknown>;
-        const memoryId = readString(item, '', 'id', 'memory_id', 'memoryId');
-        if (memoryId.length === 0) {
-          return [];
-        }
-        return [{
-          MEMORY_ID: memoryId,
-          SIMILARITY_SCORE: readNumber(item, 0, 'similarity', 'similarity_score', 'similarityScore'),
-        }];
-      }
-      return [];
-    })
-    : [];
-  const fallbackFingerprint = crypto
-    .createHash('sha1')
-    .update(`${sessionData.SESSION_ID}\n${memoryTitle}\n${sessionData.SUMMARY}`)
-    .digest('hex');
-
-  return {
-    MEMORIES_SURFACED_COUNT: readNumber(
-      rawDedup,
-      similarMemories.length,
-      'memories_surfaced',
-      'memoriesSurfaced',
-      'memories_surfaced_count',
-      'memoriesSurfacedCount',
-    ),
-    DEDUP_SAVINGS_TOKENS: readNumber(
-      rawDedup,
-      0,
-      'dedup_savings_tokens',
-      'dedupSavingsTokens',
-    ),
-    FINGERPRINT_HASH: readString(
-      rawDedup,
-      fallbackFingerprint,
-      'fingerprint_hash',
-      'fingerprintHash',
-    ),
-    SIMILAR_MEMORIES: similarMemories,
-  };
-}
-
-function buildCausalLinksContext(collectedData: CollectedDataFull): CausalLinksContext {
-  const rawCausalLinks = readNamedObject(collectedData, 'causal_links', 'causalLinks');
-
-  return {
-    CAUSED_BY: readStringArray(rawCausalLinks, 'caused_by', 'causedBy'),
-    SUPERSEDES: readStringArray(rawCausalLinks, 'supersedes'),
-    DERIVED_FROM: readStringArray(rawCausalLinks, 'derived_from', 'derivedFrom'),
-    BLOCKS: readStringArray(rawCausalLinks, 'blocks'),
-    RELATED_TO: readStringArray(rawCausalLinks, 'related_to', 'relatedTo'),
-  };
-}
+// ───────────────────────────────────────────────────────────────
+// 2. WORKFLOW RUN LOCK
+// ───────────────────────────────────────────────────────────────
 
 let workflowRunQueue: Promise<void> = Promise.resolve();
 
+/** Filesystem lock directory for cross-process serialization. */
+const WORKFLOW_LOCK_DIR = path.resolve(__dirname, '../../.workflow-lock');
+
+/**
+ * Acquire the filesystem lock via atomic mkdir.
+ * Uses exponential backoff; gives up after ~30 s total wait.
+ */
+async function acquireFilesystemLock(): Promise<boolean> {
+  const MAX_TOTAL_MS = 30_000;
+  let waited = 0;
+  let delay = 100;
+
+  while (waited < MAX_TOTAL_MS) {
+    try {
+      fsSync.mkdirSync(WORKFLOW_LOCK_DIR, { recursive: false });
+      return true; // lock acquired
+    } catch (err: unknown) {
+      if ((err as NodeJS.ErrnoException).code !== 'EEXIST') {
+        // Unexpected error (permissions, etc.) -- skip fs lock
+        return false;
+      }
+      // Lock held by another process -- wait with backoff
+      await new Promise<void>((resolve) => setTimeout(resolve, delay));
+      waited += delay;
+      delay = Math.min(delay * 2, 4_000);
+    }
+  }
+  // Timed out -- proceed without fs lock (fallback to in-process queue)
+  console.warn('[workflow] Filesystem lock acquisition timed out after 30 s; proceeding without fs lock.');
+  return false;
+}
+
+function releaseFilesystemLock(): void {
+  try {
+    fsSync.rmdirSync(WORKFLOW_LOCK_DIR);
+  } catch (_err: unknown) {
+    // Lock dir already removed or never created -- benign
+  }
+}
+
 async function withWorkflowRunLock<TResult>(operation: () => Promise<TResult>): Promise<TResult> {
+  // Belt: in-process promise queue (serialises concurrent calls in same process)
   const priorRun = workflowRunQueue;
   let releaseCurrentRun: () => void = () => undefined;
   workflowRunQueue = new Promise<void>((resolve) => {
@@ -985,203 +250,22 @@ async function withWorkflowRunLock<TResult>(operation: () => Promise<TResult>): 
 
   await priorRun;
 
+  // Suspenders: filesystem-based lock (serialises across processes)
+  const fsLockAcquired = await acquireFilesystemLock();
+
   try {
     return await operation();
   } finally {
+    if (fsLockAcquired) {
+      releaseFilesystemLock();
+    }
     releaseCurrentRun();
   }
 }
 
-function injectQualityMetadata(content: string, qualityScore: number, qualityFlags: string[]): string {
-  // F-21: Require `---` at string start for strict frontmatter detection
-  const frontmatterMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-  if (!frontmatterMatch || frontmatterMatch.index === undefined) {
-    return content;
-  }
-
-  const newline = content.includes('\r\n') ? '\r\n' : '\n';
-  const frontmatterLines = frontmatterMatch[1].split(/\r?\n/);
-  const strippedLines: string[] = [];
-  let skippingQualityFlags = false;
-
-  for (const line of frontmatterLines) {
-    const trimmed = line.trimStart();
-    if (skippingQualityFlags) {
-      if (/^\s*-\s+/.test(line) || line.trim() === '') {
-        continue;
-      }
-      skippingQualityFlags = false;
-    }
-
-    if (/^quality_score\s*:/i.test(trimmed)) {
-      continue;
-    }
-
-    if (/^quality_flags\s*:/i.test(trimmed)) {
-      skippingQualityFlags = true;
-      continue;
-    }
-
-    strippedLines.push(line);
-  }
-
-  const qualityLines = [
-    `quality_score: ${qualityScore.toFixed(2)}`,
-    ...(qualityFlags.length > 0
-      ? ['quality_flags:', ...qualityFlags.map((flag) => `  - ${JSON.stringify(flag)}`)]
-      : ['quality_flags: []']),
-  ];
-  const updatedFrontmatter = [
-    '---',
-    ...strippedLines,
-    ...qualityLines,
-    '---',
-  ].join(newline);
-  const prefix = content.slice(0, frontmatterMatch.index);
-  const suffix = content.slice(frontmatterMatch.index + frontmatterMatch[0].length).replace(/^\r?\n/, '');
-  return `${updatedFrontmatter}${newline}${prefix}${suffix}`;
-}
-
-function injectSpecDocHealthMetadata(content: string, health: SpecDocHealthResult): string {
-  const frontmatterMatch = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-  if (!frontmatterMatch || frontmatterMatch.index === undefined) return content;
-
-  const newline = content.includes('\r\n') ? '\r\n' : '\n';
-  const lines = frontmatterMatch[1].split(/\r?\n/);
-
-  // Remove existing spec_folder_health lines
-  const filtered = lines.filter(l => !l.trimStart().startsWith('spec_folder_health'));
-  const healthLine = `spec_folder_health: ${JSON.stringify({ pass: health.pass, score: health.score, errors: health.errors, warnings: health.warnings })}`;
-  filtered.push(healthLine);
-
-  const updated = ['---', ...filtered, '---'].join(newline);
-  const prefix = content.slice(0, frontmatterMatch.index);
-  const suffix = content.slice(frontmatterMatch.index + frontmatterMatch[0].length).replace(/^\r?\n/, '');
-  return `${updated}${newline}${prefix}${suffix}`;
-}
-
-function extractAnchorIds(content: string): string[] {
-  const matches = content.matchAll(/<!--\s*(?:\/)?ANCHOR:\s*([a-zA-Z0-9][a-zA-Z0-9-]*)\s*-->/g);
-  return Array.from(new Set(Array.from(matches, (match) => match[1])));
-}
-
-function normalizeEvidenceLine(value: unknown): string {
-  if (typeof value === 'string') {
-    return value.trim();
-  }
-
-  if (value && typeof value === 'object' && typeof (value as { text?: unknown }).text === 'string') {
-    return String((value as { text?: unknown }).text).trim();
-  }
-
-  return '';
-}
-
-type WorkflowObservationEvidence = {
-  TITLE?: string;
-  title?: string;
-  NARRATIVE?: string;
-  narrative?: string;
-  FACTS?: unknown[];
-  facts?: unknown[];
-  _synthetic?: boolean;
-  _provenance?: string;
-  _specRelevant?: boolean;
-};
-
-type WorkflowDecisionEvidence = {
-  TITLE?: string;
-  CHOSEN?: string;
-  RATIONALE?: string;
-  CONTEXT?: string;
-};
-
-type WorkflowOutcomeEvidence = {
-  OUTCOME?: string;
-};
-
-function buildWorkflowMemoryEvidenceSnapshot(params: {
-  title: string;
-  content: string;
-  triggerPhrases: string[];
-  files: FileChange[];
-  observations: WorkflowObservationEvidence[];
-  decisions: WorkflowDecisionEvidence[];
-  outcomes: WorkflowOutcomeEvidence[];
-  nextAction?: string;
-  blockers?: string;
-  recentContext?: Array<{ request?: string; learning?: string }>;
-}): MemoryEvidenceSnapshot {
-  const {
-    title,
-    content,
-    triggerPhrases,
-    files,
-    observations,
-    decisions,
-    outcomes,
-    nextAction,
-    blockers,
-    recentContext,
-  } = params;
-
-  const meaningfulBlockers = typeof blockers === 'string'
-    && blockers.trim().length > 0
-    && !/^none$/i.test(blockers.trim())
-    ? [blockers.trim()]
-    : [];
-
-  return {
-    title,
-    content,
-    triggerPhrases,
-    files: files.map((file) => ({
-      path: file.FILE_PATH,
-      description: file.DESCRIPTION,
-      specRelevant: true,
-    })),
-    observations: observations.map((observation) => ({
-      title: typeof observation.TITLE === 'string'
-        ? observation.TITLE
-        : (typeof observation.title === 'string' ? observation.title : ''),
-      narrative: typeof observation.NARRATIVE === 'string'
-        ? observation.NARRATIVE
-        : (typeof observation.narrative === 'string' ? observation.narrative : ''),
-      facts: Array.isArray(observation.FACTS)
-        ? observation.FACTS.map(normalizeEvidenceLine).filter(Boolean)
-        : (Array.isArray(observation.facts) ? observation.facts.map(normalizeEvidenceLine).filter(Boolean) : []),
-      synthetic: observation._synthetic === true,
-      provenance: typeof observation._provenance === 'string' ? observation._provenance : undefined,
-      specRelevant: observation._specRelevant !== false,
-    })),
-    decisions: decisions.map((decision) => (
-      [
-        typeof decision.TITLE === 'string' ? decision.TITLE : '',
-        typeof decision.CHOSEN === 'string' ? decision.CHOSEN : '',
-        typeof decision.RATIONALE === 'string' ? decision.RATIONALE : '',
-        typeof decision.CONTEXT === 'string' ? decision.CONTEXT : '',
-      ].filter(Boolean).join(' ')
-    )).filter(Boolean),
-    nextActions: typeof nextAction === 'string' && nextAction.trim().length > 0 ? [nextAction.trim()] : [],
-    blockers: meaningfulBlockers,
-    outcomes: outcomes
-      .map((outcome) => (typeof outcome.OUTCOME === 'string' ? outcome.OUTCOME.trim() : ''))
-      .filter(Boolean),
-    recentContext: (recentContext || []).map((context) => ({
-      request: context.request,
-      learning: context.learning,
-    })),
-    anchors: extractAnchorIds(content),
-  };
-}
-
-function formatSufficiencyAbort(result: MemorySufficiencyResult): string {
-  return `${MEMORY_SUFFICIENCY_REJECTION_CODE}: Not enough context for a proper memory. `
-    + `${result.reasons.join(' ')} `
-    + `Evidence counts: primary=${result.evidenceCounts.primary}, `
-    + `support=${result.evidenceCounts.support}, total=${result.evidenceCounts.total}, `
-    + `semanticChars=${result.evidenceCounts.semanticChars}, uniqueWords=${result.evidenceCounts.uniqueWords}.`;
-}
+// ───────────────────────────────────────────────────────────────
+// 3. STATELESS ENRICHMENT
+// ───────────────────────────────────────────────────────────────
 
 async function enrichStatelessData(
   collectedData: CollectedDataFull,
@@ -1196,7 +280,7 @@ async function enrichStatelessData(
   try {
     // Run spec-folder and git extraction in parallel
     const [specContext, gitContext] = await Promise.all([
-      extractSpecFolderContext(specFolder).catch((err: unknown) => {
+      extractSpecFolderContext(path.resolve(specFolder)).catch((err: unknown) => {
         const msg = err instanceof Error ? err.message : String(err);
         console.warn(`[workflow] enrichment degraded: ${msg}`);
         return null;
@@ -1308,7 +392,7 @@ async function enrichStatelessData(
 }
 
 // ───────────────────────────────────────────────────────────────
-// 2. MAIN WORKFLOW
+// 4. MAIN WORKFLOW
 // ───────────────────────────────────────────────────────────────
 
 /**
@@ -1862,7 +946,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   } catch (_error: unknown) { /* Expected: description.json may not exist yet */ }
   const contentSlug: string = generateContentSlug(preferredMemoryTask, folderBase, memoryNameHistoryForSlug);
   const rawCtxFilename: string = `${sessionData.DATE}_${sessionData.TIME}__${contentSlug}.md`;
-  const ctxFilename: string = ensureUniqueMemoryFilename(contextDir, rawCtxFilename);
+  let ctxFilename: string = rawCtxFilename;
 
   const keyTopicsInitial: string[] = extractKeyTopics(sessionData.SUMMARY, decisions.DECISIONS, specFolderName);
   const keyTopics: string[] = ensureMinSemanticTopics(keyTopicsInitial, effectiveFiles, specFolderName);
@@ -1952,6 +1036,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   const memoryClassification = buildMemoryClassificationContext(collectedData, sessionData);
   const sessionDedup = buildSessionDedupContext(collectedData, sessionData, memoryTitle);
   const causalLinks = buildCausalLinksContext(collectedData);
+  const effectiveDecisionCount = Math.max(sessionData.DECISION_COUNT, decisions.DECISIONS.length);
 
   const files: Record<string, string> = {
     [ctxFilename]: await populateTemplate('context', {
@@ -1967,7 +1052,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       FILES: effectiveFiles,
       HAS_FILES: effectiveFiles.length > 0,
       MESSAGE_COUNT: conversations.MESSAGES.length,
-      DECISION_COUNT: decisions.DECISIONS.length,
+      DECISION_COUNT: effectiveDecisionCount,
       DIAGRAM_COUNT: diagrams.DIAGRAMS.length,
       PHASE_COUNT: conversations.PHASE_COUNT,
       // P1-4: Convert 0-1 confidence to 0-100 for template percentage rendering
@@ -2067,6 +1152,26 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       }
     }, null, 2)
   };
+  let duplicateExistingFilename: string | null = null;
+  const existingRawPath = path.join(contextDir, rawCtxFilename);
+  if (fsSync.existsSync(existingRawPath)) {
+    try {
+      const existingRawContent = fsSync.readFileSync(existingRawPath, 'utf-8');
+      if (existingRawContent === files[ctxFilename]) {
+        duplicateExistingFilename = rawCtxFilename;
+      } else {
+        const uniqueCtxFilename = ensureUniqueMemoryFilename(contextDir, rawCtxFilename);
+        if (uniqueCtxFilename !== ctxFilename) {
+          files[uniqueCtxFilename] = files[ctxFilename];
+          delete files[ctxFilename];
+          ctxFilename = uniqueCtxFilename;
+        }
+      }
+    } catch (e: unknown) {
+      const errMsg = e instanceof Error ? e.message : String(e);
+      warn(`   Warning: Could not preflight duplicate check for ${rawCtxFilename}: ${errMsg}`);
+    }
+  }
 
   const isSimulation: boolean = !collectedData || !!collectedData._isSimulation || simFactory.requiresSimulation(collectedData);
   log(`   Template populated (quality: ${filterStats.qualityScore}/100)\n`);
@@ -2115,14 +1220,14 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     contaminationSeverity: contaminationMaxSeverity,
     messageCount: conversations.MESSAGES.length,
     toolCount: patchedToolCount,
-    decisionCount: decisions.DECISIONS.length,
+    decisionCount: effectiveDecisionCount,
     sufficiencyScore: sufficiencyResult.score,
     insufficientContext: !sufficiencyResult.pass,
   });
   files[ctxFilename] = injectQualityMetadata(files[ctxFilename], qualityV2.score01, qualityV2.qualityFlags);
 
   // Step 8.5b: Spec document health annotation (non-blocking)
-  let specDocHealth: SpecDocHealthResult | null = null;
+  let specDocHealth: ReturnType<typeof evaluateSpecDocHealth> | null = null;
   try {
     const specFolderAbsForHealth = path.resolve(specFolder);
     specDocHealth = evaluateSpecDocHealth(specFolderAbsForHealth);
@@ -2237,6 +1342,10 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 
   // Step 9: Write files with atomic writes and rollback on failure
   log('Step 9: Writing files...');
+  if (duplicateExistingFilename) {
+    log(`   Skipping ${ctxFilename}: duplicate of existing ${duplicateExistingFilename}`);
+    delete files[ctxFilename];
+  }
   const writtenFiles: string[] = await writeFilesAtomically(contextDir, files);
 
   // RC-6 fix: Check if the primary context file was actually written (it may
@@ -2315,7 +1424,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   log();
   log('Summary:');
   log(`  - ${conversations.MESSAGES.length} messages captured`);
-  log(`  - ${decisions.DECISIONS.length} key decisions documented`);
+  log(`  - ${effectiveDecisionCount} key decisions documented`);
   log(`  - ${diagrams.DIAGRAMS.length} diagrams preserved`);
   log(`  - Session duration: ${sessionData.DURATION}\n`);
 
@@ -2463,10 +1572,11 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 }
 
 // ───────────────────────────────────────────────────────────────
-// 3. EXPORTS
+// 5. EXPORTS
 // ───────────────────────────────────────────────────────────────
+
+export { stripWorkflowHtmlOutsideCodeFences } from './content-cleaner';
 
 export {
   runWorkflow,
-  stripWorkflowHtmlOutsideCodeFences,
 };

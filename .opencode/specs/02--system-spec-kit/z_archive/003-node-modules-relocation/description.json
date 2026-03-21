@@ -1,14 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/z_archive/003-node-modules-relocation",
-  "description": "Spec 120: Node Modules Relocation",
+  "description": "Spec 003: Node Modules Relocation",
   "keywords": [
     "spec",
-    "120",
+    "003",
     "node",
     "modules",
     "relocation"
   ],
-  "lastUpdated": "2026-03-19T15:45:44.257Z",
+  "lastUpdated": "2026-03-21T13:24:04.054Z",
   "specId": "003",
   "folderSlug": "node-modules-relocation",
   "parentChain": [

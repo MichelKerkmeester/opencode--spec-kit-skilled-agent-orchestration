@@ -69,6 +69,7 @@ export const CONFIG: TriggerConfig = {
   MIN_PHRASE_COUNT: 8,
   MAX_PHRASE_COUNT: 25,
   MIN_WORD_LENGTH: 3,
+  MIN_UNIGRAM_LENGTH: 6,
   MIN_CONTENT_LENGTH: 50,
   MIN_FREQUENCY: 1,
   LENGTH_BONUS: {
@@ -85,6 +86,12 @@ export const CONFIG: TriggerConfig = {
     COMPOUND_NOUN: 1.3,
   },
 };
+
+const GENERIC_STOPWORDS: Set<string> = new Set([
+  'manual', 'testing', 'per', 'spec', 'phase',
+  'the', 'for', 'with', 'from', 'into', 'about',
+  'this', 'that', 'which', 'where', 'when', 'what',
+]);
 
 // ---------------------------------------------------------------
 // 3. PREPROCESSING
@@ -118,8 +125,18 @@ export function tokenize(text: string): string[] {
       token === '__break__' ||
       (token.length >= CONFIG.MIN_WORD_LENGTH &&
        !/^\d+$/.test(token) &&
-       !/^[^a-z_]+$/.test(token))
+        !/^[^a-z_]+$/.test(token))
     );
+}
+
+function isAllowedUnigram(phrase: string): boolean {
+  const normalized = phrase.toLowerCase().trim();
+  if (!normalized || normalized.includes(' ')) {
+    return true;
+  }
+
+  return normalized.length >= CONFIG.MIN_UNIGRAM_LENGTH
+    && !GENERIC_STOPWORDS.has(normalized);
 }
 
 /** Filter out stop words (preserves __break__ markers) */
@@ -595,7 +612,8 @@ export function extractTriggerPhrases(text: string): string[] {
   const quadgrams = countNgrams(filtered, 4);
 
   const totalTokens = filtered.length;
-  const scoredUnigrams = scoreNgrams(unigrams, CONFIG.LENGTH_BONUS.UNIGRAM, totalTokens);
+  const scoredUnigrams = scoreNgrams(unigrams, CONFIG.LENGTH_BONUS.UNIGRAM, totalTokens)
+    .filter((candidate) => isAllowedUnigram(candidate.phrase));
   const scoredBigrams = scoreNgrams(bigrams, CONFIG.LENGTH_BONUS.BIGRAM, totalTokens);
   const scoredTrigrams = scoreNgrams(trigrams, CONFIG.LENGTH_BONUS.TRIGRAM, totalTokens);
   const scoredQuadgrams = scoreNgrams(quadgrams, CONFIG.LENGTH_BONUS.QUADGRAM, totalTokens);
@@ -683,4 +701,3 @@ export function extractTriggerPhrasesWithStats(text: string): ExtractionResult {
     },
   };
 }
-

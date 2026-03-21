@@ -4,7 +4,12 @@
 
 import { checkDatabaseUpdated } from '../core';
 import * as vectorIndex from '../lib/search/vector-index';
-import { init as initHybridSearch, hybridSearchEnhanced } from '../lib/search/hybrid-search';
+import {
+  init as initHybridSearch,
+  hybridSearchEnhanced,
+  bm25Search,
+  ftsSearch,
+} from '../lib/search/hybrid-search';
 import { generateQueryEmbedding } from '../lib/providers/embeddings';
 import { MemoryError, ErrorCodes } from '../lib/errors';
 import { createMCPSuccessResponse } from '../lib/response/envelope';
@@ -23,6 +28,16 @@ import {
   formatReportJSON,
   formatReportText,
 } from '../lib/eval/reporting-dashboard';
+import {
+  analyzeKValueSensitivityBatch,
+  formatKValueReport,
+} from '../lib/eval/k-value-analysis';
+import {
+  createUnifiedGraphSearchFn,
+  computeDegreeScores,
+} from '../lib/search/graph-search-fn';
+import { isDegreeBoostEnabled } from '../lib/search/search-flags';
+import type { RankedList } from '@spec-kit/shared/algorithms/rrf-fusion';
 
 import type { MCPResponse } from './types';
 
@@ -31,11 +46,18 @@ import type { MCPResponse } from './types';
 
 
 interface RunAblationArgs {
+  mode?: 'ablation' | 'k_sensitivity';
   channels?: AblationChannel[];
   groundTruthQueryIds?: number[];
   recallK?: number;
+  queries?: string[];
   storeResults?: boolean;
   includeFormattedReport?: boolean;
+}
+
+interface KSensitivityArgs {
+  queries?: string[];
+  limit?: number;
 }
 
 interface ReportingDashboardArgs {
@@ -54,7 +76,97 @@ function normalizeChannels(input?: string[]): AblationChannel[] {
   return valid.length > 0 ? valid : ALL_CHANNELS;
 }
 
+function initializeEvalHybridSearch(database: ReturnType<typeof vectorIndex.getDb>) {
+  const graphSearchFn = createUnifiedGraphSearchFn(database);
+  initHybridSearch(database, vectorIndex.vectorSearch, graphSearchFn);
+  return graphSearchFn;
+}
+
+function buildRawFusionLists(
+  database: NonNullable<ReturnType<typeof vectorIndex.getDb>>,
+  graphSearchFn: ReturnType<typeof createUnifiedGraphSearchFn>,
+  query: string,
+  embedding: Float32Array | number[] | null,
+  limit: number,
+): RankedList[] {
+  const lists: RankedList[] = [];
+
+  if (embedding) {
+    const vectorResults = vectorIndex.vectorSearch(embedding, {
+      limit,
+      minSimilarity: 0,
+      includeConstitutional: false,
+      includeArchived: false,
+    });
+    if (vectorResults.length > 0) {
+      lists.push({
+        source: 'vector',
+        results: vectorResults.map((row) => ({ id: row.id as number | string })),
+      });
+    }
+  }
+
+  const ftsResults = ftsSearch(query, { limit });
+  if (ftsResults.length > 0) {
+    lists.push({
+      source: 'fts',
+      results: ftsResults.map((row) => ({ id: row.id })),
+    });
+  }
+
+  const bm25Results = bm25Search(query, { limit });
+  if (bm25Results.length > 0) {
+    lists.push({
+      source: 'bm25',
+      results: bm25Results.map((row) => ({ id: row.id })),
+    });
+  }
+
+  const graphResults = graphSearchFn(query, { limit });
+  if (graphResults.length > 0) {
+    lists.push({
+      source: 'graph',
+      results: graphResults.map((row) => ({ id: row.id as number | string })),
+    });
+  }
+
+  if (isDegreeBoostEnabled()) {
+    const allResultIds = new Set<number>();
+    for (const list of lists) {
+      for (const row of list.results) {
+        if (typeof row.id === 'number') {
+          allResultIds.add(row.id);
+        }
+      }
+    }
+
+    if (allResultIds.size > 0) {
+      const degreeScores = computeDegreeScores(database, Array.from(allResultIds));
+      const degreeItems = Array.from(degreeScores.entries())
+        .map(([id, score]) => ({ id: Number(id), score }))
+        .filter((item) => Number.isFinite(item.id) && item.score > 0)
+        .sort((left, right) => right.score - left.score);
+
+      if (degreeItems.length > 0) {
+        lists.push({
+          source: 'degree',
+          results: degreeItems.map((item) => ({ id: item.id })),
+        });
+      }
+    }
+  }
+
+  return lists;
+}
+
 async function handleEvalRunAblation(args: RunAblationArgs): Promise<MCPResponse> {
+  if (args.mode === 'k_sensitivity') {
+    return handleEvalKSensitivity({
+      queries: args.queries,
+      limit: args.recallK,
+    });
+  }
+
   await checkDatabaseUpdated();
 
   if (!isAblationEnabled()) {
@@ -74,7 +186,7 @@ async function handleEvalRunAblation(args: RunAblationArgs): Promise<MCPResponse
     );
   }
 
-  initHybridSearch(db, vectorIndex.vectorSearch);
+  initializeEvalHybridSearch(db);
 
   const channels = normalizeChannels(args.channels as string[] | undefined);
   const recallK = typeof args.recallK === 'number' && Number.isFinite(args.recallK)
@@ -93,6 +205,7 @@ async function handleEvalRunAblation(args: RunAblationArgs): Promise<MCPResponse
       useFts: channelFlags.useFts,
       useGraph: channelFlags.useGraph,
       triggerPhrases: channelFlags.useTrigger ? undefined : [],
+      forceAllChannels: true,
     };
 
     const results = await hybridSearchEnhanced(query, embedding, searchOptions);
@@ -137,6 +250,65 @@ async function handleEvalRunAblation(args: RunAblationArgs): Promise<MCPResponse
   });
 }
 
+/** Representative queries used when no custom query set is provided. */
+const DEFAULT_K_SENSITIVITY_QUERIES = [
+  'memory retrieval',
+  'hybrid search fusion',
+  'context recall',
+  'RRF scoring',
+  'semantic search',
+];
+
+/**
+ * Run Multi-K RRF sensitivity analysis.
+ *
+ * 1. Runs hybridSearchEnhanced for each representative query
+ * 2. Converts results to per-query RankedList[] groups
+ * 3. Aggregates per-query sensitivity and formats the report
+ */
+async function handleEvalKSensitivity(args: KSensitivityArgs): Promise<MCPResponse> {
+  await checkDatabaseUpdated();
+
+  const db = vectorIndex.getDb();
+  if (!db) {
+    throw new MemoryError(
+      ErrorCodes.DATABASE_ERROR,
+      'Database not initialized. Server may still be starting up.',
+      {}
+    );
+  }
+
+  const graphSearchFn = initializeEvalHybridSearch(db);
+
+  const queries = Array.isArray(args.queries) && args.queries.length > 0
+    ? args.queries
+    : DEFAULT_K_SENSITIVITY_QUERIES;
+
+  const limit = typeof args.limit === 'number' && Number.isFinite(args.limit)
+    ? Math.max(1, Math.floor(args.limit))
+    : 20;
+
+  const queryLists: RankedList[][] = [];
+  for (const query of queries) {
+    const embedding = await generateQueryEmbedding(query);
+    queryLists.push(buildRawFusionLists(db, graphSearchFn, query, embedding, limit));
+  }
+
+  const analysis = analyzeKValueSensitivityBatch(queryLists);
+  const report = formatKValueReport(analysis);
+
+  return createMCPSuccessResponse({
+    tool: 'eval_run_ablation',
+    summary: `K-sensitivity analysis complete (${queries.length} queries, ${analysis.totalItems} unique items)`,
+    data: {
+      report,
+      queriesUsed: queries,
+      totalItems: analysis.totalItems,
+    },
+    hints: [report.recommendation],
+  });
+}
+
 async function handleEvalReportingDashboard(args: ReportingDashboardArgs): Promise<MCPResponse> {
   await checkDatabaseUpdated();
 
@@ -164,12 +336,15 @@ async function handleEvalReportingDashboard(args: ReportingDashboardArgs): Promi
 export {
   handleEvalRunAblation,
   handleEvalReportingDashboard,
+  handleEvalKSensitivity,
 };
 
 const handle_eval_run_ablation = handleEvalRunAblation;
 const handle_eval_reporting_dashboard = handleEvalReportingDashboard;
+const handle_eval_k_sensitivity = handleEvalKSensitivity;
 
 export {
   handle_eval_run_ablation,
   handle_eval_reporting_dashboard,
+  handle_eval_k_sensitivity,
 };

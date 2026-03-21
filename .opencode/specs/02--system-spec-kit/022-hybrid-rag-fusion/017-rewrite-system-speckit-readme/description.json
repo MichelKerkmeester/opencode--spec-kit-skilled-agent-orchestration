@@ -13,5 +13,9 @@
     "022-hybrid-rag-fusion"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Rewrite System Spec Kit README",
+  "status": "In Progress",
+  "importance_tier": "important",
+  "short_description": "Specification: 017-rewrite-system-speckit-readme"
 }

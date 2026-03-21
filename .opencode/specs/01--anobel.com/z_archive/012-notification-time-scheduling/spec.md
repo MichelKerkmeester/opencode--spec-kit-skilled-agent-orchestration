@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Notification Time-Based Scheduling [013-notification-time-scheduling/spec]"
+title: "Feature Specification: Notification Time-Based Scheduling [012-notification-time-scheduling/spec]"
 description: "Enable time-based scheduling for CMS alerts, allowing notifications to appear at specific times rather than just dates."
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "time"
   - "based"
   - "spec"
-  - "013"
+  - "012"
 importance_tier: "important"
 contextType: "decision"
 ---

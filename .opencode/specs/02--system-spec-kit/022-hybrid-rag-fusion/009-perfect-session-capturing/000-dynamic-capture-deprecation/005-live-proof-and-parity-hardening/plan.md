@@ -2,7 +2,7 @@
 title: "Implementation Plan: Live Proof And Parity Hardening [template:level_1/plan.md]"
 description: "Refresh retained live artifacts and keep multi-CLI parity claims tied to current evidence."
 trigger_phrases:
-  - "phase 020"
+  - "retained live proof"
   - "live proof"
 importance_tier: "normal"
 contextType: "general"

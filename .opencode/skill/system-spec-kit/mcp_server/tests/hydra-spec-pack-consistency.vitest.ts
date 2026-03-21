@@ -100,8 +100,8 @@ describe('Hydra spec-pack truth sync', () => {
     expect(tasksContent).toContain('.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md');
     expect(tasksContent).toContain('.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md');
     expect(tasksContent).toContain('Fix retention sweeps so deletion uses the passed database handle');
-    expect(checklistContent).toContain('**Verification Date**: 2026-03-17');
-    expect(checklistContent).toContain('Hydra closure verification passed across parent and phase validation');
+    expect(checklistContent).toContain('**Verification Date**: 2026-03-20');
+    expect(checklistContent).toContain('Hydra follow-up verification passed across targeted governed-retrieval, shared-space admin, graph-ranking, and retention regressions');
     expect(checklistContent).toContain('`283` passed files, `7790` passed tests, `11` skipped, and `28` todo');
     expect(checklistContent).toContain('Live prompt proof was captured for all five CLIs with timestamps');
   });
@@ -114,23 +114,23 @@ describe('Hydra spec-pack truth sync', () => {
     const playbookPath = path.join(SKILL_ROOT, 'manual_testing_playbook', 'manual_testing_playbook.md');
     const playbookContent = readDoc(playbookPath);
 
-    expect(playbookContent).toContain('NEW-121');
-    expect(playbookContent).toContain('NEW-122');
-    expect(playbookContent).toContain('NEW-123');
-    expect(playbookContent).toContain('NEW-125');
-    expect(playbookContent).toContain('NEW-129');
-    expect(playbookContent).toContain('NEW-130');
-    expect(playbookContent).toContain('NEW-142');
-    expect(playbookContent).toContain('NEW-143');
-    expect(playbookContent).toContain('NEW-144');
+    expect(playbookContent).toContain('### 121 | Adaptive shadow proposal and rollback (Phase 4)');
+    expect(playbookContent).toContain('### 122 | Governed ingest and scope isolation (Phase 5)');
+    expect(playbookContent).toContain('### 123 | Shared-space deny-by-default rollout (Phase 6)');
+    expect(playbookContent).toContain('### 125 | Hydra roadmap capability flags');
+    expect(playbookContent).toContain('### 129 | Lineage state active projection and asOf resolution');
+    expect(playbookContent).toContain('### 130 | Lineage backfill rollback drill');
+    expect(playbookContent).toContain('### 142 | Session transition trace contract');
+    expect(playbookContent).toContain('### 143 | Bounded graph-walk rollout and diagnostics');
+    expect(playbookContent).toContain('### 144 | Advisory ingest lifecycle forecast');
   });
 
   it('implementation summary records the closure verification set and corrected runtime boundaries', () => {
     const summaryContent = readDoc(parentDocs.implementationSummary);
 
     expect(summaryContent).toContain('Hydra closure pass now leaves the parent pack and all six phase packs');
-    expect(summaryContent).toContain('Owner-only shared-space operations now enforce the `owner` role correctly');
-    expect(summaryContent).toContain('retention sweeps now delete through the database handle');
+    expect(summaryContent).toContain('owner-only shared-space operations now enforce explicit actor identity plus owner authorization');
+    expect(summaryContent).toContain('The earlier retention sweep database-handle fix remains in place, so retention sweeps now delete through the passed database handle');
     expect(summaryContent).toContain('npm run test:hydra:phase1');
     expect(summaryContent).toContain('npx vitest run tests/feature-flag-reference-docs.vitest.ts tests/hydra-spec-pack-consistency.vitest.ts');
     expect(summaryContent).toContain('PASS (`53` tests)');

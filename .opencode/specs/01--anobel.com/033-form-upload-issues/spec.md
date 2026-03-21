@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: CV Upload Form File Type Validation Fix [035-form-upload-issues/spec]"
+title: "Feature Specification: CV Upload Form File Type Validation Fix [033-form-upload-issues/spec]"
 description: "Level 3 (+Arch) is appropriate when"
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "form"
   - "file"
   - "spec"
-  - "035"
+  - "033"
 importance_tier: "important"
 contextType: "decision"
 ---

@@ -17,5 +17,8 @@
     "011-upgrade-auto-populate"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: AI Auto-Populate on Spec Upgrade [.backup-20260216-113650/spec]",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: AI Auto-Populate on Spec Upgrade"
 }

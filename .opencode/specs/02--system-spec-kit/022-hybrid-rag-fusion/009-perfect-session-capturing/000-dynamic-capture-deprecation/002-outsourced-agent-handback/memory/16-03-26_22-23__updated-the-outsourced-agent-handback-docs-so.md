@@ -1,5 +1,5 @@
 ---
-title: "Updated The Outsourced [015-outsourced-agent-handback/16-03-26_22-23__updated-the-outsourced-agent-handback-docs-so]"
+title: "Updated The Outsourced"
 description: "Updated the outsourced-agent handback docs so every CLI surface explains the post-010 save gates, richer FILE metadata, and the documented snake case payload contract."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/010 perfect session capturing/015 outsourced agent handback"
@@ -411,7 +411,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 ```yaml
 # Core Identifiers
 session_id: "session-1773696227730-6589583a8df0"
-spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/015-outsourced-agent-handback"
+spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/010-perfect-session-capturing/000-dynamic-capture-deprecation/002-outsourced-agent-handback"
 channel: "main"
 
 # Classification

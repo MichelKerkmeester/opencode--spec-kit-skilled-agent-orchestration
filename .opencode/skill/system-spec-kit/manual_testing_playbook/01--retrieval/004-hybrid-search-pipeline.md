@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `EX-004` and confirm the
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| EX-004 | Hybrid search pipeline | Channel fusion sanity | `Validate graph search fallback tiers behavior. Capture the evidence needed to prove Non-empty diverse results; fallback not empty. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_search(query,limit:25)` -> `memory_search(bypassCache:true)` | Non-empty diverse results; fallback not empty | Both run outputs | PASS if channels contribute and no empty tail | Force fallback tier, inspect flags |
+| EX-004 | Hybrid search pipeline | Channel fusion sanity | `Validate graph search fallback tiers behavior. Capture the evidence needed to prove Non-empty diverse results; fallback not empty. Return a concise user-facing pass/fail verdict with the main reason.` | `memory_search({ query: "graph search fallback tiers behavior", limit: 25 })` -> `memory_search({ query: "graph search fallback tiers behavior", limit: 25, bypassCache: true, includeTrace: true })` | Non-empty diverse results; fallback not empty | Both run outputs plus trace envelope | PASS if channels contribute and no empty tail | Force fallback tier, inspect trace metadata and active channel set |
 
 ---
 

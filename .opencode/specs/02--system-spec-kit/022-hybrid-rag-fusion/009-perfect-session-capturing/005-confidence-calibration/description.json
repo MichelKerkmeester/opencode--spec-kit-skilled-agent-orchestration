@@ -1,6 +1,7 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/005-confidence-calibration",
   "description": "Feature Specification: Confidence Calibration",
+  "status": "Complete",
   "keywords": [
     "feature",
     "specification",
@@ -20,5 +21,8 @@
     "16-03-26_19-21__confidence-calibration.md",
     "17-03-26_14-47__phase-005-completion-reconfirmed.md",
     "17-03-26_16-44__strict-closeout-evidence-refreshed.md"
-  ]
+  ],
+  "title": "Feature Specification: Confidence Calibration",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: Confidence Calibration"
 }

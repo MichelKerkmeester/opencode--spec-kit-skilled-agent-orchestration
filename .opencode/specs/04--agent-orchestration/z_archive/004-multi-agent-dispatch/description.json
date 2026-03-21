@@ -17,5 +17,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: Multi-Agent Dispatch for Research and Debug Commands [004-multi-agent-dispatch/spec]",
+  "importance_tier": "important",
+  "short_description": "Spec: Multi-Agent Dispatch for Research and Debug Commands"
 }

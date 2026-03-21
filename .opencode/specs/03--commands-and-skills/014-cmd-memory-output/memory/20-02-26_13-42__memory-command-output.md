@@ -1,5 +1,5 @@
 ---
-title: "Memory dashboard design planning for 013-memory-command-output 2026-02-20"
+title: "Memory dashboard design planning for 014-cmd-memory-output 2026-02-20"
 description: "This session planned a Memory Dashboard Visual Design System for the 013-memory-command-output spec. It documented how to unify the visual language, status lines, and shared..."
 trigger_phrases:
   - "memory dashboard design system"
@@ -21,7 +21,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-02-20 |
 | Session ID | session-1771591363489-jfkp7j3kv |
-| Spec Folder | 03--commands-and-skills/013-memory-command-output |
+| Spec Folder | 03--commands-and-skills/014-cmd-memory-output |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -110,13 +110,13 @@ quality_flags:
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 03--commands-and-skills/013-memory-command-output
+/spec_kit:resume 03--commands-and-skills/014-cmd-memory-output
 ```
 
 **Or paste this continuation prompt:**
 ```
 CONTINUATION - Attempt 2
-Spec: 03--commands-and-skills/013-memory-command-output
+Spec: 03--commands-and-skills/014-cmd-memory-output
 Last: Technical Implementation Details
 Next: Continue implementation
 ```
@@ -196,7 +196,7 @@ Next: Continue implementation
 
 ## 2. OVERVIEW
 
-Planned a Memory Dashboard Visual Design System to unify visual output across all 5 memory commands (context, save, manage, learn, continue). Deep analysis revealed 5 different visual languages with inconsistent headers (ALL CAPS vs Title Case), dividers (heavy vs light vs none), box-drawing (square vs rounded vs none), status line formats, and icon usage (emoji vs ASCII vs none). Defined a 12-component design system: COMMAND HEADER, SECTION HEADER, KEY-VALUE PAIR, DATA TABLE, RESULT ITEM, STATUS BAR, METRIC ROW, ACTION MENU, INDICATOR SYSTEM, PROGRESS/TIER DISPLAY, BOX FRAME, EMPTY STATE. Created spec.md (Level 2) and plan.md with 3-phase implementation approach. Spec folder: .opencode/specs/03--commands-and-skills/013-memory-command-output/
+Planned a Memory Dashboard Visual Design System to unify visual output across all 5 memory commands (context, save, manage, learn, continue). Deep analysis revealed 5 different visual languages with inconsistent headers (ALL CAPS vs Title Case), dividers (heavy vs light vs none), box-drawing (square vs rounded vs none), status line formats, and icon usage (emoji vs ASCII vs none). Defined a 12-component design system: COMMAND HEADER, SECTION HEADER, KEY-VALUE PAIR, DATA TABLE, RESULT ITEM, STATUS BAR, METRIC ROW, ACTION MENU, INDICATOR SYSTEM, PROGRESS/TIER DISPLAY, BOX FRAME, EMPTY STATE. Created spec.md (Level 2) and plan.md with 3-phase implementation approach. Spec folder: .opencode/specs/03--commands-and-skills/014-cmd-memory-output/
 
 **Key Outcomes**:
 - Planned a Memory Dashboard Visual Design System to unify visual output across all 5 memory commands...
@@ -249,7 +249,7 @@ Nodes: 412 | Edges: 627 | Skills: 9
 <!-- ANCHOR:implementation-planned-memory-dashboard-visual-4c12bf27 -->
 ### FEATURE: Planned a Memory Dashboard Visual Design System to unify visual output across all 5 memory commands...
 
-Planned a Memory Dashboard Visual Design System to unify visual output across all 5 memory commands (context, save, manage, learn, continue). Deep analysis revealed 5 different visual languages with inconsistent headers (ALL CAPS vs Title Case), dividers (heavy vs light vs none), box-drawing (square vs rounded vs none), status line formats, and icon usage (emoji vs ASCII vs none). Defined a 12-component design system: COMMAND HEADER, SECTION HEADER, KEY-VALUE PAIR, DATA TABLE, RESULT ITEM, STATUS BAR, METRIC ROW, ACTION MENU, INDICATOR SYSTEM, PROGRESS/TIER DISPLAY, BOX FRAME, EMPTY STATE. Created spec.md (Level 2) and plan.md with 3-phase implementation approach. Spec folder: .opencode/specs/03--commands-and-skills/013-memory-command-output/
+Planned a Memory Dashboard Visual Design System to unify visual output across all 5 memory commands (context, save, manage, learn, continue). Deep analysis revealed 5 different visual languages with inconsistent headers (ALL CAPS vs Title Case), dividers (heavy vs light vs none), box-drawing (square vs rounded vs none), status line formats, and icon usage (emoji vs ASCII vs none). Defined a 12-component design system: COMMAND HEADER, SECTION HEADER, KEY-VALUE PAIR, DATA TABLE, RESULT ITEM, STATUS BAR, METRIC ROW, ACTION MENU, INDICATOR SYSTEM, PROGRESS/TIER DISPLAY, BOX FRAME, EMPTY STATE. Created spec.md (Level 2) and plan.md with 3-phase implementation approach. Spec folder: .opencode/specs/03--commands-and-skills/014-cmd-memory-output/
 
 **Details:** memory command output | dashboard visual | visual design system | output template | consistent formatting | box-drawing | status line format | command header | section header | indicator system | memory context save manage learn continue
 <!-- /ANCHOR:implementation-planned-memory-dashboard-visual-4c12bf27 -->
@@ -453,7 +453,7 @@ This session followed a **Linear Sequential** conversation pattern with **0** di
 
 > **User** | 2026-02-20 @ 13:42:43
 
-Planned a Memory Dashboard Visual Design System to unify visual output across all 5 memory commands (context, save, manage, learn, continue). Deep analysis revealed 5 different visual languages with inconsistent headers (ALL CAPS vs Title Case), dividers (heavy vs light vs none), box-drawing (square vs rounded vs none), status line formats, and icon usage (emoji vs ASCII vs none). Defined a 12-component design system: COMMAND HEADER, SECTION HEADER, KEY-VALUE PAIR, DATA TABLE, RESULT ITEM, STATUS BAR, METRIC ROW, ACTION MENU, INDICATOR SYSTEM, PROGRESS/TIER DISPLAY, BOX FRAME, EMPTY STATE. Created spec.md (Level 2) and plan.md with 3-phase implementation approach. Spec folder: .opencode/specs/03--commands-and-skills/013-memory-command-output/
+Planned a Memory Dashboard Visual Design System to unify visual output across all 5 memory commands (context, save, manage, learn, continue). Deep analysis revealed 5 different visual languages with inconsistent headers (ALL CAPS vs Title Case), dividers (heavy vs light vs none), box-drawing (square vs rounded vs none), status line formats, and icon usage (emoji vs ASCII vs none). Defined a 12-component design system: COMMAND HEADER, SECTION HEADER, KEY-VALUE PAIR, DATA TABLE, RESULT ITEM, STATUS BAR, METRIC ROW, ACTION MENU, INDICATOR SYSTEM, PROGRESS/TIER DISPLAY, BOX FRAME, EMPTY STATE. Created spec.md (Level 2) and plan.md with 3-phase implementation approach. Spec folder: .opencode/specs/03--commands-and-skills/014-cmd-memory-output/
 
 ---
 
@@ -472,9 +472,9 @@ Planned a Memory Dashboard Visual Design System to unify visual output across al
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/013-memory-command-output` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 03--commands-and-skills/014-cmd-memory-output` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/013-memory-command-output" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "03--commands-and-skills/014-cmd-memory-output" })` |
 | Stale Context | Information seems outdated | Check `last_accessed_epoch` vs current time |
 | Incomplete Handover | Missing continuation context | Review CONTINUE SESSION section above |
 | Dedup Collision | Wrong memory surfaced | Check `fingerprint_hash` for conflicts |
@@ -486,16 +486,16 @@ Planned a Memory Dashboard Visual Design System to unify visual output across al
 node .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts --status
 
 # List memories for this spec folder
-memory_search({ specFolder: "03--commands-and-skills/013-memory-command-output", limit: 10 })
+memory_search({ specFolder: "03--commands-and-skills/014-cmd-memory-output", limit: 10 })
 
 # Verify memory file integrity
-ls -la 03--commands-and-skills/013-memory-command-output/memory/
+ls -la 03--commands-and-skills/014-cmd-memory-output/memory/
 
 # Check for orphaned memories
 memory_search({ query: "orphaned", anchors: ["state"] })
 
 # Force re-index of this spec folder
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/013-memory-command-output --force
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 03--commands-and-skills/014-cmd-memory-output --force
 ```
 
 ### Recovery Priority
@@ -567,7 +567,7 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1771591363489-jfkp7j3kv"
-spec_folder: "03--commands-and-skills/013-memory-command-output"
+spec_folder: "03--commands-and-skills/014-cmd-memory-output"
 channel: "main"
 
 # Classification
@@ -653,7 +653,7 @@ trigger_phrases:
   - "memory dashboard design system"
   - "unified memory command output"
   - "shared status line format"
-  - "memory command visual language"parent_spec: "03--commands-and-skills/013-memory-command-output"
+  - "memory command visual language"parent_spec: "03--commands-and-skills/014-cmd-memory-output"
 child_sessions:
 
   []

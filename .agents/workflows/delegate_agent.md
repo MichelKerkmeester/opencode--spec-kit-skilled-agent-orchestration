@@ -7,7 +7,7 @@ argument-hint: "<agent_name> <task_description>"
 >
 > This command seamlessly delegates execution to a specialized sub-agent by having you **adopt** its exact persona and rules.
 >
-> **YOUR FIRST ACTION:** Identify the requested agent from the user input and read its `.md` identity file from `.opencode/agent/chatgpt/` (or equivalent provider directory).
+> **YOUR FIRST ACTION:** Identify the requested agent from the user input and read its `.md` identity file from the Gemini runtime directory first: `.gemini/agents/`. If runtime guidance is insufficient and you need authoring-family context, then consult `.opencode/agent/` or `.opencode/agent/chatgpt/` as supporting sources.
 
 ## CONSTRAINTS
 
@@ -29,9 +29,9 @@ EXECUTE PROMPT AND WORKFLOW:
    - WAIT for user response.
 
 2. LOCATE and READ the agent's identity file:
-   - Check `.opencode/agent/chatgpt/<agent_name>.md`
-   - Check `.opencode/agent/claude/<agent_name>.md`
    - Check `.gemini/agents/<agent_name>.md`
+   - If additional authoring context is needed, check `.opencode/agent/<agent_name>.md`
+   - If additional ChatGPT-family authoring context is needed, check `.opencode/agent/chatgpt/<agent_name>.md`
 
 // turbo 3. ADOPT IDENTITY:
 

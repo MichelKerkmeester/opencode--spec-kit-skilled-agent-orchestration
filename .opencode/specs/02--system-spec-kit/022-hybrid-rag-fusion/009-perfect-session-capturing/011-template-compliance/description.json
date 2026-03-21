@@ -15,9 +15,13 @@
     "022-hybrid-rag-fusion",
     "009-perfect-session-capturing"
   ],
+  "status": "Complete",
   "memorySequence": 2,
   "memoryNameHistory": [
     "16-03-26_22-23__template-compliance.md",
     "17-03-26_16-44__strict-closeout-evidence-refreshed.md"
-  ]
+  ],
+  "title": "Feature Specification: Template Compliance",
+  "importance_tier": "high",
+  "short_description": "Feature Specification: Template Compliance"
 }

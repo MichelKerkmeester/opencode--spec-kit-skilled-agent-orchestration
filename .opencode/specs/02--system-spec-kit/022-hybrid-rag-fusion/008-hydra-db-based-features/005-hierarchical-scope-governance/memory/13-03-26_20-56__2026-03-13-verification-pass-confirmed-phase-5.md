@@ -14,7 +14,7 @@ trigger_phrases:
   - "governed ingest retention audit"
   - "ingest retention audit cascade"
   - "retention audit cascade deletion"
-importance_tier: "normal"
+importance_tier: "important"
 contextType: "general"
 quality_score: 0.90
 quality_flags:
@@ -68,8 +68,8 @@ quality_flags:
 
 | Field | Value |
 |-------|-------|
-| Session Status | IN_PROGRESS |
-| Completion % | 14% |
+| Session Status | COMPLETED |
+| Completion % | 100% |
 | Last Activity | 2026-03-13T19:56:03.414Z |
 | Time in Session | 0m |
 | Continuation Count | 1 |
@@ -264,133 +264,6 @@ Next: Continue implementation
 
 **Confidence**: 0.65%
 
----
-
-### Decision 1: Fixed cascade deletion so graph edges are removed reliably with the base memory
-
-**Context**: Fixed cascade deletion so graph edges are removed reliably with the base memory - The audit found and corrected a real causal_edges cleanup bug in deleteMemory.
-
-**Timestamp**: 2026-03-13T19:56:03.435Z
-
-**Importance**: medium
-
-#### Visual Decision Tree
-
-```
-╭────────────────────────────────────────────────╮
-│  DECISION: Fixed cascade deletion so graph ed  │
-│  Context: Fixed cascade deletion so graph ...  │
-│  Confidence: 50% | 2026-03-13 @ 19:56:03       │
-╰────────────────────────────────────────────────╯
-                      │
-                      ▼
-              ╱────────────────╲
-             ╱  Choose option?  ╲
-            ╱                  ╲
-            ╲                  ╱
-             ╲────────────────╱
-      │
-   Option 1
-┌──────────────────┐
-│  Option 1        │
-└──────────────────┘
-             │           │
-             │           ▼
-             │  ┌────────────────────────────────────────┐
-             │  │  ✅ CHOSEN: Option 1                    │
-             │  │                                        │
-             │  │  Rationale:                            │
-             │  │  Fixed cascade deletion so graph       │
-             │  │  edges are removed reliably with the   │
-             │  │  base memory - The audit found an      │
-             │  └────────────────────────────────────────┘
-             │           │
-             └─────┬─────┘
-                   │
-                   ▼
-        ╭────────────────╮
-        │ Decision Logged │
-        ╰────────────────╯
-```
-
-#### Options Considered
-
-1. **Option 1**
-   Fixed cascade deletion so graph edges are removed reliably with the base memory
-
-#### Chosen Approach
-
-**Selected**: Option 1
-
-**Rationale**: Fixed cascade deletion so graph edges are removed reliably with the base memory - The audit found and corrected a real causal_edges cleanup bug in deleteMemory.
-
-#### Trade-offs
-
-**Confidence**: 0.5%
-
----
-
-### Decision 2: Left governance reviewer sign-off pending - The runtime is verified, but no huma
-
-**Context**: Left governance reviewer sign-off pending - The runtime is verified, but no human policy-review artifact exists.
-
-**Timestamp**: 2026-03-13T19:56:03.436Z
-
-**Importance**: medium
-
-#### Visual Decision Tree
-
-```
-╭────────────────────────────────────────────────╮
-│  DECISION: Left governance reviewer sign-off   │
-│  Context: Left governance reviewer sign-of...  │
-│  Confidence: 50% | 2026-03-13 @ 19:56:03       │
-╰────────────────────────────────────────────────╯
-                      │
-                      ▼
-              ╱────────────────╲
-             ╱  Choose option?  ╲
-            ╱                  ╲
-            ╲                  ╱
-             ╲────────────────╱
-      │
-   Option 1
-┌──────────────────┐
-│  Option 1        │
-└──────────────────┘
-             │           │
-             │           ▼
-             │  ┌────────────────────────────────────────┐
-             │  │  ✅ CHOSEN: Option 1                    │
-             │  │                                        │
-             │  │  Rationale:                            │
-             │  │  Left governance reviewer sign-off     │
-             │  │  pending - The runtime is verified,    │
-             │  │  but no human policy-review arti       │
-             │  └────────────────────────────────────────┘
-             │           │
-             └─────┬─────┘
-                   │
-                   ▼
-        ╭────────────────╮
-        │ Decision Logged │
-        ╰────────────────╯
-```
-
-#### Options Considered
-
-1. **Option 1**
-   Left governance reviewer sign-off pending
-
-#### Chosen Approach
-
-**Selected**: Option 1
-
-**Rationale**: Left governance reviewer sign-off pending - The runtime is verified, but no human policy-review artifact exists.
-
-#### Trade-offs
-
-**Confidence**: 0.5%
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -488,7 +361,7 @@ spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-featu
 channel: "main"
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)

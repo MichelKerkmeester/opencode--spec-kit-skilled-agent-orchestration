@@ -34,7 +34,7 @@ The parent pack and each phase pack were normalized back onto the active `system
 
 ### Runtime Corrections
 
-The March 20 2026 follow-up fixed three more reviewed runtime gaps in the shipped MCP surface. Governed retrieval scope now survives the MCP boundary end-to-end across `memory_search`, `memory_context`, and `memory_quick_search`; shared-space admin mutations now require explicit actor identity plus owner authorization, with first-create auto-bootstrapping the creator as `owner`; and the FTS-backed graph channel now returns the same BM25-aware composite score it uses for SQL ranking instead of collapsing back to edge strength only. The earlier retention sweep database-handle fix remains in place.
+The March 20 2026 follow-up fixed three more reviewed runtime gaps in the shipped MCP surface. Governed retrieval scope now survives the MCP boundary end-to-end across `memory_search`, `memory_context`, and `memory_quick_search`; owner-only shared-space operations now enforce explicit actor identity plus owner authorization, with first-create auto-bootstrapping the creator as `owner`; and the FTS-backed graph channel now returns the same BM25-aware composite score it uses for SQL ranking instead of collapsing back to edge strength only. The earlier retention sweep database-handle fix remains in place, so retention sweeps now delete through the passed database handle rather than a global default path.
 
 ### Truth-Sync Guarding
 

@@ -1,11 +1,11 @@
 ---
-title: "Implementation Summary [134-command-adherence/implementation-summary]"
+title: "Implementation Summary [017-command-adherence/implementation-summary]"
 description: "Implementation work for the core gate-bypass fix is still in progress in this spec folder."
 trigger_phrases:
   - "implementation"
   - "summary"
   - "implementation summary"
-  - "134"
+  - "017"
   - "command"
 importance_tier: "normal"
 contextType: "implementation"

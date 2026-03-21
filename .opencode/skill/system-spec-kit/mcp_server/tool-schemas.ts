@@ -457,10 +457,20 @@ const evalRunAblation: ToolDefinition = {
     type: 'object',
     additionalProperties: false,
     properties: {
+      mode: {
+        type: 'string',
+        enum: ['ablation', 'k_sensitivity'],
+        description: 'Evaluation mode. Defaults to ablation; use k_sensitivity for raw pre-fusion RRF K analysis.'
+      },
       channels: {
         type: 'array',
         items: { type: 'string', enum: ['vector', 'bm25', 'fts5', 'graph', 'trigger'] },
         description: 'Channels to ablate (default: all channels).'
+      },
+      queries: {
+        type: 'array',
+        items: { type: 'string' },
+        description: 'Optional custom query set for k_sensitivity mode.'
       },
       groundTruthQueryIds: {
         type: 'array',

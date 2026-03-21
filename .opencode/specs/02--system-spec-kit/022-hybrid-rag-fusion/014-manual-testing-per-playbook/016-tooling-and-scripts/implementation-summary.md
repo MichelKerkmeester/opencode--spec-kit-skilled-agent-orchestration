@@ -21,7 +21,7 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 016-tooling-and-scripts |
-| **Completed** | 2026-03-16 |
+| **Completed** | 2026-03-21 |
 | **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
@@ -30,11 +30,11 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase 016 (tooling-and-scripts) manual testing documentation packet isolating playbook scenarios for the tooling-and-scripts feature catalog category. The packet maps each assigned test ID to its feature catalog entry and preserves exact prompts, command sequences, evidence expectations, and verdict criteria from the canonical playbook.
+Phase 016 (tooling-and-scripts) manual testing execution completed: all 23 scenarios verdicted with evidence. The documentation packet is now fully executed — 21 PASS, 2 PARTIAL (138 and PHASE-005), 0 FAIL.
 
-### Documentation Packet
+### Documentation Packet + Execution
 
-Four template-aligned files provide structured per-phase test documentation so operators can execute, evidence, and review tooling-and-scripts scenarios without re-reading the monolithic playbook.
+Phase packet created and executed. Evidence captured in `scratch/execution-evidence.md`.
 
 ### Files Changed
 
@@ -42,8 +42,9 @@ Four template-aligned files provide structured per-phase test documentation so o
 |------|--------|---------|
 | spec.md | Created | Phase requirements, test inventory, feature catalog links, and acceptance criteria |
 | plan.md | Created | Execution plan with preconditions, evidence capture, and verdict pipeline |
-| tasks.md | Created | Task tracker for setup, execution, and verification work |
-| checklist.md | Created | QA verification checklist with P0/P1/P2 priority items |
+| tasks.md | Created + Updated | Task tracker — all 18 tasks marked complete |
+| checklist.md | Created + Updated | QA verification checklist — 22/22 P0, 10/10 P1, 3/3 P2 verified |
+| scratch/execution-evidence.md | Created | Full execution transcript with verdicts, artifact detail, and issues log |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -77,6 +78,10 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 | checklist.md anchor count | PASS — exactly 8 anchors |
 | checklist.md no overview section | PASS — no ANCHOR:overview |
 | checklist.md no standalone P0/P1 headers | PASS — priority is per-item only |
+| All 23 scenarios verdicted | PASS — 21 PASS, 2 PARTIAL, 0 FAIL |
+| Vitest suites 127 + 128 | PASS — 2+2 tests, all passing |
+| Sandbox cleanup | PASS — specs/999-phase-test removed |
+| Checklist fully verified | PASS — 22/22 P0, 10/10 P1, 3/3 P2 |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -84,8 +89,10 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Draft status** — Test scenarios are documented but not yet executed. Final verdicts require manual or MCP-backed execution.
-2. **Coverage audit pending** — Cross-reference validation against the full playbook index has not been run for this individual phase.
+1. **138 PARTIAL** — `scripts/utils/source-capabilities.ts` has 1 TS-MODULE-HEADER WARN (not an error). `verify_alignment_drift.py` returns PASS overall. Easy fix: add MODULE: header to that file.
+2. **PHASE-005 PARTIAL** — `check-phase-links.sh` path in playbook (`scripts/spec/`) differs from actual location (`scripts/rules/`). Playbook doc gap. All 7 workflow steps verified individually.
+3. **PHASE-001 field names** — JSON output uses `recommended_phases` not `phase_recommended` (playbook expectation); 4 scoring dimensions not 5. Functionality is correct; playbook description needs updating.
+4. **`--tier scratch` invalid** — Playbook scenario 113 references "scratch" tier which does not exist in the CLI. Valid tiers: constitutional/critical/important/normal/temporary/deprecated.
 <!-- /ANCHOR:limitations -->
 
 ---

@@ -16,5 +16,8 @@
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Specification: cli-gemini Model Consolidation + cli-codex Skill",
+  "importance_tier": "normal",
+  "short_description": "Specification: cli-gemini Model Consolidation + cli-codex Skill"
 }

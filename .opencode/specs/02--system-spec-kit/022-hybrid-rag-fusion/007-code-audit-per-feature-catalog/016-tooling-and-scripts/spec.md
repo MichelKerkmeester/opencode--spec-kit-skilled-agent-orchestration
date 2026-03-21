@@ -28,12 +28,12 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-10 |
 | **Branch** | `016-tooling-and-scripts` |
 | **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../015-retrieval-enhancements/spec.md |
-| **Next Phase** | ../017-governance/spec.md |
+| **Predecessor** | ../015-retrieval-enhancements/spec.md |
+| **Successor** | ../017-governance/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

@@ -26,12 +26,12 @@ import {
   QUALITY_WEIGHTS,
   DEFAULT_TOKEN_BUDGET,
   DEFAULT_CHAR_BUDGET,
-} from '../handlers/memory-save';
+} from '../handlers/quality-loop';
 
 import type {
   QualityScore,
   QualityLoopResult,
-} from '../handlers/memory-save';
+} from '../handlers/quality-loop';
 
 /* ───────────────────────────────────────────────────────────────
    FIXTURES

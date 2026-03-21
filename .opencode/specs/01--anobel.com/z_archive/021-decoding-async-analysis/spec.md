@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Image Decoding Async Analysis [023-decoding-async-analysis/spec]"
+title: "Feature Specification: Image Decoding Async Analysis [021-decoding-async-analysis/spec]"
 description: "The decoding=\"async\" HTML attribute for <img> elements is a performance optimization that may not be utilized on anobel.com. Without this attribute, the browser decodes images s..."
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "decoding"
   - "async"
   - "spec"
-  - "023"
+  - "021"
 importance_tier: "important"
 contextType: "decision"
 ---

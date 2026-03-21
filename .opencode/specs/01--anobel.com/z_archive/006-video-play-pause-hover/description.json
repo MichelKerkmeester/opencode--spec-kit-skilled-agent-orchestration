@@ -17,5 +17,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Video Play/Pause Button Hover Effect [006-video-play-pause-hover/spec]",
+  "importance_tier": "important",
+  "short_description": "Video Play/Pause Button Hover Effect"
 }

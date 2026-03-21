@@ -550,11 +550,11 @@ Memory files are always saved to the child folder's `memory/` directory (e.g., `
 
 Context preservation across sessions via hybrid search (vector similarity + BM25 + FTS with Reciprocal Rank Fusion).
 
-**Server:** `@spec-kit/mcp-server` v1.7.2 — `context-server.ts` (~682 lines) with ~40 handler files, 26 lib subdirectories, and 32 MCP tools across 7 layers.
+**Server:** `@spec-kit/mcp-server` v1.7.2 — `context-server.ts` (~682 lines) with ~40 handler files, 26 lib subdirectories, and 33 MCP tools across 7 layers.
 
-**Memory Commands:** 6 slash commands (`/memory:save`, `/memory:continue`, `/memory:manage`, `/memory:learn`, `/memory:analyze`, `/memory:shared`) cover all 32 tools. The original `/memory:context` was merged into `/memory:analyze` (v2.4.0.0). See `.opencode/command/memory/` for full command documentation.
+**Memory Commands:** 6 slash commands (`/memory:save`, `/memory:continue`, `/memory:manage`, `/memory:learn`, `/memory:analyze`, `/memory:shared`) cover all 33 tools. The original `/memory:context` was merged into `/memory:analyze` (v2.4.0.0). See `.opencode/command/memory/` for full command documentation.
 
-**MCP Tools (13 most-used of 32 total — see [memory_system.md](./references/memory/memory_system.md) for full reference):**
+**MCP Tools (13 most-used of 33 total — see [memory_system.md](./references/memory/memory_system.md) for full reference):**
 
 | Tool                            | Layer | Purpose                                           |
 | ------------------------------- | ----- | ------------------------------------------------- |
@@ -594,6 +594,8 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - Similar existing memories are auto-merged via reconsolidation (≥0.88 similarity). The save may update an existing memory instead of creating a new one. See `SPECKIT_RECONSOLIDATION` flag.
 - A verify-fix-verify loop auto-corrects trigger phrases, anchors, and token budget (up to 2 retries).
 - Entities are extracted and linked cross-document at save time. See `SPECKIT_AUTO_ENTITIES` and `SPECKIT_ENTITY_LINKING` flags.
+- Governed save and retrieval flows can carry `tenantId`, `userId`, `agentId`, and `sharedSpaceId` so private, agent-scoped, and shared-space memory boundaries stay aligned end to end.
+- Shared-memory collaboration is opt-in: use `/memory:shared` to enable rollout, create spaces, and manage deny-by-default memberships before relying on shared-space save or retrieval flows.
 
 **Epistemic Learning:** Use `task_preflight()` before and `task_postflight()` after implementation to measure knowledge gains. Learning Index: `LI = (KnowledgeDelta × 0.4) + (UncertaintyReduction × 0.35) + (ContextImprovement × 0.25)`. Review trends via `memory_get_learning_history()`. See [epistemic_vectors.md](./references/memory/epistemic_vectors.md).
 
@@ -614,7 +616,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - **Mutation ledger** — Append-only audit trail for all memory mutations (create, update, delete, reinforce); implemented via SQLite triggers; queryable for compliance and rollback
 - **Retrieval telemetry** — 4-dimension metrics (latency, retrieval mode, fallback activation, quality score) plus Hydra architecture metadata. Enabled only when `SPECKIT_EXTENDED_TELEMETRY=true` (default: off)
 - **Hydra roadmap metadata** — `SPECKIT_HYDRA_PHASE` plus prefixed `SPECKIT_HYDRA_*` capability flags annotate telemetry, eval baselines, and migration checkpoint sidecars without changing live retrieval behavior by themselves
-- **Feature catalog** — 191 entries across 19 categories (`feature_catalog/01--retrieval/` through `19--feature-flag-reference/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
+- **Feature catalog** — 194 documented features across 19 categories (`feature_catalog/01--retrieval/` through `19--feature-flag-reference/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
 - **Manual testing playbook** — Operator-facing validation matrix covering existing (`EX-*`) and new (`NEW-*`) features with deterministic prompts, execution sequences, and pass/fail triage. Includes review protocol and subagent utilization ledger. See [manual_testing_playbook/](./manual_testing_playbook/)
 - **Validation scoring** — `wasUseful=false` applies a demotion penalty to memory scores; 5+ positive validations may promote a memory's importance tier
 - **Tree-thinning threshold** — Lowered from 300 to 150 characters with merge group cap of 3 for improved file visibility in memory context
@@ -639,7 +641,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 | `SPECKIT_PIPELINE_V2`        | on (inert) | Legacy flag — always true; v1 pipeline removed. Retained for backward compatibility only |
 | `SPECKIT_QUALITY_LOOP`       | off     | Enables verify-fix-verify quality loop on save with up to 2 autofix retries |
 | `SPECKIT_RELATIONS`          | off     | Enables correction tracking with undo semantics (superseded/deprecated/refined/merged) |
-| `SPECKIT_STRICT_SCHEMAS`     | on      | Strict Zod validation for all 32 MCP tools; rejects hallucinated parameters |
+| `SPECKIT_STRICT_SCHEMAS`     | on      | Strict Zod validation for all 33 MCP tools; rejects hallucinated parameters |
 | `SPECKIT_DEGREE_BOOST`       | on      | Typed weighted-degree channel in graph signal scoring |
 | `SPECKIT_GRAPH_SIGNALS`      | on      | Graph momentum and causal depth scoring signals |
 | `SPECKIT_COMMUNITY_DETECTION` | on     | Community detection clustering for graph-aware retrieval |
@@ -850,7 +852,7 @@ Automated validation of spec folder contents via `validate.sh`.
 | MCP Server        | `mcp_server/context-server.ts`                                             | Spec Kit Memory MCP (~682 lines)  |
 | Database          | `mcp_server/dist/database/context-index.sqlite`                            | Vector search index (canonical runtime path) |
 | Constitutional    | `constitutional/`                                                          | Always-surface rules              |
-| Feature Catalog   | `feature_catalog/` (19 categories, 191 entries)                            | Per-feature current-reality docs  |
+| Feature Catalog   | `feature_catalog/` (19 categories, 194 documented features)                | Per-feature current-reality docs  |
 | Testing Playbook  | `manual_testing_playbook/` (3 files)                                       | Manual validation matrix          |
 
 ---

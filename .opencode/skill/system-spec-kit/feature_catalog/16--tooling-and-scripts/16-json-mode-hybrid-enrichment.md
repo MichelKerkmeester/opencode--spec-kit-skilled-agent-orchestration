@@ -33,7 +33,7 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 5. Truncated outcome/title handling respects explicit input values instead of silently replacing them.
 6. `git_changed_file_count` follows a stable 3-tier priority chain: explicit count > enrichment-derived count > provenance-based count.
 7. Template assembly preserves explicit session-level message and tool counts when conversation arrays are sparse.
-8. After the memory file is written (Step 10.5), a post-save quality review validates that JSON payload fields propagated correctly to frontmatter before indexing begins.
+8. After the memory file is written (Step 10.5), a post-save quality review validates that JSON payload fields propagated correctly to the saved memory, using both frontmatter and the `## MEMORY METADATA` YAML block before indexing begins.
 9. JSON payload fields `sessionSummary`, `triggerPhrases`, `keyDecisions`, and `contextType` now properly flow through to rendered frontmatter via RC1–RC5 fixes (see §3.4).
 
 ---
@@ -70,6 +70,7 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 
 - After the memory file is written but before indexing begins, a post-save review step compares the saved frontmatter against the original JSON payload.
 - Detects propagation failures including generic titles, path-fragment trigger phrases, importance_tier mismatch, decision_count of zero, contextType mismatch, and generic descriptions.
+- Reads authoritative `decision_count` from either frontmatter or `## MEMORY METADATA`, matching the shipped runtime parser.
 - Emits a machine-readable review with severity levels (HIGH/MEDIUM/LOW) so callers can surface actionable field-level failures.
 - Skipped automatically in recovery mode and stateless mode where no authoritative JSON payload is available.
 - See feature catalog entry `13--memory-quality-and-indexing/19-post-save-quality-review.md` for full specification.
@@ -85,7 +86,8 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 | `scripts/types/session-types.ts` | Structured JSON contract types for `toolCalls` and `exchanges` |
 | `scripts/utils/input-normalizer.ts` | Snake_case JSON compatibility, structured-summary normalization |
 | `scripts/extractors/collect-session-data.ts` | Wave 2 count, confidence, and outcome handling |
-| `scripts/core/workflow.ts` | JSON/file authority behavior, structured-input routing |
+| `scripts/core/workflow.ts` | JSON/file authority behavior, structured-input routing, and post-save review invocation gating |
+| `scripts/core/post-save-review.ts` | Post-save review logic, severity grading, and MEMORY METADATA-aware field checks |
 | `scripts/memory/generate-context.ts` | CLI help text and structured-first save workflow documentation |
 
 ### Tests
@@ -109,5 +111,5 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 
 - Group: Tooling and scripts
 - Source feature title: JSON mode hybrid enrichment
-- Source spec: `010-perfect-session-capturing/016-json-mode-hybrid-enrichment`
+- Source spec: `009-perfect-session-capturing/016-json-mode-hybrid-enrichment`
 - Phase: 016

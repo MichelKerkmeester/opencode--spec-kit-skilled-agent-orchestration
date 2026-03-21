@@ -10,11 +10,14 @@
   "scripts": {
     "build": "tsc --build",
     "lint": "tsc --noEmit",
-    "test": "vitest run --config ../mcp_server/vitest.config.ts --root .",
+    "test": "vitest run --config ../mcp_server/vitest.config.ts --root . && npm run test:legacy",
+    "test:legacy": "npm run build && node tests/test-scripts-modules.js && node tests/test-extractors-loaders.js",
     "check:ast": "npx tsx evals/check-no-mcp-lib-imports-ast.ts && npx tsx evals/check-handler-cycles-ast.ts",
-    "check": "npm run lint && npx tsx evals/check-no-mcp-lib-imports.ts && bash check-api-boundary.sh && npx tsx evals/check-architecture-boundaries.ts && npx tsx evals/check-allowlist-expiry.ts && npx tsx evals/check-source-dist-alignment.ts"
+    "check": "npm run lint && npx tsx evals/check-no-mcp-lib-imports.ts && bash check-api-boundary.sh && npx tsx evals/check-architecture-boundaries.ts && npx tsx evals/check-allowlist-expiry.ts && npx tsx evals/check-source-dist-alignment.ts && npx tsx evals/check-no-mcp-lib-imports-ast.ts && npx tsx evals/check-handler-cycles-ast.ts"
   },
   "dependencies": {
+    "@spec-kit/mcp-server": "workspace:*",
+    "@spec-kit/shared": "workspace:*",
     "better-sqlite3": "12.6.2",
     "sqlite-vec": "0.1.7-alpha.2"
   },

@@ -20,6 +20,7 @@ contextType: "implementation"
 | **Spec Folder** | 027-copilot-gpt-5-4-agents |
 | **Completed** | 2026-03-06 |
 | **Level** | 2 |
+| **Status** | Stalled |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -102,4 +103,5 @@ I first checked the current agent metadata and the runtime-specific setup rules.
 ## Known Limitations
 
 1. **Runtime execution not exercised** This work verifies config shape and target strings, but it does not launch each agent runtime end-to-end.
+2. **Stalled (2026-03-21):** The `model:` and `reasoningEffort:` frontmatter fields were never added to the `.opencode/agent/*.md` files, and `model = "gpt-5.4"` was never added to `.codex/config.toml`. This implementation-summary describes an intended completed state; the underlying file changes are absent from the repository.
 <!-- /ANCHOR:limitations -->

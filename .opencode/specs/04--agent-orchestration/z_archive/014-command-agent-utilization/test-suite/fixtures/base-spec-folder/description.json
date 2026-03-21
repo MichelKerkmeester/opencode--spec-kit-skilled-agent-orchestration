@@ -18,5 +18,9 @@
     "fixtures"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: JWT Authentication [base-spec-folder/spec]",
+  "status": "In Progress",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: JWT Authentication"
 }

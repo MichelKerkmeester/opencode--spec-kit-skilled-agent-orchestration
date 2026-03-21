@@ -37,11 +37,11 @@ Phase 3 unifies the current fragmented graph-related retrieval signals into one 
 | **Created** | 2026-03-13 |
 | **Updated** | 2026-03-13 |
 | **Branch** | `022-hybrid-rag-fusion` |
-| **Parent Spec** | `../spec.md` |
+| **Parent Spec** | ../spec.md |
 | **Parent Plan** | `../plan.md` |
 | **Phase** | 3 of 6 |
-| **Predecessor** | `002-versioned-memory-state` |
-| **Successor** | `004-adaptive-retrieval-loops` |
+| **Predecessor** | ../002-versioned-memory-state/spec.md |
+| **Successor** | ../004-adaptive-retrieval-loops/spec.md |
 | **Handoff Criteria** | Unified graph scoring, deterministic ranking, explainability traces, and regression benchmarks verified |
 
 ### Phase Context
@@ -309,4 +309,3 @@ Build a single deterministic graph-aware retrieval contract that uses causal, en
 - **Task Breakdown**: `tasks.md`
 - **Verification Checklist**: `checklist.md`
 - **Decision Records**: `decision-record.md`
-

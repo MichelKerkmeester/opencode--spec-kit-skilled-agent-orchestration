@@ -48,6 +48,17 @@ export {
   get_atomicity_metrics,
 } from './memory-save';
 
+// PE-gating handlers (extracted from memory-save)
+export {
+  calculateDocumentWeight,
+  isSpecDocumentType,
+  findSimilarMemories,
+  reinforceExistingMemory,
+  markMemorySuperseded,
+  updateExistingMemory,
+  logPeDecision,
+} from './pe-gating';
+
 // Memory ingest handlers
 export {
   handleMemoryIngestStart,

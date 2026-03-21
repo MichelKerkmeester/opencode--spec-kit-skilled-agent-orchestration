@@ -83,7 +83,7 @@ I completed the root packet in two steps: first the structural Level 1 closeout,
 ---
 
 <!-- ANCHOR:limitations -->
-## Current Reality Notes
+## Known Limitations
 
 1. The root packet is structurally complete and the latest umbrella verification rerun is green; any future drift should be recorded as a new verification snapshot rather than preserved here as a stale warning.
 <!-- /ANCHOR:limitations -->

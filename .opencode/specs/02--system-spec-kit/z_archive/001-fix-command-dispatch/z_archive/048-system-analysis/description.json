@@ -18,5 +18,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "048: SpecKit & Memory System Remediation [048-system-analysis/spec]",
+  "importance_tier": "important",
+  "short_description": "048: SpecKit & Memory System Remediation"
 }

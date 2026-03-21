@@ -24,7 +24,7 @@ Stateless mode (`node generate-context.js "014-stateless-quality-gates"`) is blo
 
 **Key Decisions**: Tier rules rather than disable Gate A entirely; route `--stdin` / `--json` through preloaded `collectedData` plus explicit spec-folder resolution/validation (not a temp file); downgrade only tool-title-with-path for Claude Code source.
 
-**Critical Dependencies**: Phase 016 fixes (ALIGNMENT_BLOCK, technicalContext, confidence) must be merged first.
+**Critical Dependencies**: Adjacent session-capturing alignment, metadata, and confidence fixes must remain in place so this phase's Gate A and contamination behavior stays coherent.
 
 ---
 
@@ -49,10 +49,10 @@ Stateless mode (`node generate-context.js "014-stateless-quality-gates"`) is blo
 
 ### Phase Context
 
-This is **Phase 17** of the Perfect Session Capturing specification.
+This is **Phase 14** of the Perfect Session Capturing specification.
 
-**Scope Boundary**: Phase 017 shipped the quality-gate and CLI updates in the system-spec-kit scripts workspace so legitimate stateless Claude Code saves no longer depend on the `/tmp/save-context-data.json` workaround.
-**Dependencies**: Phase 016 alignment and metadata fixes remain a prerequisite because Phase 017 builds on the explicit-CLI alignment warning path, technical-context propagation, and string-form decision confidence extraction.
+**Scope Boundary**: Phase 014 shipped the quality-gate and CLI updates in the system-spec-kit scripts workspace so legitimate stateless Claude Code saves no longer depend on the `/tmp/save-context-data.json` workaround.
+**Dependencies**: This shipped phase relies on already-landed explicit-CLI alignment warning, technical-context propagation, and string-form decision-confidence extraction in the surrounding runtime. Those surrounding semantics were documented again later in phase `016`, but phase `014` is not chronologically gated on `016`.
 **Deliverables**: Tiered Gate A, `--stdin` / `--json` CLI flags, source-aware contamination filtering, and targeted regression coverage for the affected workflow lanes.
 ---
 
@@ -140,7 +140,7 @@ This phase fixes the quality gate architecture so stateless saves from Claude Co
 | REQ-004 | V8/V9/V11 still hard-block in stateless mode | Test with foreign spec contamination verifies abort |
 | REQ-005 | `--stdin` / `--json` validate JSON shape and target spec folder before passing to workflow | Malformed JSON or invalid target spec folder produces a clear error message |
 | REQ-006 | Source-aware filter only affects Claude Code captures | Other capture sources (Codex, Copilot, Gemini) retain original severity |
-| REQ-007 | Broader closure evidence remains consistent with the shipped Phase 017 behavior | The parent closure baseline remains green, and the Phase 017 targeted regression lane reruns cleanly on 2026-03-18 |
+| REQ-007 | Broader closure evidence remains consistent with the shipped Phase 014 behavior | The parent closure baseline remains green, and the Phase 014 targeted regression lane reruns cleanly on 2026-03-18 |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -153,7 +153,7 @@ This phase fixes the quality gate architecture so stateless saves from Claude Co
 - **SC-003**: **Given** a Claude Code stateless capture containing tool-title-with-path patterns, **When** the contamination filter evaluates the content, **Then** the score is not capped at 0.60 and the save proceeds.
 - **SC-004**: **Given** a stateless capture with foreign spec contamination (V8/V9 trigger), **When** Gate A evaluates the content, **Then** the save is aborted with QUALITY_GATE_ABORT regardless of source type.
 - **SC-005**: **Given** a stateless save where only V10 fails, **When** Gate A evaluates, **Then** the save proceeds with a warning and the quality score reflects the V10 diagnostic signal.
-- **SC-006**: **Given** a Codex or Copilot stateless capture containing tool-title-with-path patterns, **When** the contamination filter evaluates the content, **Then** original high severity is applied (behavior unchanged from before Phase 017).
+- **SC-006**: **Given** a Codex or Copilot stateless capture containing tool-title-with-path patterns, **When** the contamination filter evaluates the content, **Then** original high severity is applied for those sources (behavior unchanged by the Phase 014 Claude-specific exception).
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -163,7 +163,7 @@ This phase fixes the quality gate architecture so stateless saves from Claude Co
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Phase 016 fixes (explicit-CLI alignment warning, technicalContext, confidence) | Low | Already implemented and tested; Phase 017 builds on those shipped semantics |
+| Dependency | Surrounding runtime semantics later documented by phase `016` | Low | Already implemented and tested; phase `014` relies on those shipped semantics without being blocked on the later documentation sweep |
 | Risk | Soft-warning tier lets low-quality saves through | Medium | V10 still logged as warning; quality score still reflects the issue; retrieval scoring can deprioritize |
 | Risk | `--stdin` / `--json` implementation could drift from file-mode semantics | Medium | Explicitly reuse preloaded `collectedData` + `runWorkflow()`; add CLI authority and score-cap regression tests |
 | Risk | Downgrading tool-title-with-path might miss real contamination | Low | Pattern only downgraded for Claude Code source; other patterns (AI self-reference) remain high |
@@ -207,7 +207,7 @@ This phase fixes the quality gate architecture so stateless saves from Claude Co
 | Risk | 15/25 | Pipeline-central changes; regression risk on all save paths |
 | Research | 10/20 | Root causes already diagnosed; architecture already understood |
 | Multi-Agent | 5/15 | Single workstream, 3 independent sub-phases |
-| Coordination | 8/15 | Phase 016 dependency; test suite gate |
+| Coordination | 8/15 | Shared scripts/MCP baseline plus test-suite gate |
 | **Total** | **53/100** | **Level 3** |
 
 ---
@@ -219,7 +219,7 @@ This phase fixes the quality gate architecture so stateless saves from Claude Co
 | R-001 | Gate A tiering accidentally soft-warns on a safety-critical rule | High | Low | Explicit hard-block allowlist (V1, V3, V8, V9, V11) with unit test per rule |
 | R-002 | `--stdin` / `--json` path diverges from file-mode semantics over time | Medium | Medium | Shared `runWorkflow()` path; explicit CLI authority tests assert target resolution and preloaded-data handoff |
 | R-003 | Source-aware filter introduced without severity and score-cap tests | Medium | Low | REQ-006 acceptance criterion + contamination-filter and quality-scorer regression assertions |
-| R-004 | Phase 016 not merged when Phase 017 starts | Low | Low | Block Phase 017 implementation until 016 is merged |
+| R-004 | Later documentation could imply that phase `014` was blocked on phase `016` | Low | Low | Keep chronology explicit: phase `016` later captured surrounding evidence, but phase `014` shipped independently |
 
 ---
 

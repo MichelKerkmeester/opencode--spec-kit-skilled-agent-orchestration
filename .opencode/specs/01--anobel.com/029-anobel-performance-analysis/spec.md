@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Comprehensive Performance Optimization - anobel.com [031-anobel-performance-analysis/spec]"
+title: "Feature Specification: Comprehensive Performance Optimization - anobel.com [029-anobel-performance-analysis/spec]"
 description: "A 10-agent deep analysis of anobel.com identified 50+ performance issues across JavaScript, CSS, images, third-party scripts, and network optimization. The mobile LCP of 20.2 se..."
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "performance"
   - "optimization"
   - "spec"
-  - "031"
+  - "029"
   - "anobel"
 importance_tier: "important"
 contextType: "decision"

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: AI Auto-Populate on Spec Upgrade [128-upgrade-auto-populate/spec]"
+title: "Feature Specification: AI Auto-Populate on Spec Upgrade [011-upgrade-auto-populate/spec]"
 description: "When upgrade-level.sh upgrades a spec folder (e.g., L1 → L3+), it injects template scaffolding with placeholder text like [Response time target], [Low/Med/High], [Component A]. ..."
 trigger_phrases:
   - "feature"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "auto"
   - "populate"
   - "spec"
-  - "128"
+  - "011"
   - "upgrade"
 importance_tier: "important"
 contextType: "decision"

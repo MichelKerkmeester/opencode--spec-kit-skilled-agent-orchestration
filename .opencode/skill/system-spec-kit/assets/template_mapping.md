@@ -16,12 +16,15 @@ Maps documentation levels to required templates with ready-to-use copy commands.
 
 This asset provides the definitive source for which templates are required at each documentation level. Use it to ensure spec folders contain all mandatory files before claiming completion.
 
+For cross-phase campaigns, keep one template set per owning phase folder rather than trying to share one spec packet across unrelated branches. Shared-memory or multi-runtime sweeps can share research inputs, but each implementation or truth-reconciliation branch should still resolve to an explicit parent phase for template ownership.
+
 ### Usage
 
 1. Determine your documentation level (1, 2, 3, or 3+)
 2. Copy the required templates using the provided bash commands
 3. Follow the step-by-step template usage guide for proper folder setup
 4. Verify all placeholders are filled before proceeding
+5. When work spans multiple phases or shared spaces, create or update the template set inside the owning phase folder and reference the sibling branches explicitly
 
 ---
 

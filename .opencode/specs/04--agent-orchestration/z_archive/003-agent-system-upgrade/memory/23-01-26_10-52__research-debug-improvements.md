@@ -21,7 +21,7 @@ quality_flags:
 |:--------------|:----------|
 | Session Date | 2026-01-23 |
 | Session ID | session-1769161968510-r2t6m0y4m |
-| Spec Folder | 04--agent-orchestration/006-research-debug-improvements |
+| Spec Folder | 04--agent-orchestration/z_archive/003-agent-system-upgrade |
 | Channel | main |
 | Importance Tier | normal |
 | Context Type | general |
@@ -103,7 +103,7 @@ This session was migrated from an older format to v2.2. Review the OVERVIEW and 
 
 **To continue this work, use:**
 ```
-/spec_kit:resume 04--agent-orchestration/006-research-debug-improvements
+/spec_kit:resume 04--agent-orchestration/z_archive/003-agent-system-upgrade
 ```
 <!-- /ANCHOR:continue-session -->
 ---
@@ -458,9 +458,9 @@ Completed implementation of Research Agent Improvements & Debug Sub-Agent Creati
 
 | Scenario | Symptoms | Recovery Action |
 |----------|----------|-----------------|
-| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 04--agent-orchestration/006-research-debug-improvements` |
+| Context Loss | Agent doesn't remember prior work | Run `/spec_kit:resume 04--agent-orchestration/z_archive/003-agent-system-upgrade` |
 | State Mismatch | Files don't match expected state | Verify with `git status` and `git diff` |
-| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "04--agent-orchestration/006-research-debug-improvements" })` |
+| Memory Not Found | Search returns no results | Check `memory_search({ specFolder: "04--agent-orchestration/z_archive/003-agent-system-upgrade" })` |
 
 ### Recovery Priority
 
@@ -509,7 +509,7 @@ This session was migrated from an older format. Learning metrics were not captur
 ```yaml
 # Core Identifiers
 session_id: "session-1769161968510-r2t6m0y4m"
-spec_folder: "04--agent-orchestration/006-research-debug-improvements"
+spec_folder: "04--agent-orchestration/z_archive/003-agent-system-upgrade"
 channel: "main"
 
 # Classification
@@ -582,7 +582,7 @@ related_sessions:
 
   []
 
-parent_spec: "04--agent-orchestration/006-research-debug-improvements"
+parent_spec: "04--agent-orchestration/z_archive/003-agent-system-upgrade"
 child_sessions:
 
   []

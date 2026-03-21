@@ -1,6 +1,7 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection",
   "description": "Feature Specification: Contamination Detection",
+  "status": "Complete",
   "keywords": [
     "feature",
     "specification",
@@ -19,5 +20,8 @@
   "memoryNameHistory": [
     "16-03-26_18-23__contamination-detection.md",
     "17-03-26_16-44__strict-closeout-evidence-refreshed.md"
-  ]
+  ],
+  "title": "Feature Specification: Contamination Detection",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: Contamination Detection"
 }

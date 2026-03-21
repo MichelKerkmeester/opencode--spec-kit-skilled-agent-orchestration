@@ -372,6 +372,7 @@ export interface TriggerConfig {
   MIN_PHRASE_COUNT: number;
   MAX_PHRASE_COUNT: number;
   MIN_WORD_LENGTH: number;
+  MIN_UNIGRAM_LENGTH: number;
   MIN_CONTENT_LENGTH: number;
   MIN_FREQUENCY: number;
   LENGTH_BONUS: {

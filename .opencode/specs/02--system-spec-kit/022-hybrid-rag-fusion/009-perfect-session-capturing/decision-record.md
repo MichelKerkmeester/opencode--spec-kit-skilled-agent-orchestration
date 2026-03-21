@@ -4,7 +4,7 @@ description: "The parent pack remains audit-first and now treats the current on-
 trigger_phrases:
   - "decision"
   - "perfect session capturing"
-  - "roadmap phases 018 019 020"
+  - "roadmap phases 018 019"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -109,7 +109,7 @@ The parent `009-perfect-session-capturing` pack had drifted away from on-disk tr
 - Keep the parent pack centered on the audit truth.
 - Preserve `research.md` as the detailed synthesis.
 - Reconcile future roadmap phases through explicit child folders rather than vague parent-only prose.
-- Record phases `018` and `019` as shipped follow-up work and keep phase `020` open until retained live artifacts are refreshed.
+- Record phase `018` as shipped follow-up work and keep phase `019` explicitly analysis-only.
 
 **How to roll back**: revert only the affected runtime/docs files, restore the previous validated parent narrative, and rerun focused verification plus recursive validation.
 <!-- /ANCHOR:adr-001-impl -->

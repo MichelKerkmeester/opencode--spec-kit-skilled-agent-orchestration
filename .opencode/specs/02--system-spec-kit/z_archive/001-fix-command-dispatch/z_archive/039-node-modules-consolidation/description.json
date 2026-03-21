@@ -16,5 +16,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Node Modules Consolidation [039-node-modules-consolidation/spec]",
+  "importance_tier": "important",
+  "short_description": "Node Modules Consolidation"
 }

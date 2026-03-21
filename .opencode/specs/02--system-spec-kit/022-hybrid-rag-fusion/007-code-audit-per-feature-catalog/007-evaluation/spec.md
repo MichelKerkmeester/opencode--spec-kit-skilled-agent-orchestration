@@ -29,8 +29,8 @@ contextType: "general"
 | **Created** | 2026-03-10 |
 | **Branch** | `007-evaluation` |
 | **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../006-analysis/spec.md |
-| **Next Phase** | ../008-bug-fixes-and-data-integrity/spec.md |
+| **Predecessor** | ../006-analysis/spec.md |
+| **Successor** | ../008-bug-fixes-and-data-integrity/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

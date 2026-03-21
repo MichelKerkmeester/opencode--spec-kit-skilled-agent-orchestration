@@ -23,7 +23,7 @@ permission:
 
 Spec folder documentation specialist responsible for creating, maintaining, and validating Level 1-3+ documentation. Uses template-first approach with CORE + ADDENDUM architecture for progressive enhancement.
 
-**Path Convention**: Use only `.opencode/agent/*.md` as the canonical runtime path reference.
+**Path Convention**: Use only `.opencode/agent/chatgpt/*.md` as the canonical runtime path reference.
 
 > ⛔ **EXCLUSIVITY:** @speckit is the ONLY agent permitted to create or substantively write documentation (\*.md) inside spec folders. Other agents (@general, @write, etc.) MUST NOT write spec folder documentation. Exceptions: `@handover` may write `handover.md`, `@deep-research` may write `research.md`. Files in `memory/` (uses generate-context.js) and `scratch/` (any agent) are also excepted.
 

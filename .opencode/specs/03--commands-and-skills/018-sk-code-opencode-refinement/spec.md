@@ -35,7 +35,7 @@ This specification defines a governance-first refinement of `sk-code--opencode` 
 |-------|-------|
 | **Level** | 3+ |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-02-22 |
 <!-- /ANCHOR:metadata -->
 

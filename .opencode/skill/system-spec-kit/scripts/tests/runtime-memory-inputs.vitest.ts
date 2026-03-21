@@ -195,7 +195,7 @@ describe('valid explicit dataFile happy path', () => {
   it('accepts the documented snake_case JSON shape without dropping prompts or context', async () => {
     const validFile = path.join(os.tmpdir(), `valid-snake-${Date.now()}.json`);
     await fs.writeFile(validFile, JSON.stringify({
-      spec_folder: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      spec_folder: '022-hybrid-rag-fusion/009-perfect-session-capturing',
       session_summary: 'Verified generated memory render quality in snake_case JSON mode.',
       trigger_phrases: ['perfect session capturing', 'render quality', 'trigger phrases'],
       user_prompts: [
@@ -216,7 +216,7 @@ describe('valid explicit dataFile happy path', () => {
       const { loadCollectedData } = await import('../loaders/data-loader');
       const result = await loadCollectedData({
         dataFile: validFile,
-        specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+        specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
       });
 
       expect(result._source).toBe('file');
@@ -271,7 +271,7 @@ describe('native CLI fallback handling', () => {
     const { loadCollectedData } = await import('../loaders/data-loader');
 
     await expect(loadCollectedData({
-      specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
     })).rejects.toThrow(/RECOVERY_MODE_REQUIRED/);
 
     expect(captureConversation).not.toHaveBeenCalled();
@@ -286,8 +286,8 @@ describe('native CLI fallback handling', () => {
     captureClaudeConversation.mockResolvedValueOnce({
       exchanges: [
         {
-          userInput: 'Use Claude transcript for 010-perfect-session-capturing hybrid rag fusion work',
-          assistantResponse: 'Loaded the Claude session for 010-perfect-session-capturing successfully.',
+          userInput: 'Use Claude transcript for 009-perfect-session-capturing hybrid rag fusion work',
+          assistantResponse: 'Loaded the Claude session for 009-perfect-session-capturing successfully.',
           timestamp: '2026-03-15T10:00:00.000Z',
         },
       ],
@@ -300,7 +300,7 @@ describe('native CLI fallback handling', () => {
 
     const { loadCollectedData } = await import('../loaders/data-loader');
     const result = await loadCollectedData({
-      specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
       allowRecovery: true,
     });
 
@@ -317,7 +317,7 @@ describe('native CLI fallback handling', () => {
     expect(captureCopilotConversation).not.toHaveBeenCalled();
     expect(captureGeminiConversation).not.toHaveBeenCalled();
     expect(result._source).toBe('claude-code-capture');
-    expect(result.userPrompts?.[0]?.prompt).toContain('010-perfect-session-capturing');
+    expect(result.userPrompts?.[0]?.prompt).toContain('009-perfect-session-capturing');
   });
 
   it('falls back to Codex CLI after OpenCode and Claude both return no usable content', async () => {
@@ -326,8 +326,8 @@ describe('native CLI fallback handling', () => {
     captureCodexConversation.mockResolvedValueOnce({
       exchanges: [
         {
-          userInput: 'Capture Codex session for 010-perfect-session-capturing hybrid rag fusion',
-          assistantResponse: 'Loaded Codex session for 010-perfect-session-capturing successfully.',
+          userInput: 'Capture Codex session for 009-perfect-session-capturing hybrid rag fusion',
+          assistantResponse: 'Loaded Codex session for 009-perfect-session-capturing successfully.',
           timestamp: '2026-03-15T10:10:00.000Z',
         },
       ],
@@ -340,7 +340,7 @@ describe('native CLI fallback handling', () => {
 
     const { loadCollectedData } = await import('../loaders/data-loader');
     const result = await loadCollectedData({
-      specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
       allowRecovery: true,
     });
 
@@ -350,7 +350,7 @@ describe('native CLI fallback handling', () => {
     expect(captureCopilotConversation).not.toHaveBeenCalled();
     expect(captureGeminiConversation).not.toHaveBeenCalled();
     expect(result._source).toBe('codex-cli-capture');
-    expect(result.userPrompts?.[0]?.prompt).toContain('010-perfect-session-capturing');
+    expect(result.userPrompts?.[0]?.prompt).toContain('009-perfect-session-capturing');
   });
 
   it('falls back to Copilot CLI after Codex also returns no usable content', async () => {
@@ -374,7 +374,7 @@ describe('native CLI fallback handling', () => {
 
     const { loadCollectedData } = await import('../loaders/data-loader');
     const result = await loadCollectedData({
-      specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
       allowRecovery: true,
     });
 
@@ -408,7 +408,7 @@ describe('native CLI fallback handling', () => {
 
     const { loadCollectedData } = await import('../loaders/data-loader');
     const result = await loadCollectedData({
-      specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
       allowRecovery: true,
     });
 
@@ -430,7 +430,7 @@ describe('native CLI fallback handling', () => {
     const { loadCollectedData } = await import('../loaders/data-loader');
 
     await expect(loadCollectedData({
-      specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
       allowRecovery: true,
     })).rejects.toThrow(/NO_DATA_AVAILABLE/);
 
@@ -481,7 +481,7 @@ describe('native CLI fallback handling', () => {
 
     const { loadCollectedData } = await import('../loaders/data-loader');
     const result = await loadCollectedData({
-      specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
       allowRecovery: true,
     });
 
@@ -511,7 +511,7 @@ describe('native CLI fallback handling', () => {
 
     const { loadCollectedData } = await import('../loaders/data-loader');
     const result = await loadCollectedData({
-      specFolderArg: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      specFolderArg: '022-hybrid-rag-fusion/009-perfect-session-capturing',
       allowRecovery: true,
     });
 
@@ -849,7 +849,7 @@ describe('manual next-steps normalization', () => {
 describe('extractNextAction recentContext regex fallback', () => {
   it('extracts next action from recentContext learning when observations have no matching next/todo facts', async () => {
     const normalized = normalizeInputData({
-      specFolder: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      specFolder: '022-hybrid-rag-fusion/009-perfect-session-capturing',
       observations: [{
         type: 'feature',
         title: 'Deployment completed',
@@ -868,7 +868,7 @@ describe('extractNextAction recentContext regex fallback', () => {
 
     const sessionData = await collectSessionData(
       normalized,
-      '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      '022-hybrid-rag-fusion/009-perfect-session-capturing',
     );
 
     expect(sessionData.NEXT_ACTION).toBe('run smoke tests on staging');
@@ -877,7 +877,7 @@ describe('extractNextAction recentContext regex fallback', () => {
   it('truncates extractFromRecentContext result to 100 characters', async () => {
     const longAction = 'A'.repeat(150);
     const normalized = normalizeInputData({
-      specFolder: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      specFolder: '022-hybrid-rag-fusion/009-perfect-session-capturing',
       observations: [{
         type: 'feature',
         title: 'Long action test',
@@ -896,7 +896,7 @@ describe('extractNextAction recentContext regex fallback', () => {
 
     const sessionData = await collectSessionData(
       normalized,
-      '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      '022-hybrid-rag-fusion/009-perfect-session-capturing',
     );
 
     expect(sessionData.NEXT_ACTION).toHaveLength(100);
@@ -909,7 +909,7 @@ describe('observation truncation prioritizes followup observations (M-005b)', ()
     // so with 5 observations and MAX_OBSERVATIONS=3, it would be truncated
     // without the priority sort fix.
     const normalized = normalizeInputData({
-      specFolder: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      specFolder: '022-hybrid-rag-fusion/009-perfect-session-capturing',
       observations: [
         { type: 'implementation', title: 'Obs 1', narrative: 'First observation', facts: [] },
         { type: 'implementation', title: 'Obs 2', narrative: 'Second observation', facts: [] },
@@ -941,7 +941,7 @@ describe('observation truncation prioritizes followup observations (M-005b)', ()
 
     const sessionData = await collectSessionData(
       normalized,
-      '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      '022-hybrid-rag-fusion/009-perfect-session-capturing',
     );
 
     // The fix ensures followup observations are prioritized before truncation,
@@ -951,7 +951,7 @@ describe('observation truncation prioritizes followup observations (M-005b)', ()
 
   it('retains no more than MAX_OBSERVATIONS total after prioritization', async () => {
     const normalized = normalizeInputData({
-      specFolder: '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      specFolder: '022-hybrid-rag-fusion/009-perfect-session-capturing',
       observations: [
         { type: 'implementation', title: 'Impl 1', narrative: 'Implementation work', facts: [] },
         { type: 'feature', title: 'Feature 1', narrative: 'Feature work', facts: [] },
@@ -971,7 +971,7 @@ describe('observation truncation prioritizes followup observations (M-005b)', ()
 
     const sessionData = await collectSessionData(
       normalized,
-      '022-hybrid-rag-fusion/010-perfect-session-capturing',
+      '022-hybrid-rag-fusion/009-perfect-session-capturing',
     );
 
     // MAX_OBSERVATIONS is 3, so total observations in output must not exceed 3.

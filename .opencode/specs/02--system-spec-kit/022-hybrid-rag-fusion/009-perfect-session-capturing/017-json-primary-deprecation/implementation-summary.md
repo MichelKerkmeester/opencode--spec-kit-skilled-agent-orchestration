@@ -31,18 +31,18 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This phase ended the fiction that dynamic capture was a trustworthy routine-save path. You now have a JSON-primary contract for routine saves, the runtime warns when someone falls back to the deprecated stateless path, and the obsolete follow-up phases live under a real archived branch parent instead of dangling as direct children.
+This phase ended the fiction that dynamic capture was a trustworthy routine-save path. You now have a JSON-primary contract for routine saves, the runtime rejects routine stateless saves unless `--recovery` is supplied, and the obsolete follow-up phases live under a real archived branch parent instead of dangling as direct children.
 
 ### JSON-Primary Contract Shift
 
-The runtime and operator guidance now agree on the same posture: structured JSON is the preferred routine-save contract, while stateless capture stays available only for recovery. The phase also recorded which follow-up phases were kept, reframed, or archived so the branch history remains understandable instead of silently disappearing.
+The runtime and operator guidance now agree on the same posture: structured JSON is the preferred routine-save contract, while stateless capture stays available only for recovery. Routine positional stateless saves are rejected unless `--recovery` is supplied, and the warning behavior appears only inside that explicit recovery flow. The phase also recorded which follow-up phases were kept, reframed, or archived so the branch history remains understandable instead of silently disappearing.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | Modified | Warn on deprecated routine stateless saves |
-| `.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts` | Modified | Mirror the same runtime posture in the loader path |
+| `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` | Modified | Reject routine positional stateless saves unless `--recovery` is supplied, and warn only inside the explicit recovery path |
+| `.opencode/skill/system-spec-kit/scripts/loaders/data-loader.ts` | Modified | Mirror the same recovery-only contract and warning behavior in the fallback loader path |
 | `.opencode/skill/system-spec-kit/scripts/types/session-types.ts` | Modified | Add structured JSON enrichment types |
 | `.opencode/skill/system-spec-kit/SKILL.md` | Modified | Teach the JSON-primary operator contract |
 | `.opencode/command/memory/save.md` | Modified | Align the save command with the new contract |
@@ -53,7 +53,7 @@ The runtime and operator guidance now agree on the same posture: structured JSON
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The work landed in one contract-focused pass. Runtime warnings and structured JSON support shipped first, the operator docs were updated in the same phase, and the obsolete dynamic-capture follow-ups were moved under `../000-dynamic-capture-deprecation/` so the historical trail stayed intact.
+The work landed in one contract-focused pass. Recovery gating and structured JSON support shipped first, routine positional stateless saves were rejected unless `--recovery` was present, recovery-only warning behavior stayed limited to the explicit fallback path, and the operator docs were updated in the same phase. The obsolete dynamic-capture follow-ups were then moved under `../000-dynamic-capture-deprecation/` so the historical trail stayed intact.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -75,7 +75,8 @@ The work landed in one contract-focused pass. Runtime warnings and structured JS
 
 | Check | Result |
 |-------|--------|
-| Runtime deprecation warning present | PASS |
+| Routine stateless saves require `--recovery` | PASS |
+| Recovery-path warning remains limited to explicit recovery flow | PASS |
 | JSON-primary wording present in operator docs | PASS |
 | Modified JSON artifacts parse correctly | PASS |
 | Archived follow-up branch parent resolves cleanly | PASS |

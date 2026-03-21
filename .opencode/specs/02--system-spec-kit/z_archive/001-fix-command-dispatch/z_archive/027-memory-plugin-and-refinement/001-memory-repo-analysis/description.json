@@ -24,5 +24,8 @@
     "027-memory-plugin-and-refinement"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Memory System Analysis & Roampal Comparison - Requirements & [001-memory-repo-analysis/spec]",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Memory System Analysis & Roampal Comparison - Requirements & User Stories"
 }

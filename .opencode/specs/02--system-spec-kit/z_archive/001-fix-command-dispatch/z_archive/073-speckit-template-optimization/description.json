@@ -18,5 +18,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: SpecKit Template Optimization [073-speckit-template-optimization/spec]",
+  "status": "Complete",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: SpecKit Template Optimization"
 }

@@ -29,8 +29,8 @@ contextType: "general"
 | **Created** | 2026-03-13 |
 | **Branch** | `021-remediation-revalidation` |
 | **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../020-feature-flag-reference/spec.md |
-| **Next Phase** | N/A |
+| **Predecessor** | ../020-feature-flag-reference/spec.md |
+| **Successor** | None |
 <!-- /ANCHOR:metadata -->
 
 ---

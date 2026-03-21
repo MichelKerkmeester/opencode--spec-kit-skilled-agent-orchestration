@@ -13,8 +13,11 @@ const mocks = vi.hoisted(() => ({
   mockGetDb: vi.fn(),
   mockInitHybridSearch: vi.fn(),
   mockHybridSearchEnhanced: vi.fn(),
+  mockBm25Search: vi.fn(),
+  mockFtsSearch: vi.fn(),
   mockGenerateQueryEmbedding: vi.fn(),
   mockVectorSearch: vi.fn(),
+  mockCreateUnifiedGraphSearchFn: vi.fn(),
   mockIsAblationEnabled: vi.fn(),
   mockRunAblation: vi.fn(),
   mockStoreAblationResults: vi.fn(),
@@ -37,10 +40,17 @@ vi.mock('../lib/search/vector-index', () => ({
 vi.mock('../lib/search/hybrid-search', () => ({
   init: mocks.mockInitHybridSearch,
   hybridSearchEnhanced: mocks.mockHybridSearchEnhanced,
+  bm25Search: mocks.mockBm25Search,
+  ftsSearch: mocks.mockFtsSearch,
 }));
 
 vi.mock('../lib/providers/embeddings', () => ({
   generateQueryEmbedding: mocks.mockGenerateQueryEmbedding,
+}));
+
+vi.mock('../lib/search/graph-search-fn', () => ({
+  createUnifiedGraphSearchFn: mocks.mockCreateUnifiedGraphSearchFn,
+  computeDegreeScores: vi.fn(() => new Map()),
 }));
 
 vi.mock('../lib/eval/ablation-framework', async () => {
@@ -139,8 +149,11 @@ describe('Handler Eval Reporting (007-evaluation)', () => {
     mocks.mockGetDb.mockReturnValue({ prepare: vi.fn() });
     mocks.mockInitHybridSearch.mockImplementation(() => undefined);
     mocks.mockHybridSearchEnhanced.mockResolvedValue([]);
+    mocks.mockBm25Search.mockReturnValue([]);
+    mocks.mockFtsSearch.mockReturnValue([]);
     mocks.mockGenerateQueryEmbedding.mockResolvedValue([0.1, 0.2, 0.3]);
-    mocks.mockVectorSearch.mockResolvedValue([]);
+    mocks.mockVectorSearch.mockReturnValue([]);
+    mocks.mockCreateUnifiedGraphSearchFn.mockReturnValue(vi.fn(() => []));
     mocks.mockIsAblationEnabled.mockReturnValue(true);
     mocks.mockRunAblation.mockResolvedValue(makeAblationReport());
     mocks.mockStoreAblationResults.mockReturnValue(true);
@@ -270,6 +283,84 @@ describe('Handler Eval Reporting (007-evaluation)', () => {
       const envelope = parseEnvelope(result);
       const data = getData(envelope);
       expect(data.formattedReport).toBeUndefined();
+    });
+
+    it('T006-A10: ablation search forces all channels and wires graph search', async () => {
+      await evalReporting.handleEvalRunAblation({ channels: ['graph'] });
+
+      expect(mocks.mockCreateUnifiedGraphSearchFn).toHaveBeenCalledTimes(1);
+      expect(mocks.mockInitHybridSearch).toHaveBeenCalledWith(
+        mocks.mockGetDb.mock.results[0].value,
+        mocks.mockVectorSearch,
+        expect.any(Function),
+      );
+
+      const searchFn = mocks.mockRunAblation.mock.calls[0]?.[0];
+      expect(typeof searchFn).toBe('function');
+
+      await searchFn('graph-heavy query', new Set());
+
+      expect(mocks.mockHybridSearchEnhanced).toHaveBeenCalledWith(
+        'graph-heavy query',
+        [0.1, 0.2, 0.3],
+        expect.objectContaining({ forceAllChannels: true }),
+      );
+    });
+
+    it('T006-A11: mode=k_sensitivity forwards custom queries and uses raw channel lists', async () => {
+      mocks.mockVectorSearch.mockReturnValue([{ id: 11, similarity: 0.92 }]);
+      mocks.mockFtsSearch.mockReturnValue([{ id: 22, score: 0.88, source: 'fts' }]);
+      mocks.mockBm25Search.mockReturnValue([{ id: 33, score: 0.76, source: 'bm25' }]);
+      const graphSearch = vi.fn(() => [{ id: 44, score: 0.64 }]);
+      mocks.mockCreateUnifiedGraphSearchFn.mockReturnValue(graphSearch);
+
+      const result = await evalReporting.handleEvalRunAblation({
+        mode: 'k_sensitivity',
+        queries: ['hybrid retrieval graph diagnosis'],
+        recallK: 7,
+      });
+
+      expect(mocks.mockRunAblation).not.toHaveBeenCalled();
+      expect(graphSearch).toHaveBeenCalledWith('hybrid retrieval graph diagnosis', { limit: 7 });
+
+      const envelope = parseEnvelope(result);
+      const data = getData(envelope);
+      expect(data.queriesUsed).toEqual(['hybrid retrieval graph diagnosis']);
+      expect(data.report).toBeDefined();
+    });
+
+    it('T006-A12: mode=k_sensitivity aggregates multi-query metrics per query', async () => {
+      mocks.mockGenerateQueryEmbedding.mockImplementation(async (query: string) =>
+        query === 'query-one' ? [1] : [2]
+      );
+      mocks.mockVectorSearch.mockImplementation((embedding: number[]) =>
+        embedding[0] === 1
+          ? [{ id: 1, similarity: 0.92 }, { id: 2, similarity: 0.81 }]
+          : [{ id: 3, similarity: 0.88 }, { id: 4, similarity: 0.77 }]
+      );
+      mocks.mockBm25Search.mockImplementation((query: string) =>
+        query === 'query-one'
+          ? [{ id: 1, score: 0.88, source: 'bm25' }, { id: 2, score: 0.72, source: 'bm25' }]
+          : [{ id: 4, score: 0.86, source: 'bm25' }, { id: 3, score: 0.74, source: 'bm25' }]
+      );
+
+      const result = await evalReporting.handleEvalRunAblation({
+        mode: 'k_sensitivity',
+        queries: ['query-one', 'query-two'],
+        recallK: 5,
+      });
+
+      const envelope = parseEnvelope(result);
+      const data = getData(envelope);
+      expect(data.queriesUsed).toEqual(['query-one', 'query-two']);
+      expect(data.totalItems).toBe(4);
+
+      const report = data.report as {
+        grid: Array<{ k: number; mrr5: number; avgScore: number }>;
+      };
+      const k20 = report.grid.find((row) => row.k === 20);
+      expect(k20?.mrr5).toBeCloseTo(0.75, 10);
+      expect(k20?.avgScore).toBeCloseTo(0.75, 10);
     });
   });
 

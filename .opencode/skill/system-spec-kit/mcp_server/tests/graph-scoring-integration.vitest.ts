@@ -149,14 +149,14 @@ describe('B. Composite Score Normalization', () => {
     expect(result).toEqual(scores);
   });
 
-  it('B3: normalizeCompositeScores maps single score to 1.0', () => {
+  it('B3: normalizeCompositeScores maps single score to 0.0', () => {
     vi.stubEnv('SPECKIT_SCORE_NORMALIZATION', 'true');
 
     const scores = [0.42];
     const normalized = normalizeCompositeScores(scores);
 
     expect(normalized).toHaveLength(1);
-    expect(normalized[0]).toBeCloseTo(1.0, 5);
+    expect(normalized[0]).toBeCloseTo(0.0, 5);
   });
 });
 

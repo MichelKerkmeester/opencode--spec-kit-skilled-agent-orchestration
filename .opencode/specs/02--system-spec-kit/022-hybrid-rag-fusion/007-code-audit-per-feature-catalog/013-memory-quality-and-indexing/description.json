@@ -17,5 +17,9 @@
   "memorySequence": 1,
   "memoryNameHistory": [
     "11-03-26_14-57__memory-quality-and-indexing.md"
-  ]
+  ],
+  "title": "Feature Specification: memory-quality-and-indexing [template:level_2/spec.md]",
+  "status": "Complete",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: memory-quality-and-indexing"
 }

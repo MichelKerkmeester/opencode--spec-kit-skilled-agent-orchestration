@@ -15,5 +15,9 @@
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Skill Advisor Refinement [template:level_3/spec.md]",
+  "status": "Implementation Complete",
+  "importance_tier": "critical",
+  "short_description": "Feature Specification: Skill Advisor Refinement"
 }

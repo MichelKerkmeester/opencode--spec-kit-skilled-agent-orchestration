@@ -1,5 +1,5 @@
 ---
-title: "Implemented Full Hybrid Rag [001-hybrid-rag-fusion-epic/20-03-26_16-36__implemented-full-hybrid-rag-fusion-pipeline]"
+title: "Implemented Full Hybrid Rag"
 description: "Implemented full Hybrid RAG Fusion Pipeline roadmap (Sprints 1-3 + Dead Code cleanup), then GPT-5.4...; Sprint 1 (A1, B6, B7, G1, G2, G3) verified as already implemented in..."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/001 hybrid rag fusion epic"
@@ -28,10 +28,7 @@ trigger_phrases:
   - "fix for vi"
   - "rewritten per-stage try/catch withtimeout"
   - "per-stage try/catch withtimeout 10s"
-  - "kit/022"
-  - "fusion/001"
-  - "epic"
-importance_tier: "normal"
+importance_tier: "important"
 contextType: "general"
 _sourceTranscriptPath: ""
 _sourceSessionId: ""
@@ -623,7 +620,7 @@ repository_state: "unavailable"
 is_detached_head: No
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)

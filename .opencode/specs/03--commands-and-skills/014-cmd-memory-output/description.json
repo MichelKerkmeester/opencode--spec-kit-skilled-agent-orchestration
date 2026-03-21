@@ -18,5 +18,9 @@
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Memory Command Dashboard Visual Design System [013-memory-command-output/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Memory Command Dashboard Visual Design System"
 }

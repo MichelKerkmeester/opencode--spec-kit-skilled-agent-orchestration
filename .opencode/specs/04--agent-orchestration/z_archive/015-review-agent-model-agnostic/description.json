@@ -16,5 +16,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Review Agent Model-Agnostic [015-review-agent-model-agnostic/spec]",
+  "status": "Complete",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Review Agent Model-Agnostic"
 }

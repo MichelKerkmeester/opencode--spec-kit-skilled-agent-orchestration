@@ -18,7 +18,26 @@ import type { IntentWeightsConfig } from '../lib/search/pipeline/types';
 import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consumption-logger';
 import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
 // Artifact-class routing (spec/plan/tasks/checklist/memory)
-import { applyRoutingWeights, getStrategyForQuery } from '../lib/search/artifact-routing';
+import { getStrategyForQuery } from '../lib/search/artifact-routing';
+// Chunk reassembly (extracted from this file)
+import { collapseAndReassembleChunkResults } from '../lib/search/chunk-reassembly';
+// Search utilities (extracted from this file)
+import {
+  filterByMinQualityScore,
+  resolveQualityThreshold,
+  buildCacheArgs,
+  resolveRowContextType,
+  resolveArtifactRoutingQuery,
+  applyArtifactRouting,
+} from '../lib/search/search-utils';
+// CacheArgsInput used internally by buildCacheArgs (lib/search/search-utils.ts)
+// Eval channel tracking (extracted from this file)
+import {
+  collectEvalChannelsFromRow,
+  buildEvalChannelPayloads,
+  summarizeGraphWalkDiagnostics,
+} from '../lib/telemetry/eval-channel-tracking';
+import type { EvalChannelPayload } from '../lib/telemetry/eval-channel-tracking';
 
 // Eval logger — fail-safe, no-op when SPECKIT_EVAL_LOGGING !== "true"
 import { logSearchQuery, logChannelResult, logFinalResult } from '../lib/eval/eval-logger';
@@ -28,7 +47,7 @@ import { checkDatabaseUpdated, isEmbeddingModelReady, waitForEmbeddingModel } fr
 import { validateQuery, requireDb, toErrorMessage } from '../utils';
 
 // Response envelope + formatters
-import { createMCPErrorResponse } from '../lib/response/envelope';
+import { createMCPErrorResponse, createMCPSuccessResponse } from '../lib/response/envelope';
 import { formatSearchResults } from '../formatters';
 
 // Shared handler types
@@ -46,7 +65,7 @@ import {
 // Type imports for casting
 import type { IntentType, IntentWeights as IntentClassifierWeights } from '../lib/search/intent-classifier';
 import type { RawSearchResult } from '../formatters';
-import type { RoutingResult, WeightedResult } from '../lib/search/artifact-routing';
+// RoutingResult, WeightedResult — now used internally by lib/search/search-utils.ts
 
 // Feature catalog: Semantic and lexical search (memory_search)
 // Feature catalog: Hybrid search pipeline
@@ -96,15 +115,13 @@ interface DedupResult {
   dedupStats: Record<string, unknown>;
 }
 
-interface ChunkReassemblyResult {
-  results: MemorySearchRow[];
-  stats: {
-    collapsedChunkHits: number;
-    chunkParents: number;
-    reassembled: number;
-    fallback: number;
-  };
+interface SearchCachePayload {
+  summary: string;
+  data: Record<string, unknown>;
+  hints: string[];
 }
+
+// ChunkReassemblyResult — now imported from lib/search/chunk-reassembly.ts
 
 type IntentWeights = IntentClassifierWeights;
 
@@ -117,11 +134,7 @@ function toIntentWeightsConfig(weights: IntentWeights | null): IntentWeightsConf
   };
 }
 
-interface EvalChannelPayload {
-  channel: string;
-  resultMemoryIds: number[];
-  scores: number[];
-}
+// EvalChannelPayload — now imported from lib/telemetry/eval-channel-tracking.ts
 
 interface SearchArgs {
   query?: string;
@@ -159,64 +172,8 @@ interface SearchArgs {
   sessionTransition?: SessionTransitionTrace;
 }
 
-function resolveRowContextType(row: MemorySearchRow): string | undefined {
-  if (typeof row.contextType === 'string' && row.contextType.length > 0) {
-    return row.contextType;
-  }
-  if (typeof row.context_type === 'string' && row.context_type.length > 0) {
-    return row.context_type;
-  }
-  return undefined;
-}
-
-function resolveEvalScore(row: Record<string, unknown>): number {
-  const score = row.score;
-  if (typeof score === 'number' && Number.isFinite(score)) {
-    return score;
-  }
-
-  const similarity = row.similarity;
-  if (typeof similarity === 'number' && Number.isFinite(similarity)) {
-    return similarity;
-  }
-
-  const rrfScore = row.rrfScore;
-  if (typeof rrfScore === 'number' && Number.isFinite(rrfScore)) {
-    return rrfScore;
-  }
-
-  return 0;
-}
-
-function collectEvalChannelsFromRow(row: Record<string, unknown>): string[] {
-  const channels = new Set<string>();
-
-  if (Array.isArray(row.sources)) {
-    for (const source of row.sources) {
-      if (typeof source === 'string' && source.trim().length > 0) {
-        channels.add(source.trim());
-      }
-    }
-  }
-
-  if (typeof row.source === 'string' && row.source.trim().length > 0) {
-    channels.add(row.source.trim());
-  }
-
-  if (Array.isArray(row.channelAttribution)) {
-    for (const source of row.channelAttribution) {
-      if (typeof source === 'string' && source.trim().length > 0) {
-        channels.add(source.trim());
-      }
-    }
-  }
-
-  if (channels.size === 0) {
-    channels.add('hybrid');
-  }
-
-  return Array.from(channels);
-}
+// resolveRowContextType — now imported from lib/search/search-utils.ts
+// resolveEvalScore, collectEvalChannelsFromRow — now imported from lib/telemetry/eval-channel-tracking.ts
 
 function attachTelemetryMeta(
   response: MCPResponse,
@@ -267,416 +224,53 @@ function extractResponseResults(response: MCPResponse): Array<Record<string, unk
   }
 }
 
-function summarizeGraphWalkDiagnostics(
-  rows: Array<Record<string, unknown>>,
-): {
-  rolloutState: 'off' | 'trace_only' | 'bounded_runtime';
-  rowsWithGraphContribution: number;
-  rowsWithAppliedBonus: number;
-  capAppliedCount: number;
-  maxRaw: number;
-  maxNormalized: number;
-  maxAppliedBonus: number;
-} {
-  let rolloutState: 'off' | 'trace_only' | 'bounded_runtime' = 'off';
-  let rowsWithGraphContribution = 0;
-  let rowsWithAppliedBonus = 0;
-  let capAppliedCount = 0;
-  let maxRaw = 0;
-  let maxNormalized = 0;
-  let maxAppliedBonus = 0;
-
-  for (const row of rows) {
-    const trace = row.trace && typeof row.trace === 'object'
-      ? row.trace as Record<string, unknown>
-      : null;
-    const graphContribution = trace?.graphContribution && typeof trace.graphContribution === 'object'
-      ? trace.graphContribution as Record<string, unknown>
-      : null;
-    if (!graphContribution) {
-      continue;
-    }
-
-    rowsWithGraphContribution += 1;
-    if (graphContribution.rolloutState === 'trace_only' || graphContribution.rolloutState === 'bounded_runtime') {
-      rolloutState = graphContribution.rolloutState;
-    }
-    if (typeof graphContribution.appliedBonus === 'number' && graphContribution.appliedBonus > 0) {
-      rowsWithAppliedBonus += 1;
-      maxAppliedBonus = Math.max(maxAppliedBonus, graphContribution.appliedBonus);
-    }
-    if (graphContribution.capApplied === true) {
-      capAppliedCount += 1;
-    }
-    if (typeof graphContribution.raw === 'number' && Number.isFinite(graphContribution.raw)) {
-      maxRaw = Math.max(maxRaw, graphContribution.raw);
-    }
-    if (typeof graphContribution.normalized === 'number' && Number.isFinite(graphContribution.normalized)) {
-      maxNormalized = Math.max(maxNormalized, graphContribution.normalized);
-    }
-  }
-
-  return {
-    rolloutState,
-    rowsWithGraphContribution,
-    rowsWithAppliedBonus,
-    capAppliedCount,
-    maxRaw,
-    maxNormalized,
-    maxAppliedBonus,
-  };
-}
-
-function buildEvalChannelPayloads(rows: Array<Record<string, unknown>>): EvalChannelPayload[] {
-  if (!Array.isArray(rows) || rows.length === 0) {
-    return [];
-  }
-
-  const byChannel = new Map<string, Map<number, number>>();
-
-  for (const row of rows) {
-    const rawId = row.id;
-    if (typeof rawId !== 'number' || !Number.isInteger(rawId) || rawId <= 0) {
-      continue;
-    }
-
-    const score = resolveEvalScore(row);
-    const channels = collectEvalChannelsFromRow(row);
-
-    for (const channel of channels) {
-      const bucket = byChannel.get(channel) ?? new Map<number, number>();
-      const existing = bucket.get(rawId);
-      if (existing === undefined || score > existing) {
-        bucket.set(rawId, score);
-      }
-      byChannel.set(channel, bucket);
-    }
-  }
-
-  return Array.from(byChannel.entries()).map(([channel, idToScore]): EvalChannelPayload => {
-    const entries = Array.from(idToScore.entries());
-    return {
-      channel,
-      resultMemoryIds: entries.map(([id]) => id),
-      scores: entries.map(([, score]) => score),
-    };
-  });
-}
-
-function filterByMinQualityScore(results: MemorySearchRow[], minQualityScore?: number): MemorySearchRow[] {
-  if (typeof minQualityScore !== 'number' || !Number.isFinite(minQualityScore)) {
-    return results;
-  }
-
-  const threshold = Math.max(0, Math.min(1, minQualityScore));
-  return results.filter((result) => {
-    const rawScore = result.quality_score as number | undefined;
-    const score = typeof rawScore === 'number' && Number.isFinite(rawScore) ? rawScore : 0;
-    return score >= threshold;
-  });
-}
-
-function resolveQualityThreshold(minQualityScore?: number, minQualityScoreSnake?: number): number | undefined {
-  if (typeof minQualityScore === 'number' && Number.isFinite(minQualityScore)) {
-    return minQualityScore;
-  }
-
-  if (typeof minQualityScoreSnake === 'number' && Number.isFinite(minQualityScoreSnake)) {
-    return minQualityScoreSnake;
-  }
-
-  return undefined;
-}
-
-interface CacheArgsInput {
-  normalizedQuery: string | null;
-  hasValidConcepts: boolean;
-  concepts?: string[];
-  specFolder?: string;
-  tenantId?: string;
-  userId?: string;
-  agentId?: string;
-  sharedSpaceId?: string;
-  limit: number;
-  mode?: string;
-  tier?: string;
-  contextType?: string;
-  useDecay: boolean;
-  includeArchived: boolean;
-  qualityThreshold?: number;
-  applyStateLimits: boolean | undefined;
-  includeContiguity: boolean;
-  includeConstitutional: boolean;
-  includeContent: boolean;
-  anchors?: string[] | string;
-  detectedIntent: string | null;
-  minState: string;
-  rerank: boolean;
-  applyLengthPenalty: boolean;
-  sessionId?: string;
-  enableSessionBoost: boolean;
-  enableCausalBoost: boolean;
-  includeTrace?: boolean;
-}
-
-function buildCacheArgs({
-  normalizedQuery,
-  hasValidConcepts,
-  concepts,
-  specFolder,
-  tenantId,
-  userId,
-  agentId,
-  sharedSpaceId,
-  limit,
-  mode,
-  tier,
-  contextType,
-  useDecay,
-  includeArchived,
-  qualityThreshold,
-  applyStateLimits,
-  includeContiguity,
-  includeConstitutional,
-  includeContent,
-  anchors,
-  detectedIntent,
-  minState,
-  rerank,
-  applyLengthPenalty,
-  sessionId,
-  enableSessionBoost,
-  enableCausalBoost,
-  includeTrace = false,
-}: CacheArgsInput): Record<string, unknown> {
-  return {
-    query: normalizedQuery,
-    concepts: hasValidConcepts ? concepts : undefined,
-    specFolder,
-    tenantId,
-    userId,
-    agentId,
-    sharedSpaceId,
-    limit,
-    mode,
-    tier,
-    contextType,
-    useDecay,
-    includeArchived,
-    qualityThreshold,
-    applyStateLimits,
-    includeContiguity,
-    includeConstitutional,
-    includeContent,
-    anchors,
-    intent: detectedIntent,
-    minState,
-    rerank,
-    applyLengthPenalty,
-    sessionId,
-    enableSessionBoost,
-    enableCausalBoost,
-    includeTrace,
-  };
-}
-
-function resolveArtifactRoutingQuery(query: string | null, concepts?: string[]): string {
-  if (typeof query === 'string' && query.trim().length > 0) {
-    return query;
-  }
-
-  if (Array.isArray(concepts) && concepts.length > 0) {
-    return concepts.join(' ');
-  }
-
-  return '';
-}
-
-function applyArtifactRouting(results: MemorySearchRow[], routingResult?: RoutingResult): MemorySearchRow[] {
-  if (!Array.isArray(results) || results.length === 0) {
-    return results;
-  }
-
-  if (!routingResult || routingResult.detectedClass === 'unknown' || routingResult.confidence <= 0) {
-    return results;
-  }
-
-  return applyRoutingWeights(results as WeightedResult[], routingResult.strategy) as MemorySearchRow[];
-}
-
-function parseNullableInt(value: unknown): number | null {
-  if (typeof value === 'number' && Number.isFinite(value) && Number.isInteger(value)) {
-    return value;
-  }
-  if (typeof value === 'string' && value.trim().length > 0) {
-    const parsed = Number(value);
-    if (Number.isFinite(parsed) && Number.isInteger(parsed)) {
-      return parsed;
-    }
-  }
-  return null;
-}
-
-function collapseAndReassembleChunkResults(results: MemorySearchRow[]): ChunkReassemblyResult {
-  if (!Array.isArray(results) || results.length === 0) {
-    return {
-      results: [],
-      stats: {
-        collapsedChunkHits: 0,
-        chunkParents: 0,
-        reassembled: 0,
-        fallback: 0,
-      },
-    };
-  }
-
-  const seenParents = new Set<number>();
-  const parentIds = new Set<number>();
-  const collapsed: MemorySearchRow[] = [];
-  let collapsedChunkHits = 0;
-
-  for (const row of results) {
-    const parentId = parseNullableInt(row.parent_id);
-    if (parentId !== null) {
-      if (seenParents.has(parentId)) {
-        collapsedChunkHits++;
-        continue;
-      }
-      seenParents.add(parentId);
-      parentIds.add(parentId);
-      collapsed.push({
-        ...row,
-        isChunk: true,
-        parentId,
-        chunkIndex: parseNullableInt(row.chunk_index),
-        chunkLabel: typeof row.chunk_label === 'string' ? row.chunk_label : null,
-        chunkCount: null,
-        contentSource: 'file_read_fallback',
-      });
-      continue;
-    }
-
-    collapsed.push({
-      ...row,
-      isChunk: false,
-      parentId: null,
-      chunkIndex: null,
-      chunkLabel: null,
-      chunkCount: null,
-    });
-  }
-
-  if (parentIds.size === 0) {
-    return {
-      results: collapsed,
-      stats: {
-        collapsedChunkHits,
-        chunkParents: 0,
-        reassembled: 0,
-        fallback: 0,
-      },
-    };
+function extractSearchCachePayload(response: MCPResponse): SearchCachePayload | null {
+  const firstEntry = response?.content?.[0];
+  if (!firstEntry || typeof firstEntry.text !== 'string') {
+    return null;
   }
 
   try {
-    const database = requireDb();
-    const ids = Array.from(parentIds);
-    const placeholders = ids.map(() => '?').join(', ');
-    const rows = database.prepare(`
-      SELECT parent_id, chunk_index, chunk_label, content_text
-      FROM memory_index
-      WHERE parent_id IN (${placeholders})
-      ORDER BY parent_id ASC, chunk_index ASC
-    `).all(...ids) as Array<{
-      parent_id: number;
-      chunk_index: number | null;
-      chunk_label: string | null;
-      content_text: string | null;
-    }>;
+    const envelope = JSON.parse(firstEntry.text) as Record<string, unknown>;
+    const summary = typeof envelope.summary === 'string' ? envelope.summary : null;
+    const data = envelope.data && typeof envelope.data === 'object'
+      ? envelope.data as Record<string, unknown>
+      : null;
+    const hints = Array.isArray(envelope.hints)
+      ? envelope.hints.filter((hint): hint is string => typeof hint === 'string')
+      : [];
 
-    const byParent = new Map<number, Array<{
-      chunk_index: number | null;
-      chunk_label: string | null;
-      content_text: string | null;
-    }>>();
-
-    for (const row of rows) {
-      const list = byParent.get(row.parent_id);
-      if (list) {
-        list.push(row);
-      } else {
-        byParent.set(row.parent_id, [row]);
-      }
+    if (!summary || !data) {
+      return null;
     }
 
-    let reassembled = 0;
-    let fallback = 0;
-    const withContent: MemorySearchRow[] = collapsed.map((row): MemorySearchRow => {
-      if (!row.isChunk || row.parentId == null) return row;
-
-      const chunks = byParent.get(row.parentId) || [];
-      const chunkCount = chunks.length;
-      if (chunkCount === 0) {
-        fallback++;
-        return { ...row, chunkCount, contentSource: 'file_read_fallback' as const };
-      }
-
-      const normalizedChunks = chunks
-        .slice()
-        .sort((a, b) => (a.chunk_index ?? Number.MAX_SAFE_INTEGER) - (b.chunk_index ?? Number.MAX_SAFE_INTEGER));
-
-      const hasMissingContent = normalizedChunks.some(
-        (chunk) => typeof chunk.content_text !== 'string' || chunk.content_text.trim().length === 0
-      );
-
-      if (hasMissingContent) {
-        fallback++;
-        return { ...row, chunkCount, contentSource: 'file_read_fallback' as const };
-      }
-
-      const reassembledContent = normalizedChunks
-        .map((chunk) => (chunk.content_text as string).trim())
-        .filter(Boolean)
-        .join('\n\n')
-        .trim();
-
-      if (!reassembledContent) {
-        fallback++;
-        return { ...row, chunkCount, contentSource: 'file_read_fallback' as const };
-      }
-
-      reassembled++;
-      return {
-        ...row,
-        chunkCount,
-        precomputedContent: reassembledContent,
-        contentSource: 'reassembled_chunks' as const,
-      };
-    });
-
-    return {
-      results: withContent,
-      stats: {
-        collapsedChunkHits,
-        chunkParents: parentIds.size,
-        reassembled,
-        fallback,
-      },
-    };
-  } catch (error: unknown) {
-    const message = toErrorMessage(error);
-    console.warn('[memory-search] Failed to reassemble chunked results, falling back to file reads:', message);
-    return {
-      results: collapsed,
-      stats: {
-        collapsedChunkHits,
-        chunkParents: parentIds.size,
-        reassembled: 0,
-        fallback: parentIds.size,
-      },
-    };
+    return { summary, data, hints };
+  } catch {
+    return null;
   }
 }
+
+function buildSearchResponseFromPayload(
+  payload: SearchCachePayload,
+  startTime: number,
+  cacheHit: boolean,
+): MCPResponse {
+  return createMCPSuccessResponse({
+    tool: 'memory_search',
+    summary: payload.summary,
+    data: payload.data,
+    hints: payload.hints,
+    startTime,
+    cacheHit,
+  });
+}
+
+// summarizeGraphWalkDiagnostics, buildEvalChannelPayloads — now imported from lib/telemetry/eval-channel-tracking.ts
+
+// filterByMinQualityScore, resolveQualityThreshold, buildCacheArgs,
+// resolveArtifactRoutingQuery, applyArtifactRouting — now imported from lib/search/search-utils.ts
+// CacheArgsInput — now imported from lib/search/search-utils.ts
+// parseNullableInt, collapseAndReassembleChunkResults — now imported from lib/search/chunk-reassembly.ts
 
 /* ───────────────────────────────────────────────────────────────
    3. CONFIGURATION
@@ -800,6 +394,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
 
   const hasValidQuery = normalizedQuery !== null;
   const hasValidConcepts = Array.isArray(concepts) && concepts.length >= 2;
+  const effectiveQuery = normalizedQuery ?? (hasValidConcepts ? concepts.join(', ') : '');
 
   if (!hasValidQuery && !hasValidConcepts) {
     return createMCPErrorResponse({
@@ -830,7 +425,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   let _evalRunId = 0;
   try {
     const evalEntry = logSearchQuery({
-      query: normalizedQuery ?? (Array.isArray(concepts) ? concepts.join(', ') : ''),
+      query: effectiveQuery,
       intent: explicitIntent ?? null,
       specFolder: specFolder ?? null,
     });
@@ -874,7 +469,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
 
   // Create retrieval trace at pipeline entry
   const trace = createTrace(
-    normalizedQuery || (concepts ? concepts.join(', ') : ''),
+    effectiveQuery,
     sessionId,
     detectedIntent || undefined
   );
@@ -912,171 +507,177 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   });
 
   let _evalChannelPayloads: EvalChannelPayload[] = [];
+  const cacheKey = toolCache.generateCacheKey('memory_search', cacheArgs);
+  const cacheEnabled = toolCache.isEnabled() && !bypassCache;
+  const cachedPayload = cacheEnabled
+    ? toolCache.get<SearchCachePayload>(cacheKey)
+    : null;
 
-  // Use cache wrapper for search execution
-  const cachedResult = await toolCache.withCache(
-    'memory_search',
-    cacheArgs,
-    async () => {
-      // Wait for embedding model only on cache miss
-      if (!isEmbeddingModelReady()) {
-        const modelReady = await waitForEmbeddingModel(30000);
-        if (!modelReady) {
-          throw new Error('Embedding model not ready after 30s timeout. Try again later.');
-        }
+  let responseToReturn: MCPResponse;
+
+  if (cachedPayload) {
+    responseToReturn = buildSearchResponseFromPayload(cachedPayload, _searchStartTime, true);
+  } else {
+    // Wait for embedding model only on cache miss
+    if (!isEmbeddingModelReady()) {
+      const modelReady = await waitForEmbeddingModel(30000);
+      if (!modelReady) {
+        throw new Error('Embedding model not ready after 30s timeout. Try again later.');
       }
+    }
 
-      // V2 pipeline is the only path (legacy V1 removed from the runtime pipeline)
-      {
-        const pipelineConfig: PipelineConfig = {
-          query: normalizedQuery || '',
-          concepts: hasValidConcepts ? concepts : undefined,
-          searchType: (hasValidConcepts && concepts!.length >= 2)
-            ? 'multi-concept'
-            : 'hybrid',
-          mode,
-          limit,
-          specFolder,
-          tenantId: normalizedScope.tenantId,
-          userId: normalizedScope.userId,
-          agentId: normalizedScope.agentId,
-          sharedSpaceId: normalizedScope.sharedSpaceId,
-          tier,
-          contextType,
-          includeArchived,
-          includeConstitutional,
-          includeContent,
-          anchors,
-          qualityThreshold,
-          minState,
-          applyStateLimits,
-          useDecay,
-          rerank,
-          applyLengthPenalty,
-          sessionId,
-          enableDedup,
-          enableSessionBoost,
-          enableCausalBoost,
-          trackAccess,
-          detectedIntent,
-          intentConfidence,
-          intentWeights: toIntentWeightsConfig(intentWeights),
-          artifactRouting: artifactRouting as unknown as PipelineConfig['artifactRouting'],
-          trace,
-        };
+    // V2 pipeline is the only path (legacy V1 removed from the runtime pipeline)
+    const pipelineConfig: PipelineConfig = {
+      query: effectiveQuery,
+      concepts: hasValidConcepts ? concepts : undefined,
+      searchType: (hasValidConcepts && concepts!.length >= 2)
+        ? 'multi-concept'
+        : 'hybrid',
+      mode,
+      limit,
+      specFolder,
+      tenantId: normalizedScope.tenantId,
+      userId: normalizedScope.userId,
+      agentId: normalizedScope.agentId,
+      sharedSpaceId: normalizedScope.sharedSpaceId,
+      tier,
+      contextType,
+      includeArchived,
+      includeConstitutional,
+      includeContent,
+      anchors,
+      qualityThreshold,
+      minState,
+      applyStateLimits,
+      useDecay,
+      rerank,
+      applyLengthPenalty,
+      sessionId,
+      enableDedup,
+      enableSessionBoost,
+      enableCausalBoost,
+      trackAccess,
+      detectedIntent,
+      intentConfidence,
+      intentWeights: toIntentWeightsConfig(intentWeights),
+      artifactRouting: artifactRouting as unknown as PipelineConfig['artifactRouting'],
+      trace,
+    };
 
-        const pipelineResult: PipelineResult = await executePipeline(pipelineConfig);
+    const pipelineResult: PipelineResult = await executePipeline(pipelineConfig);
 
-        // Build extra data from pipeline metadata for response formatting
-        const extraData: Record<string, unknown> = {
-          stateStats: pipelineResult.annotations.stateStats,
-          featureFlags: {
-            ...pipelineResult.annotations.featureFlags,
-            pipelineV2: true,
-          },
-          pipelineMetadata: pipelineResult.metadata,
-        };
+    // Build extra data from pipeline metadata for response formatting
+    const extraData: Record<string, unknown> = {
+      stateStats: pipelineResult.annotations.stateStats,
+      featureFlags: {
+        ...pipelineResult.annotations.featureFlags,
+        pipelineV2: true,
+      },
+      pipelineMetadata: pipelineResult.metadata,
+    };
 
-        if (pipelineResult.annotations.evidenceGapWarning) {
-          extraData.evidenceGapWarning = pipelineResult.annotations.evidenceGapWarning;
-        }
+    if (pipelineResult.annotations.evidenceGapWarning) {
+      extraData.evidenceGapWarning = pipelineResult.annotations.evidenceGapWarning;
+    }
 
-        if (detectedIntent) {
-          extraData.intent = {
-            type: detectedIntent,
-            confidence: intentConfidence,
-            description: intentClassifier.getIntentDescription(detectedIntent as IntentType),
-            weightsApplied: pipelineResult.metadata.stage2.intentWeightsApplied,
-          };
-        }
+    if (detectedIntent) {
+      extraData.intent = {
+        type: detectedIntent,
+        confidence: intentConfidence,
+        description: intentClassifier.getIntentDescription(detectedIntent as IntentType),
+        weightsApplied: pipelineResult.metadata.stage2.intentWeightsApplied,
+      };
+    }
 
-        if (artifactRouting) {
-          extraData.artifactRouting = artifactRouting;
-          extraData.artifact_routing = artifactRouting;
-        }
+    if (artifactRouting) {
+      extraData.artifactRouting = artifactRouting;
+      extraData.artifact_routing = artifactRouting;
+    }
 
-        if (pipelineResult.metadata.stage2.feedbackSignalsApplied === 'applied') {
-          extraData.feedbackSignals = { applied: true };
-          extraData.feedback_signals = { applied: true };
-        }
+    if (pipelineResult.metadata.stage2.feedbackSignalsApplied === 'applied') {
+      extraData.feedbackSignals = { applied: true };
+      extraData.feedback_signals = { applied: true };
+    }
 
-        if (pipelineResult.metadata.stage2.graphContribution) {
-          extraData.graphContribution = pipelineResult.metadata.stage2.graphContribution;
-          extraData.graph_contribution = pipelineResult.metadata.stage2.graphContribution;
-        }
+    if (pipelineResult.metadata.stage2.graphContribution) {
+      extraData.graphContribution = pipelineResult.metadata.stage2.graphContribution;
+      extraData.graph_contribution = pipelineResult.metadata.stage2.graphContribution;
+    }
 
-        if (pipelineResult.metadata.stage3.rerankApplied) {
-          extraData.rerankMetadata = {
-            reranking_enabled: true,
-            reranking_requested: true,
-            reranking_applied: true,
-          };
-        }
+    if (pipelineResult.metadata.stage3.rerankApplied) {
+      extraData.rerankMetadata = {
+        reranking_enabled: true,
+        reranking_requested: true,
+        reranking_applied: true,
+      };
+    }
 
-        if (pipelineResult.metadata.stage3.chunkReassemblyStats.chunkParents > 0) {
-          extraData.chunkReassembly = pipelineResult.metadata.stage3.chunkReassemblyStats;
-          extraData.chunk_reassembly = pipelineResult.metadata.stage3.chunkReassemblyStats;
-        }
+    if (pipelineResult.metadata.stage3.chunkReassemblyStats.chunkParents > 0) {
+      extraData.chunkReassembly = pipelineResult.metadata.stage3.chunkReassemblyStats;
+      extraData.chunk_reassembly = pipelineResult.metadata.stage3.chunkReassemblyStats;
+    }
 
-        if (pipelineResult.trace) {
-          extraData.retrievalTrace = pipelineResult.trace;
-        }
-        try {
-          const adaptiveShadow = buildAdaptiveShadowProposal(
-            requireDb(),
-            normalizedQuery || (concepts ? concepts.join(', ') : ''),
-            pipelineResult.results as Array<Record<string, unknown> & { id: number }>,
-          );
-          if (adaptiveShadow) {
-            extraData.adaptiveShadow = adaptiveShadow;
-            extraData.adaptive_shadow = adaptiveShadow;
-          }
-        } catch (_error: unknown) {
-          // Adaptive proposal logging is best-effort only
-        }
-
-        _evalChannelPayloads = buildEvalChannelPayloads(
-          pipelineResult.results as unknown as Array<Record<string, unknown>>
-        );
-
-        const appliedBoosts = {
-          session: { applied: pipelineResult.metadata.stage2.sessionBoostApplied },
-          causal: { applied: pipelineResult.metadata.stage2.causalBoostApplied },
-        };
-        extraData.appliedBoosts = appliedBoosts;
-        extraData.applied_boosts = appliedBoosts;
-
-        const formatted = await formatSearchResults(
-          pipelineResult.results as unknown as RawSearchResult[],
-          pipelineConfig.searchType,
-          includeContent,
-          anchors,
-          null,
-          null,
-          extraData,
-          includeTrace
-        );
-
-        // Prepend evidence gap warning if present
-        if (pipelineResult.annotations.evidenceGapWarning && formatted?.content?.[0]?.text) {
-          try {
-            const parsed = JSON.parse(formatted.content[0].text) as Record<string, unknown>;
-            if (typeof parsed.summary === 'string') {
-              parsed.summary = `${pipelineResult.annotations.evidenceGapWarning}\n\n${parsed.summary}`;
-              formatted.content[0].text = JSON.stringify(parsed, null, 2);
-            }
-          } catch (_error: unknown) {
-            // Non-fatal
-          }
-        }
-
-        return formatted;
+    if (pipelineResult.trace) {
+      extraData.retrievalTrace = pipelineResult.trace;
+    }
+    try {
+      const adaptiveShadow = buildAdaptiveShadowProposal(
+        requireDb(),
+        effectiveQuery,
+        pipelineResult.results as Array<Record<string, unknown> & { id: number }>,
+      );
+      if (adaptiveShadow) {
+        extraData.adaptiveShadow = adaptiveShadow;
+        extraData.adaptive_shadow = adaptiveShadow;
       }
-    },
-    { bypassCache }
-  );
+    } catch (_error: unknown) {
+      // Adaptive proposal logging is best-effort only
+    }
 
-  let responseToReturn: MCPResponse = cachedResult;
+    _evalChannelPayloads = buildEvalChannelPayloads(
+      pipelineResult.results as unknown as Array<Record<string, unknown>>
+    );
+
+    const appliedBoosts = {
+      session: { applied: pipelineResult.metadata.stage2.sessionBoostApplied },
+      causal: { applied: pipelineResult.metadata.stage2.causalBoostApplied },
+    };
+    extraData.appliedBoosts = appliedBoosts;
+    extraData.applied_boosts = appliedBoosts;
+
+    const formatted = await formatSearchResults(
+      pipelineResult.results as unknown as RawSearchResult[],
+      pipelineConfig.searchType,
+      includeContent,
+      anchors,
+      null,
+      null,
+      extraData,
+      includeTrace
+    );
+
+    // Prepend evidence gap warning if present
+    if (pipelineResult.annotations.evidenceGapWarning && formatted?.content?.[0]?.text) {
+      try {
+        const parsed = JSON.parse(formatted.content[0].text) as Record<string, unknown>;
+        if (typeof parsed.summary === 'string') {
+          parsed.summary = `${pipelineResult.annotations.evidenceGapWarning}\n\n${parsed.summary}`;
+          formatted.content[0].text = JSON.stringify(parsed, null, 2);
+        }
+      } catch (_error: unknown) {
+        // Non-fatal
+      }
+    }
+
+    const cachePayload = extractSearchCachePayload(formatted);
+    if (cachePayload && cacheEnabled) {
+      toolCache.set(cacheKey, cachePayload, { toolName: 'memory_search' });
+    }
+
+    responseToReturn = cachePayload
+      ? buildSearchResponseFromPayload(cachePayload, _searchStartTime, false)
+      : formatted;
+  }
 
   // Apply session deduplication AFTER cache
   if (sessionId && enableDedup && sessionManager.isEnabled()) {
@@ -1185,7 +786,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       } catch (_error: unknown) { /* ignore parse errors */ }
       logConsumptionEvent(db, {
         event_type: 'search',
-        query_text: normalizedQuery ?? (Array.isArray(concepts) ? concepts.join(', ') : null),
+        query_text: effectiveQuery || null,
         intent: detectedIntent,
         result_count: resultCount,
         result_ids: resultIds,

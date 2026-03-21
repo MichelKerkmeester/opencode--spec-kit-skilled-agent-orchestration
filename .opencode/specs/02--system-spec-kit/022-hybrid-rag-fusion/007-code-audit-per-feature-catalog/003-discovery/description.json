@@ -17,5 +17,9 @@
   "memorySequence": 1,
   "memoryNameHistory": [
     "10-03-26_22-55__discovery.md"
-  ]
+  ],
+  "title": "Feature Specification: discovery [template:level_2/spec.md]",
+  "status": "Complete",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: discovery"
 }

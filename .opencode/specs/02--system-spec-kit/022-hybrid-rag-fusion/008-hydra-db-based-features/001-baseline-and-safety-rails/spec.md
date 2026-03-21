@@ -37,11 +37,11 @@ Phase 1 establishes the safe operating baseline for the Hydra roadmap. It harden
 | **Created** | 2026-03-13 |
 | **Updated** | 2026-03-14 |
 | **Branch** | `022-hybrid-rag-fusion` |
-| **Parent Spec** | `../spec.md` |
+| **Parent Spec** | ../spec.md |
 | **Parent Plan** | `../plan.md` |
 | **Phase** | 1 of 6 |
 | **Predecessor** | None |
-| **Successor** | `002-versioned-memory-state` |
+| **Successor** | ../002-versioned-memory-state/spec.md |
 | **Handoff Criteria** | Buildable runtime, roadmap-safe flags, checkpoint scripts, baseline snapshot coverage, and aligned docs all verified |
 
 ### Phase Context
@@ -319,4 +319,3 @@ Create a trustworthy Phase 1 foundation so later Hydra phases can build on repro
 - **Task Breakdown**: `tasks.md`
 - **Verification Checklist**: `checklist.md`
 - **Decision Records**: `decision-record.md`
-

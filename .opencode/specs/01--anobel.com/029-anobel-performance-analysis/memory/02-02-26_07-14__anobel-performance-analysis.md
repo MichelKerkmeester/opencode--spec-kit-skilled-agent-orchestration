@@ -5,7 +5,7 @@ trigger_phrases:
   - "anobel performance optimization documentation"
   - "performance analysis adr decisions"
   - "webflow performance verification checklist"
-importance_tier: "normal"
+importance_tier: "important"
 contextType: "research"
 quality_score: 0.60
 quality_flags:
@@ -591,11 +591,11 @@ Learning metrics will be calculated when both preflight and postflight data are 
 ```yaml
 # Core Identifiers
 session_id: "session-1770012882357-hyk40psi8"
-spec_folder: "005-anobel.com/031-anobel-performance-analysis"
+spec_folder: "01--anobel.com/029-anobel-performance-analysis"
 channel: "001-hero-flicker-debug"
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)

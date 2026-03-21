@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Remove Emoji Enforcement from /create Command [011-create-command-emoji-enforcement/spec]"
+title: "Feature Specification: Remove Emoji Enforcement from /create Command [012-cmd-create-emoji-enforcement/spec]"
 description: "The /create command currently enforces emoji usage in documentation titles and sections through validation logic. This policy has been deprecated. This spec documents the remova..."
 trigger_phrases:
   - "feature"

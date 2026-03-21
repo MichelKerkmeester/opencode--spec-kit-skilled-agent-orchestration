@@ -16,5 +16,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Specification: generate-context.js Modularization [058-generate-context-modularization/spec]",
+  "importance_tier": "important",
+  "short_description": "Specification: generate-context.js Modularization"
 }

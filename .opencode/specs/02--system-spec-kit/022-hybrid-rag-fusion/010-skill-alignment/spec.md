@@ -1,7 +1,7 @@
 ---
 title: "Feature Specification: Skill Alignment — system-spec-kit"
-description: "Research-backed Level 2 specification for aligning system-spec-kit documentation with the delivered 022-hybrid-rag-fusion program without changing MCP runtime behavior."
-trigger_phrases: ["skill alignment", "010 alignment", "speckit skill update", "system skill guide update"]
+description: "Truth-reconciled Level 2 specification for closing the last system-spec-kit documentation gaps after current memory, command, and agent alignment landed."
+trigger_phrases: ["skill alignment", "010 alignment", "system-spec-kit backlog", "system skill guide update"]
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -20,10 +20,13 @@ contextType: "implementation"
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-14 |
-| **Updated** | 2026-03-15 |
-| **Branch** | `017-markovian-architectures` |
+| **Updated** | 2026-03-21 |
+| **Branch** | `main` |
 | **Parent** | `022-hybrid-rag-fusion` |
-| **Complexity** | 48/70 |
+| **Complexity** | 36/70 |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../009-perfect-session-capturing/spec.md |
+| **Successor** | ../011-command-alignment/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -33,13 +36,16 @@ contextType: "implementation"
 
 ### Problem Statement
 
-The `system-spec-kit` documentation surface no longer cleanly matches the delivered state of the 022-hybrid-rag-fusion program. Scratch research for this phase identified stale metadata in the system skill guide, missing governance and campaign guidance across multiple reference files, and outdated assets that still describe a smaller pre-epic execution model.
+The `010-skill-alignment` pack preserved an older story that no longer matched the repository. It mixed a finished-state label with draft or pre-implementation language, cited superseded command-surface counts, and had to reconcile the final `system-spec-kit` skill/reference/asset drift after the live memory surface settled at **33 tools**, **6 commands**, with retrieval documented under `/memory:analyze`.
 
-This phase is currently a **research-complete, pre-implementation** documentation phase. Some related improvements have already landed elsewhere in the repo, so the main risk is now duplicating work or re-adding stale backlog items instead of targeting the gaps that remain open.
+At the same time, most of the broad alignment backlog that 010 originally tracked had already landed elsewhere in the repo. The final work in scope for this phase was narrower and documentation-only:
+- align the `system-spec-kit` skill guide with the live 33-tool, 6-command memory surface and its save-workflow/shared-memory governance framing
+- align the memory references with shared-memory and shared-space governance expectations
+- align the assets with campaign, shared-space, and cross-phase guidance
 
 ### Purpose
 
-Produce an implementation-ready documentation spec that accurately tracks the **still-open** alignment work for `system-spec-kit`, preserves already-landed changes, and defines verification rules that use live repo truth instead of hand-maintained assumptions.
+Record 010 as the completed documentation-only reconciliation for the remaining `system-spec-kit` drift, instead of re-stating already-landed command or agent alignment changes.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -48,27 +54,25 @@ Produce an implementation-ready documentation spec that accurately tracks the **
 ## 3. SCOPE
 
 ### In Scope
-- Upgrade this phase to a Level 2 spec folder with anchors, checklist coverage, and valid local cross-references.
-- Rewrite the backlog so it tracks only documentation gaps that remain open in the system skill guide, selected references, and selected assets.
-- Record canonical-source rules for counts, flags, and verification commands so future implementation work does not rely on brittle grep shortcuts or stale prose.
+- Rewrite this spec pack so all five canonical docs tell one documentation-only story grounded in current repo truth.
+- Replace stale command-surface references with the live memory model: 33 tools, 6 commands, retrieval in `/memory:analyze`.
+- Record the now-closed `system-spec-kit` documentation gaps that were still observable on disk at the start of this pass.
+- Record the canonical verification method for future memory-surface count checks.
 
 ### Out of Scope
-- MCP server runtime code changes - this phase remains documentation-only.
-- Command alignment work completed by `011-command-alignment` (32/32 tools, 7 commands).
-- Agent alignment, README rewrites, and finalization work owned by `999-finalization`.
-- Re-implementing documentation changes that are already present elsewhere in the repo.
+- Runtime TypeScript or MCP behavior changes.
+- Re-opening `011-command-alignment`, agent-runtime alignment, or README/install-guide cleanup.
+- Re-implementing documentation work that is already present in the repo.
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-skill-alignment/spec.md` | Modify | Upgrade to Level 2 and rewrite scope/requirements around confirmed open gaps |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-skill-alignment/plan.md` | Modify | Replace the old implementation plan with a doc-refresh execution plan |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-skill-alignment/tasks.md` | Modify | Replace duplicate/stale tasks with an actionable open backlog |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-skill-alignment/checklist.md` | Create | Add Level 2 verification for this pre-implementation documentation phase |
-| `../../../../skill/system-spec-kit/` | Future modify | Primary documentation alignment target for the system skill guide, metadata, routing, rules, and resource guidance |
-| `.opencode/skill/system-spec-kit/references/**` | Future modify | Reference targets that still lag epic-scale behavior, rollout guidance, and verification patterns |
-| `.opencode/skill/system-spec-kit/assets/**` | Future modify | Asset targets that still describe pre-epic complexity and dispatch patterns |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-skill-alignment/spec.md` | Modify | Truth-reconcile requirements, scope, and success criteria |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-skill-alignment/plan.md` | Modify | Rebase the plan around the remaining documentation backlog |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-skill-alignment/tasks.md` | Modify | Remove stale 32/7/context framing and preserve only the factual closeout scope |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-skill-alignment/checklist.md` | Modify | Verify pack-level truth reconciliation and docs-only boundaries |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-skill-alignment/implementation-summary.md` | Modify | Record what this reconciliation pass changed and how it was verified |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -80,34 +84,28 @@ Produce an implementation-ready documentation spec that accurately tracks the **
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Normalize this spec folder as a Level 2 pre-implementation phase | `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` declare Level 2, include valid anchors, and use working local references from the `010-skill-alignment` folder |
-| REQ-002 | Track only confirmed open documentation gaps | The rewritten backlog maps to scratch research and live repo inspection; already-landed items are removed or explicitly marked "do not re-implement" |
-| REQ-003 | Preserve the documentation-only boundary | The spec states that runtime TypeScript, handler behavior, and command alignment are out of scope for this phase |
-| REQ-004 | Define canonical source-of-truth rules for future implementation | Tool inventory points to `mcp_server/tool-schemas.ts`; runtime/documentation counts are verified from live files; verification commands avoid brittle `grep -c "name:"` shortcuts |
-| REQ-005 | Make open skill-guide alignment work explicit | The spec retains open work for stale metadata, routing gaps, governance gaps, and shared-space/shared-memory layer treatment where the repo still lacks alignment |
+| REQ-001 | The 010 pack must tell one consistent story | No canonical file mixes completion language with draft or pre-implementation framing |
+| REQ-002 | The 010 pack must use live memory-surface truth | The pack uses 33 tools, 6 commands, and `/memory:analyze` as retrieval home |
+| REQ-003 | The 010 pack must remove stale command-alignment residue | No canonical file still presents obsolete command counts or the retired standalone retrieval command as current state |
+| REQ-004 | The 010 pack must preserve the docs-only boundary | Scope and tasks stay limited to documentation work in `system-spec-kit` surfaces |
+| REQ-005 | The closeout scope must be genuinely current | Only the real `system-spec-kit` documentation gaps that existed at the start of the pass are listed, and the packet records when they were resolved |
 
-### P1 - Required (complete OR user-approved deferral)
+### P1 - Required
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-006 | Separate open work from already-landed work | The spec explicitly calls out repo changes that already landed, including recursive validation shortcuts, phase-aware template guidance, and nested child-path support |
-| REQ-007 | Reframe the execution plan around future doc refresh work | `plan.md` uses five documentation phases: normalization, skill-guide refresh, references refresh, assets refresh, and verification/drift-proofing |
-| REQ-008 | Rewrite the task backlog into a non-duplicative implementation list | `tasks.md` starts with spec-folder remediation, keeps only open alignment targets, and includes a guard task that forbids runtime behavior changes |
-| REQ-009 | Add Level 2 verification tailored to this phase | `checklist.md` verifies structure, links, canonical-source usage, open-gap accuracy, and the docs-only boundary |
+| REQ-006 | Keep the skill-guide closeout grounded in current repo truth | `SKILL.md` describes the live 33-tool, 6-command memory surface and adds save-workflow/shared-memory governance framing |
+| REQ-007 | Keep the memory-reference closeout narrow and factual | `save_workflow.md` and `embedding_resilience.md` carry the required governance/shared-memory/shared-space framing |
+| REQ-008 | Keep the asset closeout narrow and factual | The asset docs contain the required campaign/shared-space/cross-phase guidance |
+| REQ-009 | Document a canonical verification method | The pack points future reviewers to `mcp_server/tool-schemas.ts` and `.opencode/command/memory/*.md` for live counts and ownership |
 
 ### Already-Landed Items (Do Not Re-Implement)
 
-- Recursive validation shortcuts are already documented in `../../../../skill/system-spec-kit/references/workflows/quick_reference.md` and related template guidance.
-- Phase-aware template guidance is already present in `../../../../skill/system-spec-kit/references/templates/level_specifications.md`.
-- Nested child-path support is already present in `../../../../skill/system-spec-kit/references/structure/sub_folder_versioning.md`.
-- Environment variable coverage is broadly current except for the missing runtime `SPECKIT_GRAPH_UNIFIED` entry and stale wording for `SPEC_KIT_ENABLE_CAUSAL`.
-- Full 32-tool command documentation suite delivered by `011-command-alignment` (7 commands: context, save, manage, learn, continue, analyze, shared).
-
-### Out-of-Scope Backlog Boundaries
-
-- Do not queue runtime MCP handler or library edits in this spec.
-- Do not fold `011-command-alignment` tasks into this phase.
-- Do not invent new feature behavior to satisfy documentation drift; document existing behavior or mark gaps for later documentation work.
+- `011-command-alignment` already aligned the memory command docs to the live 33-tool, 6-command surface.
+- Retrieval ownership already lives in `/memory:analyze`; there is no standalone `context` command anymore.
+- `SKILL.md` already contains expanded routing scaffolding such as `INTENT_SIGNALS`, `RESOURCE_MAP`, `/memory:analyze`, and `/memory:shared` command boosts.
+- `environment_variables.md` already includes `SPECKIT_GRAPH_UNIFIED`.
+- `trigger_config.md`, `epistemic_vectors.md`, and troubleshooting guidance already received the earlier reconciliation pass and should not be re-added as open backlog by this spec.
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -115,18 +113,17 @@ Produce an implementation-ready documentation spec that accurately tracks the **
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: The `010-skill-alignment` spec folder is clearly documented as a Level 2, draft, pre-implementation documentation phase.
-- **SC-002**: The rewritten backlog reflects only still-open alignment work supported by scratch research and live repo inspection.
-- **SC-003**: At least one canonical verification method is documented for tool counts, runtime flags, and stale-doc detection without relying on brittle grep counts.
-- **SC-004**: Local cross-references in the spec folder resolve from the `010-skill-alignment` directory and do not reference sibling or child files with broken relative paths.
-- **SC-005**: The spec explicitly protects already-landed documentation work from being re-added as future implementation scope.
+- **SC-001**: All five canonical docs describe 010 as a completed documentation-only reconciliation record, not as a draft or pre-implementation phase.
+- **SC-002**: No canonical file repeats the obsolete command-surface framing or retired standalone retrieval ownership model.
+- **SC-003**: The pack records the live memory truth as 33 tools, 6 commands, and retrieval in `/memory:analyze`.
+- **SC-004**: The packet records the last observable `system-spec-kit` gaps and their closeout: skill-guide memory-surface/save-governance wording, save-workflow/shared-memory framing, embedding/shared-space governance framing, and campaign/shared-space/cross-phase asset guidance.
+- **SC-005**: Strict Spec Kit validation passes for the `010-skill-alignment` folder.
 
 ### Acceptance Scenarios
 
-- **AS-001**: A future implementer can distinguish open alignment work from already-landed documentation work without rereading the scratch research.
-- **AS-002**: A reviewer can trace tool-count guidance back to `tool-schemas.ts` instead of a brittle grep heuristic.
-- **AS-003**: A reviewer can verify the docs-only boundary without inspecting runtime TypeScript diffs.
-- **AS-004**: A validator can resolve all local references in the spec folder except for policy-required artifacts that are intentionally deferred.
+- **AS-001**: A reviewer can read any one of the five canonical docs and get the same story about current state and closeout scope.
+- **AS-002**: A future implementer can identify the live memory-surface source of truth without relying on stale command counts.
+- **AS-003**: A future implementer can distinguish already-landed documentation work from the still-open backlog without re-reading the earlier audit scratch files.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -136,22 +133,20 @@ Produce an implementation-ready documentation spec that accurately tracks the **
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Scratch research files in `./scratch/agent-01...agent-10` | Missing or stale findings would weaken the backlog rewrite | Keep the research files as the primary decision source and cross-check against live repo files before writing requirements |
-| Dependency | Parent epic docs in `../spec.md` and `../implementation-summary.md` | Without parent context, open-vs-landed decisions drift | Use the parent epic as the authoritative delivery summary for 022 |
-| Risk | Validation policy requires artifacts that are unusual for a draft docs-only phase | The spec folder can fail validation even when the backlog rewrite is correct | Resolve all validator issues that can be fixed in the spec folder now and document any policy tension honestly |
-| Risk | Future implementer re-adds already-landed tasks | Wasted work and renewed drift | Keep explicit "already landed" notes in spec, plan, tasks, and checklist |
-| Risk | Numeric claims drift again before implementation begins | Future backlog becomes stale quickly | Require canonical-source verification during future implementation and final review |
-| Dependency | `011-command-alignment` | Completed | Command documentation coverage is fully delivered (32/32 tools, 7 commands); only SKILL.md metadata/routing/rules remain as 010 scope |
+| Dependency | `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` | Tool-count truth could drift again if reviewers rely on prose instead of the schema file | Treat `TOOL_DEFINITIONS` as the canonical tool inventory |
+| Dependency | `.opencode/command/memory/analyze.md` and `.opencode/command/memory/README.txt` | Retrieval ownership can be misdocumented if future reviewers rely on older pack language | Point the pack to `/memory:analyze` and the live memory command directory |
+| Risk | Closeout over-pruning | Genuine start-of-pass documentation gaps could disappear if already-landed items and recorded fixes are not separated cleanly | Keep the recorded start-of-pass gaps explicitly scoped to the skill, reference, and asset surfaces reconciled here |
+| Risk | Numeric drift | The memory tool count may change again later | Document the canonical verification method and avoid hard-coding derived counts outside the pack narrative |
 <!-- /ANCHOR:risks -->
 
 ---
 
 <!-- ANCHOR:questions -->
-## 7. IMPLEMENTATION NOTES
+## 7. CLOSEOUT NOTES
 
-- This phase is **ready for implementation planning**, not implementation completion.
-- Future implementation should prefer live-file verification over transcribing counts from prior notes.
-- Shared-space and shared-memory tools must be documented either within the 7-layer architecture or as explicitly out-of-band utilities; the spec should not leave them ambiguous.
+- This pack records completed documentation reconciliation work, not runtime implementation work.
+- Future reviews should prefer live-file verification over restating counts from older specs.
+- If the memory surface changes again, create a fresh reconciliation pass using the schema file and live command docs rather than reopening this packet with stale counts.
 <!-- /ANCHOR:questions -->
 
 ---
@@ -160,16 +155,16 @@ Produce an implementation-ready documentation spec that accurately tracks the **
 ## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Documentation Quality
-- **NFR-D01**: Cross-references in the spec folder must resolve from the local folder without relying on repository-root assumptions.
-- **NFR-D02**: The backlog must be traceable to research files or live repo evidence for every retained open item.
+- **NFR-D01**: The five canonical docs must stay internally consistent about current state and closeout scope.
+- **NFR-D02**: Future backlog items must be phrased as documentation updates, not runtime behavior changes.
 
 ### Verification Safety
-- **NFR-V01**: Verification commands must use canonical-source methods that do not overcount JSON schema properties or unrelated matches.
-- **NFR-V02**: The spec must not require future implementers to infer whether a task is already landed or still open.
+- **NFR-V01**: Count verification must use `mcp_server/tool-schemas.ts`, not brittle string-count heuristics.
+- **NFR-V02**: Command ownership verification must use `.opencode/command/memory/` and `/memory:analyze`, not superseded spec prose.
 
 ### Change Control
-- **NFR-C01**: This phase must not authorize runtime TypeScript behavior changes.
-- **NFR-C02**: This phase must remain compatible with the current `system-spec-kit` validation and drift-check workflows.
+- **NFR-C01**: This phase does not authorize runtime TypeScript changes.
+- **NFR-C02**: This phase must remain valid under strict Spec Kit validation.
 <!-- /ANCHOR:nfr -->
 
 ---
@@ -178,14 +173,12 @@ Produce an implementation-ready documentation spec that accurately tracks the **
 ## L2: EDGE CASES
 
 ### Documentation Boundaries
-- Already-landed repo change: keep it out of the open backlog and label it as preserved behavior.
-- Research/live repo conflict: prefer live repo truth and record the research note as stale context rather than turning it into a task.
-- Validator policy conflict: fix what is fixable in-folder, then document the remaining policy issue instead of fabricating implementation progress.
+- Already-landed `system-spec-kit` doc improvements must stay out of the future backlog even if older 010 text still mentions them.
+- If a live doc mixes current and stale memory-surface wording, the future backlog should target the wording drift rather than invent new runtime work.
 
 ### Verification Edge Cases
-- Tool-count verification: count actual tool definition entries, not every `name:` token in schema files.
-- Runtime flag coverage: distinguish runtime flags from Hydra roadmap metadata flags when documenting env vars.
-- Shared-space tool routing: do not assume the current 7-layer writeup already covers shared-memory utilities unless the live docs explicitly do so.
+- Tool-count verification must ignore schema type definitions and count actual tool entries only.
+- The old `context` command may still appear in historical notes; the pack must not treat those historical mentions as the live command model.
 <!-- /ANCHOR:edge-cases -->
 
 ---
@@ -195,10 +188,18 @@ Produce an implementation-ready documentation spec that accurately tracks the **
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 18/25 | Touches four spec files now and prepares a later 30+ file documentation refresh |
-| Risk | 12/25 | Incorrect backlog curation could duplicate already-landed work or hide genuine gaps |
-| Research | 18/20 | Ten scratch research files plus live repo inspection must be reconciled accurately |
-| **Total** | **48/70** | **Level 2** |
+| Scope | 12/25 | Five spec-pack docs updated, no runtime docs changed in this phase |
+| Risk | 9/25 | Main risk is reintroducing stale backlog items or obsolete command-surface claims |
+| Research | 15/20 | Requires reconciliation against live tool schemas, command docs, and current `system-spec-kit` docs |
+| **Total** | **36/70** | **Level 2** |
 <!-- /ANCHOR:complexity -->
 
 ---
+
+## Phase Navigation
+
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../009-perfect-session-capturing/spec.md |
+| **Next Phase** | ../011-command-alignment/spec.md |

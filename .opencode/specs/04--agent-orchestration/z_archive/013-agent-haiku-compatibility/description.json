@@ -16,5 +16,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Agent Haiku Compatibility [013-agent-haiku-compatibility/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Agent Haiku Compatibility"
 }

@@ -25,7 +25,7 @@ contextType: "implementation"
 | **Spec Folder** | 019-incorrect-sub-agent-nesting |
 | **Completed** | 2026-02-17 |
 | **Level** | 3 |
-| **Status** | Complete |
+| **Status** | Partially Reverted |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -124,6 +124,7 @@ Duplicated all 8 copilot agent files to `.claude/agents/` with Claude Code (CC) 
 - Enforcement is instruction-based only (no runtime tooling) — depends on model compliance
 - Codex-specific behavioral tendencies may require additional prompting beyond NDP rules
 - Future spec may add runtime depth enforcement via code
+- **Partial revert (2026-03-21):** The `.opencode/agent/copilot/` directory no longer exists — removed after implementation. The NDP changes applied to `copilot/orchestrate.md` and `copilot/review.md` (Phase 1, Phase 2, Phase 3, Phase 4) are no longer present in the repository.
 <!-- /ANCHOR:limitations -->
 
 ---

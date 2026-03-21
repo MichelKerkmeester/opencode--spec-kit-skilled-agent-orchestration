@@ -33,8 +33,9 @@ Adapt the sk-git skill's worktree handling from Superset IDE's git worktree mode
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Never Implemented |
 | **Created** | 2026-02-28 |
+| **Note** | Spec was written but no implementation files exist (no tasks.md, no implementation-summary.md). The sk-git skill was not updated per this spec. Work can be resumed from this spec if needed. |
 <!-- ANCHOR:metadata -->
 <!-- /ANCHOR:metadata -->
 

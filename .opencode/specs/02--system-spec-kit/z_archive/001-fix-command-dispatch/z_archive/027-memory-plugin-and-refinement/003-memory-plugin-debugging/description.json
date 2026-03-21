@@ -20,5 +20,8 @@
     "027-memory-plugin-and-refinement"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Memory Plugin Debugging - bun:sqlite Migration [003-memory-plugin-debugging/spec]",
+  "importance_tier": "important",
+  "short_description": "Memory Plugin Debugging - bun:sqlite Migration"
 }

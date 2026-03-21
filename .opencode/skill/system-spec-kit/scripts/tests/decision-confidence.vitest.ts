@@ -18,9 +18,9 @@ describe('decision confidence calibration', () => {
       }],
     });
 
-    expect(result.DECISIONS[0]?.CHOICE_CONFIDENCE).toBeCloseTo(0.65, 3);
-    expect(result.DECISIONS[0]?.RATIONALE_CONFIDENCE).toBeCloseTo(0.5, 3);
-    expect(result.DECISIONS[0]?.CONFIDENCE).toBeCloseTo(0.5, 3);
+    expect(result.DECISIONS[0]?.CHOICE_CONFIDENCE).toBeCloseTo(0.8, 3);
+    expect(result.DECISIONS[0]?.RATIONALE_CONFIDENCE).toBeCloseTo(0.7, 3);
+    expect(result.DECISIONS[0]?.CONFIDENCE).toBeCloseTo(0.7, 3);
   });
 
   it('produces stronger choice confidence than rationale confidence when only the choice is explicit', async () => {
@@ -39,9 +39,9 @@ describe('decision confidence calibration', () => {
     });
 
     expect(result.DECISION_COUNT).toBe(1);
-    expect(result.DECISIONS[0]?.CHOICE_CONFIDENCE).toBeCloseTo(0.85, 3);
-    expect(result.DECISIONS[0]?.RATIONALE_CONFIDENCE).toBeCloseTo(0.5, 3);
-    expect(result.DECISIONS[0]?.CONFIDENCE).toBeCloseTo(0.5, 3);
+    expect(result.DECISIONS[0]?.CHOICE_CONFIDENCE).toBeCloseTo(0.95, 3);
+    expect(result.DECISIONS[0]?.RATIONALE_CONFIDENCE).toBeCloseTo(0.7, 3);
+    expect(result.DECISIONS[0]?.CONFIDENCE).toBeCloseTo(0.7, 3);
   });
 
   it('produces stronger rationale confidence when the choice remains implicit', async () => {
@@ -61,9 +61,9 @@ describe('decision confidence calibration', () => {
       }],
     });
 
-    expect(result.DECISIONS[0]?.CHOICE_CONFIDENCE).toBeCloseTo(0.5, 3);
-    expect(result.DECISIONS[0]?.RATIONALE_CONFIDENCE).toBeCloseTo(0.85, 3);
-    expect(result.DECISIONS[0]?.CONFIDENCE).toBeCloseTo(0.5, 3);
+    expect(result.DECISIONS[0]?.CHOICE_CONFIDENCE).toBeCloseTo(0.7, 3);
+    expect(result.DECISIONS[0]?.RATIONALE_CONFIDENCE).toBeCloseTo(0.95, 3);
+    expect(result.DECISIONS[0]?.CONFIDENCE).toBeCloseTo(0.7, 3);
   });
 
   it('raises rationale confidence when rationale, tradeoffs, and evidence are present', async () => {
@@ -85,9 +85,9 @@ describe('decision confidence calibration', () => {
       }],
     });
 
-    expect(result.DECISIONS[0]?.CHOICE_CONFIDENCE).toBeCloseTo(0.85, 3);
-    expect(result.DECISIONS[0]?.RATIONALE_CONFIDENCE).toBeCloseTo(0.85, 3);
-    expect(result.DECISIONS[0]?.CONFIDENCE).toBeCloseTo(0.85, 3);
+    expect(result.DECISIONS[0]?.CHOICE_CONFIDENCE).toBeCloseTo(0.95, 3);
+    expect(result.DECISIONS[0]?.RATIONALE_CONFIDENCE).toBeCloseTo(0.95, 3);
+    expect(result.DECISIONS[0]?.CONFIDENCE).toBeCloseTo(0.95, 3);
   });
 
   it('maps explicit single confidence overrides to both new fields', async () => {

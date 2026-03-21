@@ -22,5 +22,8 @@
     "16-03-26_18-04__quality-scorer-unification.md",
     "17-03-26_15-40__next-steps.md",
     "17-03-26_19-49__bimodal-quality-distribution-in-historical-memory.md"
-  ]
+  ],
+  "title": "Feature Specification: Quality Scorer Unification",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: Quality Scorer Unification"
 }

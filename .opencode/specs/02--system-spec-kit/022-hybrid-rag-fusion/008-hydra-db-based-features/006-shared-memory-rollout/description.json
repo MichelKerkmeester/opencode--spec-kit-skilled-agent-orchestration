@@ -17,5 +17,9 @@
   "memorySequence": 1,
   "memoryNameHistory": [
     "13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-6.md"
-  ]
+  ],
+  "title": "Feature Specification: 006-shared-memory-rollout",
+  "status": "Complete",
+  "importance_tier": "critical",
+  "short_description": "Feature Specification: 006-shared-memory-rollout"
 }

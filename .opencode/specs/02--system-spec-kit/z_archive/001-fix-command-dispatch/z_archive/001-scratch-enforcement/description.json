@@ -21,5 +21,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: SpecKit Scratch Folder Enforcement - Requirements & Analysis [001-scratch-enforcement/spec]",
+  "status": "Details",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: SpecKit Scratch Folder Enforcement - Requirements & Analysis"
 }

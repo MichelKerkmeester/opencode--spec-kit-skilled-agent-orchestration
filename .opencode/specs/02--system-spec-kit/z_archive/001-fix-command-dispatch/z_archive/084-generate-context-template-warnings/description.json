@@ -20,5 +20,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: Fix generate-context.js Template Warnings and API Mismatch [084-generate-context-template-warnings/spec]",
+  "importance_tier": "important",
+  "short_description": "Spec: Fix generate-context.js Template Warnings and API Mismatch"
 }

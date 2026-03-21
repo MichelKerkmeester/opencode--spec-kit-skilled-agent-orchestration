@@ -1,5 +1,5 @@
 ---
-title: "Speckit Plan Setup No [024-sk-deep-research-refinement/18-03-26_20-18__speckit-plan-setup-no-feature-description-or-mode]"
+title: "Speckit Plan Setup No Feature Description Or Mode"
 description: "All 18 checks pass. Now proceeding to Step 6 (save context) and Step 7 (handover check). Step 6: Save Context"
 trigger_phrases:
   - "commands and skills/024 sk deep research refinement"

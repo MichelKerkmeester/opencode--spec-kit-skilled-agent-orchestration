@@ -1,5 +1,5 @@
 ---
-title: "Spec: Hero Webshop Selector Scoping [036-hero-contact-success/spec]"
+title: "Spec: Hero Webshop Selector Scoping [035-hero-contact-success/spec]"
 description: "hero_webshop.js uses broad CSS class selectors (.hero--section) that match hero sections on non-webshop pages like contact-success, causing unintended DOM manipulation and a persistent blue bar artifact."
 trigger_phrases:
   - "spec"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "contact-success"
   - "blue bar"
   - "selectors"
-  - "036"
+  - "035"
 importance_tier: "important"
 contextType: "decision"
 ---

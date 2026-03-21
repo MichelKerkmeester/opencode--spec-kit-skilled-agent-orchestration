@@ -30,7 +30,7 @@ This document combines two complementary views of the Spec Kit Memory MCP server
 - [17. TOOLING AND SCRIPTS](#17--tooling-and-scripts)
 - [18. GOVERNANCE](#18--governance)
 - [19. UX HOOKS](#19--ux-hooks)
-- [20. PHASE SYSTEM](#20--phase-system)
+- [20. SPEC KIT PHASE WORKFLOWS](#20--spec-kit-phase-workflows)
 - [21. FEATURE FLAG REFERENCE](#21--feature-flag-reference)
 
 ---
@@ -835,11 +835,11 @@ This is a set of automated tests that checks the entire response from start to f
 
 ---
 
-## 20. PHASE SYSTEM
+## 20. SPEC KIT PHASE WORKFLOWS
 
 ### Phase detection and scoring (recommend-level.sh --recommend-phases)
 
-The five scoring dimensions evaluate distinct aspects of specification complexity. Each dimension contributes a weighted score to the composite result. High scores on multiple dimensions produce a strong phase recommendation, while specs that score low across all dimensions receive a recommendation against phasing. The `--json` flag outputs the full scoring breakdown as structured JSON for programmatic consumption.
+The four scoring dimensions evaluate distinct aspects of specification complexity. Each dimension contributes a weighted score to the composite result. High scores on multiple dimensions produce a strong phase recommendation, while specs that score low across all dimensions receive a recommendation against phasing. The `--json` flag outputs the full scoring breakdown as structured JSON for programmatic consumption.
 
 ### Phase folder creation (create.sh --phase)
 

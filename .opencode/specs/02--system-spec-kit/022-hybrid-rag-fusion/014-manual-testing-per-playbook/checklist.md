@@ -34,7 +34,7 @@ contextType: "general"
 - [x] CHK-002 [P0] Parent plan.md exists and now describes the alignment pass rather than the original generation wave [EVIDENCE: parent `plan.md` summary and phases reviewed]
 - [x] CHK-003 [P0] All 19 phase directories still exist (`001-retrieval/` through `019-feature-flag-reference/`) [EVIDENCE: directory inventory confirmed for all `001-*` to `019-*` folders]
 - [x] CHK-004 [P1] Manual testing playbook resolves at `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` [EVIDENCE: relative path resolves and file exists]
-- [x] CHK-005 [P1] Review protocol resolves at `../../../../skill/system-spec-kit/manual_testing_playbook/review_protocol.md` [EVIDENCE: relative path resolves and file exists]
+- [x] CHK-005 [P1] Review and release-readiness rules resolve from `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` [EVIDENCE: root playbook contains the scenario verdict and release-readiness rules used by this packet]
 - [x] CHK-006 [P0] Exact-ID inventory established from the current playbook at `213` scenario IDs, while retaining `195` as the top-level-ID count only [EVIDENCE: exact-ID audit input reviewed against the current playbook text]
 <!-- /ANCHOR:pre-impl -->
 
@@ -95,6 +95,22 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:execution -->
+## Execution + Remediation (2026-03-21)
+
+- [x] CHK-070 [P0] All 209 scenarios across 19 phases verdicted (0 skipped) [EVIDENCE: Wave 0-3 agent outputs, per-phase scratch/execution-evidence.md]
+- [x] CHK-071 [P0] 2 FAIL verdicts root-caused and fixed: graph FTS5 regression + calculateDocumentWeight undefined [EVIDENCE: graph-search-fn.ts Math.abs fix, handlers/index.ts pe-gating re-exports, 76 targeted tests pass]
+- [x] CHK-072 [P0] GPT-5.4 ultra-think review completed: 5 findings identified and fixed [EVIDENCE: graph root cause corrected (eval init not score sign), K-sensitivity schema+data fixed, test migration completed, shadow-scoring flag aligned, 264 tests pass]
+- [x] CHK-073 [P0] Memory generation scripts hardened: 7 source fixes applied and dist rebuilt [EVIDENCE: title-builder.ts, collect-session-data.ts, phase-classifier.ts, decision-extractor.ts, semantic-summarizer.ts, trigger-extractor.ts, embeddings.ts all fixed, workspace tests pass]
+- [x] CHK-074 [P1] FUT-5 K-sensitivity reporting endpoint implemented [EVIDENCE: formatKValueReport() + k_sensitivity mode in eval handler, schema updated, score-normalization tests pass]
+- [x] CHK-075 [P1] Sprint 3 trace field enrichment implemented [EVIDENCE: Sprint3PipelineMeta extended with routing.confidence, truncation.medianGap, tokenBudget.configValues]
+- [x] CHK-076 [P1] 4 playbook documentation errors corrected [EVIDENCE: channel enums vector/bm25, script path rules/, field name recommended_phases, tier temporary]
+- [ ] CHK-077 [P2] Re-test with SPECKIT_ABLATION=true to convert 10+ PARTIAL scenarios to PASS [DEFERRED: environment prerequisite]
+- [ ] CHK-078 [P2] Seed indexed memories for phase 010 re-test [DEFERRED: data prerequisite]
+<!-- /ANCHOR:execution -->
+
+---
+
 <!-- ANCHOR:file-org -->
 ## File Organization
 
@@ -109,9 +125,9 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 18 | 18/18 |
-| P1 Items | 9 | 9/9 |
-| P2 Items | 1 | 1/1 |
+| P0 Items | 22 | 22/22 |
+| P1 Items | 12 | 12/12 |
+| P2 Items | 3 | 1/3 |
 
 **Verification Date**: 2026-03-21
 

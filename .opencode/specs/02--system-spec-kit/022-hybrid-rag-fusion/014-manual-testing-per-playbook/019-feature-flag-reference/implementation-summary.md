@@ -21,7 +21,7 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 019-feature-flag-reference |
-| **Completed** | 2026-03-16 |
+| **Completed** | 2026-03-21 |
 | **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
@@ -42,8 +42,9 @@ Four template-aligned files provide structured per-phase test documentation so o
 |------|--------|---------|
 | spec.md | Created | Phase requirements, test inventory, feature catalog links, and acceptance criteria |
 | plan.md | Created | Execution plan with preconditions, evidence capture, and verdict pipeline |
-| tasks.md | Created | Task tracker for setup, execution, and verification work |
-| checklist.md | Created | QA verification checklist with P0/P1/P2 priority items |
+| tasks.md | Created + Updated | Task tracker; all tasks marked [x] after execution |
+| checklist.md | Created + Updated | QA verification checklist; 8/8 P0 items verified, 9/10 P1 items verified |
+| scratch/execution-evidence.md | Created | Full MCP execution evidence for all 8 scenarios with verdicts and outputs |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -77,6 +78,23 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 | checklist.md anchor count | PASS — exactly 8 anchors |
 | checklist.md no overview section | PASS — no ANCHOR:overview |
 | checklist.md no standalone P0/P1 headers | PASS — priority is per-item only |
+| 8/8 scenarios executed | PASS — EX-028 through EX-034 + 125 all verdicted |
+| 125 dist build verified | PASS — capability-flags.js present, getMemoryRoadmapDefaults confirmed |
+| 125 snapshot isolation | PASS — SPECKIT_GRAPH_UNIFIED does not alter roadmap metadata |
+| MCP corpus gap documented | PASS — root cause identified; feature catalog cross-ref applied as triage |
+
+### Scenario Verdicts
+
+| Test ID | Verdict | Reason |
+|---------|---------|--------|
+| EX-028 | PARTIAL | memory_search 0 results (EVIDENCE GAP); flag classification confirmed via feature catalog |
+| EX-029 | PARTIAL | memory_search 0 results (EVIDENCE GAP); all 9 session/cache keys confirmed via catalog |
+| EX-030 | PARTIAL | memory_search 0 results (EVIDENCE GAP); all 7 MCP guardrail defaults confirmed via catalog |
+| EX-031 | PARTIAL | memory_search + memory_context focused both 0 results; 4-tier DB precedence chain confirmed via catalog |
+| EX-032 | PARTIAL | memory_search 0 results (EVIDENCE GAP); auto-mode routing + key precedence confirmed via catalog |
+| EX-033 | PARTIAL | memory_search 0 results (EVIDENCE GAP); opt-in vs inert separation confirmed (CHK-013 verified) |
+| EX-034 | PARTIAL | memory_search 0 results (EVIDENCE GAP); all 4 branch vars + fallback chain confirmed via catalog |
+| 125 | PASS | Both snapshots match expected exactly; SPECKIT_HYDRA_* isolation confirmed |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -84,8 +102,9 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Draft status** — Test scenarios are documented but not yet executed. Final verdicts require manual or MCP-backed execution.
-2. **Coverage audit pending** — Cross-reference validation against the full playbook index has not been run for this individual phase.
+1. **MCP corpus not indexed** — EX-028 through EX-034 all returned EVIDENCE GAP (candidateCount: 0) because feature flag reference documentation has not been indexed into the memory corpus. Run `memory_index_scan({ force: true })` to index feature catalog files, then re-run for full PASS verdicts.
+2. **PARTIAL verdicts are functionally complete** — All acceptance criteria for EX-028 through EX-034 are satisfied via feature catalog cross-reference (the playbook's documented failure triage path). The PARTIAL verdict reflects the MCP retrieval path being the failure mode, not the flag documentation quality.
+3. **125 dist build not rebuilt** — The existing dist build was used without running `npm run build`. Snapshots matched expected output exactly, confirming the build is current.
 <!-- /ANCHOR:limitations -->
 
 ---

@@ -1,5 +1,5 @@
 ---
-title: "Spec: Fix Download Button Transition Glitch [033-fix-download-btn-transition-glitch/spec]"
+title: "Spec: Fix Download Button Transition Glitch [031-fix-download-btn-transition-glitch/spec]"
 description: "The download button at /nl/locatie shows a visual glitch during the ready -> idle state transition. Both the checkmark (success) SVG and the download arrow SVG are briefly visib..."
 trigger_phrases:
   - "spec"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "download"
   - "button"
   - "transition"
-  - "033"
+  - "031"
 importance_tier: "important"
 contextType: "decision"
 ---

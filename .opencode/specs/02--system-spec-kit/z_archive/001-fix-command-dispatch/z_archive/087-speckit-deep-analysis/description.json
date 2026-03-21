@@ -19,5 +19,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: System-Spec-Kit Deep Analysis & Remediation [087-speckit-deep-analysis/spec]",
+  "status": "Complete",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: System-Spec-Kit Deep Analysis & Remediation"
 }

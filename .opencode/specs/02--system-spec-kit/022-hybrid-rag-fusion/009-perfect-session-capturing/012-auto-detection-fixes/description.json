@@ -15,6 +15,10 @@
     "022-hybrid-rag-fusion",
     "009-perfect-session-capturing"
   ],
+  "status": "Complete",
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Auto-Detection Fixes",
+  "importance_tier": "normal",
+  "short_description": "Feature Specification: Auto-Detection Fixes"
 }

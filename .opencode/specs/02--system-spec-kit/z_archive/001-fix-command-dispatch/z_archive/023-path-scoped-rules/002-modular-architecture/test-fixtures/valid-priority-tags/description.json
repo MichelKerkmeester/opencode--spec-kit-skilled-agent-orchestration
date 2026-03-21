@@ -21,5 +21,9 @@
     "test-fixtures"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: Valid Priority Tags Fixture [valid-priority-tags/spec]",
+  "status": "In Progress",
+  "importance_tier": "important",
+  "short_description": "Spec: Valid Priority Tags Fixture"
 }

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Memory Overhaul & Agent Upgrade Release [130-memory-overhaul-and-agent-upgrade-release/spec]"
+title: "Feature Specification: Memory Overhaul & Agent Upgrade Release [013-memory-overhaul-and-agent-upgrade-release/spec]"
 description: "Umbrella specification coordinating documentation alignment across 11 source specs (014–016 agent system, 122–129 spec-kit system) that have been implemented but whose documenta..."
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "overhaul"
   - "agent"
   - "spec"
-  - "130"
+  - "013"
 importance_tier: "important"
 contextType: "decision"
 ---

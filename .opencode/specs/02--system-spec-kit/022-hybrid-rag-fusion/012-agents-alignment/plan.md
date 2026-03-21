@@ -1,68 +1,119 @@
 ---
 title: "Plan: 012 — Agent Alignment"
+description: "Reconciliation plan for updating the 012 packet and the scoped runtime-facing agent docs to the live multi-runtime lineage model."
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 2 -->
 # Plan: 012 — Agent Alignment
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+---
 
 <!-- ANCHOR:summary -->
-## Overview
+## 1. SUMMARY
 
-Sync 18 stale agent files across 2 runtimes (Claude, Gemini) with canonical `.opencode/agent/` definitions. ~18 files, body-content sync with frontmatter preservation.
-
----
-
+This pass rewrites the `012-agents-alignment` packet so it matches the current runtime lineage instead of preserving the obsolete "single canonical source copied to every runtime" story. It also fixes the scoped runtime-facing drift in Gemini delegation guidance and the write-agent projections.
 <!-- /ANCHOR:summary -->
-## Phases
-
-### Phase 0: Diff Analysis
-- Read all 9 canonical agent files
-- Read all 9 Claude agent files — identify frontmatter to preserve and body drift
-- Read all 9 Gemini agent files — identify frontmatter to preserve and body drift
-- Produce per-file change report
-
-### Phase 1: Claude Runtime Sync (9 files)
-For each of the 9 agents in `.claude/agents/`:
-1. Extract and preserve Claude-specific frontmatter (`tools:`, `model:`, `mcpServers:`)
-2. Copy body content from canonical `.opencode/agent/X.md`
-3. Update path convention directive to `.claude/agents/`
-4. Write updated file
-
-### Phase 2: Gemini Runtime Sync (9 files)
-For each of the 9 agents in `.gemini/agents/`:
-1. Extract and preserve Gemini-specific frontmatter (`kind:`, `model:`, `tools:`, `max_turns:`, `timeout_mins:`)
-2. Copy body content from canonical `.opencode/agent/X.md`
-3. Update path convention directive to `.gemini/agents/`
-4. Write updated file
-
-### Phase 3: Verification
-- Verify body content parity across all 3 variants (canonical, Claude, Gemini)
-- Verify frontmatter integrity per runtime
-- Spot-check ChatGPT and Codex remain in sync
-- File size sanity check
 
 ---
 
-## Architecture Decisions
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-1. **Body-only sync:** Copy everything after YAML frontmatter (the `---` delimiters) from canonical. Frontmatter is runtime-specific and must be preserved per-runtime.
-2. **Path convention directive:** Each runtime's agent files contain a line like `Use only .opencode/agent/*.md as the canonical runtime path reference`. This must be updated to match the runtime's own path.
-3. **No content changes:** This is a mechanical sync. No behavioral modifications, no refactoring, no improvements.
-4. **Frontmatter preservation rules:**
-   - Claude: `tools:` (list), `model:` (sonnet/opus), `mcpServers:` (includes code_mode)
-   - Gemini: `kind: local`, `model: gemini-3.1-pro-preview`, `tools:` (Gemini-style names), `max_turns:`, `timeout_mins:`
+### Definition of Ready
+- [x] Canonical packet files reviewed
+- [x] Live runtime family paths reviewed
+- [x] Known stale naming and path-convention drift identified
+
+### Definition of Done
+- [x] Packet documents dual-source lineage accurately
+- [x] Packet uses `deep-research.md` naming consistently
+- [x] Packet documents Codex and Gemini runtime lineage clearly
+- [x] Scoped runtime-facing agent docs match the reconciled lineage story
+- [x] Strict validation passes
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
-## Delegation Strategy
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-Per the plan, delegation uses single-hop agents at depth 1. However, since this is a mechanical sync operation with well-defined inputs/outputs, direct execution is more efficient than multi-agent coordination. The spec files document the delegation strategy for reference, but implementation proceeds with direct file operations.
+### Source Families
+
+1. Base markdown family: `.opencode/agent/*.md`
+2. ChatGPT markdown family: `.opencode/agent/chatgpt/*.md`
+
+### Runtime Targets
+
+- Claude runtime: `.claude/agents/*.md`
+- Codex runtime: `.codex/agents/*.toml` generated from ChatGPT markdown
+- Gemini runtime: `.gemini/agents/*.md`, backed by `.agents/agents/*.md`
+
+### Path Guidance
+
+Document runtime-facing paths first, then note storage details only where they matter for understanding the live repo.
+<!-- /ANCHOR:architecture -->
 
 ---
 
-## Risk Assessment
+<!-- ANCHOR:phases -->
+## 4. PHASES
 
-| Risk | Impact | Mitigation |
-| ---- | ------ | ---------- |
-| Frontmatter corruption | High — agent won't load | Read frontmatter carefully, preserve exact format |
-| Path directive mismatch | Medium — wrong file refs | Pattern-match and replace per runtime |
-| Missing agent file | Low — all 9 exist in all runtimes | Verify count before and after |
+### Phase 1: Audit Live Lineage
+- Confirm file counts for base, ChatGPT, Claude, Codex, and Gemini runtime families.
+- Confirm `.gemini -> .agents` symlink behavior.
+- Confirm live naming uses `deep-research.md`.
+
+### Phase 2: Rewrite the Packet
+- Reframe `spec.md` away from the old single-source sync story.
+- Rewrite `tasks.md`, `checklist.md`, and `implementation-summary.md` so they describe truth reconciliation rather than historical sync work.
+- Normalize runtime path-convention wording.
+
+### Phase 2b: Scoped Runtime-Doc Closeout
+- Fix `.gemini/workflows/delegate_agent.md` so Gemini resolves runtime agents from `.gemini/agents/` first and never references the removed `.opencode/agent/claude/` path.
+- Reconcile the write-agent projections so Claude, Gemini, ChatGPT, and Codex keep the documented catalog/playbook modes and nested `references/**/*.md` routing aligned with the authoring families.
+
+### Phase 3: Verify
+- Grep the packet for stale `research.md` naming and single-source language.
+- Run strict spec validation.
+- Re-read canonical docs for internal consistency.
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tooling |
+|-----------|-------|---------|
+| File-count verification | Base and runtime families | `find`, `wc -l` |
+| Path verification | Gemini runtime-facing and storage-facing paths | `ls -ld .gemini .agents`, `find -L .gemini/agents` |
+| Stale-string verification | Canonical packet only | `rg` |
+| Spec validation | `012-agents-alignment` folder | `validate.sh --strict` |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Status | Role |
+|------------|--------|------|
+| `.opencode/agent/*.md` | Available | Base markdown family |
+| `.opencode/agent/chatgpt/*.md` | Available | ChatGPT markdown family |
+| `.claude/agents/*.md` | Available | Runtime path verification |
+| `.codex/agents/*.toml` | Available | Codex downstream verification |
+| `.gemini/agents/*.md` and `.agents/agents/*.md` | Available | Gemini runtime/storage verification |
+| `.gemini/workflows/delegate_agent.md` | Available | Scoped delegation-path closeout |
+| `.claude/agents/write.md`, `.opencode/agent/chatgpt/write.md`, `.codex/agents/write.toml`, `.gemini/agents/write.md` | Available | Scoped writer-surface closeout |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- If the packet regresses into mixed lineage language, revert only the canonical `012` docs and re-apply the rewrite from live runtime evidence.
+- Do not revert unrelated live runtime agent files as part of packet rollback because this pass closes only the scoped delegation/write surfaces, not a bulk runtime sync.
+<!-- /ANCHOR:rollback -->
+
+---

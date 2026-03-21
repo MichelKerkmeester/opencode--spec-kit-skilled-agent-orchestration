@@ -1,141 +1,101 @@
 ---
 title: "Implementation Summary: 011-command-alignment"
-description: "Summary of command alignment implementation — 5 command updates + 2 new commands + README refresh."
+description: "Truth-reconciled summary of the 011 command-alignment pack against the live 33-tool, 6-command memory-command surface."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Implementation Summary: 011-command-alignment
-
 <!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary-core | v2.2 -->
 
 ---
 
-## 1. OVERVIEW
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-Aligned the memory command documentation suite with the current 32-tool Spec Kit Memory MCP surface. The implementation expanded the command suite from 5 to 7 commands, documented all previously uncovered tools, and added a complete coverage matrix to the README.
-
-**Key Metrics:**
-- 32/32 MCP tools now have documented command homes (was 16/32)
-- 7 command files (was 5) + updated README (ingest folded into manage)
-- 24/24 tasks completed across 5 phases
-- 0 stale counts or naming drift remaining
-- sk-doc DQI aligned: all code blocks tagged, prose em dashes removed
-
----
-
-## 2. FILES MODIFIED/CREATED
-
-### Modified (5 existing commands + README)
-
-| File | Changes |
-|------|---------|
-| `context.md` | Added Section 12: Advanced Parameter Reference with full `memory_context`, `memory_search`, and `memory_match_triggers` parameter tables including `includeTrace`, `tokenUsage`, `minQualityScore` deprecated alias, cognitive params (`session_id`, `turnNumber`, `include_cognitive`), governance scoping note. Updated related commands |
-| `save.md` | Added Section 15: Governance, Provenance & Retention (advanced) with tenantId/userId/agentId/sessionId/sharedSpaceId, provenanceSource/provenanceActor/governedAt, retentionPolicy/deleteAfter. Added async ingest routing to `/memory:manage ingest`. Updated related commands |
-| `manage.md` | Fixed `## 189. RELATED COMMANDS` → `## 19. RELATED COMMANDS`. Added `confirmName` safety contract to checkpoint delete (both MCP signatures and docs). Added `/memory:manage ingest` subcommand (Section 15). Added Advanced Parameter Reference for stats, health, list, update, validate, bulk-delete params. Updated related commands |
-| `learn.md` | Updated related commands section to include analyze, shared, ingest |
-| `continue.md` | Updated related commands to include `/memory:analyze history <specFolder>`, analyze, shared, ingest |
-| `README.txt` | Expanded from 5 to 7 commands. Added analyze/shared/ingest subcommand tables. Added Section 6: Tool Coverage Matrix (32-tool table). Updated directory tree, usage examples, manage subcommands (added `history`), troubleshooting. Updated related documents |
-
-### Created (2 new commands)
-
-| File | LOC | Description |
-|------|-----|-------------|
-| `analyze.md` | ~530 | Command home for all 8 L6 tools + `memory_get_learning_history` (L7): `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, `eval_reporting_dashboard`. 9 subcommands including `history` |
-| `shared.md` | ~318 | Command home for all 4 L5 shared-memory tools: `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable`. Deny-by-default model with first-time enablement flow |
-
-**Note:** Ingest was folded into `manage.md` as Section 15 (`/memory:manage ingest`) rather than a separate command, reducing the suite from the planned 8 to 7 commands.
+| Field | Value |
+|-------|-------|
+| Scope | Canonical 011 packet only |
+| Date | 2026-03-21 |
+| Status | Complete (truth-reconciled) |
+| Type | Documentation reconciliation |
+<!-- /ANCHOR:metadata -->
 
 ---
 
-## 3. VERIFICATION STEPS TAKEN
+<!-- ANCHOR:what-built -->
+## 2. WHAT WAS BUILT
+
+The 011 command-alignment pack originally described an in-flight transition from a 5-command memory suite to a larger command surface. That is no longer the live repo state. The repo now ships a **33-tool** Spec Kit Memory MCP surface and a **6-command** memory suite, with retrieval merged into `/memory:analyze`.
+
+This reconciliation pass updated the canonical 011 pack so it reflects what is already true on disk instead of repeating older planning assumptions.
+
+**Key Metrics**
+- 33 MCP tools in `tool-schemas.ts`
+- 6 live memory commands in `.opencode/command/memory/`
+- `/memory:analyze` owns retrieval, `memory_quick_search`, analysis/eval tooling, and `memory_get_learning_history`
+- `/memory:manage ingest` owns async ingest workflows
+- README already maps 33/33 tools to command homes
+- The last runtime-doc drift cluster was concentrated in `analyze.md` and `shared.md`: `analyze.md` Appendix A said it owned 12 tools while its own coverage table listed 13, and `shared.md` lagged the live create/member schema contract
+<!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## 3. HOW IT WAS DELIVERED
+
+| File | Change |
+|------|--------|
+| `spec.md` | Reframed the spec around the live 33-tool, 6-command memory-command surface and narrowed the remaining-gap list |
+| `plan.md` | Replaced the stale implementation roadmap with a documentation-only reconciliation plan |
+| `tasks.md` | Replaced outdated implementation tasks with live-state verification and pack-rewrite tasks |
+| `checklist.md` | Rewrote verification evidence around current counts, ownership, and strict validation |
+| `implementation-summary.md` | Replaced stale 32-tool / 7-command outcome claims with the current shipped state and the final live-doc closeout |
+
+### Current Shipped Reality
+
+| Command | Tools Owned | Layers |
+|---------|-------------|--------|
+| `/memory:analyze` | `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, `eval_reporting_dashboard`, `memory_get_learning_history` | L1, L2, L6, L7 |
+| `/memory:save` | `memory_save` | L2 |
+| `/memory:manage` | `memory_list`, `memory_stats`, `memory_health`, `memory_delete`, `memory_update`, `memory_validate`, `memory_bulk_delete`, `checkpoint_create`, `checkpoint_list`, `checkpoint_restore`, `checkpoint_delete`, `memory_index_scan`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel` | L3, L4, L5, L7 |
+| `/memory:learn` | Wrapper flow; uses other memory tools rather than owning distinct MCP inventory | — |
+| `/memory:continue` | Wrapper flow; uses analyze/manage surfaces rather than owning distinct MCP inventory | — |
+| `/memory:shared` | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` | L5 |
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+1. There is no standalone `context` command file in the live memory command directory.
+2. Retrieval belongs to `/memory:analyze`, not a separate command surface.
+3. `memory_get_learning_history` belongs to `/memory:analyze history <specFolder>`.
+4. Async ingest belongs to `/memory:manage ingest`.
+5. `tool-schemas.ts` plus `schemas/tool-input-schemas.ts` remain the canonical validation baseline.
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
+## 5. VERIFICATION
 
 | Check | Result | Evidence |
 |-------|--------|----------|
-| T19: 32-tool coverage | PASS | README Section 6 maps all 32 tools to command homes |
-| T20: Parameter completeness | PASS | All ALLOWED_PARAMETERS entries and aliases documented |
-| T21: Stale string grep | PASS | No matches for `189. RELATED`, `learning-history`, or `29.*tool` |
-| T22: Requirement traceability | PASS | All CA-001 through CA-015 mapped to owning tasks |
-| T23: Spec validation | PASS (known issues) | Missing `checklist.md` is out-of-scope; SPEC_DOC_INTEGRITY warnings are false positives from command filename references |
-| Command registration | PASS | New commands auto-discovered (visible in system skill list) |
+| Live tool count | PASS | Counted 33 tool definitions in `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` |
+| Live command count | PASS | `.opencode/command/memory/` contains `analyze`, `continue`, `learn`, `manage`, `save`, `shared`, plus `README.txt` |
+| Retrieval ownership | PASS | `analyze.md` frontmatter and Appendix A include `memory_quick_search`; README maps retrieval tools to `/memory:analyze` |
+| Learning-history ownership | PASS | README maps `memory_get_learning_history` to `/memory:analyze`; command docs use `/memory:analyze history <specFolder>` |
+| Async ingest ownership | PASS | README maps ingest tools to `/memory:manage ingest` |
+| Runtime-doc drift audit | PASS | Remaining drift narrowed to the observed `analyze.md` and `shared.md` mismatches, then reflected in the scoped closeout |
+| Strict spec validation | PASS | `validate.sh --strict` run after pack reconciliation |
+<!-- /ANCHOR:verification -->
 
 ---
 
-## 4. DEVIATIONS FROM PLAN
+<!-- ANCHOR:limitations -->
+## Known Limitations
 
-| Deviation | Reason |
-|-----------|--------|
-| 7 commands instead of planned 8 | Ingest folded into `/memory:manage ingest` (Section 15) rather than a separate `/memory:ingest` command. Reduces command surface fragmentation since ingest is a maintenance operation |
-| Learning history under `/memory:analyze history` instead of `/memory:manage history` | Co-locates with other epistemic measurement tools (preflight, postflight). The analyze command owns the full learning lifecycle |
-| Governance params (`tenantId`, `userId`, etc.) for `memory_save` documented as "advertised in tool schema" rather than validated | These params appear in ToolDefinition JSON Schema but are not in ALLOWED_PARAMETERS or Zod validation. Documented with rollout-dependent note |
-| `memory_search` governance scoping params documented as note rather than parameter table entries | Same pattern: present in ToolDefinition but absent from ALLOWED_PARAMETERS/Zod. Documented as governance rollout note |
-| sk-doc DQI alignment pass added as follow-up | ~90 bare code blocks tagged and ~92 prose em dashes replaced across all 7 command files for HVR compliance |
+This pack now treats the former `analyze.md` and `shared.md` mismatches as the last scoped runtime-doc drift closed by the 2026-03-21 reconciliation pass.
+<!-- /ANCHOR:limitations -->
 
 ---
-
-## 5. COMMAND OWNERSHIP MODEL (Final)
-
-| Command | Tools Owned | Layers |
-|---------|-------------|--------|
-| `/memory:analyze` | `memory_context`, `memory_search`, `memory_match_triggers` | L1, L2 |
-| `/memory:save` | `memory_save` | L2 |
-| `/memory:manage` | `memory_list`, `memory_stats`, `memory_health`, `memory_delete`, `memory_update`, `memory_validate`, `memory_bulk_delete`, `checkpoint_create`, `checkpoint_list`, `checkpoint_restore`, `checkpoint_delete`, `memory_index_scan`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel` | L3, L4, L5, L7 |
-| `/memory:learn` | (uses manage/save tools) | — |
-| `/memory:continue` | (uses context/manage tools) | — |
-| `/memory:analyze` | `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, `eval_reporting_dashboard`, `memory_get_learning_history` | L6, L7 |
-| `/memory:shared` | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` | L5 |
-
----
-
-## 6. RECOMMENDED NEXT STEPS
-
-- Monitor for schema file drift and re-verify coverage if `TOOL_DEFINITIONS` changes
-- Consider adding the `/memory:analyze` and `/memory:shared` tools to `learn.md` and `continue.md` allowed-tools if those commands need direct access
-
----
-
-## ADDENDUM: v2.4.0.0 -- Context/Analyze Merge (2026-03-16)
-
-### Change
-
-Merged `/memory:context` (L1/L2 retrieval, 438 lines, 3 tools) into `/memory:analyze` (now 926 lines, 12 tools). The command count dropped from 7 to 6. Retrieval became the default mode of `/memory:analyze`; analysis subcommands route via keyword detection on the first argument.
-
-### Rationale
-
-- Reduces cognitive load: one fewer command to remember
-- Natural fit: retrieval and analysis are both "read" operations on the memory system
-- Flat subcommand routing avoids nesting complexity
-
-### Impact
-
-| Metric | Before | After |
-|--------|--------|-------|
-| Command count | 7 | 6 |
-| `/memory:analyze` tools | 9 (L6, L7) | 12 (L1, L2, L6, L7) |
-| `/memory:context` | Standalone | Deleted (merged) |
-| `context.md` file | Existed | Deleted |
-
-### Files Modified
-
-- **Rewritten:** `analyze.md` (926 lines, unified retrieval + analysis)
-- **Deleted:** `context.md`, `context.toml` (`.agents/`, `.gemini/`)
-- **Updated:** `README.txt`, 5 sibling commands, 4 agent definitions, 9 framework docs, 8 active spec files, `.codex/agents/speckit.toml`, `.agents/commands/` TOMLs, `.gemini/commands/` TOMLs
-- **Changelog:** `.opencode/changelog/04--commands/v2.4.0.0.md`
-
-### Updated Ownership Model (Final)
-
-| Command | Tools Owned | Layers |
-|---------|-------------|--------|
-| `/memory:analyze` | `memory_context`, `memory_search`, `memory_match_triggers`, `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, `eval_reporting_dashboard`, `memory_get_learning_history` | L1, L2, L6, L7 |
-| `/memory:save` | `memory_save` | L2 |
-| `/memory:manage` | 15 tools | L3, L4, L5, L7 |
-| `/memory:learn` | (uses manage/save tools) | -- |
-| `/memory:continue` | (uses analyze/manage tools) | -- |
-| `/memory:shared` | 4 tools | L5 |
-
----
-
-<!--
-IMPLEMENTATION-SUMMARY: 011-command-alignment
-24/24 tasks complete + v2.4.0.0 addendum (context/analyze merge)
-5 commands updated + 2 new commands created + 1 command merged + README refreshed + sk-doc DQI aligned
-32/32 MCP tools documented across 6 commands
--->

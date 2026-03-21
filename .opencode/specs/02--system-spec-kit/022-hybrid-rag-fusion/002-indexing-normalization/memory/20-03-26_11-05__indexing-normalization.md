@@ -1,5 +1,5 @@
 ---
-title: "Indexing Normalization [002-indexing-normalization/20-03-26_11-05__indexing-normalization]"
+title: "Indexing Normalization — 3 ADRs: Canonical Path Dedup, Tier Precedence, Frontmatter Contract"
 description: "find the actual hybrid-rag-fusion codebase and understand the MCP ser; Iteration 1 dispatched — all 3 agents running in parallel: - A1 (Codex) :; Good, rich scoring ecosystem...."
 trigger_phrases:
   - "system spec kit/022 hybrid rag fusion/002 indexing normalization"

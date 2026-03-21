@@ -16,5 +16,9 @@
     "013-memory-overhaul-and-agent-upgrade-release"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Task 01 — README Audit & Alignment [task-01-readme-alignment/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Task 01 — README Audit & Alignment"
 }

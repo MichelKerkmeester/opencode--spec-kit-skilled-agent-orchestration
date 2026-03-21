@@ -18,5 +18,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Spec: Fix @explore Direct Dispatch in Orchestrate Agent [010-explore-routing-fix/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Spec: Fix @explore Direct Dispatch in Orchestrate Agent"
 }

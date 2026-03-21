@@ -17,5 +17,9 @@
     "01--anobel.com"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Contact Form Bot Submission Investigation",
+  "status": "Draft (planning only)",
+  "importance_tier": "critical",
+  "short_description": "Feature Specification: Contact Form Bot Submission Investigation"
 }

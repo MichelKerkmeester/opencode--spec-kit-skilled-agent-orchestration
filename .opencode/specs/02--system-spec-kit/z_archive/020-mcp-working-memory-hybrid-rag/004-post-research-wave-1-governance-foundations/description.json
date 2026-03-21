@@ -19,5 +19,9 @@
     "020-mcp-working-memory-hybrid-rag"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Phase Package Spec: Post-Research Wave 1 (Governance Foundations) [004-post-research-wave-1-governance-foundations/spec]",
+  "status": "Planned (post-research wave package)",
+  "importance_tier": "important",
+  "short_description": "Phase Package Spec: Post-Research Wave 1 (Governance Foundations)"
 }

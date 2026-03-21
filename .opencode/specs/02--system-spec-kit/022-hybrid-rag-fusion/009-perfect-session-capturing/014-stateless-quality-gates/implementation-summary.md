@@ -52,7 +52,7 @@ The contamination filter now understands that Claude Code often documents tool a
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The shipped Phase 014 code was already present in the scripts workspace, so this closeout pass focused on truth reconciliation and regression proof. I re-read the workflow, CLI, contamination, and test seams, fixed the `workflow-e2e` failed-embedding harness so it reliably mocks `indexMemory()` before importing `workflow.ts`, reran the targeted Phase 014 scripts lane, and then rewrote the phase pack plus downstream catalog and playbook docs to match the shipped behavior. The broader scripts and MCP closure evidence remains inherited from the parent pack and phase-016 continuation, while the affected Phase 014 lane now has a fresh 2026-03-18 rerun.
+The shipped Phase 014 code was already present in the scripts workspace, so this closeout pass focused on truth reconciliation and regression proof. I re-read the workflow, CLI, contamination, and test seams, fixed the `workflow-e2e` failed-embedding harness so it reliably mocks `indexMemory()` before importing `workflow.ts`, reran the targeted Phase 014 scripts lane, and then rewrote the phase pack plus downstream catalog and playbook docs to match the shipped behavior. The broader scripts and MCP closure evidence remains inherited from the parent pack and the later phase-016 documentation sweep, while the affected Phase 014 lane now has a fresh 2026-03-18 rerun.
 <!-- /ANCHOR:how-delivered -->
 
 ---

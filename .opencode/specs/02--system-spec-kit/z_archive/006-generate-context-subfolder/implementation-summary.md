@@ -1,11 +1,11 @@
 ---
-title: "Implementation Summary [123-generate-context-subfolder/implementation-summary]"
+title: "Implementation Summary [006-generate-context-subfolder/implementation-summary]"
 description: "Added nested spec folder path support to generate-context.ts and folder-detector.ts. The scripts now resolve parent/child folder paths (e.g., 003-parent/121-child), bare child n..."
 trigger_phrases:
   - "implementation"
   - "summary"
   - "implementation summary"
-  - "123"
+  - "006"
   - "generate"
 importance_tier: "normal"
 contextType: "implementation"

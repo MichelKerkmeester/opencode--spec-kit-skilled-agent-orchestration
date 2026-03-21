@@ -172,7 +172,8 @@ function withSyncedScoreAliases(row: PipelineRow, score: number): PipelineRow {
     score: clamped,
     rrfScore: clamped,
     intentAdjustedScore: clamped,
-    attentionScore: clamped,
+    // Preserve attentionScore — it is set by the attention-decay module and
+    // must not be overwritten with the fusion/ranking score.
   };
 }
 
@@ -184,7 +185,8 @@ function syncScoreAliasesInPlace(rows: PipelineRow[]): void {
     row.score = clamped;
     row.rrfScore = clamped;
     row.intentAdjustedScore = clamped;
-    row.attentionScore = clamped;
+    // Preserve attentionScore — it is set by the attention-decay module and
+    // must not be overwritten with the fusion/ranking score.
   }
 }
 

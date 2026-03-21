@@ -43,6 +43,9 @@ The three AGENTS.md governance framework files reference outdated Quick Referenc
 | **Epic** | 022-hybrid-rag-fusion |
 | **Phase** | 013 |
 | **Dependencies** | 011-command-alignment (source of truth for 7-command suite) |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../012-agents-alignment/spec.md |
+| **Successor** | ../014-manual-testing-per-playbook/spec.md |
 
 ---
 
@@ -114,3 +117,13 @@ The three AGENTS.md governance framework files reference outdated Quick Referenc
 | Barter git policy intact | Grep `GIT POLICY: READ-ONLY` | 1 match |
 | FS research row aligned | Grep `memory_context.*unified` | 1 match (FS) |
 <!-- /ANCHOR:verification -->
+
+---
+
+## Phase Navigation
+
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | ../spec.md |
+| **Previous Phase** | ../012-agents-alignment/spec.md |
+| **Next Phase** | ../014-manual-testing-per-playbook/spec.md |

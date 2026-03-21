@@ -133,7 +133,7 @@ The caller submits structured JSON data. The shared contract accepts richer summ
 - [x] RC1: Thread `_JSON_SESSION_SUMMARY` through session-types, collect-session-data, and workflow.ts as first title candidate.
 - [x] Create `scripts/core/post-save-review.ts` — 6-check quality review module with severity grading.
 - [x] Integrate Step 10.5 in workflow.ts (after file write, before indexing).
-- [x] Update 5 instruction files (CLAUDE.md, AGENTS.md, GEMINI.md, AGENTS_example_fs_enterprises.md, Barter/coder/AGENTS).
+- [x] Update the 4 tracked instruction files present in this repo (CLAUDE.md, AGENTS.md, GEMINI.md, AGENTS_example_fs_enterprises.md).
 - [x] Update feature catalog and manual testing playbook.
 - [x] TypeScript verification passes cleanly.
 <!-- /ANCHOR:phases -->

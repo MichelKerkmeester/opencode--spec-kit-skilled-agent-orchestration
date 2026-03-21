@@ -18,6 +18,9 @@ vi.mock('../core', () => ({
 }));
 
 vi.mock('../lib/cache/tool-cache', () => ({
+  generateCacheKey: vi.fn(() => 'memory-search-test-cache-key'),
+  isEnabled: vi.fn(() => false),
+  get: vi.fn(() => null),
   withCache: vi.fn(async (_tool: string, _args: unknown, fn: () => Promise<unknown>) => fn()),
 }));
 

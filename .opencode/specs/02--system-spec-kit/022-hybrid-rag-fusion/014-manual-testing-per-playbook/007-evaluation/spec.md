@@ -52,7 +52,7 @@ Provide a single evaluation-focused specification that maps both Phase 007 test 
 
 | Test ID | Scenario Name | Feature Catalog | Exact Prompt | Exact Command Sequence |
 |---------|---------------|-----------------|--------------|------------------------|
-| EX-026 | Ablation studies (eval_run_ablation) | [`../../feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md`](../../feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md) | `Run ablation on retrieval channels` | `eval_run_ablation({ dataset:"retrieval-channels-smoke", channels:["semantic","keyword","graph"], storeResults:true })` -> `eval_reporting_dashboard({ format:"json", limit:10 })` |
+| EX-026 | Ablation studies (eval_run_ablation) | [`../../feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md`](../../feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md) | `Run ablation on retrieval channels` | `eval_run_ablation({ dataset:"retrieval-channels-smoke", channels:["vector","bm25","graph"], storeResults:true })` -> `eval_reporting_dashboard({ format:"json", limit:10 })` |
 | EX-027 | Reporting dashboard (eval_reporting_dashboard) | [`../../feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md`](../../feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md) | `Generate the latest dashboard report` | `eval_reporting_dashboard(format:text)` and `eval_reporting_dashboard(format:json)` |
 
 ### Out of Scope

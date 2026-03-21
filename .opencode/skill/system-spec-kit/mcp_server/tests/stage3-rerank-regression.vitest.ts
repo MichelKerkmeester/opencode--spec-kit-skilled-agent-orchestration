@@ -87,4 +87,23 @@ describe('stage3-rerank regression (F-16)', () => {
       expect(rerankerScore).toBeGreaterThanOrEqual(0);
     }
   });
+
+  it('preserves attentionScore as an independent signal after reranking', async () => {
+    rerankResultsMock.mockResolvedValue([
+      { id: 1, score: 0.92, rerankerScore: 0.92 },
+      { id: 2, score: 0.61, rerankerScore: 0.61 },
+    ]);
+
+    const input: PipelineRow[] = [
+      { id: 1, score: 0.6, attentionScore: 0.17, content: 'alpha' },
+      { id: 2, score: 0.5, attentionScore: 0.04, content: 'beta' },
+    ];
+
+    const result = await __testables.applyCrossEncoderReranking('query', input, RERANK_OPTIONS);
+
+    expect(result.applied).toBe(true);
+    expect(result.rows[0]?.score).toBe(0.92);
+    expect(result.rows[0]?.rerankerScore).toBe(0.92);
+    expect(result.rows[0]?.attentionScore).toBe(0.17);
+  });
 });

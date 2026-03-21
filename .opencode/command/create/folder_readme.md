@@ -293,7 +293,9 @@ Use `[runtime_agent_path]` based on the active runtime profile:
 
 - Default/Copilot: `.opencode/agent`
 - ChatGPT: `.opencode/agent/chatgpt`
-- Claude: `/.claude/agents`
+- Claude: `.claude/agents`
+- Codex: `.codex/agents`
+- Gemini CLI: `.gemini/agents` (runtime-facing symlink to `.agents/agents`)
 
 ---
 

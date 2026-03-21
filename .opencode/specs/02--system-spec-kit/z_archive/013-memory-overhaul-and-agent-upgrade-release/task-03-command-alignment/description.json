@@ -16,5 +16,9 @@
     "013-memory-overhaul-and-agent-upgrade-release"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Task 03 — Command Configs Audit [task-03-command-alignment/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Task 03 — Command Configs Audit"
 }

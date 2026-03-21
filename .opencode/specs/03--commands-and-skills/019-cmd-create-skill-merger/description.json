@@ -15,5 +15,9 @@
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Create Skill Merger",
+  "status": "Complete",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Create Skill Merger"
 }

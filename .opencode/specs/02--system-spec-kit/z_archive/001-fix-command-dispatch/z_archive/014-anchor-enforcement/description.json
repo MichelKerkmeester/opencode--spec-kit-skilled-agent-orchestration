@@ -16,5 +16,8 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Anchor System Enforcement [014-anchor-enforcement/spec]",
+  "importance_tier": "important",
+  "short_description": "Anchor System Enforcement"
 }

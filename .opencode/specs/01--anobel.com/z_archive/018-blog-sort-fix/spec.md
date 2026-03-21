@@ -1,5 +1,5 @@
 ---
-title: "Spec: Blog Sort Dropdown Fix [019-blog-sort-fix/spec]"
+title: "Spec: Blog Sort Dropdown Fix [018-blog-sort-fix/spec]"
 description: "Fix the blog page sort dropdown to properly trigger Finsweet fs-list sorting. Currently, selecting a sort option updates the hidden select value but does not trigger list re-sor..."
 trigger_phrases:
   - "spec"
@@ -7,7 +7,7 @@ trigger_phrases:
   - "sort"
   - "dropdown"
   - "fix"
-  - "019"
+  - "018"
 importance_tier: "important"
 contextType: "decision"
 ---

@@ -16,5 +16,9 @@
     "03--commands-and-skills"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: Create Command YAML Refinement [template:level_3/spec.md]",
+  "status": "Complete",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: Create Command YAML Refinement"
 }

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Human Voice Rules — Template Integration [137-readme-and-summary-with-hvr/spec]"
+title: "Feature Specification: Human Voice Rules — Template Integration [019-readme-and-summary-with-hvr/spec]"
 description: "AI-generated documentation has a tell: it reads like AI wrote it. This spec fixes that. The Human Voice Rules (HVR), currently locked inside a Barter-specific document, get extr..."
 trigger_phrases:
   - "feature"
@@ -8,7 +8,7 @@ trigger_phrases:
   - "voice"
   - "rules"
   - "spec"
-  - "137"
+  - "019"
   - "readme"
 importance_tier: "important"
 contextType: "decision"

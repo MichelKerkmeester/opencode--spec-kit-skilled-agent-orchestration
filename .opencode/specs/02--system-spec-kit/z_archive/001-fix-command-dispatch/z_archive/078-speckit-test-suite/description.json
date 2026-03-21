@@ -21,5 +21,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Feature Specification: System Spec Kit Comprehensive Test Suite [078-speckit-test-suite/spec]",
+  "status": "In Progress",
+  "importance_tier": "important",
+  "short_description": "Feature Specification: System Spec Kit Comprehensive Test Suite"
 }

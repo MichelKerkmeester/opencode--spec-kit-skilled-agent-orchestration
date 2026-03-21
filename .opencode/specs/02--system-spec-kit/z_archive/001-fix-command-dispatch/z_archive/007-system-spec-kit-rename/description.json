@@ -17,5 +17,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Skill Rename: workflows-spec-kit → system-spec-kit [007-system-spec-kit-rename/spec]",
+  "status": "Draft",
+  "importance_tier": "important",
+  "short_description": "Skill Rename: workflows-spec-kit → system-spec-kit"
 }

@@ -17,5 +17,9 @@
     "z_archive"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Memory System Integration into Spec-Kit [035-memory-speckit-merger/spec]",
+  "status": "Complete",
+  "importance_tier": "important",
+  "short_description": "Memory System Integration into Spec-Kit"
 }

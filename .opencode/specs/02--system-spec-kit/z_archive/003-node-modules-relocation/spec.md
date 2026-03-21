@@ -1,9 +1,9 @@
 ---
-title: "Spec 120: Node Modules Relocation [120-node-modules-relocation/spec]"
+title: "Spec 003: Node Modules Relocation [003-node-modules-relocation/spec]"
 description: "Move node_modules from system-spec-kit/node_modules/ (workspace-hoisted) into mcp_server/node_modules/ where dependencies actually belong."
 trigger_phrases:
   - "spec"
-  - "120"
+  - "003"
   - "node"
   - "modules"
   - "relocation"
@@ -12,7 +12,7 @@ contextType: "decision"
 ---
 <!-- SPECKIT_LEVEL: CORE -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Spec 120: Node Modules Relocation
+# Spec 003: Node Modules Relocation
 
 <!-- ANCHOR:metadata -->
 ## Goal

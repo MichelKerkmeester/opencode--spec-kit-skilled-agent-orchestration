@@ -15,5 +15,9 @@
     "013-memory-overhaul-and-agent-upgrade-release"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": []
+  "memoryNameHistory": [],
+  "title": "Task 05 — Changelog Creation [task-05-changelog-updates/spec]",
+  "status": "Complete",
+  "importance_tier": "important",
+  "short_description": "Task 05 — Changelog Creation"
 }

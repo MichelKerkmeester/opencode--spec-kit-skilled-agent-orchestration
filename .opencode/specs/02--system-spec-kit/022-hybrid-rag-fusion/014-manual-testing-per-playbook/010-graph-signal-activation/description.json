@@ -1,0 +1,25 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/010-graph-signal-activation",
+  "description": "Feature Specification: Phase 010 Graph Signal Activation Manual Testing",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "010",
+    "graph",
+    "signal",
+    "activation",
+    "manual",
+    "testing"
+  ],
+  "lastUpdated": "2026-03-21T10:31:34.858Z",
+  "specId": "010",
+  "folderSlug": "graph-signal-activation",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "014-manual-testing-per-playbook"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

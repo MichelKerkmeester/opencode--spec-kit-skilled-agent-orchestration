@@ -15,7 +15,7 @@ When you search for something, the system looks in several places at once, like 
 
 ## 2. CURRENT REALITY
 
-The engine under the hood. `hybrid-search.ts` orchestrates multi-channel retrieval with five search channels, adaptive fusion, diversity reranking and a multi-tier fallback chain. This pipeline provides the candidate generation and fusion components used by Stage 1 of the 4-stage pipeline (the sole runtime path since the legacy V1 path was removed in Phase 017).
+The engine under the hood. `handlers/memory-search.ts` is the runtime entry point, and Stage 1 delegates candidate generation into `lib/search/hybrid-search.ts` plus the supporting pipeline stages. `hybrid-search.ts` still owns the multi-channel retrieval, adaptive fusion inputs, diversity reranking, and fallback chain, but it now operates as the candidate-generation engine inside the four-stage runtime pipeline rather than as a standalone top-level MCP entry point.
 
 Five channels feed the pipeline. Vector search (cosine similarity via sqlite-vec, base weight 1.0) is the primary semantic signal. FTS5 (SQLite full-text search with weighted BM25, base weight 0.8) captures keyword matches the embedding might miss. In-memory BM25 (base weight 0.6, gated by `ENABLE_BM25`, default ON) provides broader coverage with a different tokenization approach. Graph search (causal edge traversal, base weight 0.5) finds structurally related memories through the causal graph. Degree search (connectivity scoring, base weight 0.4, gated by `SPECKIT_DEGREE_BOOST`, default ON) re-ranks by hub score via `computeDegreeScores()` with logarithmic normalization and a hard cap of 50.
 

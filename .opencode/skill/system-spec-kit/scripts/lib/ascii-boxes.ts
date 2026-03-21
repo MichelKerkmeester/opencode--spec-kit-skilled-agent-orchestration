@@ -223,6 +223,7 @@ function formatFollowUpBox(followup: Array<FollowUpRecord | string>): string {
 // 6. EXPORTS
 // ───────────────────────────────────────────────────────────────
 export {
+  BOX,
   padText,
   formatDecisionHeader,
   formatOptionBox,

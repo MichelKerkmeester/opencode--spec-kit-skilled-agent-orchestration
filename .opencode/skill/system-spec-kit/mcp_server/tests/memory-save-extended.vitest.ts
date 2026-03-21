@@ -4,6 +4,17 @@ import os from 'os';
 import fs from 'fs';
 import Database from 'better-sqlite3';
 import * as handler from '../handlers/memory-save';
+import {
+  reinforceExistingMemory,
+  markMemorySuperseded,
+  updateExistingMemory,
+  logPeDecision,
+} from '../handlers/pe-gating';
+import {
+  resolveMemoryReference,
+  processCausalLinks,
+  CAUSAL_LINK_MAPPINGS,
+} from '../handlers/causal-links-processor';
 import * as vectorIndex from '../lib/search/vector-index';
 
 function getErrorMessage(error: unknown): string {
@@ -136,8 +147,8 @@ describe('MEMORY SAVE EXTENDED', () => {
   ──────────────────────────────────────────────────────────────── */
 
   describe('resolveMemoryReference', () => {
-    const resolveFn = typeof handler.resolveMemoryReference === 'function'
-      ? handler.resolveMemoryReference
+    const resolveFn = typeof resolveMemoryReference === 'function'
+      ? resolveMemoryReference
       : null;
     type ResolveReferenceInput = Parameters<NonNullable<typeof resolveFn>>[1];
 
@@ -239,8 +250,8 @@ describe('MEMORY SAVE EXTENDED', () => {
   ──────────────────────────────────────────────────────────────── */
 
   describe('processCausalLinks', () => {
-    const processFn = typeof handler.processCausalLinks === 'function'
-      ? handler.processCausalLinks
+    const processFn = typeof processCausalLinks === 'function'
+      ? processCausalLinks
       : null;
     type CausalLinksInput = Parameters<NonNullable<typeof processFn>>[2];
 
@@ -326,7 +337,7 @@ describe('MEMORY SAVE EXTENDED', () => {
     });
 
     it.skipIf(!processFn)('CAUSAL_LINK_MAPPINGS exported', () => {
-      const mappings = handler.CAUSAL_LINK_MAPPINGS;
+      const mappings = CAUSAL_LINK_MAPPINGS;
       expect(mappings).toBeDefined();
       expect(typeof mappings).toBe('object');
       const keys = Object.keys(mappings);
@@ -342,8 +353,8 @@ describe('MEMORY SAVE EXTENDED', () => {
   ──────────────────────────────────────────────────────────────── */
 
   describe('logPeDecision', () => {
-    const logPeFn = typeof handler.logPeDecision === 'function'
-      ? handler.logPeDecision
+    const logPeFn = typeof logPeDecision === 'function'
+      ? logPeDecision
       : null;
     const hasGetDb = typeof vectorIndex.getDb === 'function';
     const canRun = logPeFn && hasGetDb;
@@ -409,8 +420,8 @@ describe('MEMORY SAVE EXTENDED', () => {
   ──────────────────────────────────────────────────────────────── */
 
   describe('reinforceExistingMemory', () => {
-    const reinforceFn = typeof handler.reinforceExistingMemory === 'function'
-      ? handler.reinforceExistingMemory
+    const reinforceFn = typeof reinforceExistingMemory === 'function'
+      ? reinforceExistingMemory
       : null;
     const hasGetDb = typeof vectorIndex.getDb === 'function';
     const canRun = reinforceFn && hasGetDb;
@@ -536,8 +547,8 @@ describe('MEMORY SAVE EXTENDED', () => {
   ──────────────────────────────────────────────────────────────── */
 
   describe('markMemorySuperseded', () => {
-    const markSupersededFn = typeof handler.markMemorySuperseded === 'function'
-      ? handler.markMemorySuperseded
+    const markSupersededFn = typeof markMemorySuperseded === 'function'
+      ? markMemorySuperseded
       : null;
     const hasGetDb = typeof vectorIndex.getDb === 'function';
     const canRun = markSupersededFn && hasGetDb;
@@ -596,8 +607,8 @@ describe('MEMORY SAVE EXTENDED', () => {
   ──────────────────────────────────────────────────────────────── */
 
   describe('updateExistingMemory', () => {
-    const updateFn = typeof handler.updateExistingMemory === 'function'
-      ? handler.updateExistingMemory
+    const updateFn = typeof updateExistingMemory === 'function'
+      ? updateExistingMemory
       : null;
     const hasGetDb = typeof vectorIndex.getDb === 'function';
     const canRun = updateFn && hasGetDb;

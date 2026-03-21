@@ -563,7 +563,7 @@ This session was migrated from an older format. Learning metrics were not captur
 ```yaml
 # Core Identifiers
 session_id: "session-1766839461668-guzu8k16x"
-spec_folder: "04--agent-orchestration"
+spec_folder: "01--anobel.com/011-form-input-upload-select"
 channel: "main"
 
 # Classification

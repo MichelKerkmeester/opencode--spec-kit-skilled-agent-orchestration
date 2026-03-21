@@ -190,12 +190,136 @@ function analyzeKValueSensitivity(
   };
 }
 
+/**
+ * Run K-value sensitivity analysis across multiple independent query runs.
+ *
+ * Each query's ranked lists are analyzed independently, then averaged so the
+ * final metrics reflect per-query sensitivity rather than a synthetic fusion
+ * across unrelated queries.
+ */
+function analyzeKValueSensitivityBatch(
+  queryLists: RankedList[][]
+): KValueAnalysisResult {
+  if (queryLists.length === 0) {
+    return analyzeKValueSensitivity([], 0);
+  }
+
+  const perQueryAnalyses = queryLists.map((lists) => analyzeKValueSensitivity(lists, 1));
+  const allIds = new Set<number | string>();
+
+  for (const lists of queryLists) {
+    for (const list of lists) {
+      for (const item of list.results) {
+        allIds.add(item.id);
+      }
+    }
+  }
+
+  const results = Object.fromEntries(
+    K_VALUES.map((k) => {
+      const totals = perQueryAnalyses.reduce(
+        (accumulator, analysis) => {
+          const metrics = analysis.results[k];
+          accumulator.mrr5 += metrics.mrr5;
+          accumulator.kendallTau += metrics.kendallTau;
+          accumulator.avgScore += metrics.avgScore;
+          return accumulator;
+        },
+        { mrr5: 0, kendallTau: 0, avgScore: 0 }
+      );
+
+      const divisor = perQueryAnalyses.length;
+      return [k, {
+        mrr5: totals.mrr5 / divisor,
+        kendallTau: totals.kendallTau / divisor,
+        avgScore: totals.avgScore / divisor,
+      }];
+    })
+  ) as Record<number, KValueMetrics>;
+
+  return {
+    baselineK: BASELINE_K,
+    results,
+    totalItems: allIds.size,
+  };
+}
+
 // ───────────────────────────────────────────────────────────────
-// 4. EXPORTS
+// 4. REPORT FORMATTER
+
+// ───────────────────────────────────────────────────────────────
+/** Formatted report returned by formatKValueReport(). */
+interface KValueReport {
+  baselineK: number;
+  grid: Array<{ k: number; mrr5: number; kendallTau: number; avgScore: number }>;
+  recommendation: string;
+  sensitivityCurve: string;
+}
+
+/**
+ * Format a KValueAnalysisResult into a human-readable structured report.
+ *
+ * - grid: sorted array of per-K metrics (ascending K order)
+ * - recommendation: which K to use based on MRR@5 vs the baseline
+ * - sensitivityCurve: prose description of score variation across the grid
+ */
+function formatKValueReport(analysis: KValueAnalysisResult): KValueReport {
+  // Build grid sorted by ascending K
+  const grid = (Object.keys(analysis.results) as unknown as number[])
+    .map(Number)
+    .sort((a, b) => a - b)
+    .map(k => ({
+      k,
+      mrr5: analysis.results[k].mrr5,
+      kendallTau: analysis.results[k].kendallTau,
+      avgScore: analysis.results[k].avgScore,
+    }));
+
+  // Recommendation: find K with highest MRR@5; if it equals baseline, recommend staying
+  let bestK = analysis.baselineK;
+  let bestMrr = analysis.results[analysis.baselineK]?.mrr5 ?? 0;
+
+  for (const row of grid) {
+    if (row.mrr5 > bestMrr + 0.001) {
+      bestMrr = row.mrr5;
+      bestK = row.k;
+    }
+  }
+
+  const recommendation =
+    bestK === analysis.baselineK
+      ? `K=${analysis.baselineK} (current default) is optimal — no change recommended.`
+      : `K=${bestK} yields the highest MRR@5 (${bestMrr.toFixed(4)}); consider switching from K=${analysis.baselineK}.`;
+
+  // Sensitivity curve: compare score spread across the grid
+  const avgScores = grid.map(r => r.avgScore);
+  const minAvg = Math.min(...avgScores);
+  const maxAvg = Math.max(...avgScores);
+  const spread = maxAvg - minAvg;
+
+  let sensitivityCurve: string;
+  if (spread < 0.001) {
+    sensitivityCurve = 'Flat — average RRF score is stable across all tested K values. Ranking is insensitive to K.';
+  } else {
+    const lowK = grid[0];
+    const highK = grid[grid.length - 1];
+    const direction = highK.avgScore > lowK.avgScore ? 'increases' : 'decreases';
+    sensitivityCurve =
+      `Score ${direction} with K (range ${minAvg.toFixed(4)}–${maxAvg.toFixed(4)}). ` +
+      `Diminishing returns observed at extremes (K=${lowK.k} and K=${highK.k}).`;
+  }
+
+  return { baselineK: analysis.baselineK, grid, recommendation, sensitivityCurve };
+}
+
+// ───────────────────────────────────────────────────────────────
+// 5. EXPORTS
 
 // ───────────────────────────────────────────────────────────────
 export {
   analyzeKValueSensitivity,
+  analyzeKValueSensitivityBatch,
+  formatKValueReport,
   kendallTau,
   mrr5,
   K_VALUES,
@@ -205,4 +329,5 @@ export {
 export type {
   KValueMetrics,
   KValueAnalysisResult,
+  KValueReport,
 };
