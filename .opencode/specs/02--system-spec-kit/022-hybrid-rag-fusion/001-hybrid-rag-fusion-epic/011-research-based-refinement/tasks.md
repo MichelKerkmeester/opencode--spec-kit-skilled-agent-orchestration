@@ -82,11 +82,16 @@ contextType: "implementation"
 <!-- ANCHOR:wave-4 -->
 ## Wave 4: Final Items (After Wave 3)
 
-- [ ] T018 [P] Execute D1 Phase D — Learned Stage 2 weights (#28)
-- [ ] T019 [P] Execute D4 Phase C — Shadow scoring with holdout (#21)
-- [ ] T020 [P] Execute D3 Phase C — Graph calibration, communities (#15, #29)
-- [ ] T021 [P] Execute D2 Phase C — Index-time surrogates (#25)
-- [ ] T022 [P] Execute D5 Phase C — Progressive disclosure, session state (#26, #27)
+- [x] T018 [P] Execute D1 Phase D — Learned Stage 2 weights (#28)
+  - Evidence: learned-combiner.ts (380 lines), ridge regression + LOOCV + SHAP, 51 tests
+- [x] T019 [P] Execute D4 Phase C — Shadow scoring with holdout (#21)
+  - Evidence: shadow-scoring.ts (430 lines), holdout selection + rank comparison + promotion gate, 87 tests
+- [x] T020 [P] Execute D3 Phase C — Graph calibration, communities (#15, #29)
+  - Evidence: graph-calibration.ts (370 lines), ablation harness + Louvain thresholds + community capping, 80 tests
+- [x] T021 [P] Execute D2 Phase C — Index-time surrogates (#25)
+  - Evidence: query-surrogates.ts (400 lines), heuristic extraction + SQLite storage + query-time matching, 80 tests
+- [x] T022 [P] Execute D5 Phase C — Progressive disclosure, session state (#26, #27)
+  - Evidence: progressive-disclosure.ts (310 lines) + session-state.ts (320 lines), cursor pagination + cross-turn dedup, 94 tests
 - [ ] T023 Run final eval — compare all metrics vs baseline
 - [ ] T024 Run full test suite (4876+ tests) — verify no regressions
 <!-- /ANCHOR:wave-4 -->

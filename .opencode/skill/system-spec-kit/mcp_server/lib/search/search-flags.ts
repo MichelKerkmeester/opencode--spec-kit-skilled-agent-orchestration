@@ -267,6 +267,17 @@ export function isGraphConceptRoutingEnabled(): boolean {
   return process.env.SPECKIT_GRAPH_CONCEPT_ROUTING?.toLowerCase().trim() === 'true';
 }
 
+/**
+ * D2 REQ-D2-005: Index-time surrogates for recall improvement.
+ * Generates surrogate metadata (aliases, headings, summary, questions)
+ * at index time; matched at query time with no LLM calls.
+ * Default: FALSE (opt-in). Set SPECKIT_QUERY_SURROGATES=true to enable.
+ */
+export function isQuerySurrogatesEnabled(): boolean {
+  const val = process.env.SPECKIT_QUERY_SURROGATES?.toLowerCase().trim();
+  return val === 'true' || val === '1';
+}
+
 /* ───────────────────────────────────────────────────────────────
    6. D4 PHASE A FLAGS (Feedback & Quality Learning)
 ──────────────────────────────────────────────────────────────── */
@@ -351,5 +362,74 @@ export function getGraphRefreshMode(): string {
  */
 export function isLlmGraphBackfillEnabled(): boolean {
   const val = process.env.SPECKIT_LLM_GRAPH_BACKFILL?.toLowerCase().trim();
+  return val === 'true' || val === '1';
+}
+
+/* ───────────────────────────────────────────────────────────────
+   9. D3 PHASE C FLAGS (Graph Calibration & Communities)
+──────────────────────────────────────────────────────────────── */
+
+/**
+ * REQ-D3-005 / REQ-D3-006: Graph calibration profiles and community thresholds.
+ * Enables calibration profile enforcement, Louvain activation gates, and
+ * community score capping (secondary-only).
+ * Default: FALSE (opt-in). Set SPECKIT_GRAPH_CALIBRATION_PROFILE=true to enable.
+ */
+export function isGraphCalibrationProfileEnabled(): boolean {
+  const val = process.env.SPECKIT_GRAPH_CALIBRATION_PROFILE?.toLowerCase().trim();
+  return val === 'true' || val === '1';
+}
+
+/* ───────────────────────────────────────────────────────────────
+   10. D1 PHASE D FLAGS (Learned Ranking)
+──────────────────────────────────────────────────────────────── */
+
+/**
+ * REQ-D1-006: Learned Stage 2 weight combiner (shadow mode).
+ * Runs the learned linear ranker in parallel with manual weights.
+ * Scores are computed but NOT used for ranking (shadow-only).
+ * Default: FALSE (opt-in). Set SPECKIT_LEARNED_STAGE2_COMBINER=true to enable.
+ */
+export function isLearnedStage2CombinerEnabled(): boolean {
+  const val = process.env.SPECKIT_LEARNED_STAGE2_COMBINER?.toLowerCase().trim();
+  return val === 'true' || val === '1';
+}
+
+/* ───────────────────────────────────────────────────────────────
+   11. D4 PHASE C FLAGS (Shadow Evaluation)
+──────────────────────────────────────────────────────────────── */
+
+/**
+ * REQ-D4-006: Shadow scoring with holdout evaluation.
+ * Compares would-have-changed rankings vs live rankings on a holdout
+ * slice of queries. Shadow-only — no ranking side effects.
+ * Default: FALSE (opt-in). Set SPECKIT_SHADOW_FEEDBACK=true to enable.
+ */
+export function isShadowFeedbackEnabled(): boolean {
+  const val = process.env.SPECKIT_SHADOW_FEEDBACK?.toLowerCase().trim();
+  return val === 'true' || val === '1';
+}
+
+/* ───────────────────────────────────────────────────────────────
+   12. D5 PHASE C FLAGS (Progressive Disclosure & Session State)
+──────────────────────────────────────────────────────────────── */
+
+/**
+ * REQ-D5-005: Progressive disclosure for search results.
+ * Replaces hard tail-truncation with summary layer + snippet + cursor pagination.
+ * Default: FALSE (opt-in). Set SPECKIT_PROGRESSIVE_DISCLOSURE_V1=true to enable.
+ */
+export function isProgressiveDisclosureEnabled(): boolean {
+  const val = process.env.SPECKIT_PROGRESSIVE_DISCLOSURE_V1?.toLowerCase().trim();
+  return val === 'true' || val === '1';
+}
+
+/**
+ * REQ-D5-006: Retrieval session state for cross-turn context.
+ * Enables cross-turn dedup and goal-aware refinement of search results.
+ * Default: FALSE (opt-in). Set SPECKIT_SESSION_RETRIEVAL_STATE_V1=true to enable.
+ */
+export function isSessionRetrievalStateEnabled(): boolean {
+  const val = process.env.SPECKIT_SESSION_RETRIEVAL_STATE_V1?.toLowerCase().trim();
   return val === 'true' || val === '1';
 }

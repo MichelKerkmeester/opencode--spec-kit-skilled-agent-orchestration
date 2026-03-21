@@ -1,6 +1,6 @@
 ---
-title: "Implementation Summary: Research-Based Refinement — Waves 1-3"
-description: "Waves 1-3 implementation across all 5 dimensions (D1-D5): fusion calibration, query intelligence, graph traversal, feedback ledger, and retrieval UX. Wave 1 Phase A + Wave 2 (D3.B, D4.B) + Wave 3 (D1.B+C, D2.B, D5.B)."
+title: "Implementation Summary: Research-Based Refinement — Waves 1-4 (Complete)"
+description: "All 4 waves implemented across all 5 dimensions (D1-D5): fusion calibration, query intelligence, graph traversal, feedback ledger, and retrieval UX. 29 research recommendations implemented."
 # SPECKIT_TEMPLATE_SOURCE: implementation-summary-core | v2.2
 trigger_phrases:
   - "wave 1 implementation"
@@ -16,6 +16,12 @@ trigger_phrases:
   - "HyDE"
   - "explainability"
   - "profile formatters"
+  - "learned combiner"
+  - "shadow scoring"
+  - "graph calibration"
+  - "query surrogates"
+  - "progressive disclosure"
+  - "session state"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -29,15 +35,16 @@ contextType: "implementation"
 |-------|-------|
 | **Spec Folder** | `011-research-based-refinement` |
 | **Level** | 2 |
-| **Scope** | Wave 1 (all 5 dimensions Phase A) + Wave 2 (D3.B, D4.B) + Wave 3 (D1.B+C, D2.B, D5.B) |
-| **Status** | Waves 1-3 complete — Wave 4 remaining |
+| **Scope** | All 4 waves across all 5 dimensions — 29 research recommendations |
+| **Status** | Complete — all waves delivered |
 | **Date** | 2026-03-21 |
 | **Wave 1 Commit** | `347d17c3c` |
-| **LOC Added** | ~7,400+ (implementation) + ~5,100+ (tests) |
-| **Files Changed** | 21 modified + 15 created (impl) + 27 test files |
-| **Feature Flags** | 16 of 28 created |
-| **Tests** | ~650+ new tests, 0 regressions (26 pre-existing failures fixed) |
-| **Agent Dispatch** | Wave 1: 5 Sonnet + 5 GPT-5.4 / Waves 2-3: 3 Sonnet (native worktree) |
+| **Wave 2-3 Commit** | `401076758` |
+| **LOC Added** | ~9,600+ (implementation) + ~8,000+ (tests) |
+| **Files Changed** | 25+ modified + 21 created (impl) + 37 test files |
+| **Feature Flags** | 22 of 28 created |
+| **Tests** | ~1,040+ new tests, 0 regressions |
+| **Agent Dispatch** | W1: 5 Sonnet + 5 GPT-5.4 / W2-3: 3 Sonnet / W4: 5 Sonnet |
 <!-- /ANCHOR:metadata -->
 
 <!-- ANCHOR:what-built -->
@@ -229,6 +236,75 @@ contextType: "implementation"
 - Passes profile parameter through search pipeline
 
 **Feature Flags:** `SPECKIT_RESULT_EXPLAIN_V1`, `SPECKIT_RESPONSE_PROFILE_V1` (all default OFF)
+
+---
+
+## Wave 4: What Was Built
+
+### D1.D: Learned Stage 2 Weights
+
+**New:** `shared/ranking/learned-combiner.ts` (380 lines)
+- REQ-D1-006: Ridge regression (L2) linear ranker from Stage 2 signals
+- `extractFeatureVector()` — 8 normalized features: rrf, overlap, graph, session, causal, feedback, validation, artifact
+- `trainRegularizedLinearRanker()` — closed-form `w = (X^T X + lambda*I)^{-1} X^T y`, configurable lambda
+- `runLOOCV()` — leave-one-out cross-validation with R-squared and per-fold metrics
+- `computeSHAP()` / `computeExactLinearSHAP()` — feature importance approximation
+- `saveModel()` / `loadModel()` — JSON persistence with version checks
+- `shadowScore()` — shadow-mode comparison (returns null when flag OFF)
+- All matrix math inline (transpose, multiply, Gaussian elimination) — no external dependencies
+
+**Feature Flag:** `SPECKIT_LEARNED_STAGE2_COMBINER` (default OFF, shadow-only)
+
+### D4.C: Shadow Scoring with Holdout
+
+**New:** `mcp_server/lib/feedback/shadow-scoring.ts` (430 lines)
+- REQ-D4-006: Shadow rank comparison on holdout query slices
+- `selectHoldoutQueries()` — deterministic seeded random with stratified intent sampling
+- `compareRanks()` — per-query rank deltas, Kendall tau, NDCG delta, MRR delta
+- `logRankDelta()` — SQLite tables `shadow_scoring_log` + `shadow_cycle_results`
+- `WeeklyEvaluationTracker` — tracks consecutive improvements across cycles
+- `evaluatePromotionGate()` — 2-consecutive-week gate: `promote` / `wait` / `rollback`
+- `runShadowEvaluation()` — end-to-end pipeline
+
+**Feature Flag:** `SPECKIT_SHADOW_FEEDBACK` (default OFF, shadow-only)
+
+### D3.C: Graph Calibration & Communities
+
+**New:** `mcp_server/lib/search/graph-calibration.ts` (370 lines)
+- REQ-D3-005: Ablation harness with per-intent MRR@k and NDCG@k
+- REQ-D3-006: Louvain activation thresholds (density >= 0.3, size >= 10)
+- `calibrateGraphWeight()` — caps Stage 2 graph bonus at 0.05
+- `CalibrationProfile` with DEFAULT and AGGRESSIVE presets
+- `applyCommunityScoring()` — secondary-only, capped at 0.03
+
+**Feature Flag:** `SPECKIT_GRAPH_CALIBRATION_PROFILE` (default OFF)
+
+### D2.C: Index-Time Surrogates
+
+**New:** `mcp_server/lib/search/query-surrogates.ts` (400 lines)
+- REQ-D2-005: Surrogate metadata for recall without runtime LLM calls
+- `extractAliases()` — heuristic abbreviation/synonym extraction
+- `generateSurrogateQuestions()` — heading-to-question conversion (2-5 per document)
+- `matchSurrogates()` — weighted query-time matching (alias 0.3, question 0.4, summary 0.2, heading 0.1)
+- SQLite table `memory_surrogates` with batch loading
+
+**Feature Flag:** `SPECKIT_QUERY_SURROGATES` (default OFF)
+
+### D5.C: Progressive Disclosure & Session State
+
+**New:** `mcp_server/lib/search/progressive-disclosure.ts` (310 lines)
+- REQ-D5-005: Summary layer + snippet extraction + cursor pagination
+- `buildProgressiveResponse()` — replaces hard tail-truncation
+- Base64 continuation cursors with 5-minute TTL
+
+**New:** `mcp_server/lib/search/session-state.ts` (320 lines)
+- REQ-D5-006: Cross-turn retrieval session state
+- `SessionStateManager` — activeGoal, seenResultIds, openQuestions, preferredAnchors
+- `deduplicateResults()` — deprioritizes seen results (score * 0.3)
+- `refineForGoal()` — keyword-overlap boost (up to 1.2x)
+- In-memory with 30-min TTL and LRU eviction at 100 sessions
+
+**Feature Flags:** `SPECKIT_PROGRESSIVE_DISCLOSURE_V1`, `SPECKIT_SESSION_RETRIEVAL_STATE_V1` (both default OFF)
 <!-- /ANCHOR:what-built -->
 
 <!-- ANCHOR:how-delivered -->
@@ -345,15 +421,18 @@ contextType: "implementation"
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Wave 4 remaining** — 5 final items covering advanced features: learned weights (D1.D), shadow scoring holdout (D4.C), graph calibration + communities (D3.C), index-time surrogates (D2.C), progressive disclosure + session state (D5.C).
-2. **Eval baseline not yet recorded** — T001 (Phase 0) was not executed; baseline metrics needed before activating any feature flags for comparison.
-3. **LLM-dependent features need API key** — `SPECKIT_LLM_REFORMULATION` and `SPECKIT_HYDE` require an LLM provider to be configured. They are no-ops without one.
-4. **10 remaining feature flags** — 18 of 28 planned flags created; the remaining 10 cover Wave 4 features.
-5. **No live ranking changes** — All features are shadow-only or gated OFF; no production behavior is affected.
+1. **Eval baseline not yet recorded** — T001 (Phase 0) was not executed; baseline metrics needed before activating any feature flags for comparison.
+2. **LLM-dependent features need API key** — `SPECKIT_LLM_REFORMULATION` and `SPECKIT_HYDE` require an LLM provider to be configured. They are no-ops without one.
+3. **No live ranking changes** — All features are shadow-only or gated OFF; no production behavior is affected until explicit opt-in.
+4. **Learned combiner needs training data** — Ridge regression requires accumulated judged relevance data (50+ per intent class) before producing useful weights.
+5. **Shadow scoring needs 2+ weekly cycles** — Promotion gate requires 2 consecutive stable weekly evaluations before recommending live activation.
 
-### Remaining Wave
+### All Waves Complete
 
 | Wave | Dimensions | Items | Status |
 |------|-----------|-------|--------|
-| Wave 4 | D1.D, D4.C, D3.C, D2.C, D5.C | 5 items | Pending |
+| Wave 1 | D1.A, D2.A, D3.A, D4.A, D5.A | 10 items | Complete |
+| Wave 2 | D3.B, D4.B | 4 items | Complete |
+| Wave 3 | D1.B+C, D2.B, D5.B | 6 items | Complete |
+| Wave 4 | D1.D, D4.C, D3.C, D2.C, D5.C | 5 items | Complete |
 <!-- /ANCHOR:limitations -->
