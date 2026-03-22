@@ -56,8 +56,9 @@ contextType: "implementation"
 <!-- ANCHOR:docs -->
 ## Documentation
 - [x] Per-intent and per-wave delivery notes remain available [Evidence: implementation-summary D1/D2/D3 sections]
-- [x] Feature catalog updated for the affected graduated/live flags [Evidence: feature catalog sync completed on 2026-03-22]
-- [x] Manual testing playbook entries updated for key graduated features [Evidence: progressive disclosure, session state, and LLM reformulation playbooks refreshed]
+- [x] Feature catalog updated for all graduated flags [Evidence: 22+ dedicated entries + 25 root index inline entries + 11 flag reference rows added (2026-03-22)]
+- [x] Manual testing playbook entries for all graduated features [Evidence: IDs 156-180 (22+ per-feature entries), root index inline entries + cross-reference table updated (2026-03-22)]
+- [x] Ultra-think quality review passed [Evidence: 1 HIGH (broken playbook links fixed), 1 MEDIUM (cross-ref table completed), 1 LOW (import style — cosmetic)]
 <!-- /ANCHOR:docs -->
 
 <!-- ANCHOR:file-org -->
@@ -70,6 +71,7 @@ contextType: "implementation"
 <!-- ANCHOR:summary -->
 ## Verification Summary
 - **P0 Items:** 5/5 verified
-- **P1 Items:** 6/6 verified
+- **P1 Items:** 7/7 verified (ultra-think review added)
 - **P2 Items:** 3/3 verified
+- **Test Suite:** 44/44 files, 478/478 tests passing (2026-03-22)
 <!-- /ANCHOR:summary -->
