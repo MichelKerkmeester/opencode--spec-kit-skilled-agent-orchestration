@@ -1,12 +1,16 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation",
-  "description": "Feature Specification: graph-signal-activation",
+  "description": "Feature Specification: Code Audit — Graph Signal Activation",
   "keywords": [
     "feature",
     "specification",
-    "graph-signal-activation"
+    "code",
+    "audit",
+    "graph",
+    "signal",
+    "activation"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.260Z",
+  "lastUpdated": "2026-03-22T17:41:14.686Z",
   "specId": "010",
   "folderSlug": "graph-signal-activation",
   "parentChain": [
@@ -14,16 +18,6 @@
     "022-hybrid-rag-fusion",
     "007-code-audit-per-feature-catalog"
   ],
-  "memorySequence": 5,
-  "memoryNameHistory": [
-    "11-03-26_13-36__graph-signal-activation.md",
-    "12-03-26_13-51__graph-signal-activation.md",
-    "12-03-26_13-52__graph-signal-activation.md",
-    "12-03-26_13-53__closed-graph-signal-activation-backlog-to.md",
-    "12-03-26_13-55__rejected-non-finite-causal-edge-strengths-before.md"
-  ],
-  "title": "Feature Specification: graph-signal-activation [template:level_2/spec.md]",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: graph-signal-activation"
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

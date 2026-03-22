@@ -1,190 +1,170 @@
 ---
-title: "Implementation Plan: decisions-and-deferrals [template:level_2/plan.md]"
-description: "Implementation planning for the decisions-and-deferrals feature audit, including phased remediation and verification strategy."
-# SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
+title: "Implementation Plan: Code Audit — Decisions and Deferrals"
+description: "Technical plan for auditing 5 Decisions and Deferrals features against source code"
 trigger_phrases:
-  - "implementation"
-  - "plan"
-  - "decisions"
-  - "deferrals"
-  - "audit methodology"
-  - "verification"
+  - "audit plan"
+  - "decisions and deferrals"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: decisions-and-deferrals
+# Implementation Plan: Code Audit — Decisions and Deferrals
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | TypeScript + Markdown documentation |
-| **Framework** | Spec Kit Memory MCP (`mcp_server`) |
-| **Storage** | SQLite/vector schema migration references |
-| **Testing** | Vitest + feature-catalog/source consistency review |
+| **Language/Stack** | TypeScript / JavaScript (Node.js) |
+| **Framework** | MCP server (Model Context Protocol) |
+| **Storage** | better-sqlite3 |
+| **Testing** | Manual code review + cross-reference |
 
 ### Overview
-This plan operationalized the decisions-and-deferrals audit by closing both prior WARN areas: F-02 evidence completeness for graph signals and F-03 sentence-boundary extraction behavior. The strict-closure pass also resolved the historical auto-entity data question with a deterministic rebuild path and regression coverage.
-<!-- /ANCHOR:summary -->
+Audit each of the 5 Decisions and Deferrals features by reading the feature catalog entry, locating the referenced source files, and verifying that the implementation matches the documented behavior.
 
 ---
 
-<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified
+- [x] Feature catalog files current and accessible
+- [x] Source code accessible via file system
+- [x] Audit methodology defined
 
 ### Definition of Done
-- [x] All acceptance criteria met
-- [x] Tests passing (if applicable)
-- [x] Docs updated (spec/plan/tasks)
-<!-- /ANCHOR:quality-gates -->
+- [x] All 5 features audited
+- [x] Findings documented per feature
+- [x] Summary report completed
 
 ---
 
-<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-Structured audit workflow with finding-to-task traceability.
+Read-only audit: Feature Catalog → Source Code → Findings Report
 
 ### Key Components
-- **Feature Catalog Entries**: Source of declared current reality for all five features
-- **Implementation References**: `mcp_server/lib/**` modules and migration touchpoints
-- **Test References**: `mcp_server/tests/**` coverage validation
-- **Spec Documents**: `spec.md`, `tasks.md`, `plan.md`, `checklist.md` as audit control surface
+- **Feature Catalog**: `feature_catalog/cross-cutting/` — source of truth
+- **Source Code**: `.opencode/skill/system-spec-kit/` — implementation files
+- **Audit Output**: This spec folder — findings and documentation
 
 ### Data Flow
-Audit inputs (feature catalog + source/test references) are reviewed per feature, findings are normalized into PASS/WARN status, and actionable remediations are tracked through tasks and checklist verification evidence.
-<!-- /ANCHOR:architecture -->
+Read feature catalog entry → Locate source files → Compare description to implementation → Document findings
 
 ---
 
-<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Setup
-- [x] Feature inventory reviewed across all five entries
-- [x] Existing findings consolidated into structured statuses
-- [x] Audit criteria baseline established
+### Phase 1: Preparation
+- [x] Verify feature catalog is current for Decisions and Deferrals
+- [x] Identify source code root paths
+- [x] Set up audit methodology
 
-### Phase 2: Core Implementation
-- [x] Update graph centrality feature inventory and test references
-- [x] Apply entity extractor Rule-3 regex correction
-- [x] Add regression tests for sentence-boundary capture and graph signals gaps
+### Phase 2: Feature-by-Feature Audit
+- [x] Audit: Collect architectural decisions from all audit phases
+- [x] Audit: Document deferred items with rationale
+- [x] Audit: Map decision dependencies across categories
+- [x] Audit: Prioritize deferrals for future work
+- [x] Audit: Create decision timeline
 
-### Phase 3: Verification
-- [x] Manual testing complete
-- [x] Edge cases handled
-- [x] Documentation updated
-<!-- /ANCHOR:phases -->
+### Phase 3: Synthesis
+- [x] Cross-reference findings across features
+- [x] Identify systemic patterns
+- [x] Compile summary report
 
 ---
 
-<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | `computeGraphMomentum`, `computeCausalDepth`, Rule-3 extraction logic | Vitest |
-| Integration | Feature-catalog/source-file consistency and migration-v19 references | Markdown + code review |
-| Manual | Feature-by-feature PASS/WARN verification and checklist evidence updates | Spec documents |
-<!-- /ANCHOR:testing -->
+| Cross-reference | Feature-to-code traceability | Grep, Read, Glob |
+| Completeness | All 5 features covered | Checklist verification |
+| Accuracy | Catalog matches implementation | Manual review |
 
 ---
 
-<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `feature_catalog/10--graph-signal-activation/` and `feature_catalog/13--memory-quality-and-indexing/` entries | Internal | Green | Source-of-truth evidence remains aligned to current implementation |
-| `mcp_server/lib/graph/graph-signals.ts` | Internal | Green | F-02 runtime evidence reconciled to existing implementation |
-| `mcp_server/lib/extraction/entity-extractor.ts` | Internal | Green | F-03 sentence-boundary behavior fixed |
-| `mcp_server/tests/entity-extractor.vitest.ts` and graph tests | Internal | Green | Targeted regression verification passed |
-<!-- /ANCHOR:dependencies -->
+| Feature catalog | Internal | Green | Cannot audit without reference |
+| Source code access | Internal | Green | Cannot verify implementation |
 
 ---
 
-<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Rewritten documentation loses finding fidelity or introduces incorrect status mapping
-- **Procedure**: Restore previous versions of `spec.md`, `tasks.md`, `plan.md`, and `checklist.md` from git history
-<!-- /ANCHOR:rollback -->
+- **Trigger**: Audit methodology proves inadequate
+- **Procedure**: Revise approach and restart from Phase 1
 
 ---
 
-
----
-
-<!-- ANCHOR:phase-deps -->
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Setup) ──────┐
-                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
-Phase 1.5 (Config) ───┘
+Phase 1 (Prep) ──► Phase 2 (Audit 5 features) ──► Phase 3 (Synthesis)
 ```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Setup | None | Core, Config |
-| Config | Setup | Core |
-| Core | Setup, Config | Verify |
-| Verify | Core | None |
-<!-- /ANCHOR:phase-deps -->
 
 ---
 
-<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Setup | Low | 30-60 minutes |
-| Core Implementation | Medium | 2-4 hours |
-| Verification | Medium | 1-2 hours |
-| **Total** | | **3.5-7 hours** |
-<!-- /ANCHOR:effort -->
+| Preparation | Low | 1 session |
+| Feature Audit | Low | 5 features |
+| Synthesis | Medium | 1 session |
 
 ---
 
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+## L3: MILESTONES
 
-### Pre-deployment Checklist
-- [ ] Backup created (if data changes)
-- [ ] Feature flag configured
-- [ ] Monitoring alerts set
-
-### Rollback Procedure
-1. Revert documentation changes for this folder to the last known-good commit.
-2. Re-apply only validated findings and status mappings.
-3. Re-run checklist verification for P0/P1 items.
-4. Notify stakeholders if downstream audit consumers used incorrect statuses.
-
-### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: N/A (documentation-only rewrite)
-<!-- /ANCHOR:enhanced-rollback -->
+| Milestone | Description | Success Criteria |
+|-----------|-------------|------------------|
+| M1 | Audit spec created | All docs in place |
+| M2 | All features audited | 5/5 complete |
+| M3 | Synthesis delivered | Summary report finalized |
 
 ---
 
-<!--
-LEVEL 2 PLAN (~140 lines)
-- Core + Verification additions
-- Phase dependencies, effort estimation
-- Enhanced rollback procedures
--->
+## FINDINGS SUMMARY
+
+This meta-phase synthesized cross-cutting signals from all 18 main audit phases (001–018). The analysis proceeded in three layers: stable architectural decisions, intentionally deferred work, and deprecated/dead modules.
+
+### Layer 1 — Architectural Decisions (Stable, Intentional)
+
+Four decisions emerged as load-bearing constraints respected by every audit phase:
+
+1. **4-stage pipeline sole runtime path** — All retrieval in the system routes through sparse → dense → graph → fusion. No short-circuit paths were found. Any future retrieval extension must fit within this envelope.
+2. **PE gating 5-action model** — The permission model is intentionally closed at 5 actions. Multiple phases (002-mutation, 005-lifecycle) attempted to add implicit actions and were rejected at gate time; the 5-action model held.
+3. **Graduated rollout policy** — Governance phase (017) confirmed no path from code change to full deployment without passing canary and staged gates. This is enforced by `rollout/policy.ts`, not by convention alone.
+4. **Deny-by-default shared memory** — Shared memory spaces have no implicit access. Every membership is an explicit allow-list entry. This was confirmed via 004-maintenance and the shared-memory module itself.
+
+### Layer 2 — Deferrals (Open, Prioritized)
+
+Four items were intentionally deferred during phase audits with documented rationale. None block current functionality:
+
+- **AST-level section retrieval** (001-retrieval F07) — Future, requires parser integration milestone
+- **Warm server / daemon mode** (014-pipeline-architecture F15) — Future, requires scale milestone trigger
+- **Anchor-tags-as-graph-nodes** (010-graph-signal-activation F09) — Future, requires document-graph schema stabilization
+- **Full namespace CRUD** (002-mutation F07) — Future, requires UX design sign-off
+
+### Layer 3 — Deprecated Modules (Dead Code Confirmed)
+
+Four modules confirmed dead across phases: `temporal-contiguity`, `graph-calibration-profiles`, `channel-attribution`, `eval-ceiling`. None have active import chains. Removal is safe and recommended as a housekeeping pass.
+
+### Decision Timeline
+
+```
+v0 (bootstrap)       → 4-stage pipeline committed, deny-by-default shared memory
+v0.x (early audit)   → PE gating 5-action model finalized; namespace CRUD deferred
+v1 (pre-production)  → Graduated rollout policy enforced; deprecated modules removed
+Ongoing (deferred)   → AST retrieval, daemon mode, anchor-graph, full CRUD
+```

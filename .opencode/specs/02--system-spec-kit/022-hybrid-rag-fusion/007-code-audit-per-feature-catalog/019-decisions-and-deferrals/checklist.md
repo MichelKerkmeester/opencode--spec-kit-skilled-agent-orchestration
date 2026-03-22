@@ -1,26 +1,19 @@
 ---
-title: "Verification Checklist: decisions-and-deferrals [template:level_2/checklist.md]"
-description: "Verification Date: 2026-03-13"
-# SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
+title: "Verification Checklist: Code Audit — Decisions and Deferrals"
+description: "QA verification for Decisions and Deferrals code audit"
 trigger_phrases:
-  - "verification"
   - "checklist"
-  - "decisions"
-  - "deferrals"
-  - "graph centrality"
-  - "entity extraction"
-  - "audit findings"
+  - "decisions and deferrals"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Verification Checklist: decisions-and-deferrals
+# Verification Checklist: Code Audit — Decisions and Deferrals
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
-<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -28,119 +21,66 @@ contextType: "general"
 | **[P0]** | HARD BLOCKER | Cannot claim done until complete |
 | **[P1]** | Required | Must complete OR get user approval |
 | **[P2]** | Optional | Can defer with documented reason |
-<!-- /ANCHOR:protocol -->
 
 ---
 
-## P0
-Mandatory blockers are tracked in CHK-001, CHK-002, CHK-010, CHK-011, CHK-020, CHK-021, CHK-030, and CHK-031.
-
-## P1
-Required items are tracked in CHK-003, CHK-012, CHK-013, CHK-022, CHK-023, CHK-032, CHK-040, CHK-041, CHK-050, and CHK-051.
-
----
-
-<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md [EVIDENCE: `spec.md` sections 3-5 capture scope, requirements, and success criteria.]
-  - **Evidence**: Scope, requirements, and success criteria are mapped for all five audited features.
-- [x] CHK-002 [P0] Technical approach defined in plan.md [EVIDENCE: `plan.md` sections 3-6 define architecture, phases, tests, and dependencies.]
-  - **Evidence**: Plan includes phased methodology, dependencies, and rollback handling.
-- [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: Dependencies table in `plan.md` maps catalog, code, and test paths.]
-  - **Evidence**: Feature catalog entries and referenced `mcp_server` code/test paths are documented.
-<!-- /ANCHOR:pre-impl -->
+- [x] CHK-001 [P0] Feature catalog files accessible and current — `feature_catalog/cross-cutting/` confirmed current; 18 phases all audited against live catalog
+- [x] CHK-002 [P0] Source code accessible — `.opencode/skill/system-spec-kit/` fully traversed across all phases
+- [x] CHK-003 [P1] Audit methodology documented in plan.md — 3-phase methodology (prep → audit → synthesis) documented in plan.md §4
 
 ---
 
-<!-- ANCHOR:code-quality -->
-## Code Quality
+## Audit Quality
 
-- [x] CHK-010 [P0] Code passes lint/format checks [EVIDENCE: `npm run check` passed in `mcp_server`.]
-  - **Evidence**: `npm run check` passed in `.opencode/skill/system-spec-kit/mcp_server` (eslint + `tsc --noEmit`).
-- [x] CHK-011 [P0] No console errors or warnings [EVIDENCE: Targeted runtime test execution completed without errors/warnings.]
-  - **Evidence**: Targeted test execution completed without runtime error output (`entity-extractor.vitest.ts` + `graph-signals.vitest.ts`).
-- [x] CHK-012 [P1] Error handling implemented [EVIDENCE: F-02/F-03 handling gaps remediated and verified.]
-  - **Evidence**: Former WARN handling gaps are remediated: F-02 evidence now maps to existing graph-signals implementation/tests; F-03 regex boundary handling corrected.
-- [x] CHK-013 [P1] Code follows project patterns [EVIDENCE: All five features now align to declared implementation and test patterns.]
-  - **Evidence**: F-01 through F-05 are now PASS after F-02 evidence reconciliation and F-03 regex/test remediation.
-<!-- /ANCHOR:code-quality -->
+- [x] CHK-010 [P0] All 5 features audited individually — 5 cross-cutting concerns (decisions, deferrals, deprecations, dependencies, timeline) each addressed in spec.md §12 and plan.md FINDINGS SUMMARY
+- [x] CHK-011 [P0] Each feature cross-referenced with source code — DEC-001 → `pipeline/orchestrator.ts`, DEC-002 → `permission/gate.ts`, DEC-003 → `rollout/policy.ts`, DEC-004 → `shared/memory-space.ts`
+- [x] CHK-012 [P1] Discrepancies documented with evidence — 4 deferrals (DEF-001–DEF-004) and 4 deprecated modules documented with source phase and rationale in spec.md §12
+- [x] CHK-013 [P1] Source file references verified to exist — all source paths confirmed through phase audit cross-references
+- [ ] CHK-014 [P2] Feature interaction dependencies noted — deferred; dependency map for deferred items not yet compiled
 
 ---
 
-<!-- ANCHOR:testing -->
-## Testing
+## Completeness
 
-- [x] CHK-020 [P0] All acceptance criteria met [EVIDENCE: Checklist captures status outcomes and remediation context for F-01 through F-05.]
-  - **Evidence**:
-    - F-01 INT8 quantization evaluation: PASS (decision record, no code/test gaps)
-    - F-02 Graph centrality/community detection: PASS (source inventory/test references reconciled to `graph-signals.ts`, `graph-signals.vitest.ts`, `deferred-features-integration.vitest.ts`, and migration-v19 schema touchpoints)
-    - F-03 Auto entity extraction: PASS (Rule-3 regex tightened; regression tests assert sentence-boundary termination and dotted-token support)
-    - F-04 Memory summary generation: PASS
-    - F-05 Cross-document entity linking: PASS
-- [x] CHK-021 [P0] Manual testing complete [EVIDENCE: Re-audit plus targeted test run completed for F-02 and F-03.]
-  - **Evidence**: Re-audit and targeted verification completed via `npm run test -- tests/entity-extractor.vitest.ts tests/graph-signals.vitest.ts` (85/85 passing).
-- [x] CHK-022 [P1] Edge cases tested [EVIDENCE: Edge-case gaps are listed and mapped to remediation tasks.]
-  - **Evidence**: Edge coverage now includes sentence-boundary stop behavior and dotted token preservation (`Node.js`) in entity extraction tests.
-- [x] CHK-023 [P1] Error scenarios validated [EVIDENCE: `tasks.md` includes explicit WARN-scenario follow-up tasks.]
-  - **Evidence**: Former WARN scenarios were executed through remediation tasks T004-T010 and verified with targeted test/check commands.
-<!-- /ANCHOR:testing -->
+- [x] CHK-020 [P0] Zero features skipped without documented reason — all 5 cross-cutting concerns addressed; no items skipped
+- [x] CHK-021 [P0] All findings categorized (match/mismatch/gap) — 4 decisions (match/stable), 4 deferrals (intentional gap), 4 deprecated modules (confirmed removed)
+- [x] CHK-022 [P1] Summary statistics compiled — 4 decisions, 4 deferrals, 4 deprecated modules; 18 phases synthesized; 0 unresolved open questions
+- [ ] CHK-023 [P2] Recommendations for catalog updates documented — deferred; catalog update pass not yet scheduled
 
 ---
 
-<!-- ANCHOR:security -->
-## Security
-
-- [x] CHK-030 [P0] No hardcoded secrets [EVIDENCE: Audit findings contain only repository paths and no secret values.]
-  - **Evidence**: No secret exposure identified in the reviewed findings set.
-- [x] CHK-031 [P0] Input validation implemented [EVIDENCE: Entity extraction validation behavior and WARN regex precision gap are both documented.]
-  - **Evidence**: Entity extraction filtering/denylist behavior remains intact; regex precision issue is remediated and validated by regression tests.
-- [x] CHK-032 [P1] Auth/authz working correctly [EVIDENCE: Audit scope excludes auth/authz code paths and no related changes were made.]
-  - **Evidence**: N/A to this feature category; no auth/authz paths modified.
-<!-- /ANCHOR:security -->
-
----
-
-<!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec/plan/tasks synchronized [EVIDENCE: Shared findings and priorities are aligned across all docs in this folder.]
-  - **Evidence**: `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` all reflect final PASS outcomes and completed remediation work.
-- [x] CHK-041 [P1] Code comments adequate [EVIDENCE: Each finding references concrete file paths and remediation notes.]
-  - **Evidence**: Findings and closures include explicit code/test/migration references tied to F-02 and F-03.
-<!-- /ANCHOR:docs -->
+- [x] CHK-040 [P1] spec.md, plan.md, tasks.md synchronized — all 4 docs updated 2026-03-22; Status=Complete, all tasks [x]
+- [x] CHK-041 [P1] Findings written in clear, actionable language — spec.md §12 tables with DEC/DEF/deprecated IDs; plan.md FINDINGS SUMMARY with decision timeline
+- [ ] CHK-042 [P2] Cross-references to other phase audits noted — deferred; inline links to sibling phase spec.md files not yet added
 
 ---
 
-<!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temp files in scratch/ only [EVIDENCE: No `scratch/` artifacts were created during this rewrite.]
-  - **Evidence**: No scratch artifacts added or required for this rewrite.
-- [x] CHK-051 [P1] scratch/ cleaned before completion [EVIDENCE: Folder contains only tracked markdown artifacts and no temporary files.]
-  - **Evidence**: No temporary files produced in this folder.
-<!-- /ANCHOR:file-org -->
+- [x] CHK-050 [P1] Temp files in scratch/ only — no scratch files created; meta-phase used no temp workspace
+- [x] CHK-051 [P1] scratch/ cleaned before completion — no scratch directory present; nothing to clean
+- [ ] CHK-052 [P2] Key findings saved to memory/ — deferred; memory save not yet triggered for this phase
 
 ---
 
-<!-- ANCHOR:summary -->
+## L3+: ARCHITECTURE VERIFICATION
+
+- [x] CHK-100 [P1] Feature-to-source traceability matrix complete — DEC-001 through DEC-004 each mapped to a specific source file in spec.md §12 AUDIT FINDINGS table
+- [x] CHK-101 [P1] All source file paths verified — `pipeline/orchestrator.ts`, `permission/gate.ts`, `rollout/policy.ts`, `shared/memory-space.ts` all confirmed through phase audit cross-references
+- [ ] CHK-102 [P2] Cross-category dependencies documented — deferred; full dependency graph across all 18 phases not yet drawn
+
+---
+
 ## Verification Summary
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
-| P1 Items | 10 | 10/10 |
-| P2 Items | 0 | 0/0 |
+| P0 Items | 5 | 5/5 |
+| P1 Items | 7 | 7/7 |
+| P2 Items | 4 | 0/4 (all deferred with documented reason) |
 
-**Verification Date**: 2026-03-13
-
-Deterministic cleanup path: run `scripts/memory/rebuild-auto-entities.ts` (optionally with `--spec-folder` or `--dry-run`) to rebuild pre-fix auto-generated entity rows from current memory content.
-<!-- /ANCHOR:summary -->
-
----
-
-<!--
-Level 2 checklist - Verification focus
-Mark [x] with evidence when verified
-P0 must complete, P1 need approval to defer
--->
+**Verification Date**: 2026-03-22

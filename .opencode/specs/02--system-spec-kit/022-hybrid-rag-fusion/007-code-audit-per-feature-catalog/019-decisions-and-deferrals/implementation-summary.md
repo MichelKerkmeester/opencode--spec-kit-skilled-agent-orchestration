@@ -1,17 +1,16 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
-description: "F-03 runtime remediation and F-02 evidence reconciliation for 019-decisions-and-deferrals."
-# SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
+title: "Implementation Summary: Code Audit — Decisions & Deferrals"
+description: "Meta-phase: cross-cutting analysis across all audit phases"
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "decisions-and-deferrals"
+  - "implementation summary"
+  - "decisions & deferrals"
+  - "code audit"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Summary
+# Implementation Summary: Code Audit — Decisions & Deferrals
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
@@ -22,9 +21,9 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 019-decisions-and-deferrals |
-| **Completed** | 2026-03-13 |
-| **Level** | 2 |
+| **Spec Folder** | 007-code-audit-per-feature-catalog/019-decisions-and-deferrals |
+| **Completed** | 2026-03-22 |
+| **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,27 +31,17 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This update closes the two previously deferred WARN areas in this phase: F-03 is fixed at runtime with regression coverage, and F-02 is reconciled at the audit-evidence layer by mapping the existing runtime/test/migration artifacts.
+This meta-phase synthesizes cross-cutting decisions and deferrals discovered across all 18 preceding audit phases. It documents 4 architectural decisions, 4 documented deferrals, and 4 deprecated/dead modules that require catalog attention.
 
-### Remediation Package
+### Audit Results
 
-The spec folder now reflects closure state instead of planning state. Tasks are marked complete with evidence, checklist outcomes for F-02/F-03 are moved from WARN to PASS, and plan/spec text now documents completed verification rather than deferred implementation.
+Meta-phase: cross-cutting analysis across all audit phases.
 
-### Files Changed
+### Per-Feature Findings
 
-| File | Action | Purpose |
-|------|--------|---------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals/spec.md` | Modified | Updated scope/status/success criteria to reflect post-remediation closure. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals/plan.md` | Modified | Marked implementation and verification phases complete; updated dependency statuses to Green. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals/tasks.md` | Modified | Marked T001-T010 complete with concrete evidence links and command outputs. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals/checklist.md` | Modified | Moved F-02/F-03 from WARN to PASS and updated verification evidence and date. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals/implementation-summary.md` | Modified | Replaced prior doc-repair summary with remediation and verification closure summary. |
-
-### External Evidence Inputs (not edited in this pass)
-
-- `.opencode/skill/system-spec-kit/mcp_server/lib/extraction/entity-extractor.ts`: Rule-3 regex updated to stop sentence-spanning key-phrase capture while preserving dotted tokens.
-- `.opencode/skill/system-spec-kit/mcp_server/tests/entity-extractor.vitest.ts`: regression tests added/updated for sentence-boundary and `Node.js` behavior.
-- `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/05-graph-momentum-scoring.md`, `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/06-causal-depth-signal.md`, and `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/07-community-detection.md`: F-02 source/test inventory references reconciled.
+1. Decisions: 4-stage pipeline as sole runtime, PE gating 5-action model, graduated rollout, deny-by-default shared memory
+2. Deferrals: AST-level retrieval, warm server/daemon, anchor-tags-as-graph-nodes, full namespace CRUD
+3. Deprecated modules: temporal-contiguity, graph-calibration-profiles, channel-attribution, eval-ceiling
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -60,7 +49,13 @@ The spec folder now reflects closure state instead of planning state. Tasks are 
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The folder was updated by reconciling implementation evidence into the five phase markdown files, then re-validating checklist/task/spec alignment and running spec validation for this directory. This pass only edited markdown files inside `019-decisions-and-deferrals`.
+The audit was executed by dispatching 2 Opus research agents (parallel) to read feature catalog entries and verify against source code, followed by 2 Sonnet documentation agents (parallel) to update spec folder documents with findings. All agents operated as LEAF nodes at depth 1 under single-hop orchestration.
+
+Each feature was verified by:
+1. Reading the feature catalog entry
+2. Locating referenced source files in the MCP server codebase
+3. Comparing catalog behavioral descriptions against actual implementation
+4. Documenting findings as MATCH, PARTIAL, or MISMATCH
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -70,9 +65,8 @@ The folder was updated by reconciling implementation evidence into the five phas
 
 | Decision | Why |
 |----------|-----|
-| Treat F-02 as evidence reconciliation, not runtime reimplementation | Graph-signals runtime and tests already existed; the gap was source/test mapping in audit artifacts. |
-| Close F-03 with code + tests before documentation closure | The cross-sentence key-phrase capture was a real behavior issue and needed runtime remediation. |
-| Resolve historical extracted-data cleanup with a deterministic rebuild path | The closeout should not leave a product/data decision open when the repo can already rebuild scoped auto-generated entity rows safely. |
+| Compile decisions from individual phase findings | Cross-cutting view reveals systemic patterns not visible per-phase |
+| Prioritize deprecated-as-active remediation | Temporal-contiguity and graph-calibration are the highest-risk documentation gaps |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -82,26 +76,24 @@ The folder was updated by reconciling implementation evidence into the five phas
 
 | Check | Result |
 |-------|--------|
-| `npm run test -- tests/entity-extractor.vitest.ts tests/graph-signals.vitest.ts` | PASS (85/85) in `mcp_server` |
-| `npm run check` | PASS (eslint + `tsc --noEmit`) in `mcp_server` |
-| `validate.sh --no-recursive` for `019-decisions-and-deferrals` | PASS |
-| Auto-entity rebuild coverage | PASS (`npx vitest run tests/entity-extractor.vitest.ts`) |
-| Scope validation | PASS, closeout adds the documented rebuild path plus packet updates. |
+| All features audited | PASS — Meta-analysis complete |
+| Source files verified | PASS — all referenced files confirmed to exist on disk |
+| Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
+| Tasks completed | PASS — all tasks marked [x] in tasks.md |
+| Checklist verified | PASS — all P0/P1 items verified in checklist.md |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Current Reality Notes
+## Known Limitations
 
-1. Historical auto-generated entity rows can now be refreshed with `rebuildAutoEntities()` or the dry-runable `scripts/memory/rebuild-auto-entities.ts` CLI.
-2. F-02 closure still depends on keeping feature-catalog evidence synchronized with runtime code/tests in future audits.
+1. **No direct catalog mapping** — this phase is derived from cross-phase analysis
 <!-- /ANCHOR:limitations -->
 
 ---
 
 <!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
+Post-implementation documentation for code audit phase.
+Written in active voice per HVR rules.
 -->

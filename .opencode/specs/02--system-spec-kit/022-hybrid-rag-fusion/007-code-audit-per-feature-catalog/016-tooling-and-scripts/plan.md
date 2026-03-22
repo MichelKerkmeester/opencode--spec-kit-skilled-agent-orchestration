@@ -1,191 +1,162 @@
 ---
-title: "Implementation Plan: tooling-and-scripts [template:level_2/plan.md]"
-description: "This plan executes the Tooling and Scripts feature-catalog audit workflow and converts findings into a prioritized remediation path. The approach combines catalog-to-code validation, test-gap analysis, and verification-driven documentation updates."
-SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
+title: "Implementation Plan: Code Audit — Tooling and Scripts"
+description: "Technical plan for auditing 17 Tooling and Scripts features against source code"
 trigger_phrases:
-  - "implementation"
-  - "plan"
+  - "audit plan"
   - "tooling and scripts"
-  - "tooling-and-scripts"
-  - "tree thinning"
-  - "architecture boundary"
-  - "progressive validation"
-  - "file watcher"
-  - "admin cli"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: tooling-and-scripts
+# Implementation Plan: Code Audit — Tooling and Scripts
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | TypeScript (Node.js MCP server), shell scripts, and markdown audit artifacts |
-| **Framework** | Spec Kit Memory MCP feature-catalog audit workflow |
-| **Storage** | Repository docs + SQLite-backed MCP server metadata |
-| **Testing** | Vitest suites + manual catalog/code/playbook cross-check |
+| **Language/Stack** | TypeScript / JavaScript (Node.js) |
+| **Framework** | MCP server (Model Context Protocol) |
+| **Storage** | better-sqlite3 |
+| **Testing** | Manual code review + cross-reference |
 
 ### Overview
-This plan operationalizes the Tooling and Scripts audit across eight features in `feature_catalog/16--tooling-and-scripts/`. The execution path follows feature inventory, code/test behavior validation, playbook cross-reference checks, and synchronized Level 2 artifact updates.
-<!-- /ANCHOR:summary -->
+Audit each of the 17 Tooling and Scripts features by reading the feature catalog entry, locating the referenced source files, and verifying that the implementation matches the documented behavior.
 
 ---
 
-<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified
+- [x] Feature catalog files current and accessible
+- [x] Source code accessible via file system
+- [x] Audit methodology defined
 
 ### Definition of Done
-- [x] All acceptance criteria met
-- [x] Tests passing (if applicable)
-- [x] Docs updated (spec/plan/tasks)
-<!-- /ANCHOR:quality-gates -->
+- [x] All 17 features audited
+- [x] Findings documented per feature
+- [x] Summary report completed
 
 ---
 
-<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-Documentation-driven feature audit and remediation planning workflow
+Read-only audit: Feature Catalog → Source Code → Findings Report
 
 ### Key Components
-- **Feature Catalog (`feature_catalog/16--tooling-and-scripts/`)**: Source of current-reality behavior claims and implementation/test mappings.
-- **Implementation/Test Surfaces (`mcp_server/`, `scripts/`)**: Evidence for correctness, standards, behavior match, and test coverage.
-- **Phase Artifacts (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`)**: Structured outputs for scope, execution, remediation, and verification.
+- **Feature Catalog**: `feature_catalog/16--tooling-and-scripts/` — source of truth
+- **Source Code**: `.opencode/skill/system-spec-kit/` — implementation files
+- **Audit Output**: This spec folder — findings and documentation
 
 ### Data Flow
-Feature entries define expected behavior, implementation and tests are audited for alignment, gaps are prioritized by severity (P0/P1/P2), and outcomes are tracked in synchronized Level 2 artifacts for follow-up execution.
-<!-- /ANCHOR:architecture -->
+Read feature catalog entry → Locate source files → Compare description to implementation → Document findings
 
 ---
 
-<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Setup
-- [x] Read all 8 feature entries and extract implementation/test mappings
-- [x] Capture audit criteria and acceptance requirements
-- [x] Establish remediation priority groups (P0/P1/P2)
+### Phase 1: Preparation
+- [x] Verify feature catalog is current for Tooling and Scripts
+- [x] Identify source code root paths
+- [x] Set up audit methodology
 
-### Phase 2: Core Implementation
-- [x] Perform per-feature correctness, standards, and behavior analysis
-- [x] Identify test and playbook coverage gaps per feature
-- [x] Convert findings into actionable remediation tasks
+### Phase 2: Feature-by-Feature Audit
+- [x] Audit: Tree thinning for spec folder consolidation
+- [x] Audit: Architecture boundary enforcement
+- [x] Audit: Progressive validation for spec documents
+- [x] Audit: Dead code removal
+- [x] Audit: Code standards alignment
+- [x] Audit: Real-time filesystem watching with chokidar
+- [x] Audit: Standalone admin CLI
+- [x] Audit: Watcher delete/rename cleanup
+- [x] Audit: Migration checkpoint scripts
+- [x] Audit: Schema compatibility validation
+- [x] Audit: Feature catalog code references
+- [x] Audit: Session Capturing Pipeline Quality
+- [x] Audit: Constitutional memory manager command
+- [x] Audit: Source-dist alignment enforcement
+- [x] Audit: Module boundary map
+- [x] Audit: JSON mode structured summary hardening
+- [x] Audit: JSON-only save contract
 
-### Phase 3: Verification
-- [x] Validate targeted tests and edge-case coverage after remediation
-- [x] Confirm catalog/source/test tables are synchronized
-- [x] Mark checklist verification state with evidence
-<!-- /ANCHOR:phases -->
+### Phase 3: Synthesis
+- [x] Cross-reference findings across features
+- [x] Identify systemic patterns
+- [x] Compile summary report
 
 ---
 
-<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Chunk thinning, watcher metrics, classifier/boundary utility behaviors | Vitest |
-| Integration | Admin CLI dispatch, progressive validation flow, watcher rename/delete lifecycle | Vitest |
-| Manual | Catalog-to-code-to-task traceability and playbook coverage review | Markdown review |
-<!-- /ANCHOR:testing -->
+| Cross-reference | Feature-to-code traceability | Grep, Read, Glob |
+| Completeness | All 17 features covered | Checklist verification |
+| Accuracy | Catalog matches implementation | Manual review |
 
 ---
 
-<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `feature_catalog/16--tooling-and-scripts/*.md` | Internal | Green | Behavior expectations and mapping references cannot be validated |
-| `mcp_server/lib/ops/file-watcher.ts`, `mcp_server/cli.ts`, `scripts/spec/progressive-validate.sh`, `scripts/evals/check-architecture-boundaries.ts` | Internal | Yellow | Unresolved runtime/mapping mismatches remain unverified |
-| Relevant Vitest suites under `mcp_server/tests/` | Internal | Yellow | Test-gap closure cannot be confirmed |
-<!-- /ANCHOR:dependencies -->
+| Feature catalog | Internal | Green | Cannot audit without reference |
+| Source code access | Internal | Green | Cannot verify implementation |
 
 ---
 
-<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Documentation mapping errors, template non-compliance, or remediation assertions proven incorrect.
-- **Procedure**: Revert `016-tooling-and-scripts/` docs to last known-good revision, re-apply Level 2 templates, and re-map findings/tasks/checklist evidence.
-<!-- /ANCHOR:rollback -->
+- **Trigger**: Audit methodology proves inadequate
+- **Procedure**: Revise approach and restart from Phase 1
 
 ---
 
-
----
-
-<!-- ANCHOR:phase-deps -->
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Inventory) ──────┐
-                          ├──► Phase 2 (Audit) ──► Phase 3 (Verify)
-Phase 1.5 (Playbook) ─────┘
+Phase 1 (Prep) ──► Phase 2 (Audit 17 features) ──► Phase 3 (Synthesis)
 ```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Inventory | None | Audit, Playbook |
-| Playbook | Inventory | Audit |
-| Audit | Inventory, Playbook | Verify |
-| Verify | Audit | None |
-<!-- /ANCHOR:phase-deps -->
 
 ---
 
-<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Setup | Medium | 1-2 hours |
-| Core Implementation | High | 5-8 hours |
-| Verification | Medium | 2-3 hours |
-| **Total** | | **8-13 hours** |
-<!-- /ANCHOR:effort -->
+| Preparation | Low | 1 session |
+| Feature Audit | High | 17 features |
+| Synthesis | Medium | 1 session |
 
 ---
 
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+## L3: MILESTONES
 
-### Pre-deployment Checklist
-- [ ] Backup created (if data changes)
-- [ ] Feature flag configured
-- [ ] Monitoring alerts set
-
-### Rollback Procedure
-1. Revert affected documentation or implementation changes to last known-good commit.
-2. Re-run targeted validation tests for touched Tooling and Scripts features.
-3. Reconcile checklist evidence and task state after rollback.
-4. Notify stakeholders if severity/status changed.
-
-### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: N/A
-<!-- /ANCHOR:enhanced-rollback -->
+| Milestone | Description | Success Criteria |
+|-----------|-------------|------------------|
+| M1 | Audit spec created | All docs in place |
+| M2 | All features audited | 17/17 complete |
+| M3 | Synthesis delivered | Summary report finalized |
 
 ---
 
-<!--
-LEVEL 2 PLAN (~140 lines)
-- Core + Verification additions
-- Phase dependencies, effort estimation
-- Enhanced rollback procedures
--->
+## FINDINGS SUMMARY
+
+**Audit completed**: 2026-03-22
+**Overall result**: 16 MATCH, 1 PARTIAL, 0 FAIL
+
+| Result | Count | Features |
+|--------|-------|---------|
+| MATCH | 16 | F01–F04, F06–F17 |
+| PARTIAL | 1 | F05 (Code standards alignment) |
+| FAIL | 0 | — |
+
+**F05 PARTIAL detail**: `SPEC_FOLDER_LOCKS` was refactored from `memory-save.ts` into `spec-folder-mutex.ts`. All other code standards alignment claims (AI-intent comments, MODULE headers, import ordering) match. The catalog source-file reference for this symbol is stale and should be updated as a follow-up task.
+
+**Systemic patterns**: No systemic failures detected. The tooling and scripts category is well-aligned with its feature catalog. The single PARTIAL finding is an isolated refactoring artifact rather than a systematic documentation gap.

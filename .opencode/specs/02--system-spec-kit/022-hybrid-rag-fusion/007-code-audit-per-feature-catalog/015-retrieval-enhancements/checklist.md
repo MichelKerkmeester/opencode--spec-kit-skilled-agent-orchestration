@@ -1,24 +1,19 @@
 ---
-title: "Verification Checklist: retrieval-enhancements [template:level_2/checklist.md]"
-description: "Verification Date: 2026-03-13"
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
+title: "Verification Checklist: Code Audit — Retrieval Enhancements"
+description: "QA verification for Retrieval Enhancements code audit"
 trigger_phrases:
-  - "retrieval enhancements checklist"
-  - "feature audit verification"
-  - "hybrid rag fusion checks"
-  - "fallback channel forcing tests"
-  - "provenance trace validation"
+  - "checklist"
+  - "retrieval enhancements"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Verification Checklist: retrieval-enhancements
+# Verification Checklist: Code Audit — Retrieval Enhancements
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
-<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -26,112 +21,66 @@ contextType: "general"
 | **[P0]** | HARD BLOCKER | Cannot claim done until complete |
 | **[P1]** | Required | Must complete OR get user approval |
 | **[P2]** | Optional | Can defer with documented reason |
-<!-- /ANCHOR:protocol -->
 
 ---
 
-## P0 - Blockers
-
-P0 items below are complete and include inline evidence.
-
----
-
-<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md (mapped into sections 2-6) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-002 [P0] Technical approach defined in plan.md (phases + architecture captured) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-003 [P1] Dependencies identified and available (catalog, code, tests, playbook) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-<!-- /ANCHOR:pre-impl -->
+- [x] CHK-001 [P0] Feature catalog files accessible and current — 9 files in `feature_catalog/15--retrieval-enhancements/`, verified 2026-03-22
+- [x] CHK-002 [P0] Source code accessible — all primary source files confirmed to exist in `mcp_server/`
+- [x] CHK-003 [P1] Audit methodology documented in plan.md — plan.md §4 describes feature-by-feature approach
 
 ---
 
-<!-- ANCHOR:code-quality -->
-## Code Quality
+## Audit Quality
 
-- [x] CHK-010 [P0] Code passes lint/format checks (332 vitest tests pass; `npx tsc --noEmit` clean) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-011 [P0] No console errors or warnings (no new console errors or warnings in targeted suites) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-012 [P1] Error handling implemented (T009 replaced empty catches with logger.warn in vector-index-queries.ts and vector-index-schema.ts; T012 added error logging in entity-linker.ts) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-013 [P1] Code follows project patterns (T008 replaced wildcard re-exports with explicit named exports in vector-index.ts) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-014 [P1] Wildcard re-exports removed from F-01/F-09 implementation surfaces (T008 wildcard re-exports replaced with explicit named exports in vector-index.ts) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-015 [P1] Empty/silent catch blocks replaced with typed logged handling (T009 empty catches replaced with typed logger.warn in vector-index-queries.ts and vector-index-schema.ts) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-016 [P1] Token/header budget handling calibrated to measurable behavior (T013 header overhead calibrated CONTEXT_HEADER_MAX_CHARS=100, per-result x12->x26 tokens) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-<!-- /ANCHOR:code-quality -->
+- [x] CHK-010 [P0] All 9 features audited individually — F01–F09 each read and cross-referenced
+- [x] CHK-011 [P0] Each feature cross-referenced with source code — primary source files confirmed for all 9
+- [x] CHK-012 [P1] Discrepancies documented with evidence — F09 PARTIAL: source list bloated with 50+ incidental dependency files; primary implementation is `hybrid-search.ts` gated by `SPECKIT_CONTEXT_HEADERS`
+- [x] CHK-013 [P1] Source file references verified to exist — all primary source files confirmed via filesystem check
+- [x] CHK-014 [P2] Feature interaction dependencies noted — F06 depends on R10 entity catalog; F07 (`forceAllChannels`) wired into same `hybrid-search.ts` pipeline as F09
 
 ---
 
-<!-- ANCHOR:testing -->
-## Testing
+## Completeness
 
-- [x] CHK-020 [P0] All acceptance criteria met (332 tests pass across 10 files, all P0 acceptance criteria met for T004-T020) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-021 [P0] Manual audit of 9 features complete (PASS/WARN/FAIL matrix preserved) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-022 [P1] Edge cases tested (T017 added 3 summary merge/dedupe/threshold tests; T018 added 4 batched edge-count tests; T019 added 2 post-truncation ordering tests) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-023 [P1] Error scenarios validated (T009 error handling tested; T012 fallback logging tested; T020 replaced deferred branches with 4 concrete payload validation tests) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-024 [P0] Placeholder channel test assertions replaced with executable checks (F-07) (T005 added 3 executable channel tests F07-CH-01/02/03 in channel.vitest.ts) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-025 [P0] Provenance `includeTrace` schema assertions added (F-08) (T006 provenance ownership corrected with search-results.ts, memory-search.ts, envelope.ts; trace assertions covered) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-026 [P1] Hook lifecycle and summary-channel integration tests added (F-01/F-05) (T014 added 2 hook dispatch/compaction tests in dual-scope-hooks.vitest.ts; T015 added 2 constitutional enrichment tests in retrieval-directives.vitest.ts) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-027 [P1] Batched edge-count and context-header ordering tests added (F-06/F-09) (T018 added 4 batched edge-count tests in entity-linker.vitest.ts; T019 added 2 context-header ordering tests in hybrid-search-context-headers.vitest.ts) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-<!-- /ANCHOR:testing -->
+- [x] CHK-020 [P0] Zero features skipped without documented reason — all 9 audited
+- [x] CHK-021 [P0] All findings categorized (match/mismatch/gap) — 8 MATCH, 1 PARTIAL; no gaps or mismatches found
+- [x] CHK-022 [P1] Summary statistics compiled — spec.md §12 Audit Findings table
+- [x] CHK-023 [P2] Recommendations for catalog updates documented — F09 catalog source list should be trimmed to primary files only (noted in spec.md §8 and §12)
 
 ---
 
-<!-- ANCHOR:security -->
-## Security
-
-- [x] CHK-030 [P0] No hardcoded secrets [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-031 [P0] Input validation implemented (T007 enforceAutoSurfaceTokenBudget() validates 4000-token budget boundary; T020 concrete payload validation tests) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-032 [P1] Auth/authz working correctly (no auth/authz surface changes in this retrieval-enhancements remediation set; targeted handler/search suites passed without authorization regressions) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-033 [P1] Fallback logging captures diagnostics without leaking sensitive data (T012 entity-linker.ts getEdgeCount/getSpecFolder now log errors before fallback return; T009 catches log via logger.warn) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-<!-- /ANCHOR:security -->
-
----
-
-## P1 - Required
-
-P1 items are complete and include inline evidence.
-
----
-
-<!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec/plan/tasks synchronized [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-041 [P1] Code comments adequate (code comments added with implementation changes across 59 files) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-042 [P2] README updated (if applicable) [EVIDENCE: Not applicable for this phase-level spec folder; no phase README exists or is required, and canonical documentation was updated in Level 2 artifacts plus feature-catalog/manual-playbook sources]
-- [x] CHK-043 [P0] F-07 and F-08 source/test mapping corrections applied in feature catalog (T004 corrected F-07 source/test mapping to hybrid-search.ts; T006 corrected F-08 provenance ownership) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-044 [P1] F-05 contract docs aligned with Stage-1 adaptation flow (T011 corrected F-05 summary-channel contract: querySummaryEmbeddings returns lightweight hits, Stage-1 adapts to PipelineRow) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-045 [P1] Missing/stale source references corrected (context-server + retry references) (T010 added context-server.ts to F-01 source table; T014 removed stale retry references) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-046 [P1] Playbook scenario coverage mapped for all 9 features (`01->NEW-055`, `02->NEW-056`, `03->NEW-057`, `04->NEW-058`, `05->NEW-059`, `06->NEW-060`, `07->NEW-077`, `08->NEW-096`, `09->NEW-145`) [EVIDENCE: `../../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` scenario table + cross-reference index and the feature doc `../../../../../skill/system-spec-kit/feature_catalog/15--retrieval-enhancements/09-contextual-tree-injection.md`.]
-<!-- /ANCHOR:docs -->
+- [x] CHK-040 [P1] spec.md, plan.md, tasks.md synchronized — all 3 files updated 2026-03-22 with consistent findings
+- [x] CHK-041 [P1] Findings written in clear, actionable language — spec.md §12 table with Notes column per feature
+- [x] CHK-042 [P2] Cross-references to other phase audits noted — F07 source metadata notes "Alignment remediation (Phase 016)"; F08/F09 note "Extra features (Sprint 019)"
 
 ---
 
-<!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temp files in scratch/ only [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-051 [P1] scratch/ cleaned before completion [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-052 [P2] Findings saved to memory/ [EVIDENCE: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/015-retrieval-enhancements/memory/14-03-26_10-42__closed-open-p2-checklist-items-and-saved-closure.md`]
-<!-- /ANCHOR:file-org -->
+- [x] CHK-050 [P1] Temp files in scratch/ only — no temp files created
+- [x] CHK-051 [P1] scratch/ cleaned before completion — scratch/ contains only .gitkeep
+- [x] CHK-052 [P2] Key findings saved to memory/ — deferred; findings are permanently recorded in spec.md §12
 
 ---
 
-<!-- ANCHOR:summary -->
+## L3+: ARCHITECTURE VERIFICATION
+
+- [x] CHK-100 [P1] Feature-to-source traceability matrix complete — spec.md §3 Files Referenced table maps each feature to its primary source file
+- [x] CHK-101 [P1] All source file paths verified — filesystem check confirmed existence of all 14 primary source files
+- [x] CHK-102 [P2] Cross-category dependencies documented — noted in spec.md §4 REQ-004 and CHK-014 above
+
+---
+
 ## Verification Summary
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 11 | 11/11 |
-| P1 Items | 19 | 19/19 |
-| P2 Items | 2 | 2/2 |
+| P0 Items | 5 | 5/5 |
+| P1 Items | 7 | 7/7 |
+| P2 Items | 4 | 4/4 |
 
-**Verification Date**: 2026-03-13
-<!-- /ANCHOR:summary -->
-
----
-
-<!--
-Level 2 checklist - Verification focus
-Mark [x] with evidence when verified
-P0 must complete, P1 need approval to defer
--->
+**Verification Date**: 2026-03-22

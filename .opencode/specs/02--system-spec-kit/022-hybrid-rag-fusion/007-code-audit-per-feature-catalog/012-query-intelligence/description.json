@@ -1,12 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/012-query-intelligence",
-  "description": "Feature Specification: query-intelligence",
+  "description": "Feature Specification: Code Audit — Query Intelligence",
   "keywords": [
     "feature",
     "specification",
-    "query-intelligence"
+    "code",
+    "audit",
+    "query",
+    "intelligence"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.271Z",
+  "lastUpdated": "2026-03-22T17:41:14.695Z",
   "specId": "012",
   "folderSlug": "query-intelligence",
   "parentChain": [
@@ -14,13 +17,6 @@
     "022-hybrid-rag-fusion",
     "007-code-audit-per-feature-catalog"
   ],
-  "memorySequence": 2,
-  "memoryNameHistory": [
-    "11-03-26_14-32__query-intelligence.md",
-    "14-03-26_10-42__closed-deferred-checklist-items-after-check-and.md"
-  ],
-  "title": "Feature Specification: query-intelligence [template:level_2/spec.md]",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: query-intelligence"
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

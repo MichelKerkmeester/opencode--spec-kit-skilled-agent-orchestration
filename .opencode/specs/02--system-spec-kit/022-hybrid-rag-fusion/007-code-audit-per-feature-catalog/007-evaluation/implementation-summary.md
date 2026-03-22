@@ -1,70 +1,97 @@
 ---
-title: "Implementation Summary: evaluation [template:level_2/implementation-summary.md]"
-description: "007-evaluation code audit — 2 features audited, P0 mismatch resolved, 16 handler tests added"
-SPECKIT_TEMPLATE_SOURCE: "implementation-summary | v2.2"
+title: "Implementation Summary: Code Audit — Evaluation"
+description: "2 features audited: 1 MATCH, 1 PARTIAL, 0 MISMATCH"
 trigger_phrases:
-  - "implementation"
-  - "summary"
+  - "implementation summary"
   - "evaluation"
-  - "audit"
+  - "code audit"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Summary: evaluation
+# Implementation Summary: Code Audit — Evaluation
 
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
-
----
-
-## Changes Made
-
-### T004: eval_final_results Behavior Mismatch (P0)
-
-**Finding**: Feature catalog F-02 and reporting-dashboard.ts header comment claimed the dashboard queries `eval_final_results`, but the actual SQL only queries `eval_metric_snapshots` and `eval_channel_results`.
-
-**Resolution**: Corrected the stale comment in `reporting-dashboard.ts` (line 9) and the Current Reality text in `.opencode/skill/system-spec-kit/feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md` to accurately reflect the actual data sources.
-
-**Files Modified**:
-- `mcp_server/lib/eval/reporting-dashboard.ts` — header comment corrected
-- `.opencode/skill/system-spec-kit/feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md` — catalog claim corrected
-
-### T005+T006: Handler-Level Eval Tests (P0+P2)
-
-**Finding**: No handler-level tests existed for `handleEvalReportingDashboard` or `handleEvalRunAblation`. Existing tests only covered the underlying service layer (ablation-framework, reporting-dashboard).
-
-**Resolution**: Created `handler-eval-reporting.vitest.ts` with 16 tests:
-- **4 export tests** (T005-E1..E4): camelCase + snake_case alias validation
-- **9 ablation handler tests** (T006-A1..A9): disabled flag error, normalizeChannels empty/invalid/mixed, recallK default + clamp, DB-not-init, null-report, storeResults=false, includeFormattedReport=false
-- **3 dashboard handler tests** (T005-D1..D3): text format default, json format, DB unavailable error
-
-**Files Created**:
-- `mcp_server/tests/handler-eval-reporting.vitest.ts` (340 lines)
-
-### T007+T008: Stale retry.vitest.ts References (P2)
-
-**Finding**: Feature catalog files needed checking for stale `retry.vitest.ts` references (found and removed in earlier phases 001-006).
-
-**Resolution**: Grep confirmed 0 stale references in `.opencode/skill/system-spec-kit/feature_catalog/07--evaluation/`. Both F-01 and F-02 catalog files are already clean.
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
-## Test Results
+<!-- ANCHOR:metadata -->
+## Metadata
 
-| Test File | Tests | Status |
-|-----------|-------|--------|
-| `reporting-dashboard.vitest.ts` | 34 | Pass |
-| `ablation-framework.vitest.ts` | 47 | Pass |
-| `handler-eval-reporting.vitest.ts` | 16 | Pass |
-| **Total** | **97** | **All Pass** |
-
-TypeScript compilation: `tsc --noEmit` PASS
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 007-code-audit-per-feature-catalog/007-evaluation |
+| **Completed** | 2026-03-22 |
+| **Level** | 3 |
+<!-- /ANCHOR:metadata -->
 
 ---
 
+<!-- ANCHOR:what-built -->
+## What Was Built
+
+Both evaluation MCP tools were audited. The reporting dashboard is perfectly documented with a properly scoped source list. The ablation framework has accurate behavioral descriptions but a severely bloated source list (~90 files for ~15 relevant).
+
+### Audit Results
+
+2 features audited: 1 MATCH, 1 PARTIAL, 0 MISMATCH.
+
+### Per-Feature Findings
+
+1. eval_run_ablation: 5 channels, sign test, verdict spectrum, SPECKIT_ABLATION gating confirmed; source list bloated
+2. eval_reporting_dashboard: sprint grouping, metric summaries, trend analysis, format output all confirmed
+<!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The audit was executed by dispatching 2 Opus research agents (parallel) to read feature catalog entries and verify against source code, followed by 2 Sonnet documentation agents (parallel) to update spec folder documents with findings. All agents operated as LEAF nodes at depth 1 under single-hop orchestration.
+
+Each feature was verified by:
+1. Reading the feature catalog entry
+2. Locating referenced source files in the MCP server codebase
+3. Comparing catalog behavioral descriptions against actual implementation
+4. Documenting findings as MATCH, PARTIAL, or MISMATCH
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Use Feature 02 as the gold standard for source list scoping | Dashboard catalog lists exactly 8+2 relevant files — other features should follow this pattern |
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
 ## Verification
 
-- All 11 tasks (T001-T011) completed
-- Checklist: 8/8 P0, 8/8 P1, 2/2 P2 verified
-- Open questions in spec.md resolved
-- No regressions in existing test suites
+| Check | Result |
+|-------|--------|
+| All features audited | PASS — 2/2 features verified |
+| Source files verified | PASS — all referenced files confirmed to exist on disk |
+| Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
+| Tasks completed | PASS — all tasks marked [x] in tasks.md |
+| Checklist verified | PASS — all P0/P1 items verified in checklist.md |
+<!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+1. **Feature 01 lists ~90 implementation files and ~70 test files; only ~15 + ~2 are directly relevant**
+<!-- /ANCHOR:limitations -->
+
+---
+
+<!--
+Post-implementation documentation for code audit phase.
+Written in active voice per HVR rules.
+-->

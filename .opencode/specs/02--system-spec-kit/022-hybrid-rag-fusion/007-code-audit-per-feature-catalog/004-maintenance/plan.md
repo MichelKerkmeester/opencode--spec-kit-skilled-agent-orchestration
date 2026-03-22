@@ -1,182 +1,141 @@
 ---
-title: "Implementation Plan: maintenance [template:level_2/plan.md]"
-description: "Maintenance audit execution and remediation planning for workspace indexing metrics and startup compatibility guard coverage."
-SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
+title: "Implementation Plan: Code Audit — Maintenance"
+description: "Technical plan for auditing 2 Maintenance features against source code"
 trigger_phrases:
-  - "implementation"
-  - "plan"
+  - "audit plan"
   - "maintenance"
-  - "template"
-  - "plan core"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: maintenance
+# Implementation Plan: Code Audit — Maintenance
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | TypeScript (Node.js) |
-| **Framework** | MCP Server |
-| **Storage** | SQLite |
-| **Testing** | Vitest |
+| **Language/Stack** | TypeScript / JavaScript (Node.js) |
+| **Framework** | MCP server (Model Context Protocol) |
+| **Storage** | better-sqlite3 |
+| **Testing** | Manual code review + cross-reference |
 
 ### Overview
-This plan operationalizes the maintenance audit work for two cataloged features: workspace scanning/indexing and startup runtime compatibility guards. It translates the existing methodology and checklist into phased implementation and verification activities, with explicit focus on the F-01 P0 semantic mismatch and F-02 automated-plus-manual coverage alignment.
-<!-- /ANCHOR:summary -->
+Audit each of the 2 Maintenance features by reading the feature catalog entry, locating the referenced source files, and verifying that the implementation matches the documented behavior.
 
 ---
 
-<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified
+- [x] Feature catalog files current and accessible
+- [x] Source code accessible via file system
+- [x] Audit methodology defined
 
 ### Definition of Done
-- [x] All acceptance criteria met
-- [x] Tests passing (if applicable)
-- [x] Docs updated (spec/plan/tasks/checklist/implementation-summary)
-<!-- /ANCHOR:quality-gates -->
+- [x] All 2 features audited
+- [x] Findings documented per feature
+- [x] Summary report completed
 
 ---
 
-<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-Monolith (TypeScript MCP server + feature catalog documentation)
+Read-only audit: Feature Catalog → Source Code → Findings Report
 
 ### Key Components
-- **`feature_catalog/04--maintenance/`**: Source-of-truth feature descriptions and expected behavior.
-- **`mcp_server` indexing/startup modules**: Runtime behavior under audit (`memory-index`, `incremental-index`, `startup-checks`).
-- **`mcp_server/tests/`**: Validation surface for behavior and regression coverage.
+- **Feature Catalog**: `feature_catalog/04--maintenance/` — source of truth
+- **Source Code**: `.opencode/skill/system-spec-kit/` — implementation files
+- **Audit Output**: This spec folder — findings and documentation
 
 ### Data Flow
-Feature catalog definitions drive audit criteria, which are validated against implementation and test evidence, then converted into prioritized remediation tasks and verification checklist items.
-<!-- /ANCHOR:architecture -->
+Read feature catalog entry → Locate source files → Compare description to implementation → Document findings
 
 ---
 
-<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Setup
-- [x] Inventory both maintenance features and confirm referenced source/test files
-- [x] Map playbook coverage correctly (F-01 -> EX-014, F-02 -> EX-035)
-- [x] Confirm baseline findings and priority labels (P0/P1/P2)
+### Phase 1: Preparation
+- [x] Verify feature catalog is current for Maintenance
+- [x] Identify source code root paths
+- [x] Set up audit methodology
 
-### Phase 2: Core Implementation
-- [x] Reconcile F-01 incremental accounting semantics (`skipped_hash`, `hash_checks`)
-- [x] Validate dedicated startup-checks coverage for SQLite validation and pure runtime mismatch logic
-- [x] Update maintenance catalog/test inventory references after changes
+### Phase 2: Feature-by-Feature Audit
+- [x] Audit: Workspace scanning and indexing (memory_index_scan)
+- [x] Audit: Startup runtime compatibility guards
 
-### Phase 3: Verification
-- [x] Validate behavior matches Current Reality descriptions
-- [x] Execute relevant Vitest coverage for modified maintenance paths
-- [x] Synchronize `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`
-<!-- /ANCHOR:phases -->
+### Phase 3: Synthesis
+- [x] Cross-reference findings across features
+- [x] Identify systemic patterns
+- [x] Compile summary report
 
 ---
 
-<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | `startup-checks.ts` SQLite validation + pure runtime mismatch logic; incremental decision semantics | Vitest |
-| Integration | `memory_index_scan` handler output fields + incremental indexing flow (`incremental-index-v2.vitest.ts`) | Vitest |
-| Manual | F-01 mapped to EX-014; F-02 mapped to EX-035 | Manual test playbook + checklist |
-<!-- /ANCHOR:testing -->
+| Cross-reference | Feature-to-code traceability | Grep, Read, Glob |
+| Completeness | All 2 features covered | Checklist verification |
+| Accuracy | Catalog matches implementation | Manual review |
 
 ---
 
-<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `feature_catalog/04--maintenance/` definitions | Internal | Green | Audit criteria become ambiguous or stale |
-| `mcp_server` source modules | Internal | Green | Findings cannot be validated against real behavior |
-| Vitest test harness in `mcp_server/tests` | Internal | Green | Coverage gaps cannot be verified |
-| SQLite runtime version info | External | Yellow | Startup compatibility checks cannot be fully validated |
-<!-- /ANCHOR:dependencies -->
+| Feature catalog | Internal | Green | Cannot audit without reference |
+| Source code access | Internal | Green | Cannot verify implementation |
 
 ---
 
-<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Mapped documentation introduces incorrect requirements, priorities, or evidence references.
-- **Procedure**: Revert affected maintenance docs to previous git state and reapply mapping using verified source citations.
-<!-- /ANCHOR:rollback -->
+- **Trigger**: Audit methodology proves inadequate
+- **Procedure**: Revise approach and restart from Phase 1
 
 ---
 
-<!-- ANCHOR:phase-deps -->
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Setup) ───► Phase 2 (Core) ───► Phase 3 (Verify)
+Phase 1 (Prep) ──► Phase 2 (Audit 2 features) ──► Phase 3 (Synthesis)
 ```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Setup | None | Core |
-| Core | Setup | Verify |
-| Verify | Core | None |
-<!-- /ANCHOR:phase-deps -->
 
 ---
 
-<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Setup | Low | 1-2 hours |
-| Core Implementation | Medium | 3-5 hours |
-| Verification | Low | 1-2 hours |
-| **Total** | | **5-9 hours** |
-<!-- /ANCHOR:effort -->
+| Preparation | Low | 1 session |
+| Feature Audit | Low | 2 features |
+| Synthesis | Medium | 1 session |
 
 ---
 
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+## L3: MILESTONES
 
-### Pre-deployment Checklist
-- [ ] Backup created (if data changes)
-- [ ] Feature flag configured
-- [ ] Monitoring alerts set
-
-### Rollback Procedure
-1. Disable or pause maintenance remediation rollout if active.
-2. Revert impacted maintenance files via git and restore last verified state.
-3. Re-run smoke checks on `memory_index_scan` and startup guard behavior.
-4. Notify stakeholders of rollback scope and follow-up timeline.
-
-### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: N/A
-<!-- /ANCHOR:enhanced-rollback -->
+| Milestone | Description | Success Criteria |
+|-----------|-------------|------------------|
+| M1 | Audit spec created | All docs in place |
+| M2 | All features audited | 2/2 complete |
+| M3 | Synthesis delivered | Summary report finalized |
 
 ---
 
-<!--
-LEVEL 2 PLAN (~140 lines)
-- Core + Verification additions
-- Phase dependencies, effort estimation
-- Enhanced rollback procedures
--->
+## FINDINGS SUMMARY
+
+| Feature | Result | Notes |
+|---------|--------|-------|
+| memory_index_scan | PARTIAL | 131 impl + 78 test files confirmed; `history.ts` missing from source list; `BATCH_SIZE` origin untraced |
+| Startup runtime compatibility guards | MATCH | All 3 impl + 3 test files confirmed; Node version, ABI/platform/arch, SQLite 3.35.0+ all verified |
+
+**Overall**: 1 MATCH, 1 PARTIAL. No blockers. Minor catalog update recommended for F01 (add `history.ts` to source list).

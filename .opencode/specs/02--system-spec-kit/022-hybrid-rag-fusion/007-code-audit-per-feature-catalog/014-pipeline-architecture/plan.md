@@ -1,185 +1,169 @@
 ---
-title: "Implementation Plan: pipeline-architecture [template:level_2/plan.md]"
-description: "Repairs this Level 2 audit folder by making the core docs self-contained, truthful, and internally consistent for all 21 pipeline-architecture features. Plan date: 2026-03-10."
-SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
+title: "Implementation Plan: Code Audit — Pipeline Architecture"
+description: "Technical plan for auditing 22 Pipeline Architecture features against source code"
 trigger_phrases:
-  - "implementation"
-  - "plan"
-  - "pipeline-architecture"
-  - "hybrid rag fusion"
-  - "feature catalog"
-  - "verification"
+  - "audit plan"
+  - "pipeline architecture"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: pipeline-architecture
+# Implementation Plan: Code Audit — Pipeline Architecture
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown documentation + TypeScript codebase references |
-| **Framework** | System Spec Kit / Spec Kit Memory MCP |
-| **Storage** | Filesystem docs + SQLite-backed runtime state |
-| **Testing** | Vitest suites + manual feature-catalog audit review |
+| **Language/Stack** | TypeScript / JavaScript (Node.js) |
+| **Framework** | MCP server (Model Context Protocol) |
+| **Storage** | better-sqlite3 |
+| **Testing** | Manual code review + cross-reference |
 
 ### Overview
-This plan repairs the pipeline-architecture audit folder so the Level 2 core docs carry their own evidence. The approach adds a compact 21-feature traceability matrix, replaces unsupported PASS/WARN/FAIL shorthand with a backlog-coverage rubric, removes redundant scratch traceability data, and verifies the folder with the standard validation script.
-<!-- /ANCHOR:summary -->
+Audit each of the 22 Pipeline Architecture features by reading the feature catalog entry, locating the referenced source files, and verifying that the implementation matches the documented behavior.
 
 ---
 
-<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified
+- [x] Feature catalog files current and accessible
+- [x] Source code accessible via file system
+- [x] Audit methodology defined
 
 ### Definition of Done
-- [x] All acceptance criteria met
-- [x] Tests passing (if applicable)
-- [x] Docs updated (spec/plan/tasks)
-<!-- /ANCHOR:quality-gates -->
+- [x] All 22 features audited — 19 MATCH, 3 PARTIAL (F07 bloated file list, F12 .ts/.js path refs, F14 ~200-entry file list)
+- [x] Findings documented per feature
+- [x] Summary report completed
 
 ---
 
-<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-Audit-driven remediation planning
+Read-only audit: Feature Catalog → Source Code → Findings Report
 
 ### Key Components
-- **Spec (`spec.md`)**: Defines the evidence model, scope boundaries, and success criteria for the documentation repair.
-- **Task Backlog (`tasks.md`)**: Retains T001-T020 and adds the self-contained 21-feature traceability matrix plus rubric summary.
-- **Verification Checklist (`checklist.md`)**: Captures validation, synchronization, scratch cleanup, and count-correction evidence.
+- **Feature Catalog**: `feature_catalog/14--pipeline-architecture/` — source of truth
+- **Source Code**: `.opencode/skill/system-spec-kit/` — implementation files
+- **Audit Output**: This spec folder — findings and documentation
 
 ### Data Flow
-Feature-catalog source files feed the approved F01-F21 mapping, which feeds the traceability matrix in `tasks.md`. That matrix anchors the scope and acceptance criteria in `spec.md`, while `checklist.md` records validation evidence and confirms that scratch-only traceability is no longer required.
-<!-- /ANCHOR:architecture -->
+Read feature catalog entry → Locate source files → Compare description to implementation → Document findings
 
 ---
 
-<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Audit Alignment
-- [x] Read current Level 2 docs and identify unsupported claims
-- [x] Confirm the approved F01-F21 feature-to-task mapping
-- [x] Define the self-contained evidence rubric and scratch cleanup approach
+### Phase 1: Preparation
+- [x] Verify feature catalog is current for Pipeline Architecture
+- [x] Identify source code root paths
+- [x] Set up audit methodology
 
-### Phase 2: Core Documentation Fixes
-- [x] Add a 21-feature traceability matrix without changing T001-T020
-- [x] Update `spec.md` and `checklist.md` to use truthful, evidence-backed language
-- [x] Resolve the phase-dependency inconsistency so all planning sections describe the same three phases
+### Phase 2: Feature-by-Feature Audit
+- [x] Audit: 4-stage pipeline refactor
+- [x] Audit: MPAB chunk-to-memory aggregation
+- [x] Audit: Chunk ordering preservation
+- [x] Audit: Template anchor optimization
+- [x] Audit: Validation signals as retrieval metadata
+- [x] Audit: Learned relevance feedback
+- [x] Audit: Search pipeline safety
+- [x] Audit: Performance improvements
+- [x] Audit: Activation window persistence
+- [x] Audit: Legacy V1 pipeline removal
+- [x] Audit: Pipeline and mutation hardening
+- [x] Audit: DB_PATH extraction and import standardization
+- [x] Audit: Strict Zod schema validation
+- [x] Audit: Dynamic server instructions at MCP initialization
+- [x] Audit: Warm server daemon mode
+- [x] Audit: Backend storage adapter abstraction
+- [x] Audit: Cross-process DB hot rebinding
+- [x] Audit: Atomic write-then-index API
+- [x] Audit: Embedding retry orchestrator
+- [x] Audit: 7-layer tool architecture metadata
+- [x] Audit: Atomic pending-file recovery
+- [x] Audit: Lineage state active projection and asOf resolution
 
-### Phase 3: Verification
-- [x] Remove redundant scratch traceability inventory if core docs fully replace it
-- [x] Run `validate.sh` and fix any ERROR-level issues
-- [x] Confirm no placeholders remain and checklist counts match the actual checkboxes
-<!-- /ANCHOR:phases -->
+### Phase 3: Synthesis
+- [x] Cross-reference findings across features
+- [x] Identify systemic patterns
+- [x] Compile summary report
 
 ---
 
-<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Structural | Anchor pairs, required sections, placeholder detection | `validate.sh` |
-| Consistency | Feature-to-task mapping, checklist counts, phase alignment | Manual reviewer walkthrough |
-| Scope | Allowed-file boundary and scratch cleanup truthfulness | Manual diff review |
-<!-- /ANCHOR:testing -->
+| Cross-reference | Feature-to-code traceability | Grep, Read, Glob |
+| Completeness | All 22 features covered | Checklist verification |
+| Accuracy | Catalog matches implementation | Manual review |
 
 ---
 
-<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `feature_catalog/14--pipeline-architecture/` files | Internal | Green | Source-of-truth mapping cannot be validated |
-| Approved F01-F21 mapping context | Internal | Green | Traceability matrix cannot be completed accurately |
-| Repository Level 2 templates | Internal | Green | Template conformance cannot be validated |
-<!-- /ANCHOR:dependencies -->
+| Feature catalog | Internal | Green | Cannot audit without reference |
+| Source code access | Internal | Green | Cannot verify implementation |
 
 ---
 
-<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Template rewrite introduces structural regressions or loses critical audit context.
-- **Procedure**: Revert the four rewritten docs to the prior git state and re-run mapping with corrected structure.
-<!-- /ANCHOR:rollback -->
+- **Trigger**: Audit methodology proves inadequate
+- **Procedure**: Revise approach and restart from Phase 1
 
 ---
 
-
----
-
-<!-- ANCHOR:phase-deps -->
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Audit Alignment) ──► Phase 2 (Core Documentation Fixes) ──► Phase 3 (Verification)
+Phase 1 (Prep) ──► Phase 2 (Audit 22 features) ──► Phase 3 (Synthesis)
 ```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Audit Alignment | None | Core Documentation Fixes |
-| Core Documentation Fixes | Audit Alignment | Verification |
-| Verification | Core Documentation Fixes | None |
-<!-- /ANCHOR:phase-deps -->
 
 ---
 
-<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Audit Alignment | Low | <1 hour |
-| Core Documentation Fixes | Medium | 1-2 hours |
-| Verification | Low | <1 hour |
-| **Total** | | **2-4 hours** |
-<!-- /ANCHOR:effort -->
+| Preparation | Low | 1 session |
+| Feature Audit | High | 22 features |
+| Synthesis | Medium | 1 session |
 
 ---
 
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+## L3: MILESTONES
 
-### Pre-deployment Checklist
-- [x] Backup created (git history available)
-- [x] Allowed-file scope confirmed
-- [x] Validation command identified
-
-### Rollback Procedure
-1. Revert the rewritten docs (`spec.md`, `tasks.md`, `plan.md`, `checklist.md`) to the previous commit state.
-2. Re-apply the Level 2 template skeleton before remapping content.
-3. Re-verify anchor integrity and section completeness.
-4. Notify stakeholders of template rollback and remap timeline.
-
-### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: N/A
-<!-- /ANCHOR:enhanced-rollback -->
+| Milestone | Description | Success Criteria |
+|-----------|-------------|------------------|
+| M1 | Audit spec created | All docs in place |
+| M2 | All features audited | 22/22 complete |
+| M3 | Synthesis delivered | Summary report finalized |
 
 ---
 
-<!--
-LEVEL 2 PLAN (~140 lines)
-- Core + Verification additions
-- Phase dependencies, effort estimation
-- Enhanced rollback procedures
--->
+## FINDINGS SUMMARY
+
+**Audit Date**: 2026-03-22
+**Total Features**: 22 | **MATCH**: 19 | **PARTIAL**: 3 | **MISMATCH**: 0
+
+### Systemic Patterns Identified
+
+1. **Behavioral accuracy is high**: All 22 feature descriptions correctly capture runtime behavior. No behavioral mismatches found.
+2. **Source list hygiene issues (2 features)**: F07 and F14 have bloated source file lists relative to the actual scope of the feature implementation.
+3. **TypeScript/JavaScript path discrepancy (1 feature)**: F12 references `.ts` source paths that only exist as compiled `.js` at runtime. This is a catalog documentation convention issue, not a code defect.
+
+### Recommendations
+
+- F07, F14: Trim source lists to the primary files that implement the feature's core behavior
+- F12: Either switch catalog source references to `.js` paths or add a note clarifying that `.ts` is the authoring language and `.js` is the runtime artifact
+- No features require re-implementation or behavioral correction

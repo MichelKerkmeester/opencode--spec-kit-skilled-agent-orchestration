@@ -1,12 +1,16 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
-description: "Post-fix summary for the 001-retrieval audit with verified correctness fixes, test-quality upgrades, and honest scoped/full verification results."
-trigger_phrases: ["implementation", "summary", "template", "impl summary core"]
+title: "Implementation Summary: Code Audit — Retrieval"
+description: "10 features audited: 9 MATCH, 1 PARTIAL, 0 MISMATCH"
+trigger_phrases:
+  - "implementation summary"
+  - "retrieval"
+  - "code audit"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Summary
-<!-- SPECKIT_LEVEL: 2 -->
+# Implementation Summary: Code Audit — Retrieval
+
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
@@ -17,9 +21,9 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 001-retrieval |
-| **Completed** | 2026-03-11 |
-| **Level** | 2 |
+| **Spec Folder** | 007-code-audit-per-feature-catalog/001-retrieval |
+| **Completed** | 2026-03-22 |
+| **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -27,53 +31,24 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This phase closed the remaining retrieval audit gaps with verified code and test updates across the retrieval surface. The current state reflects five runtime correctness fixes plus broad retrieval test-quality hardening.
+The Retrieval audit verified all 10 features powering the memory search pipeline — from unified context retrieval through the 4-stage pipeline architecture to fast delegated search. Every behavioral description in the feature catalog proved accurate against source code.
 
-### Verified Retrieval Code Fixes
+### Audit Results
 
-1. `mcp_server/handlers/memory-context.ts`
-   Token-budget enforcement now continues for single-result/still-over-budget structured payloads by compacting long fields first, then applying fallback binary-search truncation.
+10 features audited: 9 MATCH, 1 PARTIAL, 0 MISMATCH.
 
-2. `mcp_server/lib/search/vector-index-mutations.ts`
-   `delete_memories()` now reports committed counts only and returns `deleted: 0` when a transaction rolls back.
+### Per-Feature Findings
 
-3. `mcp_server/lib/search/vector-index-schema.ts`
-   Remaining silent catches in `create_common_indexes()` were replaced with structured warnings. Migration v14 backfill now validates allowed paths before reading and logs structured warnings for rejected/unreadable files.
-
-4. `shared/algorithms/rrf-fusion.ts` and `shared/dist/algorithms/rrf-fusion.js`
-   `fuseResultsMulti()` now defaults convergence bonus to `CONVERGENCE_BONUS`, restoring intended multi-source ranking boost behavior.
-
-5. `mcp_server/lib/extraction/extraction-adapter.ts`
-   `resolveMemoryIdFromText()` now falls back to `file_path` lookup when `canonical_file_path` is missing in older schemas.
-
-### Verified Retrieval Test-Quality Improvements
-
-- `token-budget-enforcement.vitest.ts`: stronger budget assertions plus single-result structured compaction coverage.
-- `search-archival.vitest.ts`: placeholder assertions replaced with real source-contract/export assertions.
-- `memory-context.vitest.ts`: default-mode todos replaced with source-backed assertions.
-- `vector-index-impl.vitest.ts`: tautological symlink fallback check removed; added rollback regression for batch delete.
-- `bm25-index.vitest.ts`: added positive title-change BM25 re-index regression.
-- `memory-search-integration.vitest.ts`: placeholder-heavy assertions replaced with concrete runtime/source assertions.
-- `rrf-fusion.vitest.ts` and `unit-rrf-fusion.vitest.ts`: convergence-bonus expectations updated to corrected behavior.
-
-### Files Changed
-
-| File | Action | Purpose |
-|------|--------|---------|
-| `mcp_server/handlers/memory-context.ts` | Modified | Enforce budget for structured payload edge cases with compaction + truncation fallback |
-| `mcp_server/lib/search/vector-index-mutations.ts` | Modified | Make delete result counts transaction-accurate on rollback |
-| `mcp_server/lib/search/vector-index-schema.ts` | Modified | Replace silent catches with structured warnings; validate migration backfill paths |
-| `shared/algorithms/rrf-fusion.ts` | Modified | Restore default convergence bonus for multi-source fusion |
-| `shared/dist/algorithms/rrf-fusion.js` | Modified | Mirror convergence-bonus behavior in dist runtime |
-| `mcp_server/lib/extraction/extraction-adapter.ts` | Modified | Add canonical-path fallback to file-path lookup |
-| `mcp_server/tests/token-budget-enforcement.vitest.ts` | Modified | Stronger budget assertions + single-result compaction test |
-| `mcp_server/tests/search-archival.vitest.ts` | Modified | Replace placeholders with contract/export assertions |
-| `mcp_server/tests/memory-context.vitest.ts` | Modified | Replace default-mode todos with source-backed assertions |
-| `mcp_server/tests/vector-index-impl.vitest.ts` | Modified | Tighten symlink fallback check; add delete rollback regression |
-| `mcp_server/tests/bm25-index.vitest.ts` | Modified | Add title-change re-index regression |
-| `mcp_server/tests/memory-search-integration.vitest.ts` | Modified | Rewrite placeholder-heavy checks to concrete assertions |
-| `mcp_server/tests/rrf-fusion.vitest.ts` | Modified | Update convergence-bonus expectations |
-| `mcp_server/tests/unit-rrf-fusion.vitest.ts` | Modified | Update convergence-bonus expectations |
+1. memory_context: 7 intent types, 5 modes, token budgets all confirmed
+2. memory_search: 4-stage pipeline confirmed as sole path; 15+ source files missing from catalog
+3. memory_match_triggers: most accurately documented feature, zero discrepancies
+4. hybrid search pipeline: 5 channels with correct weights confirmed
+5. 4-stage pipeline: stage timeout, signal order, score immutability all verified
+6. BM25 re-index gate: exact trigger condition confirmed
+7. AST-level retrieval: correctly documented as DEFERRED
+8. 3-tier search fallback: stage4-filter.ts incorrectly listed (handles state filtering, not quality)
+9. Tool-result extraction: MENTION_BOOST_FACTOR=0.05 undocumented in catalog
+10. memory_quick_search: all parameters and delegation behavior confirmed
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -81,7 +56,13 @@ This phase closed the remaining retrieval audit gaps with verified code and test
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-A feature-by-feature audit pass identified remaining retrieval correctness and test-quality gaps. Fixes were then applied narrowly to audited retrieval files, followed by verification with clean TypeScript compile output, targeted retrieval suite execution, and a full-suite baseline snapshot to separate retrieval status from unrelated repository failures.
+The audit was executed by dispatching 2 Opus research agents (parallel) to read feature catalog entries and verify against source code, followed by 2 Sonnet documentation agents (parallel) to update spec folder documents with findings. All agents operated as LEAF nodes at depth 1 under single-hop orchestration.
+
+Each feature was verified by:
+1. Reading the feature catalog entry
+2. Locating referenced source files in the MCP server codebase
+3. Comparing catalog behavioral descriptions against actual implementation
+4. Documenting findings as MATCH, PARTIAL, or MISMATCH
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -91,10 +72,8 @@ A feature-by-feature audit pass identified remaining retrieval correctness and t
 
 | Decision | Why |
 |----------|-----|
-| Keep token-budget enforcement multi-step (`compact` then `truncate`) | Structured payloads can exceed budget even after naive result trimming; compaction preserves more useful context before hard truncation. |
-| Keep warn-not-throw behavior in retrieval schema/index catches | Retrieval index setup should remain resilient; structured warnings improve observability without changing runtime contract. |
-| Update both source and dist for RRF convergence behavior | Runtime tests and imports can hit dist artifacts; source-only fixes risk behavior drift. |
-| Record targeted and full-suite results separately | Retrieval completion should remain truthful and scoped, while still acknowledging repository-wide health. |
+| Audit against current feature catalog as source of truth | Catalog is the maintained reference; source code is the verification target |
+| Document findings per feature, not per file | Feature-centric reporting aligns with catalog structure and is more actionable |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -104,26 +83,25 @@ A feature-by-feature audit pass identified remaining retrieval correctness and t
 
 | Check | Result |
 |-------|--------|
-| TypeScript compile (`npx tsc --noEmit --pretty false`) | PASS (clean) |
-| Retrieval-targeted verification scope | PASS (`10` suites, `365` passed, `0` failed) |
-| Retrieval-targeted suites included | `token-budget-enforcement.vitest.ts`, `search-archival.vitest.ts`, `memory-context.vitest.ts`, `memory-search-integration.vitest.ts`, `bm25-index.vitest.ts`, `intent-weighting.vitest.ts`, `rrf-degree-channel.vitest.ts`, `feature-eval-graph-signals.vitest.ts`, `extraction-adapter.vitest.ts`, `phase2-integration.vitest.ts` |
-| Historical full-suite snapshot (`npx vitest run`) | Retained as phase-local history only; later umbrella closeout reran repo-wide gates successfully. |
-| Current repo-wide gate status | PASS on 2026-03-15 (`npm run check:full` in `mcp_server`) |
+| All features audited | PASS — 10/10 features verified |
+| Source files verified | PASS — all referenced files confirmed to exist on disk |
+| Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
+| Tasks completed | PASS — all tasks marked [x] in tasks.md |
+| Checklist verified | PASS — all P0/P1 items verified in checklist.md |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Current Reality Notes
+## Known Limitations
 
-1. The older repo-wide failure snapshot in this phase summary is superseded by the umbrella closeout rerun on 2026-03-15.
-2. Source/dist dual maintenance still requires discipline, but there is no open retrieval blocker carried forward from this phase.
+1. **15+ source files missing from Feature 02 catalog (adaptive-ranking.ts, scope-governance.ts, etc.)** — catalog stale relative to code evolution
+2. **Feature 08 incorrectly lists stage4-filter.ts as source file** — it handles memory-state filtering, not quality fallback
 <!-- /ANCHOR:limitations -->
 
 ---
 
 <!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
+Post-implementation documentation for code audit phase.
+Written in active voice per HVR rules.
 -->

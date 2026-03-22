@@ -1,23 +1,19 @@
 ---
-title: "Verification Checklist: analysis [template:level_2/checklist.md]"
-description: "Verification Date: 2026-03-10"
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
+title: "Verification Checklist: Code Audit — Analysis"
+description: "QA verification for Analysis code audit"
 trigger_phrases:
-  - "verification"
   - "checklist"
   - "analysis"
-  - "template"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Verification Checklist: analysis
+# Verification Checklist: Code Audit — Analysis
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
-<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -25,100 +21,66 @@ contextType: "general"
 | **[P0]** | HARD BLOCKER | Cannot claim done until complete |
 | **[P1]** | Required | Must complete OR get user approval |
 | **[P2]** | Optional | Can defer with documented reason |
-<!-- /ANCHOR:protocol -->
 
 ---
 
-## P0 - Blockers
-
-P0 items below are complete and include inline evidence.
-
----
-
-<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Findings for F-01 through F-07 are documented in `spec.md` — all 7 features with REQ-001 through REQ-006 documented [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-002 [P0] Analysis technical approach and phase flow are defined in `plan.md` — 3 phases with TypeScript/MCP/SQLite/Vitest stack [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-003 [P1] Feature and code dependencies are identified and available — causal-graph.ts, session-learning.ts, causal-edges.ts, errors barrel, 5 test files, 7 catalog files [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-<!-- /ANCHOR:pre-impl -->
+- [x] CHK-001 [P0] Feature catalog files accessible and current
+- [x] CHK-002 [P0] Source code accessible
+- [x] CHK-003 [P1] Audit methodology documented in plan.md
 
 ---
 
-<!-- ANCHOR:code-quality -->
-## Code Quality
+## Audit Quality
 
-- [x] CHK-010 [P0] FAIL findings (F-02, F-04) are mapped to concrete fix tasks — T004 (orphan coverage, P0) and T006 (max_depth_reached, P0) implemented and verified [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-011 [P0] Wildcard export standards violations are tracked for remediation — T008 implemented: `export *` replaced with named exports in lib/errors.ts and lib/errors/index.ts [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-012 [P1] Behavior mismatches are explicitly linked to acceptance-impacting fixes — T004 orphan inflation and T006 false-positive depth flag both fixed with regression tests (T005, T007) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-013 [P1] Task backlog uses T### numbering with clear file-path targeting — all 25 tasks use T### format with file paths [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-<!-- /ANCHOR:code-quality -->
-
----
-
-<!-- ANCHOR:testing -->
-## Testing
-
-- [x] CHK-020 [P0] Test gaps are documented for all seven features — T009-T015 cover all 7 feature areas with new tests; 211 tests pass across 5 files [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-021 [P0] P0 regression tests are defined for orphan coverage and depth truncation semantics — T005 (4 orphan tests: T005-R1, T005-R2, T005-HL1, T005-HL2) + T007 (2 storage + 4 handler-level depth tests) all pass [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-022 [P1] P1 regression tests are defined for unlink, preflight, postflight, and history flows — T010 (4 unlink tests), T011 (1 overwrite guard), T012 (10 LI formula/band tests), T013 (5 ordering/threshold tests) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-023 [P1] Placeholder suites are replaced with DB-backed assertions — T009 replaced all `expect(true).toBe(true)` stubs in causal-edges.vitest.ts; 77/77 DB-backed tests pass [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-<!-- /ANCHOR:testing -->
+- [x] CHK-010 [P0] All 7 features audited individually
+- [x] CHK-011 [P0] Each feature cross-referenced with source code
+- [x] CHK-012 [P1] Discrepancies documented with evidence — graph-signals.ts + 2 test files missing (T001-T004); bloated source lists (T005); undocumented re-correction (T006); layer mismatch + missing param (T007)
+- [x] CHK-013 [P1] Source file references verified to exist
+- [x] CHK-014 [P2] Feature interaction dependencies noted — causal_link/stats/unlink/drift_why share the same gap set
 
 ---
 
-<!-- ANCHOR:security -->
-## Security
+## Completeness
 
-- [x] CHK-030 [P0] No hardcoded secrets or unsafe command patterns appear in phase docs — no secrets in any diff; only SQL parameterized queries added [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-031 [P0] Validation/auth-sensitive findings are visible for F-05/F-06/F-07 follow-up — session-learning validation (T011) and error barrel exports (T008) preserve validation paths [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-032 [P1] Error-handling and export-pattern risks are documented for remediation — T008 completed: wildcard exports replaced with named exports [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-<!-- /ANCHOR:security -->
-
----
-
-## P1 - Required
-
-P1 items are complete and include inline evidence.
+- [x] CHK-020 [P0] Zero features skipped without documented reason
+- [x] CHK-021 [P0] All findings categorized (match/mismatch/gap) — 5 MATCH, 2 PARTIAL
+- [x] CHK-022 [P1] Summary statistics compiled — 5 MATCH, 2 PARTIAL (T005 task_preflight, T007 learning_history)
+- [x] CHK-023 [P2] Recommendations for catalog updates documented — remove extra source entries (T005), add re-correction note (T006), fix layer + param (T007), add graph-signals.ts to T001-T004
 
 ---
 
-<!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` are synchronized — all 4 docs updated with implementation evidence [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-041 [P1] Stale `retry.vitest.ts` references are tracked across F-01..F-07 — T016-T022 removed all 7 references; grep confirms 0 matches [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-042 [P2] Playbook mappings (EX-019..EX-025) are explicit in the feature catalog — all seven analysis feature docs now reference their direct manual scenarios [EVIDENCE: `../../../../../skill/system-spec-kit/feature_catalog/06--analysis/*.md` manual coverage sections + `../../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` cross-reference index.]
-<!-- /ANCHOR:docs -->
+- [x] CHK-040 [P1] spec.md, plan.md, tasks.md synchronized
+- [x] CHK-041 [P1] Findings written in clear, actionable language
+- [x] CHK-042 [P2] Cross-references to other phase audits noted
 
 ---
 
-<!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Changes are limited to 006-analysis target documents — all code changes in mcp_server (handlers, lib, tests) and feature_catalog/06--analysis only [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-051 [P1] `description.json`, `memory/`, and `scratch/` remain untouched — no modifications to these directories [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-052 [P2] Findings are ready for future memory save flow if requested — spec folder complete with all evidence [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-<!-- /ANCHOR:file-org -->
+- [x] CHK-050 [P1] Temp files in scratch/ only
+- [x] CHK-051 [P1] scratch/ cleaned before completion
+- [ ] CHK-052 [P2] Key findings saved to memory/
 
 ---
 
-<!-- ANCHOR:summary -->
+## L3+: ARCHITECTURE VERIFICATION
+
+- [x] CHK-100 [P1] Feature-to-source traceability matrix complete
+- [x] CHK-101 [P1] All source file paths verified
+- [x] CHK-102 [P2] Cross-category dependencies documented — causal group (T001-T004) shares identical gap; T005/T007 are independent PARTIAL issues
+
+---
+
 ## Verification Summary
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
-| P1 Items | 10 | 10/10 |
-| P2 Items | 2 | 2/2 |
+| P0 Items | 5 | 5/5 |
+| P1 Items | 7 | 7/7 |
+| P2 Items | 4 | 3/4 |
 
-**Verification Date**: 2026-03-11
-<!-- /ANCHOR:summary -->
-
----
-
-<!--
-Level 2 checklist - Verification focus
-Mark [x] with evidence when verified
-P0 must complete, P1 need approval to defer
--->
+**Verification Date**: 2026-03-22

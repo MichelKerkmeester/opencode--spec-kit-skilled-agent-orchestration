@@ -1,201 +1,235 @@
 ---
-# <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
-title: "Feature Specification: scoring-and-calibration [template:level_2/spec.md]"
-description: "The scoring-and-calibration audit closed 17 cataloged features plus approved follow-up fixes for access-tracker flush behavior, targeted regressions, and RRF convergence wording. This spec records the true completed scope and aligned verification state."
-template_source: "spec-core + level2-verify | v2.2"
+title: "Feature Specification: Code Audit — Scoring and Calibration"
+description: "Systematic code audit of 23 Scoring and Calibration features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
-  - "scoring"
-  - "calibration"
-  - "rrf"
-  - "reranker"
-  - "popularity"
-  - "coherence"
-  - "feature catalog"
+  - "code audit"
+  - "scoring and calibration"
+  - "feature verification"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Feature Specification: scoring-and-calibration
+# Feature Specification: Code Audit — Scoring and Calibration
 
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
 
-<!-- ANCHOR:metadata -->
+## EXECUTIVE SUMMARY
+
+Systematic code audit of 23 Scoring and Calibration features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/11--scoring-and-calibration/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.
+
+**Key Decisions**: Audit against current feature catalog as source of truth, document findings per feature
+
+**Critical Dependencies**: Feature catalog must be current and accurate
+
+---
+
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Level** | 2 |
-| **Priority** | P0 |
+| **Level** | 3 |
+| **Priority** | P1 |
 | **Status** | Complete |
-| **Created** | 2026-03-10 |
-| **Branch** | `011-scoring-and-calibration` |
-| **Parent Spec** | ../spec.md |
-| **Predecessor** | ../010-graph-signal-activation/spec.md |
-| **Successor** | ../012-query-intelligence/spec.md |
-<!-- /ANCHOR:metadata -->
+| **Created** | 2026-03-22 |
+| **Branch** | `main` |
 
 ---
 
-<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The scoring-and-calibration audit delivered code, test, and catalog fixes across 17 features, but the phase docs drifted after implementation. `spec.md` still described runtime work as out of scope, completion state was inconsistent across the Level 2 artifacts, and the approved follow-up fixes were not reflected in the closing narrative.
+The feature catalog for Scoring and Calibration has evolved significantly. Existing audit documentation was stale and no longer reflected the current 23-feature inventory. A fresh audit baseline is needed to verify each feature's implementation against its catalog description.
 
 ### Purpose
-Capture the completed phase truthfully so reviewers can trace delivered work, follow-up fixes, and verification status without conflicting statements.
-<!-- /ANCHOR:problem -->
+Verify that all 23 Scoring and Calibration features are accurately documented in the feature catalog and correctly implemented in source code.
 
 ---
 
-<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-- Preserve the full 17-feature scoring-and-calibration remediation scope in Level 2 completion docs.
-- Record delivered code, test, and catalog work, including the approved follow-up fixes in `.opencode/skill/system-spec-kit/mcp_server/lib/storage/access-tracker.ts`, `.opencode/skill/system-spec-kit/mcp_server/tests/access-tracker-extended.vitest.ts`, and `.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md`.
-- Synchronize completion state, verification evidence, and summary language across all five Level 2 phase artifacts.
+- Score normalization
+- Cold-start novelty boost
+- Interference scoring
+- Classification-based decay
+- Folder-level relevance scoring
+- Embedding cache
+- Double intent weighting investigation
+- RRF K-value sensitivity analysis
+- Negative feedback confidence signal
+- Auto-promotion on validation
+- Scoring and ranking corrections
+- Stage 3 effectiveScore fallback chain
+- Scoring and fusion corrections
+- Local GGUF reranker via node-llama-cpp
+- Tool-level TTL cache
+- Access-driven popularity scoring
+- Temporal-structural coherence scoring
+- Adaptive shadow ranking
+- Learned Stage 2 weight combiner
+- Shadow feedback holdout evaluation
+- Calibrated overlap bonus
+- RRF K experimental tuning
+- Fusion policy shadow evaluation V2
 
 ### Out of Scope
-- Additional remediation beyond the already delivered scoring-and-calibration fixes and approved follow-up patch.
-- Fresh workspace-wide verification beyond the targeted/package-local results already recorded for the implementation pass.
-- Modifying `description.json`, `memory/`, or `scratch/`.
+- Implementing new features or fixing bugs discovered during audit
+- Modifying source code (audit is read-only)
+- Performance benchmarking
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/spec.md` | Modify | Record the completed scope and aligned status |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/plan.md` | Modify | Reflect completed phases, done criteria, and truthful verification scope |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/tasks.md` | Modify | Preserve completed backlog and add follow-up tasks T022-T024 |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/checklist.md` | Modify | Inline verification evidence and follow-up-fix coverage |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/implementation-summary.md` | Modify | Summarize completed delivery and follow-up closure |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/storage/access-tracker.ts` | Modify | Preserve accumulator state when threshold-triggered flush fails |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/access-tracker-extended.vitest.ts` | Modify | Add threshold flush regression coverage |
-| `.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md` | Modify | Correct the RRF convergence wording to match shipped behavior |
-<!-- /ANCHOR:scope -->
+| `feature_catalog/11--scoring-and-calibration/*.md` | Reference | Feature catalog source files |
+| `007-code-audit-per-feature-catalog/011-scoring-and-calibration/` | Create | Audit documentation |
 
 ---
 
-<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | All five Level 2 phase documents reflect the completed implementation scope | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` all report a completed state with no contradictory out-of-scope claims |
-| REQ-002 | Blocker findings remain traceable to delivered remediation | The phase docs preserve the five FAIL resolutions plus follow-up corrections for access-tracker flush behavior and RRF convergence wording |
-| REQ-003 | Follow-up fix coverage is explicit and completed | Tasks T022-T024 are recorded as done with evidence tied to the delivered code, test, and catalog changes |
+| REQ-001 | Each feature verified against source code | Every feature file cross-referenced with implementation |
+| REQ-002 | Discrepancies documented | Any catalog-vs-code mismatches recorded |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Verification claims stay truthful to actual rerun scope | The docs distinguish the earlier targeted implementation verification from this follow-up documentation-alignment pass |
-| REQ-005 | Spec validation succeeds after alignment | `.opencode/skill/system-spec-kit/scripts/spec/validate.sh` returns exit code 0 or 1 for this folder |
-
-### Acceptance Scenarios
-
-- **Given** the phase is reviewed after follow-up fixes, **when** a reader checks scope, **then** the spec lists both the original remediation work and the approved follow-up patch.
-- **Given** a reviewer compares `spec.md`, `plan.md`, `tasks.md`, and `checklist.md`, **when** they inspect status and completion state, **then** every artifact shows the phase as complete.
-- **Given** a reviewer needs proof for the follow-up patch, **when** they inspect `tasks.md` and `checklist.md`, **then** they can trace T022-T024 to the access-tracker code, regression tests, and catalog correction.
-- **Given** validation tooling scans the completed phase docs, **when** it resolves markdown references and template metadata, **then** the folder validates without error-level doc-integrity failures.
-<!-- /ANCHOR:requirements -->
+| REQ-003 | Source file references validated | All listed source files confirmed to exist |
+| REQ-004 | Feature interactions mapped | Cross-feature dependencies documented |
 
 ---
 
-<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: The completed scoring-and-calibration scope, including follow-up fixes, is represented consistently across all five Level 2 docs.
-- **SC-002**: The 17-feature audit remains traceable to delivered code, test, and catalog work, including the five resolved FAIL findings and follow-up tasks T022-T024.
-- **SC-003**: Validation passes without error-level documentation issues for this spec folder.
-<!-- /ANCHOR:success-criteria -->
+- **SC-001**: All 23 features audited with findings documented
+- **SC-002**: Zero unverified features remaining in this category
 
 ---
 
-<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Level 2 templates in `.opencode/skill/system-spec-kit/templates/level_2/` | Template drift could invalidate validation | Mirror current headings, anchors, and template-source metadata |
-| Dependency | Delivered artifacts in `.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/` and `.opencode/skill/system-spec-kit/mcp_server/` | Missing trace links would make the completed docs non-auditable | Keep references repo-resolvable and tie follow-up tasks to concrete files |
-| Risk | Overstating verification scope | Completion claims would become inaccurate | Separate earlier targeted implementation verification from the final doc-alignment validation pass |
-| Risk | Leaving stale draft-era language in place | Reviewers could treat a completed phase as still open | Align metadata, scope, tasks, checklist, and implementation summary to the same completed state |
-<!-- /ANCHOR:risks -->
+| Dependency | Feature catalog accuracy | Audit based on stale catalog | Verify catalog currency first |
+| Risk | Source code changed since catalog update | Med | Cross-reference git history |
+| Risk | Some features span multiple source files | Low | Follow import chains |
 
 ---
 
-<!-- ANCHOR:questions -->
-
----
-
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: The completed documentation set should stay scannable enough for a reviewer to verify closure in one pass.
-- **NFR-P02**: Follow-up fixes should remain documented without implying broader reruns than actually occurred.
-
-### Security
-- **NFR-S01**: Documentation must not introduce secrets, tokens, or sensitive environment values.
-- **NFR-S02**: File references must resolve within the repository and stay limited to the delivered scoring-and-calibration surfaces.
+- **NFR-P01**: Audit completable by AI agent in single session
 
 ### Reliability
-- **NFR-R01**: Template anchors and headings remain stable for automated tooling and validation.
-- **NFR-R02**: Priority mapping (P0/P1/P2) remains consistent across documents and completed follow-up tasks.
-<!-- /ANCHOR:nfr -->
+- **NFR-R01**: Findings must be reproducible by re-reading same sources
 
 ---
 
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 8. EDGE CASES
 
 ### Data Boundaries
-- Empty follow-up scope: do not invent new remediation beyond T022-T024.
-- High-detail remediation history: summarize prior work without dropping the five FAIL resolutions.
-- Markdown reference paths: use repo-resolvable `.md` paths so validation can resolve them.
+- Feature with no source files listed: Flag as catalog gap
+- Feature spanning 10+ source files: Prioritize primary implementation file
 
 ### Error Scenarios
-- Draft-era language survives in one artifact: treat the phase as incomplete until all five docs agree.
-- Follow-up fixes are described as fresh broad verification: correct the language to reflect targeted scope only.
-- Catalog wording diverges from shipped behavior: align the doc statement before closing the phase.
-
-### State Transitions
-- Draft to complete: status and scope language must change together across all Level 2 artifacts.
-- Pending to complete remediation: tasks can flip from `[ ]` to `[x]` only when code, test, or catalog evidence exists.
-<!-- /ANCHOR:edge-cases -->
+- Source file referenced in catalog no longer exists: Document as finding
+- Feature partially implemented: Document completion percentage
 
 ---
 
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 9. COMPLEXITY ASSESSMENT
 
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 21/25 | Five phase docs aligned against a completed 17-feature remediation set |
-| Risk | 19/25 | Incorrect closure language would misstate implementation and verification truth |
-| Research | 14/20 | Requires cross-checking spec docs against delivered code, tests, and catalog fixes |
-| **Total** | **54/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
-
----
-
-## 10. OPEN QUESTIONS (RESOLVED)
-
-- **Resolved (scope alignment):** Runtime and feature-catalog changes are part of the completed phase scope; they are no longer described as out of scope.
-- **Resolved (follow-up patch closure):** The approved access-tracker regression fix, targeted test additions, and RRF wording correction are recorded as completed work in the same phase.
-<!-- /ANCHOR:questions -->
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 20/25 | Features: 23 |
+| Risk | 8/25 | Read-only audit, no breaking changes |
+| Research | 15/20 | Must trace each feature to source |
+| Multi-Agent | 5/15 | Single-phase audit |
+| Coordination | 5/15 | Depends on feature catalog |
+| **Total** | **53/100** | **Level 3** |
 
 ---
 
-<!--
-CORE TEMPLATE (~80 lines)
-- Essential what/why/how only
-- No boilerplate sections
-- Add L2/L3 addendums for complexity
--->
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Catalog out of date | M | L | Verify against latest commit |
+| R-002 | Missing source files | L | M | Flag in findings |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Feature Verification (Priority: P0)
+
+**As a** system maintainer, **I want** each Scoring and Calibration feature verified against source code, **so that** I can trust the catalog accurately reflects the implementation.
+
+**Acceptance Criteria**:
+1. Given a feature catalog entry, When audited, Then implementation matches description
+
+---
+
+## 12. AUDIT FINDINGS
+
+Audit completed 2026-03-22. 23 features verified. Result: **20 MATCH, 3 PARTIAL**.
+
+### MATCH (20/23)
+
+| ID | Feature | Finding |
+|----|---------|---------|
+| F01 | Score normalization | Confirmed in source |
+| F02 | Cold-start novelty boost | Confirmed in source |
+| F03 | Interference scoring | Confirmed in source |
+| F04 | Classification-based decay | Confirmed in source |
+| F05 | Folder-level relevance scoring | Confirmed in source |
+| F06 | Embedding cache | Confirmed in source |
+| F07 | Double intent weighting investigation | Confirmed in source |
+| F08 | RRF K-value sensitivity analysis | Confirmed in source |
+| F09 | Negative feedback confidence signal | Confirmed in source |
+| F10 | Auto-promotion on validation | Confirmed in source |
+| F11 | Scoring and ranking corrections | Confirmed in source |
+| F12 | Stage 3 effectiveScore fallback chain | Confirmed in source |
+| F14 | Local GGUF reranker via node-llama-cpp | Confirmed in source |
+| F15 | Tool-level TTL cache | Confirmed in source |
+| F16 | Access-driven popularity scoring | Confirmed in source |
+| F17 | Temporal-structural coherence scoring | Confirmed in source |
+| F18 | Adaptive shadow ranking | Confirmed in source |
+| F19 | Learned Stage 2 weight combiner | Confirmed in source |
+| F20 | Shadow feedback holdout evaluation | Confirmed in source |
+| F21 | Calibrated overlap bonus | Confirmed in source |
+
+### PARTIAL (3/23)
+
+| ID | Feature | Issue |
+|----|---------|-------|
+| F13 | Scoring and fusion corrections | Catalog lists file paths without `pipeline/` prefix — paths should be `pipeline/<file>` |
+| F22 | RRF K experimental tuning | Function name mismatch: catalog says `perIntentKSweep`, implementation uses `runJudgedKSweep` |
+| F23 | Fusion policy shadow evaluation V2 | Flag accessor listed in `search-flags.ts`; actual accessor is in `fusion-lab.ts` |
+
+### Systemic Patterns
+All behavioral descriptions are accurate. The three PARTIAL findings are limited to file path and naming precision (no functional discrepancies). No deprecated features detected. No undocumented features identified.
+
+---
+
+## 13. OPEN QUESTIONS
+
+- F13: Confirm canonical path prefix for scoring/fusion correction files (`pipeline/` vs root).
+- F22: Determine whether `perIntentKSweep` is an alias or whether the catalog should be updated to `runJudgedKSweep`.
+- F23: Verify whether `fusion-lab.ts` is the intended home for the shadow evaluation V2 flag accessor.
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`

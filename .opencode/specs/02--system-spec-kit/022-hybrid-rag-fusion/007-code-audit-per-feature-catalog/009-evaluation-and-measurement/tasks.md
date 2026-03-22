@@ -1,25 +1,19 @@
 ---
-title: "Tasks: evaluation-and-measurement [template:level_2/tasks.md]"
-description: "Task Format: T### [P?] Description (file path)"
-SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
+title: "Tasks: Code Audit — Evaluation and Measurement"
+description: "Task breakdown for auditing 16 Evaluation and Measurement features"
 trigger_phrases:
   - "tasks"
-  - "evaluation"
-  - "measurement"
-  - "core metric computation"
-  - "observer effect mitigation"
-  - "shadow scoring"
+  - "evaluation and measurement"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Tasks: evaluation-and-measurement
+# Tasks: Code Audit — Evaluation and Measurement
 
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level2-verify | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -29,71 +23,56 @@ contextType: "general"
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
-**Task Format**: `T### [P?] Description (file path)`
-<!-- /ANCHOR:notation -->
+**Task Format**: `T### [P?] Description`
 
 ---
 
-<!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+## Phase 1: Preparation
 
-- [x] T001 Align metric-count contract across feature docs and eval-metrics references (`.opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/`, `mcp_server/lib/eval/eval-metrics.ts`) — Evidence: `eval-metrics.ts` documents "12 evaluation metrics (7 core + 5 diagnostic)"; `computeAllMetrics()` returns 12 keys; test asserts 12 keys.
-- [x] T002 Add missing per-feature source/test mappings for F-03, F-04, F-05, F-12, and F-14 (`.opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/`) — Evidence: all 14 feature files include `## Source Files` with `### Implementation` and `### Tests` mappings.
-- [x] T003 [P] Add explicit NEW-050..072 playbook coverage mapping (or documented gaps) for each of the 14 features (`.opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/`) — Evidence: NEW-050..072 mapping statement present in 14/14 feature files.
-- [x] T004 [P] Define non-fatal logging policy for currently silent evaluation and telemetry catch blocks (`mcp_server/lib/eval/`, `mcp_server/lib/telemetry/`) — Evidence: policy resolution captured in `spec.md` open questions; non-fatal warning behavior verified in `eval-db.ts` and `consumption-logger.ts`.
-<!-- /ANCHOR:phase-1 -->
+- [x] T000 Verify feature catalog currency for Evaluation and Measurement
+- [x] T000a [P] Identify source code root paths
 
 ---
 
-<!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## Phase 2: Feature Audit
 
-- [x] T005 Fix duplicate-ID precision/F1 inflation by applying dedupe semantics consistent with recall/MAP (`mcp_server/lib/eval/eval-metrics.ts`, `mcp_server/tests/eval-metrics.vitest.ts`) — Evidence: `computePrecision` uses `seenIds` dedupe; tests `T005-01..T005-03` assert duplicate-ID behavior.
-- [x] T006 Implement or document-correct observer p95 enabled-vs-disabled overhead behavior and alerting path (`mcp_server/lib/eval/`, `.opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/03-observer-effect-mitigation.md`) — Evidence: feature file explicitly documents current-reality (no automated p95 alert path) and fail-safe mitigation.
-- [x] T007 Replace placeholder channel attribution assertions with real channel-attribution behavior tests (`mcp_server/tests/channel.vitest.ts`, `mcp_server/lib/eval/channel-attribution.ts`) — Evidence: `channel.vitest.ts` contains concrete attribution/ECR assertions and no placeholder tautologies.
-- [x] T008 Replace silent close catch in eval DB helpers with non-fatal warning logging (`mcp_server/lib/eval/eval-db.ts`) — Evidence: `closeEvalDb` catch logs `[eval-db] closeEvalDb warning:` and continues safely.
-- [x] T009 Guard bootstrap confidence interval iteration bounds and add invalid-input coverage (`mcp_server/lib/eval/bm25-baseline.ts`, `mcp_server/tests/bm25-baseline.vitest.ts`) — Evidence: `safeIterations` guard + NaN/Infinity filter in `computeBootstrapCI`; tests `T009.1..T009.10`.
-- [x] T010 Add non-fatal logging for broad consumption logger catch paths (`mcp_server/lib/telemetry/consumption-logger.ts`, `mcp_server/tests/consumption-logger.vitest.ts`) — Evidence: catch paths emit `[consumption-logger] ... warning:` and return fallback values.
-- [x] T011 Align scoring observability behavior/docs for failure reporting semantics (`mcp_server/lib/telemetry/scoring-observability.ts`, `.opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/09-scoring-observability.md`) — Evidence: doc states fail-safe non-silent logging; tests validate non-throw behavior in failure paths.
-- [x] T012 Fix ablation baseline query-count persistence when all channel runs fail (`mcp_server/lib/eval/ablation-framework.ts`, `mcp_server/tests/ablation-framework.vitest.ts`) — Evidence: baseline snapshot uses `report.queryCount` fallback; regression test at `storeAblationResults() persists baseline query_count...`.
-- [x] T013 Fix eval run counter bootstrap to derive max run ID from both final and channel result tables (`mcp_server/lib/eval/eval-logger.ts`, `mcp_server/tests/eval-logger.vitest.ts`) — Evidence: logger computes `Math.max(channelMax, finalMax)`; tests cover both table-dominant scenarios.
-<!-- /ANCHOR:phase-2 -->
-
----
-
-<!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
-
-- [x] T014 [P] Add edge-case regression tests for duplicate IDs, bootstrap CI bounds, and baseline query-count persistence (`mcp_server/tests/`) — Evidence: edge-case test groups verified in `eval-metrics.vitest.ts`, `bm25-baseline.vitest.ts`, and `ablation-framework.vitest.ts`.
-- [x] T015 [P] Validate observer-overhead and channel-attribution coverage against current-reality claims (`mcp_server/tests/`, `.opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/`) — Evidence: `channel.vitest.ts`, `scoring-observability.vitest.ts`, `shadow-scoring.vitest.ts` reviewed; no `expect(true).toBe(true)` placeholders found.
-- [x] T016 Verify all 14 features include auditable source/test evidence links and cross-AI remediation traceability (`.opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/`) — Evidence: 14/14 feature files include Source Files + Implementation/Tests subsections with listed references; spot-checks confirm referenced files exist.
-- [x] T017 Synchronize `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` status/summary counts after verification (`009-evaluation-and-measurement/*.md`) — Evidence: synchronized in this verification pass.
-<!-- /ANCHOR:phase-3 -->
+- [x] T001 [P] Audit: Evaluation database and schema — PARTIAL (schema present, missing migration guards)
+- [x] T002 [P] Audit: Core metric computation — PARTIAL (core logic present, edge-case coverage gaps)
+- [x] T003 [P] Audit: Observer effect mitigation — MATCH
+- [x] T004 [P] Audit: Full-context ceiling evaluation — MATCH
+- [x] T005 [P] Audit: Quality proxy formula — MATCH
+- [x] T006 [P] Audit: Synthetic ground truth corpus — MATCH
+- [x] T007 [P] Audit: BM25-only baseline — MATCH
+- [x] T008 [P] Audit: Agent consumption instrumentation — MATCH
+- [x] T009 [P] Audit: Scoring observability — MATCH
+- [x] T010 [P] Audit: Full reporting and ablation study framework — MATCH
+- [x] T011 [P] Audit: Shadow scoring and channel attribution — PARTIAL (channel attribution logic incomplete)
+- [x] T012 [P] Audit: Test quality improvements — MATCH
+- [x] T013 [P] Audit: Evaluation and housekeeping fixes — PARTIAL (stale fixtures and unused imports remain)
+- [x] T014 [P] Audit: Cross-AI validation fixes — MATCH
+- [x] T015 [P] Audit: Memory roadmap baseline snapshot — MATCH
+- [x] T016 [P] Audit: INT8 quantization evaluation — MATCH
 
 ---
 
-<!-- ANCHOR:completion -->
+## Phase 3: Synthesis
+
+- [x] T900 Cross-reference findings across features
+- [x] T901 Compile audit summary report
+- [x] T902 Update implementation-summary.md
+
+---
+
 ## Completion Criteria
 
-- [x] All tasks marked `[x]`
+- [x] All feature audit tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed
-<!-- /ANCHOR:completion -->
+- [x] Summary report completed
 
 ---
 
-<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-<!-- /ANCHOR:cross-refs -->
-
----
-
-<!--
-CORE TEMPLATE (~60 lines)
-- Simple task tracking
-- 3 phases: Setup, Implementation, Verification
-- Add L2/L3 addendums for complexity
--->
+- **Checklist**: See `checklist.md`

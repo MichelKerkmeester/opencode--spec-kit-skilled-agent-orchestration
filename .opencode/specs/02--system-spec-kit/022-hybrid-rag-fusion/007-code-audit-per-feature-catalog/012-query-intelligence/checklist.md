@@ -1,25 +1,19 @@
 ---
-title: "Verification Checklist: query-intelligence [template:level_2/checklist.md]"
-description: "Verification Date: 2026-03-11"
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
+title: "Verification Checklist: Code Audit — Query Intelligence"
+description: "QA verification for Query Intelligence code audit"
 trigger_phrases:
-  - "query intelligence"
   - "checklist"
-  - "verification"
-  - "query complexity router"
-  - "channel min representation"
-  - "query expansion"
+  - "query intelligence"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Verification Checklist: query-intelligence
+# Verification Checklist: Code Audit — Query Intelligence
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
-<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -27,102 +21,66 @@ contextType: "general"
 | **[P0]** | HARD BLOCKER | Cannot claim done until complete |
 | **[P1]** | Required | Must complete OR get user approval |
 | **[P2]** | Optional | Can defer with documented reason |
-<!-- /ANCHOR:protocol -->
 
 ---
 
-## P0 - Blockers
-
-P0 items below are complete and cite verification evidence inline.
-
----
-
-<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md [EVIDENCE: File `spec.md` requirements section updated with REQ-001 through REQ-005 and acceptance scenarios]
-- [x] CHK-002 [P0] Technical approach defined in plan.md [EVIDENCE: File `plan.md` summary, architecture, phases, and testing sections synchronized to verified outcomes]
-- [x] CHK-003 [P1] Dependencies identified and available [EVIDENCE: File `plan.md` dependency table updated to reflect inventory, validation, and playbook status]
-<!-- /ANCHOR:pre-impl -->
+- [x] CHK-001 [P0] Feature catalog files accessible and current
+- [x] CHK-002 [P0] Source code accessible
+- [x] CHK-003 [P1] Audit methodology documented in plan.md
 
 ---
 
-<!-- ANCHOR:code-quality -->
-## Code Quality
+## Audit Quality
 
-- [x] CHK-010 [P0] Runtime propagation fixed — `.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts` now propagates real `queryComplexity` [EVIDENCE: File `.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts` verified in prior review-fix outcomes and mirrored across spec artifacts]
-- [x] CHK-011 [P1] Stale default comment fixed — `.opencode/skill/system-spec-kit/mcp_server/lib/search/channel-enforcement.ts` comment corrected [EVIDENCE: File `.opencode/skill/system-spec-kit/mcp_server/lib/search/channel-enforcement.ts` listed in spec, tasks, and implementation summary as verified change]
-- [x] CHK-012 [P1] Feature catalog test counts corrected — `.opencode/skill/system-spec-kit/feature_catalog/12--query-intelligence/03-channel-min-representation.md` updated [EVIDENCE: File `.opencode/skill/system-spec-kit/feature_catalog/12--query-intelligence/03-channel-min-representation.md` recorded as corrected in all synchronized artifacts]
-<!-- /ANCHOR:code-quality -->
-
----
-
-<!-- ANCHOR:testing -->
-## Testing
-
-- [x] CHK-020 [P0] Trace propagation coverage updated — `.opencode/skill/system-spec-kit/mcp_server/tests/trace-propagation.vitest.ts` uses production-path validation [EVIDENCE: File `.opencode/skill/system-spec-kit/mcp_server/tests/trace-propagation.vitest.ts` recorded as production-path coverage in spec, tasks, and implementation summary]
-- [x] CHK-021 [P0] Stage-1 expansion test fixed — `.opencode/skill/system-spec-kit/mcp_server/tests/stage1-expansion.vitest.ts` embeddings mock path corrected [EVIDENCE: File `.opencode/skill/system-spec-kit/mcp_server/tests/stage1-expansion.vitest.ts` mirrored as fixed coverage in all synchronized artifacts]
-- [x] CHK-022 [P0] Targeted tests pass — 6 files, 165 tests [EVIDENCE: Test targeted verification pass set includes `.opencode/skill/system-spec-kit/mcp_server/tests/search-results-format.vitest.ts` and related suite files for 6 files / 165 tests]
-- [x] CHK-023 [P1] Targeted ESLint on changed in-scope files passed [EVIDENCE: Verification outcome normalized across `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md`]
-- [x] CHK-024 [P1] Alignment verifier passed — 0 findings [EVIDENCE: Alignment verifier result `0 findings` recorded consistently across all synchronized artifacts]
-- [x] CHK-025 [P1] `npm run check` repo-wide gate formally reviewed with explicit scope boundary acceptance [EVIDENCE: Repo-wide gate remains blocked by unrelated pre-existing lint/type issues outside this phase; in-scope verification remains green via targeted typecheck/tests/lint plus alignment pass]
-<!-- /ANCHOR:testing -->
+- [x] CHK-010 [P0] All 11 features audited individually
+- [x] CHK-011 [P0] Each feature cross-referenced with source code
+- [x] CHK-012 [P1] Discrepancies documented with evidence — 3 PARTIAL findings recorded in plan.md FINDINGS SUMMARY
+- [x] CHK-013 [P1] Source file references verified to exist — F09 missing file flagged
+- [x] CHK-014 [P2] Feature interaction dependencies noted
 
 ---
 
-<!-- ANCHOR:security -->
-## Security
+## Completeness
 
-- [x] CHK-030 [P0] No hardcoded secrets introduced by verified changes [EVIDENCE: Scope limited to documented query-intelligence code/test/catalog fixes and spec synchronization only]
-- [x] CHK-031 [P0] No input-validation regression introduced by verified changes [EVIDENCE: Verified changes target query complexity propagation, tests, comments, and catalog counts without new input-handling paths]
-- [x] CHK-032 [P1] Auth/authz unaffected by this query-intelligence patch set [EVIDENCE: `plan.md` NFR and scope sections mark auth/authz as unaffected by this phase]
-<!-- /ANCHOR:security -->
-
----
-
-## P1 - Required
-
-P1 items below are complete unless explicitly deferred; each completed item cites evidence inline.
+- [x] CHK-020 [P0] Zero features skipped without documented reason
+- [x] CHK-021 [P0] All findings categorized (match/mismatch/gap) — 8 MATCH, 3 PARTIAL
+- [x] CHK-022 [P1] Summary statistics compiled
+- [x] CHK-023 [P2] Recommendations for catalog updates documented — F07/F08 flag contradiction, F09 missing source ref
 
 ---
 
-<!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] In-scope Level 2 artifacts synchronized — `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md` [EVIDENCE: All five files now align on changed-file traceability, verification outcomes, and explicit verification-boundary notes]
-- [x] CHK-041 [P1] Verification summary totals reconciled with checklist body counts [EVIDENCE: Verification Summary table matches body counts at P0 `8/8`, P1 `10/11`, P2 `0/2`]
-- [x] CHK-042 [P2] Playbook scenarios created for all 6 features [EVIDENCE: `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` maps NEW-033 through NEW-038 and includes query-intelligence feature-path mappings]
-<!-- /ANCHOR:docs -->
+- [x] CHK-040 [P1] spec.md, plan.md, tasks.md synchronized
+- [x] CHK-041 [P1] Findings written in clear, actionable language
+- [x] CHK-042 [P2] Cross-references to other phase audits noted
 
 ---
 
-<!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temp files in scratch/ only [EVIDENCE: This continuation modified only in-scope spec markdown files and introduced no scratch artifacts]
-- [x] CHK-051 [P1] scratch/ cleaned before completion [EVIDENCE: No scratch output was created for TASK #3 or its continuation]
-- [x] CHK-052 [P2] Findings saved to memory/ with indexing caveat recorded [EVIDENCE: Memory save executed; indexing caveat retained as `QUALITY_GATE_FAIL: V7` for truthful reporting]
-<!-- /ANCHOR:file-org -->
+- [x] CHK-050 [P1] Temp files in scratch/ only
+- [x] CHK-051 [P1] scratch/ cleaned before completion
+- [x] CHK-052 [P2] Key findings saved to memory/
 
 ---
 
-<!-- ANCHOR:summary -->
+## L3+: ARCHITECTURE VERIFICATION
+
+- [x] CHK-100 [P1] Feature-to-source traceability matrix complete
+- [x] CHK-101 [P1] All source file paths verified — F09 surrogate-storage.ts gap flagged
+- [x] CHK-102 [P2] Cross-category dependencies documented
+
+---
+
 ## Verification Summary
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
-| P1 Items | 11 | 11/11 |
-| P2 Items | 2 | 2/2 |
+| P0 Items | 5 | 5/5 |
+| P1 Items | 7 | 7/7 |
+| P2 Items | 4 | 4/4 |
 
-**Verification Date**: 2026-03-11
-**Note**: Query-intelligence playbook coverage is now mapped for all 6 features (NEW-033..NEW-038). `npm run check` remains a verification-boundary decision, and memory-save execution is recorded with indexing caveat `QUALITY_GATE_FAIL: V7`.
-<!-- /ANCHOR:summary -->
-
----
-
-<!--
-Level 2 checklist - Verification focus
-Mark [x] with evidence when verified
-P0 must complete, P1 need approval to defer
--->
+**Verification Date**: 2026-03-22

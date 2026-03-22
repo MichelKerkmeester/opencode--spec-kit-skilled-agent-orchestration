@@ -1,198 +1,238 @@
 ---
-title: "Feature Specification: pipeline-architecture [template:level_2/spec.md]"
-description: "Audit and remediation specification for the pipeline-architecture feature catalog, converting the folder to self-contained Level 2 docs with a truthful 21-feature evidence model."
-SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
+title: "Feature Specification: Code Audit — Pipeline Architecture"
+description: "Systematic code audit of 22 Pipeline Architecture features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
-  - "pipeline-architecture"
-  - "pipeline architecture"
-  - "hybrid rag fusion"
-  - "feature catalog"
   - "code audit"
-  - "stage pipeline"
-  - "db hot rebinding"
-  - "atomic pending file recovery"
+  - "pipeline architecture"
+  - "feature verification"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Feature Specification: pipeline-architecture
+# Feature Specification: Code Audit — Pipeline Architecture
 
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
 
-<!-- ANCHOR:metadata -->
+## EXECUTIVE SUMMARY
+
+Systematic code audit of 22 Pipeline Architecture features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/14--pipeline-architecture/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.
+
+**Key Decisions**: Audit against current feature catalog as source of truth, document findings per feature
+
+**Critical Dependencies**: Feature catalog must be current and accurate
+
+---
+
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Level** | 2 |
-| **Priority** | P0 |
+| **Level** | 3 |
+| **Priority** | P1 |
 | **Status** | Complete |
-| **Created** | 2026-03-10 |
-| **Branch** | `014-pipeline-architecture` |
-| **Parent Spec** | ../spec.md |
-| **Predecessor** | ../013-memory-quality-and-indexing/spec.md |
-| **Successor** | ../015-retrieval-enhancements/spec.md |
-<!-- /ANCHOR:metadata -->
+| **Created** | 2026-03-22 |
+| **Branch** | `main` |
 
 ---
 
-<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The pipeline-architecture feature catalog covers 21 features, but the prior Level 2 rewrite still depended on scratch material for full traceability and used unsupported PASS/WARN/FAIL shorthand that overstated what the core docs proved. The folder therefore remained difficult to audit as a self-contained, truthful remediation artifact.
+The feature catalog for Pipeline Architecture has evolved significantly. Existing audit documentation was stale and no longer reflected the current 22-feature inventory. A fresh audit baseline is needed to verify each feature's implementation against its catalog description.
 
 ### Purpose
-Standardize this folder to the Level 2 Spec Kit structure, move the full 21-feature traceability burden into the core docs, and describe remediation coverage using evidence-backed backlog linkage rather than unsupported implementation verdicts.
-<!-- /ANCHOR:problem -->
+Verify that all 22 Pipeline Architecture features are accurately documented in the feature catalog and correctly implemented in source code.
 
 ---
 
-<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-- Rewrite `spec.md`, `tasks.md`, `plan.md`, and `checklist.md` to Level 2 template structure with all required anchors/comments.
-- Add a self-contained 21-feature traceability matrix to the core docs using direct task/evidence links for every feature.
-- Maintain a prioritized remediation backlog (P0/P1/P2) linked to concrete files and behaviors.
-- Remove redundant scratch traceability inventory if the core docs fully carry that burden.
+- 4-stage pipeline refactor
+- MPAB chunk-to-memory aggregation
+- Chunk ordering preservation
+- Template anchor optimization
+- Validation signals as retrieval metadata
+- Learned relevance feedback
+- Search pipeline safety
+- Performance improvements
+- Activation window persistence
+- Legacy V1 pipeline removal
+- Pipeline and mutation hardening
+- DB_PATH extraction and import standardization
+- Strict Zod schema validation
+- Dynamic server instructions at MCP initialization
+- Warm server daemon mode
+- Backend storage adapter abstraction
+- Cross-process DB hot rebinding
+- Atomic write-then-index API
+- Embedding retry orchestrator
+- 7-layer tool architecture metadata
+- Atomic pending-file recovery
+- Lineage state active projection and asOf resolution
 
 ### Out of Scope
-- Implementing unrelated new `mcp_server/` behavior outside the evidence-backed closure already captured in this phase.
-- Editing `description.json`, any `memory/` content, or files outside this spec folder.
-- Creating the implementation summary artifact - explicitly excluded for this task.
+- Implementing new features or fixing bugs discovered during audit
+- Modifying source code (audit is read-only)
+- Performance benchmarking
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture/spec.md | Modify | Convert to Level 2 spec template and map audit scope/requirements. |
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture/tasks.md | Modify | Convert to Level 2 tasks template and preserve prioritized remediation tasks. |
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture/plan.md | Modify | Convert to Level 2 plan template and preserve audit methodology. |
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture/checklist.md | Modify | Convert to Level 2 checklist template and preserve verification status summary. |
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture/scratch/phase14_features.json | Delete | Remove redundant scratch-only traceability inventory after migration to core docs. |
-<!-- /ANCHOR:scope -->
+| `feature_catalog/14--pipeline-architecture/*.md` | Reference | Feature catalog source files |
+| `007-code-audit-per-feature-catalog/014-pipeline-architecture/` | Create | Audit documentation |
 
 ---
 
-<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | All four folder documents match Level 2 template structure, including YAML frontmatter, SPECKIT comments, and ANCHOR pairs. | Each file contains required headings/comments/anchors from Level 2 templates with no missing open/close anchors. |
-| REQ-002 | Core docs carry a self-contained traceability model for all 21 audited features. | `tasks.md` contains 21 feature rows (F01-F21) with source feature files, rubric classification, and linked backlog tasks or explicit gap notes. |
-| REQ-003 | Keep status/date conventions consistent for this rewrite cycle. | All metadata uses Level `2`, Status `Complete`, and date `2026-03-10`. |
+| REQ-001 | Each feature verified against source code | Every feature file cross-referenced with implementation |
+| REQ-002 | Discrepancies documented | Any catalog-vs-code mismatches recorded |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Preserve remediation prioritization from the prior task inventory. | P0/P1/P2 remediation actions are retained in `tasks.md` with clear file targets. |
-| REQ-005 | Replace unsupported PASS/WARN/FAIL claims with truthful, evidence-backed language. | `spec.md`, `tasks.md`, and `checklist.md` describe coverage through the approved rubric and do not claim implementation verification without cited evidence. |
-| REQ-006 | Use trigger phrases aligned to folder name and pipeline features. | Frontmatter `trigger_phrases` include pipeline-architecture and representative feature keywords. |
-| REQ-007 | Make traceability explicit for previously indirect features. | Features F04, F05, F11, and F16 each point to direct task/evidence entries rather than residual gap labels. |
-<!-- /ANCHOR:requirements -->
+| REQ-003 | Source file references validated | All listed source files confirmed to exist |
+| REQ-004 | Feature interactions mapped | Cross-feature dependencies documented |
 
 ---
 
-<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: `spec.md`, `tasks.md`, `plan.md`, and `checklist.md` all follow Level 2 template sections and anchors.
-- **SC-002**: A reviewer can trace every pipeline-architecture feature from F01-F21 to direct task and evidence links without opening scratch artifacts.
-- **SC-003**: Core docs describe documentation evidence truthfully and do not rely on unsupported PASS/WARN/FAIL shorthand.
-- **SC-004**: A reviewer can identify P0/P1/P2 remediation actions and the direct closure path for all 21 features in under 5 minutes.
-
-### Acceptance Scenarios
-
-- **Given** the core docs only, **when** a reviewer checks feature coverage, **then** all 21 features resolve to direct task and evidence coverage in `tasks.md`.
-- **Given** a reviewer compares requirements and verification text, **when** they inspect `spec.md`, `tasks.md`, and `checklist.md`, **then** they do not find unsupported PASS/WARN/FAIL implementation claims.
-- **Given** the plan phases and dependency graph, **when** a reviewer reads `plan.md`, **then** the folder describes one consistent three-phase workflow with no orphaned Config phase.
-- **Given** scratch cleanup is expected, **when** a reviewer inspects the folder, **then** the traceability burden is satisfied by core docs and `scratch/phase14_features.json` is no longer needed.
-<!-- /ANCHOR:success-criteria -->
+- **SC-001**: All 22 features audited with findings documented
+- **SC-002**: Zero unverified features remaining in this category
 
 ---
 
-<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Feature catalog source docs (`feature_catalog/14--pipeline-architecture/`) | Inaccurate mapping if source references drift | Preserve current audit mapping and keep file-linked tasks explicit. |
-| Dependency | Verified feature-to-task mapping for F01-F21 | Incorrect backlog coverage if remapped ad hoc | Use the approved mapping directly and mark uncovered features explicitly. |
-| Risk | Instruction-file access constraint (`/tmp` unavailable in this runtime) | Potential mismatch with external template copy | Use repository Level 2 templates as authoritative structure and keep anchors/comments exact. |
-| Risk | Over-condensing checklist details | Reduced forensic traceability | Keep counts, rubric summary, and validation evidence in the core docs. |
-<!-- /ANCHOR:risks -->
+| Dependency | Feature catalog accuracy | Audit based on stale catalog | Verify catalog currency first |
+| Risk | Source code changed since catalog update | Med | Cross-reference git history |
+| Risk | Some features span multiple source files | Low | Follow import chains |
 
 ---
 
-<!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS
-
-- None. This strict-closure pass removed the earlier indirect-gap framing and left all 21 features with direct traceability.
-<!-- /ANCHOR:questions -->
-
----
-
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: The rewritten documents must remain human-scannable, with section-level navigation by anchors.
-- **NFR-P02**: Any single remediation task should be locatable by ID within 10 seconds.
-
-### Security
-- **NFR-S01**: No secrets, credentials, or sensitive environment values may be introduced in rewritten docs.
-- **NFR-S02**: No files outside the four allowed targets are modified.
+- **NFR-P01**: Audit completable by AI agent in single session
 
 ### Reliability
-- **NFR-R01**: All required anchor pairs remain syntactically valid and properly closed.
-- **NFR-R02**: Metadata conventions (Level/Status/Date) are consistent across all four files.
-<!-- /ANCHOR:nfr -->
+- **NFR-R01**: Findings must be reproducible by re-reading same sources
 
 ---
 
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 8. EDGE CASES
 
 ### Data Boundaries
-- Empty finding category: keep section present and explicitly note `NONE` rather than removing structure.
-- Large task inventory: preserve all remediation items without collapsing priority separation.
-- Invalid file references: retain original intent but flag correction tasks in backlog.
+- Feature with no source files listed: Flag as catalog gap
+- Feature spanning 10+ source files: Prioritize primary implementation file
 
 ### Error Scenarios
-- External template mismatch: prefer repository Level 2 templates and annotate dependency risk.
-- Source-document drift during rewrite: map from current folder content snapshot and avoid speculative updates.
-- Concurrent edits to same docs: use deterministic template order and full-file rewrites.
-
-### State Transitions
-- Partial completion: status remains `Draft` until remediation and verification tasks are complete.
-- Checklist progression: verification evidence can move from aggregate-only to per-item proof without changing template skeleton.
-<!-- /ANCHOR:edge-cases -->
+- Source file referenced in catalog no longer exists: Document as finding
+- Feature partially implemented: Document completion percentage
 
 ---
 
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 9. COMPLEXITY ASSESSMENT
 
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 18/25 | Four document rewrites plus 21-feature content mapping and traceability retention. |
-| Risk | 17/25 | High risk of losing audit intent or breaking template anchor compliance. |
-| Research | 12/20 | Required template/source cross-reading and priority mapping from existing artifacts. |
-| **Total** | **47/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 20/25 | Features: 22 |
+| Risk | 8/25 | Read-only audit, no breaking changes |
+| Research | 15/20 | Must trace each feature to source |
+| Multi-Agent | 5/15 | Single-phase audit |
+| Coordination | 5/15 | Depends on feature catalog |
+| **Total** | **53/100** | **Level 3** |
 
 ---
 
-<!--
-CORE TEMPLATE (~80 lines)
-- Essential what/why/how only
-- No boilerplate sections
-- Add L2/L3 addendums for complexity
--->
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Catalog out of date | M | L | Verify against latest commit |
+| R-002 | Missing source files | L | M | Flag in findings |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Feature Verification (Priority: P0)
+
+**As a** system maintainer, **I want** each Pipeline Architecture feature verified against source code, **so that** I can trust the catalog accurately reflects the implementation.
+
+**Acceptance Criteria**:
+1. Given a feature catalog entry, When audited, Then implementation matches description
+
+---
+
+## 11b. AUDIT FINDINGS
+
+**Audit Date**: 2026-03-22
+**Overall Result**: 19 MATCH, 3 PARTIAL (out of 22 features)
+
+### MATCH (19 features)
+
+| ID | Feature | Result |
+|----|---------|--------|
+| F01 | 4-stage pipeline refactor | MATCH — all 4 stages, sequencing, and orchestration logic verified |
+| F02 | MPAB chunk-to-memory aggregation | MATCH — aggregation logic and batch semantics confirmed |
+| F03 | Chunk ordering preservation | MATCH — ordering invariants verified in pipeline flow |
+| F04 | Template anchor optimization | MATCH — anchor extraction and caching logic confirmed |
+| F05 | Validation signals as retrieval metadata | MATCH — signal attachment to retrieval context verified |
+| F06 | Learned relevance feedback | MATCH — feedback loop and weight update confirmed |
+| F08 | Performance improvements | MATCH — batch processing and caching paths verified |
+| F09 | Activation window persistence | MATCH — window state stored and resumed correctly |
+| F10 | Legacy V1 pipeline removal | MATCH — V1 code paths absent from codebase |
+| F11 | Pipeline and mutation hardening | MATCH — guard clauses and rollback paths present |
+| F13 | Strict Zod schema validation | MATCH — Zod schemas applied at all input boundaries |
+| F15 | Warm server daemon mode | MATCH — daemon lifecycle and keep-alive logic verified |
+| F16 | Backend storage adapter abstraction | MATCH — adapter interface and SQLite implementation confirmed |
+| F17 | Cross-process DB hot rebinding | MATCH — rebind trigger and reconnection logic verified |
+| F18 | Atomic write-then-index API | MATCH — write + index atomicity enforced |
+| F19 | Embedding retry orchestrator | MATCH — retry loop, backoff, and failure handling confirmed |
+| F20 | 7-layer tool architecture metadata | MATCH — all 7 metadata layers present in tool definitions |
+| F21 | Atomic pending-file recovery | MATCH — recovery scan and commit logic verified |
+| F22 | Lineage state active projection and asOf resolution | MATCH — projection queries and asOf logic confirmed |
+
+### PARTIAL (3 features)
+
+| ID | Feature | Result | Issue |
+|----|---------|--------|-------|
+| F07 | Search pipeline safety | PARTIAL | Source list bloated: catalog lists broad file set for what is a 3-bug fix; behavioral description is accurate |
+| F12 | DB_PATH extraction and import standardization | PARTIAL | Source list references `.ts` files that only exist as compiled `.js`; runtime behavior is correct |
+| F14 | Dynamic server instructions at MCP initialization | PARTIAL | Source list contains ~200 files; the actual initialization hook is narrow; behavioral description is accurate |
+
+### Summary
+
+- All behavioral descriptions are accurate across all 22 features
+- Issues are limited to source list hygiene (F07 bloat, F14 bloat) and TypeScript/JavaScript path discrepancy (F12)
+- No catalog gaps or missing features detected
+- No deprecated features found
+
+---
+
+## 12. OPEN QUESTIONS
+
+- ~~Are there undocumented features in this category not yet in the catalog?~~ **Resolved**: No gaps found.
+- ~~Have any features been deprecated since the last catalog update?~~ **Resolved**: No deprecations found.
+- F12: Catalog source lists should reference compiled `.js` paths or note that `.ts` sources are the canonical reference — low-priority catalog hygiene item.
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`

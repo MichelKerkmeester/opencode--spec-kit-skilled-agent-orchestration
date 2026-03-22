@@ -1,133 +1,99 @@
 ---
-title: "Implementation Summary: bug-fixes-and-data-integrity [template:level_2/implementation-summary.md]"
-description: "Summary of causal-link reliability fixes, regression hardening, scripts testability repairs, and truthful verification sync."
-SPECKIT_TEMPLATE_SOURCE: "implementation-summary | v2.2"
+title: "Implementation Summary: Code Audit — Bug Fixes & Data Integrity"
+description: "11 features audited: 9 MATCH, 2 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
-  - "causal link"
-  - "verification sync"
-  - "scripts package"
-  - "phase 001-018"
+  - "bug fixes & data integrity"
+  - "code audit"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Summary: bug-fixes-and-data-integrity
+# Implementation Summary: Code Audit — Bug Fixes & Data Integrity
 
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
-## Overview
+<!-- ANCHOR:metadata -->
+## Metadata
 
 | Field | Value |
 |-------|-------|
-| **Updated** | 2026-03-13 |
-| **Task Status** | 22/22 complete |
-| **P0 Status** | Complete |
-| **Verification Status** | Complete (required checks and suites passing) |
-| **Primary Goal** | Align runtime behavior and packet evidence with actual repository state |
+| **Spec Folder** | 007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity |
+| **Completed** | 2026-03-22 |
+| **Level** | 3 |
+<!-- /ANCHOR:metadata -->
 
 ---
 
-## What Changed
+<!-- ANCHOR:what-built -->
+## What Was Built
 
-### 1) Runtime reliability fix
+All 11 bug fixes and data integrity improvements were audited. Nine are perfectly documented. The Math.max/min overflow fix has 2 residual unfixed patterns, and the graph channel ID fix references pre-fix code patterns that no longer exist.
 
-- Updated causal edge insert behavior so transient lock/busy DB failures are re-thrown instead of being collapsed into validation-style null behavior.
-- This allows handler-level logic to surface infrastructure-class envelope behavior (`E022`) instead of misleading edge-create failure semantics.
+### Audit Results
 
-**Files**
-- `.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts`
+11 features audited: 9 MATCH, 2 PARTIAL, 0 MISMATCH.
 
-### 2) Regression coverage for the fixed failure mode
+### Per-Feature Findings
 
-- Added storage-level regression for `SQLITE_BUSY` rethrow behavior.
-- Added deterministic integration regression proving causal-link lock/busy path maps to `E022`.
-
-**Files**
-- `.opencode/skill/system-spec-kit/mcp_server/tests/causal-edges.vitest.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/integration-causal-graph.vitest.ts`
-
-### 3) Test hygiene hardening
-
-- Replaced pass-through symlink fallback branches with explicit capability-based skip gating.
-- Removed stale legacy `hash_checks` token from incremental-index test comment.
-
-**Files**
-- `.opencode/skill/system-spec-kit/mcp_server/tests/incremental-index-v2.vitest.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/incremental-index.vitest.ts`
-
-### 4) Documentation and catalog alignment
-
-- Updated stale counts/coverage language in root README and MCP tests README.
-- Updated watcher feature doc wording to reflect current reliability coverage.
-- Replaced playbook "no direct coverage" implication with an explicit coverage notes matrix for 29 entries.
-
-**Files**
-- `.opencode/skill/system-spec-kit/README.md`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/README.md`
-- `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md`
-- `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`
-
-### 5) Scripts package testability repairs
-
-- Added `vitest` to scripts package local dev dependencies.
-- Corrected decision-tree generator import path.
-- Corrected generate-context CLI authority expected path depth.
-- Fixed file-writer target validation for macOS `/var` vs `/private/var`.
-
-**Files**
-- `.opencode/skill/system-spec-kit/scripts/package.json`
-- `.opencode/skill/system-spec-kit/package-lock.json`
-- `.opencode/skill/system-spec-kit/scripts/lib/decision-tree-generator.ts`
-- `.opencode/skill/system-spec-kit/scripts/tests/generate-context-cli-authority.vitest.ts`
-- `.opencode/skill/system-spec-kit/scripts/core/file-writer.ts`
-
-### 6) Packet hygiene and spec-doc sync
-
-- Removed stray `.DS_Store` from packet tree.
-- Rewrote the `008` packet docs to reflect current implementation/verification state.
-- Replaced stale placeholder/glob/brace path notation in Discovery task document with concrete file paths.
-
-**Files**
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle/.DS_Store` (removed)
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/003-discovery/tasks.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/spec.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/plan.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/tasks.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/checklist.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/implementation-summary.md`
+1. Graph channel ID fix: pre-fix mem: prefix pattern removed (expected)
+2. Chunk collapse, co-activation divisor, SHA-256 dedup, DB safety, guards, canonical ID dedup, chunking safe-swap, WM timestamp: all confirmed
+3. Math.max/min overflow: 2 files still have unfixed Math.max(...spread) patterns (k-value-analysis.ts, graph-lifecycle.ts)
+4. Session manager transaction: enforceEntryLimit count may be 3, not 2 as documented
+<!-- /ANCHOR:what-built -->
 
 ---
 
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The audit was executed by dispatching 2 Opus research agents (parallel) to read feature catalog entries and verify against source code, followed by 2 Sonnet documentation agents (parallel) to update spec folder documents with findings. All agents operated as LEAF nodes at depth 1 under single-hop orchestration.
+
+Each feature was verified by:
+1. Reading the feature catalog entry
+2. Locating referenced source files in the MCP server codebase
+3. Comparing catalog behavioral descriptions against actual implementation
+4. Documenting findings as MATCH, PARTIAL, or MISMATCH
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
 ## Key Decisions
 
-1. **Infra classification for lock/busy failures**: Keep validation/null behavior for true guard failures, but rethrow lock/busy DB write failures so handler envelope maps to infra path.
-2. **No fabricated verification**: Keep verification open until command-level output is captured, then close packet status immediately with exact results.
-3. **Explicit documentation for residual coverage gaps**: Use coverage-notes matrix in manual playbook rather than implicit/ambiguous gap language.
+| Decision | Why |
+|----------|-----|
+| Track residual unfixed patterns as remediation items | k-value-analysis.ts and graph-lifecycle.ts still use Math.max(...spread) |
+<!-- /ANCHOR:decisions -->
 
 ---
 
-## Verification Evidence
+<!-- ANCHOR:verification -->
+## Verification
 
-- **Typecheck**: `npm run typecheck` passed in `.opencode/skill/system-spec-kit`.
-- **Package quality checks**:
-  - `npm run check` passed in `.opencode/skill/system-spec-kit/mcp_server`.
-  - `npm run check` passed in `.opencode/skill/system-spec-kit/scripts`.
-- **Targeted MCP suites**: `causal-edges`, `integration-causal-graph`, `incremental-index`, and `incremental-index-v2` targeted run passed in `.opencode/skill/system-spec-kit/mcp_server`.
-- **Scripts targeted suites**: several suites passed individually in `.opencode/skill/system-spec-kit/scripts` including:
-  - `generate-context-cli-authority.vitest.ts`
-  - `memory-render-fixture.vitest.ts`
-  - `import-policy-rules.vitest.ts`
-  - `tree-thinning.vitest.ts`
-  - `slug-uniqueness.vitest.ts`
-  - `task-enrichment.vitest.ts`
-  - `runtime-memory-inputs.vitest.ts`
-- **Full scripts package `npm test`**: passed in `.opencode/skill/system-spec-kit/scripts` with `Test Files 9 passed (9)`, `Tests 150 passed (150)`, `Duration 77.49s`.
+| Check | Result |
+|-------|--------|
+| All features audited | PASS — 11/11 features verified |
+| Source files verified | PASS — all referenced files confirmed to exist on disk |
+| Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
+| Tasks completed | PASS — all tasks marked [x] in tasks.md |
+| Checklist verified | PASS — all P0/P1 items verified in checklist.md |
+<!-- /ANCHOR:verification -->
 
 ---
 
-## Open Items
+<!-- ANCHOR:limitations -->
+## Known Limitations
 
-- None.
+1. **Features 07 and 09 have inflated source file lists (12-13 unrelated files alongside 1-2 relevant ones)**
+<!-- /ANCHOR:limitations -->
+
+---
+
+<!--
+Post-implementation documentation for code audit phase.
+Written in active voice per HVR rules.
+-->

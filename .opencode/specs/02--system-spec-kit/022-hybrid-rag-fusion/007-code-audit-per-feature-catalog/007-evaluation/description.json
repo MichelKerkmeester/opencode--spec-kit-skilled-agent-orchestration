@@ -1,12 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/007-evaluation",
-  "description": "Feature Specification: evaluation",
+  "description": "Feature Specification: Code Audit — Evaluation",
   "keywords": [
     "feature",
     "specification",
+    "code",
+    "audit",
     "evaluation"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.239Z",
+  "lastUpdated": "2026-03-22T17:41:14.670Z",
   "specId": "007",
   "folderSlug": "evaluation",
   "parentChain": [
@@ -15,9 +17,5 @@
     "007-code-audit-per-feature-catalog"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: evaluation [template:level_2/spec.md]",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: evaluation"
+  "memoryNameHistory": []
 }

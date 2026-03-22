@@ -1,28 +1,19 @@
 ---
-title: "Tasks: query-intelligence [template:level_2/tasks.md]"
-description: "Task Format: T### [P?] Description (file path)"
-SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
+title: "Tasks: Code Audit — Query Intelligence"
+description: "Task breakdown for auditing 11 Query Intelligence features"
 trigger_phrases:
-  - "query intelligence"
-  - "query-intelligence"
   - "tasks"
-  - "code audit"
-  - "query complexity router"
-  - "relative score fusion"
-  - "channel representation"
-  - "token budget"
-  - "query expansion"
+  - "query intelligence"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Tasks: query-intelligence
+# Tasks: Code Audit — Query Intelligence
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -32,68 +23,51 @@ contextType: "general"
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
-**Task Format**: `T### [P?] Description (file path)`
-<!-- /ANCHOR:notation -->
+**Task Format**: `T### [P?] Description`
 
 ---
 
-<!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+## Phase 1: Preparation
 
-- [x] T001 Build authoritative source-of-truth inventory for this synchronization task (verified changed files + verified outcomes)
-- [x] T002 Confirm scope lock to in-scope artifact files only (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`)
-- [x] T003 [P] Normalize verification evidence contract (tests, ESLint, alignment verifier, `npm run check` warning)
-<!-- /ANCHOR:phase-1 -->
+- [x] T000 Verify feature catalog currency for Query Intelligence
+- [x] T000a [P] Identify source code root paths
 
 ---
 
-<!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## Phase 2: Feature Audit
 
-- [x] T004 [P0] Fix real runtime `queryComplexity` propagation in `.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`
-- [x] T005 [P0] Replace synthetic trace test with production-path coverage in `.opencode/skill/system-spec-kit/mcp_server/tests/trace-propagation.vitest.ts`
-- [x] T006 [P0] Fix embeddings mock path in `.opencode/skill/system-spec-kit/mcp_server/tests/stage1-expansion.vitest.ts`
-- [x] T007 [P1] Correct stale default comment in `.opencode/skill/system-spec-kit/mcp_server/lib/search/channel-enforcement.ts`
-- [x] T008 [P1] Correct stale test counts in `.opencode/skill/system-spec-kit/feature_catalog/12--query-intelligence/03-channel-min-representation.md`
-<!-- /ANCHOR:phase-2 -->
-
----
-
-<!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
-
-- [x] T009 [P] Run targeted test validation across `trace-propagation.vitest.ts`, `stage1-expansion.vitest.ts`, `search-results-format.vitest.ts`, and related suite files — 6 files, 165 tests passing
-- [x] T010 Run targeted ESLint on changed in-scope files — passing
-- [x] T011 Run alignment verifier — 0 findings
-- [x] T012 Run `npm run check` for repo health signal — failed due to unrelated pre-existing repo-wide lint/type issues (out of scope)
-- [x] T013 Reconcile checklist verification totals with checklist body
-- [x] T014 Synchronize `implementation-summary.md` with verified review-fix outcomes
-<!-- /ANCHOR:phase-3 -->
+- [x] T001 [P] Audit: Query complexity router — MATCH (F01)
+- [x] T002 [P] Audit: Relative score fusion in shadow mode — MATCH (F02)
+- [x] T003 [P] Audit: Channel min-representation — MATCH (F03)
+- [x] T004 [P] Audit: Confidence-based result truncation — MATCH (F04)
+- [x] T005 [P] Audit: Dynamic token budget allocation — MATCH (F05)
+- [x] T006 [P] Audit: Query expansion — MATCH (F06)
+- [x] T007 [P] Audit: LLM query reformulation — PARTIAL (F07: `useQueryReformulation` flag header says default=FALSE, runtime guard inverts this and defaults ON)
+- [x] T008 [P] Audit: HyDE (Hypothetical Document Embeddings) — PARTIAL (F08: same `useQueryReformulation` flag contradiction as F07; duplicate accessor definitions present)
+- [x] T009 [P] Audit: Index-time query surrogates — PARTIAL (F09: `surrogate-storage.ts` unlisted in catalog source-file list; `matchSurrogates()` dead code at query time)
+- [x] T010 [P] Audit: Query decomposition — MATCH (F10)
+- [x] T011 [P] Audit: Graph concept routing — MATCH (F11)
 
 ---
 
-<!-- ANCHOR:completion -->
+## Phase 3: Synthesis
+
+- [x] T900 Cross-reference findings across features
+- [x] T901 Compile audit summary report
+- [x] T902 Update implementation-summary.md
+
+---
+
 ## Completion Criteria
 
-- [x] All tasks marked `[x]`
+- [x] All feature audit tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] Verification evidence captured — tests (6 files, 165, including `search-results-format.vitest.ts` in the targeted pass set), targeted ESLint pass, alignment verifier pass, known out-of-scope `npm run check` warning
-<!-- /ANCHOR:completion -->
+- [x] Summary report completed
 
 ---
 
-<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-<!-- /ANCHOR:cross-refs -->
-
----
-
-<!--
-CORE TEMPLATE (~60 lines)
-- Simple task tracking
-- 3 phases: Setup, Implementation, Verification
-- Add L2/L3 addendums for complexity
--->
+- **Checklist**: See `checklist.md`

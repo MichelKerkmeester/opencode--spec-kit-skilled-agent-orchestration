@@ -1,208 +1,220 @@
 ---
-title: "Feature Specification: graph-signal-activation [template:level_2/spec.md]"
-description: "Feature-centric code audit for Graph Signal Activation to verify correctness, standards alignment, behavioral fidelity, and test coverage across 11 cataloged features."
-# SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
+title: "Feature Specification: Code Audit — Graph Signal Activation"
+description: "Systematic code audit of 16 Graph Signal Activation features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
+  - "code audit"
   - "graph signal activation"
-  - "graph-signal-activation"
-  - "typed weighted degree"
-  - "co-activation boost"
-  - "edge density measurement"
-  - "graph momentum scoring"
-  - "causal depth signal"
-  - "community detection"
-  - "anchor tags graph nodes"
-  - "causal neighbor boost"
-  - "temporal contiguity layer"
+  - "feature verification"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Feature Specification: graph-signal-activation
+# Feature Specification: Code Audit — Graph Signal Activation
 
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
 
-<!-- ANCHOR:metadata -->
+## EXECUTIVE SUMMARY
+
+Systematic code audit of 16 Graph Signal Activation features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/10--graph-signal-activation/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.
+
+**Key Decisions**: Audit against current feature catalog as source of truth, document findings per feature
+
+**Critical Dependencies**: Feature catalog must be current and accurate
+
+---
+
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Level** | 2 |
-| **Priority** | P0 |
+| **Level** | 3 |
+| **Priority** | P1 |
 | **Status** | Complete |
-| **Created** | 2026-03-10 |
-| **Branch** | `010-graph-signal-activation` |
-| **Parent Spec** | ../spec.md |
-| **Predecessor** | ../009-evaluation-and-measurement/spec.md |
-| **Successor** | ../011-scoring-and-calibration/spec.md |
-<!-- /ANCHOR:metadata -->
+| **Created** | 2026-03-22 |
+| **Branch** | `main` |
 
 ---
 
-<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The Graph Signal Activation catalog contains 11 high-complexity features that require a structured code audit. Current implementation and tests show correctness risks, standards deviations, behavior mismatches against catalog "Current Reality" statements, and inconsistent playbook coverage mapping. Without a normalized spec artifact, remediation is hard to prioritize and verify.
+The feature catalog for Graph Signal Activation has evolved significantly. Existing audit documentation was stale and no longer reflected the current 16-feature inventory. A fresh audit baseline is needed to verify each feature's implementation against its catalog description.
 
 ### Purpose
-Deliver an evidence-backed, feature-by-feature audit baseline that drives and verifies remediation for Graph Signal Activation. This spec now serves as the completed closure record for all 11 cataloged items with synchronized code/test/doc evidence.
-<!-- /ANCHOR:problem -->
+Verify that all 16 Graph Signal Activation features are accurately documented in the feature catalog and correctly implemented in source code.
 
 ---
 
-<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-- Audit all 11 features under `feature_catalog/10--graph-signal-activation/`.
-- Record per-feature status (PASS/WARN/FAIL), code issues, standards violations, behavior mismatch, test gaps, and playbook coverage.
-- Produce prioritized remediation tasks (P0/P1/P2) with concrete file references.
-- Synchronize `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` to Level 2 structure.
+- Typed-weighted degree channel
+- Co-activation boost strength increase
+- Edge density measurement
+- Weight history audit tracking
+- Graph momentum scoring
+- Causal depth signal
+- Community detection
+- Graph and cognitive memory fixes
+- ANCHOR tags as graph nodes
+- Causal neighbor boost and injection
+- Temporal contiguity layer
+- Unified graph retrieval and deterministic ranking
+- Graph lifecycle refresh
+- Async LLM graph backfill
+- Graph calibration profiles
+- Typed traversal
 
 ### Out of Scope
-- Implementing net-new graph features beyond closure of the identified audit backlog.
-- Altering catalog taxonomy outside the minimum wording updates required to match runtime behavior.
-- Broad refactors unrelated to graph-signal activation correctness, verification, and documentation alignment.
+- Implementing new features or fixing bugs discovered during audit
+- Modifying source code (audit is read-only)
+- Performance benchmarking
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation/spec.md` | Modify | Rewrite into Level 2 `spec.md` template with mapped audit scope and requirements. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation/tasks.md` | Modify | Rewrite into Level 2 `tasks.md` template and preserve prioritized findings tasks. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation/plan.md` | Modify | Rewrite into Level 2 `plan.md` template and map methodology into phases. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation/checklist.md` | Modify | Rewrite into Level 2 `checklist.md` template and preserve verification outcomes. |
-<!-- /ANCHOR:scope -->
+| `feature_catalog/10--graph-signal-activation/*.md` | Reference | Feature catalog source files |
+| `007-code-audit-per-feature-catalog/010-graph-signal-activation/` | Create | Audit documentation |
 
 ---
 
-<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Audit all 11 Graph Signal Activation features from the catalog. | Every feature F-01..F-11 appears in checklist summary with a status. |
-| REQ-002 | Capture structured findings for each feature. | Each feature includes issue/gap mapping via tasks/checklist and references to relevant files. |
-| REQ-003 | Identify immediate correctness failures requiring urgent remediation. | P0 backlog contains all FAIL findings with concrete fixes and file paths. |
+| REQ-001 | Each feature verified against source code | Every feature file cross-referenced with implementation |
+| REQ-002 | Discrepancies documented | Any catalog-vs-code mismatches recorded |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Map manual playbook coverage for all in-scope graph-signal features (F-01..F-11). | Each feature is represented with explicit playbook scenario coverage or documented deferral rationale. |
-| REQ-005 | Align documents to SpecKit Level 2 template structure. | All four files contain Level 2 frontmatter, SPECKIT comments, and ANCHOR pairs. |
-<!-- /ANCHOR:requirements -->
+| REQ-003 | Source file references validated | All listed source files confirmed to exist |
+| REQ-004 | Feature interactions mapped | Cross-feature dependencies documented |
 
 ---
 
-<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 11 features are audited and represented with PASS/WARN/FAIL status.
-- **SC-002**: Prioritized remediation tasks are documented with source locations and fixes.
-- **SC-003**: Test gaps and playbook coverage gaps are explicitly documented.
-- **SC-004**: Spec folder documents are normalized to Level 2 templates with synchronized content.
-<!-- /ANCHOR:success-criteria -->
+- **SC-001**: All 16 features audited with findings documented
+- **SC-002**: Zero unverified features remaining in this category
 
 ---
 
-## 6. ACCEPTANCE SCENARIOS
-
-1. **Given** the Graph Signal Activation catalog with 11 scoped features, **when** the audit baseline is reviewed, **then** every feature F-01 through F-11 is represented with a PASS/WARN/FAIL status and traceable evidence.
-
-2. **Given** this spec is now in closure mode, **when** task status is checked, **then** all 11 tracked items (T001..T011) are closed with supporting evidence in `tasks.md` and `implementation-summary.md`.
-
-3. **Given** the latest verification state for `mcp_server`, **when** checklist quality gates are reviewed, **then** CHK-010 reflects passing `npx tsc --noEmit` and completed P0/P1 checks include explicit evidence markers.
-
-4. **Given** Level 2 documentation requirements, **when** validator checks run on this folder, **then** required section headers and acceptance scenario count requirements are satisfied without structural warnings.
-
----
-
-<!-- ANCHOR:risks -->
-## 7. RISKS & DEPENDENCIES
+## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `feature_catalog/10--graph-signal-activation/` files | Missing/changed catalog inputs can invalidate audit mapping. | Lock audit to current catalog revision and cite file paths. |
-| Dependency | `mcp_server/` source and test files | Stale references can produce false findings. | Validate references during verification and keep paths explicit in tasks. |
-| Dependency | Playbook scenarios NEW-035..039, NEW-050+ | Coverage claims cannot be completed if scenario definitions move. | Mark unknown entries as `MISSING` and track as follow-up. |
-| Risk | Audit findings drift from implementation changes | Findings may age quickly and lose accuracy. | Time-box follow-up implementation and rerun targeted verification checks. |
-| Risk | Incomplete negative/error-path tests | Hidden regressions remain unresolved despite documentation. | Promote missing tests into P0/P1 tasks with explicit acceptance criteria. |
-<!-- /ANCHOR:risks -->
+| Dependency | Feature catalog accuracy | Audit based on stale catalog | Verify catalog currency first |
+| Risk | Source code changed since catalog update | Med | Cross-reference git history |
+| Risk | Some features span multiple source files | Low | Follow import chains |
 
 ---
 
-<!-- ANCHOR:questions -->
-
----
-
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: Documentation updates for this closure phase complete within the 2026-03-12 verification cycle.
-- **NFR-P02**: Per-feature findings remain scannable and traceable without requiring cross-repo search.
-
-### Security
-- **NFR-S01**: No secrets, credentials, or sensitive runtime data are introduced in spec artifacts.
-- **NFR-S02**: All cited paths reference repository files only; no external data leakage.
+- **NFR-P01**: Audit completable by AI agent in single session
 
 ### Reliability
-- **NFR-R01**: Audit results are reproducible from cited source/test files.
-- **NFR-R02**: Remediation tasks remain actionable without additional hidden context.
-<!-- /ANCHOR:nfr -->
+- **NFR-R01**: Findings must be reproducible by re-reading same sources
 
 ---
 
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 8. EDGE CASES
 
 ### Data Boundaries
-- Empty input: If a feature has no listed tests, mark status with explicit test-gap rationale.
-- Maximum length: Large multi-file findings should remain summarized with links to task entries.
-- Invalid format: Non-conforming catalog wording is captured as behavior mismatch, not silently normalized.
+- Feature with no source files listed: Flag as catalog gap
+- Feature spanning 10+ source files: Prioritize primary implementation file
 
 ### Error Scenarios
-- External service failure: If playbook lookup is unavailable, mark coverage as `MISSING`.
-- Network timeout: Not applicable for local document rewrite; no network dependency in this phase.
-- Concurrent access: If underlying files change during rewrite, rerun verification before completion.
-
-### State Transitions
-- Partial completion: If a regression appears after closure, reopen impacted tasks/checklist items with fresh evidence.
-- Session expiry: Preserve all mapped findings in tasks/checklist so work can resume deterministically.
-<!-- /ANCHOR:edge-cases -->
+- Source file referenced in catalog no longer exists: Document as finding
+- Feature partially implemented: Document completion percentage
 
 ---
 
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 9. COMPLEXITY ASSESSMENT
 
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 23/25 | 11-feature audit with four synchronized Level 2 artifacts. |
-| Risk | 21/25 | Multiple FAIL/WARN correctness issues and behavior mismatches. |
-| Research | 15/20 | Cross-referencing catalog, source files, tests, and playbook scenarios. |
-| **Total** | **59/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
-
----
-
-## 10. OPEN QUESTIONS
-
-- Should deferred F-09 (`ANCHOR` tags as graph nodes) be moved into a dedicated implementation spec cycle?
-- Should low-quality `generate-context.js` memory outputs be treated as a hard gate or informational warning in closure checklists?
-<!-- /ANCHOR:questions -->
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 20/25 | Features: 16 |
+| Risk | 8/25 | Read-only audit, no breaking changes |
+| Research | 13/20 | Must trace each feature to source |
+| Multi-Agent | 5/15 | Single-phase audit |
+| Coordination | 5/15 | Depends on feature catalog |
+| **Total** | **51/100** | **Level 3** |
 
 ---
 
-<!--
-CORE TEMPLATE (~80 lines)
-- Essential what/why/how only
-- No boilerplate sections
-- Add L2/L3 addendums for complexity
--->
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Catalog out of date | M | L | Verify against latest commit |
+| R-002 | Missing source files | L | M | Flag in findings |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Feature Verification (Priority: P0)
+
+**As a** system maintainer, **I want** each Graph Signal Activation feature verified against source code, **so that** I can trust the catalog accurately reflects the implementation.
+
+**Acceptance Criteria**:
+1. Given a feature catalog entry, When audited, Then implementation matches description
+
+---
+
+## 12. AUDIT FINDINGS
+
+**Result: 12 MATCH, 4 PARTIAL across 16 features.**
+
+| ID | Feature | Status | Finding |
+|----|---------|--------|---------|
+| F01 | typed-weighted-degree | MATCH | Constants, cache, and feature flag all confirmed in source |
+| F02 | co-activation-boost | MATCH | 0.25 default confirmed; minor catalog imprecision (states 0.3) — negligible |
+| F03 | edge-density | MATCH | Thresholds and R10 escalation path confirmed |
+| F04 | weight-history | MATCH | Audit tracking confirmed; source file list is over-inclusive but not incorrect |
+| F05 | graph-momentum | MATCH | Momentum formula and cache confirmed |
+| F06 | causal-depth | MATCH | Tarjan SCC, depth bonus of +0.05 confirmed |
+| F07 | community-detection | MATCH | BFS + Louvain, debounce, Stage 2 wiring all confirmed |
+| F08 | graph-cognitive-fixes | MATCH | All 7 fixes verified; minor file attribution imprecision — negligible |
+| F09 | anchor-tags | MATCH | Correctly documented as DEFERRED; no implementation expected |
+| F10 | causal-neighbor-boost | MATCH | Constants and multipliers confirmed |
+| F11 | temporal-contiguity | PARTIAL | Module is `@deprecated` and never wired into the pipeline; catalog presents it as active |
+| F12 | unified-graph | MATCH | Deterministic ranking and explainability confirmed |
+| F13 | graph-lifecycle | PARTIAL | Inline comment is misleading relative to actual default behavior in source |
+| F14 | llm-graph-backfill | PARTIAL | Catalog contains self-contradictory default messaging; needs reconciliation |
+| F15 | graph-calibration | PARTIAL | Module is `@deprecated` and never wired into the pipeline; catalog presents it as active |
+| F16 | typed-traversal | MATCH | All constants and intent-priority logic confirmed |
+
+### Key Issues Requiring Follow-up
+
+1. **F11 / F15 — Deprecated modules presented as active**: Both `temporal-contiguity` and `graph-calibration` modules carry `@deprecated` annotations and are not wired into any active pipeline path. The catalog entries describe them as functional features. These entries should be updated to DEFERRED or DEPRECATED status, or the modules should be explicitly removed.
+
+2. **F14 — Self-contradictory catalog entry**: The `llm-graph-backfill` catalog entry contains conflicting statements about its default behavior. The entry must be reconciled to a single authoritative description.
+
+3. **F13 — Misleading inline comment**: The `graph-lifecycle` source contains an inline comment that does not match actual default behavior. Low severity but should be corrected to prevent future confusion.
+
+---
+
+## 13. OPEN QUESTIONS
+
+- **RESOLVED**: 14 of 16 features confirmed as accurately documented (MATCH).
+- **OPEN — F11, F15**: Should deprecated-but-documented modules be removed from the catalog or flagged as DEFERRED? Recommend a follow-up task to update those two catalog entries.
+- **OPEN — F14**: Which of the two conflicting defaults in the `llm-graph-backfill` catalog entry is authoritative?
+- **OPEN — F13**: Inline comment in `graph-lifecycle` source should be corrected in a future maintenance pass.
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`

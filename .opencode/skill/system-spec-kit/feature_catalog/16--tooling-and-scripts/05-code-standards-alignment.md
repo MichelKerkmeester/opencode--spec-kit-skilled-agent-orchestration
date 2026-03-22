@@ -24,8 +24,8 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
 ### 1) AI-intent comments (AI-WHY / AI-TRACE / AI-GUARD)
 
 - **Rule mapping**
-  - `sk-code--opencode/SKILL.md:357` (allowed AI-intent tags)
-  - `sk-code--opencode/SKILL.md:444` (AI comment policy checklist gate)
+  - `sk-code--opencode/SKILL.md:357` (stale — AI-WHY/AI-TRACE/AI-GUARD prefix policy no longer present in SKILL.md at HEAD; superseded by generic purposeful-comment rule at line 357)
+  - `sk-code--opencode/SKILL.md:437` (P0 checklist: "File header present and correct format" — was line 444)
 - **File-level fix counts (auditable)**
   - From `git show 18a0f9548` AI-intent additions:
     - `mcp_server/lib/search/hybrid-search.ts` → `10`
@@ -34,13 +34,13 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
     - `mcp_server/lib/cognitive/co-activation.ts` → `4`
   - These four files account for `26` AI-intent conversions (matching the catalog claim).
 - **HEAD evidence**
-  - `rg "AI-(WHY|TRACE|GUARD):" mcp_server/lib` shows the standardized prefixes are present.
+  - `rg "AI-(WHY|TRACE|GUARD):" mcp_server/lib` — NOTE: these prefixes are no longer enforced by SKILL.md at HEAD; existing occurrences in code may reflect a deprecated convention.
 
 ### 2) MODULE/COMPONENT headers
 
 - **Rule mapping**
-  - `sk-code--opencode/SKILL.md:341-344` (required file header format by language)
-  - `sk-code--opencode/SKILL.md:435` (P0: file header present and correct)
+  - `sk-code--opencode/SKILL.md:341-343` (required file header format by language — TypeScript at line 343)
+  - `sk-code--opencode/SKILL.md:437` (P0: file header present and correct — was line 435)
 - **File-level evidence (10 files, 1 header each at HEAD)**
   - `mcp_server/handlers/memory-save.ts` → `1`
   - `mcp_server/lib/search/hybrid-search.ts` → `1`
@@ -58,7 +58,7 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
 ### 3) Import ordering and grouping
 
 - **Rule mapping**
-  - `sk-code--opencode/SKILL.md:429` (P2 import order)
+  - `sk-code--opencode/SKILL.md:431` (P2 import order — was line 429)
 - **File-level evidence**
   - `mcp_server/handlers/memory-save.ts:6-21` has grouped import blocks:
     - `Node built-ins` → `Shared packages` → `Internal modules`

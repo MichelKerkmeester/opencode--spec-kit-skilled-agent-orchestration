@@ -1,12 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration",
-  "description": "Feature Specification: scoring-and-calibration",
+  "description": "Feature Specification: Code Audit — Scoring and Calibration",
   "keywords": [
     "feature",
     "specification",
-    "scoring-and-calibration"
+    "code",
+    "audit",
+    "scoring",
+    "calibration"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.265Z",
+  "lastUpdated": "2026-03-22T17:41:14.690Z",
   "specId": "011",
   "folderSlug": "scoring-and-calibration",
   "parentChain": [
@@ -14,12 +17,6 @@
     "022-hybrid-rag-fusion",
     "007-code-audit-per-feature-catalog"
   ],
-  "memorySequence": 1,
-  "memoryNameHistory": [
-    "11-03-26_14-14__scoring-and-calibration.md"
-  ],
-  "title": "Feature Specification: scoring-and-calibration [template:level_2/spec.md]",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: scoring-and-calibration"
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

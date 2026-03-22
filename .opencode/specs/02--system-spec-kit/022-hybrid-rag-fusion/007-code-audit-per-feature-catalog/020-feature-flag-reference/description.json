@@ -1,12 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference",
-  "description": "Feature Specification: feature-flag-reference",
+  "description": "Feature Specification: Code Audit — Feature Flag Reference",
   "keywords": [
     "feature",
     "specification",
-    "feature-flag-reference"
+    "code",
+    "audit",
+    "flag",
+    "reference"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.313Z",
+  "lastUpdated": "2026-03-22T17:41:14.735Z",
   "specId": "020",
   "folderSlug": "feature-flag-reference",
   "parentChain": [
@@ -15,9 +18,5 @@
     "007-code-audit-per-feature-catalog"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: feature-flag-reference [template:level_2/spec.md]",
-  "status": "Complete",
-  "importance_tier": "high",
-  "short_description": "Feature Specification: feature-flag-reference"
+  "memoryNameHistory": []
 }

@@ -1,195 +1,198 @@
 ---
-title: "Feature Specification: feature-flag-reference [template:level_2/spec.md]"
-description: "Audit closeout for Feature Flag Reference after corrected source-file mappings and automated mapping validation guard were established."
-# SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
+title: "Feature Specification: Code Audit — Feature Flag Reference"
+description: "Systematic code audit of 7 Feature Flag Reference features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
-  - "feature-flag-reference"
+  - "code audit"
   - "feature flag reference"
-  - "mapping guard"
-  - "catalog alignment"
-importance_tier: "high"
+  - "feature verification"
+importance_tier: "normal"
 contextType: "general"
 ---
-# Feature Specification: feature-flag-reference
+# Feature Specification: Code Audit — Feature Flag Reference
 
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
 
-<!-- ANCHOR:metadata -->
+## EXECUTIVE SUMMARY
+
+Systematic code audit of 7 Feature Flag Reference features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/19--feature-flag-reference/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.
+
+**Key Decisions**: Audit against current feature catalog as source of truth, document findings per feature
+
+**Critical Dependencies**: Feature catalog must be current and accurate
+
+---
+
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Level** | 2 |
-| **Priority** | P0 |
+| **Level** | 3 |
+| **Priority** | P1 |
 | **Status** | Complete |
-| **Created** | 2026-03-14 |
-| **Branch** | `020-feature-flag-reference` |
-| **Parent Spec** | ../spec.md |
-| **Predecessor** | ../019-decisions-and-deferrals/spec.md |
-| **Successor** | ../021-remediation-revalidation/spec.md |
-<!-- /ANCHOR:metadata -->
+| **Created** | 2026-03-22 |
+| **Branch** | `main` |
 
 ---
 
-<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-This phase packet was left in stale draft/pending mode after mapping corrections had already landed in the feature catalog and mapping-validation tests. As a result, the docs no longer reflected current repository truth.
+The feature catalog for Feature Flag Reference has evolved significantly. Existing audit documentation was stale and no longer reflected the current 7-feature inventory. A fresh audit baseline is needed to verify each feature's implementation against its catalog description.
 
 ### Purpose
-Publish a completed, verification-backed phase packet where mapping outcomes and guard evidence match current implementation and tests.
-<!-- /ANCHOR:problem -->
+Verify that all 7 Feature Flag Reference features are accurately documented in the feature catalog and correctly implemented in source code.
 
 ---
 
-<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-- Align phase 020 docs to current feature catalog location: `feature_catalog/19--feature-flag-reference/`.
-- Capture corrected mappings for `SPECKIT_ABLATION`, `SPECKIT_RRF`, `SPECKIT_LAZY_LOADING`, `MEMORY_DB_*`, `EMBEDDINGS_PROVIDER`, and `EMBEDDING_DIM`.
-- Record automated mapping-validation guard evidence from `tests/feature-flag-reference-docs.vitest.ts`.
+- Search Pipeline Features (SPECKIT_*)
+- Session and Cache flags
+- MCP Configuration flags
+- Memory and Storage flags
+- Embedding and API flags
+- Debug and Telemetry flags
+- CI and Build flags
 
 ### Out of Scope
-- Runtime code changes in `mcp_server/` or `shared/`.
-- Edits to memory artifacts or unrelated phase folders.
+- Implementing new features or fixing bugs discovered during audit
+- Modifying source code (audit is read-only)
+- Performance benchmarking
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference/spec.md` | Modify | Convert stale draft state to completed closeout state |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference/plan.md` | Modify | Mark completed execution and verification evidence |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference/tasks.md` | Modify | Move pending remediation tasks to completed closure tasks |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference/checklist.md` | Modify | Replace stale FAIL/WARN claims with current PASS evidence |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference/implementation-summary.md` | Modify | Document closeout and guard-validation outcome |
-<!-- /ANCHOR:scope -->
+| `feature_catalog/19--feature-flag-reference/*.md` | Reference | Feature catalog source files |
+| `007-code-audit-per-feature-catalog/020-feature-flag-reference/` | Create | Audit documentation |
 
 ---
 
-<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | All seven feature docs in `feature_catalog/19--feature-flag-reference/` are represented in this phase packet | `spec.md`, `tasks.md`, and `checklist.md` reference all seven feature domains |
-| REQ-002 | Corrected source-file mappings are reflected as closed outcomes | F-01, F-04, and F-05 mapping findings are documented as resolved with concrete evidence |
-| REQ-003 | Automated mapping-validation guard evidence is recorded | `npm run test -- tests/feature-flag-reference-docs.vitest.ts` is captured as PASS |
+| REQ-001 | Each feature verified against source code | Every feature file cross-referenced with implementation |
+| REQ-002 | Discrepancies documented | Any catalog-vs-code mismatches recorded |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Stale draft/pending claims are removed | Metadata and task/checklist states reflect complete closeout |
-| REQ-005 | Markdown references in this folder resolve | `validate.sh --no-recursive` reports no missing markdown targets |
-<!-- /ANCHOR:requirements -->
+| REQ-003 | Source file references validated | All listed source files confirmed to exist |
+| REQ-004 | Feature interactions mapped | Cross-feature dependencies documented |
 
 ---
 
-<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Phase 020 status is complete and no longer tracks resolved mapping issues as open FAIL/WARN.
-- **SC-002**: Mapping guard test passes and is cited in checklist and summary evidence.
-- **SC-003**: Folder validation passes with no missing markdown references.
-<!-- /ANCHOR:success-criteria -->
+- **SC-001**: All 7 features audited with findings documented
+- **SC-002**: Zero unverified features remaining in this category
 
 ---
 
-<!-- ANCHOR:acceptance-scenarios -->
-## 6. ACCEPTANCE SCENARIOS
-
-1. **Given** corrected catalog mappings exist under `19--feature-flag-reference`, **When** phase docs are reviewed, **Then** path references and status claims align with those files.
-2. **Given** the docs guard test validates critical env-var mappings, **When** the command runs, **Then** all checks pass and evidence is recorded.
-3. **Given** this phase was previously left in draft/pending state, **When** tasks and checklist are reviewed, **Then** completed closure status is explicit and traceable.
-4. **Given** markdown reference integrity requirements, **When** folder validation runs, **Then** no missing-markdown issues remain.
-<!-- /ANCHOR:acceptance-scenarios -->
-
----
-
-<!-- ANCHOR:risks -->
-## 7. RISKS & DEPENDENCIES
+## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `feature_catalog/19--feature-flag-reference/*.md` | Incorrect source paths would stale mapping claims again | Keep references pinned to current catalog folder and filenames |
-| Dependency | `mcp_server/tests/feature-flag-reference-docs.vitest.ts` | Guard evidence unavailable if test is removed or broken | Retain guard command as required verification evidence |
-| Risk | Future mapping drift after this closeout | Docs can become stale again | Keep test guard in active verification workflow |
-<!-- /ANCHOR:risks -->
+| Dependency | Feature catalog accuracy | Audit based on stale catalog | Verify catalog currency first |
+| Risk | Source code changed since catalog update | Med | Cross-reference git history |
+| Risk | Some features span multiple source files | Low | Follow import chains |
 
 ---
 
-<!-- ANCHOR:questions -->
-
----
-
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: Mapping verification should complete quickly enough for routine doc updates.
-- **NFR-P02**: Evidence lookup from checklist to command output should be one hop.
-
-### Security
-- **NFR-S01**: No secrets or runtime-sensitive values are added to this phase packet.
-- **NFR-S02**: Source references remain repository-internal and auditable.
+- **NFR-P01**: Audit completable by AI agent in single session
 
 ### Reliability
-- **NFR-R01**: Completed states reflect actual command and validation outputs only.
-- **NFR-R02**: Mapping guard command remains reproducible in `mcp_server`.
-<!-- /ANCHOR:nfr -->
+- **NFR-R01**: Findings must be reproducible by re-reading same sources
 
 ---
 
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 8. EDGE CASES
 
 ### Data Boundaries
-- Empty input: If a feature has no open findings, closure status is still explicitly documented.
-- Maximum length: Long mapping evidence is summarized with command-level proof.
-- Invalid format: Any broken path or missing markdown target blocks closeout.
+- Feature with no source files listed: Flag as catalog gap
+- Feature spanning 10+ source files: Prioritize primary implementation file
 
 ### Error Scenarios
-- External service failure: N/A for docs-only closeout.
-- Network timeout: N/A for local repository validation.
-- Concurrent access: Re-run validation if files change during closeout updates.
-
-### State Transitions
-- Partial completion: Keep pending markers until guard + validation commands complete.
-- Session expiry: Tasks/checklist retain command evidence so closure can resume safely.
-<!-- /ANCHOR:edge-cases -->
+- Source file referenced in catalog no longer exists: Document as finding
+- Feature partially implemented: Document completion percentage
 
 ---
 
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 9. COMPLEXITY ASSESSMENT
 
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 18/25 | Five phase docs reconciled to current mapping reality |
-| Risk | 15/25 | Main risk is future mapping drift if guard is ignored |
-| Research | 9/20 | Current catalog/test evidence was already available |
-| **Total** | **42/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
-
----
-
-## 10. OPEN QUESTIONS
-
-- Should the mapping guard test be added to the default CI gate for every PR touching `feature_catalog/19--feature-flag-reference/`?
-<!-- /ANCHOR:questions -->
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 12/25 | Features: 7 |
+| Risk | 8/25 | Read-only audit, no breaking changes |
+| Research | 10/20 | Must trace each feature to source |
+| Multi-Agent | 5/15 | Single-phase audit |
+| Coordination | 5/15 | Depends on feature catalog |
+| **Total** | **40/100** | **Level 3** |
 
 ---
 
-<!--
-CORE TEMPLATE (~80 lines)
-- Essential what/why/how only
-- No boilerplate sections
-- Add L2/L3 addendums for complexity
--->
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Catalog out of date | M | L | Verify against latest commit |
+| R-002 | Missing source files | L | M | Flag in findings |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Feature Verification (Priority: P0)
+
+**As a** system maintainer, **I want** each Feature Flag Reference feature verified against source code, **so that** I can trust the catalog accurately reflects the implementation.
+
+**Acceptance Criteria**:
+1. Given a feature catalog entry, When audited, Then implementation matches description
+
+---
+
+## 12. AUDIT FINDINGS
+
+**Audit Date**: 2026-03-22
+**Result**: 6 MATCH, 1 PARTIAL (7/7 features audited)
+
+| # | Feature | Status | Notes |
+|---|---------|--------|-------|
+| F01 | Search Pipeline Features (SPECKIT_*) | MATCH | 100+ flags verified in source |
+| F02 | Session and Cache flags | MATCH | 11 flags verified |
+| F03 | MCP Configuration flags | MATCH | 7 flags verified |
+| F04 | Memory and Storage flags | MATCH | 8 vars verified |
+| F05 | Embedding and API flags | PARTIAL | Source files point to test files instead of production sources for COHERE/OPENAI/VOYAGE API keys |
+| F06 | Debug and Telemetry flags | MATCH | 13 flags verified |
+| F07 | CI and Build flags | MATCH | 4 vars in exact fallback order |
+
+### F05 Finding Detail
+
+The catalog entry for Embedding and API flags lists source file references that resolve to test files rather than the production implementation files. The flags themselves (COHERE_API_KEY, OPENAI_API_KEY, VOYAGE_API_KEY) exist and function correctly; the issue is limited to catalog source-file reference accuracy.
+
+**Remediation**: Update `feature_catalog/19--feature-flag-reference/` F05 source file paths to point to production files.
+
+---
+
+## 13. OPEN QUESTIONS
+
+- F05 source file paths require a catalog update to point to production files (tracked finding, not a blocker).
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`

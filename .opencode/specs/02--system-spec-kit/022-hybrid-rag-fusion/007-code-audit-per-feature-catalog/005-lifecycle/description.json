@@ -1,12 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle",
-  "description": "Feature Specification: lifecycle",
+  "description": "Feature Specification: Code Audit — Lifecycle",
   "keywords": [
     "feature",
     "specification",
+    "code",
+    "audit",
     "lifecycle"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.224Z",
+  "lastUpdated": "2026-03-22T17:41:14.660Z",
   "specId": "005",
   "folderSlug": "lifecycle",
   "parentChain": [
@@ -14,13 +16,6 @@
     "022-hybrid-rag-fusion",
     "007-code-audit-per-feature-catalog"
   ],
-  "memorySequence": 2,
-  "memoryNameHistory": [
-    "11-03-26_09-04__lifecycle.md",
-    "11-03-26_09-40__lifecycle.md"
-  ],
-  "title": "Feature Specification: lifecycle [template:level_2/spec.md]",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: lifecycle"
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

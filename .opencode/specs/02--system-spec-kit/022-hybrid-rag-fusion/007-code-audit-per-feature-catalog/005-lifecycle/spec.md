@@ -1,199 +1,212 @@
 ---
-title: "Feature Specification: lifecycle [template:level_2/spec.md]"
-description: "Lifecycle feature auditing lacks a template-structured specification and traceable requirement mapping, making findings harder to validate and execute. This document standardizes the audit scope, requirements, and verification targets for the 005-lifecycle phase."
-SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
+title: "Feature Specification: Code Audit — Lifecycle"
+description: "Systematic code audit of 7 Lifecycle features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
-  - "feature"
-  - "specification"
+  - "code audit"
   - "lifecycle"
-  - "template"
-  - "spec core"
+  - "feature verification"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Feature Specification: lifecycle
+# Feature Specification: Code Audit — Lifecycle
 
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
 
-<!-- ANCHOR:metadata -->
+## EXECUTIVE SUMMARY
+
+Systematic code audit of 7 Lifecycle features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/05--lifecycle/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.
+
+**Key Decisions**: Audit against current feature catalog as source of truth, document findings per feature
+
+**Critical Dependencies**: Feature catalog must be current and accurate
+
+---
+
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Level** | 2 |
-| **Priority** | P0 |
+| **Level** | 3 |
+| **Priority** | P1 |
 | **Status** | Complete |
-| **Created** | 2026-03-10 |
-| **Branch** | `007-code-audit-per-feature-catalog/005-lifecycle` |
-| **Parent Spec** | ../spec.md |
-| **Predecessor** | ../004-maintenance/spec.md |
-| **Successor** | ../006-analysis/spec.md |
-<!-- /ANCHOR:metadata -->
+| **Created** | 2026-03-22 |
+| **Branch** | `main` |
 
 ---
 
-<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Lifecycle audit findings were captured in free-form documents without Level 2 template structure, which weakens traceability across feature requirements, test coverage, and playbook mapping. The phase needs a consistent format to preserve correctness, standards alignment, and behavior validation for all lifecycle features.
+The feature catalog for Lifecycle has evolved significantly. Existing audit documentation was stale and no longer reflected the current 7-feature inventory. A fresh audit baseline is needed to verify each feature's implementation against its catalog description.
 
 ### Purpose
-Define a template-structured, feature-complete lifecycle audit specification that is directly actionable for remediation and verification.
-<!-- /ANCHOR:problem -->
+Verify that all 7 Lifecycle features are accurately documented in the feature catalog and correctly implemented in source code.
 
 ---
 
-<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-- Audit all 7 lifecycle features in `feature_catalog/05--lifecycle/`.
-- Record correctness, standards, behavior-match, testing, and playbook findings per feature.
-- Produce prioritized requirements and success criteria for lifecycle audit follow-up.
+- Checkpoint creation (checkpoint_create)
+- Checkpoint listing (checkpoint_list)
+- Checkpoint restore (checkpoint_restore)
+- Checkpoint deletion (checkpoint_delete)
+- Async ingestion job lifecycle
+- Startup pending-file recovery
+- Automatic archival subsystem
 
 ### Out of Scope
-- Broad non-lifecycle refactors in MCP server modules outside the audited lifecycle paths.
-- Expanding audit coverage to non-lifecycle categories - outside Phase 005 boundaries.
+- Implementing new features or fixing bugs discovered during audit
+- Modifying source code (audit is read-only)
+- Performance benchmarking
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle/spec.md` | Modify | Reformat to Level 2 specification template with mapped lifecycle audit content |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle/tasks.md` | Modify | Align task inventory with template phase/task notation |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle/plan.md` | Modify | Align implementation methodology with Level 2 plan structure |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle/checklist.md` | Modify | Align verification checkpoints with Level 2 checklist structure |
-<!-- /ANCHOR:scope -->
+| `feature_catalog/05--lifecycle/*.md` | Reference | Feature catalog source files |
+| `007-code-audit-per-feature-catalog/005-lifecycle/` | Create | Audit documentation |
 
 ---
 
-<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Audit feature F-01 checkpoint creation (`checkpoint_create`) for code correctness, standards alignment, behavior match, testing, and playbook coverage. | Finding recorded with PASS/WARN/FAIL status and evidence-backed remediation notes. |
-| REQ-002 | Audit feature F-02 checkpoint listing (`checkpoint_list`) across the same five dimensions. | Deterministic boundary/ordering coverage expectations and gaps are documented. |
-| REQ-003 | Audit feature F-03 checkpoint restore (`checkpoint_restore`) across the same five dimensions. | Restore side-effect expectations (cache/BM25 refresh) and coverage gaps are documented. |
-| REQ-004 | Audit feature F-04 checkpoint deletion (`checkpoint_delete`) across the same five dimensions. | Confirm-name safety behavior and full-pipeline coverage status are documented. |
-| REQ-005 | Audit feature F-05 async ingestion lifecycle for schema/handler parity, queue lifecycle, and edge cases. | Constraint drift and missing concurrency/boundary tests are explicitly documented. |
-| REQ-006 | Audit feature F-06 startup pending-file recovery for stale-file handling and crash recovery branches. | Behavior mismatch against documented stale-file handling is captured with fix guidance. |
-| REQ-007 | Audit feature F-07 automatic archival subsystem for BM25/vector parity and archive/unarchive behavior. | Vector archival gap and associated regression-test requirements are documented. |
+| REQ-001 | Each feature verified against source code | Every feature file cross-referenced with implementation |
+| REQ-002 | Discrepancies documented | Any catalog-vs-code mismatches recorded |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-008 | Map lifecycle audit outputs to playbook scenarios EX-015..EX-018 plus NEW-097/NEW-114/NEW-123/NEW-124 and call out missing per-feature scenario linkage. | Coverage mapping is present for all audited features with explicit gaps. |
-| REQ-009 | Maintain a prioritized remediation inventory across FAIL/WARN findings. | P0/P1/P2 task prioritization is documented in `tasks.md`. |
-<!-- /ANCHOR:requirements -->
+| REQ-003 | Source file references validated | All listed source files confirmed to exist |
+| REQ-004 | Feature interactions mapped | Cross-feature dependencies documented |
 
 ---
 
-<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 7 lifecycle features are audited with structured PASS/WARN/FAIL findings.
-- **SC-002**: Each feature includes code issues, standards violations, behavior mismatch, and test-gap status.
-- **SC-003**: Playbook scenario mapping EX-015..EX-018 plus NEW-097/NEW-114/NEW-123/NEW-124 is captured with missing coverage explicitly noted.
-- **SC-004**: Remediation work is triaged into actionable priority buckets with clear follow-up paths.
-
-### Acceptance Scenarios
-
-1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
-2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
-3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
-4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
-
-<!-- /ANCHOR:success-criteria -->
+- **SC-001**: All 7 features audited with findings documented
+- **SC-002**: Zero unverified features remaining in this category
 
 ---
 
-<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Lifecycle feature catalog (`feature_catalog/05--lifecycle/`) | Missing or stale catalog entries reduce audit accuracy. | Validate each feature source table and current-reality section during audit pass. |
-| Dependency | MCP server test suites | Deferred or placeholder tests can mask behavior drift. | Flag deferred suites explicitly and add deterministic follow-up tasks. |
-| Risk | Audit findings drift from implementation reality over time | Medium | Keep source citations and line references current during updates. |
-| Risk | Priority misclassification delays blocker fixes | High | Keep FAIL findings in P0 and link each to verification criteria. |
-<!-- /ANCHOR:risks -->
+| Dependency | Feature catalog accuracy | Audit based on stale catalog | Verify catalog currency first |
+| Risk | Source code changed since catalog update | Med | Cross-reference git history |
+| Risk | Some features span multiple source files | Low | Follow import chains |
 
 ---
 
-<!-- ANCHOR:questions -->
-
----
-
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: Audit documentation updates should remain lightweight and reviewable in a single pass.
-- **NFR-P02**: Requirement/task/checklist cross-reference must be quickly traceable without external tooling.
-
-### Security
-- **NFR-S01**: No sensitive operational data or secrets are introduced in audit artifacts.
-- **NFR-S02**: Security-relevant findings (input validation, archival behavior) must be explicitly represented.
+- **NFR-P01**: Audit completable by AI agent in single session
 
 ### Reliability
-- **NFR-R01**: Template structure must remain valid and complete for Level 2 validation workflows.
-- **NFR-R02**: All required anchor blocks and metadata fields must be present and well-formed.
-<!-- /ANCHOR:nfr -->
+- **NFR-R01**: Findings must be reproducible by re-reading same sources
 
 ---
 
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 8. EDGE CASES
 
 ### Data Boundaries
-- Empty feature evidence: mark as explicit gap, not implicit pass.
-- Maximum finding density: maintain concise requirement entries and defer deep details to tasks/checklist.
-- Invalid references: replace stale paths with verified file references or flag as unresolved.
+- Feature with no source files listed: Flag as catalog gap
+- Feature spanning 10+ source files: Prioritize primary implementation file
 
 ### Error Scenarios
-- External file mismatch: preserve template structure and annotate unresolved source conflicts.
-- Incomplete test inventory: classify as WARN/FAIL based on behavior risk and evidence.
-- Concurrent edits to phase docs: preserve template anchors and re-verify full document structure.
-
-### State Transitions
-- Partial completion: keep document status at Draft until all mapped sections are populated.
-- Session expiry: preserve frontmatter and anchors so downstream validation can resume safely.
-<!-- /ANCHOR:edge-cases -->
+- Source file referenced in catalog no longer exists: Document as finding
+- Feature partially implemented: Document completion percentage
 
 ---
 
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 9. COMPLEXITY ASSESSMENT
 
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 18/25 | Four lifecycle phase documents with full template migration |
-| Risk | 16/25 | Risk of losing findings fidelity during structural rewrite |
-| Research | 10/20 | Existing source content already available and mapped |
-| **Total** | **44/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
-
----
-
-## 10. OPEN QUESTIONS
-
-- Should per-feature playbook mapping become mandatory at feature-document level (not only phase-level)?
-- Should stale `retry.vitest.ts` references be auto-validated in catalog generation tooling?
-<!-- /ANCHOR:questions -->
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 12/25 | Features: 7 |
+| Risk | 8/25 | Read-only audit, no breaking changes |
+| Research | 10/20 | Must trace each feature to source |
+| Multi-Agent | 5/15 | Single-phase audit |
+| Coordination | 5/15 | Depends on feature catalog |
+| **Total** | **40/100** | **Level 3** |
 
 ---
 
-<!--
-CORE TEMPLATE (~80 lines)
-- Essential what/why/how only
-- No boilerplate sections
-- Add L2/L3 addendums for complexity
--->
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Catalog out of date | M | L | Verify against latest commit |
+| R-002 | Missing source files | L | M | Flag in findings |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Feature Verification (Priority: P0)
+
+**As a** system maintainer, **I want** each Lifecycle feature verified against source code, **so that** I can trust the catalog accurately reflects the implementation.
+
+**Acceptance Criteria**:
+1. Given a feature catalog entry, When audited, Then implementation matches description
+
+---
+
+## 12. AUDIT FINDINGS
+
+Audit completed 2026-03-22. 7 features audited: 4 MATCH, 3 PARTIAL.
+
+### F01 — checkpoint_create: PARTIAL
+
+Behavioral descriptions accurate. Snapshot scope understated: catalog states 3 tables, but actual implementation captures 20 tables. Source file list is bloated and identical to F02–F04 (cross-cutting issue). 4 checkpoint test files missing from catalog.
+
+### F02 — checkpoint_list: MATCH
+
+Default limit 50, max 100, and specFolder filtering all confirmed against source. Source list bloat issue present (cross-cutting).
+
+### F03 — checkpoint_restore: MATCH
+
+clearExisting and merge modes, transaction wrapping, and post-restore rebuild all confirmed. Source list bloat present.
+
+### F04 — checkpoint_delete: MATCH
+
+confirmName safety guard and boolean return value confirmed. Source list bloat present.
+
+### F05 — Async ingestion job lifecycle: MATCH
+
+Job states, sequential worker, forecast calculation, and SQLITE_BUSY retry logic all confirmed. No discrepancies.
+
+### F06 — Startup pending-file recovery: PARTIAL
+
+Core recovery behavior confirmed. One test file missing from catalog: `transaction-manager-extended.vitest.ts`.
+
+### F07 — Automatic archival subsystem: PARTIAL
+
+Core archival behavior confirmed. Behavioral mismatch on unarchive path: catalog states vector re-embedding is deferred to next scan, but source code shows immediate async re-embedding on unarchive. Two source files missing from catalog: `bm25-index.ts`, `embeddings.ts`.
+
+---
+
+## 13. OPEN QUESTIONS
+
+- Are there undocumented features in this category not yet in the catalog?
+- Have any features been deprecated since the last catalog update?
+- **[From audit]** Should the bloated source file lists for F01–F04 be deduplicated to their actual per-feature files?
+- **[From audit]** Does F07 catalog entry need to be corrected to reflect immediate re-embedding (not deferred)?
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`

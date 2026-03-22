@@ -1,91 +1,98 @@
 ---
-title: "Implementation Summary: ux-hooks [template:level_2/implementation-summary.md]"
-description: "018-ux-hooks code audit remediation — 17 tasks, 445/445 tests, 5-agent parallel execution"
+title: "Implementation Summary: Code Audit — UX Hooks"
+description: "19 features audited: 17 MATCH, 2 PARTIAL, 0 MISMATCH"
 trigger_phrases:
-  - "ux hooks implementation"
-  - "code audit results"
+  - "implementation summary"
+  - "ux hooks"
+  - "code audit"
 importance_tier: "normal"
 contextType: "general"
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
-# Implementation Summary: ux-hooks
+# Implementation Summary: Code Audit — UX Hooks
 
-<!-- SPECKIT_LEVEL: 2 -->
-
----
-
-## Execution Model
-
-| Aspect | Value |
-|--------|-------|
-| **Orchestration** | Claude Opus 4.6 (depth 0) -> 5 Copilot CLI LEAF agents (depth 1) |
-| **Model** | gpt-5.3-codex with xhigh reasoning effort |
-| **Nesting** | Single-hop only (max depth 2), LEAF constraint enforced |
-| **Parallelism** | 5 agents, zero file conflicts, all background |
-| **Total Duration** | ~5.5 min (longest agent) |
-| **Total Changes** | +501 -45 across 18 files |
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
-## Agent Results
+<!-- ANCHOR:metadata -->
+## Metadata
 
-| Agent | Tasks | Priority | Changes | Tests | Duration |
-|-------|-------|----------|---------|-------|----------|
-| 1: Health & Repair | T004, T008 | P0+P1 | +97 -4 | 71 passed | 5m 27s |
-| 2: Checkpoint Contract | T005, T009 | P0+P1 | +25 -2 | 37 passed | 2m 49s |
-| 3: Mutation Hooks & Barrel | T006, T007, T010, T011, T013, T019 | P1+P2 | +199 -10 | 8 passed + eslint | 5m 36s |
-| 4: Response Hints | T012, T020 | P1+P2 | +79 -2 | 318 passed | 4m 35s |
-| 5: Save UX & Catalog Docs | T014-T018 | P2 | +101 -27 | 8 passed | 5m 11s |
-
-**Cross-agent verification:** 7 test files, 445/445 tests, ALL PASSED (zero conflicts).
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 007-code-audit-per-feature-catalog/018-ux-hooks |
+| **Completed** | 2026-03-22 |
+| **Level** | 3 |
+<!-- /ANCHOR:metadata -->
 
 ---
 
-## Files Modified
+<!-- ANCHOR:what-built -->
+## What Was Built
 
-### Source Code (7 files)
-- `mcp_server/handlers/memory-crud-health.ts` — T004: mixed-outcome repair aggregation + `partialSuccess`
-- `mcp_server/handlers/checkpoints.ts` — T005: `confirmName` required; T009: `deletedAt`/`checkpointName`
-- `mcp_server/handlers/mutation-hooks.ts` — T006: operation-aware warnings; T011: `errors[]` collection
-- `mcp_server/handlers/memory-crud-types.ts` — T011: `errors?: string[]` in `MutationHookResult`
-- `mcp_server/hooks/index.ts` — T010: explicit named exports (no wildcards)
-- `mcp_server/hooks/response-hints.ts` — T012: observable `console.warn` in catch
-- mcp_server/hooks/README.md — T013: export list aligned
+All 19 UX hook features were audited — mutation hooks, health autorepair, safety gates, dedicated modules, contract expansion, response payloads, token recomputation, explainability, response profiles, progressive disclosure, session state, and more. Two PARTIAL findings: one inflated source list and one flag default discrepancy.
 
-### Test Files (7 files)
-- `tests/memory-crud-extended.vitest.ts` — T008: mixed-outcome regression EXT-H13, EXT-H14
-- `tests/handler-checkpoints.vitest.ts` — T009: deletedAt/checkpointName assertions
-- `tests/hooks-mutation-wiring.vitest.ts` — T007: new file, hook wiring + T013/T019 regressions (5 operations incl. atomic-save)
-- `tests/mutation-hooks.vitest.ts` — T011: updated for new warning format
-- `tests/context-server.vitest.ts` — T012/T020: parse-failure telemetry (3 tests)
-- `tests/memory-save-ux-regressions.vitest.ts` — T014-T016: contract + duplicate + partial-indexing
-- `tests/hooks-ux-feedback.vitest.ts` — existing, verified passing
+### Audit Results
 
-### Feature Catalog Docs (4 files)
-- feature_catalog/18--ux-hooks/02-memory-health-autorepair-metadata.md — T008: `partialSuccess` semantics
-- feature_catalog/18--ux-hooks/07-mutation-response-ux-payload-exposure.md — T014: tests table
-- feature_catalog/18--ux-hooks/11-final-token-metadata-recomputation.md — T017: tests table
-- feature_catalog/18--ux-hooks/13-end-to-end-success-envelope-verification.md — T018: tests table
+19 features audited: 17 MATCH, 2 PARTIAL, 0 MISMATCH.
+
+### Per-Feature Findings
+
+1. 17 features confirmed with behavioral accuracy across the full UX hook stack
+2. F12 (hooks README alignment): source list inflated (40+ files for alignment fix)
+3. F17 (retrieval session state): module header says OFF but runtime defaults ON
+<!-- /ANCHOR:what-built -->
 
 ---
 
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The audit was executed by dispatching 2 Opus research agents (parallel) to read feature catalog entries and verify against source code, followed by 2 Sonnet documentation agents (parallel) to update spec folder documents with findings. All agents operated as LEAF nodes at depth 1 under single-hop orchestration.
+
+Each feature was verified by:
+1. Reading the feature catalog entry
+2. Locating referenced source files in the MCP server codebase
+3. Comparing catalog behavioral descriptions against actual implementation
+4. Documenting findings as MATCH, PARTIAL, or MISMATCH
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
 ## Key Decisions
 
-1. **`partialSuccess` field** (T004): Added explicit mixed-outcome telemetry instead of overloading `repaired`. Per-attempt tracking ensures aggregate boolean is only true when all repairs succeed.
-2. **`errors[]` optional** (T011): Kept optional in `MutationHookResult` interface for backward compatibility, but always returned as array from `runPostMutationHooks`.
-3. **`deletedAt` conditional** (T009): Uses conditional spread so field is absent (not null) when deletion fails.
-4. **Non-throwing catch** (T012): `appendAutoSurfaceHints` stays non-throwing by design; added `console.warn` for observability without breaking callers.
-5. **Explicit barrel exports** (T010): Replaced `export *` with named re-exports for tree-shaking and import traceability.
+| Decision | Why |
+|----------|-----|
+| Source list trimming is a low-risk catalog maintenance task | F12 inflated list does not affect runtime behavior |
+<!-- /ANCHOR:decisions -->
 
 ---
 
+<!-- ANCHOR:verification -->
 ## Verification
 
 | Check | Result |
 |-------|--------|
-| Targeted test suite (7 files) | 445/445 passed |
-| P0 checklist items | 8/8 verified |
-| P1 checklist items | 11/11 verified |
-| P2 checklist items | 2/2 verified |
-| Cross-agent file conflicts | 0 |
-| ESLint (Agent 3 files) | Passed |
+| All features audited | PASS — 19/19 features verified |
+| Source files verified | PASS — all referenced files confirmed to exist on disk |
+| Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
+| Tasks completed | PASS — all tasks marked [x] in tasks.md |
+| Checklist verified | PASS — all P0/P1 items verified in checklist.md |
+<!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+1. **Feature 17 session-state.ts header says "default OFF, opt-in" but search-flags.ts defaults to ON**
+<!-- /ANCHOR:limitations -->
+
+---
+
+<!--
+Post-implementation documentation for code audit phase.
+Written in active voice per HVR rules.
+-->

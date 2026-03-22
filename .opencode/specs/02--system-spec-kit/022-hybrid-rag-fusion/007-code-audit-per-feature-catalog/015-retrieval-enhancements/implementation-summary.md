@@ -1,12 +1,18 @@
 ---
-title: "Implementation Summary: retrieval-enhancements"
-description: "17-task remediation across 9 retrieval-enhancement features: code standards, feature doc corrections, token budget calibration, and 15 new test cases."
-SPECKIT_TEMPLATE_SOURCE: "implementation-summary | v2.2"
+title: "Implementation Summary: Code Audit — Retrieval Enhancements"
+description: "9 features audited: 8 MATCH, 1 PARTIAL, 0 MISMATCH"
+trigger_phrases:
+  - "implementation summary"
+  - "retrieval enhancements"
+  - "code audit"
+importance_tier: "normal"
+contextType: "general"
 ---
-# Implementation Summary: retrieval-enhancements
+# Implementation Summary: Code Audit — Retrieval Enhancements
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -15,9 +21,9 @@ SPECKIT_TEMPLATE_SOURCE: "implementation-summary | v2.2"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 015-retrieval-enhancements |
-| **Completed** | 2026-03-13 |
-| **Level** | 2 |
+| **Spec Folder** | 007-code-audit-per-feature-catalog/015-retrieval-enhancements |
+| **Completed** | 2026-03-22 |
+| **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -25,34 +31,16 @@ SPECKIT_TEMPLATE_SOURCE: "implementation-summary | v2.2"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Seventeen remediation tasks spanning nine retrieval-enhancement features have been closed, bringing the audit from 2 FAIL / 5 WARN to all-PASS status. The changes enforce explicit exports, logged error handling, calibrated token budgets, and corrected feature documentation while adding 15 new test cases across 8 test files.
+All 9 retrieval enhancement features were audited — dual-scope auto-surface, constitutional injection, hierarchy retrieval, lightweight consolidation, summary search channel, entity linking, tier-2 fallback, provenance envelopes, and contextual tree injection. Eight are perfectly documented; one has a bloated source list.
 
-### P0 Critical Fixes (T004-T006)
+### Audit Results
 
-T004 corrected the F-07 tier-2 fallback feature doc to point at hybrid-search.ts as the true owner of forceAllChannels behavior. T005 added 3 executable channel tests (F07-CH-01/02/03) in channel.vitest.ts, replacing legacy non-behavioral assertions. T006 updated F-08 provenance ownership to reference search-results.ts, memory-search.ts, and envelope.ts with trace field coverage.
+9 features audited: 8 MATCH, 1 PARTIAL, 0 MISMATCH.
 
-### Code Standards (T007-T009, T012-T013)
+### Per-Feature Findings
 
-T007 introduced enforceAutoSurfaceTokenBudget() in memory-surface.ts enforcing a 4000-token budget at hook output boundaries. T008 replaced wildcard re-exports in vector-index.ts with explicit named exports. T009 converted empty catch blocks in vector-index-queries.ts and vector-index-schema.ts to logger.warn calls. T012 added error logging to entity-linker.ts getEdgeCount and getSpecFolder before fallback returns. T013 calibrated header overhead from x12 to x26 tokens per result with CONTEXT_HEADER_MAX_CHARS=100.
-
-### Feature Documentation Corrections (T010-T011)
-
-T010 added context-server.ts to the F-01 dual-scope auto-surface source table. T011 corrected the F-05 summary-channel contract documentation: querySummaryEmbeddings returns lightweight hits and Stage-1 adapts them to PipelineRow.
-
-### Test Coverage Expansion (T014-T020)
-
-T014: 2 hook dispatch/compaction tests in dual-scope-hooks.vitest.ts. T015: 2 constitutional enrichment tests in retrieval-directives.vitest.ts. T016: 2 cache invalidation tests in spec-folder-hierarchy.vitest.ts. T017: 3 summary merge/dedupe/threshold tests in stage1-expansion.vitest.ts. T018: 4 batched edge-count tests in entity-linker.vitest.ts. T019: 2 post-truncation ordering/budget tests in hybrid-search-context-headers.vitest.ts. T020: 4 concrete payload validation tests in mcp-response-envelope.vitest.ts replacing legacy non-behavioral envelope branches.
-
-### Execution Overview
-
-| Aspect | Value |
-|--------|-------|
-| **Date** | 2026-03-13 |
-| **Agents** | 5 parallel cli-copilot codex 5.3 xhigh (CWB Pattern A) |
-| **Tasks** | 20 total (3 setup + 17 implementation), 20/20 complete |
-| **Tests** | 332 pass, 0 fail (10 test files) + targeted phase-3 verification: 138 pass, 0 fail (5 test files) |
-| **TSC** | PASS (`npx tsc --noEmit` clean) |
-| **Files** | 59 modified, +3054 -498 lines |
+1. 8 features confirmed with behavioral accuracy
+2. Contextual tree injection: source list ~60 files for a 3-4 file feature
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -60,7 +48,13 @@ T014: 2 hook dispatch/compaction tests in dual-scope-hooks.vitest.ts. T015: 2 co
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Five parallel cli-copilot agents running gpt-5.3-codex at xhigh reasoning dispatched single-hop from the conductor. Each agent received a targeted prompt covering 3-4 tasks scoped to a specific domain (critical fixes, code standards, documentation, test coverage). All agents completed within a single orchestration round. Final phase-3 closure on 2026-03-13 validated all nine retrieval-enhancement source/test mappings (`MISSING_TOTAL=0` for backticked `mcp_server/...` references), ran targeted fallback/provenance/context-header regressions (5 files, 138 tests, 0 failures), and synchronized `spec.md`, `plan.md`, `tasks.md`, and `checklist.md`.
+The audit was executed by dispatching 2 Opus research agents (parallel) to read feature catalog entries and verify against source code, followed by 2 Sonnet documentation agents (parallel) to update spec folder documents with findings. All agents operated as LEAF nodes at depth 1 under single-hop orchestration.
+
+Each feature was verified by:
+1. Reading the feature catalog entry
+2. Locating referenced source files in the MCP server codebase
+3. Comparing catalog behavioral descriptions against actual implementation
+4. Documenting findings as MATCH, PARTIAL, or MISMATCH
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -70,10 +64,7 @@ Five parallel cli-copilot agents running gpt-5.3-codex at xhigh reasoning dispat
 
 | Decision | Why |
 |----------|-----|
-| Single-hop 5-agent parallel dispatch | Each agent handles a cohesive domain (fixes, standards, docs, tests A, tests B) to minimize cross-agent file conflicts |
-| x12 to x26 token multiplier for header overhead | Measurement showed actual header bytes consumed 2.2x the previous estimate; calibrated to measured ceiling |
-| logger.warn over silent catch | Preserves debuggability while keeping non-critical paths from throwing; follows project error-handling conventions |
-| Explicit named exports over wildcard re-exports | Prevents barrel-file import ambiguity and enables tree-shaking; aligns with project TypeScript standards |
+| Verify consolidation cycle timing | runConsolidationCycleIfEnabled has a weekly cadence gate inside — fires post-save but rate-limited |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -83,25 +74,24 @@ Five parallel cli-copilot agents running gpt-5.3-codex at xhigh reasoning dispat
 
 | Check | Result |
 |-------|--------|
-| Vitest suite (332 tests, 10 files) | PASS, 0 failures |
-| Targeted phase-3 regressions (`channel`, `hybrid-search`, `search-results-format`, `mcp-response-envelope`, `hybrid-search-context-headers`) | PASS, 5 files, 138 tests, 0 failures |
-| TypeScript build (tsc --noEmit) | PASS, no TypeScript errors |
-| Feature doc source/test mapping review | PASS, 9/9 retrieval-enhancement docs validated (`MISSING_TOTAL=0` across all backticked `mcp_server/...` refs) |
-| Checklist verification | PASS, P0 11/11, P1 19/19, P2 2/2 |
+| All features audited | PASS — 9/9 features verified |
+| Source files verified | PASS — all referenced files confirmed to exist on disk |
+| Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
+| Tasks completed | PASS — all tasks marked [x] in tasks.md |
+| Checklist verified | PASS — all P0/P1 items verified in checklist.md |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Current Reality Notes
+## Known Limitations
 
-1. Feature 09 now maps directly to NEW-145 in the manual testing playbook and in the feature-catalog cross-reference index.
+1. **Feature 09 (contextual tree injection) implementation is in only 3-4 files but catalog lists ~60**
 <!-- /ANCHOR:limitations -->
 
 ---
 
 <!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
+Post-implementation documentation for code audit phase.
+Written in active voice per HVR rules.
 -->

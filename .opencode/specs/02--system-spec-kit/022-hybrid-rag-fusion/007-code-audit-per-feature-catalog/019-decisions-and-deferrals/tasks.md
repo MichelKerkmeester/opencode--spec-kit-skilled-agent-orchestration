@@ -1,25 +1,19 @@
 ---
-title: "Tasks: decisions-and-deferrals [template:level_2/tasks.md]"
-description: "Task Format: T### [P?] Description (file path)"
-# SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
+title: "Tasks: Code Audit — Decisions and Deferrals"
+description: "Task breakdown for auditing 5 Decisions and Deferrals features"
 trigger_phrases:
   - "tasks"
-  - "decisions"
-  - "deferrals"
-  - "graph signals"
-  - "entity regex"
-  - "test gaps"
+  - "decisions and deferrals"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Tasks: decisions-and-deferrals
+# Tasks: Code Audit — Decisions and Deferrals
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -29,65 +23,45 @@ contextType: "general"
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
-**Task Format**: `T### [P?] Description (file path)`
-<!-- /ANCHOR:notation -->
+**Task Format**: `T### [P?] Description`
 
 ---
 
-<!-- ANCHOR:phase-1 -->
-## Phase 1: Setup
+## Phase 1: Preparation
 
-- [x] T001 Validate all 5 feature entries and source inventories (`feature_catalog/10--graph-signal-activation/`, `feature_catalog/13--memory-quality-and-indexing/`) [EVIDENCE: Catalog entries reconciled during re-audit and F-02 source table correction.]
-- [x] T002 Capture baseline status for F-01 through F-05 in verification checklist (`checklist.md`) [EVIDENCE: Checklist status matrix updated with final PASS outcomes.]
-- [x] T003 [P] Confirm audit criteria coverage (correctness, standards, behavior, tests) (`spec.md`) [EVIDENCE: Spec acceptance scenarios and requirements map to correctness, behavior, and tests.]
-<!-- /ANCHOR:phase-1 -->
+- [x] T000 Verify feature catalog currency for Decisions and Deferrals
+- [x] T000a [P] Identify source code root paths
 
 ---
 
-<!-- ANCHOR:phase-2 -->
-## Phase 2: Implementation
+## Phase 2: Feature Audit
 
-- [x] T004 Update F-02 source inventory to include `mcp_server/lib/graph/graph-signals.ts` and migration-v19 touchpoints (`.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/07-community-detection.md`) [EVIDENCE: Implementation references now include graph-signals and vector-index-schema v19.]
-- [x] T005 Add/attach F-02 test references for `computeGraphMomentum` and `computeCausalDepth` plus migration-v19 expectations (`.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/05-graph-momentum-scoring.md`, `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/06-causal-depth-signal.md`) [EVIDENCE: Test table includes `graph-signals.vitest.ts` and deferred-features integration coverage.]
-- [x] T006 Tighten Rule-3 continuation token to prevent cross-sentence key-phrase capture (`mcp_server/lib/extraction/entity-extractor.ts`) [EVIDENCE: Rule-3 regex updated to stop at sentence periods while preserving dotted tokens.]
-- [x] T007 Add negative tests asserting sentence-boundary termination in key-phrase extraction (`mcp_server/tests/entity-extractor.vitest.ts`) [EVIDENCE: Regression tests now assert no `'. Implements'` capture and preserve `Node.js` extraction.]
-<!-- /ANCHOR:phase-2 -->
-
----
-
-<!-- ANCHOR:phase-3 -->
-## Phase 3: Verification
-
-- [x] T008 Re-run targeted graph/entity extraction tests after updates (`mcp_server/tests/*.vitest.ts`) [EVIDENCE: `npm run test -- tests/entity-extractor.vitest.ts tests/graph-signals.vitest.ts` passed (85/85).]
-- [x] T009 Re-audit F-02 and F-03 status after remediation (`checklist.md`) [EVIDENCE: F-02 and F-03 both moved from WARN to PASS with linked source/test evidence.]
-- [x] T010 Update final audit outcomes and close remaining closure items (`tasks.md`) [EVIDENCE: Task/checklist/spec now represent closure state with no residual open question.]
-- [x] T011 Add deterministic cleanup/backfill path for pre-fix auto-generated entity rows (`mcp_server/lib/extraction/entity-extractor.ts`, `scripts/memory/rebuild-auto-entities.ts`) [EVIDENCE: `rebuildAutoEntities()` rebuilds scoped `created_by='auto'` rows from current memory content and is covered by entity-extractor regression tests.]
-<!-- /ANCHOR:phase-3 -->
+- [x] T001 [P] Audit: Collect architectural decisions from all audit phases
+- [x] T002 [P] Audit: Document deferred items with rationale
+- [x] T003 [P] Audit: Map decision dependencies across categories
+- [x] T004 [P] Audit: Prioritize deferrals for future work
+- [x] T005 [P] Audit: Create decision timeline
 
 ---
 
-<!-- ANCHOR:completion -->
+## Phase 3: Synthesis
+
+- [x] T900 Cross-reference findings across features
+- [x] T901 Compile audit summary report
+- [x] T902 Update implementation-summary.md
+
+---
+
 ## Completion Criteria
 
-- [x] All tasks marked `[x]`
+- [x] All feature audit tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed
-<!-- /ANCHOR:completion -->
+- [x] Summary report completed
 
 ---
 
-<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-<!-- /ANCHOR:cross-refs -->
-
----
-
-<!--
-CORE TEMPLATE (~60 lines)
-- Simple task tracking
-- 3 phases: Setup, Implementation, Verification
-- Add L2/L3 addendums for complexity
--->
+- **Checklist**: See `checklist.md`

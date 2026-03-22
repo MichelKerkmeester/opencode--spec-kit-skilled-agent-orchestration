@@ -1,191 +1,181 @@
 ---
-title: "Implementation Plan: 001-Retrieval Code Audit"
-description: "Feature-centric audit and fix plan for nine retrieval features, with scoped regression verification and honest full-suite baseline reporting."
-trigger_phrases: ["implementation", "plan", "retrieval", "audit", "plan core"]
+title: "Implementation Plan: Code Audit — Retrieval"
+description: "Technical plan for auditing 10 Retrieval features against source code"
+trigger_phrases:
+  - "audit plan"
+  - "retrieval"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: 001-Retrieval Code Audit
-<!-- SPECKIT_LEVEL: 2 -->
+# Implementation Plan: Code Audit — Retrieval
+
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | TypeScript |
-| **Framework** | None |
-| **Storage** | SQLite / `better-sqlite3` |
-| **Testing** | Vitest |
+| **Language/Stack** | TypeScript / JavaScript (Node.js) |
+| **Framework** | MCP server (Model Context Protocol) |
+| **Storage** | better-sqlite3 |
+| **Testing** | Manual code review + cross-reference |
 
 ### Overview
-The retrieval layer was audited feature-by-feature against the Spec Kit Memory feature catalog to confirm documented behavior matches implementation and tests. Where mismatches were found, this plan drove focused correctness and test-quality fixes instead of broad refactors. The phase now closes with a clean TypeScript gate and green retrieval-targeted verification, while documenting unrelated repository-wide failures explicitly as out-of-scope.
-<!-- /ANCHOR:summary -->
+Audit each of the 10 Retrieval features by reading the feature catalog entry, locating the referenced source files, and verifying that the implementation matches the documented behavior.
 
 ---
 
-<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified
+- [x] Feature catalog files current and accessible
+- [x] Source code accessible via file system
+- [x] Audit methodology defined
 
 ### Definition of Done
-- [x] All acceptance criteria met
-- [x] Retrieval-targeted verification passing (`10` suites, `365` passed, `0` failed)
-- [x] Docs updated (spec/plan/tasks)
-- [x] Full-suite baseline recorded with out-of-scope failures called out explicitly
-<!-- /ANCHOR:quality-gates -->
+- [x] All 10 features audited
+- [x] Findings documented per feature
+- [x] Summary report completed
 
 ---
 
-<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-Feature-centric audit pipeline.
+Read-only audit: Feature Catalog → Source Code → Findings Report
 
 ### Key Components
-- **Feature Catalog (`.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/`)**: Source of expected Current Reality behavior per feature.
-- **Retrieval Implementation Surface (`mcp_server/handlers`, `mcp_server/lib`)**: Audited code paths where mismatches and standards issues were validated and fixed.
-- **Shared Runtime Algorithm Surface (`shared/algorithms`, `shared/dist/algorithms`)**: Convergence-scoring behavior used by retrieval fusion logic.
-- **Retrieval Test Surface (`mcp_server/tests`)**: Regression and contract verification for corrected behavior and assertion quality.
-- **Task Evidence Layer (`tasks.md`, `checklist.md`, `implementation-summary.md`)**: Per-task proof of completion with scoped vs full-suite verification separation.
+- **Feature Catalog**: `feature_catalog/01--retrieval/` — source of truth
+- **Source Code**: `.opencode/skill/system-spec-kit/` — implementation files
+- **Audit Output**: This spec folder — findings and documentation
 
 ### Data Flow
-Feature metadata and declared sources are inventoried first, then each feature's implementation and tests are reviewed against documented behavior and standards. Findings are prioritized (P0/P1/P2), fixed in-place with targeted regressions, and re-verified through type checks plus retrieval-targeted test suites. Full repository suite status is retained as context but not used as the retrieval completion gate because current failures are outside retrieval scope.
-<!-- /ANCHOR:architecture -->
+Read feature catalog entry → Locate source files → Compare description to implementation → Document findings
 
 ---
 
-<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Inventory
-- [x] **Step 1: Feature Inventory**
-- [x] Read all 9 feature markdown files in `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/`
-- [x] Extract implementation/test source lists
-- [x] Map features to manual playbook scenarios (EX-001..EX-009)
+### Phase 1: Preparation
+- [x] Verify feature catalog is current for Retrieval
+- [x] Identify source code root paths
+- [x] Set up audit methodology
 
-### Phase 2: Audit Per Feature
-- [x] **Step 2: Code Review Per Feature**
-- [x] Correctness: logic bugs, off-by-one, null/undefined handling, error paths
-- [x] Standards: `sk-code--opencode` TypeScript checklist
-- [x] Behavior: implementation matches catalog "Current Reality"
-- [x] Edge cases: boundaries, empty inputs, concurrent access
-- [x] **Step 3: Test Coverage Assessment**
-- [x] Verify listed test files exist and align with behavior claims
-- [x] Identify and document test gaps
-- [x] **Step 4: Manual Test Playbook Cross-Reference**
-- [x] Map features to EX-001..EX-009 where available
-- [x] Record coverage gaps where mapping is missing or stale
+### Phase 2: Feature-by-Feature Audit
+- [x] Audit: Unified context retrieval (memory_context)
+- [x] Audit: Semantic and lexical search (memory_search)
+- [x] Audit: Trigger phrase matching (memory_match_triggers)
+- [x] Audit: Hybrid search pipeline
+- [x] Audit: 4-stage pipeline architecture
+- [x] Audit: BM25 trigger phrase re-index gate
+- [x] Audit: AST-level section retrieval tool
+- [x] Audit: Quality-aware 3-tier search fallback
+- [x] Audit: Tool-result extraction to working memory
+- [x] Audit: Fast delegated search (memory_quick_search)
 
-### Phase 3: Fix + Verify
-- [x] **Step 5: Findings Report and Closure**
-- [x] Produce structured findings (PASS/WARN/FAIL, issues, mismatches, gaps, fixes)
-- [x] Implement prioritized fixes (T-01 through T-09)
-- [x] Re-run verification gates (`tsc --noEmit --pretty false`, retrieval-targeted Vitest set, full-suite baseline)
-<!-- /ANCHOR:phases -->
+### Phase 3: Synthesis
+- [x] Cross-reference findings across features
+- [x] Identify systemic patterns
+- [x] Compile summary report
 
 ---
 
-<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Retrieval helpers and scoring/calibration logic | Vitest |
-| Integration | Handler-level retrieval behavior and fallback pipelines | Vitest |
-| Baseline | Repository-wide health snapshot (out-of-scope failures documented, not masked) | Vitest |
-
-### `sk-code--opencode` Checklist (Per File, Preserved)
-- [x] Naming: camelCase functions, PascalCase types/interfaces
-- [x] Imports: explicit, no barrel re-exports of side-effect modules
-- [x] Types: strict TypeScript, no `any` without justification
-- [x] Error handling: typed errors, no swallowed catches
-- [x] Null safety: optional chaining, nullish coalescing
-- [x] Constants: UPPER_SNAKE_CASE, no magic numbers
-- [x] Functions: single responsibility, < 50 lines preferred
-- [x] Comments: only where logic is non-obvious
-- [x] Exports: explicit named exports
-<!-- /ANCHOR:testing -->
+| Cross-reference | Feature-to-code traceability | Grep, Read, Glob |
+| Completeness | All 10 features covered | Checklist verification |
+| Accuracy | Catalog matches implementation | Manual review |
 
 ---
 
-<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Retrieval feature catalog files | Internal | Green | Audit cannot validate behavior/source mapping |
-| Retrieval implementation modules | Internal | Green | Findings cannot be verified or fixed |
-| Retrieval Vitest suites | Internal | Green | Regression confidence cannot be established |
-| TypeScript compile gate (`tsc --noEmit`) | Internal | Green | Standards/correctness closure cannot be claimed |
-| Full-suite baseline (`vitest run`) | Internal | Yellow (out-of-scope failures present) | Must be reported accurately to avoid false green claim |
-<!-- /ANCHOR:dependencies -->
+| Feature catalog | Internal | Green | Cannot audit without reference |
+| Source code access | Internal | Green | Cannot verify implementation |
 
 ---
 
-<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: New regressions in retrieval handlers/search behavior, failing retrieval test suites, or type-check breakage.
-- **Procedure**: Revert the specific retrieval patches introduced by T-01 through T-09, restore previous catalog references where required, then re-run retrieval verification suites.
-<!-- /ANCHOR:rollback -->
+- **Trigger**: Audit methodology proves inadequate
+- **Procedure**: Revise approach and restart from Phase 1
 
 ---
 
-<!-- ANCHOR:phase-deps -->
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Inventory) ──► Phase 2 (Audit Per Feature) ──► Phase 3 (Fix + Verify)
+Phase 1 (Prep) ──► Phase 2 (Audit 10 features) ──► Phase 3 (Synthesis)
 ```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Inventory | None | Audit Per Feature |
-| Audit Per Feature | Inventory | Fix + Verify |
-| Fix + Verify | Audit Per Feature | Completion |
-<!-- /ANCHOR:phase-deps -->
 
 ---
 
-<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Inventory | Medium | 1-2 hours |
-| Audit Per Feature | High | 4-6 hours |
-| Fix + Verify | Medium | 2-3 hours |
-| **Total** | | **7-11 hours** |
-<!-- /ANCHOR:effort -->
+| Preparation | Low | 1 session |
+| Feature Audit | Medium | 10 features |
+| Synthesis | Medium | 1 session |
 
 ---
 
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+## L3: MILESTONES
 
-### Pre-deployment Checklist
-- [x] Backup created (documentation and evidence retained in spec folder history)
-- [x] Feature flag configured (N/A for this audit-only scope)
-- [x] Monitoring alerts set (N/A for this audit-only scope)
+| Milestone | Description | Success Criteria |
+|-----------|-------------|------------------|
+| M1 | Audit spec created | All docs in place |
+| M2 | All features audited | 10/10 complete |
+| M3 | Synthesis delivered | Summary report finalized |
 
-### Rollback Procedure
-1. Revert offending retrieval changes linked to failed task IDs.
-2. Re-run targeted retrieval Vitest suites and `tsc --noEmit` on reverted state.
-3. Validate catalog-to-code consistency for affected features.
-4. Record rollback outcome in spec folder artifacts.
+---
 
-### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: N/A
-<!-- /ANCHOR:enhanced-rollback -->
+## FINDINGS SUMMARY
+
+Audit completed 2026-03-22. 10/10 features audited.
+
+### Results at a Glance
+
+| # | Feature | Verdict |
+|---|---------|---------|
+| 01 | Unified context retrieval (memory_context) | MATCH |
+| 02 | Semantic and lexical search (memory_search) | MATCH with GAPS |
+| 03 | Trigger phrase matching (memory_match_triggers) | MATCH |
+| 04 | Hybrid search pipeline | MATCH |
+| 05 | 4-stage pipeline architecture | MATCH |
+| 06 | BM25 trigger phrase re-index gate | MATCH |
+| 07 | AST-level section retrieval tool | MATCH (DEFERRED) |
+| 08 | Quality-aware 3-tier search fallback | PARTIAL |
+| 09 | Tool-result extraction to working memory | MATCH |
+| 10 | Fast delegated search (memory_quick_search) | MATCH |
+
+**Overall**: 8 MATCH, 1 MATCH with GAPS, 1 PARTIAL
+
+### Key Issues Found
+
+1. **Feature 02 catalog gap** — 15+ source files absent from the catalog entry (`adaptive-ranking.ts`, `scope-governance.ts`, `profile-formatters.ts`, `progressive-disclosure.ts`, `session-state.ts`, `chunk-reassembly.ts`, `search-utils.ts`, `eval-channel-tracking.ts`, `feedback-ledger.ts`, `shared-spaces.ts`, `query-decomposer.ts`, `entity-linker.ts`, `llm-reformulation.ts`, `hyde.ts`, `stage2b-enrichment.ts`).
+2. **Feature 08 incorrect source file** — `stage4-filter.ts` listed for quality fallback but handles memory-state filtering; wrong reference.
+3. **Feature 05 missing files** — `stage2b-enrichment.ts` and `ranking-contract.ts` absent from catalog.
+
+### Undocumented Implementation Details Surfaced
+
+- `TURN_DECAY_RATE=0.98` (Feature 03)
+- `MENTION_BOOST_FACTOR=0.05` (Feature 09)
+- Stage 4 per-tier limits: HOT=50, WARM=30, COLD=20, DORMANT=10, ARCHIVED=5 (Feature 05)
+- RSF shadow fusion inactive at runtime despite being labeled an operational stage (Feature 04)
+
+### Recommended Follow-Up Actions
+
+- Update Feature 02 catalog entry to add 15 missing source files.
+- Correct Feature 08 catalog entry: replace `stage4-filter.ts` with the correct quality-fallback file.
+- Update Feature 05 catalog entry to include `stage2b-enrichment.ts` and `ranking-contract.ts`.
+- Optionally document the three undocumented constants above in their respective catalog entries.

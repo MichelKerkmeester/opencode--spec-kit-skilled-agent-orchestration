@@ -1,204 +1,188 @@
 ---
-title: "Feature Specification: governance [template:level_2/spec.md]"
-description: "Feature-centric governance code audit for feature flag lifecycle controls and sunset readiness verification."
-# SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
+title: "Feature Specification: Code Audit — Governance"
+description: "Systematic code audit of 4 Governance features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
+  - "code audit"
   - "governance"
-  - "feature"
-  - "flag"
-  - "sunset"
-  - "audit"
-  - "catalog"
+  - "feature verification"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Feature Specification: governance
+# Feature Specification: Code Audit — Governance
 
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
 
-<!-- ANCHOR:metadata -->
+## EXECUTIVE SUMMARY
+
+Systematic code audit of 4 Governance features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/17--governance/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.
+
+**Key Decisions**: Audit against current feature catalog as source of truth, document findings per feature
+
+**Critical Dependencies**: Feature catalog must be current and accurate
+
+---
+
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Level** | 2 |
-| **Priority** | P2 |
+| **Level** | 3 |
+| **Priority** | P1 |
 | **Status** | Complete |
-| **Created** | 2026-03-10 |
-| **Branch** | `017-governance` |
-| **Parent Spec** | ../spec.md |
-| **Predecessor** | ../016-tooling-and-scripts/spec.md |
-| **Successor** | ../018-ux-hooks/spec.md |
-<!-- /ANCHOR:metadata -->
+| **Created** | 2026-03-22 |
+| **Branch** | `main` |
 
 ---
 
-<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Governance features in the hybrid RAG fusion catalog require consistent, feature-level audit documentation to confirm code correctness, standards alignment, behavior parity, and test coverage. Existing notes were present but not aligned to the Level 2 SpecKit structure, which made governance review evidence harder to compare across phases.
+The feature catalog for Governance has evolved significantly. Existing audit documentation was stale and no longer reflected the current 4-feature inventory. A fresh audit baseline is needed to verify each feature's implementation against its catalog description.
 
 ### Purpose
-Provide a standardized Level 2 governance specification that captures audit scope, requirements, and measurable success criteria for the two governance features.
-<!-- /ANCHOR:problem -->
+Verify that all 4 Governance features are accurately documented in the feature catalog and correctly implemented in source code.
 
 ---
 
-<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-- Audit the governance feature catalog entries in `feature_catalog/17--governance/`.
-- Cover both features: feature flag governance and feature flag sunset audit.
-- Validate correctness, standards alignment, behavior match, test coverage, and manual playbook mapping (NEW-063/NEW-064).
-- Record findings in SpecKit Level 2 format.
-- Apply targeted corrective fixes found during the audit (rollout-policy behavior hardening, missing wrapper tests, and governance documentation drift).
+- Feature flag governance
+- Feature flag sunset audit
+- Hierarchical scope governance and ingest retention
+- Shared-memory rollout and kill switch
 
 ### Out of Scope
-- Large feature additions or architectural refactors outside governance findings.
-- Creating new manual playbook scenarios - only mapping existing coverage is included.
+- Implementing new features or fixing bugs discovered during audit
+- Modifying source code (audit is read-only)
+- Performance benchmarking
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/017-governance/spec.md` | Modify | Convert governance specification into Level 2 template format |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/017-governance/plan.md` | Modify | Convert audit methodology into Level 2 implementation plan format |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/017-governance/tasks.md` | Modify | Convert audit task list into Level 2 task tracking format |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/017-governance/checklist.md` | Modify | Convert findings into Level 2 verification checklist format |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/cache/cognitive/rollout-policy.ts` | Modify | Harden rollout percent parsing and fail-closed partial-rollout identity handling |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/rollout-policy.vitest.ts` | Modify | Add regression tests for malformed rollout values and identity gaps |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/search-flags.vitest.ts` | Modify | Add direct tests for `isFileWatcherEnabled` and `isLocalRerankerEnabled` |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/dead-code-regression.vitest.ts` | Modify | Expand removed-symbol canary to match governance claims |
-| `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` | Modify | Correct governance counts and rollout semantics |
-| `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md` | Modify | Align rollout reference text with runtime behavior |
-| `.opencode/skill/system-spec-kit/mcp_server/README.md` | Modify | Align feature flag semantics with runtime behavior |
-<!-- /ANCHOR:scope -->
+| `feature_catalog/17--governance/*.md` | Reference | Feature catalog source files |
+| `007-code-audit-per-feature-catalog/017-governance/` | Create | Audit documentation |
 
 ---
 
-<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | All governance features are audited with structured findings | Both features have explicit PASS/WARN/FAIL status and finding fields |
-| REQ-002 | Audit covers correctness, standards, behavior, and tests | Each feature documents code issues, standards violations, behavior mismatch, and test gaps |
-| REQ-003 | Manual playbook coverage is mapped | Each feature includes NEW-063/NEW-064 mapping or a documented gap |
+| REQ-001 | Each feature verified against source code | Every feature file cross-referenced with implementation |
+| REQ-002 | Discrepancies documented | Any catalog-vs-code mismatches recorded |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Governance audit artifacts follow Level 2 template structure | spec.md, plan.md, tasks.md, and checklist.md include required anchors/comments |
-| REQ-005 | Feature-level results remain preserved from existing audit notes | No governance finding content is lost during template migration |
-<!-- /ANCHOR:requirements -->
+| REQ-003 | Source file references validated | All listed source files confirmed to exist |
+| REQ-004 | Feature interactions mapped | Cross-feature dependencies documented |
 
 ---
 
-<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Both governance features are represented in the final checklist with documented status and findings (F-01 PASS, F-02 PASS WITH NOTES after remediation).
-- **SC-002**: All four governance docs conform to Level 2 template sections and anchor structure.
-- **SC-003**: Corrective fixes for rollout behavior, test coverage gaps, and governance documentation drift are applied and verified with targeted tests.
-
-### Acceptance Scenarios
-
-1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
-2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
-3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
-4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
-
-<!-- /ANCHOR:success-criteria -->
+- **SC-001**: All 4 features audited with findings documented
+- **SC-002**: Zero unverified features remaining in this category
 
 ---
 
-<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `feature_catalog/17--governance/` entries | Incomplete or outdated catalog content can misstate governance scope | Cross-check feature list and references during audit mapping |
-| Dependency | `mcp_server/lib/search/search-flags.ts` behavior | Mismatch between docs and code can invalidate findings | Verify described behavior against current code references |
-| Risk | Audit drift over time | PASS results can become stale after code changes | Re-run governance audit when feature flag helpers change |
-| Risk | Partial rollout behavior mismatch | Identity-less wrapper calls can diverge from documented behavior | Keep rollout-policy tests and docs synchronized when semantics change |
-| Risk | Missing scenario mapping evidence | Manual validation coverage confidence drops | Keep NEW-063/NEW-064 mapping explicit per feature |
-<!-- /ANCHOR:risks -->
+| Dependency | Feature catalog accuracy | Audit based on stale catalog | Verify catalog currency first |
+| Risk | Source code changed since catalog update | Med | Cross-reference git history |
+| Risk | Some features span multiple source files | Low | Follow import chains |
 
 ---
 
-<!-- ANCHOR:questions -->
-
----
-
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: Governance audit write-up for both features is reviewable within one session.
-- **NFR-P02**: Findings remain concise enough for quick PASS/WARN/FAIL triage.
-
-### Security
-- **NFR-S01**: Audit notes do not expose secrets or sensitive runtime data.
-- **NFR-S02**: Governance controls are documented without weakening feature-flag safety boundaries.
+- **NFR-P01**: Audit completable by AI agent in single session
 
 ### Reliability
-- **NFR-R01**: Feature-to-finding mapping is deterministic and repeatable.
-- **NFR-R02**: Documented outcomes remain traceable to code and catalog sources.
-<!-- /ANCHOR:nfr -->
+- **NFR-R01**: Findings must be reproducible by re-reading same sources
 
 ---
 
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 8. EDGE CASES
 
 ### Data Boundaries
-- Empty governance feature list: report as blocked audit with explicit dependency note.
-- Maximum catalog growth: preserve one findings block per feature to keep traceability.
-- Invalid feature metadata: flag mismatch and avoid silent assumptions.
+- Feature with no source files listed: Flag as catalog gap
+- Feature spanning 10+ source files: Prioritize primary implementation file
 
 ### Error Scenarios
-- Source file moved or renamed: update file references and re-validate behavior mapping.
-- Test references unavailable: document test gap explicitly instead of inferring coverage.
-- Concurrent edits during audit: re-read impacted files before finalizing findings.
-
-### State Transitions
-- Partial completion: keep per-feature status to show completed vs pending audits.
-- Session expiry: preserve findings in spec docs before ending the phase.
-<!-- /ANCHOR:edge-cases -->
+- Source file referenced in catalog no longer exists: Document as finding
+- Feature partially implemented: Document completion percentage
 
 ---
 
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 9. COMPLEXITY ASSESSMENT
 
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 8/25 | Four governance docs and two features |
-| Risk | 8/25 | Targeted runtime/test/doc corrections in addition to audit artifacts |
-| Research | 5/20 | Requires source-to-catalog verification and playbook mapping |
-| **Total** | **21/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
-
----
-
-## 10. OPEN QUESTIONS
-
-- None at this time.
-<!-- /ANCHOR:questions -->
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 9/25 | Features: 4 |
+| Risk | 8/25 | Read-only audit, no breaking changes |
+| Research | 9/20 | Must trace each feature to source |
+| Multi-Agent | 5/15 | Single-phase audit |
+| Coordination | 5/15 | Depends on feature catalog |
+| **Total** | **36/100** | **Level 3** |
 
 ---
 
-<!--
-CORE TEMPLATE (~80 lines)
-- Essential what/why/how only
-- No boilerplate sections
-- Add L2/L3 addendums for complexity
--->
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Catalog out of date | M | L | Verify against latest commit |
+| R-002 | Missing source files | L | M | Flag in findings |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Feature Verification (Priority: P0)
+
+**As a** system maintainer, **I want** each Governance feature verified against source code, **so that** I can trust the catalog accurately reflects the implementation.
+
+**Acceptance Criteria**:
+1. Given a feature catalog entry, When audited, Then implementation matches description
+
+---
+
+## 12. AUDIT FINDINGS
+
+| Feature | Result | Evidence |
+|---------|--------|----------|
+| F01: feature-flag-governance | MATCH | Process documentation only; no source files claimed — catalog description is accurate |
+| F02: feature-flag-sunset-audit | PARTIAL | Catalog states 24 feature flags; actual count is 38+; flag count is stale and requires update |
+| F03: hierarchical-scope-governance | MATCH | All 4 source files confirmed to exist; scope model (tenant → namespace → user) verified in code |
+| F04: shared-memory-rollout | MATCH | Deny-by-default posture and kill switch confirmed; all 6 referenced source files verified |
+
+**Overall result**: 3 MATCH, 1 PARTIAL
+**Action required**: Update F02 catalog entry — change flag count from 24 to 38+
+
+---
+
+## 13. OPEN QUESTIONS
+
+- F02 flag count stale: catalog claims 24 flags, actual implementation has 38+. Catalog entry should be corrected. — *RESOLVED: document the discrepancy; correction deferred to 020-feature-flag-reference phase*
+- No undocumented features found in this category.
+- No deprecated features identified.
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`

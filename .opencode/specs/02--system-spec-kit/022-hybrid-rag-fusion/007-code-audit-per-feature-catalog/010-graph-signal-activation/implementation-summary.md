@@ -1,89 +1,100 @@
 ---
-title: "Implementation Summary: graph-signal-activation [template:level_2/implementation-summary.md]"
-description: "Graph-signal activation completion pass: code bug fixes, documentation alignment and full 11-item audit backlog closure"
-# SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2
+title: "Implementation Summary: Code Audit — Graph Signal Activation"
+description: "16 features audited: 12 MATCH, 4 PARTIAL, 0 MISMATCH"
 trigger_phrases:
-  - "graph signal activation implementation"
-  - "010 graph signal summary"
+  - "implementation summary"
+  - "graph signal activation"
+  - "code audit"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Summary: graph-signal-activation
+# Implementation Summary: Code Audit — Graph Signal Activation
 
-<!-- SPECKIT_LEVEL: 2 -->
-
----
-
-## Overview
-
-This summary now reflects full backlog closure for the graph-signal activation audit. Task #2 established the first remediation baseline, and the completion pass finalized remaining correctness, standards, and documentation gaps.
-
-**Result**: targeted Vitest closure coverage passed (`6` files / `185` tests), alignment drift passed (`0` findings), spec validation passed (`0` warnings/errors), and `npx tsc --noEmit` passes in `.opencode/skill/system-spec-kit/mcp_server`.
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
-## Files Changed
+<!-- ANCHOR:metadata -->
+## Metadata
 
-| File | Role |
-|------|------|
-| `.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts` | Implementation change for deterministic history/rollback behavior and observable `touchEdgeAccess()` failures |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/causal-edges.vitest.ts` | Regression coverage for deterministic ordering, rollback behavior, and `touchEdgeAccess()` failures |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/degree-computation.vitest.ts` | Fail-closed constitutional lookup throw-path coverage |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/co-activation.vitest.ts` | Env clamp coverage for `>1`, `<0`, and non-numeric inputs |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/causal-boost.vitest.ts` | Behavioral coverage for seed cap and relation precedence |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/temporal-contiguity.vitest.ts` | MAX_WINDOW/min-window clamp coverage |
-| `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md` | F-08 current-reality statement alignment |
-| `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md` | F-10 relation taxonomy alignment |
-| `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/11-temporal-contiguity-layer.md` | F-11 API and behavior alignment |
-| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | F-06 semantics correction and dedicated F-10/F-11 coverage entries |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/graph/README.md` | TOC anchor compliance fix |
-| `.opencode/skill/system-spec-kit/mcp_server/lib/storage/README.md` | Schema version and metadata refresh |
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 007-code-audit-per-feature-catalog/010-graph-signal-activation |
+| **Completed** | 2026-03-22 |
+| **Level** | 3 |
+<!-- /ANCHOR:metadata -->
 
 ---
 
-## Implemented Fixes
+<!-- ANCHOR:what-built -->
+## What Was Built
 
-1. Deterministic `weight_history` ordering and rollback behavior were implemented and covered in `.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts` and `.opencode/skill/system-spec-kit/mcp_server/tests/causal-edges.vitest.ts`.
+All 16 graph signal features were audited — from typed degree channels through community detection to typed traversal. The core graph infrastructure is well-documented. Two deprecated modules (temporal-contiguity, graph-calibration) are presented as active in the catalog, and the LLM backfill feature has self-contradictory default messaging.
 
-2. `touchEdgeAccess()` failure behavior was made observable and covered in `.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts` and `.opencode/skill/system-spec-kit/mcp_server/tests/causal-edges.vitest.ts`.
+### Audit Results
 
-3. `.opencode/skill/system-spec-kit/mcp_server/tests/degree-computation.vitest.ts` now covers the constitutional lookup throw-path so the fail-closed behavior is verified explicitly.
+16 features audited: 12 MATCH, 4 PARTIAL, 0 MISMATCH.
 
-4. `.opencode/skill/system-spec-kit/mcp_server/tests/co-activation.vitest.ts` now covers co-activation boost-factor clamp behavior for values `>1`, `<0`, and non-numeric inputs.
+### Per-Feature Findings
 
-5. `.opencode/skill/system-spec-kit/mcp_server/tests/causal-boost.vitest.ts` now covers seed-cap handling and relation-precedence behavior for causal boost scoring, and the strengthened regression passes (`6/6` tests in that file).
-
-6. Non-finite edge strengths are now rejected before insert/update writes, preventing invalid strengths from entering causal graph storage.
-
-7. Weight-history writes now participate in transactional failure semantics (no swallowed `logWeightChange` errors), with regression tests proving rollback behavior when `weight_history` persistence fails.
-
-8. Temporal contiguity clamp behavior now has explicit tests for minimum and maximum window bounds.
-
-9. Graph signal docs and playbook coverage were reconciled for F-06, F-08, F-10, and F-11 to match runtime behavior.
+1. Typed degree, co-activation, edge density, weight history, momentum, causal depth, community detection, graph fixes, anchor tags, causal boost, unified graph, typed traversal: all MATCH
+2. Temporal contiguity: @deprecated/never wired, catalog says active
+3. Graph lifecycle: misleading inline comment vs actual default
+4. LLM backfill: contradictory default messaging within catalog
+5. Graph calibration: @deprecated/never wired, catalog says active
+<!-- /ANCHOR:what-built -->
 
 ---
 
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The audit was executed by dispatching 2 Opus research agents (parallel) to read feature catalog entries and verify against source code, followed by 2 Sonnet documentation agents (parallel) to update spec folder documents with findings. All agents operated as LEAF nodes at depth 1 under single-hop orchestration.
+
+Each feature was verified by:
+1. Reading the feature catalog entry
+2. Locating referenced source files in the MCP server codebase
+3. Comparing catalog behavioral descriptions against actual implementation
+4. Documenting findings as MATCH, PARTIAL, or MISMATCH
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Flag deprecated-as-active as highest priority remediation | Two modules with @deprecated tags presented as graduated features |
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
 ## Verification
 
-- **Vitest**: `npx vitest run tests/causal-edges.vitest.ts tests/degree-computation.vitest.ts tests/co-activation.vitest.ts tests/rrf-degree-channel.vitest.ts tests/causal-boost.vitest.ts tests/temporal-contiguity.vitest.ts` -> passed (`6` files / `185` tests)
-- **Alignment drift**: `python3 .opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/mcp_server` -> passed (`0` findings)
-- **TypeScript**: `npx tsc --noEmit` -> passed in `.opencode/skill/system-spec-kit/mcp_server`
-- **Spec validation**: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder>` -> passed (`0` errors, `0` warnings)
+| Check | Result |
+|-------|--------|
+| All features audited | PASS — 16/16 features verified |
+| Source files verified | PASS — all referenced files confirmed to exist on disk |
+| Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
+| Tasks completed | PASS — all tasks marked [x] in tasks.md |
+| Checklist verified | PASS — all P0/P1 items verified in checklist.md |
+<!-- /ANCHOR:verification -->
 
 ---
 
-## Final Backlog Status
+<!-- ANCHOR:limitations -->
+## Known Limitations
 
-| Task | Status | Notes |
-|------|--------|-------|
-| T001 | Remediated | Observable `touchEdgeAccess()` failure behavior documented and verified |
-| T002 | Remediated | Deterministic `weight_history` ordering and rollback documented and verified |
-| T005 | Verified | Fail-closed constitutional lookup throw-path coverage added |
-| T006 | Verified | Co-activation env clamp coverage expanded |
-| T008 | Verified | Causal-boost seed-cap and relation-precedence coverage added; strengthened seed-cap regression now passes `6/6` |
-| T003 | Closed | Missing-snapshot momentum path verified as zero with regression coverage |
-| T004 | Closed | Graph-signals cache invalidation wiring and mutation-hook coverage verified |
-| T007 | Closed | Edge-density denominator semantics aligned between code and docs |
-| T009 | Closed | Temporal window clamping verified in runtime and tests |
-| T010 | Closed | F-08 doc traceability and behavior text aligned to current code |
-| T011 | Closed | Negative ANCHOR parsing coverage verified in existing anchor/parser test suites |
+1. **Temporal-contiguity and graph-calibration-profiles modules are @deprecated but catalog describes them as active graduated features**
+<!-- /ANCHOR:limitations -->
+
+---
+
+<!--
+Post-implementation documentation for code audit phase.
+Written in active voice per HVR rules.
+-->

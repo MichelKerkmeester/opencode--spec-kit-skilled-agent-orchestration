@@ -1,128 +1,98 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
-description: "Phase 003-discovery documentation sync to latest handler/schema behavior and focused verification evidence."
-trigger_phrases: ["implementation", "summary", "template", "impl summary core"]
+title: "Implementation Summary: Code Audit — Discovery"
+description: "3 features audited: 2 MATCH, 1 PARTIAL, 0 MISMATCH"
+trigger_phrases:
+  - "implementation summary"
+  - "discovery"
+  - "code audit"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Summary
-<!-- SPECKIT_LEVEL: 2 -->
+# Implementation Summary: Code Audit — Discovery
+
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
-
 <!-- ANCHOR:metadata -->
-## 1. METADATA
+## Metadata
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 003-discovery |
-| **Completed** | 2026-03-12 |
-| **Level** | 2 |
+| **Spec Folder** | 007-code-audit-per-feature-catalog/003-discovery |
+| **Completed** | 2026-03-22 |
+| **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:overview -->
-## 2. OVERVIEW
-
-This packet now reflects the final Discovery fixes that were already landed in runtime code, tests, and related documentation. The update removes remaining stale packet claims so phase artifacts match current behavior and current verification evidence.
-<!-- /ANCHOR:overview -->
-
----
-
 <!-- ANCHOR:what-built -->
-## 3. WHAT WAS BUILT
+## What Was Built
 
-This update synchronizes the Discovery phase packet to the currently landed implementation.
+All three Discovery tools — memory list, system statistics, and health diagnostics — were audited. The first two are perfectly documented. Health diagnostics has a minor source file attribution issue and undocumented full-mode response fields.
 
-### Runtime Reliability Alignment (`memory_list`, `memory_stats`, `memory_health`)
+### Audit Results
 
-Docs now capture that all three Discovery handlers catch pre-query `checkDatabaseUpdated()` failures and return MCP error envelopes (`E021`) with `requestId`, instead of allowing thrown exceptions to escape handler-level contracts.
+3 features audited: 2 MATCH, 1 PARTIAL, 0 MISMATCH.
 
-### Discovery Regression Coverage Alignment
+### Per-Feature Findings
 
-Docs now capture the added regression tests in the three Discovery edge suites that assert the pre-query refresh failure path returns MCP `E021` envelopes with `requestId`.
-
-### Existing Behavior Documentation Alignment
-
-Docs now keep `memory_list` and `memory_stats` response/validation details synchronized (`sortBy`, `limit`, validation envelopes), and keep `memory_health` schema reachability for `confirmed` synchronized.
-
-### Related Documentation Alignment (Outside Packet)
-
-The packet now explicitly notes that related docs were corrected:
-- `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`: EX-012 uses `memory_stats(folderRanking:composite,includeScores:true)`
-- merged `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`: removed `memory_list` tier claim, corrected `importanceScore` wording, corrected `memory_health` top-level status wording
-- `.opencode/skill/system-spec-kit/shared/scoring/README.md`: removed stale `memory_list` folder-scoring consumer claims
-
-### Stale Claim Removal
-
-Removed stale wording from the Discovery phase docs, including:
-- "documentation-only phase" framing
-- stale targeted test totals (`89/89`)
-- outdated Discovery inconsistency limitation
-
-### Files Changed
-
-| File | Action | Purpose |
-|------|--------|---------|
-| `spec.md` | Modified | Added `TABLE OF CONTENTS`/`OVERVIEW`; updated scope/requirements to landed runtime+test+doc reality |
-| `plan.md` | Modified | Updated phases, dependencies, and testing strategy to include runtime/test/doc sync and current evidence |
-| `tasks.md` | Modified | Updated completed tasks to include pre-query reliability fixes, regression coverage, and related-doc sync |
-| `checklist.md` | Modified | Updated verification items and evidence to `95/95` and pre-query `E021` coverage |
-| `implementation-summary.md` | Modified | Added `TABLE OF CONTENTS`/`OVERVIEW`; replaced stale completion narrative with current final-state evidence |
+1. memory_list: sort fallback, pagination clamping, validation codes, response payload all verified
+2. memory_stats: folder ranking modes, scoring fallback, totalSpecFolders, graph metrics confirmed
+3. memory_health: summarizeAliasConflicts attributed to memory-index.ts but actually in memory-index-alias.ts; undocumented full-mode fields
 <!-- /ANCHOR:what-built -->
 
 ---
 
 <!-- ANCHOR:how-delivered -->
-## 4. HOW IT WAS DELIVERED
+## How It Was Delivered
 
-Delivery followed a source-first pass: verify handlers, schemas, tests, and related docs; update all five Discovery packet docs; then record current focused verification evidence and remove stale packet claims.
+The audit was executed by dispatching 2 Opus research agents (parallel) to read feature catalog entries and verify against source code, followed by 2 Sonnet documentation agents (parallel) to update spec folder documents with findings. All agents operated as LEAF nodes at depth 1 under single-hop orchestration.
+
+Each feature was verified by:
+1. Reading the feature catalog entry
+2. Locating referenced source files in the MCP server codebase
+3. Comparing catalog behavioral descriptions against actual implementation
+4. Documenting findings as MATCH, PARTIAL, or MISMATCH
 <!-- /ANCHOR:how-delivered -->
 
 ---
 
 <!-- ANCHOR:decisions -->
-## 5. KEY DECISIONS
+## Key Decisions
 
 | Decision | Why |
 |----------|-----|
-| Use current on-disk implementation as source of truth | Prevents drift from older audit narratives |
-| Document pre-query refresh failure handling as MCP envelope contracts | Matches current handler behavior and `requestId` observability across all three Discovery handlers |
-| Explicitly document resolved response fields (`sortBy`, `limit`) | Makes caller-visible behavior precise and testable |
-| Record related-doc fixes outside this packet | Ensures packet readers can reconcile Discovery behavior across playbook/catalog/scoring docs |
-| Replace old verification counts with current focused evidence | Keeps completion claims current and measurable |
+| Accept re-export attribution as defensible | Import path references memory-index.ts which re-exports from memory-index-alias.ts |
 <!-- /ANCHOR:decisions -->
 
 ---
 
 <!-- ANCHOR:verification -->
-## 6. VERIFICATION
+## Verification
 
 | Check | Result |
 |-------|--------|
-| TypeScript (`npx tsc --noEmit`) | PASS - clean run, no output |
-| Targeted Discovery suite (5 files) | PASS - `95/95` tests passed |
-| Targeted files included | `handler-memory-list-edge.vitest.ts`, `handler-memory-stats-edge.vitest.ts`, `handler-memory-health-edge.vitest.ts`, `handler-memory-crud.vitest.ts`, `tool-input-schema.vitest.ts` |
+| All features audited | PASS — 3/3 features verified |
+| Source files verified | PASS — all referenced files confirmed to exist on disk |
+| Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
+| Tasks completed | PASS — all tasks marked [x] in tasks.md |
+| Checklist verified | PASS — all P0/P1 items verified in checklist.md |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## 7. KNOWN LIMITATIONS
+## Known Limitations
 
-1. **Verification scope is focused.** This summary records the targeted Discovery suite and does not claim full-suite execution.
-2. **`requestId` discussion here is error-path focused.** Success-response shape was not broadened by this doc update.
-3. **Doc-to-code drift can recur with future handler/schema updates.** Re-audit this phase folder if Discovery behavior changes again.
+1. **Full-mode health response includes undocumented fields: embeddingRetry stats, repair.partialSuccess, orphan cleanup, integrity verification**
 <!-- /ANCHOR:limitations -->
 
 ---
 
 <!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
+Post-implementation documentation for code audit phase.
+Written in active voice per HVR rules.
 -->

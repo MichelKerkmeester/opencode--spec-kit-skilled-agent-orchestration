@@ -1,190 +1,163 @@
 ---
-title: "Implementation Plan: 002-Mutation Code Audit"
-description: "Execution plan for auditing and remediating mutation-feature correctness issues in the Spec Kit Memory MCP server using a feature-centric review and verification pipeline."
-trigger_phrases: ["implementation", "plan", "002-mutation", "audit per feature", "mutation remediation"]
+title: "Implementation Plan: Code Audit — Mutation"
+description: "Technical plan for auditing 10 Mutation features against source code"
+trigger_phrases:
+  - "audit plan"
+  - "mutation"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: 002-Mutation Code Audit
-<!-- SPECKIT_LEVEL: 2 -->
+# Implementation Plan: Code Audit — Mutation
+
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | TypeScript |
-| **Framework** | None |
-| **Storage** | SQLite (`better-sqlite3`) |
-| **Testing** | Vitest |
+| **Language/Stack** | TypeScript / JavaScript (Node.js) |
+| **Framework** | MCP server (Model Context Protocol) |
+| **Storage** | better-sqlite3 |
+| **Testing** | Manual code review + cross-reference |
 
 ### Overview
-Phase 002 executed a feature-centric audit of all 10 mutation features and closed 9 original remediation tasks (3 P0, 6 P1). The March 11, 2026 re-audit then closed the remaining mutation-specific gaps that were still present after the earlier review rounds, and refreshed the evidence to match current verification state.
-<!-- /ANCHOR:summary -->
+Audit each of the 10 Mutation features by reading the feature catalog entry, locating the referenced source files, and verifying that the implementation matches the documented behavior.
 
 ---
 
-<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified
+- [x] Feature catalog files current and accessible
+- [x] Source code accessible via file system
+- [x] Audit methodology defined
 
 ### Definition of Done
-- [x] All acceptance criteria met
-- [x] Tests passing for mutation scope (`npx tsc --noEmit` clean, focused mutation suites green, full suite currently `254 passed files / 5 unrelated failed files` and `7331 passed / 8 failed / 1 skipped / 30 todo` tests)
-- [x] Docs updated (spec/plan/tasks)
-<!-- /ANCHOR:quality-gates -->
+- [x] All 10 features audited
+- [x] Findings documented per feature
+- [x] Summary report completed
 
 ---
 
-<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-Feature-centric audit pipeline
+Read-only audit: Feature Catalog → Source Code → Findings Report
 
 ### Key Components
-- **Feature Inventory Layer**: Enumerates mutation feature catalog entries and source/test mappings.
-- **Per-Feature Audit Loop**: Applies correctness, standards, behavior, and test-gap checks for each feature.
-- **Remediation Workstreams**: Implements and validates fixes grouped by priority (P0/P1).
-- **Verification Layer**: Runs TSC/tests and consolidates evidence in tasks/checklist/review rounds.
+- **Feature Catalog**: `feature_catalog/02--mutation/` — source of truth
+- **Source Code**: `.opencode/skill/system-spec-kit/` — implementation files
+- **Audit Output**: This spec folder — findings and documentation
 
 ### Data Flow
-Catalog definitions are inventoried first, then each feature is traced to implementation and tests. Findings are converted into prioritized tasks, fixes are applied and verified, and final outcomes are recorded through checklist validation plus cross-AI review closure.
-<!-- /ANCHOR:architecture -->
+Read feature catalog entry → Locate source files → Compare description to implementation → Document findings
 
 ---
 
-<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Inventory
-- [x] **Step 1: Feature Inventory**
-- [x] Read all 10 feature `.md` files in `feature_catalog/02--mutation/`
-- [x] Extract source file lists (implementation + tests)
-- [x] Map features to manual playbook scenarios (`EX-006..EX-010`, `NEW-*`)
+### Phase 1: Preparation
+- [x] Verify feature catalog is current for Mutation
+- [x] Identify source code root paths
+- [x] Set up audit methodology
 
-### Phase 2: Audit per Feature
-- [x] **Step 2: Code Review Per Feature**
-- [x] Correctness checks: logic bugs, null/undefined handling, error paths
-- [x] Standards checks: `sk-code--opencode` TypeScript checklist
-- [x] Behavior checks: implementation vs "Current Reality"
-- [x] Edge-case checks: boundaries, empty input, concurrency
-- [x] **Step 3: Test Coverage Assessment**
-- [x] Verify tests exist for listed files
-- [x] Verify tests assert described feature behavior
-- [x] Document gaps between documented behavior and assertions
-- [x] **Step 4: Manual Test Playbook Cross-Reference**
-- [x] Map to scenarios `EX-006..EX-010`, `NEW-*`
-- [x] Mark missing or weak scenario coverage
+### Phase 2: Feature-by-Feature Audit
+- [x] Audit: Memory indexing (memory_save) — PARTIAL
+- [x] Audit: Memory metadata update (memory_update) — MATCH
+- [x] Audit: Single and folder delete (memory_delete) — MATCH
+- [x] Audit: Tier-based bulk deletion (memory_bulk_delete) — MATCH
+- [x] Audit: Validation feedback (memory_validate) — PARTIAL
+- [x] Audit: Transaction wrappers on mutation handlers — MATCH
+- [x] Audit: Namespace management CRUD tools — MATCH
+- [x] Audit: Prediction-error save arbitration — MATCH
+- [x] Audit: Correction tracking with undo — MATCH
+- [x] Audit: Per-memory history log — MATCH
 
-### Phase 3: Fix + Verify
-- [x] **Step 5: Findings Report + Remediation Closure**
-- [x] Produce structured findings per feature: PASS/WARN/FAIL, issues, violations, gaps, recommendations
-- [x] Complete all remediation tasks T-01 through T-09
-- [x] Verify closure with TypeScript compile and test results
-- [x] Record post-fix status and current re-audit verification state (superseding the older `R11: 98/100 APPROVE` snapshot)
-<!-- /ANCHOR:phases -->
+### Phase 3: Synthesis
+- [x] Cross-reference findings across features
+- [x] Identify systemic patterns
+- [x] Compile summary report
 
 ---
 
-<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Static Type Check | Compile-time validation for all touched TypeScript paths | `npx tsc --noEmit` |
-| Targeted Regression | Task-specific suites (e.g., confidence tracker, history, CRUD/update/delete flows) | Vitest |
-| Manual Verification | Per-feature audit evidence review, playbook cross-reference, post-fix validation | Repository + audit artifacts |
-
-### sk-code--opencode Checklist (Per File)
-- [x] Naming: camelCase functions, PascalCase types/interfaces
-- [x] Imports: explicit, no barrel re-exports of side-effect modules
-- [x] Types: strict TypeScript, no `any` without justification
-- [x] Error handling: typed errors, no swallowed catches
-- [x] Null safety: optional chaining, nullish coalescing
-- [x] Constants: UPPER_SNAKE_CASE, no magic numbers
-- [x] Functions: single responsibility, < 50 lines preferred
-- [x] Comments: only where logic is non-obvious
-- [x] Exports: explicit named exports
-<!-- /ANCHOR:testing -->
+| Cross-reference | Feature-to-code traceability | Grep, Read, Glob |
+| Completeness | All 10 features covered | Checklist verification |
+| Accuracy | Catalog matches implementation | Manual review |
 
 ---
 
-<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Mutation feature catalog (`feature_catalog/02--mutation`) | Internal | Green | Audit cannot reliably map behavior claims to source files. |
-| MCP server TypeScript modules and handlers | Internal | Green | Core mutation paths cannot be evaluated or remediated. |
-| Vitest test suite and fixtures | Internal | Yellow | Some broader repository suites still fail outside mutation scope; mutation-focused suites are now concrete and green. |
-| Cross-AI review loop | External process | Green | Lower confidence in closure quality if not completed. |
-<!-- /ANCHOR:dependencies -->
+| Feature catalog | Internal | Green | Cannot audit without reference |
+| Source code access | Internal | Green | Cannot verify implementation |
 
 ---
 
-<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Regression introduced by remediation, or audit fix violates expected runtime behavior.
-- **Procedure**: Revert affected commits/worktree changes for mutation-fix files, rerun `npx tsc --noEmit` and targeted Vitest suites, then restore prior known-good behavior and re-open impacted tasks.
-<!-- /ANCHOR:rollback -->
+- **Trigger**: Audit methodology proves inadequate
+- **Procedure**: Revise approach and restart from Phase 1
 
 ---
 
-<!-- ANCHOR:phase-deps -->
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Inventory) ───► Phase 2 (Audit per Feature) ───► Phase 3 (Fix + Verify)
+Phase 1 (Prep) ──► Phase 2 (Audit 10 features) ──► Phase 3 (Synthesis)
 ```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Inventory | None | Audit per Feature |
-| Audit per Feature | Inventory | Fix + Verify |
-| Fix + Verify | Audit per Feature | Final completion reporting |
-<!-- /ANCHOR:phase-deps -->
 
 ---
 
-<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Inventory | Medium | 2-4 hours |
-| Audit per Feature | High | 8-14 hours |
-| Fix + Verify | High | 10-18 hours |
-| **Total** | | **20-36 hours** |
-<!-- /ANCHOR:effort -->
+| Preparation | Low | 1 session |
+| Feature Audit | Medium | 10 features |
+| Synthesis | Medium | 1 session |
 
 ---
 
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+## L3: MILESTONES
 
-### Pre-deployment Checklist
-- [x] Backup created (git history/worktree state available)
-- [x] Feature flag impact reviewed where applicable
-- [x] Monitoring/check validation path defined via compile/tests
+| Milestone | Description | Success Criteria |
+|-----------|-------------|------------------|
+| M1 | Audit spec created | All docs in place |
+| M2 | All features audited | 10/10 complete |
+| M3 | Synthesis delivered | Summary report finalized |
 
-### Rollback Procedure
-1. Revert changed mutation files to last known-good revision.
-2. Re-run `npx tsc --noEmit`.
-3. Re-run targeted Vitest suites for touched modules.
-4. Re-open failed tasks in `tasks.md` with updated evidence.
+---
 
-### Data Reversal
-- **Has data migrations?** Yes (history schema migration adjustments)
-- **Reversal procedure**: Restore previous schema revision and rerun migration tests before redeploying.
-<!-- /ANCHOR:enhanced-rollback -->
+## FINDINGS SUMMARY
+
+Audit completed 2026-03-22. 10/10 features audited.
+
+| Feature | ID | Result | Key Finding |
+|---------|----|--------|-------------|
+| Memory indexing | F01 | PARTIAL | 10+ source files missing; over-inclusive list |
+| Memory metadata update | F02 | MATCH | `history.ts` missing from source list |
+| Single and folder delete | F03 | MATCH | `history.ts` missing; source list over-inclusive |
+| Tier-based bulk deletion | F04 | MATCH | `history.ts` missing from source list |
+| Validation feedback | F05 | PARTIAL | 7 source files missing incl. primary handler; undocumented `recordAdaptiveSignal()` call |
+| Transaction wrappers | F06 | MATCH | Source list over-enumerated (37 files for ~5-file feature) |
+| Namespace management | F07 | MATCH | 2 primary impl files missing; source list has 158+ unrelated files |
+| PE save arbitration | F08 | MATCH | No discrepancies |
+| Correction tracking | F09 | MATCH | No discrepancies |
+| Per-memory history log | F10 | MATCH | Minor wording ambiguity only |
+
+**Systemic patterns identified:**
+1. `history.ts` omitted from source lists across F01–F05 (cross-cutting catalog gap)
+2. F06 and F07 source lists massively over-enumerated; require pruning
+3. F05 and F07 missing their primary handler/implementation files (highest-severity gap)
+4. F08–F10 are the most accurate entries; no corrective action needed

@@ -1,205 +1,162 @@
 ---
-title: "Implementation Plan: bug-fixes-and-data-integrity [template:level_2/plan.md]"
-description: "Execution plan for causal-link reliability fixes, regression hardening, scripts testability repair, and evidence-truthful documentation sync."
-SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
+title: "Implementation Plan: Code Audit — Bug Fixes and Data Integrity"
+description: "Technical plan for auditing 11 Bug Fixes and Data Integrity features against source code"
 trigger_phrases:
-  - "implementation plan"
-  - "causal link"
-  - "verification alignment"
-  - "scripts testability"
-  - "phase 001-018"
+  - "audit plan"
+  - "bug fixes and data integrity"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: bug-fixes-and-data-integrity
+# Implementation Plan: Code Audit — Bug Fixes and Data Integrity
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | TypeScript (Node.js) |
-| **Framework** | Spec Kit Memory MCP server + docs/spec packet workflow |
-| **Storage** | SQLite + markdown artifacts |
-| **Testing** | Vitest (`mcp_server`, `scripts`) + packet validation |
+| **Language/Stack** | TypeScript / JavaScript (Node.js) |
+| **Framework** | MCP server (Model Context Protocol) |
+| **Storage** | better-sqlite3 |
+| **Testing** | Manual code review + cross-reference |
 
 ### Overview
-This plan executes a targeted remediation bundle discovered during the phase `001` to `018` review:
-1. Fix causal-link lock/busy masking so infra failures surface correctly.
-2. Add deterministic regressions for the corrected failure mode.
-3. Replace weak test branches and stale wording in docs/playbook/readmes.
-4. Repair scripts package local testability and keep packet verification claims truthful.
-<!-- /ANCHOR:summary -->
+Audit each of the 11 Bug Fixes and Data Integrity features by reading the feature catalog entry, locating the referenced source files, and verifying that the implementation matches the documented behavior.
 
 ---
 
-<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement and boundaries documented
-- [x] Scope locked to review findings and user-approved file set
-- [x] Verification evidence sources identified
+- [x] Feature catalog files current and accessible
+- [x] Source code accessible via file system
+- [x] Audit methodology defined
 
 ### Definition of Done
-- [x] Runtime and test fixes landed for causal-link, incremental-index, and scripts path issues
-- [x] Targeted verification completed (`typecheck`, targeted MCP vitest, selected scripts suites)
-- [x] Full `scripts` package `npm test` completed end-to-end and reflected in checklist (`Test Files 9 passed (9)`, `Tests 150 passed (150)`, `Duration 77.49s`)
-- [x] Packet docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`) synchronized to real state
-<!-- /ANCHOR:quality-gates -->
+- [x] All 11 features audited
+- [x] Findings documented per feature
+- [x] Summary report completed
 
 ---
 
-<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-Monolith
+Read-only audit: Feature Catalog → Source Code → Findings Report
 
 ### Key Components
-- **Storage edge insert path**: `.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts`
-- **Causal graph handler path**: `.opencode/skill/system-spec-kit/mcp_server/handlers/causal-graph.ts`
-- **Regression suites**: causal-edge, causal-graph integration, incremental-index v1/v2, scripts unit suites
-- **Documentation surfaces**: root README, test README, watcher catalog, manual playbook, spec packet docs
+- **Feature Catalog**: `feature_catalog/08--bug-fixes-and-data-integrity/` — source of truth
+- **Source Code**: `.opencode/skill/system-spec-kit/` — implementation files
+- **Audit Output**: This spec folder — findings and documentation
 
 ### Data Flow
-Review findings were mapped to concrete files, code/test fixes were applied first, documentation surfaces were synchronized next, and verification evidence was captured and closed with full package-level check/test results.
-<!-- /ANCHOR:architecture -->
+Read feature catalog entry → Locate source files → Compare description to implementation → Document findings
 
 ---
 
-<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Setup
-- [x] Confirm review findings and reproduction surface for causal-link lock/busy flake
-- [x] Confirm stale documentation claims and path placeholders needing correction
-- [x] Lock edits to approved files and packet scope only
+### Phase 1: Preparation
+- [x] Verify feature catalog is current for Bug Fixes and Data Integrity
+- [x] Identify source code root paths
+- [x] Set up audit methodology
 
-### Phase 2: Core Implementation
-- [x] Update causal edge insert behavior to rethrow lock/busy DB errors
-- [x] Add storage-level and handler-level causal regressions for lock/busy -> `E022`
-- [x] Replace incremental-index symlink pass-through fallback assertions with explicit capability gating
-- [x] Apply scripts package/test path fixes and remove stale artifact file
+### Phase 2: Feature-by-Feature Audit
+- [x] Audit: Graph channel ID fix (PARTIAL)
+- [x] Audit: Chunk collapse deduplication (MATCH)
+- [x] Audit: Co-activation fan-effect divisor (MATCH)
+- [x] Audit: SHA-256 content-hash deduplication (MATCH)
+- [x] Audit: Database and schema safety (MATCH)
+- [x] Audit: Guards and edge cases (MATCH)
+- [x] Audit: Canonical ID dedup hardening (MATCH)
+- [x] Audit: Math.max/min stack overflow elimination (PARTIAL)
+- [x] Audit: Session-manager transaction gap fixes (MATCH)
+- [x] Audit: Chunking Orchestrator Safe Swap (MATCH)
+- [x] Audit: Working Memory Timestamp Fix (MATCH)
 
-### Phase 3: Documentation Alignment
-- [x] Refresh stale counts/coverage language in root and tests READMEs
-- [x] Update watcher feature note to current coverage wording
-- [x] Replace playbook "missing coverage" statement with explicit matrix for 29 entries
-- [x] Rewrite packet docs to match true implementation and verification state
-
-### Phase 4: Verification
-- [x] `npm run typecheck` in `.opencode/skill/system-spec-kit`
-- [x] `npm run check` in `.opencode/skill/system-spec-kit/mcp_server`
-- [x] `npm run check` in `.opencode/skill/system-spec-kit/scripts`
-- [x] Targeted MCP vitest run for causal and incremental suites
-- [x] Selected scripts vitest suites run individually
-- [x] Full scripts package `npm test` completed (`Test Files 9 passed (9)`, `Tests 150 passed (150)`, `Duration 77.49s`)
-<!-- /ANCHOR:phases -->
+### Phase 3: Synthesis
+- [x] Cross-reference findings across features
+- [x] Identify systemic patterns
+- [x] Compile summary report
 
 ---
 
-<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Type Safety | `system-spec-kit` workspace | `npm run typecheck` |
-| Package Quality Gates | `mcp_server` and `scripts` package checks | `npm run check` |
-| Targeted Runtime Regression | causal-link + incremental-index suites | `npm test -- --run ...` in `mcp_server` |
-| Scripts Local Reliability | focused suites for path/import/file-writer behavior | `npm test -- --run ...` in `scripts` |
-| Full Package Verification | all scripts tests | `npm test` in `scripts` (complete: 9 files, 150 tests) |
-<!-- /ANCHOR:testing -->
+| Cross-reference | Feature-to-code traceability | Grep, Read, Glob |
+| Completeness | All 11 features covered | Checklist verification |
+| Accuracy | Catalog matches implementation | Manual review |
 
 ---
 
-<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Existing review findings for phases `001` to `018` | Internal | Green | Scope rationale and acceptance mapping lose traceability |
-| Local workspace code changes already landed | Internal | Green | Packet cannot be synchronized to real implementation state |
-| Verification outputs captured in packet docs | Internal | Green | Future audits can trace completion evidence precisely |
-| Spec packet validation (`validate.sh`) | Internal | Green | Structural quality gates for markdown docs |
-<!-- /ANCHOR:dependencies -->
+| Feature catalog | Internal | Green | Cannot audit without reference |
+| Source code access | Internal | Green | Cannot verify implementation |
 
 ---
 
-<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Regressions fail after doc sync, or lock/busy behavior mapping is shown incorrect.
-- **Procedure**:
-1. Revert affected code/docs commits for this packet.
-2. Re-run targeted MCP and scripts suites.
-3. Restore prior packet docs and re-apply corrections with updated evidence.
-<!-- /ANCHOR:rollback -->
+- **Trigger**: Audit methodology proves inadequate
+- **Procedure**: Revise approach and restart from Phase 1
 
 ---
 
-<!-- ANCHOR:phase-deps -->
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Setup) ---> Phase 2 (Code/Test Fixes) ---> Phase 3 (Docs Sync) ---> Phase 4 (Verification)
+Phase 1 (Prep) ──► Phase 2 (Audit 11 features) ──► Phase 3 (Synthesis)
 ```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Setup | None | Code/Test Fixes, Docs Sync |
-| Code/Test Fixes | Setup | Docs Sync, Verification |
-| Docs Sync | Code/Test Fixes | Verification |
-| Verification | Code/Test Fixes, Docs Sync | Final packet closeout |
-<!-- /ANCHOR:phase-deps -->
 
 ---
 
-<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Setup | Medium | 1-2 hours |
-| Core Implementation | High | 4-7 hours |
-| Documentation Alignment | Medium | 2-4 hours |
-| Verification | Medium | 2-3 hours |
-| **Total** | | **9-16 hours** |
-<!-- /ANCHOR:effort -->
+| Preparation | Low | 1 session |
+| Feature Audit | Medium | 11 features |
+| Synthesis | Medium | 1 session |
 
 ---
 
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+## L3: MILESTONES
 
-### Pre-deployment Checklist
-- [x] Scope lock preserved (no unrelated feature work)
-- [x] Targeted regression coverage present for causal-lock path
-- [x] Full scripts package suite completion captured
-
-### Rollback Procedure
-1. Revert causal-edge/storage and scripts-path patches.
-2. Re-run causal/incremental suites and key scripts tests.
-3. Reconcile packet docs/checklist to reverted evidence.
-4. Re-open unresolved task IDs in `tasks.md`.
-
-### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: N/A
-<!-- /ANCHOR:enhanced-rollback -->
+| Milestone | Description | Success Criteria |
+|-----------|-------------|------------------|
+| M1 | Audit spec created | All docs in place |
+| M2 | All features audited | 11/11 complete |
+| M3 | Synthesis delivered | Summary report finalized |
 
 ---
 
-<!--
-LEVEL 2 PLAN (~140 lines)
-- Core + Verification additions
-- Phase dependencies, effort estimation
-- Enhanced rollback procedures
--->
+## FINDINGS SUMMARY
+
+Audit completed 2026-03-22. Result: **9 MATCH, 2 PARTIAL** across 11 features.
+
+| Verdict | Count | Features |
+|---------|-------|---------|
+| MATCH | 9 | F02, F03, F04, F05, F06, F07, F09, F10, F11 |
+| PARTIAL | 2 | F01 (graph-channel-id-fix), F08 (math-max-min-overflow) |
+
+### PARTIAL Details
+
+**F01 — Graph channel ID fix**: Pre-fix `mem:` prefix removal and the primary fix are confirmed. Two call-sites in `graph-lifecycle.ts` remain unfixed and are not documented in the catalog source list.
+
+**F08 — Math.max/min stack overflow elimination**: Fix applied in `retrieval-pipeline.ts` and `score-calibration.ts`. Two files (`k-value-analysis.ts`, `graph-lifecycle.ts`) still use spread-based calls and are absent from the catalog's source list. Needs follow-on work item.
+
+### Cross-Cutting Patterns
+
+- **Inflated source lists**: F07 and F09 reference more source files than the fix strictly involves. Catalog source lists should be trimmed on next revision.
+- **Transaction count (F09)**: Documented as 2 transactions; source code shows 3. Catalog correction recommended.
+- **`graph-lifecycle.ts` as a hotspot**: Appears in both F01 and F08 PARTIAL verdicts — two separate unfixed patterns in the same file.

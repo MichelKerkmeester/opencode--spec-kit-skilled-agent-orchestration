@@ -1,12 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/015-retrieval-enhancements",
-  "description": "Feature Specification: retrieval-enhancements",
+  "description": "Feature Specification: Code Audit — Retrieval Enhancements",
   "keywords": [
     "feature",
     "specification",
-    "retrieval-enhancements"
+    "code",
+    "audit",
+    "retrieval",
+    "enhancements"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.288Z",
+  "lastUpdated": "2026-03-22T17:41:14.711Z",
   "specId": "015",
   "folderSlug": "retrieval-enhancements",
   "parentChain": [
@@ -14,12 +17,6 @@
     "022-hybrid-rag-fusion",
     "007-code-audit-per-feature-catalog"
   ],
-  "memorySequence": 1,
-  "memoryNameHistory": [
-    "14-03-26_10-42__closed-open-p2-checklist-items-and-saved-closure.md"
-  ],
-  "title": "Feature Specification: retrieval-enhancements [template:level_2/spec.md]",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: retrieval-enhancements"
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

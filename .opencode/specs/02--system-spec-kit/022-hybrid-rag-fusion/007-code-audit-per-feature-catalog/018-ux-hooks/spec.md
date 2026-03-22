@@ -1,191 +1,217 @@
 ---
-title: "Feature Specification: ux-hooks [template:level_2/spec.md]"
-description: "Audit the UX Hooks feature catalog for correctness, standards, behavior parity, and coverage gaps across 13 features. Produce prioritized findings that can drive implementation fixes and catalog alignment."
+title: "Feature Specification: Code Audit — UX Hooks"
+description: "Systematic code audit of 19 UX Hooks features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
-  - "ux hooks"
   - "code audit"
+  - "ux hooks"
+  - "feature verification"
 importance_tier: "normal"
 contextType: "general"
 ---
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
-# Feature Specification: ux-hooks
+# Feature Specification: Code Audit — UX Hooks
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
 
-<!-- ANCHOR:metadata -->
+## EXECUTIVE SUMMARY
+
+Systematic code audit of 19 UX Hooks features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/18--ux-hooks/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.
+
+**Key Decisions**: Audit against current feature catalog as source of truth, document findings per feature
+
+**Critical Dependencies**: Feature catalog must be current and accurate
+
+---
+
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Level** | 2 |
-| **Priority** | P0 |
+| **Level** | 3 |
+| **Priority** | P1 |
 | **Status** | Complete |
-| **Created** | 2026-03-10 |
-| **Branch** | `018-ux-hooks` |
-| **Parent Spec** | ../spec.md |
-| **Predecessor** | ../017-governance/spec.md |
-| **Successor** | ../019-decisions-and-deferrals/spec.md |
-<!-- /ANCHOR:metadata -->
+| **Created** | 2026-03-22 |
+| **Branch** | `main` |
 
 ---
 
-<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The UX Hooks catalog includes 13 features whose documented "Current Reality" does not fully match implementation behavior in several high-impact areas. Findings include contract desynchronization (`confirmName` optionality), mixed-outcome auto-repair success over-reporting, silent hook failure handling, and stale test references. Without a structured audit artifact, remediation sequencing and verification remain inconsistent.
+The feature catalog for UX Hooks has evolved significantly. Existing audit documentation was stale and no longer reflected the current 19-feature inventory. A fresh audit baseline is needed to verify each feature's implementation against its catalog description.
 
 ### Purpose
-Create a feature-by-feature, evidence-backed audit that produces a prioritized remediation backlog and synchronized documentation targets for UX Hooks.
-<!-- /ANCHOR:problem -->
+Verify that all 19 UX Hooks features are accurately documented in the feature catalog and correctly implemented in source code.
 
 ---
 
-<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-- Audit all 13 features in `feature_catalog/18--ux-hooks/` for correctness, standards alignment, behavior match, and test/playbook coverage.
-- Capture per-feature findings with status (`PASS/WARN/FAIL`), issues, test gaps, and recommended fixes.
-- Produce and maintain a prioritized remediation backlog (P0/P1/P2) with concrete source file targets.
+- Shared post-mutation hook wiring
+- Memory health autoRepair metadata
+- Checkpoint delete confirmName safety
+- Schema and type contract synchronization
+- Dedicated UX hook modules
+- Mutation hook result contract expansion
+- Mutation response UX payload exposure
+- Context-server success-path hint append
+- Duplicate-save no-op feedback hardening
+- Atomic-save parity and partial-indexing hints
+- Final token metadata recomputation
+- Hooks README and export alignment
+- End-to-end success-envelope verification
+- Two-tier result explainability
+- Mode-aware response profiles
+- Progressive disclosure with cursor pagination
+- Retrieval session state
+- Empty result recovery
+- Result confidence scoring
 
 ### Out of Scope
-- Implementing production code fixes in `mcp_server/` during this documentation pass - tracked separately in tasks.
-- Auditing non-UX feature categories outside `feature_catalog/18--ux-hooks/` - separate audits own those categories.
+- Implementing new features or fixing bugs discovered during audit
+- Modifying source code (audit is read-only)
+- Performance benchmarking
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `spec.md` | Modify | Level 2 specification for UX Hooks audit scope and requirements |
-| `plan.md` | Modify | Methodology and execution plan mapped to Level 2 structure |
-| `tasks.md` | Modify | Prioritized remediation backlog and execution checklist |
-| `checklist.md` | Modify | Verification checklist with preserved feature findings |
-<!-- /ANCHOR:scope -->
+| `feature_catalog/18--ux-hooks/*.md` | Reference | Feature catalog source files |
+| `007-code-audit-per-feature-catalog/018-ux-hooks/` | Create | Audit documentation |
 
 ---
 
-<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Audit all 13 UX Hooks features with structured findings | Every feature has status, code/standards notes, behavior match, test gaps, and recommended fix |
-| REQ-002 | Produce actionable blocker findings for correctness/contract issues | Contract desync and mixed-repair outcome defects are explicitly captured with source references |
-| REQ-003 | Preserve remediation backlog with explicit P0/P1/P2 prioritization | Backlog includes P0=2, P1=8, P2=7 items mapped to code or catalog files |
+| REQ-001 | Each feature verified against source code | Every feature file cross-referenced with implementation |
+| REQ-002 | Discrepancies documented | Any catalog-vs-code mismatches recorded |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Document test coverage and stale reference gaps | Missing `retry.vitest.ts` references and unasserted behavior paths are listed per impacted feature |
-| REQ-005 | Capture playbook coverage outcomes for UX features | Features with missing NEW-095+ mappings are identified as coverage gaps |
-<!-- /ANCHOR:requirements -->
+| REQ-003 | Source file references validated | All listed source files confirmed to exist |
+| REQ-004 | Feature interactions mapped | Cross-feature dependencies documented |
 
 ---
 
-<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: ✓ VERIFIED — All 13 features in `feature_catalog/18--ux-hooks/` audited with `PASS/WARN/FAIL` status, issue type, evidence, and recommended fix. Findings F-01–F-13 preserved in `checklist.md`.
-- **SC-002**: ✓ VERIFIED — 17 tasks (P0=2, P1=8, P2=7) executed via 5 parallel agents; 445/445 tests across 7 files, all green. See `implementation-summary.md`.
-
-### Acceptance Scenarios
-
-**Given** a feature catalog entry with a documented contract (e.g. `confirmName` required), **When** the handler code is audited, **Then** the finding captures contract desynchronization as P0 with source reference.
-
-**Given** a mutation hook catch block that silently swallows errors, **When** the error handling audit runs, **Then** the finding is flagged as WARN with recommended logging fix and test gap.
-
-**Given** a feature catalog entry referencing a stale test file (e.g. `retry.vitest.ts`), **When** test coverage is assessed, **Then** the stale reference is logged and a reconciliation task is created.
-
-**Given** a completed remediation backlog with 17 tasks, **When** the full test suite executes, **Then** all 445/445 tests pass with zero regressions.
-<!-- /ANCHOR:success-criteria -->
+- **SC-001**: All 19 features audited with findings documented
+- **SC-002**: Zero unverified features remaining in this category
 
 ---
 
-<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `feature_catalog/18--ux-hooks/*.md` accuracy | Mis-prioritized fixes if catalog reality is stale | Cross-check each claim against source/test files before final status |
-| Dependency | `mcp_server/handlers`, `mcp_server/hooks`, `mcp_server/tests` availability | Unable to validate behavior and test linkage | Use source references already captured in tasks/checklist where direct verification is unavailable |
-| Risk | Stale test references (for example `retry.vitest.ts`) | False confidence in test coverage | Mark each stale reference explicitly and add catalog sync tasks |
-| Risk | Silent catch behavior masks runtime failures | Hard-to-diagnose production regressions | Prioritize logging/observability tasks in P1 backlog |
-<!-- /ANCHOR:risks -->
+| Dependency | Feature catalog accuracy | Audit based on stale catalog | Verify catalog currency first |
+| Risk | Source code changed since catalog update | Med | Cross-reference git history |
+| Risk | Some features span multiple source files | Low | Follow import chains |
 
 ---
 
-<!-- ANCHOR:questions -->
-
----
-
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: Audit artifacts for all 13 features must be readable and scannable within a single review pass.
-- **NFR-P02**: Priority and status metadata must allow deterministic triage without additional interpretation.
-
-### Security
-- **NFR-S01**: Documentation updates must not expose secrets, credentials, or sensitive runtime data.
-- **NFR-S02**: Safety-critical contract requirements (for example required `confirmName`) must be unambiguous in specs/tasks.
+- **NFR-P01**: Audit completable by AI agent in single session
 
 ### Reliability
-- **NFR-R01**: Findings should remain reproducible from cited source paths and test references.
-- **NFR-R02**: Template anchors/comments must remain intact to keep downstream tooling compatible.
-<!-- /ANCHOR:nfr -->
+- **NFR-R01**: Findings must be reproducible by re-reading same sources
 
 ---
 
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 8. EDGE CASES
 
 ### Data Boundaries
-- Empty input: Missing or empty feature files are recorded as explicit audit gaps.
-- Maximum length: Large feature narratives are summarized into prioritized findings without dropping source references.
-- Invalid format: Malformed markdown/frontmatter is treated as a documentation defect and flagged.
+- Feature with no source files listed: Flag as catalog gap
+- Feature spanning 10+ source files: Prioritize primary implementation file
 
 ### Error Scenarios
-- External service failure: If playbook metadata is unavailable, mark playbook coverage as `MISSING` with follow-up task.
-- Network timeout: Not applicable for local audit execution; use existing references when live checks are blocked.
-- Concurrent access: If source files change during audit, re-validate impacted findings before final sign-off.
-
-### State Transitions
-- Partial completion: Preserve completed feature findings and mark remaining features as pending.
-- Session expiry: Audit can resume from saved spec/tasks/checklist artifacts without data loss.
-<!-- /ANCHOR:edge-cases -->
+- Source file referenced in catalog no longer exists: Document as finding
+- Feature partially implemented: Document completion percentage
 
 ---
 
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 9. COMPLEXITY ASSESSMENT
 
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 21/25 | 13-feature catalog, multiple handler/hook/test surfaces |
-| Risk | 18/25 | Contract mismatch + silent failure patterns + stale test mapping |
-| Research | 14/20 | Cross-file traceability and verification synthesis required |
-| **Total** | **53/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
-
----
-
-## 10. OPEN QUESTIONS
-
-- Should all `retry.vitest.ts` references be removed from UX feature catalog entries, or should a replacement test artifact be introduced?
-- Should checkpoint delete success payload include both checkpoint id and deletion timestamp, or is name-level metadata sufficient?
-<!-- /ANCHOR:questions -->
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 20/25 | Features: 19 |
+| Risk | 8/25 | Read-only audit, no breaking changes |
+| Research | 14/20 | Must trace each feature to source |
+| Multi-Agent | 5/15 | Single-phase audit |
+| Coordination | 5/15 | Depends on feature catalog |
+| **Total** | **52/100** | **Level 3** |
 
 ---
 
-<!--
-CORE TEMPLATE (~80 lines)
-- Essential what/why/how only
-- No boilerplate sections
-- Add L2/L3 addendums for complexity
--->
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Catalog out of date | M | L | Verify against latest commit |
+| R-002 | Missing source files | L | M | Flag in findings |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Feature Verification (Priority: P0)
+
+**As a** system maintainer, **I want** each UX Hooks feature verified against source code, **so that** I can trust the catalog accurately reflects the implementation.
+
+**Acceptance Criteria**:
+1. Given a feature catalog entry, When audited, Then implementation matches description
+
+---
+
+## 12. AUDIT FINDINGS
+
+**Audit Date**: 2026-03-22
+**Result**: 17 MATCH, 2 PARTIAL (out of 19 features)
+
+| ID | Feature | Result | Notes |
+|----|---------|--------|-------|
+| F01 | Shared post-mutation hook wiring | MATCH | Implementation matches catalog |
+| F02 | Memory health autoRepair metadata | MATCH | Implementation matches catalog |
+| F03 | Checkpoint delete confirmName safety | MATCH | Implementation matches catalog |
+| F04 | Schema and type contract synchronization | MATCH | Implementation matches catalog |
+| F05 | Dedicated UX hook modules | MATCH | Implementation matches catalog |
+| F06 | Mutation hook result contract expansion | MATCH | Implementation matches catalog |
+| F07 | Mutation response UX payload exposure | MATCH | Implementation matches catalog |
+| F08 | Context-server success-path hint append | MATCH | Implementation matches catalog |
+| F09 | Duplicate-save no-op feedback hardening | MATCH | Implementation matches catalog |
+| F10 | Atomic-save parity and partial-indexing hints | MATCH | Implementation matches catalog |
+| F11 | Final token metadata recomputation | MATCH | Implementation matches catalog |
+| F12 | Hooks README and export alignment | PARTIAL | Source list inflated — 40+ files listed for an alignment fix; scope overstated in catalog |
+| F13 | End-to-end success-envelope verification | MATCH | Implementation matches catalog |
+| F14 | Two-tier result explainability | MATCH | Implementation matches catalog |
+| F15 | Mode-aware response profiles | MATCH | Implementation matches catalog |
+| F16 | Progressive disclosure with cursor pagination | MATCH | Implementation matches catalog |
+| F17 | Retrieval session state | PARTIAL | Module header documents feature as OFF; runtime defaults to ON — catalog/header inconsistency |
+| F18 | Empty result recovery | MATCH | Implementation matches catalog |
+| F19 | Result confidence scoring | MATCH | Implementation matches catalog |
+
+---
+
+## 13. OPEN QUESTIONS
+
+- F12: Should the catalog source-file list for Hooks README/export alignment be pruned to the primary files only, or is the broad list intentional?
+- F17: Is the retrieval-session-state feature intentionally enabled at runtime despite the module header marking it OFF, or should the header be updated to reflect the live default?
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`

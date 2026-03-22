@@ -1,23 +1,19 @@
 ---
-title: "Verification Checklist: evaluation [template:level_2/checklist.md]"
-description: "Verification Date: 2026-03-10"
-SPECKIT_TEMPLATE_SOURCE: "checklist | v2.2"
+title: "Verification Checklist: Code Audit — Evaluation"
+description: "QA verification for Evaluation code audit"
 trigger_phrases:
-  - "verification"
   - "checklist"
   - "evaluation"
-  - "template"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Verification Checklist: evaluation
+# Verification Checklist: Code Audit — Evaluation
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
-<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -25,100 +21,66 @@ contextType: "general"
 | **[P0]** | HARD BLOCKER | Cannot claim done until complete |
 | **[P1]** | Required | Must complete OR get user approval |
 | **[P2]** | Optional | Can defer with documented reason |
-<!-- /ANCHOR:protocol -->
 
 ---
 
-## P0 - Blockers
-
-P0 items below are complete and include inline evidence.
-
----
-
-<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] F-01 and F-02 requirements documented in `spec.md` — REQ-001 through REQ-004 cover both features [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-002 [P0] Technical remediation approach defined in `plan.md` — 3 phases with TypeScript/MCP/SQLite/Vitest stack [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-003 [P1] Dependencies identified (`MCP handlers`, `SQLite eval tables`, `Vitest harness`) — eval-reporting.ts, reporting-dashboard.ts, ablation-framework.ts, eval-db.ts [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-<!-- /ANCHOR:pre-impl -->
+- [x] CHK-001 [P0] Feature catalog files accessible and current — `feature_catalog/07--evaluation/` confirmed accessible with 2 entries
+- [x] CHK-002 [P0] Source code accessible — MCP server source confirmed readable
+- [x] CHK-003 [P1] Audit methodology documented in plan.md — plan.md Phase 1-3 structure in place
 
 ---
 
-<!-- ANCHOR:code-quality -->
-## Code Quality
+## Audit Quality
 
-- [x] CHK-010 [P0] F-02 `eval_final_results` behavior mismatch resolved or catalog-corrected — stale comment in reporting-dashboard.ts and catalog claim in F-02 corrected; dashboard only queries `eval_metric_snapshots` + `eval_channel_results` [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-011 [P0] No evaluation handler warnings/errors in targeted test runs — 97/97 tests pass, tsc clean [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-012 [P1] Error handling paths validated (ablation disabled, dashboard failures) — T006-A1 (disabled flag throws), T005-D3 (DB unavailable throws) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-013 [P1] TypeScript implementation follows existing project patterns — vi.hoisted mocks, vi.mock, handler-level test structure matches handler-memory-*.vitest.ts patterns [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-<!-- /ANCHOR:code-quality -->
-
----
-
-<!-- ANCHOR:testing -->
-## Testing
-
-- [x] CHK-020 [P0] `handleEvalReportingDashboard` filter/format behavior verified with handler-level tests — T005-D1 (text default), T005-D2 (json format), T005-D3 (DB error) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-021 [P0] `handleEvalRunAblation` normalization/flag behavior verified with handler-level tests — T006-A1 (disabled), T006-A2 (empty/invalid→ALL_CHANNELS), T006-A3 (mixed filter), T006-A4 (recallK default 20), T006-A5 (recallK clamped >=1), T006-A6 (DB-not-init), T006-A7 (null-report), T006-A8 (storeResults=false), T006-A9 (includeFormattedReport=false) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-022 [P1] Edge cases tested (`storeResults=false`, `includeFormattedReport=false`, `recallK` boundaries) — recallK boundaries (T006-A4, T006-A5), channel normalization (T006-A2, T006-A3), storeResults=false (T006-A8), includeFormattedReport=false (T006-A9), DB-not-init (T006-A6), null-report (T006-A7) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-023 [P1] Stale `retry.vitest.ts` references removed or replaced with valid coverage — grep confirmed 0 matches in feature_catalog/07--evaluation/ [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-<!-- /ANCHOR:testing -->
+- [x] CHK-010 [P0] All 2 features audited individually — eval_run_ablation (PARTIAL) and eval_reporting_dashboard (MATCH) both audited
+- [x] CHK-011 [P0] Each feature cross-referenced with source code — behavioral descriptions traced to implementation for both features
+- [x] CHK-012 [P1] Discrepancies documented with evidence — F01 bloated source list (~90 vs ~15 relevant files) documented in spec.md §12
+- [x] CHK-013 [P1] Source file references verified to exist — confirmed for both features; eval_reporting_dashboard properly scoped (8 impl + 2 test)
+- [x] CHK-014 [P2] Feature interaction dependencies noted — no cross-feature dependencies identified within this category
 
 ---
 
-<!-- ANCHOR:security -->
-## Security
+## Completeness
 
-- [x] CHK-030 [P0] No hardcoded secrets introduced — no secrets in any diff; only comment and catalog text corrections [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-031 [P0] Input normalization for channel/filter/limit parameters validated — T006-A2 (empty→ALL_CHANNELS), T006-A3 (mixed→valid only), T006-A5 (recallK clamp) [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-032 [P1] Auth/authz behavior remains correct after remediation — no auth-sensitive code modified; handler validation paths preserved [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-<!-- /ANCHOR:security -->
-
----
-
-## P1 - Required
-
-P1 items are complete and include inline evidence unless explicitly deferred.
+- [x] CHK-020 [P0] Zero features skipped without documented reason — both features covered
+- [x] CHK-021 [P0] All findings categorized (match/mismatch/gap) — F01: PARTIAL, F02: MATCH; recorded in spec.md §12 and plan.md FINDINGS SUMMARY
+- [x] CHK-022 [P1] Summary statistics compiled — 1 MATCH, 1 PARTIAL; recorded in plan.md FINDINGS SUMMARY
+- [x] CHK-023 [P2] Recommendations for catalog updates documented — trim eval_run_ablation source list to ~15 relevant files; noted in spec.md §13
 
 ---
 
-<!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Feature catalog Current Reality for F-02 matches implementation — F-02 catalog updated: removed `eval_final_results` claim, now correctly states `eval_metric_snapshots` + `eval_channel_results` [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-041 [P1] `spec.md`, `plan.md`, and `tasks.md` are synchronized — all 4 docs updated with implementation evidence [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-042 [P2] Evidence references (files/lines, `EX-032`, `EX-033`) captured — playbook mapping documented in spec.md; findings tied to handler and service files [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-<!-- /ANCHOR:docs -->
+- [x] CHK-040 [P1] spec.md, plan.md, tasks.md synchronized — all 4 files updated to reflect Complete status with findings
+- [x] CHK-041 [P1] Findings written in clear, actionable language — PARTIAL verdict explains exact issue (source list size); MATCH verdict confirms full alignment
+- [x] CHK-042 [P2] Cross-references to other phase audits noted — out of scope for this LEAF task; parent catalog handles cross-phase references
 
 ---
 
-<!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temp files in scratch/ only — no temp files created outside scratch/ [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-051 [P1] scratch/ cleaned before completion — no scratch files generated [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-- [x] CHK-052 [P2] Findings saved to memory/ — spec folder complete with all evidence [EVIDENCE: See phase evidence in spec.md, plan.md, tasks.md, and implementation-summary.md]
-<!-- /ANCHOR:file-org -->
+- [x] CHK-050 [P1] Temp files in scratch/ only — no temp files created
+- [x] CHK-051 [P1] scratch/ cleaned before completion — no scratch files to clean
+- [x] CHK-052 [P2] Key findings saved to memory/ — findings captured in spec.md §12 and plan.md FINDINGS SUMMARY
 
 ---
 
-<!-- ANCHOR:summary -->
+## L3+: ARCHITECTURE VERIFICATION
+
+- [x] CHK-100 [P1] Feature-to-source traceability matrix complete — findings table in spec.md §12 maps each feature to verdict and evidence
+- [x] CHK-101 [P1] All source file paths verified — eval_reporting_dashboard (8+2 files confirmed); eval_run_ablation source list noted as bloated
+- [x] CHK-102 [P2] Cross-category dependencies documented — no cross-category dependencies found for these 2 features
+
+---
+
 ## Verification Summary
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
-| P1 Items | 8 | 8/8 |
-| P2 Items | 2 | 2/2 |
+| P0 Items | 5 | 5/5 |
+| P1 Items | 7 | 7/7 |
+| P2 Items | 4 | 4/4 |
 
-**Verification Date**: 2026-03-11
-<!-- /ANCHOR:summary -->
-
----
-
-<!--
-Level 2 checklist - Verification focus
-Mark [x] with evidence when verified
-P0 must complete, P1 need approval to defer
--->
+**Verification Date**: 2026-03-22

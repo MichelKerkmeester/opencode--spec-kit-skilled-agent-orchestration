@@ -1,12 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation",
-  "description": "Feature Specification: remediation-revalidation",
+  "description": "Feature Specification: Code Audit — Remediation and Revalidation",
   "keywords": [
     "feature",
     "specification",
-    "remediation-revalidation"
+    "code",
+    "audit",
+    "remediation",
+    "revalidation"
   ],
-  "lastUpdated": "2026-03-21T10:31:34.749Z",
+  "lastUpdated": "2026-03-22T17:41:14.740Z",
   "specId": "021",
   "folderSlug": "remediation-revalidation",
   "parentChain": [

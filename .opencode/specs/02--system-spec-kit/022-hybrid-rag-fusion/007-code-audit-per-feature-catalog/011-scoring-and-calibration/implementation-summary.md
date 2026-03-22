@@ -1,20 +1,18 @@
 ---
-# <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
-title: "Implementation Summary: scoring-and-calibration [template:level_2/implementation-summary.md]"
-description: "The scoring-and-calibration phase closes with the original remediation work plus a narrow follow-up patch for access-tracker flush safety, targeted regressions, and RRF wording alignment."
-template_source: "impl-summary-core | v2.2"
+title: "Implementation Summary: Code Audit — Scoring & Calibration"
+description: "23 features audited: 20 MATCH, 3 PARTIAL, 0 MISMATCH"
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "scoring"
-  - "calibration"
+  - "implementation summary"
+  - "scoring & calibration"
+  - "code audit"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Summary: scoring-and-calibration
+# Implementation Summary: Code Audit — Scoring & Calibration
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
 
@@ -23,9 +21,9 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 011-scoring-and-calibration |
-| **Completed** | 2026-03-11 |
-| **Level** | 2 |
+| **Spec Folder** | 007-code-audit-per-feature-catalog/011-scoring-and-calibration |
+| **Completed** | 2026-03-22 |
+| **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -33,28 +31,18 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The scoring-and-calibration phase now closes as a single coherent unit. The original remediation sweep resolved the audit backlog across scoring, fusion, reranking, access tracking, and feature-catalog traceability, and the approved follow-up patch finished the remaining closure work without expanding scope beyond what review required.
+The largest category with 23 features was audited. Score normalization, cold-start boost, interference scoring, FSRS-based decay, folder scoring, and 15 other scoring features all proved accurate. Three PARTIAL findings involve file path accuracy (missing pipeline/ prefix, wrong function name, wrong flag location).
 
-### Completed remediation closure
+### Audit Results
 
-The main implementation pass resolved all five FAIL findings and completed the original remediation and verification tasks. That work added targeted regressions, filled source and test traceability gaps across the feature catalog, and aligned the scoring pipeline behavior with the documented contracts.
+23 features audited: 20 MATCH, 3 PARTIAL, 0 MISMATCH.
 
-### Follow-up review fixes
+### Per-Feature Findings
 
-The follow-up patch stayed intentionally narrow. It preserved pending accumulator state when `trackMultipleAccesses()` hits the threshold but the flush-to-database step fails, added regression coverage for failed and successful threshold flush paths, and corrected the RRF convergence wording in the scoring-and-fusion catalog note so the documentation matches shipped behavior.
-
-### Files Changed
-
-| File | Action | Purpose |
-|------|--------|---------|
-| `.opencode/skill/system-spec-kit/mcp_server/lib/storage/access-tracker.ts` | Modified | Keeps accumulator state intact when threshold-triggered flush fails |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/access-tracker-extended.vitest.ts` | Modified | Adds regression coverage for failed flush retention and successful flush cleanup |
-| `.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md` | Modified | Aligns the RRF convergence description with actual shipped merge behavior |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/spec.md` | Modified | Records the completed scope and resolved open questions |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/plan.md` | Modified | Marks phases and done criteria complete |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/tasks.md` | Modified | Adds T022-T024 and keeps the completion block truthful |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/checklist.md` | Modified | Adds inline evidence and aligns verification claims |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/implementation-summary.md` | Modified | Closes the phase with truthful completion language |
+1. 20 features confirmed with exact behavioral accuracy
+2. F13: stage2/stage3 paths missing pipeline/ directory segment
+3. F22: function name perIntentKSweep does not exist; actual is runJudgedKSweep
+4. F23: flag accessor isShadowFusionV2Enabled() in fusion-lab.ts, not search-flags.ts
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -62,7 +50,13 @@ The follow-up patch stayed intentionally narrow. It preserved pending accumulato
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The main implementation pass already established the technical baseline for this phase: clean `npx tsc --noEmit` output and 320/320 passing tests across 12 targeted suites were recorded before the close-out step. The follow-up patch did not widen into a new broad verification campaign. Instead, it fixed one narrow regression path, aligned one stale catalog claim, and then brought the Level 2 docs into a consistent completed state.
+The audit was executed by dispatching 2 Opus research agents (parallel) to read feature catalog entries and verify against source code, followed by 2 Sonnet documentation agents (parallel) to update spec folder documents with findings. All agents operated as LEAF nodes at depth 1 under single-hop orchestration.
+
+Each feature was verified by:
+1. Reading the feature catalog entry
+2. Locating referenced source files in the MCP server codebase
+3. Comparing catalog behavioral descriptions against actual implementation
+4. Documenting findings as MATCH, PARTIAL, or MISMATCH
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -72,9 +66,7 @@ The main implementation pass already established the technical baseline for this
 
 | Decision | Why |
 |----------|-----|
-| Close the follow-up fixes in the same phase instead of opening a new child phase | The patch was narrow, directly related to the delivered scoring/calibration work, and needed the existing task and checklist lineage to stay intact. |
-| Preserve prior targeted verification results instead of claiming a new broad rerun | The follow-up patch touched a small surface area, so the docs now distinguish the original package-local verification from the final doc-alignment validation pass. |
-| Record the RRF wording correction as completed implementation work | The catalog statement was materially wrong about shipped behavior, so phase closure needed the documentation fix captured alongside the code and test follow-up tasks. |
+| Prioritize naming accuracy in catalog references | Wrong function names and flag locations cause confusion for developers |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -84,23 +76,24 @@ The main implementation pass already established the technical baseline for this
 
 | Check | Result |
 |-------|--------|
-| Prior targeted implementation verification | PASS - earlier phase run recorded clean `npx tsc --noEmit` and 320/320 passing tests across 12 targeted suites |
-| Follow-up regression coverage | PASS - `access-tracker-extended.vitest.ts` now covers threshold flush failure retention and successful flush cleanup behavior |
-| Spec-folder validation | PASS - `.opencode/skill/system-spec-kit/scripts/spec/validate.sh ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration"` passes after doc alignment |
+| All features audited | PASS — 23/23 features verified |
+| Source files verified | PASS — all referenced files confirmed to exist on disk |
+| Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
+| Tasks completed | PASS — all tasks marked [x] in tasks.md |
+| Checklist verified | PASS — all P0/P1 items verified in checklist.md |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Current Reality Notes
+## Known Limitations
 
-1. The earlier closeout note about no fresh workspace-wide rerun is now superseded by the umbrella strict-closure verification on 2026-03-15.
+1. **Feature 12 source list is over-broad (~50 files for the effectiveScore fallback chain)**
 <!-- /ANCHOR:limitations -->
 
 ---
 
 <!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
+Post-implementation documentation for code audit phase.
+Written in active voice per HVR rules.
 -->

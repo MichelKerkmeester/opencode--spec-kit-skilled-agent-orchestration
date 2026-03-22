@@ -1,202 +1,203 @@
 ---
-title: "Feature Specification: analysis [template:level_2/spec.md]"
-description: "Feature-centric code audit baseline for the Analysis catalog, capturing correctness, standards, behavior, and test coverage findings across seven features."
-SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
+title: "Feature Specification: Code Audit — Analysis"
+description: "Systematic code audit of 7 Analysis features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
-  - "feature"
-  - "specification"
+  - "code audit"
   - "analysis"
-  - "template"
-  - "spec core"
+  - "feature verification"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Feature Specification: analysis
+# Feature Specification: Code Audit — Analysis
 
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
 
-<!-- ANCHOR:metadata -->
+## EXECUTIVE SUMMARY
+
+Systematic code audit of 7 Analysis features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/06--analysis/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.
+
+**Key Decisions**: Audit against current feature catalog as source of truth, document findings per feature
+
+**Critical Dependencies**: Feature catalog must be current and accurate
+
+---
+
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Level** | 2 |
-| **Priority** | P0 |
+| **Level** | 3 |
+| **Priority** | P1 |
 | **Status** | Complete |
-| **Created** | 2026-03-10 |
-| **Branch** | `006-analysis` |
-| **Parent Spec** | ../spec.md |
-| **Predecessor** | ../005-lifecycle/spec.md |
-| **Successor** | ../007-evaluation/spec.md |
-<!-- /ANCHOR:metadata -->
+| **Created** | 2026-03-22 |
+| **Branch** | `main` |
 
 ---
 
-<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The Analysis feature catalog has seven features but lacked a Level 2 normalized spec structure, making it harder to track correctness, standards alignment, behavior parity, and test coverage uniformly. Existing audit notes were detailed but not organized in a template-compatible way for repeatable verification. This created friction for execution planning and quality gating.
+The feature catalog for Analysis has evolved significantly. Existing audit documentation was stale and no longer reflected the current 7-feature inventory. A fresh audit baseline is needed to verify each feature's implementation against its catalog description.
 
 ### Purpose
-Provide a Level 2, template-compliant analysis specification that preserves all key audit findings and makes remediation work traceable.
-<!-- /ANCHOR:problem -->
+Verify that all 7 Analysis features are accurately documented in the feature catalog and correctly implemented in source code.
 
 ---
 
-<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-- Normalize the Analysis phase documents to Level 2 template structure.
-- Preserve findings for all seven Analysis features (F-01 through F-07).
-- Map acceptance, tasks, plan phases, and verification checks into consistent anchors and checkbox formats.
+- Causal edge creation (memory_causal_link)
+- Causal graph statistics (memory_causal_stats)
+- Causal edge deletion (memory_causal_unlink)
+- Causal chain tracing (memory_drift_why)
+- Epistemic baseline capture (task_preflight)
+- Post-task learning measurement (task_postflight)
+- Learning history (memory_get_learning_history)
 
 ### Out of Scope
-- Extending P0/P1 fixes beyond the 7 Analysis features (F-01 through F-07) and their direct handler/storage code paths.
-- Auditing feature catalogs outside `feature_catalog/06--analysis/` — not part of this phase.
+- Implementing new features or fixing bugs discovered during audit
+- Modifying source code (audit is read-only)
+- Performance benchmarking
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `mcp_server/handlers/causal-graph.ts` | Modify | Fix orphan-inflated coverage SQL (T004) and false-positive max_depth_reached (T006). |
-| `mcp_server/lib/errors.ts` | Modify | Replace wildcard barrel exports with named exports (T008). |
-| `mcp_server/lib/errors/index.ts` | Modify | Replace wildcard barrel exports with named exports (T008). |
-| `mcp_server/tests/causal-edges-unit.vitest.ts` | Modify | Add orphan regression (T005) and depth semantics (T007) tests. |
-| `mcp_server/tests/causal-edges.vitest.ts` | Modify | Replace 77 placeholder stubs with DB-backed tests (T009), add unlink tests (T010). |
-| `mcp_server/tests/handler-session-learning.vitest.ts` | Modify | Add overwrite guard (T011) and LI formula/band tests (T012). |
-| `mcp_server/tests/learning-stats-filters.vitest.ts` | Modify | Add ordering, threshold, and limit clamping tests (T013). |
-| `mcp_server/tests/integration-causal-graph.vitest.ts` | Modify | Add causal-stats (T014) and drift-why (T015) integration tests. |
-| `feature_catalog/06--analysis/01-*.md` through `07-*.md` | Modify | Remove stale retry.vitest.ts references (T016-T022). |
-| `spec.md` | Modify | Update status to Complete. |
-| `tasks.md` | Modify | Mark all 25 tasks with evidence. |
-| `plan.md` | Modify | Mark phase checkboxes with evidence. |
-| `checklist.md` | Modify | Mark all verification items with evidence. |
-<!-- /ANCHOR:scope -->
+| `feature_catalog/06--analysis/*.md` | Reference | Feature catalog source files |
+| `007-code-audit-per-feature-catalog/006-analysis/` | Create | Audit documentation |
 
 ---
 
-<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Audit documentation covers all seven Analysis features. | F-01 through F-07 appear with status, findings, and actionable follow-ups. |
-| REQ-002 | FAIL-level defects are explicitly captured as immediate tasks. | Orphan-inflated coverage and false-positive `maxDepthReached` defects are documented with fix direction. |
-| REQ-003 | Template compliance is exact for Level 2 structure. | Required frontmatter, Speckit comments, anchors, and checkbox syntax are present. |
+| REQ-001 | Each feature verified against source code | Every feature file cross-referenced with implementation |
+| REQ-002 | Discrepancies documented | Any catalog-vs-code mismatches recorded |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Standards alignment gaps are tracked across impacted features. | Wildcard export and pattern-violation findings are mapped into tasks/checklist entries. |
-| REQ-005 | Test coverage gaps are traceable to concrete regression tasks. | P0/P1/P2 test gaps are represented in tasks with T### numbering and file context. |
-| REQ-006 | Manual playbook mapping status is recorded. | EX-019..EX-025 are explicitly linked from the corresponding analysis feature files and the playbook index. |
-<!-- /ANCHOR:requirements -->
+| REQ-003 | Source file references validated | All listed source files confirmed to exist |
+| REQ-004 | Feature interactions mapped | Cross-feature dependencies documented |
 
 ---
 
-<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 7 features are represented with structured PASS/WARN/FAIL findings.
-- **SC-002**: Each feature documents code issues, standards violations, behavior match/mismatch, and test gaps.
-- **SC-003**: P0/P1/P2 remediation tasks are converted into template-conformant Phase 2 tasks with T### numbering.
-- **SC-004**: Verification checklist sections reflect pre-implementation, quality, testing, security, and documentation outcomes, including 211 passing tests across 5 Vitest files.
-
-### Acceptance Scenarios
-
-1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
-2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
-3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
-4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
-
-<!-- /ANCHOR:success-criteria -->
+- **SC-001**: All 7 features audited with findings documented
+- **SC-002**: Zero unverified features remaining in this category
 
 ---
 
-<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Analysis feature catalog markdown files | Missing or stale source references can weaken audit evidence. | Keep citations aligned with current file paths and line contexts during updates. |
-| Risk | Deferred test suites remain unresolved | Backlog may grow while production behavior drifts. | Prioritize P0 regressions first, then complete P1 DB-backed suite replacements. |
-<!-- /ANCHOR:risks -->
+| Dependency | Feature catalog accuracy | Audit based on stale catalog | Verify catalog currency first |
+| Risk | Source code changed since catalog update | Med | Cross-reference git history |
+| Risk | Some features span multiple source files | Low | Follow import chains |
 
 ---
 
-<!-- ANCHOR:questions -->
-
----
-
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: Documentation restructuring should remain readable and quickly scannable for execution planning.
-- **NFR-P02**: Task and checklist navigation should support fast triage across 25 mapped tasks.
-
-### Security
-- **NFR-S01**: No secrets, credentials, or unsafe command patterns are introduced in spec artifacts.
-- **NFR-S02**: Security-relevant findings (validation/auth/error handling) remain visible in checklist and tasks.
+- **NFR-P01**: Audit completable by AI agent in single session
 
 ### Reliability
-- **NFR-R01**: Template anchors remain stable for automated parsing and memory tooling.
-- **NFR-R02**: Priority mapping (P0/P1/P2) remains internally consistent across all four documents.
-<!-- /ANCHOR:nfr -->
+- **NFR-R01**: Findings must be reproducible by re-reading same sources
 
 ---
 
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 8. EDGE CASES
 
 ### Data Boundaries
-- Empty findings set: maintain required template scaffolding with explicit "NONE" entries.
-- Large task backlog: preserve strict T### ordering to avoid ambiguity.
-- Missing file references: keep task descriptions actionable without unresolved placeholders.
+- Feature with no source files listed: Flag as catalog gap
+- Feature spanning 10+ source files: Prioritize primary implementation file
 
 ### Error Scenarios
-- Stale source path references: flag in documentation checklist and avoid silent omission.
-- Inconsistent priority mapping: treat as blocker until aligned across spec/tasks/checklist.
-- Partial rewrites: reject if any required anchor or frontmatter key is missing.
-
-### State Transitions
-- Draft to In Progress: checklist counters update as verification evidence is added.
-- In Progress to Complete: all P0 resolved and P1 completed or explicitly deferred with approval.
-<!-- /ANCHOR:edge-cases -->
+- Source file referenced in catalog no longer exists: Document as finding
+- Feature partially implemented: Document completion percentage
 
 ---
 
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 9. COMPLEXITY ASSESSMENT
 
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 18/25 | Four documents, seven audited features, cross-file consistency requirements. |
-| Risk | 17/25 | Incorrect mapping can hide FAIL findings or priority blockers. |
-| Research | 12/20 | Existing audit content is complete but needs structured normalization. |
-| **Total** | **47/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
-
----
-
-## 10. OPEN QUESTIONS
-
-- No open questions remain for the phase closure packet. Future analysis additions should introduce new scenarios instead of reopening EX-019..EX-025 mapping.
-<!-- /ANCHOR:questions -->
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 12/25 | Features: 7 |
+| Risk | 8/25 | Read-only audit, no breaking changes |
+| Research | 10/20 | Must trace each feature to source |
+| Multi-Agent | 5/15 | Single-phase audit |
+| Coordination | 5/15 | Depends on feature catalog |
+| **Total** | **40/100** | **Level 3** |
 
 ---
 
-<!--
-CORE TEMPLATE (~80 lines)
-- Essential what/why/how only
-- No boilerplate sections
-- Add L2/L3 addendums for complexity
--->
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Catalog out of date | M | L | Verify against latest commit |
+| R-002 | Missing source files | L | M | Flag in findings |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Feature Verification (Priority: P0)
+
+**As a** system maintainer, **I want** each Analysis feature verified against source code, **so that** I can trust the catalog accurately reflects the implementation.
+
+**Acceptance Criteria**:
+1. Given a feature catalog entry, When audited, Then implementation matches description
+
+---
+
+## 12. AUDIT FINDINGS
+
+Audit completed 2026-03-22. Results per feature:
+
+| ID | Feature | Tool | Result | Notes |
+|----|---------|------|--------|-------|
+| F01 | Causal edge creation | `memory_causal_link` | MATCH | 6 relation types, upsert, strength clamping, weight history all confirmed. Missing: `graph-signals.ts`, `causal-boost.ts`, 2 test files not listed in catalog source file list. |
+| F02 | Causal graph statistics | `memory_causal_stats` | MATCH | 60% coverage target, orphan detection, health status confirmed. Same missing files as F01. |
+| F03 | Causal edge deletion | `memory_causal_unlink` | MATCH | Delete by ID, cascade cleanup, cache invalidation confirmed. Same missing files as F01. |
+| F04 | Causal chain tracing | `memory_drift_why` | MATCH | Direction mapping, cycle detection, relation weights, depth limits all confirmed. Same missing files as F01. |
+| F05 | Epistemic baseline capture | `task_preflight` | PARTIAL | Behavioral claims verified. Source file list massively bloated: 43 files listed for ~8 relevant files. All 3 analysis features (F05–F07) share identical bloated file lists. |
+| F06 | Post-task learning measurement | `task_postflight` | MATCH | LI formula, interpretation bands, gap tracking all verified. Minor: re-correction capability undocumented. Same bloat as F05. |
+| F07 | Learning history | `memory_get_learning_history` | PARTIAL | Filtering, summary stats, trends confirmed. Layer classification mismatch (catalog says L7, implementation uses L6). `includeSummary` param omitted from catalog. Same bloat as F05. |
+
+**Overall**: 5 MATCH, 2 PARTIAL.
+
+**Cross-cutting findings:**
+- **CF-01 (Missing source files, F01–F04)**: `graph-signals.ts`, `causal-boost.ts`, and 2 test files are absent from all causal-feature source file lists.
+- **CF-02 (Bloated source lists, F05–F07)**: All three task-analysis features share an identical source file list of ~43 files; only ~8 are relevant. Catalog should be trimmed to primary implementation files.
+- **CF-03 (Layer classification, F07)**: `memory_get_learning_history` catalog claims layer L7; implementation uses L6. Catalog needs correction.
+- **CF-04 (Undocumented param, F07)**: `includeSummary` parameter present in implementation but absent from catalog documentation.
+- **CF-05 (Undocumented behaviour, F06)**: Re-correction capability (adjusting a prior postflight measurement) is functional but not mentioned in catalog.
+
+---
+
+## 13. OPEN QUESTIONS
+
+- CF-01: Should `graph-signals.ts` and `causal-boost.ts` be added to the source file lists for F01–F04, or are they intentionally excluded?
+- CF-02: What is the authoritative minimal source file list for F05–F07?
+- CF-03: Is layer L6 or L7 correct for `memory_get_learning_history`?
+- CF-04/CF-05: Should `includeSummary` and re-correction capability be added to catalog entries for F06–F07?
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`

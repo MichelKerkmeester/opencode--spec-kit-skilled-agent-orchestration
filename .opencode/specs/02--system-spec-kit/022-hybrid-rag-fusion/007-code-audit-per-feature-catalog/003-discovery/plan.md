@@ -1,198 +1,156 @@
 ---
-title: "Implementation Plan: discovery [template:level_2/plan.md]"
-description: "Finalize Discovery phase docs so they match current handler, schema, feature-catalog, and test reality with updated verification evidence."
-SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
+title: "Implementation Plan: Code Audit — Discovery"
+description: "Technical plan for auditing 3 Discovery features against source code"
 trigger_phrases:
-  - "implementation"
-  - "plan"
+  - "audit plan"
   - "discovery"
-  - "template"
-  - "plan core"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: discovery
-<!-- SPECKIT_LEVEL: 2 -->
+# Implementation Plan: Code Audit — Discovery
+
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-
-<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | TypeScript |
-| **Framework** | MCP |
-| **Storage** | SQLite |
-| **Testing** | Vitest |
+| **Language/Stack** | TypeScript / JavaScript (Node.js) |
+| **Framework** | MCP server (Model Context Protocol) |
+| **Storage** | better-sqlite3 |
+| **Testing** | Manual code review + cross-reference |
 
 ### Overview
-This plan finalizes Discovery audit artifacts against current on-disk implementation reality. It synchronizes all five phase docs to landed runtime handler fixes, new regression tests, related documentation corrections, and focused verification evidence (`tsc` clean + targeted `95/95` tests).
-<!-- /ANCHOR:summary -->
+Audit each of the 3 Discovery features by reading the feature catalog entry, locating the referenced source files, and verifying that the implementation matches the documented behavior.
 
 ---
 
-<!-- ANCHOR:overview -->
-## 2. OVERVIEW
-
-The plan captures a packet-sync workflow: verify landed Discovery runtime and doc changes, update only the five packet docs, then validate evidence and cross-file consistency.
-<!-- /ANCHOR:overview -->
-
----
-
-<!-- ANCHOR:quality-gates -->
-## 3. QUALITY GATES
+## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Source-of-truth files identified (`handlers`, `schemas`, `tests`, `manual_testing_playbook`, merged `feature_catalog`, scoring `README`)
-- [x] Stale claims explicitly listed for removal
-- [x] Scope locked to five Discovery phase docs
+- [x] Feature catalog files current and accessible
+- [x] Source code accessible via file system
+- [x] Audit methodology defined
 
 ### Definition of Done
-- [x] All five target docs updated and synchronized
-- [x] Behavior statements match current code, schema, and related doc reality
-- [x] Verification evidence updated to `npx tsc --noEmit` clean and targeted `95/95` tests
-<!-- /ANCHOR:quality-gates -->
+- [x] All 3 features audited
+- [x] Findings documented per feature
+- [x] Summary report completed
 
 ---
 
-<!-- ANCHOR:architecture -->
-## 4. ARCHITECTURE
+## 3. ARCHITECTURE
 
 ### Pattern
-Evidence-driven documentation alignment for Discovery handlers, schemas, tests, and related system docs.
+Read-only audit: Feature Catalog → Source Code → Findings Report
 
 ### Key Components
-- **Handlers**: `memory-crud-list.ts`, `memory-crud-stats.ts`, `memory-crud-health.ts`
-- **Schema surface**: `mcp_server/schemas/tool-input-schemas.ts`, `mcp_server/tool-schemas.ts`
-- **Regression tests**: `handler-memory-list-edge`, `handler-memory-stats-edge`, `handler-memory-health-edge` (pre-query refresh failure coverage)
-- **Related docs**: `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`, merged `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`, `.opencode/skill/system-spec-kit/shared/scoring/README.md`
-- **Focused verification suite**: `handler-memory-list-edge`, `handler-memory-stats-edge`, `handler-memory-health-edge`, `handler-memory-crud`, `tool-input-schema`
+- **Feature Catalog**: `feature_catalog/03--discovery/` — source of truth
+- **Source Code**: `.opencode/skill/system-spec-kit/` — implementation files
+- **Audit Output**: This spec folder — findings and documentation
 
 ### Data Flow
-On-disk implementation behavior and test outcomes feed requirements/checklist evidence, which then propagate into synchronized spec, plan, tasks, and implementation summary artifacts.
-<!-- /ANCHOR:architecture -->
+Read feature catalog entry → Locate source files → Compare description to implementation → Document findings
 
 ---
 
-<!-- ANCHOR:phases -->
-## 5. IMPLEMENTATION PHASES
+## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Setup
-- [x] Re-read current Discovery phase docs and identify stale statements
-- [x] Re-verify current on-disk handler/schema/test behavior
-- [x] Confirm scope lock to the five requested files
+### Phase 1: Preparation
+- [x] Verify feature catalog is current for Discovery
+- [x] Identify source code root paths
+- [x] Set up audit methodology
 
-### Phase 2: Core Implementation
-- [x] Update docs to capture pre-query `checkDatabaseUpdated()` failure handling (`E021` + `requestId`) for all three Discovery handlers
-- [x] Update docs to capture new regression tests in Discovery edge suites for the pre-query failure path
-- [x] Update requirements to current `memory_list`/`memory_stats` validation-envelope behavior
-- [x] Update docs for `memory_list` resolved `sortBy` and `memory_stats` response `limit`
-- [x] Update docs for `memory_health` public-schema support for `confirmed`
-- [x] Document related doc corrections in playbook, merged catalog, and scoring README
-- [x] Remove stale wording (`documentation-only phase`, stale targeted test totals, outdated Discovery inconsistency limitation)
+### Phase 2: Feature-by-Feature Audit
+- [x] Audit: Memory browser (memory_list)
+- [x] Audit: System statistics (memory_stats)
+- [x] Audit: Health diagnostics (memory_health)
 
-### Phase 3: Verification
-- [x] Record clean `npx tsc --noEmit` result
-- [x] Record targeted 5-file suite result: `95/95` passing
-- [x] Validate `spec.md` and `implementation-summary.md` with `validate_document.py`
-- [x] Perform cross-file consistency pass across all five docs
-<!-- /ANCHOR:phases -->
+### Phase 3: Synthesis
+- [x] Cross-reference findings across features
+- [x] Identify systemic patterns
+- [x] Compile summary report
 
 ---
 
-<!-- ANCHOR:testing -->
-## 6. TESTING STRATEGY
+## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Static type check | TypeScript compile check for MCP server | `npx tsc --noEmit` |
-| Focused automated verification | Discovery handlers + schema coverage across 5 files | `npx vitest run --no-file-parallelism tests/handler-memory-list-edge.vitest.ts tests/handler-memory-stats-edge.vitest.ts tests/handler-memory-health-edge.vitest.ts tests/handler-memory-crud.vitest.ts tests/tool-input-schema.vitest.ts` |
-| sk-doc validation | Ensure packet docs satisfy required markdown structure | `python3 .opencode/skill/sk-doc/scripts/validate_document.py <doc-path>` |
-| Documentation consistency | Cross-file sync validation among five updated docs | Manual doc review |
-<!-- /ANCHOR:testing -->
+| Cross-reference | Feature-to-code traceability | Grep, Read, Glob |
+| Completeness | All 3 features covered | Checklist verification |
+| Accuracy | Catalog matches implementation | Manual review |
 
 ---
 
-<!-- ANCHOR:dependencies -->
-## 7. DEPENDENCIES
+## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Discovery handlers (`mcp_server/handlers/*`) | Internal | Green | Behavior claims cannot be verified |
-| Public/runtime schemas (`tool-schemas.ts`, `tool-input-schemas.ts`) | Internal | Green | `confirmed` flow documentation can become inaccurate |
-| Related docs (playbook, merged catalog, scoring README) | Internal | Green | Packet misses documented alignment outcomes |
-| Focused test files (`mcp_server/tests/*`) | Internal | Green | Verification evidence cannot be updated |
-<!-- /ANCHOR:dependencies -->
+| Feature catalog | Internal | Green | Cannot audit without reference |
+| Source code access | Internal | Green | Cannot verify implementation |
 
 ---
 
-<!-- ANCHOR:rollback -->
-## 8. ROLLBACK PLAN
+## 7. ROLLBACK PLAN
 
-- **Trigger**: Any newly updated Discovery doc is found inconsistent with current source behavior.
-- **Procedure**: Restore only the affected `003-discovery` doc(s) from git history, then re-run source verification and re-apply corrected statements.
-<!-- /ANCHOR:rollback -->
+- **Trigger**: Audit methodology proves inadequate
+- **Procedure**: Revise approach and restart from Phase 1
 
 ---
 
-<!-- ANCHOR:phase-deps -->
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Setup) ──► Phase 2 (Core Updates) ──► Phase 3 (Verification)
+Phase 1 (Prep) ──► Phase 2 (Audit 3 features) ──► Phase 3 (Synthesis)
 ```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Setup | None | Core Updates |
-| Core Updates | Setup | Verification |
-| Verification | Core Updates | None |
-<!-- /ANCHOR:phase-deps -->
 
 ---
 
-<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Setup | Low | 0.5-1 hour |
-| Core Updates | Medium | 1-2 hours |
-| Verification | Medium | 0.5-1 hour |
-| **Total** | | **2-4 hours** |
-<!-- /ANCHOR:effort -->
+| Preparation | Low | 1 session |
+| Feature Audit | Low | 3 features |
+| Synthesis | Medium | 1 session |
 
 ---
 
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+## L3: MILESTONES
 
-### Pre-deployment Checklist
-- [x] Scope locked to five files
-- [x] Stale claims identified before edits
-- [x] Verification commands defined before completion claim
-
-### Rollback Procedure
-1. Restore the affected Discovery doc file(s).
-2. Re-verify handler/schema/test behavior from on-disk sources.
-3. Re-apply minimal wording corrections.
-4. Re-check cross-file consistency across all five docs.
-
-### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: N/A
-<!-- /ANCHOR:enhanced-rollback -->
+| Milestone | Description | Success Criteria |
+|-----------|-------------|------------------|
+| M1 | Audit spec created | All docs in place |
+| M2 | All features audited | 3/3 complete |
+| M3 | Synthesis delivered | Summary report finalized |
 
 ---
 
-<!--
-LEVEL 2 PLAN (~140 lines)
-- Core + Verification additions
-- Phase dependencies, effort estimation
-- Enhanced rollback procedures
--->
+## FINDINGS SUMMARY
+
+Audit completed 2026-03-22. All 3 Discovery features audited.
+
+| Feature | Result | File Count (impl/test) |
+|---------|--------|------------------------|
+| F01: memory_list | MATCH | 5 impl + 3 test |
+| F02: memory_stats | MATCH | 6 impl + 3 test |
+| F03: memory_health | PARTIAL | 7 impl + 4 test |
+
+**Overall: 2 MATCH, 1 PARTIAL.**
+
+### Discrepancies (F03 — memory_health)
+
+- **D1**: `summarizeAliasConflicts` source attribution incorrect — documented as `memory-index.ts` but implemented in `memory-index-alias.ts`.
+- **D2**: Full-mode response includes undocumented fields not reflected in the catalog: `embeddingRetry` stats, `repair.partialSuccess`, orphan cleanup counts, integrity verification results.
+
+### Systemic Patterns
+
+- Both MATCH features (F01, F02) had complete source file coverage in the catalog.
+- The single PARTIAL feature (F03) had a source attribution error and undocumented response fields in full-mode output — both catalog documentation gaps rather than implementation defects.
+- No missing source files or unimplemented catalog features found across any of the 3 features.

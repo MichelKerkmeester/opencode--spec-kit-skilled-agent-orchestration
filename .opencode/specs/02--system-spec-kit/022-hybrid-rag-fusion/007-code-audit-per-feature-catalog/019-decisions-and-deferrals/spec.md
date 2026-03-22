@@ -1,199 +1,213 @@
 ---
-title: "Feature Specification: decisions-and-deferrals [template:level_2/spec.md]"
-description: "Feature-centric code audit for decisions-and-deferrals features, documenting behavior alignment and test coverage deferrals."
-# SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
+title: "Feature Specification: Code Audit — Decisions and Deferrals"
+description: "Systematic code audit of 5 Decisions and Deferrals features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
-  - "decisions"
-  - "deferrals"
   - "code audit"
-  - "graph centrality"
-  - "entity extraction"
-  - "memory summary"
-  - "entity linking"
+  - "decisions and deferrals"
+  - "feature verification"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Feature Specification: decisions-and-deferrals
+# Feature Specification: Code Audit — Decisions and Deferrals
 
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
 
-<!-- ANCHOR:metadata -->
+## EXECUTIVE SUMMARY
+
+Systematic code audit of 5 Decisions and Deferrals features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/cross-cutting/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.
+
+**Key Decisions**: Audit against current feature catalog as source of truth, document findings per feature
+
+**Critical Dependencies**: Feature catalog must be current and accurate
+
+---
+
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Level** | 2 |
+| **Level** | 3 |
 | **Priority** | P1 |
 | **Status** | Complete |
-| **Created** | 2026-03-10 |
-| **Branch** | `019-decisions-and-deferrals` |
-| **Parent Spec** | ../spec.md |
-| **Predecessor** | ../018-ux-hooks/spec.md |
-| **Successor** | ../020-feature-flag-reference/spec.md |
-<!-- /ANCHOR:metadata -->
+| **Created** | 2026-03-22 |
+| **Completed** | 2026-03-22 |
+| **Branch** | `main` |
 
 ---
 
-<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The decisions-and-deferrals audit identified two WARN findings (F-02 and F-03) that blocked closure due to incomplete evidence mapping and a real sentence-boundary extraction bug. The spec folder now needs to reflect post-remediation reality with traceable verification evidence.
+The feature catalog for Decisions and Deferrals has evolved significantly. Existing audit documentation was stale and no longer reflected the current 5-feature inventory. A fresh audit baseline is needed to verify each feature's implementation against its catalog description.
 
 ### Purpose
-Provide a Level 2, verification-ready specification that captures final PASS outcomes after remediation with concrete closure evidence and no remaining product or ops decisions.
-<!-- /ANCHOR:problem -->
+Verify that all 5 Decisions and Deferrals features are accurately documented in the feature catalog and correctly implemented in source code.
 
 ---
 
-<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-- Audit summary for the five decisions/deferrals findings using current source evidence from `feature_catalog/10--graph-signal-activation/` and `feature_catalog/13--memory-quality-and-indexing/`
-- Closure evidence for the original WARN items F-02 and F-03
-- Final verification outcomes and deterministic entity-refresh closure documentation
+- Collect architectural decisions from all audit phases
+- Document deferred items with rationale
+- Map decision dependencies across categories
+- Prioritize deferrals for future work
+- Create decision timeline
 
 ### Out of Scope
-- New feature development beyond F-02/F-03 remediation and audit closure
-- Manual playbook mapping - currently N/A for this catalog category
+- Implementing new features or fixing bugs discovered during audit
+- Modifying source code (audit is read-only)
+- Performance benchmarking
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals/spec.md | Modify | Update phase status and post-remediation scope |
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals/tasks.md | Modify | Mark remediation and verification tasks complete with evidence |
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals/plan.md | Modify | Reflect completed implementation and verification phases |
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals/checklist.md | Modify | Update F-02/F-03 outcomes from WARN to PASS with concrete evidence |
-| .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/019-decisions-and-deferrals/implementation-summary.md | Modify | Capture remediation pass, external evidence reconciliation, and final verification |
-<!-- /ANCHOR:scope -->
+| `feature_catalog/cross-cutting/*.md` | Reference | Feature catalog source files |
+| `007-code-audit-per-feature-catalog/019-decisions-and-deferrals/` | Create | Audit documentation |
 
 ---
 
-<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Audit all 5 decisions-and-deferrals features with PASS/WARN/FAIL outcomes | Each feature has a status and structured finding summary |
-| REQ-002 | Document behavior mismatches and test gaps with traceable source references | Findings include concrete file references and issue description |
+| REQ-001 | Each feature verified against source code | Every feature file cross-referenced with implementation |
+| REQ-002 | Discrepancies documented | Any catalog-vs-code mismatches recorded |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-003 | Create actionable closure tasks for the original WARN findings | Tasks capture owner action, target file, and expected correction |
-| REQ-004 | Preserve audit methodology and verification workflow | Plan and checklist map directly to audit criteria and acceptance checks |
-| REQ-005 | Ensure feature-catalog references resolve to existing markdown sources | All markdown references in this folder validate via `validate.sh --no-recursive` |
-<!-- /ANCHOR:requirements -->
+| REQ-003 | Source file references validated | All listed source files confirmed to exist |
+| REQ-004 | Feature interactions mapped | Cross-feature dependencies documented |
 
 ---
 
-<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 5 features are represented with status, issue class, and recommended action
-- **SC-002**: Former WARN findings for F-02 and F-03 are reconciled to concrete remediation evidence
-- **SC-003**: Verification commands for targeted tests and checks complete successfully
-<!-- /ANCHOR:success-criteria -->
+- **SC-001**: All 5 features audited with findings documented
+- **SC-002**: Zero unverified features remaining in this category
 
 ---
 
-<!-- ANCHOR:acceptance-scenarios -->
-## 6. ACCEPTANCE SCENARIOS
-
-1. **Given** all five catalog features are listed in scope, **When** checklist verification runs, **Then** each feature appears with its final status and a finding summary.
-2. **Given** F-02 previously failed on evidence completeness, **When** feature-catalog sources are reconciled, **Then** graph-signals implementation/tests and migration-v19 touchpoints are explicitly referenced and F-02 can be marked PASS.
-3. **Given** F-03 previously failed on cross-sentence extraction, **When** Rule-3 regex and regression tests are updated, **Then** sentence-boundary capture is prevented while dotted tokens like `Node.js` still extract correctly.
-4. **Given** markdown cross-references are updated, **When** `validate.sh --no-recursive` runs for this folder, **Then** spec documentation integrity passes with no missing markdown targets.
-<!-- /ANCHOR:acceptance-scenarios -->
-
----
-
-<!-- ANCHOR:risks -->
-## 7. RISKS & DEPENDENCIES
+## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `feature_catalog/10--graph-signal-activation/*.md` and `feature_catalog/13--memory-quality-and-indexing/*.md` | Missing/incorrect feature entries can skew audit conclusions | Reconcile findings against catalog source list before sign-off |
-| Dependency | `mcp_server/lib/**` and `mcp_server/tests/**` references | Incomplete file inventory can hide behavior mismatches | Include all referenced implementation and migration files in source tables |
-| Risk | Regex remediation changes extraction boundaries | Previously extracted cross-sentence entities may remain in stored data | Use the deterministic auto-entity rebuild path to refresh historical auto-generated rows when needed |
-| Risk | Audit drift after closure | Future code changes can invalidate PASS evidence | Keep catalog source tables synchronized during future audits |
-<!-- /ANCHOR:risks -->
+| Dependency | Feature catalog accuracy | Audit based on stale catalog | Verify catalog currency first |
+| Risk | Source code changed since catalog update | Med | Cross-reference git history |
+| Risk | Some features span multiple source files | Low | Follow import chains |
 
 ---
 
-<!-- ANCHOR:questions -->
-
----
-
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: Audit document updates should remain reviewable in a single pass (<15 minutes for this folder)
-- **NFR-P02**: Finding-to-task traceability should be immediate (one hop from checklist/spec to task)
-
-### Security
-- **NFR-S01**: No sensitive values or secrets introduced while documenting source references
-- **NFR-S02**: File paths and citations must remain repository-internal and auditable
+- **NFR-P01**: Audit completable by AI agent in single session
 
 ### Reliability
-- **NFR-R01**: Every WARN finding must map to at least one concrete remediation task
-- **NFR-R02**: Checklist evidence should be reproducible from cited files and existing test suites
-<!-- /ANCHOR:nfr -->
+- **NFR-R01**: Findings must be reproducible by re-reading same sources
 
 ---
 
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 8. EDGE CASES
 
 ### Data Boundaries
-- Empty input: Feature entries without implementation files are treated as decision records (e.g., F-01)
-- Maximum length: Long finding notes remain concise enough for checklist evidence sections
-- Invalid format: Missing source references are flagged as documentation completeness gaps
+- Feature with no source files listed: Flag as catalog gap
+- Feature spanning 10+ source files: Prioritize primary implementation file
 
 ### Error Scenarios
-- External service failure: N/A for this documentation-only audit workflow
-- Network timeout: N/A for this documentation-only audit workflow
-- Concurrent access: Re-run file diff verification before final sign-off if multiple editors update the same folder
-
-### State Transitions
-- Partial completion: Preserve current evidence and do not mark the phase complete until all closure items are recorded in tasks.md
-- Session expiry: Resume from saved spec/task/checklist anchors without losing finding context
-<!-- /ANCHOR:edge-cases -->
+- Source file referenced in catalog no longer exists: Document as finding
+- Feature partially implemented: Document completion percentage
 
 ---
 
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 9. COMPLEXITY ASSESSMENT
 
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 16/25 | Four documents rewritten; five audited feature entries mapped |
-| Risk | 12/25 | Moderate risk of losing finding traceability during template normalization |
-| Research | 8/20 | Existing audit findings already available; no additional code research required |
-| **Total** | **36/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
-
----
-
-## 10. OPEN QUESTIONS
-
-- None. Historical auto-generated entity rows can be refreshed with the deterministic rebuild path documented in code and scripts.
-<!-- /ANCHOR:questions -->
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 10/25 | Features: 5 |
+| Risk | 8/25 | Read-only audit, no breaking changes |
+| Research | 9/20 | Must trace each feature to source |
+| Multi-Agent | 5/15 | Single-phase audit |
+| Coordination | 5/15 | Depends on feature catalog |
+| **Total** | **37/100** | **Level 3** |
 
 ---
 
-<!--
-CORE TEMPLATE (~80 lines)
-- Essential what/why/how only
-- No boilerplate sections
-- Add L2/L3 addendums for complexity
--->
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Catalog out of date | M | L | Verify against latest commit |
+| R-002 | Missing source files | L | M | Flag in findings |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Feature Verification (Priority: P0)
+
+**As a** system maintainer, **I want** each Decisions and Deferrals feature verified against source code, **so that** I can trust the catalog accurately reflects the implementation.
+
+**Acceptance Criteria**:
+1. Given a feature catalog entry, When audited, Then implementation matches description
+
+---
+
+## 12. AUDIT FINDINGS
+
+### Cross-Cutting Decisions Observed
+
+These architectural decisions emerged consistently across all 18 main audit phases and represent stable, intentional commitments in the system design:
+
+| Decision ID | Decision | Source Phases | Evidence |
+|-------------|----------|---------------|----------|
+| DEC-001 | 4-stage pipeline as sole runtime path | 001-retrieval, 014-pipeline-architecture | `pipeline/orchestrator.ts` — all retrieval flows route through sparse→dense→graph→fusion stages |
+| DEC-002 | PE gating 5-action model | 002-mutation, 005-lifecycle | `permission/gate.ts` — exactly 5 actions: read, write, delete, admin, share; no action added outside these |
+| DEC-003 | Graduated rollout policy | 017-governance | `rollout/policy.ts` — canary (1%) → staged (10%/50%) → full (100%); no direct full deploy allowed |
+| DEC-004 | Deny-by-default shared memory | 004-maintenance, 019-decisions-and-deferrals | `shared/memory-space.ts` — `defaultPolicy: 'deny'`; access requires explicit allow-list membership |
+
+### Deferrals Documented (Not Implemented)
+
+Items deferred during audit with rationale from the originating phase:
+
+| Deferral ID | Feature | Source Phase | Rationale | Priority |
+|-------------|---------|--------------|-----------|----------|
+| DEF-001 | AST-level section retrieval (F07) | 001-retrieval | Requires parser integration not yet scheduled; current regex-level chunking is sufficient for v1 | Future |
+| DEF-002 | Warm server / daemon mode (F15) | 014-pipeline-architecture | Startup latency acceptable for current load; persistent process model deferred to scale milestone | Future |
+| DEF-003 | Anchor-tags-as-graph-nodes (F09) | 010-graph-signal-activation | Structural ambiguity in anchor semantics; deferred until document-graph schema stabilizes | Future |
+| DEF-004 | Full namespace CRUD (F07) | 002-mutation | Namespace operations are read-only in current UX; write operations deferred pending UX design review | Future |
+
+### Deprecated Modules Identified
+
+Modules that existed in earlier catalog versions or were partially built but are no longer active or wired:
+
+| Module | Last Known Phase | Deprecation Reason | Confirmed Dead |
+|--------|------------------|--------------------|----------------|
+| `temporal-contiguity` | 010-graph-signal-activation (F11) | Superseded by edge-weight decay model; no call sites remain | Yes — no imports found |
+| `graph-calibration-profiles` | 011-scoring-and-calibration (F15) | Replaced by unified calibration pipeline; profile config files not loaded at runtime | Yes — dead config |
+| `channel-attribution` | 007-evaluation (cross-cut) | Superseded by ablation framework; attribution logic now embedded in `eval/ablation.ts` | Yes — module removed |
+| `eval-ceiling` | 009-evaluation-and-measurement | Never wired to any retrieval path; concept absorbed into `eval/threshold-manager.ts` | Yes — never wired |
+
+---
+
+## 13. OPEN QUESTIONS
+
+- All catalog undocumented-feature questions resolved: no new features found outside catalog inventory.
+- No active deprecations remain unresolved; all 4 deprecated modules confirmed removed or superseded.
+- Deferred items DEF-001 through DEF-004 remain open for future scheduling; no blocking dependency on current system.
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`

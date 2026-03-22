@@ -1,12 +1,16 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/013-memory-quality-and-indexing",
-  "description": "Feature Specification: memory-quality-and-indexing",
+  "description": "Feature Specification: Code Audit — Memory Quality and Indexing",
   "keywords": [
     "feature",
     "specification",
-    "memory-quality-and-indexing"
+    "code",
+    "audit",
+    "memory",
+    "quality",
+    "indexing"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.277Z",
+  "lastUpdated": "2026-03-22T17:41:14.700Z",
   "specId": "013",
   "folderSlug": "memory-quality-and-indexing",
   "parentChain": [
@@ -14,12 +18,6 @@
     "022-hybrid-rag-fusion",
     "007-code-audit-per-feature-catalog"
   ],
-  "memorySequence": 1,
-  "memoryNameHistory": [
-    "11-03-26_14-57__memory-quality-and-indexing.md"
-  ],
-  "title": "Feature Specification: memory-quality-and-indexing [template:level_2/spec.md]",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: memory-quality-and-indexing"
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

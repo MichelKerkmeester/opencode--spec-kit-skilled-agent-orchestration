@@ -1,12 +1,17 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity",
-  "description": "Feature Specification: bug-fixes-and-data-integrity",
+  "description": "Feature Specification: Code Audit — Bug Fixes and Data Integrity",
   "keywords": [
     "feature",
     "specification",
-    "bug-fixes-and-data-integrity"
+    "code",
+    "audit",
+    "bug",
+    "fixes",
+    "data",
+    "integrity"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.247Z",
+  "lastUpdated": "2026-03-22T17:41:14.675Z",
   "specId": "008",
   "folderSlug": "bug-fixes-and-data-integrity",
   "parentChain": [
@@ -14,13 +19,6 @@
     "022-hybrid-rag-fusion",
     "007-code-audit-per-feature-catalog"
   ],
-  "memorySequence": 2,
-  "memoryNameHistory": [
-    "11-03-26_10-54__bug-fixes-and-data-integrity.md",
-    "14-03-26_10-42__closed-deferred-context-save-item-after-final.md"
-  ],
-  "title": "Feature Specification: bug-fixes-and-data-integrity [template:level_2/spec.md]",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: bug-fixes-and-data-integrity"
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

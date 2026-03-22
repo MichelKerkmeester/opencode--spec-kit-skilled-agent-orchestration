@@ -1,12 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/017-governance",
-  "description": "Feature Specification: governance",
+  "description": "Feature Specification: Code Audit — Governance",
   "keywords": [
     "feature",
     "specification",
+    "code",
+    "audit",
     "governance"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.298Z",
+  "lastUpdated": "2026-03-22T17:41:14.721Z",
   "specId": "017",
   "folderSlug": "governance",
   "parentChain": [
@@ -14,14 +16,6 @@
     "022-hybrid-rag-fusion",
     "007-code-audit-per-feature-catalog"
   ],
-  "memorySequence": 3,
-  "memoryNameHistory": [
-    "12-03-26_18-15__independent-review-of-017-governance-spec-folder.md",
-    "12-03-26_18-50__governance.md",
-    "12-03-26_18-53__rollout-parsing-hardened.md"
-  ],
-  "title": "Feature Specification: governance [template:level_2/spec.md]",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: governance"
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

@@ -1,74 +1,101 @@
 ---
-title: "Implementation Summary: memory-quality-and-indexing"
-description: "Completed remediation plus adjacent-path save/indexing fixes, with synchronized Level 2 documentation and expanded verification evidence."
-SPECKIT_TEMPLATE_SOURCE: "implementation-summary | v2.2"
+title: "Implementation Summary: Code Audit — Memory Quality & Indexing"
+description: "24 features audited: 19 MATCH, 5 PARTIAL, 0 MISMATCH"
+trigger_phrases:
+  - "implementation summary"
+  - "memory quality & indexing"
+  - "code audit"
+importance_tier: "normal"
+contextType: "general"
 ---
-# Implementation Summary: memory-quality-and-indexing
+# Implementation Summary: Code Audit — Memory Quality & Indexing
 
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
-## Execution Overview
+---
 
-| Aspect | Value |
-|--------|-------|
-| **Date** | 2026-03-11 |
-| **Workstreams** | Remediation closure + adjacent-path follow-up |
-| **Tasks** | 24 (3 setup + 16 implementation + 5 verification) |
-| **Tests** | 410 pass, 0 fail |
-| **TSC** | Clean (--noEmit) |
-| **Alignment Drift** | Pass (0 findings) |
-| **Audit Status** | 18 PASS, 0 WARN, 0 FAIL (phase now tracks 18 catalog features) |
+<!-- ANCHOR:metadata -->
+## Metadata
 
-## Workstream Execution
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 007-code-audit-per-feature-catalog/013-memory-quality-and-indexing |
+| **Completed** | 2026-03-22 |
+| **Level** | 3 |
+<!-- /ANCHOR:metadata -->
 
-| Workstream | Tasks | Areas Updated | Result |
-|------------|-------|---------------|--------|
-| Base remediation closure | T004-T012 | quality-loop, preflight, save-quality-gate, search-flags, encoding-intent, feature-catalog corrections | Complete |
-| Adjacent-path behavior fixes | T016-T022 | quality-loop save flow, memory-save/embedding health handling, content-hash dedup, chunking cache hashing, watcher/ingest reindex path, `memory_index_scan` invalidation | Complete |
-| Verification + documentation sync | T013-T015, T023-T024 | targeted test suites, type-check, alignment drift verifier, Level 2 artifacts | Complete |
+---
 
-## Key Changes
+<!-- ANCHOR:what-built -->
+## What Was Built
 
-### Code Changes
-- **CHARS_PER_TOKEN harmonized** (T006): Both `quality-loop.ts` and `preflight.ts` now read `MCP_CHARS_PER_TOKEN` env var with default `4`. Preflight tests updated from 3.5 to 4.
-- **Quality loop flag centralized** (T009): Added `isQualityLoopEnabled()` to `search-flags.ts`; `quality-loop.ts` imports and re-exports for backward compatibility.
-- **Token budget message fixed** (T005): `scoreTokenBudget()` now derives budget from `charBudget` parameter instead of `DEFAULT_TOKEN_BUDGET` literal.
-- **Stale comments cleaned** (T010): Removed TM-04/MR12 tracking codes from `save-quality-gate.ts`; fixed default state comment to "default ON, graduated".
-- **Accepted-save metadata persistence fixed** (T016): quality-loop metadata updates now persist when save requests are accepted.
-- **Rewrite lock semantics corrected** (T017): quality-loop content rewrites remain in-memory until later hard-reject gates pass under lock.
- - **Unhealthy embedding masking removed** (T018): same-path and metadata-only `unchanged` outcomes no longer suppress unhealthy embedding states.
-- **Chunk-parent dedup validity tightened** (T019): hash dedup now accepts valid `partial` chunked parents and rejects invalid `complete` states.
-- **Chunking cache hashing normalized** (T020): embedding-cache keys now hash normalized content.
-- **Reindex embedding mode corrected** (T021): watcher/ingest reindex paths no longer force deferred embeddings on normal cache misses.
-- **Index scan invalidation broadened** (T022): `memory_index_scan` now performs broader post-mutation invalidation.
+The second-largest category with 24 features covering the full memory quality pipeline — from the verify-fix-verify loop through entity extraction to implicit feedback logging. 19 features are perfectly documented. Five have minor source list or naming issues.
 
-### Documentation Changes
-- **F-01 catalog** (T004): Retry wording clarified to "3 total attempts (1 initial + 2 auto-fix retries, maxRetries=2)".
-- **F-06 catalog** (T007): Default corrected from "ON" to "OFF, opt-in (SPECKIT_RECONSOLIDATION=true)".
-- **F-09 encoding-intent** (T011): JSDoc fixed from "opt-in, default OFF" to "default ON, graduated".
- - **F-11 catalog** (T012): Implementation path fixed to `scripts/utils/slug-utils.ts`, test path to `tests/slug-utils-boundary.vitest.ts`.
- - **Validation README** (T006): `.opencode/skill/system-spec-kit/mcp_server/lib/validation/README.md` was updated when the `MCP_CHARS_PER_TOKEN` default moved to `4`; adjacent-path follow-up needed no further README edit.
+### Audit Results
 
-### No Changes Needed
-- **T008** (extraction-adapter): `lib/cache/cognitive/` is a symlink to `../cognitive/` — standard codebase convention. All imports resolve correctly.
-- **F-12 catalog** (T012): All paths verified correct.
+24 features audited: 19 MATCH, 5 PARTIAL, 0 MISMATCH.
 
-## Test Results
+### Per-Feature Findings
 
-| Suite | Tests | Status |
-|-------|-------|--------|
-| quality-loop.vitest.ts | Included in combined run | Pass |
-| handler-memory-save.vitest.ts | Included in combined run | Pass |
-| content-hash-dedup.vitest.ts | Included in combined run | Pass |
-| chunking-orchestrator-swap.vitest.ts | Included in combined run | Pass |
-| context-server.vitest.ts | Included in combined run | Pass |
-| handler-memory-index-cooldown.vitest.ts | Included in combined run | Pass |
-| mutation-hooks.vitest.ts | Included in combined run | Pass |
-| **Total** | **410** | **All pass** |
+1. 19 features confirmed with behavioral accuracy across quality gates, content normalization, chunking, entity extraction, session enrichment, batch learning, and more
+2. F11: slugToTitle in title-builder.ts, not slug-utils.ts
+3. F12: duplicate gate behavior changed (returns filename instead of throwing)
+4. F13: entity-linker.ts missing from source list
+5. F14: source list massively inflated (30+ files for 1-file fix)
+6. F23: applyHybridDecayPolicy not a named export (logic is inline)
+<!-- /ANCHOR:what-built -->
 
-## Verification Commands
+---
 
-- `npx vitest run tests/quality-loop.vitest.ts tests/handler-memory-save.vitest.ts tests/content-hash-dedup.vitest.ts tests/chunking-orchestrator-swap.vitest.ts tests/context-server.vitest.ts tests/handler-memory-index-cooldown.vitest.ts tests/mutation-hooks.vitest.ts` -> 410/410 passing
-- `npx tsc --noEmit` -> pass
-- Alignment drift verifier on `.opencode/skill/system-spec-kit/mcp_server` -> pass, 0 findings
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The audit was executed by dispatching 2 Opus research agents (parallel) to read feature catalog entries and verify against source code, followed by 2 Sonnet documentation agents (parallel) to update spec folder documents with findings. All agents operated as LEAF nodes at depth 1 under single-hop orchestration.
+
+Each feature was verified by:
+1. Reading the feature catalog entry
+2. Locating referenced source files in the MCP server codebase
+3. Comparing catalog behavioral descriptions against actual implementation
+4. Documenting findings as MATCH, PARTIAL, or MISMATCH
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Accept inline logic as equivalent to named export | Feature 23 hybrid decay policy is implemented inline in the scheduler, not as a standalone function |
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
+## Verification
+
+| Check | Result |
+|-------|--------|
+| All features audited | PASS — 24/24 features verified |
+| Source files verified | PASS — all referenced files confirmed to exist on disk |
+| Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
+| Tasks completed | PASS — all tasks marked [x] in tasks.md |
+| Checklist verified | PASS — all P0/P1 items verified in checklist.md |
+<!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+1. **Feature 12 duplicate gate now returns filename idempotently instead of throwing on duplicates** — catalog needs update
+<!-- /ANCHOR:limitations -->
+
+---
+
+<!--
+Post-implementation documentation for code audit phase.
+Written in active voice per HVR rules.
+-->

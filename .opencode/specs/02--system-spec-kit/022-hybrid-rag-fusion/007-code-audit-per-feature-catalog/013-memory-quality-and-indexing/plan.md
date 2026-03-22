@@ -1,192 +1,174 @@
 ---
-title: "Implementation Plan: memory-quality-and-indexing [template:level_2/plan.md]"
-description: "Feature-centric audit execution plan for 18 Memory Quality and Indexing features, including adjacent-path save/indexing fixes and updated verification outcomes."
-SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
+title: "Implementation Plan: Code Audit — Memory Quality and Indexing"
+description: "Technical plan for auditing 24 Memory Quality and Indexing features against source code"
 trigger_phrases:
-  - "implementation"
-  - "plan"
-  - "memory quality"
-  - "memory indexing"
-  - "feature audit"
-  - "verification workflow"
+  - "audit plan"
+  - "memory quality and indexing"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: memory-quality-and-indexing
+# Implementation Plan: Code Audit — Memory Quality and Indexing
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown documentation + TypeScript codebase under audit |
-| **Framework** | SpecKit Level 2 documentation templates |
-| **Storage** | File-based spec folder artifacts |
-| **Testing** | Targeted Vitest suites + `tsc --noEmit` + alignment drift verification |
+| **Language/Stack** | TypeScript / JavaScript (Node.js) |
+| **Framework** | MCP server (Model Context Protocol) |
+| **Storage** | better-sqlite3 |
+| **Testing** | Manual code review + cross-reference |
 
 ### Overview
-This plan records completed execution for the Memory Quality and Indexing catalog (18 features total), including follow-on adjacent-path fixes after WARN remediation closed. Work covered feature inventory, code/test verification, remediation of all WARN findings, adjacent quality/indexing-path behavior fixes, and synchronization of Level 2 artifacts to a closed state.
-<!-- /ANCHOR:summary -->
+Audit each of the 24 Memory Quality and Indexing features by reading the feature catalog entry, locating the referenced source files, and verifying that the implementation matches the documented behavior.
 
 ---
 
-<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified
+- [x] Feature catalog files current and accessible
+- [x] Source code accessible via file system
+- [x] Audit methodology defined
 
 ### Definition of Done
-- [x] All acceptance criteria met — remediation and adjacent-path tasks complete
-- [x] Tests passing (if applicable) — 410/410 targeted tests, TSC clean, alignment drift verifier clean
-- [x] Docs updated (spec/plan/tasks/checklist/implementation-summary) — all in-scope artifacts synchronized
-<!-- /ANCHOR:quality-gates -->
+- [x] All 24 features audited
+- [x] Findings documented per feature
+- [x] Summary report completed
 
 ---
 
-<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-Documentation-Driven Audit Workflow
+Read-only audit: Feature Catalog → Source Code → Findings Report
 
 ### Key Components
-- **Feature Catalog Inputs**: 18 markdown feature definitions in `feature_catalog/13--memory-quality-and-indexing/`.
-- **Audit Findings Store**: `checklist.md` records status, issues, gaps, and recommendations.
-- **Remediation Backlog**: `tasks.md` tracks prioritized implementation/documentation fixes.
+- **Feature Catalog**: `feature_catalog/13--memory-quality-and-indexing/` — source of truth
+- **Source Code**: `.opencode/skill/system-spec-kit/` — implementation files
+- **Audit Output**: This spec folder — findings and documentation
 
 ### Data Flow
-Feature definitions and referenced source files were reviewed first, findings were recorded per feature, remediation work was executed and verified, then status totals were reconciled across checklist and completion artifacts.
-<!-- /ANCHOR:architecture -->
+Read feature catalog entry → Locate source files → Compare description to implementation → Document findings
 
 ---
 
-<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Setup
-- [x] Project structure created
-- [x] Dependencies installed
-- [x] Development environment ready
+### Phase 1: Preparation
+- [x] Verify feature catalog is current for Memory Quality and Indexing
+- [x] Identify source code root paths
+- [x] Set up audit methodology
 
-### Phase 2: Core Implementation
-- [x] Feature inventory and source/test mapping complete
-- [x] Per-feature correctness/standards/behavior review complete
-- [x] Playbook cross-reference and findings capture complete
-- [x] Adjacent-path fixes applied: quality-loop metadata persistence on accepted saves and in-memory rewrite behavior under lock
-- [x] Adjacent-path fixes applied: same-path `unchanged` no longer masks unhealthy embeddings; hash dedup now keeps valid `partial` parents and rejects invalid `complete`
-- [x] Adjacent-path fixes applied: chunking cache keys now hash normalized content; watcher/ingest and `memory_index_scan` invalidation behavior updated
+### Phase 2: Feature-by-Feature Audit
+- [x] Audit: Verify-fix-verify memory quality loop
+- [x] Audit: Signal vocabulary expansion
+- [x] Audit: Pre-flight token budget validation
+- [x] Audit: Spec folder description discovery
+- [x] Audit: Pre-storage quality gate
+- [x] Audit: Reconsolidation-on-save
+- [x] Audit: Smarter memory content generation
+- [x] Audit: Anchor-aware chunk thinning
+- [x] Audit: Encoding-intent capture at index time
+- [x] Audit: Auto entity extraction
+- [x] Audit: Content-aware memory filename generation
+- [x] Audit: Duplicate and empty content prevention
+- [x] Audit: Entity normalization consolidation
+- [x] Audit: Quality gate timer persistence
+- [x] Audit: Deferred lexical-only indexing
+- [x] Audit: Dry-run preflight for memory_save
+- [x] Audit: Outsourced agent handback protocol
+- [x] Audit: Session enrichment and alignment guards
+- [x] Audit: Post-save quality review
+- [x] Audit: Weekly batch feedback learning
+- [x] Audit: Assistive reconsolidation
+- [x] Audit: Implicit feedback log
+- [x] Audit: Hybrid decay policy
+- [x] Audit: Save quality gate exceptions
 
-### Phase 3: Verification
-- [x] Combined verification complete — 410/410 tests pass, `npx tsc --noEmit` pass, alignment drift verifier pass with 0 findings
-- [x] Edge cases handled — retry bounds, token budget, flag routing, symlink imports
-- [x] Documentation updated — all spec folder artifacts synchronized
-<!-- /ANCHOR:phases -->
+### Phase 3: Synthesis
+- [x] Cross-reference findings across features
+- [x] Identify systemic patterns
+- [x] Compile summary report
 
 ---
 
-<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Remediation and adjacent-path changes in save/indexing/chunking modules | Vitest (targeted suites) |
-| Integration | End-to-end save/index/index-scan behavior across handler and context-server paths | Existing MCP/server test harness |
-| Manual | Feature-status verification and artifact consistency checks | Markdown review |
-<!-- /ANCHOR:testing -->
+| Cross-reference | Feature-to-code traceability | Grep, Read, Glob |
+| Completeness | All 24 features covered | Checklist verification |
+| Accuracy | Catalog matches implementation | Manual review |
 
 ---
 
-<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `feature_catalog/13--memory-quality-and-indexing/` | Internal | Green | Cannot confirm expected behavior baselines |
-| `mcp_server` and `scripts` source trees | Internal | Green | Cannot validate remediation and adjacent-path behavior against implementation |
-| Manual test playbook scenarios `NEW-073..085+` | Internal | Yellow | Coverage mapping may be incomplete |
-| Level 2 template files | Internal | Green | Cannot maintain required structure consistency |
-<!-- /ANCHOR:dependencies -->
+| Feature catalog | Internal | Green | Cannot audit without reference |
+| Source code access | Internal | Green | Cannot verify implementation |
 
 ---
 
-<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Rewritten docs lose critical findings or fail template/anchor requirements.
-- **Procedure**: Revert the five modified markdown docs to the previous known-good revision and reapply mapping with corrected structure.
-<!-- /ANCHOR:rollback -->
+- **Trigger**: Audit methodology proves inadequate
+- **Procedure**: Revise approach and restart from Phase 1
 
 ---
 
-
----
-
-<!-- ANCHOR:phase-deps -->
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Setup) ──────┐
-                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
-Phase 1.5 (Config) ───┘
+Phase 1 (Prep) ──► Phase 2 (Audit 24 features) ──► Phase 3 (Synthesis)
 ```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Setup | None | Core, Config |
-| Config | Setup | Core |
-| Core | Setup, Config | Verify |
-| Verify | Core | None |
-<!-- /ANCHOR:phase-deps -->
 
 ---
 
-<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Setup | Low | 30-60 minutes |
-| Core Implementation | Medium | 2-4 hours |
-| Verification | Medium | 1-2 hours |
-| **Total** | | **3.5-7 hours** |
-<!-- /ANCHOR:effort -->
+| Preparation | Low | 1 session |
+| Feature Audit | High | 24 features |
+| Synthesis | Medium | 1 session |
 
 ---
 
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+## L3: MILESTONES
 
-### Pre-deployment Checklist
-- [ ] Backup created (if data changes)
-- [ ] Feature flag configured
-- [ ] Monitoring alerts set
-
-### Rollback Procedure
-1. Restore prior versions of `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`.
-2. Re-validate required template anchors/comments and frontmatter fields.
-3. Re-check summary totals (18 features; 18 PASS, 0 WARN, 0 FAIL) and task counts.
-4. Notify stakeholders of rollback and corrected re-application plan.
-
-### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: N/A
-<!-- /ANCHOR:enhanced-rollback -->
+| Milestone | Description | Success Criteria |
+|-----------|-------------|------------------|
+| M1 | Audit spec created | All docs in place |
+| M2 | All features audited | 24/24 complete |
+| M3 | Synthesis delivered | Summary report finalized |
 
 ---
 
-<!--
-LEVEL 2 PLAN (~140 lines)
-- Core + Verification additions
-- Phase dependencies, effort estimation
-- Enhanced rollback procedures
--->
+## FINDINGS SUMMARY
+
+**Audit completed:** 2026-03-22
+**Result:** 19 MATCH, 5 PARTIAL (0 FAIL)
+
+### PARTIAL Findings
+
+| Feature | Issue | Remediation |
+|---------|-------|-------------|
+| F11 — Content-aware memory filename generation | `slugToTitle` attributed to wrong source file in catalog | Correct source file reference in feature catalog |
+| F12 — Duplicate and empty content prevention | Duplicate gate behavior evolved; source list includes unrelated files | Trim source list; re-verify gate logic description |
+| F13 — Entity normalization consolidation | `entity-linker.ts` missing from source list | Add `entity-linker.ts` to catalog source list |
+| F14 — Quality gate timer persistence | Source list massively inflated with tangentially related files | Reduce source list to primary implementation files only |
+| F23 — Hybrid decay policy | `applyHybridDecayPolicy` described as named export but is internal-only | Clarify export status in catalog; or promote to named export |
+
+### Systemic Patterns
+- Source list accuracy is the dominant issue class (F11, F12, F13, F14 all involve incorrect or incomplete source attribution).
+- One naming/visibility discrepancy (F23) is a catalog description error rather than a source list error.
+- No features were found to be unimplemented or fundamentally misrepresented in behavior.

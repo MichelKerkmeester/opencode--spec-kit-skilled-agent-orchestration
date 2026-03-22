@@ -52,4 +52,4 @@ Default ON (graduated). Set `SPECKIT_SESSION_RETRIEVAL_STATE_V1=false` to disabl
 
 - Group: UX hooks
 - Source feature title: Retrieval session state
-- Current reality source: mcp_server/lib/search/session-state.ts and handlers/memory-search.ts
+- Current reality source: feature_catalog.md

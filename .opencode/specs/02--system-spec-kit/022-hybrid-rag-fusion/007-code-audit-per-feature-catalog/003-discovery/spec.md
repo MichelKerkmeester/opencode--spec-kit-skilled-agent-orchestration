@@ -1,206 +1,193 @@
 ---
-title: "Feature Specification: discovery [template:level_2/spec.md]"
-description: "Align Discovery phase documentation with current on-disk handler, schema, feature-catalog, and test reality after latest fixes."
-SPECKIT_TEMPLATE_SOURCE: "spec-core | v2.2"
+title: "Feature Specification: Code Audit — Discovery"
+description: "Systematic code audit of 3 Discovery features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
-  - "feature"
-  - "specification"
-  - "discovery"
   - "code audit"
-  - "spec core"
+  - "discovery"
+  - "feature verification"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Feature Specification: discovery
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+# Feature Specification: Code Audit — Discovery
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
 
+## EXECUTIVE SUMMARY
 
-<!-- ANCHOR:metadata -->
+Systematic code audit of 3 Discovery features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/03--discovery/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.
+
+**Key Decisions**: Audit against current feature catalog as source of truth, document findings per feature
+
+**Critical Dependencies**: Feature catalog must be current and accurate
+
+---
+
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Level** | 2 |
+| **Level** | 3 |
 | **Priority** | P1 |
 | **Status** | Complete |
-| **Created** | 2026-03-10 |
-| **Updated** | 2026-03-12 |
-| **Branch** | `003-discovery` |
-| **Parent Spec** | ../spec.md |
-| **Predecessor** | ../002-mutation/spec.md |
-| **Successor** | ../004-maintenance/spec.md |
-<!-- /ANCHOR:metadata -->
+| **Created** | 2026-03-22 |
+| **Branch** | `main` |
 
 ---
 
-<!-- ANCHOR:overview -->
-## 2. OVERVIEW
-
-This packet now captures final Discovery implementation reality after reliability hardening and doc alignment work were completed. It includes runtime handler error-path hardening for database refresh failures, targeted regression tests for those paths, and synchronized updates to related Discovery documentation.
-<!-- /ANCHOR:overview -->
-
----
-
-<!-- ANCHOR:problem -->
-## 3. PROBLEM & PURPOSE
+## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The Discovery packet still reflected an older doc-only audit snapshot. That snapshot no longer matched on-disk runtime behavior, regression coverage, and current verification totals.
+The feature catalog for Discovery has evolved significantly. Existing audit documentation was stale and no longer reflected the current 3-feature inventory. A fresh audit baseline is needed to verify each feature's implementation against its catalog description.
 
 ### Purpose
-Update `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` so they match the currently landed Discovery changes and their verification evidence.
-<!-- /ANCHOR:problem -->
+Verify that all 3 Discovery features are accurately documented in the feature catalog and correctly implemented in source code.
 
 ---
 
-<!-- ANCHOR:scope -->
-## 4. SCOPE
+## 3. SCOPE
 
 ### In Scope
-- Discovery runtime reliability behavior for `memory_list`, `memory_stats`, and `memory_health` when `checkDatabaseUpdated()` fails before query execution
-- Discovery regression coverage for the three edge suites that now assert MCP `E021` envelopes with `requestId` on pre-query refresh failures
-- Documentation of `memory_list` resolved `sortBy` response field
-- Documentation of `memory_stats` response `limit` field and validation for `includeScores`, `includeArchived`, and non-finite `limit`
-- Documentation of `memory_health` public schema support for `confirmed` in auto-repair confirmation flow
-- Alignment notes for related docs already updated outside this packet: manual testing playbook (`EX-012`), merged feature catalog Discovery section, and scoring README
-- Final verification evidence: clean `tsc` run and targeted 5-file suite passing `95/95`
+- Memory browser (memory_list)
+- System statistics (memory_stats)
+- Health diagnostics (memory_health)
 
 ### Out of Scope
-- New runtime feature changes beyond the already landed Discovery fixes
-- Audit updates for non-Discovery categories
+- Implementing new features or fixing bugs discovered during audit
+- Modifying source code (audit is read-only)
+- Performance benchmarking
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/003-discovery/spec.md` | Modify | Refresh requirements/success criteria to current Discovery reality |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/003-discovery/plan.md` | Modify | Refresh plan phases/testing evidence to finalized implementation state |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/003-discovery/tasks.md` | Modify | Refresh completed task list and verification tasks |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/003-discovery/checklist.md` | Modify | Refresh checklist evidence and remove stale claims |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/003-discovery/implementation-summary.md` | Modify | Refresh final summary to current behavior and verification evidence |
-<!-- /ANCHOR:scope -->
+| `feature_catalog/03--discovery/*.md` | Reference | Feature catalog source files |
+| `007-code-audit-per-feature-catalog/003-discovery/` | Create | Audit documentation |
 
 ---
 
-<!-- ANCHOR:requirements -->
-## 5. REQUIREMENTS
+## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Document pre-query database-refresh failure handling | Docs state `memory_list`, `memory_stats`, and `memory_health` catch `checkDatabaseUpdated()` failures and return MCP `E021` envelopes with `requestId` instead of thrown exceptions |
-| REQ-002 | Document `memory_list` validation and response behavior accurately | Docs state invalid `specFolder`, `includeChunks`, and non-finite `limit`/`offset` return `E_INVALID_INPUT` envelopes with `requestId`, and success payload includes resolved `sortBy` (`created_at` fallback) |
-| REQ-003 | Document `memory_stats` validation and response behavior accurately | Docs state validation coverage for `includeScores`, `includeArchived`, and non-finite `limit` returns `E_INVALID_INPUT` envelopes with `requestId`, and success payload includes resolved `limit` |
-| REQ-004 | Document `memory_health` confirmation-schema reachability accurately | Docs state public/runtime schemas accept `confirmed` for `autoRepair` confirmation flow |
-| REQ-005 | Capture final focused verification evidence | Docs record `npx tsc --noEmit` clean and targeted suite passing `95/95` across the 5 named files |
+| REQ-001 | Each feature verified against source code | Every feature file cross-referenced with implementation |
+| REQ-002 | Discrepancies documented | Any catalog-vs-code mismatches recorded |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-006 | Document related doc alignment completed outside the packet | Packet references that `EX-012` now uses `folderRanking:composite`, merged Discovery catalog wording matches runtime behavior, and scoring README no longer claims `memory_list` folder-scoring consumption |
-| REQ-007 | Remove stale Discovery claims | Remove outdated statements including "documentation-only phase" wording and stale targeted test totals |
-| REQ-008 | Keep all five phase docs synchronized | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` share consistent behavior statements and verification evidence |
-<!-- /ANCHOR:requirements -->
+| REQ-003 | Source file references validated | All listed source files confirmed to exist |
+| REQ-004 | Feature interactions mapped | Cross-feature dependencies documented |
 
 ---
 
-<!-- ANCHOR:success-criteria -->
-## 6. SUCCESS CRITERIA
+## 5. SUCCESS CRITERIA
 
-- **SC-001**: Discovery docs describe pre-query `checkDatabaseUpdated()` failure handling as MCP `E021` envelopes with `requestId` for all three Discovery handlers.
-- **SC-002**: Discovery docs describe `memory_list` and `memory_stats` validation envelopes and response fields (`sortBy`, `limit`) accurately.
-- **SC-003**: Discovery docs describe `memory_health` schema support for `confirmed` accurately.
-- **SC-004**: Discovery docs note related manual playbook, merged feature catalog, and scoring README alignment updates.
-- **SC-005**: Verification evidence is updated to `tsc` clean plus targeted `95/95` tests across the five specified files.
-
-### Acceptance Scenarios
-
-1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
-2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
-3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
-4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
-
-<!-- /ANCHOR:success-criteria -->
+- **SC-001**: All 3 features audited with findings documented
+- **SC-002**: Zero unverified features remaining in this category
 
 ---
 
-<!-- ANCHOR:risks -->
-## 7. RISKS & DEPENDENCIES
+## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Current on-disk handler/schema/test files under `.opencode/skill/system-spec-kit/` | If these change again, docs can drift quickly | Anchor claims to currently verified file behavior and commands |
-| Risk | Concurrent codebase updates by other contributors | Statements can become stale after doc refresh | Scope locked to current reality snapshot + explicit verification evidence |
-| Risk | Focused verification is narrower than full-suite coverage | Potential regressions outside targeted scope remain unseen | Document focused scope explicitly and keep evidence command-level precise |
-<!-- /ANCHOR:risks -->
+| Dependency | Feature catalog accuracy | Audit based on stale catalog | Verify catalog currency first |
+| Risk | Source code changed since catalog update | Med | Cross-reference git history |
+| Risk | Some features span multiple source files | Low | Follow import chains |
 
 ---
 
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- **NFR-P01**: Discovery docs remain readable in under 5 minutes per file.
-- **NFR-P02**: Behavior-to-evidence traceability lookup should take under 30 seconds per claim.
-
-### Security
-- **NFR-S01**: Documentation must not expose credentials or unsafe absolute paths.
-- **NFR-S02**: Error envelope and `requestId` documentation should preserve observability without introducing sensitive data exposure.
+- **NFR-P01**: Audit completable by AI agent in single session
 
 ### Reliability
-- **NFR-R01**: Level 2 anchors and template markers remain intact in all five updated files.
-- **NFR-R02**: Cross-file behavior statements are internally consistent.
-<!-- /ANCHOR:nfr -->
+- **NFR-R01**: Findings must be reproducible by re-reading same sources
 
 ---
 
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 8. EDGE CASES
 
 ### Data Boundaries
-- Non-finite numeric inputs (`limit`, `offset`) must be documented as validation errors, not clamped success paths.
-- Unsupported `sortBy` values must be documented as fallback-to-`created_at`, with resolved value in response payload.
+- Feature with no source files listed: Flag as catalog gap
+- Feature spanning 10+ source files: Prioritize primary implementation file
 
 ### Error Scenarios
-- Handler-level validation failures must be documented as MCP error envelopes with `requestId`, not thrown errors.
-- Pre-query `checkDatabaseUpdated()` failures must be documented as handled MCP `E021` envelopes with `requestId`, not thrown errors.
-- Schema-level acceptance for `confirmed` must be documented for both public schema and runtime args parsing.
-
-### State Transitions
-- If source code changes after this doc refresh, Discovery docs must be re-audited before reuse as evidence.
-<!-- /ANCHOR:edge-cases -->
+- Source file referenced in catalog no longer exists: Document as finding
+- Feature partially implemented: Document completion percentage
 
 ---
 
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 9. COMPLEXITY ASSESSMENT
 
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 19/25 | Five spec artifacts refreshed and synchronized |
-| Risk | 13/25 | Moderate drift risk due active concurrent code changes |
-| Research | 9/20 | Required direct verification across handlers, schemas, tests, and catalog docs |
-| **Total** | **41/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
-
----
-
-<!-- ANCHOR:questions -->
-## 8. OPEN QUESTIONS
-
-- None. The previously stale Discovery statements targeted by this phase update are resolved in this revision.
-<!-- /ANCHOR:questions -->
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 8/25 | Features: 3 |
+| Risk | 8/25 | Read-only audit, no breaking changes |
+| Research | 9/20 | Must trace each feature to source |
+| Multi-Agent | 5/15 | Single-phase audit |
+| Coordination | 5/15 | Depends on feature catalog |
+| **Total** | **35/100** | **Level 3** |
 
 ---
 
-<!--
-CORE TEMPLATE (~80 lines)
-- Essential what/why/how only
-- No boilerplate sections
-- Add L2/L3 addendums for complexity
--->
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Catalog out of date | M | L | Verify against latest commit |
+| R-002 | Missing source files | L | M | Flag in findings |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Feature Verification (Priority: P0)
+
+**As a** system maintainer, **I want** each Discovery feature verified against source code, **so that** I can trust the catalog accurately reflects the implementation.
+
+**Acceptance Criteria**:
+1. Given a feature catalog entry, When audited, Then implementation matches description
+
+---
+
+## 12. AUDIT FINDINGS
+
+Audit completed 2026-03-22. Results per feature:
+
+| Feature ID | Feature | Result | Notes |
+|------------|---------|--------|-------|
+| F01 | memory_list (Memory browser) | MATCH | All 5 impl + 3 test files exist. Sort fallback, pagination clamping, validation error codes, response payload all verified. No discrepancies. |
+| F02 | memory_stats (System statistics) | MATCH | All 6 impl + 3 test files exist. Folder ranking modes (count/recency/importance/composite), scoring fallback, totalSpecFolders, graph channel metrics all verified. No discrepancies. |
+| F03 | memory_health (Health diagnostics) | PARTIAL | All 7 impl + 4 test files exist. Two report modes, status derivation, autoRepair confirmation gate, path redaction all verified. Discrepancies: (1) summarizeAliasConflicts attributed to memory-index.ts but actually in memory-index-alias.ts; (2) Full-mode response includes undocumented fields: embeddingRetry stats, repair.partialSuccess, orphan cleanup, integrity verification. |
+
+**Overall: 2 MATCH, 1 PARTIAL.**
+
+### F03 Discrepancy Detail
+
+- **D1 — Wrong source attribution**: `summarizeAliasConflicts` is documented as residing in `memory-index.ts` but is actually implemented in `memory-index-alias.ts`. Catalog source file list should be corrected.
+- **D2 — Undocumented response fields**: Full-mode health response includes fields not mentioned in the catalog: `embeddingRetry` stats, `repair.partialSuccess`, orphan cleanup counts, and integrity verification results. Catalog description should be extended to cover these.
+
+---
+
+## 13. OPEN QUESTIONS
+
+- Are there undocumented features in this category not yet in the catalog?
+- Have any features been deprecated since the last catalog update?
+- **[From audit]** Should the F03 catalog entry be updated to list `memory-index-alias.ts` as a primary source file?
+- **[From audit]** Should the F03 catalog entry document all undocumented full-mode response fields (embeddingRetry, repair.partialSuccess, orphan cleanup, integrity verification)?
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`

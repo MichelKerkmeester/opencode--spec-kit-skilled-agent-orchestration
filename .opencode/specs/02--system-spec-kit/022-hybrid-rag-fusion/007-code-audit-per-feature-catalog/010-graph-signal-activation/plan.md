@@ -1,191 +1,165 @@
 ---
-title: "Implementation Plan: graph-signal-activation [template:level_2/plan.md]"
-description: "Execute and close a feature-by-feature Graph Signal Activation audit by mapping catalog claims to implementation/tests/playbook scenarios and reconciling all remediation tasks."
-# SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
+title: "Implementation Plan: Code Audit — Graph Signal Activation"
+description: "Technical plan for auditing 16 Graph Signal Activation features against source code"
 trigger_phrases:
-  - "graph signal activation plan"
-  - "feature inventory"
-  - "code review per feature"
-  - "test coverage assessment"
-  - "playbook cross-reference"
-  - "graph momentum"
-  - "causal boost"
-  - "temporal contiguity"
+  - "audit plan"
+  - "graph signal activation"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: graph-signal-activation
+# Implementation Plan: Code Audit — Graph Signal Activation
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | TypeScript + Node.js |
-| **Framework** | Spec Kit Memory MCP server modules |
-| **Storage** | SQLite-backed `memory_index` and `causal_edges` access paths |
-| **Testing** | Vitest + manual playbook cross-reference |
+| **Language/Stack** | TypeScript / JavaScript (Node.js) |
+| **Framework** | MCP server (Model Context Protocol) |
+| **Storage** | better-sqlite3 |
+| **Testing** | Manual code review + cross-reference |
 
 ### Overview
-This plan executes a feature-by-feature closure workflow for Graph Signal Activation (11 features). The approach maps catalog "Current Reality" statements to source behavior, test coverage, and manual playbook scenarios, then reconciles code and documentation drift to final verified status. Output is a closed remediation backlog with explicit evidence and file references.
-<!-- /ANCHOR:summary -->
+Audit each of the 16 Graph Signal Activation features by reading the feature catalog entry, locating the referenced source files, and verifying that the implementation matches the documented behavior.
 
 ---
 
-<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified
+- [x] Feature catalog files current and accessible
+- [x] Source code accessible via file system
+- [x] Audit methodology defined
 
 ### Definition of Done
-- [x] All acceptance criteria met
-- [x] Tests passing (if applicable)
-- [x] Docs updated (spec/plan/tasks)
-<!-- /ANCHOR:quality-gates -->
+- [x] All 16 features audited
+- [x] Findings documented per feature
+- [x] Summary report completed
 
 ---
 
-<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-Monolith audit workflow (catalog-driven analysis over existing `mcp_server` modules)
+Read-only audit: Feature Catalog → Source Code → Findings Report
 
 ### Key Components
-- **Feature Inventory**: Enumerates all 11 catalog features and expected behavior.
-- **Code Review Lens**: Evaluates correctness, standards alignment, and behavior match.
-- **Coverage Mapping**: Compares listed tests and manual playbook scenarios to actual behavior.
-- **Findings Consolidation**: Emits per-feature status and prioritized remediation tasks.
+- **Feature Catalog**: `feature_catalog/10--graph-signal-activation/` — source of truth
+- **Source Code**: `.opencode/skill/system-spec-kit/` — implementation files
+- **Audit Output**: This spec folder — findings and documentation
 
 ### Data Flow
-Feature catalog entries provide implementation/test references, which are reviewed against runtime code paths and tests. Findings are classified (PASS/WARN/FAIL), mapped to playbook coverage, and translated into prioritized tasks and verification checklist entries.
-<!-- /ANCHOR:architecture -->
+Read feature catalog entry → Locate source files → Compare description to implementation → Document findings
 
 ---
 
-<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Setup
-- [x] Feature inventory for `feature_catalog/10--graph-signal-activation/` completed
-- [x] Source/test references extracted for all listed features
-- [x] Manual playbook target range (NEW-035..039, NEW-050+) identified
+### Phase 1: Preparation
+- [x] Verify feature catalog is current for Graph Signal Activation
+- [x] Identify source code root paths
+- [x] Set up audit methodology
 
-### Phase 2: Core Implementation
-- [x] Correctness/standards/behavior review executed per feature
-- [x] Test coverage and gap analysis captured
-- [x] PASS/WARN/FAIL findings converted into prioritized remediation tasks
+### Phase 2: Feature-by-Feature Audit
+- [x] Audit: Typed-weighted degree channel — MATCH
+- [x] Audit: Co-activation boost strength increase — MATCH (minor 0.3 imprecision)
+- [x] Audit: Edge density measurement — MATCH
+- [x] Audit: Weight history audit tracking — MATCH (source list over-inclusive)
+- [x] Audit: Graph momentum scoring — MATCH
+- [x] Audit: Causal depth signal — MATCH
+- [x] Audit: Community detection — MATCH
+- [x] Audit: Graph and cognitive memory fixes — MATCH (minor file attribution)
+- [x] Audit: ANCHOR tags as graph nodes — MATCH (correctly DEFERRED)
+- [x] Audit: Causal neighbor boost and injection — MATCH
+- [x] Audit: Temporal contiguity layer — PARTIAL (@deprecated, never wired, catalog says active)
+- [x] Audit: Unified graph retrieval and deterministic ranking — MATCH
+- [x] Audit: Graph lifecycle refresh — PARTIAL (misleading inline comment)
+- [x] Audit: Async LLM graph backfill — PARTIAL (self-contradictory catalog default)
+- [x] Audit: Graph calibration profiles — PARTIAL (@deprecated, never wired, catalog says active)
+- [x] Audit: Typed traversal — MATCH
 
-### Phase 3: Verification
-- [x] Findings normalized into Level 2 template structure
-- [x] Pending code fixes resolved and backlog closed in `tasks.md`
-- [x] Checklist summary updated with final feature outcomes
-<!-- /ANCHOR:phases -->
+### Phase 3: Synthesis
+- [x] Cross-reference findings across features
+- [x] Identify systemic patterns
+- [x] Compile summary report
 
 ---
 
-<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Existing module-level behavior already covered by referenced vitest suites | Vitest |
-| Integration | Cross-module behavior checks for cache invalidation, traversal, and relation weighting | Vitest + SQLite-backed test fixtures |
-| Manual | Playbook scenario mapping validation for graph-signal features (F-01..F-11) | Feature playbook + markdown audit review |
-<!-- /ANCHOR:testing -->
+| Cross-reference | Feature-to-code traceability | Grep, Read, Glob |
+| Completeness | All 16 features covered | Checklist verification |
+| Accuracy | Catalog matches implementation | Manual review |
 
 ---
 
-<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `feature_catalog/10--graph-signal-activation/` feature docs | Internal | Green | Cannot validate behavior expectations per feature |
-| `mcp_server/lib/**` and `mcp_server/tests/**` files | Internal | Green | Cannot verify correctness/test gap findings |
-| Playbook graph-signal scenario coverage | Internal | Green | Coverage is now present for in-scope graph features, with deferred items documented explicitly |
-<!-- /ANCHOR:dependencies -->
+| Feature catalog | Internal | Green | Cannot audit without reference |
+| Source code access | Internal | Green | Cannot verify implementation |
 
 ---
 
-<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Template rewrite introduces incorrect structure, dropped findings, or broken anchor/frontmatter format.
-- **Procedure**: Revert spec folder document changes to previous revision and re-apply mapping with validated template sections.
-<!-- /ANCHOR:rollback -->
+- **Trigger**: Audit methodology proves inadequate
+- **Procedure**: Revise approach and restart from Phase 1
 
 ---
 
-
----
-
-<!-- ANCHOR:phase-deps -->
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Setup) ──────┐
-                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
-Phase 1.5 (Config) ───┘
+Phase 1 (Prep) ──► Phase 2 (Audit 16 features) ──► Phase 3 (Synthesis)
 ```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Setup | None | Core, Config |
-| Config | Setup | Core |
-| Core | Setup, Config | Verify |
-| Verify | Core | None |
-<!-- /ANCHOR:phase-deps -->
 
 ---
 
-<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Setup | Medium | 2-3 hours |
-| Core Implementation | High | 6-10 hours |
-| Verification | Medium | 2-3 hours |
-| **Total** | | **10-16 hours** |
-<!-- /ANCHOR:effort -->
+| Preparation | Low | 1 session |
+| Feature Audit | High | 16 features |
+| Synthesis | Medium | 1 session |
 
 ---
 
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+## L3: MILESTONES
 
-### Pre-deployment Checklist
-- [x] Backup created (if data changes)
-- [x] Feature flag configured
-- [x] Monitoring alerts set
-
-### Rollback Procedure
-1. Revert changed spec folder files (`spec.md`, `tasks.md`, `plan.md`, `checklist.md`).
-2. Restore prior document versions from git history.
-3. Re-verify frontmatter, ANCHOR pairs, and Level 2 comments.
-4. Re-run document sanity review before re-submitting.
-
-### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: N/A
-<!-- /ANCHOR:enhanced-rollback -->
+| Milestone | Description | Success Criteria |
+|-----------|-------------|------------------|
+| M1 | Audit spec created | All docs in place |
+| M2 | All features audited | 16/16 complete — DONE |
+| M3 | Synthesis delivered | Summary report finalized — DONE |
 
 ---
 
-<!--
-LEVEL 2 PLAN (~140 lines)
-- Core + Verification additions
-- Phase dependencies, effort estimation
-- Enhanced rollback procedures
--->
+## FINDINGS SUMMARY
+
+**Audit complete: 12 MATCH, 4 PARTIAL (16 total)**
+
+### MATCH (12)
+F01 typed-weighted-degree, F02 co-activation-boost, F03 edge-density, F04 weight-history, F05 graph-momentum, F06 causal-depth, F07 community-detection, F08 graph-cognitive-fixes, F09 anchor-tags (DEFERRED), F10 causal-neighbor-boost, F12 unified-graph, F16 typed-traversal
+
+### PARTIAL (4) — Follow-up required
+
+| Feature | Issue | Severity |
+|---------|-------|----------|
+| F11 temporal-contiguity | Module `@deprecated`, never wired; catalog presents as active | High |
+| F13 graph-lifecycle | Misleading inline comment vs actual default behavior | Low |
+| F14 llm-graph-backfill | Self-contradictory default messaging within catalog entry | Medium |
+| F15 graph-calibration | Module `@deprecated`, never wired; catalog presents as active | High |
+
+### Systemic Pattern
+Two features (F11, F15) share the same failure mode: a deprecated module left in the codebase with an active-facing catalog entry. These should be handled together in a single catalog-correction pass. The F14 contradiction and F13 comment are independent, lower-priority fixes.

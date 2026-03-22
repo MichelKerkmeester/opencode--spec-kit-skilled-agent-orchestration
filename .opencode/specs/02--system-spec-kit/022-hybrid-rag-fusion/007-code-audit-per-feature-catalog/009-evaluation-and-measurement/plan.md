@@ -1,190 +1,172 @@
 ---
-title: "Implementation Plan: evaluation-and-measurement [template:level_2/plan.md]"
-description: "This plan operationalizes evaluation-and-measurement audit findings into phased remediation across metrics, observability, reporting, and traceability. It emphasizes deterministic verification and documentation-to-code parity."
-SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
+title: "Implementation Plan: Code Audit — Evaluation and Measurement"
+description: "Technical plan for auditing 16 Evaluation and Measurement features against source code"
 trigger_phrases:
-  - "implementation"
-  - "plan"
-  - "evaluation"
-  - "measurement"
-  - "metrics"
-  - "observability"
-  - "ablation"
+  - "audit plan"
+  - "evaluation and measurement"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: evaluation-and-measurement
+# Implementation Plan: Code Audit — Evaluation and Measurement
 
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | TypeScript (Node.js) |
-| **Framework** | Spec Kit Memory MCP server |
-| **Storage** | SQLite evaluation tables (`eval_*`) and telemetry/event paths |
-| **Testing** | Vitest + feature-catalog/playbook verification |
+| **Language/Stack** | TypeScript / JavaScript (Node.js) |
+| **Framework** | MCP server (Model Context Protocol) |
+| **Storage** | better-sqlite3 |
+| **Testing** | Manual code review + cross-reference |
 
 ### Overview
-This plan translates the evaluation-and-measurement feature audit into a phased execution model across setup, remediation, and verification. The technical approach prioritizes correctness fixes first (P0), then behavior/documentation alignment (P1), followed by traceability and coverage closure across all 14 features.
-<!-- /ANCHOR:summary -->
+Audit each of the 16 Evaluation and Measurement features by reading the feature catalog entry, locating the referenced source files, and verifying that the implementation matches the documented behavior.
 
 ---
 
-<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified
+- [x] Feature catalog files current and accessible
+- [x] Source code accessible via file system
+- [x] Audit methodology defined
 
 ### Definition of Done
-- [x] All acceptance criteria met
-- [x] Tests passing (if applicable)
-- [x] Docs updated (spec/plan/tasks)
-<!-- /ANCHOR:quality-gates -->
+- [x] All 16 features audited
+- [x] Findings documented per feature
+- [x] Summary report completed
 
 ---
 
-<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-Feature-oriented remediation workflow over existing MCP server modules and catalog artifacts.
+Read-only audit: Feature Catalog → Source Code → Findings Report
 
 ### Key Components
-- **Feature Catalog (`feature_catalog/09--evaluation-and-measurement/`)**: Declares current-reality behavior and source/test mapping per feature.
-- **Evaluation Runtime (`mcp_server/lib/eval/`)**: Core target for metric, baseline, ablation, and run-ID correctness fixes.
-- **Telemetry & Tests (`mcp_server/lib/telemetry/`, `mcp_server/tests/`)**: Validation surfaces for observability and regression coverage.
+- **Feature Catalog**: `feature_catalog/09--evaluation-and-measurement/` — source of truth
+- **Source Code**: `.opencode/skill/system-spec-kit/` — implementation files
+- **Audit Output**: This spec folder — findings and documentation
 
 ### Data Flow
-Catalog findings are converted into scoped tasks, executed in runtime/test files, and then re-verified against feature narratives and playbook mappings before checklist sign-off.
-<!-- /ANCHOR:architecture -->
+Read feature catalog entry → Locate source files → Compare description to implementation → Document findings
 
 ---
 
-<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Setup
-- [x] Normalize feature-doc mappings and requirement IDs
-- [x] Confirm P0/P1 remediation ownership and target files
-- [x] Establish logging/error-handling expectations for silent-catch paths
+### Phase 1: Preparation
+- [x] Verify feature catalog is current for Evaluation and Measurement
+- [x] Identify source code root paths
+- [x] Set up audit methodology
 
-### Phase 2: Core Implementation
-- [x] Apply metric, observer-overhead, channel-attribution, and persistence edge-case fixes
-- [x] Add or update regression tests for each corrected behavior
-- [x] Align feature narratives with implementation truth where code changes are deferred
+### Phase 2: Feature-by-Feature Audit
+- [x] Audit: Evaluation database and schema (F01 — PARTIAL)
+- [x] Audit: Core metric computation (F02 — PARTIAL)
+- [x] Audit: Observer effect mitigation (F03 — MATCH)
+- [x] Audit: Full-context ceiling evaluation (F04 — MATCH)
+- [x] Audit: Quality proxy formula (F05 — MATCH)
+- [x] Audit: Synthetic ground truth corpus (F06 — MATCH)
+- [x] Audit: BM25-only baseline (F07 — MATCH)
+- [x] Audit: Agent consumption instrumentation (F08 — MATCH)
+- [x] Audit: Scoring observability (F09 — MATCH)
+- [x] Audit: Full reporting and ablation study framework (F10 — MATCH)
+- [x] Audit: Shadow scoring and channel attribution (F11 — PARTIAL)
+- [x] Audit: Test quality improvements (F12 — MATCH)
+- [x] Audit: Evaluation and housekeeping fixes (F13 — PARTIAL)
+- [x] Audit: Cross-AI validation fixes (F14 — MATCH)
+- [x] Audit: Memory roadmap baseline snapshot (F15 — MATCH)
+- [x] Audit: INT8 quantization evaluation (F16 — MATCH)
 
-### Phase 3: Verification
-- [x] Validate all acceptance criteria and edge-case coverage
-- [x] Confirm per-feature NEW-050..072 mapping completeness
-- [x] Synchronize spec/plan/tasks/checklist outcomes
-<!-- /ANCHOR:phases -->
+### Phase 3: Synthesis
+- [x] Cross-reference findings across features
+- [x] Identify systemic patterns
+- [x] Compile summary report
 
 ---
 
-<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Metric computation, helper guards, logging paths | Vitest |
-| Integration | Eval DB persistence, ablation reporting, run-ID bootstrap | Vitest + DB-backed fixtures |
-| Manual | Feature-catalog to playbook mapping verification (NEW-050..072) | Catalog review + audit docs |
-<!-- /ANCHOR:testing -->
+| Cross-reference | Feature-to-code traceability | Grep, Read, Glob |
+| Completeness | All 16 features covered | Checklist verification |
+| Accuracy | Catalog matches implementation | Manual review |
 
 ---
 
-<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Evaluation-and-measurement feature catalog docs | Internal | Green | Requirement and acceptance drift across 14 features |
-| MCP server eval + telemetry modules | Internal | Green | Correctness remediations cannot be implemented |
-| Vitest suites and fixtures | Internal | Yellow | Regression claims cannot be verified deterministically |
-| NEW-050..072 playbook scenario references | Internal | Green | Manual validation remains phase-level and non-auditable |
-<!-- /ANCHOR:dependencies -->
+| Feature catalog | Internal | Green | Cannot audit without reference |
+| Source code access | Internal | Green | Cannot verify implementation |
 
 ---
 
-<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Any remediation introduces regression, unresolved test failures, or behavior drift from current-reality claims.
-- **Procedure**: Revert affected commits, restore previous evaluation/telemetry behavior, and re-run baseline verification suites.
-<!-- /ANCHOR:rollback -->
+- **Trigger**: Audit methodology proves inadequate
+- **Procedure**: Revise approach and restart from Phase 1
 
 ---
 
-
----
-
-<!-- ANCHOR:phase-deps -->
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Setup) ───────────────┐
-                               ├──► Phase 2 (Core) ──► Phase 3 (Verify)
-Phase 1.5 (Mapping cleanup) ───┘
+Phase 1 (Prep) ──► Phase 2 (Audit 16 features) ──► Phase 3 (Synthesis)
 ```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Setup | None | Core, Mapping cleanup |
-| Mapping cleanup | Setup | Core |
-| Core | Setup, Mapping cleanup | Verify |
-| Verify | Core | None |
-<!-- /ANCHOR:phase-deps -->
 
 ---
 
-<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Setup | Medium | 2-3 hours |
-| Core Implementation | High | 10-16 hours |
-| Verification | Medium | 3-5 hours |
-| **Total** | | **15-24 hours** |
-<!-- /ANCHOR:effort -->
+| Preparation | Low | 1 session |
+| Feature Audit | High | 16 features |
+| Synthesis | Medium | 1 session |
 
 ---
 
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+## L3: MILESTONES
 
-### Pre-deployment Checklist
-- [ ] Backup created (if data changes)
-- [ ] Feature flag configured
-- [ ] Monitoring alerts set
-
-### Rollback Procedure
-1. Disable or revert impacted evaluation/telemetry paths.
-2. Revert remediation commits for the affected feature set.
-3. Re-run targeted Vitest suites for metrics, reporting, and observability.
-4. Reconcile feature-catalog narratives with restored behavior and record follow-up tasks.
-
-### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: N/A
-<!-- /ANCHOR:enhanced-rollback -->
+| Milestone | Description | Success Criteria |
+|-----------|-------------|------------------|
+| M1 | Audit spec created | All docs in place |
+| M2 | All features audited | 16/16 complete |
+| M3 | Synthesis delivered | Summary report finalized |
 
 ---
 
-<!--
-LEVEL 2 PLAN (~140 lines)
-- Core + Verification additions
-- Phase dependencies, effort estimation
-- Enhanced rollback procedures
--->
+## FINDINGS SUMMARY
+
+**Audit Date**: 2026-03-22
+**Overall Result**: 12 MATCH, 4 PARTIAL
+
+### PARTIAL Findings
+
+| Feature ID | Feature Name | Issue |
+|------------|-------------|-------|
+| F01 | eval-db-schema | `eval-logger.ts` missing from catalog source file list |
+| F02 | core-metrics | Catalog counts 11 metrics; code implements 12 (MAP uncounted) |
+| F11 | shadow-scoring | Catalog says channel attribution "active"; code has `@deprecated` |
+| F13 | eval-housekeeping | Source list covers 2 of 6 actual fix locations; 4 files unlisted |
+
+### Systemic Patterns
+
+- **Source list staleness**: Three of the four PARTIAL findings (F01, F13 missing files; F02 metric count) stem from catalog source lists not being updated when implementation files were added or expanded. Recommend a lightweight update pass when source files change.
+- **Deprecation tracking**: F11 reveals that `@deprecated` annotations in code are not propagated back to catalog status fields. Recommend a convention for marking catalog entries deprecated when code is annotated.
+
+### Recommended Follow-up Actions
+
+1. Add `eval-logger.ts` to `eval-db-schema` catalog source list (F01)
+2. Increment metric count to 12, add MAP entry to `core-metrics` catalog (F02)
+3. Mark channel attribution as deprecated in `shadow-scoring` catalog (F11)
+4. Expand `eval-housekeeping` source file list to all 6 fix locations (F13)

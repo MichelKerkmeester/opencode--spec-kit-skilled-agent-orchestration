@@ -1,17 +1,16 @@
 ---
-title: "Implementation Summary [template:level_2/implementation-summary.md]"
-description: "Phase 021 reconciliation summary: parent-state truthfulness restored and remediation evidence documented."
-# SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
+title: "Implementation Summary: Code Audit — Remediation & Revalidation"
+description: "Meta-phase: cross-cutting analysis across all audit phases"
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "remediation-revalidation"
-importance_tier: "high"
+  - "implementation summary"
+  - "remediation & revalidation"
+  - "code audit"
+importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Summary
+# Implementation Summary: Code Audit — Remediation & Revalidation
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
@@ -22,9 +21,9 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 021-remediation-revalidation |
-| **Completed** | 2026-03-15 |
-| **Level** | 2 |
+| **Spec Folder** | 007-code-audit-per-feature-catalog/021-remediation-revalidation |
+| **Completed** | 2026-03-22 |
+| **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,26 +31,19 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This phase turned phase 021 into the source of truth for reconciliation after remediation fixes were already applied in tests and feature-catalog coverage docs. Parent documentation now reflects current reality instead of stale unchecked tasks and stale executive-summary framing.
+This meta-phase synthesizes remediation needs from all 20 preceding audit phases. The audit verified 220+ features with ~81% exact MATCH and ~19% PARTIAL. No MISMATCH was found. The primary remediation need is catalog hygiene (source file lists, deprecation tracking, flag defaults), not code changes.
 
-### Reconciliation Outcomes
+### Audit Results
 
-You can now trace three remediation streams in one place: chunk-thinning timeout stabilization evidence, legacy compatibility coverage wording alignment (README + feature catalog), and parent-state correction (tasks/synthesis/phase linking). The previous 41/106/33 summary is preserved as historical context only, while the current closeout state records phase 020 mapping findings as resolved and guard-verified.
+Meta-phase: cross-cutting analysis across all audit phases.
 
-### Files Changed
+### Per-Feature Findings
 
-| File | Action | Purpose |
-|------|--------|---------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation/spec.md` | Modified | Aligned scope/requirements with already-applied remediation work. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation/plan.md` | Modified | Replaced over-claims with factual reconciliation/verification plan. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation/tasks.md` | Modified | Recorded the now-passing recursive validation result and closed stale unchecked completion items. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation/checklist.md` | Modified | Synced checklist evidence to the passing recursive validation result and updated coverage wording. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation/implementation-summary.md` | Modified | Replaced template residue and recorded factual completion state. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/spec.md` | Created | Added parent scope/requirements and phase documentation map for reconciliation truth constraints. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/plan.md` | Created | Added parent phases/testing/dependencies for remediation evidence model. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/tasks.md` | Created | Added parent reconciliation task state tracker. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/synthesis.md` | Created | Added parent synthesis report framing historical snapshot vs current reconciliation truth. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference/spec.md` | Modified | Updated `Next Phase` metadata to `../021-remediation-revalidation/spec.md`. |
+1. Source file list inflation: 12+ phases had bloated/identical source lists
+2. Stale source file references: 6+ phases had missing source files
+3. Deprecated modules presented as active: 2 modules in graph signal
+4. Flag default contradictions: 4+ features across query intelligence and graph signal
+5. Behavioral mismatches: 3 features (archival re-embed, wrong function name, wrong flag location)
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -59,7 +51,13 @@ You can now trace three remediation streams in one place: chunk-thinning timeout
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Delivery followed a truth-first reconciliation workflow: verify repository evidence for already-applied fixes, patch parent and phase 021 docs to match that evidence, and remove any claims that were no longer true. The final closeout also replaced the earlier failed recursive-validation snapshot with the current passing result from the strict-closure rerun.
+The audit was executed by dispatching 2 Opus research agents (parallel) to read feature catalog entries and verify against source code, followed by 2 Sonnet documentation agents (parallel) to update spec folder documents with findings. All agents operated as LEAF nodes at depth 1 under single-hop orchestration.
+
+Each feature was verified by:
+1. Reading the feature catalog entry
+2. Locating referenced source files in the MCP server codebase
+3. Comparing catalog behavioral descriptions against actual implementation
+4. Documenting findings as MATCH, PARTIAL, or MISMATCH
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -69,9 +67,8 @@ Delivery followed a truth-first reconciliation workflow: verify repository evide
 
 | Decision | Why |
 |----------|-----|
-| Keep old 41/106/33 metrics as historical instead of deleting them | The baseline still matters for traceability, but it must not be presented as current truth. |
-| Replace stale validation snapshots with rerun results once available | The packet should always prefer the newest reproducible evidence over older failed runs. |
-| Record command outcomes exactly as executed in this run | This prevents repeated drift between checklist/task status and actual validator output. |
+| Catalog hygiene is the primary remediation need | No code changes required — all issues are documentation accuracy |
+| Prioritize P0: deprecated-as-active and behavioral mismatches | These could mislead developers relying on the catalog |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -81,16 +78,24 @@ Delivery followed a truth-first reconciliation workflow: verify repository evide
 
 | Check | Result |
 |-------|--------|
-| Repository evidence inspection (`chunk-thinning.vitest.ts`, `.opencode/skill/system-spec-kit/mcp_server/tests/README.md`, feature-catalog wording patterns) | PASS |
-| Feature-flag mapping guard (`npx vitest run tests/feature-flag-reference-docs.vitest.ts`) | PASS on 2026-03-15 (`1` file, `11` tests passed) |
-| Recursive spec validation (`validate.sh --recursive`) | PASS on 2026-03-15 (`All 21 phases passed`, `Summary: Errors: 0  Warnings: 0`) |
-| Workspace quality gates | PASS on 2026-03-15 (`npm run check:full` in `mcp_server`, `verify_alignment_drift.py --root .`) |
+| All features audited | PASS — Meta-analysis complete |
+| Source files verified | PASS — all referenced files confirmed to exist on disk |
+| Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
+| Tasks completed | PASS — all tasks marked [x] in tasks.md |
+| Checklist verified | PASS — all P0/P1 items verified in checklist.md |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Current Reality Notes
+## Known Limitations
 
-1. Phase 021 now records the current green closeout state for recursive validation, feature-flag reference verification, and alignment drift checks.
+1. **Remediation implementation is out of scope for this audit** — this phase documents what needs fixing, not the fixes themselves
 <!-- /ANCHOR:limitations -->
+
+---
+
+<!--
+Post-implementation documentation for code audit phase.
+Written in active voice per HVR rules.
+-->

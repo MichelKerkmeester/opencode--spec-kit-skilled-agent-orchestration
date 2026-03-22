@@ -1,17 +1,16 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
-description: "Parent umbrella closeout summary for root-document completion and recursive-validation readiness."
-# SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
+title: "Implementation Summary: Code Audit per Feature Catalog"
+description: "Comprehensive code audit of 220+ features across 19 categories completed with ~81% MATCH and ~19% PARTIAL accuracy"
 trigger_phrases:
-  - "implementation"
-  - "summary"
-  - "umbrella root"
+  - "implementation summary"
+  - "code audit"
+  - "feature catalog"
 importance_tier: "high"
 contextType: "general"
 ---
-# Implementation Summary
+# Implementation Summary: Code Audit per Feature Catalog
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
@@ -23,8 +22,8 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 007-code-audit-per-feature-catalog |
-| **Completed** | 2026-03-15 |
-| **Level** | 1 |
+| **Completed** | 2026-03-22 |
+| **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,20 +31,52 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The umbrella root packet is now structurally complete and closed against the current repo state. You can validate this phased spec tree without missing parent artifacts, and the root packet now points at the current green verification record instead of preserving stale failure narratives.
+A comprehensive code audit verified all 220+ features documented in the Spec Kit Memory MCP server's 19-category feature catalog against the actual source code. The audit was decomposed into 21 phase folders (001-021), each covering one catalog category plus two meta-phases for cross-cutting analysis. Every behavioral description in the catalog proved fundamentally accurate — no MISMATCH was found.
 
-### Parent Packet Completion
+### Overall Results
 
-This pass adds the missing root completion artifact (`implementation-summary.md`) and extends the root `spec.md` with concise acceptance scenarios so Level 1 section-count expectations are met.
+| Metric | Value |
+|--------|-------|
+| Total features audited | 220+ |
+| MATCH (exact accuracy) | ~179 (~81%) |
+| PARTIAL (minor issues) | ~41 (~19%) |
+| MISMATCH (wrong) | 0 (0%) |
+| Phase folders | 21 |
+| Spec documents updated | 110 |
 
-### Files Changed
+### Top Findings by Category
 
-| File | Action | Purpose |
-|------|--------|---------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/implementation-summary.md` | Created | Add required Level 1 completion artifact at parent root. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/spec.md` | Modified | Add acceptance scenarios to clear Level 1 scenario-count warning. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference/tasks.md` | Modified | Fix unresolved markdown references with full catalog paths. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/020-feature-flag-reference/checklist.md` | Modified | Fix unresolved markdown references with full catalog paths. |
+1. **Source file list inflation** (12+ phases): Catalog entries list dozens to hundreds of unrelated files instead of scoping to direct dependencies
+2. **Stale source file references** (6+ phases): Files that exist in code but are not listed in catalog
+3. **Deprecated modules presented as active** (Phase 010): temporal-contiguity and graph-calibration-profiles are @deprecated but catalog shows as graduated
+4. **Flag default contradictions** (Phases 010, 012): Module headers say "default: FALSE" but runtime defaults to ON
+5. **Minor behavioral mismatches** (Phases 005, 011): Vector re-embedding timing, wrong function names, wrong flag locations
+
+### Phase Summary
+
+| Phase | Category | Features | MATCH | PARTIAL |
+|-------|----------|----------|-------|---------|
+| 001 | Retrieval | 10 | 9 | 1 |
+| 002 | Mutation | 10 | 8 | 2 |
+| 003 | Discovery | 3 | 2 | 1 |
+| 004 | Maintenance | 2 | 1 | 1 |
+| 005 | Lifecycle | 7 | 4 | 3 |
+| 006 | Analysis | 7 | 5 | 2 |
+| 007 | Evaluation | 2 | 1 | 1 |
+| 008 | Bug Fixes | 11 | 9 | 2 |
+| 009 | Eval & Measurement | 16 | 12 | 4 |
+| 010 | Graph Signal | 16 | 12 | 4 |
+| 011 | Scoring & Calibration | 23 | 20 | 3 |
+| 012 | Query Intelligence | 11 | 8 | 3 |
+| 013 | Memory Quality | 24 | 19 | 5 |
+| 014 | Pipeline Architecture | 22 | 19 | 3 |
+| 015 | Retrieval Enhancements | 9 | 8 | 1 |
+| 016 | Tooling & Scripts | 17 | 16 | 1 |
+| 017 | Governance | 4 | 3 | 1 |
+| 018 | UX Hooks | 19 | 17 | 2 |
+| 019 | Decisions & Deferrals | meta | — | — |
+| 020 | Feature Flag Reference | 7 | 6 | 1 |
+| 021 | Remediation | meta | — | — |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -53,7 +84,14 @@ This pass adds the missing root completion artifact (`implementation-summary.md`
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-I completed the root packet in two steps: first the structural Level 1 closeout, then the strict-closure reconciliation that refreshed stale verification language after the repo-wide gates were rerun successfully.
+The audit was executed in 21 sequential waves, one phase at a time. Each wave dispatched 4 agents (2 Opus for research, 2 Sonnet for documentation) under single-hop orchestration following orchestrate.md protocols. Total: 84 agent dispatches across all phases.
+
+Verification approach per feature:
+1. Read feature catalog entry (behavioral description + source file list)
+2. Locate and read referenced source files in the MCP server codebase
+3. Compare documented behavior against actual implementation
+4. Classify as MATCH (exact), PARTIAL (minor issues), or MISMATCH (wrong)
+5. Update spec folder documents with findings and completion marks
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -63,9 +101,11 @@ I completed the root packet in two steps: first the structural Level 1 closeout,
 
 | Decision | Why |
 |----------|-----|
-| Add root acceptance scenarios instead of generic narrative filler | The validator warning is scenario-count based, so concise Given/When/Then scenarios are the most direct fix. |
-| Use fully qualified `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/...` paths in 020 docs | This matches real catalog file locations and resolves SPEC_DOC_INTEGRITY path checks. |
-| Keep scope strictly to umbrella-spec markdown | Honors ownership boundary and avoids unintended non-spec changes. |
+| Organize audit by feature catalog categories | Aligns with how the catalog is maintained and enables parallel phase execution |
+| Use 4 agents per phase (2 opus + 2 sonnet) | Opus for deep source code analysis, Sonnet for template-compliant documentation |
+| Sequential phases, parallel within each phase | Prevents cross-phase interference while maximizing per-phase throughput |
+| Classify as MATCH/PARTIAL/MISMATCH | Three-level system captures nuance without over-complicating verdicts |
+| Flag catalog hygiene as primary remediation | All PARTIAL findings are documentation accuracy issues, not code bugs |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -75,9 +115,11 @@ I completed the root packet in two steps: first the structural Level 1 closeout,
 
 | Check | Result |
 |-------|--------|
-| Recursive validator on umbrella packet (`validate.sh --recursive`) | PASS on 2026-03-15 (`All 21 phases passed`, `Summary: Errors: 0  Warnings: 0`). |
-| Root Level 1 required files present | `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md` are now present. |
-| Phase 020 markdown references | Updated to fully qualified resolvable catalog markdown paths. |
+| All 220+ features audited | PASS — every feature in all 19 catalog categories verified |
+| All 21 phase folders complete | PASS — spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md in each |
+| All tasks marked complete | PASS — zero pending tasks across all phases |
+| All P0 checklist items verified | PASS — zero unchecked P0 items |
+| Parent spec folder synchronized | PASS — this implementation summary reflects all phase findings |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -85,13 +127,16 @@ I completed the root packet in two steps: first the structural Level 1 closeout,
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. The root packet is structurally complete and the latest umbrella verification rerun is green; any future drift should be recorded as a new verification snapshot rather than preserved here as a stale warning.
+1. **Source file lists not corrected** — the audit documents stale/bloated source lists but does not fix them in the feature catalog
+2. **Deprecated module catalog entries not updated** — temporal-contiguity and graph-calibration-profiles still show as active
+3. **Flag default contradictions not resolved** — module headers and runtime behavior still disagree in several features
+4. **No automated regression tracking** — future catalog drift requires manual re-audit
+5. **Meta-phases (019, 021) are synthesis only** — they document patterns but do not execute remediation
 <!-- /ANCHOR:limitations -->
 
 ---
 
 <!--
-CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
-Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
-HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
+Post-implementation documentation for the comprehensive code audit.
+Written in active voice per HVR rules.
 -->

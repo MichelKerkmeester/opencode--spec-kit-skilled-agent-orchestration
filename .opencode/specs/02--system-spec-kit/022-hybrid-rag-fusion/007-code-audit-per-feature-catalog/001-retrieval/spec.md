@@ -1,202 +1,231 @@
 ---
-title: "Feature Specification: 001-Retrieval Code Audit"
-description: "Audit and align retrieval implementation, tests, and documentation across nine retrieval features. Close correctness and verification gaps, then record honest post-fix evidence."
-trigger_phrases: ["retrieval", "code audit", "feature catalog", "specification", "level 2"]
+title: "Feature Specification: Code Audit — Retrieval"
+description: "Systematic code audit of 10 Retrieval features against source code to verify implementation accuracy and catalog alignment."
+trigger_phrases:
+  - "code audit"
+  - "retrieval"
+  - "feature verification"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Feature Specification: 001-Retrieval Code Audit
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+# Feature Specification: Code Audit — Retrieval
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
 
-<!-- ANCHOR:metadata -->
+## EXECUTIVE SUMMARY
+
+Systematic code audit of 10 Retrieval features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/01--retrieval/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.
+
+**Key Decisions**: Audit against current feature catalog as source of truth, document findings per feature
+
+**Critical Dependencies**: Feature catalog must be current and accurate
+
+---
+
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Level** | 2 |
-| **Priority** | P0 |
+| **Level** | 3 |
+| **Priority** | P1 |
 | **Status** | Complete |
-| **Created** | 2026-03-10 |
+| **Created** | 2026-03-22 |
 | **Branch** | `main` |
-| **Parent Spec** | ../spec.md |
-| **Predecessor** | None |
-| **Successor** | ../002-mutation/spec.md |
-<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Retrieval behavior and documentation had drifted. The audit surfaced correctness issues in token budget enforcement, transactional delete reporting, schema/index error handling, convergence scoring defaults, and backward-compatibility handling for older schemas. Several retrieval tests also had weak or placeholder assertions.
+The feature catalog for Retrieval has evolved significantly. Existing audit documentation was stale and no longer reflected the current 10-feature inventory. A fresh audit baseline is needed to verify each feature's implementation against its catalog description.
 
 ### Purpose
-Verify all 9 retrieval features against real code and tests, fix the validated gaps, and keep documentation aligned with verified post-fix evidence.
-
-### Audit Criteria (Preserved)
-1. Code correctness: logic bugs, off-by-one, null/undefined, error paths
-2. Standards alignment: `sk-code--opencode` TypeScript checklist
-3. Behavior match: code matches feature catalog "Current Reality"
-4. Test coverage: tests exist and cover described behavior
-5. Playbook mapping: EX-001..EX-009
-<!-- /ANCHOR:problem -->
+Verify that all 10 Retrieval features are accurately documented in the feature catalog and correctly implemented in source code.
 
 ---
 
-<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-- Retrieval feature catalog audit (`01--retrieval`) across 9 features
-- Correctness and standards fixes discovered during audit
-- Regression and coverage tests needed to close identified gaps
-- Spec-folder documentation accuracy for final post-fix state
+- Unified context retrieval (memory_context)
+- Semantic and lexical search (memory_search)
+- Trigger phrase matching (memory_match_triggers)
+- Hybrid search pipeline
+- 4-stage pipeline architecture
+- BM25 trigger phrase re-index gate
+- AST-level section retrieval tool
+- Quality-aware 3-tier search fallback
+- Tool-result extraction to working memory
+- Fast delegated search (memory_quick_search)
 
 ### Out of Scope
-- New retrieval feature development not required by findings
-- Non-retrieval feature categories outside `01--retrieval`
-- Broad refactors unrelated to T-01 through T-09
-
-### Feature Inventory (Preserved)
-1. unified context retrieval memorycontext
-2. semantic and lexical search memorysearch
-3. trigger phrase matching memorymatchtriggers
-4. hybrid search pipeline
-5. 4 stage pipeline architecture
-6. bm25 trigger phrase re index gate
-7. ast level section retrieval tool
-8. quality aware 3 tier search fallback
-9. tool result extraction to working memory
+- Implementing new features or fixing bugs discovered during audit
+- Modifying source code (audit is read-only)
+- Performance benchmarking
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `mcp_server/handlers/memory-context.ts` | Modify | Enforce budget even for single-result / still-over-budget structured payloads via compaction + binary-search truncation fallback |
-| `mcp_server/lib/search/vector-index-mutations.ts` | Modify | Ensure `delete_memories()` reports committed counts only and returns `deleted: 0` on rollback |
-| `mcp_server/lib/search/vector-index-schema.ts` | Modify | Replace remaining silent catches with structured warnings; validate migration v14 file paths before read |
-| `shared/algorithms/rrf-fusion.ts` | Modify | Set `fuseResultsMulti()` default convergence bonus to `CONVERGENCE_BONUS` |
-| `shared/dist/algorithms/rrf-fusion.js` | Modify | Keep runtime build aligned with source convergence-bonus behavior |
-| `mcp_server/lib/extraction/extraction-adapter.ts` | Modify | Add fallback to `file_path` lookup when `canonical_file_path` is unavailable |
-| `mcp_server/tests/token-budget-enforcement.vitest.ts` | Modify | Strengthen token-budget assertions and add single-result structured compaction test |
-| `mcp_server/tests/search-archival.vitest.ts` | Modify | Replace placeholder assertions with real source-contract/export assertions |
-| `mcp_server/tests/memory-context.vitest.ts` | Modify | Replace default-mode todos with source-backed assertions |
-| `mcp_server/tests/vector-index-impl.vitest.ts` | Modify | Replace tautological symlink fallback check and add batch-delete rollback regression test |
-| `mcp_server/tests/bm25-index.vitest.ts` | Modify | Add positive title-change BM25 re-index regression test |
-| `mcp_server/tests/memory-search-integration.vitest.ts` | Modify | Replace placeholder-heavy checks with concrete runtime/source assertions |
-| `mcp_server/tests/rrf-fusion.vitest.ts` | Modify | Update convergence-bonus expectations for corrected default behavior |
-| `mcp_server/tests/unit-rrf-fusion.vitest.ts` | Modify | Update convergence-bonus expectations for corrected default behavior |
-<!-- /ANCHOR:scope -->
+| `feature_catalog/01--retrieval/*.md` | Reference | Feature catalog source files |
+| `007-code-audit-per-feature-catalog/001-retrieval/` | Create | Audit documentation |
 
 ---
 
-<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Ensure token-budget enforcement cannot silently pass over-budget structured payloads | [x] `enforceTokenBudget()` compacts structured fields and falls back to binary-search truncation when still over budget |
-| REQ-002 | Ensure mutation rollback reporting is transaction-correct | [x] `delete_memories()` now reports committed counts only and returns `deleted: 0` when transaction rolls back |
-| REQ-003 | Eliminate silent catch behavior in retrieval schema/index flow | [x] Remaining silent catches replaced with structured warnings in `vector-index-schema.ts` |
-| REQ-004 | Preserve intended multi-source ranking behavior in RRF fusion | [x] `fuseResultsMulti()` default convergence bonus restored to `CONVERGENCE_BONUS` in both source and dist runtime |
+| REQ-001 | Each feature verified against source code | Every feature file cross-referenced with implementation |
+| REQ-002 | Discrepancies documented | Any catalog-vs-code mismatches recorded |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-005 | Keep extraction compatible with older schemas lacking canonical path column | [x] `resolveMemoryIdFromText()` falls back from `canonical_file_path` lookup to `file_path` lookup |
-| REQ-006 | Remove weak retrieval-test assertions and placeholders in audited suites | [x] Placeholder/todo assertions replaced with concrete source/runtime assertions in target retrieval suites |
-| REQ-007 | Add/adjust retrieval regressions for corrected behavior | [x] Token budget, vector-index rollback, BM25 title-change, and RRF convergence regressions are covered and passing |
-| REQ-008 | Keep documentation and evidence synchronized with current verification reality | [x] Success metrics now reflect scoped and full-suite outcomes without unsupported score claims |
-<!-- /ANCHOR:requirements -->
+| REQ-003 | Source file references validated | All listed source files confirmed to exist |
+| REQ-004 | Feature interactions mapped | Cross-feature dependencies documented |
 
 ---
 
-<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- [x] **SC-001**: All 9 retrieval features audited with structured findings and closure tasks
-- [x] **SC-002**: TypeScript compile is clean (`tsc --noEmit` passes)
-- [x] **SC-003**: Retrieval-targeted verification is green (`10` suites, `365` passed, `0` failed)
-- [x] **SC-004**: Full-suite status is documented honestly (`7339` passed, `5` failed, `28` todo, `1` pending), with failures outside retrieval scope
-- [x] **SC-005**: Unsupported score claims and stale pass-count claims are removed from this spec folder
-
-### Acceptance Scenarios
-
-1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
-2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
-3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
-4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
-
-<!-- /ANCHOR:success-criteria -->
+- **SC-001**: All 10 features audited with findings documented
+- **SC-002**: Zero unverified features remaining in this category
 
 ---
 
-<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Retrieval implementation modules (`handlers`, `lib/search`, `lib/extraction`, shared RRF) | Shared modules affect multiple features simultaneously | Keep fixes narrow and regression-test changed behavior |
-| Dependency | Retrieval verification suites (targeted Vitest set) | Weak assertions can hide real regressions | Replace placeholders/todos with concrete assertions |
-| Dependency | TypeScript compile gate | Type drift or missing exports can break MCP surfaces | Require clean `tsc --noEmit --pretty false` |
-| Risk | Full repository suite has unrelated failures | Could be misread as retrieval instability | Explicitly separate scoped retrieval verification from repository-wide failures |
-| Risk | Dist/source divergence in shared algorithms | Runtime behavior can drift from source behavior | Mirror RRF convergence fix in both `shared/algorithms` and `shared/dist` |
-<!-- /ANCHOR:risks -->
+| Dependency | Feature catalog accuracy | Audit based on stale catalog | Verify catalog currency first |
+| Risk | Source code changed since catalog update | Med | Cross-reference git history |
+| Risk | Some features span multiple source files | Low | Follow import chains |
 
 ---
 
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- N/A for this audit-focused documentation alignment phase.
-
-### Security
-- Retrieval path handling and input validation must remain explicit; no hardcoded secrets or credential material is introduced by this phase.
+- **NFR-P01**: Audit completable by AI agent in single session
 
 ### Reliability
-- N/A for this audit-focused documentation alignment phase.
-<!-- /ANCHOR:nfr -->
+- **NFR-R01**: Findings must be reproducible by re-reading same sources
 
 ---
 
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 8. EDGE CASES
 
 ### Data Boundaries
-- N/A for this audit-focused documentation alignment phase.
+- Feature with no source files listed: Flag as catalog gap
+- Feature spanning 10+ source files: Prioritize primary implementation file
 
 ### Error Scenarios
-- N/A for this audit-focused documentation alignment phase.
-
-### State Transitions
-- N/A for this audit-focused documentation alignment phase.
-<!-- /ANCHOR:edge-cases -->
+- Source file referenced in catalog no longer exists: Document as finding
+- Feature partially implemented: Document completion percentage
 
 ---
 
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 9. COMPLEXITY ASSESSMENT
 
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 16/25 | 9 audited features with correctness fixes across handlers, search libs, extraction, shared algorithm code, and retrieval tests |
-| Risk | 11/25 | Shared retrieval/search modules carry medium regression risk; mitigated through scoped regressions and compile gate |
-| Research | 15/20 | Feature-by-feature verification plus targeted and full-suite baseline reporting |
-| **Total** | **40/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 15/25 | Features: 10 |
+| Risk | 8/25 | Read-only audit, no breaking changes |
+| Research | 11/20 | Must trace each feature to source |
+| Multi-Agent | 5/15 | Single-phase audit |
+| Coordination | 5/15 | Depends on feature catalog |
+| **Total** | **44/100** | **Level 3** |
 
 ---
 
-<!-- ANCHOR:questions -->
-## 10. OPEN QUESTIONS
+## 10. RISK MATRIX
 
-- None — all resolved.
-<!-- /ANCHOR:questions -->
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Catalog out of date | M | L | Verify against latest commit |
+| R-002 | Missing source files | L | M | Flag in findings |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Feature Verification (Priority: P0)
+
+**As a** system maintainer, **I want** each Retrieval feature verified against source code, **so that** I can trust the catalog accurately reflects the implementation.
+
+**Acceptance Criteria**:
+1. Given a feature catalog entry, When audited, Then implementation matches description
+
+---
+
+## 12. OPEN QUESTIONS
+
+- ~~Are there undocumented features in this category not yet in the catalog?~~ **Answered**: No new features found; 15+ source files are missing from the Feature 02 catalog entry (see AUDIT FINDINGS).
+- ~~Have any features been deprecated since the last catalog update?~~ **Answered**: No deprecations found. Feature 07 (AST-level section retrieval) is correctly documented as DEFERRED, not deprecated.
+
+---
+
+## 13. AUDIT FINDINGS
+
+Audit completed 2026-03-22. Overall result: **8 MATCH, 1 MATCH with GAPS, 1 PARTIAL**.
+
+### Feature 01 — Unified context retrieval (memory_context): MATCH
+- All 164 source files confirmed to exist.
+- 7 intent types, 5 modes, token budgets (800/2000/1500/1200) all verified.
+- Pressure thresholds: 0.60→focused, 0.80→quick confirmed in source.
+- `SPECKIT_PRESSURE_POLICY` and `SPECKIT_FOLDER_DISCOVERY` gating confirmed.
+- Minor: ~15 indirect dependency files not listed in catalog (reasonable omission, no action required).
+
+### Feature 02 — Semantic and lexical search (memory_search): MATCH with GAPS
+- 4-stage pipeline confirmed as the sole runtime path.
+- Multi-concept queries, deep mode expansion, and cache all confirmed.
+- **GAP**: 15+ source files missing from catalog entry: `adaptive-ranking.ts`, `scope-governance.ts`, `profile-formatters.ts`, `progressive-disclosure.ts`, `session-state.ts`, `chunk-reassembly.ts`, `search-utils.ts`, `eval-channel-tracking.ts`, `feedback-ledger.ts`, `shared-spaces.ts`, `query-decomposer.ts`, `entity-linker.ts`, `llm-reformulation.ts`, `hyde.ts`, `stage2b-enrichment.ts`.
+
+### Feature 03 — Trigger phrase matching (memory_match_triggers): MATCH
+- Most accurately documented feature in this category.
+- `TURN_DECAY_RATE=0.98`, 2× candidate fetch, and tiered content (HOT=full, WARM=150 chars, COLD+=empty) all confirmed.
+
+### Feature 04 — Hybrid search pipeline: MATCH
+- 5 channels with correct weights confirmed: Vector=1.0, FTS=0.8, BM25=0.6, Graph=0.5, Degree=0.4.
+- Minor: RSF shadow fusion is labeled as an "operational stage" in the catalog but is inactive at runtime (shadow/evaluation mode only).
+
+### Feature 05 — 4-stage pipeline architecture: MATCH
+- Pipeline orchestrator, 10 s stage timeout, and 12-step Stage 2 signal order all confirmed.
+- **Missing from catalog**: `stage2b-enrichment.ts`, `ranking-contract.ts`.
+- Undocumented detail: Stage 4 per-tier limits HOT=50, WARM=30, COLD=20, DORMANT=10, ARCHIVED=5.
+
+### Feature 06 — BM25 trigger phrase re-index gate: MATCH
+- No discrepancies found.
+
+### Feature 07 — AST-level section retrieval tool: MATCH
+- Correctly documented as DEFERRED. No discrepancies.
+
+### Feature 08 — Quality-aware 3-tier search fallback: PARTIAL
+- `stage4-filter.ts` is incorrectly listed as a source file; it handles memory-state filtering, not quality fallback logic.
+
+### Feature 09 — Tool-result extraction to working memory: MATCH
+- Minor: `MENTION_BOOST_FACTOR=0.05` is not documented in the catalog entry.
+
+### Feature 10 — Fast delegated search (memory_quick_search): MATCH
+- No discrepancies found.
+
+### Cross-Cutting Observations
+- Feature 02 catalog entry has the largest source-file gap (15+ files).
+- Feature 08 contains the only incorrect source-file reference (`stage4-filter.ts`).
+- Several undocumented constants surfaced: `MENTION_BOOST_FACTOR=0.05`, Stage 4 per-tier limits, `TURN_DECAY_RATE=0.98`.
+- Features 06, 07, 10 are cleanly documented with no gaps.
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`

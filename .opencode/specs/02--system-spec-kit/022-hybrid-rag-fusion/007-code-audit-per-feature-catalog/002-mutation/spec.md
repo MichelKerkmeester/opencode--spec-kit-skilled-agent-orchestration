@@ -1,224 +1,277 @@
 ---
-title: "Feature Specification: 002-Mutation Code Audit"
-description: "Feature-centric audit and remediation of 10 mutation features in the Spec Kit Memory MCP server to validate correctness, standards alignment, behavior parity, and test coverage."
-trigger_phrases: ["002-mutation", "mutation code audit", "feature catalog audit", "memory mcp mutation", "audit per feature"]
+title: "Feature Specification: Code Audit — Mutation"
+description: "Systematic code audit of 10 Mutation features against source code to verify implementation accuracy and catalog alignment."
+trigger_phrases:
+  - "code audit"
+  - "mutation"
+  - "feature verification"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Feature Specification: 002-Mutation Code Audit
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+# Feature Specification: Code Audit — Mutation
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
 
-<!-- ANCHOR:metadata -->
+## EXECUTIVE SUMMARY
+
+Systematic code audit of 10 Mutation features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/02--mutation/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.
+
+**Key Decisions**: Audit against current feature catalog as source of truth, document findings per feature
+
+**Critical Dependencies**: Feature catalog must be current and accurate
+
+---
+
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Level** | 2 |
-| **Priority** | P0 |
+| **Level** | 3 |
+| **Priority** | P1 |
 | **Status** | Complete |
-| **Created** | 2026-03-10 |
+| **Created** | 2026-03-22 |
 | **Branch** | `main` |
-| **Parent Spec** | ../spec.md |
-| **Predecessor** | ../001-retrieval/spec.md |
-| **Successor** | ../003-discovery/spec.md |
-<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Mutation handlers and related mutation feature definitions can drift over time, creating correctness bugs, inconsistent validation behavior, missing audit trails, and documentation-to-code mismatches. Before this phase, several mutation paths had WARN/FAIL findings across validation contracts, transactional boundaries, and mutation history logging.
+The feature catalog for Mutation has evolved significantly. Existing audit documentation was stale and no longer reflected the current 10-feature inventory. A fresh audit baseline is needed to verify each feature's implementation against its catalog description.
 
 ### Purpose
-Verify all 10 mutation features against implementation reality, remediate high-priority defects, and produce evidence-backed completion artifacts.
-<!-- /ANCHOR:problem -->
+Verify that all 10 Mutation features are accurately documented in the feature catalog and correctly implemented in source code.
 
 ---
 
-<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-- Audit all 10 features in `feature_catalog/02--mutation/`.
-- Execute feature-centric review criteria: correctness, standards alignment, behavior parity, test coverage, and playbook mapping.
-- Implement and verify remediation tasks T-01 through T-09 (3 P0, 6 P1).
-- Produce structured findings with PASS/WARN/FAIL and post-fix status annotations.
+- Memory indexing (memory_save)
+- Memory metadata update (memory_update)
+- Single and folder delete (memory_delete)
+- Tier-based bulk deletion (memory_bulk_delete)
+- Validation feedback (memory_validate)
+- Transaction wrappers on mutation handlers
+- Namespace management CRUD tools
+- Prediction-error save arbitration
+- Correction tracking with undo
+- Per-memory history log
 
 ### Out of Scope
-- Net-new feature development outside the mutation catalog - not part of the audit objective.
-- Cross-category audits outside mutation phase `002-mutation` - handled in separate phase folders.
-- P2 enhancements that do not block correctness or required behavior - explicitly deferred.
-
-### Audit Context
-- **Feature catalog:** `feature_catalog/02--mutation/`
-- **Features:** 10
-- **Complexity:** HIGH
-- **Agent:** C2
-
-### Features Audited
-1. memory indexing memorysave
-2. memory metadata update memoryupdate
-3. single and folder delete memorydelete
-4. tier based bulk deletion memorybulkdelete
-5. validation feedback memoryvalidate
-6. transaction wrappers on mutation handlers
-7. namespace management crud tools
-8. prediction error save arbitration
-9. correction tracking with undo
-10. per memory history log
-
-### Audit Criteria
-1. Code correctness - logic bugs, off-by-one, null/undefined, error paths
-2. Standards alignment - `sk-code--opencode` TypeScript checklist
-3. Behavior match - code matches feature catalog \"Current Reality\"
-4. Test coverage - tests exist and cover described behavior
-5. Playbook mapping - `EX-006..EX-010`, `NEW-*`
+- Implementing new features or fixing bugs discovered during audit
+- Modifying source code (audit is read-only)
+- Performance benchmarking
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `mcp_server/schemas/tool-input-schemas.ts` | Modify | Align `olderThanDays` minimum validation with schema contract. |
-| `mcp_server/handlers/memory-bulk-delete.ts` | Modify | Add/adjust delete history recording and bulk delete behavior fixes. |
-| `mcp_server/lib/learning/corrections.ts` | Modify | Make undo relation-scoped and surface edge-removal failures. |
-| `mcp_server/lib/storage/history.ts` | Modify | Update history schema constraints and runtime compatibility. |
-| `mcp_server/handlers/save/create-record.ts` | Modify | Wire `recordHistory('ADD')` in save transaction path. |
-| `mcp_server/handlers/memory-crud-update.ts` | Modify | Make BM25 failure handling transactional and add update history recording. |
-| `mcp_server/handlers/memory-crud-delete.ts` | Modify | Enforce safe bulk-folder delete behavior and delete history recording. |
-| `mcp_server/handlers/save/reconsolidation-bridge.ts` | Modify | Collapse reconsolidation gating to canonical opt-in flag flow. |
-| `mcp_server/lib/scoring/confidence-tracker.ts` | Modify | Replace success-shaped fallback with explicit throw behavior. |
-| `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/06-transaction-wrappers-on-mutation-handlers.md` | Modify | Correct source table coverage for wrapper feature documentation. |
-| `mcp_server/lib/cognitive/prediction-error-gate.ts` | Modify | Ensure all PE decisions are logged. |
-| `mcp_server/tests/confidence-tracker.vitest.ts` | Modify | Update tests for throw behavior in validation recording. |
-| `mcp_server/tests/history.vitest.ts` | Modify | Add regression coverage for history schema migration behavior. |
-| `mcp_server/tests/memory-save-ux-regressions.vitest.ts` | Modify | Adjust cleanup strategy for history persistence behavior. |
-| `mcp_server/lib/search/vector-index-schema.ts` | Modify | Initialize history table lifecycle in companion schema init path. |
-| `mcp_server/lib/search/vector-index-mutations.ts` | Modify | Preserve history rows during memory delete operations. |
-| `mcp_server/context-server.ts` | Modify | Add history recording for file-watcher delete path. |
-| `mcp_server/cli.ts` | Modify | Add history recording for CLI bulk delete path. |
-| `mcp_server/handlers/memory-index.ts` | Modify | Add history recording for stale-record cleanup deletes. |
-| `mcp_server/handlers/chunking-orchestrator.ts` | Modify | Add history recording before delete operations across re-chunk/rollback flows. |
-| `mcp_server/lib/storage/reconsolidation.ts` | Modify | Add history recording for orphan conflict cleanup deletes. |
-| `mcp_server/lib/storage/checkpoints.ts` | Modify | Add history recording for checkpoint restore clearExisting deletes. |
-| `mcp_server/lib/search/vector-index-queries.ts` | Modify | Add history recording for integrity auto-clean delete operations. |
-<!-- /ANCHOR:scope -->
+| `feature_catalog/02--mutation/*.md` | Reference | Feature catalog source files |
+| `007-code-audit-per-feature-catalog/002-mutation/` | Create | Audit documentation |
 
 ---
 
-<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Complete T-01: align `olderThanDays` validation across JSON schema, Zod schema, and handler guard. | Runtime and schema constraints both enforce `olderThanDays >= 1`; evidence recorded in T-01 as DONE. |
-| REQ-002 | Complete T-02: make correction undo relation-scoped and prevent unintended edge deletion. | Undo deletes by source+target+relation and logs edge-removal failures; evidence recorded in T-02 as DONE. |
-| REQ-003 | Complete T-03: wire `recordHistory` into live mutation paths. | Runtime mutation handlers populate history trail via ADD/UPDATE/DELETE events; evidence recorded in T-03 as DONE. |
+| REQ-001 | Each feature verified against source code | Every feature file cross-referenced with implementation |
+| REQ-002 | Discrepancies documented | Any catalog-vs-code mismatches recorded |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Complete T-04: unify reconsolidation gating to a single source of truth. | Bridge and internal defensive guard both require `SPECKIT_RECONSOLIDATION=true` (default OFF) with no semantic drift. |
-| REQ-005 | Complete T-05: treat BM25 re-index failures with transactional correctness rules. | Infrastructure failures warn; data failures roll back transaction; update history recorded. |
-| REQ-006 | Complete T-06: prevent partial bulk-folder deletes when DB handle is unavailable. | Bulk-folder no-DB path aborts with explicit error; no silent partial delete behavior remains. |
-| REQ-007 | Complete T-07: expand validation feedback failure signaling consistency. | `recordValidation` throws on DB failure; tests updated to assert explicit failure path. |
-| REQ-008 | Complete T-08: correct transaction-wrapper feature source table alignment. | Feature source table includes actual handler wrapper files and stale entries removed. |
-| REQ-009 | Complete T-09: align prediction-error logging with "all decisions logged" contract. | All PE decision paths emit log entries when DB is available, including low/no-match creates. |
-<!-- /ANCHOR:requirements -->
+| REQ-003 | Source file references validated | All listed source files confirmed to exist |
+| REQ-004 | Feature interactions mapped | Cross-feature dependencies documented |
 
 ---
 
-<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 10 mutation features audited with structured PASS/WARN/FAIL findings.
-- **SC-002**: TypeScript compile check is clean (`npx tsc --noEmit` passes with 0 errors).
-- **SC-003**: Verification confirms the mutation fixes hold (`npx tsc --noEmit` clean, focused mutation suites green, full suite at `254 passed files / 5 failed files` and `7331 passed / 8 failed / 1 skipped / 30 todo` tests, with remaining failures outside mutation scope).
-- **SC-004**: The 2026-03-11 re-audit closes the remaining mutation-specific correctness, schema-contract, and coverage gaps, and the spec folder reflects the current state rather than the older R11 snapshot.
-
-### Acceptance Criteria (Original)
-- [x] All 10 features audited with structured findings
-- [x] Each feature has Status (PASS/WARN/FAIL), code issues, standards violations
-- [x] Test gaps documented
-- [x] Playbook scenarios mapped or gaps noted
-
-### Acceptance Scenarios
-
-1. **Given** the documented requirements for this phase, **When** a reviewer walks the updated packet, **Then** each requirement has a matching verification path in tasks and checklist artifacts.
-2. **Given** current implementation behavior, **When** spec statements are compared with source and test references, **Then** no contradictory behavior claims remain in the phase packet.
-3. **Given** the updated verification evidence, **When** checklist entries are audited, **Then** each completed P0/P1 item carries inline evidence and traceable context.
-4. **Given** Level 2 template constraints, **When** the spec validator runs, **Then** acceptance-scenario coverage and section integrity checks pass without structural warnings.
-
-<!-- /ANCHOR:success-criteria -->
+- **SC-001**: All 10 features audited with findings documented
+- **SC-002**: Zero unverified features remaining in this category
 
 ---
 
-<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Feature catalog accuracy (`feature_catalog/02--mutation/*`) | Incorrect source mapping could skew audit outcomes | Cross-check catalog entries against actual implementation paths during each task. |
-| Dependency | Test harness and fixtures for mutation flows | Deferred or thin integration assertions can hide behavior regressions | Add targeted regression tests and keep feature-catalog test mappings synchronized with real suites. |
-| Risk | Silent catch/fallback patterns in mutation side effects | Audit trails can be lost without operator visibility | Convert success-shaped fallbacks to explicit warnings/errors where required. |
-| Risk | History logging coverage gaps on delete paths | Incomplete lifecycle trail for destructive operations | Add `recordHistory('DELETE')` across all confirmed delete call sites and raw SQL paths. |
-| Risk | Schema migration side effects on production SQLite | Migration errors could block runtime startup | Use guarded migration path and regression tests for legacy table conversion. |
-<!-- /ANCHOR:risks -->
+| Dependency | Feature catalog accuracy | Audit based on stale catalog | Verify catalog currency first |
+| Risk | Source code changed since catalog update | Med | Cross-reference git history |
+| Risk | Some features span multiple source files | Low | Follow import chains |
 
 ---
 
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
-- N/A for audit documentation phase; no new runtime performance targets introduced.
-
-### Security
-- N/A for audit documentation phase; no auth model or secret handling changes introduced.
+- **NFR-P01**: Audit completable by AI agent in single session
 
 ### Reliability
-- N/A for audit documentation phase; reliability validation expressed through compile/test verification evidence.
-<!-- /ANCHOR:nfr -->
+- **NFR-R01**: Findings must be reproducible by re-reading same sources
 
 ---
 
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+## 8. EDGE CASES
 
 ### Data Boundaries
-- N/A for audit documentation phase.
+- Feature with no source files listed: Flag as catalog gap
+- Feature spanning 10+ source files: Prioritize primary implementation file
 
 ### Error Scenarios
-- N/A for audit documentation phase.
-
-### State Transitions
-- N/A for audit documentation phase.
-<!-- /ANCHOR:edge-cases -->
+- Source file referenced in catalog no longer exists: Document as finding
+- Feature partially implemented: Document completion percentage
 
 ---
 
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+## 9. COMPLEXITY ASSESSMENT
 
-| Dimension | Score | Notes |
-|-----------|-------|-------|
-| Scope | 20/25 | 10 feature audits plus 9 remediation tasks across handlers, schema, storage, and tests. |
-| Risk | 15/25 | Mutation correctness and delete-history integrity are high-impact, mitigated by regression coverage and review rounds. |
-| Research | 15/20 | Required multi-round evidence validation, source-table verification, and cross-AI review adjudication. |
-| **Total** | **50/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | 15/25 | Features: 10 |
+| Risk | 8/25 | Read-only audit, no breaking changes |
+| Research | 11/20 | Must trace each feature to source |
+| Multi-Agent | 5/15 | Single-phase audit |
+| Coordination | 5/15 | Depends on feature catalog |
+| **Total** | **44/100** | **Level 3** |
 
 ---
 
-<!-- ANCHOR:questions -->
-## 10. OPEN QUESTIONS
+## 10. RISK MATRIX
 
-- None - all open questions were resolved during implementation and review.
-<!-- /ANCHOR:questions -->
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | Catalog out of date | M | L | Verify against latest commit |
+| R-002 | Missing source files | L | M | Flag in findings |
+
+---
+
+## 11. USER STORIES
+
+### US-001: Feature Verification (Priority: P0)
+
+**As a** system maintainer, **I want** each Mutation feature verified against source code, **so that** I can trust the catalog accurately reflects the implementation.
+
+**Acceptance Criteria**:
+1. Given a feature catalog entry, When audited, Then implementation matches description
+
+---
+
+## 12. OPEN QUESTIONS
+
+- Are there undocumented features in this category not yet in the catalog?
+- Have any features been deprecated since the last catalog update?
+
+> **POST-AUDIT STATUS**: Open questions resolved. No undocumented features found. No deprecated features identified. history.ts was missing from multiple catalogs (F01–F05) and has been noted as a systemic gap. F06 and F07 source lists require cleanup to remove over-enumerated unrelated files.
+
+---
+
+## AUDIT FINDINGS
+
+Audit completed 2026-03-22. Ten features (F01–F10) verified against source code.
+
+### F01 — memory_save (Memory Indexing)
+
+**Result: PARTIAL**
+
+Behavioral descriptions are accurate. However, the source file list is materially incomplete and over-inclusive:
+
+- **Missing files (10+):** `spec-folder-mutex.ts`, `markdown-evidence-builder.ts`, `validation-responses.ts`, `v-rule-bridge.ts`, `lineage-state.ts`, `history.ts`, `scope-governance.ts`, `shared-spaces.ts`, `memory-sufficiency.ts`, `spec-doc-health.ts`
+- **Over-inclusive:** Source list contains unrelated retrieval files that do not participate in the save path
+
+### F02 — memory_update (Memory Metadata Update)
+
+**Result: MATCH**
+
+Handler, validation, embedding regeneration, and BM25 re-index all confirmed present and accurately described.
+
+- **Missing file:** `history.ts` absent from source list
+
+### F03 — memory_delete (Single and Folder Delete)
+
+**Result: MATCH**
+
+Single delete, bulk folder delete, auto-checkpoint trigger, and atomic transaction all confirmed.
+
+- **Missing file:** `history.ts` absent from source list
+- **Over-inclusive:** Source list contains unrelated files
+
+### F04 — memory_bulk_delete (Tier-Based Bulk Deletion)
+
+**Result: MATCH**
+
+Tier safety checks, checkpoint logic, and `olderThanDays` validation all confirmed.
+
+- **Missing file:** `history.ts` absent from source list
+
+### F05 — memory_validate (Validation Feedback)
+
+**Result: PARTIAL**
+
+Behavioral descriptions are accurate, but source coverage has critical gaps:
+
+- **Missing files (7):** `handlers/checkpoints.ts` (the primary handler file), `confidence-tracker.ts`, `auto-promotion.ts`, `negative-feedback.ts`, `learned-feedback.ts`, `ground-truth-feedback.ts`, `adaptive-ranking.ts`
+- **Undocumented call:** `recordAdaptiveSignal()` invocation not mentioned in catalog
+
+### F06 — Transaction Wrappers on Mutation Handlers
+
+**Result: MATCH**
+
+`runInTransaction` and `executeAtomicSave` confirmed present and accurately described.
+
+- **Over-enumerated:** Source list contains 37 files for a 4–5 file feature; requires pruning
+
+### F07 — Namespace Management CRUD Tools
+
+**Result: MATCH**
+
+All 4 shared-memory tools confirmed. Behavioral descriptions accurate.
+
+- **Missing primary files:** `handlers/shared-memory.ts` and `lib/collab/shared-spaces.ts` are the primary implementation files but are NOT listed in the catalog
+- **Over-enumerated:** Source list contains 158+ unrelated files instead of the ~2 that implement this feature
+
+### F08 — Prediction-Error Save Arbitration
+
+**Result: MATCH**
+
+5-action engine, contradiction detection, and threshold configuration all confirmed. No significant discrepancies.
+
+### F09 — Correction Tracking with Undo
+
+**Result: MATCH**
+
+All 4 correction types, stability adjustment, undo operation, and feature flag confirmed. No discrepancies.
+
+### F10 — Per-Memory History Log
+
+**Result: MATCH**
+
+`recordHistory`, schema migration, and actor field all confirmed. Minor wording ambiguity only; no functional inaccuracies.
+
+---
+
+### Cross-Cutting Patterns
+
+| Pattern | Affected Features | Severity |
+|---------|-------------------|----------|
+| `history.ts` missing from source lists | F01, F02, F03, F04, F05 | Medium — catalog gap |
+| Over-inclusive / over-enumerated source lists | F01, F03, F06, F07 | Medium — catalog noise |
+| Primary handler file absent from source list | F05, F07 | High — traceability gap |
+| Undocumented internal call | F05 (`recordAdaptiveSignal`) | Low — accuracy gap |
+| F08–F10 most accurate; no gaps | F08, F09, F10 | — |
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See `plan.md`
+- **Task Breakdown**: See `tasks.md`
+- **Verification Checklist**: See `checklist.md`

@@ -1,187 +1,163 @@
 ---
-title: "Implementation Plan: analysis [template:level_2/plan.md]"
-description: "Draft plan dated 2026-03-10 for executing the Analysis feature audit backlog using TypeScript, MCP handlers, SQLite evidence, and Vitest regression coverage."
-SPECKIT_TEMPLATE_SOURCE: "plan-core | v2.2"
+title: "Implementation Plan: Code Audit — Analysis"
+description: "Technical plan for auditing 7 Analysis features against source code"
 trigger_phrases:
-  - "implementation"
-  - "plan"
+  - "audit plan"
   - "analysis"
-  - "template"
-  - "plan core"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: analysis
+# Implementation Plan: Code Audit — Analysis
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
-<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | TypeScript |
-| **Framework** | MCP tool handlers + storage modules |
-| **Storage** | SQLite |
-| **Testing** | Vitest |
+| **Language/Stack** | TypeScript / JavaScript (Node.js) |
+| **Framework** | MCP server (Model Context Protocol) |
+| **Storage** | better-sqlite3 |
+| **Testing** | Manual code review + cross-reference |
 
 ### Overview
-This plan converts the Analysis audit methodology into a Level 2 execution structure with explicit phases, quality gates, and rollback safety. It focuses on resolving P0 correctness issues first, then closing P1 standards/test gaps, while tracking P2 documentation cleanup. The approach relies on DB-backed regression validation and consistent cross-document traceability.
-<!-- /ANCHOR:summary -->
+Audit each of the 7 Analysis features by reading the feature catalog entry, locating the referenced source files, and verifying that the implementation matches the documented behavior.
 
 ---
 
-<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Problem statement clear and scope documented
-- [x] Success criteria measurable
-- [x] Dependencies identified
+- [x] Feature catalog files current and accessible
+- [x] Source code accessible via file system
+- [x] Audit methodology defined
 
 ### Definition of Done
-- [x] All acceptance criteria met
-- [x] Tests passing (if applicable) — 211 across 5 test files
-- [x] Docs updated (spec/plan/tasks)
-<!-- /ANCHOR:quality-gates -->
+- [x] All 7 features audited
+- [x] Findings documented per feature
+- [x] Summary report completed
 
 ---
 
-<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
-Layered MCP handler + storage module architecture with test-first verification loops.
+Read-only audit: Feature Catalog → Source Code → Findings Report
 
 ### Key Components
-- **Feature Catalog Inputs**: Source of expected behavior per Analysis feature.
-- **MCP Server Code Paths**: Handler/storage implementation surfaces under audit.
-- **Vitest Suites**: Unit/integration evidence for regressions and behavior parity.
+- **Feature Catalog**: `feature_catalog/06--analysis/` — source of truth
+- **Source Code**: `.opencode/skill/system-spec-kit/` — implementation files
+- **Audit Output**: This spec folder — findings and documentation
 
 ### Data Flow
-Feature catalog expectations are mapped to concrete code paths, then validated against existing tests and new regression cases; resulting findings are promoted into prioritized task backlog items.
-<!-- /ANCHOR:architecture -->
+Read feature catalog entry → Locate source files → Compare description to implementation → Document findings
 
 ---
 
-<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Setup
-- [x] Inventory all seven Analysis feature definitions and source mappings
-- [x] Confirm handler/storage/test file ownership and citation boundaries
-- [x] Establish priority mapping for FAIL/WARN findings
+### Phase 1: Preparation
+- [x] Verify feature catalog is current for Analysis
+- [x] Identify source code root paths
+- [x] Set up audit methodology
 
-### Phase 2: Core Implementation
-- [x] Resolve P0 correctness defects (coverage semantics, max-depth flag semantics)
-- [x] Implement P1 test and standards remediation backlog
-- [x] Record P2 catalog-reference cleanup tasks
+### Phase 2: Feature-by-Feature Audit
+- [x] Audit: Causal edge creation (memory_causal_link)
+- [x] Audit: Causal graph statistics (memory_causal_stats)
+- [x] Audit: Causal edge deletion (memory_causal_unlink)
+- [x] Audit: Causal chain tracing (memory_drift_why)
+- [x] Audit: Epistemic baseline capture (task_preflight)
+- [x] Audit: Post-task learning measurement (task_postflight)
+- [x] Audit: Learning history (memory_get_learning_history)
 
-### Phase 3: Verification
-- [x] Manual testing complete — 211 tests pass across 5 files
-- [x] Edge cases handled — orphan edges, natural leaves, depth limits, LI regression
-- [x] Documentation updated — all 4 spec docs synchronized
-<!-- /ANCHOR:phases -->
+### Phase 3: Synthesis
+- [x] Cross-reference findings across features
+- [x] Identify systemic patterns
+- [x] Compile summary report
 
 ---
 
-<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Unit | Causal stats computation, learning thresholds, depth semantics | Vitest |
-| Integration | MCP handler flows for causal graph and learning-history behavior | Vitest + SQLite fixtures |
-| Manual | Playbook alignment for EX-019..EX-025 coverage mapping | Catalog review |
-<!-- /ANCHOR:testing -->
+| Cross-reference | Feature-to-code traceability | Grep, Read, Glob |
+| Completeness | All 7 features covered | Checklist verification |
+| Accuracy | Catalog matches implementation | Manual review |
 
 ---
 
-<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `feature_catalog/06--analysis/*.md` | Internal | Green | Behavior mapping cannot be validated if source definitions are unavailable. |
-| `mcp_server/handlers/*.ts` and `lib/storage/*.ts` | Internal | Green | P0/P1 remediation cannot be implemented without these code paths. |
-| Vitest regression suites | Internal | Yellow | Deferred suites can delay closure of behavior and coverage gaps. |
-<!-- /ANCHOR:dependencies -->
+| Feature catalog | Internal | Green | Cannot audit without reference |
+| Source code access | Internal | Green | Cannot verify implementation |
 
 ---
 
-<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: New regressions, incorrect semantics, or unverifiable findings after Phase 2 changes.
-- **Procedure**: Revert specific remediation commits, restore previous test baselines, and re-run focused verification suites.
-<!-- /ANCHOR:rollback -->
+- **Trigger**: Audit methodology proves inadequate
+- **Procedure**: Revise approach and restart from Phase 1
 
 ---
 
-
----
-
-<!-- ANCHOR:phase-deps -->
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Setup) ──────┐
-                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
-Phase 1.5 (Config) ───┘
+Phase 1 (Prep) ──► Phase 2 (Audit 7 features) ──► Phase 3 (Synthesis)
 ```
-
-| Phase | Depends On | Blocks |
-|-------|------------|--------|
-| Setup | None | Core, Config |
-| Config | Setup | Core |
-| Core | Setup, Config | Verify |
-| Verify | Core | None |
-<!-- /ANCHOR:phase-deps -->
 
 ---
 
-<!-- ANCHOR:effort -->
 ## L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
-| Setup | Medium | 2-3 hours |
-| Core Implementation | High | 8-12 hours |
-| Verification | Medium | 3-4 hours |
-| **Total** | | **13-19 hours** |
-<!-- /ANCHOR:effort -->
+| Preparation | Low | 1 session |
+| Feature Audit | Low | 7 features |
+| Synthesis | Medium | 1 session |
 
 ---
 
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+## L3: MILESTONES
 
-### Pre-deployment Checklist
-- [ ] Backup created (if data changes)
-- [ ] Feature flag configured
-- [ ] Monitoring alerts set
-
-### Rollback Procedure
-1. Disable or gate newly introduced behavior that changes output semantics.
-2. Revert the most recent remediation commit set.
-3. Re-run P0-focused smoke tests for causal stats and drift_why semantics.
-4. Notify maintainers and record rollback rationale in phase artifacts.
-
-### Data Reversal
-- **Has data migrations?** No
-- **Reversal procedure**: N/A
-<!-- /ANCHOR:enhanced-rollback -->
+| Milestone | Description | Success Criteria |
+|-----------|-------------|------------------|
+| M1 | Audit spec created | All docs in place |
+| M2 | All features audited | 7/7 complete |
+| M3 | Synthesis delivered | Summary report finalized |
 
 ---
 
-<!--
-LEVEL 2 PLAN (~140 lines)
-- Core + Verification additions
-- Phase dependencies, effort estimation
-- Enhanced rollback procedures
--->
+## FINDINGS SUMMARY
+
+Audit completed 2026-03-22. 7/7 features audited. Overall result: **5 MATCH, 2 PARTIAL**.
+
+### Per-Feature Results
+
+| Feature | Result | Key Finding |
+|---------|--------|-------------|
+| F01 `memory_causal_link` | MATCH | Core behavior verified; `graph-signals.ts`, `causal-boost.ts`, 2 test files absent from source list |
+| F02 `memory_causal_stats` | MATCH | Coverage target, orphan detection, health status all confirmed; same missing files |
+| F03 `memory_causal_unlink` | MATCH | Delete by ID, cascade, cache invalidation confirmed; same missing files |
+| F04 `memory_drift_why` | MATCH | Direction mapping, cycle detection, weights, depth limits confirmed; same missing files |
+| F05 `task_preflight` | PARTIAL | Behavior verified; source file list bloated (~43 files, ~8 relevant); identical list shared with F06–F07 |
+| F06 `task_postflight` | MATCH | LI formula, bands, gap tracking verified; re-correction capability undocumented |
+| F07 `memory_get_learning_history` | PARTIAL | Filtering/stats/trends confirmed; layer classification L7 vs L6 mismatch; `includeSummary` param missing from catalog |
+
+### Cross-Cutting Issues
+
+| ID | Scope | Issue |
+|----|-------|-------|
+| CF-01 | F01–F04 | `graph-signals.ts`, `causal-boost.ts`, and 2 test files missing from causal-feature source lists |
+| CF-02 | F05–F07 | All three features share an identical ~43-file source list; should be trimmed to ~8 relevant files each |
+| CF-03 | F07 | Layer classification mismatch: catalog says L7, implementation uses L6 |
+| CF-04 | F07 | `includeSummary` parameter present in implementation but absent from catalog |
+| CF-05 | F06 | Re-correction capability functional but undocumented in catalog |

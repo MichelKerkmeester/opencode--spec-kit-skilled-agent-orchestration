@@ -1,18 +1,16 @@
 ---
-title: "Implementation Summary: maintenance"
-description: "Aligned maintenance Level 2 documentation with current workspace scanning and startup compatibility guard fixes."
-SPECKIT_TEMPLATE_SOURCE: "impl-summary-core | v2.2"
+title: "Implementation Summary: Code Audit — Maintenance"
+description: "2 features audited: 1 MATCH, 1 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "maintenance"
-  - "code audit per feature catalog"
-  - "ex-014 mapping"
+  - "code audit"
 importance_tier: "normal"
-contextType: "implementation"
+contextType: "general"
 ---
-# Implementation Summary: maintenance
+# Implementation Summary: Code Audit — Maintenance
 
-<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
@@ -23,9 +21,9 @@ contextType: "implementation"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 004-maintenance |
-| **Completed** | 2026-03-12 |
-| **Level** | 2 |
+| **Spec Folder** | 007-code-audit-per-feature-catalog/004-maintenance |
+| **Completed** | 2026-03-22 |
+| **Level** | 3 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -33,25 +31,16 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Maintenance documentation now reflects the real remediation state instead of stale mappings. The spec set is internally consistent for completion state, evidence language, and playbook references, so reviewers can track what is actually covered and what is still a documented gap.
+Both Maintenance features — workspace scanning and startup compatibility guards — were audited. The startup guards are perfectly documented. The index scan feature has accurate behavioral descriptions but its source file list omits history.ts despite being a direct import.
 
-### Workspace Scanning and Indexing (F-01)
+### Audit Results
 
-F-01 mapping was corrected from EX-021/EX-022 to EX-014. Behavioral test evidence was also corrected to use `incremental-index-v2.vitest.ts` as the primary suite. The focused `incremental-index.vitest.ts` suite is retained as supplemental compatibility coverage and is no longer described as a placeholder.
+2 features audited: 1 MATCH, 1 PARTIAL, 0 MISMATCH.
 
-### Startup Runtime Compatibility Guards (F-02)
+### Per-Feature Findings
 
-Startup coverage language was updated to reflect the dedicated `startup-checks.vitest.ts` suite, including SQLite validation and pure runtime mismatch logic coverage. A dedicated manual playbook scenario was also added as EX-035, so F-02 now has explicit manual coverage without reusing unrelated EX-021/EX-022 entries.
-
-### Files Changed
-
-| File | Action | Purpose |
-|------|--------|---------|
-| `spec.md` | Modified | Corrected playbook mapping and success criteria; repaired malformed anchor structure |
-| `plan.md` | Modified | Marked phases complete, fixed manual testing row, removed phantom Config phase dependency |
-| `tasks.md` | Modified | Corrected mapping/evidence phrasing and completion criteria wording |
-| `checklist.md` | Modified | Removed stale P0 evidence claims and aligned testing/playbook checks |
-| `implementation-summary.md` | Created | Recorded completion outcomes and verification state |
+1. memory_index_scan: rate limiting, incremental mode, 4 buckets, canonical dedup all confirmed; history.ts missing from source list
+2. Startup guards: Node version marker, ABI/platform/arch comparison, SQLite 3.35.0+ check all confirmed with zero discrepancies
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -59,7 +48,13 @@ Startup coverage language was updated to reflect the dedicated `startup-checks.v
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-The update was delivered by reconciling the maintenance spec docs against the manual testing playbook and current test-suite roles. After mapping and evidence language were corrected, all Level 2 artifacts were synchronized and revalidated with the spec validation script.
+The audit was executed by dispatching 2 Opus research agents (parallel) to read feature catalog entries and verify against source code, followed by 2 Sonnet documentation agents (parallel) to update spec folder documents with findings. All agents operated as LEAF nodes at depth 1 under single-hop orchestration.
+
+Each feature was verified by:
+1. Reading the feature catalog entry
+2. Locating referenced source files in the MCP server codebase
+3. Comparing catalog behavioral descriptions against actual implementation
+4. Documenting findings as MATCH, PARTIAL, or MISMATCH
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -69,9 +64,7 @@ The update was delivered by reconciling the maintenance spec docs against the ma
 
 | Decision | Why |
 |----------|-----|
-| Map maintenance workspace scanning to EX-014 only | EX-014 is the canonical playbook scenario for `memory_index_scan`; EX-021/EX-022 belong to causal-analysis features |
-| Treat `incremental-index-v2.vitest.ts` as behavioral evidence and keep `incremental-index.vitest.ts` as supplemental focused coverage | The v2 suite contains the broader behavioral assertions, while the focused suite provides concrete fast-path checks without standing in for primary behavioral proof |
-| Add EX-035 for F-02 manual validation | Startup runtime compatibility is an existing maintenance feature and now has a dedicated playbook scenario without reusing unrelated causal-analysis entries |
+| Scope source file lists to direct dependencies only | Index scan lists 131 files but most belong to adjacent features |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -81,25 +74,24 @@ The update was delivered by reconciling the maintenance spec docs against the ma
 
 | Check | Result |
 |-------|--------|
-| Cross-doc consistency review (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`) | PASS |
-| Manual playbook mapping review (`.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/manual_testing_playbook/manual_testing_playbook.md`) | PASS (`EX-014` confirmed for F-01; `EX-035` added for F-02) |
-| `scripts/spec/validate.sh` on `004-maintenance/` | PASS with warnings (non-blocking evidence-format and section-recommendation warnings only) |
+| All features audited | PASS — 2/2 features verified |
+| Source files verified | PASS — all referenced files confirmed to exist on disk |
+| Findings documented | PASS — per-feature findings in spec.md AUDIT FINDINGS section |
+| Tasks completed | PASS — all tasks marked [x] in tasks.md |
+| Checklist verified | PASS — all P0/P1 items verified in checklist.md |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## Current Reality Notes
+## Known Limitations
 
-1. `incremental-index-v2.vitest.ts` is the primary behavioral suite, while `incremental-index.vitest.ts` is documented consistently as supplemental focused compatibility coverage.
-2. EX-035 remains the direct startup/runtime manual scenario; keep it synchronized if the startup suite contract changes materially.
+1. **BATCH_SIZE origin not clarified in catalog** — comes from both core/config.ts and utils/batch-processor.ts
 <!-- /ANCHOR:limitations -->
 
 ---
 
 <!--
-Level 2 implementation summary
-- Records what was built and why
-- Captures key decisions and verification
-- Notes remaining limitations explicitly
+Post-implementation documentation for code audit phase.
+Written in active voice per HVR rules.
 -->
