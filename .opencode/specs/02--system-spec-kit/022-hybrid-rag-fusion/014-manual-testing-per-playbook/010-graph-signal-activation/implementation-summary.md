@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary [template:level_2/implementation-summary.md]"
-description: "Phase 010 graph-signal-activation manual testing -- 15 scenarios analyzed, 15 PASS. Pass rate: 100%."
+description: "Phase 010 graph-signal-activation manual testing -- 15 scenarios analyzed, 14 PASS, 1 PARTIAL. Pass rate: 93%."
 trigger_phrases:
   - "graph-signal-activation implementation summary"
   - "phase 010 summary"
@@ -45,7 +45,7 @@ Phase 010 manual testing execution for all 15 graph-signal-activation scenarios.
 | 021 | Causal depth signal (N2b) | **PASS** | `mcp_server/lib/graph/graph-signals.ts` | L328-391 (SCC condensation), L397-471 (longest-path depth), L484-537 (normalized [0,1]) |
 | 022 | Community detection (N2c) | **PASS** | `mcp_server/lib/graph/community-detection.ts` | L99-134 (BFS), L184-307 (Louvain), L525-560 (applyCommunityBoost, 0.3 cap, max 3 injected) |
 | 081 | Graph and cognitive memory fixes | **PASS** | `mcp_server/lib/storage/causal-edges.ts` | L165 (self-loop guard), L108-119 (cache invalidation); `handlers/causal-graph.ts` L253 (depth clamp [1,10]) |
-| 091 | Graph centrality and community detection (N2) | **PASS** | `mcp_server/lib/search/search-flags.ts`, `mcp_server/lib/graph/graph-signals.ts`, `mcp_server/lib/graph/community-detection.ts` | L165-175 (N2 flags ON); `applyGraphSignals()` provides momentum+depth; `applyCommunityBoost()` provides community scoring. Catalog link corrected from `09-anchor-tags-as-graph-nodes.md` to `07-community-detection.md` per canonical playbook mapping. |
+| 091 | Graph centrality and community detection (N2) | **PARTIAL** | `mcp_server/lib/search/search-flags.ts`, `mcp_server/lib/graph/graph-signals.ts`, `mcp_server/lib/graph/community-detection.ts` | L165-175 (N2 flags ON); `applyGraphSignals()` provides momentum+depth; `applyCommunityBoost()` provides community scoring. ANCHOR-as-graph-node feature is PLANNED/DEFERRED per feature catalog `09-anchor-tags-as-graph-nodes.md`. |
 | 120 | Unified graph rollback and explainability (Phase 3) | **PASS** | `mcp_server/lib/search/graph-flags.ts`, `result-explainability.ts` | L16-18 (SPECKIT_GRAPH_UNIFIED), explainability L89-169 (graphContribution signals), `causal-edges.ts` L531-547 (deleteEdge) |
 | 156 | Graph refresh mode (SPECKIT_GRAPH_REFRESH_MODE) | **PASS** | `mcp_server/lib/search/graph-lifecycle.ts` | L47-58 (resolveGraphRefreshMode), L140-154 (markDirty), L391-450 (onWrite), L255-301 (recomputeLocal) |
 | 157 | LLM graph backfill (SPECKIT_LLM_GRAPH_BACKFILL) | **PASS** | `mcp_server/lib/search/graph-lifecycle.ts` | L70-73 (flag), L472-575 (onIndex), L593-595 (registerLlmBackfillFn), L604-616 (_scheduleLlmBackfill via setImmediate) |
@@ -57,10 +57,10 @@ Phase 010 manual testing execution for all 15 graph-signal-activation scenarios.
 
 | Category | Count | Percentage |
 |----------|-------|------------|
-| PASS | 15 | 100% |
-| PARTIAL | 0 | 0% |
+| PASS | 14 | 93% |
+| PARTIAL | 1 | 7% |
 | FAIL | 0 | 0% |
-| **Total** | **15** | **100% coverage** |
+| **Total** | **15** | **93% pass rate** |
 
 ### Files Changed
 
@@ -111,7 +111,7 @@ Static code analysis of the MCP server TypeScript source files against the 15 pl
 
 | Decision | Why |
 |----------|-----|
-| 091 upgraded from PARTIAL to PASS | The original PARTIAL verdict was caused by a wrong feature catalog link in spec.md: scenario 091 was mapped to `09-anchor-tags-as-graph-nodes.md` (a PLANNED/DEFERRED feature) instead of the correct `07-community-detection.md`. The canonical playbook (`manual_testing_playbook.md:3592`) maps 091 to `07-community-detection.md`. The playbook pass criteria ("N2 tables populated, flags active, centrality/community scoring in graph queries") is fully satisfied. ANCHOR-as-graph-node is a separate deferred feature unrelated to this scenario. |
+| 091 remains PARTIAL | ANCHOR-as-graph-node feature (catalog `09-anchor-tags-as-graph-nodes.md`) is PLANNED/DEFERRED. Core N2 (momentum, depth, community) fully working, but ANCHOR-as-node component is not implemented. |
 | All feature flags confirmed as implemented | All 5 feature flags questioned in spec.md open questions (SPECKIT_GRAPH_REFRESH_MODE, SPECKIT_LLM_GRAPH_BACKFILL, SPECKIT_GRAPH_CALIBRATION_PROFILE, SPECKIT_GRAPH_CONCEPT_ROUTING, SPECKIT_TYPED_TRAVERSAL) are implemented with functional code paths and default behaviors. |
 | graph-calibration.ts marked @deprecated but code is complete | The module header has a `@deprecated` JSDoc annotation noting it is "fully implemented and tested but never wired into the Stage 2 pipeline." Capping is done independently by `ranking-contract.ts` and `causal-boost.ts`. The functions themselves work correctly, so the scenario PASSes based on implementation completeness. |
 <!-- /ANCHOR:decisions -->
@@ -123,8 +123,8 @@ Static code analysis of the MCP server TypeScript source files against the 15 pl
 
 | Check | Result |
 |-------|--------|
-| 15/15 scenarios have verdicts (all PASS) | PASS |
-| No FAIL or PARTIAL verdicts blocking release | PASS |
+| 15/15 scenarios have verdicts (14 PASS, 1 PARTIAL) | PASS |
+| 1 PARTIAL verdict documented (091 ANCHOR-as-node deferred) | NOTED |
 | All evidence cites specific file:line | PASS |
 | Feature flags implemented for all flag-gated scenarios | PASS |
 | P0 checklist items complete | 24/24 |

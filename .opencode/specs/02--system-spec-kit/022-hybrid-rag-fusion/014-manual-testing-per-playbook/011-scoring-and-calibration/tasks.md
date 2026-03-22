@@ -72,7 +72,7 @@ contextType: "general"
 
 ### Feature-Flag Execution
 
-- [x] T023 Execute 159 -- Learned Stage 2 Combiner: **PASS** -- `learned-combiner.js:386-400` implements `shadowScore()`: returns null when flag OFF (line 388); returns `{ learnedScore, manualScore, delta }` when ON; `predict()` at line 193-199 clamps to [0,1]; `isLearnedStage2CombinerEnabled()` at `search-flags.ts:383` uses graduated default-ON
+- [x] T023 Execute 159 -- Learned Stage 2 Combiner: **PARTIAL** -- `learned-combiner.ts` carries `@deprecated` JSDoc. Module is a circular dead code island: not imported by `mcp_server/` or re-exported from `shared/index.ts`. Unit logic (shadowScore, predict) works correctly but pipeline integration is missing.
 - [x] T024 Execute 160 -- Shadow Feedback Holdout: **PASS** -- `shadow-scoring.ts:599-710` implements full pipeline: holdout selection (line 615), rank comparison (line 651), delta logging to `shadow_scoring_log` table (line 653), cycle result recording (line 692); `isShadowFeedbackEnabled()` at line 132 gates all operations; `evaluatePromotionGate()` at line 545 returns promote/wait/rollback
 - [x] T025 Execute 170 -- Fusion Policy Shadow v2: **PASS** -- `fusion-lab.js:308-362` `runShadowComparison()` runs all three policies (rrf, minmax_linear, zscore_linear) via `Promise.all` at line 330; returns active policy result unchanged; per-policy NDCG@10 and MRR@5 telemetry at lines 350-355; `isShadowFusionV2Enabled()` at line 32 gates shadow comparison
 - [x] T026 Execute 171 -- Calibrated Overlap Bonus: **PASS** -- `rrf-fusion.js:60` defines `CALIBRATED_OVERLAP_BETA = 0.15`; line 66: `CALIBRATED_OVERLAP_MAX = 0.06`; `fuseResultsMulti()` at line 292-294 computes `overlapScore = beta * overlapRatio * meanNorm` and clamps to [0, 0.06]; `isCalibratedOverlapBonusEnabled()` at line 121 defaults ON (graduated)
@@ -80,7 +80,7 @@ contextType: "general"
 
 ### Verdict and Verification
 
-- [x] T028 Assign PASS/PARTIAL/FAIL verdict to all 22 scenarios using review protocol (`scratch/`) -- All 22 scenarios: PASS
+- [x] T028 Assign PASS/PARTIAL/FAIL verdict to all 22 scenarios using review protocol (`scratch/`) -- 21 PASS, 1 PARTIAL (159 dead code island)
 - [x] T029 Complete all checklist items in `checklist.md` with evidence references (`checklist.md`)
 - [x] T030 Write `implementation-summary.md` with verdict table and known limitations (`implementation-summary.md`)
 <!-- /ANCHOR:phase-3 -->

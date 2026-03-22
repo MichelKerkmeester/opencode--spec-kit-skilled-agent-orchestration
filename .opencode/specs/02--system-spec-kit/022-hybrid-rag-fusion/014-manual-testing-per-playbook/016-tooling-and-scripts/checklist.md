@@ -117,7 +117,7 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-080 [P0] All 60 scenario IDs have individual pass/fail evidence -- **60 PASS, 0 PARTIAL, 0 FAIL**
+- [x] CHK-080 [P0] All 60 scenario IDs have individual pass/fail evidence -- **59 PASS, 0 PARTIAL, 1 FAIL (182 pre-commit hook script missing)**
 - [x] CHK-081 [P0] Zero untested scenarios remaining -- **Confirmed: all 60 IDs tested**
 - [x] CHK-082 [P1] Evidence is reproducible (exact commands documented) -- **File:line references provided for all verdicts**
 - [x] CHK-083 [P1] Failures include exact error output verbatim -- **No failures; no PARTIAL remaining; 138 resolved by adding MODULE headers to 3 scripts/ files**
@@ -165,5 +165,5 @@ contextType: "general"
 | P2 Items | 2 | 0/2 |
 
 **Verification Date**: 2026-03-22
-**Overall Result**: 60 PASS, 0 PARTIAL, 0 FAIL (100% pass rate)
+**Overall Result**: 59 PASS, 0 PARTIAL, 1 FAIL (98% pass rate)
 <!-- /ANCHOR:summary -->

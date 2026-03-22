@@ -125,7 +125,7 @@ contextType: "general"
 ## Phase 3: Verification
 
 - [x] T011 Verify all 60 scenario IDs have captured evidence -- All 60 IDs verified via code analysis with file:line references
-- [x] T012 Assign PASS / PARTIAL / FAIL verdict per scenario -- 60 PASS, 0 PARTIAL, 0 FAIL
+- [x] T012 Assign PASS / PARTIAL / FAIL verdict per scenario -- 59 PASS, 0 PARTIAL, 1 FAIL (182 pre-commit hook script missing)
 - [x] T013 Update checklist with evidence references for all 5 groups
 - [x] T014 Clean up sandbox folders created during testing -- N/A (code analysis mode)
 - [x] T015 Complete implementation-summary.md with execution results

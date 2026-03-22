@@ -47,7 +47,7 @@ contextType: "general"
 - [x] CHK-041 [P0] No scenario IDs missing from phase ownership (zero orphans) — 265/265 IDs assigned and verdicted
 - [x] CHK-042 [P0] No duplicate scenario ID assignments across phases (zero duplicates) — each ID appears in exactly one phase folder
 - [x] CHK-043 [P1] Parent spec.md, plan.md, tasks.md synchronized with execution results — all parent docs updated with final verdict counts
-- [x] CHK-044 [P1] Implementation-summary.md completed with actual execution data — aggregate report with 265 PASS, 0 PARTIAL, 0 FAIL
+- [x] CHK-044 [P1] Implementation-summary.md completed with actual execution data — aggregate report with 261 PASS, 3 PARTIAL, 1 FAIL
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -61,29 +61,29 @@ contextType: "general"
 - [x] CHK-011 [P0] Phase 002 (mutation) — 9/9 verdicted: 9 PASS (100%)
 - [x] CHK-012 [P0] Phase 003 (discovery) — 3/3 verdicted: 3 PASS (100%)
 - [x] CHK-013 [P0] Phase 004 (maintenance) — 2/2 verdicted: 2 PASS (100%)
-- [x] CHK-014 [P0] Phase 005 (lifecycle) — 10/10 verdicted: 9 PASS, 1 PARTIAL (90%)
+- [x] CHK-014 [P0] Phase 005 (lifecycle) — 10/10 verdicted: 10 PASS (100%)
 - [x] CHK-015 [P0] Phase 006 (analysis) — 7/7 verdicted: 7 PASS (100%)
 - [x] CHK-016 [P0] Phase 007 (evaluation) — 2/2 verdicted: 2 PASS (100%)
-- [x] CHK-017 [P0] Phase 008 (bug-fixes-and-data-integrity) — 11/11 verdicted: 10 PASS, 1 PARTIAL (91%)
+- [x] CHK-017 [P0] Phase 008 (bug-fixes-and-data-integrity) — 11/11 verdicted: 11 PASS (100%)
 - [x] CHK-018 [P0] Phase 009 (evaluation-and-measurement) — 16/16 verdicted: 16 PASS (100%)
-- [x] CHK-019 [P0] Phase 010 (graph-signal-activation) — 15/15 verdicted: 14 PASS, 1 PARTIAL (93%)
-- [x] CHK-020 [P0] Phase 011 (scoring-and-calibration) — 22/22 verdicted: 22 PASS (100%)
-- [x] CHK-021 [P0] Phase 012 (query-intelligence) — 10/10 verdicted: 7 PASS, 3 PARTIAL (70%)
-- [x] CHK-022 [P0] Phase 013 (memory-quality-and-indexing) — 34/34 verdicted: 31 PASS, 3 PARTIAL (91%)
-- [x] CHK-023 [P0] Phase 014 (pipeline-architecture) — 18/18 verdicted: 16 PASS, 2 PARTIAL (89%)
+- [x] CHK-019 [P0] Phase 010 (graph-signal-activation) — 15/15 verdicted: 14 PASS, 1 PARTIAL (93%) — 091 ANCHOR-as-node deferred
+- [x] CHK-020 [P0] Phase 011 (scoring-and-calibration) — 22/22 verdicted: 21 PASS, 1 PARTIAL (95%)
+- [x] CHK-021 [P0] Phase 012 (query-intelligence) — 10/10 verdicted: 10 PASS (100%)
+- [x] CHK-022 [P0] Phase 013 (memory-quality-and-indexing) — 34/34 verdicted: 33 PASS, 1 PARTIAL (97%)
+- [x] CHK-023 [P0] Phase 014 (pipeline-architecture) — 18/18 verdicted: 18 PASS (100%)
 - [x] CHK-024 [P0] Phase 015 (retrieval-enhancements) — 11/11 verdicted: 11 PASS (100%)
-- [x] CHK-025 [P0] Phase 016 (tooling-and-scripts) — 60/60 verdicted: 59 PASS, 1 PARTIAL (98%)
-- [x] CHK-026 [P0] Phase 017 (governance) — 5/5 verdicted: 3 PASS, 2 PARTIAL (60%)
-- [x] CHK-027 [P0] Phase 018 (ux-hooks) — 11/11 verdicted: 8 PASS, 3 PARTIAL (73%)
+- [x] CHK-025 [P0] Phase 016 (tooling-and-scripts) — 60/60 verdicted: 59 PASS, 1 FAIL (98%)
+- [x] CHK-026 [P0] Phase 017 (governance) — 5/5 verdicted: 5 PASS (100%)
+- [x] CHK-027 [P0] Phase 018 (ux-hooks) — 11/11 verdicted: 11 PASS (100%)
 - [x] CHK-028 [P0] Phase 019 (feature-flag-reference) — 8/8 verdicted: 8 PASS (100%)
 
 ### Result Aggregation
 
 - [x] CHK-030 [P0] All scenario verdicts collected across 19 phases with zero skipped — 265/265 IDs verdicted
-- [x] CHK-031 [P0] FAIL verdicts root-caused and either fixed or documented — 0 FAIL verdicts across all 265 IDs
-- [x] CHK-032 [P1] PARTIAL verdicts categorized with clear reasons (environment, data, config) — all 17 initial PARTIALs remediated to PASS (0 remaining)
+- [x] CHK-031 [P0] FAIL verdicts root-caused and either fixed or documented — 1 FAIL (182: pre-commit hook script unimplemented) documented
+- [x] CHK-032 [P1] PARTIAL verdicts categorized with clear reasons (environment, data, config) — 3 PARTIAL remaining: 091 (deferred feature), 159 (dead code island), 164 (unwired execution path)
 - [x] CHK-033 [P1] Per-phase execution evidence captured in scratch/ directories — evidence captured in implementation-summary.md and checklist.md with file:line citations
-- [x] CHK-034 [P2] Aggregate pass/partial/fail counts reconciled against total scenario inventory — 265 + 0 + 0 = 265 (matches inventory)
+- [x] CHK-034 [P2] Aggregate pass/partial/fail counts reconciled against total scenario inventory — 261 + 3 + 1 = 265 (matches inventory)
 <!-- /ANCHOR:testing -->
 
 ---
@@ -102,7 +102,7 @@ contextType: "general"
 
 - [x] CHK-060 [P1] All phase spec.md files document scenario IDs, prompts, and pass/fail criteria — verified across all 19 phases
 - [x] CHK-061 [P1] Phase plan.md files document execution pipelines — verified across all 19 phases
-- [x] CHK-062 [P2] Findings saved to memory/ if significant discoveries made — 17 PARTIAL verdicts documented as findings in phase implementation summaries
+- [x] CHK-062 [P2] Findings saved to memory/ if significant discoveries made — 3 PARTIAL and 1 FAIL verdict documented as findings in phase implementation summaries
 <!-- /ANCHOR:docs -->
 
 ---
@@ -122,7 +122,7 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 27 | 27/27 |
+| P0 Items | 29 | 29/29 |
 | P1 Items | 11 | 11/11 |
 | P2 Items | 3 | 3/3 |
 

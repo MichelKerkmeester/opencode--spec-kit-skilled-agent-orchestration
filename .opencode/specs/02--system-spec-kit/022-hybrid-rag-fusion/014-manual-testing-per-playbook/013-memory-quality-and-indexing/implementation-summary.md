@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary [template:level_2/implementation-summary.md]"
-description: "Phase 013 memory quality and indexing manual testing -- code analysis complete. 34/34 IDs verdicted: 34 PASS, 0 PARTIAL, 0 FAIL. Pass rate 100%."
+description: "Phase 013 memory quality and indexing manual testing -- code analysis complete. 34/34 IDs verdicted: 33 PASS, 1 PARTIAL, 0 FAIL. Pass rate 97%."
 trigger_phrases:
   - "memory quality implementation summary"
   - "phase 013 summary"
@@ -40,10 +40,10 @@ All 34 exact IDs from the memory quality and indexing playbook phase were evalua
 | Metric | Value |
 |--------|-------|
 | **Total Exact IDs** | 34 |
-| **PASS** | 34 (100%) |
-| **PARTIAL** | 0 (0.0%) |
-| **FAIL** | 0 (0.0%) |
-| **Pass Rate** | 100% |
+| **PASS** | 33 (97%) |
+| **PARTIAL** | 1 (3%) |
+| **FAIL** | 0 (0%) |
+| **Pass Rate** | 97% |
 
 ### Execution Results
 
@@ -78,7 +78,7 @@ All 34 exact IDs from the memory quality and indexing playbook phase were evalua
 | 133 | Dry-run preflight for memory_save | PASS | memory-save.ts:549-613 dryRun; INSUFFICIENT_CONTEXT_ABORT; force:true blocked |
 | 155 | Post-save quality review | PASS | post-save-review.ts:208-350 title/triggers/tier/decisions/contextType/description checks |
 | 155-F | Score penalty advisory logging | PASS | post-save-review.ts:357-368 computeReviewScorePenalty(); workflow.ts advisory log |
-| 164 | Batch learned feedback (SPECKIT_BATCH_LEARNED_FEEDBACK) | PASS | Constants correct (MIN_SUPPORT=3, MAX_BOOST=0.10, WINDOW=7d, CONFIDENCE_WEIGHTS); @deprecated removed; runBatchLearning() callable on-demand; shadow-only; 53 tests pass |
+| 164 | Batch learned feedback (SPECKIT_BATCH_LEARNED_FEEDBACK) | PARTIAL | Constants correct (MIN_SUPPORT=3, MAX_BOOST=0.10, WINDOW=7d, CONFIDENCE_WEIGHTS). runBatchLearning() fully implemented but zero callers found in any handler, scheduler, or background job. Dead code at execution layer (unwired). |
 | 165 | Assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION) | PASS | reconsolidation-bridge.ts AUTO_MERGE>=0.96, REVIEW>=0.88; shadow-only recommendations |
 | 176 | Implicit feedback log (SPECKIT_IMPLICIT_FEEDBACK_LOG) | PASS | 5 event types, resolveConfidence() correct; comment fixed to "Default: TRUE (graduated)" matching implementation; search-flags.ts:289 consistent |
 | 177 | Hybrid decay policy (SPECKIT_HYBRID_DECAY_POLICY) | PASS | fsrs-scheduler.ts:403-446 classifyHybridDecay(); Infinity for no_decay types; FSRS v4 for others |
@@ -91,16 +91,21 @@ All 34 exact IDs from the memory quality and indexing playbook phase were evalua
 | ID | Original Issue | Remediation Applied |
 |----|---------------|---------------------|
 | 040 | Playbook expects 3 signal categories (correction, preference, reinforcement) but code only had correction/preference/neutral. | Added `reinforcement` to SignalCategory union type, REINFORCEMENT_KEYWORDS array (7 keywords), detection logic in detectSignals(), and boost value (0.15) in SIGNAL_BOOSTS. All 88 trigger-matcher tests pass. |
-| 164 | batch-learning.ts:20 marked `@deprecated` with "never wired" note. All constants and logic correct. | Removed @deprecated annotation; replaced with accurate JSDoc describing shadow-only on-demand usage. Module is callable via runBatchLearning(db, opts). 53 batch-learning tests pass. |
 | 176 | feedback-ledger.ts:104 comment said "Default: FALSE (off)" but implementation defaults ON (val !== 'false'). | Fixed comment to "Default: TRUE (graduated)" and module-level comment to "(default ON, graduated)". Now consistent with search-flags.ts:287 and actual implementation. 39 feedback-ledger tests pass. |
+
+### Remaining PARTIAL Verdict
+
+| ID | Issue | Status |
+|----|-------|--------|
+| 164 | `runBatchLearning()` fully implemented with correct constants and flag, but zero callers found in any handler, scheduler, or background job. Dead code at execution layer (unwired). | PARTIAL -- @deprecated annotation was removed, but the function remains unwired in the production pipeline. |
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| tasks.md | Modified | Updated all 34 scenario verdicts with evidence; 3 PARTIALs remediated to PASS |
-| checklist.md | Modified | Marked all P0/P1 items with evidence citations; 3 PARTIALs remediated to PASS |
-| implementation-summary.md | Modified | Completed with aggregate results and verdict table; 100% pass rate |
+| tasks.md | Modified | Updated all 34 scenario verdicts with evidence; 2 PARTIALs (040, 176) remediated to PASS; 164 remains PARTIAL |
+| checklist.md | Modified | Marked all P0/P1 items with evidence citations; 164 remains PARTIAL (unwired) |
+| implementation-summary.md | Modified | Completed with aggregate results and verdict table; 97% pass rate |
 | trigger-matcher.ts | Modified | Added reinforcement signal category, keywords, detection, and boost (040 remediation) |
 | batch-learning.ts | Modified | Removed @deprecated annotation; updated JSDoc (164 remediation) |
 | feedback-ledger.ts | Modified | Fixed default-state comments from FALSE to TRUE (graduated) (176 remediation) |
@@ -130,7 +135,7 @@ All evidence references use file:line format pointing to the actual source code 
 |----------|-----|
 | Used static code analysis instead of runtime execution | Enables complete coverage of all 34 IDs including feature-flag-gated scenarios (164-178) without environment mutation risk |
 | Added reinforcement signal category (040) | Playbook requires correction/preference/reinforcement; added type, keywords, detection logic, and boost (0.15) to trigger-matcher.ts |
-| Removed @deprecated from batch-learning.ts (164) | Module is fully implemented with correct constants; shadow-only by design; callable on-demand via runBatchLearning(); annotation was misleading |
+| 164 remains PARTIAL despite @deprecated removal | @deprecated annotation removed, but runBatchLearning() has zero callers in any handler, scheduler, or background job. Dead code at execution layer. |
 | Fixed default-state comment in feedback-ledger.ts (176) | Comment said "Default: FALSE (off)" but implementation defaults ON via val !== 'false'; documentation bug, not code bug |
 <!-- /ANCHOR:decisions -->
 
@@ -142,7 +147,7 @@ All evidence references use file:line format pointing to the actual source code 
 | Check | Result |
 |-------|--------|
 | 34 exact IDs executed | 34/34 |
-| All verdicts assigned | 34 PASS, 0 PARTIAL, 0 FAIL |
+| All verdicts assigned | 33 PASS, 1 PARTIAL (164 unwired), 0 FAIL |
 | Sub-scenarios independently verdicted | M-005a/b/c, M-006a/b/c, 155-F all individually verdicted |
 | Checklist P0 items complete | 42/42 |
 | Tasks complete | All T001-T066 marked complete |

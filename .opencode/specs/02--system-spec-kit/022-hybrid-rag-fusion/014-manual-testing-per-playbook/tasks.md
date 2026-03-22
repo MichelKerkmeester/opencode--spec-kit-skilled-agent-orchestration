@@ -56,13 +56,13 @@ Each task executes all test scenarios for one playbook category. Tasks are paral
 | T007 | 007 | `007-evaluation/` | Evaluation | 2 | 2 | DONE — 2 PASS (100%) |
 | T008 | 008 | `008-bug-fixes-and-data-integrity/` | Bug Fixes and Data Integrity | 11 | 11 | DONE — 11 PASS (100%) |
 | T009 | 009 | `009-evaluation-and-measurement/` | Evaluation and Measurement | 16 | 16 | DONE — 16 PASS (100%) |
-| T010 | 010 | `010-graph-signal-activation/` | Graph Signal Activation | 15 | 15 | DONE — 15 PASS (100%) |
-| T011 | 011 | `011-scoring-and-calibration/` | Scoring and Calibration | 22 | 22 | DONE — 22 PASS (100%) |
+| T010 | 010 | `010-graph-signal-activation/` | Graph Signal Activation | 15 | 15 | DONE — 14 PASS, 1 PARTIAL (93%) |
+| T011 | 011 | `011-scoring-and-calibration/` | Scoring and Calibration | 22 | 22 | DONE — 21 PASS, 1 PARTIAL (95%) |
 | T012 | 012 | `012-query-intelligence/` | Query Intelligence | 10 | 10 | DONE — 10 PASS (100%) |
-| T013 | 013 | `013-memory-quality-and-indexing/` | Memory Quality and Indexing | 27 | 34 | DONE — 34 PASS (100%) |
+| T013 | 013 | `013-memory-quality-and-indexing/` | Memory Quality and Indexing | 27 | 34 | DONE — 33 PASS, 1 PARTIAL (97%) |
 | T014 | 014 | `014-pipeline-architecture/` | Pipeline Architecture | 18 | 18 | DONE — 18 PASS (100%) |
 | T015 | 015 | `015-retrieval-enhancements/` | Retrieval Enhancements | 11 | 11 | DONE — 11 PASS (100%) |
-| T016 | 016 | `016-tooling-and-scripts/` | Tooling and Scripts | 28 | 60 | DONE — 60 PASS (100%) |
+| T016 | 016 | `016-tooling-and-scripts/` | Tooling and Scripts | 28 | 60 | DONE — 59 PASS, 1 FAIL (98%) |
 | T017 | 017 | `017-governance/` | Governance | 5 | 5 | DONE — 5 PASS (100%) |
 | T018 | 018 | `018-ux-hooks/` | UX Hooks | 11 | 11 | DONE — 11 PASS (100%) |
 | T019 | 019 | `019-feature-flag-reference/` | Feature Flag Reference | 8 | 8 | DONE — 8 PASS (100%) |
@@ -73,7 +73,7 @@ Each task executes all test scenarios for one playbook category. Tasks are paral
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T020 Aggregate per-phase verdict summaries into coverage report — 265/265 IDs verdicted: 265 PASS, 0 PARTIAL, 0 FAIL (100% pass rate)
+- [x] T020 Aggregate per-phase verdict summaries into coverage report — 265/265 IDs verdicted: 261 PASS, 3 PARTIAL, 1 FAIL (98.5% pass rate)
 - [x] T021 Run `validate.sh --recursive` on the spec folder tree and record results — all 19 phase folders contain complete tasks.md, checklist.md, implementation-summary.md
 <!-- /ANCHOR:phase-3 -->
 
@@ -83,7 +83,7 @@ Each task executes all test scenarios for one playbook category. Tasks are paral
 ## Completion Criteria
 
 - [x] All tasks T001-T019 completed with per-phase verdict summaries
-- [x] T020 aggregate coverage report produced — 248 PASS, 17 PARTIAL, 0 FAIL
+- [x] T020 aggregate coverage report produced — 261 PASS, 3 PARTIAL, 1 FAIL
 - [x] T021 validation results recorded
 - [x] No `[B]` blocked tasks remaining
 - [x] All 265 exact scenario IDs have recorded verdicts

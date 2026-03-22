@@ -125,10 +125,10 @@ Executed comprehensive code analysis across all 60 exact scenario IDs in the 16-
 | Metric | Value |
 |--------|-------|
 | Total IDs | 60 |
-| PASS | 60 |
+| PASS | 59 |
 | PARTIAL | 0 |
-| FAIL | 0 |
-| Pass Rate | 100% |
+| FAIL | 1 |
+| Pass Rate | 98% |
 
 ### Files Changed
 
@@ -174,7 +174,7 @@ Executed comprehensive code analysis across all 60 exact scenario IDs in the 16-
 
 3. **M-007e through M-007i interpretation**: The playbook describes these as "fallback" backends, but the implementation uses DataSource type tags (not a file-discovery fallback chain). The SYSTEM_SPEC_KIT_CAPTURE_SOURCE env var sets the source tag, and source-capabilities.ts defines per-source behavior. The Vitest test suites verify each backend's specific code paths.
 
-4. **Scenarios 181/182 scope**: These are new playbook files (created 2026-03-22) not in the original 28 file count or 60 ID scope. The pre-commit hook script does not exist on disk. These are tracked as scope addenda but not counted against the 60 ID verdict table.
+4. **Scenario 182 FAIL**: pre-commit-spec-validate.sh does not exist in scripts/spec/. Git hook symlink not installed. Configuration (.speckit-enforce.yaml) present but executing script unimplemented. Scenario 181 (template compliance) PASSes. 182 is the only FAIL in this phase.
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -184,7 +184,7 @@ Executed comprehensive code analysis across all 60 exact scenario IDs in the 16-
 
 | Check | Result |
 |-------|--------|
-| All 60 scenarios executed | PASS (60 PASS, 0 PARTIAL) |
+| All 60 scenarios executed | 59 PASS, 0 PARTIAL, 1 FAIL (182 pre-commit hook missing) |
 | Checklist fully populated | PASS (68 P0, 9 P1 verified) |
 | Sandbox cleanup complete | N/A (code analysis mode) |
 <!-- /ANCHOR:verification -->

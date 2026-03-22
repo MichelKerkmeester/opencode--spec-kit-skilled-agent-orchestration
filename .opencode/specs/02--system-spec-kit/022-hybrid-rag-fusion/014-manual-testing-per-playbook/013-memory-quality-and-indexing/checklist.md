@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: manual-testing-per-playbook memory quality and indexing phase [template:level_2/checklist.md]"
-description: "Verification checklist for phase 013 memory quality and indexing: 34 exact IDs verdicted via code analysis -- 34 PASS, 0 PARTIAL, 0 FAIL."
+description: "Verification checklist for phase 013 memory quality and indexing: 34 exact IDs verdicted via code analysis -- 33 PASS, 1 PARTIAL, 0 FAIL."
 trigger_phrases:
   - "memory quality checklist"
   - "phase 013 verification"
@@ -92,7 +92,7 @@ Each item below must be marked `[x]` with a verdict (PASS / PARTIAL / FAIL) and 
 
 ### Group 6: Advanced Quality Features
 
-- [x] CHK-050 [P0] 164 executed and verdicted -- PASS. batch-learning.ts constants correct (MIN_SUPPORT=3, MAX_BOOST=0.10, WINDOW=7d, CONFIDENCE_WEIGHTS). @deprecated removed; runBatchLearning() callable on-demand; shadow-only. 53 tests pass.
+- [x] CHK-050 [P0] 164 executed and verdicted -- PARTIAL. batch-learning.ts constants correct (MIN_SUPPORT=3, MAX_BOOST=0.10, WINDOW=7d, CONFIDENCE_WEIGHTS). runBatchLearning() fully implemented but zero callers found in any handler, scheduler, or background job. Dead code at execution layer (unwired).
 - [x] CHK-051 [P0] 165 executed and verdicted -- PASS. reconsolidation-bridge.ts AUTO_MERGE>=0.96, REVIEW>=0.88, keep_separate<0.88. classifyAssistiveSimilarity(). Shadow-only recommendations.
 - [x] CHK-052 [P0] 176 executed and verdicted -- PASS. feedback-ledger.ts 5 event types, resolveConfidence() correct. Comment at :104 fixed to "Default: TRUE (graduated)" matching implementation. Module-level comment also fixed. 39 tests pass.
 - [x] CHK-053 [P0] 177 executed and verdicted -- PASS. fsrs-scheduler.ts:403-446 classifyHybridDecay() no_decay for decision/constitutional/critical; applyHybridDecayPolicy() returns Infinity; FSRS v4 for others.
@@ -100,7 +100,7 @@ Each item below must be marked `[x]` with a verdict (PASS / PARTIAL / FAIL) and 
 
 ### Coverage
 
-- [x] CHK-060 [P0] All 34 exact IDs assigned a verdict -- 34/34, 0 skipped. 34 PASS, 0 PARTIAL, 0 FAIL.
+- [x] CHK-060 [P0] All 34 exact IDs assigned a verdict -- 34/34, 0 skipped. 33 PASS, 1 PARTIAL (164 unwired), 0 FAIL.
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -110,10 +110,10 @@ Each item below must be marked `[x]` with a verdict (PASS / PARTIAL / FAIL) and 
 
 - [x] CHK-070 [P1] Evidence captured for each executed scenario -- file:line references in tasks.md per scenario
 - [x] CHK-071 [P1] Feature catalog cross-reference verified -- all 24 catalog files present and matched to playbook scenarios
-- [x] CHK-072 [P1] All 3 former PARTIAL verdicts remediated to PASS:
-  - 040: Added reinforcement signal category to trigger-matcher.ts (type, keywords, detection, boost).
-  - 164: Removed @deprecated from batch-learning.ts; module is callable on-demand via runBatchLearning().
-  - 176: Fixed feedback-ledger.ts comment from "Default: FALSE (off)" to "Default: TRUE (graduated)".
+- [x] CHK-072 [P1] Former PARTIAL verdicts reviewed: 2 remediated to PASS, 1 remains PARTIAL:
+  - 040: Added reinforcement signal category to trigger-matcher.ts (type, keywords, detection, boost). Now PASS.
+  - 164: @deprecated removed but runBatchLearning() has zero callers. Remains PARTIAL (unwired dead code).
+  - 176: Fixed feedback-ledger.ts comment from "Default: FALSE (off)" to "Default: TRUE (graduated)". Now PASS.
 - [x] CHK-073 [P1] Sub-scenarios M-005a/b/c, M-006a/b/c, and 155-F have independent evidence -- all 7 individually verdicted with distinct file:line citations
 <!-- /ANCHOR:testing -->
 

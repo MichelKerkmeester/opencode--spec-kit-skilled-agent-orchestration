@@ -47,24 +47,24 @@ Executed manual test verification across all 19 playbook categories covering 226
 | 007 | Evaluation | 2 | 2 | 2 | 0 | 0 | 100% |
 | 008 | Bug Fixes & Data Integrity | 11 | 11 | 11 | 0 | 0 | 100% |
 | 009 | Evaluation & Measurement | 16 | 16 | 16 | 0 | 0 | 100% |
-| 010 | Graph Signal Activation | 15 | 15 | 15 | 0 | 0 | 100% |
-| 011 | Scoring & Calibration | 22 | 22 | 22 | 0 | 0 | 100% |
+| 010 | Graph Signal Activation | 15 | 15 | 14 | 1 | 0 | 93% |
+| 011 | Scoring & Calibration | 22 | 22 | 21 | 1 | 0 | 95% |
 | 012 | Query Intelligence | 10 | 10 | 10 | 0 | 0 | 100% |
-| 013 | Memory Quality & Indexing | 27 | 34 | 34 | 0 | 0 | 100% |
+| 013 | Memory Quality & Indexing | 27 | 34 | 33 | 1 | 0 | 97% |
 | 014 | Pipeline Architecture | 18 | 18 | 18 | 0 | 0 | 100% |
 | 015 | Retrieval Enhancements | 11 | 11 | 11 | 0 | 0 | 100% |
-| 016 | Tooling & Scripts | 28 | 60 | 60 | 0 | 0 | 100% |
+| 016 | Tooling & Scripts | 28 | 60 | 59 | 0 | 1 | 98% |
 | 017 | Governance | 5 | 5 | 5 | 0 | 0 | 100% |
 | 018 | UX Hooks | 11 | 11 | 11 | 0 | 0 | 100% |
 | 019 | Feature Flag Reference | 8 | 8 | 8 | 0 | 0 | 100% |
-| **TOTAL** | | **226** | **265** | **265** | **0** | **0** | **100%** |
+| **TOTAL** | | **226** | **265** | **261** | **3** | **1** | **98.5%** |
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
 | `tasks.md` | Modified | All tasks T000-T021 marked complete with verdict summaries |
-| `checklist.md` | Modified | All 41 items (27 P0, 11 P1, 3 P2) verified with evidence |
+| `checklist.md` | Modified | All 43 items (29 P0, 11 P1, 3 P2) verified with evidence |
 | `implementation-summary.md` | Modified | This file -- aggregate coverage report |
 | `001-retrieval/` through `019-feature-flag-reference/` | Modified | Per-phase tasks.md, checklist.md, implementation-summary.md updated with verdicts |
 <!-- /ANCHOR:what-built -->
@@ -107,12 +107,11 @@ Execution methodology: static source code analysis against the MCP server TypeSc
 | Check | Result |
 |-------|--------|
 | 265/265 exact IDs verdicted | PASS -- zero skipped, zero unexecuted |
-| 265/265 PASS verdicts | PASS -- 100% pass rate across all 19 phases |
-| 0 FAIL verdicts | PASS -- no broken features found |
-| 0 PARTIAL verdicts | PASS -- all 17 initial PARTIALs remediated to PASS |
+| 261 PASS verdicts | PASS -- 98.5% pass rate across all 19 phases |
+| 1 FAIL verdict | NOTED -- 182 (pre-commit hook script unimplemented) |
+| 3 PARTIAL verdicts | NOTED -- 091 (deferred), 159 (dead code), 164 (unwired) |
 | 19/19 phase folders updated | PASS -- tasks.md, checklist.md, implementation-summary.md complete |
-| Parent checklist 41/41 verified | PASS -- 27 P0, 11 P1, 3 P2 all checked |
-| 8848 tests passing | PASS -- full test suite verified after code fixes |
+| Parent checklist 43/43 verified | PASS -- 29 P0, 11 P1, 3 P2 all checked |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -120,15 +119,21 @@ Execution methodology: static source code analysis against the MCP server TypeSc
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-### Remediated Issues
+### Remaining Issues (Re-Run 2026-03-22)
 
-All 17 initial PARTIAL verdicts were remediated to PASS through a combination of:
+**3 PARTIAL verdicts:**
 
-- **Deeper code analysis** (10 cases): Initial agents missed code paths due to incomplete search scope or naming mismatches. Remediation agents traced full call chains and found the features were already implemented.
-- **Code fixes** (5 cases): Genuine gaps fixed with minimal changes -- archival deferral (124), fan-effect divisor wiring (003), truncation trace surfacing (036), simple-query bypass (038), surrogates pipeline wiring (163).
-- **Source corrections** (2 cases): Added `reinforcement` signal category (040), fixed misleading comments (176), removed incorrect `@deprecated` annotation (164), added MODULE headers (138).
+- **091** (Phase 010): ANCHOR-as-graph-node explicitly "PLANNED/DEFERRED" in feature catalog. Core N2 (momentum, depth, community) fully working. Test actively guards against edge creation.
+- **159** (Phase 011): `learned-combiner.ts` carries `@deprecated` JSDoc. Circular island not imported by `mcp_server/` or re-exported from `shared/index.ts`. Unit logic works but pipeline integration missing.
+- **164** (Phase 013): `runBatchLearning()` fully implemented with all constants and flag. Zero callers found in any handler, scheduler, or background job. Dead code at execution layer.
 
-All code fixes verified with `tsc --noEmit` (clean) and full test suite (8848 tests passing, 0 failures).
+**1 FAIL verdict:**
+
+- **182** (Phase 016): Pre-commit hook block mode. `pre-commit-spec-validate.sh` does not exist in `scripts/spec/`. Git hook symlink not installed. Configuration (`.speckit-enforce.yaml`) present but executing script unimplemented.
+
+### Re-Run Delta (vs Initial Run)
+
+15 scenarios upgraded PARTIAL to PASS (124, 003, 036, 038, 163, 040, 176, 053, 076, 063, 064, 104, 168, 169, 138). 1 scenario regressed PASS to PARTIAL (159). 1 new FAIL (182). Net: 94% to 98.5% pass rate.
 
 ### Methodology Limitation
 

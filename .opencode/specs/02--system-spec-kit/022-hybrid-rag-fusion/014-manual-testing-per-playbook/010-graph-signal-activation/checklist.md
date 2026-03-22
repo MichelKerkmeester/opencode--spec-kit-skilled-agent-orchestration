@@ -72,14 +72,14 @@ contextType: "general"
 - [x] CHK-035 [P0] 021 has been executed and `memory_drift_why` output showing multi-hop traversal and depth signal is captured -- Evidence: PASS -- `graph-signals.ts:328-537` SCC + longest-path depth with [0,1] normalization
 - [x] CHK-036 [P0] 022 has been executed and community detection output with cluster assignments is captured -- Evidence: PASS -- `community-detection.ts:99-560` BFS + Louvain + co-member boost injection
 - [x] CHK-037 [P0] 081 has been executed and fix-location inspection notes with corrected behavior evidence are captured -- Evidence: PASS -- self-loop guard, depth clamp, cache invalidation all confirmed
-- [x] CHK-038 [P0] 091 has been executed and N2 implementation status verified with tables populated, flags active, and centrality/community scoring confirmed -- Evidence: PASS -- N2 tables exist with data, flags ON, `applyGraphSignals()` and `applyCommunityBoost()` contribute to graph queries per playbook criteria
+- [x] CHK-038 [P0] 091 has been executed and N2 implementation status verified with tables populated, flags active, and centrality/community scoring confirmed -- Evidence: PARTIAL -- Core N2 (momentum, depth, community) fully working. ANCHOR-as-graph-node feature (catalog 09) is PLANNED/DEFERRED and not implemented.
 - [x] CHK-039 [P0] 120 has been executed and rollback confirmation with edge count before/after and explainability trace is captured -- Evidence: PASS -- deleteEdge + graphContribution trace + deterministic tie-breaking
 - [x] CHK-040 [P0] 156 has been executed and graph refresh log with mode, affected edges, and post-refresh stats is captured -- Evidence: PASS -- onWrite pipeline with dirty-node tracking and local recompute
 - [x] CHK-041 [P0] 157 has been executed and backfill log showing memories processed, edges created, and LLM usage is captured -- Evidence: PASS -- onIndex with quality-gated LLM backfill scheduling via setImmediate
 - [x] CHK-042 [P0] 158 has been executed and search traces showing different graph weights per calibration profile are captured -- Evidence: PASS -- DEFAULT vs AGGRESSIVE profiles with different caps
 - [x] CHK-043 [P0] 174 has been executed and concept-routed search output with graph signal attribution is captured -- Evidence: PASS -- nounPhrases + matchAliases + routeQueryConcepts with graphActivated flag
 - [x] CHK-044 [P0] 175 has been executed and `memory_drift_why` output filtered to specified relation types with no cross-type leakage is captured -- Evidence: PASS -- sparse-first + intent-aware scoring + filterChainByRelations
-- [x] CHK-045 [P0] Each of the 15 scenarios has a verdict (PASS, PARTIAL, or FAIL) with explicit rationale referencing the review protocol acceptance rules -- Evidence: 15 PASS, 0 PARTIAL, 0 FAIL
+- [x] CHK-045 [P0] Each of the 15 scenarios has a verdict (PASS, PARTIAL, or FAIL) with explicit rationale referencing the review protocol acceptance rules -- Evidence: 14 PASS, 1 PARTIAL (091 ANCHOR-as-node deferred), 0 FAIL
 - [x] CHK-046 [P1] Coverage summary reports 15/15 scenarios executed with no skipped test IDs -- Evidence: all 15 test IDs (016-022, 081, 091, 120, 156-158, 174, 175) have verdicts
 <!-- /ANCHOR:testing -->
 
