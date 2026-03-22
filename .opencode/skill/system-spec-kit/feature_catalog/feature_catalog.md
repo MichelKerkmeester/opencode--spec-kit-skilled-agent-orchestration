@@ -1689,6 +1689,70 @@ See [`10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranki
 
 ---
 
+### Typed traversal
+
+#### Description
+
+Typed traversal enables sparse-first graph policy and intent-aware edge traversal for causal boost scoring, constraining traversal to typed 1-hop expansion in sparse graphs and mapping query intents to edge-type priority orderings.
+
+#### Current Reality
+
+Enabled by default (graduated). Set `SPECKIT_TYPED_TRAVERSAL=false` to disable. When graph density falls below `SPARSE_DENSITY_THRESHOLD = 0.5`, community detection is disabled and traversal is constrained to `SPARSE_MAX_HOPS = 1` typed expansion. Intent-aware edge traversal maps classified query intents to edge-type priority orderings via `INTENT_EDGE_PRIORITY`. The traversal score is computed as `score = seedScore * edgePrior * hopDecay * freshness`. Edge prior scores are tiered: first-listed relation = 1.0, second = 0.75, remaining = 0.5.
+
+#### Source Files
+
+See [`10--graph-signal-activation/16-typed-traversal.md`](10--graph-signal-activation/16-typed-traversal.md) for full implementation and test file listings.
+
+---
+
+### Graph lifecycle refresh
+
+#### Description
+
+Graph lifecycle refresh manages dirty-node tracking and graph recomputation after write operations, with synchronous local or scheduled background modes controlled by the `SPECKIT_GRAPH_REFRESH_MODE` flag.
+
+#### Current Reality
+
+The graph lifecycle module tracks dirty nodes across `onWrite()` calls within the same process. When `SPECKIT_GRAPH_REFRESH_MODE` is set to `write_local`, small connected components (up to 50 nodes) are recomputed synchronously during the save operation. When set to `scheduled`, larger components are queued for a background global refresh. The default value is `off`, which makes all graph refresh a no-op.
+
+#### Source Files
+
+See [`10--graph-signal-activation/13-graph-lifecycle-refresh.md`](10--graph-signal-activation/13-graph-lifecycle-refresh.md) for full implementation and test file listings.
+
+---
+
+### Async LLM graph backfill
+
+#### Description
+
+Async LLM graph backfill enriches high-value documents with probabilistic graph edges via an LLM call after deterministic extraction, gated by the `SPECKIT_LLM_GRAPH_BACKFILL` flag.
+
+#### Current Reality
+
+When `SPECKIT_LLM_GRAPH_BACKFILL` is set to `true`, high-value documents receive an async LLM-based enrichment pass after the synchronous deterministic extraction completes. The flag is default OFF (opt-in). The LLM backfill is also scheduled when `SPECKIT_GRAPH_REFRESH_MODE` is set to `write_local` or `scheduled`.
+
+#### Source Files
+
+See [`10--graph-signal-activation/14-llm-graph-backfill.md`](10--graph-signal-activation/14-llm-graph-backfill.md) for full implementation and test file listings.
+
+---
+
+### Graph calibration profiles and community thresholds
+
+#### Description
+
+Graph calibration profiles enforce weight caps, RRF fusion overflow limits, and Louvain community detection activation gates, with named presets controlled by the `SPECKIT_GRAPH_CALIBRATION_PROFILE` flag.
+
+#### Current Reality
+
+The calibration module defines two profiles. The default profile sets `GRAPH_WEIGHT_CAP = 0.05`, `n2aCap = 0.10`, `n2bCap = 0.10`, `louvainMinDensity = 0.3`, and `louvainMinSize = 10`. The aggressive profile tightens these to `graphWeightCap = 0.03`, `n2aCap = 0.07`, `n2bCap = 0.07`, `louvainMinDensity = 0.5`, and `louvainMinSize = 20`. Community score boost is capped at `COMMUNITY_SCORE_CAP = 0.03`. Default OFF, opt-in.
+
+#### Source Files
+
+See [`10--graph-signal-activation/15-graph-calibration-profiles.md`](10--graph-signal-activation/15-graph-calibration-profiles.md) for full implementation and test file listings.
+
+---
+
 ## 12. SCORING AND CALIBRATION
 
 ### Score normalization
@@ -2046,6 +2110,86 @@ See [`11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-a
 
 ---
 
+### Calibrated overlap bonus
+
+#### Description
+
+Calibrated overlap bonus replaces the flat convergence bonus in RRF fusion with a query-aware scaled bonus that accounts for the number of overlapping channels and the mean normalized top score.
+
+#### Current Reality
+
+Enabled by default (graduated). Set `SPECKIT_CALIBRATED_OVERLAP_BONUS=false` to revert to the flat convergence bonus. When enabled, the `fuseResultsMulti()` function computes a query-aware overlap bonus using `CALIBRATED_OVERLAP_BETA = 0.15` as the scaling factor and the mean normalized top score across channels. The bonus is clamped to `CALIBRATED_OVERLAP_MAX = 0.06`. When disabled, the standard flat `CONVERGENCE_BONUS = 0.10` is applied instead.
+
+#### Source Files
+
+See [`11--scoring-and-calibration/21-calibrated-overlap-bonus.md`](11--scoring-and-calibration/21-calibrated-overlap-bonus.md) for full implementation and test file listings.
+
+---
+
+### RRF K experimental tuning
+
+#### Description
+
+RRF K experimental tuning enables per-intent K-value selection for Reciprocal Rank Fusion, sweeping candidate K values and selecting the one that maximizes NDCG@10 per query intent.
+
+#### Current Reality
+
+Enabled by default (graduated). Set `SPECKIT_RRF_K_EXPERIMENTAL=false` to revert to the default K=60 for all intents. When enabled, `perIntentKSweep()` groups judged queries by intent, evaluates each against `JUDGED_K_SWEEP_VALUES` {10,20,40,60,80,100,120}, and selects the K that maximizes NDCG@10 via `argmaxNdcg10()`. The runtime override `SPECKIT_RRF_K` allows a single global K override.
+
+#### Source Files
+
+See [`11--scoring-and-calibration/22-rrf-k-experimental.md`](11--scoring-and-calibration/22-rrf-k-experimental.md) for full implementation and test file listings.
+
+---
+
+### Fusion policy shadow evaluation V2
+
+#### Description
+
+Fusion policy shadow evaluation V2 runs RRF, minmax-linear, and zscore-linear fusion policies in parallel on each query, returning the active policy result while capturing shadow telemetry for the alternatives.
+
+#### Current Reality
+
+Enabled by default (graduated). Set `SPECKIT_FUSION_POLICY_SHADOW_V2=false` to disable shadow evaluation. The fusion lab module implements three fusion policies: rrf (standard RRF), minmax_linear (min-max normalized weighted linear combination), and zscore_linear (z-score normalized weighted linear combination). Each policy run produces a `PolicyTelemetry` record with NDCG@10, MRR@5, and wall-clock latency. Shadow results are telemetry-only and have no ranking side effects.
+
+#### Source Files
+
+See [`11--scoring-and-calibration/23-fusion-policy-shadow-v2.md`](11--scoring-and-calibration/23-fusion-policy-shadow-v2.md) for full implementation and test file listings.
+
+---
+
+### Learned Stage 2 weight combiner
+
+#### Description
+
+A regularized linear ranker that learns combination weights from accumulated Stage 2 signals, running in shadow-only mode behind the `SPECKIT_LEARNED_STAGE2_COMBINER` flag.
+
+#### Current Reality
+
+The learned combiner uses Ridge Regression with an inline matrix math implementation (no external ML dependencies). The 8-feature canonical vector covers: rrf, overlap, graph, session, causal, feedback, validation, artifact. Training uses the closed-form solution with default regularization `DEFAULT_LAMBDA = 0.1`. Validation uses Leave-One-Out Cross-Validation, and feature importance is computed via SHAP-style analysis. Shadow scoring returns both learned and manual scores when the flag is ON, or null with zero overhead when OFF. Default OFF, opt-in.
+
+#### Source Files
+
+See [`11--scoring-and-calibration/19-learned-stage2-weight-combiner.md`](11--scoring-and-calibration/19-learned-stage2-weight-combiner.md) for full implementation and test file listings.
+
+---
+
+### Shadow scoring with holdout evaluation
+
+#### Description
+
+Shadow scoring compares would-have-changed rankings against live rankings on a deterministic holdout slice of queries, tracking weekly improvement cycles and gating promotion of learned signals to production.
+
+#### Current Reality
+
+The shadow scoring module computes per-result rank deltas between live and shadow rankings, producing Kendall tau correlation, NDCG delta, and MRR delta metrics. Holdout queries are deterministically selected via a seed (default 20% holdout). Promotion requires 2+ consecutive weeks of stable improvement. The evaluation window is 7 days. The promotion gate returns one of three recommendations: promote, wait, or rollback. Shadow-only: no live ranking columns are mutated. Default OFF, set `SPECKIT_SHADOW_FEEDBACK=true` to enable.
+
+#### Source Files
+
+See [`11--scoring-and-calibration/20-shadow-feedback-holdout-evaluation.md`](11--scoring-and-calibration/20-shadow-feedback-holdout-evaluation.md) for full implementation and test file listings.
+
+---
+
 ## 13. QUERY INTELLIGENCE
 
 ### Query complexity router
@@ -2165,6 +2309,86 @@ When R15 classifies a query as "simple", expansion is suppressed because expandi
 #### Source Files
 
 See [`12--query-intelligence/06-query-expansion.md`](12--query-intelligence/06-query-expansion.md) for full implementation and test file listings.
+
+---
+
+### Query decomposition
+
+#### Description
+
+Query decomposition splits multi-faceted questions into up to 3 sub-queries using rule-based heuristics, enabling facet-aware retrieval in deep mode without LLM calls.
+
+#### Current Reality
+
+Enabled by default (graduated). Set `SPECKIT_QUERY_DECOMPOSITION=false` to disable. The `query-decomposer.ts` module performs bounded facet detection: splits on coordinating conjunctions, detects multiple wh-question words, caps at `MAX_FACETS = 3` sub-queries, uses no LLM calls, and only activates in deep mode. Graceful fallback returns only the original query on error.
+
+#### Source Files
+
+See [`12--query-intelligence/10-query-decomposition.md`](12--query-intelligence/10-query-decomposition.md) for full implementation and test file listings.
+
+---
+
+### Graph concept routing
+
+#### Description
+
+Graph concept routing extracts noun phrases from a query and matches them against a concept alias table, activating the graph channel for matched concepts to improve retrieval via causal edge traversal.
+
+#### Current Reality
+
+Enabled by default (graduated). Set `SPECKIT_GRAPH_CONCEPT_ROUTING=false` to disable. The entity linker module extracts noun phrases from the query, matches them against the concept alias table in SQLite, and returns canonical concept names. The matched concepts are used by `stage1-candidate-gen.ts` to activate the graph retrieval channel for those concepts.
+
+#### Source Files
+
+See [`12--query-intelligence/11-graph-concept-routing.md`](12--query-intelligence/11-graph-concept-routing.md) for full implementation and test file listings.
+
+---
+
+### LLM query reformulation
+
+#### Description
+
+Corpus-grounded LLM query reformulation applies step-back abstraction combined with real corpus seed grounding to produce enriched query variants in deep mode.
+
+#### Current Reality
+
+The reformulation module performs a two-step process: (1) cheap seed retrieval via FTS5/BM25 keyword search (no embedding call, up to 3 results) to ground the prompt in real corpus content, then (2) a single LLM call to produce a step-back abstraction and up to 2 corpus-grounded query variants. Timeout is 8000ms. LLM results are cached via a shared LLM result cache (1h TTL). Only fires in deep mode. Default OFF, set `SPECKIT_LLM_REFORMULATION=true` to enable.
+
+#### Source Files
+
+See [`12--query-intelligence/07-llm-query-reformulation.md`](12--query-intelligence/07-llm-query-reformulation.md) for full implementation and test file listings.
+
+---
+
+### HyDE (Hypothetical Document Embeddings)
+
+#### Description
+
+HyDE generates a short hypothetical document answering the query, embeds it, and uses the pseudo-document embedding as an additional retrieval channel for deep low-confidence queries.
+
+#### Current Reality
+
+HyDE operates in two modes: `SPECKIT_HYDE` (default FALSE) enables the feature and generates pseudo-documents, `SPECKIT_HYDE_ACTIVE` (default FALSE) graduates from shadow to full merge mode. HyDE only fires in deep mode with low-confidence baselines (top score < 0.45). Pseudo-documents are generated in markdown-memory format (max 200 tokens). Budget: 1 LLM call per cache miss. Combined with reformulation: at most 2 total LLM calls per deep query.
+
+#### Source Files
+
+See [`12--query-intelligence/08-hyde-hypothetical-document-embeddings.md`](12--query-intelligence/08-hyde-hypothetical-document-embeddings.md) for full implementation and test file listings.
+
+---
+
+### Index-time query surrogates
+
+#### Description
+
+Index-time query surrogates generate surrogate metadata (aliases, headings, summaries, heuristic questions) at index time for improved recall without runtime LLM calls.
+
+#### Current Reality
+
+At index time, the surrogate generator produces aliases (parenthetical abbreviations, synonyms), headings, extractive summaries (max 200 characters), and 2-5 heuristic questions. At query time, stored surrogates are matched against the incoming query using token overlap with a minimum match threshold of 0.15. Default OFF, set `SPECKIT_QUERY_SURROGATES=true` to enable.
+
+#### Source Files
+
+See [`12--query-intelligence/09-index-time-query-surrogates.md`](12--query-intelligence/09-index-time-query-surrogates.md) for full implementation and test file listings.
 
 ---
 
@@ -2597,6 +2821,86 @@ Current detection checks: generic title, path-fragment trigger phrases, importan
 #### Source Files
 
 See [`13--memory-quality-and-indexing/19-post-save-quality-review.md`](13--memory-quality-and-indexing/19-post-save-quality-review.md) for full implementation and test file listings.
+
+---
+
+### Implicit feedback log
+
+#### Description
+
+Implicit feedback log records implicit feedback signals from search and save interactions into a shadow-only SQLite table with tiered confidence scoring, enabling offline analysis of search quality without ranking side effects.
+
+#### Current Reality
+
+Enabled by default (graduated). Set `SPECKIT_IMPLICIT_FEEDBACK_LOG=false` to disable. The feedback ledger module records five event types with a three-tier confidence hierarchy: strong (result_cited, follow_on_tool_use), medium (query_reformulated), and weak (search_shown, same_topic_requery). Each event is stored with type, memory_id, query_id, confidence, timestamp, and optional session_id. Shadow-only: no ranking influence.
+
+#### Source Files
+
+See [`13--memory-quality-and-indexing/22-implicit-feedback-log.md`](13--memory-quality-and-indexing/22-implicit-feedback-log.md) for full implementation and test file listings.
+
+---
+
+### Hybrid decay policy
+
+#### Description
+
+Hybrid decay policy applies type-aware no-decay rules to permanent artifacts (decision, constitutional, critical context types) while all other types follow the standard FSRS schedule.
+
+#### Current Reality
+
+Enabled by default (graduated). Set `SPECKIT_HYBRID_DECAY_POLICY=false` to disable. When enabled, `classifyHybridDecay()` maps decision, constitutional, and critical context types to no_decay class with Infinity stability (no decay). All other context types follow the standard FSRS v4 power-law decay: `R(t) = (1 + 19/81 * t/S)^(-0.5)`. Separate from TM-03 classification-based decay.
+
+#### Source Files
+
+See [`13--memory-quality-and-indexing/23-hybrid-decay-policy.md`](13--memory-quality-and-indexing/23-hybrid-decay-policy.md) for full implementation and test file listings.
+
+---
+
+### Save quality gate exceptions
+
+#### Description
+
+Save quality gate exceptions allow decision-type documents with sufficient structural signals to bypass the minimum content length check, preventing false rejections of short but high-value memories.
+
+#### Current Reality
+
+Enabled by default (graduated). Set `SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=false` to disable. When enabled, the quality gate evaluates an exception path for documents where the context_type is decision and the document has at least 2 structural signals (title quality, trigger quality, anchor quality, metadata quality). Documents meeting both criteria bypass the `MIN_CONTENT_LENGTH = 50` character check in Layer 1 structural validation.
+
+#### Source Files
+
+See [`13--memory-quality-and-indexing/24-save-quality-gate-exceptions.md`](13--memory-quality-and-indexing/24-save-quality-gate-exceptions.md) for full implementation and test file listings.
+
+---
+
+### Weekly batch feedback learning
+
+#### Description
+
+Weekly batch feedback learning aggregates implicit feedback events from the ledger, computes confidence-weighted signal scores per memory, and records shadow rank deltas with min-support and boost-cap guards.
+
+#### Current Reality
+
+The batch learning pipeline runs on a 7-day window. It reads implicit feedback events and aggregates per-memory signals with confidence-weighted scoring: strong = 1.0, medium = 0.5, weak = 0.1. Guards: minimum 3 distinct sessions required before a signal is eligible, max boost delta of 0.10 per cycle. Results are logged for auditability. Shadow-only: no live ranking columns are mutated. Default OFF, set `SPECKIT_BATCH_LEARNED_FEEDBACK=true` to enable.
+
+#### Source Files
+
+See [`13--memory-quality-and-indexing/20-weekly-batch-feedback-learning.md`](13--memory-quality-and-indexing/20-weekly-batch-feedback-learning.md) for full implementation and test file listings.
+
+---
+
+### Assistive reconsolidation
+
+#### Description
+
+Three-tier assistive reconsolidation classifies memory pairs by cosine similarity into auto-merge, review, or keep-separate tiers, providing non-destructive recommendations for near-duplicates and borderline pairs.
+
+#### Current Reality
+
+The assistive reconsolidation module operates in three tiers: auto-merge (similarity >= 0.96, near-duplicates automatically merged), review (similarity >= 0.88, recommendation logged but no destructive action), and keep-separate (similarity < 0.88). Review-tier classification uses a heuristic: if the newer memory content is longer by > 20%, it is classified as complement; otherwise as supersede. Default OFF, set `SPECKIT_ASSISTIVE_RECONSOLIDATION=true` to enable.
+
+#### Source Files
+
+See [`13--memory-quality-and-indexing/21-assistive-reconsolidation.md`](13--memory-quality-and-indexing/21-assistive-reconsolidation.md) for full implementation and test file listings.
 
 ---
 
@@ -3852,6 +4156,102 @@ Phase 014 verification includes end-to-end success-envelope assertions in `tests
 #### Source Files
 
 See [`18--ux-hooks/13-end-to-end-success-envelope-verification.md`](18--ux-hooks/13-end-to-end-success-envelope-verification.md) for full implementation and test file listings.
+
+---
+
+### Empty result recovery
+
+#### Description
+
+Empty result recovery generates structured recovery payloads when search returns no results, low-confidence results, or only partial matches, providing the calling agent with actionable next steps.
+
+#### Current Reality
+
+Enabled by default (graduated). Set `SPECKIT_EMPTY_RESULT_RECOVERY_V1=false` to disable. The recovery payload module classifies search outcomes into three statuses: no_results (zero results), low_confidence (average confidence below 0.4), and partial (fewer than 3 results). For each status, the module identifies a root cause reason (spec_filter_too_narrow, low_signal_query, knowledge_gap) and recommended actions (retry_broader, switch_mode, save_memory, ask_user).
+
+#### Source Files
+
+See [`18--ux-hooks/18-empty-result-recovery.md`](18--ux-hooks/18-empty-result-recovery.md) for full implementation and test file listings.
+
+---
+
+### Result confidence scoring
+
+#### Description
+
+Result confidence scoring combines margin, multi-channel agreement, reranker support, and anchor density into a single calibrated confidence score per search result, using heuristic scoring with no LLM calls in the hot path.
+
+#### Current Reality
+
+Enabled by default (graduated). Set `SPECKIT_RESULT_CONFIDENCE_V1=false` to disable. The confidence scoring module computes a weighted composite score from four factors: margin (0.35), channel agreement (0.30), reranker support (0.20), and anchor density (0.15). The composite score maps to labels via HIGH_THRESHOLD = 0.7 and LOW_THRESHOLD = 0.4. Confidence drivers are reported per result for explainability.
+
+#### Source Files
+
+See [`18--ux-hooks/19-result-confidence.md`](18--ux-hooks/19-result-confidence.md) for full implementation and test file listings.
+
+---
+
+### Two-tier result explainability
+
+#### Description
+
+Two-tier result explainability attaches natural-language "why" explanations to each search result composed from Stage 2 scoring signals, with a slim tier (summary + topSignals) and an optional debug tier (channelContribution map).
+
+#### Current Reality
+
+The explainability module detects 10+ signal types including semantic/lexical match, graph/session/causal/community boosts, reranker support, feedback, validation quality, and anchor labels. The slim tier (summary + topSignals) is always present when ON. The debug tier adds per-channel score breakdown (vector, fts, graph). Default OFF, set `SPECKIT_RESULT_EXPLAIN_V1=true` to enable.
+
+#### Source Files
+
+See [`18--ux-hooks/14-result-explainability.md`](18--ux-hooks/14-result-explainability.md) for full implementation and test file listings.
+
+---
+
+### Mode-aware response profiles
+
+#### Description
+
+Mode-aware response profiles route search and context results through one of four named presentation profiles (quick, research, resume, debug), each optimizing for a different consumer.
+
+#### Current Reality
+
+Four profiles are implemented: quick (topResult + oneLineWhy + omittedCount + tokenReduction), research (results + evidenceDigest + followUps), resume (state + nextSteps + blockers), and debug (full trace + tokenStats). Backward compatible: when the flag is OFF or profile is omitted, the original response is unchanged. Default OFF, set `SPECKIT_RESPONSE_PROFILE_V1=true` to enable.
+
+#### Source Files
+
+See [`18--ux-hooks/15-mode-aware-response-profiles.md`](18--ux-hooks/15-mode-aware-response-profiles.md) for full implementation and test file listings.
+
+---
+
+### Progressive disclosure with cursor pagination
+
+#### Description
+
+Progressive disclosure replaces hard tail-truncation with a multi-layer response consisting of a summary layer, snippet extraction, and continuation cursors for paginated retrieval.
+
+#### Current Reality
+
+The progressive disclosure module provides four layers: summary layer (confidence distribution digest), snippet extraction (100-char previews), continuation cursors (base64 tokens, 5-min TTL), and progressive response builder. Default page size is 5. Cursor encoding uses JSON-in-base64 with strict field validation. The cursor store is process-local. Default OFF, set `SPECKIT_PROGRESSIVE_DISCLOSURE_V1=true` to enable.
+
+#### Source Files
+
+See [`18--ux-hooks/16-progressive-disclosure.md`](18--ux-hooks/16-progressive-disclosure.md) for full implementation and test file listings.
+
+---
+
+### Retrieval session state
+
+#### Description
+
+Retrieval session state tracks per-session context enabling cross-turn deduplication, goal-aware refinement, and stateful question and anchor tracking, all in-memory with TTL-based cleanup.
+
+#### Current Reality
+
+The session state module provides cross-turn deduplication (seen results receive 0.3x score multiplier), goal-aware refinement (up to 1.2x boost for goal-aligned results), and stateful tracking of open questions, preferred anchors, and seen result IDs. Storage is in-memory only (ephemeral). Sessions expire after 30 minutes of inactivity. LRU eviction at 100 concurrent sessions. Default OFF, set `SPECKIT_SESSION_RETRIEVAL_STATE_V1=true` to enable.
+
+#### Source Files
+
+See [`18--ux-hooks/17-retrieval-session-state.md`](18--ux-hooks/17-retrieval-session-state.md) for full implementation and test file listings.
 
 ---
 

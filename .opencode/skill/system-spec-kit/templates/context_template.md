@@ -3,7 +3,7 @@ title: "{{MEMORY_DASHBOARD_TITLE}}"
 description: "{{MEMORY_DESCRIPTION}}"
 {{TRIGGER_PHRASES_YAML}}
 importance_tier: "{{IMPORTANCE_TIER}}"
-contextType: "general"
+contextType: "{{CONTEXT_TYPE}}"
 _sourceTranscriptPath: "{{SOURCE_TRANSCRIPT_PATH}}"
 _sourceSessionId: "{{SOURCE_SESSION_ID}}"
 _sourceSessionCreated: {{SOURCE_SESSION_CREATED}}

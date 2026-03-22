@@ -254,7 +254,7 @@ export async function executeMerge(
 
       // Create supersedes causal edge
       db.prepare(`
-        INSERT OR IGNORE INTO causal_edges (source_id, target_id, relation_type, strength, created_at)
+        INSERT OR IGNORE INTO causal_edges (source_id, target_id, relation, strength, extracted_at)
         VALUES (?, ?, 'supersedes', 1.0, datetime('now'))
       `).run(newId, existingMemory.id);
 

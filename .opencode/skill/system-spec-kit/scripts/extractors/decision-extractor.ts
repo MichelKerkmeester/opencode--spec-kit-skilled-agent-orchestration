@@ -270,7 +270,7 @@ async function extractDecisions(
           : [{
             OPTION_NUMBER: 1,
             LABEL: 'Chosen Approach',
-            DESCRIPTION: title.length > 60 ? title.substring(0, 57) + '...' : title,
+            DESCRIPTION: title.length > 200 ? title.substring(0, 197) + '...' : title,
             HAS_PROS_CONS: false,
             PROS: [],
             CONS: []
@@ -429,10 +429,10 @@ async function extractDecisions(
     // Ensure at least one option for template rendering
     if (OPTIONS.length === 0 && narrative.trim()) {
       let impliedDescription: string;
-      if (narrative.length > 100) {
-        const truncated = narrative.substring(0, 100);
+      if (narrative.length > 200) {
+        const truncated = narrative.substring(0, 200);
         const lastSpace = truncated.lastIndexOf(' ');
-        impliedDescription = (lastSpace > 40 ? truncated.substring(0, lastSpace) : truncated) + '...';
+        impliedDescription = (lastSpace > 80 ? truncated.substring(0, lastSpace) : truncated) + '...';
       } else {
         impliedDescription = narrative;
       }

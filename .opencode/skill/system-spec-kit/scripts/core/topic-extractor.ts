@@ -32,7 +32,7 @@ export function extractKeyTopics(
 
   if (specFolderName) {
     const folderBase = specFolderName.replace(/^\d{1,3}-/, '').replace(/[-_]/g, ' ');
-    weightedSegments.push(folderBase, folderBase, folderBase, folderBase);
+    weightedSegments.push(folderBase);
   }
 
   for (const decision of decisions) {

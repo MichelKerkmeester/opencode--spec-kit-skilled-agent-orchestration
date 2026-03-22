@@ -372,13 +372,13 @@ export class SemanticSignalExtractor {
     };
   }
 
-  /** Extracts trigger phrases from text using balanced stopwords and ngram depth 4 by default. */
+  /** Extracts trigger phrases from text using balanced stopwords and ngram depth 2 by default. */
   static extractTriggerPhrases(text: string, overrides: Omit<SemanticSignalExtractOptions, 'text' | 'mode'> = {}): string[] {
     return SemanticSignalExtractor.extract({
       text,
       mode: 'triggers',
       stopwordProfile: overrides.stopwordProfile ?? 'balanced',
-      ngramDepth: overrides.ngramDepth ?? 4,
+      ngramDepth: overrides.ngramDepth ?? 2,
       maxPhrases: overrides.maxPhrases,
       minPhraseCount: overrides.minPhraseCount,
     }).phrases;
@@ -390,7 +390,7 @@ export class SemanticSignalExtractor {
       text,
       mode: 'triggers',
       stopwordProfile: overrides.stopwordProfile ?? 'balanced',
-      ngramDepth: overrides.ngramDepth ?? 4,
+      ngramDepth: overrides.ngramDepth ?? 2,
       maxPhrases: overrides.maxPhrases,
       minPhraseCount: overrides.minPhraseCount,
     });

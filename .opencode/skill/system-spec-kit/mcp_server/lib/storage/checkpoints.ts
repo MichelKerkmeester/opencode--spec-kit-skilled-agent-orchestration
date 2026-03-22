@@ -939,7 +939,7 @@ function runPostRestoreRebuilds(
     }
   }
 
-  console.info(
+  console.warn(
     `[checkpoints] Post-restore rebuild summary: completed=${[...completed].join(', ') || 'none'}; skipped=${[...skipped].join(', ') || 'none'}`,
   );
 }

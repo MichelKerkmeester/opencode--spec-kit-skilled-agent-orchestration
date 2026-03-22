@@ -92,7 +92,8 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
         importance_tier TEXT DEFAULT 'normal',
         created_at TEXT NOT NULL DEFAULT (datetime('now')),
         updated_at TEXT NOT NULL DEFAULT (datetime('now')),
-        embedding_status TEXT DEFAULT 'pending'
+        embedding_status TEXT DEFAULT 'pending',
+        is_archived INTEGER DEFAULT 0
       )
     `);
 

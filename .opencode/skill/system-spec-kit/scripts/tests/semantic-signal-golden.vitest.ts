@@ -14,6 +14,7 @@ const GOLDEN_CASES = [
   {
     name: 'technical implementation',
     text: 'Implemented OAuth authentication with JWT tokens. Fixed authentication bug in login handler and updated auth middleware for refresh tokens.',
+    // ngramDepth 4 baseline (shared trigger-extractor and explicit depth 4)
     expected: [
       'authentication bug',
       'implemented oauth authentication jwt',
@@ -23,6 +24,17 @@ const GOLDEN_CASES = [
       'login handler auth middleware',
       'handler auth middleware refresh',
       'auth middleware refresh tokens.',
+    ],
+    // ngramDepth 2 baseline (SemanticSignalExtractor default after Fix 6)
+    expectedDepth2: [
+      'authentication bug',
+      'implemented oauth',
+      'oauth authentication',
+      'authentication jwt',
+      'jwt tokens',
+      'fixed authentication',
+      'authentication login',
+      'login handler',
     ],
   },
   {
@@ -39,6 +51,16 @@ const GOLDEN_CASES = [
       'path fixed null pointer',
       'fixed null pointer memory',
     ],
+    expectedDepth2: [
+      'pointer bug',
+      'debugging failing',
+      'failing vitest',
+      'vitest suite',
+      'grep output',
+      'output showed',
+      'showed error',
+      'path fixed',
+    ],
   },
   {
     name: 'research and planning',
@@ -53,14 +75,27 @@ const GOLDEN_CASES = [
       'codex capture formats planned',
       'capture formats planned adapter',
     ],
+    expectedDepth2: [
+      'researched workspace',
+      'workspace identity',
+      'identity alignment',
+      'alignment compared',
+      'compared claude',
+      'claude codex',
+      'codex capture',
+      'capture formats',
+    ],
   },
 ] as const;
 
 describe('semantic signal extractor golden coverage', () => {
   it('keeps trigger extraction locked to the shared baseline for frozen inputs', () => {
     for (const goldenCase of GOLDEN_CASES) {
-      expect(extractTriggerPhrases(goldenCase.text).slice(0, 8)).toEqual(goldenCase.expected);
+      // Scripts-side extractTriggerPhrases now defaults to ngramDepth 2 (Fix 6)
+      expect(extractTriggerPhrases(goldenCase.text).slice(0, 8)).toEqual(goldenCase.expectedDepth2);
+      // Shared trigger-extractor still uses depth 4 internally
       expect(sharedExtractTriggerPhrases(goldenCase.text).slice(0, 8)).toEqual(goldenCase.expected);
+      // Explicit depth 4 still matches the original baseline
       expect(
         SemanticSignalExtractor.extract({
           text: goldenCase.text,
@@ -75,7 +110,8 @@ describe('semantic signal extractor golden coverage', () => {
   it('returns trigger stats and preserves the baseline phrase order', () => {
     const result = extractTriggerPhrasesWithStats(GOLDEN_CASES[0].text);
 
-    expect(result.phrases.slice(0, 4)).toEqual(GOLDEN_CASES[0].expected.slice(0, 4));
+    // extractTriggerPhrasesWithStats now defaults to ngramDepth 2 (Fix 6)
+    expect(result.phrases.slice(0, 4)).toEqual(GOLDEN_CASES[0].expectedDepth2.slice(0, 4));
     expect(result.stats.tokenCount).toBeGreaterThan(0);
     expect(result.stats.filteredTokenCount).toBeGreaterThan(0);
     expect(result.breakdown.problemTerms).toBeGreaterThan(0);

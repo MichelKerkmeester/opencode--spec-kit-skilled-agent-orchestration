@@ -224,8 +224,8 @@ function transformKeyDecision(decisionItem: string | DecisionItemObject | null):
 
   const titleMatch = decisionText.match(/^([^.!?]+[.!?]?)/);
   const title: string = titleMatch
-    ? titleMatch[1].substring(0, 80).trim()
-    : decisionText.substring(0, 80).trim();
+    ? titleMatch[1].substring(0, 200).trim()
+    : decisionText.substring(0, 200).trim();
 
   const finalChosenApproach: string = chosenApproach || title;
   const hasMultipleAlternativesMentioned: boolean = alternatives.length > 1
@@ -271,10 +271,15 @@ function buildSessionSummaryObservation(summary: string, triggerPhrases: string[
     ? summary.substring(0, 100).replace(/\s+\S*$/, '') + '...'
     : summary;
 
+  // Truncate narrative to avoid verbatim duplication with OVERVIEW section.
+  const narrativeText: string = summary.length > 200
+    ? summary.substring(0, 200).replace(/\s+\S*$/, '') + '...'
+    : summary;
+
   return {
     type: 'feature',
     title: summaryTitle,
-    narrative: summary,
+    narrative: narrativeText,
     facts: triggerPhrases
   };
 }

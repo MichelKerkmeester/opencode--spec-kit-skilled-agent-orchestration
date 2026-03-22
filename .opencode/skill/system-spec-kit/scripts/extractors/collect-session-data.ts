@@ -562,14 +562,6 @@ function generateContextSummary(
     parts.push(`**Decisions:** ${decisionCount} decision${decisionCount > 1 ? 's' : ''} recorded`);
   }
 
-  if (summary &&
-      summary.length > 30 &&
-      !summary.includes('SIMULATION') &&
-      !summary.includes('[response]')) {
-    const trimmed = summary.substring(0, 200);
-    parts.push(`**Summary:** ${trimmed}${summary.length > 200 ? '...' : ''}`);
-  }
-
   return parts.join('\n\n');
 }
 
@@ -856,6 +848,11 @@ async function collectSessionData(
   const explicitContextType = typeof data.contextType === 'string'
     ? data.contextType
     : (typeof data.context_type === 'string' ? data.context_type : null);
+  // RC5-ext: Extract explicit projectPhase from JSON payload (not on CollectedDataBase yet)
+  const dataAny = data as Record<string, unknown>;
+  let explicitProjectPhase = typeof dataAny.projectPhase === 'string'
+    ? dataAny.projectPhase
+    : (typeof dataAny.project_phase === 'string' ? dataAny.project_phase : null);
   const { contextType, importanceTier, decisionCount, toolCounts } =
     detectSessionCharacteristics(
       observations,
@@ -864,6 +861,22 @@ async function collectSessionData(
       explicitImportanceTier,
       explicitContextType
     );
+  // RC5-ext: When no explicit projectPhase and tool counts are 0 (JSON mode),
+  // infer phase from contextType to avoid RESEARCH default.
+  if (!explicitProjectPhase && contextType !== 'general') {
+    const CONTEXT_TO_PHASE: Record<string, string> = {
+      implementation: 'IMPLEMENTATION',
+      research: 'RESEARCH',
+      debugging: 'DEBUGGING',
+      review: 'REVIEW',
+      decision: 'PLANNING',
+      planning: 'PLANNING',
+      discovery: 'RESEARCH',
+    };
+    if (CONTEXT_TO_PHASE[contextType]) {
+      explicitProjectPhase = CONTEXT_TO_PHASE[contextType];
+    }
+  }
   const manualDecisionCount = Array.isArray(data._manualDecisions)
     ? data._manualDecisions.length
     : (Array.isArray(data.keyDecisions) ? data.keyDecisions.length : 0);

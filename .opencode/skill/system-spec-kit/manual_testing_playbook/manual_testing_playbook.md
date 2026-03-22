@@ -2842,6 +2842,160 @@ REVIEW block present in stdout; issue count and severity match the scenario; fix
 > **Feature File:** [155](13--memory-quality-and-indexing/155-post-save-quality-review.md)
 > **Catalog:** [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md)
 
+### 170 | Fusion policy shadow v2 (SPECKIT_FUSION_POLICY_SHADOW_V2)
+
+#### Description
+Verify Fusion Lab runs all three policies (RRF, minmax-linear, zscore-linear) in shadow while returning the active policy result unchanged.
+
+#### Current Reality
+Prompt: `Test the default-on SPECKIT_FUSION_POLICY_SHADOW_V2 behavior. Run Fusion Lab on a judged query set and verify telemetry is produced for rrf, minmax_linear, and zscore_linear while the active policy result remains the only live result. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Telemetry exists for `rrf`, `minmax_linear`, and `zscore_linear`; the active policy result is returned unchanged; shadow alternatives are telemetry-only; disabling the flag suppresses the shadow comparison path
+
+#### Test Execution
+> **Feature File:** [170](11--scoring-and-calibration/170-fusion-policy-shadow-v2-speckit-fusion-policy-shadow-v2.md)
+> **Catalog:** [11--scoring-and-calibration/23-fusion-policy-shadow-v2.md](../feature_catalog/11--scoring-and-calibration/23-fusion-policy-shadow-v2.md)
+
+### 171 | Calibrated overlap bonus (SPECKIT_CALIBRATED_OVERLAP_BONUS)
+
+#### Description
+Verify calibrated overlap bonus replaces flat convergence bonus in RRF fusion with correct beta=0.15 scaling and 0.06 cap.
+
+#### Current Reality
+Prompt: `Test the default-on SPECKIT_CALIBRATED_OVERLAP_BONUS behavior. Run a multi-channel search that produces overlapping results across vector, BM25, and graph channels. Verify the calibrated bonus uses beta=0.15 scaling and caps at 0.06, replacing the flat 0.10 convergence bonus. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Calibrated bonus computed using CALIBRATED_OVERLAP_BETA=0.15 and mean normalized top score; bonus clamped to CALIBRATED_OVERLAP_MAX=0.06; flat CONVERGENCE_BONUS=0.10 not applied when flag ON
+
+#### Test Execution
+> **Feature File:** [171](11--scoring-and-calibration/171-calibrated-overlap-bonus-speckit-calibrated-overlap-bonus.md)
+> **Catalog:** [11--scoring-and-calibration/21-calibrated-overlap-bonus.md](../feature_catalog/11--scoring-and-calibration/21-calibrated-overlap-bonus.md)
+
+### 172 | RRF K experimental (SPECKIT_RRF_K_EXPERIMENTAL)
+
+#### Description
+Verify per-intent K optimization selects best K from sweep grid {10,20,40,60,80,100,120} using NDCG@10.
+
+#### Current Reality
+Prompt: `Test the default-on SPECKIT_RRF_K_EXPERIMENTAL behavior. Run a per-intent K sweep and verify the system evaluates candidate K values {10,20,40,60,80,100,120} using NDCG@10 and MRR@5, selecting the best K per intent. Confirm fallback to K=60 when the flag is OFF. Return a concise user-facing pass/fail verdict with the main reason.`
+
+perIntentKSweep() groups queries by intent and sweeps JUDGED_K_SWEEP_VALUES; argmaxNdcg10() selects K maximizing NDCG@10 with ties broken by lower K; falls back to DEFAULT_K=60 when OFF
+
+#### Test Execution
+> **Feature File:** [172](11--scoring-and-calibration/172-rrf-k-experimental-speckit-rrf-k-experimental.md)
+> **Catalog:** [11--scoring-and-calibration/22-rrf-k-experimental.md](../feature_catalog/11--scoring-and-calibration/22-rrf-k-experimental.md)
+
+### 173 | Query decomposition (SPECKIT_QUERY_DECOMPOSITION)
+
+#### Description
+Verify bounded facet detection decomposes multi-faceted queries into max 3 sub-queries using rule-based heuristics in deep mode.
+
+#### Current Reality
+Prompt: `Test the default-on SPECKIT_QUERY_DECOMPOSITION behavior in deep mode. Run a search with a multi-faceted query containing coordinating conjunctions. Verify the query is split into focused sub-queries (max 3), each retrieving independently. Confirm decomposition is deep-mode only, rule-based with no LLM, and gracefully falls back on error. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Conjunction splitting on "and"/"or"/"also"/"plus"/"as well as"/"along with"; multiple wh-question word detection; MAX_FACETS=3 cap enforced; no LLM calls; deep-mode only activation; graceful fallback returns original query on error
+
+#### Test Execution
+> **Feature File:** [173](12--query-intelligence/173-query-decomposition-speckit-query-decomposition.md)
+> **Catalog:** [12--query-intelligence/10-query-decomposition.md](../feature_catalog/12--query-intelligence/10-query-decomposition.md)
+
+### 174 | Graph concept routing (SPECKIT_GRAPH_CONCEPT_ROUTING)
+
+#### Description
+Verify query-time alias matching activates graph channel for matched concepts via noun phrase extraction.
+
+#### Current Reality
+Prompt: `Test the default-on SPECKIT_GRAPH_CONCEPT_ROUTING behavior. Run a search with a natural language query that references a known concept indirectly. Verify noun phrase extraction identifies concept references, alias table matching returns canonical concept names, and the graph channel is activated for matched concepts. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Noun phrases extracted from query; concept alias table matched in SQLite; canonical concept names returned; graph channel activated in stage1-candidate-gen for matched concepts; isGraphConceptRoutingEnabled() returns true by default
+
+#### Test Execution
+> **Feature File:** [174](10--graph-signal-activation/174-graph-concept-routing-speckit-graph-concept-routing.md)
+> **Catalog:** [10--graph-signal-activation/15-graph-calibration-profiles.md](../feature_catalog/10--graph-signal-activation/15-graph-calibration-profiles.md)
+
+### 175 | Typed traversal (SPECKIT_TYPED_TRAVERSAL)
+
+#### Description
+Verify sparse-first policy constrains to 1-hop in sparse graphs and intent-aware edge traversal applies correct scoring formula.
+
+#### Current Reality
+Prompt: `Test the default-on SPECKIT_TYPED_TRAVERSAL behavior. Verify that sparse graphs (density < 0.5) constrain traversal to 1-hop typed expansion and that intent-aware edge traversal maps query intents to edge-type priority orderings. Confirm the scoring formula score = seedScore * edgePrior * hopDecay * freshness is applied. Return a concise user-facing pass/fail verdict with the main reason.`
+
+SPARSE_DENSITY_THRESHOLD=0.5 gates sparse-first policy; SPARSE_MAX_HOPS=1 constrains traversal in sparse graphs; INTENT_EDGE_PRIORITY maps intents to edge-type orderings; scoring formula = seedScore * edgePrior * hopDecay * freshness; edge prior tiers: first=1.0, second=0.75, remaining=0.5
+
+#### Test Execution
+> **Feature File:** [175](10--graph-signal-activation/175-typed-traversal-speckit-typed-traversal.md)
+> **Catalog:** [10--graph-signal-activation/16-typed-traversal.md](../feature_catalog/10--graph-signal-activation/16-typed-traversal.md)
+
+### 176 | Implicit feedback log (SPECKIT_IMPLICIT_FEEDBACK_LOG)
+
+#### Description
+Verify shadow-only implicit feedback event ledger records 5 event types with correct confidence tiers.
+
+#### Current Reality
+Prompt: `Test the default-on SPECKIT_IMPLICIT_FEEDBACK_LOG behavior. Run a search, cite a result, reformulate the query, and verify the feedback ledger records events for all 5 types: search_shown, result_cited, query_reformulated, same_topic_requery, follow_on_tool_use. Confirm confidence tiers (strong/medium/weak) are correctly assigned and events are shadow-only. Return a concise user-facing pass/fail verdict with the main reason.`
+
+5 event types recorded; confidence tiers: strong (result_cited, follow_on_tool_use), medium (query_reformulated), weak (search_shown, same_topic_requery); shadow-only (no ranking influence)
+
+#### Test Execution
+> **Feature File:** [176](13--memory-quality-and-indexing/176-implicit-feedback-log-speckit-implicit-feedback-log.md)
+> **Catalog:** [13--memory-quality-and-indexing/22-implicit-feedback-log.md](../feature_catalog/13--memory-quality-and-indexing/22-implicit-feedback-log.md)
+
+### 177 | Hybrid decay policy (SPECKIT_HYBRID_DECAY_POLICY)
+
+#### Description
+Verify type-aware no-decay FSRS policy assigns Infinity stability to decision/constitutional/critical types while standard FSRS decay applies to others.
+
+#### Current Reality
+Prompt: `Test the default-on SPECKIT_HYBRID_DECAY_POLICY behavior. Verify that memories with context_type decision, constitutional, or critical receive Infinity stability (no decay), while all other context types follow the standard FSRS v4 schedule. Confirm this is separate from TM-03 and that disabling the flag restores uniform FSRS decay for all types. Return a concise user-facing pass/fail verdict with the main reason.`
+
+classifyHybridDecay() maps decision/constitutional/critical to no_decay class; applyHybridDecayPolicy() returns Infinity stability for no_decay types; standard FSRS v4 power-law decay for all other types; separate from TM-03
+
+#### Test Execution
+> **Feature File:** [177](13--memory-quality-and-indexing/177-hybrid-decay-policy-speckit-hybrid-decay-policy.md)
+> **Catalog:** [13--memory-quality-and-indexing/23-hybrid-decay-policy.md](../feature_catalog/13--memory-quality-and-indexing/23-hybrid-decay-policy.md)
+
+### 178 | Save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS)
+
+#### Description
+Verify short-critical quality gate exception allows decision documents with >=2 structural signals to bypass the 50-char minimum content length check.
+
+#### Current Reality
+Prompt: `Test the default-on SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS behavior. Save a short decision document (< 50 characters) with at least 2 structural signals. Verify the document bypasses the MIN_CONTENT_LENGTH=50 check via the short-critical exception path. Confirm the exception requires context_type=decision and >= 2 structural signals. Return a concise user-facing pass/fail verdict with the main reason.`
+
+context_type=decision required; SHORT_CRITICAL_MIN_STRUCTURAL_SIGNALS=2 threshold; bypasses MIN_CONTENT_LENGTH=50 in Layer 1; non-decision types still rejected
+
+#### Test Execution
+> **Feature File:** [178](13--memory-quality-and-indexing/178-save-quality-gate-exceptions-speckit-save-quality-gate-exceptions.md)
+> **Catalog:** [13--memory-quality-and-indexing/24-save-quality-gate-exceptions.md](../feature_catalog/13--memory-quality-and-indexing/24-save-quality-gate-exceptions.md)
+
+### 179 | Empty result recovery (SPECKIT_EMPTY_RESULT_RECOVERY_V1)
+
+#### Description
+Verify structured recovery payloads for empty/weak search results across all 3 statuses: no_results, low_confidence, partial.
+
+#### Current Reality
+Prompt: `Test the default-on SPECKIT_EMPTY_RESULT_RECOVERY_V1 behavior. Trigger all 3 recovery statuses: no_results, low_confidence (below 0.4), and partial (fewer than 3 results). Verify each status includes root cause reasons, suggested actions, and alternative queries. Return a concise user-facing pass/fail verdict with the main reason.`
+
+3 statuses: no_results, low_confidence, partial; root cause reasons: spec_filter_too_narrow, low_signal_query, knowledge_gap; suggested actions: retry_broader, switch_mode, save_memory, ask_user; DEFAULT_LOW_CONFIDENCE_THRESHOLD=0.4; PARTIAL_RESULT_MIN=3
+
+#### Test Execution
+> **Feature File:** [179](18--ux-hooks/179-empty-result-recovery-speckit-empty-result-recovery-v1.md)
+> **Catalog:** [18--ux-hooks/18-empty-result-recovery.md](../feature_catalog/18--ux-hooks/18-empty-result-recovery.md)
+
+### 180 | Result confidence (SPECKIT_RESULT_CONFIDENCE_V1)
+
+#### Description
+Verify per-result calibrated confidence scoring with 4-factor weighting: margin (0.35), channel agreement (0.30), reranker (0.20), anchor density (0.15).
+
+#### Current Reality
+Prompt: `Test the default-on SPECKIT_RESULT_CONFIDENCE_V1 behavior. Run a search and verify each result receives a calibrated confidence score computed from 4 weighted factors: margin (0.35), channel agreement (0.30), reranker support (0.20), and anchor density (0.15). Confirm results are labeled high/medium/low based on thresholds (HIGH >= 0.7, LOW < 0.4). Return a concise user-facing pass/fail verdict with the main reason.`
+
+4 factors: margin 0.35, channel agreement 0.30, reranker support 0.20, anchor density 0.15; HIGH_THRESHOLD=0.7; LOW_THRESHOLD=0.4; labels: high/medium/low; confidence drivers reported per result; heuristic only (no LLM)
+
+#### Test Execution
+> **Feature File:** [180](18--ux-hooks/180-result-confidence-speckit-result-confidence-v1.md)
+> **Catalog:** [18--ux-hooks/19-result-confidence.md](../feature_catalog/18--ux-hooks/19-result-confidence.md)
+
 ---
 
 ## 9. PHASE SYSTEM FEATURES
@@ -3256,6 +3410,17 @@ This split playbook keeps automated coverage references in three places:
 | 153 | Features | JSON mode structured summary hardening | [153](16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md) | [16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md](../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
 | 154 | Features | JSON-primary deprecation posture | [154](16--tooling-and-scripts/154-json-primary-deprecation-posture.md) | [16--tooling-and-scripts/17-json-primary-deprecation-posture.md](../feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md) |
 | 155 | Features | Post-save quality review | [155](13--memory-quality-and-indexing/155-post-save-quality-review.md) | [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md) |
+| 170 | Features | Fusion policy shadow v2 (SPECKIT_FUSION_POLICY_SHADOW_V2) | [170](11--scoring-and-calibration/170-fusion-policy-shadow-v2-speckit-fusion-policy-shadow-v2.md) | [11--scoring-and-calibration/23-fusion-policy-shadow-v2.md](../feature_catalog/11--scoring-and-calibration/23-fusion-policy-shadow-v2.md) |
+| 171 | Features | Calibrated overlap bonus (SPECKIT_CALIBRATED_OVERLAP_BONUS) | [171](11--scoring-and-calibration/171-calibrated-overlap-bonus-speckit-calibrated-overlap-bonus.md) | [11--scoring-and-calibration/21-calibrated-overlap-bonus.md](../feature_catalog/11--scoring-and-calibration/21-calibrated-overlap-bonus.md) |
+| 172 | Features | RRF K experimental (SPECKIT_RRF_K_EXPERIMENTAL) | [172](11--scoring-and-calibration/172-rrf-k-experimental-speckit-rrf-k-experimental.md) | [11--scoring-and-calibration/22-rrf-k-experimental.md](../feature_catalog/11--scoring-and-calibration/22-rrf-k-experimental.md) |
+| 173 | Features | Query decomposition (SPECKIT_QUERY_DECOMPOSITION) | [173](12--query-intelligence/173-query-decomposition-speckit-query-decomposition.md) | [12--query-intelligence/10-query-decomposition.md](../feature_catalog/12--query-intelligence/10-query-decomposition.md) |
+| 174 | Features | Graph concept routing (SPECKIT_GRAPH_CONCEPT_ROUTING) | [174](10--graph-signal-activation/174-graph-concept-routing-speckit-graph-concept-routing.md) | [10--graph-signal-activation/15-graph-calibration-profiles.md](../feature_catalog/10--graph-signal-activation/15-graph-calibration-profiles.md) |
+| 175 | Features | Typed traversal (SPECKIT_TYPED_TRAVERSAL) | [175](10--graph-signal-activation/175-typed-traversal-speckit-typed-traversal.md) | [10--graph-signal-activation/16-typed-traversal.md](../feature_catalog/10--graph-signal-activation/16-typed-traversal.md) |
+| 176 | Features | Implicit feedback log (SPECKIT_IMPLICIT_FEEDBACK_LOG) | [176](13--memory-quality-and-indexing/176-implicit-feedback-log-speckit-implicit-feedback-log.md) | [13--memory-quality-and-indexing/22-implicit-feedback-log.md](../feature_catalog/13--memory-quality-and-indexing/22-implicit-feedback-log.md) |
+| 177 | Features | Hybrid decay policy (SPECKIT_HYBRID_DECAY_POLICY) | [177](13--memory-quality-and-indexing/177-hybrid-decay-policy-speckit-hybrid-decay-policy.md) | [13--memory-quality-and-indexing/23-hybrid-decay-policy.md](../feature_catalog/13--memory-quality-and-indexing/23-hybrid-decay-policy.md) |
+| 178 | Features | Save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS) | [178](13--memory-quality-and-indexing/178-save-quality-gate-exceptions-speckit-save-quality-gate-exceptions.md) | [13--memory-quality-and-indexing/24-save-quality-gate-exceptions.md](../feature_catalog/13--memory-quality-and-indexing/24-save-quality-gate-exceptions.md) |
+| 179 | Features | Empty result recovery (SPECKIT_EMPTY_RESULT_RECOVERY_V1) | [179](18--ux-hooks/179-empty-result-recovery-speckit-empty-result-recovery-v1.md) | [18--ux-hooks/18-empty-result-recovery.md](../feature_catalog/18--ux-hooks/18-empty-result-recovery.md) |
+| 180 | Features | Result confidence (SPECKIT_RESULT_CONFIDENCE_V1) | [180](18--ux-hooks/180-result-confidence-speckit-result-confidence-v1.md) | [18--ux-hooks/19-result-confidence.md](../feature_catalog/18--ux-hooks/19-result-confidence.md) |
 | PHASE-001 | Phase System Features | Phase detection scoring | [PHASE-001](16--tooling-and-scripts/001-phase-detection-scoring.md) |  |
 | PHASE-002 | Phase System Features | Phase folder creation | [PHASE-002](16--tooling-and-scripts/002-phase-folder-creation.md) |  |
 | PHASE-003 | Phase System Features | Recursive phase validation | [PHASE-003](16--tooling-and-scripts/003-recursive-phase-validation.md) |  |
