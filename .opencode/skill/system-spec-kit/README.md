@@ -51,7 +51,7 @@ Every time an AI assistant modifies files, Spec Kit ensures the work is document
 | MCP Tools | 33 | Across 7 layers (L1-L7) |
 | Commands | 14 | 8 spec_kit + 6 memory |
 | Documentation Levels | 4 | Levels 1, 2, 3 and 3+ |
-| Script Modules | 11 spec + 8 memory | TypeScript and Bash |
+| Script Modules | 13 spec + 9 memory | TypeScript, JavaScript and Bash |
 | Feature Entries | 189 | Across 19 categories in feature catalog |
 | Template LOC | ~455 to ~1350 | Scales with documentation level |
 | Requirements | Node.js 18+ | TypeScript 5.0+, OpenCode 1.0.190+ |
@@ -147,18 +147,18 @@ The response should return relevant memory entries. If it returns an error, see 
 │   ├── handover.md             # Session continuity template
 │   └── debug-delegation.md     # Debug delegation template
 ├── scripts/                    # CLI tools (TypeScript source + Bash)
-│   ├── spec/                   # Spec folder management (11 scripts)
-│   ├── memory/                 # Memory system scripts (8 scripts)
+│   ├── spec/                   # Spec folder management (13 scripts)
+│   ├── memory/                 # Memory system scripts (9 scripts)
 │   ├── templates/              # Template composition (compose.sh)
-│   ├── core/                   # Core library (config, quality-scorer, workflow, etc.)
-│   ├── extractors/             # Session data extractors (18 extractors)
-│   ├── utils/                  # Utility modules (14 utilities)
+│   ├── core/                   # Core library (17 modules: workflow, post-save-review, etc.)
+│   ├── extractors/             # Session data extractors (12 extractors)
+│   ├── utils/                  # Utility modules (20 utilities)
 │   ├── loaders/                # Data loading
 │   ├── renderers/              # Output rendering
 │   └── dist/                   # Compiled JavaScript output
 ├── mcp_server/                 # Spec Kit Memory MCP (TypeScript)
 │   ├── context-server.ts       # MCP server entry (~682 lines, 33 tools)
-│   ├── handlers/               # Tool handlers (9 functional + 2 infra)
+│   ├── handlers/               # Tool handlers (11 functional + 2 infra)
 │   ├── lib/                    # cognitive/, search/, cache/, storage/, providers/
 │   ├── tests/                  # MCP test suite
 │   └── database/               # SQLite + vector search
@@ -698,4 +698,4 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
 
 ---
 
-*Documentation version: 2.2 | Last updated: 2026-03-15 | Skill version: 2.2.26.0*
+*Documentation version: 2.2 | Last updated: 2026-03-22 | Skill version: 2.2.26.0*
