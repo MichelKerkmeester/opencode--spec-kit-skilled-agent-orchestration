@@ -78,7 +78,6 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
     contaminationSeverity = null,
     messageCount = 0,
     toolCount = 0,
-    decisionCount = 0,
     sufficiencyScore,
     insufficientContext = false,
   } = inputs;
@@ -161,7 +160,7 @@ function scoreMemoryQuality(inputs: QualityInputs): QualityScoreResult {
     qualityFlags.add('has_contamination');
     const severity = contaminationSeverity || 'medium';
     if (severity === 'low') {
-      warnings.push('Low-severity contamination detected (preamble only) — penalty applied post-bonus');
+      warnings.push('Low-severity contamination detected (preamble only) — score penalty applied');
     } else if (severity === 'medium') {
       sufficiencyCap = Math.min(sufficiencyCap ?? 1, 0.85);
       warnings.push('Medium-severity contamination detected (orchestration chatter) — capped at 0.85');

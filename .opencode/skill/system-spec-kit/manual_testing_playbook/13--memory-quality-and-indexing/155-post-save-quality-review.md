@@ -39,6 +39,7 @@ Operators invoke `generate-context.js --json` with controlled payloads and inspe
 ## 4. REFERENCES
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Feature catalog: [13--memory-quality-and-indexing/19-post-save-quality-review.md](../../feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md)
 - Related entry: [16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md](../16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md)
 - Workflow hook: `scripts/core/post-save-review.ts`
 - Save pipeline: `scripts/core/workflow.ts`

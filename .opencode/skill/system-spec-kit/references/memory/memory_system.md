@@ -109,6 +109,7 @@ Six-tier system for prioritizing memory relevance:
 |-------|------|---------|-------------|
 | L1: Orchestration | `memory_context()` | Unified entry point with intent-aware routing (7 intents) | START HERE for most memory operations |
 | L2: Core | `memory_search()` | Semantic search with vector similarity | Find prior decisions on auth |
+| L2: Core | `memory_quick_search()` | Simplified search wrapper for fast lookups | Quick keyword-based retrieval |
 | L2: Core | `memory_match_triggers()` | Fast keyword matching (<50ms) with cognitive features | Gate enforcement |
 | L2: Core | `memory_save()` | Index a memory file. Re-generates embedding when **content hash** changes. Title-only changes do not trigger re-embedding. | After generate-context.js |
 | L3: Discovery | `memory_list()` | Browse stored memories with pagination (parent rows by default) | Review session history |

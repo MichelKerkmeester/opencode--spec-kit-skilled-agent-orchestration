@@ -141,7 +141,7 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 | `scripts/extractors/session-extractor.ts` | `resolveProjectPhase()` for projectPhase override |
 | `scripts/core/workflow.ts` | JSON/file authority behavior, structured-input routing, trigger-phrase filtering, post-save review invocation gating, and SHA1-based pre-save overlap checks |
 | `scripts/core/post-save-review.ts` | Post-save review logic, severity grading, MEMORY METADATA-aware field checks, `computeReviewScorePenalty()`, multi-token path fragment detection |
-| `scripts/core/contamination-filter.ts` | Contamination filter extension: 4 additional text fields, 18 new patterns (33 -> 51 total) |
+| `scripts/extractors/contamination-filter.ts` | Contamination filter extension: 4 additional text fields, 18 new patterns (33 -> 51 total) |
 | `scripts/lib/validate-memory-quality.ts` | V13 YAML parsing and memory-quality validation |
 | `scripts/renderers/template-renderer.ts` | Optional-placeholder handling for compact tool/exchange sections |
 | `templates/context_template.md` | Compact `toolCalls` and `exchanges` template sections |

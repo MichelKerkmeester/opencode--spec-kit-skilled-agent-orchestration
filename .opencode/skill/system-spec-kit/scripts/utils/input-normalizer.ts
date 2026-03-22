@@ -713,6 +713,7 @@ const KNOWN_RAW_INPUT_FIELDS: Set<string> = new Set([
   'importanceTier', 'importance_tier',
   'contextType', 'context_type',
   'projectPhase', 'project_phase',
+  'toolCalls', 'exchanges',
   'FILES', 'observations',
   'userPrompts', 'user_prompts',
   'recentContext', 'recent_context',

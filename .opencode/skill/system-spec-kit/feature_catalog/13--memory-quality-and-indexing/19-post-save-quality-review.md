@@ -85,7 +85,7 @@ The review output is machine-readable so callers and downstream quality monitors
 
 | File | Focus |
 |------|-------|
-| `scripts/tests/post-save-review.vitest.ts` | Severity classification, detection checks, machine-readable output shape _(planned — not yet created)_ |
+| `scripts/tests/post-save-review.vitest.ts` | Severity classification, detection checks, machine-readable output shape, score-penalty computation |
 | `scripts/tests/workflow-e2e.vitest.ts` | End-to-end coverage of Step 10.5 placement within the save workflow |
 
 ---

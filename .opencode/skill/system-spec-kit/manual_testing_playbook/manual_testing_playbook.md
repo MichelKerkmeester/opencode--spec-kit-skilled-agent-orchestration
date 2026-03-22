@@ -2840,7 +2840,7 @@ REVIEW block present in stdout; issue count and severity match the scenario; fix
 
 #### Test Execution
 > **Feature File:** [155](13--memory-quality-and-indexing/155-post-save-quality-review.md)
-> **Catalog:** [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md)
+> **Catalog:** [13--memory-quality-and-indexing/19-post-save-quality-review.md](../feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md)
 
 ### 156 | Graph refresh mode (SPECKIT_GRAPH_REFRESH_MODE)
 
@@ -3605,7 +3605,7 @@ This split playbook keeps automated coverage references in three places:
 | 152 | Features | No symlinks in lib/ tree | [152](16--tooling-and-scripts/152-no-symlinks-in-lib-tree.md) | [16--tooling-and-scripts/15-module-boundary-map.md](../feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md) |
 | 153 | Features | JSON mode structured summary hardening | [153](16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md) | [16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md](../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
 | 154 | Features | JSON-primary deprecation posture | [154](16--tooling-and-scripts/154-json-primary-deprecation-posture.md) | [16--tooling-and-scripts/17-json-primary-deprecation-posture.md](../feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md) |
-| 155 | Features | Post-save quality review | [155](13--memory-quality-and-indexing/155-post-save-quality-review.md) | [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md) |
+| 155 | Features | Post-save quality review | [155](13--memory-quality-and-indexing/155-post-save-quality-review.md) | [13--memory-quality-and-indexing/19-post-save-quality-review.md](../feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md) |
 | 156 | Features | Graph refresh mode (SPECKIT_GRAPH_REFRESH_MODE) | [156](10--graph-signal-activation/156-graph-refresh-mode-speckit-graph-refresh-mode.md) | [10--graph-signal-activation/13-graph-lifecycle-refresh.md](../feature_catalog/10--graph-signal-activation/13-graph-lifecycle-refresh.md) |
 | 157 | Features | LLM graph backfill (SPECKIT_LLM_GRAPH_BACKFILL) | [157](10--graph-signal-activation/157-llm-graph-backfill-speckit-llm-graph-backfill.md) | [10--graph-signal-activation/14-llm-graph-backfill.md](../feature_catalog/10--graph-signal-activation/14-llm-graph-backfill.md) |
 | 158 | Features | Graph calibration profile (SPECKIT_GRAPH_CALIBRATION_PROFILE) | [158](10--graph-signal-activation/158-graph-calibration-profile-speckit-graph-calibration-profile.md) | [10--graph-signal-activation/15-graph-calibration-profiles.md](../feature_catalog/10--graph-signal-activation/15-graph-calibration-profiles.md) |

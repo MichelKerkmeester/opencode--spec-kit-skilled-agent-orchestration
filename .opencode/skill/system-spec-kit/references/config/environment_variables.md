@@ -264,6 +264,20 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_AUTO_RESUME` | ON | S7 | Auto-resume session detection in `memory_context()` |
 | `SPECKIT_PRESSURE_POLICY` | ON | S7 | Context pressure policy for token budget management |
 
+#### Research-Based Refinement (Spec-011 Graduated)
+
+| Flag | Default | Sprint | Purpose |
+|------|---------|--------|---------|
+| `SPECKIT_CALIBRATED_OVERLAP_BONUS` | ON | R-011 | Calibrated overlap bonus: query-aware scaling replaces flat convergence bonus (+0.10). Beta=0.15, capped at 0.06. Set `false` to revert to flat bonus |
+| `SPECKIT_RRF_K_EXPERIMENTAL` | ON | R-011 | Per-intent NDCG@10-maximizing K selection over sweep grid {10,20,40,60,80,100,120}. Falls back to K=60 when OFF |
+| `SPECKIT_TYPED_TRAVERSAL` | ON | R-011 | Sparse-first policy + intent-aware edge traversal. Density < 0.5 constrains to 1-hop. Score: seedScore * edgePrior * hopDecay * freshness |
+| `SPECKIT_EMPTY_RESULT_RECOVERY_V1` | ON | R-011 | Structured recovery payloads for empty/weak search results. Classifies outcome, diagnoses cause, suggests alternatives |
+| `SPECKIT_RESULT_CONFIDENCE_V1` | ON | R-011 | Per-result calibrated confidence from 4 weighted factors: margin (0.35), channel agreement (0.30), reranker (0.20), anchor density (0.15) |
+| `SPECKIT_BATCH_LEARNED_FEEDBACK` | ON | R-011 | Weekly batch feedback learning. Confidence-weighted signals (strong=1.0, medium=0.5, weak=0.1), min-support 3 sessions, boost-cap 0.10. Shadow-only |
+| `SPECKIT_ASSISTIVE_RECONSOLIDATION` | ON | R-011 | Three-tier assistive reconsolidation: auto-merge (>=0.96), review (>=0.88), keep-separate (<0.88). Review-tier logs recommendation only |
+| `SPECKIT_RESULT_EXPLAIN_V1` | OFF | R-011 | Two-tier result explainability: slim (summary + topSignals) and debug (per-channel breakdown). Set `true` to enable |
+| `SPECKIT_RESPONSE_PROFILE_V1` | OFF | R-011 | Mode-aware response profiles: quick, research, resume, debug. Set `true` to enable. Original response when profile omitted |
+
 #### Observability & Evaluation
 
 | Flag | Default | Sprint | Purpose |

@@ -382,13 +382,19 @@ export function computeReviewScorePenalty(issues: ReviewIssue[]): number {
  * Print the post-save quality review result to stdout in machine-readable format.
  */
 export function printPostSaveReview(result: PostSaveReviewResult): void {
+  const status = result.status;
+  const findings = result.issues;
+  const scorePenalty = findings.length > 0 ? computeReviewScorePenalty(findings) : 0;
+
   if (result.status === 'SKIPPED') {
     console.log(`\nPOST-SAVE QUALITY REVIEW -- SKIPPED (${result.skipReason})\n`);
+    console.log(JSON.stringify({ status, issues: findings, scorePenalty }, null, 2));
     return;
   }
 
   if (result.status === 'PASSED') {
     console.log('\nPOST-SAVE QUALITY REVIEW -- PASSED (0 issues)\n');
+    console.log(JSON.stringify({ status, issues: findings, scorePenalty }, null, 2));
     return;
   }
 
@@ -408,4 +414,6 @@ export function printPostSaveReview(result: PostSaveReviewResult): void {
   } else if (medCount > 0) {
     console.log('MEDIUM issues should be patched when practical.\n');
   }
+
+  console.log(JSON.stringify({ status, issues: findings, scorePenalty }, null, 2));
 }

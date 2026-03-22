@@ -615,7 +615,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - **Mutation ledger** — Append-only audit trail for all memory mutations (create, update, delete, reinforce); implemented via SQLite triggers; queryable for compliance and rollback
 - **Retrieval telemetry** — 4-dimension metrics (latency, retrieval mode, fallback activation, quality score) plus Hydra architecture metadata. Enabled only when `SPECKIT_EXTENDED_TELEMETRY=true` (default: off)
 - **Hydra roadmap metadata** — `SPECKIT_HYDRA_PHASE` plus prefixed `SPECKIT_HYDRA_*` capability flags annotate telemetry, eval baselines, and migration checkpoint sidecars without changing live retrieval behavior by themselves
-- **Feature catalog** — 194 documented features across 19 categories (`feature_catalog/01--retrieval/` through `19--feature-flag-reference/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
+- **Feature catalog** — 220 documented features across 19 categories (`feature_catalog/01--retrieval/` through `19--feature-flag-reference/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
 - **Manual testing playbook** — Operator-facing validation matrix covering existing (`EX-*`) and new (`NEW-*`) features with deterministic prompts, execution sequences, and pass/fail triage. Includes review protocol and subagent utilization ledger. See [manual_testing_playbook/](./manual_testing_playbook/)
 - **Validation scoring** — `wasUseful=false` applies a demotion penalty to memory scores; 5+ positive validations may promote a memory's importance tier
 - **Tree-thinning threshold** — Lowered from 300 to 150 characters with merge group cap of 3 for improved file visibility in memory context
@@ -652,8 +652,17 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 | `SPECKIT_FOLDER_SCORING`     | on      | Folder-level relevance scoring boost |
 | `SPECKIT_SHADOW_SCORING`     | off     | Shadow A/B scoring comparison (attribution-only mode) |
 | `SPECKIT_DASHBOARD_LIMIT`    | 100     | Row cap for reporting dashboard queries |
+| `SPECKIT_CALIBRATED_OVERLAP_BONUS` | on | Calibrated overlap bonus replaces flat convergence bonus with query-aware scaling (graduated from spec-011) |
+| `SPECKIT_RRF_K_EXPERIMENTAL` | on      | Per-intent NDCG@10-maximizing K selection over sweep grid (graduated from spec-011) |
+| `SPECKIT_TYPED_TRAVERSAL`    | on      | Sparse-first policy + intent-aware edge traversal in graph scoring (graduated from spec-011) |
+| `SPECKIT_EMPTY_RESULT_RECOVERY_V1` | on | Structured recovery payloads for empty/weak search results (graduated from spec-011) |
+| `SPECKIT_RESULT_CONFIDENCE_V1` | on    | Per-result calibrated confidence from 4 weighted factors (graduated from spec-011) |
+| `SPECKIT_BATCH_LEARNED_FEEDBACK` | on  | Weekly batch feedback learning pipeline with shadow scoring (graduated from spec-011) |
+| `SPECKIT_ASSISTIVE_RECONSOLIDATION` | on | Three-tier assistive reconsolidation: auto-merge, review, keep-separate (graduated from spec-011) |
+| `SPECKIT_RESULT_EXPLAIN_V1`  | off     | Two-tier result explainability with signal detection (opt-in; graduated from spec-011) |
+| `SPECKIT_RESPONSE_PROFILE_V1` | off    | Mode-aware response profiles: quick, research, resume, debug (opt-in; graduated from spec-011) |
 
-> **25 flags total.** Set via environment variable before starting the MCP server (e.g., `SPECKIT_ADAPTIVE_FUSION=1`).
+> **34 flags total.** Set via environment variable before starting the MCP server (e.g., `SPECKIT_ADAPTIVE_FUSION=1`).
 
 > **Token budgets per layer:** L1:2000, L2:1500, L3:800, L4:500, L5:600, L6:1200, L7:1000 (enforced via `chars/3.5` approximation).
 
@@ -851,8 +860,8 @@ Automated validation of spec folder contents via `validate.sh`.
 | MCP Server        | `mcp_server/context-server.ts`                                             | Spec Kit Memory MCP (~682 lines)  |
 | Database          | `mcp_server/dist/database/context-index.sqlite`                            | Vector search index (canonical runtime path) |
 | Constitutional    | `constitutional/`                                                          | Always-surface rules              |
-| Feature Catalog   | `feature_catalog/` (19 categories, 194 documented features)                | Per-feature current-reality docs  |
-| Testing Playbook  | `manual_testing_playbook/` (3 files)                                       | Manual validation matrix          |
+| Feature Catalog   | `feature_catalog/` (19 categories, 220 documented features)                | Per-feature current-reality docs  |
+| Testing Playbook  | `manual_testing_playbook/` (19 categories, 226 per-test files)             | Manual validation matrix          |
 
 ---
 

@@ -848,11 +848,10 @@ async function collectSessionData(
   const explicitContextType = typeof data.contextType === 'string'
     ? data.contextType
     : (typeof data.context_type === 'string' ? data.context_type : null);
-  // RC5-ext: Extract explicit projectPhase from JSON payload (not on CollectedDataBase yet)
-  const dataAny = data as Record<string, unknown>;
-  let explicitProjectPhase = typeof dataAny.projectPhase === 'string'
-    ? dataAny.projectPhase
-    : (typeof dataAny.project_phase === 'string' ? dataAny.project_phase : null);
+  // RC5-ext: Extract explicit projectPhase from JSON payload
+  let explicitProjectPhase = typeof data.projectPhase === 'string'
+    ? data.projectPhase
+    : (typeof data.project_phase === 'string' ? data.project_phase : null);
   const { contextType, importanceTier, decisionCount, toolCounts } =
     detectSessionCharacteristics(
       observations,

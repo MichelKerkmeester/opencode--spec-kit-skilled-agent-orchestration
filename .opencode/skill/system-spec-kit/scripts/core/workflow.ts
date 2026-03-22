@@ -1058,23 +1058,45 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     triggerSourceParts.push(folderNameForTriggers);
 
     const triggerSource = triggerSourceParts.join('\n');
-    preExtractedTriggers = extractTriggerPhrases(triggerSource);
-
-    // Phase 004 T011-T013: Filter auto-extracted trigger phrases before merge
-    // Applied to auto-extracted set only — manual phrases bypass the filter
-    preExtractedTriggers = filterTriggerPhrases(preExtractedTriggers);
+    const autoExtractedTriggers = extractTriggerPhrases(triggerSource);
+    const mergedTriggers: string[] = [];
+    const seenMergedTriggers = new Set<string>();
 
     // RC2: Merge manual trigger phrases from JSON into frontmatter triggers.
-    // Previously these only went into vector indexing (memory-indexer.ts) but NOT frontmatter.
-    if (collectedData?._manualTriggerPhrases && Array.isArray(collectedData._manualTriggerPhrases) && collectedData._manualTriggerPhrases.length > 0) {
-      const seen = new Set(preExtractedTriggers.map(p => p.toLowerCase()));
+    // Manual phrases stay prepended, but the merged set still goes through the
+    // same quality filter as auto-extracted phrases.
+    if (collectedData?._manualTriggerPhrases && Array.isArray(collectedData._manualTriggerPhrases)) {
       for (const phrase of collectedData._manualTriggerPhrases) {
-        if (typeof phrase === 'string' && phrase.trim().length > 0 && !seen.has(phrase.trim().toLowerCase())) {
-          preExtractedTriggers.unshift(phrase.trim());
-          seen.add(phrase.trim().toLowerCase());
+        if (typeof phrase !== 'string') {
+          continue;
+        }
+        const trimmedPhrase = phrase.trim();
+        if (trimmedPhrase.length === 0) {
+          continue;
+        }
+        const loweredPhrase = trimmedPhrase.toLowerCase();
+        if (!seenMergedTriggers.has(loweredPhrase)) {
+          mergedTriggers.push(trimmedPhrase);
+          seenMergedTriggers.add(loweredPhrase);
         }
       }
     }
+
+    for (const phrase of autoExtractedTriggers) {
+      const trimmedPhrase = phrase.trim();
+      if (trimmedPhrase.length === 0) {
+        continue;
+      }
+      const loweredPhrase = trimmedPhrase.toLowerCase();
+      if (!seenMergedTriggers.has(loweredPhrase)) {
+        mergedTriggers.push(trimmedPhrase);
+        seenMergedTriggers.add(loweredPhrase);
+      }
+    }
+
+    // Phase 004 T011-T013: Filter the merged trigger set so manual phrases
+    // follow the same quality rules as auto-extracted phrases.
+    preExtractedTriggers = filterTriggerPhrases(mergedTriggers);
 
     // Also add spec folder name-derived phrases if not already present
     const folderTokens = folderNameForTriggers.split(/\s+/).filter(t => t.length >= 3);
@@ -1459,7 +1481,9 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
             warn(`   [PRE-SAVE OVERLAP] Memory content matches existing "${existingFile}" — possible duplicate save`);
             break;
           }
-        } catch { /* skip unreadable files */ }
+        } catch (e: unknown) {
+          console.warn('[pre-save-overlap] File read failed:', e instanceof Error ? e.message : String(e));
+        }
       }
     } catch (overlapErr: unknown) {
       // Fail open — overlap detection is advisory, must not block save
@@ -1507,28 +1531,41 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       }
 
       if (existing) {
-        // Integration-tested via workflow-memory-tracking.vitest.ts (F3 coverage).
-        const rawSeq = Number(existing.memorySequence) || 0;
-        // Defensive clamp handles Infinity/NaN/negative/overflow edge cases (F11 fix).
-        const expectedSeq = (Number.isSafeInteger(rawSeq) && rawSeq >= 0) ? rawSeq + 1 : 1;
-        existing.memorySequence = expectedSeq;
-        existing.memoryNameHistory = [
-          ...(existing.memoryNameHistory || []).slice(-19),
-          ctxFilename,
-        ];
-        savePFD(existing, specFolderAbsolute);
+        const MAX_MEMORY_SEQUENCE_RETRIES = 3;
+        const MEMORY_SEQUENCE_RETRY_DELAY_MS = 25;
+        let memorySequenceUpdated = false;
 
-        // F-34: Verify memorySequence to detect lost-update race, retry once
-        const verified = loadPFD(specFolderAbsolute);
-        if (verified && verified.memorySequence !== expectedSeq) {
-          console.warn('[workflow] memorySequence lost-update detected, retrying');
-          const freshSeq = Number(verified.memorySequence) || 0;
-          verified.memorySequence = (Number.isSafeInteger(freshSeq) && freshSeq >= 0) ? freshSeq + 1 : 1;
-          verified.memoryNameHistory = [
-            ...(verified.memoryNameHistory || []).slice(-19),
+        for (let attempt = 1; attempt <= MAX_MEMORY_SEQUENCE_RETRIES; attempt++) {
+          const sequenceSnapshot = attempt === 1 ? existing : loadPFD(specFolderAbsolute);
+          if (!sequenceSnapshot) {
+            break;
+          }
+
+          // Integration-tested via workflow-memory-tracking.vitest.ts (F3 coverage).
+          const rawSeq = Number(sequenceSnapshot.memorySequence) || 0;
+          // Defensive clamp handles Infinity/NaN/negative/overflow edge cases (F11 fix).
+          const expectedSeq = (Number.isSafeInteger(rawSeq) && rawSeq >= 0) ? rawSeq + 1 : 1;
+          sequenceSnapshot.memorySequence = expectedSeq;
+          sequenceSnapshot.memoryNameHistory = [
+            ...(sequenceSnapshot.memoryNameHistory || []).slice(-19),
             ctxFilename,
           ];
-          savePFD(verified, specFolderAbsolute);
+          savePFD(sequenceSnapshot, specFolderAbsolute);
+
+          const verified = loadPFD(specFolderAbsolute);
+          if (verified && verified.memorySequence === expectedSeq) {
+            memorySequenceUpdated = true;
+            break;
+          }
+
+          if (attempt < MAX_MEMORY_SEQUENCE_RETRIES) {
+            console.warn(`[workflow] memorySequence lost-update detected on attempt ${attempt}; retrying`);
+            await new Promise<void>((resolve) => setTimeout(resolve, MEMORY_SEQUENCE_RETRY_DELAY_MS));
+          }
+        }
+
+        if (!memorySequenceUpdated) {
+          console.warn('[workflow] memorySequence update could not be confirmed after 3 attempts; continuing');
         }
       }
     } catch (descErr: unknown) {
@@ -1558,9 +1595,17 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   // Step 10.5: Post-save quality review (JSON mode only)
   if (ctxFileWritten && captureCapabilities.inputMode !== 'captured') {
     const savedFilePath = path.join(contextDir, ctxFilename);
+    const jsonSessionSummary = typeof (collectedData as Record<string, unknown>)?._JSON_SESSION_SUMMARY === 'string'
+      ? (collectedData as Record<string, unknown>)._JSON_SESSION_SUMMARY as string
+      : undefined;
     const reviewResult = reviewPostSaveQuality({
       savedFilePath,
-      collectedData,
+      collectedData: collectedData
+        ? {
+            ...collectedData,
+            sessionSummary: collectedData.sessionSummary || jsonSessionSummary,
+          }
+        : collectedData,
       inputMode: captureCapabilities.inputMode,
     });
     printPostSaveReview(reviewResult);

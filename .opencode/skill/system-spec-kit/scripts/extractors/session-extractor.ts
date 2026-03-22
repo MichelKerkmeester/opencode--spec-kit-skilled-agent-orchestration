@@ -184,7 +184,7 @@ function resolveImportanceTier(
  * @param toolCounts - Aggregated counts of each tool type used in the session.
  * @param observations - Session observations containing type and fact data.
  * @param messageCount - Total number of messages in the conversation.
- * @returns One of `'RESEARCH'`, `'PLANNING'`, `'IMPLEMENTATION'`, or `'REVIEW'`.
+ * @returns One of `'RESEARCH'`, `'PLANNING'`, `'IMPLEMENTATION'`, `'DEBUGGING'`, or `'REVIEW'`.
  */
 function detectProjectPhase(
   toolCounts: ToolCounts,

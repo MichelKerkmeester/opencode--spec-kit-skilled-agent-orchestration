@@ -88,13 +88,14 @@ const DEFAULT_DENYLIST: readonly DenylistEntry[] = [
   { label: 'orphaned markdown header', pattern: /^#{1,6}\s*$/gm, severity: 'medium' },
   { label: 'stray backtick block', pattern: /^```\s*$/gm, severity: 'medium' },
   // Safety disclaimer patterns — high severity (T022)
-  { label: 'safety cannot disclaimer', pattern: /\bI(?:'m| am) not able to\b/gi, severity: 'high' },
+  { label: 'safety cannot disclaimer', pattern: /\bI(?:'m| am) not able to(?! (?:reproduce|replicate|confirm|verify|find|locate|identify|determine|access|connect)\b)\b/gi, severity: 'high' },
   { label: 'safety i-cannot disclaimer', pattern: /\bI cannot\b(?=\s+(?:provide|assist|help|access|create|generate|write|give))/gi, severity: 'high' },
   { label: 'safety please-consult disclaimer', pattern: /\bPlease consult\b/gi, severity: 'high' },
   // Redundant certainty markers — low severity (T023)
   { label: 'certainty important-note marker', pattern: /\bIt is important to note(?: that)?\b/gi, severity: 'low' },
   { label: 'certainty worth-mentioning marker', pattern: /\bIt is worth mentioning(?: that)?\b/gi, severity: 'low' },
   { label: 'certainty keep-in-mind marker', pattern: /\bIt(?:'s| is) important to keep in mind\b/gi, severity: 'low' },
+  { label: 'certainty redundant-assurance marker', pattern: /^(?:I am )?(?:absolutely |completely )?(?:certain|confident|sure) that /gim, severity: 'low' },
 ] as const;
 
 interface FilterResult {

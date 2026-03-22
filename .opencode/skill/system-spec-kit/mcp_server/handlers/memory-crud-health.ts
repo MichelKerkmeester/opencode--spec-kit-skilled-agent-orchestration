@@ -298,6 +298,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
   let aliasConflicts: ReturnType<typeof summarizeAliasConflicts> = summarizeAliasConflicts([]);
   let aliasRows: AliasConflictDbRow[] = [];
   let divergentAliasGroups: DivergentAliasGroup[] = [];
+  const embeddingRetry = getEmbeddingRetryStats();
   try {
     if (database) {
       const countResult = database.prepare('SELECT COUNT(*) as count FROM memory_index')
@@ -361,6 +362,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
         reportMode,
         status: isEmbeddingModelReady() && database ? 'healthy' : 'degraded',
         databaseConnected: !!database,
+        embeddingRetry,
         specFolder: specFolder ?? null,
         limit: safeLimit,
         totalRowsScanned: aliasRows.length,
@@ -431,6 +433,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
         autoRepairRequested: true,
         needsConfirmation: true,
         actions: repairActions,
+        embeddingRetry,
       },
       hints: [
         'Re-run memory_health with autoRepair:true and confirmed:true to execute repair actions.',
@@ -584,7 +587,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
         healthy: providerMetadata.healthy !== false,
         databasePath: redactPath(vectorIndex.getDbPath() ?? ''),
       },
-      embeddingRetry: getEmbeddingRetryStats(),
+      embeddingRetry,
     },
     hints,
     startTime,
