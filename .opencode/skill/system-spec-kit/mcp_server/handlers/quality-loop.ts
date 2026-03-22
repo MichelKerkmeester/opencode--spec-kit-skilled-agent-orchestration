@@ -304,7 +304,7 @@ function scoreCoherence(content: string, metadata: CoherenceMetadata = {}): { sc
         return false;
       }
 
-      const start = Math.max(0, match.index ?? 0 - 80);
+      const start = Math.max(0, (match.index ?? 0) - 80);
       const end = Math.min(content.length, (match.index ?? 0) + match[0].length + 80);
       const surroundingText = content.slice(start, end);
       return COMPLETION_CLAIM_PATTERN.test(surroundingText);

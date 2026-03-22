@@ -524,6 +524,9 @@ function applyPostProcessingAndObserve(
   const docMultiplier = DOCUMENT_TYPE_MULTIPLIERS[docType] ?? 1.0;
   composite *= docMultiplier;
 
+  // Capture pre-penalty composite for telemetry (before interference + clamp)
+  const scoreBeforePenalties = composite;
+
   // TM-01: Apply interference penalty (after doc multiplier)
   const interferenceScore = (row.interference_score as number) || 0;
   composite = applyInterferencePenalty(composite, interferenceScore);
@@ -547,9 +550,9 @@ function applyPostProcessingAndObserve(
         interferenceScore,
         interferencePenalty: process.env.SPECKIT_INTERFERENCE_SCORE?.toLowerCase() !== 'false' && interferenceScore > 0
           ? INTERFERENCE_PENALTY_COEFFICIENT * interferenceScore : 0,
-        scoreBeforeBoosts: composite,
+        scoreBeforeBoosts: scoreBeforePenalties,
         scoreAfterBoosts: finalScore,
-        scoreDelta: finalScore - composite,
+        scoreDelta: finalScore - scoreBeforePenalties,
       });
     }
   } catch (_err: unknown) { /* Telemetry must never affect scoring — fail-safe swallow */ }

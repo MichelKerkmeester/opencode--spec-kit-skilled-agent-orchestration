@@ -247,7 +247,7 @@ class BM25Index {
       const rows = (database.prepare(
         `SELECT id, title, content_text, trigger_phrases, file_path
          FROM memory_index
-         WHERE is_archived = 0`
+         WHERE COALESCE(is_archived, 0) = 0`
       ) as Database.Statement).all() as Array<{
         id: number;
         title: string | null;
