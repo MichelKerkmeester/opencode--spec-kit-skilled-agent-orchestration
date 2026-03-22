@@ -116,6 +116,7 @@ const queryEmbedding = await generateQueryEmbedding('how to authenticate?');
 | `getRetryQueue` | `(limit?: number) => RetryMemoryRow[]` | Get items eligible for retry |
 | `getFailedEmbeddings` | `() => RetryMemoryRow[]` | Get permanently failed items |
 | `getRetryStats` | `() => RetryStats` | Get queue statistics |
+| `getEmbeddingRetryStats` | `() => EmbeddingRetryStats` | Get a lightweight in-memory retry health snapshot without DB access |
 | `retryEmbedding` | `(id: number, content: string) => Promise<RetryResult>` | Retry a single embedding |
 | `markAsFailed` | `(id: number, reason: string) => void` | Mark as permanently failed |
 | `resetForRetry` | `(id: number) => boolean` | Reset a failed item for retry |
@@ -126,6 +127,14 @@ const queryEmbedding = await generateQueryEmbedding('how to authenticate?');
 | `runBackgroundJob` | `(batchSize?: number) => Promise<BackgroundJobResult>` | Run a single background job iteration |
 
 **Exported constants:** `BACKGROUND_JOB_CONFIG`, `BACKOFF_DELAYS`, `MAX_RETRIES`
+
+**Exported types:**
+
+| Type | Purpose |
+|------|---------|
+| `EmbeddingRetryStats` | In-memory retry health snapshot returned by `getEmbeddingRetryStats()`, including pending/failed counts, retry attempts, circuit-breaker state, last run and queue depth |
+
+**T3-15 circuit breaker:** The retry manager opens a provider circuit breaker after 5 consecutive embedding-provider failures, cools down for 2 minutes, and causes retry paths to skip outbound embedding API calls until the cooldown expires.
 
 <!-- /ANCHOR:features -->
 

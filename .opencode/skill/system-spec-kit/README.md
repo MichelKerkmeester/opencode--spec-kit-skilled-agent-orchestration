@@ -163,6 +163,15 @@ The response should return relevant memory entries. If it returns an error, see 
 │   ├── tests/                  # MCP test suite
 │   └── database/               # SQLite + vector search
 ├── shared/                     # Shared workspace (@spec-kit/shared)
+│   ├── algorithms/             # Fusion, reranking, and lab algorithms
+│   ├── contracts/              # Typed trace/envelope contracts
+│   ├── embeddings/             # Provider implementations
+│   ├── lib/                    # Structure-aware chunker
+│   ├── mcp_server/             # Shared database directory
+│   ├── parsing/                # Quality extractors and health checks
+│   ├── ranking/                # Learned combiner and matrix math
+│   ├── scoring/                # Folder scoring logic
+│   └── utils/                  # Path security, retry, token estimation
 ├── references/                 # Reference documentation (19 files)
 ├── assets/                     # Decision matrices, YAML configs
 ├── constitutional/             # Always-surface rules (never decay)
@@ -178,7 +187,7 @@ The response should return relevant memory entries. If it returns an error, see 
 | `templates/core/` | Four foundation templates used at all documentation levels |
 | `scripts/spec/create.sh` | Create spec folders with level-appropriate template files |
 | `scripts/spec/validate.sh` | Run 13-rule validation on any spec folder |
-| `scripts/memory/generate-context.ts` | Primary workflow for saving session context to memory |
+| `scripts/memory/generate-context.ts` (source) / `scripts/dist/memory/generate-context.js` (runtime) | Primary workflow for saving session context to memory |
 | `mcp_server/context-server.ts` | MCP server entry point exposing 33 tools |
 | `feature_catalog/feature_catalog.md` | Complete catalog of 189 implemented features |
 | `references/memory/memory_system.md` | Detailed memory system reference |

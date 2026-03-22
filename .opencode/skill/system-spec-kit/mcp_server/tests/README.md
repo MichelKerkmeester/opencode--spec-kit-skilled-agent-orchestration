@@ -42,7 +42,7 @@ The test suite validates all critical functionality of the Spec Kit Memory MCP s
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Test Files | 269 | All `.vitest.ts` format (snapshot as of 2026-03-13) |
+| Test Files | 321 | All `.vitest.ts` format (snapshot of current root `tests/` inventory, excluding `README.md`) |
 | Total Tests | See `npx vitest run` | Use the current Vitest summary as the source of truth |
 | Test Framework | Vitest | TypeScript-native, no compilation step needed |
 | Coverage Target | 80/70/50 | Unit 80%, Integration 70%, E2E 50% |
@@ -52,7 +52,7 @@ The test suite validates all critical functionality of the Spec Kit Memory MCP s
 | Feature | Description |
 |---------|-------------|
 | **Vitest Framework** | Modern TypeScript-native test runner with built-in assertions |
-| **Coverage Snapshot** | 269 test files across cognitive, search, handlers, integration and eval; some DB-fixture-dependent suites remain explicit deferred stubs |
+| **Coverage Snapshot** | 321 test files across cognitive, search, handlers, integration, eval, shared-memory, graph/community, learning and scoring suites |
 | **Category Organization** | Tests grouped by functional domain (cognitive, search, handlers, integration, unit) |
 | **Type Safety** | Full TypeScript with type checking at test level |
 | **Spec 126/127 Reality Checks** | Coverage for 3-source indexing, 7 intents, schema v13 document fields, document-type scoring and `includeSpecDocs` |
@@ -119,7 +119,7 @@ npx vitest run tests/working-memory.vitest.ts
 ## 3. STRUCTURE
 <!-- ANCHOR:structure -->
 
-The directory tree below is a representative catalog slice, not a byte-for-byte exhaustive listing of all 265 `.vitest.ts` files. For current inventory checks, treat `rg --files tests -g '*.vitest.ts'` and the latest Vitest summary as the source of truth. Notable suites added beyond the representative tree include `file-watcher.vitest.ts`, `chunk-thinning.vitest.ts`, `cli.vitest.ts`, and `startup-checks.vitest.ts`.
+The directory tree below is a representative catalog slice, not a byte-for-byte exhaustive listing of all 321 `.vitest.ts` files. For current inventory checks, treat `rg --files tests -g '*.vitest.ts'` and the latest Vitest summary as the source of truth. Notable additions beyond the representative tree now include Phase 016 retry coverage (`embedding-retry-stats.vitest.ts`, `retry-manager-health.vitest.ts`), handler edge-case suites (`handler-checkpoints-edge.vitest.ts`, `handler-memory-health-edge.vitest.ts`, `handler-memory-ingest-edge.vitest.ts`, `handler-memory-list-edge.vitest.ts`, `handler-memory-stats-edge.vitest.ts`), shared-memory suites (`shared-memory-handlers.vitest.ts`, `shared-spaces.vitest.ts`), graph/community suites (`community-detection.vitest.ts`, `graph-calibration.vitest.ts`, `graph-lifecycle.vitest.ts`), feedback/learning suites (`batch-learning.vitest.ts`, `feedback-denylist.vitest.ts`, `feedback-ledger.vitest.ts`, `ground-truth-feedback.vitest.ts`, `learned-feedback.vitest.ts`), and scoring suites (`d5-confidence-scoring.vitest.ts`, `result-confidence-scoring.vitest.ts`, `score-resolution-consistency.vitest.ts`).
 
 ```
 tests/
@@ -370,6 +370,8 @@ tests/
 | `handler-memory-save.vitest.ts` | Memory save handler tests |
 | `handler-memory-index-cooldown.vitest.ts` | memory_index_scan cooldown and rate-limit safety |
 | `handler-session-learning.vitest.ts` | Session learning handler tests |
+| `embedding-retry-stats.vitest.ts` | Phase 016 embedding retry statistics and telemetry coverage |
+| `retry-manager-health.vitest.ts` | Phase 016 retry-manager health, readiness, and degradation checks |
 | `file-watcher.vitest.ts` | Watcher metrics plus delete/rename lifecycle coverage |
 | `chunk-thinning.vitest.ts` | Tree-thinning and token-threshold merge logic |
 | `cli.vitest.ts` | Standalone admin CLI integration coverage |

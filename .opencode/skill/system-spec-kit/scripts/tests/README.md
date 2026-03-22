@@ -22,7 +22,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `tests/` directory validates script behavior, TypeScript module contracts, end-to-end flows, and targeted Vitest regressions for import-policy rules, task enrichment, and rendered-memory fixture guardrails.
+The `tests/` directory validates script behavior, TypeScript module contracts, end-to-end flows, and targeted Vitest regressions for import-policy rules, task enrichment, rendered-memory fixture guardrails, and phase/alignment workflows. Current footprint: 442 files when traversing the linked `test-fixtures/` corpus (160 physical files rooted under `tests/` itself), including 44 top-level `*.vitest.ts` suites.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:current-inventory -->
@@ -30,6 +30,8 @@ The `tests/` directory validates script behavior, TypeScript module contracts, e
 
 
 JavaScript tests:
+- `test-alignment-validator.js`
+- `test-ast-parser.js`
 - `test-bug-fixes.js`
 - `test-bug-regressions.js`
 - `test-cleanup-orphaned-vectors.js`
@@ -39,7 +41,8 @@ JavaScript tests:
 - `test-extractors-loaders.js`
 - `test-five-checks.js`
 - `test-folder-detector-functional.js`
-- `test-ast-parser.js`
+- `test-frontmatter-backfill.js`
+- `test-memory-quality-lane.js` - Tests memory quality validation lane
 - `test-naming-migration.js`
 - `test-phase-command-workflows.js`
 - `test-phase-system.js`
@@ -47,7 +50,6 @@ JavaScript tests:
 - `test-retry-manager-behavioral.js`
 - `test-scripts-modules.js`
 - `test-subfolder-resolution.js`
-- `test-memory-quality-lane.js` - Tests memory quality validation lane
 - `test-template-comprehensive.js`
 - `test-template-system.js`
 - `test-utils.js`
@@ -62,19 +64,71 @@ Shell tests:
 Python tests:
 - `test_dual_threshold.py`
 
-Vitest regression suites:
-- `generate-context-cli-authority.vitest.ts` - preserves explicit CLI root-spec and phase-folder targets through `main()` into `runWorkflow`
-- `runtime-memory-inputs.vitest.ts` - covers explicit JSON-mode hard-fail behavior plus `nextSteps` / `next_steps` preservation into `NEXT_ACTION`
-- `task-enrichment.vitest.ts` - candidate selection, generic-name rejection, content-aware slug coverage, and captured-session alignment workflow seams
-- `memory-render-fixture.vitest.ts` - rendered-memory regression coverage for naming fallback and quality validation
-- `test-integration.vitest.ts` - validation pipeline, cognitive memory, spec-folder creation, checkpoint, and export surface parity (migrated from `test-integration.js`)
-- `workflow-e2e.vitest.ts` - real save-pipeline E2E coverage with temp-repo factory: happy-path, alignment block, dedup, insufficiency, indexing resilience, tree-thinning
-- `session-enrichment.vitest.ts` - captured-session relevance filtering, sparse-spec extraction, git scoping/fallbacks, live-over-synthetic session snapshot behavior, and extractor barrel export coverage
-- import-policy Vitest suites under `tests/` - boundary enforcement coverage for package-form, relative, dynamic, and AST-backed checks
+Vitest regression suites (44 total), grouped by category:
+- Pipeline and workflow:
+  - `collect-session-data.vitest.ts`
+  - `generate-context-cli-authority.vitest.ts`
+  - `test-integration.vitest.ts`
+  - `workflow-e2e.vitest.ts`
+  - `workflow-warning.vitest.ts`
+- Memory and context:
+  - `description-enrichment.vitest.ts`
+  - `memory-indexer-weighting.vitest.ts`
+  - `memory-learn-command-docs.vitest.ts`
+  - `memory-pipeline-regressions.vitest.ts`
+  - `memory-render-fixture.vitest.ts`
+  - `memory-sufficiency.vitest.ts`
+  - `memory-template-contract.vitest.ts`
+  - `post-save-review.vitest.ts`
+  - `runtime-memory-inputs.vitest.ts`
+  - `session-enrichment.vitest.ts`
+  - `task-enrichment.vitest.ts`
+  - `validate-memory-quality.vitest.ts`
+- Validation and quality:
+  - `decision-confidence.vitest.ts`
+  - `progressive-validation.vitest.ts`
+  - `quality-scorer-calibration.vitest.ts`
+  - `semantic-signal-golden.vitest.ts`
+  - `validation-rule-metadata.vitest.ts`
+  - `validation-v13-v14-v12.vitest.ts`
+- Normalization and filtering:
+  - `auto-detection-fixes.vitest.ts`
+  - `contamination-filter.vitest.ts`
+  - `content-filter-parity.vitest.ts`
+  - `input-normalizer-unit.vitest.ts`
+  - `slug-uniqueness.vitest.ts`
+  - `spec-affinity.vitest.ts`
+  - `trigger-phrase-filter.vitest.ts`
+- Import policy and boundaries:
+  - `architecture-boundary-enforcement.vitest.ts`
+  - `import-policy-rules.vitest.ts`
+  - `tool-sanitizer.vitest.ts`
+- Templates and docs:
+  - `ascii-boxes.vitest.ts`
+  - `outsourced-agent-handback-docs.vitest.ts`
+  - `template-mustache-sections.vitest.ts`
+  - `template-structure.vitest.ts`
+- Phase and project classification:
+  - `phase-classification.vitest.ts`
+  - `project-phase-e2e.vitest.ts`
+- Phase 016 and alignment fixtures:
+  - `alignment-drift-fixture-preservation.vitest.ts`
+  - `tree-thinning.vitest.ts`
+- Utilities and identity:
+  - `backfill-frontmatter.vitest.ts`
+  - `utils-regressions.vitest.ts`
+  - `workspace-identity.vitest.ts`
 
 Fixtures and cache:
-- `fixtures/` - phase-system fixture inputs for level recommendation/create/validate tests
-- `test-fixtures/`
+- `fixtures/` - 80 fixture files for phase-system and validation workflows
+- `test-fixtures/` - symlink to `../test-fixtures` with 282 fixture files
+- Generated JS artifacts:
+  - `progressive-validation.vitest.js`
+  - `progressive-validation.vitest.js.map`
+  - `progressive-validation.vitest.d.ts.map`
+  - `tree-thinning.vitest.js`
+  - `tree-thinning.vitest.js.map`
+  - `tree-thinning.vitest.d.ts.map`
 - `.pytest_cache/`
 
 

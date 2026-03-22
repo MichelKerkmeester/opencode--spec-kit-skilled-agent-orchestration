@@ -36,7 +36,7 @@ The storage layer provides all persistence operations for the Spec Kit Memory MC
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Modules | 12 | Core persistence modules |
+| Modules | 13 | Core persistence modules |
 | Relationship Types | 6 | Causal edge types for decision lineage |
 
 ### Key Features
@@ -71,12 +71,13 @@ storage/
  consolidation.ts           # N3-lite graph maintenance (contradiction, Hebbian, staleness)
  history.ts                 # Change history tracking (ADD/UPDATE/DELETE events)
  incremental-index.ts       # Mtime-based incremental indexing
- index-refresh.ts           # Embedding index freshness management
- learned-triggers-schema.ts # Schema migration for learned_triggers column (R11)
- mutation-ledger.ts         # Append-only audit trail with SQLite BEFORE triggers, hash chains, 7 mutation types
- reconsolidation.ts         # Post-embedding similarity-based memory merge/conflict/complement
- schema-downgrade.ts        # Targeted v16->v15 schema downgrade utility
- transaction-manager.ts     # Atomic file + index operations
+  index-refresh.ts           # Embedding index freshness management
+  learned-triggers-schema.ts # Schema migration for learned_triggers column (R11)
+  lineage-state.ts           # Append-first lineage transitions and asOf resolution
+  mutation-ledger.ts         # Append-only audit trail with SQLite BEFORE triggers, hash chains, 7 mutation types
+  reconsolidation.ts         # Post-embedding similarity-based memory merge/conflict/complement
+  schema-downgrade.ts        # Targeted v16->v15 schema downgrade utility
+  transaction-manager.ts     # Atomic file + index operations
  README.md                  # This file
 ```
 
@@ -91,6 +92,7 @@ storage/
 | `incremental-index.ts` | Determines which files need re-indexing via mtime fast path |
 | `index-refresh.ts` | Manages embedding index freshness: status tracking, retry logic and unindexed document querying |
 | `mutation-ledger.ts` | Append-only audit trail with SQLite BEFORE triggers, hash chains, 7 mutation types |
+| `lineage-state.ts` | Append-first lineage transitions, active projection reads, asOf resolution, and lineage integrity/backfill helpers |
 | `consolidation.ts` | N3-lite graph maintenance: contradiction scan, Hebbian strengthening, staleness detection, edge bounds enforcement. Behind `SPECKIT_CONSOLIDATION` flag |
 | `learned-triggers-schema.ts` | Schema migration adding `learned_triggers` column to `memory_index` (excluded from FTS5). Exports `migrateLearnedTriggers()` and FTS5 isolation verification |
 | `reconsolidation.ts` | Post-embedding reconsolidation: merge (>=0.88 similarity), conflict (0.75-0.88), complement (<0.75). Behind `SPECKIT_RECONSOLIDATION` flag |

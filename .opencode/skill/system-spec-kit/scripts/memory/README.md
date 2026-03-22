@@ -43,6 +43,7 @@ Other locations point here: `mcp_server/scripts/README.md`, `mcp_server/database
 - `ast-parser.ts` - parse markdown into heading/code/table-aware sections
 - `backfill-frontmatter.ts` - bulk frontmatter normalization for templates, spec docs, and memory files
 - `rebuild-auto-entities.ts` - rebuild auto-entity metadata from indexed content
+- `fix-memory-h1.mjs` - One-shot migration script — fixes H1 heading format in legacy memory files
 
 Runtime files are compiled into `../dist/memory/`.
 
@@ -63,7 +64,7 @@ Explicit CLI targets are authoritative, including policy-defined phase folders. 
 JSON input mode:
 
 ```bash
-node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-spec-name>
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"sessionSummary":"...","specFolder":"..."}' specs/NNN-name
 ```
 
 

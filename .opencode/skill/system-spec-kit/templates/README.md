@@ -54,6 +54,7 @@ Use level templates for real work. Do not copy from `core/` or `addendum/` direc
 | `memory/` | Memory workflow notes (no manual memory files) |
 | `scratch/` | Temporary workspace for non-committed artifacts |
 | `sharded/` | Sharded template set |
+| `.hashes` | Pipeline artifact from template composition (`compose.sh`). Auto-generated, do not edit manually. |
 
 <!-- /ANCHOR:structure -->
 

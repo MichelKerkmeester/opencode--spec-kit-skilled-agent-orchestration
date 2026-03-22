@@ -121,7 +121,6 @@ ls .opencode/skill/system-spec-kit/constitutional/
 # Expected output:
 # gate-enforcement.md
 # README.md
-# speckit-exclusivity.md
 ```
 
 ### First Use

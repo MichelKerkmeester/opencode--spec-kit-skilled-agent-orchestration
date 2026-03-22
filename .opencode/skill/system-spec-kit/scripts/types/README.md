@@ -164,7 +164,7 @@ This module was created to resolve **TECH-DEBT P6-05**, where `simulation-factor
 |----------|------|
 | File extractor (provides `FileChange`, `ObservationDetailed`) | `../extractors/file-extractor.ts` |
 | Session extractor (provides `ToolCounts`, `SpecFileEntry`) | `../extractors/session-extractor.ts` |
-| Simulation factory (primary consumer) | `../simulation-factory.ts` |
+| Simulation factory (primary consumer) | `../lib/simulation-factory.ts` |
 | Scripts README | `../README.md` |
 
 <!-- /ANCHOR:related -->

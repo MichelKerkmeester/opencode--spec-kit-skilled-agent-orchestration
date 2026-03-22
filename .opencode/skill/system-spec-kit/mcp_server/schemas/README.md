@@ -24,9 +24,11 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`schemas/` holds a single file that defines every Zod validation schema used by MCP tool handlers. All 28 tool schemas are declared here, exported through a `TOOL_SCHEMAS` registry and consumed by tool modules via the `validateToolArgs()` function.
+`schemas/` holds a single file that defines every Zod validation schema used by MCP tool handlers. All 29+ tool schemas are declared here, exported through a `TOOL_SCHEMAS` registry and consumed by tool modules via the `validateToolArgs()` function.
 
 Strict mode is on by default (`SPECKIT_STRICT_SCHEMAS !== 'false'`). When enabled, unknown parameters cause validation to fail instead of passing through silently.
+
+Compatibility and aliased tools may reuse the same validator path instead of getting a duplicated schema entry, so this README uses `29+` rather than treating the file as a fixed one-schema-per-runtime-name list.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:structure -->
@@ -34,7 +36,7 @@ Strict mode is on by default (`SPECKIT_STRICT_SCHEMAS !== 'false'`). When enable
 
 | File | Purpose |
 |---|---|
-| `tool-input-schemas.ts` | Defines Zod schemas for all 28 MCP tools, exports `TOOL_SCHEMAS` registry, `validateToolArgs()`, `getToolSchema()`, `formatZodError()`, `getSchema()` and the `ToolSchemaValidationError` class |
+| `tool-input-schemas.ts` | Defines Zod schemas for all 29+ MCP tools, exports `TOOL_SCHEMAS` registry, `validateToolArgs()`, `getToolSchema()`, `formatZodError()`, `getSchema()` and the `ToolSchemaValidationError` class |
 
 No subfolders exist in this directory.
 

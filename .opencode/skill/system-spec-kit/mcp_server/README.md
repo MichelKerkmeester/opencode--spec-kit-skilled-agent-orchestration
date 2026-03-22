@@ -202,10 +202,11 @@ mcp_server/
 │   │   ├── stage2-fusion/     # RRF fusion, signals integration
 │   │   ├── stage3-rerank/     # Cross-encoder reranking, MPAB aggregation
 │   │   └── stage4-filter/     # Score invariants, state filtering, TRM
-│   ├── db/                    # Database adapters, migration, schema
-│   ├── embedding/             # Provider adapters (Voyage, OpenAI, HuggingFace)
-│   ├── graph/                 # Causal graph and co-activation modules
-│   └── errors/                # Typed error classes and recovery hints
+│   ├── architecture/, cache/, chunking/, cognitive/, collab/, config/
+│   ├── contracts/, errors/, eval/, extraction/, feedback/, governance/
+│   ├── graph/, interfaces/, learning/, manage/, ops/, parsing/
+│   └── providers/, response/, scoring/, session/, storage/, telemetry/, utils/, validation/
+│                              # 26 additional runtime subdirectories under lib/
 ├── hooks/
 │   ├── README.md              # Lifecycle hook documentation
 │   └── ...                    # Post-mutation hooks, UX payload builders

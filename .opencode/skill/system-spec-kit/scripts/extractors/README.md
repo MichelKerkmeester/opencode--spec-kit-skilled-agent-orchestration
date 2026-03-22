@@ -29,22 +29,18 @@ The `extractors/` directory converts collected session input into structured dat
 <!-- ANCHOR:current-inventory -->
 ## 2. CURRENT INVENTORY
 
+Current source inventory: 12 TypeScript modules plus `index.ts` barrel export.
 
-- `claude-code-capture.ts` - Claude Code CLI session capture
-- `codex-cli-capture.ts` - Codex CLI session capture
-- `collect-session-data.ts`
+- `collect-session-data.ts` - Orchestrates session data collection across observations, files, decisions, and context
 - `contamination-filter.ts` - Filters contamination from extraction pipeline outputs
 - `conversation-extractor.ts`
-- `copilot-cli-capture.ts` - Copilot CLI session capture
 - `decision-extractor.ts`
 - `diagram-extractor.ts`
 - `file-extractor.ts`
-- `gemini-cli-capture.ts` - Gemini CLI session capture
 - `git-context-extractor.ts` - Mines git history for captured-session enrichment (spec 013)
 - `implementation-guide-extractor.ts`
-- `opencode-capture.ts`
 - `quality-scorer.ts` - Scores extraction quality for validation
-- `../lib/session-activity-signal.ts` - Detects session activity signals for capture gating (re-exported from barrel)
+- `session-activity-signal.ts` - Detects session activity signals for capture gating (re-exported from barrel)
 - `session-extractor.ts`
 - `spec-folder-extractor.ts` - Parses spec folder docs for captured-session enrichment (spec 013)
 - `index.ts`

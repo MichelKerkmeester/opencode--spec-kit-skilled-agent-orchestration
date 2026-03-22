@@ -40,16 +40,18 @@ Tool handler surface (wired through `handlers/index.ts` and `tools/memory-tools.
 - `session-learning.ts` — task preflight/postflight and learning history
 - `causal-graph.ts` — causal link/unlink, drift-why, causal stats (T043-T047)
 - `eval-reporting.ts` — ablation runs and reporting dashboard (R13-S3)
+- `shared-memory.ts` — MCP handler for shared-space CRUD, membership, rollout status and `shared_memory_enable`
 - `index.ts` — barrel re-exports
 
 Internal helper modules (not direct MCP tool endpoints):
-- `memory-crud-delete.ts`, `memory-crud-update.ts`, `memory-crud-list.ts`, `memory-crud-stats.ts`, `memory-crud-health.ts` — split CRUD internals behind `memory-crud.ts`
+- `memory-crud-delete.ts`, `memory-crud-update.ts`, `memory-crud-list.ts`, `memory-crud-stats.ts`, `memory-crud-health.ts` — split CRUD internals behind `memory-crud.ts`; `memory-crud-health.ts` also calls `getEmbeddingRetryStats()` and includes `embeddingRetry` in health responses
 - `memory-crud-types.ts`, `memory-crud-utils.ts` — shared CRUD types and utilities
 - `memory-index-alias.ts`, `memory-index-discovery.ts` — indexing support helpers
 - `causal-links-processor.ts` — causal link extraction and processing
 - `chunking-orchestrator.ts` — document chunking orchestration
 - `handler-utils.ts`, `mutation-hooks.ts`, `types.ts` — shared handler helpers/types
 - `pe-gating.ts` — prediction-error decision utilities consumed by save/index flows
+- `v-rule-bridge.ts` — Runtime bridge to `validate-memory-quality` script (O2-5/O2-12)
 - `quality-loop.ts` — quality scoring/fix helpers consumed by `memory-save.ts` (not a standalone MCP handler)
 - `save/` — decomposed save pipeline (see `save/README.md`)
 

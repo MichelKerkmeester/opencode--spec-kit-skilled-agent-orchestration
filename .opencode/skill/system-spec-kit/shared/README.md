@@ -81,7 +81,7 @@ This consolidation eliminates code duplication and ensures consistent behavior a
 | Category                 | Count         | Details                                          |
 | ------------------------ | ------------- | ------------------------------------------------ |
 | Top-Level TS Modules     | 8             | index, embeddings, chunking, trigger extractor, types, normalization, config, paths |
-| Top-Level Subdirectories | 9             | algorithms, contracts, dist, embeddings, lib, mcp_server, parsing, scoring, utils |
+| Top-Level Subdirectories | 10            | algorithms, contracts, dist, embeddings, lib, mcp_server, parsing, ranking, scoring, utils |
 | Provider Implementations | 3             | OpenAI, HF Local, Voyage                         |
 | Embedding Dimensions     | 768/1024/1536 | Provider-dependent                               |
 
@@ -182,6 +182,7 @@ shared/
 ├── tsconfig.json               # TypeScript project configuration
 ├── algorithms/                 # Shared retrieval fusion and reranking algorithms
 │   ├── adaptive-fusion.ts      # Intent-aware weighted RRF profiles
+│   ├── fusion-lab.ts           # Experimental fusion strategies and A/B tooling
 │   ├── mmr-reranker.ts         # Diversity-aware reranking helpers
 │   ├── rrf-fusion.ts           # Reciprocal rank fusion primitives
 │   └── index.ts                # Algorithms barrel
@@ -204,8 +205,15 @@ shared/
 │       ├── README.md           # Database directory notes and handling guidance
 │       └── speckit_memory.db   # Active shared SQLite database file
 ├── parsing/
-│   ├── quality-extractors.ts   # Quality score/flags extraction
-│   └── quality-extractors.test.ts # Parsing coverage for quality extraction
+│   ├── memory-sufficiency.ts          # Memory sufficiency checks
+│   ├── memory-template-contract.ts    # Template contract validation for memory files
+│   ├── quality-extractors.ts          # Quality score/flags extraction
+│   ├── quality-extractors.test.ts     # Parsing coverage for quality extraction
+│   ├── spec-doc-health.ts             # Spec document health checks
+│   └── spec-doc-health.test.ts        # Tests for spec document health checks
+├── ranking/
+│   ├── learned-combiner.ts     # ML-based score combiner for retrieval ranking
+│   └── matrix-math.ts          # Matrix operations for ranking computations
 ├── scoring/
 │   ├── folder-scoring.ts       # Composite folder ranking logic
 │   └── README.md

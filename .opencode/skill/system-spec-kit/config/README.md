@@ -33,7 +33,6 @@ This directory contains the JSON configuration files that control how the Spec K
 | File                       | Purpose                                                              |
 | -------------------------- | -------------------------------------------------------------------- |
 | `config.jsonc`             | Main configuration for memory, search, decay, tiers and templates   |
-| `complexity-config.jsonc`  | **DEPRECATED**: Complexity detection weights/thresholds (not read by any runtime code, retained for reference) |
 | `filters.jsonc`            | Content filtering pipeline for noise removal and quality scoring     |
 
 <!-- /ANCHOR:overview -->
@@ -65,36 +64,9 @@ This directory contains the JSON configuration files that control how the Spec K
 - `hybridSearch.enabled: true` - Combine FTS and vector search with RRF
 - `templates.path: "templates"` - Path to spec templates
 
-### complexity-config.jsonc (DEPRECATED)
+### complexity-config.jsonc (removed)
 
-> **DEPRECATED:** This file is not read by any runtime code. Retained for reference only. Use `--level N` with `scripts/spec/create.sh` to select a level directly. See the deprecation header in the file itself and [level_selection_guide.md](../references/templates/level_selection_guide.md) for current guidance.
-
-**Complexity scoring algorithm** with 5-dimensional analysis:
-
-**Dimensions** (weights sum to 100):
-- **Scope** (25%) - Files affected, LOC estimate, systems touched
-- **Risk** (25%) - Security, auth, breaking changes
-- **Research** (20%) - Investigation needs, unknowns, external dependencies
-- **Multi-Agent** (15%) - Parallel workstreams, coordination needs
-- **Coordination** (15%) - Cross-system dependencies, blocking relationships
-
-**Level Thresholds:**
-- **Level 1 (Baseline)**: 0-25 points
-- **Level 2 (Verification)**: 26-55 points
-- **Level 3 (Full)**: 56-79 points
-- **Level 3+ (Extended)**: 80-100 points
-
-**Keyword Matching:**
-- High-risk keywords (auth, security, encryption): 15 points each
-- Medium-risk keywords (api, database, config): 8 points each
-- Investigation keywords (research, analyze, explore): 12 points each
-- Uncertainty keywords (unknown, unclear, tbd): 15 points each
-
-**Feature Scaling:**
-- User stories: 1-2 (Level 1) to 8-15 (Level 3+)
-- Phases: 2-3 (Level 1) to 8-12 (Level 3+)
-- Tasks: 5-15 (Level 1) to 100-200 (Level 3+)
-- Checklist items: 10-20 (Level 1) to 100-150 (Level 3+)
+`complexity-config.jsonc` was deprecated and removed. Complexity scoring uses hardcoded defaults in the pipeline. Use `--level N` with `scripts/spec/create.sh` to select a documentation level directly.
 
 ### filters.jsonc
 
@@ -135,7 +107,7 @@ const config = loadConfig();  // Loads config.jsonc (Section 1 keys only used at
 The loader strips JSONC comments and parses JSON safely with fallback to defaults.
 
 > **Note:** `loadComplexityConfig` and `loadFilterConfig` do not exist in `scripts/core/config.ts`.
-> `complexity-config.jsonc` is not read by any runtime code (see deprecation notice in that file).
+> `complexity-config.jsonc` has been removed — complexity scoring uses hardcoded defaults.
 > `filters.jsonc` is loaded directly by `scripts/lib/content-filter.ts`, not through the core config loader.
 
 ### Modifying Settings
@@ -158,14 +130,6 @@ The loader strips JSONC comments and parses JSON safely with fallback to default
 "memoryDecay": {
   "scaleDays": 120,    // Slower decay (default: 90)
   "decayWeight": 0.2   // Less impact (default: 0.3)
-}
-```
-
-**Change complexity level thresholds:**
-```jsonc
-"levels": {
-  "level1Max": 30,    // Wider Level 1 range (default: 25)
-  "level2Max": 60     // Adjust Level 2 ceiling (default: 55)
 }
 ```
 

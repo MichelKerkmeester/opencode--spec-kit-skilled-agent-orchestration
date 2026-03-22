@@ -1,6 +1,6 @@
 ---
 title: "System Spec Kit Utilities"
-description: "Shared utility modules providing core functionality for data validation, path sanitization, file operations, logging and input normalization across all system-spec-kit scripts."
+description: "Shared utility modules providing core functionality for validation, normalization, frontmatter handling, path safety, and workspace/tool identification across system-spec-kit scripts."
 trigger_phrases:
   - "spec kit utilities"
   - "data validator path utils"
@@ -9,7 +9,7 @@ trigger_phrases:
 
 # System Spec Kit Utilities
 
-> Shared utility modules providing core functionality for data validation, path sanitization, file operations, logging and input normalization across all system-spec-kit scripts.
+> Shared utility modules providing core functionality for validation, normalization, frontmatter handling, path safety, and workspace/tool identification across all system-spec-kit scripts.
 
 ---
 
@@ -31,7 +31,7 @@ trigger_phrases:
 
 ### What are System Spec Kit Utilities?
 
-The utilities folder contains reusable TypeScript modules (compiled to JavaScript) that provide core functionality for all system-spec-kit scripts. These modules handle data validation, path security, file I/O, structured logging, message formatting, prompt generation and tool detection. They enforce security standards (CWE-22 path traversal prevention), normalize diverse input formats and provide consistent error handling across the entire script collection.
+The utilities folder contains reusable TypeScript modules (compiled to JavaScript) plus a small direct-runtime JavaScript helper that provide core functionality for all system-spec-kit scripts. These modules handle data validation, path security, file I/O, structured logging, message formatting, prompt generation and tool detection. They enforce security standards (CWE-22 path traversal prevention), normalize diverse input formats and provide consistent error handling across the entire script collection.
 
 **Build System**: TypeScript source files (`.ts`) are compiled to `dist/utils/` using the TypeScript compiler. Scripts import from the compiled output at runtime.
 
@@ -39,7 +39,7 @@ The utilities folder contains reusable TypeScript modules (compiled to JavaScrip
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Utility Modules | 12 | Core functionality for all scripts |
+| Utility Modules | 20 | 19 TypeScript modules plus 1 JavaScript helper |
 | Primary Functions | 40+ | Validation, sanitization, normalization, logging |
 | Security Standards | CWE-22, Path Traversal | Enforced in path-utils.ts |
 
@@ -84,9 +84,9 @@ node -e "const { sanitizePath } = require('./dist/utils/path-utils'); console.lo
 ### Verify Utilities
 
 ```bash
-# Check all TypeScript source files exist
-ls -la utils/*.ts
-# Expected: 12 TypeScript files
+# Check all source utility files exist
+ls -la utils/*.{ts,js}
+# Expected: 19 TypeScript files plus 1 JavaScript helper
 
 # Check compiled output exists
 ls -la dist/utils/*.js
@@ -127,34 +127,52 @@ structuredLog('info', 'Processing spec folder', { path: safePath });
 ```
 utils/
 ├── data-validator.ts          # Data structure validation and flag mappings
+├── fact-coercion.ts           # Fact normalization and coercion helpers
 ├── file-helpers.ts            # Safe file read/write operations
 ├── index.ts                   # Module exports aggregator
 ├── input-normalizer.ts        # Input format normalization and transformation
 ├── logger.ts                  # Structured logging utilities
+├── memory-frontmatter.ts      # Memory document frontmatter parsing and formatting
 ├── message-utils.ts           # User-facing message formatting
 ├── path-utils.ts              # Path sanitization and security (CWE-22)
+├── phase-classifier.ts        # Workflow phase classification helpers
 ├── prompt-utils.ts            # Prompt generation and formatting
-├── slug-utils.ts                 # Content-aware slug generation and memory filename uniqueness
-├── task-enrichment.ts            # Task title enrichment from spec titles and memory context
+├── slug-utils.ts              # Content-aware slug generation and memory filename uniqueness
+├── source-capabilities.ts     # Source capability and provenance helpers
+├── spec-affinity.ts           # Spec matching and affinity scoring helpers
+├── task-enrichment.ts         # Task title enrichment from spec titles and memory context
+├── template-structure.js      # Template structure lookup and validation helpers
 ├── tool-detection.ts          # MCP tool capability detection
+├── tool-sanitizer.ts          # Tool input and output sanitization helpers
 ├── validation-utils.ts        # Path-scoped validation and checklist verification
+├── workspace-identity.ts      # Workspace identity detection and normalization
 └── README.md                  # This file
 
-Compiled output:
+Compiled output and direct-runtime helper:
 dist/utils/                    # TypeScript compilation output
 ├── data-validator.js          # Compiled JavaScript + type definitions
+├── fact-coercion.js
 ├── file-helpers.js
 ├── index.js
 ├── input-normalizer.js
 ├── logger.js
+├── memory-frontmatter.js
 ├── message-utils.js
 ├── path-utils.js
+├── phase-classifier.js
 ├── prompt-utils.js
 ├── slug-utils.js
+├── source-capabilities.js
+├── spec-affinity.js
 ├── task-enrichment.js
 ├── tool-detection.js
+├── tool-sanitizer.js
 ├── validation-utils.js
-└── *.d.ts, *.js.map           # Type definitions and source maps
+├── workspace-identity.js
+└── *.d.ts, *.js.map           # Type definitions and source maps for each TS module
+
+Direct-runtime helper:
+utils/template-structure.js    # Source-only helper (not emitted to dist/)
 ```
 
 ### Key Files
@@ -162,17 +180,25 @@ dist/utils/                    # TypeScript compilation output
 | File | Purpose |
 |------|---------|
 | `data-validator.ts` | Validates and transforms spec folder data structures. Applies flag mappings for arrays and presence checks |
+| `fact-coercion.ts` | Coerces extracted facts into normalized values for downstream utilities |
 | `file-helpers.ts` | Provides safe file I/O operations with UTF-8 encoding, existence checks and error handling |
 | `index.ts` | Aggregates exports from all utility modules for convenient importing |
 | `input-normalizer.ts` | Normalizes diverse input formats (strings, objects, arrays) into consistent structures. Transforms key decisions |
 | `logger.ts` | Structured logging with severity levels (info, warn, error) and contextual data |
+| `memory-frontmatter.ts` | Builds and normalizes frontmatter metadata for memory documents |
 | `message-utils.ts` | Formats user-facing messages, error reports and validation feedback |
 | `path-utils.ts` | Sanitizes file paths to prevent directory traversal (CWE-22). Validates against allowed base directories |
+| `phase-classifier.ts` | Classifies tasks or captured context into workflow phases |
 | `prompt-utils.ts` | Generates prompts for CLI interactions and user input collection |
 | `tool-detection.ts` | Detects available MCP tools and their capabilities for dynamic feature enablement |
+| `source-capabilities.ts` | Normalizes metadata about source capabilities and available behaviors |
+| `spec-affinity.ts` | Scores how strongly content aligns with a candidate spec folder |
 | `slug-utils.ts` | Content-aware slug generation for memory filenames. Provides `ensureUniqueMemoryFilename()` to prevent collisions via `-1`, `-2` suffix appending |
 | `task-enrichment.ts` | Task title enrichment from spec titles and memory context for higher-quality memory naming |
+| `template-structure.js` | Defines helper logic for working with template structure layouts |
+| `tool-sanitizer.ts` | Sanitizes tool payloads before reuse, storage, or display |
 | `validation-utils.ts` | Validates spec folders against path-scoped rules. Verifies checklist completeness |
+| `workspace-identity.ts` | Detects and normalizes workspace identity details for current runs |
 
 ---
 
@@ -312,6 +338,6 @@ node -e "const { validateDataStructure } = require('./dist/utils/data-validator'
 
 ---
 
-*Documentation for system-spec-kit utilities v2.1 | TypeScript Migration | Last updated: 2026-02-07*
+*Documentation for system-spec-kit utilities v2.1 | TypeScript Migration | Last updated: 2026-03-22*
 
 <!-- /ANCHOR:related -->

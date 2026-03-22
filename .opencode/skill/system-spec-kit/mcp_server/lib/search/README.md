@@ -303,7 +303,29 @@ vector-index-impl.ts     (3333 LOC)
 | `retrieval-directives.ts`  | -      | TypeScript | Retrieval directive parsing and application for search configuration |
 | `spec-folder-hierarchy.ts` | -      | TypeScript | Spec folder parent-child hierarchy resolution with WeakMap caching (S4) |
 
-**Total**: ~10,000+ LOC across 47 root files + 7 pipeline files (all TypeScript)
+**Additional root files in the current directory:**
+
+| File                       | LOC    | Language   | Purpose                                             |
+| -------------------------- | ------ | ---------- | --------------------------------------------------- |
+| `chunk-reassembly.ts`      | -      | TypeScript | Reassembles chunk-level hits into parent result content |
+| `confidence-scoring.ts`    | -      | TypeScript | Computes calibrated confidence scores for retrieval results |
+| `deterministic-extractor.ts` | -    | TypeScript | Extracts deterministic signals and fields for search processing |
+| `graph-calibration.ts`     | -      | TypeScript | Calibrates graph-channel scoring inputs and weights |
+| `graph-lifecycle.ts`       | -      | TypeScript | Manages graph refresh, rebuild, and lifecycle operations |
+| `hyde.ts`                  | -      | TypeScript | HyDE-style hypothetical document generation for query expansion |
+| `llm-cache.ts`             | -      | TypeScript | Caches LLM-assisted search transforms and helper outputs |
+| `llm-reformulation.ts`     | -      | TypeScript | Reformulates search queries with LLM-assisted variants |
+| `progressive-disclosure.ts` | -     | TypeScript | Supports progressive-disclosure result paging and response shaping |
+| `query-decomposer.ts`      | -      | TypeScript | Decomposes complex queries into smaller retrieval units |
+| `query-surrogates.ts`      | -      | TypeScript | Builds surrogate query forms for alternate retrieval passes |
+| `recovery-payload.ts`      | -      | TypeScript | Builds structured recovery payloads for weak or empty results |
+| `result-explainability.ts` | -      | TypeScript | Attaches explainability metadata to result ranking signals |
+| `search-utils.ts`          | -      | TypeScript | Shared utility helpers used across search modules |
+| `session-state.ts`         | -      | TypeScript | Tracks per-session search state and retrieval context |
+| `session-transition.ts`    | -      | TypeScript | Handles session-state transition rules during retrieval flows |
+| `surrogate-storage.ts`     | -      | TypeScript | Persists generated query surrogates and related metadata |
+
+**Total**: ~10,000+ LOC across 64 root files + 7 pipeline files (all TypeScript)
 
 **Relocated to `shared/algorithms/`**: `rrf-fusion.ts`, `adaptive-fusion.ts`, `mmr-reranker.ts` -- these are now imported from `@spec-kit/shared/algorithms/`.
 

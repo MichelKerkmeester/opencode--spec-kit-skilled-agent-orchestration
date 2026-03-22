@@ -39,13 +39,13 @@ The MCP Server Library provides the core functionality for the Spec Kit Memory M
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Module Categories | 24 | architecture, cache, chunking, cognitive, config, contracts, errors, eval, extraction, graph, interfaces, learning, manage, ops, parsing, providers, response, scoring, search, session, storage, telemetry, utils, validation |
+| Module Categories | 26 | architecture, cache, chunking, cognitive, collab, config, errors, eval, extraction, feedback, governance, graph, interfaces, learning, manage, ops, parsing, providers, response, scoring, search, session, storage, telemetry, utils, validation; plus proxy docs in `contracts/` |
 | Cognitive Features | 10+ | FSRS scheduler, attention decay, PE gating, working memory, tier classification, co-activation, temporal contiguity, archival manager, causal graph, corrections |
 | Search Intents | 7 | add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision |
 | Index Sources | 3 | spec memories, constitutional files, spec documents (`includeSpecDocs`) |
 | Schema Milestones | v13+ | v13 introduced `document_type` and `spec_level` for spec-doc indexing and scoring |
-| Total Modules | 140 | Recursive `.ts` files under `lib/`, organized into 24 top-level folders |
-| Last Verified | 2026-02-27 | Module category and total counts revalidated after Sprint 1-3 |
+| Total Modules | 171 | Recursive `.ts` files under `lib/`, organized into 26 top-level module folders plus `contracts/` proxy docs |
+| Last Verified | 2026-03-22 | Module category and total counts revalidated against the live source tree |
 
 ### Key Features
 
@@ -286,6 +286,19 @@ lib/                            # TypeScript source files
 │   ├── extraction-adapter.ts   # Extraction adapter
 │   ├── redaction-gate.ts       # Redaction gate
 │   └── README.md               # Module documentation
+│
+├── collab/                     # Shared-memory collaboration (1 module)
+│   └── shared-spaces.ts        # Shared spaces, memberships, rollout and kill switch
+│
+├── feedback/                   # Feedback learning utilities (4 modules)
+│   ├── batch-learning.ts       # Batch feedback aggregation pipeline
+│   ├── feedback-ledger.ts      # Implicit feedback event ledger
+│   ├── rank-metrics.ts         # Rank comparison metrics
+│   └── shadow-scoring.ts       # Shadow evaluation and promotion gating
+│
+├── governance/                 # Scope and retention governance (2 modules)
+│   ├── retention.ts            # Scoped retention sweeps and audit entries
+│   └── scope-governance.ts     # Hierarchical scope enforcement and governed ingest
 │
 ├── graph/                      # Graph scoring helpers (2 modules)
 │   ├── community-detection.ts  # Community detection helpers

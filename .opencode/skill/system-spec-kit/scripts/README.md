@@ -43,15 +43,16 @@ Top-level files:
 - `wrap-all-templates.ts`
 
 Primary script directories:
-- `spec/` - 10 lifecycle scripts (`create.sh`, `upgrade-level.sh`, `check-placeholders.sh`, `validate.sh`, `progressive-validate.sh`, `test-validation.sh`, `check-completion.sh`, `calculate-completeness.sh`, `recommend-level.sh`, `archive.sh`)
+- `spec/` - 13 lifecycle scripts (`create.sh`, `upgrade-level.sh`, `check-placeholders.sh`, `validate.sh`, `progressive-validate.sh`, `test-validation.sh`, `check-completion.sh`, `calculate-completeness.sh`, `recommend-level.sh`, `archive.sh`, `check-template-staleness.sh`, `pre-commit-spec-validate.sh`, `quality-audit.sh`)
 - `spec-folder/` - 5 TypeScript modules (`generate-description.ts`, `folder-detector.ts`, `alignment-validator.ts`, `directory-setup.ts`, `index.ts`)
 - `rules/` - 18 modular validation rules used by `spec/validate.sh` (`LINKS_VALID` runs only when `SPECKIT_VALIDATE_LINKS=true`)
-- `memory/` - 8 TypeScript CLIs (`generate-context.ts`, `rank-memories.ts`, `cleanup-orphaned-vectors.ts`, `validate-memory-quality.ts`, `reindex-embeddings.ts`, `ast-parser.ts`, `backfill-frontmatter.ts`, `rebuild-auto-entities.ts`)
-- `core/` - 8 TypeScript workflow modules plus barrel export
+- `memory/` - 9 TypeScript/JS CLIs (`generate-context.ts`, `rank-memories.ts`, `cleanup-orphaned-vectors.ts`, `validate-memory-quality.ts`, `reindex-embeddings.ts`, `ast-parser.ts`, `backfill-frontmatter.ts`, `rebuild-auto-entities.ts`, `fix-memory-h1.mjs`)
+- `core/` - 17 TypeScript workflow modules plus barrel export
+- `config/` - 1 TypeScript configuration module (`index.ts`)
 - `extractors/` - 14 files total (12 TypeScript extraction modules, barrel export, and directory README)
 - `loaders/` - 1 TypeScript loading module (`data-loader.ts`) plus barrel export
 - `renderers/` - 1 TypeScript rendering module (`template-renderer.ts`) plus barrel export
-- `utils/` - 11 TypeScript utility modules plus barrel export
+- `utils/` - 19 TypeScript utility modules plus barrel export
 - `types/` - TypeScript type definitions (`session-types.ts`)
 - `lib/` - 12 TypeScript libraries plus 3 shell helper libraries
 - `evals/` - 18 evaluation and audit scripts plus policy allowlist
