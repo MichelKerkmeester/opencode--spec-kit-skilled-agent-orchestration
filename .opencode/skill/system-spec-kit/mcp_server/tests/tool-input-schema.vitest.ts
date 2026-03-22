@@ -217,6 +217,18 @@ describe('memory_bulk_delete schema', () => {
 ──────────────────────────────────────────────────────────────── */
 
 describe('memory_search limit contract', () => {
+  it('public schema accepts cursor-only continuation', () => {
+    expect(() => {
+      validateToolInputSchema('memory_search', { cursor: 'opaque-cursor-token' }, TOOL_DEFINITIONS);
+    }).not.toThrow();
+  });
+
+  it('runtime schema accepts cursor-only continuation', () => {
+    expect(() => {
+      validateToolArgs('memory_search', { cursor: 'opaque-cursor-token' });
+    }).not.toThrow();
+  });
+
   it('public schema accepts concepts-only search', () => {
     expect(() => {
       validateToolInputSchema('memory_search', { concepts: ['alpha', 'beta'] }, TOOL_DEFINITIONS);

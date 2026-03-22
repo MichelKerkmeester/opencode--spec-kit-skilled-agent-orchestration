@@ -958,7 +958,8 @@ async function collectSessionData(
       FILES: FILES as FileEntry[],
       SPEC_FILES,
       specFolderPath,
-      recentContext: data.recentContext
+      recentContext: data.recentContext,
+      explicitProjectPhase,
     });
 
   const expiresAtEpoch: number = calculateExpiryEpoch(importanceTier, createdAtEpoch);

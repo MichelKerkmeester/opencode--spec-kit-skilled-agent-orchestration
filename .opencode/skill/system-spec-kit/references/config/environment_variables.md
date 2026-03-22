@@ -242,6 +242,7 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | Flag | Default | Sprint | Purpose |
 |------|---------|--------|---------|
 | `SPECKIT_SAVE_QUALITY_GATE` | ON | S4 | Pre-storage quality gate for memory saves (TM-04) |
+| `SPECKIT_PRE_SAVE_DEDUP` | ON | S9 | Script-side save-pipeline overlap advisory. Default ON unless explicitly set to `false` or `0`. Runs an exact-match SHA1 comparison against the 20 most recent sibling memories before write and logs a warning without blocking the save. |
 | `SPECKIT_RECONSOLIDATION` | OFF | S4 | Reconsolidation-on-save for memory deduplication (TM-06). Opt in with `SPECKIT_RECONSOLIDATION=true` |
 | `SPECKIT_ENCODING_INTENT` | ON | S5 | Encoding-intent capture at index time (document, code, structured_data) |
 | `SPECKIT_AUTO_ENTITIES` | ON | S6 | Rule-based noun-phrase entity extraction at save time (R10) |

@@ -158,30 +158,37 @@ The D5 research agent found the system already has basic empty-result handling, 
 | Feature Flag       | `SPECKIT_PROGRESSIVE_DISCLOSURE_V1`                                                     |
 | Files              | `memory-context.ts`, `search-results.ts`                                                |
 
-**Description:** Replace hard tail-truncation with a summary layer plus continuation cursors. The initial response includes a compact digest of all results; detailed content is available on demand via cursor-based pagination.
+**Description:** Add a progressive-disclosure companion payload without removing the full result list. The response preserves full `data.results`, adds `data.progressiveDisclosure` with summary/snippet metadata, and supports continuation via `memory_search({ cursor })`.
 
 **Schema:**
 
 ```jsonc
 {
-  "summaryLayer": {
-    "count": 10,
-    "digest": "3 strong, 2 weak, 1 conflict"
-  },
-  "results": [
-    { "snippet": "...", "detailAvailable": true }
-  ],
-  "continuation": {
-    "cursor": "abc",
-    "remainingCount": 6
+  "data": {
+    "results": [
+      { "id": "mem-1", "content": "full result content remains available" }
+    ],
+    "progressiveDisclosure": {
+      "summaryLayer": {
+        "count": 10,
+        "digest": "3 strong, 2 weak, 1 conflict"
+      },
+      "results": [
+        { "id": "mem-1", "snippet": "...", "detailAvailable": true }
+      ],
+      "continuation": {
+        "cursor": "abc",
+        "remainingCount": 6
+      }
+    }
   }
 }
 ```
 
 **Acceptance Criteria:**
-- Summary layer is generated for all retrieval responses.
-- Continuation cursors work — callers can page through remaining results.
-- Token savings measured and documented (compared to full dump).
+- Full `data.results` remains present for backward compatibility.
+- `data.progressiveDisclosure` is generated for retrieval responses when the graduated flag remains enabled.
+- Continuation cursors work through `memory_search({ cursor })` without requiring a new query.
 
 ---
 
@@ -194,25 +201,31 @@ The D5 research agent found the system already has basic empty-result handling, 
 | Feature Flag       | `SPECKIT_SESSION_RETRIEVAL_STATE_V1`                                                    |
 | Files              | `memory-context.ts`, new `session-state.ts`                                             |
 
-**Description:** Track retrieval session state across turns: active goal, seen result IDs, open questions, and preferred anchors. This enables cross-turn deduplication, goal-aware refinement, and continuity in multi-turn retrieval conversations.
+**Description:** Track retrieval session state across turns and expose it additively in the live search response. The handler preserves normal search output, adds `data.sessionState` plus `data.goalRefinement`, and uses session context for cross-turn deduplication and goal-aware refinement.
 
 **Schema:**
 
 ```jsonc
 {
-  "sessionState": {
-    "activeGoal": "Find decision records about fusion scoring",
-    "seenResultIds": [12, 18],
-    "openQuestions": ["What weighting does graph channel use?"],
-    "preferredAnchors": ["state", "next-steps"]
+  "data": {
+    "sessionState": {
+      "activeGoal": "Find decision records about fusion scoring",
+      "seenResultIds": [12, 18],
+      "openQuestions": ["What weighting does graph channel use?"],
+      "preferredAnchors": ["state", "next-steps"]
+    },
+    "goalRefinement": {
+      "activeGoal": "Find decision records about fusion scoring",
+      "applied": true
+    }
   }
 }
 ```
 
 **Acceptance Criteria:**
-- Session state persists across queries within a retrieval session.
-- Dedup respects `seenResultIds` — previously returned results are deprioritized.
-- Follow-up query quality improves with session context (open questions, goal awareness).
+- `data.sessionState` is returned for session-aware searches while preserving the existing response shape.
+- Dedup respects `seenResultIds` and falls back to score-based deprioritization when the legacy session manager is unavailable.
+- `data.goalRefinement` is returned when an active goal is inferred or refreshed from the current query.
 
 ---
 
@@ -223,8 +236,8 @@ The D5 research agent found the system already has basic empty-result handling, 
 | No silent empty results               | Every empty/weak retrieval returns recovery payload             |
 | Every result has confidence + why     | 100% of results carry confidence label and why.summary          |
 | Mode-aware responses reduce tokens    | `quick` mode uses measurably fewer tokens than full response    |
-| Progressive disclosure available      | Summary layer + continuation cursors functional                 |
-| Session state operational             | State persists, dedup works, follow-ups improve                 |
+| Progressive disclosure available      | Full results preserved plus companion disclosure and cursor flow |
+| Session state operational             | Additive session state and goal refinement emitted live         |
 
 ---
 

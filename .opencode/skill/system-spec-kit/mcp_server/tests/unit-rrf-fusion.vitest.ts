@@ -1,6 +1,6 @@
 // TEST: RRF Fusion (C138-P3) — Cross-Variant Multi-Query Fusion
 // Converted from: unit-rrf-fusion.test.ts (custom runner)
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import type { FusionResult } from '@spec-kit/shared/algorithms/rrf-fusion';
 import { fuseResults, fuseResultsMulti, fuseResultsCrossVariant, SOURCE_TYPES } from '@spec-kit/shared/algorithms/rrf-fusion';
 
@@ -8,6 +8,21 @@ function requireResult<T>(value: T | undefined): T {
   expect(value).toBeDefined();
   return value as T;
 }
+
+// Disable calibrated overlap bonus so tests exercise the flat CONVERGENCE_BONUS (0.10) path.
+// The calibrated mode (graduated-ON) caps bonuses at CALIBRATED_OVERLAP_MAX (0.06), which
+// would cause these convergence bonus assertions to fail.
+const savedCalibratedOverlap = process.env.SPECKIT_CALIBRATED_OVERLAP_BONUS;
+beforeAll(() => {
+  process.env.SPECKIT_CALIBRATED_OVERLAP_BONUS = 'false';
+});
+afterAll(() => {
+  if (savedCalibratedOverlap === undefined) {
+    delete process.env.SPECKIT_CALIBRATED_OVERLAP_BONUS;
+  } else {
+    process.env.SPECKIT_CALIBRATED_OVERLAP_BONUS = savedCalibratedOverlap;
+  }
+});
 
 describe('RRF Fusion (T001-T006)', () => {
   it('T001: Fuses results from multiple sources', () => {

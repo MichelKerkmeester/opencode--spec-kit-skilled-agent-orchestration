@@ -362,14 +362,22 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       expect(result.importanceWeight).toBeCloseTo(0.6); // min(1.0, 0.5 + 0.1)
       expect(result.similarity).toBe(0.90);
 
-      // Verify DB update
-      const row = testDb.prepare('SELECT content_text, importance_weight FROM memory_index WHERE id = 100').get() as {
+      // F04-001: Append-only merge — old row (id=100) is archived, new row holds merged content.
+      const oldRow = testDb.prepare('SELECT is_archived FROM memory_index WHERE id = 100').get() as {
+        is_archived: number;
+      };
+      expect(oldRow.is_archived).toBe(1);
+
+      // Verify the NEW merged row (latest insert after id=100)
+      const newRow = testDb.prepare(
+        'SELECT content_text, importance_weight FROM memory_index WHERE id > 100 ORDER BY id DESC LIMIT 1'
+      ).get() as {
         content_text: string | null;
         importance_weight: number;
       };
-      expect(row.importance_weight).toBeCloseTo(0.6);
-      expect(row.content_text).toContain('Existing content line A');
-      expect(row.content_text).toContain('New unique content line B');
+      expect(newRow.importance_weight).toBeCloseTo(0.6);
+      expect(newRow.content_text).toContain('Existing content line A');
+      expect(newRow.content_text).toContain('New unique content line B');
     });
 
     it('MP2: importance_weight defaults to 0.5 if not present', async () => {
@@ -761,7 +769,7 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
       expect(result!.action).toBe('complement');
     });
 
-    it('EC2b: orphan cleanup records DELETE history when the cleanup delete succeeds', async () => {
+    it('EC2b: orphan cleanup via transaction rollback when executeConflict fails', async () => {
       testDb.prepare(`
         INSERT INTO memory_index (id, spec_folder, file_path, title, content_text, importance_weight, created_at, updated_at)
         VALUES (520, 'test-spec', '/test/520.md', 'Existing Memory', 'Existing content', 0.5, datetime('now'), datetime('now'))
@@ -788,14 +796,11 @@ describe('Reconsolidation-on-Save (TM-06)', () => {
         }
       )).rejects.toThrow('forced edge failure');
 
+      // F04-002: storeMemory + executeConflict are wrapped in a single transaction.
+      // When executeConflict throws, the transaction rolls back the storeMemory insert,
+      // so the orphan row is already gone without needing an explicit delete.
       const orphanRow = testDb.prepare('SELECT id FROM memory_index WHERE id = ?').get(orphanId);
       expect(orphanRow).toBeUndefined();
-      expect(getHistory(orphanId)).toEqual(expect.arrayContaining([
-        expect.objectContaining({
-          event: 'DELETE',
-          actor: 'mcp:reconsolidation_cleanup',
-        }),
-      ]));
 
       insertEdgeSpy.mockRestore();
     });

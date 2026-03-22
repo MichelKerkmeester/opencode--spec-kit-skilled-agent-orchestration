@@ -1713,5 +1713,6 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
 export { stripWorkflowHtmlOutsideCodeFences } from './content-cleaner';
 
 export {
+  filterTriggerPhrases,
   runWorkflow,
 };

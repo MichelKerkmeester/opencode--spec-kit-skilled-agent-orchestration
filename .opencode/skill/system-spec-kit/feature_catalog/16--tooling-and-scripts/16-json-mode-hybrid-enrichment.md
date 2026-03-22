@@ -104,14 +104,15 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 
 - Trigger phrase filter pipeline: 3-stage filter (path fragments, short tokens, shingle subsets) applied to auto-extracted phrases before manual merge.
 - Template sections for `toolCalls`/`exchanges` as compact strings.
-- `OPTIONAL_PLACEHOLDERS` cleanup: 8 phantom Session Integrity entries documented, Memory Classification and Session Dedup entries annotated.
+- `OPTIONAL_PLACEHOLDERS` cleanup: phantom Session Integrity placeholders remain documented as intentional suppressions, while live Memory Classification and Session Dedup fields are tracked separately.
 - Multi-token path fragment detection in post-save review.
 - Observation dedup at normalization time (string-equality).
-- Pre-save overlap check enabled by default (set `SPECKIT_PRE_SAVE_DEDUP=false` to disable).
+- Pre-save overlap check enabled by default (set `SPECKIT_PRE_SAVE_DEDUP=false` to disable). Current algorithm is advisory exact-match SHA1 comparison against the most recent 20 sibling memories.
 
 ### 3.10 Embedding visibility (Phase 004)
 
-- `RetryStats` accessor (`getEmbeddingRetryStats`) in `retry-manager.ts`.
+- Zero-DB `getEmbeddingRetryStats()` accessor in `retry-manager.ts`.
+- `embeddingRetry` returns an in-memory health snapshot refreshed by retry-manager queue scans and status mutations; the accessor itself does not hit SQLite.
 - `embeddingRetry` block in `memory_health` MCP response with: `pending`, `failed`, `retryAttempts`, `circuitBreakerOpen`, `lastRun`, `queueDepth`.
 
 ### 3.11 projectPhase override (Phase 002)
@@ -138,27 +139,40 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 | `scripts/extractors/collect-session-data.ts` | Wave 2 count, confidence, and outcome handling |
 | `scripts/extractors/quality-scorer.ts` | Quality score computation; penalty-only model (Phase 002 recalibration) |
 | `scripts/extractors/session-extractor.ts` | `resolveProjectPhase()` for projectPhase override |
-| `scripts/core/workflow.ts` | JSON/file authority behavior, structured-input routing, and post-save review invocation gating |
+| `scripts/core/workflow.ts` | JSON/file authority behavior, structured-input routing, trigger-phrase filtering, post-save review invocation gating, and SHA1-based pre-save overlap checks |
 | `scripts/core/post-save-review.ts` | Post-save review logic, severity grading, MEMORY METADATA-aware field checks, `computeReviewScorePenalty()`, multi-token path fragment detection |
 | `scripts/core/contamination-filter.ts` | Contamination filter extension: 4 additional text fields, 18 new patterns (33 -> 51 total) |
+| `scripts/lib/validate-memory-quality.ts` | V13 YAML parsing and memory-quality validation |
+| `scripts/renderers/template-renderer.ts` | Optional-placeholder handling for compact tool/exchange sections |
+| `templates/context_template.md` | Compact `toolCalls` and `exchanges` template sections |
 | `scripts/memory/generate-context.ts` | CLI help text and structured-first save workflow documentation |
-| `scripts/mcp/retry-manager.ts` | `getEmbeddingRetryStats()` accessor for embedding retry visibility |
-| `scripts/mcp/memory-health.ts` | `embeddingRetry` block in `memory_health` MCP response |
+| `mcp_server/lib/providers/retry-manager.ts` | `getEmbeddingRetryStats()` accessor for embedding retry visibility |
+| `mcp_server/handlers/memory-crud-health.ts` | `embeddingRetry` block in `memory_health` MCP response |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
 | `scripts/tests/generate-context-cli-authority.vitest.ts` | Structured-input precedence for `--stdin` and `--json` |
+| `scripts/tests/input-normalizer-unit.vitest.ts` | Fast-path field propagation, FILES conversion, and enum validation |
+| `scripts/tests/post-save-review.vitest.ts` | Post-save review PASS-path coverage and score-penalty computation |
+| `scripts/tests/project-phase-e2e.vitest.ts` | Explicit `projectPhase` propagation through the save pipeline |
+| `scripts/tests/quality-scorer-calibration.vitest.ts` | Live scorer calibration coverage |
 | `scripts/tests/task-enrichment.vitest.ts` | Summary enrichment and count preservation behavior |
+| `scripts/tests/template-mustache-sections.vitest.ts` | Compact `toolCalls` and `exchanges` template sections |
+| `scripts/tests/trigger-phrase-filter.vitest.ts` | Trigger-phrase filter coverage for path fragments, short tokens, and shingle subsets |
+| `scripts/tests/validation-v13-v14-v12.vitest.ts` | V12/V13/V14 validation behavior |
 | `scripts/tests/workflow-e2e.vitest.ts` | End-to-end save pipeline with structured JSON inputs |
+| `mcp_server/tests/embedding-retry-stats.vitest.ts` | `embeddingRetry` type and zero-state contract |
+| `mcp_server/tests/retry-manager-health.vitest.ts` | Zero-DB `embeddingRetry` snapshot accessor coverage |
 
 ---
 
 ## 5. VERIFICATION SOURCES
 
-- `cd .opencode/skill/system-spec-kit/scripts && npm run check`
-- `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/generate-context-cli-authority.vitest.ts tests/task-enrichment.vitest.ts tests/workflow-e2e.vitest.ts`
+- `cd .opencode/skill/system-spec-kit/scripts && npm run lint`
+- `cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/generate-context-cli-authority.vitest.ts tests/input-normalizer-unit.vitest.ts tests/post-save-review.vitest.ts tests/project-phase-e2e.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/task-enrichment.vitest.ts tests/template-mustache-sections.vitest.ts tests/trigger-phrase-filter.vitest.ts tests/validation-v13-v14-v12.vitest.ts tests/workflow-e2e.vitest.ts`
+- `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/embedding-retry-stats.vitest.ts tests/retry-manager-health.vitest.ts`
 
 ---
 

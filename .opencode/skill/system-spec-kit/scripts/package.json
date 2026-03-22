@@ -16,9 +16,10 @@
     "check": "npm run lint && npx tsx evals/check-no-mcp-lib-imports.ts && bash check-api-boundary.sh && npx tsx evals/check-architecture-boundaries.ts && npx tsx evals/check-allowlist-expiry.ts && npx tsx evals/check-source-dist-alignment.ts && npx tsx evals/check-no-mcp-lib-imports-ast.ts && npx tsx evals/check-handler-cycles-ast.ts"
   },
   "dependencies": {
-    "@spec-kit/mcp-server": "workspace:*",
-    "@spec-kit/shared": "workspace:*",
+    "@spec-kit/mcp-server": "file:../mcp_server",
+    "@spec-kit/shared": "file:../shared",
     "better-sqlite3": "12.6.2",
+    "js-yaml": "^4.1.1",
     "sqlite-vec": "0.1.7-alpha.2"
   },
   "optionalDependencies": {

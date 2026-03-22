@@ -194,3 +194,30 @@ describe('normalizeInputData importanceTier propagation (BUG-006)', () => {
     expect((result as NormalizedData).importanceTier).toBeUndefined();
   });
 });
+
+describe('normalizeInputData Phase 016 regressions', () => {
+  it('deduplicates duplicate observations in fast-path structured payloads', () => {
+    const result = normalizeInputData({
+      userPrompts: [{ prompt: 'test', timestamp: '2026-01-01T00:00:00Z' }],
+      recentContext: [{ request: 'test', learning: 'test' }],
+      observations: [
+        { type: 'feature', title: 'First', narrative: 'same narrative', facts: [] },
+        { type: 'feature', title: 'Second', narrative: 'same narrative', facts: [] },
+      ],
+    }) as NormalizedData;
+
+    expect(result.observations).toHaveLength(1);
+    expect(result.observations[0].title).toBe('First');
+  });
+
+  it('propagates projectPhase through fast-path structured payloads', () => {
+    const result = normalizeInputData({
+      userPrompts: [{ prompt: 'test', timestamp: '2026-01-01T00:00:00Z' }],
+      recentContext: [{ request: 'test', learning: 'test' }],
+      observations: [{ type: 'feature', title: 'test', narrative: 'test', facts: [] }],
+      projectPhase: 'IMPLEMENTATION',
+    }) as NormalizedData;
+
+    expect(result.projectPhase).toBe('IMPLEMENTATION');
+  });
+});

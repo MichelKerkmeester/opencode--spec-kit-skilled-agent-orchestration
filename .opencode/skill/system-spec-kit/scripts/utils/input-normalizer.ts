@@ -88,6 +88,8 @@ export interface RawInputData {
   importance_tier?: string;
   contextType?: string;
   context_type?: string;
+  projectPhase?: string;
+  project_phase?: string;
   FILES?: Array<NormalizedFileEntry | Record<string, unknown>>;
   observations?: Observation[];
   userPrompts?: NormalizedUserPrompt[];
@@ -120,6 +122,7 @@ export interface NormalizedData {
   TECHNICAL_CONTEXT?: Array<{ KEY: string; VALUE: string }>;
   importanceTier?: string;
   contextType?: string;
+  projectPhase?: string;
   // TODO(O3-12): Remove index signature once all dynamic fields are explicitly declared
   [key: string]: unknown;
 }
@@ -313,6 +316,28 @@ function mapTechnicalContext(techContext: Record<string, unknown>): Array<{ KEY:
       KEY: key,
       VALUE: typeof value === 'object' ? JSON.stringify(value) : String(value),
     }));
+}
+
+function dedupeObservationsByNarrative(observations: Observation[]): Observation[] {
+  const seenNarratives = new Set<string>();
+  const dedupedObservations: Observation[] = [];
+
+  for (const observation of observations) {
+    const dedupeKey = typeof observation === 'object'
+      && observation !== null
+      && typeof (observation as Record<string, unknown>).narrative === 'string'
+      ? (observation as Record<string, unknown>).narrative as string
+      : JSON.stringify(observation);
+
+    if (seenNarratives.has(dedupeKey)) {
+      continue;
+    }
+
+    seenNarratives.add(dedupeKey);
+    dedupedObservations.push(observation);
+  }
+
+  return dedupedObservations;
 }
 
 function buildNextStepsObservation(nextSteps: string[]): Observation {
@@ -538,6 +563,8 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
       }
     }
 
+    cloned.observations = dedupeObservationsByNarrative(cloned.observations);
+
     return cloned;
   }
 
@@ -625,18 +652,7 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
   }
 
   // Phase 004 T033: Observation dedup at normalization time — string-equality dedup
-  const seenNarratives = new Set<string>();
-  const dedupedObservations: Observation[] = [];
-  for (const obs of observations) {
-    const key = typeof obs === 'object' && obs !== null && typeof (obs as Record<string, unknown>).narrative === 'string'
-      ? (obs as Record<string, unknown>).narrative as string
-      : JSON.stringify(obs);
-    if (!seenNarratives.has(key)) {
-      seenNarratives.add(key);
-      dedupedObservations.push(obs);
-    }
-  }
-  normalized.observations = dedupedObservations;
+  normalized.observations = dedupeObservationsByNarrative(observations);
 
   normalized.userPrompts = [{
     prompt: sessionSummary || 'Manual context save',
@@ -669,7 +685,7 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
   // Phase 002 T029: Propagate projectPhase through slow-path (mirrors contextType pattern)
   const slowPathProjectPhase = (data as Record<string, unknown>).projectPhase || (data as Record<string, unknown>).project_phase;
   if (typeof slowPathProjectPhase === 'string' && slowPathProjectPhase.length > 0) {
-    (normalized as Record<string, unknown>).projectPhase = slowPathProjectPhase;
+    normalized.projectPhase = slowPathProjectPhase;
   }
 
   console.log('   \u2713 Transformed manual format to MCP-compatible structure');

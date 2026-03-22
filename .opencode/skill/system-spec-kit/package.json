@@ -12,12 +12,12 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "start": "npm run start --workspace=mcp_server",
+    "start": "npm run start --workspace=@spec-kit/mcp-server",
     "build": "tsc --build",
     "typecheck": "tsc -p shared/tsconfig.json && tsc --noEmit --composite false -p mcp_server/tsconfig.json && tsc --noEmit --composite false -p scripts/tsconfig.json",
     "build:watch": "tsc --build --watch",
-    "test": "npm run test:cli && npm run test:embeddings && npm run test:mcp && npm run test --workspace=scripts",
-    "test:mcp": "npm run test --workspace=mcp_server",
+    "test": "npm run test:cli && npm run test:embeddings && npm run test:mcp && npm run test --workspace=@spec-kit/scripts",
+    "test:mcp": "npm run test --workspace=@spec-kit/mcp-server",
     "test:cli": "node scripts/dist/memory/generate-context.js --help && echo 'CLI smoke test passed'",
     "test:task-enrichment": "node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts",
     "test:embeddings": "node scripts/tests/test-embeddings-factory.js",

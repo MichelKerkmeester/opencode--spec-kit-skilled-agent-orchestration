@@ -36,7 +36,7 @@ The `isGraphConceptRoutingEnabled()` function in `search-flags.ts` checks the fl
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/concept-routing.vitest.ts` | Concept routing logic and alias matching |
-| `mcp_server/tests/graph-concept-routing.vitest.ts` | Graph concept routing integration tests |
+| `mcp_server/tests/memory-search-ux-hooks.vitest.ts` | Live search integration coverage for graduated routing-adjacent UX hooks |
 
 ---
 

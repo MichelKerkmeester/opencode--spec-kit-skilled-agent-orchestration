@@ -46,12 +46,17 @@ const memoryContext: ToolDefinition = {
 // L2: Core - Primary operations (Token Budget: 1500)
 const memorySearch: ToolDefinition = {
   name: 'memory_search',
-  description: '[L2:Core] Search conversation memories semantically using vector similarity. Returns ranked results with similarity scores. Constitutional tier memories are ALWAYS included at the top of results (~2000 tokens max), regardless of query. Requires either query (string) OR concepts (array of 2-5 strings) for multi-concept AND search. Supports intent-aware retrieval (REQ-006) with task-specific weight adjustments. Token Budget: 1500.',
+  description: '[L2:Core] Search conversation memories semantically using vector similarity. Returns ranked results with similarity scores. Constitutional tier memories are ALWAYS included at the top of results (~2000 tokens max), regardless of query. Requires query (string), concepts (array of 2-5 strings), or cursor (string) for continuation pagination. Supports intent-aware retrieval (REQ-006) with task-specific weight adjustments. Token Budget: 1500.',
   inputSchema: {
     type: 'object',
     additionalProperties: false,
-    'x-requiredAnyOf': [['query'], ['concepts']],
+    'x-requiredAnyOf': [['query'], ['concepts'], ['cursor']],
     properties: {
+      cursor: {
+        type: 'string',
+        minLength: 1,
+        description: 'Opaque continuation cursor returned by progressive disclosure. When provided, resolves the next page without requiring a new query.'
+      },
       query: { type: 'string', minLength: 2, maxLength: 1000, description: 'Natural language search query' },
       concepts: {
         type: 'array',

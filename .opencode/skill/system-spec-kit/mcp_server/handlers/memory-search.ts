@@ -72,6 +72,18 @@ import {
   applyProfileToEnvelope,
   isResponseProfileEnabled,
 } from '../lib/response/profile-formatters';
+import {
+  buildProgressiveResponse,
+  extractSnippets,
+  isProgressiveDisclosureEnabled,
+  resolveCursor,
+} from '../lib/search/progressive-disclosure';
+import {
+  deduplicateResults as deduplicateWithSessionState,
+  isSessionRetrievalStateEnabled,
+  manager as retrievalSessionStateManager,
+  refineForGoal,
+} from '../lib/search/session-state';
 
 // Type imports for casting
 import type { IntentType, IntentWeights as IntentClassifierWeights } from '../lib/search/intent-classifier';
@@ -132,6 +144,12 @@ interface SearchCachePayload {
   hints: string[];
 }
 
+type SessionAwareResult = Record<string, unknown> & {
+  id: number | string;
+  score?: number;
+  content?: string;
+};
+
 // ChunkReassemblyResult — now imported from lib/search/chunk-reassembly.ts
 
 type IntentWeights = IntentClassifierWeights;
@@ -148,6 +166,7 @@ function toIntentWeightsConfig(weights: IntentWeights | null): IntentWeightsConf
 // EvalChannelPayload — now imported from lib/telemetry/eval-channel-tracking.ts
 
 interface SearchArgs {
+  cursor?: string;
   query?: string;
   concepts?: string[];
   specFolder?: string;
@@ -263,6 +282,45 @@ function extractSearchCachePayload(response: MCPResponse): SearchCachePayload | 
   }
 }
 
+function parseResponseEnvelope(
+  response: MCPResponse,
+): { firstEntry: { type: 'text'; text: string }; envelope: Record<string, unknown> } | null {
+  const firstEntry = response?.content?.[0];
+  if (!firstEntry || firstEntry.type !== 'text' || typeof firstEntry.text !== 'string') {
+    return null;
+  }
+
+  try {
+    return {
+      firstEntry,
+      envelope: JSON.parse(firstEntry.text) as Record<string, unknown>,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function replaceResponseEnvelope(
+  response: MCPResponse,
+  firstEntry: { type: 'text'; text: string },
+  envelope: Record<string, unknown>,
+): MCPResponse {
+  return {
+    ...response,
+    content: [{ ...firstEntry, text: JSON.stringify(envelope, null, 2) }],
+  };
+}
+
+function buildSessionStatePayload(sessionId: string): Record<string, unknown> {
+  const session = retrievalSessionStateManager.getOrCreate(sessionId);
+  return {
+    activeGoal: session.activeGoal,
+    seenResultIds: Array.from(session.seenResultIds),
+    openQuestions: [...session.openQuestions],
+    preferredAnchors: [...session.preferredAnchors],
+  };
+}
+
 function buildSearchResponseFromPayload(
   payload: SearchCachePayload,
   startTime: number,
@@ -338,6 +396,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   await checkDatabaseUpdated();
 
   const {
+    cursor,
     query,
     concepts,
     specFolder,
@@ -376,6 +435,34 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   const includeTraceByFlag = process.env.SPECKIT_RESPONSE_TRACE === 'true';
   const includeTrace = includeTraceByFlag || includeTraceArg === true;
 
+  if (typeof cursor === 'string' && cursor.trim().length > 0) {
+    const resolved = resolveCursor(cursor.trim());
+    if (!resolved) {
+      return createMCPErrorResponse({
+        tool: 'memory_search',
+        error: 'Cursor is invalid or expired',
+        code: 'E_VALIDATION',
+        details: { parameter: 'cursor' },
+        recovery: {
+          hint: 'Retry the original search to generate a fresh continuation cursor',
+        },
+      });
+    }
+
+    const snippetResults = extractSnippets(resolved.results);
+    return createMCPSuccessResponse({
+      tool: 'memory_search',
+      summary: `Returned ${snippetResults.length} continuation results`,
+      data: {
+        count: snippetResults.length,
+        results: snippetResults,
+        continuation: resolved.continuation,
+      },
+      startTime: _searchStartTime,
+      cacheHit: false,
+    });
+  }
+
   const qualityThreshold = resolveQualityThreshold(minQualityScore, min_quality_score);
   const normalizedScope = normalizeScopeContext({ tenantId, userId, agentId, sessionId, sharedSpaceId });
 
@@ -413,11 +500,11 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   if (!hasValidQuery && !hasValidConcepts) {
     return createMCPErrorResponse({
       tool: 'memory_search',
-      error: 'Either query (string) or concepts (array of 2-5 strings) is required',
+      error: 'Either query (string), concepts (array of 2-5 strings), or cursor (string) is required',
       code: 'E_VALIDATION',
       details: { parameter: 'query' },
       recovery: {
-        hint: 'Provide a query string or concepts array with 2-5 entries'
+        hint: 'Provide a query string, concepts array with 2-5 entries, or a continuation cursor'
       }
     });
   }
@@ -528,6 +615,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     : null;
 
   let responseToReturn: MCPResponse;
+  let goalRefinementPayload: Record<string, unknown> | null = null;
 
   if (cachedPayload) {
     responseToReturn = buildSearchResponseFromPayload(cachedPayload, _searchStartTime, true);
@@ -579,6 +667,25 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     };
 
     const pipelineResult: PipelineResult = await executePipeline(pipelineConfig);
+    let resultsForFormatting = pipelineResult.results as unknown as SessionAwareResult[];
+
+    if (sessionId && isSessionRetrievalStateEnabled()) {
+      const activeGoal = effectiveQuery.trim().length > 0 ? effectiveQuery : null;
+      if (activeGoal) {
+        retrievalSessionStateManager.updateGoal(sessionId, activeGoal);
+      }
+      if (Array.isArray(anchors) && anchors.length > 0) {
+        retrievalSessionStateManager.setAnchors(sessionId, anchors);
+      }
+
+      const goalRefinement = refineForGoal(resultsForFormatting, sessionId);
+      resultsForFormatting = goalRefinement.results as SessionAwareResult[];
+      goalRefinementPayload = {
+        activeGoal: goalRefinement.metadata.activeGoal,
+        applied: goalRefinement.metadata.refined,
+        boostedCount: goalRefinement.metadata.boostedCount,
+      };
+    }
 
     // Build extra data from pipeline metadata for response formatting
     const extraData: Record<string, unknown> = {
@@ -638,7 +745,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       const adaptiveShadow = buildAdaptiveShadowProposal(
         requireDb(),
         effectiveQuery,
-        pipelineResult.results as Array<Record<string, unknown> & { id: number }>,
+        resultsForFormatting as Array<Record<string, unknown> & { id: number }>,
       );
       if (adaptiveShadow) {
         extraData.adaptiveShadow = adaptiveShadow;
@@ -648,9 +755,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       // Adaptive proposal logging is best-effort only
     }
 
-    _evalChannelPayloads = buildEvalChannelPayloads(
-      pipelineResult.results as unknown as Array<Record<string, unknown>>
-    );
+    _evalChannelPayloads = buildEvalChannelPayloads(resultsForFormatting);
 
     const appliedBoosts = {
       session: { applied: pipelineResult.metadata.stage2.sessionBoostApplied },
@@ -659,8 +764,8 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     extraData.appliedBoosts = appliedBoosts;
     extraData.applied_boosts = appliedBoosts;
 
-    const formatted = await formatSearchResults(
-      pipelineResult.results as unknown as RawSearchResult[],
+    let formatted = await formatSearchResults(
+      resultsForFormatting as RawSearchResult[],
       pipelineConfig.searchType,
       includeContent,
       anchors,
@@ -685,6 +790,22 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       }
     }
 
+    if (isProgressiveDisclosureEnabled()) {
+      const parsedFormatted = parseResponseEnvelope(formatted);
+      if (parsedFormatted) {
+        const data = parsedFormatted.envelope.data && typeof parsedFormatted.envelope.data === 'object'
+          ? parsedFormatted.envelope.data as Record<string, unknown>
+          : {};
+        data.progressiveDisclosure = buildProgressiveResponse(
+          resultsForFormatting,
+          undefined,
+          effectiveQuery,
+        );
+        parsedFormatted.envelope.data = data;
+        formatted = replaceResponseEnvelope(formatted, parsedFormatted.firstEntry, parsedFormatted.envelope);
+      }
+    }
+
     const cachePayload = extractSearchCachePayload(formatted);
     if (cachePayload && cacheEnabled) {
       toolCache.set(cacheKey, cachePayload, { toolName: 'memory_search' });
@@ -693,6 +814,23 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     responseToReturn = cachePayload
       ? buildSearchResponseFromPayload(cachePayload, _searchStartTime, false)
       : formatted;
+  }
+
+  if (sessionId && isSessionRetrievalStateEnabled() && !sessionManager.isEnabled()) {
+    const parsedResponse = parseResponseEnvelope(responseToReturn);
+    const data = parsedResponse?.envelope.data && typeof parsedResponse.envelope.data === 'object'
+      ? parsedResponse.envelope.data as Record<string, unknown>
+      : null;
+      const existingResults = Array.isArray(data?.results) ? data.results as SessionAwareResult[] : null;
+
+    if (parsedResponse && data && existingResults && existingResults.length > 0) {
+      const deduped = deduplicateWithSessionState(existingResults, sessionId);
+      data.results = deduped.results as SessionAwareResult[];
+      data.count = deduped.results.length;
+      data.sessionDedup = deduped.metadata;
+      parsedResponse.envelope.data = data;
+      responseToReturn = replaceResponseEnvelope(responseToReturn, parsedResponse.firstEntry, parsedResponse.envelope);
+    }
   }
 
   // Apply session deduplication AFTER cache
@@ -767,6 +905,32 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
         ...responseToReturn,
         content: [{ type: 'text', text: JSON.stringify(resultsData, null, 2) }]
       } as MCPResponse;
+    }
+  }
+
+  if (sessionId && isSessionRetrievalStateEnabled()) {
+    const parsedResponse = parseResponseEnvelope(responseToReturn);
+    const data = parsedResponse?.envelope.data && typeof parsedResponse.envelope.data === 'object'
+      ? parsedResponse.envelope.data as Record<string, unknown>
+      : null;
+    const existingResults = Array.isArray(data?.results) ? data.results as Array<Record<string, unknown>> : [];
+
+    if (parsedResponse && data) {
+      const returnedIds = existingResults
+        .map((result) => result.id ?? result.resultId)
+        .filter((id): id is string | number => typeof id === 'string' || typeof id === 'number');
+
+      if (returnedIds.length > 0) {
+        retrievalSessionStateManager.markSeen(sessionId, returnedIds);
+      }
+
+      data.sessionState = buildSessionStatePayload(sessionId);
+      if (goalRefinementPayload) {
+        data.goalRefinement = goalRefinementPayload;
+      }
+
+      parsedResponse.envelope.data = data;
+      responseToReturn = replaceResponseEnvelope(responseToReturn, parsedResponse.firstEntry, parsedResponse.envelope);
     }
   }
 

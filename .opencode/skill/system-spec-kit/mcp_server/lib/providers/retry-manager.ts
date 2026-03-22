@@ -43,6 +43,8 @@ export interface EmbeddingRetryStats {
   queueDepth: number;
 }
 
+interface RetryHealthSnapshot extends EmbeddingRetryStats {}
+
 interface RetryResult {
   success: boolean;
   id?: number;
@@ -115,6 +117,14 @@ let backgroundJobRunning = false;
 // In-memory retry telemetry (never persisted to DB — read by getEmbeddingRetryStats)
 let lastBackgroundRunAt: string | null = null;
 let totalRetryAttempts = 0;
+const retryHealthSnapshot: RetryHealthSnapshot = {
+  pending: 0,
+  failed: 0,
+  retryAttempts: 0,
+  circuitBreakerOpen: false,
+  lastRun: null,
+  queueDepth: 0,
+};
 
 // T3-15 circuit breaker — prevents the background retry job from
 // Hammering the embedding API when the provider is entirely down. After
@@ -140,6 +150,7 @@ function isProviderCircuitOpen(): boolean {
 function recordProviderSuccess(): void {
   providerFailures = 0;
   providerCircuitOpenedAt = null;
+  retryHealthSnapshot.circuitBreakerOpen = false;
 }
 
 function recordProviderFailure(): void {
@@ -148,6 +159,43 @@ function recordProviderFailure(): void {
     providerCircuitOpenedAt = Date.now();
     console.warn(`[retry-manager] Embedding provider circuit breaker OPEN after ${providerFailures} consecutive failures. Cooldown: ${PROVIDER_COOLDOWN_MS}ms`);
   }
+  retryHealthSnapshot.circuitBreakerOpen = isProviderCircuitOpen();
+}
+
+function applyRetryHealthTransition(previousStatus: string | null | undefined, nextStatus: string): void {
+  if (previousStatus === 'pending') {
+    retryHealthSnapshot.pending = Math.max(0, retryHealthSnapshot.pending - 1);
+  }
+
+  if (previousStatus === 'pending' || previousStatus === 'retry') {
+    retryHealthSnapshot.queueDepth = Math.max(0, retryHealthSnapshot.queueDepth - 1);
+  }
+
+  if (nextStatus === 'pending') {
+    retryHealthSnapshot.pending++;
+    retryHealthSnapshot.queueDepth++;
+  }
+
+  if (nextStatus === 'retry') {
+    retryHealthSnapshot.queueDepth++;
+  }
+
+  if (previousStatus === 'failed') {
+    retryHealthSnapshot.failed = Math.max(0, retryHealthSnapshot.failed - 1);
+  }
+
+  if (nextStatus === 'failed') {
+    retryHealthSnapshot.failed++;
+  }
+}
+
+function refreshRetryHealthSnapshot(stats: RetryStats): void {
+  retryHealthSnapshot.pending = stats.pending;
+  retryHealthSnapshot.failed = stats.failed;
+  retryHealthSnapshot.retryAttempts = totalRetryAttempts;
+  retryHealthSnapshot.circuitBreakerOpen = isProviderCircuitOpen();
+  retryHealthSnapshot.lastRun = lastBackgroundRunAt;
+  retryHealthSnapshot.queueDepth = stats.queue_size;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -236,7 +284,7 @@ function getRetryStats(): RetryStats {
     FROM memory_index
   `).get() as Record<string, number>;
 
-  return {
+  const result = {
     pending: stats.pending || 0,
     retry: stats.retry || 0,
     failed: stats.failed || 0,
@@ -244,6 +292,9 @@ function getRetryStats(): RetryStats {
     total: stats.total || 0,
     queue_size: (stats.pending || 0) + (stats.retry || 0),
   };
+
+  refreshRetryHealthSnapshot(result);
+  return result;
 }
 
 /**
@@ -252,14 +303,13 @@ function getRetryStats(): RetryStats {
  * Returns zero-state when the retry manager has not yet been initialized.
  */
 function getEmbeddingRetryStats(): EmbeddingRetryStats {
-  const dbStats = getRetryStats();
   return {
-    pending: dbStats.pending,
-    failed: dbStats.failed,
+    pending: retryHealthSnapshot.pending,
+    failed: retryHealthSnapshot.failed,
     retryAttempts: totalRetryAttempts,
     circuitBreakerOpen: isProviderCircuitOpen(),
     lastRun: lastBackgroundRunAt,
-    queueDepth: dbStats.queue_size,
+    queueDepth: retryHealthSnapshot.queueDepth,
   };
 }
 
@@ -276,6 +326,11 @@ async function retryEmbedding(id: number, content: string): Promise<RetryResult>
   try {
     const memory = vectorIndex.getMemory(id);
     if (!memory) return { success: false, error: 'Memory not found' };
+    const previousStatus = typeof memory.embedding_status === 'string'
+      ? memory.embedding_status
+      : typeof (memory as { embeddingStatus?: unknown }).embeddingStatus === 'string'
+        ? (memory as { embeddingStatus?: string }).embeddingStatus ?? null
+        : null;
 
     if ((memory.retry_count as number) >= MAX_RETRIES) {
       markAsFailed(id, 'Maximum retry attempts exceeded');
@@ -346,6 +401,7 @@ async function retryEmbedding(id: number, content: string): Promise<RetryResult>
 
     try {
       updateTx();
+      applyRetryHealthTransition(previousStatus, 'success');
       return { success: true, id, dimensions: embedding.length };
     } catch (tx_error: unknown) {
       const message = tx_error instanceof Error ? tx_error.message : String(tx_error);
@@ -373,6 +429,11 @@ function incrementRetryCount(id: number, reason: string): void {
   }
 
   const newRetryCount = (Number(memory.retry_count) || 0) + 1;
+  const previousStatus = typeof memory.embedding_status === 'string'
+    ? memory.embedding_status
+    : typeof (memory as { embeddingStatus?: unknown }).embeddingStatus === 'string'
+      ? (memory as { embeddingStatus?: string }).embeddingStatus ?? null
+      : null;
 
   if (newRetryCount >= MAX_RETRIES) {
     markAsFailed(id, reason);
@@ -386,6 +447,7 @@ function incrementRetryCount(id: number, reason: string): void {
           updated_at = ?
       WHERE id = ?
     `).run(newRetryCount, now, reason, now, id);
+    applyRetryHealthTransition(previousStatus, 'retry');
   }
 }
 
@@ -396,6 +458,12 @@ function markAsFailed(id: number, reason: string): void {
     return;
   }
   const now = new Date().toISOString();
+  const memory = vectorIndex.getMemory(id);
+  const previousStatus = memory && typeof memory.embedding_status === 'string'
+    ? memory.embedding_status
+    : memory && typeof (memory as { embeddingStatus?: unknown }).embeddingStatus === 'string'
+      ? (memory as { embeddingStatus?: string }).embeddingStatus ?? null
+      : null;
 
   db.prepare(`
     UPDATE memory_index
@@ -404,12 +472,19 @@ function markAsFailed(id: number, reason: string): void {
         updated_at = ?
     WHERE id = ?
   `).run(reason, now, id);
+  applyRetryHealthTransition(previousStatus, 'failed');
 }
 
 function resetForRetry(id: number): boolean {
   const db = vectorIndex.getDb();
   if (!db) return false;
   const now = new Date().toISOString();
+  const memory = vectorIndex.getMemory(id);
+  const previousStatus = memory && typeof memory.embedding_status === 'string'
+    ? memory.embedding_status
+    : memory && typeof (memory as { embeddingStatus?: unknown }).embeddingStatus === 'string'
+      ? (memory as { embeddingStatus?: string }).embeddingStatus ?? null
+      : null;
 
   const result = db.prepare(`
     UPDATE memory_index
@@ -420,6 +495,10 @@ function resetForRetry(id: number): boolean {
         updated_at = ?
     WHERE id = ? AND embedding_status = 'failed'
   `).run(now, id);
+
+  if (result.changes > 0) {
+    applyRetryHealthTransition(previousStatus, 'retry');
+  }
 
   return result.changes > 0;
 }
@@ -557,6 +636,9 @@ async function runBackgroundJob(batchSize: number = BACKGROUND_JOB_CONFIG.batchS
     return { error: message };
   } finally {
     lastBackgroundRunAt = new Date().toISOString();
+    retryHealthSnapshot.lastRun = lastBackgroundRunAt;
+    retryHealthSnapshot.retryAttempts = totalRetryAttempts;
+    retryHealthSnapshot.circuitBreakerOpen = isProviderCircuitOpen();
     backgroundJobRunning = false;
   }
 }

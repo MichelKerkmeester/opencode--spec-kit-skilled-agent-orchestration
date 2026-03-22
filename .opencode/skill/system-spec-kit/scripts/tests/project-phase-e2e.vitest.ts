@@ -4,7 +4,7 @@
 // ───────────────────────────────────────────────────────────────
 
 import { describe, expect, it } from 'vitest';
-import { resolveProjectPhase } from '../extractors/session-extractor';
+import { buildProjectStateSnapshot, resolveProjectPhase } from '../extractors/session-extractor';
 
 /* ───────────────────────────────────────────────────────────────
    HELPERS
@@ -167,6 +167,22 @@ describe('resolveProjectPhase', () => {
         10
       );
       expect(result).toBe('RESEARCH');
+    });
+  });
+
+  describe('project state snapshot integration', () => {
+    it('honors explicit projectPhase overrides when building the snapshot', () => {
+      const snapshot = buildProjectStateSnapshot({
+        toolCounts: makeToolCounts({ Read: 10, Grep: 4 }),
+        observations: [makeObservation({ type: 'decision' })],
+        messageCount: 12,
+        FILES: [{ FILE_PATH: 'src/feature.ts', DESCRIPTION: 'Feature work' }],
+        SPEC_FILES: [],
+        specFolderPath: null,
+        explicitProjectPhase: 'IMPLEMENTATION',
+      });
+
+      expect(snapshot.projectPhase).toBe('IMPLEMENTATION');
     });
   });
 });

@@ -22,9 +22,11 @@ The session state module provides a `SessionStateManager` class (singleton patte
 
 Storage is in-memory only (no SQLite persistence, ephemeral by design). Sessions expire after `SESSION_TTL_MS = 30 minutes` of inactivity. LRU eviction kicks in at `MAX_SESSIONS = 100` concurrent sessions — the least-recently-updated session is evicted.
 
+The live search handler preserves normal search output and adds `data.sessionState` plus `data.goalRefinement` on session-aware searches. When the legacy session manager is disabled, the score-based session-state deduplication path remains active as a fallback.
+
 The manager exposes: `getOrCreate()`, `updateGoal()`, `markSeen()`, `addQuestion()`, `setAnchors()`, `clear()`, `clearAll()`, and a `size` property.
 
-Default OFF, set `SPECKIT_SESSION_RETRIEVAL_STATE_V1=true` to enable.
+Default ON (graduated). Set `SPECKIT_SESSION_RETRIEVAL_STATE_V1=false` to disable.
 
 ---
 
@@ -42,6 +44,7 @@ Default OFF, set `SPECKIT_SESSION_RETRIEVAL_STATE_V1=true` to enable.
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/session-state.vitest.ts` | Flag behavior, session CRUD, deduplication, goal refinement, TTL eviction, LRU eviction |
+| `mcp_server/tests/memory-search-ux-hooks.vitest.ts` | Live handler integration for `data.sessionState` and `data.goalRefinement` |
 
 ---
 
@@ -49,4 +52,4 @@ Default OFF, set `SPECKIT_SESSION_RETRIEVAL_STATE_V1=true` to enable.
 
 - Group: UX hooks
 - Source feature title: Retrieval session state
-- Current reality source: mcp_server/lib/search/session-state.ts module header and implementation
+- Current reality source: mcp_server/lib/search/session-state.ts and handlers/memory-search.ts

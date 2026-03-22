@@ -681,14 +681,6 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {{S
 5. **Resume with handover prompt** - Use continuation template above
 {{/RECOVERY_PRIORITY}}
 
-### Session Integrity Checks
-
-| Check | Status | Details |
-|-------|--------|---------|
-| Memory File Exists | {{MEMORY_FILE_EXISTS}} | {{MEMORY_FILE_PATH}} |
-| Index Entry Valid | {{INDEX_ENTRY_VALID}} | Last indexed: {{LAST_INDEXED}} |
-| Checksums Match | {{CHECKSUMS_MATCH}} | {{CHECKSUM_DETAILS}} |
-| No Dedup Conflicts | {{NO_DEDUP_CONFLICTS}} | {{DEDUP_CONFLICT_DETAILS}} |
 <!-- /ANCHOR:recovery-hints -->
 
 ---

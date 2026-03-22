@@ -32,14 +32,6 @@ type TemplateDataItem = Record<string, unknown> | string | number | boolean;
 const OPTIONAL_PLACEHOLDERS: Set<string> = new Set([
   // @planned(V2.2) — These placeholders suppress warnings for template sections not yet populated.
   // Remove these entries when the corresponding template sections are either populated or removed.
-  // Session Integrity Checks (V2.2) — Phase 004 T026: 8 phantom entries, zero construction sites
-  'MEMORY_FILE_EXISTS', 'MEMORY_FILE_PATH', 'INDEX_ENTRY_VALID', 'LAST_INDEXED',
-  'CHECKSUMS_MATCH', 'CHECKSUM_DETAILS', 'NO_DEDUP_CONFLICTS', 'DEDUP_CONFLICT_DETAILS',
-  // Memory Classification (V2.2) — Phase 004 T028: active via buildMemoryClassificationContext (un-suppress when template tests updated)
-  'MEMORY_TYPE', 'HALF_LIFE_DAYS', 'BASE_DECAY_RATE', 'ACCESS_BOOST_FACTOR',
-  'RECENCY_WEIGHT', 'IMPORTANCE_MULTIPLIER',
-  // Session Deduplication (V2.2) — Phase 004 T028: active via buildSessionDedupContext (un-suppress when template tests updated)
-  'MEMORIES_SURFACED_COUNT', 'DEDUP_SAVINGS_TOKENS', 'FINGERPRINT_HASH',
   // Postflight Learning Delta (V2.2) — intentionally nullable; suppress until postflight flow is stable
   'PREFLIGHT_KNOW_SCORE', 'POSTFLIGHT_KNOW_SCORE', 'DELTA_KNOW_SCORE', 'DELTA_KNOW_TREND',
   'PREFLIGHT_UNCERTAINTY_SCORE', 'POSTFLIGHT_UNCERTAINTY_SCORE', 'DELTA_UNCERTAINTY_SCORE', 'DELTA_UNCERTAINTY_TREND',

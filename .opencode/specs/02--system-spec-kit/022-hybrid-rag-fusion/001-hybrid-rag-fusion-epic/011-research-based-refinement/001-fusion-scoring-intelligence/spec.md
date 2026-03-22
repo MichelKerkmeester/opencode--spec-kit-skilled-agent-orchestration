@@ -257,7 +257,7 @@ The 8-feature vector captures all Stage 2 signals. A regularized linear model (L
 - **NFR-P03**: Learned combiner inference <= 1ms (linear model, 8 features)
 
 ### Reliability
-- **NFR-R01**: All feature flags default to OFF (no behavior change without explicit opt-in)
+- **NFR-R01**: All new capabilities remain feature-flagged; rollout state may graduate to default-on after validation, but effective flag state must remain reproducible and logged per query
 - **NFR-R02**: Fallback to existing RRF if any fusion policy throws or times out
 - **NFR-R03**: Learned combiner gracefully degrades to manual weights on model load failure
 

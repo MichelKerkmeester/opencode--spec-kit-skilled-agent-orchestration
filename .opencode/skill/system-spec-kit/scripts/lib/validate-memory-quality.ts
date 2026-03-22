@@ -18,6 +18,8 @@ import type { ContaminationAuditRecord } from './content-filter';
 import type { DataSource } from '../utils/input-normalizer';
 import { getSourceCapabilities, type KnownDataSource } from '../utils/source-capabilities';
 
+const yaml = require('js-yaml') as { load: (input: string) => unknown };
+
 type QualityRuleId = 'V1' | 'V2' | 'V3' | 'V4' | 'V5' | 'V6' | 'V7' | 'V8' | 'V9' | 'V10' | 'V11' | 'V12' | 'V13' | 'V14';
 
 type ValidationRuleSeverity = 'low' | 'medium' | 'high';
@@ -196,50 +198,52 @@ const TITLE_CONTAMINATION_PATTERNS: Array<{ pattern: RegExp; label: string }> = 
   { pattern: /^\d{3}(?:-[a-z0-9][a-z0-9-]*)?$/i, label: 'spec-id-only title' },
 ];
 
-/**
- * Perform lightweight YAML syntax validation on a raw frontmatter string.
- * Returns an error description string if a structural problem is detected,
- * or null when the frontmatter appears well-formed.
- *
- * This is intentionally conservative: it only flags unambiguous errors
- * (unclosed quoted strings, hard tab indentation) rather than attempting
- * full YAML parsing without a dedicated library.
- */
+function isYamlMapping(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function describeYamlParseError(error: unknown): string {
+  if (!(error instanceof Error)) {
+    return String(error);
+  }
+
+  const mark = error as Error & { mark?: { line?: number; column?: number } };
+  if (typeof mark.mark?.line === 'number') {
+    const line = mark.mark.line + 1;
+    const column = typeof mark.mark.column === 'number' ? `, column ${mark.mark.column + 1}` : '';
+    return `line ${line}${column}: ${error.message}`;
+  }
+
+  return error.message;
+}
+
+function loadYamlValue(raw: string): unknown {
+  return yaml.load(raw);
+}
+
+function parseYamlMapping(raw: string): Record<string, unknown> | null {
+  if (raw.trim().length === 0) {
+    return null;
+  }
+
+  try {
+    const parsed = loadYamlValue(raw);
+    return isYamlMapping(parsed) ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
 function validateFrontMatterSyntax(raw: string): string | null {
   try {
-    const lines = raw.split('\n');
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-
-      // Hard tabs are not valid YAML indentation
-      if (/^\t/.test(line)) {
-        return `line ${i + 1}: hard tab indentation is not valid YAML`;
-      }
-
-      // Detect unclosed single-quoted string: odd number of unescaped ' on a line
-      // that starts with a key: 'value pattern
-      const singleQuoteMatch = line.match(/:\s*'([^']*)$/);
-      if (singleQuoteMatch) {
-        // Check if the quote is closed on the same or a subsequent line (multi-line scalar)
-        const rest = lines.slice(i + 1).join('\n');
-        if (!rest.includes("'")) {
-          return `line ${i + 1}: unclosed single-quoted string`;
-        }
-      }
-
-      // Detect unclosed double-quoted string
-      const doubleQuoteMatch = line.match(/:\s*"([^"\\]*(\\.[^"\\]*)*)$/);
-      if (doubleQuoteMatch) {
-        const rest = lines.slice(i + 1).join('\n');
-        if (!rest.includes('"')) {
-          return `line ${i + 1}: unclosed double-quoted string`;
-        }
-      }
+    const parsed = loadYamlValue(raw);
+    if (parsed !== null && !isYamlMapping(parsed)) {
+      return 'frontmatter root must be a YAML mapping';
     }
+
     return null;
   } catch (err: unknown) {
-    // Defensive catch — syntax validation must never throw
-    return `syntax check error: ${err instanceof Error ? err.message : String(err)}`;
+    return describeYamlParseError(err);
   }
 }
 
@@ -281,6 +285,12 @@ function stripCodeSegments(content: string): string {
 }
 
 function extractYamlValue(frontMatter: string, key: string): string | null {
+  const parsedFrontMatter = parseYamlMapping(frontMatter);
+  const parsedValue = parsedFrontMatter?.[key];
+  if (typeof parsedValue === 'string' || typeof parsedValue === 'number' || typeof parsedValue === 'boolean') {
+    return String(parsedValue);
+  }
+
   const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const match = frontMatter.match(new RegExp(`^${escapedKey}:\\s*(.+)$`, 'm'));
   return match ? match[1].trim() : null;
@@ -306,6 +316,17 @@ function extractYamlValueFromContent(content: string, key: string): string | nul
 }
 
 function parseYamlList(frontMatter: string, key: string): string[] {
+  const parsedFrontMatter = parseYamlMapping(frontMatter);
+  const parsedList = parsedFrontMatter?.[key];
+  if (Array.isArray(parsedList)) {
+    return parsedList
+      .filter((item): item is string | number | boolean => (
+        typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean'
+      ))
+      .map((item) => String(item).trim())
+      .filter((item) => item.length > 0);
+  }
+
   const escapedKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const inlineMatch = frontMatter.match(new RegExp(`^${escapedKey}:\\s*\\[(.*)\\]\\s*$`, 'm'));
   if (inlineMatch) {

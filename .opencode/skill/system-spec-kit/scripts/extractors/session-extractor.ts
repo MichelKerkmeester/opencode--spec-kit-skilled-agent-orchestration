@@ -74,6 +74,7 @@ export interface ProjectStateParams {
   SPEC_FILES: SpecFileEntry[];
   specFolderPath: string | null;
   recentContext?: RecentContextEntry[];
+  explicitProjectPhase?: string | null;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -607,10 +608,10 @@ function detectSessionCharacteristics(
  * @returns Snapshot with project phase, active file, last/next actions, blockers, and file progress.
  */
 function buildProjectStateSnapshot(params: ProjectStateParams): ProjectStateSnapshot {
-  const { toolCounts, observations, messageCount, FILES, SPEC_FILES, recentContext } = params;
+  const { toolCounts, observations, messageCount, FILES, SPEC_FILES, recentContext, explicitProjectPhase } = params;
   const behavioralObservations = getBehavioralObservations(observations);
   return {
-    projectPhase: detectProjectPhase(toolCounts, observations, messageCount),
+    projectPhase: resolveProjectPhase(toolCounts, observations, messageCount, explicitProjectPhase),
     activeFile: extractActiveFile(observations, FILES),
     lastAction: behavioralObservations.slice(-1)[0]?.title || 'Context save initiated',
     nextAction: extractNextAction(behavioralObservations, recentContext),

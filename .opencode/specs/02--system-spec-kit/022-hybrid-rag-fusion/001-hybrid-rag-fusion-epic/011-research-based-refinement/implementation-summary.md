@@ -37,13 +37,13 @@ contextType: "implementation"
 | **Level** | 2 |
 | **Scope** | All 4 waves across all 5 dimensions — 29 research recommendations |
 | **Status** | Complete — all waves delivered |
-| **Date** | 2026-03-21 |
+| **Date** | 2026-03-22 |
 | **Wave 1 Commit** | `347d17c3c` |
 | **Wave 2-3 Commit** | `401076758` |
 | **LOC Added** | ~9,600+ (implementation) + ~8,000+ (tests) |
 | **Files Changed** | 25+ modified + 21 created (impl) + 37 test files |
 | **Feature Flags** | 22 of 28 created |
-| **Tests** | ~1,040+ new tests, 0 regressions |
+| **Tests** | ~1,040+ new tests plus 2026-03-22 targeted regression sweep (229 passing tests, build green) |
 | **Agent Dispatch** | W1: 5 Sonnet + 5 GPT-5.4 / W2-3: 3 Sonnet / W4: 5 Sonnet |
 <!-- /ANCHOR:metadata -->
 
@@ -69,7 +69,7 @@ contextType: "implementation"
 - `countStructuralSignals()`, `isShortCriticalException()` functions
 - Warn-only mode via `console.warn` on each bypass
 
-**Feature Flags:** `SPECKIT_IMPLICIT_FEEDBACK_LOG`, `SPECKIT_HYBRID_DECAY_POLICY`, `SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS` (all default OFF)
+**Feature Flags:** `SPECKIT_IMPLICIT_FEEDBACK_LOG`, `SPECKIT_HYBRID_DECAY_POLICY`, `SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS` (all default ON, graduated)
 
 ### D1: Fusion & Scoring Intelligence
 
@@ -85,7 +85,7 @@ contextType: "implementation"
 - `argmaxNdcg10()` with tie-break to lower K
 - `IntentClass` type, `JudgedQuery` type, full eval framework
 
-**Feature Flags:** `SPECKIT_CALIBRATED_OVERLAP_BONUS`, `SPECKIT_RRF_K_EXPERIMENTAL` (all default OFF)
+**Feature Flags:** `SPECKIT_CALIBRATED_OVERLAP_BONUS`, `SPECKIT_RRF_K_EXPERIMENTAL` (all default ON, graduated)
 
 ### D3: Graph-Augmented Retrieval
 
@@ -96,7 +96,7 @@ contextType: "implementation"
 - `resolveEdgePrior()`, `computeHopDecay()`, `computeIntentTraversalScore()` functions
 - Extended `applyCausalBoost()` with `CausalBoostOptions { graphDensity?, intent?, freshness? }`
 
-**Feature Flag:** `SPECKIT_TYPED_TRAVERSAL` (extends existing `SPECKIT_CAUSAL_BOOST`, default OFF)
+**Feature Flag:** `SPECKIT_TYPED_TRAVERSAL` (extends existing `SPECKIT_CAUSAL_BOOST`, default ON, graduated)
 
 ### D5: Retrieval UX & Result Presentation
 
@@ -116,7 +116,7 @@ contextType: "implementation"
 **Modified:** `mcp_server/handlers/memory-search.ts` (+41 lines)
 - Passes query and specFolder context to formatters
 
-**Feature Flags:** `SPECKIT_EMPTY_RESULT_RECOVERY_V1`, `SPECKIT_RESULT_CONFIDENCE_V1` (all default OFF)
+**Feature Flags:** `SPECKIT_EMPTY_RESULT_RECOVERY_V1`, `SPECKIT_RESULT_CONFIDENCE_V1` (all default ON, graduated)
 
 ### D2: Query Intelligence & Reformulation
 
@@ -138,7 +138,7 @@ contextType: "implementation"
 **Modified:** `mcp_server/lib/search/search-flags.ts` (+60 lines)
 - Registered all new feature flags for centralized discoverability
 
-**Feature Flags:** `SPECKIT_QUERY_DECOMPOSITION`, `SPECKIT_GRAPH_CONCEPT_ROUTING` (all default OFF)
+**Feature Flags:** `SPECKIT_QUERY_DECOMPOSITION`, `SPECKIT_GRAPH_CONCEPT_ROUTING` (all default ON, graduated)
 
 ---
 
@@ -155,7 +155,7 @@ contextType: "implementation"
 **Modified:** `mcp_server/handlers/save/post-insert.ts` (+30 lines)
 - Wired `onIndex()` as final enrichment step, gated by `isGraphRefreshEnabled() || isEntityLinkingEnabled()`
 
-**Feature Flags:** `SPECKIT_GRAPH_REFRESH_MODE` (`off`/`write_local`/`scheduled`), `SPECKIT_LLM_GRAPH_BACKFILL` (default OFF)
+**Feature Flags:** `SPECKIT_GRAPH_REFRESH_MODE` (`off`/`write_local`/`scheduled`, default `write_local`), `SPECKIT_LLM_GRAPH_BACKFILL` (default ON, graduated)
 
 ### D4.B: Batch Learning & Assistive Reconsolidation (Wave 2)
 
@@ -173,7 +173,7 @@ contextType: "implementation"
   - sim < 0.88: keep separate
 - `classifyAssistiveSimilarity()`, `classifyBorderline()`, `logAssistiveRecommendation()`
 
-**Feature Flags:** `SPECKIT_BATCH_LEARNED_FEEDBACK`, `SPECKIT_ASSISTIVE_RECONSOLIDATION` (all default OFF)
+**Feature Flags:** `SPECKIT_BATCH_LEARNED_FEEDBACK`, `SPECKIT_ASSISTIVE_RECONSOLIDATION` (all default ON, graduated)
 
 ### D1.B+C: Shadow Fusion Lab (Wave 3)
 
@@ -210,7 +210,7 @@ contextType: "implementation"
 **Modified:** `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` (+104 lines)
 - Wired LLM reformulation and HyDE into deep-mode path
 
-**Feature Flags:** `SPECKIT_LLM_REFORMULATION`, `SPECKIT_HYDE` (all default OFF)
+**Feature Flags:** `SPECKIT_LLM_REFORMULATION`, `SPECKIT_HYDE` (all default ON, graduated)
 
 ### D5.B: Explainability & Response Profiles (Wave 3)
 
@@ -235,7 +235,7 @@ contextType: "implementation"
 **Modified:** `mcp_server/handlers/memory-search.ts` (+27 lines)
 - Passes profile parameter through search pipeline
 
-**Feature Flags:** `SPECKIT_RESULT_EXPLAIN_V1`, `SPECKIT_RESPONSE_PROFILE_V1` (all default OFF)
+**Feature Flags:** `SPECKIT_RESULT_EXPLAIN_V1`, `SPECKIT_RESPONSE_PROFILE_V1` (all default ON, graduated)
 
 ---
 
@@ -253,7 +253,7 @@ contextType: "implementation"
 - `shadowScore()` — shadow-mode comparison (returns null when flag OFF)
 - All matrix math inline (transpose, multiply, Gaussian elimination) — no external dependencies
 
-**Feature Flag:** `SPECKIT_LEARNED_STAGE2_COMBINER` (default OFF, shadow-only)
+**Feature Flag:** `SPECKIT_LEARNED_STAGE2_COMBINER` (default ON, graduated, shadow-only)
 
 ### D4.C: Shadow Scoring with Holdout
 
@@ -266,7 +266,7 @@ contextType: "implementation"
 - `evaluatePromotionGate()` — 2-consecutive-week gate: `promote` / `wait` / `rollback`
 - `runShadowEvaluation()` — end-to-end pipeline
 
-**Feature Flag:** `SPECKIT_SHADOW_FEEDBACK` (default OFF, shadow-only)
+**Feature Flag:** `SPECKIT_SHADOW_FEEDBACK` (default ON, graduated, shadow-only)
 
 ### D3.C: Graph Calibration & Communities
 
@@ -277,7 +277,7 @@ contextType: "implementation"
 - `CalibrationProfile` with DEFAULT and AGGRESSIVE presets
 - `applyCommunityScoring()` — secondary-only, capped at 0.03
 
-**Feature Flag:** `SPECKIT_GRAPH_CALIBRATION_PROFILE` (default OFF)
+**Feature Flag:** `SPECKIT_GRAPH_CALIBRATION_PROFILE` (default ON, graduated)
 
 ### D2.C: Index-Time Surrogates
 
@@ -288,13 +288,13 @@ contextType: "implementation"
 - `matchSurrogates()` — weighted query-time matching (alias 0.3, question 0.4, summary 0.2, heading 0.1)
 - SQLite table `memory_surrogates` with batch loading
 
-**Feature Flag:** `SPECKIT_QUERY_SURROGATES` (default OFF)
+**Feature Flag:** `SPECKIT_QUERY_SURROGATES` (default ON, graduated)
 
 ### D5.C: Progressive Disclosure & Session State
 
 **New:** `mcp_server/lib/search/progressive-disclosure.ts` (310 lines)
 - REQ-D5-005: Summary layer + snippet extraction + cursor pagination
-- `buildProgressiveResponse()` — replaces hard tail-truncation
+- `buildProgressiveResponse()` — powers additive disclosure metadata while preserving full `data.results`
 - Base64 continuation cursors with 5-minute TTL
 
 **New:** `mcp_server/lib/search/session-state.ts` (320 lines)
@@ -304,7 +304,21 @@ contextType: "implementation"
 - `refineForGoal()` — keyword-overlap boost (up to 1.2x)
 - In-memory with 30-min TTL and LRU eviction at 100 sessions
 
-**Feature Flags:** `SPECKIT_PROGRESSIVE_DISCLOSURE_V1`, `SPECKIT_SESSION_RETRIEVAL_STATE_V1` (both default OFF)
+**Modified:** `mcp_server/handlers/memory-search.ts` (+live integration refresh)
+- Preserves full `data.results` while adding `data.progressiveDisclosure`
+- Accepts cursor-only continuation via `memory_search({ cursor })`
+- Emits additive `data.sessionState` and `data.goalRefinement`
+- Falls back to score-based session dedup when the legacy session manager is disabled
+
+**Modified:** `mcp_server/tool-schemas.ts` (+cursor contract)
+- `memory_search` accepts `cursor` as a standalone continuation input
+
+**Verification Refresh (2026-03-22):**
+- Removed obsolete `tests/graph-concept-routing.vitest.ts` because it targeted a superseded API
+- Added `tests/memory-search-ux-hooks.vitest.ts` for additive disclosure/session-state integration and cursor-only continuation
+- Reconfirmed `concept-routing`, `memory-search-ux-hooks`, `tool-input-schema`, `progressive-disclosure`, `session-state`, and `fusion-lab`
+
+**Feature Flags:** `SPECKIT_PROGRESSIVE_DISCLOSURE_V1`, `SPECKIT_SESSION_RETRIEVAL_STATE_V1` (both default ON, graduated)
 <!-- /ANCHOR:what-built -->
 
 <!-- ANCHOR:how-delivered -->
@@ -341,7 +355,7 @@ contextType: "implementation"
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-1. **All features default OFF** — Every new capability is behind a feature flag that defaults to OFF, ensuring zero behavior change without explicit opt-in.
+1. **Feature-flagged rollout with graduated defaults** — New capabilities remain feature-flagged, but validated features may graduate to default-on while still keeping rollout state explicit and reproducible.
 
 2. **D2 Phase A accelerated into Wave 1** — Though originally Wave 2 in the plan, D2's Phase A (decomposition + concept routing) has no Wave 1 dependencies and was implemented in parallel. [DEVIATION: Implemented ahead of schedule for efficiency]
 

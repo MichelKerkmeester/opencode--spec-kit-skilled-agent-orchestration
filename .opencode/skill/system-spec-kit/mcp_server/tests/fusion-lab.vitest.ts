@@ -77,9 +77,9 @@ afterEach(() => {
    ────────────────────────────────────────────────────────────── */
 
 describe('REQ-D1-002 Feature Flag (SPECKIT_FUSION_POLICY_SHADOW_V2)', () => {
-  it('D2-FF-1: flag is OFF by default', () => {
+  it('D2-FF-1: flag is ON by default', () => {
     delete process.env.SPECKIT_FUSION_POLICY_SHADOW_V2;
-    expect(isShadowFusionV2Enabled()).toBe(false);
+    expect(isShadowFusionV2Enabled()).toBe(true);
   });
 
   it('D2-FF-2: flag is OFF when set to "false"', () => {
