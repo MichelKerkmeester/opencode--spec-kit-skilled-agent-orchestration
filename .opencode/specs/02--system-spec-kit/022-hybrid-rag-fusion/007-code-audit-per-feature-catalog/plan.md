@@ -67,7 +67,7 @@ Feature Catalog → Phase Audits (parallel) → Findings → Synthesis → Remed
 - [x] Verify feature catalog currency
 
 ### Phase 2: Parallel Category Audits (001-018, 020)
-- [x] 001-retrieval (10 features) — 9 MATCH, 1 PARTIAL
+- [x] 001-retrieval (10 features) — 8 MATCH, 2 PARTIAL
 - [x] 002-mutation (10 features) — 8 MATCH, 2 PARTIAL
 - [x] 003-discovery (3 features) — 2 MATCH, 1 PARTIAL
 - [x] 004-maintenance (2 features) — 1 MATCH, 1 PARTIAL
@@ -79,7 +79,7 @@ Feature Catalog → Phase Audits (parallel) → Findings → Synthesis → Remed
 - [x] 010-graph-signal-activation (16 features) — 12 MATCH, 4 PARTIAL
 - [x] 011-scoring-and-calibration (23 features) — 20 MATCH, 3 PARTIAL
 - [x] 012-query-intelligence (11 features) — 8 MATCH, 3 PARTIAL
-- [x] 013-memory-quality-and-indexing (24 features) — 19 MATCH, 5 PARTIAL
+- [x] 013-memory-quality-and-indexing (24 features) — 20 MATCH, 4 PARTIAL
 - [x] 014-pipeline-architecture (22 features) — 19 MATCH, 3 PARTIAL
 - [x] 015-retrieval-enhancements (9 features) — 8 MATCH, 1 PARTIAL
 - [x] 016-tooling-and-scripts (17 features) — 16 MATCH, 1 PARTIAL

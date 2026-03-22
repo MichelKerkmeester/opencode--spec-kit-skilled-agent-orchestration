@@ -31,7 +31,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-All 4 governance features were audited — feature flag governance process, sunset audit, hierarchical scope governance, and shared memory rollout. The flag sunset audit claims 24 exported flags but actual count is 38+.
+All 4 governance features were audited — feature flag governance process, sunset audit, hierarchical scope governance, and shared memory rollout. The flag sunset audit claims 24 exported flags but actual count is 46.
 
 ### Audit Results
 
@@ -40,7 +40,7 @@ All 4 governance features were audited — feature flag governance process, suns
 ### Per-Feature Findings
 
 1. Feature flag governance: process document, accurately describes B8 signal ceiling
-2. Sunset audit: claims 24 flags, actual count is 38+; flag count stale
+2. Sunset audit: claims 24 flags, actual count is 46 (`search-flags.ts`); flag count stale
 3. Hierarchical scope: all 4 source files exist, scope model confirmed
 4. Shared memory rollout: deny-by-default, kill switch, all 6 files confirmed
 <!-- /ANCHOR:what-built -->
@@ -88,7 +88,7 @@ Each feature was verified by:
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Feature 02 flag count (24) is significantly stale** — actual count is 38+
+1. **Feature 02 flag count (24) is significantly stale** — actual count is 46
 <!-- /ANCHOR:limitations -->
 
 ---

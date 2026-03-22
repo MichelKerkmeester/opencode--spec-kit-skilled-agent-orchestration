@@ -156,19 +156,19 @@ Phase 1 (Prep) ──► Phase 2 (Audit 24 features) ──► Phase 3 (Synthesi
 ## FINDINGS SUMMARY
 
 **Audit completed:** 2026-03-22
-**Result:** 19 MATCH, 5 PARTIAL (0 FAIL)
+**Result:** 20 MATCH, 4 PARTIAL (0 FAIL)
 
 ### PARTIAL Findings
 
 | Feature | Issue | Remediation |
 |---------|-------|-------------|
-| F11 — Content-aware memory filename generation | `slugToTitle` attributed to wrong source file in catalog | Correct source file reference in feature catalog |
-| F12 — Duplicate and empty content prevention | Duplicate gate behavior evolved; source list includes unrelated files | Trim source list; re-verify gate logic description |
+| F11 — Content-aware memory filename generation | `slugToTitle` lives in `scripts/core/title-builder.ts` but that file is missing from catalog source list | Add `title-builder.ts` to catalog source list |
+| F12 — Duplicate and empty content prevention | Primary file `scripts/core/file-writer.ts` missing; source list bloated with 55+ unrelated files | Add `file-writer.ts`; trim unrelated files from catalog |
 | F13 — Entity normalization consolidation | `entity-linker.ts` missing from source list | Add `entity-linker.ts` to catalog source list |
 | F14 — Quality gate timer persistence | Source list massively inflated with tangentially related files | Reduce source list to primary implementation files only |
-| F23 — Hybrid decay policy | `applyHybridDecayPolicy` described as named export but is internal-only | Clarify export status in catalog; or promote to named export |
+| F23 — Hybrid decay policy | CORRECTED: now MATCH — `applyHybridDecayPolicy` IS exported at line 478 of `fsrs-scheduler.ts`; original audit finding was hallucinated | No remediation needed |
 
 ### Systemic Patterns
 - Source list accuracy is the dominant issue class (F11, F12, F13, F14 all involve incorrect or incomplete source attribution).
-- One naming/visibility discrepancy (F23) is a catalog description error rather than a source list error.
+- F23 was originally flagged as PARTIAL but verification confirmed `applyHybridDecayPolicy` is a named export — the audit finding was hallucinated.
 - No features were found to be unimplemented or fundamentally misrepresented in behavior.

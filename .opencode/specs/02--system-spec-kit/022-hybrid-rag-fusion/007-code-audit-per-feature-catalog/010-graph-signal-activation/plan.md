@@ -77,11 +77,11 @@ Read feature catalog entry → Locate source files → Compare description to im
 - [x] Audit: Graph and cognitive memory fixes — MATCH (minor file attribution)
 - [x] Audit: ANCHOR tags as graph nodes — MATCH (correctly DEFERRED)
 - [x] Audit: Causal neighbor boost and injection — MATCH
-- [x] Audit: Temporal contiguity layer — PARTIAL (@deprecated, never wired, catalog says active)
+- [x] Audit: Temporal contiguity layer — PARTIAL (CONFIRMED @deprecated: "Never wired into production pipeline. Superseded by FSRS v4 decay." Catalog incorrectly presents as active)
 - [x] Audit: Unified graph retrieval and deterministic ranking — MATCH
 - [x] Audit: Graph lifecycle refresh — PARTIAL (misleading inline comment)
 - [x] Audit: Async LLM graph backfill — PARTIAL (self-contradictory catalog default)
-- [x] Audit: Graph calibration profiles — PARTIAL (@deprecated, never wired, catalog says active)
+- [x] Audit: Graph calibration profiles — PARTIAL (CONFIRMED @deprecated: "Fully implemented and tested but never wired into Stage 2 pipeline." Catalog incorrectly presents as active)
 - [x] Audit: Typed traversal — MATCH
 
 ### Phase 3: Synthesis
@@ -156,10 +156,10 @@ F01 typed-weighted-degree, F02 co-activation-boost, F03 edge-density, F04 weight
 
 | Feature | Issue | Severity |
 |---------|-------|----------|
-| F11 temporal-contiguity | Module `@deprecated`, never wired; catalog presents as active | High |
+| F11 temporal-contiguity | CONFIRMED @deprecated — "Never wired into production pipeline. Superseded by FSRS v4 decay." Catalog must be updated to reflect deprecated status | High |
 | F13 graph-lifecycle | Misleading inline comment vs actual default behavior | Low |
 | F14 llm-graph-backfill | Self-contradictory default messaging within catalog entry | Medium |
-| F15 graph-calibration | Module `@deprecated`, never wired; catalog presents as active | High |
+| F15 graph-calibration | CONFIRMED @deprecated — "Fully implemented and tested but never wired into Stage 2 pipeline." Catalog must be updated to reflect deprecated status | High |
 
 ### Systemic Pattern
-Two features (F11, F15) share the same failure mode: a deprecated module left in the codebase with an active-facing catalog entry. These should be handled together in a single catalog-correction pass. The F14 contradiction and F13 comment are independent, lower-priority fixes.
+Two features (F11, F15) share the same failure mode: a CONFIRMED @deprecated module left in the codebase with an active-facing catalog entry that incorrectly presents it as a graduated feature. These must be handled together in a single catalog-correction pass to update status from active to DEPRECATED. The F14 contradiction and F13 comment are independent, lower-priority fixes.

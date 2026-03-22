@@ -183,11 +183,16 @@ The catalog entry for Embedding and API flags lists source file references that 
 
 **Remediation**: Update `feature_catalog/19--feature-flag-reference/` F05 source file paths to point to production files.
 
+### Flag Graduation Event (Post-Audit Finding)
+
+Commit `09acbe8ce` ("feat(system-spec-kit): graduate all Wave 1-4 feature flags to default ON") graduated 22 flags from opt-in to default-ON after this audit was performed. This Phase 020 audit covered 7 flag *categories* (search pipeline, session/cache, MCP config, memory/storage, embedding/API, debug/telemetry, CI/build) but did not audit individual flag behavior or default values. The graduation event changed the default state of 22 individual flags without modifying their catalog descriptions. A follow-up audit targeting individual flag default values is recommended.
+
 ---
 
 ## 13. OPEN QUESTIONS
 
 - F05 source file paths require a catalog update to point to production files (tracked finding, not a blocker).
+- Post-audit flag graduation: 22 flags changed from opt-in to default-ON (commit `09acbe8ce`). Individual flag default values were not in scope for this category-level audit.
 
 ---
 

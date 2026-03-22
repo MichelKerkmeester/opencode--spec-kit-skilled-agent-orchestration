@@ -174,7 +174,7 @@ Verify that all 10 Retrieval features are accurately documented in the feature c
 
 ## 13. AUDIT FINDINGS
 
-Audit completed 2026-03-22. Overall result: **8 MATCH, 1 MATCH with GAPS, 1 PARTIAL**.
+Audit completed 2026-03-22. Overall result: **8 MATCH, 2 PARTIAL**.
 
 ### Feature 01 — Unified context retrieval (memory_context): MATCH
 - All 164 source files confirmed to exist.
@@ -183,10 +183,11 @@ Audit completed 2026-03-22. Overall result: **8 MATCH, 1 MATCH with GAPS, 1 PART
 - `SPECKIT_PRESSURE_POLICY` and `SPECKIT_FOLDER_DISCOVERY` gating confirmed.
 - Minor: ~15 indirect dependency files not listed in catalog (reasonable omission, no action required).
 
-### Feature 02 — Semantic and lexical search (memory_search): MATCH with GAPS
+### Feature 02 — Semantic and lexical search (memory_search): PARTIAL
 - 4-stage pipeline confirmed as the sole runtime path.
 - Multi-concept queries, deep mode expansion, and cache all confirmed.
 - **GAP**: 15+ source files missing from catalog entry: `adaptive-ranking.ts`, `scope-governance.ts`, `profile-formatters.ts`, `progressive-disclosure.ts`, `session-state.ts`, `chunk-reassembly.ts`, `search-utils.ts`, `eval-channel-tracking.ts`, `feedback-ledger.ts`, `shared-spaces.ts`, `query-decomposer.ts`, `entity-linker.ts`, `llm-reformulation.ts`, `hyde.ts`, `stage2b-enrichment.ts`.
+- Reclassified per deep research: 15+ missing source files warrants PARTIAL, not MATCH.
 
 ### Feature 03 — Trigger phrase matching (memory_match_triggers): MATCH
 - Most accurately documented feature in this category.

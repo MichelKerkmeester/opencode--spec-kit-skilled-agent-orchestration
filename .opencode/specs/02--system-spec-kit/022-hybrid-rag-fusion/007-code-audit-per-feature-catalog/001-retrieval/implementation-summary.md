@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Retrieval"
-description: "10 features audited: 9 MATCH, 1 PARTIAL, 0 MISMATCH"
+description: "10 features audited: 8 MATCH, 2 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "retrieval"
@@ -35,12 +35,12 @@ The Retrieval audit verified all 10 features powering the memory search pipeline
 
 ### Audit Results
 
-10 features audited: 9 MATCH, 1 PARTIAL, 0 MISMATCH.
+10 features audited: 8 MATCH, 2 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
 1. memory_context: 7 intent types, 5 modes, token budgets all confirmed
-2. memory_search: 4-stage pipeline confirmed as sole path; 15+ source files missing from catalog
+2. memory_search: PARTIAL — 4-stage pipeline confirmed as sole path; 15+ source files missing from catalog (reclassified per deep research)
 3. memory_match_triggers: most accurately documented feature, zero discrepancies
 4. hybrid search pipeline: 5 channels with correct weights confirmed
 5. 4-stage pipeline: stage timeout, signal order, score immutability all verified

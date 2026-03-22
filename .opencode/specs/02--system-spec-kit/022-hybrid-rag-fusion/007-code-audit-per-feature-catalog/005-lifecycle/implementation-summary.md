@@ -31,7 +31,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The Lifecycle audit covered checkpoints (create, list, restore, delete), async ingestion, pending-file recovery, and automatic archival. Checkpoint features share identical bloated source lists. The archival subsystem has a behavioral mismatch: vector re-embedding happens immediately on unarchive, not deferred as catalog claims.
+The Lifecycle audit covered checkpoints (create, list, restore, delete), async ingestion, pending-file recovery, and automatic archival. Checkpoint features share identical bloated source lists. The archival subsystem has a behavioral mismatch: vector re-embedding happens immediately on unarchive via `rebuildVectorOnUnarchive()` (archival-manager.ts:455), not deferred to next scan as the catalog claims. The call chain is `unarchiveMemory()` -> `syncVectorOnUnarchive()` -> `rebuildVectorOnUnarchive()` (fire-and-forget async).
 
 ### Audit Results
 
@@ -45,7 +45,7 @@ The Lifecycle audit covered checkpoints (create, list, restore, delete), async i
 4. checkpoint_delete: confirmName safety, boolean return confirmed
 5. Async ingestion: job states, sequential worker, forecast, SQLITE_BUSY retry confirmed
 6. Pending-file recovery: core behavior confirmed; 1 missing test file
-7. Automatic archival: vector re-embedding is immediate (not deferred as catalog claims)
+7. Automatic archival: vector re-embedding is immediate via `rebuildVectorOnUnarchive()` (archival-manager.ts:455) — fire-and-forget async, not deferred to next scan as catalog claims
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -91,7 +91,7 @@ Each feature was verified by:
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Feature 07 (archival): catalog says vector re-embedding deferred to next scan, but code shows immediate async re-embedding on unarchive**
+1. **Feature 07 (archival): catalog says vector re-embedding deferred to next scan, but `rebuildVectorOnUnarchive()` (archival-manager.ts:455) performs immediate async re-embedding via fire-and-forget in `syncVectorOnUnarchive()` (line 510)**
 2. **4 checkpoint-specific test files exist but are missing from all 4 checkpoint catalogs**
 <!-- /ANCHOR:limitations -->
 

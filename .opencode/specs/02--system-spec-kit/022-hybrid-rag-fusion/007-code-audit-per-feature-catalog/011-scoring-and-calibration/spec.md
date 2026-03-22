@@ -213,7 +213,7 @@ Audit completed 2026-03-22. 23 features verified. Result: **20 MATCH, 3 PARTIAL*
 |----|---------|-------|
 | F13 | Scoring and fusion corrections | Catalog lists file paths without `pipeline/` prefix — paths should be `pipeline/<file>` |
 | F22 | RRF K experimental tuning | Function name mismatch: catalog says `perIntentKSweep`, implementation uses `runJudgedKSweep` |
-| F23 | Fusion policy shadow evaluation V2 | Flag accessor listed in `search-flags.ts`; actual accessor is in `fusion-lab.ts` |
+| F23 | Fusion policy shadow evaluation V2 | Flag accessor `isShadowFeedbackEnabled()` confirmed in `search-flags.ts:397`. Corrected per deep research iteration 3+9 verification. |
 
 ### Systemic Patterns
 All behavioral descriptions are accurate. The three PARTIAL findings are limited to file path and naming precision (no functional discrepancies). No deprecated features detected. No undocumented features identified.
@@ -224,7 +224,7 @@ All behavioral descriptions are accurate. The three PARTIAL findings are limited
 
 - F13: Confirm canonical path prefix for scoring/fusion correction files (`pipeline/` vs root).
 - F22: Determine whether `perIntentKSweep` is an alias or whether the catalog should be updated to `runJudgedKSweep`.
-- F23: Verify whether `fusion-lab.ts` is the intended home for the shadow evaluation V2 flag accessor.
+- F23: Resolved — flag accessor `isShadowFeedbackEnabled()` is in `search-flags.ts:397`. Corrected per deep research iteration 3+9 verification.
 
 ---
 

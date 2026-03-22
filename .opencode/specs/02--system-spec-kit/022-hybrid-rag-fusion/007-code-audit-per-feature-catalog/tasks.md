@@ -33,7 +33,7 @@ contextType: "general"
 
 ## Phase 2: Category Audits
 
-- [x] T003 Audit 001-retrieval (10 features) — 9 MATCH, 1 PARTIAL
+- [x] T003 Audit 001-retrieval (10 features) — 8 MATCH, 2 PARTIAL
 - [x] T004 Audit 002-mutation (10 features) — 8 MATCH, 2 PARTIAL
 - [x] T005 Audit 003-discovery (3 features) — 2 MATCH, 1 PARTIAL
 - [x] T006 Audit 004-maintenance (2 features) — 1 MATCH, 1 PARTIAL
@@ -45,7 +45,7 @@ contextType: "general"
 - [x] T012 Audit 010-graph-signal-activation (16 features) — 12 MATCH, 4 PARTIAL
 - [x] T013 Audit 011-scoring-and-calibration (23 features) — 20 MATCH, 3 PARTIAL
 - [x] T014 Audit 012-query-intelligence (11 features) — 8 MATCH, 3 PARTIAL
-- [x] T015 Audit 013-memory-quality-and-indexing (24 features) — 19 MATCH, 5 PARTIAL
+- [x] T015 Audit 013-memory-quality-and-indexing (24 features) — 20 MATCH, 4 PARTIAL
 - [x] T016 Audit 014-pipeline-architecture (22 features) — 19 MATCH, 3 PARTIAL
 - [x] T017 Audit 015-retrieval-enhancements (9 features) — 8 MATCH, 1 PARTIAL
 - [x] T018 Audit 016-tooling-and-scripts (17 features) — 16 MATCH, 1 PARTIAL

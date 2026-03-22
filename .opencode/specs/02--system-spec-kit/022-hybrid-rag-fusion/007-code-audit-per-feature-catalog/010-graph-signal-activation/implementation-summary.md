@@ -31,7 +31,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-All 16 graph signal features were audited — from typed degree channels through community detection to typed traversal. The core graph infrastructure is well-documented. Two deprecated modules (temporal-contiguity, graph-calibration) are presented as active in the catalog, and the LLM backfill feature has self-contradictory default messaging.
+All 16 graph signal features were audited — from typed degree channels through community detection to typed traversal. The core graph infrastructure is well-documented. Two modules (temporal-contiguity, graph-calibration) are CONFIRMED @deprecated in source code but are incorrectly presented as active graduated features in the catalog, and the LLM backfill feature has self-contradictory default messaging.
 
 ### Audit Results
 
@@ -40,10 +40,10 @@ All 16 graph signal features were audited — from typed degree channels through
 ### Per-Feature Findings
 
 1. Typed degree, co-activation, edge density, weight history, momentum, causal depth, community detection, graph fixes, anchor tags, causal boost, unified graph, typed traversal: all MATCH
-2. Temporal contiguity: @deprecated/never wired, catalog says active
+2. Temporal contiguity: CONFIRMED @deprecated — "Never wired into production pipeline. Superseded by FSRS v4 decay." Catalog incorrectly presents as active
 3. Graph lifecycle: misleading inline comment vs actual default
 4. LLM backfill: contradictory default messaging within catalog
-5. Graph calibration: @deprecated/never wired, catalog says active
+5. Graph calibration: CONFIRMED @deprecated — "Fully implemented and tested but never wired into Stage 2 pipeline." Catalog incorrectly presents as active
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -89,7 +89,7 @@ Each feature was verified by:
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Temporal-contiguity and graph-calibration-profiles modules are @deprecated but catalog describes them as active graduated features**
+1. **Temporal-contiguity and graph-calibration-profiles modules are CONFIRMED @deprecated in source code (F11: "Never wired into production pipeline. Superseded by FSRS v4 decay."; F15: "Fully implemented and tested but never wired into Stage 2 pipeline.") but catalog incorrectly describes them as active graduated features**
 <!-- /ANCHOR:limitations -->
 
 ---

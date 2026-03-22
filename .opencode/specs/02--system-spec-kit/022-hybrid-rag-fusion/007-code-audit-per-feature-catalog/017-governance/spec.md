@@ -164,18 +164,18 @@ Verify that all 4 Governance features are accurately documented in the feature c
 | Feature | Result | Evidence |
 |---------|--------|----------|
 | F01: feature-flag-governance | MATCH | Process documentation only; no source files claimed — catalog description is accurate |
-| F02: feature-flag-sunset-audit | PARTIAL | Catalog states 24 feature flags; actual count is 38+; flag count is stale and requires update |
+| F02: feature-flag-sunset-audit | PARTIAL | Catalog states 24 feature flags; actual count is 46 (`grep -c "^export function is" search-flags.ts`); flag count is stale and requires update |
 | F03: hierarchical-scope-governance | MATCH | All 4 source files confirmed to exist; scope model (tenant → namespace → user) verified in code |
 | F04: shared-memory-rollout | MATCH | Deny-by-default posture and kill switch confirmed; all 6 referenced source files verified |
 
 **Overall result**: 3 MATCH, 1 PARTIAL
-**Action required**: Update F02 catalog entry — change flag count from 24 to 38+
+**Action required**: Update F02 catalog entry — change flag count from 24 to 46
 
 ---
 
 ## 13. OPEN QUESTIONS
 
-- F02 flag count stale: catalog claims 24 flags, actual implementation has 38+. Catalog entry should be corrected. — *RESOLVED: document the discrepancy; correction deferred to 020-feature-flag-reference phase*
+- F02 flag count stale: catalog claims 24 flags, actual implementation has 46 exported `is*` functions in `search-flags.ts`. Catalog entry should be corrected. — *RESOLVED: document the discrepancy; correction deferred to 020-feature-flag-reference phase*
 - No undocumented features found in this category.
 - No deprecated features identified.
 

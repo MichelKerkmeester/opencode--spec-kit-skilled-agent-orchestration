@@ -34,7 +34,7 @@ contextType: "general"
 
 ## Audit Quality
 
-- [x] CHK-010 [P0] All 10 features audited individually — F01–F10 each reviewed; 9 MATCH, 1 PARTIAL
+- [x] CHK-010 [P0] All 10 features audited individually — F01–F10 each reviewed; 8 MATCH, 2 PARTIAL
 - [x] CHK-011 [P0] Each feature cross-referenced with source code — catalog entries compared against actual source files
 - [x] CHK-012 [P1] Discrepancies documented with evidence — 2 GAPs found: stale source files in F02/F05, stage4-filter.ts misattribution in F08
 - [x] CHK-013 [P1] Source file references verified to exist — verified; stale refs in F02/F05 identified as catalog gaps
@@ -45,8 +45,8 @@ contextType: "general"
 ## Completeness
 
 - [x] CHK-020 [P0] Zero features skipped without documented reason — all 10 audited; F07 deferred status confirmed correct
-- [x] CHK-021 [P0] All findings categorized (match/mismatch/gap) — 9 MATCH, 1 PARTIAL; no outright mismatches
-- [x] CHK-022 [P1] Summary statistics compiled — 9/10 MATCH, 1/10 PARTIAL; 2 catalog gaps identified
+- [x] CHK-021 [P0] All findings categorized (match/mismatch/gap) — 8 MATCH, 2 PARTIAL; no outright mismatches
+- [x] CHK-022 [P1] Summary statistics compiled — 8/10 MATCH, 2/10 PARTIAL; 2 catalog gaps identified
 - [x] CHK-023 [P2] Recommendations for catalog updates documented — stale file listings in F02/F05 and stage4-filter.ts misattribution in F08 flagged for catalog update
 
 ---

@@ -45,7 +45,7 @@ contextType: "general"
 ## Completeness
 
 - [x] CHK-020 [P0] Zero features skipped without documented reason
-- [x] CHK-021 [P0] All findings categorized (match/mismatch/gap) — 19 MATCH, 5 PARTIAL
+- [x] CHK-021 [P0] All findings categorized (match/mismatch/gap) — 20 MATCH, 4 PARTIAL
 - [x] CHK-022 [P1] Summary statistics compiled
 - [x] CHK-023 [P2] Recommendations for catalog updates documented
 

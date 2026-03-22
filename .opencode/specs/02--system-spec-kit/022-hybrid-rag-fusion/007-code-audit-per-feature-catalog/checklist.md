@@ -59,6 +59,14 @@ contextType: "general"
 
 ---
 
+## Post-Audit Deep Research
+
+- [x] CHK-050 [P1] Deep research completed — 10 iterations, 11 questions answered, 5 systemic gap findings documented
+- [x] CHK-051 [P1] Wave 1 corrections applied — P001-F02 reclassified MATCH→PARTIAL, P013-F23 reclassified PARTIAL→MATCH (net zero change)
+- [x] CHK-052 [P2] Gap analysis integrated — findings added to parent spec.md and implementation-summary.md
+
+---
+
 ## L3+: SIGN-OFF
 
 | Approver | Role | Status | Date |
@@ -72,7 +80,7 @@ contextType: "general"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 6 | 6/6 |
-| P1 Items | 6 | 6/6 |
-| P2 Items | 2 | 2/2 |
+| P1 Items | 8 | 8/8 |
+| P2 Items | 3 | 3/3 |
 
 **Verification Date**: 2026-03-22

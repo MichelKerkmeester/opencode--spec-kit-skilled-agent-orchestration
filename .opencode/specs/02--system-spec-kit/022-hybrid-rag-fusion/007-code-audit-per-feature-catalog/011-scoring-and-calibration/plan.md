@@ -89,7 +89,7 @@ Read feature catalog entry → Locate source files → Compare description to im
 - [x] Audit: Shadow feedback holdout evaluation — MATCH
 - [x] Audit: Calibrated overlap bonus — MATCH
 - [x] Audit: RRF K experimental tuning — PARTIAL (function name: catalog `perIntentKSweep`, code `runJudgedKSweep`)
-- [x] Audit: Fusion policy shadow evaluation V2 — PARTIAL (flag accessor in `fusion-lab.ts`, not `search-flags.ts`)
+- [x] Audit: Fusion policy shadow evaluation V2 — PARTIAL (flag accessor `isShadowFeedbackEnabled()` confirmed in `search-flags.ts:397`. Corrected per deep research iteration 3+9 verification.)
 
 ### Phase 3: Synthesis
 - [x] Cross-reference findings across features
@@ -166,6 +166,6 @@ Phase 1 (Prep) ──► Phase 2 (Audit 23 features) ──► Phase 3 (Synthesi
 **PARTIAL details:**
 - **F13** (Scoring and fusion corrections): Catalog file paths missing `pipeline/` prefix
 - **F22** (RRF K experimental tuning): Function name in catalog (`perIntentKSweep`) differs from code (`runJudgedKSweep`)
-- **F23** (Fusion policy shadow evaluation V2): Flag accessor is in `fusion-lab.ts`, catalog lists `search-flags.ts`
+- **F23** (Fusion policy shadow evaluation V2): Flag accessor `isShadowFeedbackEnabled()` confirmed in `search-flags.ts:397`. Corrected per deep research iteration 3+9 verification.
 
 **Conclusion**: All behavioral descriptions are accurate. The three PARTIAL findings are naming/path precision issues only — no functional discrepancies detected. No deprecated or undocumented features found.

@@ -172,7 +172,7 @@ Audit completed 2026-03-22. Results per feature:
 
 ### F03 Discrepancy Detail
 
-- **D1 — Wrong source attribution**: `summarizeAliasConflicts` is documented as residing in `memory-index.ts` but is actually implemented in `memory-index-alias.ts`. Catalog source file list should be corrected.
+- **D1 — Wrong source attribution**: `summarizeAliasConflicts` is documented as residing in `memory-index.ts` but is actually defined in `mcp_server/handlers/memory-index-alias.ts` (line 153, verified on disk). `memory-index.ts` re-exports it (line 34). Catalog source file list should be corrected to reference the defining module.
 - **D2 — Undocumented response fields**: Full-mode health response includes fields not mentioned in the catalog: `embeddingRetry` stats, `repair.partialSuccess`, orphan cleanup counts, and integrity verification results. Catalog description should be extended to cover these.
 
 ---

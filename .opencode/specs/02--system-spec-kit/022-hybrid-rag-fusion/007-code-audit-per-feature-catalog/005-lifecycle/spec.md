@@ -192,7 +192,7 @@ Core recovery behavior confirmed. One test file missing from catalog: `transacti
 
 ### F07 — Automatic archival subsystem: PARTIAL
 
-Core archival behavior confirmed. Behavioral mismatch on unarchive path: catalog states vector re-embedding is deferred to next scan, but source code shows immediate async re-embedding on unarchive. Two source files missing from catalog: `bm25-index.ts`, `embeddings.ts`.
+Core archival behavior confirmed. **Behavioral mismatch on unarchive path**: catalog states vector re-embedding is "deferred to next scan," but code performs immediate async re-embedding. The call chain is: `unarchiveMemory()` (line 595) calls `syncVectorOnUnarchive()` (line 510), which fire-and-forgets `rebuildVectorOnUnarchive()` (line 455). That async function generates a fresh embedding via `generateDocumentEmbedding()` and inserts it into `vec_memories` in a DELETE+INSERT transaction (lines 498-501) — all within the same unarchive call, not deferred. Two source files missing from catalog: `bm25-index.ts`, `embeddings.ts`. Source: `archival-manager.ts` lines 455-515, 595-618.
 
 ---
 
@@ -201,7 +201,7 @@ Core archival behavior confirmed. Behavioral mismatch on unarchive path: catalog
 - Are there undocumented features in this category not yet in the catalog?
 - Have any features been deprecated since the last catalog update?
 - **[From audit]** Should the bloated source file lists for F01–F04 be deduplicated to their actual per-feature files?
-- **[From audit]** Does F07 catalog entry need to be corrected to reflect immediate re-embedding (not deferred)?
+- **[From audit]** F07 catalog entry must be corrected: `rebuildVectorOnUnarchive()` (archival-manager.ts:455) performs immediate async re-embedding, not deferred to next scan.
 
 ---
 

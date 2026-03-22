@@ -184,7 +184,7 @@ Audit completed 2026-03-22. Ten features (F01–F10) verified against source cod
 
 Behavioral descriptions are accurate. However, the source file list is materially incomplete and over-inclusive:
 
-- **Missing files (10+):** `spec-folder-mutex.ts`, `markdown-evidence-builder.ts`, `validation-responses.ts`, `v-rule-bridge.ts`, `lineage-state.ts`, `history.ts`, `scope-governance.ts`, `shared-spaces.ts`, `memory-sufficiency.ts`, `spec-doc-health.ts`
+- **Missing files (10+):** `spec-folder-mutex.ts`, `markdown-evidence-builder.ts`, `validation-responses.ts`, `v-rule-bridge.ts`, `lineage-state.ts`, `history.ts`, `scope-governance.ts`, `shared-spaces.ts`, `shared/parsing/memory-sufficiency.ts` (verified on disk), `shared/parsing/spec-doc-health.ts` (verified on disk)
 - **Over-inclusive:** Source list contains unrelated retrieval files that do not participate in the save path
 
 ### F02 — memory_update (Memory Metadata Update)

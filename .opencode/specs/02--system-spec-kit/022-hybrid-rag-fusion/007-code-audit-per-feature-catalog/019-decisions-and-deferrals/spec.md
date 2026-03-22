@@ -196,6 +196,37 @@ Modules that existed in earlier catalog versions or were partially built but are
 | `channel-attribution` | 007-evaluation (cross-cut) | Superseded by ablation framework; attribution logic now embedded in `eval/ablation.ts` | Yes — module removed |
 | `eval-ceiling` | 009-evaluation-and-measurement | Never wired to any retrieval path; concept absorbed into `eval/threshold-manager.ts` | Yes — never wired |
 
+### Cross-Cutting Blind Spots (Deep Research Findings)
+
+The following systemic gaps were identified by deep research analysis across all 20 audit phases. These represent structural audit blind spots that individual per-feature phases did not surface:
+
+#### BS-001: Session-Manager Unaudited Coverage
+
+`session-manager.ts` (1186 lines, 26 exported functions, ~85% unaudited). Only Phase 008 (Bug Fixes & Data Integrity) references it. The module controls deduplication, session state management, and cleanup — none of these responsibilities were verified as primary audit targets in any catalog feature file.
+
+#### BS-002: Zero-Mention Production Modules
+
+4 source files are active in production with zero catalog mentions across all 20 audit phases:
+
+| Module | Size | Role |
+|--------|------|------|
+| `attention-decay.ts` | 10 KB | Attention signal decay over time |
+| `tier-classifier.ts` | 17 KB | Memory tier classification |
+| `pressure-monitor.ts` | 2.7 KB | Memory pressure monitoring |
+| `mutation-feedback.ts` | 2.3 KB | Mutation feedback loop |
+
+#### BS-003: Hooks Layer Gap
+
+The `hooks/` directory (4 files, ~21 KB total, 17 importers across the codebase) has partial catalog coverage. Specifically, `mutation-feedback.ts` and `memory-surface.ts` have 0 catalog filename mentions despite being actively imported by other modules.
+
+#### BS-004: Audit Used Moving HEAD, Not Pinned SHA
+
+The audit was executed against a moving HEAD revision throughout all 20 phases, despite spec.md Risk R-003 in the parent `007-code-audit-per-feature-catalog` recommending commit pinning. This means features audited early in the sequence may have been verified against different code than features audited later.
+
+#### BS-005: Unreferenced Source Files
+
+32 source files (11% of the 290-file codebase) were never referenced in any catalog feature file across all 20 audit phases. These files may contain unaudited behavior, dead code, or features not yet cataloged.
+
 ---
 
 ## 13. OPEN QUESTIONS
@@ -203,6 +234,8 @@ Modules that existed in earlier catalog versions or were partially built but are
 - All catalog undocumented-feature questions resolved: no new features found outside catalog inventory.
 - No active deprecations remain unresolved; all 4 deprecated modules confirmed removed or superseded.
 - Deferred items DEF-001 through DEF-004 remain open for future scheduling; no blocking dependency on current system.
+- **[Deep Research]** BS-001 through BS-005 represent structural blind spots that require a cross-cutting re-audit pass to resolve. These are not addressable within any single per-feature phase.
+- **[Deep Research]** The 32 unreferenced source files (BS-005) need triage: dead code candidates vs. uncataloged features.
 
 ---
 

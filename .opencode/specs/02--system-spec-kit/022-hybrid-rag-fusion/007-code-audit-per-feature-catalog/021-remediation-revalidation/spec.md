@@ -193,6 +193,56 @@ All P0 items have been identified and documented. Catalog updates for P0 items a
 
 ---
 
+### Deep Research Findings: Re-Audit Plan
+
+Deep research analysis across all 20 audit phases surfaced additional systemic findings that expand the remediation scope beyond catalog hygiene.
+
+#### DR-001: Per-Phase Risk Scores
+
+Phase-level risk scoring identified two phases requiring priority re-audit:
+
+| Phase | Category | Risk Level | Reason |
+|-------|----------|------------|--------|
+| 011 | Scoring & Calibration | CRITICAL | Highest density of PARTIAL verdicts; function name mismatches, flag path errors, and deprecated-as-active modules |
+| 014 | Pipeline Architecture | CRITICAL | Core runtime path; session-manager (1186 lines) largely unaudited; pipeline orchestrator changes affect all retrieval |
+
+#### DR-002: 3-Tier Re-Audit Plan
+
+A structured re-audit plan estimated at 27-38 hours total:
+
+| Tier | Tasks | Scope | Est. Hours |
+|------|-------|-------|------------|
+| **S1-S2 (Structural)** | S1: Pin audit to specific SHA; S2: Cross-cutting audit of session-manager, hooks/, and 4 zero-mention modules | Foundation fixes before targeted work | 5-8 |
+| **T1-T7 (Targeted)** | Re-audit 7 highest-risk phases with corrected methodology | Phases 008, 010, 011, 012, 013, 014, 018 | 14-21 |
+| **N1-N3 (New Categories)** | N1: Audit 32 unreferenced source files; N2: Audit 6 uncataloged new files; N3: Verify 22 graduated flags | Coverage gaps not addressed by original audit | 8-9 |
+
+#### DR-003: Hallucination Rate in Corrections
+
+Deep research verified the accuracy of audit corrections and catalog references:
+- **File references**: 85.7% accurate (confirmed to exist on disk and match described role)
+- **Function name references**: Lower accuracy — some catalog corrections cited function names that did not exactly match source signatures (e.g., naming convention differences, wrapper vs. inner function)
+
+#### DR-004: 6 Uncataloged New Source Files
+
+These source files were added to the codebase during or after the audit period and have no catalog feature entry:
+
+| File | Role |
+|------|------|
+| `batch-learning.ts` | Batch learning pipeline |
+| `confidence-scoring.ts` | Confidence score computation |
+| `graph-calibration.ts` | Graph weight calibration |
+| `llm-cache.ts` | LLM response caching |
+| `recovery-payload.ts` | Recovery payload construction |
+| `result-explainability.ts` | Result explanation generation |
+
+These require new catalog feature entries before any re-audit can consider them covered.
+
+#### DR-005: 22 Feature Flags Graduated Mid-Audit
+
+22 feature flags graduated from `enabled: false` to `enabled: true` (or were removed entirely) during the audit period. This reversed their behavioral semantics — features that were disabled when early phases audited them became enabled by the time later phases ran. This is a direct consequence of the moving-HEAD audit methodology (see Phase 019 BS-004).
+
+---
+
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -262,6 +312,9 @@ All P0 items have been identified and documented. Catalog updates for P0 items a
 
 - Are there undocumented features in this category not yet in the catalog?
 - Have any features been deprecated since the last catalog update?
+- **[Deep Research]** DR-002 re-audit plan requires 27-38 hours — should this be executed as a single campaign or phased across sprints?
+- **[Deep Research]** DR-004 identifies 6 uncataloged files — should new catalog entries be created before or during the re-audit?
+- **[Deep Research]** DR-005's 22 graduated flags may have invalidated early-phase audit verdicts — what is the threshold for re-auditing those features?
 
 ---
 

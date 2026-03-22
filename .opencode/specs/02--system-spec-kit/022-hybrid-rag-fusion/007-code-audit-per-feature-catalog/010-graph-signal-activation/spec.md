@@ -187,16 +187,16 @@ Verify that all 16 Graph Signal Activation features are accurately documented in
 | F08 | graph-cognitive-fixes | MATCH | All 7 fixes verified; minor file attribution imprecision — negligible |
 | F09 | anchor-tags | MATCH | Correctly documented as DEFERRED; no implementation expected |
 | F10 | causal-neighbor-boost | MATCH | Constants and multipliers confirmed |
-| F11 | temporal-contiguity | PARTIAL | Module is `@deprecated` and never wired into the pipeline; catalog presents it as active |
+| F11 | temporal-contiguity | PARTIAL | CONFIRMED @deprecated — "Never wired into production pipeline. Superseded by FSRS v4 decay." Catalog must be updated to reflect deprecated status |
 | F12 | unified-graph | MATCH | Deterministic ranking and explainability confirmed |
 | F13 | graph-lifecycle | PARTIAL | Inline comment is misleading relative to actual default behavior in source |
 | F14 | llm-graph-backfill | PARTIAL | Catalog contains self-contradictory default messaging; needs reconciliation |
-| F15 | graph-calibration | PARTIAL | Module is `@deprecated` and never wired into the pipeline; catalog presents it as active |
+| F15 | graph-calibration | PARTIAL | CONFIRMED @deprecated — "Fully implemented and tested but never wired into Stage 2 pipeline." Catalog must be updated to reflect deprecated status |
 | F16 | typed-traversal | MATCH | All constants and intent-priority logic confirmed |
 
 ### Key Issues Requiring Follow-up
 
-1. **F11 / F15 — Deprecated modules presented as active**: Both `temporal-contiguity` and `graph-calibration` modules carry `@deprecated` annotations and are not wired into any active pipeline path. The catalog entries describe them as functional features. These entries should be updated to DEFERRED or DEPRECATED status, or the modules should be explicitly removed.
+1. **F11 / F15 — CONFIRMED @deprecated modules presented as active**: Both `temporal-contiguity` (deprecated: "Never wired into production pipeline. Superseded by FSRS v4 decay.") and `graph-calibration` (deprecated: "Fully implemented and tested but never wired into Stage 2 pipeline.") carry explicit `@deprecated` annotations in source code and are not wired into any active pipeline path. The catalog entries incorrectly describe them as graduated active features. These entries must be updated to DEPRECATED status to match the source code reality.
 
 2. **F14 — Self-contradictory catalog entry**: The `llm-graph-backfill` catalog entry contains conflicting statements about its default behavior. The entry must be reconciled to a single authoritative description.
 
@@ -207,7 +207,7 @@ Verify that all 16 Graph Signal Activation features are accurately documented in
 ## 13. OPEN QUESTIONS
 
 - **RESOLVED**: 14 of 16 features confirmed as accurately documented (MATCH).
-- **OPEN — F11, F15**: Should deprecated-but-documented modules be removed from the catalog or flagged as DEFERRED? Recommend a follow-up task to update those two catalog entries.
+- **OPEN — F11, F15**: Both modules are CONFIRMED @deprecated in source code (F11: superseded by FSRS v4 decay; F15: never wired into Stage 2 pipeline). Catalog entries must be corrected from active to DEPRECATED status. Recommend a follow-up task to update those two catalog entries.
 - **OPEN — F14**: Which of the two conflicting defaults in the `llm-graph-backfill` catalog entry is authoritative?
 - **OPEN — F13**: Inline comment in `graph-lifecycle` source should be corrected in a future maintenance pass.
 

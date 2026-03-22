@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Code Audit — Memory Quality & Indexing"
-description: "24 features audited: 19 MATCH, 5 PARTIAL, 0 MISMATCH"
+description: "24 features audited: 20 MATCH, 4 PARTIAL, 0 MISMATCH"
 trigger_phrases:
   - "implementation summary"
   - "memory quality & indexing"
@@ -31,20 +31,20 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The second-largest category with 24 features covering the full memory quality pipeline — from the verify-fix-verify loop through entity extraction to implicit feedback logging. 19 features are perfectly documented. Five have minor source list or naming issues.
+The second-largest category with 24 features covering the full memory quality pipeline — from the verify-fix-verify loop through entity extraction to implicit feedback logging. 20 features are perfectly documented. Four have minor source list issues (F11, F12, F13, F14). One original PARTIAL (F23) was corrected to MATCH after verifying the function is indeed exported.
 
 ### Audit Results
 
-24 features audited: 19 MATCH, 5 PARTIAL, 0 MISMATCH.
+24 features audited: 20 MATCH, 4 PARTIAL, 0 MISMATCH.
 
 ### Per-Feature Findings
 
-1. 19 features confirmed with behavioral accuracy across quality gates, content normalization, chunking, entity extraction, session enrichment, batch learning, and more
-2. F11: slugToTitle in title-builder.ts, not slug-utils.ts
-3. F12: duplicate gate behavior changed (returns filename instead of throwing)
-4. F13: entity-linker.ts missing from source list
-5. F14: source list massively inflated (30+ files for 1-file fix)
-6. F23: applyHybridDecayPolicy not a named export (logic is inline)
+1. 20 features confirmed with behavioral accuracy across quality gates, content normalization, chunking, entity extraction, session enrichment, batch learning, and more
+2. F11: `slugToTitle` lives in `scripts/core/title-builder.ts` but that file is missing from the catalog source list (only `slug-utils.ts` is listed)
+3. F12: primary implementation file `scripts/core/file-writer.ts` missing from catalog; source list bloated with 55+ unrelated files
+4. F13: `entity-linker.ts` missing from source list
+5. F14: source list massively inflated (55+ files for a feature implemented in few files)
+6. F23: CORRECTED to MATCH — `applyHybridDecayPolicy` IS a named export in `fsrs-scheduler.ts` (line 478); original audit finding was hallucinated
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -68,7 +68,7 @@ Each feature was verified by:
 
 | Decision | Why |
 |----------|-----|
-| Accept inline logic as equivalent to named export | Feature 23 hybrid decay policy is implemented inline in the scheduler, not as a standalone function |
+| F23 reclassified from PARTIAL to MATCH | `applyHybridDecayPolicy` IS a named export in `fsrs-scheduler.ts` (verified at line 478); original audit incorrectly claimed it was internal-only |
 <!-- /ANCHOR:decisions -->
 
 ---

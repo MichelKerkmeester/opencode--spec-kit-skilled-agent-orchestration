@@ -59,7 +59,7 @@ contextType: "general"
 - [x] T021 [P] Audit: Assistive reconsolidation — MATCH
 - [x] T022 [P] Audit: Implicit feedback log — MATCH
 - [x] T023 [P] Audit: Hybrid decay policy — MATCH
-- [x] T024 [P] Audit: Save quality gate exceptions — PARTIAL (F23: implementation exists but no named export; catalog references export that does not exist)
+- [x] T024 [P] Audit: Save quality gate exceptions — MATCH (F23 reclassified: applyHybridDecayPolicy IS exported at fsrs-scheduler.ts:478, verified per deep research)
 
 ---
 

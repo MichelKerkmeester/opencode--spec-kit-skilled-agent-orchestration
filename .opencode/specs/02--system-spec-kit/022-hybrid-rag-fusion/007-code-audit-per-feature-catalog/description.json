@@ -9,13 +9,15 @@
     "per",
     "catalog"
   ],
-  "lastUpdated": "2026-03-22T17:41:14.635Z",
+  "lastUpdated": "2026-03-22T18:20:28.922Z",
   "specId": "007",
   "folderSlug": "code-audit-per-feature-catalog",
   "parentChain": [
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "22-03-26_20-00__deep-research-on-code-audit-gaps-10-iterations-11.md"
+  ]
 }

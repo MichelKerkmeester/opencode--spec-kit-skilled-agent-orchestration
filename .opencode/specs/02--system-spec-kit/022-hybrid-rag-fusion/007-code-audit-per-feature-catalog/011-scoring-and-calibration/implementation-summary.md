@@ -42,7 +42,7 @@ The largest category with 23 features was audited. Score normalization, cold-sta
 1. 20 features confirmed with exact behavioral accuracy
 2. F13: stage2/stage3 paths missing pipeline/ directory segment
 3. F22: function name perIntentKSweep does not exist; actual is runJudgedKSweep
-4. F23: flag accessor isShadowFusionV2Enabled() in fusion-lab.ts, not search-flags.ts
+4. F23: flag accessor `isShadowFeedbackEnabled()` confirmed in `search-flags.ts:397`. Corrected per deep research iteration 3+9 verification.
 <!-- /ANCHOR:what-built -->
 
 ---

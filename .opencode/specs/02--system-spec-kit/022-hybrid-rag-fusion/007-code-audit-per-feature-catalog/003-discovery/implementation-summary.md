@@ -41,7 +41,7 @@ All three Discovery tools — memory list, system statistics, and health diagnos
 
 1. memory_list: sort fallback, pagination clamping, validation codes, response payload all verified
 2. memory_stats: folder ranking modes, scoring fallback, totalSpecFolders, graph metrics confirmed
-3. memory_health: summarizeAliasConflicts attributed to memory-index.ts but actually in memory-index-alias.ts; undocumented full-mode fields
+3. memory_health: `summarizeAliasConflicts` attributed to memory-index.ts but defined in mcp_server/handlers/memory-index-alias.ts (line 153, verified); memory-index.ts re-exports it (line 34); undocumented full-mode fields
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -65,7 +65,7 @@ Each feature was verified by:
 
 | Decision | Why |
 |----------|-----|
-| Accept re-export attribution as defensible | Import path references memory-index.ts which re-exports from memory-index-alias.ts |
+| Accept re-export attribution as defensible | `memory-index.ts` re-exports `summarizeAliasConflicts` (line 34) from `memory-index-alias.ts` where it is defined (line 153). Both verified on disk. |
 <!-- /ANCHOR:decisions -->
 
 ---

@@ -1,0 +1,19 @@
+{
+  "topic": "007-code-audit-per-feature-catalog: Find gaps, missed features, inaccuracies, and systemic issues in the completed code audit of 220+ features across 19 categories of the Spec Kit Memory MCP server",
+  "maxIterations": 15,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
+  "createdAt": "2026-03-22T18:22:00.000Z",
+  "status": "complete",
+  "executionMode": "auto",
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "iteration-*.md": "write-once",
+    "research.md": "mutable"
+  }
+}

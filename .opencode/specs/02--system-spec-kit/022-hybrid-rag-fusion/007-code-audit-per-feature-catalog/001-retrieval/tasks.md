@@ -37,7 +37,7 @@ contextType: "general"
 ## Phase 2: Feature Audit
 
 - [x] T001 [P] Audit: Unified context retrieval (memory_context) — MATCH: minor indirect deps not listed
-- [x] T002 [P] Audit: Semantic and lexical search (memory_search) — MATCH: 15+ source files missing from catalog
+- [x] T002 [P] Audit: Semantic and lexical search (memory_search) — PARTIAL: 15+ source files missing from catalog (reclassified per deep research)
 - [x] T003 [P] Audit: Trigger phrase matching (memory_match_triggers) — MATCH
 - [x] T004 [P] Audit: Hybrid search pipeline — MATCH: RSF stage labeling slightly misleading
 - [x] T005 [P] Audit: 4-stage pipeline architecture — MATCH: missing source files in catalog

@@ -39,7 +39,7 @@ The Mutation audit covered all 10 write-path features from memory_save through p
 
 ### Per-Feature Findings
 
-1. memory_save: 10+ source files missing from catalog (spec-folder-mutex, v-rule-bridge, etc.)
+1. memory_save: 10+ source files missing from catalog (spec-folder-mutex, v-rule-bridge, shared/parsing/memory-sufficiency.ts, shared/parsing/spec-doc-health.ts, etc. — all verified on disk)
 2. memory_update: handler, validation, embedding regen, BM25 re-index all confirmed
 3. memory_delete: single + bulk delete, auto-checkpoint, atomic transactions confirmed
 4. memory_bulk_delete: tier safety, checkpoint logic, olderThanDays validation confirmed

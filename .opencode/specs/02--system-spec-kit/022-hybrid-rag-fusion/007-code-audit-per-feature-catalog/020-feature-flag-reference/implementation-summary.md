@@ -88,6 +88,7 @@ Each feature was verified by:
 ## Known Limitations
 
 1. **COHERE_API_KEY, OPENAI_API_KEY, VOYAGE_API_KEY source references point to test files instead of production source files**
+2. **Post-audit flag graduation**: Commit `09acbe8ce` graduated 22 flags from opt-in to default-ON. This audit covered 7 flag categories but not individual flag default values, so the graduation event is outside the audit's scope but affects the behavioral accuracy of catalog entries.
 <!-- /ANCHOR:limitations -->
 
 ---

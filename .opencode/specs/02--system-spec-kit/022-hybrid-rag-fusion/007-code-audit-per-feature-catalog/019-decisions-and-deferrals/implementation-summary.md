@@ -31,17 +31,25 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This meta-phase synthesizes cross-cutting decisions and deferrals discovered across all 18 preceding audit phases. It documents 4 architectural decisions, 4 documented deferrals, and 4 deprecated/dead modules that require catalog attention.
+This meta-phase synthesizes cross-cutting decisions and deferrals discovered across all 18 preceding audit phases. It documents 4 architectural decisions, 4 documented deferrals, 4 deprecated/dead modules, and 5 cross-cutting blind spots discovered by deep research analysis.
 
 ### Audit Results
 
-Meta-phase: cross-cutting analysis across all audit phases.
+Meta-phase: cross-cutting analysis across all audit phases, augmented with deep research findings.
 
 ### Per-Feature Findings
 
 1. Decisions: 4-stage pipeline as sole runtime, PE gating 5-action model, graduated rollout, deny-by-default shared memory
 2. Deferrals: AST-level retrieval, warm server/daemon, anchor-tags-as-graph-nodes, full namespace CRUD
 3. Deprecated modules: temporal-contiguity, graph-calibration-profiles, channel-attribution, eval-ceiling
+
+### Cross-Cutting Blind Spots (Deep Research)
+
+4. Session-manager blind spot: 1186 lines, 26 functions, ~85% unaudited — only Phase 008 references it
+5. 4 zero-mention production modules: attention-decay.ts, tier-classifier.ts, pressure-monitor.ts, mutation-feedback.ts
+6. Hooks layer gap: mutation-feedback.ts and memory-surface.ts have 0 catalog filename mentions despite 17 importers
+7. Audit used moving HEAD instead of pinned SHA (violating parent spec R-003)
+8. 32 source files (11%) never referenced in any catalog feature file
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -89,6 +97,8 @@ Each feature was verified by:
 ## Known Limitations
 
 1. **No direct catalog mapping** — this phase is derived from cross-phase analysis
+2. **Deep research identified 5 structural blind spots** (BS-001 through BS-005) that were invisible to per-feature auditing and require a dedicated cross-cutting re-audit pass to resolve
+3. **Moving HEAD violation** — the audit did not pin to a specific SHA, meaning early and late phases may have verified against different code states
 <!-- /ANCHOR:limitations -->
 
 ---

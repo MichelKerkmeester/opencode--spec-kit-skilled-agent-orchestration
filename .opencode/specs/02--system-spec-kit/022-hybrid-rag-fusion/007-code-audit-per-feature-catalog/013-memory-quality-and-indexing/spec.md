@@ -181,7 +181,7 @@ Verify that all 24 Memory Quality and Indexing features are accurately documente
 
 ## 12. AUDIT FINDINGS
 
-Audit completed 2026-03-22. 24 features verified. Overall result: **19 MATCH, 5 PARTIAL**.
+Audit completed 2026-03-22. 24 features verified. Overall result: **20 MATCH, 4 PARTIAL**.
 
 ### Feature Results
 
@@ -197,8 +197,8 @@ Audit completed 2026-03-22. 24 features verified. Overall result: **19 MATCH, 5 
 | F08 | Anchor-aware chunk thinning | MATCH | |
 | F09 | Encoding-intent capture at index time | MATCH | |
 | F10 | Auto entity extraction | MATCH | |
-| F11 | Content-aware memory filename generation | PARTIAL | `slugToTitle` referenced in wrong source file in catalog |
-| F12 | Duplicate and empty content prevention | PARTIAL | Duplicate gate behavior changed; source list bloated with unrelated files |
+| F11 | Content-aware memory filename generation | PARTIAL | `slugToTitle` lives in `scripts/core/title-builder.ts` but that file is missing from catalog source list |
+| F12 | Duplicate and empty content prevention | PARTIAL | Primary file `scripts/core/file-writer.ts` missing from catalog; source list bloated with 55+ unrelated files |
 | F13 | Entity normalization consolidation | PARTIAL | `entity-linker.ts` missing from source list in catalog |
 | F14 | Quality gate timer persistence | PARTIAL | Source list massively inflated; many listed files are unrelated |
 | F15 | Deferred lexical-only indexing | MATCH | |
@@ -209,28 +209,28 @@ Audit completed 2026-03-22. 24 features verified. Overall result: **19 MATCH, 5 
 | F20 | Weekly batch feedback learning | MATCH | |
 | F21 | Assistive reconsolidation | MATCH | |
 | F22 | Implicit feedback log | MATCH | |
-| F23 | Hybrid decay policy | PARTIAL | `applyHybridDecayPolicy` is not a named export; referenced as internal function only |
+| F23 | Hybrid decay policy | MATCH | `applyHybridDecayPolicy` IS a named export in `fsrs-scheduler.ts` (line 478); catalog is accurate |
 | F24 | Save quality gate exceptions | MATCH | |
 
 ### PARTIAL Finding Details
 
-**F11 — slugToTitle in wrong file**: The catalog source list attributes `slugToTitle` to a file that does not contain it. The function resides in a different module. Catalog source reference needs correction.
+**F11 — title-builder.ts missing from catalog**: The catalog describes `slugToTitle()` in the feature overview but does not list its actual location (`scripts/core/title-builder.ts`) in the source files table. The function does not exist in `slug-utils.ts` (the only slug-related file listed). Catalog source list needs `title-builder.ts` added.
 
-**F12 — Duplicate gate source list bloated**: The duplicate and empty content prevention gate behavior has evolved (stricter deduplication path changed). The catalog source list includes several files whose relationship to this feature is indirect or absent.
+**F12 — Duplicate gate source list bloated**: The primary implementation file (`scripts/core/file-writer.ts` containing `validateContentSubstance` and `checkForDuplicateContent`) is not listed in the catalog. Meanwhile the catalog lists 55+ files (spanning embedding providers, scoring, vector index, etc.) whose relationship to duplicate/empty prevention is indirect or absent.
 
 **F13 — entity-linker.ts missing**: The entity normalization consolidation feature relies on `entity-linker.ts` as a primary implementation file, but that file is absent from the catalog's source list.
 
 **F14 — Quality gate timer persistence source list inflated**: The catalog lists significantly more source files than actually implement the timer persistence logic. Many listed files touch the quality gate tangentially or not at all.
 
-**F23 — applyHybridDecayPolicy not a named export**: The catalog describes `applyHybridDecayPolicy` as an exported function. In the actual source it is an internal/private function not exported from the module boundary. Consumers cannot reference it directly by that name.
+**F23 — CORRECTED (now MATCH)**: Original audit claimed `applyHybridDecayPolicy` was not a named export. Verification shows it IS explicitly exported at line 478 of `fsrs-scheduler.ts` via `export { ... applyHybridDecayPolicy ... }`. The catalog description is accurate. This finding was a hallucinated audit error.
 
 ---
 
 ## 13. OPEN QUESTIONS
 
 - Should `entity-linker.ts` (F13) be added to the catalog source list, or is it intentionally omitted?
-- Is the un-exported status of `applyHybridDecayPolicy` (F23) intentional design, or should it be promoted to a named export?
 - Should the bloated source lists for F12 and F14 be trimmed in a follow-on catalog-cleanup pass?
+- F12: Should `scripts/core/file-writer.ts` be added as the primary source file in the catalog?
 
 ---
 

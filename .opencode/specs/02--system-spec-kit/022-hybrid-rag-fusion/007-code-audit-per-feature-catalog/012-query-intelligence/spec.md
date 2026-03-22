@@ -173,8 +173,9 @@ Verify that all 11 Query Intelligence features are accurately documented in the 
 
 **Resolved by audit (2026-03-22):**
 - No undocumented features found; all 11 catalog entries map to source code.
-- F07/F08: `useQueryReformulation` flag header claims default=FALSE but runtime logic defaults ON — catalog description should clarify the inverted guard pattern.
-- F09: `surrogate-storage.ts` and `matchSurrogates()` are omitted from the catalog's source-file list; `matchSurrogates()` appears to be dead code at query time and should be flagged for removal or future wiring.
+- F07: `llm-reformulation.ts` header (line 17) says "default: FALSE, opt-in" but `isLlmReformulationEnabled()` (search-flags.ts:323) delegates to `isFeatureEnabled('SPECKIT_LLM_REFORMULATION')` (rollout-policy.ts:42) which treats undefined env vars as enabled at rollout=100%. Runtime default is ON.
+- F08: `hyde.ts` header (line 23) says "default: FALSE, opt-in" but `isHyDEEnabled()` (search-flags.ts:332) uses the same `isFeatureEnabled()` pattern — runtime default is ON. Additionally, `query-surrogates.ts` line 93 has a local `isQuerySurrogatesEnabled()` with the same header-vs-runtime contradiction.
+- F09: `matchSurrogates()` is defined in `query-surrogates.ts` (line 460), NOT in `surrogate-storage.ts`. A TODO comment at lines 405-408 explicitly states it is not wired into the search pipeline. Grep confirms it is only called from test files (`query-surrogates.vitest.ts`), never from `stage1-candidate-gen.ts` or `hybrid-search.ts`.
 
 ---
 
@@ -191,16 +192,16 @@ Verify that all 11 Query Intelligence features are accurately documented in the 
 | F04 | Confidence-based result truncation | MATCH | Truncation threshold logic confirmed |
 | F05 | Dynamic token budget allocation | MATCH | Budget allocation confirmed |
 | F06 | Query expansion | MATCH | Expansion paths verified |
-| F07 | LLM query reformulation | PARTIAL | `useQueryReformulation` flag: header documents default=FALSE, but runtime guard inverts this (defaults ON). Catalog needs clarification. |
-| F08 | HyDE (Hypothetical Document Embeddings) | PARTIAL | Same flag contradiction as F07; duplicate accessor definitions present. |
-| F09 | Index-time query surrogates | PARTIAL | `surrogate-storage.ts` and `matchSurrogates()` absent from catalog source-file list. `matchSurrogates()` appears dead code at query time. |
+| F07 | LLM query reformulation | PARTIAL | `llm-reformulation.ts` header (line 17) says "default: FALSE" but `isLlmReformulationEnabled()` (search-flags.ts:323) delegates to `isFeatureEnabled()` (rollout-policy.ts:42) which defaults ON for undefined env vars at rollout=100%. |
+| F08 | HyDE (Hypothetical Document Embeddings) | PARTIAL | `hyde.ts` header (line 23) says "default: FALSE" but `isHyDEEnabled()` (search-flags.ts:332) uses same `isFeatureEnabled()` pattern — defaults ON. Same contradiction as F07. |
+| F09 | Index-time query surrogates | PARTIAL | `matchSurrogates()` defined in `query-surrogates.ts` (line 460), not `surrogate-storage.ts`. TODO at lines 405-408 confirms it is not wired into the search pipeline. Only called from tests. |
 | F10 | Query decomposition | MATCH | Decomposition pipeline confirmed |
 | F11 | Graph concept routing | MATCH | Graph routing wiring verified |
 
 ### Systemic Findings
 
-1. **Flag default contradiction (F07, F08)**: The `useQueryReformulation` feature-flag guard is inverted relative to its documented default. Two features are affected. The catalog description should be updated to reflect the actual runtime behavior, or the guard logic should be corrected.
-2. **Dead/unwired code (F09)**: `matchSurrogates()` in `surrogate-storage.ts` is not called at query time. The file is also unlisted in the catalog. Recommend either wiring it or marking it as deferred/deprecated.
+1. **Flag default contradiction (F07, F08)**: Module headers in `llm-reformulation.ts` (line 17) and `hyde.ts` (line 23) both document "default: FALSE, opt-in," but the runtime accessor functions `isLlmReformulationEnabled()` (search-flags.ts:323) and `isHyDEEnabled()` (search-flags.ts:332) delegate to `isFeatureEnabled()` (rollout-policy.ts:42), which treats undefined env vars as enabled when `SPECKIT_ROLLOUT_PERCENT` is 100 (the default). This means both features default to ON at runtime, contradicting their headers. The `query-surrogates.ts` local flag (line 93, `isQuerySurrogatesEnabled()`) has the same contradiction pattern — header says "default OFF" but the function only disables on explicit `'false'`/`'0'`. Either the headers or the runtime logic should be corrected.
+2. **Dead/unwired code (F09)**: `matchSurrogates()` is defined in `query-surrogates.ts` (line 460), not in `surrogate-storage.ts` as previously noted. A TODO comment at lines 405-408 in `query-surrogates.ts` explicitly states: "Query-time surrogate matching is implemented but not wired into the search pipeline." Grep confirms it is called only from `query-surrogates.vitest.ts` (test file), never from `stage1-candidate-gen.ts` or `hybrid-search.ts`. Recommend wiring it into Stage 1 or marking as deferred.
 
 ---
 

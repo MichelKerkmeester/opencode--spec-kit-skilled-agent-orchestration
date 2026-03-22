@@ -103,7 +103,7 @@ Establish a verified baseline where every feature in the catalog has been audite
 
 | Phase | Folder | Scope | Dependencies | Status |
 |-------|--------|-------|--------------|--------|
-| 1 | `001-retrieval/` | Audit 10 retrieval features (memory_context, memory_search, etc.) | None | Complete (9M/1P) |
+| 1 | `001-retrieval/` | Audit 10 retrieval features (memory_context, memory_search, etc.) | None | Complete (8M/2P) |
 | 2 | `002-mutation/` | Audit 10 mutation features (memory_save, memory_update, etc.) | None | Complete (8M/2P) |
 | 3 | `003-discovery/` | Audit 3 discovery features (memory_list, memory_stats, memory_health) | None | Complete (2M/1P) |
 | 4 | `004-maintenance/` | Audit 2 maintenance features (index_scan, startup guards) | None | Complete (1M/1P) |
@@ -115,7 +115,7 @@ Establish a verified baseline where every feature in the catalog has been audite
 | 10 | `010-graph-signal-activation/` | Audit 16 graph signal features | None | Complete (12M/4P) |
 | 11 | `011-scoring-and-calibration/` | Audit 23 scoring/calibration features | None | Complete (20M/3P) |
 | 12 | `012-query-intelligence/` | Audit 11 query intelligence features | None | Complete (8M/3P) |
-| 13 | `013-memory-quality-and-indexing/` | Audit 24 memory quality features | None | Complete (19M/5P) |
+| 13 | `013-memory-quality-and-indexing/` | Audit 24 memory quality features | None | Complete (20M/4P) |
 | 14 | `014-pipeline-architecture/` | Audit 22 pipeline architecture features | None | Complete (19M/3P) |
 | 15 | `015-retrieval-enhancements/` | Audit 9 retrieval enhancement features | None | Complete (8M/1P) |
 | 16 | `016-tooling-and-scripts/` | Audit 17 tooling/script features | None | Complete (16M/1P) |
@@ -275,6 +275,20 @@ Establish a verified baseline where every feature in the catalog has been audite
 2. Mark deprecated modules (temporal-contiguity, graph-calibration) in catalog
 3. Fix flag default contradictions (header vs runtime)
 4. Add missing source files (history.ts, graph-signals.ts) to catalog entries
+
+### Deep Research Gap Analysis
+
+A post-audit deep research cycle (10 iterations, 11 questions answered) identified five systemic gaps:
+
+| # | Finding | Severity | Detail |
+|---|---------|----------|--------|
+| 1 | Coverage Gaps | HIGH | 32/286 source files unreferenced; 4 modules with zero mentions; session-manager 85% unaudited |
+| 2 | Accuracy Concerns | MEDIUM | 85.7% correction accuracy in Wave 1; 2 MATCH boundary reclassifications (net zero) |
+| 3 | Temporal Instability | HIGH | 82% files modified during audit; 22 flags graduated mid-audit |
+| 4 | Structural Blind Spots | MEDIUM | Cross-cutting modules inversely correlated with audit effectiveness |
+| 5 | Risk Concentration | CRITICAL | Phases 011 and 014 — highest density + deepest cross-module dependencies |
+
+**Re-audit estimate**: 27-38 hours targeting 32 unreferenced files and 2 critical phases to reach coverage threshold.
 
 ---
 
