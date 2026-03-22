@@ -7,7 +7,7 @@
 // per memory, enforces min-support and boost-cap guards, and
 // records the would-have-been shadow rank alongside the live rank.
 //
-// Feature flag: SPECKIT_BATCH_LEARNED_FEEDBACK (default OFF)
+// Feature flag: SPECKIT_BATCH_LEARNED_FEEDBACK (default ON, graduated)
 //
 // Key invariants:
 //   - Shadow-only: no live ranking columns are mutated
@@ -118,14 +118,13 @@ export interface BatchLearningResult {
    3. FEATURE FLAG
 ----------------------------------------------------------------*/
 
+import { isBatchLearnedFeedbackEnabled } from '../search/search-flags';
+
 /**
  * Check whether the batch learned feedback feature is enabled.
- * Default: FALSE (off). Set SPECKIT_BATCH_LEARNED_FEEDBACK=true to enable.
+ * Default: ON (graduated). Set SPECKIT_BATCH_LEARNED_FEEDBACK=false to disable.
  */
-export function isBatchLearnedFeedbackEnabled(): boolean {
-  const val = process.env.SPECKIT_BATCH_LEARNED_FEEDBACK?.toLowerCase().trim();
-  return val !== 'false' && val !== '0';
-}
+export { isBatchLearnedFeedbackEnabled };
 
 /* ───────────────────────────────────────────────────────────────
    4. SCHEMA

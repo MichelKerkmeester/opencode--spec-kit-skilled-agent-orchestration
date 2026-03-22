@@ -153,7 +153,8 @@ function createTestDb(): Database.Database {
       quality_flags TEXT,
       chunk_index INTEGER,
       chunk_label TEXT,
-      content_text TEXT
+      content_text TEXT,
+      is_archived INTEGER DEFAULT 0
     );
   `);
   return db;

@@ -7,7 +7,7 @@
 // no results, very low-confidence results, or only partial matches.
 // Provides the calling agent with actionable next steps.
 //
-// FEATURE FLAG: SPECKIT_EMPTY_RESULT_RECOVERY_V1 (default OFF, opt-in)
+// FEATURE FLAG: SPECKIT_EMPTY_RESULT_RECOVERY_V1 (default ON, graduated)
 //
 // OUTPUT SHAPE:
 // {
@@ -215,9 +215,6 @@ export function shouldTriggerRecovery(ctx: RecoveryContext): boolean {
 
 /**
  * Check whether the empty-result recovery feature flag is enabled.
- * Default: FALSE (opt-in). Set SPECKIT_EMPTY_RESULT_RECOVERY_V1=true to enable.
+ * Default: ON (graduated). Set SPECKIT_EMPTY_RESULT_RECOVERY_V1=false to disable.
  */
-export function isEmptyResultRecoveryEnabled(): boolean {
-  const val = process.env.SPECKIT_EMPTY_RESULT_RECOVERY_V1?.toLowerCase().trim();
-  return val !== 'false' && val !== '0';
-}
+export { isEmptyResultRecoveryEnabled } from './search-flags';

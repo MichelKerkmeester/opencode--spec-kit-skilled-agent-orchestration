@@ -15,6 +15,7 @@ import { classifyEncodingIntent } from '../../lib/search/encoding-intent';
 import {
   isEncodingIntentEnabled,
   isReconsolidationEnabled as isReconsolidationFlagEnabled,
+  isAssistiveReconsolidationEnabled as _isAssistiveReconsolidationEnabled,
 } from '../../lib/search/search-flags';
 import type * as memoryParser from '../../lib/parsing/memory-parser';
 import { toErrorMessage } from '../../utils';
@@ -67,11 +68,10 @@ export interface AssistiveRecommendation {
 
 /**
  * Check whether the assistive reconsolidation feature is enabled.
- * Default: FALSE (off). Set SPECKIT_ASSISTIVE_RECONSOLIDATION=true to enable.
+ * Default: ON (graduated). Set SPECKIT_ASSISTIVE_RECONSOLIDATION=false to disable.
  */
 export function isAssistiveReconsolidationEnabled(): boolean {
-  const val = process.env.SPECKIT_ASSISTIVE_RECONSOLIDATION?.toLowerCase().trim();
-  return val !== 'false' && val !== '0';
+  return _isAssistiveReconsolidationEnabled();
 }
 
 /**

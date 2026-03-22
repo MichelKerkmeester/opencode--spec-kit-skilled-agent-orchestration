@@ -419,3 +419,79 @@ export function isProgressiveDisclosureEnabled(): boolean {
 export function isSessionRetrievalStateEnabled(): boolean {
   return isFeatureEnabled('SPECKIT_SESSION_RETRIEVAL_STATE_V1');
 }
+
+/* ───────────────────────────────────────────────────────────────
+   13. SPEC 011 GRADUATED FLAGS
+──────────────────────────────────────────────────────────────── */
+
+/**
+ * REQ-D1-001: Calibrated overlap bonus for multi-channel convergence.
+ * Default: TRUE (graduated). Set SPECKIT_CALIBRATED_OVERLAP_BONUS=false to disable.
+ */
+export function isCalibratedOverlapBonusEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_CALIBRATED_OVERLAP_BONUS');
+}
+
+/**
+ * REQ-D1-003: Experimental per-intent RRF K selection.
+ * Default: TRUE (graduated). Set SPECKIT_RRF_K_EXPERIMENTAL=false to disable.
+ */
+export function isRrfKExperimentalEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_RRF_K_EXPERIMENTAL');
+}
+
+/**
+ * D3 Phase A: Sparse-first + intent-aware typed traversal.
+ * Default: TRUE (graduated). Set SPECKIT_TYPED_TRAVERSAL=false to disable.
+ */
+export function isTypedTraversalEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_TYPED_TRAVERSAL');
+}
+
+/**
+ * REQ-D5-001: Empty/weak result recovery UX.
+ * Default: TRUE (graduated). Set SPECKIT_EMPTY_RESULT_RECOVERY_V1=false to disable.
+ */
+export function isEmptyResultRecoveryEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_EMPTY_RESULT_RECOVERY_V1');
+}
+
+/**
+ * REQ-D5-004: Per-result calibrated confidence scoring.
+ * Default: TRUE (graduated). Set SPECKIT_RESULT_CONFIDENCE_V1=false to disable.
+ */
+export function isResultConfidenceEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_RESULT_CONFIDENCE_V1');
+}
+
+/**
+ * REQ-D4-004: Weekly batch feedback learning pipeline.
+ * Default: TRUE (graduated). Set SPECKIT_BATCH_LEARNED_FEEDBACK=false to disable.
+ */
+export function isBatchLearnedFeedbackEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_BATCH_LEARNED_FEEDBACK');
+}
+
+/**
+ * REQ-D4-005: Assistive reconsolidation for near-duplicate detection.
+ * Default: TRUE (graduated). Set SPECKIT_ASSISTIVE_RECONSOLIDATION=false to disable.
+ */
+export function isAssistiveReconsolidationEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_ASSISTIVE_RECONSOLIDATION');
+}
+
+/**
+ * REQ-D5-002: Two-tier result explainability.
+ * Default: TRUE (graduated). Set SPECKIT_RESULT_EXPLAIN_V1=false to disable.
+ */
+export function isResultExplainEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_RESULT_EXPLAIN_V1');
+}
+
+/**
+ * REQ-D5-003: Mode-aware response profile formatting.
+ * Default: TRUE (graduated). Set SPECKIT_RESPONSE_PROFILE_V1=false to disable.
+ */
+export function isResponseProfileEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_RESPONSE_PROFILE_V1');
+}

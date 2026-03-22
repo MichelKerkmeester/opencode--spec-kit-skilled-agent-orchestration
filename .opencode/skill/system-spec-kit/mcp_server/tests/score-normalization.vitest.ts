@@ -378,7 +378,7 @@ describe('K-Value Sensitivity Analysis (T004a)', () => {
   it('produces results for all 5 K values', () => {
     const analysis = analyzeKValueSensitivity(testLists, 1);
 
-    expect(Object.keys(analysis.results)).toHaveLength(5);
+    expect(Object.keys(analysis.results)).toHaveLength(K_VALUES.length);
     for (const k of K_VALUES) {
       expect(analysis.results[k]).toBeDefined();
       expect(analysis.results[k].mrr5).toBeDefined();

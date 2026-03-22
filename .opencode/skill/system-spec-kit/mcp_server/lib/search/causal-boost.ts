@@ -12,8 +12,9 @@
 // - REQ-D3-002: Intent-aware edge traversal — maps classified query intents
 //   to edge-type priority orderings; computes traversal score as:
 //   score = seedScore * edgePrior * hopDecay * freshness
-// Both requirements are gated behind SPECKIT_TYPED_TRAVERSAL (default OFF).
+// Both requirements are gated behind SPECKIT_TYPED_TRAVERSAL (default ON, graduated).
 import { isFeatureEnabled } from '../cognitive/rollout-policy';
+import { isTypedTraversalEnabled as _isTypedTraversalEnabled } from './search-flags';
 
 import type Database from 'better-sqlite3';
 
@@ -138,12 +139,11 @@ function isEnabled(): boolean {
 
 /**
  * Check whether the typed traversal feature flag is enabled.
- * D3 Phase A — defaults to OFF (unlike SPECKIT_CAUSAL_BOOST which defaults to ON).
- * Must be explicitly set to 'true' to activate sparse-first + intent-aware traversal.
+ * Default: ON (graduated). Set SPECKIT_TYPED_TRAVERSAL=false to disable.
+ * Activates sparse-first + intent-aware traversal.
  */
 function isTypedTraversalEnabled(): boolean {
-  const rawFlag = process.env.SPECKIT_TYPED_TRAVERSAL?.toLowerCase()?.trim();
-  return rawFlag !== 'false' && rawFlag !== '0';
+  return _isTypedTraversalEnabled();
 }
 
 /** Store the database reference used by causal edge traversal queries. */

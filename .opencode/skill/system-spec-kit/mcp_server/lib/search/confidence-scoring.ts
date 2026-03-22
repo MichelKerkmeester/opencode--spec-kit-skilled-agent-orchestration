@@ -291,9 +291,6 @@ export function assessRequestQuality(
 
 /**
  * Check whether the per-result confidence feature flag is enabled.
- * Default: TRUE (graduated). Set SPECKIT_RESULT_CONFIDENCE_V1=false to disable.
+ * Default: ON (graduated). Set SPECKIT_RESULT_CONFIDENCE_V1=false to disable.
  */
-export function isResultConfidenceEnabled(): boolean {
-  const val = process.env.SPECKIT_RESULT_CONFIDENCE_V1?.toLowerCase().trim();
-  return val !== 'false' && val !== '0';
-}
+export { isResultConfidenceEnabled } from './search-flags';

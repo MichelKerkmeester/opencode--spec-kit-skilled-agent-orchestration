@@ -165,9 +165,9 @@ function resolveRrfK(rawK: number | undefined): number {
 
 /**
  * Check if calibrated overlap bonus is enabled (REQ-D1-001).
- * When OFF (default), the flat CONVERGENCE_BONUS is used.
+ * Default: ON (graduated). Set SPECKIT_CALIBRATED_OVERLAP_BONUS=false to disable.
+ * When OFF, the flat CONVERGENCE_BONUS is used.
  * When ON, a query-aware scaled overlap bonus is computed.
- * @returns True when SPECKIT_CALIBRATED_OVERLAP_BONUS is set to 'true'.
  */
 function isCalibratedOverlapBonusEnabled(): boolean {
   const val = process.env.SPECKIT_CALIBRATED_OVERLAP_BONUS?.toLowerCase().trim();

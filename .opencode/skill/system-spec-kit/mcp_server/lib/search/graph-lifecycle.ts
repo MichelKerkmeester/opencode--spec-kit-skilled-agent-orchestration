@@ -9,7 +9,7 @@
 // and SPECKIT_LLM_GRAPH_BACKFILL for async LLM enrichment.
 //
 // Design principles:
-//   - All features default-OFF (no-op when flags unset)
+//   - All features graduated to default-ON via feature flags
 //   - No breaking changes to existing save pipeline
 //   - Deterministic extraction: no LLM calls for default path
 //   - TypeScript strict mode; zero external runtime deps beyond better-sqlite3
@@ -40,7 +40,7 @@ const logger = createLogger('GraphLifecycle');
  * Controls when dirty-node recomputation is triggered after write operations.
  *
  * Values:
- *   off          — No graph refresh (default, safe).
+ *   off          — No graph refresh.
  *   write_local  — Synchronous local recompute for small dirty components.
  *   scheduled    — Schedule a background global refresh for larger components.
  */
@@ -48,7 +48,7 @@ export type GraphRefreshMode = 'off' | 'write_local' | 'scheduled';
 
 /**
  * Resolve the SPECKIT_GRAPH_REFRESH_MODE environment variable.
- * Falls back to 'off' for any unrecognised value.
+ * Falls back to 'write_local' for any unrecognised value (graduated default ON).
  */
 export function resolveGraphRefreshMode(): GraphRefreshMode {
   const raw = process.env.SPECKIT_GRAPH_REFRESH_MODE?.trim().toLowerCase();

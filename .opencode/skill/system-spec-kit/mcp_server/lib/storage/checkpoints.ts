@@ -246,11 +246,22 @@ function tableExists(database: Database.Database, tableName: string): boolean {
 
 // F04-005: Static allowlist for dynamic table name interpolation
 const ALLOWED_TABLE_NAMES = new Set([
-  'memory_index', 'memory_fts', 'vec_memories', 'causal_edges', 'memory_conflicts',
-  'memory_lineage', 'active_memory_projection', 'auto_entities', 'community_assignments',
-  'degree_snapshots', 'checkpoints', 'checkpoint_items', 'deletion_log',
-  'shared_spaces', 'shared_space_members', 'eval_shadow_comparisons',
-  'learned_trigger_scores', 'learned_trigger_feedback', 'consumption_log',
+  // Core tables
+  'memory_index', 'memory_fts', 'vec_memories', 'vec_metadata', 'causal_edges',
+  'memory_conflicts', 'memory_corrections', 'memory_lineage', 'memory_history',
+  'memory_summaries', 'mutation_ledger',
+  // Working memory & session
+  'working_memory', 'session_state', 'session_sent_memories', 'session_learning',
+  // Graph & signals
+  'weight_history', 'adaptive_signal_events', 'negative_feedback_events',
+  'active_memory_projection', 'auto_entities', 'community_assignments', 'degree_snapshots',
+  // Feedback & learning
+  'learned_feedback_audit', 'learned_trigger_scores', 'learned_trigger_feedback',
+  // Governance & shared
+  'governance_audit', 'shared_spaces', 'shared_space_members', 'shared_space_conflicts',
+  // Checkpoints & system
+  'checkpoints', 'checkpoint_items', 'deletion_log', 'consumption_log',
+  'eval_shadow_comparisons',
 ]);
 
 function validateTableName(tableName: string): void {

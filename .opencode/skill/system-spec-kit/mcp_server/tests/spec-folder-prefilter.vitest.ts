@@ -89,6 +89,13 @@ vi.mock('../lib/search/search-flags', () => ({
   isTRMEnabled: vi.fn(() => false),
   isNegativeFeedbackEnabled: vi.fn(() => false),
   isMemorySummariesEnabled: vi.fn(() => false),
+  isGraphConceptRoutingEnabled: vi.fn(() => false),
+  isQuerySurrogatesEnabled: vi.fn(() => false),
+  isHyDEEnabled: vi.fn(() => false),
+  isLlmReformulationEnabled: vi.fn(() => false),
+  isQueryDecompositionEnabled: vi.fn(() => false),
+  isSessionRetrievalStateEnabled: vi.fn(() => false),
+  isProgressiveDisclosureEnabled: vi.fn(() => false),
 }));
 
 // -- Import module under test AFTER mocks ----------------------

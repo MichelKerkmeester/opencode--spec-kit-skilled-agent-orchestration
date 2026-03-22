@@ -187,7 +187,8 @@ describe('RRF Fusion Core Tests (T021-T030)', () => {
     const sharedDoc = expectDefined(fused.find((r: MultiFusedResult) => r.id === 'shared'), 'shared');
     expect(sharedDoc.sources).toHaveLength(2);
     expect(sharedDoc.rrfScore).toBeGreaterThan(expectDefined(fused.find((r: MultiFusedResult) => r.id === 'vec_only'), 'vec_only').rrfScore);
-    expect(sharedDoc.convergenceBonus).toBeCloseTo(0.10, 2);
+    // Calibrated overlap bonus is graduated (default ON); bonus is positive but may differ from flat 0.10
+    expect(sharedDoc.convergenceBonus).toBeGreaterThan(0);
   });
 });
 

@@ -194,10 +194,20 @@ describe('T020-6: SPECKIT_CLASSIFICATION_DECAY feature flag gating', () => {
   });
 
   it('flag="false" → applyClassificationDecay returns stability unchanged', () => {
-    withFlag('false', () => {
-      const result = applyClassificationDecay(10, 'decision', 'constitutional');
-      expect(result).toBe(10);
-    });
+    const originalHybrid = process.env.SPECKIT_HYBRID_DECAY_POLICY;
+    process.env.SPECKIT_HYBRID_DECAY_POLICY = 'false';
+    try {
+      withFlag('false', () => {
+        const result = applyClassificationDecay(10, 'decision', 'constitutional');
+        expect(result).toBe(10);
+      });
+    } finally {
+      if (originalHybrid === undefined) {
+        delete process.env.SPECKIT_HYBRID_DECAY_POLICY;
+      } else {
+        process.env.SPECKIT_HYBRID_DECAY_POLICY = originalHybrid;
+      }
+    }
   });
 
   it('flag="0" → applyClassificationDecay returns stability unchanged', () => {

@@ -2842,6 +2842,202 @@ REVIEW block present in stdout; issue count and severity match the scenario; fix
 > **Feature File:** [155](13--memory-quality-and-indexing/155-post-save-quality-review.md)
 > **Catalog:** [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md)
 
+### 156 | Graph refresh mode (SPECKIT_GRAPH_REFRESH_MODE)
+
+#### Description
+Verify dirty-node tracking fires in write_local mode when saving a memory with entity edges.
+
+#### Current Reality
+Prompt: `Test SPECKIT_GRAPH_REFRESH_MODE=write_local. Save a memory with entity edges, then verify dirty-node tracking and local recompute execute. Capture the evidence needed to prove markDirty() populates the dirty-node set and recomputeLocal() runs for small components. Return a concise user-facing pass/fail verdict with the main reason.`
+
+markDirty() populates dirty-node set; onWrite() returns localRecomputed=true and skipped=false; component size estimation runs; dirty nodes cleared after local recompute
+
+#### Test Execution
+> **Feature File:** [156](10--graph-signal-activation/156-graph-refresh-mode-speckit-graph-refresh-mode.md)
+> **Catalog:** [10--graph-signal-activation/13-graph-lifecycle-refresh.md](../feature_catalog/10--graph-signal-activation/13-graph-lifecycle-refresh.md)
+
+### 157 | LLM graph backfill (SPECKIT_LLM_GRAPH_BACKFILL)
+
+#### Description
+Verify backfill hook registration and scheduling for high-value documents when the flag is enabled.
+
+#### Current Reality
+Prompt: `Test SPECKIT_LLM_GRAPH_BACKFILL=true. Register a backfill callback via registerLlmBackfillFn(), save a high-quality memory (qualityScore >= 0.7), and verify the LLM backfill is scheduled. Capture the evidence needed to prove onIndex() returns llmBackfillScheduled=true for high-value docs and false for low-value docs. Return a concise user-facing pass/fail verdict with the main reason.`
+
+onIndex() returns llmBackfillScheduled=true when qualityScore >= threshold; backfill callback is invoked via setImmediate; low-value docs (qualityScore < 0.7) do not trigger backfill
+
+#### Test Execution
+> **Feature File:** [157](10--graph-signal-activation/157-llm-graph-backfill-speckit-llm-graph-backfill.md)
+> **Catalog:** [10--graph-signal-activation/14-llm-graph-backfill.md](../feature_catalog/10--graph-signal-activation/14-llm-graph-backfill.md)
+
+### 158 | Graph calibration profile (SPECKIT_GRAPH_CALIBRATION_PROFILE)
+
+#### Description
+Verify graph weight cap enforcement at 0.05 and community score capping at 0.03 when graph calibration profile is enabled.
+
+#### Current Reality
+Prompt: `Test SPECKIT_GRAPH_CALIBRATION_PROFILE=true. Run a search with graph signals active and verify graph weight contribution is capped at 0.05 (GRAPH_WEIGHT_CAP) and community scoring boost is capped at 0.03 (COMMUNITY_SCORE_CAP). Capture the evidence needed to prove applyCalibrationProfile() enforces caps and shouldActivateLouvain() respects density/size thresholds. Return a concise user-facing pass/fail verdict with the main reason.`
+
+applyGraphWeightCap() clamps values to [0, 0.05]; applyCommunityScoring() caps boost at 0.03; shouldActivateLouvain() returns activate=false when density or size below thresholds; calibrateGraphWeight() enforces N2a/N2b caps
+
+#### Test Execution
+> **Feature File:** [158](10--graph-signal-activation/158-graph-calibration-profile-speckit-graph-calibration-profile.md)
+> **Catalog:** [10--graph-signal-activation/15-graph-calibration-profiles.md](../feature_catalog/10--graph-signal-activation/15-graph-calibration-profiles.md)
+
+### 159 | Learned Stage 2 combiner (SPECKIT_LEARNED_STAGE2_COMBINER)
+
+#### Description
+Verify shadow scoring produces learned vs manual comparison output without affecting live ranking.
+
+#### Current Reality
+Prompt: `Test SPECKIT_LEARNED_STAGE2_COMBINER=true. Train a model with sample data, run shadowScore() with the learned model and a manual score, and verify the ShadowResult contains learnedScore, manualScore, and delta. Capture the evidence needed to prove the learned combiner produces scores in [0,1] without affecting live ranking. Return a concise user-facing pass/fail verdict with the main reason.`
+
+shadowScore() returns ShadowResult with learnedScore in [0,1], manualScore matching input, and delta = |learned - manual|; trainRegularizedLinearRanker() produces valid weights; predict() clamps output to [0,1]; flag OFF returns null (no overhead)
+
+#### Test Execution
+> **Feature File:** [159](11--scoring-and-calibration/159-learned-stage2-combiner-speckit-learned-stage2-combiner.md)
+> **Catalog:** [11--scoring-and-calibration/19-learned-stage2-weight-combiner.md](../feature_catalog/11--scoring-and-calibration/19-learned-stage2-weight-combiner.md)
+
+### 160 | Shadow feedback (SPECKIT_SHADOW_FEEDBACK)
+
+#### Description
+Verify shadow scoring log entries are created and holdout evaluation runs without mutating live rankings.
+
+#### Current Reality
+Prompt: `Test SPECKIT_SHADOW_FEEDBACK=true. Run a shadow evaluation with holdout queries, then verify shadow_scoring_log entries are created with per-result rank deltas. Capture the evidence needed to prove logRankDelta() writes rows, compareRanks() produces Kendall tau and NDCG delta, and evaluatePromotionGate() returns a recommendation. Return a concise user-facing pass/fail verdict with the main reason.`
+
+shadow_scoring_log table has rows with query_id, result_id, live_rank, shadow_rank, delta, direction; compareRanks() produces RankComparisonResult with kendallTau and ndcgDelta; evaluatePromotionGate() returns ready/wait/rollback; no live ranking columns mutated
+
+#### Test Execution
+> **Feature File:** [160](11--scoring-and-calibration/160-shadow-feedback-speckit-shadow-feedback.md)
+> **Catalog:** [11--scoring-and-calibration/20-shadow-feedback-holdout-evaluation.md](../feature_catalog/11--scoring-and-calibration/20-shadow-feedback-holdout-evaluation.md)
+
+### 161 | LLM reformulation (SPECKIT_LLM_REFORMULATION)
+
+#### Description
+Verify reformulation pipeline runs in deep mode with corpus-grounded seeds, producing a step-back abstract and variants.
+
+#### Current Reality
+Prompt: `Run a deep-mode search and verify the graduated reformulation pipeline produces a step-back abstract and corpus-grounded variants. Capture the evidence needed to prove cheapSeedRetrieve() returns FTS5/BM25 seeds, the LLM generates an abstract + variants (max 2), and the shared LLM cache is populated. Return a concise user-facing pass/fail verdict with the main reason.`
+
+cheapSeedRetrieve() returns up to 3 seed results from FTS5; ReformulationResult contains abstract (>= 5 chars) and variants array (max 2 entries); LLM cache hit on repeated query; pipeline is no-op when mode != deep
+
+#### Test Execution
+> **Feature File:** [161](12--query-intelligence/161-llm-reformulation-speckit-llm-reformulation.md)
+> **Catalog:** [12--query-intelligence/07-llm-query-reformulation.md](../feature_catalog/12--query-intelligence/07-llm-query-reformulation.md)
+
+### 162 | HyDE (SPECKIT_HYDE)
+
+#### Description
+Verify HyDE pseudo-document generation for low-confidence deep queries with shadow-only behavior.
+
+#### Current Reality
+Prompt: `Test SPECKIT_HYDE=true with deep mode. Run a search that produces low-confidence baseline results and verify a HyDE pseudo-document is generated with its embedding. Capture the evidence needed to prove generateHyDE() returns a pseudoDocument and embedding, the shared LLM cache is populated, and shadow mode logs results without merging into the candidate set (unless SPECKIT_HYDE_ACTIVE=true). Return a concise user-facing pass/fail verdict with the main reason.`
+
+HyDEResult contains pseudoDocument (non-empty) and embedding (Float32Array); low-confidence threshold (top score < 0.45) triggers generation; LLM cache shared with reformulation; shadow mode: results logged but not merged; SPECKIT_HYDE_ACTIVE=true required for full merge
+
+#### Test Execution
+> **Feature File:** [162](12--query-intelligence/162-hyde-speckit-hyde.md)
+> **Catalog:** [12--query-intelligence/08-hyde-hypothetical-document-embeddings.md](../feature_catalog/12--query-intelligence/08-hyde-hypothetical-document-embeddings.md)
+
+### 163 | Query surrogates (SPECKIT_QUERY_SURROGATES)
+
+#### Description
+Verify surrogate metadata generated at index time and matched at query time with boost scores.
+
+#### Current Reality
+Prompt: `Test SPECKIT_QUERY_SURROGATES=true. Save a memory with rich content, then verify surrogates (aliases, headings, summary, surrogate questions) are generated at index time. Run a search using alias/question terms and verify surrogate matching produces boost scores. Capture the evidence needed to prove SurrogateMetadata is populated and SurrogateMatchResult returns matching scores. Return a concise user-facing pass/fail verdict with the main reason.`
+
+SurrogateMetadata contains aliases (from parenthetical abbreviations), headings, summary (max 200 chars), and surrogateQuestions (2-5 entries); query-time matching produces SurrogateMatchResult with score in [0,1] and matchedSurrogates list; no LLM calls on the default path
+
+#### Test Execution
+> **Feature File:** [163](12--query-intelligence/163-query-surrogates-speckit-query-surrogates.md)
+> **Catalog:** [12--query-intelligence/09-index-time-query-surrogates.md](../feature_catalog/12--query-intelligence/09-index-time-query-surrogates.md)
+
+### 164 | Batch learned feedback (SPECKIT_BATCH_LEARNED_FEEDBACK)
+
+#### Description
+Verify batch learning aggregation with min-support and boost-cap guards across multiple sessions.
+
+#### Current Reality
+Prompt: `Test SPECKIT_BATCH_LEARNED_FEEDBACK=true. Populate feedback events across multiple sessions, run batch learning, and verify aggregated signals respect MIN_SUPPORT_SESSIONS (3) and MAX_BOOST_DELTA (0.10). Capture the evidence needed to prove AggregatedSignal contains session counts, confidence-weighted scores, and capped boost values, and that batch_learning_log entries are recorded. Return a concise user-facing pass/fail verdict with the main reason.`
+
+AggregatedSignal with sessionCount >= MIN_SUPPORT_SESSIONS (3) for promoted signals; weightedScore computed using CONFIDENCE_WEIGHTS (strong=1.0, medium=0.5, weak=0.1); computedBoost capped at MAX_BOOST_DELTA (0.10); batch_learning_log rows recorded; shadow-only (no live ranking mutation)
+
+#### Test Execution
+> **Feature File:** [164](13--memory-quality-and-indexing/164-batch-learned-feedback-speckit-batch-learned-feedback.md)
+> **Catalog:** [13--memory-quality-and-indexing/20-weekly-batch-feedback-learning.md](../feature_catalog/13--memory-quality-and-indexing/20-weekly-batch-feedback-learning.md)
+
+### 165 | Assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION)
+
+#### Description
+Verify near-duplicate auto-merge and borderline recommendation behavior with correct similarity tier classification.
+
+#### Current Reality
+Prompt: `Test SPECKIT_ASSISTIVE_RECONSOLIDATION=true. Save two near-duplicate memories (similarity >= 0.96) and verify auto-merge triggers. Then save a borderline pair (0.88 <= similarity < 0.96) and verify a recommendation is logged with supersede/complement classification. Capture the evidence needed to prove classifyAssistiveSimilarity() returns the correct tier and no destructive action occurs for review-tier pairs. Return a concise user-facing pass/fail verdict with the main reason.`
+
+similarity >= 0.96 returns 'auto_merge'; 0.88 <= similarity < 0.96 returns 'review' with AssistiveRecommendation logged; similarity < 0.88 returns 'keep_separate'; review tier produces classification (supersede/complement/keep_separate) without destructive action
+
+#### Test Execution
+> **Feature File:** [165](13--memory-quality-and-indexing/165-assistive-reconsolidation-speckit-assistive-reconsolidation.md)
+> **Catalog:** [13--memory-quality-and-indexing/21-assistive-reconsolidation.md](../feature_catalog/13--memory-quality-and-indexing/21-assistive-reconsolidation.md)
+
+### 166 | Result explain v1 (SPECKIT_RESULT_EXPLAIN_V1)
+
+#### Description
+Verify two-tier explainability attachment to search results with slim tier (summary + topSignals) and debug tier (channelContribution).
+
+#### Current Reality
+Prompt: `Test SPECKIT_RESULT_EXPLAIN_V1=true. Run a search and verify each result contains a why.summary (natural-language explanation) and topSignals array (scoring signal labels). Then test with debug enabled to verify channelContribution map is included. Capture the evidence needed to prove the slim tier (summary + topSignals) always present when flag ON, and debug tier (channelContribution) only when debug.enabled=true. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Each result has why.summary string (non-empty); why.topSignals array with SignalLabel entries (e.g., 'semantic_match', 'graph_boosted', 'anchor:decisions'); channelContribution with vector/fts/graph numbers only in debug mode; no why field when flag OFF
+
+#### Test Execution
+> **Feature File:** [166](18--ux-hooks/166-result-explain-v1-speckit-result-explain-v1.md)
+> **Catalog:** [18--ux-hooks/14-result-explainability.md](../feature_catalog/18--ux-hooks/14-result-explainability.md)
+
+### 167 | Response profile v1 (SPECKIT_RESPONSE_PROFILE_V1)
+
+#### Description
+Verify mode-aware response shape routing for quick, research, and resume profiles with token savings calculation.
+
+#### Current Reality
+Prompt: `Test SPECKIT_RESPONSE_PROFILE_V1=true with profile=quick. Run a search and verify the response contains only topResult, oneLineWhy, omittedCount, and tokenReduction (with savingsPercent). Then test profile=research for results + evidenceDigest + followUps, and profile=resume for state + nextSteps + blockers. Capture the evidence needed to prove each profile produces its expected shape and token savings are calculated. Return a concise user-facing pass/fail verdict with the main reason.`
+
+quick profile returns QuickProfile with topResult, oneLineWhy, omittedCount, and tokenReduction.savingsPercent; research profile returns results[], evidenceDigest, followUps[]; resume profile returns state, nextSteps[], blockers[]; original full response when flag OFF or profile omitted
+
+#### Test Execution
+> **Feature File:** [167](18--ux-hooks/167-response-profile-v1-speckit-response-profile-v1.md)
+> **Catalog:** [18--ux-hooks/15-mode-aware-response-profiles.md](../feature_catalog/18--ux-hooks/15-mode-aware-response-profiles.md)
+
+### 168 | Progressive disclosure v1 (SPECKIT_PROGRESSIVE_DISCLOSURE_V1)
+
+#### Description
+Verify additive disclosure payload and cursor pagination in response while preserving full results.
+
+#### Current Reality
+Prompt: `Run a search returning > 5 results and verify the response preserves full data.results while adding data.progressiveDisclosure with summaryLayer (count + digest), snippet previews (max 100 chars with detailAvailable flags), and a continuation cursor. Then use memory_search({ cursor }) to retrieve the next page and verify remaining results are returned. Capture the evidence needed to prove the additive disclosure contract. Return a concise user-facing pass/fail verdict with the main reason.`
+
+data.results remains present; data.progressiveDisclosure.summaryLayer with count and digest; data.progressiveDisclosure.results as Snippet[] with snippet (max 100 chars), detailAvailable, resultId; continuation cursor with remainingCount; cursor expiry at DEFAULT_CURSOR_TTL_MS (5 min); page size DEFAULT_PAGE_SIZE (5)
+
+#### Test Execution
+> **Feature File:** [168](18--ux-hooks/168-progressive-disclosure-v1-speckit-progressive-disclosure-v1.md)
+> **Catalog:** [18--ux-hooks/16-progressive-disclosure.md](../feature_catalog/18--ux-hooks/16-progressive-disclosure.md)
+
+### 169 | Session retrieval state v1 (SPECKIT_SESSION_RETRIEVAL_STATE_V1)
+
+#### Description
+Verify additive session-state metadata and goal refinement are emitted on session-aware searches.
+
+#### Current Reality
+Prompt: `Run a search within a session, note the returned session metadata, then run a second search in the same session and verify data.sessionState and data.goalRefinement remain present while previously-seen results can be deprioritized by the session-state path. Capture the evidence needed to prove the session state tracks seenResultIds, preferredAnchors, activeGoal, and goalRefinement metadata. Return a concise user-facing pass/fail verdict with the main reason.`
+
+data.sessionState includes activeGoal, seenResultIds, openQuestions, preferredAnchors; data.goalRefinement includes activeGoal and applied status; follow-up search in same session can deprioritize seen results (score * 0.3 fallback path); session expires after SESSION_TTL_MS (30 min); LRU eviction at MAX_SESSIONS (100)
+
+#### Test Execution
+> **Feature File:** [169](18--ux-hooks/169-session-retrieval-state-v1-speckit-session-retrieval-state-v1.md)
+> **Catalog:** [18--ux-hooks/17-retrieval-session-state.md](../feature_catalog/18--ux-hooks/17-retrieval-session-state.md)
+
 ### 170 | Fusion policy shadow v2 (SPECKIT_FUSION_POLICY_SHADOW_V2)
 
 #### Description
@@ -3410,6 +3606,20 @@ This split playbook keeps automated coverage references in three places:
 | 153 | Features | JSON mode structured summary hardening | [153](16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md) | [16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md](../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
 | 154 | Features | JSON-primary deprecation posture | [154](16--tooling-and-scripts/154-json-primary-deprecation-posture.md) | [16--tooling-and-scripts/17-json-primary-deprecation-posture.md](../feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md) |
 | 155 | Features | Post-save quality review | [155](13--memory-quality-and-indexing/155-post-save-quality-review.md) | [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md) |
+| 156 | Features | Graph refresh mode (SPECKIT_GRAPH_REFRESH_MODE) | [156](10--graph-signal-activation/156-graph-refresh-mode-speckit-graph-refresh-mode.md) | [10--graph-signal-activation/13-graph-lifecycle-refresh.md](../feature_catalog/10--graph-signal-activation/13-graph-lifecycle-refresh.md) |
+| 157 | Features | LLM graph backfill (SPECKIT_LLM_GRAPH_BACKFILL) | [157](10--graph-signal-activation/157-llm-graph-backfill-speckit-llm-graph-backfill.md) | [10--graph-signal-activation/14-llm-graph-backfill.md](../feature_catalog/10--graph-signal-activation/14-llm-graph-backfill.md) |
+| 158 | Features | Graph calibration profile (SPECKIT_GRAPH_CALIBRATION_PROFILE) | [158](10--graph-signal-activation/158-graph-calibration-profile-speckit-graph-calibration-profile.md) | [10--graph-signal-activation/15-graph-calibration-profiles.md](../feature_catalog/10--graph-signal-activation/15-graph-calibration-profiles.md) |
+| 159 | Features | Learned Stage 2 combiner (SPECKIT_LEARNED_STAGE2_COMBINER) | [159](11--scoring-and-calibration/159-learned-stage2-combiner-speckit-learned-stage2-combiner.md) | [11--scoring-and-calibration/19-learned-stage2-weight-combiner.md](../feature_catalog/11--scoring-and-calibration/19-learned-stage2-weight-combiner.md) |
+| 160 | Features | Shadow feedback (SPECKIT_SHADOW_FEEDBACK) | [160](11--scoring-and-calibration/160-shadow-feedback-speckit-shadow-feedback.md) | [11--scoring-and-calibration/20-shadow-feedback-holdout-evaluation.md](../feature_catalog/11--scoring-and-calibration/20-shadow-feedback-holdout-evaluation.md) |
+| 161 | Features | LLM reformulation (SPECKIT_LLM_REFORMULATION) | [161](12--query-intelligence/161-llm-reformulation-speckit-llm-reformulation.md) | [12--query-intelligence/07-llm-query-reformulation.md](../feature_catalog/12--query-intelligence/07-llm-query-reformulation.md) |
+| 162 | Features | HyDE (SPECKIT_HYDE) | [162](12--query-intelligence/162-hyde-speckit-hyde.md) | [12--query-intelligence/08-hyde-hypothetical-document-embeddings.md](../feature_catalog/12--query-intelligence/08-hyde-hypothetical-document-embeddings.md) |
+| 163 | Features | Query surrogates (SPECKIT_QUERY_SURROGATES) | [163](12--query-intelligence/163-query-surrogates-speckit-query-surrogates.md) | [12--query-intelligence/09-index-time-query-surrogates.md](../feature_catalog/12--query-intelligence/09-index-time-query-surrogates.md) |
+| 164 | Features | Batch learned feedback (SPECKIT_BATCH_LEARNED_FEEDBACK) | [164](13--memory-quality-and-indexing/164-batch-learned-feedback-speckit-batch-learned-feedback.md) | [13--memory-quality-and-indexing/20-weekly-batch-feedback-learning.md](../feature_catalog/13--memory-quality-and-indexing/20-weekly-batch-feedback-learning.md) |
+| 165 | Features | Assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION) | [165](13--memory-quality-and-indexing/165-assistive-reconsolidation-speckit-assistive-reconsolidation.md) | [13--memory-quality-and-indexing/21-assistive-reconsolidation.md](../feature_catalog/13--memory-quality-and-indexing/21-assistive-reconsolidation.md) |
+| 166 | Features | Result explain v1 (SPECKIT_RESULT_EXPLAIN_V1) | [166](18--ux-hooks/166-result-explain-v1-speckit-result-explain-v1.md) | [18--ux-hooks/14-result-explainability.md](../feature_catalog/18--ux-hooks/14-result-explainability.md) |
+| 167 | Features | Response profile v1 (SPECKIT_RESPONSE_PROFILE_V1) | [167](18--ux-hooks/167-response-profile-v1-speckit-response-profile-v1.md) | [18--ux-hooks/15-mode-aware-response-profiles.md](../feature_catalog/18--ux-hooks/15-mode-aware-response-profiles.md) |
+| 168 | Features | Progressive disclosure v1 (SPECKIT_PROGRESSIVE_DISCLOSURE_V1) | [168](18--ux-hooks/168-progressive-disclosure-v1-speckit-progressive-disclosure-v1.md) | [18--ux-hooks/16-progressive-disclosure.md](../feature_catalog/18--ux-hooks/16-progressive-disclosure.md) |
+| 169 | Features | Session retrieval state v1 (SPECKIT_SESSION_RETRIEVAL_STATE_V1) | [169](18--ux-hooks/169-session-retrieval-state-v1-speckit-session-retrieval-state-v1.md) | [18--ux-hooks/17-retrieval-session-state.md](../feature_catalog/18--ux-hooks/17-retrieval-session-state.md) |
 | 170 | Features | Fusion policy shadow v2 (SPECKIT_FUSION_POLICY_SHADOW_V2) | [170](11--scoring-and-calibration/170-fusion-policy-shadow-v2-speckit-fusion-policy-shadow-v2.md) | [11--scoring-and-calibration/23-fusion-policy-shadow-v2.md](../feature_catalog/11--scoring-and-calibration/23-fusion-policy-shadow-v2.md) |
 | 171 | Features | Calibrated overlap bonus (SPECKIT_CALIBRATED_OVERLAP_BONUS) | [171](11--scoring-and-calibration/171-calibrated-overlap-bonus-speckit-calibrated-overlap-bonus.md) | [11--scoring-and-calibration/21-calibrated-overlap-bonus.md](../feature_catalog/11--scoring-and-calibration/21-calibrated-overlap-bonus.md) |
 | 172 | Features | RRF K experimental (SPECKIT_RRF_K_EXPERIMENTAL) | [172](11--scoring-and-calibration/172-rrf-k-experimental-speckit-rrf-k-experimental.md) | [11--scoring-and-calibration/22-rrf-k-experimental.md](../feature_catalog/11--scoring-and-calibration/22-rrf-k-experimental.md) |

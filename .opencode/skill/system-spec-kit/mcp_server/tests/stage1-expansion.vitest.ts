@@ -59,6 +59,16 @@ vi.mock('../lib/search/search-flags', () => ({
   isEmbeddingExpansionEnabled: () => mockIsEmbeddingExpansionEnabled(),
   isMultiQueryEnabled: () => mockIsMultiQueryEnabled(),
   isMemorySummariesEnabled: () => mockIsMemorySummariesEnabled(),
+  isGraphConceptRoutingEnabled: vi.fn(() => false),
+  isQuerySurrogatesEnabled: vi.fn(() => false),
+  isHyDEEnabled: vi.fn(() => false),
+  isLlmReformulationEnabled: vi.fn(() => false),
+  isSearchFallbackEnabled: vi.fn(() => false),
+  isTRMEnabled: vi.fn(() => false),
+  isNegativeFeedbackEnabled: vi.fn(() => false),
+  isQueryDecompositionEnabled: vi.fn(() => false),
+  isSessionRetrievalStateEnabled: vi.fn(() => false),
+  isProgressiveDisclosureEnabled: vi.fn(() => false),
 }));
 
 // Mock embedding-expansion
@@ -155,10 +165,11 @@ function makeConfig(overrides: Partial<PipelineConfig> = {}): PipelineConfig {
   };
 }
 
-function makeSummaryDb(rowsById: Record<number, Record<string, unknown>>): { prepare: (sql: string) => { get: (id: number) => Record<string, unknown> | undefined } } {
+function makeSummaryDb(rowsById: Record<number, Record<string, unknown>>): { prepare: (sql: string) => { get: (id: number) => Record<string, unknown> | undefined; all: (...ids: number[]) => Array<Record<string, unknown>> } } {
   return {
     prepare: vi.fn((_sql: string) => ({
       get: vi.fn((id: number) => rowsById[id]),
+      all: vi.fn((...ids: number[]) => ids.map((id) => rowsById[id]).filter(Boolean)),
     })),
   };
 }

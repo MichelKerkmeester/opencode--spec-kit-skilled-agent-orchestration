@@ -6,6 +6,7 @@
 // This is a measurement/analysis tool, not production code.
 import { fuseResultsMulti } from '@spec-kit/shared/algorithms/rrf-fusion';
 import type { RankedList, FusionResult } from '@spec-kit/shared/algorithms/rrf-fusion';
+import { isRrfKExperimentalEnabled as _isRrfKExperimentalEnabled } from '../search/search-flags';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -594,13 +595,12 @@ function computeMrr5Judged(
 
 /**
  * Check if experimental K selection is enabled (REQ-D1-003).
- * When OFF (default), per-intent K selection is skipped and K=60 is used.
+ * Default: ON (graduated). Set SPECKIT_RRF_K_EXPERIMENTAL=false to disable.
+ * When OFF, per-intent K selection is skipped and K=60 is used.
  * When ON, NDCG@10-maximizing K is selected per intent.
- * @returns True when SPECKIT_RRF_K_EXPERIMENTAL is set to 'true'.
  */
 function isKExperimentalEnabled(): boolean {
-  const val = process.env.SPECKIT_RRF_K_EXPERIMENTAL?.toLowerCase().trim();
-  return val !== 'false' && val !== '0';
+  return _isRrfKExperimentalEnabled();
 }
 
 /**
@@ -661,7 +661,7 @@ function argmaxNdcg10(metricsPerK: Record<number, JudgedKMetrics>): number {
  * Run a per-intent K sweep over JUDGED_K_SWEEP_VALUES and select the best K
  * per intent via argmax(NDCG@10).
  *
- * Feature flag: SPECKIT_RRF_K_EXPERIMENTAL (default OFF).
+ * Feature flag: SPECKIT_RRF_K_EXPERIMENTAL (default ON, graduated).
  * When OFF, returns K=60 for all intents without running the sweep.
  *
  * @param queries - Judged queries to evaluate

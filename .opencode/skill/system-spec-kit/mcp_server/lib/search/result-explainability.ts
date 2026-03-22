@@ -9,7 +9,7 @@
 //   - slim (default): why.summary + topSignals — always present when flag ON
 //   - debug (opt-in): adds channelContribution map
 //
-// FEATURE FLAG: SPECKIT_RESULT_EXPLAIN_V1 (default OFF, opt-in)
+// FEATURE FLAG: SPECKIT_RESULT_EXPLAIN_V1 (default ON, graduated)
 //
 // OUTPUT SHAPE (per result):
 // {
@@ -72,14 +72,13 @@ export interface ExplainabilityOptions {
 
 // ── Feature flag ──────────────────────────────────────────────
 
+import { isResultExplainEnabled } from './search-flags';
+
 /**
- * Returns true when SPECKIT_RESULT_EXPLAIN_V1=true is set.
- * Default: OFF (opt-in).
+ * Returns true when SPECKIT_RESULT_EXPLAIN_V1 is enabled.
+ * Default: ON (graduated). Set SPECKIT_RESULT_EXPLAIN_V1=false to disable.
  */
-export function isResultExplainEnabled(): boolean {
-  const val = process.env.SPECKIT_RESULT_EXPLAIN_V1?.toLowerCase().trim();
-  return val !== 'false' && val !== '0';
-}
+export { isResultExplainEnabled };
 
 // ── Internal helpers ──────────────────────────────────────────
 

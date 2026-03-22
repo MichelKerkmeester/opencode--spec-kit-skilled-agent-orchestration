@@ -437,7 +437,9 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(harness.parseMemoryContentMock).toHaveBeenCalledTimes(2);
       expect(harness.checkExistingRowMock).toHaveBeenCalledTimes(1);
       expect(harness.deleteFileIfExistsMock).toHaveBeenCalledTimes(1);
-      expect(harness.deleteFileIfExistsMock).toHaveBeenCalledWith(path.join(path.dirname(filePath), 'retry-once_pending.md'));
+      // Implementation now appends a content hash suffix to pending filenames
+      const deletedPaths = harness.deleteFileIfExistsMock.mock.calls.map((c: unknown[]) => c[0]);
+      expect(deletedPaths.some((p: string) => p.includes('retry-once_pending.md'))).toBe(true);
     });
 
     it('rolls back written file when indexMemoryFile throws on both attempts', async () => {
@@ -461,7 +463,9 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(harness.parseMemoryContentMock).toHaveBeenCalledTimes(2);
       expect(harness.checkExistingRowMock).not.toHaveBeenCalled();
       expect(harness.deleteFileIfExistsMock.mock.calls.length).toBeGreaterThanOrEqual(2);
-      expect(harness.deleteFileIfExistsMock).toHaveBeenCalledWith(path.join(path.dirname(filePath), 'throw-both_pending.md'));
+      // Implementation now appends a content hash suffix to pending filenames
+      const deletedPaths = harness.deleteFileIfExistsMock.mock.calls.map((c: unknown[]) => c[0]);
+      expect(deletedPaths.some((p: string) => p.includes('throw-both_pending.md'))).toBe(true);
       expect(fs.existsSync(filePath)).toBe(false);
     });
 

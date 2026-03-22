@@ -155,19 +155,19 @@ describe('Memory Search Integration (T601-T650) [deferred - requires DB test fix
     it('T627: Empty concepts array rejected', async () => {
       const response = await memorySearchHandler.handleMemorySearch({ concepts: [] });
       const data = parseResponseData(response);
-      expect(data.error).toBe('Either query (string) or concepts (array of 2-5 strings) is required');
+      expect(data.error).toBe('Either query (string), concepts (array of 2-5 strings), or cursor (string) is required');
     });
 
     it('T628: Single concept rejected', async () => {
       const response = await memorySearchHandler.handleMemorySearch({ concepts: ['only-one'] });
       const data = parseResponseData(response);
-      expect(data.error).toBe('Either query (string) or concepts (array of 2-5 strings) is required');
+      expect(data.error).toBe('Either query (string), concepts (array of 2-5 strings), or cursor (string) is required');
     });
 
     it('T629: Non-array concepts rejected', async () => {
       const response = await memorySearchHandler.handleMemorySearch({ concepts: 'bad-input' as unknown as string[] });
       const data = parseResponseData(response);
-      expect(data.error).toBe('Either query (string) or concepts (array of 2-5 strings) is required');
+      expect(data.error).toBe('Either query (string), concepts (array of 2-5 strings), or cursor (string) is required');
     });
 
     it('T630: Null concepts handled', async () => {

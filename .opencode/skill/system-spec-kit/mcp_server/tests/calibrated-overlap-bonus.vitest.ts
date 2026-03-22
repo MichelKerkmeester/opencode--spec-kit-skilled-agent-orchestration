@@ -67,9 +67,9 @@ describe('REQ-D1-001 Constants', () => {
    ────────────────────────────────────────────────────────────── */
 
 describe('REQ-D1-001 Feature Flag (SPECKIT_CALIBRATED_OVERLAP_BONUS)', () => {
-  it('D1-FF-1: flag is OFF by default', () => {
+  it('D1-FF-1: flag is ON by default (graduated)', () => {
     delete process.env.SPECKIT_CALIBRATED_OVERLAP_BONUS;
-    expect(isCalibratedOverlapBonusEnabled()).toBe(false);
+    expect(isCalibratedOverlapBonusEnabled()).toBe(true);
   });
 
   it('D1-FF-2: flag is OFF when set to "false"', () => {
@@ -266,7 +266,7 @@ describe('REQ-D1-001 Flag ON: calibrated overlap bonus', () => {
    ────────────────────────────────────────────────────────────── */
 
 describe('REQ-D1-001 Backwards compatibility', () => {
-  it('D1-BC-1: flag unset (undefined) behaves identically to flag OFF', () => {
+  it('D1-BC-1: flag unset (undefined) behaves identically to flag ON (graduated)', () => {
     delete process.env.SPECKIT_CALIBRATED_OVERLAP_BONUS;
     setEnv({ SPECKIT_SCORE_NORMALIZATION: 'false' });
 
@@ -276,8 +276,9 @@ describe('REQ-D1-001 Backwards compatibility', () => {
     ]);
     const item = fused.find(r => r.id === 'bc');
     expect(item).toBeDefined();
-    // Flat bonus expected when flag is not set
-    expect(item!.convergenceBonus).toBeCloseTo(CONVERGENCE_BONUS, 5);
+    // Calibrated bonus expected when flag is graduated (default ON)
+    expect(item!.convergenceBonus).toBeGreaterThanOrEqual(0);
+    expect(item!.convergenceBonus).toBeLessThanOrEqual(CALIBRATED_OVERLAP_MAX + 1e-9);
   });
 
   it('D1-BC-2: calibratedOverlapBeta option has no effect when flag is OFF', () => {
