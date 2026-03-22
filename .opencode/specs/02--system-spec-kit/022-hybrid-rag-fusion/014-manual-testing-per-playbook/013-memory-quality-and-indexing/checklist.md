@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: manual-testing-per-playbook memory quality and indexing phase [template:level_2/checklist.md]"
-description: "Verification checklist for Phase 013 memory-quality-and-indexing manual tests covering 42 exact IDs, including the dedicated memory sub-scenarios."
+description: "Verification checklist for Phase 013 memory-quality-and-indexing manual tests covering 49 exact IDs, including the dedicated memory sub-scenarios and Wave 5 additions (176-178)."
 trigger_phrases:
   - "memory quality checklist"
   - "phase 013 verification"
@@ -31,8 +31,8 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Scope is locked to 42 exact IDs for Phase 013, including `M-005a..c`, `M-006a..c`, and `M-007a..j` [EVIDENCE: `spec.md` scope table lists the exact-ID inventory]
-- [x] CHK-002 [P0] Exact prompts, command sequences, and pass criteria were extracted from the current playbook for all 42 exact IDs [EVIDENCE: `plan.md` testing strategy reflects the current playbook wording]
+- [x] CHK-001 [P0] Scope is locked to 49 exact IDs for Phase 013, including `M-005a..c`, `M-006a..c`, and `M-007a..j` [EVIDENCE: `spec.md` scope table lists the exact-ID inventory]
+- [x] CHK-002 [P0] Exact prompts, command sequences, and pass criteria were extracted from the current playbook for all 49 exact IDs [EVIDENCE: `plan.md` testing strategy reflects the current playbook wording]
 - [x] CHK-003 [P0] `M-005a..c` map to the dedicated outsourced-agent feature entry [EVIDENCE: `spec.md` scope table mappings]
 - [x] CHK-004 [P0] `M-006a..c` map to the dedicated stateless-enrichment feature entry [EVIDENCE: `spec.md` scope table mappings]
 - [x] CHK-005 [P0] `M-007` and `M-007a..j` map to the exact session-capturing feature entry under `../../../../../skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md` [EVIDENCE: `spec.md` scope table mappings]
@@ -47,7 +47,7 @@ contextType: "general"
 - [x] CHK-010 [P0] `spec.md` explicitly names `M-005a`, `M-005b`, and `M-005c` rather than only the parent `M-005` row [EVIDENCE: `spec.md` scope and requirements]
 - [x] CHK-011 [P0] `spec.md` explicitly names `M-006a`, `M-006b`, and `M-006c` rather than only the parent `M-006` row [EVIDENCE: `spec.md` scope and requirements]
 - [x] CHK-012 [P0] `spec.md` explicitly names `M-007a` through `M-007j`, including literal `M-007g` and `M-007h` coverage [EVIDENCE: `spec.md` scope and requirements]
-- [x] CHK-013 [P0] The packet now treats `42` exact IDs as the authoritative coverage unit for Phase 013 [EVIDENCE: `spec.md`, `plan.md`, and `tasks.md` count language]
+- [x] CHK-013 [P0] The packet now treats `49` exact IDs as the authoritative coverage unit for Phase 013 [EVIDENCE: `spec.md`, `plan.md`, and `tasks.md` count language]
 - [x] CHK-014 [P1] `plan.md` testing strategy includes the dedicated-memory sub-scenarios as explicit rows [EVIDENCE: `plan.md` testing strategy]
 <!-- /ANCHOR:code-quality -->
 
@@ -79,7 +79,7 @@ contextType: "general"
 ## Documentation
 
 - [x] CHK-040 [P0] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` contain no template placeholder text [EVIDENCE: content review after rewrite]
-- [x] CHK-041 [P0] Cross-document ID coverage is synchronized to the 42-ID model [EVIDENCE: matching count language across the rewritten packet]
+- [x] CHK-041 [P0] Cross-document ID coverage is synchronized to the 49-ID model [EVIDENCE: matching count language across the rewritten packet]
 - [ ] CHK-042 [P1] Open questions are resolved or explicitly deferred before phase execution begins [EVIDENCE: `spec.md` open questions updated]
 - [x] CHK-043 [P1] `implementation-summary.md` reflects the exact-ID draft packet rather than the older 25/26-ID model [EVIDENCE: rewritten summary]
 <!-- /ANCHOR:docs -->

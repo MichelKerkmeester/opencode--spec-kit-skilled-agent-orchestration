@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary [template:level_1/implementation-summary.md]"
-description: "Phase 013 memory-quality-and-indexing manual testing packet aligned from the older 25/26-ID model to the current 42 exact-ID model."
+description: "Phase 013 memory-quality-and-indexing manual testing packet aligned from the older 25/26-ID model to the current 49 exact-ID model (42 base + 4 Wave 2-4 + 3 Wave 5)."
 trigger_phrases:
   - "memory-quality-and-indexing implementation summary"
   - "phase 013 summary"
@@ -103,12 +103,21 @@ Checkpoint `phase-013-partB-destructive-baseline` (ID 20) created before destruc
 
 ---
 
+<!-- ANCHOR:wave5 -->
+## Wave 5 Alignment (2026-03-22)
+
+Three new scenarios — `176` (Implicit Feedback Log), `177` (Hybrid Decay Policy), and `178` (Save Quality Gate Exceptions) — were added to Phase 013 as part of the Wave 5 playbook expansion. The phase spec.md scope table and requirements were updated from `46` to `49` exact IDs. These scenarios have corresponding feature catalog entries (`22-implicit-feedback-log.md`, `23-hybrid-decay-policy.md`, `24-save-quality-gate-exceptions.md`) and per-category playbook files. The original 42-ID execution pass remains historical; these 7 additional IDs (4 Wave 2-4 + 3 Wave 5) have not yet been executed.
+<!-- /ANCHOR:wave5 -->
+
+---
+
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
 1. **Two PARTIAL verdicts** - M-005b: nextSteps data loads but thin-only input cannot produce a full memory file (expected behavior, not a system defect). M-007j: NO_DATA_AVAILABLE path code-confirmed but live demonstration impossible when active session is running.
 2. **Nearest-category mappings remain for M-001 through M-004** - A future catalog backfill could still add dedicated operator-flow feature entries.
 3. **P2 memory save deferred** - CHK-051 (session memory save) not run; phase documents are self-contained.
+4. **7 IDs not yet executed** - Wave 2-4 IDs (155, 155-F, 164, 165) and Wave 5 IDs (176, 177, 178) are documented in spec.md but have not been tested.
 <!-- /ANCHOR:limitations -->
 
 ---

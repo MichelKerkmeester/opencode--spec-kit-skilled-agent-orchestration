@@ -1,16 +1,18 @@
 ---
 title: "Feature Specification: manual-testing-per-playbook ux-hooks phase [template:level_1/spec.md]"
-description: "Phase 018 documents the UX-hooks manual test packet for the Spec Kit Memory system. It breaks nine UX-hooks scenarios out of the central playbook so testers can execute prompts, command sequences, evidence capture, and verdict criteria from one bounded folder."
+description: "Phase 018 documents the UX-hooks manual test packet for the Spec Kit Memory system. It breaks eleven UX-hooks scenarios out of the central playbook so testers can execute prompts, command sequences, evidence capture, and verdict criteria from one bounded folder."
 trigger_phrases:
   - "ux hooks manual testing"
   - "phase 018 ux hooks"
   - "mutation feedback hooks testing"
   - "checkpoint confirmName manual tests"
-  - "166 167 168 169"
+  - "166 167 168 169 179 180"
   - "result explainability"
   - "response profiles"
   - "progressive disclosure"
   - "session retrieval state"
+  - "empty result recovery"
+  - "result confidence"
 importance_tier: "high"
 contextType: "general"
 ---
@@ -42,10 +44,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual UX-hooks scenarios for the Spec Kit Memory system currently live inside the central playbook and need a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated UX-hooks packet, Phase 018 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results. Wave 2-4 additions introduce result explainability, response profiles, progressive disclosure, and session retrieval state.
+Manual UX-hooks scenarios for the Spec Kit Memory system currently live inside the central playbook and need a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated UX-hooks packet, Phase 018 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results. Wave 2-5 additions introduce result explainability, response profiles, progressive disclosure, session retrieval state, empty result recovery, and result confidence.
 
 ### Purpose
-Provide a single UX-hooks-focused specification that maps all nine Phase 018 test IDs to their feature context and acceptance criteria so manual execution and review remain consistent with the canonical playbook.
+Provide a single UX-hooks-focused specification that maps all eleven Phase 018 test IDs to their feature context and acceptance criteria so manual execution and review remain consistent with the canonical playbook.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -66,9 +68,11 @@ Provide a single UX-hooks-focused specification that maps all nine Phase 018 tes
 | 167 | Response Profiles | [`../../feature_catalog/18--ux-hooks/14-response-profiles.md`](../../feature_catalog/18--ux-hooks/14-response-profiles.md) | `Verify quick/research/resume/debug response profile modes (SPECKIT_RESPONSE_PROFILE_V1).` | `1) Enable flag 2) Run query with profile=quick 3) Run query with profile=research 4) Run query with profile=resume 5) Run query with profile=debug 6) Compare output shape/verbosity across profiles 7) Disable flag fallback` |
 | 168 | Progressive Disclosure | [`../../feature_catalog/18--ux-hooks/15-progressive-disclosure.md`](../../feature_catalog/18--ux-hooks/15-progressive-disclosure.md) | `Verify cursor-based progressive disclosure pagination (SPECKIT_PROGRESSIVE_DISCLOSURE_V1).` | `1) Enable flag 2) Run large-result query 3) Inspect initial page with cursor token 4) Request next page using cursor 5) Verify no duplicates across pages 6) Disable flag fallback` |
 | 169 | Session Retrieval State | [`../../feature_catalog/18--ux-hooks/16-session-retrieval-state.md`](../../feature_catalog/18--ux-hooks/16-session-retrieval-state.md) | `Verify cross-turn dedup via session retrieval state (SPECKIT_SESSION_RETRIEVAL_STATE_V1).` | `1) Enable flag 2) Run first query 3) Run follow-up query in same session 4) Verify already-surfaced results are deprioritized or deduplicated 5) Start new session and verify state is reset 6) Disable flag fallback` |
+| 179 | Empty Result Recovery (SPECKIT_EMPTY_RESULT_RECOVERY_V1) | [`../../feature_catalog/18--ux-hooks/18-empty-result-recovery.md`](../../feature_catalog/18--ux-hooks/18-empty-result-recovery.md) | `Verifies structured recovery payloads for empty/weak search results across all 3 statuses.` | `1) Enable flag 2) Run empty-result query 3) Run weak-result query 4) Inspect structured recovery payloads across all 3 statuses 5) Disable flag fallback` |
+| 180 | Result Confidence (SPECKIT_RESULT_CONFIDENCE_V1) | [`../../feature_catalog/18--ux-hooks/19-result-confidence.md`](../../feature_catalog/18--ux-hooks/19-result-confidence.md) | `Verifies per-result calibrated confidence scoring with 4-factor weighting.` | `1) Enable flag 2) Run representative search queries 3) Inspect per-result calibrated confidence fields 4) Verify 4-factor weighting in trace output 5) Disable flag fallback` |
 
 ### Out of Scope
-- Executing the nine UX-hooks scenarios and assigning final run verdicts.
+- Executing the eleven UX-hooks scenarios and assigning final run verdicts.
 - Modifying the playbook or feature catalog content linked from this packet.
 - Documenting non-UX-hooks phases from other phase folders within `014-manual-testing-per-playbook/`.
 
@@ -100,8 +104,10 @@ Provide a single UX-hooks-focused specification that maps all nine Phase 018 tes
 | REQ-007 | Document 167 (Response Profiles) with its exact prompt, execution sequence, evidence target, and feature link. Feature flag: `SPECKIT_RESPONSE_PROFILE_V1` (default: OFF). | PASS when flag ON: `quick` mode returns concise results with minimal metadata, `research` mode returns full results with extended context, `resume` mode returns continuation-optimized results prioritizing recent activity, `debug` mode returns full trace and diagnostic data, and an unrecognized profile name falls back to the default output shape; PASS when flag OFF: all queries use the default output shape regardless of requested profile. FAIL when profile modes produce identical output, when an invalid profile name causes an error instead of fallback, or when profiles are applied with the flag disabled. |
 | REQ-008 | Document 168 (Progressive Disclosure) with its exact prompt, execution sequence, evidence target, and feature link. Feature flag: `SPECKIT_PROGRESSIVE_DISCLOSURE_V1` (default: OFF). | PASS when flag ON: large result sets return an initial page with a cursor token, subsequent page requests using the cursor return the next batch without duplicates, and the final page has no cursor; PASS when flag OFF: all results are returned in a single response with no cursor. FAIL when pages contain duplicate results, when the cursor token is missing from non-final pages, or when pagination activates with the flag disabled. |
 | REQ-009 | Document 169 (Session Retrieval State) with its exact prompt, execution sequence, evidence target, and feature link. Feature flag: `SPECKIT_SESSION_RETRIEVAL_STATE_V1` (default: OFF). | PASS when flag ON: results already surfaced in earlier turns of the same session are deprioritized or deduplicated in subsequent queries, starting a new session resets the state, and the dedup does not suppress genuinely re-relevant results when the query context changes significantly; PASS when flag OFF: no cross-turn dedup occurs and every query returns results independently. FAIL when dedup state leaks across sessions, when previously surfaced results are suppressed despite a significant context change, or when dedup activates with the flag disabled. |
+| REQ-010 | Document 179 (Empty Result Recovery) with its exact prompt, execution sequence, evidence target, and feature link. Feature flag: `SPECKIT_EMPTY_RESULT_RECOVERY_V1` (default: OFF). | PASS when flag ON: empty and weak-result searches return structured recovery payloads across all 3 documented statuses, recovery guidance is actionable without changing result ranking, and non-empty healthy searches do not emit recovery payloads; PASS when flag OFF: no recovery payload is emitted beyond the default response shape. FAIL when any status is missing, when recovery payloads appear for healthy results, or when disabling the flag still emits structured recovery guidance. |
+| REQ-011 | Document 180 (Result Confidence) with its exact prompt, execution sequence, evidence target, and feature link. Feature flag: `SPECKIT_RESULT_CONFIDENCE_V1` (default: OFF). | PASS when flag ON: each result includes a calibrated confidence score, the score reflects the documented 4-factor weighting, and confidence output remains consistent across repeated runs with the same inputs; PASS when flag OFF: no calibrated confidence field is included in result output. FAIL when confidence is missing with the flag enabled, when the weighting logic drifts from the documented factors, or when disabling the flag still returns calibrated confidence values. |
 
-No P1 items are defined for this phase; all nine UX-hooks scenarios are mandatory for coverage.
+No P1 items are defined for this phase; all eleven UX-hooks scenarios are mandatory for coverage.
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -109,8 +115,8 @@ No P1 items are defined for this phase; all nine UX-hooks scenarios are mandator
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 9 UX-hooks tests are documented with exact prompts, exact command sequences, linked feature catalog entries, and playbook-derived pass criteria.
-- **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for 103, 104, 105, 106, 107, 166, 167, 168, and 169 will be collected.
+- **SC-001**: All 11 UX-hooks tests are documented with exact prompts, exact command sequences, linked feature catalog entries, and playbook-derived pass criteria.
+- **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for 103, 104, 105, 106, 107, 166, 167, 168, 169, 179, and 180 will be collected.
 - **SC-003**: Reviewers can audit every Phase 018 scenario using this folder plus the linked playbook (`../../manual_testing_playbook/manual_testing_playbook.md`).
 - **SC-004**: The phase packet contains no placeholder or template text and is ready for manual execution planning.
 <!-- /ANCHOR:success-criteria -->

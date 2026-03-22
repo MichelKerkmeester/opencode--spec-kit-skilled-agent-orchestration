@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: manual-testing-per-playbook [template:level_1/plan.md]"
-description: "Alignment pass for the 014 parent packet: reconcile 19 phase folders to the current 213-ID exact scenario inventory, expand Phase 013 dedicated-memory coverage, and record the March 17, 2026 validator truth."
+description: "Alignment pass for the 014 parent packet: reconcile 19 phase folders to the current 252-ID exact scenario inventory, expand Phase 013 dedicated-memory coverage, and record the March 17, 2026 validator truth."
 trigger_phrases:
   - "manual testing plan"
   - "testing phases"
@@ -29,7 +29,7 @@ contextType: "general"
 | **Testing** | Exact-ID audit + `validate.sh --recursive` |
 
 ### Overview
-This pass does not generate the packet from scratch. It reconciles the existing 19 phase folders to the current playbook truth by switching the parent packet from a top-level-ID model (`195`) to an exact-ID model (`213`), expanding Phase `013-memory-quality-and-indexing` for the dedicated memory sub-scenarios, refreshing the `M-007` playbook verification wording, and recording the real validator outcome for the packet.
+This pass does not generate the packet from scratch. It reconciles the existing 19 phase folders to the current playbook truth by switching the parent packet from a top-level-ID model (`195`) to an exact-ID model (`252`), incorporating the Wave 5 additions (`170..180`) across Phases `010`, `011`, `012`, `013`, and `018`, expanding Phase `013-memory-quality-and-indexing` for the dedicated memory sub-scenarios, refreshing the `M-007` playbook verification wording, and recording the real validator outcome for the packet.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -44,7 +44,7 @@ This pass does not generate the packet from scratch. It reconciles the existing 
 - [x] Scope limited to the `014` parent docs, Phase `013` docs, the `M-007` playbook block, and the narrow `010` truth-cleanup.
 
 ### Definition of Done
-- [ ] Parent packet uses the `213` exact-ID model as its authoritative coverage measure.
+- [ ] Parent packet uses the `252` exact-ID model as its authoritative coverage measure.
 - [ ] Phase `013` explicitly documents `M-005a..c`, `M-006a..c`, and `M-007a..j`.
 - [ ] Exact-ID audit reports `0` missing IDs and `0` duplicate owners.
 - [ ] Recursive validation is rerun and its current `0`-error, `19`-warning state is recorded truthfully in the packet.

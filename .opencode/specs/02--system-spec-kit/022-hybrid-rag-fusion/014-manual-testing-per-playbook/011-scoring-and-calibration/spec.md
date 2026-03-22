@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: scoring-and-calibration manual testing [template:level_1/spec.md]"
-description: "Phase 011 documents the 19 manual testing scenarios for scoring and calibration features in the Spec Kit Memory system. It maps each playbook scenario to the matching feature catalog entry and preserves the required acceptance language for verdict review."
+description: "Phase 011 documents the 22 manual testing scenarios for scoring and calibration features in the Spec Kit Memory system. It maps each playbook scenario to the matching feature catalog entry and preserves the required acceptance language for verdict review."
 trigger_phrases:
   - "manual testing"
   - "scoring and calibration"
@@ -10,6 +10,10 @@ trigger_phrases:
   - "159 160"
   - "learned stage 2 combiner"
   - "shadow feedback holdout"
+  - "170 171 172"
+  - "fusion policy shadow"
+  - "calibrated overlap bonus"
+  - "rrf k experimental"
 importance_tier: "high"
 contextType: "general"
 ---
@@ -41,7 +45,7 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual test scenarios for scoring-and-calibration need structured per-phase documentation instead of a single playbook table buried inside the hybrid RAG fusion packet. Phase 011 must capture the exact test prompts, execution steps, evidence expectations, and verdict rules for the 19 scoring-focused scenarios so operators can run them consistently and reviewers can score them against the review protocol.
+Manual test scenarios for scoring-and-calibration need structured per-phase documentation instead of a single playbook table buried inside the hybrid RAG fusion packet. Phase 011 must capture the exact test prompts, execution steps, evidence expectations, and verdict rules for the 22 scoring-focused scenarios so operators can run them consistently and reviewers can score them against the review protocol.
 
 ### Purpose
 Provide a canonical phase packet that maps every assigned scoring-and-calibration test ID to its feature catalog source and preserves the pass/fail acceptance language needed for PASS, PARTIAL, or FAIL verdicts. Wave 2-4 additions include learned Stage 2 combiner shadow scoring and shadow feedback holdout evaluation.
@@ -53,7 +57,7 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 ## 3. SCOPE
 
 ### In Scope
-- Phase 011 documentation for all 19 assigned scoring-and-calibration playbook scenarios.
+- Phase 011 documentation for all 22 assigned scoring-and-calibration playbook scenarios.
 - Exact linkage from each test ID to the matching feature catalog file under `11--scoring-and-calibration/`.
 - Manual-testing execution guidance covering prompts, evidence expectations, and review-protocol verdict inputs.
 
@@ -83,8 +87,11 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 | 102 | node-llama-cpp optionalDependencies | [`../../feature_catalog/11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md`](../../feature_catalog/11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md) | Verifies optional dependency installation and dynamic import fallback behavior for local reranker support. |
 | 118 | Stage-2 score field synchronization (P0-8) | [`../../feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md`](../../feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md) | Depends on includeTrace output from the active non-hybrid pipeline. |
 | 121 | Adaptive shadow proposal and rollback (Phase 4) | [`../../feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md`](../../feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md) | Mutates adaptive signals and feature flags, so it needs rollback-safe isolation. |
-| 159 | Learned Stage 2 Combiner | [`../../feature_catalog/11--scoring-and-calibration/19-learned-stage2-combiner.md`](../../feature_catalog/11--scoring-and-calibration/19-learned-stage2-combiner.md) | Validates `SPECKIT_LEARNED_STAGE2_COMBINER` shadow scoring output alongside the live combiner. |
-| 160 | Shadow Feedback Holdout | [`../../feature_catalog/11--scoring-and-calibration/20-shadow-feedback-holdout.md`](../../feature_catalog/11--scoring-and-calibration/20-shadow-feedback-holdout.md) | Validates `SPECKIT_SHADOW_FEEDBACK` holdout evaluation pipeline for offline scoring comparison. |
+| 159 | Learned Stage 2 Combiner | [`../../feature_catalog/11--scoring-and-calibration/19-learned-stage2-weight-combiner.md`](../../feature_catalog/11--scoring-and-calibration/19-learned-stage2-weight-combiner.md) | Validates `SPECKIT_LEARNED_STAGE2_COMBINER` shadow scoring output alongside the live combiner. |
+| 160 | Shadow Feedback Holdout | [`../../feature_catalog/11--scoring-and-calibration/20-shadow-feedback-holdout-evaluation.md`](../../feature_catalog/11--scoring-and-calibration/20-shadow-feedback-holdout-evaluation.md) | Validates `SPECKIT_SHADOW_FEEDBACK` holdout evaluation pipeline for offline scoring comparison. |
+| 170 | Fusion Policy Shadow v2 (SPECKIT_FUSION_POLICY_SHADOW_V2) | [`../../feature_catalog/11--scoring-and-calibration/23-fusion-policy-shadow-v2.md`](../../feature_catalog/11--scoring-and-calibration/23-fusion-policy-shadow-v2.md) | Verifies Fusion Lab runs all three policies in shadow while returning active policy result unchanged. |
+| 171 | Calibrated Overlap Bonus (SPECKIT_CALIBRATED_OVERLAP_BONUS) | [`../../feature_catalog/11--scoring-and-calibration/21-calibrated-overlap-bonus.md`](../../feature_catalog/11--scoring-and-calibration/21-calibrated-overlap-bonus.md) | Verifies calibrated overlap bonus replaces flat convergence bonus with beta=0.15 scaling and 0.06 cap. |
+| 172 | RRF K Experimental (SPECKIT_RRF_K_EXPERIMENTAL) | [`../../feature_catalog/11--scoring-and-calibration/22-rrf-k-experimental.md`](../../feature_catalog/11--scoring-and-calibration/22-rrf-k-experimental.md) | Verifies per-intent K optimization selects best K from sweep grid using NDCG@10. |
 
 ### Files to Change
 
@@ -122,6 +129,9 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 | REQ-121 | Document 121 (Adaptive shadow proposal and rollback (Phase 4)) with the exact prompt, execution sequence, evidence target, and feature link. | PASS: Shadow proposal emitted without mutating live order; disable flag removes proposal cleanly; FAIL: Live order changes under shadow mode or proposal persists after disable |
 | REQ-159 | Document 159 (Learned Stage 2 Combiner) with its exact prompt, execution sequence, evidence target, and feature link. Feature flag: `SPECKIT_LEARNED_STAGE2_COMBINER` (default: OFF). | PASS when flag ON: shadow scoring output is emitted alongside the live Stage 2 combiner, shadow weights are logged, and the live ranking is not affected by shadow output; PASS when flag OFF: no shadow scoring output appears and the live combiner behaves identically to baseline. FAIL when shadow output mutates live ranking or when disabling the flag still produces shadow logs. |
 | REQ-160 | Document 160 (Shadow Feedback Holdout) with its exact prompt, execution sequence, evidence target, and feature link. Feature flag: `SPECKIT_SHADOW_FEEDBACK` (default: OFF). | PASS when flag ON: holdout evaluation pipeline runs on a configured percentage of queries, holdout results are logged separately from live results, and live retrieval quality is unaffected; PASS when flag OFF: no holdout pipeline runs and no holdout log entries appear. FAIL when holdout affects live results, runs on all queries regardless of configured percentage, or holdout logging occurs when the flag is disabled. |
+| REQ-170 | Document 170 (Fusion Policy Shadow v2) with its exact prompt, execution sequence, evidence target, and feature link. Feature flag: `SPECKIT_FUSION_POLICY_SHADOW_V2` (default: OFF). | PASS when flag ON: Fusion Lab runs all three policies in shadow, returns the active policy result unchanged, and logs shadow policy comparisons separately from the live output; PASS when flag OFF: no shadow policy comparison runs. FAIL when shadow execution changes the returned active result or when disabling the flag still emits shadow policy output. |
+| REQ-171 | Document 171 (Calibrated Overlap Bonus) with its exact prompt, execution sequence, evidence target, and feature link. Feature flag: `SPECKIT_CALIBRATED_OVERLAP_BONUS` (default: OFF). | PASS when flag ON: calibrated overlap bonus replaces the flat convergence bonus with beta=0.15 scaling and a 0.06 cap, and trace output shows the capped calibrated value; PASS when flag OFF: the prior overlap bonus behavior remains. FAIL when calibrated scaling is absent, the 0.06 cap is exceeded, or disabling the flag still applies the calibrated bonus. |
+| REQ-172 | Document 172 (RRF K Experimental) with its exact prompt, execution sequence, evidence target, and feature link. Feature flag: `SPECKIT_RRF_K_EXPERIMENTAL` (default: OFF). | PASS when flag ON: per-intent K optimization evaluates the sweep grid, selects the best K using NDCG@10, and records the winning K in the experiment output; PASS when flag OFF: no per-intent K sweep runs. FAIL when the sweep grid is skipped, the chosen K is not supported by NDCG@10 evidence, or disabling the flag still runs the experiment. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -129,7 +139,7 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 19 assigned test IDs are documented in this phase packet with exact prompts, execution steps, evidence targets, and verdict criteria.
+- **SC-001**: All 22 assigned test IDs are documented in this phase packet with exact prompts, execution steps, evidence targets, and verdict criteria.
 - **SC-002**: Every test row links to the correct scoring-and-calibration feature catalog file by relative path.
 - **SC-003**: The paired `plan.md` defines the execution pipeline from preconditions through evidence capture and verdict assignment.
 - **SC-004**: Reviewers can apply the review protocol without reopening the monolithic playbook for missing scenario details.

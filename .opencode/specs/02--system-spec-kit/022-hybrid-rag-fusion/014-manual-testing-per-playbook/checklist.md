@@ -35,7 +35,7 @@ contextType: "general"
 - [x] CHK-003 [P0] All 19 phase directories still exist (`001-retrieval/` through `019-feature-flag-reference/`) [EVIDENCE: directory inventory confirmed for all `001-*` to `019-*` folders]
 - [x] CHK-004 [P1] Manual testing playbook resolves at `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` [EVIDENCE: relative path resolves and file exists]
 - [x] CHK-005 [P1] Review and release-readiness rules resolve from `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` [EVIDENCE: root playbook contains the scenario verdict and release-readiness rules used by this packet]
-- [x] CHK-006 [P0] Exact-ID inventory established from the current playbook at `213` scenario IDs, while retaining `195` as the top-level-ID count only [EVIDENCE: exact-ID audit input reviewed against the current playbook text]
+- [x] CHK-006 [P0] Exact-ID inventory established from the current playbook at `252` scenario IDs, while retaining `195` as the top-level-ID count only [EVIDENCE: exact-ID audit input reviewed against the current playbook text]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -44,7 +44,7 @@ contextType: "general"
 ## Code Quality
 
 - [x] CHK-010 [P0] Parent spec.md no longer presents `195` top-level IDs as the authoritative coverage model [EVIDENCE: parent `spec.md` problem statement and success criteria]
-- [x] CHK-011 [P0] Parent phase map uses truthful exact-ID counts, including `42` exact IDs for Phase `013` and `18` exact IDs for Phase `014` [EVIDENCE: parent `spec.md` Phase Documentation Map]
+- [x] CHK-011 [P0] Parent phase map uses truthful exact-ID counts, including `49` exact IDs for Phase `013` and `18` exact IDs for Phase `014` [EVIDENCE: parent `spec.md` Phase Documentation Map]
 - [x] CHK-012 [P0] Parent docs record the current validator truth instead of claiming an unrun or unresolved recursive-validation step [EVIDENCE: parent `tasks.md`, `checklist.md`, and `implementation-summary.md`]
 - [x] CHK-013 [P1] The parent packet still follows the Level 1 template structure after the rewrite [EVIDENCE: `validate.sh --recursive` reports required sections present]
 - [x] CHK-014 [P1] Parent `description.json` exists and is valid JSON [EVIDENCE: JSON parse succeeded for `description.json` on 2026-03-17]
@@ -55,7 +55,7 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] Exact-ID ownership audit across all 19 phase specs reports `213` exact scenario IDs with `0` missing IDs and `0` duplicate owners [EVIDENCE: audit rerun on 2026-03-17]
+- [x] CHK-020 [P0] Exact-ID ownership audit across all 19 phase specs reports `252` exact scenario IDs with `0` missing IDs and `0` duplicate owners [EVIDENCE: audit rerun on 2026-03-17]
 - [x] CHK-021 [P0] Recursive `validate.sh --recursive` was rerun on `014-manual-testing-per-playbook/` and completed with `0` errors and `19` warnings [EVIDENCE: validator rerun on 2026-03-17]
 - [x] CHK-022 [P0] `013-memory-quality-and-indexing/` validation was rerun after the exact-ID expansion [EVIDENCE: child validator rerun on 2026-03-17]
 - [x] CHK-023 [P1] Cross-cutting ownership remains stable: `PHASE-001..005` in Phase `016`; `M-001..008` plus dedicated-memory sub-scenarios in Phase `013` [EVIDENCE: parent `spec.md` and child `013-memory-quality-and-indexing/spec.md` reviewed together]
@@ -87,7 +87,7 @@ contextType: "general"
 ## Normalization Alignment (2026-03-21)
 
 - [x] CHK-060 [P0] All `NEW-NNN` provisional markers replaced with bare `NNN` IDs across 80 spec folder files [EVIDENCE: `grep -r 'NEW-[0-9]' | grep -v 'G-NEW-'` returns 0 matches]
-- [x] CHK-061 [P0] Root-level count references updated from `211` to `213` exact scenario IDs [EVIDENCE: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md all reference `213`]
+- [x] CHK-061 [P0] Root-level count references updated from `211` to `252` exact scenario IDs [EVIDENCE: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md all reference `252`]
 - [x] CHK-062 [P0] Phase 016 expanded with scenarios `153` and `154`, count updated from `21` to `23` [EVIDENCE: Phase 016 spec.md test inventory and root phase map both show 23 IDs]
 - [x] CHK-063 [P0] `G-NEW-1`, `G-NEW-2`, `G-NEW-3` proper nouns preserved unchanged [EVIDENCE: `grep -r 'G-NEW-'` confirms 1 match in expected location]
 - [x] CHK-064 [P0] `EX-NNN`, `PHASE-NNN`, `M-NNN` prefixes unchanged [EVIDENCE: grep confirms all prefixed IDs intact across phase folders]

@@ -147,7 +147,7 @@ Release is `READY` only when:
 1. No feature verdict is `FAIL`.
 2. All critical scenarios are `PASS`.
 3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-scenario files (`COVERED_SCENARIOS == TOTAL_SCENARIOS`).
-4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 201 scenario files while the feature catalog contains 194 feature files.
+4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 226 scenario files while the feature catalog contains 220 feature files.
 5. No unresolved blocking triage item remains.
 
 Otherwise release is `NOT READY`.
@@ -167,6 +167,10 @@ count = sum(
 print(count)
 PY
 )
+if [ "$TOTAL_FEATURES" -ne 226 ]; then
+  echo "Expected 226 scenario files, found $TOTAL_FEATURES" >&2
+  exit 1
+fi
 ```
 
 Final verdict report must include `COVERED_SCENARIOS/TOTAL_SCENARIOS` and should call out any remaining feature-catalog entries that are automated-only, indirect, or intentionally operator-only.
@@ -3148,7 +3152,7 @@ Noun phrases extracted from query; concept alias table matched in SQLite; canoni
 
 #### Test Execution
 > **Feature File:** [174](10--graph-signal-activation/174-graph-concept-routing-speckit-graph-concept-routing.md)
-> **Catalog:** [10--graph-signal-activation/15-graph-calibration-profiles.md](../feature_catalog/10--graph-signal-activation/15-graph-calibration-profiles.md)
+> **Catalog:** [12--query-intelligence/11-graph-concept-routing.md](../feature_catalog/12--query-intelligence/11-graph-concept-routing.md)
 
 ### 175 | Typed traversal (SPECKIT_TYPED_TRAVERSAL)
 

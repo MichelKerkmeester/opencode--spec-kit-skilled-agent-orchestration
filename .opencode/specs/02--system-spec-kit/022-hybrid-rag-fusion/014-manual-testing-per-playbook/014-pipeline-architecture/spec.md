@@ -120,7 +120,7 @@ No additional P1 requirements. Phase completeness depends on documenting every a
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 19 phase-014 pipeline-architecture scenarios are listed with feature-catalog links in scope.
+- **SC-001**: All 18 phase-014 pipeline-architecture scenarios are listed with feature-catalog links in scope.
 - **SC-002**: Every documented scenario carries the exact playbook prompt in `plan.md` and the pass/fail-derived acceptance criteria in this spec.
 - **SC-003**: The plan describes the full execution lifecycle as preconditions -> execute -> evidence -> verdict, including sandbox guidance for state-changing scenarios.
 - **SC-004**: Reviewers can determine scenario and feature verdicts using only the generated phase docs plus the canonical playbook and review protocol.

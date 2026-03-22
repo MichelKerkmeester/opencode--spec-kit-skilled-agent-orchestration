@@ -37,7 +37,7 @@ This root packet is the coordination layer for the Hybrid RAG Fusion program. It
 | **Branch** | `main` |
 | **Spec Folders** | 107 numbered spec directories currently present on disk |
 | **Direct Child Counts** | `001=10`, `007=21`, `008=6`, `009=20`, `010=1`, `014=19` |
-| **Feature Catalog Count** | 194 feature files |
+| **Feature Catalog Count** | 220 feature files |
 
 ---
 

@@ -1,15 +1,16 @@
 ---
 title: "Feature Specification: manual-testing-per-playbook query-intelligence phase [template:level_1/spec.md]"
-description: "Phase 012 documents the query-intelligence manual test packet for the Spec Kit Memory system. It maps nine scenarios covering query complexity routing, RSF shadow mode, channel min-representation, confidence truncation, dynamic token budgets, query expansion, LLM reformulation, HyDE shadow, and query surrogates so testers can execute prompts, command sequences, evidence capture, and verdict criteria from one bounded folder."
+description: "Phase 012 documents the query-intelligence manual test packet for the Spec Kit Memory system. It maps ten scenarios covering query complexity routing, RSF shadow mode, channel min-representation, confidence truncation, dynamic token budgets, query expansion, LLM reformulation, HyDE shadow, query surrogates, and query decomposition so testers can execute prompts, command sequences, evidence capture, and verdict criteria from one bounded folder."
 trigger_phrases:
   - "query intelligence manual testing"
   - "phase 012 query intelligence"
   - "spec kit memory query intelligence tests"
   - "hybrid rag fusion query intelligence playbook"
-  - "161 162 163"
+  - "161 162 163 173"
   - "llm reformulation"
   - "hyde shadow"
   - "query surrogates"
+  - "query decomposition"
 importance_tier: "high"
 contextType: "general"
 ---
@@ -41,10 +42,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual query-intelligence scenarios for the Spec Kit Memory system currently live inside the central playbook and need a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated query-intelligence packet, Phase 012 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results. Wave 2-4 additions introduce LLM reformulation, HyDE shadow generation, and query surrogates.
+Manual query-intelligence scenarios for the Spec Kit Memory system currently live inside the central playbook and need a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated query-intelligence packet, Phase 012 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results. Wave 2-5 additions introduce LLM reformulation, HyDE shadow generation, query surrogates, and query decomposition.
 
 ### Purpose
-Provide a single query-intelligence-focused specification that maps all nine Phase 012 test IDs (033 through 038, 161, 162, 163) to their feature context and acceptance criteria so manual execution and review remain consistent with the canonical playbook.
+Provide a single query-intelligence-focused specification that maps all ten Phase 012 test IDs (033 through 038, 161, 162, 163, 173) to their feature context and acceptance criteria so manual execution and review remain consistent with the canonical playbook.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -62,12 +63,13 @@ Provide a single query-intelligence-focused specification that maps all nine Pha
 | 036 | Confidence-based result truncation (R15-ext) | [`../../feature_catalog/12--query-intelligence/04-confidence-based-result-truncation.md`](../../feature_catalog/12--query-intelligence/04-confidence-based-result-truncation.md) | `Verify confidence-based truncation (R15-ext).` | `1) Run long-tail query 2) Inspect cutoff math 3) Verify min-result guarantee` |
 | 037 | Dynamic token budget allocation (FUT-7) | [`../../feature_catalog/12--query-intelligence/05-dynamic-token-budget-allocation.md`](../../feature_catalog/12--query-intelligence/05-dynamic-token-budget-allocation.md) | `Verify dynamic token budgets (FUT-7).` | `1) Run classed queries 2) Inspect budgets 3) Disable flag fallback` |
 | 038 | Query expansion (R12) | [`../../feature_catalog/12--query-intelligence/06-query-expansion.md`](../../feature_catalog/12--query-intelligence/06-query-expansion.md) | `Validate query expansion (R12).` | `1) Complex query expansion 2) Parallel baseline+expanded 3) Dedup + simple-query skip` |
-| 161 | LLM Reformulation | [`../../feature_catalog/12--query-intelligence/07-llm-reformulation.md`](../../feature_catalog/12--query-intelligence/07-llm-reformulation.md) | `Verify LLM reformulation in deep mode (SPECKIT_LLM_REFORMULATION).` | `1) Enable flag 2) Run deep-mode query 3) Inspect reformulated query in trace 4) Disable flag fallback` |
-| 162 | HyDE Shadow | [`../../feature_catalog/12--query-intelligence/08-hyde-shadow.md`](../../feature_catalog/12--query-intelligence/08-hyde-shadow.md) | `Verify HyDE hypothetical document generation (SPECKIT_HYDE).` | `1) Enable flag 2) Run query 3) Inspect generated hypothetical doc 4) Confirm shadow-only (no live impact) 5) Disable flag fallback` |
-| 163 | Query Surrogates | [`../../feature_catalog/12--query-intelligence/09-query-surrogates.md`](../../feature_catalog/12--query-intelligence/09-query-surrogates.md) | `Verify index-time query surrogate generation (SPECKIT_QUERY_SURROGATES).` | `1) Enable flag 2) Save a memory record 3) Inspect generated surrogates in index 4) Run retrieval using surrogate terms 5) Disable flag fallback` |
+| 161 | LLM Reformulation | [`../../feature_catalog/12--query-intelligence/07-llm-query-reformulation.md`](../../feature_catalog/12--query-intelligence/07-llm-query-reformulation.md) | `Verify LLM reformulation in deep mode (SPECKIT_LLM_REFORMULATION).` | `1) Enable flag 2) Run deep-mode query 3) Inspect reformulated query in trace 4) Disable flag fallback` |
+| 162 | HyDE Shadow | [`../../feature_catalog/12--query-intelligence/08-hyde-hypothetical-document-embeddings.md`](../../feature_catalog/12--query-intelligence/08-hyde-hypothetical-document-embeddings.md) | `Verify HyDE hypothetical document generation (SPECKIT_HYDE).` | `1) Enable flag 2) Run query 3) Inspect generated hypothetical doc 4) Confirm shadow-only (no live impact) 5) Disable flag fallback` |
+| 163 | Query Surrogates | [`../../feature_catalog/12--query-intelligence/09-index-time-query-surrogates.md`](../../feature_catalog/12--query-intelligence/09-index-time-query-surrogates.md) | `Verify index-time query surrogate generation (SPECKIT_QUERY_SURROGATES).` | `1) Enable flag 2) Save a memory record 3) Inspect generated surrogates in index 4) Run retrieval using surrogate terms 5) Disable flag fallback` |
+| 173 | Query Decomposition (SPECKIT_QUERY_DECOMPOSITION) | [`../../feature_catalog/12--query-intelligence/10-query-decomposition.md`](../../feature_catalog/12--query-intelligence/10-query-decomposition.md) | `Verify bounded facet detection decomposes multi-faceted queries into max 3 sub-queries using rule-based heuristics in deep mode.` | `1) Enable flag 2) Run a multi-faceted deep-mode query 3) Inspect bounded facet detection output 4) Verify decomposition produces at most 3 rule-based sub-queries 5) Disable flag fallback` |
 
 ### Out of Scope
-- Executing the nine query-intelligence scenarios and assigning final run verdicts.
+- Executing the ten query-intelligence scenarios and assigning final run verdicts.
 - Modifying the playbook or feature catalog content linked from this packet.
 - Documenting non-query-intelligence phases from other `014-manual-testing-per-playbook/` sub-folders.
 
@@ -100,8 +102,9 @@ Provide a single query-intelligence-focused specification that maps all nine Pha
 | REQ-007 | Document 161 (LLM Reformulation) with its exact prompt, execution sequence, evidence target, and feature link. Feature flag: `SPECKIT_LLM_REFORMULATION` (default: OFF). | PASS when flag ON: deep-mode queries produce a reformulated query visible in trace output, reformulation improves retrieval relevance or at minimum does not degrade it, and non-deep queries bypass reformulation; PASS when flag OFF: no reformulation occurs and queries execute unchanged. FAIL when reformulation runs outside deep mode, when disabling the flag still produces reformulated queries, or when reformulation degrades retrieval quality below baseline. |
 | REQ-008 | Document 162 (HyDE Shadow) with its exact prompt, execution sequence, evidence target, and feature link. Feature flag: `SPECKIT_HYDE` (default: OFF). | PASS when flag ON: a hypothetical document is generated from the query and logged in shadow output, the hypothetical document is used only for embedding similarity (not returned to the user), and live ranking is not affected by the shadow path; PASS when flag OFF: no hypothetical document generation occurs. FAIL when the hypothetical document affects live ranking, is returned as a result, or generation occurs when the flag is disabled. |
 | REQ-009 | Document 163 (Query Surrogates) with its exact prompt, execution sequence, evidence target, and feature link. Feature flag: `SPECKIT_QUERY_SURROGATES` (default: OFF). | PASS when flag ON: saving a memory record generates query surrogates stored in the index, retrieval using surrogate-matching terms returns the record, and surrogates are regenerated on content update; PASS when flag OFF: no surrogates are generated at index time and retrieval uses only the original content. FAIL when surrogates are generated with the flag disabled, when surrogates are stale after content update, or when surrogate-based retrieval returns incorrect records. |
+| REQ-010 | Document 173 (Query Decomposition) with its exact prompt, execution sequence, evidence target, and feature link. Feature flag: `SPECKIT_QUERY_DECOMPOSITION` (default: OFF). | PASS when flag ON: deep-mode multi-faceted queries are decomposed into bounded sub-queries using rule-based facet detection, decomposition is capped at 3 sub-queries, and the trace output shows the derived sub-queries without mutating the original user query; PASS when flag OFF: no decomposition occurs and the original query executes unchanged. FAIL when decomposition runs outside deep mode, when more than 3 sub-queries are produced, or when disabling the flag still produces decomposed sub-queries. |
 
-No P1 items are defined for this phase; all nine query-intelligence scenarios are mandatory for coverage.
+No P1 items are defined for this phase; all ten query-intelligence scenarios are mandatory for coverage.
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -109,8 +112,8 @@ No P1 items are defined for this phase; all nine query-intelligence scenarios ar
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 9 query-intelligence tests are documented with exact prompts, exact command sequences, linked feature catalog entries, and playbook-derived pass criteria.
-- **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for 033, 034, 035, 036, 037, 038, 161, 162, and 163 will be collected.
+- **SC-001**: All 10 query-intelligence tests are documented with exact prompts, exact command sequences, linked feature catalog entries, and playbook-derived pass criteria.
+- **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for 033, 034, 035, 036, 037, 038, 161, 162, 163, and 173 will be collected.
 - **SC-003**: Reviewers can audit every Phase 012 scenario using this folder plus the linked playbook (`../../manual_testing_playbook/manual_testing_playbook.md`) and review protocol (`../../manual_testing_playbook/review_protocol.md`).
 - **SC-004**: The phase packet contains no placeholder or template text and is ready for manual execution planning.
 <!-- /ANCHOR:success-criteria -->

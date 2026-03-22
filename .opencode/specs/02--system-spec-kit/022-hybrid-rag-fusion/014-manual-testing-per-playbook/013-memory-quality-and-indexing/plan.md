@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: manual-testing-per-playbook memory quality and indexing phase [template:level_1/plan.md]"
-description: "Phase 013 defines the execution plan for 42 exact memory-quality-and-indexing scenario IDs in the Spec Kit Memory system, including the dedicated memory-section sub-scenarios."
+description: "Phase 013 defines the execution plan for 49 exact memory-quality-and-indexing scenario IDs in the Spec Kit Memory system, including the dedicated memory-section sub-scenarios and Wave 5 additions (176-178)."
 trigger_phrases:
   - "memory quality execution plan"
   - "phase 013 manual tests"
@@ -44,9 +44,9 @@ This plan converts the memory-quality-and-indexing scenarios in the manual testi
 - [x] Destructive scenarios that write files, corrupt metadata, restart services, or mutate indexing state were identified for sandbox-only execution.
 
 ### Definition of Done
-- [ ] All 42 exact scenario IDs have prompt, command, evidence, and verdict records tied to the playbook wording.
+- [ ] All 49 exact scenario IDs have prompt, command, evidence, and verdict records tied to the playbook wording.
 - [ ] Every destructive scenario was executed in a disposable sandbox or restored from checkpoint before phase closeout.
-- [ ] Coverage is reported as 42/42 exact IDs for Phase 013 with no skipped scenario IDs.
+- [ ] Coverage is reported as 49/49 exact IDs for Phase 013 with no skipped scenario IDs.
 - [ ] Final reviewer output uses review-protocol verdict language and clearly distinguishes PASS, PARTIAL, and FAIL evidence.
 <!-- /ANCHOR:quality-gates -->
 
@@ -74,7 +74,7 @@ Manual memory-quality test execution pipeline with review-gated evidence collect
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Preconditions
-- [ ] Verify the playbook, review protocol, and all linked feature files match the 42-ID Phase 013 inventory.
+- [ ] Verify the playbook, review protocol, and all linked feature files match the 49-ID Phase 013 inventory.
 - [ ] Confirm MCP runtime access for `memory_save`, `memory_search`, `memory_stats`, `memory_index_scan`, and any required CLI/script entry points.
 - [ ] Prepare disposable sandbox spec folders, temporary JSON files under `/tmp`, and restart-safe test notes before any write or corruption scenario begins.
 - [ ] Record baseline environment variables, API-key state, DB path context, and checkpoint availability before stateful execution.
@@ -93,7 +93,7 @@ Manual memory-quality test execution pipeline with review-gated evidence collect
 ### Phase 4: Evidence Collection and Verdict
 - [ ] For each exact scenario ID, capture prompt, exact command sequence, raw output, expected signals, evidence artifact paths, and reviewer rationale.
 - [ ] Apply the review protocol acceptance checks: preconditions satisfied, prompt and commands executed as written, expected signals present, evidence readable, and outcome rationale explicit.
-- [ ] Assign PASS, PARTIAL, or FAIL per exact scenario ID and summarize phase coverage as 42/42 exact IDs with linked evidence references.
+- [ ] Assign PASS, PARTIAL, or FAIL per exact scenario ID and summarize phase coverage as 49/49 exact IDs with linked evidence references.
 <!-- /ANCHOR:phases -->
 
 ---

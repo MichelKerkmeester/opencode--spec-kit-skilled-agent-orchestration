@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary [template:level_1/implementation-summary.md]"
-description: "Umbrella parent for 014-manual-testing-per-playbook — 19 phase folders with 95 child documentation files (100 total including root docs) now aligned to 213 exact playbook scenario IDs while retaining 195 as the top-level-ID inventory."
+description: "Umbrella parent for 014-manual-testing-per-playbook — 19 phase folders with 95 child documentation files (100 total including root docs) now aligned to 252 exact playbook scenario IDs while retaining 195 as the top-level-ID inventory."
 trigger_phrases:
   - "manual testing implementation summary"
   - "019 playbook umbrella summary"
@@ -30,7 +30,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This alignment pass kept the existing 19 phase folders intact and corrected the packet's coverage model to match the current playbook truth. The packet now distinguishes between the retained `195` top-level IDs and the authoritative `213` exact scenario IDs that include the dedicated memory-section sub-scenarios.
+This alignment pass kept the existing 19 phase folders intact and corrected the packet's coverage model to match the current playbook truth. The packet now distinguishes between the retained `195` top-level IDs and the authoritative `252` exact scenario IDs that include the dedicated memory-section sub-scenarios.
 
 ### Parent Packet Alignment
 
@@ -43,6 +43,10 @@ The parent `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` were rewritten a
 ### Normalization Alignment (2026-03-21)
 
 All `NEW-NNN` provisional scenario ID markers across this spec folder were normalized to bare numeric IDs (`NNN`), aligning with the 2026-03-21 catalog/playbook normalization pass. Two new playbook entries — `153` (JSON mode hybrid enrichment) and `154` (JSON-primary deprecation posture) — were added to Phase 016, bringing the total exact-ID count from `211` to `213` and Phase 016 from `21` to `23` exact IDs.
+
+### Wave 5 Alignment (2026-03-22)
+
+Wave 5 added scenario IDs `170..180` across five phases: `170..172` in Phase `011`, `173` in Phase `012`, `174..175` in Phase `010`, `176..178` in Phase `013`, and `179..180` in Phase `018`, increasing the packet's exact-ID total from `241` to `252` while preserving the retained `195` top-level-ID inventory.
 
 ### Supporting-Doc Refresh
 
@@ -67,7 +71,7 @@ The `M-007` manual testing playbook block now reflects the `010` closure evidenc
 
 | Decision | Why |
 |----------|-----|
-| Treat `213` exact IDs as the authoritative coverage model | The dedicated memory section now contains suffixed sub-scenarios that are active playbook requirements |
+| Treat `252` exact IDs as the authoritative coverage model | The dedicated memory section now contains suffixed sub-scenarios that are active playbook requirements |
 | Retain `195` only as the top-level-ID inventory | Historical counts remain useful, but they no longer prove complete packet coverage |
 | Record recursive validation as `0` errors / `19` warnings instead of pretending it is fully clean | Truthful validator reporting is more important than preserving the earlier completion narrative |
 | Leave Level 1 section-count warnings unresolved in this pass | The user asked for alignment accuracy, not a template-expansion cleanup across all 19 phases |
@@ -80,7 +84,7 @@ The `M-007` manual testing playbook block now reflects the `010` closure evidenc
 
 | Check | Result |
 |-------|--------|
-| Exact-ID ownership audit across all 19 child specs | PASS: `213` exact IDs, `0` missing, `0` duplicate owners |
+| Exact-ID ownership audit across all 19 child specs | PASS: `252` exact IDs, `0` missing, `0` duplicate owners |
 | Parent `description.json` JSON parse | PASS |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook --recursive` | PASS WITH WARNINGS: `0` errors, `19` warnings |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/013-memory-quality-and-indexing` | PASS WITH WARNINGS: `0` errors, `1` warning |
