@@ -4,7 +4,11 @@
 // ───────────────────────────────────────────────────────────────
 
 import { describe, expect, it } from 'vitest';
-import { buildProjectStateSnapshot, resolveProjectPhase } from '../extractors/session-extractor';
+import {
+  buildProjectStateSnapshot,
+  detectSessionCharacteristics,
+  resolveProjectPhase,
+} from '../extractors/session-extractor';
 
 /* ───────────────────────────────────────────────────────────────
    HELPERS
@@ -183,6 +187,35 @@ describe('resolveProjectPhase', () => {
       });
 
       expect(snapshot.projectPhase).toBe('IMPLEMENTATION');
+    });
+  });
+
+  describe('explicit contextType passthrough', () => {
+    it('honors all documented valid contextType overrides', () => {
+      const validContextTypes = [
+        'implementation',
+        'research',
+        'debugging',
+        'review',
+        'planning',
+        'decision',
+        'architecture',
+        'configuration',
+        'documentation',
+        'general',
+      ];
+
+      for (const contextType of validContextTypes) {
+        const characteristics = detectSessionCharacteristics(
+          [],
+          [],
+          [],
+          null,
+          contextType
+        );
+
+        expect(characteristics.contextType).toBe(contextType);
+      }
     });
   });
 });

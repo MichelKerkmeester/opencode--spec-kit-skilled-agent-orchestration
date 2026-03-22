@@ -573,7 +573,17 @@ function extractKeyTopics(summary: string | undefined, decisions: DecisionForTop
  * @returns Composite characteristics including context type, importance tier, decision count, and tool counts.
  */
 const VALID_CONTEXT_TYPES = new Set([
-  'decision', 'discovery', 'research', 'implementation', 'general',
+  'implementation',
+  'research',
+  'debugging',
+  'review',
+  'planning',
+  'decision',
+  'architecture',
+  'configuration',
+  'documentation',
+  'general',
+  'discovery',
 ]);
 
 function detectSessionCharacteristics(
