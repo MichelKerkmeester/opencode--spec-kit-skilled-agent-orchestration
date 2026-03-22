@@ -1,17 +1,17 @@
 ---
-title: "Implementation Plan: bug-fixes-and-data-integrity manual testing [template:level_1/plan.md]"
-description: "This plan turns the bug-fixes-and-data-integrity slice of the manual testing playbook into an execution-ready Level 1 packet. It sequences preconditions, non-destructive checks, destructive sandbox work, and evidence capture for 11 manual + MCP scenarios."
+title: "Implementation Plan: Manual Testing — Bug Fixes and Data Integrity"
+description: "Execution plan for running all 11 bug-fixes-and-data-integrity manual test scenarios from the hybrid-rag-fusion playbook."
 trigger_phrases:
-  - "implementation"
-  - "manual testing"
-  - "bug fixes"
-  - "data integrity"
-importance_tier: "high"
+  - "manual testing plan"
+  - "bug fixes and data integrity"
+  - "playbook execution"
+  - "test execution plan"
+importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: bug-fixes-and-data-integrity manual testing
+# Implementation Plan: Manual Testing — Bug Fixes and Data Integrity
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
@@ -23,13 +23,14 @@ contextType: "general"
 
 | Aspect | Value |
 |--------|-------|
-| **Language** | Markdown |
-| **Framework** | spec-kit L1 |
-| **Storage** | Existing spec folder markdown + evidence artifacts |
-| **Testing** | manual + MCP |
+| **Language/Stack** | TypeScript / Node.js MCP server |
+| **Framework** | spec-kit-memory MCP, SQLite via better-sqlite3 |
+| **Storage** | SQLite (memory_index.db) |
+| **Testing** | Manual execution via MCP tool calls |
 
 ### Overview
-This plan organizes the bug-fixes-and-data-integrity scenarios from the hybrid-rag-fusion manual testing playbook into an execution-ready phase packet. The approach preserves the exact prompts, separates non-destructive checks from rollback-sensitive scenarios, and uses a consistent preconditions -> execute -> evidence -> verdict pipeline so reviewers can apply the shared protocol without reinterpretation.
+
+This plan covers sequential manual execution of 11 playbook scenarios that verify bug fixes and data integrity in the hybrid-rag-fusion memory system. Scenarios are run in playbook ID order. Each scenario is executed, observed, and the result is recorded in checklist.md and tasks.md. No code changes are expected — this is a verification-only phase.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -38,14 +39,18 @@ This plan organizes the bug-fixes-and-data-integrity scenarios from the hybrid-r
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] Problem statement, scope, and parent linkage are documented in `spec.md`
-- [ ] All 11 playbook rows and feature catalog links are verified for this phase
-- [ ] MCP runtime access and sandbox/checkpoint strategy are identified for rollback-sensitive scenarios
+
+- [ ] MCP server is running and responding to tool calls
+- [ ] SQLite DB has at least 5 existing memories for read scenarios
+- [ ] Tester has read the playbook file for each scenario before starting
+- [ ] A checkpoint exists or can be created before destructive tests
 
 ### Definition of Done
-- [ ] `spec.md` and `plan.md` contain all 11 exact scenario names and prompts
-- [ ] Evidence expectations and verdict flow are documented for every scenario
-- [ ] Rollback guidance exists for destructive tests and coverage reaches 11/11 scenarios
+
+- [ ] All 11 scenario tasks marked complete in tasks.md
+- [ ] All 11 P0 checklist items checked with evidence in checklist.md
+- [ ] implementation-summary.md filled in with overall result and date
+- [ ] No unresolved FAIL findings without a tracked follow-up
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -54,16 +59,20 @@ This plan organizes the bug-fixes-and-data-integrity scenarios from the hybrid-r
 ## 3. ARCHITECTURE
 
 ### Pattern
-Documentation-driven manual test pipeline
+
+Manual test execution — sequential scenario runner
 
 ### Key Components
-- **Playbook scenario source**: Canonical prompts, command sequences, expected signals, and pass/fail rules from [manual_testing_playbook.md](../../manual_testing_playbook/manual_testing_playbook.md)
-- **Phase packet docs**: [spec.md](spec.md) and [plan.md](plan.md) provide phase-local scope, requirements, execution ordering, and traceability
-- **Execution environment**: Manual operator workflows plus MCP runtime access for search, save, stats, or DB-adjacent validation steps
-- **Review protocol**: [review_protocol.md](../../manual_testing_playbook/review_protocol.md) turns collected evidence into deterministic PASS, PARTIAL, or FAIL verdicts
+
+- **Playbook files**: Source of truth for each scenario's steps and expected outcomes. Located in `.opencode/skill/system-spec-kit/manual_testing_playbook/08--bug-fixes-and-data-integrity/`
+- **MCP tool chain**: All scenario steps are executed via `mcp__spec_kit_memory__*` tools
+- **SQLite DB**: State store under test; read before and after each mutating scenario
+- **checklist.md**: Evidence log — one P0 item per scenario, updated as runs complete
+- **tasks.md**: Progress tracker — one task per scenario, marked complete on pass
 
 ### Data Flow
-The execution pipeline starts with preconditions, then runs the exact manual prompt and MCP-assisted steps for each scenario, captures command/output evidence immediately after execution, and ends by applying the review protocol to issue a verdict for the scenario and the phase.
+
+Tester reads playbook scenario → executes MCP calls → observes response → compares to expected outcome → records PASS/FAIL in checklist and tasks
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -71,25 +80,42 @@ The execution pipeline starts with preconditions, then runs the exact manual pro
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1 Preconditions
-- [ ] Confirm 001, 002, 003, 004, 065, 068, 075, 083, 084, 116, and 117 are mapped to this folder and remain unchanged in the source playbook
-- [ ] Verify access to the MCP runtime, safe seed data, and the feature catalog files linked from `spec.md`
-- [ ] Decide which scenarios require sandboxed or checkpointed state before execution begins
+### Phase 1: Environment Setup
 
-### Phase 2 Non-Destructive Tests
-- [ ] Prepare execution notes for 001, 002, 003, 004, 068, 075, and 083 as the non-destructive subset
-- [ ] Preserve the exact prompt text while capturing query, save, dedup, and scoring evidence through manual + MCP execution
-- [ ] Confirm expected signals are observable before moving to rollback-sensitive scenarios
+- [ ] Confirm MCP server is running (`memory_health` call succeeds)
+- [ ] Create a named checkpoint: `checkpoint_create({ name: "pre-008-testing" })`
+- [ ] Verify DB has sufficient seed data (at least 5 memories exist)
+- [ ] Read scenario files 001–004 from the playbook before starting
 
-### Phase 3 Destructive Tests (if any with sandbox rules)
-- [ ] Run 065, 084, 116, and 117 only in sandboxed or checkpointed environments because they exercise atomicity, cleanup, or failure behavior
-- [ ] Apply reset, checkpoint, or disposable-database rules before inducing concurrency, indexing failure, or cleanup side effects
-- [ ] Restore sandbox state after each destructive scenario so later evidence remains attributable and reversible
+### Phase 2: Core Data Integrity Scenarios (001–004)
 
-### Phase 4 Evidence Collection and Verdict
-- [ ] Collect prompt, command sequence, output, feature link, and rationale for every scenario
-- [ ] Apply [review_protocol.md](../../manual_testing_playbook/review_protocol.md) PASS/PARTIAL/FAIL rules exactly as written, including the 100% coverage expectation
-- [ ] Hand off a complete 11/11 scenario packet to the parent phase review without leaving undocumented verdict gaps
+- [ ] Execute scenario 001 — Graph channel ID fix (G1)
+- [ ] Execute scenario 002 — Chunk collapse deduplication (G3)
+- [ ] Execute scenario 003 — Co-activation fan-effect divisor (R17)
+- [ ] Execute scenario 004 — SHA-256 content-hash deduplication (TM-02)
+- [ ] Record PASS/FAIL with evidence for each in checklist.md
+
+### Phase 3: Database and Safety Scenarios (065, 068, 075)
+
+- [ ] Execute scenario 065 — Database and schema safety
+- [ ] Execute scenario 068 — Guards and edge cases
+- [ ] Execute scenario 075 — Canonical ID dedup hardening
+- [ ] Record PASS/FAIL with evidence for each in checklist.md
+
+### Phase 4: Runtime and Concurrency Scenarios (083, 084, 116, 117)
+
+- [ ] Execute scenario 083 — Math.max/min stack overflow elimination
+- [ ] Execute scenario 084 — Session-manager transaction gap fixes
+- [ ] Execute scenario 116 — Chunking safe swap atomicity (P0-6)
+- [ ] Execute scenario 117 — SQLite datetime session cleanup (P0-7)
+- [ ] Record PASS/FAIL with evidence for each in checklist.md
+
+### Phase 5: Wrap-Up
+
+- [ ] Confirm all 11 tasks complete in tasks.md
+- [ ] Confirm all 11 P0 checklist items checked
+- [ ] Fill in implementation-summary.md
+- [ ] Restore from checkpoint if DB state was modified destructively
 <!-- /ANCHOR:phases -->
 
 ---
@@ -97,19 +123,11 @@ The execution pipeline starts with preconditions, then runs the exact manual pro
 <!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
-| Test ID | Scenario Name | Exact Prompt | Execution Type (manual/MCP) |
-|---------|---------------|--------------|-----------------------------|
-| 001 | Confirm graph hits are non-zero when edges exist | `Verify Graph channel ID fix (G1) manually with causal-edge data.` | manual + MCP |
-| 002 | Confirm dedup in default mode | `Validate chunk collapse deduplication (G3) in default search mode.` | manual + MCP |
-| 003 | Confirm hub dampening | `Verify co-activation fan-effect divisor (R17).` | manual + MCP |
-| 004 | Confirm identical re-save skips embedding | `Check SHA-256 dedup (TM-02) on re-save.` | manual + MCP |
-| 065 | Confirm Sprint 8 DB safety bundle | `Validate database and schema safety bundle.` | manual + MCP |
-| 068 | Confirm edge-case guard fixes | `Validate guards and edge-cases bundle.` | manual + MCP |
-| 075 | Confirm mixed-format ID dedup | `Verify canonical ID dedup hardening.` | manual + MCP |
-| 083 | Confirm large-array safety | `Validate Math.max/min stack overflow elimination.` | manual + MCP |
-| 084 | Confirm transactional limit enforcement | `Validate session-manager transaction gap fixes.` | manual + MCP |
-| 116 | Verify re-chunking indexes new chunks before deleting old ones, and old chunks survive if new indexing fails | `Re-chunk a parent memory and verify old children survive indexing failure` | manual + MCP |
-| 117 | Verify cleanupOldSessions() correctly identifies expired sessions using SQLite-native datetime comparison regardless of timestamp format | `Create sessions with known timestamps and verify cleanup deletes only expired ones` | manual + MCP |
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Manual | Each of the 11 bug-fix scenarios | MCP tool calls |
+| Verification | Response structure and data integrity | Visual inspection of tool output |
+| Evidence | Capture tool responses | Copy/paste tool output |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -119,10 +137,9 @@ The execution pipeline starts with preconditions, then runs the exact manual pro
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| [manual_testing_playbook.md](../../manual_testing_playbook/manual_testing_playbook.md) | Internal | Green | Exact prompts, commands, expected signals, and acceptance criteria cannot be trusted |
-| [review_protocol.md](../../manual_testing_playbook/review_protocol.md) | Internal | Green | PASS/PARTIAL/FAIL evaluation and 100% coverage checks become inconsistent |
-| `../../feature_catalog/08--bug-fixes-and-data-integrity/` | Internal | Green | Scenario context and feature traceability are lost |
-| MCP runtime and sandboxable data stores | Internal Runtime | Yellow | Manual + MCP execution cannot be performed safely, especially for rollback-sensitive scenarios |
+| MCP server | Internal | Green | Cannot execute any scenarios |
+| SQLite DB with test data | Internal | Green | Some scenarios require existing records |
+| Pre-test checkpoint | Internal | Green | Destructive scenarios need rollback capability |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -130,8 +147,15 @@ The execution pipeline starts with preconditions, then runs the exact manual pro
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Roll back if any prompt, acceptance criterion, or destructive-test guard is found to be misaligned with the playbook, review protocol, or safe sandbox requirements.
-- **Procedure**: Revert `spec.md` and `plan.md` to the last known good git revision, pause execution of 065/084/116/117 until sandbox controls are re-confirmed, then regenerate the phase packet from the playbook sources before resuming.
-<!-- /ANCHOR:rollback -->
+- **Trigger**: DB mutation in scenario 084 leaves dirty state or scenario 116 atomicity test corrupts subsequent scenarios
+- **Procedure**: Restore from checkpoint created in Phase 1; verify graph integrity; rerun only the affected scenario
 
----
+### Risks & Mitigations
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|-----------|--------|------------|
+| Server not running at test start | Medium | Blocks all scenarios | Run `memory_health` as first step; restart server if needed |
+| Scenario 116 race window too narrow to observe | Medium | Inconclusive result | Run 3 times; document environment concurrency level |
+| DB mutation in scenario 084 leaves dirty state | Low | Corrupts subsequent scenarios | Restore from checkpoint created in Phase 1 |
+| Schema version mismatch in scenario 065 | Low | False positive fail | Document DB schema version in evidence note |
+<!-- /ANCHOR:rollback -->

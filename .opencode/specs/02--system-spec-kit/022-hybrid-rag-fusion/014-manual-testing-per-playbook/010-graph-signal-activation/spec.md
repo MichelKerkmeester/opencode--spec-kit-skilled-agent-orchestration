@@ -1,25 +1,17 @@
 ---
-title: "Feature Specification: Phase 010 Graph Signal Activation Manual Testing"
-description: "Structured manual test documentation for the graph-signal-activation phase of the Spec Kit Memory playbook. This packet maps fifteen assigned scenarios to their feature catalog entries and records the acceptance criteria reviewers will apply during execution."
+title: "Feature Specification: graph-signal-activation [template:level_2/spec.md]"
+description: "Phase 010 manual testing packet for graph-signal-activation coverage. Documents the 15 mapped playbook scenarios, feature catalog links, and evidence-driven acceptance criteria for graph and causal linking validation."
 trigger_phrases:
-  - "phase 010 manual testing"
-  - "graph signal activation tests"
-  - "016 017 018"
-  - "019 020 021 022"
-  - "081 120"
-  - "156 157 158"
-  - "graph refresh mode"
-  - "llm graph backfill"
-  - "graph calibration profile"
-  - "174 175"
-  - "graph concept routing"
-  - "typed traversal"
-importance_tier: "important"
+  - "graph signal activation manual testing"
+  - "phase 010 graph tests"
+  - "manual testing playbook 016"
+  - "manual testing playbook 175"
+importance_tier: "high"
 contextType: "general"
 ---
-# Feature Specification: Phase 010 Graph Signal Activation Manual Testing
+# Feature Specification: graph-signal-activation
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
@@ -29,14 +21,14 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Level** | 1 |
+| **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
-| **Created** | 2026-03-16 |
+| **Status** | Not Started |
+| **Created** | 2026-03-22 |
 | **Branch** | `main` |
-| **Parent** | [`../spec.md`](../spec.md) |
-| **Predecessor Phase** | `009-evaluation-and-measurement` |
-| **Successor Phase** | `011-scoring-and-calibration` |
+| **Parent Spec** | [../spec.md](../spec.md) |
+| **Predecessor** | [009-evaluation-and-measurement](../009-evaluation-and-measurement/spec.md) |
+| **Successor** | [011-scoring-and-calibration](../011-scoring-and-calibration/spec.md) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -45,10 +37,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual test scenarios for graph-signal-activation need structured per-phase documentation. The canonical playbook defines the prompts, commands, evidence, and pass or fail rules, but operators still need a focused phase packet that isolates the fifteen graph-signal scenarios assigned to Phase 010, including Wave 2-5 additions for graph refresh mode, LLM graph backfill, graph calibration profiles, graph concept routing, and typed traversal.
+Manual test scenarios for graph-signal-activation need structured per-phase documentation instead of relying on scattered playbook rows. Phase 010 covers 15 graph-focused scenarios spanning typed degree scoring, co-activation boost, causal depth signals, community detection, graph rollback and explainability, and feature-flag-driven graph lifecycle features, so reviewers need one packet that preserves the mapped feature links, acceptance criteria, and evidence expectations for each test.
 
 ### Purpose
-Create a phase-local specification that links each assigned test to its feature catalog entry and preserves the review-ready acceptance criteria for 016, 017, 018, 019, 020, 021, 022, 081, 091, 120, 156, 157, 158, 174, and 175.
+Provide a single Phase 010 specification that maps every graph-signal-activation scenario to its feature catalog entry and defines the documentation requirements needed for consistent manual execution and verdicting.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -57,34 +49,59 @@ Create a phase-local specification that links each assigned test to its feature 
 ## 3. SCOPE
 
 ### In Scope
-- Document the fifteen Phase 010 scenarios from the manual testing playbook.
-- Link each scenario to the matching graph-signal-activation feature catalog entry.
-- Preserve the acceptance criteria reviewers will use when issuing PASS, PARTIAL, or FAIL verdicts.
+- Phase 010 manual testing documentation for all 15 scenarios assigned to `10--graph-signal-activation` in the parent phase map.
+- Per-scenario mapping from playbook test ID to the graph-signal-activation feature catalog entry.
+- Documentation expectations for prompts, execution records, evidence, and verdict capture.
 
 ### Out of Scope
-- Running the tests described in this packet.
-- Changing MCP runtime code, feature flags, or the playbook itself.
-- Covering unassigned graph-signal scenarios such as `F-10` and `F-11`.
+- Executing the tests and recording final runtime outcomes.
+- Code or schema changes in the MCP server or graph libraries.
+- Creating evidence artifacts beyond the documentation packet itself.
 
-### Assigned Tests
+### Scenario Mapping
 
-| Test ID | Scenario Name | Feature Catalog File |
-|---------|---------------|----------------------|
-| `016` | Typed-weighted degree channel (R4) | [`../../feature_catalog/10--graph-signal-activation/01-typed-weighted-degree-channel.md`](../../feature_catalog/10--graph-signal-activation/01-typed-weighted-degree-channel.md) |
-| `017` | Co-activation boost strength increase (A7) | [`../../feature_catalog/10--graph-signal-activation/02-co-activation-boost-strength-increase.md`](../../feature_catalog/10--graph-signal-activation/02-co-activation-boost-strength-increase.md) |
-| `018` | Edge density measurement | [`../../feature_catalog/10--graph-signal-activation/03-edge-density-measurement.md`](../../feature_catalog/10--graph-signal-activation/03-edge-density-measurement.md) |
-| `019` | Weight history audit tracking | [`../../feature_catalog/10--graph-signal-activation/04-weight-history-audit-tracking.md`](../../feature_catalog/10--graph-signal-activation/04-weight-history-audit-tracking.md) |
-| `020` | Graph momentum scoring (N2a) | [`../../feature_catalog/10--graph-signal-activation/05-graph-momentum-scoring.md`](../../feature_catalog/10--graph-signal-activation/05-graph-momentum-scoring.md) |
-| `021` | Causal depth signal (N2b) | [`../../feature_catalog/10--graph-signal-activation/06-causal-depth-signal.md`](../../feature_catalog/10--graph-signal-activation/06-causal-depth-signal.md) |
-| `022` | Community detection (N2c) | [`../../feature_catalog/10--graph-signal-activation/07-community-detection.md`](../../feature_catalog/10--graph-signal-activation/07-community-detection.md) |
-| `081` | Graph and cognitive memory fixes | [`../../feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`](../../feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md) |
-| `091` | Implemented: graph centrality and community detection (N2) | [`../../feature_catalog/10--graph-signal-activation/07-community-detection.md`](../../feature_catalog/10--graph-signal-activation/07-community-detection.md) |
-| `120` | Unified graph rollback and explainability (Phase 3) | [`../../feature_catalog/10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md`](../../feature_catalog/10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md) |
-| `156` | Graph Refresh Mode | [`../../feature_catalog/10--graph-signal-activation/13-graph-lifecycle-refresh.md`](../../feature_catalog/10--graph-signal-activation/13-graph-lifecycle-refresh.md) |
-| `157` | LLM Graph Backfill | [`../../feature_catalog/10--graph-signal-activation/14-llm-graph-backfill.md`](../../feature_catalog/10--graph-signal-activation/14-llm-graph-backfill.md) |
-| `158` | Graph Calibration Profile | [`../../feature_catalog/10--graph-signal-activation/15-graph-calibration-profiles.md`](../../feature_catalog/10--graph-signal-activation/15-graph-calibration-profiles.md) |
-| `174` | Graph Concept Routing (SPECKIT_GRAPH_CONCEPT_ROUTING) | [`../../feature_catalog/12--query-intelligence/11-graph-concept-routing.md`](../../feature_catalog/12--query-intelligence/11-graph-concept-routing.md) |
-| `175` | Typed Traversal (SPECKIT_TYPED_TRAVERSAL) | [`../../feature_catalog/10--graph-signal-activation/16-typed-traversal.md`](../../feature_catalog/10--graph-signal-activation/16-typed-traversal.md) |
+| Test ID | Scenario Name | Feature Catalog Link | Playbook Command Summary | Evidence Focus |
+|---------|---------------|----------------------|--------------------------|----------------|
+| 016 | Typed-weighted degree channel (R4) | [10--graph-signal-activation/01-typed-weighted-degree-channel.md](../../feature_catalog/10--graph-signal-activation/01-typed-weighted-degree-channel.md) | Run a retrieval with graph channel active, inspect the typed-weighted degree score contribution in the fusion trace. | Fusion trace showing degree-channel weight, typed edge counts, and weighted score. |
+| 017 | Co-activation boost strength increase (A7) | [10--graph-signal-activation/02-co-activation-boost-strength-increase.md](../../feature_catalog/10--graph-signal-activation/02-co-activation-boost-strength-increase.md) | Trigger co-activation for a memory pair, verify the boost magnitude against the configured strength multiplier. | Co-activation log showing boosted scores and strength multiplier applied. |
+| 018 | Edge density measurement | [10--graph-signal-activation/03-edge-density-measurement.md](../../feature_catalog/10--graph-signal-activation/03-edge-density-measurement.md) | Run `memory_causal_stats`, inspect edge density percentage and per-relation-type breakdown. | Causal stats output with total edges, coverage percentage, and relation-type counts. |
+| 019 | Weight history audit tracking | [10--graph-signal-activation/04-weight-history-audit-tracking.md](../../feature_catalog/10--graph-signal-activation/04-weight-history-audit-tracking.md) | Create a causal link, update its strength, then inspect the weight history log for audit trail entries. | Weight history rows showing old value, new value, timestamp, and actor. |
+| 020 | Graph momentum scoring (N2a) | [10--graph-signal-activation/05-graph-momentum-scoring.md](../../feature_catalog/10--graph-signal-activation/05-graph-momentum-scoring.md) | Run a search with graph channel enabled, verify momentum score contribution for memories with recent causal activity. | Search trace showing momentum score and recency-weighted graph activity. |
+| 021 | Causal depth signal (N2b) | [10--graph-signal-activation/06-causal-depth-signal.md](../../feature_catalog/10--graph-signal-activation/06-causal-depth-signal.md) | Create a multi-hop causal chain, run `memory_drift_why` with maxDepth, verify depth signal in scoring. | Drift-why output showing traversal depth and depth-signal contribution. |
+| 022 | Community detection (N2c) | [10--graph-signal-activation/07-community-detection.md](../../feature_catalog/10--graph-signal-activation/07-community-detection.md) | Run community detection, inspect cluster assignments for memories with shared causal edges. | Community cluster output with member lists and cluster boundary rationale. |
+| 081 | Graph and cognitive memory fixes | [10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md](../../feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md) | Inspect fix locations for graph and cognitive memory corrections, verify corrected behavior in representative flows. | Fix-location inspection notes and representative flow output. |
+| 091 | Implemented: graph centrality and community detection (N2) | [10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md](../../feature_catalog/10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md) | Verify ANCHOR tags are treated as graph nodes for community and centrality calculations. | Graph node listing showing ANCHOR-derived nodes alongside memory nodes. |
+| 120 | Unified graph rollback and explainability (Phase 3) | [10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md](../../feature_catalog/10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md) | Create causal links, trigger rollback, verify edge removal and explainability trace output. | Rollback confirmation, edge count before/after, and explainability trace. |
+| 156 | Graph refresh mode (SPECKIT_GRAPH_REFRESH_MODE) | [10--graph-signal-activation/13-graph-lifecycle-refresh.md](../../feature_catalog/10--graph-signal-activation/13-graph-lifecycle-refresh.md) | Set SPECKIT_GRAPH_REFRESH_MODE, trigger a refresh cycle, inspect refresh log and updated graph state. | Refresh log output showing mode, affected edges, and post-refresh stats. |
+| 157 | LLM graph backfill (SPECKIT_LLM_GRAPH_BACKFILL) | [10--graph-signal-activation/14-llm-graph-backfill.md](../../feature_catalog/10--graph-signal-activation/14-llm-graph-backfill.md) | Enable SPECKIT_LLM_GRAPH_BACKFILL, trigger backfill for unlinked memories, verify new edges created. | Backfill log showing memories processed, edges created, and LLM prompts used. |
+| 158 | Graph calibration profile (SPECKIT_GRAPH_CALIBRATION_PROFILE) | [10--graph-signal-activation/15-graph-calibration-profiles.md](../../feature_catalog/10--graph-signal-activation/15-graph-calibration-profiles.md) | Set different calibration profiles, run searches, compare graph signal weights across profiles. | Search traces showing different graph weights per calibration profile. |
+| 174 | Graph concept routing (SPECKIT_GRAPH_CONCEPT_ROUTING) | [10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md](../../feature_catalog/10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md) | Enable SPECKIT_GRAPH_CONCEPT_ROUTING, run a concept-based query, verify graph-routed results. | Search output showing concept-routed results with graph signal attribution. |
+| 175 | Typed traversal (SPECKIT_TYPED_TRAVERSAL) | [10--graph-signal-activation/16-typed-traversal.md](../../feature_catalog/10--graph-signal-activation/16-typed-traversal.md) | Enable SPECKIT_TYPED_TRAVERSAL, run `memory_drift_why` filtering by relation type, verify typed edges only. | Drift-why output filtered to specific relation types with no cross-type leakage. |
+
+### Acceptance Scenarios
+
+#### Acceptance Scenario A: Core graph signal checks
+- Cover MCP-backed execution for 016 through 022, 120, and 175.
+- Verify the packet preserves prompts, command sequences, evidence targets, and PASS/FAIL verdict rules for typed-weighted degree scoring, co-activation boost, edge density, weight history audit, momentum scoring, causal depth, community detection, graph rollback/explainability, and typed traversal.
+
+#### Acceptance Scenario B: Feature flag and lifecycle checks
+- Cover feature-flag-driven scenarios 156, 157, 158, and 174.
+- Verify the packet preserves flag configuration steps, expected behavior per mode, evidence expectations, and PASS/PARTIAL/FAIL decision paths for graph refresh, LLM backfill, calibration profiles, and concept routing.
+
+#### Acceptance Scenario C: Fix verification and audit checks
+- Cover inspection-heavy scenarios 081 and 091.
+- Verify the packet preserves inspection guidance, evidence expectations, and PASS/PARTIAL/FAIL decision paths for graph/cognitive memory fix review and ANCHOR-as-graph-node verification.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Create | Phase 010 requirements and scenario mapping for graph signal tests |
+| `plan.md` | Create | Phase 010 execution plan for manual and MCP-based graph signal coverage |
+| `tasks.md` | Create | Phase 010 task tracker for all 15 scenarios |
+| `checklist.md` | Create | Phase 010 QA verification checklist |
+| `implementation-summary.md` | Create | Phase 010 post-execution summary (blank until execution completes) |
+| `description.json` | Create | Phase 010 folder metadata |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -96,21 +113,24 @@ Create a phase-local specification that links each assigned test to its feature 
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| `REQ-016` | Document the typed-weighted degree channel scenario and its bounded boost expectations. | PASS when boost values stay within `[0, cap]`, fallback returns the default when no typed edges exist, and varied edge types produce different scores. FAIL when boosts exceed the cap or fallback behavior does not appear. |
-| `REQ-017` | Document the co-activation strength comparison scenario and its baseline delta expectations. | PASS when increasing strength yields a measurable positive contribution delta that scales with the multiplier change. FAIL when there is no measurable difference or the effect moves in the wrong direction. |
-| `REQ-018` | Document the edge density measurement scenario and its gate-threshold expectations. | PASS when the ratio equals `edges/nodes` under manual calculation and the threshold gate flips correctly at the boundary. FAIL when the ratio is wrong or the gate ignores the threshold. |
-| `REQ-019` | Document the weight history audit tracking scenario and its rollback expectations. | PASS when every mutation creates an audit row with old and new values, rollback restores the prior weights, and history remains append-only. FAIL when audit rows are missing or rollback loses state. |
-| `REQ-020` | Document the graph momentum scoring scenario and its seven-day delta bonus expectations. | PASS when the momentum bonus equals the capped `current - 7d_ago` delta, nodes without history stay at zero bonus, and the cap is enforced. FAIL when the bonus is uncapped or non-zero for missing history. |
-| `REQ-021` | Document the causal depth signal scenario and its normalized depth expectations. | PASS when all depth scores stay in `[0,1]` and deeper nodes score greater than or equal to shallower nodes on the same chain. FAIL when scores leave range or depth ordering is wrong. |
-| `REQ-022` | Document the community detection scenario and its cluster-boost expectations. | PASS when cluster IDs are assigned, co-members receive a boost within the configured cap, and non-members receive zero boost. FAIL when cluster IDs are missing or the boost exceeds the cap. |
-| `REQ-081` | Document the graph and cognitive memory fixes bundle and its guardrail expectations. | PASS when self-loops are blocked, depth remains inside the clamped bounds, and cache invalidation occurs correctly after mutation. FAIL when any guard or invalidation path is missing. |
-| `REQ-091` | Document the implemented graph centrality and community detection status scenario and its activation expectations. | PASS when N2 tables are populated, feature flags are active, and graph queries include centrality or community score contributions. FAIL when any implementation signal is missing. |
-| `REQ-120` | Document the unified graph rollback and explainability scenario and its kill-switch expectations. | PASS when enabled runs show graph contribution trace data, disabled runs remove graph-side effects while keeping deterministic baseline order, and repeated runs preserve exact ordering. FAIL when graph effects remain after disable or identical runs reorder ties. |
-| `REQ-156` | Document the graph refresh mode scenario and its `SPECKIT_GRAPH_REFRESH_MODE` feature flag behavior. | PASS when `write_local` mode updates the local graph store on each mutation and `scheduled` mode defers updates to the configured interval; default (flag OFF or unset) keeps the existing synchronous write behavior. FAIL when `write_local` skips the local store, `scheduled` writes immediately, or disabling the flag still triggers the new refresh pathway. |
-| `REQ-157` | Document the LLM graph backfill scenario and its `SPECKIT_LLM_GRAPH_BACKFILL` feature flag behavior. | PASS when enabling the flag triggers an async backfill job that populates missing graph edges from existing memory records, backfill progress is logged, and the live retrieval path is unblocked during backfill; default (flag OFF) performs no backfill. FAIL when backfill blocks retrieval, runs synchronously, or proceeds when the flag is disabled. |
-| `REQ-158` | Document the graph calibration profile scenario and its `SPECKIT_GRAPH_CALIBRATION_PROFILE` feature flag behavior. | PASS when enabling the flag applies the named profile's weight caps and Louvain community detection thresholds, profile switching takes effect on the next query, and disabling the flag reverts to the default calibration values. FAIL when weight caps are ignored, Louvain thresholds do not change with the profile, or disabling the flag retains the custom profile values. |
-| `REQ-174` | Document the graph concept routing scenario and its `SPECKIT_GRAPH_CONCEPT_ROUTING` feature flag behavior. | PASS when query-time alias matching activates the graph channel for matched concepts via noun phrase extraction and unmatched aliases do not activate graph routing. FAIL when alias matching does not trigger graph activation for matched concepts or activation occurs without noun phrase extraction support. |
-| `REQ-175` | Document the typed traversal scenario and its `SPECKIT_TYPED_TRAVERSAL` feature flag behavior. | PASS when the sparse-first policy constrains traversal to 1-hop and intent-aware edge traversal applies the correct scoring formula for the selected edge types. FAIL when traversal exceeds 1-hop under sparse-first policy or intent-aware scoring does not use the required formula. |
+| REQ-001 | Document how Phase 010 captures prompt, execution record, evidence, and verdict details for 016 typed-weighted degree channel scoring. | PASS: Degree channel contributes a non-zero weighted score in the fusion trace with typed edge counts visible; FAIL: Degree channel absent from fusion trace or zero weight |
+| REQ-002 | Document how Phase 010 captures prompt, execution record, evidence, and verdict details for 017 co-activation boost strength increase. | PASS: Co-activation boost applies the configured strength multiplier and boosted scores are higher than unboosted; FAIL: No boost applied or multiplier mismatch |
+| REQ-003 | Document how Phase 010 captures prompt, execution record, evidence, and verdict details for 018 edge density measurement. | PASS: `memory_causal_stats` returns edge count, coverage percentage, and per-relation-type breakdown; FAIL: Missing fields or zero coverage when edges exist |
+| REQ-004 | Document how Phase 010 captures prompt, execution record, evidence, and verdict details for 019 weight history audit tracking. | PASS: Weight history contains timestamped entries with old/new values after a strength update; FAIL: No audit trail or missing entries |
+| REQ-005 | Document how Phase 010 captures prompt, execution record, evidence, and verdict details for 020 graph momentum scoring. | PASS: Momentum score is non-zero for memories with recent causal activity and zero for isolated memories; FAIL: Momentum score absent or applied to non-graph memories |
+| REQ-006 | Document how Phase 010 captures prompt, execution record, evidence, and verdict details for 021 causal depth signal. | PASS: Depth signal increases with longer causal chains and `memory_drift_why` traverses to configured maxDepth; FAIL: Depth signal flat regardless of chain length |
+| REQ-007 | Document how Phase 010 captures prompt, execution record, evidence, and verdict details for 022 community detection. | PASS: Community detection returns cluster assignments grouping memories with shared causal edges; FAIL: No clusters returned or all memories in one cluster |
+| REQ-008 | Document how Phase 010 captures prompt, execution record, evidence, and verdict details for 081 graph and cognitive memory fixes. | PASS: Fix locations produce corrected behavior and no regressions; FAIL: Fixes not applied or regression detected |
+| REQ-009 | Document how Phase 010 captures prompt, execution record, evidence, and verdict details for 091 graph centrality and ANCHOR-as-graph-node verification. | PASS: ANCHOR tags appear as graph nodes in centrality/community calculations; FAIL: ANCHOR tags excluded from graph or no centrality scores |
+| REQ-010 | Document how Phase 010 captures prompt, execution record, evidence, and verdict details for 120 unified graph rollback and explainability. | PASS: Rollback removes specified edges, edge count decreases, and explainability trace shows removal rationale; FAIL: Rollback fails or edges persist |
+| REQ-011 | Document how Phase 010 captures prompt, execution record, evidence, and verdict details for 156 graph refresh mode. | PASS: Refresh cycle completes under configured mode with updated graph state and refresh log; FAIL: Refresh fails or mode ignored |
+| REQ-012 | Document how Phase 010 captures prompt, execution record, evidence, and verdict details for 157 LLM graph backfill. | PASS: Backfill creates new edges for previously unlinked memories with LLM-generated relation types; FAIL: No new edges or backfill errors |
+| REQ-013 | Document how Phase 010 captures prompt, execution record, evidence, and verdict details for 158 graph calibration profile. | PASS: Different calibration profiles produce measurably different graph signal weights in search traces; FAIL: Profiles produce identical weights |
+| REQ-014 | Document how Phase 010 captures prompt, execution record, evidence, and verdict details for 174 graph concept routing. | PASS: Concept-routed queries return graph-attributed results with concept labels; FAIL: No graph attribution or concept labels missing |
+| REQ-015 | Document how Phase 010 captures prompt, execution record, evidence, and verdict details for 175 typed traversal. | PASS: `memory_drift_why` with relation filter returns only edges of the specified type; FAIL: Cross-type edges leak into filtered results |
+
+### P1 - Required (complete OR user-approved deferral)
+- No additional P1 requirements; Phase 010 readiness depends on complete P0 coverage for all 15 mapped scenarios.
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -118,10 +138,10 @@ Create a phase-local specification that links each assigned test to its feature 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All fifteen assigned test IDs are documented with their exact prompt source, feature link, evidence target, and verdict expectations.
-- **SC-002**: The paired plan documents the exact playbook command sequences by reference and tells operators to execute them verbatim.
-- **SC-003**: Stateful scenarios identify sandbox, checkpoint, or rollback handling before execution begins.
-- **SC-004**: Reviewers can apply the review protocol verdict rules without consulting any other phase packet.
+- **SC-001**: All 15 Phase 010 tests are documented with their exact prompts, mapped feature links, expected execution method, required evidence, and final verdict path.
+- **SC-002**: The packet preserves the parent phase-map coverage for `10--graph-signal-activation` with no missing IDs and no duplicate scenario mappings.
+- **SC-003**: Reviewers can evaluate every scenario against the playbook verdict model using prompts, commands or inspections, evidence notes, and PASS/PARTIAL/FAIL outcomes.
+- **SC-004**: Release-readiness review for this phase can confirm 100% feature coverage with no scenario left undocumented.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -131,24 +151,71 @@ Create a phase-local specification that links each assigned test to its feature 
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Provides the canonical prompts, command sequences, evidence fields, and pass or fail rules. | Treat the playbook as the source of truth and copy scenario wording from its Phase 010 rows. |
-| Dependency | [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Controls PASS, PARTIAL, FAIL, and coverage rules. | Reuse the review protocol verdict language in the plan and final evidence checklist. |
-| Dependency | Graph-signal feature catalog files | Provide current-reality context for each assigned scenario. | Link every test to its category file and keep category scope limited to `10--graph-signal-activation`. |
-| Dependency | MCP runtime with graph features enabled | Required to execute graph, causal, cache, and trace scenarios. | Confirm tool access and graph-related flags before running the packet. |
-| Risk | Stateful scenarios mutate graph data or rollout flags | Shared environments can drift and invalidate later evidence. | Run rollback-sensitive checks in a disposable sandbox with checkpoints and isolated flag changes. |
-| Dependency | `SPECKIT_GRAPH_REFRESH_MODE` feature flag | Required for 156; controls whether graph refresh uses `write_local` or `scheduled` mode | Confirm flag support in the runtime before running 156; default OFF preserves existing behavior |
-| Dependency | `SPECKIT_LLM_GRAPH_BACKFILL` feature flag | Required for 157; controls the async backfill pathway | Confirm flag support and verify backfill job infrastructure before running 157 |
-| Dependency | `SPECKIT_GRAPH_CALIBRATION_PROFILE` feature flag | Required for 158; controls weight caps and Louvain thresholds | Confirm named profiles are configured and verify fallback to defaults when flag is OFF |
-| Risk | Scenario overlap with adjacent graph features | Operators might mix Phase 010 work with `F-10`, `F-11`, or deferred anchor-node work. | Keep this packet scoped to the fifteen listed scenarios only. |
+| Dependency | Manual testing playbook source | Source of prompts, evidence expectations, and pass/fail criteria | Keep Phase 010 language aligned to the playbook rows for 016-022, 081, 091, 120, 156-158, 174, and 175 |
+| Dependency | Feature catalog group `10--graph-signal-activation` | Source of feature summaries such as typed degree channel, co-activation boost, community detection, graph lifecycle refresh, and typed traversal | Preserve one catalog link per test ID and use catalog summaries to frame execution context |
+| Dependency | MCP runtime with graph tools | Needed for `memory_causal_link`, `memory_drift_why`, `memory_causal_stats`, and search with graph channel enabled | Limit runtime-oriented scenarios to environments where MCP graph tools are available |
+| Risk | Graph state from prior sessions contaminates measurements | Re-runs may blur causal edge counts or community assignments | Use checkpoint/restore or fresh DB before graph-dependent scenarios |
+| Risk | Feature flags for 156, 157, 158, 174, 175 may not be implemented | Scenarios targeting future flags cannot be executed | Mark as DEFERRED with rationale if flags are absent from the current build |
 <!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
-- Should `019` and `120` always run in a disposable sandbox runtime, even when the operator claims to have an isolated local dataset?
-- For `081`, should reviewers capture one bundled evidence packet for the full fix set or one artifact per guardrail check?
+### Performance
+- **NFR-P01**: Graph signal scenarios should complete within 30 seconds per MCP call for databases under 1000 memories.
+- **NFR-P02**: Community detection and typed traversal should not degrade search latency by more than 2x compared to non-graph searches.
+
+### Security
+- **NFR-S01**: No raw database file paths or credentials exposed in evidence artifacts.
+- **NFR-S02**: Graph backfill LLM prompts must not contain PII from memory content.
+
+### Reliability
+- **NFR-R01**: Graph rollback must be deterministic -- repeated rollback of the same edge set produces identical results.
+- **NFR-R02**: Feature flag toggles must not corrupt existing graph state.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Data Boundaries
+- Empty graph (zero edges): `memory_causal_stats` returns 0 coverage, community detection returns no clusters.
+- Single-node graph: Degree channel returns zero, momentum score is zero, depth signal is zero.
+- Maximum depth traversal: `memory_drift_why` with maxDepth=10 on a chain of length 3 stops at depth 3.
+
+### Error Scenarios
+- Graph tools called when causal_edges table is empty: Graceful empty response, no crash.
+- Invalid relation type in typed traversal filter: Error message returned, no partial results.
+- LLM backfill fails mid-batch: Partial edges committed, error logged, remaining memories skipped.
+
+### State Transitions
+- Graph refresh during active search: Search completes with pre-refresh state, refresh applies after.
+- Rollback of edges created during current session: Edges removed, no orphaned references.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 15/25 | 15 scenarios, documentation-only, no code changes |
+| Risk | 10/25 | Feature flags may not exist, graph state contamination |
+| Research | 5/20 | Playbook and feature catalog provide all inputs |
+| **Total** | **30/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+- Which graph state (edge count, community assignments) should be treated as the canonical baseline for reproducible comparisons in 018, 022, and 120?
+- Are feature flags SPECKIT_GRAPH_REFRESH_MODE, SPECKIT_LLM_GRAPH_BACKFILL, SPECKIT_GRAPH_CALIBRATION_PROFILE, SPECKIT_GRAPH_CONCEPT_ROUTING, and SPECKIT_TYPED_TRAVERSAL implemented in the current build?
 <!-- /ANCHOR:questions -->
 
 ---

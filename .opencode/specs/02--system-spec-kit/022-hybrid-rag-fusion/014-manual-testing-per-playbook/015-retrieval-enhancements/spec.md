@@ -1,17 +1,17 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook retrieval-enhancements phase [template:level_1/spec.md]"
-description: "Phase 015 documents the retrieval-enhancements manual test packet for the Spec Kit Memory system. It maps eleven retrieval-enhancements scenarios out of the central playbook so testers can execute prompts, command sequences, evidence capture, and verdict criteria from one bounded folder."
+title: "Feature Specification: Manual Testing — Retrieval Enhancements (Phase 015)"
+description: "Manual test execution tracking for 11 retrieval enhancement scenarios covering dual-scope auto-surface, constitutional memory injection, spec folder hierarchy retrieval, lightweight consolidation, memory summary channel, cross-document entity linking, tier-2 fallback, provenance envelopes, and contextual tree injection."
 trigger_phrases:
-  - "retrieval enhancements manual testing"
-  - "phase 015 retrieval enhancements"
-  - "spec kit memory retrieval enhancements tests"
-  - "hybrid rag retrieval enhancements playbook"
-importance_tier: "high"
-contextType: "general"
+  - "retrieval enhancements testing"
+  - "015 retrieval enhancements"
+  - "phase 015 manual testing"
+  - "dual scope auto surface test"
+importance_tier: "normal"
+contextType: "implementation"
 ---
-# Feature Specification: manual-testing-per-playbook retrieval-enhancements phase
+# Feature Specification: Manual Testing — Retrieval Enhancements (Phase 015)
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
@@ -21,14 +21,14 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Level** | 1 |
+| **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
-| **Created** | 2026-03-16 |
-| **Branch** | `main` |
-| **Parent** | [`../spec.md`](../spec.md) |
-| **Predecessor Phase** | `014-pipeline-architecture` |
-| **Successor Phase** | `016-tooling-and-scripts` |
+| **Status** | Not Started |
+| **Created** | 2026-03-22 |
+| **Branch** | `014-manual-testing-per-playbook` |
+| **Parent Spec** | [../spec.md](../spec.md) |
+| **Predecessor** | [014-pipeline-architecture](../014-pipeline-architecture/spec.md) |
+| **Successor** | [016-tooling-and-scripts](../016-tooling-and-scripts/spec.md) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -37,10 +37,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual retrieval-enhancements scenarios for the Spec Kit Memory system currently live inside the central playbook and need a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated retrieval-enhancements packet, Phase 015 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results.
+The retrieval enhancements category (15--retrieval-enhancements) contains 9 features covering dual-scope surfacing, constitutional memory injection, spec folder hierarchy retrieval, lightweight consolidation, memory summary channel, cross-document entity linking, tier-2 fallback, provenance envelopes, and contextual tree injection. These features have never been manually verified against the published playbook scenarios, so conformance is unknown.
 
 ### Purpose
-Provide a single retrieval-enhancements specification that maps all eleven Phase 015 test IDs to their feature context and acceptance criteria so manual execution and review remain consistent with the canonical playbook.
+Execute all 11 playbook scenarios for the retrieval enhancements category and record PASS/FAIL/SKIP per scenario, producing a verified conformance record.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -49,34 +49,40 @@ Provide a single retrieval-enhancements specification that maps all eleven Phase
 ## 3. SCOPE
 
 ### In Scope
-
-| Test ID | Scenario Name | Feature Catalog | Exact Prompt | Exact Command Sequence |
-|---------|---------------|-----------------|--------------|------------------------|
-| 055 | Dual-scope memory auto-surface | [`../../feature_catalog/15--retrieval-enhancements/01-dual-scope-memory-auto-surface.md`](../../feature_catalog/15--retrieval-enhancements/01-dual-scope-memory-auto-surface.md) | `Validate dual-scope auto-surface (TM-05).` | 1) invoke non-memory-aware tool path 2) trigger compaction 3) verify surfaced memories |
-| 056 | Constitutional memory as expert knowledge injection | [`../../feature_catalog/15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md`](../../feature_catalog/15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md) | `Verify constitutional memory directive injection (PI-A4).` | 1) save constitutional directive 2) run retrieval 3) inspect directive metadata |
-| 057 | Spec folder hierarchy as retrieval structure | [`../../feature_catalog/15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md`](../../feature_catalog/15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md) | `Validate spec-folder hierarchy retrieval (S4).` | 1) create nested hierarchy 2) query 3) verify self/parent/sibling scoring |
-| 058 | Lightweight consolidation | [`../../feature_catalog/15--retrieval-enhancements/04-lightweight-consolidation.md`](../../feature_catalog/15--retrieval-enhancements/04-lightweight-consolidation.md) | `Run lightweight consolidation cycle (N3-lite).` | 1) trigger cycle 2) inspect contradiction/hebbian/staleness outputs 3) verify logs |
-| 059 | Memory summary search channel | [`../../feature_catalog/15--retrieval-enhancements/05-memory-summary-search-channel.md`](../../feature_catalog/15--retrieval-enhancements/05-memory-summary-search-channel.md) | `Verify memory summary search channel (R8).` | 1) check corpus size threshold 2) run stage-1 3) verify channel activation rules |
-| 060 | Cross-document entity linking | [`../../feature_catalog/15--retrieval-enhancements/06-cross-document-entity-linking.md`](../../feature_catalog/15--retrieval-enhancements/06-cross-document-entity-linking.md) | `Validate cross-document entity linking (S5).` | 1) ensure shared entities across docs 2) run linker 3) verify density guards |
-| 077 | Tier-2 fallback channel forcing | [`../../feature_catalog/15--retrieval-enhancements/07-tier-2-fallback-channel-forcing.md`](../../feature_catalog/15--retrieval-enhancements/07-tier-2-fallback-channel-forcing.md) | `Validate tier-2 fallback channel forcing.` | 1) trigger tier-2 fallback 2) inspect options 3) confirm all channels forced |
-| 093 | Implemented: memory summary generation (R8) | [`../../feature_catalog/15--retrieval-enhancements/05-memory-summary-search-channel.md`](../../feature_catalog/15--retrieval-enhancements/05-memory-summary-search-channel.md) | `Verify R8 implemented and gated.` | 1) save long memory 2) inspect summary persistence 3) verify scale-gated usage |
-| 094 | Implemented: cross-document entity linking (S5) | [`../../feature_catalog/15--retrieval-enhancements/06-cross-document-entity-linking.md`](../../feature_catalog/15--retrieval-enhancements/06-cross-document-entity-linking.md) | `Verify S5 implemented and guarded.` | 1) run entity linker 2) inspect supports edges 3) verify density guards |
-| 096 | Provenance-rich response envelopes | [`../../feature_catalog/15--retrieval-enhancements/08-provenance-rich-response-envelopes.md`](../../feature_catalog/15--retrieval-enhancements/08-provenance-rich-response-envelopes.md) | `Validate SPECKIT_RESPONSE_TRACE includeTrace behavior.` | **Precondition:** ensure `SPECKIT_RESPONSE_TRACE` is unset or `false` before the "absent" assertion. 1) `memory_search({query:"test", includeTrace:true})` → verify `scores`, `source`, `trace` objects 2) `memory_search({query:"test"})` (no includeTrace, env unset) → verify objects absent 3) set `SPECKIT_RESPONSE_TRACE=true` and repeat without arg → verify trace objects appear via env override 4) inspect score fields: semantic, lexical, fusion, intentAdjusted, composite, rerank, attention |
-| 145 | Contextual tree injection | [`../../feature_catalog/15--retrieval-enhancements/09-contextual-tree-injection.md`](../../feature_catalog/15--retrieval-enhancements/09-contextual-tree-injection.md) | `Validate contextual tree injection header format and flag toggle.` | 1) `memory_search({ query:"spec folder context headers", includeContent:true, includeTrace:true, limit:5 })` with `SPECKIT_CONTEXT_HEADERS=true` (default) 2) verify results with spec-folder file paths have `[parent > child — desc]` header prepended 3) verify header truncated at 100 characters 4) restart with `SPECKIT_CONTEXT_HEADERS=false` and repeat 5) verify no contextual headers prepended |
+- Execute all 11 playbook scenarios listed in section 4
+- Record result (PASS / FAIL / SKIP) and evidence for each scenario
+- Capture any defects found during execution
 
 ### Out of Scope
-- Executing the nine retrieval-enhancements scenarios and assigning final run verdicts.
-- Modifying the playbook or feature catalog content linked from this packet.
-- Documenting non-retrieval-enhancements phases from `001-retrieval/` through `014-manual-testing-per-playbook/`.
+- Fixing defects (tracked separately)
+- Testing scenarios outside the 15--retrieval-enhancements category
+- Automated test creation
+
+### Scenario Inventory
+
+| ID | Playbook File | Title |
+|----|--------------|-------|
+| 055 | 055-dual-scope-memory-auto-surface-tm-05.md | Dual-scope memory auto-surface (TM-05) |
+| 056 | 056-constitutional-memory-as-expert-knowledge-injection-pi-a4.md | Constitutional memory as expert knowledge injection (PI-A4) |
+| 057 | 057-spec-folder-hierarchy-as-retrieval-structure-s4.md | Spec folder hierarchy as retrieval structure (S4) |
+| 058 | 058-lightweight-consolidation-n3-lite.md | Lightweight consolidation (N3-lite) |
+| 059 | 059-memory-summary-search-channel-r8.md | Memory summary search channel (R8) |
+| 060 | 060-cross-document-entity-linking-s5.md | Cross-document entity linking (S5) |
+| 077 | 077-tier-2-fallback-channel-forcing.md | Tier-2 fallback channel forcing |
+| 093 | 093-implemented-memory-summary-generation-r8.md | Implemented: memory summary generation (R8) |
+| 094 | 094-implemented-cross-document-entity-linking-s5.md | Implemented: cross-document entity linking (S5) |
+| 096 | 096-provenance-rich-response-envelopes-p0-2.md | Provenance-rich response envelopes (P0-2) |
+| 145 | 145-contextual-tree-injection-p1-4.md | Contextual tree injection (P1-4) |
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `spec.md` | Create | Phase 015 retrieval-enhancements requirements, test inventory, and acceptance criteria |
-| `plan.md` | Create | Phase 015 retrieval-enhancements execution plan and review workflow |
-| `tasks.md` | Create | Phase 015 task tracker for setup, execution, and verification work |
-| `checklist.md` | Create | Phase 015 L2 verification checklist |
+| `spec.md` | Rewrite | Clean-slate Level 2 specification for Phase 015 manual test execution |
+| `plan.md` | Rewrite | Execution plan for all 11 scenarios |
+| `tasks.md` | Rewrite | One task per scenario, all pending |
+| `checklist.md` | Rewrite | P0 checklist items per scenario, all unchecked |
+| `implementation-summary.md` | Rewrite | Blank template, Not Started |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -88,19 +94,17 @@ Provide a single retrieval-enhancements specification that maps all eleven Phase
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Document 055 dual-scope memory auto-surface with its exact playbook prompt, command sequence, evidence target, and feature link. | PASS if auto-surface hook fires on non-memory-aware tool path and compaction event surfaces context-relevant memories |
-| REQ-002 | Document 056 constitutional memory directive injection with its exact prompt, retrieval sequence, evidence target, and feature link. | PASS if constitutional directives are injected into retrieval results with correct metadata and tier classification |
-| REQ-003 | Document 057 spec-folder hierarchy retrieval with its exact prompt, nested-hierarchy sequence, evidence target, and feature link. | PASS if retrieval respects folder hierarchy with self > parent > sibling ordering |
-| REQ-004 | Document 058 lightweight consolidation cycle with its exact prompt, cycle-trigger sequence, evidence target, and feature link. | PASS if all three consolidation sub-processes (contradiction, Hebbian, staleness) execute and produce expected outputs without errors |
-| REQ-005 | Document 059 memory summary search channel with its exact prompt, stage-1 channel activation sequence, evidence target, and feature link. | PASS if summary channel activates above corpus size threshold and remains inert below it |
-| REQ-006 | Document 060 cross-document entity linking with its exact prompt, linker run sequence, evidence target, and feature link. | PASS if supports-edges are created for shared entities and density guards cap edge count appropriately |
-| REQ-007 | Document 077 tier-2 fallback channel forcing with its exact prompt, fallback trigger sequence, evidence target, and feature link. | PASS if tier-2 fallback forces all channels active and results show multi-channel contribution |
-| REQ-008 | Document 096 provenance-rich response envelopes with its exact prompt, includeTrace toggle sequence, evidence target, and feature link. | PASS if trace objects present when opt-in or env-forced and absent when neither is set; all 7 score sub-fields verified |
-| REQ-009 | Document 093 implemented memory-summary-generation status with its exact prompt, command sequence, evidence target, and feature link. | PASS if summaries are generated and persisted for long memories and scale gate correctly controls activation |
-| REQ-010 | Document 094 implemented cross-document-entity-linking status with its exact prompt, command sequence, evidence target, and feature link. | PASS if entity linker produces correctly typed supports edges and density guards enforce limits |
-| REQ-011 | Document 145 contextual tree injection with its exact prompt, flag-toggle sequence, evidence target, and feature link. | PASS if enabled mode injects correctly formatted `[parent > child — description]` headers truncated at 100 chars and disabled mode skips injection entirely |
-
-No P1 items are defined for this phase; all eleven retrieval-enhancements scenarios are mandatory for coverage.
+| REQ-055 | Execute scenario 055 — Dual-scope memory auto-surface (TM-05) | PASS: auto-surface hook fires on non-memory-aware tool path; compaction event surfaces context-relevant memories. FAIL: hook does not fire or wrong memories surfaced |
+| REQ-056 | Execute scenario 056 — Constitutional memory as expert knowledge injection (PI-A4) | PASS: constitutional directives injected into retrieval results with correct metadata and tier classification. FAIL: directives absent or tier metadata missing |
+| REQ-057 | Execute scenario 057 — Spec folder hierarchy as retrieval structure (S4) | PASS: retrieval respects folder hierarchy with self > parent > sibling scoring. FAIL: hierarchy ordering not observed |
+| REQ-058 | Execute scenario 058 — Lightweight consolidation (N3-lite) | PASS: all three consolidation sub-processes (contradiction detection, Hebbian edge strengthening, staleness decay) execute and produce expected outputs without errors. FAIL: any sub-process skipped or errors thrown |
+| REQ-059 | Execute scenario 059 — Memory summary search channel (R8) | PASS: summary channel activates above corpus size threshold and remains inert below it. FAIL: channel active below threshold or absent above it |
+| REQ-060 | Execute scenario 060 — Cross-document entity linking (S5) | PASS: supports-edges created for shared entities; density guards cap edge count appropriately. FAIL: no edges created or density guard not enforced |
+| REQ-077 | Execute scenario 077 — Tier-2 fallback channel forcing | PASS: tier-2 fallback sets forceAllChannels=true; results show multi-channel contribution. FAIL: fallback does not force all channels |
+| REQ-093 | Execute scenario 093 — Implemented: memory summary generation (R8) | PASS: summaries generated and persisted for long memories; scale gate correctly controls activation. FAIL: summaries absent or scale gate bypassed |
+| REQ-094 | Execute scenario 094 — Implemented: cross-document entity linking (S5) | PASS: entity linker produces correctly typed supports edges; density guards enforce limits. FAIL: edges maltyped or density guard absent |
+| REQ-096 | Execute scenario 096 — Provenance-rich response envelopes (P0-2) | PASS: scores/source/trace objects present when includeTrace=true or SPECKIT_RESPONSE_TRACE=true; absent when neither set; all 7 score sub-fields verified. FAIL: trace objects absent when requested or present when not requested |
+| REQ-145 | Execute scenario 145 — Contextual tree injection (P1-4) | PASS: enabled mode injects [parent > child — description] headers truncated at 100 chars; disabled mode injects nothing. FAIL: headers malformatted, not truncated, or not suppressed when disabled |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -108,10 +112,9 @@ No P1 items are defined for this phase; all eleven retrieval-enhancements scenar
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 11 retrieval-enhancements tests are documented with exact prompts, exact command sequences, linked feature catalog entries, and playbook-derived pass criteria.
-- **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for 055, 056, 057, 058, 059, 060, 077, 093, 094, 096, and 145 will be collected.
-- **SC-003**: Reviewers can audit every Phase 015 scenario using this folder plus the linked playbook (`../../manual_testing_playbook/manual_testing_playbook.md`) and review protocol (`../../manual_testing_playbook/review_protocol.md`).
-- **SC-004**: The phase packet contains no placeholder or template text and is ready for manual execution planning.
+- **SC-001**: All 11 scenarios executed (PASS, FAIL, or SKIP — no "Not Started" remaining)
+- **SC-002**: Every result has an evidence note (observation, command output, or explicit skip reason)
+- **SC-003**: All FAIL results have a defect note capturing the observed vs expected behaviour
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -121,23 +124,66 @@ No P1 items are defined for this phase; all eleven retrieval-enhancements scenar
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth and update this phase packet only from that document |
-| Dependency | [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review and do not invent alternate verdict logic |
-| Dependency | [`../../feature_catalog/15--retrieval-enhancements/`](../../feature_catalog/15--retrieval-enhancements/) | Supplies feature context for each retrieval-enhancements scenario | Keep every test row linked to its mapped retrieval-enhancements feature file |
-| Dependency | MCP runtime plus retrieval sandbox corpus | Required to execute `memory_search`, `memory_context`, and consolidation/linker scenarios safely | Run stateful tests in an isolated sandbox and preserve restart/checkpoint instructions in the plan |
-| Risk | 058 triggers the N3-lite consolidation cycle which mutates edge weights in the graph database | Medium | Run only against sandbox/disposable corpus and record baseline edge state before triggering the cycle |
-| Risk | 059 and 060 depend on corpus size thresholds and entity density guards that may behave differently across environments | Medium | Capture corpus size count and density metrics before execution; document actual threshold values encountered |
-| Risk | 096 depends on `SPECKIT_RESPONSE_TRACE` env var state; shared environments may have the flag set globally | Medium | Record env var state before testing, restore defaults after, and confirm trace-absent assertion against a clean env |
-| Risk | 145 requires a runtime restart to toggle `SPECKIT_CONTEXT_HEADERS`; restart can skew comparison evidence if corpus changes between runs | Low | Use a stable read-only sandbox corpus and capture header-on and header-off outputs within the same session where possible |
+| Dependency | Playbook scenario files for IDs 055–060, 077, 093, 094, 096, 145 | Cannot execute without scenario steps | Locate files before starting |
+| Dependency | `../../manual_testing_playbook/manual_testing_playbook.md` | Exact prompts and pass criteria source | Treat playbook as source of truth |
+| Dependency | `../../manual_testing_playbook/manual_testing_playbook.md` | Verdict rubric (PASS/PARTIAL/FAIL) | Load before any verdict assignment |
+| Dependency | `../../feature_catalog/15--retrieval-enhancements/` | Feature context per scenario | Link every scenario to its feature file |
+| Risk | Scenario 058 triggers N3-lite consolidation — mutates edge weights in graph DB | Medium | Run only against sandbox/disposable corpus; record baseline before triggering |
+| Risk | Scenario 059 requires corpus exceeding 5,000 memories to activate summary channel | Medium | Capture corpus size before execution; document threshold outcome encountered |
+| Risk | Scenario 060 requires shared entities across distinct spec folders for entity linker | Medium | Prepare cross-document entity fixture before executing |
+| Risk | Scenario 096 depends on SPECKIT_RESPONSE_TRACE env var — shared environments may have it set globally | Medium | Record env var state before testing; restore defaults after |
+| Risk | Scenario 145 requires runtime restart to toggle SPECKIT_CONTEXT_HEADERS | Low | Use stable sandbox corpus; capture both flag states in sequence |
 <!-- /ANCHOR:risks -->
 
 ---
 
 <!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS
+## 10. OPEN QUESTIONS
 
-- Which sandbox corpus or disposable memory fixtures should Phase 015 reviewers use for 058 consolidation and 060 entity linking so edge-mutation evidence stays reproducible across machines?
-- Which minimum corpus size should be pre-populated for 059 to push the corpus above the 5,000-memory threshold needed to activate the summary channel?
+- Which sandbox corpus or disposable memory fixtures should be used for scenario 058 (consolidation) and 060 (entity linking) so edge-mutation evidence is reproducible across machines?
+- Which minimum corpus size should be pre-populated for scenario 059 to push above the 5,000-memory threshold needed to activate the summary channel?
 <!-- /ANCHOR:questions -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: Each scenario execution must complete or time out within 5 minutes
+
+### Reliability
+- **NFR-R01**: Test environment must be reset to clean state before each stateful scenario (058, 060)
+- **NFR-R02**: Env var state must be recorded before and restored after scenarios 096 and 145
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Scenario Boundaries
+- Scenarios 058 and 060 mutate graph DB state — must run in sandbox only
+- Scenarios 096 and 145 require env var toggling — document pre/post state
+- If corpus size for 059 cannot reach 5,000 memories: record SKIP with reason and document actual corpus size
+
+### Error Scenarios
+- If the playbook scenario file is missing: record SKIP with note "scenario file not found"
+- If the MCP server is unavailable: halt execution and record environment issue
+- If sandbox isolation fails for stateful scenarios: mark blocked rather than proceeding
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 14/25 | 11 scenarios, varied tool surface |
+| Risk | 12/25 | 2 stateful scenarios need sandbox; 2 need env var control |
+| Research | 4/20 | Playbook steps are pre-defined |
+| **Total** | **30/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
 
 ---

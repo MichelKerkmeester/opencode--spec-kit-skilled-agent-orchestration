@@ -6,19 +6,15 @@
     "specification",
     "manual-testing-per-playbook"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.470Z",
+  "lastUpdated": "2026-03-22T00:00:00.000Z",
   "specId": "014",
   "folderSlug": "manual-testing-per-playbook",
   "parentChain": [
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 3,
-  "memoryNameHistory": [
-    "16-03-26_14-30__manual-testing-per-playbook.md",
-    "16-03-26_15-31__aligned-all-38-document-files-19-spec-md-19.md",
-    "21-03-26_13-39__executed-spec-kit-implement-across-all-19-phase.md"
-  ],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
   "title": "Feature Specification: manual-testing-per-playbook [template:level_1/spec.md]",
   "status": "Draft",
   "importance_tier": "high",

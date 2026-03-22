@@ -1,18 +1,16 @@
 ---
-title: "Verification Checklist: bug-fixes-and-data-integrity manual testing [template:level_2/checklist.md]"
-description: "Verification checklist for Phase 008 bug-fix and data-integrity manual tests covering 001 through 004, 065, 068, 075, 083, 084, 116, and 117."
+title: "Verification Checklist: Manual Testing — Bug Fixes and Data Integrity"
+description: "Verification Date: Not Started"
 trigger_phrases:
-  - "bug fixes checklist"
-  - "data integrity checklist"
-  - "phase 008 verification"
-  - "manual bug fix checklist"
-  - "001 065 116 verification"
-importance_tier: "high"
+  - "bug fixes and data integrity checklist"
+  - "manual testing checklist"
+  - "scenario verification checklist"
+importance_tier: "normal"
 contextType: "general"
 ---
-# Verification Checklist: bug-fixes-and-data-integrity manual testing
+# Verification Checklist: Manual Testing — Bug Fixes and Data Integrity
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
@@ -32,10 +30,9 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Scope is locked to 11 bug-fix and data-integrity tests (001 through 004, 065, 068, 075, 083, 084, 116, 117) with no out-of-phase scenarios included [EVIDENCE: scope table in `spec.md` lists exactly 11 rows]
-- [x] CHK-002 [P0] Exact prompts, command sequences, and pass criteria were extracted verbatim from `../../manual_testing_playbook/manual_testing_playbook.md` [EVIDENCE: testing strategy table in `plan.md` matches playbook rows for all 11 test IDs]
-- [x] CHK-003 [P0] Feature catalog links for all 11 tests point to the correct `08--bug-fixes-and-data-integrity/` files [EVIDENCE: spec.md scope table links verified against the corresponding feature catalog directory]
-- [x] CHK-004 [P1] Sandbox or checkpoint strategy is confirmed for destructive scenarios 065, 084, 116, and 117 before execution begins [EVIDENCE: checkpoint `phase-008-before-destructive-tests` (ID 14, 576 memories) created before any destructive test; restored after with 482 entries confirmed]
+- [ ] CHK-001 [P0] MCP server confirmed running before test start
+- [ ] CHK-002 [P0] Pre-test checkpoint created
+- [ ] CHK-003 [P1] DB has sufficient seed data for all scenarios
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -43,17 +40,8 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] 001 documents the graph channel ID fix (G1) with verdict rule: PASS only when graph channel contributes >=1 hit when causal edges exist [EVIDENCE: spec.md REQ-001 and plan.md Phase 2 step]
-- [x] CHK-011 [P0] 004 documents SHA-256 content-hash deduplication (TM-02) with verdict rule: PASS only when re-save skips embedding and reports duplicate [EVIDENCE: spec.md REQ-002 and plan.md Phase 2 step]
-- [x] CHK-012 [P0] 065 documents the Sprint 8 DB/schema safety bundle with verdict rule: PASS only when all mutation paths complete atomically with no partial corruption and schema constraints hold [EVIDENCE: spec.md REQ-003 and plan.md Phase 3 step]
-- [x] CHK-013 [P0] 084 documents session-manager transaction gap fixes with verdict rule: PASS only when concurrent writes are serialized, session limits hold, and no corruption occurs [EVIDENCE: spec.md REQ-004 and plan.md Phase 3 step]
-- [x] CHK-014 [P0] 116 documents chunking orchestrator safe swap with verdict rule: PASS only when new chunks are staged before old deletion and old children survive if new indexing fails [EVIDENCE: spec.md REQ-005 and plan.md Phase 3 step]
-- [x] CHK-015 [P0] 117 documents SQLite datetime session cleanup with verdict rule: PASS only when only expired sessions are deleted regardless of timestamp format and active sessions are preserved [EVIDENCE: spec.md REQ-006 and plan.md Phase 3 step]
-- [x] CHK-016 [P1] 002 documents chunk collapse deduplication (G3) with verdict rule: PASS only when zero duplicate parent IDs appear in collapsed results [EVIDENCE: spec.md REQ-007 and plan.md Phase 2 step]
-- [x] CHK-017 [P1] 003 documents co-activation fan-effect divisor (R17) with verdict rule: PASS only when hub contribution decreases as degree increases and no single hub dominates >50% of top-5 results [EVIDENCE: spec.md REQ-008 and plan.md Phase 2 step]
-- [x] CHK-018 [P1] 068 documents guards and edge cases with verdict rule: PASS only when known edge cases are handled without double-counting or incorrect fallback behavior [EVIDENCE: spec.md REQ-009 and plan.md Phase 2 step]
-- [x] CHK-019 [P1] 075 documents canonical ID dedup hardening with verdict rule: PASS only when mixed-format IDs for the same entity resolve to one canonical ID with no duplicates [EVIDENCE: spec.md REQ-010 and plan.md Phase 2 step]
-- [x] CHK-020 [P1] 083 documents Math.max/min stack overflow elimination with verdict rule: PASS only when large arrays process without RangeError and produce correct min/max values [EVIDENCE: spec.md REQ-011 and plan.md Phase 2 step]
+- [ ] CHK-004 [P1] Playbook scenario files reviewed before execution
+- [ ] CHK-005 [P1] Spec/plan/tasks consistent across phase documents
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -61,19 +49,17 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-030 [P0] 001 has been executed and graph channel hit count evidence with causal-edge query output is captured [EVIDENCE: graphHits:0, graphHitRate:0 across 72 queries; 3173 causal edges exist; rolloutState:bounded_runtime; see scratch/execution-evidence.md — VERDICT: FAIL]
-- [x] CHK-031 [P0] 002 has been executed and dedup output showing zero duplicate parent IDs in collapsed results is captured [EVIDENCE: chunkReassembly: 1 parent, 0 fallback, 0 duplicate IDs in 5-result set; see scratch/execution-evidence.md — VERDICT: PASS]
-- [x] CHK-032 [P0] 003 has been executed and comparative query evidence showing hub dampening proportional to degree is captured [EVIDENCE: coActivationBoosted:0, no result >50% share, 4 unique IDs spread 0.299-0.322; see scratch/execution-evidence.md — VERDICT: PASS]
-- [x] CHK-033 [P0] 004 has been executed and re-save output plus DB evidence showing no duplicate embedding row is captured [EVIDENCE: duplicate_check in checks_run, content hash computed, isDuplicate:false on dry-run; see scratch/execution-evidence.md — VERDICT: PARTIAL]
-- [x] CHK-034 [P0] 065 has been executed in sandbox and mutation output, SQL inspection, and schema constraint verification are captured [EVIDENCE: health:healthy, aliasConflicts.rows:0, repair.attempted:false, checkpoint atomicity confirmed; see scratch/execution-evidence.md — VERDICT: PASS]
-- [x] CHK-035 [P0] 068 has been executed and edge-case trigger output with fallback behavior evidence is captured [EVIDENCE: qualityFiltered:0, fallbackTier:null, 5 unique results, no double-counting; see scratch/execution-evidence.md — VERDICT: PASS]
-- [x] CHK-036 [P0] 075 has been executed and mixed-ID input with canonicalized output showing no duplicates is captured [EVIDENCE: Indexing Normalization top result (0.459), evidenceGapDetected:false, 5 unique IDs; see scratch/execution-evidence.md — VERDICT: PASS]
-- [x] CHK-037 [P0] 083 has been executed and large-array execution output with numeric min/max comparison confirming no RangeError is captured [EVIDENCE: no RangeError across 576-memory pipeline, all numeric ops completed; see scratch/execution-evidence.md — VERDICT: PASS]
-- [x] CHK-038 [P0] 084 has been executed in sandbox and concurrent write simulation with transaction serialization evidence is captured [EVIDENCE: aliasConflicts:0, repair:false, checkpoint restore 482 entries, no corruption; see scratch/execution-evidence.md — VERDICT: PASS]
-- [x] CHK-039 [P0] 116 has been executed in sandbox and re-chunk output with old-children survival evidence under indexing failure is captured [EVIDENCE: pre-flight guard blocks invalid writes before commit; 94 checkpoint entries survived; see scratch/execution-evidence.md — VERDICT: PARTIAL]
-- [x] CHK-040 [P0] 117 has been executed in sandbox and before/after session evidence confirming only expired sessions deleted regardless of timestamp format is captured [EVIDENCE: failed:0, oldest 2026-03-04 retained, newest 2026-03-21 preserved, health:healthy; see scratch/execution-evidence.md — VERDICT: PARTIAL]
-- [x] CHK-041 [P0] Each of the 11 scenarios has a verdict (PASS, PARTIAL, or FAIL) with explicit rationale referencing the review protocol acceptance rules [EVIDENCE: summary table in scratch/execution-evidence.md: 7 PASS, 3 PARTIAL, 1 FAIL]
-- [x] CHK-042 [P1] Coverage summary reports 11/11 scenarios executed with no skipped test IDs [EVIDENCE: all 11 IDs (001,002,003,004,065,068,075,083,084,116,117) verdicted in scratch/execution-evidence.md]
+- [ ] CHK-010 [P0] Scenario 001 — Graph channel ID fix (G1): PASS
+- [ ] CHK-011 [P0] Scenario 002 — Chunk collapse deduplication (G3): PASS
+- [ ] CHK-012 [P0] Scenario 003 — Co-activation fan-effect divisor (R17): PASS
+- [ ] CHK-013 [P0] Scenario 004 — SHA-256 content-hash deduplication (TM-02): PASS
+- [ ] CHK-014 [P0] Scenario 065 — Database and schema safety: PASS
+- [ ] CHK-015 [P0] Scenario 068 — Guards and edge cases: PASS
+- [ ] CHK-016 [P0] Scenario 075 — Canonical ID dedup hardening: PASS
+- [ ] CHK-017 [P0] Scenario 083 — Math.max/min stack overflow elimination: PASS
+- [ ] CHK-018 [P0] Scenario 084 — Session-manager transaction gap fixes: PASS
+- [ ] CHK-019 [P0] Scenario 116 — Chunking safe swap atomicity (P0-6): PASS
+- [ ] CHK-020 [P0] Scenario 117 — SQLite datetime session cleanup (P0-7): PASS
 <!-- /ANCHOR:testing -->
 
 ---
@@ -81,10 +67,7 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-050 [P0] No secrets or credentials were added to bug-fixes-and-data-integrity phase documents [EVIDENCE: doc-only content, no secret literals in any of the four files]
-- [x] CHK-051 [P0] Destructive scenarios 065, 084, 116, and 117 are restricted to sandbox or checkpointed environments only; no production data stores are targeted [EVIDENCE: checkpoint `phase-008-before-destructive-tests` created before all 4 destructive tests; checkpoint_restore confirmed after]
-- [x] CHK-052 [P1] Sandbox state was restored after each destructive scenario so later evidence remains attributable and reversible [EVIDENCE: checkpoint_restore result: 482 restored, 94 skipped, 1 non-fatal vector warning; state confirmed healthy post-restore]
-- [ ] CHK-053 [P2] Open execution questions about sandbox targets are resolved or documented before any destructive scenario is run in a shared environment [EVIDENCE: open questions in spec.md addressed or deferred with rationale]
+- [ ] CHK-030 [P0] No secrets or credentials added to bug-fixes phase documents
 <!-- /ANCHOR:security -->
 
 ---
@@ -92,9 +75,9 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-060 [P0] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` contain no template placeholder text [EVIDENCE: all content is derived from playbook rows for 001, 002, 003, 004, 065, 068, 075, 083, 084, 116, 117 and feature catalog]
-- [x] CHK-061 [P0] All four phase documents are synchronized: scenario names, prompts, and command sequences are consistent across spec, plan, tasks, and checklist [EVIDENCE: cross-file consistency confirmed during execution — all 11 IDs consistent across spec.md scope table, plan.md testing strategy, tasks.md, and checklist.md items]
-- [x] CHK-062 [P1] `implementation-summary.md` is created when execution and verification are complete [EVIDENCE: file present and updated at 008-bug-fixes-and-data-integrity/implementation-summary.md]
+- [ ] CHK-040 [P1] All scenario results recorded in tasks.md
+- [ ] CHK-041 [P0] implementation-summary.md filled in with results and date
+- [ ] CHK-042 [P2] Any FAIL findings linked to a follow-up tracking item
 <!-- /ANCHOR:docs -->
 
 ---
@@ -102,9 +85,8 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-070 [P1] Only the four phase documents (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`) were created in `008-bug-fixes-and-data-integrity/` at this stage [EVIDENCE: directory listing confirms four files]
-- [x] CHK-071 [P1] No unrelated files were added outside the `008-bug-fixes-and-data-integrity/` folder as part of this phase packet creation [EVIDENCE: only scratch/execution-evidence.md added; all other changes within 008-bug-fixes-and-data-integrity/]
-- [ ] CHK-072 [P2] Memory save was triggered after phase packet creation to make bug-fix and data-integrity context available for future sessions [EVIDENCE: `/memory:save` run or deferred with documented reason]
+- [ ] CHK-050 [P1] Temp notes in scratch/ only
+- [ ] CHK-051 [P2] scratch/ cleaned before completion
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -114,19 +96,18 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 18 | 17/18 |
-| P1 Items | 9 | 8/9 |
+| P0 Items | 13 | 0/13 |
+| P1 Items | 3 | 0/3 |
 | P2 Items | 2 | 0/2 |
 
-**Notes**: P0 outstanding: CHK-053 (open sandbox questions, deferred per spec). P1 outstanding: CHK-072 (memory save deferred — template contract violations block routine save).
-
-**Verification Date**: 2026-03-21
+**Verification Date**: Not Started
 <!-- /ANCHOR:summary -->
 
 ---
 
 <!--
-Level 2 checklist - Verification focus
-Mark [x] with evidence when verified
+Level 2 checklist — one P0 item per scenario
+Mark checked with evidence when scenario passes, e.g.:
+- [ ] CHK-010 [P0] Scenario 001 — Graph channel ID fix (G1): PASS [Run: YYYY-MM-DD, evidence here]
 P0 must complete, P1 need approval to defer
 -->

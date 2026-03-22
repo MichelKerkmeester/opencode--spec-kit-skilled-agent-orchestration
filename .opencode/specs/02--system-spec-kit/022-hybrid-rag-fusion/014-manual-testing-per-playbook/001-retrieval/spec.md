@@ -1,17 +1,17 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook retrieval phase [template:level_1/spec.md]"
-description: "Phase 001 documents the retrieval manual test packet for the Spec Kit Memory system. It breaks nine retrieval scenarios out of the central playbook so testers can execute prompts, command sequences, evidence capture, and verdict criteria from one bounded folder."
+title: "Feature Specification: manual-testing-per-playbook retrieval phase [template:level_2/spec.md]"
+description: "Test specification for the retrieval category: 11 playbook scenarios covering memory_context, memory_search, memory_match_triggers, hybrid pipeline, 4-stage architecture, BM25 gate, quality fallback, and advanced session/graph scenarios."
 trigger_phrases:
   - "retrieval manual testing"
   - "phase 001 retrieval"
   - "spec kit memory retrieval tests"
   - "hybrid rag fusion retrieval playbook"
-importance_tier: "high"
-contextType: "general"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Feature Specification: manual-testing-per-playbook retrieval phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
@@ -21,12 +21,13 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Level** | 1 |
+| **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Complete |
-| **Created** | 2026-03-16 |
-| **Branch** | `main` |
-| **Parent** | [`../spec.md`](../spec.md) |
+| **Status** | Not Started |
+| **Created** | 2026-03-22 |
+| **Parent Spec** | [../spec.md](../spec.md) |
+| **Phase** | 001-retrieval |
+| **Successor** | [002-mutation](../002-mutation/spec.md) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -35,10 +36,12 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual retrieval scenarios for the Spec Kit Memory system currently live inside the central playbook and need a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated retrieval packet, Phase 001 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results.
+
+The retrieval feature category of the hybrid-RAG-fusion system requires structured manual verification against the official playbook. Each of the 11 retrieval scenarios must be executed, verdicted, and evidenced independently. Without a dedicated phase packet, testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or record results.
 
 ### Purpose
-Provide a single retrieval-focused specification that maps all nine Phase 001 test IDs to their feature context and acceptance criteria so manual execution and review remain consistent with the canonical playbook.
+
+Execute every retrieval-category playbook scenario, record a PASS/FAIL/PARTIAL verdict for each, and capture supporting evidence so the retrieval layer of the system-spec-kit memory system is fully verified.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -48,32 +51,24 @@ Provide a single retrieval-focused specification that maps all nine Phase 001 te
 
 ### In Scope
 
-| Test ID | Scenario Name | Feature Catalog | Exact Prompt | Exact Command Sequence |
-|---------|---------------|-----------------|--------------|------------------------|
-| EX-001 | Intent-aware context pull | [`../../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md`](../../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md) | `Use memory_context in auto mode for: fix flaky index scan retry logic` | `memory_match_triggers({ prompt:"fix flaky index scan retry logic", sessionId:"ex001" })` -> `memory_context({ mode:"auto", prompt:"fix flaky index scan retry logic", sessionId:"ex001" })` -> `memory_context({ mode:"focused", prompt:"fix flaky index scan retry logic", sessionId:"ex001" })` |
-| EX-002 | Hybrid precision check | [`../../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md`](../../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md) | `Search for checkpoint restore clearExisting transaction rollback` | `memory_search({ query:"checkpoint restore clearExisting transaction rollback", limit:20 })` -> `memory_search({ query:"checkpoint restore clearExisting transaction rollback", limit:20, bypassCache:true })` |
-| EX-003 | Fast recall path | [`../../feature_catalog/01--retrieval/03-trigger-phrase-matching-memorymatchtriggers.md`](../../feature_catalog/01--retrieval/03-trigger-phrase-matching-memorymatchtriggers.md) | `Run trigger matching for resume previous session blockers with cognitive=true` | `memory_match_triggers(prompt,include_cognitive:true,sessionId:ex003)` |
-| EX-004 | Channel fusion sanity | [`../../feature_catalog/01--retrieval/04-hybrid-search-pipeline.md`](../../feature_catalog/01--retrieval/04-hybrid-search-pipeline.md) | `Validate graph search fallback tiers behavior` | `memory_search(query,limit:25)` -> `memory_search(bypassCache:true)` |
-| EX-005 | Stage invariant verification | [`../../feature_catalog/01--retrieval/05-4-stage-pipeline-architecture.md`](../../feature_catalog/01--retrieval/05-4-stage-pipeline-architecture.md) | `Search Stage4Invariant score snapshot verifyScoreInvariant` | `memory_search(query,intent:understand)` |
-| 086 | Confirm trigger edit causes re-index | [`../../feature_catalog/01--retrieval/06-bm25-trigger-phrase-re-index-gate.md`](../../feature_catalog/01--retrieval/06-bm25-trigger-phrase-re-index-gate.md) | `Validate BM25 trigger phrase re-index gate.` | `1) edit trigger phrases 2) verify re-index activity 3) query new trigger` |
-| 109 | Confirm 3-tier degradation chain triggers correctly | [`../../feature_catalog/01--retrieval/08-quality-aware-3-tier-search-fallback.md`](../../feature_catalog/01--retrieval/08-quality-aware-3-tier-search-fallback.md) | `Validate SPECKIT_SEARCH_FALLBACK tiered degradation.` | `1) memory_search({query:"zzz_nonexistent_term_zzz", limit:20}) with default settings (Tier 1) 2) inspect _degradation property on result — if topScore < 0.02 AND relativeGap < 0.2, OR resultCount < 3, confirm Tier 2 triggered 3) verify Tier 2 uses minSimilarity=0.1 and forces all channels 4) if Tier 2 also fails quality check, confirm Tier 3 structural SQL fallback fires 5) verify Tier 3 scores capped at 50% of existing top score 6) set SPECKIT_SEARCH_FALLBACK=false and verify single-tier only` |
-| 142 | Verify `memory_context` emits trace-only session transitions with no non-trace leakage | [`../../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md`](../../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md) | `Validate Markovian session transition tracing for memory_context.` | `1) memory_context({ mode:"resume", prompt:"resume previous work on rollout hardening", sessionId:"markovian-142", includeTrace:true }) 2) Verify each result exposes trace.sessionTransition.previousState, currentState, confidence, and ordered signalSources 3) Repeat without includeTrace and verify sessionTransition is absent 4) Confirm the non-trace response does not expose transition data in top-level metadata` |
-| 143 | Verify `SPECKIT_GRAPH_WALK_ROLLOUT` changes diagnostics and bounded bonus behavior without destabilizing ordering | [`../../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md`](../../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md) | `Validate bounded graph-walk rollout states and trace diagnostics.` | `1) Prepare a graph-connected sandbox corpus 2) Start runtime with SPECKIT_GRAPH_WALK_ROLLOUT=trace_only and run memory_search({ query:"graph rollout trace check", includeTrace:true, limit:10 }) 3) Verify trace.graphContribution.rolloutState is trace_only and appliedBonus remains 0 while raw/normalized are still visible 4) Restart with SPECKIT_GRAPH_WALK_ROLLOUT=bounded_runtime and repeat 5) Verify appliedBonus is present, bounded at <= 0.03, and capApplied flips to true when the bounded runtime bonus saturates at the Stage 2 cap 6) Restart with SPECKIT_GRAPH_WALK_ROLLOUT=off and verify the graph-walk bonus disappears while the broader graph-signal path stays governed by SPECKIT_GRAPH_SIGNALS and repeated identical runs keep the same ordering` |
+- Executing all 11 retrieval playbook scenarios listed in Section 4
+- Recording PASS/FAIL/PARTIAL verdicts with evidence for each scenario
+- Cross-referencing each scenario against the feature catalog (01--retrieval)
+- Updating checklist.md and tasks.md as execution proceeds
 
 ### Out of Scope
-- Modifying the playbook or feature catalog content linked from this packet.
-- Documenting non-retrieval phases from `002-mutation/` through `019-feature-flag-reference/`.
 
-### Files Changed
+- Mutation scenarios (covered in 002-mutation)
+- Discovery, lifecycle, analysis, evaluation, or other category scenarios
+- Code changes or bug fixes discovered during testing (tracked separately)
+
+### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `spec.md` | Created + Updated | Phase 001 retrieval requirements; status updated to Complete |
-| `plan.md` | Created | Phase 001 retrieval execution plan and review workflow |
-| `tasks.md` | Created + Updated | Task tracker; T003, T006-T010 marked complete |
-| `checklist.md` | Created + Updated | QA checklist; 26/26 P0, 7/7 P1, 2/2 P2 verified |
-| `implementation-summary.md` | Created + Updated | Execution results, verdicts, and verification |
-| `scratch/*.md` | Created | 9 evidence files + verdict-summary.md |
+| `tasks.md` | Modify | Update task status as scenarios are executed |
+| `checklist.md` | Modify | Mark items complete with evidence references |
+| `implementation-summary.md` | Modify | Complete after all scenarios are verdicted |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -81,21 +76,30 @@ Provide a single retrieval-focused specification that maps all nine Phase 001 te
 <!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
-### P0 - Blockers (MUST complete)
+### P0 — Scenarios to Execute
+
+All 11 scenarios below are P0. Each must receive a PASS, FAIL, or PARTIAL verdict before this phase is considered complete.
+
+| Scenario ID | Scenario Name | Playbook File | Feature Catalog Reference |
+|-------------|---------------|---------------|--------------------------|
+| EX-001 | Unified context retrieval (memory_context) | `../../manual_testing_playbook/01--retrieval/001-unified-context-retrieval-memory-context.md` | 01--retrieval / 01-unified-context-retrieval-memorycontext.md |
+| M-001 | Context Recovery and Continuation | `../../manual_testing_playbook/01--retrieval/001-context-recovery-and-continuation.md` | 01--retrieval / 01-unified-context-retrieval-memorycontext.md |
+| EX-002 | Semantic and lexical search (memory_search) | `../../manual_testing_playbook/01--retrieval/002-semantic-and-lexical-search-memory-search.md` | 01--retrieval / 02-semantic-and-lexical-search-memorysearch.md |
+| M-002 | Targeted Memory Lookup | `../../manual_testing_playbook/01--retrieval/002-targeted-memory-lookup.md` | 01--retrieval / 02-semantic-and-lexical-search-memorysearch.md |
+| EX-003 | Trigger phrase matching (memory_match_triggers) | `../../manual_testing_playbook/01--retrieval/003-trigger-phrase-matching-memory-match-triggers.md` | 01--retrieval / 03-trigger-phrase-matching-memorymatchtriggers.md |
+| EX-004 | Hybrid search pipeline | `../../manual_testing_playbook/01--retrieval/004-hybrid-search-pipeline.md` | 01--retrieval / 04-hybrid-search-pipeline.md |
+| EX-005 | 4-stage pipeline architecture | `../../manual_testing_playbook/01--retrieval/005-4-stage-pipeline-architecture.md` | 01--retrieval / 05-4-stage-pipeline-architecture.md |
+| 086 | BM25 trigger phrase re-index gate | `../../manual_testing_playbook/01--retrieval/086-bm25-trigger-phrase-re-index-gate.md` | 01--retrieval / 06-bm25-trigger-phrase-re-index-gate.md |
+| 109 | Quality-aware 3-tier search fallback | `../../manual_testing_playbook/01--retrieval/109-quality-aware-3-tier-search-fallback.md` | 01--retrieval / 08-quality-aware-3-tier-search-fallback.md |
+| 142 | Session transition trace contract | `../../manual_testing_playbook/01--retrieval/142-session-transition-trace-contract.md` | 01--retrieval (pipeline / session signal) |
+| 143 | Bounded graph-walk rollout and diagnostics | `../../manual_testing_playbook/01--retrieval/143-bounded-graph-walk-rollout-and-diagnostics.md` | 01--retrieval (graph-backed retrieval) |
+
+### P1 — Supporting Requirements
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Document EX-001 intent-aware context pull with its exact playbook prompt, command sequence, evidence target, and feature link. | PASS if relevant context returned in both calls |
-| REQ-002 | Document EX-002 hybrid precision check with its exact search prompt, dual-run command sequence, evidence target, and feature link. | PASS if top results match query intent |
-| REQ-003 | Document EX-003 fast recall path with its exact trigger-matching prompt, cognitive command sequence, evidence target, and feature link. | PASS if matched triggers returned with cognitive fields |
-| REQ-004 | Document EX-004 channel fusion sanity scenario with its exact fallback prompt, command sequence, evidence target, and feature link. | PASS if channels contribute and no empty tail |
-| REQ-005 | Document EX-005 Stage 4 invariant verification with its exact prompt, command sequence, evidence target, and feature link. | PASS if no score-mutation symptoms |
-| REQ-006 | Document 086 BM25 trigger phrase re-index gate with its exact prompt, mutation sequence, evidence target, and feature link. | PASS if editing trigger phrases causes automatic BM25 re-index and new triggers are immediately searchable |
-| REQ-007 | Document 109 quality-aware 3-tier fallback with its exact prompt, degradation-check sequence, evidence target, and feature link. | PASS if all 3 tiers trigger in correct order based on quality thresholds and disabling fallback produces single-tier behavior |
-| REQ-008 | Document 142 session transition trace contract with its exact prompt, traced/untraced command sequence, evidence target, and feature link. | PASS if trace-only gating holds and the contract fields are present only in the traced call |
-| REQ-009 | Document 143 bounded graph-walk rollout diagnostics with its exact prompt, rollout-state sequence, evidence target, and feature link. | PASS if rollout state, bounded bonus, cap saturation signaling, and ordering guarantees all match the documented ladder |
-
-No P1 items are defined for this phase; all nine retrieval scenarios are mandatory for coverage.
+| REQ-R01 | Evidence captured per scenario | Each executed scenario has a recorded observation or output excerpt |
+| REQ-R02 | Feature catalog cross-reference verified | Each scenario's catalog reference confirmed present and accurate |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -103,11 +107,10 @@ No P1 items are defined for this phase; all nine retrieval scenarios are mandato
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 9 retrieval tests are documented with exact prompts, exact command sequences, linked feature catalog entries, and playbook-derived pass criteria. **MET** — scope table in spec.md covers all 9 test IDs.
-- **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for EX-001, EX-002, EX-003, EX-004, EX-005, 086, 109, 142, and 143 will be collected. **MET** — plan.md defines 3-phase execution with evidence capture.
-- **SC-003**: Reviewers can audit every Phase 001 scenario using this folder plus the linked playbook (`../../manual_testing_playbook/manual_testing_playbook.md`) and review protocol (`../../manual_testing_playbook/review_protocol.md`). **MET** — 9 evidence files in scratch/ with per-test signal checklists.
-- **SC-004**: The phase packet contains no placeholder or template text and is ready for manual execution planning. **MET** — all 9 scenarios executed with verdicts assigned.
-- **SC-005**: All 9 scenarios have been executed with evidence captured and verdicts assigned (6 PASS, 3 PARTIAL). **MET** — see `scratch/verdict-summary.md`.
+- **SC-001**: All 11 retrieval scenarios executed and verdicted (PASS, FAIL, or PARTIAL)
+- **SC-002**: All P0 checklist items marked with evidence
+- **SC-003**: tasks.md reflects final execution status for every scenario task
+- **SC-004**: implementation-summary.md completed with aggregate results
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -117,21 +120,22 @@ No P1 items are defined for this phase; all nine retrieval scenarios are mandato
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth and update this phase packet only from that document |
-| Dependency | [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review and do not invent alternate verdict logic |
-| Dependency | [`../../feature_catalog/01--retrieval/`](../../feature_catalog/01--retrieval/) | Supplies feature context for each retrieval scenario | Keep every test row linked to its mapped retrieval feature file |
-| Dependency | MCP runtime plus retrieval sandbox corpus | Required to execute `memory_context`, `memory_search`, and `memory_match_triggers` scenarios safely | Run stateful tests in an isolated sandbox and preserve restart/checkpoint instructions in the plan |
+| Dependency | Parent plan `../plan.md` | Execution order and environment setup | Read parent plan before starting |
+| Dependency | Playbook folder `../../manual_testing_playbook/01--retrieval/` | Scenario steps not available | Confirm playbook files accessible before execution |
+| Dependency | Feature catalog `../../feature_catalog/01--retrieval/` | Cross-reference cannot be verified | Confirm catalog files accessible before execution |
+| Dependency | MCP runtime for `memory_context`, `memory_search`, `memory_match_triggers` | Retrieval scenarios cannot be executed | Verify MCP runtime healthy before starting |
 | Risk | 086 mutates trigger phrases and can pollute shared search indexes | High | Restrict trigger edits to disposable sandbox data and record rollback steps before execution |
-| Risk | 109 and 143 depend on feature flags and runtime restarts that can skew comparison evidence | Medium | Capture baseline env state, isolate runs per rollout state, and restore defaults before the next scenario |
+| Risk | 109 and 143 depend on feature flags and runtime restarts | Medium | Capture baseline env state, isolate runs per rollout state, restore defaults before the next scenario |
+| Risk | 142 requires prior session state for transition fields | Medium | Set up known session state per playbook prerequisites |
 <!-- /ANCHOR:risks -->
 
 ---
 
 <!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS
-
-- ~~Which sandbox fixture or disposable memory record should be treated as the canonical target for 086 trigger-phrase edits?~~ **Resolved**: memoryId 25368 (z_archive/013-agent-haiku-compatibility) used with checkpoint/restore.
-- ~~Which graph-connected sandbox corpus should Phase 001 reviewers use for 143 so repeated ordering checks stay reproducible across machines?~~ **Deferred**: Multi-state rollout testing requires a shell-level harness that can restart the MCP server with different env vars. Current execution tested the default bounded_runtime state only.
-<!-- /ANCHOR:questions -->
 
 ---
+
+## 10. OPEN QUESTIONS
+
+- None at time of writing. Questions discovered during execution should be noted in scratch/ and tracked here.
+<!-- /ANCHOR:questions -->

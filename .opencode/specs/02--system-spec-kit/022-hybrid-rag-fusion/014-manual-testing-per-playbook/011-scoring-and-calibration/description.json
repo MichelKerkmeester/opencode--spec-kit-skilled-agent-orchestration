@@ -8,7 +8,7 @@
     "manual",
     "testing"
   ],
-  "lastUpdated": "2026-03-21T13:24:03.981Z",
+  "lastUpdated": "2026-03-22T00:00:00.000Z",
   "specId": "011",
   "folderSlug": "scoring-and-calibration",
   "parentChain": [
@@ -19,7 +19,7 @@
   "memorySequence": 0,
   "memoryNameHistory": [],
   "title": "Manual Testing: Scoring and Calibration",
-  "status": "Complete",
+  "status": "Draft",
   "importance_tier": "medium",
   "short_description": "Manual testing for scoring and calibration pipeline features"
 }

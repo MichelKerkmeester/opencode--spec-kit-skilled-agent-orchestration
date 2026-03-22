@@ -1,6 +1,6 @@
 ---
-title: "Tasks: manual-testing-per-playbook [template:level_1/tasks.md]"
-description: "Task Format: T### [P?] Description (file path)"
+title: "Tasks: manual-testing-per-playbook"
+description: "Task tracking for manual test execution across 19 phase folders (226 scenario files, 265 exact IDs)."
 trigger_phrases:
   - "manual testing tasks"
   - "playbook phase tasks"
@@ -10,7 +10,7 @@ contextType: "general"
 ---
 # Tasks: manual-testing-per-playbook
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -33,10 +33,9 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Re-read the parent `014` packet and all current phase folders to identify stale `195`-only and validation-pending claims.
-- [x] T002 Re-read the dedicated memory section of `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` and establish the exact-ID inventory model.
-- [x] T003 Capture the current parent recursive-validation result for `014-manual-testing-per-playbook/`.
-- [x] T004 Confirm parent `description.json` exists and is valid JSON.
+- [ ] T000 Verify playbook and feature catalog are accessible
+- [ ] T000a Verify MCP server is running and healthy
+- [ ] T000b Document test environment baseline (database state, feature flags, server version)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -44,19 +43,29 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T010 Update parent `spec.md` to use the `252` exact-ID model, fix stale phase counts, and record current validator truth.
-- [x] T011 Update parent `plan.md` to describe the alignment pass instead of the original generation wave.
-- [x] T012 Update parent `tasks.md`, `checklist.md`, and `implementation-summary.md` to the exact-ID and validator-truth model.
-- [x] T013 Expand `013-memory-quality-and-indexing/spec.md` from `26` top-level scenarios to `42` exact IDs.
-- [x] T014 Update `013-memory-quality-and-indexing/plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` to the exact-ID model.
-- [x] T015 Refresh the `M-007` playbook verification suite list and proof-lane wording to match the `010` closure docs.
-- [x] T016 Apply the narrow `010` parent truth-cleanup for validator-support wording.
-- [x] T030 Bulk-replace all `NEW-NNN` provisional markers with bare `NNN` IDs across 80 files in the spec folder.
-- [x] T031 Update all root-level count references from `211` to `252` exact scenario IDs.
-- [x] T032 Add scenarios `153` (JSON mode hybrid enrichment) and `154` (JSON-primary deprecation posture) to Phase 016 test inventory.
-- [x] T033 Update Phase 016 exact-ID count from `21` to `23` in root phase map and sub-phase docs.
-- [x] T034 Fold the normalization addendum into the parent packet's core truth-sync narrative.
-- [x] T035 Verify zero stale `NEW-NNN` markers remain (excluding `G-NEW-` proper nouns).
+Each task executes all test scenarios for one playbook category. Tasks are parallelizable.
+
+| Task | Phase | Folder | Category | Scenarios | Exact IDs | Status |
+|------|-------|--------|----------|-----------|-----------|--------|
+| T001 | 001 | `001-retrieval/` | Retrieval | 11 | 11 | PENDING |
+| T002 | 002 | `002-mutation/` | Mutation | 9 | 9 | PENDING |
+| T003 | 003 | `003-discovery/` | Discovery | 3 | 3 | PENDING |
+| T004 | 004 | `004-maintenance/` | Maintenance | 2 | 2 | PENDING |
+| T005 | 005 | `005-lifecycle/` | Lifecycle | 10 | 10 | PENDING |
+| T006 | 006 | `006-analysis/` | Analysis | 7 | 7 | PENDING |
+| T007 | 007 | `007-evaluation/` | Evaluation | 2 | 2 | PENDING |
+| T008 | 008 | `008-bug-fixes-and-data-integrity/` | Bug Fixes and Data Integrity | 11 | 11 | PENDING |
+| T009 | 009 | `009-evaluation-and-measurement/` | Evaluation and Measurement | 16 | 16 | PENDING |
+| T010 | 010 | `010-graph-signal-activation/` | Graph Signal Activation | 15 | 15 | PENDING |
+| T011 | 011 | `011-scoring-and-calibration/` | Scoring and Calibration | 22 | 22 | PENDING |
+| T012 | 012 | `012-query-intelligence/` | Query Intelligence | 10 | 10 | PENDING |
+| T013 | 013 | `013-memory-quality-and-indexing/` | Memory Quality and Indexing | 27 | 34 | PENDING |
+| T014 | 014 | `014-pipeline-architecture/` | Pipeline Architecture | 18 | 18 | PENDING |
+| T015 | 015 | `015-retrieval-enhancements/` | Retrieval Enhancements | 11 | 11 | PENDING |
+| T016 | 016 | `016-tooling-and-scripts/` | Tooling and Scripts | 28 | 60 | PENDING |
+| T017 | 017 | `017-governance/` | Governance | 5 | 5 | PENDING |
+| T018 | 018 | `018-ux-hooks/` | UX Hooks | 11 | 11 | PENDING |
+| T019 | 019 | `019-feature-flag-reference/` | Feature Flag Reference | 8 | 8 | PENDING |
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -64,19 +73,8 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T020 Run an exact-ID ownership audit across all 19 child `spec.md` files.
-- [x] T021 Verify the audit result is `252` exact scenario IDs with `0` missing IDs and `0` duplicate owners.
-- [x] T022 Re-run `validate.sh --recursive` on the parent `014-manual-testing-per-playbook/` tree and record the current `0`-error, `19`-warning result.
-- [x] T023 Re-run `validate.sh` on the touched `013-memory-quality-and-indexing/` child packet.
-- [x] T024 Spot-check the parent/child/docs surface for `M-005a..c`, `M-006a..c`, `M-007a..j`, and the `010` validator-support narrative.
-- [x] T040 Execute spec_kit:implement across all 19 phase folders (20 agents: 5 GPT-5.4 + 15 Sonnet, 4 waves)
-- [x] T041 Verdict all 209 scenarios: 153 PASS, 52 PARTIAL, 4 FAIL
-- [x] T042 Fix 2 critical code bugs: graph FTS5 regression (graph-search-fn.ts), pe-gating barrel export (handlers/index.ts)
-- [x] T043 Fix 4 playbook doc errors: channel enums, script path, field names, tier value
-- [x] T044 Implement FUT-5 K-sensitivity reporting endpoint (k-value-analysis.ts + eval-reporting.ts)
-- [x] T045 Implement Sprint 3 trace field enrichment (hybrid-search.ts Sprint3PipelineMeta)
-- [x] T046 GPT-5.4 ultra-think review: 5 findings identified and fixed (graph root cause, K-sensitivity schema+data, test migration, flag drift)
-- [x] T047 Harden memory generation scripts: 7 source fixes (title truncation, session status, phase classifier, decision confidence, outcome trimming, trigger phrases, embedding model)
+- [ ] T020 Aggregate per-phase verdict summaries into coverage report
+- [ ] T021 Run `validate.sh --recursive` on the spec folder tree and record results
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -84,11 +82,11 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]`
-- [x] No `[B]` blocked tasks remaining
-- [x] Parent packet uses the `252` exact-ID model as the authoritative coverage unit
-- [x] Recursive validation truth is recorded honestly for the parent packet
-- [x] Manual verification passed
+- [ ] All tasks T001-T019 completed with per-phase verdict summaries
+- [ ] T020 aggregate coverage report produced
+- [ ] T021 validation results recorded
+- [ ] No `[B]` blocked tasks remaining
+- [ ] All 265 exact scenario IDs have recorded verdicts
 <!-- /ANCHOR:completion -->
 
 ---
@@ -99,15 +97,8 @@ contextType: "general"
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
-- **Playbook**: See `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`
-- **Review Protocol**: Use the review and release-readiness rules in `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`
+- **Playbook**: See `../../../../skill/system-spec-kit/manual_testing_playbook/`
 - **Feature Catalog**: See `../../../../skill/system-spec-kit/feature_catalog/`
 <!-- /ANCHOR:cross-refs -->
 
 ---
-
-<!--
-Level 2 tasks - Umbrella phase tracking
-Task numbering uses gaps for future insertion
-Phases 1-4 map to plan.md phases 0-5
--->

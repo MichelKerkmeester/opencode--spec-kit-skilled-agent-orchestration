@@ -1,16 +1,17 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
-description: "Phase 013 memory-quality-and-indexing manual testing packet aligned from the older 25/26-ID model to the current 49 exact-ID model (42 base + 4 Wave 2-4 + 3 Wave 5)."
+title: "Implementation Summary [template:level_2/implementation-summary.md]"
+description: "Phase 013 memory quality and indexing manual testing -- not yet executed. All sections to be completed after scenario execution."
 trigger_phrases:
-  - "memory-quality-and-indexing implementation summary"
+  - "memory quality implementation summary"
   - "phase 013 summary"
-  - "manual testing memory-quality-and-indexing"
+  - "manual testing memory quality"
+  - "memory quality test results"
 importance_tier: "normal"
-contextType: "general"
+contextType: "implementation"
 ---
 # Implementation Summary
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
@@ -21,8 +22,9 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 013-memory-quality-and-indexing |
-| **Completed** | 2026-03-21 (Part A + Part B execution complete) |
-| **Level** | 1 |
+| **Completed** | -- |
+| **Level** | 2 |
+| **Status** | Not Started |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -30,30 +32,54 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase 013 was realigned and fully executed. The packet treats 42 exact IDs as the authoritative Phase 013 inventory. Both Part A (non-destructive, 19 scenarios) and Part B (destructive + remaining, 23 scenarios) are complete.
+To be completed after execution.
 
-### Exact-ID Expansion
+### Execution Results
 
-The alignment explicitly added the dedicated memory-section sub-scenarios:
-- `M-005a..c`
-- `M-006a..c`
-- `M-007a..j`
+| Scenario ID | Scenario Name | Verdict | Evidence |
+|-------------|---------------|---------|----------|
+| M-003 | Context Save + Index Update | -- | -- |
+| M-005 | Outsourced Agent Memory Capture Round-Trip | -- | -- |
+| M-005a | JSON-mode hard-fail | -- | -- |
+| M-005b | nextSteps persistence | -- | -- |
+| M-005c | Verification freshness | -- | -- |
+| M-006 | Session Enrichment and Alignment Guardrails | -- | -- |
+| M-006a | Unborn-HEAD and dirty snapshot fallback | -- | -- |
+| M-006b | Detached-HEAD snapshot preservation | -- | -- |
+| M-006c | Similar-folder boundary protection | -- | -- |
+| 039 | Verify-fix-verify memory quality loop (PI-A5) | -- | -- |
+| 040 | Signal vocabulary expansion (TM-08) | -- | -- |
+| 041 | Pre-flight token budget validation (PI-A3) | -- | -- |
+| 042 | Spec folder description discovery (PI-B3) | -- | -- |
+| 043 | Pre-storage quality gate (TM-04) | -- | -- |
+| 044 | Reconsolidation-on-save (TM-06) | -- | -- |
+| 045 | Smarter memory content generation (S1) | -- | -- |
+| 046 | Anchor-aware chunk thinning (R7) | -- | -- |
+| 047 | Encoding-intent capture at index time (R16) | -- | -- |
+| 048 | Auto entity extraction (R10) | -- | -- |
+| 069 | Entity normalization consolidation | -- | -- |
+| 073 | Quality gate timer persistence | -- | -- |
+| 092 | Implemented: auto entity extraction (R10) | -- | -- |
+| 111 | Deferred lexical-only indexing | -- | -- |
+| 119 | Memory filename uniqueness (ensureUniqueMemoryFilename) | -- | -- |
+| 131 | Description.json batch backfill validation (PI-B3) | -- | -- |
+| 132 | description.json schema field validation | -- | -- |
+| 133 | Dry-run preflight for memory_save | -- | -- |
+| 155 | Post-save quality review | -- | -- |
+| 155-F | Score penalty advisory logging | -- | -- |
+| 164 | Batch learned feedback (SPECKIT_BATCH_LEARNED_FEEDBACK) | -- | -- |
+| 165 | Assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION) | -- | -- |
+| 176 | Implicit feedback log (SPECKIT_IMPLICIT_FEEDBACK_LOG) | -- | -- |
+| 177 | Hybrid decay policy (SPECKIT_HYBRID_DECAY_POLICY) | -- | -- |
+| 178 | Save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS) | -- | -- |
 
-This brings the phase to 42 exact IDs while keeping the umbrella `M-005`, `M-006`, and `M-007` parent rows in place.
+**Coverage**: 0/34 exact IDs executed.
 
-### Mapping Cleanup
+### Files Changed
 
-`M-007` and its child exact IDs now point to the actual cross-category feature entry at `../../../../../skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md`, while `M-008` remains mapped to the mutation history-log feature and `M-001` through `M-004` remain nearest-category mappings pending any future catalog backfill.
-
-### Part B Execution Results (2026-03-21)
-
-| Verdict | Count | Scenarios |
-|---------|-------|-----------|
-| PASS | 21 | 042, 043, 044, 111, 119, 132, M-003, M-005, M-005a, M-006, M-006a, M-006b, M-006c, M-007, M-007a, M-007b, M-007c, M-007d, M-007e, M-007f, M-007g, M-007h, M-007i, M-007r, M-008 |
-| PARTIAL | 2 | M-005b (nextSteps loads but thin context → INSUFFICIENT_CONTEXT_ABORT); M-007j (NO_DATA_AVAILABLE code-confirmed, live proof blocked by active session) |
-| FAIL | 0 | — |
-
-Checkpoint `phase-013-partB-destructive-baseline` (ID 20) created before destructive tests and restored after. Sandbox `.opencode/specs/test-sandbox-m008/` cleaned up post-execution.
+| File | Action | Purpose |
+|------|--------|---------|
+| -- | -- | To be completed after execution |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -61,11 +87,7 @@ Checkpoint `phase-013-partB-destructive-baseline` (ID 20) created before destruc
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-1. Re-read the current playbook memory section and identified the missing exact IDs.
-2. Expanded `spec.md` and `plan.md` so the dedicated memory sub-scenarios are represented literally.
-3. Rewrote the packet tracker docs (`tasks.md`, `checklist.md`, `implementation-summary.md`) around the 42-ID draft model.
-4. Part A (2026-03-21): executed non-destructive scenarios (039, 040, 041, 045, 046, 047, 048, 069, 073, 092, 131, 133, M-001, M-002, M-004, M-005c, M-006a, M-006b, M-006c) via MCP + code inspection. Evidence in `scratch/execution-evidence-partA.md`.
-5. Part B (2026-03-21): created checkpoint ID 20, executed destructive + remaining scenarios (042, 043, 044, 111, 119, 132, M-003, M-005, M-005a, M-005b, M-006, M-007 family, M-008) via MCP + CLI + code inspection. Restored checkpoint. Evidence in `scratch/execution-evidence-partB.md`.
+To be completed after execution.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -75,9 +97,7 @@ Checkpoint `phase-013-partB-destructive-baseline` (ID 20) created before destruc
 
 | Decision | Why |
 |----------|-----|
-| Keep the umbrella `M-005`, `M-006`, and `M-007` rows alongside the exact child IDs | The playbook still defines the umbrella scenarios, so the packet should preserve both levels |
-| Map `M-007*` to the actual session-capturing feature entry | A direct cross-category mapping is more truthful than the earlier nearest-category proxy |
-| Leave execution verdicts pending | This pass aligns the packet structure and coverage model; it does not execute the scenarios |
+| -- | To be completed after execution |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -87,37 +107,17 @@ Checkpoint `phase-013-partB-destructive-baseline` (ID 20) created before destruc
 
 | Check | Result |
 |-------|--------|
-| Phase packet rewritten to the 42 exact-ID model | PASS |
-| Literal `M-005a..c` coverage present | PASS |
-| Literal `M-006a..c` coverage present | PASS |
-| Literal `M-007a..j` coverage present, including `M-007g` and `M-007h` | PASS |
-| `plan.md` testing strategy reflects the exact-ID model | PASS |
-| Phase validation rerun captured after alignment | PASS WITH WARNINGS: `0` errors, `1` warning |
-| Part A execution (19 non-destructive scenarios) | PASS (18 PASS, 1 PARTIAL) |
-| Part B execution (23 destructive + remaining scenarios) | PASS (21 PASS, 2 PARTIAL, 0 FAIL) |
-| Combined 42/42 scenario coverage | PASS |
-| Checkpoint created before destructive tests and restored after | PASS (ID: 20) |
-| Sandbox cleaned up after Part B | PASS |
-| Checklist P0 items: 17/17 verified | PASS |
+| 34 exact IDs executed | -- |
+| All verdicts assigned | -- |
+| Sub-scenarios independently verdicted | -- |
+| Checklist P0 items complete | -- |
+| Tasks complete | -- |
 <!-- /ANCHOR:verification -->
-
----
-
-<!-- ANCHOR:wave5 -->
-## Wave 5 Alignment (2026-03-22)
-
-Three new scenarios — `176` (Implicit Feedback Log), `177` (Hybrid Decay Policy), and `178` (Save Quality Gate Exceptions) — were added to Phase 013 as part of the Wave 5 playbook expansion. The phase spec.md scope table and requirements were updated from `46` to `49` exact IDs. These scenarios have corresponding feature catalog entries (`22-implicit-feedback-log.md`, `23-hybrid-decay-policy.md`, `24-save-quality-gate-exceptions.md`) and per-category playbook files. The original 42-ID execution pass remains historical; these 7 additional IDs (4 Wave 2-4 + 3 Wave 5) have not yet been executed.
-<!-- /ANCHOR:wave5 -->
 
 ---
 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Two PARTIAL verdicts** - M-005b: nextSteps data loads but thin-only input cannot produce a full memory file (expected behavior, not a system defect). M-007j: NO_DATA_AVAILABLE path code-confirmed but live demonstration impossible when active session is running.
-2. **Nearest-category mappings remain for M-001 through M-004** - A future catalog backfill could still add dedicated operator-flow feature entries.
-3. **P2 memory save deferred** - CHK-051 (session memory save) not run; phase documents are self-contained.
-4. **7 IDs not yet executed** - Wave 2-4 IDs (155, 155-F, 164, 165) and Wave 5 IDs (176, 177, 178) are documented in spec.md but have not been tested.
+1. To be completed after execution.
 <!-- /ANCHOR:limitations -->
-
----

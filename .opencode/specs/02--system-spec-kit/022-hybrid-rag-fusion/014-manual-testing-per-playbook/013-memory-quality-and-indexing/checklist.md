@@ -1,17 +1,17 @@
 ---
 title: "Verification Checklist: manual-testing-per-playbook memory quality and indexing phase [template:level_2/checklist.md]"
-description: "Verification checklist for Phase 013 memory-quality-and-indexing manual tests covering 49 exact IDs, including the dedicated memory sub-scenarios and Wave 5 additions (176-178)."
+description: "Verification checklist for phase 013 memory quality and indexing: 34 exact IDs (M-003, M-005, M-005a/b/c, M-006, M-006a/b/c, 039-048, 069, 073, 092, 111, 119, 131, 132, 133, 155, 155-F, 164, 165, 176, 177, 178) -- all items unchecked, awaiting execution."
 trigger_phrases:
   - "memory quality checklist"
   - "phase 013 verification"
   - "indexing checklist"
-  - "M-005a M-006a M-007a verification"
-importance_tier: "high"
-contextType: "general"
+  - "M-003 M-005 M-006 039 155 164 verification"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: manual-testing-per-playbook memory quality and indexing phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
@@ -31,12 +31,12 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Scope is locked to 49 exact IDs for Phase 013, including `M-005a..c`, `M-006a..c`, and `M-007a..j` [EVIDENCE: `spec.md` scope table lists the exact-ID inventory]
-- [x] CHK-002 [P0] Exact prompts, command sequences, and pass criteria were extracted from the current playbook for all 49 exact IDs [EVIDENCE: `plan.md` testing strategy reflects the current playbook wording]
-- [x] CHK-003 [P0] `M-005a..c` map to the dedicated outsourced-agent feature entry [EVIDENCE: `spec.md` scope table mappings]
-- [x] CHK-004 [P0] `M-006a..c` map to the dedicated stateless-enrichment feature entry [EVIDENCE: `spec.md` scope table mappings]
-- [x] CHK-005 [P0] `M-007` and `M-007a..j` map to the exact session-capturing feature entry under `../../../../../skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md` [EVIDENCE: `spec.md` scope table mappings]
-- [x] CHK-006 [P1] Level 1 template anchors and metadata blocks remain intact across all five phase documents [EVIDENCE: phase validator rerun on 2026-03-17]
+- [ ] CHK-001 [P0] Playbook files for 13--memory-quality-and-indexing confirmed accessible
+- [ ] CHK-002 [P0] Feature catalog files for 13--memory-quality-and-indexing confirmed accessible
+- [ ] CHK-003 [P0] Review protocol loaded and verdict rules understood
+- [ ] CHK-004 [P0] MCP runtime healthy -- `memory_save`, `memory_index_scan`, quality gate pipeline all respond
+- [ ] CHK-005 [P1] Sandbox data and named checkpoint prepared for destructive scenarios (M-005, M-006, 044)
+- [ ] CHK-006 [P1] Baseline feature flag values recorded for all SPECKIT_* flags used in Group 6 scenarios
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -44,11 +44,63 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] `spec.md` explicitly names `M-005a`, `M-005b`, and `M-005c` rather than only the parent `M-005` row [EVIDENCE: `spec.md` scope and requirements]
-- [x] CHK-011 [P0] `spec.md` explicitly names `M-006a`, `M-006b`, and `M-006c` rather than only the parent `M-006` row [EVIDENCE: `spec.md` scope and requirements]
-- [x] CHK-012 [P0] `spec.md` explicitly names `M-007a` through `M-007j`, including literal `M-007g` and `M-007h` coverage [EVIDENCE: `spec.md` scope and requirements]
-- [x] CHK-013 [P0] The packet now treats `49` exact IDs as the authoritative coverage unit for Phase 013 [EVIDENCE: `spec.md`, `plan.md`, and `tasks.md` count language]
-- [x] CHK-014 [P1] `plan.md` testing strategy includes the dedicated-memory sub-scenarios as explicit rows [EVIDENCE: `plan.md` testing strategy]
+Each item below must be marked `[x]` with a verdict (PASS / PARTIAL / FAIL) and an evidence reference before this phase is complete.
+
+### Group 1: Core Pipeline Scenarios
+
+- [ ] CHK-010 [P0] M-003 executed and verdicted -- Context Save + Index Update
+- [ ] CHK-011 [P0] M-005 executed and verdicted -- Outsourced Agent Memory Capture Round-Trip
+- [ ] CHK-012 [P0] M-005a executed and verdicted -- JSON-mode hard-fail
+- [ ] CHK-013 [P0] M-005b executed and verdicted -- nextSteps persistence
+- [ ] CHK-014 [P0] M-005c executed and verdicted -- Verification freshness
+- [ ] CHK-015 [P0] M-006 executed and verdicted -- Session Enrichment and Alignment Guardrails
+- [ ] CHK-016 [P0] M-006a executed and verdicted -- Unborn-HEAD and dirty snapshot fallback
+- [ ] CHK-017 [P0] M-006b executed and verdicted -- Detached-HEAD snapshot preservation
+- [ ] CHK-018 [P0] M-006c executed and verdicted -- Similar-folder boundary protection
+
+### Group 2: Quality Loop and Signal Scenarios
+
+- [ ] CHK-020 [P0] 039 executed and verdicted -- Verify-fix-verify memory quality loop (PI-A5)
+- [ ] CHK-021 [P0] 040 executed and verdicted -- Signal vocabulary expansion (TM-08)
+- [ ] CHK-022 [P0] 041 executed and verdicted -- Pre-flight token budget validation (PI-A3)
+- [ ] CHK-023 [P0] 042 executed and verdicted -- Spec folder description discovery (PI-B3)
+- [ ] CHK-024 [P0] 043 executed and verdicted -- Pre-storage quality gate (TM-04)
+- [ ] CHK-025 [P0] 044 executed and verdicted -- Reconsolidation-on-save (TM-06)
+- [ ] CHK-026 [P0] 045 executed and verdicted -- Smarter memory content generation (S1)
+- [ ] CHK-027 [P0] 046 executed and verdicted -- Anchor-aware chunk thinning (R7)
+- [ ] CHK-028 [P0] 047 executed and verdicted -- Encoding-intent capture at index time (R16)
+- [ ] CHK-029 [P0] 048 executed and verdicted -- Auto entity extraction (R10)
+
+### Group 3: Consolidation and Persistence Scenarios
+
+- [ ] CHK-030 [P0] 069 executed and verdicted -- Entity normalization consolidation
+- [ ] CHK-031 [P0] 073 executed and verdicted -- Quality gate timer persistence
+- [ ] CHK-032 [P0] 092 executed and verdicted -- Implemented: auto entity extraction (R10)
+- [ ] CHK-033 [P0] 111 executed and verdicted -- Deferred lexical-only indexing
+- [ ] CHK-034 [P0] 119 executed and verdicted -- Memory filename uniqueness (ensureUniqueMemoryFilename)
+
+### Group 4: Validation and Preflight Scenarios
+
+- [ ] CHK-035 [P0] 131 executed and verdicted -- Description.json batch backfill validation (PI-B3)
+- [ ] CHK-036 [P0] 132 executed and verdicted -- description.json schema field validation
+- [ ] CHK-037 [P0] 133 executed and verdicted -- Dry-run preflight for memory_save
+
+### Group 5: Post-Save and Review Scenarios
+
+- [ ] CHK-040 [P0] 155 executed and verdicted -- Post-save quality review
+- [ ] CHK-041 [P0] 155-F executed and verdicted -- Score penalty advisory logging
+
+### Group 6: Advanced Quality Features
+
+- [ ] CHK-050 [P0] 164 executed and verdicted -- Batch learned feedback (SPECKIT_BATCH_LEARNED_FEEDBACK)
+- [ ] CHK-051 [P0] 165 executed and verdicted -- Assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION)
+- [ ] CHK-052 [P0] 176 executed and verdicted -- Implicit feedback log (SPECKIT_IMPLICIT_FEEDBACK_LOG)
+- [ ] CHK-053 [P0] 177 executed and verdicted -- Hybrid decay policy (SPECKIT_HYBRID_DECAY_POLICY)
+- [ ] CHK-054 [P0] 178 executed and verdicted -- Save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS)
+
+### Coverage
+
+- [ ] CHK-060 [P0] All 34 exact IDs assigned a verdict -- 0 skipped test IDs
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -56,11 +108,10 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All non-destructive exact IDs have execution evidence captured [EVIDENCE: `scratch/execution-evidence-partA.md` (Part A: 19 scenarios) and `scratch/execution-evidence-partB.md` (Part B: code-inspection lanes for 042,043,044,111,119,132,M-006 family)]
-- [x] CHK-021 [P0] All destructive exact IDs have isolated sandbox evidence captured [EVIDENCE: `scratch/execution-evidence-partB.md` — checkpoint ID 20 created/restored; `.opencode/specs/test-sandbox-m008/` used and deleted; M-005a/b CLI runs via `/tmp/`; sandbox teardown confirmed]
-- [x] CHK-022 [P0] Each of the 42 exact IDs has a PASS, PARTIAL, or FAIL verdict with explicit rationale [EVIDENCE: Part A verdict table in `scratch/execution-evidence-partA.md`; Part B verdict table in `scratch/execution-evidence-partB.md`; combined 42/42 coverage]
-- [x] CHK-023 [P0] `M-007a` through `M-007j` each have distinct evidence traces and are not collapsed into the umbrella `M-007` row [EVIDENCE: `scratch/execution-evidence-partB.md` — each M-007a..j has individual evidence row with distinct rationale]
-- [x] CHK-024 [P1] Coverage summary reports 42/42 exact IDs executed with no skipped dedicated-memory sub-scenarios [EVIDENCE: Part A (19) + Part B (23) = 42/42; M-005a/b/c, M-006a/b/c, M-007a..j all individually verdicted]
+- [ ] CHK-070 [P1] Evidence captured for each executed scenario (output excerpt or observation)
+- [ ] CHK-071 [P1] Feature catalog cross-reference verified for each scenario
+- [ ] CHK-072 [P1] PARTIAL verdicts include a root-cause note and remediation suggestion
+- [ ] CHK-073 [P1] Sub-scenarios M-005a/b/c, M-006a/b/c, and 155-F have independent evidence
 <!-- /ANCHOR:testing -->
 
 ---
@@ -68,9 +119,11 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No secrets or credentials were added to the Phase 013 documents [EVIDENCE: doc-only content review]
-- [x] CHK-031 [P0] Destructive exact IDs are scoped to disposable sandboxes and `/tmp` paths in the draft execution plan [EVIDENCE: `plan.md` destructive-phase wording]
-- [x] CHK-032 [P1] The canonical sandbox spec folder is documented before destructive execution starts [EVIDENCE: T016 resolved — `.opencode/specs/test-sandbox-m008/` used as disposable sandbox; teardown confirmed in `scratch/execution-evidence-partB.md`]
+- [ ] CHK-080 [P0] M-005 outsourced agent capture targets only disposable sandbox data
+- [ ] CHK-081 [P0] M-006 git state manipulation uses temporary repos only
+- [ ] CHK-082 [P0] 044 reconsolidation merge uses sandbox data with pre-merge checkpoint
+- [ ] CHK-083 [P0] Feature flag changes (164, 165, 176, 177, 178) documented and restored to defaults after capture
+- [ ] CHK-084 [P1] Named checkpoint created before any destructive or mutation step
 <!-- /ANCHOR:security -->
 
 ---
@@ -78,10 +131,9 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P0] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` contain no template placeholder text [EVIDENCE: content review after rewrite]
-- [x] CHK-041 [P0] Cross-document ID coverage is synchronized to the 49-ID model [EVIDENCE: matching count language across the rewritten packet]
-- [ ] CHK-042 [P1] Open questions are resolved or explicitly deferred before phase execution begins [EVIDENCE: `spec.md` open questions updated]
-- [x] CHK-043 [P1] `implementation-summary.md` reflects the exact-ID draft packet rather than the older 25/26-ID model [EVIDENCE: rewritten summary]
+- [ ] CHK-090 [P0] tasks.md updated with final status for each scenario task
+- [ ] CHK-091 [P0] implementation-summary.md completed with aggregate results
+- [ ] CHK-092 [P1] No placeholder or template text remains in any phase document
 <!-- /ANCHOR:docs -->
 
 ---
@@ -89,8 +141,8 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Only the intended five phase docs were updated in `013-memory-quality-and-indexing/` for this alignment pass [EVIDENCE: edited-file list reviewed]
-- [ ] CHK-051 [P2] Memory save is triggered after the alignment pass if future session continuity is needed [EVIDENCE: `/memory:save` run or deferred with reason]
+- [ ] CHK-100 [P1] Evidence artifacts stored in `scratch/` only
+- [ ] CHK-101 [P2] Memory save triggered after execution to preserve session context
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -100,11 +152,17 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 17 | 17/17 |
-| P1 Items | 7 | 6/7 |
+| P0 Items | 42 | 0/42 |
+| P1 Items | 7 | 0/7 |
 | P2 Items | 1 | 0/1 |
 
-**Verification Date**: 2026-03-21 (Part B execution complete)
+**Verification Date**: --
 <!-- /ANCHOR:summary -->
 
 ---
+
+<!--
+Level 2 checklist - Verification focus
+Mark [x] with evidence when verified
+P0 must complete, P1 need approval to defer
+-->

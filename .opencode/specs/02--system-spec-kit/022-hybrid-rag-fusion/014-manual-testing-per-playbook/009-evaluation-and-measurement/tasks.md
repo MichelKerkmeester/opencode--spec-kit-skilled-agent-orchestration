@@ -1,17 +1,16 @@
 ---
-title: "Tasks: manual-testing-per-playbook evaluation-and-measurement phase [template:level_1/tasks.md]"
-description: "Task Format: T### [P?] Description (file path)"
+title: "Tasks: Manual Testing — Evaluation and Measurement"
+description: "Task Format: T### [P?] Description (scenario ID)"
 trigger_phrases:
   - "evaluation and measurement tasks"
-  - "phase 009 tasks"
-  - "measurement testing tasks"
-  - "tasks core evaluation"
-importance_tier: "high"
+  - "manual testing tasks"
+  - "scenario execution tasks"
+importance_tier: "normal"
 contextType: "general"
 ---
-# Tasks: manual-testing-per-playbook evaluation-and-measurement phase
+# Tasks: Manual Testing — Evaluation and Measurement
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -26,7 +25,7 @@ contextType: "general"
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
-**Task Format**: `T### [P?] Description (file path)`
+**Task Format**: `T### [P?] Description (scenario ID)`
 <!-- /ANCHOR:notation -->
 
 ---
@@ -34,11 +33,10 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Extract prompts, execution methods, evidence expectations, and pass criteria for all 16 scenarios from `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] T002 Confirm feature catalog links for 005 through 015, 072, 082, 088, 090, and 126 in `../../feature_catalog/09--evaluation-and-measurement/`
-- [x] T003 Identify which scenarios are inspection-only (009, 010, 072, 088, 090) versus MCP-backed command-driven (005, 006, 007, 008, 011, 012, 013, 014, 015, 082, 126)
-- [x] T004 [P] Prepare isolated eval/context DB paths and confirm MCP runtime access for command-driven scenarios
-- [x] T005 [P] Verify baseline corpus and fixture prerequisites for 008, 011, and 014 comparison scenarios
+- [ ] T001 Confirm MCP server is running — `memory_health` call succeeds
+- [ ] T002 Confirm SPECKIT_ABLATION=true is set in environment
+- [ ] T003 Create pre-test checkpoint — `checkpoint_create({ name: "pre-009-testing" })`
+- [ ] T004 Verify eval_metric_snapshots table exists
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -46,12 +44,22 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T006 Draft `spec.md` with metadata, 16-row scenario mapping table, 16 P0 requirements, and acceptance scenarios A and B
-- [x] T007 Draft `plan.md` with readiness gates, four execution phases, and testing strategy table covering all 16 test IDs
-- [x] T008 Run inspection-oriented scenarios: 009 (quality proxy), 010 (corpus audit), 072 (test quality review), 088 (cross-AI fix verification), 090 (INT8 decision re-evaluation)
-- [x] T009 [P] Run reproducible runtime scenarios: 006, 007, 008, 011, 012, 013, 014, 015
-- [x] T010 Run isolated write-heavy scenarios: 005 (eval DB schema), 082 (housekeeping fixes), 126 (baseline snapshot suite)
-- [x] T011 [P] Resolve open questions for shared-vs-disposable sandbox decision (005, 082, 126) and canonical fixture baseline (008, 011, 014)
+- [ ] T005 Execute and record scenario 005 — Evaluation database and schema (R13-S1)
+- [ ] T006 Execute and record scenario 006 — Core metric computation (R13-S1)
+- [ ] T007 Execute and record scenario 007 — Observer effect mitigation (D4)
+- [ ] T008 Execute and record scenario 008 — Full-context ceiling evaluation (A2)
+- [ ] T009 Execute and record scenario 009 — Quality proxy formula (B7)
+- [ ] T010 Execute and record scenario 010 — Synthetic ground truth corpus (G-NEW-1, G-NEW-3 phase A)
+- [ ] T011 Execute and record scenario 011 — BM25-only baseline (G-NEW-1)
+- [ ] T012 Execute and record scenario 012 — Agent consumption instrumentation (G-NEW-2)
+- [ ] T013 Execute and record scenario 013 — Scoring observability (T010)
+- [ ] T014 Execute and record scenario 014 — Full reporting and ablation study framework (R13-S3)
+- [ ] T015 Execute and record scenario 015 — Shadow scoring and channel attribution (R13-S2)
+- [ ] T016 Execute and record scenario 072 — Test quality improvements
+- [ ] T017 Execute and record scenario 082 — Evaluation and housekeeping fixes
+- [ ] T018 Execute and record scenario 088 — Cross-AI validation fixes (Tier 4)
+- [ ] T019 Execute and record scenario 090 — INT8 quantization evaluation (R5)
+- [ ] T020 Execute and record scenario 126 — Memory roadmap baseline snapshot
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -59,11 +67,9 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T012 Capture command transcripts, inspection notes, DB/log extracts, dashboard output, and test-suite results for all 16 scenarios
-- [x] T013 Compare evidence against playbook PASS/FAIL criteria and assign PASS, PARTIAL, or FAIL verdict with rationale for each scenario
-- [x] T014 Validate documentation structure: confirm all required anchors, SPECKIT_LEVEL headers, and YAML frontmatter are intact across spec.md, plan.md, tasks.md, checklist.md
-- [x] T015 Confirm coverage is 16/16 with no missing test IDs against the parent phase map
-- [x] T016 Update `implementation-summary.md` when all 16 scenarios are executed and verdicts are recorded
+- [ ] T021 Confirm all 16 P0 checklist items checked with evidence
+- [ ] T022 Fill in implementation-summary.md with overall results and date
+- [ ] T023 Restore from checkpoint if DB was modified destructively
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -71,9 +77,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]`
-- [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed
+- [ ] All tasks T001–T023 marked `[x]`
+- [ ] No `[B]` blocked tasks remaining
+- [ ] All 16 scenarios have PASS, FAIL, or SKIP-ENV in checklist.md
 <!-- /ANCHOR:completion -->
 
 ---
@@ -83,6 +89,6 @@ contextType: "general"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+- **Playbook source**: `.opencode/skill/system-spec-kit/manual_testing_playbook/09--evaluation-and-measurement/`
 <!-- /ANCHOR:cross-refs -->
-
----

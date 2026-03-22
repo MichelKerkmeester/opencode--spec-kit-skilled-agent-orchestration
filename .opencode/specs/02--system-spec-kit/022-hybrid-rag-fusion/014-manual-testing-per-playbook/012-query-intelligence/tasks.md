@@ -1,17 +1,16 @@
 ---
-title: "Tasks: manual-testing-per-playbook query-intelligence phase [template:level_1/tasks.md]"
+title: "Tasks: query-intelligence manual testing [template:level_2/tasks.md]"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
-  - "query intelligence tasks"
   - "phase 012 tasks"
-  - "query intelligence manual testing tasks"
-  - "tasks core"
+  - "query intelligence tasks"
+  - "query intelligence task tracker"
 importance_tier: "high"
 contextType: "general"
 ---
-# Tasks: manual-testing-per-playbook query-intelligence phase
+# Tasks: query-intelligence manual testing
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -34,9 +33,10 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Extract query-intelligence prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] T002 Confirm feature links for 033, 034, 035, 036, 037, and 038 in `../../feature_catalog/12--query-intelligence/`
-- [x] T003 [P] Prepare sandbox prerequisites: varied-complexity corpus, feature flag baseline record, and evidence capture checklist for `plan.md`
+- [ ] T001 Load manual testing playbook and identify all 10 Phase 012 scenario rows with exact prompts and command sequences (`plan.md`)
+- [ ] T002 Confirm MCP runtime tool available: `memory_search` with `includeTrace: true` (`plan.md`)
+- [ ] T003 Confirm feature flag support for 161, 162, 163, 173 in the active runtime (`plan.md`)
+- [ ] T004 Record baseline feature flag state for 033 and 037 fallback tests (`scratch/`)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -44,12 +44,12 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Draft `spec.md` with metadata, scope table, and six playbook-derived requirements
-- [x] T005 Draft `plan.md` with readiness gates, execution phases, and testing strategy table
-- [x] T006 Draft `tasks.md` with phase breakdown and cross-references
-- [x] T007 Draft `checklist.md` with Level 2 verification items for all six scenarios
-- [x] T008 Add evidence references and verdict outcomes after manual execution
-- [x] T009 [P] Resolve open questions for 035 dominance corpus and 038 expansion threshold
+- [ ] T005 [P] Execute 033 — Query complexity router (R15): simple/moderate/complex passes + flag-disabled fallback (`scratch/`)
+- [ ] T006 [P] Execute 034 — RSF shadow mode (R14/N1): branch inspection + RRF live ranking confirmation (`scratch/`)
+- [ ] T007 [P] Execute 035 — Channel min-representation (R2): dominance query + channel representation check (`scratch/`)
+- [ ] T008 [P] Execute 036 — Confidence-based result truncation (R15-ext): long-tail query + truncation metadata check (`scratch/`)
+- [ ] T009 [P] Execute 037 — Dynamic token budget allocation (FUT-7): per-tier budget queries + flag-disabled fallback (`scratch/`)
+- [ ] T010 [P] Execute 038 — Query expansion (R12): complex-query expansion + simple-query bypass (`scratch/`)
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -57,9 +57,16 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T010 Run the six Phase 012 scenarios following `plan.md`
-- [x] T011 Validate documentation structure and required anchors
-- [x] T012 Update `implementation-summary.md` when execution and verification are complete
+- [ ] T011 Execute 161 — LLM Reformulation: flag ON deep-mode pass + flag OFF pass; restore flag after (`scratch/`)
+- [ ] T012 Execute 162 — HyDE Shadow: flag ON shadow-only pass + flag OFF pass; restore flag after (`scratch/`)
+- [ ] T013 Execute 163 — Query Surrogates: flag ON save+surrogate+retrieve pass + flag OFF pass; clean up disposable test record; restore flag after (`scratch/`)
+- [ ] T014 Execute 173 — Query Decomposition: flag ON decomposition pass (max 3 sub-queries) + flag OFF pass; restore flag after (`scratch/`)
+
+### Verdict and Verification
+
+- [ ] T015 Assign PASS/PARTIAL/FAIL verdict to all 10 scenarios using review protocol (`scratch/`)
+- [ ] T016 Complete all checklist items in `checklist.md` with evidence references (`checklist.md`)
+- [ ] T017 Write `implementation-summary.md` with verdict table and known limitations (`implementation-summary.md`)
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -67,9 +74,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]`
-- [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed
+- [ ] All tasks marked `[x]`
+- [ ] No `[B]` blocked tasks remaining (or blocked status explicitly documented)
+- [ ] All 10 scenarios have a verdict with evidence
 <!-- /ANCHOR:completion -->
 
 ---
@@ -79,6 +86,7 @@ contextType: "general"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+- **Evidence**: See `scratch/`
 <!-- /ANCHOR:cross-refs -->
 
 ---

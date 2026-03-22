@@ -8,7 +8,7 @@
     "retrieval",
     "phase"
   ],
-  "lastUpdated": "2026-03-19T19:08:37.118Z",
+  "lastUpdated": "2026-03-22T00:00:00.000Z",
   "specId": "001",
   "folderSlug": "retrieval",
   "parentChain": [
@@ -16,13 +16,10 @@
     "022-hybrid-rag-fusion",
     "014-manual-testing-per-playbook"
   ],
-  "memorySequence": 2,
-  "memoryNameHistory": [
-    "19-03-26_20-08__manual-testing-per-playbook-retrieval-phase.md",
-    "19-03-26_20-17__manual-testing-per-playbook-retrieval-phase.md"
-  ],
-  "title": "Feature Specification: manual-testing-per-playbook retrieval phase [template:level_1/spec.md]",
-  "status": "Complete",
-  "importance_tier": "high",
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "title": "Feature Specification: manual-testing-per-playbook retrieval phase [template:level_2/spec.md]",
+  "status": "Draft",
+  "importance_tier": "normal",
   "short_description": "Feature Specification: manual-testing-per-playbook retrieval phase"
 }

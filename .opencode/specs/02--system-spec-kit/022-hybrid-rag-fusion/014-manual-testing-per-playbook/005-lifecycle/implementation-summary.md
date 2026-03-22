@@ -1,16 +1,16 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
-description: "Phase 005 lifecycle manual testing — 9 scenarios executed (6 PASS, 3 PARTIAL), documentation packet complete, all tasks and checklist items resolved."
+title: "Implementation Summary: manual-testing-per-playbook lifecycle phase"
+description: "Post-execution summary for Phase 005 lifecycle scenarios EX-015, EX-016, EX-017, EX-018, 097, 100, 114, 124, 134, 144. Status: Not Started."
 trigger_phrases:
   - "lifecycle implementation summary"
-  - "phase 005 summary"
-  - "manual testing lifecycle"
+  - "phase 005 results"
+  - "checkpoint lifecycle results"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Summary
+# Implementation Summary: manual-testing-per-playbook lifecycle phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
@@ -21,8 +21,9 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 005-lifecycle |
-| **Completed** | 2026-03-19 |
-| **Level** | 1 |
+| **Completed** | Not started |
+| **Level** | 2 |
+| **Status** | Not Started |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -30,42 +31,57 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase 005 (lifecycle) manual testing — complete execution of 9 lifecycle scenarios from the manual testing playbook, with evidence capture and review-protocol verdicts.
+Phase 005 lifecycle scenarios have not yet been executed. Fill this section after completing all tasks in tasks.md.
 
-### Execution Results
+### EX-015 — Checkpoint creation (checkpoint_create)
+**Verdict**: (pending)
+**Evidence**: (paste tool output here)
 
-| Test ID | Scenario | Verdict | Evidence Method |
-|---------|----------|---------|-----------------|
-| EX-015 | Checkpoint creation | **PASS** | MCP execution |
-| EX-016 | Checkpoint listing | **PASS** | MCP execution |
-| EX-017 | Checkpoint restore | **PASS** | MCP execution (sandbox) |
-| EX-018 | Checkpoint deletion | **PASS** | MCP execution (sandbox) |
-| 097 | Async ingest lifecycle | **PARTIAL** | MCP execution + code analysis |
-| 114 | Path traversal validation | **PASS** | MCP execution |
-| 124 | Archival lifecycle | **PARTIAL** | Code analysis + unit tests |
-| 134 | Startup recovery | **PARTIAL** | Code analysis + unit tests |
-| 144 | Ingest forecast | **PASS** | MCP execution + code analysis |
+### EX-016 — Checkpoint listing (checkpoint_list)
+**Verdict**: (pending)
+**Evidence**: (paste tool output here)
 
-**Coverage:** 9/9 scenarios (6 PASS, 3 PARTIAL, 0 FAIL)
+### EX-017 — Checkpoint restore (checkpoint_restore)
+**Verdict**: (pending)
+**Evidence**: (paste tool output here)
 
-### PARTIAL Verdicts Rationale
+### EX-018 — Checkpoint deletion (checkpoint_delete)
+**Verdict**: (pending)
+**Evidence**: (paste tool output here)
 
-- **097**: Core state machine works (queued→complete via MCP). Intermediate states (parsing/embedding/indexing), cancelled state, and restart requeue confirmed only via code analysis — MCP round-trip faster than pipeline processing.
-- **124**: Archival is an internal background process (1h scan interval) with no MCP trigger. Code analysis + unit tests confirm archive/unarchive parity, vector deletion, deferred rebuild, and protected tier safeguards.
-- **134**: Startup recovery runs at server boot only. Code analysis + unit tests confirm committed/stale divergence, scan root configuration, and stale file preservation for manual review.
+### 097 — Async ingestion job lifecycle
+**Verdict**: (pending)
+**Evidence**: (paste polling output here)
+
+### 100 — Async shutdown with deadline
+**Verdict**: (pending)
+**Evidence**: (paste shutdown output here)
+
+### 114 — Path traversal validation
+**Verdict**: (pending)
+**Evidence**: (paste rejection response here)
+
+### 124 — Automatic archival lifecycle coverage
+**Verdict**: (pending)
+**Evidence**: (paste archival output here)
+
+### 134 — Startup pending-file recovery
+**Verdict**: (pending)
+**Evidence**: (paste startup recovery output here)
+
+### 144 — Advisory ingest lifecycle forecast
+**Verdict**: (pending)
+**Evidence**: (paste forecast output here)
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| spec.md | Updated | Status changed from Draft to Complete |
-| plan.md | Created | Execution plan (unchanged from documentation phase) |
-| tasks.md | Updated | All 24 tasks marked complete |
-| checklist.md | Updated | All 30 items verified with evidence |
-| implementation-summary.md | Rewritten | Execution results, verdict table, coverage summary |
-| scratch/pre-execution-analysis.md | Created | Open question resolution, parameter values, execution sequence |
-| scratch/verdict-assessment.md | Created | Per-scenario 5-check assessment, task/checklist update instructions |
-| scratch/evidence/*.md (9 files) | Created | Per-scenario execution transcripts with MCP outputs |
+| `spec.md` | Rewritten | Clean-slate phase specification |
+| `plan.md` | Rewritten | Execution plan |
+| `tasks.md` | Rewritten | Task tracker, all pending |
+| `checklist.md` | Rewritten | Verification items, all unchecked |
+| `implementation-summary.md` | Rewritten | Results placeholder |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -73,11 +89,7 @@ Phase 005 (lifecycle) manual testing — complete execution of 9 lifecycle scena
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-1. **Environment setup**: MCP server verified healthy (v1.7.2, 679 memories), sandbox spec folder `test-sandbox-lifecycle` created with 20 seed files, 3 open questions resolved.
-2. **Phase A — Non-destructive tests**: EX-015, EX-016, 097, 114, 144 executed via MCP tools. 134 evidenced via code analysis (startup-only operation).
-3. **Phase B — Destructive tests**: Pre-test checkpoints created for EX-017, EX-018, 124. Checkpoint restore and deletion executed in sandbox with rollback. 124 evidenced via code analysis (background process).
-4. **Verdict assessment**: All 9 scenarios assessed against review protocol 5 acceptance checks.
-5. **Closeout**: Tasks, checklist, implementation-summary, and spec.md updated; memory saved.
+Not yet executed. Update this section after completing Phase 2 (Scenario Execution) and Phase 3 (Verification) in plan.md.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -87,10 +99,9 @@ Phase 005 (lifecycle) manual testing — complete execution of 9 lifecycle scena
 
 | Decision | Why |
 |----------|-----|
-| Code analysis for 097/124/134 | Internal server operations not exposed via MCP tools — code analysis with unit test citations provides equivalent evidence |
-| PARTIAL (not FAIL) for code-analysis scenarios | Core behavior confirmed in implementation; limitation is observability, not functionality |
-| Sandbox at `test-sandbox-lifecycle` | Disposable folder scoped to lifecycle tests, per playbook section 2 guidance |
-| Checkpoint naming `pre-[test-id]-[action]` | Consistent rollback targets per plan.md Phase 3 |
+| Run checkpoint group (EX-015 to EX-018) in strict order | EX-016, EX-017, EX-018 depend on the checkpoint created in EX-015 |
+| Run scenario 100 (shutdown) last | Premature server termination would block all remaining MCP-dependent scenarios |
+| Create a dedicated checkpoint for EX-017 | Avoids restoring a checkpoint that contains unrelated prior state |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -100,12 +111,17 @@ Phase 005 (lifecycle) manual testing — complete execution of 9 lifecycle scena
 
 | Check | Result |
 |-------|--------|
-| Tasks complete | PASS — 24/24 marked [x] |
-| Checklist verified | PASS — 30/30 items (19 P0, 8 P1, 3 P2) |
-| Scenarios executed | PASS — 9/9 with evidence |
-| Verdicts recorded | PASS — 6 PASS, 3 PARTIAL, 0 FAIL |
-| Destructive tests sandbox-only | PASS — all on test-sandbox-lifecycle |
-| Rollback after destructive tests | PASS — checkpoint_restore executed |
+| EX-015 checkpoint_create | Pending |
+| EX-016 checkpoint_list | Pending |
+| EX-017 checkpoint_restore | Pending |
+| EX-018 checkpoint_delete | Pending |
+| 097 async ingestion job | Pending |
+| 100 async shutdown | Pending |
+| 114 path traversal validation | Pending |
+| 124 automatic archival | Pending |
+| 134 startup pending-file recovery | Pending |
+| 144 advisory ingest forecast | Pending |
+| All P0 checklist items | Pending |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -113,9 +129,5 @@ Phase 005 (lifecycle) manual testing — complete execution of 9 lifecycle scena
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **097 intermediate states**: MCP polling cannot observe parsing/embedding/indexing states because pipeline processing completes faster than MCP round-trip (~2-4ms per file).
-2. **124/134 runtime observation**: Archival scans and startup recovery are internal background operations with no MCP trigger — code analysis serves as evidence.
-3. **Restart requeue**: 097 restart-requeue behavior (`resetIncompleteJobsToQueued`) requires server restart, not testable in a live session.
+1. **Not executed** — All results pending. Execute scenarios per plan.md before filling this summary.
 <!-- /ANCHOR:limitations -->
-
----

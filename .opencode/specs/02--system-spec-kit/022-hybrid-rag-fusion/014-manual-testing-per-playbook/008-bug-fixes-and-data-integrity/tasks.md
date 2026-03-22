@@ -1,18 +1,16 @@
 ---
-title: "Tasks: bug-fixes-and-data-integrity manual testing [template:level_1/tasks.md]"
-description: "Task Format: T### [P?] Description (file path)"
+title: "Tasks: Manual Testing — Bug Fixes and Data Integrity"
+description: "Task Format: T### [P?] Description (scenario ID)"
 trigger_phrases:
-  - "bug fixes tasks"
-  - "data integrity tasks"
-  - "phase 008 tasks"
+  - "bug fixes and data integrity tasks"
   - "manual testing tasks"
-  - "tasks core"
-importance_tier: "high"
+  - "scenario execution tasks"
+importance_tier: "normal"
 contextType: "general"
 ---
-# Tasks: bug-fixes-and-data-integrity manual testing
+# Tasks: Manual Testing — Bug Fixes and Data Integrity
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -27,7 +25,7 @@ contextType: "general"
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
-**Task Format**: `T### [P?] Description (file path)`
+**Task Format**: `T### [P?] Description (scenario ID)`
 <!-- /ANCHOR:notation -->
 
 ---
@@ -35,9 +33,9 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Extract bug-fix and data-integrity prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] T002 Confirm feature links for 001, 002, 003, 004, 065, 068, 075, 083, 084, 116, and 117 in `../../feature_catalog/08--bug-fixes-and-data-integrity/`
-- [x] T003 [P] Confirm sandbox or checkpoint availability for destructive scenarios 065, 084, 116, and 117 before execution begins
+- [ ] T001 Confirm MCP server is running — `memory_health` call succeeds
+- [ ] T002 Create pre-test checkpoint — `checkpoint_create({ name: "pre-008-testing" })`
+- [ ] T003 Verify DB has at least 5 existing memories
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -45,10 +43,17 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Draft `spec.md` with metadata, scenario scope table, P0/P1 requirements, and success criteria for 11 playbook scenarios
-- [x] T005 Draft `plan.md` with readiness gates, execution phases, testing strategy table, and rollback guidance
-- [x] T006 Run non-destructive scenarios 001, 002, 003, 004, 068, 075, and 083 following `plan.md` Phase 2
-- [x] T007 [P] Capture command transcript and output evidence for each non-destructive scenario immediately after execution
+- [ ] T004 Execute and record scenario 001 — Graph channel ID fix (G1)
+- [ ] T005 Execute and record scenario 002 — Chunk collapse deduplication (G3)
+- [ ] T006 Execute and record scenario 003 — Co-activation fan-effect divisor (R17)
+- [ ] T007 Execute and record scenario 004 — SHA-256 content-hash deduplication (TM-02)
+- [ ] T008 Execute and record scenario 065 — Database and schema safety
+- [ ] T009 Execute and record scenario 068 — Guards and edge cases
+- [ ] T010 Execute and record scenario 075 — Canonical ID dedup hardening
+- [ ] T011 Execute and record scenario 083 — Math.max/min stack overflow elimination
+- [ ] T012 Execute and record scenario 084 — Session-manager transaction gap fixes
+- [ ] T013 Execute and record scenario 116 — Chunking safe swap atomicity (P0-6)
+- [ ] T014 Execute and record scenario 117 — SQLite datetime session cleanup (P0-7)
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -56,11 +61,9 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T008 Run destructive scenarios 065, 084, 116, and 117 in sandbox or checkpointed environments following `plan.md` Phase 3
-- [x] T009 [P] Capture command transcript, output, and rollback evidence for each destructive scenario immediately after execution
-- [x] T010 Apply `../../manual_testing_playbook/review_protocol.md` PASS/PARTIAL/FAIL rules to all 11 scenarios and record verdicts
-- [x] T011 Validate documentation structure and required anchors across `spec.md`, `plan.md`, `tasks.md`, and `checklist.md`
-- [x] T012 Update `implementation-summary.md` when execution and verification are complete
+- [ ] T015 Confirm all 11 P0 checklist items checked with evidence
+- [ ] T016 Fill in implementation-summary.md with overall results and date
+- [ ] T017 Restore from checkpoint if DB was modified destructively
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -68,9 +71,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
+- [ ] All tasks T001–T017 marked `[x]`
 - [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification passed
+- [ ] All 11 scenarios have PASS or tracked FAIL in checklist.md
 <!-- /ANCHOR:completion -->
 
 ---
@@ -80,6 +83,6 @@ contextType: "general"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+- **Playbook source**: `.opencode/skill/system-spec-kit/manual_testing_playbook/08--bug-fixes-and-data-integrity/`
 <!-- /ANCHOR:cross-refs -->
-
----

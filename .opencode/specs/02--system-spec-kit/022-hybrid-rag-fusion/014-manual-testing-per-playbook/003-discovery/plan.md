@@ -1,12 +1,11 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook discovery phase [template:level_1/plan.md]"
-description: "Phase 003 defines the execution plan for three discovery manual tests in the Spec Kit Memory system. It sequences preconditions, read-only execution, evidence capture, and review-protocol verdicting for discovery-focused scenarios."
+title: "Implementation Plan: manual-testing-per-playbook discovery phase"
+description: "Execution plan for Phase 003 discovery scenarios EX-011, EX-012, EX-013. Read playbook context, set up environment, execute each scenario in order, record evidence and verdicts."
 trigger_phrases:
-  - "discovery execution plan"
-  - "phase 003 manual tests"
-  - "memory discovery verdict plan"
-  - "hybrid rag discovery review"
-importance_tier: "high"
+  - "discovery phase execution plan"
+  - "phase 003 plan"
+  - "EX-011 EX-012 EX-013 execution"
+importance_tier: "normal"
 contextType: "general"
 ---
 # Implementation Plan: manual-testing-per-playbook discovery phase
@@ -23,13 +22,13 @@ contextType: "general"
 
 | Aspect | Value |
 |--------|-------|
-| **Language** | Markdown |
-| **Framework** | spec-kit L1 |
-| **Storage** | Filesystem spec folder + linked evidence artifacts |
-| **Testing** | manual + MCP |
+| **Tool Layer** | MCP — Spec Kit Memory |
+| **Scenarios** | EX-011 (memory_list), EX-012 (memory_stats), EX-013 (memory_health) |
+| **Execution mode** | Manual, sequential |
+| **Evidence capture** | Inline tool output or screenshot per scenario |
 
 ### Overview
-This plan converts the discovery scenarios in the manual testing playbook into an ordered execution workflow for Phase 003. The phase covers folder inventory first via `memory_list`, then system-level dashboard statistics via `memory_stats`, and finally health diagnostics and alias integrity via `memory_health`. All three scenarios are read-only and require no sandbox mutation or destructive setup.
+Execute the three Phase 003 discovery scenarios against a live MCP runtime with an indexed memory corpus. Each scenario is run in isolation in the prescribed order. Verdicts follow the review protocol defined in the canonical playbook.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -38,16 +37,17 @@ This plan converts the discovery scenarios in the manual testing playbook into a
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Exact prompts, command sequences, and pass criteria were extracted from [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md).
-- [x] Feature mappings for all 3 discovery tests were confirmed against the cross-reference index and discovery feature files.
-- [x] Verdict rules from [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) were loaded for PASS/PARTIAL/FAIL handling.
-- [x] No destructive preconditions were identified for EX-011, EX-012, or EX-013.
+- [ ] MCP server is running and reachable
+- [ ] Memory corpus has at least one indexed memory (for EX-011/EX-012 to produce output)
+- [ ] Playbook context file read: `../scratch/context-playbook.md` §03--discovery
+- [ ] Feature catalog context file read: `../scratch/context-feature-catalog.md` §03--discovery
 
 ### Definition of Done
-- [ ] All 3 discovery scenarios have execution evidence tied to the exact documented prompt and command sequence.
-- [ ] Every scenario has a verdict and rationale using the review protocol acceptance rules.
-- [ ] Coverage is reported as 3/3 scenarios for Phase 003 with no skipped test IDs.
-- [ ] No unintended mutations were introduced during discovery-phase execution.
+- [ ] EX-011 executed and verdict recorded
+- [ ] EX-012 executed and verdict recorded
+- [ ] EX-013 (full mode + divergent_aliases mode) executed and verdict recorded
+- [ ] All P0 checklist items checked with evidence
+- [ ] implementation-summary.md filled with results
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -56,16 +56,16 @@ This plan converts the discovery scenarios in the manual testing playbook into a
 ## 3. ARCHITECTURE
 
 ### Pattern
-Manual discovery test execution pipeline with review-gated evidence collection.
+Sequential manual execution — each scenario is an isolated MCP tool call sequence
 
 ### Key Components
-- **Preconditions pack**: Playbook, review protocol, feature catalog links, and MCP runtime access to an indexed memory corpus.
-- **Execution layer**: Manual operator actions plus MCP calls to `memory_list`, `memory_stats`, and `memory_health`.
-- **Evidence bundle**: Tool outputs, pagination totals, dashboard field presence, and health/alias diagnostics captured per scenario.
-- **Verdict layer**: Review protocol checks that classify each scenario as PASS, PARTIAL, or FAIL.
+- **MCP runtime**: Hosts memory_list, memory_stats, memory_health tools
+- **Indexed corpus**: The memory database against which scenarios run
+- **Playbook context**: `../scratch/context-playbook.md` — source of truth for prompts and pass criteria
+- **This spec folder**: Records tasks, checklist, and results
 
 ### Data Flow
-`preconditions -> execute exact prompt/commands -> capture evidence -> apply verdict rules`
+Tester reads playbook → Issues MCP tool call(s) per scenario → Captures tool output → Compares against pass criteria → Records PASS / PARTIAL / FAIL verdict
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -73,21 +73,37 @@ Manual discovery test execution pipeline with review-gated evidence collection.
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Preconditions
-- [ ] Verify source documents are open: playbook, review protocol, and linked discovery feature files.
-- [ ] Confirm MCP runtime access for `memory_list`, `memory_stats`, and `memory_health`.
-- [ ] Identify a representative spec folder path to use as the `specFolder` parameter for EX-011 pagination.
-- [ ] Confirm the indexed corpus is stable and no concurrent mutations are in flight before discovery runs begin.
+### Phase 1: Setup
+- [ ] Read `../scratch/context-playbook.md` section 03--discovery for all three scenario definitions
+- [ ] Read `../scratch/context-feature-catalog.md` section 03--discovery for feature background
+- [ ] Verify MCP server is running and accepting tool calls
+- [ ] Confirm at least one memory is indexed (run a quick `memory_list` sanity check)
 
-### Phase 2: Non-Destructive Tests
-- [ ] Run EX-011 to browse a target spec folder with `memory_list(specFolder, limit, offset)` and verify paginated inventory including `total`, `count`, `limit`, `offset`, and resolved `sortBy` are present.
-- [ ] Run EX-012 to capture the system dashboard with `memory_stats(folderRanking:composite, includeScores:true)` and verify counts, tiers, graph channel metrics, and folder ranking fields are populated.
-- [ ] Run EX-013 in two passes: first `memory_health(reportMode:full)` to confirm system readiness diagnostics, then `memory_health(reportMode:divergent_aliases)` to confirm alias-conflict triage payload returns without error.
+### Phase 2: Scenario Execution
 
-### Phase 3: Evidence Collection and Verdict
-- [ ] For each scenario, capture prompt, exact command sequence, raw output, expected signals, and reviewer notes.
-- [ ] Apply the review protocol acceptance checks: preconditions satisfied, prompt/commands executed as written, expected signals present, evidence readable, outcome rationale explicit.
-- [ ] Assign PASS, PARTIAL, or FAIL per scenario and summarize phase coverage as 3/3 scenarios with linked evidence references.
+#### EX-011 — Memory browser (memory_list)
+- [ ] Invoke `memory_list` with `specFolder`, `limit`, and `offset` parameters as specified in the playbook
+- [ ] Capture full tool output
+- [ ] Verify paginated list is returned with memory items and total count
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+#### EX-012 — System statistics (memory_stats)
+- [ ] Invoke `memory_stats` with `folderRanking: "composite"` and `includeScores: true`
+- [ ] Capture full tool output
+- [ ] Verify dashboard fields are populated: counts, tiers, folder ranking with scores
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+#### EX-013 — Health diagnostics (memory_health)
+- [ ] Invoke `memory_health(reportMode: "full")` — capture output
+- [ ] Invoke `memory_health(reportMode: "divergent_aliases")` — capture output
+- [ ] Do NOT pass `autoRepair: true` or `confirmed: true`
+- [ ] Verify both modes return a valid response with status and diagnostic data
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+### Phase 3: Verification
+- [ ] Transfer verdicts and evidence to implementation-summary.md
+- [ ] Check all P0 items in checklist.md
+- [ ] Check applicable P1 items (evidence captured, verdicts recorded)
 <!-- /ANCHOR:phases -->
 
 ---
@@ -95,11 +111,11 @@ Manual discovery test execution pipeline with review-gated evidence collection.
 <!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
-| Test ID | Scenario Name | Exact Prompt | Execution Type (manual/MCP) |
-|---------|---------------|--------------|-----------------------------|
-| EX-011 | Folder inventory audit | `List memories in target spec folder` | MCP |
-| EX-012 | System baseline snapshot | `Return stats with composite ranking` | MCP |
-| EX-013 | Index/FTS integrity check | `Run full health and divergent_aliases` | MCP |
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Manual | EX-011: memory_list pagination and counts | MCP tool call |
+| Manual | EX-012: memory_stats composite ranking | MCP tool call |
+| Manual | EX-013: memory_health full + divergent_aliases | MCP tool call (two calls) |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -109,11 +125,9 @@ Manual discovery test execution pipeline with review-gated evidence collection.
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Internal | Green | Exact prompts, commands, evidence targets, and pass criteria cannot be verified |
-| [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Internal | Green | Verdicts and coverage rules cannot be applied consistently |
-| [`../../feature_catalog/03--discovery/`](../../feature_catalog/03--discovery/) | Internal | Green | Test-to-feature context and review triage lose their canonical reference |
-| MCP runtime for `memory_list`, `memory_stats`, and `memory_health` | Internal | Yellow | Discovery scenarios cannot be executed or compared |
-| Indexed memory corpus (read-only) | Internal | Yellow | Pagination, dashboard, and health diagnostics cannot produce meaningful evidence |
+| MCP server runtime | Internal | Verify before start | Cannot execute any scenario |
+| Indexed memory corpus | Internal | Verify before start | EX-011/EX-012 may produce empty output |
+| `../scratch/context-playbook.md` | Internal | Available | Cannot confirm pass criteria without it |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -121,8 +135,55 @@ Manual discovery test execution pipeline with review-gated evidence collection.
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: An accidental `autoRepair: true` with `confirmed: true` call during EX-013 alters alias or index state, or a corpus mutation is detected mid-run.
-- **Procedure**: Halt remaining discovery runs immediately. Document the mutation in triage notes. Restore affected index state via a prior checkpoint if one exists. Re-verify corpus baseline before rerunning any impacted scenario.
+- **Trigger**: EX-013 health check reveals index corruption or FTS mismatch
+- **Procedure**: Record the exact diagnostic output as evidence; do not trigger autoRepair; escalate before proceeding
 <!-- /ANCHOR:rollback -->
 
 ---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```
+Phase 1 (Setup) ──► Phase 2 (Execution) ──► Phase 3 (Verification)
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | MCP server running | Execution |
+| Execution | Setup complete | Verification |
+| Verification | All 3 scenarios executed | Phase closure |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Low | 5-10 minutes |
+| Scenario Execution | Low | 15-20 minutes |
+| Verification | Low | 5-10 minutes |
+| **Total** | | **25-40 minutes** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-execution Checklist
+- [ ] No autoRepair flags will be passed during discovery execution
+- [ ] Corpus state noted before starting (rough count of indexed memories)
+
+### Rollback Procedure
+1. If a scenario produces unexpected mutations, stop immediately
+2. Check corpus state with `memory_list` to assess change
+3. If corruption detected, escalate — do not attempt self-repair in this phase
+4. Record all observed state in implementation-summary.md
+
+### Data Reversal
+- **Has data side effects?** No — all three scenarios are read-only
+- **Reversal procedure**: N/A
+<!-- /ANCHOR:enhanced-rollback -->

@@ -1,12 +1,12 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook discovery phase [template:level_1/spec.md]"
-description: "Phase 003 documents the discovery manual test packet for the Spec Kit Memory system. It breaks three discovery scenarios out of the central playbook so testers can execute prompts, command sequences, evidence capture, and verdict criteria from one bounded folder."
+title: "Feature Specification: manual-testing-per-playbook discovery phase"
+description: "Phase 003 documents the discovery manual test packet. Execute scenarios EX-011, EX-012, and EX-013 against the Spec Kit Memory system to verify memory_list, memory_stats, and memory_health."
 trigger_phrases:
   - "discovery manual testing"
   - "phase 003 discovery"
-  - "spec kit memory discovery tests"
-  - "hybrid rag fusion discovery playbook"
-importance_tier: "high"
+  - "EX-011 EX-012 EX-013"
+  - "memory_list memory_stats memory_health test"
+importance_tier: "normal"
 contextType: "general"
 ---
 # Feature Specification: manual-testing-per-playbook discovery phase
@@ -23,10 +23,12 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Complete |
-| **Created** | 2026-03-16 |
+| **Status** | Not Started |
+| **Created** | 2026-03-22 |
 | **Branch** | `main` |
-| **Parent** | [`../spec.md`](../spec.md) |
+| **Parent Spec** | [../spec.md](../spec.md) |
+| **Predecessor** | [002-mutation](../002-mutation/spec.md) |
+| **Successor** | [004-maintenance](../004-maintenance/spec.md) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -35,10 +37,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual discovery scenarios for the Spec Kit Memory system currently live inside the central playbook and need a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated discovery packet, Phase 003 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results.
+Phase 003 discovery scenarios must be executed from scratch. All prior results are invalidated. The three discovery scenarios (EX-011, EX-012, EX-013) require fresh manual execution to verify that memory_list, memory_stats, and memory_health behave as specified by the canonical playbook.
 
 ### Purpose
-Provide a single discovery-focused specification that maps all three Phase 003 test IDs to their feature context and acceptance criteria so manual execution and review remain consistent with the canonical playbook.
+Execute all three Phase 003 discovery scenarios, record verdicts and evidence, and mark this phase complete only when all P0 checklist items pass.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -48,25 +50,26 @@ Provide a single discovery-focused specification that maps all three Phase 003 t
 
 ### In Scope
 
-| Test ID | Scenario Name | Feature Catalog | Exact Prompt | Exact Command Sequence |
-|---------|---------------|-----------------|--------------|------------------------|
-| EX-011 | Folder inventory audit | [`../../feature_catalog/03--discovery/01-memory-browser-memorylist.md`](../../feature_catalog/03--discovery/01-memory-browser-memorylist.md) | `List memories in target spec folder` | `memory_list(specFolder,limit,offset)` |
-| EX-012 | System baseline snapshot | [`../../feature_catalog/03--discovery/02-system-statistics-memorystats.md`](../../feature_catalog/03--discovery/02-system-statistics-memorystats.md) | `Return stats with composite ranking` | `memory_stats(folderRanking:composite,includeScores:true)` |
-| EX-013 | Index/FTS integrity check | [`../../feature_catalog/03--discovery/03-health-diagnostics-memoryhealth.md`](../../feature_catalog/03--discovery/03-health-diagnostics-memoryhealth.md) | `Run full health and divergent_aliases` | `memory_health(reportMode:full)` -> `memory_health(reportMode:divergent_aliases)` |
+| Test ID | Scenario Name | Playbook File |
+|---------|---------------|---------------|
+| EX-011 | Memory browser (memory_list) | `../../manual_testing_playbook/03--discovery/011-memory-browser-memory-list.md` |
+| EX-012 | System statistics (memory_stats) | `../../manual_testing_playbook/03--discovery/012-system-statistics-memory-stats.md` |
+| EX-013 | Health diagnostics (memory_health) | `../../manual_testing_playbook/03--discovery/013-health-diagnostics-memory-health.md` |
 
 ### Out of Scope
-- Executing the three discovery scenarios and assigning final run verdicts.
-- Modifying the playbook or feature catalog content linked from this packet.
-- Documenting non-discovery phases from `001-retrieval/` through `002-mutation/` and `004-maintenance/` onward.
+- Scenarios from other phases (retrieval, mutation, maintenance, lifecycle, etc.)
+- Modifying the playbook or feature catalog source files
+- Automated test harnesses — this phase is manual execution only
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `spec.md` | Create | Phase 003 discovery requirements, test inventory, and acceptance criteria |
-| `plan.md` | Create | Phase 003 discovery execution plan and review workflow |
-| `tasks.md` | Create | Phase 003 task tracker for setup, execution, and verification work |
-| `checklist.md` | Create | Phase 003 Level 2 verification checklist |
+| `spec.md` | Rewrite | Phase 003 clean-slate specification |
+| `plan.md` | Rewrite | Execution plan for Phase 003 |
+| `tasks.md` | Rewrite | One task per scenario, all pending |
+| `checklist.md` | Rewrite | P0/P1 items, all unchecked |
+| `implementation-summary.md` | Rewrite | Blank — to be filled after execution |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -78,11 +81,16 @@ Provide a single discovery-focused specification that maps all three Phase 003 t
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Document EX-011 folder inventory audit with its exact playbook prompt, command sequence, evidence target, and feature link. | PASS if browsable inventory returned with paginated list and totals |
-| REQ-002 | Document EX-012 system baseline snapshot with its exact stats prompt, composite-ranking command sequence, evidence target, and feature link. | PASS if dashboard fields populated including counts, tiers, and folder ranking |
-| REQ-003 | Document EX-013 index/FTS integrity check with its exact health prompt, full-then-divergent-aliases command sequence, evidence target, and feature link. | PASS if report completes with healthy/degraded status and actionable diagnostics |
+| REQ-001 | Execute EX-011: invoke `memory_list` with `specFolder`, `limit`, and `offset` parameters | PASS if paginated list returns with memory items and total count |
+| REQ-002 | Execute EX-012: invoke `memory_stats` with `folderRanking: "composite"` and `includeScores: true` | PASS if dashboard fields populate including counts, tiers, and folder ranking |
+| REQ-003 | Execute EX-013: invoke `memory_health(reportMode: "full")` then `memory_health(reportMode: "divergent_aliases")` | PASS if both report modes complete with status and diagnostic output |
 
-No P1 items are defined for this phase; all three discovery scenarios are mandatory for coverage.
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | Capture evidence for each scenario (tool output or screenshot) | Evidence file or inline output recorded in implementation-summary.md |
+| REQ-005 | Mark final verdict (PASS / PARTIAL / FAIL) per scenario following the review protocol | Verdict recorded against EX-011, EX-012, EX-013 in implementation-summary.md |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -90,10 +98,10 @@ No P1 items are defined for this phase; all three discovery scenarios are mandat
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 3 discovery tests are documented with exact prompts, exact command sequences, linked feature catalog entries, and playbook-derived pass criteria.
-- **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for EX-011, EX-012, and EX-013 will be collected.
-- **SC-003**: Reviewers can audit every Phase 003 scenario using this folder plus the linked playbook (`../../manual_testing_playbook/manual_testing_playbook.md`) and review protocol (`../../manual_testing_playbook/review_protocol.md`).
-- **SC-004**: The phase packet contains no placeholder or template text and is ready for manual execution planning.
+- **SC-001**: EX-011 returns a paginated memory list with valid item count
+- **SC-002**: EX-012 returns a stats dashboard with composite folder ranking and scores
+- **SC-003**: EX-013 completes both report modes without error and returns a health status
+- **SC-004**: All three verdicts are recorded and all P0 checklist items are checked
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -103,20 +111,67 @@ No P1 items are defined for this phase; all three discovery scenarios are mandat
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth and update this phase packet only from that document |
-| Dependency | [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review and do not invent alternate verdict logic |
-| Dependency | [`../../feature_catalog/03--discovery/`](../../feature_catalog/03--discovery/) | Supplies feature context for each discovery scenario | Keep every test row linked to its mapped discovery feature file |
-| Dependency | MCP runtime plus indexed memory corpus | Required to execute `memory_list`, `memory_stats`, and `memory_health` scenarios safely | Run tests against a stable indexed corpus; avoid corpus mutations during discovery-phase execution |
-| Risk | EX-013 `autoRepair: true` can modify index state if triggered accidentally | Medium | Do not pass `autoRepair: true` or `confirmed: true` during read-only verification runs; rely on the read-only `full` and `divergent_aliases` modes only |
+| Dependency | Canonical playbook: `../scratch/context-playbook.md` §03--discovery | Source of truth for exact prompts and pass criteria | Treat as read-only; do not invent alternate criteria |
+| Dependency | Feature catalog: `../scratch/context-feature-catalog.md` §03--discovery | Feature context for each scenario | Read before execution for background |
+| Dependency | MCP runtime with indexed memory corpus | Required for all three tool invocations | Verify MCP server is running before starting |
+| Risk | EX-013 `autoRepair: true` can mutate index state | Medium | Never pass `autoRepair: true` or `confirmed: true` during verification runs |
 <!-- /ANCHOR:risks -->
 
 ---
 
 <!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS
+## 10. OPEN QUESTIONS
 
-- Q1 resolved: Target `specFolder` is `02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic` because it has `86` memories and representative pagination. Note: bare `022-hybrid-rag-fusion` returns `0` results because `specFolder` filtering is exact-match, not prefix-match.
-- Q2 resolved: Clean-corpus output is sufficient. EX-013b returned a structurally complete triage payload with `433` rows scanned and `0` divergent groups, so `groups: []` is valid evidence that the tool functions correctly.
+- None at start. Record any blockers discovered during execution here.
 <!-- /ANCHOR:questions -->
 
 ---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: Each tool call must complete within the MCP server's default timeout
+- **NFR-P02**: No scenario requires more than one retry to obtain a valid response
+
+### Security
+- **NFR-S01**: Run against a non-production indexed corpus; do not expose live user data
+- **NFR-S02**: Do not trigger autoRepair operations during read-only discovery execution
+
+### Reliability
+- **NFR-R01**: All three scenarios must complete to claim phase done
+- **NFR-R02**: Partial execution (only 1 or 2 scenarios) is not acceptable for phase closure
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Data Boundaries
+- Empty corpus: if `memory_list` returns 0 items, record as PARTIAL and note corpus state
+- Zero divergent aliases: `groups: []` from EX-013 divergent_aliases mode is a valid PASS
+- Stats with no folders: if `memory_stats` returns empty folder list, record as PARTIAL
+
+### Error Scenarios
+- MCP server not running: stop, start server, then retry
+- Tool call timeout: retry once; if still failing, record as FAIL with error text
+- `memory_health` FTS mismatch detected: record PARTIAL with exact error; do not repair
+
+### State Transitions
+- EX-013 full mode then divergent_aliases mode must both run in sequence before verdict
+- Do not run scenarios in parallel; execute EX-011, EX-012, EX-013 in order
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 5/25 | 3 read-only tool calls, no file changes |
+| Risk | 5/25 | autoRepair risk mitigated by protocol |
+| Research | 3/20 | Playbook provides all needed context |
+| **Total** | **13/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->

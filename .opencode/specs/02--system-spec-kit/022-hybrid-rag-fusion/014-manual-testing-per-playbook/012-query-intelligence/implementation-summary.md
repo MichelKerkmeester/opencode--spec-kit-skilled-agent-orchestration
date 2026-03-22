@@ -1,16 +1,16 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
-description: "Phase 012 query-intelligence manual testing documentation packet — spec.md, plan.md, tasks.md, and checklist.md created and aligned to template standards."
+title: "Implementation Summary: query-intelligence manual testing [template:level_2/implementation-summary.md]"
+description: "Phase 012 query-intelligence manual testing — execution not yet started. This summary will be completed after all 10 scenarios are executed and verdicted."
 trigger_phrases:
-  - "query-intelligence implementation summary"
-  - "phase 012 summary"
-  - "manual testing query-intelligence"
+  - "phase 012 implementation summary"
+  - "query intelligence execution summary"
+  - "query intelligence test results"
 importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Summary
+# Implementation Summary: query-intelligence manual testing
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
@@ -21,8 +21,9 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 012-query-intelligence |
-| **Completed** | 2026-03-21 |
-| **Level** | 1 |
+| **Completed** | Not Started |
+| **Level** | 2 |
+| **Execution Status** | Not Started — 0/10 scenarios executed |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -30,32 +31,16 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase 012 (query-intelligence) manual testing documentation packet — all 6 scenarios (033–038) executed via MCP `memory_search` on 2026-03-21 with `includeTrace: true`. Evidence captured in `scratch/execution-evidence.md`. Verdicts: 034 PASS, 033/035/036/037/038 PARTIAL. Coverage: 6/6 scenarios verdicted.
-
-### Documentation Packet
-
-Four template-aligned files provide structured per-phase test documentation. MCP execution on 2026-03-21 produced 6 verdicts across 6 scenarios using exact playbook prompts and `memory_search` with full pipeline traces.
-
-### Execution Verdict Table
-
-| Test ID | Scenario | Verdict | Key Evidence |
-|---------|----------|---------|-------------|
-| 033 | Query complexity router (R15) | PARTIAL | 2 channels active; queryComplexity null (tier routing not traceable via MCP alone) |
-| 034 | RSF shadow mode (R14/N1) | PASS | RRF confirmed live; adaptiveMode: shadow; all scoreDelta: 0; RSF evaluation-only |
-| 035 | Channel min-representation (R2) | PARTIAL | 3 channels (r12+fts+bm25) for complex query; qualityFiltered: 0; per-channel top-k counts not emitted |
-| 036 | Confidence-based truncation (R15-ext) | PARTIAL | 10 results returned (min satisfied); no cliff metadata in trace; R15-ext not yet emitting |
-| 037 | Dynamic token budget (FUT-7) | PARTIAL | No token budget field in trace; FUT-7 likely future/not yet emitting |
-| 038 | Query expansion (R12) | PARTIAL | r12EmbeddingExpansion: true; 8 terms generated; dedup active; simple-query bypass not tested |
+Not started. This section will be completed after all 10 Phase 012 query-intelligence scenarios have been executed and verdicted.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| spec.md | Created | Phase requirements, test inventory, feature catalog links, and acceptance criteria |
-| plan.md | Created | Execution plan with preconditions, evidence capture, and verdict pipeline |
-| tasks.md | Updated | Task tracker — all tasks marked complete after execution on 2026-03-21 |
-| checklist.md | Updated | QA verification checklist — all P0/P1/P2 items verified with evidence |
-| scratch/execution-evidence.md | Created | Full MCP trace outputs for all 6 scenarios with per-scenario verdicts and pipeline findings |
+| `spec.md` | Rewritten | Phase 012 requirements, 10-scenario test inventory, and acceptance criteria (clean slate) |
+| `plan.md` | Rewritten | Execution plan with core and feature-flag phases, plus 163 index-write handling (clean slate) |
+| `tasks.md` | Rewritten | Task tracker — one task per scenario, all pending (clean slate) |
+| `checklist.md` | Rewritten | Level 2 verification checklist — all items unchecked (clean slate) |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -63,7 +48,7 @@ Four template-aligned files provide structured per-phase test documentation. MCP
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Documentation generated via parallel agent delegation from the parent 014-manual-testing-per-playbook spec, then structurally aligned to system-spec-kit Level 1 templates with Level 2 checklist validation.
+Not started. Execution approach: MCP `memory_search` with `includeTrace: true` for core scenarios; flag ON/OFF passes for feature-flag scenarios; MCP `memory_save` + disposable record for 163 surrogate test.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -73,8 +58,9 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 
 | Decision | Why |
 |----------|-----|
-| Level 1 spec with checklist | Documentation-only packet needs structured tracking but not full Level 2 architecture sections |
-| Template alignment post-generation | Agents produced 4 structural variants for checklist.md; batch alignment ensured 100% template compliance |
+| Clean slate rewrite | Prior documentation reflected a completed execution run; all files reset to Not Started for fresh manual test execution |
+| Level 2 upgrade | 10 scenarios with feature-flag and index-write paths warrant a Level 2 checklist |
+| Separate core and feature-flag phases | Core scenarios (033-038) are all non-destructive; feature-flag scenarios (161, 162, 163, 173) require distinct tooling and isolation |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -84,11 +70,10 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 
 | Check | Result |
 |-------|--------|
-| spec.md section 2 header | PASS — `## 2. PROBLEM & PURPOSE` |
-| spec.md Parent link format | PASS — backtick-wrapped with link |
-| checklist.md anchor count | PASS — exactly 8 anchors |
-| checklist.md no overview section | PASS — no ANCHOR:overview |
-| checklist.md no standalone P0/P1 headers | PASS — priority is per-item only |
+| All 10 scenario tasks pending | Not Started |
+| All checklist items unchecked | Not Started |
+| Feature-flag procedures documented | Ready in plan.md |
+| 163 index-write and cleanup documented | Ready in plan.md |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -96,9 +81,10 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **5 PARTIAL verdicts** — Scenarios 033, 035, 036, 037, 038 are PARTIAL. Core pipeline behavior is confirmed but per-feature trace metadata is incomplete: R15-ext confidence cliff and FUT-7 token budget fields are not yet emitted in the MCP trace; queryComplexity-based tier channel scaling is not fully traceable; simple-query bypass for R12 was not tested.
-2. **Flag toggle tests not executed** — Runtime feature flag disablement for 033 (SPECKIT_COMPLEXITY_ROUTER) and 037 (SPECKIT_EMBEDDING_EXPANSION) fallback paths requires non-MCP runtime access and was not performed in this execution pass.
-3. **Simple-query skip for 038 not verified** — Confirming that simple queries bypass R12 expansion requires a second execution pass with a simple query.
+1. **Execution not yet started.** All verdicts pending.
+2. **036 and 037 may yield PARTIAL** — R15-ext confidence cliff metadata and FUT-7 token budget fields were not observed in prior MCP traces; these features may not yet emit trace metadata.
+3. **033 flag-toggle** requires non-MCP runtime access to disable `SPECKIT_COMPLEXITY_ROUTER`; flag test may be partially observable only.
+4. **161 depends on external LLM service**; network or rate-limit issues may block this scenario.
 <!-- /ANCHOR:limitations -->
 
 ---

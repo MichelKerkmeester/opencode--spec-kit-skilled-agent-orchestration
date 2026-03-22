@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook governance phase [template:level_1/spec.md]"
+title: "Feature Specification: manual-testing-per-playbook governance phase [template:level_2/spec.md]"
 description: "Phase 017 documents the governance manual test packet for the Spec Kit Memory system. It isolates five governance scenarios from the central playbook so testers can execute prompts, command sequences, evidence capture, and verdict criteria from one bounded folder."
 trigger_phrases:
   - "governance manual testing"
@@ -11,7 +11,7 @@ contextType: "general"
 ---
 # Feature Specification: manual-testing-per-playbook governance phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
@@ -21,14 +21,14 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Level** | 1 |
+| **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
-| **Created** | 2026-03-16 |
+| **Status** | Not Started |
+| **Created** | 2026-03-22 |
 | **Branch** | `main` |
-| **Parent** | [`../spec.md`](../spec.md) |
-| **Predecessor Phase** | `016-tooling-and-scripts` |
-| **Successor Phase** | `018-ux-hooks` |
+| **Parent Spec** | [../spec.md](../spec.md) |
+| **Predecessor** | [016-tooling-and-scripts](../016-tooling-and-scripts/spec.md) |
+| **Successor** | [018-ux-hooks](../018-ux-hooks/spec.md) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -37,7 +37,7 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual governance scenarios for the Spec Kit Memory system currently live inside the central playbook and need a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated governance packet, Phase 017 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results.
+Manual governance scenarios for the Spec Kit Memory system live inside the central playbook and require a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated governance packet, Phase 017 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results.
 
 ### Purpose
 Provide a single governance-focused specification that maps all five Phase 017 test IDs to their feature context and acceptance criteria so manual execution and review remain consistent with the canonical playbook.
@@ -67,10 +67,12 @@ Provide a single governance-focused specification that maps all five Phase 017 t
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `spec.md` | Create | Phase 017 governance requirements, test inventory, and acceptance criteria |
-| `plan.md` | Create | Phase 017 governance execution plan and review workflow |
-| `tasks.md` | Create | Phase 017 task tracker for setup, execution, and verification work |
-| `checklist.md` | Create | Phase 017 verification checklist for pre-implementation, testing, and documentation |
+| `spec.md` | Rewrite | Phase 017 governance requirements, test inventory, and acceptance criteria |
+| `plan.md` | Rewrite | Phase 017 governance execution plan and review workflow |
+| `tasks.md` | Rewrite | Phase 017 task tracker for setup, execution, and verification work |
+| `checklist.md` | Rewrite | Phase 017 verification checklist for pre-execution and evidence quality gates |
+| `implementation-summary.md` | Rewrite | Blank template pending execution |
+| `description.json` | Rewrite | Reset to Draft, Not Started |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -82,11 +84,11 @@ Provide a single governance-focused specification that maps all five Phase 017 t
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Document 063 feature flag governance with its exact playbook prompt, command sequence, evidence target, and feature link. | PASS if all flags enumerated with governance metadata and compliance gaps identified |
-| REQ-002 | Document 064 feature flag sunset audit with its exact prompt, disposition-comparison command sequence, evidence target, and feature link. | PASS if all sunset dispositions match runtime behavior and deprecated flags have no side effects |
-| REQ-003 | Document 122 governed ingest and scope isolation with its exact prompt, provenance/scope command sequence, evidence target, and feature link. | PASS if missing provenance is rejected, valid governed save succeeds, cross-scope retrieval returns no hit, and audit rows exist |
-| REQ-004 | Document 123 shared-space deny-by-default rollout with its exact prompt, membership/kill-switch command sequence, evidence target, and feature link. | PASS if non-member is denied, member is allowed, and kill switch blocks access again |
-| REQ-005 | Document 148 shared-memory disabled-by-default and first-run setup with its exact prompt, enablement command sequence, evidence target, and feature link. | PASS if default is off, enable persists, idempotent, README created, restart persistence works, env override works, and command gate triggers |
+| REQ-001 | Execute 063 feature flag governance: audit all SPECKIT_ flag conformance against governance targets. | PASS if all flags are enumerated with governance metadata and compliance gaps are identified |
+| REQ-002 | Execute 064 feature flag sunset audit: compare documented dispositions vs. code runtime state. | PASS if all sunset dispositions match runtime behavior and deprecated flags have no side effects |
+| REQ-003 | Execute 122 governed ingest and scope isolation: validate provenance enforcement and cross-scope retrieval filtering. | PASS if missing provenance is rejected, valid governed save succeeds, cross-scope retrieval returns no hit, and audit rows exist |
+| REQ-004 | Execute 123 shared-space deny-by-default rollout: validate rollout controls, membership, and kill switch. | PASS if non-member is denied, member is allowed, and kill switch blocks access again |
+| REQ-005 | Execute 148 shared-memory disabled-by-default and first-run setup: validate enablement lifecycle end-to-end. | PASS if default is off, enable persists, idempotent, README created, restart persistence works, env override works, and command gate triggers |
 
 No P1 items are defined for this phase; all five governance scenarios are mandatory for coverage.
 <!-- /ANCHOR:requirements -->
@@ -96,10 +98,10 @@ No P1 items are defined for this phase; all five governance scenarios are mandat
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 5 governance tests are documented with exact prompts, exact command sequences, linked feature catalog entries, and playbook-derived pass criteria.
-- **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for 063, 064, 122, 123, and 148 will be collected.
-- **SC-003**: Reviewers can audit every Phase 017 scenario using this folder plus the linked playbook (`../../manual_testing_playbook/manual_testing_playbook.md`) and review protocol (`../../manual_testing_playbook/review_protocol.md`).
-- **SC-004**: The phase packet contains no placeholder or template text and is ready for manual execution planning.
+- **SC-001**: All 5 governance scenarios (063, 064, 122, 123, 148) are executed with evidence captured per the review protocol.
+- **SC-002**: Each scenario has a PASS, PARTIAL, or FAIL verdict with explicit rationale.
+- **SC-003**: Coverage is reported as 5/5 with no skipped test IDs.
+- **SC-004**: Any DB config mutations and scoped memory writes are restored or explicitly documented before phase closeout.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -109,8 +111,8 @@ No P1 items are defined for this phase; all five governance scenarios are mandat
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth and update this phase packet only from that document |
-| Dependency | [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review and do not invent alternate verdict logic |
+| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth; update this phase packet only from that document |
+| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review; do not invent alternate verdict logic |
 | Dependency | [`../../feature_catalog/17--governance/`](../../feature_catalog/17--governance/) | Supplies feature context for each governance scenario | Keep every test row linked to its mapped governance feature file |
 | Dependency | MCP runtime plus governance sandbox corpus | Required to execute `memory_save`, `shared_memory_status`, `shared_memory_enable`, `shared_space_upsert`, and `shared_space_membership_set` scenarios safely | Run stateful tests in an isolated sandbox and preserve restart/checkpoint instructions in the plan |
 | Risk | 122 writes scoped memory records that could leak across test runs if sandbox isolation fails | High | Restrict provenance/scope saves to disposable sandbox tenant IDs and document rollback steps before execution |
@@ -120,10 +122,57 @@ No P1 items are defined for this phase; all five governance scenarios are mandat
 ---
 
 <!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS
+## 10. OPEN QUESTIONS
 
 - Which disposable tenant ID and user/agent combination should Phase 017 reviewers use for 122 governed-ingest tests to avoid cross-contamination with existing memory records?
 - Should 148 DB-persistence restart be performed against the same MCP instance used for the preceding governance tests, or should it run in a clean process to avoid stale DB state from 122 or 123?
 <!-- /ANCHOR:questions -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: Each governance scenario command sequence must complete within the MCP tool timeout window (no hung calls).
+
+### Security
+- **NFR-S01**: Scoped memory writes for 122 must use disposable sandbox tenant/user IDs isolated from production memory records.
+- **NFR-S02**: Kill-switch and rollout flag state must be restored to pre-test baseline after 123 and 148.
+
+### Reliability
+- **NFR-R01**: Evidence artifacts must be captured before any rollback so verdict review can proceed independently of runtime state.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Data Boundaries
+- Missing provenance fields (122): System must reject save, not silently succeed.
+- Kill switch set to true mid-session (123): Access must be blocked immediately without requiring restart.
+
+### Error Scenarios
+- MCP restart failure during 148: Mark scenario BLOCKED and document the stale DB state before continuing.
+- Sandbox contamination from prior scenario: Stop execution, document the contamination, restore baseline.
+
+### State Transitions
+- 148 steps 2 → 3 (idempotent enable): Second call must return `alreadyEnabled: true`.
+- 123 step 6 (kill switch): Access denied without removing the membership record.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 15/25 | 5 scenarios, mix of stateless audit and stateful MCP calls |
+| Risk | 20/25 | Stateful DB config changes, MCP restart dependency, sandbox isolation risk |
+| Research | 8/20 | Exact prompts and commands already defined in playbook |
+| **Total** | **43/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
 
 ---

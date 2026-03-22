@@ -1,14 +1,17 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/003-discovery",
-  "description": "Feature Specification: manual-testing-per-playbook discovery phase",
+  "description": "Phase 003 discovery manual test packet. Execute scenarios EX-011 (memory_list), EX-012 (memory_stats), EX-013 (memory_health).",
   "keywords": [
-    "feature",
-    "specification",
-    "manual-testing-per-playbook",
+    "manual-testing",
     "discovery",
-    "phase"
+    "EX-011",
+    "EX-012",
+    "EX-013",
+    "memory_list",
+    "memory_stats",
+    "memory_health"
   ],
-  "lastUpdated": "2026-03-19T19:19:17.446Z",
+  "lastUpdated": "2026-03-22T00:00:00.000Z",
   "specId": "003",
   "folderSlug": "discovery",
   "parentChain": [
@@ -16,12 +19,10 @@
     "022-hybrid-rag-fusion",
     "014-manual-testing-per-playbook"
   ],
-  "memorySequence": 1,
-  "memoryNameHistory": [
-    "19-03-26_20-11__manual-testing-per-playbook-discovery-phase.md"
-  ],
-  "title": "Feature Specification: manual-testing-per-playbook discovery phase [template:level_1/spec.md]",
-  "status": "Complete",
-  "importance_tier": "high",
-  "short_description": "Feature Specification: manual-testing-per-playbook discovery phase"
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "title": "Feature Specification: manual-testing-per-playbook discovery phase",
+  "status": "Draft",
+  "importance_tier": "normal",
+  "short_description": "Phase 003 discovery manual test packet: EX-011, EX-012, EX-013"
 }

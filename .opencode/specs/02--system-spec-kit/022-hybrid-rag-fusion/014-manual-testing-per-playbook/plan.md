@@ -1,17 +1,17 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook [template:level_1/plan.md]"
-description: "Alignment pass for the 014 parent packet: reconcile 19 phase folders to the current 252-ID exact scenario inventory, expand Phase 013 dedicated-memory coverage, and record the March 17, 2026 validator truth."
+title: "Implementation Plan: manual-testing-per-playbook"
+description: "Execute manual testing across 19 phase folders covering 226 scenario files (265 exact IDs) from the manual testing playbook, with pre-execution setup, phased execution, and aggregate result reporting."
 trigger_phrases:
   - "manual testing plan"
   - "testing phases"
-  - "exact id audit"
-  - "playbook alignment"
+  - "playbook execution"
+  - "test execution plan"
 importance_tier: "high"
 contextType: "general"
 ---
 # Implementation Plan: manual-testing-per-playbook
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
@@ -23,13 +23,13 @@ contextType: "general"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown documentation |
-| **Framework** | system-spec-kit Level 1 templates |
-| **Storage** | Filesystem (spec folders + playbook docs) |
-| **Testing** | Exact-ID audit + `validate.sh --recursive` |
+| **Language/Stack** | Spec Kit Memory MCP (TypeScript/Node.js) |
+| **Framework** | system-spec-kit manual testing playbook |
+| **Storage** | SQLite (memory_index.db) |
+| **Testing** | Manual scenario execution per playbook |
 
 ### Overview
-This pass does not generate the packet from scratch. It reconciles the existing 19 phase folders to the current playbook truth by switching the parent packet from a top-level-ID model (`195`) to an exact-ID model (`252`), incorporating the Wave 5 additions (`170..180`) across Phases `010`, `011`, `012`, `013`, and `018`, expanding Phase `013-memory-quality-and-indexing` for the dedicated memory sub-scenarios, refreshing the `M-007` playbook verification wording, and recording the real validator outcome for the packet.
+Execute manual testing across 19 phase folders, each covering one playbook category. Each phase runs its test scenarios using the prompts, commands, and pass/fail criteria defined in the playbook scenario files. Results are recorded as per-scenario verdicts (PASS/PARTIAL/FAIL) with evidence, then aggregated into a coverage report.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -38,16 +38,16 @@ This pass does not generate the packet from scratch. It reconciles the existing 
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Current playbook inventory reviewed, including the dedicated memory-section suffixed IDs.
-- [x] Existing phase ownership model reviewed across all 19 child folders.
-- [x] Current recursive validator output captured for the parent packet.
-- [x] Scope limited to the `014` parent docs, Phase `013` docs, the `M-007` playbook block, and the narrow `010` truth-cleanup.
+- [ ] Manual testing playbook is accessible (symlinked or direct path)
+- [ ] Feature catalog is accessible (symlinked or direct path)
+- [ ] MCP server is running and responding to tool calls
+- [ ] Test database is in a known state (fresh or documented baseline)
 
 ### Definition of Done
-- [ ] Parent packet uses the `252` exact-ID model as its authoritative coverage measure.
-- [ ] Phase `013` explicitly documents `M-005a..c`, `M-006a..c`, and `M-007a..j`.
-- [ ] Exact-ID audit reports `0` missing IDs and `0` duplicate owners.
-- [ ] Recursive validation is rerun and its current `0`-error, `19`-warning state is recorded truthfully in the packet.
+- [ ] All 265 exact scenario IDs have recorded verdicts
+- [ ] Per-phase summaries are complete for all 19 phases
+- [ ] Aggregate coverage report is produced
+- [ ] Bugs and playbook errors are documented
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -56,16 +56,18 @@ This pass does not generate the packet from scratch. It reconciles the existing 
 ## 3. ARCHITECTURE
 
 ### Pattern
-Documentation reconciliation with exact-ID audit and validator-truth refresh.
+Phased manual test execution with verdict recording.
 
 ### Key Components
-- **Playbook source of truth**: `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`, including the dedicated memory section.
-- **Packet surface**: parent `014` docs plus child `013-memory-quality-and-indexing/`.
-- **Supporting truth sources**: recursive validation output for `014`, validation output for `013`, and the `010` closure docs used to refresh `M-007` proof-lane wording.
-- **Audit layer**: exact-ID ownership scan across all 19 child specs.
+- **Playbook**: 226 scenario files across 19 categories providing prompts, expected behavior, and pass/fail criteria
+- **Feature Catalog**: 220 feature definitions across 19 categories providing feature context
+- **Phase Folders**: 19 child folders (001 through 019) where test results are recorded
+- **Aggregate Report**: Summary of all phase results with overall coverage metrics
 
 ### Data Flow
-`playbook exact IDs -> phase ownership docs -> exact-ID audit -> validator rerun -> parent packet truth update`
+```
+Playbook scenario file -> Read prompts/criteria -> Execute against MCP server -> Record verdict with evidence -> Phase summary -> Aggregate report
+```
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -73,21 +75,50 @@ Documentation reconciliation with exact-ID audit and validator-truth refresh.
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Audit the Current Packet
-- [x] Re-read the parent `014` docs and capture every stale `195`-only or validation-pending claim.
-- [x] Re-read `013-memory-quality-and-indexing/` and identify the missing exact IDs in the dedicated memory section.
-- [x] Re-run parent recursive validation to capture the current `0`-error, `19`-warning result.
+### Phase 1: Pre-Execution Setup
+- [ ] Verify playbook and feature catalog are accessible
+- [ ] Verify MCP server is running and healthy (`memory_health`)
+- [ ] Document test environment baseline (database state, feature flags, server version)
+- [ ] Confirm all 19 phase folders exist with scenario files
 
-### Phase 2: Align Parent and Phase 013 Docs
-- [ ] Update the parent `014` spec, plan, tasks, checklist, and implementation summary to the exact-ID model.
-- [ ] Expand `013-memory-quality-and-indexing` docs from `26` top-level scenarios to `42` exact IDs.
-- [ ] Replace `M-007` shorthand wording with literal `M-007a` through `M-007j` coverage.
-- [ ] Refresh the `M-007` playbook block so its verification suite list and proof-lane wording match the `010` closure docs.
+### Phase 2: Execute 19 Phases
+Execute each phase by running its test scenarios per playbook. Phases can be run independently or in sequence.
 
-### Phase 3: Verify and Close Out
-- [ ] Run an exact-ID ownership audit across all 19 child specs.
-- [ ] Re-run validation on the touched `013-memory-quality-and-indexing/` child packet.
-- [ ] Spot-check the dedicated memory IDs and the `010` parent narrative for internal consistency.
+| Phase | Folder | Scenarios | Exact IDs |
+|-------|--------|-----------|-----------|
+| 001 | `001-retrieval/` | 11 | 11 |
+| 002 | `002-mutation/` | 9 | 9 |
+| 003 | `003-discovery/` | 3 | 3 |
+| 004 | `004-maintenance/` | 2 | 2 |
+| 005 | `005-lifecycle/` | 10 | 10 |
+| 006 | `006-analysis/` | 7 | 7 |
+| 007 | `007-evaluation/` | 2 | 2 |
+| 008 | `008-bug-fixes-and-data-integrity/` | 11 | 11 |
+| 009 | `009-evaluation-and-measurement/` | 16 | 16 |
+| 010 | `010-graph-signal-activation/` | 15 | 15 |
+| 011 | `011-scoring-and-calibration/` | 22 | 22 |
+| 012 | `012-query-intelligence/` | 10 | 10 |
+| 013 | `013-memory-quality-and-indexing/` | 27 | 34 |
+| 014 | `014-pipeline-architecture/` | 18 | 18 |
+| 015 | `015-retrieval-enhancements/` | 11 | 11 |
+| 016 | `016-tooling-and-scripts/` | 28 | 60 |
+| 017 | `017-governance/` | 5 | 5 |
+| 018 | `018-ux-hooks/` | 11 | 11 |
+| 019 | `019-feature-flag-reference/` | 8 | 8 |
+
+For each phase:
+1. Read scenario files from the playbook category
+2. Execute each scenario's prompts/commands against the MCP server
+3. Compare actual behavior against expected behavior
+4. Record verdict (PASS/PARTIAL/FAIL) with evidence
+5. Document any bugs or playbook errors discovered
+
+### Phase 3: Aggregate Results
+- [ ] Collect per-phase verdict summaries
+- [ ] Produce aggregate coverage table (phase, pass, partial, fail, total)
+- [ ] Calculate overall pass rate
+- [ ] List all FAIL scenarios requiring follow-up
+- [ ] Document all bugs and playbook errors discovered
 <!-- /ANCHOR:phases -->
 
 ---
@@ -97,10 +128,9 @@ Documentation reconciliation with exact-ID audit and validator-truth refresh.
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Exact-ID ownership audit | All 19 child `spec.md` files | Python exact-ID scan |
-| Parent validation truth | `014-manual-testing-per-playbook/` | `validate.sh --recursive` |
-| Child validation truth | `013-memory-quality-and-indexing/` | `validate.sh` |
-| Spot checks | `M-005a..c`, `M-006a..c`, `M-007a..j`, `010` validator wording | `rg`, `sed` |
+| Manual scenario execution | All 265 exact IDs across 19 phases | MCP tool calls, CLI commands |
+| Verdict recording | Per-scenario pass/fail with evidence | Inline documentation in phase folders |
+| Coverage aggregation | All 19 phases | Summary table in implementation-summary.md |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -110,10 +140,11 @@ Documentation reconciliation with exact-ID audit and validator-truth refresh.
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Manual testing playbook | Internal | Green | Exact-ID inventory and `M-007` wording cannot be aligned |
-| Feature catalog | Internal | Green | Test-to-feature mappings cannot be verified |
-| `validate.sh` | Internal | Green | Current packet truth cannot be recorded honestly |
-| `009-perfect-session-capturing` closure docs | Internal | Green | `M-007` proof-lane wording cannot be aligned to the latest closure evidence |
+| Manual testing playbook | Internal | Green | Cannot execute -- source of all scenarios |
+| Feature catalog | Internal | Green | Cannot map scenarios to features |
+| MCP server (spec-kit-memory) | Internal | Green | Cannot execute tool-based scenarios |
+| Embedding service | External | Green | Embedding-dependent scenarios blocked |
+| SQLite database | Internal | Green | Cannot test data-dependent scenarios |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -121,15 +152,59 @@ Documentation reconciliation with exact-ID audit and validator-truth refresh.
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: An alignment edit introduces broken counts, broken links, or contradictory validation claims.
-- **Procedure**: Revert only the touched parent/Phase-013/playbook docs, rerun the exact-ID audit and validator commands, and reapply the alignment using the last verified counts and outputs.
+- **Trigger**: Test execution corrupts database state or produces unreliable results
+- **Procedure**: Restore database from checkpoint, re-execute affected phase from clean state
 <!-- /ANCHOR:rollback -->
 
 ---
 
-<!--
-CORE TEMPLATE (~90 lines)
-- Essential technical planning
-- Simple phase structure
-- Add L2/L3 addendums for complexity
--->
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```
+Phase 1 (Setup) ──► Phase 2 (Execute 19 Phases) ──► Phase 3 (Aggregate)
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | None | Execute |
+| Execute (001-019) | Setup | Aggregate |
+| Aggregate | Execute | None |
+
+Note: Within Phase 2, individual phases (001-019) are independent and can be executed in any order or in parallel.
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Low | 1 hour |
+| Execute (19 phases) | High | 3-4 days |
+| Aggregate | Low | 2 hours |
+| **Total** | | **4-5 days** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+- [ ] Database checkpoint created before testing begins
+- [ ] Test environment state documented
+- [ ] Feature flag configuration captured
+
+### Rollback Procedure
+1. Restore database from pre-testing checkpoint
+2. Re-execute affected phase with corrected approach
+3. Verify restored state matches pre-testing baseline
+
+### Data Reversal
+- **Has data migrations?** No
+- **Reversal procedure**: Checkpoint restore via `checkpoint_restore`
+<!-- /ANCHOR:enhanced-rollback -->
+
+---

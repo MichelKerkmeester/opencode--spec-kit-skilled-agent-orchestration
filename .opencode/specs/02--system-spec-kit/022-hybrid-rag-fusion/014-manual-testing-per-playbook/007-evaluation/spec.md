@@ -1,17 +1,17 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook evaluation phase [template:level_1/spec.md]"
-description: "Phase 007 documents the evaluation manual test packet for the Spec Kit Memory system. It breaks two evaluation scenarios out of the central playbook so testers can execute prompts, command sequences, evidence capture, and verdict criteria from one bounded folder."
+title: "Feature Specification: manual-testing-per-playbook evaluation phase"
+description: "Execute 2 manual test scenarios for the evaluation category, covering ablation studies and reporting dashboard."
 trigger_phrases:
-  - "evaluation manual testing"
-  - "phase 007 evaluation"
-  - "ablation studies manual test"
-  - "hybrid rag evaluation playbook"
+  - "evaluation testing"
+  - "ablation test"
+  - "dashboard test"
+  - "eval reporting test"
 importance_tier: "high"
 contextType: "general"
 ---
 # Feature Specification: manual-testing-per-playbook evaluation phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
@@ -21,14 +21,14 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Level** | 1 |
+| **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
-| **Created** | 2026-03-16 |
+| **Status** | Not Started |
+| **Created** | 2026-03-22 |
 | **Branch** | `main` |
-| **Parent** | [`../spec.md`](../spec.md) |
-| **Predecessor Phase** | `006-analysis` |
-| **Successor Phase** | `008-bug-fixes-and-data-integrity` |
+| **Parent Spec** | [../spec.md](../spec.md) |
+| **Predecessor** | [006-analysis](../006-analysis/spec.md) |
+| **Successor** | [008-bug-fixes-and-data-integrity](../008-bug-fixes-and-data-integrity/spec.md) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -37,10 +37,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual evaluation scenarios for the Spec Kit Memory system currently live inside the central playbook and need a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated evaluation packet, Phase 007 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results.
+The evaluation category contains 2 manual test scenarios covering ablation studies (channel-level Recall@20 delta measurement) and reporting dashboard (sprint/channel trend aggregation). Each scenario must be executed with defined prompts, expected behaviors verified, and evidence captured to validate that evaluation tools function correctly.
 
 ### Purpose
-Provide a single evaluation-focused specification that maps both Phase 007 test IDs to their feature context and acceptance criteria so manual execution and review remain consistent with the canonical playbook.
+Execute both evaluation scenarios from the manual testing playbook, producing pass/fail verdicts with evidence for each scenario.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -49,25 +49,28 @@ Provide a single evaluation-focused specification that maps both Phase 007 test 
 ## 3. SCOPE
 
 ### In Scope
-
-| Test ID | Scenario Name | Feature Catalog | Exact Prompt | Exact Command Sequence |
-|---------|---------------|-----------------|--------------|------------------------|
-| EX-026 | Ablation studies (eval_run_ablation) | [`../../feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md`](../../feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md) | `Run ablation on retrieval channels` | `eval_run_ablation({ dataset:"retrieval-channels-smoke", channels:["vector","bm25","graph"], storeResults:true })` -> `eval_reporting_dashboard({ format:"json", limit:10 })` |
-| EX-027 | Reporting dashboard (eval_reporting_dashboard) | [`../../feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md`](../../feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md) | `Generate the latest dashboard report` | `eval_reporting_dashboard(format:text)` and `eval_reporting_dashboard(format:json)` |
+- Execute both scenarios listed in the scenario registry below
+- Capture pass/fail verdict per scenario with evidence
+- Record deviations and unexpected behaviors
 
 ### Out of Scope
-- Executing the two evaluation scenarios and assigning final run verdicts.
-- Modifying the playbook or feature catalog content linked from this packet.
-- Documenting non-evaluation phases from other phase folders.
+- Automated test creation -- manual execution only
+- Bug fixing -- document failures, do not remediate
+- Performance benchmarking -- functional verification only
 
-### Files to Change
+### Scenario Registry
 
-| File Path | Change Type | Description |
-|-----------|-------------|-------------|
-| `spec.md` | Create | Phase 007 evaluation requirements, test inventory, and acceptance criteria |
-| `plan.md` | Create | Phase 007 evaluation execution plan and review workflow |
-| `tasks.md` | Create | Phase 007 task tracker for setup, execution, and verification work |
-| `checklist.md` | Create | Phase 007 verification checklist for all quality gates |
+| # | Scenario ID | Scenario Name | Feature Catalog Ref |
+|---|-------------|---------------|---------------------|
+| 1 | EX-026 | Ablation studies (eval_run_ablation) | 07--evaluation/01-ablation-studies-evalrunablation.md |
+| 2 | EX-027 | Reporting dashboard (eval_reporting_dashboard) | 07--evaluation/02-reporting-dashboard-evalreportingdashboard.md |
+
+### Playbook Source Files
+
+| Scenario ID | Playbook File |
+|-------------|---------------|
+| EX-026 | `../../manual_testing_playbook/07--evaluation/026-ablation-studies-eval-run-ablation.md` |
+| EX-027 | `../../manual_testing_playbook/07--evaluation/027-reporting-dashboard-eval-reporting-dashboard.md` |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -79,10 +82,15 @@ Provide a single evaluation-focused specification that maps both Phase 007 test 
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Document EX-026 ablation studies scenario with its exact playbook prompt, command sequence, evidence target, and feature link. | PASS if per-channel deltas are reported and ablation run produces metrics/verdict |
-| REQ-002 | Document EX-027 reporting dashboard scenario with its exact playbook prompt, dual-format command sequence, evidence target, and feature link. | PASS if report is generated without error in both text and JSON formats |
+| REQ-001 | Execute EX-026 Ablation studies | Pass/fail verdict with per-channel Recall@20 deltas in evidence |
+| REQ-002 | Execute EX-027 Reporting dashboard | Pass/fail verdict with both text and JSON format output in evidence |
 
-No P1 items are defined for this phase; both evaluation scenarios are mandatory for coverage.
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-003 | Capture evidence artifacts for each scenario | Tool output stored as evidence |
+| REQ-004 | Document deviations from expected behavior | Deviation notes in implementation-summary.md |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -90,10 +98,9 @@ No P1 items are defined for this phase; both evaluation scenarios are mandatory 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 2 evaluation tests are documented with exact prompts, exact command sequences, linked feature catalog entries, and playbook-derived pass criteria.
-- **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for EX-026 and EX-027 will be collected.
-- **SC-003**: Reviewers can audit every Phase 007 scenario using this folder plus the linked playbook (`../../manual_testing_playbook/manual_testing_playbook.md`) and review protocol (`../../manual_testing_playbook/review_protocol.md`).
-- **SC-004**: The phase packet contains no placeholder or template text and is ready for manual execution planning.
+- **SC-001**: Both scenarios executed with pass/fail verdict recorded
+- **SC-002**: Evidence captured for every scenario (tool output in both formats for EX-027)
+- **SC-003**: Deviations documented with reproducibility notes
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -103,21 +110,51 @@ No P1 items are defined for this phase; both evaluation scenarios are mandatory 
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth and update this phase packet only from that document |
-| Dependency | [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review and do not invent alternate verdict logic |
-| Dependency | [`../../feature_catalog/07--evaluation/`](../../feature_catalog/07--evaluation/) | Supplies feature context for each evaluation scenario | Keep every test row linked to its mapped evaluation feature file |
-| Dependency | MCP runtime with `SPECKIT_ABLATION=true` and a populated eval dataset | Required to execute `eval_run_ablation` and `eval_reporting_dashboard` scenarios | Confirm the ablation flag is active and the `retrieval-channels-smoke` eval dataset exists before running EX-026 |
-| Risk | EX-026 requires `SPECKIT_ABLATION=true`; if the flag is off the MCP handler returns a disabled-flag error and the run produces no metrics | High | Verify the flag before execution and document the enabled/disabled state in evidence |
-| Risk | EX-027 depends on populated `eval_metric_snapshots` and `eval_channel_results` tables; an empty database will produce an empty dashboard rather than a failure | Medium | Pre-populate or confirm prior eval run data exists before executing the dashboard scenario |
+| Dependency | MCP server running | Cannot execute tool calls | Verify server health before starting |
+| Dependency | SPECKIT_ABLATION=true env flag | EX-026 returns disabled-flag error if not set | Verify flag is active before execution |
+| Dependency | Populated eval database | EX-027 returns empty dashboard if no prior eval runs exist | Confirm eval data exists or run EX-026 first |
+| Risk | SPECKIT_ABLATION flag disabled in environment | High | Check and document flag state in evidence |
+| Risk | Channel alias mismatch in playbook | Medium | Use MCP schema enums (vector, bm25, graph) not playbook aliases (semantic, keyword, graph) |
 <!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
-- Which eval dataset should be treated as the canonical `retrieval-channels-smoke` fixture for EX-026 ablation runs, and where is it defined?
-- For EX-027, which sprint labels or date range should reviewers use to confirm trend analysis is exercised rather than just returning an empty sprint list?
-<!-- /ANCHOR:questions -->
+### Test Execution
+- **NFR-T01**: EX-026 should run before EX-027 so dashboard has data to display
+- **NFR-T02**: Evidence captured within the same session as execution
+<!-- /ANCHOR:nfr -->
 
 ---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Scenario-Specific
+- SPECKIT_ABLATION=false: EX-026 will return a disabled-flag error rather than metrics
+- Empty eval DB: EX-027 dashboard returns valid structure but empty sprint list
+- Channel aliases: Playbook may use "semantic"/"keyword" but MCP schema requires "vector"/"bm25"
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 4/25 | 2 scenarios, single category, no code changes |
+| Risk | 6/25 | Feature flag dependency, channel alias mismatch |
+| Research | 2/20 | Playbook provides exact steps |
+| **Total** | **12/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+- None at this time. All scenario definitions are complete in the playbook.
+<!-- /ANCHOR:questions -->

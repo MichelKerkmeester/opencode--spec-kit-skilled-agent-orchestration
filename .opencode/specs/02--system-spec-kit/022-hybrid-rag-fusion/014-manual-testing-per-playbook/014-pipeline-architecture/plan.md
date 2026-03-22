@@ -1,18 +1,17 @@
 ---
-title: "Implementation Plan: Manual Testing Playbook Phase 014 Pipeline Architecture"
-description: "This plan defines how operators should prepare, sequence, and review the phase 014 pipeline-architecture scenarios. It packages prompts, execution modes, evidence expectations, and rollback guidance into a single runbook-aligned plan."
+title: "Implementation Plan: Manual Testing — Pipeline Architecture (Phase 014)"
+description: "Execution plan for 18 pipeline architecture scenarios. Sequences preconditions, non-destructive execution, destructive execution, and evidence collection for PASS/FAIL/SKIP verdicts."
 trigger_phrases:
-  - "implementation plan"
-  - "manual testing"
-  - "pipeline architecture"
-  - "phase 014"
-  - "146"
-importance_tier: "important"
+  - "pipeline architecture execution plan"
+  - "phase 014 plan"
+  - "manual testing pipeline plan"
+  - "pipeline test execution"
+importance_tier: "normal"
 contextType: "implementation"
 ---
-# Implementation Plan: Manual Testing Playbook Phase 014 Pipeline Architecture
+# Implementation Plan: Manual Testing — Pipeline Architecture (Phase 014)
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
@@ -24,13 +23,13 @@ contextType: "implementation"
 
 | Aspect | Value |
 |--------|-------|
-| **Language** | Markdown |
-| **Framework** | spec-kit L1 |
-| **Storage** | Documentation only; evidence lives in transcripts, logs, and test artifacts |
-| **Testing** | manual + MCP |
+| **Language/Stack** | MCP (Spec Kit Memory tools), shell, Vitest |
+| **Framework** | spec-kit Level 2 |
+| **Storage** | Evidence artifacts in scratch/; results recorded in checklist.md |
+| **Testing** | Manual execution following playbook scenario steps |
 
 ### Overview
-This plan covers the 19 pipeline-architecture scenarios assigned to phase 014 of the manual testing playbook effort. It turns the playbook rows, review protocol, and feature-catalog context into an execution pipeline that keeps non-destructive checks separate from restart, mutation, and rollback drills.
+This plan sequences the execution of all 18 pipeline architecture scenarios assigned to Phase 014. It separates non-destructive query and inspection scenarios from state-changing scenarios that require sandbox isolation, and defines evidence collection and verdict assignment procedures for each.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -39,16 +38,18 @@ This plan covers the 19 pipeline-architecture scenarios assigned to phase 014 of
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] The canonical playbook rows for `049`, `050`, `051`, `052`, `053`, `054`, `067`, `071`, `076`, `078`, `080`, `087`, `095`, `112`, `115`, `129`, `130`, and `146` have been extracted.
-- [ ] Every scenario is mapped to a `14--pipeline-architecture` feature file, including shared lineage coverage for `129` and `130`.
-- [ ] The review protocol has been loaded so scenario, feature, and release verdicts use the same PASS/PARTIAL/FAIL rubric.
-- [ ] Operators know which scenarios require restart control, checkpoints, or disposable sandboxes before execution begins.
+- [ ] Playbook scenario files for IDs 049, 050, 051, 052, 053, 054, 067, 071, 076, 078, 080, 087, 095, 112, 115, 129, 130, and 146 are accessible
+- [ ] Feature catalog entries in `../../feature_catalog/14--pipeline-architecture/` are accessible
+- [ ] Review protocol loaded: `../../manual_testing_playbook/manual_testing_playbook.md`
+- [ ] MCP runtime available for MCP-tagged scenarios
+- [ ] Disposable sandbox or checkpoint-backed environment available for scenarios 080, 112, 115, and 130
 
 ### Definition of Done
-- [ ] `spec.md` and `plan.md` exist in the phase 014 folder with all required sections and anchors.
-- [ ] All 19 scenarios have exact prompts captured in the testing-strategy table.
-- [ ] Destructive or state-changing scenarios are isolated with explicit sandbox, checkpoint, or rollback rules.
-- [ ] The generated documents pass the targeted structural validation used for this documentation task.
+- [ ] All 18 scenarios executed and verdicted (PASS / FAIL / SKIP)
+- [ ] Evidence captured per scenario (transcript, output snippet, or explicit skip reason)
+- [ ] All FAIL verdicts have defect notes
+- [ ] checklist.md P0 items marked with evidence
+- [ ] implementation-summary.md updated with final results
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -57,16 +58,16 @@ This plan covers the 19 pipeline-architecture scenarios assigned to phase 014 of
 ## 3. ARCHITECTURE
 
 ### Pattern
-Documentation pipeline for manual test execution and review handoff.
+Manual test execution pipeline with evidence-gated verdict assignment.
 
 ### Key Components
-- **Preconditions gate**: Confirms runtime access, sandbox availability, env-flag control, and checkpoint expectations before any scenario runs.
-- **Scenario executor**: Runs the exact prompt and command sequence defined by the playbook for MCP calls, shell test suites, restarts, or mutation drills.
-- **Evidence collector**: Captures transcripts, output snippets, DB/log references, and any restart or rollback artifacts required by the scenario.
-- **Verdict reviewer**: Applies scenario acceptance checks from the playbook and feature/release verdict rules from `../../manual_testing_playbook/review_protocol.md`.
+- **Preconditions gate**: Confirms runtime access, sandbox readiness, env-flag control, and checkpoint expectations before any scenario runs
+- **Scenario executor**: Runs the exact prompt and command sequence defined by the playbook for each scenario
+- **Evidence collector**: Captures transcripts, output snippets, DB or log references, and any restart or rollback artefacts
+- **Verdict reviewer**: Applies acceptance checks from the playbook and verdict rules from the review protocol
 
 ### Data Flow
-Preconditions -> execute the exact scenario prompt and command sequence -> collect evidence artifacts -> compare observed behavior against PASS criteria -> assign scenario verdict -> roll up to feature verdict using the review protocol.
+Preconditions confirmed → execute exact scenario prompt and commands → collect evidence → compare observed vs expected → assign PASS/FAIL/SKIP verdict → roll up to phase summary
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -75,24 +76,40 @@ Preconditions -> execute the exact scenario prompt and command sequence -> colle
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Preconditions
-- [ ] Confirm access to the phase-14 feature catalog, the merged playbook, and the review protocol.
-- [ ] Prepare MCP runtime access for query-driven scenarios and shell access for restart, env-toggle, or Vitest-based scenarios.
-- [ ] Establish a disposable sandbox or checkpoint-backed environment for any scenario that mutates DB state or simulates save failures.
+- [ ] Load playbook rows for all 18 pipeline architecture scenario IDs
+- [ ] Load review protocol verdict rules
+- [ ] Confirm feature catalog links for all 18 scenarios
+- [ ] Verify MCP runtime access for MCP-tagged scenarios (049, 050, 051, 052, 053, 054, 067, 095)
+- [ ] Establish disposable sandbox or checkpoint for destructive scenarios: 080, 112, 115, 130
 
-### Phase 2: Non-Destructive Tests
-- [ ] Execute pipeline-flow, scoring, metadata, and prompt-validation scenarios: `049`, `050`, `051`, `052`, `053`, `054`, `067`, `071`, `076`, `078`, `087`, `095`, `129`, and `146`.
-- [ ] Use targeted MCP calls or read-only shell/test commands to gather evidence without changing durable state outside approved fixtures.
-- [ ] Verify each scenario against its explicit PASS criteria before moving on.
+### Phase 2: Non-Destructive Scenarios
+- [ ] Execute 049 — 4-stage pipeline refactor: `Trace one query through all 4 stages.`
+- [ ] Execute 050 — MPAB chunk-to-memory aggregation: `Verify MPAB chunk aggregation (R1).`
+- [ ] Execute 051 — Chunk ordering preservation: `Validate chunk ordering preservation (B2).`
+- [ ] Execute 052 — Template anchor optimization: `Verify template anchor optimization (S2).`
+- [ ] Execute 053 — Validation signals as retrieval metadata: `Validate S3 retrieval metadata weighting.`
+- [ ] Execute 054 — Learned relevance feedback: `Verify learned relevance feedback (R11).`
+- [ ] Execute 067 — Search pipeline safety: `Validate search pipeline safety bundle.`
+- [ ] Execute 071 — Performance improvements: `Verify performance improvements (Sprint 8).`
+- [ ] Execute 076 — Activation window persistence: `Verify activation window persistence.`
+- [ ] Execute 078 — Legacy V1 pipeline removal: `Verify legacy V1 removal.`
+- [ ] Execute 087 — DB_PATH extraction: `Validate DB_PATH extraction/import standardization.`
+- [ ] Execute 095 — Strict Zod schema validation: `Validate SPECKIT_STRICT_SCHEMAS enforcement.`
+- [ ] Execute 129 — Lineage state projection: `Run the lineage state verification suite.`
+- [ ] Execute 146 — Dynamic server instructions: `Validate dynamic server instructions at MCP initialization.`
 
-### Phase 3: Destructive Tests
-- [ ] Treat `080`, `112`, `115`, and `130` as state-changing or rollback-sensitive scenarios.
-- [ ] Run these scenarios only in disposable sandboxes, isolated worktrees, or checkpoint-backed environments with clear restore points.
-- [ ] Record the checkpoint name, mutated resource, and rollback evidence for each destructive drill before closing the scenario.
+### Phase 3: Destructive and State-Changing Scenarios
+- [ ] Execute 080 — Pipeline and mutation hardening in disposable sandbox: `Validate phase-017 pipeline and mutation hardening.`
+- [ ] Execute 112 — Cross-process DB hot rebinding in isolated environment: `Validate cross-process DB hot rebinding via marker file.`
+- [ ] Execute 115 — Transaction atomicity on rename failure in isolated fixture: `Simulate rename failure after DB commit and verify pending file survives.`
+- [ ] Execute 130 — Lineage backfill rollback drill with pre-drill checkpoint: `Run the lineage backfill + rollback verification suite.`
+- [ ] Record checkpoint name, mutated resource, and rollback evidence for each destructive drill
 
 ### Phase 4: Evidence Collection and Verdict
-- [ ] Attach the exact prompt, command transcript, key output snippets, and artifact references for every scenario.
-- [ ] Apply PASS/PARTIAL/FAIL at the scenario level using the playbook, then roll up feature verdicts with the review protocol.
-- [ ] Confirm coverage remains 19/19 for the resolved phase scope, including the recovered `146` mapping.
+- [ ] Attach prompt, command transcript, key output snippets, and artefact references for every scenario
+- [ ] Apply PASS/FAIL/SKIP at the scenario level using playbook acceptance criteria
+- [ ] Confirm 18/18 scenarios are verdicted with no "Not Started" remaining
+- [ ] Mark all P0 checklist items in checklist.md with evidence
 <!-- /ANCHOR:phases -->
 
 ---
@@ -100,8 +117,8 @@ Preconditions -> execute the exact scenario prompt and command sequence -> colle
 <!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
-| Test ID | Scenario Name | Exact Prompt | Execution Type (manual/MCP) |
-|-----------|-------|-------|-------|
+| Test ID | Scenario Name | Exact Prompt | Execution Type |
+|---------|---------------|--------------|----------------|
 | 049 | 4-stage pipeline refactor | `Trace one query through all 4 stages.` | MCP |
 | 050 | MPAB chunk-to-memory aggregation | `Verify MPAB chunk aggregation (R1).` | MCP |
 | 051 | Chunk ordering preservation | `Validate chunk ordering preservation (B2).` | MCP |
@@ -112,14 +129,14 @@ Preconditions -> execute the exact scenario prompt and command sequence -> colle
 | 071 | Performance improvements | `Verify performance improvements (Sprint 8).` | manual |
 | 076 | Activation window persistence | `Verify activation window persistence.` | manual |
 | 078 | Legacy V1 pipeline removal | `Verify legacy V1 removal.` | manual |
-| 080 | Pipeline and mutation hardening | `Validate phase-017 pipeline and mutation hardening.` | manual |
-| 087 | DB_PATH extraction and import standardization | `Validate DB_PATH extraction/import standardization.` | manual |
+| 080 | Pipeline and mutation hardening | `Validate phase-017 pipeline and mutation hardening.` | manual (sandbox) |
+| 087 | DB_PATH extraction and import standardisation | `Validate DB_PATH extraction/import standardization.` | manual |
 | 095 | Strict Zod schema validation | `Validate SPECKIT_STRICT_SCHEMAS enforcement.` | MCP |
-| 112 | Cross-process DB hot rebinding | `Validate cross-process DB hot rebinding via marker file.` | manual |
-| 115 | Transaction atomicity on rename failure | `Simulate rename failure after DB commit and verify pending file survives` | manual |
+| 112 | Cross-process DB hot rebinding | `Validate cross-process DB hot rebinding via marker file.` | manual (sandbox) |
+| 115 | Transaction atomicity on rename failure | `Simulate rename failure after DB commit and verify pending file survives.` | manual (sandbox) |
 | 129 | Lineage state active projection and asOf resolution | `Run the lineage state verification suite.` | manual |
-| 130 | Lineage backfill rollback drill | `Run the lineage backfill + rollback verification suite.` | manual |
-| 146 | Dynamic server instructions at MCP initialization | `Validate dynamic server instructions at MCP initialization.` | manual |
+| 130 | Lineage backfill rollback drill | `Run the lineage backfill + rollback verification suite.` | manual (sandbox) |
+| 146 | Dynamic server instructions | `Validate dynamic server instructions at MCP initialization.` | manual |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -129,12 +146,12 @@ Preconditions -> execute the exact scenario prompt and command sequence -> colle
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal source | Green | Exact prompts, commands, evidence, and PASS criteria cannot be reconstructed reliably. |
-| `../../manual_testing_playbook/review_protocol.md` | Internal source | Green | Scenario execution could complete without a usable verdict rubric. |
-| `../../feature_catalog/14--pipeline-architecture/` | Internal source | Green | Operators lose the feature intent and implementation context behind each scenario. |
-| MCP runtime with Spec Kit Memory tools | Runtime | Yellow | MCP-tagged scenarios cannot be exercised or evidence cannot be captured. |
-| Shell access for restarts, env toggles, and targeted Vitest suites | Runtime | Yellow | Restart and lineage/backfill scenarios cannot be executed as written. |
-| Disposable sandbox/checkpoint workflow | Operational | Yellow | State-changing scenarios would be unsafe to run in shared environments. |
+| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Unknown | Exact prompts and pass criteria cannot be verified |
+| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Unknown | Verdict rules cannot be applied consistently |
+| `../../feature_catalog/14--pipeline-architecture/` | Internal | Unknown | Feature context and review triage lose canonical reference |
+| MCP runtime with Spec Kit Memory tools | Runtime | Unknown | MCP-tagged scenarios cannot be executed |
+| Shell access for Vitest suites and env toggles | Runtime | Unknown | Vitest-based scenarios (129, 130) cannot be executed |
+| Disposable sandbox or checkpoint workflow | Operational | Unknown | Destructive scenarios (080, 112, 115, 130) cannot be safely run |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -142,9 +159,61 @@ Preconditions -> execute the exact scenario prompt and command sequence -> colle
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: The playbook, cross-reference index, or feature catalog changes in a way that invalidates the documented prompt set, mappings, or scenario count.
-- **Procedure**: Re-read the canonical sources, update the phase docs to match the latest mapped IDs, and re-run the structural validation checks before reuse.
-- **Operational rollback for execution**: For `080`, `112`, `115`, and `130`, restore the recorded checkpoint or dispose of the sandbox/worktree immediately after evidence capture.
+- **Trigger**: A destructive scenario (080, 112, 115, 130) leaves DB state in an unexpected condition
+- **Procedure**: Restore the pre-scenario checkpoint or discard the disposable sandbox immediately. Do not continue to the next scenario until the baseline is clean
 <!-- /ANCHOR:rollback -->
 
 ---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```
+Phase 1 (Preconditions) ──────┐
+                              ├──► Phase 2 (Non-Destructive) ──► Phase 4 (Verdict)
+Phase 1 (Preconditions) ──────┤
+                              └──► Phase 3 (Destructive) ───────► Phase 4 (Verdict)
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Preconditions | None | All execution phases |
+| Non-Destructive | Preconditions | Verdict |
+| Destructive | Preconditions + sandbox ready | Verdict |
+| Verdict | Non-Destructive + Destructive | None |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Preconditions | Low | 30 minutes |
+| Non-Destructive Scenarios (14) | Medium | 3-4 hours |
+| Destructive Scenarios (4) | High | 2-3 hours |
+| Verdict and Evidence | Low | 1 hour |
+| **Total** | | **6-8 hours** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-Scenario Checklist (Destructive)
+- [ ] Checkpoint created or sandbox confirmed disposable
+- [ ] Baseline state recorded (DB path, relevant file list, edge counts)
+- [ ] Recovery procedure documented before starting
+
+### Rollback Procedure
+1. Stop execution immediately on unexpected state change
+2. Restore checkpoint or dispose of sandbox
+3. Verify clean baseline before retrying
+4. If baseline cannot be restored, mark scenario as SKIP with reason "sandbox isolation failure"
+
+### Data Reversal
+- **Has data mutations?** Yes (scenarios 080, 112, 115, 130)
+- **Reversal procedure**: Restore pre-scenario checkpoint; discard disposable sandbox
+<!-- /ANCHOR:enhanced-rollback -->

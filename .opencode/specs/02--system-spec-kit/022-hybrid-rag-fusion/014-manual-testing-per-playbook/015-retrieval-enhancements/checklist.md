@@ -1,17 +1,17 @@
 ---
-title: "Verification Checklist: manual-testing-per-playbook retrieval-enhancements phase [template:level_2/checklist.md]"
-description: "Verification checklist for Phase 015 retrieval-enhancements manual test packet covering 055, 056, 057, 058, 059, 060, 077, 096, and 145."
+title: "Verification Checklist: Manual Testing — Retrieval Enhancements (Phase 015)"
+description: "Verification checklist for Phase 015 retrieval enhancements manual test execution. One P0 item per scenario, all unchecked. 11 scenarios: 055, 056, 057, 058, 059, 060, 077, 093, 094, 096, 145."
 trigger_phrases:
   - "retrieval enhancements checklist"
   - "phase 015 verification checklist"
   - "manual testing retrieval enhancements checks"
-  - "new-055 new-056 new-057 verification"
-importance_tier: "high"
+  - "055 056 057 retrieval checklist"
+importance_tier: "normal"
 contextType: "general"
 ---
-# Verification Checklist: manual-testing-per-playbook retrieval-enhancements phase
+# Verification Checklist: Manual Testing — Retrieval Enhancements (Phase 015)
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
@@ -31,9 +31,11 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md — all 9 test IDs mapped with exact prompts, command sequences, feature links, and acceptance criteria
-- [x] CHK-002 [P0] Technical approach defined in plan.md — execution phases, quality gates, testing strategy table, and rollback procedure captured
-- [x] CHK-003 [P1] Dependencies identified and available — playbook, review protocol, feature catalog links, MCP runtime, sandbox corpus, and env var snapshot all confirmed
+- [ ] CHK-001 [P0] Playbook loaded — rows for all 11 scenario IDs (055, 056, 057, 058, 059, 060, 077, 093, 094, 096, 145) are accessible
+- [ ] CHK-002 [P0] Review protocol loaded — PASS/FAIL/SKIP verdict rules available before any execution
+- [ ] CHK-003 [P1] Feature catalog links confirmed for all 11 scenarios in `../../feature_catalog/15--retrieval-enhancements/`
+- [ ] CHK-004 [P1] Baseline env var state recorded (SPECKIT_RESPONSE_TRACE, SPECKIT_CONTEXT_HEADERS, SPECKIT_CONSOLIDATION, SPECKIT_ENTITY_LINKING, SPECKIT_MEMORY_SUMMARIES)
+- [ ] CHK-005 [P1] Disposable sandbox prepared for stateful scenarios 058 and 060
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -41,10 +43,17 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] No placeholder or template text remains in spec.md, plan.md, tasks.md, or checklist.md
-- [x] CHK-011 [P0] All feature catalog links in the scope table resolve to existing files in `../../feature_catalog/15--retrieval-enhancements/`
-- [x] CHK-012 [P1] Scenario descriptions match the exact playbook wording — no paraphrasing of prompts or command sequences
-- [x] CHK-013 [P1] Execution type (manual vs MCP) correctly assigned for each of the 9 scenarios in plan.md testing strategy table
+- [ ] CHK-010 [P0] Scenario 055 executed and verdicted — Dual-scope memory auto-surface (TM-05)
+- [ ] CHK-011 [P0] Scenario 056 executed and verdicted — Constitutional memory as expert knowledge injection (PI-A4)
+- [ ] CHK-012 [P0] Scenario 057 executed and verdicted — Spec folder hierarchy as retrieval structure (S4)
+- [ ] CHK-013 [P0] Scenario 058 executed and verdicted in sandbox — Lightweight consolidation (N3-lite)
+- [ ] CHK-014 [P0] Scenario 059 executed and verdicted — Memory summary search channel (R8)
+- [ ] CHK-015 [P0] Scenario 060 executed and verdicted in sandbox — Cross-document entity linking (S5)
+- [ ] CHK-016 [P0] Scenario 077 executed and verdicted — Tier-2 fallback channel forcing
+- [ ] CHK-017 [P0] Scenario 093 executed and verdicted — Implemented: memory summary generation (R8)
+- [ ] CHK-018 [P0] Scenario 094 executed and verdicted — Implemented: cross-document entity linking (S5)
+- [ ] CHK-019 [P0] Scenario 096 executed and verdicted — Provenance-rich response envelopes (P0-2)
+- [ ] CHK-020 [P0] Scenario 145 executed and verdicted — Contextual tree injection (P1-4)
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -52,18 +61,13 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All 9 retrieval-enhancements scenarios have execution evidence tied to the exact documented prompt and command sequence
-- [x] CHK-021 [P0] Every scenario has a verdict (PASS / PARTIAL / FAIL) with rationale per the review protocol acceptance rules
-- [x] CHK-022 [P0] Coverage reported as 9/9 scenarios for Phase 015 with no skipped test IDs
-- [ ] CHK-023 [P1] 055 auto-surface hook evidence captures both lifecycle points: non-memory-aware tool dispatch and compaction event — PARTIAL: dispatch confirmed, compaction untestable in MCP context
-- [x] CHK-024 [P1] 056 evidence shows directive metadata fields present in retrieval results with constitutional tier classification confirmed
-- [ ] CHK-025 [P1] 057 evidence shows folder hierarchy ranking with self > parent > sibling score ordering verified — PARTIAL: structural channel active; child folder has no indexed memories for differential comparison
-- [ ] CHK-026 [P1] 058 evidence captures all three consolidation sub-outputs: contradiction detection, Hebbian edge strengthening, and staleness decay — FAIL: sandbox prerequisite not met
-- [ ] CHK-027 [P1] 059 evidence captures corpus size count and confirms summary channel is active above and inert below the 5,000-memory threshold — PARTIAL: below-threshold confirmed (576 memories), above-threshold untestable
-- [ ] CHK-028 [P1] 060 evidence shows supports-edges created between cross-document entities and density guard metrics recorded — FAIL: entity fixture prerequisite not met
-- [ ] CHK-029 [P1] 077 evidence shows `forceAllChannels=true` in tier-2 fallback options and multi-channel contribution in results — PARTIAL: fallback not triggered (zero candidates path)
-- [x] CHK-030 [P0] 096 evidence covers all four sub-steps: includeTrace=true, no includeTrace with env unset, env override active, and all 7 score sub-fields verified — PARTIAL: steps 1-2 pass, all 7 sub-fields confirmed, env override step requires restart
-- [ ] CHK-031 [P0] 145 evidence covers both flag states: header-injected results with `[parent > child — desc]` format truncated at 100 chars, and suppressed results with no headers — PARTIAL: content returned, no [parent>child] header observed, flag toggle requires restart
+- [ ] CHK-030 [P0] All 11 scenarios have a verdict — no "Not Started" entries remain
+- [ ] CHK-031 [P0] Each verdict has an evidence note (transcript snippet, command output, or explicit skip reason)
+- [ ] CHK-032 [P0] All FAIL verdicts have defect notes capturing observed vs expected behaviour
+- [ ] CHK-033 [P1] Stateful scenarios (058, 060) have sandbox isolation evidence recorded
+- [ ] CHK-034 [P1] Scenario 096 evidence covers all four sub-steps: includeTrace=true, no includeTrace with env unset, env override, and all 7 score sub-fields verified
+- [ ] CHK-035 [P1] Scenario 145 evidence covers both flag states: header-injected ([parent > child — desc] format, truncated at 100 chars) and header-suppressed
+- [ ] CHK-036 [P1] Any SKIP verdicts have explicit reasons (scenario file not found, sandbox not available, corpus threshold not met, etc.)
 <!-- /ANCHOR:testing -->
 
 ---
@@ -71,10 +75,9 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-040 [P0] No hardcoded secrets, tokens, or credentials in any phase 015 document
-- [x] CHK-041 [P0] Sandbox corpus used for 058 and 060 does not contain real production memory data — 058 and 060 NOT executed (blocked); no sandbox mutations performed
-- [x] CHK-042 [P1] Env var changes for 096 and 145 are restored to baseline values after evidence capture — no env var changes made; env state preserved
-- [ ] CHK-043 [P1] 060 entity linker density guard prevents runaway edge creation — density metrics captured and within configured threshold — FAIL: 060 blocked, not executed
+- [ ] CHK-040 [P0] No secrets or credentials added to phase 015 documents
+- [ ] CHK-041 [P0] Stateful scenario execution (058, 060) confined to sandbox — no production environment modified
+- [ ] CHK-042 [P1] Env var state restored to baseline after scenarios 096 and 145 complete
 <!-- /ANCHOR:security -->
 
 ---
@@ -82,10 +85,8 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [ ] CHK-050 [P1] spec.md, plan.md, tasks.md, and checklist.md are synchronized — no contradictions between test IDs, scenario names, or feature links across documents
-- [ ] CHK-051 [P1] All ANCHOR blocks present and correctly named in all four files
-- [ ] CHK-052 [P1] YAML frontmatter complete in all four files — title, description, trigger_phrases (4 each), importance_tier, and contextType fields present
-- [ ] CHK-053 [P2] Findings and execution evidence saved to `memory/` via `generate-context.js` after phase completion
+- [ ] CHK-050 [P1] spec.md, plan.md, tasks.md, and checklist.md are synchronised — no contradictions in scenario names or IDs across documents
+- [ ] CHK-051 [P2] implementation-summary.md updated with final verdict summary after all scenarios complete
 <!-- /ANCHOR:docs -->
 
 ---
@@ -93,9 +94,8 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [ ] CHK-060 [P1] Target folder `015-retrieval-enhancements/` contains only the four spec-kit files — no stray artifacts or temp files at root level
-- [ ] CHK-061 [P1] Any scratch or temp content placed in `scratch/` subdirectory only
-- [ ] CHK-062 [P2] Phase 015 folder registered or referenced in the parent `014-manual-testing-per-playbook/` index if one exists
+- [ ] CHK-060 [P1] Only the expected phase documents exist in `015-retrieval-enhancements/` — no stray temp files at folder root
+- [ ] CHK-061 [P2] Evidence files placed in `scratch/` subdirectory only
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -105,12 +105,11 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 9 | 7/9 |
-| P1 Items | 13 | 6/13 |
-| P2 Items | 2 | 0/2 |
+| P0 Items | 16 | 0/16 |
+| P1 Items | 8 | 0/8 |
+| P2 Items | 3 | 0/3 |
 
-**Verification Date**: 2026-03-21
-**Note**: CHK-030 and CHK-031 marked [x] with PARTIAL evidence noted inline. CHK-026, CHK-028 blocked by sandbox prerequisites. CHK-029 and others PARTIAL due to corpus/runtime constraints.
+**Verification Date**: Not Started
 <!-- /ANCHOR:summary -->
 
 ---

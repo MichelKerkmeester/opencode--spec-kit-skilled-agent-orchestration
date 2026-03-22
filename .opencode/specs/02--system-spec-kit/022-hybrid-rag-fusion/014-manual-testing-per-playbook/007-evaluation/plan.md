@@ -1,17 +1,16 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook evaluation phase [template:level_1/plan.md]"
-description: "Phase 007 defines the execution plan for two evaluation manual tests in the Spec Kit Memory system. It sequences preconditions, flag verification, eval dataset setup, execution, evidence capture, and review-protocol verdicting for evaluation-focused scenarios."
+title: "Implementation Plan: manual-testing-per-playbook evaluation phase"
+description: "Execute 2 evaluation scenarios from the manual testing playbook covering ablation studies and reporting dashboard."
 trigger_phrases:
-  - "evaluation execution plan"
-  - "phase 007 manual tests"
-  - "ablation dashboard verdict plan"
-  - "hybrid rag evaluation review"
+  - "evaluation test plan"
+  - "ablation test plan"
+  - "dashboard test plan"
 importance_tier: "high"
 contextType: "general"
 ---
 # Implementation Plan: manual-testing-per-playbook evaluation phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
@@ -23,13 +22,13 @@ contextType: "general"
 
 | Aspect | Value |
 |--------|-------|
-| **Language** | Markdown |
-| **Framework** | spec-kit L1 |
-| **Storage** | Filesystem spec folder + linked evidence artifacts |
-| **Testing** | manual + MCP |
+| **Language/Stack** | MCP tool calls via Spec Kit Memory |
+| **Framework** | Manual testing playbook |
+| **Storage** | SQLite (eval.db, memory_index.db) |
+| **Testing** | Manual execution per playbook scenario |
 
 ### Overview
-This plan converts the evaluation scenarios in the manual testing playbook into an ordered execution workflow for Phase 007. The phase covers the ablation study first (which requires `SPECKIT_ABLATION=true` and a valid eval dataset), then the reporting dashboard (which requires prior eval run data in the database). Both scenarios are non-destructive read or measurement operations.
+Execute 2 manual test scenarios for the evaluation category. EX-026 runs an ablation study measuring per-channel Recall@20 deltas, requiring SPECKIT_ABLATION=true. EX-027 generates the reporting dashboard in both text and JSON formats, requiring prior eval run data. EX-026 should run before EX-027 so the dashboard has data to display.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -38,16 +37,16 @@ This plan converts the evaluation scenarios in the manual testing playbook into 
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Exact prompts, command sequences, and pass criteria were extracted from [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md).
-- [x] Feature mappings for both evaluation tests were confirmed against the cross-reference index and evaluation feature files.
-- [x] Verdict rules from [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) were loaded for PASS/PARTIAL/FAIL handling.
-- [ ] `SPECKIT_ABLATION=true` is confirmed active and the `retrieval-channels-smoke` eval dataset is available before EX-026 execution.
+- [ ] MCP server running and healthy (memory_health returns OK)
+- [ ] SPECKIT_ABLATION=true confirmed in environment
+- [ ] Ground truth queries exist for ablation evaluation
+- [ ] Playbook scenario files accessible for reference
 
 ### Definition of Done
-- [ ] Both evaluation scenarios have execution evidence tied to the exact documented prompt and command sequence.
-- [ ] Every scenario has a verdict and rationale using the review protocol acceptance rules.
-- [ ] Coverage is reported as 2/2 scenarios for Phase 007 with no skipped test IDs.
-- [ ] Ablation flag and eval dataset state are restored or explicitly documented before closeout.
+- [ ] Both scenarios executed with pass/fail verdicts
+- [ ] Evidence captured for each scenario
+- [ ] Results recorded in tasks.md and checklist.md
+- [ ] implementation-summary.md completed with findings
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -56,16 +55,15 @@ This plan converts the evaluation scenarios in the manual testing playbook into 
 ## 3. ARCHITECTURE
 
 ### Pattern
-Manual evaluation test execution pipeline with review-gated evidence collection.
+Manual test execution following playbook-defined scenarios.
 
 ### Key Components
-- **Preconditions pack**: Playbook, review protocol, feature catalog links, runtime baseline, `SPECKIT_ABLATION` flag state, and eval dataset availability.
-- **Execution layer**: Manual operator actions plus MCP calls to `eval_run_ablation` and `eval_reporting_dashboard`.
-- **Evidence bundle**: Tool outputs, per-channel delta tables, dashboard JSON/text outputs, and ablation metric snapshots captured per scenario.
-- **Verdict layer**: Review protocol checks that classify each scenario as PASS, PARTIAL, or FAIL.
+- **Playbook scenarios**: 2 files in `../../manual_testing_playbook/07--evaluation/`
+- **MCP tools under test**: eval_run_ablation, eval_reporting_dashboard
+- **Evidence capture**: Tool output saved as verdict evidence
 
 ### Data Flow
-`preconditions -> verify flag + dataset -> execute exact prompt/commands -> capture evidence -> apply verdict rules`
+Read playbook scenario -> Verify preconditions (flag, data) -> Execute MCP tool call -> Compare response to expected behavior -> Record pass/fail verdict -> Capture evidence
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -73,21 +71,25 @@ Manual evaluation test execution pipeline with review-gated evidence collection.
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Preconditions
-- [ ] Verify source documents are open: playbook, review protocol, and linked evaluation feature files.
-- [ ] Confirm MCP runtime access for `eval_run_ablation` and `eval_reporting_dashboard`.
-- [ ] Verify `SPECKIT_ABLATION=true` is set in the runtime environment before attempting EX-026.
-- [ ] Confirm the `retrieval-channels-smoke` eval dataset exists and is populated; document its location in evidence.
-- [ ] Confirm `eval_metric_snapshots` and `eval_channel_results` tables contain prior run data for EX-027 dashboard completeness.
+### Phase 1: Pre-flight
+- [ ] Verify MCP server health
+- [ ] Confirm SPECKIT_ABLATION=true is set
+- [ ] Confirm ground truth queries exist for ablation
+- [ ] Check eval database for prior run data (for EX-027)
 
-### Phase 2: Non-Destructive Tests
-- [ ] Run EX-026 with channels `["semantic","keyword","graph"]` and `storeResults:true`, then follow with `eval_reporting_dashboard({ format:"json", limit:10 })` to confirm the ablation results are queryable.
-- [ ] Run EX-027 in both text format and JSON format to confirm trend/channel/summary data is present in each output variant.
+### Phase 2: Ablation Scenario (EX-026)
+- [ ] EX-026: Run eval_run_ablation with channels [vector, bm25, graph] and storeResults:true
+- [ ] Verify per-channel Recall@20 deltas in response
+- [ ] Confirm results stored in eval_metric_snapshots
 
-### Phase 3: Evidence Collection and Verdict
-- [ ] For each scenario, capture prompt, exact command sequence, raw output, expected signals, and reviewer notes.
-- [ ] Apply the review protocol acceptance checks: preconditions satisfied, prompt/commands executed as written, expected signals present, evidence readable, outcome rationale explicit.
-- [ ] Assign PASS, PARTIAL, or FAIL per scenario and summarize phase coverage as 2/2 scenarios with linked evidence references.
+### Phase 3: Dashboard Scenario (EX-027)
+- [ ] EX-027: Run eval_reporting_dashboard with format:text
+- [ ] EX-027: Run eval_reporting_dashboard with format:json
+- [ ] Verify both outputs contain sprint/channel trend data
+
+### Phase 4: Wrap-up
+- [ ] Record all verdicts in tasks.md and checklist.md
+- [ ] Complete implementation-summary.md with findings
 <!-- /ANCHOR:phases -->
 
 ---
@@ -95,10 +97,11 @@ Manual evaluation test execution pipeline with review-gated evidence collection.
 <!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
-| Test ID | Scenario Name | Exact Prompt | Execution Type (manual/MCP) |
-|---------|---------------|--------------|-----------------------------|
-| EX-026 | Ablation studies (eval_run_ablation) | `Run ablation on retrieval channels` | MCP |
-| EX-027 | Reporting dashboard (eval_reporting_dashboard) | `Generate the latest dashboard report` | MCP |
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Manual | Each of the 2 evaluation scenarios | MCP tool calls |
+| Verification | Response structure and content | Visual inspection of tool output |
+| Evidence | Capture tool responses | Copy/paste tool output |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -108,12 +111,10 @@ Manual evaluation test execution pipeline with review-gated evidence collection.
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Internal | Green | Exact prompts, commands, evidence targets, and pass criteria cannot be verified |
-| [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Internal | Green | Verdicts and coverage rules cannot be applied consistently |
-| [`../../feature_catalog/07--evaluation/`](../../feature_catalog/07--evaluation/) | Internal | Green | Test-to-feature context and review triage lose their canonical reference |
-| MCP runtime with `SPECKIT_ABLATION=true` | Internal | Yellow | EX-026 returns disabled-flag error and no metrics are produced |
-| `retrieval-channels-smoke` eval dataset | Internal | Yellow | EX-026 ablation run cannot execute against a valid channel set |
-| Populated `eval_metric_snapshots` and `eval_channel_results` tables | Internal | Yellow | EX-027 dashboard returns empty sprint list instead of trend data |
+| MCP server | Internal | Green | Cannot execute any scenarios |
+| SPECKIT_ABLATION=true | Internal | Yellow | EX-026 returns disabled-flag error |
+| Ground truth queries | Internal | Yellow | Ablation cannot compute Recall@20 without ground truth |
+| Prior eval run data | Internal | Yellow | EX-027 dashboard returns empty sprint list |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -121,8 +122,53 @@ Manual evaluation test execution pipeline with review-gated evidence collection.
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Ablation flag changes or eval dataset modifications leave the evaluation environment in a state that could taint later scenarios.
-- **Procedure**: Restore the original `SPECKIT_ABLATION` flag value, discard any ablation metric snapshots written to `eval_metric_snapshots` during testing (negative timestamp IDs), and rerun only the affected scenario after the baseline database state is confirmed clean.
+- **Trigger**: Not applicable (evaluation tools are non-destructive read/measure operations)
+- **Procedure**: Ablation metric snapshots written during EX-026 can be identified by timestamp and removed if needed; no other data mutations occur
 <!-- /ANCHOR:rollback -->
 
 ---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```
+Phase 1 (Pre-flight) --> Phase 2 (Ablation EX-026) --> Phase 3 (Dashboard EX-027) --> Phase 4 (Wrap-up)
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Pre-flight | None | Ablation, Dashboard |
+| Ablation | Pre-flight | Dashboard (populates eval data) |
+| Dashboard | Ablation | Wrap-up |
+| Wrap-up | Dashboard | None |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Pre-flight | Low | 5 minutes |
+| Ablation (1 scenario) | Medium | 10 minutes |
+| Dashboard (1 scenario) | Low | 10 minutes |
+| Wrap-up | Low | 5 minutes |
+| **Total** | | **~30 minutes** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+- Not applicable (non-destructive evaluation operations)
+
+### Rollback Procedure
+- Not applicable (no persistent state changes beyond eval snapshots)
+
+### Data Reversal
+- **Has data migrations?** No
+- **Reversal procedure**: Eval metric snapshots from EX-026 can be identified by timestamp if cleanup needed
+<!-- /ANCHOR:enhanced-rollback -->

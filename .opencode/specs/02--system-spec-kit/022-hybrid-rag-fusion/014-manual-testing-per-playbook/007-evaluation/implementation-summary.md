@@ -1,16 +1,16 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
-description: "Phase 007 evaluation manual testing documentation packet — spec.md, plan.md, tasks.md, and checklist.md created and aligned to template standards."
+title: "Implementation Summary: manual-testing-per-playbook evaluation phase"
+description: "Post-execution summary for 2 evaluation scenarios. To be completed after test execution."
 trigger_phrases:
-  - "evaluation implementation summary"
-  - "phase 007 summary"
-  - "manual testing evaluation"
-importance_tier: "normal"
+  - "evaluation summary"
+  - "evaluation results"
+  - "ablation dashboard results"
+importance_tier: "high"
 contextType: "general"
 ---
 # Implementation Summary
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
@@ -21,11 +21,8 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 007-evaluation |
-| **Completed** | 2026-03-21 |
-| **Level** | 1 |
-| **Scenarios** | 2/2 verdicted |
-| **EX-026 Verdict** | PARTIAL |
-| **EX-027 Verdict** | PASS |
+| **Completed** | Not Started |
+| **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -33,20 +30,14 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase 007 (evaluation) manual testing documentation packet isolating playbook scenarios for the evaluation feature catalog category. The packet maps each assigned test ID to its feature catalog entry and preserves exact prompts, command sequences, evidence expectations, and verdict criteria from the canonical playbook.
+Not yet executed. This section will be completed after both evaluation scenarios have been run.
 
-### Documentation Packet
+### Scenario Results
 
-Four template-aligned files provide structured per-phase test documentation so operators can execute, evidence, and review evaluation scenarios without re-reading the monolithic playbook.
-
-### Files Changed
-
-| File | Action | Purpose |
-|------|--------|---------|
-| spec.md | Created | Phase requirements, test inventory, feature catalog links, and acceptance criteria |
-| plan.md | Created | Execution plan with preconditions, evidence capture, and verdict pipeline |
-| tasks.md | Created | Task tracker for setup, execution, and verification work |
-| checklist.md | Created | QA verification checklist with P0/P1/P2 priority items |
+| Scenario ID | Scenario Name | Verdict | Notes |
+|-------------|---------------|---------|-------|
+| EX-026 | Ablation studies (eval_run_ablation) | PENDING | |
+| EX-027 | Reporting dashboard (eval_reporting_dashboard) | PENDING | |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -54,7 +45,7 @@ Four template-aligned files provide structured per-phase test documentation so o
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Documentation generated via parallel agent delegation from the parent 014-manual-testing-per-playbook spec, then structurally aligned to system-spec-kit Level 1 templates with Level 2 checklist validation.
+Not yet executed.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -64,8 +55,7 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 
 | Decision | Why |
 |----------|-----|
-| Level 1 spec with checklist | Documentation-only packet needs structured tracking but not full Level 2 architecture sections |
-| Template alignment post-generation | Agents produced 4 structural variants for checklist.md; batch alignment ensured 100% template compliance |
+| Not yet executed | |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -75,14 +65,9 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 
 | Check | Result |
 |-------|--------|
-| spec.md section 2 header | PASS — `## 2. PROBLEM & PURPOSE` |
-| spec.md Parent link format | PASS — backtick-wrapped with link |
-| checklist.md anchor count | PASS — exactly 8 anchors |
-| checklist.md no overview section | PASS — no ANCHOR:overview |
-| checklist.md no standalone P0/P1 headers | PASS — priority is per-item only |
-| EX-026 MCP execution | PARTIAL — SPECKIT_ABLATION=false; tool structure valid; channel alias mismatch found |
-| EX-027 MCP execution | PASS — both format:text and format:json succeed without error |
-| Evidence captured | PASS — scratch/execution-evidence.md with 5 MCP response artifacts |
+| All scenarios executed | PENDING |
+| Evidence captured | PENDING |
+| Deviations documented | PENDING |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -90,10 +75,5 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **EX-026 PARTIAL** — `SPECKIT_ABLATION=true` must be set to enable ablation execution. The tool infrastructure is confirmed valid; channel enum mapping corrected (`semantic`→`vector`, `keyword`→`bm25`). Re-run with flag enabled to achieve PASS.
-2. **EX-027 empty DB** — Dashboard executes correctly but returns 0 eval runs. Trend/channel data will populate after a successful EX-026 ablation run.
-3. **Playbook alias mismatch** — EX-026 playbook specifies `["semantic","keyword","graph"]`; MCP schema requires `["vector","bm25","graph"]`. Playbook documentation should be corrected.
-4. **Coverage audit pending** — Cross-reference validation against the full playbook index has not been run for this individual phase.
+Not yet executed. Limitations will be documented after test execution.
 <!-- /ANCHOR:limitations -->
-
----

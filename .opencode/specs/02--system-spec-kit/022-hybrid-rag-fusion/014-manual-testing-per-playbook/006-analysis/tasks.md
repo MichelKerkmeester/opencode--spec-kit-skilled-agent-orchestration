@@ -1,17 +1,16 @@
 ---
-title: "Tasks: manual-testing-per-playbook analysis phase [template:level_1/tasks.md]"
-description: "Task Format: T### [P?] Description (file path)"
+title: "Tasks: manual-testing-per-playbook analysis phase"
+description: "7 manual test scenarios for analysis category. One task per scenario ID."
 trigger_phrases:
   - "analysis tasks"
-  - "phase 006 tasks"
-  - "causal graph testing tasks"
-  - "tasks core"
+  - "analysis test tasks"
+  - "causal graph tasks"
 importance_tier: "high"
 contextType: "general"
 ---
 # Tasks: manual-testing-per-playbook analysis phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -26,7 +25,7 @@ contextType: "general"
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
-**Task Format**: `T### [P?] Description (file path)`
+**Task Format**: `T### [P?] Description (scenario ID)`
 <!-- /ANCHOR:notation -->
 
 ---
@@ -34,9 +33,10 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Extract analysis prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] T002 Confirm feature links for EX-019, EX-020, EX-021, EX-022, EX-023, EX-024, and EX-025 in `../../feature_catalog/06--analysis/`
-- [x] T003 [P] Prepare sandbox checkpoint and agree on `specFolder`/`taskId` values for EX-023/EX-024 before execution
+- [ ] T001 Verify MCP server health (memory_health)
+- [ ] T002 Confirm test memories exist for causal operations
+- [ ] T003 Create named checkpoint for EX-021 sandbox
+- [ ] T004 Agree on specFolder and taskId for EX-023/EX-024
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -44,12 +44,14 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Draft `spec.md` with metadata, scope table, and seven playbook-derived requirements
-- [x] T005 Draft `plan.md` with readiness gates, execution phases, and testing strategy table
-- [x] T006 Draft `tasks.md` with phase breakdown and completion criteria
-- [x] T007 Draft `checklist.md` with P0/P1/P2 verification items for the analysis phase
-- [x] T008 Add evidence references and verdict outcomes after manual execution
-- [x] T009 [P] Resolve open questions for EX-021 sandbox target and EX-023/EX-024 shared taskId
+- [ ] T005 Execute EX-019: Causal edge creation (memory_causal_link)
+- [ ] T006 Execute EX-020: Causal graph statistics (memory_causal_stats)
+- [ ] T007 Execute EX-022: Causal chain tracing (memory_drift_why)
+- [ ] T008 Execute EX-023: Epistemic baseline capture (task_preflight)
+- [ ] T009 Execute EX-024: Post-task learning measurement (task_postflight)
+- [ ] T010 Execute EX-025: Learning history (memory_get_learning_history)
+- [ ] T011 Confirm sandbox isolation and checkpoint before EX-021
+- [ ] T012 Execute EX-021: Causal edge deletion (memory_causal_unlink)
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -57,9 +59,8 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T010 Run the seven Phase 006 scenarios following `plan.md`
-- [x] T011 Validate documentation structure and required anchors
-- [x] T012 Update `implementation-summary.md` when execution and verification are complete
+- [ ] T013 Record all verdicts in checklist.md with evidence
+- [ ] T014 Complete implementation-summary.md with findings
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -67,9 +68,10 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]`
-- [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed
+- [ ] All 7 scenario tasks (T005-T012) marked `[x]`
+- [ ] No `[B]` blocked tasks remaining
+- [ ] Verdicts and evidence recorded in checklist.md
+- [ ] implementation-summary.md completed
 <!-- /ANCHOR:completion -->
 
 ---
@@ -79,6 +81,6 @@ contextType: "general"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+- **Parent**: See `../spec.md`
 <!-- /ANCHOR:cross-refs -->
-
----

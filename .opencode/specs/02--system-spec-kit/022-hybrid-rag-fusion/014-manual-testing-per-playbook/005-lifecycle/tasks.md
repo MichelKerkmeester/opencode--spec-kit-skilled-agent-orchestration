@@ -1,18 +1,16 @@
 ---
-title: "Tasks: manual-testing-per-playbook lifecycle phase [template:level_1/tasks.md]"
-description: "Task Format: T### [P?] Description (file path)"
+title: "Tasks: manual-testing-per-playbook lifecycle phase"
+description: "Task tracker for Phase 005 lifecycle scenarios. One task per scenario (EX-015, EX-016, EX-017, EX-018, 097, 100, 114, 124, 134, 144), all pending."
 trigger_phrases:
-  - "lifecycle tasks"
+  - "lifecycle phase tasks"
   - "phase 005 tasks"
-  - "checkpoint testing tasks"
-  - "ingest lifecycle tasks"
-  - "tasks core"
-importance_tier: "high"
+  - "checkpoint lifecycle tasks"
+importance_tier: "normal"
 contextType: "general"
 ---
 # Tasks: manual-testing-per-playbook lifecycle phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -27,7 +25,7 @@ contextType: "general"
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
-**Task Format**: `T### [P?] Description (file path)`
+**Task Format**: `T### [P?] Description`
 <!-- /ANCHOR:notation -->
 
 ---
@@ -35,9 +33,11 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Extract lifecycle prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] T002 Confirm feature links for EX-015, EX-016, EX-017, EX-018, 097, 114, 124, 134, and 144 in `../../feature_catalog/05--lifecycle/`
-- [x] T003 [P] Prepare sandbox prerequisites: disposable spec folder, seed markdown files, test database, and checkpoint naming convention `pre-[test-id]-[action]`
+- [ ] T001 Read playbook context for 05--lifecycle (`../scratch/context-playbook.md` §05--lifecycle)
+- [ ] T002 Read feature catalog context for 05--lifecycle (`../scratch/context-feature-catalog.md` §05--lifecycle)
+- [ ] T003 Verify MCP server is running and accepting tool calls
+- [ ] T004 Run baseline `checkpoint_list` to note existing checkpoints
+- [ ] T005 Run baseline `memory_list` to note current memory count
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -45,11 +45,31 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Draft `spec.md` with metadata, scope table, and nine playbook-derived requirements
-- [x] T005 Draft `plan.md` with readiness gates, execution phases, and testing strategy table
-- [x] T006 Draft `tasks.md` with phase-separated task list covering setup, execution, and verification
-- [x] T007 Draft `checklist.md` with P0/P1/P2 items for scenario documentation quality, sandbox safety, and execution evidence
-- [x] T008 [P] Resolve open questions: sandbox spec folder path, restart procedure for 097 requeue, and DB parity evidence format for 124
+### Checkpoint Group (run in order)
+
+- [ ] T006 Execute EX-015 — Checkpoint creation: invoke checkpoint_create with unique name; capture output
+- [ ] T007 Record EX-015 verdict: PASS / PARTIAL / FAIL
+- [ ] T008 Execute EX-016 — Checkpoint listing: invoke checkpoint_list; verify EX-015 checkpoint present; capture output
+- [ ] T009 Record EX-016 verdict: PASS / PARTIAL / FAIL
+- [ ] T010 Execute EX-017 — Checkpoint restore: invoke checkpoint_restore with EX-015 checkpoint name; capture output
+- [ ] T011 Record EX-017 verdict: PASS / PARTIAL / FAIL
+- [ ] T012 Execute EX-018 — Checkpoint deletion: invoke checkpoint_delete with EX-015 name and confirmName; verify absent from list; capture output
+- [ ] T013 Record EX-018 verdict: PASS / PARTIAL / FAIL
+
+### Async and Server Lifecycle Scenarios
+
+- [ ] T014 Execute 097 — Async ingestion job lifecycle: start job, poll status, confirm completion; capture output at each step
+- [ ] T015 Record 097 verdict: PASS / PARTIAL / FAIL
+- [ ] T016 Execute 114 — Path traversal validation: submit traversal payload; capture rejection response
+- [ ] T017 Record 114 verdict: PASS / PARTIAL / FAIL
+- [ ] T018 Execute 124 — Automatic archival lifecycle coverage: follow setup, trigger archival, capture output
+- [ ] T019 Record 124 verdict: PASS / PARTIAL / FAIL
+- [ ] T020 Execute 134 — Startup pending-file recovery: place pending file, restart server, capture recovery output
+- [ ] T021 Record 134 verdict: PASS / PARTIAL / FAIL
+- [ ] T022 Execute 144 — Advisory ingest lifecycle forecast: invoke forecast tool; capture output
+- [ ] T023 Record 144 verdict: PASS / PARTIAL / FAIL
+- [ ] T024 Execute 100 — Async shutdown with deadline: trigger shutdown, capture output, restart server after
+- [ ] T025 Record 100 verdict: PASS / PARTIAL / FAIL
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -57,17 +77,9 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T009 Run EX-015 and EX-016 (non-destructive checkpoint creation and listing) and capture evidence
-- [x] T010 Run 097 (async ingest job lifecycle) and capture all five state-transition and cancellation evidence
-- [x] T011 [P] Run 114 (path traversal validation) and capture rejection and acceptance evidence
-- [x] T012 [P] Run 134 (startup pending-file recovery) and capture committed-vs-stale divergence evidence
-- [x] T013 [P] Run 144 (advisory ingest lifecycle forecast) and capture forecast field polling evidence
-- [x] T014 Run EX-017 (checkpoint restore) inside sandbox, capturing restore and health evidence; roll back sandbox afterward
-- [x] T015 Run EX-018 (checkpoint deletion — DESTRUCTIVE) inside sandbox only, capturing before/after list evidence; roll back sandbox afterward
-- [x] T016 Run 124 (automatic archival lifecycle — DESTRUCTIVE) inside sandbox only, capturing archive/unarchive parity and protected-tier evidence; roll back sandbox afterward
-- [x] T017 Validate documentation structure and required anchors across all four phase documents
-- [x] T018 Record PASS, PARTIAL, or FAIL verdict per test ID with review-protocol rationale
-- [x] T019 Update `implementation-summary.md` when execution and verification are complete
+- [ ] T026 Fill implementation-summary.md with all 10 verdicts and captured evidence
+- [ ] T027 Check all P0 items in checklist.md
+- [ ] T028 Check P1 items in checklist.md (evidence captured, verdicts recorded)
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -75,11 +87,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]`
-- [x] No `[B]` blocked tasks remaining
-- [x] All nine lifecycle scenarios executed with captured evidence
-- [x] PASS/PARTIAL/FAIL verdict recorded for each of the nine test IDs
-- [x] Destructive tests (EX-018, 124, and the restore step of EX-017) were run sandbox-only only
+- [ ] All tasks T001-T028 marked `[x]`
+- [ ] No `[B]` blocked tasks remaining
+- [ ] All 10 scenarios have recorded verdicts
 <!-- /ANCHOR:completion -->
 
 ---
@@ -89,6 +99,6 @@ contextType: "general"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+- **Playbook**: `../scratch/context-playbook.md` §05--lifecycle
 <!-- /ANCHOR:cross-refs -->
-
----

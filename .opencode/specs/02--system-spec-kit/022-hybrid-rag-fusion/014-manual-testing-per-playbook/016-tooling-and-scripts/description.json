@@ -1,14 +1,17 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/016-tooling-and-scripts",
-  "description": "Feature Specification: 016-tooling-and-scripts manual testing",
+  "description": "Manual testing for 60 tooling-and-scripts scenario IDs including phase workflow, session capturing pipeline quality (M-007a-q), JSON mode hardening (153-A-O), and 20 utility scenarios",
   "keywords": [
-    "feature",
-    "specification",
-    "016-tooling-and-scripts",
-    "manual",
-    "testing"
+    "manual-testing",
+    "tooling-and-scripts",
+    "phase-016",
+    "M-007",
+    "153",
+    "session-capturing",
+    "json-mode",
+    "phase-workflow"
   ],
-  "lastUpdated": "2026-03-21T10:31:34.897Z",
+  "lastUpdated": "2026-03-22T00:00:00.000Z",
   "specId": "016",
   "folderSlug": "tooling-and-scripts",
   "parentChain": [
@@ -19,7 +22,7 @@
   "memorySequence": 0,
   "memoryNameHistory": [],
   "title": "Manual Testing: Tooling and Scripts",
-  "status": "Complete",
-  "importance_tier": "medium",
-  "short_description": "Manual testing for tooling, scripts, and automation features"
+  "status": "Draft",
+  "importance_tier": "high",
+  "short_description": "Manual testing for 60 tooling-and-scripts scenario IDs across 5 groups"
 }

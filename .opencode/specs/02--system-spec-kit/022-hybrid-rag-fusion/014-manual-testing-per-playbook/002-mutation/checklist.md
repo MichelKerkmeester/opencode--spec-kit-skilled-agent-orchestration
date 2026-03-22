@@ -1,17 +1,17 @@
 ---
-title: "Checklist: manual-testing-per-playbook mutation phase [template:level_2/checklist.md]"
-description: "Phase 002 QA verification checklist for the mutation manual test packet. Covers pre-execution sandbox setup, scenario execution, destructive test safety gates, evidence completeness, and documentation closure."
+title: "Verification Checklist: manual-testing-per-playbook mutation phase [template:level_2/checklist.md]"
+description: "Verification checklist for phase 002 mutation: 9 scenarios (EX-006, EX-007, M-008, EX-008, EX-009, EX-010, 085, 101, 110) — all items unchecked, awaiting execution."
 trigger_phrases:
   - "mutation checklist"
   - "phase 002 checklist"
   - "mutation test verification"
   - "hybrid rag mutation qa"
-importance_tier: "high"
-contextType: "general"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Verification Checklist: manual-testing-per-playbook mutation phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
@@ -32,21 +32,23 @@ contextType: "general"
 ## Pre-Implementation
 
 ### Source Documents
-- [x] CHK-001 [P0] Playbook at `../../manual_testing_playbook/manual_testing_playbook.md` is open and version-checked. — Review protocol §5 loaded (lines 109-191).
-- [x] CHK-002 [P0] Review protocol at `../../manual_testing_playbook/review_protocol.md` is loaded and verdict rules understood. — Embedded in playbook §5; 5 acceptance checks, PASS/PARTIAL/FAIL rules loaded.
-- [x] CHK-003 [P0] All seven mutation feature catalog files in `../../feature_catalog/02--mutation/` are accessible. — All 7 per-feature files read and verified.
+
+- [ ] CHK-001 [P0] Playbook files for 02--mutation confirmed accessible
+- [ ] CHK-002 [P0] Feature catalog files for 02--mutation confirmed accessible
+- [ ] CHK-003 [P0] Review protocol loaded and verdict rules understood
 
 ### Runtime Environment
-- [x] CHK-004 [P0] MCP runtime is running and `memory_save`, `memory_update`, `memory_delete`, `memory_bulk_delete`, `memory_validate`, and checkpoint tools respond. — memory_health: healthy, v1.7.2, vector search available.
-- [x] CHK-005 [P0] Working directory is project root. — Confirmed `/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public`.
-- [x] CHK-006 [P0] Terminal transcript capture (manual execution logging) is enabled. — All tool outputs captured in conversation context; evidence recorded in implementation-summary.md.
+
+- [ ] CHK-004 [P0] MCP runtime healthy — all mutation tools and checkpoint tools respond
+- [ ] CHK-005 [P0] Working directory confirmed at project root
 
 ### Sandbox and Checkpoint Setup
-- [x] CHK-007 [P0] Disposable sandbox spec folder (`specs/test-sandbox-mutation/`) has been created and confirmed to contain only test fixtures. — 6 fixture memories + memory/ and scratch/ directories.
-- [x] CHK-008 [P0] No active checkpoints named `pre-ex008-delete` or `pre-ex009-bulk-delete` exist from a previous run. — checkpoint_list confirmed only `pre-merge-022-023` existed at start.
-- [x] CHK-009 [P0] Sandbox fixture memories for EX-008 (ID 25372) and EX-009 (IDs 25373, 25374 deprecated-tier) are in place. — All indexed successfully.
-- [x] CHK-010 [P1] Sandbox fixture memories for 110 similarity-band saves are in place (ID 25377). — Base content indexed, memory_conflicts table baseline recorded via PE gate.
-- [x] CHK-011 [P1] Fault injection mechanism for 085 is confirmed infeasible from MCP client. Vitest fallback applied (139/139 tests pass). — Does not touch main project database.
+
+- [ ] CHK-006 [P0] Disposable sandbox spec folder created and contains only test fixtures
+- [ ] CHK-007 [P0] No active checkpoints named `pre-ex008-delete` or `pre-ex009-bulk-delete` exist from a previous run
+- [ ] CHK-008 [P0] Sandbox fixture memories for EX-008 are in place
+- [ ] CHK-009 [P0] Sandbox fixture memories for EX-009 (deprecated tier) are in place
+- [ ] CHK-010 [P1] Sandbox fixture memories for 110 similarity-band saves are in place
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -54,21 +56,9 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-### Scenario Fidelity
-- [x] CHK-012 [P0] Each scenario is executed with the exact prompt from the playbook — no paraphrasing or shorthand substitutions. — Tool calls match documented command sequences.
-- [x] CHK-013 [P0] Each command sequence is executed exactly as documented — parameters, argument names, and ordering match the playbook. — EX-006: save→stats→search; EX-007: update→search; EX-008: checkpoint→delete→search; EX-009: checkpoint→bulk_delete→list; EX-010: validate.
-- [x] CHK-014 [P0] For EX-008 and EX-009: the `checkpoint_create` step is confirmed complete (checkpoint visible in `checkpoint_list()`) before the destructive step runs. — pre-ex008-delete (ID 10), pre-ex009-bulk-delete (ID 11) both confirmed.
-- [x] CHK-015 [P0] For 085: vitest suite provides rollback evidence (T192, T194). Not "no-fault" output. — 139/139 tests pass including explicit rollback test cases.
-
-### Evidence Capture
-- [x] CHK-016 [P0] Raw tool output is captured for every command in every scenario. — All MCP tool responses recorded in conversation transcript.
-- [x] CHK-017 [P0] For EX-006: save action type visible — status: "indexed", CREATE action (new memory, no prior match). Quality score: 1.0.
-- [x] CHK-018 [P0] For EX-007: updated title "EX-007 Updated Title: Memory Metadata Test" searchable at rank #1, embedding regenerated. Search output captured.
-- [x] CHK-019 [P0] For EX-008: `memory_search("EX-008 Delete Target")` after delete returns results with IDs 25373/25374/25375/25371/25377 — ID 25372 absent, confirming removal.
-- [x] CHK-020 [P0] For EX-009: `checkpoint_list(specFolder:"test-sandbox-mutation")` shows pre-ex009-bulk-delete (ID 11) + auto-checkpoint (ID 12). Bulk delete response: deleted=3.
-- [x] CHK-021 [P0] For EX-010: `memory_validate` response includes confidence: 0.60, autoPromotion: {attempted: true, promoted: false, reason: "below_threshold: positive_validation_count=1/5"}.
-- [x] CHK-022 [P0] For 085: vitest output captured (139/139 pass). Rollback behavior verified via T192 (atomic save wrapping), T194 (file cleanup on DB failure). MCP runtime healthy throughout.
-- [x] CHK-023 [P0] For 110: CREATE demonstrated (base fixture ID 25377), UPDATE demonstrated (force re-save ID 25416). All 5 PE actions verified via code inspection (prediction-error-gate.ts thresholds) + vitest suite. force:true produces "updated" status.
+- [ ] CHK-040 [P1] Evidence captured for each executed scenario (output excerpt or observation)
+- [ ] CHK-041 [P1] Feature catalog cross-reference verified for each scenario
+- [ ] CHK-042 [P1] PARTIAL verdicts include a root-cause note and remediation suggestion
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -76,21 +66,18 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-### Scenario Verdicts
-- [x] CHK-024 [P0] EX-006 verdict: **PASS** — Indexed and retrievable, no INSUFFICIENT_CONTEXT_ABORT on final save.
-- [x] CHK-025 [P0] EX-007 verdict: **PASS** — Updated title retrievable at rank #1 after memory_update.
-- [x] CHK-026 [P0] EX-008 verdict: **PASS** — Deleted item absent from retrieval, checkpoint exists (ID 10).
-- [x] CHK-027 [P0] EX-009 verdict: **PASS** — Scoped deletions in sandbox (count=3), checkpoint present (IDs 11, 12).
-- [x] CHK-028 [P0] EX-010 verdict: **PASS** — Feedback persisted, confidence/promotion metadata returned.
-- [x] CHK-029 [P0] 085 verdict: **PARTIAL** — Fault injection infeasible; vitest fallback (139/139) + code inspection confirms rollback behavior.
-- [x] CHK-030 [P0] 110 verdict: **PARTIAL** — Code + vitest confirm all 5 thresholds; live MCP demonstrated CREATE + UPDATE; embedding similarity not precisely controllable for all 5 bands.
+Each item below must be marked `[x]` with a verdict (PASS / PARTIAL / FAIL) and an evidence reference before this phase is complete.
 
-### Coverage
-- [x] CHK-031 [P0] Phase 002 coverage confirmed as 7/7 with no skipped test IDs. — EX-006, EX-007, EX-008, EX-009, EX-010, 085, 110 all executed.
-- [x] CHK-032 [P0] Review protocol acceptance checks applied to all seven scenarios. — Preconditions satisfied, prompts/commands executed as documented, expected signals present, evidence readable, outcome rationale explicit.
-- [x] CHK-033 [P1] PARTIAL verdicts triaged:
-  - **085**: Root cause: better-sqlite3 synchronous transactions prevent external fault injection. Remediation: implement server-side test harness with injectable fault callback for future testing.
-  - **110**: Root cause: embedding similarity scores depend on model output and cannot be precisely controlled from MCP client. Remediation: add server-side PE gate integration tests with mock embeddings at exact threshold boundaries.
+- [ ] CHK-020 [P0] EX-006 executed and verdicted — Memory indexing (memory_save)
+- [ ] CHK-021 [P0] EX-007 executed and verdicted — Memory metadata update (memory_update)
+- [ ] CHK-022 [P0] M-008 executed and verdicted — Feature 09 Direct Manual Scenario (Per-memory History Log)
+- [ ] CHK-023 [P0] EX-008 executed and verdicted — Single and folder delete (memory_delete)
+- [ ] CHK-024 [P0] EX-009 executed and verdicted — Tier-based bulk deletion (memory_bulk_delete)
+- [ ] CHK-025 [P0] EX-010 executed and verdicted — Validation feedback (memory_validate)
+- [ ] CHK-026 [P0] 085 executed and verdicted — Transaction wrappers on mutation handlers
+- [ ] CHK-027 [P0] 101 executed and verdicted — memory_delete confirm schema tightening
+- [ ] CHK-028 [P0] 110 executed and verdicted — Prediction-error save arbitration
+- [ ] CHK-029 [P0] All 9 scenarios assigned a verdict — 0 skipped test IDs
 <!-- /ANCHOR:testing -->
 
 ---
@@ -99,19 +86,22 @@ contextType: "general"
 ## Security
 
 ### EX-008 Single Delete
-- [x] CHK-034 [P0] Confirmed execution target is in `specs/test-sandbox-mutation/` — NOT in an active project spec folder.
-- [x] CHK-035 [P0] Checkpoint `pre-ex008-delete` (ID 10) is listed and restorable before delete runs.
-- [x] CHK-036 [P1] Post-execution: sandbox folder explicitly marked as consumed. Checkpoint available for restore if needed.
+
+- [ ] CHK-050 [P0] Confirmed execution target is in sandbox folder — NOT in an active project spec folder
+- [ ] CHK-051 [P0] Checkpoint for EX-008 listed and restorable before delete runs
+- [ ] CHK-052 [P0] Post-execution: deleted item confirmed absent from retrieval
 
 ### EX-009 Bulk Deletion
-- [x] CHK-037 [P0] Confirmed execution target is in `specs/test-sandbox-mutation/` — NOT in an active project spec folder.
-- [x] CHK-038 [P0] Checkpoint `pre-ex009-bulk-delete` (ID 11) is listed and restorable before bulk delete runs.
-- [x] CHK-039 [P0] `specFolder` parameter explicitly set to `test-sandbox-mutation` — unscoped bulk delete not permitted.
-- [x] CHK-040 [P1] Post-execution: sandbox folder explicitly marked as consumed. Auto-checkpoint (ID 12) available for restore.
 
-### 085 Fault Injection
-- [x] CHK-041 [P0] Vitest suite runs against isolated in-memory/temp databases — confirmed no writes to main project database.
-- [x] CHK-042 [P1] Post-execution: `memory_health()` confirms database healthy. No fault artifacts — vitest uses temp databases that are cleaned up automatically.
+- [ ] CHK-053 [P0] Confirmed execution target is in sandbox folder — NOT in an active project spec folder
+- [ ] CHK-054 [P0] Checkpoint for EX-009 listed and restorable before bulk delete runs
+- [ ] CHK-055 [P0] `specFolder` parameter explicitly set to sandbox folder — unscoped bulk delete not permitted
+- [ ] CHK-056 [P1] Post-execution: sandbox folder explicitly marked as consumed
+
+### 085 Transaction / Fault Injection
+
+- [ ] CHK-057 [P0] Test runs against isolated database — no writes to main project database
+- [ ] CHK-058 [P1] Post-execution: `memory_health()` confirms database healthy
 <!-- /ANCHOR:security -->
 
 ---
@@ -119,12 +109,10 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-043 [P0] `spec.md` contains YAML frontmatter, all seven scope table rows with exact prompts and feature catalog links, all seven REQ items, and success criteria SC-001 through SC-005.
-- [x] CHK-044 [P0] `plan.md` contains YAML frontmatter, five execution phases, a testing strategy table with all seven test IDs, rollback procedures for EX-008, EX-009, and 085, and dependency table.
-- [x] CHK-045 [P0] `tasks.md` contains YAML frontmatter, all task phases with T001-T015, completion criteria, and cross-references.
-- [x] CHK-046 [P0] `checklist.md` (this file) contains YAML frontmatter and all anchor blocks.
-- [x] CHK-047 [P1] Open questions from `spec.md` section 7 are resolved (OQ-1 through OQ-4 with detailed answers).
-- [x] CHK-048 [P2] `implementation-summary.md` drafted with execution results, verdicts, and evidence references.
+- [ ] CHK-060 [P0] tasks.md updated with final status for each scenario task
+- [ ] CHK-061 [P0] implementation-summary.md completed with aggregate results
+- [ ] CHK-062 [P0] No placeholder or template text remains in any phase document
+- [ ] CHK-063 [P1] Open questions in spec.md resolved (if any discovered during execution)
 <!-- /ANCHOR:docs -->
 
 ---
@@ -132,10 +120,8 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-049 [P0] Phase folder `002-mutation/` contains only: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`.
-- [x] CHK-050 [P0] No template placeholder text (`<TODO>`, `[PLACEHOLDER]`, `TBD`) remains in any of the four primary files.
-- [x] CHK-051 [P1] All feature catalog links in `spec.md` scope table resolve to existing files under `../../feature_catalog/02--mutation/`.
-- [x] CHK-052 [P2] Evidence artifacts stored in conversation transcript and implementation-summary.md. `scratch/` subfolder available in sandbox but primary evidence is inline.
+- [ ] CHK-070 [P1] Evidence artifacts stored in `scratch/` only
+- [ ] CHK-071 [P2] Memory save triggered after execution to preserve session context
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -145,11 +131,11 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 42 | 42/42 |
-| P1 Items | 8 | 8/8 |
-| P2 Items | 2 | 2/2 |
+| P0 Items | 22 | 0/22 |
+| P1 Items | 8 | 0/8 |
+| P2 Items | 1 | 0/1 |
 
-**Verification Date**: 2026-03-19
+**Verification Date**: —
 <!-- /ANCHOR:summary -->
 
 ---

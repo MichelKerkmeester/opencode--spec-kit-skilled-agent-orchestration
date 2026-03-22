@@ -1,17 +1,16 @@
 ---
-title: "Implementation Plan: 005 lifecycle manual testing"
-description: "This Level 1 plan turns the lifecycle playbook rows into a runnable phase packet. It defines preconditions, sandbox controls, execution order, evidence collection, and review-ready verdict handling for nine lifecycle scenarios."
+title: "Implementation Plan: manual-testing-per-playbook lifecycle phase"
+description: "Execution plan for Phase 005 lifecycle scenarios EX-015, EX-016, EX-017, EX-018, 097, 100, 114, 124, 134, 144. Read playbook context, set up environment, execute scenarios in dependency order, record evidence and verdicts."
 trigger_phrases:
-  - "lifecycle plan"
+  - "lifecycle phase execution plan"
   - "phase 005 plan"
-  - "checkpoint testing"
-  - "ingest lifecycle verification"
-importance_tier: "high"
+  - "checkpoint lifecycle plan"
+importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: 005 lifecycle manual testing
+# Implementation Plan: manual-testing-per-playbook lifecycle phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
@@ -23,13 +22,13 @@ contextType: "general"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown |
-| **Framework** | spec-kit L1 |
-| **Storage** | Filesystem spec folder documentation |
-| **Testing** | manual + MCP |
+| **Tool Layer** | MCP — Spec Kit Memory + server lifecycle |
+| **Scenarios** | EX-015, EX-016, EX-017, EX-018, 097, 100, 114, 124, 134, 144 |
+| **Execution mode** | Manual, dependency-ordered |
+| **Evidence capture** | Inline tool output or screenshot per scenario |
 
 ### Overview
-Translate the lifecycle playbook rows into a single phase 005 execution plan that operators can follow without re-reading the full umbrella packet. The plan keeps execution ordered around preconditions, tool runs, evidence capture, and review-protocol verdicts while isolating destructive lifecycle scenarios inside a disposable sandbox.
+Execute ten Phase 005 lifecycle scenarios. The checkpoint group (EX-015 to EX-018) must run in order because each scenario depends on state from the previous one. The remaining scenarios (097, 100, 114, 124, 134, 144) are executed per playbook ordering, with scenario 100 (server shutdown) run after all other MCP-dependent scenarios to avoid premature termination.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -38,17 +37,16 @@ Translate the lifecycle playbook rows into a single phase 005 execution plan tha
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Parent `../spec.md` and `../plan.md` reviewed for phase 005 scope.
-- [x] Playbook rows for EX-015, EX-016, EX-017, EX-018, 097, 114, 124, 134, and 144 identified.
-- [x] Review protocol acceptance rules available for evidence and verdict formatting.
-- [x] Feature catalog links confirmed for all nine lifecycle scenarios.
-- [x] Sandbox-only requirement acknowledged for destructive tests.
+- [ ] MCP server is running and reachable
+- [ ] At least one indexed memory available (for checkpoint and archival scenarios)
+- [ ] Playbook context file read: `../scratch/context-playbook.md` §05--lifecycle
+- [ ] Feature catalog context file read: `../scratch/context-feature-catalog.md` §05--lifecycle
+- [ ] Execution order understood (checkpoint chain must run EX-015 → EX-016 → EX-017 → EX-018)
 
 ### Definition of Done
-- [ ] `spec.md` and `plan.md` document all nine lifecycle tests with prompt, command, evidence, and PASS criteria.
-- [ ] Execution order separates non-destructive and destructive scenarios.
-- [ ] Destructive steps define sandbox isolation, checkpoint naming, and rollback handling.
-- [ ] Evidence expectations map cleanly to PASS/PARTIAL/FAIL review protocol outcomes.
+- [ ] All 10 scenarios executed and verdicts recorded
+- [ ] All P0 checklist items checked with evidence
+- [ ] implementation-summary.md filled with results
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -57,18 +55,16 @@ Translate the lifecycle playbook rows into a single phase 005 execution plan tha
 ## 3. ARCHITECTURE
 
 ### Pattern
-Manual lifecycle test execution pipeline
+Dependency-ordered manual execution — checkpoint group forms a stateful chain; other scenarios are largely independent
 
 ### Key Components
-- **Preconditions package**: Sandbox spec folder, seed files, and checkpoint naming rules prepared before any lifecycle run.
-- **Operator + MCP runtime**: Human-driven execution that issues the exact playbook prompt and command sequence.
-- **Evidence bundle**: Tool outputs, filesystem checks, logs, and optional DB proofs captured per test ID.
-- **Verdict review**: Review protocol converts collected evidence into PASS, PARTIAL, or FAIL without changing the scenario contract.
+- **MCP runtime**: Hosts checkpoint, ingest, and archival tools
+- **Server lifecycle**: Node.js process start/stop for scenarios 100 and 134
+- **Playbook context**: `../scratch/context-playbook.md` — source of truth for prompts and pass criteria
+- **This spec folder**: Records tasks, checklist, and results
 
 ### Data Flow
-`preconditions -> execute -> evidence -> verdict`
-
-Preconditions are established first so each test starts from a known sandbox state. The operator then executes the exact manual prompt through the MCP runtime, captures the required evidence immediately after each command sequence, and closes the scenario with a verdict that references the playbook PASS rule and review protocol acceptance checks.
+Tester reads playbook → Executes scenarios in dependency order → Captures each tool output → Compares against pass criteria → Records PASS / PARTIAL / FAIL verdict → Fills implementation-summary.md
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -76,29 +72,87 @@ Preconditions are established first so each test starts from a known sandbox sta
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1 Preconditions
-- [ ] Confirm the sandbox spec folder, disposable test database, and seed markdown files needed for checkpoint and ingest scenarios.
-- [ ] Prepare a fresh recovery target for startup and archival drills so committed, stale, archived, and restored states are observable.
-- [ ] Record the checkpoint naming convention `pre-[test-id]-[action]` before any state-changing run.
-- [ ] Verify required MCP tools are reachable: checkpoint, ingest start/status/cancel, health, and any supporting archival or recovery entry points.
+### Phase 1: Setup
+- [ ] Read `../scratch/context-playbook.md` section 05--lifecycle for all 10 scenario definitions
+- [ ] Read `../scratch/context-feature-catalog.md` section 05--lifecycle for feature background
+- [ ] Verify MCP server is running and accepting tool calls
+- [ ] Note current checkpoint list (run `checkpoint_list` as baseline)
+- [ ] Note current memory count (run `memory_list` as baseline)
 
-### Phase 2 Non-Destructive Tests
-- [ ] Run EX-015 and EX-016 first to confirm checkpoint creation and listing on clean sandbox state.
-- [ ] Execute 097, 114, 134, and 144 with evidence capture focused on state transitions, validation errors, recovery roots, and advisory forecast fields.
-- [ ] Treat outputs from these scenarios as baseline evidence for later destructive drills.
-- [ ] Stop and reset the sandbox if any non-destructive prerequisite fails, rather than continuing into restore, delete, or archival changes.
+### Phase 2: Scenario Execution
 
-### Phase 3 Destructive Tests
-- [ ] Run EX-017, EX-018, and 124 only inside a disposable sandbox backed by a fresh test database or checkpoint; never run destructive lifecycle tests against production data.
-- [ ] Create a pre-test checkpoint named `pre-[test-id]-[action]` before each destructive scenario so restore or cleanup starts from a known point.
-- [ ] Treat EX-018 as destructive by definition, and keep restore or archival mutations sandbox-only when validating EX-017 or 124.
-- [ ] After each destructive test, roll back by restoring the pre-test checkpoint or rebuilding the sandbox fixture before starting the next scenario.
+#### Checkpoint Group (must run in order)
 
-### Phase 4 Evidence Collection and Verdict
-- [ ] Capture prompt transcript, command output, and any filesystem, health, DB, or log evidence required by the playbook row.
-- [ ] Evaluate each scenario against the review protocol: preconditions satisfied, commands executed as written, expected signals present, evidence readable, and rationale explicit.
-- [ ] Record a PASS, PARTIAL, or FAIL verdict per test ID, then roll those outcomes into the phase-level lifecycle summary.
-- [ ] Flag any missing evidence or unsafe sandbox handling as a blocker before release-readiness review.
+**EX-015 — Checkpoint creation (checkpoint_create)**
+- [ ] Invoke `checkpoint_create` with a unique name as specified in the playbook
+- [ ] Capture full tool output
+- [ ] Verify checkpoint name is returned and creation is confirmed
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+**EX-016 — Checkpoint listing (checkpoint_list)**
+- [ ] Invoke `checkpoint_list` (no filter, or with specFolder per playbook)
+- [ ] Capture full tool output
+- [ ] Verify checkpoint from EX-015 is present in the list
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+**EX-017 — Checkpoint restore (checkpoint_restore)**
+- [ ] Invoke `checkpoint_restore` with the checkpoint name from EX-015
+- [ ] Capture full tool output
+- [ ] Verify restore completes without error
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+**EX-018 — Checkpoint deletion (checkpoint_delete)**
+- [ ] Invoke `checkpoint_delete` with name and confirmName matching the EX-015 checkpoint
+- [ ] Capture full tool output
+- [ ] Verify checkpoint is deleted and absent from a subsequent `checkpoint_list` call
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+#### Async and Server Lifecycle Scenarios
+
+**097 — Async ingestion job lifecycle**
+- [ ] Invoke `memory_ingest_start` with target file paths per playbook
+- [ ] Poll `memory_ingest_status` at playbook-specified intervals
+- [ ] Capture status output at each poll step
+- [ ] Verify job reaches completed state
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+**114 — Path traversal validation**
+- [ ] Submit a path traversal payload as specified in the playbook
+- [ ] Capture the rejection response
+- [ ] Verify a validation error is returned (not a success)
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+**124 — Automatic archival lifecycle coverage**
+- [ ] Follow playbook setup to ensure eligible memories exist for archival
+- [ ] Trigger or wait for archival per playbook instructions
+- [ ] Capture archival result
+- [ ] Verify targeted memories are archived
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+**134 — Startup pending-file recovery**
+- [ ] Follow playbook setup to place a pending file in the queue before server start
+- [ ] Restart the MCP server
+- [ ] Capture startup output showing pending file recovery
+- [ ] Verify pending file is indexed after startup
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+**144 — Advisory ingest lifecycle forecast**
+- [ ] Invoke the ingest forecast tool as specified in the playbook
+- [ ] Capture full tool output
+- [ ] Verify advisory forecast data is returned
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+**100 — Async shutdown with deadline (run last among MCP scenarios)**
+- [ ] Trigger async server shutdown with deadline per playbook instructions
+- [ ] Capture shutdown output
+- [ ] Verify server exits cleanly within the deadline
+- [ ] Restart MCP server after this scenario if further work is needed
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+### Phase 3: Verification
+- [ ] Transfer verdicts and evidence to implementation-summary.md
+- [ ] Check all P0 items in checklist.md
+- [ ] Check applicable P1 items (evidence captured, verdicts recorded)
 <!-- /ANCHOR:phases -->
 
 ---
@@ -106,17 +160,15 @@ Preconditions are established first so each test starts from a known sandbox sta
 <!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
-| Test ID | Scenario Name | Exact Prompt | Execution Type (manual/MCP) |
-|---------|---------------|--------------|-----------------------------|
-| EX-015 | Checkpoint creation | `Create checkpoint pre-bulk-delete` | manual/MCP |
-| EX-016 | Checkpoint listing | `List checkpoints newest first` | manual/MCP |
-| EX-017 | Checkpoint restore | `Restore checkpoint with merge mode` | manual/MCP |
-| EX-018 | Checkpoint deletion | `Delete stale checkpoint by name` | manual/MCP |
-| 097 | Async ingestion job lifecycle | `Validate memory_ingest_start/status/cancel lifecycle.` | manual/MCP |
-| 114 | Path traversal validation | `Ingest a file using a path with ../ segments and verify rejection` | manual/MCP |
-| 124 | Automatic archival lifecycle coverage | `Validate automatic archival subsystem vector/BM25 parity and protected tier behavior.` | manual/MCP |
-| 134 | Startup pending-file recovery lifecycle coverage | `Validate startup pending-file recovery behavior across committed and stale files.` | manual/MCP |
-| 144 | Advisory ingest lifecycle forecast | `Validate ingest forecast contract and early-progress caveats.` | manual/MCP |
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Manual | EX-015 to EX-018: checkpoint create/list/restore/delete chain | MCP tool calls |
+| Manual | 097: async ingestion job lifecycle | MCP tool calls + polling |
+| Manual | 100: async shutdown with deadline | Server lifecycle |
+| Manual | 114: path traversal validation | MCP tool call |
+| Manual | 124: automatic archival | MCP tool call |
+| Manual | 134: startup pending-file recovery | Server restart |
+| Manual | 144: advisory ingest forecast | MCP tool call |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -126,11 +178,10 @@ Preconditions are established first so each test starts from a known sandbox sta
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Green | Exact prompts, commands, evidence, and PASS rules cannot be reconstructed safely |
-| `../../manual_testing_playbook/manual_testing_playbook.md` §5 Review Protocol | Internal | Green | Verdict and evidence handling may drift from review expectations |
-| `../../feature_catalog/05--lifecycle/` | Internal | Green | Feature traceability for the nine lifecycle scenarios is lost |
-| MCP runtime with checkpoint and ingest tools | Runtime | Green | Lifecycle scenarios cannot be executed or validated as written |
-| Disposable sandbox spec folder and test data | Runtime | Yellow | Destructive tests must pause until isolated fixtures exist |
+| MCP server runtime | Internal | Verify before start | Cannot execute any MCP-dependent scenario |
+| Indexed memory corpus | Internal | Verify before start | Checkpoint and archival scenarios may produce empty results |
+| `../scratch/context-playbook.md` | Internal | Available | Cannot confirm pass criteria without it |
+| EX-015 checkpoint name | Internal (created during execution) | Created in Phase 2 | EX-016, EX-017, EX-018 depend on this |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -138,8 +189,70 @@ Preconditions are established first so each test starts from a known sandbox sta
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Any destructive lifecycle scenario changes the sandbox unexpectedly, evidence becomes inconsistent, or production-adjacent data is touched.
-- **Procedure**: Stop the run, restore the matching `pre-[test-id]-[action]` checkpoint or discard the disposable test database, rebuild the sandbox fixture, and rerun only after the unsafe condition is removed.
+- **Trigger**: EX-017 restore produces unexpected state; scenario 100 leaves server unavailable
+- **Procedure for EX-017**: Record exact output; verify memory state with `memory_list`; escalate if state is corrupt
+- **Procedure for scenario 100**: Restart MCP server cleanly; continue remaining scenarios
 <!-- /ANCHOR:rollback -->
 
 ---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```
+Phase 1 (Setup) ──► Phase 2 (Execution) ──► Phase 3 (Verification)
+
+Within Phase 2:
+EX-015 ──► EX-016 ──► EX-017 ──► EX-018
+097, 114, 124, 134, 144 (independent, after setup)
+100 (run last — shuts down server)
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | MCP server running | Execution |
+| EX-015 | Setup complete | EX-016, EX-017, EX-018 |
+| EX-016 | EX-015 | EX-017, EX-018 |
+| EX-017 | EX-016 | EX-018 |
+| EX-018 | EX-017 | None |
+| 097, 114, 124, 144 | Setup | None (independent) |
+| 134 | Setup | None (requires server restart) |
+| 100 | All other MCP scenarios | Phase closure |
+| Verification | All 10 scenarios executed | Phase closure |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Low | 10-15 minutes |
+| Checkpoint Group (EX-015 to EX-018) | Low-Medium | 20-30 minutes |
+| Async/Server Scenarios (097, 100, 114, 124, 134, 144) | Medium | 40-60 minutes |
+| Verification | Low | 10-15 minutes |
+| **Total** | | **80-120 minutes** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-execution Checklist
+- [ ] Baseline checkpoint list noted before EX-015
+- [ ] Baseline memory count noted before EX-017 (restore may change count)
+- [ ] Scenario 100 scheduled as the last MCP-dependent scenario
+
+### Rollback Procedure
+1. If EX-017 restore corrupts memory state: stop, record exact output, escalate
+2. If scenario 100 terminates server prematurely: restart MCP server; re-run any scenarios that were interrupted
+3. If scenario 134 pending-file setup fails: record PARTIAL and note environment constraint
+4. Record all observed state in implementation-summary.md
+
+### Data Reversal
+- **EX-017 has data side effects?** Yes — restores memory state to checkpoint snapshot
+- **Scenario 100 has data side effects?** No — shutdown does not modify persisted data
+- **Reversal procedure for EX-017**: Create a fresh checkpoint before EX-017 to enable restoration to pre-restore state if needed
+<!-- /ANCHOR:enhanced-rollback -->

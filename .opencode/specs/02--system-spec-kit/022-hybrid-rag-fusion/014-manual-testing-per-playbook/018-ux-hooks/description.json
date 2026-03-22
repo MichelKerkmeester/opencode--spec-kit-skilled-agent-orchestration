@@ -1,14 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/018-ux-hooks",
-  "description": "Feature Specification: manual-testing-per-playbook ux-hooks phase",
+  "description": "Phase 018 UX-hooks manual test packet — eleven scenarios: 103 hook module coverage, 104 save-path parity, 105 success-envelope, 106 barrel sync, 107 confirmName, 166–169 flag-based UX, 179 empty result recovery, 180 result confidence.",
   "keywords": [
-    "feature",
-    "specification",
-    "manual-testing-per-playbook",
     "ux-hooks",
-    "phase"
+    "manual-testing",
+    "mutation-feedback",
+    "checkpoint-confirmname",
+    "feature-flags",
+    "phase-018"
   ],
-  "lastUpdated": "2026-03-21T10:31:34.909Z",
+  "lastUpdated": "2026-03-22T00:00:00.000Z",
   "specId": "018",
   "folderSlug": "ux-hooks",
   "parentChain": [
@@ -19,7 +20,7 @@
   "memorySequence": 0,
   "memoryNameHistory": [],
   "title": "Manual Testing: UX Hooks",
-  "status": "Complete",
+  "status": "Draft",
   "importance_tier": "medium",
-  "short_description": "Manual testing for UX hooks and user interaction trigger features"
+  "short_description": "Manual test execution packet for UX-hooks scenarios 103–107, 166–169, 179, 180"
 }

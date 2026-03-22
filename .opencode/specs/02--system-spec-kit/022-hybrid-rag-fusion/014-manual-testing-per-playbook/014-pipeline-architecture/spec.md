@@ -1,18 +1,17 @@
 ---
-title: "Feature Specification: Manual Testing Playbook Phase 014 Pipeline Architecture"
-description: "This specification captures the per-playbook manual testing scope for the pipeline-architecture category in Spec Kit Memory. It aligns the full phase 014 scenario set with feature catalog references and acceptance criteria so reviewers can execute and score coverage consistently."
+title: "Feature Specification: Manual Testing — Pipeline Architecture (Phase 014)"
+description: "Manual test execution tracking for 18 pipeline architecture scenarios covering 4-stage pipeline refactor, MPAB aggregation, chunk ordering, schema validation, DB path standardisation, cross-process rebinding, and lineage state projection."
 trigger_phrases:
-  - "manual testing"
-  - "pipeline architecture"
-  - "phase 014"
-  - "049"
-  - "146"
-importance_tier: "important"
-contextType: "specification"
+  - "pipeline architecture testing"
+  - "014 pipeline architecture"
+  - "phase 014 manual testing"
+  - "4-stage pipeline refactor test"
+importance_tier: "normal"
+contextType: "implementation"
 ---
-# Feature Specification: Manual Testing Playbook Phase 014 Pipeline Architecture
+# Feature Specification: Manual Testing — Pipeline Architecture (Phase 014)
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
@@ -22,14 +21,14 @@ contextType: "specification"
 
 | Field | Value |
 |-------|-------|
-| **Level** | 1 |
+| **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Complete |
-| **Created** | 2026-03-16 |
-| **Branch** | `main` |
-| **Parent** | [`../spec.md`](../spec.md) |
-| **Predecessor Phase** | `013-memory-quality-and-indexing` |
-| **Successor Phase** | `015-retrieval-enhancements` |
+| **Status** | Not Started |
+| **Created** | 2026-03-22 |
+| **Branch** | `014-manual-testing-per-playbook` |
+| **Parent Spec** | [../spec.md](../spec.md) |
+| **Predecessor** | [013-memory-quality-and-indexing](../013-memory-quality-and-indexing/spec.md) |
+| **Successor** | [015-retrieval-enhancements](../015-retrieval-enhancements/spec.md) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -38,10 +37,10 @@ contextType: "specification"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual test scenarios for pipeline-architecture need structured per-phase documentation so operators can execute the playbook without re-deriving feature intent, scope, or verdict rules. The category spans pipeline flow, scoring safeguards, runtime safety, DB coordination, and lineage recovery, which makes ad hoc execution and review brittle.
+The pipeline architecture category (14--pipeline-architecture) contains 22 features spanning the 4-stage pipeline refactor, chunk-to-memory aggregation, schema validation, DB path standardisation, cross-process rebinding, and lineage projection. These features have never been manually verified against the published playbook scenarios, so conformance is unknown.
 
 ### Purpose
-Create phase 014 specification coverage that ties every assigned pipeline-architecture scenario to its feature-catalog source and explicit acceptance criteria.
+Execute all 18 playbook scenarios for the pipeline architecture category and record PASS/FAIL/SKIP per scenario, producing a verified conformance record.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -50,36 +49,47 @@ Create phase 014 specification coverage that ties every assigned pipeline-archit
 ## 3. SCOPE
 
 ### In Scope
-- **049** - 4-stage pipeline refactor - [`../../feature_catalog/14--pipeline-architecture/01-4-stage-pipeline-refactor.md`](../../feature_catalog/14--pipeline-architecture/01-4-stage-pipeline-refactor.md)
-- **050** - MPAB chunk-to-memory aggregation - [`../../feature_catalog/14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md`](../../feature_catalog/14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md)
-- **051** - Chunk ordering preservation - [`../../feature_catalog/14--pipeline-architecture/03-chunk-ordering-preservation.md`](../../feature_catalog/14--pipeline-architecture/03-chunk-ordering-preservation.md)
-- **052** - Template anchor optimization - [`../../feature_catalog/14--pipeline-architecture/04-template-anchor-optimization.md`](../../feature_catalog/14--pipeline-architecture/04-template-anchor-optimization.md)
-- **053** - Validation signals as retrieval metadata - [`../../feature_catalog/14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md`](../../feature_catalog/14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md)
-- **054** - Learned relevance feedback - [`../../feature_catalog/14--pipeline-architecture/06-learned-relevance-feedback.md`](../../feature_catalog/14--pipeline-architecture/06-learned-relevance-feedback.md)
-- **067** - Search pipeline safety - [`../../feature_catalog/14--pipeline-architecture/07-search-pipeline-safety.md`](../../feature_catalog/14--pipeline-architecture/07-search-pipeline-safety.md)
-- **071** - Performance improvements - [`../../feature_catalog/14--pipeline-architecture/08-performance-improvements.md`](../../feature_catalog/14--pipeline-architecture/08-performance-improvements.md)
-- **076** - Activation window persistence - [`../../feature_catalog/14--pipeline-architecture/09-activation-window-persistence.md`](../../feature_catalog/14--pipeline-architecture/09-activation-window-persistence.md)
-- **078** - Legacy V1 pipeline removal - [`../../feature_catalog/14--pipeline-architecture/10-legacy-v1-pipeline-removal.md`](../../feature_catalog/14--pipeline-architecture/10-legacy-v1-pipeline-removal.md)
-- **080** - Pipeline and mutation hardening - [`../../feature_catalog/14--pipeline-architecture/11-pipeline-and-mutation-hardening.md`](../../feature_catalog/14--pipeline-architecture/11-pipeline-and-mutation-hardening.md)
-- **087** - DB_PATH extraction and import standardization - [`../../feature_catalog/14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md`](../../feature_catalog/14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md)
-- **095** - Strict Zod schema validation - [`../../feature_catalog/14--pipeline-architecture/13-strict-zod-schema-validation.md`](../../feature_catalog/14--pipeline-architecture/13-strict-zod-schema-validation.md)
-- **112** - Cross-process DB hot rebinding - [`../../feature_catalog/14--pipeline-architecture/17-cross-process-db-hot-rebinding.md`](../../feature_catalog/14--pipeline-architecture/17-cross-process-db-hot-rebinding.md)
-- **115** - Transaction atomicity on rename failure - [`../../feature_catalog/14--pipeline-architecture/21-atomic-pending-file-recovery.md`](../../feature_catalog/14--pipeline-architecture/21-atomic-pending-file-recovery.md)
-- **129** - Lineage state active projection and asOf resolution - [`../../feature_catalog/14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md`](../../feature_catalog/14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md)
-- **130** - Lineage backfill rollback drill - [`../../feature_catalog/14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md`](../../feature_catalog/14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md)
-- **146** - Dynamic server instructions at MCP initialization - [`../../feature_catalog/14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md`](../../feature_catalog/14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md)
+- Execute all 18 playbook scenarios listed in section 4
+- Record result (PASS / FAIL / SKIP) and evidence for each scenario
+- Capture any defects found during execution
 
 ### Out of Scope
-- Creating or changing the underlying Spec Kit Memory implementation - this phase only documents manual validation.
-- Rewriting the canonical playbook or review protocol - this phase consumes those sources and points back to them.
-- Executing the scenarios - this phase prepares the documentation operators will run later.
+- Fixing defects (tracked separately)
+- Testing scenarios outside the 14--pipeline-architecture category
+- Automated test creation
+
+### Scenario Inventory
+
+| ID | Playbook File | Title |
+|----|--------------|-------|
+| 049 | 049-4-stage-pipeline-refactor-r6.md | 4-stage pipeline refactor (R6) |
+| 050 | 050-mpab-chunk-to-memory-aggregation-r1.md | MPAB chunk-to-memory aggregation (R1) |
+| 051 | 051-chunk-ordering-preservation-b2.md | Chunk ordering preservation (B2) |
+| 052 | 052-template-anchor-optimization-s2.md | Template anchor optimization (S2) |
+| 053 | 053-validation-signals-as-retrieval-metadata-s3.md | Validation signals as retrieval metadata (S3) |
+| 054 | 054-learned-relevance-feedback-r11.md | Learned relevance feedback (R11) |
+| 067 | 067-search-pipeline-safety.md | Search pipeline safety |
+| 071 | 071-performance-improvements.md | Performance improvements |
+| 076 | 076-activation-window-persistence.md | Activation window persistence |
+| 078 | 078-legacy-v1-pipeline-removal.md | Legacy V1 pipeline removal |
+| 080 | 080-pipeline-and-mutation-hardening.md | Pipeline and mutation hardening |
+| 087 | 087-db-path-extraction-and-import-standardization.md | DB_PATH extraction and import standardisation |
+| 095 | 095-strict-zod-schema-validation-p0-1.md | Strict Zod schema validation (P0-1) |
+| 112 | 112-cross-process-db-hot-rebinding.md | Cross-process DB hot rebinding |
+| 115 | 115-transaction-atomicity-on-rename-failure-p0-5.md | Transaction atomicity on rename failure (P0-5) |
+| 129 | 129-lineage-state-active-projection-and-asof-resolution.md | Lineage state active projection and asOf resolution |
+| 130 | 130-lineage-backfill-rollback-drill.md | Lineage backfill rollback drill |
+| 146 | 146-dynamic-server-instructions-p1-6.md | Dynamic server instructions (P1-6) |
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/014-pipeline-architecture/spec.md` | Create | Level 1 phase specification for the pipeline-architecture manual test slice. |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/014-pipeline-architecture/plan.md` | Create | Level 1 execution plan for prompts, scenario flow, evidence, and verdict handling. |
+| `spec.md` | Rewrite | Clean-slate Level 2 specification for Phase 014 manual test execution |
+| `plan.md` | Rewrite | Execution plan for all 18 scenarios |
+| `tasks.md` | Rewrite | One task per scenario, all pending |
+| `checklist.md` | Rewrite | P0 checklist items per scenario, all unchecked |
+| `implementation-summary.md` | Rewrite | Blank template, Not Started |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -91,28 +101,24 @@ Create phase 014 specification coverage that ties every assigned pipeline-archit
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-049 | Document the `049` scenario for **4-stage pipeline refactor** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS: All 4 stages execute in sequence; stage-4 scores unchanged after completion; FAIL: Stage skipped or stage-4 scores mutated |
-| REQ-050 | Document the `050` scenario for **MPAB chunk-to-memory aggregation** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS: Computed MPAB score matches manual calculation within 0.001 tolerance; FAIL: Score deviation >0.001 or missing chunk contributions |
-| REQ-051 | Document the `051` scenario for **Chunk ordering preservation** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS: Marker sequence in collapsed output matches original save order; FAIL: Markers out of order or missing |
-| REQ-052 | Document the `052` scenario for **Template anchor optimization** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS: Anchor metadata present; scores identical with/without anchor enrichment; FAIL: Anchor metadata missing or score mutation detected |
-| REQ-053 | Document the `053` scenario for **Validation signals as retrieval metadata** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS: All multipliers in [0.8, 1.2]; positive validations increase multiplier; zero validations = 1.0; FAIL: Multiplier out of bounds or zero-validation not neutral |
-| REQ-054 | Document the `054` scenario for **Learned relevance feedback** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS: Triggers learned from helpful validations with queryId; safeguards cap total learned triggers; FAIL: Triggers learned without queryId or safeguard limits exceeded |
-| REQ-067 | Document the `067` scenario for **Search pipeline safety** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS if pipeline safely handles summary/lexical heavy queries with correct filtering and tokenization |
-| REQ-071 | Document the `071` scenario for **Performance improvements** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS if optimized paths are active and heavy query timing shows no regressions compared to baseline |
-| REQ-076 | Document the `076` scenario for **Activation window persistence** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS if activation window timestamp survives restart and warn-only behavior is maintained |
-| REQ-078 | Document the `078` scenario for **Legacy V1 pipeline removal** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS if zero V1 pipeline references exist and all queries execute via V2 pipeline exclusively |
-| REQ-080 | Document the `080` scenario for **Pipeline and mutation hardening** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS if all mutation paths are atomic, error handling leaves no partial state, and cleanup is complete |
-| REQ-087 | Document the `087` scenario for **DB_PATH extraction and import standardization** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS if all entry points resolve the same DB path and env var precedence is consistent across scripts/tools |
-| REQ-095 | Document the `095` scenario for **Strict Zod schema validation** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS if strict mode rejects unknown params and passthrough mode allows them |
-| REQ-112 | Document the `112` scenario for **Cross-process DB hot rebinding** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS if server detects marker file, reinitializes DB, returns current (non-stale) data, and health is healthy |
-| REQ-115 | Document the `115` scenario for **Transaction atomicity on rename failure** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS if pending file survives rename failure and recovery function can find and process it |
-| REQ-129 | Document the `129` scenario for **Lineage state active projection and asOf resolution** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS if memory-lineage-state.vitest.ts completes with all tests passing and the transcript shows both valid and malformed lineage cases |
-| REQ-130 | Document the `130` scenario for **Lineage backfill rollback drill** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS if memory-lineage-backfill.vitest.ts completes with all tests passing and shows both execution and rollback evidence |
-| REQ-146 | Document the `146` scenario for **Dynamic server instructions at MCP initialization** with the linked feature context, playbook prompt, execution notes, evidence expectations, and verdict guidance. | PASS if enabled mode emits overview with counts/channels and disabled mode yields empty string |
-
-### P1 - Required (complete OR user-approved deferral)
-
-No additional P1 requirements. Phase completeness depends on documenting every assigned playbook scenario above.
+| REQ-049 | Execute scenario 049 — 4-stage pipeline refactor (R6) | PASS: all 4 stages execute in sequence; stage-4 scores unchanged after completion. FAIL: stage skipped or stage-4 scores mutated |
+| REQ-050 | Execute scenario 050 — MPAB chunk-to-memory aggregation (R1) | PASS: computed MPAB score matches manual calculation within 0.001 tolerance. FAIL: score deviation >0.001 or missing chunk contributions |
+| REQ-051 | Execute scenario 051 — Chunk ordering preservation (B2) | PASS: marker sequence in collapsed output matches original save order. FAIL: markers out of order or missing |
+| REQ-052 | Execute scenario 052 — Template anchor optimization (S2) | PASS: anchor metadata present; scores identical with and without anchor enrichment. FAIL: anchor metadata missing or score mutation detected |
+| REQ-053 | Execute scenario 053 — Validation signals as retrieval metadata (S3) | PASS: all multipliers in [0.8, 1.2]; positive validations increase multiplier; zero validations = 1.0. FAIL: multiplier out of bounds or zero-validation not neutral |
+| REQ-054 | Execute scenario 054 — Learned relevance feedback (R11) | PASS: triggers learned from helpful validations with queryId; safeguards cap total learned triggers. FAIL: triggers learned without queryId or safeguard limits exceeded |
+| REQ-067 | Execute scenario 067 — Search pipeline safety | PASS: pipeline safely handles summary/lexical heavy queries with correct filtering and tokenisation |
+| REQ-071 | Execute scenario 071 — Performance improvements | PASS: optimised paths active; heavy query timing shows no regressions compared to baseline |
+| REQ-076 | Execute scenario 076 — Activation window persistence | PASS: activation window timestamp survives restart; warn-only behaviour maintained |
+| REQ-078 | Execute scenario 078 — Legacy V1 pipeline removal | PASS: zero V1 pipeline references exist; all queries execute via V2 pipeline exclusively |
+| REQ-080 | Execute scenario 080 — Pipeline and mutation hardening | PASS: all mutation paths atomic; error handling leaves no partial state; cleanup complete |
+| REQ-087 | Execute scenario 087 — DB_PATH extraction and import standardisation | PASS: all entry points resolve the same DB path; env var precedence consistent across scripts and tools |
+| REQ-095 | Execute scenario 095 — Strict Zod schema validation (P0-1) | PASS: strict mode rejects unknown params; passthrough mode allows them |
+| REQ-112 | Execute scenario 112 — Cross-process DB hot rebinding | PASS: server detects marker file; reinitialises DB; returns current non-stale data; health is healthy |
+| REQ-115 | Execute scenario 115 — Transaction atomicity on rename failure (P0-5) | PASS: pending file survives rename failure; recovery function can find and process it |
+| REQ-129 | Execute scenario 129 — Lineage state active projection and asOf resolution | PASS: memory-lineage-state.vitest.ts completes with all tests passing; transcript shows both valid and malformed lineage cases |
+| REQ-130 | Execute scenario 130 — Lineage backfill rollback drill | PASS: memory-lineage-backfill.vitest.ts completes with all tests passing; execution and rollback evidence captured |
+| REQ-146 | Execute scenario 146 — Dynamic server instructions (P1-6) | PASS: enabled mode emits overview with counts and channels; disabled mode yields empty string |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -120,10 +126,9 @@ No additional P1 requirements. Phase completeness depends on documenting every a
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 18 phase-014 pipeline-architecture scenarios are listed with feature-catalog links in scope.
-- **SC-002**: Every documented scenario carries the exact playbook prompt in `plan.md` and the pass/fail-derived acceptance criteria in this spec.
-- **SC-003**: The plan describes the full execution lifecycle as preconditions -> execute -> evidence -> verdict, including sandbox guidance for state-changing scenarios.
-- **SC-004**: Reviewers can determine scenario and feature verdicts using only the generated phase docs plus the canonical playbook and review protocol.
+- **SC-001**: All 18 scenarios executed (PASS, FAIL, or SKIP — no "Not Started" remaining)
+- **SC-002**: Every result has an evidence note (observation, command output, or explicit skip reason)
+- **SC-003**: All FAIL results have a defect note capturing the observed vs expected behaviour
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -133,21 +138,62 @@ No additional P1 requirements. Phase completeness depends on documenting every a
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | `../../manual_testing_playbook/manual_testing_playbook.md` | If prompts or PASS text drift, the phase docs become stale. | Treat the playbook as source of truth and refresh this phase whenever those rows change. |
-| Dependency | `../../manual_testing_playbook/review_protocol.md` | Verdict language can diverge from the reviewer's expected rubric. | Keep feature and release verdict wording aligned to the review protocol's PASS/PARTIAL/FAIL rules. |
-| Dependency | `feature_catalog/14--pipeline-architecture/` | Missing feature context would make scenario intent harder to understand. | Link every scenario to its phase-14 feature file and note shared files such as lineage coverage. |
-| Dependency | MCP runtime, CLI scripts, and test harnesses | Operators need the proper runtime to execute MCP calls, server restarts, and targeted Vitest suites. | Call out execution type, restart expectations, and shell-based suites in the plan. |
-| Risk | State-changing scenarios (`080`, `112`, `115`, `130`) can affect shared environments. | Evidence can be invalidated and working state can drift. | Require disposable sandboxes, checkpoints, and isolated worktrees before those scenarios run. |
-| Risk | Phase assignment drift between prompt text and cross-reference tables | Operators could miss a category-mapped test. | Document the resolved 19-scenario set and record the source mismatch in open questions. |
+| Dependency | Playbook scenario files in scratch/playbook/ | Cannot execute without scenario steps | Locate files before starting |
+| Dependency | `../../manual_testing_playbook/manual_testing_playbook.md` | Exact prompts and pass criteria source | Treat playbook as source of truth |
+| Dependency | `../../manual_testing_playbook/manual_testing_playbook.md` | Verdict rubric (PASS/PARTIAL/FAIL) | Load before any verdict assignment |
+| Dependency | `../../feature_catalog/14--pipeline-architecture/` | Feature context per scenario | Link every scenario to its feature file |
+| Risk | Cross-process rebinding (112) requires multiple processes | May be hard to reproduce locally | Document environment setup steps; use code inspection if live run not possible |
+| Risk | Transaction atomicity (115) requires simulated rename failure | Edge case needs controlled failure injection | Use transaction-manager test hooks in isolated fixture |
+| Risk | Lineage backfill rollback (130) alters DB state | Could corrupt test environment | Run in isolated test DB; record checkpoint before execution |
+| Risk | Destructive scenarios (080, 112, 115, 130) share state | Evidence can be invalidated | Require disposable sandboxes and checkpoints |
 <!-- /ANCHOR:risks -->
 
 ---
 
 <!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS
+## 10. OPEN QUESTIONS
 
-- The request lists 17 explicit IDs but states `TEST COUNT: 18`; this phase resolves the mismatch by including `146`, which is mapped to `14--pipeline-architecture` in the playbook cross-reference. Should future assignments list all category-mapped IDs explicitly?
-- Should any future phase refresh split shared lineage feature references into separate scenario-specific links, or is shared linkage the preferred pattern?
+- Should any future phase refresh split shared lineage feature references (129 and 130 both link to the same feature file) into separate scenario-specific links?
 <!-- /ANCHOR:questions -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: Each scenario execution must complete or time out within 5 minutes
+
+### Reliability
+- **NFR-R01**: Test environment must be reset to clean state before each stateful scenario (080, 112, 115, 130)
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Scenario Boundaries
+- Scenarios that share DB state must be run in isolation or with state reset between runs
+- Scenarios marked P0-N in the playbook title are hard blockers — FAIL results must be escalated immediately
+
+### Error Scenarios
+- If the playbook scenario file is missing: record SKIP with note "scenario file not found"
+- If the MCP server is unavailable: halt execution and record environment issue
+- If sandbox isolation fails for destructive scenarios: mark blocked rather than proceeding
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 18/25 | 18 scenarios, moderate tool surface |
+| Risk | 12/25 | 4 stateful/destructive scenarios need isolation |
+| Research | 4/20 | Playbook steps are pre-defined |
+| **Total** | **34/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
 
 ---

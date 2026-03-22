@@ -1,17 +1,16 @@
 ---
-title: "Tasks: manual-testing-per-playbook pipeline-architecture phase [template:level_1/tasks.md]"
+title: "Tasks: Manual Testing — Pipeline Architecture (Phase 014)"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "pipeline architecture tasks"
   - "phase 014 tasks"
   - "manual testing pipeline tasks"
-  - "tasks core"
-importance_tier: "high"
+importance_tier: "normal"
 contextType: "general"
 ---
-# Tasks: manual-testing-per-playbook pipeline-architecture phase
+# Tasks: Manual Testing — Pipeline Architecture (Phase 014)
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -34,9 +33,10 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Extract pipeline-architecture prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] T002 Confirm feature links for 049, 050, 051, 052, 053, 054, 067, 071, 076, 078, 080, 087, 095, 112, 115, 129, 130, and 146 in `../../feature_catalog/14--pipeline-architecture/`
-- [x] T003 [P] Prepare sandbox prerequisites, checkpoint-backed environment, and evidence capture checklist for destructive scenarios (`080`, `112`, `115`, `130`) in `plan.md`
+- [ ] T001 Load playbook rows for all 18 pipeline architecture scenario IDs from `../../manual_testing_playbook/manual_testing_playbook.md`
+- [ ] T002 Load review protocol verdict rules from `../../manual_testing_playbook/manual_testing_playbook.md`
+- [ ] T003 [P] Confirm feature catalog links for all 18 scenarios in `../../feature_catalog/14--pipeline-architecture/`
+- [ ] T004 Verify MCP runtime access and confirm sandbox availability for destructive scenarios (080, 112, 115, 130)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -44,10 +44,24 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Draft `spec.md` with metadata, scope table, and 18 playbook-derived requirements
-- [x] T005 Draft `plan.md` with readiness gates, execution phases, and testing strategy table
-- [x] T006 Add evidence references and verdict outcomes after manual execution of all 18 scenarios
-- [x] T007 [P] Resolve open questions — confirm whether `146` should appear in future explicit ID assignments and whether shared lineage feature files should be split
+- [ ] T005 Execute scenario 049 — 4-stage pipeline refactor (R6) and record verdict
+- [ ] T006 Execute scenario 050 — MPAB chunk-to-memory aggregation (R1) and record verdict
+- [ ] T007 Execute scenario 051 — Chunk ordering preservation (B2) and record verdict
+- [ ] T008 Execute scenario 052 — Template anchor optimization (S2) and record verdict
+- [ ] T009 Execute scenario 053 — Validation signals as retrieval metadata (S3) and record verdict
+- [ ] T010 Execute scenario 054 — Learned relevance feedback (R11) and record verdict
+- [ ] T011 Execute scenario 067 — Search pipeline safety and record verdict
+- [ ] T012 Execute scenario 071 — Performance improvements and record verdict
+- [ ] T013 Execute scenario 076 — Activation window persistence and record verdict
+- [ ] T014 Execute scenario 078 — Legacy V1 pipeline removal and record verdict
+- [ ] T015 Execute scenario 087 — DB_PATH extraction and import standardisation and record verdict
+- [ ] T016 Execute scenario 095 — Strict Zod schema validation (P0-1) and record verdict
+- [ ] T017 Execute scenario 129 — Lineage state active projection and asOf resolution and record verdict
+- [ ] T018 Execute scenario 146 — Dynamic server instructions (P1-6) and record verdict
+- [ ] T019 Execute scenario 080 — Pipeline and mutation hardening in sandbox and record verdict
+- [ ] T020 Execute scenario 112 — Cross-process DB hot rebinding in sandbox and record verdict
+- [ ] T021 Execute scenario 115 — Transaction atomicity on rename failure in sandbox and record verdict
+- [ ] T022 Execute scenario 130 — Lineage backfill rollback drill in sandbox and record verdict
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -55,10 +69,10 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T008 Run the 14 non-destructive Phase 014 scenarios (049 through 087, 095, 129, 146) following `plan.md` Phase 2
-- [x] T009 Run the 4 destructive Phase 014 scenarios (080, 112, 115, 130) in disposable sandboxes following `plan.md` Phase 3
-- [x] T010 Validate documentation structure and required anchors across `spec.md`, `plan.md`, `tasks.md`, and `checklist.md`
-- [x] T011 Update `implementation-summary.md` when execution and verification are complete
+- [ ] T023 Confirm all 18 scenarios have a verdict (PASS / FAIL / SKIP — no "Not Started" remaining)
+- [ ] T024 Confirm all FAIL verdicts have defect notes with observed vs expected behaviour
+- [ ] T025 Mark all P0 checklist items in checklist.md with evidence
+- [ ] T026 Update implementation-summary.md with final verdict summary
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -66,9 +80,10 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]`
-- [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed
+- [ ] All tasks marked `[x]`
+- [ ] No `[B]` blocked tasks remaining
+- [ ] All 18 scenarios verdicted
+- [ ] checklist.md P0 items verified with evidence
 <!-- /ANCHOR:completion -->
 
 ---
@@ -78,6 +93,5 @@ contextType: "general"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
 <!-- /ANCHOR:cross-refs -->
-
----

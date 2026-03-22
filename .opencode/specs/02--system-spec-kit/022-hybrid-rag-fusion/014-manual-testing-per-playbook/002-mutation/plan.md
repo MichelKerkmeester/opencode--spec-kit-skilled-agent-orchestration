@@ -1,17 +1,17 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook mutation phase [template:level_1/plan.md]"
-description: "Phase 002 defines the execution plan for seven mutation manual tests in the Spec Kit Memory system. It sequences preconditions, sandboxed execution for destructive scenarios, evidence capture, and review-protocol verdicting for mutation-focused scenarios."
+title: "Implementation Plan: manual-testing-per-playbook mutation phase [template:level_2/plan.md]"
+description: "Execution plan for 9 mutation playbook scenarios: preconditions, non-destructive tests, transaction integrity, destructive deletion, and evidence-plus-verdict collection."
 trigger_phrases:
   - "mutation execution plan"
   - "phase 002 manual tests"
   - "memory mutation verdict plan"
   - "hybrid rag mutation review"
-importance_tier: "high"
-contextType: "general"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Implementation Plan: manual-testing-per-playbook mutation phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
@@ -24,12 +24,13 @@ contextType: "general"
 | Aspect | Value |
 |--------|-------|
 | **Language** | Markdown |
-| **Framework** | spec-kit L1 |
+| **Framework** | spec-kit L2 |
 | **Storage** | Filesystem spec folder + linked evidence artifacts |
 | **Testing** | manual + MCP |
 
 ### Overview
-This plan converts the mutation scenarios in the manual testing playbook into an ordered execution workflow for Phase 002. The phase covers non-destructive write and feedback behavior first (EX-006, EX-007, EX-010, 110), then transaction-integrity fault injection (085), and finally the two destructive deletion scenarios (EX-008, EX-009) which require a disposable sandbox and named checkpoints before execution.
+
+This plan converts the 9 mutation scenarios in the manual testing playbook into an ordered execution workflow for phase 002-mutation. The phase covers non-destructive write and feedback behavior first (EX-006, EX-007, EX-010, M-008, 110), then transaction-integrity fault injection (085), the schema-tightening scenario (101), and finally the two destructive deletion scenarios (EX-008, EX-009) which require a disposable sandbox and named checkpoints before execution.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -38,18 +39,21 @@ This plan converts the mutation scenarios in the manual testing playbook into an
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Exact prompts, command sequences, and pass criteria were extracted from [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md).
-- [x] Feature mappings for all 7 mutation tests were confirmed against the cross-reference index and mutation feature files.
-- [x] Verdict rules from [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) were loaded for PASS/PARTIAL/FAIL handling.
-- [x] Sandbox and checkpoint requirements for EX-008 and EX-009 were identified and documented.
-- [x] Disposable sandbox spec folder (`specs/test-sandbox-mutation/`) is prepared with test fixtures for EX-008, EX-009, and 110.
+
+- [ ] Playbook files for 02--mutation are accessible at `../../manual_testing_playbook/02--mutation/`
+- [ ] Feature catalog files for 02--mutation are accessible at `../../feature_catalog/02--mutation/`
+- [ ] Review protocol is loaded from `../../manual_testing_playbook/manual_testing_playbook.md`
+- [ ] MCP runtime is healthy and all mutation tools respond
+- [ ] Disposable sandbox spec folder and named checkpoints prepared for EX-008 and EX-009
+- [ ] Sandbox fixtures for 110 similarity-band saves are in place
 
 ### Definition of Done
-- [x] All 7 mutation scenarios have execution evidence tied to the exact documented prompt and command sequence.
-- [x] Every scenario has a verdict and rationale using the review protocol acceptance rules.
-- [x] Coverage is reported as 7/7 scenarios for Phase 002 with no skipped test IDs.
-- [x] Checkpoint names for EX-008 (`pre-ex008-delete`) and EX-009 (`pre-ex009-bulk-delete`) are confirmed present in `checkpoint_list()` output before the destructive step runs.
-- [x] Any sandbox mutations, fault injections, or similarity-band test records are restored or explicitly documented before closeout.
+
+- [ ] All 9 mutation scenarios have execution evidence tied to the exact documented prompt and command sequence
+- [ ] Every scenario has a verdict (PASS, PARTIAL, or FAIL) with rationale using the review protocol acceptance rules
+- [ ] Coverage is reported as 9/9 scenarios with no skipped test IDs
+- [ ] Checkpoint names for EX-008 and EX-009 confirmed present before destructive steps run
+- [ ] Any sandbox mutations, fault injections, or similarity-band test records are restored or explicitly documented before closeout
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -58,15 +62,18 @@ This plan converts the mutation scenarios in the manual testing playbook into an
 ## 3. ARCHITECTURE
 
 ### Pattern
+
 Manual mutation test execution pipeline with checkpoint-gated destructive scenarios and review-gated evidence collection.
 
 ### Key Components
+
 - **Preconditions pack**: Playbook, review protocol, feature catalog links, MCP runtime baseline, sandbox spec folder, and named checkpoints for destructive scenarios.
 - **Execution layer**: Manual operator actions plus MCP calls to `memory_save`, `memory_update`, `memory_delete`, `memory_bulk_delete`, `memory_validate`, `checkpoint_create`, and `checkpoint_list`.
 - **Evidence bundle**: Tool outputs, checkpoint listings, DB state snapshots, rollback traces, PE arbitration action logs, and fault-injection recovery evidence captured per scenario.
 - **Verdict layer**: Review protocol checks that classify each scenario as PASS, PARTIAL, or FAIL.
 
 ### Data Flow
+
 `preconditions + sandbox setup -> execute exact prompt/commands -> capture evidence -> apply verdict rules`
 <!-- /ANCHOR:architecture -->
 
@@ -76,30 +83,36 @@ Manual mutation test execution pipeline with checkpoint-gated destructive scenar
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Preconditions
-- [x] Verify source documents are open: playbook, review protocol, and linked mutation feature files.
-- [x] Confirm MCP runtime access for `memory_save`, `memory_update`, `memory_delete`, `memory_bulk_delete`, `memory_validate`, and checkpoint tools.
-- [x] Prepare a disposable sandbox spec folder (`specs/test-sandbox-mutation/`) with known fixture memories for EX-008, EX-009, and 110.
-- [x] Record baseline environment state and confirm no active checkpoints from previous runs conflict with planned checkpoint names.
+
+- [ ] Verify source documents are open: playbook, review protocol, and linked mutation feature files
+- [ ] Confirm MCP runtime access for all mutation tools and checkpoint tools
+- [ ] Prepare a disposable sandbox spec folder with known fixture memories for EX-008, EX-009, and 110
+- [ ] Record baseline environment state and confirm no active checkpoints from previous runs conflict with planned names
 
 ### Phase 2: Non-Destructive Tests
-- [x] Run EX-006 to verify the `memory_save` ingestion pipeline, quality gate, template-contract enforcement, and post-save retrievability. **PASS** — ID 25371, CREATE, quality 1.0, searchable.
-- [x] Run EX-007 to verify `memory_update` triggers embedding regeneration on title change and the updated title becomes retrievable. **PASS** — Title updated, embedding regenerated, searchable rank #1.
-- [x] Run EX-010 to verify `memory_validate` persists positive feedback, adjusts confidence, and returns auto-promotion metadata. **PASS** — Confidence 0.60, validationCount 1, autoPromotion metadata returned.
-- [x] Run 110 sequentially across all five similarity bands. **PARTIAL** — CREATE and UPDATE demonstrated live; all 5 bands verified via code inspection + vitest 139/139. `force:true` re-save produced UPDATE (ID 25416).
 
-### Phase 3: Transaction-Integrity Test
-- [x] Run 085 only in an isolated database or sandbox environment. **PARTIAL** — Fault injection infeasible from MCP client (better-sqlite3 synchronous transactions). Vitest fallback: 139/139 tests pass (T192/T194/T191a/b). Code inspection confirms auto-rollback on exception.
-- [x] ~~If the fault injection mechanism is unavailable~~ Fault injection confirmed unavailable; vitest fallback applied per plan risk mitigation.
+- [ ] Run EX-006 — `memory_save` ingestion pipeline, quality gate, and post-save retrievability
+- [ ] Run EX-007 — `memory_update` embedding regeneration and updated-title retrievability
+- [ ] Run EX-010 — `memory_validate` feedback persistence, confidence adjustment, and auto-promotion metadata
+- [ ] Run M-008 — Per-memory history log scenario
+- [ ] Run 110 — Prediction-error save arbitration across all five similarity bands
+
+### Phase 3: Schema and Transaction Tests
+
+- [ ] Run 101 — `memory_delete` confirm schema tightening
+- [ ] Run 085 — Transaction wrapper atomicity; if fault injection is infeasible from MCP client, apply vitest fallback and document the limitation
 
 ### Phase 4: Destructive Tests
-- [x] Run EX-008: checkpoint `pre-ex008-delete` created (ID 10), `memory_delete(25372)` deleted 1 memory, post-deletion search confirms absence. **PASS**
-- [x] Run EX-009: checkpoint `pre-ex009-bulk-delete` created (ID 11), auto-checkpoint created (ID 12), `memory_bulk_delete(tier:"deprecated", specFolder:"test-sandbox-mutation")` deleted 3 deprecated memories. **PASS**
-- [x] Sandbox isolation maintained — all operations scoped to `test-sandbox-mutation`.
+
+- [ ] Run EX-008: create checkpoint before executing `memory_delete`; confirm checkpoint visible before delete runs; verify post-deletion absence
+- [ ] Run EX-009: create checkpoint before executing `memory_bulk_delete`; confirm `specFolder` explicitly scoped to sandbox; verify deletion count and checkpoint list
+- [ ] Maintain sandbox isolation — all operations scoped to the disposable sandbox folder
 
 ### Phase 5: Evidence Collection and Verdict
-- [x] For each scenario, capture prompt, exact command sequence, raw output, expected signals, and reviewer notes.
-- [x] Apply the review protocol acceptance checks: preconditions satisfied, prompt/commands executed as written, expected signals present, evidence readable, outcome rationale explicit.
-- [x] Assign PASS, PARTIAL, or FAIL per scenario and summarize phase coverage as 7/7 scenarios (5 PASS, 2 PARTIAL, 0 FAIL).
+
+- [ ] For each scenario, capture prompt, exact command sequence, raw output, expected signals, and reviewer notes
+- [ ] Apply the review protocol acceptance checks (preconditions satisfied, prompt/commands as written, expected signals present, evidence readable, outcome rationale explicit)
+- [ ] Assign PASS, PARTIAL, or FAIL per scenario and summarize phase coverage as 9/9 with linked evidence references
 <!-- /ANCHOR:phases -->
 
 ---
@@ -107,15 +120,17 @@ Manual mutation test execution pipeline with checkpoint-gated destructive scenar
 <!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
-| Test ID | Scenario Name | Exact Prompt | Execution Type (manual/MCP) |
-|---------|---------------|--------------|-----------------------------|
-| EX-006 | New memory ingestion | `Index memory file and report action` | MCP |
-| EX-007 | Metadata + re-embed update | `Update memory title and triggers` | MCP |
-| EX-008 | Atomic single delete | `Delete memory ID and verify removal` | manual (destructive — sandbox required) |
-| EX-009 | Tier cleanup with safety | `Delete deprecated tier in scoped folder` | manual (destructive — sandbox required) |
-| EX-010 | Feedback learning loop | `Record positive validation with queryId` | MCP |
-| 085 | Confirm atomic wrapper behavior | `Validate mutation transaction wrappers.` | manual |
-| 110 | Confirm 5-action PE decision engine during save | `Validate prediction-error save arbitration actions.` | manual |
+| Scenario ID | Scenario Name | Execution Type |
+|-------------|---------------|----------------|
+| EX-006 | Memory indexing (memory_save) | MCP |
+| EX-007 | Memory metadata update (memory_update) | MCP |
+| M-008 | Feature 09 Direct Manual Scenario (Per-memory History Log) | MCP |
+| EX-008 | Single and folder delete (memory_delete) | manual (destructive — sandbox required) |
+| EX-009 | Tier-based bulk deletion (memory_bulk_delete) | manual (destructive — sandbox required) |
+| EX-010 | Validation feedback (memory_validate) | MCP |
+| 085 | Transaction wrappers on mutation handlers | manual |
+| 101 | memory_delete confirm schema tightening | MCP |
+| 110 | Prediction-error save arbitration | manual |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -125,12 +140,12 @@ Manual mutation test execution pipeline with checkpoint-gated destructive scenar
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Internal | Green | Exact prompts, commands, evidence targets, and pass criteria cannot be verified |
-| [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Internal | Green | Verdicts and coverage rules cannot be applied consistently |
-| [`../../feature_catalog/02--mutation/`](../../feature_catalog/02--mutation/) | Internal | Green | Test-to-feature context and review triage lose their canonical reference |
-| MCP runtime for `memory_save`, `memory_update`, `memory_delete`, `memory_bulk_delete`, `memory_validate`, and checkpoint tools | Internal | Green | MCP runtime healthy (v1.7.2), all tools responsive |
-| Disposable sandbox spec folder and rollback checkpoints for EX-008 and EX-009 | Internal | Green | `specs/test-sandbox-mutation/` created with 6 fixture memories and 4 checkpoints |
-| Fault injection mechanism (mock adapter or controlled DB mutation) for 085 | Internal | Yellow | Client-side injection infeasible; vitest fallback applied (139/139 pass) |
+| Playbook `../../manual_testing_playbook/02--mutation/` | Internal | Unknown | Scenario steps unavailable |
+| Review protocol `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Unknown | Verdicts cannot be applied consistently |
+| Feature catalog `../../feature_catalog/02--mutation/` | Internal | Unknown | Cross-reference cannot be verified |
+| MCP runtime (all mutation tools and checkpoint tools) | Internal | Unknown | Mutation scenarios cannot be executed |
+| Disposable sandbox spec folder with fixture memories | Internal | Unknown | Destructive and PE tests cannot run safely |
+| Fault injection mechanism for 085 | Internal | Unknown | Transaction rollback may require vitest fallback |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -138,10 +153,68 @@ Manual mutation test execution pipeline with checkpoint-gated destructive scenar
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Any destructive scenario (EX-008, EX-009) leaves the sandbox in a state that could taint later scenarios, or fault injection (085) leaves the database in a partial state.
-- **Procedure for EX-008**: Restore `pre-ex008-delete` checkpoint via `checkpoint_restore(name:"pre-ex008-delete")`, verify restore with `memory_search(old title)`, and discard compromised evidence before retrying.
-- **Procedure for EX-009**: Restore `pre-ex009-bulk-delete` checkpoint via `checkpoint_restore(name:"pre-ex009-bulk-delete")`, confirm recovery with `checkpoint_list()` and `memory_stats()`, and restart the scenario from the checkpoint step.
-- **Procedure for 085**: Run `memory_health()` to assess database consistency after a failed rollback; if the health report shows a degraded state, restore the nearest valid checkpoint and rerun the fault injection from a clean baseline.
+- **Trigger for EX-008**: Deletion leaves sandbox in unexpected state or checkpoint was not created before delete.
+- **Procedure for EX-008**: Restore named checkpoint via `checkpoint_restore`, verify restore with `memory_search`, discard compromised evidence before retrying.
+- **Trigger for EX-009**: Bulk delete affects more records than expected or unscoped records were deleted.
+- **Procedure for EX-009**: Restore named checkpoint via `checkpoint_restore`, confirm recovery with `checkpoint_list()` and `memory_stats()`, restart from checkpoint step.
+- **Trigger for 085**: Fault injection leaves database in a partial state.
+- **Procedure for 085**: Run `memory_health()` to assess consistency; if degraded, restore nearest valid checkpoint and rerun from clean baseline.
 <!-- /ANCHOR:rollback -->
 
 ---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```
+Phase 1 (Preconditions) ──► Phase 2 (Non-Destructive) ──► Phase 3 (Schema/Transaction) ──► Phase 4 (Destructive) ──► Phase 5 (Verdict)
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Preconditions | None | All |
+| Non-Destructive (EX-006, EX-007, EX-010, M-008, 110) | Preconditions | Schema/Transaction |
+| Schema/Transaction (085, 101) | Preconditions | Destructive |
+| Destructive (EX-008, EX-009) | Preconditions + Sandbox setup | Verdict |
+| Evidence + Verdict | All execution phases | None |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Preconditions | Low | 20-40 min |
+| Non-destructive tests (5 scenarios) | Medium | 45-75 min |
+| Schema and transaction tests (2 scenarios) | Medium | 30-60 min |
+| Destructive tests (2 scenarios) | High | 30-45 min |
+| Evidence collection and verdict | Low | 20-30 min |
+| **Total** | | **2.5-4 hours** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-Execution Checklist
+
+- [ ] Sandbox spec folder created and contains only test fixtures
+- [ ] No active checkpoints conflict with planned checkpoint names (pre-ex008-delete, pre-ex009-bulk-delete)
+- [ ] Baseline environment state recorded
+
+### Rollback Procedure
+
+1. Stop execution of current scenario
+2. Restore appropriate named checkpoint
+3. Verify restore with `memory_search` or `memory_stats`
+4. Run `memory_health()` to confirm database integrity
+5. Re-run affected scenario from scratch
+
+### Data Reversal
+
+- **Has data mutations?** Yes — EX-008 deletes a memory, EX-009 bulk-deletes a tier, 110 creates multiple memory records
+- **Reversal procedure**: Restore named checkpoints created immediately before each destructive step
+<!-- /ANCHOR:enhanced-rollback -->

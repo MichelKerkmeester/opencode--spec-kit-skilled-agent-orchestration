@@ -1,17 +1,17 @@
 ---
-title: "Implementation Plan: evaluation-and-measurement [template:level_1/plan.md]"
-description: "Phase 009 execution plan for manual testing coverage of evaluation-and-measurement scenarios. Organizes the preconditions, run sequence, evidence collection, and verdict process for the 16 mapped measurement tests."
+title: "Implementation Plan: Manual Testing — Evaluation and Measurement"
+description: "Execution plan for running all 16 evaluation-and-measurement manual test scenarios from the hybrid-rag-fusion playbook."
 trigger_phrases:
-  - "evaluation and measurement implementation plan"
-  - "phase 009 measurement plan"
-  - "manual testing measurement workflow"
-  - "evaluation playbook execution plan"
-importance_tier: "high"
+  - "evaluation and measurement plan"
+  - "manual testing plan"
+  - "eval run ablation execution"
+  - "playbook execution plan"
+importance_tier: "normal"
 contextType: "general"
 ---
-# Implementation Plan: evaluation-and-measurement
+# Implementation Plan: Manual Testing — Evaluation and Measurement
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
@@ -23,13 +23,14 @@ contextType: "general"
 
 | Aspect | Value |
 |--------|-------|
-| **Language/Stack** | Markdown |
-| **Framework** | spec-kit L1 |
-| **Storage** | Spec folder markdown files |
-| **Testing** | manual + MCP |
+| **Language/Stack** | TypeScript / Node.js MCP server |
+| **Framework** | spec-kit-memory MCP, SQLite via better-sqlite3 |
+| **Storage** | SQLite (memory_index.db, eval_metric_snapshots) |
+| **Testing** | Manual execution via MCP tool calls |
 
 ### Overview
-Phase 009 documents manual testing coverage for the 16 scenarios assigned to `09--evaluation-and-measurement`. The plan follows the playbook prompts and feature catalog summaries so each run can move from setup through execution, evidence capture, and verdict assignment without losing measurement-specific context such as isolated eval storage, ablation reporting, baseline snapshots, and INT8 decision review.
+
+This plan covers sequential manual execution of 16 playbook scenarios that verify the evaluation and measurement subsystem in the hybrid-rag-fusion memory system. Scenarios have strict ordering dependencies: the eval schema (005) must be verified before metric computation (006), and the ground truth corpus (010) must exist before the BM25 baseline (011). Each scenario is executed, observed, and the result is recorded in checklist.md and tasks.md. No code changes are expected — this is a verification-only phase.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -38,16 +39,19 @@ Phase 009 documents manual testing coverage for the 16 scenarios assigned to `09
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Parent phase map confirms Phase 009 is `Measurement tests` with 16 scenarios.
-- [x] Each test ID is mapped to one `09--evaluation-and-measurement` feature catalog entry.
-- [x] Exact prompts and acceptance criteria are captured from the manual testing playbook.
-- [ ] Runtime prerequisites for MCP-backed scenarios are available in the target sandbox.
+
+- [ ] MCP server is running and responding to tool calls
+- [ ] eval_metric_snapshots table exists (run scenario 005 first to verify)
+- [ ] SPECKIT_ABLATION=true is set in environment (required for scenarios 014, 015)
+- [ ] A ground truth corpus is available or can be generated (scenario 010)
+- [ ] Tester has read the playbook file for each scenario before starting
 
 ### Definition of Done
-- [ ] All 16 scenarios have documented prompts, commands or inspection steps, evidence expectations, and verdict notes.
-- [ ] Evidence is sufficient to issue PASS, PARTIAL, or FAIL for every scenario.
-- [ ] No mapped feature in Phase 009 ends with verdict FAIL for release-readiness review.
-- [ ] Coverage remains 16/16 against the parent phase map.
+
+- [ ] All 16 scenario tasks marked complete in tasks.md
+- [ ] All 16 P0 checklist items checked with evidence in checklist.md
+- [ ] implementation-summary.md filled in with overall result and date
+- [ ] No unresolved FAIL findings without a tracked follow-up
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -56,18 +60,21 @@ Phase 009 documents manual testing coverage for the 16 scenarios assigned to `09
 ## 3. ARCHITECTURE
 
 ### Pattern
-Manual test execution pipeline
+
+Manual test execution — dependency-ordered scenario runner
 
 ### Key Components
-- **Preconditions**: Confirm dataset, flags, isolated DB paths, and runtime access before any scenario begins.
-- **Execute**: Run the exact prompt-driven workflow as a manual inspection or MCP-backed command sequence.
-- **Evidence**: Capture transcripts, DB snapshots, logs, dashboard output, or code-inspection notes that match the playbook row.
-- **Verdict**: Compare evidence to the scenario acceptance criteria and assign PASS, PARTIAL, or FAIL.
+
+- **Playbook files**: Source of truth for each scenario's steps and expected outcomes. Located in `.opencode/skill/system-spec-kit/manual_testing_playbook/09--evaluation-and-measurement/`
+- **MCP tool chain**: Scenarios executed via `mcp__spec_kit_memory__eval_run_ablation`, `memory_search`, `memory_stats`, and related tools
+- **eval_metric_snapshots table**: Stores ablation and metric results; must exist before metric computation scenarios run
+- **Ground truth corpus**: Required for BM25 baseline and ablation scenarios; generated via scenario 010
+- **checklist.md**: Evidence log — one P0 item per scenario, updated as runs complete
+- **tasks.md**: Progress tracker — one task per scenario, marked complete on pass
 
 ### Data Flow
-`preconditions -> execute -> evidence -> verdict`
 
-The pipeline stays consistent across all measurement scenarios: establish the target eval/context state first, run the scenario with the exact prompt, collect proof artifacts, then decide the verdict using the playbook acceptance checks.
+Tester reads playbook scenario → sets required env flags → executes MCP calls → observes response → compares to expected outcome → records PASS/FAIL in checklist and tasks
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -75,26 +82,51 @@ The pipeline stays consistent across all measurement scenarios: establish the ta
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Preconditions
-- [ ] Confirm the Phase 009 mapping against the parent packet and the 16 feature catalog entries.
-- [ ] Prepare isolated eval/context DB paths for scenarios that write measurement artifacts.
-- [ ] Verify MCP runtime access, required flags, and any baseline corpus or fixture prerequisites.
-- [ ] Decide which scenarios are inspection-only versus command-driven before execution starts.
+### Phase 1: Environment Setup
 
-### Phase 2: Non-Destructive Tests
-- [ ] Run inspection-oriented scenarios first: 009, 010, 072, 088, 090.
-- [ ] Run reproducible runtime scenarios next: 006, 007, 008, 011, 012, 013, 014, 015.
-- [ ] Reserve 005, 082, and 126 for isolated runs where writes and persisted snapshots can be inspected clearly.
+- [ ] Confirm MCP server is running (`memory_health` call succeeds)
+- [ ] Confirm SPECKIT_ABLATION=true is set
+- [ ] Verify eval_metric_snapshots table exists (or run scenario 005 to create it)
+- [ ] Create a named checkpoint: `checkpoint_create({ name: "pre-009-testing" })`
 
-### Phase 3: Destructive Tests
-- [ ] No dedicated destructive scenarios are defined for Phase 009.
-- [ ] If a scenario requires mutating eval or context stores beyond disposable fixtures, run it only in a sandbox or after taking a checkpoint, then restore before the next scenario.
-- [ ] Apply reset steps only when persistence or restart behavior is part of the acceptance check.
+### Phase 2: Schema and Metric Foundation (005–009)
 
-### Phase 4: Evidence Collection and Verdict
-- [ ] Capture command transcripts, inspection notes, DB/log extracts, and dashboard or test-suite output for every scenario.
-- [ ] Compare evidence against the exact PASS/FAIL criteria from the playbook row.
-- [ ] Record PASS, PARTIAL, or FAIL with concise rationale and note any retry or escalation follow-up.
+- [ ] Execute scenario 005 — Evaluation database and schema (R13-S1)
+- [ ] Execute scenario 006 — Core metric computation (R13-S1)
+- [ ] Execute scenario 007 — Observer effect mitigation (D4)
+- [ ] Execute scenario 008 — Full-context ceiling evaluation (A2)
+- [ ] Execute scenario 009 — Quality proxy formula (B7)
+- [ ] Record PASS/FAIL with evidence for each in checklist.md
+
+### Phase 3: Ground Truth and Baseline (010–012)
+
+- [ ] Execute scenario 010 — Synthetic ground truth corpus (G-NEW-1, G-NEW-3 phase A)
+- [ ] Execute scenario 011 — BM25-only baseline (G-NEW-1)
+- [ ] Execute scenario 012 — Agent consumption instrumentation (G-NEW-2)
+- [ ] Record PASS/FAIL with evidence for each in checklist.md
+
+### Phase 4: Reporting and Shadow Scoring (013–015)
+
+- [ ] Execute scenario 013 — Scoring observability (T010)
+- [ ] Execute scenario 014 — Full reporting and ablation study framework (R13-S3)
+- [ ] Execute scenario 015 — Shadow scoring and channel attribution (R13-S2)
+- [ ] Record PASS/FAIL with evidence for each in checklist.md
+
+### Phase 5: Fixes, Validation, and Snapshots (072, 082, 088, 090, 126)
+
+- [ ] Execute scenario 072 — Test quality improvements
+- [ ] Execute scenario 082 — Evaluation and housekeeping fixes
+- [ ] Execute scenario 088 — Cross-AI validation fixes (Tier 4)
+- [ ] Execute scenario 090 — INT8 quantization evaluation (R5)
+- [ ] Execute scenario 126 — Memory roadmap baseline snapshot
+- [ ] Record PASS/FAIL with evidence for each in checklist.md
+
+### Phase 6: Wrap-Up
+
+- [ ] Confirm all 16 tasks complete in tasks.md
+- [ ] Confirm all 16 P0 checklist items checked
+- [ ] Fill in implementation-summary.md
+- [ ] Restore from checkpoint if DB state was modified destructively
 <!-- /ANCHOR:phases -->
 
 ---
@@ -102,24 +134,11 @@ The pipeline stays consistent across all measurement scenarios: establish the ta
 <!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
-| Test ID | Scenario Name | Exact Prompt | Execution Type (manual/MCP) |
-|---------|---------------|--------------|-----------------------------|
-| 005 | Evaluation database and schema | `Verify evaluation DB/schema writes.` | MCP |
-| 006 | Core metric computation | `Validate core metric computation (R13-S1).` | MCP |
-| 007 | Observer effect mitigation | `Check observer effect mitigation (D4).` | MCP |
-| 008 | Full-context ceiling evaluation | `Run full-context ceiling evaluation (A2).` | MCP |
-| 009 | Quality proxy formula | `Compute and verify quality proxy formula (B7).` | manual |
-| 010 | Synthetic ground truth corpus | `Audit synthetic ground-truth corpus coverage.` | manual |
-| 011 | BM25-only baseline | `Run BM25-only baseline measurement.` | MCP |
-| 012 | Agent consumption instrumentation | `Validate G-NEW-2 instrumentation behavior.` | MCP |
-| 013 | Scoring observability | `Verify scoring observability (T010).` | MCP |
-| 014 | Full reporting and ablation study framework | `Execute manual ablation run (R13-S3).` | MCP |
-| 015 | Shadow scoring and channel attribution | `Verify shadow scoring deactivation and attribution continuity.` | MCP |
-| 072 | Test quality improvements | `Audit test quality improvements.` | manual |
-| 082 | Evaluation and housekeeping fixes | `Validate evaluation and housekeeping fixes.` | MCP |
-| 088 | Cross-AI validation fixes | `Validate Phase 018 Tier-4 cross-AI fixes.` | manual |
-| 090 | INT8 quantization evaluation | `Re-evaluate INT8 quantization decision criteria.` | manual |
-| 126 | Memory roadmap baseline snapshot | `Run the memory roadmap baseline snapshot verification suite.` | MCP |
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Manual | Each of the 16 evaluation scenarios | MCP tool calls |
+| Verification | Response structure and metric accuracy | Visual inspection of tool output |
+| Evidence | Capture tool responses | Copy/paste tool output |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -129,9 +148,10 @@ The pipeline stays consistent across all measurement scenarios: establish the ta
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Manual testing playbook source | Internal | Green | Exact prompts, evidence rules, and acceptance criteria for Phase 009 cannot be reconstructed accurately |
-| Evaluation-and-measurement feature catalog | Internal | Green | Scenario context and feature-level grounding for isolated eval DBs, ablation reporting, baseline snapshots, and INT8 decision state are lost |
-| MCP runtime and supporting test environment | Internal | Yellow | MCP-backed scenarios, dashboard checks, and `memory-state-baseline.vitest.ts` cannot be executed or verified |
+| MCP server | Internal | Green | Cannot execute any scenarios |
+| SPECKIT_ABLATION=true | Internal | Yellow | Scenarios 014, 015 return disabled-flag error |
+| eval_metric_snapshots table | Internal | Yellow | Metric computation scenarios need schema present |
+| Ground truth corpus | Internal | Yellow | BM25 baseline and ablation need queries to run against |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -139,8 +159,16 @@ The pipeline stays consistent across all measurement scenarios: establish the ta
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Scenario mapping is found to be wrong, execution guidance conflicts with the playbook, or sandbox instructions are unsafe for repeated runs.
-- **Procedure**: Revert `spec.md` and `plan.md` for Phase 009 to the last correct version or remove the packet files and regenerate them from the Level 1 templates using the verified playbook and feature catalog inputs. For runtime test fallout, restore the sandbox or checkpointed eval/context databases before re-running the affected scenario.
-<!-- /ANCHOR:rollback -->
+- **Trigger**: Eval metric snapshots corrupted or checkpoint needed
+- **Procedure**: Restore from checkpoint created in Phase 1; verify eval table integrity; rerun affected scenario
 
----
+### Risks & Mitigations
+
+| Risk | Likelihood | Impact | Mitigation |
+|------|-----------|--------|------------|
+| SPECKIT_ABLATION not set | Medium | Scenarios 014, 015 return no-op | Check env before starting Phase 4 |
+| eval_metric_snapshots table missing | Medium | Scenario 006 fails silently | Run 005 first; verify table presence |
+| Scenario 010 corpus generation fails | Low | Blocks 011 and 014 | Document error; manually seed minimal corpus if needed |
+| INT8 backend absent for scenario 090 | Medium | Cannot complete quantization path | Mark step as SKIP-ENV; proceed with rest of scenario |
+| Cross-AI provider unavailable for 088 | Medium | Cannot validate cross-provider consistency | Mark as SKIP-ENV; document single-provider result |
+<!-- /ANCHOR:rollback -->

@@ -1,17 +1,17 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook memory quality and indexing phase [template:level_1/plan.md]"
-description: "Phase 013 defines the execution plan for 49 exact memory-quality-and-indexing scenario IDs in the Spec Kit Memory system, including the dedicated memory-section sub-scenarios and Wave 5 additions (176-178)."
+title: "Implementation Plan: manual-testing-per-playbook memory quality and indexing phase [template:level_2/plan.md]"
+description: "Execution plan for 34 exact IDs across 27 scenario files in the memory quality and indexing category, organized into six execution groups with sub-scenario tracking."
 trigger_phrases:
   - "memory quality execution plan"
   - "phase 013 manual tests"
   - "indexing verdict plan"
-  - "manual testing playbook memory save"
-importance_tier: "high"
-contextType: "general"
+  - "hybrid rag memory quality review"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Implementation Plan: manual-testing-per-playbook memory quality and indexing phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
@@ -24,12 +24,13 @@ contextType: "general"
 | Aspect | Value |
 |--------|-------|
 | **Language** | Markdown |
-| **Framework** | spec-kit L1 |
-| **Storage** | Filesystem spec folder + sandbox artifacts + runtime metadata |
+| **Framework** | spec-kit L2 |
+| **Storage** | Filesystem spec folder + linked evidence artifacts |
 | **Testing** | manual + MCP |
 
 ### Overview
-This plan converts the memory-quality-and-indexing scenarios in the manual testing playbook into an ordered execution workflow for Phase 013. The phase now tracks 42 exact IDs by keeping the original top-level scenarios while explicitly breaking out `M-005a..c`, `M-006a..c`, and `M-007a..j`. The phase starts with source verification and sandbox setup, runs lower-risk inspection and dry-run scenarios first, isolates stateful save and corruption tests in disposable workspaces, and closes with review-protocol verdicting across all 42 exact IDs.
+
+This plan converts the 27 memory-quality-and-indexing scenario files (34 exact IDs) in the manual testing playbook into an ordered execution workflow for phase 013-memory-quality-and-indexing. The phase is the largest in the playbook suite. Scenarios are organized into six groups: core pipeline scenarios with sub-scenario expansions (M-003, M-005 family, M-006 family), quality loop and signal scenarios (039-048), consolidation and persistence scenarios (069-119), validation and preflight scenarios (131-133), post-save review scenarios (155, 155-F), and advanced quality features behind feature flags (164-178). Sub-scenarios M-005a/b/c, M-006a/b/c, and 155-F are tracked as independent exact IDs with individual verdicts.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -38,16 +39,21 @@ This plan converts the memory-quality-and-indexing scenarios in the manual testi
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Exact prompts, command sequences, and pass criteria were extracted from [`../../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`](../../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md).
-- [x] PASS, PARTIAL, FAIL, and coverage rules were loaded from [`../../../../../skill/system-spec-kit/manual_testing_playbook/review_protocol.md`](../../../../../skill/system-spec-kit/manual_testing_playbook/review_protocol.md).
-- [x] All 42 exact scenario IDs were mapped to feature-catalog context, including source-backed judgment calls for `M-001` through `M-004`.
-- [x] Destructive scenarios that write files, corrupt metadata, restart services, or mutate indexing state were identified for sandbox-only execution.
+
+- [ ] Playbook files for 13--memory-quality-and-indexing are accessible at `../../manual_testing_playbook/13--memory-quality-and-indexing/`
+- [ ] Feature catalog files for 13--memory-quality-and-indexing are accessible at `../../feature_catalog/13--memory-quality-and-indexing/`
+- [ ] Review protocol is loaded from `../../manual_testing_playbook/manual_testing_playbook.md`
+- [ ] MCP runtime is healthy and `memory_save`, `memory_index_scan`, quality gate pipeline respond
+- [ ] Sandbox data and checkpoint strategy identified for destructive scenarios (M-005, M-006, 044)
+- [ ] Feature flags documented for scenarios 164, 165, 176, 177, 178
 
 ### Definition of Done
-- [ ] All 49 exact scenario IDs have prompt, command, evidence, and verdict records tied to the playbook wording.
-- [ ] Every destructive scenario was executed in a disposable sandbox or restored from checkpoint before phase closeout.
-- [ ] Coverage is reported as 49/49 exact IDs for Phase 013 with no skipped scenario IDs.
-- [ ] Final reviewer output uses review-protocol verdict language and clearly distinguishes PASS, PARTIAL, and FAIL evidence.
+
+- [ ] All 34 exact scenario IDs have execution evidence tied to the exact documented prompt and command sequence
+- [ ] Every scenario has a verdict (PASS, PARTIAL, or FAIL) with rationale using the review protocol acceptance rules
+- [ ] Sub-scenarios M-005a/b/c, M-006a/b/c, and 155-F each have independent verdicts
+- [ ] Coverage is reported as 34/34 exact IDs with no skipped test IDs
+- [ ] Any sandbox mutations or feature flag changes are restored or explicitly documented before closeout
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -56,16 +62,19 @@ This plan converts the memory-quality-and-indexing scenarios in the manual testi
 ## 3. ARCHITECTURE
 
 ### Pattern
-Manual memory-quality test execution pipeline with review-gated evidence collection.
+
+Manual memory quality test execution pipeline with review-gated evidence collection.
 
 ### Key Components
-- **Preconditions pack**: playbook rows, review protocol, mapped feature files, sandbox spec folders, and checkpoint rules.
-- **Execution layer**: manual operator actions plus MCP calls such as `memory_save`, `memory_search`, `memory_stats`, `memory_index_scan`, and related CLI/script commands.
-- **Evidence bundle**: save outputs, search traces, JSON artifacts, description.json snapshots, service-restart comparisons, and validator output.
-- **Verdict layer**: review-protocol checks that classify each exact scenario ID as PASS, PARTIAL, or FAIL and enforce full phase coverage.
+
+- **Preconditions pack**: Playbook, review protocol, feature catalog links, runtime baseline, sandbox/checkpoint setup, and feature flag documentation.
+- **Execution layer**: Manual operator actions plus MCP calls to `memory_save`, `memory_index_scan`, `memory_search`, and quality gate pipeline functions.
+- **Evidence bundle**: Tool outputs, runtime logs, flag snapshots, quality scores, and entity extraction results captured per scenario.
+- **Verdict layer**: Review protocol checks that classify each scenario (including sub-scenarios) as PASS, PARTIAL, or FAIL.
 
 ### Data Flow
-`preconditions -> execute exact prompt/commands -> capture evidence -> apply review-protocol verdict`
+
+`preconditions -> execute exact prompt/commands -> capture evidence -> apply verdict rules per exact ID`
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -74,26 +83,66 @@ Manual memory-quality test execution pipeline with review-gated evidence collect
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Preconditions
-- [ ] Verify the playbook, review protocol, and all linked feature files match the 49-ID Phase 013 inventory.
-- [ ] Confirm MCP runtime access for `memory_save`, `memory_search`, `memory_stats`, `memory_index_scan`, and any required CLI/script entry points.
-- [ ] Prepare disposable sandbox spec folders, temporary JSON files under `/tmp`, and restart-safe test notes before any write or corruption scenario begins.
-- [ ] Record baseline environment variables, API-key state, DB path context, and checkpoint availability before stateful execution.
 
-### Phase 2: Non-Destructive Tests
-- [ ] Run inspection and dry-run-first scenarios before mutation-heavy cases: `039`, `040`, `041`, `045`, `046`, `047`, `048`, `069`, `073`, `131`, `133`, `M-001`, `M-002`, `M-004`, `M-005c`, `M-006a`, `M-006b`, `M-006c`, and the non-mutating `M-007*` proof lanes where safe.
-- [ ] Capture the exact prompt, commands, expected signals, and evidence targets for each scenario before collecting verdict notes.
-- [ ] Keep a running list of reusable sandbox inputs so later destructive scenarios can reference the same baseline files where appropriate.
+- [ ] Verify source documents are open: playbook, review protocol, and linked memory quality feature files
+- [ ] Confirm MCP runtime access for `memory_save`, `memory_index_scan`, and quality gate pipeline
+- [ ] Record baseline environment flags (SPECKIT_SAVE_QUALITY_GATE, SPECKIT_RECONSOLIDATION, SPECKIT_BATCH_LEARNED_FEEDBACK, SPECKIT_ASSISTIVE_RECONSOLIDATION, SPECKIT_IMPLICIT_FEEDBACK_LOG, SPECKIT_HYBRID_DECAY_POLICY, SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS)
+- [ ] Prepare disposable sandbox data for destructive scenarios (M-005 agent capture, M-006 git state manipulation, 044 reconsolidation)
+- [ ] Create named checkpoint before any mutation or merge operations
 
-### Phase 3: Destructive Tests
-- [ ] Restrict `042`, `043`, `044`, `111`, `119`, `132`, `M-003`, `M-005`, `M-005a`, `M-005b`, `M-006`, `M-007`, `M-007a`, `M-007b`, `M-007c`, `M-007e`, `M-007f`, `M-007g`, `M-007h`, `M-007i`, `M-007j`, and `M-008` to disposable sandboxes, checkpoints, or isolated runtime sessions.
-- [ ] For metadata-corruption tests, snapshot `spec.md`, `description.json`, and generated memory files before corruption or regeneration steps, then restore or discard the sandbox afterward.
-- [ ] For save/reindex/restart scenarios, separate baseline, failure-path, and recovery-path evidence so no state leak carries into the next test.
-- [ ] If a destructive scenario cannot be isolated safely, stop that scenario and mark it blocked rather than mutating shared workspace state.
+### Phase 2: Core Pipeline + Sub-Scenario Tests (M-003, M-005 family, M-006 family -- 9 exact IDs)
 
-### Phase 4: Evidence Collection and Verdict
-- [ ] For each exact scenario ID, capture prompt, exact command sequence, raw output, expected signals, evidence artifact paths, and reviewer rationale.
-- [ ] Apply the review protocol acceptance checks: preconditions satisfied, prompt and commands executed as written, expected signals present, evidence readable, and outcome rationale explicit.
-- [ ] Assign PASS, PARTIAL, or FAIL per exact scenario ID and summarize phase coverage as 49/49 exact IDs with linked evidence references.
+- [ ] Run M-003 (context save + index update) -- verify save-then-index round-trip
+- [ ] Run M-005 (outsourced agent memory capture round-trip) -- parent scenario
+- [ ] Run M-005a (JSON-mode hard-fail) -- verify rejection on invalid JSON
+- [ ] Run M-005b (nextSteps persistence) -- verify nextSteps field survives round-trip
+- [ ] Run M-005c (verification freshness) -- verify freshness check on capture
+- [ ] Run M-006 (session enrichment and alignment guardrails) -- parent scenario
+- [ ] Run M-006a (unborn-HEAD and dirty snapshot fallback) -- test fallback in unborn-HEAD state
+- [ ] Run M-006b (detached-HEAD snapshot preservation) -- test snapshot in detached-HEAD state
+- [ ] Run M-006c (similar-folder boundary protection) -- test boundary detection for similar folder names
+
+### Phase 3: Quality Loop and Signal Tests (039-048 -- 10 exact IDs)
+
+- [ ] Run 039 (verify-fix-verify memory quality loop) -- three-pass quality improvement cycle
+- [ ] Run 040 (signal vocabulary expansion) -- new signal types recognized
+- [ ] Run 041 (pre-flight token budget validation) -- budget check before save
+- [ ] Run 042 (spec folder description discovery) -- description.json auto-detection
+- [ ] Run 043 (pre-storage quality gate) -- rejection of low-quality saves
+- [ ] Run 044 (reconsolidation-on-save) -- sandbox merge operation with checkpoint
+- [ ] Run 045 (smarter memory content generation) -- improved content output
+- [ ] Run 046 (anchor-aware chunk thinning) -- chunk reduction with anchor preservation
+- [ ] Run 047 (encoding-intent capture at index time) -- intent metadata capture
+- [ ] Run 048 (auto entity extraction) -- entity detection on save
+
+### Phase 4: Consolidation, Persistence, Validation, and Preflight Tests (069-133 -- 8 exact IDs)
+
+- [ ] Run 069 (entity normalization consolidation) -- entity name normalization
+- [ ] Run 073 (quality gate timer persistence) -- timer survives restart
+- [ ] Run 092 (implemented: auto entity extraction) -- verify extraction feature live
+- [ ] Run 111 (deferred lexical-only indexing) -- lexical index without embedding
+- [ ] Run 119 (memory filename uniqueness) -- unique filename generation
+- [ ] Run 131 (description.json batch backfill validation) -- batch processing
+- [ ] Run 132 (description.json schema field validation) -- schema enforcement
+- [ ] Run 133 (dry-run preflight for memory_save) -- preflight without side effects
+
+### Phase 5: Post-Save Review and Advanced Feature-Flag Tests (155-178 -- 7 exact IDs)
+
+- [ ] Run 155 (post-save quality review) -- review output after save
+- [ ] Run 155-F (score penalty advisory logging) -- sub-scenario penalty logging
+- [ ] Run 164 (batch learned feedback) -- enable SPECKIT_BATCH_LEARNED_FEEDBACK, test batch aggregation
+- [ ] Run 165 (assistive reconsolidation) -- enable SPECKIT_ASSISTIVE_RECONSOLIDATION, test threshold tiers
+- [ ] Run 176 (implicit feedback log) -- enable SPECKIT_IMPLICIT_FEEDBACK_LOG, test logging
+- [ ] Run 177 (hybrid decay policy) -- enable SPECKIT_HYBRID_DECAY_POLICY, test decay behavior
+- [ ] Run 178 (save quality gate exceptions) -- enable SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS, test exception handling
+
+### Phase 6: Evidence Collection and Verdict
+
+- [ ] For each of the 34 exact IDs, capture prompt, exact command sequence, raw output, expected signals, and reviewer notes
+- [ ] Apply the review protocol acceptance checks (preconditions satisfied, prompt/commands as written, expected signals present, evidence readable, outcome rationale explicit)
+- [ ] Assign PASS, PARTIAL, or FAIL per exact ID and summarize phase coverage as 34/34 with linked evidence references
+- [ ] Restore all feature flags to baseline values
+- [ ] Restore sandbox checkpoint if mutation scenarios altered shared state
 <!-- /ANCHOR:phases -->
 
 ---
@@ -101,50 +150,42 @@ Manual memory-quality test execution pipeline with review-gated evidence collect
 <!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
-| Test ID | Scenario Name | Exact Prompt | Execution Type |
-|---------|---------------|--------------|----------------|
-| 039 | Confirm retry then reject path | `Verify PI-A5 quality loop behavior.` | MCP |
-| 040 | Confirm signal category detection | `Validate signal vocabulary expansion (TM-08).` | manual + MCP |
-| 041 | Confirm save-time preflight warn/fail behavior | `Verify pre-flight token budget validation (PI-A3).` | MCP |
-| 042 | Confirm per-folder plus aggregated routing | `Validate PI-B3 folder description discovery.` | manual + MCP |
-| 043 | Confirm 3-layer gate behavior | `Verify pre-storage quality gate (TM-04).` | MCP |
-| 044 | Confirm merge/deprecate thresholds | `Validate reconsolidation-on-save (TM-06).` | MCP |
-| 045 | Confirm quality and structure output | `Assess smarter memory content generation (S1).` | manual |
-| 046 | Confirm anchor-priority thinning | `Validate anchor-aware chunk thinning (R7).` | manual |
-| 047 | Confirm persisted intent labels | `Verify encoding-intent capture (R16).` | manual |
-| 048 | Confirm entity pipeline persistence | `Validate auto entity extraction (R10).` | manual |
-| 069 | Confirm shared normalization path | `Validate entity normalization consolidation.` | manual |
-| 073 | Confirm restart persistence | `Verify quality gate timer persistence.` | manual |
-| 092 | Confirm implemented auto entity extraction | `Validate implemented auto entity extraction (R10).` | manual |
-| 111 | Confirm embedding-failure fallback and BM25 searchability | `Validate deferred lexical-only indexing fallback.` | manual + MCP |
-| 119 | Confirm collision resolution | `Validate memory filename collision prevention.` | manual + MCP |
-| 131 | Confirm batch-generated folder descriptions exist and conform to schema | `Validate PI-B3 batch backfill results.` | manual |
-| 132 | Confirm per-folder description metadata matches schema contract | `Validate description.json required fields and types.` | manual + MCP |
-| 133 | Confirm dry-run preview behavior | `Validate memory_save dryRun preview behavior, including insufficiency detection.` | MCP |
-| M-001 | Context Recovery and Continuation | `/memory:continue specs/<target-spec>` | MCP |
-| M-002 | Targeted Memory Lookup | `Find rationale for <specific decision>` | MCP |
-| M-003 | Context Save + Index Update | `No explicit prompt; command-driven scenario in playbook.` | manual + MCP |
-| M-004 | Main-Agent Review and Verdict Handoff | `@review findings-first review with severity + verdict APPROVE/CHANGES_REQUESTED` | manual |
-| M-005 | Outsourced Agent Memory Capture Round-Trip | `Dispatch task to external CLI agent and capture memory back to Spec Kit` | manual + MCP |
-| M-005a | JSON-mode hard-fail | `Validate JSON-mode hard-fail for outsourced agent handback.` | manual + MCP |
-| M-005b | nextSteps persistence | `Validate nextSteps persistence for outsourced agent handback.` | manual + MCP |
-| M-005c | Verification freshness | `Validate freshness requirements for outsourced agent handback proof.` | manual |
-| M-006 | Stateless Enrichment and Alignment Guardrails | `Run a stateless memory save for a spec that edits generic code paths and verify enrichment/guard behavior` | manual + MCP |
-| M-006a | Unborn-HEAD and dirty snapshot fallback | `Validate unborn-HEAD and dirty snapshot fallback.` | manual |
-| M-006b | Detached-HEAD snapshot preservation | `Validate detached-HEAD snapshot preservation.` | manual |
-| M-006c | Similar-folder boundary protection | `Validate similar-folder boundary protection.` | manual |
-| M-007 | Session Capturing Pipeline Quality | `Run full closure verification for spec 009-perfect-session-capturing, including JSON authority, stateless enrichment, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), numeric quality calibration, and indexing readiness.` | manual + MCP |
-| M-007a | JSON authority and successful indexing | `Validate rich JSON authority and successful indexing.` | manual + MCP |
-| M-007b | Thin JSON insufficiency rejection | `Validate thin JSON insufficiency rejection and lower-score behavior.` | manual + MCP |
-| M-007c | Mis-scoped stateless rejection | `Validate mis-scoped stateless save rejection.` | manual + MCP |
-| M-007d | Spec-folder and git-context enrichment presence | `Validate spec-folder and git-context enrichment plus render quality.` | manual + MCP |
-| M-007e | OpenCode precedence | `Validate OpenCode precedence without bypassing alignment blocking.` | manual + MCP |
-| M-007f | Claude fallback | `Validate Claude fallback under canonical workspace identity.` | manual + MCP |
-| M-007g | Codex fallback | `Validate Codex fallback under canonical workspace identity.` | manual + MCP |
-| M-007h | Copilot fallback | `Validate Copilot fallback under canonical workspace identity.` | manual + MCP |
-| M-007i | Gemini fallback | `Validate Gemini fallback under canonical workspace identity.` | manual + MCP |
-| M-007j | Final `NO_DATA_AVAILABLE` hard-fail | `Validate final NO_DATA_AVAILABLE hard-fail behavior.` | manual + MCP |
-| M-008 | Feature 09 Direct Manual Scenario (Per-memory History Log) | `Run direct manual verification for per-memory history log behavior (feature 09 gap closure).` | MCP |
+| Scenario ID | Scenario Name | Execution Type |
+|-------------|---------------|----------------|
+| M-003 | Context Save + Index Update | MCP |
+| M-005 | Outsourced Agent Memory Capture Round-Trip | MCP (sandbox) |
+| M-005a | JSON-mode hard-fail | MCP (sandbox) |
+| M-005b | nextSteps persistence | MCP (sandbox) |
+| M-005c | Verification freshness | MCP (sandbox) |
+| M-006 | Session Enrichment and Alignment Guardrails | manual (git state) |
+| M-006a | Unborn-HEAD and dirty snapshot fallback | manual (git state) |
+| M-006b | Detached-HEAD snapshot preservation | manual (git state) |
+| M-006c | Similar-folder boundary protection | manual |
+| 039 | Verify-fix-verify memory quality loop | MCP |
+| 040 | Signal vocabulary expansion | MCP |
+| 041 | Pre-flight token budget validation | MCP |
+| 042 | Spec folder description discovery | MCP |
+| 043 | Pre-storage quality gate | MCP |
+| 044 | Reconsolidation-on-save | MCP (sandbox, checkpoint required) |
+| 045 | Smarter memory content generation | MCP |
+| 046 | Anchor-aware chunk thinning | MCP |
+| 047 | Encoding-intent capture at index time | MCP |
+| 048 | Auto entity extraction | MCP |
+| 069 | Entity normalization consolidation | MCP |
+| 073 | Quality gate timer persistence | MCP (restart required) |
+| 092 | Implemented: auto entity extraction | MCP |
+| 111 | Deferred lexical-only indexing | MCP |
+| 119 | Memory filename uniqueness | MCP |
+| 131 | Description.json batch backfill validation | MCP |
+| 132 | description.json schema field validation | MCP |
+| 133 | Dry-run preflight for memory_save | MCP |
+| 155 | Post-save quality review | MCP |
+| 155-F | Score penalty advisory logging | MCP |
+| 164 | Batch learned feedback | MCP (feature flag required) |
+| 165 | Assistive reconsolidation | MCP (feature flag required) |
+| 176 | Implicit feedback log | MCP (feature flag required) |
+| 177 | Hybrid decay policy | MCP (feature flag required) |
+| 178 | Save quality gate exceptions | MCP (feature flag required) |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -154,11 +195,12 @@ Manual memory-quality test execution pipeline with review-gated evidence collect
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| [`../../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`](../../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md) | Internal | Green | Exact prompts, commands, evidence targets, and pass criteria cannot be verified |
-| [`../../../../../skill/system-spec-kit/manual_testing_playbook/review_protocol.md`](../../../../../skill/system-spec-kit/manual_testing_playbook/review_protocol.md) | Internal | Green | Verdicts and coverage rules cannot be applied consistently |
-| [`../../../../../skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/`](../../../../../skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/), [`../../../../../skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md`](../../../../../skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md), and [`../../../../../skill/system-spec-kit/feature_catalog/02--mutation/10-per-memory-history-log.md`](../../../../../skill/system-spec-kit/feature_catalog/02--mutation/10-per-memory-history-log.md) | Internal | Green | Test-to-feature context and cross-category mapping rationale lose their canonical references |
-| MCP runtime, CLI scripts, and restart-capable sandbox environment | Internal | Yellow | Save, reindex, restart, and search scenarios cannot be executed safely or reproducibly |
-| Disposable sandbox spec folders and checkpoints | Internal | Yellow | Destructive description.json, file-collision, and save-path tests cannot run without risking shared state |
+| Playbook `../../manual_testing_playbook/13--memory-quality-and-indexing/` | Internal | Unknown | Scenario steps unavailable |
+| Review protocol `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Unknown | Verdicts cannot be applied consistently |
+| Feature catalog `../../feature_catalog/13--memory-quality-and-indexing/` | Internal | Unknown | Cross-reference cannot be verified |
+| MCP runtime (`memory_save`, `memory_index_scan`, quality gate) | Internal | Unknown | Memory quality scenarios cannot be executed |
+| Disposable sandbox corpus and rollback checkpoint | Internal | Unknown | Destructive tests M-005, M-006, 044 cannot run safely |
+| Feature flags for 164, 165, 176, 177, 178 | Internal | Unknown | Advanced scenarios cannot be tested without flag activation |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -166,8 +208,68 @@ Manual memory-quality test execution pipeline with review-gated evidence collect
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: A Phase 013 scenario modifies shared runtime state, corrupts non-sandbox metadata, leaves extra memory files behind, or changes service configuration in a way that could taint later scenarios.
-- **Procedure**: Restore the sandbox checkpoint or discard the disposable spec folder, revert edited `spec.md` and `description.json` files, remove generated temporary JSON artifacts, reset environment variables and API keys to baseline values, restart the runtime if required, and rerun only the affected scenario after the environment is clean.
+- **Trigger**: Reconsolidation merges (044), outsourced agent writes (M-005), git state manipulation (M-006), or feature flag changes (164, 165, 176, 177, 178) leave the environment in a state that could taint later scenarios.
+- **Procedure**: Restore the named checkpoint, revert git state, restart the runtime with default flag values, discard compromised evidence, and rerun only the affected scenarios after the baseline is clean again.
 <!-- /ANCHOR:rollback -->
 
 ---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```
+Phase 1 (Preconditions) --> Phase 2 (Core Pipeline) --> Phase 3 (Quality Loop) --> Phase 4 (Consolidation) --> Phase 5 (Advanced) --> Phase 6 (Verdict)
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Preconditions | None | All |
+| Core Pipeline (M-003, M-005 family, M-006 family) | Preconditions | Quality Loop |
+| Quality Loop (039-048) | Preconditions | Consolidation |
+| Consolidation (069-133) | Preconditions | Advanced |
+| Advanced (155-178) | Preconditions | Verdict |
+| Evidence + Verdict | All execution phases | None |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Preconditions | Low | 20-30 min |
+| Core pipeline tests (9 exact IDs) | High | 60-90 min |
+| Quality loop tests (10 exact IDs) | Medium | 45-75 min |
+| Consolidation tests (8 exact IDs) | Medium | 30-60 min |
+| Advanced tests (7 exact IDs) | High | 45-75 min |
+| Evidence collection and verdict | Low | 30-45 min |
+| **Total** | | **4-6 hours** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-Execution Checklist
+
+- [ ] Named checkpoint created before any destructive scenario
+- [ ] Baseline feature flags recorded before any flag changes
+- [ ] Temporary git repos prepared for M-006 git state scenarios
+- [ ] No shared production memory records targeted by any test
+
+### Rollback Procedure
+
+1. Stop execution of current scenario
+2. Restore named checkpoint if reconsolidation or save mutations were made
+3. Delete temporary git repos created for M-006 scenarios
+4. Restart MCP runtime with default flag values if env was changed
+5. Verify clean state with `memory_health()`
+6. Re-run affected scenario from scratch
+
+### Data Reversal
+
+- **Has data mutations?** Yes -- scenarios 044 (reconsolidation merge), M-005 (agent capture write), M-006 (git state)
+- **Reversal procedure**: Restore named checkpoint created immediately before mutation scenarios
+<!-- /ANCHOR:enhanced-rollback -->

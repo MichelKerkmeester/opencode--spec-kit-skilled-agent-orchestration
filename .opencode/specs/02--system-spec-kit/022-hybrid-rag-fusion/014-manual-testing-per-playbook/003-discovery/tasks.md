@@ -1,12 +1,11 @@
 ---
-title: "Tasks: manual-testing-per-playbook discovery phase [template:level_1/tasks.md]"
-description: "Task Format: T### [P?] Description (file path)"
+title: "Tasks: manual-testing-per-playbook discovery phase"
+description: "Task tracker for Phase 003 discovery scenarios. One task per scenario (EX-011, EX-012, EX-013), all pending."
 trigger_phrases:
-  - "discovery tasks"
+  - "discovery phase tasks"
   - "phase 003 tasks"
-  - "manual discovery tasks"
-  - "tasks core"
-importance_tier: "high"
+  - "EX-011 EX-012 EX-013 tasks"
+importance_tier: "normal"
 contextType: "general"
 ---
 # Tasks: manual-testing-per-playbook discovery phase
@@ -26,7 +25,7 @@ contextType: "general"
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
-**Task Format**: `T### [P?] Description (file path)`
+**Task Format**: `T### [P?] Description`
 <!-- /ANCHOR:notation -->
 
 ---
@@ -34,9 +33,10 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Extract discovery prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] T002 Confirm feature links for EX-011, EX-012, and EX-013 in `../../feature_catalog/03--discovery/`
-- [x] T003 [P] Identify target spec folder path for EX-011 pagination and confirm indexed corpus is stable before execution
+- [ ] T001 Read playbook context for 03--discovery (`../scratch/context-playbook.md` §03--discovery)
+- [ ] T002 Read feature catalog context for 03--discovery (`../scratch/context-feature-catalog.md` §03--discovery)
+- [ ] T003 Verify MCP server is running and accepting tool calls
+- [ ] T004 Confirm at least one memory is indexed (quick sanity check)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -44,12 +44,13 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Draft `spec.md` with metadata, scope table, and three playbook-derived requirements
-- [x] T005 Draft `plan.md` with readiness gates, execution phases, and testing strategy table
-- [x] T006 Draft `tasks.md` with phase breakdown and cross-references
-- [x] T007 Draft `checklist.md` with verification protocol and P0/P1/P2 items
-- [x] T008 Add evidence references and verdict outcomes after manual execution
-- [x] T009 [P] Resolve open questions for EX-011 spec folder target and EX-013 alias-conflict corpus
+- [ ] T005 Execute EX-011 — Memory browser (memory_list): invoke with specFolder, limit, offset; capture output
+- [ ] T006 Record EX-011 verdict: PASS / PARTIAL / FAIL
+- [ ] T007 Execute EX-012 — System statistics (memory_stats): invoke with folderRanking: "composite", includeScores: true; capture output
+- [ ] T008 Record EX-012 verdict: PASS / PARTIAL / FAIL
+- [ ] T009 Execute EX-013a — Health diagnostics full mode: invoke memory_health(reportMode: "full"); capture output
+- [ ] T010 Execute EX-013b — Health diagnostics divergent_aliases mode: invoke memory_health(reportMode: "divergent_aliases"); capture output
+- [ ] T011 Record EX-013 verdict: PASS / PARTIAL / FAIL
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -57,9 +58,9 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T010 Run the three Phase 003 scenarios following `plan.md`
-- [x] T011 Validate documentation structure and required anchors
-- [x] T012 Update `implementation-summary.md` when execution and verification are complete
+- [ ] T012 Fill implementation-summary.md with all three verdicts and captured evidence
+- [ ] T013 Check all P0 items in checklist.md
+- [ ] T014 Check P1 items in checklist.md (evidence captured, verdicts recorded)
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -67,9 +68,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]`
-- [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed
+- [ ] All tasks T001-T014 marked `[x]`
+- [ ] No `[B]` blocked tasks remaining
+- [ ] All three scenarios have recorded verdicts
 <!-- /ANCHOR:completion -->
 
 ---
@@ -79,6 +80,6 @@ contextType: "general"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+- **Playbook**: `../scratch/context-playbook.md` §03--discovery
 <!-- /ANCHOR:cross-refs -->
-
----

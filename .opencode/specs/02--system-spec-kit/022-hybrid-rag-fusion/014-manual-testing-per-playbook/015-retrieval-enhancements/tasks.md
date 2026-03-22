@@ -1,17 +1,16 @@
 ---
-title: "Tasks: manual-testing-per-playbook retrieval-enhancements phase [template:level_1/tasks.md]"
+title: "Tasks: Manual Testing — Retrieval Enhancements (Phase 015)"
 description: "Task Format: T### [P?] Description (file path)"
 trigger_phrases:
   - "retrieval enhancements tasks"
   - "phase 015 tasks"
-  - "manual testing retrieval enhancements tasks"
-  - "tasks core retrieval enhancements"
-importance_tier: "high"
+  - "manual testing retrieval tasks"
+importance_tier: "normal"
 contextType: "general"
 ---
-# Tasks: manual-testing-per-playbook retrieval-enhancements phase
+# Tasks: Manual Testing — Retrieval Enhancements (Phase 015)
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -34,9 +33,12 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Extract retrieval-enhancements prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] T002 Confirm feature links for 055, 056, 057, 058, 059, 060, 077, 096, and 145 in `../../feature_catalog/15--retrieval-enhancements/`
-- [x] T003 [P] Prepare sandbox prerequisites and evidence capture checklist for `plan.md` (corpus size check for 059, edge-weight backup for 058, cross-document entity fixture for 060)
+- [ ] T001 Load playbook rows for all 11 retrieval enhancement scenario IDs from `../../manual_testing_playbook/manual_testing_playbook.md`
+- [ ] T002 Load review protocol verdict rules from `../../manual_testing_playbook/manual_testing_playbook.md`
+- [ ] T003 [P] Confirm feature catalog links for all 11 scenarios in `../../feature_catalog/15--retrieval-enhancements/`
+- [ ] T004 Record baseline env var state (SPECKIT_RESPONSE_TRACE, SPECKIT_CONTEXT_HEADERS, SPECKIT_CONSOLIDATION, SPECKIT_ENTITY_LINKING, SPECKIT_MEMORY_SUMMARIES)
+- [ ] T005 Capture corpus size count to determine whether 059 summary channel threshold (5,000 memories) is satisfied
+- [ ] T006 Prepare disposable sandbox corpus for consolidation (058) and cross-document entity corpus for entity linking (060)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -44,12 +46,17 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Draft `spec.md` with metadata, scope table, and nine playbook-derived requirements
-- [x] T005 Draft `plan.md` with readiness gates, execution phases, and testing strategy table
-- [x] T006 Draft `tasks.md` with phase breakdown and cross-references
-- [x] T007 Draft `checklist.md` with L2 verification items scoped to retrieval-enhancements scenarios
-- [x] T008 [P] Add evidence references and verdict outcomes after manual execution
-- [x] T009 [P] Resolve open questions for 058 sandbox corpus and 059 threshold corpus size
+- [ ] T007 Execute scenario 055 — Dual-scope memory auto-surface (TM-05) and record verdict
+- [ ] T008 Execute scenario 056 — Constitutional memory as expert knowledge injection (PI-A4) and record verdict
+- [ ] T009 Execute scenario 057 — Spec folder hierarchy as retrieval structure (S4) and record verdict
+- [ ] T010 Execute scenario 058 — Lightweight consolidation (N3-lite) in sandbox and record verdict
+- [ ] T011 Execute scenario 059 — Memory summary search channel (R8) and record verdict
+- [ ] T012 Execute scenario 060 — Cross-document entity linking (S5) in sandbox and record verdict
+- [ ] T013 Execute scenario 077 — Tier-2 fallback channel forcing and record verdict
+- [ ] T014 Execute scenario 093 — Implemented: memory summary generation (R8) and record verdict
+- [ ] T015 Execute scenario 094 — Implemented: cross-document entity linking (S5) and record verdict
+- [ ] T016 Execute scenario 096 — Provenance-rich response envelopes (P0-2) and record verdict
+- [ ] T017 Execute scenario 145 — Contextual tree injection (P1-4) and record verdict
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -57,9 +64,11 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T010 Run the nine Phase 015 scenarios following `plan.md`
-- [x] T011 Validate documentation structure and required anchors
-- [x] T012 Update `implementation-summary.md` when execution and verification are complete
+- [ ] T018 Restore env var state to baseline after scenarios 096 and 145 complete
+- [ ] T019 Confirm all 11 scenarios have a verdict (PASS / FAIL / SKIP — no "Not Started" remaining)
+- [ ] T020 Confirm all FAIL verdicts have defect notes with observed vs expected behaviour
+- [ ] T021 Mark all P0 checklist items in checklist.md with evidence
+- [ ] T022 Update implementation-summary.md with final verdict summary
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -67,9 +76,10 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]`
-- [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed
+- [ ] All tasks marked `[x]`
+- [ ] No `[B]` blocked tasks remaining
+- [ ] All 11 scenarios verdicted
+- [ ] checklist.md P0 items verified with evidence
 <!-- /ANCHOR:completion -->
 
 ---
@@ -79,6 +89,5 @@ contextType: "general"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
 <!-- /ANCHOR:cross-refs -->
-
----

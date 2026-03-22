@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook feature-flag-reference phase [template:level_1/spec.md]"
+title: "Feature Specification: manual-testing-per-playbook feature-flag-reference phase [template:level_2/spec.md]"
 description: "Phase 019 documents the feature-flag-reference manual test packet for the Spec Kit Memory system. It groups eight flag-catalog and Hydra roadmap scenarios from the central playbook so testers can execute prompts, command sequences, evidence capture, and verdict criteria from one bounded folder."
 trigger_phrases:
   - "feature flag reference manual testing"
@@ -11,7 +11,7 @@ contextType: "general"
 ---
 # Feature Specification: manual-testing-per-playbook feature-flag-reference phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
@@ -21,12 +21,13 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Level** | 1 |
+| **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
-| **Created** | 2026-03-16 |
+| **Status** | Not Started |
+| **Created** | 2026-03-22 |
 | **Branch** | `main` |
-| **Parent** | [`../spec.md`](../spec.md) |
+| **Parent Spec** | [../spec.md](../spec.md) |
+| **Predecessor** | [018-ux-hooks](../018-ux-hooks/spec.md) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -35,7 +36,7 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual feature-flag-reference scenarios for the Spec Kit Memory system currently live inside the central playbook and need a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated feature-flag-reference packet, Phase 019 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results.
+Manual feature-flag-reference scenarios for the Spec Kit Memory system live inside the central playbook and require a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated feature-flag-reference packet, Phase 019 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results.
 
 ### Purpose
 Provide a single feature-flag-reference-focused specification that maps all eight Phase 019 test IDs to their feature context and acceptance criteria so manual execution and review remain consistent with the canonical playbook. The eight tests cover SPECKIT_* flag classification (EX-028), session and cache policy retrieval (EX-029), MCP configuration limits (EX-030), DB path precedence (EX-031), embedding provider selection (EX-032), debug and telemetry toggles (EX-033), CI branch metadata vars (EX-034), and Hydra roadmap capability flag isolation (125).
@@ -68,10 +69,12 @@ Provide a single feature-flag-reference-focused specification that maps all eigh
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `spec.md` | Create | Phase 019 feature-flag-reference requirements, test inventory, and acceptance criteria |
-| `plan.md` | Create | Phase 019 feature-flag-reference execution plan and review workflow |
-| `tasks.md` | Create | Phase 019 task tracker for setup, execution, and verification work |
-| `checklist.md` | Create | Phase 019 verification checklist for quality gates and completion criteria |
+| `spec.md` | Rewrite | Phase 019 feature-flag-reference requirements, test inventory, and acceptance criteria |
+| `plan.md` | Rewrite | Phase 019 feature-flag-reference execution plan and review workflow |
+| `tasks.md` | Rewrite | Phase 019 task tracker — all tasks pending |
+| `checklist.md` | Rewrite | Phase 019 verification checklist — all items unchecked |
+| `implementation-summary.md` | Rewrite | Blank template pending execution |
+| `description.json` | Rewrite | Reset to Draft, Not Started |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -83,14 +86,14 @@ Provide a single feature-flag-reference-focused specification that maps all eigh
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Document EX-028 flag catalog verification with its exact playbook prompt, command sequence, evidence target, and feature link. | PASS if classifications are internally consistent; validate active, inert, and deprecated flags against code/config docs |
-| REQ-002 | Document EX-029 session policy audit with its exact search prompt, command sequence, evidence target, and feature link. | PASS if all required session/cache control keys are surfaced; expand query terms on failure |
-| REQ-003 | Document EX-030 MCP limits audit with its exact search prompt, command sequence, evidence target, and feature link. | PASS if defaults and keys for MCP guardrails are identified; verify in config files directly on failure |
-| REQ-004 | Document EX-031 storage precedence check with its exact search-then-context prompt, command sequence, evidence target, and feature link. | PASS if DB path precedence chain is unambiguous; cross-check startup config loader on failure |
-| REQ-005 | Document EX-032 provider selection audit with its exact search prompt, command sequence, evidence target, and feature link. | PASS if provider routing and key precedence are clear; verify env in runtime on failure |
-| REQ-006 | Document EX-033 observability toggle check with its exact search prompt, command sequence, evidence target, and feature link. | PASS if opt-in versus inert controls are clearly separated; check feature flag governance section on failure |
-| REQ-007 | Document EX-034 branch metadata source audit with its exact search prompt, command sequence, evidence target, and feature link. | PASS if all listed branch env vars are found; search CI scripts and runtime helpers on failure |
-| REQ-008 | Document 125 Hydra roadmap capability flag isolation with its exact prompt, two-snapshot command sequence, evidence target, and feature link. | PASS if runtime SPECKIT_GRAPH_UNIFIED flag does not flip roadmap metadata and prefixed SPECKIT_HYDRA_* env vars can explicitly opt out of the roadmap snapshot |
+| REQ-001 | Execute EX-028 flag catalog verification: classify SPECKIT_ flags as active, inert, or deprecated. | PASS if classifications are internally consistent; validate active, inert, and deprecated flags against code/config docs |
+| REQ-002 | Execute EX-029 session policy audit: surface all required session/cache control keys. | PASS if all required session/cache control keys are surfaced; expand query terms on failure |
+| REQ-003 | Execute EX-030 MCP limits audit: identify defaults and keys for MCP guardrails. | PASS if defaults and keys for MCP guardrails are identified; verify in config files directly on failure |
+| REQ-004 | Execute EX-031 storage precedence check: confirm DB path precedence chain is unambiguous. | PASS if DB path precedence chain is unambiguous; cross-check startup config loader on failure |
+| REQ-005 | Execute EX-032 provider selection audit: confirm provider routing and key precedence. | PASS if provider routing and key precedence are clear; verify env in runtime on failure |
+| REQ-006 | Execute EX-033 observability toggle check: clearly separate opt-in versus inert controls. | PASS if opt-in versus inert controls are clearly separated; check feature flag governance section on failure |
+| REQ-007 | Execute EX-034 branch metadata source audit: surface all listed branch env vars. | PASS if all listed branch env vars are found; search CI scripts and runtime helpers on failure |
+| REQ-008 | Execute 125 Hydra roadmap capability flag isolation: verify two dist-build snapshots with distinct env var injection. | PASS if runtime SPECKIT_GRAPH_UNIFIED flag does not flip roadmap metadata and SPECKIT_HYDRA_* env vars can explicitly opt out of the roadmap snapshot |
 
 No P1 items are defined for this phase; all eight feature-flag-reference scenarios are mandatory for coverage.
 <!-- /ANCHOR:requirements -->
@@ -100,10 +103,10 @@ No P1 items are defined for this phase; all eight feature-flag-reference scenari
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 8 feature-flag-reference tests are documented with exact prompts, exact command sequences, linked feature catalog entries, and playbook-derived pass criteria.
-- **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for EX-028, EX-029, EX-030, EX-031, EX-032, EX-033, EX-034, and 125 will be collected.
-- **SC-003**: Reviewers can audit every Phase 019 scenario using this folder plus the linked playbook (`../../manual_testing_playbook/manual_testing_playbook.md`) and review protocol (`../../manual_testing_playbook/review_protocol.md`).
-- **SC-004**: The phase packet contains no placeholder or template text and is ready for manual execution planning.
+- **SC-001**: All 8 feature-flag-reference scenarios (EX-028 through EX-034 and 125) are executed with evidence captured per the review protocol.
+- **SC-002**: Each scenario has a PASS, PARTIAL, or FAIL verdict with explicit rationale.
+- **SC-003**: Coverage is reported as 8/8 with no skipped test IDs.
+- **SC-004**: 125 snapshot comparison outputs are captured before any env cleanup.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -113,21 +116,68 @@ No P1 items are defined for this phase; all eight feature-flag-reference scenari
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth and update this phase packet only from that document |
-| Dependency | [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review and do not invent alternate verdict logic |
+| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth; update this phase packet only from that document |
+| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review; do not invent alternate verdict logic |
 | Dependency | [`../../feature_catalog/19--feature-flag-reference/`](../../feature_catalog/19--feature-flag-reference/) | Supplies feature context for each flag-reference scenario | Keep every test row linked to its mapped feature-flag-reference file |
 | Dependency | MCP runtime and `dist` build of `capability-flags.js` | Required to execute `memory_search`, `memory_context`, and 125 node-based snapshot scenarios | Verify the dist build is current before executing 125 and confirm `memory_search` is available |
 | Risk | 125 requires a freshly compiled dist build; stale builds produce incorrect snapshot results | High | Run `npm run build` inside the mcp_server directory before executing 125 and inspect `capability-flags.ts` if snapshots diverge from expectations |
-| Risk | EX-031 and EX-028 rely on memory search retrieving indexed flag documentation; results may be sparse if flag docs have not been indexed | Medium | Run `memory_index_scan(force:true)` if search results are unexpectedly sparse, then retry the affected scenario |
+| Risk | EX-028 through EX-034 rely on memory search retrieving indexed flag documentation; results may be sparse if flag docs have not been indexed | Medium | Run `memory_index_scan({ force:true })` if search results are unexpectedly sparse, then retry the affected scenario |
 <!-- /ANCHOR:risks -->
 
 ---
 
 <!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS
+## 10. OPEN QUESTIONS
 
 - Which indexed corpus is expected to hold the SPECKIT flag documentation so EX-028 through EX-034 memory_search calls return relevant results? Should a dedicated flag-reference memory file be pre-indexed before execution?
 - For 125, should both dist build runs use the same `mcp_server` working directory, or is there a preferred test environment that isolates env var bleed between the two snapshot commands?
 <!-- /ANCHOR:questions -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: EX-028 through EX-034 MCP calls must complete within the standard tool timeout window.
+- **NFR-P02**: 125 node invocations must each complete in under 10 seconds; a timeout indicates a build or module resolution issue.
+
+### Security
+- **NFR-S01**: No real API keys (COHERE_API_KEY, OPENAI_API_KEY, VOYAGE_API_KEY) may appear in evidence artifacts; use variable names only.
+- **NFR-S02**: SPECKIT_HYDRA_* env var injection for 125 must be scoped to single shell invocations; unset after snapshot capture.
+
+### Reliability
+- **NFR-R01**: If MCP search returns 0 results for a flag-reference scenario, document the EVIDENCE GAP and triage via feature catalog cross-reference per playbook instructions; do not fabricate retrieval evidence.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Data Boundaries
+- EX-028 zero-result search: triage via feature catalog cross-reference; verdict PARTIAL (not FAIL) if classification is confirmed via catalog.
+- 125 snapshot key absent from JSON output: verify dist build and re-run; do not accept undefined as a valid value.
+
+### Error Scenarios
+- 125 module not found: run `npm run build` and retry; if still failing, mark BLOCKED with verbatim error.
+- EX-031 to EX-034 zero results: run `memory_index_scan({ force:true })` and retry once before accepting PARTIAL triage path.
+
+### State Transitions
+- 125 step 2 env var bleed: if SPECKIT_HYDRA_PHASE leaks into step 1 re-run, unset all SPECKIT_HYDRA_* vars and restart from step 1.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 12/25 | 8 scenarios, 7 read-only MCP and 1 node snapshot |
+| Risk | 12/25 | Indexed corpus dependency, dist build freshness, env var isolation |
+| Research | 6/20 | Exact prompts and commands already defined in playbook |
+| **Total** | **30/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
 
 ---

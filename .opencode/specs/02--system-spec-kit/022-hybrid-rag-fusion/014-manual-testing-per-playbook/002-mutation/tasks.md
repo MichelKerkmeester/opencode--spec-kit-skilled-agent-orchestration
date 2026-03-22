@@ -1,17 +1,17 @@
 ---
-title: "Tasks: manual-testing-per-playbook mutation phase [template:level_1/tasks.md]"
-description: "Task Format: T### [P?] Description (file path)"
+title: "Tasks: manual-testing-per-playbook mutation phase [template:level_2/tasks.md]"
+description: "Task tracker for 9 mutation playbook scenarios. One task per scenario, all PENDING."
 trigger_phrases:
   - "mutation tasks"
   - "phase 002 tasks"
   - "manual mutation testing tasks"
   - "tasks core"
-importance_tier: "high"
-contextType: "general"
+importance_tier: "normal"
+contextType: "implementation"
 ---
 # Tasks: manual-testing-per-playbook mutation phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -26,7 +26,7 @@ contextType: "general"
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
-**Task Format**: `T### [P?] Description (file path)`
+**Task Format**: `T### [P?] Description`
 <!-- /ANCHOR:notation -->
 
 ---
@@ -34,10 +34,12 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Extract mutation prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] T002 Confirm feature links for EX-006, EX-007, EX-008, EX-009, EX-010, 085, and 110 in `../../feature_catalog/02--mutation/`
-- [x] T003 [P] Prepare disposable sandbox spec folder and evidence capture checklist for destructive tests EX-008 and EX-009
-- [x] T004 [P] Identify fault injection mechanism for 085 (mock adapter or controlled DB path) and document in `plan.md`
+- [ ] T001 Verify playbook files accessible at `../../manual_testing_playbook/02--mutation/`
+- [ ] T002 Confirm feature catalog accessible at `../../feature_catalog/02--mutation/`
+- [ ] T003 Load review protocol from `../../manual_testing_playbook/manual_testing_playbook.md`
+- [ ] T004 Verify MCP runtime healthy — all mutation tools and checkpoint tools respond
+- [ ] T005 [P] Prepare disposable sandbox spec folder with fixture memories for EX-008, EX-009, and 110
+- [ ] T006 [P] Confirm no active checkpoints conflict with planned names (pre-ex008-delete, pre-ex009-bulk-delete)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -45,12 +47,19 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T005 Draft `spec.md` with metadata, scope table, and seven playbook-derived requirements
-- [x] T006 Draft `plan.md` with readiness gates, checkpoint-gated execution phases, and testing strategy table
-- [x] T007 Draft `tasks.md` with phase breakdown and destructive task callouts
-- [x] T008 Draft `checklist.md` with pre-execution, execution, and post-execution verification items
-- [x] T009 Add evidence references and verdict outcomes after manual execution
-- [x] T010 [P] Resolve open questions for EX-008 sandbox target, EX-009 tier/age config, 085 fault injection mechanism, and 110 sandbox scope
+### Scenario Tasks
+
+| Task | Scenario ID | Scenario Name | Status | Evidence |
+|------|-------------|---------------|--------|----------|
+| T010 | EX-006 | Memory indexing (memory_save) | PENDING | — |
+| T011 | EX-007 | Memory metadata update (memory_update) | PENDING | — |
+| T012 | M-008 | Feature 09 Direct Manual Scenario (Per-memory History Log) | PENDING | — |
+| T013 | EX-008 | Single and folder delete (memory_delete) — DESTRUCTIVE | PENDING | — |
+| T014 | EX-009 | Tier-based bulk deletion (memory_bulk_delete) — DESTRUCTIVE | PENDING | — |
+| T015 | EX-010 | Validation feedback (memory_validate) | PENDING | — |
+| T016 | 085 | Transaction wrappers on mutation handlers | PENDING | — |
+| T017 | 101 | memory_delete confirm schema tightening | PENDING | — |
+| T018 | 110 | Prediction-error save arbitration | PENDING | — |
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -58,11 +67,11 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T011 Run EX-006, EX-007, EX-010, and 110 (non-destructive) following `plan.md` Phase 2
-- [x] T012 Run 085 (transaction fault injection) following `plan.md` Phase 3 — sandbox/isolation required
-- [x] T013 Run EX-008 and EX-009 (destructive) following `plan.md` Phase 4 — sandbox and named checkpoints required before execution
-- [x] T014 Validate documentation structure and required anchors
-- [x] T015 Update `implementation-summary.md` when execution and verification are complete
+- [ ] T030 Record verdict for each scenario (PASS, PARTIAL, or FAIL) with rationale
+- [ ] T031 Confirm 9/9 scenarios executed with no skipped test IDs
+- [ ] T032 Update checklist.md with evidence references for all P0 items
+- [ ] T033 Complete implementation-summary.md with aggregate results
+- [ ] T034 Verify sandbox isolation maintained for EX-008 and EX-009 (operations scoped to sandbox folder)
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -70,9 +79,11 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]`
-- [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed
+- [ ] All 9 scenario tasks (T010-T018) marked complete
+- [ ] All verification tasks (T030-T034) complete
+- [ ] No `[B]` blocked tasks remaining without documented reason
+- [ ] Destructive tests executed only with named checkpoints confirmed in advance
+- [ ] Manual verification passed per review protocol
 <!-- /ANCHOR:completion -->
 
 ---
@@ -84,5 +95,3 @@ contextType: "general"
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
 <!-- /ANCHOR:cross-refs -->
-
----

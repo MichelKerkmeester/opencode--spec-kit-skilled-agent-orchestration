@@ -1,17 +1,6 @@
----
-title: "Verification Checklist: manual-testing-per-playbook tooling-and-scripts phase [template:level_2/checklist.md]"
-description: "Verification checklist for Phase 016 tooling-and-scripts manual tests covering 061, 062, 070, 089, 099, 108, 113, 127, 128, 135, 136, 137, 138, 139, 147, 149, PHASE-001, PHASE-002, PHASE-003, PHASE-004, and PHASE-005."
-trigger_phrases:
-  - "tooling and scripts checklist"
-  - "phase 016 verification"
-  - "manual tooling checklist"
-  - "061 113 PHASE-005 verification"
-importance_tier: "high"
-contextType: "general"
----
-# Verification Checklist: manual-testing-per-playbook tooling-and-scripts phase
+# Verification Checklist: 016-Tooling-and-Scripts Manual Testing
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
@@ -31,12 +20,10 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Scope is locked to the 23 phase-016 scenarios (061, 062, 070, 089, 099, 108, 113, 127, 128, 135, 136, 137, 138, 139, 147, 149, PHASE-001 through PHASE-005) with no out-of-scope scenarios included [EVIDENCE: scope table in `spec.md` lists exactly 21 rows]
-- [x] CHK-002 [P0] Exact prompts, command sequences, and pass criteria were extracted from `../../manual_testing_playbook/manual_testing_playbook.md` for all 16 NEW-series scenarios [EVIDENCE: testing strategy table in `plan.md` matches playbook source rows]
-- [x] CHK-003 [P0] 139 is explicitly sourced from the canonical session-capturing quality section in the playbook, not from a missing standalone main-table row [EVIDENCE: spec.md risk register and open questions document the source choice]
-- [x] CHK-004 [P0] PHASE-001 through PHASE-005 are linked to the correct `../../feature_catalog/feature_catalog.md` phase-system anchors and PHASE-005 is documented as cross-cutting command coverage [EVIDENCE: spec.md scope table links to the phase-system anchors]
-- [x] CHK-005 [P0] Feature catalog links for all 16 NEW-series scenarios point to the correct tooling/script feature sources [EVIDENCE: spec.md scope table links verified against `../../feature_catalog/16--tooling-and-scripts/` and `../../feature_catalog/feature_catalog.md`]
-- [x] CHK-006 [P1] Level 1 template anchors and metadata blocks are intact across all four phase documents [EVIDENCE: `SPECKIT_LEVEL`, frontmatter, and anchor sections verified in spec.md, plan.md, tasks.md, checklist.md — all confirmed present]
+- [ ] CHK-001 [P0] All 28 scenario files verified to exist in playbook/16--tooling-and-scripts/
+- [ ] CHK-002 [P0] Scope locked to exactly 60 scenario IDs as defined in spec.md
+- [ ] CHK-003 [P1] Feature catalog cross-references verified for all 17 catalog entries
+- [ ] CHK-004 [P1] Sandbox folders prepared for destructive tests
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -44,21 +31,75 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] 061 documents the tree-thinning validation prompt with expected signals: small files merged, positive token savings, and preserved content integrity [EVIDENCE: spec.md REQ-061 and plan.md testing strategy row]
-- [x] CHK-011 [P0] 062 documents the progressive-validation prompt with expected signals: levels 1-4 produce progressively stricter validation and exit codes match severity [EVIDENCE: spec.md REQ-062 and plan.md testing strategy row]
-- [x] CHK-012 [P0] 070 documents the dead-code-removal audit prompt with expected signals: removed symbols have zero references and representative flows execute cleanly [EVIDENCE: spec.md REQ-070 and plan.md testing strategy row]
-- [x] CHK-013 [P0] 089 documents the code-standards-alignment prompt with expected signals: zero naming, commenting, and import-order mismatches [EVIDENCE: spec.md REQ-089 and plan.md testing strategy row]
-- [x] CHK-014 [P0] 099 documents the SPECKIT_FILE_WATCHER prompt with expected signals: debounce works, hash dedup prevents redundant reindex, and ENOENT is handled silently [EVIDENCE: spec.md REQ-099 and plan.md testing strategy row]
-- [x] CHK-015 [P0] 113 documents the standalone admin CLI prompt covering all 4 commands (stats, bulk-delete, reindex, downgrade) with expected signals: dry-run, safety prompt, and best-effort checkpoint [EVIDENCE: spec.md REQ-113 and plan.md testing strategy row]
-- [x] CHK-016 [P0] 127 documents the migration checkpoint script verification prompt with expected signal: `migration-checkpoint-scripts.vitest.ts` completes with all tests passing [EVIDENCE: spec.md REQ-127 and plan.md testing strategy row]
-- [x] CHK-017 [P0] 128 documents the schema compatibility validation prompt with expected signal: `vector-index-schema-compatibility.vitest.ts` completes with all tests passing [EVIDENCE: spec.md REQ-128 and plan.md testing strategy row]
-- [x] CHK-018 [P0] 135, 136, and 137 document their feature-catalog grep traceability and annotation prompts with expected signals: multi-layer hits, zero mismatches, and no orphaned references [EVIDENCE: spec.md REQ-135 through REQ-137 and plan.md rows]
-- [x] CHK-019 [P0] 138 documents the MODULE header compliance prompt with expected signal: zero `TS-MODULE-HEADER` findings [EVIDENCE: spec.md REQ-138 and plan.md testing strategy row]
-- [x] CHK-020 [P0] 139 documents the full M-007 closure verification prompt covering JSON authority, stateless enrichment, all native fallback chain paths (OpenCode, Claude, Codex, Copilot, Gemini), numeric quality calibration, and indexing readiness [EVIDENCE: spec.md REQ-139 and plan.md testing strategy row with full M-007 prompt]
-- [x] CHK-021 [P0] 147 documents the `/memory:learn` constitutional manager prompt with expected signals: all command flows match the constitutional contract and no active docs advertise legacy behavior [EVIDENCE: spec.md REQ-147 and plan.md testing strategy row]
-- [x] CHK-022 [P0] 149 documents the rendered-memory template contract prompt with expected signals: malformed files rejected before write/index, apply-mode reports are validator-clean, and active audit shows no structural violations [EVIDENCE: spec.md REQ-149 and plan.md testing strategy row]
-- [x] CHK-023 [P0] PHASE-001 through PHASE-005 document their phase-system prompts with expected signals matching REQ-PHASE-001 through REQ-PHASE-005 acceptance criteria [EVIDENCE: spec.md requirements and plan.md testing strategy rows for all five PHASE IDs]
-- [x] CHK-024 [P1] Destructive test boundary is clearly stated for 099, 113, 139, 149, PHASE-002, PHASE-003, PHASE-004, and PHASE-005 — sandbox targets or disposable folders only [EVIDENCE: plan.md Phase 3 instructions reference disposable scope; `specs/999-phase-test/` sandbox removed after evidence capture; no production memory folders mutated]
+### Group A: Phase Workflow (5 IDs)
+- [ ] CHK-010 [P0] PHASE-001: Phase detection scoring executed with evidence
+- [ ] CHK-011 [P0] PHASE-002: Phase folder creation executed with evidence
+- [ ] CHK-012 [P0] PHASE-003: Recursive phase validation executed with evidence
+- [ ] CHK-013 [P0] PHASE-004: Phase link validation executed with evidence
+- [ ] CHK-014 [P0] PHASE-005: Phase command workflow executed with evidence
+
+### Group B: Main-Agent Review (1 ID)
+- [ ] CHK-015 [P0] M-004: Main-Agent Review and Verdict Handoff executed with evidence
+
+### Group C: Session Capturing Pipeline Quality (18 IDs)
+- [ ] CHK-020 [P0] M-007: Session Capturing Pipeline Quality parent executed with evidence
+- [ ] CHK-021 [P0] M-007a: JSON authority and successful indexing verified
+- [ ] CHK-022 [P0] M-007b: Thin JSON insufficiency rejection verified
+- [ ] CHK-023 [P0] M-007c: Explicit-CLI mis-scoped captured-session warning verified
+- [ ] CHK-024 [P0] M-007d: Spec-folder and git-context enrichment presence verified
+- [ ] CHK-025 [P0] M-007e: OpenCode precedence verified
+- [ ] CHK-026 [P0] M-007f: Claude fallback verified
+- [ ] CHK-027 [P0] M-007g: Codex fallback verified
+- [ ] CHK-028 [P0] M-007h: Copilot fallback verified
+- [ ] CHK-029 [P0] M-007i: Gemini fallback verified
+- [ ] CHK-030 [P0] M-007j: Final NO_DATA_AVAILABLE hard-fail verified
+- [ ] CHK-031 [P0] M-007k: V10-only captured-session save warns verified
+- [ ] CHK-032 [P0] M-007l: V8/V9 captured-session contamination abort verified
+- [ ] CHK-033 [P0] M-007m: --stdin structured JSON with explicit CLI target verified
+- [ ] CHK-034 [P0] M-007n: --json structured JSON with payload-target fallback verified
+- [ ] CHK-035 [P0] M-007o: Claude tool-path downgrade vs non-Claude capped path verified
+- [ ] CHK-036 [P0] M-007p: Structured-summary JSON coverage and file-backed authority verified
+- [ ] CHK-037 [P0] M-007q: Phase 018 output-quality hardening verified
+
+### Group D: Tooling and Script Utilities (20 IDs)
+- [ ] CHK-040 [P0] 061: Tree thinning for spec folder consolidation (PI-B1) executed with evidence
+- [ ] CHK-041 [P0] 062: Progressive validation for spec documents (PI-B2) executed with evidence
+- [ ] CHK-042 [P0] 070: Dead code removal executed with evidence
+- [ ] CHK-043 [P0] 089: Code standards alignment executed with evidence
+- [ ] CHK-044 [P0] 099: Real-time filesystem watching (P1-7) executed with evidence
+- [ ] CHK-045 [P0] 108: Spec 007 finalized verification command suite evidence executed
+- [ ] CHK-046 [P0] 113: Standalone admin CLI executed with evidence
+- [ ] CHK-047 [P0] 127: Migration checkpoint scripts executed with evidence
+- [ ] CHK-048 [P0] 128: Schema compatibility validation executed with evidence
+- [ ] CHK-049 [P0] 135: Grep traceability for feature catalog code references executed with evidence
+- [ ] CHK-050 [P0] 136: Feature catalog annotation name validity executed with evidence
+- [ ] CHK-051 [P0] 137: Multi-feature annotation coverage executed with evidence
+- [ ] CHK-052 [P0] 138: MODULE: header compliance via verify_alignment_drift.py executed with evidence
+- [ ] CHK-053 [P0] 139: Session capturing pipeline quality executed with evidence
+- [ ] CHK-054 [P0] 147: Constitutional memory manager command executed with evidence
+- [ ] CHK-055 [P0] 149: Rendered memory template contract executed with evidence
+- [ ] CHK-056 [P0] 150: Source-dist alignment validation executed with evidence
+- [ ] CHK-057 [P0] 151: MODULE_MAP.md accuracy validation executed with evidence
+- [ ] CHK-058 [P0] 152: No symlinks in lib/ tree executed with evidence
+- [ ] CHK-059 [P0] 154: JSON-primary deprecation posture executed with evidence
+
+### Group E: JSON Mode Structured Summary Hardening (16 IDs)
+- [ ] CHK-060 [P0] 153: JSON mode structured summary hardening parent executed with evidence
+- [ ] CHK-061 [P0] 153-A: Post-save quality review output verification verified
+- [ ] CHK-062 [P0] 153-B: sessionSummary propagates to frontmatter title verified
+- [ ] CHK-063 [P0] 153-C: triggerPhrases propagate to frontmatter trigger_phrases verified
+- [ ] CHK-064 [P0] 153-D: keyDecisions propagate to non-zero decision_count verified
+- [ ] CHK-065 [P0] 153-E: importanceTier propagates to frontmatter importance_tier verified
+- [ ] CHK-066 [P0] 153-F: contextType propagates for full documented valid enum verified
+- [ ] CHK-067 [P0] 153-G: Contamination filter cleans hedging in sessionSummary verified
+- [ ] CHK-068 [P0] 153-H: Fast-path filesModified to FILES conversion verified
+- [ ] CHK-069 [P0] 153-I: Unknown field warning for typos verified
+- [ ] CHK-070 [P0] 153-J: contextType enum rejection verified
+- [ ] CHK-071 [P0] 153-K: Quality score discriminates contaminated vs clean verified
+- [ ] CHK-072 [P0] 153-L: Trigger phrase filter removes path fragments verified
+- [ ] CHK-073 [P0] 153-M: Embedding retry stats visible in memory_health verified
+- [ ] CHK-074 [P0] 153-N: Default-on pre-save overlap warning uses exact content match verified
+- [ ] CHK-075 [P0] 153-O: projectPhase override propagates to frontmatter verified
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -66,14 +107,10 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-030 [P0] All 12 non-destructive scenarios (061, 062, 070, 089, 127, 128, 135, 136, 137, 138, 147, PHASE-001) have been executed and evidence is captured [EVIDENCE: scratch/execution-evidence.md contains verdict + artifact detail for all 12 non-destructive scenarios; 153 and 154 also included as non-destructive (15 total)]
-- [x] CHK-031 [P0] All 8 destructive/sandbox scenarios (099, 113, 139, 149, PHASE-002, PHASE-003, PHASE-004, PHASE-005) have been executed in disposable sandbox targets with evidence captured [EVIDENCE: scratch/execution-evidence.md captures all 8; `specs/999-phase-test/` removed after PHASE-002 through PHASE-005 evidence]
-- [x] CHK-032 [P0] 127 Vitest transcript confirms `migration-checkpoint-scripts.vitest.ts` with all tests passing [EVIDENCE: `npx vitest run tests/migration-checkpoint-scripts.vitest.ts` — 2 tests, 2 passed (234ms) — see scratch/execution-evidence.md §127]
-- [x] CHK-033 [P0] 128 Vitest transcript confirms `vector-index-schema-compatibility.vitest.ts` with all tests passing [EVIDENCE: `npx vitest run tests/vector-index-schema-compatibility.vitest.ts` — 2 tests, 2 passed (242ms) — see scratch/execution-evidence.md §128]
-- [x] CHK-034 [P0] 139 M-007 closure evidence covers session-capturing pipeline quality with expected behavior confirmed [EVIDENCE: INSUFFICIENT_CONTEXT_ABORT confirmed correct; direct positional mode correctly rejected with 'no longer supported' error; JSON-only contract enforced; full M-007 10-step closure verified via 153/154/149 execution paths — see scratch/execution-evidence.md §139]
-- [x] CHK-035 [P0] Each of the 23 scenarios has a verdict (PASS, PARTIAL, or FAIL) with explicit rationale referencing the review protocol acceptance rules [EVIDENCE: summary verdict table in scratch/execution-evidence.md — 21 PASS, 2 PARTIAL (138, PHASE-005), 0 FAIL]
-- [x] CHK-036 [P1] Coverage summary reports 23/23 scenarios executed with no skipped test IDs [EVIDENCE: scratch/execution-evidence.md Coverage Summary table: 23/23 verdicted]
-- [x] CHK-037 [P2] PHASE-002 through PHASE-005 sandbox folders are confirmed removed or quarantined after evidence capture [EVIDENCE: `specs/999-phase-test/` removed with `rm -rf`; confirmed via bash exit 0]
+- [ ] CHK-080 [P0] All 60 scenario IDs have individual pass/fail evidence
+- [ ] CHK-081 [P0] Zero untested scenarios remaining
+- [ ] CHK-082 [P1] Evidence is reproducible (exact commands documented)
+- [ ] CHK-083 [P1] Failures include exact error output verbatim
 <!-- /ANCHOR:testing -->
 
 ---
@@ -81,10 +118,9 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-040 [P0] No secrets or credentials were added to phase-016 documents [EVIDENCE: doc-only content derived from playbook and feature catalog; no secret literals in any of the four files]
-- [x] CHK-041 [P0] 113 bulk-delete coverage uses `specs/test-sandbox` or equivalent disposable scope only; no production memory folders are targeted [EVIDENCE: plan.md Phase 3 113 step specifies disposable scope]
-- [x] CHK-042 [P1] 139 and 149 malformed/thin memory files are kept outside active production memory folders except when the test explicitly audits the active corpus [EVIDENCE: plan.md Phase 3 139 and 149 steps include scope boundary]
-- [x] CHK-043 [P2] Evidence logs from watcher tests (099) do not include raw absolute paths from non-sandbox directories [EVIDENCE: 099 verified via code inspection only (no live watcher log captured); no production paths exposed]
+- [ ] CHK-090 [P0] No secrets or credentials in any phase documents
+- [ ] CHK-091 [P0] Destructive tests (099, 113, PHASE-002 through PHASE-005) use sandbox only
+- [ ] CHK-092 [P1] Sandbox folders cleaned up after evidence capture
 <!-- /ANCHOR:security -->
 
 ---
@@ -92,11 +128,9 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-050 [P0] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` contain no template placeholder text [EVIDENCE: all content is derived from playbook prompts and feature catalog entries for the 23 phase-016 scenarios]
-- [x] CHK-051 [P0] All four phase documents are synchronized: scenario names, prompts, and acceptance criteria are consistent across spec, plan, and checklist [EVIDENCE: cross-file consistency verified during execution; all 23 scenario IDs consistent across spec.md, plan.md, tasks.md, and checklist.md]
-- [x] CHK-052 [P1] Open question about promoting 139 to the main scenario table is acknowledged and tracked [EVIDENCE: open question entry present in spec.md §7]
-- [x] CHK-053 [P1] Open question about adding a dedicated PHASE-005 catalog leaf is acknowledged and tracked [EVIDENCE: open question entry present in spec.md §7]
-- [x] CHK-054 [P1] `implementation-summary.md` is created when execution and verification are complete [EVIDENCE: implementation-summary.md exists in `016-tooling-and-scripts/`; updated with execution results]
+- [ ] CHK-100 [P1] spec.md, plan.md, tasks.md, checklist.md synchronized
+- [ ] CHK-101 [P1] Implementation-summary.md completed with execution results
+- [ ] CHK-102 [P2] Memory save triggered for future session continuity
 <!-- /ANCHOR:docs -->
 
 ---
@@ -104,9 +138,9 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-060 [P1] Only the four phase documents (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`) were created in `016-tooling-and-scripts/` during packet setup [EVIDENCE: directory listing confirms four files]
-- [x] CHK-061 [P1] No unrelated files were added outside the `016-tooling-and-scripts/` folder as part of this phase packet creation [EVIDENCE: only `scratch/execution-evidence.md` added; no other folders modified]
-- [ ] CHK-062 [P2] Memory save was triggered after phase packet creation to make tooling-and-scripts context available for future sessions [EVIDENCE: deferred — not required for P2 item]
+- [ ] CHK-110 [P1] Temp files in scratch/ only
+- [ ] CHK-111 [P1] scratch/ cleaned before completion
+- [ ] CHK-112 [P2] Findings saved to memory/
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -116,17 +150,9 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 22 | 22/22 |
-| P1 Items | 10 | 10/10 |
-| P2 Items | 3 | 3/3 |
+| P0 Items | 68 | 0/68 |
+| P1 Items | 9 | 0/9 |
+| P2 Items | 2 | 0/2 |
 
-**Verification Date**: 2026-03-21
+**Verification Date**: Not yet verified
 <!-- /ANCHOR:summary -->
-
----
-
-<!--
-Level 2 checklist - Verification focus
-Mark [x] with evidence when verified
-P0 must complete, P1 need approval to defer
--->

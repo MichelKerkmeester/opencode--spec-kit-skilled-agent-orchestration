@@ -1,17 +1,16 @@
 ---
-title: "Tasks: manual-testing-per-playbook maintenance phase [template:level_1/tasks.md]"
-description: "Task Format: T### [P?] Description (file path)"
+title: "Tasks: manual-testing-per-playbook maintenance phase"
+description: "Task tracker for Phase 004 maintenance scenarios. One task per scenario (EX-014, EX-035), all pending."
 trigger_phrases:
-  - "maintenance tasks"
+  - "maintenance phase tasks"
   - "phase 004 tasks"
-  - "index scan testing tasks"
-  - "startup guard testing tasks"
-importance_tier: "high"
+  - "EX-014 EX-035 tasks"
+importance_tier: "normal"
 contextType: "general"
 ---
 # Tasks: manual-testing-per-playbook maintenance phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -26,7 +25,7 @@ contextType: "general"
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
-**Task Format**: `T### [P?] Description (file path)`
+**Task Format**: `T### [P?] Description`
 <!-- /ANCHOR:notation -->
 
 ---
@@ -34,10 +33,10 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Extract maintenance prompts, commands, and pass criteria from `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] T002 Confirm feature links for EX-014 and EX-035 in `../../feature_catalog/04--maintenance/`
-- [x] T003 [P] Prepare sandbox spec folder with known changed files for EX-014 and verify Node/npm toolchain for EX-035
-- [x] T013 Confirm feature context for 100 in `../../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md` and 101 in `../../feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md`
+- [ ] T001 Read playbook context for 04--maintenance (`../scratch/context-playbook.md` §04--maintenance)
+- [ ] T002 Read feature catalog context for 04--maintenance (`../scratch/context-feature-catalog.md` §04--maintenance)
+- [ ] T003 Verify MCP server is running and accepting tool calls
+- [ ] T004 Identify target spec folder with at least one markdown file (for EX-014)
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -45,14 +44,10 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T004 Draft `spec.md` with metadata, scope table, and four playbook-derived requirements (EX-014, EX-035, 100, 101)
-- [x] T005 Draft `plan.md` with readiness gates, execution phases, and testing strategy table
-- [x] T006 Draft `tasks.md` with phase breakdown and cross-references
-- [x] T007 Draft `checklist.md` with pre-implementation, code quality, testing, security, docs, and file organization sections
-- [x] T008 Add evidence references and verdict outcomes after manual execution
-- [x] T009 [P] Resolve open questions for EX-014 sandbox target and EX-035 mismatch simulation scope
-- [x] T014 Execute 100 code analysis of `context-server.ts` shutdown logic and capture evidence
-- [x] T015 Execute 101 `memory_delete` confirm schema validation via MCP and capture evidence
+- [ ] T005 Execute EX-014 — Workspace scanning and indexing (memory_index_scan): invoke with specFolder and incremental: true; capture output
+- [ ] T006 Record EX-014 verdict: PASS / PARTIAL / FAIL
+- [ ] T007 Execute EX-035 — Startup runtime compatibility guards: follow playbook to trigger or simulate guard; capture diagnostic output
+- [ ] T008 Record EX-035 verdict: PASS / PARTIAL / FAIL
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -60,10 +55,9 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T010 Run the four Phase 004 scenarios following `plan.md`
-- [x] T016 Assign PASS/PARTIAL/FAIL verdicts for all four scenarios per review protocol
-- [x] T011 Validate documentation structure and required anchors
-- [x] T012 Update `implementation-summary.md` when execution and verification are complete
+- [ ] T009 Fill implementation-summary.md with both verdicts and captured evidence
+- [ ] T010 Check all P0 items in checklist.md
+- [ ] T011 Check P1 items in checklist.md (evidence captured, verdicts recorded)
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -71,9 +65,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]`
-- [x] No `[B]` blocked tasks remaining
-- [x] Manual verification passed
+- [ ] All tasks T001-T011 marked `[x]`
+- [ ] No `[B]` blocked tasks remaining
+- [ ] Both scenarios have recorded verdicts
 <!-- /ANCHOR:completion -->
 
 ---
@@ -83,6 +77,6 @@ contextType: "general"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+- **Playbook**: `../scratch/context-playbook.md` §04--maintenance
 <!-- /ANCHOR:cross-refs -->
-
----

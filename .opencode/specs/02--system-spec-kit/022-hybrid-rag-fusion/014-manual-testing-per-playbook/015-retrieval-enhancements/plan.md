@@ -1,17 +1,17 @@
 ---
-title: "Implementation Plan: manual-testing-per-playbook retrieval-enhancements phase [template:level_1/plan.md]"
-description: "Phase 015 defines the execution plan for nine retrieval-enhancements manual tests in the Spec Kit Memory system. It sequences preconditions, sandboxed execution, evidence capture, and review-protocol verdicting for retrieval-enhancements-focused scenarios."
+title: "Implementation Plan: Manual Testing — Retrieval Enhancements (Phase 015)"
+description: "Execution plan for 11 retrieval enhancement scenarios. Sequences preconditions, non-stateful execution, stateful and flag-dependent execution, and evidence collection for PASS/FAIL/SKIP verdicts."
 trigger_phrases:
   - "retrieval enhancements execution plan"
-  - "phase 015 manual tests"
-  - "memory retrieval enhancements verdict plan"
-  - "hybrid rag retrieval enhancements review"
-importance_tier: "high"
-contextType: "general"
+  - "phase 015 plan"
+  - "manual testing retrieval plan"
+  - "retrieval test execution"
+importance_tier: "normal"
+contextType: "implementation"
 ---
-# Implementation Plan: manual-testing-per-playbook retrieval-enhancements phase
+# Implementation Plan: Manual Testing — Retrieval Enhancements (Phase 015)
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
@@ -23,13 +23,13 @@ contextType: "general"
 
 | Aspect | Value |
 |--------|-------|
-| **Language** | Markdown |
-| **Framework** | spec-kit L1 |
-| **Storage** | Filesystem spec folder + linked evidence artifacts |
-| **Testing** | manual + MCP |
+| **Language/Stack** | MCP (Spec Kit Memory tools), shell |
+| **Framework** | spec-kit Level 2 |
+| **Storage** | Evidence artifacts in scratch/; results recorded in checklist.md |
+| **Testing** | Manual execution following playbook scenario steps |
 
 ### Overview
-This plan converts the retrieval-enhancements scenarios in the manual testing playbook into an ordered execution workflow for Phase 015. The phase covers non-stateful read-only scenarios first (hierarchy retrieval, constitutional injection, summary channel, provenance envelopes, context headers, and tier-2 fallback), then stateful or flag-dependent scenarios that require corpus setup, cycle triggers, env var changes, or runtime restarts before verdict review.
+This plan sequences the execution of all 11 retrieval enhancement scenarios assigned to Phase 015. It separates non-stateful read scenarios from stateful or flag-dependent scenarios requiring corpus setup, env var changes, or runtime restarts, and defines evidence collection and verdict assignment for each.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -38,16 +38,21 @@ This plan converts the retrieval-enhancements scenarios in the manual testing pl
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Exact prompts, command sequences, and pass criteria were extracted from [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md).
-- [x] Feature mappings for all 9 retrieval-enhancements tests were confirmed against the cross-reference index and retrieval-enhancements feature files.
-- [x] Verdict rules from [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) were loaded for PASS/PARTIAL/FAIL handling.
-- [x] Sandbox expectations were identified for stateful scenarios 058 (consolidation cycle) and 060 (entity linking).
+- [ ] Playbook scenario files for IDs 055, 056, 057, 058, 059, 060, 077, 093, 094, 096, and 145 are accessible
+- [ ] Feature catalog entries in `../../feature_catalog/15--retrieval-enhancements/` are accessible
+- [ ] Review protocol loaded: `../../manual_testing_playbook/manual_testing_playbook.md`
+- [ ] MCP runtime available for MCP-tagged scenarios
+- [ ] Baseline env var state recorded (SPECKIT_RESPONSE_TRACE, SPECKIT_CONTEXT_HEADERS, SPECKIT_CONSOLIDATION, SPECKIT_ENTITY_LINKING, SPECKIT_MEMORY_SUMMARIES)
+- [ ] Corpus size count captured to determine whether 059 summary channel threshold is satisfied
+- [ ] Disposable sandbox prepared for stateful scenarios 058 and 060
 
 ### Definition of Done
-- [ ] All 9 retrieval-enhancements scenarios have execution evidence tied to the exact documented prompt and command sequence.
-- [ ] Every scenario has a verdict and rationale using the review protocol acceptance rules.
-- [ ] Coverage is reported as 9/9 scenarios for Phase 015 with no skipped test IDs.
-- [ ] Any sandbox mutations, consolidation cycles, or env var changes are restored or explicitly documented before closeout.
+- [ ] All 11 scenarios executed and verdicted (PASS / FAIL / SKIP)
+- [ ] Evidence captured per scenario (transcript, output snippet, or explicit skip reason)
+- [ ] All FAIL verdicts have defect notes
+- [ ] checklist.md P0 items marked with evidence
+- [ ] Env var state restored to baseline after scenarios 096 and 145
+- [ ] implementation-summary.md updated with final results
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -56,16 +61,16 @@ This plan converts the retrieval-enhancements scenarios in the manual testing pl
 ## 3. ARCHITECTURE
 
 ### Pattern
-Manual retrieval-enhancements test execution pipeline with review-gated evidence collection.
+Manual test execution pipeline with evidence-gated verdict assignment.
 
 ### Key Components
-- **Preconditions pack**: Playbook, review protocol, feature catalog links, runtime baseline, corpus size metrics, env var snapshot, and sandbox/checkpoint setup.
-- **Execution layer**: Manual operator actions plus MCP calls to `memory_search`, `memory_context`, consolidation cycle triggers, and the entity linker.
-- **Evidence bundle**: Tool outputs, runtime logs, flag snapshots, corpus size counts, edge density metrics, and header comparison outputs captured per scenario.
-- **Verdict layer**: Review protocol checks that classify each scenario as PASS, PARTIAL, or FAIL.
+- **Preconditions pack**: Playbook rows, review protocol, feature catalog links, runtime baseline, corpus size metrics, env var snapshot, and sandbox setup
+- **Execution layer**: Manual operator actions plus MCP calls to `memory_search`, `memory_context`, consolidation cycle triggers, and the entity linker
+- **Evidence bundle**: Tool outputs, runtime logs, flag snapshots, corpus size counts, edge density metrics, and header comparison outputs captured per scenario
+- **Verdict layer**: Review protocol checks that classify each scenario as PASS, FAIL, or SKIP
 
 ### Data Flow
-`preconditions -> execute exact prompt/commands -> capture evidence -> apply verdict rules`
+Preconditions confirmed → execute exact scenario prompt and commands → collect evidence → compare observed vs expected → assign PASS/FAIL/SKIP verdict → roll up to phase summary
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -74,30 +79,36 @@ Manual retrieval-enhancements test execution pipeline with review-gated evidence
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Preconditions
-- [ ] Verify source documents are open: playbook, review protocol, and linked retrieval-enhancements feature files.
-- [ ] Confirm MCP runtime access for `memory_search` and `memory_context`.
-- [ ] Record baseline environment flags (`SPECKIT_RESPONSE_TRACE`, `SPECKIT_CONTEXT_HEADERS`, `SPECKIT_CONSOLIDATION`, `SPECKIT_ENTITY_LINKING`, `SPECKIT_MEMORY_SUMMARIES`) before any scenario execution.
-- [ ] Capture corpus size count to determine whether the summary channel (059) threshold is satisfied.
-- [ ] Prepare disposable sandbox data for consolidation (058) and a corpus with shared cross-document entities for entity linking (060).
+- [ ] Load playbook rows for all 11 retrieval enhancement scenario IDs
+- [ ] Load review protocol verdict rules
+- [ ] Confirm feature catalog links for all 11 scenarios
+- [ ] Verify MCP runtime access for MCP-tagged scenarios (056, 057, 059, 077, 093, 094, 096, 145)
+- [ ] Record baseline env var state before any scenario execution
+- [ ] Capture corpus size count to determine whether 059 threshold is satisfied
+- [ ] Prepare disposable sandbox data for consolidation (058) and cross-document entity corpus for entity linking (060)
 
 ### Phase 2: Non-Stateful Tests
-- [ ] Run 056 to verify constitutional directive metadata appears in retrieval results with correct tier classification.
-- [ ] Run 057 to verify hierarchy-aware retrieval scores self > parent > sibling for nested spec folder structures.
-- [ ] Run 077 to verify tier-2 fallback sets `forceAllChannels=true` and results contain multi-channel contributions.
-- [ ] Run 096 to compare `includeTrace` on/off responses and confirm all 7 score sub-fields appear only when trace is requested.
-- [ ] Run 145 to compare header-injected and header-suppressed search results under `SPECKIT_CONTEXT_HEADERS` toggle.
+- [ ] Execute 056 — constitutional directive metadata appears in retrieval results with correct tier classification
+- [ ] Execute 057 — hierarchy-aware retrieval scores self > parent > sibling for nested spec folder structures
+- [ ] Execute 077 — tier-2 fallback sets forceAllChannels=true and results contain multi-channel contributions
+- [ ] Execute 093 — memory summary generation confirms summaries persist for long memories and scale gate controls activation
+- [ ] Execute 094 — cross-document entity linking confirms correctly typed supports edges and density guard enforcement
+- [ ] Execute 096 — compare includeTrace on/off responses; confirm all 7 score sub-fields appear only when trace is requested
+- [ ] Execute 145 — compare header-injected and header-suppressed search results under SPECKIT_CONTEXT_HEADERS toggle
 
 ### Phase 3: Stateful and Flag-Dependent Tests
-- [ ] Run 055 by invoking a non-memory-aware tool path and then triggering compaction; confirm auto-surface hook fires and surfaces context-relevant memories at both lifecycle points.
-- [ ] Run 058 only against disposable sandbox memories; checkpoint original edge weights before triggering the N3-lite cycle and capture contradiction/Hebbian/staleness sub-outputs immediately after.
-- [ ] Run 059 against a corpus verified to exceed the 5,000-memory threshold; confirm summary channel appears in Stage 1 and confirm the channel is skipped below the threshold.
-- [ ] Run 060 by verifying shared entities exist across distinct spec folders, running the entity linker, and confirming supports-edges are created within density guard limits.
-- [ ] If sandbox isolation fails or shared data would be mutated unexpectedly, stop execution and mark the scenario blocked instead of proceeding.
+- [ ] Execute 055 — invoke non-memory-aware tool path; trigger compaction; confirm auto-surface hook fires at both lifecycle points
+- [ ] Execute 058 — only against disposable sandbox memories; checkpoint original edge weights before triggering N3-lite cycle; capture contradiction/Hebbian/staleness outputs immediately after
+- [ ] Execute 059 — against corpus verified to exceed 5,000-memory threshold; confirm summary channel appears in Stage 1; confirm channel is skipped below threshold
+- [ ] Execute 060 — verify shared entities exist across distinct spec folders; run entity linker; confirm supports-edges created within density guard limits
+- [ ] If sandbox isolation fails or shared data would be mutated unexpectedly: stop and mark scenario blocked rather than proceeding
 
 ### Phase 4: Evidence Collection and Verdict
-- [ ] For each scenario, capture prompt, exact command sequence, raw output, expected signals, and reviewer notes.
-- [ ] Apply the review protocol acceptance checks: preconditions satisfied, prompt/commands executed as written, expected signals present, evidence readable, outcome rationale explicit.
-- [ ] Assign PASS, PARTIAL, or FAIL per scenario and summarize phase coverage as 9/9 scenarios with linked evidence references.
+- [ ] Attach prompt, command transcript, key output snippets, and artefact references for every scenario
+- [ ] Restore env var state to baseline after scenarios 096 and 145
+- [ ] Apply PASS/FAIL/SKIP at the scenario level using playbook acceptance criteria
+- [ ] Confirm 11/11 scenarios are verdicted with no "Not Started" remaining
+- [ ] Mark all P0 checklist items in checklist.md with evidence
 <!-- /ANCHOR:phases -->
 
 ---
@@ -105,15 +116,17 @@ Manual retrieval-enhancements test execution pipeline with review-gated evidence
 <!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
-| Test ID | Scenario Name | Exact Prompt | Execution Type (manual/MCP) |
-|---------|---------------|--------------|-----------------------------|
+| Test ID | Scenario Name | Exact Prompt | Execution Type |
+|---------|---------------|--------------|----------------|
 | 055 | Dual-scope memory auto-surface | `Validate dual-scope auto-surface (TM-05).` | manual |
 | 056 | Constitutional memory as expert knowledge injection | `Verify constitutional memory directive injection (PI-A4).` | MCP |
 | 057 | Spec folder hierarchy as retrieval structure | `Validate spec-folder hierarchy retrieval (S4).` | MCP |
-| 058 | Lightweight consolidation | `Run lightweight consolidation cycle (N3-lite).` | manual |
+| 058 | Lightweight consolidation | `Run lightweight consolidation cycle (N3-lite).` | manual (sandbox) |
 | 059 | Memory summary search channel | `Verify memory summary search channel (R8).` | MCP |
-| 060 | Cross-document entity linking | `Validate cross-document entity linking (S5).` | manual |
+| 060 | Cross-document entity linking | `Validate cross-document entity linking (S5).` | manual (sandbox) |
 | 077 | Tier-2 fallback channel forcing | `Validate tier-2 fallback channel forcing.` | MCP |
+| 093 | Implemented: memory summary generation (R8) | `Verify R8 implemented and gated.` | MCP |
+| 094 | Implemented: cross-document entity linking (S5) | `Verify S5 implemented and guarded.` | MCP |
 | 096 | Provenance-rich response envelopes | `Validate SPECKIT_RESPONSE_TRACE includeTrace behavior.` | MCP |
 | 145 | Contextual tree injection | `Validate contextual tree injection header format and flag toggle.` | MCP |
 <!-- /ANCHOR:testing -->
@@ -125,12 +138,12 @@ Manual retrieval-enhancements test execution pipeline with review-gated evidence
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Internal | Green | Exact prompts, commands, evidence targets, and pass criteria cannot be verified |
-| [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Internal | Green | Verdicts and coverage rules cannot be applied consistently |
-| [`../../feature_catalog/15--retrieval-enhancements/`](../../feature_catalog/15--retrieval-enhancements/) | Internal | Green | Test-to-feature context and review triage lose their canonical reference |
-| MCP runtime for `memory_search` and `memory_context` | Internal | Yellow | Retrieval and provenance scenarios cannot be executed or compared |
-| Disposable sandbox corpus and rollback checkpoint for 058 and 060 | Internal | Yellow | Stateful consolidation and entity-linking tests cannot run safely |
-| Corpus exceeding 5,000 indexed memories for 059 | Internal | Yellow | Summary channel threshold cannot be crossed; scale-gate behavior cannot be verified |
+| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Unknown | Exact prompts and pass criteria cannot be verified |
+| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal | Unknown | Verdict rules cannot be applied consistently |
+| `../../feature_catalog/15--retrieval-enhancements/` | Internal | Unknown | Feature context and review triage lose canonical reference |
+| MCP runtime for `memory_search` and `memory_context` | Runtime | Unknown | Retrieval and provenance scenarios cannot be executed |
+| Disposable sandbox corpus and rollback checkpoint for 058 and 060 | Operational | Unknown | Stateful consolidation and entity linking tests cannot run safely |
+| Corpus exceeding 5,000 indexed memories for 059 | Operational | Unknown | Summary channel threshold cannot be crossed; scale-gate behaviour cannot be verified |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -138,8 +151,62 @@ Manual retrieval-enhancements test execution pipeline with review-gated evidence
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: Consolidation cycle edge mutations, entity linker edge creation, or env var changes leave the retrieval environment in a state that could taint later scenarios.
-- **Procedure**: Restore the sandbox checkpoint, revert any edge-weight mutations using the pre-cycle backup, restart the runtime with default flag values (`SPECKIT_RESPONSE_TRACE` unset, `SPECKIT_CONTEXT_HEADERS=true`, `SPECKIT_CONSOLIDATION=true`, `SPECKIT_ENTITY_LINKING=true`), discard compromised evidence, and rerun only the affected scenarios after the baseline is clean again.
+- **Trigger**: Consolidation cycle edge mutations, entity linker edge creation, or env var changes leave the retrieval environment in a state that could taint later scenarios
+- **Procedure**: Restore the sandbox checkpoint; revert edge-weight mutations using the pre-cycle backup; restart runtime with default flag values (SPECKIT_RESPONSE_TRACE unset, SPECKIT_CONTEXT_HEADERS=true, SPECKIT_CONSOLIDATION=true, SPECKIT_ENTITY_LINKING=true); discard compromised evidence; rerun only the affected scenarios after baseline is clean
 <!-- /ANCHOR:rollback -->
 
 ---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```
+Phase 1 (Preconditions) ──────┐
+                              ├──► Phase 2 (Non-Stateful) ──► Phase 4 (Verdict)
+Phase 1 (Preconditions) ──────┤
+                              └──► Phase 3 (Stateful) ───────► Phase 4 (Verdict)
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Preconditions | None | All execution phases |
+| Non-Stateful | Preconditions | Verdict |
+| Stateful | Preconditions + sandbox ready | Verdict |
+| Verdict | Non-Stateful + Stateful | None |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Preconditions | Low | 30 minutes |
+| Non-Stateful Scenarios (7) | Medium | 2-3 hours |
+| Stateful Scenarios (4) | High | 2-3 hours |
+| Verdict and Evidence | Low | 1 hour |
+| **Total** | | **5-7 hours** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-Scenario Checklist (Stateful)
+- [ ] Sandbox confirmed disposable or checkpoint created for 058 and 060
+- [ ] Baseline edge state recorded before triggering consolidation cycle (058)
+- [ ] Env var baseline snapshot taken before executing 096 and 145
+
+### Rollback Procedure
+1. Stop execution on unexpected state change
+2. Restore checkpoint or dispose of sandbox
+3. Reset env vars to baseline values
+4. Verify clean baseline before retrying
+5. If baseline cannot be restored: mark scenario as SKIP with reason "sandbox isolation failure"
+
+### Data Reversal
+- **Has data mutations?** Yes (scenarios 058, 060)
+- **Reversal procedure**: Restore pre-scenario checkpoint; discard disposable sandbox; restart runtime with default flags
+<!-- /ANCHOR:enhanced-rollback -->

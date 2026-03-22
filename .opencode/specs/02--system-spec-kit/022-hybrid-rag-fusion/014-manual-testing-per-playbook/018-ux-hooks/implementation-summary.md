@@ -1,6 +1,6 @@
 ---
-title: "Implementation Summary [template:level_1/implementation-summary.md]"
-description: "Phase 018 ux-hooks manual testing documentation packet — spec.md, plan.md, tasks.md, and checklist.md created and aligned to template standards."
+title: "Implementation Summary: manual-testing-per-playbook ux-hooks phase [template:level_2/implementation-summary.md]"
+description: "Phase 018 UX-hooks manual testing — not yet executed."
 trigger_phrases:
   - "ux-hooks implementation summary"
   - "phase 018 summary"
@@ -10,7 +10,7 @@ contextType: "general"
 ---
 # Implementation Summary
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
 ---
@@ -21,8 +21,8 @@ contextType: "general"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 018-ux-hooks |
-| **Completed** | 2026-03-16 |
-| **Level** | 1 |
+| **Completed** | Not Started |
+| **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -30,20 +30,34 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Phase 018 (ux-hooks) manual testing documentation packet isolating playbook scenarios for the ux-hooks feature catalog category. The packet maps each assigned test ID to its feature catalog entry and preserves exact prompts, command sequences, evidence expectations, and verdict criteria from the canonical playbook.
+Not yet executed. This file will be updated after Phase 018 manual testing is complete.
 
-### Documentation Packet
+### Scenarios Covered
 
-Four template-aligned files provide structured per-phase test documentation so operators can execute, evidence, and review ux-hooks scenarios without re-reading the monolithic playbook.
+| Test ID | Scenario Name | Status |
+|---------|---------------|--------|
+| 103 | UX hook module coverage | Not Started |
+| 104 | Mutation save-path UX parity and no-op hardening | Not Started |
+| 105 | Context-server success-envelope finalization | Not Started |
+| 106 | Hooks barrel + README synchronization | Not Started |
+| 107 | Checkpoint confirmName and schema enforcement | Not Started |
+| 166 | Result Explainability | Not Started |
+| 167 | Response Profiles | Not Started |
+| 168 | Progressive Disclosure | Not Started |
+| 169 | Session Retrieval State | Not Started |
+| 179 | Empty Result Recovery | Not Started |
+| 180 | Result Confidence | Not Started |
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| spec.md | Created | Phase requirements, test inventory, feature catalog links, and acceptance criteria |
-| plan.md | Created | Execution plan with preconditions, evidence capture, and verdict pipeline |
-| tasks.md | Created | Task tracker for setup, execution, and verification work |
-| checklist.md | Created | QA verification checklist with P0/P1/P2 priority items |
+| spec.md | Rewritten | Clean-slate Level 2 spec for manual test execution |
+| plan.md | Rewritten | Execution plan with all tasks pending |
+| tasks.md | Rewritten | Task tracker — all tasks pending |
+| checklist.md | Rewritten | QA checklist — all items unchecked |
+| implementation-summary.md | Rewritten | Blank template pending execution |
+| description.json | Rewritten | Reset to Draft, Not Started |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -51,7 +65,7 @@ Four template-aligned files provide structured per-phase test documentation so o
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Documentation generated via parallel agent delegation from the parent 014-manual-testing-per-playbook spec, then structurally aligned to system-spec-kit Level 1 templates with Level 2 checklist validation.
+Not yet executed.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -61,8 +75,7 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 
 | Decision | Why |
 |----------|-----|
-| Level 1 spec with checklist | Documentation-only packet needs structured tracking but not full Level 2 architecture sections |
-| Template alignment post-generation | Agents produced 4 structural variants for checklist.md; batch alignment ensured 100% template compliance |
+| Level 2 (upgraded from Level 1) | 11 scenarios spanning vitest, ripgrep, and 6 feature-flag MCP paths require Level 2 checklist coverage and phase dependency tracking |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -72,25 +85,18 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 
 | Check | Result |
 |-------|--------|
-| spec.md section 2 header | PASS — `## 2. PROBLEM & PURPOSE` |
-| spec.md Parent link format | PASS — backtick-wrapped with link |
-| checklist.md anchor count | PASS — exactly 8 anchors |
-| checklist.md no overview section | PASS — no ANCHOR:overview |
-| checklist.md no standalone P0/P1 headers | PASS — priority is per-item only |
-
-### Phase 018 Execution Verdicts (2026-03-21)
-
-| Test ID | Scenario | Verdict | Evidence |
-|---------|----------|---------|----------|
-| 103 | UX hook module coverage | PASS | `hooks-ux-feedback.vitest.ts` 6/6 tests |
-| 104 | Mutation save-path UX parity | FAIL | `ReferenceError: calculateDocumentWeight` not defined at `handlers/memory-save.ts:1335` — import crash, 0 tests run |
-| 105 | Context-server success-envelope | PASS | `context-server.vitest.ts` 346/346 tests; T000i + T000j confirmed |
-| 106 | Hooks barrel + README sync | PASS | All 4 terms present in `hooks/index.ts` and `hooks/README.md` |
-| 107 | Checkpoint confirmName enforcement | PARTIAL | handler-checkpoints (37) + tool-input-schema (42) + Group 13b T103-T106 pass; mcp-input-validation blocked by same `calculateDocumentWeight` defect |
-
-**Coverage**: 5/5 scenarios verdicted — 3 PASS, 1 FAIL, 1 PARTIAL
-
-**Blocking defect**: `calculateDocumentWeight` undefined at `handlers/memory-save.ts:1335` blocks tests 104 and 107 (mcp-input-validation suite only).
+| 103 UX hook module coverage | Not Started |
+| 104 Mutation save-path UX parity | Not Started |
+| 105 Context-server success-envelope | Not Started |
+| 106 Hooks barrel + README sync | Not Started |
+| 107 Checkpoint confirmName enforcement | Not Started |
+| 166 Result Explainability | Not Started |
+| 167 Response Profiles | Not Started |
+| 168 Progressive Disclosure | Not Started |
+| 169 Session Retrieval State | Not Started |
+| 179 Empty Result Recovery | Not Started |
+| 180 Result Confidence | Not Started |
+| Aggregate result | 0/11 scenarios executed |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -98,9 +104,7 @@ Documentation generated via parallel agent delegation from the parent 014-manual
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Test 104 FAIL** — `memory-save-ux-regressions.vitest.ts` fails at import due to `ReferenceError: calculateDocumentWeight is not defined` at `handlers/memory-save.ts:1335`. No regression assertions were executed.
-2. **Test 107 PARTIAL** — `mcp-input-validation.vitest.ts` blocked by the same `calculateDocumentWeight` defect (imports via `handlers/index.ts`). Core confirmName enforcement is verified via the other 3 suites.
-3. **Coverage audit** — Cross-reference validation against the full playbook index has not been run for this individual phase.
+1. **Not yet executed** — All scenarios are pending. Execute per `plan.md` Phases 2–4 before updating this file.
 <!-- /ANCHOR:limitations -->
 
 ---

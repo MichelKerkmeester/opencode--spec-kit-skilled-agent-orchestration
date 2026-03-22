@@ -1,18 +1,6 @@
----
-title: "Implementation Plan: 016-tooling-and-scripts manual testing"
-description: "This plan structures execution for the 23 tooling-and-scripts manual scenarios assigned to phase 016. It organizes exact prompts, destructive-vs-safe sequencing, evidence collection, and verdict handling under the review protocol."
-trigger_phrases:
-  - "implementation plan"
-  - "manual testing"
-  - "tooling and scripts"
-  - "149"
-  - "PHASE-001"
-importance_tier: "high"
-contextType: "general"
----
-# Implementation Plan: 016-tooling-and-scripts manual testing
+# Implementation Plan: 016-Tooling-and-Scripts Manual Testing
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
@@ -24,13 +12,13 @@ contextType: "general"
 
 | Aspect | Value |
 |--------|-------|
-| **Language** | Markdown |
-| **Framework** | spec-kit L1 |
-| **Storage** | Spec folder documentation + sandbox evidence artifacts |
-| **Testing** | manual + MCP |
+| **Language/Stack** | Shell, Node.js, Python (tooling under test) |
+| **Framework** | system-spec-kit manual testing playbook |
+| **Storage** | Spec folder documentation + evidence artifacts |
+| **Testing** | Manual execution per playbook scenario |
 
 ### Overview
-This plan sequences the phase-016 tooling-and-scripts scenarios so low-risk inspections and verification suites run before any sandbox-destructive flows. It keeps the playbook prompts exact, applies the merged review protocol for verdicts, and separates shell-driven manual checks from MCP-backed contract validation.
+This plan structures execution of 60 exact scenario IDs across 28 scenario files in the 16--tooling-and-scripts playbook category. The scenarios are organized into 5 groups: Phase Workflow (5 IDs), Main-Agent Review (1 ID), Session Capturing Pipeline Quality (18 IDs with sub-scenarios), Tooling Utilities (20 IDs), and JSON Mode Structured Summary Hardening (16 IDs with sub-scenarios). Execution proceeds from non-destructive inspections through sandbox-constrained destructive tests, with evidence captured per-scenario.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -39,18 +27,17 @@ This plan sequences the phase-016 tooling-and-scripts scenarios so low-risk insp
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] All 23 test IDs are resolved to a source prompt, command path, and evidence expectation.
-- [ ] The playbook, review protocol, and feature catalog links are available from this phase folder.
-- [ ] Sandbox targets exist for destructive checks (`bulk-delete`, malformed memories, generated phase folders, watcher temp files).
-- [ ] MCP/runtime prerequisites are known for tests that require slash commands or `memory_save`.
-- [ ] The `139` session-capturing scenario is sourced from the canonical `M-007` section, not reconstructed from memory.
+- [ ] All 28 playbook scenario files exist in manual_testing_playbook/16--tooling-and-scripts/
+- [ ] generate-context.js script is functional (required for M-007 group)
+- [ ] Sandbox folders prepared for destructive tests (PHASE-002 through PHASE-005, 099, 113)
+- [ ] MCP runtime available for memory_save and slash-command scenarios
+- [ ] All 5 CLI environments identified for M-007e through M-007i (defer unavailable)
 
 ### Definition of Done
-- [ ] `spec.md` and `plan.md` both cover all 23 phase-016 scenarios.
-- [ ] Every scenario has an exact prompt in Section 5 and a matching acceptance rule in `spec.md`.
-- [ ] Evidence collection expectations align with `../../manual_testing_playbook/review_protocol.md` verdict rules.
-- [ ] Destructive scenarios are constrained to disposable folders, sandbox files, or checkpoint-backed targets.
-- [ ] A quick structural audit confirms required anchors, frontmatter fields, and test IDs are present.
+- [ ] All 60 exact scenario IDs have individual pass/fail evidence
+- [ ] Checklist fully populated with evidence references
+- [ ] Implementation-summary.md completed with execution results
+- [ ] Zero untested scenarios remaining
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -62,15 +49,20 @@ This plan sequences the phase-016 tooling-and-scripts scenarios so low-risk insp
 Manual testing pipeline with evidence-first verdicting
 
 ### Key Components
-- **Preconditions**: Validate environment, sandbox targets, and source references before running a scenario.
-- **Execution**: Run the exact prompt/command sequence from the playbook without rewriting intent.
-- **Evidence**: Capture transcripts, logs, diffs, manifests, or screenshots named by scenario.
-- **Verdict**: Apply review-protocol rules to classify each scenario as `PASS`, `PARTIAL`, or `FAIL`.
+- **Playbook Scenarios**: 28 source files defining prompts, commands, and expected outcomes
+- **Evidence Collection**: Per-scenario transcripts, logs, and command output
+- **Verdict Assignment**: PASS / PARTIAL / FAIL per review protocol rules
+- **Sub-Scenario Tracking**: Individual tracking for M-007a-q and 153-A-O expansions
 
 ### Data Flow
-`preconditions -> execute -> evidence -> verdict`
+Playbook scenario -> execute commands -> capture evidence -> assign verdict -> record in checklist
 
-The phase packet should be used as an operator checklist: establish safe prerequisites, run the documented commands, capture readable evidence, then apply the review protocol so feature-level rollups remain deterministic.
+### Sub-Scenario Grouping Strategy
+Two groups have sub-scenario expansions that require individual tracking:
+
+**M-007 (18 IDs total):** The parent scenario (M-007) defines the overall session capturing pipeline quality contract. Sub-scenarios M-007a through M-007q each test a specific aspect: JSON authority (a), thin rejection (b), CLI scoping (c), enrichment (d), five CLI fallback paths (e-i), hard-fail (j), version warnings (k-l), input modes (m-n), path handling (o), JSON coverage (p), and output hardening (q). Execute sequentially as some share pipeline state.
+
+**153 (16 IDs total):** The parent scenario (153) defines the overall JSON mode structured summary hardening contract. Sub-scenarios 153-A through 153-O each test an independent field propagation or validation path. Can be parallelized as they are independent code paths.
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -79,27 +71,40 @@ The phase packet should be used as an operator checklist: establish safe prerequ
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Preconditions
-- [ ] Confirm source references: playbook, review protocol, tooling feature docs, and phase-system catalog anchors.
-- [ ] Prepare sandbox paths for watcher tests, malformed memory files, admin CLI dry-run/delete checks, and generated phase-folder structures.
-- [ ] Confirm MCP availability for `memory_save` and slash-command scenarios.
-- [ ] Establish checkpoint or delete-after-use cleanup rules for any scenario that mutates files or creates folders.
+- [ ] Verify all 28 scenario files exist in playbook/16--tooling-and-scripts/
+- [ ] Confirm generate-context.js runs without errors
+- [ ] Prepare sandbox folders for PHASE-002 through PHASE-005
+- [ ] Confirm MCP runtime for memory_save scenarios
+- [ ] Identify available CLI environments for M-007e through M-007i
 
-### Phase 2: Non-Destructive Tests
-- [ ] Run documentation, grep, audit, and targeted-suite scenarios first: `061`, `062`, `070`, `089`, `127`, `128`, `135`, `136`, `137`, `138`, `147`, and `PHASE-001`.
-- [ ] Capture direct evidence from stdout, grep output, Vitest transcripts, or verifier summaries.
-- [ ] Use these runs to confirm baseline health before any write-path checks begin.
+### Phase 2: Non-Destructive Tests (Group A partial + Group D partial)
+- [ ] Execute PHASE-001 (phase detection scoring -- read-only)
+- [ ] Execute 061, 062, 070, 089, 108, 127, 128 (inspection and test-suite scenarios)
+- [ ] Execute 135, 136, 137, 138 (feature catalog and compliance checks)
+- [ ] Execute 147 (constitutional memory manager -- read-only validation)
+- [ ] Execute 150, 151, 152 (alignment and structure validation)
 
-### Phase 3: Destructive Tests
-- [ ] Constrain watcher, admin CLI, session-capture, malformed-memory, and phase-folder workflows to sandbox targets: `099`, `113`, `139`, `149`, `PHASE-002`, `PHASE-003`, `PHASE-004`, and `PHASE-005`.
-- [ ] For `113`, use `specs/test-sandbox` or equivalent disposable scope and preserve any checkpoint-warning evidence.
-- [ ] For `139` and `149`, keep malformed or thin-memory files outside active production memory folders except when the test explicitly audits the active corpus.
-- [ ] For `PHASE-002` through `PHASE-005`, create disposable parent/child phase folders and remove or quarantine them after evidence capture.
+### Phase 3: Sub-Scenario Expansions
+- [ ] Execute M-007 parent scenario
+- [ ] Execute M-007a through M-007q individually (17 sub-scenarios)
+- [ ] Execute 153 parent scenario
+- [ ] Execute 153-A through 153-O individually (15 sub-scenarios)
 
-### Phase 4: Evidence Collection and Verdict
-- [ ] Ensure every scenario captures readable evidence named in the playbook (logs, transcripts, manifests, JSON output, or screenshots).
-- [ ] Evaluate each scenario against the review protocol: preconditions satisfied, prompt/command sequence followed, expected signals present, evidence complete, rationale explicit.
-- [ ] Record `PASS`, `PARTIAL`, or `FAIL` per scenario and preserve triage notes for any non-pass outcome.
-- [ ] Derive feature verdicts only after all mapped scenarios have evidence-backed scenario verdicts.
+### Phase 4: Destructive / Sandbox Tests
+- [ ] Execute M-004 (main-agent review -- requires agent interaction)
+- [ ] Execute PHASE-002 through PHASE-005 (creates temporary folders)
+- [ ] Execute 099 (filesystem watcher -- modifies watched directories)
+- [ ] Execute 113 (admin CLI -- uses disposable scope)
+- [ ] Execute 139 (session capturing -- pipeline mutations)
+- [ ] Execute 149 (rendered memory template -- file validation)
+- [ ] Execute 154 (JSON-primary deprecation -- rejection testing)
+
+### Phase 5: Evidence Collection and Verdict
+- [ ] Verify all 60 scenario IDs have captured evidence
+- [ ] Assign PASS / PARTIAL / FAIL per scenario using review protocol rules
+- [ ] Update checklist with evidence references
+- [ ] Complete implementation-summary.md with results
+- [ ] Clean up sandbox folders
 <!-- /ANCHOR:phases -->
 
 ---
@@ -107,30 +112,13 @@ The phase packet should be used as an operator checklist: establish safe prerequ
 <!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
-| Test ID | Scenario Name | Exact Prompt | Execution Type |
-|---|---|---|---|
-| `061` | Tree thinning for spec folder consolidation | `Validate tree thinning behavior (PI-B1).` | manual |
-| `062` | Progressive validation for spec documents | `Run progressive validation (PI-B2).` | manual |
-| `070` | Dead code removal | `Audit dead code removal outcomes.` | manual |
-| `089` | Code standards alignment | `Validate code standards alignment outcomes.` | manual |
-| `099` | Real-time filesystem watching (P1-7) | `Validate SPECKIT_FILE_WATCHER behavior.` | manual |
-| `113` | Standalone admin CLI | `Validate standalone admin CLI commands.` | manual |
-| `127` | Migration checkpoint scripts | `Run the migration checkpoint script verification suite.` | manual |
-| `128` | Schema compatibility validation | `Run the schema compatibility validation suite.` | manual |
-| `135` | Grep traceability for feature catalog code references | `Validate feature catalog grep traceability.` | manual |
-| `136` | Feature catalog annotation name validity | `Validate all Feature catalog annotation names against catalog.` | manual |
-| `137` | Multi-feature annotation coverage | `Validate multi-feature files carry all applicable annotations.` | manual |
-| `138` | MODULE: header compliance via `verify_alignment_drift.py` | `Validate MODULE: header compliance across all non-test .ts files.` | manual |
-| `139` | Session capturing pipeline quality | `Run full closure verification for spec 009-perfect-session-capturing, including JSON authority, stateless enrichment, the full native fallback chain (OpenCode, Claude, Codex, Copilot, Gemini), numeric quality calibration, and indexing readiness.` | manual |
-| `147` | Constitutional memory manager command | `Validate /memory:learn constitutional manager flow and documentation consistency.` | manual |
-| `149` | Rendered memory template contract | `Validate the rendered-memory template contract for memory_save, generate-context, and historical remediation.` | MCP |
-| `PHASE-001` | Phase detection scoring | `Verify phase detection scoring produces valid 5-dimension output for a complex spec folder.` | manual |
-| `PHASE-002` | Phase folder creation | `Create a phase-decomposed spec folder and verify parent and child structure.` | manual |
-| `PHASE-003` | Recursive phase validation | `Run recursive validation on a phase parent and verify aggregated per-phase results.` | manual |
-| `PHASE-004` | Phase link validation | `Validate phase link integrity across parent and child folders.` | manual |
-| `153` | JSON mode hybrid enrichment | `Validate the structured JSON summary contract for generate-context.js including toolCalls/exchanges fields and file-backed JSON authority.` | manual |
-| `154` | JSON-primary deprecation posture | `Validate that routine saves require --json/--stdin, direct positional mode is rejected with migration guidance to --json/--stdin, and operator guidance reflects the JSON-only contract.` | manual |
-| `PHASE-005` | Phase command workflow | `Run the spec_kit:phase command end-to-end and verify all 7 workflow steps complete.` | manual |
+| Group | Scenario Count | Execution Type | Notes |
+|-------|---------------|----------------|-------|
+| A: Phase Workflow | 5 | Manual shell | PHASE-001 non-destructive; PHASE-002 through PHASE-005 require sandbox |
+| B: Main-Agent Review | 1 | Manual + agent | Requires agent interaction for verdict handoff |
+| C: Session Capturing | 18 (1+17) | Manual + MCP | Sequential execution; CLI-specific sub-scenarios may need deferral |
+| D: Tooling Utilities | 20 | Manual + Vitest | Mix of inspection, test suites, and validation scripts |
+| E: JSON Mode Hardening | 16 (1+15) | Manual + MCP | Independent sub-scenarios; can parallelize |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -140,12 +128,12 @@ The phase packet should be used as an operator checklist: establish safe prerequ
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| `../../manual_testing_playbook/manual_testing_playbook.md` | Internal source | Green | No canonical prompts, commands, or acceptance rules |
-| `../../manual_testing_playbook/review_protocol.md` | Internal source | Green | Verdict rules and release-readiness logic become ambiguous |
-| `feature_catalog/16--tooling-and-scripts/` | Internal source | Green | Scenario-to-feature traceability is incomplete |
-| `../../feature_catalog/feature_catalog.md` phase-system anchors | Internal source | Green | `PHASE-001` through `PHASE-005` cannot be linked to the catalog section |
-| MCP runtime (`memory_save`, slash commands) | Runtime dependency | Yellow | `147` and `149` cannot be executed end-to-end |
-| Sandbox file/folder workspace | Test infrastructure | Yellow | Destructive scenarios risk touching non-disposable content |
+| Playbook scenario files (28) | Internal | Green | Cannot execute without source scenarios |
+| generate-context.js | Internal | Green | M-007 group cannot be tested |
+| MCP runtime | Runtime | Yellow | M-007, 147, 149 require live MCP |
+| CLI environments (5) | External | Yellow | M-007e through M-007i may need deferral |
+| Sandbox workspace | Infrastructure | Green | Destructive tests need disposable folders |
+| create.sh / validate.sh | Internal | Green | PHASE scenarios depend on these scripts |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -153,8 +141,62 @@ The phase packet should be used as an operator checklist: establish safe prerequ
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- **Trigger**: The packet misstates a playbook prompt, acceptance criterion, source link, or destructive-test safety boundary.
-- **Procedure**: Re-open the canonical playbook and feature sources, revert only the inaccurate documentation sections, and regenerate the affected file content from source text. Remove any disposable folders or malformed sandbox files created while validating the plan.
+- **Trigger**: Destructive test modifies non-sandbox content or evidence is captured incorrectly
+- **Procedure**: Remove sandbox folders, revert any non-sandbox file changes, re-execute affected scenarios from clean state
 <!-- /ANCHOR:rollback -->
 
 ---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```
+Phase 1 (Preconditions) ──► Phase 2 (Non-Destructive) ──► Phase 3 (Sub-Scenarios) ──► Phase 4 (Destructive) ──► Phase 5 (Verdict)
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| 1: Preconditions | None | All other phases |
+| 2: Non-Destructive | Phase 1 | Phase 5 |
+| 3: Sub-Scenarios | Phase 1 | Phase 5 |
+| 4: Destructive | Phase 1 | Phase 5 |
+| 5: Verdict | Phases 2, 3, 4 | None |
+
+Note: Phases 2, 3, and 4 can run in parallel after Phase 1 completes.
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Preconditions | Low | 30 min |
+| Non-Destructive Tests | Medium | 2-3 hours (15 scenarios) |
+| Sub-Scenario Expansions | High | 2-3 hours (34 scenarios with individual tracking) |
+| Destructive / Sandbox Tests | Medium | 1-2 hours (11 scenarios) |
+| Evidence and Verdict | Low | 30 min |
+| **Total** | | **6-9 hours** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+- [ ] Sandbox folders created and isolated from production content
+- [ ] Checkpoint of current memory state (for M-007 and 153 groups)
+- [ ] CLI environment availability confirmed
+
+### Rollback Procedure
+1. Remove all sandbox folders created during PHASE-002 through PHASE-005
+2. Revert any memory files created during M-007 or 153 testing
+3. Verify no production content was modified
+4. Re-execute failed scenarios from clean state if needed
+
+### Data Reversal
+- **Has data migrations?** No
+- **Reversal procedure**: Delete sandbox artifacts only
+<!-- /ANCHOR:enhanced-rollback -->

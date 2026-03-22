@@ -1,17 +1,17 @@
 ---
-title: "Feature Specification: manual-testing-per-playbook maintenance phase [template:level_1/spec.md]"
-description: "Phase 004 documents the maintenance manual test packet for the Spec Kit Memory system. It isolates four maintenance scenarios so testers can execute prompts, command sequences, evidence capture, and verdict criteria from one bounded folder."
+title: "Feature Specification: manual-testing-per-playbook maintenance phase"
+description: "Phase 004 documents the maintenance manual test packet. Execute scenarios EX-014 and EX-035 against the Spec Kit Memory system to verify memory_index_scan and startup runtime compatibility guards."
 trigger_phrases:
   - "maintenance manual testing"
   - "phase 004 maintenance"
-  - "memory index scan testing"
-  - "startup compatibility guard testing"
-importance_tier: "high"
+  - "EX-014 EX-035"
+  - "memory_index_scan startup guards test"
+importance_tier: "normal"
 contextType: "general"
 ---
 # Feature Specification: manual-testing-per-playbook maintenance phase
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
@@ -21,14 +21,14 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Level** | 1 |
+| **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Complete |
-| **Created** | 2026-03-16 |
+| **Status** | Not Started |
+| **Created** | 2026-03-22 |
 | **Branch** | `main` |
-| **Parent** | [`../spec.md`](../spec.md) |
-| **Predecessor Phase** | `003-discovery` |
-| **Successor Phase** | `005-lifecycle` |
+| **Parent Spec** | [../spec.md](../spec.md) |
+| **Predecessor** | [003-discovery](../003-discovery/spec.md) |
+| **Successor** | [005-lifecycle](../005-lifecycle/spec.md) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -37,10 +37,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual maintenance scenarios for the Spec Kit Memory system currently live inside the central playbook and need a phase-specific document that preserves exact prompts, command sequences, evidence expectations, and verdict criteria. Without a dedicated maintenance packet, Phase 004 testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or review results.
+Phase 004 maintenance scenarios must be executed from scratch. All prior results are invalidated. The two maintenance scenarios (EX-014, EX-035) require fresh manual execution to verify that memory_index_scan and the startup runtime compatibility guards behave as specified by the canonical playbook.
 
 ### Purpose
-Provide a single maintenance-focused specification that maps all Phase 004 test IDs to their feature context and acceptance criteria so manual execution and review remain consistent with the canonical playbook.
+Execute both Phase 004 maintenance scenarios, record verdicts and evidence, and mark this phase complete only when all P0 checklist items pass.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -50,26 +50,25 @@ Provide a single maintenance-focused specification that maps all Phase 004 test 
 
 ### In Scope
 
-| Test ID | Scenario Name | Feature Catalog | Exact Prompt | Exact Command Sequence |
-|---------|---------------|-----------------|--------------|------------------------|
-| EX-014 | Incremental sync run | [`../../feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md`](../../feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md) | `Run index scan for changed docs` | `memory_index_scan(force:false)` -> `memory_stats()` |
-| EX-035 | Startup diagnostics verification | [`../../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md`](../../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md) | `Run the dedicated startup guard validation suite` | `cd .opencode/skill/system-spec-kit/mcp_server` -> `npm test -- --run tests/startup-checks.vitest.ts` |
-| 100 | Async shutdown with deadline (server lifecycle) | [`../../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md`](../../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md) | `Validate server shutdown deadline behavior.` | 1) start server with file watcher and local reranker enabled 2) send SIGTERM 3) verify watcher/reranker/vector-index cleanup 4) verify shutdown completes within 5s |
-| 101 | memory_delete confirm schema tightening | [`../../feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md`](../../feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md) | `Validate memory_delete confirm:z.literal(true) enforcement.` | 1) verify `confirm:true` accepted 2) verify `confirm:false` rejected 3) verify bulk delete path requires confirm |
+| Test ID | Scenario Name | Playbook File |
+|---------|---------------|---------------|
+| EX-014 | Workspace scanning and indexing (memory_index_scan) | `../../manual_testing_playbook/04--maintenance/014-workspace-scanning-and-indexing-memory-index-scan.md` |
+| EX-035 | Startup runtime compatibility guards | `../../manual_testing_playbook/04--maintenance/035-startup-runtime-compatibility-guards.md` |
 
 ### Out of Scope
-- Modifying the per-feature playbook files or code under test during execution.
-- Modifying the playbook or feature catalog content linked from this packet.
-- Documenting non-maintenance phases from `001-retrieval/` through `019-feature-flag-reference/`.
+- Scenarios from other phases (retrieval, mutation, discovery, lifecycle, etc.)
+- Modifying the playbook or feature catalog source files
+- Automated test harnesses — this phase is manual execution only
 
 ### Files to Change
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `spec.md` | Create | Phase 004 maintenance requirements, test inventory, and acceptance criteria |
-| `plan.md` | Create | Phase 004 maintenance execution plan and review workflow |
-| `tasks.md` | Create | Phase 004 task tracker for setup, execution, and verification work |
-| `checklist.md` | Create | Phase 004 verification checklist for documentation and evidence quality |
+| `spec.md` | Rewrite | Phase 004 clean-slate specification |
+| `plan.md` | Rewrite | Execution plan for Phase 004 |
+| `tasks.md` | Rewrite | One task per scenario, all pending |
+| `checklist.md` | Rewrite | P0/P1 items, all unchecked |
+| `implementation-summary.md` | Rewrite | Blank — to be filled after execution |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -81,12 +80,15 @@ Provide a single maintenance-focused specification that maps all Phase 004 test 
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Document EX-014 incremental sync run with its exact playbook prompt, command sequence, evidence target, and feature link. | PASS if changed files reflected in scan summary and updated index state after `memory_index_scan(force:false)` -> `memory_stats()` |
-| REQ-002 | Document EX-035 startup diagnostics verification with its exact playbook prompt, command sequence, evidence target, and feature link. | PASS if `startup-checks.vitest.ts` completes with all tests passing covering runtime mismatch, marker creation, and SQLite diagnostics |
-| REQ-003 | Document 100 async shutdown with deadline with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS if watcher/reranker/vector-index cleanup completes within the 5-second shutdown deadline and no hang occurs |
-| REQ-004 | Document 101 memory_delete confirm-schema tightening with its exact playbook prompt, command sequence, evidence target, and mapped feature link. | PASS if only `confirm:true` is accepted while `confirm:false` or missing confirm are rejected by schema validation |
+| REQ-001 | Execute EX-014: invoke `memory_index_scan` (incremental mode) against a target spec folder | PASS if scan completes, reports indexed/skipped counts, and new files are visible to search |
+| REQ-002 | Execute EX-035: verify startup runtime compatibility guards fire correctly on version mismatch or missing dependency | PASS if guard blocks incompatible startup and emits a clear diagnostic message |
 
-No P1 items are defined for this phase; all four maintenance scenarios are mandatory for coverage.
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-003 | Capture evidence for each scenario (tool output or screenshot) | Evidence recorded in implementation-summary.md |
+| REQ-004 | Mark final verdict (PASS / PARTIAL / FAIL) per scenario following the review protocol | Verdict recorded against EX-014 and EX-035 in implementation-summary.md |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -94,10 +96,9 @@ No P1 items are defined for this phase; all four maintenance scenarios are manda
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All four maintenance tests are documented with exact prompts, exact command sequences, linked feature catalog entries, and playbook-derived pass criteria.
-- **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for EX-014, EX-035, 100, and 101 will be collected.
-- **SC-003**: Reviewers can audit every Phase 004 scenario using this folder plus the linked playbook (`../../manual_testing_playbook/manual_testing_playbook.md`) and review protocol (`../../manual_testing_playbook/review_protocol.md`).
-- **SC-004**: The phase packet contains no placeholder or template text and is ready for manual execution planning.
+- **SC-001**: EX-014 completes with a scan report showing indexed and skipped counts
+- **SC-002**: EX-035 demonstrates that incompatible runtime conditions are caught at startup
+- **SC-003**: Both verdicts are recorded and all P0 checklist items are checked
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -107,22 +108,67 @@ No P1 items are defined for this phase; all four maintenance scenarios are manda
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | [`../../manual_testing_playbook/manual_testing_playbook.md`](../../manual_testing_playbook/manual_testing_playbook.md) | Canonical source for exact prompts, commands, evidence targets, and pass/fail criteria | Treat the playbook as source of truth and update this phase packet only from that document |
-| Dependency | [`../../manual_testing_playbook/review_protocol.md`](../../manual_testing_playbook/review_protocol.md) | Verdict rules determine PASS, PARTIAL, FAIL, and coverage requirements | Apply the protocol during evidence review and do not invent alternate verdict logic |
-| Dependency | [`../../feature_catalog/04--maintenance/`](../../feature_catalog/04--maintenance/) | Supplies feature context for each maintenance scenario | Keep every test row linked to its mapped maintenance feature file |
-| Dependency | MCP runtime for `memory_index_scan` and `memory_stats` | Required to execute EX-014 incremental scan scenario | Run against a sandbox with known changed files; preserve the sandbox state for stat comparison |
-| Dependency | Node.js runtime and `npm test` build toolchain | Required to execute EX-035 startup guard validation suite in `mcp_server/` | Confirm Node version, install dependencies, and run from the correct working directory |
-| Risk | EX-014 incremental scan can modify the live index if run outside a sandbox | Medium | Restrict scan execution to a dedicated sandbox spec folder and verify stats delta before and after |
-| Risk | EX-035 test run mutates the `.node-version-marker` file if the runtime has changed | Low | Run on a stable CI-like environment; restore the original marker if it changes unexpectedly |
+| Dependency | Canonical playbook: `../scratch/context-playbook.md` §04--maintenance | Source of truth for exact prompts and pass criteria | Treat as read-only; do not invent alternate criteria |
+| Dependency | Feature catalog: `../scratch/context-feature-catalog.md` §04--maintenance | Feature context for each scenario | Read before execution |
+| Dependency | MCP runtime with indexed memory corpus | Required for EX-014 tool invocation | Verify MCP server is running before starting |
+| Risk | EX-014 `force: true` re-indexes all files and may be slow on large corpora | Low | Use incremental (default) mode unless the playbook explicitly requires force mode |
+| Risk | EX-035 may require a controlled environment to simulate version mismatch | Medium | Follow playbook instructions exactly; do not skip guard simulation steps |
 <!-- /ANCHOR:risks -->
 
 ---
 
 <!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS
+## 10. OPEN QUESTIONS
 
-- Which sandbox spec folder should Phase 004 reviewers target for the EX-014 incremental scan so that the changed-file count remains deterministic across runs?
-- Should EX-035 be executed against the project's current Node version, or should reviewers also simulate a version mismatch to test the warning path?
+- None at start. Record any blockers discovered during execution here.
 <!-- /ANCHOR:questions -->
 
 ---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: EX-014 scan must complete within the MCP server's default timeout
+- **NFR-P02**: No scenario requires more than one retry to obtain a valid response
+
+### Security
+- **NFR-S01**: Run EX-014 against a non-production spec folder; do not scan sensitive paths
+- **NFR-S02**: EX-035 simulation must not leave the system in an incompatible state
+
+### Reliability
+- **NFR-R01**: Both scenarios must complete to claim phase done
+- **NFR-R02**: Partial execution (only 1 scenario) is not acceptable for phase closure
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Data Boundaries
+- Empty folder: if `memory_index_scan` targets a folder with no markdown files, record as PARTIAL
+- No files changed since last scan: incremental scan should report 0 indexed, all skipped — valid PASS
+- Guard not triggered: if EX-035 environment already meets requirements, record as PASS with note
+
+### Error Scenarios
+- MCP server not running: stop, start server, then retry
+- `memory_index_scan` timeout on large corpus: retry with a smaller scoped `specFolder`
+- EX-035 environment cannot simulate mismatch: record as PARTIAL and note environment constraint
+
+### State Transitions
+- Run EX-014 before EX-035 (indexed state may be relevant to startup guard check)
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 5/25 | 2 scenarios, one MCP call + one startup check |
+| Risk | 8/25 | EX-035 requires controlled environment simulation |
+| Research | 3/20 | Playbook provides all needed context |
+| **Total** | **16/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->

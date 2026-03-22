@@ -1,14 +1,19 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/008-bug-fixes-and-data-integrity",
-  "description": "Feature Specification: bug-fixes-and-data-integrity manual testing",
+  "description": "Manual test specification for 11 bug-fixes-and-data-integrity playbook scenarios: graph channel ID fix, chunk collapse deduplication, co-activation fan-effect divisor, SHA-256 content-hash deduplication, database and schema safety, guards and edge cases, canonical ID dedup hardening, Math.max/min stack overflow elimination, session-manager transaction gap fixes, chunking safe swap atomicity, and SQLite datetime session cleanup.",
   "keywords": [
-    "feature",
-    "specification",
-    "bug-fixes-and-data-integrity",
-    "manual",
-    "testing"
+    "manual testing",
+    "bug fixes",
+    "data integrity",
+    "graph channel id",
+    "chunk deduplication",
+    "sha-256",
+    "canonical id",
+    "session manager",
+    "sqlite",
+    "atomicity"
   ],
-  "lastUpdated": "2026-03-21T10:31:34.845Z",
+  "lastUpdated": "2026-03-22T00:00:00.000Z",
   "specId": "008",
   "folderSlug": "bug-fixes-and-data-integrity",
   "parentChain": [
@@ -19,7 +24,7 @@
   "memorySequence": 0,
   "memoryNameHistory": [],
   "title": "Manual Testing: Bug Fixes and Data Integrity",
-  "status": "Complete",
-  "importance_tier": "medium",
-  "short_description": "Manual testing for bug fixes and data integrity validation features"
+  "status": "Draft",
+  "importance_tier": "normal",
+  "short_description": "Manual test execution for 11 bug-fix and data-integrity scenarios from the hybrid-rag-fusion playbook"
 }

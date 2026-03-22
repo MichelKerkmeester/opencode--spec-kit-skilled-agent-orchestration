@@ -12,7 +12,7 @@
     "manual",
     "testing"
   ],
-  "lastUpdated": "2026-03-21T10:31:34.858Z",
+  "lastUpdated": "2026-03-22T00:00:00.000Z",
   "specId": "010",
   "folderSlug": "graph-signal-activation",
   "parentChain": [
@@ -23,7 +23,7 @@
   "memorySequence": 0,
   "memoryNameHistory": [],
   "title": "Manual Testing: Graph Signal Activation",
-  "status": "Complete",
+  "status": "Draft",
   "importance_tier": "medium",
   "short_description": "Manual testing for graph signal activation and causal linking features"
 }

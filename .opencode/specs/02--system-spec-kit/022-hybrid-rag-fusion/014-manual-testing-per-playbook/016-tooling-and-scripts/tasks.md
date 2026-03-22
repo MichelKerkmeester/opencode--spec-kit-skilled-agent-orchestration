@@ -1,17 +1,6 @@
----
-title: "Tasks: manual-testing-per-playbook tooling-and-scripts phase [template:level_1/tasks.md]"
-description: "Task Format: T### [P?] Description (file path)"
-trigger_phrases:
-  - "tooling and scripts tasks"
-  - "phase 016 tasks"
-  - "manual testing tasks"
-  - "tasks core"
-importance_tier: "high"
-contextType: "general"
----
-# Tasks: manual-testing-per-playbook tooling-and-scripts phase
+# Tasks: 016-Tooling-and-Scripts Manual Testing
 
-<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -34,12 +23,11 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Extract prompts, command sequences, and pass criteria for all 23 phase-016 scenarios from `../../manual_testing_playbook/manual_testing_playbook.md`
-- [x] T002 [P] Confirm feature catalog links for 061, 062, 070, 089, 099, 113, 127, 128, 135, 136, 137, 138, 139, 147, and 149 in `../../feature_catalog/16--tooling-and-scripts/`
-- [x] T003 [P] Confirm phase-system catalog anchors for PHASE-001, PHASE-002, PHASE-003, PHASE-004, and PHASE-005 in `../../feature_catalog/feature_catalog.md`
-- [x] T004 Source the 139 session-capturing scenario from the canonical `M-007` playbook section and record the sourcing choice in spec.md open questions
-- [x] T005 [P] Prepare sandbox targets: watcher temp files, admin CLI disposable scope, malformed memory sandbox files, and disposable phase parent/child folders
-- [x] T006 Confirm MCP runtime availability for `memory_save` and slash-command scenarios (147, 149)
+- [ ] T001 Verify all 28 scenario files exist in playbook/16--tooling-and-scripts/
+- [ ] T002 [P] Confirm generate-context.js runs without errors
+- [ ] T003 [P] Prepare sandbox folders for destructive tests (PHASE-002 through PHASE-005, 099, 113)
+- [ ] T004 [P] Identify available CLI environments for M-007e through M-007i (OpenCode, Claude, Codex, Copilot, Gemini)
+- [ ] T005 Confirm MCP runtime availability for memory_save and slash-command scenarios
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -47,11 +35,78 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T007 Draft `spec.md` with metadata, 23-scenario scope table, P0 requirements, success criteria, and risk register
-- [x] T008 Draft `plan.md` with readiness gates, definition of done, execution phases (preconditions, non-destructive, destructive, verdict), and 23-row testing strategy table
-- [x] T009 Draft `tasks.md` with setup, implementation, and verification phases covering all 23 scenarios
-- [x] T010 Draft `checklist.md` with P0/P1/P2 items for pre-implementation, scenario documentation quality, testing execution, security, documentation, and file organization
-- [x] T011 [P] Resolve open questions: promote 139 to main scenario table and add dedicated PHASE-005 catalog leaf
+### T006: Group A -- Phase Workflow (5 IDs)
+- [ ] T006 Execute PHASE-001 through PHASE-005
+  - PHASE-001: Phase detection scoring
+  - PHASE-002: Phase folder creation
+  - PHASE-003: Recursive phase validation
+  - PHASE-004: Phase link validation
+  - PHASE-005: Phase command workflow
+
+### T007: Group B -- Main-Agent Review (1 ID)
+- [ ] T007 Execute M-004: Main-Agent Review and Verdict Handoff
+
+### T008: Group C -- Session Capturing Pipeline Quality (18 IDs)
+- [ ] T008 Execute M-007 parent + M-007a through M-007q (18 IDs total)
+  - M-007: Session Capturing Pipeline Quality (parent)
+  - M-007a: JSON authority and successful indexing
+  - M-007b: Thin JSON insufficiency rejection
+  - M-007c: Explicit-CLI mis-scoped captured-session warning
+  - M-007d: Spec-folder and git-context enrichment presence
+  - M-007e: OpenCode precedence
+  - M-007f: Claude fallback
+  - M-007g: Codex fallback
+  - M-007h: Copilot fallback
+  - M-007i: Gemini fallback
+  - M-007j: Final NO_DATA_AVAILABLE hard-fail
+  - M-007k: V10-only captured-session save warns
+  - M-007l: V8/V9 captured-session contamination abort
+  - M-007m: --stdin structured JSON with explicit CLI target
+  - M-007n: --json structured JSON with payload-target fallback
+  - M-007o: Claude tool-path downgrade vs non-Claude capped path
+  - M-007p: Structured-summary JSON coverage and file-backed authority
+  - M-007q: Phase 018 output-quality hardening
+
+### T009: Group D -- Tooling and Script Utilities (20 IDs)
+- [ ] T009a Execute 061: Tree thinning for spec folder consolidation (PI-B1)
+- [ ] T009b Execute 062: Progressive validation for spec documents (PI-B2)
+- [ ] T009c Execute 070: Dead code removal
+- [ ] T009d Execute 089: Code standards alignment
+- [ ] T009e Execute 099: Real-time filesystem watching (P1-7)
+- [ ] T009f Execute 108: Spec 007 finalized verification command suite evidence
+- [ ] T009g Execute 113: Standalone admin CLI
+- [ ] T009h Execute 127: Migration checkpoint scripts
+- [ ] T009i Execute 128: Schema compatibility validation
+- [ ] T009j Execute 135: Grep traceability for feature catalog code references
+- [ ] T009k Execute 136: Feature catalog annotation name validity
+- [ ] T009l Execute 137: Multi-feature annotation coverage
+- [ ] T009m Execute 138: MODULE: header compliance via verify_alignment_drift.py
+- [ ] T009n Execute 139: Session capturing pipeline quality
+- [ ] T009o Execute 147: Constitutional memory manager command
+- [ ] T009p Execute 149: Rendered memory template contract
+- [ ] T009q Execute 150: Source-dist alignment validation
+- [ ] T009r Execute 151: MODULE_MAP.md accuracy validation
+- [ ] T009s Execute 152: No symlinks in lib/ tree
+- [ ] T009t Execute 154: JSON-primary deprecation posture
+
+### T010: Group E -- JSON Mode Structured Summary Hardening (16 IDs)
+- [ ] T010 Execute 153 parent + 153-A through 153-O (16 IDs total)
+  - 153: JSON mode structured summary hardening (parent)
+  - 153-A: Post-save quality review output verification
+  - 153-B: sessionSummary propagates to frontmatter title
+  - 153-C: triggerPhrases propagate to frontmatter trigger_phrases
+  - 153-D: keyDecisions propagate to non-zero decision_count
+  - 153-E: importanceTier propagates to frontmatter importance_tier
+  - 153-F: contextType propagates for full documented valid enum
+  - 153-G: Contamination filter cleans hedging in sessionSummary
+  - 153-H: Fast-path filesModified to FILES conversion
+  - 153-I: Unknown field warning for typos
+  - 153-J: contextType enum rejection
+  - 153-K: Quality score discriminates contaminated vs clean
+  - 153-L: Trigger phrase filter removes path fragments
+  - 153-M: Embedding retry stats visible in memory_health
+  - 153-N: Default-on pre-save overlap warning uses exact content match
+  - 153-O: projectPhase override propagates to frontmatter
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -59,13 +114,11 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T012 Execute Phase 1 preconditions: source reference availability, sandbox setup, and MCP runtime check
-- [x] T013 [P] Run non-destructive scenarios: 061, 062, 070, 089, 127, 128, 135, 136, 137, 138, 147, and PHASE-001
-- [x] T014 Run destructive scenarios in sandbox: 099, 113, 139, 149, PHASE-002, PHASE-003, PHASE-004, and PHASE-005
-- [x] T015 Capture named evidence artifacts for each scenario (transcripts, grep output, Vitest logs, manifests, JSON output)
-- [x] T016 Assign PASS, PARTIAL, or FAIL verdict per scenario with explicit rationale referencing review protocol acceptance rules
-- [x] T017 Validate documentation structure and required anchors across spec.md, plan.md, tasks.md, and checklist.md
-- [x] T018 Create `implementation-summary.md` when execution and verification are complete
+- [ ] T011 Verify all 60 scenario IDs have captured evidence
+- [ ] T012 Assign PASS / PARTIAL / FAIL verdict per scenario using review protocol
+- [ ] T013 Update checklist with evidence references for all 5 groups
+- [ ] T014 Clean up sandbox folders created during testing
+- [ ] T015 Complete implementation-summary.md with execution results
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -73,10 +126,10 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks marked `[x]`
-- [x] No `[B]` blocked tasks remaining
-- [x] All 23 scenarios have evidence-backed verdicts
-- [x] Manual verification passed
+- [ ] All tasks marked `[x]`
+- [ ] No `[B]` blocked tasks remaining
+- [ ] All 60 scenarios have evidence-backed verdicts
+- [ ] Manual verification passed
 <!-- /ANCHOR:completion -->
 
 ---
@@ -86,6 +139,5 @@ contextType: "general"
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
 <!-- /ANCHOR:cross-refs -->
-
----
