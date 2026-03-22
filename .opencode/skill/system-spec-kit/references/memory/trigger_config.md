@@ -142,8 +142,6 @@ const matches = await memory_match_triggers({
 | **Test coverage** | Verify triggers match common user phrases |
 | **Limit count** | 20-40 triggers recommended for constitutional memories |
 
-**Reference:** See `specs/005-memory/018-gate3-enforcement/` for complete implementation.
-
 ---
 
 ### Signal Vocabulary Expansion

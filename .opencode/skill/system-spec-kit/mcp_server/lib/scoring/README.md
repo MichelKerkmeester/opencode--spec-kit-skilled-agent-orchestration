@@ -75,7 +75,7 @@ The scoring module provides multi-factor algorithms for ranking memories in the 
 | **Pattern** | 0.20 | Query alignment (title, anchor, type matching) |
 | **Citation** | 0.15 | Recency of last citation/access |
 
-### Legacy 6-Factor Weights (Backward Compatibility)
+### 6-Factor Weight Reference
 
 | Factor | Weight | Description |
 |--------|--------|-------------|

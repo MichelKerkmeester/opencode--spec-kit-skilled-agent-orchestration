@@ -47,6 +47,10 @@ Use this simplified catalog as the plain-language companion to the full feature 
 
 When you ask the system a question, it figures out what kind of help you need and automatically picks the best way to find the answer. Think of it like a smart librarian who reads your request, decides whether you need a quick lookup or a deep research session and then fetches the right materials for you. Without this, you would have to manually tell the system how to search every time.
 
+### Fast delegated search (memory_quick_search)
+
+This is the lightweight search entry point for callers that want the main semantic search behavior without having to set a large option surface themselves. It works like a preset: you provide a query and optional governed-scope boundaries, and the server forwards the request to the full search tool using sensible retrieval defaults.
+
 ### Semantic and lexical search (memory_search)
 
 This is the main search tool. You type what you are looking for in plain language and the system searches through all stored knowledge to find the best matches. It understands meaning (not just keywords), so searching for "login problems" can find a document titled "authentication troubleshooting." Without it, you would have no way to find relevant information in the knowledge base.
@@ -397,6 +401,22 @@ Memories created around the same time are often about the same topic, like notes
 
 This brings all the graph-based search features together into one reliable path. The same query will always return results in the same order, and you can see exactly why each result ranked where it did. If anything goes wrong with the graph features, a single switch turns them off and search falls back to working without them. Think of it as a well-labeled control panel with an emergency off switch.
 
+### Typed traversal
+
+Typed traversal enables sparse-first graph policy and intent-aware edge traversal for causal boost scoring, constraining traversal to typed 1-hop expansion in sparse graphs and mapping query intents to edge-type priority orderings.
+
+### Graph lifecycle refresh
+
+Graph lifecycle refresh manages dirty-node tracking and graph recomputation after write operations, with synchronous local or scheduled background modes controlled by the `SPECKIT_GRAPH_REFRESH_MODE` flag.
+
+### Async LLM graph backfill
+
+Async LLM graph backfill enriches high-value documents with probabilistic graph edges via an LLM call after deterministic extraction, gated by the `SPECKIT_LLM_GRAPH_BACKFILL` flag.
+
+### Graph calibration profiles and community thresholds
+
+Graph calibration profiles enforce weight caps, RRF fusion overflow limits, and Louvain community detection activation gates, with named presets controlled by the `SPECKIT_GRAPH_CALIBRATION_PROFILE` flag.
+
 ---
 
 ## 12. SCORING AND CALIBRATION
@@ -473,6 +493,26 @@ This checks whether a memory's claims make sense in the order things actually ha
 
 This feature lets the system experiment with new ranking ideas without changing what you actually see. It runs alternative rankings in the background and records what would have changed, like a flight simulator for search results. The experiments have strict limits on how big a change they can propose, and a single switch turns the whole thing off if anything looks wrong. Only after a deliberate decision would any of these proposals go live.
 
+### Calibrated overlap bonus
+
+Calibrated overlap bonus replaces the flat convergence bonus in RRF fusion with a query-aware scaled bonus that accounts for the number of overlapping channels and the mean normalized top score.
+
+### RRF K experimental tuning
+
+RRF K experimental tuning enables per-intent K-value selection for Reciprocal Rank Fusion, sweeping candidate K values and selecting the one that maximizes NDCG@10 per query intent.
+
+### Fusion policy shadow evaluation V2
+
+Fusion policy shadow evaluation V2 runs RRF, minmax-linear, and zscore-linear fusion policies in parallel on each query, returning the active policy result while capturing shadow telemetry for the alternatives.
+
+### Learned Stage 2 weight combiner
+
+A regularized linear ranker that learns combination weights from accumulated Stage 2 signals, running in shadow-only mode behind the `SPECKIT_LEARNED_STAGE2_COMBINER` flag.
+
+### Shadow scoring with holdout evaluation
+
+Shadow scoring compares would-have-changed rankings against live rankings on a deterministic holdout slice of queries, tracking weekly improvement cycles and gating promotion of learned signals to production.
+
 ---
 
 ## 13. QUERY INTELLIGENCE
@@ -500,6 +540,26 @@ Every answer the system gives takes up space in a limited response window. This 
 ### Query expansion
 
 Sometimes the words you use in a question do not match the words stored in the system, even though they mean the same thing. This feature automatically adds related terms to your search so you find relevant results even when the exact wording differs. It only kicks in for complex questions because simple lookups do not benefit from the extra breadth.
+
+### Query decomposition
+
+Query decomposition splits multi-faceted questions into up to 3 sub-queries using rule-based heuristics, enabling facet-aware retrieval in deep mode without LLM calls.
+
+### Graph concept routing
+
+Graph concept routing extracts noun phrases from a query and matches them against a concept alias table, activating the graph channel for matched concepts to improve retrieval via causal edge traversal.
+
+### LLM query reformulation
+
+Corpus-grounded LLM query reformulation applies step-back abstraction combined with real corpus seed grounding to produce enriched query variants in deep mode.
+
+### HyDE (Hypothetical Document Embeddings)
+
+HyDE generates a short hypothetical document answering the query, embeds it, and uses the pseudo-document embedding as an additional retrieval channel for deep low-confidence queries.
+
+### Index-time query surrogates
+
+Index-time query surrogates generate surrogate metadata (aliases, headings, summaries, heuristic questions) at index time for improved recall without runtime LLM calls.
 
 ---
 
@@ -581,13 +641,37 @@ When a memory is saved with minimal context, the system fills in the gaps by pul
 
 The session-capture flow now also refuses to keep malformed output around as “good enough.” The same rendered-memory contract used by `memory_save` and `generate-context.js` is also used to audit and clean active historical memories.
 
+### Post-save quality review
+
+After the system saves a memory file, it runs a quick proof-reading step to check that nothing was lost in transcription. It compares the saved file against the original JSON payload to catch cases where the rendering pipeline silently dropped or degraded caller-supplied fields — like a generic title replacing a meaningful one, or trigger phrases that are file paths instead of natural-language keywords. Think of it as a proof-reader who checks the printed form against the original application before it goes into the filing cabinet.
+
+### Implicit feedback log
+
+Implicit feedback log records implicit feedback signals from search and save interactions into a shadow-only SQLite table with tiered confidence scoring, enabling offline analysis of search quality without ranking side effects.
+
+### Hybrid decay policy
+
+Hybrid decay policy applies type-aware no-decay rules to permanent artifacts (decision, constitutional, critical context types) while all other types follow the standard FSRS schedule.
+
+### Save quality gate exceptions
+
+Save quality gate exceptions allow decision-type documents with sufficient structural signals to bypass the minimum content length check, preventing false rejections of short but high-value memories.
+
+### Weekly batch feedback learning
+
+Weekly batch feedback learning aggregates implicit feedback events from the ledger, computes confidence-weighted signal scores per memory, and records shadow rank deltas with min-support and boost-cap guards.
+
+### Assistive reconsolidation
+
+Three-tier assistive reconsolidation classifies memory pairs by cosine similarity into auto-merge, review, or keep-separate tiers, providing non-destructive recommendations for near-duplicates and borderline pairs.
+
 ---
 
 ## 15. PIPELINE ARCHITECTURE
 
 ### 4-stage pipeline refactor
 
-When you ask the system a question, your search goes through four clear steps: gather candidates, combine and score them, rerank the best ones and finally filter the results. This is like an assembly line where each station has one job and passes its work to the next. The old system tried to do everything in one messy step, which made it hard to find and fix problems. The new structure makes each step predictable and testable.
+When you ask the system a question, your search goes through four clear steps: gather candidates, combine and score them, rerank the best ones and finally filter the results. This is like an assembly line where each station has one job and passes its work to the next. The old system tried to do everything in one messy step, which made it hard to find and fix problems. The new structure makes each step predictable and testable. Sprint 8 further tightened the assembly line: all stages now share a single `resolveEffectiveScore()` function so scores are resolved the same way everywhere, and the fusion weights automatically normalize to sum 1.0 after any partial override, preventing weights from silently drifting off balance.
 
 ### MPAB chunk-to-memory aggregation
 
@@ -607,7 +691,7 @@ Well-maintained documents should rank slightly higher than neglected ones when b
 
 ### Learned relevance feedback
 
-When you mark a search result as useful, the system remembers which search terms led you to it. Next time similar terms appear in a question, the system gives that memory a small boost. Over time, the system learns which results are genuinely helpful based on your actual selections, like a music app that gets better at recommending songs the more you use it.
+When you mark a search result as useful, the system remembers which search terms led you to it. Next time similar terms appear in a question, the system gives that memory a small boost. Over time, the system learns which results are genuinely helpful based on your actual selections, like a music app that gets better at recommending songs the more you use it. Ten safeguards protect against noise, including a stop-word denylist, rate caps, 30-day decay and FTS5 isolation. A one-week shadow period (Safeguard #6) logs learned triggers without applying them, giving the system time to verify quality before boosts go live. The Sprint 8 dead-code cleanup removed other retired flag helpers but intentionally retained `isInShadowPeriod()` and its guards as an active safeguard.
 
 ### Search pipeline safety
 
@@ -647,7 +731,7 @@ Right now, the memory server starts fresh every time it is called and shuts down
 
 ### Backend storage adapter abstraction
 
-The system now has a small adapter layer (`IVectorStore` / `SQLiteVectorStore`) that defines the vector-storage contract and keeps the storage implementation swappable at the vector boundary. It is like changing from plugging appliances straight into the wall to using a standardized socket adapter first. SQLite remains the concrete backend, but the coupling point is cleaner and easier to replace later if scale ever demands it.
+The system now has a small adapter layer (`IVectorStore` / `SQLiteVectorStore`) that defines the vector-storage contract and keeps the storage implementation swappable at the vector boundary. It is like changing from plugging appliances straight into the wall to using a standardized socket adapter first. SQLite remains the concrete backend, but the coupling point is cleaner and easier to replace later if scale ever demands it. Note that only vector storage is abstracted through this adapter. The graph store and document store still talk directly to SQLite, so those boundaries remain tightly coupled until a real multi-backend need appears.
 
 ### Cross-process DB hot rebinding
 
@@ -745,6 +829,26 @@ Instead of waiting for you to ask the system to re-scan your files, this feature
 
 This is a command-line maintenance tool for the memory database that you can run directly without going through the normal system. It lets you check database statistics, delete old records in bulk, rebuild the search index or roll back a database upgrade. Think of it as the "service panel" for the system that only operators use when routine maintenance or emergency recovery is needed.
 
+### Constitutional memory manager command
+
+This is the operator-facing slash command for creating and managing constitutional memories: the durable rules that always surface at the top of search results. Think of it as the system's rulebook editor rather than a generic note-taking command.
+
+### Source-dist alignment enforcement
+
+Source-dist alignment enforcement validates that every `.js` file in `mcp_server/dist/lib/` has a corresponding `.ts` source file in `mcp_server/lib/`, detecting orphaned build artifacts that persist after source files are deleted or refactored.
+
+### Module boundary map
+
+MODULE_MAP.md documents internal module ownership, dependency directions, feature catalog mapping, and canonical locations for all 26 `lib/` subdirectories. It makes module boundaries explicit for dead-code analysis, refactoring, and dependency enforcement.
+
+### JSON mode structured summary hardening
+
+Phase 016 added structured JSON summary support to `generate-context.js`, including `toolCalls` and `exchanges` fields, file-backed JSON authority preservation, and Wave 2 hardening for decision confidence, truncated titles, `git_changed_file_count` stability, and template count preservation.
+
+### JSON-primary deprecation posture
+
+Phase 017 established the JSON-only save contract for `generate-context.js`. Dynamic session capture proved unreliable and has been removed. `--json` and `--stdin` are now the sole save paths.
+
 ### Migration checkpoint scripts
 
 Before the system upgrades its database structure, these scripts take a full backup of the database file so you can roll back if something goes wrong. It is like making a photocopy of an important form before you fill it in: if you make a mistake, you can start over from the clean copy.
@@ -757,6 +861,14 @@ This feature checks whether the database has the right structure before the syst
 
 When you delete or rename a file on your computer, the search index needs to clean up the old entry so it does not show stale results. This feature handles that cleanup automatically. Without it, you could search and find references to files that no longer exist, like a phone book that still lists people who have moved away.
 
+### Feature catalog code references
+
+Feature catalog code references embed inline traceability comments in every source file, linking implementation code back to the feature catalog by name. Each file declares which catalog features it implements via `// Feature catalog: <feature-name>` comments, and every non-test TypeScript file carries a standardized `// MODULE: Name` header block. This is like labeling warehouse boxes by product name instead of aisle number — anyone can grep for a feature and find every file that implements it.
+
+### Session capturing pipeline quality
+
+Session capturing pipeline quality is the current reality-alignment feature for `009-perfect-session-capturing`. It covers the full shipped session-capture path for `generate-context.js`: (1) Part I hardening across session extraction, file writing, contamination filtering, alignment blocking, and config-driven limits; (2) spec-folder and git context enrichment for JSON-mode saves; (3) numeric quality-score calibration so thin saves score lower than rich ones; (4) one shared semantic sufficiency gate so aligned but under-evidenced memories fail explicitly instead of indexing; (5) one shared rendered-memory template contract so malformed ANCHOR/frontmatter output fails before write/index; (6) a fully refreshed canonical verification and manual-testing record; (7) JSON-only routine-save contract; (8) Wave 2 count/confidence hardening for decision confidence, truncated outcomes, and stable `git_changed_file_count` priority.
+
 ---
 
 ## 18. GOVERNANCE
@@ -767,7 +879,7 @@ Feature flags let you turn new features on or off without changing the code itse
 
 ### Feature flag sunset audit
 
-This audit went through all 79 feature switches in the system and decided the fate of each one. Most were ready to become permanent (switch removed, feature stays on). Some were dead and got deleted. A few remain as active controls. Without this cleanup, the system would accumulate unused switches that confuse anyone trying to understand what is actually running.
+This audit went through all 79 feature switches in the system and decided the fate of each one. Most were ready to become permanent (switch removed, feature stays on). Some were dead and got deleted. A few remain as active controls. The Sprint 8 comprehensive remediation acted on these audit findings by removing a large slice of dead code: dead feature flag branches, retired flag helper functions, dead module-level state variables and unused exports. After cleanup, 24 active `is*` flag-helper functions remain in `search-flags.ts`, including the deprecated `isPipelineV2Enabled()` compatibility shim and the newly added `isQualityLoopEnabled()`. Without this kind of periodic cleanup, the system would accumulate unused switches that confuse anyone trying to understand what is actually running.
 
 ### Hierarchical scope governance, governed ingest, retention, and audit
 
@@ -775,7 +887,7 @@ This feature controls who can save and read memories and keeps a record of every
 
 ### Shared-memory rollout, deny-by-default membership, and kill switch
 
-Shared memory spaces let multiple users or agents access the same pool of knowledge. This feature makes sure nobody gets access unless they are explicitly granted membership, and it includes an emergency "off" switch that immediately blocks everyone if something goes wrong. It is like a shared office with a keycard lock: you only get in if your name is on the list, and building management can lock it down instantly in an emergency.
+Shared memory spaces let multiple users or agents access the same pool of knowledge. The subsystem is disabled by default and requires explicit opt-in: either set the `SPECKIT_MEMORY_SHARED_MEMORY` environment variable to `true` or run the first-time enablement flow via `shared_memory_enable` or `/memory:shared`. Once enabled, access is deny-by-default: nobody gets in unless they are explicitly granted membership. An emergency kill switch immediately blocks everyone if something goes wrong. It is like a shared office with a keycard lock that starts powered off: you must first turn on the lock system, then add names to the access list, and building management can lock it down instantly in an emergency.
 
 ---
 
@@ -833,6 +945,30 @@ The documentation and the published list of available hook modules had drifted o
 
 This is a set of automated tests that checks the entire response from start to finish: hints are included, previously surfaced context is preserved and the size count is correct. It acts as a final quality check before a response leaves the system, like a shipping inspector who opens the box, verifies everything is inside and confirms the label is accurate before it goes out the door.
 
+### Empty result recovery
+
+Empty result recovery generates structured recovery payloads when search returns no results, low-confidence results, or only partial matches, providing the calling agent with actionable next steps.
+
+### Result confidence scoring
+
+Result confidence scoring combines margin, multi-channel agreement, reranker support, and anchor density into a single calibrated confidence score per search result, using heuristic scoring with no LLM calls in the hot path.
+
+### Two-tier result explainability
+
+Two-tier result explainability attaches natural-language "why" explanations to each search result composed from Stage 2 scoring signals, with a slim tier (summary + topSignals) and an optional debug tier (channelContribution map).
+
+### Mode-aware response profiles
+
+Mode-aware response profiles route search and context results through one of four named presentation profiles (quick, research, resume, debug), each optimizing for a different consumer.
+
+### Progressive disclosure with cursor pagination
+
+Progressive disclosure replaces hard tail-truncation with a multi-layer response consisting of a summary layer, snippet extraction, and continuation cursors for paginated retrieval.
+
+### Retrieval session state
+
+Retrieval session state tracks per-session context enabling cross-turn deduplication, goal-aware refinement, and stateful question and anchor tracking, all in-memory with TTL-based cleanup.
+
 ---
 
 ## 20. SPEC KIT PHASE WORKFLOWS
@@ -867,7 +1003,7 @@ These settings control short-term memory and caching behavior. They decide how l
 
 ### 3. MCP Configuration
 
-These are guardrail settings for save-time validation. They define size limits, token estimates, duplicate thresholds, and anchor strictness so problematic files can be caught before indexing.
+These are guardrail settings for save-time validation. They define size limits, token estimates, duplicate thresholds, and anchor strictness so problematic files can be caught before indexing. The `MCP_CHARS_PER_TOKEN` ratio serves double duty: it is used both by preflight validation to estimate whether a memory exceeds the token budget and by the quality loop when trimming content to fit its default token budget.
 
 ### 4. Memory and Storage
 
@@ -879,7 +1015,7 @@ These settings pick which embedding and reranking providers the system uses and 
 
 ### 6. Debug and Telemetry
 
-These settings control diagnostic visibility. They adjust log verbosity and optional telemetry so you can inspect runtime behavior during debugging while keeping production output stable by default.
+These settings control diagnostic visibility. They adjust log verbosity and optional telemetry so you can inspect runtime behavior during debugging while keeping production output stable by default. This group also contains the `SPECKIT_HYDRA_*` legacy compatibility aliases (phase label, lineage state, graph unified, adaptive ranking, scope enforcement, governance guardrails, shared memory) which are consumed by roadmap metadata snapshots and rename-window compatibility paths, not just log and telemetry settings.
 
 ### 7. CI and Build (informational)
 

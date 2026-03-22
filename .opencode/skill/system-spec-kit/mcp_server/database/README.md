@@ -40,7 +40,7 @@ This section provides an overview of the MCP Server Database Storage directory.
 
 
 - Primary table set includes `memory_index`, `vec_memories`, `memory_fts`, `checkpoints`, and `config`.
-- Spec 126/127/129 alignment:
+- Document-type indexing alignment:
   - `memory_index.document_type` and `memory_index.spec_level` are part of schema v13.
   - Spec document indexing is first-class (not memory-only).
   - Anchor-based retrieval applies to indexed spec docs.
@@ -54,7 +54,7 @@ This section provides an overview of the MCP Server Database Storage directory.
 
 - Reinit safety is handled in `core/db-state.ts` (mutex + dependency rebind).
 - Rate-limit timestamp is persisted in DB `config` table (`last_index_scan`).
-- Document metadata remains preserved across update/reinforce/index paths (Spec 126 hardening follow-up).
+- Document metadata remains preserved across update/reinforce/index paths (document-type indexing hardening).
 
 
 <!-- /ANCHOR:hardening-notes -->

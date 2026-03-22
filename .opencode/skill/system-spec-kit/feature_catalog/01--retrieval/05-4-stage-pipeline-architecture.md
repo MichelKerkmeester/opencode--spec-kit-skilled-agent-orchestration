@@ -25,7 +25,7 @@ Stage 3 (Rerank and Aggregate) handles cross-encoder reranking (optional, gated 
 
 Stage 4 (Filter and Annotate) enforces a "no score changes" invariant through dual enforcement. At compile time, `Stage4ReadonlyRow` declares all six score fields as `Readonly`, making assignment a TypeScript error. At runtime, `captureScoreSnapshot()` records all scores before operations and `verifyScoreInvariant()` checks them afterward, throwing a `[Stage4Invariant]` error on any mismatch. Within this invariant, Stage 4 applies memory state filtering (removing rows below `config.minState` with optional per-tier hard limits), evidence gap detection via TRM Z-score analysis and annotation metadata for feature flags and state statistics. Session deduplication is explicitly excluded from Stage 4 and runs post-cache in the handler to avoid double-counting.
 
-The pipeline is the sole runtime path. The legacy `postSearchPipeline` was removed in Phase 017, and `SPECKIT_PIPELINE_V2` is no longer consumed by runtime code.
+The 4-stage pipeline is the sole runtime path. The `SPECKIT_PIPELINE_V2` environment variable is not consumed by runtime code.
 
 ---
 

@@ -104,10 +104,6 @@ export function isNegativeFeedbackEnabled(): boolean {
 
 // -- Pipeline Refactor flags --
 
-// C8 CLEANUP: isPipelineV2Enabled() removed — always returned true.
-// The V1 pipeline was removed and V2 is the only code path.
-// SPECKIT_PIPELINE_V2 env var is no longer consumed.
-
 /**
  * R12: Query expansion for embedding-based retrieval.
  * Suppressed when R15 classification = "simple" (mutual exclusion).

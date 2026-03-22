@@ -14,7 +14,7 @@ Systematic diagnosis and resolution for semantic memory issues, context retrieva
 
 **Core Principle:** Systematic diagnosis before fixes. Never guess at solutions.
 
-This reference provides structured troubleshooting for the semantic memory system v1.7.2, covering:
+This reference provides structured troubleshooting for the semantic memory system, covering:
 
 - **Context retrieval failures** - Memory search returning no/wrong results
 - **Vector index issues** - Embedding generation and search problems
@@ -485,24 +485,6 @@ memory_delete({ id: <memory_id> })
 ---
 
 <!-- /ANCHOR:empty-trigger-phrases -->
-<!-- ANCHOR:known-resolved-issues -->
-## 8b. KNOWN RESOLVED ISSUES
-
-Issues that changed runtime behavior and are now fixed. Listed for historical context:
-
-| Issue | Fix | Impact | Catalog Reference |
-|-------|-----|--------|-------------------|
-| Graph channel ID mismatch | Canonical ID normalization | Graph signals now use consistent IDs across channels | `08--bug-fixes/01` |
-| Chunk collapse deduplication | Dedup runs regardless of `includeContent` flag | Eliminates duplicate chunk rows in search results | `08--bug-fixes/02` |
-| Canonical ID format mixing | Unified ID format (`mem:NNN`) across hybrid search | Prevents duplicate surfacing from mixed ID formats | `08--bug-fixes/07` |
-| Math.max/min stack overflow | Replaced spread-based calls with iterative loops | Eliminates stack overflow on large arrays | `08--bug-fixes/08` |
-| Session manager transaction gaps | Added transaction wrappers to mutation handlers | Prevents partial writes on concurrent mutations | `08--bug-fixes/09` |
-| Chunking orchestrator unsafe swap | Safe-swap guard prevents re-chunking during active retrieval | Eliminates data corruption during live index updates | `08--bug-fixes/10` |
-| Working memory timestamp cleanup | Fixed stale timestamps in session-scoped attention | Ensures correct temporal ordering in working memory | `08--bug-fixes/11` |
-
----
-
-<!-- /ANCHOR:known-resolved-issues -->
 <!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 

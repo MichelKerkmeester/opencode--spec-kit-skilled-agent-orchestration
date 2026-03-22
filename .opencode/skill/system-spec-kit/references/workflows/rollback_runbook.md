@@ -12,7 +12,7 @@ Rollback procedure for safely disabling and re-enabling working-memory automatio
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This runbook defines the rollback and staged recovery flow for working-memory automation features introduced in spec `136-mcp-working-memory-hybrid-rag`.
+This runbook defines the rollback and staged recovery flow for working-memory automation features (session boost, pressure policy, extraction, causal boost, auto-resume).
 
 Use this runbook when rollout quality gates regress and feature flags must be disabled and re-enabled in a controlled sequence.
 
@@ -22,7 +22,7 @@ Use this runbook when rollout quality gates regress and feature flags must be di
 <!-- ANCHOR:scope -->
 ## 2. SCOPE
 
-This runbook defines the rollback flow for the automation features introduced in spec `136-mcp-working-memory-hybrid-rag`.
+This runbook defines the rollback flow for the working-memory automation features (session boost, pressure policy, extraction, causal boost, auto-resume).
 
 Rollback is required when one or more of the following occurs:
 - Rank stability regresses (`top-5 MRR < 0.95x` baseline)

@@ -326,7 +326,7 @@ Folders matching these patterns are automatically excluded:
 
 - `z_*` (archive prefix)
 - `*archive*` (contains "archive")
-- `old*` (deprecated prefix)
+- `old*` (excluded naming pattern)
 
 ---
 
@@ -557,37 +557,8 @@ test -d specs/###-name/memory/ && echo "OK" || echo "MISSING"
 ---
 
 <!-- /ANCHOR:validation-checkpoints -->
-<!-- ANCHOR:migration-from-marker-files -->
-## 13. MIGRATION FROM MARKER FILES
-
-If migrating from a system that used `.spec-active` marker files:
-
-### Cleanup Commands
-
-```bash
-# Remove legacy marker files (safe - they're no longer used)
-rm -f .spec-active
-rm -f .opencode/.spec-active.*
-rm -f .opencode/.spec-actives.json
-
-# Verify removal
-find . -name ".spec-active*" -type f 2>/dev/null
-```
-
-### Behavior Changes
-
-| Aspect                  | Old (Marker-Based)    | New (CLI-First) |
-| ----------------------- | --------------------- | --------------- |
-| **Folder tracking**     | Read from marker file | Pass via CLI    |
-| **Session state**       | Persisted to disk     | None            |
-| **Concurrent sessions** | Potential conflicts   | No conflicts    |
-| **Stale state**         | Possible              | Impossible      |
-
----
-
-<!-- /ANCHOR:migration-from-marker-files -->
 <!-- ANCHOR:related-resources -->
-## 14. RELATED RESOURCES
+## 13. RELATED RESOURCES
 
 ### Reference Files
 - [execution_methods.md](../workflows/execution_methods.md) - Save context workflows
@@ -599,5 +570,5 @@ find . -name ".spec-active*" -type f 2>/dev/null
 
 ---
 
-*Last Updated: 2025-12-25 | Architecture: Structured-First with Alignment Scoring*
+*Last Updated: 2026-03-22 | Architecture: Structured-First with Alignment Scoring*
 <!-- /ANCHOR:related-resources -->

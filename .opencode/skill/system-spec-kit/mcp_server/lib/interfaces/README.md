@@ -39,7 +39,7 @@ The interfaces module documents contracts for embedding providers and vector sto
 | **Flexibility** | Swap backends (local vs API embeddings) via configuration |
 | **Adaptability** | Migrate to new systems (e.g., LadybugDB) without interface changes |
 | **Decoupling** | Core logic depends on interfaces, not concrete implementations |
-| **Spec 126 Alignment** | Retrieval pipeline preserves document metadata (`documentType`, `specLevel`) through storage boundaries |
+| **Document-Type Indexing Alignment** | Retrieval pipeline preserves document metadata (`documentType`, `specLevel`) through storage boundaries |
 
 <!-- /ANCHOR:overview -->
 

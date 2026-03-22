@@ -1,6 +1,6 @@
 ---
 title: "Memory and Document Type Configuration"
-description: "Memory-type decay configuration plus Spec 126 document-type inference and defaults."
+description: "Memory-type decay configuration plus document-type inference and defaults."
 trigger_phrases:
   - "memory types"
   - "half-life configuration"
@@ -9,7 +9,7 @@ trigger_phrases:
 
 # Memory and Document Type Configuration
 
-> Memory-type decay configuration plus Spec 126 document-type inference and defaults.
+> Memory-type decay configuration plus document-type inference and defaults.
 
 ---
 
@@ -31,7 +31,7 @@ trigger_phrases:
 
 ### What is the Config Module?
 
-The config module defines two related configuration layers: memory types (decay behavior) and spec document types (indexing and weighting behavior introduced in Spec 126). This keeps retrieval aligned with both conversational memory state and spec-folder document structure.
+The config module defines two related configuration layers: memory types (decay behavior) and spec document types (indexing and weighting behavior). This keeps retrieval aligned with both conversational memory state and spec-folder document structure.
 
 ### Key Features
 

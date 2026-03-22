@@ -471,7 +471,7 @@ Before presenting documentation to user:
 
 **Note:** OpenCode does not support automatic interval-based saves (no hooks system).
 
-**MANDATORY:** Use generate-context.ts (source) for memory save:
+**MANDATORY:** Use generate-context.js for memory save:
 ```
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/###-folder/
 ```

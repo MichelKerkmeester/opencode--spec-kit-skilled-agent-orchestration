@@ -581,7 +581,7 @@ When enabled, this feature adjusts the balance between vector similarity and key
 
 ### Cross-Encoder Reranking
 
-Cross-encoder reranking is now enabled by default. It was previously disabled. The reranker applies a second-pass scoring pass over the top-K candidates returned by the initial retrieval, improving result ordering for ambiguous queries.
+Cross-encoder reranking is enabled by default. The reranker applies a second-pass scoring pass over the top-K candidates returned by the initial retrieval, improving result ordering for ambiguous queries.
 
 ### Evidence Gap Warnings
 

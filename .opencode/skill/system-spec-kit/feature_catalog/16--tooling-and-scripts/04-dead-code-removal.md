@@ -1,31 +1,29 @@
 ---
 title: "Dead code removal"
-description: "Dead code removal eliminated approximately 360 lines of unused branches, feature flags, module-level state and function exports across the codebase."
+description: "Clean-code maintenance ensures unused branches, feature flags, module-level state and function exports do not accumulate in the codebase."
 ---
 
 # Dead code removal
 
 ## 1. OVERVIEW
 
-Dead code removal eliminated approximately 360 lines of unused branches, feature flags, module-level state and function exports across the codebase.
-
-Over time, some parts of the code stopped being used but were never cleaned up. This effort identified and removed roughly 360 lines of unused code: old switches that were always off, variables that were set but never read and functions that nothing called anymore. It is like clearing out a storage closet of things nobody has touched in years so the space stays organized.
+The codebase maintains clean-code discipline by ensuring unused branches, feature flags, module-level state and function exports do not accumulate. Approximately 360 lines of dead code across four categories have been verified absent from the source tree.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Approximately 360 lines of dead code were removed across four categories:
+The codebase is clean across four dead-code categories:
 
-**Hot-path dead branches:** Dead RSF branch and dead shadow-scoring branch removed from `hybrid-search.ts`. Both were guarded by feature flag functions that always returned `false`.
+**Hot-path branches:** `hybrid-search.ts` contains no RSF or shadow-scoring branches. Those code paths do not exist.
 
-**Dead feature flag functions:** `isShadowScoringEnabled()` removed from `shadow-scoring.ts` and `search-flags.ts`. `isRsfEnabled()` function was removed from `rsf-fusion.ts` (the name remains only in explanatory module comments). `isInShadowPeriod()` in `learned-feedback.ts` remains active as the R11 shadow-period safeguard and was not removed.
+**Feature flag functions:** `isShadowScoringEnabled()` and `isRsfEnabled()` do not exist in the codebase. `isInShadowPeriod()` in `learned-feedback.ts` is active as the R11 shadow-period safeguard.
 
-**Dead module-level state:** `stmtCache` Map (archival-manager.ts, never populated), `lastComputedAt` (community-detection.ts, set but never read), `activeProvider` cache (cross-encoder.ts, never populated), `flushCount` (access-tracker.ts, never incremented), 3 dead config fields in working-memory.ts (`decayInterval`, `attentionDecayRate`, `minAttentionScore`).
+**Module-level state:** The following variables do not exist: `stmtCache` (archival-manager.ts), `lastComputedAt` (community-detection.ts), `activeProvider` (cross-encoder.ts), `flushCount` (access-tracker.ts), and the config fields `decayInterval`, `attentionDecayRate`, `minAttentionScore` (working-memory.ts).
 
-**Dead functions and exports:** `computeCausalDepth` single-node variant (graph-signals.ts) was removed. `computeCausalDepthScores` is the live batch API. Also removed: `getSubgraphWeights` (graph-search-fn.ts, always returned 1.0, replaced with inline constant), `RECOVERY_HALF_LIFE_DAYS` (negative-feedback.ts, never imported), `'related'` weight entry (causal-edges.ts, invalid relation type), `logCoActivationEvent` and `CoActivationEvent` (co-activation.ts, never called).
+**Functions and exports:** `computeCausalDepthScores` is the live batch API in `graph-signals.ts`; no single-node `computeCausalDepth` variant exists. `getSubgraphWeights`, `RECOVERY_HALF_LIFE_DAYS`, the `'related'` weight entry, `logCoActivationEvent`, and `CoActivationEvent` do not exist in the codebase.
 
-**Preserved (NOT dead):** `computeStructuralFreshness` and `computeGraphCentrality` in `fsrs.ts` were identified as planned architectural components (not concluded experiments) and retained.
+**Retained:** `computeStructuralFreshness` and `computeGraphCentrality` in `fsrs.ts` are planned architectural components and remain in the source.
 
 ---
 

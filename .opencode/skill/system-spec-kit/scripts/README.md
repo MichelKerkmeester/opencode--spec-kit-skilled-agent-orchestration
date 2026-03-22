@@ -104,7 +104,7 @@ Memory save entrypoint (required by Memory Save Rule):
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data.json specs/<###-spec-name>
 ```
 
-Direct positional saves are no longer supported. Explicit CLI targets remain authoritative in structured-input modes, and phase-folder saves write into that selected phase folder's `memory/` directory.
+Direct positional saves are not supported; use structured JSON. Explicit CLI targets remain authoritative in structured-input modes, and phase-folder saves write into that selected phase folder's `memory/` directory.
 
 JSON mode is also supported:
 

@@ -905,22 +905,24 @@ spec.md and plan.md exist but don't reference each other
 
 There are **two distinct sub-folder systems**:
 
-### 10.1 Automatic Sub-Folder Versioning (Workflow-Triggered)
+### 10.1 Workflow-Assisted Sub-Folder Versioning
 
 **Triggered when:** User selects Option A to reuse existing spec folder with root-level content.
 
 **How it works:**
 1. Workflow detects existing spec.md/plan.md at root level
-2. Prompts user for new sub-folder name (lowercase, hyphens, 2-3 words)
-3. Automatically creates numbered archive: `001-original-work/`
-4. Creates new numbered sub-folder: `002-{user-name}/`
+2. AI suggests sub-folder organization if appropriate
+3. User chooses a descriptive name for the new sub-folder
+4. Sub-folder created via `create.sh --subfolder` or manually
 5. Spec folder path passed via explicit CLI target
 6. Each sub-folder gets independent `memory/` context
+
+Archival and reorganization of existing root content is explicit (user-driven), not automatic.
 
 **Example:**
 ```text
 specs/122-skill-standardization/
-├── 001-original-work/  (auto-archived)
+├── 001-original-work/  (manually organized)
 │   ├── spec.md
 │   └── plan.md
 ├── 002-api-refactor/   (completed)
@@ -1147,7 +1149,7 @@ See [phase_definitions.md](../structure/phase_definitions.md) for complete phase
 
 **Core Templates (Level-Based):**
 
-Templates are now organized in level folders for pre-expanded, level-appropriate content:
+Templates are organized in level folders for pre-expanded, level-appropriate content:
 
 | Level | Folder | Contents |
 |-------|--------|----------|

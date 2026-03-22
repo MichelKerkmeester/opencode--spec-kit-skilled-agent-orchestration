@@ -216,8 +216,6 @@ Choose the appropriate template **style** based on user experience and requireme
 ./scripts/spec/create.sh "Platform migration" --level 3+
 ```
 
-> **Note:** The `--complexity` flag and `detect-complexity.js` have been deprecated. Use `--level N` to select the appropriate level based on the guidelines above.
-
 ---
 
 <!-- /ANCHOR:cli-quick-reference -->

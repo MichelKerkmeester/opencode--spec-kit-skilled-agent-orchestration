@@ -1,6 +1,6 @@
 ---
 title: "Cache Scoring"
-description: "Historical documentation for the cache/scoring namespace. The re-export proxy was removed in Phase 15."
+description: "This directory is empty. Scoring functions are in lib/scoring/."
 trigger_phrases:
   - "cache scoring"
   - "composite scoring re-export"
@@ -19,9 +19,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`lib/cache/scoring/` previously contained a barrel re-export of composite scoring from `lib/scoring/composite-scoring.ts`. The re-export proxy (`composite-scoring.ts`) was removed in Phase 15 (Internal Module Boundary Remediation) after confirming zero consumers in source code.
-
-All scoring functions, types, constants and weight configurations live in the canonical `lib/scoring/` directory. Import directly from there.
+This directory is empty. Scoring functions are in `lib/scoring/`.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:related-documents -->

@@ -7,7 +7,7 @@ description: Detailed documentation for Spec Kit Memory MCP tools, behavior note
 
 Spec Kit Memory MCP tools, behavior notes, and configuration options.
 
-Current baseline (specs 126/127): schema v13 (`document_type`, `spec_level`), 5 indexed content sources, 7 intent types, and `includeSpecDocs: true` by default.
+Current baseline: schema v13 (`document_type`, `spec_level`), 3 indexed content sources, 7 intent types, and `includeSpecDocs: true` by default.
 
 ---
 
@@ -48,13 +48,6 @@ The memory system indexes content from three distinct sources:
 - **Memory Files** — Session-specific context generated via `generate-context.js`. Subject to temporal decay.
 - **Constitutional Rules** — Always-surface critical rules. Injected at top of every search result. No decay.
 - **Spec Documents** — Discovered via `findSpecDocuments()` which walks `.opencode/specs/`. Indexes spec folder documentation (specs, plans, tasks, checklists, decision records, implementation summaries, research, handovers) with per-type scoring multipliers. Controlled by `includeSpecDocs` parameter (default: `true`) or the `SPECKIT_INDEX_SPEC_DOCS` environment variable. Causal chains are created via `createSpecDocumentChain()` linking spec->plan->tasks->implementation_summary.
-
-**Post-implementation hardening (spec 126 follow-up):**
-
-- Import-path regression fixes in `context-server.ts` and `attention-decay.ts`
-- Exact `specFolder` boundary filtering plus improved incremental chain coverage
-- `document_type` and `spec_level` preservation in update/reinforce flows, including vector metadata update plumbing
-- Causal edge conflict-update semantics to keep edge IDs stable
 
 **Spec Document Indexing Pipeline:**
 1. `findSpecDocuments()` walks the specs tree and discovers supported doc filenames
@@ -444,7 +437,7 @@ To index new or modified memory files:
 
 ### Future Enhancement
 
-File watcher for real-time sync is planned but not yet implemented.
+Real-time file watching is not supported. Use `memory_save()` or `memory_index_scan()` to index new or modified files.
 
 ### Rate Limiting
 

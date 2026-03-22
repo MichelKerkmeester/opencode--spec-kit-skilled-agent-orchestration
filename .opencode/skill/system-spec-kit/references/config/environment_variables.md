@@ -189,7 +189,6 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 
 | Flag | Default | Sprint | Purpose |
 |------|---------|--------|---------|
-| `SPECKIT_PIPELINE_V2` | ON | S3 | Legacy flag — always `true`; v1 pipeline has been removed. Retained for backward compatibility; setting to `false` has no effect |
 | `SPECKIT_RRF` | ON | S0 | Reciprocal Rank Fusion for multi-channel result merging |
 | `SPECKIT_SCORE_NORMALIZATION` | ON | S1 | Min-max normalization of scores to [0,1] range (both RRF and composite) |
 | `SPECKIT_MMR` | ON | S1 | Graph-guided MMR diversity reranking |
@@ -209,7 +208,7 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_ADAPTIVE_FUSION` | ON | S5 | Intent-aware weighted RRF with 7 task-type profiles |
 | `SPECKIT_TRM` | ON | S5 | Transparent Reasoning Module (evidence-gap detection) |
 | `ENABLE_BM25` | ON | S3 | Enables in-memory BM25 scoring channel. Set `false` to disable |
-| `SPECKIT_SHADOW_SCORING` | OFF | S7 | Shadow A/B scoring (attribution-only mode; scoring comparison permanently disabled) |
+| `SPECKIT_SHADOW_SCORING` | OFF | S7 | Shadow attribution logging (comparison path disabled; attribution tracking only) |
 | `SPECKIT_DASHBOARD_LIMIT` | `100` | S7 | Row cap for `eval_reporting_dashboard` queries |
 | `SPECKIT_GRAPH_UNIFIED` | ON | S7 | Unified graph retrieval with deterministic ranking, explainability trace, and rollback support |
 | `SPECKIT_GRAPH_REFRESH_MODE` | `write_local` | R-011 | Graph refresh policy: off, write_local, write_global. Graduated default: write_local |
@@ -281,7 +280,7 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_AUTO_RESUME` | ON | S7 | Auto-resume session detection in `memory_context()` |
 | `SPECKIT_PRESSURE_POLICY` | ON | S7 | Context pressure policy for token budget management |
 
-#### Research-Based Refinement (Spec-011 Graduated)
+#### Research-Based Refinement Flags
 
 | Flag | Default | Sprint | Purpose |
 |------|---------|--------|---------|
@@ -355,9 +354,6 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 ### Usage Examples
 
 ```bash
-# Disable a graduated feature
-SPECKIT_PIPELINE_V2=false node mcp_server/context-server.ts
-
 # Enable an opt-in feature
 SPECKIT_ABLATION=true node mcp_server/context-server.ts
 
@@ -382,7 +378,6 @@ SPEC_KIT_OFFLINE_MODE=true EMBEDDINGS_PROVIDER=hf-local node mcp_server/context-
 - `SPECKIT_DEBUG_INDEX_SCAN=true` — Index scan diagnostics
 
 **Disable Only If:**
-- `SPECKIT_PIPELINE_V2=false` — No effect (v1 pipeline removed; flag is inert)
 - `SPEC_KIT_OFFLINE_MODE=true` — No network access
 - `SPEC_KIT_LAZY_EMBEDDING=false` — Faster first query (slower startup)
 

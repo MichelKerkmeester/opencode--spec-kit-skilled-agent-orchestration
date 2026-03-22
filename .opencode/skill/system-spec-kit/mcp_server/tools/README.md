@@ -39,7 +39,7 @@ This section provides an overview of the Tools: Dispatch Layer directory.
 - Routing model: first dispatcher with `TOOL_NAMES.has(name)` handles the call.
 - `parseArgs<T>()` is the single protocol-boundary cast point.
 - Tool args include recent fields such as:
-  - `includeSpecDocs` for `memory_index_scan` (Spec 126)
+  - `includeSpecDocs` for `memory_index_scan`
   - `asyncEmbedding` for `memory_save`
   - cognitive/intent-related flags on search/context flows
   - `onlyComplete` and `includeSummary` for `memory_get_learning_history`

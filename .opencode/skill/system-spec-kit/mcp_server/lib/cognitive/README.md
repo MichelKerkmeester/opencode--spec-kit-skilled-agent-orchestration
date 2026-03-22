@@ -32,7 +32,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-The cognitive subsystem implements human memory principles to manage conversation context intelligently. It models how memories decay and strengthen through use, then transition between activity states based on research-validated algorithms from cognitive science and spaced repetition systems. Post-Spec 126 retrieval also consumes `documentType` and `specLevel` metadata from indexing, so cognitive scoring is applied to both memory notes and spec documents.
+The cognitive subsystem implements human memory principles to manage conversation context intelligently. It models how memories decay and strengthen through use, then transition between activity states based on research-validated algorithms from cognitive science and spaced repetition systems. Retrieval consumes `documentType` and `specLevel` metadata from indexing, so cognitive scoring is applied to both memory notes and spec documents.
 
 ### What is the Cognitive Subsystem?
 

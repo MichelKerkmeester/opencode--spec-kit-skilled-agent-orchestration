@@ -76,7 +76,7 @@ Final Results
 <a id="4-stage-pipeline-architecture"></a>
 ### 4-Stage Pipeline Architecture
 
-The search pipeline (R6) decomposes retrieval into four bounded stages with strict responsibilities. The legacy `SPECKIT_PIPELINE_V2` env var is accepted for compatibility but ignored at runtime (the 4-stage path is always active). Each stage has clear input/output contracts defined in `pipeline/types.ts`.
+The search pipeline (R6) decomposes retrieval into four bounded stages with strict responsibilities. Each stage has clear input/output contracts defined in `pipeline/types.ts`.
 
 ```
 Stage 1                Stage 2                 Stage 3              Stage 4
@@ -401,7 +401,6 @@ vector-index-impl.ts     (3333 LOC)
 | `SPECKIT_LEARN_FROM_SELECTION`| `true`  | Enable learned relevance feedback from selections (R11). Disable with `SPECKIT_LEARN_FROM_SELECTION=false` |
 | `SPECKIT_EMBEDDING_EXPANSION`| `true` | Enable R12 embedding-based query expansion |
 | `SPECKIT_AUTO_ENTITIES`   | `true`  | Enable auto entity extraction at save time (R10) |
-| `SPECKIT_PIPELINE_V2`     | `true`  | Deprecated/compatibility only: accepted but ignored; Stage-1..4 pipeline is always active |
 | `SPECKIT_GRAPH_SIGNALS`   | `true`  | Enable N2a momentum + N2b causal depth scoring |
 | `SPECKIT_COMMUNITY_DETECTION`| `true`| Enable N2c BFS/Louvain community detection |
 
@@ -435,11 +434,11 @@ const DEFAULT_B = 0.75;    // Length normalization
 | v9      | `memory_corrections` table for learning from corrections (REQ-015, REQ-026, T052-T055) |
 | v10-v11 | **Skipped** (no migration functions exist. Version jumps from 9 to 12)       |
 | v12     | Unified `memory_conflicts` DDL: drop and recreate with canonical schema (KL-1) |
-| v13     | Add `document_type` + `spec_level` columns and indexes for spec-doc indexing and document-type scoring (Spec 126) |
+| v13     | Add `document_type` + `spec_level` columns and indexes for spec-doc indexing and document-type scoring |
 | v14     | Follow-up schema updates after v13                                                           |
 | v15     | Event-based decay columns (spec 136), HVR integration fields (spec 137), phase-aware scoring columns (spec 139) — **current schema** |
 
-**Spec 126 hardening references:**
+**Document-type indexing references:**
 - `tests/full-spec-doc-indexing.vitest.ts`: validates 8 spec document types, scoring multipliers and new intents.
 - `handlers/memory-index.ts`: keeps 3-source indexing and `includeSpecDocs` wiring aligned with search expectations.
 
@@ -637,7 +636,7 @@ Top-ranked results seed a 2-hop BFS traversal over causal edges. Discovered neig
 Tracks degree change over a 7-day rolling window using the `degree_snapshots` table. Momentum = currentDegree - pastDegree. Nodes gaining connections receive a score bonus: `clamp(momentum * 0.01, 0, 0.05)` — additive cap of +0.05.
 
 **N2b: Causal Depth** (`graph-signals.ts`):
-The causal graph is condensed into strongly connected components, then longest-path depth is computed across the resulting DAG. Shortcut edges no longer collapse deeper chains, cycle members share one bounded depth layer, and the final depth is normalized by the deepest reachable component chain (`maxDepth`). Score bonus: `normalizedDepth * 0.05` — rewards structurally deep nodes in the causal chain.
+The causal graph is condensed into strongly connected components, then longest-path depth is computed across the resulting DAG. Shortcut edges do not collapse deeper chains; cycle members share one bounded depth layer, and the final depth is normalized by the deepest reachable component chain (`maxDepth`). Score bonus: `normalizedDepth * 0.05` — rewards structurally deep nodes in the causal chain.
 
 **N2c: Community Detection** (`community-detection.ts`):
 BFS connected-component labelling assigns community IDs. When the largest component contains >50% of all nodes, escalates to Louvain modularity optimization for finer-grained communities. Community co-members are injected into Stage 2 results before graph signal scoring. Gated via `SPECKIT_COMMUNITY_DETECTION`.

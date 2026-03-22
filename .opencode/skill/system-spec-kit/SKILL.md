@@ -551,7 +551,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 
 **Server:** `@spec-kit/mcp-server` v1.7.2 — `context-server.ts` (~1073 lines) with ~44 handler files, 27 lib subdirectories, and 33 MCP tools across 7 layers.
 
-**Memory Commands:** 6 slash commands (`/memory:save`, `/memory:continue`, `/memory:manage`, `/memory:learn`, `/memory:analyze`, `/memory:shared`) cover all 33 tools. The original `/memory:context` was merged into `/memory:analyze` (v2.4.0.0). See `.opencode/command/memory/` for full command documentation.
+**Memory Commands:** 6 slash commands (`/memory:save`, `/memory:continue`, `/memory:manage`, `/memory:learn`, `/memory:analyze`, `/memory:shared`) cover all 33 tools. The `/memory:analyze` command covers all analysis and retrieval workflows. See `.opencode/command/memory/` for full command documentation.
 
 **MCP Tools (13 most-used of 33 total — see [memory_system.md](./references/memory/memory_system.md) for full reference):**
 
@@ -602,10 +602,10 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - **Constitutional tier** — 3.0x search boost + 2.0x importance multiplier; merged into normal scoring pipeline
 - **Document-type scoring** — 10 indexed document types with multipliers: spec (1.4x), plan (1.3x), constitutional (2.0x), decision_record (1.4x), tasks (1.1x), implementation_summary (1.1x), scratch (0.6x), checklist (1.0x), handover (1.0x), memory (1.0x). README files and skill-doc trees (`sk-*`, including `references/` and `assets/`) are excluded from memory indexing.
 - **Decay scoring** — FSRS v4 power-law model; recent memories rank higher
-- **Import-path hardening** - Spec 126 fixed MCP import-path regressions in memory runtime modules (including context server + attention decay wiring)
-- **Metadata preservation pipeline** - `memory_save` update/reinforce paths preserve `document_type` and `spec_level`, and vector-index metadata updates stay in sync
-- **Descriptive memory titles** - context generation derives `MEMORY_TITLE` from the content slug (the same `generateContentSlug()` output used for the filename), title-cased via `slugToTitle()`. This guarantees every memory H1 is unique, deterministic, and descriptive. The parser falls back to feature/overview content when the top heading is generic
-- **Causal edge stability** - conflict-update semantics keep causal edge IDs stable during re-link and graph maintenance operations
+- **Import-path hardening** — MCP import paths are validated for memory runtime modules (context server and attention decay wiring)
+- **Metadata preservation** — `memory_save` update/reinforce paths preserve `document_type` and `spec_level` with synchronized vector-index metadata
+- **Descriptive memory titles** — `MEMORY_TITLE` is derived from the content slug via `generateContentSlug()` and `slugToTitle()`, producing unique and deterministic H1 headings. The parser falls back to feature/overview content when the top heading is generic
+- **Causal edge stability** — conflict-update semantics maintain stable causal edge IDs during re-link and graph maintenance
 - **Real-time sync** — Use `memory_save` or `memory_index_scan` after creating files
 - **Checkpoints** — Gzip-compressed JSON snapshots of memory_index + working_memory; max 10 stored; transaction-wrapped restore
 - **Indexing persistence** — After `generate-context.js`, call `memory_index_scan()` or `memory_save()` for immediate MCP visibility
@@ -615,13 +615,13 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - **Mutation ledger** — Append-only audit trail for all memory mutations (create, update, delete, reinforce); implemented via SQLite triggers; queryable for compliance and rollback
 - **Retrieval telemetry** — 4-dimension metrics (latency, retrieval mode, fallback activation, quality score) plus Hydra architecture metadata. Enabled only when `SPECKIT_EXTENDED_TELEMETRY=true` (default: off)
 - **Hydra roadmap metadata** — `SPECKIT_HYDRA_PHASE` plus prefixed `SPECKIT_HYDRA_*` capability flags annotate telemetry, eval baselines, and migration checkpoint sidecars without changing live retrieval behavior by themselves
-- **Feature catalog** — 219 documented features across 19 categories (`feature_catalog/01--retrieval/` through `19--feature-flag-reference/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
+- **Feature catalog** — 222 documented features across 19 categories (`feature_catalog/01--retrieval/` through `19--feature-flag-reference/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
 - **Manual testing playbook** — Operator-facing validation matrix covering existing (`EX-*`) and new (`NEW-*`) features with deterministic prompts, execution sequences, and pass/fail triage. Includes review protocol and subagent utilization ledger. See [manual_testing_playbook/](./manual_testing_playbook/)
 - **Validation scoring** — `wasUseful=false` applies a demotion penalty to memory scores; 5+ positive validations may promote a memory's importance tier
-- **Tree-thinning threshold** — Lowered from 300 to 150 tokens with merge group cap of 3 for improved file visibility in memory context
+- **Tree-thinning threshold** — 150 tokens with merge group cap of 3 for improved file visibility in memory context
 - **JSON-mode conversation synthesis** — When conversation prompts are sparse (e.g., JSON-mode captures with minimal exchange data), conversation content is synthesized from `sessionSummary` field
-- **Decision deduplication** — String-form decisions no longer produce duplicate CONTEXT/RATIONALE/CHOSEN values in memory output
-- **Structural blocker detection** — Broad keyword matching (e.g., "error", "problem") replaced with structural pattern detection to reduce false blocker reports
+- **Decision deduplication** — String-form decisions produce deduplicated CONTEXT/RATIONALE/CHOSEN values in memory output
+- **Structural blocker detection** — Structural pattern detection identifies blockers (avoiding false positives from broad keyword matching)
 
 **Feature Flags:**
 
@@ -637,7 +637,6 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 | `SPECKIT_EMBEDDING_EXPANSION` | on     | Expands queries with semantic neighbors before vector search |
 | `SPECKIT_AUTO_ENTITIES`      | on      | Extracts entities at save time for cross-document linking |
 | `SPECKIT_ENTITY_LINKING`     | on      | Links memories sharing extracted entities during search |
-| `SPECKIT_PIPELINE_V2`        | on (inert) | Legacy flag — always true; v1 pipeline removed. Retained for backward compatibility only |
 | `SPECKIT_QUALITY_LOOP`       | off     | Enables verify-fix-verify quality loop on save with up to 2 autofix retries |
 | `SPECKIT_RELATIONS`          | on      | Correction tracking with undo semantics (superseded/deprecated/refined/merged). Graduated to default ON |
 | `SPECKIT_STRICT_SCHEMAS`     | on      | Strict Zod validation for all 33 MCP tools; rejects hallucinated parameters |
@@ -650,19 +649,19 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 | `SPECKIT_CLASSIFICATION_DECAY` | on    | Classification-based decay rates by memory type |
 | `SPECKIT_INTERFERENCE_SCORE` | on      | Interference detection scoring between similar memories |
 | `SPECKIT_FOLDER_SCORING`     | on      | Folder-level relevance scoring boost |
-| `SPECKIT_SHADOW_SCORING`     | off     | Shadow A/B scoring comparison (attribution-only mode) (retired — no active runtime gate) |
+| `SPECKIT_SHADOW_SCORING`     | off     | Shadow attribution logging (comparison path disabled; attribution tracking only) |
 | `SPECKIT_DASHBOARD_LIMIT`    | 100     | Row cap for reporting dashboard queries |
-| `SPECKIT_CALIBRATED_OVERLAP_BONUS` | on | Calibrated overlap bonus replaces flat convergence bonus with query-aware scaling (graduated from spec-011) |
-| `SPECKIT_RRF_K_EXPERIMENTAL` | on      | Per-intent NDCG@10-maximizing K selection over sweep grid (graduated from spec-011) |
-| `SPECKIT_TYPED_TRAVERSAL`    | on      | Sparse-first policy + intent-aware edge traversal in graph scoring (graduated from spec-011) |
-| `SPECKIT_EMPTY_RESULT_RECOVERY_V1` | on | Structured recovery payloads for empty/weak search results (graduated from spec-011) |
-| `SPECKIT_RESULT_CONFIDENCE_V1` | on    | Per-result calibrated confidence from 4 weighted factors (graduated from spec-011) |
-| `SPECKIT_BATCH_LEARNED_FEEDBACK` | on  | Weekly batch feedback learning pipeline with shadow scoring (graduated from spec-011) |
-| `SPECKIT_ASSISTIVE_RECONSOLIDATION` | on | Three-tier assistive reconsolidation: auto-merge, review, keep-separate (graduated from spec-011) |
-| `SPECKIT_RESULT_EXPLAIN_V1`  | on      | Two-tier result explainability with signal detection (graduated from spec-011) |
-| `SPECKIT_RESPONSE_PROFILE_V1` | on     | Mode-aware response profiles: quick, research, resume, debug (graduated from spec-011) |
+| `SPECKIT_CALIBRATED_OVERLAP_BONUS` | on | Calibrated overlap bonus with query-aware scaling |
+| `SPECKIT_RRF_K_EXPERIMENTAL` | on      | Per-intent NDCG@10-maximizing K selection over sweep grid |
+| `SPECKIT_TYPED_TRAVERSAL`    | on      | Sparse-first policy + intent-aware edge traversal in graph scoring |
+| `SPECKIT_EMPTY_RESULT_RECOVERY_V1` | on | Structured recovery payloads for empty/weak search results |
+| `SPECKIT_RESULT_CONFIDENCE_V1` | on    | Per-result calibrated confidence from 4 weighted factors |
+| `SPECKIT_BATCH_LEARNED_FEEDBACK` | on  | Weekly batch feedback learning pipeline with shadow scoring |
+| `SPECKIT_ASSISTIVE_RECONSOLIDATION` | on | Three-tier assistive reconsolidation: auto-merge, review, keep-separate |
+| `SPECKIT_RESULT_EXPLAIN_V1`  | on      | Two-tier result explainability with signal detection |
+| `SPECKIT_RESPONSE_PROFILE_V1` | on     | Mode-aware response profiles: quick, research, resume, debug |
 
-> **34 flags total.** Set via environment variable before starting the MCP server (e.g., `SPECKIT_ADAPTIVE_FUSION=1`).
+> **33 flags total.** Set via environment variable before starting the MCP server (e.g., `SPECKIT_ADAPTIVE_FUSION=1`).
 
 > **Token budgets per layer:** L1:2000, L2:1500, L3:800, L4:500, L5:600, L6:1200, L7:1000 (enforced via `chars/3.5` approximation).
 
@@ -857,10 +856,10 @@ Automated validation of spec folder contents via `validate.sh`.
 | Validation        | `scripts/spec/validate.sh`                                                 | Automated validation              |
 | Gates             | `AGENTS.md` Section 2                                                      | Gate definitions                  |
 | Memory gen        | `scripts/memory/generate-context.ts` → `scripts/dist/`                     | Memory file creation              |
-| MCP Server        | `mcp_server/context-server.ts`                                             | Spec Kit Memory MCP (~682 lines)  |
+| MCP Server        | `mcp_server/context-server.ts`                                             | Spec Kit Memory MCP (~1073 lines) |
 | Database          | `mcp_server/dist/database/context-index.sqlite`                            | Vector search index (canonical runtime path) |
 | Constitutional    | `constitutional/`                                                          | Always-surface rules              |
-| Feature Catalog   | `feature_catalog/` (19 categories, 219 documented features)                | Per-feature current-reality docs  |
+| Feature Catalog   | `feature_catalog/` (19 categories, 222 documented features)                | Per-feature current-reality docs  |
 | Testing Playbook  | `manual_testing_playbook/` (19 categories, 226 per-test files)             | Manual validation matrix          |
 
 ---

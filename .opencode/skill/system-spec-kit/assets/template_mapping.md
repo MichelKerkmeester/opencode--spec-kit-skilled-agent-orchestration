@@ -175,7 +175,7 @@ specs/043-add-email-validation/
 ├── tasks.md                     (REQUIRED - from tasks.md)
 ├── implementation-summary.md    (REQUIRED - from implementation-summary.md)
 └── memory/                      (OPTIONAL - context preservation)
-    └── *.md                     (auto-generated via generate-context.ts)
+    └── *.md                     (auto-generated via generate-context.js)
 ```
 
 **Content expectations:**
@@ -197,7 +197,7 @@ specs/044-modal-component/
 ├── implementation-summary.md    (REQUIRED - from Level 1)
 ├── checklist.md                 (REQUIRED - adds QA validation)
 └── memory/                      (OPTIONAL - context preservation)
-    └── *.md                     (auto-generated via generate-context.ts)
+    └── *.md                     (auto-generated via generate-context.js)
 ```
 
 **Additional expectations:**
@@ -219,7 +219,7 @@ specs/045-user-dashboard/
 ├── decision-record-[topic].md   (REQUIRED - architecture decisions)
 ├── research.md                  (OPTIONAL - comprehensive research)
 └── memory/                      (OPTIONAL - context preservation)
-    └── *.md                     (auto-generated via generate-context.ts)
+    └── *.md                     (auto-generated via generate-context.js)
 ```
 
 **Additional expectations:**
@@ -241,7 +241,7 @@ specs/046-enterprise-migration/
 ├── decision-record-[topic].md   (REQUIRED - from Level 3, +decision authority, +review requirements)
 ├── research.md                  (OPTIONAL - comprehensive research)
 └── memory/                      (OPTIONAL - context preservation)
-    └── *.md                     (auto-generated via generate-context.ts)
+    └── *.md                     (auto-generated via generate-context.js)
 ```
 
 **Additional expectations:**
@@ -478,5 +478,5 @@ Get explicit "yes/go ahead/proceed" before ANY file changes.
 
 ### Related Skills
 - `system-spec-kit` - Spec folder workflow orchestrator
-- `sk-doc` - Document quality and skill creation<!-- /ANCHOR:related-resources -->
+- `sk-doc` - Document quality and skill creation
 <!-- /ANCHOR:related-resources -->

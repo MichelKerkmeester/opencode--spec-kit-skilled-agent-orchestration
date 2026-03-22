@@ -52,7 +52,7 @@ Every time an AI assistant modifies files, Spec Kit ensures the work is document
 | Commands | 14 | 8 spec_kit + 6 memory |
 | Documentation Levels | 4 | Levels 1, 2, 3 and 3+ |
 | Script Modules | 13 spec + 9 memory | TypeScript, JavaScript and Bash |
-| Feature Entries | 189 | Across 19 categories in feature catalog |
+| Feature Entries | 222 | Across 19 categories in feature catalog |
 | Template LOC | ~455 to ~1350 | Scales with documentation level |
 | Requirements | Node.js 18+ | TypeScript 5.0+, OpenCode 1.0.190+ |
 
@@ -175,7 +175,7 @@ The response should return relevant memory entries. If it returns an error, see 
 ├── references/                 # Reference documentation (25 files)
 ├── assets/                     # Decision matrices, YAML configs
 ├── constitutional/             # Always-surface rules (never decay)
-└── feature_catalog/            # Feature documentation (19 categories, 189 features)
+└── feature_catalog/            # Feature documentation (19 categories, 222 features)
 ```
 
 ### Key Files
@@ -189,7 +189,7 @@ The response should return relevant memory entries. If it returns an error, see 
 | `scripts/spec/validate.sh` | Run 13-rule validation on any spec folder |
 | `scripts/memory/generate-context.ts` (source) / `scripts/dist/memory/generate-context.js` (runtime) | Primary workflow for saving session context to memory |
 | `mcp_server/context-server.ts` | MCP server entry point exposing 33 tools |
-| `feature_catalog/feature_catalog.md` | Complete catalog of 189 implemented features |
+| `feature_catalog/feature_catalog.md` | Complete catalog of 222 implemented features |
 | `references/memory/memory_system.md` | Detailed memory system reference |
 
 <!-- /ANCHOR:structure -->
@@ -679,7 +679,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
 | [`references/validation/validation_rules.md`](./references/validation/validation_rules.md) | All 13 validation rules and their fixes |
 | [`references/validation/five_checks.md`](./references/validation/five_checks.md) | Five Checks evaluation framework |
 | [`references/workflows/rollback_runbook.md`](./references/workflows/rollback_runbook.md) | Feature-flag rollback and smoke-test procedures |
-| [`feature_catalog/feature_catalog.md`](./feature_catalog/feature_catalog.md) | Complete catalog of 189 implemented features across 19 categories |
+| [`feature_catalog/feature_catalog.md`](./feature_catalog/feature_catalog.md) | Complete catalog of 222 implemented features across 19 categories |
 
 ### Cross-Skill Alignment
 

@@ -1,21 +1,19 @@
 ---
 title: "Legacy V1 pipeline removal"
-description: "Legacy V1 pipeline removal deleted the old monolithic handler path, making the 4-stage orchestrator the only runtime code path."
+description: "The 4-stage pipeline is the sole runtime search path. The SPECKIT_PIPELINE_V2 environment variable is not consumed by runtime code."
 ---
 
 # Legacy V1 pipeline removal
 
 ## 1. OVERVIEW
 
-Legacy V1 pipeline removal deleted the old monolithic handler path, making the 4-stage orchestrator the only runtime code path.
-
-The system used to have two different search paths: an old one and a new one. The old path was causing bugs and was no longer needed because the new one was already the default. This cleanup removed the old path entirely so there is only one way searches run, eliminating a whole class of bugs that came from the two paths disagreeing with each other.
+The 4-stage pipeline is the sole runtime search path. The `SPECKIT_PIPELINE_V2` environment variable is not consumed by runtime code. A single orchestrator (`stage1-candidate-gen.ts` through `stage4-filter.ts`) handles all retrieval. There is no alternative code path.
 
 ---
 
 ## 2. CURRENT REALITY
 
-The legacy V1 pipeline was the root cause of 3 of 4 P0 bugs: an inverted `STATE_PRIORITY` map, divergent scoring order in post-search weighting and a mismatched deep-query variant cap. Since V2 was already the default, the legacy handler path in `memory-search.ts` was removed and the 4-stage orchestrator became the only runtime path. Stage helpers with familiar names now live in stage modules (`stage1-candidate-gen.ts`, `stage2-fusion.ts`, `stage3-rerank.ts`, `stage4-filter.ts`) rather than the old monolithic V1 branch. The `isPipelineV2Enabled()` function now always returns `true` with a deprecation comment, and stale legacy-handler imports were removed.
+The 4-stage orchestrator is the only runtime code path. Stage responsibilities are distributed across `stage1-candidate-gen.ts`, `stage2-fusion.ts`, `stage3-rerank.ts`, and `stage4-filter.ts`. There is no `isPipelineV2Enabled()` function; the helper was removed along with the legacy V1 pipeline. The `SPECKIT_PIPELINE_V2` environment variable is not read by any code.
 
 Orphaned chunk detection was added to `verify_integrity()` as the fourth P0 fix: chunks whose parent has been deleted but the chunk record persists (e.g., if FK cascade didn't fire) are now detected and optionally auto-cleaned when `autoClean=true`.
 

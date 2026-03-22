@@ -192,7 +192,7 @@ Completed checklist items MUST include verification evidence:
 
 **Examples:**
 ```markdown
-- [x] Remove deprecated function - [verified: grep shows 0 matches for 'oldFunction']
+- [x] Remove unused helper - [verified: grep shows 0 matches for 'helperName']
 - [x] All tests pass - [verified: test pass - 47/47 tests green]
 - [x] Modal displays correctly - [verified: browser check - Chrome/Firefox/Safari]
 - [x] Config file created - [verified: file exists at config/settings.json]
@@ -275,9 +275,9 @@ If scope grows during implementation, escalate by adding the required files:
 **Changelog example:**
 ```markdown
 ## Change Log
-- 2025-11-15: Created as Level 1 (simple bug fix) - spec.md, plan.md, tasks.md
-- 2025-11-16: Escalated to Level 2 (discovered validation needs) - added checklist.md
-- 2025-11-17: Escalated to Level 3 (architectural decision required) - added decision-record.md
+- [YYYY-MM-DD]: Created as Level 1 (simple bug fix) - spec.md, plan.md, tasks.md
+- [YYYY-MM-DD]: Escalated to Level 2 (discovered validation needs) - added checklist.md
+- [YYYY-MM-DD]: Escalated to Level 3 (architectural decision required) - added decision-record.md
 ```
 
 **Note:** Going down levels is rare (keep higher-level docs even if not all used).

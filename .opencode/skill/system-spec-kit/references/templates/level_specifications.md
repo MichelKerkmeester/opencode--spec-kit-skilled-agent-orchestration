@@ -491,10 +491,6 @@ Level 3+ is auto-detected via complexity scoring for highly complex tasks:
 ```bash
 # Specify level directly (recommended)
 ./scripts/spec/create.sh "Complex migration" --level 3+
-
-# DEPRECATED flags (no longer supported):
-# ./scripts/spec/create.sh "..." --complexity    # Removed: use --level N instead
-# ./scripts/spec/create.sh "..." --expand        # Removed: templates are pre-expanded in level folders
 ```
 
 ### Template Adaptation

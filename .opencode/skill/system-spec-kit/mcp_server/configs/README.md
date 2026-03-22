@@ -39,7 +39,7 @@ This section provides an overview of the MCP Server Configuration Files director
 
 Current sections in `search-weights.json`:
 
-- `documentTypeMultipliers` (Spec 126): active scoring reference for 10 document types (spec, decision_record, plan, tasks, implementation_summary, checklist, handover, memory, constitutional, scratch).
+- `documentTypeMultipliers`: active scoring reference for 10 document types (spec, decision_record, plan, tasks, implementation_summary, checklist, handover, memory, constitutional, scratch).
 - `maxTriggersPerMemory`: active cap used by trigger-related flows.
 - `smartRanking`: live config read by `vector-index-impl.ts` (weights: relevance 0.5, recency 0.3, access 0.2).
 - `rrfFusion` and `crossEncoder`: removed (P2-05 audit, 2026-02-08) as dead config with no .ts references.
@@ -58,8 +58,8 @@ Important: canonical scoring behavior lives in TypeScript modules (not this READ
 ## 3. HARDENING NOTES
 
 
-- Spec 126 added document-type multiplier coverage aligned to schema/document-type indexing.
-- Spec 125 audit documented dead/legacy config sections to reduce ambiguity.
+- Document-type multiplier coverage is aligned to schema/document-type indexing.
+- Dead/legacy config sections are documented to reduce ambiguity.
 - Treat this folder as config reference plus transition notes until legacy paths are fully removed.
 
 

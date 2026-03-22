@@ -65,7 +65,7 @@ Internal helper modules (not direct MCP tool endpoints):
 - Tool domains cover L1-L7 behavior through the dispatch layer in `tools/`.
 - Core persistence uses `memory_index` (not `memories`) with FTS/vector/checkpoint support.
 - `quality-loop.ts` is an internal save helper module invoked inside `memory-save.ts`; MCP does not expose a separate `quality_loop` tool.
-- Spec 126 alignment:
+- Document-type indexing alignment:
   - `memory-index` supports `includeSpecDocs` and indexes spec docs plus memory files.
   - `memory-save` preserves `document_type` and `spec_level` across create/update/reinforce flows. Integrates with embedding cache for deduplication of unchanged content, persists accepted quality-loop metadata fixes, and carries rewritten body content in-memory until downstream hard-reject gates clear under lock.
   - scan flow can build spec-document causal chains after indexing.

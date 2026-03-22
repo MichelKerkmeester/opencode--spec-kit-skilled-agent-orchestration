@@ -1,6 +1,6 @@
 ---
 title: "Architecture Module"
-description: "7-layer MCP architecture with token budgets and document-aware routing after Spec 126."
+description: "7-layer MCP architecture with token budgets and document-aware routing."
 trigger_phrases:
   - "architecture"
   - "layer definitions"
@@ -9,7 +9,7 @@ trigger_phrases:
 
 # Architecture Module
 
-> 7-layer MCP architecture with token budgets and document-aware routing after Spec 126.
+> 7-layer MCP architecture with token budgets and document-aware routing.
 
 ---
 
@@ -29,7 +29,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-The architecture module defines the 7-layer MCP tool organization (T060) that enables progressive disclosure from high-level orchestration to specialized operations. Post-Spec 126, this layer model also frames document-aware behavior (spec documents, memory notes, constitutional files) used across indexing and retrieval.
+The architecture module defines the 7-layer MCP tool organization (T060) that enables progressive disclosure from high-level orchestration to specialized operations. This layer model also frames document-aware behavior (spec documents, memory notes, constitutional files) used across indexing and retrieval.
 
 ### Design Principles
 

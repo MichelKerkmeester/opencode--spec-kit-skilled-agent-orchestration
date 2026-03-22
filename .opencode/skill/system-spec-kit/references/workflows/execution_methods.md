@@ -212,7 +212,7 @@ bash .opencode/skill/system-spec-kit/scripts/templates/compose.sh 2 3
 <!-- ANCHOR:memory-workflow-12-steps -->
 ## 8. MEMORY WORKFLOW (12 Steps)
 
-The `generate-context.ts` script orchestrates a 12-step workflow via `workflow.ts`:
+The `generate-context.js` script orchestrates a 12-step workflow via `workflow.ts`:
 
 ### Workflow Steps
 

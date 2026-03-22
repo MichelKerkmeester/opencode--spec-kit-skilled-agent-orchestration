@@ -29,7 +29,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-The learning module tracks corrections over time and applies stability adjustments that help the system learn which entries are most reliable. Post-Spec 126 this applies to both standard memory notes and indexed spec documents, improving ranking quality for spec and decision retrieval.
+The learning module tracks corrections over time and applies stability adjustments that help the system learn which entries are most reliable. This applies to both standard memory notes and indexed spec documents, improving ranking quality for spec and decision retrieval.
 
 ### Key Benefits
 

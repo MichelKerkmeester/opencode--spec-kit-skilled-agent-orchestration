@@ -422,13 +422,6 @@ Three MCP tools measure knowledge gains across implementation tasks:
 - **Section 4**: Confidence & Clarification Framework (includes uncertainty tracking)
 - **Section 2**: Mandatory Gates (dual-threshold validation in Gate 1)
 
-### Related Spec
-- `specs/003-memory-and-spec-kit/077-speckit-upgrade-from-research/spec.md` - Source specification
-
-### Research Origins
-- **Empirica Framework** - Original epistemic vectors concept (13 vectors simplified to 4)
-- **Superego Framework** - Evaluation and decision journaling patterns
-
 ### Related Skills
 - `system-spec-kit` - Parent skill using uncertainty tracking in gates
 - `sk-code--web` - Implementation skill with verification gates

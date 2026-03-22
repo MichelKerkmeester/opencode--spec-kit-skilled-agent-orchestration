@@ -110,7 +110,7 @@ Routine saves pass the target spec folder alongside structured JSON.
 - Writes to specified sub-folder's `memory/` directory
 - Each iteration has isolated conversation history
 - Sub-folder creation also provisions isolated `scratch/` directories
-- Root `memory/` preserved for historical compatibility, but routine saves should target the intended folder with structured JSON
+- Root `memory/` may contain earlier session files. Routine saves target the intended sub-folder path with structured JSON
 
 ---
 

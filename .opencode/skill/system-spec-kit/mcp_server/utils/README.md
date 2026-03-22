@@ -59,7 +59,7 @@ Security and reliability behavior:
 
 - Utility APIs are now aligned with current camelCase usage across handlers.
 - Shared DB error conversion reduces inconsistent thrown-error formatting.
-- Validation helpers are part of query/input hardening used after Spec 125/126 stabilization.
+- Validation helpers are part of query/input hardening used across the retrieval pipeline.
 
 
 <!-- /ANCHOR:hardening-notes -->

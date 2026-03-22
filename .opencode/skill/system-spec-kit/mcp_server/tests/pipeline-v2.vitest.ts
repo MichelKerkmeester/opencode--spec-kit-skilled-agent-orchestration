@@ -1,6 +1,6 @@
 // TEST: 4-Stage Pipeline Architecture (v2)
 // Validates pipeline types, stage interfaces, Stage 4 invariant,
-// And pipeline orchestration under SPECKIT_PIPELINE_V2 flag.
+// And pipeline orchestration stages.
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 
 // Pipeline types and utilities
@@ -363,11 +363,11 @@ describe('R6: Stage Interface Contracts', () => {
       },
       annotations: {
         stateStats: { HOT: 1, WARM: 2 },
-        featureFlags: { pipelineV2: true, trmEnabled: true },
+        featureFlags: { trmEnabled: true },
       },
     };
     expect(output.metadata.constitutionalInjected).toBe(0);
-    expect(output.annotations.featureFlags.pipelineV2).toBe(true);
+    expect(output.annotations.featureFlags.trmEnabled).toBe(true);
   });
 });
 

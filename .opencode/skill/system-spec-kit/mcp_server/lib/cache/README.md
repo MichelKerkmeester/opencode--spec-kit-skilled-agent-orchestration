@@ -29,7 +29,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-The cache module provides in-memory caching for MCP tool outputs to reduce redundant operations and improve response times. It uses SHA-256 hashed keys for deterministic cache lookups and supports automatic TTL-based expiration. Post-Spec 126, cache invalidation is especially important for spec document indexing and document-aware retrieval flows.
+The cache module provides in-memory caching for MCP tool outputs to reduce redundant operations and improve response times. It uses SHA-256 hashed keys for deterministic cache lookups and supports automatic TTL-based expiration. Cache invalidation is especially important for spec document indexing and document-aware retrieval flows.
 
 ### Key Characteristics
 
@@ -139,7 +139,7 @@ await withCache(toolName, args, asyncFn, options);
 
 ### Scoring Subdirectory (`scoring/`)
 
-The `scoring/` subdirectory previously contained a barrel re-export of composite scoring. The re-export proxy was removed in Phase 15 after confirming zero consumers. Import scoring directly from `lib/scoring/`.
+Import scoring directly from `lib/scoring/`.
 
 ### Embedding Cache (`embedding-cache.ts`)
 

@@ -9,7 +9,7 @@ trigger_phrases:
 
 # Contracts
 
-> Proxy README for retrieval pipeline contracts. The source module has been relocated to `@spec-kit/shared/contracts/retrieval-trace.ts`.
+> Proxy README for retrieval pipeline contracts. The canonical source is `@spec-kit/shared/contracts/retrieval-trace.ts`.
 
 ---
 
@@ -29,7 +29,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-This directory previously contained `retrieval-trace.ts`. That module has been relocated to the shared package at `shared/contracts/retrieval-trace.ts` (importable as `@spec-kit/shared/contracts/retrieval-trace`). This README is retained as a pointer so that existing documentation links remain valid.
+The canonical location for retrieval-trace is `shared/contracts/retrieval-trace.ts` (importable as `@spec-kit/shared/contracts/retrieval-trace`). This README is retained as a pointer so that existing documentation links remain valid.
 
 ### Key Statistics
 

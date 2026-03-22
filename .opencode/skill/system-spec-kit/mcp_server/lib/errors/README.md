@@ -29,7 +29,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-The errors subsystem provides standardized error handling for the Spec Kit Memory MCP server. Every error includes a code and message paired with actionable recovery guidance to help agents self-diagnose and resolve issues across memory operations and Spec 126 document-aware indexing/search paths.
+The errors subsystem provides standardized error handling for the Spec Kit Memory MCP server. Every error includes a code and message paired with actionable recovery guidance to help agents self-diagnose and resolve issues across memory operations and document-aware indexing/search paths.
 
 ### Key Statistics
 

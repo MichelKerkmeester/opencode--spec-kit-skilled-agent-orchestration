@@ -524,7 +524,7 @@ const matches = await parsing.triggerMatcher.match_triggers({
 });
 ```
 
-### Spec 126 Hardening References
+### Document-Type Indexing References
 
 - `handlers/memory-index.ts`: indexes 5 sources and applies safety rules for incremental updates and post-success mtime writes.
 - `lib/search/vector-index-impl.ts`: v13 migration adds `document_type` and `spec_level` columns and indexes.

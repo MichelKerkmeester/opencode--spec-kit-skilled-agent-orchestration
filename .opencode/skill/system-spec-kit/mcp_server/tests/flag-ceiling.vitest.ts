@@ -155,11 +155,8 @@ describe('Feature Flag Ceiling Test (A10-P2-2)', () => {
     for (const flag of ALL_SPECKIT_FLAGS) {
       process.env[flag] = 'false';
     }
-    for (const { flag, checker } of FLAG_CHECKERS) {
-      // IsPipelineV2Enabled() is deprecated and always returns true
-      // Regardless of env var (legacy V1 removed in 017-refinement-phase-6).
-      const expected = flag === 'SPECKIT_PIPELINE_V2' ? true : false;
-      expect(checker()).toBe(expected);
+    for (const { checker } of FLAG_CHECKERS) {
+      expect(checker()).toBe(false);
     }
 
     // Re-activate all
@@ -178,8 +175,7 @@ describe('Feature Flag Ceiling Test (A10-P2-2)', () => {
 
     for (let i = 0; i < FLAG_CHECKERS.length; i++) {
       const { flag, checker } = FLAG_CHECKERS[i];
-      // IsPipelineV2Enabled() always returns true (deprecated).
-      const expected = flag === 'SPECKIT_PIPELINE_V2' ? true : i < half;
+      const expected = i < half;
       expect(checker(), `${flag} expected=${expected}`).toBe(expected);
     }
   });

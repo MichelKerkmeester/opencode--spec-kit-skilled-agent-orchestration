@@ -36,7 +36,7 @@ trigger_phrases:
 
 The test suite validates all critical functionality of the Spec Kit Memory MCP server. Tests cover cognitive memory features (attention decay, working memory, co-activation and confidence tracking), tier classification, summary generation, search pipelines, MCP tool handlers and integration scenarios. All tests use **Vitest** as the test framework with `.vitest.ts` file extensions.
 
-**TypeScript Migration:** The full JS-to-TS migration is complete (Spec 092). All test files are TypeScript (`.vitest.ts`). There are zero `.test.js`, `.test.ts` or standalone `.js` test files remaining.
+**TypeScript Migration:** The full JS-to-TS migration is complete. All test files are TypeScript (`.vitest.ts`). There are zero `.test.js`, `.test.ts` or standalone `.js` test files remaining.
 
 ### Key Statistics
 
@@ -55,7 +55,7 @@ The test suite validates all critical functionality of the Spec Kit Memory MCP s
 | **Coverage Snapshot** | 321 test files across cognitive, search, handlers, integration, eval, shared-memory, graph/community, learning and scoring suites |
 | **Category Organization** | Tests grouped by functional domain (cognitive, search, handlers, integration, unit) |
 | **Type Safety** | Full TypeScript with type checking at test level |
-| **Spec 126/127 Reality Checks** | Coverage for 3-source indexing, 7 intents, schema v13 document fields, document-type scoring and `includeSpecDocs` |
+| **Document-Type Indexing Tests** | Coverage for 3-source indexing, 7 intents, schema v13 document fields, document-type scoring and `includeSpecDocs` |
 | **Feature Eval Tests** | Graph Signals, Scoring Calibration, Query Intelligence feature evals, cross-feature integration, BM25 baseline, embedding cache |
 
 ### Requirements
