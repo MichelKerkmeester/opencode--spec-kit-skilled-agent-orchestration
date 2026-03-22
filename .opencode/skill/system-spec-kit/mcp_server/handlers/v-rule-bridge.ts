@@ -8,6 +8,9 @@
 import path from 'path';
 import { createRequire } from 'module';
 
+// Feature catalog: Verify-fix-verify memory quality loop
+// Feature catalog: Pre-storage quality gate
+
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES (mirrored from validate-memory-quality.ts)
 // ───────────────────────────────────────────────────────────────

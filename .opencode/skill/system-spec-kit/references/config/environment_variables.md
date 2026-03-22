@@ -212,6 +212,16 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_SHADOW_SCORING` | OFF | S7 | Shadow A/B scoring (attribution-only mode; scoring comparison permanently disabled) |
 | `SPECKIT_DASHBOARD_LIMIT` | `100` | S7 | Row cap for `eval_reporting_dashboard` queries |
 | `SPECKIT_GRAPH_UNIFIED` | ON | S7 | Unified graph retrieval with deterministic ranking, explainability trace, and rollback support |
+| `SPECKIT_GRAPH_REFRESH_MODE` | `write_local` | R-011 | Graph refresh policy: off, write_local, write_global. Graduated default: write_local |
+| `SPECKIT_GRAPH_WALK_ROLLOUT` | `bounded_runtime` | S5 | Graph walk rollout state: off, bounded_runtime, full. Default: bounded_runtime |
+| `SPECKIT_HYDE` | ON | R-011 | HyDE shadow document generation for embedding enrichment |
+| `SPECKIT_HYDE_ACTIVE` | OFF | R-011 | Promote HyDE from shadow to active query pipeline. Set `true` to enable |
+| `SPECKIT_LLM_REFORMULATION` | ON | R-011 | LLM-based corpus-grounded query reformulation |
+| `SPECKIT_QUERY_DECOMPOSITION` | ON | R-011 | Bounded facet-aware query decomposition (max 3 facets) |
+| `SPECKIT_GRAPH_CONCEPT_ROUTING` | ON | R-011 | Entity-linked graph concept routing in Stage 1 |
+| `SPECKIT_QUERY_SURROGATES` | ON | R-011 | Index-time surrogate query generation and matching |
+| `SPECKIT_PROGRESSIVE_DISCLOSURE_V1` | ON | R-011 | Cursor-based pagination with progressive detail levels |
+| `SPECKIT_SESSION_RETRIEVAL_STATE_V1` | ON | R-011 | Cross-turn session state with seen-dedup and goal alignment |
 
 #### Scoring & Feedback
 
@@ -221,6 +231,11 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_INTERFERENCE_SCORE` | ON | S5 | Interference scoring for conflicting memory detection |
 | `SPECKIT_CLASSIFICATION_DECAY` | ON | S6 | Context-type-aware decay rates in FSRS scheduling |
 | `SPECKIT_NEGATIVE_FEEDBACK` | ON | S6 | Negative-feedback confidence demotion in ranking (T002b/A4) |
+| `SPECKIT_IMPLICIT_FEEDBACK_LOG` | ON | R-011 | Append-only implicit feedback event ledger |
+| `SPECKIT_HYBRID_DECAY_POLICY` | ON | R-011 | FSRS hybrid decay with classification-aware scheduling |
+| `SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS` | ON | R-011 | Quality gate exception handling for edge-case saves |
+| `SPECKIT_SHADOW_FEEDBACK` | ON | R-011 | Shadow feedback scoring for holdout evaluation |
+| `SPECKIT_LEARNED_STAGE2_COMBINER` | ON | R-011 | Ridge regression learned Stage 2 weight combiner |
 
 #### Cognitive & Graph
 
@@ -236,6 +251,8 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_GRAPH_SIGNALS` | ON | S5 | Graph momentum scoring and causal depth signals (N2a+N2b) |
 | `SPECKIT_COMMUNITY_DETECTION` | ON | S5 | Community detection via BFS connected components + Louvain (N2c) |
 | `SPECKIT_CONSOLIDATION` | ON | S4 | Consolidation engine: contradiction scan, Hebbian strengthening, staleness detection |
+| `SPECKIT_LLM_GRAPH_BACKFILL` | ON | R-011 | LLM-assisted graph backfill for sparse nodes |
+| `SPECKIT_GRAPH_CALIBRATION_PROFILE` | ON | R-011 | Graph calibration with ablation harness and community capping |
 
 #### Indexing & Extraction
 
@@ -297,6 +314,43 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_SKIP_API_VALIDATION` | OFF | S0 | Skip API key validation at startup (development only) |
 | `SPECKIT_DEBUG_INDEX_SCAN` | OFF | S7 | Debug logging for index scan operations (opt-in) |
 | `SPECKIT_ROLLOUT_PERCENT` | `100` | S3 | Numeric: graduated rollout percentage (0-100) for deterministic feature bucketing |
+| `SPECKIT_HYDE_LOG` | OFF | R-011 | Debug logging for HyDE pipeline. Set `true` to enable |
+| `SPECKIT_RESULT_EXPLAIN_DEBUG` | OFF | R-011 | Debug-tier per-channel score breakdown. Set `true` to enable |
+| `SPECKIT_CONSUMPTION_LOG` | OFF | S7 | Consumption tracking log. Set `true` to enable |
+
+#### Graph Calibration Parameters
+
+| Flag | Default | Sprint | Purpose |
+|------|---------|--------|---------|
+| `SPECKIT_GRAPH_WEIGHT_CAP` | `0.05` | R-011 | Maximum graph weight contribution cap |
+| `SPECKIT_GRAPH_LOCAL_THRESHOLD` | numeric | R-011 | Local graph density threshold for refresh decisions |
+| `SPECKIT_LOUVAIN_MIN_DENSITY` | numeric | R-011 | Minimum density for Louvain community detection |
+| `SPECKIT_LOUVAIN_MIN_SIZE` | numeric | R-011 | Minimum community size for Louvain |
+| `SPECKIT_CALIBRATION_PROFILE_NAME` | string | R-011 | Named calibration profile selector |
+| `SPECKIT_N2A_CAP` | numeric | S5 | Degree centrality cap for N2a scoring |
+
+#### Hydra Canonical Flags
+
+| Flag | Default | Sprint | Purpose |
+|------|---------|--------|---------|
+| `SPECKIT_MEMORY_ADAPTIVE_RANKING` | ON | S7 | Canonical alias for SPECKIT_HYDRA_ADAPTIVE_RANKING |
+| `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | ON | S7 | Canonical alias for SPECKIT_HYDRA_SCOPE_ENFORCEMENT |
+| `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | ON | S7 | Canonical alias for SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS |
+| `SPECKIT_MEMORY_SHARED_MEMORY` | OFF | S7 | Canonical alias for SPECKIT_HYDRA_SHARED_MEMORY. Shared-memory opt-in |
+| `SPECKIT_MEMORY_GRAPH_UNIFIED` | ON | S7 | Canonical alias for SPECKIT_HYDRA_GRAPH_UNIFIED |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `baseline` | S7 | Canonical phase label for Hydra roadmap tracking |
+| `SPECKIT_MEMORY_ADAPTIVE_MODE` | string | S7 | Adaptive ranking mode selector |
+
+#### Runtime Configuration Parameters
+
+| Flag | Default | Sprint | Purpose |
+|------|---------|--------|---------|
+| `SPECKIT_RERANKER_TIMEOUT_MS` | `5000` | S9 | Timeout in milliseconds for local reranker inference |
+| `SPECKIT_RECENCY_DECAY_DAYS` | `30` | S7 | Recency decay window in days for access tracking |
+| `SPECKIT_TOKEN_BUDGET` | auto | S5 | Override token budget for hybrid search responses |
+| `SPECKIT_FOLDER_TOP_K` | `5` | S3 | Top-K folder candidates for folder-scoped retrieval |
+| `SPECKIT_EAGER_WARMUP` | OFF | S9 | Eager model warmup at server startup |
+| `SPECKIT_LAZY_LOADING` | ON | S9 | Lazy module loading for faster startup |
 
 ### Usage Examples
 

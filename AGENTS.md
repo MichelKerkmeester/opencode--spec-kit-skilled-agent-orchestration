@@ -62,6 +62,8 @@ Full details: `.opencode/skill/sk-git/`
 | **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint, ingest operations                                                           |
 | **Deep research**         | `/spec_kit:deep-research` → Init state → Loop (@deep-research iterations) → Convergence → Synthesize → Memory save                            |
 | **Analysis/evaluation**   | `/memory:analyze` → preflight, postflight, causal graph, ablation, dashboard, history                                            |
+| **Constitutional memory** | `/memory:learn` → Constitutional memory manager: create, list, edit, remove, budget                                               |
+| **Shared memory**         | `/memory:shared` → Shared-memory lifecycle: create spaces, manage memberships, inspect rollout                                    |
 
 ### Code Search Protocol
 

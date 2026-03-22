@@ -30,7 +30,7 @@ The output shape per result:
 
 The `channelContribution` map (with `vector`, `fts`, `graph` breakdowns) is only included when `debugEnabled = true`. Top signals are limited to 2-4 unique labels, prioritizing semantic/lexical first, then boosts, then meta. Summary is composed as a natural-language sentence from the top signals and result rank.
 
-No-op when `SPECKIT_RESULT_EXPLAIN_V1` is not set. Default OFF, set to `true` to enable.
+No-op when `SPECKIT_RESULT_EXPLAIN_V1` is not set. Default ON (graduated), controlled by `SPECKIT_RESULT_EXPLAIN_V1`.
 
 ---
 

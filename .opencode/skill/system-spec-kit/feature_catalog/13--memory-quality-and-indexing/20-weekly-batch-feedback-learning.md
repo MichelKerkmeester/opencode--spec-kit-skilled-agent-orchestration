@@ -21,7 +21,7 @@ Guards: `MIN_SUPPORT_SESSIONS = 3` distinct sessions required before a signal is
 
 The `runBatchLearning()` function accepts configurable options for run timestamp, look-back window, minimum support, and max boost delta. Returns a `BatchLearningResult` with counts of candidates evaluated, shadow-applied, and skipped due to insufficient support.
 
-Key invariant: shadow-only — no live ranking columns are mutated. Default OFF, set `SPECKIT_BATCH_LEARNED_FEEDBACK=true` to enable.
+Key invariant: shadow-only — no live ranking columns are mutated. Default ON (graduated), controlled by `SPECKIT_BATCH_LEARNED_FEEDBACK`.
 
 ---
 

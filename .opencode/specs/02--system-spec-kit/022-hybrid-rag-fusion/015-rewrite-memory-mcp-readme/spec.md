@@ -1,6 +1,6 @@
 ---
 title: "Rewrite Memory MCP README"
-description: "Complete rewrite of the Spec Kit Memory MCP server README to accurately document all 32 tools, hybrid search pipeline, and cognitive memory architecture."
+description: "Complete rewrite of the Spec Kit Memory MCP server README to accurately document all 33 tools, hybrid search pipeline, and cognitive memory architecture."
 trigger_phrases:
   - "mcp readme rewrite"
   - "020 mcp readme"
@@ -23,7 +23,7 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P1 |
-| **Status** | In Progress |
+| **Status** | Complete |
 | **Created** | 2026-03-15 |
 | **Branch** | `main` |
 | **Parent** | `022-hybrid-rag-fusion` (Phase 020) |
@@ -104,7 +104,7 @@ Produce a complete rewrite grounded in the feature catalog that serves both newc
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 32 tools documented with parameters and layer annotations
+- **SC-001**: All 33 tools documented with parameters and layer annotations
 - **SC-002**: DQI >= 75 with zero banned HVR words
 - **SC-003**: A newcomer can set up the MCP server using only Overview + Quick Start
 - **SC-004**: A power user can find any tool's full parameter reference within 2 TOC clicks
@@ -135,8 +135,8 @@ Produce a complete rewrite grounded in the feature catalog that serves both newc
 
 <!--
 SPEC: 015-rewrite-memory-mcp-readme
-Level 1 — In Progress (2026-03-15)
-Target: Complete rewrite of MCP README covering all 32 tools
+Level 1 — Complete (2026-03-15)
+Target: Complete rewrite of MCP README covering all 33 tools
 Source: feature_catalog.md + tool-schemas.ts
 -->
 

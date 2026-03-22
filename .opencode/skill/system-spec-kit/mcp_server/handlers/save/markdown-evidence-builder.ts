@@ -7,6 +7,9 @@
 import type { MemoryEvidenceSnapshot } from '@spec-kit/shared/parsing/memory-sufficiency';
 import type { ParsedMemory } from './types';
 
+// Feature catalog: Memory indexing (memory_save)
+// Feature catalog: Dry-run preflight for memory_save
+
 const MARKDOWN_HEADING_RE = /^(#{2,6})\s+(.+?)\s*$/;
 const MARKDOWN_BULLET_RE = /^\s*(?:[-*]|\d+\.)\s+(.*)$/;
 

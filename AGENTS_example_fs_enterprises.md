@@ -87,7 +87,8 @@
 | **Phase workflow**        | `/spec_kit:phase` → Decompose → `create.sh --phase` → Populate parent/children → `validate.sh --recursive`               |
 | **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint, ingest operations                                                           |
 | **Analysis/evaluation**   | `/memory:analyze` → preflight, postflight, causal graph, ablation, dashboard, history                                            |
-| **Shared memory**         | `/memory:shared` → create, member, status (deny-by-default governance)                                                             |
+| **Constitutional memory** | `/memory:learn` → Constitutional memory manager: create, list, edit, remove, budget                                               |
+| **Shared memory**         | `/memory:shared` → Shared-memory lifecycle: create spaces, manage memberships, inspect rollout                                    |
 
 ### Code Search Protocol
 

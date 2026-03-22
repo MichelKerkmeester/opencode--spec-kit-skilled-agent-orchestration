@@ -23,7 +23,7 @@ Four profiles are implemented:
 
 The formatter uses `estimateTokens()` from `formatters/token-metrics.ts` for token accounting. Score resolution supports both `score` and `similarity` fields with normalization. Evidence digest and follow-ups are contextually generated based on matched anchors, score thresholds, and spec folder patterns.
 
-Backward compatible: when the flag is OFF or profile is omitted, the original response is unchanged. Default OFF, set `SPECKIT_RESPONSE_PROFILE_V1=true` to enable.
+Backward compatible: when the flag is OFF or profile is omitted, the original response is unchanged. Default ON (graduated), controlled by `SPECKIT_RESPONSE_PROFILE_V1`.
 
 ---
 

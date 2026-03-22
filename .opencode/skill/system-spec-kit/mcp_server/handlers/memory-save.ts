@@ -468,7 +468,7 @@ async function processPreparedMemory(
       if (persistQualityLoopContent && qualityLoopResult.passed && qualityLoopResult.fixedContent) {
         try {
           await fs.promises.writeFile(filePath, parsed.content, 'utf-8');
-        } catch (writeErr) {
+        } catch (writeErr: unknown) {
           console.error('[memory-save] Auto-fix file write failed, rolling back:', writeErr instanceof Error ? writeErr.message : String(writeErr));
           if (useTx) database.exec('ROLLBACK');
           throw writeErr;
@@ -476,8 +476,8 @@ async function processPreparedMemory(
       }
 
       if (useTx) database.exec('COMMIT');
-    } catch (txErr) {
-      if (useTx) try { database.exec('ROLLBACK'); } catch (rbErr) { console.warn('[memory-save] ROLLBACK failed after transaction error:', rbErr instanceof Error ? rbErr.message : String(rbErr)); }
+    } catch (txErr: unknown) {
+      if (useTx) try { database.exec('ROLLBACK'); } catch (rbErr: unknown) { console.warn('[memory-save] ROLLBACK failed after transaction error:', rbErr instanceof Error ? rbErr.message : String(rbErr)); }
       throw txErr;
     }
 

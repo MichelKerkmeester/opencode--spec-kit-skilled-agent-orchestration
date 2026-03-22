@@ -15,6 +15,10 @@ import type { QualityLoopResult } from '../../handlers/quality-loop';
 import type { IndexResult, ParsedMemory } from './types';
 import type { ParsedMemoryValidation } from '../../lib/parsing/memory-parser';
 
+// Feature catalog: Dry-run preflight for memory_save
+// Feature catalog: Verify-fix-verify memory quality loop
+// Feature catalog: Validation feedback (memory_validate)
+
 function applyInsufficiencyMetadata(
   parsed: ParsedMemory,
   sufficiencyResult: MemorySufficiencyResult,

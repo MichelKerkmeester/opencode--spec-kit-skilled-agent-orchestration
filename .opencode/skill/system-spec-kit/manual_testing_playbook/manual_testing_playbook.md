@@ -2800,6 +2800,48 @@ Dry-run surfaces template-contract violations; non-dry-run rejects malformed fil
 > **Feature File:** [149](16--tooling-and-scripts/149-rendered-memory-template-contract.md)
 > **Catalog:** [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md)
 
+### 150 | Source-dist alignment validation
+
+#### Description
+Validate the check-source-dist-alignment.ts script detects no orphaned dist files. Verify every dist/lib/*.js maps to a source .ts file.
+
+#### Current Reality
+Prompt: `Run the source-dist alignment check and confirm no orphaned dist files exist. Capture the summary output as evidence. Return a concise pass/fail verdict.`
+
+0 violations, all dist files aligned, exit code 0
+
+#### Test Execution
+> **Feature File:** [150](16--tooling-and-scripts/150-source-dist-alignment-validation.md)
+> **Catalog:** [16--tooling-and-scripts/14-source-dist-alignment-enforcement.md](../feature_catalog/16--tooling-and-scripts/14-source-dist-alignment-enforcement.md)
+
+### 151 | MODULE_MAP.md accuracy validation
+
+#### Description
+Validate MODULE_MAP.md content accuracy by spot-checking module entries against actual code structure. Verify listed files exist and consumers are correct.
+
+#### Current Reality
+Prompt: `Validate MODULE_MAP.md accuracy by spot-checking 5 modules (config, cognitive, search, storage, scoring). For each: verify listed key files exist, verify primary consumers are accurate via grep. Return a pass/fail verdict per module.`
+
+All 5 sampled modules have accurate file lists and consumer mappings
+
+#### Test Execution
+> **Feature File:** [151](16--tooling-and-scripts/151-module-map-accuracy.md)
+> **Catalog:** [16--tooling-and-scripts/15-module-boundary-map.md](../feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md)
+
+### 152 | No symlinks in lib/ tree
+
+#### Description
+Validate the no-symlinks policy by confirming zero symlinks exist under mcp_server/lib/. Enforces the ARCHITECTURE.md "No Symlinks in lib/ Tree" policy.
+
+#### Current Reality
+Prompt: `Check for symlinks in the lib/ tree. Run find mcp_server/lib -type l and confirm zero results. Return a pass/fail verdict.`
+
+Zero symlinks found
+
+#### Test Execution
+> **Feature File:** [152](16--tooling-and-scripts/152-no-symlinks-in-lib-tree.md)
+> **Catalog:** [16--tooling-and-scripts/15-module-boundary-map.md](../feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md)
+
 ### 153 | JSON mode structured summary hardening
 
 #### Description

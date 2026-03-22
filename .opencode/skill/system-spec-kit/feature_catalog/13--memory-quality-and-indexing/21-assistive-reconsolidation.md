@@ -24,7 +24,7 @@ The `classifyAssistiveSimilarity()` function returns the tier, and `classifySupe
 
 The bridge result (`ReconsolidationBridgeResult`) includes an `assistiveRecommendation` field populated when the feature is enabled and a borderline pair is detected.
 
-Default OFF, set `SPECKIT_ASSISTIVE_RECONSOLIDATION=true` to enable.
+Default ON (graduated), controlled by `SPECKIT_ASSISTIVE_RECONSOLIDATION`.
 
 ---
 

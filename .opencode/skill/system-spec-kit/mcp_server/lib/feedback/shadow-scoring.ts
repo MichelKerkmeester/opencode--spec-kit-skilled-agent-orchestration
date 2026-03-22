@@ -127,7 +127,7 @@ export interface ShadowEvaluationReport {
 
 /**
  * Check whether shadow feedback evaluation is enabled.
- * Default: FALSE (off). Set SPECKIT_SHADOW_FEEDBACK=true to enable.
+ * Default: TRUE (graduated, default ON). Set SPECKIT_SHADOW_FEEDBACK=false to disable.
  */
 export function isShadowFeedbackEnabled(): boolean {
   const val = process.env.SPECKIT_SHADOW_FEEDBACK?.toLowerCase().trim();

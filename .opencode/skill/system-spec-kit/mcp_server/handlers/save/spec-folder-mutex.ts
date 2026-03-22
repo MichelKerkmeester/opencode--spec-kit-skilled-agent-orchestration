@@ -3,6 +3,9 @@
 // ───────────────────────────────────────────────────────────────
 // Per-spec-folder save mutex to prevent concurrent indexing races (TOCTOU).
 
+// Feature catalog: Memory indexing (memory_save)
+// Feature catalog: Atomic-save parity and partial-indexing hints
+
 /** Per-spec-folder save mutex to prevent concurrent indexing races (TOCTOU) */
 const SPEC_FOLDER_LOCKS = new Map<string, Promise<unknown>>();
 
