@@ -394,6 +394,9 @@ export async function formatSearchResults(
   if (!results || results.length === 0) {
     // REQ-D5-001: Attach recovery payload when flag is enabled
     let recoveryPayload: RecoveryPayload | null = null;
+    const requestQualityData = isResultConfidenceEnabled()
+      ? assessRequestQuality([], [])
+      : null;
     if (isEmptyResultRecoveryEnabled()) {
       recoveryPayload = buildRecoveryPayload({
         query,
@@ -409,6 +412,7 @@ export async function formatSearchResults(
       data: {
         searchType: searchType,
         constitutionalCount: 0,
+        ...(requestQualityData ?? {}),
         // Always spread caller-provided extraData (pipeline trace, timing, evidence gaps, etc.)
         ...(extraData ?? {}),
         // REQ-D5-001: Attach recovery payload (additive, only when flag enabled)

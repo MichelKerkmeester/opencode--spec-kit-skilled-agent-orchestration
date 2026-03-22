@@ -212,22 +212,22 @@ describe('computeResultConfidence() — multi-channel agreement', () => {
 // -- computeResultConfidence — reranker support --
 
 describe('computeResultConfidence() — reranker support', () => {
-  it('adds "reranker_support" driver when rerankerScore is present', () => {
+  it('adds "reranker_boost" driver when rerankerScore is present', () => {
     const result = makeResult({ id: 1, score: 0.8, rerankerScore: 0.72 });
     const [conf] = computeResultConfidence([result]);
-    expect(conf.confidence.drivers).toContain('reranker_support');
+    expect(conf.confidence.drivers).toContain('reranker_boost');
   });
 
-  it('does NOT add "reranker_support" when rerankerScore is absent', () => {
+  it('does NOT add "reranker_boost" when rerankerScore is absent', () => {
     const result = makeResult({ id: 1, score: 0.8 });
     const [conf] = computeResultConfidence([result]);
-    expect(conf.confidence.drivers).not.toContain('reranker_support');
+    expect(conf.confidence.drivers).not.toContain('reranker_boost');
   });
 
-  it('does NOT add "reranker_support" when rerankerScore is NaN', () => {
+  it('does NOT add "reranker_boost" when rerankerScore is NaN', () => {
     const result = makeResult({ id: 1, score: 0.8, rerankerScore: NaN });
     const [conf] = computeResultConfidence([result]);
-    expect(conf.confidence.drivers).not.toContain('reranker_support');
+    expect(conf.confidence.drivers).not.toContain('reranker_boost');
   });
 });
 
@@ -320,7 +320,7 @@ describe('computeResultConfidence() — drivers list', () => {
     expect(conf.confidence.drivers.length).toBeGreaterThan(1);
     expect(conf.confidence.drivers).toContain('large_margin');
     expect(conf.confidence.drivers).toContain('multi_channel_agreement');
-    expect(conf.confidence.drivers).toContain('reranker_support');
+    expect(conf.confidence.drivers).toContain('reranker_boost');
     expect(conf.confidence.drivers).toContain('anchor_density');
   });
 });

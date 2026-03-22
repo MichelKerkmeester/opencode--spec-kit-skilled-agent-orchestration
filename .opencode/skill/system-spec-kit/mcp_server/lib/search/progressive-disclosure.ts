@@ -1,3 +1,5 @@
+import { randomUUID } from 'node:crypto';
+
 // ───────────────────────────────────────────────────────────────
 // MODULE: Progressive Disclosure
 // ───────────────────────────────────────────────────────────────
@@ -9,7 +11,7 @@
 // 3. Continuation cursors — opaque tokens for paginated retrieval
 // 4. Progressive response builder — orchestrates all layers
 //
-// FEATURE FLAG: SPECKIT_PROGRESSIVE_DISCLOSURE_V1 (default OFF, opt-in)
+// FEATURE FLAG: SPECKIT_PROGRESSIVE_DISCLOSURE_V1 (default ON, graduated)
 
 // -- Constants --
 
@@ -39,6 +41,7 @@ interface Snippet {
 
 /** Decoded cursor payload. */
 interface CursorPayload {
+  cursorKey?: string;
   offset: number;
   queryHash: string;
   timestamp: number;
@@ -77,7 +80,7 @@ interface CursorOptions {
 // -- Internal: Cursor Store --
 
 /**
- * In-memory cache of result sets keyed by query hash.
+ * In-memory cache of result sets keyed by an opaque cursor identifier.
  * Used for cursor resolution (pagination).
  */
 const cursorStore = new Map<string, { results: DisclosureResult[]; storedAt: number }>();
@@ -144,6 +147,17 @@ function classifyByConfidence(results: DisclosureResult[]): { high: number; medi
   return { high, medium, low };
 }
 
+function pruneExpiredCursorEntries(
+  ttlMs: number = DEFAULT_CURSOR_TTL_MS,
+  now: number = Date.now(),
+): void {
+  for (const [key, entry] of cursorStore.entries()) {
+    if (now - entry.storedAt > ttlMs) {
+      cursorStore.delete(key);
+    }
+  }
+}
+
 /**
  * Build a human-readable digest string from confidence distribution.
  * Format: "3 strong, 2 weak, 1 conflict" style.
@@ -160,7 +174,7 @@ function buildDigest(classification: { high: number; medium: number; low: number
 
 /**
  * Check whether progressive disclosure is enabled.
- * Default: FALSE (opt-in). Set SPECKIT_PROGRESSIVE_DISCLOSURE_V1=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_PROGRESSIVE_DISCLOSURE_V1=false to disable.
  */
 function isProgressiveDisclosureEnabled(): boolean {
   const val = process.env.SPECKIT_PROGRESSIVE_DISCLOSURE_V1?.toLowerCase().trim();
@@ -234,11 +248,15 @@ function createCursor(
 
   const queryHash = hashQuery(query);
   const now = Date.now();
+  const cursorKey = randomUUID();
+
+  pruneExpiredCursorEntries(options?.ttlMs ?? DEFAULT_CURSOR_TTL_MS, now);
 
   // Store the full result set for later resolution
-  cursorStore.set(queryHash, { results: resultSet, storedAt: now });
+  cursorStore.set(cursorKey, { results: resultSet, storedAt: now });
 
   const payload: CursorPayload = {
+    cursorKey,
     offset: pageSize,
     queryHash,
     timestamp: now,
@@ -266,17 +284,20 @@ function resolveCursor(
   const ttlMs = options?.ttlMs ?? DEFAULT_CURSOR_TTL_MS;
   const payload = decodeCursor(cursor);
   if (!payload) return null;
+  const storeKey = payload.cursorKey ?? payload.queryHash;
+
+  pruneExpiredCursorEntries(ttlMs);
 
   // Check expiry
   const now = Date.now();
   if (now - payload.timestamp > ttlMs) {
     // Expired cursor — clean up stored data
-    cursorStore.delete(payload.queryHash);
+    cursorStore.delete(storeKey);
     return null;
   }
 
   // Retrieve stored result set
-  const stored = cursorStore.get(payload.queryHash);
+  const stored = cursorStore.get(storeKey);
   if (!stored) return null;
 
   // Extract the requested page
@@ -285,7 +306,7 @@ function resolveCursor(
   const pageResults = stored.results.slice(start, end);
 
   if (pageResults.length === 0) {
-    cursorStore.delete(payload.queryHash);
+    cursorStore.delete(storeKey);
     return null;
   }
 
@@ -293,6 +314,7 @@ function resolveCursor(
   let continuation: CursorInfo | null = null;
   if (end < stored.results.length) {
     const nextPayload: CursorPayload = {
+      cursorKey: payload.cursorKey,
       offset: end,
       queryHash: payload.queryHash,
       timestamp: payload.timestamp, // Preserve original timestamp for TTL

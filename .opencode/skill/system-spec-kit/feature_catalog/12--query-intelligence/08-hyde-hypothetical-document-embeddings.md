@@ -16,14 +16,14 @@ When a search returns weak results, the problem is often a vocabulary mismatch b
 ## 2. CURRENT REALITY
 
 The HyDE module operates in two modes controlled by separate flags:
-- `SPECKIT_HYDE` (default FALSE): enables the feature, generates pseudo-documents and logs results
-- `SPECKIT_HYDE_ACTIVE` (default FALSE): graduates from shadow to full merge mode
+- `SPECKIT_HYDE` (default ON, graduated): generates pseudo-documents unless explicitly set to `false`
+- `SPECKIT_HYDE_ACTIVE` (default ON, graduated): merges HyDE results unless explicitly set to `false`
 
 HyDE only fires in deep mode with low-confidence baselines. Low confidence is detected when the top result has an effective score below `LOW_CONFIDENCE_THRESHOLD = 0.45` or the result set has fewer than `MIN_RESULTS_FOR_CONFIDENCE = 1` results.
 
 Pseudo-documents are generated in `markdown-memory` format (matching corpus style) with a max of `MAX_HYDE_TOKENS = 200` tokens. LLM timeout is `HYDE_TIMEOUT_MS = 8000ms`. Results are cached via the shared LLM cache (module `llm-cache.ts`, same cache as LLM reformulation).
 
-Budget: 1 LLM call per cache miss. Combined with reformulation: at most 2 total LLM calls per deep query. In shadow mode (`SPECKIT_HYDE_ACTIVE=false`), results are logged but NOT merged. In active mode, results are merged into candidates. Debug logging available via `SPECKIT_HYDE_LOG=true`.
+Budget: 1 LLM call per cache miss. Combined with reformulation: at most 2 total LLM calls per deep query. Set `SPECKIT_HYDE=false` to disable the feature entirely. In shadow mode (`SPECKIT_HYDE_ACTIVE=false`), results are logged but NOT merged. In active mode, results are merged into candidates. Debug logging available via `SPECKIT_HYDE_LOG=true`.
 
 ---
 

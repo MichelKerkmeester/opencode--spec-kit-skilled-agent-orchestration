@@ -44,7 +44,12 @@ import { requireDb } from '../../../utils/db-helpers';
 import { filterRowsByScope } from '../../governance/scope-governance';
 import { getAllowedSharedSpaceIds } from '../../collab/shared-spaces';
 import { withTimeout } from '../../errors/core';
-import { isMultiFacet, decompose, mergeByFacetCoverage } from '../query-decomposer';
+import {
+  isMultiFacet,
+  decompose,
+  mergeByFacetCoverage as mergeFacetCoveragePools,
+  MAX_FACETS,
+} from '../query-decomposer';
 import { routeQueryConcepts } from '../entity-linker';
 import { cheapSeedRetrieve, llm, fanout } from '../llm-reformulation';
 import { runHyDE } from '../hyde';
@@ -72,6 +77,7 @@ const DEFAULT_EXPANSION_CANDIDATE_LIMIT = 5;
 
 /** D2: Timeout for facet decomposition parallel searches (ms). */
 const DECOMPOSITION_TIMEOUT_MS = 5000;
+const MAX_QUERY_DECOMPOSITION_FACETS = MAX_FACETS;
 
 // -- Helper Functions --
 
@@ -183,6 +189,66 @@ async function buildDeepQueryVariants(query: string): Promise<string[]> {
     );
     return [query];
   }
+}
+
+function normalizeFacetText(fragment: string): string {
+  return fragment
+    .replace(/^[\s,:;]+|[\s,.:;?!]+$/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function decomposeQueryFacets(query: string): string[] {
+  const trimmed = normalizeFacetText(query);
+  if (trimmed.length === 0) return [];
+
+  const focusMatch = trimmed.match(/\babout\s+(.+?)[?.!]*$/i);
+  const focusSegment = focusMatch?.[1]?.trim() ?? trimmed;
+
+  const listLikeFacets = focusSegment
+    .split(/\s*(?:,|\band\b|\bor\b|\balso\b|\bplus\b|\bas well as\b|\balong with\b)\s*/i)
+    .map(normalizeFacetText)
+    .filter((facet) => facet.length > 0);
+
+  if (listLikeFacets.length >= 2) {
+    return [...new Set(listLikeFacets)].slice(0, MAX_QUERY_DECOMPOSITION_FACETS);
+  }
+
+  if (!isMultiFacet(trimmed)) {
+    return [trimmed];
+  }
+
+  const decomposedFacets = decompose(trimmed)
+    .map(normalizeFacetText)
+    .filter((facet) => facet.length > 0);
+
+  if (decomposedFacets.length === 0) {
+    return [trimmed];
+  }
+
+  return [...new Set(decomposedFacets)].slice(0, MAX_QUERY_DECOMPOSITION_FACETS);
+}
+
+function buildQueryDecompositionPool(query: string, mode?: string | null): string[] {
+  const normalizedQuery = normalizeFacetText(query);
+  if (mode !== 'deep' || !isQueryDecompositionEnabled()) {
+    return [normalizedQuery];
+  }
+
+  const facets = decomposeQueryFacets(query).filter((facet) => facet !== normalizedQuery);
+  return [normalizedQuery, ...facets];
+}
+
+function mergeQueryFacetCoverage(resultSets: PipelineRow[][]): PipelineRow[] {
+  const firstSeenById = new Map<number, PipelineRow>();
+  for (const resultSet of resultSets) {
+    for (const row of resultSet) {
+      if (!firstSeenById.has(row.id)) {
+        firstSeenById.set(row.id, row);
+      }
+    }
+  }
+  return Array.from(firstSeenById.values());
 }
 
 // -- Stage 1 --
@@ -351,7 +417,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
               query: q,
               results: facetResultSets[i] ?? [],
             }));
-            candidates = mergeByFacetCoverage(pools);
+            candidates = mergeFacetCoveragePools(pools);
 
             if (trace) {
               addTraceEntry(trace, 'candidate', channelCount, candidates.length, 0, {
@@ -927,4 +993,8 @@ export const __testables = {
   resolveRowContextType,
   buildDeepQueryVariants,
   DEFAULT_EXPANSION_CANDIDATE_LIMIT,
+  decomposeQueryFacets,
+  mergeByFacetCoverage: mergeQueryFacetCoverage,
+  buildQueryDecompositionPool,
+  MAX_QUERY_DECOMPOSITION_FACETS,
 };

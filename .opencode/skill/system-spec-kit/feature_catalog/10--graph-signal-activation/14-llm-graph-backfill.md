@@ -15,7 +15,7 @@ The default save path extracts graph edges using deterministic heuristics (no LL
 
 ## 2. CURRENT REALITY
 
-When `SPECKIT_LLM_GRAPH_BACKFILL` is set to `true` or `1`, high-value documents receive an async LLM-based enrichment pass after the synchronous deterministic extraction completes. The flag is default OFF (opt-in). The LLM backfill is also scheduled when `SPECKIT_GRAPH_REFRESH_MODE` is set to `write_local` or `scheduled`.
+Enabled by default (graduated). Set `SPECKIT_LLM_GRAPH_BACKFILL=false` to disable. High-value documents receive an async LLM-based enrichment pass after the synchronous deterministic extraction completes, and the backfill is also scheduled when `SPECKIT_GRAPH_REFRESH_MODE` is `write_local` or `scheduled`.
 
 The feature is implemented in the graph lifecycle module and wired into the post-insert handler. It shares the graph lifecycle's dirty-node tracking to mark nodes affected by LLM-generated edges. The function `isLlmGraphBackfillEnabled()` checks the environment variable.
 

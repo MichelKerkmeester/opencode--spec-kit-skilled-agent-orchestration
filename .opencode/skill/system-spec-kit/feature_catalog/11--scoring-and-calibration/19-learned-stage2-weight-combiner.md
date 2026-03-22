@@ -23,7 +23,7 @@ Validation uses Leave-One-Out Cross-Validation (`runLOOCV()`), and feature impor
 
 Shadow scoring via `shadowScore()` returns both the learned and manual scores when the flag is ON, or `null` with zero overhead when OFF. Model persistence uses `saveModel()` / `loadModel()` with JSON serialization and strict field validation.
 
-Runs behind `SPECKIT_LEARNED_STAGE2_COMBINER` (default FALSE, opt-in).
+Enabled by default (graduated). Set `SPECKIT_LEARNED_STAGE2_COMBINER=false` to disable.
 
 ---
 

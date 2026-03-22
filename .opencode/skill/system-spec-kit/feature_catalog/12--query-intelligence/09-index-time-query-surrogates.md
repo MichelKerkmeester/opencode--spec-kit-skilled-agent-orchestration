@@ -23,7 +23,7 @@ At index time, the surrogate generator produces a `SurrogateMetadata` object con
 
 At query time, stored surrogates are matched against the incoming query using token overlap. A match requires a minimum overlap ratio of `MIN_MATCH_THRESHOLD = 0.15`. The `SurrogateMatchResult` includes the memory ID, combined match score in [0, 1], and which surrogates were matched (for explainability).
 
-Default OFF, set `SPECKIT_QUERY_SURROGATES=true` to enable. Also has a flag accessor in `search-flags.ts`.
+Enabled by default (graduated). Set `SPECKIT_QUERY_SURROGATES=false` to disable. Also has a flag accessor in `search-flags.ts`.
 
 ---
 

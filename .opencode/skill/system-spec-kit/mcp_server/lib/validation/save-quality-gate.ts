@@ -113,6 +113,7 @@ const WARN_ONLY_PERIOD_MS = 14 * 24 * 60 * 60 * 1000;
 
 /** Minimum number of structural signals required for short-critical exception. */
 const SHORT_CRITICAL_MIN_STRUCTURAL_SIGNALS = 2;
+const SHORT_DECISION_EXCEPTION_LOG_PREFIX = '[QUALITY-GATE] short-critical-exception';
 
 /** Layer 2 dimension weights for weighted average signal density */
 const DIMENSION_WEIGHTS: Record<keyof ContentQualityDimensions, number> = {
@@ -307,6 +308,7 @@ function ensureActivationTimestampInitialized(): void {
  * 0.92 dedup) remain enforced.
  */
 export function isSaveQualityGateExceptionsEnabled(): boolean {
+  if (!isQualityGateEnabled()) return false;
   const val = process.env.SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS?.toLowerCase().trim();
   return val !== 'false' && val !== '0';
 }
@@ -357,6 +359,19 @@ export function isShortCriticalException(params: {
   return signals >= SHORT_CRITICAL_MIN_STRUCTURAL_SIGNALS;
 }
 
+export function isQualityGateExceptionEnabled(): boolean {
+  return isSaveQualityGateExceptionsEnabled();
+}
+
+export function shouldBypassShortDecisionLengthGate(params: {
+  contextType: string | null | undefined;
+  title: string | null;
+  specFolder: string | null | undefined;
+  anchor?: string | null;
+}): boolean {
+  return isShortCriticalException(params);
+}
+
 /* ───────────────────────────────────────────────────────────────
    4. LAYER 1: STRUCTURAL VALIDATION
    ──────────────────────────────────────────────────────────────── */
@@ -404,7 +419,7 @@ export function validateStructural(params: {
     if (exceptionApplies) {
       // Warn-only: log bypass event but do not add rejection reason
       console.warn(
-        `[QUALITY-GATE] short-critical-exception | context_type=decision | content_length=${params.content.trim().length} | bypassing min-length check`
+        `${SHORT_DECISION_EXCEPTION_LOG_PREFIX} | context_type=decision | content_length=${params.content.trim().length} | bypassing min-length check`
       );
     } else {
       reasons.push(
@@ -816,6 +831,7 @@ export {
   MIN_CONTENT_LENGTH,
   WARN_ONLY_PERIOD_MS,
   SHORT_CRITICAL_MIN_STRUCTURAL_SIGNALS,
+  SHORT_DECISION_EXCEPTION_LOG_PREFIX,
 };
 
 /**

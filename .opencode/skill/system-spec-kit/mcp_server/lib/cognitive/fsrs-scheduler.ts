@@ -341,6 +341,10 @@ function applyClassificationDecay(
   contextType: string,
   importanceTier: string
 ): number {
+  if (isHybridDecayPolicyEnabled() && HYBRID_NO_DECAY_CONTEXT_TYPES.has(contextType)) {
+    return Infinity;
+  }
+
   // Graduated: default-ON. Set SPECKIT_CLASSIFICATION_DECAY=false to disable.
   const flag = process.env.SPECKIT_CLASSIFICATION_DECAY?.toLowerCase();
   if (flag === 'false' || flag === '0') {
@@ -381,6 +385,16 @@ const HYBRID_NO_DECAY_CONTEXT_TYPES: ReadonlySet<string> = new Set([
   'constitutional',
   'critical',
 ]);
+const HYBRID_FSRS_CONTEXT_TYPES: ReadonlySet<string> = new Set([
+  'session',
+  'scratch',
+  'transient',
+  'implementation',
+  'discovery',
+  'research',
+  'general',
+]);
+const NO_DECAY = Infinity;
 
 /**
  * REQ-D4-002: Check whether the hybrid decay policy feature flag is enabled.
@@ -407,6 +421,13 @@ function classifyHybridDecay(contextType: string): HybridDecayClass {
   return 'fsrs_schedule';
 }
 
+function getHybridDecayMultiplier(contextType: string, _importanceTier?: string): number {
+  if (!isHybridDecayPolicyEnabled()) {
+    return 1;
+  }
+  return HYBRID_NO_DECAY_CONTEXT_TYPES.has(contextType) ? NO_DECAY : 1;
+}
+
 /**
  * REQ-D4-002: Apply the hybrid decay policy to a stability value.
  *
@@ -419,18 +440,9 @@ function classifyHybridDecay(contextType: string): HybridDecayClass {
  * @param contextType  Memory context_type field (classified at save time)
  * @returns Adjusted stability: Infinity for no-decay types, original otherwise
  */
-function applyHybridDecayPolicy(stability: number, contextType: string): number {
-  if (!isHybridDecayPolicyEnabled()) {
-    return stability;
-  }
-
-  const decayClass = classifyHybridDecay(contextType);
-  if (decayClass === 'no_decay') {
-    return Infinity;
-  }
-
-  // Engagement-sensitive: apply normal FSRS schedule unchanged
-  return stability;
+function applyHybridDecayPolicy(stability: number, contextType: string, importanceTier?: string): number {
+  const multiplier = getHybridDecayMultiplier(contextType, importanceTier);
+  return Number.isFinite(multiplier) ? stability * multiplier : NO_DECAY;
 }
 
 export {
@@ -457,9 +469,12 @@ export {
   applyClassificationDecay,
 
   // REQ-D4-002: Hybrid decay policy
+  NO_DECAY,
+  HYBRID_FSRS_CONTEXT_TYPES,
   HYBRID_NO_DECAY_CONTEXT_TYPES,
   isHybridDecayPolicyEnabled,
   classifyHybridDecay,
+  getHybridDecayMultiplier,
   applyHybridDecayPolicy,
 
   // Core functions

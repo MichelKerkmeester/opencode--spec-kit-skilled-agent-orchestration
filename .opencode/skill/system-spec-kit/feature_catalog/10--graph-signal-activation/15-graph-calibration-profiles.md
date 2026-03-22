@@ -17,7 +17,7 @@ When graph signals contribute to search scoring, they need guardrails to prevent
 
 The calibration module defines two profiles. The default profile sets `GRAPH_WEIGHT_CAP = 0.05`, `n2aCap = 0.10`, `n2bCap = 0.10`, `louvainMinDensity = 0.3`, and `louvainMinSize = 10`. The aggressive profile tightens these to `graphWeightCap = 0.03`, `n2aCap = 0.07`, `n2bCap = 0.07`, `louvainMinDensity = 0.5`, and `louvainMinSize = 20`. Community score boost is capped at `COMMUNITY_SCORE_CAP = 0.03` (secondary signal only).
 
-The flag `SPECKIT_GRAPH_CALIBRATION_PROFILE` is default OFF (opt-in). When enabled, `isGraphCalibrationEnabled()` returns true and calibration profile enforcement activates. The profile name can be selected via `SPECKIT_CALIBRATION_PROFILE_NAME`.
+Enabled by default (graduated). Set `SPECKIT_GRAPH_CALIBRATION_PROFILE=false` to disable. When enabled, `isGraphCalibrationEnabled()` returns true and calibration profile enforcement activates. The profile name can be selected via `SPECKIT_CALIBRATION_PROFILE_NAME`.
 
 The module also includes an ablation harness with MRR and NDCG computation for per-intent evaluation of graph features.
 

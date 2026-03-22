@@ -68,6 +68,8 @@ const DEFAULT_EDGE_PRIORITY = ['caused', 'enabled', 'derived_from', 'supports', 
 
 /** Edge prior score tiers: 1st priority = 1.0, 2nd = 0.75, remaining = 0.5. */
 const EDGE_PRIOR_TIERS = [1.0, 0.75, 0.5];
+const DEFAULT_EDGE_PRIOR = 1.0;
+const FRESHNESS_DECAY_WINDOW_MS = 30 * 24 * 60 * 60 * 1000;
 
 /**
  * C138-P2: Relation-type weight multipliers for causal edge traversal.
@@ -246,6 +248,59 @@ function computeIntentTraversalScore(
   const edgePrior = resolveEdgePrior(relation, intent);
   const hopDecay = computeHopDecay(hopDistance);
   return seedScore * edgePrior * hopDecay * freshness;
+}
+
+function getIntentEdgePriorities(intent: string): string[] {
+  return (INTENT_EDGE_PRIORITY[intent] ?? []).slice(0, 2);
+}
+
+function computeIntentEdgePrior(intent: string, edgeType: string): number {
+  const priorities = getIntentEdgePriorities(intent);
+  if (priorities.length === 0) {
+    return DEFAULT_EDGE_PRIOR;
+  }
+
+  const normalizedEdgeType = edgeType.toUpperCase();
+  const directMatchIndex = priorities.findIndex(
+    (priority) => priority.toUpperCase() === normalizedEdgeType,
+  );
+  if (directMatchIndex >= 0) {
+    return EDGE_PRIOR_TIERS[Math.min(directMatchIndex, EDGE_PRIOR_TIERS.length - 1)] ?? 0.5;
+  }
+
+  return resolveEdgePrior(edgeType, intent);
+}
+
+function computeTraversalHopDecay(hopDistance: number): number {
+  return computeHopDecay(hopDistance);
+}
+
+function computeTraversalFreshnessFactor(
+  updatedAt: Date | string,
+  now: Date | string = new Date(),
+): number {
+  const updatedAtMs = new Date(updatedAt).getTime();
+  const nowMs = new Date(now).getTime();
+  if (!Number.isFinite(updatedAtMs) || !Number.isFinite(nowMs) || nowMs <= updatedAtMs) {
+    return 1;
+  }
+
+  const ageMs = nowMs - updatedAtMs;
+  return Math.exp(-(ageMs / FRESHNESS_DECAY_WINDOW_MS));
+}
+
+function computeIntentAwareTraversalScore(params: {
+  seedScore: number;
+  intent: string;
+  edgeType: string;
+  hopDistance: number;
+  updatedAt: Date | string;
+  now?: Date | string;
+}): number {
+  return params.seedScore *
+    computeIntentEdgePrior(params.intent, params.edgeType) *
+    computeTraversalHopDecay(params.hopDistance) *
+    computeTraversalFreshnessFactor(params.updatedAt, params.now);
 }
 
 /**
@@ -571,6 +626,7 @@ export {
   SPARSE_MAX_HOPS,
   INTENT_EDGE_PRIORITY,
   DEFAULT_EDGE_PRIORITY,
+  DEFAULT_EDGE_PRIOR,
   EDGE_PRIOR_TIERS,
   EDGE_LABEL_ALIASES,
   init,
@@ -580,6 +636,11 @@ export {
   resolveEdgePrior,
   computeHopDecay,
   computeIntentTraversalScore,
+  getIntentEdgePriorities,
+  computeIntentEdgePrior,
+  computeTraversalHopDecay,
+  computeTraversalFreshnessFactor,
+  computeIntentAwareTraversalScore,
   getNeighborBoosts,
   applyCausalBoost,
 };

@@ -28,7 +28,7 @@ The confidence scoring module (`confidence-scoring.ts`) computes a weighted comp
 
 The composite score maps to labels via: `HIGH_THRESHOLD = 0.7`, `LOW_THRESHOLD = 0.4`. Each result also carries a `requestQuality` label (`good`, `weak`, `gap`) computed across all results.
 
-Confidence drivers (`large_margin`, `multi_channel_agreement`, `reranker_support`, `anchor_density`) are reported per result, enabling the calling agent to explain why a result was rated as it was.
+Confidence drivers (`large_margin`, `multi_channel_agreement`, `reranker_boost`, `anchor_density`) are reported per result, enabling the calling agent to explain why a result was rated as it was.
 
 ---
 

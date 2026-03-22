@@ -337,6 +337,29 @@ describe('resolveCursor()', () => {
     const resolved = resolveCursor(cursor, 5);
     expect(resolved).toBeNull();
   });
+
+  it('keeps same-query cursors isolated across distinct searches', () => {
+    const resultSetA = makeResults(12).map((result, index) => ({
+      ...result,
+      id: `A${index + 1}`,
+    }));
+    const resultSetB = makeResults(12).map((result, index) => ({
+      ...result,
+      id: `B${index + 1}`,
+    }));
+
+    const cursorA = createCursor(resultSetA, 5, 'same query');
+    const cursorB = createCursor(resultSetB, 5, 'same query');
+
+    expect(cursorA).not.toBeNull();
+    expect(cursorB).not.toBeNull();
+
+    const pageA = resolveCursor(cursorA!.cursor, 5);
+    const pageB = resolveCursor(cursorB!.cursor, 5);
+
+    expect(pageA?.results[0]?.id).toBe('A6');
+    expect(pageB?.results[0]?.id).toBe('B6');
+  });
 });
 
 // -- encodeCursor / decodeCursor --

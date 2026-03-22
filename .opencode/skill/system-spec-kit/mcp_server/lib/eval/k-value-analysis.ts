@@ -124,7 +124,7 @@ function mrr5(baselineRanking: (number | string)[], candidateRanking: (number | 
 
 // ───────────────────────────────────────────────────────────────
 /** K-values to test in the grid search. */
-const K_VALUES = [20, 40, 60, 80, 100] as const;
+const K_VALUES = [10, 20, 40, 60, 80, 100, 120] as const;
 
 /** The baseline K-value (current production default). */
 const BASELINE_K = 60;
@@ -391,7 +391,161 @@ interface JudgedKSweepResult {
 // ───────────────────────────────────────────────────────────────
 
 /** K-values for the judged relevance sweep (REQ-D1-003). */
-const JUDGED_K_SWEEP_VALUES = [10, 20, 40, 60, 80, 100, 120] as const;
+const JUDGED_K_SWEEP_VALUES = K_VALUES;
+
+interface OptimizationJudgment {
+  id: number | string;
+  relevance: number;
+}
+
+interface IntentKOptimizationQuery {
+  intent: string;
+  judgments: OptimizationJudgment[];
+  rankingsByK: Partial<Record<number, Array<number | string>>>;
+}
+
+interface IntentKMetrics {
+  ndcg10: number;
+  mrr5: number;
+}
+
+interface IntentKOptimizationResult {
+  bestKByIntent: Record<string, number>;
+  metricsByIntent: Record<string, Record<number, IntentKMetrics>>;
+}
+
+function buildJudgmentLabelMap(judgments: OptimizationJudgment[]): Map<string, number> {
+  return new Map(judgments.map((judgment) => [String(judgment.id), judgment.relevance]));
+}
+
+function buildRelevantIds(judgments: OptimizationJudgment[]): string[] {
+  return judgments
+    .filter((judgment) => judgment.relevance > 0)
+    .map((judgment) => String(judgment.id));
+}
+
+function computeNdcgAtK(
+  rankedIds: Array<string | number>,
+  judgments: OptimizationJudgment[],
+  cutoff: number,
+): number {
+  if (cutoff <= 0) return 0;
+
+  const labels = buildJudgmentLabelMap(judgments);
+  const topN = rankedIds.slice(0, cutoff);
+
+  let dcg = 0;
+  for (let i = 0; i < topN.length; i++) {
+    const rel = labels.get(String(topN[i])) ?? 0;
+    if (rel > 0) {
+      dcg += rel / Math.log2(i + 2);
+    }
+  }
+
+  const idealLabels = Array.from(labels.values())
+    .filter((value) => value > 0)
+    .sort((a, b) => b - a)
+    .slice(0, cutoff);
+
+  let idcg = 0;
+  for (let i = 0; i < idealLabels.length; i++) {
+    idcg += idealLabels[i] / Math.log2(i + 2);
+  }
+
+  return idcg === 0 ? 0 : dcg / idcg;
+}
+
+function computeMrrAtK(
+  rankedIds: Array<string | number>,
+  judgments: OptimizationJudgment[],
+  cutoff: number,
+): number {
+  if (cutoff <= 0) return 0;
+
+  const relevantIds = new Set(buildRelevantIds(judgments));
+  const topN = rankedIds.slice(0, cutoff);
+  for (let i = 0; i < topN.length; i++) {
+    if (relevantIds.has(String(topN[i]))) {
+      return 1 / (i + 1);
+    }
+  }
+  return 0;
+}
+
+function argmaxK(metricsByK: Record<number, { ndcg10: number }>): number {
+  const ks = Object.keys(metricsByK).map(Number);
+  if (ks.length === 0) return BASELINE_K;
+
+  let bestK = ks[0];
+  let bestNdcg = metricsByK[bestK]?.ndcg10 ?? -Infinity;
+
+  for (const k of ks.slice(1)) {
+    const ndcg = metricsByK[k]?.ndcg10 ?? -Infinity;
+    if (ndcg > bestNdcg || (ndcg === bestNdcg && k < bestK)) {
+      bestK = k;
+      bestNdcg = ndcg;
+    }
+  }
+
+  return bestK;
+}
+
+function optimizeKValuesByIntent(queries: IntentKOptimizationQuery[]): IntentKOptimizationResult {
+  if (queries.length === 0) {
+    return {
+      bestKByIntent: {},
+      metricsByIntent: {},
+    };
+  }
+
+  const grouped = new Map<string, IntentKOptimizationQuery[]>();
+  for (const query of queries) {
+    const bucket = grouped.get(query.intent) ?? [];
+    bucket.push(query);
+    grouped.set(query.intent, bucket);
+  }
+
+  const bestKByIntent: Record<string, number> = {};
+  const metricsByIntent: Record<string, Record<number, IntentKMetrics>> = {};
+
+  for (const [intent, intentQueries] of grouped.entries()) {
+    const metricsForIntent: Record<number, IntentKMetrics> = {};
+
+    for (const k of K_VALUES) {
+      let ndcgTotal = 0;
+      let mrrTotal = 0;
+
+      for (const query of intentQueries) {
+        const ranking = query.rankingsByK[k] ?? [];
+        ndcgTotal += computeNdcgAtK(ranking, query.judgments, 10);
+        mrrTotal += computeMrrAtK(ranking, query.judgments, 5);
+      }
+
+      metricsForIntent[k] = {
+        ndcg10: ndcgTotal / intentQueries.length,
+        mrr5: mrrTotal / intentQueries.length,
+      };
+    }
+
+    metricsByIntent[intent] = metricsForIntent;
+    bestKByIntent[intent] = argmaxK(metricsForIntent);
+  }
+
+  return {
+    bestKByIntent,
+    metricsByIntent,
+  };
+}
+
+function resolveOptimalRrfK(
+  intent: string,
+  bestKByIntent: Record<string, number>,
+): number {
+  if (!isKExperimentalEnabled()) {
+    return BASELINE_K;
+  }
+  return bestKByIntent[intent] ?? BASELINE_K;
+}
 
 /**
  * Compute NDCG@10 for a single result ranking against judged labels.
@@ -408,35 +562,11 @@ function computeNdcg10(
   rankedIds: (string | number)[],
   labels: Map<string, number>
 ): number {
-  const cutoff = 10;
-
-  function getLabel(id: string | number): number {
-    return labels.get(String(id)) ?? 0;
-  }
-
-  // DCG@10
-  let dcg = 0;
-  const topN = rankedIds.slice(0, cutoff);
-  for (let i = 0; i < topN.length; i++) {
-    const rel = getLabel(topN[i]);
-    if (rel > 0) {
-      dcg += rel / Math.log2(i + 2); // log2(rank+1), rank is 1-indexed
-    }
-  }
-
-  // IDCG@10 — ideal ordering of all labeled items
-  const allRelevances = Array.from(labels.values())
-    .filter(v => v > 0)
-    .sort((a, b) => b - a);
-
-  let idcg = 0;
-  const idealTop = allRelevances.slice(0, cutoff);
-  for (let i = 0; i < idealTop.length; i++) {
-    idcg += idealTop[i] / Math.log2(i + 2);
-  }
-
-  if (idcg === 0) return 0;
-  return dcg / idcg;
+  return computeNdcgAtK(
+    rankedIds,
+    Array.from(labels.entries()).map(([id, relevance]) => ({ id, relevance })),
+    10,
+  );
 }
 
 /**
@@ -450,14 +580,11 @@ function computeMrr5Judged(
   rankedIds: (string | number)[],
   relevantIds: string[]
 ): number {
-  const relevantSet = new Set(relevantIds);
-  const top5 = rankedIds.slice(0, 5);
-  for (let i = 0; i < top5.length; i++) {
-    if (relevantSet.has(String(top5[i]))) {
-      return 1 / (i + 1); // 1-indexed rank
-    }
-  }
-  return 0;
+  return computeMrrAtK(
+    rankedIds,
+    relevantIds.map((id) => ({ id, relevance: 1 })),
+    5,
+  );
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -616,6 +743,11 @@ export {
   mrr5,
   K_VALUES,
   BASELINE_K,
+  computeNdcgAtK,
+  computeMrrAtK,
+  argmaxK,
+  optimizeKValuesByIntent,
+  resolveOptimalRrfK,
   // REQ-D1-003: Judged relevance K-optimization
   JUDGED_K_SWEEP_VALUES,
   computeNdcg10,
@@ -630,6 +762,7 @@ export type {
   KValueMetrics,
   KValueAnalysisResult,
   KValueReport,
+  IntentKOptimizationQuery,
   // REQ-D1-003: Judged relevance types
   IntentClass,
   JudgedQuery,

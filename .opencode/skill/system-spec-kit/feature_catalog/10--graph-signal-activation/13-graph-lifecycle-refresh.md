@@ -15,9 +15,9 @@ When you save or update a memory that has graph edges, the nearby graph nodes be
 
 ## 2. CURRENT REALITY
 
-The graph lifecycle module tracks dirty nodes across `onWrite()` calls within the same process. When `SPECKIT_GRAPH_REFRESH_MODE` is set to `write_local`, small connected components (up to 50 nodes by default, configurable via `SPECKIT_GRAPH_LOCAL_THRESHOLD`) are recomputed synchronously during the save operation. When set to `scheduled`, larger components are queued for a background global refresh. The default value is `off`, which makes all graph refresh a no-op.
+Enabled by default (graduated). `SPECKIT_GRAPH_REFRESH_MODE` defaults to `write_local`; set `SPECKIT_GRAPH_REFRESH_MODE=off` to disable graph refresh entirely. Small connected components (up to 50 nodes by default, configurable via `SPECKIT_GRAPH_LOCAL_THRESHOLD`) are recomputed synchronously during the save operation, while `scheduled` queues larger components for a background global refresh.
 
-Additionally, `SPECKIT_LLM_GRAPH_BACKFILL` (default OFF) enables async LLM-based enrichment for high-value documents after deterministic extraction completes. This adds probabilistic edges via an LLM call — separate from the deterministic extraction path.
+Additionally, `SPECKIT_LLM_GRAPH_BACKFILL` is enabled by default (graduated); set it to `false` to disable async LLM-based enrichment for high-value documents after deterministic extraction completes. This adds probabilistic edges via an LLM call — separate from the deterministic extraction path.
 
 Key constants: `DEFAULT_LOCAL_RECOMPUTE_THRESHOLD = 50`, `LOCAL_RECOMPUTE_EDGE_LIMIT = 500`. Component size estimation uses BFS expansion bounded by the edge limit.
 

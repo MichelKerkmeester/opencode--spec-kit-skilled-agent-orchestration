@@ -1713,7 +1713,7 @@ Graph lifecycle refresh manages dirty-node tracking and graph recomputation afte
 
 #### Current Reality
 
-The graph lifecycle module tracks dirty nodes across `onWrite()` calls within the same process. When `SPECKIT_GRAPH_REFRESH_MODE` is set to `write_local`, small connected components (up to 50 nodes) are recomputed synchronously during the save operation. When set to `scheduled`, larger components are queued for a background global refresh. The default value is `off`, which makes all graph refresh a no-op.
+Enabled by default (graduated). `SPECKIT_GRAPH_REFRESH_MODE` defaults to `write_local`; set `SPECKIT_GRAPH_REFRESH_MODE=off` to disable graph refresh entirely. Small connected components (up to 50 nodes) are recomputed synchronously during the save operation, while `scheduled` queues larger components for a background global refresh.
 
 #### Source Files
 
@@ -1729,7 +1729,7 @@ Async LLM graph backfill enriches high-value documents with probabilistic graph 
 
 #### Current Reality
 
-When `SPECKIT_LLM_GRAPH_BACKFILL` is set to `true`, high-value documents receive an async LLM-based enrichment pass after the synchronous deterministic extraction completes. The flag is default OFF (opt-in). The LLM backfill is also scheduled when `SPECKIT_GRAPH_REFRESH_MODE` is set to `write_local` or `scheduled`.
+Enabled by default (graduated). Set `SPECKIT_LLM_GRAPH_BACKFILL=false` to disable. High-value documents receive an async LLM-based enrichment pass after the synchronous deterministic extraction completes, and the backfill is scheduled when `SPECKIT_GRAPH_REFRESH_MODE` is `write_local` or `scheduled`.
 
 #### Source Files
 
@@ -1745,7 +1745,7 @@ Graph calibration profiles enforce weight caps, RRF fusion overflow limits, and 
 
 #### Current Reality
 
-The calibration module defines two profiles. The default profile sets `GRAPH_WEIGHT_CAP = 0.05`, `n2aCap = 0.10`, `n2bCap = 0.10`, `louvainMinDensity = 0.3`, and `louvainMinSize = 10`. The aggressive profile tightens these to `graphWeightCap = 0.03`, `n2aCap = 0.07`, `n2bCap = 0.07`, `louvainMinDensity = 0.5`, and `louvainMinSize = 20`. Community score boost is capped at `COMMUNITY_SCORE_CAP = 0.03`. Default OFF, opt-in.
+Enabled by default (graduated). Set `SPECKIT_GRAPH_CALIBRATION_PROFILE=false` to disable. The calibration module defines two profiles. The default profile sets `GRAPH_WEIGHT_CAP = 0.05`, `n2aCap = 0.10`, `n2bCap = 0.10`, `louvainMinDensity = 0.3`, and `louvainMinSize = 10`. The aggressive profile tightens these to `graphWeightCap = 0.03`, `n2aCap = 0.07`, `n2bCap = 0.07`, `louvainMinDensity = 0.5`, and `louvainMinSize = 20`. Community score boost is capped at `COMMUNITY_SCORE_CAP = 0.03`.
 
 #### Source Files
 
@@ -2166,7 +2166,7 @@ A regularized linear ranker that learns combination weights from accumulated Sta
 
 #### Current Reality
 
-The learned combiner uses Ridge Regression with an inline matrix math implementation (no external ML dependencies). The 8-feature canonical vector covers: rrf, overlap, graph, session, causal, feedback, validation, artifact. Training uses the closed-form solution with default regularization `DEFAULT_LAMBDA = 0.1`. Validation uses Leave-One-Out Cross-Validation, and feature importance is computed via SHAP-style analysis. Shadow scoring returns both learned and manual scores when the flag is ON, or null with zero overhead when OFF. Default OFF, opt-in.
+Enabled by default (graduated). Set `SPECKIT_LEARNED_STAGE2_COMBINER=false` to disable. The learned combiner uses Ridge Regression with an inline matrix math implementation (no external ML dependencies). The 8-feature canonical vector covers: rrf, overlap, graph, session, causal, feedback, validation, artifact. Training uses the closed-form solution with default regularization `DEFAULT_LAMBDA = 0.1`. Validation uses Leave-One-Out Cross-Validation, and feature importance is computed via SHAP-style analysis. Shadow scoring returns both learned and manual scores when the flag is ON, or null with zero overhead when OFF.
 
 #### Source Files
 
@@ -2182,7 +2182,7 @@ Shadow scoring compares would-have-changed rankings against live rankings on a d
 
 #### Current Reality
 
-The shadow scoring module computes per-result rank deltas between live and shadow rankings, producing Kendall tau correlation, NDCG delta, and MRR delta metrics. Holdout queries are deterministically selected via a seed (default 20% holdout). Promotion requires 2+ consecutive weeks of stable improvement. The evaluation window is 7 days. The promotion gate returns one of three recommendations: promote, wait, or rollback. Shadow-only: no live ranking columns are mutated. Default OFF, set `SPECKIT_SHADOW_FEEDBACK=true` to enable.
+Enabled by default (graduated). Set `SPECKIT_SHADOW_FEEDBACK=false` to disable. The shadow scoring module computes per-result rank deltas between live and shadow rankings, producing Kendall tau correlation, NDCG delta, and MRR delta metrics. Holdout queries are deterministically selected via a seed (default 20% holdout). Promotion requires 2+ consecutive weeks of stable improvement. The evaluation window is 7 days. The promotion gate returns one of three recommendations: promote, wait, or rollback. Shadow-only: no live ranking columns are mutated.
 
 #### Source Files
 
@@ -2352,7 +2352,7 @@ Corpus-grounded LLM query reformulation applies step-back abstraction combined w
 
 #### Current Reality
 
-The reformulation module performs a two-step process: (1) cheap seed retrieval via FTS5/BM25 keyword search (no embedding call, up to 3 results) to ground the prompt in real corpus content, then (2) a single LLM call to produce a step-back abstraction and up to 2 corpus-grounded query variants. Timeout is 8000ms. LLM results are cached via a shared LLM result cache (1h TTL). Only fires in deep mode. Default OFF, set `SPECKIT_LLM_REFORMULATION=true` to enable.
+Enabled by default (graduated). Set `SPECKIT_LLM_REFORMULATION=false` to disable. The reformulation module performs a two-step process: (1) cheap seed retrieval via FTS5/BM25 keyword search (no embedding call, up to 3 results) to ground the prompt in real corpus content, then (2) a single LLM call to produce a step-back abstraction and up to 2 corpus-grounded query variants. Timeout is 8000ms. LLM results are cached via a shared LLM result cache (1h TTL). Only fires in deep mode.
 
 #### Source Files
 
@@ -2368,7 +2368,7 @@ HyDE generates a short hypothetical document answering the query, embeds it, and
 
 #### Current Reality
 
-HyDE operates in two modes: `SPECKIT_HYDE` (default FALSE) enables the feature and generates pseudo-documents, `SPECKIT_HYDE_ACTIVE` (default FALSE) graduates from shadow to full merge mode. HyDE only fires in deep mode with low-confidence baselines (top score < 0.45). Pseudo-documents are generated in markdown-memory format (max 200 tokens). Budget: 1 LLM call per cache miss. Combined with reformulation: at most 2 total LLM calls per deep query.
+Enabled by default (graduated). Set `SPECKIT_HYDE=false` to disable HyDE generation and `SPECKIT_HYDE_ACTIVE=false` to force shadow-only mode. HyDE only fires in deep mode with low-confidence baselines (top score < 0.45). Pseudo-documents are generated in markdown-memory format (max 200 tokens). Budget: 1 LLM call per cache miss. Combined with reformulation: at most 2 total LLM calls per deep query.
 
 #### Source Files
 
@@ -2384,7 +2384,7 @@ Index-time query surrogates generate surrogate metadata (aliases, headings, summ
 
 #### Current Reality
 
-At index time, the surrogate generator produces aliases (parenthetical abbreviations, synonyms), headings, extractive summaries (max 200 characters), and 2-5 heuristic questions. At query time, stored surrogates are matched against the incoming query using token overlap with a minimum match threshold of 0.15. Default OFF, set `SPECKIT_QUERY_SURROGATES=true` to enable.
+Enabled by default (graduated). Set `SPECKIT_QUERY_SURROGATES=false` to disable. At index time, the surrogate generator produces aliases (parenthetical abbreviations, synonyms), headings, extractive summaries (max 200 characters), and 2-5 heuristic questions. At query time, stored surrogates are matched against the incoming query using token overlap with a minimum match threshold of 0.15.
 
 #### Source Files
 
@@ -4231,7 +4231,7 @@ Progressive disclosure replaces hard tail-truncation with a multi-layer response
 
 #### Current Reality
 
-The progressive disclosure module provides four layers: summary layer (confidence distribution digest), snippet extraction (100-char previews), continuation cursors (base64 tokens, 5-min TTL), and progressive response builder. Default page size is 5. Cursor encoding uses JSON-in-base64 with strict field validation. The cursor store is process-local. Default OFF, set `SPECKIT_PROGRESSIVE_DISCLOSURE_V1=true` to enable.
+Enabled by default (graduated). Set `SPECKIT_PROGRESSIVE_DISCLOSURE_V1=false` to disable. The progressive disclosure module provides four layers: summary layer (confidence distribution digest), snippet extraction (100-char previews), continuation cursors (base64 tokens, 5-min TTL), and progressive response builder. Default page size is 5. Cursor encoding uses JSON-in-base64 with strict field validation. The cursor store is process-local.
 
 #### Source Files
 
@@ -4247,7 +4247,7 @@ Retrieval session state tracks per-session context enabling cross-turn deduplica
 
 #### Current Reality
 
-The session state module provides cross-turn deduplication (seen results receive 0.3x score multiplier), goal-aware refinement (up to 1.2x boost for goal-aligned results), and stateful tracking of open questions, preferred anchors, and seen result IDs. Storage is in-memory only (ephemeral). Sessions expire after 30 minutes of inactivity. LRU eviction at 100 concurrent sessions. Default OFF, set `SPECKIT_SESSION_RETRIEVAL_STATE_V1=true` to enable.
+Enabled by default (graduated). Set `SPECKIT_SESSION_RETRIEVAL_STATE_V1=false` to disable. The session state module provides cross-turn deduplication (seen results receive 0.3x score multiplier), goal-aware refinement (up to 1.2x boost for goal-aligned results), and stateful tracking of open questions, preferred anchors, and seen result IDs. Storage is in-memory only (ephemeral). Sessions expire after 30 minutes of inactivity. LRU eviction at 100 concurrent sessions.
 
 #### Source Files
 

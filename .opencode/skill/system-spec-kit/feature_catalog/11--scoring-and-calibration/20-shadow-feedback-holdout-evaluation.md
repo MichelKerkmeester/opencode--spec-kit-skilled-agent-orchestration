@@ -19,7 +19,7 @@ The shadow scoring module computes per-result rank deltas between live and shado
 
 Promotion requires 2+ consecutive weeks of stable improvement (`PROMOTION_THRESHOLD_WEEKS = 2`). The evaluation window is 7 days (`EVALUATION_WINDOW_MS`). The promotion gate returns one of three recommendations: `promote`, `wait`, or `rollback`.
 
-Key invariants: shadow-only (no live ranking columns are mutated), holdout queries are deterministically selected via seed, all results logged for auditability. The feature is default OFF, set `SPECKIT_SHADOW_FEEDBACK=true` to enable.
+Enabled by default (graduated). Set `SPECKIT_SHADOW_FEEDBACK=false` to disable. Key invariants: shadow-only (no live ranking columns are mutated), holdout queries are deterministically selected via seed, all results logged for auditability.
 
 ---
 

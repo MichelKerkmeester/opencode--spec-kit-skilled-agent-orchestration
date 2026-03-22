@@ -17,7 +17,7 @@ Operators run the exact prompt and command sequence for `180` and confirm the ex
 
 - Objective: Verify per-result calibrated confidence with 4-factor weighting
 - Prompt: `Test the default-on SPECKIT_RESULT_CONFIDENCE_V1 behavior. Run a search and verify each result receives a calibrated confidence score computed from 4 weighted factors: margin (0.35), channel agreement (0.30), reranker support (0.20), and anchor density (0.15). Confirm results are labeled high/medium/low based on thresholds (HIGH >= 0.7, LOW < 0.4), and that confidence drivers are reported per result. Verify this is heuristic only with no LLM calls. Return a concise user-facing pass/fail verdict with the main reason.`
-- Expected signals: 4 factors: margin 0.35, channel agreement 0.30, reranker support 0.20, anchor density 0.15; HIGH_THRESHOLD=0.7; LOW_THRESHOLD=0.4; labels: high/medium/low; confidence drivers: large_margin, multi_channel_agreement, reranker_support, anchor_density; requestQuality: good/weak/gap; heuristic only (no LLM)
+- Expected signals: 4 factors: margin 0.35, channel agreement 0.30, reranker support 0.20, anchor density 0.15; HIGH_THRESHOLD=0.7; LOW_THRESHOLD=0.4; labels: high/medium/low; confidence drivers: large_margin, multi_channel_agreement, reranker_boost, anchor_density; requestQuality: good/weak/gap; heuristic only (no LLM)
 - Pass/fail: PASS if per-result confidence uses correct 4-factor weights, labels match thresholds, and drivers are reported; FAIL if weights incorrect, thresholds wrong, labels missing, or LLM called in hot path
 
 ---

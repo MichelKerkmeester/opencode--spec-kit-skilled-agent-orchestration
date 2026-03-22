@@ -7,7 +7,7 @@
 // and anchor density into a single calibrated confidence score per
 // result. V1 uses heuristic scoring only — no LLM calls in the hot path.
 //
-// FEATURE FLAG: SPECKIT_RESULT_CONFIDENCE_V1 (default OFF, opt-in)
+// FEATURE FLAG: SPECKIT_RESULT_CONFIDENCE_V1 (default ON, graduated)
 //
 // OUTPUT SHAPE (per result):
 // {
@@ -51,7 +51,7 @@ export type RequestQualityLabel = 'good' | 'weak' | 'gap';
 export type ConfidenceDriver =
   | 'large_margin'
   | 'multi_channel_agreement'
-  | 'reranker_support'
+  | 'reranker_boost'
   | 'anchor_density';
 
 /** Per-result confidence payload. */
@@ -241,7 +241,7 @@ export function computeResultConfidence(results: ScoredResult[]): ResultConfiden
     const drivers: ConfidenceDriver[] = [];
     if (margin >= LARGE_MARGIN_THRESHOLD) drivers.push('large_margin');
     if (channelCount >= STRONG_CHANNEL_AGREEMENT_MIN) drivers.push('multi_channel_agreement');
-    if (hasReranker) drivers.push('reranker_support');
+    if (hasReranker) drivers.push('reranker_boost');
     if (anchorCount >= 2) drivers.push('anchor_density');
 
     return {
@@ -291,7 +291,7 @@ export function assessRequestQuality(
 
 /**
  * Check whether the per-result confidence feature flag is enabled.
- * Default: FALSE (opt-in). Set SPECKIT_RESULT_CONFIDENCE_V1=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_RESULT_CONFIDENCE_V1=false to disable.
  */
 export function isResultConfidenceEnabled(): boolean {
   const val = process.env.SPECKIT_RESULT_CONFIDENCE_V1?.toLowerCase().trim();

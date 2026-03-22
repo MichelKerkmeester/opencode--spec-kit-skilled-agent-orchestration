@@ -19,7 +19,7 @@ The reformulation module performs a two-step process: (1) cheap seed retrieval v
 
 LLM results are cached via a shared LLM result cache (key: normalized query + mode, TTL 1 hour) imported from `llm-cache.ts`, also shared with the HyDE module. Budget: at most 1 LLM call per reformulation. Combined with HyDE: at most 2 total LLM calls per deep query.
 
-Only fires in deep mode (checked by the caller in `stage1-candidate-gen.ts`). Default OFF, set `SPECKIT_LLM_REFORMULATION=true` to enable. Fail-open: seed retrieval returns an empty array on error so the caller can proceed without grounding.
+Only fires in deep mode (checked by the caller in `stage1-candidate-gen.ts`). Enabled by default (graduated). Set `SPECKIT_LLM_REFORMULATION=false` to disable. Fail-open: seed retrieval returns an empty array on error so the caller can proceed without grounding.
 
 ---
 
