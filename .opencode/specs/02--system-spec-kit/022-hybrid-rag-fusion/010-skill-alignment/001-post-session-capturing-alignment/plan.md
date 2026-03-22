@@ -16,7 +16,7 @@ Documentation-only alignment pass using parallel agent dispatch for independent 
 - B2: execution_methods.md — reorder JSON-first
 - B3: save_workflow.md — add --recovery and JSON examples
 - B4: environment_variables.md — add JSON-mode example
-- B6: memory_system.md — update tool count to 32
+- B6: memory_system.md — update tool count to 33
 
 ### Sprint 3: Verification
 - validate.sh on spec folder

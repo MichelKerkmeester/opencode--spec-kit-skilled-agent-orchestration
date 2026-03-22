@@ -72,11 +72,34 @@ description: "Summary of the 2026-03-21 truth-reconciliation pass for the 010 sk
 
 ---
 
-<!-- ANCHOR:limitations -->
-## 6. LIMITATIONS
+<!-- ANCHOR:pass-2 -->
+## 6. POST-RESEARCH-REFINEMENT ALIGNMENT (2026-03-22)
 
-- This pass remains documentation-only.
-- Any future 010 work should be treated as new drift discovered after this closeout, not as leftover backlog from the 2026-03-21 packet.
+After spec-011 (research-based refinement) graduated 9 new feature flags and the feature catalog/playbook grew, a second alignment pass was needed.
+
+### What Changed
+
+| File | Change |
+|------|--------|
+| `SKILL.md` | Added 9 graduated spec-011 flags to feature flags table (25 → 34); updated feature catalog count 194 → 220; updated testing playbook count "(3 files)" → "(19 categories, 226 per-test files)" |
+| `references/config/environment_variables.md` | Added "Research-Based Refinement (Spec-011 Graduated)" subsection with 9 flags to section 8.2 |
+| `references/memory/memory_system.md` | Added `memory_quick_search()` row to L2 Core in tool reference table (32 → 33 rows, matching header) |
+
+### Verification
+
+- Agent definitions (all runtimes): no stale tool/command/flag counts found
+- Command files (all 6 memory commands + README): all clean
+- Command configs (27 YAML + 22 TOML): no stale references
+- sk-doc alignment: zero HVR violations, zero em dashes, zero semicolons, table columns consistent
+<!-- /ANCHOR:pass-2 -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## 7. LIMITATIONS
+
+- Both passes remain documentation-only.
+- Any future 010 work should be treated as new drift discovered after these closeouts, not as leftover backlog.
 <!-- /ANCHOR:limitations -->
 
 ---

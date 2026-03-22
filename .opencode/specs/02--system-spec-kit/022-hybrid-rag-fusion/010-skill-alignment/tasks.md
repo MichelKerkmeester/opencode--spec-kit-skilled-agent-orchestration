@@ -62,6 +62,19 @@ contextType: "implementation"
 
 ---
 
+## Phase 5: Post-Research-Refinement Alignment (2026-03-22)
+
+Drift reconciliation after session-capturing (009) and research-based-refinement (epic/011) phases.
+
+- [x] T011 Add 9 graduated spec-011 flags to SKILL.md feature flags table (25 → 34 flags) (`.opencode/skill/system-spec-kit/SKILL.md`)
+- [x] T012 Update feature catalog count in SKILL.md (194 → 220 documented features, 2 locations) (`.opencode/skill/system-spec-kit/SKILL.md`)
+- [x] T013 Update testing playbook count in SKILL.md resource table (3 files → 19 categories, 226 per-test files) (`.opencode/skill/system-spec-kit/SKILL.md`)
+- [x] T014 Add `memory_quick_search()` row to memory_system.md tool reference table (32 → 33 rows, matching header) (`.opencode/skill/system-spec-kit/references/memory/memory_system.md`)
+- [x] T015 Add 9 graduated spec-011 flags to environment_variables.md section 8.2 (`.opencode/skill/system-spec-kit/references/config/environment_variables.md`)
+- [x] T016 Verify agent definitions, command files, and command configs have no stale references [Evidence: all clean, no hardcoded counts]
+
+---
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
@@ -69,6 +82,9 @@ contextType: "implementation"
 - [x] The canonical 010 docs no longer preserve obsolete command-surface or retired retrieval-command framing
 - [x] The last observable `system-spec-kit` documentation drift is closed in the scoped live docs
 - [x] Strict validation passes for the reconciled 010 pack
+- [x] SKILL.md feature flags, catalog counts, and playbook counts reflect post-spec-011 state
+- [x] memory_system.md tool table has 33 rows matching header count
+- [x] environment_variables.md documents all graduated spec-011 flags
 <!-- /ANCHOR:completion -->
 
 ---

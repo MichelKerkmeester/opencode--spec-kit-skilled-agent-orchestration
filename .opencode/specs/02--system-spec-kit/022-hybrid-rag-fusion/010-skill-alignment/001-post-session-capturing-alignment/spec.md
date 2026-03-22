@@ -1,6 +1,6 @@
 # 001 — Post Session Capturing Alignment
 
-**Level:** 2 | **Priority:** P1 | **Status:** In Progress
+**Level:** 2 | **Priority:** P1 | **Status:** Complete (superseded by parent 010 reconciliation passes)
 
 ## 1. Problem
 
@@ -9,7 +9,7 @@ Six completed specs within the 022-hybrid-rag-fusion epic introduced changes tha
 - **016-json-mode-hybrid-enrichment**: Structured JSON summary fields (toolCalls, exchanges, preflight, postflight)
 - **017-json-primary-deprecation**: JSON as primary save contract, recovery-only gating
 - **018-memory-save-quality-fixes**: Tree-thinning threshold, conversation synthesis, decision deduplication
-- **011-command-alignment**: 6-command structure (context merged into analyze), 32-tool coverage
+- **011-command-alignment**: 6-command structure (context merged into analyze), 33-tool coverage
 - **012-agents-alignment**: Multi-runtime agent sync (18 files across Claude/Gemini)
 - **013-agents-md-alignment**: AGENTS.md Quick Reference tables, Gate 3 ordering fix
 
@@ -21,7 +21,7 @@ Six completed specs within the 022-hybrid-rag-fusion epic introduced changes tha
 - execution_methods.md: Reorder JSON-first, add --json/--stdin
 - save_workflow.md: Add --recovery to bare positional examples, add --json/--stdin
 - environment_variables.md: Add JSON-mode usage example
-- memory_system.md: Update tool count 23→32, add 10 missing tool rows
+- memory_system.md: Update tool count 23→33, add missing tool rows including memory_quick_search
 
 ### Out of Scope
 - Runtime TypeScript changes (NFR-C01)
@@ -33,6 +33,6 @@ Six completed specs within the 022-hybrid-rag-fusion epic introduced changes tha
 
 - SA-001: All bare positional generate-context.js examples use --recovery or JSON-primary syntax
 - SA-002: SKILL.md documents structured JSON fields matching session-types.ts
-- SA-003: memory_system.md tool count matches live 32-tool surface
+- SA-003: memory_system.md tool count matches live 33-tool surface
 - SA-004: execution_methods.md and save_workflow.md show JSON mode as primary path
 - SA-005: Zero runtime TypeScript files modified

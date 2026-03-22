@@ -92,16 +92,28 @@ Required evidence that the pack now reflects live repo truth.
 
 ---
 
+## Post-Research-Refinement Alignment (2026-03-22)
+
+- [x] CHK-060 [P0] SKILL.md feature flags table includes all 9 graduated spec-011 flags (34 total) [EVIDENCE: diff shows 9 rows added between SPECKIT_DASHBOARD_LIMIT and the total count line]
+- [x] CHK-061 [P0] SKILL.md feature catalog count updated 194 → 220 [EVIDENCE: actual per-feature file count verified at 220 via find command]
+- [x] CHK-062 [P0] memory_system.md tool table has 33 rows matching "(33 tools)" header [EVIDENCE: memory_quick_search row added to L2 Core section]
+- [x] CHK-063 [P1] environment_variables.md section 8.2 documents all 9 graduated spec-011 flags [EVIDENCE: new "Research-Based Refinement (Spec-011 Graduated)" subsection added]
+- [x] CHK-064 [P1] SKILL.md testing playbook count updated from "(3 files)" to "(19 categories, 226 per-test files)" [EVIDENCE: actual count verified via find command]
+- [x] CHK-065 [P1] Agent definitions, command files, and command configs verified clean of stale counts [EVIDENCE: 3 parallel explore agents found no hardcoded tool/command/flag counts in any agent or command file]
+- [x] CHK-066 [P0] All edits aligned with sk-doc standards (HVR, table formatting, no em dashes/semicolons) [EVIDENCE: grep for banned words returned zero matches, diff verified zero em dashes and semicolons in additions]
+
+---
+
 <!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 6 | 6/6 |
-| P1 Items | 8 | 8/8 |
+| P0 Items | 6+3 | 9/9 |
+| P1 Items | 8+3 | 11/11 |
 | P2 Items | 1 | 0/1 |
 
-**Verification Date**: 2026-03-21
+**Verification Date**: 2026-03-21 (initial), 2026-03-22 (post-research-refinement alignment)
 <!-- /ANCHOR:summary -->
 
 ---

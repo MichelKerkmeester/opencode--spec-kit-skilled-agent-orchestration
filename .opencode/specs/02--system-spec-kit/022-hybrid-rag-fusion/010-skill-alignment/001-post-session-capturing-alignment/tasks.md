@@ -13,10 +13,10 @@
 - [x] T006: Reorder execution_methods.md JSON-first
 - [x] T007: Fix save_workflow.md bare positional examples
 - [x] T008: Add JSON-mode example to environment_variables.md
-- [x] T009: Update memory_system.md tool count 23→32
+- [x] T009: Update memory_system.md tool count 23→33
 
 ## Sprint 3: Verification
 
-- [ ] T010: Run validate.sh
-- [ ] T011: Grep for remaining bare positional syntax
-- [ ] T012: Verify tool counts match live repo
+- [x] T010: Run validate.sh [Evidence: parent 010 passed strict validation 2026-03-21]
+- [x] T011: Grep for remaining bare positional syntax [Evidence: verified in parent 010 reconciliation pass]
+- [x] T012: Verify tool counts match live repo [Evidence: 33 tools in tool-schemas.ts, 33 rows in memory_system.md, verified 2026-03-22]
