@@ -4,6 +4,9 @@
 // Feature catalog: Auto entity extraction
 // Provides context type detection, scope filtering, and session ID
 // Generation for the spec-kit memory system.
+
+/** @deprecated Never wired into production pipeline. Entity scoping handled by entity-linker.ts instead. */
+
 // ───────────────────────────────────────────────────────────────
 // 1. CONSTANTS
 

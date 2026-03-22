@@ -600,7 +600,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 
 **Key Concepts:**
 - **Constitutional tier** — 3.0x search boost + 2.0x importance multiplier; merged into normal scoring pipeline
-- **Document-type scoring** — 10 indexed document types with multipliers: spec (1.4x), plan (1.3x), constitutional (2.0x), decision_record (1.4x), tasks (1.1x), implementation_summary (1.1x), research (1.1x), checklist (1.0x), handover (1.0x), memory (1.0x). README files and skill-doc trees (`sk-*`, including `references/` and `assets/`) are excluded from memory indexing.
+- **Document-type scoring** — 10 indexed document types with multipliers: spec (1.4x), plan (1.3x), constitutional (2.0x), decision_record (1.4x), tasks (1.1x), implementation_summary (1.1x), scratch (0.6x), checklist (1.0x), handover (1.0x), memory (1.0x). README files and skill-doc trees (`sk-*`, including `references/` and `assets/`) are excluded from memory indexing.
 - **Decay scoring** — FSRS v4 power-law model; recent memories rank higher
 - **Import-path hardening** - Spec 126 fixed MCP import-path regressions in memory runtime modules (including context server + attention decay wiring)
 - **Metadata preservation pipeline** - `memory_save` update/reinforce paths preserve `document_type` and `spec_level`, and vector-index metadata updates stay in sync
@@ -618,7 +618,7 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - **Feature catalog** — 219 documented features across 19 categories (`feature_catalog/01--retrieval/` through `19--feature-flag-reference/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
 - **Manual testing playbook** — Operator-facing validation matrix covering existing (`EX-*`) and new (`NEW-*`) features with deterministic prompts, execution sequences, and pass/fail triage. Includes review protocol and subagent utilization ledger. See [manual_testing_playbook/](./manual_testing_playbook/)
 - **Validation scoring** — `wasUseful=false` applies a demotion penalty to memory scores; 5+ positive validations may promote a memory's importance tier
-- **Tree-thinning threshold** — Lowered from 300 to 150 characters with merge group cap of 3 for improved file visibility in memory context
+- **Tree-thinning threshold** — Lowered from 300 to 150 tokens with merge group cap of 3 for improved file visibility in memory context
 - **JSON-mode conversation synthesis** — When conversation prompts are sparse (e.g., JSON-mode captures with minimal exchange data), conversation content is synthesized from `sessionSummary` field
 - **Decision deduplication** — String-form decisions no longer produce duplicate CONTEXT/RATIONALE/CHOSEN values in memory output
 - **Structural blocker detection** — Broad keyword matching (e.g., "error", "problem") replaced with structural pattern detection to reduce false blocker reports

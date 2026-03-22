@@ -22,6 +22,9 @@
  *
  * @see feature_catalog/12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md
  */
+
+/** @deprecated RSF fusion dead code. isRsfEnabled() was removed in Sprint 10 audit. Core algorithms retained for reference only. */
+
 import type { RrfItem, RankedList } from '@spec-kit/shared/algorithms/rrf-fusion';
 
 // Feature catalog: Relative score fusion in shadow mode

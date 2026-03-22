@@ -54,11 +54,13 @@ function parseEnvelope(response: Awaited<ReturnType<typeof handleSharedSpaceUpse
 
 describe('shared-memory admin handlers', () => {
   beforeEach(() => {
+    process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
     dbHolder.current = new Database(':memory:');
     mockRequireDb.mockClear();
   });
 
   afterEach(() => {
+    delete process.env.SPECKIT_MEMORY_SHARED_MEMORY;
     dbHolder.current?.close();
     dbHolder.current = null;
   });

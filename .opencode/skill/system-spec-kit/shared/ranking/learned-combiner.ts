@@ -10,6 +10,8 @@
 // No external ML dependencies — matrix math imported from matrix-math.ts.
 // ---------------------------------------------------------------
 
+/** @deprecated Circular island with matrix-math.ts. Neither module is imported by mcp_server/ or re-exported from shared/index.ts. Ridge regression combiner needs a barrel export and pipeline integration. */
+
 // Feature catalog: Learned Stage 2 weight combiner
 
 import { transpose, matMul, matVecMul, addScaledIdentity, solveLinearSystem } from './matrix-math';

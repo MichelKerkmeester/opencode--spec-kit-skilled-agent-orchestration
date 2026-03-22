@@ -15,6 +15,10 @@ import type { ParsedMemory } from '../parsing/memory-parser';
 import { classifyEncodingIntent } from '../search/encoding-intent';
 import { isEncodingIntentEnabled } from '../search/search-flags';
 import { getHistoryEventsForLineage, init as initHistory, recordHistory, type HistoryLineageEvent } from './history';
+// TODO: ARCHITECTURAL DEBT — lib/ importing from handlers/ creates a circular dependency
+// with handlers/pe-gating.ts. Fix: extract calculateDocumentWeight(), isSpecDocumentType(),
+// detectSpecLevelFromParsed(), and applyPostInsertMetadata() into a new lib/storage/document-helpers.ts
+// module, then update both lineage-state.ts and pe-gating.ts to import from there.
 import { applyPostInsertMetadata } from '../../handlers/save/db-helpers';
 import { calculateDocumentWeight, isSpecDocumentType } from '../../handlers/pe-gating';
 import { detectSpecLevelFromParsed } from '../../handlers/handler-utils';

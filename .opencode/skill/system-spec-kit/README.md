@@ -157,7 +157,7 @@ The response should return relevant memory entries. If it returns an error, see 
 │   ├── renderers/              # Output rendering
 │   └── dist/                   # Compiled JavaScript output
 ├── mcp_server/                 # Spec Kit Memory MCP (TypeScript)
-│   ├── context-server.ts       # MCP server entry (~682 lines, 33 tools)
+│   ├── context-server.ts       # MCP server entry (~1073 lines, 33 tools)
 │   ├── handlers/               # Tool handlers (11 functional + 2 infra)
 │   ├── lib/                    # cognitive/, search/, cache/, storage/, providers/
 │   ├── tests/                  # MCP test suite
@@ -172,7 +172,7 @@ The response should return relevant memory entries. If it returns an error, see 
 │   ├── ranking/                # Learned combiner and matrix math
 │   ├── scoring/                # Folder scoring logic
 │   └── utils/                  # Path security, retry, token estimation
-├── references/                 # Reference documentation (19 files)
+├── references/                 # Reference documentation (25 files)
 ├── assets/                     # Decision matrices, YAML configs
 ├── constitutional/             # Always-surface rules (never decay)
 └── feature_catalog/            # Feature documentation (19 categories, 189 features)
@@ -300,7 +300,7 @@ The Spec Kit Memory MCP exposes **33 tools** across 7 functional groups. All too
 
 | Group | Tools | Count |
 |-------|-------|-------|
-| Search and Retrieval | memory_context, memory_search, memory_match_triggers, memory_list, memory_stats | 5 |
+| Search and Retrieval | memory_context, memory_search, memory_match_triggers, memory_quick_search, memory_list, memory_stats | 6 |
 | CRUD Operations | memory_save, memory_update, memory_delete, memory_bulk_delete, memory_validate, memory_index_scan | 6 |
 | Checkpoints | checkpoint_create, checkpoint_list, checkpoint_restore, checkpoint_delete | 4 |
 | Session Learning | task_preflight, task_postflight, memory_get_learning_history | 3 |
@@ -325,6 +325,7 @@ For full API reference including parameters, return types and configuration, see
 | `/spec_kit:handover` | 4 | Create a session handover document |
 | `/spec_kit:debug` | 5 | Delegate debugging to a specialized sub-agent |
 | `/spec_kit:phase` | N/A | Create and manage phase decomposition for complex spec folders |
+| `/spec_kit:deep-research` | N/A | Autonomous deep research loop - iterative investigation with convergence detection |
 
 **Mode Suffixes** (apply to spec_kit commands):
 

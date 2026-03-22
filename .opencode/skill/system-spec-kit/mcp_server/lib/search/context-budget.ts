@@ -3,6 +3,9 @@
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: Dynamic token budget allocation
 // Token-budget-aware result selection with graph region diversity.
+
+/** @deprecated Never wired into production pipeline. Token budget managed by dynamic-token-budget.ts instead. */
+
 // ───────────────────────────────────────────────────────────────
 // 1. CONSTANTS
 

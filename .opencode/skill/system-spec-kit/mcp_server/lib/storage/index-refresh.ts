@@ -3,6 +3,9 @@
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: Workspace scanning and indexing (memory_index_scan)
 // Manages embedding index freshness on the memory_index table
+
+/** @deprecated Never wired into production pipeline. Index refresh logic handled by memory_index_scan handler. */
+
 // External packages
 import type Database from 'better-sqlite3';
 

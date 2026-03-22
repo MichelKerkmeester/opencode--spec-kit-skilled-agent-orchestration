@@ -12,6 +12,9 @@
 //   - Pure functions — no DB access, no side effects.
 //   - Channel names are lowercase strings matching existing conventions
 // (see rrf-fusion.ts SOURCE_TYPES and eval-logger.ts channel parameter).
+
+/** @deprecated Never wired into production pipeline. Channel attribution superseded by ablation-framework.ts. */
+
 /* --- 1. TYPES --- */
 
 /** Known retrieval channels (extensible — any lowercase string accepted). */

@@ -119,6 +119,15 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
   const db = requireDb();
   ensureSharedCollabRuntime(db);
 
+  const enabled = isSharedMemoryEnabled(db);
+  if (!enabled) {
+    return createMCPErrorResponse({
+      tool: 'shared_space_upsert',
+      error: 'Shared memory is not enabled. Run /memory:shared enable first.',
+      code: 'SHARED_MEMORY_DISABLED',
+    });
+  }
+
   const actor = resolveAdminActor('shared_space_upsert', args.actorUserId, args.actorAgentId);
   if ('content' in actor) {
     return actor;
@@ -184,6 +193,15 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
 export async function handleSharedSpaceMembershipSet(args: SharedSpaceMembershipArgs): Promise<MCPResponse> {
   const db = requireDb();
   ensureSharedCollabRuntime(db);
+
+  const enabled = isSharedMemoryEnabled(db);
+  if (!enabled) {
+    return createMCPErrorResponse({
+      tool: 'shared_space_membership_set',
+      error: 'Shared memory is not enabled. Run /memory:shared enable first.',
+      code: 'SHARED_MEMORY_DISABLED',
+    });
+  }
 
   const actor = resolveAdminActor('shared_space_membership_set', args.actorUserId, args.actorAgentId);
   if ('content' in actor) {

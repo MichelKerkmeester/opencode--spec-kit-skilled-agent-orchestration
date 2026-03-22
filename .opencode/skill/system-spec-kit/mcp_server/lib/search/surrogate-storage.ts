@@ -6,6 +6,9 @@
 //
 // Provides: table init, store, load, and batch-load operations.
 // Self-contained — no imports from query-surrogates to avoid cycles.
+//
+// TODO: Surrogate storage is populated at index time but never queried at search time.
+// See query-surrogates.ts for the matching function that needs pipeline integration.
 
 import type Database from 'better-sqlite3';
 

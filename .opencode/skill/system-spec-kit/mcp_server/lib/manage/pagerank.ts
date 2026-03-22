@@ -5,6 +5,9 @@
 // Iterative PageRank algorithm for memory graph authority scoring.
 // Computes convergence-based rank scores for weighted node retrieval.
 // Reference: C138-P4 — graph-based importance scoring for memory nodes.
+
+/** @deprecated Never wired into production pipeline. Graph ranking uses typed-weighted degree boost instead. */
+
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
 

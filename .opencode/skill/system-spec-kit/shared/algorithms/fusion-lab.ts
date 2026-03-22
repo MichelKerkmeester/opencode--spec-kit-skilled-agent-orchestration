@@ -7,6 +7,8 @@
 //
 // Feature flag: SPECKIT_FUSION_POLICY_SHADOW_V2 (default OFF)
 
+/** @deprecated Re-exported by algorithms/index.ts barrel but never consumed by any production code in mcp_server/. Shadow fusion comparison infrastructure needs Stage 2 pipeline integration. */
+
 // Local
 import { fuseResultsMulti, clamp } from './rrf-fusion';
 

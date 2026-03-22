@@ -16,6 +16,9 @@
 //   - MAX_BOOST_DELTA per cycle prevents runaway amplification
 //   - All reads and writes use the existing feedback_events table
 //     plus a lightweight batch_learning_log table for auditability
+
+/** @deprecated Fully implemented and tested but never wired into any handler, cron job, or save path. Requires a scheduled trigger to call runBatchLearning(). */
+
 import type Database from 'better-sqlite3';
 import {
   initFeedbackLedger,

@@ -6,6 +6,9 @@
 // Maximum MRR@5 assuming access to ALL memory content and
 // Perfect ranking ability. Pure functions, no DB writes,
 // No side effects (except optional async scorer).
+
+/** @deprecated Never wired into production pipeline. Full-context ceiling baseline retained for reference only. */
+
 import { GroundTruthEntry } from './eval-metrics';
 
 /* ───────────────────────────────────────────────────────────────
