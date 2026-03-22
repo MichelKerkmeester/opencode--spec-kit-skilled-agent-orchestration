@@ -11,12 +11,13 @@
     "phase"
   ],
   "lastUpdated": "2026-03-21T13:24:03.947Z",
-  "specId": "016",
-  "folderSlug": "json-mode-hybrid-enrichment",
+  "specId": "001",
+  "folderSlug": "initial-enrichment",
   "parentChain": [
     "02--system-spec-kit",
     "022-hybrid-rag-fusion",
-    "009-perfect-session-capturing"
+    "009-perfect-session-capturing",
+    "016-json-mode-hybrid-enrichment"
   ],
   "memorySequence": 3,
   "memoryNameHistory": [

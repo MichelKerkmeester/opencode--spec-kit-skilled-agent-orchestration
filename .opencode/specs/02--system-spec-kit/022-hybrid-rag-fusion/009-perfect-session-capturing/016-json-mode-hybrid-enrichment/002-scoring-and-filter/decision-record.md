@@ -25,7 +25,7 @@ contextType: "decision"
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-03-21 |
 | **Deciders** | Implementation author |
 
@@ -126,7 +126,7 @@ The extractors quality scorer (extractors/quality-scorer.ts:113-205) applies bon
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-03-21 |
 | **Deciders** | Implementation author |
 
@@ -234,7 +234,7 @@ Additionally, the contamination-filter.ts pattern list covers 29 actual patterns
 
 | Field | Value |
 |-------|-------|
-| **Status** | Proposed |
+| **Status** | Accepted |
 | **Date** | 2026-03-21 |
 | **Deciders** | Implementation author |
 

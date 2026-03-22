@@ -136,7 +136,7 @@ If a task is blocked:
 - [x] T033 Add observation dedup at normalization time — string-equality dedup with fallback for non-string entries (input-normalizer.ts)
 - [x] T034 Read workflow.ts save entry point — identify hook point before memory_save call (workflow.ts)
 - [x] T035 Implement pre-save overlap check: query last 20 memories for spec folder, compare SHA1 fingerprint, warn if match found — fail open on timeout (workflow.ts)
-- [x] T036 Add `SPECKIT_PRE_SAVE_DEDUP` env flag — default false; overlap check runs only when truthy (workflow.ts)
+- [x] T036 Add `SPECKIT_PRE_SAVE_DEDUP` env flag — default enabled (opt-out); overlap check runs only when truthy (workflow.ts)
 - [x] T037 Document `SPECKIT_PRE_SAVE_DEDUP` in env flag documentation or SKILL.md feature flags section (SKILL.md or equivalent)
 <!-- /ANCHOR:phase-2 -->
 

@@ -4,7 +4,7 @@
 **Priority**: P0
 **Level**: 3+
 **Created**: 2026-03-20
-**Updated**: 2026-03-21
+**Updated**: 2026-03-22
 **Parent**: [009-perfect-session-capturing](../spec.md)
 
 ---
@@ -18,9 +18,9 @@ Phase container for JSON-mode memory capturing quality improvements. Houses the 
 | Phase | Name | Focus | Status |
 |-------|------|-------|--------|
 | 001 | [Initial Enrichment](001-initial-enrichment/spec.md) | Structured JSON support, Wave 2/3 hardening, RC1-RC5 fixes, post-save review | Complete |
-| 002 | [Scoring & Filter](002-scoring-and-filter/spec.md) | Quality scorer recalibration + contamination filter scope expansion (Domains C+E) | Draft |
-| 003 | [Field Integrity & Schema](003-field-integrity-and-schema/spec.md) | Fast-path field drops, validation gaps, V-rule coverage (Domains A+B) | Draft |
-| 004 | [Indexing & Coherence](004-indexing-and-coherence/spec.md) | Trigger phrase quality, template consumption, cross-session dedup (Domains D+F) | Draft |
+| 002 | [Scoring & Filter](002-scoring-and-filter/spec.md) | Quality scorer recalibration + contamination filter scope expansion (Domains C+E) | Complete |
+| 003 | [Field Integrity & Schema](003-field-integrity-and-schema/spec.md) | Fast-path field drops, validation gaps, V-rule coverage (Domains A+B) | Complete |
+| 004 | [Indexing & Coherence](004-indexing-and-coherence/spec.md) | Trigger phrase quality, template consumption, cross-session dedup (Domains D+F) | Complete |
 
 ## Shared Resources
 

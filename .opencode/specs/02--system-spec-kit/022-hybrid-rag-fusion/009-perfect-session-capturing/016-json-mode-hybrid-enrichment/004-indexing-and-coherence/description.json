@@ -12,7 +12,7 @@
   "specId": "004",
   "folderSlug": "indexing-and-coherence",
   "level": 3,
-  "status": "draft",
+  "status": "Complete",
   "parentChain": [
     "02--system-spec-kit",
     "022-hybrid-rag-fusion",

@@ -146,7 +146,7 @@ input-normalizer.ts observation array build → dedup by string equality → nor
 - [ ] Add dedup: `observations = [...new Set(observations)]` or equivalent for non-string-safe arrays
 - [ ] Read workflow.ts save entry point — identify where pre-save check should be injected
 - [ ] Implement pre-save fingerprint query: fetch last 20 memories for spec folder, compare SHA1 fingerprint, warn if match found
-- [ ] Guard with `SPECKIT_PRE_SAVE_DEDUP` env flag (default: false); log warning, do not block save
+- [x] Guard with `SPECKIT_PRE_SAVE_DEDUP` env flag (default: enabled, opt-out via false); log warning, do not block save
 <!-- /ANCHOR:phases -->
 
 ---

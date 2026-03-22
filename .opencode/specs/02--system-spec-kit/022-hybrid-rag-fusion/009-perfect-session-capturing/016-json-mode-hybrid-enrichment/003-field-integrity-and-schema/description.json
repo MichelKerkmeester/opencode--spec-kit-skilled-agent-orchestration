@@ -25,6 +25,7 @@
     "016-json-mode-hybrid-enrichment"
   ],
   "level": 3,
+  "status": "Complete",
   "priority": "P0-P2",
   "domains": ["A-pipeline-data-integrity", "B-schema-validation-completeness"],
   "filesModified": [
