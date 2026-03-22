@@ -17,7 +17,7 @@ Some highly connected memories kept showing up in every search result regardless
 
 Hub memories with many connections dominated co-activation results no matter what you searched for. If a memory had 40 causal edges, it showed up everywhere.
 
-A fan-effect divisor helper (`1 / sqrt(neighbor_count)`) exists in `co-activation.ts`, but the divisor is only applied on the helper path, not in the Stage 2 hot-path co-activation scoring. Stage 2 hot-path boosting applies spread-activation scores directly via the configured co-activation strength multiplier (`SPECKIT_COACTIVATION_STRENGTH`) without the fan-effect divisor. The guard logic remains in the helper path with bounded division behavior.
+A fan-effect divisor helper (`1 / sqrt(neighbor_count)`) exists in `co-activation.ts` `boostScore()`. The same divisor is now also applied in the Stage 2 hot-path co-activation scoring (`stage2-fusion.ts`). When spreading activation boosts are applied to search results, the boost is divided by `sqrt(relatedCount)` where `relatedCount` is the number of pre-computed related memories for the target result. This ensures hub nodes with many connections receive proportionally dampened boosts, preventing any single hub from monopolizing top-N results.
 
 ---
 

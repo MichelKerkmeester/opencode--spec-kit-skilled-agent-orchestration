@@ -1,3 +1,7 @@
+// ---------------------------------------------------------------
+// MODULE: Phase Classifier
+// ---------------------------------------------------------------
+
 export type {
   PhaseClassifierExchangeInput,
   PhaseClassificationResult,

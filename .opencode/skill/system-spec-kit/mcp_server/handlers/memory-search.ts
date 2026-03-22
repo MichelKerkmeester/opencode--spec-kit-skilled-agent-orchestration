@@ -692,7 +692,6 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       stateStats: pipelineResult.annotations.stateStats,
       featureFlags: {
         ...pipelineResult.annotations.featureFlags,
-        pipelineV2: true,
       },
       pipelineMetadata: pipelineResult.metadata,
     };

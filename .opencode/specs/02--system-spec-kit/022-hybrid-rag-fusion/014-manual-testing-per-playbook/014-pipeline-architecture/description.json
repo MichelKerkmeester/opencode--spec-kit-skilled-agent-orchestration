@@ -2,15 +2,16 @@
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/014-pipeline-architecture",
   "description": "Feature Specification: Manual Testing — Pipeline Architecture (Phase 014)",
   "keywords": [
+    "feature",
+    "specification",
     "manual",
     "testing",
     "pipeline",
     "architecture",
     "phase",
-    "014",
-    "playbook"
+    "014"
   ],
-  "lastUpdated": "2026-03-22T00:00:00.000Z",
+  "lastUpdated": "2026-03-22T17:41:14.836Z",
   "specId": "014",
   "folderSlug": "pipeline-architecture",
   "parentChain": [
@@ -19,9 +20,5 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Manual Testing: Pipeline Architecture",
-  "status": "Draft",
-  "importance_tier": "normal",
-  "short_description": "Manual test execution for 18 pipeline architecture scenarios"
+  "memoryNameHistory": []
 }

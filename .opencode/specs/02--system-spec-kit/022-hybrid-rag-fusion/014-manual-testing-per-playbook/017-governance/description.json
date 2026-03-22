@@ -1,15 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/017-governance",
-  "description": "Phase 017 governance manual test packet — five scenarios: 063 feature flag governance, 064 sunset audit, 122 governed ingest, 123 shared-space rollout, 148 shared-memory first-run setup.",
+  "description": "Feature Specification: manual-testing-per-playbook governance phase",
   "keywords": [
+    "feature",
+    "specification",
+    "manual-testing-per-playbook",
     "governance",
-    "manual-testing",
-    "feature-flag-governance",
-    "shared-memory",
-    "governed-ingest",
-    "phase-017"
+    "phase"
   ],
-  "lastUpdated": "2026-03-22T00:00:00.000Z",
+  "lastUpdated": "2026-03-22T17:41:14.858Z",
   "specId": "017",
   "folderSlug": "governance",
   "parentChain": [
@@ -18,9 +17,5 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Manual Testing: Governance",
-  "status": "Draft",
-  "importance_tier": "medium",
-  "short_description": "Manual test execution packet for governance scenarios 063, 064, 122, 123, 148"
+  "memoryNameHistory": []
 }

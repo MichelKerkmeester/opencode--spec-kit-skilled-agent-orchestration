@@ -1,14 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/007-evaluation",
-  "description": "Manual testing for evaluation category: 2 scenarios covering ablation studies and reporting dashboard",
+  "description": "Feature Specification: manual-testing-per-playbook evaluation phase",
   "keywords": [
-    "manual-testing",
+    "feature",
+    "specification",
+    "manual-testing-per-playbook",
     "evaluation",
-    "ablation",
-    "reporting-dashboard",
-    "eval-metrics"
+    "phase"
   ],
-  "lastUpdated": "2026-03-22T00:00:00.000Z",
+  "lastUpdated": "2026-03-22T17:41:14.800Z",
   "specId": "007",
   "folderSlug": "evaluation",
   "parentChain": [
@@ -17,9 +17,5 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: manual-testing-per-playbook evaluation phase",
-  "status": "Draft",
-  "importance_tier": "high",
-  "short_description": "Execute 2 evaluation scenarios: EX-026 and EX-027"
+  "memoryNameHistory": []
 }

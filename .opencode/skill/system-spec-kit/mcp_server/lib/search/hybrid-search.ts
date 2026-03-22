@@ -1119,6 +1119,19 @@ async function hybridSearchEnhanced(
               budgetLimit: budgetResult.budget,
               // Wire queryComplexity from router classification into trace
               queryComplexity: routeResult.tier,
+              // Wire confidence truncation metadata into per-result trace (036)
+              ...(s3meta.truncation ? {
+                confidenceTruncation: {
+                  truncated: s3meta.truncation.truncated,
+                  originalCount: s3meta.truncation.originalCount,
+                  truncatedCount: s3meta.truncation.truncatedCount,
+                  medianGap: s3meta.truncation.medianGap,
+                  cutoffGap: s3meta.truncation.cutoffGap,
+                  cutoffIndex: s3meta.truncation.cutoffIndex,
+                  thresholdMultiplier: s3meta.truncation.thresholdMultiplier,
+                  minResultsGuaranteed: s3meta.truncation.minResultsGuaranteed,
+                },
+              } : {}),
             },
           };
         });

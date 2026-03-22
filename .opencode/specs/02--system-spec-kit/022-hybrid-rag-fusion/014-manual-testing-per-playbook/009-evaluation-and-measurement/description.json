@@ -1,20 +1,16 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/009-evaluation-and-measurement",
-  "description": "Manual test specification for 16 evaluation-and-measurement playbook scenarios: evaluation database and schema, core metric computation, observer effect mitigation, full-context ceiling evaluation, quality proxy formula, synthetic ground truth corpus, BM25-only baseline, agent consumption instrumentation, scoring observability, full reporting and ablation study framework, shadow scoring and channel attribution, test quality improvements, evaluation and housekeeping fixes, cross-AI validation fixes, INT8 quantization evaluation, and memory roadmap baseline snapshot.",
+  "description": "Feature Specification: Manual Testing — Evaluation and Measurement",
   "keywords": [
-    "manual testing",
+    "feature",
+    "specification",
+    "manual",
+    "testing",
     "evaluation",
-    "measurement",
-    "ablation study",
-    "recall",
-    "metric computation",
-    "shadow scoring",
-    "ground truth",
-    "bm25 baseline",
-    "int8 quantization",
-    "roadmap baseline"
+    "measurement"
   ],
-  "lastUpdated": "2026-03-22T00:00:00.000Z",
+  "status": "complete",
+  "lastUpdated": "2026-03-22T17:41:14.809Z",
   "specId": "009",
   "folderSlug": "evaluation-and-measurement",
   "parentChain": [
@@ -23,9 +19,5 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Manual Testing: Evaluation and Measurement",
-  "status": "Draft",
-  "importance_tier": "normal",
-  "short_description": "Manual test execution for 16 evaluation-and-measurement scenarios from the hybrid-rag-fusion playbook"
+  "memoryNameHistory": []
 }

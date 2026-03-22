@@ -1,15 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/004-maintenance",
-  "description": "Phase 004 maintenance manual test packet. Execute scenarios EX-014 (memory_index_scan) and EX-035 (startup runtime compatibility guards).",
+  "description": "Feature Specification: manual-testing-per-playbook maintenance phase",
   "keywords": [
-    "manual-testing",
+    "feature",
+    "specification",
+    "manual-testing-per-playbook",
     "maintenance",
-    "EX-014",
-    "EX-035",
-    "memory_index_scan",
-    "startup-guards"
+    "phase"
   ],
-  "lastUpdated": "2026-03-22T00:00:00.000Z",
+  "lastUpdated": "2026-03-22T17:41:14.785Z",
   "specId": "004",
   "folderSlug": "maintenance",
   "parentChain": [
@@ -18,9 +17,5 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: manual-testing-per-playbook maintenance phase",
-  "status": "Draft",
-  "importance_tier": "normal",
-  "short_description": "Phase 004 maintenance manual test packet: EX-014, EX-035"
+  "memoryNameHistory": []
 }

@@ -8,7 +8,7 @@ import { escapeRegex } from '../utils/path-security';
 /* --- 1. TYPES --- */
 
 /** Signal category detected in user prompt */
-export type SignalCategory = 'correction' | 'preference' | 'neutral';
+export type SignalCategory = 'correction' | 'preference' | 'reinforcement' | 'neutral';
 
 /** Result of signal detection for a prompt */
 export interface SignalDetection {
@@ -337,10 +337,22 @@ export const PREFERENCE_KEYWORDS: string[] = [
   'please use',
 ];
 
-// Correction signals (0.2) weighted higher than preferences (0.1) — corrections indicate stronger search intent
+/** Keywords for REINFORCEMENT signals — user is confirming or praising a prior result */
+export const REINFORCEMENT_KEYWORDS: string[] = [
+  'that worked',
+  'perfect',
+  'exactly',
+  'great',
+  'yes',
+  'keep doing that',
+  'this is correct',
+];
+
+// Correction signals (0.2) weighted higher than preferences (0.1) and reinforcement (0.15) — corrections indicate stronger search intent
 /** Boost values per signal category */
 const SIGNAL_BOOSTS: Record<Exclude<SignalCategory, 'neutral'>, number> = {
   correction: 0.2,
+  reinforcement: 0.15,
   preference: 0.1,
 };
 
@@ -384,6 +396,21 @@ export function detectSignals(prompt: string): SignalDetection[] {
       category: 'preference',
       keywords: preferenceHits,
       boost: SIGNAL_BOOSTS.preference,
+    });
+  }
+
+  // Check REINFORCEMENT keywords
+  const reinforcementHits: string[] = [];
+  for (const kw of REINFORCEMENT_KEYWORDS) {
+    if (matchPhraseWithBoundary(normalized, kw)) {
+      reinforcementHits.push(kw);
+    }
+  }
+  if (reinforcementHits.length > 0) {
+    detected.push({
+      category: 'reinforcement',
+      keywords: reinforcementHits,
+      boost: SIGNAL_BOOSTS.reinforcement,
     });
   }
 

@@ -1,15 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/019-feature-flag-reference",
-  "description": "Phase 019 feature-flag-reference manual test packet — eight scenarios: EX-028 through EX-034 flag group audits via memory_search/context, and 125 Hydra roadmap capability flag isolation via dist build snapshots.",
+  "description": "Feature Specification: manual-testing-per-playbook feature-flag-reference phase",
   "keywords": [
+    "feature",
+    "specification",
+    "manual-testing-per-playbook",
     "feature-flag-reference",
-    "manual-testing",
-    "SPECKIT-flags",
-    "hydra-roadmap",
-    "capability-flags",
-    "phase-019"
+    "phase"
   ],
-  "lastUpdated": "2026-03-22T00:00:00.000Z",
+  "lastUpdated": "2026-03-22T17:41:14.867Z",
   "specId": "019",
   "folderSlug": "feature-flag-reference",
   "parentChain": [
@@ -18,9 +17,5 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Manual Testing: Feature Flag Reference",
-  "status": "Draft",
-  "importance_tier": "medium",
-  "short_description": "Manual test execution packet for feature-flag-reference scenarios EX-028 to EX-034 and 125"
+  "memoryNameHistory": []
 }

@@ -1,17 +1,16 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/013-memory-quality-and-indexing",
-  "description": "Manual testing phase for the memory quality and indexing category: 27 scenario files, 34 exact IDs including sub-scenarios M-005a/b/c, M-006a/b/c, and 155-F.",
+  "description": "Feature Specification: manual-testing-per-playbook memory quality and indexing phase",
   "keywords": [
-    "memory-quality",
+    "feature",
+    "specification",
+    "manual-testing-per-playbook",
+    "memory",
+    "quality",
     "indexing",
-    "manual-testing",
-    "quality-gate",
-    "reconsolidation",
-    "entity-extraction",
-    "session-enrichment",
-    "post-save-review"
+    "phase"
   ],
-  "lastUpdated": "2026-03-22T00:00:00.000Z",
+  "lastUpdated": "2026-03-22T17:41:14.830Z",
   "specId": "013",
   "folderSlug": "memory-quality-and-indexing",
   "parentChain": [
@@ -20,9 +19,5 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Manual Testing: Memory Quality and Indexing",
-  "status": "Draft",
-  "importance_tier": "normal",
-  "short_description": "Manual testing for memory quality scoring and indexing features -- 34 exact IDs across 27 scenario files"
+  "memoryNameHistory": []
 }

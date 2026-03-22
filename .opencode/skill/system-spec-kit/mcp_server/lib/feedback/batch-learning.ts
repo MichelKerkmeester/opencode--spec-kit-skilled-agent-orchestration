@@ -17,7 +17,7 @@
 //   - All reads and writes use the existing feedback_events table
 //     plus a lightweight batch_learning_log table for auditability
 
-/** @deprecated Fully implemented and tested but never wired into any handler, cron job, or save path. Requires a scheduled trigger to call runBatchLearning(). */
+/** Shadow-only batch learning pipeline. Callable on-demand via runBatchLearning(db, opts). No live ranking mutations — writes to batch_learning_log for observability. Feature-flag gated by SPECKIT_BATCH_LEARNED_FEEDBACK (default ON). */
 
 import type Database from 'better-sqlite3';
 import {

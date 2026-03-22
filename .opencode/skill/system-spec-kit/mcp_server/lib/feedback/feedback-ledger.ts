@@ -5,7 +5,7 @@
 // Records implicit feedback signals from search/save interactions
 // into a shadow-only SQLite table. No ranking side effects.
 //
-// Feature flag: SPECKIT_IMPLICIT_FEEDBACK_LOG (default OFF)
+// Feature flag: SPECKIT_IMPLICIT_FEEDBACK_LOG (default ON, graduated)
 // Signal confidence tiers:
 //   strong  — citation, follow_on_tool_use (result was used)
 //   medium  — query_reformulated (implicit relevance dissatisfaction)
@@ -101,7 +101,7 @@ export function resolveConfidence(
 
 /**
  * Check whether the implicit feedback log is enabled.
- * Default: FALSE (off). Set SPECKIT_IMPLICIT_FEEDBACK_LOG=true to enable.
+ * Default: TRUE (graduated). Set SPECKIT_IMPLICIT_FEEDBACK_LOG=false to disable.
  */
 export function isImplicitFeedbackLogEnabled(): boolean {
   const val = process.env.SPECKIT_IMPLICIT_FEEDBACK_LOG?.toLowerCase().trim();

@@ -1,14 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/006-analysis",
-  "description": "Manual testing for analysis category: 7 scenarios covering causal graph tools and epistemic measurement",
+  "description": "Feature Specification: manual-testing-per-playbook analysis phase",
   "keywords": [
-    "manual-testing",
+    "feature",
+    "specification",
+    "manual-testing-per-playbook",
     "analysis",
-    "causal-graph",
-    "epistemic",
-    "learning-history"
+    "phase"
   ],
-  "lastUpdated": "2026-03-22T00:00:00.000Z",
+  "lastUpdated": "2026-03-22T17:41:14.794Z",
   "specId": "006",
   "folderSlug": "analysis",
   "parentChain": [
@@ -17,9 +17,5 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: manual-testing-per-playbook analysis phase",
-  "status": "Draft",
-  "importance_tier": "high",
-  "short_description": "Execute 7 analysis scenarios: EX-019 through EX-025"
+  "memoryNameHistory": []
 }

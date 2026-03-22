@@ -1,19 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/005-lifecycle",
-  "description": "Phase 005 lifecycle manual test packet. Execute scenarios EX-015, EX-016, EX-017, EX-018 (checkpoint), 097 (async ingest), 100 (shutdown), 114 (path traversal), 124 (archival), 134 (startup recovery), 144 (ingest forecast).",
+  "description": "Feature Specification: manual-testing-per-playbook lifecycle phase",
   "keywords": [
-    "manual-testing",
+    "feature",
+    "specification",
+    "manual-testing-per-playbook",
     "lifecycle",
-    "EX-015",
-    "EX-016",
-    "EX-017",
-    "EX-018",
-    "checkpoint",
-    "async-ingestion",
-    "path-traversal",
-    "archival"
+    "phase"
   ],
-  "lastUpdated": "2026-03-22T00:00:00.000Z",
+  "lastUpdated": "2026-03-22T17:41:14.789Z",
   "specId": "005",
   "folderSlug": "lifecycle",
   "parentChain": [
@@ -22,9 +17,5 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: manual-testing-per-playbook lifecycle phase",
-  "status": "Draft",
-  "importance_tier": "normal",
-  "short_description": "Phase 005 lifecycle manual test packet: EX-015–EX-018, 097, 100, 114, 124, 134, 144"
+  "memoryNameHistory": []
 }

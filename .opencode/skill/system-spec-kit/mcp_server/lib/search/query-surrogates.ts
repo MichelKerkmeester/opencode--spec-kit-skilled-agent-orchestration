@@ -402,10 +402,9 @@ export function generateSurrogates(
    10. QUERY-TIME MATCHING
 ──────────────────────────────────────────────────────────────── */
 
-// TODO: Query-time surrogate matching is implemented but not wired into the search pipeline.
-// The index-time generation (storeSurrogates) runs during save, but matchSurrogates() is
-// never called from stage1-candidate-gen.ts or hybrid-search.ts. Wire this into Stage 1
-// as an additional candidate source when SPECKIT_QUERY_SURROGATES is enabled.
+// Query-time surrogate matching is wired into stage1-candidate-gen.ts as a post-candidate
+// boost. When SPECKIT_QUERY_SURROGATES is enabled, loadSurrogatesBatch() fetches surrogates
+// for all candidate IDs and matchSurrogates() produces a score boost (capped at 0.15).
 
 /**
  * Tokenize a string into lowercase words for matching.

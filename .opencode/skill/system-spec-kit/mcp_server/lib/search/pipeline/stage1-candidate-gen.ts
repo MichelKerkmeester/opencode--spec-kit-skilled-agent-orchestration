@@ -35,7 +35,7 @@ import type { Stage1Input, Stage1Output, PipelineRow } from './types';
 import * as vectorIndex from '../vector-index';
 import * as embeddings from '../../providers/embeddings';
 import * as hybridSearch from '../hybrid-search';
-import { isMultiQueryEnabled, isEmbeddingExpansionEnabled, isMemorySummariesEnabled, isQueryDecompositionEnabled, isGraphConceptRoutingEnabled, isLlmReformulationEnabled, isHyDEEnabled } from '../search-flags';
+import { isMultiQueryEnabled, isEmbeddingExpansionEnabled, isMemorySummariesEnabled, isQueryDecompositionEnabled, isGraphConceptRoutingEnabled, isLlmReformulationEnabled, isHyDEEnabled, isQuerySurrogatesEnabled } from '../search-flags';
 import { expandQuery } from '../query-expander';
 import { expandQueryWithEmbeddings, isExpansionActive } from '../embedding-expansion';
 import { querySummaryEmbeddings, checkScaleGate } from '../memory-summaries';
@@ -53,6 +53,8 @@ import {
 import { routeQueryConcepts } from '../entity-linker';
 import { cheapSeedRetrieve, llm, fanout } from '../llm-reformulation';
 import { runHyDE } from '../hyde';
+import { matchSurrogates } from '../query-surrogates';
+import { loadSurrogatesBatch } from '../surrogate-storage';
 
 // Feature catalog: 4-stage pipeline architecture
 // Feature catalog: Hybrid search pipeline
@@ -169,6 +171,11 @@ function resolveRowContextType(row: PipelineRow): string | undefined {
  * additional variants are produced by `expandQuery`. If expansion fails or produces
  * no new terms, the array contains only the original query.
  *
+ * Simple-query bypass (038): When R15 classifies the query as "simple",
+ * rule-based expansion is skipped — consistent with the R12 embedding-expansion
+ * path's `isExpansionActive()` gate. Simple queries do not benefit from synonym
+ * expansion and the additional search channels add latency without recall gain.
+ *
  * Duplicates are eliminated via `Set` deduplication before slicing.
  *
  * @param query - The original search query string.
@@ -176,6 +183,10 @@ function resolveRowContextType(row: PipelineRow): string | undefined {
  */
 async function buildDeepQueryVariants(query: string): Promise<string[]> {
   try {
+    // 038 fix: Skip rule-based expansion for simple queries (consistent with R12 path)
+    if (!isExpansionActive(query)) {
+      return [query];
+    }
     const expanded = expandQuery(query);
     const variants = new Set<string>(expanded);
     // ExpandQuery already includes the original as the first entry,
@@ -944,6 +955,74 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     } catch (r8Err: unknown) {
       const r8Msg = r8Err instanceof Error ? r8Err.message : String(r8Err);
       console.warn(`[stage1-candidate-gen] R8 summary channel failed: ${r8Msg}`);
+    }
+  }
+
+  // -- D2 REQ-D2-005: Query Surrogate Matching (SPECKIT_QUERY_SURROGATES) ----
+  //
+  // When SPECKIT_QUERY_SURROGATES is enabled, batch-load stored surrogates for
+  // all candidate IDs and run matchSurrogates() against each. Candidates with
+  // a surrogate match above MIN_MATCH_THRESHOLD receive a score boost (additive,
+  // capped at 0.15) to improve ranking for vocabulary-mismatched queries.
+  //
+  // This is a lightweight post-candidate boost — no new candidates are added,
+  // only existing ones are re-scored. No LLM calls on this path.
+  //
+  // Fail-open: any error leaves candidates unchanged.
+
+  if (isQuerySurrogatesEnabled() && candidates.length > 0) {
+    try {
+      const surrogateDb = requireDb();
+      const candidateIds = candidates
+        .map((r) => r.id)
+        .filter((id): id is number => typeof id === 'number');
+
+      if (candidateIds.length > 0) {
+        const surrogateMap = loadSurrogatesBatch(surrogateDb, candidateIds);
+
+        if (surrogateMap.size > 0) {
+          let boostedCount = 0;
+          const SURROGATE_BOOST_CAP = 0.15;
+
+          candidates = candidates.map((row) => {
+            const surrogates = surrogateMap.get(row.id as number);
+            if (!surrogates) return row;
+
+            const matchResult = matchSurrogates(query, {
+              aliases: surrogates.aliases,
+              headings: surrogates.headings,
+              summary: surrogates.summary,
+              surrogateQuestions: surrogates.surrogateQuestions,
+              generatedAt: surrogates.generatedAt,
+            });
+
+            if (matchResult.score > 0) {
+              boostedCount++;
+              const currentScore = typeof row.score === 'number' ? row.score : 0;
+              const boost = Math.min(matchResult.score * SURROGATE_BOOST_CAP, SURROGATE_BOOST_CAP);
+              return {
+                ...row,
+                score: currentScore + boost,
+                surrogateBoost: boost,
+                surrogateMatches: matchResult.matchedSurrogates,
+              };
+            }
+
+            return row;
+          });
+
+          if (trace && boostedCount > 0) {
+            addTraceEntry(trace, 'candidate', 0, boostedCount, 0, {
+              channel: 'd2-query-surrogates',
+              surrogatesLoaded: surrogateMap.size,
+              boostedCount,
+            });
+          }
+        }
+      }
+    } catch (surrogateErr: unknown) {
+      const surrogateMsg = surrogateErr instanceof Error ? surrogateErr.message : String(surrogateErr);
+      console.warn(`[stage1-candidate-gen] D2 query surrogate matching failed: ${surrogateMsg}`);
     }
   }
 

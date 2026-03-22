@@ -1,14 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/012-query-intelligence",
-  "description": "Feature Specification: manual-testing-per-playbook query-intelligence phase",
+  "description": "Feature Specification: query-intelligence manual testing",
   "keywords": [
     "feature",
     "specification",
-    "manual-testing-per-playbook",
     "query-intelligence",
-    "phase"
+    "manual",
+    "testing"
   ],
-  "lastUpdated": "2026-03-22T00:00:00.000Z",
+  "lastUpdated": "2026-03-22T17:41:14.825Z",
   "specId": "012",
   "folderSlug": "query-intelligence",
   "parentChain": [
@@ -17,9 +17,5 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Manual Testing: Query Intelligence",
-  "status": "Draft",
-  "importance_tier": "medium",
-  "short_description": "Manual testing for query intelligence and intent classification features"
+  "memoryNameHistory": []
 }

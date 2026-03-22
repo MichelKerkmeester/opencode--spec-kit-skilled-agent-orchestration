@@ -92,7 +92,7 @@ The pipeline stays consistent across all graph signal scenarios: establish the g
 
 ### Phase 3: Fix Verification and Advanced Tests
 - [ ] Run graph and cognitive memory fixes review (081): inspect fix locations, verify corrected behavior.
-- [ ] Run graph centrality and ANCHOR-as-node verification (091): confirm ANCHOR tags in graph calculations.
+- [ ] Run graph centrality and community detection (N2) verification (091): confirm N2 tables populated, flags active, centrality/community scoring in graph queries.
 - [ ] Run unified graph rollback and explainability (120): create links, rollback, verify trace.
 
 ### Phase 4: Feature Flag Tests

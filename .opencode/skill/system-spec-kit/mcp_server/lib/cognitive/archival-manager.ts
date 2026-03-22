@@ -507,11 +507,19 @@ async function rebuildVectorOnUnarchive(memoryId: number): Promise<void> {
   }
 }
 
+/**
+ * Defer vector re-embedding to the next index scan rather than rebuilding immediately.
+ *
+ * The playbook contract (scenario 124) requires that unarchive does NOT recreate the
+ * vec_memories row inline — instead it logs a deferred-rebuild notice so the next
+ * `memory_index_scan` picks up the gap and re-embeds the memory. This avoids blocking
+ * the unarchive call on an async embedding generation round-trip and keeps the
+ * archive/unarchive path lightweight.
+ */
 function syncVectorOnUnarchive(memoryId: number): void {
-  void rebuildVectorOnUnarchive(memoryId).catch((error: unknown) => {
-    const msg = error instanceof Error ? error.message : String(error);
-    console.warn(`[archival-manager] Vector unarchive rebuild failed: ${msg}`);
-  });
+  console.error(
+    `[archival-manager] Deferred vector re-embedding for memory ${memoryId} until next index scan`
+  );
 }
 
 function archiveMemory(memoryId: number): boolean {

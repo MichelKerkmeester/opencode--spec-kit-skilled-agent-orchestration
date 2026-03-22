@@ -2,15 +2,16 @@
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook/015-retrieval-enhancements",
   "description": "Feature Specification: Manual Testing — Retrieval Enhancements (Phase 015)",
   "keywords": [
+    "feature",
+    "specification",
     "manual",
     "testing",
     "retrieval",
     "enhancements",
     "phase",
-    "015",
-    "playbook"
+    "015"
   ],
-  "lastUpdated": "2026-03-22T00:00:00.000Z",
+  "lastUpdated": "2026-03-22T17:41:14.842Z",
   "specId": "015",
   "folderSlug": "retrieval-enhancements",
   "parentChain": [
@@ -19,9 +20,5 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Manual Testing: Retrieval Enhancements",
-  "status": "Draft",
-  "importance_tier": "normal",
-  "short_description": "Manual test execution for 11 retrieval enhancement scenarios"
+  "memoryNameHistory": []
 }

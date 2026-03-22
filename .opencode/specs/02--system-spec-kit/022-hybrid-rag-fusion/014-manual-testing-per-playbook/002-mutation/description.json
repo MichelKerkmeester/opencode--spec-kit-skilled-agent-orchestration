@@ -8,7 +8,7 @@
     "mutation",
     "phase"
   ],
-  "lastUpdated": "2026-03-22T00:00:00.000Z",
+  "lastUpdated": "2026-03-22T17:41:14.774Z",
   "specId": "002",
   "folderSlug": "mutation",
   "parentChain": [
@@ -17,9 +17,5 @@
     "014-manual-testing-per-playbook"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: manual-testing-per-playbook mutation phase [template:level_2/spec.md]",
-  "status": "Draft",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: manual-testing-per-playbook mutation phase"
+  "memoryNameHistory": []
 }

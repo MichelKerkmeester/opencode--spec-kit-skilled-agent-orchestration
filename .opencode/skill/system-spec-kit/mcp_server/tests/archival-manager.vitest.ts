@@ -368,7 +368,7 @@ describe('Archival Manager (T059)', () => {
       expect(vectorRow).toBeUndefined();
     });
 
-    it('T059-012b: unarchiveMemory rebuilds vec_memories row when embedding generation succeeds', async () => {
+    it('T059-012b: unarchiveMemory defers vector re-embedding to next index scan', () => {
       const oldDate = new Date();
       oldDate.setDate(oldDate.getDate() - 100);
 
@@ -400,21 +400,29 @@ describe('Archival Manager (T059)', () => {
         .get(BigInt(memory_id));
       expect(archivedVector).toBeUndefined();
 
-      expect(archivalManager.unarchiveMemory(memory_id)).toBe(true);
+      // Capture deferred-rebuild log emitted by syncVectorOnUnarchive
+      const logSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      try {
+        expect(archivalManager.unarchiveMemory(memory_id)).toBe(true);
 
-      let restoredVector = undefined as unknown;
-      for (let attempt = 0; attempt < 20; attempt += 1) {
-        restoredVector = requireDb()
+        // Vector should NOT be rebuilt immediately — deferred to next index scan
+        const vectorAfterUnarchive = requireDb()
           .prepare('SELECT rowid FROM vec_memories WHERE rowid = ?')
           .get(BigInt(memory_id));
-        if (restoredVector) {
-          break;
-        }
-        await new Promise((resolve) => setTimeout(resolve, 5));
-      }
+        expect(vectorAfterUnarchive).toBeUndefined();
 
-      expect(embeddingCalls).toBeGreaterThan(0);
-      expect(restoredVector).toBeDefined();
+        // No embedding generation should have been called
+        expect(embeddingCalls).toBe(0);
+
+        // Deferred-rebuild log should have been emitted
+        const hasDeferredLog = logSpy.mock.calls.some(([message]) => {
+          const text = String(message ?? '');
+          return text.includes('Deferred vector re-embedding') && text.includes(String(memory_id));
+        });
+        expect(hasDeferredLog).toBe(true);
+      } finally {
+        logSpy.mockRestore();
+      }
     });
 
     it('T059-011c: archiveMemory suppresses vec_memories no-such-table cleanup errors', () => {
