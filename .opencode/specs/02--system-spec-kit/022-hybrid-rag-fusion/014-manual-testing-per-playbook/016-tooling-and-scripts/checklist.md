@@ -1,3 +1,13 @@
+---
+title: "Verification Checklist: 016-Tooling-and-Scripts Manual Testing"
+description: "P0/P1/P2 checklist for verifying all 60 tooling-and-scripts scenario IDs are executed with evidence, covering pre-implementation, code quality, testing, security, documentation, and file organisation checks."
+trigger_phrases:
+  - "tooling scripts manual testing"
+  - "016 testing"
+  - "016 tooling and scripts checklist"
+importance_tier: "normal"
+contextType: "general"
+---
 # Verification Checklist: 016-Tooling-and-Scripts Manual Testing
 
 <!-- SPECKIT_LEVEL: 2 -->

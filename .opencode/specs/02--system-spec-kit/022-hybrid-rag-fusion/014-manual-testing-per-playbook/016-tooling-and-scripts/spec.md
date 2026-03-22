@@ -1,3 +1,14 @@
+---
+title: "Feature Specification: 016-Tooling-and-Scripts Manual Testing"
+description: "Manual test execution tracking for 60 exact scenario IDs across 28 tooling-and-scripts playbook scenarios, covering phase workflow, session capturing pipeline quality, tooling utilities, and JSON mode structured summary hardening."
+trigger_phrases:
+  - "tooling scripts manual testing"
+  - "016 testing"
+  - "016 tooling and scripts"
+  - "tooling and scripts manual test"
+importance_tier: "normal"
+contextType: "general"
+---
 # Feature Specification: 016-Tooling-and-Scripts Manual Testing
 
 <!-- SPECKIT_LEVEL: 2 -->

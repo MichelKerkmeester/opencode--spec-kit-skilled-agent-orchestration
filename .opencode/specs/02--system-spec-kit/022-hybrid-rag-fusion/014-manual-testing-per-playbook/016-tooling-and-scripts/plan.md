@@ -1,3 +1,13 @@
+---
+title: "Implementation Plan: 016-Tooling-and-Scripts Manual Testing"
+description: "Execution plan for 60 tooling-and-scripts scenario IDs across 5 groups: phase workflow, main-agent review, session capturing pipeline quality, tooling utilities, and JSON mode structured summary hardening."
+trigger_phrases:
+  - "tooling scripts manual testing"
+  - "016 testing"
+  - "016 tooling and scripts plan"
+importance_tier: "normal"
+contextType: "general"
+---
 # Implementation Plan: 016-Tooling-and-Scripts Manual Testing
 
 <!-- SPECKIT_LEVEL: 2 -->

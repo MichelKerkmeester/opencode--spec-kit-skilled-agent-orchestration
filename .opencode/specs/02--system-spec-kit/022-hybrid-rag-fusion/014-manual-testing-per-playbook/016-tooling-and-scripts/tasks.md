@@ -1,3 +1,13 @@
+---
+title: "Tasks: 016-Tooling-and-Scripts Manual Testing"
+description: "Task list for executing all 60 tooling-and-scripts scenario IDs, organized by group across setup, implementation, and verification phases."
+trigger_phrases:
+  - "tooling scripts manual testing"
+  - "016 testing"
+  - "016 tooling and scripts tasks"
+importance_tier: "normal"
+contextType: "general"
+---
 # Tasks: 016-Tooling-and-Scripts Manual Testing
 
 <!-- SPECKIT_LEVEL: 2 -->
