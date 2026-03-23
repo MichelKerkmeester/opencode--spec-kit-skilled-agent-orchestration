@@ -812,8 +812,9 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   });
 
   if (typeof result.id === 'number' && result.id > 0 && result.status !== 'unchanged' && result.status !== 'duplicate') {
-    // B13: Wrap governance metadata UPDATE + audit + conflict in a transaction
-    // so the memory row is never left without its governance fields.
+    // B13 + H5 FIX: Wrap governance metadata in a transaction with rollback on failure.
+    // If governance application fails, delete the orphaned memory row to prevent
+    // persisted rows without tenant/shared-space/retention metadata.
     const applyGovernanceTx = database.transaction(() => {
       applyPostInsertMetadata(database, result.id, buildGovernancePostInsertFields(governanceDecision));
       recordGovernanceAudit(database, {
@@ -851,7 +852,14 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
         }
       }
     });
-    applyGovernanceTx();
+    try {
+      applyGovernanceTx();
+    } catch (govErr: unknown) {
+      // H5 FIX: Delete orphaned row when governance post-step fails
+      console.error('[memory-save] Governance metadata failed, removing orphaned memory row:', govErr instanceof Error ? govErr.message : String(govErr));
+      try { database.prepare('DELETE FROM memory_index WHERE id = ?').run(result.id); } catch (_: unknown) { /* best-effort cleanup */ }
+      throw govErr;
+    }
   }
 
   return buildSaveResponse({ result, filePath: file_path, asyncEmbedding, requestId });

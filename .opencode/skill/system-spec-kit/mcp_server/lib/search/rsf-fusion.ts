@@ -245,7 +245,8 @@ function fuseResultsRsfMulti(lists: RankedList[]): RsfResult[] {
     const normalizedMap = new Map<number | string, { item: RrfItem; normalizedScore: number }>();
     for (let i = 0; i < items.length; i++) {
       const normalized = minMaxNormalize(rawScores[i], minScore, maxScore);
-      normalizedMap.set(items[i].id, { item: items[i], normalizedScore: normalized });
+      // L4 FIX: Canonicalize IDs to prevent 42 vs "42" split in RSF maps
+      normalizedMap.set(canonicalRrfId(items[i].id), { item: items[i], normalizedScore: normalized });
     }
     sourceMaps.push({ list, normalizedMap });
   }
@@ -333,13 +334,15 @@ function fuseResultsRsfCrossVariant(variantLists: RankedList[][]): RsfResult[] {
   );
 
   // --- Step 2: Track which variants each ID appeared in ---
+  // L4 FIX: Canonicalize IDs in cross-variant tracking
   const variantAppearances = new Map<number | string, Set<number>>();
   for (let vi = 0; vi < perVariantFused.length; vi++) {
     for (const result of perVariantFused[vi]) {
-      let variants = variantAppearances.get(result.id);
+      const cid = canonicalRrfId(result.id);
+      let variants = variantAppearances.get(cid);
       if (!variants) {
         variants = new Set<number>();
-        variantAppearances.set(result.id, variants);
+        variantAppearances.set(cid, variants);
       }
       variants.add(vi);
     }

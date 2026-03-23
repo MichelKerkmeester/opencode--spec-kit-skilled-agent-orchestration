@@ -316,10 +316,6 @@ Think of this like a report card for search quality, but with eleven different g
 
 Measuring performance can sometimes slow down the thing you are measuring, like how stepping on a scale while running would trip you up. This feature makes sure that all the quality-checking work happens quietly in the background. If the measurement process breaks, your searches keep running at full speed without noticing.
 
-### Full-context ceiling evaluation
-
-This answers the question: "How good could search results possibly be if the system were perfect?" By asking an AI to rank every single piece of stored knowledge for each test question, you get a best-case score. Comparing that ceiling against actual results tells you how much room for improvement still exists, like knowing the top possible grade so you can see how close you are.
-
 ### Quality proxy formula
 
 You cannot have a person hand-check every search result after every change. This feature creates a single "quality score" from 0 to 1 that runs automatically and flags when results are getting worse. Think of it like an automated smoke detector for search quality: it watches for problems around the clock so you do not have to.
@@ -343,10 +339,6 @@ This is like a security camera for how scores change. It randomly samples a smal
 ### Full reporting and ablation study framework
 
 Imagine a car with five engines and you want to know which ones actually help. This feature turns off one engine at a time and measures whether the car goes slower or faster. If removing an engine makes things worse, it is pulling its weight. If removing it makes things better, it was actually hurting. A dashboard then shows trends over time so you can spot problems early.
-
-### Shadow scoring and channel attribution
-
-This feature let the team test new ranking approaches side-by-side with the current one, without affecting what you actually see. It also tracks which search method found each result. Think of it like taste-testing a new recipe next to the old one before deciding to switch. The side-by-side testing has finished its job and been retired, but the tracking of "which method found this result" remains active.
 
 ### Test quality improvements
 
@@ -519,10 +511,6 @@ When a result is found by multiple search methods at once, the system gives it a
 ### RRF K experimental tuning
 
 When combining ranked lists from different search methods, a tuning knob controls the balance between "ranked first in one list" and "appeared in many lists." This feature tests different settings for that knob and picks the best one based on your question type, because what works well for a bug-hunt query might not work well for a decision-tracing query.
-
-### Fusion policy shadow evaluation V2
-
-The system has several different strategies for merging ranked lists from multiple search methods into one final ranking. This feature runs three strategies side by side on every query but only uses one for your actual results. The other two run silently in the background so the team can compare their performance and decide if a different strategy would produce better results.
 
 ### Learned Stage 2 weight combiner
 

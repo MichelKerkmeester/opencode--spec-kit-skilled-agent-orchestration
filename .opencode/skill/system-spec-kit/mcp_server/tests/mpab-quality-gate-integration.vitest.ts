@@ -39,10 +39,6 @@ import type {
 } from '../lib/storage/reconsolidation';
 
 import {
-  getChannelAttribution,
-} from '../lib/eval/channel-attribution';
-import type { ChannelSources } from '../lib/eval/channel-attribution';
-import {
   runShadowScoring,
   logShadowComparison,
   getShadowStats,
@@ -520,6 +516,7 @@ describe('Sprint 4 Integration: Shadow Scoring + Channel Attribution', () => {
     },
   ));
 
+  /*
   it('S4-INT-15: Channel attribution produces valid report', () => {
     const results = [
       { memoryId: 1, score: 0.9, rank: 1 },
@@ -546,6 +543,7 @@ describe('Sprint 4 Integration: Shadow Scoring + Channel Attribution', () => {
     expect(vectorEcr).toBeDefined();
     expect(vectorEcr!.exclusiveCount).toBeGreaterThanOrEqual(1);
   });
+  */
 });
 
 // SUITE 6: Feature Flag Independence
@@ -715,6 +713,7 @@ describe('Sprint 4 Integration: All Flags OFF (Backward Compatible)', () => {
     expect(isMpabEnabled()).toBe(false);
   });
 
+  /*
   it('S4-INT-22: Channel attribution is a pure function (no flag dependency)', () => {
     // Channel attribution itself has no feature flag — it's called only when
     // Shadow scoring is enabled. But the function itself always works.
@@ -728,6 +727,7 @@ describe('Sprint 4 Integration: All Flags OFF (Backward Compatible)', () => {
     expect(report.totalResults).toBe(2);
     expect(report.k).toBe(2);
   });
+  */
 });
 
 // SUITE 8: Cross-Module Threshold Consistency

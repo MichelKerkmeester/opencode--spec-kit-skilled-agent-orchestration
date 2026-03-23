@@ -457,7 +457,8 @@ export function validateHalfLifeConfig(config: Record<string, unknown> | null | 
     }
 
     const value = config[type];
-    if (value !== null && (typeof value !== 'number' || (value as number) < 0)) {
+    // M5 FIX: Reject 0 in addition to negatives — error message says "positive" but <= 0 was accepted
+    if (value !== null && (typeof value !== 'number' || !Number.isFinite(value as number) || (value as number) <= 0)) {
       errors.push(`Invalid half-life for ${type}: must be positive number or null`);
     }
   }

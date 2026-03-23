@@ -4,8 +4,6 @@
 // Boost search results when memories are temporally adjacent,
 // Query temporal neighbors, and build spec-folder timelines.
 
-/** @deprecated Never wired into production pipeline. Temporal contiguity scoring was superseded by FSRS v4 decay. */
-
 import type Database from 'better-sqlite3';
 
 // Feature catalog: Temporal contiguity layer

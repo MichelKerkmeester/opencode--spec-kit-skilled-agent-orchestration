@@ -159,7 +159,6 @@ When trace is enabled, result envelopes now expose richer bounded Markovian diag
 | `mcp_server/tests/causal-boost.vitest.ts` | Causal boost tests |
 | `mcp_server/tests/channel-enforcement.vitest.ts` | Channel enforcement tests |
 | `mcp_server/tests/channel-representation.vitest.ts` | Channel representation tests |
-| `mcp_server/tests/channel.vitest.ts` | Channel general tests |
 | `mcp_server/tests/checkpoint-working-memory.vitest.ts` | Checkpoint working memory |
 | `mcp_server/tests/co-activation.vitest.ts` | Co-activation spreading tests |
 | `mcp_server/tests/cognitive-gaps.vitest.ts` | Cognitive gap analysis |

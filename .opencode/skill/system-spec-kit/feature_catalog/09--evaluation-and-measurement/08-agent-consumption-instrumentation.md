@@ -1,23 +1,23 @@
 ---
 title: "Agent consumption instrumentation"
-description: "Describes the retrieval handler instrumentation wiring for agent consumption logging, currently inert but structurally preserved for reactivation."
+description: "Describes the active retrieval handler instrumentation wiring for agent consumption logging, gated by SPECKIT_CONSUMPTION_LOG and graduated default ON."
 ---
 
 # Agent consumption instrumentation
 
 ## 1. OVERVIEW
 
-Describes the retrieval handler instrumentation wiring for agent consumption logging, currently inert but structurally preserved for reactivation.
+Describes the active retrieval handler instrumentation wiring for agent consumption logging, gated by `SPECKIT_CONSUMPTION_LOG` and graduated default ON.
 
-This is the wiring that lets the system record how AI agents actually use search results in practice. It is currently turned off but kept in place so it can be switched back on later. The earlier data it collected helped shape better test questions by showing real usage patterns instead of guessed ones.
+This is the wiring that lets the system record how AI agents actually use search results in practice. The logger is now active through the graduated `SPECKIT_CONSUMPTION_LOG` feature flag, which defaults to enabled unless explicitly set to `false` or `0`.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Instrumentation wiring remains present in retrieval handlers (`memory_search`, `memory_context`, `memory_match_triggers`), but the runtime logger is currently inert/deprecated (`isConsumptionLogEnabled()` hardcoded `false`). Calls remain fail-safe no-ops for compatibility while telemetry paths stay structurally available.
+Instrumentation wiring is present in the retrieval handlers (`memory_search`, `memory_context`, `memory_match_triggers`), and the runtime logger is active through `isConsumptionLogEnabled()`, which delegates to `isFeatureEnabled('SPECKIT_CONSUMPTION_LOG')`.
 
-The earlier pattern-analysis outcome from this workstream still informed ground-truth design, but current production runtime does not actively write new consumption-log rows unless instrumentation is reactivated.
+Calls remain fail-safe so instrumentation errors never break the handlers, while production runtime can actively write new `consumption_log` rows whenever the flag remains enabled.
 
 ---
 

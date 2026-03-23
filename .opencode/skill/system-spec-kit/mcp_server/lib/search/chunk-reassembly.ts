@@ -107,7 +107,8 @@ function collapseAndReassembleChunkResults(results: ChunkableSearchRow[]): Chunk
   let collapsedChunkHits = 0;
 
   for (const row of results) {
-    const parentId = parseNullableInt(row.parent_id);
+    // H14 FIX: Support both snake_case and camelCase chunk field names
+    const parentId = parseNullableInt(row.parent_id ?? (row as Record<string, unknown>).parentId);
     if (parentId !== null) {
       if (seenParents.has(parentId)) {
         collapsedChunkHits++;
@@ -119,8 +120,8 @@ function collapseAndReassembleChunkResults(results: ChunkableSearchRow[]): Chunk
         ...row,
         isChunk: true,
         parentId,
-        chunkIndex: parseNullableInt(row.chunk_index),
-        chunkLabel: typeof row.chunk_label === 'string' ? row.chunk_label : null,
+        chunkIndex: parseNullableInt(row.chunk_index ?? (row as Record<string, unknown>).chunkIndex),
+        chunkLabel: typeof row.chunk_label === 'string' ? row.chunk_label : (typeof (row as Record<string, unknown>).chunkLabel === 'string' ? (row as Record<string, unknown>).chunkLabel as string : null),
         chunkCount: null,
         contentSource: 'file_read_fallback',
       });

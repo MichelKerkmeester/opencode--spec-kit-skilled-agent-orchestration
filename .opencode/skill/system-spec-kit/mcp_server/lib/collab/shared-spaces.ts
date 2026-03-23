@@ -403,9 +403,9 @@ export function upsertSharedSpace(database: Database.Database, definition: Share
       tenant_id = excluded.tenant_id,
       name = excluded.name,
       rollout_enabled = COALESCE(?, rollout_enabled),
-      rollout_cohort = excluded.rollout_cohort,
+      rollout_cohort = COALESCE(excluded.rollout_cohort, rollout_cohort),
       kill_switch = COALESCE(?, kill_switch),
-      metadata = excluded.metadata,
+      metadata = COALESCE(excluded.metadata, metadata),
       updated_at = CURRENT_TIMESTAMP
   `).run(
     definition.spaceId,

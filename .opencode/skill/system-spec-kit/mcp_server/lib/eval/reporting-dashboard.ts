@@ -16,7 +16,7 @@
 import type Database from 'better-sqlite3';
 
 // Internal modules
-import { initEvalDb } from './eval-db';
+import { getEvalDb, initEvalDb } from './eval-db';
 
 // Feature catalog: Reporting dashboard (eval_reporting_dashboard)
 
@@ -36,7 +36,7 @@ export interface ReportConfig {
   channelFilter?: string[];
   /** Filter to specific metric names. */
   metricFilter?: string[];
-  /** Maximum number of eval runs to include (most recent first). */
+  /** Maximum number of sprint groups to include (most recent first). */
   limit?: number;
 }
 
@@ -118,7 +118,10 @@ export interface DashboardReport {
  * Lazy DB accessor. Initializes eval DB if needed.
  * Safe to call repeatedly (initEvalDb is idempotent).
  */
+// H18 FIX: Use existing eval DB singleton first to avoid silently switching
+// away from a non-default/test eval DB when generating a dashboard.
 function getDb(): Database.Database {
+  try { return getEvalDb(); } catch (_: unknown) { /* not yet initialized */ }
   return initEvalDb();
 }
 

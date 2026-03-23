@@ -160,16 +160,18 @@ const INDEX_SQL = `
   ON session_learning(spec_folder)
 `;
 
-let schemaInitialized = false;
+// M2 FIX: Track schema init per database instance, not as a process-global boolean.
+// If the server swaps to a fresh DB connection, the old global would skip init.
+const schemaInitializedDbs = new WeakSet<Database>();
 
 /** Initialize the session_learning table schema if not already created */
 function ensureSchema(database: Database): void {
-  if (schemaInitialized) return;
+  if (schemaInitializedDbs.has(database)) return;
 
   try {
     database.exec(SCHEMA_SQL);
     database.exec(INDEX_SQL);
-    schemaInitialized = true;
+    schemaInitializedDbs.add(database);
     console.error('[session-learning] Schema initialized');
   } catch (err: unknown) {
     const message = toErrorMessage(err);
@@ -201,8 +203,9 @@ function validateScores(
     if (score.value === undefined || score.value === null) {
       throw new MemoryError(ErrorCodes.MISSING_REQUIRED_PARAM, `${score.name} is required`, { param: score.name });
     }
-    if (typeof score.value !== 'number' || score.value < 0 || score.value > 100) {
-      throw new MemoryError(ErrorCodes.INVALID_PARAMETER, `${score.name} must be a number between 0 and 100`, { param: score.name, value: score.value });
+    // M3 FIX: Reject NaN (typeof NaN === 'number' so the old check passed it through)
+    if (typeof score.value !== 'number' || !Number.isFinite(score.value) || score.value < 0 || score.value > 100) {
+      throw new MemoryError(ErrorCodes.INVALID_PARAMETER, `${score.name} must be a finite number between 0 and 100`, { param: score.name, value: score.value });
     }
   }
 }

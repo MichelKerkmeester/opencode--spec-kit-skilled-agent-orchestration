@@ -114,7 +114,7 @@ export function get_memory_count(): number {
  * Gets memory counts grouped by embedding status.
  * @returns The counts for each embedding status.
  */
-export function get_status_counts(): { pending: number; success: number; failed: number; retry: number } {
+export function get_status_counts(): { pending: number; success: number; failed: number; retry: number; partial: number } {
   const database = initialize_db();
 
   const rows = database.prepare(`
@@ -124,9 +124,12 @@ export function get_status_counts(): { pending: number; success: number; failed:
     GROUP BY m.embedding_status
   `).all();
 
-  const counts = { pending: 0, success: 0, failed: 0, retry: 0 };
+  // M7 FIX: Include 'partial' status in counts
+  const counts = { pending: 0, success: 0, failed: 0, retry: 0, partial: 0 };
   for (const row of rows as Array<{ embedding_status: keyof typeof counts; count: number }>) {
-    counts[row.embedding_status] = row.count;
+    if (row.embedding_status in counts) {
+      counts[row.embedding_status] = row.count;
+    }
   }
 
   return counts;
@@ -136,9 +139,9 @@ export function get_status_counts(): { pending: number; success: number; failed:
  * Gets summary counts for indexed memories.
  * @returns The aggregate memory statistics.
  */
-export function get_stats(): { total: number; pending: number; success: number; failed: number; retry: number } {
+export function get_stats(): { total: number; pending: number; success: number; failed: number; retry: number; partial: number } {
   const counts = get_status_counts();
-  const total = counts.pending + counts.success + counts.failed + counts.retry;
+  const total = counts.pending + counts.success + counts.failed + counts.retry + counts.partial;
 
   return {
     total,
@@ -180,6 +183,15 @@ export function vector_search(query_embedding: EmbeddingInput, options: VectorSe
     includeConstitutional = true,
     includeArchived = false
   } = options;
+
+  // M9 FIX: Validate embedding dimension before querying
+  const expected_dim = get_embedding_dim();
+  if (!query_embedding || query_embedding.length !== expected_dim) {
+    throw new VectorIndexError(
+      `Invalid embedding dimension: expected ${expected_dim}, got ${query_embedding?.length}`,
+      VectorIndexErrorCode.EMBEDDING_VALIDATION,
+    );
+  }
 
   const query_buffer = to_embedding_buffer(query_embedding);
   const max_distance = 2 * (1 - minSimilarity / 100);
@@ -234,6 +246,10 @@ export function vector_search(query_embedding: EmbeddingInput, options: VectorSe
     params.push(contextType);
   }
 
+  // M8 FIX: If constitutional results already satisfy limit, return them directly
+  if (constitutional_results.length >= limit) {
+    return constitutional_results.slice(0, limit);
+  }
   const adjusted_limit = Math.max(1, limit - constitutional_results.length);
   params.push(max_distance, adjusted_limit);
 
@@ -359,6 +375,7 @@ export function multi_concept_search(
       JOIN active_memory_projection p ON p.active_memory_id = m.id
       JOIN vec_memories v ON m.id = v.rowid
       WHERE m.embedding_status = 'success'
+        AND (m.expires_at IS NULL OR m.expires_at > datetime('now'))
         ${folder_filter}
         ${archival_filter}
         AND ${distance_filters}

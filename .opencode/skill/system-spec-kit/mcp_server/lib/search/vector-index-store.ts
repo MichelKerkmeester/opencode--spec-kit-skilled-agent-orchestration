@@ -293,6 +293,8 @@ export function safe_parse_json(json_string: unknown, default_value = []): unkno
 let db: Database.Database | null = null;
 let db_path = DEFAULT_DB_PATH;
 let sqlite_vec_available_flag = true;
+// C1 FIX: Key connections by resolved DB path to prevent cross-store data corruption
+const db_connections = new Map<string, Database.Database>();
 
 /** Accessor for sqlite_vec_available (used by other modules) */
 export function sqlite_vec_available(): boolean {
@@ -436,7 +438,8 @@ export function get_constitutional_memories(
   spec_folder: string | null = null,
   includeArchived = false
 ): MemoryRow[] {
-  const cache_key = spec_folder || 'global';
+  // H4 FIX: Include includeArchived in cache key to prevent cross-option cache leaks
+  const cache_key = `${spec_folder || 'global'}:${includeArchived ? 'arch' : 'noarch'}`;
   const now = Date.now();
   const cached = constitutional_cache.get(cache_key);
 
@@ -553,13 +556,19 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
 
   const target_path = custom_path || resolve_database_path();
 
+  // C1 FIX: Check connection map for existing connection to this path
+  const resolved_target = path.resolve(target_path);
+  const cached_conn = db_connections.get(resolved_target);
+  if (cached_conn) return cached_conn;
+
   const dir = path.dirname(target_path);
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true, mode: 0o700 });
   }
 
+  let new_db: Database.Database;
   try {
-    db = new Database(target_path);
+    new_db = new Database(target_path);
   } catch (db_error: unknown) {
     const errMsg = get_error_message(db_error);
     const errCode = get_error_code(db_error);
@@ -583,39 +592,46 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
     throw db_error;
   }
 
+  let vec_available = true;
   try {
-    sqliteVec.load(db);
-    sqlite_vec_available_flag = true;
+    sqliteVec.load(new_db);
   } catch (vec_error: unknown) {
-    sqlite_vec_available_flag = false;
+    vec_available = false;
     console.warn(`[vector-index] sqlite-vec extension not available: ${get_error_message(vec_error)}`);
     console.warn('[vector-index] Falling back to anchor-only mode (no vector search)');
     console.warn('[vector-index] Install sqlite-vec: brew install sqlite-vec (macOS)');
   }
 
-  db.pragma('journal_mode = WAL');
-  db.pragma('busy_timeout = 10000');
-  db.pragma('foreign_keys = ON');
-  db.pragma('cache_size = -64000');
-  db.pragma('mmap_size = 268435456');
-  db.pragma('synchronous = NORMAL');
-  db.pragma('temp_store = MEMORY');
+  new_db.pragma('journal_mode = WAL');
+  new_db.pragma('busy_timeout = 10000');
+  new_db.pragma('foreign_keys = ON');
+  new_db.pragma('cache_size = -64000');
+  new_db.pragma('mmap_size = 268435456');
+  new_db.pragma('synchronous = NORMAL');
+  new_db.pragma('temp_store = MEMORY');
 
-  create_schema(db, { sqlite_vec_available: sqlite_vec_available_flag, get_embedding_dim });
-  ensure_schema_version(db);
+  create_schema(new_db, { sqlite_vec_available: vec_available, get_embedding_dim });
+  ensure_schema_version(new_db);
 
-  // F9.09-F9.13 fix: Validate embedding dimension matches DB at init time.
-  // Reject mismatches early instead of silently producing corrupted search results.
-  if (sqlite_vec_available_flag) {
-    const dimCheck = validate_embedding_dimension();
-    if (!dimCheck.valid && dimCheck.stored != null) {
-      const msg = dimCheck.warning || `Dimension mismatch: DB=${dimCheck.stored}, provider=${dimCheck.current}`;
-      console.error(`[vector-index] FATAL: ${msg}`);
-      throw new VectorIndexError(msg, VectorIndexErrorCode.INTEGRITY_ERROR);
-    }
-  }
+  // C1 FIX: Store in connection map keyed by resolved path
+  db_connections.set(resolved_target, new_db);
 
   if (!custom_path) {
+    // Only update globals for the default connection
+    db = new_db;
+    db_path = target_path;
+    sqlite_vec_available_flag = vec_available;
+
+    // F9.09-F9.13 fix: Validate embedding dimension matches DB at init time.
+    if (sqlite_vec_available_flag) {
+      const dimCheck = validate_embedding_dimension();
+      if (!dimCheck.valid && dimCheck.stored != null) {
+        const msg = dimCheck.warning || `Dimension mismatch: DB=${dimCheck.stored}, provider=${dimCheck.current}`;
+        console.error(`[vector-index] FATAL: ${msg}`);
+        throw new VectorIndexError(msg, VectorIndexErrorCode.INTEGRITY_ERROR);
+      }
+    }
+
     try {
       fs.chmodSync(target_path, DB_PERMISSIONS);
     } catch (err: unknown) {
@@ -623,8 +639,7 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
     }
   }
 
-  db_path = target_path;
-  return db;
+  return new_db;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -637,6 +652,11 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
  */
 export function close_db(): void {
   clear_prepared_statements();
+  // C1 FIX: Close all tracked connections
+  for (const [, conn] of db_connections) {
+    try { if (conn !== db) conn.close(); } catch (_: unknown) { /* ignore close errors */ }
+  }
+  db_connections.clear();
   if (db) {
     db.close();
     db = null;

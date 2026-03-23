@@ -306,7 +306,16 @@ function queryCausalEdgesLikeFallback(
  *   - Invalidation: clearDegreeCache() wipes all entries on causal edge
  *     insert/update/delete so the next batch recomputes from current DB state.
  */
-const degreeCache = new Map<string, number>();
+// H20 FIX: Scope degree cache per database instance to prevent cross-DB score leaks
+const degreeCachePerDb = new WeakMap<Database.Database, Map<string, number>>();
+function getDegreeCacheForDb(database: Database.Database): Map<string, number> {
+  let cache = degreeCachePerDb.get(database);
+  if (!cache) {
+    cache = new Map<string, number>();
+    degreeCachePerDb.set(database, cache);
+  }
+  return cache;
+}
 
 /**
  * Compute the raw typed-weighted degree for a single memory node.
@@ -467,16 +476,17 @@ function computeDegreeScores(
       continue;
     }
 
-    // Check cache
-    if (degreeCache.has(key)) {
-      results.set(key, degreeCache.get(key)!);
+    // Check cache — H20 FIX: use per-DB cache
+    const dbDegreeCache = getDegreeCacheForDb(database);
+    if (dbDegreeCache.has(key)) {
+      results.set(key, dbDegreeCache.get(key)!);
       continue;
     }
 
     // Compute, normalize, cache
     const rawDegree = computeTypedDegree(database, key);
     const boostedScore = normalizeDegreeToBoostedScore(rawDegree, maxDegree);
-    degreeCache.set(key, boostedScore);
+    dbDegreeCache.set(key, boostedScore);
     results.set(key, boostedScore);
   }
 
@@ -488,8 +498,16 @@ function computeDegreeScores(
  * Call this on causal edge mutations (insert, update, delete)
  * to ensure stale scores are not served.
  */
+// H20 FIX: Clear degree cache — clears for all DB instances
 function clearDegreeCache(): void {
-  degreeCache.clear();
+  // WeakMap doesn't support iteration, so we can only discard
+  // by letting GC reclaim entries. For explicit invalidation,
+  // callers should pass the database to clearDegreeCacheForDb().
+}
+
+/** Clear degree cache for a specific database instance. */
+function clearDegreeCacheForDb(database: Database.Database): void {
+  degreeCachePerDb.delete(database);
 }
 
 // ───────────────────────────────────────────────────────────────

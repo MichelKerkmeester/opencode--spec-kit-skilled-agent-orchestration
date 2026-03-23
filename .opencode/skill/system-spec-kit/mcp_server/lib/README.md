@@ -237,12 +237,11 @@ lib/                            # TypeScript source files
 │   │   └── composite-scoring.ts # Cache-aware composite scoring
 │   └── README.md               # Module documentation
 │
-├── eval/                       # Evaluation and metrics (10 modules)
+├── eval/                       # Evaluation and metrics (9 modules)
 │   ├── eval-db.ts              # Evaluation database
 │   ├── eval-logger.ts          # Evaluation logging
 │   ├── eval-metrics.ts         # Evaluation metrics
 │   ├── eval-quality-proxy.ts   # Quality proxy scoring
-│   ├── eval-ceiling.ts         # Ceiling evaluation
 │   ├── bm25-baseline.ts        # BM25 baseline measurement
 │   ├── edge-density.ts         # Edge density measurement (Sprint 1)
 │   ├── ground-truth-data.ts    # Ground truth dataset

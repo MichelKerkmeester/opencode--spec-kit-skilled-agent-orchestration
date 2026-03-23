@@ -138,7 +138,6 @@ The 4-stage pipeline is the sole runtime path. The `SPECKIT_PIPELINE_V2` environ
 | `mcp_server/tests/causal-boost.vitest.ts` | Causal boost tests |
 | `mcp_server/tests/channel-enforcement.vitest.ts` | Channel enforcement tests |
 | `mcp_server/tests/channel-representation.vitest.ts` | Channel representation tests |
-| `mcp_server/tests/channel.vitest.ts` | Channel general tests |
 | `mcp_server/tests/co-activation.vitest.ts` | Co-activation spreading tests |
 | `mcp_server/tests/cognitive-gaps.vitest.ts` | Cognitive gap analysis |
 | `mcp_server/tests/community-detection.vitest.ts` | Community detection tests |

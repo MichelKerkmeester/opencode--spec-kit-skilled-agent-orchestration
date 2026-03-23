@@ -4,8 +4,9 @@
 // 4-stage retrieval pipeline architecture
 //
 // Responsibility: Execute search channels and collect raw candidate results.
-// This stage performs NO scoring modifications — it only retrieves candidates
-// From the appropriate search channel based on search type.
+// This stage avoids downstream fusion/reranking, but may apply temporal
+// Contiguity to raw vector-channel hits before later pipeline stages.
+// Results are collected from the appropriate search channel based on search type.
 //
 // Search channels handled:
 //   - multi-concept: Generate per-concept embeddings, run multiConceptSearch
@@ -24,7 +25,8 @@
 // Input:  Stage1Input { config: PipelineConfig }
 // Output: Stage1Output { candidates: PipelineRow[], metadata }
 // Key invariants:
-//     - candidates contains raw scores assigned by the search channel (unchanged)
+//     - candidates contains raw channel scores; vector hits may include an
+//       optional temporal-contiguity boost applied before downstream fusion
 //     - Constitutional rows are always present when includeConstitutional=true and no tier filter
 //     - All rows pass qualityThreshold (if set) and tier/contextType filters
 // Side effects:
@@ -36,7 +38,8 @@ import { resolveEffectiveScore } from './types';
 import * as vectorIndex from '../vector-index';
 import * as embeddings from '../../providers/embeddings';
 import * as hybridSearch from '../hybrid-search';
-import { isMultiQueryEnabled, isEmbeddingExpansionEnabled, isMemorySummariesEnabled, isQueryDecompositionEnabled, isGraphConceptRoutingEnabled, isLlmReformulationEnabled, isHyDEEnabled, isQuerySurrogatesEnabled } from '../search-flags';
+import { vectorSearchWithContiguity } from '../../cognitive/temporal-contiguity';
+import { isMultiQueryEnabled, isEmbeddingExpansionEnabled, isMemorySummariesEnabled, isQueryDecompositionEnabled, isGraphConceptRoutingEnabled, isLlmReformulationEnabled, isHyDEEnabled, isQuerySurrogatesEnabled, isTemporalContiguityEnabled } from '../search-flags';
 import { expandQuery } from '../query-expander';
 import { expandQueryWithEmbeddings, isExpansionActive } from '../embedding-expansion';
 import { querySummaryEmbeddings, checkScaleGate } from '../memory-summaries';
@@ -269,11 +272,12 @@ function mergeQueryFacetCoverage(resultSets: PipelineRow[][]): PipelineRow[] {
  * Execute Stage 1: Candidate Generation.
  *
  * Selects and runs the appropriate search channel(s) based on `config.searchType`
- * and `config.mode`, then applies constitutional injection, quality filtering,
- * and tier/contextType filtering.
+ * and `config.mode`, then applies vector-channel temporal contiguity when
+ * enabled, followed by constitutional injection, quality filtering, and
+ * tier/contextType filtering.
  *
- * No scoring values are created or modified in this stage — results are returned
- * with whatever scores the underlying search channel assigns (similarity, rrfScore, etc.).
+ * This stage does not apply Stage 2 fusion/reranking signals. Vector-channel
+ * results may receive a temporal proximity boost before moving downstream.
  *
  * @param input - Stage 1 input containing the resolved pipeline configuration.
  * @returns Stage 1 output with raw candidate rows and channel metadata.
@@ -642,7 +646,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
 
           // Fallback: pure vector search
           channelCount = 1;
-          candidates = vectorIndex.vectorSearch(effectiveEmbedding, {
+          let vectorResults = vectorIndex.vectorSearch(effectiveEmbedding, {
             limit,
             specFolder,
             tier,
@@ -650,6 +654,15 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
             includeConstitutional: false, // Constitutional managed separately below
             includeArchived,
           }) as PipelineRow[];
+          if (isTemporalContiguityEnabled()) {
+            vectorResults = (
+              vectorSearchWithContiguity(
+                vectorResults as Array<PipelineRow & { similarity: number; created_at: string }>,
+                3600,
+              ) as PipelineRow[] | null
+            ) ?? vectorResults;
+          }
+          candidates = vectorResults;
 
           if (trace) {
             addTraceEntry(trace, 'fallback', 0, candidates.length, 0, {
@@ -673,7 +686,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     }
 
     channelCount = 1;
-    candidates = vectorIndex.vectorSearch(effectiveEmbedding, {
+    let vectorResults = vectorIndex.vectorSearch(effectiveEmbedding, {
       limit,
       specFolder,
       tier,
@@ -681,6 +694,15 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
       includeConstitutional: false, // Constitutional managed separately below
       includeArchived,
     }) as PipelineRow[];
+    if (isTemporalContiguityEnabled()) {
+      vectorResults = (
+        vectorSearchWithContiguity(
+          vectorResults as Array<PipelineRow & { similarity: number; created_at: string }>,
+          3600,
+        ) as PipelineRow[] | null
+      ) ?? vectorResults;
+    }
+    candidates = vectorResults;
   }
 
   // -- Unknown search type -----------------------------------------------------
@@ -785,7 +807,9 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
         const contextFilteredConstitutional = contextType
           ? uniqueConstitutional.filter((r) => resolveRowContextType(r) === contextType)
           : uniqueConstitutional;
-        const filteredConstitutional = hasGovernanceScope
+        // H12 FIX: Use shouldApplyScopeFiltering (not just hasGovernanceScope)
+        // to ensure constitutional injection respects global scope enforcement
+        const filteredConstitutional = shouldApplyScopeFiltering
           ? filterRowsByScope(
             contextFilteredConstitutional,
             scopeFilter,
@@ -863,7 +887,13 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
                 }
               }
             }
-            candidates = [...candidates, ...reformMerged];
+            // H11 FIX: Apply the same tier/context/quality filters as main candidates
+            let filteredReformMerged = reformMerged;
+            if (contextType) {
+              filteredReformMerged = filteredReformMerged.filter((r) => resolveRowContextType(r) === contextType);
+            }
+            filteredReformMerged = filterByMinQualityScore(filteredReformMerged, qualityThreshold);
+            candidates = [...candidates, ...filteredReformMerged];
             channelCount += allQueries.length - 1; // discount original (already counted)
 
             if (trace) {
@@ -903,7 +933,12 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
         : rawHydeCandidates;
       if (hydeCandidates.length > 0) {
         const seenIds = new Set(candidates.map((r) => r.id));
-        const newHydeCandidates = hydeCandidates.filter((r) => !seenIds.has(r.id));
+        let newHydeCandidates = hydeCandidates.filter((r) => !seenIds.has(r.id));
+        // H11 FIX: Apply the same tier/context/quality filters as main candidates
+        if (contextType) {
+          newHydeCandidates = newHydeCandidates.filter((r) => resolveRowContextType(r) === contextType);
+        }
+        newHydeCandidates = filterByMinQualityScore(newHydeCandidates, qualityThreshold);
         candidates = [...candidates, ...newHydeCandidates];
         channelCount++;
 

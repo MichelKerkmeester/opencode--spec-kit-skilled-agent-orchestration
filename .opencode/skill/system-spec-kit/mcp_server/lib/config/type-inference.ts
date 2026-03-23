@@ -303,7 +303,8 @@ export function inferMemoryTypesBatch(
       importanceTier: memory.importanceTier || memory.importance_tier,
     });
 
-    const key = memory.filePath || memory.file_path || '';
+    // L1 FIX: Use index-based fallback key to avoid collapsing pathless inputs
+    const key = memory.filePath || memory.file_path || `__pathless_${results.size}`;
     results.set(key, result);
   }
 

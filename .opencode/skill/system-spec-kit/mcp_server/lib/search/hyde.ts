@@ -135,11 +135,14 @@ export function lowConfidence(baseline: BaselineResult[]): boolean {
     return true;
   }
 
-  const top = baseline[0];
-  if (!top) return true;
-
-  const score = resolveBaselineScore(top);
-  return score < LOW_CONFIDENCE_THRESHOLD;
+  // H15 FIX: Use max score from baseline, not baseline[0], since callers
+  // don't guarantee sorted input.
+  let maxScore = 0;
+  for (const item of baseline) {
+    const s = resolveBaselineScore(item);
+    if (s > maxScore) maxScore = s;
+  }
+  return maxScore < LOW_CONFIDENCE_THRESHOLD;
 }
 
 /**

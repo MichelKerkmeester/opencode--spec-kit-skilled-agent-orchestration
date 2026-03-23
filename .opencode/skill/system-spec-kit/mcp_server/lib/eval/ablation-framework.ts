@@ -315,12 +315,14 @@ function buildAggregatedMetrics(
 
   const bLatencies = bMetrics.map(m => m.latencyMs).sort((a, b) => a - b);
   const aLatencies = aMetrics.map(m => m.latencyMs).sort((a, b) => a - b);
+  // L2 FIX: Filter out zero/undefined token usage since runAblation does not
+  // currently populate tokenUsage — avoids reporting synthetic zeroes.
   const bTokenUsage = bMetrics
     .map(m => m.tokenUsage)
-    .filter((value): value is number => typeof value === 'number' && Number.isFinite(value));
+    .filter((value): value is number => typeof value === 'number' && Number.isFinite(value) && value > 0);
   const aTokenUsage = aMetrics
     .map(m => m.tokenUsage)
-    .filter((value): value is number => typeof value === 'number' && Number.isFinite(value));
+    .filter((value): value is number => typeof value === 'number' && Number.isFinite(value) && value > 0);
 
   return {
     'MRR@5': entry(bMetrics.map(m => m.metrics.mrr), aMetrics.map(m => m.metrics.mrr)),

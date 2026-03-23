@@ -1,6 +1,5 @@
-// TEST: Shadow Scoring + Channel Attribution
-// R13-S2: Shadow scoring infrastructure, channel attribution,
-// And Exclusive Contribution Rate metric.
+// TEST: Shadow Scoring
+// R13-S2: Shadow scoring infrastructure and disabled compatibility paths.
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -16,14 +15,6 @@ import {
   type ShadowConfig,
   type ShadowComparison,
 } from '../lib/eval/shadow-scoring';
-
-import {
-  attributeChannels,
-  computeExclusiveContributionRate,
-  getChannelAttribution,
-  type ChannelSources,
-  type AttributedResult,
-} from '../lib/eval/channel-attribution';
 
 import { initEvalDb, closeEvalDb } from '../lib/eval/eval-db';
 
@@ -351,8 +342,9 @@ describe('Shadow Scoring (R13-S2)', () => {
   });
 });
 
-/* --- Channel Attribution Tests --- */
+/* --- Disabled Channel Attribution Tests (module removed) --- */
 
+/*
 describe('Channel Attribution (R13-S2)', () => {
   describe('attributeChannels', () => {
     it('tags results with correct single channels', () => {
@@ -575,3 +567,4 @@ describe('Channel Attribution (R13-S2)', () => {
     });
   });
 });
+*/

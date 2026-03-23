@@ -179,6 +179,14 @@ export function isMemorySummariesEnabled(): boolean {
 }
 
 /**
+ * Temporal contiguity boost on raw Stage 1 vector results.
+ * Default: TRUE (graduated). Set SPECKIT_TEMPORAL_CONTIGUITY=false to disable.
+ */
+export function isTemporalContiguityEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_TEMPORAL_CONTIGUITY');
+}
+
+/**
  * R10: Auto entity extraction (rule-based noun-phrase extraction at save time).
  * Default: TRUE (enabled). Set SPECKIT_AUTO_ENTITIES=false to disable.
  */

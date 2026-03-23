@@ -165,7 +165,10 @@ function applySessionBoost(
           score: finalScore,
           rrfScore: finalScore,
           intentAdjustedScore: finalScore,
-          attentionScore: finalScore,
+          // M11 FIX: Preserve original attentionScore (working-memory signal),
+          // store boosted ranking score separately
+          attentionScore: result.attentionScore ?? finalScore,
+          sessionBoostScore: finalScore,
           sessionBoost: boost,
           baseScore,
         },

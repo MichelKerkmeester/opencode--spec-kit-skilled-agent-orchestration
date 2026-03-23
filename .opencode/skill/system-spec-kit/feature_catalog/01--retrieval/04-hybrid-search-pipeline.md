@@ -108,7 +108,6 @@ The fallback chain (`searchWithFallback()`) provides resilience. When `SPECKIT_S
 | `mcp_server/tests/bm25-index.vitest.ts` | BM25 index operations |
 | `mcp_server/tests/channel-enforcement.vitest.ts` | Channel enforcement tests |
 | `mcp_server/tests/channel-representation.vitest.ts` | Channel representation tests |
-| `mcp_server/tests/channel.vitest.ts` | Channel general tests |
 | `mcp_server/tests/co-activation.vitest.ts` | Co-activation spreading tests |
 | `mcp_server/tests/cognitive-gaps.vitest.ts` | Cognitive gap analysis |
 | `mcp_server/tests/confidence-truncation.vitest.ts` | Truncation behavior |

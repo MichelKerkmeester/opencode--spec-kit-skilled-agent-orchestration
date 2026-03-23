@@ -1223,22 +1223,6 @@ See [`09--evaluation-and-measurement/03-observer-effect-mitigation.md`](09--eval
 
 ---
 
-### Full-context ceiling evaluation
-
-#### Description
-
-This answers the question: "How good could search results possibly be if the system were perfect?" By asking an AI to rank every single piece of stored knowledge for each test question, you get a best-case score. Comparing that ceiling against actual results tells you how much room for improvement still exists, like knowing the top possible grade so you can see how close you are.
-
-#### Current Reality
-
-How good could retrieval be if the system had perfect recall? To answer that, an LLM receives all memory titles and summaries and ranks them for each ground truth query. The resulting MRR@5 score is the theoretical upper bound. The gap between this ceiling and actual hybrid performance tells you how much room for improvement exists. A 2x2 matrix alongside the BM25 baseline puts both numbers in context: the BM25 floor shows the minimum, the LLM ceiling shows the maximum and the hybrid pipeline sits somewhere between.
-
-#### Source Files
-
-See [`09--evaluation-and-measurement/04-full-context-ceiling-evaluation.md`](09--evaluation-and-measurement/04-full-context-ceiling-evaluation.md) for full implementation and test file listings.
-
----
-
 ### Quality proxy formula
 
 #### Description
@@ -1352,26 +1336,6 @@ The reporting dashboard aggregates per-sprint metric summaries (mean, min, max, 
 #### Source Files
 
 See [`09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md`](09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md) for full implementation and test file listings.
-
----
-
-### Shadow scoring and channel attribution
-
-#### Description
-
-This feature let the team test new ranking approaches side-by-side with the current one, without affecting what you actually see. It also tracks which search method found each result. Think of it like taste-testing a new recipe next to the old one before deciding to switch. The side-by-side testing has finished its job and been retired, but the tracking of "which method found this result" remains active.
-
-#### Current Reality
-
-Full A/B comparison infrastructure ran alternative scoring algorithms in parallel, logging results without affecting live ranking. The system computed detailed comparison metrics including Kendall tau rank correlation, per-result score deltas and production-only versus shadow-only result sets. Channel attribution tagged each result with its source channels and computed Exclusive Contribution Rate per channel: how often each channel was the sole source for a result in the top-k window.
-
-Ground truth expansion via implicit user selection tracking and an LLM-judge stub interface were included for future corpus growth.
-
-Shadow scoring completed its evaluation purpose and has been fully removed. The `isShadowScoringEnabled()` function and shadow-scoring branches in `hybrid-search.ts` were deleted during Sprint 8 remediation. The `runShadowScoring` and `logShadowComparison` function bodies now return immediately (`return null` and `return false` respectively). The `SPECKIT_SHADOW_SCORING` flag remains as a no-op for backward compatibility. This shadow-scoring cleanup is independent from R11 learned-feedback safeguards, where `isInShadowPeriod()` remains active. Channel attribution logic remains active within the 4-stage pipeline.
-
-#### Source Files
-
-See [`09--evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md`](09--evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md) for full implementation and test file listings.
 
 ---
 
@@ -2189,22 +2153,6 @@ Enabled by default (graduated). Set `SPECKIT_RRF_K_EXPERIMENTAL=false` to revert
 #### Source Files
 
 See [`11--scoring-and-calibration/22-rrf-k-experimental.md`](11--scoring-and-calibration/22-rrf-k-experimental.md) for full implementation and test file listings.
-
----
-
-### Fusion policy shadow evaluation V2
-
-#### Description
-
-Fusion policy shadow evaluation V2 runs RRF, minmax-linear, and zscore-linear fusion policies in parallel on each query, returning the active policy result while capturing shadow telemetry for the alternatives.
-
-#### Current Reality
-
-Enabled by default (graduated). Set `SPECKIT_FUSION_POLICY_SHADOW_V2=false` to disable shadow evaluation. The fusion lab module implements three fusion policies: rrf (standard RRF), minmax_linear (min-max normalized weighted linear combination), and zscore_linear (z-score normalized weighted linear combination). Each policy run produces a `PolicyTelemetry` record with NDCG@10, MRR@5, and wall-clock latency. Shadow results are telemetry-only and have no ranking side effects.
-
-#### Source Files
-
-See [`11--scoring-and-calibration/23-fusion-policy-shadow-v2.md`](11--scoring-and-calibration/23-fusion-policy-shadow-v2.md) for full implementation and test file listings.
 
 ---
 
@@ -4430,7 +4378,6 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_FOLDER_DISCOVERY` | `true` | boolean | `lib/search/search-flags.ts` | PI-B3: automatic spec folder discovery. Matches the query against cached one-sentence folder descriptions to identify the most relevant spec folder without triggering full-corpus search. Discovery failure is non-fatal. |
 | `SPECKIT_FOLDER_SCORING` | `true` | boolean | `lib/search/folder-relevance.ts` | Sprint 1 two-phase folder-relevance scoring. When enabled, re-ranks results by spec folder relevance using a two-phase retrieval strategy. Disabled by setting to `'false'`. |
 | `SPECKIT_FOLDER_TOP_K` | `5` | number | `lib/search/hybrid-search.ts` | Number of top folders used in two-phase folder retrieval when `SPECKIT_FOLDER_SCORING` is active. Parsed as integer; invalid or missing values fall back to 5. |
-| `SPECKIT_FUSION_POLICY_SHADOW_V2` | `true` | boolean | `shared/algorithms/fusion-lab.ts` | **Default ON (graduated).** Shadow fusion lab for A/B testing fusion strategies (RRF vs minmax_linear vs zscore_linear). Records telemetry per query without affecting live ranking. |
 | `SPECKIT_GRAPH_CALIBRATION_PROFILE` | `true` | boolean | `lib/search/graph-calibration.ts` | **Default ON (graduated).** Graph calibration profiles and community thresholds. Enables calibration profile enforcement (graphWeightCap=0.05, communityScoreCap=0.03), Louvain activation gates (minDensity=0.3, minSize=10), and ablation harness with MRR/NDCG metrics. Two presets: default (conservative) and aggressive (tighter caps). |
 | `SPECKIT_GRAPH_CONCEPT_ROUTING` | `true` | boolean | `lib/search/entity-linker.ts` | **Default ON (graduated).** Query-time concept alias matching. Extracts noun phrases and matches against the concept alias table, activating the graph channel for matched concepts. |
 | `SPECKIT_GRAPH_REFRESH_MODE` | `write_local` | enum (`off`, `write_local`, `scheduled`) | `lib/search/graph-lifecycle.ts` | **Default `write_local` (graduated).** Graph lifecycle refresh mode. `off` disables graph refresh. `write_local` runs synchronous local recompute for small dirty components (<=50 nodes). `scheduled` queues background global refresh for larger components. Dirty-node tracking persists across onWrite() calls within the process. |

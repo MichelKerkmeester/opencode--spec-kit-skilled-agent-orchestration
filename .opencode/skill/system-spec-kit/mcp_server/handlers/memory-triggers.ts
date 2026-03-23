@@ -38,6 +38,8 @@ import { logSearchQuery, logFinalResult } from '../lib/eval/eval-logger';
 
 // Shared handler types
 import type { MCPResponse } from './types';
+// C2 FIX: Import DB access for scope filtering
+import { initialize_db } from '../lib/search/vector-index-store';
 
 /* ───────────────────────────────────────────────────────────────
    2. TYPES
@@ -103,6 +105,11 @@ interface TriggerArgs {
   session_id?: string;
   turnNumber?: number;
   include_cognitive?: boolean;
+  // C2 FIX: Scope fields to prevent cross-tenant trigger leaks
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
+  sharedSpaceId?: string;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -251,7 +258,35 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
   }
 
   const triggerMatchResult = triggerMatcher.matchTriggerPhrasesWithStats(prompt, limit * 2);
-  const results: TriggerMatch[] = triggerMatchResult.matches;
+  let results: TriggerMatch[] = triggerMatchResult.matches;
+
+  // C2 FIX: Post-filter by scope to prevent cross-tenant trigger leaks
+  const { tenantId, userId, agentId, sharedSpaceId } = args;
+  if (tenantId || userId || agentId || sharedSpaceId) {
+    try {
+      const database = initialize_db();
+      const memoryIds = results.map(r => r.memoryId);
+      if (memoryIds.length > 0) {
+        const placeholders = memoryIds.map(() => '?').join(',');
+        const scopeRows = database.prepare(`
+          SELECT id, tenant_id, user_id, agent_id, shared_space_id
+          FROM memory_index WHERE id IN (${placeholders})
+        `).all(...memoryIds) as Array<{ id: number; tenant_id?: string; user_id?: string; agent_id?: string; shared_space_id?: string }>;
+        const scopeMap = new Map(scopeRows.map(r => [r.id, r]));
+        results = results.filter(match => {
+          const row = scopeMap.get(match.memoryId);
+          if (!row) return false;
+          if (tenantId && row.tenant_id && row.tenant_id !== tenantId) return false;
+          if (userId && row.user_id && row.user_id !== userId) return false;
+          if (agentId && row.agent_id && row.agent_id !== agentId) return false;
+          if (sharedSpaceId && row.shared_space_id && row.shared_space_id !== sharedSpaceId) return false;
+          return true;
+        });
+      }
+    } catch (scopeErr: unknown) {
+      console.warn('[memory_match_triggers] Scope filtering failed, returning unscoped results:', toErrorMessage(scopeErr));
+    }
+  }
   const detectedSignals = Array.isArray(triggerMatchResult.stats?.signals)
     ? triggerMatchResult.stats.signals
     : [];

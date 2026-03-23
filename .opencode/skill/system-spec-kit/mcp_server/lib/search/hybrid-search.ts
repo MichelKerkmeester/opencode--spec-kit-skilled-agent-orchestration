@@ -1030,8 +1030,11 @@ async function hybridSearchEnhanced(
             for (const result of reranked) {
               const boost = spreadMap.get(result.id as number);
               if (boost !== undefined) {
-                (result as Record<string, unknown>).score =
-                  ((result.score as number) ?? 0) + boost * CO_ACTIVATION_CONFIG.boostFactor;
+                // M10 FIX: Update all score aliases so downstream consumers see the boost
+              const boostedScore = ((result.score as number) ?? 0) + boost * CO_ACTIVATION_CONFIG.boostFactor;
+              (result as Record<string, unknown>).score = boostedScore;
+              if ('rrfScore' in result) (result as Record<string, unknown>).rrfScore = boostedScore;
+              if ('intentAdjustedScore' in result) (result as Record<string, unknown>).intentAdjustedScore = boostedScore;
               }
             }
           }
@@ -1249,8 +1252,10 @@ function structuralSearch(
 
   try {
     // Build SQL with optional specFolder filter
+    // H13 FIX: Exclude archived rows unless explicitly requested
     const conditions = [
-      `(importance_tier IS NULL OR importance_tier NOT IN ('deprecated', 'archived'))`
+      `(importance_tier IS NULL OR importance_tier NOT IN ('deprecated', 'archived'))`,
+      `(is_archived IS NULL OR is_archived = 0)`
     ];
     const params: unknown[] = [];
 

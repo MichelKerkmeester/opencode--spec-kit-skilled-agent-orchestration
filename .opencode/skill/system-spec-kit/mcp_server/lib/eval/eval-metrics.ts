@@ -18,8 +18,11 @@ export interface EvalResult {
   rank: number;
 }
 
-function getRankAtIndex(result: EvalResult, index: number): number {
-  return Number.isFinite(result.rank) && result.rank > 0 ? result.rank : index + 1;
+// H16 FIX: Use contiguous 1-based position within the topK slice, not external sparse rank.
+// External ranks can be non-contiguous after filtering/reranking, which would systematically
+// understate MRR/NDCG/MAP if used directly.
+function getRankAtIndex(_result: EvalResult, index: number): number {
+  return index + 1;
 }
 
 /** A single ground truth relevance judgment for a query-memory pair. */

@@ -77,11 +77,13 @@ function findSimilarMemories(embedding: Float32Array | null, options: { limit?: 
       includeConstitutional: false
     });
 
-    // Post-filter by governance scope to prevent cross-tenant PE decisions
+    // Post-filter by governance scope to prevent cross-tenant/session PE decisions
     const scopeFiltered = results.filter((r: Record<string, unknown>) => {
       if (tenantId && r.tenant_id && r.tenant_id !== tenantId) return false;
       if (userId && r.user_id && r.user_id !== userId) return false;
       if (agentId && r.agent_id && r.agent_id !== agentId) return false;
+      // H9 FIX: Filter by sessionId to prevent false duplicate/supersede decisions across sessions
+      if (sessionId && r.session_id && r.session_id !== sessionId) return false;
       if (sharedSpaceId && r.shared_space_id && r.shared_space_id !== sharedSpaceId) return false;
       return true;
     }).slice(0, limit);

@@ -29,13 +29,13 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-The eval module provides measurement infrastructure for search quality evaluation. It includes baseline measurement (BM25 MRR@5), ceiling evaluation, ground truth datasets, edge density analysis, quality proxy scoring, K-value sensitivity analysis, channel attribution, ground truth expansion via feedback, shadow scoring for A/B comparison, ablation studies for channel contribution analysis, a reporting dashboard for metric aggregation and trend analysis, and an evaluation database for tracking metrics over time.
+The eval module provides measurement infrastructure for search quality evaluation. It includes baseline measurement (BM25 MRR@5), ground truth datasets, edge density analysis, quality proxy scoring, K-value sensitivity analysis, ground truth expansion via feedback, shadow scoring for A/B comparison, ablation studies for channel contribution analysis, a reporting dashboard for metric aggregation and trend analysis, and an evaluation database for tracking metrics over time.
 
 ### Key Statistics
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Modules | 15 + 1 data file | eval-db, eval-logger, eval-metrics, eval-quality-proxy, eval-ceiling, bm25-baseline, edge-density, ground-truth-data, ground-truth-generator, k-value-analysis, channel-attribution, ground-truth-feedback, reporting-dashboard, shadow-scoring, ablation-framework, data/ground-truth.json |
+| Modules | 14 + 1 data file | eval-db, eval-logger, eval-metrics, eval-quality-proxy, bm25-baseline, edge-density, ground-truth-data, ground-truth-generator, k-value-analysis, ground-truth-feedback, memory-state-baseline, reporting-dashboard, shadow-scoring, ablation-framework, data/ground-truth.json |
 | Origin | Sprint 0+ | Foundation measurement established in Sprint 0, expanded in Sprints 1-7 |
 | Last Verified | 2026-03-01 | After Sprint 10 comprehensive remediation |
 
@@ -50,11 +50,9 @@ The eval module provides measurement infrastructure for search quality evaluatio
 eval/
  ablation-framework.ts     # Controlled channel ablation studies (R13-S3, Sprint 7)
  bm25-baseline.ts          # BM25 MRR@5 baseline measurement
- channel-attribution.ts    # Per-result channel source tagging and Exclusive Contribution Rate (Sprint 4)
  data/
    ground-truth.json       # Static ground truth query-result pairs (JSON dataset)
  edge-density.ts           # Edge density measurement for graph analysis (Sprint 1)
- eval-ceiling.ts           # Ceiling evaluation (upper bound measurement)
  eval-db.ts                # Evaluation SQLite database management
  eval-logger.ts            # Evaluation run logging
  eval-metrics.ts           # Metric computation (MRR@5, precision, recall, F1)
@@ -63,6 +61,7 @@ eval/
  ground-truth-feedback.ts  # Ground truth expansion via implicit feedback + deterministic judge (Sprint 4)
  ground-truth-generator.ts # Ground truth generation from live corpus
  k-value-analysis.ts       # RRF K-value sensitivity analysis
+ memory-state-baseline.ts  # Baseline retrieval/isolation metrics snapshot
  README.md                 # This file
  reporting-dashboard.ts    # Full reporting dashboard with sprint/channel aggregation (R13-S3, Sprint 7)
  shadow-scoring.ts         # Shadow scoring A/B comparison infrastructure (Sprint 4; write path disabled Sprint 7)
@@ -78,8 +77,8 @@ eval/
 | `edge-density.ts` | Graph edge density measurement for R10 escalation decisions |
 | `ground-truth-data.ts` | Hand-verified ground truth queries and expected results |
 | `k-value-analysis.ts` | Grid search for optimal RRF K parameter |
-| `channel-attribution.ts` | Tags search results with source channel(s); computes Exclusive Contribution Rate |
 | `ground-truth-feedback.ts` | Collects implicit feedback from user selections; deterministic heuristic judge for relevance labeling |
+| `memory-state-baseline.ts` | Captures baseline retrieval and isolation metrics before roadmap rollout changes |
 | `reporting-dashboard.ts` | Aggregates per-sprint and per-channel metrics; generates text and JSON reports with trend analysis |
 | `shadow-scoring.ts` | Runs parallel scoring paths without affecting production; logs comparison data for A/B evaluation |
 | `ablation-framework.ts` | Selectively disables channels to measure Recall@20 delta; paired sign-test for statistical significance |
@@ -111,10 +110,6 @@ Hand-verified query-result pairs for measuring retrieval quality. The generator 
 
 Grid search across RRF K values to identify optimal fusion parameters.
 
-### Channel Attribution (`channel-attribution.ts`)
-
-Tags each search result with its source channel(s) for evaluation analysis. Computes Exclusive Contribution Rate: how often each channel is the sole source for a result in top-K. Pure functions with no DB access. Added in Sprint 4.
-
 ### Ground Truth Feedback (`ground-truth-feedback.ts`)
 
 Expands ground truth datasets via two mechanisms: (1) implicit feedback from user memory selections persisted to the eval DB, and (2) a deterministic heuristic judge that scores query-memory relevance using lexical overlap with 4-band classification. Designed for replacement with a model-backed judge without changing persistence or agreement APIs. Added in Sprint 4.
@@ -125,7 +120,7 @@ Full reporting dashboard for the R13-S3 evaluation infrastructure. Aggregates me
 
 ### Shadow Scoring (`shadow-scoring.ts`)
 
-Runs a parallel scoring path alongside production results without affecting production output. Logs both production and shadow scores for A/B comparison with channel attribution per result. The shadow write path (`runShadowScoring`, `logShadowComparison`) was permanently disabled in Sprint 7; read-only analysis functions remain available. Added in Sprint 4.
+Runs a parallel scoring path alongside production results without affecting production output. Logs both production and shadow scores for A/B comparison. The shadow write path (`runShadowScoring`, `logShadowComparison`) was permanently disabled in Sprint 7; read-only analysis functions remain available. Added in Sprint 4.
 
 ### Ablation Framework (`ablation-framework.ts`)
 

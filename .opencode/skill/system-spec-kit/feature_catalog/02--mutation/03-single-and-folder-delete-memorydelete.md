@@ -174,7 +174,6 @@ Bulk deletes by spec folder are more involved. The system first creates an auto-
 | `mcp_server/tests/causal-edges.vitest.ts` | Causal edge storage tests |
 | `mcp_server/tests/channel-enforcement.vitest.ts` | Channel enforcement tests |
 | `mcp_server/tests/channel-representation.vitest.ts` | Channel representation tests |
-| `mcp_server/tests/channel.vitest.ts` | Channel general tests |
 | `mcp_server/tests/checkpoints-extended.vitest.ts` | Checkpoint extended tests |
 | `mcp_server/tests/checkpoints-storage.vitest.ts` | Checkpoint storage tests |
 | `mcp_server/tests/chunk-thinning.vitest.ts` | Chunk thinning tests |

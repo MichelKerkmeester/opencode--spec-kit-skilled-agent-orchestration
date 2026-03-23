@@ -435,7 +435,9 @@ function validateTransitionInput(
   if (transitionEvent === 'SUPERSEDE' && predecessorMemoryId == null) {
     throw new Error('E_LINEAGE: SUPERSEDE transition requires a predecessor');
   }
-  if (predecessor && validFrom < predecessor.valid_from) {
+  // M6 FIX: Compare timestamps as numeric epoch values, not raw strings,
+  // to handle non-ISO strings and timezone-offset variants correctly.
+  if (predecessor && new Date(validFrom).getTime() < new Date(predecessor.valid_from).getTime()) {
     throw new Error(
       `E_LINEAGE: valid_from (${validFrom}) is earlier than predecessor valid_from (${predecessor.valid_from})`,
     );

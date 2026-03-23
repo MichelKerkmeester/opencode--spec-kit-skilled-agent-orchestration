@@ -8,15 +8,14 @@
 // - Run alternative scoring algorithms in shadow mode
 // - Compare shadow vs production results
 // - Log comparison data to eval database
-// - Channel attribution per result
-// - Exclusive Contribution Rate metric
+// - Comparison summaries for production vs shadow output
 //
 // CRITICAL: Shadow scoring must NEVER affect production search results.
 // Every public function is wrapped in try-catch. The legacy compatibility flag
 // SPECKIT_SHADOW_SCORING is retained for tests/docs, but the write path remains disabled.
 import { initEvalDb, getEvalDb } from './eval-db';
 
-// Feature catalog: Shadow scoring and channel attribution
+// Feature catalog: Shadow scoring
 
 /* --- 1. ENV VAR GATE --- */
 

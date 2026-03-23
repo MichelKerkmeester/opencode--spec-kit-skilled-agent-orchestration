@@ -7,8 +7,9 @@
 // And (via hooks) which results they actually use.
 //
 // Table: consumption_log
-// Feature flag: SPECKIT_CONSUMPTION_LOG (deprecated, hardcoded false)
+// Feature flag: SPECKIT_CONSUMPTION_LOG (graduated, default ON)
 import Database from 'better-sqlite3';
+import { isFeatureEnabled } from '../cognitive/rollout-policy';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
@@ -78,11 +79,10 @@ export interface ConsumptionPatternsOptions {
 ──────────────────────────────────────────────────────────────── */
 
 /**
- * Eval complete. Telemetry is baked into core.
- * SPECKIT_CONSUMPTION_LOG env var is inert. Always returns false.
+ * Returns true when SPECKIT_CONSUMPTION_LOG is enabled (graduated, default ON).
  */
 function isConsumptionLogEnabled(): boolean {
-  return false;
+  return isFeatureEnabled('SPECKIT_CONSUMPTION_LOG');
 }
 
 /* ───────────────────────────────────────────────────────────────

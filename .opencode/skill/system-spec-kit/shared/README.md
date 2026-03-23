@@ -182,7 +182,6 @@ shared/
 ├── tsconfig.json               # TypeScript project configuration
 ├── algorithms/                 # Shared retrieval fusion and reranking algorithms
 │   ├── adaptive-fusion.ts      # Intent-aware weighted RRF profiles
-│   ├── fusion-lab.ts           # Experimental fusion strategies and A/B tooling
 │   ├── mmr-reranker.ts         # Diversity-aware reranking helpers
 │   ├── rrf-fusion.ts           # Reciprocal rank fusion primitives
 │   └── index.ts                # Algorithms barrel

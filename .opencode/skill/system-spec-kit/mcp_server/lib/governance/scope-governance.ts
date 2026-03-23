@@ -266,6 +266,11 @@ export function validateGovernedIngest(input: GovernedIngestInput): GovernanceDe
   if (deleteAfter && new Date(deleteAfter).getTime() <= new Date(governedAt).getTime()) {
     issues.push('deleteAfter must be later than governedAt');
   }
+  // H21 FIX: Require valid future deleteAfter for ephemeral retention policy
+  // Without this, ephemeral rows are never swept since sweeps key off delete_after
+  if (retentionPolicy === 'ephemeral' && !deleteAfter) {
+    issues.push('deleteAfter is required for ephemeral retention policy');
+  }
 
   return {
     allowed: issues.length === 0,
@@ -470,6 +475,13 @@ export function createScopeFilterPredicate<T extends Record<string, unknown>>(
       }
     } else if (normalized.sharedSpaceId) {
       return false;
+    }
+
+    // H8 FIX: When a row belongs to an allowed shared space, use membership as
+    // the access boundary — don't require exact actor/session match, which would
+    // block collaborator B from seeing collaborator A's shared memories.
+    if (rowSharedSpaceId && allowedSharedSpaceIds?.has(rowSharedSpaceId)) {
+      return matchesExactScope(row.tenant_id, normalized.tenantId);
     }
 
     return matchesExactScope(row.tenant_id, normalized.tenantId)

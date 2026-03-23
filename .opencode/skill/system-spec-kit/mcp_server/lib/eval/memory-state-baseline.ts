@@ -179,12 +179,17 @@ function captureMemoryStateBaselineSnapshot(
   const contextDbPath = resolveContextDbPath(options.contextDbPath);
   const targetEvalDbDir = path.dirname(contextDbPath);
   const previousEvalDbPath = getEvalDbPath();
-  const evalDb = initEvalDb(targetEvalDbDir);
-  const contextDb = openContextDb(contextDbPath);
-  const defaults = getMemoryRoadmapDefaults();
-  const evalRunId = options.evalRunId ?? -Math.floor(Date.now() / 1000);
 
+  // H17 FIX: Wrap the entire path switch in try/finally so the previous DB is
+  // restored even when initEvalDb() fails after closing the prior singleton.
+  let evalDb: ReturnType<typeof initEvalDb> | null = null;
+  let contextDb: ReturnType<typeof openContextDb> | null = null;
   try {
+    evalDb = initEvalDb(targetEvalDbDir);
+    contextDb = openContextDb(contextDbPath);
+    const defaults = getMemoryRoadmapDefaults();
+    const evalRunId = options.evalRunId ?? -Math.floor(Date.now() / 1000);
+
     const metrics = buildMetrics(evalDb, contextDb);
     const snapshot: MemoryStateBaselineSnapshot = {
       capturedAt: new Date().toISOString(),
@@ -214,7 +219,7 @@ function captureMemoryStateBaselineSnapshot(
     }
 
     if (previousEvalDbPath && previousEvalDbPath !== path.join(targetEvalDbDir, 'speckit-eval.db')) {
-      initEvalDb(path.dirname(previousEvalDbPath));
+      try { initEvalDb(path.dirname(previousEvalDbPath)); } catch (_: unknown) { /* best-effort restore */ }
     }
   }
 }

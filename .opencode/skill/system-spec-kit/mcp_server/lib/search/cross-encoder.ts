@@ -216,8 +216,15 @@ function applyLengthPenalty(
    6. CACHE
 ----------------------------------------------------------------*/
 
-function generateCacheKey(query: string, docIds: Array<number | string>): string {
-  const key = `${query}:${[...docIds].sort().join(',')}`;
+// H19 FIX: Include provider, document order, and option bits in cache key
+// to prevent false cache hits across different providers/options.
+function generateCacheKey(
+  query: string,
+  docIds: Array<number | string>,
+  provider?: string,
+  optionBits?: string,
+): string {
+  const key = `${provider || 'default'}:${optionBits || ''}:${query}:${docIds.join(',')}`;
   // Simple hash
   let hash = 0;
   for (let i = 0; i < key.length; i++) {
@@ -391,9 +398,10 @@ async function rerankResults(
     }));
   }
 
-  // Check cache
+  // Check cache — H19 FIX: include provider and options in cache key
+  const optionBits = shouldApplyLengthPenalty ? 'lp' : '';
   if (useCache) {
-    const cacheKey = generateCacheKey(query, documents.map(d => d.id));
+    const cacheKey = generateCacheKey(query, documents.map(d => d.id), provider, optionBits);
     const cached = cache.get(cacheKey);
     if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
       return cached.results.slice(0, limit);
@@ -431,9 +439,9 @@ async function rerankResults(
       latencyTracker.durations.shift();
     }
 
-    // Cache results
+    // Cache results — H19 FIX: use provider+options-aware cache key
     if (useCache) {
-      const cacheKey = generateCacheKey(query, documents.map(d => d.id));
+      const cacheKey = generateCacheKey(query, documents.map(d => d.id), provider, optionBits);
       const MAX_CACHE_ENTRIES = 200;
       if (cache.size >= MAX_CACHE_ENTRIES) {
         let oldestKey: string | null = null;
@@ -485,7 +493,8 @@ function getRerankerStatus(): RerankerStatus {
   if (durations.length > 0) {
     avg = durations.reduce((a, b) => a + b, 0) / durations.length;
     const sorted = [...durations].sort((a, b) => a - b);
-    p95 = sorted[Math.floor(sorted.length * 0.95)] || 0;
+    // L3 FIX: Correct p95 percentile index with bounds clamping
+    p95 = sorted[Math.min(Math.ceil(sorted.length * 0.95) - 1, sorted.length - 1)] || 0;
   }
 
   return {

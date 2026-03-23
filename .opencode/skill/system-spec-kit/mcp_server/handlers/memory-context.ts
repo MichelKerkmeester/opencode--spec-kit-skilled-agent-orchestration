@@ -1077,28 +1077,32 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   const modeTokenBudget = CONTEXT_MODES[effectiveMode]?.tokenBudget;
   const effectiveBudget = modeTokenBudget || tokenBudget;
 
-  // T205: Enforce token budget on strategy results
-  const { result: budgetedResult, enforcement } = enforceTokenBudget(result, effectiveBudget);
-  const tracedResult: ContextResult = effectiveMode === 'quick' && options.includeTrace === true
+  // M1 FIX: Inject auto-resume context BEFORE budget enforcement
+  // so the final response respects the advertised token budget.
+  const tracedResult0: ContextResult = effectiveMode === 'quick' && options.includeTrace === true
     ? attachSessionTransitionTrace(
-      budgetedResult as ContextResult & { content?: Array<{ text?: string; type?: string }> },
+      result as ContextResult & { content?: Array<{ text?: string; type?: string }> },
       sessionTransition,
     ) as ContextResult
-    : budgetedResult;
+    : result;
 
   if (autoResumeEnabled && effectiveMode === 'resume' && requestedSessionId) {
     const resumeContextItems = workingMemory.getSessionPromptContext(requestedSessionId, workingMemory.DECAY_FLOOR, 5);
     if (resumeContextItems.length > 0) {
       sessionLifecycle.resumedContextCount = resumeContextItems.length;
-      (tracedResult as Record<string, unknown>).systemPromptContext = resumeContextItems.map((item) => ({
+      (tracedResult0 as Record<string, unknown>).systemPromptContext = resumeContextItems.map((item) => ({
         memoryId: item.memoryId,
         title: item.title,
         filePath: item.filePath,
         attentionScore: item.attentionScore,
       }));
-      (tracedResult as Record<string, unknown>).systemPromptContextInjected = true;
+      (tracedResult0 as Record<string, unknown>).systemPromptContextInjected = true;
     }
   }
+
+  // T205: Enforce token budget AFTER all context injection
+  const { result: budgetedResult, enforcement } = enforceTokenBudget(tracedResult0, effectiveBudget);
+  const tracedResult = budgetedResult;
 
   // Build response with layer metadata
   const _contextResponse = createMCPResponse({

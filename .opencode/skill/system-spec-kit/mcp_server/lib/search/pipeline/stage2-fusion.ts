@@ -59,10 +59,12 @@ import { applyNegativeFeedback, getNegativeFeedbackStats } from '../../scoring/n
 import {
   isNegativeFeedbackEnabled,
   isCommunityDetectionEnabled,
+  isGraphCalibrationProfileEnabled,
   isGraphSignalsEnabled,
   resolveGraphWalkRolloutState,
   isLearnedStage2CombinerEnabled,
 } from '../search-flags';
+import { applyCalibrationProfile } from '../graph-calibration';
 import { shadowScore, extractFeatureVector } from '@spec-kit/shared/ranking/learned-combiner';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/db-helpers';
@@ -238,6 +240,59 @@ function countGraphInjected(rows: PipelineRow[]): number {
     const graphContribution = row.graphContribution as Record<string, unknown> | undefined;
     return graphContribution?.injected === true;
   }).length;
+}
+
+function resolveGraphContributionValue(
+  graphContribution: Record<string, unknown> | undefined,
+  key: GraphContributionKey,
+): number {
+  const value = graphContribution?.[key];
+  return typeof value === 'number' && Number.isFinite(value) ? value : 0;
+}
+
+function applyGraphCalibrationProfileToResults(results: PipelineRow[]): PipelineRow[] {
+  return results.map((row) => {
+    const graphContribution = row.graphContribution as Record<string, unknown> | undefined;
+    const originalGraphSignalDelta = Math.max(0, resolveGraphContributionValue(graphContribution, 'graphSignalDelta'));
+    const originalCommunityDelta = Math.max(0, resolveGraphContributionValue(graphContribution, 'communityDelta'));
+
+    if (originalGraphSignalDelta === 0 && originalCommunityDelta === 0) {
+      return row;
+    }
+
+    const calibrated = applyCalibrationProfile({
+      graphWeightBoost: originalGraphSignalDelta,
+      // Stage 2 currently tracks graph-signal contribution as one aggregate delta.
+      // Feed the same bounded value through the N2a/N2b caps until per-signal
+      // attribution is exposed on PipelineRow graphContribution.
+      n2aScore: originalGraphSignalDelta,
+      n2bScore: originalGraphSignalDelta,
+      communityBoost: originalCommunityDelta,
+    });
+
+    const adjustedScore = resolveBaseScore(row)
+      - originalGraphSignalDelta
+      - originalCommunityDelta
+      + calibrated.graphWeightBoost
+      + calibrated.communityBoost;
+
+    const calibratedRow = withSyncedScoreAliases(row, adjustedScore);
+    const causalDelta = resolveGraphContributionValue(graphContribution, 'causalDelta');
+    const coActivationDelta = resolveGraphContributionValue(graphContribution, 'coActivationDelta');
+
+    return {
+      ...calibratedRow,
+      graphContribution: {
+        ...(graphContribution ?? {}),
+        graphSignalDelta: calibrated.graphWeightBoost,
+        communityDelta: calibrated.communityBoost,
+        totalDelta: causalDelta
+          + coActivationDelta
+          + calibrated.communityBoost
+          + calibrated.graphWeightBoost,
+      },
+    };
+  });
 }
 
 /**
@@ -718,6 +773,10 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
       });
       // FIX #4: Sync aliases immediately after graph signal score mutations.
       syncScoreAliasesInPlace(results);
+      if (isGraphCalibrationProfileEnabled()) {
+        results = applyGraphCalibrationProfileToResults(results);
+        syncScoreAliasesInPlace(results);
+      }
       (metadata as Record<string, unknown>).graphSignalsApplied = true;
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);

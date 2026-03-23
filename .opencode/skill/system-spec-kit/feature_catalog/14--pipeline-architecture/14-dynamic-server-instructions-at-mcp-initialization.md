@@ -248,7 +248,6 @@ When the memory server starts up, it now tells the calling AI how many memories 
 | `mcp_server/tests/causal-edges.vitest.ts` | Causal edge storage tests |
 | `mcp_server/tests/channel-enforcement.vitest.ts` | Channel enforcement tests |
 | `mcp_server/tests/channel-representation.vitest.ts` | Channel representation tests |
-| `mcp_server/tests/channel.vitest.ts` | Channel general tests |
 | `mcp_server/tests/checkpoint-working-memory.vitest.ts` | Checkpoint working memory |
 | `mcp_server/tests/checkpoints-extended.vitest.ts` | Checkpoint extended tests |
 | `mcp_server/tests/checkpoints-storage.vitest.ts` | Checkpoint storage tests |

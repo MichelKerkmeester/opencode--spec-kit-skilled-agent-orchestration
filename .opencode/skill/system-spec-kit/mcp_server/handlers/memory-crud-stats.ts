@@ -124,7 +124,7 @@ async function handleMemoryStats(args: StatsArgs | null): Promise<MCPResponse> {
   const safeLimit = Math.max(1, Math.min(Math.floor(rawLimit || 10), 100));
 
   let total = 0;
-  let statusCounts: ReturnType<typeof vectorIndex.getStatusCounts> = { success: 0, pending: 0, failed: 0, retry: 0 };
+  let statusCounts: ReturnType<typeof vectorIndex.getStatusCounts> = { success: 0, pending: 0, failed: 0, retry: 0, partial: 0 };
   let dates: Record<string, unknown> = { oldest: null, newest: null };
   let triggerCount = 0;
   let topFolders: Record<string, unknown>[];

@@ -1,11 +1,9 @@
 ---
-title: "DEPRECATED: Graph calibration profiles and community thresholds"
-description: "DEPRECATED: Graph calibration profiles define weight caps, RRF fusion overflow limits, and Louvain community detection thresholds, but the module is @deprecated and never wired into the live Stage 2 pipeline."
+title: "Graph calibration profiles and community thresholds"
+description: "Graph calibration profiles define weight caps, RRF fusion overflow limits, and Louvain community detection thresholds as an active graduated feature in the live Stage 2 pipeline."
 ---
 
-# DEPRECATED: Graph calibration profiles and community thresholds
-
-> **DEPRECATED:** This module is `@deprecated` — fully implemented and tested but never wired into the Stage 2 pipeline. The feature flag accessor exists but is vestigial since nothing in the pipeline calls `applyCalibrationProfile()`.
+# Graph calibration profiles and community thresholds
 
 ## 1. OVERVIEW
 
@@ -19,7 +17,7 @@ When graph signals contribute to search scoring, they need guardrails to prevent
 
 The calibration module defines two profiles. The default profile sets `GRAPH_WEIGHT_CAP = 0.05`, `n2aCap = 0.10`, `n2bCap = 0.10`, `louvainMinDensity = 0.3`, and `louvainMinSize = 10`. The aggressive profile tightens these to `graphWeightCap = 0.03`, `n2aCap = 0.07`, `n2bCap = 0.07`, `louvainMinDensity = 0.5`, and `louvainMinSize = 20`. Community score boost is capped at `COMMUNITY_SCORE_CAP = 0.03` (secondary signal only).
 
-The module also exposes flag helpers for `SPECKIT_GRAPH_CALIBRATION_PROFILE` and `SPECKIT_CALIBRATION_PROFILE_NAME`, but those accessors are vestigial because the calibration module is not imported by the live Stage 2 pipeline.
+The live Stage 2 pipeline applies `applyCalibrationProfile()` after graph signals, so the `SPECKIT_GRAPH_CALIBRATION_PROFILE` and `SPECKIT_CALIBRATION_PROFILE_NAME` accessors actively control runtime calibration.
 
 The module also includes an ablation harness with MRR and NDCG computation for per-intent evaluation of graph features.
 

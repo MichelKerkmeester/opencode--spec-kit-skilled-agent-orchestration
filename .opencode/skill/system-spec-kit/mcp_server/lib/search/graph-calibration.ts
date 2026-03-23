@@ -11,8 +11,6 @@
 //
 // All features gated behind SPECKIT_GRAPH_CALIBRATION_PROFILE (default OFF).
 
-/** @deprecated Fully implemented and tested but never wired into the Stage 2 pipeline. Capping is done independently by ranking-contract.ts and causal-boost.ts. */
-
 /* ---------------------------------------------------------------
    1. IMPORTS
 ---------------------------------------------------------------- */

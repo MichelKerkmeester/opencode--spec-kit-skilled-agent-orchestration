@@ -147,7 +147,7 @@ Release is `READY` only when:
 1. No feature verdict is `FAIL`.
 2. All critical scenarios are `PASS`.
 3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-scenario files (`COVERED_SCENARIOS == TOTAL_SCENARIOS`).
-4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 233 scenario files (272 exact IDs) while the feature catalog contains 222 feature files.
+4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 231 scenario files (270 exact IDs) while the feature catalog contains 220 feature files.
 5. No unresolved blocking triage item remains.
 
 Otherwise release is `NOT READY`.
@@ -167,8 +167,8 @@ count = sum(
 print(count)
 PY
 )
-if [ "$TOTAL_FEATURES" -ne 233 ]; then
-  echo "Expected 233 scenario files, found $TOTAL_FEATURES" >&2
+if [ "$TOTAL_FEATURES" -ne 231 ]; then
+  echo "Expected 231 scenario files, found $TOTAL_FEATURES" >&2
   exit 1
 fi
 ```
@@ -839,20 +839,6 @@ Search returns normal results even when eval logging throws; no latency spike fr
 > **Feature File:** [007](09--evaluation-and-measurement/007-observer-effect-mitigation-d4.md)
 > **Catalog:** [09--evaluation-and-measurement/03-observer-effect-mitigation.md](../feature_catalog/09--evaluation-and-measurement/03-observer-effect-mitigation.md)
 
-### 008 | Full-context ceiling evaluation (A2)
-
-#### Description
-Confirm ceiling benchmark run.
-
-#### Current Reality
-Prompt: `Run full-context ceiling evaluation (A2). Capture the evidence needed to prove Ceiling benchmark produces ranked output; ceiling score >= hybrid and BM25 baselines. Return a concise user-facing pass/fail verdict with the main reason.`
-
-Ceiling benchmark produces ranked output; ceiling score >= hybrid and BM25 baselines
-
-#### Test Execution
-> **Feature File:** [008](09--evaluation-and-measurement/008-full-context-ceiling-evaluation-a2.md)
-> **Catalog:** [09--evaluation-and-measurement/04-full-context-ceiling-evaluation.md](../feature_catalog/09--evaluation-and-measurement/04-full-context-ceiling-evaluation.md)
-
 ### 009 | Quality proxy formula (B7)
 
 #### Description
@@ -936,20 +922,6 @@ Ablation run produces per-channel delta snapshots; dashboard renders with trend 
 #### Test Execution
 > **Feature File:** [014](09--evaluation-and-measurement/014-full-reporting-and-ablation-study-framework-r13-s3.md)
 > **Catalog:** [09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md](../feature_catalog/09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md)
-
-### 015 | Shadow scoring and channel attribution (R13-S2)
-
-#### Description
-Confirm shadow deactivation and attribution continuity.
-
-#### Current Reality
-Prompt: `Verify shadow scoring deactivation and attribution continuity. Capture the evidence needed to prove Shadow scoring flags are inert (no live ranking impact); attribution metadata still attached to results. Return a concise user-facing pass/fail verdict with the main reason.`
-
-Shadow scoring flags are inert (no live ranking impact); attribution metadata still attached to results
-
-#### Test Execution
-> **Feature File:** [015](09--evaluation-and-measurement/015-shadow-scoring-and-channel-attribution-r13-s2.md)
-> **Catalog:** [09--evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md](../feature_catalog/09--evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md)
 
 ### 016 | Typed-weighted degree channel (R4)
 
@@ -3086,20 +3058,6 @@ data.sessionState includes activeGoal, seenResultIds, openQuestions, preferredAn
 > **Feature File:** [169](18--ux-hooks/169-session-retrieval-state-v1-speckit-session-retrieval-state-v1.md)
 > **Catalog:** [18--ux-hooks/17-retrieval-session-state.md](../feature_catalog/18--ux-hooks/17-retrieval-session-state.md)
 
-### 170 | Fusion policy shadow v2 (SPECKIT_FUSION_POLICY_SHADOW_V2)
-
-#### Description
-Verify Fusion Lab runs all three policies (RRF, minmax-linear, zscore-linear) in shadow while returning the active policy result unchanged.
-
-#### Current Reality
-Prompt: `Test the default-on SPECKIT_FUSION_POLICY_SHADOW_V2 behavior. Run Fusion Lab on a judged query set and verify telemetry is produced for rrf, minmax_linear, and zscore_linear while the active policy result remains the only live result. Return a concise user-facing pass/fail verdict with the main reason.`
-
-Telemetry exists for `rrf`, `minmax_linear`, and `zscore_linear`; the active policy result is returned unchanged; shadow alternatives are telemetry-only; disabling the flag suppresses the shadow comparison path
-
-#### Test Execution
-> **Feature File:** [170](11--scoring-and-calibration/170-fusion-policy-shadow-v2-speckit-fusion-policy-shadow-v2.md)
-> **Catalog:** [11--scoring-and-calibration/23-fusion-policy-shadow-v2.md](../feature_catalog/11--scoring-and-calibration/23-fusion-policy-shadow-v2.md)
-
 ### 171 | Calibrated overlap bonus (SPECKIT_CALIBRATED_OVERLAP_BONUS)
 
 #### Description
@@ -3522,14 +3480,12 @@ This split playbook keeps automated coverage references in three places:
 | 005 | Features | Evaluation database and schema (R13-S1) | [005](09--evaluation-and-measurement/005-evaluation-database-and-schema-r13-s1.md) | [09--evaluation-and-measurement/01-evaluation-database-and-schema.md](../feature_catalog/09--evaluation-and-measurement/01-evaluation-database-and-schema.md) |
 | 006 | Features | Core metric computation (R13-S1) | [006](09--evaluation-and-measurement/006-core-metric-computation-r13-s1.md) | [09--evaluation-and-measurement/02-core-metric-computation.md](../feature_catalog/09--evaluation-and-measurement/02-core-metric-computation.md) |
 | 007 | Features | Observer effect mitigation (D4) | [007](09--evaluation-and-measurement/007-observer-effect-mitigation-d4.md) | [09--evaluation-and-measurement/03-observer-effect-mitigation.md](../feature_catalog/09--evaluation-and-measurement/03-observer-effect-mitigation.md) |
-| 008 | Features | Full-context ceiling evaluation (A2) | [008](09--evaluation-and-measurement/008-full-context-ceiling-evaluation-a2.md) | [09--evaluation-and-measurement/04-full-context-ceiling-evaluation.md](../feature_catalog/09--evaluation-and-measurement/04-full-context-ceiling-evaluation.md) |
 | 009 | Features | Quality proxy formula (B7) | [009](09--evaluation-and-measurement/009-quality-proxy-formula-b7.md) | [09--evaluation-and-measurement/05-quality-proxy-formula.md](../feature_catalog/09--evaluation-and-measurement/05-quality-proxy-formula.md) |
 | 010 | Features | Synthetic ground truth corpus (G-NEW-1, G-NEW-3 phase A) | [010](09--evaluation-and-measurement/010-synthetic-ground-truth-corpus-g-new-1-g-new-3-phase-a.md) | [09--evaluation-and-measurement/06-synthetic-ground-truth-corpus.md](../feature_catalog/09--evaluation-and-measurement/06-synthetic-ground-truth-corpus.md) |
 | 011 | Features | BM25-only baseline (G-NEW-1) | [011](09--evaluation-and-measurement/011-bm25-only-baseline-g-new-1.md) | [09--evaluation-and-measurement/07-bm25-only-baseline.md](../feature_catalog/09--evaluation-and-measurement/07-bm25-only-baseline.md) |
 | 012 | Features | Agent consumption instrumentation (G-NEW-2) | [012](09--evaluation-and-measurement/012-agent-consumption-instrumentation-g-new-2.md) | [09--evaluation-and-measurement/08-agent-consumption-instrumentation.md](../feature_catalog/09--evaluation-and-measurement/08-agent-consumption-instrumentation.md) |
 | 013 | Features | Scoring observability (T010) | [013](09--evaluation-and-measurement/013-scoring-observability-t010.md) | [09--evaluation-and-measurement/09-scoring-observability.md](../feature_catalog/09--evaluation-and-measurement/09-scoring-observability.md) |
 | 014 | Features | Full reporting and ablation study framework (R13-S3) | [014](09--evaluation-and-measurement/014-full-reporting-and-ablation-study-framework-r13-s3.md) | [09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md](../feature_catalog/09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md) |
-| 015 | Features | Shadow scoring and channel attribution (R13-S2) | [015](09--evaluation-and-measurement/015-shadow-scoring-and-channel-attribution-r13-s2.md) | [09--evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md](../feature_catalog/09--evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md) |
 | 016 | Features | Typed-weighted degree channel (R4) | [016](10--graph-signal-activation/016-typed-weighted-degree-channel-r4.md) | [10--graph-signal-activation/01-typed-weighted-degree-channel.md](../feature_catalog/10--graph-signal-activation/01-typed-weighted-degree-channel.md) |
 | 017 | Features | Co-activation boost strength increase (A7) | [017](10--graph-signal-activation/017-co-activation-boost-strength-increase-a7.md) | [10--graph-signal-activation/02-co-activation-boost-strength-increase.md](../feature_catalog/10--graph-signal-activation/02-co-activation-boost-strength-increase.md) |
 | 018 | Features | Edge density measurement | [018](10--graph-signal-activation/018-edge-density-measurement.md) | [10--graph-signal-activation/03-edge-density-measurement.md](../feature_catalog/10--graph-signal-activation/03-edge-density-measurement.md) |
@@ -3683,7 +3639,6 @@ This split playbook keeps automated coverage references in three places:
 | 167 | Features | Response profile v1 (SPECKIT_RESPONSE_PROFILE_V1) | [167](18--ux-hooks/167-response-profile-v1-speckit-response-profile-v1.md) | [18--ux-hooks/15-mode-aware-response-profiles.md](../feature_catalog/18--ux-hooks/15-mode-aware-response-profiles.md) |
 | 168 | Features | Progressive disclosure v1 (SPECKIT_PROGRESSIVE_DISCLOSURE_V1) | [168](18--ux-hooks/168-progressive-disclosure-v1-speckit-progressive-disclosure-v1.md) | [18--ux-hooks/16-progressive-disclosure.md](../feature_catalog/18--ux-hooks/16-progressive-disclosure.md) |
 | 169 | Features | Session retrieval state v1 (SPECKIT_SESSION_RETRIEVAL_STATE_V1) | [169](18--ux-hooks/169-session-retrieval-state-v1-speckit-session-retrieval-state-v1.md) | [18--ux-hooks/17-retrieval-session-state.md](../feature_catalog/18--ux-hooks/17-retrieval-session-state.md) |
-| 170 | Features | Fusion policy shadow v2 (SPECKIT_FUSION_POLICY_SHADOW_V2) | [170](11--scoring-and-calibration/170-fusion-policy-shadow-v2-speckit-fusion-policy-shadow-v2.md) | [11--scoring-and-calibration/23-fusion-policy-shadow-v2.md](../feature_catalog/11--scoring-and-calibration/23-fusion-policy-shadow-v2.md) |
 | 171 | Features | Calibrated overlap bonus (SPECKIT_CALIBRATED_OVERLAP_BONUS) | [171](11--scoring-and-calibration/171-calibrated-overlap-bonus-speckit-calibrated-overlap-bonus.md) | [11--scoring-and-calibration/21-calibrated-overlap-bonus.md](../feature_catalog/11--scoring-and-calibration/21-calibrated-overlap-bonus.md) |
 | 172 | Features | RRF K experimental (SPECKIT_RRF_K_EXPERIMENTAL) | [172](11--scoring-and-calibration/172-rrf-k-experimental-speckit-rrf-k-experimental.md) | [11--scoring-and-calibration/22-rrf-k-experimental.md](../feature_catalog/11--scoring-and-calibration/22-rrf-k-experimental.md) |
 | 173 | Features | Query decomposition (SPECKIT_QUERY_DECOMPOSITION) | [173](12--query-intelligence/173-query-decomposition-speckit-query-decomposition.md) | [12--query-intelligence/10-query-decomposition.md](../feature_catalog/12--query-intelligence/10-query-decomposition.md) |

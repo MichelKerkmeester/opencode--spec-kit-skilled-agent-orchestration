@@ -229,6 +229,8 @@ export function index_memory(params: IndexMemoryParams): number {
     }
 
     refresh_interference_scores_for_folder(database, specFolder);
+    // H3 FIX: Invalidate search cache after insert
+    clear_search_cache();
 
     return metadata_id;
   });
@@ -408,8 +410,9 @@ export function update_memory(params: UpdateMemoryParams): number {
     if (embedding) {
       updates.push('embedding_model = ?');
       updates.push('embedding_generated_at = ?');
+      // H1 FIX: Set 'pending' until vector write is confirmed
       updates.push('embedding_status = ?');
-      values.push(embeddingsProvider.getModelName(), now, 'success');
+      values.push(embeddingsProvider.getModelName(), now, 'pending');
     }
 
     values.push(id);
@@ -439,11 +442,15 @@ export function update_memory(params: UpdateMemoryParams): number {
       database.prepare(`
         INSERT INTO vec_memories (rowid, embedding) VALUES (?, ?)
       `).run(BigInt(id), embedding_buffer);
+      // H1 FIX: Mark success only after vector write confirmed
+      database.prepare('UPDATE memory_index SET embedding_status = ? WHERE id = ?').run('success', id);
     }
 
     if (existingRow?.spec_folder) {
       refresh_interference_scores_for_folder(database, existingRow.spec_folder);
     }
+    // H3 FIX: Invalidate search cache after update
+    clear_search_cache();
 
     return id;
   });

@@ -5,9 +5,9 @@
 // Covers: table creation, event logging, stats aggregation,
 // Pattern detection, fail-safe behavior, latency tracking.
 //
-// NOTE: isConsumptionLogEnabled is REMOVED (hardcoded false). Tests that
-// Exercise logging mechanics use forceLogConsumptionEvent() which bypasses
-// The flag check by inserting directly into the DB using the same SQL.
+// NOTE: logging is now gated by SPECKIT_CONSUMPTION_LOG (graduated, default ON).
+// Tests that exercise raw insert mechanics still use forceLogConsumptionEvent()
+// To bypass the flag check and hit the shared SQL path directly.
 
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import Database from 'better-sqlite3';
@@ -20,9 +20,8 @@ import {
 } from '../lib/telemetry/consumption-logger';
 
 // -- Force-log helper ------------------------------------------------------
-// IsConsumptionLogEnabled() is REMOVED (always false), so logConsumptionEvent
-// Short-circuits before inserting. To test logging mechanics we bypass the
-// Flag check by inserting directly with the same SQL the source uses.
+// To test logging mechanics directly, bypass the runtime flag check and insert
+// With the same SQL the source uses.
 
 interface ConsumptionEvent {
   event_type: string;
@@ -137,7 +136,7 @@ describe('T001: initConsumptionLog — table creation', () => {
    2. EVENT LOGGING — all 3 event types
 ──────────────────────────────────────────────────────────────── */
 
-describe('T002: event logging mechanics (via forceLog — flag is REMOVED)', () => {
+describe('T002: event logging mechanics (via forceLog)', () => {
   let db: Database.Database;
 
   beforeEach(() => {
@@ -460,17 +459,27 @@ describe('T005: fail-safe behavior — logging errors never propagate', () => {
     }).not.toThrow();
   });
 
-  it('logConsumptionEvent is a no-op when feature is disabled (production path)', () => {
-    // IsConsumptionLogEnabled() returns false, so logConsumptionEvent should not insert
-    const db = createTestDb();
-    logConsumptionEvent(db, {
-      event_type: 'search',
-      query_text: 'should-not-appear',
-      result_count: 5,
-    });
-    const rows = db.prepare('SELECT COUNT(*) as cnt FROM consumption_log').get() as { cnt: number };
-    expect(rows.cnt).toBe(0);
-    db.close();
+  it('logConsumptionEvent inserts when the feature flag is unset (default ON)', () => {
+    const prevFlag = process.env.SPECKIT_CONSUMPTION_LOG;
+    delete process.env.SPECKIT_CONSUMPTION_LOG;
+
+    try {
+      const db = createTestDb();
+      logConsumptionEvent(db, {
+        event_type: 'search',
+        query_text: 'should-appear',
+        result_count: 5,
+      });
+      const rows = db.prepare('SELECT COUNT(*) as cnt FROM consumption_log').get() as { cnt: number };
+      expect(rows.cnt).toBe(1);
+      db.close();
+    } finally {
+      if (prevFlag === undefined) {
+        delete process.env.SPECKIT_CONSUMPTION_LOG;
+      } else {
+        process.env.SPECKIT_CONSUMPTION_LOG = prevFlag;
+      }
+    }
   });
 
   it('T005-B: getConsumptionStats returns defaults on empty/uninitialized DB', () => {
