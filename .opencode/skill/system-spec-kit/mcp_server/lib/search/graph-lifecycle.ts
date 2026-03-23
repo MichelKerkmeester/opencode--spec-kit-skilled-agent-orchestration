@@ -62,15 +62,9 @@ export function isGraphRefreshEnabled(): boolean {
   return resolveGraphRefreshMode() !== 'off';
 }
 
-/**
- * REQ-D3-004: LLM graph backfill feature flag.
- * When true, high-value docs receive an async LLM-based enrichment pass.
- * Default: FALSE (opt-in).  Set SPECKIT_LLM_GRAPH_BACKFILL=true to enable.
- */
-export function isLlmGraphBackfillEnabled(): boolean {
-  const val = process.env.SPECKIT_LLM_GRAPH_BACKFILL?.toLowerCase().trim();
-  return val !== 'false' && val !== '0';
-}
+// REQ-D3-004: LLM graph backfill gate — canonical implementation in search-flags.ts.
+// Default: TRUE (graduated). Set SPECKIT_LLM_GRAPH_BACKFILL=false to disable.
+export { isLlmGraphBackfillEnabled } from './search-flags';
 
 // ───────────────────────────────────────────────────────────────
 // 2. CONSTANTS

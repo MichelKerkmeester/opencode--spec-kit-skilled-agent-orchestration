@@ -165,14 +165,10 @@ export const AGGRESSIVE_PROFILE: CalibrationProfile = {
    5. FEATURE FLAG
 ---------------------------------------------------------------- */
 
-/**
- * Check whether graph calibration profiles are active.
- * Default: OFF (opt-in). Set SPECKIT_GRAPH_CALIBRATION_PROFILE=true to enable.
- */
-export function isGraphCalibrationEnabled(): boolean {
-  const val = process.env.SPECKIT_GRAPH_CALIBRATION_PROFILE?.toLowerCase().trim();
-  return val !== 'false' && val !== '0';
-}
+// Graph calibration gate — canonical implementation in search-flags.ts.
+// Default: TRUE (graduated). Set SPECKIT_GRAPH_CALIBRATION_PROFILE=false to disable.
+import { isGraphCalibrationProfileEnabled } from './search-flags';
+export const isGraphCalibrationEnabled = isGraphCalibrationProfileEnabled;
 
 /* ---------------------------------------------------------------
    6. METRIC COMPUTATION

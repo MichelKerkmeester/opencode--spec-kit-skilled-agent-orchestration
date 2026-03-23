@@ -99,15 +99,9 @@ const HYDE_TIMEOUT_MS = 8000;
    4. FEATURE FLAGS
 ──────────────────────────────────────────────────────────────── */
 
-/**
- * D2 REQ-D2-004: HyDE feature gate.
- * Default: FALSE (opt-in). Set SPECKIT_HYDE=true to enable.
- * Only fires in deep mode with low-confidence baseline.
- */
-export function isHyDEEnabled(): boolean {
-  const val = process.env.SPECKIT_HYDE?.toLowerCase().trim();
-  return val !== 'false' && val !== '0';
-}
+// D2 REQ-D2-004: HyDE feature gate — canonical implementation in search-flags.ts.
+// Default: TRUE (graduated). Set SPECKIT_HYDE=false to disable.
+export { isHyDEEnabled } from './search-flags';
 
 /**
  * HyDE active mode (graduate from shadow to full merge).

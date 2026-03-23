@@ -335,12 +335,11 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
         const classification = tierClassifier.classifyTier(fullRecord);
         let effectiveRetrievability = classification.retrievability;
 
-        effectiveRetrievability *= turnDecayFactor;
-
         if (wmEntry) {
-          // WM already applies its own decay.
-          // Multiplying by turnDecayFactor again causes double-decay.
+          // WM already applies its own decay — skip turnDecayFactor to avoid double-decay.
           effectiveRetrievability = Math.min(effectiveRetrievability, wmEntry.attentionScore);
+        } else {
+          effectiveRetrievability *= turnDecayFactor;
         }
 
         attentionScore = effectiveRetrievability;

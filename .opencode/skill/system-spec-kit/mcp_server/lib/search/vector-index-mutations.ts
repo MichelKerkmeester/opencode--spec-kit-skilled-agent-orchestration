@@ -583,9 +583,9 @@ export function delete_memories(memory_ids: number[]): { deleted: number; failed
           }
         }
 
+        deleteAncillaryMemoryRows(database, id);
         const result = database.prepare('DELETE FROM memory_index WHERE id = ?').run(id);
         if (result.changes > 0) {
-          deleteAncillaryMemoryRows(database, id);
           // Memory_history rows are intentionally preserved after deletion
           // So DELETE audit events recorded here persist as audit trail.
           try {

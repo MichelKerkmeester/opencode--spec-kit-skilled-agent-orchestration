@@ -24,6 +24,9 @@ const DEFAULT_CURSOR_TTL_MS = 5 * 60 * 1000;
 /** Maximum snippet length in characters before truncation. */
 const SNIPPET_MAX_LENGTH = 100;
 
+/** Maximum number of cursors stored in memory. */
+const MAX_CURSORS = 1000;
+
 // -- Types --
 
 /** Compact digest of result quality distribution. */
@@ -254,6 +257,15 @@ function createCursor(
 
   // Store the full result set for later resolution
   cursorStore.set(cursorKey, { results: resultSet, storedAt: now });
+
+  // Evict oldest cursors when exceeding max capacity
+  if (cursorStore.size > MAX_CURSORS) {
+    const sorted = [...cursorStore.entries()].sort((a, b) => a[1].storedAt - b[1].storedAt);
+    const excess = cursorStore.size - MAX_CURSORS;
+    for (let i = 0; i < excess; i++) {
+      cursorStore.delete(sorted[i][0]);
+    }
+  }
 
   const payload: CursorPayload = {
     cursorKey,

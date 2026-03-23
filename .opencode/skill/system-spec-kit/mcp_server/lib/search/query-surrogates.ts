@@ -86,14 +86,9 @@ const MIN_MATCH_THRESHOLD = 0.15;
    4. FEATURE FLAG
 ──────────────────────────────────────────────────────────────── */
 
-/**
- * D2 REQ-D2-005: Query surrogates feature gate.
- * Default: FALSE (opt-in). Set SPECKIT_QUERY_SURROGATES=true to enable.
- */
-export function isQuerySurrogatesEnabled(): boolean {
-  const val = process.env.SPECKIT_QUERY_SURROGATES?.toLowerCase().trim();
-  return val !== 'false' && val !== '0';
-}
+// D2 REQ-D2-005: Query surrogates gate — canonical implementation in search-flags.ts.
+// Default: TRUE (graduated). Set SPECKIT_QUERY_SURROGATES=false to disable.
+export { isQuerySurrogatesEnabled } from './search-flags';
 
 /* ───────────────────────────────────────────────────────────────
    5. ALIAS EXTRACTION

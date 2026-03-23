@@ -38,6 +38,7 @@ interface CacheEntry<T> {
 
 /** Default TTL for cached LLM results: 1 hour in milliseconds. */
 export const DEFAULT_TTL_MS = 60 * 60 * 1000;
+const MAX_CACHE_SIZE = 500;
 
 /* ───────────────────────────────────────────────────────────────
    3. LLM CACHE CLASS
@@ -110,6 +111,19 @@ export class LlmCache {
       value,
       expiresAt: Date.now() + this.ttlMs,
     });
+
+    // Evict oldest entry when cache exceeds max size
+    if (this.store.size > MAX_CACHE_SIZE) {
+      let oldestKey: string | null = null;
+      let oldestExpiry = Infinity;
+      for (const [k, v] of this.store) {
+        if (v.expiresAt < oldestExpiry) {
+          oldestExpiry = v.expiresAt;
+          oldestKey = k;
+        }
+      }
+      if (oldestKey) this.store.delete(oldestKey);
+    }
   }
 
   /**

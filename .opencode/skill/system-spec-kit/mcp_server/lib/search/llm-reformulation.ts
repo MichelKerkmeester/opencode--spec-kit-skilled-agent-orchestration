@@ -76,15 +76,9 @@ const MIN_OUTPUT_LENGTH = 5;
    4. FEATURE FLAG
 ──────────────────────────────────────────────────────────────── */
 
-/**
- * D2 REQ-D2-003: LLM-based corpus-grounded query reformulation.
- * Default: FALSE (opt-in). Set SPECKIT_LLM_REFORMULATION=true to enable.
- * Only fires in deep mode — checked by the caller in stage1-candidate-gen.
- */
-export function isLlmReformulationEnabled(): boolean {
-  const val = process.env.SPECKIT_LLM_REFORMULATION?.toLowerCase().trim();
-  return val !== 'false' && val !== '0';
-}
+// D2 REQ-D2-003: LLM reformulation gate — canonical implementation in search-flags.ts.
+// Default: TRUE (graduated). Set SPECKIT_LLM_REFORMULATION=false to disable.
+export { isLlmReformulationEnabled } from './search-flags';
 
 /* ───────────────────────────────────────────────────────────────
    5. SEED RETRIEVAL

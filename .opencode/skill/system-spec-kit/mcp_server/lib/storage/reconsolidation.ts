@@ -114,17 +114,9 @@ const SIMILAR_MEMORY_LIMIT = 3;
 // 3. FEATURE FLAG
 
 // ───────────────────────────────────────────────────────────────
-/**
- * Check if reconsolidation is enabled via feature flag.
- *
- * Reconsolidation is opt-in and requires explicit
- * `SPECKIT_RECONSOLIDATION=true`.
- *
- * @returns true only when SPECKIT_RECONSOLIDATION is explicitly enabled
- */
-export function isReconsolidationEnabled(): boolean {
-  return process.env.SPECKIT_RECONSOLIDATION?.toLowerCase().trim() === 'true';
-}
+// Reconsolidation gate — canonical implementation in search-flags.ts.
+// Opt-in: requires explicit SPECKIT_RECONSOLIDATION=true.
+export { isReconsolidationEnabled } from '../search/search-flags';
 
 // ───────────────────────────────────────────────────────────────
 // 4. SIMILARITY SEARCH

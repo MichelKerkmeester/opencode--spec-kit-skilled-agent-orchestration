@@ -224,14 +224,9 @@ const manager = new SessionStateManager();
 
 // -- Feature Flag --
 
-/**
- * Check whether retrieval session state is enabled.
- * Default: FALSE (opt-in). Set SPECKIT_SESSION_RETRIEVAL_STATE_V1=true to enable.
- */
-function isSessionRetrievalStateEnabled(): boolean {
-  const val = process.env.SPECKIT_SESSION_RETRIEVAL_STATE_V1?.toLowerCase().trim();
-  return val !== 'false' && val !== '0';
-}
+// Session retrieval state gate — canonical implementation in search-flags.ts.
+// Default: TRUE (graduated). Set SPECKIT_SESSION_RETRIEVAL_STATE_V1=false to disable.
+import { isSessionRetrievalStateEnabled } from './search-flags';
 
 // -- Cross-Turn Deduplication --
 

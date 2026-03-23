@@ -882,7 +882,7 @@ async function hybridSearchEnhanced(
             score: typeof (r as Record<string, unknown>).score === 'number'
               ? (r as Record<string, unknown>).score as number
               : typeof (r as Record<string, unknown>).similarity === 'number'
-                ? (r as Record<string, unknown>).similarity as number
+                ? ((r as Record<string, unknown>).similarity as number) / 100
                 : 0,
           })));
         }
