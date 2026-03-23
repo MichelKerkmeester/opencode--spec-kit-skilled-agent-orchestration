@@ -47,13 +47,13 @@ Use this simplified catalog as the plain-language companion to the full feature 
 
 When you ask the system a question, it figures out what kind of help you need and automatically picks the best way to find the answer. Think of it like a smart librarian who reads your request, decides whether you need a quick lookup or a deep research session and then fetches the right materials for you. Without this, you would have to manually tell the system how to search every time.
 
-### Fast delegated search (memory_quick_search)
-
-This is the lightweight search entry point for callers that want the main semantic search behavior without having to set a large option surface themselves. It works like a preset: you provide a query and optional governed-scope boundaries, and the server forwards the request to the full search tool using sensible retrieval defaults.
-
 ### Semantic and lexical search (memory_search)
 
 This is the main search tool. You type what you are looking for in plain language and the system searches through all stored knowledge to find the best matches. It understands meaning (not just keywords), so searching for "login problems" can find a document titled "authentication troubleshooting." Without it, you would have no way to find relevant information in the knowledge base.
+
+### Fast delegated search (memory_quick_search)
+
+This is the lightweight search entry point for callers that want the main semantic search behavior without having to set a large option surface themselves. It works like a preset: you provide a query and optional governed-scope boundaries, and the server forwards the request to the full search tool using sensible retrieval defaults.
 
 ### Trigger phrase matching (memory_match_triggers)
 
@@ -91,7 +91,7 @@ When the system finds something useful during a search, it keeps a mental note o
 
 This is how you add new knowledge to the system. You point it at a file and it reads, understands and stores the content so it becomes searchable. Before storing, it checks whether the same information already exists and decides whether to add it fresh, update an older version or skip it entirely. Quality checks catch low-value content before it clutters up the knowledge base.
 
-Today that save path has two extra hard stops before storage: thin aligned memories fail with `INSUFFICIENT_CONTEXT_ABORT`, and malformed rendered files fail a shared template contract check if required anchors, ids, frontmatter keys or cleanup invariants are missing. Dry-run can preview those rejections without writing or indexing anything.
+Today that save path has two extra safety checks before storage. First, memories that are too thin or lack enough supporting context are rejected outright so the system does not fill up with low-value entries. Second, files that are missing required structure (like headings, labels or metadata fields) are caught and rejected before they enter the index. You can also do a practice run to preview these checks without actually saving anything.
 
 ### Memory metadata update (memory_update)
 
@@ -403,19 +403,19 @@ This brings all the graph-based search features together into one reliable path.
 
 ### Typed traversal
 
-Typed traversal enables sparse-first graph policy and intent-aware edge traversal for causal boost scoring, constraining traversal to typed 1-hop expansion in sparse graphs and mapping query intents to edge-type priority orderings.
+When the system follows connections between memories, it now pays attention to what type of connection it is following and what kind of question you asked. A "what caused this bug?" query prioritizes cause-and-effect links while a "what supports this decision?" query prioritizes evidence links. In smaller knowledge bases with fewer connections, the system takes shorter, more targeted steps instead of trying to traverse the entire web.
 
 ### Graph lifecycle refresh
 
-Graph lifecycle refresh manages dirty-node tracking and graph recomputation after write operations, with synchronous local or scheduled background modes controlled by the `SPECKIT_GRAPH_REFRESH_MODE` flag.
+When you save or change a memory, the connections around it might need updating. This feature keeps track of which parts of the connection network have changed and recalculates the affected area. For small changes, this happens instantly. For larger updates, it queues the work for a background refresh so saving stays fast.
 
 ### Async LLM graph backfill
 
-Async LLM graph backfill enriches high-value documents with probabilistic graph edges via an LLM call after deterministic extraction, gated by the `SPECKIT_LLM_GRAPH_BACKFILL` flag.
+Some documents have relationships that are obvious to a human reader but not detected by simple pattern matching. This feature uses an AI to read important documents after they are saved and suggest additional connections that the automatic extraction missed. It runs in the background after the initial save so it does not slow down the normal workflow.
 
 ### Graph calibration profiles and community thresholds
 
-Graph calibration profiles enforce weight caps, RRF fusion overflow limits, and Louvain community detection activation gates, with named presets controlled by the `SPECKIT_GRAPH_CALIBRATION_PROFILE` flag.
+The connection-based search features need guardrails to prevent any single feature from overwhelming the results. This sets limits on how much influence graph connections can have on rankings, how large a cluster of related memories needs to be before it is treated as a meaningful group, and provides named presets so operators can switch between conservative and aggressive tuning without adjusting individual knobs.
 
 ---
 
@@ -495,23 +495,23 @@ This feature lets the system experiment with new ranking ideas without changing 
 
 ### Calibrated overlap bonus
 
-Calibrated overlap bonus replaces the flat convergence bonus in RRF fusion with a query-aware scaled bonus that accounts for the number of overlapping channels and the mean normalized top score.
+When a result is found by multiple search methods at once, the system gives it an extra ranking boost because agreement across methods is a strong signal of relevance. The old version applied a fixed bonus regardless of how many methods agreed or how strong the match was. The new version scales the bonus based on how many methods found the result and how confidently they scored it, making the boost more accurate and less likely to over-promote weak results.
 
 ### RRF K experimental tuning
 
-RRF K experimental tuning enables per-intent K-value selection for Reciprocal Rank Fusion, sweeping candidate K values and selecting the one that maximizes NDCG@10 per query intent.
+When combining ranked lists from different search methods, a tuning knob controls the balance between "ranked first in one list" and "appeared in many lists." This feature tests different settings for that knob and picks the best one based on your question type, because what works well for a bug-hunt query might not work well for a decision-tracing query.
 
 ### Fusion policy shadow evaluation V2
 
-Fusion policy shadow evaluation V2 runs RRF, minmax-linear, and zscore-linear fusion policies in parallel on each query, returning the active policy result while capturing shadow telemetry for the alternatives.
+The system has several different strategies for merging ranked lists from multiple search methods into one final ranking. This feature runs three strategies side by side on every query but only uses one for your actual results. The other two run silently in the background so the team can compare their performance and decide if a different strategy would produce better results.
 
 ### Learned Stage 2 weight combiner
 
-A regularized linear ranker that learns combination weights from accumulated Stage 2 signals, running in shadow-only mode behind the `SPECKIT_LEARNED_STAGE2_COMBINER` flag.
+Instead of using hand-tuned rules to combine all the different scoring signals (graph connections, recency, importance and so on), this feature learns the best combination from actual usage data. It runs in the background only, watching how its learned weights would have ranked results compared to the current rules, without affecting what you actually see.
 
 ### Shadow scoring with holdout evaluation
 
-Shadow scoring compares would-have-changed rankings against live rankings on a deterministic holdout slice of queries, tracking weekly improvement cycles and gating promotion of learned signals to production.
+This feature tests whether proposed ranking improvements actually make things better before they go live. It keeps a fixed set of test queries aside, runs both the current and proposed ranking on those queries each week and compares the results. A new approach only gets promoted to production after it proves itself on this test set, preventing changes that look good in theory but hurt quality in practice.
 
 ---
 
@@ -543,23 +543,23 @@ Sometimes the words you use in a question do not match the words stored in the s
 
 ### Query decomposition
 
-Query decomposition splits multi-faceted questions into up to 3 sub-queries using rule-based heuristics, enabling facet-aware retrieval in deep mode without LLM calls.
+When your question covers multiple topics at once, this feature splits it into separate focused sub-questions and searches for each one individually. It is like asking a librarian three things at once and having them check three different sections of the library instead of trying to find one book that covers everything. This runs automatically for complex questions without needing an AI to do the splitting.
 
 ### Graph concept routing
 
-Graph concept routing extracts noun phrases from a query and matches them against a concept alias table, activating the graph channel for matched concepts to improve retrieval via causal edge traversal.
+When your question mentions a specific concept by name, the system checks its catalog of known topics and activates the connection-based search for any match. This way, if you ask about "embedding cache" and that topic has known relationships in the knowledge graph, those connections are used to find related information that a plain keyword search would miss.
 
 ### LLM query reformulation
 
-Corpus-grounded LLM query reformulation applies step-back abstraction combined with real corpus seed grounding to produce enriched query variants in deep mode.
+For deep searches where the initial results are not confident enough, this feature asks an AI to rephrase your question in a broader, more abstract way while grounding it in actual content from the knowledge base. It is like asking a subject matter expert to translate your specific question into the terms that the reference library actually uses.
 
 ### HyDE (Hypothetical Document Embeddings)
 
-HyDE generates a short hypothetical document answering the query, embeds it, and uses the pseudo-document embedding as an additional retrieval channel for deep low-confidence queries.
+When a deep search produces low-confidence results, this feature writes a short imaginary answer to your question and then searches for real documents that look like that imaginary answer. It is like describing the book you wish existed and then finding real books that match that description, which can surface relevant content that your original wording missed entirely.
 
 ### Index-time query surrogates
 
-Index-time query surrogates generate surrogate metadata (aliases, headings, summaries, heuristic questions) at index time for improved recall without runtime LLM calls.
+When a memory is first saved, the system pre-generates alternative names, summaries and likely questions someone might ask about it. These extras are stored alongside the original content so future searches can match against them. It is like a library cataloger adding subject headings and cross-references to a new book so it can be found by readers who use different terminology.
 
 ---
 
@@ -639,7 +639,7 @@ When work is delegated to an external helper (like a different AI tool), the res
 
 When a memory is saved with minimal context, the system fills in the gaps by pulling relevant details from the project folder and recent changes. At the same time, it checks that the memory actually belongs to the project it claims to be part of and blocks saves that clearly belong somewhere else. Think of it as an assistant who fills out missing form fields for you but refuses to file the form in the wrong cabinet.
 
-The session-capture flow now also refuses to keep malformed output around as “good enough.” The same rendered-memory contract used by `memory_save` and `generate-context.js` is also used to audit and clean active historical memories.
+The session-capture flow now also refuses to keep malformed output around as “good enough.” The same structural contract used by the save tool and the context generation script is also used to audit and clean active historical memories.
 
 ### Post-save quality review
 
@@ -647,23 +647,23 @@ After the system saves a memory file, it runs a quick proof-reading step to chec
 
 ### Implicit feedback log
 
-Implicit feedback log records implicit feedback signals from search and save interactions into a shadow-only SQLite table with tiered confidence scoring, enabling offline analysis of search quality without ranking side effects.
+The system quietly watches how you interact with search results and saves without you having to give explicit feedback. Actions like citing a result, following up with a related question or reformulating a search all get recorded as background signals. These signals are stored separately so they can be analyzed later without affecting your current search results. Think of it as a silent observer taking notes on what works and what does not.
 
 ### Hybrid decay policy
 
-Hybrid decay policy applies type-aware no-decay rules to permanent artifacts (decision, constitutional, critical context types) while all other types follow the standard FSRS schedule.
+Some memories are permanent records that should never lose relevance over time, like key decisions or fundamental rules. This feature protects those types of memories from the normal fading process while letting everyday notes and temporary context decay on their usual schedule. It is like a library where reference books stay on the shelf permanently while newspapers get recycled after a set time.
 
 ### Save quality gate exceptions
 
-Save quality gate exceptions allow decision-type documents with sufficient structural signals to bypass the minimum content length check, preventing false rejections of short but high-value memories.
+The quality gate normally rejects memories that are too short, but some types of content are naturally brief. A decision record might be only a few sentences but still be extremely valuable. This feature recognizes that short documents with strong structural signals (like a clear title and proper labels) are worth keeping, so they are not falsely rejected by the length check.
 
 ### Weekly batch feedback learning
 
-Weekly batch feedback learning aggregates implicit feedback events from the ledger, computes confidence-weighted signal scores per memory, and records shadow rank deltas with min-support and boost-cap guards.
+Once a week, the system reviews all the quiet usage signals it has collected and calculates which memories are performing well and which are underperforming. It only promotes a memory's score after enough independent sessions have confirmed its value, and it caps how much any single memory can be boosted in one cycle. These adjustments run in the background and do not affect live rankings until they are deliberately approved.
 
 ### Assistive reconsolidation
 
-Three-tier assistive reconsolidation classifies memory pairs by cosine similarity into auto-merge, review, or keep-separate tiers, providing non-destructive recommendations for near-duplicates and borderline pairs.
+When two memories look very similar, the system automatically classifies them into one of three categories: near-identical (merged automatically), borderline similar (flagged for your review with a recommendation) or clearly different (kept separate). This helps prevent duplicate clutter while making sure genuinely distinct memories are not accidentally combined. No content is deleted without clear justification.
 
 ---
 
@@ -671,7 +671,7 @@ Three-tier assistive reconsolidation classifies memory pairs by cosine similarit
 
 ### 4-stage pipeline refactor
 
-When you ask the system a question, your search goes through four clear steps: gather candidates, combine and score them, rerank the best ones and finally filter the results. This is like an assembly line where each station has one job and passes its work to the next. The old system tried to do everything in one messy step, which made it hard to find and fix problems. The new structure makes each step predictable and testable. Sprint 8 further tightened the assembly line: all stages now share a single `resolveEffectiveScore()` function so scores are resolved the same way everywhere, and the fusion weights automatically normalize to sum 1.0 after any partial override, preventing weights from silently drifting off balance.
+When you ask the system a question, your search goes through four clear steps: gather candidates, combine and score them, rerank the best ones and finally filter the results. This is like an assembly line where each station has one job and passes its work to the next. The old system tried to do everything in one messy step, which made it hard to find and fix problems. The new structure makes each step predictable and testable. A later improvement tightened this further by making all four steps use the same scoring method, so results are evaluated consistently across the entire pipeline and scoring weights stay balanced automatically.
 
 ### MPAB chunk-to-memory aggregation
 
@@ -691,7 +691,7 @@ Well-maintained documents should rank slightly higher than neglected ones when b
 
 ### Learned relevance feedback
 
-When you mark a search result as useful, the system remembers which search terms led you to it. Next time similar terms appear in a question, the system gives that memory a small boost. Over time, the system learns which results are genuinely helpful based on your actual selections, like a music app that gets better at recommending songs the more you use it. Ten safeguards protect against noise, including a stop-word denylist, rate caps, 30-day decay and FTS5 isolation. A one-week shadow period (Safeguard #6) logs learned triggers without applying them, giving the system time to verify quality before boosts go live. The Sprint 8 dead-code cleanup removed other retired flag helpers but intentionally retained `isInShadowPeriod()` and its guards as an active safeguard.
+When you mark a search result as useful, the system remembers which search terms led you to it. Next time similar terms appear in a question, the system gives that memory a small boost. Over time, the system learns which results are genuinely helpful based on your actual selections, like a music app that gets better at recommending songs the more you use it. Ten safeguards protect against noise, including a denylist of common words, rate limits, 30-day score decay and separation from the main search index. A one-week trial period logs learned triggers without applying them, giving the system time to verify quality before boosts go live.
 
 ### Search pipeline safety
 
@@ -731,7 +731,7 @@ Right now, the memory server starts fresh every time it is called and shuts down
 
 ### Backend storage adapter abstraction
 
-The system now has a small adapter layer (`IVectorStore` / `SQLiteVectorStore`) that defines the vector-storage contract and keeps the storage implementation swappable at the vector boundary. It is like changing from plugging appliances straight into the wall to using a standardized socket adapter first. SQLite remains the concrete backend, but the coupling point is cleaner and easier to replace later if scale ever demands it. Note that only vector storage is abstracted through this adapter. The graph store and document store still talk directly to SQLite, so those boundaries remain tightly coupled until a real multi-backend need appears.
+The system is still backed by the same database, but the search storage layer now connects through a standardized adapter instead of being hard-wired directly. It is like changing from plugging appliances straight into the wall to using a standardized socket adapter first. You still use the same power source today, but the coupling point is cleaner and easier to replace later if scale ever demands it. Note that only the search storage uses this adapter. The connection graph and document storage still talk directly to the database, so those boundaries remain tightly coupled until a real need appears to swap them out.
 
 ### Cross-process DB hot rebinding
 
@@ -835,19 +835,19 @@ This is the operator-facing slash command for creating and managing constitution
 
 ### Source-dist alignment enforcement
 
-Source-dist alignment enforcement validates that every `.js` file in `mcp_server/dist/lib/` has a corresponding `.ts` source file in `mcp_server/lib/`, detecting orphaned build artifacts that persist after source files are deleted or refactored.
+When source code files are deleted or renamed, their compiled output files should be removed too. But sometimes the old output files get left behind like ghosts. This tool checks that every compiled file has a matching source file and flags any orphans so they can be cleaned up, preventing stale code from lingering in the build output.
 
 ### Module boundary map
 
-MODULE_MAP.md documents internal module ownership, dependency directions, feature catalog mapping, and canonical locations for all 26 `lib/` subdirectories. It makes module boundaries explicit for dead-code analysis, refactoring, and dependency enforcement.
+A reference document that lists every major section of the codebase, who owns it, what it depends on and which features it implements. It is like a building floor plan that shows which department sits where and which hallways connect them. This map makes it easier to find where things live and prevents accidental cross-boundary dependencies during refactoring.
 
 ### JSON mode structured summary hardening
 
-Phase 016 added structured JSON summary support to `generate-context.js`, including `toolCalls` and `exchanges` fields, file-backed JSON authority preservation, and Wave 2 hardening for decision confidence, truncated titles, `git_changed_file_count` stability, and template count preservation.
+When saving session context to memory, the system now accepts richer structured data including tool usage details, conversation exchanges and decision records. This improvement also hardened how the system handles edge cases like truncated titles, missing confidence scores and unstable file counts, so saved memories are more complete and reliable regardless of how the data arrives.
 
 ### JSON-primary deprecation posture
 
-Phase 017 established the JSON-only save contract for `generate-context.js`. Dynamic session capture proved unreliable and has been removed. `--json` and `--stdin` are now the sole save paths.
+The system used to have two ways to save session context: a structured data format and a looser automatic capture. The automatic capture proved unreliable and was removed. Now there is only one way to save, which is through structured data. This simplification prevents a class of subtle bugs that came from the two paths producing slightly different results.
 
 ### Migration checkpoint scripts
 
@@ -863,11 +863,11 @@ When you delete or rename a file on your computer, the search index needs to cle
 
 ### Feature catalog code references
 
-Feature catalog code references embed inline traceability comments in every source file, linking implementation code back to the feature catalog by name. Each file declares which catalog features it implements via `// Feature catalog: <feature-name>` comments, and every non-test TypeScript file carries a standardized `// MODULE: Name` header block. This is like labeling warehouse boxes by product name instead of aisle number — anyone can grep for a feature and find every file that implements it.
+Every source code file now carries a label saying which features from this catalog it implements, like labeling warehouse boxes by product name instead of aisle number. If you want to find all the files involved in a particular feature, you can search for its name and immediately see every file that contributes to it. This makes it much easier to understand the impact of changes and track down where features are actually built.
 
 ### Session capturing pipeline quality
 
-Session capturing pipeline quality is the current reality-alignment feature for `009-perfect-session-capturing`. It covers the full shipped session-capture path for `generate-context.js`: (1) Part I hardening across session extraction, file writing, contamination filtering, alignment blocking, and config-driven limits; (2) spec-folder and git context enrichment for JSON-mode saves; (3) numeric quality-score calibration so thin saves score lower than rich ones; (4) one shared semantic sufficiency gate so aligned but under-evidenced memories fail explicitly instead of indexing; (5) one shared rendered-memory template contract so malformed ANCHOR/frontmatter output fails before write/index; (6) a fully refreshed canonical verification and manual-testing record; (7) JSON-only routine-save contract; (8) Wave 2 count/confidence hardening for decision confidence, truncated outcomes, and stable `git_changed_file_count` priority.
+When you save a conversation's context to memory, this feature ensures the entire capture process is robust and trustworthy. It filters out contamination, blocks saves that are not properly aligned with their project, rejects memories that are too thin to be useful later, catches malformed output before it enters the index and calibrates quality scores so rich saves rank higher than shallow ones. Think of it as a complete quality control line for the session-to-memory pipeline, making sure every saved memory is clean, well-formed and genuinely useful.
 
 ---
 
@@ -879,7 +879,7 @@ Feature flags let you turn new features on or off without changing the code itse
 
 ### Feature flag sunset audit
 
-This audit went through all 79 feature switches in the system and decided the fate of each one. Most were ready to become permanent (switch removed, feature stays on). Some were dead and got deleted. A few remain as active controls. The Sprint 8 comprehensive remediation acted on these audit findings by removing a large slice of dead code: dead feature flag branches, retired flag helper functions, dead module-level state variables and unused exports. After cleanup, 24 active `is*` flag-helper functions remain in `search-flags.ts`, including the deprecated `isPipelineV2Enabled()` compatibility shim and the newly added `isQualityLoopEnabled()`. Without this kind of periodic cleanup, the system would accumulate unused switches that confuse anyone trying to understand what is actually running.
+This audit went through all 79 feature switches in the system and decided the fate of each one. Most were ready to become permanent (switch removed, feature stays on). Some were dead and got deleted. A few remain as active controls. A comprehensive cleanup pass acted on these findings by removing a large amount of unused code: old switches that were always off, variables that were set but never read and functions that nothing called anymore. Without this kind of periodic cleanup, the system would accumulate unused switches that confuse anyone trying to understand what is actually running.
 
 ### Hierarchical scope governance, governed ingest, retention, and audit
 
@@ -887,7 +887,7 @@ This feature controls who can save and read memories and keeps a record of every
 
 ### Shared-memory rollout, deny-by-default membership, and kill switch
 
-Shared memory spaces let multiple users or agents access the same pool of knowledge. The subsystem is disabled by default and requires explicit opt-in: either set the `SPECKIT_MEMORY_SHARED_MEMORY` environment variable to `true` or run the first-time enablement flow via `shared_memory_enable` or `/memory:shared`. Once enabled, access is deny-by-default: nobody gets in unless they are explicitly granted membership. An emergency kill switch immediately blocks everyone if something goes wrong. It is like a shared office with a keycard lock that starts powered off: you must first turn on the lock system, then add names to the access list, and building management can lock it down instantly in an emergency.
+Shared memory spaces let multiple users or agents access the same pool of knowledge. The subsystem is disabled by default and requires explicit opt-in: either set the appropriate environment variable or run the first-time enablement flow via the shared memory tool or slash command. Once enabled, access is deny-by-default: nobody gets in unless they are explicitly granted membership. An emergency kill switch immediately blocks everyone if something goes wrong. It is like a shared office with a keycard lock that starts powered off: you must first turn on the lock system, then add names to the access list, and building management can lock it down instantly in an emergency.
 
 ---
 
@@ -947,27 +947,27 @@ This is a set of automated tests that checks the entire response from start to f
 
 ### Empty result recovery
 
-Empty result recovery generates structured recovery payloads when search returns no results, low-confidence results, or only partial matches, providing the calling agent with actionable next steps.
+When a search comes back empty or with weak results, the system does not just shrug and say "nothing found." Instead, it diagnoses what went wrong (too narrow a filter, unclear question, or genuinely missing knowledge) and suggests what to do next, like broadening the search, switching modes, or saving new information. It is like a helpful shop assistant who says "we do not have that, but try the store down the street" instead of just shaking their head.
 
 ### Result confidence scoring
 
-Result confidence scoring combines margin, multi-channel agreement, reranker support, and anchor density into a single calibrated confidence score per search result, using heuristic scoring with no LLM calls in the hot path.
+Each search result now carries a confidence label (high, medium or low) that tells you how sure the system is about the match. This score is calculated by checking multiple factors: how far ahead the result is from the next one, how many search methods agreed on it, whether additional quality checks confirmed it and how well-structured the source document is. No AI calls are needed for this, so it runs instantly.
 
 ### Two-tier result explainability
 
-Two-tier result explainability attaches natural-language "why" explanations to each search result composed from Stage 2 scoring signals, with a slim tier (summary + topSignals) and an optional debug tier (channelContribution map).
+Each search result can now tell you why it ranked where it did, in plain language. The basic explanation says something like "matched strongly on meaning and was boosted by graph connections." If you need more detail, a debug mode shows exactly which search methods contributed and by how much. This helps you understand and trust the results instead of treating the ranking as a black box.
 
 ### Mode-aware response profiles
 
-Mode-aware response profiles route search and context results through one of four named presentation profiles (quick, research, resume, debug), each optimizing for a different consumer.
+Different situations call for different response styles. A quick lookup needs just the top answer. A research session needs full results with evidence. Resuming previous work needs state and next steps. Debugging needs the full technical trace. This feature formats the same search results differently depending on the situation, like a waiter who adjusts their description of the menu based on whether you are in a rush or settling in for a long meal.
 
 ### Progressive disclosure with cursor pagination
 
-Progressive disclosure replaces hard tail-truncation with a multi-layer response consisting of a summary layer, snippet extraction, and continuation cursors for paginated retrieval.
+Instead of cutting off results abruptly when the response gets too long, the system now gives you a summary of all results first, shows previews of the top ones and provides a "show me more" option to page through the rest. It is like a search engine that shows ten results per page instead of dumping everything at once or hiding results beyond an arbitrary limit.
 
 ### Retrieval session state
 
-Retrieval session state tracks per-session context enabling cross-turn deduplication, goal-aware refinement, and stateful question and anchor tracking, all in-memory with TTL-based cleanup.
+The system remembers what it already showed you during this conversation so it does not repeat itself. If you already saw a result three turns ago, it gets pushed down in future results so you see something new. It also tracks what you seem to be looking for and gives a small boost to results that align with your apparent goal. These notes last for the duration of your session and are cleaned up automatically when you are done.
 
 ---
 
@@ -975,19 +975,19 @@ Retrieval session state tracks per-session context enabling cross-turn deduplica
 
 ### Phase detection and scoring (recommend-level.sh --recommend-phases)
 
-The four scoring dimensions evaluate distinct aspects of specification complexity. Each dimension contributes a weighted score to the composite result. High scores on multiple dimensions produce a strong phase recommendation, while specs that score low across all dimensions receive a recommendation against phasing. The `--json` flag outputs the full scoring breakdown as structured JSON for programmatic consumption.
+Before splitting a large specification into phases, the system evaluates whether phasing is actually worthwhile. It scores the specification across four dimensions of complexity. High scores on multiple dimensions produce a strong recommendation to split into phases, while specifications that score low across the board get a recommendation to stay as a single unit. The scoring breakdown can also be exported in a machine-readable format for use in automated workflows.
 
 ### Phase folder creation (create.sh --phase)
 
-The `--phases <N>` option controls how many child phase folders are generated (default is determined by the phase scoring algorithm if `recommend-level.sh` was run first). The `--phase-names` option accepts a comma-separated list of descriptive names for each phase, which are used in both folder naming and the Phase Documentation Map entries. When `--phase-names` is omitted, child folders receive sequential numeric names. The parent folder receives the standard spec kit template files at the specified level, while each child phase folder receives its own independent set of template files.
+When a specification is large enough to benefit from phasing, this tool creates a parent folder with child phase folders inside it. You can specify how many phases to create and give each one a descriptive name, or let the system number them automatically. The parent folder gets the standard template files, and each child phase folder gets its own independent set so they can be worked on separately. A documentation map in the parent links everything together.
 
 ### Recursive phase validation (validate.sh --recursive)
 
-The aggregated output includes a combined exit code (the highest severity exit code across all children), per-phase pass/fail status and a JSON `phases` array containing the validation result for each child folder. Exit code 0 indicates all phases passed, exit code 1 indicates warnings in one or more phases and exit code 2 indicates errors that must be fixed. This enables CI pipelines and automated workflows to validate an entire phase tree with a single command invocation.
+When you validate a parent phase folder, this tool automatically discovers and validates every child phase folder beneath it. The results are aggregated into a single report showing which phases passed, which have warnings and which have errors that must be fixed. The overall result reflects the worst outcome across all children, so one failing phase means the whole tree reports a failure. This lets you check an entire phase structure with a single command.
 
 ### Phase link validation (check-phase-links.sh)
 
-All link validation issues are reported at warn severity rather than error severity, reflecting that missing links are a documentation gap rather than a structural failure. The script exits with code 0 when all links are valid and code 1 when any link check produces a warning.
+Phase folders are supposed to link to each other: each child links back to its parent, and adjacent phases link to their predecessor and successor. This tool checks that all those cross-references are correct and that every phase listed in the parent's documentation map actually exists on disk. Missing or broken links are reported as warnings rather than errors, since they represent a documentation gap rather than a structural failure.
 
 ---
 
@@ -1003,7 +1003,7 @@ These settings control short-term memory and caching behavior. They decide how l
 
 ### 3. MCP Configuration
 
-These are guardrail settings for save-time validation. They define size limits, token estimates, duplicate thresholds, and anchor strictness so problematic files can be caught before indexing. The `MCP_CHARS_PER_TOKEN` ratio serves double duty: it is used both by preflight validation to estimate whether a memory exceeds the token budget and by the quality loop when trimming content to fit its default token budget.
+These are guardrail settings for save-time validation. They define size limits, token estimates, duplicate thresholds, and anchor strictness so problematic files can be caught before indexing. The characters-per-token ratio serves double duty: it is used both by preflight validation to estimate whether a memory exceeds the token budget and by the quality loop when trimming content to fit its default token budget.
 
 ### 4. Memory and Storage
 
@@ -1015,7 +1015,7 @@ These settings pick which embedding and reranking providers the system uses and 
 
 ### 6. Debug and Telemetry
 
-These settings control diagnostic visibility. They adjust log verbosity and optional telemetry so you can inspect runtime behavior during debugging while keeping production output stable by default. This group also contains the `SPECKIT_HYDRA_*` legacy compatibility aliases (phase label, lineage state, graph unified, adaptive ranking, scope enforcement, governance guardrails, shared memory) which are consumed by roadmap metadata snapshots and rename-window compatibility paths, not just log and telemetry settings.
+These settings control diagnostic visibility. They adjust log verbosity and optional telemetry so you can inspect runtime behavior during debugging while keeping production output stable by default. This group also contains several legacy compatibility settings that are consumed by internal metadata snapshots and backward-compatibility paths, not just log and telemetry settings.
 
 ### 7. CI and Build (informational)
 
