@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: 012-command-alignment"
-description: "Truth-reconciled summary of the 011 command-alignment pack against the live 33-tool, 6-command memory-command surface."
+description: "Truth-reconciled summary of the 012 command-alignment pack against the live 33-tool, 6-command memory-command surface."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Implementation Summary: 012-command-alignment
@@ -13,7 +13,7 @@ description: "Truth-reconciled summary of the 011 command-alignment pack against
 
 | Field | Value |
 |-------|-------|
-| Scope | Canonical 011 packet only |
+| Scope | Canonical 012 packet plus runtime-doc drift patches |
 | Date | 2026-03-21 |
 | Status | Complete (truth-reconciled) |
 | Type | Documentation reconciliation |
@@ -24,9 +24,9 @@ description: "Truth-reconciled summary of the 011 command-alignment pack against
 <!-- ANCHOR:what-built -->
 ## 2. WHAT WAS BUILT
 
-The 011 command-alignment pack originally described an in-flight transition from a 5-command memory suite to a larger command surface. That is no longer the live repo state. The repo now ships a **33-tool** Spec Kit Memory MCP surface and a **6-command** memory suite, with retrieval merged into `/memory:analyze`.
+The 012 command-alignment pack originally described an in-flight transition from a 5-command memory suite to a larger command surface. That is no longer the live repo state. The repo now ships a **33-tool** Spec Kit Memory MCP surface and a **6-command** memory suite, with retrieval merged into `/memory:analyze`.
 
-This reconciliation pass updated the canonical 011 pack so it reflects what is already true on disk instead of repeating older planning assumptions.
+This reconciliation pass updated the canonical 012 pack so it reflects what is already true on disk instead of repeating older planning assumptions. It also resolved the runtime-doc drift in `analyze.md` and `shared.md`.
 
 **Key Metrics**
 - 33 MCP tools in `tool-schemas.ts`
@@ -34,7 +34,7 @@ This reconciliation pass updated the canonical 011 pack so it reflects what is a
 - `/memory:analyze` owns retrieval, `memory_quick_search`, analysis/eval tooling, and `memory_get_learning_history`
 - `/memory:manage ingest` owns async ingest workflows
 - README already maps 33/33 tools to command homes
-- The last runtime-doc drift cluster was concentrated in `analyze.md` and `shared.md`: `analyze.md` Appendix A said it owned 12 tools while its own coverage table listed 13, and `shared.md` lagged the live create/member schema contract
+- The runtime-doc drift cluster in `analyze.md` and `shared.md` was resolved during this pass: `analyze.md` Appendix A updated from 12 to 13 tools with governed retrieval parameters now documented; `shared.md` create/member contract updated with tenantId, actor identity, and auto-grant behavior
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -48,7 +48,9 @@ This reconciliation pass updated the canonical 011 pack so it reflects what is a
 | `plan.md` | Replaced the stale implementation roadmap with a documentation-only reconciliation plan |
 | `tasks.md` | Replaced outdated implementation tasks with live-state verification and pack-rewrite tasks |
 | `checklist.md` | Rewrote verification evidence around current counts, ownership, and strict validation |
-| `implementation-summary.md` | Replaced stale 32-tool / 7-command outcome claims with the current shipped state and the final live-doc closeout |
+| `implementation-summary.md` | Replaced stale 32-tool / 7-command outcome claims with the current shipped state and drift resolution record |
+| `analyze.md` | Resolved runtime-doc drift: updated Appendix A from 12 to 13 tools; documented governed retrieval parameters |
+| `shared.md` | Resolved runtime-doc drift: added tenantId and actor identity to create/member contract; documented auto-grant behavior |
 
 ### Current Shipped Reality
 
@@ -86,7 +88,7 @@ This reconciliation pass updated the canonical 011 pack so it reflects what is a
 | Retrieval ownership | PASS | `analyze.md` frontmatter and Appendix A include `memory_quick_search`; README maps retrieval tools to `/memory:analyze` |
 | Learning-history ownership | PASS | README maps `memory_get_learning_history` to `/memory:analyze`; command docs use `/memory:analyze history <specFolder>` |
 | Async ingest ownership | PASS | README maps ingest tools to `/memory:manage ingest` |
-| Runtime-doc drift audit | PASS | Remaining drift narrowed to the observed `analyze.md` and `shared.md` mismatches, then reflected in the scoped closeout |
+| Runtime-doc drift audit | PASS | The `analyze.md` and `shared.md` mismatches were resolved during the 2026-03-21 reconciliation pass; no remaining drift observed |
 | Strict spec validation | PASS | `validate.sh --strict` run after pack reconciliation |
 <!-- /ANCHOR:verification -->
 
@@ -95,7 +97,7 @@ This reconciliation pass updated the canonical 011 pack so it reflects what is a
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-This pack now treats the former `analyze.md` and `shared.md` mismatches as the last scoped runtime-doc drift closed by the 2026-03-21 reconciliation pass.
+The `analyze.md` and `shared.md` runtime-doc drift was resolved during the 2026-03-21 reconciliation pass. No open drift items remain for this phase.
 <!-- /ANCHOR:limitations -->
 
 ---

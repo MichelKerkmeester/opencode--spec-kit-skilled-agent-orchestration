@@ -149,6 +149,25 @@ describe('Layer Definitions Tests', () => {
       const unmapped = toolNames.filter((name) => !mappedToolNames.includes(name));
       expect(unmapped).toEqual([]);
     });
+
+    it('shared_memory_status appears in exactly one layer and is mapped to that layer', () => {
+      const matchingLayers = Object.values(LD).filter((layer) => layer.tools.includes('shared_memory_status'));
+
+      expect(matchingLayers).toHaveLength(1);
+      expect(matchingLayers[0].id).toBe('L5');
+      expect(mod.TOOL_LAYER_MAP['shared_memory_status']).toBe(matchingLayers[0].id);
+    });
+
+    it('tool definition prefixes stay aligned with TOOL_LAYER_MAP', () => {
+      for (const tool of TOOL_DEFINITIONS) {
+        const match = tool.description.match(/^\[(L\d+):([^\]]+)\]/);
+        expect(match, `missing layer prefix for ${tool.name}`).not.toBeNull();
+        expect(match?.[1]).toBe(mod.TOOL_LAYER_MAP[tool.name]);
+
+        const layerId = mod.TOOL_LAYER_MAP[tool.name];
+        expect(match?.[2]).toBe(mod.LAYER_DEFINITIONS[layerId].name);
+      }
+    });
   });
 
   // 4.3 getLayerPrefix()

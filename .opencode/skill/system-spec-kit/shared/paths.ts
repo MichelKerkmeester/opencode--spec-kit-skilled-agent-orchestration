@@ -17,7 +17,7 @@ function findUp(filename: string, startDir: string): string | undefined {
   }
 }
 
-function resolvePackageRoot(): string {
+export function resolvePackageRoot(): string {
   const fromPackageJson = findUp('package.json', __dirname);
   if (fromPackageJson && fs.existsSync(path.join(fromPackageJson, 'mcp_server', 'database'))) {
     return fromPackageJson;
@@ -31,8 +31,15 @@ function resolvePackageRoot(): string {
   return fromPackageJson || path.resolve(__dirname, '..');
 }
 
-const PACKAGE_ROOT = resolvePackageRoot();
-const DEFAULT_DB_PATH = path.join(PACKAGE_ROOT, 'mcp_server', 'database', 'context-index.sqlite');
+export function resolveDatabaseDir(): string {
+  const configuredDir = getDbDir();
+  if (configuredDir) {
+    return path.resolve(process.cwd(), configuredDir);
+  }
+  return path.join(resolvePackageRoot(), 'mcp_server', 'database');
+}
+
+const DEFAULT_DB_PATH = path.join(resolveDatabaseDir(), 'context-index.sqlite');
 
 /** Defines database path. */
 export const DB_PATH: string = (() => {
@@ -41,6 +48,5 @@ export const DB_PATH: string = (() => {
     return path.resolve(process.cwd(), configuredPath);
   }
 
-  const dir = getDbDir();
-  return dir ? path.resolve(process.cwd(), dir, 'context-index.sqlite') : DEFAULT_DB_PATH;
+  return DEFAULT_DB_PATH;
 })();

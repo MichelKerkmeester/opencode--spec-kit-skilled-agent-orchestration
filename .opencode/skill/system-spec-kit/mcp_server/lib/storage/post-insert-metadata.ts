@@ -36,6 +36,7 @@ export interface PostInsertMetadataFields {
   tenant_id?: string;
   user_id?: string;
   agent_id?: string;
+  session_id?: string;
   shared_space_id?: string;
   provenance_source?: string;
   provenance_actor?: string;
@@ -56,6 +57,7 @@ export const ALLOWED_POST_INSERT_COLUMNS = new Set<string>([
   'file_mtime_ms', 'embedding_status', 'encoding_intent', 'document_type',
   'spec_level', 'quality_score', 'quality_flags', 'parent_id',
   'chunk_index', 'chunk_label', 'tenant_id', 'user_id', 'agent_id',
+  'session_id',
   'shared_space_id', 'provenance_source', 'provenance_actor',
   'governed_at', 'retention_policy', 'delete_after', 'governance_metadata',
 ]);

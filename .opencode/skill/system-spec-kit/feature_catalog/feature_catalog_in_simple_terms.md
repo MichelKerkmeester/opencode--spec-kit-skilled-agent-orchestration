@@ -39,6 +39,21 @@ This document combines two complementary views of the Spec Kit Memory MCP server
 
 Use this simplified catalog as the plain-language companion to the full feature catalog. The numbered sections below keep the same capability grouping as the canonical reference, but explain the system in operator-friendly terms so readers can understand what each part does before diving into implementation details.
 
+### Command-Surface Contract
+
+The memory system exposes **33 tools** through **6 slash commands**. Think of commands as doors into the system. Each door only opens access to the tools it needs. The source of truth for which tools each command can use is the `allowed-tools` field in each command file under `.opencode/command/memory/`.
+
+| Command | What It Does | Tools It Can Use |
+|---------|-------------|-----------------|
+| `/memory:analyze` | Search, retrieve, and analyze knowledge (13 tools) | `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, `eval_reporting_dashboard`, `memory_get_learning_history` |
+| `/memory:continue` | Recover an interrupted session (4 tools, borrowed) | `memory_context`, `memory_search`, `memory_list`, `memory_stats` |
+| `/memory:learn` | Create and manage always-surface rules (6 tools, borrowed) | `memory_save`, `memory_search`, `memory_stats`, `memory_list`, `memory_delete`, `memory_index_scan` |
+| `/memory:manage` | Database maintenance, checkpoints, and bulk ingestion (16 tools) | `memory_stats`, `memory_list`, `memory_search`, `memory_index_scan`, `memory_validate`, `memory_update`, `memory_delete`, `memory_bulk_delete`, `memory_health`, `checkpoint_create`, `checkpoint_restore`, `checkpoint_list`, `checkpoint_delete`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel` |
+| `/memory:save` | Save conversation context (4 tools, borrowed) | `memory_save`, `memory_index_scan`, `memory_stats`, `memory_update` |
+| `/memory:shared` | Manage shared-memory spaces and memberships (4 tools) | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` |
+
+Some commands own their tools (they are the primary home) while others borrow tools from `/memory:analyze` or `/memory:manage`. A borrowed tool works the same way; it is just administered somewhere else.
+
 ---
 
 ## 2. RETRIEVAL
@@ -83,6 +98,10 @@ If your search does not find good results on the first try, the system automatic
 
 When the system finds something useful during a search, it keeps a mental note of it for the rest of your session. That way, if you ask a follow-up question a few turns later, the system still remembers what it found earlier. These notes gradually fade over time so the most recent findings stay prominent while older ones quietly step aside.
 
+### Session recovery (/memory:continue)
+
+When a session is interrupted by a crash, context compaction, or timeout, this command figures out where you left off and helps you pick up again. It checks the memory system for your most recent work, looks for crash-recovery breadcrumbs, and presents what it found. Think of it like reopening your laptop after it went to sleep and having your browser restore all the tabs you had open. It uses 4 borrowed tools: `memory_context`, `memory_search`, `memory_list`, and `memory_stats`. Two modes are available: auto (resolves the best candidate with minimal prompting) and manual (presents alternatives when it is not sure which session you want). After recovery, it routes you to the right next command depending on whether you want to continue structured work or just see what you were doing.
+
 ---
 
 ## 3. MUTATION
@@ -113,9 +132,9 @@ After a search result is shown to you, you can tell the system whether it was he
 
 Every time the system saves or changes your data, it wraps the operation in a safety net. If anything goes wrong mid-save, all changes roll back so you never end up with half-written or corrupted information. This is like a bank transfer that either completes fully or does not happen at all.
 
-### Namespace management CRUD tools
+### Namespace management CRUD tools (shared-memory lifecycle)
 
-This planned feature would let you organize memories into completely separate workspaces, like having different notebooks for different projects. Right now the system uses folder-based filtering to keep things separated, which works well enough. Full workspace management is on hold until there is a real need for it.
+Shared-memory spaces let multiple users or agents access the same pool of knowledge. Four shipped tools live under `/memory:shared`: `shared_space_upsert` creates or updates a space with tenant and actor identity, `shared_space_membership_set` controls who gets access using a deny-by-default model (nobody gets in unless explicitly granted `owner`, `editor`, or `viewer` access), `shared_memory_status` reports what is enabled and who has access, and `shared_memory_enable` turns on the subsystem for the first time. The first create auto-grants the acting caller owner access so the space is not locked out from the start. Think of it like a shared office with a keycard lock: you must first turn on the lock system, then add names to the access list. The original plan for full workspace management (list/create/switch/delete) is still deferred since the shared-memory tools cover the current need.
 
 ### Prediction-error save arbitration
 
@@ -179,7 +198,7 @@ This permanently removes a saved snapshot. You have to type the snapshot name to
 
 ### Async ingestion job lifecycle
 
-When you need to import a large batch of files, this feature queues them up and processes them one at a time in the background. You can start the import, check its progress and cancel it if needed. It works like a print queue: you submit the jobs and the system works through them at its own pace while you continue doing other things.
+When you need to import a large batch of files, this feature queues them up and processes them one at a time in the background. Three tools handle the lifecycle: `memory_ingest_start` queues file paths for processing, `memory_ingest_status` checks how far along a job is, and `memory_ingest_cancel` stops a running job. All three live under `/memory:manage ingest`. It works like a print queue: you submit the jobs and the system works through them at its own pace while you continue doing other things.
 
 ### Startup pending-file recovery
 
@@ -887,7 +906,7 @@ This feature controls who can save and read memories and keeps a record of every
 
 ### Shared-memory rollout, deny-by-default membership, and kill switch
 
-Shared memory spaces let multiple users or agents access the same pool of knowledge. The subsystem is disabled by default and requires explicit opt-in: either set the appropriate environment variable or run the first-time enablement flow via the shared memory tool or slash command. Once enabled, access is deny-by-default: nobody gets in unless they are explicitly granted membership. An emergency kill switch immediately blocks everyone if something goes wrong. It is like a shared office with a keycard lock that starts powered off: you must first turn on the lock system, then add names to the access list, and building management can lock it down instantly in an emergency.
+Shared memory spaces let multiple users or agents access the same pool of knowledge. Four shipped tools handle the lifecycle under `/memory:shared`: `shared_memory_enable` turns on the subsystem, `shared_space_upsert` creates or updates spaces, `shared_space_membership_set` controls who gets in, and `shared_memory_status` reports the current state. The subsystem is disabled by default and requires explicit opt-in: either set the appropriate environment variable or run the first-time enablement flow via `/memory:shared enable`. Once enabled, access is deny-by-default: nobody gets in unless they are explicitly granted membership with a role (`owner`, `editor`, or `viewer`). An emergency kill switch immediately blocks everyone if something goes wrong. It is like a shared office with a keycard lock that starts powered off: you must first turn on the lock system, then add names to the access list, and building management can lock it down instantly in an emergency.
 
 ---
 

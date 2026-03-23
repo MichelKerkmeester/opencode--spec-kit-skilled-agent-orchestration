@@ -297,6 +297,7 @@ export function buildGovernancePostInsertFields(decision: GovernanceDecision): R
     tenant_id: decision.normalized.tenantId || null,
     user_id: decision.normalized.userId ?? null,
     agent_id: decision.normalized.agentId ?? null,
+    session_id: decision.normalized.sessionId || null,
     shared_space_id: decision.normalized.sharedSpaceId ?? null,
     provenance_source: decision.normalized.provenanceSource || null,
     provenance_actor: decision.normalized.provenanceActor || null,

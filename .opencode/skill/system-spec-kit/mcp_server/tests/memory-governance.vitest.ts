@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import {
   benchmarkScopeFilter,
+  buildGovernancePostInsertFields,
   createScopeFilterPredicate,
   ensureGovernanceRuntime,
   filterRowsByScope,
@@ -10,6 +11,7 @@ import {
   reviewGovernanceAudit,
   validateGovernedIngest,
 } from '../lib/governance/scope-governance';
+import { ALLOWED_POST_INSERT_COLUMNS } from '../lib/storage/post-insert-metadata';
 import { runRetentionSweep } from '../lib/governance/retention';
 describe('Phase 5 memory governance', () => {
   afterEach(() => {
@@ -103,6 +105,26 @@ describe('Phase 5 memory governance', () => {
       tenant_id: 'tenant-a',
       user_id: 'user-1',
     });
+  });
+
+  it('persists session_id as a queryable governance post-insert column', () => {
+    const decision = validateGovernedIngest({
+      tenantId: 'tenant-a',
+      userId: 'user-1',
+      sessionId: 'session-123',
+      provenanceSource: 'memory-save',
+      provenanceActor: 'agent:test',
+    });
+
+    expect(decision.allowed).toBe(true);
+
+    const fields = buildGovernancePostInsertFields(decision);
+    expect(fields).toMatchObject({
+      tenant_id: 'tenant-a',
+      user_id: 'user-1',
+      session_id: 'session-123',
+    });
+    expect(ALLOWED_POST_INSERT_COLUMNS.has('session_id')).toBe(true);
   });
 
   it('reviews governance audit history with summary counts and parsed metadata', () => {
@@ -321,6 +343,128 @@ describe('Phase 5 memory governance', () => {
       FROM memory_index
       ORDER BY id ASC
     `).all()).toEqual([{ id: 2 }]);
+  });
+
+  it('continues retention sweeps after a single row fails to delete', () => {
+    const db = new Database(':memory:');
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    db.exec(`
+      CREATE TABLE memory_index (
+        id INTEGER PRIMARY KEY,
+        spec_folder TEXT,
+        file_path TEXT,
+        tenant_id TEXT,
+        user_id TEXT,
+        agent_id TEXT,
+        session_id TEXT,
+        shared_space_id TEXT,
+        delete_after TEXT
+      )
+    `);
+    ensureGovernanceRuntime(db);
+    db.exec(`
+      INSERT INTO memory_index (id, spec_folder, file_path, tenant_id, user_id, session_id, delete_after)
+      VALUES
+        (1, 'specs/015-hydra', '/tmp/expired-1.md', 'tenant-a', 'user-1', 'session-1', datetime('now', '-1 day')),
+        (2, 'specs/015-hydra', '/tmp/expired-2.md', 'tenant-a', 'user-1', 'session-1', datetime('now', '-1 day')),
+        (3, 'specs/015-hydra', '/tmp/expired-3.md', 'tenant-a', 'user-1', 'session-1', datetime('now', '-1 day'))
+    `);
+
+    const originalPrepare = db.prepare.bind(db);
+    vi.spyOn(db, 'prepare').mockImplementation(((sql: string) => {
+      const statement = originalPrepare(sql) as any;
+      if (sql.includes('DELETE FROM memory_index WHERE id = ?')) {
+        const originalRun = statement.run.bind(statement);
+        statement.run = ((id: number) => {
+          if (id === 1) {
+            throw new Error('simulated delete failure');
+          }
+          return originalRun(id);
+        }) as typeof statement.run;
+      }
+      return statement;
+    }) as typeof db.prepare);
+
+    const result = runRetentionSweep(db, {
+      tenantId: 'tenant-a',
+      userId: 'user-1',
+      sessionId: 'session-1',
+    });
+
+    expect(result.failed).toBe(1);
+    expect(result.deleted).toBe(2);
+    expect(result.deletedIds).toEqual([2, 3]);
+    expect(errorSpy).toHaveBeenCalledWith(
+      'Retention sweep: failed to process row 1:',
+      'simulated delete failure',
+    );
+    expect(db.prepare(`
+      SELECT id
+      FROM memory_index
+      ORDER BY id ASC
+    `).all()).toEqual([{ id: 1 }]);
+  });
+
+  it('allows admin override retention sweeps to run globally under scope enforcement', () => {
+    process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT = 'true';
+    const db = new Database(':memory:');
+
+    ensureGovernanceRuntime(db);
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS memory_index (
+        id INTEGER PRIMARY KEY,
+        spec_folder TEXT,
+        file_path TEXT,
+        tenant_id TEXT,
+        user_id TEXT,
+        agent_id TEXT,
+        session_id TEXT,
+        shared_space_id TEXT,
+        delete_after TEXT
+      )
+    `);
+    db.exec(`
+      INSERT INTO memory_index (id, spec_folder, file_path, tenant_id, user_id, session_id, delete_after)
+      VALUES
+        (1, 'specs/015-hydra', '/tmp/global-expired.md', 'tenant-a', 'user-1', 'session-1', datetime('now', '-1 hour'))
+    `);
+
+    const blockedResult = runRetentionSweep(db, {});
+    expect(blockedResult).toEqual({
+      scanned: 0,
+      deleted: 0,
+      skipped: 0,
+      deletedIds: [],
+    });
+    expect(db.prepare(`SELECT id FROM memory_index ORDER BY id ASC`).all()).toEqual([{ id: 1 }]);
+
+    const overrideResult = runRetentionSweep(db, {}, { adminOverride: true });
+    expect(overrideResult).toEqual({
+      scanned: 1,
+      deleted: 1,
+      skipped: 0,
+      deletedIds: [1],
+    });
+
+    const overrideAuditRow = db.prepare(`
+      SELECT action, decision, reason, metadata
+      FROM governance_audit
+      WHERE reason = 'admin_override_global_sweep'
+      LIMIT 1
+    `).get() as {
+      action: string;
+      decision: string;
+      reason: string;
+      metadata: string | null;
+    };
+
+    expect(overrideAuditRow.action).toBe('retention_sweep');
+    expect(overrideAuditRow.decision).toBe('allow');
+    expect(overrideAuditRow.reason).toBe('admin_override_global_sweep');
+    expect(JSON.parse(overrideAuditRow.metadata ?? '{}')).toEqual({
+      adminOverride: true,
+      scopeEnforcement: true,
+    });
   });
 
   it('retention sweep returns zero when enforcement is on and scope is empty', () => {

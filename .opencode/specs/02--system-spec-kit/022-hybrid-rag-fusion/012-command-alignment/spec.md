@@ -29,7 +29,7 @@ This spec-pack update is documentation-only. Its job is to reconcile `spec.md`, 
 - 0 uncovered tools in the live README coverage matrix
 - `/memory:analyze` is the documented home for retrieval, `memory_quick_search`, analysis/eval tooling, and `memory_get_learning_history`
 - `/memory:manage ingest` is the documented home for async ingest workflows
-- The last visible runtime-doc drift cluster for this phase is concentrated in `analyze.md` and `shared.md`: the `analyze.md` Appendix A 12-vs-13 mismatch, governed retrieval parameter under-documentation, and stale `shared.md` create/member contract wording
+- The runtime-doc drift cluster in `analyze.md` and `shared.md` was resolved during the 2026-03-21 reconciliation pass: `analyze.md` Appendix A now says 13 tools (was 12), governed retrieval parameters are documented, and `shared.md` create/member contract now includes tenantId and actor identity
 
 ---
 
@@ -58,7 +58,7 @@ This spec-pack update is documentation-only. Its job is to reconcile `spec.md`, 
 
 ### Problem Statement
 
-The 012 spec pack still describes an older transition state that is no longer true on disk:
+The 012 spec pack previously described an older transition state that was no longer true on disk:
 
 1. **Historical count drift**
    - The spec pack still says the memory MCP surface has 32 tools.
@@ -73,15 +73,15 @@ The 012 spec pack still describes an older transition state that is no longer tr
    - The live docs place `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, L6 analysis/eval tools, and `memory_get_learning_history` under `/memory:analyze`.
 
 4. **Remaining-gap drift**
-   - The earlier spec pack still frames many items as missing even though `shared.md`, `analyze.md`, `/memory:manage ingest`, and the README coverage matrix already exist.
-   - The remaining gap list should now be narrow and factual: most command-alignment work has shipped, with only the last observable runtime-doc drift cluster still requiring closeout.
+   - The earlier spec pack framed many items as missing even though `shared.md`, `analyze.md`, `/memory:manage ingest`, and the README coverage matrix already existed.
+   - The remaining gap list was narrowed to factual items: the runtime-doc drift cluster in `analyze.md` and `shared.md` was resolved during the 2026-03-21 reconciliation pass.
 
 ### Purpose
 
 Bring the 012 planning docs into line with live repo truth so that:
 - the spec pack describes the current 33-tool, 6-command memory surface
 - `/memory:analyze` is recorded as the command home for retrieval plus `memory_quick_search`
-- the spec distinguishes completed alignment work from the last runtime-doc drift cluster that this pass closes
+- the spec distinguishes completed alignment work from the runtime-doc drift cluster that was resolved in this pass
 - later audits can use 012 as a reliable source instead of re-litigating already-shipped command changes
 <!-- /ANCHOR:problem -->
 
@@ -94,18 +94,18 @@ Bring the 012 planning docs into line with live repo truth so that:
 
 | Category | Items |
 |----------|-------|
-| **Spec-pack reconciliation** | `spec.md`, `plan.md`, and `tasks.md` only |
+| **Spec-pack reconciliation** | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` |
+| **Runtime-doc drift closeout** | Reconcile runtime command docs (`analyze.md`, `shared.md`) to resolve the drift cluster identified in this pass |
 | **Live-surface alignment** | Update all count, ownership, and command-structure claims to match the current repo |
-| **Truthful gap recording** | Keep only gaps that are still observable in live command docs |
+| **Truthful gap recording** | Record gaps that were resolved during this pass and verify no new drift remains |
 | **Source-of-truth references** | Reassert `tool-schemas.ts` plus `schemas/tool-input-schemas.ts` as the validation baseline |
 
 ### Out of Scope
 
-- Editing runtime command docs such as `.opencode/command/memory/analyze.md`
 - MCP server implementation changes
 - New MCP tool creation
 - Cross-runtime command or agent docs
-- Spec-folder artifacts outside `spec.md`, `plan.md`, and `tasks.md`
+- Spec-folder artifacts outside the five canonical files
 
 ### Deliverables
 
@@ -114,7 +114,7 @@ Bring the 012 planning docs into line with live repo truth so that:
 | D1 | Updated `spec.md` | Reflect the live 33-tool, 6-command memory-command reality |
 | D2 | Updated `plan.md` | Rebase the plan from "implement missing commands" to "reconcile planning docs against shipped state" |
 | D3 | Updated `tasks.md` | Replace stale implementation tasks with reconciliation and verification tasks |
-| D4 | Drift closeout record | Explicitly record and close the remaining `analyze.md` and `shared.md` documentation drift without overstating broader gaps |
+| D4 | Drift closeout record | Resolved the `analyze.md` and `shared.md` runtime-doc drift (13-tool count, governed retrieval params, tenantId/actor identity, auto-grant behavior) during the 2026-03-21 reconciliation pass |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -135,10 +135,10 @@ Bring the 012 planning docs into line with live repo truth so that:
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|-------------------|
-| CA-005 | The pack distinguishes shipped work from remaining drift | `shared.md`, `analyze.md`, `/memory:manage ingest`, and README coverage are treated as existing, not planned |
+| CA-005 | The pack distinguishes shipped work from resolved drift | `shared.md`, `analyze.md`, `/memory:manage ingest`, and README coverage are treated as existing, not planned; former drift is recorded as resolved |
 | CA-006 | The pack preserves true ownership decisions | `/memory:analyze history <specFolder>` remains the documented home for `memory_get_learning_history`; `/memory:manage ingest` remains the async ingest home |
 | CA-007 | Source-of-truth guidance remains explicit | The pack names both `tool-schemas.ts` and `schemas/tool-input-schemas.ts` as validation inputs |
-| CA-008 | Residual runtime drift is recorded and closed narrowly | The pack records the observed `analyze.md` and `shared.md` mismatches as the final runtime-doc drift cluster and reflects their closeout in this pass |
+| CA-008 | Runtime drift was resolved in this pass | The pack records that the `analyze.md` and `shared.md` mismatches were resolved during the 2026-03-21 reconciliation pass |
 
 ### P2 - Desired
 
@@ -156,7 +156,7 @@ Bring the 012 planning docs into line with live repo truth so that:
 - **SC-001**: The 012 pack describes the live 33-tool inventory and does not repeat the older 32-tool count as present-day truth.
 - **SC-002**: The 012 pack describes the live 6-command memory suite and does not treat `context.md` as an existing command file.
 - **SC-003**: `/memory:analyze` is documented as the command home for retrieval, `memory_quick_search`, analysis/eval tooling, and learning history.
-- **SC-004**: The pack records the last runtime-doc drift cluster accurately and no longer treats it as open after the live command docs are reconciled.
+- **SC-004**: The pack records the runtime-doc drift cluster as resolved during the 2026-03-21 reconciliation pass.
 
 ### Acceptance Scenarios
 
@@ -181,8 +181,8 @@ then `/memory:analyze` is documented as the command home for retrieval, `memory_
 ### Scenario D: Remaining-Gap Audit
 
 Given the live memory command docs,
-when a reviewer compares them against the reconciled 011 pack,
-then already-shipped alignment work is not restated as missing and only still-observable drift remains on the gap list.
+when a reviewer compares them against the reconciled 012 pack,
+then already-shipped alignment work is not restated as missing and the former drift cluster is recorded as resolved.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -214,12 +214,14 @@ then already-shipped alignment work is not restated as missing and only still-ob
 | Async ingest home | `/memory:manage ingest` | Treat as already shipped |
 | README coverage matrix | Present and already maps 33 tools | Treat as existing evidence, not future work |
 
-### 6.3 Remaining Observable Drift
+### 6.3 Drift Resolved in This Pass
 
-| Location | Residual Drift | Why It Still Matters |
-|----------|----------------|----------------------|
-| `.opencode/command/memory/analyze.md` Appendix A and retrieval notes | Intro sentence says the command owns 12 tools, while the tool-coverage table lists 13 and includes `memory_quick_search`; governed retrieval parameters are under-documented | `/memory:analyze` is the live retrieval home, so count and parameter drift there misstates the command contract |
-| `.opencode/command/memory/shared.md` create/member contract | Create/member docs omit required `tenantId` and actor identity, and still deny the first-create owner auto-grant behavior in the live schema | `/memory:shared` is the live shared-memory home, so schema-contract drift here misstates access and ownership behavior |
+The following runtime-doc drift was identified and resolved during the 2026-03-21 reconciliation pass:
+
+| Location | Drift (resolved) | Resolution |
+|----------|-------------------|------------|
+| `.opencode/command/memory/analyze.md` Appendix A and retrieval notes | Intro sentence said the command owned 12 tools, while the tool-coverage table listed 13 and included `memory_quick_search`; governed retrieval parameters were under-documented | Updated to 13 tools; governed retrieval parameters now documented |
+| `.opencode/command/memory/shared.md` create/member contract | Create/member docs omitted required `tenantId` and actor identity, and denied the first-create owner auto-grant behavior present in the live schema | tenantId and actor identity now present; auto-grant behavior documented |
 
 ### 6.4 Source-of-Truth Notes
 
@@ -240,7 +242,7 @@ The following decisions remain authoritative after truth reconciliation:
 3. `memory_quick_search` belongs with the rest of the retrieval surface under `/memory:analyze`.
 4. Shared-memory lifecycle tools belong to `/memory:shared`.
 5. Async ingestion tools belong to `/memory:manage ingest`.
-6. The spec pack should describe already-shipped command docs as existing and reserve the gap list for real residual drift only.
+6. The spec pack describes already-shipped command docs as existing; formerly open drift items are recorded as resolved.
 <!-- /ANCHOR:implementation-decisions -->
 
 ---
@@ -256,9 +258,9 @@ Confirm the current tool count, command-file count, command ownership, and the a
 
 Update `spec.md`, `plan.md`, and `tasks.md` so they describe the shipped 6-command memory suite and the current 33-tool schema surface.
 
-### Phase 2: Record Only Remaining Drift
+### Phase 2: Resolve Runtime-Doc Drift
 
-Reduce the old "missing command" narrative to the small amount of drift that is still observable, specifically the `analyze.md` appendix count mismatch.
+Reduce the old "missing command" narrative, resolve the runtime-doc drift in `analyze.md` (12-to-13 tool count, governed retrieval params) and `shared.md` (tenantId, actor identity, auto-grant behavior).
 
 ### Phase 3: Verify the Reconciled Pack
 
@@ -274,7 +276,7 @@ Run targeted stale-string checks and spec validation so the 012 pack no longer r
 |------|--------|------------|
 | Historical notes get mistaken for current gaps | Medium | Reword every gap section around present-tense repo state |
 | Future schema changes make 012 stale again | Medium | Keep schema files as the explicit source of truth |
-| Residual runtime-doc drift gets overstated | Low | Record only directly verified drift, not inferred gaps |
+| Resolved runtime-doc drift gets overstated in future reads | Low | Drift is recorded as resolved with specific evidence from the 2026-03-21 pass |
 | Old memory files inside the spec folder still mention older counts | Low | Keep this pass scoped to `spec.md`, `plan.md`, and `tasks.md` only |
 <!-- /ANCHOR:risks -->
 
@@ -283,7 +285,7 @@ Run targeted stale-string checks and spec validation so the 012 pack no longer r
 <!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
-- None for this reconciliation pass. The only follow-up surfaced by the audit is a runtime-doc cleanup: update `.opencode/command/memory/analyze.md` Appendix A so its intro count matches the 13-tool matrix.
+- None. The runtime-doc drift in `analyze.md` and `shared.md` was resolved during the 2026-03-21 reconciliation pass.
 <!-- /ANCHOR:questions -->
 
 ---
@@ -302,7 +304,7 @@ Run targeted stale-string checks and spec validation so the 012 pack no longer r
 SPEC: 012-command-alignment
 Level 2 - Complete (truth-reconciled 2026-03-21)
 Current reality: 33-tool schema surface, 6-command memory suite, retrieval merged into analyze
-Residual drift still observed: analyze.md Appendix A says 12 tools while its matrix lists 13
+Drift cluster resolved: analyze.md updated to 13 tools, shared.md contract updated with tenantId/actor/auto-grant
 -->
 
 ---

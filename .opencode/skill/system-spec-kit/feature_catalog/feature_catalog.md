@@ -39,6 +39,21 @@ This document combines two complementary views of the Spec Kit Memory system int
 
 Use this catalog as the canonical inventory for both current behavior and delivered refinements. The numbered sections below group the live system by capability area so operators can move from the top-level reference into the per-feature files without losing implementation, validation, or rollout context.
 
+### Command-Surface Contract
+
+The Spec Kit Memory MCP server exposes **33 tools** organized under **6 slash commands**. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for this matrix is the `allowed-tools` field in each command file under `.opencode/command/memory/`.
+
+| Command | Tools | Ownership | Tool Names |
+|---------|-------|-----------|------------|
+| `/memory:analyze` | 13 | owns | `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, `eval_reporting_dashboard`, `memory_get_learning_history` |
+| `/memory:continue` | 4 | shared | `memory_context`, `memory_search`, `memory_list`, `memory_stats` |
+| `/memory:learn` | 6 | shared | `memory_save`, `memory_search`, `memory_stats`, `memory_list`, `memory_delete`, `memory_index_scan` |
+| `/memory:manage` | 16 | owns | `memory_stats`, `memory_list`, `memory_search`, `memory_index_scan`, `memory_validate`, `memory_update`, `memory_delete`, `memory_bulk_delete`, `memory_health`, `checkpoint_create`, `checkpoint_restore`, `checkpoint_list`, `checkpoint_delete`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel` |
+| `/memory:save` | 4 | shared | `memory_save`, `memory_index_scan`, `memory_stats`, `memory_update` |
+| `/memory:shared` | 4 | owns | `shared_space_upsert`, `shared_space_membership_set`, `shared_memory_status`, `shared_memory_enable` |
+
+**Owns** means the command is the primary home for those tools. **Shared** means the command borrows tools whose primary home is another command (typically `/memory:analyze` or `/memory:manage`).
+
 ---
 
 ## 2. RETRIEVAL
@@ -254,6 +269,34 @@ See [`01--retrieval/09-tool-result-extraction-to-working-memory.md`](01--retriev
 
 ---
 
+### Session recovery via /memory:continue
+
+#### Description
+
+When a session is interrupted by a crash, context compaction, or timeout, this command reconstructs the most likely previous session state and routes the user to the best next step. It uses `memory_context` in resume mode as the primary recovery path, with a fallback chain through crash-recovery breadcrumbs, anchored memory search, and recent-candidate discovery.
+
+#### Current Reality
+
+**SHIPPED.** `/memory:continue` is one of the 6 memory commands. It uses 4 shared MCP tools: `memory_context`, `memory_search`, `memory_list`, and `memory_stats`.
+
+The primary recovery path calls `memory_context` in `resume` mode with anchors targeting `state`, `next-steps`, `summary`, and `blockers`. Resume mode uses a 1200-token budget with `minState=WARM`, `includeContent=true`, dedup and decay both disabled.
+
+Two recovery modes are available: **auto** (default) resolves the strongest session candidate with minimal prompting, and **manual** presents alternatives when multiple recent folders look plausible or confidence is low.
+
+The fallback chain has 5 priority levels: (1) `memory_context` in resume mode, (2) `CONTINUE_SESSION.md` crash breadcrumb, (3) anchored `memory_search` for thin summaries, (4) `memory_list` for recent-candidate discovery, (5) user confirmation as final fallback.
+
+After recovery, the command routes to `/spec_kit:resume` for structured spec-folder work or `/memory:analyze history` for broader historical analysis, depending on user intent.
+
+#### Source Files
+
+| File | Role |
+|------|------|
+| `.opencode/command/memory/continue.md` | `/memory:continue` command definition with auto/manual workflows |
+
+See [`01--retrieval/11-session-recovery-memory-continue.md`](01--retrieval/11-session-recovery-memory-continue.md) for full details.
+
+---
+
 ## 3. MUTATION
 
 This section documents 10 mutation features.
@@ -404,15 +447,22 @@ See [`02--mutation/06-transaction-wrappers-on-mutation-handlers.md`](02--mutatio
 
 ---
 
-### Namespace management CRUD tools
+### Namespace management CRUD tools (shared-memory lifecycle)
 
 #### Description
 
-This planned feature would let you organize memories into completely separate workspaces, like having different notebooks for different projects. Right now the system uses folder-based filtering to keep things separated, which works well enough. Full workspace management is on hold until there is a real need for it.
+Shared-memory spaces let multiple users or agents access the same pool of knowledge under a deny-by-default membership model. Four shipped tools provide workspace-level scoping beyond per-spec-folder filtering: create or update spaces, control user/agent access, inspect rollout status, and enable the subsystem. All four tools are live under the `/memory:shared` command.
 
 #### Current Reality
 
-**PLANNED (Sprint 019): DEFERRED.** Namespace CRUD (`list/create/switch/delete`) remains deferred pending demonstrated multi-tenant demand. Current scoping relies on logical `specFolder` filtering. Estimated effort: S-M (3-5 days).
+**SHIPPED.** The shared-memory lifecycle is live with 4 L5 tools managed by `/memory:shared`:
+
+- **`shared_space_upsert`** -- Creates or updates a shared-memory space with `tenantId`, `name`, and actor identity (`actorUserId` or `actorAgentId`). The first successful create auto-grants `owner` access to the acting caller.
+- **`shared_space_membership_set`** -- Controls user/agent access with a deny-by-default model. Requires `tenantId`, `subjectType` (`user` or `agent`), `subjectId`, `role` (`owner`, `editor`, or `viewer`), and actor identity. Membership mutations must be performed by an existing owner.
+- **`shared_memory_status`** -- Reports enablement state, space inventory, and membership for optional tenant/user/agent scope filters.
+- **`shared_memory_enable`** -- Activates the opt-in shared-memory subsystem (creates infrastructure tables, persists enablement, generates a README in `shared-spaces/`).
+
+The original full namespace CRUD (`list/create/switch/delete`) for complete multi-tenant isolation remains deferred. Current scoping relies on logical `specFolder` filtering augmented by the shared-memory tools above.
 
 #### Source Files
 
@@ -4199,7 +4249,7 @@ Two-tier result explainability attaches natural-language "why" explanations to e
 
 #### Current Reality
 
-The explainability module detects 10+ signal types including semantic/lexical match, graph/session/causal/community boosts, reranker support, feedback, validation quality, and anchor labels. The slim tier (summary + topSignals) is always present when ON. The debug tier adds per-channel score breakdown (vector, fts, graph). Default OFF, set `SPECKIT_RESULT_EXPLAIN_V1=true` to enable.
+The explainability module detects 10+ signal types including semantic/lexical match, graph/session/causal/community boosts, reranker support, feedback, validation quality, and anchor labels. The slim tier (summary + topSignals) is always present when ON. The debug tier adds per-channel score breakdown (vector, fts, graph). Default ON, set `SPECKIT_RESULT_EXPLAIN_V1=false` to disable.
 
 #### Source Files
 
@@ -4215,7 +4265,7 @@ Mode-aware response profiles route search and context results through one of fou
 
 #### Current Reality
 
-Four profiles are implemented: quick (topResult + oneLineWhy + omittedCount + tokenReduction), research (results + evidenceDigest + followUps), resume (state + nextSteps + blockers), and debug (full trace + tokenStats). Backward compatible: when the flag is OFF or profile is omitted, the original response is unchanged. Default OFF, set `SPECKIT_RESPONSE_PROFILE_V1=true` to enable.
+Four profiles are implemented: quick (topResult + oneLineWhy + omittedCount + tokenReduction), research (results + evidenceDigest + followUps), resume (state + nextSteps + blockers), and debug (full trace + tokenStats). Backward compatible: when the flag is OFF or profile is omitted, the original response is unchanged. Default ON, set `SPECKIT_RESPONSE_PROFILE_V1=false` to disable.
 
 #### Source Files
 
@@ -4390,12 +4440,12 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_HYDRA_PHASE` | `shared-rollout` | string | `lib/config/capability-flags.ts` | Legacy compatibility alias for the memory-roadmap phase label. Supported values are `baseline`, `lineage`, `graph`, `adaptive`, `scope-governance`, and `shared-rollout`; unknown values fall back to `shared-rollout`. |
 | `SPECKIT_HYDRA_LINEAGE_STATE` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the lineage roadmap flag. It remains default-on for roadmap metadata snapshots and rename-window lineage compatibility paths; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_GRAPH_UNIFIED` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the unified-graph roadmap flag. It remains intentionally separate from the runtime `SPECKIT_GRAPH_UNIFIED` retrieval gate so roadmap metadata cannot misreport live graph-channel defaults; set it to `false` or `0` to opt out explicitly. |
-| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the adaptive-ranking roadmap flag. It remains default-on for roadmap metadata snapshots and adaptive shadow-ranking compatibility paths; set it to `false` or `0` to opt out explicitly. |
+| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the adaptive-ranking roadmap flag. Phase 4 adaptive ranking remains dormant in production, so roadmap metadata defaults this flag to off unless explicitly enabled with `true` or `1`. Used by roadmap metadata snapshots and adaptive shadow-ranking compatibility paths. |
 | `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the scope-enforcement roadmap flag. It remains default-on for roadmap metadata and governed-scope compatibility paths; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the governance-guardrail roadmap flag. It remains default-on for roadmap metadata and governed-ingest compatibility paths; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_SHARED_MEMORY` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the shared-memory roadmap flag. It remains default-on for roadmap metadata and shared-memory rollout compatibility paths; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYBRID_DECAY_POLICY` | `true` | boolean | `lib/cognitive/fsrs-scheduler.ts` | **Default ON (graduated).** Type-aware no-decay FSRS policy. Decision/constitutional/critical context types receive Infinity stability (never decay). Separate from TM-03. |
-| `SPECKIT_HYDE` | `true` | boolean | `lib/search/hyde.ts` | **Default ON (graduated).** HyDE (Hypothetical Document Embeddings). Generates a pseudo-document (~200 tokens, markdown-memory format) for deep low-confidence queries (top score < 0.45), embeds it, and uses the embedding as an additional retrieval channel. Starts in shadow mode (logged, not merged); `SPECKIT_HYDE_ACTIVE=true` graduates to full merge. Budget: 1 LLM call per cache miss. |
+| `SPECKIT_HYDE` | `true` | boolean | `lib/search/hyde.ts` | **Default ON (graduated).** HyDE (Hypothetical Document Embeddings). Generates a pseudo-document (~200 tokens, markdown-memory format) for deep low-confidence queries (top score < 0.45), embeds it, and uses the embedding as an additional retrieval channel. HyDE is active in the query pipeline by default and merges results into the candidate set unless `SPECKIT_HYDE_ACTIVE=false` forces shadow-only logging. Budget: 1 LLM call per cache miss. |
 | `SPECKIT_IMPLICIT_FEEDBACK_LOG` | `true` | boolean | `lib/feedback/feedback-ledger.ts` | **Default ON (graduated).** Shadow-only implicit feedback event ledger. Records 5 event types with confidence tiers (strong/medium/weak). No ranking side effects. |
 | `SPECKIT_INDEX_SPEC_DOCS` | `true` | boolean | `handlers/memory-index-discovery.ts` | Controls whether `memory_index_scan` indexes spec folder documents (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `research.md`, `handover.md`). Set to `'false'` to skip spec docs. |
 | `SPECKIT_INTERFERENCE_SCORE` | `true` | boolean | `lib/scoring/interference-scoring.ts` | Enables interference-based penalty scoring in composite scoring. When disabled (set to `'false'`), the interference computation is bypassed and the raw score passes through unchanged. |
@@ -4574,7 +4624,7 @@ These settings control diagnostic visibility. They adjust log verbosity and opti
 | `SPECKIT_HYDRA_PHASE` | `shared-rollout` | string | `lib/config/capability-flags.ts` | Legacy compatibility alias for the memory-roadmap phase label. Used by telemetry, eval baselines, migration checkpoint metadata, and rename-window compatibility paths. Unsupported values fall back to `shared-rollout`. |
 | `SPECKIT_HYDRA_LINEAGE_STATE` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the lineage roadmap flag. Consumed by default-on roadmap metadata snapshots and rename-window lineage compatibility checks; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_GRAPH_UNIFIED` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the unified-graph roadmap flag. Still distinct from the live `SPECKIT_GRAPH_UNIFIED` runtime gate; set it to `false` or `0` to opt out explicitly. |
-| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the adaptive-ranking roadmap flag. Used by default-on roadmap snapshots and adaptive shadow-ranking compatibility checks; set it to `false` or `0` to opt out explicitly. |
+| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the adaptive-ranking roadmap flag. Phase 4 adaptive ranking remains dormant in production, so roadmap metadata defaults this flag to off unless explicitly enabled with `true` or `1`. Used by roadmap metadata snapshots and adaptive shadow-ranking compatibility paths. |
 | `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the scope-enforcement roadmap flag. Used by default-on roadmap snapshots and governed-scope compatibility checks; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the governance-guardrail roadmap flag. Used by default-on roadmap snapshots and governed-ingest compatibility checks; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_SHARED_MEMORY` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the shared-memory roadmap flag. Used by default-on roadmap snapshots and shared-memory rollout compatibility checks; set it to `false` or `0` to opt out explicitly. |

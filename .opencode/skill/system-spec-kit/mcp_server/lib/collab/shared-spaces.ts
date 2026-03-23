@@ -394,25 +394,29 @@ export function upsertSharedSpace(database: Database.Database, definition: Share
     throw new Error('E_VALIDATION: spaceId and tenantId must be non-empty strings');
   }
   ensureSharedCollabRuntime(database);
+  const rolloutEnabledValue = definition.rolloutEnabled === undefined ? null : (definition.rolloutEnabled ? 1 : 0);
+  const killSwitchValue = definition.killSwitch === undefined ? null : (definition.killSwitch ? 1 : 0);
   database.prepare(`
     INSERT INTO shared_spaces (space_id, tenant_id, name, rollout_enabled, rollout_cohort, kill_switch, metadata, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+    VALUES (?, ?, ?, COALESCE(?, 0), ?, COALESCE(?, 0), ?, CURRENT_TIMESTAMP)
     ON CONFLICT(space_id) DO UPDATE SET
       tenant_id = excluded.tenant_id,
       name = excluded.name,
-      rollout_enabled = excluded.rollout_enabled,
+      rollout_enabled = COALESCE(?, rollout_enabled),
       rollout_cohort = excluded.rollout_cohort,
-      kill_switch = excluded.kill_switch,
+      kill_switch = COALESCE(?, kill_switch),
       metadata = excluded.metadata,
       updated_at = CURRENT_TIMESTAMP
   `).run(
     definition.spaceId,
     definition.tenantId,
     definition.name,
-    definition.rolloutEnabled ? 1 : 0,
+    rolloutEnabledValue,
     definition.rolloutCohort?.trim() || null,
-    definition.killSwitch ? 1 : 0,
+    killSwitchValue,
     definition.metadata ? JSON.stringify(definition.metadata) : null,
+    rolloutEnabledValue,
+    killSwitchValue,
   );
 }
 
@@ -448,6 +452,10 @@ export function getAllowedSharedSpaceIds(database: Database.Database, scope: Sco
   if (!isSharedMemoryEnabled(database)) return new Set();
   ensureSharedCollabRuntime(database);
   const normalizedScope = normalizeScopeContext(scope);
+
+  // P0 fix: require tenant context so null scopes cannot enumerate every tenant.
+  if (!normalizedScope.tenantId) return new Set();
+
   const ids = new Set<string>();
   const candidates: Array<[SharedSubjectType, string | undefined]> = [
     ['user', normalizedScope.userId],
@@ -462,14 +470,13 @@ export function getAllowedSharedSpaceIds(database: Database.Database, scope: Sco
       JOIN shared_spaces s ON s.space_id = m.space_id
       WHERE m.subject_type = ?
         AND m.subject_id = ?
-        AND (? IS NULL OR s.tenant_id = ?)
+        AND s.tenant_id = ?
         AND s.kill_switch = 0
         AND s.rollout_enabled = 1
     `).all(
       subjectType,
       subjectId,
-      normalizedScope.tenantId ?? null,
-      normalizedScope.tenantId ?? null,
+      normalizedScope.tenantId,
     ) as Array<{ space_id: string }>;
     for (const row of rows) {
       ids.add(row.space_id);
@@ -500,20 +507,25 @@ export function assertSharedSpaceAccess(
     reason: string,
     metadata?: Record<string, unknown>,
   ): void => {
-    recordGovernanceAudit(database, {
-      action: 'shared_space_access',
-      decision,
-      reason,
-      tenantId: normalizedScope.tenantId,
-      userId: normalizedScope.userId,
-      agentId: normalizedScope.agentId,
-      sessionId: normalizedScope.sessionId,
-      sharedSpaceId: spaceId,
-      metadata: {
-        requiredRole,
-        ...(metadata ?? {}),
-      },
-    });
+    try {
+      recordGovernanceAudit(database, {
+        action: 'shared_space_access',
+        decision,
+        reason,
+        tenantId: normalizedScope.tenantId,
+        userId: normalizedScope.userId,
+        agentId: normalizedScope.agentId,
+        sessionId: normalizedScope.sessionId,
+        sharedSpaceId: spaceId,
+        metadata: {
+          requiredRole,
+          ...(metadata ?? {}),
+        },
+      });
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error(`[shared-spaces] Failed to record shared_space_access audit: ${message}`);
+    }
   };
   const deny = (reason: string, metadata?: Record<string, unknown>): { allowed: false; reason: string } => {
     auditAccessDecision('deny', reason, metadata);
@@ -543,12 +555,6 @@ export function assertSharedSpaceAccess(
   if (!space) {
     return deny('shared_space_not_found');
   }
-  if (space.kill_switch === 1) {
-    return deny('shared_space_kill_switch');
-  }
-  if (space.rollout_enabled !== 1) {
-    return deny('shared_space_rollout_disabled');
-  }
   if (normalizedScope.tenantId && space.tenant_id !== normalizedScope.tenantId) {
     return deny('shared_space_tenant_mismatch', {
       spaceTenantId: space.tenant_id ?? null,
@@ -558,8 +564,16 @@ export function assertSharedSpaceAccess(
     return deny('shared_space_tenant_required');
   }
 
+  const bypassAvailabilityChecks = requiredRole === 'owner';
+  if (!bypassAvailabilityChecks && space.kill_switch === 1) {
+    return deny('shared_space_kill_switch');
+  }
+  if (!bypassAvailabilityChecks && space.rollout_enabled !== 1) {
+    return deny('shared_space_rollout_disabled');
+  }
+
   const allowed = getAllowedSharedSpaceIds(database, normalizedScope);
-  if (!allowed.has(spaceId)) {
+  if (!allowed.has(spaceId) && !bypassAvailabilityChecks) {
     return deny('shared_space_membership_required');
   }
 
@@ -616,8 +630,8 @@ export function recordSharedConflict(
   }
 ): void {
   ensureSharedCollabRuntime(database);
-  // B5: Wrap strategy resolution (count query) + insert + audit in a transaction
-  // to prevent race between the count read and the conflict insert.
+  // Use an IMMEDIATE transaction so concurrent writers cannot observe the same
+  // prior conflict count between strategy resolution and the insert/audit write.
   const recordConflictTx = database.transaction(() => {
     const resolved = resolveSharedConflictStrategy(database, args);
     database.prepare(`
@@ -644,5 +658,5 @@ export function recordSharedConflict(
       metadata: resolved.metadata,
     });
   });
-  recordConflictTx();
+  recordConflictTx.immediate();
 }

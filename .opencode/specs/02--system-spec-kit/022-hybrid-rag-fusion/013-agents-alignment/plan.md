@@ -1,9 +1,9 @@
 ---
-title: "Plan: 012 — Agent Alignment"
-description: "Reconciliation plan for updating the 012 packet and the scoped runtime-facing agent docs to the live multi-runtime lineage model."
+title: "Plan: 013 — Agent Alignment"
+description: "Reconciliation plan for updating the 013 packet and the scoped runtime-facing agent docs to the live multi-runtime lineage model."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
-# Plan: 012 — Agent Alignment
+# Plan: 013 — Agent Alignment
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
@@ -112,7 +112,7 @@ Document runtime-facing paths first, then note storage details only where they m
 <!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
-- If the packet regresses into mixed lineage language, revert only the canonical `012` docs and re-apply the rewrite from live runtime evidence.
+- If the packet regresses into mixed lineage language, revert only the canonical `013` docs and re-apply the rewrite from live runtime evidence.
 - Do not revert unrelated live runtime agent files as part of packet rollback because this pass closes only the scoped delegation/write surfaces, not a bulk runtime sync.
 <!-- /ANCHOR:rollback -->
 

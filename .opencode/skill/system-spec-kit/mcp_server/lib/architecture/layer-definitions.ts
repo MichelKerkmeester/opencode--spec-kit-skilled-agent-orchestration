@@ -65,7 +65,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     tokenBudget: 800,
     priority: 3,
     useCase: 'Explore available memories, check system health, view statistics.',
-    tools: ['memory_list', 'memory_stats', 'memory_health', 'shared_memory_status']
+    tools: ['memory_list', 'memory_stats', 'memory_health']
   },
   L4: {
     id: 'L4',
@@ -83,7 +83,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     tokenBudget: 600,
     priority: 5,
     useCase: 'Create checkpoints before major changes, restore previous states.',
-    tools: ['checkpoint_create', 'checkpoint_list', 'checkpoint_restore', 'checkpoint_delete', 'shared_memory_enable', 'shared_space_upsert', 'shared_space_membership_set', 'memory_ingest_start', 'memory_ingest_status', 'memory_ingest_cancel']
+    tools: ['checkpoint_create', 'checkpoint_list', 'checkpoint_restore', 'checkpoint_delete', 'shared_memory_enable', 'shared_memory_status', 'shared_space_upsert', 'shared_space_membership_set']
   },
   L6: {
     id: 'L6',
@@ -110,7 +110,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     tokenBudget: 1000,
     priority: 7,
     useCase: 'Re-index memories, view learning history, perform bulk operations.',
-    tools: ['memory_index_scan', 'memory_get_learning_history']
+    tools: ['memory_index_scan', 'memory_get_learning_history', 'memory_ingest_start', 'memory_ingest_status', 'memory_ingest_cancel']
   }
 } as const;
 
@@ -138,11 +138,18 @@ for (const [layerId, layer] of Object.entries(LAYER_DEFINITIONS)) {
    ──────────────────────────────────────────────────────────────── */
 
 /**
+ * Get the layer ID for a tool.
+ */
+export function getLayerForTool(toolName: string): LayerId | null {
+  return TOOL_LAYER_MAP[toolName] ?? null;
+}
+
+/**
  * Get the layer prefix for a tool's description.
  * CHK-073: Tool descriptions include layer prefix.
  */
 export function getLayerPrefix(toolName: string): string {
-  const layerId = TOOL_LAYER_MAP[toolName];
+  const layerId = getLayerForTool(toolName);
   if (!layerId) return '';
 
   const layer = LAYER_DEFINITIONS[layerId];
@@ -169,18 +176,25 @@ export function enhanceDescription(toolName: string, description: string): strin
 /**
  * Get the token budget for a tool.
  */
-export function getTokenBudget(toolName: string): number {
-  const layerId = TOOL_LAYER_MAP[toolName];
+export function getLayerTokenBudget(toolName: string): number {
+  const layerId = getLayerForTool(toolName);
   if (!layerId) return 1000; // Default budget
 
   return LAYER_DEFINITIONS[layerId].tokenBudget;
 }
 
 /**
+ * Get the token budget for a tool.
+ */
+export function getTokenBudget(toolName: string): number {
+  return getLayerTokenBudget(toolName);
+}
+
+/**
  * Get layer information for a tool.
  */
 export function getLayerInfo(toolName: string): LayerDefinition | null {
-  const layerId = TOOL_LAYER_MAP[toolName];
+  const layerId = getLayerForTool(toolName);
   if (!layerId) return null;
 
   return { ...LAYER_DEFINITIONS[layerId] };

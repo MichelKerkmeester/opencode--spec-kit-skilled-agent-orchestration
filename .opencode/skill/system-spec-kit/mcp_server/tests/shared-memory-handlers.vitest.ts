@@ -27,6 +27,7 @@ import {
   handleSharedMemoryStatus,
   handleSharedSpaceMembershipSet,
   handleSharedSpaceUpsert,
+  resolveAdminActor,
 } from '../handlers/shared-memory';
 
 interface SharedMemoryEnvelope extends Record<string, unknown> {
@@ -241,6 +242,156 @@ describe('shared-memory admin handlers', () => {
     const envelope = parseEnvelope(response);
     expect(response.isError).toBe(true);
     expect(envelope.data.details?.reason).toBe('actor_identity_ambiguous');
+  });
+
+  it('rejects empty and whitespace-only admin actor identifiers and enforces exactly one actor', () => {
+    const emptyActor = resolveAdminActor('shared_space_upsert', '', undefined);
+    expect(emptyActor.ok).toBe(false);
+    if (!emptyActor.ok) {
+      expect(parseEnvelope(emptyActor.response).data.details?.reason).toBe('actor_identity_required');
+    }
+
+    const whitespaceActor = resolveAdminActor('shared_space_membership_set', '   ', ' \n\t ');
+    expect(whitespaceActor.ok).toBe(false);
+    if (!whitespaceActor.ok) {
+      expect(parseEnvelope(whitespaceActor.response).data.details?.reason).toBe('actor_identity_required');
+    }
+
+    const ambiguousActor = resolveAdminActor('shared_space_upsert', 'user-1', 'agent-1');
+    expect(ambiguousActor.ok).toBe(false);
+    if (!ambiguousActor.ok) {
+      expect(parseEnvelope(ambiguousActor.response).data.details?.reason).toBe('actor_identity_ambiguous');
+    }
+  });
+
+  it('preserves rolloutEnabled when an owner updates a shared space without resending the boolean', async () => {
+    await handleSharedSpaceUpsert({
+      spaceId: 'space-preserve-rollout',
+      tenantId: 'tenant-a',
+      name: 'Alpha',
+      actorUserId: 'user-owner',
+      rolloutEnabled: true,
+    });
+
+    const response = await handleSharedSpaceUpsert({
+      spaceId: 'space-preserve-rollout',
+      tenantId: 'tenant-a',
+      name: 'Alpha Renamed',
+      actorUserId: 'user-owner',
+    });
+
+    const envelope = parseEnvelope(response);
+    expect(envelope.data.rolloutEnabled).toBe(true);
+    expect(getDb().prepare(`
+      SELECT rollout_enabled
+      FROM shared_spaces
+      WHERE space_id = ?
+    `).get('space-preserve-rollout')).toEqual({
+      rollout_enabled: 1,
+    });
+  });
+
+  it('records a shared-space admin audit entry after a successful upsert', async () => {
+    await handleSharedSpaceUpsert({
+      spaceId: 'space-audit-success',
+      tenantId: 'tenant-a',
+      name: 'Alpha Audit',
+      actorUserId: 'user-owner',
+      rolloutEnabled: true,
+    });
+
+    const auditRow = getDb().prepare(`
+      SELECT action, decision, reason, tenant_id, user_id, shared_space_id, metadata
+      FROM governance_audit
+      WHERE action = 'shared_space_admin'
+      ORDER BY id DESC
+      LIMIT 1
+    `).get() as {
+      action: string;
+      decision: string;
+      reason: string;
+      tenant_id: string;
+      user_id: string;
+      shared_space_id: string;
+      metadata: string;
+    };
+
+    expect(auditRow.action).toBe('shared_space_admin');
+    expect(auditRow.decision).toBe('allow');
+    expect(auditRow.reason).toBe('space_created');
+    expect(auditRow.tenant_id).toBe('tenant-a');
+    expect(auditRow.user_id).toBe('user-owner');
+    expect(auditRow.shared_space_id).toBe('space-audit-success');
+    expect(JSON.parse(auditRow.metadata)).toMatchObject({
+      operation: 'space_upsert',
+      operationType: 'create',
+      actorSubjectType: 'user',
+      actorSubjectId: 'user-owner',
+      rolloutEnabled: true,
+    });
+  });
+
+  it('rejects non-owner members and audits the denied admin mutation', async () => {
+    await handleSharedSpaceUpsert({
+      spaceId: 'space-owner-only',
+      tenantId: 'tenant-a',
+      name: 'Owner Only',
+      actorUserId: 'user-owner',
+      rolloutEnabled: true,
+    });
+    await handleSharedSpaceMembershipSet({
+      spaceId: 'space-owner-only',
+      tenantId: 'tenant-a',
+      actorUserId: 'user-owner',
+      subjectType: 'user',
+      subjectId: 'user-editor',
+      role: 'editor',
+    });
+
+    const response = await handleSharedSpaceMembershipSet({
+      spaceId: 'space-owner-only',
+      tenantId: 'tenant-a',
+      actorUserId: 'user-editor',
+      subjectType: 'agent',
+      subjectId: 'agent-1',
+      role: 'viewer',
+    });
+
+    const envelope = parseEnvelope(response);
+    expect(response.isError).toBe(true);
+    expect(envelope.data.details?.reason).toBe('shared_space_owner_required');
+
+    const auditRow = getDb().prepare(`
+      SELECT action, decision, reason, tenant_id, user_id, shared_space_id, metadata
+      FROM governance_audit
+      WHERE action = 'shared_space_admin'
+      ORDER BY id DESC
+      LIMIT 1
+    `).get() as {
+      action: string;
+      decision: string;
+      reason: string;
+      tenant_id: string;
+      user_id: string;
+      shared_space_id: string;
+      metadata: string;
+    };
+
+    expect(auditRow.action).toBe('shared_space_admin');
+    expect(auditRow.decision).toBe('deny');
+    expect(auditRow.reason).toBe('shared_space_owner_required');
+    expect(auditRow.tenant_id).toBe('tenant-a');
+    expect(auditRow.user_id).toBe('user-editor');
+    expect(auditRow.shared_space_id).toBe('space-owner-only');
+    expect(JSON.parse(auditRow.metadata)).toMatchObject({
+      operation: 'membership_set',
+      operationType: 'membership_update',
+      actorSubjectType: 'user',
+      actorSubjectId: 'user-editor',
+      subjectType: 'agent',
+      subjectId: 'agent-1',
+      role: 'viewer',
+    });
   });
 
   it('rejects tenant mismatch on membership mutation', async () => {

@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Command Alignment"
-description: "Documentation reconciliation tasks for updating the 011 spec pack to the live 33-tool, 6-command memory-command surface."
+description: "Documentation reconciliation tasks for updating the 012 command-alignment spec pack to the live 33-tool, 6-command memory-command surface."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Tasks: 012-command-alignment
@@ -44,7 +44,7 @@ description: "Documentation reconciliation tasks for updating the 011 spec pack 
 - **Priority:** P0
 - **Files:** `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`
 - **Action:** Count `TOOL_DEFINITIONS` and confirm the live total is 33.
-- **Acceptance:** The reconciled 011 pack uses 33 as the only valid tool count.
+- **Acceptance:** The reconciled 012 pack uses 33 as the only valid tool count.
 - **Covers:** CA-001
 - [x] Done
 
@@ -52,7 +52,7 @@ description: "Documentation reconciliation tasks for updating the 011 spec pack 
 - **Priority:** P0
 - **Files:** `.opencode/command/memory/`
 - **Action:** Confirm the live suite contains `analyze`, `continue`, `learn`, `manage`, `save`, and `shared`, and confirm that no standalone `context` command file exists.
-- **Acceptance:** The reconciled 011 pack uses a 6-command model and removes the standalone `context` command assumption.
+- **Acceptance:** The reconciled 012 pack uses a 6-command model and removes the standalone `context` command assumption.
 - **Covers:** CA-002, CA-003
 - [x] Done
 
@@ -60,7 +60,7 @@ description: "Documentation reconciliation tasks for updating the 011 spec pack 
 - **Priority:** P0
 - **Files:** `.opencode/command/memory/analyze.md`, `.opencode/command/memory/README.txt`
 - **Action:** Confirm `/memory:analyze` is the documented home for retrieval, `memory_quick_search`, analysis/eval tooling, and learning history.
-- **Acceptance:** The reconciled 011 pack assigns retrieval ownership to `/memory:analyze`.
+- **Acceptance:** The reconciled 012 pack assigns retrieval ownership to `/memory:analyze`.
 - **Covers:** CA-004, CA-006
 - [x] Done
 <!-- /ANCHOR:phase-1 -->
@@ -108,7 +108,7 @@ description: "Documentation reconciliation tasks for updating the 011 spec pack 
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-### T07: Grep the 011 pack for stale assumptions
+### T07: Grep the 012 pack for stale assumptions
 - **Priority:** P1
 - **Files:** `spec.md`, `plan.md`, `tasks.md`
 - **Action:** Search the reconciled pack for stale `32`, `7-command`, `7 commands`, and standalone `context` command assumptions.
@@ -124,11 +124,11 @@ description: "Documentation reconciliation tasks for updating the 011 spec pack 
 - **Covers:** CA-007
 - [x] Done
 
-### T09: Preserve the residual follow-up note
+### T09: Record drift as resolved
 - **Priority:** P1
 - **Files:** `spec.md`, `plan.md`
-- **Action:** Record the observed `.opencode/command/memory/analyze.md` and `.opencode/command/memory/shared.md` mismatches so the pack stays truthful about the last live-doc drift this pass closes.
-- **Acceptance:** The pack contains a narrow drift-closeout note instead of a broad stale-missing-work narrative.
+- **Action:** Record that the `.opencode/command/memory/analyze.md` and `.opencode/command/memory/shared.md` mismatches were resolved during the 2026-03-21 reconciliation pass.
+- **Acceptance:** The pack describes the drift cluster as resolved, not open.
 - **Covers:** CA-008
 - [x] Done
 <!-- /ANCHOR:phase-3 -->

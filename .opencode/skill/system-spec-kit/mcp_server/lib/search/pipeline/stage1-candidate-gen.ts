@@ -41,7 +41,10 @@ import { expandQueryWithEmbeddings, isExpansionActive } from '../embedding-expan
 import { querySummaryEmbeddings, checkScaleGate } from '../memory-summaries';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/db-helpers';
-import { filterRowsByScope } from '../../governance/scope-governance';
+import {
+  filterRowsByScope,
+  isScopeEnforcementEnabled,
+} from '../../governance/scope-governance';
 import { getAllowedSharedSpaceIds } from '../../collab/shared-spaces';
 import { withTimeout } from '../../errors/core';
 import {
@@ -690,6 +693,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
     || config.sessionId
     || sharedSpaceId
   );
+  const shouldApplyScopeFiltering = hasGovernanceScope || isScopeEnforcementEnabled();
   const scopeFilter = {
     tenantId,
     userId,
@@ -699,7 +703,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
   };
   let allowedSharedSpaceIds: Set<string> | undefined;
 
-  if (hasGovernanceScope) {
+  if (shouldApplyScopeFiltering) {
     try {
       const db = requireDb();
       allowedSharedSpaceIds = getAllowedSharedSpaceIds(db, scopeFilter);
@@ -709,7 +713,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
         allowedSharedSpaceIds,
       );
     } catch (_error: unknown) {
-      candidates = filterRowsByScope(candidates, scopeFilter);
+      candidates = filterRowsByScope(candidates, scopeFilter, allowedSharedSpaceIds);
     }
   }
 
@@ -757,7 +761,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
         const contextFilteredConstitutional = contextType
           ? uniqueConstitutional.filter((r) => resolveRowContextType(r) === contextType)
           : uniqueConstitutional;
-        const filteredConstitutional = hasGovernanceScope
+        const filteredConstitutional = shouldApplyScopeFiltering
           ? filterRowsByScope(
             contextFilteredConstitutional,
             scopeFilter,
@@ -818,7 +822,10 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
             const seenIds = new Set(candidates.map((r) => r.id));
             const reformMerged: PipelineRow[] = [];
             for (const resultSet of reformResultSets) {
-              for (const row of resultSet) {
+              const scopeFilteredResultSet = shouldApplyScopeFiltering
+                ? filterRowsByScope(resultSet, scopeFilter, allowedSharedSpaceIds)
+                : resultSet;
+              for (const row of scopeFilteredResultSet) {
                 if (!seenIds.has(row.id)) {
                   seenIds.add(row.id);
                   reformMerged.push(row);
@@ -860,9 +867,12 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
   if (mode === 'deep' && isHyDEEnabled() && searchType === 'hybrid') {
     try {
       const hydeCandidates = await runHyDE(query, candidates, limit, specFolder);
-      if (hydeCandidates.length > 0) {
+      const scopeFilteredHydeCandidates = shouldApplyScopeFiltering
+        ? filterRowsByScope(hydeCandidates, scopeFilter, allowedSharedSpaceIds)
+        : hydeCandidates;
+      if (scopeFilteredHydeCandidates.length > 0) {
         const seenIds = new Set(candidates.map((r) => r.id));
-        const newHydeCandidates = hydeCandidates.filter((r) => !seenIds.has(r.id));
+        const newHydeCandidates = scopeFilteredHydeCandidates.filter((r) => !seenIds.has(r.id));
         candidates = [...candidates, ...newHydeCandidates];
         channelCount++;
 
@@ -930,7 +940,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
             const contextFilteredSummaryHits = contextType
               ? tierFilteredSummaryHits.filter((r) => resolveRowContextType(r) === contextType)
               : tierFilteredSummaryHits;
-            const scopeFilteredSummaryHits = hasGovernanceScope
+            const scopeFilteredSummaryHits = shouldApplyScopeFiltering
               ? filterRowsByScope(contextFilteredSummaryHits, scopeFilter, allowedSharedSpaceIds)
               : contextFilteredSummaryHits;
 

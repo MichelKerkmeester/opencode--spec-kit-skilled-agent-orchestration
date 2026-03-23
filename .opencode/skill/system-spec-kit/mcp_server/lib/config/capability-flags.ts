@@ -80,20 +80,23 @@ function isMemoryRoadmapCapabilityEnabled(
   identity?: string,
   defaultValue = true,
 ): boolean {
+  const candidates = Array.isArray(flagNames) ? flagNames : [flagNames];
   if (hasExplicitDisableFlag(flagNames)) {
     return false;
   }
 
-  const canonicalFlag = Array.isArray(flagNames) ? flagNames[0] : flagNames;
-  const rawCanonicalValue = process.env[canonicalFlag]?.trim().toLowerCase();
-  if (rawCanonicalValue === 'true' || rawCanonicalValue === '1') {
-    return true;
+  for (const flagName of candidates) {
+    const rawValue = process.env[flagName]?.trim().toLowerCase();
+    if (rawValue === 'true' || rawValue === '1') {
+      return true;
+    }
   }
 
   if (!defaultValue) {
     return false;
   }
 
+  const canonicalFlag = candidates[0];
   return isFeatureEnabled(canonicalFlag, normalizeIdentity(canonicalFlag, identity));
 }
 
@@ -147,7 +150,7 @@ function getMemoryRoadmapDefaults(identity?: string): MemoryRoadmapDefaults {
   return {
     phase: getMemoryRoadmapPhase(),
     capabilities: getMemoryRoadmapCapabilityFlags(identity),
-    scopeDimensionsTracked: 4, // tenant/user/agent/session
+    scopeDimensionsTracked: 5, // tenant/user/agent/session/sharedSpace
   };
 }
 

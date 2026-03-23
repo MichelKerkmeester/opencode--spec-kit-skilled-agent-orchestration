@@ -93,7 +93,16 @@ const MAX_ALLOWED_ADAPTIVE_DELTA = 0.12;
 const MIN_ALLOWED_SIGNALS_FOR_PROMOTION = 1;
 const MAX_ALLOWED_SIGNALS_FOR_PROMOTION = 8;
 
-let adaptiveThresholdOverrides: AdaptiveThresholdOverrides = {};
+const adaptiveThresholdOverridesMap = new WeakMap<object, AdaptiveThresholdOverrides>();
+
+function getOverridesForDb(database?: object): AdaptiveThresholdOverrides {
+  if (!database) return {};
+  return adaptiveThresholdOverridesMap.get(database) ?? {};
+}
+
+function setOverridesForDb(database: object, overrides: AdaptiveThresholdOverrides): void {
+  adaptiveThresholdOverridesMap.set(database, overrides);
+}
 
 function isAdaptiveFlagEnabled(...flagNames: string[]): boolean {
   for (const flagName of flagNames) {
@@ -124,7 +133,8 @@ function clampSignalThreshold(value: number): number {
   );
 }
 
-function getAdaptiveThresholdConfig(): AdaptiveThresholdSnapshot {
+function getAdaptiveThresholdConfig(database?: Database.Database): AdaptiveThresholdSnapshot {
+  const adaptiveThresholdOverrides = getOverridesForDb(database);
   return {
     maxAdaptiveDelta: clampAdaptiveDelta(adaptiveThresholdOverrides.maxAdaptiveDelta ?? MAX_ADAPTIVE_DELTA),
     minSignalsForPromotion: clampSignalThreshold(
@@ -152,7 +162,8 @@ function compareAdaptiveRows(
   const bSimilarity = typeof b.similarity === 'number' && Number.isFinite(b.similarity) ? b.similarity : 0;
   if (bSimilarity !== aSimilarity) return bSimilarity - aSimilarity;
 
-  return a.id - b.id;
+  // Use relational comparison instead of subtraction so very large integer ids stay deterministic above 2^53.
+  return a.id < b.id ? -1 : a.id > b.id ? 1 : 0;
 }
 
 function isAdaptiveEnabled(): boolean {
@@ -213,6 +224,11 @@ export function ensureAdaptiveTables(database: Database.Database): void {
  */
 export function recordAdaptiveSignal(database: Database.Database, event: AdaptiveSignalEvent): void {
   if (getAdaptiveMode() === 'disabled') return;
+  if (typeof event.signalValue === 'number') {
+    if (!Number.isFinite(event.signalValue) || event.signalValue <= 0) {
+      return;
+    }
+  }
   ensureAdaptiveTables(database);
   database.prepare(`
     INSERT INTO adaptive_signal_events (memory_id, signal_type, signal_value, query, actor, metadata)
@@ -254,8 +270,9 @@ export function resetAdaptiveState(
  */
 export function setAdaptiveThresholdOverrides(
   overrides: AdaptiveThresholdOverrides = {},
+  database?: Database.Database,
 ): AdaptiveThresholdSnapshot {
-  adaptiveThresholdOverrides = {
+  const nextOverrides: AdaptiveThresholdOverrides = {
     maxAdaptiveDelta: typeof overrides.maxAdaptiveDelta === 'number' && Number.isFinite(overrides.maxAdaptiveDelta)
       ? overrides.maxAdaptiveDelta
       : undefined,
@@ -280,7 +297,10 @@ export function setAdaptiveThresholdOverrides(
         }
       : undefined,
   };
-  return getAdaptiveThresholdConfig();
+  if (database) {
+    setOverridesForDb(database, nextOverrides);
+  }
+  return getAdaptiveThresholdConfig(database);
 }
 
 /**
@@ -288,9 +308,11 @@ export function setAdaptiveThresholdOverrides(
  *
  * @returns Default adaptive threshold snapshot.
  */
-export function resetAdaptiveThresholdOverrides(): AdaptiveThresholdSnapshot {
-  adaptiveThresholdOverrides = {};
-  return getAdaptiveThresholdConfig();
+export function resetAdaptiveThresholdOverrides(database?: Database.Database): AdaptiveThresholdSnapshot {
+  if (database) {
+    adaptiveThresholdOverridesMap.delete(database);
+  }
+  return getAdaptiveThresholdConfig(database);
 }
 
 /**
@@ -298,8 +320,8 @@ export function resetAdaptiveThresholdOverrides(): AdaptiveThresholdSnapshot {
  *
  * @returns Immutable adaptive threshold configuration for diagnostics.
  */
-export function getAdaptiveThresholdSnapshot(): AdaptiveThresholdSnapshot {
-  return getAdaptiveThresholdConfig();
+export function getAdaptiveThresholdSnapshot(database?: Database.Database): AdaptiveThresholdSnapshot {
+  return getAdaptiveThresholdConfig(database);
 }
 
 /**
@@ -312,7 +334,7 @@ export function summarizeAdaptiveSignalQuality(
   database: Database.Database,
 ): AdaptiveSignalQualitySummary {
   ensureAdaptiveTables(database);
-  const thresholds = getAdaptiveThresholdConfig();
+  const thresholds = getAdaptiveThresholdConfig(database);
 
   const signalCounts: Record<AdaptiveSignalType, number> = {
     access: 0,
@@ -387,7 +409,7 @@ export function summarizeAdaptiveSignalQuality(
 export function tuneAdaptiveThresholdsAfterEvaluation(
   database: Database.Database,
 ): AdaptiveThresholdTuningResult {
-  const previous = getAdaptiveThresholdConfig();
+  const previous = getAdaptiveThresholdConfig(database);
   const summary = summarizeAdaptiveSignalQuality(database);
 
   let nextMinSignals = previous.minSignalsForPromotion;
@@ -402,11 +424,15 @@ export function tuneAdaptiveThresholdsAfterEvaluation(
       Math.min(ADAPTIVE_SIGNAL_WEIGHTS[key] + WEIGHT_CLAMP_RANGE, value),
     ));
 
-  if (summary.totalSignals >= previous.minSignalsForPromotion * 2 && summary.weightedSignalScore >= 0.04) {
+  if (
+    summary.totalSignals >= previous.minSignalsForPromotion * 2
+    && summary.weightedSignalScore >= 0.04
+    && summary.distinctMemories >= 2
+  ) {
     nextMinSignals = Math.max(2, previous.minSignalsForPromotion - 1);
     nextMaxAdaptiveDelta = clampAdaptiveDelta(previous.maxAdaptiveDelta + 0.02);
     nextSignalWeights.outcome = clampWeight('outcome', previous.signalWeights.outcome + 0.005);
-  } else if (summary.totalSignals < previous.minSignalsForPromotion * 2 || summary.distinctMemories < 2) {
+  } else if (summary.totalSignals < previous.minSignalsForPromotion * 2) {
     nextMinSignals = clampSignalThreshold(previous.minSignalsForPromotion + 1);
     nextMaxAdaptiveDelta = clampAdaptiveDelta(previous.maxAdaptiveDelta - 0.02);
     nextSignalWeights.correction = clampWeight('correction', previous.signalWeights.correction - 0.005);
@@ -416,7 +442,7 @@ export function tuneAdaptiveThresholdsAfterEvaluation(
     maxAdaptiveDelta: nextMaxAdaptiveDelta,
     minSignalsForPromotion: nextMinSignals,
     signalWeights: nextSignalWeights,
-  });
+  }, database);
 
   return {
     summary,
@@ -427,7 +453,7 @@ export function tuneAdaptiveThresholdsAfterEvaluation(
 
 function getSignalDelta(database: Database.Database, memoryId: number): number {
   ensureAdaptiveTables(database);
-  const thresholds = getAdaptiveThresholdConfig();
+  const thresholds = getAdaptiveThresholdConfig(database);
   const rows = database.prepare(`
     SELECT signal_type, COUNT(*) AS count, COALESCE(SUM(signal_value), 0) AS total
     FROM adaptive_signal_events
@@ -466,7 +492,7 @@ export function buildAdaptiveShadowProposal(
 ): AdaptiveShadowProposal | null {
   const mode = getAdaptiveMode();
   if (mode === 'disabled' || results.length === 0) return null;
-  const thresholds = getAdaptiveThresholdConfig();
+  const thresholds = getAdaptiveThresholdConfig(database);
 
   const production = results.map((row, index) => ({
     ...row,

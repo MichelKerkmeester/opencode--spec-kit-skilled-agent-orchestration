@@ -80,3 +80,32 @@ export {
   resetExtractionMetrics,
 } from '../lib/extraction/extraction-adapter';
 export type { ExtractionMetrics } from '../lib/extraction/extraction-adapter';
+
+// --- Hybrid RAG Fusion rollout metadata and architecture surfaces ---
+export {
+  LAYER_DEFINITIONS,
+  TOOL_LAYER_MAP,
+  getLayerForTool,
+  getLayerTokenBudget,
+} from '../lib/architecture/layer-definitions';
+export type { LayerDefinition, LayerId } from '../lib/architecture/layer-definitions';
+
+export {
+  getSharedRolloutMetrics,
+  getSharedRolloutCohortSummary,
+} from '../lib/collab/shared-spaces';
+export type {
+  SharedMembership,
+  SharedRole,
+  SharedRolloutCohortSummary,
+  SharedRolloutMetrics,
+  SharedSpaceDefinition,
+  SharedSubjectType,
+} from '../lib/collab/shared-spaces';
+
+export {
+  getMemoryRoadmapCapabilityFlags,
+  getMemoryRoadmapDefaults,
+  getMemoryRoadmapPhase,
+} from '../lib/config/capability-flags';
+export type { MemoryRoadmapCapabilityFlags } from '../lib/config/capability-flags';

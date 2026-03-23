@@ -5,7 +5,7 @@
 import path from 'path';
 import fs from 'fs';
 import os from 'os';
-import { getDbDir } from '../../shared/config';
+import { DB_PATH } from '../../shared/paths';
 import { loadCognitiveConfigFromEnv } from '../configs/cognitive';
 import type { CognitiveConfig } from '../configs/cognitive';
 
@@ -42,12 +42,8 @@ export interface DatabasePaths {
 }
 
 export function resolveDatabasePaths(): DatabasePaths {
-  // F4.04/F8.02 fix: Use shared getDbDir() for consistent env var resolution
-  // (supports both SPEC_KIT_DB_DIR and SPECKIT_DB_DIR).
-  const configuredDir = getDbDir();
-  const databaseDir = configuredDir
-    ? path.resolve(process.cwd(), configuredDir)
-    : path.join(SERVER_DIR, 'database');
+  // shared/paths.ts is the single source of truth for DB directory resolution.
+  const databaseDir = path.dirname(DB_PATH);
 
   // F4.04: Reject paths that escape the project root (allow homedir and tmpdir for tests).
   // Use realpathSync to handle macOS /var -> /private/var symlinks.

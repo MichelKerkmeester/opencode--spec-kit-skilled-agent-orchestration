@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: HyDE (Hypothetical Document Embeddings)
 // ───────────────────────────────────────────────────────────────
-// Feature catalog: D2 REQ-D2-004 — HyDE Shadow Mode
+// Feature catalog: D2 REQ-D2-004 — HyDE Active Mode
 //
 // Gate: SPECKIT_HYDE — deep + low-confidence queries only.
 //
@@ -10,9 +10,9 @@
 // additional retrieval channel.  This helps bridge the vocabulary
 // mismatch between user queries and indexed memories.
 //
-// Shadow mode (initial): HyDE results are logged but NOT merged into
-// the candidate set.  Set SPECKIT_HYDE_ACTIVE=true to graduate to
-// full merge mode after shadow validation completes.
+// Active mode (graduated): HyDE results are merged into the candidate
+// set by default.  Set SPECKIT_HYDE_ACTIVE=false to revert to shadow
+// mode where results are logged but NOT merged.
 //
 // Budget:
 //   HyDE uses 1 LLM call per cache miss.
@@ -20,8 +20,8 @@
 //   Both share the same LlmCache (module: llm-cache.ts).
 //
 // Feature flags:
-//   SPECKIT_HYDE        — enable the HyDE feature (default: FALSE, opt-in)
-//   SPECKIT_HYDE_ACTIVE — graduate from shadow to full merge (default: FALSE)
+//   SPECKIT_HYDE        — enable the HyDE feature (default: TRUE, graduated)
+//   SPECKIT_HYDE_ACTIVE — merge HyDE results into candidates (default: TRUE, graduated)
 
 /* ───────────────────────────────────────────────────────────────
    1. IMPORTS

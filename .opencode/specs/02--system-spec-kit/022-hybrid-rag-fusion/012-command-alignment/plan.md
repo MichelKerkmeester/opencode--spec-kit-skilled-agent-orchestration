@@ -1,6 +1,6 @@
 ---
 title: "Plan: Command Alignment"
-description: "Documentation-only reconciliation plan for updating the 011 spec pack to the live 33-tool, 6-command memory-command surface."
+description: "Documentation-only reconciliation plan for updating the 012 command-alignment spec pack to the live 33-tool, 6-command memory-command surface."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Plan: 012-command-alignment
@@ -23,9 +23,9 @@ description: "Documentation-only reconciliation plan for updating the 011 spec p
 
 ### Overview
 
-This pass does not implement memory-command features. It reconciles the 011 planning docs with what the repo already ships today: a 33-tool Spec Kit Memory MCP surface and a 6-command memory suite with retrieval merged into `/memory:analyze`.
+This pass does not implement memory-command features. It reconciles the 012 command-alignment planning docs with what the repo already ships today: a 33-tool Spec Kit Memory MCP surface and a 6-command memory suite with retrieval merged into `/memory:analyze`. It also resolved the runtime-doc drift in `analyze.md` and `shared.md` during the 2026-03-21 reconciliation pass.
 
-**Effort Estimate:** Small documentation rewrite limited to the five canonical 011 markdown files.
+**Effort Estimate:** Small documentation rewrite limited to the five canonical 012 markdown files plus targeted runtime-doc patches.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -74,7 +74,7 @@ Read live schema and command-doc evidence, update the five scoped planning docum
 | 0.2 | Count live memory command files | Confirm 6-command suite and no standalone `context` command file | P0 |
 | 0.3 | Verify command ownership in `.opencode/command/memory/analyze.md` and `.opencode/command/memory/README.txt` | Confirm retrieval plus `memory_quick_search` ownership | P0 |
 
-### Phase 1: Reconcile the 011 Spec Pack
+### Phase 1: Reconcile the 012 Spec Pack
 
 | Step | File | Changes | Priority |
 |------|------|---------|----------|
@@ -87,9 +87,9 @@ Read live schema and command-doc evidence, update the five scoped planning docum
 
 | Step | Action | Success Criteria |
 |------|--------|-----------------|
-| 2.1 | Grep 011 for stale count and structure strings | No stale live-state claims remain in canonical docs |
+| 2.1 | Grep 012 pack for stale count and structure strings | No stale live-state claims remain in canonical docs |
 | 2.2 | Run strict validation | Validation passes with no errors or warnings |
-| 2.3 | Record and close the final runtime-doc drift cluster | `analyze.md` and `shared.md` mismatches are documented accurately and reflected as resolved in this pass |
+| 2.3 | Confirm runtime-doc drift cluster resolved | `analyze.md` and `shared.md` mismatches were resolved during the 2026-03-21 reconciliation pass (13-tool count, governed params, tenantId/actor, auto-grant) |
 <!-- /ANCHOR:phases -->
 
 ---
@@ -105,11 +105,11 @@ Read live schema and command-doc evidence, update the five scoped planning docum
 
 ### Verification Focus
 
-- 011 now describes a 33-tool surface.
-- 011 now describes a 6-command suite.
-- 011 no longer assumes a standalone `context` command file.
-- 011 explicitly assigns retrieval plus `memory_quick_search` to `/memory:analyze`.
-- 011 keeps the drift list narrow and factual, then reflects its live-doc closeout accurately.
+- The 012 pack now describes a 33-tool surface.
+- The 012 pack now describes a 6-command suite.
+- The 012 pack no longer assumes a standalone `context` command file.
+- The 012 pack explicitly assigns retrieval plus `memory_quick_search` to `/memory:analyze`.
+- The 012 pack records the drift cluster as resolved, not open.
 <!-- /ANCHOR:testing -->
 
 ---
@@ -191,18 +191,18 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
 | Risk | Probability | Impact | Mitigation |
 |------|-------------|--------|------------|
 | Old implementation language survives in one section | Medium | Medium | Run targeted stale-string grep after edits |
-| Future schema changes make 011 stale again | Medium | Medium | Keep schema files as the explicit source of truth |
-| Residual runtime-doc drift is missed | Low | Medium | Record and verify the observed `analyze.md` and `shared.md` mismatches before closing the pass |
+| Future schema changes make 012 stale again | Medium | Medium | Keep schema files as the explicit source of truth |
+| Resolved runtime-doc drift is misrepresented as open | Low | Medium | Drift is recorded as resolved with specific evidence from the 2026-03-21 pass |
 | Validation reports unrelated legacy issues | Low | Low | Note them honestly if they appear, but do not widen scope |
 
 ---
 
 ### Assumptions
 
-- Live repo state wins when it conflicts with older 011 draft text.
+- Live repo state wins when it conflicts with older draft text.
 - The 6-command suite is the canonical current memory-command surface.
 - `README.txt` already provides a complete 33-tool ownership map.
-- This pass includes the scoped runtime-doc patch needed to clear the final `analyze.md` and `shared.md` drift.
+- This pass resolved the runtime-doc drift in `analyze.md` and `shared.md` during the 2026-03-21 reconciliation.
 
 ---
 
