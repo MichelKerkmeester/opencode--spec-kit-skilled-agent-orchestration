@@ -427,6 +427,7 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
           // Expected — checkpoint won't exist or DB may not be init'd
         }
 
+        expect(calls.length).not.toBe(1);
         if (calls.length >= 2) {
           expect(calls).toContain('clearConstitutionalCache');
           expect(calls).toContain('clearSearchCache');

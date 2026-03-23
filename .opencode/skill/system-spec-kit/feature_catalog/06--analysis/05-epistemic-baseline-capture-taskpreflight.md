@@ -104,7 +104,6 @@ The purpose of preflight is establishing a baseline for learning measurement. Wi
 | `mcp_server/tests/handler-session-learning.vitest.ts` | Session learning validation |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
 | `mcp_server/tests/incremental-index.vitest.ts` | Focused incremental-index coverage (supplemental to `incremental-index-v2.vitest.ts`; concrete fast-path assertions) |
-| `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/integration-learning-history.vitest.ts` | Learning history integration |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
 | `mcp_server/tests/learning-stats-filters.vitest.ts` | Learning stats filter tests |

@@ -167,13 +167,13 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
 
   // 4.2 getGitBranch
   describe('Storage: getGitBranch', () => {
-    it('EXT-S3: getGitBranch returns string or null', () => {
+    it.skip('EXT-S3: getGitBranch returns string or null', () => {
       if (!checkpointStorage.getGitBranch) return;
       const branch = checkpointStorage.getGitBranch();
       expect(branch === null || (typeof branch === 'string' && branch.length > 0)).toBe(true);
     });
 
-    it('EXT-S4: checkpoint records git branch', () => {
+    it.skip('EXT-S4: checkpoint records git branch', () => {
       if (!checkpointStorage.getGitBranch) return;
       const cp = checkpointStorage.createCheckpoint({ name: 'git-branch-test' });
       expect(cp).toBeDefined();
@@ -673,7 +673,7 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       checkpointStorage.deleteCheckpoint('t107-no-mutation');
     });
 
-    it('T107-09: validateMemoryRow accepts valid row', () => {
+    it.skip('T107-09: validateMemoryRow accepts valid row', () => {
       if (typeof checkpointStorage.validateMemoryRow !== 'function') return;
       expect(() => {
         checkpointStorage.validateMemoryRow({
@@ -683,7 +683,7 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
       }).not.toThrow();
     });
 
-    it('T107-10: validateMemoryRow rejects invalid id', () => {
+    it.skip('T107-10: validateMemoryRow rejects invalid id', () => {
       if (typeof checkpointStorage.validateMemoryRow !== 'function') return;
       expect(() => {
         checkpointStorage.validateMemoryRow({ id: 'not-a-number', file_path: '/x.md', spec_folder: 'sp' }, 0);

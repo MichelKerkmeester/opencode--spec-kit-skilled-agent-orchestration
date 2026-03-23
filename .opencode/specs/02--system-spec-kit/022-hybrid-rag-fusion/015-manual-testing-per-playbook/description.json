@@ -1,13 +1,12 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
-  "description": "Feature Specification: manual-testing-per-playbook — COMPLETE (265 PASS, 0 PARTIAL, 0 FAIL across 265 IDs)",
-  "status": "Complete",
+  "description": "Feature Specification: manual-testing-per-playbook",
   "keywords": [
     "feature",
     "specification",
     "manual-testing-per-playbook"
   ],
-  "lastUpdated": "2026-03-22T17:41:14.764Z",
+  "lastUpdated": "2026-03-23T20:30:25.443Z",
   "specId": "015",
   "folderSlug": "manual-testing-per-playbook",
   "parentChain": [

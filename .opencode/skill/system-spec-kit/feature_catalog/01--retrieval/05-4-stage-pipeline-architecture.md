@@ -170,7 +170,6 @@ The 4-stage pipeline is the sole runtime path. The `SPECKIT_PIPELINE_V2` environ
 | `mcp_server/tests/hybrid-search.vitest.ts` | Hybrid search orchestration |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
 | `mcp_server/tests/incremental-index.vitest.ts` | Focused incremental-index coverage (supplemental to `incremental-index-v2.vitest.ts`; concrete fast-path assertions) |
-| `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/integration-138-pipeline.vitest.ts` | Pipeline feature-138 tests |
 | `mcp_server/tests/integration-search-pipeline.vitest.ts` | Search pipeline integration |
 | `mcp_server/tests/intent-classifier.vitest.ts` | Intent classification accuracy |

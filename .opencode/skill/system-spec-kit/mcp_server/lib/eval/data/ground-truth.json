@@ -417,7 +417,7 @@
       "complexityTier": "moderate",
       "category": "temporal",
       "source": "pattern_derived",
-      "expectedResultDescription": "Should surface incremental-index.ts, index-refresh.ts, and any spec memories about stale cache behavior after indexing operations.",
+      "expectedResultDescription": "Should surface incremental-index.ts, retry-manager.ts, and any spec memories about stale cache behavior after indexing operations.",
       "notes": "Bug-intent with temporal aspect (\"after index rebuild\") — tests recency boosting for fix_bug intent."
     },
     {
@@ -827,7 +827,7 @@
       "complexityTier": "moderate",
       "category": "cross_document",
       "source": "manual",
-      "expectedResultDescription": "Should surface incremental-index.ts, index-refresh.ts, and any spec about the indexing latency after save operations.",
+      "expectedResultDescription": "Should surface incremental-index.ts, retry-manager.ts, and any spec about the indexing latency after save operations.",
       "notes": "Manual bug query about indexing lag — realistic user confusion about save vs. search consistency."
     },
     {

@@ -36,10 +36,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Manual test scenarios for scoring-and-calibration need structured per-phase documentation instead of a single playbook table buried inside the hybrid RAG fusion packet. Phase 011 must capture the exact test prompts, execution steps, evidence expectations, and verdict rules for all 22 scoring-focused scenarios so operators can run them consistently and reviewers can score them against the review protocol.
+Manual test scenarios for scoring-and-calibration need structured per-phase documentation instead of a single playbook table buried inside the hybrid RAG fusion packet. Phase 011 must capture the exact test prompts, execution steps, evidence expectations, and verdict rules for all 22 scoring-focused playbook rows so operators can run the active scenarios consistently and reviewers can identify retired items that no longer exist in the MCP server.
 
 ### Purpose
-Provide a canonical phase packet that maps every assigned scoring-and-calibration test ID to its feature catalog source and preserves the pass/fail acceptance language needed for PASS, PARTIAL, or FAIL verdicts. Includes Wave 2-4 additions: learned Stage 2 combiner, shadow feedback holdout evaluation, fusion policy shadow v2, calibrated overlap bonus, and RRF K experimental tuning.
+Provide a canonical phase packet that maps every assigned scoring-and-calibration test ID to its feature catalog source when one exists and preserves the acceptance language needed for review outcomes. Includes Wave 2-4 additions: learned Stage 2 combiner, shadow feedback holdout evaluation, calibrated overlap bonus, and RRF K experimental tuning, plus a retired historical row for scenario 170.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -48,7 +48,7 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 ## 3. SCOPE
 
 ### In Scope
-- Phase 011 documentation for all 22 assigned scoring-and-calibration playbook scenarios.
+- Phase 011 documentation for all 22 assigned scoring-and-calibration playbook rows, including 21 active MCP-server-backed scenarios and retired row 170.
 - Exact linkage from each test ID to the matching feature catalog file under `11--scoring-and-calibration/`.
 - Manual-testing execution guidance covering prompts, evidence expectations, and review-protocol verdict inputs.
 
@@ -80,7 +80,7 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 | 121 | Adaptive shadow proposal and rollback (Phase 4) | [`../../feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md`](../../feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md) | Mutates adaptive signals and feature flags; needs rollback-safe isolation. |
 | 159 | Learned Stage 2 Combiner (SPECKIT_LEARNED_STAGE2_COMBINER) | [`../../feature_catalog/11--scoring-and-calibration/19-learned-stage2-weight-combiner.md`](../../feature_catalog/11--scoring-and-calibration/19-learned-stage2-weight-combiner.md) | Validates shadow scoring output alongside the live Stage 2 combiner. |
 | 160 | Shadow Feedback Holdout (SPECKIT_SHADOW_FEEDBACK) | [`../../feature_catalog/11--scoring-and-calibration/20-shadow-feedback-holdout-evaluation.md`](../../feature_catalog/11--scoring-and-calibration/20-shadow-feedback-holdout-evaluation.md) | Validates holdout evaluation pipeline for offline scoring comparison. |
-| 170 | Fusion Policy Shadow v2 (SPECKIT_FUSION_POLICY_SHADOW_V2) | [`../../feature_catalog/11--scoring-and-calibration/23-fusion-policy-shadow-v2.md`](../../feature_catalog/11--scoring-and-calibration/23-fusion-policy-shadow-v2.md) | Verifies Fusion Lab runs all three policies in shadow while returning active policy result unchanged. |
+| 170 | Fusion Policy Shadow v2 (historical playbook row) | Retired in active MCP server; no current feature-catalog file | Documents that `SPECKIT_FUSION_POLICY_SHADOW_V2` and related Fusion Lab code are no longer active in `mcp_server`. |
 | 171 | Calibrated Overlap Bonus (SPECKIT_CALIBRATED_OVERLAP_BONUS) | [`../../feature_catalog/11--scoring-and-calibration/21-calibrated-overlap-bonus.md`](../../feature_catalog/11--scoring-and-calibration/21-calibrated-overlap-bonus.md) | Verifies calibrated overlap bonus replaces flat convergence bonus with beta=0.15 scaling and 0.06 cap. |
 | 172 | RRF K Experimental (SPECKIT_RRF_K_EXPERIMENTAL) | [`../../feature_catalog/11--scoring-and-calibration/22-rrf-k-experimental.md`](../../feature_catalog/11--scoring-and-calibration/22-rrf-k-experimental.md) | Verifies per-intent K optimization selects best K from sweep grid using NDCG@10. |
 
@@ -123,7 +123,7 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 | REQ-121 | Execute 121 (Adaptive shadow proposal and rollback (Phase 4)) with the exact prompt, execution sequence, evidence capture, and feature link. | PASS: Shadow proposal emitted without mutating live order; disable flag removes proposal cleanly; FAIL: Live order changes under shadow mode or proposal persists after disable |
 | REQ-159 | Execute 159 (Learned Stage 2 Combiner) with exact prompt, execution sequence, evidence capture, and feature link. Feature flag: `SPECKIT_LEARNED_STAGE2_COMBINER` (default: OFF). | PASS when flag ON: shadow scoring output emitted alongside live Stage 2 combiner, shadow weights logged, live ranking not affected; PASS when flag OFF: no shadow scoring output. FAIL when shadow output mutates live ranking |
 | REQ-160 | Execute 160 (Shadow Feedback Holdout) with exact prompt, execution sequence, evidence capture, and feature link. Feature flag: `SPECKIT_SHADOW_FEEDBACK` (default: OFF). | PASS when flag ON: holdout pipeline runs on configured percentage, holdout results logged separately, live retrieval unaffected; PASS when flag OFF: no holdout pipeline runs. FAIL when holdout affects live results |
-| REQ-170 | Execute 170 (Fusion Policy Shadow v2) with exact prompt, execution sequence, evidence capture, and feature link. Feature flag: `SPECKIT_FUSION_POLICY_SHADOW_V2` (default: OFF). | PASS when flag ON: Fusion Lab runs all three policies in shadow, returns active policy result unchanged, logs shadow comparisons; FAIL when shadow execution changes the returned active result |
+| REQ-170 | Document 170 (Fusion Policy Shadow v2) as retired/removed from the active MCP server with evidence from the current codebase audit. | PASS: Phase docs explicitly state that `SPECKIT_FUSION_POLICY_SHADOW_V2`, `fusion-lab.js`, `isShadowFusionV2Enabled`, `runShadowComparison`, `minmax_linear`, and `zscore_linear` have no active `mcp_server` matches; FAIL: Phase docs still claim scenario 170 is active |
 | REQ-171 | Execute 171 (Calibrated Overlap Bonus) with exact prompt, execution sequence, evidence capture, and feature link. Feature flag: `SPECKIT_CALIBRATED_OVERLAP_BONUS` (default: OFF). | PASS when flag ON: calibrated overlap bonus replaces flat convergence bonus with beta=0.15 scaling and 0.06 cap; trace shows capped calibrated value; FAIL when cap is exceeded or calibrated scaling absent |
 | REQ-172 | Execute 172 (RRF K Experimental) with exact prompt, execution sequence, evidence capture, and feature link. Feature flag: `SPECKIT_RRF_K_EXPERIMENTAL` (default: OFF). | PASS when flag ON: per-intent K optimization evaluates sweep grid, selects best K using NDCG@10, records winning K; FAIL when sweep grid is skipped or chosen K lacks NDCG@10 evidence |
 <!-- /ANCHOR:requirements -->
@@ -133,7 +133,7 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 22 assigned test IDs are executed with exact prompts, command sequences, evidence captures, and verdicts per the review protocol.
+- **SC-001**: All 22 assigned playbook rows are documented with exact prompts, command sequences, evidence captures, and outcomes appropriate to current runtime state.
 - **SC-002**: Every test row links to the correct scoring-and-calibration feature catalog file by relative path.
 - **SC-003**: Destructive scenarios (025, 026, 028, 031, 032, 121) are executed in an isolated sandbox with pre/post state documented.
 - **SC-004**: Reviewers can apply the review protocol verdict rules without reopening the monolithic playbook for missing scenario details.
@@ -152,7 +152,7 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 | Dependency | MCP runtime, flags, and sandbox fixture data | Several tests depend on trace output, toggled flags, or state-mutating validation flows | Run destructive scenarios in an isolated sandbox and reset state between tests |
 | Dependency | `SPECKIT_LEARNED_STAGE2_COMBINER` feature flag | Required for 159; controls shadow scoring output alongside the live combiner | Confirm flag support in the runtime before running 159; default OFF preserves existing combiner behavior |
 | Dependency | `SPECKIT_SHADOW_FEEDBACK` feature flag | Required for 160; controls the holdout evaluation pipeline | Confirm flag support and holdout percentage configuration before running 160; default OFF disables holdout |
-| Dependency | `SPECKIT_FUSION_POLICY_SHADOW_V2` feature flag | Required for 170; controls Fusion Lab shadow policy comparison | Confirm flag support before running 170; default OFF disables shadow policy comparison |
+| Dependency | Phase 011 code audit for retired scenario 170 | Required to prove 170 no longer exists in the active MCP server | Confirm the absence of active `mcp_server` matches before closing the phase packet |
 | Dependency | `SPECKIT_CALIBRATED_OVERLAP_BONUS` feature flag | Required for 171; controls calibrated overlap bonus behavior | Confirm flag support before running 171; default OFF preserves prior overlap bonus |
 | Dependency | `SPECKIT_RRF_K_EXPERIMENTAL` feature flag | Required for 172; controls per-intent K sweep | Confirm flag support before running 172; default OFF disables K sweep |
 | Risk | Host-specific prerequisites for 098 local reranker checks | Missing model files or insufficient memory can block the reranker scenario | Record blocked status with evidence, or use a prepared host that satisfies model-path and memory thresholds |
@@ -179,7 +179,7 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 - **NFR-P02**: Sandbox checkpoint create/restore operations must complete before the next scenario begins.
 
 ### Reliability
-- **NFR-R01**: All 22 scenarios must produce a verdict (PASS, PARTIAL, or FAIL) — no scenario may be left without a result.
+- **NFR-R01**: All 22 playbook rows must produce a documented outcome — active scenarios use PASS/PARTIAL/FAIL, and retired scenario 170 must be labeled as retired/removed.
 - **NFR-R02**: Evidence artifacts must be retained in `scratch/` for reviewer audit.
 <!-- /ANCHOR:nfr -->
 
@@ -190,7 +190,7 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 
 ### Data Boundaries
 - Sandbox state reset: required between scenarios 025, 026, 028, 031, 032, and 121.
-- Feature flag toggling: flag-dependent scenarios (159, 160, 170, 171, 172) require explicit ON/OFF verification passes.
+- Feature flag toggling: active flag-dependent scenarios (159, 160, 171, 172) require explicit ON/OFF verification passes; scenario 170 requires retirement-status verification instead.
 - Host prerequisites: 098 may be blocked by missing GGUF model; document blocked status with evidence rather than skipping.
 
 ### Error Scenarios

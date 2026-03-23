@@ -35,7 +35,7 @@ The parsing module provides core functionality for extracting structured data fr
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Modules | 4 | memory-parser, trigger-matcher, entity-scope, content-normalizer |
+| Modules | 3 | memory-parser, trigger-matcher, content-normalizer |
 | Supported Encodings | 3 | UTF-8, UTF-16 LE, UTF-16 BE (with BOM detection) |
 | Trigger Match Target | <50ms | NFR-P03 performance requirement |
 
@@ -48,7 +48,6 @@ The parsing module provides core functionality for extracting structured data fr
 | **Memory Type Inference** | Automatic classification (research, implementation, decision, discovery) via `inferMemoryType` from config |
 | **Spec Document Classification** | Derives `documentType` and `specLevel` from file paths for full spec folder indexing |
 | **Causal Link Extraction** | Parse relationship metadata (caused_by, supersedes, derived_from, blocks, related_to) |
-| **Entity Scope Detection** | Context type detection from content or tool usage, SQL scope filter building, session ID generation |
 
 <!-- /ANCHOR:overview -->
 
@@ -60,7 +59,6 @@ The parsing module provides core functionality for extracting structured data fr
 ```
 parsing/
  content-normalizer.ts # Strip markdown noise (frontmatter, anchors, tables, fences) for embedding and BM25
- entity-scope.ts       # Context type detection, scope filtering, session ID generation
  memory-parser.ts      # Core memory file parsing with ANCHOR extraction
  trigger-matcher.ts    # Fast trigger phrase matching (<50ms target)
  README.md             # This file
@@ -71,7 +69,6 @@ parsing/
 | File | Purpose |
 |------|---------|
 | `content-normalizer.ts` | Normalize raw markdown for embedding generation and BM25 indexing by stripping structural noise (frontmatter, anchors, HTML comments, code fences, pipe tables, list bullets, heading hashes) |
-| `entity-scope.ts` | Detect context types from content/tools, build SQL scope filters, generate session IDs |
 | `memory-parser.ts` | Parse memory files, extract metadata, titles, trigger phrases, anchors, causal links |
 | `trigger-matcher.ts` | Match prompts against trigger phrases with LRU regex caching |
 
@@ -177,29 +174,6 @@ parsing/
 | `normalizeMarkdownTables` | `(content: string) => string` | Convert pipe tables to plain prose |
 | `normalizeMarkdownLists` | `(content: string) => string` | Strip bullet, checkbox, and ordered list notation |
 | `normalizeHeadings` | `(content: string) => string` | Strip hash marks and numeric prefixes from headings |
-
-### Entity Scope (`entity-scope.ts`)
-
-**Purpose**: Context type detection, scope filtering and session ID generation
-
-| Aspect | Details |
-|--------|---------|
-| **Context Types** | `research`, `implementation`, `decision`, `discovery`, `general` |
-| **Content Detection** | Keyword scanning (explored->research, implemented->implementation, decided->decision, found->discovery) |
-| **Tool Detection** | Infers context from tool usage (AskUserQuestion->decision, Read/Grep/Glob majority->research) |
-| **Scope Filtering** | Builds SQL WHERE clauses from specFolder, sessionId and contextTypes |
-
-**Exported functions:**
-
-| Function | Signature | Purpose |
-|----------|-----------|---------|
-| `detectContextType` | `(content: string) => string` | Detect context type from free-text content via keyword matching |
-| `detectContextTypeFromTools` | `(tools: Array<{tool: string}>) => string` | Detect context type from tool invocation list |
-| `buildScopeFilter` | `(scope: {specFolder?, sessionId?, contextTypes?}) => {clause, params}` | Build SQL WHERE clause from scope object |
-| `isValidContextType` | `(type: string) => boolean` | Check if string is a recognised context type |
-| `generateSessionId` | `() => string` | Generate a unique session-prefixed identifier |
-
-**Exported constants:** `CONTEXT_TYPES`
 
 <!-- /ANCHOR:features -->
 

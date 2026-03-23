@@ -159,7 +159,6 @@ tests/
 ├── adaptive-fusion.vitest.ts              # 15 tests for adaptive fusion
 ├── adaptive-fallback.vitest.ts            # Adaptive fallback behavior
 ├── mmr-reranker.vitest.ts                 # MMR reranking
-├── pagerank.vitest.ts                     # PageRank scoring
 ├── query-expander.vitest.ts               # Query expansion
 ├── sqlite-fts.vitest.ts                   # SQLite FTS5 search
 ├── structure-aware-chunker.vitest.ts      # Structure-aware document chunking
@@ -201,7 +200,6 @@ tests/
 ├── retry-manager.vitest.ts                # Retry manager
 ├── incremental-index.vitest.ts            # Focused compatibility coverage
 ├── incremental-index-v2.vitest.ts         # Incremental indexing v2
-├── index-refresh.vitest.ts                # Index refresh
 ├── interfaces.vitest.ts                   # Protocol interfaces
 ├── layer-definitions.vitest.ts            # 7-layer architecture
 ├── memory-types.vitest.ts                 # Memory types
@@ -215,7 +213,6 @@ tests/
 ├── channel.vitest.ts                      # Channel communication
 ├── context-server.vitest.ts               # Context server
 ├── errors-comprehensive.vitest.ts         # Error handling coverage
-├── entity-scope.vitest.ts                 # Entity scope
 ├── history.vitest.ts                      # History module
 ├── extraction-adapter.vitest.ts           # Extraction adapter pipeline
 ├── redaction-gate.vitest.ts               # Redaction/safety gate

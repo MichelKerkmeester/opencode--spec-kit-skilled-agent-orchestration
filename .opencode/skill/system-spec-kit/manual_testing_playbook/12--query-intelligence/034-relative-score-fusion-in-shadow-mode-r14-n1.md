@@ -1,24 +1,24 @@
 ---
-title: "034 -- Relative score fusion in shadow mode (R14/N1)"
-description: "This scenario validates Relative score fusion in shadow mode (R14/N1) for `034`. It focuses on Confirm RSF stays off the live ranking path."
+title: "034 -- Relative score fusion in shadow mode (R14/N1) [retired]"
+description: "This page records that the RSF runtime-path scenario was removed from active manual testing because the shipped ranking path no longer uses RSF."
 ---
 
-# 034 -- Relative score fusion in shadow mode (R14/N1)
+# 034 -- Relative score fusion in shadow mode (R14/N1) [retired]
 
 ## 1. OVERVIEW
 
-This scenario validates Relative score fusion in shadow mode (R14/N1) for `034`. It focuses on Confirm RSF stays off the live ranking path.
+This page records that the RSF runtime-path scenario was removed from active manual testing because the shipped ranking path no longer uses RSF.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Operators run the exact prompt and command sequence for `034` and confirm the expected signals without contradicting evidence.
+This feature remains documented as historical or compatibility context, but it is no longer an active operator scenario in the playbook.
 
-- Objective: Confirm RSF stays off the live ranking path
-- Prompt: `Check RSF shadow behavior post-cleanup. Capture the evidence needed to prove RRF remains the live fusion method; RSF does not affect returned rankings; any RSF comparison remains evaluation-only rather than a required runtime trace field. Return a concise user-facing pass/fail verdict with the main reason.`
-- Expected signals: RRF remains the live fusion method; RSF does not affect returned rankings; any RSF comparison remains evaluation-only rather than a required runtime trace field
-- Pass/fail: PASS: Live ranking uses RRF and no runtime RSF branch affects returned results; FAIL: RSF changes live ranking or a live RSF branch is still wired into returned results
+- Objective: Record retirement of the RSF live-runtime scenario
+- Prompt: `N/A — active manual validation for RSF live ranking was removed from the playbook because production ranking stays on RRF and RSF is no longer a shipped runtime path.`
+- Expected signals: This page clearly marks the scenario as retired and no longer asks operators to prove live RSF behavior
+- Pass/fail: PASS if the page is clearly a retirement note and contains no active RSF runtime test steps; FAIL if it still instructs operators to validate live RSF behavior
 
 ---
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `034` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 034 | Relative score fusion in shadow mode (R14/N1) | Confirm RSF stays off the live ranking path | `Check RSF shadow behavior post-cleanup. Capture the evidence needed to prove RRF remains the live fusion method; RSF does not affect returned rankings; any RSF comparison remains evaluation-only rather than a required runtime trace field. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Inspect branch conditions 2) Run queries 3) Confirm RRF live ranking | RRF remains the live fusion method; RSF does not affect returned rankings; any RSF comparison remains evaluation-only rather than a required runtime trace field | Code-path evidence plus query output confirming stable RRF-ranked results | PASS: Live ranking uses RRF and no runtime RSF branch affects returned results; FAIL: RSF changes live ranking or a live RSF branch is still wired into returned results | Check RSF branch conditions → Verify live fusion method selection → Inspect evaluation-only logging path |
+| 034 | Relative score fusion in shadow mode (R14/N1) [retired] | Record retirement of the RSF live-runtime scenario | `N/A — active manual validation for RSF live ranking was removed from the playbook because production ranking stays on RRF and RSF is no longer a shipped runtime path.` | No active execution sequence. Confirm the playbook and linked catalog frame RSF as retired or inert documentation only. | This page clearly marks the scenario as retired and no longer asks operators to prove live RSF behavior | Current page text + linked catalog reference | PASS if the page is clearly a retirement note and contains no active RSF runtime test steps; FAIL if it still instructs operators to validate live RSF behavior | If active-runtime wording reappears, remove it from this page and the root playbook index, then re-check the linked catalog note |
 
 ---
 

@@ -901,8 +901,9 @@ async function hybridSearchEnhanced(
             underRepresentedChannels: enforcementResult.enforcement.underRepresentedChannels,
           };
         }
-      } catch (_enfErr: unknown) {
+      } catch (err: unknown) {
         // Non-critical — enforcement failure does not block pipeline
+        console.warn('[hybrid-search] channel enforcement failed:', err instanceof Error ? err.message : String(err));
       }
 
       // -- Stage D: Confidence Truncation (SPECKIT_CONFIDENCE_TRUNCATION) --
@@ -929,8 +930,9 @@ async function hybridSearchEnhanced(
             featureFlagEnabled: isConfidenceTruncationEnabled(),
           };
         }
-      } catch (_truncErr: unknown) {
+      } catch (err: unknown) {
         // Non-critical — truncation failure does not block pipeline
+        console.warn('[hybrid-search] confidence truncation failed:', err instanceof Error ? err.message : String(err));
       }
 
       // C138: MMR reranking — retrieve embeddings from vec_memories for diversity pruning.
@@ -1041,8 +1043,9 @@ async function hybridSearchEnhanced(
           // P1-2 FIX: Re-sort after co-activation boost to ensure boosted results
           // Are promoted to their correct position in the ranking
           reranked.sort((a, b) => ((b.score as number) ?? 0) - ((a.score as number) ?? 0));
-        } catch (_err: unknown) {
+        } catch (err: unknown) {
           // Non-critical enrichment — co-activation failure does not affect core ranking
+          console.warn('[hybrid-search] co-activation enrichment failed:', err instanceof Error ? err.message : String(err));
         }
       }
 

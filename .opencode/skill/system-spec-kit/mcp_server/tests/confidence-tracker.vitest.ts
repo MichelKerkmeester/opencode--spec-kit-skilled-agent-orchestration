@@ -181,7 +181,7 @@ describe('Confidence Tracker Tests (T510)', () => {
       // If wasPromoted is not available from getConfidenceInfo, check tier
       expect(info).toBeTruthy();
       // This test may pass or be skipped depending on auto-promote behavior
-      expect(info.importanceTier === 'critical' || info.importanceTier === 'normal').toBe(true);
+      expect(info.importanceTier).toBe('critical');
     });
 
     it('T510-05c: getConfidenceInfo returns full info', () => {

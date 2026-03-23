@@ -102,7 +102,6 @@ When extended telemetry is enabled, ingest-status responses also record lifecycl
 | `mcp_server/tests/handler-memory-ingest-edge.vitest.ts` | Ingest boundary/error edge coverage |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
 | `mcp_server/tests/incremental-index.vitest.ts` | Focused incremental-index coverage (supplemental to `incremental-index-v2.vitest.ts`; concrete fast-path assertions) |
-| `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
 | `mcp_server/tests/job-queue.vitest.ts` | Job queue tests |
 | `mcp_server/tests/job-queue-state-edge.vitest.ts` | Job queue state-transition edge coverage |

@@ -36,13 +36,13 @@ Phase 019 executed all 8 feature-flag-reference scenarios from the manual testin
 
 | Test ID | Scenario Name | Verdict | Evidence Source |
 |---------|---------------|---------|-----------------|
-| EX-028 | Flag catalog verification | **PASS** | `feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md` — 60+ SPECKIT_* flags classified; 6 confirmed inert/deprecated |
-| EX-029 | Session policy audit | **PASS** | `lib/session/session-manager.ts:163-181` + catalog `02-2-session-and-cache.md` — all 11 session/cache keys surfaced |
-| EX-030 | MCP limits audit | **PASS** | `lib/validation/preflight.ts:187-203` + catalog `03-3-mcp-configuration.md` — all 7 MCP guardrail keys with defaults confirmed |
-| EX-031 | Storage precedence check | **PASS** | `shared/config.ts:10` + `core/config.ts:47-50` + catalog `04-4-memory-and-storage.md` — precedence chain unambiguous |
-| EX-032 | Provider selection audit | **PASS** | `shared/embeddings/factory.ts:75-112` + catalog `05-5-embedding-and-api.md` — provider routing and key precedence clear |
-| EX-033 | Observability toggle check | **PASS** | `lib/parsing/trigger-matcher.ts:130` + `lib/utils/logger.ts:29` + catalog `06-6-debug-and-telemetry.md` — opt-in vs inert clearly separated |
-| EX-034 | Branch metadata source audit | **PASS** | `lib/storage/checkpoints.ts:219-225` + catalog `07-7-ci-and-build-informational.md` — all 4 branch vars found |
+| EX-028 | Flag catalog verification | **PASS** | `../../../../../skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md` — 60+ SPECKIT_* flags classified; 6 confirmed inert/deprecated |
+| EX-029 | Session policy audit | **PASS** | `lib/session/session-manager.ts:163-181` + catalog `../../../../../skill/system-spec-kit/feature_catalog/19--feature-flag-reference/02-2-session-and-cache.md` — all 11 session/cache keys surfaced |
+| EX-030 | MCP limits audit | **PASS** | `lib/validation/preflight.ts:187-203` + catalog `../../../../../skill/system-spec-kit/feature_catalog/19--feature-flag-reference/03-3-mcp-configuration.md` — all 7 MCP guardrail keys with defaults confirmed |
+| EX-031 | Storage precedence check | **PASS** | `shared/config.ts:10` + `core/config.ts:47-50` + catalog `../../../../../skill/system-spec-kit/feature_catalog/19--feature-flag-reference/04-4-memory-and-storage.md` — precedence chain unambiguous |
+| EX-032 | Provider selection audit | **PASS** | `shared/embeddings/factory.ts:75-112` + catalog `../../../../../skill/system-spec-kit/feature_catalog/19--feature-flag-reference/05-5-embedding-and-api.md` — provider routing and key precedence clear |
+| EX-033 | Observability toggle check | **PASS** | `lib/parsing/trigger-matcher.ts:130` + `lib/utils/logger.ts:29` + catalog `../../../../../skill/system-spec-kit/feature_catalog/19--feature-flag-reference/06-6-debug-and-telemetry.md` — opt-in vs inert clearly separated |
+| EX-034 | Branch metadata source audit | **PASS** | `lib/storage/checkpoints.ts:219-225` + catalog `../../../../../skill/system-spec-kit/feature_catalog/19--feature-flag-reference/07-7-ci-and-build-informational.md` — all 4 branch vars found |
 | 125 | Hydra roadmap capability flags | **PASS** | Dist node execution — both snapshots match expected criteria |
 
 **Pass Rate: 8/8 (100%)**

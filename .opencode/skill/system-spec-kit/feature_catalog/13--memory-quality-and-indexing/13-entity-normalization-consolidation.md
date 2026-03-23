@@ -31,14 +31,12 @@ Two cross-cutting normalization issues were resolved:
 |------|-------|------|
 | `mcp_server/lib/extraction/entity-denylist.ts` | Lib | Entity denylist |
 | `mcp_server/lib/extraction/entity-extractor.ts` | Lib | Entity extraction |
-| `mcp_server/lib/parsing/entity-scope.ts` | Lib | Entity scope parsing |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/entity-extractor.vitest.ts` | Entity extraction tests |
-| `mcp_server/tests/entity-scope.vitest.ts` | Entity scope parsing |
 
 ---
 

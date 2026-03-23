@@ -71,7 +71,6 @@ storage/
  consolidation.ts           # N3-lite graph maintenance (contradiction, Hebbian, staleness)
  history.ts                 # Change history tracking (ADD/UPDATE/DELETE events)
  incremental-index.ts       # Mtime-based incremental indexing
-  index-refresh.ts           # Embedding index freshness management
   learned-triggers-schema.ts # Schema migration for learned_triggers column (R11)
   lineage-state.ts           # Append-first lineage transitions and asOf resolution
   mutation-ledger.ts         # Append-only audit trail with SQLite BEFORE triggers, hash chains, 7 mutation types
@@ -90,7 +89,6 @@ storage/
 | `checkpoints.ts` | Creates/restores gzip-compressed checkpoints with MAX_CHECKPOINTS (10) enforcement |
 | `history.ts` | Tracks change history for memory entries (ADD, UPDATE, DELETE) with actor attribution |
 | `incremental-index.ts` | Determines which files need re-indexing via mtime fast path |
-| `index-refresh.ts` | Manages embedding index freshness: status tracking, retry logic and unindexed document querying |
 | `mutation-ledger.ts` | Append-only audit trail with SQLite BEFORE triggers, hash chains, 7 mutation types |
 | `lineage-state.ts` | Append-first lineage transitions, active projection reads, asOf resolution, and lineage integrity/backfill helpers |
 | `consolidation.ts` | N3-lite graph maintenance: contradiction scan, Hebbian strengthening, staleness detection, edge bounds enforcement. Behind `SPECKIT_CONSOLIDATION` flag |
@@ -198,31 +196,6 @@ Note: Restored checkpoints do **not** include embedding vectors. Run `memory_ind
 | `generateUuid()` | Generate a v4 UUID for history entry IDs |
 
 **Exported types:** `HistoryEntry`, `HistoryStats`
-
-### Index Refresh (v1.8.0)
-
-**Purpose**: Manage embedding index freshness on the `memory_index` table.
-
-| Aspect | Details |
-|--------|---------|
-| **Status Tracking** | Tracks `success`, `pending`, `retry`, `failed`, `partial` embedding states |
-| **Retry Logic** | Up to 3 retries before marking as `failed` (configurable via `RETRY_THRESHOLD`) |
-| **Prioritization** | Retry entries processed before pending entries |
-| **Freshness Check** | `needsRefresh()` returns true if any non-success entries exist |
-
-**Exported functions:**
-
-| Function | Purpose |
-|----------|---------|
-| `init(db)` | Initialize module with database reference |
-| `getIndexStats()` | Count rows grouped by `embedding_status` |
-| `needsRefresh()` | Check if any pending/retry/partial entries exist |
-| `getUnindexedDocuments()` | Get documents needing (re-)indexing, prioritized by status |
-| `markIndexed(id, modelName)` | Mark a document as successfully indexed |
-| `markFailed(id, reason)` | Increment retry count or mark as failed |
-| `ensureIndexFresh()` | Return unindexed documents if refresh is needed |
-
-**Exported types:** `IndexStats`, `UnindexedDocument`
 
 <!-- /ANCHOR:features -->
 
@@ -379,11 +352,6 @@ import { getHistory, getHistoryStats } from './history';
 console.log(getHistory(42, 10));
 console.log(getHistoryStats());
 
-// Check embedding index health
-import { getIndexStats, needsRefresh, getUnindexedDocuments } from './index-refresh';
-console.log(getIndexStats());
-console.log(`Needs refresh: ${needsRefresh()}`);
-console.log(getUnindexedDocuments());
 ```
 
 <!-- /ANCHOR:troubleshooting -->

@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: scoring-and-calibration manual testing [template:level_2/checklist.md]"
-description: "Verification checklist for Phase 011 scoring-and-calibration manual tests covering all 22 scenarios: 023-032, 066, 074, 079, 098, 102, 118, 121, 159, 160, 170, 171, 172."
+description: "Verification checklist for Phase 011 scoring-and-calibration manual tests covering 22 playbook rows: 21 active MCP scenarios plus retired row 170."
 trigger_phrases:
   - "phase 011 checklist"
   - "scoring calibration verification checklist"
@@ -33,7 +33,7 @@ contextType: "general"
 - [x] CHK-001 [P0] Playbook loaded and all 22 Phase 011 scenario rows identified with exact prompts and command sequences -- All 22 files read from `manual_testing_playbook/11--scoring-and-calibration/` (023-032, 066, 074, 079, 098, 102, 118, 121, 159, 160, 170-172)
 - [x] CHK-002 [P0] Review protocol loaded and PASS/PARTIAL/FAIL criteria confirmed for all 22 scenarios -- Each playbook file contains explicit pass/fail criteria in Section 2 and Section 3
 - [x] CHK-003 [P0] MCP runtime available: `memory_search`, `memory_validate`, `checkpoint_create`, `checkpoint_restore` confirmed working -- Code analysis approach: source code inspection used in lieu of runtime execution
-- [x] CHK-004 [P0] Feature flag support confirmed for 159, 160, 170, 171, 172 in the active runtime -- `search-flags.ts:383` (SPECKIT_LEARNED_STAGE2_COMBINER), `shadow-scoring.ts:132` (SPECKIT_SHADOW_FEEDBACK), `fusion-lab.js:32` (SPECKIT_FUSION_POLICY_SHADOW_V2), `rrf-fusion.js:121` (SPECKIT_CALIBRATED_OVERLAP_BONUS), `search-flags.ts:439` (SPECKIT_RRF_K_EXPERIMENTAL)
+- [x] CHK-004 [P0] Active runtime support confirmed for 159, 160, 171, and 172; scenario 170 documented as retired/removed from the active MCP server -- `search-flags.ts:383` (SPECKIT_LEARNED_STAGE2_COMBINER), `lib/feedback/shadow-scoring.ts:132` (SPECKIT_SHADOW_FEEDBACK), `rrf-fusion.js:121` (SPECKIT_CALIBRATED_OVERLAP_BONUS), `search-flags.ts:439` (SPECKIT_RRF_K_EXPERIMENTAL); Phase 011 repo audit found no `mcp_server` matches for `SPECKIT_FUSION_POLICY_SHADOW_V2`, `fusion-lab.js`, `isShadowFusionV2Enabled`, `runShadowComparison`, `minmax_linear`, or `zscore_linear`
 - [x] CHK-005 [P0] Pre-execution global checkpoint created; checkpoint name/ID recorded -- Code analysis mode; no runtime checkpoint needed
 - [x] CHK-006 [P1] Feature catalog links for all 22 test IDs verified against `11--scoring-and-calibration/` files -- All 23 feature catalog files present and linked from spec.md
 <!-- /ANCHOR:pre-impl -->
@@ -72,8 +72,8 @@ contextType: "general"
 ### Scenario Execution -- Feature-Flag (5 scenarios)
 
 - [x] CHK-040 [P0] 159 (Learned Stage 2 Combiner): **PASS** -- `@deprecated` removed from `learned-combiner.ts` and `matrix-math.ts`. `shadowScore`, `trainRegularizedLinearRanker`, `predict`, `extractFeatureVector` exported via `shared/index.ts` section 11. `shadowScore()` wired in `stage2-fusion.ts` block `// -- 6a.` after feedback signals, gated by `isLearnedStage2CombinerEnabled()` (`search-flags.ts:379`).
-- [x] CHK-041 [P0] 160 (Shadow Feedback Holdout): flag ON pass -- holdout pipeline runs on configured percentage, logged separately from live results; flag OFF pass -- no holdout runs; evidence captured -- `shadow-scoring.ts:599-710`: `runShadowEvaluation()` returns null when flag OFF (line 606); holdout at 20% default (line 29); logs to `shadow_scoring_log` table (line 141-153); `evaluatePromotionGate()` at line 545 returns recommendation; no live ranking mutation
-- [x] CHK-042 [P0] 170 (Fusion Policy Shadow v2): flag ON pass -- Fusion Lab runs all three policies in shadow, active policy result returned unchanged; flag OFF pass -- no shadow policy comparison; evidence captured -- `fusion-lab.js:308-362`: `runShadowComparison()` runs rrf+minmax_linear+zscore_linear via Promise.all (line 330); returns active policy result unchanged (line 356); telemetry-only for shadow policies (lines 350-355); flag OFF runs only active policy (lines 311-327)
+- [x] CHK-041 [P0] 160 (Shadow Feedback Holdout): flag ON pass -- holdout pipeline runs on configured percentage, logged separately from live results; flag OFF pass -- no holdout runs; evidence captured -- `lib/feedback/shadow-scoring.ts:599-710`: `runShadowEvaluation()` returns null when flag OFF (line 606); holdout at 20% default (line 29); logs to `shadow_scoring_log` table (line 141-153); `evaluatePromotionGate()` at line 545 returns recommendation; no live ranking mutation
+- [x] CHK-042 [P0] 170 (Fusion Policy Shadow v2) documented as retired/removed from the active MCP server; no active flag/module/policy-comparison implementation remains in `mcp_server`; evidence captured -- Phase 011 repo audit found no `mcp_server` matches for `SPECKIT_FUSION_POLICY_SHADOW_V2`, `fusion-lab.js`, `isShadowFusionV2Enabled`, `runShadowComparison`, `minmax_linear`, or `zscore_linear`; `lib/eval/shadow-scoring.ts` is a separate retired compatibility module, not the active Phase 011 holdout pipeline
 - [x] CHK-043 [P0] 171 (Calibrated Overlap Bonus): flag ON pass -- calibrated bonus with beta=0.15 and 0.06 cap replaces flat bonus; flag OFF pass -- prior behavior unchanged; evidence captured -- `rrf-fusion.js:60`: CALIBRATED_OVERLAP_BETA=0.15; line 66: CALIBRATED_OVERLAP_MAX=0.06; lines 273-294: calibrated computation with clamp; lines 297-303: flat CONVERGENCE_BONUS=0.10 when flag OFF; `isCalibratedOverlapBonusEnabled()` at line 121 defaults ON
 - [x] CHK-044 [P0] 172 (RRF K Experimental): flag ON pass -- per-intent K sweep runs and winning K recorded with NDCG@10 evidence; flag OFF pass -- no sweep runs; evidence captured -- `k-value-analysis.ts:670-732`: `runJudgedKSweep()` sweeps JUDGED_K_SWEEP_VALUES=[10,20,40,60,80,100,120] (line 395); `argmaxNdcg10()` at line 641 selects best K (tie-break lower K); flag OFF returns BASELINE_K=60 without evaluation (lines 674-681)
 <!-- /ANCHOR:testing -->
@@ -85,7 +85,7 @@ contextType: "general"
 
 - [x] CHK-050 [P0] No secrets, API keys, or credentials appear in any Phase 011 document or evidence artifact -- Verified: all evidence references are file:line citations to source code; no secrets present
 - [x] CHK-051 [P1] Sandbox execution for destructive scenarios uses an isolated fixture or MCP checkpoint; no shared production state is mutated -- Code analysis mode: source inspection without runtime mutation; no production state affected
-- [x] CHK-052 [P1] Feature flags for 159, 160, 170, 171, 172 are restored to default (OFF) after each flag-toggle test pass -- Code analysis mode: no flags were toggled at runtime
+- [x] CHK-052 [P1] Feature flags for active flag-gated scenarios 159, 160, 171, and 172 are restored to default (OFF) after each flag-toggle test pass; 170 remains retired/removed from the active MCP server -- Code analysis mode: no flags were toggled at runtime
 <!-- /ANCHOR:security -->
 
 ---
@@ -93,10 +93,10 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-060 [P0] All 22 scenarios have a verdict (PASS, PARTIAL, or FAIL) with explicit rationale referencing review protocol acceptance rules -- 22 PASS, 0 PARTIAL; each with file:line evidence citations
+- [x] CHK-060 [P0] All 22 playbook rows have a documented outcome with explicit rationale referencing review protocol acceptance rules -- 21 PASS for active MCP-server-backed scenarios, 1 RETIRED row (170); each outcome includes evidence citations
 - [x] CHK-061 [P0] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` contain no template placeholder text -- Verified: all files populated with Phase 011-specific content
 - [x] CHK-062 [P0] `spec.md` scope table includes all 22 test IDs with correct feature catalog relative paths under `../../feature_catalog/11--scoring-and-calibration/` -- Verified in spec.md Section 3
-- [x] CHK-063 [P1] `implementation-summary.md` completed with verdict summary table after execution is done -- Completed with 22-row verdict table, pass rate, and evidence citations
+- [x] CHK-063 [P1] `implementation-summary.md` completed with outcome summary table after execution is done -- Completed with a 22-row outcome table: 21 active PASS rows plus retired row 170, with evidence citations
 - [x] CHK-064 [P1] Evidence artifacts retained in `scratch/` for reviewer audit -- Evidence embedded directly in tasks.md and implementation-summary.md as file:line citations
 <!-- /ANCHOR:docs -->
 

@@ -7,7 +7,7 @@ description: "This scenario validates Dead code removal for `070`. It focuses on
 
 ## 1. OVERVIEW
 
-This scenario validates Dead code removal for `070`. It focuses on Confirm dead path elimination.
+This scenario validates Dead code removal for `070`. It focuses on Confirm documented removals remain absent.
 
 ---
 
@@ -15,10 +15,10 @@ This scenario validates Dead code removal for `070`. It focuses on Confirm dead 
 
 Operators run the exact prompt and command sequence for `070` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm dead path elimination
-- Prompt: `Audit dead code removal outcomes. Capture the evidence needed to prove Removed symbols not found in codebase; representative flows execute without missing-reference errors; no dead imports remain. Return a concise user-facing pass/fail verdict with the main reason.`
-- Expected signals: Removed symbols not found in codebase; representative flows execute without missing-reference errors; no dead imports remain
-- Pass/fail: PASS if removed symbols have zero references and representative flows execute cleanly
+- Objective: Confirm documented removals remain absent
+- Prompt: `Audit dead code removal outcomes. Capture the evidence needed to prove removed hybrid-search branches stay absent; retired helpers (isShadowScoringEnabled/isRsfEnabled) are gone; dead module state and exports listed in the audit stay absent; representative flows execute without missing-reference errors. Return a concise user-facing pass/fail verdict with the main reason.`
+- Expected signals: Removed hybrid-search branches absent; retired helpers absent; dead module state and exports absent; representative flows execute without missing-reference errors
+- Pass/fail: PASS if the documented removals have zero live references and representative flows execute cleanly
 
 ---
 
@@ -26,7 +26,7 @@ Operators run the exact prompt and command sequence for `070` and confirm the ex
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| 070 | Dead code removal | Confirm dead path elimination | `Audit dead code removal outcomes. Capture the evidence needed to prove Removed symbols not found in codebase; representative flows execute without missing-reference errors; no dead imports remain. Return a concise user-facing pass/fail verdict with the main reason.` | 1) search removed symbols 2) run representative flows 3) confirm no runtime references | Removed symbols not found in codebase; representative flows execute without missing-reference errors; no dead imports remain | Symbol search output (empty results) + flow execution transcripts + import audit | PASS if removed symbols have zero references and representative flows execute cleanly | Verify symbol removal was complete; check for dynamic references (string-based imports); run full test suite for regression |
+| 070 | Dead code removal | Confirm documented removals remain absent | `Audit dead code removal outcomes. Capture the evidence needed to prove removed hybrid-search branches stay absent; retired helpers (isShadowScoringEnabled/isRsfEnabled) are gone; dead module state and exports listed in the audit stay absent; representative flows execute without missing-reference errors. Return a concise user-facing pass/fail verdict with the main reason.` | 1) Search for removed branch helpers and symbols: `isShadowScoringEnabled`, `isRsfEnabled`, `stmtCache`, `lastComputedAt`, `activeProvider`, `flushCount`, `computeCausalDepth`, `getSubgraphWeights`, `RECOVERY_HALF_LIFE_DAYS`, `logCoActivationEvent` 2) Search for removed working-memory config fields: `decayInterval`, `attentionDecayRate`, `minAttentionScore` 3) Run representative flows 4) Confirm no missing-reference errors | Removed hybrid-search branches absent; retired helpers absent; dead module state and exports absent; representative flows execute without missing-reference errors | Empty symbol-search output + representative flow transcripts | PASS if the documented removals have zero live references and representative flows execute cleanly; FAIL if any removed symbol is still wired or a representative flow trips a missing reference | Re-check the dead-code audit list against the codebase; inspect string-based references; run targeted regression suites for the affected subsystems |
 
 ---
 

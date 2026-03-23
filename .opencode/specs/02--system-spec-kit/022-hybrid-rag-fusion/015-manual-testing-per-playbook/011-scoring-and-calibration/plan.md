@@ -29,7 +29,7 @@ contextType: "general"
 | **Review Protocol** | `../../manual_testing_playbook/manual_testing_playbook.md` |
 
 ### Overview
-Phase 011 executes 22 scoring-and-calibration manual test scenarios drawn from the Spec Kit Memory playbook. Non-destructive scenarios (023, 024, 027, 029, 030, 066, 074, 079, 098, 102, 118) are run directly against the live index. Destructive/stateful scenarios (025, 026, 028, 031, 032, 121) require a checkpoint snapshot before execution and restore after. Feature-flag scenarios (159, 160, 170, 171, 172) require explicit flag ON and flag OFF passes.
+Phase 011 covers 22 scoring-and-calibration playbook rows drawn from the Spec Kit Memory playbook. Twenty-one rows remain active MCP-server-backed scenarios. Non-destructive scenarios (023, 024, 027, 029, 030, 066, 074, 079, 098, 102, 118) are run directly against the live index. Destructive/stateful scenarios (025, 026, 028, 031, 032, 121) require a checkpoint snapshot before execution and restore after. Active feature-flag scenarios (159, 160, 171, 172) require explicit flag ON and flag OFF passes, while historical row 170 requires a retirement-status code audit instead of active execution.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -42,7 +42,7 @@ Phase 011 executes 22 scoring-and-calibration manual test scenarios drawn from t
 - [ ] Review protocol loaded and verdict criteria confirmed
 - [ ] MCP runtime available and `memory_search` tool confirmed working
 - [ ] Checkpoint capability confirmed (`checkpoint_create` / `checkpoint_restore`)
-- [ ] Feature flag support confirmed for 159, 160, 170, 171, 172
+- [ ] Active feature flag support confirmed for 159, 160, 171, and 172; retirement status for 170 confirmed by code audit
 
 ### Definition of Done
 - [ ] All 22 scenarios executed with evidence captured in `scratch/`
@@ -129,20 +129,20 @@ Create sandbox checkpoint before each group; restore after:
 - [ ] 032 executed and evidence captured; sandbox restored
 - [ ] 121 executed and evidence captured; sandbox restored
 
-### Phase 4: Feature-Flag Execution (5 scenarios)
-For each scenario: run with flag ON, capture trace; run with flag OFF, confirm no shadow output:
+### Phase 4: Feature-Flag Execution and Retirement Audit (5 playbook rows)
+For active scenarios: run with flag ON, capture trace; run with flag OFF, confirm no shadow output. For row 170: confirm the feature is retired/removed from the active MCP server:
 
 | Test ID | Scenario | Feature Flag | Exact Prompt |
 |---------|----------|--------------|--------------|
 | 159 | Learned Stage 2 Combiner | `SPECKIT_LEARNED_STAGE2_COMBINER` | `Verify SPECKIT_LEARNED_STAGE2_COMBINER shadow scoring output alongside the live Stage 2 combiner.` |
-| 160 | Shadow Feedback Holdout | `SPECKIT_SHADOW_FEEDBACK` | `Verify SPECKIT_SHADOW_FEEDBACK holdout evaluation pipeline for offline scoring comparison.` |
-| 170 | Fusion Policy Shadow v2 | `SPECKIT_FUSION_POLICY_SHADOW_V2` | `Verify SPECKIT_FUSION_POLICY_SHADOW_V2 Fusion Lab runs all three policies in shadow while returning active policy result unchanged.` |
+| 160 | Shadow Feedback Holdout | `SPECKIT_SHADOW_FEEDBACK` | `Verify SPECKIT_SHADOW_FEEDBACK holdout evaluation pipeline in lib/feedback/shadow-scoring.ts for offline scoring comparison.` |
+| 170 | Fusion Policy Shadow v2 (historical row) | Retired in active MCP server | `Confirm the active MCP server no longer contains SPECKIT_FUSION_POLICY_SHADOW_V2 or the Fusion Lab shadow-comparison implementation.` |
 | 171 | Calibrated Overlap Bonus | `SPECKIT_CALIBRATED_OVERLAP_BONUS` | `Verify SPECKIT_CALIBRATED_OVERLAP_BONUS replaces flat convergence bonus with beta=0.15 scaling and 0.06 cap.` |
 | 172 | RRF K Experimental | `SPECKIT_RRF_K_EXPERIMENTAL` | `Verify SPECKIT_RRF_K_EXPERIMENTAL per-intent K optimization selects best K from sweep grid using NDCG@10.` |
 
 - [ ] 159 executed (flag ON + flag OFF) and evidence captured
 - [ ] 160 executed (flag ON + flag OFF) and evidence captured
-- [ ] 170 executed (flag ON + flag OFF) and evidence captured
+- [ ] 170 retirement status documented with absence evidence from the current `mcp_server` tree
 - [ ] 171 executed (flag ON + flag OFF) and evidence captured
 - [ ] 172 executed (flag ON + flag OFF) and evidence captured
 
@@ -161,8 +161,8 @@ For each scenario: run with flag ON, capture trace; run with flag OFF, confirm n
 |-----------|-------|-------|
 | Non-destructive MCP | 023, 024, 027, 029, 030, 066, 074, 079, 098, 102, 118 | `memory_search` with `includeTrace: true` |
 | Sandbox / destructive | 025, 026, 028, 031, 032, 121 | `checkpoint_create`, `checkpoint_restore`, `memory_validate` |
-| Feature-flag | 159, 160, 170, 171, 172 | Flag toggle + `memory_search` + trace inspection |
-| Source code inspection | 098, 102, 118 (supplement) | Direct code review when trace metadata is absent |
+| Feature-flag | 159, 160, 171, 172 | Flag toggle + `memory_search` + trace inspection |
+| Source code inspection | 098, 102, 118, 170 (supplement) | Direct code review when trace metadata is absent or when a historical row must be confirmed retired |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -179,7 +179,7 @@ For each scenario: run with flag ON, capture trace; run with flag OFF, confirm n
 | `checkpoint_create` / `checkpoint_restore` | Runtime | Confirm | Destructive scenarios blocked if checkpoint tools unavailable |
 | `SPECKIT_LEARNED_STAGE2_COMBINER` | Feature flag | Confirm | 159 blocked if flag absent from runtime |
 | `SPECKIT_SHADOW_FEEDBACK` | Feature flag | Confirm | 160 blocked if flag absent from runtime |
-| `SPECKIT_FUSION_POLICY_SHADOW_V2` | Feature flag | Confirm | 170 blocked if flag absent from runtime |
+| Historical playbook row 170 | Documentation/runtime audit | Confirm | Phase packet would misstate active MCP behavior if retirement status is not verified |
 | `SPECKIT_CALIBRATED_OVERLAP_BONUS` | Feature flag | Confirm | 171 blocked if flag absent from runtime |
 | `SPECKIT_RRF_K_EXPERIMENTAL` | Feature flag | Confirm | 172 blocked if flag absent from runtime |
 | GGUF model file (host) | External | Confirm per host | 098 blocked if model asset absent |

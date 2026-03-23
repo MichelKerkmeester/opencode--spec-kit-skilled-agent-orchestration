@@ -234,12 +234,11 @@ Notes:
 
 ### `manage/`
 
-- Purpose: Owns scheduled or batch-style memory-management algorithms that are not part of the live search path. Today that mainly means graph authority scoring for maintenance cycles.
+- Purpose: Reserved for future scheduled or batch-style memory-management algorithms that are not part of the live search path. The deprecated PageRank helper was removed after the dead-code audit confirmed it was never wired.
 - Key files:
-  - `pagerank.ts` — iterative PageRank computation for graph-authority scoring.
   - `README.md` — current management-cycle scope and algorithm notes.
 - Primary consumers:
-  - No direct in-repo imports were observed in `handlers/`, `tools/`, or sibling `lib/` modules during this pass; this is a management-cycle utility surface.
+  - No live in-repo consumers remain; this folder is currently documentation-only.
 
 ### `ops/`
 
@@ -253,12 +252,11 @@ Notes:
 
 ### `parsing/`
 
-- Purpose: Owns structured parsing of memory/spec files, content normalization, trigger matching, and entity-scope derivation. It is the canonical parser boundary between raw content and structured retrieval/indexing inputs.
+- Purpose: Owns structured parsing of memory/spec files, content normalization, and trigger matching. It is the canonical parser boundary between raw content and structured retrieval/indexing inputs.
 - Key files:
   - `memory-parser.ts` — main parser for anchors, metadata, causal links, and document classification.
   - `trigger-matcher.ts` — proactive trigger-phrase matching logic.
   - `content-normalizer.ts` — normalization helpers for file content and search/index inputs.
-  - `entity-scope.ts` — entity-scope detection and scope filter helpers.
   - `README.md` — parser responsibilities and supported behaviors.
 - Primary consumers:
   - `handlers/save/*`

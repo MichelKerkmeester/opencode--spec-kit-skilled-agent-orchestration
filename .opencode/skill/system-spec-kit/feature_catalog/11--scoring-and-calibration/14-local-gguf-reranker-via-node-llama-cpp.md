@@ -94,7 +94,6 @@ The shared cross-encoder path now keys its reranker cache by provider, document 
 | `mcp_server/tests/hybrid-search-flags.vitest.ts` | Hybrid search flag behavior |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
 | `mcp_server/tests/incremental-index.vitest.ts` | Focused incremental-index coverage (supplemental to `incremental-index-v2.vitest.ts`; concrete fast-path assertions) |
-| `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
 | `mcp_server/tests/local-reranker.vitest.ts` | Local reranker tests |
 | `mcp_server/tests/memory-types.vitest.ts` | Memory type tests |

@@ -803,7 +803,7 @@ export class SQLiteVectorStore extends IVectorStore {
       anchorId: metadata_alias.anchor_id || metadata_alias.anchorId || null,
       title: metadata_alias.title || null,
       triggerPhrases: metadata_alias.trigger_phrases || metadata_alias.triggerPhrases || [],
-      importanceWeight: metadata_alias.importance_weight || metadata_alias.importanceWeight || 0.5,
+      importanceWeight: metadata_alias.importance_weight ?? metadata_alias.importanceWeight ?? 0.5,
       embedding: embedding
     };
 

@@ -126,7 +126,7 @@ describe('Index Re-exports (DB-dependent)', () => {
   const directories = ['core', 'handlers', 'formatters', 'utils', 'hooks', 'tools'];
 
   for (const dir of directories) {
-    it(`${dir}/index.js exports items`, () => {
+    it.skip(`${dir}/index.js exports items`, () => {
     });
   }
 });
@@ -143,7 +143,7 @@ describe('Core Module Exports (DB-dependent)', () => {
   ];
 
   for (const fn of required) {
-    it(`core.${fn} is exported`, () => {
+    it.skip(`core.${fn} is exported`, () => {
     });
   }
 });
@@ -164,7 +164,7 @@ describe('Handler Module Exports (DB-dependent)', () => {
   ];
 
   for (const fn of required) {
-    it(`handlers.${fn} is exported as function`, () => {
+    it.skip(`handlers.${fn} is exported as function`, () => {
     });
   }
 });
@@ -178,7 +178,7 @@ describe('Formatter Module Exports (DB-dependent)', () => {
   ];
 
   for (const fn of required) {
-    it(`formatters.${fn} is exported as function`, () => {
+    it.skip(`formatters.${fn} is exported as function`, () => {
     });
   }
 });
@@ -193,7 +193,7 @@ describe('Utils Module Exports (DB-dependent)', () => {
   ];
 
   for (const fn of required) {
-    it(`utils.${fn} is exported`, () => {
+    it.skip(`utils.${fn} is exported`, () => {
     });
   }
 });
@@ -209,7 +209,7 @@ describe('Hooks Module Exports (DB-dependent)', () => {
   ];
 
   for (const fn of required) {
-    it(`hooks.${fn} is exported`, () => {
+    it.skip(`hooks.${fn} is exported`, () => {
     });
   }
 });
@@ -218,16 +218,16 @@ describe('Hooks Module Exports (DB-dependent)', () => {
 describe('Validator Function Tests (DB-dependent)', () => {
   // Original: testValidatorFunctions() — requires dist/utils which has DB deps
 
-  it('validateQuery(null) throws', () => {
+  it.skip('validateQuery(null) throws', () => {
   });
 
-  it('validateQuery("   ") throws', () => {
+  it.skip('validateQuery("   ") throws', () => {
   });
 
-  it('validateQuery("test query") returns trimmed', () => {
+  it.skip('validateQuery("test query") returns trimmed', () => {
   });
 
-  it('validateInputLengths with valid input does not throw', () => {
+  it.skip('validateInputLengths with valid input does not throw', () => {
   });
 });
 
@@ -235,9 +235,9 @@ describe('Validator Function Tests (DB-dependent)', () => {
 describe('Token Metrics Tests (DB-dependent)', () => {
   // Original: testTokenMetrics() — requires dist/formatters
 
-  it('estimateTokens("Hello world") returns positive number', () => {
+  it.skip('estimateTokens("Hello world") returns positive number', () => {
   });
 
-  it('calculateTokenMetrics returns object with actualTokens', () => {
+  it.skip('calculateTokenMetrics returns object with actualTokens', () => {
   });
 });

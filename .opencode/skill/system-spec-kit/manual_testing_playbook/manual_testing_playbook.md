@@ -375,9 +375,9 @@ Deleted item absent from retrieval
 Tier cleanup with safety.
 
 #### Current Reality
-Prompt: `Delete deprecated tier in scoped folder. Capture the evidence needed to prove Deletion count + checkpoint created. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Delete temporary tier in scoped folder. Capture the evidence needed to prove Deletion count + checkpoint created. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Deletion count + checkpoint created
+Scoped deletion count + checkpoint created
 
 #### Test Execution
 > **Feature File:** [EX-009](02--mutation/009-tier-based-bulk-deletion-memory-bulk-delete.md)
@@ -642,12 +642,12 @@ Trend/channel/summary data present in supported runtime formats; active eval DB 
 ### EX-028 | 1. Search Pipeline Features (SPECKIT_*)
 
 #### Description
-Flag catalog verification.
+Flag catalog verification with inert and retired surface cleanup.
 
 #### Current Reality
-Prompt: `List SPECKIT flags active/inert/deprecated. Capture the evidence needed to prove Accurate flag classification. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `List SPECKIT search-pipeline flags as active, inert compatibility shims, or retired. Capture the evidence needed to prove active flags stay separated from inert compatibility shims such as SPECKIT_RSF_FUSION and SPECKIT_SHADOW_SCORING, and that retired topics such as full-context ceiling eval, index refresh, context budget, PageRank, and entity scope are not presented as active manual-test scenarios. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Accurate flag classification
+Accurate active/inert/retired classification; retired topics absent from active manual-test guidance
 
 #### Test Execution
 > **Feature File:** [EX-028](19--feature-flag-reference/028-1-search-pipeline-features-speckit.md)
@@ -763,9 +763,9 @@ Note: 042, 119, 131, and 132 all map to the same catalog entry for spec folder d
 Confirm graph hits are non-zero when edges exist.
 
 #### Current Reality
-Prompt: `Verify Graph channel ID fix (G1) manually with causal-edge data. Capture the evidence needed to prove Graph channel returns >0 hits; channel attribution includes graph source. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Verify Graph channel ID fix (G1) manually with causal-edge data. Capture the evidence needed to prove Graph channel returns >0 hits when causal edges exist. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Graph channel returns >0 hits; channel attribution includes graph source
+Graph channel returns >0 hits when causal edges exist
 
 #### Test Execution
 > **Feature File:** [001](08--bug-fixes-and-data-integrity/001-graph-channel-id-fix-g1.md)
@@ -1191,15 +1191,15 @@ Simple queries route to fewer channels; complex queries activate all channels; d
 > **Feature File:** [033](12--query-intelligence/033-query-complexity-router-r15.md)
 > **Catalog:** [12--query-intelligence/01-query-complexity-router.md](../feature_catalog/12--query-intelligence/01-query-complexity-router.md)
 
-### 034 | Relative score fusion in shadow mode (R14/N1)
+### 034 | Relative score fusion in shadow mode (R14/N1) [retired]
 
 #### Description
-Confirm RSF stays off the live ranking path.
+Retired from active manual testing.
 
 #### Current Reality
-Prompt: `Check RSF shadow behavior post-cleanup. Capture the evidence needed to prove RRF remains the live fusion method; RSF does not affect returned rankings; any RSF comparison remains evaluation-only rather than a required runtime trace field. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `N/A — active manual validation for RSF live ranking was removed from the playbook because production ranking stays on RRF and RSF is no longer a shipped runtime path.`
 
-RRF remains the live fusion method; RSF does not affect returned rankings; any RSF comparison remains evaluation-only rather than a required runtime trace field
+This page is retained only as a retirement note and should not be treated as an active operator scenario
 
 #### Test Execution
 > **Feature File:** [034](12--query-intelligence/034-relative-score-fusion-in-shadow-mode-r14-n1.md)
@@ -1614,12 +1614,12 @@ All flags enumerated with age and review cadence; compliance gaps identified; no
 ### 064 | Feature flag sunset audit
 
 #### Description
-Confirm sunset dispositions.
+Confirm sunset dispositions for active, inert, and retired surfaces.
 
 #### Current Reality
-Prompt: `Verify feature flag sunset audit outcomes. Capture the evidence needed to prove Documented dispositions match code state; deprecated flags are no-ops; deltas between docs and code identified. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Verify feature flag sunset audit outcomes. Capture the evidence needed to prove documented dispositions match code state; inert compatibility flags such as SPECKIT_RSF_FUSION and SPECKIT_SHADOW_SCORING stay no-op; retired topics such as full-context ceiling eval, index refresh, context budget, PageRank, and entity scope are not treated as live runtime checks. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Documented dispositions match code state; deprecated flags are no-ops; deltas between docs and code identified
+Documented dispositions match code state; inert compatibility flags remain no-op; retired topics are not treated as live runtime checks
 
 #### Test Execution
 > **Feature File:** [064](17--governance/064-feature-flag-sunset-audit.md)
@@ -1706,12 +1706,12 @@ Extractor and linker produce identical normalized forms for same input; unicode 
 ### 070 | Dead code removal
 
 #### Description
-Confirm dead path elimination.
+Confirm documented removals remain absent.
 
 #### Current Reality
-Prompt: `Audit dead code removal outcomes. Capture the evidence needed to prove Removed symbols not found in codebase; representative flows execute without missing-reference errors; no dead imports remain. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Audit dead code removal outcomes. Capture the evidence needed to prove removed hybrid-search branches stay absent; retired helpers (isShadowScoringEnabled/isRsfEnabled) are gone; dead module state and exports listed in the audit stay absent; representative flows execute without missing-reference errors. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Removed symbols not found in codebase; representative flows execute without missing-reference errors; no dead imports remain
+Removed hybrid-search branches absent; retired helpers absent; dead module state and exports absent; representative flows execute without missing-reference errors
 
 #### Test Execution
 > **Feature File:** [070](16--tooling-and-scripts/070-dead-code-removal.md)
@@ -1835,9 +1835,9 @@ V1 pipeline symbols absent from codebase; all queries route through V2 pipeline;
 Confirm phase-017 correction bundle.
 
 #### Current Reality
-Prompt: `Validate phase-017 scoring and fusion corrections. Capture the evidence needed to prove Scoring math produces correct values; normalization stays within bounds; fusion formula applies corrected weights; RSF treats numeric and string forms of the same ID as one fused item. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate phase-017 scoring and fusion corrections. Capture the evidence needed to prove Scoring math produces correct values; normalization stays within bounds; fusion formula applies corrected weights. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Scoring math produces correct values; normalization stays within bounds; fusion formula applies corrected weights; RSF canonicalizes numeric/string IDs into one fused item
+Scoring math produces correct values; normalization stays within bounds; fusion formula applies corrected weights
 
 #### Test Execution
 > **Feature File:** [079](11--scoring-and-calibration/079-scoring-and-fusion-corrections.md)
@@ -3528,7 +3528,7 @@ This split playbook keeps automated coverage references in three places:
 | 031 | Features | Negative feedback confidence signal (A4) | [031](11--scoring-and-calibration/031-negative-feedback-confidence-signal-a4.md) | [11--scoring-and-calibration/09-negative-feedback-confidence-signal.md](../feature_catalog/11--scoring-and-calibration/09-negative-feedback-confidence-signal.md) |
 | 032 | Features | Auto-promotion on validation (T002a) | [032](11--scoring-and-calibration/032-auto-promotion-on-validation-t002a.md) | [11--scoring-and-calibration/10-auto-promotion-on-validation.md](../feature_catalog/11--scoring-and-calibration/10-auto-promotion-on-validation.md) |
 | 033 | Features | Query complexity router (R15) | [033](12--query-intelligence/033-query-complexity-router-r15.md) | [12--query-intelligence/01-query-complexity-router.md](../feature_catalog/12--query-intelligence/01-query-complexity-router.md) |
-| 034 | Features | Relative score fusion in shadow mode (R14/N1) | [034](12--query-intelligence/034-relative-score-fusion-in-shadow-mode-r14-n1.md) | [12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md](../feature_catalog/12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md) |
+| 034 | Features | Relative score fusion in shadow mode (R14/N1) [retired] | [034](12--query-intelligence/034-relative-score-fusion-in-shadow-mode-r14-n1.md) | [12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md](../feature_catalog/12--query-intelligence/02-relative-score-fusion-in-shadow-mode.md) |
 | 035 | Features | Channel min-representation (R2) | [035](12--query-intelligence/035-channel-min-representation-r2.md) | [12--query-intelligence/03-channel-min-representation.md](../feature_catalog/12--query-intelligence/03-channel-min-representation.md) |
 | 036 | Features | Confidence-based result truncation (R15-ext) | [036](12--query-intelligence/036-confidence-based-result-truncation-r15-ext.md) | [12--query-intelligence/04-confidence-based-result-truncation.md](../feature_catalog/12--query-intelligence/04-confidence-based-result-truncation.md) |
 | 037 | Features | Dynamic token budget allocation (FUT-7) | [037](12--query-intelligence/037-dynamic-token-budget-allocation-fut-7.md) | [12--query-intelligence/05-dynamic-token-budget-allocation.md](../feature_catalog/12--query-intelligence/05-dynamic-token-budget-allocation.md) |

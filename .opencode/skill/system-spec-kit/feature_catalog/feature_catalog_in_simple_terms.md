@@ -494,7 +494,7 @@ A search result can carry several different scores from different stages of proc
 
 ### Scoring and fusion corrections
 
-These nine fixes address problems in how scores are calculated and combined. Issues ranged from weights that did not add up to 100% to a method that crashed when processing large batches and a filter that compared apples to oranges. The latest fix also makes RSF treat `42` and `"42"` as the same result, so duplicate fused items do not sneak in under different ID formats.
+These nine fixes address problems in how scores are calculated and combined. Issues ranged from weights that did not add up to 100% to a method that crashed when processing large batches and a filter that compared apples to oranges. The latest fix also cleans up leftover RSF compatibility code so the retired shadow/test path treats `42` and `"42"` as the same result instead of duplicating them.
 
 ### Local GGUF reranker via node-llama-cpp
 
@@ -542,7 +542,7 @@ Not every question needs the same amount of effort to answer. This feature sizes
 
 ### Relative score fusion in shadow mode
 
-When you search for something, multiple search methods each return their own ranked lists of results. This feature is an alternative way to merge those lists into one final ranking. It is currently shelved and not actively used, but it remains available if the team decides to switch merging strategies in the future.
+When you search for something, multiple search methods each return their own ranked lists of results. This used to be an alternative way to merge those lists into one final ranking. Today it is retired runtime code kept only as a shadow/test artifact for compatibility and evaluation work. The live ranking system does not use it.
 
 ### Channel min-representation
 

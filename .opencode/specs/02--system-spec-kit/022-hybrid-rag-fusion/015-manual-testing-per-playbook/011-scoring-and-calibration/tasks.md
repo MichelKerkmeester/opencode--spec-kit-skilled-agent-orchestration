@@ -35,7 +35,7 @@ contextType: "general"
 
 - [x] T001 Load manual testing playbook and identify all 22 Phase 011 scenario rows (`plan.md`) -- All 22 playbook files read from `manual_testing_playbook/11--scoring-and-calibration/`
 - [x] T002 Confirm MCP runtime tools available: `memory_search`, `memory_validate`, `checkpoint_create`, `checkpoint_restore` (`plan.md`) -- Confirmed via MCP tool listing
-- [x] T003 Confirm feature flag support for 159, 160, 170, 171, 172 in the active runtime (`plan.md`) -- Flags verified in `search-flags.ts`
+- [x] T003 Confirm active runtime support for 159, 160, 171, and 172, and document retired status for 170 (`plan.md`) -- Active flags verified in `search-flags.ts`; Phase 011 audit found no `mcp_server` matches for `SPECKIT_FUSION_POLICY_SHADOW_V2`, `fusion-lab.js`, `isShadowFusionV2Enabled`, `runShadowComparison`, `minmax_linear`, or `zscore_linear`
 - [x] T004 Create pre-execution global checkpoint; record checkpoint name/ID (`scratch/`) -- Code analysis approach: source code inspection replaces runtime checkpoint
 <!-- /ANCHOR:phase-1 -->
 
@@ -73,14 +73,14 @@ contextType: "general"
 ### Feature-Flag Execution
 
 - [x] T023 Execute 159 -- Learned Stage 2 Combiner: **PASS** -- `@deprecated` removed from `learned-combiner.ts` (line 13) and `matrix-math.ts` (line 9). `shadowScore`, `trainRegularizedLinearRanker`, `predict`, `extractFeatureVector` exported from `shared/index.ts` section 11. `shadowScore()` wired into `stage2-fusion.ts` after step 6 (feedback signals) in block `// -- 6a. Learned Stage 2 shadow scoring --`, gated by `isLearnedStage2CombinerEnabled()` from `search-flags.ts:379`.
-- [x] T024 Execute 160 -- Shadow Feedback Holdout: **PASS** -- `shadow-scoring.ts:599-710` implements full pipeline: holdout selection (line 615), rank comparison (line 651), delta logging to `shadow_scoring_log` table (line 653), cycle result recording (line 692); `isShadowFeedbackEnabled()` at line 132 gates all operations; `evaluatePromotionGate()` at line 545 returns promote/wait/rollback
-- [x] T025 Execute 170 -- Fusion Policy Shadow v2: **PASS** -- `fusion-lab.js:308-362` `runShadowComparison()` runs all three policies (rrf, minmax_linear, zscore_linear) via `Promise.all` at line 330; returns active policy result unchanged; per-policy NDCG@10 and MRR@5 telemetry at lines 350-355; `isShadowFusionV2Enabled()` at line 32 gates shadow comparison
+- [x] T024 Execute 160 -- Shadow Feedback Holdout: **PASS** -- Active holdout pipeline lives in `lib/feedback/shadow-scoring.ts:599-710`: holdout selection (line 615), rank comparison (line 651), delta logging to `shadow_scoring_log` table (line 653), cycle result recording (line 692); `isShadowFeedbackEnabled()` at line 132 gates all operations; `lib/search/search-flags.ts` keeps `SPECKIT_SHADOW_FEEDBACK` active
+- [x] T025 Execute 170 -- Fusion Policy Shadow v2: **RETIRED** -- No code matches in `mcp_server` for `SPECKIT_FUSION_POLICY_SHADOW_V2`, `fusion-lab.js`, `isShadowFusionV2Enabled`, `runShadowComparison`, `minmax_linear`, or `zscore_linear`. `lib/eval/shadow-scoring.ts` is a separate retired compatibility module and does not make scenario 170 active in the MCP server
 - [x] T026 Execute 171 -- Calibrated Overlap Bonus: **PASS** -- `rrf-fusion.js:60` defines `CALIBRATED_OVERLAP_BETA = 0.15`; line 66: `CALIBRATED_OVERLAP_MAX = 0.06`; `fuseResultsMulti()` at line 292-294 computes `overlapScore = beta * overlapRatio * meanNorm` and clamps to [0, 0.06]; `isCalibratedOverlapBonusEnabled()` at line 121 defaults ON (graduated)
 - [x] T027 Execute 172 -- RRF K Experimental: **PASS** -- `k-value-analysis.ts:395` defines `JUDGED_K_SWEEP_VALUES = K_VALUES` = [10,20,40,60,80,100,120]; `runJudgedKSweep()` at line 670 groups by intent and sweeps all K values; `argmaxNdcg10()` at line 641 selects best K with tie-breaking by lower K; `isKExperimentalEnabled()` at line 602 gates the sweep; falls back to `BASELINE_K=60` when OFF
 
 ### Verdict and Verification
 
-- [x] T028 Assign PASS/PARTIAL/FAIL verdict to all 22 scenarios using review protocol (`scratch/`) -- 22 PASS, 0 PARTIAL (159 promoted to PASS after pipeline wiring)
+- [x] T028 Assign documented outcomes to all 22 playbook rows using review protocol (`scratch/`) -- 21 PASS for active MCP-server-backed scenarios, 1 RETIRED row (170 removed from the active MCP server)
 - [x] T029 Complete all checklist items in `checklist.md` with evidence references (`checklist.md`)
 - [x] T030 Write `implementation-summary.md` with verdict table and known limitations (`implementation-summary.md`)
 <!-- /ANCHOR:phase-3 -->
@@ -92,7 +92,8 @@ contextType: "general"
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining (or blocked status explicitly documented)
-- [x] All 22 scenarios have a verdict with evidence
+- [x] All 22 playbook rows have documented outcomes with evidence
+- [x] Scenario 170 is explicitly documented as RETIRED/REMOVED from the active MCP server
 <!-- /ANCHOR:completion -->
 
 ---

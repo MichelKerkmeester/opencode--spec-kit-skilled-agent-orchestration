@@ -83,6 +83,7 @@ contextType: "general"
 - [x] CHK-040 [P1] Phase coverage reported as 8/8 scenarios with verdict summary — all 8 PASS; see implementation-summary.md verdict table
 - [x] CHK-041 [P1] `implementation-summary.md` updated with execution results and verdict table — rewritten with 8/8 PASS, pass rate 100%, evidence citations
 - [ ] CHK-042 [P2] Findings saved to `memory/` via generate-context.js
+- Follow-up note (2026-03-23): Before closing any M4 cleanup that changes roadmap-default semantics or telemetry wording, rerun scenario 125 and confirm the evidence only claims shared memory is enabled when the explicit-enable path is exercised.
 <!-- /ANCHOR:docs -->
 
 ---
@@ -109,8 +110,3 @@ contextType: "general"
 <!-- /ANCHOR:summary -->
 
 ---
-
-## Audit Follow-up Additions (2026-03-23)
-
-- [ ] CHK-052 [P1] Scenario 125 follow-up rerun after M4 confirms roadmap snapshots report `capabilities.sharedMemory:false` by default until explicitly enabled
-- [ ] CHK-053 [P2] Capability-flags roadmap/telemetry evidence does not imply shared memory is enabled by default; explicit-enable path documented only if exercised

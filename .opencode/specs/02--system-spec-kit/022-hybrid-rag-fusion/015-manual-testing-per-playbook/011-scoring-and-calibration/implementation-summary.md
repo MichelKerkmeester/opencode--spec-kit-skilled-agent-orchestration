@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: scoring-and-calibration manual testing [template:level_2/implementation-summary.md]"
-description: "Phase 011 scoring-and-calibration manual testing -- 22/22 scenarios executed via source code analysis. 22 PASS. Pass rate: 100%."
+description: "Phase 011 scoring-and-calibration manual testing -- 22 playbook rows reviewed via source code analysis. 21 active PASS, 1 retired row (170)."
 trigger_phrases:
   - "phase 011 implementation summary"
   - "scoring calibration execution summary"
@@ -23,8 +23,8 @@ contextType: "general"
 | **Spec Folder** | 011-scoring-and-calibration |
 | **Completed** | 2026-03-22 |
 | **Level** | 2 |
-| **Execution Status** | Complete -- 22/22 scenarios executed |
-| **Pass Rate** | 100% (22 PASS, 0 PARTIAL, 0 FAIL) |
+| **Execution Status** | Complete -- 22 playbook rows reviewed |
+| **Pass Rate** | Active MCP scenarios: 21/21 PASS; retired historical row: 170 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,7 +32,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-All 22 scoring-and-calibration manual test scenarios were executed via thorough source code analysis. Each scenario was evaluated against its playbook acceptance criteria with file:line evidence citations from the production codebase.
+All 22 scoring-and-calibration playbook rows were reviewed via source code analysis. Twenty-one rows map to active MCP-server-backed behavior and passed with file:line evidence citations from the production codebase. Historical playbook row 170 was reclassified as retired/removed because the current `mcp_server` no longer contains the Fusion Policy Shadow v2 implementation it described.
 
 ### Verdict Table
 
@@ -56,8 +56,8 @@ All 22 scoring-and-calibration manual test scenarios were executed via thorough 
 | 118 | Stage-2 score field sync (P0-8) | **PASS** | `stage2-fusion.ts:174,187,730-734`, `types.ts:59-60` -- Math.max sync |
 | 121 | Adaptive shadow proposal/rollback | **PASS** | `adaptive-ranking.ts:84,170-174,196-205` -- bounded delta, shadow-only |
 | 159 | Learned Stage 2 Combiner | **PASS** | `@deprecated` removed from `learned-combiner.ts` and `matrix-math.ts`. Exported via `shared/index.ts` section 11. `shadowScore()` wired into `stage2-fusion.ts` after step 6 (feedback signals), gated by `isLearnedStage2CombinerEnabled()`. |
-| 160 | Shadow Feedback Holdout | **PASS** | `shadow-scoring.ts:132,599-710` -- null when OFF, full pipeline when ON |
-| 170 | Fusion Policy Shadow v2 | **PASS** | `fusion-lab.js:32,308-362` -- all 3 policies, active unchanged, telemetry-only |
+| 160 | Shadow Feedback Holdout | **PASS** | `lib/feedback/shadow-scoring.ts:132,599-710` -- null when OFF, full pipeline when ON |
+| 170 | Fusion Policy Shadow v2 | **RETIRED** | No `mcp_server` matches for `SPECKIT_FUSION_POLICY_SHADOW_V2`, `fusion-lab.js`, `isShadowFusionV2Enabled`, `runShadowComparison`, `minmax_linear`, or `zscore_linear`; `lib/eval/shadow-scoring.ts` is a separate retired compatibility module |
 | 171 | Calibrated Overlap Bonus | **PASS** | `rrf-fusion.js:60,66,121,273-303` -- beta=0.15, cap=0.06, flat fallback |
 | 172 | RRF K Experimental | **PASS** | `k-value-analysis.ts:395,641,670-732` -- 7-value sweep, argmax NDCG@10 |
 
@@ -91,10 +91,10 @@ Source code analysis was used as the primary verification method. Each scenario 
 |----------|-------|-------------|
 | **Scoring** | 5 | `composite-scoring.ts`, `interference-scoring.ts`, `negative-feedback.ts`, `confidence-tracker.ts`, `folder-scoring.js` |
 | **Ranking** | 2 | `learned-combiner.js`, `matrix-math.js` |
-| **Algorithms** | 4 | `rrf-fusion.js`, `adaptive-fusion.js`, `fusion-lab.js`, `mmr-reranker.js` |
+| **Algorithms** | 3 | `rrf-fusion.js`, `adaptive-fusion.js`, `mmr-reranker.js` |
 | **Pipeline** | 3 | `stage2-fusion.ts`, `types.ts`, `ranking-contract.ts` |
 | **Eval** | 1 | `k-value-analysis.ts` |
-| **Feedback** | 2 | `shadow-scoring.ts`, `rank-metrics.ts` |
+| **Feedback** | 2 | `lib/feedback/shadow-scoring.ts`, `rank-metrics.ts` |
 | **Search** | 3 | `local-reranker.ts`, `search-flags.ts`, `confidence-scoring.ts` |
 | **Cognitive** | 2 | `adaptive-ranking.ts`, `fsrs-scheduler.ts` |
 | **Cache** | 1 | `embedding-cache.ts` |
@@ -110,8 +110,8 @@ Source code analysis was used as the primary verification method. Each scenario 
 | Decision | Why |
 |----------|-----|
 | Source code analysis over runtime execution | Provides deterministic, reproducible verdicts with exact file:line evidence; avoids environment-specific failures |
-| 22 PASS | 159 (learned-combiner.ts) promoted from PARTIAL to PASS: `@deprecated` removed, barrel-exported from `shared/index.ts`, and `shadowScore()` wired into `stage2-fusion.ts` after step 6. All 22 acceptance criteria map to implemented code. |
-| Feature flag defaults verified as graduated-ON | 5 flag-gated scenarios (159, 160, 170, 171, 172) have correct default-ON semantics with explicit disable paths. 159 now wired into pipeline. |
+| 21 active PASS + 170 retired | 159 (learned-combiner.ts) promoted from PARTIAL to PASS: `@deprecated` removed, barrel-exported from `shared/index.ts`, and `shadowScore()` wired into `stage2-fusion.ts` after step 6. Scenario 170 no longer maps to active MCP-server code and is now documented as retired instead of active. |
+| Active feature-flag coverage narrowed to 159, 160, 171, and 172 | `SPECKIT_SHADOW_FEEDBACK` remains active in `lib/feedback/shadow-scoring.ts` and `lib/search/search-flags.ts`; scenario 170 references were removed from active-coverage claims because Fusion Policy Shadow v2 is no longer present in `mcp_server`. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -121,7 +121,7 @@ Source code analysis was used as the primary verification method. Each scenario 
 
 | Check | Result |
 |-------|--------|
-| All 22 scenario verdicts assigned | PASS (22/22: 22 PASS, 0 PARTIAL) |
+| All 22 playbook rows documented | PASS (21 active PASS rows, 1 retired row: 170) |
 | All checklist P0 items verified | 25/25 |
 | All checklist P1 items verified | 7/7 |
 | 159 promoted PARTIAL to PASS (pipeline wired) | DONE |
@@ -136,7 +136,7 @@ Source code analysis was used as the primary verification method. Each scenario 
 1. **Source code analysis only.** Verdicts are based on code inspection rather than live MCP runtime execution. Runtime-specific behaviors (e.g., actual embedding latency for cache hit <10ms) are inferred from code structure rather than measured.
 2. **098 (Local GGUF reranker) verdict assumes code correctness.** The strict `=== 'true'` check and memory threshold logic are verified in source, but actual model inference behavior depends on host-specific GGUF model availability. The code path for graceful fallback is confirmed.
 3. **030 (RRF K-value sensitivity) is a measurement tool.** The code implements the full grid analysis and recommendation engine, but actual sensitivity results depend on the evaluation corpus used at runtime.
-4. **Feature flag defaults are graduated-ON** for scenarios 170, 171, 172 (changed from spec's "default OFF" description). The code uses `!== 'false'` semantics meaning they are ON by default, which is the correct graduated rollout behavior.
+4. **Scenario 170 is retained only as a historical playbook row.** The active MCP server no longer contains `SPECKIT_FUSION_POLICY_SHADOW_V2` or the Fusion Lab comparison code, so this phase now records 170 as retired/removed instead of executable.
 <!-- /ANCHOR:limitations -->
 
 ---

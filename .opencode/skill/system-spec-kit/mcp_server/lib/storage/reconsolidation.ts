@@ -57,6 +57,7 @@ export interface NewMemoryData {
 export interface MergeResult {
   action: 'merge';
   existingMemoryId: number;
+  newMemoryId: number;
   importanceWeight: number;
   mergedContentLength: number;
   similarity: number;
@@ -192,6 +193,7 @@ export async function executeMerge(
 ): Promise<MergeResult> {
   const existingContent = existingMemory.content_text ?? '';
   const newContent = newMemory.content;
+  let newId = 0;
 
   // Merge content: append new unique sections
   const mergedContent = mergeContent(existingContent, newContent);
@@ -243,7 +245,7 @@ export async function executeMerge(
         mergedHash,
       );
 
-      const newId = Number(insertResult.lastInsertRowid);
+      newId = Number(insertResult.lastInsertRowid);
 
       // Create supersedes causal edge
       db.prepare(`
@@ -262,6 +264,7 @@ export async function executeMerge(
     return {
       action: 'merge',
       existingMemoryId: existingMemory.id,
+      newMemoryId: newId,
       importanceWeight: boostedWeight,
       mergedContentLength: mergedContent.length,
       similarity: existingMemory.similarity,

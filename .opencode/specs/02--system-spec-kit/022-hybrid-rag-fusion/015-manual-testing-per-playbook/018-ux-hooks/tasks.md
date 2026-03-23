@@ -59,7 +59,7 @@ contextType: "general"
 ## Phase 3: Verification
 
 - [x] T012 Execute 106 step 1 — `hooks/index.ts:13` exports `buildMutationHookFeedback` from `./mutation-feedback`; line 18 exports from `./response-hints`. Both module names confirmed present.
-- [x] T013 Execute 106 step 2 — `hooks/README.md:30` references `mutation-feedback.ts`; line 31 references `response-hints.ts`; line 56 references `MutationHookResult`; line 58 references `postMutationHooks`. All 4 terms confirmed. VERDICT: PASS
+- [x] T013 Execute 106 step 2 — `../../../../../skill/system-spec-kit/mcp_server/hooks/README.md:30` references `mutation-feedback.ts`; line 31 references `response-hints.ts`; line 56 references `MutationHookResult`; line 58 references `postMutationHooks`. All 4 terms confirmed. VERDICT: PASS
 - [x] T014 Execute 166 step 1 — `result-explainability.ts:51–53` defines `WhySlim { summary; topSignals }` always present when flag ON. `attachExplainabilityToResults` at line 344 applies to all results. `isResultExplainEnabled` wired at `search-flags.ts:487`.
 - [x] T015 Execute 166 step 2 — `result-explainability.ts:57–58` defines `WhyFull extends WhySlim { channelContribution? }` added only when `debugEnabled=true` (line 326). Flag OFF → `attachExplainabilityToResults` returns original array (line 350). VERDICT: PASS
 - [x] T016 Execute 167 step 1 — `profile-formatters.ts:64–73` defines `QuickProfile { topResult; oneLineWhy; omittedCount; tokenReduction { savingsPercent } }`. `formatQuick` returns this shape when `profile=quick`.
@@ -75,7 +75,7 @@ contextType: "general"
 - [x] T026 Evidence bundle 103: `mutation-feedback.ts` exports `buildMutationHookFeedback` with all required fields; `hooks-ux-feedback.vitest.ts` present. VERDICT: PASS
 - [x] T027 Evidence bundle 104: No-op save paths (`dedup.ts:146–157` unchanged, `dedup.ts:248–261` duplicate) return early without DB writes; FSRS fields preserved; `shouldEmitPostMutationFeedback` gated (`memory-save.ts:1011`, `response-builder.ts:254`); atomic-save parity confirmed (`memory-save.ts:1062`); 8 vitest cases in `memory-save-ux-regressions.vitest.ts`. VERDICT: PASS
 - [x] T028 Evidence bundle 105: `response-hints.ts` confirms `appendAutoSurfaceHints` + `syncEnvelopeTokenCount` chain; `context-server.vitest.ts` present. VERDICT: PASS
-- [x] T029 Evidence bundle 106: All 4 terms (`mutation-feedback`, `response-hints`, `MutationHookResult`, `postMutationHooks`) confirmed in both `hooks/index.ts` and `hooks/README.md`. VERDICT: PASS
+- [x] T029 Evidence bundle 106: All 4 terms (`mutation-feedback`, `response-hints`, `MutationHookResult`, `postMutationHooks`) confirmed in both `hooks/index.ts` and `../../../../../skill/system-spec-kit/mcp_server/hooks/README.md`. VERDICT: PASS
 - [x] T030 Evidence bundle 107: Handler lines 290–308 + schema lines 344,349 + Group 13b test lines 1792–1821 all confirm full enforcement chain. VERDICT: PASS
 - [x] T031 Evidence bundle 166: Two-tier explainability implemented in `result-explainability.ts`; flag ON/OFF behavior confirmed. VERDICT: PASS
 - [x] T032 Evidence bundle 167: All 4 profile shapes defined and routed in `profile-formatters.ts`; flag fallback confirmed. VERDICT: PASS

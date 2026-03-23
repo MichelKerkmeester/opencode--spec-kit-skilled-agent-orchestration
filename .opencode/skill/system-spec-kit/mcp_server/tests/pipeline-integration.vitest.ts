@@ -140,12 +140,6 @@ describe('Suite 1 — Module wiring: all exports are accessible', () => {
     expect(typeof mod.predictGraphCoverage).toBe('function');
   });
 
-  it('context-budget exports: optimizeContextBudget, estimateTokens', async () => {
-    const mod = await import('../lib/search/context-budget');
-    expect(typeof mod.optimizeContextBudget).toBe('function');
-    expect(typeof mod.estimateTokens).toBe('function');
-  });
-
   it('fsrs exports: computeStructuralFreshness, computeGraphCentrality', async () => {
     const mod = await import('../lib/search/fsrs');
     expect(typeof mod.computeStructuralFreshness).toBe('function');

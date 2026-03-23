@@ -283,7 +283,6 @@ vector-index-impl.ts     (3333 LOC)
 | `dynamic-token-budget.ts`  | -      | TypeScript | Per-tier token budgets: simple=1500, moderate=2500, complex=4000 (Sprint 3) |
 | `folder-discovery.ts`      | -      | TypeScript | Spec folder description discovery: per-folder `description.json` CRUD, centralized cache aggregation, staleness detection, `slugifyFolderName()` helper, keyword-overlap relevance scoring (PI-B3) |
 | `folder-relevance.ts`      | -      | TypeScript | Folder-level relevance scoring via damped DocScore aggregation |
-| `context-budget.ts`        | -      | TypeScript | Token-budget-aware result selection with graph region diversity |
 | `evidence-gap-detector.ts` | -      | TypeScript | Z-score confidence check on RRF scores to detect low-confidence retrieval |
 | `fsrs.ts`                  | -      | TypeScript | Temporal-structural coherence: FSRS stability augmented with graph centrality |
 | `sqlite-fts.ts`            | -      | TypeScript | SQLite FTS5 BM25 weighted scoring, extracted from hybrid-search for independent use |

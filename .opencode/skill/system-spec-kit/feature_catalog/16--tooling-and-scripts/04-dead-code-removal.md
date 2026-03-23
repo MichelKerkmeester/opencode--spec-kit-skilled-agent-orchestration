@@ -1,13 +1,13 @@
 ---
 title: "Dead code removal"
-description: "Clean-code maintenance ensures unused branches, feature flags, module-level state and function exports do not accumulate in the codebase."
+description: "Completed remediation record for removed dead branches, feature flags, module-level state and function exports."
 ---
 
 # Dead code removal
 
 ## 1. OVERVIEW
 
-The codebase maintains clean-code discipline by ensuring unused branches, feature flags, module-level state and function exports do not accumulate. Approximately 360 lines of dead code across four categories have been verified absent from the source tree.
+This entry records the completed dead-code cleanup rather than a live runtime feature. Approximately 360 lines of dead code across four categories have been verified absent from the source tree.
 
 ---
 
@@ -23,7 +23,7 @@ The codebase is clean across four dead-code categories:
 
 **Functions and exports:** `computeCausalDepthScores` is the live batch API in `graph-signals.ts`; no single-node `computeCausalDepth` variant exists. `getSubgraphWeights`, `RECOVERY_HALF_LIFE_DAYS`, the `'related'` weight entry, `logCoActivationEvent`, and `CoActivationEvent` do not exist in the codebase.
 
-**Retained:** `computeStructuralFreshness` and `computeGraphCentrality` in `fsrs.ts` are planned architectural components and remain in the source.
+**Preserved but not part of the removal set:** `computeStructuralFreshness` and `computeGraphCentrality` still exist as exported utilities in `fsrs.ts`. They remain in the source tree, but this entry does not treat them as active runtime search features or pending activations.
 
 ---
 

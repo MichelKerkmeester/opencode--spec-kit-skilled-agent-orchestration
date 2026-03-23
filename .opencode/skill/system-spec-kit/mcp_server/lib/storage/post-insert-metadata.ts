@@ -73,7 +73,6 @@ export const ALLOWED_POST_INSERT_COLUMNS = new Set<string>([
  * Special handling:
  * - `encoding_intent` uses `COALESCE(?, encoding_intent)`
  * - `last_review` is always refreshed to `datetime('now')`
- * - `review_count` defaults to `0` when not explicitly supplied
  *
  * @param db - Database connection that stores memory rows.
  * @param memoryId - Inserted memory identifier to enrich.
@@ -100,9 +99,6 @@ export function applyPostInsertMetadata(
   }
 
   setClauses.push("last_review = datetime('now')");
-  if (!Object.prototype.hasOwnProperty.call(fields, 'review_count')) {
-    setClauses.push('review_count = 0');
-  }
 
   values.push(memoryId);
 

@@ -153,7 +153,6 @@ Failure semantics are tighter on the primary governed-save path too. After a new
 | `mcp_server/tests/importance-tiers.vitest.ts` | Importance tier tests |
 | `mcp_server/tests/incremental-index-v2.vitest.ts` | Incremental index behavioral tests |
 | `mcp_server/tests/incremental-index.vitest.ts` | Focused incremental-index coverage (supplemental to `incremental-index-v2.vitest.ts`; concrete fast-path assertions) |
-| `mcp_server/tests/index-refresh.vitest.ts` | Index refresh tests |
 | `mcp_server/tests/integration-session-dedup.vitest.ts` | Session dedup integration |
 | `mcp_server/tests/interference.vitest.ts` | Interference scoring tests |
 | `mcp_server/tests/mcp-response-envelope.vitest.ts` | MCP envelope tests |

@@ -892,6 +892,9 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
             if (contextType) {
               filteredReformMerged = filteredReformMerged.filter((r) => resolveRowContextType(r) === contextType);
             }
+            if (tier) {
+              filteredReformMerged = applyTierFilter(filteredReformMerged, tier);
+            }
             filteredReformMerged = filterByMinQualityScore(filteredReformMerged, qualityThreshold);
             candidates = [...candidates, ...filteredReformMerged];
             channelCount += allQueries.length - 1; // discount original (already counted)
@@ -937,6 +940,9 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
         // H11 FIX: Apply the same tier/context/quality filters as main candidates
         if (contextType) {
           newHydeCandidates = newHydeCandidates.filter((r) => resolveRowContextType(r) === contextType);
+        }
+        if (tier) {
+          newHydeCandidates = applyTierFilter(newHydeCandidates, tier);
         }
         newHydeCandidates = filterByMinQualityScore(newHydeCandidates, qualityThreshold);
         candidates = [...candidates, ...newHydeCandidates];
@@ -1006,7 +1012,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
             const contextFilteredSummaryHits = contextType
               ? tierFilteredSummaryHits.filter((r) => resolveRowContextType(r) === contextType)
               : tierFilteredSummaryHits;
-            const scopeFilteredSummaryHits = hasGovernanceScope
+            const scopeFilteredSummaryHits = shouldApplyScopeFiltering
               ? filterRowsByScope(contextFilteredSummaryHits, scopeFilter, allowedSharedSpaceIds)
               : contextFilteredSummaryHits;
 

@@ -158,7 +158,6 @@ lib/                            # TypeScript source files
 │   ├── channel-representation.ts # Min-representation R2 (QUALITY_FLOOR=0.005)
 │   ├── confidence-truncation.ts # Confidence truncation (2x median gap, min 3 results)
 │   ├── dynamic-token-budget.ts # Dynamic token budget (1500/2500/4000 by tier)
-│   ├── context-budget.ts       # Context budget estimation
 │   ├── evidence-gap-detector.ts # TRM with Z-score confidence
 │   ├── folder-discovery.ts     # Spec folder description discovery
 │   ├── folder-relevance.ts     # Folder-level relevance scoring
@@ -186,21 +185,19 @@ lib/                            # TypeScript source files
 │   ├── rollout-policy.ts       # Feature rollout policy engine
 │   └── README.md               # Module documentation
 │
-├── storage/                    # Data persistence (8 modules)
+├── storage/                    # Data persistence (7 modules)
 │   ├── access-tracker.ts       # Memory access tracking
 │   ├── checkpoints.ts          # State checkpointing
 │   ├── history.ts              # History management
-│   ├── index-refresh.ts        # Index refresh utilities
 │   ├── causal-edges.ts         # Causal graph storage
 │   ├── incremental-index.ts    # Incremental indexing
 │   ├── transaction-manager.ts  # Transaction management
 │   ├── mutation-ledger.ts      # Append-only audit trail with SQLite triggers
 │   └── README.md               # Module documentation
 │
-├── parsing/                    # Content parsing (3 modules)
+├── parsing/                    # Content parsing (2 modules)
 │   ├── memory-parser.ts        # Memory file parser
 │   ├── trigger-matcher.ts      # Trigger phrase matching
-│   ├── entity-scope.ts         # Entity scope detection
 │   └── README.md               # Module documentation
 │
 ├── providers/                  # External services (2 modules)
@@ -340,7 +337,6 @@ dist/lib/                       # Compiled JavaScript + type definitions
 | `errors/recovery-hints.ts` | 49 error codes with recovery hints |
 | `storage/causal-edges.ts` | Causal graph storage (6 relationships) |
 | `storage/history.ts` | History management |
-| `storage/index-refresh.ts` | Index refresh utilities |
 | `learning/corrections.ts` | Learning from corrections |
 | `scoring/importance-tiers.ts` | Six-tier importance classification system |
 | `scoring/interference-scoring.ts` | TM-01 interference penalty for near-duplicates |
@@ -352,7 +348,6 @@ dist/lib/                       # Compiled JavaScript + type definitions
 | `search/channel-representation.ts` | Min-representation R2 (QUALITY_FLOOR=0.005) |
 | `cache/embedding-cache.ts` | Persistent SQLite embedding cache with LRU eviction |
 | `eval/edge-density.ts` | Edge density measurement for graph analysis |
-| `parsing/entity-scope.ts` | Entity scope detection |
 | `utils/canonical-path.ts` | Canonical path normalization for deduplication |
 | `utils/logger.ts` | Logging utilities |
 | `validation/preflight.ts` | Input validation and security checks |
