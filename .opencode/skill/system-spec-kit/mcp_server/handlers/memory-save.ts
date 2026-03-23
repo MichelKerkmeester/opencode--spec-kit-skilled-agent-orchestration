@@ -54,6 +54,7 @@ import {
   assertSharedSpaceAccess,
   recordSharedConflict,
 } from '../lib/collab/shared-spaces';
+import { delete_memory_from_database } from '../lib/search/vector-index-mutations';
 import {
   runQualityLoop,
 } from './quality-loop';
@@ -855,9 +856,11 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     try {
       applyGovernanceTx();
     } catch (govErr: unknown) {
-      // H5 FIX: Delete orphaned row when governance post-step fails
-      console.error('[memory-save] Governance metadata failed, removing orphaned memory row:', govErr instanceof Error ? govErr.message : String(govErr));
-      try { database.prepare('DELETE FROM memory_index WHERE id = ?').run(result.id); } catch (_: unknown) { /* best-effort cleanup */ }
+      // C2 FIX: Use full delete helper to clean up ALL ancillary records
+      // (vec_memories, BM25 index, causal edges, projections, etc.)
+      // not just memory_index, to prevent orphaned search phantoms.
+      console.error('[memory-save] Governance metadata failed, removing orphaned memory:', govErr instanceof Error ? govErr.message : String(govErr));
+      try { delete_memory_from_database(database, result.id); } catch (_: unknown) { /* best-effort cleanup */ }
       throw govErr;
     }
   }

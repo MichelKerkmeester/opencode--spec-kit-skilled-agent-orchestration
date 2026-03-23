@@ -276,10 +276,12 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
         results = results.filter(match => {
           const row = scopeMap.get(match.memoryId);
           if (!row) return false;
-          if (tenantId && row.tenant_id && row.tenant_id !== tenantId) return false;
-          if (userId && row.user_id && row.user_id !== userId) return false;
-          if (agentId && row.agent_id && row.agent_id !== agentId) return false;
-          if (sharedSpaceId && row.shared_space_id && row.shared_space_id !== sharedSpaceId) return false;
+          // H2 FIX: Require exact scope match — rows with NULL scope are excluded
+          // when the caller specifies a scope, not silently passed through.
+          if (tenantId && row.tenant_id !== tenantId) return false;
+          if (userId && row.user_id !== userId) return false;
+          if (agentId && row.agent_id !== agentId) return false;
+          if (sharedSpaceId && row.shared_space_id !== sharedSpaceId) return false;
           return true;
         });
       }

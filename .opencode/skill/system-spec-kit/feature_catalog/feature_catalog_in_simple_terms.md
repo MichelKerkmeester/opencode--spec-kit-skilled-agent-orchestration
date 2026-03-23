@@ -60,11 +60,13 @@ Some commands own their tools (they are the primary home) while others borrow to
 
 ### Unified context retrieval (memory_context)
 
-When you ask the system a question, it figures out what kind of help you need and automatically picks the best way to find the answer. Think of it like a smart librarian who reads your request, decides whether you need a quick lookup or a deep research session and then fetches the right materials for you. Without this, you would have to manually tell the system how to search every time.
+When you ask the system a question, it figures out what kind of help you need and automatically picks the best way to find the answer. Think of it like a smart librarian who reads your request, decides whether you need a quick lookup or a deep research session and then fetches the right materials for you. Without this, you would have to manually tell the system how to search every time. Resume notes are now added before the size limit is enforced, so the final reply does not grow past the promised budget after those notes are attached.
 
 ### Semantic and lexical search (memory_search)
 
 This is the main search tool. You type what you are looking for in plain language and the system searches through all stored knowledge to find the best matches. It understands meaning (not just keywords), so searching for "login problems" can find a document titled "authentication troubleshooting." Without it, you would have no way to find relevant information in the knowledge base.
+
+Recent hardening closed three confusing edge cases. Expired memories no longer slip into multi-concept searches, malformed embeddings now fail with a clear validation error instead of a low-level sqlite-vec crash, and constitutional memories no longer overflow the requested limit when they already fill the result set.
 
 ### Fast delegated search (memory_quick_search)
 
@@ -72,15 +74,15 @@ This is the lightweight search entry point for callers that want the main semant
 
 ### Trigger phrase matching (memory_match_triggers)
 
-This is the speed-first search option. Instead of doing a deep analysis of your question, it matches specific phrases you type against a list of known keywords, like a phone's autocomplete. It returns results almost instantly, which makes it great for quick lookups where you already know roughly what you are looking for. Frequently used memories show up with full details while older ones appear as lightweight pointers.
+This is the speed-first search option. Instead of doing a deep analysis of your question, it matches specific phrases you type against a list of known keywords, like a phone's autocomplete. It returns results almost instantly, which makes it great for quick lookups where you already know roughly what you are looking for. Frequently used memories show up with full details while older ones appear as lightweight pointers. It now also checks tenant, user, agent, and shared-space boundaries after matching so one tenant's trigger phrases do not leak into another tenant's results.
 
 ### Hybrid search pipeline
 
-When you search for something, the system looks in several places at once, like checking both the index and the shelves in a library. It then combines all the results and ranks them by relevance so the best match shows up first. If the first search comes back empty, the system automatically widens its net and tries again with looser criteria so you almost never get zero results.
+When you search for something, the system looks in several places at once, like checking both the index and the shelves in a library. It then combines all the results and ranks them by relevance so the best match shows up first. If the first search comes back empty, the system automatically widens its net and tries again with looser criteria so you almost never get zero results. The last-resort SQL fallback now keeps archived memories out unless you explicitly ask for them, and score boosts from co-activation and session memory stay in sync so later ranking code sees the same boosted values.
 
 ### 4-stage pipeline architecture
 
-Every search goes through four steps, like an assembly line. First, gather candidates. Second, score and rank them. Third, re-check the ranking for accuracy. Fourth, filter out anything that does not belong. Each step has one clear job and is not allowed to change results from earlier steps. This structure keeps searches predictable and prevents bugs from sneaking in between stages.
+Every search goes through four steps, like an assembly line. First, gather candidates. Second, score and rank them. Third, re-check the ranking for accuracy. Fourth, filter out anything that does not belong. Each step has one clear job and is not allowed to change results from earlier steps. This structure keeps searches predictable and prevents bugs from sneaking in between stages. Deep-mode helper branches now go through the same scope, context and quality filters as normal results, constitutional inserts obey global scope rules, and chunk reassembly now understands both `snake_case` and `camelCase` field names.
 
 ### BM25 trigger phrase re-index gate
 
@@ -112,9 +114,13 @@ This is how you add new knowledge to the system. You point it at a file and it r
 
 Today that save path has two extra safety checks before storage. First, memories that are too thin or lack enough supporting context are rejected outright so the system does not fill up with low-value entries. Second, files that are missing required structure (like headings, labels or metadata fields) are caught and rejected before they enter the index. You can also do a practice run to preview these checks without actually saving anything.
 
+Another fix makes fresh saves show up reliably in repeat searches. After a successful insert, the search cache is cleared right away, so asking the same question again does not replay stale results that were computed before the new memory existed.
+
 ### Memory metadata update (memory_update)
 
 You can rename a memory or change its priority without deleting and re-creating it. When you change the title, the system automatically updates its internal search index to match. If the update fails partway through, everything rolls back to the way it was before so you never end up with a half-changed record.
+
+When an update includes a new embedding, the system now marks that embedding as pending until the new vector row is actually written. This means a failed sqlite-vec write cannot leave the memory pretending its embedding update succeeded. Successful updates also clear the search cache immediately, so renamed memories and new trigger phrases show up right away.
 
 ### Single and folder delete (memory_delete)
 
@@ -138,7 +144,7 @@ Shared-memory spaces let multiple users or agents access the same pool of knowle
 
 ### Prediction-error save arbitration
 
-When you save new information, the system checks whether it already knows something similar. If it does, it decides the smartest action: strengthen the existing memory, update it in place, replace it with the new version or store both as related but different items. This prevents the knowledge base from filling up with near-identical copies while still capturing genuinely new information.
+When you save new information, the system checks whether it already knows something similar. If it does, it decides the smartest action: strengthen the existing memory, update it in place, replace it with the new version or store both as related but different items. This prevents the knowledge base from filling up with near-identical copies while still capturing genuinely new information. When a session ID is present, it now compares only against memories from that same session, so one session does not accidentally suppress or replace another.
 
 ### Correction tracking with undo
 
@@ -159,6 +165,8 @@ This lets you browse through all stored memories page by page, like scrolling th
 ### System statistics (memory_stats)
 
 This is the dashboard for your knowledge base. It tells you how many memories you have, how they are organized, which folders are most active and how large the database is. Think of it like the storage settings page on your phone that shows you how much space each app is using.
+
+The stats dashboard now counts partially indexed memories explicitly instead of silently leaving them out of the totals. That matters for chunked or in-progress indexing jobs because the headline numbers now match what is really in the database.
 
 ### Health diagnostics (memory_health)
 
@@ -238,7 +246,7 @@ After finishing a task, this tool takes the "after" measurement and compares it 
 
 ### Learning history (memory_get_learning_history)
 
-This shows you a report card of learning across all completed tasks in a project. You can see the average learning score, which tasks produced the biggest breakthroughs and whether your understanding is trending up or down over time. It is like a fitness tracker for knowledge growth.
+This shows you a report card of learning across all completed tasks in a project. You can see the average learning score, which tasks produced the biggest breakthroughs and whether your understanding is trending up or down over time. It is like a fitness tracker for knowledge growth. Behind the scenes, it now initializes its schema per database connection and rejects `NaN` scores, so swapped databases and malformed inputs do not quietly corrupt the results.
 
 ---
 
@@ -246,11 +254,11 @@ This shows you a report card of learning across all completed tasks in a project
 
 ### Ablation studies (eval_run_ablation)
 
-This tool tests how important each part of the search system is by turning off one piece at a time and measuring the difference. It is like removing one ingredient from a recipe to see if the dish still tastes good. The results tell you which components are critical and which ones you could remove without hurting search quality.
+This tool tests how important each part of the search system is by turning off one piece at a time and measuring the difference. It is like removing one ingredient from a recipe to see if the dish still tastes good. The results tell you which components are critical and which ones you could remove without hurting search quality. Token-usage summaries now skip fake zeroes when a run did not actually collect token data.
 
 ### Reporting dashboard (eval_reporting_dashboard)
 
-This is a performance report that shows how well the search system has been working over time. It tracks metrics across different work periods and search channels so you can see whether things are getting better or worse. It only reads data and never changes anything, making it safe to run at any time.
+This is a performance report that shows how well the search system has been working over time. It tracks metrics across different work periods and search channels so you can see whether things are getting better or worse. It only reads data and never changes anything, making it safe to run at any time. It also keeps using the evaluation database you already pointed the server at, and its `limit` setting counts sprint groups rather than raw runs.
 
 ---
 
@@ -274,11 +282,15 @@ When you save the same file again without changing it, the system now recognizes
 
 ### Database and schema safety
 
-Four separate bugs in the database layer were fixed to prevent data corruption. These ranged from referencing a column that did not exist to running operations in the wrong order. Each fix makes sure that database writes happen safely and predictably so your stored data stays accurate and complete.
+Five separate bugs in the database layer were fixed to prevent data corruption. These ranged from referencing a column that did not exist to running operations in the wrong order. Each fix makes sure that database writes happen safely and predictably so your stored data stays accurate and complete.
+
+Another fix stopped different database files from sharing one accidental global connection. The system now keeps a separate connection per resolved path, closes all of them cleanly and keeps archived-inclusive constitutional cache results from leaking into archived-exclusive reads.
 
 ### Guards and edge cases
 
-Two subtle bugs were fixed. One was double-counting certain score boosts, which inflated results unfairly. The other was silently linking new data to the wrong memory when it could not find the right one. Both fixes make sure the system produces accurate results and never quietly does the wrong thing.
+Six subtle bugs were fixed. Some inflated scores, some linked data to the wrong place and several only appeared on uncommon retrieval paths. Together these fixes make sure the system produces accurate results, respects caller limits and never quietly reports the wrong state.
+
+Four more protections were added in the vector query layer. Multi-concept search now hides expired memories, vector search refuses malformed embeddings with a clear validation error, constitutional-only results cannot exceed the requested limit, and `partial` indexing state is now counted instead of disappearing from stats.
 
 ### Canonical ID dedup hardening
 
@@ -310,7 +322,7 @@ When you want to know how well your search results are performing, you need a sa
 
 ### Core metric computation
 
-Think of this like a report card for search quality, but with eleven different grades instead of just one pass/fail. Some grades tell you whether the best answer shows up first, others tell you whether all the right answers are found at all. Together they pinpoint exactly where search is struggling, like a doctor running multiple tests to find the real problem instead of just asking "do you feel sick?"
+Think of this like a report card for search quality, but with twelve different grades instead of just one pass/fail. Some grades tell you whether the best answer shows up first, others tell you whether all the right answers are found at all. Together they pinpoint exactly where search is struggling, like a doctor running multiple tests to find the real problem instead of just asking "do you feel sick?" The rank-based grades now count positions 1, 2, 3 in the returned list instead of reusing skipped internal rank labels, so MRR, NDCG, and MAP match standard IR math.
 
 ### Observer effect mitigation
 
@@ -338,7 +350,7 @@ This is like a security camera for how scores change. It randomly samples a smal
 
 ### Full reporting and ablation study framework
 
-Imagine a car with five engines and you want to know which ones actually help. This feature turns off one engine at a time and measures whether the car goes slower or faster. If removing an engine makes things worse, it is pulling its weight. If removing it makes things better, it was actually hurting. A dashboard then shows trends over time so you can spot problems early.
+Imagine a car with five engines and you want to know which ones actually help. This feature turns off one engine at a time and measures whether the car goes slower or faster. If removing an engine makes things worse, it is pulling its weight. If removing it makes things better, it was actually hurting. A dashboard then shows trends over time so you can spot problems early. The ablation side now avoids fake zero token-usage numbers, and the dashboard keeps using the active eval database instead of quietly switching back to the default one.
 
 ### Test quality improvements
 
@@ -354,7 +366,7 @@ Three different AI reviewers independently checked the codebase and found 14 iss
 
 ### Memory roadmap baseline snapshot
 
-Before rolling out a big upgrade, you want to take a "before" photo so you can compare it with the "after." This feature captures a snapshot of how the memory system is performing right now, including how many searches are happening and whether the storage is set up correctly. That snapshot becomes the baseline you measure progress against during the rollout.
+Before rolling out a big upgrade, you want to take a "before" photo so you can compare it with the "after." This feature captures a snapshot of how the memory system is performing right now, including how many searches are happening and whether the storage is set up correctly. That snapshot becomes the baseline you measure progress against during the rollout. If switching to the target eval database fails halfway through, the code now restores the previous eval database handle so later tools do not get stuck on the wrong DB state.
 
 ### INT8 quantization evaluation
 
@@ -366,7 +378,7 @@ This evaluated whether compressing stored data to save space was worth the trade
 
 ### Typed-weighted degree channel
 
-This gives a search bonus to memories that are well-connected to other memories, like how a person who knows many people in a community is often a good source of information. Different types of connections count for different amounts, and there is a cap to prevent any single well-connected memory from dominating all search results just because it links to everything.
+This gives a search bonus to memories that are well-connected to other memories, like how a person who knows many people in a community is often a good source of information. Different types of connections count for different amounts, and there is a cap to prevent any single well-connected memory from dominating all search results just because it links to everything. Its degree cache is now kept separately for each database connection, so scores from one DB cannot leak into another.
 
 ### Co-activation boost strength increase
 
@@ -474,7 +486,7 @@ When a memory keeps proving useful over and over, it earns a promotion. After fi
 
 ### Scoring and ranking corrections
 
-These are four bug fixes for the scoring math. Scores could climb above their allowed maximum, a fallback was using the wrong data to guess relevance, circular relationships in the graph could multiply scores endlessly, and a statistics calculation could break with large numbers. Each fix is small on its own, but together they keep the ranking numbers honest and reliable.
+These are four bug fixes for the scoring math. Scores could climb above their allowed maximum, a fallback was using the wrong data to guess relevance, circular relationships in the graph could multiply scores endlessly, and a statistics calculation could break with large numbers. Each fix is small on its own, but together they keep the ranking numbers honest and reliable. A follow-up hardening pass also stops ablation reports from showing fake zero token-usage values when no token data was captured.
 
 ### Stage 3 effectiveScore fallback chain
 
@@ -482,15 +494,15 @@ A search result can carry several different scores from different stages of proc
 
 ### Scoring and fusion corrections
 
-These eight fixes address problems in how scores are calculated and combined. Issues ranged from weights that did not add up to 100% to a method that crashed when processing large batches and a filter that compared apples to oranges. Each fix makes the scoring math more accurate and stable, ensuring the final ranking truly reflects which results are most relevant to your question.
+These nine fixes address problems in how scores are calculated and combined. Issues ranged from weights that did not add up to 100% to a method that crashed when processing large batches and a filter that compared apples to oranges. The latest fix also makes RSF treat `42` and `"42"` as the same result, so duplicate fused items do not sneak in under different ID formats.
 
 ### Local GGUF reranker via node-llama-cpp
 
-After the initial search finds candidate results, this feature uses a small AI model running on your own computer to re-sort them for better accuracy. It works entirely offline with no network calls, so it is both private and free to use. If the model file is missing or the computer does not have enough memory, the system quietly skips this step and keeps the original order.
+After the initial search finds candidate results, this feature uses a small AI model running on your own computer to re-sort them for better accuracy. It works entirely offline with no network calls, so it is both private and free to use. If the model file is missing or the computer does not have enough memory, the system quietly skips this step and keeps the original order. Its shared reranker cache now separates providers and option settings correctly, and its p95 latency reading no longer overstates small samples.
 
 ### Tool-level TTL cache
 
-When you ask the same question twice within a short time, the system should not redo all the expensive work. This feature remembers recent results for up to 60 seconds so repeat requests get instant answers from the cache. When you save or delete a memory, the cache for affected searches is cleared automatically so you never see stale results.
+When you ask the same question twice within a short time, the system should not redo all the expensive work. This feature remembers recent results for up to 60 seconds so repeat requests get instant answers from the cache. When you save, update or delete a memory, the cache for affected searches is cleared automatically so you never see stale results.
 
 ### Access-driven popularity scoring
 
@@ -554,15 +566,15 @@ When your question covers multiple topics at once, this feature splits it into s
 
 ### Graph concept routing
 
-When your question mentions a specific concept by name, the system checks its catalog of known topics and activates the connection-based search for any match. This way, if you ask about "embedding cache" and that topic has known relationships in the knowledge graph, those connections are used to find related information that a plain keyword search would miss.
+When your question mentions a specific concept by name, the system checks its catalog of known topics and records matched concepts in trace metadata for downstream observability. This way, if you ask about "embedding cache" and that topic has known relationships in the knowledge graph, the system notes the match for diagnostics, but does not currently activate graph-based retrieval directly.
 
 ### LLM query reformulation
 
-For deep searches where the initial results are not confident enough, this feature asks an AI to rephrase your question in a broader, more abstract way while grounding it in actual content from the knowledge base. It is like asking a subject matter expert to translate your specific question into the terms that the reference library actually uses.
+For deep searches where the initial results are not confident enough, this feature asks an AI to rephrase your question in a broader, more abstract way while grounding it in actual content from the knowledge base. It is like asking a subject matter expert to translate your specific question into the terms that the reference library actually uses. Those reformulated hits now pass through the same scope, context and quality checks as ordinary results before they are merged back in.
 
 ### HyDE (Hypothetical Document Embeddings)
 
-When a deep search produces low-confidence results, this feature writes a short imaginary answer to your question and then searches for real documents that look like that imaginary answer. It is like describing the book you wish existed and then finding real books that match that description, which can surface relevant content that your original wording missed entirely.
+When a deep search produces low-confidence results, this feature writes a short imaginary answer to your question and then searches for real documents that look like that imaginary answer. It is like describing the book you wish existed and then finding real books that match that description, which can surface relevant content that your original wording missed entirely. It now checks the whole baseline set before deciding confidence is low, and the extra hits go through the same scope, context and quality checks as the main search.
 
 ### Index-time query surrogates
 
@@ -670,7 +682,7 @@ Once a week, the system reviews all the quiet usage signals it has collected and
 
 ### Assistive reconsolidation
 
-When two memories look very similar, the system automatically classifies them into one of three categories: near-identical (merged automatically), borderline similar (flagged for your review with a recommendation) or clearly different (kept separate). This helps prevent duplicate clutter while making sure genuinely distinct memories are not accidentally combined. No content is deleted without clear justification.
+When two memories look very similar, the system automatically classifies them into one of three categories: near-identical (shadow-archived: the older record is marked archived while the new one saves normally — no content merging occurs), borderline similar (flagged for your review with a recommendation) or clearly different (kept separate). This helps prevent duplicate clutter while making sure genuinely distinct memories are not accidentally combined. No content is deleted without clear justification.
 
 ---
 
@@ -686,7 +698,7 @@ A long document gets split into smaller pieces for searching, but you want to se
 
 ### Chunk ordering preservation
 
-When a document is reassembled from its search-result pieces, the pieces need to appear in the order they were written, not in the order they scored. This feature makes sure you read the content from top to bottom, just like the original document. Without it, you would get a scrambled version where paragraph three appears before paragraph one.
+When a document is reassembled from its search-result pieces, the pieces need to appear in the order they were written, not in the order they scored. This feature makes sure you read the content from top to bottom, just like the original document. Without it, you would get a scrambled version where paragraph three appears before paragraph one. The reassembly step now understands both `parent_id` and `parentId` style field names, so chunk collapse still works when callers send camelCase metadata.
 
 ### Template anchor optimization
 
@@ -718,7 +730,7 @@ The system used to have two different search paths: an old one and a new one. Th
 
 ### Pipeline and mutation hardening
 
-Ten small but important fixes were applied to make the system more robust. Some exposed missing options that were supposed to be available. Others fixed cleanup problems where deleting a memory left orphaned records behind. A few improved how the system handles word variations in searches. Together, these fixes close gaps that could have caused subtle data inconsistencies or missed search results over time.
+Ten small but important fixes were applied to make the system more robust. Some exposed missing options that were supposed to be available. Others fixed cleanup problems where deleting a memory left orphaned records behind. A few improved how the system handles word variations in searches. Together, these fixes close gaps that could have caused subtle data inconsistencies or missed search results over time. A follow-up audit also made deep-mode helper branches follow the same filters as the main search, made constitutional injection respect global scope enforcement, and let chunk reassembly read camelCase metadata.
 
 ### DB_PATH extraction and import standardization
 
@@ -774,7 +786,7 @@ When you are working on something, this feature automatically brings up importan
 
 ### Constitutional memory as expert knowledge injection
 
-Some memories are fundamental rules that should always come up when relevant, like "never delete production data." This feature tags those high-priority memories with instructions about when to surface them. It works like sticky notes on a filing cabinet that say "pull this file whenever someone asks about X."
+Some memories are fundamental rules that should always come up when relevant, like "never delete production data." This feature tags those high-priority memories with instructions about when to surface them. It works like sticky notes on a filing cabinet that say "pull this file whenever someone asks about X." Those injected constitutional rows now obey global scope-enforcement rules, not just caller-supplied scope fields.
 
 ### Spec folder hierarchy as retrieval structure
 
@@ -870,7 +882,7 @@ When you delete or rename a file on your computer, the search index needs to cle
 
 ### Feature catalog code references
 
-Every source code file now carries a label saying which features from this catalog it implements, like labeling warehouse boxes by product name instead of aisle number. If you want to find all the files involved in a particular feature, you can search for its name and immediately see every file that contributes to it. This makes it much easier to understand the impact of changes and track down where features are actually built.
+Approximately 74% of source code files (191 of 257 non-test TypeScript files) now carry a label saying which features from this catalog they implement, like labeling warehouse boxes by product name instead of aisle number. If you want to find all the files involved in a particular feature, you can search for its name and immediately see every file that contributes to it. This makes it much easier to understand the impact of changes and track down where features are actually built.
 
 ### Session capturing pipeline quality
 
@@ -890,11 +902,11 @@ This audit went through all 79 feature switches in the system and decided the fa
 
 ### Hierarchical scope governance, governed ingest, retention, and audit
 
-This feature controls who can save and read memories and keeps a record of every decision it makes. When someone tries to save information, the system checks their identity and requires proof of where the information came from. It is like a secure document room where you must show your badge, sign in and explain what you are filing before you are allowed to add or retrieve anything.
+This feature controls who can save and read memories and keeps a record of every decision it makes. When someone tries to save information, the system checks their identity and requires proof of where the information came from. It is like a secure document room where you must show your badge, sign in and explain what you are filing before you are allowed to add or retrieve anything. Ephemeral memories now must include an expiration time, and if the governance metadata step fails after a save, the new row is deleted so a half-governed record is not left behind.
 
 ### Shared-memory rollout, deny-by-default membership, and kill switch
 
-Shared memory spaces let multiple users or agents access the same pool of knowledge. Four shipped tools handle the lifecycle under `/memory:shared`: `shared_memory_enable` turns on the subsystem, `shared_space_upsert` creates or updates spaces, `shared_space_membership_set` controls who gets in, and `shared_memory_status` reports the current state. The subsystem is disabled by default and requires explicit opt-in: either set the appropriate environment variable or run the first-time enablement flow via `/memory:shared enable`. Once enabled, access is deny-by-default: nobody gets in unless they are explicitly granted membership with a role (`owner`, `editor`, or `viewer`). An emergency kill switch immediately blocks everyone if something goes wrong. It is like a shared office with a keycard lock that starts powered off: you must first turn on the lock system, then add names to the access list, and building management can lock it down instantly in an emergency.
+Shared memory spaces let multiple users or agents access the same pool of knowledge. Four shipped tools handle the lifecycle under `/memory:shared`: `shared_memory_enable` turns on the subsystem, `shared_space_upsert` creates or updates spaces, `shared_space_membership_set` controls who gets in, and `shared_memory_status` reports the current state. The subsystem is disabled by default and requires explicit opt-in: either set the appropriate environment variable or run the first-time enablement flow via `/memory:shared enable`. Once enabled, access is deny-by-default: nobody gets in unless they are explicitly granted membership with a role (`owner`, `editor`, or `viewer`). An emergency kill switch immediately blocks everyone if something goes wrong. It is like a shared office with a keycard lock that starts powered off: you must first turn on the lock system, then add names to the access list, and building management can lock it down instantly in an emergency. Shared members can now see each other's shared memories without needing an exact actor or session match, and partial space updates no longer erase saved cohort or metadata fields.
 
 ---
 
@@ -938,11 +950,11 @@ When you try to save something that is already stored exactly as-is, the system 
 
 ### Atomic-save parity and partial-indexing hints
 
-The system has two ways to save memories: a standard path and a faster "atomic" path. This feature made them return the same kind of feedback so you do not get different information depending on which path ran. It is like making sure both the express and regular checkout lanes at a store give you the same receipt format.
+The system has two ways to save memories: a standard path and a faster "atomic" path. This feature made them return the same kind of feedback so you do not get different information depending on which path ran. It is like making sure both the express and regular checkout lanes at a store give you the same receipt format. The normal governed-save path now also cleans up a new row if the follow-up governance write fails, so callers do not get a half-finished success.
 
 ### Final token metadata recomputation
 
-After the system adds hints and adjusts a response, it recalculates the size count to match what is actually being sent. Without this step, the reported size could be wrong because it was measured before the final changes were made. It is like weighing a package after you have finished packing it, not before you add the last item.
+After the system adds hints and adjusts a response, it recalculates the size count to match what is actually being sent. Without this step, the reported size could be wrong because it was measured before the final changes were made. It is like weighing a package after you have finished packing it, not before you add the last item. The same rule now applies when resume context is attached in `memory_context`: add the extra context first, then enforce the size limit.
 
 ### Hooks README and export alignment
 

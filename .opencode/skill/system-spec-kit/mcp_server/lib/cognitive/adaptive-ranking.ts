@@ -272,6 +272,10 @@ export function setAdaptiveThresholdOverrides(
   overrides: AdaptiveThresholdOverrides = {},
   database?: Database.Database,
 ): AdaptiveThresholdSnapshot {
+  // H4 FIX: Warn when called without a database, as overrides won't persist
+  if (!database) {
+    console.warn('[adaptive-ranking] setAdaptiveThresholdOverrides called without database — overrides will not persist');
+  }
   const nextOverrides: AdaptiveThresholdOverrides = {
     maxAdaptiveDelta: typeof overrides.maxAdaptiveDelta === 'number' && Number.isFinite(overrides.maxAdaptiveDelta)
       ? overrides.maxAdaptiveDelta

@@ -70,7 +70,7 @@ You send a query or prompt. The system figures out what you need. That is the co
 
 Intent detection classifies your input into one of seven types (add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision) and maps it to a retrieval mode. Five modes are available: auto (default, intent-detected routing), quick (trigger matching for fast lookups), deep (comprehensive semantic search across the full corpus), focused (intent-optimized with tighter filtering) and resume (session recovery targeting state, next-steps, summary and blocker anchors with full content included).
 
-Each mode has a token budget. Quick gets 800 tokens. Focused gets 1,500. Deep gets 2,000. Resume gets 1,200. After retrieval, the orchestrator estimates token count (1 token per 4 characters) and enforces the budget by stripping lowest-scored results from the tail until the response fits. A dedicated `enforceTokenBudget()` function handles the truncation with detailed tracking of original and returned result counts. When your overall context is running high, a pressure policy kicks in. When the `tokenUsage` ratio exceeds 0.60, the system downgrades to focused mode. Above 0.80, it switches to quick mode. The pressure policy is gated by `SPECKIT_PRESSURE_POLICY` and subject to rollout percentage via `SPECKIT_ROLLOUT_PERCENT`. You can override the mode and intent manually, but the auto-detection handles most cases correctly.
+Each mode has a token budget. Quick gets 800 tokens. Focused gets 1,500. Deep gets 2,000. Resume gets 1,200. After retrieval, the orchestrator estimates token count (1 token per 4 characters) and enforces the budget by stripping lowest-scored results from the tail until the response fits. A dedicated `enforceTokenBudget()` function handles the truncation with detailed tracking of original and returned result counts. Auto-resume `systemPromptContext` injection now happens before that budget pass runs, so resume-mode context items count toward the advertised limit instead of being appended afterward and pushing the final envelope over budget. When your overall context is running high, a pressure policy kicks in. When the `tokenUsage` ratio exceeds 0.60, the system downgrades to focused mode. Above 0.80, it switches to quick mode. The pressure policy is gated by `SPECKIT_PRESSURE_POLICY` and subject to rollout percentage via `SPECKIT_ROLLOUT_PERCENT`. You can override the mode and intent manually, but the auto-detection handles most cases correctly.
 
 When no `specFolder` is provided, automatic spec folder discovery attempts to identify the most relevant folder from the query text using a cached one-sentence description per spec folder. If the target folder can be identified from the description alone, the system avoids full-corpus search entirely. Discovery failure is non-fatal and falls through to the standard retrieval path. This feature runs behind the `SPECKIT_FOLDER_DISCOVERY` flag.
 
@@ -99,6 +99,8 @@ The search path is the 4-stage pipeline architecture, which is the sole runtime 
 A deep mode expands the query into up to 3 variants using `expandQuery()`, runs hybrid search for each variant in parallel and merges results with deduplication. Results are cached per parameter combination via `toolCache.withCache()`, and session deduplication runs after cache so that cache hits still respect session state.
 
 The parameter surface is wide. You control result count (`limit`, 1-100), spec folder scoping, tier and context type filtering, intent (explicit or auto-detected), reranking toggle, length penalty, temporal decay, minimum memory state (`minState`, default `"WARM"`, range HOT through ARCHIVED), constitutional inclusion, content inclusion, anchor filtering, session dedup, session boosting, causal boosting, minimum quality threshold, cache bypass and access tracking. Most defaults are sensible. You typically send a query and a session ID and let everything else run at defaults.
+
+Recent vector-query hardening closed three correctness gaps in the retrieval path. `multi_concept_search()` now applies the same expiry filter used by single-query search (`m.expires_at IS NULL OR m.expires_at > datetime('now')`), so expired memories no longer leak through the AND-match path. `vector_search()` validates embedding length before buffer conversion and throws `VectorIndexError(EMBEDDING_VALIDATION)` instead of surfacing raw sqlite-vec failures when callers pass malformed embeddings. It also returns early with `constitutional_results.slice(0, limit)` when constitutional injection already satisfies the requested limit, which keeps result counts deterministic and prevents the retrieval layer from returning more rows than the caller asked for.
 
 #### Source Files
 
@@ -135,6 +137,8 @@ This is the speed-first search option. Instead of doing a deep analysis of your 
 
 When you need speed over depth, trigger matching delivers. Rather than generating embeddings and running multi-channel search, it performs direct string matching of your prompt against stored trigger phrases. The performance target is under 100ms. Think of it as the "fast path" that sacrifices recall for latency.
 
+A governed-scope pass now runs immediately after raw trigger matching. `memory_match_triggers` accepts optional `tenantId`, `userId`, `agentId`, and `sharedSpaceId` boundaries, then looks up each match in `memory_index` and drops out-of-scope rows before cognitive enrichment begins. That closes the trigger-phrase leak where another tenant or actor's memory could surface before normal retrieval filtering kicked in.
+
 Where this tool gets interesting is the cognitive pipeline. When you provide a session ID with `include_cognitive=true`, the system applies FSRS-based attention decay (scores degrade each turn via `0.98^(turn-1)` exponential decay), memory activation (matched memories get their attention score set to 1.0), co-activation spreading (each activated memory spreads activation to related memories through the co-occurrence graph), tier classification (maps effective retrievability to HOT, WARM, COLD, DORMANT or ARCHIVED) and tiered content injection.
 
 Tiered content injection is the most visible effect. HOT memories return their full file content read from disk. WARM memories return the first 150 characters as a summary. COLD memories and below return no content at all. This tiering means recently active and highly relevant memories arrive with full context while dormant ones arrive as lightweight pointers.
@@ -163,9 +167,9 @@ Adaptive fusion replaces hardcoded channel weights with intent-aware profiles. T
 
 Five operational stages run between fusion and delivery. Stage A (query complexity routing, `SPECKIT_COMPLEXITY_ROUTER`) restricts active channels for simple queries to just vector and FTS, moderate queries add BM25 and complex queries get all five. Stage B (RSF shadow fusion, `SPECKIT_RSF_FUSION`) is historical and no longer active in runtime ranking. RSF artifacts are retained for compatibility/testing references only. Stage C (channel enforcement, `SPECKIT_CHANNEL_MIN_REP`) ensures every contributing channel has at least one result in top-k with a 0.005 quality floor. Stage D (confidence truncation, `SPECKIT_CONFIDENCE_TRUNCATION`) trims the irrelevant tail using a 2x-median gap elbow heuristic. Stage E (dynamic token budget, `SPECKIT_DYNAMIC_TOKEN_BUDGET`) computes tier-aware token limits (simple 1,500, moderate 2,500, complex 4,000).
 
-After these stages, Maximal Marginal Relevance reranking promotes result diversity using intent-specific lambda values (from `INTENT_LAMBDA_MAP`, default 0.7). Co-activation spreading takes the top 5 results, traverses the co-activation graph and applies a 0.25x boost to returned activation scores. A fan-effect divisor helper exists in `co-activation.ts`, but the Stage 2 hot path currently applies the spread score directly.
+After these stages, Maximal Marginal Relevance reranking promotes result diversity using intent-specific lambda values (from `INTENT_LAMBDA_MAP`, default 0.7). Co-activation spreading takes the top 5 results, traverses the co-activation graph and applies a 0.25x boost to returned activation scores. Those boosts now synchronize all live score aliases (`score`, `rrfScore`, `intentAdjustedScore`) before the reranked list is resorted, so downstream consumers see the same boosted number. Session boost likewise preserves the original working-memory `attentionScore` signal and records the boosted ranking value separately in `sessionBoostScore`. A fan-effect divisor helper exists in `co-activation.ts`, but the Stage 2 hot path currently applies the spread score directly.
 
-The fallback chain (`searchWithFallback()`) provides resilience. When `SPECKIT_SEARCH_FALLBACK` is enabled, the default path is a three-tier degradation flow: Tier 1 primary retrieval (default minimum similarity 0.3), Tier 2 widened retrieval at 0.1 with all channels forced on and Tier 3 structural SQL search as last resort. When `SPECKIT_SEARCH_FALLBACK` is disabled, the legacy two-pass path is used (0.3 then 0.17). The system is designed to avoid empty returns except on hard failures.
+The fallback chain (`searchWithFallback()`) provides resilience. When `SPECKIT_SEARCH_FALLBACK` is enabled, the default path is a three-tier degradation flow: Tier 1 primary retrieval (default minimum similarity 0.3), Tier 2 widened retrieval at 0.1 with all channels forced on and Tier 3 structural SQL search as last resort. Tier 3 now excludes archived rows unless `includeArchived=true`, closing the fallback-only leak that could reintroduce archived memories after earlier stages had filtered them. When `SPECKIT_SEARCH_FALLBACK` is disabled, the legacy two-pass path is used (0.3 then 0.17). The system is designed to avoid empty returns except on hard failures.
 
 #### Source Files
 
@@ -183,11 +187,11 @@ Every search goes through four steps, like an assembly line. First, gather candi
 
 The pipeline refactor (R6) restructures the retrieval flow into four bounded stages with clear responsibilities and a strict score-immutability invariant in the final stage.
 
-Stage 1 (Candidate Generation) executes search channels based on query type. Multi-concept queries generate one embedding per concept. Deep mode expands into up to 3 query variants via `expandQuery()`. When embedding expansion is active and R15 does not classify the query as "simple", a baseline and expanded-query search run in parallel with deduplication. Constitutional memory injection appends up to 5 constitutional rows when none appear in the initial candidate set. Quality score and tier filters run at the end of Stage 1.
+Stage 1 (Candidate Generation) executes search channels based on query type. Multi-concept queries generate one embedding per concept. Deep mode expands into up to 3 query variants via `expandQuery()`. When embedding expansion is active and R15 does not classify the query as "simple", a baseline and expanded-query search run in parallel with deduplication. Constitutional memory injection appends up to 5 constitutional rows when none appear in the initial candidate set, and that injection path now keys scope checks off `shouldApplyScopeFiltering` so global scope enforcement is honored even without caller-supplied governance scope. Deep-mode reformulation and HyDE branches re-enter the same post-search guardrails as primary candidates before merge, so scope, tier, `contextType` and `qualityThreshold` filters are applied uniformly across expansion channels.
 
-Stage 2 (Fusion and Signal Integration) is the single authoritative scoring point. The current runtime order is: session boost, causal boost, co-activation spreading, community co-retrieval from precomputed `community_assignments`, graph signals (N2a momentum + N2b depth), FSRS testing effect (when `trackAccess=true`), intent weights (non-hybrid only, preventing G2 double-weighting), artifact routing weight boosts, feedback signals (learned trigger boosts and negative feedback demotions), artifact result limiting, anchor metadata annotation (S2) and validation metadata enrichment with a bounded multiplier clamped to 0.8-1.2 (S3). The G2 prevention is structural: an `isHybrid` boolean computed once at the top of Stage 2 gates the intent weight step, so the code path for intent weights is absent when hybrid search already applied them during RRF fusion.
+Stage 2 (Fusion and Signal Integration) is the single authoritative scoring point. The current runtime order is: session boost, causal boost, co-activation spreading, community co-retrieval from precomputed `community_assignments`, graph signals (N2a momentum + N2b depth), FSRS testing effect (when `trackAccess=true`), intent weights (non-hybrid only, preventing G2 double-weighting), artifact routing weight boosts, feedback signals (learned trigger boosts and negative feedback demotions), artifact result limiting, anchor metadata annotation (S2) and validation metadata enrichment with a bounded multiplier clamped to 0.8-1.2 (S3). Session boost now preserves the original working-memory `attentionScore` signal and stores the boosted ranking value separately in `sessionBoostScore`, while co-activation spreading writes its boost back to all score aliases before the reranked set is resorted. The G2 prevention is structural: an `isHybrid` boolean computed once at the top of Stage 2 gates the intent weight step, so the code path for intent weights is absent when hybrid search already applied them during RRF fusion.
 
-Stage 3 (Rerank and Aggregate) handles cross-encoder reranking (optional, gated by `SPECKIT_CROSS_ENCODER`) and MPAB chunk collapse with parent reassembly. Chunks are grouped by parent ID, the best chunk per group is elected by score, and full parent content is loaded from the database. On DB failure, the best-chunk row is emitted as a fallback. Non-chunks and reassembled parents merge and sort descending by effective score.
+Stage 3 (Rerank and Aggregate) handles cross-encoder reranking (optional, gated by `SPECKIT_CROSS_ENCODER`) and MPAB chunk collapse with parent reassembly. Chunks are grouped by parent ID, the best chunk per group is elected by score, and full parent content is loaded from the database. The reassembly helper now accepts both snake_case and camelCase chunk metadata (`parent_id`/`parentId`, `chunk_index`/`chunkIndex`, `chunk_label`/`chunkLabel`), so formatter-style rows still collapse back to their parent correctly. On DB failure, the best-chunk row is emitted as a fallback. Non-chunks and reassembled parents merge and sort descending by effective score.
 
 Stage 4 (Filter and Annotate) enforces a "no score changes" invariant through dual enforcement. At compile time, `Stage4ReadonlyRow` declares all six score fields as `Readonly`, making assignment a TypeScript error. At runtime, `captureScoreSnapshot()` records all scores before operations and `verifyScoreInvariant()` checks them afterward, throwing a `[Stage4Invariant]` error on any mismatch. Within this invariant, Stage 4 applies memory state filtering (removing rows below `config.minState` with optional per-tier hard limits), evidence gap detection via TRM Z-score analysis and annotation metadata for feature flags and state statistics. Session deduplication is explicitly excluded from Stage 4 and runs post-cache in the handler to avoid double-counting.
 
@@ -333,6 +337,8 @@ The `asyncEmbedding` parameter (boolean, default `false`) enables non-blocking s
 
 Safety mechanisms run deep. Path security validation checks the file against an allowlist of base paths. File type validation accepts only `.md` and `.txt` in approved directories. Pre-flight validation checks anchor format, detects duplicates and estimates token budget before investing in embedding generation. A per-spec-folder mutex lock prevents TOCTOU race conditions when multiple saves target the same folder. SHA-256 content hashing skips same-path saves only when the existing row is in a healthy state (`success`, `pending`, or valid chunked-parent `partial`), so unhealthy rows still re-enter indexing. Cross-path hash dedup also accepts chunked parents in `partial` state and ignores invalid parent rows marked `complete`. A mutation ledger records every create, update, reinforce and supersede action for audit. The trigger matcher cache, tool cache and constitutional cache are all invalidated on write, and `memory_index_scan` now routes scan-triggered invalidation through the broader mutation-hook behavior used by other mutation paths. If embedding generation fails, the memory is still stored and searchable via BM25/FTS5 with the embedding marked as pending for later re-indexing.
 
+Successful insertions now clear the search cache immediately instead of waiting for delete-time invalidation or TTL expiry. `index_memory()` calls `clear_search_cache()` after the transactional insert, active-projection update and optional `vec_memories` write succeed, so a brand-new memory becomes visible to repeated `memory_search` calls right away. The fix closes a stale-results gap where the save path could report success while cached searches still replayed a pre-insert snapshot.
+
 Document type affects importance weighting automatically: constitutional files get 1.0, spec documents 0.8, plans 0.7, memory files 0.5 and scratch files 0.25.
 
 #### Source Files
@@ -354,6 +360,10 @@ You can change the title, trigger phrases, importance weight or importance tier 
 When the title changes, the system regenerates the vector embedding to keep search results aligned. This is a critical detail: if you rename a memory from "Authentication setup guide" to "OAuth2 configuration reference", the old embedding no longer represents the content accurately. Automatic regeneration fixes that.
 
 By default, if embedding regeneration fails (API timeout, provider outage), the entire update rolls back with no changes applied. Nothing happens. With `allowPartialUpdate` enabled, the metadata changes persist and the embedding is marked as pending for later re-indexing by the next `memory_index_scan`. That mode is useful when you need to fix metadata urgently and can tolerate a temporarily stale embedding.
+
+Embedding replacement now reports reality instead of optimism. When `update_memory()` receives a new embedding, it writes `embedding_status = 'pending'` as part of the main `memory_index` update and only flips that row to `'success'` after the replacement `vec_memories` insert completes. That prevents sqlite-vec outages or vec-table write failures from leaving metadata rows marked successful when no fresh vector was actually stored.
+
+Successful metadata updates now invalidate the search cache as part of the same transactional path. After the handler refreshes BM25, optionally persists the replacement vector and recomputes folder interference scores, it calls `clear_search_cache()` so renamed memories and trigger updates appear in subsequent cached searches immediately instead of after TTL expiry.
 
 A pre-update hash snapshot is captured for the mutation ledger. Every update records the prior hash, new hash, actor and decision metadata for full auditability.
 
@@ -478,7 +488,7 @@ When you save new information, the system checks whether it already knows someth
 
 #### Current Reality
 
-5-action decision engine during the save path. Examines semantic similarity of new content against existing memories: REINFORCE (>=0.95, boost FSRS stability), UPDATE (0.85-0.94 no contradiction, in-place update), SUPERSEDE (0.85-0.94 with contradiction, deprecate old + create new), CREATE_LINKED (0.70-0.84, new memory + causal edge), CREATE (<0.70, standalone). Contradiction detection via regex patterns. All decisions are logged to the `memory_conflicts` table with similarity, action, contradiction flag, reason and spec_folder. Document-type-aware weighting (constitutional=1.0 down to scratch=0.25). Always active unless `force: true` is passed.
+5-action decision engine during the save path. Examines semantic similarity of new content against existing memories: REINFORCE (>=0.95, boost FSRS stability), UPDATE (0.85-0.94 no contradiction, in-place update), SUPERSEDE (0.85-0.94 with contradiction, deprecate old + create new), CREATE_LINKED (0.70-0.84, new memory + causal edge), CREATE (<0.70, standalone). Contradiction detection via regex patterns. All decisions are logged to the `memory_conflicts` table with similarity, action, contradiction flag, reason and spec_folder. Document-type-aware weighting (constitutional=1.0 down to scratch=0.25). The arbitration path runs only when `force` is false and an embedding is available, and when `sessionId` is present it filters candidates from other sessions so one session cannot trigger false duplicate, update, or supersede decisions in another.
 
 #### Source Files
 
@@ -561,6 +571,8 @@ Folder ranking supports four modes: `count`, `recency`, `importance`, and `compo
 The response now reports `totalSpecFolders` from the full filtered/scored set before pagination slicing, so the summary stays accurate when `limit` truncates `topFolders`. The payload also includes the resolved `limit`, which makes truncation behavior explicit for callers and tests.
 
 Direct handler validation failures return MCP error envelopes with `E_INVALID_INPUT` and `data.details.requestId` for invalid `folderRanking`, invalid `excludePatterns`, invalid `includeScores`/`includeArchived`, or non-finite `limit` values. Aggregate-query and folder-ranking failures return MCP error envelopes instead of raw throws.
+
+Embedding-status totals now treat `partial` as a first-class state instead of silently dropping it. `get_status_counts()` initializes and returns a `partial` bucket, and `get_stats()` includes that bucket in the headline total. That keeps `memory_stats` aligned with chunked and partially indexed rows that already exist elsewhere in the vector-index state model.
 
 #### Source Files
 
@@ -910,7 +922,7 @@ Retrieves learning records for a spec folder with optional filtering by session 
 
 The summary statistics are where this tool earns its keep. Across all completed tasks in a spec folder, you see the average Learning Index, maximum and minimum LI, average knowledge gain, average uncertainty reduction and average context improvement. Trend interpretation maps the average LI to a human-readable assessment: above 15 is a strong learning trend, 7-15 is positive, 0-7 is slight, zero is neutral and below zero is regression.
 
-Pass `onlyComplete: true` to restrict results to tasks where both preflight and postflight were recorded. This gives you clean data for trend analysis without incomplete records skewing the averages. Records are ordered by `updated_at` descending so the most recent learning cycles appear first.
+Pass `onlyComplete: true` to restrict results to tasks where both preflight and postflight were recorded. This gives you clean data for trend analysis without incomplete records skewing the averages. Records are ordered by `updated_at` descending so the most recent learning cycles appear first. The handler now tracks schema initialization per database instance rather than per process, so fresh DB connections still create `session_learning` correctly, and score validation rejects `NaN` so malformed learning inputs cannot silently persist.
 
 #### Source Files
 
@@ -930,7 +942,7 @@ This tool tests how important each part of the search system is by turning off o
 
 This tool runs controlled ablation studies across the retrieval pipeline's search channels. You disable one channel at a time (vector, BM25, FTS5, graph or trigger) and measure the Recall@20 delta against a full-pipeline baseline. The answer to "what happens if we turn off the graph channel?" becomes a measured number rather than speculation.
 
-The framework uses dependency injection for the search function, making it testable without the full pipeline. Each channel ablation wraps in a try-catch so a failure in one channel's ablation produces partial results rather than a total failure. Statistical significance is assessed via a sign test (exact binomial distribution) because it is reliable with small query sets where a t-test would be unreliable. Verdict classification ranges from CRITICAL (channel removal causes significant regression) through negligible to HARMFUL (channel removal actually improves results).
+The framework uses dependency injection for the search function, making it testable without the full pipeline. Each channel ablation wraps in a try-catch so a failure in one channel's ablation produces partial results rather than a total failure. Statistical significance is assessed via a sign test (exact binomial distribution) because it is reliable with small query sets where a t-test would be unreliable. Verdict classification ranges from CRITICAL (channel removal causes significant regression) through negligible to HARMFUL (channel removal actually improves results). Token-usage summaries now ignore non-positive values, which prevents synthetic zeroes from appearing when a run has no real token-usage samples.
 
 Results are stored in `eval_metric_snapshots` with negative timestamp IDs to distinguish ablation runs from production evaluation runs. The tool requires `SPECKIT_ABLATION=true` to activate. When the flag is off, the MCP handler returns an explicit disabled-flag error and does not execute an ablation run.
 
@@ -948,11 +960,11 @@ This is a performance report that shows how well the search system has been work
 
 #### Current Reality
 
-Generates a sprint-level and channel-level metric dashboard from stored evaluation runs. You can filter by sprint, channel and metric, and choose between text (markdown-formatted) or JSON output.
+Generates a sprint-level and channel-level metric dashboard from stored evaluation runs. You can filter by sprint, channel and metric, and choose between text (plain fixed-width) or JSON output.
 
 The dashboard aggregates per-sprint metric summaries (mean, min, max, latest, count) and per-channel performance views (hit count, average latency, query count) from the `eval_metric_snapshots` and `eval_channel_results` tables. Sprint labels are read from metric-snapshot metadata (`sprint` or `sprintLabel`) and fall back to `run-{eval_run_id}` when metadata is absent. Trend analysis compares consecutive sprint groups using each metric's latest value, with `isHigherBetter()` treating latency-style and inversion-style metrics as lower-is-better and most other metrics as higher-is-better.
 
-This is a read-only module. It queries the eval database and produces reports with no writes or mutation side effects. Two different limits apply: the request `limit` keeps only the most recent sprint groups after grouping, while `SPECKIT_DASHBOARD_LIMIT` caps dashboard SQL reads. Snapshot rows are still fetched directly, but channel data is grouped per included eval-run/channel pair before sprint aggregation so large per-query histories do not starve the kept sprint groups.
+This is a read-only module. It queries the eval database and produces reports with no writes or mutation side effects. The accessor now tries `getEvalDb()` before falling back to `initEvalDb()`, so it keeps using an already-selected non-default or test eval DB instead of silently switching back to the default one. Two different limits apply: the request `limit` keeps only the most recent sprint groups after grouping, while `SPECKIT_DASHBOARD_LIMIT` caps dashboard SQL reads. Snapshot rows are still fetched directly, but channel data is grouped per included eval-run/channel pair before sprint aggregation so large per-query histories do not starve the kept sprint groups.
 
 #### Source Files
 
@@ -1036,11 +1048,11 @@ See [`08--bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md`
 
 #### Description
 
-Four separate bugs in the database layer were fixed to prevent data corruption. These ranged from referencing a column that did not exist to running operations in the wrong order. Each fix makes sure that database writes happen safely and predictably so your stored data stays accurate and complete.
+Five separate bugs in the database layer were fixed to prevent data corruption. These ranged from referencing a column that did not exist to running operations in the wrong order. Each fix makes sure that database writes happen safely and predictably so your stored data stays accurate and complete.
 
 #### Current Reality
 
-Four database-layer bugs were fixed:
+Five database-layer bugs were fixed:
 
 **B1: Reconsolidation column reference:** `reconsolidation.ts` referenced a non-existent `frequency_counter` column that would crash at runtime during merge operations. Replaced with `importance_weight` using `Math.min(1.0, currentWeight + 0.1)` merge logic.
 
@@ -1049,6 +1061,8 @@ Four database-layer bugs were fixed:
 **B3: Edge-deletion filter correctness:** `causal-edges.ts` delete path must match edges where either endpoint equals the target memory ID (`source_id = ? OR target_id = ?`). Regression coverage validates deletion remains scoped to intended source/target rows.
 
 **B4: Missing changes guard:** Save-path UPDATE statements in `handlers/pe-gating.ts` now validate SQLite update results (`result.changes`). Zero-row updates are treated as no-ops/errors instead of false success.
+
+**B5: Connection-map isolation and constitutional cache scoping:** `vector-index-store.ts` no longer lets `initialize_db(custom_path)` overwrite the module-global default connection. Connections are tracked in `db_connections = new Map<string, Database.Database>()` keyed by resolved path, globals are updated only for the validated default store and `close_db()` closes every tracked handle. The constitutional-memory cache key now also includes the `includeArchived` flag, preventing archived-inclusive results from leaking into archived-exclusive reads.
 
 #### Source Files
 
@@ -1060,15 +1074,23 @@ See [`08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md`](08--bu
 
 #### Description
 
-Two subtle bugs were fixed. One was double-counting certain score boosts, which inflated results unfairly. The other was silently linking new data to the wrong memory when it could not find the right one. Both fixes make sure the system produces accurate results and never quietly does the wrong thing.
+Six subtle bugs were fixed. Some inflated scores, some linked data to the wrong place and several only appeared on uncommon retrieval paths. Together these fixes make sure the system produces accurate results, respects caller limits and never quietly reports the wrong state.
 
 #### Current Reality
 
-Two guard/edge-case issues were fixed:
+Six guard/edge-case issues were fixed:
 
 **E1: Temporal contiguity double-counting:** `temporal-contiguity.ts` had an O(N^2) nested loop that processed both (A,B) and (B,A) pairs, double-counting boosts. Fixed inner loop to `j = i + 1`.
 
 **E2: Wrong-memory fallback:** `extraction-adapter.ts` fell back to resolving the most-recent memory ID on entity resolution failure, silently linking to the wrong memory. The fallback was removed. The function returns `null` on resolution failure.
+
+**E3: Expired multi-concept results:** `multi_concept_search()` now applies `AND (m.expires_at IS NULL OR m.expires_at > datetime('now'))`, bringing the AND-match path back in line with single-query retrieval and preventing expired memories from leaking into result sets.
+
+**E4: Vector-search limit overflow:** `vector_search()` now returns `constitutional_results.slice(0, limit)` when constitutional injection already fills the request, so callers never receive more rows than `limit` even when the constitutional tier saturates the result set.
+
+**E5: Embedding dimension validation:** `vector_search()` now validates embedding length before buffer conversion and throws a `VectorIndexError` with `EMBEDDING_VALIDATION` semantics instead of surfacing raw sqlite-vec errors for malformed embeddings.
+
+**E6: Partial-status accounting:** `get_status_counts()` and `get_stats()` now include the `partial` embedding state so partially indexed rows stop disappearing from dashboard totals and status breakdowns.
 
 #### Source Files
 
@@ -1189,13 +1211,15 @@ See [`09--evaluation-and-measurement/01-evaluation-database-and-schema.md`](09--
 
 #### Description
 
-Think of this like a report card for search quality, but with eleven different grades instead of just one pass/fail. Some grades tell you whether the best answer shows up first, others tell you whether all the right answers are found at all. Together they pinpoint exactly where search is struggling, like a doctor running multiple tests to find the real problem instead of just asking "do you feel sick?"
+Think of this like a report card for search quality, but with twelve different grades instead of just one pass/fail. Some grades tell you whether the best answer shows up first, others tell you whether all the right answers are found at all. Together they pinpoint exactly where search is struggling, like a doctor running multiple tests to find the real problem instead of just asking "do you feel sick?"
 
 #### Current Reality
 
-Eleven metrics run against logged retrieval data. The four primary ones are MRR@5 (how high does the right answer rank?), NDCG@10 (are results ordered well?), Recall@20 (do we find everything relevant?) and Hit Rate@1 (is the top result correct?).
+Twelve metrics run against logged retrieval data. The four primary ones are MRR@5 (how high does the right answer rank?), NDCG@10 (are results ordered well?), Recall@20 (do we find everything relevant?) and Hit Rate@1 (is the top result correct?).
 
-Seven diagnostic metrics add depth. Inversion rate counts pairwise ranking mistakes. Constitutional surfacing rate tracks whether high-priority memories appear in top results. Importance-weighted recall favors recall of critical content. Cold-start detection rate measures whether fresh memories surface when relevant. Precision@K and F1@K expose precision/recall balance. Intent-weighted NDCG adjusts ranking quality by query type.
+Eight diagnostic metrics add depth. Inversion rate counts pairwise ranking mistakes. Constitutional surfacing rate tracks whether high-priority memories appear in top results. Importance-weighted recall favors recall of critical content. Cold-start detection rate measures whether fresh memories surface when relevant. Precision@K and F1@K expose precision/recall balance. MAP captures ranking quality across the full relevant set. Intent-weighted NDCG adjusts ranking quality by query type.
+
+IR rank-based metrics now use contiguous 1-based positions within the evaluated top-K slice via `getRankAtIndex() = index + 1`, not external sparse rank labels carried through filtering or reranking. That keeps MRR, NDCG, and MAP aligned with standard IR definitions instead of understating them when rank numbers have gaps.
 
 This battery of metrics means you can diagnose where the pipeline fails, not just whether it fails.
 
@@ -1329,9 +1353,9 @@ Imagine a car with five engines and you want to know which ones actually help. T
 
 The ablation study framework disables one retrieval channel at a time (vector, BM25, FTS5, graph or trigger) and measures Recall@20 delta against a full-pipeline baseline. "What happens if we turn off the graph channel?" now has a measured answer rather than speculation.
 
-The framework uses dependency injection for the search function, making it testable without the full pipeline. Statistical significance is assessed via a sign test using log-space binomial coefficient computation (preventing overflow for n>50, fixed in Sprint 8). Verdict classification ranges from CRITICAL (channel removal causes significant regression) through negligible to HARMFUL (channel removal actually improves results). Results are stored in `eval_metric_snapshots` with negative timestamp IDs to distinguish ablation runs from production evaluation data. The framework runs behind the `SPECKIT_ABLATION` flag.
+The framework uses dependency injection for the search function, making it testable without the full pipeline. Statistical significance is assessed via a sign test using log-space binomial coefficient computation (preventing overflow for n>50, fixed in Sprint 8). Verdict classification ranges from CRITICAL (channel removal causes significant regression) through negligible to HARMFUL (channel removal actually improves results). Results are stored in `eval_metric_snapshots` with negative timestamp IDs to distinguish ablation runs from production evaluation data. The framework runs behind the `SPECKIT_ABLATION` flag. Token-usage aggregation now filters to finite values greater than zero, so ablation reports stop emitting synthetic `0` token rows when `runAblation()` has no real token-usage samples to aggregate.
 
-The reporting dashboard aggregates per-sprint metric summaries (mean, min, max, latest and count) and per-channel performance views (hit count, average latency and query count) from the evaluation database. Trend analysis compares consecutive runs to detect regressions. Sprint labels are inferred from metadata JSON. A `isHigherBetter()` helper correctly interprets trend direction for different metric types. Both the ablation runner and the dashboard are exposed as new MCP tools: `eval_run_ablation` and `eval_reporting_dashboard`.
+The reporting dashboard aggregates per-sprint metric summaries (mean, min, max, latest and count) and per-channel performance views (hit count, average latency and query count) from the evaluation database. Trend analysis compares consecutive runs to detect regressions. Sprint labels are inferred from metadata JSON. A `isHigherBetter()` helper correctly interprets trend direction for different metric types. The dashboard now calls `getEvalDb()` before falling back to `initEvalDb()`, which preserves an already-selected non-default or test eval DB instead of silently switching back to the default one. Its request `limit` is the number of sprint groups kept after grouping, not the number of raw eval runs fetched. Both the ablation runner and the dashboard are exposed as new MCP tools: `eval_run_ablation` and `eval_reporting_dashboard`.
 
 #### Source Files
 
@@ -1433,7 +1457,7 @@ Before rolling out a big upgrade, you want to take a "before" photo so you can c
 
 When `persist: true`, every metric is written into `eval_metric_snapshots` with `channel = 'memory-state-baseline'`. The metadata attached to each persisted row includes the resolved memory-roadmap phase, the compatibility-supported roadmap capability flags, `scopeDimensionsTracked` and the resolved `contextDbPath`. Missing or unreadable context databases are non-fatal: retrieval metrics still record and context-backed metrics fall back to zero.
 
-The baseline path now initializes the eval database beside the context database under test instead of silently writing to the default eval location. That keeps ad-hoc migration and rollout checks scoped to the database actually being evaluated.
+The baseline path now initializes the eval database beside the context database under test instead of silently writing to the default eval location. That keeps ad-hoc migration and rollout checks scoped to the database actually being evaluated. The path switch is also wrapped in `try/finally`, so even if `initEvalDb()` fails after closing the previous singleton, the prior eval DB handle is restored instead of leaving global eval state clobbered for later calls.
 
 #### Source Files
 
@@ -1473,7 +1497,7 @@ This gives a search bonus to memories that are well-connected to other memories,
 
 A fifth RRF channel scores memories by their graph connectivity. Edge type weights range from caused at 1.0 down to supports at 0.5, with logarithmic normalization and a hub cap (`MAX_TYPED_DEGREE=15`, `MAX_TOTAL_DEGREE=50`, `DEGREE_BOOST_CAP=0.15`) to prevent any single memory from dominating results through connections alone.
 
-Constitutional memories are excluded from degree boosting because they already receive top-tier visibility. The channel runs behind the `SPECKIT_DEGREE_BOOST` feature flag with a degree cache that invalidates only on graph mutations, not per query. When a memory has zero edges, the channel returns 0 rather than failing.
+Constitutional memories are excluded from degree boosting because they already receive top-tier visibility. The channel runs behind the `SPECKIT_DEGREE_BOOST` feature flag with a degree cache that invalidates only on graph mutations, not per query. That cache is now scoped per database instance via `WeakMap<Database.Database, Map<string, number>>`, with `getDegreeCacheForDb(database)` for lookup and `clearDegreeCacheForDb(database)` for explicit invalidation, so scores from one DB can no longer leak into another. When a memory has zero edges, the channel returns 0 rather than failing.
 
 #### Source Files
 
@@ -1983,6 +2007,8 @@ Four scoring-layer bugs were fixed:
 
 **C4: Ablation binomial overflow:** `ablation-framework.ts` computed binomial coefficients using naive multiplication that overflowed for n>50 in the sign test. Replaced with `logBinomial(n, k)` using log-space summation.
 
+**Follow-up hardening:** the same ablation metrics path now filters token-usage samples to finite values greater than zero before averaging. Because `runAblation()` does not currently populate `tokenUsage`, this prevents synthetic zeroes from appearing in `token_usage` metrics.
+
 #### Source Files
 
 See [`11--scoring-and-calibration/11-scoring-and-ranking-corrections.md`](11--scoring-and-calibration/11-scoring-and-ranking-corrections.md) for full implementation and test file listings.
@@ -2009,11 +2035,11 @@ See [`11--scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md`](
 
 #### Description
 
-These eight fixes address problems in how scores are calculated and combined. Issues ranged from weights that did not add up to 100% to a method that crashed when processing large batches and a filter that compared apples to oranges. Each fix makes the scoring math more accurate and stable, ensuring the final ranking truly reflects which results are most relevant to your question.
+These nine fixes address problems in how scores are calculated and combined. Issues ranged from weights that did not add up to 100% to a method that crashed when processing large batches and a filter that compared apples to oranges. Each fix makes the scoring math more accurate and stable, ensuring the final ranking truly reflects which results are most relevant to your question.
 
 #### Current Reality
 
-Eight scoring issues were fixed:
+Nine scoring issues were fixed:
 
 - **Intent weight recency (#5):** `applyIntentWeights` now includes timestamp-based recency scoring. Uses loop-based min/max to find timestamp range (no spread operator stack overflow).
 - **Five-factor weight normalization (#6):** Composite scoring weights auto-normalize to sum 1.0 after partial overrides. Without this, overriding one weight broke weighted-average semantics.
@@ -2023,8 +2049,9 @@ Eight scoring issues were fixed:
 - **Adaptive fusion normalization (#10):** Core weights (semantic + keyword + recency) now normalize to sum 1.0 after doc-type adjustments. Only applied when doc-type shifts alter the balance.
 - **Shared resolveEffectiveScore (#11):** A single function in `pipeline/types.ts` replaces both Stage 2's `resolveBaseScore()` and Stage 3's local `effectiveScore()`. Uses the canonical fallback chain: `intentAdjustedScore -> rrfScore -> score -> similarity/100`, all clamped [0,1].
 - **Configurable interference threshold (#12):** `computeInterferenceScoresBatch()` now accepts an optional `threshold` parameter (defaults to `INTERFERENCE_SIMILARITY_THRESHOLD`).
+- **RSF ID canonicalization (#13):** `fuseResultsRsfMulti()` and `fuseResultsRsfCrossVariant()` now use `canonicalRrfId()` for map keys and variant appearance tracking, preventing numeric/string ID splits such as `42` vs "42" from surfacing as duplicate RSF items.
 
-In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent pipeline steps (artifact routing, feedback signals) write to the `score` field. Since `resolveEffectiveScore()` prefers `intentAdjustedScore` over `score`, later modifications were invisible in final ranking. A synchronization pass now updates `intentAdjustedScore` from the post-signal `score` using `Math.max(intentAdjustedScore, score)` to preserve the higher value while ensuring all pipeline signal contributions are reflected in the final ranking.
+In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent pipeline steps (artifact routing, feedback signals, session boost, and causal boost) can mutate `score`. Since `resolveEffectiveScore()` prefers `intentAdjustedScore` over `score`, later modifications were invisible in final ranking. A synchronization pass now flat-overwrites the score aliases by clamping the current value and writing the same number into `score`, `rrfScore`, and `intentAdjustedScore` via `withSyncedScoreAliases()` and `syncScoreAliasesInPlace()`. This keeps downstream ranking consistent with the latest pipeline score; it does not preserve the prior value with `Math.max(...)`.
 
 #### Source Files
 
@@ -2042,6 +2069,8 @@ After the initial search finds candidate results, this feature uses a small AI m
 
 **IMPLEMENTED (Sprint 019).** Implements the `RERANKER_LOCAL` flag with `node-llama-cpp` in Stage 3 using `bge-reranker-v2-m3.Q4_K_M.gguf` (~350MB). Activation is strict: `RERANKER_LOCAL` must equal `'true'`, rollout gating must permit the feature, the configured model path must be readable and the host must meet the total-memory threshold (8GB by default, 2GB when `SPECKIT_RERANKER_MODEL` is set). The guard intentionally checks total system RAM rather than free-memory readings. Sequential per-candidate inference remains intentional. If local execution is unavailable or runtime scoring fails, the local path returns the incoming order unchanged. New file: `lib/search/local-reranker.ts`.
 
+The shared cross-encoder path now keys its reranker cache by provider, document order, and option bits such as `applyLengthPenalty`, and both cache lookup and cache store use that stronger key. That prevents false cache hits across providers or option combinations. The reranker status p95 latency calculation also now uses the bounded ceil-based percentile index, which removes the old off-by-one upward bias on small sample sets.
+
 #### Source Files
 
 See [`11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md`](11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md) for full implementation and test file listings.
@@ -2052,13 +2081,13 @@ See [`11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md`]
 
 #### Description
 
-When you ask the same question twice within a short time, the system should not redo all the expensive work. This feature remembers recent results for up to 60 seconds so repeat requests get instant answers from the cache. When you save or delete a memory, the cache for affected searches is cleared automatically so you never see stale results.
+When you ask the same question twice within a short time, the system should not redo all the expensive work. This feature remembers recent results for up to 60 seconds so repeat requests get instant answers from the cache. When you save, update or delete a memory, the cache for affected searches is cleared automatically so you never see stale results.
 
 #### Current Reality
 
 The tool cache (`lib/cache/tool-cache.ts`) provides a per-tool, TTL-based in-memory cache that sits in front of expensive operations like embedding generation and database queries. Each cache entry is keyed by a SHA-256 hash of the tool name plus input parameters and expires after a configurable TTL (default 60 seconds via `TOOL_CACHE_TTL_MS`). Maximum cache size is governed by `TOOL_CACHE_MAX_ENTRIES` (default 1000) with oldest-entry eviction on overflow.
 
-Cache statistics (hits, misses, evictions, invalidations, hit rate) are tracked for observability. A periodic cleanup sweep removes expired entries. Tool-specific invalidation allows targeted cache busting after mutations without flushing the entire cache. The cache is wired into multiple handlers including `memory_search`, `memory_save`, `memory_delete` and `memory_bulk_delete` via the mutation hooks system.
+Cache statistics (hits, misses, evictions, invalidations, hit rate) are tracked for observability. A periodic cleanup sweep removes expired entries. Tool-specific invalidation allows targeted cache busting after mutations without flushing the entire cache. The cache is wired into multiple handlers including `memory_search`, `memory_save`, `memory_update`, `memory_delete` and `memory_bulk_delete` via the mutation hooks system.
 
 #### Source Files
 
@@ -2350,7 +2379,7 @@ Corpus-grounded LLM query reformulation applies step-back abstraction combined w
 
 #### Current Reality
 
-Enabled by default (graduated). Set `SPECKIT_LLM_REFORMULATION=false` to disable. The reformulation module performs a two-step process: (1) cheap seed retrieval via FTS5/BM25 keyword search (no embedding call, up to 3 results) to ground the prompt in real corpus content, then (2) a single LLM call to produce a step-back abstraction and up to 2 corpus-grounded query variants. Timeout is 8000ms. LLM results are cached via a shared LLM result cache (1h TTL). Only fires in deep mode.
+Enabled by default (graduated). Set `SPECKIT_LLM_REFORMULATION=false` to disable. The reformulation module performs a two-step process: (1) cheap seed retrieval via FTS5/BM25 keyword search (no embedding call, up to 3 results) to ground the prompt in real corpus content, then (2) a single LLM call to produce a step-back abstraction and up to 2 corpus-grounded query variants. Timeout is 8000ms. LLM results are cached via a shared LLM result cache (1h TTL). Only fires in deep mode, and reformulated hits now pass through the same scope, tier, `contextType` and `qualityThreshold` filters as primary candidates before merge.
 
 #### Source Files
 
@@ -2366,7 +2395,7 @@ HyDE generates a short hypothetical document answering the query, embeds it, and
 
 #### Current Reality
 
-Enabled by default (graduated). Set `SPECKIT_HYDE=false` to disable HyDE generation and `SPECKIT_HYDE_ACTIVE=false` to force shadow-only mode. HyDE only fires in deep mode with low-confidence baselines (top score < 0.45). Pseudo-documents are generated in markdown-memory format (max 200 tokens). Budget: 1 LLM call per cache miss. Combined with reformulation: at most 2 total LLM calls per deep query.
+Enabled by default (graduated). Set `SPECKIT_HYDE=false` to disable HyDE generation and `SPECKIT_HYDE_ACTIVE=false` to force shadow-only mode. HyDE only fires in deep mode with low-confidence baselines, using the maximum resolved score across the full baseline set instead of assuming the first row is best. Pseudo-documents are generated in markdown-memory format (max 200 tokens). Budget: 1 LLM call per cache miss. Combined with reformulation: at most 2 total LLM calls per deep query, and HyDE hits now pass through the same scope, tier, `contextType` and `qualityThreshold` filters before merge.
 
 #### Source Files
 
@@ -2960,7 +2989,7 @@ When a document is reassembled from its search-result pieces, the pieces need to
 
 #### Current Reality
 
-When multi-chunk results collapse back into a single memory during MPAB aggregation, chunks are now sorted by their original `chunk_index` so the consuming agent reads content in document order rather than score order. Full parent content is loaded from the database when possible. On DB failure, the best-scoring chunk is emitted as a fallback with `contentSource: 'file_read_fallback'` metadata.
+When multi-chunk results collapse back into a single memory during MPAB aggregation, chunks are now sorted by their original `chunk_index` so the consuming agent reads content in document order rather than score order. The reassembly helper also reads both snake_case and camelCase chunk metadata (`parent_id`/`parentId`, `chunk_index`/`chunkIndex`, `chunk_label`/`chunkLabel`), so callers using formatter-style keys still hit the collapse path instead of silently passing through as separate rows. Full parent content is loaded from the database when possible. On DB failure, the best-scoring chunk is emitted as a fallback with `contentSource: 'file_read_fallback'` metadata.
 
 #### Source Files
 
@@ -3124,6 +3153,12 @@ Ten fixes addressed schema completeness, pipeline metadata, embedding efficiency
 - **BM25 index cleanup on delete (#21):** `bm25Index.getIndex().removeDocument(String(id))` called after successful delete when BM25 is enabled.
 - **Atomic save error tracking (#22):** `atomicSaveMemory` now tracks rename-failure state with a `dbCommitted` flag for better error reporting.
 - **Dynamic preflight error code (#23):** Preflight validation uses the actual error code from `preflightResult.errors[0].code` instead of hardcoding `ANCHOR_FORMAT_INVALID`.
+
+A later audit added three more pipeline-side corrections to the same runtime path:
+
+- **Deep-mode filter parity (H11):** Reformulation and HyDE candidates now re-enter scope, tier, `contextType` and `qualityThreshold` filtering before merge.
+- **Constitutional scope parity (H12):** Constitutional injection now uses `shouldApplyScopeFiltering`, so global scope enforcement applies even when callers omit explicit governance scope fields.
+- **CamelCase chunk metadata support (H14):** Chunk reassembly now accepts `parentId`, `chunkIndex` and `chunkLabel` aliases in addition to snake_case fields, preventing silent bypass of parent collapse.
 
 #### Source Files
 
@@ -3353,7 +3388,7 @@ Some memories are fundamental rules that should always come up when relevant, li
 
 Constitutional-tier memories receive a `retrieval_directive` metadata field formatted as explicit instruction prefixes for LLM consumption. Examples: "Always surface when: user asks about memory save rules" or "Prioritize when: debugging search quality."
 
-Rule patterns are extracted from content using a ranked list of imperative verbs (must, always, never, should, require) and condition-introducing words (when, if, for, during). Scanning is capped at 2,000 characters from the start of content, and each directive component is capped at 120 characters. The `enrichWithRetrievalDirectives()` function maps over results without filtering or reordering. The enrichment is wired into `hooks/memory-surface.ts` before returning results.
+Rule patterns are extracted from content using a ranked list of imperative verbs (must, always, never, should, require) and condition-introducing words (when, if, for, during). Scanning is capped at 2,000 characters from the start of content, and each directive component is capped at 120 characters. The `enrichWithRetrievalDirectives()` function maps over results without filtering or reordering. The enrichment is wired into `hooks/memory-surface.ts` before returning results. In the Stage 1 injection path, constitutional rows now use `shouldApplyScopeFiltering` rather than `hasGovernanceScope` alone before merge, so global scope enforcement and caller-provided governance scope are applied consistently.
 
 #### Source Files
 
@@ -3904,7 +3939,11 @@ Phase 5 added governed multi-scope controls across ingest and retrieval. Scope i
 
 Governed ingest now requires provenance metadata (`provenanceSource`, `provenanceActor`) when scoped identity fields are provided. Ingest attempts that carry scope identifiers without required provenance are rejected instead of being accepted as ambiguous writes.
 
-Retention policy logic is integrated with governance controls, and allow/deny outcomes are recorded for auditability. The governance audit trail captures scope decisions so policy behavior can be reviewed and verified after runtime operations.
+Retention policy logic is integrated with governance controls, and allow/deny outcomes are recorded for auditability. Ephemeral retention now requires `deleteAfter`, because sweeps key off `delete_after` and an unscheduled ephemeral row would never expire.
+
+The governed save post-step is also fail-safe now: governance metadata application and governance-audit recording run in a transaction, and if that post-insert step fails the just-created memory row is deleted instead of being left behind without tenant, scope, provenance, or retention fields.
+
+The governance audit trail captures scope decisions so policy behavior can be reviewed and verified after runtime operations.
 
 #### Source Files
 
@@ -3926,7 +3965,9 @@ Phase 6 introduced shared-memory spaces with governance-first rollout controls. 
 
 Access is deny-by-default: a caller can use a shared space only when explicit membership exists for the current identity. Rollout is controlled per space and supports immediate kill-switch behavior. Even previously authorized members are blocked when the kill switch is enabled, providing a hard operational stop for incident response or controlled rollback.
 
-Shared-memory handlers and lifecycle tools use the same membership and rollout checks so save, search and status flows enforce one consistent governance boundary.
+Shared-memory handlers and lifecycle tools use the same membership and rollout checks so save, search and status flows enforce one consistent governance boundary. When a row belongs to an allowed shared space, retrieval now treats membership as the boundary: tenant alignment is still required, but exact actor and session matching are skipped so collaborator B can retrieve collaborator A's shared memories inside the same space.
+
+`shared_space_upsert` also preserves rollout cohort and metadata on partial updates, so renaming a space or toggling rollout state no longer clears previously stored cohort labels or structured metadata.
 
 #### Source Files
 
@@ -4101,7 +4142,7 @@ The system has two ways to save memories: a standard path and a faster "atomic" 
 
 #### Current Reality
 
-`atomicSaveMemory()` now returns the same `postMutationHooks` envelope shape and UX hint payloads as the primary save path. The finalized follow-up pass also preserved structured partial-indexing guidance so callers can handle atomic-save outcomes with the same parsing and recovery flow used for standard saves.
+`atomicSaveMemory()` now returns the same `postMutationHooks` envelope shape and UX hint payloads as the primary save path. The finalized follow-up pass also preserved structured partial-indexing guidance so callers can handle atomic-save outcomes with the same parsing and recovery flow used for standard saves. The primary governed-save path now also deletes newly inserted rows if governance metadata application fails, preventing half-governed success states from leaking out to callers.
 
 #### Source Files
 
@@ -4117,7 +4158,7 @@ After the system adds hints and adjusts a response, it recalculates the size cou
 
 #### Current Reality
 
-Phase 014 recomputes final token metadata after `appendAutoSurfaceHints(...)` mutates the envelope and before token-budget enforcement evaluates the payload. This keeps `meta.tokenCount` aligned with the exact serialized envelope returned to callers.
+Phase 014 recomputes final token metadata after `appendAutoSurfaceHints(...)` mutates the envelope and before token-budget enforcement evaluates the payload. The same finalize-then-budget ordering now also applies in `memory_context`, where auto-resume `systemPromptContext` injection happens before `enforceTokenBudget()`. This keeps `meta.tokenCount` and the delivered payload aligned with the exact serialized envelope returned to callers.
 
 #### Source Files
 
@@ -4213,7 +4254,7 @@ Mode-aware response profiles route search and context results through one of fou
 
 #### Current Reality
 
-Four profiles are implemented: quick (topResult + oneLineWhy + omittedCount + tokenReduction), research (results + evidenceDigest + followUps), resume (state + nextSteps + blockers), and debug (full trace + tokenStats). Backward compatible: when the flag is OFF or profile is omitted, the original response is unchanged. Default ON, set `SPECKIT_RESPONSE_PROFILE_V1=false` to disable.
+Four profiles are implemented: quick (topResult + oneLineWhy + omittedCount + tokenReduction), research (results + evidenceDigest + followUps), resume (state + nextSteps + blockers), and debug (full trace + tokenStats). Backward compatible: when the flag is OFF or profile is omitted, the original response is unchanged. Default ON, set `SPECKIT_RESPONSE_PROFILE_V1=false` to disable. **Note:** Runtime wiring is partial: `memory_search` applies the selected profile formatter, but `memory_context` only declares `profile?: string` without using it. The public tool schemas do not currently expose the `profile` parameter for either tool.
 
 #### Source Files
 
@@ -4384,7 +4425,7 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_GRAPH_SIGNALS` | `true` | boolean | `lib/search/search-flags.ts` | Enables N2a graph momentum scoring and N2b causal depth signals. Applied during Stage 2 fusion as additional scoring inputs from the causal graph structure. |
 | `SPECKIT_GRAPH_UNIFIED` | `true` | boolean | `lib/search/graph-flags.ts` | Unified graph channel gate. Legacy compatibility shim that controls whether the graph search channel participates in hybrid retrieval. Disabled with explicit `'false'`. |
 | `SPECKIT_GRAPH_WALK_ROLLOUT` | inherited from `SPECKIT_GRAPH_SIGNALS` | enum (`off`, `trace_only`, `bounded_runtime`) | `lib/search/search-flags.ts` | Controls the bounded graph-walk ladder. `off` disables the walk bonus, `trace_only` keeps rollout state and diagnostics visible with zero applied bonus, and `bounded_runtime` applies the capped Stage 2 graph-walk bonus while preserving deterministic ordering protections. |
-| `SPECKIT_HYDRA_PHASE` | `shared-rollout` | string | `lib/config/capability-flags.ts` | Legacy compatibility alias for the memory-roadmap phase label. Supported values are `baseline`, `lineage`, `graph`, `adaptive`, `scope-governance`, and `shared-rollout`; unknown values fall back to `shared-rollout`. |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` / `SPECKIT_HYDRA_PHASE` | `shared-rollout` | string | `lib/config/capability-flags.ts` | Canonical / legacy alias pair for the memory-roadmap phase label. Code resolves `SPECKIT_MEMORY_ROADMAP_PHASE` first, then falls back to `SPECKIT_HYDRA_PHASE`. Supported values are `baseline`, `lineage`, `graph`, `adaptive`, `scope-governance`, and `shared-rollout`; unknown values fall back to `shared-rollout`. |
 | `SPECKIT_HYDRA_LINEAGE_STATE` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the lineage roadmap flag. It remains default-on for roadmap metadata snapshots and rename-window lineage compatibility paths; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_GRAPH_UNIFIED` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the unified-graph roadmap flag. It remains intentionally separate from the runtime `SPECKIT_GRAPH_UNIFIED` retrieval gate so roadmap metadata cannot misreport live graph-channel defaults; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the adaptive-ranking roadmap flag. Phase 4 adaptive ranking remains dormant in production, so roadmap metadata defaults this flag to off unless explicitly enabled with `true` or `1`. Used by roadmap metadata snapshots and adaptive shadow-ranking compatibility paths. |

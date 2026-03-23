@@ -4,7 +4,7 @@
 // Feature catalog: Causal edge creation (memory_causal_link)
 // Causal relationship graph for memory lineage
 import type Database from 'better-sqlite3';
-import { clearDegreeCache } from '../search/graph-search-fn';
+import { clearDegreeCache, clearDegreeCacheForDb } from '../search/graph-search-fn';
 import { clearGraphSignalsCache } from '../graph/graph-signals';
 import { runInTransaction } from './transaction-manager';
 
@@ -107,7 +107,10 @@ let db: Database.Database | null = null;
 
 function invalidateDegreeCache(): void {
   try {
-    clearDegreeCache();
+    // H1 FIX: Use db-specific cache invalidation instead of the no-op global version
+    if (db) {
+      clearDegreeCacheForDb(db);
+    }
   } catch (_error: unknown) {
     // Cache invalidation is best-effort; never block edge mutations
   }

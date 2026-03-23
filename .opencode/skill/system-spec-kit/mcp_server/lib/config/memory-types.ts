@@ -300,7 +300,8 @@ export function resolveSpecDocumentType(filePath: string | null | undefined): Me
 
   const normalizedPath = filePath.replace(/\\/g, '/').toLowerCase();
   if (
-    !normalizedPath.includes('/specs/')
+    // H5 FIX: Also match relative paths starting with 'specs/' (no leading slash)
+    !(normalizedPath.includes('/specs/') || normalizedPath.startsWith('specs/'))
     || normalizedPath.includes('/memory/')
     || normalizedPath.includes('/scratch/')
   ) {
@@ -417,7 +418,8 @@ export function inferDocumentTypeFromPath(filePath: string): DocumentType {
   for (const config of SPEC_DOCUMENT_CONFIGS) {
     if (config.filePattern.test(normalizedPath)) {
       // Only classify as spec doc if it's actually in a specs/ directory (not memory/)
-      if (normalizedPath.includes('/specs/') && !normalizedPath.includes('/memory/')) {
+      // H5 FIX: Also match relative paths starting with 'specs/'
+      if ((normalizedPath.includes('/specs/') || normalizedPath.startsWith('specs/')) && !normalizedPath.includes('/memory/')) {
         return config.documentType;
       }
     }

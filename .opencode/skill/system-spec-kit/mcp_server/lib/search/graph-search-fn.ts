@@ -561,4 +561,5 @@ export {
   computeMaxTypedDegree,
   computeDegreeScores,
   clearDegreeCache,
+  clearDegreeCacheForDb,
 };

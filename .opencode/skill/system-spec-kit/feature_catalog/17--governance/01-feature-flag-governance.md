@@ -21,7 +21,7 @@ A governance framework defines operational targets (small active flag surface, e
 
 The B8 signal ceiling ("12 active scoring signals") is a governance target, not a runtime-enforced guardrail.
 
-**Cross-reference**: See `16--tooling-and-scripts/18-template-compliance-contract-enforcement.md` for the 2-layer template compliance architecture (agent contracts + post-write validation).
+**Cross-reference**: See `16--tooling-and-scripts/18-template-compliance-contract-enforcement.md` for the 3-layer template compliance architecture (agent contracts + post-write validation + runtime schema enforcement).
 
 ---
 

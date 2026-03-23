@@ -613,11 +613,14 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
   create_schema(new_db, { sqlite_vec_available: vec_available, get_embedding_dim });
   ensure_schema_version(new_db);
 
-  // C1 FIX: Store in connection map keyed by resolved path
-  db_connections.set(resolved_target, new_db);
-
   if (!custom_path) {
-    // Only update globals for the default connection
+    // C1 FIX: Temporarily assign globals so validate_embedding_dimension() can
+    // read the new connection, but roll back if validation fails so the fast
+    // path (`if (db && !custom_path) return db`) never serves a bad connection.
+    const prev_db = db;
+    const prev_path = db_path;
+    const prev_vec = sqlite_vec_available_flag;
+
     db = new_db;
     db_path = target_path;
     sqlite_vec_available_flag = vec_available;
@@ -626,8 +629,13 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
     if (sqlite_vec_available_flag) {
       const dimCheck = validate_embedding_dimension();
       if (!dimCheck.valid && dimCheck.stored != null) {
+        // Rollback globals — do not cache the bad connection
+        db = prev_db;
+        db_path = prev_path;
+        sqlite_vec_available_flag = prev_vec;
         const msg = dimCheck.warning || `Dimension mismatch: DB=${dimCheck.stored}, provider=${dimCheck.current}`;
         console.error(`[vector-index] FATAL: ${msg}`);
+        try { new_db.close(); } catch (_: unknown) { /* best-effort */ }
         throw new VectorIndexError(msg, VectorIndexErrorCode.INTEGRITY_ERROR);
       }
     }
@@ -638,6 +646,9 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
       console.warn(`[vector-index] Could not set permissions on ${target_path}: ${get_error_message(err)}`);
     }
   }
+
+  // C1 FIX: Only cache in connection map after all validation passes
+  db_connections.set(resolved_target, new_db);
 
   return new_db;
 }

@@ -18,7 +18,7 @@ import { recordHistory } from '../lib/storage/history';
 import { appendMutationLedgerSafe, getMemoryHashSnapshot } from './memory-crud-utils';
 import { runPostMutationHooks } from './mutation-hooks';
 import { buildMutationHookFeedback } from '../hooks/mutation-feedback';
-import { clearDegreeCache } from '../lib/search/graph-search-fn';
+import { clearDegreeCacheForDb } from '../lib/search/graph-search-fn';
 
 import type { MCPResponse } from './types';
 import type { DeleteArgs, MemoryHashSnapshot } from './memory-crud-types';
@@ -113,7 +113,8 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
 
         causalEdges.init(database);
         causalEdges.deleteEdgesForMemory(String(numericId));
-        clearDegreeCache();
+        // H1 FIX: Use db-specific invalidation instead of the no-op global version
+        clearDegreeCacheForDb(database);
 
         appendMutationLedgerSafe(database, {
           mutationType: 'delete',
