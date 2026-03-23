@@ -9,9 +9,9 @@
 // Gated via SPECKIT_GRAPH_CONCEPT_ROUTING
 // Extracts noun phrases from a query and matches them against a concept alias
 // table, returning the matched canonical concept names for graph channel routing.
-import type Database from 'better-sqlite3';
 import { isEntityLinkingEnabled } from './search-flags';
 import { createLogger } from '../utils/logger';
+import type Database from 'better-sqlite3';
 
 // ───────────────────────────────────────────────────────────────
 // 1. CONSTANTS
@@ -146,6 +146,11 @@ const MAX_CONCEPTS_PER_QUERY = 5;
  *
  * @param query - The search query string.
  * @returns Array of candidate noun phrase tokens (lowercase, deduplicated).
+ * @example
+ * ```ts
+ * nounPhrases('How does vector search indexing work?');
+ * // ['vector', 'search', 'indexing', 'work']
+ * ```
  */
 export function nounPhrases(query: string): string[] {
   if (typeof query !== 'string' || query.trim().length === 0) return [];
@@ -197,6 +202,11 @@ export function nounPhrases(query: string): string[] {
  * @param tokens - Noun phrase tokens (from `nounPhrases()`).
  * @param extraAliases - Optional additional alias map (alias -> canonical).
  * @returns Array of matched canonical concept names (unique, max MAX_CONCEPTS_PER_QUERY).
+ * @example
+ * ```ts
+ * matchAliases(['memory', 'graph'], { relationships: 'causal' });
+ * // ['memory', 'graph']
+ * ```
  */
 export function matchAliases(
   tokens: string[],
@@ -228,6 +238,10 @@ export function matchAliases(
  *
  * @param db - SQLite database instance.
  * @returns Alias map from the entity_catalog table.
+ * @example
+ * ```ts
+ * const aliases = loadConceptAliasTable(db);
+ * ```
  */
 export function loadConceptAliasTable(
   db: Database.Database,
@@ -307,6 +321,10 @@ export interface ConceptRoutingResult {
  * @param query - The search query string.
  * @param db    - Optional SQLite database instance for alias table loading.
  * @returns ConceptRoutingResult with matched concepts and activation state.
+ * @example
+ * ```ts
+ * const routed = routeQueryConcepts('memory graph edges', db);
+ * ```
  */
 export function routeQueryConcepts(
   query: string,
@@ -339,8 +357,13 @@ export function routeQueryConcepts(
  * Normalize entity name: lowercase, strip punctuation, collapse whitespace.
  * e.g. "Memory System" -> "memory system", "TF-IDF" -> "tf idf"
  *
- * @param name - Raw entity name to normalize
- * @returns Normalized lowercase entity name
+ * @param name - Raw entity name to normalize.
+ * @returns Normalized lowercase entity name.
+ * @example
+ * ```ts
+ * normalizeEntityName('TF-IDF');
+ * // 'tf idf'
+ * ```
  */
 export function normalizeEntityName(name: string): string {
   return name
@@ -359,8 +382,12 @@ export function normalizeEntityName(name: string): string {
  * Groups entities by their normalized name, collecting associated memory IDs
  * and spec folders.
  *
- * @param db - SQLite database instance
- * @returns Map of canonical_name -> { memoryIds, specFolders (unique) }
+ * @param db - SQLite database instance.
+ * @returns Map of canonical names to associated memory IDs and spec folders.
+ * @example
+ * ```ts
+ * const catalog = buildEntityCatalog(db);
+ * ```
  */
 export function buildEntityCatalog(
   db: Database.Database,
@@ -413,8 +440,12 @@ export function buildEntityCatalog(
 /**
  * Find entities that appear in 2+ spec folders (cross-document matches).
  *
- * @param db - SQLite database instance
- * @returns Array of entity matches spanning multiple spec folders
+ * @param db - SQLite database instance.
+ * @returns Entity matches spanning multiple spec folders.
+ * @example
+ * ```ts
+ * const matches = findCrossDocumentMatches(db);
+ * ```
  */
 export function findCrossDocumentMatches(db: Database.Database): EntityMatch[] {
   const catalog = buildEntityCatalog(db);
@@ -497,6 +528,10 @@ function getEntityLinkingDensityThreshold(): number {
  *
  * @param db - An initialized better-sqlite3 Database instance.
  * @returns Density ratio, or 0 if no memories exist or on error.
+ * @example
+ * ```ts
+ * const density = computeEdgeDensity(db);
+ * ```
  */
 export function computeEdgeDensity(db: Database.Database): number {
   return getGlobalEdgeDensityStats(db).density;
@@ -568,6 +603,19 @@ function batchGetEdgeCounts(db: Database.Database, nodeIds: string[]): Map<strin
   return counts;
 }
 
+/**
+ * Create cross-document causal links for matched entities.
+ *
+ * @param db - SQLite database instance.
+ * @param matches - Cross-document entity matches to link.
+ * @param options - Optional density-guard overrides.
+ * @returns Summary of links created and density-guard behavior.
+ * @throws {Error} If the causal edge insert statement cannot be prepared.
+ * @example
+ * ```ts
+ * const result = createEntityLinks(db, matches);
+ * ```
+ */
 export function createEntityLinks(
   db: Database.Database,
   matches: EntityMatch[],
@@ -683,8 +731,12 @@ export function createEntityLinks(
 /**
  * Get statistics about entity linking.
  *
- * @param db - SQLite database instance
- * @returns Statistics including total links, cross-doc links, unique entities, and coverage
+ * @param db - SQLite database instance.
+ * @returns Statistics including total links, cross-doc links, unique entities, and coverage.
+ * @example
+ * ```ts
+ * const stats = getEntityLinkStats(db);
+ * ```
  */
 export function getEntityLinkStats(db: Database.Database): EntityLinkStats {
   try {
@@ -741,8 +793,14 @@ export function getEntityLinkStats(db: Database.Database): EntityLinkStats {
 /**
  * Entity infrastructure gate: check entity_catalog has >0 entries.
  *
- * @param db - SQLite database instance
- * @returns True if entity_catalog table has at least one entry
+ * @param db - SQLite database instance.
+ * @returns `true` when the entity catalog table is populated.
+ * @example
+ * ```ts
+ * if (hasEntityInfrastructure(db)) {
+ *   runEntityLinking(db);
+ * }
+ * ```
  */
 export function hasEntityInfrastructure(db: Database.Database): boolean {
   try {
@@ -764,8 +822,12 @@ export function hasEntityInfrastructure(db: Database.Database): boolean {
  * 2. Finds cross-document entity matches
  * 3. Creates causal edges between matching memories
  *
- * @param db - SQLite database instance
- * @returns Result with counts of links created, entities processed, and matches
+ * @param db - SQLite database instance.
+ * @returns Result with counts of links created, entities processed, and matches.
+ * @example
+ * ```ts
+ * const result = runEntityLinking(db);
+ * ```
  */
 export function runEntityLinking(db: Database.Database): EntityLinkResult {
   const emptyResult: EntityLinkResult = { linksCreated: 0, entitiesProcessed: 0, crossDocMatches: 0 };

@@ -15,7 +15,7 @@ When you save new information, the system checks whether it already knows someth
 
 ## 2. CURRENT REALITY
 
-5-action decision engine during the save path. Examines semantic similarity of new content against existing memories: REINFORCE (>=0.95, boost FSRS stability), UPDATE (0.85-0.94 no contradiction, in-place update), SUPERSEDE (0.85-0.94 with contradiction, deprecate old + create new), CREATE_LINKED (0.70-0.84, new memory + causal edge), CREATE (<0.70, standalone). Contradiction detection via regex patterns. All decisions are logged to the `memory_conflicts` table with similarity, action, contradiction flag, reason and spec_folder. Document-type-aware weighting (constitutional=1.0 down to scratch=0.25). Always active unless `force: true` is passed.
+5-action decision engine during the save path. Examines semantic similarity of new content against existing memories: REINFORCE (>=0.95, boost FSRS stability), UPDATE (0.85-0.94 no contradiction, in-place update), SUPERSEDE (0.85-0.94 with contradiction, deprecate old + create new), CREATE_LINKED (0.70-0.84, new memory + causal edge), CREATE (<0.70, standalone). Contradiction detection via regex patterns. All decisions are logged to the `memory_conflicts` table with similarity, action, contradiction flag, reason and spec_folder. Document-type-aware weighting (constitutional=1.0 down to scratch=0.25). The arbitration path runs only when `force` is false and a usable embedding exists. Async/deferred save paths and other embedding-null cases skip similarity arbitration and fall back to the normal create path.
 
 ---
 
@@ -27,6 +27,7 @@ When you save new information, the system checks whether it already knows someth
 |------|-------|------|
 | `mcp_server/handlers/pe-gating.ts` | Handler | Prediction error gating entry point |
 | `mcp_server/handlers/save/pe-orchestration.ts` | Handler | PE orchestration flow |
+| `mcp_server/handlers/save/embedding-pipeline.ts` | Handler | Embedding generation and pending/deferred save behavior that gates PE execution |
 | `mcp_server/lib/cognitive/prediction-error-gate.ts` | Lib | Prediction error computation |
 | `mcp_server/handlers/save/create-record.ts` | Handler | Record creation logic |
 

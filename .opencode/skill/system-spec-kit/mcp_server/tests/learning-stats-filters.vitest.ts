@@ -1,8 +1,9 @@
 // TEST: LEARNING STATS FILTERS
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect, beforeAll, vi } from 'vitest';
 
 import * as handler from '../handlers/session-learning';
 import * as vectorIndex from '../lib/search/vector-index';
+import * as core from '../core';
 import type { LearningHistoryPayload, LearningHistoryRow } from '../handlers/session-learning';
 
 type LearningHistoryResponse = LearningHistoryPayload;
@@ -54,6 +55,10 @@ function requireDbOrThrow(): void {
 
 describe('T503: Learning Stats SQL Filter Tests', () => {
   beforeAll(() => {
+    // Mock checkDatabaseUpdated to prevent db-state reinitialization failures
+    // in test environments where db-state.init() has not been called
+    vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+
     try {
       const db = vectorIndex.getDb();
       if (db) {

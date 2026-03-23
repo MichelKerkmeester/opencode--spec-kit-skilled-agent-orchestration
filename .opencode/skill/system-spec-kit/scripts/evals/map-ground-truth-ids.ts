@@ -74,135 +74,16 @@ interface CountRow {
 // ───────────────────────────────────────────────────────────────
 // 4. QUERY DATASET LOADING
 // ───────────────────────────────────────────────────────────────
-// Avoid runtime TS import requirements by parsing source directly.
+// Read the canonical JSON dataset directly to avoid coupling to TS source formatting.
 
 function loadGroundTruthQueries(): GroundTruthQuery[] {
-  const gtPath = path.resolve(__dirname, '../../mcp_server/lib/eval/ground-truth-data.ts');
-  const src = fs.readFileSync(gtPath, 'utf-8');
-
-  // Parse object blocks directly to keep this script dependency-light.
-  const queries: GroundTruthQuery[] = [];
-
-  // State machine handles multi-line fields with stable ordering rules.
-  const lines = src.split('\n');
-  let currentQuery: Partial<GroundTruthQuery> = {};
-  let inExpectedDesc = false;
-  let expectedDescParts: string[] = [];
-  let inNotes = false;
-  let notesParts: string[] = [];
-
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i];
-
-    // Start-of-object boundary.
-    const idMatch = line.match(/^\s*id:\s*(\d+),/);
-    if (idMatch) {
-      currentQuery = { id: parseInt(idMatch[1], 10) };
-      continue;
-    }
-
-    const queryMatch = line.match(/^\s*query:\s*'(.*)',$/);
-    if (queryMatch && currentQuery.id) {
-      currentQuery.query = queryMatch[1];
-      continue;
-    }
-
-    const intentMatch = line.match(/^\s*intentType:\s*'(.*)',$/);
-    if (intentMatch && currentQuery.id) {
-      currentQuery.intentType = intentMatch[1];
-      continue;
-    }
-
-    const complexityMatch = line.match(/^\s*complexityTier:\s*'(.*)',$/);
-    if (complexityMatch && currentQuery.id) {
-      currentQuery.complexityTier = complexityMatch[1];
-      continue;
-    }
-
-    const categoryMatch = line.match(/^\s*category:\s*'(.*)',$/);
-    if (categoryMatch && currentQuery.id) {
-      currentQuery.category = categoryMatch[1];
-      continue;
-    }
-
-    const sourceMatch = line.match(/^\s*source:\s*'(.*)',$/);
-    if (sourceMatch && currentQuery.id) {
-      currentQuery.source = sourceMatch[1];
-      continue;
-    }
-
-    // ExpectedResultDescription may span concatenated lines.
-    const expectedStart = line.match(/^\s*expectedResultDescription:\s*$/);
-    const expectedInline = line.match(/^\s*expectedResultDescription:\s*\n?\s*'(.*)'/);
-    if (expectedStart && currentQuery.id) {
-      inExpectedDesc = true;
-      expectedDescParts = [];
-      continue;
-    }
-    if (expectedInline && currentQuery.id) {
-      // Handle both inline-terminated and continued variants.
-      if (line.trimEnd().endsWith("',") || line.trimEnd().endsWith("'")) {
-        currentQuery.expectedResultDescription = expectedInline[1];
-      } else {
-        inExpectedDesc = true;
-        expectedDescParts = [expectedInline[1]];
-      }
-      continue;
-    }
-
-    if (inExpectedDesc) {
-      const partMatch = line.match(/'([^']*)'/);
-      if (partMatch) {
-        expectedDescParts.push(partMatch[1]);
-      }
-      if (!line.includes('+') || line.trimEnd().endsWith("',") || line.trimEnd().endsWith("'")) {
-        currentQuery.expectedResultDescription = expectedDescParts.join('');
-        inExpectedDesc = false;
-      }
-      continue;
-    }
-
-    // Notes field is optional and may also be multi-line.
-    const notesStart = line.match(/^\s*notes:\s*$/);
-    const notesInline = line.match(/^\s*notes:\s*'(.*)'/);
-    if (notesStart && currentQuery.id) {
-      inNotes = true;
-      notesParts = [];
-      continue;
-    }
-    if (notesInline && currentQuery.id) {
-      if (line.trimEnd().endsWith("',") || line.trimEnd().endsWith("'")) {
-        currentQuery.notes = notesInline[1];
-      } else {
-        inNotes = true;
-        notesParts = [notesInline[1]];
-      }
-      continue;
-    }
-
-    if (inNotes) {
-      const partMatch = line.match(/'([^']*)'/);
-      if (partMatch) {
-        notesParts.push(partMatch[1]);
-      }
-      if (!line.includes('+') || line.trimEnd().endsWith("',") || line.trimEnd().endsWith("'")) {
-        currentQuery.notes = notesParts.join('');
-        inNotes = false;
-      }
-      continue;
-    }
-
-    // Finalize query on closing boundary.
-    if ((line.match(/^\s*\},?\s*$/) || line.match(/^\s*\],?\s*$/)) && currentQuery.id && currentQuery.query) {
-      if (currentQuery.expectedResultDescription) {
-        queries.push(currentQuery as GroundTruthQuery);
-      }
-      currentQuery = {};
-    }
-  }
+  const gtPath = path.resolve(__dirname, '../../mcp_server/lib/eval/data/ground-truth.json');
+  const raw = fs.readFileSync(gtPath, 'utf-8');
+  const parsed = JSON.parse(raw) as { queries?: GroundTruthQuery[] };
+  const queries = Array.isArray(parsed.queries) ? parsed.queries : [];
 
   if (queries.length === 0) {
-    console.warn('[loadGroundTruthQueries] WARNING: Regex parsing yielded 0 queries from ground-truth-data.ts — file format may have changed');
+    console.warn('[loadGroundTruthQueries] WARNING: Parsed 0 queries from ground-truth.json');
   }
 
   return queries;

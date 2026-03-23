@@ -213,7 +213,6 @@ function validateScores(
 
 /** Handle task_preflight tool - captures baseline knowledge scores before a task begins */
 async function handleTaskPreflight(args: PreflightArgs): Promise<MCPResponse> {
-  await checkDatabaseUpdated();
   const {
     specFolder: spec_folder,
     taskId,
@@ -224,6 +223,7 @@ async function handleTaskPreflight(args: PreflightArgs): Promise<MCPResponse> {
     sessionId: session_id = null
   } = args;
 
+  // Validate inputs before any I/O (checkDatabaseUpdated is deferred until after validation)
   if (!spec_folder) {
     throw new MemoryError(ErrorCodes.MISSING_REQUIRED_PARAM, 'specFolder is required', { param: 'specFolder' });
   }
@@ -233,6 +233,8 @@ async function handleTaskPreflight(args: PreflightArgs): Promise<MCPResponse> {
 
   // T304: Consolidated score validation
   validateScores(knowledge_score, uncertainty_score, context_score);
+
+  await checkDatabaseUpdated();
 
   const database: Database | null = vectorIndex.getDb();
   if (!database) {
@@ -363,7 +365,6 @@ async function handleTaskPreflight(args: PreflightArgs): Promise<MCPResponse> {
 
 /** Handle task_postflight tool - measures learning by comparing post-task scores to baseline */
 async function handleTaskPostflight(args: PostflightArgs): Promise<MCPResponse> {
-  await checkDatabaseUpdated();
   const {
     specFolder: spec_folder,
     taskId,
@@ -374,6 +375,7 @@ async function handleTaskPostflight(args: PostflightArgs): Promise<MCPResponse> 
     newGapsDiscovered = []
   } = args;
 
+  // Validate inputs before any I/O (checkDatabaseUpdated is deferred until after validation)
   if (!spec_folder) {
     throw new MemoryError(ErrorCodes.MISSING_REQUIRED_PARAM, 'specFolder is required', { param: 'specFolder' });
   }
@@ -383,6 +385,8 @@ async function handleTaskPostflight(args: PostflightArgs): Promise<MCPResponse> 
 
   // T304: Consolidated score validation
   validateScores(knowledge_score, uncertainty_score, context_score);
+
+  await checkDatabaseUpdated();
 
   const database: Database | null = vectorIndex.getDb();
   if (!database) {
@@ -527,7 +531,6 @@ async function handleTaskPostflight(args: PostflightArgs): Promise<MCPResponse> 
 
 /** Handle memory_get_learning_history tool - retrieves learning records with optional summary stats */
 async function handleGetLearningHistory(args: LearningHistoryArgs): Promise<MCPResponse> {
-  await checkDatabaseUpdated();
   const {
     specFolder: spec_folder,
     sessionId: session_id,
@@ -536,9 +539,12 @@ async function handleGetLearningHistory(args: LearningHistoryArgs): Promise<MCPR
     includeSummary: include_summary = true
   } = args;
 
+  // Validate inputs before any I/O (checkDatabaseUpdated is deferred until after validation)
   if (!spec_folder) {
     throw new MemoryError(ErrorCodes.MISSING_REQUIRED_PARAM, 'specFolder is required', { param: 'specFolder' });
   }
+
+  await checkDatabaseUpdated();
 
   const safeLimit = Math.min(Math.max(1, limit), 100);
 

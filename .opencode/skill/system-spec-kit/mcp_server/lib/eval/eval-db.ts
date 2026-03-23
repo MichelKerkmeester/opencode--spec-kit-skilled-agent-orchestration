@@ -97,6 +97,15 @@ const EVAL_SCHEMA_SQL = `
     metadata TEXT,
     created_at TEXT DEFAULT (datetime('now'))
   );
+
+  CREATE INDEX IF NOT EXISTS idx_metric_snapshots_run
+    ON eval_metric_snapshots (eval_run_id, metric_name, created_at);
+
+  CREATE INDEX IF NOT EXISTS idx_channel_results_run
+    ON eval_channel_results (eval_run_id, channel, query_id);
+
+  CREATE INDEX IF NOT EXISTS idx_final_results_run
+    ON eval_final_results (eval_run_id, query_id);
 `;
 
 /* ───────────────────────────────────────────────────────────────
@@ -136,6 +145,7 @@ function initEvalDb(dataDir?: string): Database.Database {
 
   // Enable WAL mode for better concurrent read performance
   db.pragma('journal_mode = WAL');
+  db.pragma('busy_timeout = 5000');
   db.pragma('foreign_keys = ON');
 
   // Create all 5 eval tables (idempotent via IF NOT EXISTS)

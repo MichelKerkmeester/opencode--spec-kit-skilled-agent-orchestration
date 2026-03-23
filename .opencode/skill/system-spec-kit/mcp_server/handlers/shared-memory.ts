@@ -115,23 +115,18 @@ function recordSharedSpaceAdminAudit(
     metadata?: Record<string, unknown>;
   },
 ): void {
-  try {
-    recordGovernanceAudit(database, {
-      action: 'shared_space_admin',
-      decision: args.decision,
-      reason: args.reason ?? args.operation,
-      ...buildAdminScope(args.actor, args.tenantId, args.spaceId),
-      metadata: {
-        operation: args.operation,
-        actorSubjectType: args.actor.subjectType,
-        actorSubjectId: args.actor.subjectId,
-        ...(args.metadata ?? {}),
-      },
-    });
-  } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : String(error);
-    console.error(`[shared-memory] Failed to record shared_space_admin audit: ${message}`);
-  }
+  recordGovernanceAudit(database, {
+    action: 'shared_space_admin',
+    decision: args.decision,
+    reason: args.reason ?? args.operation,
+    ...buildAdminScope(args.actor, args.tenantId, args.spaceId),
+    metadata: {
+      operation: args.operation,
+      actorSubjectType: args.actor.subjectType,
+      actorSubjectId: args.actor.subjectId,
+      ...(args.metadata ?? {}),
+    },
+  });
 }
 
 function getSharedSpaceAccessErrorMessage(
@@ -254,6 +249,17 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
         );
         if (!access.allowed) {
           const reason = normalizeOwnerAdminDenyReason(access.reason ?? 'shared_space_owner_required');
+          recordSharedSpaceAdminAudit(db, {
+            actor,
+            tenantId: args.tenantId,
+            spaceId: args.spaceId,
+            decision: 'deny',
+            operation: 'space_upsert',
+            reason,
+            metadata: {
+              operationType: 'update',
+            },
+          });
           return {
             error: reason,
             msg: getSharedSpaceAccessErrorMessage('shared_space_upsert', args.spaceId, reason),
@@ -301,6 +307,22 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
         LIMIT 1
       `).get(args.spaceId) as { rollout_enabled?: number; kill_switch?: number } | undefined;
 
+      recordSharedSpaceAdminAudit(db, {
+        actor,
+        tenantId: args.tenantId,
+        spaceId: args.spaceId,
+        decision: 'allow',
+        operation: 'space_upsert',
+        reason: created ? 'space_created' : 'space_updated',
+        metadata: {
+          operationType: created ? 'create' : 'update',
+          created,
+          ownerBootstrap: created,
+          rolloutEnabled: savedSpace?.rollout_enabled === 1,
+          killSwitch: savedSpace?.kill_switch === 1,
+        },
+      });
+
       return {
         success: true,
         created,
@@ -310,35 +332,8 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
     })();
 
     if ('error' in result) {
-      recordSharedSpaceAdminAudit(db, {
-        actor,
-        tenantId: args.tenantId,
-        spaceId: args.spaceId,
-        decision: 'deny',
-        operation: 'space_upsert',
-        reason: result.error,
-        metadata: {
-          operationType: result.operationType,
-        },
-      });
       return createSharedSpaceAuthError('shared_space_upsert', result.error, result.msg);
     }
-
-    recordSharedSpaceAdminAudit(db, {
-      actor,
-      tenantId: args.tenantId,
-      spaceId: args.spaceId,
-      decision: 'allow',
-      operation: 'space_upsert',
-      reason: result.created ? 'space_created' : 'space_updated',
-      metadata: {
-        operationType: result.created ? 'create' : 'update',
-        created: result.created,
-        ownerBootstrap: result.created,
-        rolloutEnabled: result.rolloutEnabled,
-        killSwitch: result.killSwitch,
-      },
-    });
 
     return createMCPSuccessResponse({
       tool: 'shared_space_upsert',
@@ -398,20 +393,25 @@ export async function handleSharedSpaceMembershipSet(args: SharedSpaceMembership
     );
     if (!access.allowed) {
       const reason = normalizeOwnerAdminDenyReason(access.reason ?? 'shared_space_owner_required');
-      recordSharedSpaceAdminAudit(db, {
-        actor,
-        tenantId: args.tenantId,
-        spaceId: args.spaceId,
-        decision: 'deny',
-        operation: 'membership_set',
-        reason,
-        metadata: {
-          operationType: 'membership_update',
-          subjectType: args.subjectType,
-          subjectId: args.subjectId,
-          role: args.role,
-        },
-      });
+      try {
+        recordSharedSpaceAdminAudit(db, {
+          actor,
+          tenantId: args.tenantId,
+          spaceId: args.spaceId,
+          decision: 'deny',
+          operation: 'membership_set',
+          reason,
+          metadata: {
+            operationType: 'membership_update',
+            subjectType: args.subjectType,
+            subjectId: args.subjectId,
+            role: args.role,
+          },
+        });
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : String(error);
+        console.error(`[shared-memory] Failed to record shared_space_admin audit: ${message}`);
+      }
       return createSharedSpaceAuthError(
         'shared_space_membership_set',
         reason,
@@ -419,27 +419,29 @@ export async function handleSharedSpaceMembershipSet(args: SharedSpaceMembership
       );
     }
 
-    upsertSharedMembership(db, {
-      spaceId: args.spaceId,
-      subjectType: args.subjectType,
-      subjectId: args.subjectId,
-      role: args.role,
-    });
-
-    recordSharedSpaceAdminAudit(db, {
-      actor,
-      tenantId: args.tenantId,
-      spaceId: args.spaceId,
-      decision: 'allow',
-      operation: 'membership_set',
-      reason: 'membership_updated',
-      metadata: {
-        operationType: 'membership_update',
+    db.transaction(() => {
+      upsertSharedMembership(db, {
+        spaceId: args.spaceId,
         subjectType: args.subjectType,
         subjectId: args.subjectId,
         role: args.role,
-      },
-    });
+      });
+
+      recordSharedSpaceAdminAudit(db, {
+        actor,
+        tenantId: args.tenantId,
+        spaceId: args.spaceId,
+        decision: 'allow',
+        operation: 'membership_set',
+        reason: 'membership_updated',
+        metadata: {
+          operationType: 'membership_update',
+          subjectType: args.subjectType,
+          subjectId: args.subjectId,
+          role: args.role,
+        },
+      });
+    })();
 
     return createMCPSuccessResponse({
       tool: 'shared_space_membership_set',

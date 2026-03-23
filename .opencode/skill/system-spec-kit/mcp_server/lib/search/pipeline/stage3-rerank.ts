@@ -201,15 +201,25 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
           const mmrLambda = (INTENT_LAMBDA_MAP as Record<string, number>)[intent] ?? MMR_DEFAULT_LAMBDA;
           const diversified = applyMMR(mmrCandidates, { lambda: mmrLambda, limit: config.limit });
 
+          // FIX #5: MMR can only diversify rows that have embeddings. Non-embedded
+          // rows (lexical-only hits, graph injections) must be preserved and merged
+          // back in their original relative order instead of being silently dropped.
+          const embeddedIdSet = new Set(mmrCandidates.map(c => c.id));
+          const nonEmbeddedRows = results.filter(r => !embeddedIdSet.has(r.id));
+
           // Rebuild PipelineRow[] from diversified candidates, preserving all original fields
           const rowMap = new Map<number | string, PipelineRow>();
           for (const r of results) rowMap.set(r.id, r);
 
-          results = diversified.map((candidate): PipelineRow => {
+          const diversifiedRows = diversified.map((candidate): PipelineRow => {
             const existing = rowMap.get(candidate.id);
             if (existing) return existing;
             return { id: candidate.id as number, score: candidate.score };
           });
+
+          // Merge: diversified embedded rows first (MMR-ordered), then non-embedded
+          // rows in their original relative order.
+          results = [...diversifiedRows, ...nonEmbeddedRows];
         }
       }
     } catch (mmrErr: unknown) {
@@ -600,6 +610,10 @@ async function reassembleParentRow(
       quality_score: (parentRow.quality_score as number | undefined) ?? bestChunk.quality_score,
       created_at: (parentRow.created_at as string | undefined) ?? bestChunk.created_at,
       context_type: (parentRow.context_type as string | undefined) ?? bestChunk.context_type,
+      // FIX #8: Sync content with precomputedContent after reassembly.
+      // Previously, `content` still had the chunk fragment while
+      // `precomputedContent` had the full reassembled parent text.
+      content: reassembledContent,
       precomputedContent: reassembledContent,
       contentSource: 'reassembled_chunks',
       // Clear chunk-specific fields on the reassembled parent

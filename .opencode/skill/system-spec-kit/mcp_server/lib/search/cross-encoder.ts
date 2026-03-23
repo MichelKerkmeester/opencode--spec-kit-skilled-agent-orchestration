@@ -198,14 +198,18 @@ function calculateLengthPenalty(contentLength: number): number {
 function applyLengthPenalty(
   results: RerankResult[]
 ): RerankResult[] {
-  return results.map(r => {
-    const content = (r.content as string) || '';
-    const penalty = calculateLengthPenalty(content.length);
-    return {
-      ...r,
-      rerankerScore: r.rerankerScore * penalty,
-    };
-  });
+  return results
+    .map(r => {
+      const content = (r.content as string) || '';
+      const penalty = calculateLengthPenalty(content.length);
+      const rerankerScore = r.rerankerScore * penalty;
+      return {
+        ...r,
+        rerankerScore,
+        score: rerankerScore,
+      };
+    })
+    .sort((a, b) => b.score - a.score);
 }
 
 /* ───────────────────────────────────────────────────────────────

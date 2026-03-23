@@ -15,7 +15,7 @@ This was a cleanup pass that made the code follow a consistent style across the 
 
 ## 2. CURRENT REALITY
 
-All modified files were reviewed against sk-code--opencode standards. 45 violations found and fixed: 26 AI-intent comment conversions (AI-WHY, AI-TRACE, AI-GUARD prefixes), 10 MODULE/COMPONENT headers added, import ordering corrections and constant naming (`specFolderLocks` → `SPEC_FOLDER_LOCKS`).
+All modified files were reviewed against sk-code--opencode standards. 45 violations found and fixed: 26 AI-intent comment conversions (AI-WHY, AI-TRACE, AI-GUARD prefixes), 10 MODULE/COMPONENT headers added, import ordering corrections and constant naming (`specFolderLocks` → `SPEC_FOLDER_LOCKS`) in the extracted save mutex module.
 
 ---
 
@@ -70,9 +70,9 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
 - **Rule mapping**
   - `sk-code--opencode/SKILL.md:349` (TypeScript constants use UPPER_SNAKE)
 - **File-level evidence**
-  - `mcp_server/handlers/memory-save.ts:89` defines `const SPEC_FOLDER_LOCKS = ...`.
-  - `rg "\\bspecFolderLocks\\b" mcp_server` returns no matches.
-  - `rg "SPEC_FOLDER_LOCKS" mcp_server/handlers/memory-save.ts` returns active uses at lines `89, 93, 96, 100, 101`.
+  - `mcp_server/handlers/save/spec-folder-mutex.ts:10` defines `const SPEC_FOLDER_LOCKS = ...`.
+  - `rg "\\bspecFolderLocks\\b" mcp_server/handlers/save mcp_server/handlers/memory-save.ts` returns no matches.
+  - `rg "SPEC_FOLDER_LOCKS" mcp_server/handlers/save/spec-folder-mutex.ts` returns active uses at lines `10, 14, 19, 23, 24, 29`.
 
 ---
 
@@ -110,7 +110,11 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
 
 ## 5. SOURCE FILES
 
-No dedicated source files. This is a cross-cutting meta-improvement applied across multiple modules.
+### Representative implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/handlers/save/spec-folder-mutex.ts` | Handler/save | Owns the extracted `SPEC_FOLDER_LOCKS` constant and per-spec-folder save mutex used by the standards-alignment evidence above |
 
 ---
 

@@ -46,6 +46,8 @@ Shared-memory handlers and lifecycle tools use the same membership and rollout c
 
 | File | Focus |
 |------|-------|
+| `mcp_server/tests/shared-memory-e2e.vitest.ts` | End-to-end enablement, deny-by-default membership and env kill-switch behavior |
+| `mcp_server/tests/shared-memory-handlers.vitest.ts` | Handler-level enable, upsert, membership mutation and governance-audit coverage |
 | `mcp_server/tests/shared-spaces.vitest.ts` | Deny-by-default membership, kill-switch enforcement, default-off verification, DB enablement persistence, env-var override, idempotent enable |
 
 ---

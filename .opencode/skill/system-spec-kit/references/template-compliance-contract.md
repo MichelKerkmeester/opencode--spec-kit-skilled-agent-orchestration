@@ -175,11 +175,12 @@ When templates in `templates/level_N/` change:
 1. Run `node scripts/utils/template-structure.js contract <level> <basename>`
    for each changed doc type to extract the updated contract JSON
 2. Update this file with the new headers/anchors
-3. Update the inline compact contract in all 4 @speckit agent definitions:
+3. Update the inline compact contract in all 5 @speckit agent definitions:
    - `.claude/agents/speckit.md`
    - `.opencode/agent/speckit.md`
    - `.opencode/agent/chatgpt/speckit.md`
    - `.codex/agents/speckit.toml`
+   - `.gemini/agents/speckit.md`
 4. Bump the `version` and `last_synced` fields in the frontmatter above
 5. Run `validate.sh` on a sample spec folder to confirm the updated contract is correct
 

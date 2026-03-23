@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: manual-testing-per-playbook retrieval phase [template:level_2/plan.md]"
-description: "Execution plan for 11 retrieval playbook scenarios: preconditions, non-destructive tests, destructive/stateful tests, and evidence-plus-verdict collection."
+description: "Execution plan for 13 retrieval playbook scenarios: preconditions, non-destructive tests, destructive/stateful tests, and evidence-plus-verdict collection."
 trigger_phrases:
   - "retrieval execution plan"
   - "phase 001 manual tests"
@@ -30,7 +30,7 @@ contextType: "implementation"
 
 ### Overview
 
-This plan converts the 11 retrieval scenarios in the manual testing playbook into an ordered execution workflow for phase 001-retrieval. The phase covers baseline retrieval behavior first (EX-001 through EX-005), then targeted workflow scenarios (M-001, M-002), then fallback and trace behavior (086, 109, 142), and finally sandboxed stateful scenarios that require runtime flag changes (143).
+This plan converts the 13 retrieval scenarios in the manual testing playbook into an ordered execution workflow for phase 001-retrieval. The phase covers baseline retrieval behavior first (EX-001 through EX-005), then targeted workflow scenarios (M-001, M-002, 185, 187), then fallback and trace behavior (086, 109, 142), and finally sandboxed stateful scenarios that require runtime flag changes (143).
 <!-- /ANCHOR:summary -->
 
 ---
@@ -48,9 +48,9 @@ This plan converts the 11 retrieval scenarios in the manual testing playbook int
 
 ### Definition of Done
 
-- [ ] All 11 retrieval scenarios have execution evidence tied to the exact documented prompt and command sequence
+- [ ] All 13 retrieval scenarios have execution evidence tied to the exact documented prompt and command sequence
 - [ ] Every scenario has a verdict (PASS, PARTIAL, or FAIL) with rationale using the review protocol acceptance rules
-- [ ] Coverage is reported as 11/11 scenarios with no skipped test IDs
+- [ ] Coverage is reported as 13/13 scenarios with no skipped test IDs
 - [ ] Any sandbox mutations or rollout-flag changes are restored or explicitly documented before closeout
 <!-- /ANCHOR:quality-gates -->
 
@@ -87,7 +87,7 @@ Manual retrieval test execution pipeline with review-gated evidence collection.
 - [ ] Record baseline environment flags before any fallback or rollout-state testing
 - [ ] Prepare disposable sandbox data for trigger edits (086) and a graph-connected sandbox corpus for rollout diagnostics (143)
 
-### Phase 2: Baseline Retrieval Tests (EX-001 through EX-005, M-001, M-002)
+### Phase 2: Baseline Retrieval Tests (EX-001 through EX-005, M-001, M-002, 185, 187)
 
 - [ ] Run EX-001 (unified context retrieval) — dual `memory_context` call, auto then focused mode
 - [ ] Run M-001 (context recovery and continuation) — session resume scenario
@@ -96,6 +96,8 @@ Manual retrieval test execution pipeline with review-gated evidence collection.
 - [ ] Run EX-003 (trigger phrase matching) — `memory_match_triggers` with `include_cognitive:true`
 - [ ] Run EX-004 (hybrid search pipeline) — channel contribution and non-empty tail inspection
 - [ ] Run EX-005 (4-stage pipeline architecture) — `memory_search` with `intent:understand`, stage invariant check
+- [ ] Run 185 (`/memory:analyze` command routing) — verify no-args prompt, retrieval-mode query routing, and analysis subcommand dispatch
+- [ ] Run 187 (`memory_quick_search`) — verify query-only retrieval, `specFolder` scoping, `limit`, and governed retrieval boundaries
 
 ### Phase 3: Fallback and Trace Tests (086, 109, 142)
 
@@ -113,7 +115,7 @@ Manual retrieval test execution pipeline with review-gated evidence collection.
 
 - [ ] For each scenario, capture prompt, exact command sequence, raw output, expected signals, and reviewer notes
 - [ ] Apply the review protocol acceptance checks (preconditions satisfied, prompt/commands as written, expected signals present, evidence readable, outcome rationale explicit)
-- [ ] Assign PASS, PARTIAL, or FAIL per scenario and summarize phase coverage as 11/11 with linked evidence references
+- [ ] Assign PASS, PARTIAL, or FAIL per scenario and summarize phase coverage as 13/13 with linked evidence references
 <!-- /ANCHOR:phases -->
 
 ---
@@ -130,6 +132,8 @@ Manual retrieval test execution pipeline with review-gated evidence collection.
 | EX-003 | Trigger phrase matching (memory_match_triggers) | MCP |
 | EX-004 | Hybrid search pipeline | MCP |
 | EX-005 | 4-stage pipeline architecture | MCP |
+| 185 | /memory:analyze command routing | manual + MCP |
+| 187 | Quick search (memory_quick_search) | MCP |
 | 086 | BM25 trigger phrase re-index gate | manual (sandbox required) |
 | 109 | Quality-aware 3-tier search fallback | manual |
 | 142 | Session transition trace contract | MCP |
@@ -171,7 +175,7 @@ Phase 1 (Preconditions) ──► Phase 2 (Baseline) ──► Phase 3 (Fallback
 | Phase | Depends On | Blocks |
 |-------|------------|--------|
 | Preconditions | None | All |
-| Baseline (EX-001 to EX-005, M-001, M-002) | Preconditions | Fallback/Trace |
+| Baseline (EX-001 to EX-005, M-001, M-002, 185, 187) | Preconditions | Fallback/Trace |
 | Fallback/Trace (086, 109, 142) | Baseline | Rollout |
 | Rollout (143) | Preconditions | Verdict |
 | Evidence + Verdict | All execution phases | None |
@@ -185,11 +189,11 @@ Phase 1 (Preconditions) ──► Phase 2 (Baseline) ──► Phase 3 (Fallback
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
 | Preconditions | Low | 15-30 min |
-| Baseline tests (7 scenarios) | Medium | 45-90 min |
+| Baseline tests (9 scenarios) | Medium | 60-120 min |
 | Fallback and trace tests (3 scenarios) | Medium | 30-60 min |
 | Rollout test (1 scenario) | High | 30-60 min |
 | Evidence collection and verdict | Low | 20-30 min |
-| **Total** | | **2-4 hours** |
+| **Total** | | **3-5 hours** |
 <!-- /ANCHOR:effort -->
 
 ---

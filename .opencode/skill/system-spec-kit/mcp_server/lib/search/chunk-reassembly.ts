@@ -43,6 +43,17 @@ interface ChunkReassemblyResult {
    2. HELPERS
 ──────────────────────────────────────────────────────────────── */
 
+/**
+ * Parse a nullable integer from unknown input.
+ *
+ * @param value - Value to coerce into an integer.
+ * @returns Parsed integer value, or `null` when the input is missing or invalid.
+ * @example
+ * ```ts
+ * parseNullableInt('42');
+ * // 42
+ * ```
+ */
 function parseNullableInt(value: unknown): number | null {
   if (typeof value === 'number' && Number.isFinite(value) && Number.isInteger(value)) {
     return value;
@@ -69,6 +80,13 @@ function parseNullableInt(value: unknown): number | null {
  * 2. Fetches all sibling chunks from the DB
  * 3. Reassembles the full content by joining chunks in order
  * 4. Falls back to file_read_fallback when chunks have missing content
+ *
+ * @param results - Raw search rows that may include chunk-level hits.
+ * @returns Parent-collapsed search rows plus reassembly statistics.
+ * @example
+ * ```ts
+ * const collapsed = collapseAndReassembleChunkResults(results);
+ * ```
  */
 function collapseAndReassembleChunkResults(results: ChunkableSearchRow[]): ChunkReassemblyResult {
   if (!Array.isArray(results) || results.length === 0) {

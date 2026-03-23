@@ -202,10 +202,20 @@ function queryMetricSnapshots(
 
   sql += ` ORDER BY created_at DESC`;
 
-  // Row safeguard is independent from report `limit`, which applies after sprint grouping.
-  sql += ` LIMIT ${DASHBOARD_ROW_LIMIT}`;
+  const rows = db.prepare(sql).all(...params) as SnapshotRow[];
 
-  return db.prepare(sql).all(...params) as SnapshotRow[];
+  if (!config.sprintFilter || config.sprintFilter.length === 0) {
+    return rows.slice(0, DASHBOARD_ROW_LIMIT);
+  }
+
+  const filteredRows = rows.filter((snap) => {
+    const sprintFromMeta = extractSprintFromMetadata(snap.metadata);
+    const label = sprintFromMeta ?? `run-${snap.eval_run_id}`;
+    return config.sprintFilter!.some((filter) => label.toLowerCase().includes(filter.toLowerCase()));
+  });
+
+  // Apply the row safeguard after sprint filtering so matching older rows are not dropped prematurely.
+  return filteredRows.slice(0, DASHBOARD_ROW_LIMIT);
 }
 
 /**

@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: manual-testing-per-playbook retrieval phase [template:level_2/checklist.md]"
-description: "Verification checklist for phase 001 retrieval: 11 scenarios (EX-001, M-001, EX-002, M-002, EX-003, EX-004, EX-005, 086, 109, 142, 143) — all items unchecked, awaiting execution."
+description: "Verification checklist for phase 001 retrieval: 13 scenarios (EX-001, M-001, EX-002, M-002, EX-003, EX-004, EX-005, 086, 109, 142, 143, 185, 187) — all items unchecked, awaiting execution."
 trigger_phrases:
   - "retrieval checklist"
   - "phase 001 verification"
@@ -31,7 +31,7 @@ contextType: "implementation"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Playbook files for 01--retrieval confirmed accessible — all 11 scenario files read from `.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/`
+- [x] CHK-001 [P0] Playbook files for 01--retrieval confirmed accessible — all 13 scenario files read from `.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/`
 - [x] CHK-002 [P0] Feature catalog files for 01--retrieval confirmed accessible — all 6 catalog files read from `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/`
 - [x] CHK-003 [P0] Review protocol loaded and verdict rules understood — PASS/PARTIAL/FAIL applied per acceptance criteria in each playbook file
 - [x] CHK-004 [P0] MCP runtime healthy — handler source files verified present and wired: `handlers/memory-context.ts`, `handlers/memory-search.ts`, `handlers/memory-triggers.ts`
@@ -43,9 +43,9 @@ contextType: "implementation"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-030 [P1] Evidence captured for each executed scenario — source file:line citations provided for all 11 scenarios in tasks.md and implementation-summary.md
+- [x] CHK-030 [P1] Evidence captured for each executed scenario — source file:line citations provided for all 13 scenarios in tasks.md and implementation-summary.md
 - [x] CHK-031 [P1] Feature catalog cross-reference verified — all 6 feature catalog files read; every scenario cross-references correctly to its catalog entry
-- [x] CHK-032 [P1] PARTIAL verdicts — none required; all 11 scenarios returned PASS
+- [x] CHK-032 [P1] PARTIAL verdicts — none required; all 13 scenarios returned PASS
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -66,7 +66,9 @@ Each item below must be marked `[x]` with a verdict (PASS / PARTIAL / FAIL) and 
 - [x] CHK-018 [P0] 109 — PASS. `searchWithFallbackTiered` at `lib/search/hybrid-search.ts:1536`. `checkDegradation` at :1466 checks `topScore < 0.02 AND relativeGap < 0.2 OR resultCount < 3`. Tier 2 at :1564 uses `minSimilarity:0.1` all channels forced. Tier 3 structural SQL at :1598. `calibrateTier3Scores` caps at 50% of top (:1429-1460). `_degradation` non-enumerable at :1551/:1585/:1610. `SPECKIT_SEARCH_FALLBACK` flag at `lib/search/search-flags.ts:57-61`.
 - [x] CHK-019 [P0] 142 — PASS. `SessionTransitionTrace` interface at `lib/search/session-transition.ts:16-22` with fields `previousState`, `currentState`, `confidence`, `signalSources`, `reason`. Built at :64-103. Attached to trace results only when `includeTrace:true` at `handlers/memory-context.ts:780`. `attachSessionTransitionTrace` (:142-190) attaches to `result.trace.sessionTransition`, absent from non-trace path.
 - [x] CHK-020 [P0] 143 — PASS. `GraphWalkRolloutState` type (`'off'|'trace_only'|'bounded_runtime'`) at `lib/search/search-flags.ts:148`. `resolveGraphWalkRolloutState` reads `SPECKIT_GRAPH_WALK_ROLLOUT` env var at :150-163. `STAGE2_GRAPH_BONUS_CAP = 0.03` at `lib/search/pipeline/ranking-contract.ts:14`. `graphContribution` trace shape with `raw`, `normalized`, `appliedBonus`, `capApplied`, `rolloutState` at `formatters/search-results.ts:136-144`. `isGraphWalkRuntimeEnabled` returns false for `trace_only` (bonus=0 but diagnostics visible), true only for `bounded_runtime` (`lib/search/graph-flags.ts:41`).
-- [x] CHK-021 [P0] All 11 scenarios assigned a verdict — 11/11 PASS, 0 skipped
+- [x] CHK-021 [P0] 185 — PASS. `/memory:analyze` exposes retrieval plus analysis tools in frontmatter at `.opencode/command/memory/analyze.md:2-4`. No-args handling prompts for explicit intent selection at `:12-35`, retrieval queries route through retrieval mode at `:41-42,145-162`, and the analysis subcommand matrix covers `preflight`, `postflight`, `history`, `causal`, `link`, `unlink`, `causal-stats`, `ablation`, and `dashboard` at `:127-139`.
+- [x] CHK-022 [P0] 187 — PASS. `memory_quick_search` is part of the `/memory:analyze` retrieval surface at `.opencode/command/memory/analyze.md:4`. Dispatcher logic validates `query`, forwards `specFolder`, `limit`, and governed scope fields, and delegates to `handleMemorySearch()` with retrieval defaults at `.opencode/skill/system-spec-kit/mcp_server/tools/memory-tools.ts:47-65`. Schema/export coverage confirms the supported parameter set at `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts:389-485`, and governed-scope forwarding is covered by `.opencode/skill/system-spec-kit/mcp_server/tests/memory-tools.vitest.ts:41-64`.
+- [x] CHK-023 [P0] All 13 scenarios assigned a verdict — 13/13 PASS, 0 skipped
 <!-- /ANCHOR:testing -->
 
 ---
@@ -84,8 +86,8 @@ Each item below must be marked `[x]` with a verdict (PASS / PARTIAL / FAIL) and 
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-050 [P0] tasks.md updated with final status, verdict, and evidence for all 11 scenario tasks (T010-T020) and all phase tasks
-- [x] CHK-051 [P0] implementation-summary.md completed with verdict table, pass rate (11/11), evidence citations, methodology note, and known limitations
+- [x] CHK-050 [P0] tasks.md updated with final status, verdict, and evidence for all 13 scenario tasks (T010-T022) and all phase tasks
+- [x] CHK-051 [P0] implementation-summary.md completed with verdict table, pass rate (13/13), evidence citations, methodology note, and known limitations
 - [x] CHK-052 [P1] No placeholder or template text remains — all "To be completed" sections replaced with execution results
 <!-- /ANCHOR:docs -->
 
@@ -105,8 +107,8 @@ Each item below must be marked `[x]` with a verdict (PASS / PARTIAL / FAIL) and 
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 16 | 16/16 |
-| P1 Items | 8 | 8/8 |
+| P0 Items | 22 | 22/22 |
+| P1 Items | 7 | 7/7 |
 | P2 Items | 1 | 0/1 (deferred — memory save) |
 
 **Verification Date**: 2026-03-22

@@ -1,5 +1,5 @@
 // TEST: HANDLER MEMORY TRIGGERS
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 // DB-dependent imports - commented out for deferred test suite
 import * as handler from '../handlers/memory-triggers';
 import * as core from '../core';
@@ -131,6 +131,10 @@ describe('Handler Memory Triggers (T517) [deferred - requires DB test fixtures]'
 });
 
 describe('Sprint-0 reliability fixes', () => {
+  beforeEach(() => {
+    vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+  });
+
   afterEach(() => {
     vi.restoreAllMocks();
   });

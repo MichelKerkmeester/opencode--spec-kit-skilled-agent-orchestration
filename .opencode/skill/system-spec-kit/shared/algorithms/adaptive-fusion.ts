@@ -161,15 +161,21 @@ export function getAdaptiveWeights(
     }
   }
 
-  // AI-WHY: Fix #10 , P1-008 — Normalize core weights
-  // (semantic + keyword + recency) to sum 1.0. Always applied regardless of
-  // documentType presence. graphWeight and graphCausalBias are separate boosts,
-  // not part of the weighted average.
-  const coreSum = weights.semanticWeight + weights.keywordWeight + weights.recencyWeight;
-  if (coreSum > 0 && Math.abs(coreSum - 1.0) > 0.001) {
-    weights.semanticWeight /= coreSum;
-    weights.keywordWeight /= coreSum;
-    weights.recencyWeight /= coreSum;
+  const activeGraphWeight = typeof weights.graphWeight === 'number' && Number.isFinite(weights.graphWeight) && weights.graphWeight > 0
+    ? weights.graphWeight
+    : 0;
+  const activeSum =
+    weights.semanticWeight +
+    weights.keywordWeight +
+    weights.recencyWeight +
+    activeGraphWeight;
+  if (activeSum > 0 && Math.abs(activeSum - 1.0) > 0.001) {
+    weights.semanticWeight /= activeSum;
+    weights.keywordWeight /= activeSum;
+    weights.recencyWeight /= activeSum;
+    if (activeGraphWeight > 0) {
+      weights.graphWeight = activeGraphWeight / activeSum;
+    }
   }
 
   return weights;

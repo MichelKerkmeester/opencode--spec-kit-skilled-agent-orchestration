@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 // Combines vector, FTS, and BM25 search with fallback
 
-/* --- 1. IMPORTS --- */
+// 1. IMPORTS
 
 // Local
 import { getIndex } from './bm25-index';
@@ -64,7 +64,7 @@ import type { ChannelName } from './query-router';
 import type { EnforcementResult } from './channel-enforcement';
 import type { TruncationResult } from './confidence-truncation';
 
-/* --- 2. INTERFACES --- */
+// 2. INTERFACES
 
 type VectorSearchFn = (
   embedding: Float32Array | number[],
@@ -131,7 +131,7 @@ function toHybridResult(result: FusionResult): HybridSearchResult {
   };
 }
 
-/* --- 3. SPRINT 3 PIPELINE METADATA --- */
+// 3. SPRINT 3 PIPELINE METADATA
 
 /**
  * Optional metadata about pipeline stages attached to enhanced search results.
@@ -175,7 +175,7 @@ interface Sprint3PipelineMeta {
   };
 }
 
-/* --- 4. PI-A2: DEGRADATION TYPES --- */
+// 4. PI-A2: DEGRADATION TYPES
 
 /** Fallback tier in the 3-tier degradation chain. */
 type FallbackTier = 1 | 2 | 3;
@@ -211,7 +211,7 @@ const DEGRADATION_MIN_RELATIVE_GAP = 0.2;
 /** Minimum result count: must have >= this many results to stay at current tier. */
 const DEGRADATION_MIN_RESULTS = 3;
 
-/* --- 5. MODULE STATE --- */
+// 5. MODULE STATE
 
 /** Default result limit when none is specified by the caller. */
 const DEFAULT_LIMIT = 20;
@@ -238,7 +238,7 @@ let db: Database.Database | null = null;
 let vectorSearchFn: VectorSearchFn | null = null;
 let graphSearchFn: GraphSearchFn | null = null;
 
-/* --- 6. GRAPH CHANNEL METRICS (T008) --- */
+// 6. GRAPH CHANNEL METRICS (T008)
 
 interface GraphChannelMetrics {
   totalQueries: number;
@@ -275,7 +275,7 @@ function resetGraphMetrics(): void {
   graphMetrics.multiSourceResults = 0;
 }
 
-/* --- 7. INITIALIZATION --- */
+// 7. INITIALIZATION
 
 /**
  * Initialize hybrid search with database, vector search, and optional graph search dependencies.
@@ -293,7 +293,7 @@ function init(
   graphSearchFn = graphFn;
 }
 
-/* --- 8. BM25 SEARCH --- */
+// 8. BM25 SEARCH
 
 /**
  * Search the BM25 index with optional spec folder filtering.
@@ -367,7 +367,7 @@ function isBm25Available(): boolean {
   }
 }
 
-/* --- 9. FTS SEARCH --- */
+// 9. FTS SEARCH
 
 /**
  * Check whether the FTS5 full-text search table exists in the database.
@@ -421,7 +421,7 @@ function ftsSearch(
   }
 }
 
-/* --- 10. COMBINED LEXICAL SEARCH --- */
+// 10. COMBINED LEXICAL SEARCH
 
 /**
  * Merge FTS and BM25 search results, deduplicating by ID and preferring FTS scores.
@@ -457,7 +457,7 @@ function combinedLexicalSearch(
     .slice(0, options.limit || DEFAULT_LIMIT);
 }
 
-/* --- 11. HYBRID SEARCH --- */
+// 11. HYBRID SEARCH
 
 /**
  * Run multi-channel hybrid search combining vector, FTS, BM25, and graph results with per-source normalization.
@@ -984,7 +984,15 @@ async function hybridSearchEnhanced(
             if (mmrCandidates.length >= MMR_MIN_CANDIDATES) {
               const mmrLambda = INTENT_LAMBDA_MAP[intent] ?? MMR_DEFAULT_LAMBDA;
               const diversified = applyMMR(mmrCandidates, { lambda: mmrLambda, limit });
-              reranked = diversified.map((candidate): HybridSearchResult => {
+
+              // FIX #6: Same fix as stage3-rerank FIX #5 — MMR can only diversify
+              // rows that have embeddings. Non-embedded rows (lexical-only hits,
+              // graph injections) must be preserved and merged back in their
+              // original relative order instead of being silently dropped.
+              const embeddedIdSet = new Set(mmrCandidates.map(c => c.id));
+              const nonEmbeddedRows = reranked.filter(r => !embeddedIdSet.has(r.id as number));
+
+              const diversifiedRows = diversified.map((candidate): HybridSearchResult => {
                 const existing = reranked.find(r => r.id === candidate.id);
                 if (existing) {
                   return existing;
@@ -996,6 +1004,10 @@ async function hybridSearchEnhanced(
                   source: 'vector',
                 };
               });
+
+              // Merge: diversified embedded rows first (MMR-ordered), then
+              // non-embedded rows in their original relative order.
+              reranked = [...diversifiedRows, ...nonEmbeddedRows];
             }
           } catch (embErr: unknown) {
             const msg = embErr instanceof Error ? embErr.message : String(embErr);
@@ -1218,7 +1230,7 @@ async function searchWithFallback(
   return [];
 }
 
-/* --- 12. STRUCTURAL SEARCH (PI-A2 Tier 3) --- */
+// 12. STRUCTURAL SEARCH (PI-A2 TIER 3)
 
 /**
  * PI-A2: Last-resort structural search against the memory_index table.
@@ -1470,7 +1482,7 @@ function calibrateTier3Scores(
   });
 }
 
-/* --- 13. TIERED FALLBACK (PI-A2) --- */
+// 13. TIERED FALLBACK (PI-A2)
 
 /**
  * Evaluate whether results meet quality thresholds.
@@ -1629,7 +1641,7 @@ async function searchWithFallbackTiered(
   return limitedResults;
 }
 
-/* --- 14. PRE-FLIGHT TOKEN BUDGET VALIDATION (T007) --- */
+// 14. PRE-FLIGHT TOKEN BUDGET VALIDATION (T007)
 
 /** Default token budget — configurable via SPECKIT_TOKEN_BUDGET env var. */
 const DEFAULT_TOKEN_BUDGET = 2000;
@@ -1793,7 +1805,7 @@ function truncateToBudget(
   return { results: accepted, truncated: true, overflow };
 }
 
-/* --- 15. EXPORTS --- */
+// 15. EXPORTS
 
 export const __testables = {
   canonicalResultId,

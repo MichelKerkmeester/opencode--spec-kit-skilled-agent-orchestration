@@ -1,6 +1,6 @@
 ---
 title: "Tasks: manual-testing-per-playbook retrieval phase [template:level_2/tasks.md]"
-description: "Task tracker for 11 retrieval playbook scenarios. One task per scenario, all PENDING."
+description: "Task tracker for 13 retrieval playbook scenarios. One task per scenario, all PENDING."
 trigger_phrases:
   - "retrieval tasks"
   - "phase 001 tasks"
@@ -34,7 +34,7 @@ contextType: "implementation"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Verify playbook files accessible at `../../manual_testing_playbook/01--retrieval/` — All 11 files confirmed readable
+- [x] T001 Verify playbook files accessible at `../../manual_testing_playbook/01--retrieval/` — All 13 files confirmed readable
 - [x] T002 Confirm feature catalog accessible at `../../feature_catalog/01--retrieval/` — All catalog files confirmed readable
 - [x] T003 Load review protocol from `../../manual_testing_playbook/manual_testing_playbook.md` — Protocol understood; verdict rules applied
 - [x] T004 Verify MCP runtime healthy — Source files confirm all three handlers exist and compile (handlers/memory-context.ts, memory-search.ts, memory-triggers.ts)
@@ -61,6 +61,8 @@ contextType: "implementation"
 | T018 | 109 | Quality-aware 3-tier search fallback | DONE | PASS | lib/search/hybrid-search.ts:1466-1614 (3-tier chain, checkDegradation, calibrateTier3Scores, _degradation), lib/search/search-flags.ts:57-61 (SPECKIT_SEARCH_FALLBACK flag) |
 | T019 | 142 | Session transition trace contract | DONE | PASS | lib/search/session-transition.ts:16-22 (SessionTransitionTrace interface), :64-103 (buildSessionTransitionTrace), :142-190 (attachSessionTransitionTrace), handlers/memory-context.ts:780 (trace-only gating) |
 | T020 | 143 | Bounded graph-walk rollout and diagnostics | DONE | PASS | lib/search/search-flags.ts:148-163 (GraphWalkRolloutState, resolveGraphWalkRolloutState), lib/search/graph-flags.ts:26-42 (rollout accessors), lib/search/pipeline/ranking-contract.ts:14 (STAGE2_GRAPH_BONUS_CAP=0.03), formatters/search-results.ts:136-144 (graphContribution trace shape) |
+| T021 | 185 | /memory:analyze command routing | DONE | PASS | .opencode/command/memory/analyze.md:12-42 (no-args prompt + routing gates), :127-162 (analysis quick reference + subcommand routing), :2-4 (allowed tool surface includes retrieval + analysis tools) |
+| T022 | 187 | Quick search (memory_quick_search) | DONE | PASS | .opencode/skill/system-spec-kit/mcp_server/tools/memory-tools.ts:47-65 (delegates to handleMemorySearch with defaults), schemas/tool-input-schemas.ts:389-485 (schema + allowed params), tests/memory-tools.vitest.ts:41-64 (governed-scope forwarding) |
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -68,8 +70,8 @@ contextType: "implementation"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T030 Record verdict for each scenario (PASS, PARTIAL, or FAIL) with rationale — all 11 verdicted PASS via source-code review
-- [x] T031 Confirm 11/11 scenarios executed with no skipped test IDs — EX-001, M-001, EX-002, M-002, EX-003, EX-004, EX-005, 086, 109, 142, 143 all covered
+- [x] T030 Record verdict for each scenario (PASS, PARTIAL, or FAIL) with rationale — all 13 verdicted PASS via source-code review
+- [x] T031 Confirm 13/13 scenarios executed with no skipped test IDs — EX-001, M-001, EX-002, M-002, EX-003, EX-004, EX-005, 086, 109, 142, 143, 185, 187 all covered
 - [x] T032 Update checklist.md with evidence references for all P0 items — done
 - [x] T033 Complete implementation-summary.md with aggregate results — done
 <!-- /ANCHOR:phase-3 -->
@@ -79,7 +81,7 @@ contextType: "implementation"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All 11 scenario tasks (T010-T020) marked complete
+- [x] All 13 scenario tasks (T010-T022) marked complete
 - [x] All verification tasks (T030-T033) complete
 - [x] No `[B]` blocked tasks remaining without documented reason
 - [x] Manual verification passed per review protocol — source-code review methodology applied

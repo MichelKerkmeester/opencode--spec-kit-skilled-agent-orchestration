@@ -1,5 +1,3 @@
-import { randomUUID } from 'node:crypto';
-
 // ───────────────────────────────────────────────────────────────
 // MODULE: Progressive Disclosure
 // ───────────────────────────────────────────────────────────────
@@ -12,6 +10,7 @@ import { randomUUID } from 'node:crypto';
 // 4. Progressive response builder — orchestrates all layers
 //
 // FEATURE FLAG: SPECKIT_PROGRESSIVE_DISCLOSURE_V1 (default ON, graduated)
+import { randomUUID } from 'node:crypto';
 
 // -- Constants --
 
@@ -93,6 +92,13 @@ const cursorStore = new Map<string, { results: DisclosureResult[]; storedAt: num
 /**
  * Produce a simple hash string from a query for cursor identification.
  * Uses a djb2-style hash for speed and determinism.
+ *
+ * @param query - Query text to hash.
+ * @returns Deterministic base-36 hash string for the query.
+ * @example
+ * ```ts
+ * const queryHash = hashQuery('memory search');
+ * ```
  */
 function hashQuery(query: string): string {
   let hash = 5381;
@@ -104,6 +110,13 @@ function hashQuery(query: string): string {
 
 /**
  * Encode a cursor payload as a base64 string.
+ *
+ * @param payload - Cursor metadata to serialize.
+ * @returns Base64-encoded cursor token.
+ * @example
+ * ```ts
+ * const token = encodeCursor({ offset: 5, queryHash: 'abc', timestamp: Date.now() });
+ * ```
  */
 function encodeCursor(payload: CursorPayload): string {
   const json = JSON.stringify(payload);
@@ -113,6 +126,13 @@ function encodeCursor(payload: CursorPayload): string {
 /**
  * Decode a base64-encoded cursor back to a payload.
  * Returns null if the cursor is malformed.
+ *
+ * @param cursor - Opaque base64 cursor token.
+ * @returns Decoded cursor payload, or `null` when the token is invalid.
+ * @example
+ * ```ts
+ * const payload = decodeCursor(cursor);
+ * ```
  */
 function decodeCursor(cursor: string): CursorPayload | null {
   try {
@@ -122,11 +142,13 @@ function decodeCursor(cursor: string): CursorPayload | null {
       typeof parsed.offset !== 'number' ||
       typeof parsed.queryHash !== 'string' ||
       typeof parsed.timestamp !== 'number'
-    ) {
+  ) {
       return null;
     }
     return parsed as unknown as CursorPayload;
-  } catch {
+  } catch (error: unknown) {
+    void error;
+    /* Cursor decode failure is non-fatal */
     return null;
   }
 }
@@ -134,6 +156,13 @@ function decodeCursor(cursor: string): CursorPayload | null {
 /**
  * Classify results by confidence label.
  * Returns counts for high, medium, low (and unknown when no confidence data).
+ *
+ * @param results - Results to classify by confidence label.
+ * @returns Counts for each confidence bucket.
+ * @example
+ * ```ts
+ * const summary = classifyByConfidence(results);
+ * ```
  */
 function classifyByConfidence(results: DisclosureResult[]): { high: number; medium: number; low: number } {
   let high = 0;
@@ -164,6 +193,14 @@ function pruneExpiredCursorEntries(
 /**
  * Build a human-readable digest string from confidence distribution.
  * Format: "3 strong, 2 weak, 1 conflict" style.
+ *
+ * @param classification - Confidence bucket counts.
+ * @returns Human-readable digest string.
+ * @example
+ * ```ts
+ * buildDigest({ high: 2, medium: 1, low: 0 });
+ * // '2 strong, 1 moderate'
+ * ```
  */
 function buildDigest(classification: { high: number; medium: number; low: number }): string {
   const parts: string[] = [];
@@ -178,6 +215,14 @@ function buildDigest(classification: { high: number; medium: number; low: number
 /**
  * Check whether progressive disclosure is enabled.
  * Default: TRUE (graduated). Set SPECKIT_PROGRESSIVE_DISCLOSURE_V1=false to disable.
+ *
+ * @returns `true` when progressive disclosure should be used for responses.
+ * @example
+ * ```ts
+ * if (isProgressiveDisclosureEnabled()) {
+ *   // build paginated response
+ * }
+ * ```
  */
 function isProgressiveDisclosureEnabled(): boolean {
   const val = process.env.SPECKIT_PROGRESSIVE_DISCLOSURE_V1?.toLowerCase().trim();
@@ -192,6 +237,10 @@ function isProgressiveDisclosureEnabled(): boolean {
  *
  * @param results - Full result set to summarize.
  * @returns SummaryLayer with count and human-readable digest.
+ * @example
+ * ```ts
+ * const summary = generateSummaryLayer(results);
+ * ```
  */
 function generateSummaryLayer(results: DisclosureResult[]): SummaryLayer {
   if (!Array.isArray(results) || results.length === 0) {
@@ -211,6 +260,10 @@ function generateSummaryLayer(results: DisclosureResult[]): SummaryLayer {
  *
  * @param results - Full result set to extract snippets from.
  * @returns Array of Snippet objects, one per result.
+ * @example
+ * ```ts
+ * const previews = extractSnippets(results);
+ * ```
  */
 function extractSnippets(results: DisclosureResult[]): Snippet[] {
   if (!Array.isArray(results)) return [];
@@ -238,6 +291,10 @@ function extractSnippets(results: DisclosureResult[]): Snippet[] {
  * @param query - Original query string for hash-based identification.
  * @param options - Optional cursor configuration (TTL).
  * @returns CursorInfo with opaque cursor token and remaining count, or null if no more results.
+ * @example
+ * ```ts
+ * const continuation = createCursor(results, 5, 'memory search');
+ * ```
  */
 function createCursor(
   resultSet: DisclosureResult[],
@@ -287,6 +344,10 @@ function createCursor(
  * @param pageSize - Number of results to return. Default: 5.
  * @param options - Optional cursor configuration (TTL).
  * @returns Object with next page of results, next cursor (if more), or null if cursor is invalid/expired.
+ * @example
+ * ```ts
+ * const page = resolveCursor(cursor, 5);
+ * ```
  */
 function resolveCursor(
   cursor: string,
@@ -350,6 +411,10 @@ function resolveCursor(
  * @param pageSize - Number of results per page. Default: 5.
  * @param query - Original query string for cursor identification.
  * @returns ProgressiveResponse with summary, snippets, and optional continuation.
+ * @example
+ * ```ts
+ * const response = buildProgressiveResponse(results, 5, 'memory search');
+ * ```
  */
 function buildProgressiveResponse(
   results: DisclosureResult[],
@@ -392,6 +457,12 @@ function buildProgressiveResponse(
 
 /**
  * Clear the cursor store. Useful for testing and cleanup.
+ *
+ * @returns Nothing.
+ * @example
+ * ```ts
+ * clearCursorStore();
+ * ```
  */
 function clearCursorStore(): void {
   cursorStore.clear();

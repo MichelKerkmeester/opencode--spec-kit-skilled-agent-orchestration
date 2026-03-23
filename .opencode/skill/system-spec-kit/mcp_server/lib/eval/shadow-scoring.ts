@@ -137,8 +137,6 @@ const SHADOW_SCHEMA_SQL = `
 
 /* --- 4. INTERNAL HELPERS --- */
 
-let _schemaEnsured = false;
-
 /**
  * Get the eval DB instance. Prefers the already-initialized singleton
  * (via getEvalDb) to avoid overwriting test DB paths. Falls back to
@@ -157,21 +155,19 @@ function getDb() {
  * Idempotent — safe to call multiple times.
  */
 function ensureShadowSchema(): void {
-  if (_schemaEnsured) return;
   try {
     const db = getDb();
     db.exec(SHADOW_SCHEMA_SQL);
-    _schemaEnsured = true;
   } catch {
     // Non-fatal — logging should never break production
   }
 }
 
 /**
- * Reset the schema-ensured flag (for testing only).
+ * Reset hook retained for test compatibility.
  */
 export function _resetSchemaFlag(): void {
-  _schemaEnsured = false;
+  // No-op: schema creation is now idempotently attempted on every access.
 }
 
 /**
@@ -248,6 +244,7 @@ function computeRankCorrelation(
  * @param productionResults - The production scoring results (will NOT be modified).
  * @param shadowConfig - Configuration including the shadow scoring function.
  * @returns ShadowComparison when enabled and successful, null when disabled or on error.
+ * @deprecated Shadow scoring runtime is retired; this always returns null.
  */
 export async function runShadowScoring(
   query: string,
@@ -375,6 +372,7 @@ function _compareShadowResultsImpl(
  *
  * @param comparison - The ShadowComparison to persist.
  * @returns true if persisted, false if disabled or on error.
+ * @deprecated Shadow scoring persistence is retired; this always returns false.
  */
 export function logShadowComparison(comparison: ShadowComparison): boolean {
   void comparison;

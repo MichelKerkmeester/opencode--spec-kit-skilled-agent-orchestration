@@ -586,7 +586,11 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     durationMs: 0,
   };
 
-  let results: PipelineRow[] = [...candidates];
+  // FIX #3: Deep clone candidates so in-place mutations (e.g., syncScoreAliasesInPlace)
+  // cannot corrupt the original Stage 1 output. A shallow copy ([...candidates]) shares
+  // the same row objects, creating a race condition if the orchestrator's timeout fallback
+  // uses the original Stage 1 candidates array.
+  let results: PipelineRow[] = candidates.map(row => ({ ...row }));
   const isHybrid = config.searchType === 'hybrid';
 
   // -- 1. Session boost --
@@ -599,6 +603,9 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
         config.sessionId
       );
       results = boosted as PipelineRow[];
+      // FIX #4: Sync aliases immediately after session boost score mutations
+      // so rrfScore/intentAdjustedScore are not stale for subsequent steps.
+      syncScoreAliasesInPlace(results);
       metadata.sessionBoostApplied = sbMeta.applied ? 'applied' : 'off';
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
@@ -621,6 +628,8 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
           ? withGraphContribution(row, 'causalDelta', next - previous, 'causal', row.injectedByCausalBoost === true)
           : row;
       });
+      // FIX #4: Sync aliases immediately after causal boost score mutations.
+      syncScoreAliasesInPlace(results);
       metadata.causalBoostApplied = cbMeta.applied ? 'applied' : 'off';
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
@@ -707,6 +716,8 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
           ? withGraphContribution(row, 'graphSignalDelta', next - previous, 'graph-signals')
           : row;
       });
+      // FIX #4: Sync aliases immediately after graph signal score mutations.
+      syncScoreAliasesInPlace(results);
       (metadata as Record<string, unknown>).graphSignalsApplied = true;
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
@@ -804,7 +815,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
         });
         const shadow = shadowScore(null, features, resolveBaseScore(row), true);
         if (shadow) {
-          console.debug(
+          console.warn(
             `[stage2-fusion] shadow-learned id=${row.id} manual=${shadow.manualScore.toFixed(4)} learned=${shadow.learnedScore.toFixed(4)} delta=${shadow.delta.toFixed(4)}`
           );
         }

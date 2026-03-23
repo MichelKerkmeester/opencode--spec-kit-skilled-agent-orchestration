@@ -79,7 +79,8 @@ export function computeCosine(
   }
 
   const denom = Math.sqrt(normA) * Math.sqrt(normB);
-  return denom === 0 ? 0 : dot / denom;
+  const result = denom === 0 ? 0 : dot / denom;
+  return Number.isFinite(result) ? result : 0;
 }
 
 /**
@@ -89,14 +90,15 @@ export function applyMMR(
   candidates: MMRCandidate[],
   config: MMRConfig,
 ): MMRCandidate[] {
+  let rawLambda = config.lambda;
   const {
-    lambda: rawLambda,
     limit,
     maxCandidates: rawMaxCandidates = DEFAULT_MAX_CANDIDATES,
   } = config;
 
   if (limit <= 0) return [];
 
+  if (!Number.isFinite(rawLambda)) rawLambda = 0.5;
   const lambda = Math.max(0, Math.min(1, rawLambda));
   const maxCandidates = Math.max(0, rawMaxCandidates);
 

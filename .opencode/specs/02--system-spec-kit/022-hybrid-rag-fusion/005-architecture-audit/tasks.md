@@ -1,21 +1,21 @@
 ---
-title: "Tasks: Scripts vs mcp_server Architecture Refinement + Boundary Remediation [template:level_3/tasks.md]"
-description: "Atomic tasks for boundary clarity, dependency direction cleanup, remediation carry-over, and documentation consolidation."
-SPECKIT_TEMPLATE_SOURCE: "tasks-core | v2.2"
+title: "Tasks: Architecture Audit [template:level_3/tasks.md]"
+description: "Recovered task map for the completed scripts-versus-mcp_server architecture audit."
 trigger_phrases:
-  - "architecture tasks"
-  - "boundary actions"
-  - "scripts mcp_server tasks"
+  - "architecture audit tasks"
+  - "boundary remediation tasks"
 importance_tier: "critical"
 contextType: "architecture"
 ---
-# Tasks: Scripts vs mcp_server Architecture Refinement + Boundary Remediation
+# Tasks: Architecture Audit
 
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
-## Task Notation
+---
+
 <!-- ANCHOR:notation -->
+## Task Notation
 
 | Prefix | Meaning |
 |--------|---------|
@@ -24,369 +24,105 @@ contextType: "architecture"
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
-**Task Format**: `T### Action (single path) - WHY - Acceptance`
+**Task Format**: `T### [P?] Description (file path)`
 <!-- /ANCHOR:notation -->
 
-<!-- ANCHOR:phase-0 -->
-## Phase 0: Pipeline Infrastructure (Prerequisite)
+---
 
-- [x] T000 Add `lint` and `check` scripts to `.opencode/skill/system-spec-kit/scripts/package.json` - WHY: Phase 3 enforcement (T015-T017) assumes a lint/check pipeline that does not currently exist; `scripts/package.json` only has `"build": "tsc --build"` - Acceptance: `npm run check` executes successfully and can host import-policy checks.
-<!-- /ANCHOR:phase-0 -->
+The detailed root task bodies were replaced by the later coordination rewrite. This restored file preserves the recoverable completed task ranges and later addenda from archived review notes, ADRs, and self-audit evidence instead of inventing exact lost wording.
+
+### AI Execution Protocol
+
+### Pre-Task Checklist
+- Confirm the edit belongs to the standalone architecture-audit root docs.
+- Re-read the target file before modifying it.
+- Prefer ADRs, archived review notes, and self-audit evidence over reconstruction by memory.
+
+### Task Execution Rules
+
+| Rule | Expectation |
+|------|-------------|
+| Scope lock | Restore only the requested root docs and remove stale coordination references |
+| Evidence first | Keep recoverable architecture-audit content; summarize only where exact prose is lost |
+| No stale routing | Do not reintroduce child-folder routing or former coordination language |
+| Honest limits | Say when later task detail is preserved only as a verified range or summary |
+
+### Status Reporting Format
+- State which root docs were restored.
+- Note which task ranges are directly recoverable versus summarized from surviving evidence.
+- Include validation or residual warnings.
+
+### Blocked Task Protocol
+- Stop and report if surviving evidence contradicts the recovered phase or task map.
+- Stop and report if validation requires expanding scope beyond the requested cleanup.
+
+---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Contract and Discoverability
+## Phase 1: Setup
 
-- [x] T001 Create .opencode/skill/system-spec-kit/ARCHITECTURE.md - WHY: no canonical ownership contract exists - Acceptance: runtime vs scripts matrix + allowed/forbidden dependency directions documented.
-- [x] T002 Create `.opencode/skill/system-spec-kit/mcp_server/api/README.md` - WHY: public API boundary is implicit in comments only - Acceptance: API surface and consumer policy documented.
-- [x] T003 Create `.opencode/skill/system-spec-kit/scripts/evals/README.md` - WHY: eval scripts mix API and internal imports - Acceptance: import policy with exception process documented.
-- [x] T004 Update `.opencode/skill/system-spec-kit/mcp_server/scripts/README.md` - WHY: compatibility wrapper intent is easy to misread - Acceptance: heading/scope explicitly says compatibility wrappers only.
-- [x] T005 Update `.opencode/skill/system-spec-kit/scripts/memory/README.md` - WHY: reindex runbook should have single canonical owner - Acceptance: canonical runbook section present.
-- [x] T006 Update `.opencode/skill/system-spec-kit/mcp_server/database/README.md` - WHY: duplicate runbook details drift - Acceptance: pointer to canonical runbook replaces duplicate procedural detail.
+### Recovered Audit Baseline
+
+- [x] `T000` Audit scaffolding and prerequisite infrastructure
+- [x] `T001-T006` Boundary contract publication and discoverability improvements
+- [x] `T007-T014` Structural cleanup across scripts/runtime seams
+- [x] `T013a-T013c` Split cleanup tasks used to break out handler/helper work
+- [x] `T018-T020` Sidecar cleanup and documentation-gap remediation discovered during Phase 2
+- [x] `T015-T017` Enforcement automation for the architecture boundary
 <!-- /ANCHOR:phase-1 -->
 
-<!-- ANCHOR:phase-2 -->
-## Phase 2: Structural Cleanup
+---
 
-- [x] T007 Create `.opencode/skill/system-spec-kit/shared/utils/token-estimate.ts` - WHY: repeated chars/4 estimator logic across modules - Acceptance: shared helper exported and documented.
-- [x] T008 Update `.opencode/skill/system-spec-kit/scripts/core/tree-thinning.ts` - WHY: local token estimation duplicates shared concern - Acceptance: imports and uses shared token-estimate helper.
-- [x] T009 Update `.opencode/skill/system-spec-kit/mcp_server/formatters/token-metrics.ts` - WHY: local token estimation duplicates shared concern - Acceptance: imports and uses shared token-estimate helper.
-- [x] T010 Create `.opencode/skill/system-spec-kit/shared/parsing/quality-extractors.ts` - WHY: quality extraction logic duplicated between scripts and runtime parser - Acceptance: shared extractor API added.
-- [x] T011 Update `.opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts` - WHY: scripts quality extraction drift risk - Acceptance: uses shared quality extractor implementation.
-- [x] T012 Update `.opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts` - WHY: runtime parser quality extraction drift risk - Acceptance: uses shared quality extractor implementation.
-- [x] T013a Extract `escapeLikePattern` from `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts` → `handlers/handler-utils.ts` - WHY: memory-save.ts (1520 LOC) is a god object contributing to the handler cycle; extracting shared utilities reduces coupling - Acceptance: `escapeLikePattern` importable from `handler-utils.ts`, memory-save no longer exports it.
-- [x] T013b Extract `detectSpecLevelFromParsed` from `.opencode/skill/system-spec-kit/mcp_server/handlers/causal-links-processor.ts` → `handlers/handler-utils.ts` - WHY: causal-links-processor participates in handler cycle through shared utility imports - Acceptance: utility moved to handler-utils, one cycle edge removed.
-- [x] T013c Run static cycle detection to verify zero remaining handler cycles - WHY: confirms T013a/b achieved the goal - Acceptance: import analysis shows no circular dependency path through handler modules.
-- [x] T014 Update consumer imports across handler modules to use `handler-utils.ts` - WHY: complete the cycle-breaking refactor - Acceptance: dependency graph confirms cycle no longer exists, all handler imports resolve correctly.
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+### Recovered Core Audit Expansion
+
+- [x] `T021-T045` Triple-review remediation and evidence backfill
+- [x] `T046-T049` Additional enforcement hardening after review remediation
+- [x] `T050-T073` Code and documentation alignment work discovered during audit follow-up
+- [x] `T074-T090` Merged work from former `030-architecture-boundary-remediation`
+- [x] `T091-T099` Strict-pass closure for remaining documentation and architecture drift
+- [x] `T100-T104` Root-save naming regression fixes
+- [x] `T105-T109` Collector-path naming follow-up fixes
+- [x] `T110-T114` Explicit CLI target routing fixes
+- [x] `T115-T118` Guard rail for invalid phase-folder targeting
+- [x] `T119-T123` Indexed direct-save render and quality closure
+- [x] `T124-T129` README audit and documentation coverage follow-up preserved in surviving audit artifacts
+- [x] `T130-T132` Symlink removal and canonical path restoration preserved in ADR-007
+- [x] `T133-T135` Source-dist alignment enforcement preserved in ADR-008
+- [x] `T140-T152` Later completed follow-up block explicitly referenced by the 2026-03-21 self-audit
 <!-- /ANCHOR:phase-2 -->
 
-<!-- ANCHOR:phase-2-cleanup -->
-## Phase 2b: Cleanup and Documentation Gaps
-
-- [x] T018 Clean stale `retry-manager` references from `.opencode/skill/system-spec-kit/scripts/lib/README.md` and `scripts/scripts-registry.json` - WHY: inventory lists a file that no longer exists, amplifying boundary ambiguity - Acceptance: no references to `retry-manager` remain in scripts lib docs or registry (or explicitly marked as moved).
-- [x] T019 Create/update `.opencode/skill/system-spec-kit/shared/README.md` with boundary documentation - WHY: shared/ is the consolidation target for T007/T010 but has no ownership or import-policy docs - Acceptance: README documents shared module purpose, ownership, and consumer expectations before new modules are added.
-- [x] T020 Document embeddings shim consolidation (`scripts/lib/embeddings.ts` + `mcp_server/lib/providers/embeddings.ts`) - WHY: both files re-export `@spec-kit/shared/embeddings` with near-identical purpose, creating confusion about which to import - Acceptance: one canonical shim identified, the other marked as deprecated or removed.
-<!-- /ANCHOR:phase-2-cleanup -->
+---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Enforcement
+## Phase 3: Verification
 
-- [x] T015 Create `.opencode/skill/system-spec-kit/scripts/evals/import-policy-allowlist.json` - WHY: controlled migration exceptions need explicit ownership - Acceptance: each exception has owner and removal condition.
-- [x] T016 Create `.opencode/skill/system-spec-kit/scripts/evals/check-no-mcp-lib-imports.ts` - WHY: prevent new `@spec-kit/mcp-server/lib/*` coupling - Acceptance: script fails on violations outside allowlist.
-- [x] T017 Update `.opencode/skill/system-spec-kit/scripts/package.json` - WHY: guardrail must run automatically - Acceptance: check script integrated into standard lint/check pipeline.
+### Recovered Verification Notes
+
+- [x] Recovered task ranges remain aligned with the restored standalone architecture-audit scope
+- [x] Stale parent-coordination and child-phase routing tasks are removed from the root task file
+- [x] Later addenda are preserved as verified ranges where exact root wording was overwritten
 <!-- /ANCHOR:phase-3 -->
 
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Review Remediation (Triple Ultra-Think Findings)
-
-Addresses findings from the triple ultra-think cross-AI review performed 2026-03-04 by Claude Opus 4.6, Gemini 3.1 Pro Preview, and Codex 5.3.
-
-### P0 Blockers
-
-- [x] T021 Integrate `scripts/check-api-boundary.sh` into `scripts/package.json` `check` script - WHY: `check-api-boundary.sh` is documented as enforcement tool in .opencode/skill/system-spec-kit/ARCHITECTURE.md but not in the npm pipeline; creates enforcement asymmetry where only one boundary direction is protected [Claude + Codex] - Acceptance: `npm run check` runs both `check-no-mcp-lib-imports.ts` AND `check-api-boundary.sh`. [DONE: appended `&& bash check-api-boundary.sh` to check script; `npm run check` passes all 3 stages]
-- [x] T022 Add `scripts/memory/reindex-embeddings.ts` exception to .opencode/skill/system-spec-kit/ARCHITECTURE.md Current Exceptions table - WHY: boundary contract lists 5 exceptions but allowlist has 6; the missing entry has a broad `lib/*` wildcard scope [Claude + Codex cross-validated: CV-3] - Acceptance: exception table matches `import-policy-allowlist.json` exactly. [DONE: row added to Current Exceptions table]
-- [x] T023 Expand `PROHIBITED_PATTERNS` in `check-no-mcp-lib-imports.ts` to cover `@spec-kit/mcp-server/core/*` - WHY: checker only enforces `lib/*` but architecture intent says scripts should ONLY use `api/*`; `core/*` paths bypass detection entirely [Codex + Claude cross-validated: CV-2] - Acceptance: `core/*` imports in scripts trigger violations. [DONE: 2 package-form + 2 relative patterns added for core/*; existing core/config allowlist entry covers memory-indexer.ts]
-
-### P1 Should-Fix
-
-- [x] T024 Add dynamic `import()` expression detection to `check-no-mcp-lib-imports.ts` - WHY: `await import('@spec-kit/mcp-server/lib/x')` completely evades regex detection [Codex CRITICAL C-1] - Acceptance: dynamic imports of forbidden paths are detected as violations. [DONE: 2 dynamic import patterns added for lib/ and core/]
-- [x] T025 Add additional relative path variant patterns to `PROHIBITED_PATTERNS` - WHY: only `../../mcp_server/lib/` is matched; `../mcp_server/lib`, `../../../mcp_server/lib`, and deeper paths bypass [Codex CRITICAL C-2] - Acceptance: all relative path depths to `mcp_server/lib/` are detected. [DONE: variable-depth `\.\.(?:\/\.\.)*` patterns replace fixed `../../`; covers lib/ and core/]
-- [x] T026 Update `.opencode/skill/system-spec-kit/shared/README.md` structure tree and Key Files table with Phase 8 modules - WHY: `utils/token-estimate.ts` and `parsing/quality-extractors.ts` are omitted from the README that's supposed to document shared modules [Claude MAJOR F-M1] - Acceptance: both files appear in structure tree and Key Files table. [DONE: both entries added to structure tree and Key Files table]
-- [x] T027 Add allowlist governance fields to `import-policy-allowlist.json` schema - WHY: no TTL/expiry enforcement; `removeWhen` is free-text only; missing `approvedBy`, `createdAt`, `expiresAt`, `lastReviewedAt` [Codex MAJOR C-G1/C-G3] - Acceptance: schema includes governance fields; existing entries have created dates. [DONE: `createdAt`, `lastReviewedAt`, `expiresAt` added to interface and all JSON entries]
-- [x] T028 Ban or sunset wildcard exceptions in `import-policy-allowlist.json` - WHY: `@spec-kit/mcp-server/lib/*` wildcards allow very broad bypass and hide new internal dependencies [Codex MAJOR C-G2] - Acceptance: wildcards replaced with explicit module lists OR given short expiry dates. [DONE: wildcards given `expiresAt: 2026-06-04` (90-day sunset)]
-- [x] T029 Update `.opencode/skill/system-spec-kit/scripts/evals/README.md` Current Exception section to include `deleted-chk210-quality-backfill-script` - WHY: README only mentions 1 of 2 eval-scope exceptions [Claude MINOR F-m5] - Acceptance: both eval-scope exceptions documented. [DONE: both exceptions listed]
-
-### P2 Nice-to-Have
-
-- [x] T030 Add block comment (`/* */`) tracking to `check-no-mcp-lib-imports.ts` - WHY: only `//` comments skipped; block comments can trigger false positives [Gemini + Codex cross-validated: CV-1] - Acceptance: prohibited imports inside block comments are not flagged. [DONE: block comment state machine added to scanFile(); included as P1 bonus in Wave 2]
-- [x] T031 Add behavioral tests for `shared/parsing/quality-extractors.ts` edge cases - WHY: CHK-021 claims parity tests but evidence is only `tsc --noEmit`; regex edge cases for flag names with internal quotes remain untested [Gemini MINOR G-m1 + Claude MINOR F-m3] - Acceptance: test file with edge cases (empty input, quoted flags, multiline blocks). [DONE: `quality-extractors.test.ts` created with 18 assertions covering 13 edge cases — empty input, no frontmatter, valid scores, clamping, NaN, body-text isolation, YAML flags, quoted values, CRLF, whitespace]
-- [x] T032 Add bidirectional cross-links from .opencode/skill/system-spec-kit/ARCHITECTURE.md to consumer READMEs - WHY: consumer READMEs link to boundary doc but not vice versa; CHK-110 claims bidirectional but links are unidirectional [Claude MINOR F-m4] - Acceptance: .opencode/skill/system-spec-kit/ARCHITECTURE.md has navigable links to `.opencode/skill/system-spec-kit/mcp_server/api/README.md` and `.opencode/skill/system-spec-kit/scripts/evals/README.md`. [DONE: "Related Documentation" section added with links to `.opencode/skill/system-spec-kit/mcp_server/api/README.md`, `.opencode/skill/system-spec-kit/scripts/evals/README.md`, `.opencode/skill/system-spec-kit/shared/README.md`]
-- [x] T033 Define growth policy for `mcp_server/handlers/handler-utils.ts` - WHY: module currently holds 2 extracted functions; could become a catch-all without guidance [Claude MINOR F-m6] - Acceptance: module header comment defines when to add vs. when to split.
-- [x] T034 Evaluate AST-based parsing upgrade for enforcement script - WHY: regex-based static analysis has inherent limitations (multi-line, dynamic imports, computed paths); TypeScript compiler API or `@typescript-eslint/typescript-estree` would be robust [Codex P0 recommendation] - Acceptance: evaluation document with pros/cons and effort estimate. [DONE: `scratch/ast-parsing-evaluation.md` created with pros/cons/effort for TypeScript Compiler API vs typescript-estree vs keep regex]
-- [x] T035 Add transitive dependency checks for re-export evasion - WHY: scripts can import a local barrel file that re-exports forbidden mcp_server internals; checker only inspects direct import strings [Codex MAJOR C-5] - Acceptance: import graph analysis detects transitive boundary violations. [DONE: `scanTransitiveViolations()`, `findForbiddenReExports()`, `resolveLocalImportTarget()` added to `check-no-mcp-lib-imports.ts`; 1-hop transitive checking resolves local imports and scans targets for prohibited re-exports]
-- [x] T036 Update `decision-record.md` ADR-003 Five Checks to mention token estimation alongside quality extractors - WHY: ADR-003 only names quality extractors but token estimation was also consolidated [Claude MINOR F-m2] - Acceptance: Five Checks item 1 mentions both concerns. [DONE: ADR-003 context and Five Checks updated to reference both `estimateTokenCount` and quality extractors consolidation]
-- [x] T037 Add deprecation/removal criteria documentation for compatibility wrappers and allowlist entries - WHY: CHK-042 [P2] was deferred; review confirms governance gap [Codex C-G1] - Acceptance: CHK-042 verifiable with documented criteria. [DONE: "Wrapper Removal Criteria" and "Allowlist Removal Criteria" sections added to .opencode/skill/system-spec-kit/ARCHITECTURE.md with explicit sunset and expiry governance]
-- [x] T038 Run `validate.sh --recursive` and fix any remaining validation issues - WHY: CHK-112 [P2] was deferred; ensures spec folder docs pass structural validation - Acceptance: CHK-112 verifiable with passing exit code. [DONE: `validate.sh --recursive 005-architecture-audit` → 0 errors, 0 warnings, PASSED]
-
-### Agent 4 Findings (Codex 5.3 Code Quality — P0/P1)
-
-- [x] T039 [P0] Fix `escapeLikePattern` in `handler-utils.ts` to escape backslash before `%`/`_` - WHY: with `ESCAPE '\'`, unescaped `\` can alter LIKE semantics; potential SQL safety issue [Codex Agent 4 MAJOR] - Acceptance: backslash is escaped first; LIKE queries with backslash input produce correct results. [DONE: `.replace(/\\\\/g, '\\\\\\\\')` prepended to escape chain]
-- [x] T040 [P1] Constrain `extractQualityScore` and `extractQualityFlags` to YAML frontmatter boundaries - WHY: `quality_score:` in body text/code blocks can be parsed as metadata; `extractQualityFlags` block capture can overrun [Codex Agent 4 MAJOR x2] - Acceptance: quality extraction only matches within frontmatter delimiters (`---`). [DONE: `extractFrontmatter()` helper added; both functions search within frontmatter first, fallback to full content]
-- [x] T041 [P1] Add deterministic ordering to causal reference resolution LIKE queries - WHY: ambiguous LIKE without `ORDER BY` can link wrong memory when multiple rows match [Codex Agent 4 MAJOR] - Acceptance: `ORDER BY` clause added; exact-match takes precedence over LIKE. [DONE: `ORDER BY id DESC LIMIT 1` added to all 3 LIKE queries in resolveMemoryReference]
-- [x] T042 [P1] Add SQL column allowlist guard to chunking-orchestrator fallback metadata updater - WHY: builds column list from object keys without validation, unlike memory-save.ts helper [Codex Agent 4 MAJOR] - Acceptance: only allowlisted columns are written. [DONE: ALLOWED_METADATA_COLUMNS Set with 18 columns; entries filtered before SQL construction]
-- [x] T043 [P1] Add guard for `retainedChunks.length === 0` in chunking-orchestrator - WHY: can produce parent-only partial records with no child vectors [Codex Agent 4 MAJOR] - Acceptance: empty retained chunks handled with explicit error or cleanup. [DONE: early return with status='warning' and descriptive message when retainedChunks is empty]
-- [x] T044 [P1] Add finite guard on `similarity / 100` in pe-gating - WHY: invalid provider output can propagate NaN into PE decisions [Codex Agent 4 MAJOR] - Acceptance: NaN/Infinity values default to 0 or trigger warning. [DONE: typeof check + Number.isFinite guard; non-finite values default to 0]
-- [x] T045 [P1] Add relative `require('../../mcp_server/lib/...')` detection to enforcement script - WHY: `require()` with relative paths to mcp_server/lib is not blocked; only package-form `require('@spec-kit/...')` is covered [Codex Agents 3+4 cross-validated: CV-5] - Acceptance: relative require paths trigger violations. [DONE: 2 variable-depth relative require patterns added for lib/ and core/]
-<!-- /ANCHOR:phase-4 -->
-
-<!-- ANCHOR:phase-5 -->
-## Phase 5: Architecture Enforcement Gaps
-
-Closes two documentation-only rules in .opencode/skill/system-spec-kit/ARCHITECTURE.md that had no automated enforcement.
-
-- [x] T046 Create `.opencode/skill/system-spec-kit/scripts/evals/check-architecture-boundaries.ts` with shared/ neutrality + wrapper-only checks - WHY: two boundary rules (shared/ must not import mcp_server/scripts; mcp_server/scripts/ must be wrappers only) are not enforced and could regress silently - Acceptance: script detects violations in both categories and exits non-zero. [DONE: `check-architecture-boundaries.ts` created with GAP A (shared/ neutrality) and GAP B (wrapper-only) checks; violations exit non-zero]
-- [x] T047 Integrate `check-architecture-boundaries.ts` into `npm run check` pipeline - WHY: enforcement must be automatic, not manual - Acceptance: `npm run check` runs all 4 stages including new checker. [DONE: `scripts/package.json` check pipeline updated with 4th stage `npx tsx evals/check-architecture-boundaries.ts`]
-- [x] T048 Update .opencode/skill/system-spec-kit/ARCHITECTURE.md enforcement table with new checker - WHY: enforcement tooling must be discoverable in the boundary contract - Acceptance: table row added for `check-architecture-boundaries.ts`. [DONE: enforcement table includes new `check-architecture-boundaries.ts` row]
-- [x] T049 Update `.opencode/skill/system-spec-kit/scripts/evals/README.md` script inventory with new checker - WHY: eval script inventory must be complete - Acceptance: new script listed in inventory table. [DONE: script inventory updated with `check-architecture-boundaries.ts` entry]
-<!-- /ANCHOR:phase-5 -->
-
-<!-- ANCHOR:phase-6 -->
-## Phase 6: Feature Catalog Parity (Audit-Driven)
-
-Adds the complete remediation plan from the phase-wide implementation audit across feature catalog groups 01-18.
-
-### Code Fixes (Behavioral First)
-
-- [x] T050 Fix cognitive-limit leak in `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-triggers.ts` - WHY: cognitive path can return more than requested `limit`, violating tool contract - Acceptance: response count never exceeds caller `limit` across cognitive/non-cognitive branches. [DONE: cognitive path now passes caller limit to state filter; covered by `tests/handler-memory-triggers.vitest.ts`]
-- [x] T051 Add per-channel try/catch isolation in `.opencode/skill/system-spec-kit/mcp_server/lib/eval/ablation-framework.ts` - WHY: one channel failure currently aborts full ablation run - Acceptance: failed channels are reported, successful channels still produce output. [DONE: per-channel isolation + `channelFailures` reporting; covered by `tests/ablation-framework.vitest.ts`]
-- [x] T052 Enforce shadow-period semantics in `.opencode/skill/system-spec-kit/mcp_server/lib/search/learned-feedback.ts` for write path - WHY: shadow mode should be log-only end-to-end - Acceptance: no learned-trigger persistence/effect during shadow period. [DONE: shadow-mode write path is log-only; covered by `tests/learned-feedback.vitest.ts`]
-- [x] T053 Remove learned-feedback double weighting across `.opencode/skill/system-spec-kit/mcp_server/lib/search/learned-feedback.ts` and `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts` - WHY: 0.7x is effectively applied twice - Acceptance: single intended weighting is applied and covered by tests. [DONE: removed second scaling in Stage 2; covered by `tests/stage2-fusion.vitest.ts`]
-- [x] T054 Process `toDelete` category in `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-index.ts` (with support in `.opencode/skill/system-spec-kit/mcp_server/lib/storage/incremental-index.ts`) - WHY: deleted files are categorized but not consumed - Acceptance: removed files are purged from index state during incremental scan. [DONE: stale-path delete flow wired with success/failure counters; covered by `tests/incremental-index-v2.vitest.ts` and `tests/handler-memory-index-cooldown.vitest.ts`]
-- [x] T055 Align promotion thresholds to positive-validation semantics in `.opencode/skill/system-spec-kit/mcp_server/lib/scoring/confidence-tracker.ts` and `.opencode/skill/system-spec-kit/mcp_server/lib/search/auto-promotion.ts` - WHY: thresholds are currently influenced by total validation count - Acceptance: threshold counters and docs consistently reflect positive validations only. [DONE: promotion eligibility now uses positive validations; covered by `tests/promotion-positive-validation-semantics.vitest.ts`]
-- [x] T056 Wire per-channel eval events using `.opencode/skill/system-spec-kit/mcp_server/lib/eval/eval-logger.ts` from runtime handlers - WHY: `logChannelResult` exists but has no runtime callsite - Acceptance: channel-level rows are emitted when eval logging is enabled. [DONE: runtime channel logging added in search/context handlers; covered by `tests/memory-search-eval-channels.vitest.ts` and `tests/memory-context-eval-channels.vitest.ts`]
-- [x] T057 Finalize and enforce `memory_search.limit` contract in `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts` (and corresponding runtime docs) - WHY: docs and schema disagree (100 vs 50) - Acceptance: one authoritative limit value is implemented and documented. [DONE: schema enforces `positiveIntMax(100)`, runtime clamps to 100 in `handlers/memory-search.ts`, and public tool docs specify `minimum: 1, maximum: 100` in `mcp_server/tool-schemas.ts`]
-- [x] T058 Add targeted regression tests for T050-T057 in `.opencode/skill/system-spec-kit/mcp_server/tests/` - WHY: prevent contract regressions after parity fixes - Acceptance: new tests fail before and pass after fixes. [DONE: targeted suites for T050-T057 present; `tool-input-schema.vitest.ts` includes limit<=100 contract tests]
-
-### Documentation Alignment (Current Reality Sweep)
-
-- [x] T059 Update `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and retrieval snippets to remove stale `SPECKIT_PIPELINE_V2` fallback wording - WHY: runtime is V2-only - Acceptance: docs no longer describe unavailable legacy fallback behavior. [DONE: canonical + retrieval snippets state V2 as sole runtime path and mark legacy gate inert/deprecated]
-- [x] T060 Align MPAB stage-placement docs in `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and relevant phase snippets - WHY: documented stage differs from runtime call path - Acceptance: stage placement description matches implemented path. [DONE: MPAB documented as Stage 3 (rerank/aggregate) in canonical + `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md`]
-- [x] T061 Align normalization docs in `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and phase snippets with actual embedding/BM25 behavior - WHY: docs describe divergence not present in code - Acceptance: narrative reflects shared normalization pipeline as implemented. [DONE: canonical + mutation/indexing snippets now reflect shared normalizer helper behavior and live BM25 save-path tokenization]
-- [x] T062 Align lifecycle docs in `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and phase snippets for `memory_bulk_delete`/checkpoint restore semantics - WHY: current text overstates unconditional checkpointing and full vec rebuild behavior - Acceptance: wording matches actual guarded/conditional behavior. [DONE: checkpoint docs updated to conditional checkpoint creation (`skipCheckpoint`) and precise restore refresh behavior]
-- [x] T063 Align evaluation docs (metric count and edge-density denominator) in `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and phase snippets - WHY: docs say 9 metrics and edges/node while code uses 11 metrics and total-memories denominator fallback - Acceptance: metric/denominator wording matches implementation. [DONE: canonical + snippets updated to 11 metrics and `total_edges / total_memories` denominator]
-- [x] T064 Align graph/community docs in `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and phase snippets with runtime wiring - WHY: docs imply runtime detect/store + graph-cache clear flows that are not wired as stated - Acceptance: docs reflect actual hot-path behavior and invalidation strategy. [DONE: docs now scope Stage 2 to precomputed `community_assignments` usage and non-auto invocation of detect/store helpers]
-- [x] T065 Align governance docs in `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and phase snippets to actual flag inventory/knobs/caps - WHY: documented caps and counts drift from runtime/tests - Acceptance: governance text matches enforceable behavior. [DONE: governance wording updated to process targets (not hard caps); active helper inventory aligned to 23 in `search-flags.ts`]
-- [x] T066 Align eval-logging docs in `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and phase snippets - WHY: docs claim async/non-blocking and complete event coverage not fully represented in runtime flow - Acceptance: logging semantics and coverage claims are precise and verifiable. [DONE: docs now describe fail-safe sync writes behind `SPECKIT_EVAL_LOGGING`; channel-row scope clarified for search/context vs trigger]
-- [x] T067 Remove stale implementation-detail claims (line-count and call-site attribution drift) across phase snippet markdowns under `.opencode/skill/system-spec-kit/feature_catalog/` - WHY: outdated details reduce trust in documentation - Acceptance: no stale implementation-detail mismatches remain. [DONE: stale `~550 lines` and stale `line ~...` call-site attributions removed from canonical + snippet docs]
-- [x] T068 Ensure all phase snippet “Current reality source” metadata points to canonical `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` and no legacy summary-source references remain - WHY: enforce single source of truth - Acceptance: zero references to deprecated summary files; all snippet metadata consistent. [DONE: all snippet metadata points to canonical source; `rg` over `.opencode/skill/system-spec-kit/feature_catalog` shows no legacy summary-source references]
-
-### Memory Quality Gates (Generation-Time Prevention)
-
-- [x] T071 Create `scripts/utils/slug-utils.ts` with content-aware slug generation (`slugify`, `truncateSlugAtWordBoundary`, `generateContentSlug`) - WHY: all memory filenames use generic spec-folder-name slug, producing 51 identically-named files - Acceptance: `generateContentSlug(task, fallback)` returns task-based slug when available, falls back to folder name. [DONE: slug-utils.ts created with GENERIC_SLUGS blocklist, 8-char minimum, 50-char word-boundary truncation]
-- [x] T072 Add empty content gate (`validateContentSubstance`) and duplicate detection (`checkForDuplicateContent`) to `scripts/core/file-writer.ts` - WHY: 21 SGQS-template duplicates and 5 empty sessions were written to disk unchecked - Acceptance: files with <200 chars substance or matching SHA-256 hash throw before write. [DONE: both functions added to writeFilesAtomically; strips frontmatter/anchors/headings before measuring substance]
-- [x] T073 Integrate content slug in `scripts/core/workflow.ts` (line 580-581) - WHY: filename generation uses `folderBase` ignoring available `implSummary.task` - Acceptance: `ctxFilename` uses `generateContentSlug(implSummary.task, folderBase)` instead of `folderBase`. [DONE: import added, slug swap at line 581]
-
-### Re-Verification and Closure
-
-- [x] T069 Re-run 5-agent audit across feature catalog groups 01-18 and capture severity-ordered findings in this phase folder scratch artifacts - WHY: verify remediation completeness objectively - Acceptance: no unresolved HIGH findings and all MEDIUM findings either fixed or explicitly accepted. [DONE: 5 audit artifacts added: `scratch/t069-audit-agent-{1..5}-*.md` + `scratch/t069-audit-summary.md`; unresolved HIGH=0, unresolved MEDIUM=0]
-- [x] T070 Update this phase folder (`plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`) with closure evidence for T050-T069 - WHY: maintain audit trail and handover quality - Acceptance: docs reflect final status with command/file evidence. [DONE: phase docs updated with closure status, evidence pointers, and verification command outputs]
-<!-- /ANCHOR:phase-6 -->
-
-<!-- ANCHOR:phase-7 -->
-## Phase 7: Boundary Remediation Carry-Over (Merged from Former 030)
-
-### Phase 7A: Memory Indexer + Shared Config Migration
-
-- [x] T074 Add `DB_UPDATED_FILE` export to `.opencode/skill/system-spec-kit/shared/config.ts` - WHY: remove cross-boundary import pressure from `mcp_server/core/config` - Acceptance: shared config exports `DB_UPDATED_FILE` with no behavior change. [DONE: `shared/config.ts` exports `DB_UPDATED_FILE`]
-- [x] T075 Update `.opencode/skill/system-spec-kit/mcp_server/core/config.ts` to re-export `DB_UPDATED_FILE` from shared config - WHY: preserve backward compatibility for existing runtime/core consumers - Acceptance: old import path still works via re-export. [DONE: `mcp_server/core/config.ts` re-exports `DB_UPDATED_FILE`]
-- [x] T076 Migrate vector index import in `.opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts` to `@spec-kit/mcp-server/api/search` - WHY: remove avoidable direct internal import coupling - Acceptance: memory-indexer no longer imports vector index from runtime internals. [DONE: `memory-indexer.ts` imports `vectorIndex` from `@spec-kit/mcp-server/api/search`]
-- [x] T077 Migrate `DB_UPDATED_FILE` import in `.opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts` to `@spec-kit/shared/config` - WHY: align constant ownership with shared layer boundary - Acceptance: scripts-side import uses shared config path only. [DONE: `memory-indexer.ts` imports `DB_UPDATED_FILE` from `@spec-kit/shared/config`]
-- [x] T078 Remove resolved memory-indexer exceptions from `.opencode/skill/system-spec-kit/scripts/evals/import-policy-allowlist.json` - WHY: allowlist should only keep legitimate residual exceptions - Acceptance: removed entries have no remaining violations. [DONE: memory-indexer-specific exceptions removed; retained wildcard exceptions scoped to eval scripts only]
-- [x] T079 Run `npx tsc --noEmit` after Phase 7A - WHY: verify type-safety after import and ownership migration - Acceptance: zero TypeScript errors. [DONE: `npx tsc --noEmit` passed on 2026-03-06]
-- [x] T080 Run `npm run check --workspace=scripts` after Phase 7A - WHY: verify boundary enforcement passes with reduced exceptions - Acceptance: all check stages pass. [DONE: `npm run check --workspace=scripts` and `npm run check:ast --workspace=scripts` passed on 2026-03-06]
-
-### Phase 7B: Reindex Audit + API Surface Decisioning
-
-- [x] T081 Audit `.opencode/skill/system-spec-kit/scripts/memory/reindex-embeddings.ts` for `mcp_server/lib/*` and `mcp_server/core/*` dependencies - WHY: determine which exceptions are still legitimate - Acceptance: import inventory documented with API-available vs internal-only classification. [DONE: reindex dependency set reduced to API entrypoint usage]
-- [x] T082 Verify current API coverage in `.opencode/skill/system-spec-kit/mcp_server/api/search.ts` and `.opencode/skill/system-spec-kit/mcp_server/api/index.ts` - WHY: avoid unnecessary new API exports - Acceptance: coverage map identifies gaps and no-op areas. [DONE: gap confirmed for safe bootstrap/index-scan hooks]
-- [x] T083 Expand API surface only for encapsulation-safe missing dependencies (if needed) in `.opencode/skill/system-spec-kit/mcp_server/api/` - WHY: reduce internal coupling without exposing unstable internals - Acceptance: new exports are minimal and documented. [DONE: `mcp_server/api/indexing.ts` added with minimal safe runtime bootstrap/index-scan hooks]
-- [x] T084 Migrate feasible imports in `.opencode/skill/system-spec-kit/scripts/memory/reindex-embeddings.ts` to API/shared surfaces - WHY: close avoidable boundary exceptions - Acceptance: migrated imports compile and pass checks. [DONE: `reindex-embeddings.ts` now imports only `@spec-kit/mcp-server/api/indexing`]
-- [x] T085 Narrow or retain wildcard exceptions in `.opencode/skill/system-spec-kit/scripts/evals/import-policy-allowlist.json` with explicit rationale - WHY: residual exceptions must be intentional and time-bounded - Acceptance: each retained wildcard has owner, rationale, and expiry metadata. [DONE: wildcard exceptions retained only for eval scripts with governance metadata including `lastReviewedAt: 2026-03-05`]
-
-### Phase 7C: Enforcement Automation + Documentation Sync
-
-- [x] T086 Add or confirm mandatory CI boundary-check stage for pull requests - WHY: manual-only enforcement is insufficient for policy integrity - Acceptance: CI blocks merge on boundary-check failure. [DONE: `.github/workflows/system-spec-kit-boundary-enforcement.yml` runs on pull requests, prebuilds referenced declarations with `npx tsc -b shared/tsconfig.json mcp_server/tsconfig.json`, and then executes `npm run check --workspace=scripts` and `npm run check:ast --workspace=scripts`]
-- [x] T087 Update .opencode/skill/system-spec-kit/ARCHITECTURE.md current-exceptions table after Phase 7 migrations - WHY: architecture docs must reflect runtime policy reality - Acceptance: exception table and allowlist entries match exactly. [DONE: current exceptions table aligned with allowlist state]
-- [x] T088 Refresh allowlist governance metadata (`lastReviewedAt`, `expiresAt`, ownership fields) in `.opencode/skill/system-spec-kit/scripts/evals/import-policy-allowlist.json` - WHY: retained exceptions require active governance - Acceptance: all retained entries include current review metadata. [DONE: retained wildcard eval exceptions include governance metadata with `lastReviewedAt: 2026-03-05`]
-- [x] T089 Run final Phase 7 verification (`npx tsc --noEmit` + `npm run check --workspace=scripts`) and capture evidence in this spec folder - WHY: completion claims require reproducible proof - Acceptance: both commands pass with logged evidence. [DONE: passed on 2026-03-06: local verification succeeded with `npm run check --workspace=scripts`, `npm run check:ast --workspace=scripts`, `npx tsc --noEmit`, and targeted `vitest` import-policy rules test; clean-checkout CI verification also passed with `npm ci`, `npx tsc -b shared/tsconfig.json mcp_server/tsconfig.json`, `npm run check --workspace=scripts`, and `npm run check:ast --workspace=scripts`]
-- [x] T090 Update `implementation-summary.md` with Phase 7 outcomes and merged-spec closure notes - WHY: preserve post-merge continuity and handover quality - Acceptance: summary reflects migration decisions, retained exceptions, and CI enforcement state. [DONE: Phase 7 closure section added with migration, governance, CI, and verification evidence]
-<!-- /ANCHOR:phase-7 -->
-
-<!-- ANCHOR:phase-8 -->
-## Phase 8: Documentation Drift Remediation (Strict-Pass Closure)
-
-Addresses the remaining strict-alignment drift confirmed after Phase 7: README wording mismatches and unresolved `dist/` policy ambiguity.
-
-- [x] T091 Fix `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md` memory-aware tools drift - WHY: hooks documentation still misstates the memory-aware tool surface and blocks a strict alignment claim - Acceptance: README language matches the current memory-aware hooks/tool reality with no stale capability wording. [DONE: hooks README updated to align memory-aware hook/tool wording with the current documented tool surface]
-- [x] T092 Update `.opencode/skill/system-spec-kit/mcp_server/README.md` hooks inventory and stale counts - WHY: top-level runtime inventory still reflects outdated hook counts/status and can mislead future audits - Acceptance: hook inventory, counts, and status text match the current repo state exactly. [DONE: top-level mcp_server README inventory/count wording reconciled to current repo state]
-- [x] T093 Correct `.opencode/skill/system-spec-kit/mcp_server/scripts/README.md` wrapper/canonical command wording - WHY: wrapper ownership and canonical command guidance remain ambiguous after prior cleanup - Acceptance: README clearly distinguishes compatibility wrappers from canonical commands with wording that matches the current workflow. [DONE: scripts README now states wrapper-only scope and distinguishes compatibility shims from canonical commands]
-- [x] T094 Revise `.opencode/skill/system-spec-kit/shared/README.md` shared embeddings/module description - WHY: shared layer docs still drift from actual embeddings ownership and module purpose - Acceptance: embeddings and shared-module descriptions match current exported ownership and consumer expectations. [DONE: shared README updated to reflect shared embeddings ownership and module-purpose guidance]
-- [x] T095 Update .opencode/skill/system-spec-kit/ARCHITECTURE.md with explicit test-placement and `dist/` policy rules - WHY: current boundary contract does not make test-location or generated-artifact policy sufficiently explicit for strict verification - Acceptance: boundary doc states where tests belong and what the repo policy is for `dist/` artifacts in enforceable terms. [DONE: boundary contract now states explicit test-placement rules and that `dist/` is generated build output]
-- [x] T096 Reconcile `dist/` references across architecture docs with repo policy - WHY: multiple docs still imply `dist/` trees or paths that do not match the current repository policy - Acceptance: all `dist/` references in in-scope architecture docs consistently describe the same intended policy and path expectations. [DONE: .opencode/skill/system-spec-kit/ARCHITECTURE.md, `.opencode/skill/system-spec-kit/mcp_server/README.md`, `.opencode/skill/system-spec-kit/mcp_server/scripts/README.md`, `.opencode/skill/system-spec-kit/shared/README.md`, and `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md` reconciled to the same generated-`dist/` policy]
-- [x] T097 Resolve `dist/` artifact strategy branch - WHY: strict closure requires a single explicit decision on whether `dist/` artifacts are committed or build-generated only - Acceptance: either required `dist/` artifacts are restored/generated in-repo with docs updated to match, OR docs explicitly state that builds are required because `dist/` is intentionally absent from source control. [DONE: explicit policy decision recorded that `dist/` is generated build output, not source-of-truth content expected in a fresh checkout]
-- [x] T098 Re-run strict verification for Phase 8 remediation - WHY: the remediation set must be proven against the stricter audit bar, not assumed from doc edits alone - Acceptance: strict verification commands are re-run, results captured, and any remaining exception/warning is explicitly identified. [DONE: `python3 .opencode/skill/sk-doc/scripts/validate_document.py` passed for the edited README files, including 0-issue runs for `.opencode/skill/system-spec-kit/mcp_server/README.md`, `.opencode/skill/system-spec-kit/mcp_server/scripts/README.md`, `.opencode/skill/system-spec-kit/shared/README.md`, and `.opencode/skill/system-spec-kit/mcp_server/hooks/README.md`; spec validation rerun passed after doc updates]
-- [x] T099 Update `implementation-summary.md` with Phase 8 outcomes and exceptions - WHY: final remediation decisions and any residual policy exceptions need a durable handoff record - Acceptance: implementation summary records the Phase 8 fixes, verification results, and any explicitly accepted exceptions. [DONE: Phase 8 closure section added with outcomes, verification evidence, final verdict, and no remaining accepted exceptions]
-<!-- /ANCHOR:phase-8 -->
-
-<!-- ANCHOR:phase-9 -->
-## Phase 9: Memory Naming Follow-Up (Post-Strict-Pass)
-
-Captures the Task #17 follow-up: the generic memory filename regression belongs in naming candidate selection for file-backed/manual saves, not in a broad summarizer rewrite, and the existing generic-name guardrails must remain intact.
-
- - [x] T100 Investigate naming candidate sources in the file-backed/manual save path - WHY: Task #17 identified that the root-save failure comes from candidate selection/fallback order, so the follow-up needs a concrete inventory of session-derived, file-derived, and folder-derived candidates before code changes land - Acceptance: investigation notes identify where candidate values originate, which candidate wins today, and where root-save flows fall back to generic folder naming too early. [DONE: `.opencode/skill/system-spec-kit/scripts/core/workflow.ts` now passes `QUICK_SUMMARY`, `TITLE`, and `SUMMARY` into `pickPreferredMemoryTask()`, and `.opencode/skill/system-spec-kit/scripts/utils/task-enrichment.ts` documents the effective precedence as `task -> specTitle -> sessionCandidates -> folderBase`]
- - [x] T101 Update naming candidate selection to prefer stronger session semantics before folder fallback - WHY: the defect is in candidate precedence, not in summary generation itself; when session evidence exists it should beat folder-derived fallback names - Acceptance: file-backed/manual save naming uses stronger session semantics before folder fallback and still avoids a broad summarizer rewrite. [DONE: naming candidate selection now prefers `QUICK_SUMMARY`, `TITLE`, and `SUMMARY` before `folderBase`; `pickBestContentName()` remains the guardrail so generic and contaminated names are still rejected]
- - [x] T102 Add targeted unit and fixture regression coverage for naming selection and generic-name guardrails - WHY: root-save regressions and weak-name promotion risks need durable coverage across both file-backed and manual save flows - Acceptance: tests cover candidate precedence, root-save reproduction, and guardrail preservation against generic/weak names. [DONE: `.opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts` now asserts the file-backed root-save seam resolves to the stronger `hybrid-rag-fusion-recall-regression-audit` slug and explicitly rejects the old generic `hybrid-rag-fusion` fallback slug]
-  - [x] T103 Reproduce and verify the root-save scenario end-to-end - WHY: the original failure mode must be recreated and then shown fixed with the new precedence rules - Acceptance: verification evidence shows the root-save scenario previously produced a generic fallback name and now resolves to a stronger session-backed candidate when available. [DONE: from `.opencode/skill/system-spec-kit`, `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed on 2026-03-06 with PASS `27/27` tests, including the root-save naming regression coverage]
-  - [x] T104 Record closure evidence for the memory naming remediation - WHY: final closure needs a durable audit trail across this phase folder once investigation, code changes, tests, and verification pass - Acceptance: `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` record Phase 9 status/evidence after successful verification. [DONE: all four phase docs now include synchronized Phase 9 closure evidence plus refreshed verification (local `.git/hooks/pre-commit` boundary mirror pass, targeted `27/27` vitest run, and README scan completion across scripts/docs surfaces); `.opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit"` subsequently passed]
-<!-- /ANCHOR:phase-9 -->
-
-<!-- ANCHOR:phase-10 -->
-## Phase 10: Direct-Save Naming Follow-Up (Post-Phase-9 Scope Discovery)
-
-Captures the newly uncovered direct-save edge case discovered after Phase 9 closed within scope: the remaining defect is in the real collector path where quick-summary derivation can lose the best specific naming candidate before direct-save output is written.
-
-- [x] T105 Trace direct-save candidate loss through the real collector path - WHY: Phase 9 closed the root-save candidate precedence issue already in scope, but a newly discovered direct-save seam now needs precise evidence showing where `collectSessionData()` drops stronger naming candidates during collector-path assembly - Acceptance: investigation notes identify the exact collector-path handoff where observation titles, `recentContext.request`, `recentContext.learning`, or `taskFromPrompt` lose to a weaker direct-save summary candidate. [DONE: `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts` is now recorded as the seam owner; the direct-save quick-summary path explicitly inventories observation titles plus `recentContext.request`, `recentContext.learning`, and `taskFromPrompt`, preserving the historical note that this scope was discovered after Phase 9 closure.]
-- [x] T106 Fix `collectSessionData()` quick-summary derivation to choose the best specific candidate across observation titles, `recentContext.request`, `recentContext.learning`, and `taskFromPrompt` - WHY: the direct-save defect is a collector-path derivation problem, so the fix must prefer the strongest specific candidate before any generic fallback is emitted - Acceptance: direct-save flows preserve the best specific naming candidate from the listed sources before folder/generic fallback logic runs. [DONE: `collectSessionData()` now derives `QUICK_SUMMARY` via `pickBestContentName()` across observation titles, `recentContext.request`, `recentContext.learning`, and `taskFromPrompt` before fallback.]
-- [x] T107 Preserve generic and contamination guardrails while applying the direct-save fix - WHY: Phase 9 already established that weak or contaminated candidates must remain blocked, and the direct-save follow-up must not weaken those protections - Acceptance: the fix still routes through existing guardrails and no new generic/contaminated candidate is promoted by the direct-save path. [DONE: guardrails remain in `pickBestContentName()`, and `.opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts` now asserts the direct-save output rejects the generic folder-derived suffix `__hybrid-rag-fusion` while keeping broader generic/contamination negative controls.]
-- [x] T108 Add targeted direct-save regression coverage through the real collector path - WHY: helper-level naming-selection tests are no longer sufficient once the seam is known to occur inside collector-path assembly - Acceptance: regression coverage exercises the real direct-save collector path and fails if the best specific candidate is lost or if generic fallback leaks despite stronger session evidence. [DONE: `.opencode/skill/system-spec-kit/scripts/tests/task-enrichment.vitest.ts` adds the real collector-path direct-save regression, `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed with `27/27`, and the targeted test `-t "uses collector-derived quick summary during direct preloaded workflow saves"` passed.]
-- [x] T109 Update Phase 10 closure evidence after direct-save validation passes - WHY: the newly discovered Phase 10 scope needs its own closure record without rewriting Phase 9 completion history - Acceptance: `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` record Phase 10 validation evidence after passing tests and spec validation. [DONE: all four phase docs now record Phase 10 closure; `npm run lint --prefix ".opencode/skill/system-spec-kit/scripts"` passed, and `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit"` passed with exit code 0.]
-<!-- /ANCHOR:phase-10 -->
-
-<!-- ANCHOR:phase-11 -->
-## Phase 11: Explicit CLI Target Authority Closure (Memory Save Routing)
-
-Captures closure evidence for the explicit-target routing regression where direct CLI save targets could be superseded by session-learning heuristics.
-
-- [x] T110 Confirm explicit CLI target authority at the real `generate-context -> runWorkflow` seam - WHY: the bug report requires proof that direct CLI targets are authoritative and not rerouted by session-learning - Acceptance: direct CLI and JSON override paths pass explicit `specFolderArg` through `main()` into `runWorkflow`. [DONE: `.opencode/skill/system-spec-kit/scripts/tests/generate-context-cli-authority.vitest.ts` asserts both direct and JSON override paths preserve `specFolderArg` into `runWorkflow`]
-- [x] T111 Add targeted regression coverage for explicit-target routing in production control flow - WHY: helper-level or synthetic checks are insufficient for this seam; coverage must exercise `generate-context` entrypoint behavior - Acceptance: regression suite fails if `specFolderArg` is dropped or rerouted from CLI input. [DONE: targeted suite covers direct mode and JSON mode explicit override in `.opencode/skill/system-spec-kit/scripts/tests/generate-context-cli-authority.vitest.ts`]
-- [x] T112 Re-run naming and routing regressions together after the fix lands - WHY: explicit-target authority and naming fallback logic share save-path flow and need joint non-regression proof - Acceptance: targeted regression command passes for CLI-authority + task-enrichment suites. [DONE: from `.opencode/skill/system-spec-kit`, `node mcp_server/node_modules/vitest/vitest.mjs run tests/generate-context-cli-authority.vitest.ts tests/task-enrichment.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed on 2026-03-06 with PASS `29/29` tests]
-- [x] T113 Run direct command smoke test against `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` - WHY: closure requires user-visible proof that explicit CLI targeting now saves to the requested spec path - Acceptance: direct CLI run reports CLI-arg target usage and writes output under the requested `.opencode/specs/.../022-hybrid-rag-fusion/memory` directory. [DONE: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` logged `Using spec folder from CLI argument: 022-hybrid-rag-fusion` and wrote a timestamped memory entry in `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/memory/`]
-- [x] T114 Sync closure evidence in phase docs and system-spec-kit operator docs - WHY: this fix changes operator expectations for explicit overrides and must be reflected in docs and this phase trail - Acceptance: phase docs and script docs state that explicit CLI target is authoritative. [DONE: phase closure evidence updated in `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`; system docs already state explicit-target authority in `.opencode/skill/system-spec-kit/scripts/spec-folder/README.md` (CLI Authority + quick-start note) and `.opencode/skill/system-spec-kit/scripts/tests/README.md` (generate-context CLI authority suite)]
-<!-- /ANCHOR:phase-11 -->
-
-<!-- ANCHOR:phase-12 -->
-## Phase 12: Explicit Phase-Folder Target Authority (Memory Save)
-
-Records evidence for the explicit phase-folder target-authority contract in direct memory-save flows.
-
-- [x] T115 Implement explicit phase-folder target authority for direct CLI saves in source control flow - WHY: direct saves must preserve explicit phase-child targets as authoritative instead of forcing root-folder reroute logic - Acceptance: explicit phase-child target is passed through deterministically as the save destination with no implicit reroute. [DONE: explicit-target resolution in `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts` now preserves phase-child targets through workflow routing; no rejection path is applied to explicit phase folders]
-- [x] T116 Re-verify root explicit-target behavior remains passing - WHY: expanded explicit-target support must not regress legitimate root-target direct saves - Acceptance: explicit root target still reaches workflow path in regression coverage. [DONE: `tests/generate-context-cli-authority.vitest.ts` root explicit-target cases pass (`passes direct CLI spec-folder mode ...`, `passes JSON-mode ...`)]
-- [x] T117 Verify explicit phase-folder target succeeds deterministically end-to-end - WHY: the contract is only complete when direct CLI phase targets save to the requested phase-child destination without reroute - Acceptance: regression test and CLI behavior both pass, and output is written under the explicit phase-child target path. [DONE: `node mcp_server/node_modules/vitest/vitest.mjs run tests/generate-context-cli-authority.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passes with phase-target authority coverage, and direct CLI phase-target runs complete with writes under the requested phase folder]
-- [x] T118 Update tests/docs to capture intended explicit phase-folder authority behavior - WHY: operator and regression coverage docs must reflect the supported explicit-target contract - Acceptance: tests and script docs describe explicit-target authority for both root and phase-child folders. [DONE: `.opencode/skill/system-spec-kit/scripts/tests/generate-context-cli-authority.vitest.ts` includes explicit phase-folder authority coverage; `.opencode/skill/system-spec-kit/scripts/spec-folder/README.md` and `.opencode/skill/system-spec-kit/scripts/tests/README.md` reflect the updated contract]
-<!-- /ANCHOR:phase-12 -->
-
-<!-- ANCHOR:phase-13 -->
-## Phase 13: Indexed Direct-Save Render/Quality Closure
-
-Captures the post-Phase-10 discovery that V6/V7 indexed direct-save flows still have a render/quality blocker after naming-selection and CLI-authority work closed within their own scopes. To preserve prior numbering history, this follow-up continues at T119 rather than rewriting existing T115-T118 entries.
-
-- [x] T119 Investigate the V6/V7 indexed direct-save blocker across render and indexing-quality seams - WHY: the remaining issue was discovered after Phase 10 verification and needs a precise root-cause record showing where indexed direct-save quality degrades in V6/V7 output - Acceptance: investigation notes identify the real render/quality seam, explain why this is an indexing-quality blocker rather than a naming-selection regression, and preserve prior phase closure history. [DONE: confirmed as a post-Phase-10 render/indexing-quality seam rather than a reopened naming-selection defect; empty preflight/postflight sections leaked into direct saves and lowercase captured facts did not increment tool counts consistently, degrading downstream indexed quality evidence.]
-- [x] T120 Implement the minimal render/quality fixes for indexed direct-save behavior - WHY: closure requires the smallest safe fix that restores V6/V7 indexed direct-save output quality without reopening the completed naming-selection decisions from Phases 9-10 - Acceptance: the in-scope render/quality seam is fixed with no broadened rename/selection scope. [DONE: the fix stayed scoped to `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`, `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`, and `.opencode/skill/system-spec-kit/templates/context_template.md`; direct saves now suppress empty preflight/postflight sections, count lowercase captured facts consistently, and keep a non-generic root-save filename that passes indexing quality gates.]
-- [x] T121 Add regression coverage for indexed direct-save quality in the V6/V7 path - WHY: the blocker must stay closed with executable proof that rendered/indexed direct-save quality remains correct - Acceptance: regression coverage fails when indexed direct-save render/quality degrades and passes with the minimal fix in place. [DONE: `.opencode/skill/system-spec-kit/scripts/tests/memory-render-fixture.vitest.ts` records the render/quality regression seam; combined targeted run `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed with PASS `31/31`.]
-- [x] T122 Re-run targeted verification for indexed direct-save render/quality behavior - WHY: completion claims need focused reruns that exercise indexed direct-save behavior, not only prior naming/routing suites - Acceptance: targeted verification commands for indexed direct-save render/quality behavior and spec validation pass with recorded evidence. [DONE: `node mcp_server/node_modules/vitest/vitest.mjs run tests/task-enrichment.vitest.ts tests/memory-render-fixture.vitest.ts --root scripts --config ../mcp_server/vitest.config.ts` passed with PASS `31/31`; `npm run lint --prefix ".opencode/skill/system-spec-kit/scripts"` passed; `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh "specs/02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit"` passed.]
-- [x] T123 Update closure evidence across spec docs after verification passes - WHY: this follow-up needs a durable audit trail without rewriting the completion status of earlier phases - Acceptance: `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` reflect the new Phase 13 closure evidence only after T119-T122 pass. [DONE: closure evidence is synchronized across the four phase docs; indexed root-save proof recorded final saved file `specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/memory/06-03-26_15-07__phase-13-indexed-direct-save-closure.md`, successful indexing as memory `#1201`, and no `QUALITY_GATE_FAIL` or skipped indexing.]
-<!-- /ANCHOR:phase-13 -->
-
-<!-- ANCHOR:phase-14 -->
-## Phase 14: README Documentation Audit
-
-Covers README coverage gaps (14 missing) and alignment verification for 50+ existing READMEs across all three code zones (mcp_server, scripts, shared).
-
-- [x] T124 Compile README coverage inventory across mcp_server, scripts, and shared zones - WHY: 14 code folders lack README documentation, blocking discoverability and onboarding - Acceptance: inventory table with folder path, file count, and README status for all code directories. [DONE: inventory verified via Explore agent; all 14 folders confirmed existing without READMEs; see `scratch/readme-audit-summary.md` Section 1]
-- [x] T125 Create 14 missing READMEs following sk-doc readme_template format - WHY: code folders without READMEs are undiscoverable to both humans and AI agents - Acceptance: all 14 folders have README.md files with YAML frontmatter, numbered ALL CAPS H2 sections, TOC, file listings matching actual contents, and no HVR-banned words. [DONE: agents A01-A07 created all 14 READMEs; `find` scan confirms 0 source folders without README; grep confirms 0 HVR-banned words; 83/83 READMEs have frontmatter]
-- [x] T126 Verify 50+ existing READMEs for content alignment with actual folder contents - WHY: existing READMEs may list stale files, missing files, or incorrect descriptions after code changes - Acceptance: each existing README verified for file listing accuracy, description correctness, and structural format compliance. [DONE: agents A08-A25 verified 50+ folders; 25 PASS, 26 UPDATED; see per-agent audit reports A08-A25]
-- [x] T127 Fix misaligned READMEs identified during verification - WHY: stale documentation is worse than no documentation because it misleads - Acceptance: all verified READMEs reflect current folder contents with accurate file listings and descriptions. [DONE: 26 READMEs updated with missing files, wrong counts, phantom entries, and format fixes; 4 required full rewrites (api, telemetry, contracts, evals)]
-- [x] T128 Cross-validate all READMEs against sk-doc format standards - WHY: consistency across 70+ READMEs requires uniform format adherence - Acceptance: no HVR-banned words, YAML frontmatter present, numbered ALL CAPS H2 sections, and TOC anchors in all READMEs. [DONE: grep scan shows 0 banned words; frontmatter check shows 83/83; all agents verified numbered ALL CAPS H2 format compliance]
-- [x] T129 Update spec folder with audit results and evidence - WHY: audit results must be traceable in the spec folder for future reference - Acceptance: scratch files contain per-agent audit reports and a synthesis summary. [DONE: 25 individual audit reports (readme-audit-A01.md through A25.md) plus synthesis summary (readme-audit-summary.md) written to scratch/; checklist CHK-300 through CHK-307 updated with evidence]
-<!-- /ANCHOR:phase-14 -->
-
-<!-- ANCHOR:phase-15 -->
-## Phase 15: Internal Module Boundary Remediation
-
-Addresses inner-boundary architecture gaps discovered during Hydra DB feature remediation (spec 008, 2026-03-19). The same class of boundary integrity problem that Phases 1-14 addressed for the outer scripts/mcp_server boundary, but occurring inside `mcp_server/lib/` itself.
-
-### 15A: Symlink Elimination + Import Migration (P0)
-
-- [x] T130 Remove symlink `mcp_server/lib/cache/cognitive -> ../cognitive` and verify no other symlinks exist in lib/ tree - WHY: symlink creates invisible indirection; grep/IDE/dead-code analysis all fail silently on symlinked paths; deleting adaptive-ranking.ts broke 74+ imports because the real dependency graph was hidden - Acceptance: `find mcp_server/lib -type l` returns zero results; `ls -la mcp_server/lib/cache/` shows no symlink entries. [DONE: symlink removed; `find mcp_server/lib -type l` returns 0; also cleaned stale `dist/lib/cache/cognitive/` artifacts (44 files)]
-- [x] T131 Update all 74+ imports from `cache/cognitive/X` paths to canonical `cognitive/X` paths across handlers/, lib/, and tests/ - WHY: after symlink removal, all imports using the phantom `cache/cognitive/` path will break; must migrate to direct canonical paths - Acceptance: `tsc --noEmit` passes; `vitest run` passes; zero references to `cache/cognitive/` remain in source files (verified by grep). [DONE: ~60 .ts files updated (source + tests); `npx tsc --noEmit` passes; `grep -r "cache/cognitive" mcp_server/ --include="*.ts"` returns 0; also fixed stale import in `scripts/evals/run-performance-benchmarks.ts:19` and stale doc paths in `handlers/save/README.md`, `feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking...md`]
-- [x] T132 Update `mcp_server/lib/cache/README.md` to remove cognitive module references - WHY: cache README should describe caching concerns only; cognitive references belong in `lib/cognitive/README.md` - Acceptance: `lib/cache/README.md` contains no mentions of cognitive, FSRS, decay, or classification modules. [DONE: cognitive/FSRS/decay/symlink refs removed; structure scoped to tool-cache + embedding-cache + scoring/; `grep -in "cognitive\|fsrs\|decay\|classification\|symlink" cache/README.md` returns 0]
-
-### 15B: Source-Dist Alignment Enforcement (P0)
-
-- [x] T133 Create `scripts/evals/check-source-dist-alignment.ts` that verifies every dist/lib/ .js file has a corresponding source .ts file - WHY: adaptive-ranking.ts source was silently lost while dist/ output persisted; ARCHITECTURE.md section 4 dist policy has no automated enforcement - Acceptance: script scans `dist/lib/**/*.js`, reports orphans not in allowlist, exits non-zero on violations. [DONE: script created (~200 lines); typed AllowlistException interface; scans dist/lib/**/*.js; maps to lib/**/*.ts; summary output; exits non-zero on violations; now wired into `npm run check --workspace=scripts`; current verification reports 148 scanned, 148 aligned, 0 violations]
-- [x] T134 Investigate and resolve orphaned dist/ artifacts: `dist/lib/utils/retry.js` (55+ refs, zero source) and `dist/lib/eval/hydra-baseline.js` (no source) - WHY: these orphans represent the same source-loss failure mode as adaptive-ranking.ts; must either reconstruct source or remove dist/ artifacts - Acceptance: each orphan is resolved (source reconstructed from git or dist/ artifact removed) with rationale documented. [DONE: git archaeology — retry.ts deleted 2026-03-07 (commit 5e49e272), hydra-baseline.ts deleted 2026-03-13 (commit 8bb6eb62, logic moved to memory-state-baseline.ts); both stale dist artifacts removed; findings documented in script header]
-- [x] T135 Add "No symlinks in lib/ tree" and "Source-dist alignment enforcement" policies to ARCHITECTURE.md - WHY: policies must be documented alongside enforcement tooling to prevent future regressions - Acceptance: ARCHITECTURE.md contains explicit symlink prohibition and source-dist alignment check reference. [DONE: two new subsections added after Build Artifact Rule: "No Symlinks in lib/ Tree" (Policy/Rationale/Enforcement) and "Source-Dist Alignment Enforcement" (Policy/Rationale/Enforcement referencing scripts/evals/check-source-dist-alignment.ts)]
-
-### 15C: Internal Module Ownership Map (P1)
-
-- [x] T136 Create `mcp_server/lib/MODULE_MAP.md` documenting all 26 lib/ subdirectories with purpose, key files, and primary consumers - WHY: 26 directories with no ownership documentation; contributors cannot determine allowed dependency directions or module responsibilities - Acceptance: MODULE_MAP.md lists every lib/ subdirectory with: purpose (1-2 sentences), key files (3-5 per dir), and primary consumer modules. [DONE: MODULE_MAP.md created with 38 H3 entries covering all 26 directories; YAML frontmatter; 5 sections: overview, inventory, feature catalog mapping, dependency directions, canonical locations]
-- [x] T137 Map lib/ subdirectories to feature catalog categories (19-category to 26-directory mapping) - WHY: feature catalog describes capabilities; lib/ directories implement them; the mapping is undocumented - Acceptance: MODULE_MAP.md includes a traceability section mapping each lib/ dir to its feature catalog category(s). [DONE: Section 3 of MODULE_MAP.md contains feature catalog crosswalk mapping all 26 lib/ dirs to their feature catalog categories]
-
-### 15D: Module Placement Cleanup (P1)
-
-- [x] T138 Remove unused `lib/cache/scoring/composite-scoring.ts` proxy, document canonical checkpoints location, and fix .js imports in entity-extractor.ts - WHY: unused re-export proxies confuse ownership; .js imports in .ts source violate TypeScript conventions; dual checkpoints modules create ambiguity - Acceptance: composite-scoring.ts removed (verified 0 consumers); entity-extractor.ts uses .ts imports; canonical checkpoints location documented in MODULE_MAP.md. [DONE: proxy deleted (0 consumers verified by grep); entity-extractor.ts L7-L8 `.js` extensions removed; `npx tsc --noEmit` passes; canonical checkpoints location documented in MODULE_MAP.md Section 5; also cleaned stale `dist/lib/cache/scoring/composite-scoring.*` and updated `cache/scoring/README.md`]
-
-### 15E: Internal Import Policy (P2 — deferred)
-
-- [x] T139 Define allowed dependency directions between lib/ subdirectories and document in MODULE_MAP.md as future enforcement scope - WHY: outer boundary has AST checkers and CI enforcement; inner lib/ boundaries have none; this is the design-only prerequisite for future AST enforcement - Acceptance: MODULE_MAP.md contains a dependency-direction section with allowed/forbidden import directions between lib/ subdirectories; noted as deferred enforcement (can follow as separate spec). [DONE: MODULE_MAP.md Section 4 defines 5 tiers (core, foundation, infrastructure, domain, aggregator), per-module allowed/forbidden directions, forbidden global directions, and documents current reverse-dependency exceptions; enforcement marked DEFERRED]
-<!-- /ANCHOR:phase-15 -->
+---
 
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All P0 boundary documentation tasks completed (Phases 0-3).
-- [x] Handler cycle concern resolved and verified.
-- [x] Import-policy guardrail enabled by default.
-- [x] Checklist updated with evidence for completed items.
-- [x] Triple ultra-think review P0 blockers resolved (Phase 4 T021-T023, T039). [DONE: all 4 P0 blockers implemented and verified]
-- [x] Review P1 should-fix items completed or user-approved deferral (T024-T029, T040-T045). [DONE: all 12 P1 items implemented]
-- [x] Review P2 nice-to-have items completed or documented deferral (T030-T038). [DONE: all 9 P2 items completed — T030 block comments, T031 behavioral tests, T032 cross-links, T033 growth policy, T034 AST evaluation, T035 transitive deps, T036 ADR-003 update, T037 deprecation criteria, T038 validation]
-- [x] Phase 5 architecture enforcement gaps completed (T046-T049). [DONE: checker implemented, check pipeline extended to 4 stages, boundary enforcement table and eval inventory updated]
-- [x] Phase 6 feature-catalog parity remediation completed (T050-T073). [DONE: behavior + doc parity + memory-quality gates + 5-agent re-audit closure recorded]
-- [x] Phase 7 boundary remediation carry-over tasks completed (T074-T090). [DONE: Phase 7A/7B/7C completed with verification evidence captured 2026-03-06]
-- [x] Phase 8 documentation drift remediation completed (T091-T099). [DONE: non-spec drift resolved, strict-pass verification rerun, and closure evidence recorded 2026-03-06]
-- [x] Phase 9 memory naming follow-up completed (T100-T104). [DONE: T100-T104 are complete; executable validation passed via targeted vitest (`27/27` tests across task-enrichment + memory-render-fixture) and final spec validation passed]
-- [x] Phase 10 direct-save naming follow-up completed (T105-T109). [DONE: post-Phase-9 collector-path seam traced and fixed in `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`; direct-save regression coverage passed, lint passed, and final spec validation exited 0 while preserving Phase 9 closure history]
-- [x] Phase 11 explicit CLI target authority closure completed (T110-T114). [DONE: authoritative CLI routing verified in `generate-context` control flow, targeted regression coverage passed (`29/29`), direct save smoke test to `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` passed, and docs/phase evidence synchronized]
-- [x] Phase 12 explicit phase-folder target-authority closure completed (T115-T118). [DONE: explicit phase-child targets are supported as authoritative save destinations, root-target behavior stayed green, targeted CLI-authority coverage passes, and direct CLI phase-folder saves complete without forced reroute]
-- [x] Phase 13 indexed direct-save render/quality closure completed (T119-T123). [DONE: post-Phase-10 V6/V7 render/indexing-quality follow-up is now closed with scoped fixes in `.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts`, `.opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts`, and `.opencode/skill/system-spec-kit/templates/context_template.md`, regression coverage in `.opencode/skill/system-spec-kit/scripts/tests/memory-render-fixture.vitest.ts`, targeted PASS `31/31`, scripts lint PASS, spec validation PASS, and indexed root-save proof as memory `#1201` without `QUALITY_GATE_FAIL` or skipped indexing]
-- [x] Phase 14 README documentation audit completed (T124-T129). [DONE: 14 missing READMEs created by agents A01-A07; 50+ existing READMEs verified by agents A08-A25 (25 PASS, 26 UPDATED); automated checks confirm 0 source folders without README, 0 HVR-banned words, 83/83 frontmatter coverage; synthesis report at `scratch/readme-audit-summary.md`]
-- [x] Phase 15 internal module boundary remediation completed (T130-T139). Symlink eliminated, source-dist alignment enforced, MODULE_MAP.md created, orphans resolved, misplacements fixed. [DONE: 5 parallel Codex CLI agents (GPT-5.4 + GPT-5.3-Codex) executed T130-T139; ultra-think review found 1 critical + 4 warnings, all fixed; feature catalog entries (14, 15) and testing playbook scenarios (NEW-150, NEW-151, NEW-152) created; `npx tsc --noEmit` passes; `npm run check --workspace=scripts` now includes the alignment checker; current alignment verification reports 148/148 clean; zero symlinks; zero stale cache/cognitive refs]
+- [x] All recoverable architecture-audit task ranges are represented as completed
+- [x] No stale phase-decomposition or parent-coordination tasks remain
+- [x] The root task file now reads as a completed standalone architecture audit
 <!-- /ANCHOR:completion -->
 
-<!-- ANCHOR:phase-16 -->
-## Phase 16: Architecture Audit v2 Remediation (2026-03-20)
+---
 
-Deep-research-driven remediation of ~120 findings from the architecture audit v2 (10 iterations, 30 agent runs, GPT-5.4). Findings validated by expert review against source code. Organized into 4 implementation sprints by Priority = Impact / Effort.
-
-### Sprint 1: Quick Wins (Effort 1, Priority 3.0)
-
-- [x] T140 Fix feature-flag docs test path from `02--new-features` to `19--feature-flag-reference` (F8.13) - WHY: test references nonexistent directory, causing `npm test` failure - Acceptance: `vitest run tests/feature-flag-reference-docs.vitest.ts` passes (11/11). [DONE: path fixed in `tests/feature-flag-reference-docs.vitest.ts:114`]
-- [x] T141 Fix CLI help advertising nonexistent `checkpoint restore` command (F9.01) - WHY: `cli.ts:353` suggests `spec-kit-cli checkpoint restore` which doesn't exist in dispatcher - Acceptance: CLI output references actual `checkpoint_restore` MCP tool. [DONE: `cli.ts:353` updated]
-
-### Sprint 2: Critical Data Integrity (Effort 2, Priority 2.5)
-
-- [x] T142 Preserve frontmatter at byte 0 after warning banner insertion (F1.02 CRITICAL) - WHY: `workflow.ts` prepends banners before YAML frontmatter, breaking downstream parsers - Acceptance: memory files always start with `---` after banner insertion. [DONE: added `insertAfterFrontmatter()` helper; 3 banner insertion sites updated in `scripts/core/workflow.ts`]
-- [x] T143 Atomic supersede-and-replace in PE save pipeline (F1.01 CRITICAL) - WHY: `markMemorySuperseded()` runs before new record creation; creation failure orphans old record - Acceptance: supersede marking deferred into caller's DB transaction. [DONE: deferred in `pe-orchestration.ts:101-122`; caller marks inside transaction in `memory-save.ts`]
-- [x] T144 Add governance args to `memory_save` Zod schema and ALLOWED_PARAMETERS (F3.04 HIGH) - WHY: tool-schemas.ts advertises 10 governance params but Zod strict mode rejects them - Acceptance: `memory_save` with governance args passes validation. [DONE: 10 params added to `memorySaveSchema` and `ALLOWED_PARAMETERS` in `tool-input-schemas.ts`]
-- [x] T145 Centralize DB path resolution with containment (F4.04/F8.02 HIGH) - WHY: 3 modules resolve DB paths differently; `SPEC_KIT_DB_DIR=/etc` escapes project root - Acceptance: `core/config.ts` uses shared `getDbDir()`, rejects paths outside project/home/tmp. [DONE: `core/config.ts` imports `getDbDir()` from shared; `vector-index-store.ts` uses centralized `DATABASE_PATH`/`DATABASE_DIR`]
-- [x] T146 Surface mutation ledger write failures (F1.10 HIGH) - WHY: `appendMutationLedgerSafe()` silently swallows all errors - Acceptance: function returns boolean so callers can include warnings. [DONE: return type changed to `boolean` in `memory-crud-utils.ts`]
-
-### Sprint 3: Search Pipeline Scoring (Effort 2-3, Priority 2.0-2.5)
-
-- [x] T147 Sync score aliases after Stage 3 rerank (F2.02 CRITICAL) - WHY: Stage 3 updates `score`/`rerankerScore` but not `rrfScore`/`intentAdjustedScore`; `resolveEffectiveScore()` returns stale Stage 2 values - Acceptance: all score aliases synced in both cross-encoder and local reranker paths. [DONE: `rrfScore`, `intentAdjustedScore`, `attentionScore` synced in `stage3-rerank.ts` (both paths)]
-- [x] T148 Clamp scores to [0,1] in Stage 2 sync helpers (F2.03 CRITICAL) - WHY: `withSyncedScoreAliases` copies raw boosted values without clamping; direct access returns >1.0 - Acceptance: all score sync functions clamp to [0,1]. [DONE: clamping added to `withSyncedScoreAliases()` and `syncScoreAliasesInPlace()` in `stage2-fusion.ts`]
-- [x] T149 Unify quality-proxy metric (F6.06 HIGH) - WHY: eval and telemetry implement same formula with different hardcoded thresholds - Acceptance: telemetry delegates to canonical `eval-quality-proxy.ts`. [DONE: `retrieval-telemetry.ts` now imports and calls `computeQualityProxyCanonical()` with telemetry-specific parameters]
-- [x] T150 Validate embedding dimension at DB init (F9.09-F9.13 HIGH) - WHY: dimension mismatches silently corrupt search results - Acceptance: `initialize_db()` rejects mismatched dimensions; `EMBEDDING_DIM` env var honored. [DONE: dimension validation after schema init in `vector-index-store.ts`; `get_embedding_dim()` checks `EMBEDDING_DIM` env var first]
-
-### Sprint 4: Architecture & Design Track (Effort 5, Priority 1.0)
-
-- [x] T151 Pipeline stage boundary design document (F2.01 CRITICAL — design only) - WHY: biggest architecture issue; Stage 1 wraps legacy mini-pipeline that duplicates Stages 2/3 - Acceptance: design doc with function map, migration plan, risk analysis, shadow scoring strategy. [DONE: GPT-5.4 produced 249-line design at `scratch/s4-1-pipeline-boundary-design.md`]
-- [x] T152 Checkpoint restore completeness design + implementation (F1.16 HIGH) - WHY: only 4 tables snapshotted; `active_memory_projection` omission makes restored data invisible to queries - Acceptance: authoritative tables snapshotted, derived tables rebuilt post-restore. [DONE: GPT-5.4 design (339 lines) at `scratch/s4-2-checkpoint-completeness-design.md`; implementation in `checkpoints.ts` (+663/-253 lines); manifest, generic table restore, fault-tolerant post-restore rebuilds; 115/115 checkpoint tests pass]
-<!-- /ANCHOR:phase-16 -->
-
-<!-- ANCHOR:completion-v2 -->
-## Completion Evidence (Phase 16)
-
-- [x] Sprint 1: 17/17 tests pass (feature-flag-reference-docs + cli)
-- [x] Sprint 2: 346/346 context-server tests pass; 12/12 review-fixes tests pass
-- [x] Sprint 3: 27/27 pipeline tests pass; 73/73 hybrid-search tests pass
-- [x] Sprint 4: 115/115 checkpoint tests pass (including 2 new completeness tests)
-- [x] Full suite: 289/290 test files pass, 7860/7862 tests pass (2 failures are pre-existing `hydra-spec-pack-consistency` doc tests unrelated to this work)
-<!-- /ANCHOR:completion-v2 -->
-
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
-- **Specification**: `spec.md`
-- **Plan**: `plan.md`
-- **Verification Checklist**: `checklist.md`
-- **Decision Records**: `decision-record.md`
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Verification Checklist**: See `checklist.md`
+- **Implementation Summary**: See `implementation-summary.md`
+<!-- /ANCHOR:cross-refs -->

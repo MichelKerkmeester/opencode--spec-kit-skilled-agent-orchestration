@@ -1,5 +1,5 @@
 // TEST: HANDLER CHECKPOINTS
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeAll, beforeEach, afterAll, afterEach } from 'vitest';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -8,6 +8,7 @@ import * as vectorIndexMod from '../lib/search/vector-index';
 import * as bm25IndexMod from '../lib/search/bm25-index';
 import * as triggerMatcherMod from '../lib/parsing/trigger-matcher';
 import * as checkpointStorageMod from '../lib/storage/checkpoints';
+import * as core from '../core';
 import type { CheckpointInfo, RestoreResult } from '../lib/storage/checkpoints';
 
 // Track which optional modules loaded
@@ -24,6 +25,22 @@ function invalidArgs<T>(value: unknown): T {
 }
 
 describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures]', () => {
+  beforeAll(() => {
+    vectorIndexMod.closeDb();
+    vectorIndexMod.initializeDb(':memory:');
+  });
+
+  afterAll(() => {
+    vectorIndexMod.closeDb();
+  });
+
+  beforeEach(() => {
+    vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
 
   // ───────────────────────────────────────────────────────────────
   // 1. SUITE: EXPORTS VALIDATION

@@ -1,7 +1,29 @@
 // TEST: MEMORY SEARCH INTEGRATION
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
+
+// Mock core/db-state to prevent real DB operations (checkDatabaseUpdated throws
+// when the database directory cannot be resolved in the test environment).
+vi.mock('../core/db-state', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    checkDatabaseUpdated: vi.fn(async () => false),
+    waitForEmbeddingModel: vi.fn(async () => true),
+    isEmbeddingModelReady: vi.fn(() => true),
+  };
+});
+
+vi.mock('../core', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    checkDatabaseUpdated: vi.fn(async () => false),
+    waitForEmbeddingModel: vi.fn(async () => true),
+    isEmbeddingModelReady: vi.fn(() => true),
+  };
+});
 
 import * as memorySearchHandler from '../handlers/memory-search.js';
 import * as fsrsScheduler from '../lib/cognitive/fsrs-scheduler.js';

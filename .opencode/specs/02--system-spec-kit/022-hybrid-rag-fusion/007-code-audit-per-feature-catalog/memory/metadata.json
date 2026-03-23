@@ -1,5 +1,5 @@
 {
-  "timestamp": "22-03-26 20-00",
+  "timestamp": "23-03-26 15-42",
   "messageCount": 1,
   "decisionCount": 0,
   "diagramCount": 0,
@@ -9,11 +9,11 @@
     "totalProcessed": 1,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 30,
+    "qualityScore": 60,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-03-22T19:00:33.542Z",
+        "timestamp": "2026-03-23T14:42:35.528Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-03-22T19:00:33.515Z",
+      "timestamp": "2026-03-23T14:42:35.491Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:9"
+        "processed_fields:4"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-03-22T19:00:33.542Z",
+      "timestamp": "2026-03-23T14:42:35.528Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -174,7 +174,7 @@
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-03-22T19:00:33.556Z",
+      "timestamp": "2026-03-23T14:42:35.546Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -191,7 +191,7 @@
       ],
       "passedThrough": [
         "current_spec:007-code-audit-per-feature-catalog",
-        "trigger_phrases:19",
+        "trigger_phrases:32",
         "key_topics:12",
         "captured_file_count:0",
         "filesystem_file_count:0"
@@ -228,9 +228,9 @@
     "status": "indexed",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 4451,
-    "updatedAt": "2026-03-22T19:00:34.241Z",
-    "generatedAt": "2026-03-22T19:00:34.241Z",
+    "memoryId": 4452,
+    "updatedAt": "2026-03-23T14:42:36.100Z",
+    "generatedAt": "2026-03-23T14:42:36.100Z",
     "reason": "Indexed after all write and semantic-index gates passed."
   }
 }

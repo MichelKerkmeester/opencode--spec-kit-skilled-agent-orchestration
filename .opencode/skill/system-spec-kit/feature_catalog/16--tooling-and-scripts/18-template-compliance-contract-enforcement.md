@@ -25,7 +25,7 @@ Together, the three layers mean agents know structure before writing, validate a
 
 ## 2. CURRENT REALITY
 
-The system comprises 6 components spanning references, agent definitions, configuration, and scripts:
+The system comprises 4 components spanning references, agent definitions, and validation workflow:
 
 **1. Shared reference file (`references/template-compliance-contract.md`):** Canonical source of truth for structural contracts at all documentation levels (L1, L2, L3, L3+). Generated from `template-structure.js loadTemplateContract()` output. Defines the exact heading hierarchy, required anchors, and enforcement rules that all agents must follow. Versioned at 1.0.0.
 

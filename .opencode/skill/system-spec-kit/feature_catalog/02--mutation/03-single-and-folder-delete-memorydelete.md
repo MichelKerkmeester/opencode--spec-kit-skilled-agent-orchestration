@@ -124,6 +124,7 @@ Bulk deletes by spec folder are more involved. The system first creates an auto-
 | `mcp_server/lib/search/vector-index.ts` | Lib | Vector index facade |
 | `mcp_server/lib/storage/causal-edges.ts` | Lib | Causal edge storage |
 | `mcp_server/lib/storage/checkpoints.ts` | Lib | Checkpoint storage |
+| `mcp_server/lib/storage/history.ts` | Lib | Per-memory delete history writes |
 | `mcp_server/lib/storage/consolidation.ts` | Lib | Lightweight consolidation |
 | `mcp_server/lib/storage/incremental-index.ts` | Lib | Incremental indexing |
 | `mcp_server/lib/storage/mutation-ledger.ts` | Lib | Mutation ledger |

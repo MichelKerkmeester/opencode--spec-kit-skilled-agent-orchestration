@@ -19,6 +19,8 @@ The corrections module (`lib/learning/corrections.ts`) tracks inter-memory relat
 
 Each correction adjusts the stability scores of both the original and correcting memories: the original receives a penalty while the correction receives a boost. Stability changes are tracked in a `StabilityChanges` structure for audit purposes. The feature is gated by `SPECKIT_RELATIONS` (default `true`). When disabled, relational learning corrections are skipped and no stability adjustments are applied.
 
+Undo is part of the live behavior, not just the schema. `undo_correction()` runs inside a transaction, restores the pre-correction stability values for the original memory and any correction memory, marks the correction row as undone (`is_undone = 1`, `undone_at = datetime('now')`), and deletes only the correction-owned causal edge for the matching relation. If the edge still uses the older legacy evidence format, the code falls back to a scoped legacy delete rather than removing every same-relation edge between the pair.
+
 ---
 
 ## 3. SOURCE FILES

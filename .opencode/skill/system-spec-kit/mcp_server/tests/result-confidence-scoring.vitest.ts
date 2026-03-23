@@ -55,6 +55,7 @@ function makeResult(id: number, overrides: Partial<RawSearchResult> = {}): RawSe
     averageSimilarity: 70,
     triggerPhrases: ['retrieval', 'confidence'],
     created_at: '2026-03-21T18:01:48.473Z',
+    scoringMethod: 'cross-encoder',
     ...overrides,
   };
 }

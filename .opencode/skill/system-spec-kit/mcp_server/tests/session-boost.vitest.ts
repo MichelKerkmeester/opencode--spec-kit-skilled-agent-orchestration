@@ -84,7 +84,8 @@ describe('T010-T015: session-attention boost', () => {
     const { results, metadata } = sessionBoost.applySessionBoost(fusedResults, 'session-C');
 
     expect(results.map(row => row.id)).toEqual([1, 2, 3]);
-    expect(results[0].score).toBeCloseTo(0.90 * 1.15, 9);
+    expect(results[0].score).toBeCloseTo(1.0, 9);
+    expect(results[0].rrfScore).toBeCloseTo(1.0, 9);
     expect(results[1].score).toBeCloseTo(0.70 * 1.15, 9);
     expect(results[2].score).toBeCloseTo(0.50 * 1.15, 9);
 

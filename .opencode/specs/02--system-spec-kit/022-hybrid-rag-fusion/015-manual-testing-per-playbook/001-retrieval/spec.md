@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: manual-testing-per-playbook retrieval phase [template:level_2/spec.md]"
-description: "Test specification for the retrieval category: 11 playbook scenarios covering memory_context, memory_search, memory_match_triggers, hybrid pipeline, 4-stage architecture, BM25 gate, quality fallback, and advanced session/graph scenarios."
+description: "Test specification for the retrieval category: 13 playbook scenarios covering memory_context, memory_search, memory_match_triggers, /memory:analyze routing, memory_quick_search, hybrid pipeline, 4-stage architecture, BM25 gate, quality fallback, and advanced session/graph scenarios."
 trigger_phrases:
   - "retrieval manual testing"
   - "phase 001 retrieval"
@@ -37,7 +37,7 @@ contextType: "implementation"
 
 ### Problem Statement
 
-The retrieval feature category of the hybrid-RAG-fusion system requires structured manual verification against the official playbook. Each of the 11 retrieval scenarios must be executed, verdicted, and evidenced independently. Without a dedicated phase packet, testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or record results.
+The retrieval feature category of the hybrid-RAG-fusion system requires structured manual verification against the official playbook. Each of the 13 retrieval scenarios must be executed, verdicted, and evidenced independently. Without a dedicated phase packet, testers must reassemble requirements across the playbook, review protocol, and feature catalog before they can execute or record results.
 
 ### Purpose
 
@@ -51,7 +51,7 @@ Execute every retrieval-category playbook scenario, record a PASS/FAIL/PARTIAL v
 
 ### In Scope
 
-- Executing all 11 retrieval playbook scenarios listed in Section 4
+- Executing all 13 retrieval playbook scenarios listed in Section 4
 - Recording PASS/FAIL/PARTIAL verdicts with evidence for each scenario
 - Cross-referencing each scenario against the feature catalog (01--retrieval)
 - Updating checklist.md and tasks.md as execution proceeds
@@ -78,7 +78,7 @@ Execute every retrieval-category playbook scenario, record a PASS/FAIL/PARTIAL v
 
 ### P0 — Scenarios to Execute
 
-All 11 scenarios below are P0. Each must receive a PASS, FAIL, or PARTIAL verdict before this phase is considered complete.
+All 13 scenarios below are P0. Each must receive a PASS, FAIL, or PARTIAL verdict before this phase is considered complete.
 
 | Scenario ID | Scenario Name | Playbook File | Feature Catalog Reference |
 |-------------|---------------|---------------|--------------------------|
@@ -93,6 +93,8 @@ All 11 scenarios below are P0. Each must receive a PASS, FAIL, or PARTIAL verdic
 | 109 | Quality-aware 3-tier search fallback | `../../manual_testing_playbook/01--retrieval/109-quality-aware-3-tier-search-fallback.md` | 01--retrieval / 08-quality-aware-3-tier-search-fallback.md |
 | 142 | Session transition trace contract | `../../manual_testing_playbook/01--retrieval/142-session-transition-trace-contract.md` | 01--retrieval (pipeline / session signal) |
 | 143 | Bounded graph-walk rollout and diagnostics | `../../manual_testing_playbook/01--retrieval/143-bounded-graph-walk-rollout-and-diagnostics.md` | 01--retrieval (graph-backed retrieval) |
+| 185 | /memory:analyze command routing | `../../manual_testing_playbook/01--retrieval/185-memory-analyze-command-routing.md` | 01--retrieval / 01-unified-context-retrieval-memorycontext.md, 02-semantic-and-lexical-search-memorysearch.md, 03-trigger-phrase-matching-memorymatchtriggers.md, 10-fast-delegated-search-memory-quick-search.md |
+| 187 | Quick search (memory_quick_search) | `../../manual_testing_playbook/01--retrieval/187-quick-search-memory-quick-search.md` | 01--retrieval / 10-fast-delegated-search-memory-quick-search.md |
 
 ### P1 — Supporting Requirements
 
@@ -107,7 +109,7 @@ All 11 scenarios below are P0. Each must receive a PASS, FAIL, or PARTIAL verdic
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 11 retrieval scenarios executed and verdicted (PASS, FAIL, or PARTIAL)
+- **SC-001**: All 13 retrieval scenarios executed and verdicted (PASS, FAIL, or PARTIAL)
 - **SC-002**: All P0 checklist items marked with evidence
 - **SC-003**: tasks.md reflects final execution status for every scenario task
 - **SC-004**: implementation-summary.md completed with aggregate results
@@ -123,7 +125,7 @@ All 11 scenarios below are P0. Each must receive a PASS, FAIL, or PARTIAL verdic
 | Dependency | Parent plan `../plan.md` | Execution order and environment setup | Read parent plan before starting |
 | Dependency | Playbook folder `../../manual_testing_playbook/01--retrieval/` | Scenario steps not available | Confirm playbook files accessible before execution |
 | Dependency | Feature catalog `../../feature_catalog/01--retrieval/` | Cross-reference cannot be verified | Confirm catalog files accessible before execution |
-| Dependency | MCP runtime for `memory_context`, `memory_search`, `memory_match_triggers` | Retrieval scenarios cannot be executed | Verify MCP runtime healthy before starting |
+| Dependency | MCP runtime and command surface for `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, and `/memory:analyze` | Retrieval scenarios cannot be executed | Verify MCP runtime healthy before starting |
 | Risk | 086 mutates trigger phrases and can pollute shared search indexes | High | Restrict trigger edits to disposable sandbox data and record rollback steps before execution |
 | Risk | 109 and 143 depend on feature flags and runtime restarts | Medium | Capture baseline env state, isolate runs per rollout state, restore defaults before the next scenario |
 | Risk | 142 requires prior session state for transition fields | Medium | Set up known session state per playbook prerequisites |

@@ -13,25 +13,36 @@
 // This ensures backward compatibility while aligning reviewed
 // Memories with the canonical FSRS algorithm.
 
+import * as fs from 'fs';
+import * as os from 'os';
+import * as path from 'path';
+
 import Database from 'better-sqlite3';
 import * as sqliteVec from 'sqlite-vec';
-import * as path from 'path';
-import * as os from 'os';
-import * as fs from 'fs';
-import { validateFilePath } from '../utils/path-security';
-import { SERVER_DIR, DATABASE_PATH, DATABASE_DIR } from '../../core/config';
+
+import { DATABASE_DIR, DATABASE_PATH, SERVER_DIR } from '../../core/config';
 import { IVectorStore } from '../interfaces/vector-store';
 import * as embeddingsProvider from '../providers/embeddings';
 import { computeInterferenceScoresBatch } from '../scoring/interference-scoring';
+import { validateFilePath } from '../utils/path-security';
 import {
-  parse_trigger_phrases,
-  get_error_message,
   get_error_code,
+  get_error_message,
+  parse_trigger_phrases,
+  VectorIndexError,
+  VectorIndexErrorCode,
 } from './vector-index-types';
 import {
   create_schema,
   ensure_schema_version,
 } from './vector-index-schema';
+import type {
+  EmbeddingInput,
+  EnrichedSearchResult,
+  IndexMemoryParams,
+  MemoryRow,
+  VectorSearchOptions,
+} from './vector-index-types';
 
 const search_weights_path = path.join(SERVER_DIR, 'configs', 'search-weights.json');
 type SearchWeightsConfig = {
@@ -55,53 +66,6 @@ try {
 /** Loaded search weight configuration for vector-index ranking. */
 export const search_weights = _search_weights;
 
-type EmbeddingInput = Float32Array | number[];
-type MemoryRow = {
-  id: number;
-  spec_folder: string;
-  file_path: string;
-  title?: string | null;
-  trigger_phrases?: string | string[];
-  importance_tier?: string;
-  importance_weight?: number;
-  created_at?: string;
-  access_count?: number;
-  last_accessed?: number;
-  confidence?: number;
-  keyword_score?: number;
-  similarity?: number;
-  avg_similarity?: number;
-  concept_similarities?: number[];
-  smartScore?: number;
-  relationSimilarity?: number;
-  isConstitutional?: boolean;
-  [key: string]: unknown;
-};
-type IndexMemoryParams = {
-  specFolder: string;
-  filePath: string;
-  anchorId?: string | null;
-  title?: string | null;
-  triggerPhrases?: string[];
-  importanceWeight?: number;
-  embedding: EmbeddingInput;
-  encodingIntent?: string;
-  documentType?: string;
-  specLevel?: number | null;
-  contentText?: string | null;
-  qualityScore?: number;
-  qualityFlags?: string[];
-};
-type VectorSearchOptions = {
-  limit?: number;
-  specFolder?: string | null;
-  minSimilarity?: number;
-  useDecay?: boolean;
-  tier?: string | null;
-  contextType?: string | null;
-  includeConstitutional?: boolean;
-  includeArchived?: boolean;
-};
 type EnhancedSearchOptions = {
   specFolder?: string | null;
   minSimilarity?: number;
@@ -576,6 +540,11 @@ export function refresh_interference_scores_for_folder(database: Database.Databa
  * Initializes the vector-index database connection.
  * @param custom_path - An optional database path override.
  * @returns The initialized database connection.
+ * @throws {VectorIndexError} When database integrity validation fails during initialization.
+ * @example
+ * ```ts
+ * const database = initialize_db();
+ * ```
  */
 export function initialize_db(custom_path: string | null = null): Database.Database {
   if (db && !custom_path) {
@@ -604,7 +573,9 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
           const marker = JSON.parse(fs.readFileSync(marker_path, 'utf8'));
           console.error(`[vector-index] Marker recorded: Node ${marker.nodeVersion} (MODULE_VERSION ${marker.moduleVersion})`);
         }
-      } catch (_: unknown) { /* ignore marker read errors */ }
+      } catch (_: unknown) {
+        // IGNORE MARKER READ ERRORS BECAUSE THE DIAGNOSTIC FILE IS OPTIONAL.
+      }
       console.error('[vector-index] This usually means Node.js was updated without rebuilding native modules.');
       console.error('[vector-index] Fix: Run \'bash scripts/setup/rebuild-native-modules.sh\' from the spec-kit root');
       console.error('[vector-index] Or manually: npm rebuild better-sqlite3');
@@ -640,7 +611,7 @@ export function initialize_db(custom_path: string | null = null): Database.Datab
     if (!dimCheck.valid && dimCheck.stored != null) {
       const msg = dimCheck.warning || `Dimension mismatch: DB=${dimCheck.stored}, provider=${dimCheck.current}`;
       console.error(`[vector-index] FATAL: ${msg}`);
-      throw new Error(msg);
+      throw new VectorIndexError(msg, VectorIndexErrorCode.INTEGRITY_ERROR);
     }
   }
 
@@ -712,19 +683,34 @@ export class SQLiteVectorStore extends IVectorStore {
     this._initialized = false;
   }
 
-  _ensureInitialized() {
+  _ensureInitialized(): void {
     if (!this._initialized) {
       initialize_db(this.dbPath);
       this._initialized = true;
     }
   }
 
-  async search(embedding: EmbeddingInput, topK: number, options: VectorSearchOptions = {}) {
+  /**
+   * Searches indexed memories by embedding similarity.
+   * @param embedding - The query embedding to search with.
+   * @param topK - The maximum number of matches to return.
+   * @param options - Optional ranking and filtering controls.
+   * @returns Matching memory rows ordered by similarity.
+   * @throws {VectorIndexError} When the embedding dimension is invalid or the store cannot initialize.
+   * @example
+   * ```ts
+   * const rows = await store.search(queryEmbedding, 10, { specFolder: 'specs/001-demo' });
+   * ```
+   */
+  async search(embedding: EmbeddingInput, topK: number, options: VectorSearchOptions = {}): Promise<MemoryRow[]> {
     this._ensureInitialized();
 
     const expected_dim = get_embedding_dim();
     if (!embedding || embedding.length !== expected_dim) {
-      throw new Error(`Invalid embedding dimension: expected ${expected_dim}, got ${embedding?.length}`);
+      throw new VectorIndexError(
+        `Invalid embedding dimension: expected ${expected_dim}, got ${embedding?.length}`,
+        VectorIndexErrorCode.EMBEDDING_VALIDATION,
+      );
     }
 
     const search_options = {
@@ -743,12 +729,27 @@ export class SQLiteVectorStore extends IVectorStore {
     return vector_search(embedding, search_options);
   }
 
-  async upsert(_id: string, embedding: EmbeddingInput, metadata: JsonObject) {
+  /**
+   * Inserts or updates a memory row and its embedding metadata.
+   * @param _id - Legacy identifier input retained for interface compatibility.
+   * @param embedding - The embedding to persist.
+   * @param metadata - Store metadata containing the spec folder and file path.
+   * @returns The stored memory identifier.
+   * @throws {VectorIndexError} When embedding validation fails or required metadata is missing.
+   * @example
+   * ```ts
+   * const id = await store.upsert('ignored', embedding, { spec_folder: 'specs/001-demo', file_path: 'spec.md' });
+   * ```
+   */
+  async upsert(_id: string, embedding: EmbeddingInput, metadata: JsonObject): Promise<number> {
     this._ensureInitialized();
 
     const expected_dim = get_embedding_dim();
     if (!embedding || embedding.length !== expected_dim) {
-      throw new Error(`Embedding dimension mismatch: expected ${expected_dim}, got ${embedding?.length}`);
+      throw new VectorIndexError(
+        `Embedding dimension mismatch: expected ${expected_dim}, got ${embedding?.length}`,
+        VectorIndexErrorCode.EMBEDDING_VALIDATION,
+      );
     }
 
     const metadata_alias = metadata as JsonObject & {
@@ -776,26 +777,49 @@ export class SQLiteVectorStore extends IVectorStore {
     };
 
     if (!params.specFolder || !params.filePath) {
-      throw new Error('metadata must include spec_folder and file_path');
+      throw new VectorIndexError(
+        'metadata must include spec_folder and file_path',
+        VectorIndexErrorCode.STORE_ERROR,
+      );
     }
 
     const { index_memory } = await import('./vector-index-mutations');
     return index_memory(params);
   }
 
-  async delete(id: number) {
+  /**
+   * Deletes a memory by identifier.
+   * @param id - The memory identifier.
+   * @returns True when a memory was deleted.
+   * @throws {VectorIndexError} Propagates underlying delete failures from the mutation layer.
+   * @example
+   * ```ts
+   * const deleted = await store.delete(42);
+   * ```
+   */
+  async delete(id: number): Promise<boolean> {
     this._ensureInitialized();
     const { delete_memory } = await import('./vector-index-mutations');
     return delete_memory(id);
   }
 
-  async get(id: number) {
+  /**
+   * Retrieves a memory by identifier.
+   * @param id - The memory identifier.
+   * @returns The stored memory row, if found.
+   * @throws {VectorIndexError} Propagates underlying store initialization failures.
+   * @example
+   * ```ts
+   * const memory = await store.get(42);
+   * ```
+   */
+  async get(id: number): Promise<MemoryRow | null> {
     this._ensureInitialized();
     const { get_memory } = await import('./vector-index-queries');
     return get_memory(id);
   }
 
-  async getStats() {
+  async getStats(): Promise<{ total: number; pending: number; success: number; failed: number; retry: number }> {
     this._ensureInitialized();
     const { get_stats } = await import('./vector-index-queries');
     return get_stats();
@@ -805,48 +829,64 @@ export class SQLiteVectorStore extends IVectorStore {
     return sqlite_vec_available_flag;
   }
 
-  getEmbeddingDimension() {
+  getEmbeddingDimension(): number {
     return get_embedding_dim();
   }
 
-  async close() {
+  async close(): Promise<void> {
     if (this._initialized) {
       close_db();
       this._initialized = false;
     }
   }
 
-  async deleteByPath(specFolder: string, filePath: string, anchorId: string | null = null) {
+  async deleteByPath(specFolder: string, filePath: string, anchorId: string | null = null): Promise<boolean> {
     this._ensureInitialized();
     const { delete_memory_by_path } = await import('./vector-index-mutations');
     return delete_memory_by_path(specFolder, filePath, anchorId);
   }
 
-  async getByFolder(specFolder: string) {
+  async getByFolder(specFolder: string): Promise<MemoryRow[]> {
     this._ensureInitialized();
     const { get_memories_by_folder } = await import('./vector-index-queries');
     return get_memories_by_folder(specFolder);
   }
 
-  async searchEnriched(embedding: string, options: { specFolder?: string | null; minSimilarity?: number } = {}) {
+  async searchEnriched(
+    embedding: string,
+    options: { specFolder?: string | null; minSimilarity?: number } = {},
+  ): Promise<EnrichedSearchResult[]> {
     this._ensureInitialized();
     const { vector_search_enriched } = await import('./vector-index-queries');
     return vector_search_enriched(embedding, undefined, options);
   }
 
-  async enhancedSearch(embedding: string, options: EnhancedSearchOptions = {}) {
+  async enhancedSearch(embedding: string, options: EnhancedSearchOptions = {}): Promise<EnrichedSearchResult[]> {
     this._ensureInitialized();
     const { enhanced_search } = await import('./vector-index-aliases');
     return enhanced_search(embedding, undefined, options);
   }
 
-  async getConstitutionalMemories(options: { specFolder?: string | null; maxTokens?: number; includeArchived?: boolean } = {}) {
+  async getConstitutionalMemories(
+    options: { specFolder?: string | null; maxTokens?: number; includeArchived?: boolean } = {},
+  ): Promise<MemoryRow[]> {
     this._ensureInitialized();
     const { get_constitutional_memories_public } = await import('./vector-index-queries');
     return get_constitutional_memories_public(options);
   }
 
-  async verifyIntegrity(options: { autoClean?: boolean } = {}) {
+  async verifyIntegrity(
+    options: { autoClean?: boolean } = {},
+  ): Promise<{
+    totalMemories: number;
+    totalVectors: number;
+    orphanedVectors: number;
+    missingVectors: number;
+    orphanedFiles: Array<{ id: number; file_path: string; reason: string }>;
+    orphanedChunks: number;
+    isConsistent: boolean;
+    cleaned?: { vectors: number; chunks: number };
+  }> {
     this._ensureInitialized();
     const { verify_integrity } = await import('./vector-index-queries');
     return verify_integrity(options);

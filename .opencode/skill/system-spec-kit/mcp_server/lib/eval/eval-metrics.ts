@@ -18,6 +18,10 @@ export interface EvalResult {
   rank: number;
 }
 
+function getRankAtIndex(result: EvalResult, index: number): number {
+  return Number.isFinite(result.rank) && result.rank > 0 ? result.rank : index + 1;
+}
+
 /** A single ground truth relevance judgment for a query-memory pair. */
 export interface GroundTruthEntry {
   /** Identifier of the query this judgment belongs to. */
@@ -119,8 +123,7 @@ export function computeMRR(
   for (let i = 0; i < topResults.length; i++) {
     const rel = relevanceMap.get(topResults[i].memoryId) ?? 0;
     if (rel > 0) {
-      // Rank is 1-based position in the top-K slice
-      return 1 / (i + 1);
+      return 1 / getRankAtIndex(topResults[i], i);
     }
   }
 
@@ -151,7 +154,7 @@ export function computeNDCG(
   let dcg = 0;
   for (let i = 0; i < topResults.length; i++) {
     const rel = relevanceMap.get(topResults[i].memoryId) ?? 0;
-    dcg += rel / Math.log2(i + 2);
+    dcg += rel / Math.log2(getRankAtIndex(topResults[i], i) + 1);
   }
 
   // Compute IDCG: ideal ordering of all ground truth relevances, top-K
@@ -285,7 +288,7 @@ export function computeMAP(
     if (relevantIds.has(memId) && !seenIds.has(memId)) {
       seenIds.add(memId);
       hits++;
-      sumPrecision += hits / (i + 1); // Precision@(i+1)
+      sumPrecision += hits / getRankAtIndex(topResults[i], i);
     }
   }
 
@@ -472,11 +475,14 @@ export function computeColdStartDetectionRate(
   memoryTimestamps: Record<number, Date>,
   cutoffHours: number = 48,
   k: number = 10,
+  evaluatedAt?: number,
 ): number {
   if (results.length === 0 || groundTruth.length === 0) return 0;
 
   const cutoffMs = cutoffHours * 60 * 60 * 1000;
-  const now = Date.now();
+  const now = typeof evaluatedAt === 'number' && Number.isFinite(evaluatedAt)
+    ? evaluatedAt
+    : Date.now();
 
   // Identify recent relevant memory IDs
   const recentRelevantIds = new Set<number>();
@@ -571,6 +577,7 @@ export function computeIntentWeightedNDCG(
  * @param params.constitutionalIds   Memory IDs that are constitutional tier.
  * @param params.memoryTimestamps    Map from memoryId → creation Date.
  * @param params.intentType          Intent type for intent-weighted NDCG.
+ * @param params.evaluatedAt         Optional query-time timestamp for cold-start checks.
  * @returns Record mapping metric name to computed value in [0, 1].
  */
 export function computeAllMetrics(params: {
@@ -579,6 +586,7 @@ export function computeAllMetrics(params: {
   constitutionalIds?: number[];
   memoryTimestamps?: Record<number, Date>;
   intentType?: string;
+  evaluatedAt?: number;
 }): AllMetrics {
   const {
     results,
@@ -586,6 +594,7 @@ export function computeAllMetrics(params: {
     constitutionalIds = [],
     memoryTimestamps = {},
     intentType = 'understand',
+    evaluatedAt,
   } = params;
 
   return {
@@ -599,7 +608,7 @@ export function computeAllMetrics(params: {
     inversionRate: computeInversionRate(results, groundTruth),
     constitutionalSurfacingRate: computeConstitutionalSurfacingRate(results, constitutionalIds),
     importanceWeightedRecall: computeImportanceWeightedRecall(results, groundTruth),
-    coldStartDetectionRate: computeColdStartDetectionRate(results, groundTruth, memoryTimestamps),
+    coldStartDetectionRate: computeColdStartDetectionRate(results, groundTruth, memoryTimestamps, 48, 10, evaluatedAt),
     intentWeightedNdcg: computeIntentWeightedNDCG(results, groundTruth, intentType),
   };
 }

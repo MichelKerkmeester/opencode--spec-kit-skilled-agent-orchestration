@@ -7,19 +7,19 @@ description: "Covers the read-only reporting dashboard that aggregates sprint-le
 
 ## 1. OVERVIEW
 
-Covers the read-only reporting dashboard that aggregates sprint-level and channel-level evaluation metrics.
+Covers the reporting dashboard that aggregates sprint-level and channel-level evaluation metrics from the eval database.
 
-This is a performance report that shows how well the search system has been working over time. It tracks metrics across different work periods and search channels so you can see whether things are getting better or worse. It only reads data and never changes anything, making it safe to run at any time.
+This is a performance report that shows how well the search system has been working over time. It tracks metrics across different work periods and search channels so you can see whether things are getting better or worse. Aside from idempotent eval-database initialization on first use, it reads and aggregates stored evaluation data without mutating evaluation results.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Generates a sprint-level and channel-level metric dashboard from stored evaluation runs. You can filter by sprint, channel and metric, and choose between text (markdown-formatted) or JSON output.
+Generates a sprint-level and channel-level metric dashboard from stored evaluation runs. You can filter by sprint, channel and metric, and choose between text (plain fixed-width) or JSON output.
 
 The dashboard aggregates per-sprint metric summaries (mean, min, max, latest, count) and per-channel performance views (hit count, average latency, query count) from the `eval_metric_snapshots` and `eval_channel_results` tables. Sprint labels are read from metric-snapshot metadata (`sprint` or `sprintLabel`) and fall back to `run-{eval_run_id}` when metadata is absent. Trend analysis compares consecutive sprint groups using each metric's latest value, with `isHigherBetter()` treating latency-style and inversion-style metrics as lower-is-better and most other metrics as higher-is-better.
 
-This is a read-only module. It queries the eval database and produces reports with no writes or mutation side effects. Two different limits apply: the request `limit` keeps only the most recent sprint groups after grouping, while `SPECKIT_DASHBOARD_LIMIT` caps dashboard SQL reads. Snapshot rows are still fetched directly, but channel data is grouped per included eval-run/channel pair before sprint aggregation so large per-query histories do not starve the kept sprint groups.
+Runtime behavior is read-only after initialization. The dashboard path queries the eval database and produces reports without mutating stored eval rows, but its first call can trigger `initEvalDb()` to create the eval database directory and `CREATE TABLE IF NOT EXISTS` schema if that database has not been initialized yet. Two different limits apply: the request `limit` keeps only the most recent sprint groups after grouping, while `SPECKIT_DASHBOARD_LIMIT` caps dashboard SQL reads. Snapshot rows are still fetched directly, but channel data is grouped per included eval-run/channel pair before sprint aggregation so large per-query histories do not starve the kept sprint groups.
 
 ---
 
@@ -35,8 +35,17 @@ This is a read-only module. It queries the eval database and produces reports wi
 | `mcp_server/lib/eval/eval-db.ts` | Lib | Evaluation database |
 | `mcp_server/lib/eval/reporting-dashboard.ts` | Lib | Reporting dashboard |
 | `mcp_server/lib/response/envelope.ts` | Lib | Response envelope formatting |
-| `mcp_server/tests/reporting-dashboard.vitest.ts` | Test | Dashboard aggregation and formatting coverage |
-| `mcp_server/tests/handler-eval-reporting.vitest.ts` | Test | Handler response coverage |
+| `mcp_server/tool-schemas.ts` | Schema | Public MCP schema for dashboard filters and output format |
+| `mcp_server/schemas/tool-input-schemas.ts` | Schema | Strict Zod validation for dashboard arguments |
+
+### Routing And Registry
+
+| File | Layer | Role |
+|------|-------|------|
+| `mcp_server/tools/lifecycle-tools.ts` | Routing | Validates and dispatches `eval_reporting_dashboard` tool calls |
+| `mcp_server/tools/types.ts` | Routing | Shared typed arg shapes used by lifecycle dispatch |
+| `mcp_server/handlers/index.ts` | Registry | Re-exports the eval handlers for tool modules |
+| `mcp_server/lib/architecture/layer-definitions.ts` | Registry | Registers `eval_reporting_dashboard` as an L6 analysis tool |
 
 ### Tests
 

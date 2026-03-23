@@ -6,27 +6,8 @@
 // Extracted from hybrid-search.ts ftsSearch() for independent
 // Testing and future delegation.
 
-import { sanitizeQueryTokens } from './bm25-index';
-
+import { BM25_FTS5_WEIGHTS, sanitizeQueryTokens } from './bm25-index';
 import type Database from 'better-sqlite3';
-
-// ───────────────────────────────────────────────────────────────
-// 1. CONSTANTS
-
-// ───────────────────────────────────────────────────────────────
-/**
- * C138-P2: FTS5 bm25() column weight arguments.
- * Passed positionally to bm25(memory_fts, w0, w1, w2, w3)
- * matching the FTS5 table column order:
- *   col 0 = title           -> 10.0
- *   col 1 = trigger_phrases ->  5.0
- *   col 2 = file_path       ->  2.0
- *   col 3 = content_text    ->  1.0
- *
- * Note: bm25() returns NEGATIVE scores (lower = better match),
- * so we negate to produce positive scores for ranking.
- */
-const FTS5_BM25_WEIGHTS = [10.0, 5.0, 2.0, 1.0] as const;
 
 // ───────────────────────────────────────────────────────────────
 // 2. INTERFACES
@@ -59,6 +40,10 @@ interface FtsBm25Options {
  * @param query - Raw search query (will be sanitized)
  * @param options - Search options (limit, specFolder, includeArchived)
  * @returns Array of results with BM25 scores (higher = better)
+ * @example
+ * ```ts
+ * const rows = fts5Bm25Search(db, 'memory search', { limit: 10 });
+ * ```
  */
 function fts5Bm25Search(
   db: Database.Database,
@@ -86,7 +71,7 @@ function fts5Bm25Search(
 
   // Bm25() returns negative scores (lower = better), so we negate
   // To produce positive scores where higher = better match.
-  const [w0, w1, w2, w3] = FTS5_BM25_WEIGHTS;
+  const [w0, w1, w2, w3] = BM25_FTS5_WEIGHTS;
   const sql = `
     SELECT m.*, -bm25(memory_fts, ${w0}, ${w1}, ${w2}, ${w3}) AS fts_score
     FROM memory_fts
@@ -123,6 +108,12 @@ function fts5Bm25Search(
  *
  * @param db - SQLite database connection to check
  * @returns true if memory_fts exists and is queryable
+ * @example
+ * ```ts
+ * if (isFts5Available(db)) {
+ *   fts5Bm25Search(db, 'memory');
+ * }
+ * ```
  */
 function isFts5Available(db: Database.Database): boolean {
   try {
@@ -143,7 +134,7 @@ function isFts5Available(db: Database.Database): boolean {
 
 // ───────────────────────────────────────────────────────────────
 export {
-  FTS5_BM25_WEIGHTS,
+  BM25_FTS5_WEIGHTS as FTS5_BM25_WEIGHTS,
   fts5Bm25Search,
   isFts5Available,
 };

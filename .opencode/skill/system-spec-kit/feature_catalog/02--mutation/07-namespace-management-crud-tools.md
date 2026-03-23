@@ -19,7 +19,7 @@ Four shipped tools provide workspace-level scoping beyond per-spec-folder filter
 
 - **`shared_space_membership_set`** -- Controls user/agent access with a deny-by-default model. Requires `spaceId`, `tenantId`, `subjectType` (`user` or `agent`), `subjectId`, `role` (`owner`, `editor`, or `viewer`), and exactly one actor identity (`actorUserId` or `actorAgentId`). The actor must already own the target space. This tool manages individual-level membership, not spec-folder participation.
 
-- **`shared_memory_status`** -- Reports whether shared memory is enabled, how many spaces exist, and which spaces are accessible. Accepts optional scope filters: `tenantId`, `userId`, `agentId`. Returns rollout state and per-space role listings.
+- **`shared_memory_status`** -- Reports whether shared memory is enabled and which shared-space IDs are accessible for the provided scope. Accepts optional scope filters: `tenantId`, `userId`, `agentId`. Returns `enabled`, `allowedSharedSpaceIds`, and the echoed scope IDs.
 
 - **`shared_memory_enable`** -- Activates the opt-in shared-memory subsystem. Creates infrastructure tables, persists enablement in the database, and generates a README in `shared-spaces/`. This is the required first step before any other shared-memory operations.
 
@@ -38,7 +38,7 @@ The original full namespace CRUD (`list/create/switch/delete`) for complete mult
 | `mcp_server/lib/config/capability-flags.ts` | Lib | Feature capability flags including shared-memory enablement |
 | `mcp_server/tool-schemas.ts` | Core | Tool schema definitions (4 shared-memory tools) |
 | `mcp_server/schemas/tool-input-schemas.ts` | Schema | Zod input schemas for shared-memory tools |
-| `mcp_server/tools/memory-tools.ts` | API | Tool dispatcher including shared-memory routing |
+| `mcp_server/tools/lifecycle-tools.ts` | API | Tool dispatcher including shared-memory lifecycle routing |
 
 ### Tests
 

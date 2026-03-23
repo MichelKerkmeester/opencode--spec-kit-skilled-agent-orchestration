@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: 016-Tooling-and-Scripts Manual Testing"
-description: "P0/P1/P2 checklist for verifying all 60 tooling-and-scripts scenario IDs are executed with evidence, covering pre-implementation, code quality, testing, security, documentation, and file organisation checks."
+description: "P0/P1/P2 checklist for verifying all 65 tooling-and-scripts scenario IDs are executed with evidence, covering pre-implementation, code quality, testing, security, documentation, and file organisation checks."
 trigger_phrases:
   - "tooling scripts manual testing"
   - "016 testing"
@@ -30,9 +30,9 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] All 28 scenario files verified to exist in playbook/16--tooling-and-scripts/ -- **29 files found (28 original + 181-template-compliance)**
-- [x] CHK-002 [P0] Scope locked to exactly 59 scenario IDs as defined in spec.md -- **59 IDs confirmed across 5 groups (A:5, B:1, C:18, D:20, E:16, 181:1)**
-- [x] CHK-003 [P1] Feature catalog cross-references verified for all 17 catalog entries -- **18 catalog files found (17 original + 18-template-compliance); all mapped to scenarios**
+- [x] CHK-001 [P0] All 33 scenario files verified to exist in playbook/16--tooling-and-scripts/ -- **33 files found (28 original + 181-template-compliance + 182/183/184 runtime audits + 186 manage routing)**
+- [x] CHK-002 [P0] Scope locked to exactly 65 scenario IDs as defined in spec.md -- **65 IDs confirmed across 5 groups (A:5, B:1, C:18, D:25, E:16)**
+- [x] CHK-003 [P1] Feature catalog cross-references verified for all 18 catalog entries plus playbook-only audits -- **18 catalog files found; catalog-backed scenarios map cleanly and M-009/M-010/M-011/186 are explicitly tracked as playbook-only operator audits**
 - [x] CHK-004 [P1] Sandbox folders prepared for destructive tests -- **N/A: code analysis mode used for all verdicts**
 <!-- /ANCHOR:pre-impl -->
 
@@ -71,7 +71,7 @@ contextType: "general"
 - [x] CHK-036 [P0] M-007p: Structured-summary JSON coverage -- **PASS** -- generate-context.ts:90-94 documents toolCalls/exchanges, input-normalizer accepts camelCase and snake_case
 - [x] CHK-037 [P0] M-007q: Phase 018 output-quality hardening -- **PASS** -- Decision dedup (auto-detection-fixes.vitest.ts:272), blocker specificity (session-extractor.ts:339), em/en dash support (input-normalizer.ts:595), tree thinning 150-token/3-child (tree-thinning.ts:34,241-262)
 
-### Group D: Tooling and Script Utilities (20 IDs)
+### Group D: Tooling and Script Utilities (25 IDs)
 - [x] CHK-040 [P0] 061: Tree thinning -- **PASS** -- 150-token memoryThinThreshold (tree-thinning.ts:34), 3-child cap (tree-thinning.ts:241), overflow to 'keep' (tree-thinning.ts:256-262), tokensSaved computed
 - [x] CHK-041 [P0] 062: Progressive validation -- **PASS** -- progressive-validate.sh: 4-level pipeline, --level N, --dry-run, --strict, exit codes 0/1/2 (scripts/spec/progressive-validate.sh:7-10)
 - [x] CHK-042 [P0] 070: Dead code removal -- **PASS** -- No dead code symbols found; build and lint pass cleanly
@@ -92,24 +92,29 @@ contextType: "general"
 - [x] CHK-057 [P0] 151: MODULE_MAP.md accuracy -- **PASS** -- MODULE_MAP.md at mcp_server/lib/MODULE_MAP.md, contains module inventory, feature catalog mapping, dependency directions, canonical locations
 - [x] CHK-058 [P0] 152: No symlinks in lib/ tree -- **PASS** -- `find mcp_server/lib -type l` returns 0 symlinks confirmed
 - [x] CHK-059 [P0] 154: JSON-primary deprecation posture -- **PASS** -- generate-context.ts:398-407 gates --json/--stdin/file; direct positional throws with migration guidance
+- [x] CHK-060 [P0] 181: Template Compliance Contract Enforcement -- **PASS** -- `.opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/skill/system-spec-kit/scripts/test-fixtures/053-template-compliant-level2` exits 0 with 0 errors; feature catalog 18 and `scripts/tests/test-phase-command-workflows.js:123-149` confirm the 3-layer contract
+- [x] CHK-061 [P0] M-009: Runtime Family Count Census -- **PASS** -- runtime census commands return `9` for base `.opencode/agent`, ChatGPT `.opencode/agent/chatgpt`, Claude `.claude/agents`, Codex `.codex/agents`, and Gemini `.gemini/agents`
+- [x] CHK-062 [P0] M-010: Runtime Lineage Naming Parity -- **PASS** -- basename `diff -u` comparisons between base↔Claude, base↔Gemini, and ChatGPT↔Codex return no output; runtime agent directories contain no stale active research file name in Markdown or TOML form
+- [x] CHK-063 [P0] M-011: Gemini Runtime Path Resolution -- **PASS** -- `readlink .gemini` returns `.agents`, basename diff between `.gemini/agents` and `.agents/agents` is empty, and the resolved Gemini agent count is `9`
+- [x] CHK-064 [P0] 186: /memory:manage command routing -- **PASS** -- no-args defaults to stats at `.opencode/command/memory/manage.md:18-28,71-92`; routing tree covers `scan`, `cleanup`, `bulk-delete`, `tier`, `triggers`, `validate`, `delete`, `health`, `checkpoint`, and `ingest` at `:133-155`; the default dashboard calls `memory_stats()` + `memory_list()` at `:162-164`
 
 ### Group E: JSON Mode Structured Summary Hardening (16 IDs)
-- [x] CHK-060 [P0] 153: JSON mode structured summary hardening parent -- **PASS** -- Full contract: toolCalls/exchanges, snake_case compat, file-backed authority, Wave 2 hardening
-- [x] CHK-061 [P0] 153-A: Post-save quality review -- **PASS** -- post-save-review.ts:390-405 prints REVIEW block with PASSED/issue count
-- [x] CHK-062 [P0] 153-B: sessionSummary to title -- **PASS** -- input-normalizer.ts:622-627 extracts sessionSummary/session_summary, propagates to title
-- [x] CHK-063 [P0] 153-C: triggerPhrases to frontmatter -- **PASS** -- input-normalizer.ts:460-463,521,668 propagates; filterTriggerPhrases removes path fragments (workflow.ts:122-148)
-- [x] CHK-064 [P0] 153-D: keyDecisions to decision_count -- **PASS** -- input-normalizer.ts:545-559 propagates keyDecisions/key_decisions to _manualDecisions
-- [x] CHK-065 [P0] 153-E: importanceTier to frontmatter -- **PASS** -- input-normalizer.ts:530-533 (fast), 675-678 (slow) propagate importanceTier/importance_tier
-- [x] CHK-066 [P0] 153-F: contextType enum propagation -- **PASS** -- input-normalizer.ts:535-538 (fast), 680-683 (slow); VALID_CONTEXT_TYPES at line 723
-- [x] CHK-067 [P0] 153-G: Contamination filter -- **PASS** -- contamination-filter.ts, filterContamination at workflow.ts:592, cleans hedging/meta-commentary
-- [x] CHK-068 [P0] 153-H: filesModified to FILES -- **PASS** -- input-normalizer.ts:476-511 fast-path conversion, empty arrays produce FILES:[]
-- [x] CHK-069 [P0] 153-I: Unknown field warning -- **PASS** -- KNOWN_RAW_INPUT_FIELDS at input-normalizer.ts:705, warning at lines 735-737
-- [x] CHK-070 [P0] 153-J: contextType enum rejection -- **PASS** -- VALID_CONTEXT_TYPES at input-normalizer.ts:723, validation at line 748
-- [x] CHK-071 [P0] 153-K: Quality score discriminates -- **PASS** -- quality-scorer.ts: penalty weights (line 120), sufficiency caps (lines 179-206), discriminative 0.0-1.0 scoring
-- [x] CHK-072 [P0] 153-L: Trigger phrase filter -- **PASS** -- filterTriggerPhrases (workflow.ts:122-148) Stage 1 removes '/' and '\\' entries
-- [x] CHK-073 [P0] 153-M: Embedding retry stats -- **PASS** -- retry-manager.ts:40-41 defines stats fields; embedding-retry-stats.vitest.ts tests all 6 fields
-- [x] CHK-074 [P0] 153-N: Pre-save overlap warning -- **PASS** -- workflow.ts:1465-1481 SHA overlap check, SPECKIT_PRE_SAVE_DEDUP env flag, advisory warning
-- [x] CHK-075 [P0] 153-O: projectPhase override -- **PASS** -- input-normalizer.ts:540-543 (fast), 685-688 (slow); resolveProjectPhase at session-extractor.ts:227-235, VALID_PROJECT_PHASES at line 210
+- [x] CHK-070 [P0] 153: JSON mode structured summary hardening parent -- **PASS** -- Full contract: toolCalls/exchanges, snake_case compat, file-backed authority, Wave 2 hardening
+- [x] CHK-071 [P0] 153-A: Post-save quality review -- **PASS** -- post-save-review.ts:390-405 prints REVIEW block with PASSED/issue count
+- [x] CHK-072 [P0] 153-B: sessionSummary to title -- **PASS** -- input-normalizer.ts:622-627 extracts sessionSummary/session_summary, propagates to title
+- [x] CHK-073 [P0] 153-C: triggerPhrases to frontmatter -- **PASS** -- input-normalizer.ts:460-463,521,668 propagates; filterTriggerPhrases removes path fragments (workflow.ts:122-148)
+- [x] CHK-074 [P0] 153-D: keyDecisions to decision_count -- **PASS** -- input-normalizer.ts:545-559 propagates keyDecisions/key_decisions to _manualDecisions
+- [x] CHK-075 [P0] 153-E: importanceTier to frontmatter -- **PASS** -- input-normalizer.ts:530-533 (fast), 675-678 (slow) propagate importanceTier/importance_tier
+- [x] CHK-076 [P0] 153-F: contextType enum propagation -- **PASS** -- input-normalizer.ts:535-538 (fast), 680-683 (slow); VALID_CONTEXT_TYPES at line 723
+- [x] CHK-077 [P0] 153-G: Contamination filter -- **PASS** -- contamination-filter.ts, filterContamination at workflow.ts:592, cleans hedging/meta-commentary
+- [x] CHK-078 [P0] 153-H: filesModified to FILES -- **PASS** -- input-normalizer.ts:476-511 fast-path conversion, empty arrays produce FILES:[]
+- [x] CHK-079 [P0] 153-I: Unknown field warning -- **PASS** -- KNOWN_RAW_INPUT_FIELDS at input-normalizer.ts:705, warning at lines 735-737
+- [x] CHK-080 [P0] 153-J: contextType enum rejection -- **PASS** -- VALID_CONTEXT_TYPES at input-normalizer.ts:723, validation at line 748
+- [x] CHK-081 [P0] 153-K: Quality score discriminates -- **PASS** -- quality-scorer.ts: penalty weights (line 120), sufficiency caps (lines 179-206), discriminative 0.0-1.0 scoring
+- [x] CHK-082 [P0] 153-L: Trigger phrase filter -- **PASS** -- filterTriggerPhrases (workflow.ts:122-148) Stage 1 removes '/' and '\\' entries
+- [x] CHK-083 [P0] 153-M: Embedding retry stats -- **PASS** -- retry-manager.ts:40-41 defines stats fields; embedding-retry-stats.vitest.ts tests all 6 fields
+- [x] CHK-084 [P0] 153-N: Pre-save overlap warning -- **PASS** -- workflow.ts:1465-1481 SHA overlap check, SPECKIT_PRE_SAVE_DEDUP env flag, advisory warning
+- [x] CHK-085 [P0] 153-O: projectPhase override -- **PASS** -- input-normalizer.ts:540-543 (fast), 685-688 (slow); resolveProjectPhase at session-extractor.ts:227-235, VALID_PROJECT_PHASES at line 210
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -117,10 +122,10 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-080 [P0] All 59 scenario IDs have individual pass/fail evidence -- **59 PASS, 0 PARTIAL, 0 FAIL**
-- [x] CHK-081 [P0] Zero untested scenarios remaining -- **Confirmed: all 59 IDs tested**
-- [x] CHK-082 [P1] Evidence is reproducible (exact commands documented) -- **File:line references provided for all verdicts**
-- [x] CHK-083 [P1] Failures include exact error output verbatim -- **No failures; no PARTIAL remaining; 138 resolved by adding MODULE headers to 3 scripts/ files**
+- [x] CHK-090 [P0] All 65 scenario IDs have individual pass/fail evidence -- **65 PASS, 0 PARTIAL, 0 FAIL**
+- [x] CHK-091 [P0] Zero untested scenarios remaining -- **Confirmed: all 65 IDs tested**
+- [x] CHK-092 [P1] Evidence is reproducible (exact commands documented) -- **File:line references, runtime command output, and strict-validation output provided for all verdicts**
+- [x] CHK-093 [P1] Failures include exact error output verbatim -- **No failures; no PARTIAL remaining; 138 resolved by adding MODULE headers to 3 scripts/ files**
 <!-- /ANCHOR:testing -->
 
 ---
@@ -128,9 +133,9 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-090 [P0] No secrets or credentials in any phase documents -- **Confirmed: no secrets in any spec folder files**
-- [x] CHK-091 [P0] Destructive tests use sandbox only -- **N/A: code analysis mode, no destructive actions taken**
-- [x] CHK-092 [P1] Sandbox folders cleaned up after evidence capture -- **N/A: no sandbox folders created**
+- [x] CHK-100 [P0] No secrets or credentials in any phase documents -- **Confirmed: no secrets in any spec folder files**
+- [x] CHK-101 [P0] Destructive tests use sandbox only -- **N/A: code analysis mode, no destructive actions taken**
+- [x] CHK-102 [P1] Sandbox folders cleaned up after evidence capture -- **N/A: no sandbox folders created**
 <!-- /ANCHOR:security -->
 
 ---
@@ -138,9 +143,9 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-100 [P1] spec.md, plan.md, tasks.md, checklist.md synchronized -- **All 4 files updated with consistent verdicts**
-- [x] CHK-101 [P1] Implementation-summary.md completed with execution results -- **Updated with full verdict table**
-- [ ] CHK-102 [P2] Memory save triggered for future session continuity -- **Deferred: user can trigger /memory:save separately**
+- [x] CHK-110 [P1] spec.md, plan.md, tasks.md, checklist.md synchronized -- **All 4 files updated with consistent 33-file / 65-ID coverage and verdicts**
+- [x] CHK-111 [P1] Implementation-summary.md completed with execution results -- **Updated with full verdict table**
+- [ ] CHK-112 [P2] Memory save triggered for future session continuity -- **Deferred: user can trigger /memory:save separately**
 <!-- /ANCHOR:docs -->
 
 ---
@@ -148,9 +153,9 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-110 [P1] Temp files in scratch/ only -- **No temp files created**
-- [x] CHK-111 [P1] scratch/ cleaned before completion -- **scratch/ is empty**
-- [ ] CHK-112 [P2] Findings saved to memory/ -- **Deferred: user can trigger /memory:save separately**
+- [x] CHK-120 [P1] Temp files in scratch/ only -- **No temp files created**
+- [x] CHK-121 [P1] scratch/ cleaned before completion -- **scratch/ is empty**
+- [ ] CHK-122 [P2] Findings saved to memory/ -- **Deferred: user can trigger /memory:save separately**
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -160,10 +165,10 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 68 | 68/68 |
+| P0 Items | 71 | 71/71 |
 | P1 Items | 9 | 9/9 |
 | P2 Items | 2 | 0/2 |
 
 **Verification Date**: 2026-03-22
-**Overall Result**: 59 PASS, 0 PARTIAL, 0 FAIL (100% pass rate)
+**Overall Result**: 65 PASS, 0 PARTIAL, 0 FAIL (100% pass rate)
 <!-- /ANCHOR:summary -->

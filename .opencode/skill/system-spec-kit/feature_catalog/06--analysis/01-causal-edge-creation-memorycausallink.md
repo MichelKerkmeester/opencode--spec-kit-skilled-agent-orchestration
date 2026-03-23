@@ -33,8 +33,10 @@ A batch insert variant (`insertEdgesBatch()`) handles bulk edge creation during 
 |------|-------|------|
 | `mcp_server/configs/cognitive.ts` | Core | Cognitive configuration |
 | `mcp_server/core/config.ts` | Core | Server configuration |
+| `mcp_server/handlers/causal-graph.ts` | Handler | MCP handler for `memory_causal_link` |
 | `mcp_server/handlers/causal-links-processor.ts` | Handler | Causal link mutation handler |
 | `mcp_server/handlers/handler-utils.ts` | Handler | Handler utility helpers |
+| `mcp_server/handlers/memory-index.ts` | Handler | Spec document indexing flow that calls `createSpecDocumentChain()` |
 | `mcp_server/lib/cache/embedding-cache.ts` | Lib | Embedding Cache |
 | `mcp_server/lib/config/memory-types.ts` | Lib | Memory type definitions |
 | `mcp_server/lib/config/type-inference.ts` | Lib | Memory type inference |
@@ -64,6 +66,7 @@ A batch insert variant (`insertEdgesBatch()`) handles bulk edge creation during 
 | `mcp_server/lib/utils/path-security.ts` | Lib | Path security validation |
 | `mcp_server/schemas/tool-input-schemas.ts` | Schema | Zod input schemas |
 | `mcp_server/tool-schemas.ts` | Core | Tool schema definitions |
+| `mcp_server/tools/causal-tools.ts` | Tool | Dispatches `memory_causal_link` to the causal graph handler |
 | `mcp_server/utils/batch-processor.ts` | Util | Batch processing utility |
 | `mcp_server/utils/db-helpers.ts` | Util | Database helpers |
 | `mcp_server/utils/index.ts` | Util | Module barrel export |

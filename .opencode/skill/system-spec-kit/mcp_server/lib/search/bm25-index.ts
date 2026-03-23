@@ -46,13 +46,26 @@ const DEFAULT_B = 0.75;
  * content_generic:  2.0 — generic textual content (file_path, tags, etc.)
  * body:             1.0 — baseline weight for full body / content_text
  */
+const BM25_FTS5_WEIGHTS = [10.0, 5.0, 2.0, 1.0] as const;
+
 const BM25_FIELD_WEIGHTS: Record<string, number> = {
-  title:           10.0,
-  trigger_phrases:  5.0,
-  content_generic:  2.0,
-  body:             1.0,
+  title: BM25_FTS5_WEIGHTS[0],
+  trigger_phrases: BM25_FTS5_WEIGHTS[1],
+  content_generic: BM25_FTS5_WEIGHTS[2],
+  body: BM25_FTS5_WEIGHTS[3],
 };
 
+/**
+ * Check whether the in-memory BM25 index is enabled.
+ *
+ * @returns `true` when BM25 indexing/search is enabled for the current process.
+ * @example
+ * ```ts
+ * if (isBm25Enabled()) {
+ *   getIndex();
+ * }
+ * ```
+ */
 function isBm25Enabled(): boolean {
   return process.env.ENABLE_BM25 !== 'false';
 }
@@ -69,6 +82,17 @@ const STOP_WORDS = new Set([
   'do', 'does', 'did', 'so', 'if', 'then', 'than', 'too', 'very',
 ]);
 
+/**
+ * Apply lightweight stemming to a token for BM25 indexing and matching.
+ *
+ * @param word - Token to stem.
+ * @returns A lowercased token with simple suffix normalization applied.
+ * @example
+ * ```ts
+ * simpleStem('running');
+ * // 'run'
+ * ```
+ */
 function simpleStem(word: string): string {
   let stem = word.toLowerCase();
   let suffixRemoved = false;
@@ -94,6 +118,17 @@ function simpleStem(word: string): string {
   return stem;
 }
 
+/**
+ * Tokenize raw text into normalized BM25 terms.
+ *
+ * @param text - Input text to tokenize.
+ * @returns Stemmed, lowercased, stop-word-filtered terms.
+ * @example
+ * ```ts
+ * tokenize('The memory indexing pipeline');
+ * // ['memory', 'index', 'pipeline']
+ * ```
+ */
 function tokenize(text: string): string[] {
   if (!text || typeof text !== 'string') return [];
 
@@ -106,6 +141,17 @@ function tokenize(text: string): string[] {
     .map(simpleStem);
 }
 
+/**
+ * Count token frequency occurrences for BM25 scoring.
+ *
+ * @param tokens - Normalized tokens produced by {@link tokenize}.
+ * @returns A frequency map keyed by token text.
+ * @example
+ * ```ts
+ * getTermFrequencies(['memory', 'memory', 'search']).get('memory');
+ * // 2
+ * ```
+ */
 function getTermFrequencies(tokens: string[]): Map<string, number> {
   const freq = new Map<string, number>();
   for (const token of tokens) {
@@ -284,6 +330,16 @@ class BM25Index {
 // ───────────────────────────────────────────────────────────────
 let indexInstance: BM25Index | null = null;
 
+/**
+ * Retrieve the shared in-memory BM25 index singleton.
+ *
+ * @returns The process-wide {@link BM25Index} instance.
+ * @example
+ * ```ts
+ * const index = getIndex();
+ * index.addDocument('123', 'memory search');
+ * ```
+ */
 function getIndex(): BM25Index {
   if (!indexInstance) {
     indexInstance = new BM25Index();
@@ -291,6 +347,15 @@ function getIndex(): BM25Index {
   return indexInstance;
 }
 
+/**
+ * Reset the shared BM25 index singleton.
+ *
+ * @returns Nothing.
+ * @example
+ * ```ts
+ * resetIndex();
+ * ```
+ */
 function resetIndex(): void {
   indexInstance = null;
 }
@@ -307,6 +372,14 @@ function resetIndex(): void {
  *
  * Removes all FTS5 operators and special characters, then returns
  * the remaining non-empty tokens.
+ *
+ * @param query - Raw user query text that may contain FTS operators.
+ * @returns Sanitized query tokens safe to reuse for lexical search paths.
+ * @example
+ * ```ts
+ * sanitizeQueryTokens('title:memory AND vector');
+ * // ['title', 'memory', 'vector']
+ * ```
  */
 function sanitizeQueryTokens(query: string): string[] {
   // Input length guard: truncate overly long queries to prevent DoS
@@ -335,6 +408,14 @@ function sanitizeQueryTokens(query: string): string[] {
  * Sanitize a query string for safe use with SQLite FTS5.
  * Delegates to `sanitizeQueryTokens` for tokenization, then wraps
  * each token in quotes for FTS5 safety.
+ *
+ * @param query - Raw user query text.
+ * @returns A quoted FTS5-safe query string.
+ * @example
+ * ```ts
+ * sanitizeFTS5Query('memory search');
+ * // "\"memory\" \"search\""
+ * ```
  */
 function sanitizeFTS5Query(query: string): string {
   return sanitizeQueryTokens(query)
@@ -358,6 +439,7 @@ export {
   sanitizeFTS5Query,
   DEFAULT_K1,
   DEFAULT_B,
+  BM25_FTS5_WEIGHTS,
   BM25_FIELD_WEIGHTS,
 };
 

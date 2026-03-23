@@ -5,6 +5,7 @@ import Database from 'better-sqlite3';
 // DB-dependent imports - commented out for deferred test suite
 import * as handler from '../handlers/session-learning';
 import * as vectorIndex from '../lib/search/vector-index';
+import * as core from '../core';
 
 function hasErrorCode(error: unknown, code: string): boolean {
   return typeof error === 'object'
@@ -177,6 +178,8 @@ describe('Handler Session Learning (T522)', () => {
 
       // Mock vectorIndex.getDb to return our mock DB
       const spy = vi.spyOn(vectorIndex, 'getDb').mockReturnValue(mockDb as any);
+      // Mock checkDatabaseUpdated to prevent db-state reinitialization failures
+      const dbSpy = vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
 
       try {
         await handler.handleTaskPreflight({
@@ -197,6 +200,7 @@ describe('Handler Session Learning (T522)', () => {
           || hasErrorMessage(error, 'Completed records cannot be overwritten')
         ).toBe(true);
       } finally {
+        dbSpy.mockRestore();
         spy.mockRestore();
         mockDb.close();
       }

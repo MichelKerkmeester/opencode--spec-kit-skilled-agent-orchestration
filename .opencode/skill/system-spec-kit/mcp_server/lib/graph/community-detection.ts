@@ -65,17 +65,17 @@ function buildAdjacencyList(db: Database.Database): AdjacencyList {
       .all() as Array<{ source_id: string; target_id: string }>;
 
     for (const row of rows) {
-      const s = String(row.source_id);
-      const t = String(row.target_id);
+      const sourceNode = String(row.source_id);
+      const targetNode = String(row.target_id);
 
-      if (!adj.has(s)) adj.set(s, new Set());
-      if (!adj.has(t)) adj.set(t, new Set());
-      const sourceNeighbors = adj.get(s);
-      const targetNeighbors = adj.get(t);
+      if (!adj.has(sourceNode)) adj.set(sourceNode, new Set());
+      if (!adj.has(targetNode)) adj.set(targetNode, new Set());
+      const sourceNeighbors = adj.get(sourceNode);
+      const targetNeighbors = adj.get(targetNode);
       if (!sourceNeighbors || !targetNeighbors) continue;
 
-      sourceNeighbors.add(t);
-      targetNeighbors.add(s);
+      sourceNeighbors.add(targetNode);
+      targetNeighbors.add(sourceNode);
     }
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
@@ -189,7 +189,7 @@ export function detectCommunitiesLouvain(
 
   // Community assignment: node -> communityId
   const community = new Map<string, number>();
-  nodes.forEach((n, i) => community.set(n, i));
+  nodes.forEach((node, index) => community.set(node, index));
 
   // Total number of edges (each undirected edge counted once)
   let totalEdges = 0;
@@ -200,8 +200,8 @@ export function detectCommunitiesLouvain(
 
   if (totalEdges === 0) return community;
 
-  const m = totalEdges;
-  const m2 = 2 * m;
+  const edgeCount = totalEdges;
+  const doubleEdgeCount = 2 * edgeCount;
 
   // Degree of each node (number of edges)
   const degree = new Map<string, number>();
@@ -226,8 +226,8 @@ export function detectCommunitiesLouvain(
 
     for (const node of nodes) {
       const currentCommunity = community.get(node);
-      const ki = degree.get(node);
-      if (currentCommunity === undefined || ki === undefined) continue;
+      const nodeDegree = degree.get(node);
+      if (currentCommunity === undefined || nodeDegree === undefined) continue;
 
       const neighbors = adjacency.get(node);
       if (!neighbors || neighbors.size === 0) continue;
@@ -246,7 +246,9 @@ export function detectCommunitiesLouvain(
       // Gain of removing node from its current community
       const sigmaOld = sigmaTot.get(currentCommunity) ?? 0;
       const removeGain =
-        -edgesToOwn / m + ((sigmaOld - ki) / m2) ** 2 - (sigmaOld / m2) ** 2;
+        -edgesToOwn / edgeCount
+        + ((sigmaOld - nodeDegree) / doubleEdgeCount) ** 2
+        - (sigmaOld / doubleEdgeCount) ** 2;
 
       let bestGain = 0;
       let bestCommunity = currentCommunity;
@@ -258,9 +260,9 @@ export function detectCommunitiesLouvain(
 
         // Gain of inserting node into target community
         const insertGain =
-          edgesIn / m -
-          ((sigmaTarget + ki) / m2) ** 2 +
-          (sigmaTarget / m2) ** 2;
+          edgesIn / edgeCount -
+          ((sigmaTarget + nodeDegree) / doubleEdgeCount) ** 2 +
+          (sigmaTarget / doubleEdgeCount) ** 2;
 
         const totalGain = removeGain + insertGain;
 
@@ -277,11 +279,11 @@ export function detectCommunitiesLouvain(
         // Update sigma totals
         sigmaTot.set(
           currentCommunity,
-          (sigmaTot.get(currentCommunity) ?? 0) - ki,
+          (sigmaTot.get(currentCommunity) ?? 0) - nodeDegree,
         );
         sigmaTot.set(
           bestCommunity,
-          (sigmaTot.get(bestCommunity) ?? 0) + ki,
+          (sigmaTot.get(bestCommunity) ?? 0) + nodeDegree,
         );
 
         moved = true;
@@ -325,14 +327,14 @@ export function detectCommunities(db: Database.Database): Map<string, number> {
     // With count:maxId hash. Edge count alone can't detect deletions followed by
     // Insertions that maintain the same count.
     const edgeStatsRow = db
-      .prepare("SELECT COUNT(*) AS cnt, MAX(id) AS maxId FROM causal_edges")
-      .get() as { cnt: number; maxId: number | null } | undefined;
+      .prepare("SELECT COUNT(*) AS cnt, MAX(id) AS maxId, MIN(id) AS minId FROM causal_edges")
+      .get() as { cnt: number; maxId: number | null; minId: number | null } | undefined;
     const currentEdgeCount = edgeStatsRow?.cnt ?? 0;
     // Fix F22 — include SUM of source/target IDs for update-sensitive fingerprint.
     const edgeChecksumRow = db
       .prepare("SELECT COALESCE(SUM(CAST(source_id AS INTEGER) + CAST(target_id AS INTEGER)), 0) AS cksum FROM causal_edges")
       .get() as { cksum: number } | undefined;
-    const currentDebounceHash = `${currentEdgeCount}:${edgeStatsRow?.maxId ?? 0}:${edgeChecksumRow?.cksum ?? 0}`;
+    const currentDebounceHash = `${currentEdgeCount}:${edgeStatsRow?.maxId ?? 0}:${edgeStatsRow?.minId ?? 0}:${edgeChecksumRow?.cksum ?? 0}`;
 
     if (
       computedThisSession &&
@@ -535,7 +537,8 @@ export function applyCommunityBoost(
       if (injected.length >= MAX_INJECTED) break;
 
       const coMembers = getCommunityMembers(db, row.id);
-      const baseScore = row.score ?? 1.0;
+      const rawScore = row.score !== undefined ? row.score : 1.0;
+      const baseScore = Number.isFinite(rawScore) ? rawScore : 1.0;
       const boostScore = COMMUNITY_EDGE_WEIGHT_THRESHOLD * baseScore;
 
       for (const memberId of coMembers) {

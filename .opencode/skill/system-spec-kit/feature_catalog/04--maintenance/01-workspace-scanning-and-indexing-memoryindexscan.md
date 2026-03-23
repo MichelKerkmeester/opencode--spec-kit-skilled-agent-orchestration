@@ -37,11 +37,8 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/configs/cognitive.ts` | Core | Cognitive configuration |
 | `mcp_server/core/config.ts` | Core | Server configuration |
-| `mcp_server/core/db-state.ts` | Core | Database state management |
 | `mcp_server/core/index.ts` | Core | Module barrel export |
-| `mcp_server/formatters/token-metrics.ts` | Formatter | Token metrics display |
 | `mcp_server/handlers/causal-links-processor.ts` | Handler | Causal link mutation handler |
 | `mcp_server/handlers/chunking-orchestrator.ts` | Handler | Chunking orchestration |
 | `mcp_server/handlers/handler-utils.ts` | Handler | Handler utility helpers |
@@ -109,6 +106,7 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 | `mcp_server/lib/search/vector-index-types.ts` | Lib | Vector index type definitions |
 | `mcp_server/lib/search/vector-index.ts` | Lib | Vector index facade |
 | `mcp_server/lib/storage/causal-edges.ts` | Lib | Causal edge storage |
+| `mcp_server/lib/storage/history.ts` | Lib | Memory history persistence |
 | `mcp_server/lib/storage/consolidation.ts` | Lib | Lightweight consolidation |
 | `mcp_server/lib/storage/incremental-index.ts` | Lib | Incremental indexing |
 | `mcp_server/lib/storage/mutation-ledger.ts` | Lib | Mutation ledger |
@@ -122,6 +120,9 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 | `mcp_server/lib/validation/save-quality-gate.ts` | Lib | Pre-storage quality gate |
 | `mcp_server/schemas/tool-input-schemas.ts` | Schema | Zod input schemas |
 | `mcp_server/tool-schemas.ts` | Core | Tool schema definitions |
+| `mcp_server/tools/index.ts` | Tool | Tool dispatcher barrel and dispatch entry point |
+| `mcp_server/tools/lifecycle-tools.ts` | Tool | Lifecycle tool dispatcher for `memory_index_scan` |
+| `mcp_server/tools/types.ts` | Tool | Shared tool argument and response types |
 | `mcp_server/utils/batch-processor.ts` | Util | Batch processing utility |
 | `mcp_server/utils/db-helpers.ts` | Util | Database helpers |
 | `mcp_server/utils/index.ts` | Util | Module barrel export |

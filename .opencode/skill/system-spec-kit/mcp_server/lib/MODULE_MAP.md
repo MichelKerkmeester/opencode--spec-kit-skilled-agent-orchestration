@@ -176,6 +176,19 @@ Notes:
 - Primary consumers:
   - `handlers/save/*`
 
+### `feedback/`
+
+- Purpose: Owns implicit-feedback capture, shadow-feedback evaluation, ranking-comparison metrics, and batch-learning helpers used to measure learned-signal quality without mutating live rankings.
+- Key files:
+  - `feedback-ledger.ts` — shadow-only feedback event ledger and query helpers.
+  - `shadow-scoring.ts` — holdout evaluation and promotion-gate logic for learned feedback.
+  - `batch-learning.ts` — weekly aggregation and shadow-apply cycle for learned feedback.
+  - `rank-metrics.ts` — Kendall tau, NDCG, MRR, and rank-delta helpers shared by feedback evaluation flows.
+- Primary consumers:
+  - `handlers/memory-search.ts`
+  - `context-server.ts`
+  - `lib/search/search-flags.ts`
+
 ### `governance/`
 
 - Purpose: Owns scope enforcement, governed ingest normalization, audit recording, and retention sweeps. This is the boundary for tenant/user/agent/session/shared-space policy decisions.
@@ -323,6 +336,16 @@ Notes:
 - Primary consumers:
   - `handlers/memory-search.ts`
 
+### `spec/`
+
+- Purpose: Owns shared spec-document helpers extracted from handlers so lib and handler modules can detect spec levels without re-implementing spec-folder traversal logic.
+- Key files:
+  - `spec-level.ts` — derives Level 1/2/3/3+ from nearby `spec.md` and sibling spec-doc files.
+- Primary consumers:
+  - `handlers/chunking-orchestrator.ts`
+  - `handlers/save/*`
+  - `lib/storage/lineage-state.ts`
+
 ### `storage/`
 
 - Purpose: Owns persistence behavior outside the search algorithm itself: checkpoints, history, access tracking, lineage state, transactions, consolidation, reconsolidation, and index refresh flows. This is the long-lived state management layer for the memory system.
@@ -425,6 +448,7 @@ Feature-catalog categories referenced here are the 19 top-level directories unde
 | `errors` | `08--bug-fixes-and-data-integrity`, `18--ux-hooks` |
 | `eval` | `07--evaluation`, `09--evaluation-and-measurement` |
 | `extraction` | `02--mutation`, `13--memory-quality-and-indexing`, `17--governance` |
+| `feedback` | `11--scoring-and-calibration`, `13--memory-quality-and-indexing`, `19--feature-flag-reference` |
 | `governance` | `17--governance` |
 | `graph` | `06--analysis`, `10--graph-signal-activation`, `15--retrieval-enhancements` |
 | `interfaces` | `14--pipeline-architecture` |
@@ -437,6 +461,7 @@ Feature-catalog categories referenced here are the 19 top-level directories unde
 | `scoring` | `10--graph-signal-activation`, `11--scoring-and-calibration`, `15--retrieval-enhancements` |
 | `search` | `01--retrieval`, `03--discovery`, `06--analysis`, `10--graph-signal-activation`, `11--scoring-and-calibration`, `12--query-intelligence`, `14--pipeline-architecture`, `15--retrieval-enhancements`, `19--feature-flag-reference` |
 | `session` | `05--lifecycle`, `15--retrieval-enhancements` |
+| `spec` | `14--pipeline-architecture` |
 | `storage` | `02--mutation`, `04--maintenance`, `05--lifecycle`, `08--bug-fixes-and-data-integrity`, `10--graph-signal-activation`, `13--memory-quality-and-indexing`, `17--governance` |
 | `telemetry` | `09--evaluation-and-measurement`, `11--scoring-and-calibration`, `17--governance`, `18--ux-hooks` |
 | `utils` | `08--bug-fixes-and-data-integrity`, `16--tooling-and-scripts`, `18--ux-hooks` |
@@ -456,15 +481,15 @@ Feature-catalog categories referenced here are the 19 top-level directories unde
 | `08--bug-fixes-and-data-integrity` | `errors`, `storage`, `utils`, `validation` |
 | `09--evaluation-and-measurement` | `eval`, `telemetry` |
 | `10--graph-signal-activation` | `graph`, `manage`, `scoring`, `search`, `storage` |
-| `11--scoring-and-calibration` | `cognitive`, `config`, `learning`, `manage`, `scoring`, `search`, `telemetry` |
+| `11--scoring-and-calibration` | `cognitive`, `config`, `feedback`, `learning`, `manage`, `scoring`, `search`, `telemetry` |
 | `12--query-intelligence` | `parsing`, `search` |
-| `13--memory-quality-and-indexing` | `cache`, `chunking`, `extraction`, `ops`, `parsing`, `providers`, `storage`, `validation` |
-| `14--pipeline-architecture` | `architecture`, `contracts`, `interfaces`, `response`, `search` |
+| `13--memory-quality-and-indexing` | `cache`, `chunking`, `extraction`, `feedback`, `ops`, `parsing`, `providers`, `storage`, `validation` |
+| `14--pipeline-architecture` | `architecture`, `contracts`, `interfaces`, `response`, `search`, `spec` |
 | `15--retrieval-enhancements` | `cache`, `chunking`, `cognitive`, `graph`, `providers`, `scoring`, `search`, `session` |
 | `16--tooling-and-scripts` | `ops`, `utils` |
 | `17--governance` | `collab`, `config`, `extraction`, `governance`, `storage`, `telemetry` |
 | `18--ux-hooks` | `errors`, `response`, `telemetry`, `utils` |
-| `19--feature-flag-reference` | `cognitive`, `config`, `search` |
+| `19--feature-flag-reference` | `cognitive`, `config`, `feedback`, `search` |
 
 <!-- /ANCHOR:feature-catalog-mapping -->
 
@@ -505,6 +530,7 @@ Shared-helper modules:
 - `utils`
 - `response`
 - `architecture`
+- `spec`
 
 Target rule:
 
@@ -564,6 +590,7 @@ Domain modules:
 - `learning`
 - `manage`
 - `eval`
+- `feedback`
 - `governance`
 - `collab`
 
@@ -600,6 +627,9 @@ Target rule by module:
 - `eval`
   - May import: core, `search`, `scoring`, `telemetry`, `storage`
   - Must not be imported by production ranking paths
+- `feedback`
+  - May import: core, `search`, `scoring`, `storage`
+  - Must not mutate live ranking paths or import handlers as control flow
 - `governance`
   - May import: core, `storage`
   - Must not import: `search`, `collab`, handlers

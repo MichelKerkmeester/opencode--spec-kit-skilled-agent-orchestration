@@ -130,6 +130,11 @@ interface CausalBoostOptions {
   freshness?: number;
 }
 
+interface NeighborBoost {
+  boost: number;
+  hopCount: number;
+}
+
 let db: Database.Database | null = null;
 
 /** Check whether the causal boost feature flag is enabled. */
@@ -319,14 +324,15 @@ function buildPipelineRow(
   baseScore: number,
   causalBoost: number
 ): RankedSearchResult {
-  const score = baseScore * (1 + causalBoost);
+  const allowedBoost = Math.max(0, Math.min(causalBoost, MAX_COMBINED_BOOST));
+  const score = Math.min(1, Math.max(0, baseScore * (1 + allowedBoost)));
   return {
     ...row,
     score,
     rrfScore: score,
     intentAdjustedScore: score,
     attentionScore: score,
-    causalBoost,
+    causalBoost: allowedBoost,
     baseScore,
     injectedByCausalBoost: true,
   };
@@ -364,8 +370,8 @@ function computeBoostByHop(hopDistance: number): number {
  * (density < 0.5 and SPECKIT_TYPED_TRAVERSAL enabled), the caller passes
  * SPARSE_MAX_HOPS (1) to constrain traversal depth.
  */
-function getNeighborBoosts(memoryIds: number[], maxHops: number = MAX_HOPS): Map<number, number> {
-  const neighborBoosts = new Map<number, number>();
+function getNeighborBoosts(memoryIds: number[], maxHops: number = MAX_HOPS): Map<number, NeighborBoost> {
+  const neighborBoosts = new Map<number, NeighborBoost>();
   if (!db) return neighborBoosts;
 
   const ids = normalizeIds(memoryIds);
@@ -436,8 +442,13 @@ function getNeighborBoosts(memoryIds: number[], maxHops: number = MAX_HOPS): Map
         : 1.0;
       const boost = hopBoost * walkMultiplier;
       if (boost <= 0) continue;
-      const current = neighborBoosts.get(neighborId) ?? 0;
-      neighborBoosts.set(neighborId, Math.max(current, boost));
+      const current = neighborBoosts.get(neighborId);
+      if (!current || boost > current.boost) {
+        neighborBoosts.set(neighborId, {
+          boost,
+          hopCount: Math.max(1, Math.min(maxHops, row.min_hop)),
+        });
+      }
     }
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : String(error);
@@ -510,10 +521,9 @@ function applyCausalBoost(
 
   // D3-002: When SPECKIT_TYPED_TRAVERSAL is enabled, re-score neighbor boosts
   // using the intent-aware traversal formula: seedScore * edgePrior * hopDecay * freshness.
-  // We use the average seed score as the seedScore proxy and the raw boost as a hop-decay
-  // proxy (boost = MAX_BOOST_PER_HOP / hop), deriving hopDistance from the boost value.
-  // This preserves backward compatibility: when flag is OFF, the original boost values
-  // from getNeighborBoosts() are used unchanged.
+  // We use the average seed score as the seedScore proxy and the actual hop distance
+  // returned by getNeighborBoosts(). This preserves backward compatibility: when flag
+  // is OFF, the original boost values from getNeighborBoosts() are used unchanged.
   const intentBoosts: Map<number, number> = new Map();
   if (isTypedTraversalEnabled()) {
     const avgSeedScore = seedResults.length > 0
@@ -521,13 +531,7 @@ function applyCausalBoost(
       : 1.0;
     const clampedFreshness = Math.max(0, Math.min(1, Number.isFinite(freshness) ? freshness : 1.0));
 
-    for (const [neighborId, rawBoost] of neighborBoosts) {
-      // Back-derive hop distance from the raw boost value: boost ≈ MAX_BOOST_PER_HOP / hop
-      // hop = MAX_BOOST_PER_HOP / boost (clamped to [1, effectiveMaxHops])
-      const derivedHop = rawBoost > 0
-        ? Math.max(1, Math.min(effectiveMaxHops, Math.round(MAX_BOOST_PER_HOP / rawBoost)))
-        : effectiveMaxHops;
-
+    for (const [neighborId, neighborBoost] of neighborBoosts) {
       // We don't have the per-edge relation type at this aggregation level,
       // so we use the seed's dominant relation by querying the first-hop edge from the DB.
       // Fall back to 'caused' (neutral default) if unavailable.
@@ -550,7 +554,7 @@ function applyCausalBoost(
       const intentScore = computeIntentTraversalScore(
         avgSeedScore,
         dominantRelation,
-        derivedHop,
+        neighborBoost.hopCount,
         clampedFreshness,
         intent
       );
@@ -559,7 +563,11 @@ function applyCausalBoost(
   }
 
   // Select the active boost map: intent-aware when D3-002 flag is on, classic otherwise
-  const activeBoosts = isTypedTraversalEnabled() ? intentBoosts : neighborBoosts;
+  const classicBoosts = new Map<number, number>();
+  for (const [neighborId, neighborBoost] of neighborBoosts) {
+    classicBoosts.set(neighborId, neighborBoost.boost);
+  }
+  const activeBoosts = isTypedTraversalEnabled() ? intentBoosts : classicBoosts;
 
   const existingIds = new Set(results.map((item) => item.id));
   // Reduce avoids stack overflow on arrays >100K elements (spread pushes all onto call stack)
@@ -578,12 +586,15 @@ function applyCausalBoost(
     }
 
     const baseScore = resolveBaseScore(item);
-    const score = baseScore * (1 + allowedBoost);
+    const score = Math.min(1, Math.max(0, baseScore * (1 + allowedBoost)));
     metadata.boostedCount += 1;
     metadata.maxBoostApplied = Math.max(metadata.maxBoostApplied, allowedBoost);
     return {
       ...item,
       score,
+      rrfScore: score,
+      intentAdjustedScore: score,
+      attentionScore: score,
       causalBoost: allowedBoost,
       baseScore,
     };
@@ -597,7 +608,8 @@ function applyCausalBoost(
   }
 
   const injectedRows = fetchNeighborRows(injectIds).map((row) => {
-    const causalBoost = activeBoosts.get(row.id) ?? 0;
+    const causalBoost = Math.max(0, Math.min(activeBoosts.get(row.id) ?? 0, MAX_COMBINED_BOOST));
+    metadata.maxBoostApplied = Math.max(metadata.maxBoostApplied, causalBoost);
     const baseScore = lowestScore * 0.5;
     return buildPipelineRow(row, baseScore, causalBoost);
   });

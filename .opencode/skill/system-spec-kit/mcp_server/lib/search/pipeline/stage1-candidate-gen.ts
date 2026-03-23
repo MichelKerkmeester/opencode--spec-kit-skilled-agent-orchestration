@@ -32,6 +32,7 @@
 //     - Reads from the vector index and FTS5 / BM25 index (DB reads only)
 //
 import type { Stage1Input, Stage1Output, PipelineRow } from './types';
+import { resolveEffectiveScore } from './types';
 import * as vectorIndex from '../vector-index';
 import * as embeddings from '../../providers/embeddings';
 import * as hybridSearch from '../hybrid-search';
@@ -41,10 +42,7 @@ import { expandQueryWithEmbeddings, isExpansionActive } from '../embedding-expan
 import { querySummaryEmbeddings, checkScaleGate } from '../memory-summaries';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/db-helpers';
-import {
-  filterRowsByScope,
-  isScopeEnforcementEnabled,
-} from '../../governance/scope-governance';
+import { filterRowsByScope, isScopeEnforcementEnabled } from '../../governance/scope-governance';
 import { getAllowedSharedSpaceIds } from '../../collab/shared-spaces';
 import { withTimeout } from '../../errors/core';
 import {
@@ -379,6 +377,18 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
   }
 
   // -- Channel: Hybrid (with optional deep-mode query expansion) ---------------
+  //
+  // TODO(CRITICAL — double-processing): Stage 1 calls searchWithFallback() from
+  // hybrid-search.ts, which already performs RRF fusion, MMR diversity pruning,
+  // co-activation boosts, confidence truncation, token budget truncation, and
+  // channel enforcement. Stage 2 then re-applies fusion signals (session boost,
+  // causal boost, co-activation, intent weights, etc.) on top of the already-
+  // processed results, causing double-processing. The correct fix is to create
+  // a `collectRawCandidates()` function that gathers raw per-channel hits
+  // (vector, FTS, BM25, graph) with provenance metadata but WITHOUT fusion,
+  // reranking, or truncation, and have Stage 1 call that instead. Until then,
+  // the pipeline adds redundant scoring passes. See hybrid-search.ts for the
+  // lower-level channel functions: vectorSearchFn(), ftsSearch(), bm25Search().
 
   else if (searchType === 'hybrid') {
     // Resolve the query embedding — either pre-computed in config or generate now
@@ -410,8 +420,10 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
           if (facets.length > 0) {
             // Run hybrid for the original query plus each facet, in parallel
             const allQueries = [query, ...facets];
-            const facetResultSets = await withTimeout(
-              Promise.all(
+            // FIX #7: Use Promise.allSettled so one failing facet branch
+            // does not discard results from all other branches.
+            const facetSettledResults = await withTimeout(
+              Promise.allSettled(
                 allQueries.map(async (q): Promise<PipelineRow[]> => {
                   const facetEmbedding = await embeddings.generateQueryEmbedding(q);
                   if (!facetEmbedding) return [];
@@ -425,6 +437,11 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
               DECOMPOSITION_TIMEOUT_MS,
               'D2 facet decomposition',
             );
+            const facetResultSets = facetSettledResults.map((result, idx) => {
+              if (result.status === 'fulfilled') return result.value;
+              console.warn(`[stage1-candidate-gen] D2 facet branch ${idx} rejected: ${result.reason}`);
+              return [] as PipelineRow[];
+            });
 
             channelCount = allQueries.length;
             const pools = allQueries.map((q, i) => ({
@@ -463,8 +480,10 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
         try {
           // F1: Wrap parallel variant searches with latency budget.
           // If variants exceed DEEP_EXPANSION_TIMEOUT_MS, fall back to base query.
-          const variantResultSets: PipelineRow[][] = await withTimeout(
-            Promise.all(
+          // FIX #7: Use Promise.allSettled so one failing variant does not
+          // discard results from all other variant branches.
+          const variantSettledResults = await withTimeout(
+            Promise.allSettled(
               queryVariants.map(async (variant): Promise<PipelineRow[]> => {
                 const variantEmbedding = await embeddings.generateQueryEmbedding(variant);
                 if (!variantEmbedding) return [];
@@ -479,6 +498,11 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
             DEEP_EXPANSION_TIMEOUT_MS,
             'Deep-mode query expansion',
           );
+          const variantResultSets: PipelineRow[][] = variantSettledResults.map((result, idx) => {
+            if (result.status === 'fulfilled') return result.value;
+            console.warn(`[stage1-candidate-gen] Deep variant branch ${idx} rejected: ${result.reason}`);
+            return [] as PipelineRow[];
+          });
 
           channelCount = queryVariants.length;
 
@@ -713,7 +737,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
         allowedSharedSpaceIds,
       );
     } catch (_error: unknown) {
-      candidates = filterRowsByScope(candidates, scopeFilter, allowedSharedSpaceIds);
+      candidates = filterRowsByScope(candidates, scopeFilter);
     }
   }
 
@@ -761,7 +785,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
         const contextFilteredConstitutional = contextType
           ? uniqueConstitutional.filter((r) => resolveRowContextType(r) === contextType)
           : uniqueConstitutional;
-        const filteredConstitutional = shouldApplyScopeFiltering
+        const filteredConstitutional = hasGovernanceScope
           ? filterRowsByScope(
             contextFilteredConstitutional,
             scopeFilter,
@@ -805,7 +829,9 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
           cachedEmbedding ?? queryEmbedding ?? (await embeddings.generateQueryEmbedding(query));
 
         if (reformEmbedding) {
-          const reformResultSets = await Promise.all(
+          // FIX #7: Use Promise.allSettled so one failing reformulation
+          // branch does not discard results from all other branches.
+          const reformSettledResults = await Promise.allSettled(
             allQueries.map(async (q, idx): Promise<PipelineRow[]> => {
               // Reuse cached embedding for original query (idx 0); generate fresh for variants
               const emb = idx === 0 ? reformEmbedding : await embeddings.generateQueryEmbedding(q);
@@ -816,7 +842,12 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
                 { limit, specFolder, includeArchived }
               ) as Promise<PipelineRow[]>;
             })
-          ).catch((): PipelineRow[][] => []);
+          );
+          const reformResultSets = reformSettledResults.map((result, idx) => {
+            if (result.status === 'fulfilled') return result.value;
+            console.warn(`[stage1-candidate-gen] D2 LLM reform branch ${idx} rejected: ${result.reason}`);
+            return [] as PipelineRow[];
+          });
 
           if (reformResultSets.length > 0) {
             const seenIds = new Set(candidates.map((r) => r.id));
@@ -866,13 +897,13 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
 
   if (mode === 'deep' && isHyDEEnabled() && searchType === 'hybrid') {
     try {
-      const hydeCandidates = await runHyDE(query, candidates, limit, specFolder);
-      const scopeFilteredHydeCandidates = shouldApplyScopeFiltering
-        ? filterRowsByScope(hydeCandidates, scopeFilter, allowedSharedSpaceIds)
-        : hydeCandidates;
-      if (scopeFilteredHydeCandidates.length > 0) {
+      const rawHydeCandidates = await runHyDE(query, candidates, limit, specFolder);
+      const hydeCandidates = shouldApplyScopeFiltering
+        ? filterRowsByScope(rawHydeCandidates, scopeFilter, allowedSharedSpaceIds)
+        : rawHydeCandidates;
+      if (hydeCandidates.length > 0) {
         const seenIds = new Set(candidates.map((r) => r.id));
-        const newHydeCandidates = scopeFilteredHydeCandidates.filter((r) => !seenIds.has(r.id));
+        const newHydeCandidates = hydeCandidates.filter((r) => !seenIds.has(r.id));
         candidates = [...candidates, ...newHydeCandidates];
         channelCount++;
 
@@ -940,7 +971,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
             const contextFilteredSummaryHits = contextType
               ? tierFilteredSummaryHits.filter((r) => resolveRowContextType(r) === contextType)
               : tierFilteredSummaryHits;
-            const scopeFilteredSummaryHits = shouldApplyScopeFiltering
+            const scopeFilteredSummaryHits = hasGovernanceScope
               ? filterRowsByScope(contextFilteredSummaryHits, scopeFilter, allowedSharedSpaceIds)
               : contextFilteredSummaryHits;
 
@@ -1008,11 +1039,19 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
 
             if (matchResult.score > 0) {
               boostedCount++;
-              const currentScore = typeof row.score === 'number' ? row.score : 0;
+              // FIX #2: Use resolveEffectiveScore() as the base instead of
+              // raw row.score. For vector-only rows with only `similarity`,
+              // row.score may be undefined/0 while similarity is 0.82+.
+              // Using the canonical fallback chain prevents overwriting
+              // strong relevance signals with tiny surrogate boosts.
+              const currentScore = resolveEffectiveScore(row);
               const boost = Math.min(matchResult.score * SURROGATE_BOOST_CAP, SURROGATE_BOOST_CAP);
+              const boostedScore = Math.min(1, currentScore + boost);
               return {
                 ...row,
-                score: currentScore + boost,
+                score: boostedScore,
+                rrfScore: boostedScore,
+                intentAdjustedScore: boostedScore,
                 surrogateBoost: boost,
                 surrogateMatches: matchResult.matchedSurrogates,
               };

@@ -147,7 +147,7 @@ Release is `READY` only when:
 1. No feature verdict is `FAIL`.
 2. All critical scenarios are `PASS`.
 3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-scenario files (`COVERED_SCENARIOS == TOTAL_SCENARIOS`).
-4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 227 scenario files while the feature catalog contains 221 feature files.
+4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 233 scenario files (272 exact IDs) while the feature catalog contains 222 feature files.
 5. No unresolved blocking triage item remains.
 
 Otherwise release is `NOT READY`.
@@ -167,8 +167,8 @@ count = sum(
 print(count)
 PY
 )
-if [ "$TOTAL_FEATURES" -ne 227 ]; then
-  echo "Expected 227 scenario files, found $TOTAL_FEATURES" >&2
+if [ "$TOTAL_FEATURES" -ne 233 ]; then
+  echo "Expected 233 scenario files, found $TOTAL_FEATURES" >&2
   exit 1
 fi
 ```

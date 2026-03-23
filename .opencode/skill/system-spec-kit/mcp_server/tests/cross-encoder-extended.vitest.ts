@@ -120,9 +120,12 @@ describe('Cross Encoder Extended Tests', () => {
         mockResult(3, 'z'.repeat(5000), 1.0), // long → *0.95 = 0.95
       ];
       const results = crossEncoder.applyLengthPenalty(mixed);
-      expect(results[0].rerankerScore).toBeCloseTo(0.9, 9);
-      expect(results[1].rerankerScore).toBeCloseTo(1.0, 9);
-      expect(results[2].rerankerScore).toBeCloseTo(0.95, 9);
+      expect(results[0].rerankerScore).toBeCloseTo(1.0, 9);
+      expect(results[0].score).toBeCloseTo(1.0, 9);
+      expect(results[1].rerankerScore).toBeCloseTo(0.95, 9);
+      expect(results[1].score).toBeCloseTo(0.95, 9);
+      expect(results[2].rerankerScore).toBeCloseTo(0.9, 9);
+      expect(results[2].score).toBeCloseTo(0.9, 9);
     });
 
     it('boundary at exactly 50 chars (no penalty)', () => {

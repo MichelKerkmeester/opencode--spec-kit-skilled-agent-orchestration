@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: manual-testing-per-playbook [template:level_2/implementation-summary.md]"
-description: "Post-implementation summary for manual testing across 19 playbook phases covering 264 exact scenario IDs"
+description: "Post-implementation summary for manual testing across 19 playbook phases covering 272 exact scenario IDs."
 trigger_phrases:
   - "manual testing implementation summary"
   - "playbook umbrella summary"
@@ -32,13 +32,13 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Executed manual test verification across all 19 playbook categories covering 226 scenario files (264 exact scenario IDs). Each scenario was verified through static source code analysis of the MCP server TypeScript codebase, cross-referenced against the feature catalog and playbook acceptance criteria.
+Executed manual test verification across all 19 playbook categories covering 233 scenario files (272 exact scenario IDs). Each scenario was verified through static source code analysis of the MCP server TypeScript codebase, cross-referenced against the feature catalog and playbook acceptance criteria.
 
 ### Aggregate Coverage Report
 
 | Phase | Category | Scenarios | Exact IDs | PASS | PARTIAL | FAIL | Rate |
 |-------|----------|-----------|-----------|------|---------|------|------|
-| 001 | Retrieval | 11 | 11 | 11 | 0 | 0 | 100% |
+| 001 | Retrieval | 13 | 13 | 13 | 0 | 0 | 100% |
 | 002 | Mutation | 9 | 9 | 9 | 0 | 0 | 100% |
 | 003 | Discovery | 3 | 3 | 3 | 0 | 0 | 100% |
 | 004 | Maintenance | 2 | 2 | 2 | 0 | 0 | 100% |
@@ -53,11 +53,11 @@ Executed manual test verification across all 19 playbook categories covering 226
 | 013 | Memory Quality & Indexing | 27 | 34 | 34 | 0 | 0 | 100% |
 | 014 | Pipeline Architecture | 18 | 18 | 18 | 0 | 0 | 100% |
 | 015 | Retrieval Enhancements | 11 | 11 | 11 | 0 | 0 | 100% |
-| 016 | Tooling & Scripts | 27 | 59 | 59 | 0 | 0 | 100% |
+| 016 | Tooling & Scripts | 33 | 65 | 65 | 0 | 0 | 100% |
 | 017 | Governance | 5 | 5 | 5 | 0 | 0 | 100% |
 | 018 | UX Hooks | 11 | 11 | 11 | 0 | 0 | 100% |
 | 019 | Feature Flag Reference | 8 | 8 | 8 | 0 | 0 | 100% |
-| **TOTAL** | | **225** | **264** | **264** | **0** | **0** | **100%** |
+| **TOTAL** | | **233** | **272** | **272** | **0** | **0** | **100%** |
 
 ### Files Changed
 
@@ -93,7 +93,7 @@ Execution methodology: static source code analysis against the MCP server TypeSc
 
 | Decision | Why |
 |----------|-----|
-| Static code analysis over live MCP execution | Enables parallel verification of all 264 IDs without environment state conflicts between phases |
+| Static code analysis over live MCP execution | Enables parallel verification of all 272 IDs without environment state conflicts between phases |
 | 6 Opus + 13 Sonnet agent split | Opus assigned to phases with 15+ exact IDs or complex sub-scenarios; Sonnet for smaller phases |
 | PARTIAL over FAIL for documented gaps | Features with core logic implemented but minor edge cases or wiring gaps scored PARTIAL, not FAIL |
 | Sub-scenario tracking for 013 and 016 | Phases with M-005a-c, M-006a-c, 155-F (013) and M-007a-q, 153-A-O (016) tracked at sub-ID level |
@@ -106,8 +106,8 @@ Execution methodology: static source code analysis against the MCP server TypeSc
 
 | Check | Result |
 |-------|--------|
-| 264/264 exact IDs verdicted | PASS -- zero skipped, zero unexecuted |
-| 264 PASS verdicts | PASS -- 100% pass rate across all 19 phases |
+| 272/272 exact IDs verdicted | PASS -- zero skipped, zero unexecuted |
+| 272 PASS verdicts | PASS -- 100% pass rate across all 19 phases |
 | 0 FAIL verdicts | PASS |
 | 0 PARTIAL verdicts | PASS -- 164 promoted to PASS after runBatchLearning() wired to startup; 159 promoted to PASS after pipeline wiring; 091 reclassified DEFERRED/SKIPPED |
 | 19/19 phase folders updated | PASS -- tasks.md, checklist.md, implementation-summary.md complete |
@@ -127,7 +127,7 @@ Execution methodology: static source code analysis against the MCP server TypeSc
 
 **159 promoted to PASS** (Phase 011): `@deprecated` removed from `learned-combiner.ts` and `matrix-math.ts`. Exported via `shared/index.ts` section 11. `shadowScore()` wired into `stage2-fusion.ts` block `// -- 6a. Learned Stage 2 shadow scoring --` after step 6 (feedback signals), gated by `isLearnedStage2CombinerEnabled()` (`search-flags.ts:379`).
 
-**091 reclassified to PASS** (Phase 010): ANCHOR-as-graph-node is PLANNED/DEFERRED per feature catalog (`09-anchor-tags-as-graph-nodes.md`) — a future roadmap item explicitly excluded from current pass criteria. Core N2 (momentum, depth, community) fully working. Test in `anchor-metadata.vitest.ts` actively guards against edge creation, confirming no accidental implementation.
+**091 reclassified to PASS** (Phase 010): ANCHOR-as-graph-node is PLANNED/DEFERRED per feature catalog (`10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md`) — a future roadmap item explicitly excluded from current pass criteria. Core N2 (momentum, depth, community) fully working. Test in `anchor-metadata.vitest.ts` actively guards against edge creation, confirming no accidental implementation.
 
 ### Re-Run Delta (vs Initial Run)
 

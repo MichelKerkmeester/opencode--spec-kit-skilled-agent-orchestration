@@ -15,7 +15,7 @@ This audit went through all 79 feature switches in the system and decided the fa
 
 ## 2. CURRENT REALITY
 
-A comprehensive audit at Sprint 7 exit found 79 unique `SPECKIT_` flags across the codebase. Disposition: 27 flags are ready to graduate to permanent-ON defaults (removing the flag check), 9 flags are identified as dead code for removal and 3 flags remain as active operational knobs (`ADAPTIVE_FUSION`, `COACTIVATION_STRENGTH`, `PRESSURE_POLICY`).
+A comprehensive audit at Sprint 7 exit found 79 unique `SPECKIT_` flags across the codebase. Disposition: 27 flags are ready to graduate to permanent-ON defaults (removing the flag check), 9 flags are identified as dead code for removal and 2 active operational knobs remain (`COACTIVATION_STRENGTH`, `PRESSURE_POLICY`). `ADAPTIVE_FUSION` graduated to always-on behavior and is no longer counted as an active knob.
 
 The current active flag-helper inventory in `search-flags.ts` is 46 exported `is*` functions. There is no `isPipelineV2Enabled()` function; the helper was removed along with the legacy V1 pipeline. Sprint 0 core flags remain default ON, sprint-graduated flags from Sprints 3-6 remain default ON and deferred-feature flags (including GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES and ENTITY_LINKING) are now default ON. `SPECKIT_ABLATION` remains default OFF as an opt-in evaluation tool.
 

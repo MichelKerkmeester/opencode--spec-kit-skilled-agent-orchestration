@@ -1,6 +1,6 @@
 ---
 title: "Tasks: 016-Tooling-and-Scripts Manual Testing"
-description: "Task list for executing all 60 tooling-and-scripts scenario IDs, organized by group across setup, implementation, and verification phases."
+description: "Task list for executing all 65 tooling-and-scripts scenario IDs across 33 scenario files, organized by group across setup, implementation, and verification phases."
 trigger_phrases:
   - "tooling scripts manual testing"
   - "016 testing"
@@ -33,7 +33,7 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Verify all 28+ scenario files exist in playbook/16--tooling-and-scripts/ -- **29 files found (28 original + 181)**
+- [x] T001 Verify all 28+ scenario files exist in playbook/16--tooling-and-scripts/ -- **33 files found (28 original + 181 + 182 + 183 + 184 + 186)**
 - [x] T002 [P] Confirm generate-context.js runs without errors -- **scripts/dist/memory/generate-context.js exists, --json/--stdin modes implemented**
 - [x] T003 [P] Prepare sandbox folders for destructive tests -- **Code analysis mode, no sandbox needed**
 - [x] T004 [P] Identify available CLI environments for M-007e through M-007i -- **Source code supports 5 DataSource types: opencode-capture, claude-code-capture, codex-cli-capture, copilot-cli-capture, gemini-cli-capture**
@@ -77,7 +77,7 @@ contextType: "general"
   - M-007p: Structured-summary JSON coverage and file-backed authority -- **PASS** -- generate-context.ts:90-94 documents toolCalls/exchanges fields, input-normalizer accepts both camelCase and snake_case
   - M-007q: Phase 018 output-quality hardening -- **PASS** -- Decision dedup (auto-detection-fixes.vitest.ts:272), blocker specificity (session-extractor.ts:339), em/en dash separator support (input-normalizer.ts:595), tree thinning 150-token/3-child safeguards (tree-thinning.ts:34,241-262)
 
-### T009: Group D -- Tooling and Script Utilities (20 IDs)
+### T009: Group D -- Tooling and Script Utilities (25 IDs)
 - [x] T009a Execute 061: Tree thinning -- **PASS** -- 150-token memoryThinThreshold (tree-thinning.ts:34), 3-child cap (tree-thinning.ts:241-262), overflow promoted to 'keep', tokensSaved computed
 - [x] T009b Execute 062: Progressive validation -- **PASS** -- progressive-validate.sh implements 4-level pipeline (detect, auto-fix, suggest, report), --level N flag, exit codes 0/1/2 (scripts/spec/progressive-validate.sh:7-10)
 - [x] T009c Execute 070: Dead code removal -- **PASS** -- No dead code symbols found; build/lint/test pass cleanly (evidenced by npm run check, npm run build passing)
@@ -98,6 +98,11 @@ contextType: "general"
 - [x] T009r Execute 151: MODULE_MAP.md accuracy -- **PASS** -- MODULE_MAP.md exists at mcp_server/lib/MODULE_MAP.md, contains module inventory, feature catalog mapping, dependency directions, canonical locations
 - [x] T009s Execute 152: No symlinks in lib/ tree -- **PASS** -- `find mcp_server/lib -type l` returns 0 symlinks
 - [x] T009t Execute 154: JSON-primary deprecation posture -- **PASS** -- generate-context.ts:398-407 requires --json/--stdin/file; direct positional without flag throws with migration guidance message
+- [x] T009u Execute 181: Template Compliance Contract Enforcement -- **PASS** -- `.opencode/skill/system-spec-kit/scripts/spec/validate.sh --strict .opencode/skill/system-spec-kit/scripts/test-fixtures/053-template-compliant-level2` exits 0 with 0 errors; feature catalog 18 and `scripts/tests/test-phase-command-workflows.js:123-149` confirm the 3-layer contract
+- [x] T009v Execute M-009: Runtime Family Count Census -- **PASS** -- runtime census commands return 9 agent files for base, ChatGPT, Claude, Codex, and Gemini families
+- [x] T009w Execute M-010: Runtime Lineage Naming Parity -- **PASS** -- basename `diff -u` comparisons return no output and no active runtime-agent research file name exists in Markdown or TOML form
+- [x] T009x Execute M-011: Gemini Runtime Path Resolution -- **PASS** -- `readlink .gemini` returns `.agents`, `.gemini/agents` matches `.agents/agents`, and the resolved Gemini agent count is 9
+- [x] T009y Execute 186: /memory:manage command routing -- **PASS** -- `.opencode/command/memory/manage.md:18-28` defaults no-args to stats and rejects unknown modes, `:71-92` defines the supported patterns, `:133-155` covers the full routing tree, and `:162-164` calls `memory_stats()` + `memory_list()`
 
 ### T010: Group E -- JSON Mode Structured Summary Hardening (16 IDs)
 - [x] T010 Execute 153 parent + 153-A through 153-O (16 IDs total)
@@ -124,8 +129,8 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T011 Verify all 59 scenario IDs have captured evidence -- All 59 IDs verified via code analysis with file:line references
-- [x] T012 Assign PASS / PARTIAL / FAIL verdict per scenario -- 59 PASS, 0 PARTIAL, 0 FAIL
+- [x] T011 Verify all 65 scenario IDs have captured evidence -- All 65 IDs verified via code analysis, command output, or strict-validation evidence
+- [x] T012 Assign PASS / PARTIAL / FAIL verdict per scenario -- 65 PASS, 0 PARTIAL, 0 FAIL
 - [x] T013 Update checklist with evidence references for all 5 groups
 - [x] T014 Clean up sandbox folders created during testing -- N/A (code analysis mode)
 - [x] T015 Complete implementation-summary.md with execution results
@@ -138,7 +143,7 @@ contextType: "general"
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] All 59 scenarios have evidence-backed verdicts
+- [x] All 65 scenarios have evidence-backed verdicts
 - [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 

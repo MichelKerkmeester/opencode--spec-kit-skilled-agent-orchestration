@@ -69,6 +69,7 @@ The `olderThanDays` parameter is validated as a positive integer (>= 1) before q
 | `mcp_server/lib/search/vector-index.ts` | Lib | Vector index facade |
 | `mcp_server/lib/storage/causal-edges.ts` | Lib | Causal edge storage |
 | `mcp_server/lib/storage/checkpoints.ts` | Lib | Checkpoint storage |
+| `mcp_server/lib/storage/history.ts` | Lib | Per-memory delete history writes during tier bulk delete |
 | `mcp_server/lib/storage/mutation-ledger.ts` | Lib | Mutation ledger |
 | `mcp_server/lib/utils/canonical-path.ts` | Lib | Canonical path resolution |
 | `mcp_server/lib/utils/format-helpers.ts` | Lib | Format utility helpers |
