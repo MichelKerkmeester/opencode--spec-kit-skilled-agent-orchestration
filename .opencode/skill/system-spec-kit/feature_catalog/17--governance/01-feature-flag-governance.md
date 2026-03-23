@@ -21,7 +21,7 @@ A governance framework defines operational targets (small active flag surface, e
 
 The B8 signal ceiling ("12 active scoring signals") is a governance target, not a runtime-enforced guardrail.
 
-**Cross-reference**: `.speckit-enforce.yaml` introduces a non-feature-flag governance control (enforcement mode: warn/block/strict) that governs spec document structural quality at commit time. See `16--tooling-and-scripts/19-pre-commit-spec-validation-gate.md` for the pre-commit hook enforcement and `18-template-compliance-contract-enforcement.md` for the full 3-layer compliance architecture.
+**Cross-reference**: See `16--tooling-and-scripts/18-template-compliance-contract-enforcement.md` for the 2-layer template compliance architecture (agent contracts + post-write validation).
 
 ---
 
