@@ -19,10 +19,10 @@ When you run a health check on the memory system and ask it to fix problems, it 
 
 Repair metadata semantics for mixed outcomes:
 
-- The repair action inventory is limited to the actual runtime payload values: `fts_rebuild`, `trigger_cache_refresh`, `fts_consistency_verified` when the rebuilt FTS row count matches `memory_index` and orphan-edge cleanup (`orphan_edges_cleaned:N` when deletions occur).
+- The repair action inventory is limited to the actual runtime payload values: `fts_rebuild`, `trigger_cache_refresh`, `fts_consistency_verified` when the rebuilt FTS row count matches `memory_index`, orphan-edge cleanup (`orphan_edges_cleaned:N` when deletions occur), orphan-vector cleanup (`orphan_vectors_cleaned:N` when deletions occur), and orphan-chunk cleanup (`orphan_chunks_cleaned:N` when deletions occur).
 - `repair.repaired` is `true` only when every attempted repair action succeeds.
 - `repair.partialSuccess` is `true` when at least one attempted repair succeeds and at least one fails.
-- If FTS rebuild still mismatches but orphan-edge cleanup succeeds, the response reports `repair.repaired: false`, `repair.partialSuccess: true`, keeps the FTS warning and includes the orphan cleanup action in `repair.actions`.
+- If FTS rebuild still mismatches but orphan cleanup succeeds, the response reports `repair.repaired: false`, `repair.partialSuccess: true`, keeps the FTS warning and includes the successful orphan cleanup actions in `repair.actions`.
 
 ---
 

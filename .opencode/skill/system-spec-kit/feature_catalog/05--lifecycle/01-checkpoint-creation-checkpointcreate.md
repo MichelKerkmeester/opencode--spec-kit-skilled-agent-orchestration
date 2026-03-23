@@ -15,7 +15,7 @@ This takes a snapshot of your entire knowledge base at a point in time, like a s
 
 ## 2. CURRENT REALITY
 
-Named snapshots capture the current memory state by serializing the 21 tables listed in `CHECKPOINT_MANIFEST.snapshot` into a gzip-compressed JSON blob stored in the `checkpoints` table. The checkpoint metadata also records the manifest for the 7 derived tables in `CHECKPOINT_MANIFEST.rebuild`, so restore knows which tables must be regenerated rather than restored verbatim. You can scope a snapshot to a specific spec folder if you only care about preserving one area of the system.
+Named snapshots capture the current memory state by serializing all 21 persisted tables listed in `CHECKPOINT_MANIFEST.snapshot` into a gzip-compressed JSON blob stored in the `checkpoints` table, not just a small core subset. The checkpoint metadata also records the manifest for the 7 derived tables in `CHECKPOINT_MANIFEST.rebuild`, so restore knows which tables must be regenerated rather than restored verbatim. You can scope a snapshot to a specific spec folder if you only care about preserving one area of the system.
 
 A maximum of 10 checkpoints are retained. When you create the 11th, the oldest is automatically purged. Each checkpoint records arbitrary metadata you provide, plus the current git branch from environment variables. The gzip compression keeps storage manageable even with large memory databases.
 

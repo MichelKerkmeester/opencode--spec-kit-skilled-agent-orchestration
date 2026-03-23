@@ -22,7 +22,7 @@ The `isQueryDecompositionEnabled()` function in `search-flags.ts` checks the fla
 - Detects multiple wh-question words (`what`, `where`, `when`, `why`, `how`, `who`, `which`).
 - Caps at `MAX_FACETS = 3` sub-queries to bound latency.
 - No LLM calls — purely rule-based heuristics.
-- Graceful fallback: if the Stage 1 decomposition branch errors, execution falls through to the standard deep expansion path; if no expansion variants are produced, the original query remains as the fallback.
+- Graceful fallback: if the Stage 1 decomposition branch errors, execution falls through to the standard deep expansion path rather than returning only the original query; if no expansion variants are produced, the original query remains as the fallback.
 - Only active in deep mode (checked by caller in stage1-candidate-gen).
 
 ---

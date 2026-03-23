@@ -21,7 +21,7 @@ The scanner discovers files from three sources: spec folder memory files (`specs
 
 In incremental mode (the default), the scanner categorizes every discovered file into one of four buckets: to-index (new files), to-update (changed mtime), to-skip (unchanged mtime) and to-delete (files that disappeared from disk). Batch processing with configurable `BATCH_SIZE` handles large workspaces. A rate limiter with `INDEX_SCAN_COOLDOWN` prevents rapid repeated scans from exhausting resources, returning an E429 error with a wait time if you scan too frequently.
 
-Each file that passes through to indexing goes through the full `memory_save` pipeline, which means content normalization, quality gating, reconsolidation, chunk thinning and encoding-intent capture all apply automatically. Large files are split into chunks, and anchor-aware chunk thinning drops low-scoring chunks before they enter the index.
+Each file that passes through to indexing is handed off to `memory_save` for the save pipeline, so content normalization, quality gating, reconsolidation, chunk thinning and encoding-intent capture still apply automatically. The `memory_save` sub-modules are documented in that feature's own catalog entry rather than duplicated here. Large files are split into chunks, and anchor-aware chunk thinning drops low-scoring chunks before they enter the index.
 
 After indexing, the tool does more than store data. It creates causal chain edges between spec documents within the same folder (spec leads to plan, plan leads to tasks, tasks lead to checklist, and so on). It detects alias conflicts. It runs divergence reconciliation hooks. It clears the trigger matcher cache if any changes occurred.
 
@@ -68,10 +68,6 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 | `mcp_server/lib/cache/tool-cache.ts` | Lib | Tool Cache |
 | `mcp_server/lib/chunking/anchor-chunker.ts` | Lib | Anchor-aware chunking |
 | `mcp_server/lib/chunking/chunk-thinning.ts` | Lib | Chunk thinning |
-| `mcp_server/lib/cognitive/co-activation.ts` | Lib | Co-activation spreading |
-| `mcp_server/lib/cognitive/fsrs-scheduler.ts` | Lib | FSRS scheduling algorithm |
-| `mcp_server/lib/cognitive/prediction-error-gate.ts` | Lib | Prediction error computation |
-| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
 | `mcp_server/lib/config/memory-types.ts` | Lib | Memory type definitions |
 | `mcp_server/lib/config/type-inference.ts` | Lib | Memory type inference |
 | `mcp_server/lib/errors/core.ts` | Lib | Error type definitions |

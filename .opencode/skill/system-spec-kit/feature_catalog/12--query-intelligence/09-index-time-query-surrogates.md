@@ -21,7 +21,7 @@ At index time, the surrogate generator produces a `SurrogateMetadata` object con
 - **Summary**: concise extractive summary (max `MAX_SUMMARY_LENGTH = 200` characters)
 - **Surrogate questions**: 2-5 heuristic questions the document likely answers (`MIN_SURROGATE_QUESTIONS = 2`, `MAX_SURROGATE_QUESTIONS = 5`)
 
-At query time, Stage 1 batch-loads stored surrogates from SQLite and matches them against the incoming query using token overlap. A match requires a minimum overlap ratio of `MIN_MATCH_THRESHOLD = 0.15`. The runtime matcher `matchSurrogates()` returns `{ score, matchedSurrogates }` for one document; memory IDs come from the surrounding candidate rows, and Stage 1 applies the match score as a capped additive boost to existing candidates.
+At query time, Stage 1 batch-loads stored surrogates from SQLite and matches them against the incoming query using token overlap. A match requires a minimum overlap ratio of `MIN_MATCH_THRESHOLD = 0.15`. The runtime matcher `matchSurrogates()` returns `{ score, matchedSurrogates }` for one document; the exported `SurrogateMatchResult` interface is stale because it still includes `memoryId`, but memory IDs actually come from the surrounding candidate rows in Stage 1. Stage 1 applies the returned match score as a capped additive boost to existing candidates.
 
 Enabled by default (graduated). Set `SPECKIT_QUERY_SURROGATES=false` to disable. Also has a flag accessor in `search-flags.ts`.
 
@@ -50,4 +50,4 @@ Enabled by default (graduated). Set `SPECKIT_QUERY_SURROGATES=false` to disable.
 
 - Group: Query intelligence
 - Source feature title: Index-time query surrogates
-- Current reality source: mcp_server/lib/search/query-surrogates.ts, mcp_server/lib/search/surrogate-storage.ts, and mcp_server/lib/search/pipeline/stage1-candidate-gen.ts
+- Current reality source: mcp_server/lib/search/query-surrogates.ts, mcp_server/lib/search/surrogate-storage.ts, mcp_server/lib/search/pipeline/stage1-candidate-gen.ts, and mcp_server/lib/search/search-flags.ts

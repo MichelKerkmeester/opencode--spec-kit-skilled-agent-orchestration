@@ -15,7 +15,9 @@ This is the system's self-check tool. It tells you whether the database is conne
 
 ## 2. CURRENT REALITY
 
-`memory_health` has two report modes. `full` returns system diagnostics: database connectivity, embedding model readiness, vector-search availability, memory count, uptime, server version, alias-conflict summary, repair metadata and embedding provider details. `divergent_aliases` returns a compact triage payload that focuses only on alias groups whose `specs/` and `.opencode/specs/` variants have different content hashes.
+`memory_health` has two report modes. `full` returns system diagnostics: database connectivity, embedding model readiness, vector-search availability, memory count, uptime, server version, alias-conflict summary, repair metadata, embedding provider details, and an `embeddingRetry` snapshot. `divergent_aliases` returns a compact triage payload that focuses only on alias groups whose `specs/` and `.opencode/specs/` variants have different content hashes, and it also includes the same top-level `embeddingRetry` field.
+
+`embeddingRetry` comes from the retry manager's in-memory health snapshot rather than a database query. It reports retry-queue state and activity for embeddings, including `pending`, `failed`, `retryAttempts`, `circuitBreakerOpen`, `lastRun`, and `queueDepth`. The field is present in both success payload shapes; before any retry activity has happened, it remains in a zero-state with counts at `0` and `lastRun` as `null`.
 
 The top-level status is currently derived from two signals only: embedding model readiness and database connectivity. FTS drift and alias conflicts do not flip the status to `degraded` by themselves. They surface through hints and the repair payload. The embedding provider section exposes a redacted database path, not a raw absolute path.
 

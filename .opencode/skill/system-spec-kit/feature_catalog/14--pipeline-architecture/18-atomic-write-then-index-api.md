@@ -15,9 +15,9 @@ When saving a memory, the system first writes the file safely to a temporary loc
 
 ## 2. CURRENT REALITY
 
-The `memory_save` handler offers an atomic write-then-index mode where file writing is atomic (pending file + rename), while indexing runs asynchronously after the write succeeds. The transaction manager writes memory content to a `_pending` file and renames it to the final path. The `dbOperation` callback in this path is intentionally a no-op. `indexMemoryFile(...)` executes afterward and can retry once on transient failures.
+The `memory_save` handler now owns the atomic save flow directly. It computes a unique pending path, writes the memory content to that pending file, runs async indexing against the target file path before promotion, retries indexing once on transient failure, and only then renames the pending file into place. If validation, rejection, or indexing fails, the handler deletes the pending file so the original file remains untouched.
 
-Because indexing is decoupled from the file rename, this flow provides atomic file persistence with guarded best-effort index consistency (retry + rollback), not a single file+DB transaction. The `AtomicSaveResult` interface reports `dbCommitted` to distinguish full success from partial commit states (for example, DB callback committed but rename failed, leaving a pending file for startup recovery).
+This means the current implementation is a direct write/index/rename flow coordinated in `memory-save.ts`, with `transaction-manager.ts` supplying pending-path and cleanup helpers rather than owning a `dbOperation` callback transaction. The result is atomic file promotion plus guarded best-effort index consistency: a failed index attempt rolls back before rename, while a post-index rename failure leaves the pending file in place for recovery and returns `dbCommitted: true`.
 
 ---
 
@@ -27,8 +27,8 @@ Because indexing is decoupled from the file rename, this flow provides atomic fi
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/storage/transaction-manager.ts` | Lib | Atomic write + DB transaction coupling |
-| `mcp_server/handlers/memory-save.ts` | Handler | Save handler using atomic write path |
+| `mcp_server/handlers/memory-save.ts` | Handler | Direct pending-write, async index, rollback, and final rename orchestration |
+| `mcp_server/lib/storage/transaction-manager.ts` | Lib | Pending-path derivation and pending-file cleanup/recovery helpers |
 | `mcp_server/tool-schemas.ts` | Core | Tool schema definitions |
 
 ### Tests

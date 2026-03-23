@@ -1,9 +1,11 @@
 ---
-title: "Graph calibration profiles and community thresholds"
-description: "Graph calibration profiles enforce weight caps, RRF fusion overflow limits, and Louvain community detection activation gates, with named presets controlled by the SPECKIT_GRAPH_CALIBRATION_PROFILE flag."
+title: "DEPRECATED: Graph calibration profiles and community thresholds"
+description: "DEPRECATED: Graph calibration profiles define weight caps, RRF fusion overflow limits, and Louvain community detection thresholds, but the module is @deprecated and never wired into the live Stage 2 pipeline."
 ---
 
-# Graph calibration profiles and community thresholds
+# DEPRECATED: Graph calibration profiles and community thresholds
+
+> **DEPRECATED:** This module is `@deprecated` — fully implemented and tested but never wired into the Stage 2 pipeline. The feature flag accessor exists but is vestigial since nothing in the pipeline calls `applyCalibrationProfile()`.
 
 ## 1. OVERVIEW
 
@@ -17,7 +19,7 @@ When graph signals contribute to search scoring, they need guardrails to prevent
 
 The calibration module defines two profiles. The default profile sets `GRAPH_WEIGHT_CAP = 0.05`, `n2aCap = 0.10`, `n2bCap = 0.10`, `louvainMinDensity = 0.3`, and `louvainMinSize = 10`. The aggressive profile tightens these to `graphWeightCap = 0.03`, `n2aCap = 0.07`, `n2bCap = 0.07`, `louvainMinDensity = 0.5`, and `louvainMinSize = 20`. Community score boost is capped at `COMMUNITY_SCORE_CAP = 0.03` (secondary signal only).
 
-Enabled by default (graduated). Set `SPECKIT_GRAPH_CALIBRATION_PROFILE=false` to disable. When enabled, `isGraphCalibrationEnabled()` returns true and calibration profile enforcement activates. The profile name can be selected via `SPECKIT_CALIBRATION_PROFILE_NAME`.
+The module also exposes flag helpers for `SPECKIT_GRAPH_CALIBRATION_PROFILE` and `SPECKIT_CALIBRATION_PROFILE_NAME`, but those accessors are vestigial because the calibration module is not imported by the live Stage 2 pipeline.
 
 The module also includes an ablation harness with MRR and NDCG computation for per-intent evaluation of graph features.
 

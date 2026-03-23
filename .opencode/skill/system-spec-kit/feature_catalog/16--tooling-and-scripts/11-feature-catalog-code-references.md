@@ -9,7 +9,7 @@ description: "Feature catalog code references embed inline traceability comments
 
 Feature catalog code references embed inline traceability comments in a measured majority of non-test TypeScript source files, linking implementation code back to the feature catalog by name. Annotated files declare which catalog features they implement via `// Feature catalog: <feature-name>` comments near the top of the file.
 
-This feature works like a label on a warehouse box — instead of tracking items by aisle number (which changes when shelves move), you write the product name directly on the box. Anyone can grep the codebase for a feature name and immediately find every file that implements it, without needing to know the folder structure or historical sprint/phase numbering.
+This feature works like a label on a warehouse box — instead of tracking items by aisle number (which changes when shelves move), you write the product name directly on the box. Anyone can grep the codebase for a feature name and immediately find many of the annotated files that implement it, without needing to know the folder structure or historical sprint/phase numbering.
 
 ---
 

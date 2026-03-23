@@ -17,7 +17,11 @@ When the system finds something useful during a search, it keeps a mental note o
 
 The working memory module (`lib/cognitive/working-memory.ts`) captures salient results from tool invocations and stores them as session-scoped attention items. When a retrieval tool returns results, the system extracts key findings and inserts them into the `working_memory` table with an attention score. These extracted items persist across turns within the same session, enabling cross-turn context continuity.
 
-The checkpoint module (`lib/storage/checkpoints.ts`) also participates by preserving working memory state during checkpoint creation so that restored sessions retain their accumulated tool-result context. Attention scores decay with an event-distance model (0.85 per event elapsed) with a floor of 0.05 and explicit eviction at 0.01, ensuring that recent tool results remain prominent while older ones gracefully fade.
+The extraction adapter (`lib/extraction/extraction-adapter.ts`) is the primary caller for tool-result capture. After eligible tool responses are summarized and redaction-checked, it resolves a memory ID and calls `upsertExtractedEntry()` so salient findings are inserted into working memory with provenance fields.
+
+The context server (`context-server.ts`) wires this behavior into runtime startup by initializing the extraction adapter with the after-tool callback registry, making extraction automatic once the MCP server is running.
+
+The checkpoint module (`lib/storage/checkpoints.ts`) also participates by preserving working memory state during checkpoint creation so that restored sessions retain their accumulated tool-result context. Attention scores decay with an event-distance model (0.85 per event elapsed) with a floor of 0.05 and explicit eviction at 0.01. During decay updates, `MENTION_BOOST_FACTOR = 0.05` adds a bounded per-mention boost before scores are clamped, ensuring that recent or repeatedly referenced tool results remain prominent while older ones gracefully fade.
 
 ---
 
@@ -27,6 +31,8 @@ The checkpoint module (`lib/storage/checkpoints.ts`) also participates by preser
 
 | File | Layer | Role |
 |------|-------|------|
+| `mcp_server/context-server.ts` | Core | Initializes the extraction adapter during MCP server startup |
+| `mcp_server/lib/extraction/extraction-adapter.ts` | Lib | Extracts salient tool results and upserts them into working memory |
 | `mcp_server/lib/cognitive/working-memory.ts` | Lib | Working memory with tool-result extraction |
 | `mcp_server/lib/storage/checkpoints.ts` | Lib | Checkpoint preservation of working memory |
 

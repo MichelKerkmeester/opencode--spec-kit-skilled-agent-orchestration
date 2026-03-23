@@ -17,7 +17,7 @@ Normally, the graph retrieval channel only activates when a query explicitly ref
 
 Enabled by default (graduated). Set `SPECKIT_GRAPH_CONCEPT_ROUTING=false` to disable.
 
-The `isGraphConceptRoutingEnabled()` function in `search-flags.ts` checks the flag. The entity linker module (`entity-linker.ts`) provides query-time concept routing alongside its cross-document entity linking role. It extracts noun phrases from the query, matches them against the concept alias table in SQLite, and returns canonical concept names plus a `graphActivated` boolean. `stage1-candidate-gen.ts` currently uses that output only to append a `d2-concept-routing` trace entry with `matchedConcepts` and `graphActivated: true`; it does not switch the Stage 1 search path or directly activate a graph retrieval channel.
+The `isGraphConceptRoutingEnabled()` function in `search-flags.ts` checks the flag. The entity linker module (`entity-linker.ts`) provides query-time concept routing alongside its cross-document entity linking role. It extracts noun phrases from the query, matches them against the concept alias table in SQLite, and returns canonical concept names plus a `graphActivated` boolean. `stage1-candidate-gen.ts` currently uses that output only to append a `d2-concept-routing` trace entry with `matchedConcepts` and `graphActivated: true`; that trace field mirrors the routing result for observability, but it does not switch the Stage 1 search path or directly activate a graph retrieval channel.
 
 ---
 

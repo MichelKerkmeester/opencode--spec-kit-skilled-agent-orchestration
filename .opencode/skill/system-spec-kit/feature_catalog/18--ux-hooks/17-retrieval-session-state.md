@@ -26,7 +26,7 @@ The live search handler preserves normal search output and adds `data.sessionSta
 
 The manager exposes: `getOrCreate()`, `updateGoal()`, `markSeen()`, `addQuestion()`, `setAnchors()`, `clear()`, `clearAll()`, and a `size` property.
 
-Default ON (graduated). Set `SPECKIT_SESSION_RETRIEVAL_STATE_V1=false` to disable.
+Canonical flag behavior is default ON (graduated). Set `SPECKIT_SESSION_RETRIEVAL_STATE_V1=false` to disable. Any older `session-state.ts` header text that says "default OFF" is stale and does not reflect the live runtime gate.
 
 ---
 
@@ -38,6 +38,7 @@ Default ON (graduated). Set `SPECKIT_SESSION_RETRIEVAL_STATE_V1=false` to disabl
 |------|-------|------|
 | `mcp_server/lib/search/session-state.ts` | Lib | SessionStateManager, deduplication, goal refinement, TTL/LRU eviction |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isSessionRetrievalStateEnabled()` flag accessor |
+| `mcp_server/handlers/memory-search.ts` | Handler | Integrates session-state outputs into live search responses |
 
 ### Tests
 
@@ -52,4 +53,4 @@ Default ON (graduated). Set `SPECKIT_SESSION_RETRIEVAL_STATE_V1=false` to disabl
 
 - Group: UX hooks
 - Source feature title: Retrieval session state
-- Current reality source: feature_catalog.md
+- Current reality source: `mcp_server/lib/search/session-state.ts`, `mcp_server/lib/search/search-flags.ts`, and `mcp_server/handlers/memory-search.ts`

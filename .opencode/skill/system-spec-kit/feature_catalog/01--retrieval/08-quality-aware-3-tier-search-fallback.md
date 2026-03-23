@@ -26,7 +26,6 @@ Adaptive search degradation chain in `searchWithFallbackTiered()`. Tier 1: enhan
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/lib/search/hybrid-search.ts` | Lib | Multi-channel search orchestration with tiered fallback |
-| `mcp_server/lib/search/pipeline/stage4-filter.ts` | Lib | Stage 4 filtering and quality check |
 
 ### Tests
 

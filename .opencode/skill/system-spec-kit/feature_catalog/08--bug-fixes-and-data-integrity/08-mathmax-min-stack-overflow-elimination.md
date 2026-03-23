@@ -26,6 +26,8 @@ A common way of finding the largest or smallest number in a list was crashing th
 
 Each replacement uses `scores.reduce((a, b) => Math.max(a, b), -Infinity)` with an `AI-WHY` comment explaining the safety rationale.
 
+Two residual production spread sites still remain outside that converted set: `mcp_server/lib/eval/k-value-analysis.ts` still uses `Math.min(...avgScores)` and `Math.max(...avgScores)`, and `mcp_server/lib/search/graph-lifecycle.ts` still uses `Math.max(...degreeRows.map((r) => r.in_degree))`.
+
 ---
 
 ## 3. SOURCE FILES

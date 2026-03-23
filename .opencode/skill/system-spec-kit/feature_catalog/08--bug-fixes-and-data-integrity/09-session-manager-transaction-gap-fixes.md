@@ -15,7 +15,7 @@ When two requests arrived at the same time, they could both slip past a size lim
 
 ## 2. CURRENT REALITY
 
-Two instances of `enforceEntryLimit()` called outside `db.transaction()` blocks in `session-manager.ts` were moved inside. Concurrent MCP requests could both pass the limit check then both insert, exceeding the entry limit when check and insert were not atomic. Both paths now run check-and-insert atomically inside the transaction.
+Three call sites of `enforceEntryLimit()` in `session-manager.ts` now run inside transactional boundaries. `markMemorySent()` and `markMemoriesSentBatch()` use `db.transaction()` wrappers, while the `shouldSendMemoriesBatch()` `markAsSent` path uses explicit `BEGIN IMMEDIATE` / `COMMIT` / `ROLLBACK` control. Concurrent MCP requests could otherwise both pass the limit check then both insert, exceeding the entry limit when check and insert were not atomic.
 
 ---
 

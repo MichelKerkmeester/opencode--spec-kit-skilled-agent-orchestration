@@ -39,6 +39,7 @@ The confidence read-compute-write segment (`recordValidation`) runs within a sin
 |------|-------|------|
 | `mcp_server/handlers/checkpoints.ts` | Handler | `memory_validate` handler: confidence update, adaptive signal, auto-promotion, learned feedback, and ground-truth logging |
 | `mcp_server/tools/memory-tools.ts` | API | L4 tool dispatcher routing `memory_validate` |
+| `mcp_server/lib/storage/history.ts` | Lib | History writes for validation feedback events |
 | `mcp_server/lib/scoring/confidence-tracker.ts` | Lib | Transactional confidence and validation-count update |
 | `mcp_server/lib/cognitive/adaptive-ranking.ts` | Lib | Best-effort adaptive signal persistence from validation outcomes |
 | `mcp_server/lib/search/auto-promotion.ts` | Lib | Positive-validation promotion thresholds and throttle |

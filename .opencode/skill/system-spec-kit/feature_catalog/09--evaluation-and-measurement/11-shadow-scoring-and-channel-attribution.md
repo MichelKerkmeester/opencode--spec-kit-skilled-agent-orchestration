@@ -1,25 +1,27 @@
 ---
 title: "Shadow scoring and channel attribution"
-description: "Describes the shadow A/B scoring infrastructure for alternative ranking comparison and channel attribution that tags each result with its source channels and computes per-channel exclusive contribution rates."
+description: "Describes the deprecated shadow A/B scoring and channel-attribution work retained for historical and test reference. Shadow scoring was retired, and channel attribution was never wired into the production pipeline."
 ---
 
 # Shadow scoring and channel attribution
 
 ## 1. OVERVIEW
 
-Describes the shadow A/B scoring infrastructure for alternative ranking comparison and channel attribution that tags each result with its source channels and computes per-channel exclusive contribution rates.
+Describes the deprecated shadow A/B scoring and channel-attribution work retained for historical and test reference. Shadow scoring was retired, and channel attribution was never wired into the production pipeline.
 
-This feature let the team test new ranking approaches side-by-side with the current one, without affecting what you actually see. It also tracks which search method found each result. Think of it like taste-testing a new recipe next to the old one before deciding to switch. The side-by-side testing has finished its job and been retired, but the tracking of "which method found this result" remains active.
+**DEPRECATED:** `channel-attribution.ts` is marked `@deprecated` ("Never wired into production pipeline. Channel attribution superseded by ablation-framework.ts."). Shadow scoring is also retired and retained only as compatibility/testing context.
+
+This feature let the team test new ranking approaches side-by-side with the current one, without affecting what you actually see. It also explored tagging which search method found each result. Think of it like taste-testing a new recipe next to the old one before deciding to switch. That side-by-side testing has finished its job and been retired, and the channel-attribution experiment never became part of the live pipeline.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Full A/B comparison infrastructure ran alternative scoring algorithms in parallel, logging results without affecting live ranking. The system computed detailed comparison metrics including Kendall tau rank correlation, per-result score deltas and production-only versus shadow-only result sets. Channel attribution tagged each result with its source channels and computed Exclusive Contribution Rate per channel: how often each channel was the sole source for a result in the top-k window.
+Full A/B comparison infrastructure ran alternative scoring algorithms in parallel, logging results without affecting live ranking. The system computed detailed comparison metrics including Kendall tau rank correlation, per-result score deltas and production-only versus shadow-only result sets. A separate channel-attribution module tagged each result with its source channels and computed Exclusive Contribution Rate per channel: how often each channel was the sole source for a result in the top-k window.
 
 Ground truth expansion via implicit user selection tracking and an LLM-judge stub interface were included for future corpus growth.
 
-Shadow scoring completed its evaluation purpose and has been fully removed. The `isShadowScoringEnabled()` function and shadow-scoring branches in `hybrid-search.ts` were deleted during Sprint 8 remediation. The `runShadowScoring` and `logShadowComparison` function bodies now return immediately (`return null` and `return false` respectively). The `SPECKIT_SHADOW_SCORING` flag remains as a no-op for backward compatibility. This shadow-scoring cleanup is independent from R11 learned-feedback safeguards, where `isInShadowPeriod()` remains active. Channel attribution logic remains active within the 4-stage pipeline.
+Shadow scoring completed its evaluation purpose and has been fully removed. The `isShadowScoringEnabled()` function and shadow-scoring branches in `hybrid-search.ts` were deleted during Sprint 8 remediation. The `runShadowScoring` and `logShadowComparison` function bodies now return immediately (`return null` and `return false` respectively). The `SPECKIT_SHADOW_SCORING` flag remains as a no-op for backward compatibility. This shadow-scoring cleanup is independent from R11 learned-feedback safeguards, where `isInShadowPeriod()` remains active. Channel attribution never shipped in the 4-stage production pipeline; `channel-attribution.ts` is deprecated and superseded by `ablation-framework.ts`, with remaining imports limited to test coverage.
 
 ---
 

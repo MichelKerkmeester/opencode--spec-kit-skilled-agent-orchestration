@@ -23,6 +23,8 @@ Interpretation bands give the score meaning. 40 or above signals significant lea
 
 You can track gaps closed during the task and new gaps discovered. Both are stored as JSON arrays alongside the scores. The phase updates from "preflight" to "complete" after postflight runs. Calling postflight without a matching preflight record throws an error.
 
+The handler also supports re-correction runs. It accepts both "preflight" and already-"complete" records, so you can call `task_postflight` again for the same task to recompute the deltas and overwrite the stored postflight values after refining your assessment.
+
 ---
 
 ## 3. SOURCE FILES

@@ -19,7 +19,11 @@ The corrections module (`lib/learning/corrections.ts`) tracks inter-memory relat
 
 Each correction adjusts the stability scores of both the original and correcting memories: the original receives a penalty while the correction receives a boost. Stability changes are tracked in a `StabilityChanges` structure for audit purposes. The feature is gated by `SPECKIT_RELATIONS` (default `true`). When disabled, relational learning corrections are skipped and no stability adjustments are applied.
 
-Undo is part of the live behavior, not just the schema. `undo_correction()` runs inside a transaction, restores the pre-correction stability values for the original memory and any correction memory, marks the correction row as undone (`is_undone = 1`, `undone_at = datetime('now')`), and deletes only the correction-owned causal edge for the matching relation. If the edge still uses the older legacy evidence format, the code falls back to a scoped legacy delete rather than removing every same-relation edge between the pair.
+Undo is part of the live behavior, not just the schema. `undo_correction()` runs inside a transaction with three steps:
+
+1. **Stability rollback** -- restores the pre-correction stability values for both the original memory and the correcting memory using the `before_stability` and `after_stability` values stored on the correction row at record time.
+2. **`is_undone` marking** -- sets `is_undone = 1` and records `undone_at = datetime('now')` on the correction row so the correction is permanently flagged as reversed without deleting the audit trail.
+3. **Scoped causal edge deletion** -- removes only the causal edge that belongs to this specific correction. The primary path matches on the `Correction#{id}:` evidence prefix (where `{id}` is the correction row ID), so only the correction-owned edge is removed rather than every edge between the pair. If the edge still uses the older legacy evidence format without this prefix, the code falls back to a scoped legacy delete rather than removing every same-relation edge between the pair.
 
 ---
 

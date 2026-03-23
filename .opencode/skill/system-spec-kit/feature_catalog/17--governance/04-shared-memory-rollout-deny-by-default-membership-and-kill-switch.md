@@ -37,6 +37,8 @@ Shared-memory handlers and lifecycle tools use the same membership and rollout c
 |------|-------|------|
 | `mcp_server/lib/collab/shared-spaces.ts` | Lib | Shared-space definitions, membership checks, rollout/kill-switch controls, `isSharedMemoryEnabled()` two-tier check, `enableSharedMemory()` DB persistence |
 | `mcp_server/handlers/shared-memory.ts` | Handler | Shared-memory status/enable/upsert/membership handlers, README generation |
+| `mcp_server/handlers/memory-save.ts` | Handler | Enforces editor-level shared-space access before governed shared-memory saves and records deny decisions in the governance audit trail |
+| `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Applies allowed shared-space filtering during retrieval so search results stay within the caller's shared-space membership and rollout state |
 | `mcp_server/tools/lifecycle-tools.ts` | Tool | Shared-space lifecycle operations including `shared_memory_enable` dispatch |
 | `mcp_server/tool-schemas.ts` | Core | Shared-space tool contracts (4 tools: upsert, membership_set, status, enable) |
 | `mcp_server/schemas/tool-input-schemas.ts` | Schema | Zod input validation schemas and `ALLOWED_PARAMETERS` for all 4 shared-memory tools |

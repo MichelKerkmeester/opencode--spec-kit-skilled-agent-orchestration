@@ -74,8 +74,10 @@ The 4-stage pipeline is the sole runtime path. The `SPECKIT_PIPELINE_V2` environ
 | `mcp_server/lib/search/pipeline/orchestrator.ts` | Lib | Pipeline orchestration |
 | `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Stage 1 candidate generation |
 | `mcp_server/lib/search/pipeline/stage2-fusion.ts` | Lib | Stage 2 fusion |
+| `mcp_server/lib/search/pipeline/stage2b-enrichment.ts` | Lib | Stage 2 enrichment for anchor and validation metadata without score mutation |
 | `mcp_server/lib/search/pipeline/stage3-rerank.ts` | Lib | Stage 3 reranking |
 | `mcp_server/lib/search/pipeline/stage4-filter.ts` | Lib | Stage 4 filtering |
+| `mcp_server/lib/search/pipeline/ranking-contract.ts` | Lib | Deterministic ranking contract and bounded Stage 2 graph-bonus cap |
 | `mcp_server/lib/search/pipeline/types.ts` | Lib | Type definitions |
 | `mcp_server/lib/search/query-classifier.ts` | Lib | Query complexity classification |
 | `mcp_server/lib/search/query-expander.ts` | Lib | Query term expansion |

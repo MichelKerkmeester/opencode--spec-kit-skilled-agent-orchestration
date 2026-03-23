@@ -9,7 +9,7 @@ description: "Async LLM graph backfill enriches high-value documents with probab
 
 Async LLM graph backfill enriches high-value documents with probabilistic graph edges via an LLM call after deterministic extraction, gated by the `SPECKIT_LLM_GRAPH_BACKFILL` flag.
 
-The default save path extracts graph edges using deterministic heuristics (no LLM calls). This feature adds a second pass for documents that are deemed high-value: an asynchronous LLM call generates additional edges that the heuristic pass would miss. Think of it as a careful second opinion that only runs for the most important documents. It never blocks the save operation and defaults to off.
+The default save path extracts graph edges using deterministic heuristics (no LLM calls). This feature adds a second pass for documents that are deemed high-value: an asynchronous LLM call generates additional edges that the heuristic pass would miss. Think of it as a careful second opinion that only runs for the most important documents. It never blocks the save operation and is enabled by default unless `SPECKIT_LLM_GRAPH_BACKFILL=false`.
 
 ---
 
