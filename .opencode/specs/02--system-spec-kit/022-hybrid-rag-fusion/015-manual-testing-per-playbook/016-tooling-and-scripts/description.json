@@ -1,0 +1,21 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/016-tooling-and-scripts",
+  "description": "Feature Specification: 016-Tooling-and-Scripts Manual Testing",
+  "keywords": [
+    "feature",
+    "specification",
+    "016-tooling-and-scripts",
+    "manual",
+    "testing"
+  ],
+  "lastUpdated": "2026-03-22T17:41:14.849Z",
+  "specId": "016",
+  "folderSlug": "tooling-and-scripts",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "015-manual-testing-per-playbook"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

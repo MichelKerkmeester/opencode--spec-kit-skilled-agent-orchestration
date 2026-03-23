@@ -1,0 +1,24 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment",
+  "description": "013 — Agent Alignment: Runtime Lineage Truth Reconciliation",
+  "keywords": [
+    "013",
+    "agent",
+    "alignment",
+    "runtime",
+    "lineage",
+    "truth",
+    "reconciliation"
+  ],
+  "lastUpdated": "2026-03-21T13:24:03.969Z",
+  "specId": "013",
+  "folderSlug": "agents-alignment",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "16-03-26_11-32__verified-and-refined-spec-017-agents-alignment.md"
+  ]
+}

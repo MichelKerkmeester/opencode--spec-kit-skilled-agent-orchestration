@@ -58,11 +58,11 @@
 - **Severity**: CRITICAL
 - **Category**: alignment
 - **Location**: `022-hybrid-rag-fusion/spec.md` lines 98-99 (Phase Status Dashboard)
-- **Description**: The Phase Status Dashboard lists two distinct phases both numbered `009`: "Skill Alignment" (claimed as Stub) and "Perfect Session Capturing" (claimed as In Progress). On disk, the skill alignment folder is actually numbered `010-skill-alignment`, not `009-skill-alignment`. There is no `009-skill-alignment` folder.
+- **Description**: The Phase Status Dashboard lists two distinct phases both numbered `009`: "Skill Alignment" (claimed as Stub) and "Perfect Session Capturing" (claimed as In Progress). On disk, the skill alignment folder is actually numbered `011-skill-alignment`, not `009-skill-alignment`. There is no `009-skill-alignment` folder.
 - **Evidence**:
   - Epic line 98: `| 009 | Skill Alignment | Stub | - | Empty scaffold |`
   - Epic line 99: `| 009 | Perfect Session Capturing | In Progress | 3 | 375 tests, 67 deferred |`
-  - Actual folder: `010-skill-alignment/` (not 009)
+  - Actual folder: `011-skill-alignment/` (not 009)
   - No folder `009-skill-alignment` exists
 - **Impact**: Any automation or agent that parses the dashboard to locate phase folders will fail to find "009-skill-alignment". The duplicate numbering breaks uniqueness invariants.
 - **Recommended Fix**: Change the Skill Alignment row to `010` in both the Phase Status Dashboard and the Phase Documentation Map. Remove the ghost reference to `009-skill-alignment`.
@@ -107,11 +107,11 @@
 
 - **Severity**: HIGH
 - **Category**: alignment
-- **Location**: `022-hybrid-rag-fusion/spec.md` line 98 (listed as 009); `010-skill-alignment/spec.md`
-- **Description**: The epic claims "Skill Alignment" is a "Stub" with "Empty scaffold". In reality, `010-skill-alignment/` is a fully populated Level 2 spec folder with `status: Complete`, updated 2026-03-15, has 1 child phase (`001-post-session-capturing-alignment`), and comprehensive spec/plan/tasks/implementation-summary/checklist files.
+- **Location**: `022-hybrid-rag-fusion/spec.md` line 98 (listed as 009); `011-skill-alignment/spec.md`
+- **Description**: The epic claims "Skill Alignment" is a "Stub" with "Empty scaffold". In reality, `011-skill-alignment/` is a fully populated Level 2 spec folder with `status: Complete`, updated 2026-03-15, has 1 child phase (`001-post-session-capturing-alignment`), and comprehensive spec/plan/tasks/implementation-summary/checklist files.
 - **Evidence**:
   - Epic: `| 009 | Skill Alignment | Stub | - | Empty scaffold |`
-  - Actual `010-skill-alignment/spec.md` metadata: `| **Status** | Complete |`
+  - Actual `011-skill-alignment/spec.md` metadata: `| **Status** | Complete |`
   - Folder contains: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, description.json, memory/, scratch/, and 1 child folder
 - **Impact**: A reader trusting the epic will believe no skill alignment work has been done. This is false -- it was fully completed. Backlog prioritization and sprint planning will waste effort re-planning already-delivered work.
 - **Recommended Fix**: Update the dashboard row to `| 010 | Skill Alignment | **Complete** | 2 | Documentation alignment |`. Add child count of 1.
@@ -122,11 +122,11 @@
 
 - **Severity**: HIGH
 - **Category**: alignment
-- **Location**: `022-hybrid-rag-fusion/spec.md` line 100; `011-command-alignment/spec.md`
-- **Description**: The epic claims 011-command-alignment is a "Stub" with "Empty scaffold". In reality, it is a fully populated Level 2 spec folder with `status: Complete`, 32 MCP tools mapped to 7 commands, updated 2026-03-15.
+- **Location**: `022-hybrid-rag-fusion/spec.md` line 100; `012-command-alignment/spec.md`
+- **Description**: The epic claims 012-command-alignment is a "Stub" with "Empty scaffold". In reality, it is a fully populated Level 2 spec folder with `status: Complete`, 32 MCP tools mapped to 7 commands, updated 2026-03-15.
 - **Evidence**:
   - Epic: `| 011 | Command Alignment | Stub | - | Empty scaffold |`
-  - Actual `011-command-alignment/spec.md` metadata: `| **Status** | Complete |`
+  - Actual `012-command-alignment/spec.md` metadata: `| **Status** | Complete |`
   - Contains: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, description.json, memory/, scratch/
 - **Impact**: Same as O1-006. The "Stub" label hides completed work and misleads planning.
 - **Recommended Fix**: Update to `| 011 | Command Alignment | **Complete** | 2 | 32 tools, 7 commands |`.
@@ -137,11 +137,11 @@
 
 - **Severity**: HIGH
 - **Category**: alignment
-- **Location**: `022-hybrid-rag-fusion/spec.md` line 101; `012-agents-alignment/spec.md`
-- **Description**: The epic claims 012-agents-alignment is a "Stub" with "Empty scaffold". In reality, it is a fully populated Level 2 spec folder with `status: Complete`, 9 agents synced across 2 runtimes (18 files), updated 2026-03-16.
+- **Location**: `022-hybrid-rag-fusion/spec.md` line 101; `013-agents-alignment/spec.md`
+- **Description**: The epic claims 013-agents-alignment is a "Stub" with "Empty scaffold". In reality, it is a fully populated Level 2 spec folder with `status: Complete`, 9 agents synced across 2 runtimes (18 files), updated 2026-03-16.
 - **Evidence**:
   - Epic: `| 012 | Agents Alignment | Stub | - | Empty scaffold |`
-  - Actual `012-agents-alignment/spec.md` metadata: `| **Status**  | Complete |`
+  - Actual `013-agents-alignment/spec.md` metadata: `| **Status**  | Complete |`
   - Implementation summary confirms completion 2026-03-15
   - Contains: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, description.json, memory/, scratch/
 - **Impact**: Same as O1-006. This phase is also listed under 999-finalization children (which does not exist -- see O1-004).
@@ -153,8 +153,8 @@
 
 - **Severity**: HIGH
 - **Category**: alignment
-- **Location**: `022-hybrid-rag-fusion/spec.md` line 102; `013-agents-md-alignment/spec.md`
-- **Description**: The epic claims 013-agents-md-alignment is a "Stub" with "Empty scaffold". In reality, it has a complete spec (Level 2, ~36 LOC), implementation-summary detailing changes across 3 files, and 5 identified gaps all fixed.
+- **Location**: `022-hybrid-rag-fusion/spec.md` line 102; `014-agents-md-alignment/spec.md`
+- **Description**: The epic claims 014-agents-md-alignment is a "Stub" with "Empty scaffold". In reality, it has a complete spec (Level 2, ~36 LOC), implementation-summary detailing changes across 3 files, and 5 identified gaps all fixed.
 - **Evidence**:
   - Epic: `| 013 | Agents MD Alignment | Stub | - | Empty scaffold |`
   - Implementation summary: documents changes to 3 AGENTS.md files, 7-command suite alignment
@@ -169,11 +169,11 @@
 
 - **Severity**: HIGH
 - **Category**: alignment
-- **Location**: `022-hybrid-rag-fusion/spec.md` line 103 (dashboard), line 132 (documentation map); `014-manual-testing-per-playbook/spec.md`
-- **Description**: The epic claims 014-manual-testing-per-playbook is a "Stub" with "Empty scaffold" and "0 children" in the documentation map. In reality, it is a fully populated Level 1 spec folder with `status: Draft`, **19 child folders** (each with spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, description.json), and a comprehensive umbrella spec tracking 213 exact scenario IDs across 19 feature categories.
+- **Location**: `022-hybrid-rag-fusion/spec.md` line 103 (dashboard), line 132 (documentation map); `015-manual-testing-per-playbook/spec.md`
+- **Description**: The epic claims 015-manual-testing-per-playbook is a "Stub" with "Empty scaffold" and "0 children" in the documentation map. In reality, it is a fully populated Level 1 spec folder with `status: Draft`, **19 child folders** (each with spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md, description.json), and a comprehensive umbrella spec tracking 213 exact scenario IDs across 19 feature categories.
 - **Evidence**:
   - Epic dashboard line 103: `| 014 | Manual Testing per Playbook | Stub | - | Empty scaffold |`
-  - Epic documentation map line 132: `| 014 | 014-manual-testing-per-playbook | 0 | Stub | 2026-03-14 |`
+  - Epic documentation map line 132: `| 014 | 015-manual-testing-per-playbook | 0 | Stub | 2026-03-14 |`
   - Actual: 19 child folders (001-retrieval through 019-feature-flag-reference)
   - Child folders each have complete Level 1 documentation
   - Parent spec is Draft status (not Stub)
@@ -219,7 +219,7 @@
 
 - **Severity**: MEDIUM
 - **Category**: alignment
-- **Location**: `011-command-alignment/spec.md`, `015-rewrite-memory-mcp-readme/spec.md`, `016-update-install-guide/spec.md`, `017-rewrite-system-speckit-readme/spec.md`, `018-rewrite-repo-readme/spec.md`
+- **Location**: `012-command-alignment/spec.md`, `016-rewrite-memory-mcp-readme/spec.md`, `017-update-install-guide/spec.md`, `018-rewrite-system-speckit-readme/spec.md`, `019-rewrite-repo-readme/spec.md`
 - **Description**: Multiple child specs reference pre-renumbering phase numbers in their `Parent` metadata field. These are remnants from the March 14, 2026 sequential renumbering that was not fully propagated.
 - **Evidence**:
   - 011 says `Parent: 022-hybrid-rag-fusion (Phase 016)` -- should be Phase 011
@@ -232,17 +232,17 @@
 
 ---
 
-### O1-014: Phase Documentation Map Missing 010-skill-alignment Entirely
+### O1-014: Phase Documentation Map Missing 011-skill-alignment Entirely
 
 - **Severity**: MEDIUM
 - **Category**: alignment
 - **Location**: `022-hybrid-rag-fusion/spec.md` Section 4 (Phase Documentation Map)
-- **Description**: The Phase Documentation Map (lines 117-137) has no entry for `010-skill-alignment`. The epic's Phase Status Dashboard uses the incorrect number `009` for this phase, and the documentation map duplicates `009` with two entries (both pointing to non-existent `009-skill-alignment` and the real `009-perfect-session-capturing`).
+- **Description**: The Phase Documentation Map (lines 117-137) has no entry for `011-skill-alignment`. The epic's Phase Status Dashboard uses the incorrect number `009` for this phase, and the documentation map duplicates `009` with two entries (both pointing to non-existent `009-skill-alignment` and the real `009-perfect-session-capturing`).
 - **Evidence**:
   - Documentation map has two `009` rows but no `010` row
-  - `010-skill-alignment/` exists on disk with status Complete and 1 child
+  - `011-skill-alignment/` exists on disk with status Complete and 1 child
 - **Impact**: Phase 010 is invisible in the documentation map. Agents navigating the map will never find it.
-- **Recommended Fix**: Add `| 010 | 010-skill-alignment | 1 | Complete | 2026-03-15 |` to the documentation map.
+- **Recommended Fix**: Add `| 010 | 011-skill-alignment | 1 | Complete | 2026-03-15 |` to the documentation map.
 
 ---
 
@@ -251,13 +251,13 @@
 - **Severity**: MEDIUM
 - **Category**: dead-code
 - **Location**: `022-hybrid-rag-fusion/017-spec-folder-alignment-audit/`
-- **Description**: An extra folder `017-spec-folder-alignment-audit` exists on disk, colliding with the number `017` already used by `017-rewrite-system-speckit-readme`. It contains only a `scratch/` directory with one file (`audit-findings-report.md`). It has no spec.md and is not referenced anywhere in the epic.
+- **Description**: An extra folder `017-spec-folder-alignment-audit` exists on disk, colliding with the number `017` already used by `018-rewrite-system-speckit-readme`. It contains only a `scratch/` directory with one file (`audit-findings-report.md`). It has no spec.md and is not referenced anywhere in the epic.
 - **Evidence**:
   - `ls 017-spec-folder-alignment-audit/` -> `scratch/`
   - `ls 017-spec-folder-alignment-audit/scratch/` -> `audit-findings-report.md` (16,645 bytes)
   - No spec.md, plan.md, tasks.md, or description.json
   - Not listed in Phase Status Dashboard or Phase Documentation Map
-- **Impact**: Number collision with 017-rewrite-system-speckit-readme. Could confuse filesystem-based navigation and validation scripts.
+- **Impact**: Number collision with 018-rewrite-system-speckit-readme. Could confuse filesystem-based navigation and validation scripts.
 - **Recommended Fix**: Either archive this folder (move to scratch/ of the epic root or of 005-architecture-audit), or if it is still relevant, renumber it and add to the epic.
 
 ---
@@ -266,10 +266,10 @@
 
 - **Severity**: MEDIUM
 - **Category**: alignment
-- **Location**: `013-agents-md-alignment/spec.md`
+- **Location**: `014-agents-md-alignment/spec.md`
 - **Description**: Unlike every other phase, 013's spec.md has no `status` field in its metadata table or frontmatter. The implementation-summary confirms the work was completed, but the spec itself does not declare any status.
 - **Evidence**:
-  - `grep -i "status" 013-agents-md-alignment/spec.md` -> (no output)
+  - `grep -i "status" 014-agents-md-alignment/spec.md` -> (no output)
   - All other phases have at minimum `| **Status** | ... |` in their metadata table
 - **Impact**: Automated status aggregation tools will not be able to determine this phase's state from its spec.md.
 - **Recommended Fix**: Add `| **Status** | Complete |` to the metadata table.
@@ -280,7 +280,7 @@
 
 - **Severity**: MEDIUM
 - **Category**: alignment
-- **Location**: `013-agents-md-alignment/`
+- **Location**: `014-agents-md-alignment/`
 - **Description**: Phase 013 is the only main phase missing a `description.json` file. All other 17 main phases (001-012, 014-018) have one.
 - **Evidence**:
   - All 17 other main phases: HAS description.json

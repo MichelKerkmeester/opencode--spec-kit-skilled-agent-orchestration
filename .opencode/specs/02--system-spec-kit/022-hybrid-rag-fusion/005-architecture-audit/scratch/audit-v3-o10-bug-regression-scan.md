@@ -131,7 +131,7 @@
 - **Category**: bug
 - **Source**: Filesystem scan
 - **Location**: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/`
-- **Description**: Two folders share the 017 prefix: `017-rewrite-system-speckit-readme` and `017-spec-folder-alignment-audit`. This violates the phase numbering convention.
+- **Description**: Two folders share the 017 prefix: `018-rewrite-system-speckit-readme` and `017-spec-folder-alignment-audit`. This violates the phase numbering convention.
 - **Evidence**: `ls | grep "^017"` returns both folders.
 - **Impact**: Description.json indexing, phase references, and navigation are ambiguous. Memory MCP may surface wrong phase context.
 - **Recommended Fix**: Renumber one of the folders (e.g., `017-spec-folder-alignment-audit` -> `019-spec-folder-alignment-audit` or a new unused number).

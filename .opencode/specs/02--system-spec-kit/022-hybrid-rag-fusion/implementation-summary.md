@@ -32,7 +32,7 @@ The 022 root packet now acts as a real coordination document instead of a stale 
 
 ### Root Packet Normalization
 
-The root spec now preserves the current tree truth: phase `009` has 20 children, phase `014` is complete, and `spec_validate_local.out` is treated as a failed local snapshot rather than pass evidence.
+The root spec now preserves the current tree truth: phase `009` has 20 children, phase `015` is complete, and `spec_validate_local.out` is treated as a failed local snapshot rather than pass evidence.
 
 ### Direct Child Navigation
 

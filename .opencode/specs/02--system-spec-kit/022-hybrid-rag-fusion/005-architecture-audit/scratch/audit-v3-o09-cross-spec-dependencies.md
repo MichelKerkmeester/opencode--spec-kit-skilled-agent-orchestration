@@ -22,16 +22,16 @@ The epic contains 19 numbered folders on disk (18 unique phase numbers, with `01
 | 007 | `007-code-audit-per-feature-catalog` | Complete | 1 |
 | 008 | `008-hydra-db-based-features` | Complete | 3 |
 | 009 | `009-perfect-session-capturing` | In Progress | 3 |
-| 010 | `010-skill-alignment` | Complete | 2 |
-| 011 | `011-command-alignment` | Complete | 2 |
-| 012 | `012-agents-alignment` | Complete | 2 |
-| 013 | `013-agents-md-alignment` | Complete | 2 |
-| 014 | `014-manual-testing-per-playbook` | Draft | 1 |
-| 015 | `015-rewrite-memory-mcp-readme` | In Progress | 1 |
-| 016 | `016-update-install-guide` | In Progress | 1 |
-| 017a | `017-rewrite-system-speckit-readme` | In Progress | 1 |
+| 010 | `011-skill-alignment` | Complete | 2 |
+| 011 | `012-command-alignment` | Complete | 2 |
+| 012 | `013-agents-alignment` | Complete | 2 |
+| 013 | `014-agents-md-alignment` | Complete | 2 |
+| 014 | `015-manual-testing-per-playbook` | Draft | 1 |
+| 015 | `016-rewrite-memory-mcp-readme` | In Progress | 1 |
+| 016 | `017-update-install-guide` | In Progress | 1 |
+| 017a | `018-rewrite-system-speckit-readme` | In Progress | 1 |
 | 017b | `017-spec-folder-alignment-audit` | Empty (no spec.md) | - |
-| 018 | `018-rewrite-repo-readme` | In Progress | 1 |
+| 018 | `019-rewrite-repo-readme` | In Progress | 1 |
 
 **Non-numbered folders** (data artifacts, not spec phases):
 - `feature_catalog/` — Feature catalog snapshot (19 categories)
@@ -147,46 +147,46 @@ graph TD
  +-- 006-feature-catalog [In Progress]
  |    |
  |    +---> 007-code-audit-per-feature-catalog
- |    +---> 015-rewrite-memory-mcp-readme (grounding)
+ |    +---> 016-rewrite-memory-mcp-readme (grounding)
  |
  +-- 007-code-audit-per-feature-catalog [Complete]
  |     depends on: 006
  |
  +-- 008-hydra-db-based-features [Complete]
  |    |
- |    +---> 011-command-alignment (shared memory tools)
+ |    +---> 012-command-alignment (shared memory tools)
  |
  +-- 009-perfect-session-capturing [In Progress] (large sub-tree: 000-019)
  |
- +-- 010-skill-alignment [Complete]
+ +-- 011-skill-alignment [Complete]
  |     depends on: 011 (reverse dependency!)
  |
- +-- 011-command-alignment [Complete]
+ +-- 012-command-alignment [Complete]
  |    |
- |    +---> 010-skill-alignment
- |    +---> 013-agents-md-alignment
+ |    +---> 011-skill-alignment
+ |    +---> 014-agents-md-alignment
  |
- +-- 012-agents-alignment [Complete] (standalone sync)
+ +-- 013-agents-alignment [Complete] (standalone sync)
  |
- +-- 013-agents-md-alignment [Complete]
+ +-- 014-agents-md-alignment [Complete]
  |     depends on: 011
  |
- +-- 014-manual-testing-per-playbook [Draft]
+ +-- 015-manual-testing-per-playbook [Draft]
  |
- +-- 015-rewrite-memory-mcp-readme [In Progress]
+ +-- 016-rewrite-memory-mcp-readme [In Progress]
  |    |     depends on: 006, 011
  |    +---> 017a-rewrite-system-speckit-readme
- |    +---> 018-rewrite-repo-readme
+ |    +---> 019-rewrite-repo-readme
  |
- +-- 016-update-install-guide [In Progress] (standalone)
+ +-- 017-update-install-guide [In Progress] (standalone)
  |
  +-- 017a-rewrite-system-speckit-readme [In Progress]
  |    |     depends on: 015
- |    +---> 018-rewrite-repo-readme
+ |    +---> 019-rewrite-repo-readme
  |
  +-- 017b-spec-folder-alignment-audit [EMPTY - no spec.md]
  |
- +-- 018-rewrite-repo-readme [In Progress]
+ +-- 019-rewrite-repo-readme [In Progress]
        depends on: 015, 017a
 ```
 
@@ -219,8 +219,8 @@ One notable reverse-numbering dependency exists: phase 010 (skill-alignment) dep
 
 - **Severity**: CRITICAL
 - **Category**: architecture
-- **Location**: `022-hybrid-rag-fusion/017-rewrite-system-speckit-readme/` and `022-hybrid-rag-fusion/017-spec-folder-alignment-audit/`
-- **Description**: Two distinct spec folders share phase number 017. `017-rewrite-system-speckit-readme` has a complete spec.md (Level 1, In Progress). `017-spec-folder-alignment-audit` contains only an empty `scratch/` directory with no spec.md, plan.md, or tasks.md.
+- **Location**: `022-hybrid-rag-fusion/018-rewrite-system-speckit-readme/` and `022-hybrid-rag-fusion/017-spec-folder-alignment-audit/`
+- **Description**: Two distinct spec folders share phase number 017. `018-rewrite-system-speckit-readme` has a complete spec.md (Level 1, In Progress). `017-spec-folder-alignment-audit` contains only an empty `scratch/` directory with no spec.md, plan.md, or tasks.md.
 - **Evidence**: `ls` of both folders confirms the collision. The epic dashboard in 001/spec.md does not list either `017` folder.
 - **Impact**: Phase numbering collision breaks the 1:1 phase-to-number contract. References to "phase 017" are ambiguous. Recursive validation may skip or misidentify phases.
 - **Recommended Fix**: Either delete the empty `017-spec-folder-alignment-audit` (if its work was absorbed elsewhere) or renumber one of the two folders. Since `017b` is empty, deletion is the safest option.
@@ -232,10 +232,10 @@ One notable reverse-numbering dependency exists: phase 010 (skill-alignment) dep
 - **Severity**: CRITICAL
 - **Category**: alignment
 - **Location**: `022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md` lines 77-97 (Child Folder Status Dashboard)
-- **Description**: The dashboard table in the parent epic lists phases 001-013 but omits phases 014 (manual-testing), 015 (MCP README), 016 (install guide), 017 (speckit README), and 018 (repo README). It also incorrectly lists `010-skill-alignment` under folder number "009" alongside `009-perfect-session-capturing`.
+- **Description**: The dashboard table in the parent epic lists phases 001-013 but omits phases 014 (manual-testing), 015 (MCP README), 016 (install guide), 017 (speckit README), and 018 (repo README). It also incorrectly lists `011-skill-alignment` under folder number "009" alongside `009-perfect-session-capturing`.
 - **Evidence**: Dashboard table ends at 013 (plus deleted folder entries). Phases 014-018 exist on disk and have active spec.md files.
 - **Impact**: The parent epic does not reflect the actual phase tree. Anyone reading the dashboard would not know phases 014-018 exist. This violates the spec's own Phase Documentation Map convention.
-- **Recommended Fix**: Add rows for 014-018 to the dashboard. Fix the "009" row for `010-skill-alignment` to show "010".
+- **Recommended Fix**: Add rows for 014-018 to the dashboard. Fix the "009" row for `011-skill-alignment` to show "010".
 
 ---
 
@@ -270,7 +270,7 @@ One notable reverse-numbering dependency exists: phase 010 (skill-alignment) dep
 - **Location**: `022-hybrid-rag-fusion/017-spec-folder-alignment-audit/`
 - **Description**: This folder contains only an empty `scratch/` subdirectory. No spec.md, plan.md, tasks.md, or any other documentation file exists. The folder is not listed in the epic dashboard and appears to be an abandoned or accidentally created placeholder.
 - **Evidence**: `ls -la` shows only a `scratch/` directory with no files. No spec.md exists.
-- **Impact**: Occupies a phase number (017) that collides with `017-rewrite-system-speckit-readme`. Pollutes the spec tree with a non-functional folder.
+- **Impact**: Occupies a phase number (017) that collides with `018-rewrite-system-speckit-readme`. Pollutes the spec tree with a non-functional folder.
 - **Recommended Fix**: Delete the empty folder entirely, or if the work was intended, create proper spec documentation and assign a unique phase number (e.g., 019).
 
 ---
@@ -291,9 +291,9 @@ One notable reverse-numbering dependency exists: phase 010 (skill-alignment) dep
 
 - **Severity**: MEDIUM
 - **Category**: architecture
-- **Location**: `022-hybrid-rag-fusion/010-skill-alignment/spec.md` line 144
-- **Description**: Phase 010 (skill-alignment) explicitly declares a dependency on 011 (command-alignment): "Dependency: 011-command-alignment | Completed | Command documentation coverage is fully delivered (32/32 tools, 7 commands)". This means a lower-numbered phase depends on a higher-numbered phase, violating the implied sequential ordering.
-- **Evidence**: spec.md line 144: "Dependency | `011-command-alignment` | Completed"
+- **Location**: `022-hybrid-rag-fusion/011-skill-alignment/spec.md` line 144
+- **Description**: Phase 010 (skill-alignment) explicitly declares a dependency on 011 (command-alignment): "Dependency: 012-command-alignment | Completed | Command documentation coverage is fully delivered (32/32 tools, 7 commands)". This means a lower-numbered phase depends on a higher-numbered phase, violating the implied sequential ordering.
+- **Evidence**: spec.md line 144: "Dependency | `012-command-alignment` | Completed"
 - **Impact**: Phase numbering does not reflect the actual execution order. 011 was completed before 010, despite having a higher number. This can confuse maintainers who expect sequential execution.
 - **Recommended Fix**: No action required (numbering reflects creation order, not execution order), but document this explicitly in the epic. Future renumbering could resolve the confusion.
 
@@ -340,8 +340,8 @@ One notable reverse-numbering dependency exists: phase 010 (skill-alignment) dep
 - **Severity**: LOW
 - **Category**: alignment
 - **Location**: `001-hybrid-rag-fusion-epic/spec.md` line 88
-- **Description**: The epic dashboard lists `010-skill-alignment` under folder number "009", duplicating the row number with `009-perfect-session-capturing`.
-- **Evidence**: Line 88: "| 009 | `009-skill-alignment` | Complete | 2026-03-16 |" — but the actual folder is `010-skill-alignment`.
+- **Description**: The epic dashboard lists `011-skill-alignment` under folder number "009", duplicating the row number with `009-perfect-session-capturing`.
+- **Evidence**: Line 88: "| 009 | `009-skill-alignment` | Complete | 2026-03-16 |" — but the actual folder is `011-skill-alignment`.
 - **Impact**: Minor confusion in the dashboard. The phase number "009" appears twice (one for perfect-session-capturing, one for skill-alignment).
 - **Recommended Fix**: Change the row to show "010" as the folder number.
 
@@ -368,8 +368,8 @@ One notable reverse-numbering dependency exists: phase 010 (skill-alignment) dep
 
 - **Severity**: LOW
 - **Category**: alignment
-- **Location**: `014-manual-testing-per-playbook/spec.md`
-- **Description**: Phase 014 is still in "Draft" status (per its spec.md) and its 19 child phases are all "Draft". Yet phase 004 (ux-hooks-automation) spec.md line 114 declares: "Manual test playbook covers UX hook additions | manual test playbook document in folder 014-manual-testing-per-playbook includes NEW-103+ scenarios". This implies 014 should at least partially exist to validate 004's completion.
+- **Location**: `015-manual-testing-per-playbook/spec.md`
+- **Description**: Phase 014 is still in "Draft" status (per its spec.md) and its 19 child phases are all "Draft". Yet phase 004 (ux-hooks-automation) spec.md line 114 declares: "Manual test playbook covers UX hook additions | manual test playbook document in folder 015-manual-testing-per-playbook includes NEW-103+ scenarios". This implies 014 should at least partially exist to validate 004's completion.
 - **Evidence**: 004/spec.md REQ-007: "Manual test playbook covers UX hook additions". 014/spec.md status: "Draft".
 - **Impact**: Phase 004 claims completion but its P1 verification artifact (manual testing in 014) is still draft. The completion claim may be premature for this specific requirement.
 - **Recommended Fix**: Either downgrade 004's claim about manual test playbook coverage or upgrade the relevant 014 sub-phase (018-ux-hooks) from Draft to at least In Progress.

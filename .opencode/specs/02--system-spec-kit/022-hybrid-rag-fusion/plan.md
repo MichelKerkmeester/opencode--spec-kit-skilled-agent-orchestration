@@ -83,7 +83,7 @@ Coordination-layer documentation normalization
 
 ### Key Components
 - **Root packet docs**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`
-- **Direct child packets**: direct child packet specs for phases `002` through `020`
+- **Direct child packets**: direct child packet specs for phases `002` through `019`
 
 ### Data Flow
 Read the live tree -> reconcile root facts -> normalize root docs -> preserve direct-child navigation truth -> validate the parent packet.
@@ -148,4 +148,4 @@ Acceptance rule: the root packet must pass without structural errors, and any re
 
 - Record root validator results in the root packet checklist and implementation summary.
 - Keep residual subtree warnings scoped to the affected child packet family instead of inflating the root status.
-- Use the root packet as the entry point for future normalization passes in `001`, `009`, and `014`.
+- Use the root packet as the entry point for future normalization passes in `001`, `009`, and `015`.

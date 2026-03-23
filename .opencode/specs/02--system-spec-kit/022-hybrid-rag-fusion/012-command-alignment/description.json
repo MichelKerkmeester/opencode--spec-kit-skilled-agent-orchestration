@@ -1,0 +1,20 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment",
+  "description": "Specification: 012-command-alignment",
+  "keywords": [
+    "specification",
+    "012-command-alignment"
+  ],
+  "lastUpdated": "2026-03-21T13:24:03.963Z",
+  "specId": "012",
+  "folderSlug": "command-alignment",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "15-03-26_08-26__implemented-016-command-alignment-aligned-the.md",
+    "15-03-26_11-13__implemented-sk-doc-dqi-alignment-across-all-8.md"
+  ]
+}

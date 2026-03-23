@@ -121,7 +121,7 @@ Mutation request executes handler logic, then shared post-mutation hooks run and
 | Integration | Mutation handlers + context-server success response hint append + end-to-end response envelope assertion | Vitest (`tests/context-server.vitest.ts`, `tests/handler-checkpoints.vitest.ts`, `tests/mcp-input-validation.vitest.ts`, `tests/memory-crud-extended.vitest.ts`, `tests/memory-save-ux-regressions.vitest.ts`, `tests/tool-input-schema.vitest.ts`) |
 | Regression | Stdio-safe startup/runtime logging and provider-aware embeddings cache identity | Vitest (`tests/embeddings.vitest.ts`, `tests/stdio-logging-safety.vitest.ts`) |
 | Smoke | Real MCP stdio transport handshake against compiled server | MCP SDK client against `node dist/context-server.js` (28 tools listed) |
-| Manual | UX hint and post-mutation response verification scenarios | Manual playbook (manual test playbook document in folder 014-manual-testing-per-playbook, NEW-103+) |
+| Manual | UX hint and post-mutation response verification scenarios | Manual playbook (manual test playbook document in folder 015-manual-testing-per-playbook, NEW-103+) |
 <!-- /ANCHOR:testing -->
 
 ---

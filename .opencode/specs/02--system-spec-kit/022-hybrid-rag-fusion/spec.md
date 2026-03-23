@@ -21,7 +21,7 @@ This root packet is the coordination layer for the Hybrid RAG Fusion program. It
 
 **Key Decisions**: treat the on-disk tree as the authority for counts and status, keep the root packet concise, and normalize direct-child navigation before deeper subtree rewrites.
 
-**Critical Dependencies**: direct child packet truth, the already-updated feature catalog and manual testing playbook, and follow-on normalization inside the `001`, `009`, and `014` subtree families.
+**Critical Dependencies**: direct child packet truth, the already-updated feature catalog and manual testing playbook, and follow-on normalization inside the `001`, `009`, and `015` subtree families.
 
 ---
 
@@ -36,7 +36,7 @@ This root packet is the coordination layer for the Hybrid RAG Fusion program. It
 | **Updated** | 2026-03-21 |
 | **Branch** | `main` |
 | **Spec Folders** | 118 numbered spec directories currently present on disk |
-| **Direct Child Counts** | `001=11`, `007=21`, `008=6`, `009=20`, `010=1`, `014=19` |
+| **Direct Child Counts** | `001=11`, `007=21`, `008=6`, `009=20`, `011=1`, `015=19` |
 | **Feature Catalog Count** | 220 feature files |
 
 ---
@@ -60,7 +60,7 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 
 ### In Scope
 - Root packet coordination docs for `022-hybrid-rag-fusion`
-- Direct-child navigation normalization for phases `002` through `020`
+- Direct-child navigation normalization for phases `002` through `019`
 - Current-truth status recording for the 19 direct phases
 - Honest recording of residual subtree drift
 
@@ -79,7 +79,7 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/checklist.md` | Modify | Capture validator-backed verification evidence |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/decision-record.md` | Modify | Preserve root-level ADRs for packet truth and scope |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/implementation-summary.md` | Modify | Summarize the current normalization pass truthfully |
-| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-*/spec.md` through `020-*/spec.md` | Modify | Keep direct-child navigation aligned with the live root tree |
+| `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-*/spec.md` through `019-*/spec.md` | Modify | Keep direct-child navigation aligned with the live root tree |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -97,16 +97,16 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 | 007 | `007-code-audit-per-feature-catalog/` | Feature-catalog code audit umbrella | Complete |
 | 008 | `008-hydra-db-based-features/` | Hydra DB and related features | Complete |
 | 009 | `009-perfect-session-capturing/` | Session-capturing packet family | Complete |
-| 010 | `010-skill-alignment/` | Skill alignment | Complete |
-| 011 | `011-command-alignment/` | Command alignment | Complete |
-| 012 | `012-agents-alignment/` | Agent alignment | Complete |
-| 013 | `013-agents-md-alignment/` | AGENTS.md alignment | Complete |
-| 014 | `014-manual-testing-per-playbook/` | Manual testing playbook umbrella | Complete |
-| 015 | `015-rewrite-memory-mcp-readme/` | README rewrite | Complete |
-| 016 | `016-update-install-guide/` | Install guide update | Complete |
-| 017 | `017-rewrite-system-speckit-readme/` | System Spec Kit README rewrite | Complete |
-| 018 | `018-rewrite-repo-readme/` | Repository README rewrite | Complete |
-| 020 | `020-template-compliance-enforcement/` | Template compliance enforcement | Draft |
+| 010 | `010-template-compliance-enforcement/` | Template compliance enforcement | Draft |
+| 011 | `011-skill-alignment/` | Skill alignment | Complete |
+| 012 | `012-command-alignment/` | Command alignment | Complete |
+| 013 | `013-agents-alignment/` | Agent alignment | Complete |
+| 014 | `014-agents-md-alignment/` | AGENTS.md alignment | Complete |
+| 015 | `015-manual-testing-per-playbook/` | Manual testing playbook umbrella | Complete |
+| 016 | `016-rewrite-memory-mcp-readme/` | README rewrite | Complete |
+| 017 | `017-update-install-guide/` | Install guide update | Complete |
+| 018 | `018-rewrite-system-speckit-readme/` | System Spec Kit README rewrite | Complete |
+| 019 | `019-rewrite-repo-readme/` | Repository README rewrite | Complete |
 
 ---
 
@@ -118,8 +118,8 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Root packet includes the required companion docs for Level 3+ work | `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` exist under the 022 root |
-| REQ-002 | Root status claims use verified current tree counts | Root docs state `118` numbered spec directories and direct child counts `001=11`, `007=21`, `008=6`, `009=20`, `010=1`, `014=19` |
-| REQ-003 | Root packet preserves the current truth of phases `009` and `014` | Root docs state that phase `009` has 20 children and phase `014` is complete |
+| REQ-002 | Root status claims use verified current tree counts | Root docs state `118` numbered spec directories and direct child counts `001=11`, `007=21`, `008=6`, `009=20`, `011=1`, `015=19` |
+| REQ-003 | Root packet preserves the current truth of phases `009` and `015` | Root docs state that phase `009` has 20 children and phase `015` is complete |
 | REQ-004 | Direct child phase refs use validator-friendly forms | Direct child packet specs use a parent link plus explicit neighboring phase references |
 | REQ-005 | Root packet includes a live direct-phase map | `PHASE DOCUMENTATION MAP` lists all 19 direct phases with truthful status values |
 
@@ -139,7 +139,7 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 
 - **SC-001**: The 022 root packet acts as a valid coordination layer with the required companion docs.
 - **SC-002**: Root docs consistently use `118` numbered spec directories and the verified direct-child counts.
-- **SC-003**: Direct child packets `002-020` keep explicit root-facing phase navigation entries.
+- **SC-003**: Direct child packets `002-019` keep explicit root-facing phase navigation entries.
 - **SC-004**: The root packet clearly distinguishes clean facts from unresolved subtree debt.
 <!-- /ANCHOR:success-criteria -->
 
@@ -177,7 +177,7 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 
 ### Structural Edge Cases
 - Phase `001` remains a special case because it owns a nested sprint subtree and needs a deeper normalization pass than the other direct children.
-- Phase `014` is now complete with 19 children, the largest direct-child subtree after `007`.
+- Phase `015` is now complete with 19 children, the largest direct-child subtree after `007`.
 
 ### Evidence Edge Cases
 - `spec_validate_local.out` remains useful as historical debugging context, but not as pass evidence.
@@ -222,7 +222,7 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 **As a** reviewer, **I want** each direct child packet to point back to the root and to its neighboring phases, **so that** phase-link validation can reason about the direct-child layer.
 
 **Acceptance Criteria**:
-1. Given any direct child packet from `002` to `020`, when I open it, then it contains consistent parent and neighboring-phase rows.
+1. Given any direct child packet from `002` to `019`, when I open it, then it contains consistent parent and neighboring-phase rows.
 
 ### US-003: Keep Validation Truthful (Priority: P1)
 
@@ -236,9 +236,9 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 ### Acceptance Scenarios
 
 1. **Given** the root packet is opened, **When** the metadata table is reviewed, **Then** it reports `118` numbered spec directories and the verified direct-child counts.
-2. **Given** the direct phase map is opened, **When** the user scans phases `001` through `020`, **Then** every live direct child appears exactly once with a truthful status.
+2. **Given** the direct phase map is opened, **When** the user scans phases `001` through `019`, **Then** every live direct child appears exactly once with a truthful status.
 3. **Given** a reader checks phase `009`, **When** they read the root packet, **Then** they can see that the session-capturing subtree currently has 20 children.
-4. **Given** a reader checks phase `014`, **When** they read the root packet, **Then** they see that the umbrella is complete.
+4. **Given** a reader checks phase `015`, **When** they read the root packet, **Then** they see that the umbrella is complete.
 5. **Given** a validator inspects the root packet, **When** it evaluates phase-documentation coverage, **Then** the packet includes the expected phase map and acceptance-scenario sections.
 6. **Given** a maintainer reads the root verification notes, **When** they encounter `spec_validate_local.out`, **Then** it is clearly described as a failed local snapshot rather than pass evidence.
 
@@ -309,7 +309,7 @@ Root packet normalized to current tree truth, with explicit phase map, acceptanc
 <!-- ANCHOR:questions -->
 ## 16. OPEN QUESTIONS
 
-- Which nested subtree should be normalized first after the root-facing layer: `001`, `009`, or `014`?
+- Which nested subtree should be normalized first after the root-facing layer: `001`, `009`, or `015`?
 - Should the root packet stay Level 3+ after subtree normalization, or should some governance content move into child packets?
 <!-- /ANCHOR:questions -->
 

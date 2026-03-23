@@ -81,7 +81,7 @@ Twenty audit agents reviewed the entire system-spec-kit codebase and specificati
 
 ### CR-05: Duplicate phase number 017 on disk
 - **Source**: O09-001, O10-010 (deduplicated)
-- **Location**: `022-hybrid-rag-fusion/017-rewrite-system-speckit-readme/` and `022-hybrid-rag-fusion/017-spec-folder-alignment-audit/`
+- **Location**: `022-hybrid-rag-fusion/018-rewrite-system-speckit-readme/` and `022-hybrid-rag-fusion/017-spec-folder-alignment-audit/`
 - **Description**: Two folders share phase number 017. The first has a complete spec (Level 1, In Progress). The second contains only an empty `scratch/` directory with no spec.md.
 - **Impact**: Phase numbering collision breaks the 1:1 phase-to-number contract. References to "phase 017" are ambiguous.
 - **Recommended Fix**: Delete the empty `017-spec-folder-alignment-audit` folder (its content, a single audit findings report, can be archived to 005's scratch).

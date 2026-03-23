@@ -123,9 +123,9 @@ The deliverables themselves contain **multiple count mismatches** against live s
 ### O8-010: Phases 015-018 spec folders show "In Progress" with 0 tasks complete, but deliverables exist
 - **Severity**: MEDIUM
 - **Category**: completeness
-- **Location**: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-rewrite-memory-mcp-readme/` through `018-rewrite-repo-readme/`
+- **Location**: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-rewrite-memory-mcp-readme/` through `019-rewrite-repo-readme/`
 - **Description**: All four spec folders (015, 016, 017, 018) have status "In Progress" in their spec.md metadata and 0/N tasks marked complete in their tasks.md files. However, the actual deliverables (MCP README at 1404 lines, Install Guide at 1029 lines, Spec Kit README at 692 lines, Root README at 813 lines) all exist and appear to be the rewritten versions. None of the four spec folders contain `implementation-summary.md` or `checklist.md`. Memory files exist for 018, confirming work was done.
-- **Evidence**: 018-rewrite-repo-readme/tasks.md shows "0/27 tasks complete". The root README contains the role-based navigation, agent listing, skills library, gate system, etc. that the spec describes. Memory file `16-03-16_12-15__phase5-implementation-83-fixes-applied.md` exists in 018.
+- **Evidence**: 019-rewrite-repo-readme/tasks.md shows "0/27 tasks complete". The root README contains the role-based navigation, agent listing, skills library, gate system, etc. that the spec describes. Memory file `16-03-16_12-15__phase5-implementation-83-fixes-applied.md` exists in 018.
 - **Impact**: Spec folder tracking does not reflect reality. These phases appear incomplete in any audit or status report despite the deliverables being done. No implementation-summary provides traceability.
 - **Recommended Fix**: Close out each spec folder: mark tasks as [x], update status to "Complete", create implementation-summary.md for each.
 
@@ -156,7 +156,7 @@ The deliverables themselves contain **multiple count mismatches** against live s
 ### O8-013: Playbook folder naming convention differs from spec child folder naming
 - **Severity**: MEDIUM
 - **Category**: quality
-- **Location**: `.opencode/skill/system-spec-kit/manual_testing_playbook/` vs `.opencode/specs/.../014-manual-testing-per-playbook/`
+- **Location**: `.opencode/skill/system-spec-kit/manual_testing_playbook/` vs `.opencode/specs/.../015-manual-testing-per-playbook/`
 - **Description**: The playbook subfolder naming uses `NN--name` (double-dash, e.g., `01--retrieval`, `13--memory-quality-and-indexing`) while the spec child folders use `NNN-name` (single-dash, e.g., `001-retrieval`, `013-memory-quality-and-indexing`). While this is not a functional issue, it creates a mapping friction when cross-referencing between the two directory trees. The spec.md Phase Documentation Map table references the spec folder naming.
 - **Evidence**: Playbook: `01--retrieval`, `02--mutation`, etc. Spec children: `001-retrieval`, `002-mutation`, etc.
 - **Impact**: Minor cognitive overhead when navigating between playbook and spec folder trees.
@@ -200,7 +200,7 @@ The deliverables themselves contain **multiple count mismatches** against live s
 ### O8-017: Spec 015 claims MCP README was "~1281 lines" but actual file is 1404 lines
 - **Severity**: LOW (cosmetic)
 - **Category**: drift
-- **Location**: `.opencode/specs/.../015-rewrite-memory-mcp-readme/spec.md` (line 39)
+- **Location**: `.opencode/specs/.../016-rewrite-memory-mcp-readme/spec.md` (line 39)
 - **Description**: The 015 spec's Problem Statement says "The MCP server README (`mcp_server/README.md`, ~1281 lines)". The current file is 1404 lines, indicating the README was updated after the spec was written (which is expected since the spec describes a rewrite).
 - **Evidence**: `wc -l mcp_server/README.md` returns 1404.
 - **Impact**: None -- this is expected. The spec describes the pre-rewrite state.

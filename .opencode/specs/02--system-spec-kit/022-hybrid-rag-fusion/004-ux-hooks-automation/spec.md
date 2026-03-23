@@ -91,7 +91,7 @@ Ship predictable post-mutation automation for memory handlers, expose structured
 | `.opencode/skill/system-spec-kit/mcp_server/tools/types.ts` | Modify | Sync MCP tool type contracts |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/hooks-ux-feedback.vitest.ts` | Add | Validate hook module behavior and payload shape |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/context-server.vitest.ts` | Modify | Validate auto-surface hint appending on success responses |
-| manual test playbook document in folder 014-manual-testing-per-playbook | Modify | Add NEW-103+ manual scenarios for UX hooks |
+| manual test playbook document in folder 015-manual-testing-per-playbook | Modify | Add NEW-103+ manual scenarios for UX hooks |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -114,7 +114,7 @@ Ship predictable post-mutation automation for memory handlers, expose structured
 | REQ-003 | `memory_health` supports optional auto-repair with structured reporting | `autoRepair` runs return explicit repair metadata in handler output |
 | REQ-004 | Schemas/types stay aligned with new parameters and outputs | Tool input schemas and type definitions validate added params and metadata contracts |
 | REQ-005 | Validation-facing UX artifacts remain consistent with implemented behavior | Checklist evidence and acceptance scenarios map directly to implemented mutation safety and automation behavior |
-| REQ-007 | Manual test playbook covers UX hook additions | manual test playbook document in folder 014-manual-testing-per-playbook includes NEW-103+ scenarios for hook modules, handler hints, context-server hint append, and automated verification commands |
+| REQ-007 | Manual test playbook covers UX hook additions | manual test playbook document in folder 015-manual-testing-per-playbook includes NEW-103+ scenarios for hook modules, handler hints, context-server hint append, and automated verification commands |
 
 ### Acceptance Scenarios
 
@@ -134,7 +134,7 @@ Ship predictable post-mutation automation for memory handlers, expose structured
 
 - **SC-001**: TypeScript build and lint both pass for the MCP server (`npx tsc -b` and `npm run lint`)
 - **SC-002**: Verification reruns pass with the combined targeted suite (9 files / 525 tests) and split playbook checks (7 files / 510 tests, 2 files / 15 tests), and MCP SDK stdio smoke validation succeeds with 28 tools listed
-- **SC-003**: Manual playbook manual test playbook document in folder 014-manual-testing-per-playbook contains NEW-103+ scenarios covering UX hooks and context-server hint behavior
+- **SC-003**: Manual playbook manual test playbook document in folder 015-manual-testing-per-playbook contains NEW-103+ scenarios covering UX hooks and context-server hint behavior
 <!-- /ANCHOR:success-criteria -->
 
 ---
