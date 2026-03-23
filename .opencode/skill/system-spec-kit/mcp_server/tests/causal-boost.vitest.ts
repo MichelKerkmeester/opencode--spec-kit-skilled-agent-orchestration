@@ -76,8 +76,10 @@ describe('T038-T044 causal boost', () => {
     `).run();
 
     const boosts = causalBoost.getNeighborBoosts([1]);
-    expect(boosts.get(2)).toBeCloseTo(0.05, 6);
-    expect(boosts.get(3)).toBeCloseTo(0.025, 6);
+    expect(boosts.get(2)?.boost).toBeCloseTo(0.05, 6);
+    expect(boosts.get(2)?.hopCount).toBe(1);
+    expect(boosts.get(3)?.boost).toBeCloseTo(0.025, 6);
+    expect(boosts.get(3)?.hopCount).toBe(2);
   });
 
   it('T040/T044: applies bounded boost and deduplicates existing semantic results', () => {
@@ -110,7 +112,7 @@ describe('T038-T044 causal boost', () => {
     `).run();
 
     const cycle = causalBoost.getNeighborBoosts([1]);
-    expect(cycle.get(2)).toBeCloseTo(0.05, 6);
+    expect(cycle.get(2)?.boost).toBeCloseTo(0.05, 6);
   });
 });
 
@@ -178,8 +180,8 @@ describe('T008 — Seed cap and multiplier precedence', () => {
 
     const boosts = causalBoost.getNeighborBoosts([1]);
 
-    expect(boosts.get(2)).toBeCloseTo(0.05 * 1.5, 6);
-    expect(boosts.get(3)).toBeCloseTo(0.05 * 0.8, 6);
-    expect((boosts.get(2) ?? 0)).toBeGreaterThan(boosts.get(3) ?? 0);
+    expect(boosts.get(2)?.boost).toBeCloseTo(0.05 * 1.5, 6);
+    expect(boosts.get(3)?.boost).toBeCloseTo(0.05 * 0.8, 6);
+    expect((boosts.get(2)?.boost ?? 0)).toBeGreaterThan(boosts.get(3)?.boost ?? 0);
   });
 });

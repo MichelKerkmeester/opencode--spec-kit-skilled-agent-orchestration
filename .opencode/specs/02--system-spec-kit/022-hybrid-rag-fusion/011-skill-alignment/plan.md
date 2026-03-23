@@ -1,7 +1,7 @@
 ---
 title: "Implementation Plan: Skill Alignment — system-spec-kit"
 description: "Truth-reconciled plan for closing the last system-spec-kit documentation gaps after the current memory command surface and agent/runtime alignment landed."
-trigger_phrases: ["implementation", "plan", "skill alignment", "010 alignment"]
+trigger_phrases: ["implementation", "plan", "skill alignment", "011 alignment"]
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -39,8 +39,8 @@ This phase no longer tracks a broad pre-implementation alignment effort. It now 
 - [x] Current `system-spec-kit` docs spot-checked to separate landed work from remaining gaps
 
 ### Definition of Done
-- [x] The 010 pack tells one consistent documentation-only story
-- [x] The 010 pack no longer repeats obsolete command-surface counts or the retired standalone retrieval command model
+- [x] The 011 pack tells one consistent documentation-only story
+- [x] The 011 pack no longer repeats obsolete command-surface counts or the retired standalone retrieval command model
 - [x] The last observable `system-spec-kit` documentation drift is isolated and ready for closeout
 - [x] Strict Spec Kit validation passes
 <!-- /ANCHOR:quality-gates -->
@@ -60,7 +60,7 @@ Documentation closeout reconciliation.
 - **Asset targets**: campaign/shared-space/cross-phase guidance in the asset docs
 
 ### Data Flow
-Live repo truth informs the reconciled spec pack. The reconciled pack then acts as the implementation contract for the final `system-spec-kit` documentation updates in scope for phase 010.
+Live repo truth informs the reconciled spec pack. The reconciled pack then acts as the implementation contract for the final `system-spec-kit` documentation updates in scope for phase 011.
 
 ### Verification Methodology
 - Count live tools from `mcp_server/tool-schemas.ts`
@@ -74,7 +74,7 @@ Live repo truth informs the reconciled spec pack. The reconciled pack then acts 
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Phase 1: Reconcile the 010 Pack
+### Phase 1: Reconcile the 011 Pack
 - [x] Update all five canonical docs to the live 33-tool, 6-command memory story
 - [x] Remove stale command-surface count language and retired standalone retrieval-command wording
 - [x] Keep the scope explicitly documentation-only
@@ -93,7 +93,7 @@ Live repo truth informs the reconciled spec pack. The reconciled pack then acts 
 - [x] Add campaign/shared-space/cross-phase template-routing guidance to `template_mapping.md`
 
 ### Phase 5: Verification
-- [x] Run strict validation for the reconciled 010 pack
+- [x] Run strict validation for the reconciled 011 pack
 - [x] Re-run stale-string checks for obsolete command-surface language
 <!-- /ANCHOR:phases -->
 
@@ -105,7 +105,7 @@ Live repo truth informs the reconciled spec pack. The reconciled pack then acts 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Strict spec validation | Entire `011-skill-alignment` folder | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh ... --strict` |
-| Stale-string audit | Canonical 010 docs only | Run a targeted grep for obsolete command-surface phrases, then manually confirm any hit is historical/negative rather than a current-state claim |
+| Stale-string audit | Canonical 011 docs only | Run a targeted grep for obsolete command-surface phrases, then manually confirm any hit is historical/negative rather than a current-state claim |
 | Live count verification | Memory tool and command surface | `node` against `tool-schemas.ts`, `find .opencode/command/memory -name '*.md'` |
 | Ownership verification | Retrieval command home | `rg` or `Read` on `.opencode/command/memory/analyze.md` |
 <!-- /ANCHOR:testing -->
@@ -120,7 +120,7 @@ Live repo truth informs the reconciled spec pack. The reconciled pack then acts 
 | `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` | Internal | Green | Live tool count could not be verified |
 | `.opencode/command/memory/` | Internal | Green | Live command count and ownership could not be verified |
 | Current `system-spec-kit` docs | Internal | Green | Remaining backlog could not be narrowed accurately |
-| `012-command-alignment` delivered docs | Internal | Green | 010 could drift back to the superseded command model |
+| `012-command-alignment` delivered docs | Internal | Green | 011 could drift back to the superseded command model |
 <!-- /ANCHOR:dependencies -->
 
 ---
@@ -129,7 +129,7 @@ Live repo truth informs the reconciled spec pack. The reconciled pack then acts 
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: The reconciled pack reintroduces obsolete command-surface wording or loses genuine remaining backlog items.
-- **Procedure**: Revert only the 010 spec-pack edits, re-check live repo truth, and re-apply the reconciliation with the same strict verification steps.
+- **Procedure**: Revert only the 011 spec-pack edits, re-check live repo truth, and re-apply the reconciliation with the same strict verification steps.
 <!-- /ANCHOR:rollback -->
 
 ---
@@ -179,7 +179,7 @@ Phase 1 (Pack Reconciliation) ──► Phase 2 (Skill Guide)
 - [x] Current `system-spec-kit` docs spot-checked
 
 ### Rollback Procedure
-1. Revert the 010 spec-pack docs if the reconciliation introduces incorrect current-state claims.
+1. Revert the 011 spec-pack docs if the reconciliation introduces incorrect current-state claims.
 2. Re-run the live count and ownership checks.
 3. Re-apply only the corrections needed to restore current repo truth.
 

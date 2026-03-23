@@ -21,11 +21,15 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 - Prompt: `/memory:continue specs/<target-spec>. Capture the evidence needed to prove Resume-ready state summary and next steps. Return a concise user-facing pass/fail verdict with the main reason.`
 - Commands:
-  - `memory_search({query:"state next-steps blockers decisions", specFolder:"specs/<target-spec>", anchors:["state","next-steps","blockers","decisions"]})`
-- Expected: Resume-ready state summary and next steps.
-- Evidence: returned context + extracted next actions.
-- Pass: Continuation context is actionable and specific.
-- Fail triage: broaden anchors; verify spec folder path.
+  1. `memory_context({ input: "resume previous work continue session", mode: "resume", specFolder: "specs/<target-spec>", includeContent: true })` — primary recovery path
+  2. If resume-mode returns a clear session match, verify the recovery summary includes: last action, next steps, likely files
+  3. If results are empty or low-confidence, fall back to `memory_list({ limit: 5, sortBy: "updated_at" })` to discover recent candidates
+  4. Optionally enrich with `CONTINUE_SESSION.md` crash breadcrumbs if present in the spec folder
+  5. If summary is still thin, run anchored fallback: `memory_search({ query: "session state next steps summary blockers", specFolder: "specs/<target-spec>", anchors: ["state","next-steps","summary","blockers"], includeContent: true, limit: 5 })`
+- Expected: Resume-ready state summary and next steps via `memory_context(mode:"resume")` as primary path.
+- Evidence: returned context + extracted next actions + recovery source identification (memory_context / continue_session / memory_search / user).
+- Pass: `memory_context(mode:"resume")` is used as the primary recovery path; continuation context is actionable and specific.
+- Fail triage: verify `memory_context` resume mode routes correctly; broaden anchors on fallback search; verify spec folder path; check `CONTINUE_SESSION.md` presence.
 
 ---
 

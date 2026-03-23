@@ -1,6 +1,6 @@
 ---
 title: "Module boundary map"
-description: "MODULE_MAP.md documents internal module ownership, dependency directions, feature catalog mapping, and canonical locations for all 26 lib/ subdirectories."
+description: "MODULE_MAP.md documents internal module ownership, dependency directions, feature catalog mapping, and canonical locations for all 28 lib/ subdirectories."
 ---
 
 # Module boundary map
@@ -14,7 +14,7 @@ description: "MODULE_MAP.md documents internal module ownership, dependency dire
 
 ## 1. OVERVIEW
 
-MODULE_MAP.md is the internal ownership and dependency reference for `mcp_server/lib/`. It documents all 26 subdirectories with their purpose, key files, primary consumers, feature catalog cross-references, allowed/forbidden import directions, and canonical file locations.
+MODULE_MAP.md is the internal ownership and dependency reference for `mcp_server/lib/`. It documents all 28 subdirectories with their purpose, key files, primary consumers, feature catalog cross-references, allowed/forbidden import directions, and canonical file locations.
 
 Created during Phase 15 (Internal Module Boundary Remediation) after discovering that a symlink (`lib/cache/cognitive -> ../cognitive`) masked invisible cross-module dependencies. The map makes module boundaries explicit so that future refactors, dead-code analysis, and dependency enforcement have a single source of truth.
 
@@ -25,7 +25,7 @@ Created during Phase 15 (Internal Module Boundary Remediation) after discovering
 `MODULE_MAP.md` contains five sections:
 
 1. **Overview** -- purpose and scope
-2. **Module Inventory** -- 26 entries with purpose, key files, and primary consumers
+2. **Module Inventory** -- 28 entries with purpose, key files, and primary consumers, including `feedback/` and `spec/`
 3. **Feature Catalog Mapping** -- cross-reference between lib/ directories and the 19 feature catalog categories
 4. **Dependency Directions** -- allowed/forbidden import directions between module tiers (core, foundation, infrastructure, domain, leaf). Enforcement is deferred (documentation-only; future AST checker planned)
 5. **Canonical Locations** -- documents authoritative file locations where modules exist in multiple places (e.g., `lib/cognitive/` is canonical, not `lib/cache/cognitive/`)

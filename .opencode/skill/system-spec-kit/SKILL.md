@@ -619,8 +619,8 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 - **Retrieval trace** — Typed ContextEnvelope wraps every retrieval response with pipeline stages and a DegradedModeContract describing fallback behavior
 - **Mutation ledger** — Append-only audit trail for all memory mutations (create, update, delete, reinforce); implemented via SQLite triggers; queryable for compliance and rollback
 - **Retrieval telemetry** — 4-dimension metrics (latency, retrieval mode, fallback activation, quality score) plus Hydra architecture metadata. Enabled only when `SPECKIT_EXTENDED_TELEMETRY=true` (default: off)
-- **Hydra roadmap metadata** — `SPECKIT_HYDRA_PHASE` plus prefixed `SPECKIT_HYDRA_*` capability flags annotate telemetry, eval baselines, and migration checkpoint sidecars without changing live retrieval behavior by themselves
-- **Feature catalog** — 222 documented features across 19 categories (`feature_catalog/01--retrieval/` through `19--feature-flag-reference/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
+- **Hydra roadmap metadata** — `SPECKIT_MEMORY_ROADMAP_PHASE` / `SPECKIT_HYDRA_PHASE` plus canonical `SPECKIT_MEMORY_*` and legacy `SPECKIT_HYDRA_*` capability flags annotate telemetry, eval baselines, and migration checkpoint sidecars without changing live retrieval behavior by themselves
+- **Feature catalog** — 221 documented features across 19 categories (`feature_catalog/01--retrieval/` through `19--feature-flag-reference/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
 - **Manual testing playbook** — Operator-facing validation matrix covering existing (`EX-*`) and new (`NEW-*`) features with deterministic prompts, execution sequences, and pass/fail triage. Includes review protocol and subagent utilization ledger. See [manual_testing_playbook/](./manual_testing_playbook/)
 - **Validation scoring** — `wasUseful=false` applies a demotion penalty to memory scores; 5+ positive validations may promote a memory's importance tier
 - **Tree-thinning threshold** — 150 tokens with merge group cap of 3 for improved file visibility in memory context
@@ -666,9 +666,28 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 | `SPECKIT_RESULT_EXPLAIN_V1`  | on      | Two-tier result explainability with signal detection |
 | `SPECKIT_RESPONSE_PROFILE_V1` | on     | Mode-aware response profiles: quick, research, resume, debug |
 
-> **33 flags total.** Set via environment variable before starting the MCP server (e.g., `SPECKIT_ADAPTIVE_FUSION=1`).
+**Roadmap & Capabilities**
 
-> **Token budgets per layer:** L1:2000, L2:1500, L3:800, L4:500, L5:600, L6:1200, L7:1000 (enforced via `chars/3.5` approximation).
+| Flag | Default | Effect |
+| ---- | ------- | ------ |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `shared-rollout` | Canonical roadmap phase selector used for telemetry, evaluation baselines, and migration checkpoints |
+| `SPECKIT_HYDRA_PHASE` | `shared-rollout` | Legacy alias for the roadmap phase selector |
+| `SPECKIT_MEMORY_LINEAGE_STATE` | `true` | Canonical capability flag for the lineage-state milestone |
+| `SPECKIT_MEMORY_GRAPH_UNIFIED` | `true` | Canonical capability flag for the unified-graph milestone |
+| `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | Canonical capability flag for adaptive-ranking experiments; remains dormant unless explicitly enabled |
+| `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `true` | Canonical capability flag for scope-enforcement rollout tracking |
+| `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `true` | Canonical capability flag for governance-guardrail rollout tracking |
+| `SPECKIT_MEMORY_SHARED_MEMORY` | `true` | Canonical capability flag for the shared-memory milestone |
+| `SPECKIT_HYDRA_LINEAGE_STATE` | `true` | Legacy alias for `SPECKIT_MEMORY_LINEAGE_STATE` |
+| `SPECKIT_HYDRA_GRAPH_UNIFIED` | `true` | Legacy alias for `SPECKIT_MEMORY_GRAPH_UNIFIED` |
+| `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | Legacy alias for `SPECKIT_MEMORY_ADAPTIVE_RANKING`; dormant unless explicitly enabled |
+| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `true` | Legacy alias for `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` |
+| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `true` | Legacy alias for `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` |
+| `SPECKIT_HYDRA_SHARED_MEMORY` | `true` | Legacy alias for `SPECKIT_MEMORY_SHARED_MEMORY` |
+
+> **47 flags total across both tables.** Set via environment variable before starting the MCP server (e.g., `SPECKIT_ADAPTIVE_FUSION=1`).
+
+> **Token budgets per layer:** L1:2000, L2:1500, L3:800, L4:500, L5:600, L6:1200, L7:1000 (enforced via `chars/4` approximation).
 
 **Full documentation:** See [memory_system.md](./references/memory/memory_system.md) for tool behavior, importance tiers, and configuration.
 
@@ -864,8 +883,8 @@ Automated validation of spec folder contents via `validate.sh`.
 | MCP Server        | `mcp_server/context-server.ts`                                             | Spec Kit Memory MCP (~1073 lines) |
 | Database          | `mcp_server/dist/database/context-index.sqlite`                            | Vector search index (canonical runtime path) |
 | Constitutional    | `constitutional/`                                                          | Always-surface rules              |
-| Feature Catalog   | `feature_catalog/` (19 categories, 222 documented features)                | Per-feature current-reality docs  |
-| Testing Playbook  | `manual_testing_playbook/` (19 categories, 226 per-test files)             | Manual validation matrix          |
+| Feature Catalog   | `feature_catalog/` (19 categories, 221 documented features)                | Per-feature current-reality docs  |
+| Testing Playbook  | `manual_testing_playbook/` (19 categories, 227 per-test files)             | Manual validation matrix          |
 
 ---
 

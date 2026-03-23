@@ -5,6 +5,33 @@
 /** Maximum trigger phrases stored for each memory. */
 export const MAX_TRIGGERS_PER_MEMORY = 10;
 
+/** Supported embedding input shapes for vector search and mutation operations. */
+export type EmbeddingInput = Float32Array | number[];
+
+/** Stable error codes emitted by vector-index modules. */
+export const VectorIndexErrorCode = {
+  EMBEDDING_VALIDATION: 'EMBEDDING_VALIDATION',
+  QUERY_FAILED: 'QUERY_FAILED',
+  INTEGRITY_ERROR: 'INTEGRITY_ERROR',
+  MUTATION_FAILED: 'MUTATION_FAILED',
+  STORE_ERROR: 'STORE_ERROR',
+} as const;
+
+/** Enumerates the string codes used by {@link VectorIndexError}. */
+export type VectorIndexErrorCode = typeof VectorIndexErrorCode[keyof typeof VectorIndexErrorCode];
+
+/** Structured error used by vector-index query, mutation, and store helpers. */
+export class VectorIndexError extends Error {
+  code: VectorIndexErrorCode;
+
+  constructor(message: string, code: VectorIndexErrorCode) {
+    super(message);
+    this.name = 'VectorIndexError';
+    this.code = code;
+    Object.setPrototypeOf(this, new.target.prototype);
+  }
+}
+
 /** Represents a row from the memory index table. */
 export interface MemoryIndexRow {
   id: number;
@@ -45,6 +72,29 @@ export interface MemoryIndexRow {
   [key: string]: unknown;
 }
 
+/** Represents a vector-search memory row shared by query and store helpers. */
+export interface MemoryRow {
+  id: number;
+  spec_folder: string;
+  file_path: string;
+  title?: string | null;
+  trigger_phrases?: string | string[] | null;
+  importance_tier?: string;
+  importance_weight?: number;
+  created_at?: string;
+  access_count?: number;
+  last_accessed?: number;
+  confidence?: number;
+  keyword_score?: number;
+  similarity?: number;
+  avg_similarity?: number;
+  concept_similarities?: number[];
+  smartScore?: number;
+  relationSimilarity?: number;
+  isConstitutional?: boolean;
+  [key: string]: unknown;
+}
+
 /** Describes the inputs required to index a memory. */
 export interface IndexMemoryParams {
   specFolder: string;
@@ -53,7 +103,7 @@ export interface IndexMemoryParams {
   title?: string | null;
   triggerPhrases?: string[];
   importanceWeight?: number;
-  embedding: Float32Array | number[];
+  embedding: EmbeddingInput;
   encodingIntent?: string;
   documentType?: string;
   specLevel?: number | null;
@@ -69,7 +119,7 @@ export interface UpdateMemoryParams {
   triggerPhrases?: string[];
   importanceWeight?: number;
   importanceTier?: string;
-  embedding?: Float32Array | number[];
+  embedding?: EmbeddingInput;
   encodingIntent?: string;
   documentType?: string;
   specLevel?: number | null;
@@ -104,6 +154,10 @@ export interface EnrichedSearchResult {
   snippet: string;
   id: number;
   importanceWeight: number;
+  created_at?: string;
+  access_count?: number;
+  smartScore?: number;
+  spec_folder?: string;
   searchMethod?: string;
   isConstitutional: boolean;
   [key: string]: unknown;
@@ -114,7 +168,7 @@ export interface EnrichedSearchResult {
  * @param embedding - The embedding values to serialize.
  * @returns A binary buffer representing the embedding.
  */
-export function to_embedding_buffer(embedding: Float32Array | number[]): Buffer {
+export function to_embedding_buffer(embedding: EmbeddingInput): Buffer {
   if (embedding instanceof Float32Array) {
     return Buffer.from(embedding.buffer, embedding.byteOffset, embedding.byteLength);
   }
@@ -126,7 +180,7 @@ export function to_embedding_buffer(embedding: Float32Array | number[]): Buffer 
  * @param value - The stored trigger phrase payload.
  * @returns Parsed trigger phrases, or an empty array on invalid input.
  */
-export function parse_trigger_phrases(value: string | string[] | undefined): string[] {
+export function parse_trigger_phrases(value: string | string[] | null | undefined): string[] {
   if (!value) return [];
   if (Array.isArray(value)) return value;
   try {

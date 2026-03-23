@@ -8,7 +8,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import Database from 'better-sqlite3';
 import { getMemoryRoadmapDefaults } from '../config/capability-flags';
-import { DEFAULT_DB_DIR, initEvalDb } from './eval-db';
+import { DEFAULT_DB_DIR, initEvalDb, getEvalDbPath } from './eval-db';
 
 const CONTEXT_DB_FILENAME = 'context-index.sqlite';
 
@@ -177,7 +177,9 @@ function captureMemoryStateBaselineSnapshot(
   options: CaptureMemoryStateBaselineOptions = {},
 ): MemoryStateBaselineSnapshot {
   const contextDbPath = resolveContextDbPath(options.contextDbPath);
-  const evalDb = initEvalDb(path.dirname(contextDbPath));
+  const targetEvalDbDir = path.dirname(contextDbPath);
+  const previousEvalDbPath = getEvalDbPath();
+  const evalDb = initEvalDb(targetEvalDbDir);
   const contextDb = openContextDb(contextDbPath);
   const defaults = getMemoryRoadmapDefaults();
   const evalRunId = options.evalRunId ?? -Math.floor(Date.now() / 1000);
@@ -209,6 +211,10 @@ function captureMemoryStateBaselineSnapshot(
       contextDb?.close();
     } catch (_error: unknown) {
       // Ignore close failures in baseline capture path
+    }
+
+    if (previousEvalDbPath && previousEvalDbPath !== path.join(targetEvalDbDir, 'speckit-eval.db')) {
+      initEvalDb(path.dirname(previousEvalDbPath));
     }
   }
 }

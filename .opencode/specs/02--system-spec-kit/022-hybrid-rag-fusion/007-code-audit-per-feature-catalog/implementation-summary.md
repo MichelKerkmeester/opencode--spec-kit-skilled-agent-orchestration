@@ -150,7 +150,90 @@ A 10-iteration deep research cycle (11 questions answered) was conducted post-au
 
 ---
 
+## Re-Audit Results (2026-03-23)
+
+A full re-audit was conducted on 2026-03-23 using a three-agent triangulation methodology: GPT-5.4 analyst + GPT-5.3-Codex verifier (via cli-codex, both at high reasoning effort) + Opus 4.6 adjudicator review per phase.
+
+### Re-Audit Overall Results
+
+| Metric | Original (2026-03-22) | Re-Audit (2026-03-23) | Delta |
+|--------|----------------------|----------------------|-------|
+| Features audited | 220+ | 222 | +2 new |
+| MATCH | ~179 (81%) | 133 (60%) | -46 |
+| PARTIAL | ~41 (19%) | 84 (38%) | +43 |
+| MISMATCH | 0 (0%) | **5 (2%)** | +5 |
+| Codex CLI delegates | — | 42 (21 pairs) | — |
+| Opus review agents | — | 21 | — |
+
+### Verdict Changes: 53 features changed
+
+- **44 MATCH to PARTIAL** (downgrades)
+- **5 to MISMATCH** (new critical findings)
+- **4 PARTIAL to MATCH** (upgrades: 005/F06, 011/F12, 012/F08, 018/F12)
+
+### 5 MISMATCHes (Original Audit Found 0)
+
+| Phase | Feature | Issue | Severity |
+|-------|---------|-------|----------|
+| 009/F11 | Shadow scoring/channel attribution | `@deprecated` module claimed "active in pipeline" | P0 |
+| 010/F15 | Graph calibration profiles | Dead code presented as live graduated feature | P0 |
+| 011/F23 | Fusion policy shadow eval V2 | Deprecated, not exported, not consumed; flag nonexistent | P0 |
+| 013/F21 | Assistive reconsolidation | Catalog says "auto-merge"; code does shadow-archive | P0 |
+| 016/F11 | Feature catalog code references | "Every non-test TS file" false; 66/257 (26%) lack comments | P1 |
+
+### Re-Audit Phase Summary
+
+| Phase | Category | Features | MATCH | PARTIAL | MISMATCH |
+|-------|----------|----------|-------|---------|----------|
+| 001 | Retrieval | 11 | 5 | 6 | 0 |
+| 002 | Mutation | 10 | 1 | 9 | 0 |
+| 003 | Discovery | 3 | 2 | 1 | 0 |
+| 004 | Maintenance | 2 | 1 | 1 | 0 |
+| 005 | Lifecycle | 7 | 5 | 2 | 0 |
+| 006 | Analysis | 7 | 3 | 4 | 0 |
+| 007 | Evaluation | 2 | 0 | 2 | 0 |
+| 008 | Bug Fixes | 11 | 7 | 4 | 0 |
+| 009 | Eval & Measurement | 16 | 7 | 8 | 1 |
+| 010 | Graph Signal | 16 | 10 | 5 | 1 |
+| 011 | Scoring & Calibration | 23 | 17 | 5 | 1 |
+| 012 | Query Intelligence | 11 | 5 | 6 | 0 |
+| 013 | Memory Quality | 24 | 15 | 8 | 1 |
+| 014 | Pipeline Architecture | 22 | 17 | 5 | 0 |
+| 015 | Retrieval Enhancements | 9 | 7 | 2 | 0 |
+| 016 | Tooling & Scripts | 18 | 12 | 5 | 1 |
+| 017 | Governance | 4 | 2 | 2 | 0 |
+| 018 | UX Hooks | 19 | 14 | 5 | 0 |
+| 020 | Feature Flag Reference | 7 | 3 | 4 | 0 |
+
+### Systemic Findings
+
+1. **Source-list hygiene** is the dominant issue (16 of 19 phases). Over-inclusive lists (up to 344 files), missing direct dependencies, and wrong file attributions.
+2. **Deprecated/dead code as active** appears in 7 phases. Four P0 MISMATCHes involve modules with `@deprecated` JSDoc that the catalog describes as live graduated features.
+3. **Behavioral drift** in at least 13 phases. Stale numeric claims, wrong defaults, overstated activation conditions.
+4. **Stale module headers** contradict runtime behavior in 6+ phases (headers say "default OFF" while `rollout-policy.ts` graduates to ON).
+
+### Methodology Assessment
+
+The three-agent triangulation (GPT-5.4 analyst + GPT-5.3-Codex verifier + Opus adjudicator) produced materially better recall than the original two-agent pass:
+- **Analyst** (GPT-5.4): Strongest on behavioral/narrative discrepancy detection
+- **Verifier** (GPT-5.3-Codex): Strongest on systematic file/function/flag verification
+- **Adjudicator** (Opus): Added real value resolving disagreements in both directions
+
+Key improvement needed: formalize a shared-infrastructure rubric to reduce false-positive PARTIALs from the verifier's strict "unreferenced file" criterion.
+
+### Re-Audit Output Files
+
+All re-audit outputs are in `scratch/reaudit-2026-03-23/` per phase:
+- `gpt54-analyst.md` — GPT-5.4 analyst report
+- `codex53-verifier.md` — GPT-5.3-Codex verifier report
+- `opus-review.md` — Opus adjudicator consolidated review
+- Phase 019: `gpt54-cross-cutting.md` — Cross-cutting analysis
+- Phase 021: `gpt54-remediation.md` — Remediation synthesis
+
+---
+
 <!--
 Post-implementation documentation for the comprehensive code audit.
+Re-audit section added 2026-03-23 with three-agent triangulation results.
 Written in active voice per HVR rules.
 -->

@@ -155,7 +155,7 @@ describe('createUnifiedGraphSearchFn', () => {
     const sqlCalls = mockPrepare.mock.calls.map(call => String(call[0] ?? ''));
     const fallbackSql = sqlCalls.find(sql => sql.includes('FROM memory_index')) ?? '';
     expect(fallbackSql).toContain('FROM memory_index');
-    expect(fallbackSql).toContain('COALESCE(content_text, title');
+    expect(fallbackSql).toContain('content_text LIKE');
   });
 
   it('returns empty array when causal query throws', () => {

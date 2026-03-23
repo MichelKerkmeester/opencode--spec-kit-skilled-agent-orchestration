@@ -15,7 +15,7 @@ Instead of waiting for you to ask the system to re-scan your files, this feature
 
 ## 2. CURRENT REALITY
 
-**IMPLEMENTED (Sprint 019).** Adds `chokidar`-based push indexing in `lib/ops/file-watcher.ts` with 2-second debounce, TM-02 SHA-256 content-hash deduplication and exponential backoff retries for `SQLITE_BUSY` (1s/2s/4s, 3 attempts). `getWatcherMetrics()` is exported and returns `{ filesReindexed, avgReindexTimeMs }`, with per-reindex timing logs emitted to stderr (CHK-087). Gated by `SPECKIT_FILE_WATCHER` (default `false`).
+**IMPLEMENTED (Sprint 019).** Adds `chokidar`-based push indexing in `lib/ops/file-watcher.ts` with 2-second debounce, TM-02 SHA-256 content-hash deduplication and exponential backoff retries for `SQLITE_BUSY` (1s/2s/4s, 3 attempts). `getWatcherMetrics()` is exported and returns `{ filesReindexed, avgReindexTimeMs }`, with per-reindex timing logs emitted to stderr (CHK-087). Watcher startup/shutdown lifecycle wiring lives in `context-server.ts`, and rollout gating is centralized in `lib/search/search-flags.ts` via `isFileWatcherEnabled()` / `SPECKIT_FILE_WATCHER` (default `false`).
 
 `mcp_server/tests/file-watcher.vitest.ts` now covers the watcher runtime behavior and is green in the current verification run, including debounce, rename, burst/concurrent rename, retry and metrics scenarios.
 
@@ -28,6 +28,8 @@ Instead of waiting for you to ask the system to re-scan your files, this feature
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/lib/ops/file-watcher.ts` | Lib | Filesystem watcher |
+| `mcp_server/context-server.ts` | Server | Starts and stops the watcher during MCP server lifecycle |
+| `mcp_server/lib/search/search-flags.ts` | Lib | Exposes the `SPECKIT_FILE_WATCHER` gate via `isFileWatcherEnabled()` |
 
 ### Tests
 

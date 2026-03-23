@@ -1,13 +1,13 @@
 ---
 title: "Feature catalog code references"
-description: "Feature catalog code references embed inline traceability comments in every source file, linking implementation code back to the feature catalog by name. Each file declares which catalog features it implements via `// Feature catalog: <feature-name>` comments near the top of the file."
+description: "Feature catalog code references embed inline traceability comments in a measured majority of non-test TypeScript source files, linking implementation code back to the feature catalog by name. Annotated files declare which catalog features they implement via `// Feature catalog: <feature-name>` comments near the top of the file."
 ---
 
 # Feature catalog code references
 
 ## 1. OVERVIEW
 
-Feature catalog code references embed inline traceability comments in every source file, linking implementation code back to the feature catalog by name. Each file declares which catalog features it implements via `// Feature catalog: <feature-name>` comments near the top of the file.
+Feature catalog code references embed inline traceability comments in a measured majority of non-test TypeScript source files, linking implementation code back to the feature catalog by name. Annotated files declare which catalog features they implement via `// Feature catalog: <feature-name>` comments near the top of the file.
 
 This feature works like a label on a warehouse box — instead of tracking items by aisle number (which changes when shelves move), you write the product name directly on the box. Anyone can grep the codebase for a feature name and immediately find every file that implements it, without needing to know the folder structure or historical sprint/phase numbering.
 
@@ -15,7 +15,7 @@ This feature works like a label on a warehouse box — instead of tracking items
 
 ## 2. CURRENT REALITY
 
-Every non-test TypeScript file under `mcp_server/` and `shared/` carries one or more `// Feature catalog: <feature-name>` comments whose name must exactly match an H3 heading in `feature_catalog/feature_catalog.md`. Files implementing multiple catalog features list all applicable entries. Pure utility, type, and barrel-export files that do not map to any specific feature are exempt.
+Measured audit coverage at HEAD is approximately 74%: `191` of `257` non-test TypeScript files under `mcp_server/` and `shared/` carry one or more `// Feature catalog: <feature-name>` comments whose name must exactly match an H3 heading in `feature_catalog/feature_catalog.md`. Files implementing multiple catalog features list all applicable entries. Some pure utility, type, and barrel-export files are treated as exempt, but the convention is not yet universal across the live tree.
 
 The `// MODULE: Name` header convention provides a standardized 3-line block at the top of every `.ts` file (separator → module name → separator) using box-drawing characters (`───`) in `mcp_server/` and dashes (`---`) in `shared/` and `scripts/`.
 

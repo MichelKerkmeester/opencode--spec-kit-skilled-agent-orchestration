@@ -1,7 +1,29 @@
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+
+// Mock core/db-state to prevent real DB operations (checkDatabaseUpdated throws
+// when the database directory cannot be resolved in the test environment).
+vi.mock('../core/db-state', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    checkDatabaseUpdated: vi.fn(async () => false),
+    waitForEmbeddingModel: vi.fn(async () => true),
+    isEmbeddingModelReady: vi.fn(() => true),
+  };
+});
+
+vi.mock('../core', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    checkDatabaseUpdated: vi.fn(async () => false),
+    waitForEmbeddingModel: vi.fn(async () => true),
+    isEmbeddingModelReady: vi.fn(() => true),
+  };
+});
 
 import * as handler from '../handlers/memory-save';
 import { buildSaveResponse } from '../handlers/save/response-builder';

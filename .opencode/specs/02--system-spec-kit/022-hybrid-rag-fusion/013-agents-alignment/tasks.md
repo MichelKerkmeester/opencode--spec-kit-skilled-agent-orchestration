@@ -1,9 +1,9 @@
 ---
-title: "Tasks: 012 — Agent Alignment"
-description: "Truth-reconciliation tasks for updating the 012 packet and the scoped runtime-facing agent docs to the live runtime lineage model."
+title: "Tasks: 013 — Agent Alignment"
+description: "Truth-reconciliation tasks for updating the 013 packet and the scoped runtime-facing agent docs to the live runtime lineage model."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
-# Tasks: 012 — Agent Alignment
+# Tasks: 013 — Agent Alignment
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
@@ -24,7 +24,7 @@ description: "Truth-reconciliation tasks for updating the 012 packet and the sco
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Audit Current Runtime Reality
 
-- [x] T001 Read the canonical `012` packet and identify stale copy-model language (`./spec.md`, `./plan.md`, `./tasks.md`, `./checklist.md`, `./implementation-summary.md`)
+- [x] T001 Read the canonical `013` packet and identify stale copy-model language (`./spec.md`, `./plan.md`, `./tasks.md`, `./checklist.md`, `./implementation-summary.md`)
 - [x] T002 Verify the two source families at `.opencode/agent/*.md` and `.opencode/agent/chatgpt/*.md`
 - [x] T003 Verify runtime targets for Claude, Codex, and Gemini, including `.gemini -> .agents`
 - [x] T004 Confirm 9-file family counts across base, ChatGPT, Claude, Codex, and Gemini paths

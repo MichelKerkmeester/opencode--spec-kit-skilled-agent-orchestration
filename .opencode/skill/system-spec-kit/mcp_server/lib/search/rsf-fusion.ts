@@ -25,6 +25,8 @@
 
 /** @deprecated RSF fusion dead code. isRsfEnabled() was removed in Sprint 10 audit. Core algorithms retained for reference only. */
 
+import { canonicalRrfId } from '@spec-kit/shared/algorithms/rrf-fusion';
+
 import type { RrfItem, RankedList } from '@spec-kit/shared/algorithms/rrf-fusion';
 
 // Feature catalog: Relative score fusion in shadow mode
@@ -132,23 +134,23 @@ function fuseResultsRsf(listA: RankedList, listB: RankedList): RsfResult[] {
   const maxB = scoresB.length > 0 ? scoresB.reduce((a, b) => Math.max(a, b), -Infinity) : 0;
 
   // --- Step 3: Normalize and collect into maps ---
-  const normalizedMapA = new Map<number | string, { item: RrfItem; normalizedScore: number }>();
+  const normalizedMapA = new Map<string, { item: RrfItem; normalizedScore: number }>();
   for (let i = 0; i < itemsA.length; i++) {
     const normalized = minMaxNormalize(scoresA[i], minA, maxA);
-    normalizedMapA.set(itemsA[i].id, { item: itemsA[i], normalizedScore: normalized });
+    normalizedMapA.set(canonicalRrfId(itemsA[i].id), { item: itemsA[i], normalizedScore: normalized });
   }
 
-  const normalizedMapB = new Map<number | string, { item: RrfItem; normalizedScore: number }>();
+  const normalizedMapB = new Map<string, { item: RrfItem; normalizedScore: number }>();
   for (let i = 0; i < itemsB.length; i++) {
     const normalized = minMaxNormalize(scoresB[i], minB, maxB);
-    normalizedMapB.set(itemsB[i].id, { item: itemsB[i], normalizedScore: normalized });
+    normalizedMapB.set(canonicalRrfId(itemsB[i].id), { item: itemsB[i], normalizedScore: normalized });
   }
 
   // --- Step 4: Fuse ---
-  const resultMap = new Map<number | string, RsfResult>();
+  const resultMap = new Map<string, RsfResult>();
 
   // All IDs from both lists
-  const allIds = new Set<number | string>([
+  const allIds = new Set<string>([
     ...normalizedMapA.keys(),
     ...normalizedMapB.keys(),
   ]);

@@ -21,7 +21,7 @@ At index time, the surrogate generator produces a `SurrogateMetadata` object con
 - **Summary**: concise extractive summary (max `MAX_SUMMARY_LENGTH = 200` characters)
 - **Surrogate questions**: 2-5 heuristic questions the document likely answers (`MIN_SURROGATE_QUESTIONS = 2`, `MAX_SURROGATE_QUESTIONS = 5`)
 
-At query time, stored surrogates are matched against the incoming query using token overlap. A match requires a minimum overlap ratio of `MIN_MATCH_THRESHOLD = 0.15`. The `SurrogateMatchResult` includes the memory ID, combined match score in [0, 1], and which surrogates were matched (for explainability).
+At query time, Stage 1 batch-loads stored surrogates from SQLite and matches them against the incoming query using token overlap. A match requires a minimum overlap ratio of `MIN_MATCH_THRESHOLD = 0.15`. The runtime matcher `matchSurrogates()` returns `{ score, matchedSurrogates }` for one document; memory IDs come from the surrounding candidate rows, and Stage 1 applies the match score as a capped additive boost to existing candidates.
 
 Enabled by default (graduated). Set `SPECKIT_QUERY_SURROGATES=false` to disable. Also has a flag accessor in `search-flags.ts`.
 
@@ -34,6 +34,8 @@ Enabled by default (graduated). Set `SPECKIT_QUERY_SURROGATES=false` to disable.
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/lib/search/query-surrogates.ts` | Lib | Alias extraction, heading extraction, summary generation, surrogate question generation, query-time matching |
+| `mcp_server/lib/search/surrogate-storage.ts` | Lib | SQLite table initialization plus single/batch surrogate load and store helpers |
+| `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Stage 1 integration: batch-loads surrogates and applies capped additive boosts to existing candidates |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isQuerySurrogatesEnabled()` flag accessor |
 
 ### Tests
@@ -48,4 +50,4 @@ Enabled by default (graduated). Set `SPECKIT_QUERY_SURROGATES=false` to disable.
 
 - Group: Query intelligence
 - Source feature title: Index-time query surrogates
-- Current reality source: mcp_server/lib/search/query-surrogates.ts module header and implementation
+- Current reality source: mcp_server/lib/search/query-surrogates.ts, mcp_server/lib/search/surrogate-storage.ts, and mcp_server/lib/search/pipeline/stage1-candidate-gen.ts

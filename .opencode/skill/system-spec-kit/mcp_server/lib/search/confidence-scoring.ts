@@ -87,6 +87,10 @@ export interface ScoredResult extends Record<string, unknown> {
   similarity?: number;
   /** Reranker cross-encoder score if available. */
   rerankerScore?: number;
+  /** Explicit reranker application marker from the pipeline. */
+  rerankerApplied?: boolean;
+  /** Score origin metadata for distinguishing real reranks from fallbacks. */
+  scoringMethod?: string;
   /** Anchor metadata array populated by Stage 2. */
   anchorMetadata?: Array<Record<string, unknown>>;
   /** Source channels that contributed this result. */
@@ -161,6 +165,14 @@ function countAnchors(result: ScoredResult): number {
   return result.anchorMetadata.length;
 }
 
+function hasRerankerSignal(result: ScoredResult): boolean {
+  const hasFiniteRerankerScore = typeof result.rerankerScore === 'number' && Number.isFinite(result.rerankerScore);
+  if (!hasFiniteRerankerScore) return false;
+  if (result.scoringMethod === 'fallback') return false;
+  if (result.rerankerApplied === true) return true;
+  return typeof result.scoringMethod === 'string' && result.scoringMethod.trim().length > 0;
+}
+
 /**
  * Compute the score margin between result[i] and result[i+1].
  * Returns 1.0 for the last result (no successor).
@@ -206,7 +218,7 @@ export function computeResultConfidence(results: ScoredResult[]): ResultConfiden
     const margin = computeMargin(score, nextScore);
     const channelCount = countChannels(result);
     const anchorCount = countAnchors(result);
-    const hasReranker = typeof result.rerankerScore === 'number' && Number.isFinite(result.rerankerScore);
+    const hasReranker = hasRerankerSignal(result);
 
     // Factor scores (each 0–1)
     const marginFactor = margin >= LARGE_MARGIN_THRESHOLD

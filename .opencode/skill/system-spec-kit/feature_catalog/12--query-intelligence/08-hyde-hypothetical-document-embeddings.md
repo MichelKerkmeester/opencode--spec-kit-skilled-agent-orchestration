@@ -9,7 +9,7 @@ description: "HyDE generates a short hypothetical document answering the query, 
 
 HyDE generates a short hypothetical document answering the query, embeds it, and uses the pseudo-document embedding as an additional retrieval channel for deep low-confidence queries, gated by the `SPECKIT_HYDE` flag.
 
-When a search returns weak results, the problem is often a vocabulary mismatch between the query and the stored content. HyDE bridges this gap by asking an LLM to write a short document that would answer the question, then searching with that document's embedding instead of the query's. Since the hypothetical document uses the language of an answer rather than a question, it often matches stored content better. It starts in shadow mode where results are logged but not used, and graduates to active mode via a separate flag.
+When a search returns weak results, the problem is often a vocabulary mismatch between the query and the stored content. HyDE bridges this gap by asking an LLM to write a short document that would answer the question, then searching with that document's embedding instead of the query's. Since the hypothetical document uses the language of an answer rather than a question, it often matches stored content better. It is active by default (both `SPECKIT_HYDE` and `SPECKIT_HYDE_ACTIVE` are ON); set `SPECKIT_HYDE_ACTIVE=false` to revert to shadow mode where results are logged but not merged.
 
 ---
 

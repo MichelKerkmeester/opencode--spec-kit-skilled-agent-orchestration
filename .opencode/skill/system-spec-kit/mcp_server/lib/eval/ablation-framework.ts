@@ -65,8 +65,6 @@ export interface AblationConfig {
   channels: AblationChannel[];
   /** Subset of ground truth query IDs to use. Omit for all queries. */
   groundTruthQueryIds?: number[];
-  /** Compare against an existing baseline run ID instead of computing one. */
-  baselineRunId?: string;
   /** Recall cutoff K. Defaults to 20. */
   recallK?: number;
 }
@@ -299,8 +297,8 @@ function percentile(sorted: number[], p: number): number {
  * Build aggregated AblationMetrics from per-query metric maps.
  */
 function buildAggregatedMetrics(
-  baselinePerQuery: Map<number, { metrics: ReturnType<typeof computeQueryMetrics>; latencyMs: number }>,
-  ablatedPerQuery: Map<number, { metrics: ReturnType<typeof computeQueryMetrics>; latencyMs: number }>,
+  baselinePerQuery: Map<number, { metrics: ReturnType<typeof computeQueryMetrics>; latencyMs: number; tokenUsage?: number }>,
+  ablatedPerQuery: Map<number, { metrics: ReturnType<typeof computeQueryMetrics>; latencyMs: number; tokenUsage?: number }>,
 ): AblationMetrics {
   const bMetrics = [...baselinePerQuery.values()];
   const aMetrics = [...ablatedPerQuery.values()];
@@ -317,6 +315,12 @@ function buildAggregatedMetrics(
 
   const bLatencies = bMetrics.map(m => m.latencyMs).sort((a, b) => a - b);
   const aLatencies = aMetrics.map(m => m.latencyMs).sort((a, b) => a - b);
+  const bTokenUsage = bMetrics
+    .map(m => m.tokenUsage)
+    .filter((value): value is number => typeof value === 'number' && Number.isFinite(value));
+  const aTokenUsage = aMetrics
+    .map(m => m.tokenUsage)
+    .filter((value): value is number => typeof value === 'number' && Number.isFinite(value));
 
   return {
     'MRR@5': entry(bMetrics.map(m => m.metrics.mrr), aMetrics.map(m => m.metrics.mrr)),
@@ -335,7 +339,7 @@ function buildAggregatedMetrics(
       ablated: percentile(aLatencies, 95),
       delta: percentile(aLatencies, 95) - percentile(bLatencies, 95),
     },
-    'token_usage': { baseline: 0, ablated: 0, delta: 0 },
+    'token_usage': entry(bTokenUsage, aTokenUsage),
   };
 }
 
@@ -377,7 +381,7 @@ export async function runAblation(
   try {
     // -- Step 1: Compute baseline (all channels enabled) --
     const baselineRecalls: Map<number, number> = new Map();
-    const baselineMetricsPerQuery: Map<number, { metrics: ReturnType<typeof computeQueryMetrics>; latencyMs: number }> = new Map();
+    const baselineMetricsPerQuery: Map<number, { metrics: ReturnType<typeof computeQueryMetrics>; latencyMs: number; tokenUsage?: number }> = new Map();
     let evaluatedCount = 0;
     const noDisabled = new Set<AblationChannel>();
 
@@ -404,7 +408,7 @@ export async function runAblation(
     for (const channel of config.channels) {
       const disabledSet = new Set<AblationChannel>([channel]);
       const ablatedRecalls: Map<number, number> = new Map();
-      const ablatedMetricsPerQuery: Map<number, { metrics: ReturnType<typeof computeQueryMetrics>; latencyMs: number }> = new Map();
+      const ablatedMetricsPerQuery: Map<number, { metrics: ReturnType<typeof computeQueryMetrics>; latencyMs: number; tokenUsage?: number }> = new Map();
       let failedQuery: GroundTruthQuery | null = null;
 
       try {
@@ -684,8 +688,8 @@ export function formatAblationReport(report: AblationReport): string {
   if (hasMetrics) {
     lines.push(`### Full Metric Breakdown`);
     lines.push(``);
-    lines.push(`| Channel | MRR@5 | P@5 | R@5 | NDCG@5 | MAP | Hit Rate | Lat p50 | Lat p95 | Tokens |`);
-    lines.push(`|---------|-------|-----|-----|--------|-----|----------|---------|---------|--------|`);
+    lines.push(`| Channel | MRR@5 | P@5 | R@5 | NDCG@5 | MAP | Hit Rate | Lat p50 | Lat p95 |`);
+    lines.push(`|---------|-------|-----|-----|--------|-----|----------|---------|---------|`);
 
     for (const r of sorted) {
       if (!r.metrics) continue;
@@ -699,8 +703,7 @@ export function formatAblationReport(report: AblationReport): string {
         `| ${m['MAP'].delta >= 0 ? '+' : ''}${m['MAP'].delta.toFixed(4)} ` +
         `| ${m['hit_rate'].delta >= 0 ? '+' : ''}${m['hit_rate'].delta.toFixed(4)} ` +
         `| ${m['latency_p50'].delta >= 0 ? '+' : ''}${m['latency_p50'].delta.toFixed(1)}ms ` +
-        `| ${m['latency_p95'].delta >= 0 ? '+' : ''}${m['latency_p95'].delta.toFixed(1)}ms ` +
-        `| ${m['token_usage'].delta >= 0 ? '+' : ''}${m['token_usage'].delta.toFixed(0)} |`,
+        `| ${m['latency_p95'].delta >= 0 ? '+' : ''}${m['latency_p95'].delta.toFixed(1)}ms |`,
       );
     }
     lines.push(``);

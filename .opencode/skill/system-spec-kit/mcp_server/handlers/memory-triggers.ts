@@ -173,8 +173,6 @@ async function getTieredContent(
 
 /** Handle memory_match_triggers tool - matches prompt against trigger phrases with cognitive decay */
 async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse> {
-  await checkDatabaseUpdated();
-
   const {
     prompt,
     limit: rawLimit = 3,
@@ -183,13 +181,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
     include_cognitive: includeCognitive = true
   } = args;
 
-  const limit = (typeof rawLimit === 'number' && Number.isFinite(rawLimit) && rawLimit > 0)
-    ? Math.min(Math.floor(rawLimit), 50)
-    : 3;
-  const turnNumber = (typeof rawTurnNumber === 'number' && Number.isFinite(rawTurnNumber) && rawTurnNumber >= 0)
-    ? Math.floor(rawTurnNumber)
-    : 1;
-
+  // Validate inputs before any I/O (checkDatabaseUpdated is deferred until after validation)
   if (!prompt || typeof prompt !== 'string') {
     return createMCPErrorResponse({
       tool: 'memory_match_triggers',
@@ -201,6 +193,15 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
       }
     });
   }
+
+  const limit = (typeof rawLimit === 'number' && Number.isFinite(rawLimit) && rawLimit > 0)
+    ? Math.min(Math.floor(rawLimit), 50)
+    : 3;
+  const turnNumber = (typeof rawTurnNumber === 'number' && Number.isFinite(rawTurnNumber) && rawTurnNumber >= 0)
+    ? Math.floor(rawTurnNumber)
+    : 1;
+
+  await checkDatabaseUpdated();
 
   const startTime = Date.now();
 

@@ -156,8 +156,10 @@ describe('REQ-D3-001: Sparse-First Policy', () => {
     process.env.SPECKIT_TYPED_TRAVERSAL = 'false';
     // 1-hop and 2-hop should both be reachable with original MAX_HOPS=2
     const boosts = causalBoost.getNeighborBoosts([1]);
-    expect(boosts.get(2)).toBeCloseTo(0.05, 5); // 1-hop neighbor
-    expect(boosts.get(3)).toBeCloseTo(0.025, 5); // 2-hop neighbor
+    expect(boosts.get(2)?.boost).toBeCloseTo(0.05, 5); // 1-hop neighbor
+    expect(boosts.get(2)?.hopCount).toBe(1);
+    expect(boosts.get(3)?.boost).toBeCloseTo(0.025, 5); // 2-hop neighbor
+    expect(boosts.get(3)?.hopCount).toBe(2);
   });
 });
 
@@ -346,8 +348,10 @@ describe('Feature flag OFF: SPECKIT_TYPED_TRAVERSAL=false — no regressions', (
   it('classic 2-hop traversal still works when flag is OFF', () => {
     const boosts = causalBoost.getNeighborBoosts([1]);
     // 1-hop: node 2 → 0.05, 2-hop: node 3 → 0.025
-    expect(boosts.get(2)).toBeCloseTo(0.05, 5);
-    expect(boosts.get(3)).toBeCloseTo(0.025, 5);
+    expect(boosts.get(2)?.boost).toBeCloseTo(0.05, 5);
+    expect(boosts.get(2)?.hopCount).toBe(1);
+    expect(boosts.get(3)?.boost).toBeCloseTo(0.025, 5);
+    expect(boosts.get(3)?.hopCount).toBe(2);
   });
 
   it('applyCausalBoost with flag OFF ignores graphDensity and intent options', () => {

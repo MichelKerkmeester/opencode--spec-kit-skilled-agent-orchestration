@@ -541,7 +541,6 @@ async function indexMemoryFile(
 async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   // A7-P2-1: Generate requestId for incident correlation in error responses
   const requestId = randomUUID();
-  await checkDatabaseUpdated();
 
   const {
     filePath: file_path,
@@ -561,9 +560,12 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
     deleteAfter,
   } = args;
 
+  // Validate inputs before any I/O (checkDatabaseUpdated is deferred until after validation)
   if (!file_path || typeof file_path !== 'string') {
     throw new Error('filePath is required and must be a string');
   }
+
+  await checkDatabaseUpdated();
 
   const validatedPath: string = validateFilePathLocal(file_path);
   const database = requireDb();

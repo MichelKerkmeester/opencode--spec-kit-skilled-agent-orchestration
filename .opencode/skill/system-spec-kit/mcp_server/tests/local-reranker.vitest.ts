@@ -109,7 +109,7 @@ async function loadRerankerModule(overrides: {
       : async () => undefined,
   }));
 
-  vi.doMock('../../utils', () => ({
+  vi.doMock('../utils', () => ({
     toErrorMessage: (error: unknown) => error instanceof Error ? error.message : String(error),
   }));
 

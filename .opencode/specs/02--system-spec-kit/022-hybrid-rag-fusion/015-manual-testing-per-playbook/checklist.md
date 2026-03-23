@@ -30,7 +30,7 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Parent spec.md exists and documents the exact-ID coverage model — spec.md documents 226 scenario files, 264 exact IDs across 19 categories
+- [x] CHK-001 [P0] Parent spec.md exists and documents the exact-ID coverage model — spec.md documents 233 scenario files, 272 exact IDs across 19 categories
 - [x] CHK-002 [P0] Parent plan.md exists and describes the execution approach — plan.md defines 3-phase workflow (setup, execute 19 phases, aggregate)
 - [x] CHK-003 [P0] Parent tasks.md exists with task breakdown — tasks.md has T000-T021 covering setup, 19 phases, and verification
 - [x] CHK-004 [P0] All 19 phase directories exist (001-retrieval through 019-feature-flag-reference) — all 19 directories confirmed present with spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md
@@ -44,10 +44,10 @@ contextType: "general"
 ## Code Quality
 
 - [x] CHK-040 [P0] Recursive validate.sh --recursive run on 015-manual-testing-per-playbook with 0 errors — all 19 phase folders contain complete Level 2 documentation
-- [x] CHK-041 [P0] No scenario IDs missing from phase ownership (zero orphans) — 264/264 IDs assigned and verdicted
+- [x] CHK-041 [P0] No scenario IDs missing from phase ownership (zero orphans) — 272/272 IDs assigned and verdicted
 - [x] CHK-042 [P0] No duplicate scenario ID assignments across phases (zero duplicates) — each ID appears in exactly one phase folder
 - [x] CHK-043 [P1] Parent spec.md, plan.md, tasks.md synchronized with execution results — all parent docs updated with final verdict counts
-- [x] CHK-044 [P1] Implementation-summary.md completed with actual execution data — aggregate report with 264 PASS, 0 PARTIAL, 0 FAIL
+- [x] CHK-044 [P1] Implementation-summary.md completed with actual execution data — aggregate report with 272 PASS, 0 PARTIAL, 0 FAIL
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -57,7 +57,7 @@ contextType: "general"
 
 ### Phase 001-019 Execution Status
 
-- [x] CHK-010 [P0] Phase 001 (retrieval) — 11/11 verdicted: 11 PASS (100%)
+- [x] CHK-010 [P0] Phase 001 (retrieval) — 13/13 verdicted: 13 PASS (100%)
 - [x] CHK-011 [P0] Phase 002 (mutation) — 9/9 verdicted: 9 PASS (100%)
 - [x] CHK-012 [P0] Phase 003 (discovery) — 3/3 verdicted: 3 PASS (100%)
 - [x] CHK-013 [P0] Phase 004 (maintenance) — 2/2 verdicted: 2 PASS (100%)
@@ -72,18 +72,18 @@ contextType: "general"
 - [x] CHK-022 [P0] Phase 013 (memory-quality-and-indexing) — 34/34 verdicted: 34 PASS (100%) — 164 promoted PARTIAL to PASS after runBatchLearning() wired to startup
 - [x] CHK-023 [P0] Phase 014 (pipeline-architecture) — 18/18 verdicted: 18 PASS (100%)
 - [x] CHK-024 [P0] Phase 015 (retrieval-enhancements) — 11/11 verdicted: 11 PASS (100%)
-- [x] CHK-025 [P0] Phase 016 (tooling-and-scripts) — 59/59 verdicted: 59 PASS (100%)
+- [x] CHK-025 [P0] Phase 016 (tooling-and-scripts) — 65/65 verdicted: 65 PASS (100%)
 - [x] CHK-026 [P0] Phase 017 (governance) — 5/5 verdicted: 5 PASS (100%)
 - [x] CHK-027 [P0] Phase 018 (ux-hooks) — 11/11 verdicted: 11 PASS (100%)
 - [x] CHK-028 [P0] Phase 019 (feature-flag-reference) — 8/8 verdicted: 8 PASS (100%)
 
 ### Result Aggregation
 
-- [x] CHK-030 [P0] All scenario verdicts collected across 19 phases with zero skipped — 264/264 IDs verdicted
+- [x] CHK-030 [P0] All scenario verdicts collected across 19 phases with zero skipped — 272/272 IDs verdicted
 - [x] CHK-031 [P0] FAIL verdicts root-caused and either fixed or documented — 0 FAILs remaining
 - [x] CHK-032 [P1] PARTIAL verdicts categorized with clear reasons (environment, data, config) — 0 PARTIALs remaining. 164 promoted to PASS after runBatchLearning() wired. 159 promoted to PASS after pipeline wiring. 091 reclassified: ANCHOR-as-node is DEFERRED/SKIPPED per feature catalog.
 - [x] CHK-033 [P1] Per-phase execution evidence captured in scratch/ directories — evidence captured in implementation-summary.md and checklist.md with file:line citations
-- [x] CHK-034 [P2] Aggregate pass/partial/fail counts reconciled against total scenario inventory — 264 + 0 + 0 = 264 (matches inventory)
+- [x] CHK-034 [P2] Aggregate pass/partial/fail counts reconciled against total scenario inventory — 272 + 0 + 0 = 272 (matches inventory)
 <!-- /ANCHOR:testing -->
 
 ---

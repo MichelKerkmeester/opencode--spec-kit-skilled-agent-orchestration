@@ -272,6 +272,393 @@ HydraDB public positioning consistently pairs shared memory with strict boundari
 
 ---
 
+### ADR-004: Append-First Lineage (Supersede-Only, Never Mutate/Delete)
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-03-13 |
+| **Deciders** | System-spec-kit maintainers |
+
+### Context
+
+The lineage system needed a deterministic way to track memory version history without sacrificing auditability or temporal reconstruction. The implementation already records predecessor closure by setting `valid_to`, inserts a fresh lineage row for the successor, and updates a separate active projection instead of rewriting the original version in place. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts:529-596]
+
+The same module exposes append-style backfill and active projection maintenance, which reinforces that lineage history is preserved as immutable versions while "current state" is derived separately. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts:930-1060]
+
+### Constraints
+
+- Version history must remain auditable.
+- `asOf` queries must resolve against preserved historical state.
+- Current-state lookup still needs a fast active pointer.
+
+### Decision
+
+**We chose**: Make all lineage transitions append-only, where prior records are superseded rather than mutated or deleted.
+
+**How it works**: The `SUPERSEDE` path closes the predecessor by filling `valid_to`, inserts a new lineage row as the active successor, and updates `active_memory_projection` to point at the latest version. Existing lineage rows remain preserved for audit and temporal reconstruction. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts:554-596]
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Append-first supersede model (Chosen)** | Full audit trail, natural temporal semantics, rollback-friendly | Requires separate active projection and growing storage | 9/10 |
+| In-place mutation of current lineage row | Smaller storage footprint, simpler single-row reads | Destroys history and weakens auditability | 3/10 |
+| Periodic overwrite with external changelog | Reduces table growth in primary store | Splits truth across systems and complicates queries | 4/10 |
+
+**Why this one**: It preserves every version of a memory while keeping current-state access explicit and reversible.
+
+### Consequences
+
+**What improves**:
+- Full audit trail for every memory version.
+- Temporal queries work naturally against immutable history.
+- Rollback remains possible by promoting an earlier preserved version.
+
+**What it costs**:
+- Storage grows monotonically. Mitigation: rely on retention policy or external compaction tooling rather than destructive mutation.
+- Active-state lookup must be maintained separately via projection rows.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Projection drifts from latest active lineage row | M | Run `validateLineageIntegrity()` and projection checks |
+| Retention cost grows with version count | M | Monitor lineage row volume and plan archival tooling |
+
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Version history and auditability are core lineage requirements |
+| 2 | **Beyond Local Maxima?** | PASS | Compared against mutation and split-log alternatives |
+| 3 | **Sufficient?** | PASS | Covers history, rollback, and active-state lookup together |
+| 4 | **Fits Goal?** | PASS | Aligns with Hydra-inspired append-style memory evolution |
+| 5 | **Open Horizons?** | PASS | Leaves room for future compaction/archive tooling without changing the contract |
+
+**Checks Summary**: 5/5 PASS
+
+### Implementation
+
+**What changes**:
+- Predecessor rows are closed with `valid_to` instead of being rewritten.
+- Successor versions are inserted as new lineage rows and reflected in `active_memory_projection`.
+
+**How to roll back**: Record a new superseding version that re-activates prior content, or disable lineage consumers and rely on preserved historical rows for recovery.
+
+---
+
+### ADR-005: Half-Open Temporal Contract [valid_from, valid_to)
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-03-13 |
+| **Deciders** | System-spec-kit maintainers |
+
+### Context
+
+The `asOf` temporal resolver needed an unambiguous interval model so each timestamp maps to exactly one active version. The implementation already queries lineage rows with `valid_from <= timestamp` and `(valid_to IS NULL OR valid_to > timestamp)`, which is the standard half-open contract. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts:823-832]
+
+Integrity checks also show that overlap prevention is enforced operationally rather than by schema-level interval constraints: duplicate active rows are detected after the fact by `validateLineageIntegrity()`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts:857-920]
+
+### Constraints
+
+- Version boundaries must not produce ambiguous point-in-time results.
+- Current versions need a simple representation.
+- Integrity validation must work against the chosen interval semantics.
+
+### Decision
+
+**We chose**: Use half-open intervals for lineage validity, where `valid_from` is inclusive and `valid_to` is exclusive.
+
+**How it works**: A record with `valid_to = NULL` is the current version. `resolveLineageAsOf(timestamp)` returns the row where `valid_from <= timestamp < valid_to`, or the open-ended active row when `valid_to` is null. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts:823-848]
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Half-open intervals (Chosen)** | No boundary ambiguity, matches common temporal-system semantics | Requires careful write discipline | 9/10 |
+| Closed intervals on both ends | Familiar to some readers | Boundary timestamps can resolve to two versions | 4/10 |
+| Start-only timestamps with "latest before" lookup | Simpler schema story | Harder to validate overlap and active-state correctness | 5/10 |
+
+**Why this one**: It makes point-in-time resolution deterministic and aligns cleanly with append-only version transitions.
+
+### Consequences
+
+**What improves**:
+- Exactly one version is active at any timestamp when writes are correct.
+- Temporal semantics match standard database and event-interval practice.
+
+**What it costs**:
+- Overlap integrity is managed in application logic rather than with a native interval constraint.
+- Violations are detected by validation instead of being prevented by the schema alone.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Overlapping or duplicate active intervals slip through writes | H | Validate transitions and run `validateLineageIntegrity()` |
+| Boundary semantics are misunderstood by maintainers | M | Keep `[valid_from, valid_to)` explicit in docs and tests |
+
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | `asOf` requires a precise interval contract |
+| 2 | **Beyond Local Maxima?** | PASS | Compared against closed and start-only interval models |
+| 3 | **Sufficient?** | PASS | Fully defines current, historical, and boundary behavior |
+| 4 | **Fits Goal?** | PASS | Directly supports temporal resolution in lineage queries |
+| 5 | **Open Horizons?** | PASS | Compatible with future DB constraints if later added |
+
+**Checks Summary**: 5/5 PASS
+
+### Implementation
+
+**What changes**:
+- `resolveLineageAsOf()` filters by inclusive `valid_from` and exclusive `valid_to`.
+- Integrity checks flag duplicate active rows and projection drift against this contract.
+
+**How to roll back**: Keep the same stored timestamps and swap only the resolver semantics if needed, though that would require revisiting every boundary-sensitive test and query.
+
+---
+
+### ADR-006: Idempotent Legacy-Memory Backfill
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-03-13 |
+| **Deciders** | System-spec-kit maintainers |
+
+### Context
+
+When lineage state was introduced, pre-existing `memory_index` rows had no lineage entries. The backfill process therefore had to construct synthetic lineage chains from legacy rows while remaining safe to rerun after partial execution, schema evolution, or metadata improvements. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts:930-999]
+
+The implementation uses `ON CONFLICT(memory_id) DO UPDATE`, groups legacy rows by logical key, assigns version numbers in chronological order, and emits `BACKFILL` transitions so old memories become queryable by lineage and `asOf` resolution without duplicate inserts. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts:1002-1055]
+
+### Constraints
+
+- Existing memories must become lineage-aware without duplication.
+- Operators need a safe retry path after interrupted or partial backfills.
+- Synthetic history must still preserve deterministic ordering.
+
+### Decision
+
+**We chose**: Make `backfillLineageState()` idempotent by using conflict-upsert semantics for every legacy lineage row.
+
+**How it works**: Each legacy memory receives a synthetic `BACKFILL` transition with version ordering derived from chronological grouping under its logical key. Reruns update lineage metadata to the expected values rather than creating duplicate lineage rows. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts:1002-1055]
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Idempotent upsert backfill (Chosen)** | Safe reruns, resilient to partial failure, clean operator story | Can rewrite derived metadata on rerun | 9/10 |
+| One-shot insert-only migration | Simpler SQL path | Fragile under interruption and hard to recover | 4/10 |
+| Manual operator repair for legacy rows | Maximum control | Slow, error-prone, and inconsistent across environments | 2/10 |
+
+**Why this one**: It minimizes migration risk while allowing legacy memories to participate in the new lineage model immediately.
+
+### Consequences
+
+**What improves**:
+- Backfill can be rerun safely after schema changes or failed attempts.
+- Pre-lineage memories gain temporal queryability and active-projection support.
+
+**What it costs**:
+- Backfilled timestamps are synthetic, derived from `created_at` or history events rather than original lineage-intent timestamps.
+- Operators must understand that reruns may rewrite lineage metadata to the expected derived state.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Synthetic timestamps are mistaken for original lineage events | M | Document `BACKFILL` semantics clearly in lineage metadata and ops docs |
+| Repeated runs hide an earlier partial-write bug | M | Compare dry-run counts before and after execution and log seeded/skipped totals |
+
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Legacy rows otherwise remain outside the lineage contract |
+| 2 | **Beyond Local Maxima?** | PASS | Compared against insert-only and manual remediation approaches |
+| 3 | **Sufficient?** | PASS | Handles replay, metadata correction, and temporal seeding together |
+| 4 | **Fits Goal?** | PASS | Preserves migration safety while enabling lineage features retroactively |
+| 5 | **Open Horizons?** | PASS | Supports future migration refinements without abandoning rerun safety |
+
+**Checks Summary**: 5/5 PASS
+
+### Implementation
+
+**What changes**:
+- Group legacy rows by logical key and assign deterministic version order.
+- Upsert lineage rows with `BACKFILL` transitions and refresh active projections for the latest version.
+
+**How to roll back**: Restore from checkpoint or delete the seeded lineage tables/projections and rerun backfill after correcting the migration logic.
+
+---
+
+### ADR-007: Roadmap Capability Flags != Live Runtime Gates
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-03-13 |
+| **Deciders** | System-spec-kit maintainers |
+
+### Context
+
+The Hydra roadmap needed a stable capability snapshot for telemetry and migration checkpoints, but production rollout posture is not identical across all delivered phases. The roadmap flag module explicitly describes itself as phase-tracking metadata, keeps those controls distinct from unrelated live runtime flags, and defaults adaptive ranking to dormant/off unless explicitly enabled. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts:5-7] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts:36-38] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts:77-98] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts:114-151]
+
+Phase 4 documentation also requires adaptive ranking to stay in shadow mode until promotion criteria are met, while Phase 6 documentation keeps shared memory opt-in and deny-by-default. The shared-memory handler separately supports an environment override, reinforcing that capability snapshots and live enablement posture are related but not identical concepts. [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/004-adaptive-retrieval-loops/spec.md:22-25] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout/spec.md:22-25] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/handlers/shared-memory.ts:431-433]
+
+### Constraints
+
+- Telemetry and checkpoints need a coherent roadmap snapshot.
+- Dormant or opt-in phases must not be mistaken for broad default-on runtime behavior.
+- Operators need clear separation between roadmap reporting and live rollout controls.
+
+### Decision
+
+**We chose**: Treat roadmap capability flags surfaced by `getMemoryRoadmapDefaults()` as roadmap-state metadata, not as the single source of truth for live feature activation.
+
+**How it works**: Capability snapshots describe what has been delivered in the phased roadmap and the intended rollout posture. Live runtime behavior still depends on feature-specific controls such as shadow-mode guardrails, opt-in rollout policy, environment overrides, and database/governance state. Adaptive ranking remains dormant/default-off until explicitly promoted. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/config/capability-flags.ts:125-129] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/004-adaptive-retrieval-loops/spec.md:22-25]
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Separate roadmap metadata from runtime enablement (Chosen)** | Prevents accidental activation and preserves honest rollout reporting | Requires documenting two related control layers | 9/10 |
+| Single flag system for roadmap and runtime | Simpler mental model | Conflates shipped capability with safe live posture | 4/10 |
+| Manual status tracking outside code | Flexible narrative control | Drifts from implementation and weakens checkpoint fidelity | 3/10 |
+
+**Why this one**: It preserves a truthful roadmap snapshot while leaving safety-critical runtime activation under narrower controls.
+
+### Consequences
+
+**What improves**:
+- Clearer distinction between "built" and "enabled."
+- Lower risk of dormant features activating accidentally through roadmap reporting paths.
+
+**What it costs**:
+- Maintainers must understand and document two related flag systems.
+- Feature catalog and rollout docs must explain capability metadata versus runtime state.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Maintainers misread roadmap metadata as live behavior | M | Cross-link roadmap docs, runtime flags, and rollout specs |
+| Drift emerges between checkpoint snapshots and real rollout posture | M | Keep tests and docs aligned on dormant/opt-in defaults |
+
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Dormant adaptive ranking and opt-in shared memory require distinct rollout semantics |
+| 2 | **Beyond Local Maxima?** | PASS | Compared against unified and manual status models |
+| 3 | **Sufficient?** | PASS | Separates checkpoint reporting from safety-critical live controls |
+| 4 | **Fits Goal?** | PASS | Matches the phased Hydra roadmap without overexposing unfinished posture |
+| 5 | **Open Horizons?** | PASS | Supports future rollout changes without breaking the reporting contract |
+
+**Checks Summary**: 5/5 PASS
+
+### Implementation
+
+**What changes**:
+- `getMemoryRoadmapDefaults()` remains the canonical checkpoint/telemetry snapshot.
+- Live feature posture stays governed by feature-specific rollout, shadow-mode, and shared-memory controls.
+
+**How to roll back**: Collapse the distinction only if the roadmap and runtime systems are intentionally unified later, which would require coordinated changes to telemetry, docs, and rollout safeguards.
+
+---
+
+### ADR-008: Logical Key Identity Contract (spec_folder::canonical_path::anchor)
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-03-13 |
+| **Deciders** | System-spec-kit maintainers |
+
+### Context
+
+Lineage needed a stable identity for "the same logical memory" across content revisions so versions could be grouped, ordered, backfilled, and resolved over time. The storage layer builds a logical key as `spec_folder::canonical_path::anchor`, falling back to canonicalized path and `_` for missing anchors, then uses that key for grouping lineage and projection state. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts:184-195] [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts:945-953]
+
+The implementation warns when any component already contains the `::` separator, which keeps ambiguous keys visible to operators without blocking current writes. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts:191-195]
+
+### Constraints
+
+- Identity must remain stable across content edits and lineage backfill.
+- The contract must support sub-document versioning.
+- The key format must be derivable from existing stored fields.
+
+### Decision
+
+**We chose**: Define `logical_key` as `spec_folder::canonical_path::anchor`, generated by `buildLogicalKey()`, as the canonical lineage identity contract.
+
+**How it works**: Memories that share the same logical key are treated as versions of the same concept. The anchor component supports sub-document granularity, while path canonicalization reduces accidental drift from file-path variations. Separator collisions emit warnings rather than hard failures. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/storage/lineage-state.ts:184-195]
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Structured logical key contract (Chosen)** | Stable grouping, supports anchors, derivable from existing metadata | Renames create new identity unless migrated | 9/10 |
+| Memory ID as lineage identity | Simple and unique | Cannot connect later versions of the same logical memory | 2/10 |
+| Content hash as primary identity | Stable for unchanged content | Breaks across legitimate edits and conflates duplicates | 4/10 |
+
+**Why this one**: It best captures the logical document identity the lineage system actually needs, rather than the identity of one physical row snapshot.
+
+### Consequences
+
+**What improves**:
+- Versions can be grouped and ordered reliably by logical concept.
+- Anchor-based sub-document versioning is supported directly.
+- Content and metadata updates do not change identity as long as the logical location stays stable.
+
+**What it costs**:
+- Renaming the spec folder or canonical path creates a new logical key unless an explicit migration is added.
+- Separator validation is warning-only, so malformed-but-accepted keys remain theoretically possible.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Path or folder rename fractures lineage continuity | M | Add migration tooling when rename continuity becomes a requirement |
+| Ambiguous separators in component values confuse grouping | L | Keep warning telemetry and strengthen validation later if needed |
+
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Lineage grouping needs a stable logical identity across versions |
+| 2 | **Beyond Local Maxima?** | PASS | Compared against row-ID and content-hash identity models |
+| 3 | **Sufficient?** | PASS | Covers document path, scope, and anchor granularity together |
+| 4 | **Fits Goal?** | PASS | Directly supports grouping, backfill, and temporal lookup |
+| 5 | **Open Horizons?** | PASS | Can be migrated or hardened later without rewriting lineage semantics |
+
+**Checks Summary**: 5/5 PASS
+
+### Implementation
+
+**What changes**:
+- `buildLogicalKey()` constructs the lineage identity from spec folder, canonical path, and anchor.
+- Backfill, projection lookup, and temporal resolution all operate on that logical key contract.
+
+**How to roll back**: Introduce a replacement identity mapping layer and migrate stored logical keys, but doing so would require coordinated lineage rewrite tooling.
+
+---
+
 ### Assumptions and Notes
 
 - HydraDB and Cortex are treated as one branding family for planning.

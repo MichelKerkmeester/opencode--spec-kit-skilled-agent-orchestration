@@ -377,6 +377,14 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         };
       });
 
+      vi.doMock('../core', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../core')>();
+        return {
+          ...actual,
+          checkDatabaseUpdated: vi.fn(async () => false),
+        };
+      });
+
       const module = await import('../handlers/memory-save');
       return {
         module,
@@ -411,6 +419,7 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         vi.doUnmock('@spec-kit/shared/parsing/memory-sufficiency');
         vi.doUnmock('../utils/validators');
         vi.doUnmock('../utils');
+        vi.doUnmock('../core');
         vi.restoreAllMocks();
         vi.resetModules();
     });

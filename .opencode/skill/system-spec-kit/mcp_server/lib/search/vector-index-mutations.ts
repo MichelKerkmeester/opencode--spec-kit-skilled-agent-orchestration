@@ -1,5 +1,3 @@
-import type Database from 'better-sqlite3';
-
 // ───────────────────────────────────────────────────────────────
 // MODULE: Vector Index Mutations
 // ───────────────────────────────────────────────────────────────
@@ -7,26 +5,33 @@ import type Database from 'better-sqlite3';
 // Split from vector-index-store.ts — contains ALL mutation functions:
 // Index, update, delete, and status/confidence updates.
 
+import * as embeddingsProvider from '../providers/embeddings';
+import { recordHistory } from '../storage/history';
 import { getCanonicalPathKey } from '../utils/canonical-path';
 import { createLogger } from '../utils/logger';
-import * as embeddingsProvider from '../providers/embeddings';
-import {
-  to_embedding_buffer,
-  get_error_message,
-} from './vector-index-types';
-import {
-  initialize_db,
-  get_embedding_dim,
-  init_prepared_statements,
-  clear_constitutional_cache,
-  refresh_interference_scores_for_folder,
-  sqlite_vec_available as get_sqlite_vec_available,
-} from './vector-index-store';
+import * as bm25Index from './bm25-index';
 import {
   clear_search_cache,
 } from './vector-index-aliases';
-import * as bm25Index from './bm25-index';
-import { recordHistory } from '../storage/history';
+import {
+  get_error_message,
+  to_embedding_buffer,
+  VectorIndexError,
+  VectorIndexErrorCode,
+} from './vector-index-types';
+import {
+  clear_constitutional_cache,
+  get_embedding_dim,
+  initialize_db,
+  init_prepared_statements,
+  refresh_interference_scores_for_folder,
+  sqlite_vec_available as get_sqlite_vec_available,
+} from './vector-index-store';
+import type {
+  IndexMemoryParams as SharedIndexMemoryParams,
+  UpdateMemoryParams as SharedUpdateMemoryParams,
+} from './vector-index-types';
+import type Database from 'better-sqlite3';
 
 const logger = createLogger('VectorIndex');
 
@@ -96,46 +101,31 @@ function upsert_active_projection(
   `).run(logicalKey, memoryId, memoryId, updatedAt);
 }
 
-type EmbeddingInput = Float32Array | number[];
-type IndexMemoryParams = {
-  readonly specFolder: string;
-  readonly filePath: string;
-  readonly anchorId?: string | null;
-  readonly title?: string | null;
-  readonly triggerPhrases?: string[];
-  readonly importanceWeight?: number;
-  readonly embedding: EmbeddingInput;
-  readonly encodingIntent?: string;
-  readonly documentType?: string;
-  readonly specLevel?: number | null;
-  readonly contentText?: string | null;
-  readonly qualityScore?: number;
-  readonly qualityFlags?: string[];
+// TODO(vector-index): Keep these mutation-local extensions until appendOnly and
+// canonicalFilePath semantics are shared across the query/store type surface.
+type IndexMemoryParams = Readonly<SharedIndexMemoryParams> & {
   readonly appendOnly?: boolean;
 };
 type IndexMemoryDeferredParams = Omit<IndexMemoryParams, 'embedding'> & {
   readonly failureReason?: string | null;
 };
-type UpdateMemoryParams = {
-  readonly id: number;
-  readonly title?: string;
-  readonly triggerPhrases?: string[];
-  readonly importanceWeight?: number;
-  readonly importanceTier?: string;
-  readonly embedding?: EmbeddingInput;
+type UpdateMemoryParams = Readonly<SharedUpdateMemoryParams> & {
   readonly canonicalFilePath?: string;
-  readonly encodingIntent?: string;
-  readonly documentType?: string;
-  readonly specLevel?: number | null;
-  readonly contentText?: string | null;
-  readonly qualityScore?: number;
-  readonly qualityFlags?: string[];
 };
 
 /**
  * Indexes a memory with an embedding payload.
  * @param params - The memory values to index.
  * @returns The indexed memory identifier.
+ * @throws {VectorIndexError} When embedding validation fails or the mutation cannot be applied.
+ * @example
+ * ```ts
+ * const id = index_memory({
+ *   specFolder: 'specs/001-demo',
+ *   filePath: 'spec.md',
+ *   embedding,
+ * });
+ * ```
  */
 export function index_memory(params: IndexMemoryParams): number {
   const database = initialize_db();
@@ -158,13 +148,16 @@ export function index_memory(params: IndexMemoryParams): number {
   } = params;
 
   if (!embedding) {
-    throw new Error('Embedding is required');
+    throw new VectorIndexError('Embedding is required', VectorIndexErrorCode.EMBEDDING_VALIDATION);
   }
 
   const expected_dim = get_embedding_dim();
   if (embedding.length !== expected_dim) {
     console.warn(`[vector-index] Embedding dimension mismatch: expected ${expected_dim}, got ${embedding.length}`);
-    throw new Error(`Embedding must be ${expected_dim} dimensions, got ${embedding.length}`);
+    throw new VectorIndexError(
+      `Embedding must be ${expected_dim} dimensions, got ${embedding.length}`,
+      VectorIndexErrorCode.EMBEDDING_VALIDATION,
+    );
   }
 
   const now = new Date().toISOString();
@@ -335,6 +328,11 @@ export function index_memory_deferred(params: IndexMemoryDeferredParams): number
  * Updates stored memory metadata and embeddings.
  * @param params - The memory values to update.
  * @returns The updated memory identifier.
+ * @throws {VectorIndexError} When embedding validation fails or the mutation transaction cannot complete.
+ * @example
+ * ```ts
+ * const id = update_memory({ id: 42, title: 'Updated title', embedding });
+ * ```
  */
 export function update_memory(params: UpdateMemoryParams): number {
   const database = initialize_db();
@@ -430,7 +428,10 @@ export function update_memory(params: UpdateMemoryParams): number {
       const expected_dim = get_embedding_dim();
       if (embedding.length !== expected_dim) {
         console.warn(`[vector-index] Embedding dimension mismatch in update: expected ${expected_dim}, got ${embedding.length}`);
-        throw new Error(`Embedding must be ${expected_dim} dimensions, got ${embedding.length}`);
+        throw new VectorIndexError(
+          `Embedding must be ${expected_dim} dimensions, got ${embedding.length}`,
+          VectorIndexErrorCode.EMBEDDING_VALIDATION,
+        );
       }
 
       const embedding_buffer = to_embedding_buffer(embedding);
@@ -454,6 +455,11 @@ export function update_memory(params: UpdateMemoryParams): number {
  * Deletes a memory and its related index records.
  * @param id - The memory identifier.
  * @returns True when a memory was deleted.
+ * @throws {VectorIndexError} Propagates mutation or store initialization failures from the delete pipeline.
+ * @example
+ * ```ts
+ * const deleted = delete_memory(42);
+ * ```
  */
 export function delete_memory(id: number): boolean {
   const database = initialize_db();
@@ -465,6 +471,11 @@ export function delete_memory(id: number): boolean {
  * @param database - The database containing the target memory.
  * @param id - The memory identifier.
  * @returns True when a memory was deleted.
+ * @throws {VectorIndexError} Propagates mutation failures encountered while deleting the memory.
+ * @example
+ * ```ts
+ * const deleted = delete_memory_from_database(database, 42);
+ * ```
  */
 export function delete_memory_from_database(database: Database.Database, id: number): boolean {
   const sqlite_vec = get_sqlite_vec_available();
@@ -501,7 +512,9 @@ export function delete_memory_from_database(database: Database.Database, id: num
       if (bm25Index.isBm25Enabled()) {
         bm25Index.getIndex().removeDocument(String(id));
       }
-    } catch (_error: unknown) { /* BM25 cleanup is best-effort */ }
+    } catch (_error: unknown) {
+      // BEST-EFFORT BM25 CLEANUP MUST NOT MASK A SUCCESSFUL PRIMARY DELETE.
+    }
   }
   return deleted;
 }
@@ -512,6 +525,11 @@ export function delete_memory_from_database(database: Database.Database, id: num
  * @param file_path - The file path to delete.
  * @param anchor_id - The optional anchor identifier.
  * @returns True when a memory was deleted.
+ * @throws {VectorIndexError} Propagates delete failures from the underlying mutation helpers.
+ * @example
+ * ```ts
+ * const deleted = delete_memory_by_path('specs/001-demo', 'spec.md');
+ * ```
  */
 export function delete_memory_by_path(spec_folder: string, file_path: string, anchor_id: string | null = null): boolean {
   const database = initialize_db();
@@ -532,7 +550,9 @@ export function delete_memory_by_path(spec_folder: string, file_path: string, an
       // Self-record DELETE history only after the delete succeeded.
       try {
         recordHistory(row.id, 'DELETE', file_path ?? null, null, 'mcp:delete_by_path', row.spec_folder ?? spec_folder);
-      } catch (_histErr: unknown) { /* best-effort */ }
+      } catch (_histErr: unknown) {
+        // BEST-EFFORT HISTORY WRITES MUST NOT MASK A SUCCESSFUL DELETE.
+      }
     }
     return deleted;
   }
@@ -543,6 +563,11 @@ export function delete_memory_by_path(spec_folder: string, file_path: string, an
  * Deletes multiple memories in a single transaction.
  * @param memory_ids - The memory identifiers to delete.
  * @returns Counts for deleted and failed items.
+ * @throws {VectorIndexError} When one or more deletes fail and the transaction is rolled back.
+ * @example
+ * ```ts
+ * const outcome = delete_memories([1, 2, 3]);
+ * ```
  */
 export function delete_memories(memory_ids: number[]): { deleted: number; failed: number } {
   if (!memory_ids || memory_ids.length === 0) {
@@ -590,7 +615,9 @@ export function delete_memories(memory_ids: number[]): { deleted: number; failed
           // So DELETE audit events recorded here persist as audit trail.
           try {
             recordHistory(id, 'DELETE', null, null, 'mcp:delete_memories', specFolderById.get(id) ?? null);
-          } catch (_histErr: unknown) { /* best-effort */ }
+          } catch (_histErr: unknown) {
+            // BEST-EFFORT HISTORY WRITES MUST NOT MASK A SUCCESSFUL DELETE.
+          }
           transactionDeleted++;
           deletedIds.push(id);
         } else {
@@ -605,7 +632,10 @@ export function delete_memories(memory_ids: number[]): { deleted: number; failed
     }
 
     if (failed_ids.length > 0) {
-      throw new Error(`Failed to delete memories: ${failed_ids.join(', ')}. Transaction rolled back.`);
+      throw new VectorIndexError(
+        `Failed to delete memories: ${failed_ids.join(', ')}. Transaction rolled back.`,
+        VectorIndexErrorCode.MUTATION_FAILED,
+      );
     }
 
     return {

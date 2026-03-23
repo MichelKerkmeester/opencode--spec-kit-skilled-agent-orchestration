@@ -69,6 +69,12 @@ export const DOMAIN_VOCABULARY_MAP: Record<string, string[]> = {
  *
  * @param query - The input search query string.
  * @returns Array of query variants, original first, max 3 total.
+ * @throws {TypeError} If called with a non-string value at runtime.
+ * @example
+ * ```ts
+ * expandQuery('auth error');
+ * // ['auth error', 'authentication error', 'auth exception']
+ * ```
  */
 export function expandQuery(query: string): string[] {
   const words = query.toLowerCase().match(/\b\w+\b/g) || [];

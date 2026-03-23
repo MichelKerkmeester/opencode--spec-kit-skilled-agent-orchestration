@@ -17,7 +17,7 @@ contextType: "implementation"
 
 ## EXECUTIVE SUMMARY
 
-This root packet is the coordination layer for the Hybrid RAG Fusion program. It records the live 19 direct phases under `022`, the current 118 numbered spec directories on disk, and the remaining subtree normalization work without overstating completion.
+This root packet is the coordination layer for the Hybrid RAG Fusion program. It records the live 20 direct phases under `022`, the current 119 numbered spec directories on disk, and the remaining subtree normalization work without overstating completion.
 
 **Key Decisions**: treat the on-disk tree as the authority for counts and status, keep the root packet concise, and normalize direct-child navigation before deeper subtree rewrites.
 
@@ -33,11 +33,11 @@ This root packet is the coordination layer for the Hybrid RAG Fusion program. It
 | **Priority** | P0 |
 | **Status** | In Progress |
 | **Created** | 2025-12-01 |
-| **Updated** | 2026-03-21 |
+| **Updated** | 2026-03-23 |
 | **Branch** | `main` |
-| **Spec Folders** | 118 numbered spec directories currently present on disk |
+| **Spec Folders** | 119 numbered spec directories currently present on disk |
 | **Direct Child Counts** | `001=11`, `007=21`, `008=6`, `009=20`, `011=1`, `015=19` |
-| **Feature Catalog Count** | 220 feature files |
+| **Feature Catalog Count** | 222 feature files |
 
 ---
 
@@ -107,6 +107,7 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 | 017 | `017-update-install-guide/` | Install guide update | Complete |
 | 018 | `018-rewrite-system-speckit-readme/` | System Spec Kit README rewrite | Complete |
 | 019 | `019-rewrite-repo-readme/` | Repository README rewrite | Complete |
+| 020 | `020-hydra-review-and-fix/` | 5-agent GPT-5.4 review + remediation | Complete |
 
 ---
 

@@ -743,7 +743,7 @@ The most impactful findings cluster around: (1) the search pipeline's "V2 wraps 
 #### F8.13 -- Feature-flag docs test currently failing
 - **Severity:** HIGH
 - **File(s):** `mcp_server/tests/feature-flag-reference-docs.vitest.ts:110-129`
-- **Description:** Test looks for `manual_testing_playbook/02--new-features/125-hydra-roadmap-capability-flags.md`, but file lives under `manual_testing_playbook/19--feature-flag-reference/...`. This is the current baseline test failure.
+- **Description:** Test looks for an outdated `manual_testing_playbook` location, but the file actually lives under `.opencode/skill/system-spec-kit/manual_testing_playbook/19--feature-flag-reference/125-hydra-roadmap-capability-flags.md`. This is the current baseline test failure.
 - **Impact:** `npm test` fails on a documentation contract test.
 - **Recommendation:** Fix the path in the test.
 

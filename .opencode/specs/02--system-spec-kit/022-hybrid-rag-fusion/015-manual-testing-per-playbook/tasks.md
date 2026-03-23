@@ -1,6 +1,6 @@
 ---
 title: "Tasks: manual-testing-per-playbook"
-description: "Task tracking for manual test execution across 19 phase folders (226 scenario files, 264 exact IDs)."
+description: "Task tracking for manual test execution across 19 phase folders (233 scenario files, 272 exact IDs)."
 trigger_phrases:
   - "manual testing tasks"
   - "playbook phase tasks"
@@ -47,7 +47,7 @@ Each task executes all test scenarios for one playbook category. Tasks are paral
 
 | Task | Phase | Folder | Category | Scenarios | Exact IDs | Status |
 |------|-------|--------|----------|-----------|-----------|--------|
-| T001 | 001 | `001-retrieval/` | Retrieval | 11 | 11 | DONE — 11 PASS (100%) |
+| T001 | 001 | `001-retrieval/` | Retrieval | 13 | 13 | DONE — 13 PASS (100%) |
 | T002 | 002 | `002-mutation/` | Mutation | 9 | 9 | DONE — 9 PASS (100%) |
 | T003 | 003 | `003-discovery/` | Discovery | 3 | 3 | DONE — 3 PASS (100%) |
 | T004 | 004 | `004-maintenance/` | Maintenance | 2 | 2 | DONE — 2 PASS (100%) |
@@ -62,7 +62,7 @@ Each task executes all test scenarios for one playbook category. Tasks are paral
 | T013 | 013 | `013-memory-quality-and-indexing/` | Memory Quality and Indexing | 27 | 34 | DONE — 34 PASS (100%) |
 | T014 | 014 | `014-pipeline-architecture/` | Pipeline Architecture | 18 | 18 | DONE — 18 PASS (100%) |
 | T015 | 015 | `015-retrieval-enhancements/` | Retrieval Enhancements | 11 | 11 | DONE — 11 PASS (100%) |
-| T016 | 016 | `016-tooling-and-scripts/` | Tooling and Scripts | 27 | 59 | DONE — 59 PASS (100%) |
+| T016 | 016 | `016-tooling-and-scripts/` | Tooling and Scripts | 33 | 65 | DONE — 65 PASS (100%) |
 | T017 | 017 | `017-governance/` | Governance | 5 | 5 | DONE — 5 PASS (100%) |
 | T018 | 018 | `018-ux-hooks/` | UX Hooks | 11 | 11 | DONE — 11 PASS (100%) |
 | T019 | 019 | `019-feature-flag-reference/` | Feature Flag Reference | 8 | 8 | DONE — 8 PASS (100%) |
@@ -73,7 +73,7 @@ Each task executes all test scenarios for one playbook category. Tasks are paral
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T020 Aggregate per-phase verdict summaries into coverage report — 264/264 IDs verdicted: 264 PASS, 0 PARTIAL, 0 FAIL (100% pass rate)
+- [x] T020 Aggregate per-phase verdict summaries into coverage report — 272/272 IDs verdicted: 272 PASS, 0 PARTIAL, 0 FAIL (100% pass rate)
 - [x] T021 Run `validate.sh --recursive` on the spec folder tree and record results — all 19 phase folders contain complete tasks.md, checklist.md, implementation-summary.md
 <!-- /ANCHOR:phase-3 -->
 
@@ -83,10 +83,10 @@ Each task executes all test scenarios for one playbook category. Tasks are paral
 ## Completion Criteria
 
 - [x] All tasks T001-T019 completed with per-phase verdict summaries
-- [x] T020 aggregate coverage report produced — 264 PASS, 0 PARTIAL, 0 FAIL
+- [x] T020 aggregate coverage report produced — 272 PASS, 0 PARTIAL, 0 FAIL
 - [x] T021 validation results recorded
 - [x] No `[B]` blocked tasks remaining
-- [x] All 264 exact scenario IDs have recorded verdicts (264 PASS, 0 PARTIAL, 0 FAIL)
+- [x] All 272 exact scenario IDs have recorded verdicts (272 PASS, 0 PARTIAL, 0 FAIL)
 <!-- /ANCHOR:completion -->
 
 ---

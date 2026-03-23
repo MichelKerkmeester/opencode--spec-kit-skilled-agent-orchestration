@@ -155,10 +155,11 @@ describe('T017-G2: Weights Not Double-Counted in Pipeline', () => {
     expect(weights.semanticWeight).toBeDefined();
     expect(weights.keywordWeight).toBeDefined();
 
-    // For fix_bug: semantic and keyword are balanced (0.4/0.4)
-    const profile = INTENT_WEIGHT_PROFILES[intent];
-    expect(weights.semanticWeight).toBe(profile!.semanticWeight);
-    expect(weights.keywordWeight).toBe(profile!.keywordWeight);
+    // For fix_bug: semantic and keyword are balanced (0.4/0.4 raw, normalized with graphWeight)
+    // getAdaptiveWeights normalizes all channels (including graphWeight) to sum to 1.0
+    const normalizedProfile = getAdaptiveWeights(intent);
+    expect(weights.semanticWeight).toBe(normalizedProfile.semanticWeight);
+    expect(weights.keywordWeight).toBe(normalizedProfile.keywordWeight);
   });
 
   it('System B (applyIntentWeights) uses attribute weights, not channel weights', () => {
@@ -403,12 +404,16 @@ describe('T017-G2: Score Distribution Characteristics', () => {
     for (const intent of intents) {
       const weights = getAdaptiveWeights(intent);
       const expected = INTENT_WEIGHT_PROFILES[intent];
-      const coreSum = expected!.semanticWeight + expected!.keywordWeight + expected!.recencyWeight;
-      const normalizedExpected = Math.abs(coreSum - 1.0) > 0.001
+      // getAdaptiveWeights normalizes ALL channels (semantic + keyword + recency + graphWeight)
+      // to sum to 1.0, so the test must account for graphWeight in the denominator
+      const graphWeight = (typeof expected!.graphWeight === 'number' && expected!.graphWeight > 0)
+        ? expected!.graphWeight : 0;
+      const totalSum = expected!.semanticWeight + expected!.keywordWeight + expected!.recencyWeight + graphWeight;
+      const normalizedExpected = Math.abs(totalSum - 1.0) > 0.001
         ? {
-            semanticWeight: expected!.semanticWeight / coreSum,
-            keywordWeight: expected!.keywordWeight / coreSum,
-            recencyWeight: expected!.recencyWeight / coreSum,
+            semanticWeight: expected!.semanticWeight / totalSum,
+            keywordWeight: expected!.keywordWeight / totalSum,
+            recencyWeight: expected!.recencyWeight / totalSum,
           }
         : expected!;
 

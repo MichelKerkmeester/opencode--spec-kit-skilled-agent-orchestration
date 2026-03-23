@@ -381,11 +381,6 @@ describe('C138-P3: fuseResultsCrossVariant', () => {
       { source: SOURCE_TYPES.BM25, results: [{ id: 'b1', title: 'BM25 1' }], weight: Number.POSITIVE_INFINITY },
     ]);
 
-    const vectorItem = requireResult(fused.find(r => r.id === 'v1'));
-    const bm25Item = requireResult(fused.find(r => r.id === 'b1'));
-    expect(vectorItem.sourceScores[SOURCE_TYPES.VECTOR]).toBe(0);
-    expect(bm25Item.sourceScores[SOURCE_TYPES.BM25]).toBe(0);
-    expect(vectorItem.rrfScore).toBeGreaterThanOrEqual(0);
-    expect(Number.isFinite(bm25Item.rrfScore)).toBe(true);
+    expect(fused).toEqual([]);
   });
 });

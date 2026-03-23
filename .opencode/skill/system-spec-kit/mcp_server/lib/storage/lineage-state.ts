@@ -176,7 +176,8 @@ function normalizeTimestamp(value?: string | null): string {
 function getSafeHistoryEvents(database: Database.Database, memoryId: number): HistoryLineageEvent[] {
   try {
     return getHistoryEventsForLineage(memoryId, database);
-  } catch {
+  } catch (error: unknown) {
+    logger.warn(`History events retrieval failed for memory ${memoryId}: ${error instanceof Error ? error.message : String(error)}`);
     return [];
   }
 }
@@ -251,8 +252,14 @@ function parseMetadata(row: MemoryLineageRow): LineageMetadata | null {
   }
 
   try {
-    return JSON.parse(row.metadata) as LineageMetadata;
-  } catch (_error: unknown) {
+    const parsed: unknown = JSON.parse(row.metadata);
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+      return parsed as LineageMetadata;
+    }
+    logger.warn(`Invalid lineage metadata shape for memory ${row.memory_id}`);
+    return null;
+  } catch (error: unknown) {
+    logger.warn(`Failed to parse lineage metadata for memory ${row.memory_id}: ${error instanceof Error ? error.message : String(error)}`);
     return null;
   }
 }
@@ -378,15 +385,15 @@ function insertAppendOnlyMemoryIndexRow(params: CreateAppendOnlyMemoryRecordPara
   if (bm25Index.isBm25Enabled()) {
     try {
       bm25Index.getIndex().addDocument(String(memoryId), parsed.content);
-    } catch (_error: unknown) {
-      // Keep parity with save path best-effort BM25 behavior.
+    } catch (error: unknown) {
+      logger.warn(`BM25 index update failed for memory ${memoryId}: ${error instanceof Error ? error.message : String(error)}`);
     }
   }
 
   try {
     recordHistory(memoryId, 'ADD', null, parsed.title ?? filePath, params.actor ?? 'mcp:memory_save');
-  } catch (_error: unknown) {
-    // History remains best-effort during save.
+  } catch (error: unknown) {
+    logger.warn(`History record failed for memory ${memoryId}: ${error instanceof Error ? error.message : String(error)}`);
   }
 
   refresh_interference_scores_for_folder(database, parsed.specFolder);
@@ -462,31 +469,35 @@ export function seedLineageFromCurrentState(
     ?? historyEvents[0]?.timestamp
     ?? normalizeTimestamp(row.created_at ?? row.updated_at);
 
-  database.prepare(`
-    INSERT INTO memory_lineage (
-      memory_id,
-      logical_key,
-      version_number,
-      root_memory_id,
-      predecessor_memory_id,
-      superseded_by_memory_id,
-      valid_from,
-      valid_to,
-      transition_event,
+  const seedTx = database.transaction(() => {
+    database.prepare(`
+      INSERT INTO memory_lineage (
+        memory_id,
+        logical_key,
+        version_number,
+        root_memory_id,
+        predecessor_memory_id,
+        superseded_by_memory_id,
+        valid_from,
+        valid_to,
+        transition_event,
+        actor,
+        metadata
+      ) VALUES (?, ?, 1, ?, NULL, NULL, ?, NULL, ?, ?, ?)
+    `).run(
+      memoryId,
+      logicalKey,
+      memoryId,
+      validFrom,
+      options.transitionEvent ?? 'BACKFILL',
       actor,
-      metadata
-    ) VALUES (?, ?, 1, ?, NULL, NULL, ?, NULL, ?, ?, ?)
-  `).run(
-    memoryId,
-    logicalKey,
-    memoryId,
-    validFrom,
-    options.transitionEvent ?? 'BACKFILL',
-    actor,
-    buildMetadata(row, actor, historyEvents),
-  );
+      buildMetadata(row, actor, historyEvents),
+    );
 
-  upsertActiveProjection(database, logicalKey, memoryId, memoryId, normalizeTimestamp(row.updated_at ?? validFrom));
+    upsertActiveProjection(database, logicalKey, memoryId, memoryId, normalizeTimestamp(row.updated_at ?? validFrom));
+  });
+
+  seedTx();
 
   return {
     logicalKey,

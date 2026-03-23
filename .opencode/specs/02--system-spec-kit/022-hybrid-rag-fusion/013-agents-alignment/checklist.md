@@ -1,10 +1,10 @@
 ---
-title: "Checklist: 012 — Agent Alignment"
+title: "Checklist: 013 — Agent Alignment"
 description: "Verification Date: 2026-03-21"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
-# Checklist: 012 — Agent Alignment
+# Checklist: 013 — Agent Alignment
 
 ---
 
@@ -65,7 +65,7 @@ description: "Verification Date: 2026-03-21"
 <!-- ANCHOR:docs -->
 ## Documentation Integrity
 
-- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` tell one consistent lineage story
+- [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` tell one consistent lineage story [EVIDENCE: numbering corrected to 013; writer-surface limitation documented]
 - [x] CHK-041 [P1] Codex and Gemini lineage are documented explicitly
 - [x] CHK-042 [P1] Runtime-facing paths are documented before storage details
 <!-- /ANCHOR:docs -->
@@ -75,7 +75,7 @@ description: "Verification Date: 2026-03-21"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Write scope stayed inside the canonical `012` packet plus the intended scoped runtime-facing docs
+- [x] CHK-050 [P1] Write scope stayed inside the canonical `013` packet plus the intended scoped runtime-facing docs
 - [x] CHK-051 [P1] No temporary files were added outside the packet
 - [ ] CHK-052 [P2] Findings saved to `memory/`
   Evidence: optional for this documentation reconciliation pass.

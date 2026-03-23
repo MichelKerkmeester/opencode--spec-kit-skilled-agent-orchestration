@@ -1,9 +1,9 @@
 ---
-title: "Implementation Summary: 012 — Agent Alignment"
-description: "Truth-reconciled summary of the 012 agent-alignment packet against the live multi-runtime lineage model."
+title: "Implementation Summary: 013 — Agent Alignment"
+description: "Truth-reconciled summary of the 013 agent-alignment packet against the live multi-runtime lineage model."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
-# Implementation Summary: 012 — Agent Alignment
+# Implementation Summary: 013 — Agent Alignment
 <!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary-core | v2.2 -->
 
 ---
@@ -13,7 +13,7 @@ description: "Truth-reconciled summary of the 012 agent-alignment packet against
 
 | Field | Value |
 |-------|-------|
-| Scope | Canonical 012 packet only |
+| Scope | Canonical 013 packet only |
 | Date | 2026-03-21 |
 | Status | Complete (truth-reconciled) |
 | Type | Documentation reconciliation |
@@ -45,7 +45,7 @@ This pass did not perform a fresh runtime bulk sync. It reconciled the `013-agen
 | `tasks.md` | Replaced historical sync tasks with audit, rewrite, and verification tasks |
 | `checklist.md` | Rewrote verification around lineage, naming, path, and scope accuracy |
 | `implementation-summary.md` | Replaced the old bulk-sync summary with a truth-reconciled lineage summary |
-| Scoped runtime docs | Fixed Gemini delegation pathing and aligned the writer projections with the verified lineage model |
+| Scoped runtime docs | Fixed Gemini delegation pathing; writer projection alignment is partial (Gemini write-agent paths remain divergent) |
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -84,7 +84,8 @@ This pass did not perform a fresh runtime bulk sync. It reconciled the `013-agen
 
 - This pass does not claim that runtime agent bodies were freshly synchronized beyond the scoped delegation/write closeout.
 - If a future bulk runtime-sync pass is needed, it should be tracked separately from this truth-reconciliation packet.
-- Packet verification is scoped to the canonical `012` docs plus the intended live path/count and scoped runtime-doc checks.
+- Gemini write-agent (`write.md`) still uses flat `references/*.md` paths rather than `references/**/*.md`; this drift is noted but not corrected in this pass.
+- Packet verification is scoped to the canonical `013` docs plus the intended live path/count and scoped runtime-doc checks.
 <!-- /ANCHOR:limitations -->
 
 ---

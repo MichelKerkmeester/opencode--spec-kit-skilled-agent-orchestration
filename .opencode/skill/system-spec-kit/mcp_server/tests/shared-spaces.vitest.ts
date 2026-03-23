@@ -1,6 +1,15 @@
 import Database from 'better-sqlite3';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
+vi.mock('../lib/governance/scope-governance', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../lib/governance/scope-governance')>();
+  return {
+    ...actual,
+    recordGovernanceAudit: vi.fn(actual.recordGovernanceAudit),
+  };
+});
+
+import * as scopeGovernance from '../lib/governance/scope-governance';
 import {
   assertSharedSpaceAccess,
   enableSharedMemory,
@@ -18,6 +27,7 @@ describe('Phase 6 shared spaces', () => {
   afterEach(() => {
     delete process.env.SPECKIT_MEMORY_SHARED_MEMORY;
     delete process.env.SPECKIT_HYDRA_SHARED_MEMORY;
+    vi.restoreAllMocks();
   });
 
   it('enforces deny-by-default membership for shared spaces', () => {
@@ -49,7 +59,76 @@ describe('Phase 6 shared spaces', () => {
       userId: 'user-1',
     }, 'space-1', 'editor');
     expect(allowed.allowed).toBe(true);
-    expect(Array.from(getAllowedSharedSpaceIds(db, { userId: 'user-1' }))).toEqual(['space-1']);
+    expect(Array.from(getAllowedSharedSpaceIds(db, {
+      tenantId: 'tenant-a',
+      userId: 'user-1',
+    }))).toEqual(['space-1']);
+  });
+
+  it('returns an empty allowlist when tenant context is missing', () => {
+    process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
+    const db = new Database(':memory:');
+
+    upsertSharedSpace(db, {
+      spaceId: 'space-tenant-a',
+      tenantId: 'tenant-A',
+      name: 'Tenant A Space',
+      rolloutEnabled: true,
+    });
+    upsertSharedMembership(db, {
+      spaceId: 'space-tenant-a',
+      subjectType: 'user',
+      subjectId: 'user-1',
+      role: 'editor',
+    });
+
+    expect(getAllowedSharedSpaceIds(db, { userId: 'user-1' })).toEqual(new Set());
+  });
+
+  it('returns shared spaces only for the matching tenant context', () => {
+    process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
+    const db = new Database(':memory:');
+
+    upsertSharedSpace(db, {
+      spaceId: 'space-tenant-a',
+      tenantId: 'tenant-A',
+      name: 'Tenant A Space',
+      rolloutEnabled: true,
+    });
+    upsertSharedMembership(db, {
+      spaceId: 'space-tenant-a',
+      subjectType: 'user',
+      subjectId: 'user-1',
+      role: 'editor',
+    });
+
+    expect(getAllowedSharedSpaceIds(db, {
+      tenantId: 'tenant-A',
+      userId: 'user-1',
+    })).toEqual(new Set(['space-tenant-a']));
+  });
+
+  it('returns an empty allowlist for the wrong tenant context', () => {
+    process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
+    const db = new Database(':memory:');
+
+    upsertSharedSpace(db, {
+      spaceId: 'space-tenant-a',
+      tenantId: 'tenant-A',
+      name: 'Tenant A Space',
+      rolloutEnabled: true,
+    });
+    upsertSharedMembership(db, {
+      spaceId: 'space-tenant-a',
+      subjectType: 'user',
+      subjectId: 'user-1',
+      role: 'editor',
+    });
+
+    expect(getAllowedSharedSpaceIds(db, {
+      tenantId: 'tenant-B',
+      userId: 'user-1',
+    })).toEqual(new Set());
   });
 
   it('rejects blank shared-space identifiers before access evaluation', () => {
@@ -205,6 +284,77 @@ describe('Phase 6 shared spaces', () => {
         shared_space_id: 'space-audit',
       },
     ]);
+  });
+
+  it('preserves rolloutEnabled when a shared-space update omits the boolean fields', () => {
+    const db = new Database(':memory:');
+
+    upsertSharedSpace(db, {
+      spaceId: 'space-preserve-rollout',
+      tenantId: 'tenant-a',
+      name: 'Alpha',
+      rolloutEnabled: true,
+    });
+
+    upsertSharedSpace(db, {
+      spaceId: 'space-preserve-rollout',
+      tenantId: 'tenant-a',
+      name: 'Alpha Renamed',
+    });
+
+    expect(db.prepare(`
+      SELECT rollout_enabled, kill_switch
+      FROM shared_spaces
+      WHERE space_id = ?
+    `).get('space-preserve-rollout')).toEqual({
+      rollout_enabled: 1,
+      kill_switch: 0,
+    });
+  });
+
+  it('returns the computed access decision even when audit persistence fails', () => {
+    process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
+    const db = new Database(':memory:');
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+
+    upsertSharedSpace(db, {
+      spaceId: 'space-audit-failure',
+      tenantId: 'tenant-a',
+      name: 'Audit Failure Space',
+      rolloutEnabled: true,
+    });
+    upsertSharedMembership(db, {
+      spaceId: 'space-audit-failure',
+      subjectType: 'user',
+      subjectId: 'user-owner',
+      role: 'owner',
+    });
+
+    vi.mocked(scopeGovernance.recordGovernanceAudit)
+      .mockImplementationOnce(() => {
+        throw new Error('audit insert failed');
+      })
+      .mockImplementationOnce(() => {
+        throw new Error('audit insert failed');
+      });
+
+    expect(assertSharedSpaceAccess(db, {
+      tenantId: 'tenant-a',
+      userId: 'user-owner',
+    }, 'space-audit-failure', 'owner')).toEqual({
+      allowed: true,
+    });
+
+    expect(assertSharedSpaceAccess(db, {
+      tenantId: 'tenant-a',
+      userId: 'user-viewer',
+    }, 'space-audit-failure')).toEqual({
+      allowed: false,
+      reason: 'shared_space_membership_required',
+    });
+
+    expect(consoleErrorSpy).toHaveBeenCalledTimes(2);
+    expect(consoleErrorSpy.mock.calls[0]?.[0]).toContain('Failed to record shared_space_access audit');
   });
 
   it('blocks existing members immediately when a shared-space kill switch is enabled', () => {

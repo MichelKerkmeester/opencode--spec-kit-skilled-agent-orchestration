@@ -1,8 +1,31 @@
 // TEST: MEMORY CONTEXT
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import fs from 'node:fs';
 import path from 'node:path';
 import type { MCPResponse } from '@spec-kit/shared/types';
+
+// Mock core/db-state to prevent real DB operations (checkDatabaseUpdated throws
+// when the database directory cannot be resolved in the test environment).
+vi.mock('../core/db-state', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    checkDatabaseUpdated: vi.fn(async () => false),
+    waitForEmbeddingModel: vi.fn(async () => true),
+    isEmbeddingModelReady: vi.fn(() => true),
+  };
+});
+
+vi.mock('../core', async (importOriginal) => {
+  const actual = await importOriginal() as Record<string, unknown>;
+  return {
+    ...actual,
+    checkDatabaseUpdated: vi.fn(async () => false),
+    waitForEmbeddingModel: vi.fn(async () => true),
+    isEmbeddingModelReady: vi.fn(() => true),
+  };
+});
+
 import {
   handleMemoryContext,
   handle_memory_context,

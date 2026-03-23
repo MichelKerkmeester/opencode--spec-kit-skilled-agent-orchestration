@@ -8,6 +8,7 @@ import { createMCPErrorResponse, createMCPSuccessResponse } from '../lib/respons
 import type { MCPResponse } from './types';
 import type { SharedSpaceUpsertArgs, SharedSpaceMembershipArgs, SharedMemoryStatusArgs } from '../tools/types';
 import {
+  assertSharedSpaceAccess,
   enableSharedMemory,
   ensureSharedCollabRuntime,
   getAllowedSharedSpaceIds,
@@ -15,6 +16,7 @@ import {
   upsertSharedMembership,
   upsertSharedSpace,
 } from '../lib/collab/shared-spaces';
+import { recordGovernanceAudit } from '../lib/governance/scope-governance';
 
 import { access, mkdir, writeFile } from 'fs/promises';
 import * as path from 'path';
@@ -26,69 +28,140 @@ type SharedAdminActor = {
   subjectId: string;
 };
 
-function resolveAdminActor(
+export type AdminActorResult =
+  | { ok: true; actor: SharedAdminActor }
+  | { ok: false; response: MCPResponse };
+
+/**
+ * SECURITY: This function validates format only. Transport-level authentication
+ * MUST verify that the caller is the claimed actor before this handler is
+ * reached. See P1-1 review finding.
+ */
+export function resolveAdminActor(
   tool: 'shared_space_upsert' | 'shared_space_membership_set',
   actorUserId?: string,
   actorAgentId?: string,
-): SharedAdminActor | MCPResponse {
+): AdminActorResult {
   const normalizedUserId = typeof actorUserId === 'string' ? actorUserId.trim() : '';
   const normalizedAgentId = typeof actorAgentId === 'string' ? actorAgentId.trim() : '';
   const hasUser = normalizedUserId.length > 0;
   const hasAgent = normalizedAgentId.length > 0;
 
   if (!hasUser && !hasAgent) {
-    return createMCPErrorResponse({
-      tool,
-      error: 'Exactly one actor identity is required.',
-      code: 'E_VALIDATION',
-      details: { reason: 'actor_identity_required' },
-      recovery: {
-        hint: 'Provide actorUserId or actorAgentId.',
-      },
-    });
+    return {
+      ok: false,
+      response: createMCPErrorResponse({
+        tool,
+        error: 'Exactly one actor identity is required.',
+        code: 'E_VALIDATION',
+        details: { reason: 'actor_identity_required' },
+        recovery: {
+          hint: 'Provide actorUserId or actorAgentId.',
+        },
+      }),
+    };
   }
 
   if (hasUser && hasAgent) {
-    return createMCPErrorResponse({
-      tool,
-      error: 'Provide only one actor identity.',
-      code: 'E_VALIDATION',
-      details: { reason: 'actor_identity_ambiguous' },
-      recovery: {
-        hint: 'Send only actorUserId or actorAgentId, not both.',
-      },
-    });
+    return {
+      ok: false,
+      response: createMCPErrorResponse({
+        tool,
+        error: 'Provide only one actor identity.',
+        code: 'E_VALIDATION',
+        details: { reason: 'actor_identity_ambiguous' },
+        recovery: {
+          hint: 'Send only actorUserId or actorAgentId, not both.',
+        },
+      }),
+    };
   }
 
-  return hasUser
-    ? { subjectType: 'user', subjectId: normalizedUserId }
-    : { subjectType: 'agent', subjectId: normalizedAgentId };
+  return {
+    ok: true,
+    actor: hasUser
+      ? { subjectType: 'user', subjectId: normalizedUserId }
+      : { subjectType: 'agent', subjectId: normalizedAgentId },
+  };
 }
 
-function findSharedSpaceTenant(database: ReturnType<typeof requireDb>, spaceId: string): string | null {
-  const row = database.prepare(`
-    SELECT tenant_id
-    FROM shared_spaces
-    WHERE space_id = ?
-    LIMIT 1
-  `).get(spaceId) as { tenant_id?: string | null } | undefined;
-  return typeof row?.tenant_id === 'string' ? row.tenant_id : null;
-}
-
-function actorOwnsSharedSpace(
-  database: ReturnType<typeof requireDb>,
-  spaceId: string,
+function buildAdminScope(
   actor: SharedAdminActor,
-): boolean {
-  const row = database.prepare(`
-    SELECT role
-    FROM shared_space_members
-    WHERE space_id = ?
-      AND subject_type = ?
-      AND subject_id = ?
-    LIMIT 1
-  `).get(spaceId, actor.subjectType, actor.subjectId) as { role?: string } | undefined;
-  return row?.role === 'owner';
+  tenantId: string,
+  sharedSpaceId?: string,
+): {
+  tenantId: string;
+  sharedSpaceId?: string;
+  userId?: string;
+  agentId?: string;
+} {
+  return {
+    tenantId,
+    sharedSpaceId,
+    userId: actor.subjectType === 'user' ? actor.subjectId : undefined,
+    agentId: actor.subjectType === 'agent' ? actor.subjectId : undefined,
+  };
+}
+
+function recordSharedSpaceAdminAudit(
+  database: ReturnType<typeof requireDb>,
+  args: {
+    actor: SharedAdminActor;
+    tenantId: string;
+    spaceId: string;
+    decision: 'allow' | 'deny';
+    operation: 'space_upsert' | 'membership_set';
+    reason?: string;
+    metadata?: Record<string, unknown>;
+  },
+): void {
+  recordGovernanceAudit(database, {
+    action: 'shared_space_admin',
+    decision: args.decision,
+    reason: args.reason ?? args.operation,
+    ...buildAdminScope(args.actor, args.tenantId, args.spaceId),
+    metadata: {
+      operation: args.operation,
+      actorSubjectType: args.actor.subjectType,
+      actorSubjectId: args.actor.subjectId,
+      ...(args.metadata ?? {}),
+    },
+  });
+}
+
+function getSharedSpaceAccessErrorMessage(
+  tool: 'shared_space_upsert' | 'shared_space_membership_set',
+  spaceId: string,
+  reason: string,
+): string {
+  switch (reason) {
+    case 'shared_space_not_found':
+      return `Shared space "${spaceId}" was not found.`;
+    case 'shared_space_tenant_mismatch':
+      return `Shared space "${spaceId}" belongs to a different tenant.`;
+    case 'shared_space_owner_required':
+      return tool === 'shared_space_membership_set'
+        ? `Only a shared-space owner can update membership for "${spaceId}".`
+        : `Only a shared-space owner can update "${spaceId}".`;
+    case 'shared_space_editor_required':
+      return `Editor access is required for "${spaceId}".`;
+    case 'shared_space_membership_required':
+      return `Membership is required to manage shared space "${spaceId}".`;
+    case 'shared_space_kill_switch':
+      return `Shared space "${spaceId}" is disabled by its kill switch.`;
+    case 'shared_space_rollout_disabled':
+      return `Shared space "${spaceId}" is not currently rolled out.`;
+    case 'shared_space_tenant_required':
+      return 'Tenant scope is required to manage shared spaces.';
+    default:
+      return `Shared space admin access denied for "${spaceId}".`;
+  }
+}
+
+function normalizeOwnerAdminDenyReason(reason: string): string {
+  return reason === 'shared_space_membership_required'
+    ? 'shared_space_owner_required'
+    : reason;
 }
 
 function createSharedSpaceAuthError(
@@ -146,39 +219,78 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
       });
     }
 
-    const actor = resolveAdminActor('shared_space_upsert', args.actorUserId, args.actorAgentId);
-    if ('content' in actor) {
-      return actor;
+    const actorResult = resolveAdminActor('shared_space_upsert', args.actorUserId, args.actorAgentId);
+    if (!actorResult.ok) {
+      return actorResult.response;
     }
+    const actor = actorResult.actor;
 
     const result = db.transaction((): (
-      | { success: true; created: boolean }
-      | { error: 'shared_space_tenant_mismatch' | 'shared_space_owner_required'; msg: string }
+      | { success: true; created: boolean; rolloutEnabled: boolean; killSwitch: boolean }
+      | { error: string; msg: string; operationType: 'create' | 'update' }
     ) => {
-      const existingTenantId = findSharedSpaceTenant(db, args.spaceId);
-      if (existingTenantId && existingTenantId !== args.tenantId) {
-        return {
-          error: 'shared_space_tenant_mismatch',
-          msg: `Shared space "${args.spaceId}" belongs to a different tenant.`,
-        };
+      const existingSpace = db.prepare(`
+        SELECT tenant_id, rollout_enabled, kill_switch
+        FROM shared_spaces
+        WHERE space_id = ?
+        LIMIT 1
+      `).get(args.spaceId) as {
+        tenant_id?: string;
+        rollout_enabled?: number;
+        kill_switch?: number;
+      } | undefined;
+
+      if (existingSpace) {
+        const access = assertSharedSpaceAccess(
+          db,
+          buildAdminScope(actor, args.tenantId, args.spaceId),
+          args.spaceId,
+          'owner',
+        );
+        if (!access.allowed) {
+          const reason = normalizeOwnerAdminDenyReason(access.reason ?? 'shared_space_owner_required');
+          recordSharedSpaceAdminAudit(db, {
+            actor,
+            tenantId: args.tenantId,
+            spaceId: args.spaceId,
+            decision: 'deny',
+            operation: 'space_upsert',
+            reason,
+            metadata: {
+              operationType: 'update',
+            },
+          });
+          return {
+            error: reason,
+            msg: getSharedSpaceAccessErrorMessage('shared_space_upsert', args.spaceId, reason),
+            operationType: 'update',
+          };
+        }
       }
-      if (existingTenantId && !actorOwnsSharedSpace(db, args.spaceId, actor)) {
-        return {
-          error: 'shared_space_owner_required',
-          msg: `Only a shared-space owner can update "${args.spaceId}".`,
+
+      const definition = existingSpace
+        ? {
+          spaceId: args.spaceId,
+          tenantId: args.tenantId,
+          name: args.name,
+          rolloutCohort: args.rolloutCohort,
+          ...(args.rolloutEnabled !== undefined ? { rolloutEnabled: args.rolloutEnabled } : {}),
+          ...(args.killSwitch !== undefined ? { killSwitch: args.killSwitch } : {}),
+        }
+        : {
+          spaceId: args.spaceId,
+          tenantId: args.tenantId,
+          name: args.name,
+          rolloutEnabled: args.rolloutEnabled,
+          rolloutCohort: args.rolloutCohort,
+          killSwitch: args.killSwitch,
         };
-      }
 
       upsertSharedSpace(db, {
-        spaceId: args.spaceId,
-        tenantId: args.tenantId,
-        name: args.name,
-        rolloutEnabled: args.rolloutEnabled,
-        rolloutCohort: args.rolloutCohort,
-        killSwitch: args.killSwitch,
+        ...definition,
       });
 
-      const created = !existingTenantId;
+      const created = !existingSpace;
       if (created) {
         upsertSharedMembership(db, {
           spaceId: args.spaceId,
@@ -188,7 +300,35 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
         });
       }
 
-      return { success: true, created };
+      const savedSpace = db.prepare(`
+        SELECT rollout_enabled, kill_switch
+        FROM shared_spaces
+        WHERE space_id = ?
+        LIMIT 1
+      `).get(args.spaceId) as { rollout_enabled?: number; kill_switch?: number } | undefined;
+
+      recordSharedSpaceAdminAudit(db, {
+        actor,
+        tenantId: args.tenantId,
+        spaceId: args.spaceId,
+        decision: 'allow',
+        operation: 'space_upsert',
+        reason: created ? 'space_created' : 'space_updated',
+        metadata: {
+          operationType: created ? 'create' : 'update',
+          created,
+          ownerBootstrap: created,
+          rolloutEnabled: savedSpace?.rollout_enabled === 1,
+          killSwitch: savedSpace?.kill_switch === 1,
+        },
+      });
+
+      return {
+        success: true,
+        created,
+        rolloutEnabled: savedSpace?.rollout_enabled === 1,
+        killSwitch: savedSpace?.kill_switch === 1,
+      };
     })();
 
     if ('error' in result) {
@@ -205,8 +345,8 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
         actorSubjectId: actor.subjectId,
         created: result.created,
         ownerBootstrap: result.created,
-        rolloutEnabled: args.rolloutEnabled === true,
-        killSwitch: args.killSwitch === true,
+        rolloutEnabled: result.rolloutEnabled,
+        killSwitch: result.killSwitch,
       },
     });
   } catch (error: unknown) {
@@ -239,40 +379,70 @@ export async function handleSharedSpaceMembershipSet(args: SharedSpaceMembership
       });
     }
 
-    const actor = resolveAdminActor('shared_space_membership_set', args.actorUserId, args.actorAgentId);
-    if ('content' in actor) {
-      return actor;
+    const actorResult = resolveAdminActor('shared_space_membership_set', args.actorUserId, args.actorAgentId);
+    if (!actorResult.ok) {
+      return actorResult.response;
+    }
+    const actor = actorResult.actor;
+
+    const access = assertSharedSpaceAccess(
+      db,
+      buildAdminScope(actor, args.tenantId, args.spaceId),
+      args.spaceId,
+      'owner',
+    );
+    if (!access.allowed) {
+      const reason = normalizeOwnerAdminDenyReason(access.reason ?? 'shared_space_owner_required');
+      try {
+        recordSharedSpaceAdminAudit(db, {
+          actor,
+          tenantId: args.tenantId,
+          spaceId: args.spaceId,
+          decision: 'deny',
+          operation: 'membership_set',
+          reason,
+          metadata: {
+            operationType: 'membership_update',
+            subjectType: args.subjectType,
+            subjectId: args.subjectId,
+            role: args.role,
+          },
+        });
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : String(error);
+        console.error(`[shared-memory] Failed to record shared_space_admin audit: ${message}`);
+      }
+      return createSharedSpaceAuthError(
+        'shared_space_membership_set',
+        reason,
+        getSharedSpaceAccessErrorMessage('shared_space_membership_set', args.spaceId, reason),
+      );
     }
 
-    const existingTenantId = findSharedSpaceTenant(db, args.spaceId);
-    if (!existingTenantId) {
-      return createSharedSpaceAuthError(
-        'shared_space_membership_set',
-        'shared_space_not_found',
-        `Shared space "${args.spaceId}" was not found.`,
-      );
-    }
-    if (existingTenantId !== args.tenantId) {
-      return createSharedSpaceAuthError(
-        'shared_space_membership_set',
-        'shared_space_tenant_mismatch',
-        `Shared space "${args.spaceId}" belongs to a different tenant.`,
-      );
-    }
-    if (!actorOwnsSharedSpace(db, args.spaceId, actor)) {
-      return createSharedSpaceAuthError(
-        'shared_space_membership_set',
-        'shared_space_owner_required',
-        `Only a shared-space owner can update membership for "${args.spaceId}".`,
-      );
-    }
+    db.transaction(() => {
+      upsertSharedMembership(db, {
+        spaceId: args.spaceId,
+        subjectType: args.subjectType,
+        subjectId: args.subjectId,
+        role: args.role,
+      });
 
-    upsertSharedMembership(db, {
-      spaceId: args.spaceId,
-      subjectType: args.subjectType,
-      subjectId: args.subjectId,
-      role: args.role,
-    });
+      recordSharedSpaceAdminAudit(db, {
+        actor,
+        tenantId: args.tenantId,
+        spaceId: args.spaceId,
+        decision: 'allow',
+        operation: 'membership_set',
+        reason: 'membership_updated',
+        metadata: {
+          operationType: 'membership_update',
+          subjectType: args.subjectType,
+          subjectId: args.subjectId,
+          role: args.role,
+        },
+      });
+    })();
+
     return createMCPSuccessResponse({
       tool: 'shared_space_membership_set',
       summary: `Membership updated for ${args.subjectType} "${args.subjectId}"`,

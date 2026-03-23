@@ -13,6 +13,8 @@ const ENV_FLAGS = [
   'SPECKIT_EMBEDDING_EXPANSION',
   'SPECKIT_COMPLEXITY_ROUTER',
   'SPECKIT_MEMORY_SUMMARIES',
+  'SPECKIT_MEMORY_SCOPE_ENFORCEMENT',
+  'SPECKIT_HYDRA_SCOPE_ENFORCEMENT',
 ] as const;
 
 const savedEnv: Record<string, string | undefined> = {};
@@ -55,14 +57,16 @@ vi.mock('../lib/search/hybrid-search', () => ({
 const mockIsEmbeddingExpansionEnabled = vi.fn(() => true);
 const mockIsMultiQueryEnabled = vi.fn(() => false);
 const mockIsMemorySummariesEnabled = vi.fn(() => false);
+const mockIsHyDEEnabled = vi.fn(() => false);
+const mockIsLlmReformulationEnabled = vi.fn(() => false);
 vi.mock('../lib/search/search-flags', () => ({
   isEmbeddingExpansionEnabled: () => mockIsEmbeddingExpansionEnabled(),
   isMultiQueryEnabled: () => mockIsMultiQueryEnabled(),
   isMemorySummariesEnabled: () => mockIsMemorySummariesEnabled(),
   isGraphConceptRoutingEnabled: vi.fn(() => false),
   isQuerySurrogatesEnabled: vi.fn(() => false),
-  isHyDEEnabled: vi.fn(() => false),
-  isLlmReformulationEnabled: vi.fn(() => false),
+  isHyDEEnabled: () => mockIsHyDEEnabled(),
+  isLlmReformulationEnabled: () => mockIsLlmReformulationEnabled(),
   isSearchFallbackEnabled: vi.fn(() => false),
   isTRMEnabled: vi.fn(() => false),
   isNegativeFeedbackEnabled: vi.fn(() => false),
@@ -86,6 +90,25 @@ vi.mock('../lib/search/embedding-expansion', () => ({
 // Mock query-expander
 vi.mock('../lib/search/query-expander', () => ({
   expandQuery: vi.fn((q: string) => [q]),
+}));
+
+const mockCheapSeedRetrieve = vi.fn(() => []);
+const mockRewrite = vi.fn(async () => ({
+  abstract: 'abstract variant',
+  variants: ['llm variant'],
+}));
+const mockFanout = vi.fn((queries: string[]) => queries);
+vi.mock('../lib/search/llm-reformulation', () => ({
+  cheapSeedRetrieve: (...args: unknown[]) => mockCheapSeedRetrieve(...args),
+  llm: {
+    rewrite: (...args: unknown[]) => mockRewrite(...args),
+  },
+  fanout: (...args: [string[]]) => mockFanout(...args),
+}));
+
+const mockRunHyDE = vi.fn(async () => []);
+vi.mock('../lib/search/hyde', () => ({
+  runHyDE: (...args: unknown[]) => mockRunHyDE(...args),
 }));
 
 // Mock memory-summaries
@@ -112,6 +135,20 @@ vi.mock('../utils/db-helpers', () => ({
 
 // Mock governance scope filter
 const mockFilterRowsByScope = vi.fn((rows: Array<Record<string, unknown>>, scope: Record<string, unknown>, allowedSharedSpaceIds?: Set<string>) => {
+  const scopeEnforcementEnabled = process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT === 'true'
+    || process.env.SPECKIT_HYDRA_SCOPE_ENFORCEMENT === 'true';
+  const hasGovernanceScope = Boolean(
+    scope.tenantId
+    || scope.userId
+    || scope.agentId
+    || scope.sessionId
+    || scope.sharedSpaceId
+  );
+
+  if (scopeEnforcementEnabled && !hasGovernanceScope) {
+    return [];
+  }
+
   return rows.filter((row) => {
     const tenantMatches = !scope.tenantId || row.tenant_id === scope.tenantId;
     const userMatches = !scope.userId || row.user_id === scope.userId;
@@ -127,6 +164,9 @@ const mockFilterRowsByScope = vi.fn((rows: Array<Record<string, unknown>>, scope
 vi.mock('../lib/governance/scope-governance', () => ({
   filterRowsByScope: (rows: Array<Record<string, unknown>>, scope: Record<string, unknown>, allowedSharedSpaceIds?: Set<string>) =>
     mockFilterRowsByScope(rows, scope, allowedSharedSpaceIds),
+  isScopeEnforcementEnabled: () =>
+    process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT === 'true'
+    || process.env.SPECKIT_HYDRA_SCOPE_ENFORCEMENT === 'true',
 }));
 
 const mockGetAllowedSharedSpaceIds = vi.fn((_db: unknown, _scope: Record<string, unknown>) => undefined as Set<string> | undefined);
@@ -181,11 +221,20 @@ describe('Stage-1: Expansion & Dedup', () => {
     mockIsEmbeddingExpansionEnabled.mockReturnValue(true);
     mockIsMultiQueryEnabled.mockReturnValue(false);
     mockIsMemorySummariesEnabled.mockReturnValue(false);
+    mockIsHyDEEnabled.mockReturnValue(false);
+    mockIsLlmReformulationEnabled.mockReturnValue(false);
     mockCheckScaleGate.mockReset().mockReturnValue(false);
     mockQuerySummaryEmbeddings.mockReset().mockReturnValue([]);
     mockRequireDb.mockReset().mockReturnValue({});
     mockFilterRowsByScope.mockClear();
     mockGetAllowedSharedSpaceIds.mockReset().mockReturnValue(undefined);
+    mockCheapSeedRetrieve.mockReset().mockReturnValue([]);
+    mockRewrite.mockReset().mockResolvedValue({
+      abstract: 'abstract variant',
+      variants: ['llm variant'],
+    });
+    mockFanout.mockReset().mockImplementation((queries: string[]) => queries);
+    mockRunHyDE.mockReset().mockResolvedValue([]);
   });
 
   afterEach(() => {
@@ -488,6 +537,78 @@ describe('Stage-1: Expansion & Dedup', () => {
         includeConstitutional: true,
         tenantId: 'tenant-a',
         sharedSpaceId: 'allowed-space',
+      }),
+    });
+
+    expect(result.candidates.map((row) => row.id)).toEqual([1, 2]);
+    expect(result.candidates.find((row) => row.id === 3)).toBeUndefined();
+  });
+
+  it('T10: deny-by-default filters empty-scope candidates when enforcement is enabled', async () => {
+    process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT = 'true';
+
+    const mockSearch = searchWithFallback as ReturnType<typeof vi.fn>;
+    mockSearch.mockResolvedValue([
+      { id: 42, score: 0.91, title: 'would-have-leaked', tenant_id: 'tenant-a' },
+    ]);
+
+    const result = await executeStage1({ config: makeConfig() });
+
+    expect(mockFilterRowsByScope).toHaveBeenCalled();
+    expect(result.candidates).toHaveLength(0);
+  });
+
+  it('T11: deep-mode LLM reformulation results are scope-filtered before merge', async () => {
+    mockIsEmbeddingExpansionEnabled.mockReturnValue(false);
+    mockIsLlmReformulationEnabled.mockReturnValue(true);
+    mockGetAllowedSharedSpaceIds.mockReturnValue(new Set(['shared-allowed']));
+
+    const mockSearch = searchWithFallback as ReturnType<typeof vi.fn>;
+    mockSearch
+      .mockResolvedValueOnce([
+        { id: 1, title: 'baseline allowed', tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
+      ])
+      .mockResolvedValueOnce([
+        { id: 1, title: 'baseline duplicate', tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
+      ])
+      .mockResolvedValueOnce([
+        { id: 2, title: 'reform blocked', tenant_id: 'tenant-b', shared_space_id: 'shared-blocked' },
+      ])
+      .mockResolvedValueOnce([
+        { id: 3, title: 'reform allowed', tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
+      ]);
+
+    const result = await executeStage1({
+      config: makeConfig({
+        mode: 'deep',
+        tenantId: 'tenant-a',
+        sharedSpaceId: 'shared-allowed',
+      }),
+    });
+
+    expect(result.candidates.map((row) => row.id)).toEqual([1, 3]);
+    expect(result.candidates.find((row) => row.id === 2)).toBeUndefined();
+  });
+
+  it('T12: deep-mode HyDE results are scope-filtered before merge', async () => {
+    mockIsEmbeddingExpansionEnabled.mockReturnValue(false);
+    mockIsHyDEEnabled.mockReturnValue(true);
+    mockGetAllowedSharedSpaceIds.mockReturnValue(new Set(['shared-allowed']));
+
+    const mockSearch = searchWithFallback as ReturnType<typeof vi.fn>;
+    mockSearch.mockResolvedValue([
+      { id: 1, title: 'baseline allowed', tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
+    ]);
+    mockRunHyDE.mockResolvedValue([
+      { id: 2, title: 'hyde allowed', tenant_id: 'tenant-a', shared_space_id: 'shared-allowed' },
+      { id: 3, title: 'hyde blocked', tenant_id: 'tenant-b', shared_space_id: 'shared-blocked' },
+    ]);
+
+    const result = await executeStage1({
+      config: makeConfig({
+        mode: 'deep',
+        tenantId: 'tenant-a',
+        sharedSpaceId: 'shared-allowed',
       }),
     });
 

@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeAll, afterAll, vi } from 'vitest';
+import { describe, it, expect, beforeAll, beforeEach, afterAll, vi } from 'vitest';
 
 // TEST: CHECKPOINTS EXTENDED
 // Covers handler happy-paths (with in-memory DB) and storage
@@ -125,7 +125,9 @@ describe('CHECKPOINTS EXTENDED TESTS [deferred - requires DB test fixtures]', ()
     stmt.run('other-spec', '/test/memory/mem3.md', 'Test Memory 3', now, 'critical');
 
     checkpointStorage.init(testDb);
+  });
 
+  beforeEach(() => {
     vi.spyOn(coreModule, 'checkDatabaseUpdated').mockResolvedValue(false);
   });
 

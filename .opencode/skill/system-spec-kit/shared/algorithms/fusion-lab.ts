@@ -53,9 +53,9 @@ interface FusedCandidate extends RrfItem {
 interface PolicyTelemetry {
   policy: FusionPolicy;
   /** Normalized Discounted Cumulative Gain at cutoff 10. */
-  ndcg10: number;
+  ndcg10: number | null;
   /** Mean Reciprocal Rank at cutoff 5. */
-  mrr5: number;
+  mrr5: number | null;
   /** Wall-clock execution time in milliseconds. */
   latencyMs: number;
 }
@@ -72,6 +72,12 @@ interface ShadowRunResult {
 
 /** Implementation signature for a fusion policy function. */
 type PolicyFn = (channels: ScoredRankedList[], options?: FuseMultiOptions) => FusedCandidate[];
+
+interface ReferenceRankingItem {
+  id: number | string;
+  relevance?: number;
+  fusedScore?: number;
+}
 
 /* --- 3. FEATURE FLAG --- */
 
@@ -99,6 +105,12 @@ function isShadowFusionV2Enabled(): boolean {
  * @returns The same array with normalized scores.
  */
 function minMaxNormalize(results: ScoredChannelResult[]): ScoredChannelResult[] {
+  results = results.filter((result) => {
+    const score = typeof result.score === 'number'
+      ? result.score
+      : (result as { value?: unknown }).value;
+    return typeof score === 'number' && Number.isFinite(score);
+  });
   if (results.length === 0) return results;
   if (results.length === 1) {
     results[0].score = 1.0;
@@ -138,6 +150,12 @@ function minMaxNormalize(results: ScoredChannelResult[]): ScoredChannelResult[] 
  * @returns The same array with z-score-normalized and clamped scores.
  */
 function zScoreNormalize(results: ScoredChannelResult[]): ScoredChannelResult[] {
+  results = results.filter((result) => {
+    const score = typeof result.score === 'number'
+      ? result.score
+      : (result as { value?: unknown }).value;
+    return typeof score === 'number' && Number.isFinite(score);
+  });
   if (results.length === 0) return results;
 
   const n = results.length;
@@ -313,24 +331,37 @@ const POLICY_REGISTRY: Record<FusionPolicy, PolicyFn> = {
  * @param k - Cutoff rank (default 10).
  * @returns NDCG@k in [0, 1].
  */
-function computeNdcgAtK(results: FusedCandidate[], k: number = 10): number {
+function computeNdcgAtK(
+  results: FusedCandidate[],
+  k: number = 10,
+  referenceRanking?: ReferenceRankingItem[]
+): number | null {
+  if (!referenceRanking) {
+    console.warn('[fusion-lab] computeNdcgAtK requires referenceRanking; returning null');
+    return null;
+  }
   if (results.length === 0) return 0;
 
   const cutoff = Math.min(k, results.length);
-  const n = results.length;
-
-  // Assign ideal relevance: rank-0 item gets relevance n, rank-(n-1) gets 1
   const relevanceByKey = new Map<string, number>();
-  for (let i = 0; i < n; i++) {
-    relevanceByKey.set(String(results[i].id), n - i);
+  const relevanceValues: number[] = [];
+  const referenceLength = referenceRanking.length;
+  for (let i = 0; i < referenceLength; i++) {
+    const referenceItem = referenceRanking[i];
+    const relevance = typeof referenceItem.relevance === 'number' && Number.isFinite(referenceItem.relevance)
+      ? referenceItem.relevance
+      : referenceLength - i;
+    relevanceByKey.set(String(referenceItem.id), relevance);
+    relevanceValues.push(relevance);
   }
 
   let dcg = 0;
   let idcg = 0;
+  const idealRelevances = relevanceValues.sort((a, b) => b - a);
   for (let i = 0; i < cutoff; i++) {
     const rel = relevanceByKey.get(String(results[i].id)) ?? 0;
     dcg += rel / Math.log2(i + 2); // log2(rank+1), rank is 1-indexed
-    const idealRel = n - i; // perfect ordering
+    const idealRel = idealRelevances[i] ?? 0;
     idcg += idealRel / Math.log2(i + 2);
   }
 
@@ -347,11 +378,19 @@ function computeNdcgAtK(results: FusedCandidate[], k: number = 10): number {
  * @param k - Cutoff rank (default 5).
  * @returns MRR@k in [0, 1].
  */
-function computeMrrAtK(results: FusedCandidate[], k: number = 5): number {
+function computeMrrAtK(
+  results: FusedCandidate[],
+  k: number = 5,
+  referenceRanking?: ReferenceRankingItem[]
+): number | null {
+  if (!referenceRanking) {
+    console.warn('[fusion-lab] computeMrrAtK requires referenceRanking; returning null');
+    return null;
+  }
   if (results.length === 0) return 0;
 
-  // Treat the top item from the reference (first result) as the relevant document
-  const topId = String(results[0].id);
+  const topId = referenceRanking.length > 0 ? String(referenceRanking[0].id) : null;
+  if (topId === null) return 0;
   const cutoff = Math.min(k, results.length);
 
   for (let i = 0; i < cutoff; i++) {
@@ -403,8 +442,8 @@ async function runShadowComparison(
       activePolicy,
       telemetry: [{
         policy: activePolicy,
-        ndcg10: computeNdcgAtK(activeResult, 10),
-        mrr5: computeMrrAtK(activeResult, 5),
+        ndcg10: null,
+        mrr5: null,
         latencyMs,
       }],
     };
@@ -436,8 +475,8 @@ async function runShadowComparison(
   // Build telemetry (fire-and-forget: non-blocking, captured synchronously after Promise.all)
   const telemetry: PolicyTelemetry[] = policyResults.map(r => ({
     policy: r.policy,
-    ndcg10: r.error !== undefined ? 0 : computeNdcgAtK(r.candidates, 10),
-    mrr5: r.error !== undefined ? 0 : computeMrrAtK(r.candidates, 5),
+    ndcg10: r.error !== undefined ? 0 : null,
+    mrr5: r.error !== undefined ? 0 : null,
     latencyMs: r.latencyMs,
   }));
 

@@ -1,23 +1,11 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit",
   "description": "Audit and remediate ownership boundaries between root scripts (build-time and CLI tooling) and mcp_server (runtime MCP server), including merged follow-up boundary remediation work from former spec 030.",
-  "keywords": [
-    "feature",
-    "specification",
-    "system-spec-kit",
-    "scripts",
-    "architecture",
-    "audit",
-    "boundary",
-    "remediation"
-  ],
-  "lastUpdated": "2026-03-21T13:24:03.889Z",
+  "keywords": ["feature", "specification", "system-spec-kit", "scripts", "architecture", "audit", "boundary", "remediation"],
+  "lastUpdated": "2026-03-23T16:47:39.000Z",
   "specId": "005",
   "folderSlug": "architecture-audit",
-  "parentChain": [
-    "02--system-spec-kit",
-    "022-hybrid-rag-fusion"
-  ],
+  "parentChain": ["02--system-spec-kit", "022-hybrid-rag-fusion"],
   "memorySequence": 3,
   "memoryNameHistory": [
     "19-03-26_15-09__architecture-audit.md",

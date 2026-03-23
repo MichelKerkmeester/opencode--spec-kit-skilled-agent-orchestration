@@ -3,7 +3,7 @@ title: "Feature Catalog Comprehensive Audit & Remediation"
 status: "In Progress"
 level: 3
 created: "2025-12-01"
-updated: "2026-03-21"
+updated: "2026-03-23"
 ---
 # Feature Catalog Comprehensive Audit & Remediation
 
@@ -41,6 +41,12 @@ The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 his
 - New feature catalog entries: `16-json-mode-hybrid-enrichment.md` (phase 016), `17-json-primary-deprecation-posture.md` (phase 017).
 - New playbook entries: `153-json-mode-hybrid-enrichment.md`, `154-json-primary-deprecation-posture.md`.
 - Both index files updated with new entries and cross-reference table rows.
+
+## CURRENT-STATE NOTE (2026-03-23)
+
+- Live filesystem count now reports **222** feature catalog snippet files under `.opencode/skill/system-spec-kit/feature_catalog/`.
+- Live filesystem count now reports **233** manual testing playbook scenario files under `.opencode/skill/system-spec-kit/manual_testing_playbook/`.
+- Treat the earlier addendum counts above as historical milestones, not the current denominator.
 
 ---
 

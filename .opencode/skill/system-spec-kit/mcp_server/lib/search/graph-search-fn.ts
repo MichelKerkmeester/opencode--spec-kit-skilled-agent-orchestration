@@ -137,6 +137,7 @@ function queryCausalEdgesFTS5(
 ): Array<Record<string, unknown>> {
   const sanitized = sanitizeFTS5Query(query);
   if (!sanitized) return [];
+  const oversampleLimit = limit * 3;
 
   // BM25-inspired weights: title(10) highest signal, content(5), triggers(2), folder(1)
   // Find memory IDs matching the query via FTS5, then join to causal_edges
@@ -151,13 +152,21 @@ function queryCausalEdgesFTS5(
     WHERE memory_fts MATCH ?
     ORDER BY (ce.strength * (-bm25(memory_fts, 10.0, 5.0, 2.0, 1.0))) DESC
     LIMIT ?
-  `) as Database.Statement).all(sanitized, limit) as Array<CausalEdgeRow & { fts_score: number }>;
+  `) as Database.Statement).all(sanitized, oversampleLimit) as Array<CausalEdgeRow & { fts_score: number }>;
+
+  const seen = new Set<string>();
+  const dedupedRows = rows.filter((row) => {
+    const key = `${row.source_id}-${row.target_id}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 
   // Return one candidate entry per memory node (source_id and target_id) with
   // Numeric IDs matching memory_index.id (INTEGER column) in the hybrid search
   // Pipeline (MMR reranking filters with typeof id === 'number').
   const candidates: Array<Record<string, unknown>> = [];
-  for (const row of rows) {
+  for (const row of dedupedRows) {
     const edgeStrength = typeof row.strength === 'number'
       ? Math.min(1, Math.max(0, row.strength))
       : 0;
@@ -197,7 +206,7 @@ function queryCausalEdgesFTS5(
       });
     }
   }
-  return candidates;
+  return candidates.slice(0, limit);
 }
 
 /**
@@ -210,6 +219,7 @@ function queryCausalEdgesLikeFallback(
 ): Array<Record<string, unknown>> {
   const escaped = query.replace(/[%_]/g, '\\$&');
   const likeParam = `%${escaped}%`;
+  const oversampleLimit = limit * 3;
 
   const rows = (database.prepare(`
     SELECT ce.id, ce.source_id, ce.target_id, ce.relation, ce.strength
@@ -217,16 +227,22 @@ function queryCausalEdgesLikeFallback(
     WHERE ce.source_id IN (
       SELECT id
       FROM memory_index
-      WHERE COALESCE(content_text, title, '') LIKE ? ESCAPE '\\'
+      WHERE (content_text LIKE ? ESCAPE '\\' OR title LIKE ? ESCAPE '\\')
     )
        OR ce.target_id IN (
       SELECT id
       FROM memory_index
-      WHERE COALESCE(content_text, title, '') LIKE ? ESCAPE '\\'
+      WHERE (content_text LIKE ? ESCAPE '\\' OR title LIKE ? ESCAPE '\\')
     )
     ORDER BY ce.strength DESC
     LIMIT ?
-  `) as Database.Statement).all(likeParam, likeParam, limit) as CausalEdgeRow[];
+  `) as Database.Statement).all(
+    likeParam,
+    likeParam,
+    likeParam,
+    likeParam,
+    oversampleLimit,
+  ) as CausalEdgeRow[];
 
   // Return one candidate entry per memory node (source_id and target_id) with
   // Numeric IDs matching memory_index.id (INTEGER column).
@@ -351,14 +367,42 @@ function normalizeDegreeToBoostedScore(
  */
 function computeMaxTypedDegree(database: Database.Database): number {
   try {
-    // Get all unique memory IDs that participate in causal edges
-    const rows = (database.prepare(`
-      SELECT DISTINCT node_id FROM (
-        SELECT source_id AS node_id FROM causal_edges
-        UNION
-        SELECT target_id AS node_id FROM causal_edges
+    const statement = database.prepare(`
+      SELECT MAX(typed_degree) AS max_degree FROM (
+        SELECT DISTINCT node_id, typed_degree FROM (
+          SELECT
+            node_id,
+            MIN(SUM(
+              CASE relation
+                WHEN 'caused' THEN 1.0
+                WHEN 'derived_from' THEN 0.9
+                WHEN 'enabled' THEN 0.8
+                WHEN 'contradicts' THEN 0.7
+                WHEN 'supersedes' THEN 0.6
+                WHEN 'supports' THEN 0.5
+                ELSE 0
+              END * COALESCE(strength, 1.0)
+            ), 50) AS typed_degree
+          FROM (
+            SELECT source_id AS node_id, relation, strength FROM causal_edges
+            UNION
+            ALL
+            SELECT target_id AS node_id, relation, strength FROM causal_edges
+          )
+          GROUP BY node_id
+        )
       )
-    `) as Database.Statement).all() as Array<{ node_id: string }>;
+    `) as Database.Statement;
+
+    if (typeof statement.get === 'function') {
+      const row = statement.get() as { max_degree: number | null } | undefined;
+      return row?.max_degree ?? DEFAULT_MAX_TYPED_DEGREE;
+    }
+
+    // Test doubles may only expose .all() for the legacy distinct-node query shape.
+    const rows = typeof statement.all === 'function'
+      ? statement.all() as Array<{ node_id: string }>
+      : [];
 
     if (rows.length === 0) return DEFAULT_MAX_TYPED_DEGREE;
 

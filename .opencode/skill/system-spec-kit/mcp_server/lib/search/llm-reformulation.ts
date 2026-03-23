@@ -14,8 +14,8 @@
 // Shared LLM result cache (key: normalized query + mode, TTL 1h)
 // is imported from llm-cache.ts and also used by hyde.ts.
 //
-// Feature flag: SPECKIT_LLM_REFORMULATION (default: FALSE, opt-in).
-// Set to 'true' to enable. Only fires in deep mode.
+// Feature flag: SPECKIT_LLM_REFORMULATION (default: TRUE, graduated via rollout-policy).
+// Set SPECKIT_LLM_REFORMULATION=false to disable. Only fires in deep mode.
 
 /* ───────────────────────────────────────────────────────────────
    1. IMPORTS

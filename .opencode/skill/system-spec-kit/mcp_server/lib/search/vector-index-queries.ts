@@ -12,9 +12,11 @@ import { createLogger } from '../utils/logger';
 import { recordHistory } from '../storage/history';
 import * as embeddingsProvider from '../providers/embeddings';
 import {
-  to_embedding_buffer,
-  parse_trigger_phrases,
   get_error_message,
+  parse_trigger_phrases,
+  to_embedding_buffer,
+  VectorIndexError,
+  VectorIndexErrorCode,
 } from './vector-index-types';
 import {
   initialize_db,
@@ -28,62 +30,15 @@ import {
   sqlite_vec_available as get_sqlite_vec_available,
 } from './vector-index-store';
 import { delete_memory_from_database } from './vector-index-mutations';
+import type {
+  EmbeddingInput,
+  EnrichedSearchResult,
+  MemoryRow,
+  VectorSearchOptions,
+} from './vector-index-types';
 
 const logger = createLogger('VectorIndex');
 
-type EmbeddingInput = Float32Array | number[];
-type MemoryRow = {
-  id: number;
-  spec_folder: string;
-  file_path: string;
-  title?: string | null;
-  trigger_phrases?: string | string[];
-  importance_tier?: string;
-  importance_weight?: number;
-  created_at?: string;
-  access_count?: number;
-  last_accessed?: number;
-  confidence?: number;
-  keyword_score?: number;
-  similarity?: number;
-  avg_similarity?: number;
-  concept_similarities?: number[];
-  smartScore?: number;
-  relationSimilarity?: number;
-  isConstitutional?: boolean;
-  [key: string]: unknown;
-};
-type VectorSearchOptions = {
-  limit?: number;
-  specFolder?: string | null;
-  minSimilarity?: number;
-  useDecay?: boolean;
-  tier?: string | null;
-  contextType?: string | null;
-  includeConstitutional?: boolean;
-  includeArchived?: boolean;
-};
-type EnrichedSearchResult = {
-  rank: number;
-  similarity?: number;
-  avgSimilarity?: number;
-  conceptSimilarities?: number[];
-  title: string;
-  specFolder: string;
-  filePath: string;
-  date: string | null;
-  tags: string[];
-  snippet: string;
-  id: number;
-  importanceWeight: number;
-  created_at?: string;
-  access_count?: number;
-  smartScore?: number;
-  spec_folder?: string;
-  searchMethod?: string;
-  isConstitutional: boolean;
-  [key: string]: unknown;
-};
 type RelatedMemoryLink = { id: number; similarity: number };
 type UsageStatsOptions = { sortBy?: string; order?: string; limit?: number };
 type CleanupOptions = {
@@ -101,6 +56,11 @@ type CleanupOptions = {
  * Gets one indexed memory by identifier.
  * @param id - The memory identifier.
  * @returns The matching memory row, if found.
+ * @throws {VectorIndexError} Propagates store initialization failures from the vector index.
+ * @example
+ * ```ts
+ * const memory = get_memory(42);
+ * ```
  */
 export function get_memory(id: number): MemoryRow | null {
   const database = initialize_db();
@@ -195,6 +155,11 @@ export function get_stats(): { total: number; pending: number; success: number; 
  * @param query_embedding - The query embedding to search with.
  * @param options - Search options.
  * @returns The matching memory rows.
+ * @throws {VectorIndexError} Propagates store initialization failures from the vector index.
+ * @example
+ * ```ts
+ * const rows = vector_search(queryEmbedding, { limit: 5, specFolder: 'specs/001-demo' });
+ * ```
  */
 export function vector_search(query_embedding: EmbeddingInput, options: VectorSearchOptions = {}): MemoryRow[] {
   const sqlite_vec = get_sqlite_vec_available();
@@ -326,6 +291,11 @@ export function get_constitutional_memories_public(
  * @param concept_embeddings - The concept embeddings to search with.
  * @param options - Search options.
  * @returns The matching memory rows.
+ * @throws {VectorIndexError} When concept count or embedding dimensions are invalid, or when store initialization fails.
+ * @example
+ * ```ts
+ * const rows = multi_concept_search([embA, embB], { limit: 8, specFolder: 'specs/001-demo' });
+ * ```
  */
 export function multi_concept_search(
   concept_embeddings: EmbeddingInput[],
@@ -341,13 +311,16 @@ export function multi_concept_search(
 
   const concepts = concept_embeddings;
   if (!Array.isArray(concepts) || concepts.length < 2 || concepts.length > 5) {
-    throw new Error('Multi-concept search requires 2-5 concepts');
+    throw new VectorIndexError('Multi-concept search requires 2-5 concepts', VectorIndexErrorCode.QUERY_FAILED);
   }
 
   const expected_dim = get_embedding_dim();
   for (const emb of concepts) {
     if (!emb || emb.length !== expected_dim) {
-      throw new Error(`Invalid embedding dimension: expected ${expected_dim}, got ${emb?.length}`);
+      throw new VectorIndexError(
+        `Invalid embedding dimension: expected ${expected_dim}, got ${emb?.length}`,
+        VectorIndexErrorCode.QUERY_FAILED,
+      );
     }
   }
 
@@ -703,6 +676,11 @@ export function keyword_search(
  * @param limit - The maximum number of results to return.
  * @param options - Search options.
  * @returns A promise that resolves to enriched search results.
+ * @throws {VectorIndexError} Propagates vector-store initialization failures from the underlying search pipeline.
+ * @example
+ * ```ts
+ * const results = await vector_search_enriched('sqlite vec mismatch', 10, { specFolder: 'specs/001-demo' });
+ * ```
  */
 export async function vector_search_enriched(
   query: string,
@@ -780,6 +758,11 @@ export async function vector_search_enriched(
  * @param limit - The maximum number of results to return.
  * @param options - Search options.
  * @returns A promise that resolves to enriched search results.
+ * @throws {VectorIndexError} When concept validation fails or the vector search pipeline cannot execute.
+ * @example
+ * ```ts
+ * const results = await multi_concept_search_enriched(['sqlite', 'vector'], 10, { specFolder: 'specs/001-demo' });
+ * ```
  */
 export async function multi_concept_search_enriched(
   concepts: Array<string | EmbeddingInput>,
@@ -789,7 +772,7 @@ export async function multi_concept_search_enriched(
   const start_time = Date.now();
 
   if (!Array.isArray(concepts) || concepts.length < 2 || concepts.length > 5) {
-    throw new Error('Multi-concept search requires 2-5 concepts');
+    throw new VectorIndexError('Multi-concept search requires 2-5 concepts', VectorIndexErrorCode.QUERY_FAILED);
   }
 
   const { specFolder = null, minSimilarity = 50 } = options;

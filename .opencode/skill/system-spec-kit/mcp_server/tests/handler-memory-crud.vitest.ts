@@ -1,7 +1,9 @@
 // TEST: HANDLER MEMORY CRUD
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeAll, beforeEach, afterAll, afterEach } from 'vitest';
 // DB-dependent imports - commented out for deferred test suite
 import * as handler from '../handlers/memory-crud';
+import * as core from '../core';
+import * as vectorIndex from '../lib/search/vector-index';
 import type { HealthArgs, StatsArgs } from '../handlers/memory-crud-types';
 
 type ErrorLike = {
@@ -33,6 +35,23 @@ function toErrorLike(error: unknown): ErrorLike {
 }
 
 describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', () => {
+  beforeAll(() => {
+    vectorIndex.closeDb();
+    vectorIndex.initializeDb(':memory:');
+  });
+
+  afterAll(() => {
+    vectorIndex.closeDb();
+  });
+
+  beforeEach(() => {
+    vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   describe('Exports Validation', () => {
     const expectedExports = [
       'handleMemoryDelete',

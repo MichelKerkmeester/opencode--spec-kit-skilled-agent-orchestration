@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: D2 REQ-D2-005 — Index-Time Surrogates
 //
-// Gate: SPECKIT_QUERY_SURROGATES — default OFF (opt-in).
+// Gate: SPECKIT_QUERY_SURROGATES — default: ON (graduated).
 //
 // Generates surrogate metadata at index time to improve recall without
 // runtime LLM calls.  Surrogates include aliases (abbreviations, synonyms),
@@ -14,7 +14,7 @@
 // to produce a lightweight boost score — no LLM calls on the default path.
 //
 // Feature flags:
-//   SPECKIT_QUERY_SURROGATES — enable surrogate generation + matching (default: FALSE)
+//   SPECKIT_QUERY_SURROGATES — enable surrogate generation + matching (default: ON (graduated))
 
 /* ───────────────────────────────────────────────────────────────
    1. IMPORTS

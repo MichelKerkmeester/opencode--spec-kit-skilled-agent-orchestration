@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { describe, expect, it } from 'vitest';
+import * as api from '../api';
 
 const MCP_SERVER_ROOT = path.join(__dirname, '..');
 const SKILL_ROOT = path.join(MCP_SERVER_ROOT, '..');
@@ -74,6 +75,29 @@ const hydraFlagDefaults = [
   ['SPECKIT_HYDRA_SHARED_MEMORY', 'true'],
 ] as const;
 
+const canonicalHydraAliases = {
+  SPECKIT_HYDRA_PHASE: 'SPECKIT_MEMORY_ROADMAP_PHASE',
+  SPECKIT_HYDRA_LINEAGE_STATE: 'SPECKIT_MEMORY_LINEAGE_STATE',
+  SPECKIT_HYDRA_GRAPH_UNIFIED: 'SPECKIT_MEMORY_GRAPH_UNIFIED',
+  SPECKIT_HYDRA_ADAPTIVE_RANKING: 'SPECKIT_MEMORY_ADAPTIVE_RANKING',
+  SPECKIT_HYDRA_SCOPE_ENFORCEMENT: 'SPECKIT_MEMORY_SCOPE_ENFORCEMENT',
+  SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS: 'SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS',
+  SPECKIT_HYDRA_SHARED_MEMORY: 'SPECKIT_MEMORY_SHARED_MEMORY',
+} as const;
+
+function expectHydraFlagRow(
+  docContent: string,
+  legacyEnv: keyof typeof canonicalHydraAliases,
+  defaultValue: string,
+): void {
+  const canonicalEnv = canonicalHydraAliases[legacyEnv];
+  const rowPattern = new RegExp(
+    `\\|\\s+\`(?:${escapeRegExp(canonicalEnv)}\`\\s+\\/\\s+\`)?${escapeRegExp(legacyEnv)}\`\\s+\\|\\s+\`${escapeRegExp(defaultValue)}\`\\s+\\|`,
+  );
+
+  expect(docContent).toMatch(rowPattern);
+}
+
 describe('Feature flag reference catalog mappings', () => {
   for (const check of mappingChecks) {
     it(`${check.env} maps to ${check.source} and the source reads the symbol`, () => {
@@ -100,11 +124,11 @@ describe('Hydra roadmap flag documentation', () => {
       const docPath = path.join(FEATURE_FLAG_DOCS, doc);
       const docContent = fs.readFileSync(docPath, 'utf8');
 
-      expect(docContent).toContain('| `SPECKIT_HYDRA_PHASE` | `shared-rollout` |');
-      expect(docContent).toMatch(/(?:unknown|Unsupported) values fall back to `shared-rollout`/);
+      expectHydraFlagRow(docContent, 'SPECKIT_HYDRA_PHASE', 'shared-rollout');
+      expect(docContent).toMatch(/(?:unknown|unsupported) values fall back to `shared-rollout`/i);
 
       for (const [env, defaultValue] of hydraFlagDefaults) {
-        expect(docContent).toContain(`| \`${env}\` | \`${defaultValue}\` |`);
+        expectHydraFlagRow(docContent, env, defaultValue);
       }
     });
   }
@@ -132,5 +156,19 @@ describe('Hydra roadmap flag documentation', () => {
     expect(featureFileContent).toContain('capabilities.graphUnified:false');
     expect(featureFileContent).toContain('SPECKIT_HYDRA_ADAPTIVE_RANKING=true');
     expect(featureFileContent).toContain('capabilities.adaptiveRanking:true');
+  });
+});
+
+describe('Public API barrel exports', () => {
+  it('exposes rollout metadata and read-only Hybrid RAG Fusion surfaces', () => {
+    expect(api.LAYER_DEFINITIONS.L5.tools).toContain('shared_memory_status');
+    expect(api.TOOL_LAYER_MAP.shared_memory_status).toBe('L5');
+    expect(api.getLayerForTool('shared_memory_status')).toBe('L5');
+    expect(api.getLayerTokenBudget('shared_memory_status')).toBe(600);
+    expect(typeof api.getSharedRolloutMetrics).toBe('function');
+    expect(typeof api.getSharedRolloutCohortSummary).toBe('function');
+    expect(typeof api.getMemoryRoadmapPhase).toBe('function');
+    expect(typeof api.getMemoryRoadmapCapabilityFlags).toBe('function');
+    expect(typeof api.getMemoryRoadmapDefaults).toBe('function');
   });
 });

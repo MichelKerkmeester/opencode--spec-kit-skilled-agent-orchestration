@@ -417,8 +417,8 @@ describe('REQ-D1-002 runShadowComparison (flag OFF)', () => {
     const channels = [makeScoredChannel('vec', [{ id: 'a', score: 0.8 }])];
     const result = await runShadowComparison(channels);
     const t = result.telemetry[0];
-    expect(typeof t.ndcg10).toBe('number');
-    expect(typeof t.mrr5).toBe('number');
+    expect(t.ndcg10).toBeNull();
+    expect(t.mrr5).toBeNull();
     expect(typeof t.latencyMs).toBe('number');
     expect(t.latencyMs).toBeGreaterThanOrEqual(0);
   });
@@ -480,15 +480,8 @@ describe('REQ-D1-002 runShadowComparison (flag ON)', () => {
     ];
     const result = await runShadowComparison(channels, 'rrf');
     for (const t of result.telemetry) {
-      expect(typeof t.ndcg10).toBe('number');
-      expect(Number.isFinite(t.ndcg10)).toBe(true);
-      expect(t.ndcg10).toBeGreaterThanOrEqual(0);
-      expect(t.ndcg10).toBeLessThanOrEqual(1);
-
-      expect(typeof t.mrr5).toBe('number');
-      expect(Number.isFinite(t.mrr5)).toBe(true);
-      expect(t.mrr5).toBeGreaterThanOrEqual(0);
-      expect(t.mrr5).toBeLessThanOrEqual(1);
+      expect(t.ndcg10).toBeNull();
+      expect(t.mrr5).toBeNull();
 
       expect(typeof t.latencyMs).toBe('number');
       expect(t.latencyMs).toBeGreaterThanOrEqual(0);
@@ -581,12 +574,12 @@ describe('REQ-D1-002 runShadowComparison (flag ON)', () => {
 
 describe('REQ-D1-002 Telemetry metric helpers', () => {
   it('D2-TM-1: computeNdcgAtK returns 0 for empty results', () => {
-    expect(computeNdcgAtK([], 10)).toBe(0);
+    expect(computeNdcgAtK([], 10, [])).toBe(0);
   });
 
   it('D2-TM-2: computeNdcgAtK returns 1.0 for single item (ideal == actual)', () => {
     const items = [{ id: 'a', fusedScore: 1.0, sources: [] } as FusedCandidate];
-    expect(computeNdcgAtK(items, 10)).toBeCloseTo(1.0, 5);
+    expect(computeNdcgAtK(items, 10, items)).toBeCloseTo(1.0, 5);
   });
 
   it('D2-TM-3: computeNdcgAtK returns 1.0 for perfectly ranked list', () => {
@@ -596,7 +589,7 @@ describe('REQ-D1-002 Telemetry metric helpers', () => {
       { id: 'c', fusedScore: 0.5, sources: [] },
     ] as FusedCandidate[];
     // Items are in ideal order (highest score first), so NDCG should be 1.0
-    expect(computeNdcgAtK(items, 10)).toBeCloseTo(1.0, 5);
+    expect(computeNdcgAtK(items, 10, items)).toBeCloseTo(1.0, 5);
   });
 
   it('D2-TM-4: computeNdcgAtK is in [0, 1]', () => {
@@ -604,13 +597,17 @@ describe('REQ-D1-002 Telemetry metric helpers', () => {
       { id: 'c', fusedScore: 0.1, sources: [] },
       { id: 'a', fusedScore: 0.9, sources: [] },
     ] as FusedCandidate[];
-    const ndcg = computeNdcgAtK(items, 10);
+    const reference = [
+      { id: 'a', fusedScore: 0.9, sources: [] },
+      { id: 'c', fusedScore: 0.1, sources: [] },
+    ] as FusedCandidate[];
+    const ndcg = computeNdcgAtK(items, 10, reference);
     expect(ndcg).toBeGreaterThanOrEqual(0);
     expect(ndcg).toBeLessThanOrEqual(1);
   });
 
   it('D2-TM-5: computeMrrAtK returns 0 for empty results', () => {
-    expect(computeMrrAtK([], 5)).toBe(0);
+    expect(computeMrrAtK([], 5, [])).toBe(0);
   });
 
   it('D2-TM-6: computeMrrAtK returns 1 when top item is rank 1', () => {
@@ -619,7 +616,7 @@ describe('REQ-D1-002 Telemetry metric helpers', () => {
       { id: 'other', fusedScore: 0.5, sources: [] },
     ] as FusedCandidate[];
     // Top item is at position 0 (rank 1): MRR = 1/1 = 1.0
-    expect(computeMrrAtK(items, 5)).toBe(1.0);
+    expect(computeMrrAtK(items, 5, items)).toBe(1.0);
   });
 
   it('D2-TM-7: computeMrrAtK is in [0, 1]', () => {
@@ -627,9 +624,19 @@ describe('REQ-D1-002 Telemetry metric helpers', () => {
       { id: 'a', fusedScore: 0.8, sources: [] },
       { id: 'b', fusedScore: 0.6, sources: [] },
     ] as FusedCandidate[];
-    const mrr = computeMrrAtK(items, 5);
+    const mrr = computeMrrAtK(items, 5, items);
     expect(mrr).toBeGreaterThanOrEqual(0);
     expect(mrr).toBeLessThanOrEqual(1);
+  });
+
+  it('D2-TM-8: computeNdcgAtK returns null without a reference ranking', () => {
+    const items = [{ id: 'a', fusedScore: 1.0, sources: [] } as FusedCandidate];
+    expect(computeNdcgAtK(items, 10)).toBeNull();
+  });
+
+  it('D2-TM-9: computeMrrAtK returns null without a reference ranking', () => {
+    const items = [{ id: 'a', fusedScore: 1.0, sources: [] } as FusedCandidate];
+    expect(computeMrrAtK(items, 5)).toBeNull();
   });
 });
 
@@ -681,8 +688,8 @@ describe('REQ-D1-002 Integration: all 3 policies on shared input', () => {
     const result = await runShadowComparison(channels, 'rrf');
     expect(result.telemetry).toHaveLength(3);
     for (const t of result.telemetry) {
-      expect(t.ndcg10).toBeGreaterThanOrEqual(0);
-      expect(t.mrr5).toBeGreaterThanOrEqual(0);
+      expect(t.ndcg10).toBeNull();
+      expect(t.mrr5).toBeNull();
       expect(t.latencyMs).toBeGreaterThanOrEqual(0);
     }
   });

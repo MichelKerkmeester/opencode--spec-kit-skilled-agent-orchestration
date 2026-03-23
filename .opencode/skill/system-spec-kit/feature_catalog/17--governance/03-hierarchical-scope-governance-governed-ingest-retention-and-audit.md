@@ -32,13 +32,16 @@ Retention policy logic is integrated with governance controls, and allow/deny ou
 | `mcp_server/lib/governance/scope-governance.ts` | Lib | Scope evaluation and allow/deny decisioning |
 | `mcp_server/lib/governance/retention.ts` | Lib | Retention policy enforcement aligned with scope governance |
 | `mcp_server/lib/search/vector-index-schema.ts` | Lib | Governance and audit schema support |
+| `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Applies scope filtering and shared-space allowlists to retrieval candidates |
 | `mcp_server/handlers/memory-save.ts` | Handler | Governed ingest validation and provenance enforcement |
+| `mcp_server/handlers/memory-search.ts` | Handler | Normalizes scoped retrieval context before pipeline execution |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/memory-governance.vitest.ts` | Governed ingest requirements, scope isolation and governance audit coverage |
+| `mcp_server/tests/governance-e2e.vitest.ts` | End-to-end scoped retrieval isolation, retention sweeps and audit review |
 
 ---
 

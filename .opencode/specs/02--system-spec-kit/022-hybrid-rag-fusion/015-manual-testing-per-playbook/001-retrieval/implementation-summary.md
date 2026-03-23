@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary [template:level_2/implementation-summary.md]"
-description: "Phase 001 retrieval manual testing — 11/11 scenarios executed via source-code review. All verdicted PASS. Evidence citations included per scenario."
+description: "Phase 001 retrieval manual testing — 13/13 scenarios executed via source-code review. All verdicted PASS. Evidence citations included per scenario."
 trigger_phrases:
   - "retrieval implementation summary"
   - "phase 001 summary"
@@ -33,7 +33,7 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-All 11 retrieval-category playbook scenarios were executed via static source-code review of the MCP server TypeScript implementation. Each scenario's acceptance criteria were matched against actual code paths and contract definitions. No live MCP runtime was required for destructive scenarios (086, 143) because the implementation evidence is unambiguous at source level.
+All 13 retrieval-category playbook scenarios were executed via static source-code review of the MCP server TypeScript implementation and command surface. Each scenario's acceptance criteria were matched against actual code paths and contract definitions. No live MCP runtime was required for destructive scenarios (086, 143) because the implementation evidence is unambiguous at source level.
 
 ### Execution Results
 
@@ -50,8 +50,10 @@ All 11 retrieval-category playbook scenarios were executed via static source-cod
 | 109 | Quality-aware 3-tier search fallback | **PASS** | `lib/search/hybrid-search.ts:1466-1614` (`checkDegradation`, 3-tier chain, `calibrateTier3Scores`), `search-flags.ts:57-61` (`SPECKIT_SEARCH_FALLBACK`) |
 | 142 | Session transition trace contract | **PASS** | `lib/search/session-transition.ts:16-22` (interface), `:64-103` (build), `:142-190` (attach), `handlers/memory-context.ts:780` (trace-only gating) |
 | 143 | Bounded graph-walk rollout and diagnostics | **PASS** | `lib/search/search-flags.ts:148-163` (`GraphWalkRolloutState`), `pipeline/ranking-contract.ts:14` (`STAGE2_GRAPH_BONUS_CAP=0.03`), `formatters/search-results.ts:136-144` (trace shape) |
+| 185 | /memory:analyze command routing | **PASS** | `.opencode/command/memory/analyze.md:12-42` (no-args prompt + routing), `:127-162` (analysis subcommands + first-token dispatch), `:2-4` (retrieval/analysis tool surface) |
+| 187 | Quick search (memory_quick_search) | **PASS** | `.opencode/skill/system-spec-kit/mcp_server/tools/memory-tools.ts:47-65` (delegation layer), `schemas/tool-input-schemas.ts:389-485` (schema + governed params), `tests/memory-tools.vitest.ts:41-64` (scope forwarding) |
 
-**Coverage**: 11/11 scenarios executed. **Pass rate**: 11/11 (100%).
+**Coverage**: 13/13 scenarios executed. **Pass rate**: 13/13 (100%).
 
 ### Files Examined
 
@@ -70,6 +72,10 @@ All 11 retrieval-category playbook scenarios were executed via static source-cod
 | `lib/search/graph-flags.ts` | 143 — rollout accessors (`isGraphWalkRuntimeEnabled`, `isGraphWalkTraceEnabled`) |
 | `formatters/search-results.ts` | 143 — `graphContribution` trace shape with `appliedBonus`, `capApplied`, `rolloutState` |
 | `shared/contracts/retrieval-trace.ts` | EX-005 — typed pipeline trace contract |
+| `.opencode/command/memory/analyze.md` | 185, 187 — `/memory:analyze` routing gates, tool ownership, and subcommand contract |
+| `.opencode/skill/system-spec-kit/mcp_server/tools/memory-tools.ts` | 187 — `memory_quick_search` delegation into `handleMemorySearch()` |
+| `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts` | 187 — `memory_quick_search` schema export and governed parameter allowlist |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/memory-tools.vitest.ts` | 187 — governed retrieval field forwarding coverage |
 | Feature catalog files (6) | Cross-reference verification for all scenarios |
 <!-- /ANCHOR:what-built -->
 
@@ -97,7 +103,7 @@ For scenario 142 (trace contract): the `SessionTransitionTrace` shape is typed a
 | Decision | Why |
 |----------|-----|
 | Source-code review as execution methodology | MCP runtime not required when code paths are unambiguous; avoids live sandbox mutations for 086 and 143 |
-| PASS for all 11 scenarios | Every acceptance criterion in every playbook scenario maps to a confirmed code implementation with specific file:line evidence |
+| PASS for all 13 scenarios | Every acceptance criterion in every playbook scenario maps to a confirmed code implementation with specific file:line evidence |
 | No PARTIAL verdicts assigned | No missing edge cases or gaps found; all expected signals are implemented end-to-end |
 | 086 and 143 verified without live runtime | The BM25 gate (`memory-crud-update.ts:154`) and rollout ladder (`search-flags.ts:148-163`) are deterministic static code paths, not probabilistic runtime behaviors |
 <!-- /ANCHOR:decisions -->
@@ -109,11 +115,11 @@ For scenario 142 (trace contract): the `SessionTransitionTrace` shape is typed a
 
 | Check | Result |
 |-------|--------|
-| 11 scenarios executed | 11/11 — all IDs covered: EX-001, M-001, EX-002, M-002, EX-003, EX-004, EX-005, 086, 109, 142, 143 |
-| All verdicts assigned | 11/11 PASS |
-| Checklist P0 items complete | 16/16 |
-| P1 items complete | 8/8 |
-| Tasks complete | T001-T005, T010-T020, T030-T033 all marked done |
+| 13 scenarios executed | 13/13 — all IDs covered: EX-001, M-001, EX-002, M-002, EX-003, EX-004, EX-005, 086, 109, 142, 143, 185, 187 |
+| All verdicts assigned | 13/13 PASS |
+| Checklist P0 items complete | 22/22 |
+| P1 items complete | 7/7 |
+| Tasks complete | T001-T005, T010-T022, T030-T033 all marked done |
 <!-- /ANCHOR:verification -->
 
 ---

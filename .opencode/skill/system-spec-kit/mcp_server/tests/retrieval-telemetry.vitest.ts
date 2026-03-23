@@ -126,7 +126,7 @@ describe('C136-12: retrieval-telemetry', () => {
     expect(t.architecture.phase).toBe('shared-rollout');
     expect(t.architecture.capabilities.lineageState).toBe(true);
     expect(t.architecture.capabilities.graphUnified).toBe(true);
-    expect(t.architecture.scopeDimensionsTracked).toBe(4);
+    expect(t.architecture.scopeDimensionsTracked).toBe(5);
   });
 
   // T02: Feature flag disabled

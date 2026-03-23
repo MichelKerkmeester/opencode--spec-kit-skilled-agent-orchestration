@@ -1,15 +1,15 @@
 ---
 title: "Graph concept routing"
-description: "Graph concept routing extracts noun phrases from a query and matches them against a concept alias table, activating the graph channel for matched concepts to improve retrieval via causal edge traversal, gated by the SPECKIT_GRAPH_CONCEPT_ROUTING flag."
+description: "Graph concept routing extracts noun phrases from a query and matches them against a concept alias table, recording matched concepts as Stage 1 trace metadata when SPECKIT_GRAPH_CONCEPT_ROUTING is enabled."
 ---
 
 # Graph concept routing
 
 ## 1. OVERVIEW
 
-Graph concept routing extracts noun phrases from a query and matches them against a concept alias table, activating the graph channel for matched concepts to improve retrieval via causal edge traversal, gated by the `SPECKIT_GRAPH_CONCEPT_ROUTING` flag.
+Graph concept routing extracts noun phrases from a query and matches them against a concept alias table, recording matched concepts as Stage 1 trace metadata when `SPECKIT_GRAPH_CONCEPT_ROUTING` is enabled.
 
-Normally, the graph retrieval channel only activates when a query explicitly references known entities. This feature bridges the gap by automatically detecting concept references in natural language queries. It extracts noun phrases, matches them against a table of canonical concept names and their aliases, and routes the matched concepts to the graph channel. This means queries like "how does memory decay work" can activate graph traversal for the "FSRS decay" concept even though the user never mentioned FSRS directly.
+Normally, the graph retrieval channel only activates when a query explicitly references known entities. This feature adds a lightweight concept-routing pass over natural-language queries: it extracts noun phrases, matches them against canonical concept names and aliases, and records the resulting concepts in retrieval trace metadata. Today that gives downstream observability into which concepts were recognized, but it does not directly switch Stage 1 into a graph retrieval branch.
 
 ---
 
@@ -17,7 +17,7 @@ Normally, the graph retrieval channel only activates when a query explicitly ref
 
 Enabled by default (graduated). Set `SPECKIT_GRAPH_CONCEPT_ROUTING=false` to disable.
 
-The `isGraphConceptRoutingEnabled()` function in `search-flags.ts` checks the flag. The entity linker module (`entity-linker.ts`) provides query-time concept routing alongside its cross-document entity linking role. It extracts noun phrases from the query, matches them against the concept alias table in SQLite, and returns canonical concept names. The matched concepts are used by `stage1-candidate-gen.ts` to activate the graph retrieval channel for those concepts.
+The `isGraphConceptRoutingEnabled()` function in `search-flags.ts` checks the flag. The entity linker module (`entity-linker.ts`) provides query-time concept routing alongside its cross-document entity linking role. It extracts noun phrases from the query, matches them against the concept alias table in SQLite, and returns canonical concept names plus a `graphActivated` boolean. `stage1-candidate-gen.ts` currently uses that output only to append a `d2-concept-routing` trace entry with `matchedConcepts` and `graphActivated: true`; it does not switch the Stage 1 search path or directly activate a graph retrieval channel.
 
 ---
 
@@ -28,7 +28,7 @@ The `isGraphConceptRoutingEnabled()` function in `search-flags.ts` checks the fl
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/lib/search/entity-linker.ts` | Lib | Query-time concept routing, noun phrase extraction, alias table matching |
-| `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Stage-1 orchestration, graph channel activation from concept matches |
+| `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Stage-1 orchestration, records concept-routing results into retrieval trace metadata |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isGraphConceptRoutingEnabled()` flag accessor |
 
 ### Tests
@@ -44,4 +44,4 @@ The `isGraphConceptRoutingEnabled()` function in `search-flags.ts` checks the fl
 
 - Group: Query intelligence
 - Source feature title: Graph concept routing
-- Current reality source: mcp_server/lib/search/entity-linker.ts module header and search-flags.ts `isGraphConceptRoutingEnabled()` implementation
+- Current reality source: mcp_server/lib/search/entity-linker.ts and mcp_server/lib/search/pipeline/stage1-candidate-gen.ts concept-routing trace branch

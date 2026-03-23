@@ -31,7 +31,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Executed comprehensive code analysis across the documented 61 exact scenario IDs in the 16--tooling-and-scripts playbook category. Each scenario was verified against the live codebase with file:line evidence citations. The analysis covered 29 playbook scenario files, 18 feature catalog entries, MCP server source code (585+ TypeScript files), scripts source code, shared library, and configuration files.
+Executed comprehensive code analysis across the documented 65 exact scenario IDs in the 16--tooling-and-scripts playbook category. Each scenario was verified against the live codebase, runtime file census, or strict-validation output with evidence citations. The analysis covered 33 playbook scenario files, 18 feature catalog entries, MCP server source code (585+ TypeScript files), scripts source code, shared library, and configuration files.
 
 ### Verdict Table (historical execution record)
 
@@ -74,7 +74,7 @@ Executed comprehensive code analysis across the documented 61 exact scenario IDs
 | 23 | M-007p | Structured-summary JSON coverage | PASS | generate-context.ts:90-94 toolCalls/exchanges, input-normalizer camelCase/snake_case |
 | 24 | M-007q | Phase 018 output-quality hardening | PASS | Decision dedup, blocker specificity, em/en dash, tree thinning safeguards |
 
-#### Group D: Tooling and Script Utilities (20 IDs)
+#### Group D: Tooling and Script Utilities (25 IDs)
 
 | # | ID | Scenario | Verdict | Evidence |
 |---|-----|----------|---------|----------|
@@ -98,34 +98,39 @@ Executed comprehensive code analysis across the documented 61 exact scenario IDs
 | 42 | 151 | MODULE_MAP.md accuracy | PASS | MODULE_MAP.md at mcp_server/lib/ with inventory + mapping |
 | 43 | 152 | No symlinks in lib/ tree | PASS | 0 symlinks found via find |
 | 44 | 154 | JSON-primary deprecation posture | PASS | generate-context.ts:398-407 gates --json/--stdin/file |
+| 45 | 181 | Template Compliance Contract Enforcement | PASS | strict validation of `scripts/test-fixtures/053-template-compliant-level2` exits 0 with 0 errors; feature catalog 18 + command-workflow tests confirm the 3-layer contract |
+| 46 | M-009 | Runtime Family Count Census | PASS | Runtime census commands return 9 for base, ChatGPT, Claude, Codex, and Gemini agent families |
+| 47 | M-010 | Runtime Lineage Naming Parity | PASS | basename `diff -u` checks return no output; no active runtime-agent research file exists in Markdown or TOML form |
+| 48 | M-011 | Gemini Runtime Path Resolution | PASS | `readlink .gemini` returns `.agents`; `.gemini/agents` matches `.agents/agents`; resolved count is 9 |
+| 49 | 186 | /memory:manage command routing | PASS | manage.md enforces default stats mode, recognized-mode parsing, full routing tree, and stats dashboard calls |
 
 #### Group E: JSON Mode Structured Summary Hardening (16 IDs)
 
 | # | ID | Scenario | Verdict | Evidence |
 |---|-----|----------|---------|----------|
-| 45 | 153 | JSON mode hardening (parent) | PASS | Full contract: toolCalls/exchanges, snake_case, file-backed authority, Wave 2 |
-| 46 | 153-A | Post-save quality review | PASS | post-save-review.ts:390-405 REVIEW block |
-| 47 | 153-B | sessionSummary to title | PASS | input-normalizer.ts:622-627 |
-| 48 | 153-C | triggerPhrases to frontmatter | PASS | input-normalizer.ts:460-463,521,668 + filterTriggerPhrases |
-| 49 | 153-D | keyDecisions to decision_count | PASS | input-normalizer.ts:545-559 |
-| 50 | 153-E | importanceTier to frontmatter | PASS | input-normalizer.ts:530-533,675-678 |
-| 51 | 153-F | contextType enum propagation | PASS | input-normalizer.ts:535-538,680-683,723 VALID_CONTEXT_TYPES |
-| 52 | 153-G | Contamination filter | PASS | contamination-filter.ts, workflow.ts:592 |
-| 53 | 153-H | filesModified to FILES | PASS | input-normalizer.ts:476-511 |
-| 54 | 153-I | Unknown field warning | PASS | input-normalizer.ts:705,735-737 KNOWN_RAW_INPUT_FIELDS |
-| 55 | 153-J | contextType enum rejection | PASS | input-normalizer.ts:723,748 |
-| 56 | 153-K | Quality score discriminates | PASS | quality-scorer.ts:120,179-206 |
-| 57 | 153-L | Trigger phrase filter | PASS | workflow.ts:122-148 Stage 1 path removal |
-| 58 | 153-M | Embedding retry stats | PASS | retry-manager.ts:40-41 + embedding-retry-stats.vitest.ts |
-| 59 | 153-N | Pre-save overlap warning | PASS | workflow.ts:1465-1481 SHA overlap + SPECKIT_PRE_SAVE_DEDUP |
-| 60 | 153-O | projectPhase override | PASS | input-normalizer.ts:540-543,685-688 + session-extractor.ts:227-235 |
+| 50 | 153 | JSON mode hardening (parent) | PASS | Full contract: toolCalls/exchanges, snake_case, file-backed authority, Wave 2 |
+| 51 | 153-A | Post-save quality review | PASS | post-save-review.ts:390-405 REVIEW block |
+| 52 | 153-B | sessionSummary to title | PASS | input-normalizer.ts:622-627 |
+| 53 | 153-C | triggerPhrases to frontmatter | PASS | input-normalizer.ts:460-463,521,668 + filterTriggerPhrases |
+| 54 | 153-D | keyDecisions to decision_count | PASS | input-normalizer.ts:545-559 |
+| 55 | 153-E | importanceTier to frontmatter | PASS | input-normalizer.ts:530-533,675-678 |
+| 56 | 153-F | contextType enum propagation | PASS | input-normalizer.ts:535-538,680-683,723 VALID_CONTEXT_TYPES |
+| 57 | 153-G | Contamination filter | PASS | contamination-filter.ts, workflow.ts:592 |
+| 58 | 153-H | filesModified to FILES | PASS | input-normalizer.ts:476-511 |
+| 59 | 153-I | Unknown field warning | PASS | input-normalizer.ts:705,735-737 KNOWN_RAW_INPUT_FIELDS |
+| 60 | 153-J | contextType enum rejection | PASS | input-normalizer.ts:723,748 |
+| 61 | 153-K | Quality score discriminates | PASS | quality-scorer.ts:120,179-206 |
+| 62 | 153-L | Trigger phrase filter | PASS | workflow.ts:122-148 Stage 1 path removal |
+| 63 | 153-M | Embedding retry stats | PASS | retry-manager.ts:40-41 + embedding-retry-stats.vitest.ts |
+| 64 | 153-N | Pre-save overlap warning | PASS | workflow.ts:1465-1481 SHA overlap + SPECKIT_PRE_SAVE_DEDUP |
+| 65 | 153-O | projectPhase override | PASS | input-normalizer.ts:540-543,685-688 + session-extractor.ts:227-235 |
 
 ### Aggregate Results
 
 | Metric | Value |
 |--------|-------|
-| Total IDs | 59 |
-| PASS | 59 |
+| Total IDs | 65 |
+| PASS | 65 |
 | PARTIAL | 0 |
 | FAIL | 0 |
 | Pass Rate | 100% |
@@ -147,7 +152,7 @@ Executed comprehensive code analysis across the documented 61 exact scenario IDs
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-**Methodology**: Comprehensive static code analysis against playbook acceptance criteria. For each of the 59 scenario IDs, the corresponding source code was located, read, and verified against the playbook's expected signals and pass/fail criteria.
+**Methodology**: Comprehensive static code analysis, runtime file census, and strict-validation evidence against playbook acceptance criteria. For each of the 65 scenario IDs, the corresponding source code, command output, or validation signal was located, read, and verified against the playbook's expected signals and pass/fail criteria.
 
 **Evidence approach**: File:line references from the live codebase. Key verification methods:
 - Shell scripts (recommend-level.sh, create.sh, validate.sh, check-phase-links.sh, progressive-validate.sh): grep and read for flag support, output fields, exit code handling
@@ -159,7 +164,7 @@ Executed comprehensive code analysis across the documented 61 exact scenario IDs
 **Coverage notes**:
 - The 5 CLI fallback backends (M-007e through M-007i) are implemented as DataSource type tags in the source pipeline, not as a native file discovery chain. Each has dedicated source-capability definitions, contamination-filter behavior, and Vitest test coverage.
 - Scenario 139 is explicitly documented as a cross-reference to M-007 canonical coverage.
-- Scenario 181 (template compliance contract) is a new addition to the playbook (not in the original 28 files). It is within the "tooling" category and tracked as an addendum beyond the original 58 ID scope.
+- Scenario 181 plus runtime audits M-009, M-010, M-011, and `/memory:manage` routing scenario 186 extend the tooling packet beyond the earlier 60-ID draft. All are now included in the reconciled 65-ID execution record.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -167,7 +172,7 @@ Executed comprehensive code analysis across the documented 61 exact scenario IDs
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-1. **Code analysis mode**: Used static code analysis rather than runtime execution for all 59 IDs. This is appropriate because the scenarios test code structure and implementation completeness, and the code is the ground truth.
+1. **Code analysis mode with command-output exceptions**: Used static code analysis for the implementation-heavy scenarios, plus direct command output for the runtime family/path audits and strict validation for 181. This matches the evidence shape each playbook scenario asks for while keeping the packet deterministic.
 
 2. **138 resolved to PASS**: The MODULE header compliance scenario was PARTIAL due to 3 WARN-level TS-MODULE-HEADER findings in the scripts directory. MODULE headers were added to scripts/extractors/session-activity-signal.ts, scripts/utils/memory-frontmatter.ts, and scripts/utils/phase-classifier.ts. verify_alignment_drift.py now reports PASS with 0 TS-MODULE-HEADER findings across both mcp_server and scripts.
 
@@ -181,8 +186,8 @@ Executed comprehensive code analysis across the documented 61 exact scenario IDs
 
 | Check | Result |
 |-------|--------|
-| All 59 scenarios executed | 59 PASS, 0 PARTIAL, 0 FAIL |
-| Checklist fully populated | PASS (68 P0, 9 P1 verified) |
+| All 65 scenarios executed | 65 PASS, 0 PARTIAL, 0 FAIL |
+| Checklist fully populated | PASS (71 P0, 9 P1 verified) |
 | Sandbox cleanup complete | N/A (code analysis mode) |
 <!-- /ANCHOR:verification -->
 

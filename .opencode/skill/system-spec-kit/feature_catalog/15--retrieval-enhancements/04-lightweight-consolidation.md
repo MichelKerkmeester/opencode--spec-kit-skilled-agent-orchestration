@@ -19,7 +19,7 @@ Four sub-components handle ongoing memory graph maintenance as a weekly batch cy
 
 Hebbian edge strengthening reinforces recently accessed edges at +0.05 per cycle with a 30-day decay of 0.1, respecting the auto-edge strength cap. Staleness detection flags edges unfetched for 90 or more days without deleting them. Edge bounds enforcement reports current edge counts versus the 20-edge-per-node maximum.
 
-All weight modifications are logged to the `weight_history` table. The cycle fires after every successful `memory_save` when enabled. Runs behind the `SPECKIT_CONSOLIDATION` flag (default ON).
+All weight modifications are logged to the `weight_history` table. The runtime hook is invoked after every successful `memory_save`, but execution is rate-limited to a weekly cadence (`CONSOLIDATION_INTERVAL_DAYS = 7`) when enabled. Runs behind the `SPECKIT_CONSOLIDATION` flag (default ON).
 
 ---
 

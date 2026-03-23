@@ -1,7 +1,7 @@
 ---
 title: "Verification Checklist: Skill Alignment — system-spec-kit"
 description: "Verification checklist for the 2026-03-21 truth-reconciliation pass on 011-skill-alignment."
-trigger_phrases: ["verification", "checklist", "skill alignment", "010 alignment"]
+trigger_phrases: ["verification", "checklist", "skill alignment", "011 alignment"]
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -46,7 +46,7 @@ Required evidence that the pack now reflects live repo truth.
 <!-- ANCHOR:code-quality -->
 ## Documentation Quality
 
-- [x] CHK-010 [P0] The canonical 010 docs tell one consistent documentation-only story [EVIDENCE: `./spec.md`, `./plan.md`, `./tasks.md`, `./checklist.md`, and `./implementation-summary.md` all describe a scoped closeout rather than a draft/pre-implementation phase]
+- [x] CHK-014 [P0] The canonical 011 docs tell one consistent documentation-only story [EVIDENCE: `./spec.md`, `./plan.md`, `./tasks.md`, `./checklist.md`, and `./implementation-summary.md` all describe a scoped closeout rather than a draft/pre-implementation phase]
 - [x] CHK-011 [P0] The pack uses live memory-surface truth [EVIDENCE: canonical docs now reference 33 tools, 6 commands, and retrieval in `/memory:analyze`]
 - [x] CHK-012 [P1] Obsolete command-surface and retired retrieval-command framing is removed [EVIDENCE: canonical docs no longer describe the superseded command model as current state]
 - [x] CHK-013 [P1] The last observed `system-spec-kit` documentation gaps are closed in scope [EVIDENCE: `SKILL.md`, `save_workflow.md`, `embedding_resilience.md`, and the four asset docs are now part of the completed closeout set]
@@ -85,7 +85,7 @@ Required evidence that the pack now reflects live repo truth.
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Canonical packet edits stayed in scope [EVIDENCE: the 010 packet changes remain limited to its canonical files while separately tracked live-doc closeout landed in the intended skill/reference/asset paths]
+- [x] CHK-050 [P1] Canonical packet edits stayed in scope [EVIDENCE: the 011 packet changes remain limited to its canonical files while separately tracked live-doc closeout landed in the intended skill/reference/asset paths]
 - [ ] CHK-051 [P2] Findings saved to `memory/`
   Evidence: not required for this scoped reconciliation pass.
 <!-- /ANCHOR:file-org -->
@@ -94,11 +94,11 @@ Required evidence that the pack now reflects live repo truth.
 
 ## Post-Research-Refinement Alignment (2026-03-22)
 
-- [x] CHK-060 [P0] SKILL.md feature flags table includes all 9 graduated spec-011 flags (34 total) [EVIDENCE: diff shows 9 rows added between SPECKIT_DASHBOARD_LIMIT and the total count line]
-- [x] CHK-061 [P0] SKILL.md feature catalog count updated 194 → 220 [EVIDENCE: actual per-feature file count verified at 220 via find command]
+- [x] CHK-060 [P0] SKILL.md feature flags table includes all graduated spec-011 flags (33 search/pipeline flags; 47 total including roadmap env vars) [EVIDENCE: diff shows the reconciled total count line for the live table and clarifies the separate roadmap env var section]
+- [x] CHK-061 [P0] SKILL.md feature catalog count updated 194 → 221 [EVIDENCE: actual per-feature file count verified at 221 via find command]
 - [x] CHK-062 [P0] memory_system.md tool table has 33 rows matching "(33 tools)" header [EVIDENCE: memory_quick_search row added to L2 Core section]
 - [x] CHK-063 [P1] environment_variables.md section 8.2 documents all 9 graduated spec-011 flags [EVIDENCE: new "Research-Based Refinement (Spec-011 Graduated)" subsection added]
-- [x] CHK-064 [P1] SKILL.md testing playbook count updated from "(3 files)" to "(19 categories, 226 per-test files)" [EVIDENCE: actual count verified via find command]
+- [x] CHK-064 [P1] SKILL.md testing playbook count updated from "(3 files)" to "(19 categories, 227 per-test files)" [EVIDENCE: actual count verified via find command]
 - [x] CHK-065 [P1] Agent definitions, command files, and command configs verified clean of stale counts [EVIDENCE: 3 parallel explore agents found no hardcoded tool/command/flag counts in any agent or command file]
 - [x] CHK-066 [P0] All edits aligned with sk-doc standards (HVR, table formatting, no em dashes/semicolons) [EVIDENCE: grep for banned words returned zero matches, diff verified zero em dashes and semicolons in additions]
 

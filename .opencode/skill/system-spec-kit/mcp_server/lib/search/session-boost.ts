@@ -122,6 +122,10 @@ function resolveBaseScore(result: RankedSearchResult): number {
   return 0;
 }
 
+function clampScore(score: number): number {
+  return Math.min(1, Math.max(0, score));
+}
+
 function applySessionBoost(
   results: RankedSearchResult[],
   sessionId: string | null | undefined
@@ -153,12 +157,15 @@ function applySessionBoost(
       }
 
       const baseScore = resolveBaseScore(result);
-      const finalScore = baseScore * (1 + boost);
+      const finalScore = clampScore(baseScore * (1 + boost));
       return {
         index,
         result: {
           ...result,
           score: finalScore,
+          rrfScore: finalScore,
+          intentAdjustedScore: finalScore,
+          attentionScore: finalScore,
           sessionBoost: boost,
           baseScore,
         },

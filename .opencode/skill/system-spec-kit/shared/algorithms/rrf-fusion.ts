@@ -199,13 +199,13 @@ function fuseResults(
   sourceA: string = SOURCE_TYPES.VECTOR,
   sourceB: string = SOURCE_TYPES.FTS,
 ): FusionResult[] {
-  if (k < 0) throw new Error('RRF k parameter must be non-negative');
+  const effectiveK = Number.isFinite(k) && k >= 0 ? k : resolveRrfK(undefined);
   const scoreMap = new Map<string, FusionResult>();
 
   // Process list A
   for (let i = 0; i < listA.length; i++) {
     const item = listA[i];
-    const rrfScore = 1 / (k + i + 1);
+    const rrfScore = 1 / (effectiveK + i + 1);
     const key = canonicalRrfId(item.id);
     const existing = scoreMap.get(key);
     if (existing) {
@@ -226,7 +226,7 @@ function fuseResults(
   // Process list B
   for (let i = 0; i < listB.length; i++) {
     const item = listB[i];
-    const rrfScore = 1 / (k + i + 1);
+    const rrfScore = 1 / (effectiveK + i + 1);
     const key = canonicalRrfId(item.id);
     const existing = scoreMap.get(key);
     if (existing) {
@@ -283,6 +283,7 @@ function fuseResultsMulti(
   // Maps canonical id -> Map<source, rawRrfScore>
   const rawScoresBySource = new Map<string, Map<string, number>>();
   const scoreMap = new Map<string, FusionResult>();
+  let activeChannelCount = 0;
 
   for (const list of lists) {
     // AI-WHY: Use ?? so explicit weight=0 is honoured (|| would treat 0 as falsy).
@@ -290,6 +291,10 @@ function fuseResultsMulti(
     // causal edges are higher-signal than unweighted lexical/vector channels.
     const rawWeight = list.weight ?? (list.source === SOURCE_TYPES.GRAPH ? graphWeightBoost : 1.0);
     const weight = typeof rawWeight === 'number' && Number.isFinite(rawWeight) && rawWeight >= 0 ? rawWeight : 0;
+    if (weight <= 0 || list.results.length === 0) {
+      continue;
+    }
+    activeChannelCount += 1;
     for (let i = 0; i < list.results.length; i++) {
       const item = list.results[i];
       const rrfScore = weight * (1 / (k + i + 1));
@@ -327,7 +332,7 @@ function fuseResultsMulti(
     if (result.rrfScore > globalMaxRawScore) globalMaxRawScore = result.rrfScore;
   }
 
-  const totalChannels = lists.length;
+  const totalChannels = activeChannelCount;
   const calibratedMode = isCalibratedOverlapBonusEnabled();
 
   // Apply convergence bonus for multi-source matches
@@ -616,6 +621,7 @@ export {
   GRAPH_WEIGHT_BOOST,
   CALIBRATED_OVERLAP_BETA,
   CALIBRATED_OVERLAP_MAX,
+  canonicalRrfId,
 
   fuseResults,
   fuseResultsMulti,

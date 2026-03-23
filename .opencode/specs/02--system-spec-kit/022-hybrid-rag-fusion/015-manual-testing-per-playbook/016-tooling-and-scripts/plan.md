@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: 016-Tooling-and-Scripts Manual Testing"
-description: "Execution plan for 60 tooling-and-scripts scenario IDs across 5 groups: phase workflow, main-agent review, session capturing pipeline quality, tooling utilities, and JSON mode structured summary hardening."
+description: "Execution plan for 65 tooling-and-scripts scenario IDs across 5 groups: phase workflow, main-agent review, session capturing pipeline quality, tooling utilities, runtime audits, command routing, and JSON mode structured summary hardening."
 trigger_phrases:
   - "tooling scripts manual testing"
   - "016 testing"
@@ -28,7 +28,7 @@ contextType: "general"
 | **Testing** | Manual execution per playbook scenario |
 
 ### Overview
-This plan structures execution of 60 exact scenario IDs across 28 scenario files in the 16--tooling-and-scripts playbook category. The scenarios are organized into 5 groups: Phase Workflow (5 IDs), Main-Agent Review (1 ID), Session Capturing Pipeline Quality (18 IDs with sub-scenarios), Tooling Utilities (20 IDs), and JSON Mode Structured Summary Hardening (16 IDs with sub-scenarios). Execution proceeds from non-destructive inspections through sandbox-constrained destructive tests, with evidence captured per-scenario.
+This plan structures execution of 65 exact scenario IDs across 33 scenario files in the 16--tooling-and-scripts playbook category. The scenarios are organized into 5 groups: Phase Workflow (5 IDs), Main-Agent Review (1 ID), Session Capturing Pipeline Quality (18 IDs with sub-scenarios), Tooling Utilities and Runtime Audits (25 IDs), and JSON Mode Structured Summary Hardening (16 IDs with sub-scenarios). Execution proceeds from non-destructive inspections through sandbox-constrained destructive tests, with evidence captured per-scenario.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -37,14 +37,14 @@ This plan structures execution of 60 exact scenario IDs across 28 scenario files
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [ ] All 28 playbook scenario files exist in manual_testing_playbook/16--tooling-and-scripts/
+- [ ] All 33 playbook scenario files exist in manual_testing_playbook/16--tooling-and-scripts/
 - [ ] generate-context.js script is functional (required for M-007 group)
 - [ ] Sandbox folders prepared for destructive tests (PHASE-002 through PHASE-005, 099, 113)
 - [ ] MCP runtime available for memory_save and slash-command scenarios
 - [ ] All 5 CLI environments identified for M-007e through M-007i (defer unavailable)
 
 ### Definition of Done
-- [ ] All 60 exact scenario IDs have individual pass/fail evidence
+- [ ] All 65 exact scenario IDs have individual pass/fail evidence
 - [ ] Checklist fully populated with evidence references
 - [ ] Implementation-summary.md completed with execution results
 - [ ] Zero untested scenarios remaining
@@ -59,7 +59,7 @@ This plan structures execution of 60 exact scenario IDs across 28 scenario files
 Manual testing pipeline with evidence-first verdicting
 
 ### Key Components
-- **Playbook Scenarios**: 28 source files defining prompts, commands, and expected outcomes
+- **Playbook Scenarios**: 33 source files defining prompts, commands, and expected outcomes
 - **Evidence Collection**: Per-scenario transcripts, logs, and command output
 - **Verdict Assignment**: PASS / PARTIAL / FAIL per review protocol rules
 - **Sub-Scenario Tracking**: Individual tracking for M-007a-q and 153-A-O expansions
@@ -81,7 +81,7 @@ Two groups have sub-scenario expansions that require individual tracking:
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Preconditions
-- [ ] Verify all 28 scenario files exist in playbook/16--tooling-and-scripts/
+- [ ] Verify all 33 scenario files exist in playbook/16--tooling-and-scripts/
 - [ ] Confirm generate-context.js runs without errors
 - [ ] Prepare sandbox folders for PHASE-002 through PHASE-005
 - [ ] Confirm MCP runtime for memory_save scenarios
@@ -89,10 +89,11 @@ Two groups have sub-scenario expansions that require individual tracking:
 
 ### Phase 2: Non-Destructive Tests (Group A partial + Group D partial)
 - [ ] Execute PHASE-001 (phase detection scoring -- read-only)
-- [ ] Execute 061, 062, 070, 089, 108, 127, 128 (inspection and test-suite scenarios)
+- [ ] Execute 061, 062, 070, 089, 108, 127, 128, 181 (inspection and strict-validation scenarios)
 - [ ] Execute 135, 136, 137, 138 (feature catalog and compliance checks)
+- [ ] Execute M-009, M-010, M-011 (runtime family census, naming parity, Gemini path resolution)
 - [ ] Execute 147 (constitutional memory manager -- read-only validation)
-- [ ] Execute 150, 151, 152 (alignment and structure validation)
+- [ ] Execute 150, 151, 152, 186 (alignment, structure, and `/memory:manage` routing validation)
 
 ### Phase 3: Sub-Scenario Expansions
 - [ ] Execute M-007 parent scenario
@@ -110,7 +111,7 @@ Two groups have sub-scenario expansions that require individual tracking:
 - [ ] Execute 154 (JSON-primary deprecation -- rejection testing)
 
 ### Phase 5: Evidence Collection and Verdict
-- [ ] Verify all 60 scenario IDs have captured evidence
+- [ ] Verify all 65 scenario IDs have captured evidence
 - [ ] Assign PASS / PARTIAL / FAIL per scenario using review protocol rules
 - [ ] Update checklist with evidence references
 - [ ] Complete implementation-summary.md with results
@@ -138,7 +139,7 @@ Two groups have sub-scenario expansions that require individual tracking:
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| Playbook scenario files (28) | Internal | Green | Cannot execute without source scenarios |
+| Playbook scenario files (33) | Internal | Green | Cannot execute without source scenarios |
 | generate-context.js | Internal | Green | M-007 group cannot be tested |
 | MCP runtime | Runtime | Yellow | M-007, 147, 149 require live MCP |
 | CLI environments (5) | External | Yellow | M-007e through M-007i may need deferral |
@@ -183,11 +184,11 @@ Note: Phases 2, 3, and 4 can run in parallel after Phase 1 completes.
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
 | Preconditions | Low | 30 min |
-| Non-Destructive Tests | Medium | 2-3 hours (15 scenarios) |
+| Non-Destructive Tests | Medium | 2.5-3.5 hours (20 scenarios) |
 | Sub-Scenario Expansions | High | 2-3 hours (34 scenarios with individual tracking) |
 | Destructive / Sandbox Tests | Medium | 1-2 hours (11 scenarios) |
 | Evidence and Verdict | Low | 30 min |
-| **Total** | | **6-9 hours** |
+| **Total** | | **7-10 hours** |
 <!-- /ANCHOR:effort -->
 
 ---

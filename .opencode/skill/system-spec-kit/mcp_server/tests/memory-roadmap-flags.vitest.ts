@@ -1,4 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import path from 'path';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   CAPABILITY_ENV,
   getMemoryRoadmapCapabilityFlags,
@@ -21,6 +22,8 @@ const FLAG_NAMES = [
   'SPECKIT_HYDRA_SCOPE_ENFORCEMENT',
   'SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS',
   'SPECKIT_HYDRA_SHARED_MEMORY',
+  'SPEC_KIT_DB_DIR',
+  'SPECKIT_DB_DIR',
   'SPECKIT_GRAPH_UNIFIED',
   'SPECKIT_ROLLOUT_PERCENT',
 ] as const;
@@ -102,6 +105,29 @@ describe('Memory roadmap flags', () => {
     const defaults = getMemoryRoadmapDefaults('legacy-roadmap-session');
     expect(defaults.phase).toBe('graph');
     expect(defaults.capabilities.graphUnified).toBe(true);
+  });
+
+  it('honors legacy Hydra adaptive-ranking enables even when the canonical flag is unset', () => {
+    process.env.SPECKIT_HYDRA_ADAPTIVE_RANKING = 'true';
+
+    expect(getMemoryRoadmapCapabilityFlags('legacy-adaptive-session').adaptiveRanking).toBe(true);
+  });
+
+  it('tracks all five scope dimensions in roadmap defaults', () => {
+    expect(getMemoryRoadmapDefaults().scopeDimensionsTracked).toBe(5);
+  });
+
+  it('uses the shared database directory resolver when db-dir env vars are unset', async () => {
+    delete process.env.SPEC_KIT_DB_DIR;
+    delete process.env.SPECKIT_DB_DIR;
+    vi.resetModules();
+
+    const [{ resolveDatabasePaths }, { DB_PATH }] = await Promise.all([
+      import('../core/config'),
+      import('../../shared/paths'),
+    ]);
+
+    expect(resolveDatabasePaths().databaseDir).toBe(path.dirname(DB_PATH));
   });
 
   it('falls back to shared-rollout for unknown phase labels', () => {

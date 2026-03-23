@@ -213,9 +213,15 @@ describe('computeResultConfidence() — multi-channel agreement', () => {
 
 describe('computeResultConfidence() — reranker support', () => {
   it('adds "reranker_boost" driver when rerankerScore is present', () => {
-    const result = makeResult({ id: 1, score: 0.8, rerankerScore: 0.72 });
+    const result = makeResult({ id: 1, score: 0.8, rerankerScore: 0.72, rerankerApplied: true });
     const [conf] = computeResultConfidence([result]);
     expect(conf.confidence.drivers).toContain('reranker_boost');
+  });
+
+  it('does NOT add "reranker_boost" when rerankerApplied is false (fallback score)', () => {
+    const result = makeResult({ id: 1, score: 0.8, rerankerScore: 0.72 });
+    const [conf] = computeResultConfidence([result]);
+    expect(conf.confidence.drivers).not.toContain('reranker_boost');
   });
 
   it('does NOT add "reranker_boost" when rerankerScore is absent', () => {
@@ -314,6 +320,7 @@ describe('computeResultConfidence() — drivers list', () => {
       score: 0.95,
       sources: ['semantic', 'lexical'],
       rerankerScore: 0.9,
+      rerankerApplied: true,
       anchorMetadata: [{ id: 'state' }, { id: 'summary' }],
     };
     const [conf] = computeResultConfidence([result]); // single result → max margin

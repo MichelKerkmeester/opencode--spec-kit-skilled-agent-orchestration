@@ -253,14 +253,8 @@ describe('DB Error Safe Defaults (T103)', () => {
       expect(promoted).toBe(false);
     });
 
-    it('T103-01f: getConfidenceInfo returns full safe default on closed DB', () => {
-      const info = mod.getConfidenceInfo(closedDb!, 42);
-      expect(info).toBeTruthy();
-      expect(info.memoryId).toBe(42);
-      expect(info.confidence).toBe(0.5);
-      expect(info.validationCount).toBe(0);
-      expect(info.importanceTier).toBe('normal');
-      expect(info.promotionEligible).toBe(false);
+    it('T103-01f: getConfidenceInfo throws on closed DB (T-07: explicit failure signaling)', () => {
+      expect(() => mod.getConfidenceInfo(closedDb!, 42)).toThrow();
     });
   });
 
@@ -293,13 +287,8 @@ describe('DB Error Safe Defaults (T103)', () => {
       expect(result).toBe(false);
     });
 
-    it('T103-02e: getConfidenceInfo survives SQLITE_BUSY', () => {
-      const result = mod.getConfidenceInfo(brokenDb, 100);
-      expect(result).toBeTruthy();
-      expect(result.confidence).toBe(0.5);
-      expect(result.validationCount).toBe(0);
-      expect(result.promotionEligible).toBe(false);
-      expect(result.promotionProgress).toBeTruthy();
+    it('T103-02e: getConfidenceInfo throws on SQLITE_BUSY (T-07: explicit failure signaling)', () => {
+      expect(() => mod.getConfidenceInfo(brokenDb, 100)).toThrow();
     });
   });
 
@@ -347,36 +336,28 @@ describe('DB Error Safe Defaults (T103)', () => {
   // 9. DB ERROR: GETCONFIDENCEINFO FULL STRUCTURE (T103-04)
   // ───────────────────────────────────────────────────────────────
   describe('getConfidenceInfo Full Structure (T103-04)', () => {
-    it('T103-04a: getConfidenceInfo safe default has all correct fields', () => {
+    it('T103-04a: getConfidenceInfo throws on broken DB (T-07: explicit failure signaling)', () => {
       const brokenDb = createBrokenDb();
       const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
-      const info = mod.getConfidenceInfo(brokenDb, 55);
+      expect(() => mod.getConfidenceInfo(brokenDb, 55)).toThrow();
 
       errorSpy.mockRestore();
-
-      expect(info).toBeTruthy();
-      expect(info.memoryId).toBe(55);
-      expect(info.confidence).toBe(0.5);
-      expect(info.validationCount).toBe(0);
-      expect(info.importanceTier).toBe('normal');
-      expect(info.promotionEligible).toBe(false);
     });
 
-    it('T103-04b: getConfidenceInfo safe default has correct promotionProgress', () => {
+    it('T103-04b: getConfidenceInfo error is logged before re-throw', () => {
       const brokenDb = createBrokenDb();
-      const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+      const captured: string[] = [];
+      const errorSpy = vi.spyOn(console, 'error').mockImplementation((...args: unknown[]) => {
+        captured.push(args.map(String).join(' '));
+      });
 
-      const info = mod.getConfidenceInfo(brokenDb, 55);
+      expect(() => mod.getConfidenceInfo(brokenDb, 55)).toThrow();
 
       errorSpy.mockRestore();
 
-      const pp = info?.promotionProgress;
-      expect(pp).toBeTruthy();
-      expect(pp.confidenceMet).toBe(false);
-      expect(pp.validationsMet).toBe(false);
-      expect(pp.confidenceRequired).toBe(mod.PROMOTION_CONFIDENCE_THRESHOLD);
-      expect(pp.validationsRequired).toBe(mod.PROMOTION_VALIDATION_THRESHOLD);
+      const hasContext = captured.some(msg => msg.includes('getConfidenceInfo'));
+      expect(hasContext).toBe(true);
     });
   });
 });

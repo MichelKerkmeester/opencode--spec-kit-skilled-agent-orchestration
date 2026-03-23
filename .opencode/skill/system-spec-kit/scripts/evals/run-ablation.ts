@@ -121,6 +121,8 @@ async function main(): Promise<void> {
       useBm25: channelFlags.useBm25,
       useFts: channelFlags.useFts,
       useGraph: channelFlags.useGraph,
+      triggerPhrases: channelFlags.useTrigger ? undefined : [],
+      forceAllChannels: true,
     });
 
     return results.map((r, idx) => ({

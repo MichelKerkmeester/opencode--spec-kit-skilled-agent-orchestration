@@ -1,6 +1,7 @@
-import { afterEach, describe, it, expect, vi } from 'vitest';
+import { afterAll, afterEach, beforeAll, beforeEach, describe, it, expect, vi } from 'vitest';
 import * as handler from '../handlers/memory-crud';
 import * as core from '../core';
+import * as vectorIndex from '../lib/search/vector-index';
 
 /** Parse the JSON payload from an MCP response. */
 function parseResponse(result: { content: Array<{ text: string }> }) {
@@ -11,6 +12,19 @@ function getDetails(parsed: Record<string, unknown>) {
   const data = parsed.data as { details?: Record<string, unknown> } | undefined;
   return data?.details;
 }
+
+beforeAll(() => {
+  vectorIndex.closeDb();
+  vectorIndex.initializeDb(':memory:');
+});
+
+afterAll(() => {
+  vectorIndex.closeDb();
+});
+
+beforeEach(() => {
+  vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+});
 
 afterEach(() => {
   vi.restoreAllMocks();

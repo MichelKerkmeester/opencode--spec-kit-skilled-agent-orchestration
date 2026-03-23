@@ -1,7 +1,9 @@
 // TEST: HANDLER MEMORY SEARCH
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeAll, beforeEach, afterAll, afterEach } from 'vitest';
 // DB-dependent imports - commented out for deferred test suite
 import * as handler from '../handlers/memory-search';
+import * as core from '../core';
+import * as vectorIndex from '../lib/search/vector-index';
 
 type MemorySearchResponse = Awaited<ReturnType<typeof handler.handleMemorySearch>>;
 type ChunkReassemblyInput =
@@ -31,6 +33,23 @@ function getEnvelopeError(record: Record<string, unknown>): unknown {
 }
 
 describe('Handler Memory Search (T516) [deferred - requires DB test fixtures]', () => {
+  beforeAll(() => {
+    vectorIndex.closeDb();
+    vectorIndex.initializeDb(':memory:');
+  });
+
+  afterAll(() => {
+    vectorIndex.closeDb();
+  });
+
+  beforeEach(() => {
+    vi.spyOn(core, 'checkDatabaseUpdated').mockResolvedValue(false);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   describe('Exports Validation', () => {
     it('T516-1: handleMemorySearch is exported as a function', () => {
       expect(typeof handler.handleMemorySearch).toBe('function');

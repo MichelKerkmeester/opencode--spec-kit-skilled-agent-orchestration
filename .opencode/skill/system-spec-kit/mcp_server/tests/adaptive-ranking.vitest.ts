@@ -28,6 +28,56 @@ describe('Phase 4 adaptive ranking shadow proposals', () => {
     expect(db.prepare('SELECT COUNT(*) AS count FROM adaptive_signal_events').get()).toEqual({ count: 0 });
   });
 
+  it('rejects NaN adaptive signals before persistence', () => {
+    process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING = 'true';
+    const db = new Database(':memory:');
+    ensureAdaptiveTables(db);
+
+    recordAdaptiveSignal(db, { memoryId: 1, signalType: 'access', signalValue: Number.NaN });
+
+    expect(db.prepare('SELECT COUNT(*) AS count FROM adaptive_signal_events').get()).toEqual({ count: 0 });
+  });
+
+  it('rejects infinite adaptive signals before persistence', () => {
+    process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING = 'true';
+    const db = new Database(':memory:');
+    ensureAdaptiveTables(db);
+
+    recordAdaptiveSignal(db, { memoryId: 1, signalType: 'access', signalValue: Number.POSITIVE_INFINITY });
+
+    expect(db.prepare('SELECT COUNT(*) AS count FROM adaptive_signal_events').get()).toEqual({ count: 0 });
+  });
+
+  it('rejects negative adaptive signals before persistence', () => {
+    process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING = 'true';
+    const db = new Database(':memory:');
+    ensureAdaptiveTables(db);
+
+    recordAdaptiveSignal(db, { memoryId: 1, signalType: 'access', signalValue: -1 });
+
+    expect(db.prepare('SELECT COUNT(*) AS count FROM adaptive_signal_events').get()).toEqual({ count: 0 });
+  });
+
+  it('rejects zero-value adaptive signals before persistence', () => {
+    process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING = 'true';
+    const db = new Database(':memory:');
+    ensureAdaptiveTables(db);
+
+    recordAdaptiveSignal(db, { memoryId: 1, signalType: 'access', signalValue: 0 });
+
+    expect(db.prepare('SELECT COUNT(*) AS count FROM adaptive_signal_events').get()).toEqual({ count: 0 });
+  });
+
+  it('persists positive adaptive signals', () => {
+    process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING = 'true';
+    const db = new Database(':memory:');
+    ensureAdaptiveTables(db);
+
+    recordAdaptiveSignal(db, { memoryId: 1, signalType: 'access', signalValue: 1 });
+
+    expect(db.prepare('SELECT COUNT(*) AS count FROM adaptive_signal_events').get()).toEqual({ count: 1 });
+  });
+
   it('records bounded shadow proposals without mutating production order', () => {
     process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING = 'true';
     const db = new Database(':memory:');
@@ -126,6 +176,94 @@ describe('Phase 4 adaptive ranking shadow proposals', () => {
         access: 6,
         outcome: 1.5,
         correction: 0.5,
+      },
+    });
+  });
+
+  it('keeps adaptive threshold overrides isolated per database', () => {
+    process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING = 'true';
+
+    const dbA = new Database(':memory:');
+    const dbB = new Database(':memory:');
+    ensureAdaptiveTables(dbA);
+    ensureAdaptiveTables(dbB);
+
+    recordAdaptiveSignal(dbA, { memoryId: 1, signalType: 'outcome', signalValue: 1 });
+    recordAdaptiveSignal(dbA, { memoryId: 1, signalType: 'outcome', signalValue: 1 });
+    recordAdaptiveSignal(dbA, { memoryId: 1, signalType: 'outcome', signalValue: 1 });
+    recordAdaptiveSignal(dbA, { memoryId: 2, signalType: 'outcome', signalValue: 1 });
+    recordAdaptiveSignal(dbA, { memoryId: 2, signalType: 'outcome', signalValue: 1 });
+    recordAdaptiveSignal(dbA, { memoryId: 2, signalType: 'outcome', signalValue: 1 });
+
+    const tuning = tuneAdaptiveThresholdsAfterEvaluation(dbA);
+
+    expect(tuning.next).toEqual({
+      maxAdaptiveDelta: 0.1,
+      minSignalsForPromotion: 2,
+      signalWeights: {
+        access: 0.005,
+        outcome: 0.025,
+        correction: -0.03,
+      },
+    });
+    expect(getAdaptiveThresholdSnapshot(dbA)).toEqual({
+      maxAdaptiveDelta: 0.1,
+      minSignalsForPromotion: 2,
+      signalWeights: {
+        access: 0.005,
+        outcome: 0.025,
+        correction: -0.03,
+      },
+    });
+    expect(getAdaptiveThresholdSnapshot(dbB)).toEqual({
+      maxAdaptiveDelta: 0.08,
+      minSignalsForPromotion: 3,
+      signalWeights: {
+        access: 0.005,
+        outcome: 0.02,
+        correction: -0.03,
+      },
+    });
+  });
+
+  it('requires signals from multiple memories before relaxing thresholds', () => {
+    process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING = 'true';
+
+    const db = new Database(':memory:');
+    ensureAdaptiveTables(db);
+
+    for (let index = 0; index < 6; index += 1) {
+      recordAdaptiveSignal(db, { memoryId: 1, signalType: 'outcome', signalValue: 1 });
+    }
+
+    const singleMemoryTuning = tuneAdaptiveThresholdsAfterEvaluation(db);
+
+    expect(singleMemoryTuning.summary.totalSignals).toBe(6);
+    expect(singleMemoryTuning.summary.distinctMemories).toBe(1);
+    expect(singleMemoryTuning.next).toEqual({
+      maxAdaptiveDelta: 0.08,
+      minSignalsForPromotion: 3,
+      signalWeights: {
+        access: 0.005,
+        outcome: 0.02,
+        correction: -0.03,
+      },
+    });
+
+    for (let index = 0; index < 3; index += 1) {
+      recordAdaptiveSignal(db, { memoryId: 2, signalType: 'outcome', signalValue: 1 });
+    }
+
+    const multiMemoryTuning = tuneAdaptiveThresholdsAfterEvaluation(db);
+
+    expect(multiMemoryTuning.summary.distinctMemories).toBe(2);
+    expect(multiMemoryTuning.next).toEqual({
+      maxAdaptiveDelta: 0.1,
+      minSignalsForPromotion: 2,
+      signalWeights: {
+        access: 0.005,
+        outcome: 0.025,
+        correction: -0.03,
       },
     });
   });
