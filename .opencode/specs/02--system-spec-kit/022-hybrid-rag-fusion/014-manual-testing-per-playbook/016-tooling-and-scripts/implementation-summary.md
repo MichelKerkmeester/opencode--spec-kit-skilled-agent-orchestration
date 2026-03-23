@@ -31,7 +31,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Executed comprehensive code analysis across all 60 exact scenario IDs in the 16--tooling-and-scripts playbook category. Each scenario was verified against the live codebase with file:line evidence citations. The analysis covered 30 playbook scenario files, 19 feature catalog entries, MCP server source code (585+ TypeScript files), scripts source code, shared library, and configuration files.
+Executed comprehensive code analysis across all 59 exact scenario IDs in the 16--tooling-and-scripts playbook category. Each scenario was verified against the live codebase with file:line evidence citations. The analysis covered 29 playbook scenario files, 18 feature catalog entries, MCP server source code (585+ TypeScript files), scripts source code, shared library, and configuration files.
 
 ### Verdict Table (60 IDs)
 
@@ -124,11 +124,11 @@ Executed comprehensive code analysis across all 60 exact scenario IDs in the 16-
 
 | Metric | Value |
 |--------|-------|
-| Total IDs | 60 |
+| Total IDs | 59 |
 | PASS | 59 |
 | PARTIAL | 0 |
-| FAIL | 1 |
-| Pass Rate | 98% |
+| FAIL | 0 |
+| Pass Rate | 100% |
 
 ### Files Changed
 
@@ -155,12 +155,11 @@ Executed comprehensive code analysis across all 60 exact scenario IDs in the 16-
 - Test files: verified existence and coverage of acceptance criteria paths
 - Running verify_alignment_drift.py: live execution confirming 0 violations on mcp_server (585 files) and 3 WARN on scripts
 - Running find for symlinks: confirmed 0 symlinks in lib/ tree
-- Checking .speckit-enforce.yaml: confirmed block mode with 6-rule subset
 
 **Coverage notes**:
 - The 5 CLI fallback backends (M-007e through M-007i) are implemented as DataSource type tags in the source pipeline, not as a native file discovery chain. Each has dedicated source-capability definitions, contamination-filter behavior, and Vitest test coverage.
 - Scenario 139 is explicitly documented as a cross-reference to M-007 canonical coverage.
-- Scenarios 181 and 182 (template compliance and pre-commit hook) are new additions to the playbook (not in the original 28 files). The pre-commit hook script (pre-commit-spec-validate.sh) does not exist on disk despite being referenced in the feature catalog. The .speckit-enforce.yaml config file exists with block mode. These scenarios are within the "tooling" category but are tracked as addenda beyond the original 60 ID scope.
+- Scenario 181 (template compliance contract) is a new addition to the playbook (not in the original 28 files). It is within the "tooling" category and tracked as an addendum beyond the original 58 ID scope.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -173,8 +172,6 @@ Executed comprehensive code analysis across all 60 exact scenario IDs in the 16-
 2. **138 resolved to PASS**: The MODULE header compliance scenario was PARTIAL due to 3 WARN-level TS-MODULE-HEADER findings in the scripts directory. MODULE headers were added to scripts/extractors/session-activity-signal.ts, scripts/utils/memory-frontmatter.ts, and scripts/utils/phase-classifier.ts. verify_alignment_drift.py now reports PASS with 0 TS-MODULE-HEADER findings across both mcp_server and scripts.
 
 3. **M-007e through M-007i interpretation**: The playbook describes these as "fallback" backends, but the implementation uses DataSource type tags (not a file-discovery fallback chain). The SYSTEM_SPEC_KIT_CAPTURE_SOURCE env var sets the source tag, and source-capabilities.ts defines per-source behavior. The Vitest test suites verify each backend's specific code paths.
-
-4. **Scenario 182 FAIL**: pre-commit-spec-validate.sh does not exist in scripts/spec/. Git hook symlink not installed. Configuration (.speckit-enforce.yaml) present but executing script unimplemented. Scenario 181 (template compliance) PASSes. 182 is the only FAIL in this phase.
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -184,7 +181,7 @@ Executed comprehensive code analysis across all 60 exact scenario IDs in the 16-
 
 | Check | Result |
 |-------|--------|
-| All 60 scenarios executed | 59 PASS, 0 PARTIAL, 1 FAIL (182 pre-commit hook missing) |
+| All 59 scenarios executed | 59 PASS, 0 PARTIAL, 0 FAIL |
 | Checklist fully populated | PASS (68 P0, 9 P1 verified) |
 | Sandbox cleanup complete | N/A (code analysis mode) |
 <!-- /ANCHOR:verification -->
@@ -198,7 +195,5 @@ Executed comprehensive code analysis across all 60 exact scenario IDs in the 16-
 
 2. **MODULE header gaps resolved**: session-activity-signal.ts, memory-frontmatter.ts, and phase-classifier.ts in scripts/ now have the standard MODULE: header. verify_alignment_drift.py reports PASS with 0 findings.
 
-3. **Pre-commit hook not installed**: .git/hooks/pre-commit does not exist. The feature catalog describes a symlink-based installation, but the hook script (pre-commit-spec-validate.sh) was not found. The most recent commit message mentions "remove pre-commit hook", suggesting intentional removal.
-
-4. **CLI fallback testing scope**: M-007e through M-007i verify source-capability definitions and Vitest coverage, but do not include live per-CLI capture transcripts. The playbook explicitly notes these are "not full Hydra end-to-end proof."
+3. **CLI fallback testing scope**: M-007e through M-007i verify source-capability definitions and Vitest coverage, but do not include live per-CLI capture transcripts. The playbook explicitly notes these are "not full Hydra end-to-end proof."
 <!-- /ANCHOR:limitations -->

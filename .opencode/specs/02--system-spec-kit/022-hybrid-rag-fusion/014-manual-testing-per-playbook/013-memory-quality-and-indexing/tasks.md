@@ -1,6 +1,6 @@
 ---
 title: "Tasks: manual-testing-per-playbook memory quality and indexing phase [template:level_2/tasks.md]"
-description: "Task tracker for 34 exact IDs across 27 scenario files in the memory quality and indexing category. Code analysis complete: 33 PASS, 1 PARTIAL, 0 FAIL."
+description: "Task tracker for 34 exact IDs across 27 scenario files in the memory quality and indexing category. Code analysis complete: 34 PASS, 0 PARTIAL, 0 FAIL."
 trigger_phrases:
   - "memory quality tasks"
   - "phase 013 tasks"
@@ -105,7 +105,7 @@ contextType: "implementation"
 
 | Task | Scenario ID | Scenario Name | Status | Evidence |
 |------|-------------|---------------|--------|----------|
-| T050 | 164 | Batch learned feedback (SPECKIT_BATCH_LEARNED_FEEDBACK) | PARTIAL | batch-learning.ts:34 MIN_SUPPORT_SESSIONS=3, :41 MAX_BOOST_DELTA=0.10, :44 BATCH_WINDOW_MS=7 days, :47 CONFIDENCE_WEIGHTS correct. runBatchLearning() fully implemented but zero callers found in any handler, scheduler, or background job. Dead code at execution layer (unwired). |
+| T050 | 164 | Batch learned feedback (SPECKIT_BATCH_LEARNED_FEEDBACK) | PASS | batch-learning.ts:34 MIN_SUPPORT_SESSIONS=3, :41 MAX_BOOST_DELTA=0.10, :44 BATCH_WINDOW_MS=7 days, :47 CONFIDENCE_WEIGHTS correct. runBatchLearning(database) called from context-server.ts startup (after retry manager), try/catch non-fatal, feature flag gate inside function. |
 | T051 | 165 | Assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION) | PASS | reconsolidation-bridge.ts:42 ASSISTIVE_AUTO_MERGE_THRESHOLD=0.96, :49 ASSISTIVE_REVIEW_THRESHOLD=0.88. :89-95 classifyAssistiveSimilarity() returns auto_merge/review/keep_separate. :109-117 classifySupersededOrComplement(). :125-134 logAssistiveRecommendation() is shadow-only (console.warn, no DB writes). |
 | T052 | 176 | Implicit feedback log (SPECKIT_IMPLICIT_FEEDBACK_LOG) | PASS | feedback-ledger.ts:25-30 defines 5 event types. :78-84 resolveConfidence() maps correctly (strong: result_cited/follow_on_tool_use, medium: query_reformulated, weak: search_shown/same_topic_requery). :106-109 isImplicitFeedbackLogEnabled() defaults ON. Comment at :104 fixed to "Default: TRUE (graduated)". Module-level comment at :8 fixed to "(default ON, graduated)". Consistent with search-flags.ts:287. 39 feedback-ledger tests pass. |
 | T053 | 177 | Hybrid decay policy (SPECKIT_HYBRID_DECAY_POLICY) | PASS | fsrs-scheduler.ts:403-406 isHybridDecayPolicyEnabled() defaults ON. :417-422 classifyHybridDecay() maps decision/constitutional/critical to no_decay. :443-446 applyHybridDecayPolicy() returns Infinity (NO_DECAY) for protected types, original stability for others. FSRS v4 formula at :78-89 R(t) = (1 + 19/81 * t/S)^(-0.5). |
@@ -117,7 +117,7 @@ contextType: "implementation"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T060 Record verdict for each of the 34 exact IDs (PASS, PARTIAL, or FAIL) with rationale -- 33 PASS, 1 PARTIAL (164 unwired), 0 FAIL
+- [x] T060 Record verdict for each of the 34 exact IDs (PASS, PARTIAL, or FAIL) with rationale -- 34 PASS, 0 PARTIAL, 0 FAIL
 - [x] T061 Confirm 34/34 exact IDs executed with no skipped test IDs -- all 34 verdicted
 - [x] T062 Verify sub-scenarios M-005a/b/c, M-006a/b/c, and 155-F have independent verdicts -- all 7 sub-scenarios independently verdicted
 - [x] T063 Update checklist.md with evidence references for all P0 items
@@ -131,7 +131,7 @@ contextType: "implementation"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All 34 scenario tasks (T010-T054) marked complete -- 33 PASS, 1 PARTIAL (164 unwired), 0 FAIL
+- [x] All 34 scenario tasks (T010-T054) marked complete -- 34 PASS, 0 PARTIAL, 0 FAIL
 - [x] All verification tasks (T060-T066) complete
 - [x] No `[B]` blocked tasks remaining without documented reason
 - [x] Manual verification passed per review protocol -- code analysis review complete

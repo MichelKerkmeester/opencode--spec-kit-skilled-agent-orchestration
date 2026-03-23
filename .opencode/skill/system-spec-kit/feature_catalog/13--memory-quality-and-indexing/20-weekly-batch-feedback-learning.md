@@ -23,6 +23,8 @@ The `runBatchLearning()` function accepts configurable options for run timestamp
 
 Key invariant: shadow-only — no live ranking columns are mutated. Default ON (graduated), controlled by `SPECKIT_BATCH_LEARNED_FEEDBACK`.
 
+`runBatchLearning()` is called from `context-server.ts` during server startup, after the retry manager initializes. The call is wrapped in a try/catch so a failure does not crash the server. The feature flag check inside `runBatchLearning()` is the sole gate — if the flag is disabled, the function returns a zero-count no-op result immediately.
+
 ---
 
 ## 3. SOURCE FILES
@@ -31,6 +33,7 @@ Key invariant: shadow-only — no live ranking columns are mutated. Default ON (
 
 | File | Layer | Role |
 |------|-------|------|
+| `mcp_server/context-server.ts` | Server | Startup caller — invokes `runBatchLearning(database)` once at server startup after retry manager |
 | `mcp_server/lib/feedback/batch-learning.ts` | Lib | Aggregation, confidence weighting, boost computation, shadow apply, batch_learning_log |
 | `mcp_server/lib/feedback/feedback-ledger.ts` | Lib | Feedback event storage and retrieval |
 | `mcp_server/lib/search/search-flags.ts` | Lib | Flag accessor (indirectly, via feature flag pattern) |

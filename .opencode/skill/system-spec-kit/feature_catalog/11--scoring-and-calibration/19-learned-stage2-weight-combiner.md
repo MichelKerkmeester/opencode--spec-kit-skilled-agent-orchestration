@@ -34,6 +34,8 @@ Enabled by default (graduated). Set `SPECKIT_LEARNED_STAGE2_COMBINER=false` to d
 | File | Layer | Role |
 |------|-------|------|
 | `shared/ranking/learned-combiner.ts` | Shared | Ridge regression training, prediction, LOOCV, SHAP, shadow scoring, model persistence |
+| `shared/index.ts` | Shared barrel | Exports `shadowScore`, `trainRegularizedLinearRanker`, `predict`, `extractFeatureVector` |
+| `mcp_server/lib/search/pipeline/stage2-fusion.ts` | Pipeline | Calls `shadowScore()` after step 6 (feedback signals), gated by `isLearnedStage2CombinerEnabled()` |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isLearnedStage2CombinerEnabled()` flag accessor |
 
 ### Tests

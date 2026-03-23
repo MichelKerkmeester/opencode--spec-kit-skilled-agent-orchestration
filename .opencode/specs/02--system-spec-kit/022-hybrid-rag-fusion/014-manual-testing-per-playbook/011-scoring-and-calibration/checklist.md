@@ -71,7 +71,7 @@ contextType: "general"
 
 ### Scenario Execution -- Feature-Flag (5 scenarios)
 
-- [x] CHK-040 [P0] 159 (Learned Stage 2 Combiner): **PARTIAL** -- `learned-combiner.ts` carries `@deprecated` JSDoc. Module is a dead code island: not imported by `mcp_server/` or re-exported from `shared/index.ts`. Unit logic (shadowScore, predict) works but pipeline integration is missing.
+- [x] CHK-040 [P0] 159 (Learned Stage 2 Combiner): **PASS** -- `@deprecated` removed from `learned-combiner.ts` and `matrix-math.ts`. `shadowScore`, `trainRegularizedLinearRanker`, `predict`, `extractFeatureVector` exported via `shared/index.ts` section 11. `shadowScore()` wired in `stage2-fusion.ts` block `// -- 6a.` after feedback signals, gated by `isLearnedStage2CombinerEnabled()` (`search-flags.ts:379`).
 - [x] CHK-041 [P0] 160 (Shadow Feedback Holdout): flag ON pass -- holdout pipeline runs on configured percentage, logged separately from live results; flag OFF pass -- no holdout runs; evidence captured -- `shadow-scoring.ts:599-710`: `runShadowEvaluation()` returns null when flag OFF (line 606); holdout at 20% default (line 29); logs to `shadow_scoring_log` table (line 141-153); `evaluatePromotionGate()` at line 545 returns recommendation; no live ranking mutation
 - [x] CHK-042 [P0] 170 (Fusion Policy Shadow v2): flag ON pass -- Fusion Lab runs all three policies in shadow, active policy result returned unchanged; flag OFF pass -- no shadow policy comparison; evidence captured -- `fusion-lab.js:308-362`: `runShadowComparison()` runs rrf+minmax_linear+zscore_linear via Promise.all (line 330); returns active policy result unchanged (line 356); telemetry-only for shadow policies (lines 350-355); flag OFF runs only active policy (lines 311-327)
 - [x] CHK-043 [P0] 171 (Calibrated Overlap Bonus): flag ON pass -- calibrated bonus with beta=0.15 and 0.06 cap replaces flat bonus; flag OFF pass -- prior behavior unchanged; evidence captured -- `rrf-fusion.js:60`: CALIBRATED_OVERLAP_BETA=0.15; line 66: CALIBRATED_OVERLAP_MAX=0.06; lines 273-294: calibrated computation with clamp; lines 297-303: flat CONVERGENCE_BONUS=0.10 when flag OFF; `isCalibratedOverlapBonusEnabled()` at line 121 defaults ON
@@ -93,7 +93,7 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-060 [P0] All 22 scenarios have a verdict (PASS, PARTIAL, or FAIL) with explicit rationale referencing review protocol acceptance rules -- 21 PASS, 1 PARTIAL (159 dead code island); each with file:line evidence citations
+- [x] CHK-060 [P0] All 22 scenarios have a verdict (PASS, PARTIAL, or FAIL) with explicit rationale referencing review protocol acceptance rules -- 22 PASS, 0 PARTIAL; each with file:line evidence citations
 - [x] CHK-061 [P0] `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` contain no template placeholder text -- Verified: all files populated with Phase 011-specific content
 - [x] CHK-062 [P0] `spec.md` scope table includes all 22 test IDs with correct feature catalog relative paths under `../../feature_catalog/11--scoring-and-calibration/` -- Verified in spec.md Section 3
 - [x] CHK-063 [P1] `implementation-summary.md` completed with verdict summary table after execution is done -- Completed with 22-row verdict table, pass rate, and evidence citations
@@ -120,7 +120,7 @@ contextType: "general"
 | P1 Items | 7 | 7/7 |
 | P2 Items | 1 | 0/1 |
 
-**Verification Date**: 2026-03-22
+**Verification Date**: 2026-03-23
 <!-- /ANCHOR:summary -->
 
 ---

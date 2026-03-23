@@ -6,8 +6,6 @@
 //
 // No external dependencies — pure numeric computations.
 
-/** @deprecated Circular island with learned-combiner.ts. Not imported by any production code outside this directory. */
-
 /* ---------------------------------------------------------------
    1. TRANSPOSE
    --------------------------------------------------------------- */

@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: scoring-and-calibration manual testing [template:level_2/implementation-summary.md]"
-description: "Phase 011 scoring-and-calibration manual testing -- 22/22 scenarios executed via source code analysis. 21 PASS, 1 PARTIAL. Pass rate: 95%."
+description: "Phase 011 scoring-and-calibration manual testing -- 22/22 scenarios executed via source code analysis. 22 PASS. Pass rate: 100%."
 trigger_phrases:
   - "phase 011 implementation summary"
   - "scoring calibration execution summary"
@@ -24,7 +24,7 @@ contextType: "general"
 | **Completed** | 2026-03-22 |
 | **Level** | 2 |
 | **Execution Status** | Complete -- 22/22 scenarios executed |
-| **Pass Rate** | 95% (21 PASS, 1 PARTIAL, 0 FAIL) |
+| **Pass Rate** | 100% (22 PASS, 0 PARTIAL, 0 FAIL) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -55,7 +55,7 @@ All 22 scoring-and-calibration manual test scenarios were executed via thorough 
 | 102 | node-llama-cpp optionalDependencies | **PASS** | `package.json:optionalDependencies`, `local-reranker.ts:85-91` -- dynamic import |
 | 118 | Stage-2 score field sync (P0-8) | **PASS** | `stage2-fusion.ts:174,187,730-734`, `types.ts:59-60` -- Math.max sync |
 | 121 | Adaptive shadow proposal/rollback | **PASS** | `adaptive-ranking.ts:84,170-174,196-205` -- bounded delta, shadow-only |
-| 159 | Learned Stage 2 Combiner | **PARTIAL** | `learned-combiner.ts` carries `@deprecated` JSDoc. Circular island not imported by `mcp_server/` or re-exported from `shared/index.ts`. Unit logic works but pipeline integration missing (dead code island). |
+| 159 | Learned Stage 2 Combiner | **PASS** | `@deprecated` removed from `learned-combiner.ts` and `matrix-math.ts`. Exported via `shared/index.ts` section 11. `shadowScore()` wired into `stage2-fusion.ts` after step 6 (feedback signals), gated by `isLearnedStage2CombinerEnabled()`. |
 | 160 | Shadow Feedback Holdout | **PASS** | `shadow-scoring.ts:132,599-710` -- null when OFF, full pipeline when ON |
 | 170 | Fusion Policy Shadow v2 | **PASS** | `fusion-lab.js:32,308-362` -- all 3 policies, active unchanged, telemetry-only |
 | 171 | Calibrated Overlap Bonus | **PASS** | `rrf-fusion.js:60,66,121,273-303` -- beta=0.15, cap=0.06, flat fallback |
@@ -110,8 +110,8 @@ Source code analysis was used as the primary verification method. Each scenario 
 | Decision | Why |
 |----------|-----|
 | Source code analysis over runtime execution | Provides deterministic, reproducible verdicts with exact file:line evidence; avoids environment-specific failures |
-| 21 PASS, 1 PARTIAL (159) | 159 (learned-combiner.ts) is a dead code island: `@deprecated`, not imported by mcp_server or re-exported. Unit logic works but pipeline integration missing. All other 21 acceptance criteria map to implemented code. |
-| Feature flag defaults verified as graduated-ON | 5 flag-gated scenarios (159, 160, 170, 171, 172) have correct default-ON semantics with explicit disable paths |
+| 22 PASS | 159 (learned-combiner.ts) promoted from PARTIAL to PASS: `@deprecated` removed, barrel-exported from `shared/index.ts`, and `shadowScore()` wired into `stage2-fusion.ts` after step 6. All 22 acceptance criteria map to implemented code. |
+| Feature flag defaults verified as graduated-ON | 5 flag-gated scenarios (159, 160, 170, 171, 172) have correct default-ON semantics with explicit disable paths. 159 now wired into pipeline. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -121,10 +121,10 @@ Source code analysis was used as the primary verification method. Each scenario 
 
 | Check | Result |
 |-------|--------|
-| All 22 scenario verdicts assigned | PASS (22/22: 21 PASS, 1 PARTIAL) |
+| All 22 scenario verdicts assigned | PASS (22/22: 22 PASS, 0 PARTIAL) |
 | All checklist P0 items verified | 25/25 |
 | All checklist P1 items verified | 7/7 |
-| 1 PARTIAL verdict documented (159 dead code island) | NOTED |
+| 159 promoted PARTIAL to PASS (pipeline wired) | DONE |
 | Evidence citations present for each verdict | Confirmed (file:line format) |
 <!-- /ANCHOR:verification -->
 

@@ -218,3 +218,13 @@ export {
   TIER_WEIGHTS,
   SCORE_WEIGHTS,
 } from './scoring/folder-scoring';
+
+// ---------------------------------------------------------------
+// 11. LEARNED RANKING MODULE
+// ---------------------------------------------------------------
+export {
+  shadowScore,
+  trainRegularizedLinearRanker,
+  predict,
+  extractFeatureVector,
+} from './ranking/learned-combiner';

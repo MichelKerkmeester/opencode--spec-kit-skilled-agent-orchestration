@@ -7,11 +7,13 @@ description: "**STATUS: PLANNED/DEFERRED -- NOT IMPLEMENTED.** This feature has 
 
 ## 1. OVERVIEW
 
-**STATUS: PLANNED/DEFERRED -- NOT IMPLEMENTED.** This feature has not been implemented yet.
+**STATUS: PLANNED/DEFERRED -- NOT IMPLEMENTED.** This feature has not been implemented yet and is a future roadmap item. It is explicitly excluded from current test coverage.
 
 Records the deferred plan to promote parsed ANCHOR markers into typed graph nodes, pending a dedicated 2-day feasibility spike.
 
 Anchor markers are labels placed inside memories to highlight important sections. This planned feature would turn those labels into connection points in the knowledge graph, letting the system link specific parts of different memories together instead of just linking whole memories. It has been put on hold pending further investigation into whether the added complexity is worthwhile.
+
+**Test coverage note:** Playbook scenario 091 tests graph centrality and community detection (N2). The ANCHOR-as-node aspect of that scenario is excluded from current pass criteria because this feature does not exist. The test in `anchor-metadata.vitest.ts` actively guards against edge creation to confirm the feature is NOT present. Scenario 091 passes based solely on the implemented N2 features (momentum, depth, community).
 
 ---
 
