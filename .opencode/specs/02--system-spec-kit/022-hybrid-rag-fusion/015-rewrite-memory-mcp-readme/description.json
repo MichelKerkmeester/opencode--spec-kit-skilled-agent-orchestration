@@ -5,7 +5,7 @@
     "specification",
     "015-rewrite-memory-mcp-readme"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.479Z",
+  "lastUpdated": "2026-03-22T17:41:14.873Z",
   "specId": "015",
   "folderSlug": "rewrite-memory-mcp-readme",
   "parentChain": [
@@ -13,9 +13,5 @@
     "022-hybrid-rag-fusion"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Rewrite Memory MCP README",
-  "status": "In Progress",
-  "importance_tier": "important",
-  "short_description": "Specification: 015-rewrite-memory-mcp-readme"
+  "memoryNameHistory": []
 }

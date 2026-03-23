@@ -1,11 +1,16 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
-  "description": "Consolidated spec",
+  "description": "Feature Specification: 001-hybrid-rag-fusion-epic — 11-sprint program for Hybrid RAG Fusion implementation",
   "keywords": [
-    "consolidated",
-    "spec"
+    "hybrid-rag-fusion",
+    "epic",
+    "sprint-program",
+    "rag",
+    "fusion"
   ],
-  "lastUpdated": "2026-03-21T13:24:03.877Z",
+  "status": "In Progress",
+  "importance_tier": "critical",
+  "lastUpdated": "2026-03-23T00:00:00.000Z",
   "specId": "001",
   "folderSlug": "hybrid-rag-fusion-epic",
   "parentChain": [

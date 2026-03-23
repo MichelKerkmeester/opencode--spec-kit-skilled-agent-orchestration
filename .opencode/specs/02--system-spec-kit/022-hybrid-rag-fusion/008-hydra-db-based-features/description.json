@@ -1,4 +1,5 @@
 {
+  "status": "Complete",
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
   "description": "Feature Specification: 008-hydra-db-based-features",
   "keywords": [

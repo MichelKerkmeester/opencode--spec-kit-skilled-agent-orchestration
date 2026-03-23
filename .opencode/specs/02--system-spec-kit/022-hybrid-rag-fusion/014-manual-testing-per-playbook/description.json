@@ -1,7 +1,7 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-manual-testing-per-playbook",
   "description": "Feature Specification: manual-testing-per-playbook — COMPLETE (265 PASS, 0 PARTIAL, 0 FAIL across 265 IDs)",
-  "status": "complete",
+  "status": "Complete",
   "keywords": [
     "feature",
     "specification",

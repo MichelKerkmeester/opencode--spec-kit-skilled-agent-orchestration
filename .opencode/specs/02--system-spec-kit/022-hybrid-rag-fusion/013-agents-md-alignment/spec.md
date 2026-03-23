@@ -38,6 +38,7 @@ The three AGENTS.md governance framework files reference outdated Quick Referenc
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
+| **Status** | Complete |
 | **Complexity** | ~35/100 |
 | **LOC estimate** | ~36 |
 | **Epic** | 022-hybrid-rag-fusion |

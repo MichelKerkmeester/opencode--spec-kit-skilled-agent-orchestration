@@ -40,7 +40,7 @@ contextType: "implementation"
 
 - [x] CHK-010 [P0] Markdown changes stay inside assigned scope [EVIDENCE: only the 022 packet family docs, one archival summary bundle, and packet-navigation metadata were edited]
 - [x] CHK-011 [P0] No runtime code edits performed [EVIDENCE: all touched files are under `.opencode/specs/`]
-- [x] CHK-012 [P1] Direct child and sprint-child navigation use the live folder names [EVIDENCE: root validator reports `PHASE_LINKS: Phase links valid (18 phases verified)` and `001` parent validator reports `PHASE_LINKS: Phase links valid (10 phases verified)`]
+- [x] CHK-012 [P1] Direct child and sprint-child navigation use the live folder names [EVIDENCE: root validator reports `PHASE_LINKS: Phase links valid (19 phases verified)` and `001` parent validator reports `PHASE_LINKS: Phase links valid (11 phases verified)`]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -49,7 +49,7 @@ contextType: "implementation"
 ## Testing
 
 - [x] CHK-020 [P0] Focused root validation run [EVIDENCE: `validate.sh --no-recursive .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` rerun after normalization]
-- [x] CHK-021 [P0] Direct child phase-link validation rerun [EVIDENCE: root validation now reports `PHASE_LINKS: Phase links valid (18 phases verified)`]
+- [x] CHK-021 [P0] Direct child phase-link validation rerun [EVIDENCE: root validation now reports `PHASE_LINKS: Phase links valid (19 phases verified)`]
 - [x] CHK-022 [P1] Residual root warnings reviewed for truthfulness [EVIDENCE: latest root validation has 0 errors and 1 warning, limited to the non-blocking `## 8. COMMUNICATION PLAN` template-header deviation in `plan.md`]
 <!-- /ANCHOR:testing -->
 
@@ -69,7 +69,7 @@ contextType: "implementation"
 ## Documentation
 
 - [x] CHK-040 [P1] Root docs now exist and cross-reference each other [EVIDENCE: root `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` are present and validate for existence]
-- [x] CHK-041 [P1] Root spec preserves the verified count and status truths [EVIDENCE: root packet now records `107` numbered spec dirs, `009=20`, and `014` as draft/documentation-only]
+- [x] CHK-041 [P1] Root spec preserves the verified count and status truths [EVIDENCE: root packet now records `118` numbered spec dirs, `001=11`, `009=20`, and `014` as complete]
 - [x] CHK-042 [P2] Implementation summary replaced with concise current-state wording
 <!-- /ANCHOR:docs -->
 

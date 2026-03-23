@@ -124,7 +124,7 @@ contextType: "general"
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T011 Verify all 60 scenario IDs have captured evidence -- All 60 IDs verified via code analysis with file:line references
+- [x] T011 Verify all 59 scenario IDs have captured evidence -- All 59 IDs verified via code analysis with file:line references
 - [x] T012 Assign PASS / PARTIAL / FAIL verdict per scenario -- 59 PASS, 0 PARTIAL, 0 FAIL
 - [x] T013 Update checklist with evidence references for all 5 groups
 - [x] T014 Clean up sandbox folders created during testing -- N/A (code analysis mode)
@@ -138,7 +138,7 @@ contextType: "general"
 
 - [x] All tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
-- [x] All 60 scenarios have evidence-backed verdicts
+- [x] All 59 scenarios have evidence-backed verdicts
 - [x] Manual verification passed
 <!-- /ANCHOR:completion -->
 

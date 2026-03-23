@@ -38,7 +38,7 @@ The `generate-context.js` pipeline contains two categories of correctness gap di
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 (fast-path fix) / P1 (validation gaps) / P2 (secondary rules) |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-21 |
 | **Branch** | `003-field-integrity-and-schema` |
 | **Phase** | 003 of 016-json-mode-hybrid-enrichment |

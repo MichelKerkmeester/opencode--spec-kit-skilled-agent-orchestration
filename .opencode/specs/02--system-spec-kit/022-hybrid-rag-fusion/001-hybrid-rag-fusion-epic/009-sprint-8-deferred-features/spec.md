@@ -28,7 +28,7 @@ contextType: "implementation"
 | **Created** | 2026-03-01 |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 9 of 10 |
+| **Phase** | 9 of 11 |
 | **Predecessor** | ../008-sprint-7-long-horizon/spec.md |
 | **Successor** | ../010-sprint-9-extra-features/spec.md |
 <!-- /ANCHOR:metadata -->

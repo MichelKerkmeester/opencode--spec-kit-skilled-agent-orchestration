@@ -28,8 +28,8 @@ contextType: "implementation"
 | **Status** | Draft |
 | **Created** | 2026-02-26 |
 | **Parent Spec** | ../spec.md |
-| **Parent Plan** | ../000-feature-overview/plan.md |
-| **Phase** | 7 of 8 |
+| **Parent Plan** | ../plan.md |
+| **Phase** | 7 of 11 |
 | **Predecessor** | ../006-sprint-5-pipeline-refactor/spec.md |
 | **Successor** | ../008-sprint-7-long-horizon/spec.md |
 | **Handoff Criteria** | Sprint 6a gate: R7, R16, S4, N3-lite, weight_history verified; Sprint 6b gate (if executed): N2 attribution >10% or density-conditional deferral, R10 FP <20%; flag count <=6 |
@@ -279,7 +279,7 @@ Research evidence: See research documents `9 - analysis-pageindex-systems-archit
 ---
 
 <!--
-LEVEL 2 SPEC — Phase 7 of 8
+LEVEL 2 SPEC — Phase 7 of 11
 - Core + L2 addendums (NFR, Edge Cases, Complexity)
 - Phase-child-header addendum
 - Sprint 6: Indexing and graph deepening

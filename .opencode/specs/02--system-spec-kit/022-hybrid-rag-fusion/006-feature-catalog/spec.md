@@ -1,6 +1,6 @@
 ---
 title: "Feature Catalog Comprehensive Audit & Remediation"
-status: "in-progress"
+status: "In Progress"
 level: 3
 created: "2025-12-01"
 updated: "2026-03-21"

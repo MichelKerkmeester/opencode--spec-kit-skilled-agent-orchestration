@@ -5,7 +5,7 @@
     "specification",
     "018-rewrite-repo-readme"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.495Z",
+  "lastUpdated": "2026-03-22T17:41:14.888Z",
   "specId": "018",
   "folderSlug": "rewrite-repo-readme",
   "parentChain": [
@@ -16,9 +16,5 @@
   "memoryNameHistory": [
     "15-03-26_13-03__fixed-anchor-destruction-bug-and-hardcoded.md",
     "16-03-26_12-15__executed-c1-c5-edits-directly-instead-of-spawning.md"
-  ],
-  "title": "Rewrite Repo README",
-  "status": "In Progress",
-  "importance_tier": "important",
-  "short_description": "Specification: 018-rewrite-repo-readme"
+  ]
 }

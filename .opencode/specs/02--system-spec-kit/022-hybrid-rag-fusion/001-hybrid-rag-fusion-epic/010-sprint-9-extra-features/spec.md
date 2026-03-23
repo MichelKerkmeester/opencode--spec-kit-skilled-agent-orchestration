@@ -1,4 +1,13 @@
-<!-- SPECKIT_LEVEL: 3+ -->
+---
+title: "Feature Specification: Sprint 9 -- Extra Features (Productization & Operational Tooling)"
+description: "Sprint 9 covers productization and operational tooling features."
+trigger_phrases:
+  - "sprint 9 extra features"
+  - "productization tooling"
+importance_tier: "normal"
+contextType: "implementation"
+---
+<!-- SPECKIT_LEVEL: 2 -->
 # Feature Specification: Sprint 9 — Extra Features (Productization & Operational Tooling)
 
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-govern | v2.2 -->
@@ -21,13 +30,13 @@ The 023 refinement program built a sophisticated 5-channel hybrid retrieval pipe
 
 | Field | Value |
 |-------|-------|
-| **Level** | 3+ |
+| **Level** | 2 |
 | **Priority** | P0 (foundation items) through P2 (innovation) |
 | **Status** | Complete |
 | **Created** | 2026-03-03 |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 10 of 10 |
+| **Phase** | 10 of 11 |
 | **Predecessor** | ../009-sprint-8-deferred-features/spec.md |
 | **Successor** | None (final phase) |
 | **Research** | `006-extra-features/research/` (16 files) |
@@ -242,7 +251,7 @@ interface PipelineRow {
 | Research | 18/20 | Extensive: 6-agent cross-AI research, triple-verified against catalog |
 | Multi-Agent | 10/15 | Workstreams: 4 phases, parallelizable within phases |
 | Coordination | 10/15 | Dependencies: eval framework, feature flags, Phase 1→2 sequencing |
-| **Total** | **73/100** | **Level 3** (elevated to 3+ due to multi-agent research provenance) |
+| **Total** | **73/100** | **Level 2** (downgraded from 3+ — sprint child within parent epic) |
 
 ---
 

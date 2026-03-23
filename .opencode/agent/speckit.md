@@ -110,9 +110,7 @@ ASSESS: Estimate LOC → Select level → Check override factors → Bump if nee
 CREATE: Find next spec number → Run create.sh → Copy level templates
   ↓
 FILL: spec.md → plan.md → tasks.md → [Level 2+: checklist.md] → [Level 3: decision-record.md]
-  ↓
-VALIDATE: Run validate.sh → Exit 0/1 = proceed, Exit 2 = fix and re-validate
-  ↓
+  ↓  (Run validate.sh --strict AFTER EACH FILE WRITE. Fix errors before proceeding to the next file.)
 OUTPUT: Deliver spec folder → Report artifacts → List next steps
 ```
 
@@ -239,8 +237,7 @@ Additional content in existing files:
 - Inline the exact scaffold for the specific spec doc being written: include the canonical template path plus the matching H1, required ANCHOR IDs, required H2 order, and checklist `CHK-NNN [P0/P1/P2]` format when applicable
 - Remove ALL placeholder content `[PLACEHOLDER]` and sample text
 - Use 3-digit padding for spec numbers (001, 042, 099)
-- Run `validate.sh` before claiming completion
-- Run `scripts/spec/validate.sh [SPEC_FOLDER] --strict` immediately after each spec-doc write or update; if it fails, repair template drift before continuing
+- Run `validate.sh --strict` AFTER EACH FILE WRITE. Fix errors before proceeding to the next file
 - Use kebab-case for folder names (e.g., `007-add-auth`)
 - Fill spec.md FIRST, then plan.md, then tasks.md
 
@@ -320,28 +317,40 @@ Mark checklist items with evidence references:
 
 Use these prefix formats for cross-referencing and filtering in spec documentation:
 
-### Inline Scaffold Contract
+### Template Compliance Contract (MANDATORY)
 
-When drafting or updating `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, or `implementation-summary.md`:
+After writing ANY spec folder `.md` file, run `validate.sh --strict` and fix all errors before proceeding.
 
-1. Read the canonical template from `templates/level_N/`.
-2. Copy the matching scaffold into the working prompt: H1, required ANCHOR tags, required H2 sequence, and checklist item format when relevant.
-3. Keep custom sections only after the required template structure.
-4. Run `scripts/spec/validate.sh [SPEC_FOLDER] --strict` before moving to the next workflow step.
+**spec.md** anchors → headers:
+metadata → ## 1. METADATA | problem → ## 2. PROBLEM & PURPOSE | scope → ## 3. SCOPE | requirements → ## 4. REQUIREMENTS | success-criteria → ## 5. SUCCESS CRITERIA | risks → ## 6. RISKS & DEPENDENCIES | questions → ## 10. OPEN QUESTIONS
+L2 addenda: nfr → ## L2: NON-FUNCTIONAL REQUIREMENTS | edge-cases → ## L2: EDGE CASES | complexity → ## L2: COMPLEXITY ASSESSMENT
 
-#### Quick Reference: Level 2 spec.md scaffold
+**plan.md** anchors → headers:
+summary → ## 1. SUMMARY | quality-gates → ## 2. QUALITY GATES | architecture → ## 3. ARCHITECTURE | phases → ## 4. IMPLEMENTATION PHASES | testing → ## 5. TESTING STRATEGY | dependencies → ## 6. DEPENDENCIES | rollback → ## 7. ROLLBACK PLAN
+L2 addenda: phase-deps → ## L2: PHASE DEPENDENCIES | effort → ## L2: EFFORT ESTIMATION | enhanced-rollback → ## L2: ENHANCED ROLLBACK
 
-```
-# Feature Specification: [Title]
-<!-- SPECKIT_LEVEL: 2 -->
-<!-- ANCHOR:metadata --> ## 1. METADATA <!-- /ANCHOR:metadata -->
-<!-- ANCHOR:problem --> ## 2. PROBLEM & PURPOSE <!-- /ANCHOR:problem -->
-<!-- ANCHOR:scope --> ## 3. SCOPE <!-- /ANCHOR:scope -->
-<!-- ANCHOR:requirements --> ## 4. REQUIREMENTS <!-- /ANCHOR:requirements -->
-<!-- ANCHOR:success-criteria --> ## 5. SUCCESS CRITERIA <!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:risks --> ## 6. RISKS & DEPENDENCIES <!-- /ANCHOR:risks -->
-<!-- ANCHOR:questions --> ## 10. OPEN QUESTIONS <!-- /ANCHOR:questions -->
-```
+**tasks.md** anchors → headers:
+notation → ## Task Notation | phase-1 → ## Phase 1: Setup | phase-2 → ## Phase 2: Implementation | phase-3 → ## Phase 3: Verification | completion → ## Completion Criteria | cross-refs → ## Cross-References
+
+**checklist.md** anchors → headers:
+protocol → ## Verification Protocol | pre-impl → ## Pre-Implementation | code-quality → ## Code Quality | testing → ## Testing | security → ## Security | docs → ## Documentation | file-org → ## File Organization | summary → ## Verification Summary
+
+**implementation-summary.md** anchors → headers:
+metadata → ## Metadata | what-built → ## What Was Built | how-delivered → ## How It Was Delivered | decisions → ## Key Decisions | verification → ## Verification | limitations → ## Known Limitations
+
+**decision-record.md** (Level 3 only) — parametric anchors per ADR:
+adr-NNN → wraps ADR | adr-NNN-context | adr-NNN-decision | adr-NNN-alternatives | adr-NNN-consequences | adr-NNN-five-checks | adr-NNN-impl
+
+Every anchor uses `<!-- ANCHOR:name -->` / `<!-- /ANCHOR:name -->` pairs.
+Every file needs: `<!-- SPECKIT_LEVEL: N -->` and `<!-- SPECKIT_TEMPLATE_SOURCE: <template-name> | v2.2 -->` after frontmatter.
+
+**Content minimums** (SECTION_COUNTS rule — warnings if below):
+| Metric | L1 | L2 | L3/3+ |
+|--------|----|----|-------|
+| spec.md H2 sections | ≥5 | ≥7 | ≥10 |
+| plan.md H2 sections | ≥4 | ≥6 | ≥8 |
+| Requirements (`REQ-*`) | ≥3 | ≥5 | ≥8 |
+| Acceptance scenarios (`**Given**`) | ≥2 | ≥4 | ≥6 |
 
 | Format         | Purpose                                      | Example                         |
 | -------------- | -------------------------------------------- | ------------------------------- |
@@ -439,8 +448,7 @@ All spec operations should return structured responses:
 ```
 □ File existence verified (Glob/Read, not assumptions)
 □ No placeholder text remains (grep -r "\[PLACEHOLDER\]")
-□ validate.sh run successfully (exit code 0 or 1)
-□ validate.sh --strict run after final spec-doc write/update
+□ validate.sh --strict run after each file write (exit code 0 or 1 to proceed)
 □ File sizes reasonable (not empty)
 □ All required files for level present
 □ Checklist items marked with evidence (Level 2+)
@@ -500,6 +508,19 @@ Use this template for completion reports:
 ❌ **Never bypass level assessment** — Determine level BEFORE creating spec folder. Wrong level = wrong templates = rework.
 
 ❌ **Never use core/addendum directly** — These are source components for building level templates. Always use pre-composed `templates/level_N/` folders.
+
+---
+
+## 11.1. POST-WRITE VALIDATION PROTOCOL
+
+### Post-Write Validation Protocol
+
+After writing each spec folder `.md` file:
+1. Run: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <SPEC_FOLDER> --strict`
+2. Parse exit code: 0 = pass, 1 = warnings (proceed), 2 = errors (must fix)
+3. If exit code 2: read error output, fix the specific issues, re-run validation
+4. Max 3 fix attempts per file. If still failing after 3, report to user and proceed.
+5. Do NOT proceed to the next file until current file passes (exit code 0 or 1).
 
 ---
 

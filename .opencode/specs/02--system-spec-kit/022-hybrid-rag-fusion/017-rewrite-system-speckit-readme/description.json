@@ -5,7 +5,7 @@
     "specification",
     "017-rewrite-system-speckit-readme"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.489Z",
+  "lastUpdated": "2026-03-22T17:41:14.882Z",
   "specId": "017",
   "folderSlug": "rewrite-system-speckit-readme",
   "parentChain": [
@@ -13,9 +13,5 @@
     "022-hybrid-rag-fusion"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Rewrite System Spec Kit README",
-  "status": "In Progress",
-  "importance_tier": "important",
-  "short_description": "Specification: 017-rewrite-system-speckit-readme"
+  "memoryNameHistory": []
 }

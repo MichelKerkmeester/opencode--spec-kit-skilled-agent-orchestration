@@ -23,7 +23,7 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Not Started |
+| **Status** | Draft |
 | **Created** | 2026-03-22 |
 | **Branch** | `020-template-compliance-enforcement` |
 <!-- /ANCHOR:metadata -->

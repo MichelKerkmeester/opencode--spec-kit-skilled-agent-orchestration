@@ -22,7 +22,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P1 |
-| **Status** | In Progress |
+| **Status** | Archived |
 | **Created** | 2026-03-20 |
 | **Branch** | `000-dynamic-capture-deprecation` |
 | **Parent Spec** | `../spec.md` |

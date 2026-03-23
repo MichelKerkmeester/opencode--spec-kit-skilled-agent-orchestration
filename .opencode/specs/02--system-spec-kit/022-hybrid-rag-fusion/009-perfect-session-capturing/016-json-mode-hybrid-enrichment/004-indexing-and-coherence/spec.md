@@ -35,7 +35,7 @@ Four structural gaps in the generate-context.js memory pipeline degrade indexing
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0/P1/P2 (mixed — see requirements) |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-21 |
 | **Branch** | `016-json-mode-hybrid-enrichment` |
 | **Phase** | 004 of 004 in `016-json-mode-hybrid-enrichment` |

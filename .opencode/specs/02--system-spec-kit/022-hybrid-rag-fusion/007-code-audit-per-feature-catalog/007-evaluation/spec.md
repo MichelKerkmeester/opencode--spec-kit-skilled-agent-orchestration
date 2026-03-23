@@ -10,7 +10,7 @@ contextType: "general"
 ---
 # Feature Specification: Code Audit — Evaluation
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
@@ -29,7 +29,7 @@ Systematic code audit of 2 Evaluation features in the Spec Kit Memory MCP server
 
 | Field | Value |
 |-------|-------|
-| **Level** | 3 |
+| **Level** | 2 |
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-22 |

@@ -28,7 +28,7 @@ contextType: "implementation"
 | **Created** | 2026-02-26 |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 3 of 10 |
+| **Phase** | 3 of 11 |
 | **Predecessor** | ../002-sprint-1-graph-signal-activation/spec.md |
 | **Successor** | ../004-sprint-3-query-intelligence/spec.md |
 | **Handoff Criteria** | Cache hit >90%, N4 dark-run passes, G2 resolved, score distributions normalized to [0,1] |
@@ -263,7 +263,7 @@ where M is the number of memories in the folder. The damping factor `1/sqrt(M+1)
 ---
 
 <!--
-LEVEL 2 SPEC — Phase 3 of 8
+LEVEL 2 SPEC — Phase 3 of 11
 - Core + L2 addendums (NFR, Edge Cases, Complexity)
 - Phase-child-header addendum
 - Sprint 2: Scoring calibration — R18 cache, N4 cold-start, G2 investigation, normalization

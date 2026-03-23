@@ -35,7 +35,7 @@ Two interrelated defects undermine memory quality in the generate-context.js pip
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | Complete |
 | **Created** | 2026-03-21 |
 | **Branch** | `016-json-mode-hybrid-enrichment` |
 | **Spec Folder** | `009-perfect-session-capturing/016-json-mode-hybrid-enrichment/002-scoring-and-filter` |

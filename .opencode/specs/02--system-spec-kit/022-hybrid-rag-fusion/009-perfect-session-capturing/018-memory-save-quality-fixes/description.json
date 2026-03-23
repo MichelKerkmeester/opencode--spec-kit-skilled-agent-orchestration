@@ -1,7 +1,7 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/018-memory-save-quality-fixes",
   "description": "Feature Specification: Memory Save Quality Root Cause Fixes",
-  "status": "complete",
+  "status": "Complete",
   "keywords": [
     "feature",
     "specification",

@@ -26,7 +26,7 @@ contextType: "implementation"
 | **Status** | Complete |
 | **Created** | 2026-03-15 |
 | **Branch** | `main` |
-| **Parent** | `022-hybrid-rag-fusion` (Phase 022) |
+| **Parent** | `022-hybrid-rag-fusion` (Phase 018) |
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../017-rewrite-system-speckit-readme/spec.md |
 | **Successor** | None |

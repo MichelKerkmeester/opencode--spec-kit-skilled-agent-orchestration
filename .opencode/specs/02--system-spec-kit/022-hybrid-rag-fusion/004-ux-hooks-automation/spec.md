@@ -1,6 +1,6 @@
 ---
 title: "UX Hooks Automation"
-status: "complete"
+status: "Complete"
 level: 2
 created: "2025-12-01"
 updated: "2026-03-13"
@@ -29,7 +29,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Implemented |
+| **Status** | Complete |
 | **Created** | 2026-03-05 |
 | **Branch** | `006-ux-hooks-automation` |
 | **Parent Spec** | ../spec.md |

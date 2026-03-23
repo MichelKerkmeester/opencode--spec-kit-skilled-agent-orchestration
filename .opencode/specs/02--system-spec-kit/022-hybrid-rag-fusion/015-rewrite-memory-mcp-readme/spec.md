@@ -26,7 +26,7 @@ contextType: "implementation"
 | **Status** | Complete |
 | **Created** | 2026-03-15 |
 | **Branch** | `main` |
-| **Parent** | `022-hybrid-rag-fusion` (Phase 020) |
+| **Parent** | `022-hybrid-rag-fusion` (Phase 015) |
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../014-manual-testing-per-playbook/spec.md |
 | **Successor** | ../016-update-install-guide/spec.md |

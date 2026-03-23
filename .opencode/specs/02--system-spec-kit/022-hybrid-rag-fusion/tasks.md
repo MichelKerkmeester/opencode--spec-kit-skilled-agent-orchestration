@@ -30,7 +30,7 @@ contextType: "implementation"
 
 - [x] T001 Read the current root packet
 - [x] T002 Read the Level 3+ template expectations needed for the parent packet
-- [x] T003 Inventory direct child packets `001-018`
+- [x] T003 Inventory direct child packets `001-020`
 <!-- /ANCHOR:phase-1 -->
 
 ---

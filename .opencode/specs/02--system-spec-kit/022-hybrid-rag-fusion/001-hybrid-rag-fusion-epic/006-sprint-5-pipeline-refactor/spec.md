@@ -27,7 +27,7 @@ contextType: "implementation" # SPECKIT_TEMPLATE_SOURCE: spec-core + level2-veri
 | **Created** | 2026-02-26 |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 6 of 10 |
+| **Phase** | 6 of 11 |
 | **Predecessor** | ../005-sprint-4-feedback-and-quality/spec.md |
 | **Successor** | ../007-sprint-6-indexing-and-graph/spec.md |
 | **Handoff Criteria** | R6 0 ordering differences, 158+ tests pass, R9 cross-folder equivalent, R12 no latency degradation |
@@ -290,7 +290,7 @@ All auto-fixes are logged with before/after diffs as the primary mitigation agai
 ---
 
 <!--
-LEVEL 2 SPEC — Phase 6 of 8
+LEVEL 2 SPEC — Phase 6 of 11
 - Core + L2 addendums (NFR, Edge Cases, Complexity)
 - Phase-child-header addendum
 - Sprint 5: Pipeline Refactor

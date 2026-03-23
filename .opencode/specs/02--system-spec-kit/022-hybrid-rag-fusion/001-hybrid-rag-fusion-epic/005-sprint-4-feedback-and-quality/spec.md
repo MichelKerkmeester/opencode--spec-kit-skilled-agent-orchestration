@@ -29,7 +29,7 @@ contextType: "implementation"
 | **Created** | 2026-02-26 |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 5 of 10 |
+| **Phase** | 5 of 11 |
 | **Predecessor** | ../004-sprint-3-query-intelligence/spec.md |
 | **Successor** | ../006-sprint-5-pipeline-refactor/spec.md |
 | **Handoff Criteria** | R1 MRR@5 within 2%, R11 noise <5%, R13-S2 operational |
@@ -276,7 +276,7 @@ ALTER TABLE memory_index ADD COLUMN learned_triggers TEXT DEFAULT '[]';
 ---
 
 <!--
-LEVEL 2 SPEC — Phase 5 of 8
+LEVEL 2 SPEC — Phase 5 of 11
 - Core + L2 addendums (NFR, Edge Cases, Complexity)
 - Phase-child-header addendum
 - Sprint 4: Feedback and Quality

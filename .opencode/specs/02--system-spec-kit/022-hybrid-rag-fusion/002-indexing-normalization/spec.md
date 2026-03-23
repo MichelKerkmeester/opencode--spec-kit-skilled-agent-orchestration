@@ -1,6 +1,6 @@
 ---
 title: "Indexing Normalization"
-status: "complete"
+status: "Complete"
 level: 3
 created: "2025-12-01"
 updated: "2026-03-08"
@@ -12,7 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "implementation"
 ---
-# Consolidated spec.md
+# Feature Specification: Indexing Normalization
 
 This document consolidates source documents from:
 - `former child spec 002-index-tier-anomalies -> spec.md`
@@ -63,7 +63,7 @@ The same workflow also shows tier inconsistencies when parsed metadata and docum
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | Completed |
+| **Status** | Complete |
 | **Created** | 2026-02-22 |
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../001-hybrid-rag-fusion-epic/spec.md |
@@ -361,7 +361,7 @@ This child spec defines a focused Level 3 implementation for frontmatter normali
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | Completed |
+| **Status** | Complete |
 | **Created** | 2026-02-22 |
 <!-- /ANCHOR:metadata -->
 

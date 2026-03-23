@@ -29,7 +29,7 @@ contextType: "implementation"
 | **Created** | 2026-02-26 |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 8 of 10 |
+| **Phase** | 8 of 11 |
 | **Predecessor** | ../007-sprint-6-indexing-and-graph/spec.md |
 | **Successor** | ../009-sprint-8-deferred-features/spec.md |
 | **Handoff Criteria** | N/A (program completion) |
@@ -265,7 +265,7 @@ Research evidence: See research documents `9 - analysis-pageindex-systems-archit
 ---
 
 <!--
-LEVEL 2 SPEC — Phase 8 of 8 (FINAL)
+LEVEL 2 SPEC — Phase 8 of 11
 - Core + L2 addendums (NFR, Edge Cases, Complexity)
 - Phase-child-header addendum
 - Sprint 7: Long horizon — scale-dependent optimizations + eval completion

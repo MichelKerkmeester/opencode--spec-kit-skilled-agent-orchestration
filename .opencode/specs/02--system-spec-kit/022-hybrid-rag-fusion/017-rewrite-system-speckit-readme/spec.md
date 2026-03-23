@@ -26,7 +26,7 @@ contextType: "implementation"
 | **Status** | Complete |
 | **Created** | 2026-03-15 |
 | **Branch** | `main` |
-| **Parent** | `022-hybrid-rag-fusion` (Phase 021) |
+| **Parent** | `022-hybrid-rag-fusion` (Phase 017) |
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../016-update-install-guide/spec.md |
 | **Successor** | ../018-rewrite-repo-readme/spec.md |

@@ -18,6 +18,8 @@
     "022-hybrid-rag-fusion",
     "009-perfect-session-capturing"
   ],
+  "status": "Complete",
+  "importance_tier": "critical",
   "memorySequence": 0,
   "memoryNameHistory": []
 }

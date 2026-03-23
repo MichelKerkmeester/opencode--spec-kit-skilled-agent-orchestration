@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: 016-Tooling-and-Scripts Manual Testing"
-description: "Manual test execution tracking for 60 exact scenario IDs across 28 tooling-and-scripts playbook scenarios, covering phase workflow, session capturing pipeline quality, tooling utilities, and JSON mode structured summary hardening."
+description: "Manual test execution tracking for 59 exact scenario IDs across 28 tooling-and-scripts playbook scenarios, covering phase workflow, session capturing pipeline quality, tooling utilities, and JSON mode structured summary hardening."
 trigger_phrases:
   - "tooling scripts manual testing"
   - "016 testing"
@@ -30,8 +30,8 @@ contextType: "general"
 | **Predecessor** | [015-retrieval-enhancements](../015-retrieval-enhancements/spec.md) |
 | **Successor** | [017-governance](../017-governance/spec.md) |
 | **Playbook Category** | 16--tooling-and-scripts |
-| **Scenario Files** | 28 |
-| **Total Exact IDs** | 60 |
+| **Scenario Files** | 27 |
+| **Total Exact IDs** | 59 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -40,10 +40,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The tooling-and-scripts category (16) contains 28 scenario files covering 60 exact scenario IDs that have not been manually tested against the live system. This is the second-largest phase by exact ID count, with two major sub-scenario expansions: M-007 (session capturing pipeline quality) with 17 sub-IDs and 153 (JSON mode structured summary hardening) with 15 sub-IDs. Each requires systematic validation with documented evidence.
+The tooling-and-scripts category (16) contains 28 scenario files covering 59 exact scenario IDs that have not been manually tested against the live system. This is the second-largest phase by exact ID count, with two major sub-scenario expansions: M-007 (session capturing pipeline quality) with 17 sub-IDs and 153 (JSON mode structured summary hardening) with 15 sub-IDs. Each requires systematic validation with documented evidence.
 
 ### Purpose
-Execute every scenario in the 16--tooling-and-scripts playbook category, verify each produces the expected outcome, and record pass/fail evidence for all 60 exact IDs.
+Execute every scenario in the 16--tooling-and-scripts playbook category, verify each produces the expected outcome, and record pass/fail evidence for all 59 exact IDs.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -52,7 +52,7 @@ Execute every scenario in the 16--tooling-and-scripts playbook category, verify 
 ## 3. SCOPE
 
 ### In Scope
-- All 60 exact scenario IDs from 16--tooling-and-scripts playbook category
+- All 59 exact scenario IDs from 16--tooling-and-scripts playbook category
 - Phase workflow scenarios (PHASE-001 through PHASE-005)
 - Main-agent review and verdict handoff (M-004)
 - Session capturing pipeline quality parent and sub-scenarios (M-007, M-007a through M-007q)
@@ -64,7 +64,7 @@ Execute every scenario in the 16--tooling-and-scripts playbook category, verify 
 - Scenarios belonging to other playbook categories
 - Automated test creation (manual testing phase)
 
-### Scenario ID Master List (60 IDs)
+### Scenario ID Master List (59 IDs)
 
 #### Group A: Phase Workflow (5 IDs)
 
@@ -202,7 +202,7 @@ Execute every scenario in the 16--tooling-and-scripts playbook category, verify 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 60 exact scenario IDs executed with individual pass/fail evidence
+- **SC-001**: All 59 exact scenario IDs executed with individual pass/fail evidence
 - **SC-002**: Zero untested scenarios remaining in 16--tooling-and-scripts
 - **SC-003**: Checklist fully populated with evidence references for each scenario group
 <!-- /ANCHOR:success-criteria -->

@@ -47,7 +47,7 @@ contextType: "general"
 - [x] CHK-041 [P0] No scenario IDs missing from phase ownership (zero orphans) — 264/264 IDs assigned and verdicted
 - [x] CHK-042 [P0] No duplicate scenario ID assignments across phases (zero duplicates) — each ID appears in exactly one phase folder
 - [x] CHK-043 [P1] Parent spec.md, plan.md, tasks.md synchronized with execution results — all parent docs updated with final verdict counts
-- [x] CHK-044 [P1] Implementation-summary.md completed with actual execution data — aggregate report with 263 PASS, 1 PARTIAL, 0 FAIL
+- [x] CHK-044 [P1] Implementation-summary.md completed with actual execution data — aggregate report with 264 PASS, 0 PARTIAL, 0 FAIL
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -102,7 +102,7 @@ contextType: "general"
 
 - [x] CHK-060 [P1] All phase spec.md files document scenario IDs, prompts, and pass/fail criteria — verified across all 19 phases
 - [x] CHK-061 [P1] Phase plan.md files document execution pipelines — verified across all 19 phases
-- [x] CHK-062 [P2] Findings saved to memory/ if significant discoveries made — 3 PARTIAL verdict documented as findings in phase implementation summaries
+- [x] CHK-062 [P2] Findings saved to memory/ if significant discoveries made — all verdicts PASS; 091 ANCHOR-as-node deferred, 159 shadow wired, 164 startup wired
 <!-- /ANCHOR:docs -->
 
 ---

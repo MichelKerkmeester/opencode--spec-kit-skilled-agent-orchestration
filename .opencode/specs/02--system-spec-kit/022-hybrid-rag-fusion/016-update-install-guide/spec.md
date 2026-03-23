@@ -26,7 +26,7 @@ contextType: "implementation"
 | **Status** | Complete |
 | **Created** | 2026-03-15 |
 | **Branch** | `main` |
-| **Parent** | `022-hybrid-rag-fusion` (Phase 020) |
+| **Parent** | `022-hybrid-rag-fusion` (Phase 016) |
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../015-rewrite-memory-mcp-readme/spec.md |
 | **Successor** | ../017-rewrite-system-speckit-readme/spec.md |

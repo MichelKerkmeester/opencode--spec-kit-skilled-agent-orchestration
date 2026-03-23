@@ -83,7 +83,7 @@ Coordination-layer documentation normalization
 
 ### Key Components
 - **Root packet docs**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`
-- **Direct child packets**: direct child packet specs for phases `002` through `018`
+- **Direct child packets**: direct child packet specs for phases `002` through `020`
 
 ### Data Flow
 Read the live tree -> reconcile root facts -> normalize root docs -> preserve direct-child navigation truth -> validate the parent packet.

@@ -28,7 +28,7 @@ contextType: "implementation"
 | **Created** | 2026-02-26 |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 1 of 10 |
+| **Phase** | 1 of 11 |
 | **Predecessor** | None (first phase) |
 | **Successor** | ../002-sprint-1-graph-signal-activation/spec.md |
 | **Handoff Criteria** | Sprint 0 exit gate — graph hit rate >0%, chunk dedup verified, BM25 baseline MRR@5 recorded, baseline metrics for 100+ queries with diversity requirement (>=5 per intent type, >=3 complexity tiers, >=30 manually curated), active feature flags <=6 |
@@ -255,7 +255,7 @@ Bounded quality loop after embedding generation: verify (cosine self-similarity 
 ---
 
 <!--
-LEVEL 2 SPEC — Phase 1 of 8
+LEVEL 2 SPEC — Phase 1 of 11
 - Core + L2 addendums (NFR, Edge Cases, Complexity)
 - Phase-child-header addendum
 - Sprint 0: BLOCKING foundation sprint

@@ -18,7 +18,7 @@ contextType: "general"
 ---
 # Code Audit: Tooling and Scripts
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
@@ -28,7 +28,7 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Level** | 3 |
+| **Level** | 2 |
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-22 |

@@ -28,7 +28,7 @@ contextType: "implementation"
 | **Created** | 2026-02-26 |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 4 of 10 |
+| **Phase** | 4 of 11 |
 | **Predecessor** | ../003-sprint-2-scoring-calibration/spec.md |
 | **Successor** | ../005-sprint-4-feedback-and-quality/spec.md |
 | **Handoff Criteria** | R15 p95 <30ms simple, RSF Kendall tau computed, R2 precision within 5% |
@@ -269,7 +269,7 @@ Transition thresholds: top result similarity < 0.4 OR result count < 3 triggers 
 ---
 
 <!--
-LEVEL 2 SPEC — Phase 4 of 8
+LEVEL 2 SPEC — Phase 4 of 11
 - Core + L2 addendums (NFR, Edge Cases, Complexity)
 - Phase-child-header addendum
 - Sprint 3: Query Intelligence

@@ -28,11 +28,11 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The 022 root packet now acts as a real coordination document instead of a stale synthesis dump. It records the live 18 direct phases, the current 107 numbered spec directories on disk, and the verified subtree facts that matter most at the root layer.
+The 022 root packet now acts as a real coordination document instead of a stale synthesis dump. It records the live 19 direct phases, the current 118 numbered spec directories on disk, and the verified subtree facts that matter most at the root layer.
 
 ### Root Packet Normalization
 
-The root spec now preserves the current tree truth: phase `009` has 20 children, phase `014` remains draft or documentation-only, and `spec_validate_local.out` is treated as a failed local snapshot rather than pass evidence.
+The root spec now preserves the current tree truth: phase `009` has 20 children, phase `014` is complete, and `spec_validate_local.out` is treated as a failed local snapshot rather than pass evidence.
 
 ### Direct Child Navigation
 

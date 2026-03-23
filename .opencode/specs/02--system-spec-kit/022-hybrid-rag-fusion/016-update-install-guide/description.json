@@ -5,7 +5,7 @@
     "specification",
     "016-update-install-guide"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.484Z",
+  "lastUpdated": "2026-03-22T17:41:14.878Z",
   "specId": "016",
   "folderSlug": "update-install-guide",
   "parentChain": [
@@ -13,9 +13,5 @@
     "022-hybrid-rag-fusion"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Update Install Guide",
-  "status": "In Progress",
-  "importance_tier": "important",
-  "short_description": "Specification: 016-update-install-guide"
+  "memoryNameHistory": []
 }

@@ -28,7 +28,7 @@ contextType: "implementation"
 | **Created** | 2026-02-26 |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 2 of 10 |
+| **Phase** | 2 of 11 |
 | **Predecessor** | ../001-sprint-0-measurement-foundation/spec.md |
 | **Successor** | ../003-sprint-2-scoring-calibration/spec.md |
 | **Handoff Criteria** | R4 MRR@5 delta >+2% absolute, edge density measured, no single memory >60% presence |
@@ -243,7 +243,7 @@ Activate the graph's structural connectivity signal as a 5th RRF channel, measur
 ---
 
 <!--
-LEVEL 2 SPEC — Phase 2 of 8
+LEVEL 2 SPEC — Phase 2 of 11
 - Core + L2 addendums (NFR, Edge Cases, Complexity)
 - Phase-child-header addendum
 - Sprint 1: Graph signal activation via R4 typed-degree channel

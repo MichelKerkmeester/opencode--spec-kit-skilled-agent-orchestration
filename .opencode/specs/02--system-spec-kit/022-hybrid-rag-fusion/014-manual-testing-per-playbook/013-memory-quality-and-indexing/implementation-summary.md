@@ -97,9 +97,9 @@ All 34 exact IDs from the memory quality and indexing playbook phase were evalua
 
 | File | Action | Purpose |
 |------|--------|---------|
-| tasks.md | Modified | Updated all 34 scenario verdicts with evidence; 2 PARTIALs (040, 176) remediated to PASS; 164 remains PARTIAL |
-| checklist.md | Modified | Marked all P0/P1 items with evidence citations; 164 remains PARTIAL (unwired) |
-| implementation-summary.md | Modified | Completed with aggregate results and verdict table; 97% pass rate |
+| tasks.md | Modified | Updated all 34 scenario verdicts with evidence; all PARTIALs remediated to PASS (040, 176 via deeper analysis; 164 via startup wiring) |
+| checklist.md | Modified | Marked all P0/P1 items with evidence citations; 34/34 PASS |
+| implementation-summary.md | Modified | Completed with aggregate results and verdict table; 100% pass rate |
 | trigger-matcher.ts | Modified | Added reinforcement signal category, keywords, detection, and boost (040 remediation) |
 | batch-learning.ts | Modified | Removed @deprecated annotation; updated JSDoc (164 remediation) |
 | context-server.ts | Modified | Added runBatchLearning(database) caller at startup — wires 164 to production pipeline |

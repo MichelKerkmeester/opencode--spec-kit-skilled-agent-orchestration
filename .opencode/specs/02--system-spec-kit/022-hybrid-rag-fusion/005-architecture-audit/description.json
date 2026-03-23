@@ -1,6 +1,6 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit",
-  "description": "Feature Specification: System-Spec-Kit Scripts vs mcp_server Architecture Audit + Boundary Remediation",
+  "description": "Audit and remediate ownership boundaries between root scripts (build-time and CLI tooling) and mcp_server (runtime MCP server), including merged follow-up boundary remediation work from former spec 030.",
   "keywords": [
     "feature",
     "specification",
@@ -23,5 +23,7 @@
     "19-03-26_15-09__architecture-audit.md",
     "19-03-26_18-44__architecture-audit.md",
     "20-03-26_15-26__architecture-audit.md"
-  ]
+  ],
+  "status": "Complete",
+  "importance_tier": "critical"
 }

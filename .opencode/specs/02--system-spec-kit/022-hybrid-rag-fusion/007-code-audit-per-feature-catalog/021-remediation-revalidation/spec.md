@@ -10,7 +10,7 @@ contextType: "general"
 ---
 # Feature Specification: Code Audit — Remediation and Revalidation
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
 
 ---
@@ -29,7 +29,7 @@ META-PHASE synthesizing remediation needs identified across all 20 preceding aud
 
 | Field | Value |
 |-------|-------|
-| **Level** | 3 |
+| **Level** | 2 |
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-22 |

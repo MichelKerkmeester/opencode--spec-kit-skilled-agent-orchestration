@@ -1,10 +1,6 @@
 ---
 title: "Feature Specification: Refactor /memory:learn → Constitutional Memory Manager"
----
-<!-- SPECKIT_TEMPLATE_SOURCE: .opencode/skill/system-spec-kit/templates/spec.md -->
----
-title: "Constitutional Learn Refactor"
-status: "complete"
+status: "Complete"
 level: 2
 created: "2025-12-01"
 updated: "2026-03-08"

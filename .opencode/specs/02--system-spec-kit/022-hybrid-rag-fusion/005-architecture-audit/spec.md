@@ -1,6 +1,6 @@
 ---
 title: "Architecture Audit"
-status: "complete"
+status: "Complete"
 level: 3
 created: "2025-12-01"
 updated: "2026-03-19"

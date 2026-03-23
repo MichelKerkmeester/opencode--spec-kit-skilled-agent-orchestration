@@ -1,13 +1,17 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement",
-  "description": "Feature Specification: Research-Based Refinement",
+  "description": "Phase 11 applies deep-research findings to refine the hybrid RAG fusion pipeline, implementing evidence-based improvements across scoring, retrieval, and graph subsystems.",
   "keywords": [
     "feature",
     "specification",
     "research-based",
-    "refinement"
+    "refinement",
+    "deep-research",
+    "RAG improvement"
   ],
-  "lastUpdated": "2026-03-21T17:29:23.094Z",
+  "status": "Draft",
+  "importance_tier": "important",
+  "lastUpdated": "2026-03-23T00:00:00.000Z",
   "specId": "011",
   "folderSlug": "research-based-refinement",
   "parentChain": [
