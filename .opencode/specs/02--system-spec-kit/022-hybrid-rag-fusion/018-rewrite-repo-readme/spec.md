@@ -29,7 +29,7 @@ contextType: "implementation"
 | **Parent** | `022-hybrid-rag-fusion` (Phase 018) |
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../017-rewrite-system-speckit-readme/spec.md |
-| **Successor** | None |
+| **Successor** | ../020-template-compliance-enforcement/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---
