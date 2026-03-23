@@ -214,7 +214,7 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_GRAPH_REFRESH_MODE` | `write_local` | R-011 | Graph refresh policy: off, write_local, write_global. Graduated default: write_local |
 | `SPECKIT_GRAPH_WALK_ROLLOUT` | `bounded_runtime` | S5 | Graph walk rollout state: off, bounded_runtime, full. Default: bounded_runtime |
 | `SPECKIT_HYDE` | ON | R-011 | HyDE shadow document generation for embedding enrichment |
-| `SPECKIT_HYDE_ACTIVE` | OFF | R-011 | Promote HyDE from shadow to active query pipeline. Set `true` to enable |
+| `SPECKIT_HYDE_ACTIVE` | ON | R-011 | Promote HyDE from shadow to active query pipeline. Set `false` to disable merging |
 | `SPECKIT_LLM_REFORMULATION` | ON | R-011 | LLM-based corpus-grounded query reformulation |
 | `SPECKIT_QUERY_DECOMPOSITION` | ON | R-011 | Bounded facet-aware query decomposition (max 3 facets) |
 | `SPECKIT_GRAPH_CONCEPT_ROUTING` | ON | R-011 | Entity-linked graph concept routing in Stage 1 |
@@ -291,21 +291,21 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_RESULT_CONFIDENCE_V1` | ON | R-011 | Per-result calibrated confidence from 4 weighted factors: margin (0.35), channel agreement (0.30), reranker (0.20), anchor density (0.15) |
 | `SPECKIT_BATCH_LEARNED_FEEDBACK` | ON | R-011 | Weekly batch feedback learning. Confidence-weighted signals (strong=1.0, medium=0.5, weak=0.1), min-support 3 sessions, boost-cap 0.10. Shadow-only |
 | `SPECKIT_ASSISTIVE_RECONSOLIDATION` | ON | R-011 | Three-tier assistive reconsolidation: auto-merge (>=0.96), review (>=0.88), keep-separate (<0.88). Review-tier logs recommendation only |
-| `SPECKIT_RESULT_EXPLAIN_V1` | OFF | R-011 | Two-tier result explainability: slim (summary + topSignals) and debug (per-channel breakdown). Set `true` to enable |
-| `SPECKIT_RESPONSE_PROFILE_V1` | OFF | R-011 | Mode-aware response profiles: quick, research, resume, debug. Set `true` to enable. Original response when profile omitted |
+| `SPECKIT_RESULT_EXPLAIN_V1` | ON | R-011 | Two-tier result explainability: slim (summary + topSignals) and debug (per-channel breakdown). Set `false` to disable |
+| `SPECKIT_RESPONSE_PROFILE_V1` | ON | R-011 | Mode-aware response profiles: quick, research, resume, debug. Set `false` to disable. Original response when profile omitted |
 
 #### Observability & Evaluation
 
 | Flag | Default | Sprint | Purpose |
 |------|---------|--------|---------|
 | `SPECKIT_EXTENDED_TELEMETRY` | OFF | S5 | Opt-in 4-dimension retrieval metrics (latency, mode, fallback, quality) plus architecture snapshots |
-| `SPECKIT_HYDRA_PHASE` | `baseline` | S7 | Records the active Hydra roadmap phase in telemetry, eval baselines, and migration checkpoint metadata |
-| `SPECKIT_HYDRA_LINEAGE_STATE` | OFF | S7 | Opt-in Hydra roadmap metadata for the lineage-state milestone |
-| `SPECKIT_HYDRA_GRAPH_UNIFIED` | OFF | S7 | Opt-in Hydra roadmap metadata for the unified-graph milestone; distinct from runtime `SPECKIT_GRAPH_UNIFIED` |
+| `SPECKIT_HYDRA_PHASE` | `shared-rollout` | S7 | Records the active Hydra roadmap phase in telemetry, eval baselines, and migration checkpoint metadata |
+| `SPECKIT_HYDRA_LINEAGE_STATE` | ON | S7 | Legacy roadmap metadata flag for the lineage-state milestone |
+| `SPECKIT_HYDRA_GRAPH_UNIFIED` | ON | S7 | Legacy roadmap metadata flag for the unified-graph milestone; distinct from runtime `SPECKIT_GRAPH_UNIFIED` |
 | `SPECKIT_HYDRA_ADAPTIVE_RANKING` | OFF | S7 | Opt-in Hydra roadmap metadata for adaptive-ranking experiments |
-| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | OFF | S7 | Opt-in Hydra roadmap metadata for scope-enforcement tracking |
-| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | OFF | S7 | Opt-in Hydra roadmap metadata for governance-guardrail tracking |
-| `SPECKIT_HYDRA_SHARED_MEMORY` | OFF | S7 | Opt-in Hydra roadmap metadata for the shared-memory milestone |
+| `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | ON | S7 | Legacy roadmap metadata flag for scope-enforcement tracking |
+| `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | ON | S7 | Legacy roadmap metadata flag for governance-guardrail tracking |
+| `SPECKIT_HYDRA_SHARED_MEMORY` | ON | S7 | Legacy roadmap metadata flag for the shared-memory milestone |
 | `SPECKIT_RELATIONS` | ON | S4 | Enables relation extraction in learning/corrections module |
 | `SPECKIT_ABLATION` | OFF | S7 | Ablation testing framework (opt-in) |
 | `SPECKIT_EVAL_LOGGING` | OFF | S7 | Evaluation metric logging (opt-in) |
@@ -332,12 +332,13 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 
 | Flag | Default | Sprint | Purpose |
 |------|---------|--------|---------|
-| `SPECKIT_MEMORY_ADAPTIVE_RANKING` | ON | S7 | Canonical alias for SPECKIT_HYDRA_ADAPTIVE_RANKING |
+| `SPECKIT_MEMORY_LINEAGE_STATE` | ON | S7 | Canonical alias for `SPECKIT_HYDRA_LINEAGE_STATE` |
+| `SPECKIT_MEMORY_ADAPTIVE_RANKING` | OFF | S7 | Canonical alias for `SPECKIT_HYDRA_ADAPTIVE_RANKING`; dormant unless explicitly enabled |
 | `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | ON | S7 | Canonical alias for SPECKIT_HYDRA_SCOPE_ENFORCEMENT |
 | `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | ON | S7 | Canonical alias for SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS |
-| `SPECKIT_MEMORY_SHARED_MEMORY` | OFF | S7 | Canonical alias for SPECKIT_HYDRA_SHARED_MEMORY. Shared-memory opt-in |
+| `SPECKIT_MEMORY_SHARED_MEMORY` | ON | S7 | Canonical alias for SPECKIT_HYDRA_SHARED_MEMORY |
 | `SPECKIT_MEMORY_GRAPH_UNIFIED` | ON | S7 | Canonical alias for SPECKIT_HYDRA_GRAPH_UNIFIED |
-| `SPECKIT_MEMORY_ROADMAP_PHASE` | `baseline` | S7 | Canonical phase label for Hydra roadmap tracking |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `shared-rollout` | S7 | Canonical phase label for Hydra roadmap tracking |
 | `SPECKIT_MEMORY_ADAPTIVE_MODE` | string | S7 | Adaptive ranking mode selector |
 
 #### Runtime Configuration Parameters

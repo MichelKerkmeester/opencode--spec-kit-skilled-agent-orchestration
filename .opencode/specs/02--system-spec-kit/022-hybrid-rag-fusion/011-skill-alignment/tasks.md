@@ -1,7 +1,7 @@
 ---
 title: "Tasks: Skill Alignment — system-spec-kit"
 description: "Reconciled task list for closing the last system-spec-kit documentation gaps."
-trigger_phrases: ["tasks", "skill alignment", "010 alignment"]
+trigger_phrases: ["tasks", "skill alignment", "011 alignment"]
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -30,7 +30,7 @@ contextType: "implementation"
 ## Phase 1: Pack Reconciliation
 
 - [x] T001 Rewrite `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` so they all reflect the live 33-tool, 6-command memory surface (`./spec.md`, `./plan.md`, `./tasks.md`, `./checklist.md`, `./implementation-summary.md`)
-- [x] T002 Remove stale command-surface count language and retired standalone retrieval-command framing from the canonical 010 docs (`./spec.md`, `./plan.md`, `./tasks.md`, `./checklist.md`, `./implementation-summary.md`)
+- [x] T002 Remove stale command-surface count language and retired standalone retrieval-command framing from the canonical 011 docs (`./spec.md`, `./plan.md`, `./tasks.md`, `./checklist.md`, `./implementation-summary.md`)
 - [x] T003 Preserve the documentation-only boundary for this phase (`./spec.md`, `./plan.md`, `./tasks.md`, `./checklist.md`)
 <!-- /ANCHOR:phase-1 -->
 
@@ -58,7 +58,7 @@ contextType: "implementation"
 
 - [x] T008 Add campaign/shared-space/cross-phase dispatch guidance to `assets/parallel_dispatch_config.md` (`.opencode/skill/system-spec-kit/assets/parallel_dispatch_config.md`)
 - [x] T009 Add campaign/shared-space/cross-phase scoring guidance to `assets/complexity_decision_matrix.md` and `assets/level_decision_matrix.md` (`.opencode/skill/system-spec-kit/assets/complexity_decision_matrix.md`, `.opencode/skill/system-spec-kit/assets/level_decision_matrix.md`)
-- [x] T010 Add campaign/shared-space/cross-phase template-routing guidance to `assets/template_mapping.md` (`.opencode/skill/system-spec-kit/assets/template_mapping.md`)
+- [x] T017 Add campaign/shared-space/cross-phase template-routing guidance to `assets/template_mapping.md` (`.opencode/skill/system-spec-kit/assets/template_mapping.md`)
 
 ---
 
@@ -66,9 +66,9 @@ contextType: "implementation"
 
 Drift reconciliation after session-capturing (009) and research-based-refinement (epic/011) phases.
 
-- [x] T011 Add 9 graduated spec-011 flags to SKILL.md feature flags table (25 → 34 flags) (`.opencode/skill/system-spec-kit/SKILL.md`)
-- [x] T012 Update feature catalog count in SKILL.md (194 → 220 documented features, 2 locations) (`.opencode/skill/system-spec-kit/SKILL.md`)
-- [x] T013 Update testing playbook count in SKILL.md resource table (3 files → 19 categories, 226 per-test files) (`.opencode/skill/system-spec-kit/SKILL.md`)
+- [x] T011 Reconcile SKILL.md feature flags table count (25 -> 33 search/pipeline flags; 47 total including roadmap env vars) (`.opencode/skill/system-spec-kit/SKILL.md`)
+- [x] T012 Update feature catalog count in SKILL.md (194 → 221 documented features, 2 locations) (`.opencode/skill/system-spec-kit/SKILL.md`)
+- [x] T013 Update testing playbook count in SKILL.md resource table (3 files → 19 categories, 227 per-test files) (`.opencode/skill/system-spec-kit/SKILL.md`)
 - [x] T014 Add `memory_quick_search()` row to memory_system.md tool reference table (32 → 33 rows, matching header) (`.opencode/skill/system-spec-kit/references/memory/memory_system.md`)
 - [x] T015 Add 9 graduated spec-011 flags to environment_variables.md section 8.2 (`.opencode/skill/system-spec-kit/references/config/environment_variables.md`)
 - [x] T016 Verify agent definitions, command files, and command configs have no stale references [Evidence: all clean, no hardcoded counts]
@@ -78,10 +78,10 @@ Drift reconciliation after session-capturing (009) and research-based-refinement
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] The canonical 010 docs use the live 33-tool, 6-command memory model
-- [x] The canonical 010 docs no longer preserve obsolete command-surface or retired retrieval-command framing
+- [x] The canonical 011 docs use the live 33-tool, 6-command memory model
+- [x] The canonical 011 docs no longer preserve obsolete command-surface or retired retrieval-command framing
 - [x] The last observable `system-spec-kit` documentation drift is closed in the scoped live docs
-- [x] Strict validation passes for the reconciled 010 pack
+- [x] Strict validation passes for the reconciled 011 pack
 - [x] SKILL.md feature flags, catalog counts, and playbook counts reflect post-spec-011 state
 - [x] memory_system.md tool table has 33 rows matching header count
 - [x] environment_variables.md documents all graduated spec-011 flags

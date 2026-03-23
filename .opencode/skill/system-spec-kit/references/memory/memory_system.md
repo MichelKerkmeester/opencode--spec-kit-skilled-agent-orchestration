@@ -7,7 +7,7 @@ description: Detailed documentation for Spec Kit Memory MCP tools, behavior note
 
 Spec Kit Memory MCP tools, behavior notes, and configuration options.
 
-Current baseline: schema v13 (`document_type`, `spec_level`), 3 indexed content sources, 7 intent types, and `includeSpecDocs: true` by default.
+Current baseline: schema v23 (`document_type`, `spec_level`), 3 indexed content sources, 7 intent types, and `includeSpecDocs: true` by default.
 
 ---
 

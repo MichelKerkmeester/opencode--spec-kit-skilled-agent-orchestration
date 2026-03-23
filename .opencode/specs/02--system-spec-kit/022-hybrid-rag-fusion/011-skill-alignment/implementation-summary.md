@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: 011-skill-alignment"
-description: "Summary of the 2026-03-21 truth-reconciliation pass for the 010 skill-alignment spec pack."
+description: "Summary of the 2026-03-21 truth-reconciliation pass for the 011 skill-alignment spec pack."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 # Implementation Summary: 011-skill-alignment
@@ -25,7 +25,7 @@ description: "Summary of the 2026-03-21 truth-reconciliation pass for the 010 sk
 <!-- ANCHOR:what-built -->
 ## 2. WHAT WAS CHANGED
 
-- Rewrote the 010 spec pack so it no longer presents itself as draft or pre-implementation while also claiming completion.
+- Rewrote the 011 spec pack so it no longer presents itself as draft or pre-implementation while also claiming completion.
 - Replaced obsolete command-surface count language and retired standalone retrieval-command framing with the live memory-surface reality: **33 tools**, **6 commands**, retrieval in `/memory:analyze`.
 - Closed the last scoped `system-spec-kit` documentation drift:
   - `SKILL.md` memory-surface wording plus save-workflow/shared-memory governance framing
@@ -53,11 +53,11 @@ description: "Summary of the 2026-03-21 truth-reconciliation pass for the 010 sk
 <!-- ANCHOR:decisions -->
 ## 4. DECISIONS
 
-1. Treat live repo state as authoritative over older 010 prose.
+1. Treat live repo state as authoritative over older 011 prose.
 2. Treat the live memory surface as 33 tools and 6 commands.
 3. Treat `/memory:analyze` as the retrieval home for current memory-command documentation.
-4. Keep 010 documentation-only and do not reopen already-landed command or agent alignment work.
-5. Record the final skill/reference/asset closeout rather than leaving phase 010 frozen as an open backlog.
+4. Keep 011 documentation-only and do not reopen already-landed command or agent alignment work.
+5. Record the final skill/reference/asset closeout rather than leaving phase 011 frozen as an open backlog.
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -81,7 +81,7 @@ After spec-011 (research-based refinement) graduated 9 new feature flags and the
 
 | File | Change |
 |------|--------|
-| `SKILL.md` | Added 9 graduated spec-011 flags to feature flags table (25 → 34); updated feature catalog count 194 → 220; updated testing playbook count "(3 files)" → "(19 categories, 226 per-test files)" |
+| `SKILL.md` | Reconciled primary feature flags table total to 33 search/pipeline flags (47 total env vars including roadmap capabilities); updated feature catalog count 194 → 221; updated testing playbook count "(3 files)" → "(19 categories, 227 per-test files)" |
 | `references/config/environment_variables.md` | Added "Research-Based Refinement (Spec-011 Graduated)" subsection with 9 flags to section 8.2 |
 | `references/memory/memory_system.md` | Added `memory_quick_search()` row to L2 Core in tool reference table (32 → 33 rows, matching header) |
 
@@ -99,7 +99,7 @@ After spec-011 (research-based refinement) graduated 9 new feature flags and the
 ## 7. LIMITATIONS
 
 - Both passes remain documentation-only.
-- Any future 010 work should be treated as new drift discovered after these closeouts, not as leftover backlog.
+- Any future 011 work should be treated as new drift discovered after these closeouts, not as leftover backlog.
 <!-- /ANCHOR:limitations -->
 
 ---

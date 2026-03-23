@@ -73,6 +73,15 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/tasks.md` | Modify | Remove stale 32/7/context framing and preserve only the factual closeout scope |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/checklist.md` | Modify | Verify pack-level truth reconciliation and docs-only boundaries |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/implementation-summary.md` | Modify | Record what this reconciliation pass changed and how it was verified |
+| `.opencode/skill/system-spec-kit/SKILL.md` | Modify | Memory-surface wording plus save-workflow/shared-memory governance framing |
+| `.opencode/skill/system-spec-kit/references/memory/save_workflow.md` | Modify | Save-workflow routing plus shared-memory governance framing |
+| `.opencode/skill/system-spec-kit/references/memory/embedding_resilience.md` | Modify | Embedding resilience wording plus shared-space governance framing |
+| `.opencode/skill/system-spec-kit/references/config/environment_variables.md` | Modify | Graduated spec-011 flag documentation alignment |
+| `.opencode/skill/system-spec-kit/references/memory/memory_system.md` | Modify | Tool reference table alignment for the live memory surface |
+| `.opencode/skill/system-spec-kit/assets/parallel_dispatch_config.md` | Modify | Parallel dispatch campaign, shared-space, and cross-phase guidance |
+| `.opencode/skill/system-spec-kit/assets/complexity_decision_matrix.md` | Modify | Complexity scoring guidance for campaign and shared-space scenarios |
+| `.opencode/skill/system-spec-kit/assets/level_decision_matrix.md` | Modify | Level-selection guidance for campaign and shared-space scenarios |
+| `.opencode/skill/system-spec-kit/assets/template_mapping.md` | Modify | Template-routing guidance for campaign, shared-space, and cross-phase use |
 <!-- /ANCHOR:scope -->
 
 ---
