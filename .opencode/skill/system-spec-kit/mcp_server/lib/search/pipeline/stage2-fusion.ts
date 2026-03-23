@@ -61,7 +61,9 @@ import {
   isCommunityDetectionEnabled,
   isGraphSignalsEnabled,
   resolveGraphWalkRolloutState,
+  isLearnedStage2CombinerEnabled,
 } from '../search-flags';
+import { shadowScore, extractFeatureVector } from '@spec-kit/shared/ranking/learned-combiner';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/db-helpers';
 import { computeRecencyScore } from '../../scoring/folder-scoring';
@@ -772,6 +774,45 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     const message = err instanceof Error ? err.message : String(err);
     console.warn(`[stage2-fusion] feedback signals failed: ${message}`);
     metadata.feedbackSignalsApplied = 'failed';
+  }
+
+  // -- 6a. Learned Stage 2 shadow scoring --
+  // REQ-D1-006: Runs the learned linear ranker in parallel with the manual combiner.
+  // Shadow-only — scores are logged for comparison but never affect live ranking.
+  // Gated behind SPECKIT_LEARNED_STAGE2_COMBINER (default ON, graduated).
+  if (isLearnedStage2CombinerEnabled()) {
+    try {
+      for (const row of results) {
+        const features = extractFeatureVector({
+          rrfScore: row.rrfScore,
+          overlapScore: typeof row.overlapScore === 'number' ? row.overlapScore : undefined,
+          graphScore: (() => {
+            const gc = row.graphContribution as Record<string, unknown> | undefined;
+            const delta = typeof gc?.totalDelta === 'number' ? gc.totalDelta : 0;
+            return Math.max(0, Math.min(1, delta + 0.5));
+          })(),
+          sessionScore: typeof row.sessionScore === 'number' ? row.sessionScore : undefined,
+          causalScore: typeof row.causalScore === 'number' ? row.causalScore : undefined,
+          feedbackScore: typeof row.feedbackScore === 'number' ? row.feedbackScore : undefined,
+          validationScore: (() => {
+            const vm = row.validationMetadata as Record<string, unknown> | undefined;
+            return typeof vm?.qualityScore === 'number' ? vm.qualityScore : undefined;
+          })(),
+          artifactScore: typeof row.artifactBoostApplied === 'number'
+            ? Math.min(1, row.artifactBoostApplied / 2)
+            : undefined,
+        });
+        const shadow = shadowScore(null, features, resolveBaseScore(row), true);
+        if (shadow) {
+          console.debug(
+            `[stage2-fusion] shadow-learned id=${row.id} manual=${shadow.manualScore.toFixed(4)} learned=${shadow.learnedScore.toFixed(4)} delta=${shadow.delta.toFixed(4)}`
+          );
+        }
+      }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn(`[stage2-fusion] learned stage2 shadow scoring failed: ${message}`);
+    }
   }
 
   // -- 7. Artifact-based result limiting --

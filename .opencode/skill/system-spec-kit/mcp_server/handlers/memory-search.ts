@@ -389,7 +389,10 @@ function applySessionDedup(results: MemorySearchRow[], sessionId: string, enable
    10. MAIN HANDLER
 ──────────────────────────────────────────────────────────────── */
 
-/** Handle memory_search tool - performs hybrid vector/BM25 search with intent-aware ranking */
+/** Handle memory_search tool — performs hybrid vector/BM25 search with intent-aware ranking.
+ * @param args - Search arguments (query, concepts, mode, specFolder, etc.)
+ * @returns MCP response with ranked search results
+ */
 async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   const _searchStartTime = Date.now();
   // BUG-001: Check for external database updates before processing

@@ -2,6 +2,10 @@
 // MODULE: Causal Links Processor
 // ────────────────────────────────────────────────────────────────
 
+// ───────────────────────────────────────────────────────────────────
+// 1. IMPORTS
+// ───────────────────────────────────────────────────────────────────
+
 import type BetterSqlite3 from 'better-sqlite3';
 
 import type { CausalLinks } from '../lib/parsing/memory-parser';
@@ -13,6 +17,9 @@ import { escapeLikePattern } from './handler-utils';
 // Feature catalog: Causal edge deletion (memory_causal_unlink)
 // Feature catalog: Memory indexing (memory_save)
 
+// ───────────────────────────────────────────────────────────────────
+// 2. TYPES
+// ───────────────────────────────────────────────────────────────────
 
 interface CausalLinkMapping {
   relation: typeof causalEdges.RELATION_TYPES[keyof typeof causalEdges.RELATION_TYPES];
@@ -31,6 +38,10 @@ interface MemoryIdRow {
   id: number;
 }
 
+// ───────────────────────────────────────────────────────────────────
+// 3. CONSTANTS
+// ───────────────────────────────────────────────────────────────────
+
 const CAUSAL_LINK_MAPPINGS: Record<string, CausalLinkMapping> = {
   caused_by: { relation: causalEdges.RELATION_TYPES.CAUSED, reverse: true },
   supersedes: { relation: causalEdges.RELATION_TYPES.SUPERSEDES, reverse: false },
@@ -38,6 +49,10 @@ const CAUSAL_LINK_MAPPINGS: Record<string, CausalLinkMapping> = {
   blocks: { relation: causalEdges.RELATION_TYPES.ENABLED, reverse: true },
   related_to: { relation: causalEdges.RELATION_TYPES.SUPPORTS, reverse: false }
 };
+
+// ───────────────────────────────────────────────────────────────────
+// 4. HELPERS
+// ───────────────────────────────────────────────────────────────────
 
 /** Resolve a memory reference (ID, path, or title) to a numeric memory ID */
 function resolveMemoryReference(database: BetterSqlite3.Database, reference: string): number | null {
@@ -95,6 +110,10 @@ function resolveMemoryReference(database: BetterSqlite3.Database, reference: str
 
   return null;
 }
+
+// ───────────────────────────────────────────────────────────────────
+// 5. CORE LOGIC
+// ───────────────────────────────────────────────────────────────────
 
 /** Process causal link declarations from a memory file and insert edges into the graph */
 function processCausalLinks(database: BetterSqlite3.Database, memoryId: number, causalLinks: CausalLinks): CausalLinksResult {
@@ -167,6 +186,10 @@ function processCausalLinks(database: BetterSqlite3.Database, memoryId: number, 
 
   return result;
 }
+
+// ───────────────────────────────────────────────────────────────────
+// 6. EXPORTS
+// ───────────────────────────────────────────────────────────────────
 
 export {
   processCausalLinks,

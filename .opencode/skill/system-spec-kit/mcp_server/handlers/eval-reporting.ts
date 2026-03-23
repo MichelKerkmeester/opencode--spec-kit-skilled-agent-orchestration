@@ -159,6 +159,10 @@ function buildRawFusionLists(
   return lists;
 }
 
+/** Handle eval_run_ablation tool — runs ablation analysis or K-sensitivity sweep.
+ * @param args - Ablation arguments (channels, queries, recallK, mode)
+ * @returns MCP response with ablation report or K-sensitivity results
+ */
 async function handleEvalRunAblation(args: RunAblationArgs): Promise<MCPResponse> {
   if (args.mode === 'k_sensitivity') {
     return handleEvalKSensitivity({

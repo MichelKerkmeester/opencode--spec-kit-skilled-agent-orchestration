@@ -153,3 +153,25 @@ export interface PostInsertMetadataFields {
 }
 
 export type { ParsedMemory };
+
+export interface PeDecision {
+  action: string;
+  similarity: number;
+  existingMemoryId?: number | null;
+  reason?: string;
+  contradiction?: { detected: boolean; type: string | null; description: string | null; confidence: number } | null;
+}
+
+export interface MemoryScopeMatch {
+  tenantId?: string | null;
+  userId?: string | null;
+  agentId?: string | null;
+  sessionId?: string | null;
+  sharedSpaceId?: string | null;
+}
+
+export function normalizeScopeMatchValue(value?: string | null): string | null {
+  if (typeof value !== 'string') return null;
+  const normalized = value.trim();
+  return normalized.length > 0 ? normalized : null;
+}

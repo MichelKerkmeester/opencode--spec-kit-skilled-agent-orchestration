@@ -98,7 +98,10 @@ function parseMemoryId(rawId: number | string): number {
    3. CHECKPOINT CREATE HANDLER
 ──────────────────────────────────────────────────────────────── */
 
-/** Handle checkpoint_create tool - snapshots the current memory state for rollback */
+/** Handle checkpoint_create tool — snapshots the current memory state for rollback.
+ * @param args - Checkpoint creation arguments (name, note)
+ * @returns MCP response with checkpoint metadata
+ */
 async function handleCheckpointCreate(args: CheckpointCreateArgs): Promise<MCPResponse> {
   const startTime = Date.now();
   await checkDatabaseUpdated();

@@ -34,13 +34,9 @@ export type ItemProcessor<T, R> = (item: T) => Promise<R>;
 // 2. CONFIGURATION CONSTANTS
 
 // ───────────────────────────────────────────────────────────────
-/** Default batch size for concurrent processing */
-const parsedBatchSize = parseInt(process.env.SPEC_KIT_BATCH_SIZE || '5', 10);
-export const BATCH_SIZE: number = Number.isFinite(parsedBatchSize) && parsedBatchSize > 0 ? parsedBatchSize : 5;
-
-/** Default delay between batches in milliseconds */
-const parsedBatchDelayMs = parseInt(process.env.SPEC_KIT_BATCH_DELAY_MS || '100', 10);
-export const BATCH_DELAY_MS: number = Number.isFinite(parsedBatchDelayMs) && parsedBatchDelayMs > 0 ? parsedBatchDelayMs : 100;
+// Single source of truth for batch config — imported from core/config.ts
+import { BATCH_SIZE, BATCH_DELAY_MS } from '../core/config';
+export { BATCH_SIZE, BATCH_DELAY_MS };
 
 /** Default retry configuration */
 export const DEFAULT_RETRY_OPTIONS: Readonly<RetryDefaults> = {

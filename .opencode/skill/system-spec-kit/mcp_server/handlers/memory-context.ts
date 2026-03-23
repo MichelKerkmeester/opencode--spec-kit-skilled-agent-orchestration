@@ -600,7 +600,10 @@ async function executeResumeStrategy(input: string, options: ContextOptions): Pr
    6. MAIN HANDLER
 ──────────────────────────────────────────────────────────────── */
 
-/** Handle memory_context tool - L1 orchestration layer that routes to optimal retrieval strategy */
+/** Handle memory_context tool — L1 orchestration layer that routes to optimal retrieval strategy.
+ * @param args - Context retrieval arguments (intent, mode, specFolder, anchors, etc.)
+ * @returns MCP response with context-aware memory results
+ */
 async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   const _contextStartTime = Date.now();
   await checkDatabaseUpdated();

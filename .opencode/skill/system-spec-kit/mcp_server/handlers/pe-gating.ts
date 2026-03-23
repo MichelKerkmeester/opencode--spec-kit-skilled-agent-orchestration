@@ -40,13 +40,7 @@ interface SimilarMemory {
   [key: string]: unknown;
 }
 
-interface PeDecision {
-  action: string;
-  similarity: number;
-  existingMemoryId?: number | null;
-  reason?: string;
-  contradiction?: { detected: boolean; type: string | null; description: string | null; confidence: number } | null;
-}
+import type { PeDecision } from './save/types';
 
 interface IndexResult extends Record<string, unknown> {
   status: string;

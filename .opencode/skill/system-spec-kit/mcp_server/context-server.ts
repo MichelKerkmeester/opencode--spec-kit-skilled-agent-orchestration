@@ -98,6 +98,7 @@ import { isLearnedFeedbackEnabled } from './lib/search/learned-feedback';
 import { initIngestJobQueue } from './lib/ops/job-queue';
 import { startFileWatcher, type FSWatcher } from './lib/ops/file-watcher';
 import { getCanonicalPathKey } from './lib/utils/canonical-path';
+import { runBatchLearning } from './lib/feedback/batch-learning';
 
 /* ───────────────────────────────────────────────────────────────
    2. TYPES
@@ -963,6 +964,20 @@ async function main(): Promise<void> {
     } catch (retryErr: unknown) {
       const message = retryErr instanceof Error ? retryErr.message : String(retryErr);
       console.warn('[context-server] Background retry job failed to start:', message);
+    }
+
+    // REQ-D4-004: Batch feedback learning — runs one cycle at startup (shadow-only, no live ranking mutations).
+    // Feature-flag gated by SPECKIT_BATCH_LEARNED_FEEDBACK (default ON, graduated).
+    try {
+      const batchResult = runBatchLearning(database);
+      if (batchResult.candidatesEvaluated > 0) {
+        console.error(`[context-server] Batch learning: ${batchResult.shadowApplied} shadow-applied, ${batchResult.skippedMinSupport} skipped (min-support), window=${Math.round((batchResult.runAt - batchResult.windowStart) / 86_400_000)}d`);
+      } else {
+        console.error('[context-server] Batch learning: no eligible candidates in window (or flag disabled)');
+      }
+    } catch (batchErr: unknown) {
+      const message = batchErr instanceof Error ? batchErr.message : String(batchErr);
+      console.warn('[context-server] Batch learning failed (non-fatal):', message);
     }
 
     // T001-T004: Session deduplication module

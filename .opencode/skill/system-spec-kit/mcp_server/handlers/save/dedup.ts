@@ -20,19 +20,8 @@ interface SamePathDedupExclusion {
   filePath: string;
 }
 
-interface MemoryScopeMatch {
-  tenantId?: string | null;
-  userId?: string | null;
-  agentId?: string | null;
-  sessionId?: string | null;
-  sharedSpaceId?: string | null;
-}
-
-function normalizeScopeMatchValue(value?: string | null): string | null {
-  if (typeof value !== 'string') return null;
-  const normalized = value.trim();
-  return normalized.length > 0 ? normalized : null;
-}
+import type { MemoryScopeMatch } from './types';
+import { normalizeScopeMatchValue } from './types';
 
 function parseJsonStringArray(raw: string | null): string[] {
   if (!raw) {

@@ -125,6 +125,10 @@ function mapJobForResponse(job: IngestJob): Record<string, unknown> {
    5. HANDLERS
 ──────────────────────────────────────────────────────────────── */
 
+/** Handle memory_ingest_start tool — begins batch ingestion of spec documents from disk.
+ * @param args - Ingest arguments (paths, scope, options)
+ * @returns MCP response with job ID and forecast
+ */
 async function handleMemoryIngestStart(args: MemoryIngestStartArgs): Promise<MCPResponse> {
   await checkDatabaseUpdated();
 
