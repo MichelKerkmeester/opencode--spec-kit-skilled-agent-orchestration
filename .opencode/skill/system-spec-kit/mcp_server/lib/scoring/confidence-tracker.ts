@@ -310,20 +310,9 @@ export function getConfidenceInfo(db: Database, memoryId: number): ConfidenceInf
       },
     };
   } catch (error: unknown) {
+    // T-07 alignment: Re-throw on DB error instead of returning success-shaped defaults.
+    // Callers can distinguish "no data" from "query failed" and handle accordingly.
     console.error(`[confidence-tracker] getConfidenceInfo failed for memory ${memoryId}:`, error);
-    return {
-      memoryId,
-      confidence: CONFIDENCE_BASE,
-      validationCount: 0,
-      positiveValidationCount: 0,
-      importanceTier: 'normal',
-      promotionEligible: false,
-      promotionProgress: {
-        confidenceRequired: PROMOTION_CONFIDENCE_THRESHOLD,
-        validationsRequired: PROMOTION_VALIDATION_THRESHOLD,
-        confidenceMet: false,
-        validationsMet: false,
-      },
-    };
+    throw error;
   }
 }

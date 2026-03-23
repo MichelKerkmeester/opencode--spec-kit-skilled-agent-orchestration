@@ -345,8 +345,9 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
         attentionScore = effectiveRetrievability;
         tier = tierClassifier.classifyState(effectiveRetrievability);
       } else {
+        // When no FSRS record, use WM score directly (already session-decayed) or apply turn decay
         const baseScore = wmEntry ? wmEntry.attentionScore : 1.0;
-        attentionScore = baseScore * turnDecayFactor;
+        attentionScore = wmEntry ? baseScore : baseScore * turnDecayFactor;
         tier = tierClassifier.classifyState(attentionScore);
       }
 
