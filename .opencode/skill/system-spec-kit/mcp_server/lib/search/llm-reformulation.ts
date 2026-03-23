@@ -78,7 +78,8 @@ const MIN_OUTPUT_LENGTH = 5;
 
 // D2 REQ-D2-003: LLM reformulation gate — canonical implementation in search-flags.ts.
 // Default: TRUE (graduated). Set SPECKIT_LLM_REFORMULATION=false to disable.
-export { isLlmReformulationEnabled } from './search-flags';
+import { isLlmReformulationEnabled } from './search-flags';
+export { isLlmReformulationEnabled };
 
 /* ───────────────────────────────────────────────────────────────
    5. SEED RETRIEVAL

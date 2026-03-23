@@ -64,7 +64,8 @@ export function isGraphRefreshEnabled(): boolean {
 
 // REQ-D3-004: LLM graph backfill gate — canonical implementation in search-flags.ts.
 // Default: TRUE (graduated). Set SPECKIT_LLM_GRAPH_BACKFILL=false to disable.
-export { isLlmGraphBackfillEnabled } from './search-flags';
+import { isLlmGraphBackfillEnabled } from './search-flags';
+export { isLlmGraphBackfillEnabled };
 
 // ───────────────────────────────────────────────────────────────
 // 2. CONSTANTS

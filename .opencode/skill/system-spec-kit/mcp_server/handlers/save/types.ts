@@ -154,14 +154,6 @@ export interface PostInsertMetadataFields {
 
 export type { ParsedMemory };
 
-export interface PeDecision {
-  action: string;
-  similarity: number;
-  existingMemoryId?: number | null;
-  reason?: string;
-  contradiction?: { detected: boolean; type: string | null; description: string | null; confidence: number } | null;
-}
-
 export interface MemoryScopeMatch {
   tenantId?: string | null;
   userId?: string | null;
