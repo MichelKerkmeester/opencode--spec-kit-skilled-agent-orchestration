@@ -1,21 +1,21 @@
 ---
 title: "Database and schema safety"
-description: "Tracks four database-layer bug fixes covering column references, DDL placement, edge deletion filters and update validation."
+description: "Tracks five database-layer bug fixes covering column references, DDL placement, edge deletion filters, update validation and per-path connection isolation."
 ---
 
 # Database and schema safety
 
 ## 1. OVERVIEW
 
-Tracks four database-layer bug fixes covering column references, DDL placement, edge deletion filters and update validation.
+Tracks five database-layer bug fixes covering column references, DDL placement, edge deletion filters, update validation and per-path connection isolation.
 
-Four separate bugs in the database layer were fixed to prevent data corruption. These ranged from referencing a column that did not exist to running operations in the wrong order. Each fix makes sure that database writes happen safely and predictably so your stored data stays accurate and complete.
+Five separate bugs in the database layer were fixed to prevent data corruption. These ranged from referencing a column that did not exist to running operations in the wrong order. Each fix makes sure that database writes happen safely and predictably so your stored data stays accurate and complete.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Four database-layer bugs were fixed:
+Five database-layer bugs were fixed:
 
 **B1: Reconsolidation column reference:** `reconsolidation.ts` referenced a non-existent `frequency_counter` column that would crash at runtime during merge operations. Replaced with `importance_weight` using `Math.min(1.0, currentWeight + 0.1)` merge logic.
 
@@ -24,6 +24,8 @@ Four database-layer bugs were fixed:
 **B3: Edge-deletion filter correctness:** `causal-edges.ts` delete path must match edges where either endpoint equals the target memory ID (`source_id = ? OR target_id = ?`). Regression coverage validates deletion remains scoped to intended source/target rows.
 
 **B4: Missing changes guard:** Save-path UPDATE statements in `handlers/pe-gating.ts` now validate SQLite update results (`result.changes`). Zero-row updates are treated as no-ops/errors instead of false success.
+
+**B5: Connection-map isolation and constitutional cache scoping:** `vector-index-store.ts` no longer lets `initialize_db(custom_path)` overwrite the module-global default connection. Connections are tracked in `db_connections = new Map<string, Database.Database>()` keyed by resolved path, globals are updated only for the validated default store and `close_db()` closes every tracked handle. The constitutional-memory cache key now also includes the `includeArchived` flag, preventing archived-inclusive results from leaking into archived-exclusive reads.
 
 ---
 

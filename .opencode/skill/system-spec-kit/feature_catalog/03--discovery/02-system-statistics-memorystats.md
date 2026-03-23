@@ -23,6 +23,8 @@ The response now reports `totalSpecFolders` from the full filtered/scored set be
 
 Direct handler validation failures return MCP error envelopes with `E_INVALID_INPUT` and `data.details.requestId` for invalid `folderRanking`, invalid `excludePatterns`, invalid `includeScores`/`includeArchived`, or non-finite `limit` values. Aggregate-query and folder-ranking failures return MCP error envelopes instead of raw throws.
 
+Embedding-status totals now treat `partial` as a first-class state instead of silently dropping it. `get_status_counts()` initializes and returns a `partial` bucket, and `get_stats()` includes that bucket in the headline total. That keeps `memory_stats` aligned with chunked and partially indexed rows that already exist elsewhere in the vector-index state model.
+
 ---
 
 ## 3. SOURCE FILES

@@ -100,3 +100,8 @@ contextType: "general"
 <!-- /ANCHOR:cross-refs -->
 
 ---
+
+## Audit Follow-up Additions (2026-03-23)
+
+- [ ] T029 Execute post-audit follow-up for 125 — rerun capability-flags roadmap snapshot coverage after M4 and confirm `capabilities.sharedMemory` stays false until explicitly enabled
+- [ ] T030 Verify scenario 125 roadmap snapshot/telemetry evidence no longer implies shared memory is enabled by default; capture explicit-enable behavior only if exercised

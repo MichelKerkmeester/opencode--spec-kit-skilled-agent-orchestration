@@ -25,7 +25,9 @@ The `/memory:shared` command includes a first-run enablement gate: when shared m
 
 Rollout is controlled per space and supports immediate kill-switch behavior. Even previously authorized members are blocked when the kill switch is enabled, providing a hard operational stop for incident response or controlled rollback.
 
-Shared-memory handlers and lifecycle tools use the same membership and rollout checks so save, search and status flows enforce one consistent governance boundary.
+Shared-memory handlers and lifecycle tools use the same membership and rollout checks so save, search and status flows enforce one consistent governance boundary. When a row belongs to an allowed shared space, retrieval now treats membership as the access boundary: tenant alignment is still required, but exact actor and session matching are skipped so collaborator B can retrieve collaborator A's shared memories inside the same space.
+
+`shared_space_upsert()` also preserves rollout cohort and metadata on partial updates. The UPSERT keeps existing values via `COALESCE(excluded.rollout_cohort, rollout_cohort)` and the same pattern for `metadata`, so renaming a space or toggling rollout flags no longer clears previously stored cohort labels or structured metadata.
 
 ---
 

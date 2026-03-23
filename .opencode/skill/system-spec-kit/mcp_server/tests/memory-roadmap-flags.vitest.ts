@@ -62,7 +62,8 @@ describe('Memory roadmap flags', () => {
       adaptiveRanking: false,
       scopeEnforcement: true,
       governanceGuardrails: true,
-      sharedMemory: true,
+      // M4 FIX: sharedMemory defaults to false to match runtime gate behavior
+      sharedMemory: false,
     });
   });
 

@@ -118,3 +118,8 @@ contextType: "general"
 
 **Verification Date**: 2026-03-22
 <!-- /ANCHOR:summary -->
+
+## Audit Follow-up Additions (2026-03-23)
+
+- [ ] CHK-072 [P1] M6 follow-up confirms `validateTransitionInput` compares parsed epoch timestamps rather than raw timestamp strings
+- [ ] CHK-073 [P1] Non-ISO and timezone-variant lineage transition inputs do not sort incorrectly when they represent earlier vs later instants

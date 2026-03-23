@@ -15,7 +15,7 @@ After the system adds hints and adjusts a response, it recalculates the size cou
 
 ## 2. CURRENT REALITY
 
-Phase 014 recomputes final token metadata after `appendAutoSurfaceHints(...)` mutates the envelope and before token-budget enforcement evaluates the payload. This keeps `meta.tokenCount` aligned with the exact serialized envelope returned to callers.
+Phase 014 recomputes final token metadata after `appendAutoSurfaceHints(...)` mutates the envelope and before token-budget enforcement evaluates the payload. The same finalize-then-budget ordering now also applies in `memory_context`: auto-resume `systemPromptContext` items are injected before `enforceTokenBudget()` runs, so both `meta.tokenCount` and the delivered payload stay aligned with the final serialized envelope returned to callers.
 
 ---
 

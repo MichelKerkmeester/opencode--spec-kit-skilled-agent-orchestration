@@ -25,6 +25,8 @@ The parameter surface is wide. You control result count (`limit`, 1-100), spec f
 
 When trace is enabled, result envelopes now expose richer bounded Markovian diagnostics without altering the non-trace contract: `trace.graphContribution` includes `raw`, `normalized`, `appliedBonus`, `capApplied`, and `rolloutState`, and requests forwarded from `memory_context` can also include `trace.sessionTransition`. Extended telemetry summarizes the same behavior through `transitionDiagnostics` and `graphWalkDiagnostics`.
 
+Recent vector-query hardening closed three correctness gaps in the retrieval path. `multi_concept_search()` now applies the same expiry filter used by single-query search (`m.expires_at IS NULL OR m.expires_at > datetime('now')`), so expired memories no longer leak through the AND-match path. `vector_search()` validates embedding length before buffer conversion and throws `VectorIndexError(EMBEDDING_VALIDATION)` instead of surfacing raw sqlite-vec failures when callers pass malformed embeddings. It also returns early with `constitutional_results.slice(0, limit)` when constitutional injection already satisfies the requested limit, which keeps result counts deterministic and prevents the retrieval layer from returning more rows than the caller asked for.
+
 ---
 
 ## 3. SOURCE FILES

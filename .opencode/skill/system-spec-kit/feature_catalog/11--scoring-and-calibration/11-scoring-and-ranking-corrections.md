@@ -25,6 +25,8 @@ Four scoring-layer bugs were fixed:
 
 **C4: Ablation binomial overflow:** `ablation-framework.ts` computed binomial coefficients using naive multiplication that overflowed for n>50 in the sign test. Replaced with `logBinomial(n, k)` using log-space summation.
 
+**Follow-up hardening:** the same ablation metrics path now filters token-usage samples to finite values greater than zero before averaging. Because `runAblation()` does not currently populate `tokenUsage`, this prevents synthetic zeroes from appearing in `token_usage` metrics.
+
 ---
 
 ## 3. SOURCE FILES

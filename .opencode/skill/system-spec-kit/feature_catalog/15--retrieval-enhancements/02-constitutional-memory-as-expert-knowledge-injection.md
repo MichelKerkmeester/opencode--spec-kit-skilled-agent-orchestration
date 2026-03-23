@@ -19,6 +19,8 @@ Constitutional-tier memories receive a `retrieval_directive` metadata field form
 
 Rule patterns are extracted from content using a ranked list of imperative verbs (must, always, never, should, require) and condition-introducing words (when, if, for, during). Scanning is capped at 2,000 characters from the start of content, and each directive component is capped at 120 characters. The `enrichWithRetrievalDirectives()` function maps over results without filtering or reordering. The enrichment is wired into `hooks/memory-surface.ts` before returning results.
 
+In the Stage 1 injection path, constitutional rows now use `shouldApplyScopeFiltering` rather than `hasGovernanceScope` alone before merge. This means injected constitutional results honor global scope-enforcement rollout as well as caller-provided governance scope, preventing deny-by-default tenants from receiving out-of-scope constitutional rows.
+
 ---
 
 ## 3. SOURCE FILES
@@ -27,13 +29,15 @@ Rule patterns are extracted from content using a ranked list of imperative verbs
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/search/retrieval-directives.ts` | Lib | Constitutional retrieval injection |
+| `mcp_server/lib/search/retrieval-directives.ts` | Lib | Constitutional retrieval directive enrichment |
+| `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Stage 1 constitutional candidate injection with scope filtering |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/retrieval-directives.vitest.ts` | Retrieval directive tests |
+| `mcp_server/tests/stage1-expansion.vitest.ts` | Stage 1 constitutional scope filtering before merge |
 
 ---
 
@@ -41,4 +45,4 @@ Rule patterns are extracted from content using a ranked list of imperative verbs
 
 - Group: Retrieval enhancements
 - Source feature title: Constitutional memory as expert knowledge injection
-- Current reality source: feature_catalog.md
+- Current reality source: `mcp_server/lib/search/retrieval-directives.ts` and `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts`

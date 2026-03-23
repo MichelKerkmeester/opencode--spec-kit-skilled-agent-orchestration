@@ -21,6 +21,8 @@ LLM results are cached via a shared LLM result cache (key: normalized query + mo
 
 Only fires in deep mode (checked by the caller in `stage1-candidate-gen.ts`). Enabled by default (graduated). Set `SPECKIT_LLM_REFORMULATION=false` to disable. Fail-open: seed retrieval returns an empty array on error so the caller can proceed without grounding.
 
+After reformulated variants run through retrieval, Stage 1 now reapplies the same candidate guardrails used for the main result set before merge: scope filtering when enforcement is active, tier filtering, `contextType` filtering and `qualityThreshold` filtering. Deep-mode reformulation hits no longer bypass post-scope context or quality gates.
+
 ---
 
 ## 3. SOURCE FILES

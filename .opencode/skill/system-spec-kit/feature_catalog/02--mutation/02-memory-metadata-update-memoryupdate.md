@@ -27,6 +27,10 @@ BM25 refresh is not limited to title edits. Whenever either `title` or `triggerP
 
 A pre-update hash snapshot is captured for the mutation ledger. Every update records the prior hash, new hash, actor and decision metadata for full auditability.
 
+Embedding replacement now reports reality instead of optimism. When `update_memory()` receives a new embedding, it writes `embedding_status = 'pending'` as part of the main `memory_index` update and only flips that row to `'success'` after the replacement `vec_memories` insert completes. That prevents sqlite-vec outages or vec-table write failures from leaving metadata rows marked successful when no fresh vector was actually stored.
+
+Successful metadata updates now invalidate the search cache as part of the same transactional path. After the handler refreshes BM25, optionally persists the replacement vector and recomputes folder interference scores, it calls `clear_search_cache()` so renamed memories and trigger updates appear in subsequent cached searches immediately instead of after TTL expiry.
+
 ---
 
 ## 3. SOURCE FILES

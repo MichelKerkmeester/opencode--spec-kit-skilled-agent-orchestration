@@ -19,7 +19,7 @@ Raw markdown including code fences, nested lists and YAML frontmatter was being 
 
 Seven primitives run in sequence: strip YAML frontmatter, strip anchor markers, strip HTML comments, strip code fence markers (retaining the code body), normalize markdown tables, normalize markdown lists and normalize headings. Two composite entry points apply this: `normalizeContentForEmbedding()` and `normalizeContentForBM25()`. In the current runtime, the BM25 entry point delegates to the same normalization pipeline as embeddings.
 
-The normalizer has no feature flag because it is a non-destructive improvement. It is always active in the `memory-save.ts` embedding path and in BM25 rebuild/tokenization paths that call `normalizeContentForBM25()`.
+The normalizer has no feature flag because it is a non-destructive improvement. It is always active in the `memory-save.ts` embedding path and in BM25 rebuild/tokenization paths that call `normalizeContentForBM25()`. The same pipeline now also keeps batch type inference one-to-one for pathless drafts by assigning synthetic fallback keys like `__pathless_0`, `__pathless_1`, and so on, preventing multiple pathless inputs from collapsing onto the same Map entry during a single batch run.
 
 ---
 

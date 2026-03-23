@@ -19,6 +19,8 @@ Twelve metrics run against logged retrieval data. The four primary ones are MRR@
 
 Eight diagnostic metrics add depth. Inversion rate counts pairwise ranking mistakes. Constitutional surfacing rate tracks whether high-priority memories appear in top results. Importance-weighted recall favors recall of critical content. Cold-start detection rate measures whether fresh memories surface when relevant. Precision@K and F1@K expose precision/recall balance. MAP captures ranking quality across the full relevant set. Intent-weighted NDCG adjusts ranking quality by query type.
 
+IR rank-based metrics now use contiguous 1-based positions within the evaluated top-K slice via `getRankAtIndex() = index + 1`, not external sparse rank labels carried through filtering or reranking. That keeps MRR, NDCG, and MAP aligned with standard IR definitions instead of understating them when rank numbers have gaps.
+
 This battery of metrics means you can diagnose where the pipeline fails, not just whether it fails.
 
 ---

@@ -21,6 +21,8 @@ The summary statistics are where this tool earns its keep. Across all completed 
 
 Pass `onlyComplete: true` to restrict results to tasks where both preflight and postflight were recorded. This gives you clean data for trend analysis without incomplete records skewing the averages. Summary statistics are included by default; pass `includeSummary: false` when you only want the raw learning history rows. Records are ordered by `updated_at` descending so the most recent learning cycles appear first.
 
+Handler safety around the backing table is tighter now. Schema initialization is tracked per database instance with `WeakSet<Database>` instead of a process-global boolean, so swapping to a fresh DB connection still creates the `session_learning` table and index when needed. Score validation also rejects `NaN` via `Number.isFinite(...)`, closing the old loophole where `typeof NaN === 'number'` let malformed learning scores pass validation.
+
 The runtime tool schema labels `memory_get_learning_history` as `[L7:Maintenance]`, even though this catalog groups it under Analysis. Treat the catalog placement as a documentation grouping rather than the handler's runtime layer classification.
 
 ---

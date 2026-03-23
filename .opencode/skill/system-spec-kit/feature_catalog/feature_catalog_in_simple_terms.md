@@ -458,7 +458,7 @@ If you have five nearly identical memories about the same thing, they can all cr
 
 ### Classification-based decay
 
-Not all memories should fade at the same speed. A key decision made months ago is still important, but a quick scratch note from last week probably is not. This feature adjusts how fast memories lose relevance based on what kind of memory they are and how important they were marked. Critical decisions never fade. Temporary notes fade quickly. Everything else falls somewhere in between.
+Not all memories should fade at the same speed. A key decision made months ago is still important, but a quick scratch note from last week probably is not. This feature adjusts how fast memories lose relevance based on what kind of memory they are and how important they were marked. Critical decisions never fade. Temporary notes fade quickly. Everything else falls somewhere in between. The setup checker also refuses a zero half-life, so nobody can accidentally define a memory type with a "positive" timer that is actually zero days long.
 
 ### Folder-level relevance scoring
 
@@ -610,7 +610,7 @@ When you save a new memory that is very similar to one already stored, the syste
 
 ### Smarter memory content generation
 
-Raw notes are full of formatting clutter like bullet markers, code fences and header symbols that have nothing to do with the actual meaning. This feature strips that clutter away before the system creates a searchable fingerprint of your content. The result is cleaner fingerprints that match your questions more accurately, like removing the wrapping paper so you can see what is actually inside the box.
+Raw notes are full of formatting clutter like bullet markers, code fences and header symbols that have nothing to do with the actual meaning. This feature strips that clutter away before the system creates a searchable fingerprint of your content. The result is cleaner fingerprints that match your questions more accurately, like removing the wrapping paper so you can see what is actually inside the box. It also keeps batch type inference from merging multiple pathless drafts into one result during the preparation stage.
 
 ### Anchor-aware chunk thinning
 
@@ -626,7 +626,7 @@ Your notes mention tools, projects and concepts by name, but those names were ne
 
 ### Content-aware memory filename generation
 
-Previously, every saved memory in the same folder got nearly the same filename, making it impossible to tell them apart at a glance. This feature names each file based on what the memory is actually about, like labeling your photo albums by vacation instead of just numbering them. You can now scan a folder and instantly see what each file contains.
+Previously, every saved memory in the same folder got nearly the same filename, making it impossible to tell them apart at a glance. This feature names each file based on what the memory is actually about, like labeling your photo albums by vacation instead of just numbering them. You can now scan a folder and instantly see what each file contains. When several draft memories have no file path yet, the system now gives each one its own temporary key so they do not overwrite each other's type guess behind the scenes.
 
 ### Generation-time duplicate and empty content prevention
 
@@ -774,7 +774,7 @@ If the system crashes in the middle of saving a memory, the file might be left i
 
 ### Lineage state active projection and asOf resolution
 
-Every time a memory is saved, the system adds a timestamped record of that change to a history log. When you need to know what a memory looked like at a specific point in the past, the system can look up the history and give you the exact version from that moment. Think of it as a timeline for each memory that you can rewind to any date, useful for understanding what changed and when.
+Every time a memory is saved, the system adds a timestamped record of that change to a history log. When you need to know what a memory looked like at a specific point in the past, the system can look up the history and give you the exact version from that moment. Think of it as a timeline for each memory that you can rewind to any date, useful for understanding what changed and when. The time comparison now converts both timestamps to real date values first, so different timezone formats do not get sorted incorrectly just because the text looks different.
 
 ---
 
@@ -1034,7 +1034,7 @@ These settings pick which embedding and reranking providers the system uses and 
 
 ### 6. Debug and Telemetry
 
-These settings control diagnostic visibility. They adjust log verbosity and optional telemetry so you can inspect runtime behavior during debugging while keeping production output stable by default. This group also contains several legacy compatibility settings that are consumed by internal metadata snapshots and backward-compatibility paths, not just log and telemetry settings.
+These settings control diagnostic visibility. They adjust log verbosity and optional telemetry so you can inspect runtime behavior during debugging while keeping production output stable by default. This group also contains several legacy compatibility settings that are consumed by internal metadata snapshots and backward-compatibility paths, not just log and telemetry settings. One important example is the shared-memory roadmap flag, which now defaults to off in roadmap snapshots until rollout is explicitly enabled so telemetry does not claim sharing is live before runtime access allows it.
 
 ### 7. CI and Build (informational)
 

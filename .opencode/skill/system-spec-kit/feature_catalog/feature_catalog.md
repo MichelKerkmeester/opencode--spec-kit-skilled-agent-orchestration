@@ -1867,7 +1867,7 @@ Not all memories should decay at the same rate. A decision record from six month
 
 FSRS decay rates now vary by a two-dimensional multiplier matrix. On the context axis: decisions never decay (stability set to Infinity), research memories get 2x stability and implementation/discovery/general memories follow the standard rate. On the tier axis: constitutional and critical memories never decay, important memories get 1.5x stability, normal memories follow the standard, temporary memories decay at 0.5x and deprecated at 0.25x.
 
-The combined multiplier uses `Infinity` for never-decay cases, which produces `R(t) = 1.0` for all t without special-case logic. Runs behind the `SPECKIT_CLASSIFICATION_DECAY` flag.
+The combined multiplier uses `Infinity` for never-decay cases, which produces `R(t) = 1.0` for all t without special-case logic. The shared memory-type config validator now rejects `halfLifeDays: 0` in addition to negative values, matching the `positive number or null` contract and blocking undefined zero-half-life schedules from entering classification-backed decay configuration. Runs behind the `SPECKIT_CLASSIFICATION_DECAY` flag.
 
 #### Source Files
 
@@ -2597,7 +2597,7 @@ Raw markdown including code fences, nested lists and YAML frontmatter was being 
 
 Seven primitives run in sequence: strip YAML frontmatter, strip anchor markers, strip HTML comments, strip code fence markers (retaining the code body), normalize markdown tables, normalize markdown lists and normalize headings. Two composite entry points apply this: `normalizeContentForEmbedding()` and `normalizeContentForBM25()`. In the current runtime, the BM25 entry point delegates to the same normalization pipeline as embeddings.
 
-The normalizer has no feature flag because it is a non-destructive improvement. It is always active in the `memory-save.ts` embedding path and in BM25 rebuild/tokenization paths that call `normalizeContentForBM25()`.
+The normalizer has no feature flag because it is a non-destructive improvement. It is always active in the `memory-save.ts` embedding path and in BM25 rebuild/tokenization paths that call `normalizeContentForBM25()`. The same pipeline now also keeps batch type inference one-to-one for pathless drafts by assigning synthetic fallback keys like `__pathless_0`, `__pathless_1`, and so on, preventing multiple pathless inputs from collapsing onto the same Map entry during a single batch run.
 
 #### Source Files
 
@@ -2677,7 +2677,7 @@ Previously, every saved memory in the same folder got nearly the same filename, 
 
 Memory filenames were previously derived solely from the spec folder name, producing identical slugs like `hybrid-rag-fusion-refinement.md` for every save in the same folder. The workflow now builds a `preferredMemoryTask` and uses it for slug/title generation in `generateContentSlug()`, with candidate precedence `task -> specTitle -> sessionCandidates (QUICK_SUMMARY/TITLE/SUMMARY) -> folderBase`. Candidate precedence prefers stronger session-derived names before folder fallback. Generic detection used by selection/enrichment includes `implementation-and-updates`, and slug fallback still uses the generic terms list (`development-session`, `session-summary`, `session-context`, `session`, `context`, `implementation`, `work-session`).
 
-The slug is lowercased, non-alphanumeric characters replaced with hyphens, collapsed and truncated at a word boundary (hyphen) to a maximum of 50 characters. A minimum length of 8 characters ensures slugs are meaningful. This produces filenames like `04-03-26_17-25__sprint-019-impl-3-phases-81-files.md` instead of `04-03-26_17-25__hybrid-rag-fusion-refinement.md`. Always active with no feature flag.
+The slug is lowercased, non-alphanumeric characters replaced with hyphens, collapsed and truncated at a word boundary (hyphen) to a maximum of 50 characters. A minimum length of 8 characters ensures slugs are meaningful. This produces filenames like `04-03-26_17-25__sprint-019-impl-3-phases-81-files.md` instead of `04-03-26_17-25__hybrid-rag-fusion-refinement.md`. Batch type inference also now assigns synthetic fallback keys like `__pathless_0`, `__pathless_1`, and so on for inputs without a file path, so multiple pathless memories in the same batch no longer collapse onto the same Map entry before slug/title decisions are made. Always active with no feature flag.
 
 #### Source Files
 
@@ -3346,7 +3346,7 @@ Every time a memory is saved, the system adds a timestamped record of that chang
 
 Phase 2 introduced versioned lineage state as a first-class storage primitive. Save-time writes append immutable lineage rows, while a deterministic active projection resolves which row is currently effective for a memory.
 
-The active projection supports deterministic `asOf` resolution: for any timestamp, the runtime selects the latest valid lineage state at or before that point. This enables time-consistent retrieval, deterministic rollback planning and predictable replay behavior for migration and audit workflows.
+The active projection supports deterministic `asOf` resolution: for any timestamp, the runtime selects the latest valid lineage state at or before that point. Transition validation now compares parsed epoch timestamps, not raw strings, so non-ISO formatting or timezone variants cannot be misordered during predecessor checks. This enables time-consistent retrieval, deterministic rollback planning and predictable replay behavior for migration and audit workflows.
 
 Schema support is now part of vector index setup, and save handlers integrate lineage writes so append-first lineage history and active projection stay synchronized.
 
@@ -4431,7 +4431,7 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the adaptive-ranking roadmap flag. Phase 4 adaptive ranking remains dormant in production, so roadmap metadata defaults this flag to off unless explicitly enabled with `true` or `1`. Used by roadmap metadata snapshots and adaptive shadow-ranking compatibility paths. |
 | `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the scope-enforcement roadmap flag. It remains default-on for roadmap metadata and governed-scope compatibility paths; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the governance-guardrail roadmap flag. It remains default-on for roadmap metadata and governed-ingest compatibility paths; set it to `false` or `0` to opt out explicitly. |
-| `SPECKIT_HYDRA_SHARED_MEMORY` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the shared-memory roadmap flag. It remains default-on for roadmap metadata and shared-memory rollout compatibility paths; set it to `false` or `0` to opt out explicitly. |
+| `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the shared-memory roadmap flag. Roadmap metadata now defaults this flag to off unless explicitly enabled with `true` or `1`, matching the live shared-spaces runtime gate. This keeps snapshots and telemetry from claiming shared memory is live before rollout enables it. |
 | `SPECKIT_HYBRID_DECAY_POLICY` | `true` | boolean | `lib/cognitive/fsrs-scheduler.ts` | **Default ON (graduated).** Type-aware no-decay FSRS policy. Decision/constitutional/critical context types receive Infinity stability (never decay). Separate from TM-03. |
 | `SPECKIT_HYDE` | `true` | boolean | `lib/search/hyde.ts` | **Default ON (graduated).** HyDE (Hypothetical Document Embeddings). Generates a pseudo-document (~200 tokens, markdown-memory format) for deep low-confidence queries (top score < 0.45), embeds it, and uses the embedding as an additional retrieval channel. HyDE is active in the query pipeline by default and merges results into the candidate set unless `SPECKIT_HYDE_ACTIVE=false` forces shadow-only logging. Budget: 1 LLM call per cache miss. |
 | `SPECKIT_IMPLICIT_FEEDBACK_LOG` | `true` | boolean | `lib/feedback/feedback-ledger.ts` | **Default ON (graduated).** Shadow-only implicit feedback event ledger. Records 5 event types with confidence tiers (strong/medium/weak). No ranking side effects. |
@@ -4615,7 +4615,7 @@ These settings control diagnostic visibility. They adjust log verbosity and opti
 | `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the adaptive-ranking roadmap flag. Phase 4 adaptive ranking remains dormant in production, so roadmap metadata defaults this flag to off unless explicitly enabled with `true` or `1`. Used by roadmap metadata snapshots and adaptive shadow-ranking compatibility paths. |
 | `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the scope-enforcement roadmap flag. Used by default-on roadmap snapshots and governed-scope compatibility checks; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the governance-guardrail roadmap flag. Used by default-on roadmap snapshots and governed-ingest compatibility checks; set it to `false` or `0` to opt out explicitly. |
-| `SPECKIT_HYDRA_SHARED_MEMORY` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the shared-memory roadmap flag. Used by default-on roadmap snapshots and shared-memory rollout compatibility checks; set it to `false` or `0` to opt out explicitly. |
+| `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the shared-memory roadmap flag. Used by roadmap snapshots and shared-memory rollout compatibility checks, but now defaults off until explicitly enabled with `true` or `1` so metadata cannot get ahead of the live rollout gate. |
 | `SPECKIT_CONSUMPTION_LOG` | inert | boolean | `lib/telemetry/consumption-logger.ts` | (Also listed under Search Pipeline.) Deprecated and inert. See category 1 for full description. |
 
 #### Source Files

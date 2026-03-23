@@ -1,25 +1,33 @@
 ---
 title: "Guards and edge cases"
-description: "Tracks two guard/edge-case fixes for temporal contiguity double-counting and wrong-memory entity resolution fallback."
+description: "Tracks six guard/edge-case fixes for temporal contiguity scoring, entity resolution fallback, retrieval expiry filtering, limit enforcement, embedding validation and partial-status accounting."
 ---
 
 # Guards and edge cases
 
 ## 1. OVERVIEW
 
-Tracks two guard/edge-case fixes for temporal contiguity double-counting and wrong-memory entity resolution fallback.
+Tracks six guard/edge-case fixes for temporal contiguity scoring, entity resolution fallback, retrieval expiry filtering, limit enforcement, embedding validation and partial-status accounting.
 
-Two subtle bugs were fixed. One was double-counting certain score boosts, which inflated results unfairly. The other was silently linking new data to the wrong memory when it could not find the right one. Both fixes make sure the system produces accurate results and never quietly does the wrong thing.
+Six subtle bugs were fixed. Some inflated scores, some linked data to the wrong place and several only appeared on uncommon retrieval paths. Together these fixes make sure the system produces accurate results, respects caller limits and never quietly reports the wrong state.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Two guard/edge-case issues were fixed:
+Six guard/edge-case issues were fixed:
 
 **E1: Temporal contiguity double-counting:** `temporal-contiguity.ts` had an O(N^2) nested loop that processed both (A,B) and (B,A) pairs, double-counting boosts. Fixed inner loop to `j = i + 1`.
 
 **E2: Wrong-memory fallback:** `extraction-adapter.ts` fell back to resolving the most-recent memory ID on entity resolution failure, silently linking to the wrong memory. The fallback was removed. The function returns `null` on resolution failure.
+
+**E3: Expired multi-concept results:** `multi_concept_search()` now applies `AND (m.expires_at IS NULL OR m.expires_at > datetime('now'))`, bringing the AND-match path back in line with single-query retrieval and preventing expired memories from leaking into result sets.
+
+**E4: Vector-search limit overflow:** `vector_search()` now returns `constitutional_results.slice(0, limit)` when constitutional injection already fills the request, so callers never receive more rows than `limit` even when the constitutional tier saturates the result set.
+
+**E5: Embedding dimension validation:** `vector_search()` now validates embedding length before buffer conversion and throws a `VectorIndexError` with `EMBEDDING_VALIDATION` semantics instead of surfacing raw sqlite-vec errors for malformed embeddings.
+
+**E6: Partial-status accounting:** `get_status_counts()` and `get_stats()` now include the `partial` embedding state so partially indexed rows stop disappearing from dashboard totals and status breakdowns.
 
 ---
 

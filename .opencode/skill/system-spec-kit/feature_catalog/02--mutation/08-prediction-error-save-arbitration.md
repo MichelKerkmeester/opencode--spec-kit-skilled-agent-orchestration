@@ -17,7 +17,7 @@ When you save new information, the system checks whether it already knows someth
 
 5-action decision engine during the save path. Examines semantic similarity of new content against existing memories: REINFORCE (>=0.95, boost FSRS stability), UPDATE (0.85-0.94 no contradiction, in-place update), SUPERSEDE (0.85-0.94 with contradiction, deprecate old + create new), CREATE_LINKED (0.70-0.84, new memory + causal edge), CREATE (<0.70, standalone). Contradiction detection via regex patterns. All decisions are logged to the `memory_conflicts` table with similarity, action, contradiction flag, reason and spec_folder. Document-type-aware weighting (constitutional=1.0 down to scratch=0.25).
 
-**Activation condition:** Active when `force` is false AND embedding is available (non-null). Skipped for async/deferred embedding saves where embedding is null — those cases bypass similarity arbitration entirely and fall back to the normal create path.
+**Activation condition:** Active when `force` is false AND embedding is available (non-null). Skipped for async/deferred embedding saves where embedding is null — those cases bypass similarity arbitration entirely and fall back to the normal create path. When `sessionId` is supplied, the similarity post-filter also rejects rows from other sessions, preventing false duplicate, update, or supersede decisions from crossing session boundaries.
 
 ---
 

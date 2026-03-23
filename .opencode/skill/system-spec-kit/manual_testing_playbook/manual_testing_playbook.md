@@ -251,9 +251,9 @@ Use the per-feature files for feature-specific:
 Intent-aware context pull.
 
 #### Current Reality
-Prompt: `Use memory_context in auto mode for: fix flaky index scan retry logic. Capture the evidence needed to prove Relevant bounded context returned; no empty response. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Use memory_context in resume mode for: fix flaky index scan retry logic. Reuse a real sessionId with prompt-context history. Capture the evidence needed to prove Relevant bounded context returned; auto-resume systemPromptContext is injected before budget enforcement; final response stays within the advertised token budget. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Relevant bounded context returned; no empty response
+Relevant bounded context returned; auto-resume context stays within budget
 
 #### Test Execution
 > **Feature File:** [EX-001](01--retrieval/001-unified-context-retrieval-memory-context.md)
@@ -269,6 +269,10 @@ Prompt: `Search for checkpoint restore clearExisting transaction rollback. Captu
 
 Relevant ranked results with hybrid signals
 
+Additional audit scenario: `Run memory_search against a fixture set that contains one expired memory, one live memory, and enough constitutional rows to overflow a tiny limit. Capture the evidence needed to prove multi-concept search excludes the expired row, constitutional injection never returns more than the requested limit, and malformed embeddings fail with a clear validation-style error instead of a raw sqlite-vec exception. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Expired rows excluded from multi-concept search; constitutional injection respects caller limit; malformed embeddings fail with clear validation errors
+
 #### Test Execution
 > **Feature File:** [EX-002](01--retrieval/002-semantic-and-lexical-search-memory-search.md)
 > **Catalog:** [01--retrieval/02-semantic-and-lexical-search-memorysearch.md](../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md)
@@ -279,9 +283,9 @@ Relevant ranked results with hybrid signals
 Fast recall path.
 
 #### Current Reality
-Prompt: `Run trigger matching for resume previous session blockers with cognitive=true. Capture the evidence needed to prove Fast trigger hits + cognitive enrichment. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Run trigger matching for resume previous session blockers with cognitive=true and governed scope fields. Capture the evidence needed to prove In-scope trigger hits still return fast with cognitive enrichment, while mismatched tenant/user/agent/shared-space rows are filtered out before results are returned. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Fast trigger hits + cognitive enrichment
+Fast in-scope trigger hits + cognitive enrichment; out-of-scope matches filtered
 
 #### Test Execution
 > **Feature File:** [EX-003](01--retrieval/003-trigger-phrase-matching-memory-match-triggers.md)
@@ -293,9 +297,9 @@ Fast trigger hits + cognitive enrichment
 Channel fusion sanity.
 
 #### Current Reality
-Prompt: `Validate graph search fallback tiers behavior. Capture the evidence needed to prove Non-empty diverse results; fallback not empty. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate hybrid search fallback and score-alias sync behavior. Capture the evidence needed to prove Tier-3 structural fallback excludes archived rows unless includeArchived=true; co-activation boosts update score, rrfScore and intentAdjustedScore together; session boost preserves the original attentionScore while exposing the boosted rank as sessionBoostScore. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Non-empty diverse results; fallback not empty
+Tier-3 structural fallback excludes archived rows unless includeArchived=true; co-activation boost keeps score aliases synchronized; session boost preserves attentionScore and writes sessionBoostScore
 
 #### Test Execution
 > **Feature File:** [EX-004](01--retrieval/004-hybrid-search-pipeline.md)
@@ -307,9 +311,9 @@ Non-empty diverse results; fallback not empty
 Stage invariant verification.
 
 #### Current Reality
-Prompt: `Search Stage4Invariant score snapshot verifyScoreInvariant. Capture the evidence needed to prove No invariant errors; stable final scoring. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate Stage 1 and Stage 3 guardrail parity in the 4-stage pipeline. Capture the evidence needed to prove deep-mode reformulation and HyDE candidates pass the same scope, tier, contextType and qualityThreshold filters before merge; constitutional injection obeys shouldApplyScopeFiltering; chunk reassembly accepts both snake_case and camelCase chunk metadata. Return a concise user-facing pass/fail verdict with the main reason.`
 
-No invariant errors; stable final scoring
+Deep-mode reformulation and HyDE candidates pass the same scope, tier, contextType and qualityThreshold filters before merge; constitutional injection obeys shouldApplyScopeFiltering; chunk reassembly accepts both snake_case and camelCase chunk metadata
 
 #### Test Execution
 > **Feature File:** [EX-005](01--retrieval/005-4-stage-pipeline-architecture.md)
@@ -325,6 +329,10 @@ Prompt: `Index memory file and report action. Capture the evidence needed to pro
 
 Save action reported; searchable result appears; no template-contract or insufficiency rejection
 
+Additional audit scenario: `Prime a search cache for a query that currently returns zero hits, save a matching memory, then rerun the same query immediately. Capture the evidence needed to prove the new memory appears without waiting for cache TTL expiry. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Post-insert cached search refreshes immediately; new memory visible without TTL wait
+
 #### Test Execution
 > **Feature File:** [EX-006](02--mutation/006-memory-indexing-memory-save.md)
 > **Catalog:** [02--mutation/01-memory-indexing-memorysave.md](../feature_catalog/02--mutation/01-memory-indexing-memorysave.md)
@@ -338,6 +346,10 @@ Metadata + re-embed update.
 Prompt: `Update memory title and triggers. Capture the evidence needed to prove Updated metadata reflected in retrieval. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Updated metadata reflected in retrieval
+
+Additional audit scenario: `Update a memory with new title, trigger phrases and a replacement embedding while forcing one failed vec write before a successful retry. Capture the evidence needed to prove the row stays pending until the vector write completes, never reports false success on the failed attempt, and cached searches reflect the successful metadata update immediately afterward. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Pending-until-written embedding status; no false-success state; post-update cached search refreshes immediately
 
 #### Test Execution
 > **Feature File:** [EX-007](02--mutation/007-memory-metadata-update-memory-update.md)
@@ -408,6 +420,10 @@ System baseline snapshot.
 Prompt: `Return stats with composite ranking. Capture the evidence needed to prove Counts, tiers, folder ranking present. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Counts, tiers, folder ranking present
+
+Additional audit scenario: `Return memory_stats from a fixture set that includes at least one partial embedding_status row. Capture the evidence needed to prove the response exposes a partial bucket and that total equals pending + success + failed + retry + partial. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Partial bucket present and included in totals
 
 #### Test Execution
 > **Feature File:** [EX-012](03--discovery/012-system-statistics-memory-stats.md)
@@ -587,9 +603,9 @@ Delta/learning record saved
 Trend review.
 
 #### Current Reality
-Prompt: `Show completed learning history. Capture the evidence needed to prove Historical entries returned. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Show completed learning history after a fresh DB connection has been initialized, then attempt an invalid NaN score input through the learning handlers. Capture the evidence needed to prove Historical entries returned; schema initializes on the new DB instance; invalid NaN scores are rejected instead of being stored. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Historical entries returned
+Historical entries returned; fresh DB init succeeds; NaN rejected
 
 #### Test Execution
 > **Feature File:** [EX-025](06--analysis/025-learning-history-memory-get-learning-history.md)
@@ -601,9 +617,9 @@ Historical entries returned
 Channel impact experiment.
 
 #### Current Reality
-Prompt: `Run ablation on retrieval channels. Capture the evidence needed to prove Per-channel deltas reported. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Run ablation on retrieval channels. Capture the evidence needed to prove Per-channel deltas reported and token_usage omits synthetic zero-only samples when no token data exists. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Per-channel deltas reported
+Per-channel deltas reported and token_usage omits synthetic zero-only samples when no token data exists
 
 #### Test Execution
 > **Feature File:** [EX-026](07--evaluation/026-ablation-studies-eval-run-ablation.md)
@@ -615,9 +631,9 @@ Per-channel deltas reported
 Eval reporting pass.
 
 #### Current Reality
-Prompt: `Generate the latest dashboard report. Capture the evidence needed to prove Trend/channel/summary data present in supported runtime formats. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Generate the latest dashboard report. Capture the evidence needed to prove Trend/channel/summary data present in supported runtime formats, the active eval DB remains selected, and request limit trims sprint groups rather than raw runs. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Trend/channel/summary data present in supported runtime formats
+Trend/channel/summary data present in supported runtime formats; active eval DB remains selected; request limit trims sprint groups rather than raw runs
 
 #### Test Execution
 > **Feature File:** [EX-027](07--evaluation/027-reporting-dashboard-eval-reporting-dashboard.md)
@@ -817,9 +833,9 @@ Eval tables created in separate DB/schema; retrieval events logged without affec
 Confirm metric battery outputs.
 
 #### Current Reality
-Prompt: `Validate core metric computation (R13-S1). Capture the evidence needed to prove Metric battery returns precision, recall, MRR, NDCG values; all within valid ranges. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate core metric computation (R13-S1). Capture the evidence needed to prove Metric battery returns precision, recall, MRR, NDCG, and MAP values; contiguous top-K positions (1,2,3...) drive MRR/NDCG/MAP instead of sparse external ranks; all outputs stay within valid ranges. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Metric battery returns precision, recall, MRR, NDCG values; all within valid ranges
+Metric battery returns precision, recall, MRR, NDCG, and MAP values; contiguous top-K positions drive rank-based metrics; all outputs stay within valid ranges
 
 #### Test Execution
 > **Feature File:** [006](09--evaluation-and-measurement/006-core-metric-computation-r13-s1.md)
@@ -915,9 +931,9 @@ Sampled scoring rows appear in observability log; write error does not crash sea
 Confirm ablation+report workflow.
 
 #### Current Reality
-Prompt: `Execute manual ablation run (R13-S3). Capture the evidence needed to prove Ablation run produces per-channel delta snapshots; dashboard renders with trend data in supported runtime output formats; no channel leaves empty report. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Execute manual ablation run (R13-S3). Capture the evidence needed to prove Ablation run produces per-channel delta snapshots; token_usage omits synthetic zero-only samples; dashboard renders with trend data in supported runtime output formats from the active eval DB; request limit behavior is verified at the sprint-group level. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Ablation run produces per-channel delta snapshots; dashboard renders with trend data in supported runtime output formats; no channel leaves empty report
+Ablation run produces per-channel delta snapshots without synthetic zero-only token usage; dashboard renders with trend data from the active eval DB; sprint-group limit behavior is correct
 
 #### Test Execution
 > **Feature File:** [014](09--evaluation-and-measurement/014-full-reporting-and-ablation-study-framework-r13-s3.md)
@@ -929,9 +945,9 @@ Ablation run produces per-channel delta snapshots; dashboard renders with trend 
 Confirm bounded typed-degree boost.
 
 #### Current Reality
-Prompt: `Test typed-weighted degree channel (R4). Capture the evidence needed to prove Typed-degree boost bounded within configured cap; fallback activates when edge types missing; varied types produce different scores. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Test typed-weighted degree channel (R4). Capture the evidence needed to prove Typed-degree boost bounded within configured cap; per-database degree-cache isolation prevents score reuse across different DB handles; explicit cache invalidation restores fresh values; fallback activates when edge types missing; varied types produce different scores. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Typed-degree boost bounded within configured cap; fallback activates when edge types missing; varied types produce different scores
+Typed-degree boost bounded within configured cap; per-database cache isolation and explicit invalidation work; fallback activates when edge types missing; varied types produce different scores
 
 #### Test Execution
 > **Feature File:** [016](10--graph-signal-activation/016-typed-weighted-degree-channel-r4.md)
@@ -1069,9 +1085,9 @@ Near-duplicate cluster receives penalty; penalty reduces effective score; non-du
 Confirm class+tier decay matrix.
 
 #### Current Reality
-Prompt: `Verify TM-03 classification-based decay. Capture the evidence needed to prove Decay multipliers differ by classification and tier; matrix values match documented configuration. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Verify TM-03 classification-based decay. Capture the evidence needed to prove Decay multipliers differ by classification and tier; matrix values match documented configuration; validateHalfLifeConfig rejects halfLifeDays:0 with the "positive number or null" contract. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Decay multipliers differ by classification and tier; matrix values match documented configuration
+Decay multipliers differ by classification and tier; matrix values match documented configuration; zero half-life config is rejected with the positive-number-or-null error
 
 #### Test Execution
 > **Feature File:** [026](11--scoring-and-calibration/026-classification-based-decay-tm-03.md)
@@ -1335,9 +1351,9 @@ Similarity >=0.88 triggers merge; 0.75-0.88 triggers supersede/deprecate; below 
 Confirm quality/structure output.
 
 #### Current Reality
-Prompt: `Assess smarter memory content generation (S1). Capture the evidence needed to prove Generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Assess smarter memory content generation (S1). Capture the evidence needed to prove Generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections; and inferMemoryTypesBatch keeps separate results for multiple pathless inputs instead of collapsing them onto one key. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections
+Generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections; multiple pathless batch inputs keep distinct inference results
 
 #### Test Execution
 > **Feature File:** [045](13--memory-quality-and-indexing/045-smarter-memory-content-generation-s1.md)
@@ -1419,9 +1435,9 @@ MPAB aggregation formula produces correct parent score from child chunks; manual
 Confirm ordered reassembly.
 
 #### Current Reality
-Prompt: `Validate chunk ordering preservation (B2). Capture the evidence needed to prove Collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate chunk ordering and metadata-alias preservation (B2). Capture the evidence needed to prove collapsed chunks reassemble in original document order; marker sequence preserved; both parent_id/chunk_index/chunk_label and parentId/chunkIndex/chunkLabel trigger the same collapse path; no reordering or silent passthrough artifacts remain. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts
+Collapsed chunks reassemble in original document order; marker sequence preserved; snake_case and camelCase chunk metadata trigger the same collapse path; no reordering or silent passthrough artifacts remain
 
 #### Test Execution
 > **Feature File:** [051](14--pipeline-architecture/051-chunk-ordering-preservation-b2.md)
@@ -1489,9 +1505,9 @@ Non-memory-aware tool path triggers auto-surface hook; compaction event surfaces
 Confirm directive enrichment.
 
 #### Current Reality
-Prompt: `Verify constitutional memory directive injection (PI-A4). Capture the evidence needed to prove Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Verify constitutional memory injection scope enforcement (PI-A4). Capture the evidence needed to prove directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated; injected constitutional rows obey shouldApplyScopeFiltering and do not leak across globally enforced scope boundaries. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated
+Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated; injected constitutional rows obey shouldApplyScopeFiltering and stay inside enforced scope boundaries
 
 #### Test Execution
 > **Feature File:** [056](15--retrieval-enhancements/056-constitutional-memory-as-expert-knowledge-injection-pi-a4.md)
@@ -1619,6 +1635,10 @@ Prompt: `Validate database and schema safety bundle. Capture the evidence needed
 
 Mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure
 
+Additional audit scenario: `Open the default vector store, then initialize a second store with a custom DB path. Capture the evidence needed to prove each path keeps an independent connection, close_db() closes every tracked handle, and constitutional-memory cache results differ correctly between includeArchived=false and includeArchived=true requests. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Per-path DB isolation holds; close_db cleans up all handles; archived cache scoping does not leak across options
+
 #### Test Execution
 > **Feature File:** [065](08--bug-fixes-and-data-integrity/065-database-and-schema-safety.md)
 > **Catalog:** [08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md](../feature_catalog/08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md)
@@ -1629,9 +1649,9 @@ Mutations complete atomically; no partial SQL corruption; schema constraints enf
 Confirm Sprint 8 scoring fixes.
 
 #### Current Reality
-Prompt: `Validate scoring and ranking corrections bundle. Capture the evidence needed to prove Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate scoring and ranking corrections bundle. Capture the evidence needed to prove Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values; ablation token_usage metrics omit synthetic zero-only samples when token data is absent. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values
+Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values; ablation token_usage metrics omit synthetic zero-only samples
 
 #### Test Execution
 > **Feature File:** [066](11--scoring-and-calibration/066-scoring-and-ranking-corrections.md)
@@ -1660,6 +1680,10 @@ Confirm edge-case guard fixes.
 Prompt: `Validate guards and edge-cases bundle. Capture the evidence needed to prove No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state. Return a concise user-facing pass/fail verdict with the main reason.`
 
 No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state
+
+Additional audit scenario: `Validate retrieval guard fixes with a sandbox corpus that includes one expired memory, one partial-status memory, and enough constitutional rows to overflow a tiny limit. Capture the evidence needed to prove expired rows do not survive multi-concept search, vector_search never returns more than the requested limit, malformed embeddings fail with a validation error, and stats still count the partial row. Return a concise user-facing pass/fail verdict with the main reason.`
+
+Expired rows excluded; result limits respected; invalid embeddings rejected cleanly; partial state counted
 
 #### Test Execution
 > **Feature File:** [068](08--bug-fixes-and-data-integrity/068-guards-and-edge-cases.md)
@@ -1811,9 +1835,9 @@ V1 pipeline symbols absent from codebase; all queries route through V2 pipeline;
 Confirm phase-017 correction bundle.
 
 #### Current Reality
-Prompt: `Validate phase-017 scoring and fusion corrections. Capture the evidence needed to prove Scoring math produces correct values; normalization stays within bounds; fusion formula applies corrected weights. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate phase-017 scoring and fusion corrections. Capture the evidence needed to prove Scoring math produces correct values; normalization stays within bounds; fusion formula applies corrected weights; RSF treats numeric and string forms of the same ID as one fused item. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Scoring math produces correct values; normalization stays within bounds; fusion formula applies corrected weights
+Scoring math produces correct values; normalization stays within bounds; fusion formula applies corrected weights; RSF canonicalizes numeric/string IDs into one fused item
 
 #### Test Execution
 > **Feature File:** [079](11--scoring-and-calibration/079-scoring-and-fusion-corrections.md)
@@ -1825,9 +1849,9 @@ Scoring math produces correct values; normalization stays within bounds; fusion 
 Confirm mutation hardening bundle.
 
 #### Current Reality
-Prompt: `Validate phase-017 pipeline and mutation hardening. Capture the evidence needed to prove CRUD mutations are atomic (all-or-nothing); error handling cleans up partial state; no orphaned records on failure. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate pipeline and mutation hardening follow-up coverage. Capture the evidence needed to prove CRUD mutations are atomic (all-or-nothing); error handling cleans up partial state; no orphaned records on failure; deep-mode reformulation and HyDE candidates re-enter scope/context/quality filtering before merge; constitutional injection obeys global scope enforcement; chunk reassembly accepts camelCase metadata aliases. Return a concise user-facing pass/fail verdict with the main reason.`
 
-CRUD mutations are atomic (all-or-nothing); error handling cleans up partial state; no orphaned records on failure
+CRUD mutations are atomic (all-or-nothing); error handling cleans up partial state; no orphaned records on failure; deep-mode reformulation and HyDE candidates re-enter scope/context/quality filtering before merge; constitutional injection obeys global scope enforcement; chunk reassembly accepts camelCase metadata aliases
 
 #### Test Execution
 > **Feature File:** [080](14--pipeline-architecture/080-pipeline-and-mutation-hardening.md)
@@ -2077,9 +2101,9 @@ Job state transitions through queued→parsing→embedding→indexing→complete
 Confirm reranker gating and graceful fallback.
 
 #### Current Reality
-Prompt: `Validate RERANKER_LOCAL strict check and memory thresholds. Capture the evidence needed to prove Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; scoring runs sequentially in logs. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate RERANKER_LOCAL strict check and memory thresholds. Capture the evidence needed to prove Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; cache keys stay distinct across provider/order/length-penalty combinations; p95 latency uses the bounded percentile index; scoring runs sequentially in logs. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; scoring runs sequentially in logs
+Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; cache keys stay distinct across provider/order/options; p95 latency uses the bounded percentile index; scoring runs sequentially in logs
 
 #### Test Execution
 > **Feature File:** [098](11--scoring-and-calibration/098-local-gguf-reranker-via-node-llama-cpp-p1-5.md)
@@ -2246,9 +2270,9 @@ Tier 1 low-quality results trigger Tier 2; Tier 2 forces all channels with minSi
 Confirm 5-action PE decision engine during save.
 
 #### Current Reality
-Prompt: `Validate prediction-error save arbitration actions. Capture the evidence needed to prove Each similarity band triggers the correct action (CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED); memory_conflicts table records action/similarity/contradiction; force:true bypasses PE arbitration. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate prediction-error save arbitration actions across two sessions. Capture the evidence needed to prove Each similarity band triggers the correct action (CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED); memory_conflicts table records action/similarity/contradiction; force:true bypasses PE arbitration; sessionId filtering prevents one session from triggering duplicate/update/supersede decisions against another. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Each similarity band triggers the correct action (CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED); memory_conflicts table records action/similarity/contradiction; force:true bypasses PE arbitration
+Each similarity band triggers the correct action; memory_conflicts rows are recorded; force:true bypasses arbitration; cross-session PE bleed is blocked
 
 #### Test Execution
 > **Feature File:** [110](02--mutation/110-prediction-error-save-arbitration.md)
@@ -2414,9 +2438,9 @@ Adaptive proposal is present in shadow mode, proposal deltas are bounded, produc
 Confirm governed saves require provenance and scope markers and scoped retrieval blocks cross-actor leakage.
 
 #### Current Reality
-Prompt: `Validate Phase 5 governed ingest and retrieval isolation. Capture the evidence needed to prove agentId,sessionId,provenanceSource,provenanceActor} metadata 3) Query with matching scope and verify hit appears 4) Query with mismatched user/agent or tenant and verify hit is filtered out 5) Review governance_audit rows. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate Phase 5 governed ingest and retrieval isolation. Capture the evidence needed to prove governed saves require provenance metadata; ephemeral retention without deleteAfter is rejected; matching scope can read the row; mismatched user/agent or tenant is filtered out; governance_audit rows are recorded; and a simulated governance post-step failure does not leave behind a row with missing governance fields. Return a concise user-facing pass/fail verdict with the main reason.`
 
-agentId,sessionId,provenanceSource,provenanceActor}` metadata 3) Query with matching scope and verify hit appears 4) Query with mismatched user/agent or tenant and verify hit is filtered out 5) Review `governance_audit` rows
+Governed save requires provenance; ephemeral save requires deleteAfter; scope mismatches are filtered; governance audit recorded; no orphaned ungoverned row remains after failure
 
 #### Test Execution
 > **Feature File:** [122](17--governance/122-governed-ingest-and-scope-isolation-phase-5.md)
@@ -2428,9 +2452,9 @@ agentId,sessionId,provenanceSource,provenanceActor}` metadata 3) Query with matc
 Confirm shared-memory spaces require explicit membership and respect rollout/kill-switch controls.
 
 #### Current Reality
-Prompt: `Validate Phase 6 shared-memory rollout controls. Capture the evidence needed to prove Non-members are denied by default; explicit membership grants access; kill switch blocks access immediately even for existing members. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate Phase 6 shared-memory rollout controls with two collaborators. Capture the evidence needed to prove Non-members are denied by default; explicit membership grants access; collaborator B can retrieve collaborator A's shared memory inside the same allowed space; and kill switch blocks access immediately even for existing members. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Non-members are denied by default; explicit membership grants access; kill switch blocks access immediately even for existing members
+Non-members denied; explicit membership grants access; shared members can see each other's rows; kill switch blocks everyone immediately
 
 #### Test Execution
 > **Feature File:** [123](17--governance/123-shared-space-deny-by-default-rollout-phase-6.md)
@@ -2456,11 +2480,11 @@ Archived memory keeps metadata row with `is_archived=1`, BM25 artifacts are sync
 Verify prefixed Hydra roadmap flags stay distinct from live runtime flags while keeping dormant adaptive ranking default-off until explicitly enabled.
 
 #### Current Reality
-Prompt: `Validate memory roadmap flag snapshots without changing live graph-channel defaults. Work locally in the system-spec-kit mcp_server package, capture the exact commands and outputs, and summarize the result in user language. Capture the evidence needed to prove First snapshot remains phase:"shared-rollout" with capabilities.graphUnified:true; second snapshot reports phase:"graph" with capabilities.graphUnified:false. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate memory roadmap flag snapshots without changing live graph-channel defaults. Work locally in the system-spec-kit mcp_server package, capture the exact commands and outputs, and summarize the result in user language. Capture the evidence needed to prove First snapshot remains phase:"shared-rollout" with capabilities.graphUnified:true, capabilities.adaptiveRanking:false, and capabilities.sharedMemory:false; second snapshot reports phase:"graph" with capabilities.graphUnified:false while capabilities.sharedMemory stays false; third snapshot uses SPECKIT_HYDRA_ADAPTIVE_RANKING=true and reports capabilities.adaptiveRanking:true; fourth snapshot uses SPECKIT_HYDRA_SHARED_MEMORY=true and reports capabilities.sharedMemory:true. Return a concise user-facing pass/fail verdict with the main reason.`
 
-First snapshot remains `phase:\"shared-rollout\"` with `capabilities.graphUnified:true`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false`
+First snapshot remains `phase:\"shared-rollout\"` with `capabilities.graphUnified:true`, `capabilities.adaptiveRanking:false`, and `capabilities.sharedMemory:false`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false` while `capabilities.sharedMemory:false`; third snapshot reports `capabilities.adaptiveRanking:true`; fourth snapshot reports `capabilities.sharedMemory:true`
 
-Dormant adaptive ranking default-off is preserved in the first snapshot as `capabilities.adaptiveRanking:false`, and an explicit prefixed opt-in can flip it to `capabilities.adaptiveRanking:true` without changing live runtime defaults
+Shared-memory roadmap metadata now stays default-off until explicitly enabled, keeping roadmap snapshots aligned with the live runtime gate while preserving explicit prefixed opt-in behavior
 
 #### Test Execution
 > **Feature File:** [125](19--feature-flag-reference/125-hydra-roadmap-capability-flags.md)
@@ -2472,9 +2496,9 @@ Dormant adaptive ranking default-off is preserved in the first snapshot as `capa
 Verify Phase 1 readiness baselines capture/persist metrics and handle missing context DBs without throwing.
 
 #### Current Reality
-Prompt: `Run the memory roadmap baseline snapshot verification suite. Capture the evidence needed to prove Targeted suite passes; transcript shows persisted snapshot rows and missing-context DB zero fallback coverage. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Run the memory roadmap baseline snapshot verification suite. Capture the evidence needed to prove Targeted suite passes; transcript shows persisted snapshot rows, missing-context DB zero fallback coverage, and restoration of the prior eval DB handle after a forced initEvalDb failure. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Targeted suite passes; transcript shows persisted snapshot rows and missing-context DB zero fallback coverage
+Targeted suite passes; transcript shows persisted snapshot rows, missing-context DB zero fallback coverage, and prior eval DB handle restoration after forced init failure
 
 #### Test Execution
 > **Feature File:** [126](09--evaluation-and-measurement/126-memory-roadmap-baseline-snapshot.md)
@@ -2514,9 +2538,9 @@ Targeted suite passes; transcript shows missing-table reporting and minimal-comp
 Verify append-first lineage projection and deterministic `asOf` resolution.
 
 #### Current Reality
-Prompt: `Run the lineage state verification suite. Capture the evidence needed to prove Targeted suite passes; transcript shows active projection selection, deterministic asOf resolution, and malformed-chain detection. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Run the lineage state verification suite. Capture the evidence needed to prove Targeted suite passes; transcript shows active projection selection, deterministic asOf resolution, malformed-chain detection, and predecessor timestamp comparisons succeeding for non-ISO or timezone variants because validation uses parsed epoch values instead of raw strings. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Targeted suite passes; transcript shows active projection selection, deterministic `asOf` resolution, and malformed-chain detection
+Targeted suite passes; transcript shows active projection selection, deterministic `asOf` resolution, malformed-chain detection, and timestamp-order coverage for non-ISO or timezone variants
 
 #### Test Execution
 > **Feature File:** [129](14--pipeline-architecture/129-lineage-state-active-projection-and-asof-resolution.md)
@@ -2756,9 +2780,9 @@ Constitutional memory manager
 Confirm shared memory is off by default, enable flow works, persistence survives restart, env var overrides DB, and enable is idempotent.
 
 #### Current Reality
-Prompt: `Validate shared-memory default-off enablement and first-run setup. Capture the evidence needed to prove Default-off: status returns disabled without env var or DB config; enable persists to DB config table; enable is idempotent; README created in shared-spaces/; DB persistence survives restart; env var override takes priority over DB state; /memory:shared command shows setup prompt when disabled. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate shared-memory default-off enablement and first-run setup. Capture the evidence needed to prove Default-off: status returns disabled without env var or DB config; enable persists to DB config table; enable is idempotent; README created in shared-spaces/; DB persistence survives restart; env var override takes priority over DB state; /memory:shared command shows setup prompt when disabled; and partial shared-space updates preserve existing rolloutCohort and metadata fields when they are omitted from the update request. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Default-off: status returns disabled without env var or DB config; enable persists to DB config table; enable is idempotent; README created in shared-spaces/; DB persistence survives restart; env var override takes priority over DB state; /memory:shared command shows setup prompt when disabled
+Default-off works; enable persists and is idempotent; env var overrides DB state; setup prompt appears when disabled; partial updates preserve cohort and metadata
 
 #### Test Execution
 > **Feature File:** [148](17--governance/148-shared-memory-disabled-by-default-and-first-run-setup.md)
@@ -2938,9 +2962,9 @@ shadow_scoring_log table has rows with query_id, result_id, live_rank, shadow_ra
 Verify reformulation pipeline runs in deep mode with corpus-grounded seeds, producing a step-back abstract and variants.
 
 #### Current Reality
-Prompt: `Run a deep-mode search and verify the graduated reformulation pipeline produces a step-back abstract and corpus-grounded variants. Capture the evidence needed to prove cheapSeedRetrieve() returns FTS5/BM25 seeds, the LLM generates an abstract + variants (max 2), and the shared LLM cache is populated. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Run a deep-mode search and verify the graduated reformulation pipeline produces a step-back abstract and corpus-grounded variants. Capture the evidence needed to prove cheapSeedRetrieve() returns FTS5/BM25 seeds, the LLM generates an abstract + variants (max 2), the shared LLM cache is populated, and reformulated hits pass through scope, contextType and qualityThreshold filtering before merge. Return a concise user-facing pass/fail verdict with the main reason.`
 
-cheapSeedRetrieve() returns up to 3 seed results from FTS5; ReformulationResult contains abstract (>= 5 chars) and variants array (max 2 entries); LLM cache hit on repeated query; pipeline is no-op when mode != deep
+cheapSeedRetrieve() returns up to 3 seed results from FTS5; ReformulationResult contains abstract (>= 5 chars) and variants array (max 2 entries); LLM cache hit on repeated query; reformulated hits respect scope, contextType and qualityThreshold before merge; pipeline is no-op when mode != deep
 
 #### Test Execution
 > **Feature File:** [161](12--query-intelligence/161-llm-reformulation-speckit-llm-reformulation.md)
@@ -2952,9 +2976,9 @@ cheapSeedRetrieve() returns up to 3 seed results from FTS5; ReformulationResult 
 Verify HyDE pseudo-document generation for low-confidence deep queries with default-active behavior and optional shadow mode.
 
 #### Current Reality
-Prompt: `Test SPECKIT_HYDE=true with deep mode. Run a search that produces low-confidence baseline results and verify a HyDE pseudo-document is generated with its embedding. Capture the evidence needed to prove generateHyDE() returns a pseudoDocument and embedding, the shared LLM cache is populated, and HyDE results merge into the candidate set by default. Then set SPECKIT_HYDE_ACTIVE=false and verify shadow-only logging without merge. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Test SPECKIT_HYDE=true with deep mode. Run a search that produces low-confidence baseline results and verify a HyDE pseudo-document is generated with its embedding. Capture the evidence needed to prove generateHyDE() returns a pseudoDocument and embedding, lowConfidence() scans the full baseline set rather than trusting baseline[0], the shared LLM cache is populated, and HyDE hits pass through scope, contextType and qualityThreshold filtering before merge. Then set SPECKIT_HYDE_ACTIVE=false and verify shadow-only logging without merge. Return a concise user-facing pass/fail verdict with the main reason.`
 
-HyDEResult contains pseudoDocument (non-empty) and embedding (Float32Array); low-confidence threshold (top score < 0.45) triggers generation; LLM cache shared with reformulation; default behavior merges HyDE results into the candidate set; setting `SPECKIT_HYDE_ACTIVE=false` switches to shadow-only logging without merge
+HyDEResult contains pseudoDocument (non-empty) and embedding (Float32Array); low-confidence detection uses the max score across the full baseline set; LLM cache shared with reformulation; HyDE hits respect scope, contextType and qualityThreshold before merge; setting `SPECKIT_HYDE_ACTIVE=false` switches to shadow-only logging without merge
 
 #### Test Execution
 > **Feature File:** [162](12--query-intelligence/162-hyde-speckit-hyde.md)
@@ -3673,7 +3697,7 @@ This split playbook keeps automated coverage references in three places:
 | Catalog only | Features | Tool-level TTL cache | No dedicated scenario - covered by parent category tests | [11--scoring-and-calibration/15-tool-level-ttl-cache.md](../feature_catalog/11--scoring-and-calibration/15-tool-level-ttl-cache.md) |
 | Catalog only | Features | Access-driven popularity scoring | No dedicated scenario - covered by parent category tests | [11--scoring-and-calibration/16-access-driven-popularity-scoring.md](../feature_catalog/11--scoring-and-calibration/16-access-driven-popularity-scoring.md) |
 | Catalog only | Features | Temporal-structural coherence scoring | No dedicated scenario - covered by parent category tests | [11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md](../feature_catalog/11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md) |
-| Catalog only | Features | Content-aware memory filename generation | No dedicated scenario - covered by parent category tests | [13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md](../feature_catalog/13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md) |
+| Catalog only | Features | Content-aware memory filename generation | No dedicated scenario - covered by scenario 045 plus parent category tests | [13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md](../feature_catalog/13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md) |
 | Catalog only | Features | Generation-time duplicate and empty content prevention | No dedicated scenario - covered by parent category tests | [13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md](../feature_catalog/13--memory-quality-and-indexing/12-generation-time-duplicate-and-empty-content-prevention.md) |
 | Catalog only | Features | Session enrichment and alignment guards | No dedicated scenario - covered by parent category tests | [13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md](../feature_catalog/13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md) |
 | Catalog only | Features | Warm server / daemon mode | No dedicated scenario - covered by parent category tests | [14--pipeline-architecture/15-warm-server-daemon-mode.md](../feature_catalog/14--pipeline-architecture/15-warm-server-daemon-mode.md) |
@@ -3688,8 +3712,8 @@ This split playbook keeps automated coverage references in three places:
 | Catalog only | Features | Schema and type contract synchronization | No dedicated scenario - covered by parent category tests | [18--ux-hooks/04-schema-and-type-contract-synchronization.md](../feature_catalog/18--ux-hooks/04-schema-and-type-contract-synchronization.md) |
 | Catalog only | Features | Mutation hook result contract expansion | No dedicated scenario - covered by parent category tests | [18--ux-hooks/06-mutation-hook-result-contract-expansion.md](../feature_catalog/18--ux-hooks/06-mutation-hook-result-contract-expansion.md) |
 | Catalog only | Features | Mutation response UX payload exposure | No dedicated scenario - covered by parent category tests | [18--ux-hooks/07-mutation-response-ux-payload-exposure.md](../feature_catalog/18--ux-hooks/07-mutation-response-ux-payload-exposure.md) |
-| Catalog only | Features | Atomic-save parity and partial-indexing hints | No dedicated scenario - covered by parent category tests | [18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md](../feature_catalog/18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md) |
-| Catalog only | Features | Final token metadata recomputation | No dedicated scenario - covered by parent category tests | [18--ux-hooks/11-final-token-metadata-recomputation.md](../feature_catalog/18--ux-hooks/11-final-token-metadata-recomputation.md) |
+| Catalog only | Features | Atomic-save parity and partial-indexing hints | No dedicated scenario - covered by parent save-path tests for parity envelopes, partial-indexing hints, and orphan-row cleanup on governance failure | [18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md](../feature_catalog/18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md) |
+| Catalog only | Features | Final token metadata recomputation | No dedicated scenario - covered by parent context-response tests for final token sync and post-resume budget enforcement | [18--ux-hooks/11-final-token-metadata-recomputation.md](../feature_catalog/18--ux-hooks/11-final-token-metadata-recomputation.md) |
 | Catalog only | Features | End-to-end success-envelope verification | No dedicated scenario - covered by parent category tests | [18--ux-hooks/13-end-to-end-success-envelope-verification.md](../feature_catalog/18--ux-hooks/13-end-to-end-success-envelope-verification.md) |
 
 ---

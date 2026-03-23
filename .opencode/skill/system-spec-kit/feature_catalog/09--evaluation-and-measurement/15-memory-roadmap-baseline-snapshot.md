@@ -19,7 +19,7 @@ Before rolling out a big upgrade, you want to take a "before" photo so you can c
 
 When `persist: true`, every metric is written into `eval_metric_snapshots` with `channel = 'memory-state-baseline'`. The metadata attached to each persisted row includes the resolved memory-roadmap phase, the compatibility-supported roadmap capability flags, `scopeDimensionsTracked` and the resolved `contextDbPath`. Missing or unreadable context databases are non-fatal: retrieval metrics still record and context-backed metrics fall back to zero.
 
-The baseline path now initializes the eval database beside the context database under test instead of silently writing to the default eval location. That keeps ad-hoc migration and rollout checks scoped to the database actually being evaluated.
+The baseline path now initializes the eval database beside the context database under test instead of silently writing to the default eval location. That keeps ad-hoc migration and rollout checks scoped to the database actually being evaluated. The path switch is also wrapped in `try/finally`, so even if `initEvalDb()` fails after closing the previous singleton, the prior eval DB handle is restored instead of leaving global eval state clobbered for later calls.
 
 ---
 

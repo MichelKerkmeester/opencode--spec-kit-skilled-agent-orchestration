@@ -169,3 +169,10 @@ Level 2 checklist - Verification focus
 Mark [x] with evidence when verified
 P0 must complete, P1 need approval to defer
 -->
+
+## Audit Follow-up Additions (2026-03-23)
+
+- [ ] CHK-102 [P1] M5 follow-up confirms `validateHalfLifeConfig` rejects `halfLifeDays: 0` and enforces positive-number-or-null input
+- [ ] CHK-103 [P2] Zero half-life rejection evidence is captured without regressing `null` acceptance
+- [ ] CHK-104 [P1] L1 follow-up confirms `inferMemoryTypesBatch` assigns distinct `__pathless_<n>` fallback keys to each pathless input
+- [ ] CHK-105 [P1] Batch inference evidence shows pathless results remain isolated and do not collapse into one Map entry

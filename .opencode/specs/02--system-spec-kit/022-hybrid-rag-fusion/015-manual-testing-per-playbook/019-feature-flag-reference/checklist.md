@@ -109,3 +109,8 @@ contextType: "general"
 <!-- /ANCHOR:summary -->
 
 ---
+
+## Audit Follow-up Additions (2026-03-23)
+
+- [ ] CHK-052 [P1] Scenario 125 follow-up rerun after M4 confirms roadmap snapshots report `capabilities.sharedMemory:false` by default until explicitly enabled
+- [ ] CHK-053 [P2] Capability-flags roadmap/telemetry evidence does not imply shared memory is enabled by default; explicit-enable path documented only if exercised

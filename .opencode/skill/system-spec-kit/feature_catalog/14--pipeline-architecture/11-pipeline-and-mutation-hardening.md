@@ -28,6 +28,12 @@ Ten fixes addressed schema completeness, pipeline metadata, embedding efficiency
 - **Atomic save error tracking (#22):** `atomicSaveMemory` now tracks rename-failure state with a `dbCommitted` flag for better error reporting.
 - **Dynamic preflight error code (#23):** Preflight validation uses the actual error code from `preflightResult.errors[0].code` instead of hardcoding `ANCHOR_FORMAT_INVALID`.
 
+A later audit added three more pipeline-side corrections to the same runtime path:
+
+- **Deep-mode filter parity (H11):** Reformulation and HyDE candidates now re-enter scope, tier, `contextType` and `qualityThreshold` filtering before merge.
+- **Constitutional scope parity (H12):** Constitutional injection now uses `shouldApplyScopeFiltering`, so global scope enforcement applies even when callers omit explicit governance scope fields.
+- **CamelCase chunk metadata support (H14):** Chunk reassembly now accepts `parentId`, `chunkIndex` and `chunkLabel` aliases in addition to snake_case fields, preventing silent bypass of parent collapse.
+
 ---
 
 ## 3. SOURCE FILES
@@ -41,7 +47,8 @@ Ten fixes addressed schema completeness, pipeline metadata, embedding efficiency
 | `mcp_server/lib/search/pipeline/stage4-filter.ts` | Lib | Removes dead sessionDeduped metadata, forwards constitutional count |
 | `mcp_server/lib/search/pipeline/orchestrator.ts` | Lib | Passes Stage 1 constitutionalInjected metadata into Stage 4 |
 | `mcp_server/lib/search/pipeline/types.ts` | Lib | Stage metadata typing for constitutional passthrough |
-| `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Query embedding caching for constitutional injection path |
+| `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Query embedding caching plus deep-mode filter parity and constitutional scope enforcement |
+| `mcp_server/lib/search/chunk-reassembly.ts` | Lib | CamelCase chunk metadata support during parent collapse |
 | `mcp_server/lib/search/bm25-index.ts` | Lib | Doubled-consonant stemming fix after suffix stripping |
 
 ### Implementation — Mutation hardening
@@ -59,7 +66,8 @@ Ten fixes addressed schema completeness, pipeline metadata, embedding efficiency
 |------|-------|
 | `mcp_server/tests/tool-input-schema.vitest.ts` | Public/runtime schema validation for memory_search args |
 | `mcp_server/tests/pipeline-v2.vitest.ts` | Stage metadata contract including constitutional passthrough |
-| `mcp_server/tests/stage1-expansion.vitest.ts` | Stage1 embedding and constitutional-path behavior |
+| `mcp_server/tests/stage1-expansion.vitest.ts` | Stage 1 embedding, scope filtering and deep-mode merge guardrails |
+| `mcp_server/tests/handler-memory-search.vitest.ts` | Chunk collapse path behavior |
 | `mcp_server/tests/bm25-index.vitest.ts` | Stemmer regression coverage |
 | `mcp_server/tests/search-extended.vitest.ts` | Additional simpleStem doubled-consonant checks |
 

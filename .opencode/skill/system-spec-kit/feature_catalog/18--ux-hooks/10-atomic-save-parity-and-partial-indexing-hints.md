@@ -19,6 +19,8 @@ The system has two ways to save memories: a standard path and a faster "atomic" 
 
 The atomic path now applies `applyPostInsertMetadata(database, id, {})` for genuinely new saves, guarded by an unchanged/duplicate status check to avoid resetting FSRS spaced-repetition data. Both paths identically filter `unchanged` and `duplicate` statuses for hook suppression. After-tool callbacks in the atomic path receive a `structuredClone` snapshot of the result to prevent mutation before hint injection completes.
 
+Failure semantics are tighter on the primary governed-save path too. After a new row is inserted, governance metadata application and governance-audit recording run inside a transaction, and any failure deletes the orphaned row instead of returning a half-governed success. That keeps standard-save outcomes aligned with the all-or-nothing expectations callers already rely on from the atomic flow.
+
 ---
 
 ## 3. SOURCE FILES

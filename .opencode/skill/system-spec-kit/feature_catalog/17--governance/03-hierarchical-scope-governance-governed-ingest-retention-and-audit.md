@@ -19,7 +19,11 @@ Phase 5 added governed multi-scope controls across ingest and retrieval. Scope i
 
 Governed ingest now requires provenance metadata (`provenanceSource`, `provenanceActor`) when scoped identity fields are provided. Ingest attempts that carry scope identifiers without required provenance are rejected instead of being accepted as ambiguous writes.
 
-Retention policy logic is integrated with governance controls, and allow/deny outcomes are recorded for auditability. The governance audit trail captures scope decisions so policy behavior can be reviewed and verified after runtime operations.
+Retention policy logic is integrated with governance controls, and allow/deny outcomes are recorded for auditability. Ephemeral retention is now stricter: `validateGovernedIngest()` rejects `retentionPolicy: 'ephemeral'` when `deleteAfter` is missing, because retention sweeps key off `delete_after` and an unscheduled ephemeral row would never expire.
+
+The governed save post-step is now fail-safe. `memory-save.ts` wraps governance field application and audit logging in a transaction, and if that post-insert step fails it deletes the just-created `memory_index` row instead of leaving behind a persisted record with missing tenant, actor, session, provenance, or retention metadata.
+
+The governance audit trail captures scope decisions so policy behavior can be reviewed and verified after runtime operations.
 
 ---
 

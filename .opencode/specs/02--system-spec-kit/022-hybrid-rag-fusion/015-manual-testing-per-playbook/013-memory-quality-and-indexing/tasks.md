@@ -146,3 +146,10 @@ contextType: "implementation"
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
 <!-- /ANCHOR:cross-refs -->
+
+## Audit Follow-up Additions (2026-03-23)
+
+- [ ] T067 Execute post-audit follow-up for M5 — validate `validateHalfLifeConfig` rejects `halfLifeDays: 0` and preserves the positive-number-or-null contract
+- [ ] T068 Verify zero-value half-life input is rejected with the same contract boundary as other non-positive values while `null` remains allowed
+- [ ] T069 Execute post-audit follow-up for L1 batch inference — submit multiple pathless inputs to `inferMemoryTypesBatch` and confirm each receives its own `__pathless_<n>` fallback key
+- [ ] T070 Verify pathless batch results no longer collapse onto one Map entry; capture isolated outputs for each pathless input
