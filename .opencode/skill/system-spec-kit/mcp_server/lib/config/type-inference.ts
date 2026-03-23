@@ -8,6 +8,7 @@ import {
   KEYWORD_TYPE_MAP,
   getDefaultType,
   isValidType,
+  resolveSpecDocumentType,
 } from './memory-types';
 
 import type { MemoryTypeName, MemoryTypeConfig } from './memory-types';
@@ -73,6 +74,11 @@ const TIER_TO_TYPE_MAP: Readonly<Record<string, MemoryTypeName>> = {
 export function inferTypeFromPath(filePath: string | null | undefined): MemoryTypeName | null {
   if (!filePath || typeof filePath !== 'string') {
     return null;
+  }
+
+  const specDocumentType = resolveSpecDocumentType(filePath);
+  if (specDocumentType) {
+    return specDocumentType;
   }
 
   // Normalize path separators
@@ -225,7 +231,19 @@ export function inferMemoryType(params: InferMemoryTypeParams): InferenceResult 
     };
   }
 
-  // 2. Check importance tier mapping
+  // 2. Check config-backed spec document routing before tier heuristics.
+  // Spec docs commonly carry an "important" tier and must not be
+  // over-captured by the generic important -> declarative mapping.
+  const specDocumentType = resolveSpecDocumentType(filePath);
+  if (specDocumentType) {
+    return {
+      type: specDocumentType,
+      source: 'file_path',
+      confidence: 0.95,
+    };
+  }
+
+  // 3. Check importance tier mapping
   if (importanceTier && TIER_TO_TYPE_MAP[importanceTier]) {
     return {
       type: TIER_TO_TYPE_MAP[importanceTier],
@@ -243,7 +261,7 @@ export function inferMemoryType(params: InferMemoryTypeParams): InferenceResult 
     };
   }
 
-  // 3. Check file path patterns
+  // 4. Check file path patterns
   const pathType = inferTypeFromPath(filePath);
   if (pathType) {
     return {
@@ -253,7 +271,7 @@ export function inferMemoryType(params: InferMemoryTypeParams): InferenceResult 
     };
   }
 
-  // 4. Check keyword analysis
+  // 5. Check keyword analysis
   const keywordType = inferTypeFromKeywords(title, triggerPhrases, content);
   if (keywordType) {
     return {
@@ -263,7 +281,7 @@ export function inferMemoryType(params: InferMemoryTypeParams): InferenceResult 
     };
   }
 
-  // 5. Default type (lowest confidence)
+  // 6. Default type (lowest confidence)
   return {
     type: getDefaultType(),
     source: 'default',

@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: manual-testing-per-playbook"
-description: "Execute manual testing across 19 phase folders covering 226 scenario files (265 exact IDs) from the manual testing playbook, with pre-execution setup, phased execution, and aggregate result reporting."
+description: "Execute manual testing across 19 phase folders covering 227 scenario files (266 exact IDs) from the manual testing playbook, with pre-execution setup, phased execution, and aggregate result reporting."
 trigger_phrases:
   - "manual testing plan"
   - "testing phases"
@@ -44,7 +44,7 @@ Execute manual testing across 19 phase folders, each covering one playbook categ
 - [ ] Test database is in a known state (fresh or documented baseline)
 
 ### Definition of Done
-- [ ] All 265 exact scenario IDs have recorded verdicts
+- [ ] All 266 exact scenario IDs have recorded verdicts
 - [ ] Per-phase summaries are complete for all 19 phases
 - [ ] Aggregate coverage report is produced
 - [ ] Bugs and playbook errors are documented
@@ -59,7 +59,7 @@ Execute manual testing across 19 phase folders, each covering one playbook categ
 Phased manual test execution with verdict recording.
 
 ### Key Components
-- **Playbook**: 226 scenario files across 19 categories providing prompts, expected behavior, and pass/fail criteria
+- **Playbook**: 227 scenario files across 19 categories providing prompts, expected behavior, and pass/fail criteria
 - **Feature Catalog**: 220 feature definitions across 19 categories providing feature context
 - **Phase Folders**: 19 child folders (001 through 019) where test results are recorded
 - **Aggregate Report**: Summary of all phase results with overall coverage metrics
@@ -101,7 +101,7 @@ Execute each phase by running its test scenarios per playbook. Phases can be run
 | 013 | `013-memory-quality-and-indexing/` | 27 | 34 |
 | 014 | `014-pipeline-architecture/` | 18 | 18 |
 | 015 | `015-retrieval-enhancements/` | 11 | 11 |
-| 016 | `016-tooling-and-scripts/` | 28 | 60 |
+| 016 | `016-tooling-and-scripts/` | 29 | 61 |
 | 017 | `017-governance/` | 5 | 5 |
 | 018 | `018-ux-hooks/` | 11 | 11 |
 | 019 | `019-feature-flag-reference/` | 8 | 8 |
@@ -128,7 +128,7 @@ For each phase:
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Manual scenario execution | All 265 exact IDs across 19 phases | MCP tool calls, CLI commands |
+| Manual scenario execution | All 266 exact IDs across 19 phases | MCP tool calls, CLI commands |
 | Verdict recording | Per-scenario pass/fail with evidence | Inline documentation in phase folders |
 | Coverage aggregation | All 19 phases | Summary table in implementation-summary.md |
 <!-- /ANCHOR:testing -->

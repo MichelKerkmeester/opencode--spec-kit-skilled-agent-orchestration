@@ -13,7 +13,7 @@ contextType: "general"
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
-> **Status**: Complete — analysis phase finished. Wave 1 (135 findings from 15 agents) complete. Wave 3 synthesis and sprint remediation plan established.
+> **Status**: Analysis phase complete; remediation sprints pending execution. Wave 1 (135 findings from 15 agents) complete. Wave 3 synthesis and sprint remediation plan established.
 
 ---
 
@@ -43,7 +43,7 @@ Ten parallel agents (5 GPT 5.4 via Codex CLI, 5 Claude Opus) analyzed all 96+ Ty
 
 ### Wave 3 Synthesis (Complete)
 
-Five Claude Opus synthesis agents verified all findings, produced the priority matrix, 8 ADRs, and final checklist. The 6-sprint remediation plan was established with sprint S1 (CI unblock) as the first gate before subsequent sprints proceed.
+Five Claude Opus synthesis agents verified all findings, produced the priority matrix, 8 ADRs, and final checklist. The 8-sprint remediation plan was established with sprint S1 (CI unblock) as the first gate before subsequent sprints proceed.
 
 ### Files Changed
 
@@ -101,7 +101,7 @@ The analysis phase was delivered via a 3-wave parallel audit architecture. Wave 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Wave 3 pending**: This implementation summary is a pre-execution stub. All "Pending" items must be updated with actual results after Wave 3 synthesis and each sprint completes.
+1. **Remediation pending**: Analysis phase complete; remediation sprints pending execution. All "Pending" items must be updated with actual results after each sprint completes.
 2. **MCP handler coverage**: 44 MCP handlers may be under-covered by Wave 1 (CODEX-A4 focused on memory scripts, not all 44 handlers). Open question Q-003 in spec.md addresses this.
 3. **Type rename scope**: ADR-002 decision (rename vs merge for type collisions) is pending Wave 3 OPUS-B3 analysis. Sprint S2 cannot begin until this ADR is accepted.
 <!-- /ANCHOR:limitations -->

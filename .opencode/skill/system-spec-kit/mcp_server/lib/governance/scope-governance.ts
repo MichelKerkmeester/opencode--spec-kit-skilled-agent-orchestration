@@ -362,7 +362,13 @@ function matchesExactScope(rowValue: unknown, requestedValue?: string): boolean 
   return typeof rowValue === 'string' && rowValue === requestedValue;
 }
 
-function hasScopeConstraints(scope: ScopeContext): boolean {
+/**
+ * Determine whether a scope includes at least one concrete constraint.
+ *
+ * @param scope - Scope to inspect for tenant, actor, session, or shared-space bounds.
+ * @returns `true` when the scope constrains access to at least one boundary.
+ */
+export function hasScopeConstraints(scope: ScopeContext): boolean {
   return Boolean(
     scope.sharedSpaceId
     || scope.tenantId
@@ -382,7 +388,10 @@ function parseAuditMetadata(value: unknown): Record<string, unknown> | null {
     if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
       return parsed as Record<string, unknown>;
     }
-  } catch {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return null;
+    }
     return null;
   }
 
@@ -443,6 +452,10 @@ export function createScopeFilterPredicate<T extends Record<string, unknown>>(
   const normalized = normalizeScopeContext(scope);
   if (!isScopeEnforcementEnabled() && !hasScopeConstraints(normalized)) {
     return () => true;
+  }
+  if (isScopeEnforcementEnabled() && !hasScopeConstraints(normalized)) {
+    // BUG-001 fix: Empty scope under enforcement means no access, not universal access.
+    return () => false;
   }
 
   return (row: T) => {
@@ -517,35 +530,41 @@ export function reviewGovernanceAudit(
     created_at: string;
   }>;
 
-  // R4: Consolidate 4 separate aggregate queries into a single CTE query.
   const summaryRow = database.prepare(`
-    WITH filtered AS (
-      SELECT action, decision, created_at
-      FROM governance_audit
-      ${whereSql}
-    )
     SELECT
-      (SELECT COUNT(*) FROM filtered) AS total_matching,
-      (SELECT MAX(created_at) FROM filtered) AS latest_created_at,
-      (SELECT GROUP_CONCAT(action || ':' || cnt) FROM (SELECT action, COUNT(*) AS cnt FROM filtered GROUP BY action)) AS by_action,
-      (SELECT GROUP_CONCAT(decision || ':' || cnt) FROM (SELECT decision, COUNT(*) AS cnt FROM filtered GROUP BY decision)) AS by_decision
+      COUNT(*) AS total_matching,
+      MAX(created_at) AS latest_created_at
+    FROM governance_audit
+    ${whereSql}
   `).get(...params) as {
     total_matching: number;
     latest_created_at: string | null;
-    by_action: string | null;
-    by_decision: string | null;
   };
+  const aggregateRows = database.prepare(`
+    SELECT
+      'action' AS aggregate_kind,
+      action AS aggregate_key,
+      COUNT(*) AS aggregate_count
+    FROM governance_audit
+    ${whereSql}
+    GROUP BY action
+    UNION ALL
+    SELECT
+      'decision' AS aggregate_kind,
+      decision AS aggregate_key,
+      COUNT(*) AS aggregate_count
+    FROM governance_audit
+    ${whereSql}
+    GROUP BY decision
+  `).all(...params, ...params) as Array<{
+    aggregate_kind: 'action' | 'decision';
+    aggregate_key: string;
+    aggregate_count: number;
+  }>;
 
   const totalMatching = summaryRow.total_matching;
-  const byActionRows = (summaryRow.by_action ?? '').split(',').filter(Boolean).map((entry) => {
-    const [action, count] = entry.split(':');
-    return { action, count: Number(count) };
-  });
-  const byDecisionRows = (summaryRow.by_decision ?? '').split(',').filter(Boolean).map((entry) => {
-    const [decision, count] = entry.split(':');
-    return { decision: decision as GovernanceAuditEntry['decision'], count: Number(count) };
-  });
-  const latestRow = { latest_created_at: summaryRow.latest_created_at };
+  const byActionRows = aggregateRows.filter((row) => row.aggregate_kind === 'action');
+  const byDecisionRows = aggregateRows.filter((row) => row.aggregate_kind === 'decision');
 
   return {
     rows: rows.map((row) => ({
@@ -566,9 +585,9 @@ export function reviewGovernanceAudit(
     summary: {
       totalMatching,
       returnedRows: rows.length,
-      byAction: Object.fromEntries(byActionRows.map((row) => [row.action, row.count])),
-      byDecision: Object.fromEntries(byDecisionRows.map((row) => [row.decision, row.count])),
-      latestCreatedAt: latestRow.latest_created_at,
+      byAction: Object.fromEntries(byActionRows.map((row) => [row.aggregate_key, row.aggregate_count])),
+      byDecision: Object.fromEntries(byDecisionRows.map((row) => [row.aggregate_key as GovernanceAuditEntry['decision'], row.aggregate_count])),
+      latestCreatedAt: summaryRow.latest_created_at,
     },
   };
 }

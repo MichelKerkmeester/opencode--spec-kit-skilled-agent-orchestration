@@ -3,9 +3,11 @@
 // ───────────────────────────────────────────────────────────────
 // TEST: HANDLER MEMORY CONTEXT
 import { describe, it, expect, afterEach, vi } from 'vitest';
+import * as core from '../core';
 import * as layerDefs from '../lib/architecture/layer-definitions';
 import * as workingMemory from '../lib/cognitive/working-memory';
 import { handleMemorySearch } from '../handlers/memory-search';
+import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
 
 // Mock core/db-state to prevent real DB operations that cause timeouts.
 // This must be hoisted before any handler imports.
@@ -662,6 +664,31 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
 
   // SUITE: Error Response Structure
   describe('Error Response Structure (T524-7 to T524-8)', () => {
+    it('returns an E_INTERNAL envelope when database state verification throws', async () => {
+      vi.mocked(core.checkDatabaseUpdated).mockRejectedValueOnce(new Error('db unavailable'));
+
+      const result = await withTimeout(
+        handler.handleMemoryContext({ input: 'what is the auth flow?' }),
+        5000,
+        'db-state-envelope'
+      );
+
+      const parsed = JSON.parse(result.content[0].text) as {
+        data: {
+          code?: string;
+          error?: string;
+          details?: { layer?: string };
+        };
+        hints?: string[];
+      };
+
+      expect(result.isError).toBe(true);
+      expect(parsed.data.code).toBe('E_INTERNAL');
+      expect(parsed.data.error).toBe('Database state check failed: db unavailable');
+      expect(parsed.data.details?.layer).toBe('L1:Orchestration');
+      expect(parsed.hints).toContain('The memory database may be unavailable. Retry or check database connectivity.');
+    });
+
     it('T524-7: Empty input error includes L1 layer metadata', async () => {
       const result = await withTimeout(
         handler.handleMemoryContext({ input: '' }),
@@ -692,6 +719,40 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(Array.isArray(parsed.hints)).toBe(true);
       expect(parsed.hints!.length).toBeGreaterThan(0);
       expect(typeof parsed.hints![0]).toBe('string');
+    });
+
+    it('keeps successful retrievals when telemetry assembly throws', async () => {
+      vi.spyOn(retrievalTelemetry, 'isExtendedTelemetryEnabled').mockReturnValue(true);
+      vi.spyOn(retrievalTelemetry, 'createTelemetry').mockImplementation(() => {
+        throw new Error('telemetry exploded');
+      });
+
+      const result = await withTimeout(
+        handler.handleMemoryContext({ input: 'what is the auth flow?' }),
+        5000,
+        'telemetry-failsafe'
+      );
+
+      const parsed = parseResponse(result);
+      expect(result.isError).toBe(false);
+      expect(parsed.meta.mode).toBe('focused');
+      expect(parsed.meta).not.toHaveProperty('_telemetry');
+    });
+
+    it('keeps successful retrievals when session inferred mode persistence throws', async () => {
+      vi.spyOn(workingMemory, 'setSessionInferredMode').mockImplementation(() => {
+        throw new Error('session write failed');
+      });
+
+      const result = await withTimeout(
+        handler.handleMemoryContext({ input: 'what is the auth flow?' }),
+        5000,
+        'session-write-failsafe'
+      );
+
+      const parsed = parseResponse(result);
+      expect(result.isError).toBe(false);
+      expect(parsed.meta.mode).toBe('focused');
     });
   });
 });

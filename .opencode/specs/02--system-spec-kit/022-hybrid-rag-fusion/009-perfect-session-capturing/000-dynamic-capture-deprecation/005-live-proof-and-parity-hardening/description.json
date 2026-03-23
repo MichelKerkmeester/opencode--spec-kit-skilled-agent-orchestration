@@ -12,6 +12,7 @@
   "lastUpdated": "2026-03-21T13:24:03.923Z",
   "specId": "005",
   "folderSlug": "live-proof-and-parity-hardening",
+  "status": "In Progress",
   "parentChain": [
     "02--system-spec-kit",
     "022-hybrid-rag-fusion",

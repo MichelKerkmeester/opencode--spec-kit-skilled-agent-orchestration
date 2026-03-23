@@ -390,6 +390,9 @@ export function getSharedConflictStrategySummary(
  * @param definition - Shared-space values to persist.
  */
 export function upsertSharedSpace(database: Database.Database, definition: SharedSpaceDefinition): void {
+  if (!definition.spaceId?.trim() || !definition.tenantId?.trim()) {
+    throw new Error('E_VALIDATION: spaceId and tenantId must be non-empty strings');
+  }
   ensureSharedCollabRuntime(database);
   database.prepare(`
     INSERT INTO shared_spaces (space_id, tenant_id, name, rollout_enabled, rollout_cohort, kill_switch, metadata, updated_at)
@@ -420,6 +423,9 @@ export function upsertSharedSpace(database: Database.Database, definition: Share
  * @param membership - Membership values to persist.
  */
 export function upsertSharedMembership(database: Database.Database, membership: SharedMembership): void {
+  if (!membership.spaceId?.trim() || !membership.subjectId?.trim()) {
+    throw new Error('E_VALIDATION: spaceId and subjectId must be non-empty strings');
+  }
   ensureSharedCollabRuntime(database);
   database.prepare(`
     INSERT INTO shared_space_members (space_id, subject_type, subject_id, role, updated_at)
@@ -488,11 +494,44 @@ export function assertSharedSpaceAccess(
   spaceId: string,
   requiredRole: SharedRole = 'viewer',
 ): { allowed: boolean; reason?: string } {
-  ensureSharedCollabRuntime(database);
   const normalizedScope = normalizeScopeContext(scope);
+  const auditAccessDecision = (
+    decision: 'allow' | 'deny',
+    reason: string,
+    metadata?: Record<string, unknown>,
+  ): void => {
+    recordGovernanceAudit(database, {
+      action: 'shared_space_access',
+      decision,
+      reason,
+      tenantId: normalizedScope.tenantId,
+      userId: normalizedScope.userId,
+      agentId: normalizedScope.agentId,
+      sessionId: normalizedScope.sessionId,
+      sharedSpaceId: spaceId,
+      metadata: {
+        requiredRole,
+        ...(metadata ?? {}),
+      },
+    });
+  };
+  const deny = (reason: string, metadata?: Record<string, unknown>): { allowed: false; reason: string } => {
+    auditAccessDecision('deny', reason, metadata);
+    return { allowed: false, reason };
+  };
+  const allow = (metadata?: Record<string, unknown>): { allowed: true } => {
+    auditAccessDecision('allow', 'membership_verified', metadata);
+    return { allowed: true };
+  };
+
+  if (!spaceId?.trim()) {
+    return deny('shared_space_id_required');
+  }
+
+  ensureSharedCollabRuntime(database);
 
   if (!isSharedMemoryEnabled(database)) {
-    return { allowed: false, reason: 'shared_memory_disabled' };
+    return deny('shared_memory_disabled');
   }
 
   const space = database.prepare(`
@@ -502,28 +541,30 @@ export function assertSharedSpaceAccess(
   `).get(spaceId) as { tenant_id?: string; rollout_enabled?: number; kill_switch?: number } | undefined;
 
   if (!space) {
-    return { allowed: false, reason: 'shared_space_not_found' };
+    return deny('shared_space_not_found');
   }
   if (space.kill_switch === 1) {
-    return { allowed: false, reason: 'shared_space_kill_switch' };
+    return deny('shared_space_kill_switch');
   }
   if (space.rollout_enabled !== 1) {
-    return { allowed: false, reason: 'shared_space_rollout_disabled' };
+    return deny('shared_space_rollout_disabled');
   }
   if (normalizedScope.tenantId && space.tenant_id !== normalizedScope.tenantId) {
-    return { allowed: false, reason: 'shared_space_tenant_mismatch' };
+    return deny('shared_space_tenant_mismatch', {
+      spaceTenantId: space.tenant_id ?? null,
+    });
   }
   if (isGovernanceGuardrailsEnabled() && !normalizedScope.tenantId) {
-    return { allowed: false, reason: 'shared_space_tenant_required' };
+    return deny('shared_space_tenant_required');
   }
 
   const allowed = getAllowedSharedSpaceIds(database, normalizedScope);
   if (!allowed.has(spaceId)) {
-    return { allowed: false, reason: 'shared_space_membership_required' };
+    return deny('shared_space_membership_required');
   }
 
   if (requiredRole === 'viewer') {
-    return { allowed: true };
+    return allow();
   }
 
   const membership = database.prepare(`
@@ -545,16 +586,16 @@ export function assertSharedSpaceAccess(
 
   const role = membership?.role;
   if (!role) {
-    return { allowed: false, reason: 'shared_space_membership_required' };
+    return deny('shared_space_membership_required');
   }
   if (requiredRole === 'owner' && role !== 'owner') {
-    return { allowed: false, reason: 'shared_space_owner_required' };
+    return deny('shared_space_owner_required', { resolvedRole: role });
   }
   if (requiredRole === 'editor' && role === 'viewer') {
-    return { allowed: false, reason: 'shared_space_editor_required' };
+    return deny('shared_space_editor_required', { resolvedRole: role });
   }
 
-  return { allowed: true };
+  return allow({ resolvedRole: role });
 }
 
 /**

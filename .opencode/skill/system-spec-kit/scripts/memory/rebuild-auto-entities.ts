@@ -22,7 +22,7 @@ interface RebuildAutoEntitiesResult {
   catalogEntriesRebuilt: number;
 }
 
-const { rebuildAutoEntities } = require('../../mcp_server/lib/extraction/entity-extractor') as {
+const { rebuildAutoEntities } = require('@spec-kit/mcp-server/api') as {
   rebuildAutoEntities: (
     database: Database.Database,
     options: ParsedArgs,

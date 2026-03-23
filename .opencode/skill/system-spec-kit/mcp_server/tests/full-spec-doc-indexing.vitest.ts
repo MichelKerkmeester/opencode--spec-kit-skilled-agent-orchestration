@@ -143,10 +143,10 @@ describe('Spec 126 Phase 2: Type Configuration', () => {
       expect(config!.defaultImportanceWeight).toBe(0.8);
     });
 
-    it('plan.md config: procedural, important, 0.7', () => {
+    it('plan.md config: semantic, important, 0.7', () => {
       const config = getSpecDocumentConfig('plan' as DocumentType);
       expect(config).not.toBeNull();
-      expect(config!.memoryType).toBe('procedural');
+      expect(config!.memoryType).toBe('semantic');
       expect(config!.defaultImportanceTier).toBe('important');
       expect(config!.defaultImportanceWeight).toBe(0.7);
     });
@@ -157,6 +157,22 @@ describe('Spec 126 Phase 2: Type Configuration', () => {
       expect(config!.memoryType).toBe('semantic');
       expect(config!.defaultImportanceTier).toBe('important');
       expect(config!.defaultImportanceWeight).toBe(0.8);
+    });
+
+    it('implementation-summary.md config: semantic, normal, 0.6', () => {
+      const config = getSpecDocumentConfig('implementation_summary' as DocumentType);
+      expect(config).not.toBeNull();
+      expect(config!.memoryType).toBe('semantic');
+      expect(config!.defaultImportanceTier).toBe('normal');
+      expect(config!.defaultImportanceWeight).toBe(0.6);
+    });
+
+    it('research.md config: semantic, normal, 0.6', () => {
+      const config = getSpecDocumentConfig('research' as DocumentType);
+      expect(config).not.toBeNull();
+      expect(config!.memoryType).toBe('semantic');
+      expect(config!.defaultImportanceTier).toBe('normal');
+      expect(config!.defaultImportanceWeight).toBe(0.6);
     });
   });
 

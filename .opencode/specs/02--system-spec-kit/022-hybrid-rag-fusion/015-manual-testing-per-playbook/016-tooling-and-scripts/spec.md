@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: 016-Tooling-and-Scripts Manual Testing"
-description: "Manual test execution tracking for 59 exact scenario IDs across 28 tooling-and-scripts playbook scenarios, covering phase workflow, session capturing pipeline quality, tooling utilities, and JSON mode structured summary hardening."
+description: "Manual test execution tracking for 61 exact scenario IDs across 29 tooling-and-scripts playbook scenarios, covering phase workflow, session capturing pipeline quality, tooling utilities, template compliance enforcement, and JSON mode structured summary hardening."
 trigger_phrases:
   - "tooling scripts manual testing"
   - "016 testing"
@@ -30,8 +30,8 @@ contextType: "general"
 | **Predecessor** | [015-retrieval-enhancements](../015-retrieval-enhancements/spec.md) |
 | **Successor** | [017-governance](../017-governance/spec.md) |
 | **Playbook Category** | 16--tooling-and-scripts |
-| **Scenario Files** | 27 |
-| **Total Exact IDs** | 59 |
+| **Scenario Files** | 29 |
+| **Total Exact IDs** | 61 |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -40,10 +40,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The tooling-and-scripts category (16) contains 28 scenario files covering 59 exact scenario IDs that have not been manually tested against the live system. This is the second-largest phase by exact ID count, with two major sub-scenario expansions: M-007 (session capturing pipeline quality) with 17 sub-IDs and 153 (JSON mode structured summary hardening) with 15 sub-IDs. Each requires systematic validation with documented evidence.
+The tooling-and-scripts category (16) contains 29 scenario files covering 61 exact scenario IDs that have not been manually tested against the live system. This is the second-largest phase by exact ID count, with two major sub-scenario expansions: M-007 (session capturing pipeline quality) with 17 sub-IDs and 153 (JSON mode structured summary hardening) with 15 sub-IDs. Each requires systematic validation with documented evidence.
 
 ### Purpose
-Execute every scenario in the 16--tooling-and-scripts playbook category, verify each produces the expected outcome, and record pass/fail evidence for all 59 exact IDs.
+Execute every scenario in the 16--tooling-and-scripts playbook category, verify each produces the expected outcome, and record pass/fail evidence for all 61 exact IDs.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -52,7 +52,7 @@ Execute every scenario in the 16--tooling-and-scripts playbook category, verify 
 ## 3. SCOPE
 
 ### In Scope
-- All 59 exact scenario IDs from 16--tooling-and-scripts playbook category
+- All 61 exact scenario IDs from 16--tooling-and-scripts playbook category
 - Phase workflow scenarios (PHASE-001 through PHASE-005)
 - Main-agent review and verdict handoff (M-004)
 - Session capturing pipeline quality parent and sub-scenarios (M-007, M-007a through M-007q)
@@ -64,7 +64,7 @@ Execute every scenario in the 16--tooling-and-scripts playbook category, verify 
 - Scenarios belonging to other playbook categories
 - Automated test creation (manual testing phase)
 
-### Scenario ID Master List (59 IDs)
+### Scenario ID Master List (61 IDs)
 
 #### Group A: Phase Workflow (5 IDs)
 
@@ -105,7 +105,7 @@ Execute every scenario in the 16--tooling-and-scripts playbook category, verify 
 | 23 | M-007p | Structured-summary JSON coverage and file-backed authority | (sub-scenario of M-007) |
 | 24 | M-007q | Phase 018 output-quality hardening | (sub-scenario of M-007) |
 
-#### Group D: Tooling and Script Utilities (20 IDs)
+#### Group D: Tooling and Script Utilities (21 IDs)
 
 | # | ID | Scenario | Source File |
 |---|-----|----------|-------------|
@@ -129,29 +129,30 @@ Execute every scenario in the 16--tooling-and-scripts playbook category, verify 
 | 42 | 151 | MODULE_MAP.md accuracy validation | 151-module-map-accuracy.md |
 | 43 | 152 | No symlinks in lib/ tree | 152-no-symlinks-in-lib-tree.md |
 | 44 | 154 | JSON-primary deprecation posture | 154-json-primary-deprecation-posture.md |
+| 45 | 181 | Template Compliance Contract Enforcement | 181-template-compliance-contract-enforcement.md |
 
 #### Group E: JSON Mode Structured Summary Hardening (16 IDs: 1 parent + 15 sub-scenarios)
 
 | # | ID | Scenario | Source File |
 |---|-----|----------|-------------|
-| 45 | 153 | JSON mode structured summary hardening (parent) | 153-json-mode-hybrid-enrichment.md |
-| 46 | 153-A | Post-save quality review output verification | (sub-scenario of 153) |
-| 47 | 153-B | sessionSummary propagates to frontmatter title | (sub-scenario of 153) |
-| 48 | 153-C | triggerPhrases propagate to frontmatter trigger_phrases | (sub-scenario of 153) |
-| 49 | 153-D | keyDecisions propagate to non-zero decision_count | (sub-scenario of 153) |
-| 50 | 153-E | importanceTier propagates to frontmatter importance_tier | (sub-scenario of 153) |
-| 51 | 153-F | contextType propagates for full documented valid enum | (sub-scenario of 153) |
-| 52 | 153-G | Contamination filter cleans hedging in sessionSummary | (sub-scenario of 153) |
-| 53 | 153-H | Fast-path filesModified to FILES conversion | (sub-scenario of 153) |
-| 54 | 153-I | Unknown field warning for typos | (sub-scenario of 153) |
-| 55 | 153-J | contextType enum rejection | (sub-scenario of 153) |
-| 56 | 153-K | Quality score discriminates contaminated vs clean | (sub-scenario of 153) |
-| 57 | 153-L | Trigger phrase filter removes path fragments | (sub-scenario of 153) |
-| 58 | 153-M | Embedding retry stats visible in memory_health | (sub-scenario of 153) |
-| 59 | 153-N | Default-on pre-save overlap warning uses exact content match | (sub-scenario of 153) |
-| 60 | 153-O | projectPhase override propagates to frontmatter | (sub-scenario of 153) |
+| 46 | 153 | JSON mode structured summary hardening (parent) | 153-json-mode-hybrid-enrichment.md |
+| 47 | 153-A | Post-save quality review output verification | (sub-scenario of 153) |
+| 48 | 153-B | sessionSummary propagates to frontmatter title | (sub-scenario of 153) |
+| 49 | 153-C | triggerPhrases propagate to frontmatter trigger_phrases | (sub-scenario of 153) |
+| 50 | 153-D | keyDecisions propagate to non-zero decision_count | (sub-scenario of 153) |
+| 51 | 153-E | importanceTier propagates to frontmatter importance_tier | (sub-scenario of 153) |
+| 52 | 153-F | contextType propagates for full documented valid enum | (sub-scenario of 153) |
+| 53 | 153-G | Contamination filter cleans hedging in sessionSummary | (sub-scenario of 153) |
+| 54 | 153-H | Fast-path filesModified to FILES conversion | (sub-scenario of 153) |
+| 55 | 153-I | Unknown field warning for typos | (sub-scenario of 153) |
+| 56 | 153-J | contextType enum rejection | (sub-scenario of 153) |
+| 57 | 153-K | Quality score discriminates contaminated vs clean | (sub-scenario of 153) |
+| 58 | 153-L | Trigger phrase filter removes path fragments | (sub-scenario of 153) |
+| 59 | 153-M | Embedding retry stats visible in memory_health | (sub-scenario of 153) |
+| 60 | 153-N | Default-on pre-save overlap warning uses exact content match | (sub-scenario of 153) |
+| 61 | 153-O | projectPhase override propagates to frontmatter | (sub-scenario of 153) |
 
-### Feature Catalog Cross-Reference (17 features)
+### Feature Catalog Cross-Reference (18 features)
 
 | # | Feature Catalog Entry | Mapped Scenario IDs |
 |---|----------------------|---------------------|
@@ -172,6 +173,7 @@ Execute every scenario in the 16--tooling-and-scripts playbook category, verify 
 | 15 | 15-module-boundary-map.md | 138, 151 |
 | 16 | 16-json-mode-hybrid-enrichment.md | 153 group |
 | 17 | 17-json-primary-deprecation-posture.md | 154 |
+| 18 | 18-template-compliance-contract-enforcement.md | 181 |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -186,7 +188,7 @@ Execute every scenario in the 16--tooling-and-scripts playbook category, verify 
 | REQ-001 | Execute all 5 PHASE-xxx scenarios (PHASE-001 through PHASE-005) | Each produces documented pass/fail evidence |
 | REQ-002 | Execute M-004 main-agent review scenario | Pass/fail evidence recorded |
 | REQ-003 | Execute M-007 parent + all 17 sub-scenarios (M-007a through M-007q) | Each sub-scenario individually verified with evidence |
-| REQ-004 | Execute all 20 tooling utility scenarios (061, 062, 070, 089, 099, 108, 113, 127, 128, 135, 136, 137, 138, 139, 147, 149, 150, 151, 152, 154) | Each produces documented pass/fail evidence |
+| REQ-004 | Execute all 21 tooling utility scenarios (061, 062, 070, 089, 099, 108, 113, 127, 128, 135, 136, 137, 138, 139, 147, 149, 150, 151, 152, 154, 181) | Each produces documented pass/fail evidence |
 | REQ-005 | Execute 153 parent + all 15 sub-scenarios (153-A through 153-O) | Each sub-scenario individually verified with evidence |
 
 ### P1 - Required (complete OR user-approved deferral)
@@ -202,7 +204,7 @@ Execute every scenario in the 16--tooling-and-scripts playbook category, verify 
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 59 exact scenario IDs executed with individual pass/fail evidence
+- **SC-001**: All 61 exact scenario IDs executed with individual pass/fail evidence
 - **SC-002**: Zero untested scenarios remaining in 16--tooling-and-scripts
 - **SC-003**: Checklist fully populated with evidence references for each scenario group
 <!-- /ANCHOR:success-criteria -->
@@ -229,7 +231,7 @@ Execute every scenario in the 16--tooling-and-scripts playbook category, verify 
 
 ### Performance
 - **NFR-P01**: Each individual scenario should complete within 120 seconds
-- **NFR-P02**: Full phase execution target under 6 hours (60 scenarios with sub-scenarios)
+- **NFR-P02**: Full phase execution target under 6 hours (61 scenarios with sub-scenarios)
 
 ### Reliability
 - **NFR-R01**: Evidence must be reproducible (exact commands documented)
@@ -260,7 +262,7 @@ Execute every scenario in the 16--tooling-and-scripts playbook category, verify 
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 23/25 | 60 exact IDs across 28 scenario files, 5 distinct groups |
+| Scope | 23/25 | 61 exact IDs across 29 scenario files, 5 distinct groups |
 | Risk | 15/25 | Multi-CLI dependencies, JSON pipeline complexity, sandbox management |
 | Research | 7/20 | Scenarios are pre-defined in playbook, minimal discovery needed |
 | **Total** | **45/70** | **Level 2** |
@@ -271,5 +273,5 @@ Execute every scenario in the 16--tooling-and-scripts playbook category, verify 
 <!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
-- None at this time. All 60 scenario IDs and their groupings are defined by the playbook.
+- None at this time. All 61 scenario IDs and their groupings are defined by the playbook.
 <!-- /ANCHOR:questions -->

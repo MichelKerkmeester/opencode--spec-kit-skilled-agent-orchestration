@@ -2,6 +2,8 @@
 // MODULE: Shared Memory Handler Tests
 // ───────────────────────────────────────────────────────────────
 import Database from 'better-sqlite3';
+import * as fsPromises from 'fs/promises';
+import * as path from 'path';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 // ───────────────────────────────────────────────────────────────
@@ -21,16 +23,20 @@ vi.mock('../utils', () => ({
 }));
 
 import {
+  handleSharedMemoryEnable,
+  handleSharedMemoryStatus,
   handleSharedSpaceMembershipSet,
   handleSharedSpaceUpsert,
 } from '../handlers/shared-memory';
 
 interface SharedMemoryEnvelope extends Record<string, unknown> {
-  data: {
+  data: Record<string, unknown> & {
     created?: boolean;
     ownerBootstrap?: boolean;
     killSwitch?: boolean;
     role?: string;
+    error?: string;
+    code?: string;
     details?: {
       reason?: string;
     };
@@ -44,9 +50,11 @@ function getDb(): Database.Database {
   return dbHolder.current;
 }
 
-function parseEnvelope(response: Awaited<ReturnType<typeof handleSharedSpaceUpsert>>): SharedMemoryEnvelope {
+function parseEnvelope(response: { content: Array<{ text: string }> }): SharedMemoryEnvelope {
   return JSON.parse(response.content[0].text) as SharedMemoryEnvelope;
 }
+
+const sharedSpacesReadmePath = path.resolve(__dirname, '../../shared-spaces/README.md');
 
 // ───────────────────────────────────────────────────────────────
 // 2. TESTS
@@ -61,6 +69,7 @@ describe('shared-memory admin handlers', () => {
 
   afterEach(() => {
     delete process.env.SPECKIT_MEMORY_SHARED_MEMORY;
+    vi.restoreAllMocks();
     dbHolder.current?.close();
     dbHolder.current = null;
   });
@@ -109,6 +118,33 @@ describe('shared-memory admin handlers', () => {
     const envelope = parseEnvelope(response);
     expect(envelope.data.created).toBe(false);
     expect(envelope.data.killSwitch).toBe(true);
+  });
+
+  it('rolls back shared-space creation when owner bootstrap fails', async () => {
+    const db = getDb();
+    const originalPrepare = db.prepare.bind(db);
+    vi.spyOn(db, 'prepare').mockImplementation((sql: string) => {
+      if (sql.includes('INSERT INTO shared_space_members')) {
+        throw new Error('membership insert failed');
+      }
+      return originalPrepare(sql);
+    });
+
+    const response = await handleSharedSpaceUpsert({
+      spaceId: 'space-rollback',
+      tenantId: 'tenant-a',
+      name: 'Rollback',
+      actorUserId: 'user-owner',
+    });
+
+    const envelope = parseEnvelope(response);
+    expect(response.isError).toBe(true);
+    expect(envelope.data.error).toBe('Shared space upsert failed: membership insert failed');
+    expect(db.prepare(`
+      SELECT COUNT(*) AS count
+      FROM shared_spaces
+      WHERE space_id = ?
+    `).get('space-rollback')).toEqual({ count: 0 });
   });
 
   it('rejects updates from non-owners', async () => {
@@ -227,5 +263,55 @@ describe('shared-memory admin handlers', () => {
     const envelope = parseEnvelope(response);
     expect(response.isError).toBe(true);
     expect(envelope.data.details?.reason).toBe('shared_space_tenant_mismatch');
+  });
+
+  it('returns an internal error when membership persistence throws unexpectedly', async () => {
+    const db = getDb();
+    db.close();
+    dbHolder.current = null;
+
+    const response = await handleSharedSpaceMembershipSet({
+      spaceId: 'space-1',
+      tenantId: 'tenant-a',
+      actorUserId: 'user-owner',
+      subjectType: 'user',
+      subjectId: 'user-2',
+      role: 'viewer',
+    });
+
+    const envelope = parseEnvelope(response);
+    expect(response.isError).toBe(true);
+    expect(envelope.data.error).toContain('Shared space membership update failed');
+    expect(envelope.data.code).toBe('E_INTERNAL');
+  });
+
+  it('returns an internal error when shared-memory status lookup throws unexpectedly', async () => {
+    const db = getDb();
+    db.close();
+    dbHolder.current = null;
+
+    const response = await handleSharedMemoryStatus({
+      tenantId: 'tenant-a',
+      userId: 'user-owner',
+    });
+
+    const envelope = parseEnvelope(response);
+    expect(response.isError).toBe(true);
+    expect(envelope.data.error).toContain('Shared memory status failed');
+    expect(envelope.data.code).toBe('E_INTERNAL');
+  });
+
+  it('returns an internal error before README checks when shared-memory enablement fails', async () => {
+    const db = getDb();
+    db.close();
+    dbHolder.current = null;
+
+    const response = await handleSharedMemoryEnable({});
+
+    const envelope = parseEnvelope(response);
+    expect(response.isError).toBe(true);
+    expect(envelope.data.error).toContain('Shared memory enable failed');
+    expect(envelope.data.code).toBe('E_INTERNAL');
+    await expect(fsPromises.access(sharedSpacesReadmePath)).rejects.toThrow();
   });
 });

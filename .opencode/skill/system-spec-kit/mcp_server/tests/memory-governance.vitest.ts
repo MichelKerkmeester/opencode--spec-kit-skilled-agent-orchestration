@@ -47,6 +47,18 @@ describe('Phase 5 memory governance', () => {
     expect(filtered.map((row) => row.id)).toEqual([1]);
   });
 
+  it('denies all rows when enforcement is on and scope is empty', () => {
+    process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT = 'true';
+    const rows = [
+      { tenant_id: 'a', user_id: 'u1', agent_id: null, session_id: null, shared_space_id: null },
+      { tenant_id: 'b', user_id: 'u2', agent_id: null, session_id: null, shared_space_id: null },
+    ];
+
+    const filtered = filterRowsByScope(rows, {});
+
+    expect(filtered).toHaveLength(0);
+  });
+
   it('honors explicit session scope even when global scope enforcement is disabled', () => {
     const filtered = filterRowsByScope([
       { id: 1, tenant_id: 'tenant-a', user_id: 'user-1', session_id: 'session-1' },
@@ -309,5 +321,35 @@ describe('Phase 5 memory governance', () => {
       FROM memory_index
       ORDER BY id ASC
     `).all()).toEqual([{ id: 2 }]);
+  });
+
+  it('retention sweep returns zero when enforcement is on and scope is empty', () => {
+    process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT = 'true';
+    const db = new Database(':memory:');
+
+    ensureGovernanceRuntime(db);
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS memory_index (
+        id INTEGER PRIMARY KEY,
+        tenant_id TEXT,
+        user_id TEXT,
+        agent_id TEXT,
+        session_id TEXT,
+        shared_space_id TEXT,
+        delete_after TEXT
+      )
+    `);
+    db.prepare(`
+      INSERT INTO memory_index (id, tenant_id, delete_after)
+      VALUES (1, 'tenant-a', datetime('now', '-1 hour'))
+    `).run();
+
+    const result = runRetentionSweep(db, {});
+
+    expect(result.deleted).toBe(0);
+    expect(result.scanned).toBe(0);
+    expect(db.prepare(`SELECT id FROM memory_index`).all()).toEqual([{ id: 1 }]);
+
+    db.close();
   });
 });

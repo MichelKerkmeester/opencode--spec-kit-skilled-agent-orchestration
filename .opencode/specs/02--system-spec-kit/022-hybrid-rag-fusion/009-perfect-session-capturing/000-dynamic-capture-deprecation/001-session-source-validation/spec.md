@@ -24,7 +24,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 1 of 3 (000-dynamic-capture-deprecation branch) |
+| **Phase** | 1 of 5 (000-dynamic-capture-deprecation branch) |
 | **Predecessor** | 010-integration-testing |
 | **Successor** | 002-outsourced-agent-handback |
 | **Handoff Criteria** | validate.sh + test suite passing |

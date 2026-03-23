@@ -53,3 +53,30 @@ export {
   initCheckpoints,
   initAccessTracker,
 } from './storage';
+
+// --- Folder discovery (used by scripts/spec-folder, scripts/core) ---
+export {
+  generatePerFolderDescription,
+  savePerFolderDescription,
+  loadPerFolderDescription,
+  extractKeywords,
+  slugifyFolderName,
+} from '../lib/search/folder-discovery';
+export type { PerFolderDescription } from '../lib/search/folder-discovery';
+
+// --- Entity extraction (used by scripts/memory) ---
+export {
+  extractEntities,
+  rebuildAutoEntities,
+} from '../lib/extraction/entity-extractor';
+
+// --- Performance benchmarking support (used by scripts/evals) ---
+export * as sessionBoost from '../lib/search/session-boost';
+export * as causalBoost from '../lib/search/causal-boost';
+export * as workingMemory from '../lib/cognitive/working-memory';
+export {
+  initExtractionAdapter,
+  getExtractionMetrics,
+  resetExtractionMetrics,
+} from '../lib/extraction/extraction-adapter';
+export type { ExtractionMetrics } from '../lib/extraction/extraction-adapter';

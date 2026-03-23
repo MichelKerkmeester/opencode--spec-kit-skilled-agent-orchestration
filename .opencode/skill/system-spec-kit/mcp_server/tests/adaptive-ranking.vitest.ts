@@ -19,13 +19,13 @@ describe('Phase 4 adaptive ranking shadow proposals', () => {
     resetAdaptiveThresholdOverrides();
   });
 
-  it('defaults adaptive ranking to enabled shadow mode', () => {
+  it('defaults adaptive ranking to disabled mode until explicitly enabled', () => {
     const db = new Database(':memory:');
     ensureAdaptiveTables(db);
 
     recordAdaptiveSignal(db, { memoryId: 1, signalType: 'access', signalValue: 1 });
 
-    expect(db.prepare('SELECT COUNT(*) AS count FROM adaptive_signal_events').get()).toEqual({ count: 1 });
+    expect(db.prepare('SELECT COUNT(*) AS count FROM adaptive_signal_events').get()).toEqual({ count: 0 });
   });
 
   it('records bounded shadow proposals without mutating production order', () => {

@@ -31,9 +31,9 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Executed comprehensive code analysis across all 59 exact scenario IDs in the 16--tooling-and-scripts playbook category. Each scenario was verified against the live codebase with file:line evidence citations. The analysis covered 29 playbook scenario files, 18 feature catalog entries, MCP server source code (585+ TypeScript files), scripts source code, shared library, and configuration files.
+Executed comprehensive code analysis across the documented 61 exact scenario IDs in the 16--tooling-and-scripts playbook category. Each scenario was verified against the live codebase with file:line evidence citations. The analysis covered 29 playbook scenario files, 18 feature catalog entries, MCP server source code (585+ TypeScript files), scripts source code, shared library, and configuration files.
 
-### Verdict Table (59 IDs)
+### Verdict Table (historical execution record)
 
 #### Group A: Phase Workflow (5 IDs)
 

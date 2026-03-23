@@ -1011,7 +1011,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   let memoryNameHistoryForSlug: readonly string[] = [];
   try {
     const { loadPerFolderDescription: loadPFDForSlug } = await import(
-      '@spec-kit/mcp-server/lib/search/folder-discovery'
+      '@spec-kit/mcp-server/api'
     );
     const pfDesc = loadPFDForSlug(path.resolve(specFolder));
     if (pfDesc?.memoryNameHistory) {
@@ -1507,7 +1507,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
   if (ctxFileWritten) {
     try {
       const { loadPerFolderDescription: loadPFD, savePerFolderDescription: savePFD, generatePerFolderDescription: genPFD } = await import(
-        '@spec-kit/mcp-server/lib/search/folder-discovery'
+        '@spec-kit/mcp-server/api'
       );
       const specFolderAbsolute = path.resolve(specFolder);
       let existing = loadPFD(specFolderAbsolute);

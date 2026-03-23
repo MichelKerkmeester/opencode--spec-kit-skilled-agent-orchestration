@@ -6,7 +6,14 @@
 import type Database from 'better-sqlite3';
 
 import { delete_memory_from_database } from '../search/vector-index-mutations';
-import { filterRowsByScope, ensureGovernanceRuntime, recordGovernanceAudit, type ScopeContext } from './scope-governance';
+import {
+  ensureGovernanceRuntime,
+  filterRowsByScope,
+  hasScopeConstraints,
+  isScopeEnforcementEnabled,
+  recordGovernanceAudit,
+  type ScopeContext,
+} from './scope-governance';
 import { getAllowedSharedSpaceIds } from '../collab/shared-spaces';
 
 // Feature catalog: Hierarchical scope governance, governed ingest, retention, and audit
@@ -31,6 +38,10 @@ export interface RetentionSweepResult {
  */
 export function runRetentionSweep(database: Database.Database, scope: ScopeContext = {}): RetentionSweepResult {
   ensureGovernanceRuntime(database);
+  if (isScopeEnforcementEnabled() && !hasScopeConstraints(scope)) {
+    // BUG-002 fix: Prevent unscoped retention sweeps from touching cross-tenant data.
+    return { scanned: 0, deleted: 0, skipped: 0, deletedIds: [] };
+  }
   const expiredRows = database.prepare(`
     SELECT id, tenant_id, user_id, agent_id, session_id, shared_space_id
     FROM memory_index

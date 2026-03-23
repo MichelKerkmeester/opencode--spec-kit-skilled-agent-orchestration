@@ -32,7 +32,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Branch** | `003-multi-cli-parity` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 3 of 3 (000-dynamic-capture-deprecation branch) |
+| **Phase** | 3 of 5 (000-dynamic-capture-deprecation branch) |
 | **Predecessor** | 002-outsourced-agent-handback |
 | **Successor** | 004-source-capabilities-and-structured-preference |
 | **Handoff Criteria** | validate.sh + test suite passing |

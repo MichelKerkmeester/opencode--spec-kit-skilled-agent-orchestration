@@ -1,5 +1,5 @@
 import Database from 'better-sqlite3';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { createSchema, ensureSchemaVersion, validateLineageSchemaSupport } from '../lib/search/vector-index-schema';
 import { recordHistory } from '../lib/storage/history';
@@ -287,5 +287,134 @@ describe('Memory lineage state', () => {
     expect(report.missingPredecessors).toContain(11);
     expect(report.duplicateActiveLogicalKeys).toContain('specs/015-memory-state::/tmp/a.md');
     expect(report.projectionMismatches).toContain('specs/015-memory-state::/tmp/a.md::projection-mismatch');
+  });
+
+  it('rejects invalid transition event and predecessor combinations before persistence', () => {
+    const filePath = '/tmp/specs/015-memory-state/memory/validation.md';
+    insertMemory(database, {
+      id: 41,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Validation v1',
+      createdAt: '2026-03-13T08:00:00.000Z',
+    });
+    insertMemory(database, {
+      id: 42,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Validation v2',
+      createdAt: '2026-03-13T09:00:00.000Z',
+    });
+    insertMemory(database, {
+      id: 43,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Validation v3',
+      createdAt: '2026-03-13T10:00:00.000Z',
+    });
+
+    recordLineageVersion(database, {
+      memoryId: 41,
+      actor: 'ops:lineage-validation',
+      effectiveAt: '2026-03-13T08:00:00.000Z',
+      transitionEvent: 'CREATE',
+    });
+
+    expect(() => recordLineageVersion(database, {
+      memoryId: 42,
+      actor: 'ops:lineage-validation',
+      predecessorMemoryId: 41,
+      effectiveAt: '2026-03-13T09:00:00.000Z',
+      transitionEvent: 'CREATE',
+    })).toThrow(/CREATE transition must not specify a predecessor/);
+
+    expect(() => recordLineageVersion(database, {
+      memoryId: 43,
+      actor: 'ops:lineage-validation',
+      effectiveAt: '2026-03-13T10:00:00.000Z',
+      transitionEvent: 'SUPERSEDE',
+    })).toThrow(/SUPERSEDE transition requires a predecessor/);
+
+    const lineageCount = database.prepare('SELECT COUNT(*) AS count FROM memory_lineage').get() as { count: number };
+    expect(lineageCount.count).toBe(1);
+  });
+
+  it('rejects backwards valid_from timestamps and warns when a predecessor is already superseded', () => {
+    const filePath = '/tmp/specs/015-memory-state/memory/timestamps.md';
+    insertMemory(database, {
+      id: 51,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Timestamps v1',
+      createdAt: '2026-03-13T08:00:00.000Z',
+    });
+    insertMemory(database, {
+      id: 52,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Timestamps v2',
+      createdAt: '2026-03-13T09:00:00.000Z',
+    });
+    insertMemory(database, {
+      id: 53,
+      specFolder: 'specs/015-memory-state',
+      filePath,
+      title: 'Timestamps v3',
+      createdAt: '2026-03-13T10:00:00.000Z',
+    });
+
+    recordLineageVersion(database, {
+      memoryId: 51,
+      actor: 'ops:lineage-validation',
+      effectiveAt: '2026-03-13T08:00:00.000Z',
+      transitionEvent: 'CREATE',
+    });
+
+    expect(() => recordLineageVersion(database, {
+      memoryId: 52,
+      actor: 'ops:lineage-validation',
+      predecessorMemoryId: 51,
+      effectiveAt: '2026-03-13T07:30:00.000Z',
+      transitionEvent: 'SUPERSEDE',
+    })).toThrow(/is earlier than predecessor valid_from/);
+
+    recordLineageVersion(database, {
+      memoryId: 52,
+      actor: 'ops:lineage-validation',
+      predecessorMemoryId: 51,
+      effectiveAt: '2026-03-13T09:00:00.000Z',
+      transitionEvent: 'SUPERSEDE',
+    });
+
+    database.prepare(`
+      UPDATE memory_lineage
+      SET valid_to = ?
+      WHERE memory_id = 52
+    `).run('2026-03-13T09:30:00.000Z');
+
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    let warned = false;
+    try {
+      recordLineageVersion(database, {
+        memoryId: 53,
+        actor: 'ops:lineage-validation',
+        predecessorMemoryId: 52,
+        effectiveAt: '2026-03-13T10:00:00.000Z',
+        transitionEvent: 'UPDATE',
+      });
+      warned = errorSpy.mock.calls.some((call) => String(call[0]).includes('already superseded'));
+    } finally {
+      errorSpy.mockRestore();
+    }
+
+    expect(warned).toBe(true);
+
+    const predecessorRow = database.prepare(`
+      SELECT valid_to, superseded_by_memory_id
+      FROM memory_lineage
+      WHERE memory_id = 52
+    `).get() as { valid_to: string | null; superseded_by_memory_id: number | null };
+    expect(predecessorRow.valid_to).toBe('2026-03-13T09:30:00.000Z');
+    expect(predecessorRow.superseded_by_memory_id).toBe(53);
   });
 });

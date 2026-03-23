@@ -16,7 +16,7 @@ import {
   upsertSharedSpace,
 } from '../lib/collab/shared-spaces';
 
-import * as fs from 'fs';
+import { access, mkdir, writeFile } from 'fs/promises';
 import * as path from 'path';
 
 // Feature catalog: Shared-memory rollout, deny-by-default membership, and kill switch
@@ -109,6 +109,23 @@ function createSharedSpaceAuthError(
   });
 }
 
+function createSharedMemoryInternalError(
+  tool: 'shared_space_upsert' | 'shared_space_membership_set' | 'shared_memory_status' | 'shared_memory_enable',
+  prefix: string,
+  error: unknown,
+  hint: string,
+): MCPResponse {
+  const message = error instanceof Error ? error.message : String(error);
+  return createMCPErrorResponse({
+    tool,
+    error: `${prefix}: ${message}`,
+    code: 'E_INTERNAL',
+    recovery: {
+      hint,
+    },
+  });
+}
+
 /**
  * Persist a shared-space definition for rollout and membership checks.
  *
@@ -116,72 +133,90 @@ function createSharedSpaceAuthError(
  * @returns MCP success response describing the saved shared space.
  */
 export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Promise<MCPResponse> {
-  const db = requireDb();
-  ensureSharedCollabRuntime(db);
+  try {
+    const db = requireDb();
+    ensureSharedCollabRuntime(db);
 
-  const enabled = isSharedMemoryEnabled(db);
-  if (!enabled) {
-    return createMCPErrorResponse({
+    const enabled = isSharedMemoryEnabled(db);
+    if (!enabled) {
+      return createMCPErrorResponse({
+        tool: 'shared_space_upsert',
+        error: 'Shared memory is not enabled. Run /memory:shared enable first.',
+        code: 'SHARED_MEMORY_DISABLED',
+      });
+    }
+
+    const actor = resolveAdminActor('shared_space_upsert', args.actorUserId, args.actorAgentId);
+    if ('content' in actor) {
+      return actor;
+    }
+
+    const result = db.transaction((): (
+      | { success: true; created: boolean }
+      | { error: 'shared_space_tenant_mismatch' | 'shared_space_owner_required'; msg: string }
+    ) => {
+      const existingTenantId = findSharedSpaceTenant(db, args.spaceId);
+      if (existingTenantId && existingTenantId !== args.tenantId) {
+        return {
+          error: 'shared_space_tenant_mismatch',
+          msg: `Shared space "${args.spaceId}" belongs to a different tenant.`,
+        };
+      }
+      if (existingTenantId && !actorOwnsSharedSpace(db, args.spaceId, actor)) {
+        return {
+          error: 'shared_space_owner_required',
+          msg: `Only a shared-space owner can update "${args.spaceId}".`,
+        };
+      }
+
+      upsertSharedSpace(db, {
+        spaceId: args.spaceId,
+        tenantId: args.tenantId,
+        name: args.name,
+        rolloutEnabled: args.rolloutEnabled,
+        rolloutCohort: args.rolloutCohort,
+        killSwitch: args.killSwitch,
+      });
+
+      const created = !existingTenantId;
+      if (created) {
+        upsertSharedMembership(db, {
+          spaceId: args.spaceId,
+          subjectType: actor.subjectType,
+          subjectId: actor.subjectId,
+          role: 'owner',
+        });
+      }
+
+      return { success: true, created };
+    })();
+
+    if ('error' in result) {
+      return createSharedSpaceAuthError('shared_space_upsert', result.error, result.msg);
+    }
+
+    return createMCPSuccessResponse({
       tool: 'shared_space_upsert',
-      error: 'Shared memory is not enabled. Run /memory:shared enable first.',
-      code: 'SHARED_MEMORY_DISABLED',
+      summary: `Shared space "${args.spaceId}" saved`,
+      data: {
+        spaceId: args.spaceId,
+        tenantId: args.tenantId,
+        actorSubjectType: actor.subjectType,
+        actorSubjectId: actor.subjectId,
+        created: result.created,
+        ownerBootstrap: result.created,
+        rolloutEnabled: args.rolloutEnabled === true,
+        killSwitch: args.killSwitch === true,
+      },
     });
-  }
-
-  const actor = resolveAdminActor('shared_space_upsert', args.actorUserId, args.actorAgentId);
-  if ('content' in actor) {
-    return actor;
-  }
-
-  const existingTenantId = findSharedSpaceTenant(db, args.spaceId);
-  if (existingTenantId && existingTenantId !== args.tenantId) {
-    return createSharedSpaceAuthError(
+  } catch (error: unknown) {
+    return createSharedMemoryInternalError(
       'shared_space_upsert',
-      'shared_space_tenant_mismatch',
-      `Shared space "${args.spaceId}" belongs to a different tenant.`,
+      'Shared space upsert failed',
+      error,
+      'Retry the operation. If the error persists, check database connectivity.',
     );
   }
-  if (existingTenantId && !actorOwnsSharedSpace(db, args.spaceId, actor)) {
-    return createSharedSpaceAuthError(
-      'shared_space_upsert',
-      'shared_space_owner_required',
-      `Only a shared-space owner can update "${args.spaceId}".`,
-    );
-  }
-
-  upsertSharedSpace(db, {
-    spaceId: args.spaceId,
-    tenantId: args.tenantId,
-    name: args.name,
-    rolloutEnabled: args.rolloutEnabled,
-    rolloutCohort: args.rolloutCohort,
-    killSwitch: args.killSwitch,
-  });
-
-  const created = existingTenantId === null;
-  if (created) {
-    upsertSharedMembership(db, {
-      spaceId: args.spaceId,
-      subjectType: actor.subjectType,
-      subjectId: actor.subjectId,
-      role: 'owner',
-    });
-  }
-
-  return createMCPSuccessResponse({
-    tool: 'shared_space_upsert',
-    summary: `Shared space "${args.spaceId}" saved`,
-    data: {
-      spaceId: args.spaceId,
-      tenantId: args.tenantId,
-      actorSubjectType: actor.subjectType,
-      actorSubjectId: actor.subjectId,
-      created,
-      ownerBootstrap: created,
-      rolloutEnabled: args.rolloutEnabled === true,
-      killSwitch: args.killSwitch === true,
-    },
-  });
 }
 
 /**
@@ -191,65 +226,74 @@ export async function handleSharedSpaceUpsert(args: SharedSpaceUpsertArgs): Prom
  * @returns MCP success response describing the updated membership.
  */
 export async function handleSharedSpaceMembershipSet(args: SharedSpaceMembershipArgs): Promise<MCPResponse> {
-  const db = requireDb();
-  ensureSharedCollabRuntime(db);
+  try {
+    const db = requireDb();
+    ensureSharedCollabRuntime(db);
 
-  const enabled = isSharedMemoryEnabled(db);
-  if (!enabled) {
-    return createMCPErrorResponse({
-      tool: 'shared_space_membership_set',
-      error: 'Shared memory is not enabled. Run /memory:shared enable first.',
-      code: 'SHARED_MEMORY_DISABLED',
-    });
-  }
+    const enabled = isSharedMemoryEnabled(db);
+    if (!enabled) {
+      return createMCPErrorResponse({
+        tool: 'shared_space_membership_set',
+        error: 'Shared memory is not enabled. Run /memory:shared enable first.',
+        code: 'SHARED_MEMORY_DISABLED',
+      });
+    }
 
-  const actor = resolveAdminActor('shared_space_membership_set', args.actorUserId, args.actorAgentId);
-  if ('content' in actor) {
-    return actor;
-  }
+    const actor = resolveAdminActor('shared_space_membership_set', args.actorUserId, args.actorAgentId);
+    if ('content' in actor) {
+      return actor;
+    }
 
-  const existingTenantId = findSharedSpaceTenant(db, args.spaceId);
-  if (!existingTenantId) {
-    return createSharedSpaceAuthError(
-      'shared_space_membership_set',
-      'shared_space_not_found',
-      `Shared space "${args.spaceId}" was not found.`,
-    );
-  }
-  if (existingTenantId !== args.tenantId) {
-    return createSharedSpaceAuthError(
-      'shared_space_membership_set',
-      'shared_space_tenant_mismatch',
-      `Shared space "${args.spaceId}" belongs to a different tenant.`,
-    );
-  }
-  if (!actorOwnsSharedSpace(db, args.spaceId, actor)) {
-    return createSharedSpaceAuthError(
-      'shared_space_membership_set',
-      'shared_space_owner_required',
-      `Only a shared-space owner can update membership for "${args.spaceId}".`,
-    );
-  }
+    const existingTenantId = findSharedSpaceTenant(db, args.spaceId);
+    if (!existingTenantId) {
+      return createSharedSpaceAuthError(
+        'shared_space_membership_set',
+        'shared_space_not_found',
+        `Shared space "${args.spaceId}" was not found.`,
+      );
+    }
+    if (existingTenantId !== args.tenantId) {
+      return createSharedSpaceAuthError(
+        'shared_space_membership_set',
+        'shared_space_tenant_mismatch',
+        `Shared space "${args.spaceId}" belongs to a different tenant.`,
+      );
+    }
+    if (!actorOwnsSharedSpace(db, args.spaceId, actor)) {
+      return createSharedSpaceAuthError(
+        'shared_space_membership_set',
+        'shared_space_owner_required',
+        `Only a shared-space owner can update membership for "${args.spaceId}".`,
+      );
+    }
 
-  upsertSharedMembership(db, {
-    spaceId: args.spaceId,
-    subjectType: args.subjectType,
-    subjectId: args.subjectId,
-    role: args.role,
-  });
-  return createMCPSuccessResponse({
-    tool: 'shared_space_membership_set',
-    summary: `Membership updated for ${args.subjectType} "${args.subjectId}"`,
-    data: {
+    upsertSharedMembership(db, {
       spaceId: args.spaceId,
-      tenantId: args.tenantId,
-      actorSubjectType: actor.subjectType,
-      actorSubjectId: actor.subjectId,
       subjectType: args.subjectType,
       subjectId: args.subjectId,
       role: args.role,
-    },
-  });
+    });
+    return createMCPSuccessResponse({
+      tool: 'shared_space_membership_set',
+      summary: `Membership updated for ${args.subjectType} "${args.subjectId}"`,
+      data: {
+        spaceId: args.spaceId,
+        tenantId: args.tenantId,
+        actorSubjectType: actor.subjectType,
+        actorSubjectId: actor.subjectId,
+        subjectType: args.subjectType,
+        subjectId: args.subjectId,
+        role: args.role,
+      },
+    });
+  } catch (error: unknown) {
+    return createSharedMemoryInternalError(
+      'shared_space_membership_set',
+      'Shared space membership update failed',
+      error,
+      'Retry the operation. If the error persists, check database connectivity.',
+    );
+  }
 }
 
 /**
@@ -259,22 +303,31 @@ export async function handleSharedSpaceMembershipSet(args: SharedSpaceMembership
  * @returns MCP success response containing the enabled state and allowed spaces.
  */
 export async function handleSharedMemoryStatus(args: SharedMemoryStatusArgs): Promise<MCPResponse> {
-  const db = requireDb();
-  const enabled = isSharedMemoryEnabled(db);
-  const allowedSharedSpaceIds = enabled ? Array.from(getAllowedSharedSpaceIds(db, args)) : [];
-  return createMCPSuccessResponse({
-    tool: 'shared_memory_status',
-    summary: enabled
-      ? `Shared memory enabled for ${allowedSharedSpaceIds.length} space(s)`
-      : 'Shared memory disabled — run /memory:shared enable to set up',
-    data: {
-      enabled,
-      allowedSharedSpaceIds,
-      tenantId: args.tenantId ?? null,
-      userId: args.userId ?? null,
-      agentId: args.agentId ?? null,
-    },
-  });
+  try {
+    const db = requireDb();
+    const enabled = isSharedMemoryEnabled(db);
+    const allowedSharedSpaceIds = enabled ? Array.from(getAllowedSharedSpaceIds(db, args)) : [];
+    return createMCPSuccessResponse({
+      tool: 'shared_memory_status',
+      summary: enabled
+        ? `Shared memory enabled for ${allowedSharedSpaceIds.length} space(s)`
+        : 'Shared memory disabled — run /memory:shared enable to set up',
+      data: {
+        enabled,
+        allowedSharedSpaceIds,
+        tenantId: args.tenantId ?? null,
+        userId: args.userId ?? null,
+        agentId: args.agentId ?? null,
+      },
+    });
+  } catch (error: unknown) {
+    return createSharedMemoryInternalError(
+      'shared_memory_status',
+      'Shared memory status failed',
+      error,
+      'Retry the operation. If the error persists, check database connectivity.',
+    );
+  }
 }
 
 /**
@@ -285,40 +338,53 @@ export async function handleSharedMemoryStatus(args: SharedMemoryStatusArgs): Pr
  * DB flag set and the README present return `alreadyEnabled: true`.
  */
 export async function handleSharedMemoryEnable(_args: Record<string, unknown>): Promise<MCPResponse> {
-  const db = requireDb();
-
-  // Check DB-level persistence (not runtime env-var) to decide idempotency.
-  // This ensures env-var-only users still get DB persistence + README on first call.
-  let dbAlreadyEnabled = false;
   try {
-    const row = db.prepare('SELECT value FROM config WHERE key = ?')
-      .get('shared_memory_enabled') as { value: string } | undefined;
-    dbAlreadyEnabled = row?.value === 'true';
-  } catch { /* config table may not exist yet */ }
+    const db = requireDb();
 
-  const readmeAlreadyExists = createSharedSpacesReadme();
+    // Check DB-level persistence (not runtime env-var) to decide idempotency.
+    // This ensures env-var-only users still get DB persistence + README on first call.
+    let dbAlreadyEnabled = false;
+    try {
+      const row = db.prepare('SELECT value FROM config WHERE key = ?')
+        .get('shared_memory_enabled') as { value: string } | undefined;
+      dbAlreadyEnabled = row?.value === 'true';
+    } catch (error: unknown) {
+      // config table may not exist yet
+      const message = error instanceof Error ? error.message : String(error);
+      void message;
+    }
 
-  if (dbAlreadyEnabled && readmeAlreadyExists) {
+    if (dbAlreadyEnabled) {
+      await createSharedSpacesReadme();
+      return createMCPSuccessResponse({
+        tool: 'shared_memory_enable',
+        summary: 'Shared memory is already enabled',
+        data: { alreadyEnabled: true },
+      });
+    }
+
+    ensureSharedCollabRuntime(db);
+    enableSharedMemory(db);
+
+    const readmeCreated = !await createSharedSpacesReadme();
+
     return createMCPSuccessResponse({
       tool: 'shared_memory_enable',
-      summary: 'Shared memory is already enabled',
-      data: { alreadyEnabled: true },
+      summary: 'Shared memory enabled successfully',
+      data: {
+        alreadyEnabled: false,
+        enabled: true,
+        readmeCreated,
+      },
     });
+  } catch (error: unknown) {
+    return createSharedMemoryInternalError(
+      'shared_memory_enable',
+      'Shared memory enable failed',
+      error,
+      'Retry the operation. If the error persists, check database connectivity.',
+    );
   }
-
-  // Ensure tables + persist flag (README already created above)
-  ensureSharedCollabRuntime(db);
-  enableSharedMemory(db);
-
-  return createMCPSuccessResponse({
-    tool: 'shared_memory_enable',
-    summary: 'Shared memory enabled successfully',
-    data: {
-      alreadyEnabled: false,
-      enabled: true,
-      readmeCreated: !readmeAlreadyExists,
-    },
-  });
 }
 
 /**
@@ -326,13 +392,16 @@ export async function handleSharedMemoryEnable(_args: Record<string, unknown>): 
  *
  * @returns `true` when the file already existed (no write needed).
  */
-function createSharedSpacesReadme(): boolean {
+async function createSharedSpacesReadme(): Promise<boolean> {
   const dir = path.resolve(__dirname, '../../shared-spaces');
   const readmePath = path.join(dir, 'README.md');
-  if (fs.existsSync(readmePath)) return true;
-
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
+  try {
+    await access(readmePath);
+    return true;
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    void message;
+    // README does not exist yet.
   }
 
   const content = `# Shared Memory Spaces
@@ -364,6 +433,7 @@ Shared memory has been **enabled** for this workspace.
 Set \`SPECKIT_MEMORY_SHARED_MEMORY=true\` to force-enable shared memory regardless of database state.
 `;
 
-  fs.writeFileSync(readmePath, content, 'utf-8');
+  await mkdir(dir, { recursive: true });
+  await writeFile(readmePath, content, 'utf-8');
   return false;
 }

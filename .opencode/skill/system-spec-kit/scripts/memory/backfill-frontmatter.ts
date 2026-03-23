@@ -179,7 +179,8 @@ function parseArgs(argv: string[]): CliOptions {
         .filter((entry) => entry.length > 0)
         .map((entry) => {
           const resolved = path.resolve(PROJECT_ROOT, entry);
-          if (!resolved.startsWith(PROJECT_ROOT)) {
+          const relative = path.relative(PROJECT_ROOT, resolved);
+          if (relative.startsWith('..') || path.isAbsolute(relative)) {
             throw new Error(`Path ${entry} is outside project boundary`);
           }
           return resolved;
@@ -194,7 +195,8 @@ function parseArgs(argv: string[]): CliOptions {
       }
       i += 1;
       const resolvedReport = path.resolve(PROJECT_ROOT, value);
-      if (!resolvedReport.startsWith(PROJECT_ROOT)) {
+      const relative = path.relative(PROJECT_ROOT, resolvedReport);
+      if (relative.startsWith('..') || path.isAbsolute(relative)) {
         throw new Error(`Path ${value} is outside project boundary`);
       }
       reportPath = resolvedReport;

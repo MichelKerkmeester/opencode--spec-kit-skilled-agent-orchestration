@@ -27,7 +27,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Plan** | ../plan.md |
 | **Phase** | 7 |
 | **Predecessor** | 006-description-enrichment |
-| **Successor** | 009-embedding-optimization |
+| **Successor** | 008-signal-extraction |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-07 |
 | **Sequence** | C2-C3 |

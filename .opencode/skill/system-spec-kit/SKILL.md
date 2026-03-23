@@ -553,12 +553,13 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 
 **Memory Commands:** 6 slash commands (`/memory:save`, `/memory:continue`, `/memory:manage`, `/memory:learn`, `/memory:analyze`, `/memory:shared`) cover all 33 tools. The `/memory:analyze` command covers all analysis and retrieval workflows. See `.opencode/command/memory/` for full command documentation.
 
-**MCP Tools (13 most-used of 33 total — see [memory_system.md](./references/memory/memory_system.md) for full reference):**
+**MCP Tools (18 most-used of 33 total — see [memory_system.md](./references/memory/memory_system.md) for full reference):**
 
 | Tool                            | Layer | Purpose                                           |
 | ------------------------------- | ----- | ------------------------------------------------- |
 | `memory_context()`              | L1    | Unified entry point — modes: auto, quick, deep, focused, resume |
 | `memory_search()`               | L2    | Hybrid search (vector + FTS + BM25 with RRF fusion). With optional adaptive fusion (SPECKIT_ADAPTIVE_FUSION) and artifact-class routing |
+| `memory_quick_search()`         | L2    | Simplified search (query + optional spec folder)  |
 | `memory_match_triggers()`       | L2    | Trigger matching + cognitive (decay, tiers, co-activation) |
 | `memory_save()`                 | L2    | Index a memory file with pre-flight validation    |
 | `memory_list()`                 | L3    | Browse stored memories with pagination (parent rows by default) |
@@ -567,9 +568,13 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 | `checkpoint_restore()`          | L5    | Transaction-wrapped restore with rollback         |
 | `memory_stats()`                | L3    | System statistics and memory counts                |
 | `memory_health()`              | L3    | Diagnostics: orphan detection, index consistency   |
-| `memory_index_scan()`          | L4    | Workspace scanning and re-indexing                 |
+| `shared_memory_status()`        | L3    | Shared-memory subsystem status check               |
+| `memory_index_scan()`          | L7    | Workspace scanning and re-indexing                 |
 | `checkpoint_list()`            | L5    | List available checkpoint snapshots                |
 | `checkpoint_delete()`          | L5    | Delete checkpoint by name (with confirmName safety)|
+| `shared_memory_enable()`        | L5    | Enable shared-memory collaboration subsystem       |
+| `shared_space_upsert()`         | L5    | Create or update shared collaboration space        |
+| `shared_space_membership_set()` | L5    | Set membership for shared collaboration space      |
 
 > **Search architecture:** The search pipeline uses a 4-stage architecture (candidate generation → fusion → reranking → filtering). See [search/README.md](./mcp_server/lib/search/README.md) for pipeline details, scoring algorithms, and graph signal features.
 

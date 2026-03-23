@@ -95,7 +95,7 @@ const MAX_ALLOWED_SIGNALS_FOR_PROMOTION = 8;
 
 let adaptiveThresholdOverrides: AdaptiveThresholdOverrides = {};
 
-function isDefaultOnFlagEnabled(...flagNames: string[]): boolean {
+function isAdaptiveFlagEnabled(...flagNames: string[]): boolean {
   for (const flagName of flagNames) {
     const rawValue = process.env[flagName]?.trim().toLowerCase();
     if (rawValue === 'false' || rawValue === '0') {
@@ -105,7 +105,7 @@ function isDefaultOnFlagEnabled(...flagNames: string[]): boolean {
       return true;
     }
   }
-  return true;
+  return false;
 }
 
 function roundAdaptiveNumber(value: number, digits = 3): number {
@@ -156,7 +156,7 @@ function compareAdaptiveRows(
 }
 
 function isAdaptiveEnabled(): boolean {
-  return isDefaultOnFlagEnabled(
+  return isAdaptiveFlagEnabled(
     'SPECKIT_MEMORY_ADAPTIVE_RANKING',
     'SPECKIT_HYDRA_ADAPTIVE_RANKING',
   );

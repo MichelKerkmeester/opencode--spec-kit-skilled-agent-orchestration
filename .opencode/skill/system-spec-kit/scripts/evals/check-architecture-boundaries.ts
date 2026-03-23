@@ -1,6 +1,10 @@
 // ---------------------------------------------------------------
 // MODULE: Check Architecture Boundaries
 // ---------------------------------------------------------------
+// NOTE: This script enforces shared/ neutrality and mcp_server/scripts/ wrapper-only rules.
+// The companion check for Scripts -> MCP-internals import policy lives in:
+//   check-no-mcp-lib-imports-ast.ts (AST-based, with allowlist governance)
+// Both checks should be run together for full boundary compliance.
 
 // ───────────────────────────────────────────────────────────────
 // 1. CHECK ARCHITECTURE BOUNDARIES
@@ -57,7 +61,7 @@ const CHILD_PROCESS_WRAPPER_APIS = new Set(['spawn', 'spawnSync', 'exec', 'execS
 // ───────────────────────────────────────────────────────────────
 // 5. HELPERS
 // ───────────────────────────────────────────────────────────────
-function findTsFiles(dir: string): string[] {
+function findSourceFiles(dir: string): string[] {
   const files: string[] = [];
 
   function walk(currentDir: string): void {
@@ -68,7 +72,10 @@ function findTsFiles(dir: string): string[] {
       if (entry.isDirectory()) {
         if (entry.name === 'node_modules' || entry.name === 'dist') continue;
         walk(fullPath);
-      } else if (entry.name.endsWith('.ts') && !entry.name.endsWith('.d.ts')) {
+      } else if (
+        (entry.name.endsWith('.ts') || entry.name.endsWith('.js') || entry.name.endsWith('.mjs') || entry.name.endsWith('.cjs'))
+        && !entry.name.endsWith('.d.ts')
+      ) {
         files.push(fullPath);
       }
     }
@@ -371,10 +378,10 @@ function collectWrapperSignals(content: string, filePath: string): WrapperSignal
 function checkSharedNeutrality(packageRoot = PACKAGE_ROOT): GapAViolation[] {
   const resolvedRoot = resolveCheckRoot(packageRoot);
   const sharedDir = path.join(resolvedRoot, 'shared');
-  const tsFiles = findTsFiles(sharedDir);
+  const sourceFiles = findSourceFiles(sharedDir);
   const violations: GapAViolation[] = [];
 
-  for (const file of tsFiles) {
+  for (const file of sourceFiles) {
     const content = fs.readFileSync(file, 'utf-8');
     const moduleSpecifiers = extractModuleSpecifiers(content, file);
 
@@ -486,7 +493,7 @@ export {
   checkWrapperOnly,
   countSubstantiveLines,
   extractModuleSpecifiers,
-  findTsFiles,
+  findSourceFiles,
   resolvePackageRoot,
   runArchitectureBoundaryCheck,
 };

@@ -8,12 +8,15 @@ import { recordHistory } from '../lib/storage/history';
 import { recordLineageTransition } from '../lib/storage/lineage-state';
 import { classifyEncodingIntent } from '../lib/search/encoding-intent';
 import { isEncodingIntentEnabled } from '../lib/search/search-flags';
+import { calculateDocumentWeight, isSpecDocumentType } from '../lib/storage/document-helpers';
+import { applyPostInsertMetadata } from '../lib/storage/post-insert-metadata';
+import { detectSpecLevelFromParsed } from '../lib/spec/spec-level';
 import { requireDb, toErrorMessage } from '../utils';
-import { detectSpecLevelFromParsed } from './handler-utils';
-import { applyPostInsertMetadata } from './save/db-helpers';
 
 // Feature catalog: Prediction-error save arbitration
 // Feature catalog: Memory indexing (memory_save)
+
+export { calculateDocumentWeight, isSpecDocumentType } from '../lib/storage/document-helpers';
 
 
 interface ParsedMemory {
@@ -55,45 +58,6 @@ interface IndexResult extends Record<string, unknown> {
   retrievability?: number;
   success?: boolean;
   error?: string;
-}
-
-/**
- * Calculate importance weight based on file path and document type.
- * Spec 126: Applies document-type-aware weighting.
- *
- * Weights: constitutional -> 1.0, spec/decision-record -> 0.8, plan -> 0.7,
- * tasks/impl-summary/research -> 0.6, checklist/handover -> 0.5,
- * memory -> 0.5, scratch -> 0.25
- */
-function calculateDocumentWeight(filePath: string, documentType?: string): number {
-  // If documentType is provided, use it directly
-  if (documentType) {
-    const DOC_TYPE_WEIGHTS: Record<string, number> = {
-      spec: 0.8,
-      decision_record: 0.8,
-      plan: 0.7,
-      tasks: 0.6,
-      implementation_summary: 0.6,
-      research: 0.6,
-      checklist: 0.5,
-      handover: 0.5,
-      constitutional: 1.0,
-      memory: 0.5,
-      scratch: 0.25,
-    };
-    const weight = DOC_TYPE_WEIGHTS[documentType];
-    if (weight !== undefined) return weight;
-  }
-
-  // Fallback: path-based heuristic (backward compatibility)
-  const normalizedPath = filePath.replace(/\\/g, '/');
-  if (normalizedPath.includes('/scratch/')) return 0.25;
-  return 0.5;
-}
-
-/** Spec 126: True for structural spec documents (not memory/constitutional). */
-function isSpecDocumentType(documentType?: string): boolean {
-  return !!documentType && documentType !== 'memory' && documentType !== 'constitutional';
 }
 
 /** Find memories with similar embeddings for PE gating deduplication */
@@ -362,8 +326,6 @@ function logPeDecision(decision: PeDecision, contentHash: string, specFolder: st
 }
 
 export {
-  calculateDocumentWeight,
-  isSpecDocumentType,
   findSimilarMemories,
   reinforceExistingMemory,
   markMemorySuperseded,

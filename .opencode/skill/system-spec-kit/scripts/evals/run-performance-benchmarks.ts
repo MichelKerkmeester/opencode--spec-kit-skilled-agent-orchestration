@@ -14,16 +14,15 @@ import fs from 'fs';
 import path from 'path';
 import { performance } from 'perf_hooks';
 import Database from 'better-sqlite3';
-import * as sessionBoost from '@spec-kit/mcp-server/lib/search/session-boost';
-import * as causalBoost from '@spec-kit/mcp-server/lib/search/causal-boost';
-import * as workingMemory from '@spec-kit/mcp-server/lib/cognitive/working-memory';
 import {
+  sessionBoost,
+  causalBoost,
+  workingMemory,
   initExtractionAdapter,
   getExtractionMetrics,
   resetExtractionMetrics,
-} from '@spec-kit/mcp-server/lib/extraction/extraction-adapter';
-
-import type { ExtractionMetrics } from '@spec-kit/mcp-server/lib/extraction/extraction-adapter';
+  type ExtractionMetrics,
+} from '@spec-kit/mcp-server/api';
 
 interface LatencyStats {
   samples: number;

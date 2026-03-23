@@ -3,7 +3,8 @@
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: Feature flag governance
 // Phase-gated capability switches for the memory roadmap.
-// Defaults reflect the fully delivered rollout unless explicitly opted out.
+// Defaults reflect the shipped rollout unless explicitly opted out, except for
+// roadmap phases that remain intentionally dormant in production.
 import { isFeatureEnabled } from '../cognitive/rollout-policy';
 
 // R6: Derive phase type from the canonical array to keep them in sync.
@@ -73,13 +74,26 @@ function normalizeIdentity(flagName: string, identity?: string): string {
   return `memory-roadmap:${flagName}`;
 }
 
-/** Returns true by default unless the roadmap capability is explicitly opted out. */
-function isMemoryRoadmapCapabilityEnabled(flagNames: string | readonly string[], identity?: string): boolean {
+/** Returns the roadmap capability state, with optional default-off dormant flags. */
+function isMemoryRoadmapCapabilityEnabled(
+  flagNames: string | readonly string[],
+  identity?: string,
+  defaultValue = true,
+): boolean {
   if (hasExplicitDisableFlag(flagNames)) {
     return false;
   }
 
   const canonicalFlag = Array.isArray(flagNames) ? flagNames[0] : flagNames;
+  const rawCanonicalValue = process.env[canonicalFlag]?.trim().toLowerCase();
+  if (rawCanonicalValue === 'true' || rawCanonicalValue === '1') {
+    return true;
+  }
+
+  if (!defaultValue) {
+    return false;
+  }
+
   return isFeatureEnabled(canonicalFlag, normalizeIdentity(canonicalFlag, identity));
 }
 
@@ -111,6 +125,7 @@ function getMemoryRoadmapCapabilityFlags(identity?: string): MemoryRoadmapCapabi
     adaptiveRanking: isMemoryRoadmapCapabilityEnabled(
       [CAPABILITY_ENV.adaptiveRanking, LEGACY_CAPABILITY_ENV.adaptiveRanking],
       identity,
+      false,
     ),
     scopeEnforcement: isMemoryRoadmapCapabilityEnabled(
       [CAPABILITY_ENV.scopeEnforcement, LEGACY_CAPABILITY_ENV.scopeEnforcement],

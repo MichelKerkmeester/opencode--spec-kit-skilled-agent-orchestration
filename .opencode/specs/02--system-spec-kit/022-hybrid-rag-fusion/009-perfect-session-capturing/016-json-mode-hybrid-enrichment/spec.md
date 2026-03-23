@@ -6,6 +6,8 @@
 **Created**: 2026-03-20
 **Updated**: 2026-03-22
 **Parent**: [009-perfect-session-capturing](../spec.md)
+**Predecessor**: [015-runtime-contract-and-indexability](../015-runtime-contract-and-indexability/spec.md)
+**Successor**: [017-json-primary-deprecation](../017-json-primary-deprecation/spec.md)
 
 ---
 

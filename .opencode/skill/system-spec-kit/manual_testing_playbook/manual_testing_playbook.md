@@ -147,7 +147,7 @@ Release is `READY` only when:
 1. No feature verdict is `FAIL`.
 2. All critical scenarios are `PASS`.
 3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-scenario files (`COVERED_SCENARIOS == TOTAL_SCENARIOS`).
-4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 226 scenario files while the feature catalog contains 220 feature files.
+4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 227 scenario files expanding to 266 exact IDs while the feature catalog contains 220 feature files.
 5. No unresolved blocking triage item remains.
 
 Otherwise release is `NOT READY`.
@@ -167,8 +167,8 @@ count = sum(
 print(count)
 PY
 )
-if [ "$TOTAL_FEATURES" -ne 226 ]; then
-  echo "Expected 226 scenario files, found $TOTAL_FEATURES" >&2
+if [ "$TOTAL_FEATURES" -ne 227 ]; then
+  echo "Expected 227 scenario files, found $TOTAL_FEATURES" >&2
   exit 1
 fi
 ```
@@ -2481,12 +2481,14 @@ Archived memory keeps metadata row with `is_archived=1`, BM25 artifacts are sync
 ### 125 | Hydra roadmap capability flags
 
 #### Description
-Verify prefixed Hydra roadmap flags stay distinct from live runtime flags while remaining default-on unless explicitly opted out.
+Verify prefixed Hydra roadmap flags stay distinct from live runtime flags while keeping dormant adaptive ranking default-off until explicitly enabled.
 
 #### Current Reality
 Prompt: `Validate memory roadmap flag snapshots without changing live graph-channel defaults. Work locally in the system-spec-kit mcp_server package, capture the exact commands and outputs, and summarize the result in user language. Capture the evidence needed to prove First snapshot remains phase:"shared-rollout" with capabilities.graphUnified:true; second snapshot reports phase:"graph" with capabilities.graphUnified:false. Return a concise user-facing pass/fail verdict with the main reason.`
 
 First snapshot remains `phase:\"shared-rollout\"` with `capabilities.graphUnified:true`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false`
+
+Dormant adaptive ranking default-off is preserved in the first snapshot as `capabilities.adaptiveRanking:false`, and an explicit prefixed opt-in can flip it to `capabilities.adaptiveRanking:true` without changing live runtime defaults
 
 #### Test Execution
 > **Feature File:** [125](19--feature-flag-reference/125-hydra-roadmap-capability-flags.md)
@@ -3238,6 +3240,20 @@ Prompt: `Test the default-on SPECKIT_RESULT_CONFIDENCE_V1 behavior. Run a search
 > **Feature File:** [180](18--ux-hooks/180-result-confidence-speckit-result-confidence-v1.md)
 > **Catalog:** [18--ux-hooks/19-result-confidence.md](../feature_catalog/18--ux-hooks/19-result-confidence.md)
 
+### 181 | Template Compliance Contract Enforcement
+
+#### Description
+Verify the 3-layer template compliance system prevents non-compliant spec documents from being created.
+
+#### Current Reality
+Prompt: `Create a Level 2 spec folder for a test feature. Use the template compliance contract to ensure correct headers and anchors. Then run validate.sh --strict and report exit code and any violations. Capture the evidence needed to prove all 5 Level 2 files pass validate.sh --strict with exit code 0 and require no post-hoc fixes. Return a concise user-facing pass/fail verdict with the main reason.`
+
+All 5 Level 2 files pass `validate.sh --strict` with exit code 0 and require no post-hoc fixes
+
+#### Test Execution
+> **Feature File:** [181](16--tooling-and-scripts/181-template-compliance-contract-enforcement.md)
+> **Catalog:** [16--tooling-and-scripts/18-template-compliance-contract-enforcement.md](../feature_catalog/16--tooling-and-scripts/18-template-compliance-contract-enforcement.md)
+
 ---
 
 ## 9. PHASE SYSTEM FEATURES
@@ -3651,6 +3667,7 @@ This split playbook keeps automated coverage references in three places:
 | 152 | Features | No symlinks in lib/ tree | [152](16--tooling-and-scripts/152-no-symlinks-in-lib-tree.md) | [16--tooling-and-scripts/15-module-boundary-map.md](../feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md) |
 | 153 | Features | JSON mode structured summary hardening | [153](16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md) | [16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md](../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
 | 154 | Features | JSON-primary deprecation posture | [154](16--tooling-and-scripts/154-json-primary-deprecation-posture.md) | [16--tooling-and-scripts/17-json-primary-deprecation-posture.md](../feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md) |
+| 181 | Features | Template Compliance Contract Enforcement | [181](16--tooling-and-scripts/181-template-compliance-contract-enforcement.md) | [16--tooling-and-scripts/18-template-compliance-contract-enforcement.md](../feature_catalog/16--tooling-and-scripts/18-template-compliance-contract-enforcement.md) |
 | 155 | Features | Post-save quality review | [155](13--memory-quality-and-indexing/155-post-save-quality-review.md) | [13--memory-quality-and-indexing/19-post-save-quality-review.md](../feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md) |
 | 156 | Features | Graph refresh mode (SPECKIT_GRAPH_REFRESH_MODE) | [156](10--graph-signal-activation/156-graph-refresh-mode-speckit-graph-refresh-mode.md) | [10--graph-signal-activation/13-graph-lifecycle-refresh.md](../feature_catalog/10--graph-signal-activation/13-graph-lifecycle-refresh.md) |
 | 157 | Features | LLM graph backfill (SPECKIT_LLM_GRAPH_BACKFILL) | [157](10--graph-signal-activation/157-llm-graph-backfill-speckit-llm-graph-backfill.md) | [10--graph-signal-activation/14-llm-graph-backfill.md](../feature_catalog/10--graph-signal-activation/14-llm-graph-backfill.md) |
@@ -3677,19 +3694,19 @@ This split playbook keeps automated coverage references in three places:
 | 178 | Features | Save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS) | [178](13--memory-quality-and-indexing/178-save-quality-gate-exceptions-speckit-save-quality-gate-exceptions.md) | [13--memory-quality-and-indexing/24-save-quality-gate-exceptions.md](../feature_catalog/13--memory-quality-and-indexing/24-save-quality-gate-exceptions.md) |
 | 179 | Features | Empty result recovery (SPECKIT_EMPTY_RESULT_RECOVERY_V1) | [179](18--ux-hooks/179-empty-result-recovery-speckit-empty-result-recovery-v1.md) | [18--ux-hooks/18-empty-result-recovery.md](../feature_catalog/18--ux-hooks/18-empty-result-recovery.md) |
 | 180 | Features | Result confidence (SPECKIT_RESULT_CONFIDENCE_V1) | [180](18--ux-hooks/180-result-confidence-speckit-result-confidence-v1.md) | [18--ux-hooks/19-result-confidence.md](../feature_catalog/18--ux-hooks/19-result-confidence.md) |
-| PHASE-001 | Phase System Features | Phase detection scoring | [PHASE-001](16--tooling-and-scripts/001-phase-detection-scoring.md) |  |
-| PHASE-002 | Phase System Features | Phase folder creation | [PHASE-002](16--tooling-and-scripts/002-phase-folder-creation.md) |  |
-| PHASE-003 | Phase System Features | Recursive phase validation | [PHASE-003](16--tooling-and-scripts/003-recursive-phase-validation.md) |  |
-| PHASE-004 | Phase System Features | Phase link validation | [PHASE-004](16--tooling-and-scripts/004-phase-link-validation.md) |  |
-| PHASE-005 | Phase System Features | Phase command workflow | [PHASE-005](16--tooling-and-scripts/005-phase-command-workflow.md) |  |
-| M-001 | Dedicated Memory/Spec-Kit Scenarios | Context Recovery and Continuation | [M-001](01--retrieval/001-context-recovery-and-continuation.md) |  |
-| M-002 | Dedicated Memory/Spec-Kit Scenarios | Targeted Memory Lookup | [M-002](01--retrieval/002-targeted-memory-lookup.md) |  |
-| M-003 | Dedicated Memory/Spec-Kit Scenarios | Context Save + Index Update | [M-003](13--memory-quality-and-indexing/003-context-save-index-update.md) |  |
-| M-004 | Dedicated Memory/Spec-Kit Scenarios | Main-Agent Review and Verdict Handoff | [M-004](16--tooling-and-scripts/004-main-agent-review-and-verdict-handoff.md) |  |
-| M-005 | Dedicated Memory/Spec-Kit Scenarios | Outsourced Agent Memory Capture Round-Trip | [M-005](13--memory-quality-and-indexing/005-outsourced-agent-memory-capture-round-trip.md) |  |
-| M-006 | Dedicated Memory/Spec-Kit Scenarios | Session Enrichment and Alignment Guardrails | [M-006](13--memory-quality-and-indexing/006-session-enrichment-and-alignment-guardrails.md) |  |
-| M-007 | Dedicated Memory/Spec-Kit Scenarios | Session Capturing Pipeline Quality | [M-007](16--tooling-and-scripts/007-session-capturing-pipeline-quality.md) |  |
-| M-008 | Dedicated Memory/Spec-Kit Scenarios | Feature 09 Direct Manual Scenario (Per-memory History Log) | [M-008](02--mutation/008-feature-09-direct-manual-scenario-per-memory-history-log.md) |  |
+| PHASE-001 | Phase System Features | Phase detection scoring | [PHASE-001](16--tooling-and-scripts/001-phase-detection-scoring.md) | *(test-only, no catalog entry)* |
+| PHASE-002 | Phase System Features | Phase folder creation | [PHASE-002](16--tooling-and-scripts/002-phase-folder-creation.md) | *(test-only, no catalog entry)* |
+| PHASE-003 | Phase System Features | Recursive phase validation | [PHASE-003](16--tooling-and-scripts/003-recursive-phase-validation.md) | *(test-only, no catalog entry)* |
+| PHASE-004 | Phase System Features | Phase link validation | [PHASE-004](16--tooling-and-scripts/004-phase-link-validation.md) | *(test-only, no catalog entry)* |
+| PHASE-005 | Phase System Features | Phase command workflow | [PHASE-005](16--tooling-and-scripts/005-phase-command-workflow.md) | *(test-only, no catalog entry)* |
+| M-001 | Dedicated Memory/Spec-Kit Scenarios | Context Recovery and Continuation | [M-001](01--retrieval/001-context-recovery-and-continuation.md) | *(test-only, no catalog entry)* |
+| M-002 | Dedicated Memory/Spec-Kit Scenarios | Targeted Memory Lookup | [M-002](01--retrieval/002-targeted-memory-lookup.md) | *(test-only, no catalog entry)* |
+| M-003 | Dedicated Memory/Spec-Kit Scenarios | Context Save + Index Update | [M-003](13--memory-quality-and-indexing/003-context-save-index-update.md) | *(test-only, no catalog entry)* |
+| M-004 | Dedicated Memory/Spec-Kit Scenarios | Main-Agent Review and Verdict Handoff | [M-004](16--tooling-and-scripts/004-main-agent-review-and-verdict-handoff.md) | *(test-only, no catalog entry)* |
+| M-005 | Dedicated Memory/Spec-Kit Scenarios | Outsourced Agent Memory Capture Round-Trip | [M-005](13--memory-quality-and-indexing/005-outsourced-agent-memory-capture-round-trip.md) | [13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md](../feature_catalog/13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md) |
+| M-006 | Dedicated Memory/Spec-Kit Scenarios | Session Enrichment and Alignment Guardrails | [M-006](13--memory-quality-and-indexing/006-session-enrichment-and-alignment-guardrails.md) | *(test-only, no catalog entry)* |
+| M-007 | Dedicated Memory/Spec-Kit Scenarios | Session Capturing Pipeline Quality | [M-007](16--tooling-and-scripts/007-session-capturing-pipeline-quality.md) | [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) |
+| M-008 | Dedicated Memory/Spec-Kit Scenarios | Feature 09 Direct Manual Scenario (Per-memory History Log) | [M-008](02--mutation/008-feature-09-direct-manual-scenario-per-memory-history-log.md) | [02--mutation/10-per-memory-history-log.md](../feature_catalog/02--mutation/10-per-memory-history-log.md) |
 
 ---
 

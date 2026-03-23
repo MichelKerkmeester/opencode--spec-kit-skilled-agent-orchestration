@@ -59,7 +59,10 @@ export function resolveDatabasePaths(): DatabasePaths {
     allowedPrefixes.push(tmpDir);
     try { allowedPrefixes.push(fs.realpathSync(tmpDir)); } catch { /* ignore */ }
   } catch { /* os.tmpdir may be unavailable in test environments */ }
-  if (!allowedPrefixes.some(prefix => resolved.startsWith(prefix))) {
+  if (!allowedPrefixes.some((prefix) => {
+    const relative = path.relative(prefix, resolved);
+    return !relative.startsWith('..') && !path.isAbsolute(relative);
+  })) {
     throw new Error(
       `Database directory "${resolved}" is outside the project root and home directory. ` +
       `Set SPEC_KIT_DB_DIR to a path within your project or home directory.`

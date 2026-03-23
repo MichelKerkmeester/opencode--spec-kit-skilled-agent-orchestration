@@ -56,7 +56,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     tokenBudget: 1500,
     priority: 2,
     useCase: 'Direct access to search, save, and trigger matching when L1 routing is not needed.',
-    tools: ['memory_search', 'memory_save', 'memory_match_triggers']
+    tools: ['memory_search', 'memory_quick_search', 'memory_save', 'memory_match_triggers']
   },
   L3: {
     id: 'L3',
@@ -65,7 +65,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     tokenBudget: 800,
     priority: 3,
     useCase: 'Explore available memories, check system health, view statistics.',
-    tools: ['memory_list', 'memory_stats', 'memory_health']
+    tools: ['memory_list', 'memory_stats', 'memory_health', 'shared_memory_status']
   },
   L4: {
     id: 'L4',
@@ -83,7 +83,7 @@ export const LAYER_DEFINITIONS: Record<LayerId, LayerDefinition> = {
     tokenBudget: 600,
     priority: 5,
     useCase: 'Create checkpoints before major changes, restore previous states.',
-    tools: ['checkpoint_create', 'checkpoint_list', 'checkpoint_restore', 'checkpoint_delete', 'memory_ingest_start', 'memory_ingest_status', 'memory_ingest_cancel']
+    tools: ['checkpoint_create', 'checkpoint_list', 'checkpoint_restore', 'checkpoint_delete', 'shared_memory_enable', 'shared_space_upsert', 'shared_space_membership_set', 'memory_ingest_start', 'memory_ingest_status', 'memory_ingest_cancel']
   },
   L6: {
     id: 'L6',

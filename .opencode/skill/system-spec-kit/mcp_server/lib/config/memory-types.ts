@@ -47,7 +47,7 @@ interface HalfLifeValidationResult {
 /**
  * Defines the MEMORY_TYPES constant.
  */
-export const MEMORY_TYPES: Readonly<Record<MemoryTypeName, MemoryTypeConfig>> = {
+export const MEMORY_TYPES = {
   working: {
     halfLifeDays: 1,
     description: 'Active session context and immediate task state',
@@ -102,7 +102,7 @@ export const MEMORY_TYPES: Readonly<Record<MemoryTypeName, MemoryTypeConfig>> = 
     autoExpireDays: null,
     decayEnabled: false,
   },
-};
+} as const satisfies Record<MemoryTypeName, MemoryTypeConfig>;
 
 // Half-life lookup for efficient access
 /**
@@ -142,10 +142,11 @@ export const PATH_TYPE_PATTERNS: readonly PathTypePattern[] = [
   { pattern: /\/temp\//, type: 'working' },
   { pattern: /\/session-state/i, type: 'working' },
 
+  // Spec document filenames are resolved through SPEC_DOCUMENT_CONFIGS.
+  // Keep only generic path heuristics here so the config remains the
+  // single source of truth for exact spec document routing.
+
   // Prospective patterns (future actions)
-  { pattern: /\/plan\.md$/i, type: 'procedural' },
-  { pattern: /\/tasks\.md$/i, type: 'prospective' },
-  { pattern: /\/handover\.md$/i, type: 'episodic' },
   { pattern: /todo/i, type: 'prospective' },
   { pattern: /next[-_]?steps/i, type: 'prospective' },
   { pattern: /backlog/i, type: 'prospective' },
@@ -157,9 +158,8 @@ export const PATH_TYPE_PATTERNS: readonly PathTypePattern[] = [
   { pattern: /habit/i, type: 'implicit' },
 
   // Declarative patterns (facts)
-  { pattern: /implementation[-_]?(summary|guide)?/i, type: 'declarative' },
+  { pattern: /implementation[-_]guide/i, type: 'declarative' },
   { pattern: /api[-_]?ref/i, type: 'declarative' },
-  { pattern: /spec\.md$/i, type: 'declarative' },
 
   // Procedural patterns (how-to)
   { pattern: /guide/i, type: 'procedural' },
@@ -170,7 +170,6 @@ export const PATH_TYPE_PATTERNS: readonly PathTypePattern[] = [
   // Semantic patterns (concepts)
   { pattern: /architecture/i, type: 'semantic' },
   { pattern: /design[-_]?doc/i, type: 'semantic' },
-  { pattern: /decision[-_]?record/i, type: 'semantic' },
   { pattern: /adr[-_]?\d+/i, type: 'semantic' },
 
   // Autobiographical patterns (history)
@@ -278,6 +277,44 @@ function getTypeConfig(type: string | null | undefined): MemoryTypeConfig | null
   return MEMORY_TYPES[type.toLowerCase() as MemoryTypeName] || null;
 }
 
+/**
+ * Returns the half-life in days for a given memory type name.
+ * Returns null if the type has no decay or is not recognized.
+ */
+export function getHalfLifeForType(typeName: string): number | null {
+  const config = MEMORY_TYPES[typeName.toLowerCase() as MemoryTypeName];
+  if (!config || !config.decayEnabled) {
+    return null;
+  }
+  return config.halfLifeDays ?? null;
+}
+
+/**
+ * Resolves a primary spec document path to its configured memory type.
+ * Returns null for non-spec paths and nested memory artifacts.
+ */
+export function resolveSpecDocumentType(filePath: string | null | undefined): MemoryTypeName | null {
+  if (!filePath || typeof filePath !== 'string') {
+    return null;
+  }
+
+  const normalizedPath = filePath.replace(/\\/g, '/').toLowerCase();
+  if (
+    !normalizedPath.includes('/specs/')
+    || normalizedPath.includes('/memory/')
+    || normalizedPath.includes('/scratch/')
+  ) {
+    return null;
+  }
+
+  const matchedConfig = SPEC_DOCUMENT_CONFIGS.find((config) => config.filePattern.test(normalizedPath));
+  return matchedConfig?.memoryType ?? null;
+}
+
+/**
+ * Returns the stored half-life for a memory type, preserving the legacy
+ * declarative default for absent or unknown inputs.
+ */
 export function getHalfLife(type: string | null | undefined): number | null {
   if (!type || typeof type !== 'string') {
     return 60;
@@ -346,14 +383,14 @@ export interface SpecDocumentConfig {
 
 /** Configuration for each spec folder document type */
 export const SPEC_DOCUMENT_CONFIGS: readonly SpecDocumentConfig[] = [
-  { filePattern: /\/spec\.md$/i,                    documentType: 'spec',                    memoryType: 'semantic',     defaultImportanceTier: 'important', defaultImportanceWeight: 0.8 },
-  { filePattern: /\/plan\.md$/i,                    documentType: 'plan',                    memoryType: 'procedural',   defaultImportanceTier: 'important', defaultImportanceWeight: 0.7 },
-  { filePattern: /\/tasks\.md$/i,                   documentType: 'tasks',                   memoryType: 'prospective',  defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.6 },
-  { filePattern: /\/checklist\.md$/i,               documentType: 'checklist',               memoryType: 'procedural',   defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.5 },
-  { filePattern: /\/decision-record\.md$/i,         documentType: 'decision_record',         memoryType: 'semantic',     defaultImportanceTier: 'important', defaultImportanceWeight: 0.8 },
-  { filePattern: /\/implementation-summary\.md$/i,  documentType: 'implementation_summary',  memoryType: 'declarative',  defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.6 },
-  { filePattern: /\/research\.md$/i,                documentType: 'research',                memoryType: 'semantic',     defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.6 },
-  { filePattern: /\/handover\.md$/i,                documentType: 'handover',                memoryType: 'episodic',     defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.5 },
+  { filePattern: /(?:^|\/)spec\.md$/i,                    documentType: 'spec',                    memoryType: 'semantic',    defaultImportanceTier: 'important', defaultImportanceWeight: 0.8 },
+  { filePattern: /(?:^|\/)plan\.md$/i,                    documentType: 'plan',                    memoryType: 'semantic',    defaultImportanceTier: 'important', defaultImportanceWeight: 0.7 },
+  { filePattern: /(?:^|\/)tasks\.md$/i,                   documentType: 'tasks',                   memoryType: 'prospective', defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.6 },
+  { filePattern: /(?:^|\/)checklist\.md$/i,               documentType: 'checklist',               memoryType: 'procedural',  defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.5 },
+  { filePattern: /(?:^|\/)decision-record\.md$/i,         documentType: 'decision_record',         memoryType: 'semantic',    defaultImportanceTier: 'important', defaultImportanceWeight: 0.8 },
+  { filePattern: /(?:^|\/)implementation-summary\.md$/i,  documentType: 'implementation_summary',  memoryType: 'semantic',    defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.6 },
+  { filePattern: /(?:^|\/)research\.md$/i,                documentType: 'research',                memoryType: 'semantic',    defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.6 },
+  { filePattern: /(?:^|\/)handover\.md$/i,                documentType: 'handover',                memoryType: 'episodic',    defaultImportanceTier: 'normal',    defaultImportanceWeight: 0.5 },
 ] as const;
 
 /** Well-known spec folder document filenames */

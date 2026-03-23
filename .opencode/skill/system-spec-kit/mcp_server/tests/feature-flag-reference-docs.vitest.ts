@@ -65,6 +65,15 @@ const hydraDefaultDocs = [
   '06-6-debug-and-telemetry.md',
 ] as const;
 
+const hydraFlagDefaults = [
+  ['SPECKIT_HYDRA_LINEAGE_STATE', 'true'],
+  ['SPECKIT_HYDRA_GRAPH_UNIFIED', 'true'],
+  ['SPECKIT_HYDRA_ADAPTIVE_RANKING', 'false'],
+  ['SPECKIT_HYDRA_SCOPE_ENFORCEMENT', 'true'],
+  ['SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS', 'true'],
+  ['SPECKIT_HYDRA_SHARED_MEMORY', 'true'],
+] as const;
+
 describe('Feature flag reference catalog mappings', () => {
   for (const check of mappingChecks) {
     it(`${check.env} maps to ${check.source} and the source reads the symbol`, () => {
@@ -87,27 +96,20 @@ describe('Feature flag reference catalog mappings', () => {
 
 describe('Hydra roadmap flag documentation', () => {
   for (const doc of hydraDefaultDocs) {
-    it(`${doc} reflects the delivered default-on Hydra roadmap behavior`, () => {
+    it(`${doc} reflects the shipped Hydra roadmap behavior with dormant adaptive ranking default-off`, () => {
       const docPath = path.join(FEATURE_FLAG_DOCS, doc);
       const docContent = fs.readFileSync(docPath, 'utf8');
 
       expect(docContent).toContain('| `SPECKIT_HYDRA_PHASE` | `shared-rollout` |');
       expect(docContent).toMatch(/(?:unknown|Unsupported) values fall back to `shared-rollout`/);
 
-      for (const env of [
-        'SPECKIT_HYDRA_LINEAGE_STATE',
-        'SPECKIT_HYDRA_GRAPH_UNIFIED',
-        'SPECKIT_HYDRA_ADAPTIVE_RANKING',
-        'SPECKIT_HYDRA_SCOPE_ENFORCEMENT',
-        'SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS',
-        'SPECKIT_HYDRA_SHARED_MEMORY',
-      ]) {
-        expect(docContent).toContain(`| \`${env}\` | \`true\` |`);
+      for (const [env, defaultValue] of hydraFlagDefaults) {
+        expect(docContent).toContain(`| \`${env}\` | \`${defaultValue}\` |`);
       }
     });
   }
 
-  it('manual playbook 125 matches the runtime default-on plus explicit opt-out contract', () => {
+  it('manual playbook 125 matches the dormant adaptive plus explicit opt-in contract', () => {
     const playbookPath = path.join(SKILL_ROOT, 'manual_testing_playbook', 'manual_testing_playbook.md');
     const featureFilePath = path.join(
       SKILL_ROOT,
@@ -119,12 +121,16 @@ describe('Hydra roadmap flag documentation', () => {
     const featureFileContent = fs.readFileSync(featureFilePath, 'utf8');
 
     expect(playbookContent).toContain('### 125 | Hydra roadmap capability flags');
-    expect(playbookContent).toContain('default-on unless explicitly opted out');
+    expect(playbookContent).toContain('dormant adaptive ranking default-off');
     expect(playbookContent).toContain('capabilities.graphUnified:true');
+    expect(playbookContent).toContain('capabilities.adaptiveRanking:false');
 
     expect(featureFileContent).toContain('phase:\\"shared-rollout\\"');
     expect(featureFileContent).toContain('capabilities.graphUnified:true');
+    expect(featureFileContent).toContain('capabilities.adaptiveRanking:false');
     expect(featureFileContent).toContain('SPECKIT_HYDRA_GRAPH_UNIFIED=false');
     expect(featureFileContent).toContain('capabilities.graphUnified:false');
+    expect(featureFileContent).toContain('SPECKIT_HYDRA_ADAPTIVE_RANKING=true');
+    expect(featureFileContent).toContain('capabilities.adaptiveRanking:true');
   });
 });

@@ -1,6 +1,6 @@
 // TEST: MEMORY TYPES
 import { describe, it, expect } from 'vitest';
-import { MEMORY_TYPES, HALF_LIVES_DAYS } from '../lib/config/memory-types';
+import { MEMORY_TYPES, HALF_LIVES_DAYS, getHalfLifeForType } from '../lib/config/memory-types';
 import { inferTypeFromPath, extractExplicitType, inferTypeFromTier, inferTypeFromKeywords, inferMemoryType } from '../lib/config/type-inference';
 import type { MemoryTypeName } from '../lib/config/memory-types';
 
@@ -91,6 +91,12 @@ describe('Memory Types Tests (T068-T082)', () => {
       expect(HALF_LIVES_DAYS.autobiographical).toBe(365);
       expect(HALF_LIVES_DAYS['meta-cognitive']).toBeNull();
     });
+
+    it('getHalfLifeForType returns canonical decay values', () => {
+      expect(getHalfLifeForType('semantic')).toBe(180);
+      expect(getHalfLifeForType('meta-cognitive')).toBeNull();
+      expect(getHalfLifeForType('unknown')).toBeNull();
+    });
   });
 
   describe('Type Inference - T078-T082', () => {
@@ -102,12 +108,15 @@ describe('Memory Types Tests (T068-T082)', () => {
         { path: '/project/todo-list.md', expected: 'prospective' },
         { path: '/project/next-steps.md', expected: 'prospective' },
         { path: '/project/workflow-guide.md', expected: 'implicit' },
-        { path: '/project/implementation-summary.md', expected: 'declarative' },
-        { path: '/project/spec.md', expected: 'declarative' },
         { path: '/project/setup-guide.md', expected: 'procedural' },
         { path: '/project/checklist.md', expected: 'procedural' },
         { path: '/project/architecture.md', expected: 'semantic' },
-        { path: '/project/decision-record.md', expected: 'semantic' },
+        { path: '/project/.opencode/specs/008-feature/spec.md', expected: 'semantic' },
+        { path: '/project/.opencode/specs/008-feature/plan.md', expected: 'semantic' },
+        { path: '/project/.opencode/specs/008-feature/decision-record.md', expected: 'semantic' },
+        { path: '/project/.opencode/specs/008-feature/implementation-summary.md', expected: 'semantic' },
+        { path: '/project/.opencode/specs/008-feature/research.md', expected: 'semantic' },
+        { path: '/project/.opencode/specs/008-feature/scratch/spec.md', expected: 'working' },
         { path: '/project/changelog.md', expected: 'autobiographical' },
         { path: '/project/milestone.md', expected: 'autobiographical' },
         { path: '/project/constitutional-rules.md', expected: 'meta-cognitive' },
@@ -184,6 +193,23 @@ describe('Memory Types Tests (T068-T082)', () => {
 
       expect(defaultResult.type).toBe('declarative');
       expect(defaultResult.source).toBe('default');
+    });
+
+    it('Spec document paths override important tier routing', () => {
+      const specDocResult = inferMemoryType({
+        filePath: '/project/.opencode/specs/008-feature/plan.md',
+        importanceTier: 'important',
+      });
+
+      const regularImportantResult = inferMemoryType({
+        filePath: '/project/docs/api-notes.md',
+        importanceTier: 'important',
+      });
+
+      expect(specDocResult.type).toBe('semantic');
+      expect(specDocResult.source).toBe('file_path');
+      expect(regularImportantResult.type).toBe('declarative');
+      expect(regularImportantResult.source).toBe('importance_tier');
     });
   });
 });

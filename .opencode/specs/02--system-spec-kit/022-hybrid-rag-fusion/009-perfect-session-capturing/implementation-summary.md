@@ -24,7 +24,7 @@ contextType: "general"
 | **Spec Folder** | 009-perfect-session-capturing |
 | **Completed** | 2026-03-18 |
 | **Level** | 3 |
-| **Status** | Complete |
+| **Status** | Complete (documentation alignment pass) |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -32,7 +32,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## 2. WHAT WAS BUILT
 
-This pass repaired the authoritative phase-tree docs, not the runtime. The work reconciled the six parent Level 3 docs to the current direct-child layout, added a missing parent pack for `000-dynamic-capture-deprecation/`, and repaired current-navigation metadata across the affected child specs.
+Documentation alignment pass complete; strict completion verification not rerun in this pass. This pass repaired the authoritative phase-tree docs, not the runtime. The work reconciled the six parent Level 3 docs to the current direct-child layout, added a missing parent pack for `000-dynamic-capture-deprecation/`, and repaired current-navigation metadata across the affected child specs.
 <!-- /ANCHOR:what-built -->
 
 ---

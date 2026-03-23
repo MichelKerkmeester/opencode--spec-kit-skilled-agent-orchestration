@@ -127,6 +127,53 @@ interface TokenBudgetEnforcement {
   returnedResultCount?: number;
 }
 
+type PressureOverrideTargetMode = 'quick' | 'focused' | null;
+
+interface SessionLifecycleResolution {
+  requestedSessionId: string | null;
+  effectiveSessionId: string;
+  resumed: boolean;
+  priorMode: string | null;
+  counter: number;
+}
+
+interface EffectiveModeIntentClassification {
+  detectedIntent?: string;
+  intentConfidence: number;
+  resumeHeuristicApplied: boolean;
+  source: 'explicit' | 'auto-detected';
+}
+
+interface EffectiveModeResolution {
+  effectiveMode: string;
+  pressureOverrideApplied: boolean;
+  pressureOverrideTargetMode: PressureOverrideTargetMode;
+  pressureWarning: string | null;
+  intentClassification: EffectiveModeIntentClassification;
+}
+
+interface BuildResponseMetaParams {
+  effectiveMode: string;
+  requestedMode: string;
+  tracedResult: ContextResult;
+  pressurePolicy: {
+    level: string;
+    ratio: number | null;
+    source: string;
+    warning: string | null;
+  };
+  pressureOverrideApplied: boolean;
+  pressureOverrideTargetMode: PressureOverrideTargetMode;
+  pressureWarning: string | null;
+  sessionLifecycle: SessionLifecycleMetadata;
+  effectiveBudget: number;
+  enforcement: TokenBudgetEnforcement;
+  intentClassification: EffectiveModeIntentClassification;
+  discoveredFolder?: string;
+  includeTrace: boolean;
+  sessionTransition: SessionTransitionTrace;
+}
+
 function extractResultRowsFromContextResponse(responseText: string): Array<Record<string, unknown>> {
   try {
     const parsed = JSON.parse(responseText) as Record<string, unknown>;
@@ -597,7 +644,236 @@ async function executeResumeStrategy(input: string, options: ContextOptions): Pr
 }
 
 /* ───────────────────────────────────────────────────────────────
-   6. MAIN HANDLER
+   6. HANDLER HELPERS
+──────────────────────────────────────────────────────────────── */
+
+function resolveSessionLifecycle(
+  args: ContextArgs,
+  db: ReturnType<typeof vectorIndex.getDb> | null,
+): SessionLifecycleResolution {
+  void db;
+
+  const requestedSessionId = typeof args.sessionId === 'string' && args.sessionId.trim().length > 0
+    ? args.sessionId.trim()
+    : null;
+  const resumed = requestedSessionId ? workingMemory.sessionExists(requestedSessionId) : false;
+  const effectiveSessionId = requestedSessionId ?? randomUUID();
+  const priorMode = requestedSessionId
+    ? workingMemory.getSessionInferredMode(requestedSessionId)
+    : null;
+  const counter = resumed && requestedSessionId
+    ? workingMemory.getSessionEventCounter(requestedSessionId)
+    : 0;
+
+  return {
+    requestedSessionId,
+    effectiveSessionId,
+    resumed,
+    priorMode,
+    counter,
+  };
+}
+
+function resolveEffectiveMode(
+  args: ContextArgs,
+  session: SessionLifecycleResolution,
+  pressurePolicy: {
+    level: string;
+    ratio: number | null;
+    source: string;
+    warning: string | null;
+  },
+): EffectiveModeResolution {
+  void session;
+
+  const requestedMode = args.mode ?? 'auto';
+  const explicitIntent = args.intent;
+  const normalizedInput = args.input.trim();
+
+  let effectiveMode = requestedMode;
+  let detectedIntent = explicitIntent;
+  let intentConfidence = explicitIntent ? 1.0 : 0;
+  let pressureOverrideTargetMode: PressureOverrideTargetMode = null;
+  let pressureOverrideApplied = false;
+  let pressureWarning: string | null = null;
+  let resumeHeuristicApplied = false;
+
+  if (requestedMode === 'auto') {
+    if (!detectedIntent) {
+      const classification: IntentClassification = intentClassifier.classifyIntent(normalizedInput);
+      detectedIntent = classification.intent;
+      intentConfidence = classification.confidence;
+    }
+
+    effectiveMode = INTENT_TO_MODE[detectedIntent!] || 'focused';
+
+    if (normalizedInput.length < 50 || /^(what|how|where|when|why)\s/i.test(normalizedInput)) {
+      effectiveMode = 'focused';
+    }
+
+    if (/\b(resume|continue|pick up|where was i|what's next)\b/i.test(normalizedInput)) {
+      effectiveMode = 'resume';
+      resumeHeuristicApplied = true;
+    }
+
+    const prePressureMode = effectiveMode;
+    if (pressurePolicy.level === 'quick') {
+      pressureOverrideTargetMode = 'quick';
+    } else if (pressurePolicy.level === 'focused') {
+      pressureOverrideTargetMode = 'focused';
+    }
+
+    if (pressureOverrideTargetMode) {
+      effectiveMode = pressureOverrideTargetMode;
+      pressureOverrideApplied = prePressureMode !== pressureOverrideTargetMode;
+
+      if (pressureOverrideApplied) {
+        pressureWarning = `Pressure policy override applied: ${pressurePolicy.level} pressure (${pressurePolicy.ratio}) forced mode ${pressureOverrideTargetMode} from ${prePressureMode}.`;
+      }
+    }
+  }
+
+  if (!CONTEXT_MODES[effectiveMode]) {
+    effectiveMode = 'focused';
+  }
+
+  return {
+    effectiveMode,
+    pressureOverrideApplied,
+    pressureOverrideTargetMode,
+    pressureWarning,
+    intentClassification: {
+      detectedIntent,
+      intentConfidence,
+      resumeHeuristicApplied,
+      source: explicitIntent ? 'explicit' : 'auto-detected',
+    },
+  };
+}
+
+function maybeDiscoverSpecFolder(options: ContextOptions, args: ContextArgs): string | undefined {
+  if (args.specFolder || !isFolderDiscoveryEnabled()) {
+    return undefined;
+  }
+
+  try {
+    const basePaths = getSpecsBasePaths();
+    const discoveredFolder = discoverSpecFolder(args.input.trim(), basePaths) || undefined;
+    if (discoveredFolder) {
+      options.specFolder = discoveredFolder;
+    }
+    return discoveredFolder;
+  } catch (error: unknown) {
+    console.error(
+      '[memory-context] folder discovery failed (non-critical):',
+      error instanceof Error ? error.message : String(error),
+    );
+    return undefined;
+  }
+}
+
+async function executeStrategy(
+  effectiveMode: string,
+  options: ContextOptions,
+  args: ContextArgs,
+): Promise<ContextResult> {
+  const normalizedInput = args.input.trim();
+
+  switch (effectiveMode) {
+    case 'quick':
+      return executeQuickStrategy(normalizedInput, options);
+
+    case 'deep':
+      return executeDeepStrategy(normalizedInput, options);
+
+    case 'resume':
+      return executeResumeStrategy(normalizedInput, options);
+
+    case 'focused':
+    default:
+      return executeFocusedStrategy(normalizedInput, args.intent || null, options);
+  }
+}
+
+function buildResponseMeta(params: BuildResponseMetaParams): Record<string, unknown> {
+  const {
+    effectiveMode,
+    requestedMode,
+    tracedResult,
+    pressurePolicy,
+    pressureOverrideApplied,
+    pressureOverrideTargetMode,
+    pressureWarning,
+    sessionLifecycle,
+    effectiveBudget,
+    enforcement,
+    intentClassification,
+    discoveredFolder,
+    includeTrace,
+    sessionTransition,
+  } = params;
+  const { detectedIntent, intentConfidence, source } = intentClassification;
+
+  const telemetryMeta = retrievalTelemetry.isExtendedTelemetryEnabled()
+    ? (() => {
+        try {
+          const t = retrievalTelemetry.createTelemetry();
+          retrievalTelemetry.recordMode(
+            t,
+            effectiveMode,
+            pressureOverrideApplied,
+            pressurePolicy.level,
+            pressurePolicy.ratio ?? undefined,
+          );
+          if (effectiveMode !== requestedMode && pressureOverrideApplied) {
+            retrievalTelemetry.recordFallback(t, `pressure override: ${requestedMode} -> ${effectiveMode}`);
+          }
+          retrievalTelemetry.recordTransitionDiagnostics(
+            t,
+            includeTrace === true ? sessionTransition : undefined,
+          );
+          return { _telemetry: retrievalTelemetry.toJSON(t) };
+        } catch (error: unknown) {
+          void error;
+          // Telemetry must never crash the handler
+          return {};
+        }
+      })()
+    : {};
+
+  return {
+    layer: 'L1:Orchestration',
+    mode: effectiveMode,
+    requestedMode,
+    strategy: tracedResult.strategy,
+    tokenUsageSource: pressurePolicy.source,
+    tokenUsagePressure: pressurePolicy.ratio,
+    pressureLevel: pressurePolicy.level,
+    pressure_level: pressurePolicy.level,
+    pressurePolicy: {
+      applied: pressureOverrideApplied,
+      overrideMode: pressureOverrideApplied ? pressureOverrideTargetMode : null,
+      warning: pressureWarning,
+    },
+    sessionLifecycle,
+    tokenBudget: effectiveBudget,
+    tokenBudgetEnforcement: enforcement,
+    intent: detectedIntent ? {
+      type: detectedIntent,
+      confidence: intentConfidence,
+      source,
+    } : null,
+    folderDiscovery: discoveredFolder ? {
+      discovered: true,
+      specFolder: discoveredFolder,
+      source: 'folder-discovery',
+    } : null,
+    ...telemetryMeta,
+  };
+}
+
+/* ───────────────────────────────────────────────────────────────
+   7. MAIN HANDLER
 ──────────────────────────────────────────────────────────────── */
 
 /** Handle memory_context tool — L1 orchestration layer that routes to optimal retrieval strategy.
@@ -606,22 +882,34 @@ async function executeResumeStrategy(input: string, options: ContextOptions): Pr
  */
 async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   const _contextStartTime = Date.now();
-  await checkDatabaseUpdated();
+  const requestId = randomUUID();
+
+  try {
+    await checkDatabaseUpdated();
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    return createMCPErrorResponse({
+      tool: 'memory_context',
+      error: `Database state check failed: ${message}`,
+      code: 'E_INTERNAL',
+      details: { requestId, layer: 'L1:Orchestration' },
+      recovery: {
+        hint: 'The memory database may be unavailable. Retry or check database connectivity.',
+      },
+    });
+  }
+
   const {
     input,
     mode: requested_mode = 'auto',
     intent: explicit_intent,
     specFolder: spec_folder,
     limit,
-    sessionId: session_id,
     enableDedup: enableDedup = true,
     includeContent: include_content = false,
     tokenUsage,
     anchors
   } = args;
-
-  // A7-P2-1: Generate requestId for incident correlation in error responses
-  const requestId = randomUUID();
 
   // Validate input
   if (!input || typeof input !== 'string' || input.trim().length === 0) {
@@ -653,17 +941,13 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     // Intentional no-op — error deliberately discarded
   }
 
-  const requestedSessionId = typeof session_id === 'string' && session_id.trim().length > 0
-    ? session_id.trim()
-    : null;
-  const resumedSession = requestedSessionId ? workingMemory.sessionExists(requestedSessionId) : false;
-  const effectiveSessionId = requestedSessionId ?? randomUUID();
-  const previousState = requestedSessionId
-    ? workingMemory.getSessionInferredMode(requestedSessionId)
-    : null;
-  const eventCounterStart = resumedSession && requestedSessionId
-    ? workingMemory.getSessionEventCounter(requestedSessionId)
-    : 0;
+  const {
+    requestedSessionId,
+    effectiveSessionId,
+    resumed: resumedSession,
+    priorMode: previousState,
+    counter: eventCounterStart,
+  } = resolveSessionLifecycle(args, null);
   const sessionLifecycle: SessionLifecycleMetadata = {
     sessionScope: requestedSessionId ? 'caller' : 'ephemeral',
     requestedSessionId,
@@ -720,56 +1004,29 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     anchors
   };
 
-  // Determine effective mode
-  let effectiveMode = requested_mode;
-  let detectedIntent: string | undefined = explicit_intent;
-  let intentConfidence = explicit_intent ? 1.0 : 0;
-
-  let pressureOverrideTargetMode: 'quick' | 'focused' | null = null;
-  let pressureOverrideApplied = false;
-  let pressureWarning: string | null = null;
-  let resumeHeuristicApplied = false;
-
-  // Handle auto mode: detect intent and select mode
-  if (requested_mode === 'auto') {
-    if (!detectedIntent) {
-      const classification: IntentClassification = intentClassifier.classifyIntent(normalizedInput);
-      detectedIntent = classification.intent;
-      intentConfidence = classification.confidence;
-    }
-
-    effectiveMode = INTENT_TO_MODE[detectedIntent!] || 'focused';
-
-    if (normalizedInput.length < 50 || /^(what|how|where|when|why)\s/i.test(normalizedInput)) {
-      effectiveMode = 'focused';
-    }
-
-    if (/\b(resume|continue|pick up|where was i|what's next)\b/i.test(normalizedInput)) {
-      effectiveMode = 'resume';
-      resumeHeuristicApplied = true;
-    }
-
-    const prePressureMode = effectiveMode;
-    if (pressurePolicy.level === 'quick') {
-      pressureOverrideTargetMode = 'quick';
-    } else if (pressurePolicy.level === 'focused') {
-      pressureOverrideTargetMode = 'focused';
-    }
-
-    if (pressureOverrideTargetMode) {
-      effectiveMode = pressureOverrideTargetMode;
-      pressureOverrideApplied = prePressureMode !== pressureOverrideTargetMode;
-
-      if (pressureOverrideApplied) {
-        pressureWarning = `Pressure policy override applied: ${pressurePolicy.level} pressure (${pressurePolicy.ratio}) forced mode ${pressureOverrideTargetMode} from ${prePressureMode}.`;
-      }
-    }
-  }
-
-  // Validate mode
-  if (!CONTEXT_MODES[effectiveMode]) {
-    effectiveMode = 'focused';
-  }
+  const {
+    effectiveMode,
+    pressureOverrideApplied,
+    pressureOverrideTargetMode,
+    pressureWarning,
+    intentClassification,
+  } = resolveEffectiveMode(
+    { ...args, input: normalizedInput },
+    {
+      requestedSessionId,
+      effectiveSessionId,
+      resumed: resumedSession,
+      priorMode: previousState,
+      counter: eventCounterStart,
+    },
+    pressurePolicy,
+  );
+  const {
+    detectedIntent,
+    intentConfidence,
+    resumeHeuristicApplied,
+    source: intentSource,
+  } = intentClassification;
 
   const sessionTransition = buildSessionTransitionTrace({
     previousState,
@@ -782,43 +1039,15 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   });
   options.sessionTransition = options.includeTrace === true ? sessionTransition : undefined;
 
-  // PI-B3: Automatic spec folder discovery when no folder is specified
-  let discoveredFolder: string | null = null;
-  if (!spec_folder && isFolderDiscoveryEnabled()) {
-    try {
-      const basePaths = getSpecsBasePaths();
-      discoveredFolder = discoverSpecFolder(normalizedInput, basePaths);
-      if (discoveredFolder) {
-        options.specFolder = discoveredFolder;
-      }
-    } catch (err: unknown) {
-      // CHK-PI-B3-004: never block context retrieval
-      console.error('[memory-context] folder discovery failed (non-critical):',
-        err instanceof Error ? err.message : String(err));
-    }
-  }
+  const discoveredFolder = maybeDiscoverSpecFolder(options, { ...args, input: normalizedInput });
 
-  // Execute the selected strategy
   let result: ContextResult;
   try {
-    switch (effectiveMode) {
-      case 'quick':
-        result = await executeQuickStrategy(normalizedInput, options);
-        break;
-
-      case 'deep':
-        result = await executeDeepStrategy(normalizedInput, options);
-        break;
-
-      case 'resume':
-        result = await executeResumeStrategy(normalizedInput, options);
-        break;
-
-      case 'focused':
-      default:
-        result = await executeFocusedStrategy(normalizedInput, detectedIntent || null, options);
-        break;
-    }
+    result = await executeStrategy(effectiveMode, options, {
+      ...args,
+      input: normalizedInput,
+      intent: detectedIntent,
+    });
   } catch (error: unknown) {
     console.error(`[memory-context] Strategy execution failed [requestId=${requestId}]:`, toErrorMessage(error));
     return createMCPErrorResponse({
@@ -837,7 +1066,12 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     });
   }
 
-  workingMemory.setSessionInferredMode(effectiveSessionId, effectiveMode);
+  try {
+    workingMemory.setSessionInferredMode(effectiveSessionId, effectiveMode);
+  } catch (error: unknown) {
+    void error;
+    // Best-effort session state write — do not fail the handler
+  }
 
   // T205: Determine effective token budget from mode or layer definitions
   const modeTokenBudget = CONTEXT_MODES[effectiveMode]?.tokenBudget;
@@ -879,51 +1113,27 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
       `Token budget: ${effectiveBudget} (${effectiveMode} mode)`,
       ...(pressureWarning ? [pressureWarning] : [])
     ],
-    extraMeta: {
-      layer: 'L1:Orchestration',
-      mode: effectiveMode,
+    extraMeta: buildResponseMeta({
+      effectiveMode,
       requestedMode: requested_mode,
-      strategy: tracedResult.strategy,
-      tokenUsageSource: pressurePolicy.source,
-      tokenUsagePressure: pressurePolicy.ratio,
-      pressureLevel: pressurePolicy.level,
-      pressure_level: pressurePolicy.level,
-      pressurePolicy: {
-        applied: pressureOverrideApplied,
-        overrideMode: pressureOverrideApplied ? pressureOverrideTargetMode : null,
-        warning: pressureWarning,
-      },
+      tracedResult,
+      pressurePolicy,
+      pressureOverrideApplied,
+      pressureOverrideTargetMode,
+      pressureWarning,
       sessionLifecycle,
-      tokenBudget: effectiveBudget,
-      tokenBudgetEnforcement: enforcement,
-      intent: detectedIntent ? {
-        type: detectedIntent,
-        confidence: intentConfidence,
-        source: explicit_intent ? 'explicit' : 'auto-detected'
-      } : null,
-      // PI-B3: Folder discovery observability
-      folderDiscovery: discoveredFolder ? {
-        discovered: true,
-        specFolder: discoveredFolder,
-        source: 'folder-discovery',
-      } : null,
-      // C136-12: Retrieval telemetry at L1 orchestration level
-      ...(retrievalTelemetry.isExtendedTelemetryEnabled() ? (() => {
-        const t = retrievalTelemetry.createTelemetry();
-        retrievalTelemetry.recordMode(
-          t,
-          effectiveMode,
-          pressureOverrideApplied,
-          pressurePolicy.level,
-          pressurePolicy.ratio ?? undefined,
-        );
-        if (effectiveMode !== requested_mode && pressureOverrideApplied) {
-          retrievalTelemetry.recordFallback(t, `pressure override: ${requested_mode} -> ${effectiveMode}`);
-        }
-        retrievalTelemetry.recordTransitionDiagnostics(t, options.includeTrace === true ? sessionTransition : undefined);
-        return { _telemetry: retrievalTelemetry.toJSON(t) };
-      })() : {}),
-    }
+      effectiveBudget,
+      enforcement,
+      intentClassification: {
+        detectedIntent,
+        intentConfidence,
+        resumeHeuristicApplied,
+        source: intentSource,
+      },
+      discoveredFolder,
+      includeTrace: options.includeTrace === true,
+      sessionTransition,
+    })
   });
 
   // Consumption instrumentation — log context event (fail-safe, never throws)

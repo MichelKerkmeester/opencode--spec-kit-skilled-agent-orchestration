@@ -14,16 +14,14 @@ import { to_embedding_buffer } from '../search/vector-index-types';
 import type { ParsedMemory } from '../parsing/memory-parser';
 import { classifyEncodingIntent } from '../search/encoding-intent';
 import { isEncodingIntentEnabled } from '../search/search-flags';
+import { createLogger } from '../utils/logger';
+import { detectSpecLevelFromParsed } from '../spec/spec-level';
 import { getHistoryEventsForLineage, init as initHistory, recordHistory, type HistoryLineageEvent } from './history';
-// TODO: ARCHITECTURAL DEBT — lib/ importing from handlers/ creates a circular dependency
-// with handlers/pe-gating.ts. Fix: extract calculateDocumentWeight(), isSpecDocumentType(),
-// detectSpecLevelFromParsed(), and applyPostInsertMetadata() into a new lib/storage/document-helpers.ts
-// module, then update both lineage-state.ts and pe-gating.ts to import from there.
-import { applyPostInsertMetadata } from '../../handlers/save/db-helpers';
-import { calculateDocumentWeight, isSpecDocumentType } from '../../handlers/pe-gating';
-import { detectSpecLevelFromParsed } from '../../handlers/handler-utils';
+import { calculateDocumentWeight, isSpecDocumentType } from './document-helpers';
+import { applyPostInsertMetadata } from './post-insert-metadata';
 
 // Feature catalog: Lineage state active projection and asOf resolution
+const logger = createLogger('LineageState');
 
 
 type MemoryIndexRow = Record<string, unknown> & {
@@ -157,6 +155,8 @@ interface CreateAppendOnlyMemoryRecordParams {
   predecessorMemoryId: number;
   actor?: string;
 }
+
+type LineageRow = MemoryLineageRow;
 
 function getMemoryRow(database: Database.Database, memoryId: number): MemoryIndexRow {
   const row = database.prepare('SELECT * FROM memory_index WHERE id = ?').get(memoryId) as MemoryIndexRow | undefined;
@@ -413,6 +413,29 @@ function getExistingLineageTransition(
 }
 
 /**
+ * Validates transition input combinations before persisting.
+ * Rejects invalid event/predecessor pairings and backwards timestamps.
+ */
+function validateTransitionInput(
+  transitionEvent: string,
+  predecessorMemoryId: number | null,
+  validFrom: string,
+  predecessor: LineageRow | null,
+): void {
+  if (transitionEvent === 'CREATE' && predecessorMemoryId != null) {
+    throw new Error(`E_LINEAGE: CREATE transition must not specify a predecessor (got ${predecessorMemoryId})`);
+  }
+  if (transitionEvent === 'SUPERSEDE' && predecessorMemoryId == null) {
+    throw new Error('E_LINEAGE: SUPERSEDE transition requires a predecessor');
+  }
+  if (predecessor && validFrom < predecessor.valid_from) {
+    throw new Error(
+      `E_LINEAGE: valid_from (${validFrom}) is earlier than predecessor valid_from (${predecessor.valid_from})`,
+    );
+  }
+}
+
+/**
  * Seed lineage state from an existing memory row when no lineage entry exists yet.
  *
  * @param database - Database connection that stores lineage state.
@@ -506,9 +529,10 @@ export function recordLineageTransition(
     let logicalKey = buildLogicalKey(row);
     let rootMemoryId = memoryId;
     let versionNumber = 1;
+    let predecessor: LineageRow | null = null;
 
     if (predecessorMemoryId != null) {
-      const predecessor = getLineageRow(database, predecessorMemoryId);
+      predecessor = getLineageRow(database, predecessorMemoryId);
       if (predecessor) {
         logicalKey = predecessor.logical_key;
         rootMemoryId = predecessor.root_memory_id;
@@ -521,8 +545,19 @@ export function recordLineageTransition(
         logicalKey = seeded.logicalKey;
         rootMemoryId = seeded.rootMemoryId;
         versionNumber = seeded.versionNumber + 1;
+        predecessor = getLineageRow(database, predecessorMemoryId);
       }
+    }
 
+    validateTransitionInput(transitionEvent, predecessorMemoryId, validFrom, predecessor);
+
+    if (predecessorMemoryId != null) {
+      if (predecessor && predecessor.valid_to) {
+        logger.warn(
+          `Predecessor ${predecessorMemoryId} already superseded (valid_to: ${predecessor.valid_to}). ` +
+          'COALESCE will preserve the existing valid_to.',
+        );
+      }
       database.prepare(`
         UPDATE memory_lineage
         SET valid_to = COALESCE(valid_to, ?),

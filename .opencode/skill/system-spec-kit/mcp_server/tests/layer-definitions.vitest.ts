@@ -1,5 +1,6 @@
 // TEST: LAYER DEFINITIONS
 import { describe, it, expect } from 'vitest';
+import { TOOL_DEFINITIONS } from '../tool-schemas';
 import * as mod from '../lib/architecture/layer-definitions';
 import type { LayerId, TaskType } from '../lib/architecture/layer-definitions';
 
@@ -140,6 +141,13 @@ describe('Layer Definitions Tests', () => {
       for (const [tool, layer] of Object.entries(TLM)) {
         expect(validLayers).toContain(layer);
       }
+    });
+
+    it('every registered tool has a layer definition', () => {
+      const toolNames = TOOL_DEFINITIONS.map((tool) => tool.name);
+      const mappedToolNames = Object.keys(mod.TOOL_LAYER_MAP);
+      const unmapped = toolNames.filter((name) => !mappedToolNames.includes(name));
+      expect(unmapped).toEqual([]);
     });
   });
 

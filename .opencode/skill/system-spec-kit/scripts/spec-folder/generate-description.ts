@@ -19,8 +19,8 @@ import {
   loadPerFolderDescription,
   extractKeywords,
   slugifyFolderName,
-} from '@spec-kit/mcp-server/lib/search/folder-discovery';
-import type { PerFolderDescription } from '@spec-kit/mcp-server/lib/search/folder-discovery';
+} from '@spec-kit/mcp-server/api';
+import type { PerFolderDescription } from '@spec-kit/mcp-server/api';
 
 function main(): void {
   const args = process.argv.slice(2);

@@ -52,6 +52,30 @@ describe('Phase 6 shared spaces', () => {
     expect(Array.from(getAllowedSharedSpaceIds(db, { userId: 'user-1' }))).toEqual(['space-1']);
   });
 
+  it('rejects blank shared-space identifiers before access evaluation', () => {
+    process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
+    const db = new Database(':memory:');
+
+    expect(assertSharedSpaceAccess(db, {
+      tenantId: 'tenant-a',
+      userId: 'user-1',
+    }, '   ')).toEqual({
+      allowed: false,
+      reason: 'shared_space_id_required',
+    });
+
+    expect(db.prepare(`
+      SELECT action, decision, reason
+      FROM governance_audit
+      ORDER BY id DESC
+      LIMIT 1
+    `).get()).toEqual({
+      action: 'shared_space_access',
+      decision: 'deny',
+      reason: 'shared_space_id_required',
+    });
+  });
+
   it('requires owner role for owner-gated shared-space actions', () => {
     process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
     const db = new Database(':memory:');
@@ -128,6 +152,61 @@ describe('Phase 6 shared spaces', () => {
     }))).toEqual(['space-mixed-role']);
   });
 
+  it('records governance audits for denied and allowed shared-space access decisions', () => {
+    process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
+    const db = new Database(':memory:');
+
+    upsertSharedSpace(db, {
+      spaceId: 'space-audit',
+      tenantId: 'tenant-a',
+      name: 'Audit Space',
+      rolloutEnabled: true,
+    });
+    upsertSharedMembership(db, {
+      spaceId: 'space-audit',
+      subjectType: 'user',
+      subjectId: 'user-owner',
+      role: 'owner',
+    });
+
+    expect(assertSharedSpaceAccess(db, {
+      tenantId: 'tenant-a',
+      userId: 'user-viewer',
+    }, 'space-audit')).toEqual({
+      allowed: false,
+      reason: 'shared_space_membership_required',
+    });
+
+    expect(assertSharedSpaceAccess(db, {
+      tenantId: 'tenant-a',
+      userId: 'user-owner',
+    }, 'space-audit', 'owner')).toEqual({
+      allowed: true,
+    });
+
+    expect(db.prepare(`
+      SELECT decision, reason, tenant_id, user_id, shared_space_id
+      FROM governance_audit
+      WHERE action = 'shared_space_access'
+      ORDER BY id ASC
+    `).all()).toEqual([
+      {
+        decision: 'deny',
+        reason: 'shared_space_membership_required',
+        tenant_id: 'tenant-a',
+        user_id: 'user-viewer',
+        shared_space_id: 'space-audit',
+      },
+      {
+        decision: 'allow',
+        reason: 'membership_verified',
+        tenant_id: 'tenant-a',
+        user_id: 'user-owner',
+        shared_space_id: 'space-audit',
+      },
+    ]);
+  });
+
   it('blocks existing members immediately when a shared-space kill switch is enabled', () => {
     process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
     const db = new Database(':memory:');
@@ -196,6 +275,23 @@ describe('Phase 6 shared spaces', () => {
       reason: 'shared_space_rollout_disabled',
     });
     expect(Array.from(getAllowedSharedSpaceIds(db, { agentId: 'agent-1' }))).toEqual([]);
+  });
+
+  it('rejects blank identifiers when persisting shared spaces and memberships', () => {
+    const db = new Database(':memory:');
+
+    expect(() => upsertSharedSpace(db, {
+      spaceId: ' ',
+      tenantId: 'tenant-a',
+      name: 'Invalid Space',
+    })).toThrow('E_VALIDATION: spaceId and tenantId must be non-empty strings');
+
+    expect(() => upsertSharedMembership(db, {
+      spaceId: 'space-blank',
+      subjectType: 'user',
+      subjectId: ' ',
+      role: 'viewer',
+    })).toThrow('E_VALIDATION: spaceId and subjectId must be non-empty strings');
   });
 
   it('limits shared-space discovery and access to the requested tenant boundary', () => {

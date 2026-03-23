@@ -51,12 +51,12 @@ describe('Memory roadmap flags', () => {
     }
   });
 
-  it('defaults to the shared-rollout phase with all roadmap capabilities enabled', () => {
+  it('defaults to the shared-rollout phase with adaptive ranking dormant by default', () => {
     expect(getMemoryRoadmapPhase()).toBe('shared-rollout');
     expect(getMemoryRoadmapCapabilityFlags()).toEqual({
       lineageState: true,
       graphUnified: true,
-      adaptiveRanking: true,
+      adaptiveRanking: false,
       scopeEnforcement: true,
       governanceGuardrails: true,
       sharedMemory: true,
@@ -73,15 +73,23 @@ describe('Memory roadmap flags', () => {
     expect(getMemoryRoadmapCapabilityFlags().graphUnified).toBe(false);
   });
 
-  it('respects rollout phase and rollout gating for default-on roadmap capabilities', () => {
+  it('lets adaptive ranking opt in explicitly while leaving the roadmap phase metadata intact', () => {
     process.env.SPECKIT_MEMORY_ROADMAP_PHASE = 'adaptive';
     process.env.SPECKIT_ROLLOUT_PERCENT = '100';
 
+    const dormant = getMemoryRoadmapDefaults('roadmap-session-1');
+    expect(dormant.phase).toBe('adaptive');
+    expect(dormant.capabilities.adaptiveRanking).toBe(false);
+
+    process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING = 'true';
     const enabled = getMemoryRoadmapDefaults('roadmap-session-1');
-    expect(enabled.phase).toBe('adaptive');
     expect(enabled.capabilities.adaptiveRanking).toBe(true);
 
     process.env.SPECKIT_ROLLOUT_PERCENT = '0';
+    const stillEnabled = getMemoryRoadmapDefaults('roadmap-session-1');
+    expect(stillEnabled.capabilities.adaptiveRanking).toBe(true);
+
+    process.env.SPECKIT_MEMORY_ADAPTIVE_RANKING = 'false';
     const disabled = getMemoryRoadmapDefaults('roadmap-session-1');
     expect(disabled.capabilities.adaptiveRanking).toBe(false);
   });
