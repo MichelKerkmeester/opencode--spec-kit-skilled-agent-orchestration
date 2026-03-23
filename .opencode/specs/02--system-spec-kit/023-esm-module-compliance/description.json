@@ -1,0 +1,7 @@
+{
+  "specFolder": "02--system-spec-kit/023-esm-module-compliance",
+  "description": "Update sk-code--opencode standards to document ESM as the accepted module convention for MCP server TypeScript code.",
+  "keywords": ["esm", "module", "typescript", "standards", "compliance"],
+  "status": "Pending",
+  "importance_tier": "standard"
+}
