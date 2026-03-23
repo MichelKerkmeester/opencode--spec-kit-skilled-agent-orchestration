@@ -33,7 +33,7 @@ contextType: "general"
 
 Executed comprehensive code analysis across all 59 exact scenario IDs in the 16--tooling-and-scripts playbook category. Each scenario was verified against the live codebase with file:line evidence citations. The analysis covered 29 playbook scenario files, 18 feature catalog entries, MCP server source code (585+ TypeScript files), scripts source code, shared library, and configuration files.
 
-### Verdict Table (60 IDs)
+### Verdict Table (59 IDs)
 
 #### Group A: Phase Workflow (5 IDs)
 
@@ -147,7 +147,7 @@ Executed comprehensive code analysis across all 59 exact scenario IDs in the 16-
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-**Methodology**: Comprehensive static code analysis against playbook acceptance criteria. For each of the 60 scenario IDs, the corresponding source code was located, read, and verified against the playbook's expected signals and pass/fail criteria.
+**Methodology**: Comprehensive static code analysis against playbook acceptance criteria. For each of the 59 scenario IDs, the corresponding source code was located, read, and verified against the playbook's expected signals and pass/fail criteria.
 
 **Evidence approach**: File:line references from the live codebase. Key verification methods:
 - Shell scripts (recommend-level.sh, create.sh, validate.sh, check-phase-links.sh, progressive-validate.sh): grep and read for flag support, output fields, exit code handling
@@ -167,7 +167,7 @@ Executed comprehensive code analysis across all 59 exact scenario IDs in the 16-
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-1. **Code analysis mode**: Used static code analysis rather than runtime execution for all 60 IDs. This is appropriate because the scenarios test code structure and implementation completeness, and the code is the ground truth.
+1. **Code analysis mode**: Used static code analysis rather than runtime execution for all 59 IDs. This is appropriate because the scenarios test code structure and implementation completeness, and the code is the ground truth.
 
 2. **138 resolved to PASS**: The MODULE header compliance scenario was PARTIAL due to 3 WARN-level TS-MODULE-HEADER findings in the scripts directory. MODULE headers were added to scripts/extractors/session-activity-signal.ts, scripts/utils/memory-frontmatter.ts, and scripts/utils/phase-classifier.ts. verify_alignment_drift.py now reports PASS with 0 TS-MODULE-HEADER findings across both mcp_server and scripts.
 
