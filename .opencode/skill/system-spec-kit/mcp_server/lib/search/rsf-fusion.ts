@@ -1,11 +1,8 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Rsf Fusion
 // ───────────────────────────────────────────────────────────────
-/** @module rsf-fusion - DORMANT: Not active in production. Retained for offline evaluation and future reactivation use only. */
 /**
  * @module rsf-fusion
- *
- * **Status: DORMANT / Shadow-only.**
  *
  * This module implements Relative Score Fusion (RSF) as a comparison/evaluation
  * utility. It is NOT actively used in the search pipeline for ranking. The only
@@ -426,7 +423,6 @@ function fuseResultsRsfCrossVariant(variantLists: RankedList[][]): RsfResult[] {
 
 /* --- 6. EXPORTS --- */
 
-// @internal - dormant module exports are retained for offline evaluation and test harnesses only.
 export {
   fuseResultsRsf,
   fuseResultsRsfMulti,

@@ -1,7 +1,6 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Retention Policy
 // ───────────────────────────────────────────────────────────────
-/** @module retention - DORMANT: Not active in production. Retained for manual governance sweeps and future scheduler use only. */
 // Scoped retention sweeps that delete expired memories and
 // record governance audit entries for each deletion event.
 import type Database from 'better-sqlite3';
@@ -23,7 +22,6 @@ import { getAllowedSharedSpaceIds } from '../collab/shared-spaces';
 /**
  * Outcome of a retention sweep scoped to the caller's governance filters.
  */
-// @internal - dormant module export retained for manual sweeps and tests only.
 export interface RetentionSweepResult {
   scanned: number;
   deleted: number;
@@ -44,7 +42,6 @@ export interface RetentionSweepResult {
  * @param options - Optional sweep controls for privileged operations.
  * @returns Sweep counts and the identifiers deleted during the run.
  */
-// @internal - dormant module entry point retained for manual/test-only retention sweeps.
 export function runRetentionSweep(
   database: Database.Database,
   scope: ScopeContext = {},
