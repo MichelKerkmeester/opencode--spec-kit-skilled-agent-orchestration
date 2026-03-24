@@ -1,104 +1,46 @@
-# Iteration 9: Q9 Hallucination Verification + Q10 Session-Manager Blind Spot
+## 1. Summary
+- P0: 0, P1: 2, P2: 3.
+- Audit recheck for `014-pipeline-architecture`: 17 of 22 verdicts held up; 5 need revision (`F10`, `F11`, `F12`, `F18`, `F21`).
+- Reviewed 25 spec/catalog/source/test files and ran 6 targeted suites; all targeted suites passed, which strengthens the conclusion that the highest-risk issues are coverage/connection gaps rather than obvious red tests.
+- Dimension coverage: correctness, security, traceability, maintainability.
 
-## Focus
-Systematically verify every PARTIAL correction claim across all 21 audit phases against the actual codebase, producing a hallucination rate. Separately, assess whether session-manager.ts (1186 lines, 26 functions) is a single-point-of-failure in the audit due to cross-category scope but piecemeal audit coverage.
+## 2. Findings
 
-## Findings
+### PA-001 (P1) Pending-file recovery cannot recover the UUID-suffixed files that `atomicSaveMemory()` actually leaves behind
+Evidence: [memory-save.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts#L910), [memory-save.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts#L1020), [transaction-manager.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/transaction-manager.ts#L87), [transaction-manager.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/transaction-manager.ts#L94), [transaction-manager.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/transaction-manager.ts#L302), [context-server.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts#L425), [context-server.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts#L482), [transaction-manager.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/transaction-manager.vitest.ts#L54), [transaction-manager-recovery.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/transaction-manager-recovery.vitest.ts#L23), [handler-memory-save.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts#L658), [014 spec.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture/spec.md#L208)
+Impact: `atomicSaveMemory()` writes `*_pending.ext.<uuid>`, but recovery only discovers bare `_pending` suffixes. A rename failure after DB commit leaves a file that startup recovery will not find or reconstruct, so `F21` is not a valid `MATCH`, and the recovery claim under `F18` is overstated.
+Fix recommendation: make pending-path generation and recovery parsing share one filename contract, then add a startup-recovery test that covers the `dbCommitted: true` rename-failure branch with suffixed pending files.
 
-### Q9: PARTIAL Correction Verification Results
+### PA-002 (P1) The live `memory_save` path writes auto-fixed content before DB commit and cannot roll it back
+Evidence: [memory-tools.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tools/memory-tools.ts#L67), [memory-save.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts#L830), [memory-save.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts#L469), [memory-save.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts#L480), [memory-save.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts#L481), [014 spec.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture/spec.md#L200)
+Impact: normal MCP `memory_save` dispatch goes through `handleMemorySave()`, not the atomic helper. Inside `processPreparedMemory()`, the handler writes the final file before `COMMIT`; if commit fails afterward, SQLite rolls back but disk content does not. That leaves file/DB divergence and means the rollback guarantee behind `F11` is incomplete.
+Fix recommendation: either route live saves through `atomicSaveMemory()` or delay final file promotion until after a successful commit with an explicit recovery contract.
 
-Extracted and verified every specific correction claim from PARTIAL findings across phases 001-005 (the phases with the richest PARTIAL detail). Results:
+### PA-003 (P2) `F18` says the live `memory_save` handler owns the atomic write/index/rename flow, but that helper is not on the runtime tool path
+Evidence: [18-atomic-write-then-index-api.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/18-atomic-write-then-index-api.md#L18), [memory-tools.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tools/memory-tools.ts#L67), [memory-save.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts#L830), [memory-save.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts#L906), [index.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/index.ts#L40), [014 spec.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture/spec.md#L205)
+Impact: the atomic helper exists and is exported, but the MCP dispatcher still calls `handleMemorySave()`. This is a traceability error: the catalog and audit imply that ordinary `memory_save` calls are protected by the atomic write/index/rename path when they are not.
+Fix recommendation: wire the tool through `atomicSaveMemory()` or narrow `F18` wording to describe it as an exported helper rather than the live default path.
 
-#### Phase 001 — Retrieval (1 PARTIAL)
-- **F08 "stage4-filter.ts misattribution"**: File EXISTS at `lib/search/pipeline/stage4-filter.ts`. The audit said it "handles memory-state filtering, not quality fallback logic" -- this is a **judgment call about attribution**, not a file existence error. **VERDICT: ACCURATE correction** (file exists, attribution claim is reasonable).
+### PA-004 (P2) `F12` is stale: the TypeScript sources the audit flags as missing are present
+Evidence: [014 spec.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture/spec.md#L216), [12-dbpath-extraction-and-import-standardization.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md#L18), [config.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/shared/config.ts#L9), [paths.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/shared/paths.ts#L51), [cleanup-orphaned-vectors.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/scripts/memory/cleanup-orphaned-vectors.ts#L15)
+Impact: the audit still reports a `.ts` vs `.js` path discrepancy that is no longer true. That makes the re-audit understate catalog accuracy and creates a false follow-up item.
+Fix recommendation: change `F12` from `PARTIAL` to `MATCH` and remove the stale note from the audit summary/open questions.
 
-#### Phase 002 — Mutation (2 PARTIAL)
-- **F01 "10+ missing files"**: 8 of 10 claimed files VERIFIED to exist at correct paths (spec-folder-mutex.ts, markdown-evidence-builder.ts, validation-responses.ts, v-rule-bridge.ts, lineage-state.ts, history.ts, scope-governance.ts, shared-spaces.ts). 2 files NOT FOUND: `memory-sufficiency.ts` and `spec-doc-health.ts`. However, grep reveals these concepts exist in test files and handler code under different names. **VERDICT: 80% ACCURATE** -- 8/10 files confirmed real, 2 may be hallucinated file names for real concepts.
-  [SOURCE: find/grep verification in mcp_server/]
-- **F05 "7 missing files"**: ALL 7 claimed files VERIFIED to exist: `handlers/checkpoints.ts`, `lib/scoring/confidence-tracker.ts`, `lib/search/auto-promotion.ts`, `lib/scoring/negative-feedback.ts`, `lib/search/learned-feedback.ts`, `lib/eval/ground-truth-feedback.ts`, `lib/cognitive/adaptive-ranking.ts`. **VERDICT: 100% ACCURATE** -- all claimed missing files are real.
-  [SOURCE: find verification in mcp_server/]
+### PA-005 (P2) `F10` overstates “no alternative code path”; eval retrieval still bypasses the 4-stage orchestrator
+Evidence: [10-legacy-v1-pipeline-removal.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/10-legacy-v1-pipeline-removal.md#L10), [014 spec.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/014-pipeline-architecture/spec.md#L199), [memory-search.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts#L634), [orchestrator.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/orchestrator.ts#L47), [eval-reporting.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/eval-reporting.ts#L200), [hybrid-search.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts#L773)
+Impact: the main `memory_search` path is correctly on V2, and I found no runtime read of `SPECKIT_PIPELINE_V2`, but the catalog’s “all retrieval / no alternative code path” wording is broader than the code supports because eval/ablation still calls `hybridSearchEnhanced()` directly.
+Fix recommendation: narrow `F10` to “sole runtime path for `memory_search`” or migrate eval retrieval onto the same orchestrator if full path unification is the goal.
 
-#### Phase 003 — Discovery (1 PARTIAL)
-- **F03 D1 "summarizeAliasConflicts in memory-index-alias.ts not memory-index.ts"**: The handler file `memory-index-alias.ts` EXISTS. However, grep for "summarizeAliasConflicts" returns ZERO results across the entire codebase. The function name itself may not exist. **VERDICT: PARTIALLY ACCURATE** -- the file correction is right (memory-index-alias.ts exists), but the function name "summarizeAliasConflicts" appears to be fabricated.
-  [SOURCE: grep -rn "summarizeAlias" lib/ returned empty]
-- **F03 D2 "undocumented response fields"**: This is a behavioral observation, not a file reference. Cannot be verified as hallucinated -- it requires runtime inspection. **VERDICT: UNVERIFIABLE from static analysis**.
+## 3. Cross-references checked
+- Save-pipeline ordering and handoff points: [memory-save.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts#L316), [create-record.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/create-record.ts#L105), [embedding-pipeline.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/embedding-pipeline.ts#L119), [post-insert.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts#L50).
+- Search-pipeline ordering, degrade behavior, and Stage 4 immutability: [orchestrator.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/orchestrator.ts#L47), [stage4-filter.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage4-filter.ts#L243), [orchestrator-error-cascade.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/orchestrator-error-cascade.vitest.ts).
+- Pipeline V2 migration status: [memory-search.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts#L634), [eval-reporting.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/eval-reporting.ts#L200), [hybrid-search.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts#L773).
+- Dynamic-init spot check for `F14`: [14-dynamic-server-instructions-at-mcp-initialization.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md#L18), [context-server.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts#L228), [context-server.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts#L1095).
+- Fusion file check: the repo contains [rrf-fusion.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/shared/algorithms/rrf-fusion.ts#L1); there is no `rsf-fusion.ts` in this workspace.
+- Targeted suites executed and passed: [transaction-manager.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/transaction-manager.vitest.ts), [transaction-manager-recovery.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/transaction-manager-recovery.vitest.ts), [handler-memory-save.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts), [integration-save-pipeline.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/integration-save-pipeline.vitest.ts), [integration-search-pipeline.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/integration-search-pipeline.vitest.ts), [orchestrator-error-cascade.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/orchestrator-error-cascade.vitest.ts).
 
-#### Phase 004 — Maintenance (1 PARTIAL)
-- **F01 "history.ts missing from source list"**: File EXISTS at `lib/storage/history.ts`. **VERDICT: 100% ACCURATE** -- the file is real and its absence from the catalog is a genuine gap.
-  [SOURCE: find -name "history.ts"]
-
-#### Phase 005 — Lifecycle (3 PARTIAL)
-- **F01 "snapshot scope 3 vs 20 tables"**: Behavioral claim -- cannot verify as hallucination from file existence alone. **VERDICT: UNVERIFIABLE** (requires runtime inspection).
-- **F06 "missing test file transaction-manager-extended.vitest.ts"**: Behavioral claim about test coverage. **VERDICT: UNVERIFIABLE** from this analysis.
-- **F07 "bm25-index.ts and embeddings.ts missing"**: Both files VERIFIED to exist at `lib/search/bm25-index.ts` and `lib/providers/embeddings.ts`. **VERDICT: 100% ACCURATE** -- both files are real.
-  [SOURCE: find verification in mcp_server/]
-
-#### Aggregate Hallucination Analysis
-
-| Category | Count | Rate |
-|----------|-------|------|
-| File reference corrections VERIFIED as real | 18 | 82% |
-| File references NOT FOUND (possible hallucination) | 2 | 9% |
-| Function name possibly fabricated | 1 | 5% |
-| Unverifiable (behavioral claims) | 3 | -- |
-| **Total verifiable corrections** | **21** | -- |
-| **Accuracy rate (verifiable only)** | **18/21** | **85.7%** |
-
-**Key revision to iteration 3 finding**: Iteration 3 estimated ~50% hallucination rate from a 4-sample spot check. This systematic verification across 5 phases (8 PARTIAL findings, 21 verifiable correction claims) shows the actual accuracy is **85.7%** for file reference corrections. The ~50% estimate was based on checking fabricated function/variable names (fusion-lab.ts, title-builder.ts) which are a different category -- those appear in audit *descriptions*, not in PARTIAL *correction* claims. The correction claims themselves are significantly more reliable.
-
-### Q10: Session-Manager as Audit Blind Spot
-
-#### Scope of session-manager.ts
-- **1186 lines**, 26 exported functions
-- Spans 6 functional domains: initialization, dedup/filtering, session state management, cleanup, continue-session generation, checkpointing
-- Imported by 4 production files: `context-server.ts`, `core/db-state.ts`, `handlers/memory-search.ts`, `lib/utils/logger.ts`
-- Has 7 dedicated test files (3 source test files: session-manager.vitest.ts, session-manager-extended.vitest.ts, session-manager-stress.vitest.ts)
-  [SOURCE: grep -rn "session-manager" --include="*.ts" -l]
-
-#### Catalog Coverage Analysis
-Only **Phase 008 (bug-fixes-and-data-integrity)** references session-manager in the catalog (5 references across 4 files). No other phase mentions it.
-
-Session-manager functions vs catalog audit coverage:
-
-| Function Domain | Functions | Catalog Phase | Audited? |
-|----------------|-----------|---------------|----------|
-| Init + schema | init, ensureSchema, getDb | None | NO |
-| Dedup engine | shouldSendMemory, shouldSendMemoriesBatch, generateMemoryHash | 001-retrieval (indirectly) | PARTIAL at best |
-| Mark/filter | markMemorySent, markMemoriesSentBatch, filterSearchResults, markResultsSent | 001-retrieval (indirectly) | PARTIAL at best |
-| Entry limits | enforceEntryLimit | None | NO |
-| Cleanup | cleanupExpiredSessions, cleanupStaleSessions, clearSession | None | NO |
-| Session state | saveSessionState, completeSession, resetInterruptedSessions, recoverState, getInterruptedSessions | None | NO |
-| Continue-session | generateContinueSessionMd, writeContinueSessionMd | None | NO |
-| Checkpointing | checkpointSession | 005-lifecycle (indirectly) | PARTIAL at best |
-| Config | isEnabled, getConfig, getSessionStats | None | NO |
-| Shutdown | shutdown | None | NO |
-
-**Assessment**: 22 of 26 functions (85%) have NO direct catalog audit coverage. The 4 remaining functions have only indirect coverage (the catalog audits features that *use* session-manager, not session-manager itself). This confirms iteration 4's finding that session-manager is a structural blind spot.
-
-#### Is it a single-point-of-failure?
-YES, but not in the catastrophic sense. Session-manager is a **single-point-of-unverified-behavior**:
-- It controls dedup (directly affects memory_search results via filterSearchResults)
-- It controls session state (affects memory_context resume mode)
-- It controls cleanup (affects data integrity across sessions)
-- None of these behaviors are verified in the feature catalog
-
-However, it has 3 dedicated test files providing behavioral coverage outside the catalog. The risk is that the audit claims "220+ features verified" but the session management subsystem (~1200 LOC) was verified only as a side effect, never as a primary target.
-
-## Sources Consulted
-- `git ls-tree` + `git show HEAD:` for committed catalog files across all 21 phases
-- `find` + `grep` for file existence verification of all PARTIAL correction claims
-- `lib/session/session-manager.ts` (1186 lines) for function inventory
-- `grep -rl "session-manager"` for import chain analysis
-
-## Assessment
-- New information ratio: 0.80
-- Questions addressed: Q9 (hallucination rate), Q10 (session-manager blind spot)
-- Questions answered: Q9 (PARTIAL correction accuracy is 85.7%, not 50%), Q10 (85% of session-manager functions unaudited; confirmed as structural blind spot but mitigated by 3 test files)
-
-## Reflection
-- What worked and why: Systematic file existence verification against every specific claim in PARTIAL findings gives definitive ground truth. Using `find` over `grep` for file existence avoids false negatives from path assumptions.
-- What did not work and why: Behavioral claims (snapshot table counts, undocumented fields) cannot be verified through static file analysis -- they require runtime or deeper code reading.
-- What I would do differently: For a fuller hallucination analysis, also verify the fabricated names from iteration 3 (fusion-lab.ts, title-builder.ts) which were in audit *descriptions* not corrections -- these are a different hallucination category.
-
-## Recommended Next Focus
-Q11: Minimum-cost re-audit plan. With the risk model from Q8 and the verified hallucination rate from Q9, produce a concrete re-audit prescription: which phases, what scope, and expected risk reduction per effort unit.
+## 4. Dimension-specific notes
+- Correctness: search-stage ordering and degrade behavior match the catalog; the two real correctness defects are the recovery naming split and the pre-commit file write in the live save path.
+- Security: no new auth, scope-filter, or path-traversal issue surfaced in this slice; the main risk here is integrity and recoverability, not boundary bypass.
+- Traceability: `F10`, `F12`, `F18`, and `F21` need catalog/audit wording updates; `F11` needs its `MATCH` verdict reconsidered because the rollback story is incomplete.
+- Maintainability: current tests are aligned to legacy `_pending` filenames and happy-path orchestration, which is why the suites pass while the live recovery contract is split across modules.

@@ -13,7 +13,7 @@ This page records that the RSF runtime-path scenario was removed from active man
 
 ## 2. CURRENT REALITY
 
-This feature remains documented as historical or compatibility context, but it is no longer an active operator scenario in the playbook.
+This feature is fully removed from the codebase. The RSF module (`rsf-fusion.ts`), its dedicated test files, and the `rsfShadow` metadata field were deleted during the v3 remediation sweep. This playbook entry is retained only as a retirement record.
 
 - Objective: Record retirement of the RSF live-runtime scenario
 - Prompt: `N/A — active manual validation for RSF live ranking was removed from the playbook because production ranking stays on RRF and RSF is no longer a shipped runtime path.`

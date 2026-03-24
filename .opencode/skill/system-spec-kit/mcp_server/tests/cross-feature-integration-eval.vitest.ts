@@ -35,14 +35,6 @@ import {
   type RankedList,
 } from '@spec-kit/shared/algorithms/rrf-fusion';
 
-// -- RSF Fusion --
-import {
-  fuseResultsRsf,
-  fuseResultsRsfMulti,
-  clamp01,
-  type RsfResult,
-} from '../lib/search/rsf-fusion';
-
 // -- Channel Min-Representation --
 import {
   analyzeChannelRepresentation,
@@ -460,82 +452,6 @@ describe('Cross-Sprint Integration', () => {
       expect(lowScore).toBeLessThanOrEqual(1);
     });
 
-    it('11. RSF vs RRF produce correlated rankings on the same input', () => {
-      // Build 2 ranked lists with shared items
-      const listA: RankedList = {
-        source: 'vector',
-        results: [
-          { id: 1, score: 0.95 },
-          { id: 2, score: 0.85 },
-          { id: 3, score: 0.70 },
-          { id: 4, score: 0.60 },
-          { id: 5, score: 0.50 },
-        ],
-      };
-      const listB: RankedList = {
-        source: 'fts',
-        results: [
-          { id: 2, score: 0.90 },
-          { id: 1, score: 0.80 },
-          { id: 5, score: 0.65 },
-          { id: 3, score: 0.55 },
-          { id: 6, score: 0.40 },
-        ],
-      };
-
-      // RRF fusion
-      const rrfResults = fuseResultsMulti([listA, listB]);
-
-      // RSF fusion
-      const rsfResults = fuseResultsRsf(listA, listB);
-
-      // Both should return results for the same IDs (superset: all IDs from both lists)
-      const rrfIds = rrfResults.map(r => r.id);
-      const rsfIds = rsfResults.map(r => r.id);
-      const allIds = new Set([...rrfIds, ...rsfIds]);
-      expect(allIds.size).toBeGreaterThanOrEqual(5);
-
-      // Compute Kendall tau correlation for shared items
-      // Extract only IDs present in both result sets
-      const sharedIds = rrfIds.filter(id => rsfIds.includes(id));
-
-      // If we have at least 4 shared items, compute rank correlation
-      if (sharedIds.length >= 4) {
-        const rrfRanks = new Map(rrfIds.map((id, i) => [id, i]));
-        const rsfRanks = new Map(rsfIds.map((id, i) => [id, i]));
-
-        let concordant = 0;
-        let discordant = 0;
-
-        for (let i = 0; i < sharedIds.length; i++) {
-          for (let j = i + 1; j < sharedIds.length; j++) {
-            const rrfDiff = (rrfRanks.get(sharedIds[i])!) - (rrfRanks.get(sharedIds[j])!);
-            const rsfDiff = (rsfRanks.get(sharedIds[i])!) - (rsfRanks.get(sharedIds[j])!);
-            if (rrfDiff * rsfDiff > 0) concordant++;
-            else if (rrfDiff * rsfDiff < 0) discordant++;
-          }
-        }
-
-        const pairs = concordant + discordant;
-        const tau = pairs > 0 ? (concordant - discordant) / pairs : 0;
-
-        // Expect moderate positive correlation (> 0.2 as a relaxed threshold)
-        // Both methods favor items that appear in multiple lists, so correlation should exist
-        expect(tau).toBeGreaterThan(-1); // At minimum, must be valid
-        // Log for diagnostics
-        // Console.log(`Kendall tau: ${tau}, concordant: ${concordant}, discordant: ${discordant}`);
-      }
-
-      // Core invariant: both methods produce scores >= 0 for shared items
-      // With graduated-ON normalization, min-ranked result normalizes to 0.0
-      for (const result of rrfResults) {
-        expect(result.rrfScore).toBeGreaterThanOrEqual(0);
-      }
-      for (const result of rsfResults) {
-        expect(result.rsfScore).toBeGreaterThanOrEqual(0);
-        expect(result.rsfScore).toBeLessThanOrEqual(1);
-      }
-    });
   });
 
   /* ═══════════════════════════════════════════════════════════════════
@@ -551,16 +467,6 @@ describe('Cross-Sprint Integration', () => {
 
       const emptyMulti = fuseResultsMulti([]);
       expect(emptyMulti).toEqual([]);
-
-      // RSF with empty lists
-      const emptyRsf = fuseResultsRsf(
-        { source: 'a', results: [] },
-        { source: 'b', results: [] },
-      );
-      expect(emptyRsf).toEqual([]);
-
-      const emptyRsfMulti = fuseResultsRsfMulti([]);
-      expect(emptyRsfMulti).toEqual([]);
 
       // Channel representation with empty topK
       const emptyChannel = analyzeChannelRepresentation([], new Map());
@@ -605,14 +511,6 @@ describe('Cross-Sprint Integration', () => {
       const singleRrf = fuseResults([makeRrfItem(1)], []);
       expect(singleRrf.length).toBe(1);
       expect(singleRrf[0].rrfScore).toBeGreaterThan(0);
-
-      // RSF with single item
-      const singleRsf = fuseResultsRsf(
-        { source: 'vector', results: [{ id: 1, score: 0.8 }] },
-        { source: 'fts', results: [] },
-      );
-      expect(singleRsf.length).toBe(1);
-      expect(singleRsf[0].rsfScore).toBeGreaterThanOrEqual(0);
 
       // Confidence truncation with 1 result
       const singleTrunc = truncateByConfidence([{ id: 1, score: 0.9 }]);

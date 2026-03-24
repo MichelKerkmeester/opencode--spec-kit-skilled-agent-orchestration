@@ -37,7 +37,7 @@ contextType: "general"
 | Test ID | Scenario | Verdict | Key Evidence |
 |---------|----------|---------|--------------|
 | 033 | Query complexity router (R15) | **PASS** | `query-router.ts:57-61` — simple=2, moderate=3, complex=5 channels; `query-router.ts:127-133` — flag-disabled returns all channels |
-| 034 | RSF shadow mode (R14/N1) | **PASS** | `rsf-fusion.ts:4-23` — module deprecated; `hybrid-search.ts:10` — `fuseResultsMulti` (RRF) used for live ranking; `hybrid-search.ts:150-151` — RSF in shadow metadata only |
+| 034 | RSF shadow mode (R14/N1) | **PASS** | RSF confirmed dormant; module, tests, and `rsfShadow` field deleted in v3 remediation. RRF sole live fusion method |
 | 035 | Channel min-representation (R2) | **PASS** | `channel-representation.ts:15` — `QUALITY_FLOOR=0.005`; `channel-representation.ts:95-186` — promotion algorithm; `hybrid-search.ts:890` — wired via `enforceChannelRepresentation()` |
 | 036 | Confidence-based result truncation (R15-ext) | **PASS** | `confidence-truncation.ts:33-37` — `DEFAULT_MIN_RESULTS=3`, `GAP_THRESHOLD_MULTIPLIER=2`; `hybrid-search.ts:155-165` — `Sprint3PipelineMeta.truncation` block defined; `hybrid-search.ts:1121-1130` — truncation metadata now wired into per-result `traceMetadata.confidenceTruncation` (medianGap, cutoffGap, cutoffIndex, thresholdMultiplier, minResultsGuaranteed) for `includeTrace` consumers |
 | 037 | Dynamic token budget allocation (FUT-7) | **PASS** | `dynamic-token-budget.ts:43-47` — simple=1500, moderate=2500, complex=4000; `dynamic-token-budget.ts:83-90` — `applied=false`, `DEFAULT_BUDGET=4000` when disabled; `hybrid-search.ts:166-175` — metadata block defined |

@@ -1,124 +1,29 @@
-# Iteration 6: Feature Flag Graduation Impact on Audit Validity (Q6)
+**Summary**
+- `P0: 0 | P1: 3 | P2: 2`
+- `25` files reviewed across audit docs, feature-catalog docs, runtime code, handlers, and targeted tests.
+- Dimensions covered: correctness, security, traceability, maintainability.
+- Verification: `npx vitest run tests/temporal-contiguity.vitest.ts tests/graph-calibration.vitest.ts tests/graph-signals.vitest.ts tests/community-detection.vitest.ts tests/graph-lifecycle.vitest.ts tests/stage2-fusion.vitest.ts` passed `255/255`; `npx tsc --noEmit` passed.
+- Current verdict for `010-graph-signal-activation`: `14 MATCH`, `2 PARTIAL` (`F14`, `F15`).
 
-## Focus
-Investigate whether the mass graduation of 22 feature flags from opt-in (OFF) to default-ON during the audit window invalidated audit findings. The graduation commit (09acbe8ce, Mar 21 22:54) landed during active audit work (Mar 16-22), meaning some audit phases may have verified features against pre-graduation code paths that are now fundamentally different.
+**Findings**
+1. `010-GSA-01` | `P1` | F11 audit is no longer accurate: temporal contiguity is live, not deprecated/unwired. Evidence: the audit still marks F11 deprecated and unwired in [spec.md:190](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation/spec.md#L190) and [spec.md:199](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation/spec.md#L199), but Stage 1 imports and applies `vectorSearchWithContiguity()` in [stage1-candidate-gen.ts:41](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts#L41), [stage1-candidate-gen.ts:645](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts#L645), and [stage1-candidate-gen.ts:685](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts#L685), with the feature documented as default-on in [search-flags.ts:182](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts#L182). Impact: the current audit would push maintainers to deprecate an active graduated feature. Fix: change F11 from `PARTIAL` to `MATCH` and delete the deprecated/unwired rationale.
 
-## Findings
+2. `010-GSA-02` | `P1` | F15’s current diagnosis is wrong: graph calibration is wired into Stage 2, but the community-threshold half is still not runtime-connected. Evidence: the audit says “never wired into Stage 2” in [spec.md:194](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation/spec.md#L194), yet Stage 2 applies calibration in [stage2-fusion.ts:776](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts#L776) via [graph-calibration.ts:405](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-calibration.ts#L405). The remaining gap is different: community injection still uses `0.3 * baseScore` in [community-detection.ts:539](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/graph/community-detection.ts#L539), injected rows are tagged with `communityDelta: 0` in [stage2-fusion.ts:745](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts#L745), and Louvain escalation still follows [community-detection.ts:355](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/graph/community-detection.ts#L355) instead of the calibration thresholds defined in [graph-calibration.ts:431](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-calibration.ts#L431) and [graph-calibration.ts:499](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-calibration.ts#L499). Impact: the feature is not dead, but the catalog overstates runtime enforcement of community caps/gates. Fix: keep F15 as `PARTIAL`, but rewrite the reason; either wire `applyCommunityScoring()` / `shouldActivateLouvain()` into runtime or narrow the catalog text to graph-signal cap enforcement only.
 
-### Finding 1: 22 Flags Graduated in a Single Commit Mid-Audit
-Commit 09acbe8ce ("graduate all Wave 1-4 feature flags to default ON", Mar 21 22:54) changed 22 feature flags from opt-in (`=== 'true'`) to default-ON (`isFeatureEnabled()`). This affected 22 implementation files and 18 test files. The audit's final commit was 4a477420d on Mar 22 19:08, meaning the graduation landed roughly 20 hours before audit completion.
+3. `010-GSA-03` | `P1` | F14’s catalog still misstates the pipeline connection for LLM graph backfill. Evidence: the catalog ties backfill to refresh mode in [feature_catalog.md:1778](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L1778), [14-llm-graph-backfill.md:18](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/14-llm-graph-backfill.md#L18), and [feature_catalog.md:4451](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md#L4451), but `onIndex()` schedules backfill based only on `SPECKIT_LLM_GRAPH_BACKFILL` plus quality threshold in [graph-lifecycle.ts:551](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-lifecycle.ts#L551), while post-insert still calls `onIndex()` whenever `isGraphRefreshEnabled() || isEntityLinkingEnabled()` in [post-insert.ts:168](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts#L168). Tests reflect the actual gate in [graph-lifecycle.vitest.ts:712](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/graph-lifecycle.vitest.ts#L712). Impact: operators can set refresh mode `off` and still get async LLM backfill if entity linking remains enabled. Fix: either add a refresh-mode guard before scheduling backfill or update the catalog/flag reference to describe the real behavior.
 
-[SOURCE: git log 09acbe8ce, .opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts]
+4. `010-GSA-04` | `P2` | F13’s remaining `PARTIAL` verdict is stale. Evidence: the audit still flags F13 in [spec.md:192](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation/spec.md#L192), but the current catalog and implementation agree on default `write_local` behavior in [13-graph-lifecycle-refresh.md:18](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/13-graph-lifecycle-refresh.md#L18) and [graph-lifecycle.ts:50](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-lifecycle.ts#L50), with matching tests in [graph-lifecycle.vitest.ts:129](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/graph-lifecycle.vitest.ts#L129). Impact: low, but it overstates unresolved issues in this child audit. Fix: update F13 to `MATCH`.
 
-### Finding 2: Behavioral Semantics Completely Reversed
-The `isFeatureEnabled()` function in rollout-policy.ts (line 42-57) treats `undefined` environment variables as ENABLED (returns true when SPECKIT_ROLLOUT_PERCENT >= 100, which is the default). Pre-graduation, each flag function used `process.env.FLAG?.toLowerCase().trim() === 'true'`, meaning undefined = DISABLED. This is a complete inversion of default runtime behavior for all 22 features.
+5. `010-GSA-05` | `P2` | Several source headers still advertise active graph modules as deferred/off, which likely caused the audit drift. Evidence: [graph-signals.ts:4](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-signals.ts#L4), [community-detection.ts:4](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/graph/community-detection.ts#L4), and [graph-calibration.ts:12](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-calibration.ts#L12) conflict with the default-on/live flag definitions in [search-flags.ts:140](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts#L140), [search-flags.ts:165](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts#L165), and [search-flags.ts:367](//Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts#L367). Impact: maintainers reading headers get the opposite status from the actual pipeline. Fix: normalize module headers/comments to the live rollout state.
 
-**Pre-graduation**: No env var set -> feature OFF (opt-in)
-**Post-graduation**: No env var set -> feature ON (opt-out)
+**Cross-references checked**
+- Final feature verdicts: `F01 MATCH`, `F02 MATCH`, `F03 MATCH`, `F04 MATCH`, `F05 MATCH`, `F06 MATCH`, `F07 MATCH`, `F08 MATCH`, `F09 MATCH (deferred by design)`, `F10 MATCH`, `F11 MATCH`, `F12 MATCH`, `F13 MATCH`, `F14 PARTIAL`, `F15 PARTIAL`, `F16 MATCH`.
+- Audit docs cross-checked against runtime: [spec.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/010-graph-signal-activation/spec.md), [feature_catalog.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md), [11-temporal-contiguity-layer.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/11-temporal-contiguity-layer.md), [13-graph-lifecycle-refresh.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/13-graph-lifecycle-refresh.md), [14-llm-graph-backfill.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/14-llm-graph-backfill.md), [15-graph-calibration-profiles.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/15-graph-calibration-profiles.md).
+- Primary runtime paths checked: [graph-signals.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-signals.ts), [temporal-contiguity.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/temporal-contiguity.ts), [community-detection.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/graph/community-detection.ts), [graph-calibration.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-calibration.ts), [graph-lifecycle.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-lifecycle.ts), [stage1-candidate-gen.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts), [stage2-fusion.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts), [post-insert.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts), [search-flags.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts), [causal-boost.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/causal-boost.ts), [co-activation.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/co-activation.ts), [graph-search-fn.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts), [causal-edges.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts).
+- Test coverage exercised: [temporal-contiguity.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/temporal-contiguity.vitest.ts), [graph-calibration.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/graph-calibration.vitest.ts), [graph-signals.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/graph-signals.vitest.ts), [community-detection.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/community-detection.vitest.ts), [graph-lifecycle.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/graph-lifecycle.vitest.ts), [stage2-fusion.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/stage2-fusion.vitest.ts).
 
-This means any audit phase that verified a feature's behavior while the flag was opt-in may have verified the WRONG code path (the disabled/fallback path) which is no longer the active production path.
-
-[SOURCE: .opencode/skill/system-spec-kit/mcp_server/lib/cognitive/rollout-policy.ts:42-57]
-
-### Finding 3: Graduated Flag Inventory by Domain
-All 22 graduated flags and their audit-relevant phases:
-
-**D1 (Scoring/Fusion) -- affects phases 011, 014, 015:**
-- SPECKIT_CALIBRATED_OVERLAP_BONUS (REQ-D1-001)
-- SPECKIT_RRF_K_EXPERIMENTAL (REQ-D1-003)
-- SPECKIT_LEARNED_STAGE2_COMBINER (REQ-D1-006)
-
-**D2 (Query Intelligence) -- affects phase 012:**
-- SPECKIT_QUERY_DECOMPOSITION (REQ-D2-001)
-- SPECKIT_GRAPH_CONCEPT_ROUTING (REQ-D2-002)
-- SPECKIT_LLM_REFORMULATION (REQ-D2-003)
-- SPECKIT_HYDE (REQ-D2-004)
-- SPECKIT_QUERY_SURROGATES (REQ-D2-005)
-
-**D3 (Graph Lifecycle) -- affects phase 010:**
-- SPECKIT_TYPED_TRAVERSAL (D3 Phase A)
-- SPECKIT_GRAPH_REFRESH_MODE (off -> write_local) (REQ-D3-003)
-- SPECKIT_LLM_GRAPH_BACKFILL (REQ-D3-004)
-- SPECKIT_GRAPH_CALIBRATION_PROFILE (REQ-D3-005/006)
-
-**D4 (Feedback/Quality) -- affects phases 008, 009, 013:**
-- SPECKIT_IMPLICIT_FEEDBACK_LOG (REQ-D4-001)
-- SPECKIT_HYBRID_DECAY_POLICY (REQ-D4-002)
-- SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS (REQ-D4-003)
-- SPECKIT_BATCH_LEARNED_FEEDBACK (REQ-D4-004)
-- SPECKIT_ASSISTIVE_RECONSOLIDATION (REQ-D4-005)
-- SPECKIT_SHADOW_FEEDBACK (REQ-D4-006)
-
-**D5 (UX/Disclosure) -- affects phase 018:**
-- SPECKIT_EMPTY_RESULT_RECOVERY_V1 (REQ-D5-001)
-- SPECKIT_RESULT_CONFIDENCE_V1 (REQ-D5-004)
-- SPECKIT_RESULT_EXPLAIN_V1 (REQ-D5-002)
-- SPECKIT_RESPONSE_PROFILE_V1 (REQ-D5-003)
-- SPECKIT_PROGRESSIVE_DISCLOSURE_V1 (REQ-D5-005)
-- SPECKIT_SESSION_RETRIEVAL_STATE_V1 (REQ-D5-006)
-
-[SOURCE: git show 09acbe8ce commit message, search-flags.ts diff]
-
-### Finding 4: Phase 020 Only Covers 7 Flags -- 33+ Flags Unaudited as Flags
-The audit's Phase 020 ("Feature Flag Reference") audited only 7 features with a result of 6 MATCH / 1 PARTIAL. But search-flags.ts contains 40+ flag functions. The remaining 33+ flags were audited only as features within their respective domain phases (010-018), NOT as flag governance objects. This means:
-- Whether each flag's default matches its JSDoc was NOT systematically verified for all flags
-- Whether each flag's env var name matches across search-flags.ts and its consuming module was NOT systematically verified
-- Whether graduated flags' tests were updated to reflect new defaults was verified in the graduation commit but NOT in the audit
-
-[SOURCE: spec.md Phase 020 row: "Complete (6M/1P)", search-flags.ts containing 40+ functions]
-
-### Finding 5: 13 Pre-Existing Flags Were Already Default-ON Before Audit
-Not all flags in search-flags.ts were graduated. 13 flags were already default-ON before the audit window (these use `isFeatureEnabled()` in both old and new code):
-- SPECKIT_MMR, SPECKIT_TRM, SPECKIT_MULTI_QUERY, SPECKIT_CROSS_ENCODER
-- SPECKIT_SEARCH_FALLBACK, SPECKIT_FOLDER_DISCOVERY
-- SPECKIT_DOCSCORE_AGGREGATION, SPECKIT_SAVE_QUALITY_GATE
-- SPECKIT_NEGATIVE_FEEDBACK, SPECKIT_EMBEDDING_EXPANSION
-- SPECKIT_CONSOLIDATION, SPECKIT_ENCODING_INTENT
-- SPECKIT_GRAPH_SIGNALS, SPECKIT_COMMUNITY_DETECTION, SPECKIT_MEMORY_SUMMARIES, SPECKIT_AUTO_ENTITIES, SPECKIT_ENTITY_LINKING, SPECKIT_DEGREE_BOOST, SPECKIT_CONTEXT_HEADERS
-
-These flags' audit findings are NOT affected by the graduation event.
-
-[SOURCE: search-flags.ts -- these functions already called isFeatureEnabled() in the pre-graduation codebase]
-
-### Finding 6: 4 Flags Remain Opt-In (OFF by default) -- Potentially Under-Tested
-Four flags still use explicit opt-in patterns (not `isFeatureEnabled()`):
-- SPECKIT_RECONSOLIDATION (line 94): `=== 'true'` -- opt-in only
-- SPECKIT_FILE_WATCHER (line 225): double-gate (explicit `=== 'true'` + rollout)
-- RERANKER_LOCAL (line 234): double-gate (explicit `=== 'true'` + rollout)
-- SPECKIT_QUALITY_LOOP (line 244): `=== 'true'` -- opt-in only
-
-These features were OFF during the audit AND remain OFF now. Their code paths may have been audited only via catalog description (not runtime behavior). If the audit verified them as MATCH against catalog descriptions that say "opt-in", the MATCH is accurate for documentation but untested for runtime behavior.
-
-[SOURCE: search-flags.ts:94, 225, 234, 244]
-
-### Finding 7: Risk Assessment -- Which Audit Phases Are Invalidated?
-The graduation commit (Mar 21 22:54) preceded the final audit commit (Mar 22 19:08). However, the key question is: were individual phase audits conducted BEFORE or AFTER graduation? The git history shows:
-- 757eee38a (Mar 21 15:00) -- pipeline refactoring during audit (BEFORE graduation)
-- 09acbe8ce (Mar 21 22:54) -- graduation commit
-- 4a477420d (Mar 22 19:08) -- final audit commit completing all 21 phases
-
-Since the final audit commit is a SINGLE commit completing all 21 phases at once, and it post-dates graduation, the audit LIKELY ran against post-graduation code. However, this is ambiguous -- if the audit was accumulated over multiple days (as evidenced by earlier audit commits on Mar 16-21), some phase findings may have been written against pre-graduation code and merely COMMITTED in the final batch.
-
-The spec.md explicitly identifies this risk (R-003: "Source code changes during audit") with mitigation "Pin to specific commit SHA" -- but the audit used "Current HEAD on main branch at 2026-03-22" rather than a pinned SHA, meaning it accepted a MOVING baseline.
-
-[SOURCE: spec.md section 6 (R-003), git log dates for audit commits]
-
-## Sources Consulted
-- `.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts` (full file, 498 lines)
-- `.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/rollout-policy.ts` (full file, 64 lines)
-- `git show 09acbe8ce` (graduation commit diff + stat)
-- `git log` for audit window commits (Mar 16-23)
-- `spec.md` for audit phase structure and risk matrix
-
-## Assessment
-- New information ratio: 0.85
-- Questions addressed: Q6 (feature flag graduation impact)
-- Questions answered: Q6 -- substantially answered
-
-## Reflection
-- What worked and why: Reading the actual rollout-policy.ts implementation was critical -- it revealed that `isFeatureEnabled()` treats undefined env vars as ENABLED (with default 100% rollout), which is the behavioral inversion that makes the graduation significant. Without reading the implementation, the graduation might look like a simple comment change.
-- What did not work and why: N/A -- the approach was well-matched to the question. Direct source code reading + git diff analysis gave definitive answers.
-- What I would do differently: Could have also checked whether any of the 22 consuming implementation files (listed in the graduation commit stat) have behavioral differences in their flag-ON vs flag-OFF paths. This would quantify the practical impact beyond just "the default changed."
-
-## Recommended Next Focus
-Q8 (quantitative per-phase risk model) -- With Q1-Q6 now substantially answered, synthesizing all gap dimensions (unreferenced files, PARTIAL error rate, temporal churn, cross-cutting blind spots, flag graduation) into a per-phase risk score would provide the most actionable output. Q7 (PARTIAL re-verification) could be folded into Q8 as a severity multiplier.
+**Dimension-specific notes**
+- Correctness: `F11` is definitely live; `F14` and `F15` remain the only scoped partials, and both are pipeline/documentation alignment issues rather than missing modules.
+- Security: no direct security defects surfaced in the scoped graph files. The closest operational risk is unexpected async LLM backfill when an operator assumes refresh mode `off` disables it.
+- Traceability: the main audit drift is in the child audit spec itself, plus stale module headers and one stale flag-reference row.
+- Maintainability: calibration/community logic is split across utilities and runtime paths, with good unit coverage but missing end-to-end coverage for community-cap enforcement.

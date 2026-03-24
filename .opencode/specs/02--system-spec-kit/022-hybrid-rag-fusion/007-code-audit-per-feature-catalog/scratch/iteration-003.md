@@ -1,87 +1,37 @@
-# Iteration 3: Q3 -- Verify PARTIAL Audit Findings for Accuracy
+**Summary**
+- `P0: 0`, `P1: 1`, `P2: 3`
+- Files reviewed: `2` audit specs, all `14` in-scope catalog entries, `14` implementation/support files, and focused supporting tests/docs; executed `19` targeted Vitest files (`422` tests, all passing).
+- Dimension coverage: correctness, security, traceability, maintainability.
 
-## Focus
-Spot-check the PARTIAL findings from the completed audit to determine whether identified discrepancies are real code-vs-doc mismatches, false positives, or -- critically -- whether the audit's own corrections introduced new errors. This iteration selected 3 audit phases (001-retrieval, 011-scoring-and-calibration, 013-memory-quality-and-indexing) representing 57 features with 9 PARTIAL findings.
+**Findings**
 
-## Findings
+### P1-001 [P1] Orphaned-edge cleanup is not actionable through the exposed MCP workflow
+- Evidence: the catalog says orphaned edges can be cleaned by using `memory_drift_why` to find IDs and `memory_causal_unlink` to delete them in [memorycausalstats.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/06--analysis/02-causal-graph-statistics-memorycausalstats.md#L22). In code, `memory_causal_stats` returns only an orphan count, not edge records or IDs, in [causal-graph.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/causal-graph.ts#L617) and the integration test only asserts that count field in [integration-causal-graph.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/integration-causal-graph.vitest.ts#L186). `memory_causal_unlink` requires a concrete `edgeId` in [causal-graph.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/causal-graph.ts#L652), while `memory_drift_why` itself requires a starting `memoryId` in [causal-graph.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/causal-graph.ts#L243).
+- Impact: when the system detects orphaned edges, the public tool surface does not provide a supported way to identify which edge(s) must be removed, so the advertised remediation path is effectively blocked without direct DB access.
+- Fix recommendation: return orphan edge IDs/details from `memory_causal_stats`, or add a dedicated orphan-edge listing/cleanup tool and update the catalog text to match the actual supported workflow.
 
-### A. 011-scoring-and-calibration: 3 PARTIAL findings verified
+### P2-001 [P2] The 005-lifecycle audit spec still records obsolete checkpoint and pending-recovery discrepancies
+- Evidence: the old audit still says `checkpoint_create` is PARTIAL because the catalog “states 3 tables” in [005-lifecycle/spec.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle/spec.md#L169), but the current catalog already documents all `21` snapshot tables and `7` rebuild tables in [checkpointcreate.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/05--lifecycle/01-checkpoint-creation-checkpointcreate.md#L18), matching the live manifest in [checkpoints.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts#L56). The same audit also flags `transaction-manager-extended.vitest.ts` as a missing startup-recovery test in [005-lifecycle/spec.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle/spec.md#L189), but that file is explicitly a `deleteFileIfExists` test, not a pending-file recovery test, in [transaction-manager-extended.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/transaction-manager-extended.vitest.ts#L1).
+- Impact: the lifecycle audit overstates current mismatches and inflates PARTIAL counts with issues that are already corrected or out of feature scope.
+- Fix recommendation: reclassify F01 to MATCH and remove the F06 missing-test note from the audit spec.
 
-**F22 (function name: perIntentKSweep vs runJudgedKSweep): CONFIRMED REAL**
-- The function `runJudgedKSweep` exists at `lib/eval/k-value-analysis.ts:670` and is exported at line 757. [SOURCE: mcp_server/lib/eval/k-value-analysis.ts:670,757]
-- `perIntentKSweep` does NOT exist anywhere in the codebase. The catalog's function name is definitively wrong.
-- The audit's correction is accurate.
+### P2-002 [P2] The 005-lifecycle audit spec is stale on archival unarchive behavior
+- Evidence: the audit still claims unarchive performs immediate async re-embedding in [005-lifecycle/spec.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/005-lifecycle/spec.md#L193). The current catalog states the opposite in [automatic-archival-subsystem.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/05--lifecycle/07-automatic-archival-subsystem.md#L20), and the code now only logs deferred rebuild intent in [archival-manager.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/archival-manager.ts#L455) and calls that logger from `unarchiveMemory()` in [archival-manager.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/archival-manager.ts#L548). The current test explicitly verifies that no embedding call happens on unarchive in [archival-manager.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/archival-manager.vitest.ts#L371).
+- Impact: this stale audit note points reviewers toward a removed code path and incorrectly labels a corrected catalog entry as mismatched.
+- Fix recommendation: update F07 to MATCH and remove the obsolete `rebuildVectorOnUnarchive()` narrative from the audit spec.
 
-**F23 (isShadowFusionV2Enabled location): AUDIT CORRECTION IS WRONG**
-- The audit stated: "flag accessor `isShadowFusionV2Enabled()` in `fusion-lab.ts`, not `search-flags.ts`"
-- FACT: `fusion-lab.ts` does NOT exist as a source file. Only `tests/fusion-lab.vitest.ts` exists (a test file). [SOURCE: find lib -name "fusion*" returned empty]
-- FACT: The function `isShadowFusionV2Enabled` does NOT exist anywhere in the codebase. [SOURCE: grep across all .ts files returned 0 matches in lib/]
-- FACT: The closest matching function is `isShadowFeedbackEnabled()` at `lib/search/search-flags.ts:397`. [SOURCE: mcp_server/lib/search/search-flags.ts:397]
-- **SEVERITY: HIGH** -- The audit's correction pointed to a non-existent file AND a non-existent function name. The original catalog entry AND the audit finding are both wrong. Neither the catalog's `search-flags.ts` file reference nor the audit's `fusion-lab.ts` correction is correct about the function name.
-- **True state**: The function is `isShadowFeedbackEnabled()` in `search-flags.ts`. The catalog likely referenced the right file but wrong function name, and the audit "corrected" it to a wrong file with the same wrong function name.
+### P2-003 [P2] The 006-analysis audit spec is stale on `task_postflight` and `memory_get_learning_history`
+- Evidence: the audit still says re-correction is undocumented and `includeSummary` is omitted, and it claims the learning-history layer mismatch in [006-analysis/spec.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/006-analysis/spec.md#L176). The current catalog now documents re-correction in [taskpostflight.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/06--analysis/06-post-task-learning-measurement-taskpostflight.md#L24), documents `includeSummary` and the L7 runtime-layer caveat in [memorygetlearninghistory.md](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/feature_catalog/06--analysis/07-learning-history-memorygetlearninghistory.md#L22), and the runtime layer is indeed L7 in [tool-schemas.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts#L517) and [layer-definitions.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/architecture/layer-definitions.ts#L106).
+- Impact: the analysis audit still reports PARTIALs that no longer represent the current code/catalog state, so remediation tracking and mismatch counts are inaccurate.
+- Fix recommendation: reclassify F06 and F07 to MATCH and retire CF-03/CF-04/CF-05 from the audit spec.
 
-**F13 (stage2/stage3 paths missing pipeline/ prefix): NOT DIRECTLY VERIFIED**
-- This finding concerns directory path accuracy in catalog references. The pipeline directory structure confirms `lib/search/pipeline/` is the correct path prefix. [SOURCE: mcp_server/lib/search/pipeline/orchestrator.ts:36]
-- The claim is plausible but would require reading the specific catalog entry to confirm. Accepted as likely accurate based on structural evidence.
+**Cross-references checked**
+- Lifecycle audit spec vs all `05--lifecycle` catalog entries, plus [checkpoints.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/checkpoints.ts#L105), [checkpoints.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts#L56), [context-server.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts#L428), [transaction-manager.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/transaction-manager.ts#L302), [archival-manager.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/archival-manager.ts#L455), and [job-queue.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/ops/job-queue.ts#L85).
+- Analysis audit spec vs all `06--analysis` catalog entries, plus [causal-graph.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/causal-graph.ts#L243), [causal-edges.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts#L147), [session-learning.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts#L217), [tool-schemas.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts#L517), [layer-definitions.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/architecture/layer-definitions.ts#L90), and [eval-reporting.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/eval-reporting.ts#L166).
+- Live verification: `19` targeted Vitest files covering checkpoints, ingest lifecycle, causal graph, learning history, and eval reporting; `422/422` tests passed.
 
-### B. 001-retrieval: 1 PARTIAL finding verified
-
-**F8 (stage4-filter.ts incorrectly listed for 3-tier search fallback): PARTIALLY CONFIRMED**
-- `stage4-filter.ts` exists at `lib/search/pipeline/stage4-filter.ts`. [SOURCE: grep results confirming import path]
-- The README describes it as: "Removes results below minimum memory state priority, enforces per-tier limits, runs TRM evidence-gap detection and attaches annotation metadata. Enforces the score immutability invariant at runtime." [SOURCE: mcp_server/lib/search/pipeline/README.md:49]
-- This IS a filtering stage (state filtering + TRM), not a quality/fallback stage. The audit's characterization that it "handles state filtering, not quality" is accurate.
-- However, the audit finding is INCOMPLETE: `stage4-filter.ts` also does TRM evidence-gap detection and score immutability enforcement, which the catalog likely does not mention. The discrepancy may be larger than the PARTIAL finding suggests.
-
-### C. 013-memory-quality-and-indexing: 5 PARTIAL findings assessed
-
-**F11 (slugToTitle in title-builder.ts, not slug-utils.ts): BOTH REFERENCES MAY BE PHANTOM**
-- Neither `slugToTitle`, `title-builder.ts`, nor `slug-utils.ts` exist in the `lib/` directory. [SOURCE: grep for slugToTitle, title-builder, slug-utils returned 0 matches]
-- Neither the catalog entry nor the audit correction can be verified. Both reference names that may be stale or were renamed/removed.
-- **SEVERITY: MEDIUM** -- The audit recorded a correction to a non-existent target, similar to 011-F23.
-
-**F12 (duplicate gate: returns filename instead of throwing): NOT VERIFIED this iteration** -- Would require reading the specific duplicate detection code.
-
-**F13 (entity-linker.ts missing from source list): NOT VERIFIED this iteration** -- Would require reading catalog source lists.
-
-**F14 (source list inflated: 30+ files for 1-file fix): PLAUSIBLE** -- Over-broad source lists were also noted in 011's limitations ("Feature 12 source list is over-broad"). This appears to be a systemic pattern, not isolated.
-
-**F23 (applyHybridDecayPolicy not a named export): NOT VERIFIED this iteration** -- Would require reading the scheduler code.
-
-### D. Cross-Cutting Meta-Finding: Audit Corrections Introduce New Errors
-
-The most significant finding of this iteration is that the audit itself introduced errors in its "corrections":
-
-1. **011-F23**: Audit corrected to `fusion-lab.ts` (non-existent file) with `isShadowFusionV2Enabled` (non-existent function)
-2. **013-F11**: Audit corrected to `title-builder.ts` (non-existent file) with `slugToTitle` (non-existent function)
-
-Both follow the same pattern: the audit agent detected a real discrepancy in the catalog but fabricated the "correct" answer rather than verifying it against the actual codebase. This suggests the audit agents may have hallucinated corrections in some cases.
-
-**Estimated scope**: With 41 PARTIAL findings across all phases, and 2 of 4 verified corrections being wrong, the error rate in audit corrections could be ~50%. However, this sample is small (n=4) and biased toward complex/unusual features.
-
-### E. MATCH Features: Spot-Check
-
-**memory_search (001-retrieval, F2)**: The audit noted "15+ source files missing from catalog" yet classified it as... ambiguous. The implementation-summary lists this under per-feature findings without explicit MATCH/PARTIAL tagging. The finding "15+ source files missing" sounds like PARTIAL or worse, yet the summary header claims "9 MATCH, 1 PARTIAL". This suggests the 15+ missing files issue may have been absorbed into a MATCH classification.
-
-## Sources Consulted
-- `mcp_server/lib/eval/k-value-analysis.ts` (runJudgedKSweep definition)
-- `mcp_server/lib/search/search-flags.ts` (isShadowFeedbackEnabled definition)
-- `mcp_server/lib/search/pipeline/stage4-filter.ts` (stage4 functionality)
-- `mcp_server/lib/search/pipeline/README.md` (stage4 description)
-- `mcp_server/lib/search/pipeline/orchestrator.ts` (stage4 import)
-- `tests/fusion-lab.vitest.ts` (references non-existent source file)
-- `007-code-audit/001-retrieval/implementation-summary.md` (via git show)
-- `007-code-audit/011-scoring-and-calibration/implementation-summary.md` (via git show)
-- `007-code-audit/013-memory-quality-and-indexing/implementation-summary.md` (via git show)
-
-## Assessment
-- New information ratio: 0.80
-- Questions addressed: Q3 (PARTIAL finding accuracy)
-- Questions answered: Q3 is SUBSTANTIALLY ANSWERED -- audit PARTIAL findings identify real discrepancies, but ~50% of audit corrections contain errors (pointing to non-existent files/functions). Additionally, some MATCH classifications may be overly generous.
-
-## Reflection
-- What worked and why: Verifying audit corrections against actual source code via grep was definitive. The approach of checking whether corrected file/function names actually exist is a low-cost, high-signal validation technique.
-- What did not work and why: Could not verify all 9 PARTIAL findings in a single iteration due to tool budget. Prioritized depth (verifying 4 thoroughly) over breadth (checking all 9 superficially).
-- What I would do differently: Next iteration should focus on MATCH findings rather than remaining PARTIAL findings, since the meta-finding about correction errors suggests MATCH classifications themselves may be unreliable.
-
-## Recommended Next Focus
-Q4: Cross-feature blind spots. But pivot the approach: instead of looking at cross-feature interactions abstractly, look for MATCH-classified features where the implementation-summary notes something suspicious (like "15+ source files missing") that should have been PARTIAL. This tests whether the MATCH/PARTIAL classification boundary was applied consistently.
+**Dimension-specific notes**
+- Correctness: checkpoint manifests, restore/index rebuild behavior, ingest state transitions, relation weights, LI formula, runtime layer wiring, and eval-reporting handler wiring all matched current code.
+- Security: no new security findings in the assigned scope; ingest path validation remains rooted to allowed bases and rejects traversal segments in [memory-ingest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode%20Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-ingest.ts#L128).
+- Traceability: the main live gap is the orphan-edge cleanup workflow; most other discrepancies are stale audit claims rather than implementation defects.
+- Maintainability: several catalog source-file inventories remain verbose, but I did not elevate that alone because it is noisy rather than clearly incorrect in the current code path.

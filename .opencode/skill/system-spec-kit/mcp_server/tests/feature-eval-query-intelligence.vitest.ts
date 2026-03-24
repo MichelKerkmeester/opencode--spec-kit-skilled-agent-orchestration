@@ -13,16 +13,6 @@ import {
   hasTriggerMatch,
 } from '../lib/search/query-classifier';
 
-// T002: RSF fusion variants
-import {
-  fuseResultsRsf,
-  fuseResultsRsfMulti,
-  fuseResultsRsfCrossVariant,
-  extractScore,
-  minMaxNormalize,
-  clamp01,
-} from '../lib/search/rsf-fusion';
-
 // T003: Channel min-representation R2
 import {
   analyzeChannelRepresentation,
@@ -121,105 +111,6 @@ describe('T001: Query Complexity Classifier', () => {
     const result = classifyQueryComplexity('');
     expect(result.tier).toBe('complex');
     expect(result.confidence).toBe('fallback');
-  });
-});
-
-/* ═══════════════════════════════════════════════════════════════
-   T002: RSF Fusion Variants
-   ═══════════════════════════════════════════════════════════════ */
-
-describe('T002: RSF Fusion Variants', () => {
-  it('T002-01: single-pair — item in both lists ranks higher than item in one', () => {
-    const listA = {
-      source: 'vector',
-      results: [
-        { id: 1, score: 0.9 },
-        { id: 2, score: 0.7 },
-      ],
-    };
-    const listB = {
-      source: 'bm25',
-      results: [
-        { id: 1, score: 0.85 },
-        { id: 3, score: 0.6 },
-      ],
-    };
-
-    const fused = fuseResultsRsf(listA, listB);
-
-    // Id=1 appears in both lists, id=2 and id=3 appear in one only
-    const item1 = fused.find(r => r.id === 1)!;
-    const item2 = fused.find(r => r.id === 2)!;
-    const item3 = fused.find(r => r.id === 3)!;
-
-    expect(item1.rsfScore).toBeGreaterThan(item2.rsfScore);
-    expect(item1.rsfScore).toBeGreaterThan(item3.rsfScore);
-    expect(item1.sources).toContain('vector');
-    expect(item1.sources).toContain('bm25');
-  });
-
-  it('T002-02: single-pair — single-source items get 0.5 penalty', () => {
-    const listA = {
-      source: 'vector',
-      results: [{ id: 1, score: 1.0 }],
-    };
-    const listB = {
-      source: 'bm25',
-      results: [] as { id: number; score: number }[],
-    };
-
-    const fused = fuseResultsRsf(listA, listB);
-    const item1 = fused.find(r => r.id === 1)!;
-
-    // Single item, normalized to 1.0, then * 0.5 penalty
-    expect(item1.rsfScore).toBe(0.5);
-  });
-
-  it('T002-03: multi-list — penalty proportional to missing sources', () => {
-    const lists = [
-      { source: 'vector', results: [{ id: 1, score: 0.9 }, { id: 2, score: 0.8 }] },
-      { source: 'bm25', results: [{ id: 1, score: 0.85 }] },
-      { source: 'graph', results: [{ id: 1, score: 0.7 }] },
-    ];
-
-    const fused = fuseResultsRsfMulti(lists);
-
-    const item1 = fused.find(r => r.id === 1)!;
-    const item2 = fused.find(r => r.id === 2)!;
-
-    // Id=1 in 3/3 sources → no penalty
-    // Id=2 in 1/3 sources → penalty: avgScore * (1/3)
-    expect(item1.rsfScore).toBeGreaterThan(item2.rsfScore);
-    // Id=2's rsfScore should be roughly its normalized score * (1/3)
-    expect(item2.sources.length).toBe(1);
-  });
-
-  it('T002-04: cross-variant — bonus applied for items in multiple variants', () => {
-    const variant1 = [
-      { source: 'vector', results: [{ id: 1, score: 0.9 }] },
-    ];
-    const variant2 = [
-      { source: 'vector', results: [{ id: 1, score: 0.85 }, { id: 2, score: 0.7 }] },
-    ];
-
-    const fused = fuseResultsRsfCrossVariant([variant1, variant2]);
-
-    const item1 = fused.find(r => r.id === 1)!;
-    const item2 = fused.find(r => r.id === 2)!;
-
-    // Id=1 appears in 2 variants → gets +0.10 bonus
-    // Id=2 appears in 1 variant → no bonus
-    expect(item1.rsfScore).toBeGreaterThan(item2.rsfScore);
-  });
-
-  it('T002-05: minMaxNormalize — all identical scores normalize to 1.0', () => {
-    expect(minMaxNormalize(5, 5, 5)).toBe(1.0);
-  });
-
-  it('T002-06: clamp01 — values outside [0,1] are clamped', () => {
-    expect(clamp01(-0.5)).toBe(0);
-    expect(clamp01(1.5)).toBe(1);
-    expect(clamp01(0.7)).toBe(0.7);
   });
 });
 

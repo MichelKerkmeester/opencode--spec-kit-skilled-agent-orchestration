@@ -38,7 +38,7 @@ In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent p
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/lib/scoring/mpab-aggregation.ts` | Lib | MPAB chunk aggregation |
-| `mcp_server/lib/search/rsf-fusion.ts` | Lib | Relative score fusion |
+| ~~`mcp_server/lib/search/rsf-fusion.ts`~~ | ~~Lib~~ | Deleted — RSF module removed as dead code |
 | `shared/algorithms/rrf-fusion.ts` | Shared | RRF fusion algorithm |
 
 ### Tests

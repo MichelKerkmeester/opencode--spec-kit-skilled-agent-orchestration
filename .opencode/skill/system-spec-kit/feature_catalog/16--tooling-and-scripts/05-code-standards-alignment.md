@@ -30,7 +30,7 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
   - From `git show 18a0f9548` AI-intent additions:
     - `mcp_server/lib/search/hybrid-search.ts` → `10`
     - `mcp_server/lib/search/folder-discovery.ts` → `7`
-    - `mcp_server/lib/search/rsf-fusion.ts` → `5`
+    - `mcp_server/lib/search/rsf-fusion.ts` (deleted) → was `5`
     - `mcp_server/lib/cognitive/co-activation.ts` → `4`
   - These four files account for `26` AI-intent conversions (matching the catalog claim).
 - **HEAD evidence**
@@ -45,7 +45,7 @@ All modified files were reviewed against sk-code--opencode standards. 45 violati
   - `mcp_server/handlers/memory-save.ts` → `1`
   - `mcp_server/lib/search/hybrid-search.ts` → `1`
   - `mcp_server/lib/search/folder-discovery.ts` → `1`
-  - `mcp_server/lib/search/rsf-fusion.ts` → `1`
+  - `mcp_server/lib/search/rsf-fusion.ts` (deleted) → was `1`
   - `mcp_server/lib/search/graph-search-fn.ts` → `1`
   - `mcp_server/lib/scoring/composite-scoring.ts` → `1`
   - `mcp_server/lib/parsing/trigger-matcher.ts` → `1`

@@ -5,7 +5,6 @@ import path from 'node:path';
 
 import * as searchFlags from '../lib/search/search-flags';
 import * as shadowScoring from '../lib/eval/shadow-scoring';
-import * as rsfFusion from '../lib/search/rsf-fusion';
 import * as graphSignals from '../lib/graph/graph-signals';
 import * as graphSearchFn from '../lib/search/graph-search-fn';
 
@@ -25,7 +24,6 @@ const REMOVED_SYMBOLS = [
 const MODULE_EXPORTS: ReadonlyArray<[string, Record<string, unknown>]> = [
   ['../lib/search/search-flags', searchFlags as Record<string, unknown>],
   ['../lib/eval/shadow-scoring', shadowScoring as Record<string, unknown>],
-  ['../lib/search/rsf-fusion', rsfFusion as Record<string, unknown>],
   ['../lib/graph/graph-signals', graphSignals as Record<string, unknown>],
   ['../lib/search/graph-search-fn', graphSearchFn as Record<string, unknown>],
 ];

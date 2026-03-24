@@ -17,7 +17,7 @@ A common way of finding the largest or smallest number in a list was crashing th
 
 `Math.max(...array)` and `Math.min(...array)` push all elements onto the call stack, causing `RangeError` on arrays exceeding ~100K elements. Seven production files were converted from spread patterns to `reduce()`:
 
-- `rsf-fusion.ts`: 6 instances (4 + 2)
+- `rsf-fusion.ts` (deleted): 6 instances were fixed before module removal
 - `causal-boost.ts`: 1 instance
 - `evidence-gap-detector.ts`: 1 instance
 - `prediction-error-gate.ts`: 2 instances

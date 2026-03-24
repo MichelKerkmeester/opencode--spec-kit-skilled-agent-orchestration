@@ -117,7 +117,7 @@ Cross-cutting evidence is distributed across:
 
 - `mcp_server/lib/search/hybrid-search.ts`
 - `mcp_server/lib/search/search-flags.ts`
-- `mcp_server/lib/search/rsf-fusion.ts`
+- `mcp_server/lib/search/rsf-fusion.ts` (module fully deleted in v3 remediation)
 - `mcp_server/lib/search/learned-feedback.ts`
 - `mcp_server/lib/eval/shadow-scoring.ts`
 - `mcp_server/lib/cognitive/archival-manager.ts`

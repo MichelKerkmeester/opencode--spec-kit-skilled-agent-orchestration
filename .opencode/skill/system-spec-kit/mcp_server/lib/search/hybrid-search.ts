@@ -152,8 +152,6 @@ interface Sprint3PipelineMeta {
     confidence: string;
     features: Record<string, unknown>;
   };
-  /** RSF shadow fusion result (SPECKIT_RSF_FUSION) — shadow-mode only, not used for ranking. */
-  rsfShadow?: { resultCount: number; topRsfScore: number };
   /** Channel enforcement result (SPECKIT_CHANNEL_MIN_REP). */
   enforcement?: { applied: boolean; promotedCount: number; underRepresentedChannels: string[] };
   /** Confidence truncation result (SPECKIT_CONFIDENCE_TRUNCATION). */

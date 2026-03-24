@@ -1,19 +1,59 @@
 {
-  "topic": "007-code-audit-per-feature-catalog: Find gaps, missed features, inaccuracies, and systemic issues in the completed code audit of 220+ features across 19 categories of the Spec Kit Memory MCP server",
-  "maxIterations": 15,
-  "convergenceThreshold": 0.05,
-  "stuckThreshold": 3,
-  "maxDurationMinutes": 120,
+  "topic": "Review: 007-code-audit-per-feature-catalog — Full audit of 220+ features across 22 child folders, verifying correctness, security, traceability, and maintainability against MCP server source code, sk-code--opencode standards, and system-spec-kit architecture",
+  "mode": "review",
+  "reviewTarget": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": ["correctness", "security", "traceability", "maintainability"],
+  "reviewScopeFiles": {
+    "parentSpec": [
+      ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/spec.md",
+      ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/plan.md",
+      ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/tasks.md",
+      ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/checklist.md",
+      ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/implementation-summary.md"
+    ],
+    "childSpecFolders": [
+      "001-retrieval", "002-mutation", "003-discovery", "004-maintenance",
+      "005-lifecycle", "006-analysis", "007-evaluation",
+      "008-bug-fixes-and-data-integrity", "009-evaluation-and-measurement",
+      "010-graph-signal-activation", "011-scoring-and-calibration",
+      "012-query-intelligence", "013-memory-quality-and-indexing",
+      "014-pipeline-architecture", "015-retrieval-enhancements",
+      "016-tooling-and-scripts", "017-governance", "018-ux-hooks",
+      "019-decisions-and-deferrals", "020-feature-flag-reference",
+      "021-remediation-revalidation", "022-implement-and-remove-deprecated-features"
+    ],
+    "featureCatalog": ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md",
+    "mcpServerCodeFiles": 251,
+    "mcpServerTestFiles": 317,
+    "totalScopeFiles": 700
+  },
+  "severityThreshold": "P2",
+  "crossReference": {
+    "core": ["spec_code", "checklist_evidence"],
+    "overlay": ["skill_agent", "agent_cross_runtime", "feature_catalog_code", "playbook_capability"]
+  },
+  "maxIterations": 20,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "maxDurationMinutes": 180,
+  "maxToolCallsPerIteration": 13,
+  "maxMinutesPerIteration": 15,
   "progressiveSynthesis": true,
   "specFolder": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
-  "createdAt": "2026-03-22T18:22:00.000Z",
-  "status": "complete",
+  "createdAt": "2026-03-24T21:30:00.000Z",
+  "status": "initialized",
   "executionMode": "auto",
+  "delegationStrategy": {
+    "codex": { "agents": 10, "model": "gpt-5.4", "effort": "xhigh" },
+    "copilot": { "agents": 5, "model": "gpt-5.4", "effort": "high" }
+  },
   "fileProtection": {
     "deep-research-config.json": "immutable",
     "deep-research-state.jsonl": "append-only",
-    "deep-research-strategy.md": "mutable",
-    "iteration-*.md": "write-once",
-    "research.md": "mutable"
+    "deep-review-strategy.md": "mutable",
+    "deep-review-dashboard.md": "auto-generated",
+    "review-report.md": "mutable",
+    "iteration-*.md": "write-once"
   }
 }

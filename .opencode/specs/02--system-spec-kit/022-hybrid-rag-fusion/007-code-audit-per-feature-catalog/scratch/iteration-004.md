@@ -1,128 +1,45 @@
-# Iteration 4: Q4 -- Cross-Feature Blind Spots and Shared Code Path Coverage
+**Summary**
+P0: 0, P1: 3, P2: 3. Reviewed 50+ files across the two audit specs, 13 feature entries, the relevant MCP server source, and 17 executed Vitest files. Coverage: correctness, security, traceability, maintainability. Targeted verification passed: `17/17` test files, `488/488` tests.
 
-## Focus
-Investigate whether the per-category audit structure caused cross-feature blind spots by identifying shared/cross-cutting modules that serve multiple categories but may have been audited in only one (or none). Also assess whether the MATCH/PARTIAL boundary was applied consistently for features that depend on these shared modules.
+**Findings**
+`P1-001` `007/F01` audit verdict is stale: `eval_run_ablation` should no longer be `PARTIAL` for a “~90 file” source list problem.
+Evidence: [007-evaluation spec](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/007-evaluation/spec.md#L162), [ablation feature entry](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md#L32), [eval handler](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/eval-reporting.ts#L166), [ablation framework tests](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/ablation-framework.vitest.ts#L744). The live catalog entry lists 13 implementation/routing files plus 3 tests, not “~90”, and the handler/framework/test chain is wired end to end.
+Impact: the evaluation audit is overstating a catalog defect that is not present, so the category summary is misleading.
+Fix recommendation: change `007/F01` to `MATCH` unless a current, line-cited source-list inflation issue can be shown.
 
-## Findings
+`P1-002` `008/F05` is not fully verified: the audit says “all 4 bugs/fixes verified,” but the feature entry documents five fixes and the fifth one is omitted from the traced sources.
+Evidence: [008 bug-fix audit spec](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/spec.md#L179), [database-and-schema-safety feature](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md#L18), [database-and-schema-safety source table](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md#L38), [vector-index-store connection map](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts#L297), [vector-index-store cache key](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts#L441), [vector-index-store init/close](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-store.ts#L559). B5 is real code, but it is absent from the feature’s own implementation/test table, so `MATCH` is unsupported on traceability.
+Impact: one data-integrity fix was never actually audited in the artifact being reviewed.
+Fix recommendation: downgrade `008/F05` to `PARTIAL` or add B5’s implementation and test references before restoring `MATCH`.
 
-### Finding 1: Six Cross-Cutting Modules Are Active Production Code But Have ZERO Feature Catalog Mentions
+`P1-003` `008/F06` is materially under-audited: the spec marks `MATCH`, but only E1/E2 were checked while E3-E6 are still part of the feature’s current reality.
+Evidence: [008 bug-fix audit spec](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/spec.md#L180), [guards-and-edge-cases feature](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md#L18), [guards source table](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md#L38), [vector-index-queries partial counts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-queries.ts#L117), [vector-index-queries embedding validation](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-queries.ts#L187), [vector-index-queries expiry/limit guard](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-queries.ts#L221).
+Impact: four guard fixes are currently outside the audit’s evidence trail, so the `MATCH` verdict is not reliable.
+Fix recommendation: re-audit E3-E6 and either expand the feature’s source/test table or mark `008/F06` as `PARTIAL`.
 
-Three `lib/cognitive/` modules and the mutation-feedback hook have zero mentions in the feature catalog despite being actively imported by production handlers:
+`P2-001` `008/F01`’s `PARTIAL` rationale is no longer corroborated by the current graph-channel code.
+Evidence: [008 bug-fix audit spec](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/spec.md#L175), [graph-search FTS path](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts#L179), [graph-search LIKE path](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-search-fn.ts#L254), [graph-search tests](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/graph-search-fn.vitest.ts#L43), [graph-lifecycle current issue](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-lifecycle.ts#L271). I could verify the numeric-ID fix and its tests, but not the claimed remaining graph-lifecycle ID mismatch.
+Impact: the bug-fix category summary may be carrying an obsolete `PARTIAL`.
+Fix recommendation: either cite a current graph-lifecycle ID-coercion defect or update `008/F01` to `MATCH`.
 
-| Module | Size | Importers (non-test) | Catalog Mentions |
-|--------|------|---------------------|-----------------|
-| `lib/cognitive/attention-decay.ts` | 10KB | 4 (fsrs-scheduler, stage2-fusion, memory-triggers handler, context-server) | **0** |
-| `lib/cognitive/tier-classifier.ts` | 17KB | 4 (fsrs-scheduler, archival-manager, memory-search handler, memory-triggers handler) | **0** |
-| `lib/cognitive/pressure-monitor.ts` | 2.7KB | 1 (memory-context handler) | **0** |
-| `hooks/mutation-feedback.ts` | 2.3KB | 6 (memory-save, memory-crud-update, memory-crud-delete, save/response-builder, save/types, memory-bulk-delete) | **0** |
+`P2-002` `008/F08` is still `PARTIAL`, but the audit note points to stale files and no longer matches the live feature entry.
+Evidence: [008 bug-fix audit spec](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/spec.md#L182), [mathmax/min feature entry](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md#L18), [k-value residual spread](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/eval/k-value-analysis.ts#L297), [graph-lifecycle residual spread](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-lifecycle.ts#L271), [reporting-dashboard reduce fix](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/eval/reporting-dashboard.ts#L300).
+Impact: follow-up remediation would chase the wrong modules.
+Fix recommendation: keep `PARTIAL`, but rewrite the note to the current converted/residual file set.
 
-**Severity: HIGH.** These are not dead code -- they are imported by core handlers (memory-search, memory-save, memory-context). A per-category audit that does not mention them cannot have verified their behavior.
+`P2-003` `008/F09` carries a stale “2 vs 3 transactions” discrepancy that no longer exists in the live catalog.
+Evidence: [008 bug-fix audit spec](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/008-bug-fixes-and-data-integrity/spec.md#L183), [session-manager feature entry](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md#L18), [shouldSendMemoriesBatch](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/session/session-manager.ts#L494), [markMemorySent](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/session/session-manager.ts#L553), [markMemoriesSentBatch](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/session/session-manager.ts#L584).
+Impact: the audit note misreports the current documentation state even though the code path is correct.
+Fix recommendation: remove the discrepancy note; this feature is aligned as written.
 
-[SOURCE: grep -rl across mcp_server/ source tree; grep -ci across feature_catalog.md]
+**Cross-References Checked**
+- `eval_run_ablation` schema/dispatch/handler/storage path: schema in [tool-input-schemas.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts#L338), dispatch in [lifecycle-tools.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tools/lifecycle-tools.ts#L48), handler in [eval-reporting.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/eval-reporting.ts#L166), persistence in [ablation-framework.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/eval/ablation-framework.ts#L530).
+- Dashboard path and DB isolation: [reporting-dashboard.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/eval/reporting-dashboard.ts#L208), [eval-db.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/eval/eval-db.ts#L123), [reporting-dashboard.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/reporting-dashboard.vitest.ts#L16).
+- Save-path integrity guards: [memory-save.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts#L395), [dedup.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/save/dedup.ts#L151), [content-hash-dedup.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/content-hash-dedup.vitest.ts#L146).
+- Session/working-memory integrity guards: [session-manager.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/session/session-manager.ts#L494), [working-memory.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/cognitive/working-memory.ts#L251), [decay-delete-race.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/decay-delete-race.vitest.ts#L10), [chunking-orchestrator.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/chunking-orchestrator.ts#L449), [checkpoints.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts#L1325).
 
-### Finding 2: The Hooks System Is a Structural Blind Spot Despite Being Imported by 17 Files
-
-The `hooks/` directory contains 4 production files:
-- `hooks/index.ts` (barrel, 0.8KB)
-- `hooks/memory-surface.ts` (13.5KB -- the largest hook file)
-- `hooks/mutation-feedback.ts` (2.3KB)
-- `hooks/response-hints.ts` (4.1KB)
-
-Import analysis shows 17 files across the codebase import from `hooks/`. The feature catalog mentions "hooks" 35 times, but:
-- "mutation-hooks" / "mutation-feedback": **0 mentions** (despite being imported by 6 mutation handlers)
-- "response-hints": **1 mention** (despite being a standalone 4KB module)
-- "memory-surface": **0 mentions** by that filename
-
-The audit organized by categories (retrieval, mutation, etc.) would check each handler in its category but would NOT verify the hooks layer that sits BETWEEN handlers and the response pipeline. A change in `mutation-feedback.ts` affects `memory-save`, `memory-crud-update`, `memory-crud-delete`, `memory-bulk-delete` simultaneously -- spanning at least 2 audit categories (002-mutation, 008-bug-fixes).
-
-[SOURCE: ls hooks/ directory; grep -rl "mutation-feedback" across mcp_server/; grep -ci "mutation-hooks" feature_catalog.md]
-
-### Finding 3: The Session Manager Is a 41KB Monolith Imported by 4 Core Files But Minimally Cataloged
-
-`lib/session/session-manager.ts` is 41KB (the largest single source file observed so far) and is imported by:
-- `core/db-state.ts` (core initialization)
-- `lib/utils/logger.ts` (logging)
-- `handlers/memory-search.ts` (retrieval)
-- `context-server.ts` (MCP server entry point)
-
-The feature catalog mentions "session" 77 times, but iteration 2 identified that `lib/session/` was among the unreferenced directories. The session manager serves BOTH retrieval (search) and initialization (lifecycle) -- two separate audit categories that each might assume the other covered it.
-
-[SOURCE: wc -c lib/session/session-manager.ts = 41164 bytes; grep -rl "session-manager" across mcp_server/]
-
-### Finding 4: lib/cognitive/ Has 12 Files But Only 17 Catalog Mentions -- Coverage Is Shallow
-
-The `lib/cognitive/` directory contains 12 TypeScript files totaling ~196KB of source code:
-
-| File | Size | Catalog Mentions |
-|------|------|-----------------|
-| `adaptive-ranking.ts` | 20KB | present (scoring/calibration) |
-| `archival-manager.ts` | 25KB | present (maintenance) |
-| `attention-decay.ts` | 10KB | **0** |
-| `co-activation.ts` | 13KB | present (graph signal) |
-| `fsrs-scheduler.ts` | 16KB | present (scoring) |
-| `prediction-error-gate.ts` | 19KB | present (scoring) |
-| `pressure-monitor.ts` | 2.7KB | **0** |
-| `rollout-policy.ts` | 2.2KB | present (governance) |
-| `temporal-contiguity.ts` | 7.2KB | present (but noted deprecated) |
-| `tier-classifier.ts` | 17KB | **0** |
-| `working-memory.ts` | 24KB | present (retrieval) |
-
-Three files (attention-decay, pressure-monitor, tier-classifier) totaling ~30KB have ZERO catalog mentions. These serve cross-cutting concerns: attention-decay affects fusion scoring; tier-classifier drives memory importance tiers; pressure-monitor gates memory-context behavior. The per-category structure audited the features that USE these modules but never audited the modules themselves.
-
-[SOURCE: ls -la lib/cognitive/; grep -ci per module name against feature_catalog.md]
-
-### Finding 5: The lib/response/envelope Module Is the Most Cross-Cutting Active Module
-
-`lib/response/envelope` is imported by 19 files -- the highest non-utility import count in the codebase. It has 15 catalog mentions, which appears reasonable. However, being referenced in 15 feature descriptions does not mean it was audited as a cross-cutting concern. Each of the 15 category references would verify only that their own feature used the envelope correctly, not that the envelope's internal behavior is consistent across all consumers. A behavioral change in envelope.ts would affect 19 files across potentially 10+ audit categories.
-
-Similarly, `lib/search/vector-index` (21 importers, 5 catalog mentions) and `lib/providers/embeddings` (11 importers, 23 catalog mentions) are heavily cross-cutting but were audited per-consumer, not as independent units.
-
-[SOURCE: import frequency counts via grep across mcp_server/; catalog mention counts via grep against feature_catalog.md]
-
-### Finding 6: The MATCH/PARTIAL Boundary Has a Structural Consistency Problem
-
-The audit spec reported 179 MATCH and 41 PARTIAL across 21 phases. From iteration 3 we know PARTIAL corrections contain fabricated details ~50% of the time. But the MATCH boundary also has a structural issue:
-
-The per-category audit structure means a feature classified MATCH in one category may depend on a shared module that is classified PARTIAL (or not audited at all) in another. For example:
-- `memory_search` classified MATCH in 001-retrieval, but it imports `tier-classifier.ts` (0 catalog mentions) and `attention-decay.ts` (0 catalog mentions)
-- `memory_save` classified MATCH in 002-mutation, but it imports `mutation-feedback.ts` (0 catalog mentions)
-- `memory_context` classified MATCH in 001-retrieval, but it imports `pressure-monitor.ts` (0 catalog mentions)
-
-A MATCH at the feature level does not guarantee that all code paths exercised by that feature were verified. The per-category audit verified the feature's documented behavior but could not verify cross-cutting modules that were not in any category's scope.
-
-[INFERENCE: Combining import analysis (Finding 1-4) with MATCH classifications from spec.md phase documentation map]
-
-### Finding 7: Import Frequency Analysis Reveals a Power-Law Distribution of Cross-Cutting Risk
-
-| Import Frequency | Module Count | Example | Audit Coverage |
-|-----------------|-------------|---------|---------------|
-| 100+ imports | 1 | `core/` (143 files) | Partially cataloged (config, db-state in scope) |
-| 50+ imports | 1 | `utils/` (55 files) | Iter 2 identified as gap |
-| 15-25 imports | 4 | envelope (19), vector-index (21), hooks (17), memory-parser (14) | Cataloged but per-consumer only |
-| 7-12 imports | 5 | cognitive (12), embeddings (11), search-flags (10), history (10), trigger-matcher (7), causal-edges (7) | Mixed: some cataloged, 3 cognitive modules uncataloged |
-| 1-6 imports | majority | individual handlers, types | Covered by per-category audit |
-
-The audit's per-category structure effectively covers the bottom tier (low import frequency = category-specific code). It becomes progressively less effective as import frequency increases, because high-import modules serve multiple categories and no single category "owns" them.
-
-[INFERENCE: Synthesizing import frequency data with catalog coverage data from Findings 1-5]
-
-## Sources Consulted
-- `mcp_server/` source tree: import frequency analysis via grep
-- `feature_catalog/feature_catalog.md`: catalog mention counts via grep
-- `mcp_server/hooks/`: directory listing and import tracing
-- `mcp_server/lib/cognitive/`: directory listing and import tracing
-- `mcp_server/lib/session/`: file size and import tracing
-- `007-code-audit-per-feature-catalog/spec.md`: MATCH/PARTIAL counts and phase documentation map
-
-## Assessment
-- New information ratio: 0.85
-- Questions addressed: Q4 (cross-feature blind spots)
-- Questions answered: Q4 is SUBSTANTIALLY answered
-
-## Reflection
-- What worked and why: Import frequency analysis was the right approach for Q4. By counting how many files import each module and cross-referencing against catalog mentions, we got a quantitative measure of cross-cutting risk that the per-category audit could not capture. The grep-based approach was fast, definitive, and covered the entire source tree.
-- What did not work and why: N/A -- the approach was well-matched to the question.
-- What I would do differently: Could have also checked whether any of the 21 phase implementation-summary files explicitly mention cross-cutting dependencies. That would reveal whether individual auditors noticed these gaps but did not escalate them.
-
-## Recommended Next Focus
-Q5 (temporal gaps) -- check file modification dates against the audit creation date to find files changed after the audit. Also: consolidate all findings from iterations 1-4 into a coherent gap model (the audit's structural limitations are now well-characterized and ready for synthesis).
+**Dimension-Specific Notes**
+- Correctness: no P0 runtime bug surfaced in this slice; the executed suites for ablation, dedup, checkpoint restore, session-manager, safe swap, and working-memory cleanup all passed.
+- Security: no new auth/input-handling issue stood out here; the main risk remains concurrency/data-integrity drift rather than exposure.
+- Traceability: this is the weakest dimension by far; several `MATCH`/`PARTIAL` audit notes are stale or incomplete relative to the live feature entries and code.
+- Maintainability: ablation test isolation looks solid via env restoration, temp DB setup/cleanup, and mocked eval DB state in [ablation-framework.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/ablation-framework.vitest.ts#L161), [ablation-framework.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/ablation-framework.vitest.ts#L748), [reporting-dashboard.vitest.ts](/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public/.opencode/skill/system-spec-kit/mcp_server/tests/reporting-dashboard.vitest.ts#L26); the maintenance work needed is to refresh the audit artifacts, not the tested code paths.
