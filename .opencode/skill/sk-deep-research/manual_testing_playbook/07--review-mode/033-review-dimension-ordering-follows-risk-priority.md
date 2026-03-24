@@ -1,6 +1,6 @@
 ---
 title: "DR-033 -- Review dimension ordering follows risk priority"
-description: "Verify that the inventory pass runs first, then dimensions follow risk priority: Correctness, Security, Spec Alignment, Completeness, Cross-Ref, Patterns, Documentation."
+description: "Verify that the inventory pass runs first, then dimensions follow risk priority: Correctness, Security, Traceability, Maintainability."
 ---
 
 # DR-033 -- Review dimension ordering follows risk priority
@@ -11,7 +11,7 @@ This document captures the realistic user-testing contract, current behavior, ex
 
 ## 1. OVERVIEW
 
-This scenario validates review dimension ordering for `DR-033`. The objective is to verify that the inventory pass runs first, then dimensions follow risk priority: Correctness, Security, Spec Alignment, Completeness, Cross-Ref, Patterns, Documentation.
+This scenario validates review dimension ordering for `DR-033`. The objective is to verify that the inventory pass runs first, then dimensions follow risk priority: Correctness, Security, Traceability, Maintainability.
 
 ### WHY THIS MATTERS
 
@@ -23,11 +23,11 @@ Risk-ordered dimensions ensure that the most critical findings (correctness bugs
 
 Operators should run this as a real orchestrator-led check rather than a synthetic command-matrix exercise. The scenario is only complete when the operator can explain the behavior back to a user in plain language.
 
-- Objective: Verify that the inventory pass runs first, then dimensions follow risk priority: Correctness, Security, Spec Alignment, Completeness, Cross-Ref, Patterns, Documentation.
+- Objective: Verify that the inventory pass runs first, then dimensions follow risk priority: Correctness, Security, Traceability, Maintainability.
 - Real user request: When I run a review, what order does it check things in — and does it prioritize serious issues first?
-- Orchestrator prompt: Validate review dimension ordering for sk-deep-research. Confirm that `phase_init` schedules an inventory pass first, followed by dimensions in risk priority order (Correctness → Security → Spec Alignment → Completeness → Cross-Ref → Patterns → Documentation), and that this order is consistent across the review YAML, strategy doc, and loop protocol.
+- Orchestrator prompt: Validate review dimension ordering for sk-deep-research. Confirm that `phase_init` schedules an inventory pass first, followed by dimensions in risk priority order (Correctness → Security → Traceability → Maintainability), and that this order is consistent across the review YAML, strategy doc, and loop protocol.
 - Expected execution process: Inspect the review YAML `phase_init` for dimension scheduling, then `deep_review_strategy.md` for the canonical risk-priority ordering, then `loop_protocol.md` section 6 for iteration dimension dispatch rules.
-- Desired user-facing outcome: The user understands that the review starts with an inventory pass and then checks dimensions in descending risk order, with correctness and security always first.
+- Desired user-facing outcome: The user understands that the review starts with an inventory pass and then checks the 4 simplified dimensions in descending risk order, with correctness and security always first.
 - Expected signals: Inventory pass is scheduled before any dimension, dimensions follow the canonical risk-priority ordering, and all three sources agree.
 - Pass/fail posture: PASS if inventory runs first and dimensions follow the documented risk-priority order across all sources; FAIL if ordering is inconsistent or inventory is not first.
 
@@ -44,7 +44,7 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| DR-033 | Review dimension ordering follows risk priority | Verify that inventory pass runs first, then Correctness → Security → Spec Alignment → Completeness → Cross-Ref → Patterns → Documentation. | Validate review dimension ordering. Confirm inventory pass is first, then dimensions follow risk priority across the review YAML `phase_init`, `deep_review_strategy.md`, and `loop_protocol.md` §6. | 1. `bash: rg -n 'inventory|dimension|order|priority' .opencode/command/spec_kit/assets/spec_kit_deep-research_review-auto.yaml` -> 2. `bash: rg -n 'dimension|order|priority|Correctness|Security' .opencode/skill/sk-deep-research/references/deep_review_strategy.md` -> 3. `bash: rg -n 'dimension|order|dispatch|inventory' .opencode/skill/sk-deep-research/references/loop_protocol.md` | Inventory pass is first, dimensions follow Correctness → Security → Spec Alignment → Completeness → Cross-Ref → Patterns → Documentation, and all sources agree. | Capture the dimension ordering from all three sources and compare for consistency. | PASS if inventory runs first and risk-priority ordering is consistent across all sources; FAIL if ordering is inconsistent or inventory is not first. | Start with `phase_init` dimension schedule, compare against `deep_review_strategy.md` canonical ordering, then check `loop_protocol.md` §6 dispatch rules. |
+| DR-033 | Review dimension ordering follows risk priority | Verify that inventory pass runs first, then Correctness → Security → Traceability → Maintainability. | Validate review dimension ordering. Confirm inventory pass is first, then dimensions follow risk priority across the review YAML `phase_init`, `deep_review_strategy.md`, and `loop_protocol.md` §6. | 1. `bash: rg -n 'inventory|dimension|order|priority|Correctness|Security|Traceability|Maintainability' .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml` -> 2. `bash: rg -n 'dimension|order|priority|Correctness|Security|Traceability|Maintainability' .opencode/skill/sk-deep-research/references/deep_review_strategy.md` -> 3. `bash: rg -n 'dimension|order|dispatch|inventory|Correctness|Security|Traceability|Maintainability' .opencode/skill/sk-deep-research/references/loop_protocol.md` | Inventory pass is first, dimensions follow Correctness → Security → Traceability → Maintainability, and all sources agree. | Capture the dimension ordering from all three sources and compare for consistency. | PASS if inventory runs first and the 4-dimension risk-priority ordering is consistent across all sources; FAIL if ordering is inconsistent or inventory is not first. | Start with `phase_init` dimension schedule, compare against `deep_review_strategy.md` canonical ordering, then check `loop_protocol.md` §6 dispatch rules. |
 
 ---
 

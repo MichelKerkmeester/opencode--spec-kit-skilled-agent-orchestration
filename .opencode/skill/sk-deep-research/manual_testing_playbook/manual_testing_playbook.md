@@ -379,9 +379,9 @@ Feature file: [DR-032](07--review-mode/032-review-scope-discovery-resolves-targe
 
 ### DR-033 | Review dimension ordering follows risk priority
 
-Verify inventory pass runs first, then Correctness → Security → Spec Alignment → Completeness → Cross-Ref → Patterns → Documentation.
+Verify inventory pass runs first, then Correctness → Security → Traceability → Maintainability.
 
-Feature file: [DR-033](07--review-mode/033-review-dimension-ordering-risk-priority.md)
+Feature file: [DR-033](07--review-mode/033-review-dimension-ordering-follows-risk-priority.md)
 
 ### DR-034 | Review iteration produces P0/P1/P2 findings with file:line evidence
 
@@ -397,9 +397,9 @@ Feature file: [DR-035](07--review-mode/035-review-convergence-severity-weighted.
 
 ### DR-036 | Review quality guards block premature stop
 
-Verify 5 guards (evidence completeness, scope alignment, no inference-only, severity coverage, cross-reference) must pass before STOP.
+Verify 3 binary gates (evidence, scope, coverage) must pass before STOP.
 
-Feature file: [DR-036](07--review-mode/036-review-quality-guards-block-stop.md)
+Feature file: [DR-036](07--review-mode/036-review-quality-guards-block-premature-stop.md)
 
 ### DR-037 | Cross-reference verification detects spec-code misalignment
 
@@ -413,23 +413,23 @@ Verify Hunter/Skeptic/Referee runs in-iteration for P0 candidates before writing
 
 Feature file: [DR-038](07--review-mode/038-adversarial-self-check-on-p0.md)
 
-### DR-039 | Review-report.md synthesis has all 11 sections
+### DR-039 | Review-report.md synthesis has all 9 sections
 
-Verify review-report.md includes Executive Summary, Score Breakdown, P0/P1/P2 Findings, Cross-Reference Results, Coverage Map, Positive Observations, Convergence Report, Remediation Priority, Release Readiness Verdict.
+Verify review-report.md includes Executive Summary, Planning Trigger, Active Finding Registry, Remediation Workstreams, Spec Seed, Plan Seed, Traceability Status, Deferred Items, and Audit Appendix.
 
-Feature file: [DR-039](07--review-mode/039-review-report-synthesis-11-sections.md)
+Feature file: [DR-039](07--review-mode/039-review-report-synthesis-has-all-sections.md)
 
 ### DR-040 | Review verdict determines post-review workflow
 
-Verify FAIL (P0 present) / CONDITIONAL (P1 only) / PASS WITH NOTES (P2 only) / PASS (clean) verdict is correct and next-command recommendation matches.
+Verify FAIL / CONDITIONAL / PASS verdict is correct and next-command recommendation matches, with PASS carrying `hasAdvisories` when only P2 findings remain.
 
-Feature file: [DR-040](07--review-mode/040-review-verdict-post-review-workflow.md)
+Feature file: [DR-040](07--review-mode/040-review-verdict-determines-post-review-workflow.md)
 
-### DR-041 | Review dashboard shows findings by severity and dimension coverage
+### DR-041 | Review dashboard shows findings and coverage
 
-Verify review dashboard includes Findings Summary (P0/P1/P2), Progress Table with dimensions, Coverage (files/dimensions), and Trend.
+Verify review dashboard includes Findings Summary (P0/P1/P2), Progress Table with dimensions, Coverage (files/dimensions/traceability protocols), and Trend.
 
-Feature file: [DR-041](07--review-mode/041-review-dashboard-severity-coverage.md)
+Feature file: [DR-041](07--review-mode/041-review-dashboard-shows-findings-and-coverage.md)
 
 ---
 
