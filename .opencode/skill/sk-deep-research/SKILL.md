@@ -80,6 +80,10 @@ INTENT_SIGNALS = {
     "ITERATION": {"weight": 4, "keywords": ["iteration", "next round", "continue research", "research cycle"]},
     "CONVERGENCE": {"weight": 3, "keywords": ["convergence", "stop condition", "diminishing returns", "stuck"]},
     "STATE": {"weight": 3, "keywords": ["state file", "JSONL", "strategy", "resume", "auto-resume"]},
+    "REVIEW_SETUP": {"weight": 4, "keywords": ["deep review", "review mode", "code audit", "iterative review", ":review"]},
+    "REVIEW_ITERATION": {"weight": 4, "keywords": ["review iteration", "dimension review", "review findings", "P0", "P1"]},
+    "REVIEW_CONVERGENCE": {"weight": 3, "keywords": ["review convergence", "coverage gate", "verdict", "binary gate"]},
+    "REVIEW_REPORT": {"weight": 3, "keywords": ["review report", "planning packet", "remediation", "verdict"]},
 }
 
 NOISY_SYNONYMS = {
@@ -87,6 +91,10 @@ NOISY_SYNONYMS = {
     "ITERATION": {"another pass": 1.5, "keep searching": 1.4, "dig deeper": 1.6},
     "CONVERGENCE": {"good enough": 1.4, "stop when": 1.5, "diminishing": 1.6},
     "STATE": {"pick up where": 1.5, "continue from": 1.4, "resume": 1.8},
+    "REVIEW_SETUP": {"audit code": 2.0, "review spec folder": 1.8, "release readiness": 1.5},
+    "REVIEW_ITERATION": {"review dimension": 1.5, "check correctness": 1.4, "check security": 1.4},
+    "REVIEW_CONVERGENCE": {"all dimensions covered": 1.6, "coverage complete": 1.5},
+    "REVIEW_REPORT": {"review results": 1.5, "what to fix": 1.4, "ship decision": 1.6},
 }
 
 RESOURCE_MAP = {
@@ -94,6 +102,10 @@ RESOURCE_MAP = {
     "ITERATION": ["references/loop_protocol.md", "references/convergence.md"],
     "CONVERGENCE": ["references/convergence.md"],
     "STATE": ["references/state_format.md", "assets/deep_research_strategy.md"],
+    "REVIEW_SETUP": ["references/loop_protocol.md", "references/state_format.md", "assets/review_mode_contract.yaml", "assets/deep_review_strategy.md"],
+    "REVIEW_ITERATION": ["references/loop_protocol.md", "references/convergence.md", "assets/review_mode_contract.yaml"],
+    "REVIEW_CONVERGENCE": ["references/convergence.md", "assets/review_mode_contract.yaml"],
+    "REVIEW_REPORT": ["references/state_format.md", "assets/review_mode_contract.yaml"],
 }
 
 LOADING_LEVELS = {
@@ -123,10 +135,13 @@ Detect the current research phase from dispatch context to load appropriate reso
 
 | Phase | Signal | Resources to Load |
 |-------|--------|-------------------|
-| Init | No JSONL exists | Loop protocol, state format |
-| Iteration | Dispatch context includes iteration number | Loop protocol, convergence |
+| Init (research) | No JSONL exists, mode=research | Loop protocol, state format |
+| Init (review) | No JSONL exists, mode=review | Loop protocol, state format, review contract |
+| Iteration (research) | Dispatch context includes iteration number | Loop protocol, convergence |
+| Iteration (review) | Dispatch context includes dimension + iteration | Loop protocol, convergence, review contract |
 | Stuck | Dispatch context includes "RECOVERY" | Convergence, loop protocol |
-| Synthesis | Convergence triggered STOP | Quick reference |
+| Synthesis (research) | Convergence triggered STOP | Quick reference |
+| Synthesis (review) | Convergence triggered STOP, mode=review | Review contract, state format |
 
 ---
 
