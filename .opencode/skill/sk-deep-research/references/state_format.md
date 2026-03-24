@@ -465,3 +465,150 @@ The `auto-generated` protection level means the file is system-managed and overw
 ```
 
 <!-- /ANCHOR:file-location-summary -->
+
+---
+
+<!-- ANCHOR:review-mode-state -->
+## 8. REVIEW MODE STATE
+
+When `config.mode == "review"`, the state system adapts to track findings, dimensions, and severity instead of research questions and newInfoRatio.
+
+### Review-Specific JSONL Iteration Record
+
+```json
+{
+  "type": "iteration",
+  "run": 3,
+  "mode": "review",
+  "status": "complete",
+  "focus": "D2 Security — auth module",
+  "dimensions": ["security"],
+  "filesReviewed": ["src/auth/login.ts", "src/auth/session.ts"],
+  "findingsCount": 4,
+  "newFindingsRatio": 0.75,
+  "findingsSummary": { "P0": 1, "P1": 2, "P2": 1 },
+  "findingsNew": { "P0": 1, "P1": 1, "P2": 0 },
+  "findingsRefined": { "P0": 0, "P1": 1, "P2": 1 },
+  "scoreEstimate": 45,
+  "timestamp": "2026-03-24T14:30:00Z",
+  "durationMs": 52000,
+  "noveltyJustification": "1 new P0 auth bypass, 1 new P1 input validation, 1 refined P1 session handling"
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| mode | `"review"` | Yes | Discriminator for review-mode records |
+| dimensions | string[] | Yes | Review dimensions addressed this iteration |
+| filesReviewed | string[] | Yes | Files examined in this iteration |
+| findingsSummary | object | Yes | Total active findings by severity: `{ P0, P1, P2 }` |
+| findingsNew | object | Yes | Net-new findings this iteration by severity |
+| findingsRefined | object | Yes | Refined/upgraded findings this iteration by severity |
+| newFindingsRatio | number | Yes | Severity-weighted new findings ratio (0.0-1.0) |
+| scoreEstimate | number | No | Provisional quality score (0-100) |
+| noveltyJustification | string | No | Human-readable breakdown of what was found |
+
+### Review Config Fields
+
+When `mode == "review"`, additional config fields are present:
+
+```json
+{
+  "mode": "review",
+  "reviewTarget": "specs/030-sk-deep-research-review-mode",
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": [
+    "correctness", "security", "spec-alignment", "completeness",
+    "cross-ref-integrity", "patterns", "documentation-quality"
+  ],
+  "severityThreshold": "P2",
+  "crossReference": {
+    "spec": true,
+    "checklist": true,
+    "agentConsistency": true
+  },
+  "qualityGateThreshold": 70
+}
+```
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| mode | `"research"` or `"review"` | `"research"` | Session mode discriminator |
+| reviewTarget | string or null | null | Path or identifier of the review target |
+| reviewTargetType | string | `"spec-folder"` | Type: `spec-folder`, `skill`, `agent`, `track`, `files` |
+| reviewDimensions | string[] | all 7 | Dimensions to evaluate |
+| severityThreshold | string | `"P2"` | Minimum severity to report (`P0`, `P1`, `P2`) |
+| crossReference | object | `{ spec: true, checklist: true, agentConsistency: true }` | Which cross-reference checks to perform |
+| qualityGateThreshold | number | 70 | Minimum score (0-100) for PASS verdict |
+
+### Review Strategy Sections Mapping
+
+The review strategy file (`deep-review-strategy.md`) uses adapted sections:
+
+| Strategy Section | Research Equivalent | Purpose |
+|-----------------|--------------------:|---------|
+| Review Dimensions (remaining) | Key Questions (remaining) | Unchecked dimensions drive next focus |
+| Completed Dimensions | Answered Questions | Checked dimensions with score summary |
+| Running Findings | (none) | P0/P1/P2 active counts + deltas |
+| Cross-Reference Status | (none) | Alignment checks completed |
+| Files Under Review | (none) | Per-file coverage state table |
+| Review Boundaries | Research Boundaries | Max iterations, thresholds, config |
+
+Sections carried forward unchanged: Topic, Non-Goals, Stop Conditions, What Worked, What Failed, Exhausted Approaches, Ruled Out Directions, Next Focus, Known Context.
+
+### review-report.md Section List
+
+The review synthesis output (`{spec_folder}/review-report.md`) contains 11 sections:
+
+| # | Section | Description |
+|---|---------|-------------|
+| 1 | Executive Summary | Verdict (PASS/CONDITIONAL/PASS WITH NOTES/FAIL), score, P0/P1/P2 counts, review scope summary |
+| 2 | Score Breakdown | Per-dimension weight, score, band, and primary driver table |
+| 3 | P0 Findings (Blockers) | Detailed P0 writeups with ID, file:line, evidence, impact, fix recommendation, dimension(s) |
+| 4 | P1 Findings (Required) | Same structure as P0 |
+| 5 | P2 Findings (Suggestions) | Compact cards with ID, title, file:line, suggestion, dimension |
+| 6 | Cross-Reference Results | Results from the 6 cross-reference protocols with check, source, target, result, evidence, status |
+| 7 | Coverage Map | Per-file/artifact dimensions reviewed and gaps identified |
+| 8 | Positive Observations | Well-implemented patterns, good practices, strong areas |
+| 9 | Convergence Report | Stop reason, total iterations, dimension coverage, newFindingsRatio trend, quality guard results |
+| 10 | Remediation Priority | Ordered action items: P0 first, then P1, grouped by effort/impact |
+| 11 | Release Readiness Verdict | Final verdict (FAIL/CONDITIONAL/PASS WITH NOTES/PASS) with rationale |
+
+### Finding Registry
+
+Each finding across all iterations is tracked in a registry with a unique identifier:
+
+```json
+{
+  "findingId": "F003",
+  "severity": "P1",
+  "status": "active",
+  "dimension": "security",
+  "title": "Missing input validation on user endpoint",
+  "file": "src/api/users.ts",
+  "line": 42,
+  "firstSeen": 2,
+  "lastSeen": 4,
+  "transitions": [
+    { "iteration": 2, "from": null, "to": "P2", "reason": "Initial discovery" },
+    { "iteration": 4, "from": "P2", "to": "P1", "reason": "Confirmed exploitable via boundary test" }
+  ]
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| findingId | string | Unique identifier (F001, F002, ...) assigned sequentially |
+| severity | `"P0"` / `"P1"` / `"P2"` | Current severity level |
+| status | `"active"` / `"resolved"` / `"disproved"` | Current finding status |
+| dimension | string | Primary review dimension |
+| title | string | Short description |
+| file | string | File path where the finding applies |
+| line | number | Line number (approximate) |
+| firstSeen | number | Iteration where first discovered |
+| lastSeen | number | Iteration where last referenced |
+| transitions | array | Severity and status change history |
+
+Finding deduplication: when an iteration reports a finding with the same file, line range, and root cause as an existing finding, it is treated as a refinement (not a new finding) and the existing findingId is updated rather than creating a duplicate.
+
+<!-- /ANCHOR:review-mode-state -->

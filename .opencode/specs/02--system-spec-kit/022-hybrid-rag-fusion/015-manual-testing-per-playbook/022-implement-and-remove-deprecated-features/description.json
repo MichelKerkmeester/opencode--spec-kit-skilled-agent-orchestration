@@ -1,0 +1,22 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/022-implement-and-remove-deprecated-features",
+  "description": "Feature Specification: manual-testing-per-playbook implement-and-remove-deprecated-features phase",
+  "keywords": [
+    "feature",
+    "specification",
+    "manual-testing-per-playbook",
+    "implement-and-remove-deprecated-features",
+    "deprecated",
+    "phase"
+  ],
+  "lastUpdated": "2026-03-24T00:00:00.000Z",
+  "specId": "022",
+  "folderSlug": "implement-and-remove-deprecated-features",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "015-manual-testing-per-playbook"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

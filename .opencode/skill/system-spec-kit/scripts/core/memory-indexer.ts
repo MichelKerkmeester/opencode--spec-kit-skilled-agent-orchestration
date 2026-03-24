@@ -145,6 +145,17 @@ async function indexMemory(
   const qualityScore = extractQualityScore(content);
   const qualityFlags = extractQualityFlags(content);
 
+  // T11: Basic governance validation for script-side indexing
+  if (!title || title.trim().length === 0) {
+    console.warn('[memory-indexer] Skipping index: empty title');
+    return null;
+  }
+  if (!content || content.trim().length === 0) {
+    console.warn('[memory-indexer] Skipping index: empty content');
+    return null;
+  }
+  console.warn(`[memory-indexer] Script-side index: ${specFolderName}/${contextFilename} (bypass MCP governance)`);
+
   // ERR-001: Wrap vector index write in try/catch
   let memoryId: number;
   try {

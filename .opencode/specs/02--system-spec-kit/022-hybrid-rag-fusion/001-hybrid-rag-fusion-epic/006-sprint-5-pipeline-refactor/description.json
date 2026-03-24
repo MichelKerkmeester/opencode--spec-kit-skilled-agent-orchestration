@@ -8,7 +8,7 @@
     "pipeline",
     "refactor"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.155Z",
+  "lastUpdated": "2026-03-24T08:34:20.533Z",
   "specId": "006",
   "folderSlug": "sprint-5-pipeline-refactor",
   "parentChain": [
@@ -16,10 +16,7 @@
     "022-hybrid-rag-fusion",
     "001-hybrid-rag-fusion-epic"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Sprint 5 — Pipeline Refactor",
   "status": "Implemented",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: Sprint 5 — Pipeline Refactor"
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

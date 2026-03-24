@@ -9,7 +9,7 @@
     "handback",
     "protocol"
   ],
-  "lastUpdated": "2026-03-20T13:22:44.200Z",
+  "lastUpdated": "2026-03-24T08:34:20.672Z",
   "specId": "002",
   "folderSlug": "outsourced-agent-handback",
   "parentChain": [
@@ -26,9 +26,5 @@
     "16-03-26_22-23__updated-the-outsourced-agent-handback-docs-so.md",
     "16-03-26_22-31__completed-phase-015-by-aligning-the-outsourced.md",
     "17-03-26_19-49__outsourced-agent-handback-architecture.md"
-  ],
-  "title": "Outsourced Agent Handback Protocol",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: Outsourced Agent Handback Protocol"
+  ]
 }

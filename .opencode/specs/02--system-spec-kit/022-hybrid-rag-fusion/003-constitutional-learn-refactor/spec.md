@@ -16,14 +16,7 @@ contextType: "implementation"
 # Feature Specification: Refactor /memory:learn → Constitutional Memory Manager
 
 <!-- SPECKIT_LEVEL: 2 -->
-
----
-
-## EXECUTIVE SUMMARY
-
-Refactor `/memory:learn` from a generic learning capture command (pattern, mistake, insight, optimization, constraint types saved to spec folder memory/) into a focused constitutional memory manager that creates, lists, edits, removes, and budget-checks constitutional memories in `.opencode/skill/system-spec-kit/constitutional/`.
-
-**Key Decision**: Constitutional memories are fundamentally different from regular memories — they always surface, never decay, and have a hard ~2000 token budget. They deserve a dedicated creation workflow, not a generic learning classifier.
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
 
 ---
 
@@ -61,8 +54,8 @@ Repurpose `/memory:learn` as the dedicated constitutional memory manager — the
 
 ---
 
-<!-- ANCHOR:solution -->
-## 3. SOLUTION
+<!-- ANCHOR:scope -->
+## 3. SCOPE
 
 ### Approach
 
@@ -84,7 +77,7 @@ Complete rewrite of `.opencode/command/memory/learn.md` with:
 - `memory_save()` MCP handler — already supports constitutional indexing
 - `tier-classifier.ts` — already handles constitutional (no decay, always HOT)
 - No new MCP tools needed
-<!-- /ANCHOR:solution -->
+<!-- /ANCHOR:scope -->
 
 ---
 
@@ -142,6 +135,36 @@ Complete rewrite of `.opencode/command/memory/learn.md` with:
 | `CLAUDE.md` | Edit | ~5 |
 | `.opencode/skill/system-spec-kit/README.md` | Edit | ~3 |
 <!-- /ANCHOR:files -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 8. SUCCESS CRITERIA
+
+- **SC-001**: `/memory:learn` is rewritten as a constitutional memory manager with 5 subcommands
+- **SC-002**: No stale references to old learning types remain in active command/workspace/agent docs
+- **SC-003**: Regression test prevents future documentation drift
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 9. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Risk | Existing users expect old behavior | M | Update all cross-references simultaneously |
+| Dependency | Constitutional directory exists | L | Already exists at `.opencode/skill/system-spec-kit/constitutional/` |
+| Dependency | `memory_save()` supports constitutional tier | L | Already implemented |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+No open questions remain. All were resolved during implementation.
+<!-- /ANCHOR:questions -->
 
 ---
 

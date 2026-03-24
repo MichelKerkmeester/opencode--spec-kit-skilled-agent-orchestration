@@ -230,24 +230,6 @@
       "gate": null,
       "version": "1.0.0",
       "dependencies": ["lib/embeddings/"]
-    },
-    {
-      "name": "skill_advisor",
-      "path": "../../scripts/skill_advisor.py",
-      "type": "python",
-      "description": "Analyze user requests and recommend appropriate skills for Gate 2 routing",
-      "trigger": ["which skill", "skill routing", "Gate 2"],
-      "calledBy": ["AI Assistant", "Gate 2"],
-      "essential": true,
-      "inputs": {
-        "required": "User request string",
-        "options": "--threshold <float>, --health"
-      },
-      "outputs": ["JSON array of skill recommendations with confidence scores"],
-      "gate": "Gate 2 (Skill Routing)",
-      "version": "1.0.0",
-      "dependencies": [],
-      "location": ".opencode/skill/scripts/skill_advisor.py"
     }
   ],
   "rules": [
@@ -422,11 +404,6 @@
         "description": "Message classification"
       },
       {
-        "name": "opencode-capture",
-        "path": "scripts/dist/extractors/opencode-capture.js",
-        "description": "OpenCode session capture"
-      },
-      {
         "name": "content-filter",
         "path": "scripts/dist/lib/content-filter.js",
         "description": "Three-stage content filtering"
@@ -464,7 +441,7 @@
       "memory": ["generate-context", "cleanup-orphaned-vectors", "test-embeddings-factory"],
       "validation": ["validate-spec", "check-completion", "check-prerequisites", "test-validation"],
       "lifecycle": ["create-spec-folder", "archive-spec", "recommend-level", "calculate-completeness"],
-      "routing": ["skill_advisor"],
+      "routing": [],
       "utilities": ["common"]
     }
   }

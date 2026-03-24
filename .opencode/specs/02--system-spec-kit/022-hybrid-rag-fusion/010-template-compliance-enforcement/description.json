@@ -1,20 +1,20 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/010-template-compliance-enforcement",
-  "description": "Specification: 010-template-compliance-enforcement",
+  "description": "Feature Specification: Template Compliance Enforcement",
   "keywords": [
-    "template-compliance",
-    "enforcement",
-    "3-layer-architecture",
-    "pre-commit-hook",
-    "contract-injection",
-    "validate-sh"
+    "feature",
+    "specification",
+    "template",
+    "compliance",
+    "enforcement"
   ],
-  "lastUpdated": "2026-03-22T00:00:00.000Z",
+  "lastUpdated": "2026-03-24T08:34:20.710Z",
   "specId": "010",
   "folderSlug": "template-compliance-enforcement",
   "parentChain": [
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "status": "Draft"
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

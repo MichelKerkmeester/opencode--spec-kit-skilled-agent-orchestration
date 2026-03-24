@@ -15,6 +15,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -28,9 +29,11 @@ contextType: "general"
 
 ### Overview
 Historical plan: verify ~180 feature snippets and investigate 55 known gaps, then synthesize a remediation manifest. Current-state addendum: classify 14 omitted current snippets and fold follow-up actions into the remediation plan.
+<!-- /ANCHOR:summary -->
 
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -43,6 +46,7 @@ Historical plan: verify ~180 feature snippets and investigate 55 known gaps, the
 - [ ] Remediation manifest produced with prioritized actions
 - [ ] Analysis summary with aggregate statistics
 - [ ] `tasks.md` updated with concrete remediation items
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
@@ -78,6 +82,7 @@ Historical plan: verify ~180 feature snippets and investigate 55 known gaps, the
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -94,9 +99,11 @@ Feature Snippets ──► Stream 1 Agents ──► verification-C[NN].md ─�
                                                                    ├──► Synthesis ──► remediation-manifest.md
 MCP Source Files ──► Stream 2 Agents ──► investigation-X[NN].md ──┘
 ```
+<!-- /ANCHOR:architecture -->
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase A: Spec Folder Upgrade (L1 → L3)
@@ -131,9 +138,11 @@ MCP Source Files ──► Stream 2 Agents ──► investigation-X[NN].md ─�
 - [x] Audit and classify 14 omitted current snippets
 - [x] Add two follow-up remediation items for source-path normalization/correction
 - [x] Clarify tooling and taxonomy drift without rewriting March 8 historical metrics
+<!-- /ANCHOR:phases -->
 
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -142,9 +151,11 @@ MCP Source Files ──► Stream 2 Agents ──► investigation-X[NN].md ─�
 | Report completeness | All 30 agent outputs | File existence + non-empty check |
 | Cross-validation | Stream overlap | Manual comparison of findings |
 | Spot check | 10 random features | Read snippet + source, confirm match |
+<!-- /ANCHOR:testing -->
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -152,13 +163,16 @@ MCP Source Files ──► Stream 2 Agents ──► investigation-X[NN].md ─�
 | MCP server source (`mcp_server/`) | Internal | Green | Cannot verify features |
 | Feature catalog snippets | Internal | Green | Cannot audit |
 | Codex CLI (`codex` binary) | External | Green | Cannot run Stream 1/2 historical audit flows |
+<!-- /ANCHOR:dependencies -->
 
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Agent outputs contain fundamentally flawed data
 - **Procedure**: Delete scratch files, re-run agents with corrected prompts. No source code is modified.
+<!-- /ANCHOR:rollback -->
 
 ---
 
@@ -344,13 +358,13 @@ Map each source file to its feature catalog entry and add concise `// Feature ca
 
 ---
 
-<!-- ANCHOR:architecture -->
+<!-- ANCHOR:architecture-016 -->
 ## 3. ARCHITECTURE
 
 - Inline traceability model: add `// Feature catalog: <feature-name>` at handler/module boundaries
 - Change boundary: comments only; no runtime behavior, API contracts, or logic paths changed
 - Validation model: static compile check, grep-based audits, and comment-only diff classification
-<!-- /ANCHOR:architecture -->
+<!-- /ANCHOR:architecture-016 -->
 
 ---
 
@@ -393,7 +407,7 @@ Map each source file to its feature catalog entry and add concise `// Feature ca
 
 ---
 
-<!-- ANCHOR:dependencies -->
+<!-- ANCHOR:dependencies-016 -->
 ## 6. ORDERING AND DEPENDENCIES
 
 ```
@@ -404,7 +418,7 @@ A1-A3 (parallel scans)
         -> B2-B5 (parallel annotation by directory)
           -> B6-B7 (verify)
 ```
-<!-- /ANCHOR:dependencies -->
+<!-- /ANCHOR:dependencies-016 -->
 
 ---
 

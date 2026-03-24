@@ -55,6 +55,16 @@ contextType: "general"
 - [x] CHK-011 [P0] EX-014 verdict recorded — **PASS** (see implementation-summary.md)
 - [x] CHK-012 [P0] EX-035 (startup runtime compatibility guards) executed and diagnostic output captured — `npx vitest run tests/startup-checks.vitest.ts`: 14/14 tests pass; runtime mismatch, marker creation, and SQLite diagnostics all covered
 - [x] CHK-013 [P0] EX-035 verdict recorded — **PASS** (see implementation-summary.md)
+- [ ] CHK-014 [P0] EX-041 (memory_update) executed and tool output captured
+- [ ] CHK-015 [P0] EX-041 verdict recorded
+- [ ] CHK-016 [P0] EX-042 (memory_delete) executed and tool output captured
+- [ ] CHK-017 [P0] EX-042 verdict recorded
+- [ ] CHK-018 [P0] EX-043 (bulk delete with filter) executed and tool output captured; checkpoint created before execution
+- [ ] CHK-019 [P0] EX-043 verdict recorded
+- [ ] CHK-022 [P0] EX-044 (health check diagnostics) executed and tool output captured
+- [ ] CHK-023 [P0] EX-044 verdict recorded
+- [ ] CHK-024 [P0] EX-045 (index scan and repair) executed and tool output captured; checkpoint created before execution
+- [ ] CHK-025 [P0] EX-045 verdict recorded
 <!-- /ANCHOR:testing -->
 
 ---
@@ -91,7 +101,7 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
+| P0 Items | 18 | 8/18 |
 | P1 Items | 5 | 5/5 |
 | P2 Items | 1 | 1/1 |
 

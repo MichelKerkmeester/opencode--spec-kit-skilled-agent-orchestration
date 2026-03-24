@@ -25,7 +25,7 @@ description: "Task breakdown for updating the MCP server installation guide."
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Verification
+## Phase 1: Setup
 
 - [ ] T001 Read current `package.json` and catalog all dependencies
 - [ ] T002 [P] Compare dependency references in install guide against `package.json`
@@ -37,7 +37,7 @@ description: "Task breakdown for updating the MCP server installation guide."
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Update
+## Phase 2: Implementation
 
 - [ ] T006 Fix stale dependency names and versions
 - [ ] T007 Refresh platform-specific configurations (macOS, Linux, Windows)
@@ -49,7 +49,7 @@ description: "Task breakdown for updating the MCP server installation guide."
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Review
+## Phase 3: Verification
 
 - [ ] T011 Run DQI scoring via `validate_document.py` (target >= 75)
 - [ ] T012 [P] Run HVR banned-word check

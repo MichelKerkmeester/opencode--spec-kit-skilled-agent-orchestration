@@ -14,6 +14,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -21,14 +22,41 @@ contextType: "general"
 | **[P0]** | HARD BLOCKER | Cannot claim done until complete |
 | **[P1]** | Required | Must complete OR get user approval |
 | **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
 
 ---
 
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] All 22 spec folders created with Level 3 docs — 22 folders, 6 files each
 - [x] CHK-002 [P0] Feature catalog verified current — 19 categories, 220+ features confirmed
 - [x] CHK-003 [P1] Audit methodology consistent across phases — MATCH/PARTIAL/MISMATCH classification used uniformly
+<!-- /ANCHOR:pre-impl -->
+
+---
+
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+- [x] CHK-CQ1 [P0] Audit methodology consistent classification [Evidence: MATCH/PARTIAL/MISMATCH used uniformly across all 21 phases]
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+- [x] CHK-TST1 [P0] All 220+ features verified [Evidence: every feature has explicit audit status]
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-SEC1 [P0] No secrets in audit outputs [Evidence: audit is read-only code review, no credential exposure]
+<!-- /ANCHOR:security -->
 
 ---
 
@@ -51,11 +79,21 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:docs -->
 ## Documentation
 
 - [x] CHK-040 [P1] All spec folders synchronized — spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md in all 22 folders
 - [x] CHK-041 [P1] Master synthesis report delivered — parent implementation-summary.md with full results
 - [x] CHK-042 [P2] Implementation-summary.md created per phase — 22/22 folders complete
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-FO1 [P1] All audit outputs in phase-specific folders [Evidence: 22 folders each with spec docs]
+<!-- /ANCHOR:file-org -->
 
 ---
 
@@ -75,6 +113,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -84,3 +123,4 @@ contextType: "general"
 | P2 Items | 3 | 3/3 |
 
 **Verification Date**: 2026-03-22
+<!-- /ANCHOR:summary -->

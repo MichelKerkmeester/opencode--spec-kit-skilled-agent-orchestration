@@ -27,7 +27,7 @@ This phase implemented shared post-mutation automation for memory mutation flows
 ---
 
 <!-- ANCHOR:what-built -->
-## Changes Made
+## What Was Built
 
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts`, `memory-crud-update.ts`, `memory-crud-delete.ts`, and `memory-bulk-delete.ts` - Unified post-mutation hook execution, duplicate-save no-op handling, atomic-save parity, and structured `postMutationHooks` output.
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts` and `checkpoints.ts` - Added optional `autoRepair` reporting, `confirmName` safety confirmation, sanitized hint output, and safer destructive-action responses.
@@ -41,7 +41,7 @@ This phase implemented shared post-mutation automation for memory mutation flows
 ---
 
 <!-- ANCHOR:how-delivered -->
-## Testing Status
+## How It Was Delivered
 
 - PASS - `npx tsc -b` in `.opencode/skill/system-spec-kit` verified the main TypeScript build.
 - PASS - `npm run lint` in `.opencode/skill/system-spec-kit/mcp_server` verified the scoped lint target.
@@ -66,7 +66,7 @@ This phase implemented shared post-mutation automation for memory mutation flows
 ---
 
 <!-- ANCHOR:verification -->
-## Completion Status
+## Verification
 
 **Status:** Complete.
 
@@ -76,7 +76,7 @@ All checklist items verified (8/8 P0, 11/11 P1, 2/2 P2). Scratch files cleaned p
 ---
 
 <!-- ANCHOR:limitations -->
-## Known Limitations / Deferred Items
+## Known Limitations
 
 1. Runtime stderr can still report orphan-entry noise, and memory indexing still cannot produce a new indexed memory ID because of the existing 1024 vs 768 embedding-dimension mismatch.
 2. Broader follow-on work, such as structured response actions and wider success-hint composition, was explicitly deferred to later phases.

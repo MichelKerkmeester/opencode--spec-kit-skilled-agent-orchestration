@@ -25,7 +25,7 @@ contextType: "implementation"
 
 ### Overview
 
-This phase no longer tracks a broad pre-implementation alignment effort. It now serves as the closeout plan for the last `system-spec-kit` documentation work: current memory-surface wording in `SKILL.md`, save-workflow/shared-memory governance framing, embedding/shared-space governance framing, and campaign/shared-space/cross-phase asset guidance.
+This phase no longer tracks a broad pre-implementation alignment effort. It now serves as the closeout plan for the last `system-spec-kit` documentation work: current memory-surface wording in SKILL.md, save-workflow/shared-memory governance framing, embedding/shared-space governance framing, and campaign/shared-space/cross-phase asset guidance.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -55,7 +55,7 @@ Documentation closeout reconciliation.
 
 ### Key Components
 - **Spec pack**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`
-- **Skill guide target**: `SKILL.md` wording for the live memory surface plus save-workflow/shared-memory governance framing
+- **Skill guide target**: SKILL.md wording for the live memory surface plus save-workflow/shared-memory governance framing
 - **Reference targets**: memory references for save workflow and embedding governance
 - **Asset targets**: campaign/shared-space/cross-phase guidance in the asset docs
 
@@ -80,17 +80,17 @@ Live repo truth informs the reconciled spec pack. The reconciled pack then acts 
 - [x] Keep the scope explicitly documentation-only
 
 ### Phase 2: Skill-Guide Backlog
-- [x] Update `SKILL.md` memory-surface wording to the live 33-tool, 6-command, `/memory:analyze` model
-- [x] Add save-workflow/shared-memory governance framing to `SKILL.md`
+- [x] Update SKILL.md memory-surface wording to the live 33-tool, 6-command, `/memory:analyze` model
+- [x] Add save-workflow/shared-memory governance framing to SKILL.md
 
 ### Phase 3: Memory-Reference Backlog
-- [x] Add shared-memory governance and save-routing framing to `references/memory/save_workflow.md`
-- [x] Add shared-space and governance framing to `references/memory/embedding_resilience.md`
+- [x] Add shared-memory governance and save-routing framing to references/memory/save_workflow
+- [x] Add shared-space and governance framing to references/memory/embedding_resilience
 
 ### Phase 4: Asset Backlog
-- [x] Add campaign/shared-space/cross-phase guidance to `parallel_dispatch_config.md`
+- [x] Add campaign/shared-space/cross-phase guidance to parallel_dispatch_config
 - [x] Add campaign/shared-space/cross-phase guidance to the complexity and level decision assets
-- [x] Add campaign/shared-space/cross-phase template-routing guidance to `template_mapping.md`
+- [x] Add campaign/shared-space/cross-phase template-routing guidance to template_mapping
 
 ### Phase 5: Verification
 - [x] Run strict validation for the reconciled 011 pack

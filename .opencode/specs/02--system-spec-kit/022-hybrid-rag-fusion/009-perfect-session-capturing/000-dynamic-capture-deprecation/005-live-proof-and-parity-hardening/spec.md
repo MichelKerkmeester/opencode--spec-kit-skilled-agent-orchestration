@@ -22,7 +22,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P0 |
-| **Status** | In Progress |
+| **Status** | Blocked |
 | **Created** | 2026-03-18 |
 | **Branch** | `005-live-proof-and-parity-hardening` |
 | **Parent Spec** | `../spec.md` |

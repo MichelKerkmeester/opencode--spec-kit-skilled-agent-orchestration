@@ -8,7 +8,7 @@
     "scoring",
     "calibration"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.124Z",
+  "lastUpdated": "2026-03-24T08:34:20.525Z",
   "specId": "003",
   "folderSlug": "sprint-2-scoring-calibration",
   "parentChain": [
@@ -17,9 +17,5 @@
     "001-hybrid-rag-fusion-epic"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Sprint 2 — Scoring Calibration",
-  "status": "Complete (Conditional Proceed)",
-  "importance_tier": "important",
-  "short_description": "Feature Specification: Sprint 2 — Scoring Calibration"
+  "memoryNameHistory": []
 }

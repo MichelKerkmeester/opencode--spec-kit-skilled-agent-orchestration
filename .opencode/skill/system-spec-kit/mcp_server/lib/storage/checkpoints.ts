@@ -402,21 +402,6 @@ function deleteRowsByStringIds(
   }
 }
 
-function deleteRowsByClauses(
-  database: Database.Database,
-  tableName: string,
-  clauses: string[],
-  params: unknown[],
-): void {
-  if (clauses.length === 0) {
-    return;
-  }
-
-  database.prepare(
-    `DELETE FROM ${tableName} WHERE ${clauses.join(' OR ')}`
-  ).run(...params);
-}
-
 function snapshotCausalEdgesForMemoryIds(
   database: Database.Database,
   memoryIds: number[],

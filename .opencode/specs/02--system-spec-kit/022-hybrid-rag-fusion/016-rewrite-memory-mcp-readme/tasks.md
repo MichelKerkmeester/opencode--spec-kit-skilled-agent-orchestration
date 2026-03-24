@@ -25,10 +25,10 @@ description: "Task breakdown for complete rewrite of the MCP server README cover
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Research
+## Phase 1: Setup
 
 - [ ] T001 Extract 32 tool definitions from `tool-schemas.ts` into structured inventory
-- [ ] T002 [P] Map 22 feature categories from `feature_catalog.md` to README sections
+- [ ] T002 [P] Map 22 feature categories from feature_catalog.md to README sections
 - [ ] T003 [P] Extract architecture details: hybrid search pipeline, FSRS decay, 6-tier importance, 5-state lifecycle
 - [ ] T004 [P] Catalog feature flags and configuration options
 - [ ] T005 Write research brief to `scratch/research-brief.md`
@@ -37,7 +37,7 @@ description: "Task breakdown for complete rewrite of the MCP server README cover
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Draft
+## Phase 2: Implementation
 
 - [ ] T006 Write Overview section (project description, key capabilities)
 - [ ] T007 Write Quick Start section (installation reference, basic usage)
@@ -54,12 +54,12 @@ description: "Task breakdown for complete rewrite of the MCP server README cover
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Review and Assembly
+## Phase 3: Verification
 
 - [ ] T016 Run DQI scoring via `validate_document.py` (target >= 75)
 - [ ] T017 [P] Run HVR banned-word check
 - [ ] T018 [P] Verify all 32 tools present against `tool-schemas.ts`
-- [ ] T019 [P] Verify section headers match `readme_template.md`
+- [ ] T019 [P] Verify section headers match readme_template.md
 - [ ] T020 [P] Verify cross-references to sibling docs resolve
 - [ ] T021 Apply review fixes
 - [ ] T022 Final DQI check and replace current README

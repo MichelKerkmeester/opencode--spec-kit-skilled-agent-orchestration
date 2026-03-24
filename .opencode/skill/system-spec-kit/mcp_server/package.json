@@ -5,6 +5,7 @@
   "main": "dist/context-server.js",
   "exports": {
     ".": "./dist/context-server.js",
+    "./api": "./dist/api/index.js",
     "./*.js": "./dist/*.js",
     "./*": "./dist/*.js"
   },

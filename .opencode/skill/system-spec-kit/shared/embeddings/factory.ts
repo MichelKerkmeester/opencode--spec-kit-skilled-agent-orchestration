@@ -437,6 +437,7 @@ export async function validateApiKey(options: { timeout?: number } = {}): Promis
         provider: providerName,
         error: `API key validation timed out after ${timeoutMs}ms`,
         errorCode: 'E053',
+        networkError: true,
         actions: [
           'Check network connectivity',
           'Retry startup - may be transient',
@@ -451,6 +452,7 @@ export async function validateApiKey(options: { timeout?: number } = {}): Promis
       provider: providerName,
       error: `Network error during validation: ${getErrorMessage(error)}`,
       errorCode: 'E053',
+      networkError: true,
       actions: [
         'Check internet connectivity',
         'Verify firewall allows outbound HTTPS',

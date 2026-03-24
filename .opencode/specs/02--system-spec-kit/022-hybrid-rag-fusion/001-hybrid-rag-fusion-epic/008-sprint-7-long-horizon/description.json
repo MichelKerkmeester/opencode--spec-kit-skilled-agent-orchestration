@@ -8,7 +8,7 @@
     "long",
     "horizon"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.168Z",
+  "lastUpdated": "2026-03-24T08:34:20.542Z",
   "specId": "008",
   "folderSlug": "sprint-7-long-horizon",
   "parentChain": [
@@ -17,9 +17,5 @@
     "001-hybrid-rag-fusion-epic"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Sprint 7 — Long Horizon",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: Sprint 7 — Long Horizon"
+  "memoryNameHistory": []
 }

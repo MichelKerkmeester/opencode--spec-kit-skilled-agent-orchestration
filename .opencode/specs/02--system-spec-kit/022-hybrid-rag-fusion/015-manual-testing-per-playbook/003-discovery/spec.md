@@ -1,11 +1,16 @@
 ---
 title: "Feature Specification: manual-testing-per-playbook discovery phase"
-description: "Phase 003 documents the discovery manual test packet. Execute scenarios EX-011, EX-012, and EX-013 against the Spec Kit Memory system to verify memory_list, memory_stats, and memory_health."
+description: "Phase 003 documents the discovery manual test packet. Execute scenarios EX-011, EX-012, EX-013, EX-036, EX-037, EX-038, EX-039, and EX-040 against the Spec Kit Memory system to verify memory_list, memory_stats, memory_health, and targeted discovery operations including folder filtering, trigger phrase matching, date range queries, importance tier filtering, and causal link traversal."
 trigger_phrases:
   - "discovery manual testing"
   - "phase 003 discovery"
-  - "EX-011 EX-012 EX-013"
+  - "EX-011 EX-012 EX-013 EX-036 EX-037 EX-038 EX-039 EX-040"
   - "memory_list memory_stats memory_health test"
+  - "folder filter discovery"
+  - "trigger phrase matching discovery"
+  - "date range discovery"
+  - "importance tier filter"
+  - "causal link traversal"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -37,10 +42,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Phase 003 discovery scenarios must be executed from scratch. All prior results are invalidated. The three discovery scenarios (EX-011, EX-012, EX-013) require fresh manual execution to verify that memory_list, memory_stats, and memory_health behave as specified by the canonical playbook.
+Phase 003 discovery scenarios must be executed from scratch. All prior results are invalidated. The eight discovery scenarios (EX-011, EX-012, EX-013, EX-036, EX-037, EX-038, EX-039, EX-040) require fresh manual execution to verify that memory_list, memory_stats, memory_health, and targeted discovery operations behave as specified by the canonical playbook. The five new scenarios (EX-036 through EX-040) expand coverage to folder name filtering, trigger phrase matching, date range queries, importance tier filtering, and causal link traversal.
 
 ### Purpose
-Execute all three Phase 003 discovery scenarios, record verdicts and evidence, and mark this phase complete only when all P0 checklist items pass.
+Execute all eight Phase 003 discovery scenarios, record verdicts and evidence, and mark this phase complete only when all P0 checklist items pass.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -55,6 +60,11 @@ Execute all three Phase 003 discovery scenarios, record verdicts and evidence, a
 | EX-011 | Memory browser (memory_list) | `../../manual_testing_playbook/03--discovery/011-memory-browser-memory-list.md` |
 | EX-012 | System statistics (memory_stats) | `../../manual_testing_playbook/03--discovery/012-system-statistics-memory-stats.md` |
 | EX-013 | Health diagnostics (memory_health) | `../../manual_testing_playbook/03--discovery/013-health-diagnostics-memory-health.md` |
+| EX-036 | Discovery by folder name filter | `../../manual_testing_playbook/03--discovery/036-discovery-by-folder-name-filter.md` |
+| EX-037 | Discovery by trigger phrase matching | `../../manual_testing_playbook/03--discovery/037-discovery-by-trigger-phrase-matching.md` |
+| EX-038 | Discovery by date range (before/after) | `../../manual_testing_playbook/03--discovery/038-discovery-by-date-range.md` |
+| EX-039 | Discovery by importance tier filter | `../../manual_testing_playbook/03--discovery/039-discovery-by-importance-tier-filter.md` |
+| EX-040 | Discovery by causal link traversal | `../../manual_testing_playbook/03--discovery/040-discovery-by-causal-link-traversal.md` |
 
 ### Out of Scope
 - Scenarios from other phases (retrieval, mutation, maintenance, lifecycle, etc.)
@@ -84,13 +94,18 @@ Execute all three Phase 003 discovery scenarios, record verdicts and evidence, a
 | REQ-001 | Execute EX-011: invoke `memory_list` with `specFolder`, `limit`, and `offset` parameters | PASS if paginated list returns with memory items and total count |
 | REQ-002 | Execute EX-012: invoke `memory_stats` with `folderRanking: "composite"` and `includeScores: true` | PASS if dashboard fields populate including counts, tiers, and folder ranking |
 | REQ-003 | Execute EX-013: invoke `memory_health(reportMode: "full")` then `memory_health(reportMode: "divergent_aliases")` | PASS if both report modes complete with status and diagnostic output |
+| REQ-006 | Execute EX-036: invoke `memory_list` with a `specFolder` filter targeting a known subfolder path | PASS if results are restricted to the specified folder; no results from other folders appear; total count reflects filtered set. FAIL if unrelated folder memories appear in results |
+| REQ-007 | Execute EX-037: invoke `memory_match_triggers` with a known trigger phrase that exists in at least one memory | PASS if matching memories are returned with relevance scores; trigger phrase highlighted or confirmed in response metadata. FAIL if no matches returned for a known trigger phrase or false positives dominate results |
+| REQ-008 | Execute EX-038: invoke `memory_search` with date-range constraints (`createdAfter` / `createdBefore`) bracketing a known memory creation window | PASS if only memories within the specified date range are returned; boundary dates are respected (inclusive/exclusive as documented). FAIL if memories outside the date range appear in results |
+| REQ-009 | Execute EX-039: invoke `memory_list` with `importanceTier` filter set to "high", then repeat with "critical" | PASS if each call returns only memories matching the requested tier; tier field in each result matches the filter value. FAIL if memories from other tiers are included |
+| REQ-010 | Execute EX-040: invoke `memory_causal_stats` to enumerate causal links, then invoke `memory_search` with a `causalSourceId` parameter to retrieve downstream memories linked from a known source | PASS if causal stats report link counts and the follow-up search returns the expected linked memories with causal metadata. FAIL if causal traversal returns no results when links are known to exist |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-004 | Capture evidence for each scenario (tool output or screenshot) | Evidence file or inline output recorded in implementation-summary.md |
-| REQ-005 | Mark final verdict (PASS / PARTIAL / FAIL) per scenario following the review protocol | Verdict recorded against EX-011, EX-012, EX-013 in implementation-summary.md |
+| REQ-011 | Capture evidence for each scenario (tool output or screenshot) | Evidence file or inline output recorded in implementation-summary.md |
+| REQ-012 | Mark final verdict (PASS / PARTIAL / FAIL) per scenario following the review protocol | Verdict recorded against all 8 scenarios (EX-011 through EX-013 and EX-036 through EX-040) in implementation-summary.md |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -101,7 +116,12 @@ Execute all three Phase 003 discovery scenarios, record verdicts and evidence, a
 - **SC-001**: EX-011 returns a paginated memory list with valid item count
 - **SC-002**: EX-012 returns a stats dashboard with composite folder ranking and scores
 - **SC-003**: EX-013 completes both report modes without error and returns a health status
-- **SC-004**: All three verdicts are recorded and all P0 checklist items are checked
+- **SC-004**: EX-036 returns results restricted to the specified folder only
+- **SC-005**: EX-037 returns trigger phrase matches with relevance scores
+- **SC-006**: EX-038 returns only memories within the specified date range
+- **SC-007**: EX-039 returns only memories matching the requested importance tier
+- **SC-008**: EX-040 returns causal link stats and downstream linked memories
+- **SC-009**: All eight verdicts are recorded and all P0 checklist items are checked
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -170,8 +190,8 @@ Execute all three Phase 003 discovery scenarios, record verdicts and evidence, a
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 5/25 | 3 read-only tool calls, no file changes |
-| Risk | 5/25 | autoRepair risk mitigated by protocol |
-| Research | 3/20 | Playbook provides all needed context |
-| **Total** | **13/70** | **Level 2** |
+| Scope | 10/25 | 8 scenarios across read-only and filtered discovery operations |
+| Risk | 7/25 | autoRepair risk mitigated by protocol; causal link traversal requires populated graph |
+| Research | 4/20 | Playbook provides context; new scenarios require MCP parameter discovery |
+| **Total** | **21/70** | **Level 2** |
 <!-- /ANCHOR:complexity -->

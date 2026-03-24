@@ -8,6 +8,18 @@ import * as path from 'node:path';
 import type { SpecDocHealthResult } from '@spec-kit/shared/parsing/spec-doc-health';
 import type { FileChange } from '../types/session-types';
 
+// CG-04: Domain-specific stopwords — duplicated from workflow.ts to avoid circular imports
+const FOLDER_STOPWORDS = new Set([
+  'system', 'spec', 'kit', 'hybrid', 'rag', 'fusion', 'agents', 'alignment',
+  'opencode', 'config', 'setup', 'init', 'core', 'main', 'base', 'common',
+  'shared', 'utils', 'helpers', 'tools', 'scripts', 'tests', 'docs', 'build',
+  'deploy', 'release', 'version', 'update', 'fix', 'feature', 'enhancement',
+  'refactor', 'cleanup', 'migration', 'integration', 'implementation',
+  'based', 'features', 'perfect', 'session', 'capturing', 'pipeline',
+  'quality', 'command', 'skill', 'memory', 'context', 'search', 'index',
+  'generation', 'epic', 'audit', 'enforcement', 'remediation',
+]);
+
 // ───────────────────────────────────────────────────────────────
 // 1. FUNCTIONS
 // ───────────────────────────────────────────────────────────────
@@ -102,7 +114,7 @@ export function ensureMinTriggerPhrases(existing: string[], enhancedFiles: FileC
   const folderTokens = topicFromFolder
     .split(/[-_]/)
     .map((token) => token.trim().toLowerCase())
-    .filter((token) => token.length >= 3);
+    .filter((token) => token.length >= 3 && !FOLDER_STOPWORDS.has(token));
   const combined = [...new Set([...existing, ...folderTokens])];
   if (combined.length >= 2) {
     return combined;
@@ -124,7 +136,7 @@ export function ensureMinSemanticTopics(existing: string[], enhancedFiles: FileC
   const folderTokens = topicFromFolder
     .split(/[-_]/)
     .map((token) => token.trim().toLowerCase())
-    .filter((token) => token.length >= 3);
+    .filter((token) => token.length >= 3 && !FOLDER_STOPWORDS.has(token));
 
   const fileTokens = enhancedFiles
     .flatMap((file) => path.basename(file.FILE_PATH).replace(/\.[^.]+$/, '').split(/[-_]/))

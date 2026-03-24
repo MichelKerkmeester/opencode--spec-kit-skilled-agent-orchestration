@@ -433,24 +433,24 @@ Only normalizes `.opencode/specs/` ↔ `specs/` text variants.
 ## 16. EVIDENCE SOURCES
 
 ### Agent Outputs (in scratch/)
-- `agent-output-iter-001-codex-A1.md` (70KB) — Bug hunting
-- `agent-output-iter-001-codex-A2.md` (110KB) — Architecture review with AST analysis
-- `agent-output-iter-001-codex-A3.md` (95KB) — Cross-skill alignment
-- `agent-output-iter-001-copilot-C1.md` (17KB) — Improvement proposals
-- `agent-output-iter-001-copilot-C2.md` (12KB) — Standards compliance
-- `agent-output-iter-001-copilot-C3.md` (24KB) — Test coverage gaps
-- `agent-output-iter-002-codex-A1.md` (67KB) — workflow.ts decomposition
-- `agent-output-iter-002-codex-A2.md` (92KB) — Embedding pipeline
-- `agent-output-iter-002-codex-A3.md` (70KB) — Cross-skill deep dive
-- `agent-output-iter-002-copilot-C1.md` (13KB) — Spec-affinity intelligence
-- `agent-output-iter-002-copilot-C2.md` (13KB) — Memory parser pipeline
-- `agent-output-iter-002-copilot-C3.md` (15KB) — Session data collection
-- `agent-output-iter-003-codex-A1.md` — Cross-skill gaps
-- `agent-output-iter-003-copilot-C1.md` — Embedding perf details
+- `scratch/agent-output-iter-001-codex-A1.md` (70KB) — Bug hunting
+- `scratch/agent-output-iter-001-codex-A2.md` (110KB) — Architecture review with AST analysis
+- `scratch/agent-output-iter-001-codex-A3.md` (95KB) — Cross-skill alignment
+- `scratch/agent-output-iter-001-copilot-C1.md` (17KB) — Improvement proposals
+- `scratch/agent-output-iter-001-copilot-C2.md` (12KB) — Standards compliance
+- `scratch/agent-output-iter-001-copilot-C3.md` (24KB) — Test coverage gaps
+- `scratch/agent-output-iter-002-codex-A1.md` (67KB) — workflow.ts decomposition
+- `scratch/agent-output-iter-002-codex-A2.md` (92KB) — Embedding pipeline
+- `scratch/agent-output-iter-002-codex-A3.md` (70KB) — Cross-skill deep dive
+- `scratch/agent-output-iter-002-copilot-C1.md` (13KB) — Spec-affinity intelligence
+- `scratch/agent-output-iter-002-copilot-C2.md` (13KB) — Memory parser pipeline
+- `scratch/agent-output-iter-002-copilot-C3.md` (15KB) — Session data collection
+- `scratch/agent-output-iter-003-codex-A1.md` — Cross-skill gaps
+- `scratch/agent-output-iter-003-copilot-C1.md` — Embedding perf details
 
 ### Iteration Synthesis
-- `iteration-001.md` — Code quality findings
-- `iteration-002.md` — Architecture and performance findings
+- `scratch/iteration-001.md` — Code quality findings
+- `scratch/iteration-002.md` — Architecture and performance findings
 <!-- /ANCHOR:evidence-sources -->
 
 ---

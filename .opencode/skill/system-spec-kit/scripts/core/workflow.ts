@@ -199,6 +199,8 @@ export interface WorkflowOptions {
   ) => Promise<SessionData>;
   /** When true, suppresses non-error console output during execution. */
   silent?: boolean;
+  /** Optional session ID forwarded from CLI --session-id flag. */
+  sessionId?: string;
 }
 
 /** Result object returned after a successful workflow execution. */
@@ -1098,12 +1100,8 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
     // follow the same quality rules as auto-extracted phrases.
     preExtractedTriggers = filterTriggerPhrases(mergedTriggers);
 
-    // Also add spec folder name-derived phrases if not already present
     const folderTokens = folderNameForTriggers.split(/\s+/).filter(t => t.length >= 3);
     const existingLower = new Set(preExtractedTriggers.map(p => p.toLowerCase()));
-    if (folderNameForTriggers.length >= 5 && !existingLower.has(folderNameForTriggers.toLowerCase())) {
-      preExtractedTriggers.unshift(folderNameForTriggers.toLowerCase());
-    }
     // CG-04: Domain-specific stopwords for single-word trigger phrases from folder names
     const FOLDER_STOPWORDS = new Set([
       'system', 'spec', 'kit', 'hybrid', 'rag', 'fusion', 'agents', 'alignment',
@@ -1113,6 +1111,7 @@ async function runWorkflow(options: WorkflowOptions = {}): Promise<WorkflowResul
       'refactor', 'cleanup', 'migration', 'integration', 'implementation',
       'based', 'features', 'perfect', 'session', 'capturing', 'pipeline',
       'quality', 'command', 'skill', 'memory', 'context', 'search', 'index',
+      'generation', 'epic', 'audit', 'enforcement', 'remediation',
     ]);
     for (const token of folderTokens) {
       // CG-04: Skip single words that are domain stopwords

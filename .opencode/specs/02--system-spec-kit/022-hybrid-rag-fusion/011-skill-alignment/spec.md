@@ -73,15 +73,15 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/tasks.md` | Modify | Remove stale 32/7/context framing and preserve only the factual closeout scope |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/checklist.md` | Modify | Verify pack-level truth reconciliation and docs-only boundaries |
 | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/implementation-summary.md` | Modify | Record what this reconciliation pass changed and how it was verified |
-| `.opencode/skill/system-spec-kit/SKILL.md` | Modify | Memory-surface wording plus save-workflow/shared-memory governance framing |
-| `.opencode/skill/system-spec-kit/references/memory/save_workflow.md` | Modify | Save-workflow routing plus shared-memory governance framing |
-| `.opencode/skill/system-spec-kit/references/memory/embedding_resilience.md` | Modify | Embedding resilience wording plus shared-space governance framing |
-| `.opencode/skill/system-spec-kit/references/config/environment_variables.md` | Modify | Graduated spec-011 flag documentation alignment |
-| `.opencode/skill/system-spec-kit/references/memory/memory_system.md` | Modify | Tool reference table alignment for the live memory surface |
-| `.opencode/skill/system-spec-kit/assets/parallel_dispatch_config.md` | Modify | Parallel dispatch campaign, shared-space, and cross-phase guidance |
-| `.opencode/skill/system-spec-kit/assets/complexity_decision_matrix.md` | Modify | Complexity scoring guidance for campaign and shared-space scenarios |
-| `.opencode/skill/system-spec-kit/assets/level_decision_matrix.md` | Modify | Level-selection guidance for campaign and shared-space scenarios |
-| `.opencode/skill/system-spec-kit/assets/template_mapping.md` | Modify | Template-routing guidance for campaign, shared-space, and cross-phase use |
+| SKILL.md (system-spec-kit) | Modify | Memory-surface wording plus save-workflow/shared-memory governance framing |
+| references/memory/save_workflow | Modify | Save-workflow routing plus shared-memory governance framing |
+| references/memory/embedding_resilience | Modify | Embedding resilience wording plus shared-space governance framing |
+| references/config/environment_variables | Modify | Graduated spec-011 flag documentation alignment |
+| references/memory/memory_system | Modify | Tool reference table alignment for the live memory surface |
+| assets/parallel_dispatch_config | Modify | Parallel dispatch campaign, shared-space, and cross-phase guidance |
+| assets/complexity_decision_matrix | Modify | Complexity scoring guidance for campaign and shared-space scenarios |
+| assets/level_decision_matrix | Modify | Level-selection guidance for campaign and shared-space scenarios |
+| assets/template_mapping | Modify | Template-routing guidance for campaign, shared-space, and cross-phase use |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -103,8 +103,8 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-006 | Keep the skill-guide closeout grounded in current repo truth | `SKILL.md` describes the live 33-tool, 6-command memory surface and adds save-workflow/shared-memory governance framing |
-| REQ-007 | Keep the memory-reference closeout narrow and factual | `save_workflow.md` and `embedding_resilience.md` carry the required governance/shared-memory/shared-space framing |
+| REQ-006 | Keep the skill-guide closeout grounded in current repo truth | SKILL.md describes the live 33-tool, 6-command memory surface and adds save-workflow/shared-memory governance framing |
+| REQ-007 | Keep the memory-reference closeout narrow and factual | save_workflow and embedding_resilience carry the required governance/shared-memory/shared-space framing |
 | REQ-008 | Keep the asset closeout narrow and factual | The asset docs contain the required campaign/shared-space/cross-phase guidance |
 | REQ-009 | Document a canonical verification method | The pack points future reviewers to `mcp_server/tool-schemas.ts` and `.opencode/command/memory/*.md` for live counts and ownership |
 
@@ -112,9 +112,9 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 
 - `012-command-alignment` already aligned the memory command docs to the live 33-tool, 6-command surface.
 - Retrieval ownership already lives in `/memory:analyze`; there is no standalone `context` command anymore.
-- `SKILL.md` already contains expanded routing scaffolding such as `INTENT_SIGNALS`, `RESOURCE_MAP`, `/memory:analyze`, and `/memory:shared` command boosts.
-- `environment_variables.md` already includes `SPECKIT_GRAPH_UNIFIED`.
-- `trigger_config.md`, `epistemic_vectors.md`, and troubleshooting guidance already received the earlier reconciliation pass and should not be re-added as open backlog by this spec.
+- SKILL.md already contains expanded routing scaffolding such as `INTENT_SIGNALS`, `RESOURCE_MAP`, `/memory:analyze`, and `/memory:shared` command boosts.
+- environment_variables already includes `SPECKIT_GRAPH_UNIFIED`.
+- trigger_config, epistemic_vectors, and troubleshooting guidance already received the earlier reconciliation pass and should not be re-added as open backlog by this spec.
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -151,7 +151,7 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 ---
 
 <!-- ANCHOR:questions -->
-## 7. CLOSEOUT NOTES
+## 10. OPEN QUESTIONS
 
 - This pack records completed documentation reconciliation work, not runtime implementation work.
 - Future reviews should prefer live-file verification over restating counts from older specs.

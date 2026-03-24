@@ -51,13 +51,13 @@ This pass did not perform a fresh runtime bulk sync. It reconciled the `013-agen
 ---
 
 <!-- ANCHOR:decisions -->
-## 4. DECISIONS
+## Key Decisions
 
 1. The repo is modeled as **two source families**, not one flat canonical source.
 2. Codex is downstream from the ChatGPT family, not from the base markdown family.
 3. Gemini should be documented by the runtime-facing `.gemini/agents/*.md` path first.
 4. The `.gemini -> .agents` relationship is a storage detail that still needs to be documented for repo truth.
-5. `deep-research.md` is the only accepted active naming in this packet.
+5. deep-research.md is the only accepted active naming in this packet.
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -73,18 +73,18 @@ This pass did not perform a fresh runtime bulk sync. It reconciled the `013-agen
 | Codex runtime count (`.codex/agents/*.toml`) | PASS |
 | Gemini runtime count (`find -L .gemini/agents`) | PASS |
 | Gemini symlink/runtime-path verification | PASS |
-| Stale `research.md` naming removed from packet docs | PASS |
+| Stale research.md naming removed from packet docs | PASS |
 | Strict spec validation | PASS |
 <!-- /ANCHOR:verification -->
 
 ---
 
 <!-- ANCHOR:limitations -->
-## 6. LIMITATIONS & FOLLOW-UP
+## Known Limitations
 
 - This pass does not claim that runtime agent bodies were freshly synchronized beyond the scoped delegation/write closeout.
 - If a future bulk runtime-sync pass is needed, it should be tracked separately from this truth-reconciliation packet.
-- Gemini write-agent (`write.md`) still uses flat `references/*.md` paths rather than `references/**/*.md`; this drift is noted but not corrected in this pass.
+- Gemini write-agent (write.md) still uses flat `references/*.md` paths rather than `references/**/*.md`; this drift is noted but not corrected in this pass.
 - Packet verification is scoped to the canonical `013` docs plus the intended live path/count and scoped runtime-doc checks.
 <!-- /ANCHOR:limitations -->
 

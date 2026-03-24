@@ -17,7 +17,7 @@ description: "Implementation plan for a complete rewrite of the repository root 
 | Aspect | Value |
 |--------|-------|
 | **Document type** | README.md (Markdown) |
-| **Template** | `readme_template.md` from sk-doc |
+| **Template** | readme_template.md from sk-doc |
 | **Quality standard** | DQI >= 75, HVR compliant |
 | **Source of truth** | Agent defs + skill directory + CLAUDE.md + command directory |
 

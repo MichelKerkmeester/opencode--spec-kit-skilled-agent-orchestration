@@ -26,7 +26,7 @@ This pass rewrites the `013-agents-alignment` packet so it matches the current r
 
 ### Definition of Done
 - [x] Packet documents dual-source lineage accurately
-- [x] Packet uses `deep-research.md` naming consistently
+- [x] Packet uses deep-research.md naming consistently
 - [x] Packet documents Codex and Gemini runtime lineage clearly
 - [x] Scoped runtime-facing agent docs match the reconciled lineage story
 - [x] Strict validation passes
@@ -56,12 +56,12 @@ Document runtime-facing paths first, then note storage details only where they m
 ---
 
 <!-- ANCHOR:phases -->
-## 4. PHASES
+## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Audit Live Lineage
 - Confirm file counts for base, ChatGPT, Claude, Codex, and Gemini runtime families.
 - Confirm `.gemini -> .agents` symlink behavior.
-- Confirm live naming uses `deep-research.md`.
+- Confirm live naming uses deep-research.md.
 
 ### Phase 2: Rewrite the Packet
 - Reframe `spec.md` away from the old single-source sync story.
@@ -73,7 +73,7 @@ Document runtime-facing paths first, then note storage details only where they m
 - Reconcile the write-agent projections so Claude, Gemini, ChatGPT, and Codex keep the documented catalog/playbook modes and nested `references/**/*.md` routing aligned with the authoring families.
 
 ### Phase 3: Verify
-- Grep the packet for stale `research.md` naming and single-source language.
+- Grep the packet for stale research.md naming and single-source language.
 - Run strict spec validation.
 - Re-read canonical docs for internal consistency.
 <!-- /ANCHOR:phases -->

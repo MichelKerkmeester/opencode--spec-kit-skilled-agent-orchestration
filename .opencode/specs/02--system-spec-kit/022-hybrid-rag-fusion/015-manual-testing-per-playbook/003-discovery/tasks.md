@@ -51,6 +51,18 @@ contextType: "general"
 - [x] T009 Execute EX-013a — Health diagnostics full mode: invoke memory_health(reportMode: "full"); capture output
 - [x] T010 Execute EX-013b — Health diagnostics divergent_aliases mode: invoke memory_health(reportMode: "divergent_aliases"); capture output
 - [x] T011 Record EX-013 verdict: **PASS** — `handleMemoryHealth` implements both `full` and `divergent_aliases` report modes; full mode returns status, diagnostics, aliasConflicts, repair, embeddingProvider; divergent_aliases mode returns compact triage payload with groups. [memory-crud-health.ts:223-601]
+- [ ] T015 Execute EX-036 — Discovery by folder name filter: invoke `memory_list` with `specFolder` targeting a known subfolder; capture output
+- [ ] T016 Record EX-036 verdict: PASS / PARTIAL / FAIL
+- [ ] T017 Execute EX-037 — Discovery by trigger phrase matching: invoke `memory_match_triggers` with a known trigger phrase; capture output
+- [ ] T018 Record EX-037 verdict: PASS / PARTIAL / FAIL
+- [ ] T019 Execute EX-038 — Discovery by date range: invoke `memory_search` with `createdAfter` and `createdBefore`; capture output
+- [ ] T020 Record EX-038 verdict: PASS / PARTIAL / FAIL
+- [ ] T021 Execute EX-039a — Discovery by importance tier (high): invoke `memory_list` with `importanceTier: "high"`; capture output
+- [ ] T022 Execute EX-039b — Discovery by importance tier (critical): invoke `memory_list` with `importanceTier: "critical"`; capture output
+- [ ] T023 Record EX-039 verdict: PASS / PARTIAL / FAIL
+- [ ] T024 Execute EX-040a — Causal link stats: invoke `memory_causal_stats`; capture output
+- [ ] T025 Execute EX-040b — Causal link traversal: invoke `memory_search` with `causalSourceId`; capture output
+- [ ] T026 Record EX-040 verdict: PASS / PARTIAL / FAIL
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -68,9 +80,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks T001-T014 marked `[x]`
-- [x] No `[B]` blocked tasks remaining
-- [x] All three scenarios have recorded verdicts
+- [ ] All tasks T001-T026 marked `[x]`
+- [ ] No `[B]` blocked tasks remaining
+- [ ] All eight scenarios have recorded verdicts (EX-011 through EX-013 and EX-036 through EX-040)
 <!-- /ANCHOR:completion -->
 
 ---

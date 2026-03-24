@@ -31,7 +31,11 @@ export interface RetentionSweepResult {
 }
 
 /**
- * Delete memories whose `delete_after` timestamp has expired for the requested scope.
+ * Run retention sweep to clean up expired/deprecated memories.
+ *
+ * NOTE: Not wired to automatic runtime schedule. Trigger manually via:
+ * - MCP tool: memory_bulk_delete with retention criteria
+ * - Future: CLI command or cron schedule (T12 from spec 012)
  *
  * @param database - Database connection that stores memory and governance state.
  * @param scope - Scope used to constrain eligible deletions.

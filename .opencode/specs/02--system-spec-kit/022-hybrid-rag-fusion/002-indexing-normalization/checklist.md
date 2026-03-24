@@ -12,7 +12,7 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "implementation"
 ---
-# Consolidated checklist.md
+# Verification Checklist: Indexing Normalization (Consolidated)
 
 This document consolidates source documents from:
 - `former child spec 002-index-tier-anomalies -> checklist.md`

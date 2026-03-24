@@ -527,3 +527,170 @@ In confirm mode, the YAML workflow adds approval gates:
 | After synthesis | Show final research.md summary. Approve or request revisions |
 
 <!-- /ANCHOR:confirm-mode-additions -->
+
+---
+
+<!-- ANCHOR:review-mode-loop -->
+## 6. REVIEW MODE LOOP
+
+When `config.mode == "review"`, the loop protocol adapts from research to code/spec review. The 4-phase structure (init, loop, synthesis, save) is preserved, but each phase has review-specific behavior.
+
+### 6.1 Review Initialization
+
+#### Purpose
+Set up all state files for a new review session. Discover the scope, order dimensions, and create review-specific state.
+
+#### Steps
+
+1. **Classify session state**: Same as research mode (fresh, resume, completed-session, invalid-state)
+2. **Create spec folder** (if needed): `mkdir -p {spec_folder}/scratch`
+3. **Scope discovery**: Resolve the review target into a concrete file list:
+   - `spec-folder`: Read spec.md, plan.md, implementation files listed in tasks.md
+   - `skill`: Read SKILL.md, references/, assets/, scripts/, find agent definitions and command entry points
+   - `agent`: Find agent definitions across all runtimes, compare for consistency
+   - `track`: List all child spec folders under the track, read spec.md + checklist.md for each
+   - `files`: Expand glob patterns, validate existence, discover cross-references
+   - Store resolved file list in strategy.md "Files Under Review"
+4. **Dimension ordering**: Order the 7 review dimensions for iteration:
+   - Priority: correctness and security first (highest-impact dimensions)
+   - Default order: D1 Correctness, D2 Security, D3 Spec Alignment, D4 Completeness, D5 Cross-Reference Integrity, D6 Patterns, D7 Documentation Quality
+5. **Write config**: `scratch/deep-research-config.json` with `mode: "review"` and review fields
+6. **Initialize state log**: First JSONL line with config record including `mode: "review"`
+7. **Initialize strategy**: `scratch/deep-review-strategy.md` from review template with:
+   - Topic (review target description)
+   - Review Dimensions checklist
+   - Files Under Review table
+   - Known Context from `memory_context()` results
+   - Review Boundaries from config
+8. **Validate review charter**:
+   - Verify strategy.md contains Non-Goals and Stop Conditions sections
+   - In **confirm mode**: present the charter (target, dimensions, scope, non-goals) for user review
+   - In **auto mode**: accept automatically and continue
+
+#### Outputs
+- `scratch/deep-research-config.json` (with review fields)
+- `scratch/deep-research-state.jsonl` (1 line)
+- `scratch/deep-review-strategy.md`
+
+### 6.2 Review Loop
+
+The iteration loop follows the same Step 1-5 structure as research mode with these adaptations:
+
+#### Step 1: Read State (adapted)
+- Read JSONL — count iterations, get last newFindingsRatio, count active findings by severity
+- Read `deep-review-strategy.md` — get next focus dimension/files, remaining dimensions
+
+#### Step 2: Check Convergence (adapted)
+Run `shouldContinue_review()` (see convergence.md Section 10.3):
+- Max iterations reached? STOP
+- All dimensions clean with 2+ clean passes? STOP
+- Stuck count >= 2? STUCK_RECOVERY
+- Composite convergence (3-signal, review-adapted weights)? STOP (after guard check)
+- Otherwise: CONTINUE
+
+#### Step 2b: Generate State Summary (adapted)
+```
+STATE SUMMARY (auto-generated, review mode):
+Iteration: {N} of {max} | Mode: review
+Target: {config.reviewTarget} ({config.reviewTargetType})
+Dimensions: {reviewed}/{total} complete | Next: {nextDimension}
+Findings: P0:{count} P1:{count} P2:{count} active
+Last 2 ratios: {ratio_N-1} -> {ratio_N} | Stuck count: {stuck_count}
+Provisional verdict: {PASS|PASS WITH NOTES|CONDITIONAL|FAIL|PENDING}
+Next focus: {strategy.nextFocus}
+```
+
+#### Step 3: Dispatch Agent (adapted)
+Dispatch `@deep-review` with review-specific context:
+```
+{state_summary}  // Auto-generated (Step 2b)
+
+Review Target: {config.reviewTarget}
+Review Mode: {config.reviewTargetType}
+Iteration: {N} of {maxIterations}
+Focus Dimension: {strategy.nextFocus.dimension}
+Focus Files: {strategy.nextFocus.files}
+Remaining Dimensions: {strategy.remainingDimensions}
+Active Findings: {findingsSummary}
+State Files:
+  - Config: {spec_folder}/scratch/deep-research-config.json
+  - State: {spec_folder}/scratch/deep-research-state.jsonl
+  - Strategy: {spec_folder}/scratch/deep-review-strategy.md
+Output: Write findings to {spec_folder}/scratch/iteration-{NNN}.md
+CONSTRAINT: LEAF agent -- do NOT dispatch sub-agents
+CONSTRAINT: Target files are READ-ONLY -- never modify code under review
+```
+
+#### Step 3a: Cross-Reference Verification
+
+When a review iteration's focus dimension is `cross-ref-integrity` or when `config.crossReference` flags are enabled, the agent applies 6 cross-reference protocols:
+
+| # | Check | Source | Target | Description |
+|---|-------|--------|--------|-------------|
+| 1 | Spec vs Code | spec.md claims | Implementation files | Verify spec claims match shipped reality |
+| 2 | Checklist vs Evidence | `[x]` items in checklist.md | Cited evidence | Verify checked items have supporting evidence |
+| 3 | SKILL.md vs Agent | Skill contracts | Agent definition files | Verify skill references match agent capabilities |
+| 4 | Agent Cross-Runtime | `.claude` agents | `.codex`/`.opencode`/`.agents`/`.gemini` agents | Verify agent consistency across runtimes |
+| 5 | Feature Catalog vs Code | Catalog claims | Implementation | Verify catalog entries match actual features |
+| 6 | Playbook vs Capability | Scenario preconditions | Actual capability | Verify playbook scenarios are executable |
+
+Each protocol produces a result entry in the iteration file's Cross-Reference section with status (PASS/FAIL/PARTIAL) and evidence. Results are aggregated in the review-report.md Cross-Reference Results section during synthesis.
+
+#### Step 4: Evaluate Results (adapted)
+After agent completes:
+1. Verify `scratch/iteration-{NNN}.md` was created
+2. Verify JSONL was appended with review iteration record (includes `findingsSummary`, `findingsNew`)
+3. Verify strategy.md was updated (dimension progress, findings count)
+4. Extract `newFindingsRatio` from JSONL record
+5. Track stuck count: increment if `newFindingsRatio < 0.08`, reset otherwise (threshold 2)
+6. Run adversarial self-check on any new P0 findings:
+   - Re-read the cited code to verify the P0 is genuine
+   - If the P0 cannot be confirmed, downgrade to P1 with note
+
+#### Step 4a: Generate Dashboard (adapted)
+Generate `scratch/deep-review-dashboard.md` with review-specific sections:
+- Status with provisional verdict and score band
+- Findings summary (P0/P1/P2 counts with deltas)
+- Progress table with dimension column
+- Coverage (files and dimensions)
+- Trend (score, severity, new-findings)
+
+### 6.3 Review Synthesis
+
+#### Purpose
+Compile all iteration findings into the final `review-report.md`.
+
+#### Steps
+
+1. **Read all iteration files**: `scratch/iteration-*.md`
+2. **Read strategy**: Final state of dimensions, findings, coverage
+3. **Finding registry dedup**: Consolidate findings across iterations:
+   - Group findings by file + line range + root cause
+   - Merge duplicates, keeping the highest severity and all evidence
+   - Assign final findingIds (F001, F002, ...)
+4. **Severity reconciliation**: For findings with severity transitions:
+   - Use the final (most recent) severity
+   - Document the transition history in the finding entry
+5. **Adversarial recheck**: For each P0 finding in the final registry:
+   - Re-read the cited code one more time
+   - Verify the finding is reproducible and correctly classified
+   - If a P0 cannot be confirmed, downgrade to P1 with explanation
+6. **Compile review-report.md**: Generate all 11 sections (see state_format.md Section 8)
+   - Executive Summary with verdict:
+     - FAIL: Active P0 findings present OR overall score < 70
+     - CONDITIONAL: No P0, but active P1 findings remain
+     - PASS WITH NOTES: Only P2 findings remain (no active P0 or P1)
+     - PASS: No active findings
+   - Dimension summaries with per-dimension scores
+   - Prioritized remediation recommendations
+7. **Update config status**: Set `status: "complete"` in config.json
+8. **Final JSONL entry**: `{"type":"event","event":"synthesis_complete","mode":"review","totalIterations":N,"verdict":"PASS|PASS WITH NOTES|CONDITIONAL|FAIL","score":N,"findingsActive":{"P0":N,"P1":N,"P2":N}}`
+
+### 6.4 Review Save
+
+Same as research mode — context preservation via `generate-context.js`:
+
+1. **Generate context**: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {spec_folder}`
+2. **Verify**: Confirm memory/*.md file created with proper anchors
+
+<!-- /ANCHOR:review-mode-loop -->

@@ -12,7 +12,10 @@ updated: 2026-03-08
 <!-- ANCHOR:plan -->
 # Implementation Plan
 
-## Technical Context
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
+
+### Technical Context
 
 | Aspect | Value |
 |--------|-------|
@@ -22,8 +25,28 @@ updated: 2026-03-08
 | **Testing** | Manual grep verification + cross-reference checks |
 
 The `/memory:learn` command is a markdown-based AI instruction file that defines behavior for the `memory:learn` skill invocation. The refactor replaces the generic learning classifier with a focused constitutional memory manager. No TypeScript/JavaScript code changes are required — only markdown command definitions and their cross-references.
+<!-- /ANCHOR:summary -->
 
-## Architecture
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Problem statement clear and scope documented
+- [x] Success criteria measurable
+- [x] Dependencies identified
+
+### Definition of Done
+- [x] All acceptance criteria met
+- [x] Verification passed
+- [x] Docs updated
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
 The refactor is contained entirely within the OpenCode command layer — no runtime code changes:
 
@@ -35,8 +58,14 @@ CLAUDE.md                           ← quick-reference update
 ```
 
 The constitutional memory files themselves live in `.opencode/skill/system-spec-kit/constitutional/` and are managed by the MCP server's `memory_save()` handler for indexing.
+<!-- /ANCHOR:architecture -->
 
-## Phase 1: Core Command Rewrite
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Core Command Rewrite
 
 ### Step 1: Rewrite `.opencode/command/memory/learn.md`
 
@@ -77,6 +106,41 @@ Complete replacement of the 620-line generic learning capture with a ~250-line c
 
 - Check no broken cross-references
 - Verify constitutional/ directory structure documented correctly
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Manual | Grep verification of old vs new terminology | Terminal |
+| Regression | Doc-alignment regression test | Vitest |
+| Integration | MCP test suite pass | npm test |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Constitutional directory | Internal | Green | Cannot write files |
+| memory_save() MCP handler | Internal | Green | Cannot index |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: Old behavior needed or constitutional workflow breaks
+- **Procedure**: Revert learn.md and cross-reference changes
+<!-- /ANCHOR:rollback -->
+
+---
 
 ## Implementation Notes
 

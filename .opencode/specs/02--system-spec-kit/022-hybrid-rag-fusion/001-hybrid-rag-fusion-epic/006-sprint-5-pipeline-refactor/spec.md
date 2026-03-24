@@ -121,7 +121,7 @@ Establish a clean 4-stage pipeline with an architectural invariant (Stage 4 cann
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-S5-001 | **R6**: 4-stage pipeline with Stage 4 invariant (decomposed into 4 sub-tasks: Stage1/Stage2/Stage3/Stage4 + integration) | 0 ordering differences in positions 1-5 AND weighted rank correlation >0.995 on eval corpus (relaxed from strict "0 differences" which is fragile for floating-point arithmetic), 158+ tests pass. Flag: `SPECKIT_PIPELINE_V2` |
+| REQ-S5-001 | **R6**: 4-stage pipeline with Stage 4 invariant (decomposed into 4 sub-tasks: Stage1/Stage2/Stage3/Stage4 + integration) | 0 ordering differences in positions 1-5 AND weighted rank correlation >0.995 on eval corpus (relaxed from strict "0 differences" which is fragile for floating-point arithmetic), 158+ tests pass. Flag: `SPECKIT_PIPELINE_V2` **Status: Superseded -- pipeline-v2 is now the default. Flag removed from codebase.** |
 | REQ-S5-002 | **R9**: Spec folder pre-filter | Cross-folder queries produce identical results to without pre-filter |
 | REQ-S5-003 | **R12**: Query expansion (suppressed when R15="simple") | No simple query latency degradation. Flag: `SPECKIT_EMBEDDING_EXPANSION` |
 | REQ-S5-004 | **S2**: Template anchor optimization | Anchor-aware retrieval metadata present in results |
@@ -130,7 +130,7 @@ Establish a clean 4-stage pipeline with an architectural invariant (Stage 4 cann
 
 ### Acceptance Scenarios
 
-1. **Given** `SPECKIT_PIPELINE_V2` is enabled and Stage 3 produces ranked results, **When** Stage 4 filter/annotate executes, **Then** scores and ordering are unchanged.
+1. **Given** `SPECKIT_PIPELINE_V2` is enabled (**Status: Superseded -- pipeline-v2 is now the default. Flag removed from codebase.**) and Stage 3 produces ranked results, **When** Stage 4 filter/annotate executes, **Then** scores and ordering are unchanged.
 2. **Given** a query is scoped to a spec folder, **When** R9 pre-filtering runs before scoring, **Then** only in-scope candidates are processed and result relevance remains equivalent to baseline behavior.
 3. **Given** R15 classifies a query as `simple`, **When** R12 expansion logic is evaluated, **Then** expansion is skipped and simple-query latency remains within the defined guardrail.
 4. **Given** template-anchor and validation metadata are available for results, **When** Stage 2 composite scoring executes, **Then** both S2 and S3 signals are attached and applied at the single scoring point.
@@ -142,7 +142,7 @@ Establish a clean 4-stage pipeline with an architectural invariant (Stage 4 cann
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: R6 dark-run: 0 ordering differences in positions 1-5 AND weighted rank correlation >0.995 on full eval corpus
-- **SC-002**: All 158+ existing tests pass with `SPECKIT_PIPELINE_V2` enabled
+- **SC-002**: All 158+ existing tests pass with `SPECKIT_PIPELINE_V2` enabled **Status: Superseded -- pipeline-v2 is now the default. Flag removed from codebase.**
 - **SC-003**: Stage 4 invariant verified: no score modifications in Stage 4
 - **SC-004**: R9 cross-folder queries identical to without pre-filter
 - **SC-005**: R12+R15 mutual exclusion: R12 suppressed when R15="simple"
@@ -176,7 +176,7 @@ Establish a clean 4-stage pipeline with an architectural invariant (Stage 4 cann
 - **NFR-P03**: R9 pre-filter should reduce latency for scoped queries
 
 ### Reliability
-- **NFR-R01**: All 158+ existing tests must pass under `SPECKIT_PIPELINE_V2`
+- **NFR-R01**: All 158+ existing tests must pass under `SPECKIT_PIPELINE_V2` **Status: Superseded -- pipeline-v2 is now the default. Flag removed from codebase.**
 - **NFR-R02**: Stage 4 invariant: any code that modifies scores after Stage 3 is a build-time error (compile-time type guards) with runtime assertion as defense-in-depth
 
 ### Maintainability

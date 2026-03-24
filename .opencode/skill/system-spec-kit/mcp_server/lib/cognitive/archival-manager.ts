@@ -58,7 +58,7 @@ interface EmbeddingModule {
 
 let embeddingsModule: EmbeddingModule | null = null;
 
-function getEmbeddings(): EmbeddingModule | null {
+function _getEmbeddings(): EmbeddingModule | null {
   if (embeddingsModule !== null) return embeddingsModule;
 
   try {
@@ -449,61 +449,6 @@ function syncBm25OnUnarchive(memoryId: number): void {
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[archival-manager] BM25 unarchive sync failed: ${msg}`);
-  }
-}
-
-async function rebuildVectorOnUnarchive(memoryId: number): Promise<void> {
-  if (!db) return;
-
-  const embeddings = getEmbeddings();
-  if (!embeddings || typeof embeddings.generateDocumentEmbedding !== 'function') {
-    return;
-  }
-
-  const columns = getMemoryIndexColumns();
-  const sourceColumns = ['title', 'content_text', 'trigger_phrases', 'file_path']
-    .filter((column) => columns.has(column));
-
-  if (sourceColumns.length === 0) {
-    return;
-  }
-
-  const query = `SELECT ${sourceColumns.join(', ')} FROM memory_index WHERE id = ? AND is_archived = 0`;
-  const row = (db.prepare(query) as Database.Statement).get(memoryId) as Record<string, unknown> | undefined;
-  if (!row) {
-    return;
-  }
-
-  const embeddingInput = sourceColumns
-    .map((column) => {
-      const value = row[column];
-      return typeof value === 'string' ? value.trim() : '';
-    })
-    .filter(Boolean)
-    .join(' ');
-
-  if (!embeddingInput) {
-    return;
-  }
-
-  const embedding = await embeddings.generateDocumentEmbedding(embeddingInput);
-  if (!embedding) {
-    return;
-  }
-
-  const embeddingBuffer = Buffer.from(embedding.buffer, embedding.byteOffset, embedding.byteLength);
-  try {
-    // Unarchive: Wrap DELETE + INSERT in a transaction to prevent orphan vector rows.
-    const database = db!;
-    database.transaction(() => {
-      database.prepare('DELETE FROM vec_memories WHERE rowid = ?').run(BigInt(memoryId));
-      database.prepare('INSERT INTO vec_memories (rowid, embedding) VALUES (?, ?)').run(BigInt(memoryId), embeddingBuffer);
-    })();
-  } catch (error: unknown) {
-    const msg = error instanceof Error ? error.message : String(error);
-    if (!msg.includes('no such table') && !msg.includes('no such module')) {
-      console.warn(`[archival-manager] Vector unarchive sync failed: ${msg}`);
-    }
   }
 }
 

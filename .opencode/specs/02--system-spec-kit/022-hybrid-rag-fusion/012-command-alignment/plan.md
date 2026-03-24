@@ -23,7 +23,7 @@ description: "Documentation-only reconciliation plan for updating the 012 comman
 
 ### Overview
 
-This pass does not implement memory-command features. It reconciles the 012 command-alignment planning docs with what the repo already ships today: a 33-tool Spec Kit Memory MCP surface and a 6-command memory suite with retrieval merged into `/memory:analyze`. It also resolved the runtime-doc drift in `analyze.md` and `shared.md` during the 2026-03-21 reconciliation pass.
+This pass does not implement memory-command features. It reconciles the 012 command-alignment planning docs with what the repo already ships today: a 33-tool Spec Kit Memory MCP surface and a 6-command memory suite with retrieval merged into `/memory:analyze`. It also resolved the runtime-doc drift in analyze.md and shared.md during the 2026-03-21 reconciliation pass.
 
 **Effort Estimate:** Small documentation rewrite limited to the five canonical 012 markdown files plus targeted runtime-doc patches.
 <!-- /ANCHOR:summary -->
@@ -89,7 +89,7 @@ Read live schema and command-doc evidence, update the five scoped planning docum
 |------|--------|-----------------|
 | 2.1 | Grep 012 pack for stale count and structure strings | No stale live-state claims remain in canonical docs |
 | 2.2 | Run strict validation | Validation passes with no errors or warnings |
-| 2.3 | Confirm runtime-doc drift cluster resolved | `analyze.md` and `shared.md` mismatches were resolved during the 2026-03-21 reconciliation pass (13-tool count, governed params, tenantId/actor, auto-grant) |
+| 2.3 | Confirm runtime-doc drift cluster resolved | analyze.md and shared.md mismatches were resolved during the 2026-03-21 reconciliation pass (13-tool count, governed params, tenantId/actor, auto-grant) |
 <!-- /ANCHOR:phases -->
 
 ---
@@ -202,7 +202,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
 - Live repo state wins when it conflicts with older draft text.
 - The 6-command suite is the canonical current memory-command surface.
 - `README.txt` already provides a complete 33-tool ownership map.
-- This pass resolved the runtime-doc drift in `analyze.md` and `shared.md` during the 2026-03-21 reconciliation.
+- This pass resolved the runtime-doc drift in analyze.md and shared.md during the 2026-03-21 reconciliation.
 
 ---
 

@@ -4,7 +4,7 @@ description: "Verification Date: 2026-03-21"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
-# Checklist: 013 — Agent Alignment
+# Verification Checklist: 013 — Agent Alignment
 
 ---
 
@@ -31,29 +31,29 @@ description: "Verification Date: 2026-03-21"
 ---
 
 <!-- ANCHOR:code-quality -->
-## Canonical Document Quality
+## Code Quality
 
 - [x] CHK-010 [P0] The packet now documents two source families instead of one
 - [x] CHK-011 [P0] The packet now documents Codex as downstream from the ChatGPT family
-- [x] CHK-012 [P0] The packet uses `deep-research.md` naming consistently
+- [x] CHK-012 [P0] The packet uses deep-research.md naming consistently
 - [x] CHK-013 [P1] Runtime path guidance is internally consistent
 <!-- /ANCHOR:code-quality -->
 
 ---
 
 <!-- ANCHOR:testing -->
-## Verification
+## Testing
 
 - [x] CHK-020 [P0] Family counts verified — 9 files each for base, ChatGPT, Claude, Codex, and Gemini runtime paths
 - [x] CHK-021 [P0] Gemini symlink verified — `.gemini/agents/*.md` resolves through `.gemini -> .agents`
-- [x] CHK-022 [P1] Stale `research.md` naming removed from canonical packet docs
+- [x] CHK-022 [P1] Stale research.md naming removed from canonical packet docs
 - [x] CHK-023 [P1] Strict spec validation executed
 <!-- /ANCHOR:testing -->
 
 ---
 
 <!-- ANCHOR:security -->
-## Scope Safety
+## Security
 
 - [x] CHK-030 [P0] Only the scoped live runtime agent docs were modified as part of this reconciliation [EVIDENCE: changes are limited to the intended delegation/write surfaces]
 - [x] CHK-031 [P0] No secrets or runtime config were introduced
@@ -63,7 +63,7 @@ description: "Verification Date: 2026-03-21"
 ---
 
 <!-- ANCHOR:docs -->
-## Documentation Integrity
+## Documentation
 
 - [x] CHK-040 [P1] `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` tell one consistent lineage story [EVIDENCE: numbering corrected to 013; writer-surface limitation documented]
 - [x] CHK-041 [P1] Codex and Gemini lineage are documented explicitly

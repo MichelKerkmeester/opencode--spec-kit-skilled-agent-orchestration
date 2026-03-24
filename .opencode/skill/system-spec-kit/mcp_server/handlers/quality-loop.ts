@@ -597,7 +597,8 @@ function runQualityLoop(
   // F07-005: Track best state across auto-fix iterations
   let bestScore = score;
   let bestContent = currentContent;
-  let bestAttempt = 0;
+  let bestMetadata = { ...currentMetadata };
+  let _bestAttempt = 0;
 
   // Auto-fix loop
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
@@ -615,7 +616,8 @@ function runQualityLoop(
     if (score.total > bestScore.total) {
       bestScore = score;
       bestContent = currentContent;
-      bestAttempt = attempt;
+      bestMetadata = { ...currentMetadata };
+      _bestAttempt = attempt;
     }
 
     if (score.total >= threshold) {
@@ -652,10 +654,10 @@ function runQualityLoop(
     fixes: allFixes,
     rejected: true,
     rejectionReason,
-    // Return mutated content even on rejection so callers that soft-reject can persist
-    fixedContent: allFixes.length > 0 ? currentContent : undefined,
-    fixedTriggerPhrases: triggerPhrasesChanged(metadata.triggerPhrases, currentMetadata.triggerPhrases)
-      ? currentMetadata.triggerPhrases as string[]
+    // Return best-state content on rejection so callers that soft-reject persist the highest-scoring attempt
+    fixedContent: allFixes.length > 0 ? bestContent : undefined,
+    fixedTriggerPhrases: triggerPhrasesChanged(metadata.triggerPhrases, bestMetadata.triggerPhrases)
+      ? bestMetadata.triggerPhrases as string[]
       : undefined,
   };
 }

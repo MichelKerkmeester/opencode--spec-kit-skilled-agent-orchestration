@@ -17,7 +17,7 @@ description: "Implementation plan for updating the MCP server installation guide
 | Aspect | Value |
 |--------|-------|
 | **Document type** | INSTALL_GUIDE.md (Markdown) |
-| **Template** | `install_guide_template.md` from sk-doc |
+| **Template** | install_guide_template.md from sk-doc |
 | **Quality standard** | DQI >= 75, HVR compliant |
 | **Source of truth** | `package.json` + current build system |
 
@@ -110,7 +110,7 @@ current INSTALL_GUIDE.md + package.json → verify → update → review → fin
 |------------|------|--------|-------------------|
 | `package.json` | Internal | Green | Cannot verify deps without it |
 | Build system | Internal | Green | Cannot verify commands without it |
-| `install_guide_template.md` | Internal | Green | Reference for new sections |
+| install_guide_template.md | Internal | Green | Reference for new sections |
 <!-- /ANCHOR:dependencies -->
 
 ---

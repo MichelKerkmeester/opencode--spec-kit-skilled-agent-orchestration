@@ -1346,10 +1346,6 @@ async function hybridSearchEnhanced(
     console.warn(`[hybrid-search] Enhanced search failed, falling back: ${msg}`);
   }
 
-  if (options.skipFusion) {
-    return [];
-  }
-
   return hybridSearch(query, embedding, options);
 }
 

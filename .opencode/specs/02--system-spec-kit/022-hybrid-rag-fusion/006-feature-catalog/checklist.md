@@ -8,6 +8,7 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 
 ---
 
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 | Priority | Handling | Completion Impact |
@@ -15,14 +16,41 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 | **[P0]** | HARD BLOCKER | Cannot claim done until complete |
 | **[P1]** | Required | Must complete OR get user approval |
 | **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
 
 ---
 
+<!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
 - [x] CHK-001 [P0] Requirements documented in spec.md — [Evidence: spec.md rewritten with 12 sections for L3]
 - [x] CHK-002 [P0] Technical approach defined in plan.md — [Evidence: plan.md created with 4-phase approach]
 - [x] CHK-003 [P1] Dependencies identified and available — [Evidence: MCP source exists, codex CLI v0.111.0 available]
+<!-- /ANCHOR:pre-impl -->
+
+---
+
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+- [x] CHK-CQ1 [P0] Audit methodology follows consistent classification [Evidence: MATCH/PARTIAL/NO used uniformly]
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+- [x] CHK-TST1 [P0] All 30 agent reports validated [Evidence: 20 verification + 10 investigation reports in scratch/]
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-SEC1 [P0] No secrets in audit outputs [Evidence: scratch files contain code analysis only]
+<!-- /ANCHOR:security -->
 
 ---
 
@@ -58,19 +86,23 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 
 ---
 
+<!-- ANCHOR:docs -->
 ## Documentation
 
 - [x] CHK-040 [P1] Spec/plan/tasks synchronized with actual findings — [Evidence: all updated in Phase D]
 - [x] CHK-041 [P1] tasks.md updated with concrete remediation work items — [Evidence: Phase E tasks T100-T171 added]
 - [x] CHK-042 [P2] Monolithic catalog sync noted in remediation plan — [Evidence: Phase E7 in manifest]
+<!-- /ANCHOR:docs -->
 
 ---
 
+<!-- ANCHOR:file-org -->
 ## File Organization
 
 - [x] CHK-050 [P1] All agent outputs in scratch/ only — [Evidence: 32 files in scratch/]
 - [x] CHK-051 [P1] Scratch files named consistently — [Evidence: verification-C[01-20].md, investigation-X[01-10].md]
 - [ ] CHK-052 [P2] Findings summarized for potential memory save — [DEFERRED: to be done after remediation]
+<!-- /ANCHOR:file-org -->
 
 ---
 
@@ -83,6 +115,7 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 | Category | Total | Verified |
@@ -94,6 +127,7 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 **P1 gap:** CHK-022 (description accuracy 49.4% vs 95% target) — this is a finding, not a process failure. The audit correctly identified the accuracy gap, which remediation Phase F will address.
 
 **Verification Date**: 2026-03-08
+<!-- /ANCHOR:summary -->
 
 ---
 

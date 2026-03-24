@@ -93,7 +93,7 @@ Produce a complete rewrite that documents the Spec Kit skill holistically — co
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | SR-004 | No banned HVR words | Zero matches for sk-doc banned word list |
-| SR-005 | Links to MCP README for depth | MCP tool details link to `mcp_server/README.md` rather than duplicating them |
+| SR-005 | Links to MCP README for depth | MCP tool details link to mcp_server/README.md rather than duplicating them |
 | SR-006 | Command inventory complete | All 8 spec_kit commands and 5 memory commands listed with brief descriptions |
 | SR-007 | Template architecture documented | CORE + ADDENDUM system (v2.2) explained with examples |
 | SR-008 | Cross-references consistent | Links to MCP README, root README, and SKILL.md are valid |

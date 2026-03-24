@@ -127,7 +127,7 @@ Execution methodology: static source code analysis against the MCP server TypeSc
 
 **159 promoted to PASS** (Phase 011): `@deprecated` removed from `learned-combiner.ts` and `matrix-math.ts`. Exported via `shared/index.ts` section 11. `shadowScore()` wired into `stage2-fusion.ts` block `// -- 6a. Learned Stage 2 shadow scoring --` after step 6 (feedback signals), gated by `isLearnedStage2CombinerEnabled()` (`search-flags.ts:379`).
 
-**091 reclassified to PASS** (Phase 010): ANCHOR-as-graph-node is PLANNED/DEFERRED per feature catalog (`10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md`) — a future roadmap item explicitly excluded from current pass criteria. Core N2 (momentum, depth, community) fully working. Test in `anchor-metadata.vitest.ts` actively guards against edge creation, confirming no accidental implementation.
+**091 reclassified to PASS** (Phase 010): ANCHOR-as-graph-node is PLANNED/DEFERRED per feature catalog (10--graph-signal-activation/09-anchor-tags-as-graph-nodes) — a future roadmap item explicitly excluded from current pass criteria. Core N2 (momentum, depth, community) fully working. Test in `anchor-metadata.vitest.ts` actively guards against edge creation, confirming no accidental implementation.
 
 ### Re-Run Delta (vs Initial Run)
 

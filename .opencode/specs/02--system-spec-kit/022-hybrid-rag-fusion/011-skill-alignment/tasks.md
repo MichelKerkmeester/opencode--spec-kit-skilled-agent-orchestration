@@ -27,7 +27,8 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Pack Reconciliation
+## Phase 1: Setup
+<!-- alias: Pack Reconciliation -->
 
 - [x] T001 Rewrite `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md` so they all reflect the live 33-tool, 6-command memory surface (`./spec.md`, `./plan.md`, `./tasks.md`, `./checklist.md`, `./implementation-summary.md`)
 - [x] T002 Remove stale command-surface count language and retired standalone retrieval-command framing from the canonical 011 docs (`./spec.md`, `./plan.md`, `./tasks.md`, `./checklist.md`, `./implementation-summary.md`)
@@ -37,28 +38,30 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Skill-Guide Closeout
+## Phase 2: Implementation
+<!-- alias: Skill-Guide Closeout -->
 
-- [x] T004 Update `SKILL.md` to describe the live memory-command surface as 33 tools, 6 commands, and retrieval in `/memory:analyze` (`.opencode/skill/system-spec-kit/SKILL.md`)
-- [x] T005 Add save-workflow governance and shared-memory framing to `SKILL.md` so the skill guide explains how shared-memory and save behavior fit together (`.opencode/skill/system-spec-kit/SKILL.md`)
+- [x] T004 Update SKILL.md to describe the live memory-command surface as 33 tools, 6 commands, and retrieval in `/memory:analyze`
+- [x] T005 Add save-workflow governance and shared-memory framing to SKILL.md so the skill guide explains how shared-memory and save behavior fit together
 <!-- /ANCHOR:phase-2 -->
 
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Reference Closeout
+## Phase 3: Verification
+<!-- alias: Reference Closeout + Asset Closeout + Verification -->
 
-- [x] T006 Add governance and shared-memory routing guidance to `references/memory/save_workflow.md` (`.opencode/skill/system-spec-kit/references/memory/save_workflow.md`)
-- [x] T007 Add shared-space and governance framing to `references/memory/embedding_resilience.md` (`.opencode/skill/system-spec-kit/references/memory/embedding_resilience.md`)
+- [x] T006 Add governance and shared-memory routing guidance to references/memory/save_workflow
+- [x] T007 Add shared-space and governance framing to references/memory/embedding_resilience
 <!-- /ANCHOR:phase-3 -->
 
 ---
 
 ## Phase 4: Asset Closeout
 
-- [x] T008 Add campaign/shared-space/cross-phase dispatch guidance to `assets/parallel_dispatch_config.md` (`.opencode/skill/system-spec-kit/assets/parallel_dispatch_config.md`)
-- [x] T009 Add campaign/shared-space/cross-phase scoring guidance to `assets/complexity_decision_matrix.md` and `assets/level_decision_matrix.md` (`.opencode/skill/system-spec-kit/assets/complexity_decision_matrix.md`, `.opencode/skill/system-spec-kit/assets/level_decision_matrix.md`)
-- [x] T017 Add campaign/shared-space/cross-phase template-routing guidance to `assets/template_mapping.md` (`.opencode/skill/system-spec-kit/assets/template_mapping.md`)
+- [x] T008 Add campaign/shared-space/cross-phase dispatch guidance to assets/parallel_dispatch_config
+- [x] T009 Add campaign/shared-space/cross-phase scoring guidance to assets/complexity_decision_matrix and assets/level_decision_matrix
+- [x] T017 Add campaign/shared-space/cross-phase template-routing guidance to assets/template_mapping
 
 ---
 
@@ -66,11 +69,11 @@ contextType: "implementation"
 
 Drift reconciliation after session-capturing (009) and research-based-refinement (epic/011) phases.
 
-- [x] T011 Reconcile SKILL.md feature flags table count (25 -> 33 search/pipeline flags; 47 total including roadmap env vars) (`.opencode/skill/system-spec-kit/SKILL.md`)
-- [x] T012 Update feature catalog count in SKILL.md (194 → 221 documented features, 2 locations) (`.opencode/skill/system-spec-kit/SKILL.md`)
-- [x] T013 Update testing playbook count in SKILL.md resource table (3 files → 19 categories, 227 per-test files) (`.opencode/skill/system-spec-kit/SKILL.md`)
-- [x] T014 Add `memory_quick_search()` row to memory_system.md tool reference table (32 → 33 rows, matching header) (`.opencode/skill/system-spec-kit/references/memory/memory_system.md`)
-- [x] T015 Add 9 graduated spec-011 flags to environment_variables.md section 8.2 (`.opencode/skill/system-spec-kit/references/config/environment_variables.md`)
+- [x] T011 Reconcile SKILL.md feature flags table count (25 -> 33 search/pipeline flags; 47 total including roadmap env vars)
+- [x] T012 Update feature catalog count in SKILL.md (194 to 221 documented features, 2 locations)
+- [x] T013 Update testing playbook count in SKILL.md resource table (3 files to 19 categories, 227 per-test files)
+- [x] T014 Add `memory_quick_search()` row to memory_system tool reference table (32 to 33 rows, matching header)
+- [x] T015 Add 9 graduated spec-011 flags to environment_variables section 8.2
 - [x] T016 Verify agent definitions, command files, and command configs have no stale references [Evidence: all clean, no hardcoded counts]
 
 ---

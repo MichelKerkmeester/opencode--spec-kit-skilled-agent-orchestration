@@ -11,11 +11,33 @@
   "createdAt": "",
   "status": "initialized",
   "executionMode": "auto",
+  "mode": "research",
+  "reviewTarget": null,
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": [
+    "correctness",
+    "security",
+    "spec-alignment",
+    "completeness",
+    "cross-ref-integrity",
+    "patterns",
+    "documentation-quality"
+  ],
+  "severityThreshold": "P2",
+  "crossReference": {
+    "spec": true,
+    "checklist": true,
+    "agentConsistency": true
+  },
+  "qualityGateThreshold": 70,
   "fileProtection": {
     "deep-research-config.json": "immutable",
     "deep-research-state.jsonl": "append-only",
     "deep-research-strategy.md": "mutable",
     "deep-research-dashboard.md": "auto-generated",
+    "deep-review-strategy.md": "mutable",
+    "deep-review-dashboard.md": "auto-generated",
+    "review-report.md": "mutable",
     "iteration-*.md": "write-once",
     "research.md": "mutable"
   }

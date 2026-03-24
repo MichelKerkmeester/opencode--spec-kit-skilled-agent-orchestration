@@ -57,6 +57,16 @@ contextType: "general"
 - [x] CHK-014 [P0] EX-013a (memory_health full mode) executed and tool output captured — Code analysis of `memory-crud-health.ts:379-594`; full mode returns status, embeddingModelReady, databaseConnected, memoryCount, uptime, version, aliasConflicts, repair, embeddingProvider, embeddingRetry
 - [x] CHK-015 [P0] EX-013b (memory_health divergent_aliases mode) executed and tool output captured — Code analysis of `memory-crud-health.ts:343-376`; divergent_aliases mode returns compact triage payload with `groups`, `totalDivergentGroups`, `status`
 - [x] CHK-016 [P0] EX-013 verdict recorded — **PASS** [memory-crud-health.ts:223-601, tool-schemas.ts:230-265, schemas/tool-input-schemas.ts:267-273]
+- [ ] CHK-017 [P0] EX-036 (folder name filter) executed and tool output captured
+- [ ] CHK-018 [P0] EX-036 verdict recorded
+- [ ] CHK-019 [P0] EX-037 (trigger phrase matching) executed and tool output captured
+- [ ] CHK-020a [P0] EX-037 verdict recorded
+- [ ] CHK-021a [P0] EX-038 (date range discovery) executed and tool output captured
+- [ ] CHK-022a [P0] EX-038 verdict recorded
+- [ ] CHK-023a [P0] EX-039 (importance tier filter — high + critical) executed and tool output captured
+- [ ] CHK-024 [P0] EX-039 verdict recorded
+- [ ] CHK-025 [P0] EX-040 (causal link traversal — stats + search) executed and tool output captured
+- [ ] CHK-026 [P0] EX-040 verdict recorded
 <!-- /ANCHOR:testing -->
 
 ---
@@ -93,7 +103,7 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 10 | 10/10 |
+| P0 Items | 20 | 10/20 |
 | P1 Items | 5 | 5/5 |
 | P2 Items | 1 | 0/1 (CHK-051 deferred) |
 

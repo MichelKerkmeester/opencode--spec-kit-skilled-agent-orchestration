@@ -61,6 +61,7 @@ Full details: `.opencode/skill/sk-git/`
 | **Phase workflow**        | `/spec_kit:phase` → Decompose → `create.sh --phase` → Populate parent/children → `validate.sh --recursive`                         |
 | **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint, ingest operations                                                           |
 | **Deep research**         | `/spec_kit:deep-research` → Init state → Loop (@deep-research iterations) → Convergence → Synthesize → Memory save                            |
+| **Deep review**           | `/spec_kit:deep-research:review` → Scope discovery → Loop (@deep-review iterations) → Review convergence → review-report.md → Memory save      |
 | **Analysis/evaluation**   | `/memory:analyze` → preflight, postflight, causal graph, ablation, dashboard, history                                            |
 | **Constitutional memory** | `/memory:learn` → Constitutional memory manager: create, list, edit, remove, budget                                               |
 | **Shared memory**         | `/memory:shared` → Shared-memory lifecycle: create spaces, manage memberships, inspect rollout                                    |
@@ -289,10 +290,11 @@ Use the agent directory that matches the active runtime/provider profile:
 - **`@orchestrate`** — Multi-agent coordination, complex workflows
 - **`@write`** — Creating READMEs, Skills, Guides
 - **`@review`** — Code review, PRs, quality gates (READ-ONLY)
-- **`@speckit`** — Spec folder creation Level 1-3+. **EXCLUSIVE:** Only agent permitted to write `*.md` inside spec folders. Exceptions: `memory/` (generate-context.js), `scratch/` (any agent), `handover.md` (@handover), `research.md` (@deep-research), `debug-delegation.md` (@debug)
+- **`@speckit`** — Spec folder creation Level 1-3+. **EXCLUSIVE:** Only agent permitted to write `*.md` inside spec folders. Exceptions: `memory/` (generate-context.js), `scratch/` (any agent), `handover.md` (@handover), `research.md` (@deep-research), `review-report.md` (@deep-review), `debug-delegation.md` (@debug)
 - **`@debug`** — Fresh perspective debugging, root cause analysis. May write `debug-delegation.md` inside spec folders
 - **`@handover`** — Session continuation, context preservation. May write `handover.md` inside spec folders
 - **`@deep-research`** — Autonomous deep research iterations. LEAF agent executing single research cycles with externalized JSONL + strategy.md state. Dispatched by `/spec_kit:deep-research` command
+- **`@deep-review`** — Autonomous deep review iterations. LEAF agent executing single review cycles with P0/P1/P2 findings, severity-weighted convergence, and 7 review dimensions. Dispatched by `/spec_kit:deep-research:review` command
 - **`@ultra-think`** — Multi-strategy planning architect. Dispatches diverse thinking strategies, scores via 5-dimension rubric, synthesizes optimal plan. Planning-only: no file modifications
 
 ---

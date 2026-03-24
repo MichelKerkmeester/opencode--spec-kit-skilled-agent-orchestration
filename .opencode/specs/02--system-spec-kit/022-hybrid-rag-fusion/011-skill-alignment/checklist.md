@@ -44,18 +44,18 @@ Required evidence that the pack now reflects live repo truth.
 ---
 
 <!-- ANCHOR:code-quality -->
-## Documentation Quality
+## Code Quality
 
-- [x] CHK-014 [P0] The canonical 011 docs tell one consistent documentation-only story [EVIDENCE: `./spec.md`, `./plan.md`, `./tasks.md`, `./checklist.md`, and `./implementation-summary.md` all describe a scoped closeout rather than a draft/pre-implementation phase]
+- [x] CHK-014 [P0] The canonical 011 docs tell one consistent documentation-only story [EVIDENCE: spec.md, plan.md, tasks.md, checklist.md, and implementation-summary.md all describe a scoped closeout rather than a draft/pre-implementation phase]
 - [x] CHK-011 [P0] The pack uses live memory-surface truth [EVIDENCE: canonical docs now reference 33 tools, 6 commands, and retrieval in `/memory:analyze`]
 - [x] CHK-012 [P1] Obsolete command-surface and retired retrieval-command framing is removed [EVIDENCE: canonical docs no longer describe the superseded command model as current state]
-- [x] CHK-013 [P1] The last observed `system-spec-kit` documentation gaps are closed in scope [EVIDENCE: `SKILL.md`, `save_workflow.md`, `embedding_resilience.md`, and the four asset docs are now part of the completed closeout set]
+- [x] CHK-013 [P1] The last observed system-spec-kit documentation gaps are closed in scope [EVIDENCE: SKILL.md, save_workflow, embedding_resilience, and the four asset docs are now part of the completed closeout set]
 <!-- /ANCHOR:code-quality -->
 
 ---
 
 <!-- ANCHOR:testing -->
-## Verification Runs
+## Testing
 
 - [x] CHK-020 [P0] `validate.sh --strict` passes for `011-skill-alignment` [EVIDENCE: strict validation run on 2026-03-21 returned exit code 0]
 - [x] CHK-021 [P1] Stale-string checks confirm obsolete command-surface framing is gone from current-state claims [EVIDENCE: targeted `rg` checks on the five canonical docs returned only historical/negative references, not stale current-state claims]
@@ -65,7 +65,7 @@ Required evidence that the pack now reflects live repo truth.
 ---
 
 <!-- ANCHOR:security -->
-## Scope Safety
+## Security
 
 - [x] CHK-030 [P0] No runtime TypeScript behavior changes were made [EVIDENCE: this phase closes documentation drift only; runtime behavior remains unchanged]
 - [x] CHK-031 [P1] The pack explicitly preserves the docs-only boundary [EVIDENCE: `./spec.md` and `./plan.md` keep runtime behavior out of scope]
@@ -74,7 +74,7 @@ Required evidence that the pack now reflects live repo truth.
 ---
 
 <!-- ANCHOR:docs -->
-## Documentation Synchronization
+## Documentation
 
 - [x] CHK-040 [P1] `spec.md`, `plan.md`, and `tasks.md` describe the same scoped closeout [EVIDENCE: all three now cover the same skill-guide, save-workflow, embedding, and asset guidance updates]
 - [x] CHK-041 [P1] `implementation-summary.md` reflects this reconciliation pass rather than the superseded command-surface story [EVIDENCE: `./implementation-summary.md` now summarizes the 2026-03-21 pack reconciliation]
@@ -96,8 +96,8 @@ Required evidence that the pack now reflects live repo truth.
 
 - [x] CHK-060 [P0] SKILL.md feature flags table includes all graduated spec-011 flags (33 search/pipeline flags; 47 total including roadmap env vars) [EVIDENCE: diff shows the reconciled total count line for the live table and clarifies the separate roadmap env var section]
 - [x] CHK-061 [P0] SKILL.md feature catalog count updated 194 → 221 [EVIDENCE: actual per-feature file count verified at 221 via find command]
-- [x] CHK-062 [P0] memory_system.md tool table has 33 rows matching "(33 tools)" header [EVIDENCE: memory_quick_search row added to L2 Core section]
-- [x] CHK-063 [P1] environment_variables.md section 8.2 documents all 9 graduated spec-011 flags [EVIDENCE: new "Research-Based Refinement (Spec-011 Graduated)" subsection added]
+- [x] CHK-062 [P0] memory_system tool table has 33 rows matching "(33 tools)" header [EVIDENCE: memory_quick_search row added to L2 Core section]
+- [x] CHK-063 [P1] environment_variables section 8.2 documents all 9 graduated spec-011 flags [EVIDENCE: new "Research-Based Refinement (Spec-011 Graduated)" subsection added]
 - [x] CHK-064 [P1] SKILL.md testing playbook count updated from "(3 files)" to "(19 categories, 227 per-test files)" [EVIDENCE: actual count verified via find command]
 - [x] CHK-065 [P1] Agent definitions, command files, and command configs verified clean of stale counts [EVIDENCE: 3 parallel explore agents found no hardcoded tool/command/flag counts in any agent or command file]
 - [x] CHK-066 [P0] All edits aligned with sk-doc standards (HVR, table formatting, no em dashes/semicolons) [EVIDENCE: grep for banned words returned zero matches, diff verified zero em dashes and semicolons in additions]

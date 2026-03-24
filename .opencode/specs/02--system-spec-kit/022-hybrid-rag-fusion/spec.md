@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: 022-hybrid-rag-fusion"
-description: "Root Level 3+ coordination packet for the Hybrid RAG Fusion program, tracking the live 19-phase tree and the current 118 numbered spec directories on disk."
+description: "Root Level 3+ coordination packet for the Hybrid RAG Fusion program, tracking the live 19-phase tree and the current 119 numbered spec directories on disk."
 trigger_phrases:
   - "022 hybrid rag fusion"
   - "hybrid rag fusion root packet"
@@ -17,7 +17,7 @@ contextType: "implementation"
 
 ## EXECUTIVE SUMMARY
 
-This root packet is the coordination layer for the Hybrid RAG Fusion program. It records the live 20 direct phases under `022`, the current 119 numbered spec directories on disk, and the remaining subtree normalization work without overstating completion.
+This root packet is the coordination layer for the Hybrid RAG Fusion program. It records the live 19 direct phases under `022`, the current 119 numbered spec directories on disk, and the remaining subtree normalization work without overstating completion.
 
 **Key Decisions**: treat the on-disk tree as the authority for counts and status, keep the root packet concise, and normalize direct-child navigation before deeper subtree rewrites.
 
@@ -107,7 +107,6 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 | 017 | `017-update-install-guide/` | Install guide update | Complete |
 | 018 | `018-rewrite-system-speckit-readme/` | System Spec Kit README rewrite | Complete |
 | 019 | `019-rewrite-repo-readme/` | Repository README rewrite | Complete |
-| 020 | `020-hydra-review-and-fix/` | 5-agent GPT-5.4 review + remediation | Complete |
 
 ---
 
@@ -216,7 +215,7 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 **As a** maintainer, **I want** the 022 root packet to show the current phase map and counts, **so that** I can trust it as the entry point to the packet family.
 
 **Acceptance Criteria**:
-1. Given the root packet, when I open it, then I see the current 19 direct phases and the verified 118-count root fact.
+1. Given the root packet, when I open it, then I see the current 19 direct phases and the verified 119-count root fact.
 
 ### US-002: Follow Phase Links Reliably (Priority: P0)
 

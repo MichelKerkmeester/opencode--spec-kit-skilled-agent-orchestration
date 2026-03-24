@@ -39,7 +39,7 @@ contextType: "implementation"
 
 ### Problem Statement
 
-The MCP server README (`mcp_server/README.md`, ~1281 lines) was written incrementally as features were added across 16 phases of the 022-hybrid-rag-fusion epic. It now mixes API reference, architecture, configuration, and troubleshooting concerns with no clear reader path. Some sections reference 28 tools when 32 exist. The hybrid search pipeline, cognitive memory (6-tier, 5-state, FSRS decay), and feature flag system are not cohesively documented.
+The MCP server README (mcp_server/README.md, ~1281 lines) was written incrementally as features were added across 16 phases of the 022-hybrid-rag-fusion epic. It now mixes API reference, architecture, configuration, and troubleshooting concerns with no clear reader path. Some sections reference 28 tools when 32 exist. The hybrid search pipeline, cognitive memory (6-tier, 5-state, FSRS decay), and feature flag system are not cohesively documented.
 
 ### Purpose
 
@@ -57,8 +57,8 @@ Produce a complete rewrite grounded in the feature catalog that serves both newc
 |----------|-------|
 | **Full rewrite** | `.opencode/skill/system-spec-kit/mcp_server/README.md` |
 | **Section structure** | Overview, Quick Start, Architecture, MCP Tools (all 32), Search System, Configuration, Usage Examples, Troubleshooting, FAQ, Related Resources |
-| **Content grounding** | Feature catalog (`feature_catalog.md`) as authoritative source |
-| **Quality gates** | DQI >= 75, no banned HVR words, template alignment with `readme_template.md` |
+| **Content grounding** | Feature catalog (feature_catalog.md) as authoritative source |
+| **Quality gates** | DQI >= 75, no banned HVR words, template alignment with readme_template.md |
 
 ### Out of Scope
 
@@ -93,7 +93,7 @@ Produce a complete rewrite grounded in the feature catalog that serves both newc
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | MR-004 | No banned HVR words | Zero matches for sk-doc banned word list across the document |
-| MR-005 | Template alignment | Section headers match `readme_template.md` structure |
+| MR-005 | Template alignment | Section headers match readme_template.md structure |
 | MR-006 | Newcomer-friendly intro | Overview and Quick Start sections are self-contained and require no prior knowledge |
 | MR-007 | Architecture section covers hybrid search | Describes BM25 + vector fusion, FSRS decay, 6-tier importance, 5-state lifecycle |
 | MR-008 | Cross-references to sibling docs | Links to INSTALL_GUIDE.md, Spec Kit README, and command docs without duplicating content |
@@ -118,7 +118,7 @@ Produce a complete rewrite grounded in the feature catalog that serves both newc
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Feature catalog accuracy | High | Cross-reference catalog against `tool-schemas.ts` during research |
-| Dependency | `readme_template.md` structure | Medium | Load template before drafting |
+| Dependency | readme_template.md structure | Medium | Load template before drafting |
 | Risk | Document too long for single-page reading | Medium | Use collapsible sections and clear TOC hierarchy |
 | Risk | Tool descriptions duplicate command docs | Medium | Link to command docs for workflow details, keep README focused on reference |
 <!-- /ANCHOR:risks -->

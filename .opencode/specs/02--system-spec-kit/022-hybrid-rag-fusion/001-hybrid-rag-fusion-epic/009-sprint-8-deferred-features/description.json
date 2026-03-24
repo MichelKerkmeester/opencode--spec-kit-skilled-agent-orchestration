@@ -8,7 +8,7 @@
     "deferred",
     "features"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.173Z",
+  "lastUpdated": "2026-03-24T08:34:20.546Z",
   "specId": "009",
   "folderSlug": "sprint-8-deferred-features",
   "parentChain": [
@@ -17,9 +17,5 @@
     "001-hybrid-rag-fusion-epic"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Sprint 8 - Deferred Features",
-  "status": "In Progress",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: Sprint 8 - Deferred Features"
+  "memoryNameHistory": []
 }

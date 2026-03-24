@@ -159,14 +159,14 @@ All provisional `NEW-NNN` markers were removed from both the feature catalog (19
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `feature_catalog/feature_catalog.md` | Modified | Removed 14 `[NEW-NNN]` playbook references, added entries for features 16/17 |
-| `manual_testing_playbook/manual_testing_playbook.md` | Modified | Removed ~458 `NEW-` prefixes, renamed section 8, added entries 153/154 with cross-reference rows |
-| `feature_catalog/01--*/` through `17--*/*.md` | Modified | Removed `NEW-NNN` from playbook cross-references (31 files modified) |
-| `manual_testing_playbook/01--*/` through `19--*/*.md` | Modified | Removed `NEW-NNN` from titles, frontmatter, headings, table rows, metadata (~75 files modified) |
-| `feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md` | Created | Phase 016 feature catalog entry |
-| `feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md` | Created | Phase 017 feature catalog entry |
-| `manual_testing_playbook/16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md` | Created | Phase 016 playbook test scenarios |
-| `manual_testing_playbook/16--tooling-and-scripts/154-json-primary-deprecation-posture.md` | Created | Phase 017 playbook test scenarios |
+| `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` | Modified | Removed 14 `[NEW-NNN]` playbook references, added entries for features 16/17 |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Modified | Removed ~458 `NEW-` prefixes, renamed section 8, added entries 153/154 with cross-reference rows |
+| feature\_catalog 01--\* through 17--\* | Modified | Removed `NEW-NNN` from playbook cross-references (31 files modified) |
+| manual\_testing\_playbook 01--\* through 19--\* | Modified | Removed `NEW-NNN` from titles, frontmatter, headings, table rows, metadata (~75 files modified) |
+| `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md` | Created | Phase 016 feature catalog entry |
+| `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md` | Created | Phase 017 feature catalog entry |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md` | Created | Phase 016 playbook test scenarios |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/16--tooling-and-scripts/154-json-primary-deprecation-posture.md` | Created | Phase 017 playbook test scenarios |
 
 ### Phase G Verification
 

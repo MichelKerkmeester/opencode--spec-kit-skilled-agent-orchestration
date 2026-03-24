@@ -48,6 +48,16 @@ contextType: "general"
 - [x] T006 Record EX-014 verdict: **PASS** — all acceptance criteria met; incremental mode, scan summary (indexed/updated/unchanged/skipped_mtime/failed counts), rate limiter, stale delete, mtime safety invariant all confirmed in code and tests
 - [x] T007 Execute EX-035 — Startup runtime compatibility guards: ran `npx vitest run tests/startup-checks.vitest.ts` per exact playbook command sequence; 14/14 tests pass
 - [x] T008 Record EX-035 verdict: **PASS** — `startup-checks.vitest.ts` completes with all 14 tests passing; runtime mismatch, marker creation, and SQLite diagnostics all visible in transcript
+- [ ] T012 Execute EX-041 — Memory content update via memory_update: invoke `memory_update` with modified content/title on an existing memory; capture output
+- [ ] T013 Record EX-041 verdict: PASS / PARTIAL / FAIL
+- [ ] T014 Execute EX-042 — Memory deletion via memory_delete: invoke `memory_delete` on a known memory ID; capture output; verify absence via `memory_list`
+- [ ] T015 Record EX-042 verdict: PASS / PARTIAL / FAIL
+- [ ] T016 Execute EX-043 — Bulk delete with filter criteria: create checkpoint; invoke `memory_bulk_delete` with filter; capture output; verify counts
+- [ ] T017 Record EX-043 verdict: PASS / PARTIAL / FAIL
+- [ ] T018 Execute EX-044 — Health check diagnostics: invoke `memory_health(reportMode: "full")`; capture output; verify subsystem status fields
+- [ ] T019 Record EX-044 verdict: PASS / PARTIAL / FAIL
+- [ ] T020 Execute EX-045 — Index scan and repair: create checkpoint; invoke `memory_index_scan(force: true)`; capture output; invoke `memory_health` to verify post-scan integrity
+- [ ] T021 Record EX-045 verdict: PASS / PARTIAL / FAIL
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -65,9 +75,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All tasks T001-T011 marked `[x]`
-- [x] No `[B]` blocked tasks remaining
-- [x] Both scenarios have recorded verdicts
+- [ ] All tasks T001-T021 marked `[x]`
+- [ ] No `[B]` blocked tasks remaining
+- [ ] All seven scenarios have recorded verdicts (EX-014, EX-035, EX-041 through EX-045)
 <!-- /ANCHOR:completion -->
 
 ---

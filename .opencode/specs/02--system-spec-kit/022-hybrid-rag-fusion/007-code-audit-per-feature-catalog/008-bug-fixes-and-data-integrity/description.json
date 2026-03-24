@@ -11,7 +11,7 @@
     "data",
     "integrity"
   ],
-  "lastUpdated": "2026-03-22T17:41:14.675Z",
+  "lastUpdated": "2026-03-24T08:34:20.598Z",
   "specId": "008",
   "folderSlug": "bug-fixes-and-data-integrity",
   "parentChain": [
@@ -19,8 +19,6 @@
     "022-hybrid-rag-fusion",
     "007-code-audit-per-feature-catalog"
   ],
-  "status": "Complete",
-  "importance_tier": "normal",
   "memorySequence": 0,
   "memoryNameHistory": []
 }

@@ -50,7 +50,6 @@ During final verification, active documentation drift was identified outside the
 
 - Fixed stale active `/memory:learn` wording in:
   - `.opencode/command/README.txt`
-  - `.opencode/command/memory/context.md`
   - `.opencode/command/spec_kit/debug.md`
   - `.opencode/command/spec_kit/complete.md`
   - `README.md`
@@ -106,7 +105,7 @@ This produced a scope-complete closure: command behavior, active documentation, 
 ---
 
 <!-- ANCHOR:limitations -->
-## Scope Closure
+## Known Limitations
 
 No open deferred items remain within this spec's scope. The refactor and post-verification remediation are closed with aligned command behavior, aligned active docs, and regression test coverage.
 <!-- /ANCHOR:limitations -->

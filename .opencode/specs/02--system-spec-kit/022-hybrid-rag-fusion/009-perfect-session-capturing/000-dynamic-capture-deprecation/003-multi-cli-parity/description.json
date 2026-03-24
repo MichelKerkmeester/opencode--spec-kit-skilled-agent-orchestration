@@ -8,7 +8,7 @@
     "parity",
     "hardening"
   ],
-  "lastUpdated": "2026-03-20T18:07:10.385Z",
+  "lastUpdated": "2026-03-24T08:34:20.676Z",
   "specId": "003",
   "folderSlug": "multi-cli-parity",
   "parentChain": [
@@ -22,9 +22,5 @@
     "17-03-26_14-47__focused-phase-016-parity-proof-rerun.md",
     "17-03-26_16-44__strict-closeout-evidence-refreshed.md",
     "18-03-26_18-24__next-steps.md"
-  ],
-  "title": "Feature Specification: Multi-CLI Parity Hardening",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: Multi-CLI Parity Hardening"
+  ]
 }

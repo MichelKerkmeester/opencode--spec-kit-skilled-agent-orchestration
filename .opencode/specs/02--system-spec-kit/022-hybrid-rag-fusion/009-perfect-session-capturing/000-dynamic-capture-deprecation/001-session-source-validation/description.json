@@ -8,7 +8,7 @@
     "source",
     "validation"
   ],
-  "lastUpdated": "2026-03-20T13:22:44.195Z",
+  "lastUpdated": "2026-03-24T08:34:20.668Z",
   "specId": "001",
   "folderSlug": "session-source-validation",
   "parentChain": [
@@ -21,9 +21,5 @@
   "memoryNameHistory": [
     "17-03-26_14-47__focused-phase-011-proof-rerun.md",
     "17-03-26_16-44__strict-closeout-evidence-refreshed.md"
-  ],
-  "title": "Feature Specification: Session Source Validation",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: Session Source Validation"
+  ]
 }

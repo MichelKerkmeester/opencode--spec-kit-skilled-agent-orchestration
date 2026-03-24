@@ -43,7 +43,7 @@ export interface EmbeddingRetryStats {
   queueDepth: number;
 }
 
-interface RetryHealthSnapshot extends EmbeddingRetryStats {}
+type RetryHealthSnapshot = EmbeddingRetryStats;
 
 interface RetryResult {
   success: boolean;

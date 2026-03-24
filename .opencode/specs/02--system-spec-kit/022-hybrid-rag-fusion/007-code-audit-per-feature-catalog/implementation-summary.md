@@ -224,11 +224,11 @@ Key improvement needed: formalize a shared-infrastructure rubric to reduce false
 ### Re-Audit Output Files
 
 All re-audit outputs are in `scratch/reaudit-2026-03-23/` per phase:
-- `gpt54-analyst.md` — GPT-5.4 analyst report
-- `codex53-verifier.md` — GPT-5.3-Codex verifier report
-- `opus-review.md` — Opus adjudicator consolidated review
-- Phase 019: `gpt54-cross-cutting.md` — Cross-cutting analysis
-- Phase 021: `gpt54-remediation.md` — Remediation synthesis
+- gpt54-analyst.md — GPT-5.4 analyst report
+- codex53-verifier.md — GPT-5.3-Codex verifier report
+- opus-review.md — Opus adjudicator consolidated review
+- Phase 019: gpt54-cross-cutting.md — Cross-cutting analysis
+- Phase 021: gpt54-remediation.md — Remediation synthesis
 
 ---
 

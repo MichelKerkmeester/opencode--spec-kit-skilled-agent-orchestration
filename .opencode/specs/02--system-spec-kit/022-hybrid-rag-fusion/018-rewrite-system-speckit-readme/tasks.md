@@ -25,7 +25,7 @@ description: "Task breakdown for complete rewrite of the system-spec-kit README.
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Research
+## Phase 1: Setup
 
 - [ ] T001 Catalog all skill components from SKILL.md and directory structure
 - [ ] T002 [P] Extract documentation level definitions from template files
@@ -37,7 +37,7 @@ description: "Task breakdown for complete rewrite of the system-spec-kit README.
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Draft
+## Phase 2: Implementation
 
 - [ ] T006 Write Overview section (skill purpose, key capabilities)
 - [ ] T007 Write Quick Start section (getting started with Spec Kit)
@@ -54,7 +54,7 @@ description: "Task breakdown for complete rewrite of the system-spec-kit README.
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Review and Assembly
+## Phase 3: Verification
 
 - [ ] T016 Run DQI scoring (target >= 75)
 - [ ] T017 [P] Run HVR banned-word check

@@ -188,7 +188,13 @@ Save your first memory file to the index:
 ```
 mcp_server/
 ├── context-server.ts          # MCP server entry point, tool registration
+├── cli.ts                     # CLI entry point
 ├── tool-schemas.ts            # All 33 tool definitions (Zod schemas)
+├── api/                       # Public API surface (search, indexing)
+├── core/                      # Core runtime logic (lifecycle, orchestration)
+├── configs/                   # Runtime configuration modules
+├── formatters/                # Output formatting (markdown, structured)
+├── schemas/                   # Zod validation schemas
 ├── handlers/                  # Per-tool request handlers
 │   ├── memory-save.ts         # Save handler with pre-flight validation
 │   ├── memory-search.ts       # Core search handler
@@ -210,7 +216,12 @@ mcp_server/
 ├── hooks/
 │   ├── README.md              # Lifecycle hook documentation
 │   └── ...                    # Post-mutation hooks, UX payload builders
+├── tools/                     # Tool dispatch layer (5 domain dispatchers)
+├── database/                  # SQLite database files
 ├── shared/                    # Types and utilities shared with CLI scripts
+├── shared-spaces/             # Shared memory space management
+├── scripts/                   # Internal server-side scripts
+├── utils/                     # Server utility modules
 ├── tests/                     # Vitest test suites
 │   └── *.vitest.ts
 ├── INSTALL_GUIDE.md           # Full installation walkthrough
@@ -909,7 +920,7 @@ The global rollout gate `SPECKIT_ROLLOUT_PERCENT` (default `100`) applies a perc
 
 | Flag | Default | Controls |
 |------|---------|----------|
-| `DB_PATH` | `shared/mcp_server/database/spec-kit.db` | SQLite database path |
+| `DB_PATH` | `mcp_server/database/spec-kit.db` | SQLite database path |
 | `SPECKIT_EMBEDDING_CACHE` | `true` | Cache embeddings to avoid re-generation |
 | `SPECKIT_BATCH_SIZE` | `50` | Batch size for bulk indexing operations |
 
@@ -1285,10 +1296,10 @@ cd .opencode/skill/system-spec-kit/mcp_server
 npx vitest run
 
 # Check database tables directly
-sqlite3 shared/mcp_server/database/spec-kit.db ".tables"
+sqlite3 mcp_server/database/spec-kit.db ".tables"
 
 # Count indexed memories
-sqlite3 shared/mcp_server/database/spec-kit.db "SELECT COUNT(*) FROM memory_index;"
+sqlite3 mcp_server/database/spec-kit.db "SELECT COUNT(*) FROM memory_index;"
 
 # Check for divergent aliases
 ```

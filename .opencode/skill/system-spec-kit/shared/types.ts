@@ -114,6 +114,7 @@ export interface ApiKeyValidationResult {
   httpStatus?: number;
   warning?: string;
   actions?: string[];
+  networkError?: boolean;
 }
 
 /** Embedding cache statistics */

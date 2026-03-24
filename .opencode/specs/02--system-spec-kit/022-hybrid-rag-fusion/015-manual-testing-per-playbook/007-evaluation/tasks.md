@@ -47,6 +47,16 @@ contextType: "general"
 - [x] T005 Execute EX-026: Ablation studies (eval_run_ablation) — PASS. `runAblation()` at `ablation-framework.ts:361-506` computes per-channel Recall@K deltas; `storeAblationResults()` at `ablation-framework.ts:524-613` persists to `eval_metric_snapshots` with negative timestamp IDs. Playbook command `storeResults:true` maps to `args.storeResults !== false` check at `eval-reporting.ts:233`. Note: playbook uses `dataset:"retrieval-channels-smoke"` but schema has no `dataset` param — tool uses built-in ground truth; parameter is silently ignored without error.
 - [x] T006 Execute EX-027: Reporting dashboard format:text (eval_reporting_dashboard) — PASS. `formatReportText()` at `reporting-dashboard.ts:576-642` produces `=`-bordered text with SPRINT/CHANNEL/TRENDS sections. Sprint/channel/summary data fully present.
 - [x] T007 Execute EX-027: Reporting dashboard format:json (eval_reporting_dashboard) — PASS. `formatReportJSON()` at `reporting-dashboard.ts:650-652` produces pretty-printed JSON. Both formats dispatched by `format === 'json'` branch at `eval-reporting.ts:322-323`.
+- [ ] T010 Execute EX-046: Evaluation dashboard generation — invoke `eval_reporting_dashboard` with `format: "json"` and `sprintFilter` targeting a specific sprint; capture output
+- [ ] T011 Record EX-046 verdict: PASS / PARTIAL / FAIL
+- [ ] T012 Execute EX-047: Ablation study with custom channels — invoke `eval_run_ablation` with `channels: ["vector", "bm25"]` and `storeResults: true`; capture output
+- [ ] T013 Record EX-047 verdict: PASS / PARTIAL / FAIL
+- [ ] T014 Execute EX-048a: Baseline comparison — run `eval_reporting_dashboard` format:text (baseline snapshot); capture output
+- [ ] T015 Execute EX-048b: Run `eval_run_ablation` with `storeResults: true` to inject new eval data
+- [ ] T016 Execute EX-048c: Run `eval_reporting_dashboard` format:text again (comparison snapshot); capture output
+- [ ] T017 Record EX-048 verdict: PASS / PARTIAL / FAIL
+- [ ] T018 Execute EX-049: Learning history retrieval — invoke `memory_get_learning_history` with a known `specFolder`; capture output
+- [ ] T019 Record EX-049 verdict: PASS / PARTIAL / FAIL
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -63,10 +73,10 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] Both scenario tasks (T005-T007) marked `[x]`
-- [x] No `[B]` blocked tasks remaining
-- [x] Verdicts and evidence recorded in checklist.md
-- [x] implementation-summary.md completed
+- [ ] All scenario tasks (T005-T019) marked `[x]`
+- [ ] No `[B]` blocked tasks remaining
+- [ ] All six scenario verdicts recorded in checklist.md (EX-026, EX-027, EX-046 through EX-049)
+- [ ] implementation-summary.md completed
 <!-- /ANCHOR:completion -->
 
 ---

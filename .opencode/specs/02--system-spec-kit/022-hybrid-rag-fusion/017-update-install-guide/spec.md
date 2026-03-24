@@ -39,7 +39,7 @@ contextType: "implementation"
 
 ### Problem Statement
 
-The install guide (`mcp_server/INSTALL_GUIDE.md`, ~930 lines) has a solid 5-phase gate structure but was written before the final dependency set stabilized. Some installation steps may reference outdated package names, missing build scripts, or stale platform-specific configurations. No rollback procedure exists if installation fails midway.
+The install guide (mcp_server/INSTALL_GUIDE.md, ~930 lines) has a solid 5-phase gate structure but was written before the final dependency set stabilized. Some installation steps may reference outdated package names, missing build scripts, or stale platform-specific configurations. No rollback procedure exists if installation fails midway.
 
 ### Purpose
 

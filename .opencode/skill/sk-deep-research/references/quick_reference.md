@@ -214,3 +214,69 @@ Signals: RollingAvg=STOP MAD=CONTINUE Entropy=CONTINUE
 | `generate-context.js` | Supported memory save script |
 
 <!-- /ANCHOR:related -->
+
+---
+
+<!-- ANCHOR:review-mode -->
+## Review Mode
+
+### Review Commands
+
+| Command | Description |
+|---------|-------------|
+| `/spec_kit:deep-research:review "target"` | Run autonomous review (defaults to auto mode) |
+| `/spec_kit:deep-research:review:auto "target"` | Run autonomous review (no approval gates) |
+| `/spec_kit:deep-research:review:confirm "target"` | Run review with approval gates at each iteration |
+
+### Review Parameters
+
+| Parameter | Default | Description |
+|-----------|---------|-------------|
+| `--max-iterations` | 7 | Maximum review iterations |
+| `--convergence` | 0.10 | Stop when severity-weighted newFindingsRatio below this |
+| `--spec-folder` | auto | Target spec folder path |
+| `--severity-threshold` | P2 | Minimum severity to report |
+| `--quality-gate` | 70 | Minimum score (0-100) for PASS verdict |
+
+### Review Dimensions
+
+| ID | Dimension | Description |
+|----|-----------|-------------|
+| D1 | Correctness | Logic errors, off-by-one, wrong return types, broken invariants |
+| D2 | Security | Injection, auth bypass, secrets exposure, unsafe deserialization |
+| D3 | Spec Alignment | Implementation matches spec.md, plan.md, and decision records |
+| D4 | Completeness | Missing edge cases, unhandled error paths, TODO/FIXME items |
+| D5 | Cross-Reference Integrity | Internal links, import paths, schema refs all resolve |
+| D6 | Patterns | Consistency with codebase conventions, anti-pattern detection |
+| D7 | Documentation Quality | Docstrings, comments, README accuracy, changelog entries |
+
+### Review Verdicts
+
+| Verdict | Condition | Meaning | Next Command |
+|---------|-----------|---------|--------------|
+| FAIL | Active P0 findings present OR overall score < 70 | Review target does not meet quality standards | `/spec_kit:plan` for remediation |
+| CONDITIONAL | No P0, but active P1 findings remain | Meets threshold but has required fixes | `/spec_kit:plan` for fixes |
+| PASS WITH NOTES | Only P2 findings remain (no active P0 or P1) | Meets standards with minor suggestions | `/create:changelog` |
+| PASS | No active findings | Review target fully meets quality standards | `/create:changelog` |
+
+### Review Quality Guards
+
+| Guard | Rule |
+|-------|------|
+| Evidence Completeness | Every P0/P1 has file:line citation |
+| Scope Alignment | Findings within declared review scope |
+| No Inference-Only | No P0/P1 based solely on inference |
+| Severity Coverage | Security + Correctness dimensions reviewed |
+| Cross-Reference | At least one multi-dimension iteration (5+ iters) |
+
+### Review Convergence
+
+| Signal | Weight | Description |
+|--------|--------|-------------|
+| Rolling Average | 0.30 | Last 2 severity-weighted newFindingsRatios < 0.08 |
+| MAD Noise Floor | 0.25 | Latest ratio within noise floor |
+| Dimension Coverage | 0.45 | All dimensions reviewed (100% required) |
+
+**Key defaults:** maxIterations=7, convergenceThreshold=0.10, stuckThreshold=2
+
+<!-- /ANCHOR:review-mode -->

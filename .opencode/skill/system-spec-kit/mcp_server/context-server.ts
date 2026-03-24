@@ -125,6 +125,7 @@ interface ApiKeyValidation {
   errorCode?: string;
   warning?: string;
   actions?: string[];
+  networkError?: boolean;
 }
 
 interface AutoSurfaceResult { constitutional: unknown[]; triggered: unknown[]; }
@@ -758,27 +759,43 @@ async function main(): Promise<void> {
       const validation: ApiKeyValidation = await embeddings.validateApiKey({ timeout: API_KEY_VALIDATION_TIMEOUT_MS });
 
       if (!validation.valid) {
-        console.error('[context-server] ===== API KEY VALIDATION FAILED =====');
-        console.error(`[context-server] Provider: ${validation.provider}`);
-        console.error(`[context-server] Error: ${validation.error}`);
-        console.error(`[context-server] Error Code: ${validation.errorCode || 'E050'}`);
-        if (validation.actions) {
-          console.error('[context-server] Recovery Actions:');
-          validation.actions.forEach((action: string, i: number) => {
-            console.error(`[context-server]   ${i + 1}. ${action}`);
-          });
+        if (validation.networkError) {
+          // Transient network failure — warn and continue, validation will occur on first use
+          console.warn('[context-server] ===== API KEY VALIDATION SKIPPED (network error) =====');
+          console.warn(`[context-server] Provider: ${validation.provider}`);
+          console.warn(`[context-server] Error: ${validation.error}`);
+          if (validation.actions) {
+            console.warn('[context-server] Recovery Actions:');
+            validation.actions.forEach((action: string, i: number) => {
+              console.warn(`[context-server]   ${i + 1}. ${action}`);
+            });
+          }
+          console.warn('[context-server] Continuing startup — validation will occur on first use');
+        } else {
+          console.error('[context-server] ===== API KEY VALIDATION FAILED =====');
+          console.error(`[context-server] Provider: ${validation.provider}`);
+          console.error(`[context-server] Error: ${validation.error}`);
+          console.error(`[context-server] Error Code: ${validation.errorCode || 'E050'}`);
+          if (validation.actions) {
+            console.error('[context-server] Recovery Actions:');
+            validation.actions.forEach((action: string, i: number) => {
+              console.error(`[context-server]   ${i + 1}. ${action}`);
+            });
+          }
+          console.error('[context-server] =====================================');
+          console.error('[context-server] FATAL: Cannot start MCP server with invalid API key');
+          console.error('[context-server] Set SPECKIT_SKIP_API_VALIDATION=true to bypass (not recommended)');
+          process.exit(1);
         }
-        console.error('[context-server] =====================================');
-        console.error('[context-server] FATAL: Cannot start MCP server with invalid API key');
-        console.error('[context-server] Set SPECKIT_SKIP_API_VALIDATION=true to bypass (not recommended)');
-        process.exit(1);
       }
 
       if (validation.warning) {
         console.warn(`[context-server] API key warning: ${validation.warning}`);
       }
 
-      console.error(`[context-server] API key validated (provider: ${validation.provider})`);
+      if (validation.valid) {
+        console.error(`[context-server] API key validated (provider: ${validation.provider})`);
+      }
     } catch (validationError: unknown) {
       const message = validationError instanceof Error ? validationError.message : String(validationError);
       console.error(`[context-server] API key validation error: ${message}`);

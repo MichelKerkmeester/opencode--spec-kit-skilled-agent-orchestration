@@ -54,6 +54,10 @@ contextType: "general"
   - `format:json` → `formatReportJSON()` at `reporting-dashboard.ts:650-652`: `JSON.stringify(report, null, 2)` returning full `DashboardReport` object
   - Format dispatch at `eval-reporting.ts:322-323`: `format === 'json' ? formatReportJSON : formatReportText`
   - Sprint label fallback `run-{eval_run_id}` at `reporting-dashboard.ts:262` ensures non-empty report even without sprint metadata
+- [ ] CHK-012 [P0] EX-046 Evaluation dashboard generation -- Verdict pending
+- [ ] CHK-013 [P0] EX-047 Ablation study with custom channels -- Verdict pending
+- [ ] CHK-014 [P0] EX-048 Baseline comparison reporting -- Verdict pending
+- [ ] CHK-015 [P0] EX-049 Learning history retrieval -- Verdict pending
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -64,6 +68,10 @@ contextType: "general"
 - [x] CHK-020 [P1] EX-026 evidence artifact captured (per-channel Recall@20 deltas) — `AblationResult` shape at `ablation-framework.ts:88-109`: `channel`, `baselineRecall20`, `ablatedRecall20`, `delta`, `pValue`, `queriesChannelHelped`, `queriesChannelHurt`, `queriesUnchanged`, `queryCount`, `metrics` (9-metric breakdown); stored per-channel in `eval_metric_snapshots` as `ablation_recall@20_delta` rows (`ablation-framework.ts:567-583`)
 - [x] CHK-021 [P1] EX-027 evidence artifact captured (text format output) — `formatReportText()` at `reporting-dashboard.ts:576-642` produces `=`-bordered multi-section text with SUMMARY, SPRINT blocks (metrics + channels), TRENDS section with direction arrows
 - [x] CHK-022 [P1] EX-027 evidence artifact captured (JSON format output) — `formatReportJSON()` at `reporting-dashboard.ts:650-652`; full `DashboardReport` structure (`reporting-dashboard.ts:98-111`) includes `generatedAt`, `totalEvalRuns`, `totalSnapshots`, `sprints`, `trends`, `summary`
+- [ ] CHK-040 [P1] EX-046 evidence artifact captured (filtered dashboard JSON output)
+- [ ] CHK-041 [P1] EX-047 evidence artifact captured (custom channel ablation output)
+- [ ] CHK-042 [P1] EX-048 evidence artifact captured (baseline and comparison dashboard snapshots)
+- [ ] CHK-043 [P1] EX-049 evidence artifact captured (learning history output)
 <!-- /ANCHOR:testing -->
 
 ---
@@ -100,8 +108,8 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 4 | 4/4 |
-| P1 Items | 6 | 6/6 |
+| P0 Items | 8 | 4/8 |
+| P1 Items | 10 | 6/10 |
 | P2 Items | 1 | 1/1 |
 
 **Verification Date**: 2026-03-22

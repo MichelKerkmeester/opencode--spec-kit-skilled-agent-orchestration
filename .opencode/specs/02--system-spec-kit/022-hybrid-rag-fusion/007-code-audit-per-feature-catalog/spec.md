@@ -26,6 +26,7 @@ Comprehensive code audit of the Spec Kit Memory MCP server, systematically verif
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -261,7 +262,7 @@ Establish a verified baseline where every feature in the catalog has been audite
 
 ---
 
-## 12. AUDIT RESULTS
+## 11. AUDIT RESULTS
 
 | Metric | Value |
 |--------|-------|
@@ -292,11 +293,13 @@ A post-audit deep research cycle (10 iterations, 11 questions answered) identifi
 
 ---
 
-## 13. OPEN QUESTIONS (RESOLVED)
+<!-- ANCHOR:questions -->
+## 12. OPEN QUESTIONS
 
 - ~~Should deprecated features be removed from the catalog or marked in-place?~~ Mark in-place with @deprecated tag (Phase 019 recommendation)
 - ~~What commit SHA should serve as the audit baseline?~~ Current HEAD on main branch at 2026-03-22
 - ~~Should the remediation phase (021) create individual fix specs or a single batch spec?~~ Single remediation tracking phase (021) with prioritized backlog
+<!-- /ANCHOR:questions -->
 
 ---
 

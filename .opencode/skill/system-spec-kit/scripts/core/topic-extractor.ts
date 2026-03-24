@@ -26,14 +26,13 @@ const SIMULATION_MARKER = 'SIMULATION';
 export function extractKeyTopics(
   summary: string,
   decisions: DecisionForTopics[] = [],
-  specFolderName?: string
+  _specFolderName?: string
 ): string[] {
   const weightedSegments: string[] = [];
 
-  if (specFolderName) {
-    const folderBase = specFolderName.replace(/^\d{1,3}-/, '').replace(/[-_]/g, ' ');
-    weightedSegments.push(folderBase);
-  }
+  // T09: Do NOT push spec folder name into weightedSegments — folder path fragments
+  // contaminate topics with generic infrastructure words. Topics should come from
+  // actual session content (summary, decisions).
 
   for (const decision of decisions) {
     const title = decision.TITLE || '';

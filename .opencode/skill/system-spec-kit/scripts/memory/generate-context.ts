@@ -547,6 +547,7 @@ async function main(
         ? undefined
         : () => loadCollectedData({}),
       collectSessionDataFn: collectSessionData,
+      sessionId: parsed.sessionId ?? undefined,
     });
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : String(error);

@@ -4,7 +4,7 @@
 // Feature catalog: Causal edge creation (memory_causal_link)
 // Causal relationship graph for memory lineage
 import type Database from 'better-sqlite3';
-import { clearDegreeCache, clearDegreeCacheForDb } from '../search/graph-search-fn';
+import { clearDegreeCacheForDb } from '../search/graph-search-fn';
 import { clearGraphSignalsCache } from '../graph/graph-signals';
 import { runInTransaction } from './transaction-manager';
 

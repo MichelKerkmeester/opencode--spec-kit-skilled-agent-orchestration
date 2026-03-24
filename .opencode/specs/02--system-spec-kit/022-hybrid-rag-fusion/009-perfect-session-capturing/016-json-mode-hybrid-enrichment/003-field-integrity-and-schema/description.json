@@ -1,21 +1,15 @@
 {
-  "specFolder": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/003-field-integrity-and-schema",
-  "description": "Phase 003: Field Integrity and Schema Validation — fixes fast-path filesModified data loss, adds unknown-field warnings, contextType enum validation, string length limits, YAML parser replacement, content density V-rule, V12 path normalization, and status/percentage contradiction detection",
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/003-field-integrity-and-schema",
+  "description": "Feature Specification: Field Integrity and Schema Validation",
   "keywords": [
-    "field-integrity",
-    "schema-validation",
-    "filesModified",
-    "fast-path",
-    "input-normalizer",
-    "validate-memory-quality",
-    "unknown-field-warning",
-    "contextType-enum",
-    "yaml-parser",
-    "content-density",
-    "v-rule",
-    "data-loss-fix"
+    "feature",
+    "specification",
+    "field",
+    "integrity",
+    "schema",
+    "validation"
   ],
-  "lastUpdated": "2026-03-21T00:00:00.000Z",
+  "lastUpdated": "2026-03-24T08:34:20.697Z",
   "specId": "003",
   "folderSlug": "field-integrity-and-schema",
   "parentChain": [
@@ -24,14 +18,6 @@
     "009-perfect-session-capturing",
     "016-json-mode-hybrid-enrichment"
   ],
-  "level": 3,
-  "status": "Complete",
-  "priority": "P0-P2",
-  "domains": ["A-pipeline-data-integrity", "B-schema-validation-completeness"],
-  "filesModified": [
-    ".opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts",
-    ".opencode/skill/system-spec-kit/scripts/lib/validate-memory-quality.ts"
-  ],
-  "changeCount": 8,
-  "researchSource": "../research.md (Round 2, 74 findings)"
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

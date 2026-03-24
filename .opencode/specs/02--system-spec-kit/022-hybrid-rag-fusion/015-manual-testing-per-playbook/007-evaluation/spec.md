@@ -1,11 +1,15 @@
 ---
 title: "Feature Specification: manual-testing-per-playbook evaluation phase"
-description: "Execute 2 manual test scenarios for the evaluation category, covering ablation studies and reporting dashboard."
+description: "Execute 6 manual test scenarios for the evaluation category, covering ablation studies, reporting dashboard, evaluation dashboard generation, ablation study execution, baseline comparison reporting, and learning history retrieval."
 trigger_phrases:
   - "evaluation testing"
   - "ablation test"
   - "dashboard test"
   - "eval reporting test"
+  - "evaluation dashboard generation"
+  - "baseline comparison"
+  - "learning history"
+  - "EX-026 EX-027 EX-046 EX-047 EX-048 EX-049"
 importance_tier: "high"
 contextType: "general"
 ---
@@ -37,10 +41,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The evaluation category contains 2 manual test scenarios covering ablation studies (channel-level Recall@20 delta measurement) and reporting dashboard (sprint/channel trend aggregation). Each scenario must be executed with defined prompts, expected behaviors verified, and evidence captured to validate that evaluation tools function correctly.
+The evaluation category contains 6 manual test scenarios covering ablation studies (channel-level Recall@20 delta measurement), reporting dashboard (sprint/channel trend aggregation), evaluation dashboard generation, ablation study execution with custom parameters, baseline comparison reporting, and learning history retrieval. The four new scenarios (EX-046 through EX-049) expand coverage to comprehensive evaluation workflows and historical analysis. Each scenario must be executed with defined prompts, expected behaviors verified, and evidence captured to validate that evaluation tools function correctly.
 
 ### Purpose
-Execute both evaluation scenarios from the manual testing playbook, producing pass/fail verdicts with evidence for each scenario.
+Execute all six evaluation scenarios from the manual testing playbook, producing pass/fail verdicts with evidence for each scenario.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -49,7 +53,7 @@ Execute both evaluation scenarios from the manual testing playbook, producing pa
 ## 3. SCOPE
 
 ### In Scope
-- Execute both scenarios listed in the scenario registry below
+- Execute all six scenarios listed in the scenario registry below
 - Capture pass/fail verdict per scenario with evidence
 - Record deviations and unexpected behaviors
 
@@ -64,6 +68,10 @@ Execute both evaluation scenarios from the manual testing playbook, producing pa
 |---|-------------|---------------|---------------------|
 | 1 | EX-026 | Ablation studies (eval_run_ablation) | 07--evaluation/01-ablation-studies-evalrunablation.md |
 | 2 | EX-027 | Reporting dashboard (eval_reporting_dashboard) | 07--evaluation/02-reporting-dashboard-evalreportingdashboard.md |
+| 3 | EX-046 | Evaluation dashboard generation | 07--evaluation/02-reporting-dashboard-evalreportingdashboard.md |
+| 4 | EX-047 | Ablation study execution with custom channels | 07--evaluation/01-ablation-studies-evalrunablation.md |
+| 5 | EX-048 | Baseline comparison reporting | 07--evaluation/02-reporting-dashboard-evalreportingdashboard.md |
+| 6 | EX-049 | Learning history retrieval | 07--evaluation/ (memory_get_learning_history) |
 
 ### Playbook Source Files
 
@@ -71,6 +79,10 @@ Execute both evaluation scenarios from the manual testing playbook, producing pa
 |-------------|---------------|
 | EX-026 | `../../manual_testing_playbook/07--evaluation/026-ablation-studies-eval-run-ablation.md` |
 | EX-027 | `../../manual_testing_playbook/07--evaluation/027-reporting-dashboard-eval-reporting-dashboard.md` |
+| EX-046 | `../../manual_testing_playbook/07--evaluation/046-evaluation-dashboard-generation.md` |
+| EX-047 | `../../manual_testing_playbook/07--evaluation/047-ablation-study-execution-custom-channels.md` |
+| EX-048 | `../../manual_testing_playbook/07--evaluation/048-baseline-comparison-reporting.md` |
+| EX-049 | `../../manual_testing_playbook/07--evaluation/049-learning-history-retrieval.md` |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -84,13 +96,17 @@ Execute both evaluation scenarios from the manual testing playbook, producing pa
 |----|-------------|---------------------|
 | REQ-001 | Execute EX-026 Ablation studies | Pass/fail verdict with per-channel Recall@20 deltas in evidence |
 | REQ-002 | Execute EX-027 Reporting dashboard | Pass/fail verdict with both text and JSON format output in evidence |
+| REQ-005 | Execute EX-046: invoke `eval_reporting_dashboard` with `format: "json"` and `sprintFilter` targeting a specific sprint label to generate a filtered evaluation dashboard | PASS if dashboard returns only data for the specified sprint; JSON structure includes sprint metrics, channel breakdown, and trend data for the filtered sprint. FAIL if dashboard returns data from other sprints or the sprint filter is ignored |
+| REQ-006 | Execute EX-047: invoke `eval_run_ablation` with a custom `channels` subset (e.g., `["vector", "bm25"]` only, excluding graph) and `storeResults: true` | PASS if ablation runs only for the specified channels; per-channel Recall@20 deltas reported only for the requested subset; results stored in eval_metric_snapshots. FAIL if ablation includes unrequested channels or fails to restrict to the subset |
+| REQ-007 | Execute EX-048: invoke `eval_reporting_dashboard` with `format: "text"` twice in succession (with an intervening `eval_run_ablation`) and compare the two outputs to verify baseline progression | PASS if the second dashboard reflects the new eval run data; sprint count or metric values differ from the first run; trend direction is consistent with the new data. FAIL if both dashboards are identical despite the intervening eval run |
+| REQ-008 | Execute EX-049: invoke `memory_get_learning_history` with a known `specFolder` to retrieve the learning history for that folder | PASS if learning history returns a chronological list of context saves with timestamps, session summaries, and memory IDs; entries are ordered by date. FAIL if no history is returned for a folder with known saves or entries are unordered |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-003 | Capture evidence artifacts for each scenario | Tool output stored as evidence |
-| REQ-004 | Document deviations from expected behavior | Deviation notes in implementation-summary.md |
+| REQ-009 | Capture evidence artifacts for each scenario | Tool output stored as evidence |
+| REQ-010 | Document deviations from expected behavior | Deviation notes in implementation-summary.md |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -98,9 +114,13 @@ Execute both evaluation scenarios from the manual testing playbook, producing pa
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: Both scenarios executed with pass/fail verdict recorded
+- **SC-001**: All six scenarios executed with pass/fail verdict recorded
 - **SC-002**: Evidence captured for every scenario (tool output in both formats for EX-027)
 - **SC-003**: Deviations documented with reproducibility notes
+- **SC-004**: EX-046 returns a filtered dashboard for the specified sprint only
+- **SC-005**: EX-047 ablation runs only for the specified channel subset
+- **SC-006**: EX-048 demonstrates baseline progression across two dashboard snapshots
+- **SC-007**: EX-049 returns chronological learning history for the specified folder
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -145,10 +165,10 @@ Execute both evaluation scenarios from the manual testing playbook, producing pa
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 4/25 | 2 scenarios, single category, no code changes |
-| Risk | 6/25 | Feature flag dependency, channel alias mismatch |
-| Research | 2/20 | Playbook provides exact steps |
-| **Total** | **12/70** | **Level 2** |
+| Scope | 9/25 | 6 scenarios across ablation, dashboard, comparison, and history operations |
+| Risk | 9/25 | Feature flag dependency, channel alias mismatch, EX-048 requires sequential execution with intervening eval run |
+| Research | 4/20 | Playbook provides core steps; new scenarios require MCP parameter discovery for filtering and history |
+| **Total** | **22/70** | **Level 2** |
 <!-- /ANCHOR:complexity -->
 
 ---

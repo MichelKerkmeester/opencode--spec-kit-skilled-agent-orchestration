@@ -82,7 +82,7 @@ description: "Documentation reconciliation tasks for updating the 012 command-al
 - **Priority:** P1
 - **File:** `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/spec.md`
 - **Action:** Remove already-shipped items from the missing-work list and record only the directly observed runtime-doc drift cluster.
-- **Acceptance:** The spec treats `.opencode/command/memory/shared.md`, `.opencode/command/memory/analyze.md`, `/memory:manage ingest`, and README coverage as existing, and records the `analyze.md` plus `shared.md` drift that this pass resolves.
+- **Acceptance:** The spec treats `.opencode/command/memory/shared.md`, `.opencode/command/memory/analyze.md`, `/memory:manage ingest`, and README coverage as existing, and records the analyze.md plus shared.md drift that this pass resolves.
 - **Covers:** CA-005, CA-008
 - [x] Done
 

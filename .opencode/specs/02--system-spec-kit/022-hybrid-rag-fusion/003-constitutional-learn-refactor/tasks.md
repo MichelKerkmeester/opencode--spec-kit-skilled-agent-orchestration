@@ -12,7 +12,25 @@ updated: 2026-03-14
 <!-- ANCHOR:tasks -->
 # Tasks
 
-## T1: Rewrite learn.md [P0] — COMPLETE
+<!-- ANCHOR:notation -->
+## Task Notation
+
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+
+**Task Format**: `T### [P?] Description`
+<!-- /ANCHOR:notation -->
+
+---
+
+<!-- ANCHOR:phase-1 -->
+<!-- phase-alias: Phase 1: Setup = Phase 1: Core Command Rewrite -->
+## Phase 1: Setup
+
+### T1: Rewrite learn.md [P0] — COMPLETE
 - [x] Write new frontmatter with constitutional focus — lines 1-5
 - [x] Write subcommand routing (create, list, edit, remove, budget) — Section 3, lines 70-86
 - [x] Write CREATE workflow (extract → qualify → structure → budget → write+index) — Section 5, lines 107-241
@@ -33,18 +51,31 @@ updated: 2026-03-14
 - [x] Update Quick Reference table entry — line 53: constitutional memory workflow
 - [x] Verify no other stale references — confirmed clean
 
-## T4: Update system-spec-kit README.md [P1] — COMPLETE
+### T4: Update system-spec-kit README.md [P1] — COMPLETE
 - [x] Update /memory:learn description — line 542
+<!-- /ANCHOR:phase-1 -->
 
-## T5: Verify [P0] — COMPLETE
+---
+
+<!-- ANCHOR:phase-2 -->
+<!-- phase-alias: Phase 2: Implementation = Phase 2: Cross-Reference Updates -->
+## Phase 2: Implementation
+
+### T5: Verify [P0] — COMPLETE
 - [x] No broken cross-references — all links verified
 - [x] Constitutional directory path correct — `.opencode/skill/system-spec-kit/constitutional/` consistent
 - [x] Token budget constant correct (~2000) — referenced in Sections 4, 5, 6, 7, 10
+<!-- /ANCHOR:phase-2 -->
 
-## T6: Post-Verification Remediation and Scope-Complete Alignment [P0] — COMPLETE
+---
+
+<!-- ANCHOR:phase-3 -->
+<!-- phase-alias: Phase 3: Verification = Phase 3: Post-Verification Remediation -->
+## Phase 3: Verification
+
+### T6: Post-Verification Remediation and Scope-Complete Alignment [P0] — COMPLETE
 - [x] Fix stale active `/memory:learn` references in command/workspace/agent docs
   - `.opencode/command/README.txt`
-  - `.opencode/command/memory/context.md`
   - `.opencode/command/spec_kit/debug.md`
   - `.opencode/command/spec_kit/complete.md`
   - `README.md`
@@ -63,4 +94,25 @@ updated: 2026-03-14
   - `npm run typecheck` in `.opencode/skill/system-spec-kit` — PASS
   - `memory-learn-command-docs.vitest.ts` — PASS (2/2)
   - Targeted MCP suite — PASS (581/581)
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] All tasks marked `[x]`
+- [x] No blocked tasks remaining
+- [x] Verification evidence recorded
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+<!-- /ANCHOR:cross-refs -->
 <!-- /ANCHOR:tasks -->

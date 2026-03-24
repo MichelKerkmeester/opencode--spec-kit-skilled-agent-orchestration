@@ -689,7 +689,7 @@ function runJudgedKSweep(queries: JudgedQuery[]): JudgedKSweepResult {
   }
 
   const resultByIntent: Partial<Record<IntentClass, BestKPerIntent>> = {};
-  let globalSumNdcg: Record<number, number> = {};
+  const globalSumNdcg: Record<number, number> = {};
   let globalQueryCount = 0;
 
   for (const [intent, intentQueries] of byIntent) {

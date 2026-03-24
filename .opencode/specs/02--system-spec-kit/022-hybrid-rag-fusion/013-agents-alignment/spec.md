@@ -39,7 +39,7 @@ The original `013-agents-alignment` packet described a simpler runtime model tha
 - `.codex/agents/*.toml` is generated from the ChatGPT family, not from the base markdown family.
 - `.gemini/agents/*.md` is the runtime-facing Gemini path, while `.gemini -> .agents` exposes the backing storage at `.agents/agents/*.md`.
 
-The older packet also carried stale naming (`research.md`), a bulk-runtime-sync story that no longer matches the state of the repo, and it did not account for the remaining runtime-facing drift in `.gemini/workflows/delegate_agent.md` and the write-agent projections.
+The older packet also carried stale naming (research.md), a bulk-runtime-sync story that no longer matches the state of the repo, and it did not account for the remaining runtime-facing drift in `.gemini/workflows/delegate_agent.md` and the write-agent projections.
 
 ---
 
@@ -67,7 +67,7 @@ Reconcile the `013` packet so it accurately documents the current runtime lineag
 - Document the two markdown source families and their downstream runtime targets.
 - Record Codex generation from the ChatGPT family.
 - Document Gemini's runtime-facing path together with the `.gemini -> .agents` storage detail.
-- Normalize the packet on `deep-research.md` naming.
+- Normalize the packet on deep-research.md naming.
 - Fix the remaining runtime-facing path and writer-surface drift in the scoped Gemini, Claude, ChatGPT, and Codex docs.
 
 ### Out of Scope
@@ -98,7 +98,7 @@ Reconcile the `013` packet so it accurately documents the current runtime lineag
 | AA-001 | P0 | The packet must describe **two source families**, not one |
 | AA-002 | P0 | The packet must document `.opencode/agent/*.md` as the base markdown family for OpenCode/Copilot and the closest markdown lineage for Claude/Gemini |
 | AA-003 | P0 | The packet must document `.opencode/agent/chatgpt/*.md` as the ChatGPT family that feeds `.codex/agents/*.toml` |
-| AA-004 | P0 | The packet must use `deep-research.md` naming consistently |
+| AA-004 | P0 | The packet must use deep-research.md naming consistently |
 | AA-005 | P0 | The packet must document `.gemini/agents/*.md` as the runtime-facing path and `.gemini -> .agents` as the storage detail |
 | AA-006 | P1 | The packet must normalize runtime path-convention guidance |
 | AA-007 | P1 | The packet must distinguish scoped runtime-doc closeout from bulk runtime sync work |
@@ -111,7 +111,7 @@ Reconcile the `013` packet so it accurately documents the current runtime lineag
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: The packet consistently models dual-source lineage rather than a single canonical copy model.
-- **SC-002**: The packet uses `deep-research.md` naming throughout its active docs.
+- **SC-002**: The packet uses deep-research.md naming throughout its active docs.
 - **SC-003**: Codex lineage from ChatGPT markdown is explicit.
 - **SC-004**: Gemini runtime-facing and storage-facing paths are both documented without ambiguity.
 - **SC-005**: The packet avoids claiming bulk runtime sync work while accurately recording the scoped runtime-doc closeout performed in this pass.
@@ -133,7 +133,7 @@ Reconcile the `013` packet so it accurately documents the current runtime lineag
 ---
 
 <!-- ANCHOR:questions -->
-## 7. IMPLEMENTATION NOTES
+## 10. OPEN QUESTIONS
 
 - This packet is a truth-reconciliation pass, not a runtime synchronization pass.
 - Path conventions should be documented from the runtime reader's perspective first.

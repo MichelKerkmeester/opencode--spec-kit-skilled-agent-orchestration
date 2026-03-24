@@ -15,6 +15,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -28,9 +29,11 @@ contextType: "general"
 
 ### Overview
 Comprehensive code audit of the entire Spec Kit Memory MCP server organized by 19 feature catalog categories totaling 220+ features. Each category is audited in its own phase folder (001-021), with two meta-phases for cross-cutting decisions (019) and remediation tracking (021).
+<!-- /ANCHOR:summary -->
 
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -42,9 +45,11 @@ Comprehensive code audit of the entire Spec Kit Memory MCP server organized by 1
 - [x] All 21 phase audits complete
 - [x] Cross-phase synthesis delivered
 - [x] Remediation tracking initialized
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -57,9 +62,11 @@ Parallel phase-based audit: each category audited independently, results synthes
 
 ### Data Flow
 Feature Catalog → Phase Audits (parallel) → Findings → Synthesis → Remediation
+<!-- /ANCHOR:architecture -->
 
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Baseline Setup
@@ -94,9 +101,11 @@ Feature Catalog → Phase Audits (parallel) → Findings → Synthesis → Remed
 ### Phase 4: Final Synthesis
 - [x] Compile cross-phase findings — ~179 MATCH, ~41 PARTIAL, 0 MISMATCH
 - [x] Generate master audit report — implementation-summary.md in all 22 folders
+<!-- /ANCHOR:phases -->
 
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -104,9 +113,11 @@ Feature Catalog → Phase Audits (parallel) → Findings → Synthesis → Remed
 | Cross-reference | Feature-to-code traceability | Grep, Read, Glob |
 | Completeness | All 220+ features covered | Checklist verification |
 | Consistency | Uniform methodology across phases | Template adherence |
+<!-- /ANCHOR:testing -->
 
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -114,13 +125,16 @@ Feature Catalog → Phase Audits (parallel) → Findings → Synthesis → Remed
 | Feature catalog | Internal | Green | Cannot audit without reference |
 | Source code | Internal | Green | Cannot verify implementation |
 | Phase specs | Internal | Green | Required for tracking |
+<!-- /ANCHOR:dependencies -->
 
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Methodology proves inadequate or catalog significantly changes
 - **Procedure**: Archive current findings, update catalog, restart affected phases
+<!-- /ANCHOR:rollback -->
 
 ---
 

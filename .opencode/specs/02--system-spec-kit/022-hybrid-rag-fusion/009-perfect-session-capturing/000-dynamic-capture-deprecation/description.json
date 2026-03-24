@@ -1,15 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation",
-  "description": "Archived follow-up branch for the JSON-only save transition",
+  "description": "Feature Specification: Dynamic Capture Deprecation Branch",
   "keywords": [
     "feature",
-    "archived",
-    "json-only",
-    "save-transition",
-    "follow-up",
+    "specification",
+    "dynamic",
+    "capture",
+    "deprecation",
     "branch"
   ],
-  "lastUpdated": "2026-03-21T17:31:00.000Z",
+  "lastUpdated": "2026-03-24T08:34:20.664Z",
   "specId": "000",
   "folderSlug": "dynamic-capture-deprecation",
   "parentChain": [
@@ -18,9 +18,5 @@
     "009-perfect-session-capturing"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "status": "Archived",
-  "title": "Archived follow-up branch for the JSON-only save transition",
-  "importance_tier": "medium",
-  "short_description": "Archived follow-up branch that superseded the deprecated routine capture path"
+  "memoryNameHistory": []
 }

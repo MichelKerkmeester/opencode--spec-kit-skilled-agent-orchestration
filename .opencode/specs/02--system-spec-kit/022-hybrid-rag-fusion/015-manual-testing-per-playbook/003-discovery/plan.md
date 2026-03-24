@@ -100,6 +100,41 @@ Tester reads playbook → Issues MCP tool call(s) per scenario → Captures tool
 - [ ] Verify both modes return a valid response with status and diagnostic data
 - [ ] Record verdict: PASS / PARTIAL / FAIL
 
+#### EX-036 — Discovery by folder name filter
+- [ ] Invoke `memory_list` with `specFolder` set to a known subfolder path (e.g., `022-hybrid-rag-fusion`)
+- [ ] Capture full tool output
+- [ ] Verify all returned items belong to the specified folder; no items from other folders appear
+- [ ] Verify `total` count reflects only filtered results
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+#### EX-037 — Discovery by trigger phrase matching
+- [ ] Invoke `memory_match_triggers` with a trigger phrase known to exist in at least one memory (e.g., `"hybrid rag fusion"`)
+- [ ] Capture full tool output
+- [ ] Verify matching memories are returned with relevance scores
+- [ ] Verify trigger phrase is confirmed in response metadata or matched content
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+#### EX-038 — Discovery by date range (before/after)
+- [ ] Invoke `memory_search` with `createdAfter` and `createdBefore` parameters bracketing a known memory creation window
+- [ ] Capture full tool output
+- [ ] Verify only memories within the date range are returned
+- [ ] Verify boundary dates are respected (check edge-case memories at exact boundary)
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+#### EX-039 — Discovery by importance tier filter
+- [ ] Invoke `memory_list` with `importanceTier: "high"` — capture output
+- [ ] Invoke `memory_list` with `importanceTier: "critical"` — capture output
+- [ ] Verify each call returns only memories matching the requested tier
+- [ ] Verify the `importance_tier` field in every result matches the filter value
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+#### EX-040 — Discovery by causal link traversal
+- [ ] Invoke `memory_causal_stats` to enumerate existing causal links — capture output
+- [ ] Identify a source memory with known downstream links from the stats output
+- [ ] Invoke `memory_search` with `causalSourceId` set to that source memory ID — capture output
+- [ ] Verify linked downstream memories are returned with causal metadata
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
 ### Phase 3: Verification
 - [ ] Transfer verdicts and evidence to implementation-summary.md
 - [ ] Check all P0 items in checklist.md
@@ -116,6 +151,11 @@ Tester reads playbook → Issues MCP tool call(s) per scenario → Captures tool
 | Manual | EX-011: memory_list pagination and counts | MCP tool call |
 | Manual | EX-012: memory_stats composite ranking | MCP tool call |
 | Manual | EX-013: memory_health full + divergent_aliases | MCP tool call (two calls) |
+| Manual | EX-036: memory_list with specFolder filter | MCP tool call |
+| Manual | EX-037: memory_match_triggers with known phrase | MCP tool call |
+| Manual | EX-038: memory_search with date range constraints | MCP tool call |
+| Manual | EX-039: memory_list with importanceTier filter (two calls) | MCP tool call |
+| Manual | EX-040: memory_causal_stats + memory_search with causalSourceId | MCP tool call (two calls) |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -163,9 +203,10 @@ Phase 1 (Setup) ──► Phase 2 (Execution) ──► Phase 3 (Verification)
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
 | Setup | Low | 5-10 minutes |
-| Scenario Execution | Low | 15-20 minutes |
+| Scenario Execution (EX-011 to EX-013) | Low | 15-20 minutes |
+| Scenario Execution (EX-036 to EX-040) | Low-Medium | 25-35 minutes |
 | Verification | Low | 5-10 minutes |
-| **Total** | | **25-40 minutes** |
+| **Total** | | **50-75 minutes** |
 <!-- /ANCHOR:effort -->
 
 ---

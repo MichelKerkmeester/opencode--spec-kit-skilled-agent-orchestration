@@ -25,7 +25,7 @@ description: "Task breakdown for complete rewrite of the repository root README.
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Research
+## Phase 1: Setup
 
 - [ ] T001 Enumerate all 11 agents with roles and capabilities
 - [ ] T002 [P] Enumerate all 16 skills with descriptions
@@ -38,7 +38,7 @@ description: "Task breakdown for complete rewrite of the repository root README.
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Draft
+## Phase 2: Implementation
 
 - [ ] T007 Write Overview section (what OpenCode is, key numbers)
 - [ ] T008 Write Quick Start section (first steps for new users)
@@ -58,7 +58,7 @@ description: "Task breakdown for complete rewrite of the repository root README.
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Review and Assembly
+## Phase 3: Verification
 
 - [ ] T020 Run DQI scoring (target >= 75)
 - [ ] T021 [P] Run HVR banned-word check

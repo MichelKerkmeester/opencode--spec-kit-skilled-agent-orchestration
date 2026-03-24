@@ -1,0 +1,29 @@
+{
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/013-memory-generation-quality",
+  "description": "Deep research into generate-context.js JSON mode quality issues: path fragment trigger phrases, thin content, truncated titles. Root cause analysis of 5 defects in memory-frontmatter.ts, workflow.ts, semantic-summarizer.ts, topic-extractor.ts, post-save-review.ts. Fix architecture design.",
+  "keywords": [
+    "memory-generation",
+    "generate-context",
+    "json-mode",
+    "trigger-phrases",
+    "path-fragments",
+    "content-quality",
+    "semantic-summarizer",
+    "input-normalizer",
+    "deep-research"
+  ],
+  "status": "In Progress",
+  "importance_tier": "critical",
+  "lastUpdated": "2026-03-24T00:00:00.000Z",
+  "specId": "013",
+  "folderSlug": "memory-generation-quality",
+  "parentChain": [
+    "02--system-spec-kit",
+    "022-hybrid-rag-fusion",
+    "001-hybrid-rag-fusion-epic"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "24-03-26_15-30__completed-deep-research-on-memory-generation.md"
+  ]
+}

@@ -1,11 +1,13 @@
 ---
 title: "Feature Specification: manual-testing-per-playbook maintenance phase"
-description: "Phase 004 documents the maintenance manual test packet. Execute scenarios EX-014 and EX-035 against the Spec Kit Memory system to verify memory_index_scan and startup runtime compatibility guards."
+description: "Phase 004 documents the maintenance manual test packet. Execute scenarios EX-014, EX-035, EX-041, EX-042, EX-043, EX-044, and EX-045 against the Spec Kit Memory system to verify memory_index_scan, startup runtime compatibility guards, memory_update, memory_delete, bulk delete, health check diagnostics, and index scan and repair."
 trigger_phrases:
   - "maintenance manual testing"
   - "phase 004 maintenance"
-  - "EX-014 EX-035"
+  - "EX-014 EX-035 EX-041 EX-042 EX-043 EX-044 EX-045"
   - "memory_index_scan startup guards test"
+  - "memory_update memory_delete test"
+  - "bulk delete health check index repair"
 importance_tier: "normal"
 contextType: "general"
 ---
@@ -37,10 +39,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-Phase 004 maintenance scenarios must be executed from scratch. All prior results are invalidated. The two maintenance scenarios (EX-014, EX-035) require fresh manual execution to verify that memory_index_scan and the startup runtime compatibility guards behave as specified by the canonical playbook.
+Phase 004 maintenance scenarios must be executed from scratch. All prior results are invalidated. The seven maintenance scenarios (EX-014, EX-035, EX-041, EX-042, EX-043, EX-044, EX-045) require fresh manual execution to verify that memory_index_scan, startup runtime compatibility guards, memory_update, memory_delete, bulk delete, health check diagnostics, and index scan and repair behave as specified by the canonical playbook. The five new scenarios (EX-041 through EX-045) expand coverage to state-mutating maintenance operations and diagnostic repair workflows.
 
 ### Purpose
-Execute both Phase 004 maintenance scenarios, record verdicts and evidence, and mark this phase complete only when all P0 checklist items pass.
+Execute all seven Phase 004 maintenance scenarios, record verdicts and evidence, and mark this phase complete only when all P0 checklist items pass.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -54,6 +56,11 @@ Execute both Phase 004 maintenance scenarios, record verdicts and evidence, and 
 |---------|---------------|---------------|
 | EX-014 | Workspace scanning and indexing (memory_index_scan) | `../../manual_testing_playbook/04--maintenance/014-workspace-scanning-and-indexing-memory-index-scan.md` |
 | EX-035 | Startup runtime compatibility guards | `../../manual_testing_playbook/04--maintenance/035-startup-runtime-compatibility-guards.md` |
+| EX-041 | Memory content update via memory_update | `../../manual_testing_playbook/04--maintenance/041-memory-content-update-via-memory-update.md` |
+| EX-042 | Memory deletion via memory_delete | `../../manual_testing_playbook/04--maintenance/042-memory-deletion-via-memory-delete.md` |
+| EX-043 | Bulk delete with filter criteria | `../../manual_testing_playbook/04--maintenance/043-bulk-delete-with-filter-criteria.md` |
+| EX-044 | Health check diagnostics | `../../manual_testing_playbook/04--maintenance/044-health-check-diagnostics.md` |
+| EX-045 | Index scan and repair | `../../manual_testing_playbook/04--maintenance/045-index-scan-and-repair.md` |
 
 ### Out of Scope
 - Scenarios from other phases (retrieval, mutation, discovery, lifecycle, etc.)
@@ -82,13 +89,18 @@ Execute both Phase 004 maintenance scenarios, record verdicts and evidence, and 
 |----|-------------|---------------------|
 | REQ-001 | Execute EX-014: invoke `memory_index_scan` (incremental mode) against a target spec folder | PASS if scan completes, reports indexed/skipped counts, and new files are visible to search |
 | REQ-002 | Execute EX-035: verify startup runtime compatibility guards fire correctly on version mismatch or missing dependency | PASS if guard blocks incompatible startup and emits a clear diagnostic message |
+| REQ-005 | Execute EX-041: invoke `memory_update` on an existing memory to modify its content, title, or importance tier | PASS if the memory is updated and subsequent retrieval reflects the new values; `updated_at` timestamp is refreshed. FAIL if update silently fails or old values persist after update |
+| REQ-006 | Execute EX-042: invoke `memory_delete` on a known memory ID | PASS if the memory is removed and subsequent `memory_list` or `memory_search` no longer returns it; deletion is confirmed in response. FAIL if memory persists after delete or delete returns an error for a valid ID |
+| REQ-007 | Execute EX-043: invoke `memory_bulk_delete` with a filter (e.g., by `specFolder` or `importanceTier`) targeting multiple memories in a sandbox | PASS if all matching memories are deleted; response reports the count of deleted items; non-matching memories are unaffected. FAIL if partial deletion occurs without error or non-matching memories are deleted |
+| REQ-008 | Execute EX-044: invoke `memory_health(reportMode: "full")` and inspect the diagnostic output for database connectivity, embedding provider status, FTS integrity, and alias conflicts | PASS if health report returns a structured diagnostic with status fields for each subsystem (database, embedding, FTS, aliases); any detected issues are clearly flagged. FAIL if health check omits subsystem status or returns an unstructured error |
+| REQ-009 | Execute EX-045: invoke `memory_index_scan` with `force: true` to trigger a full re-index, then invoke `memory_health` to verify index integrity post-repair | PASS if force scan completes with indexed/updated/failed counts; subsequent health check shows clean index state with no FTS mismatches. FAIL if force scan fails or health check reveals index corruption after scan |
 
 ### P1 - Required (complete OR user-approved deferral)
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-003 | Capture evidence for each scenario (tool output or screenshot) | Evidence recorded in implementation-summary.md |
-| REQ-004 | Mark final verdict (PASS / PARTIAL / FAIL) per scenario following the review protocol | Verdict recorded against EX-014 and EX-035 in implementation-summary.md |
+| REQ-010 | Capture evidence for each scenario (tool output or screenshot) | Evidence recorded in implementation-summary.md |
+| REQ-011 | Mark final verdict (PASS / PARTIAL / FAIL) per scenario following the review protocol | Verdict recorded against all 7 scenarios (EX-014, EX-035, EX-041 through EX-045) in implementation-summary.md |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -98,7 +110,12 @@ Execute both Phase 004 maintenance scenarios, record verdicts and evidence, and 
 
 - **SC-001**: EX-014 completes with a scan report showing indexed and skipped counts
 - **SC-002**: EX-035 demonstrates that incompatible runtime conditions are caught at startup
-- **SC-003**: Both verdicts are recorded and all P0 checklist items are checked
+- **SC-003**: EX-041 updates a memory and subsequent retrieval confirms the new values
+- **SC-004**: EX-042 deletes a memory and subsequent search confirms its absence
+- **SC-005**: EX-043 bulk-deletes matching memories and reports the deletion count
+- **SC-006**: EX-044 returns a structured health diagnostic covering all subsystems
+- **SC-007**: EX-045 completes a force re-index and subsequent health check shows clean state
+- **SC-008**: All seven verdicts are recorded and all P0 checklist items are checked
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -167,8 +184,8 @@ Execute both Phase 004 maintenance scenarios, record verdicts and evidence, and 
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 5/25 | 2 scenarios, one MCP call + one startup check |
-| Risk | 8/25 | EX-035 requires controlled environment simulation |
-| Research | 3/20 | Playbook provides all needed context |
-| **Total** | **16/70** | **Level 2** |
+| Scope | 12/25 | 7 scenarios across read-only diagnostics and state-mutating operations |
+| Risk | 14/25 | EX-035 requires controlled environment; EX-041/042/043 mutate state and require sandbox isolation; EX-045 force re-index can be slow |
+| Research | 4/20 | Playbook provides context; new scenarios require sandbox setup knowledge |
+| **Total** | **30/70** | **Level 2** |
 <!-- /ANCHOR:complexity -->

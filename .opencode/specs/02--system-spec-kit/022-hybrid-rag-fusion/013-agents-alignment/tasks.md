@@ -22,7 +22,8 @@ description: "Truth-reconciliation tasks for updating the 013 packet and the sco
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Audit Current Runtime Reality
+## Phase 1: Setup
+<!-- alias: Audit Current Runtime Reality -->
 
 - [x] T001 Read the canonical `013` packet and identify stale copy-model language (`./spec.md`, `./plan.md`, `./tasks.md`, `./checklist.md`, `./implementation-summary.md`)
 - [x] T002 Verify the two source families at `.opencode/agent/*.md` and `.opencode/agent/chatgpt/*.md`
@@ -34,7 +35,8 @@ description: "Truth-reconciliation tasks for updating the 013 packet and the sco
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Rewrite the Canonical Packet
+## Phase 2: Implementation
+<!-- alias: Rewrite the Canonical Packet -->
 
 - [x] T005 Rewrite `spec.md` around dual-source lineage and runtime-facing path guidance (`./spec.md`)
 - [x] T006 Rewrite `plan.md` as a documentation-only reconciliation plan (`./plan.md`)
@@ -47,9 +49,9 @@ description: "Truth-reconciliation tasks for updating the 013 packet and the sco
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Verify
+## Phase 3: Verification
 
-- [x] T010 Remove stale `research.md` naming from canonical packet docs
+- [x] T010 Remove stale research.md naming from canonical packet docs
 - [x] T011 Remove stale single-source/copy-to-every-runtime language from canonical packet docs
 - [x] T012 Run strict validation on `013-agents-alignment`
 - [x] T013 Re-read the packet for internal consistency and runtime-path accuracy
@@ -62,7 +64,7 @@ description: "Truth-reconciliation tasks for updating the 013 packet and the sco
 ## Completion Criteria
 
 - [x] The packet documents dual-source lineage clearly
-- [x] The packet uses `deep-research.md` naming only
+- [x] The packet uses deep-research.md naming only
 - [x] The packet documents Codex and Gemini runtime lineage accurately
 - [x] The packet distinguishes scoped runtime-doc closeout from bulk runtime sync
 <!-- /ANCHOR:completion -->

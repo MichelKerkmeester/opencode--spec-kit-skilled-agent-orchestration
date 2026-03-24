@@ -17,7 +17,7 @@ description: "Implementation plan for a complete rewrite of the system-spec-kit 
 | Aspect | Value |
 |--------|-------|
 | **Document type** | README.md (Markdown) |
-| **Template** | `readme_template.md` from sk-doc |
+| **Template** | readme_template.md from sk-doc |
 | **Quality standard** | DQI >= 75, HVR compliant |
 | **Source of truth** | SKILL.md + feature catalog + command files + templates |
 

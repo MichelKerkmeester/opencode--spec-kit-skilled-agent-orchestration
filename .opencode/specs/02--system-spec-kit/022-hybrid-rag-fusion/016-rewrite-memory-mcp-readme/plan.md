@@ -17,7 +17,7 @@ description: "Implementation plan for a complete rewrite of the MCP server READM
 | Aspect | Value |
 |--------|-------|
 | **Document type** | README.md (Markdown) |
-| **Template** | `readme_template.md` from sk-doc |
+| **Template** | readme_template.md from sk-doc |
 | **Quality standard** | DQI >= 75, HVR compliant |
 | **Source of truth** | Feature catalog + `tool-schemas.ts` |
 
@@ -118,7 +118,7 @@ feature_catalog.md + tool-schemas.ts → research brief → draft → review →
 |------------|------|--------|-------------------|
 | Feature catalog | Internal | Green | Cannot ground content without it |
 | `tool-schemas.ts` | Internal | Green | Cannot verify tool completeness |
-| `readme_template.md` | Internal | Green | Section structure undefined |
+| readme_template.md | Internal | Green | Section structure undefined |
 | sk-doc HVR rules | Internal | Green | Cannot validate voice compliance |
 <!-- /ANCHOR:dependencies -->
 

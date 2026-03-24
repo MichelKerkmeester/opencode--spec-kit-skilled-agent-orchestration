@@ -9,7 +9,7 @@
     "evaluation",
     "measurement"
   ],
-  "lastUpdated": "2026-03-22T17:41:14.680Z",
+  "lastUpdated": "2026-03-24T08:34:20.602Z",
   "specId": "009",
   "folderSlug": "evaluation-and-measurement",
   "parentChain": [
@@ -17,8 +17,6 @@
     "022-hybrid-rag-fusion",
     "007-code-audit-per-feature-catalog"
   ],
-  "status": "Complete",
-  "importance_tier": "normal",
   "memorySequence": 0,
   "memoryNameHistory": []
 }

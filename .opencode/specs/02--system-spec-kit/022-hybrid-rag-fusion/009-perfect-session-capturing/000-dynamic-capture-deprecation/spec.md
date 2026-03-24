@@ -81,7 +81,7 @@ Provide a minimal parent pack for the archived dynamic-capture branch so the mov
 | 002 | `002-outsourced-agent-handback/` | Outsourced-agent handback | Complete |
 | 003 | `003-multi-cli-parity/` | Multi-CLI parity hardening | Complete |
 | 004 | `004-source-capabilities-and-structured-preference/` | Source capabilities and structured preference | Complete |
-| 005 | `005-live-proof-and-parity-hardening/` | Live proof and parity hardening | In Progress |
+| 005 | `005-live-proof-and-parity-hardening/` | Live proof and parity hardening | Blocked |
 
 ---
 

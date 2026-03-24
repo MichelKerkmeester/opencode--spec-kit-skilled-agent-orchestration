@@ -8,7 +8,7 @@
     "audit",
     "lifecycle"
   ],
-  "lastUpdated": "2026-03-22T17:41:14.660Z",
+  "lastUpdated": "2026-03-24T08:34:20.586Z",
   "specId": "005",
   "folderSlug": "lifecycle",
   "parentChain": [
@@ -16,8 +16,6 @@
     "022-hybrid-rag-fusion",
     "007-code-audit-per-feature-catalog"
   ],
-  "status": "Complete",
-  "importance_tier": "normal",
   "memorySequence": 0,
   "memoryNameHistory": []
 }

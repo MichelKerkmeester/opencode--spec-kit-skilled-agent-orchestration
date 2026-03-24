@@ -8,6 +8,7 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -18,10 +19,15 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 | `[B]` | Blocked |
 
 **Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
 ---
 
-## Phase A: Spec Folder Upgrade (L1 → L3)
+<!-- ANCHOR:phase-1 -->
+<!-- phase-alias: Phase 1: Setup = Phase A: Spec Folder Upgrade -->
+## Phase 1: Setup
+
+### Phase A: Spec Folder Upgrade (L1 → L3)
 
 - [x] T001 Run upgrade-level.sh --to 3
 - [x] T002 Update description.json level to 3
@@ -31,9 +37,15 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - [x] T006 Create decision-record.md with 3 ADRs (decision-record.md)
 - [x] T007 Create checklist.md with audit checks (checklist.md)
 
+<!-- /ANCHOR:phase-1 -->
+
 ---
 
-## Phase B: Research Delegation (30 Agents) — COMPLETE
+<!-- ANCHOR:phase-2 -->
+<!-- phase-alias: Phase 2: Implementation = Phase B-G: Research, Analysis, Remediation -->
+## Phase 2: Implementation
+
+### Phase B: Research Delegation (30 Agents) — COMPLETE
 
 > **Historical snapshot boundary (2026-03-08):** Phase B reflects the executed 180-feature audit baseline, not the later 189-snippet live tree.
 
@@ -115,19 +127,25 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 
 - [x] T180 Remove all `NEW-NNN` markers from individual feature catalog files (194 files across 19 categories)
 - [x] T181 Remove all `NEW-NNN` markers from individual playbook files (200 files across 19 categories)
-- [x] T182 Clean `feature_catalog.md` index: remove `[NEW-NNN]` playbook references, add 016/017 entries
-- [x] T183 Clean `manual_testing_playbook.md` index: remove ~458 `NEW-` prefixes, rename section header, add 153/154 entries + cross-reference table rows
-- [x] T184 Create `feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md` (phase 016 coverage)
-- [x] T185 Create `feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md` (phase 017 coverage)
-- [x] T186 Create `manual_testing_playbook/16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md` (phase 016 test scenarios)
-- [x] T187 Create `manual_testing_playbook/16--tooling-and-scripts/154-json-primary-deprecation-posture.md` (phase 017 test scenarios)
+- [x] T182 Clean feature\_catalog.md index: remove `[NEW-NNN]` playbook references, add 016/017 entries
+- [x] T183 Clean manual\_testing\_playbook.md index: remove ~458 `NEW-` prefixes, rename section header, add 153/154 entries + cross-reference table rows
+- [x] T184 Create `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md` (phase 016 coverage)
+- [x] T185 Create `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md` (phase 017 coverage)
+- [x] T186 Create `.opencode/skill/system-spec-kit/manual_testing_playbook/16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md` (phase 016 test scenarios)
+- [x] T187 Create `.opencode/skill/system-spec-kit/manual_testing_playbook/16--tooling-and-scripts/154-json-primary-deprecation-posture.md` (phase 017 test scenarios)
 - [x] T188 Verification: E1 — catalog file-to-index consistency (194 files, 0 NEW- markers)
 - [x] T189 Verification: E2 — playbook file-to-index consistency (200 files, 0 NEW- markers)
 - [x] T190 Verification: E3 — spot-check targeted files for marker remnants (all clean)
 
+<!-- /ANCHOR:phase-2 -->
+
 ---
 
-## Phase F: Remediation Execution (FUTURE — from manifest)
+<!-- ANCHOR:phase-3 -->
+<!-- phase-alias: Phase 3: Verification = Phase F: Remediation Execution -->
+## Phase 3: Verification
+
+### Phase F: Remediation Execution (FUTURE — from manifest)
 
 ### E1: Batch Fixes (P0 — Scriptable)
 - [x] T100 Global replace `retry.vitest.ts` → `retry-manager.vitest.ts` (52 snippets)
@@ -174,8 +192,11 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - [ ] T170 Run `replace-monolith-source-files.mjs` to sync monolith
 - [ ] T171 Run file path validation: all paths must resolve
 
+<!-- /ANCHOR:phase-3 -->
+
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All Phase A tasks `[x]`
@@ -184,9 +205,11 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - [x] Phase E addendum completed for 14 omitted current snippets
 - [x] No `[B]` blocked tasks remaining
 - [ ] Phase F remediation executed (separate workflow)
+<!-- /ANCHOR:completion -->
 
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
@@ -195,6 +218,7 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - **Decision Record**: See `decision-record.md`
 - **Analysis Summary**: See `scratch/analysis-summary.md`
 - **Remediation Manifest**: See `scratch/remediation-manifest.md`
+<!-- /ANCHOR:cross-refs -->
 
 ---
 

@@ -275,8 +275,9 @@ function buildSessionSummaryObservation(summary: string, triggerPhrases: string[
     : summary;
 
   // Truncate narrative to avoid verbatim duplication with OVERVIEW section.
-  const narrativeText: string = summary.length > 200
-    ? summary.substring(0, 200).replace(/\s+\S*$/, '') + '...'
+  // T09b: Increased from 200→500 for richer semantic content in JSON mode
+  const narrativeText: string = summary.length > 500
+    ? summary.substring(0, 500).replace(/\s+\S*$/, '') + '...'
     : summary;
 
   return {
@@ -654,10 +655,42 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
   // Phase 004 T033: Observation dedup at normalization time — string-equality dedup
   normalized.observations = dedupeObservationsByNarrative(observations);
 
-  normalized.userPrompts = [{
-    prompt: sessionSummary || 'Manual context save',
-    timestamp: new Date().toISOString()
-  }];
+  // T09b: Promote exchanges to multi-message userPrompts for richer semantic input
+  const promotedPrompts: Array<{ prompt: string; timestamp: string }> = [];
+  if (Array.isArray(data.exchanges) && (!normalized.userPrompts || normalized.userPrompts.length < 3)) {
+    const sessionSummaryLower = (sessionSummary || '').toLowerCase();
+    for (const exchange of data.exchanges.slice(0, 10)) {
+      const userInput = typeof exchange === 'object' && exchange !== null
+        ? (exchange as Record<string, unknown>).userInput || (exchange as Record<string, unknown>).user || ''
+        : '';
+      const inputStr = String(userInput).trim();
+      if (inputStr.length > 10 && !sessionSummaryLower.includes(inputStr.toLowerCase().slice(0, 50))) {
+        promotedPrompts.push({ prompt: inputStr, timestamp: new Date().toISOString() });
+      }
+    }
+  }
+
+  // T09b: Promote toolCalls to implementation observations
+  if (Array.isArray(data.toolCalls)) {
+    for (const tc of data.toolCalls.slice(0, 10)) {
+      const tool = typeof tc === 'object' && tc !== null ? (tc as Record<string, unknown>) : {};
+      const toolName = String(tool.tool || tool.name || 'unknown').trim();
+      const toolTitle = String(tool.title || tool.action || '').trim();
+      if (toolName && toolTitle) {
+        normalized.observations.push({
+          type: 'implementation' as const,
+          title: `Tool: ${toolName}`,
+          narrative: toolTitle,
+          facts: [],
+        });
+      }
+    }
+  }
+
+  // T09b: Use promoted exchange prompts alongside sessionSummary fallback
+  normalized.userPrompts = promotedPrompts.length > 0
+    ? [...promotedPrompts, { prompt: sessionSummary || 'Manual context save', timestamp: new Date().toISOString() }]
+    : [{ prompt: sessionSummary || 'Manual context save', timestamp: new Date().toISOString() }];
 
   normalized.recentContext = [{
     request: sessionSummary || 'Manual context save',
@@ -686,6 +719,16 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
   const slowPathProjectPhase = (data as Record<string, unknown>).projectPhase || (data as Record<string, unknown>).project_phase;
   if (typeof slowPathProjectPhase === 'string' && slowPathProjectPhase.length > 0) {
     normalized.projectPhase = slowPathProjectPhase;
+  }
+
+  // T06: Propagate preflight/postflight epistemic data through slow-path
+  const slowPreflight = (data as Record<string, unknown>).preflight;
+  if (slowPreflight && typeof slowPreflight === 'object') {
+    (normalized as Record<string, unknown>).preflight = slowPreflight;
+  }
+  const slowPostflight = (data as Record<string, unknown>).postflight;
+  if (slowPostflight && typeof slowPostflight === 'object') {
+    (normalized as Record<string, unknown>).postflight = slowPostflight;
   }
 
   console.log('   \u2713 Transformed manual format to MCP-compatible structure');
@@ -717,6 +760,13 @@ const KNOWN_RAW_INPUT_FIELDS: Set<string> = new Set([
   'FILES', 'observations',
   'userPrompts', 'user_prompts',
   'recentContext', 'recent_context',
+  // T06: Preflight/postflight epistemic tracking fields
+  'knowledgeScore', 'knowledge_score',
+  'uncertaintyScore', 'uncertainty_score',
+  'contextScore', 'context_score',
+  'knowledgeGaps', 'knowledge_gaps',
+  'gapsClosed', 'gaps_closed',
+  'newGapsDiscovered', 'new_gaps_discovered',
 ]);
 
 // P1: Valid contextType values for enum validation (T009)

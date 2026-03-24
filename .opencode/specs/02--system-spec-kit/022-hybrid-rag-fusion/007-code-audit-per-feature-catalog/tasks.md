@@ -14,6 +14,7 @@ contextType: "general"
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -21,17 +22,21 @@ contextType: "general"
 | `[ ]` | Pending |
 | `[x]` | Completed |
 | `[P]` | Parallelizable |
+<!-- /ANCHOR:notation -->
 
 ---
 
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
 - [x] T001 Create Level 3 spec folders for all 22 folders
 - [x] T002 Verify feature catalog currency — 19 categories, 220+ features confirmed
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
-## Phase 2: Category Audits
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
 - [x] T003 Audit 001-retrieval (10 features) — 8 MATCH, 2 PARTIAL
 - [x] T004 Audit 002-mutation (10 features) — 8 MATCH, 2 PARTIAL
@@ -52,10 +57,12 @@ contextType: "general"
 - [x] T019 Audit 017-governance (4 features) — 3 MATCH, 1 PARTIAL
 - [x] T020 Audit 018-ux-hooks (19 features) — 17 MATCH, 2 PARTIAL
 - [x] T021 Audit 020-feature-flag-reference (7 features) — 6 MATCH, 1 PARTIAL
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
-## Phase 3: Cross-Cutting
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
 - [x] T022 Complete 019-decisions-and-deferrals analysis — 4 decisions, 4 deferrals, 4 deprecated modules
 - [x] T023 Complete 021-remediation-revalidation tracking — prioritized backlog documented
@@ -66,11 +73,24 @@ contextType: "general"
 
 - [x] T024 Cross-phase dependency analysis — shared patterns identified across all phases
 - [x] T025 Master audit findings report — implementation-summary.md in all 22 folders
+<!-- /ANCHOR:phase-3 -->
 
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All 21 phase audits complete
 - [x] Cross-cutting analysis done
 - [x] Master report delivered
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+<!-- /ANCHOR:cross-refs -->

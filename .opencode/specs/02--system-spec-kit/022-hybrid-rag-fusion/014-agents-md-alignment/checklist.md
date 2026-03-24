@@ -2,60 +2,106 @@
 title: "Checklist: 014-agents-md-alignment"
 description: "Level 2 verification checklist for AGENTS.md Quick Reference alignment."
 trigger_phrases:
-  - "013 checklist"
+  - "014 checklist"
 importance_tier: "important"
 contextType: "checklist"
 ---
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
-# Checklist: 014-agents-md-alignment
+# Verification Checklist: 014-agents-md-alignment
+
+---
 
 <!-- ANCHOR:protocol -->
-## P0 — Must Pass
+## Verification Protocol
 
-- [x] Constitutional memory row updated in all 3 files — shows `list | edit | remove | budget` subcommands
-  - Evidence: Grep `list.*edit.*remove.*budget` → 3 matches (AGENTS.md:53, FS:80, Barter:89)
-- [x] Database maintenance row includes `ingest` in all 3 files
-  - Evidence: Grep `ingest operations` → 3 matches (AGENTS.md:55, FS:82, Barter:91)
-- [x] Analysis/evaluation row (`/memory:analyze`) present in all 3 files
-  - Evidence: Grep `/memory:analyze` → 3 matches (AGENTS.md:56, FS:83, Barter:92)
-- [x] Shared memory row (`/memory:shared`) present in all 3 files
-  - Evidence: Grep `/memory:shared` → 3 matches (AGENTS.md:57, FS:84, Barter:93)
-- [x] Barter READ-ONLY git policy preserved
-  - Evidence: Grep `GIT POLICY: READ-ONLY` → 1 match (Barter:63)
-
-## P1 — Should Pass
-
-- [x] FS-Enterprises Research/exploration row includes `memory_context()` unified alternative
-  - Evidence: Grep `memory_context.*unified` → 1 match (FS:64)
-- [x] FS-Enterprises stack detection table preserved (lines 11-19 unchanged)
-- [x] Quick Reference table row order consistent across all 3 files
-- [x] No accidental removal of variant-specific rows (Go/Angular/Swift verification, Git analysis)
-
-## P2 — Nice to Have
-
-- [x] Table column alignment visually consistent within each file
-- [x] Spec documentation (Level 2) complete: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md
-
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
 <!-- /ANCHOR:protocol -->
-## Refinement Pass (2026-03-16)
 
-### P0 — Must Pass
+---
 
-- [x] G-01: FS Resume prior work row has `/memory:continue` + `memory_search()`
-  - Evidence: Grep `memory:continue` → 4/4 (AGENTS.md, FS, Barter, CLAUDE.md)
-- [x] G-02: FS Save context row has `/memory:save`
-  - Evidence: Grep `memory:save` → 4/4 (AGENTS.md, FS, Barter, CLAUDE.md)
-- [x] G-06: File modification row shows `Gate 3 → Gate 1 → Gate 2` in all 4 files
-  - Evidence: Grep `Gate 3.*ask spec folder.*Gate 1.*Gate 2` → 4/4; old ordering → 0 matches
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-### P1 — Should Pass
+- [x] CHK-001 [P0] Constitutional memory row updated in all 3 files -- shows `list | edit | remove | budget` subcommands [EVIDENCE: Grep `list.*edit.*remove.*budget` returns 3 matches (AGENTS.md:53, FS:80, Barter:89)]
+- [x] CHK-002 [P0] Database maintenance row includes `ingest` in all 3 files [EVIDENCE: Grep `ingest operations` returns 3 matches (AGENTS.md:55, FS:82, Barter:91)]
+- [x] CHK-003 [P0] Analysis/evaluation row (`/memory:analyze`) present in all 3 files [EVIDENCE: Grep `/memory:analyze` returns 3 matches (AGENTS.md:56, FS:83, Barter:92)]
+- [x] CHK-004 [P0] Shared memory row (`/memory:shared`) present in all 3 files [EVIDENCE: Grep `/memory:shared` returns 3 matches (AGENTS.md:57, FS:84, Barter:93)]
+- [x] CHK-005 [P0] Barter READ-ONLY git policy preserved [EVIDENCE: Grep `GIT POLICY: READ-ONLY` returns 1 match (Barter:63)]
+<!-- /ANCHOR:pre-impl -->
 
-- [x] G-03/G-04: No trailing extra pipe on Claim completion rows
-  - Evidence: Grep `Claim completion.*\|  \|` → 0 matches
-- [x] G-05: FS Documentation row has `validate_document.py`
-  - Evidence: Grep `validate_document.py` in Quick Reference → 4/4
-- [x] GPT-5.4 ultra-think cross-AI review completed (Analytical 88, Critical 92, Holistic 88)
-- [x] Universal skill section references `sk-code--opencode` with system-spec-kit + memory system
-- [x] FS skill section references `sk-code--full-stack` with 3-phase lifecycle + stack verification
-- [x] Both files reference `sk-git` with full workflow (Worktree / Commit / Finish)
-- [x] Changelog `v2.2.0.0.md` created
+---
+
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+- [x] CHK-006 [P1] FS-Enterprises Research/exploration row includes `memory_context()` unified alternative [EVIDENCE: Grep `memory_context.*unified` returns 1 match (FS:64)]
+- [x] CHK-007 [P1] FS-Enterprises stack detection table preserved (lines 11-19 unchanged) [EVIDENCE: verified via diff]
+- [x] CHK-008 [P1] Quick Reference table row order consistent across all 3 files [EVIDENCE: manual comparison]
+- [x] CHK-009 [P1] No accidental removal of variant-specific rows (Go/Angular/Swift verification, Git analysis) [EVIDENCE: verified via diff]
+- [x] CHK-010 [P2] Table column alignment visually consistent within each file [EVIDENCE: visual inspection]
+- [x] CHK-011 [P2] Spec documentation (Level 2) complete: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md [EVIDENCE: all files present]
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+### Refinement Pass (2026-03-16)
+
+- [x] CHK-012 [P0] G-01: FS Resume prior work row has `/memory:continue` + `memory_search()` [EVIDENCE: Grep `memory:continue` returns 4/4 (AGENTS.md, FS, Barter, CLAUDE.md)]
+- [x] CHK-013 [P0] G-02: FS Save context row has `/memory:save` [EVIDENCE: Grep `memory:save` returns 4/4 (AGENTS.md, FS, Barter, CLAUDE.md)]
+- [x] CHK-014 [P0] G-06: File modification row shows `Gate 3 -> Gate 1 -> Gate 2` in all 4 files [EVIDENCE: Grep `Gate 3.*ask spec folder.*Gate 1.*Gate 2` returns 4/4; old ordering returns 0 matches]
+- [x] CHK-015 [P1] G-03/G-04: No trailing extra pipe on Claim completion rows [EVIDENCE: Grep returns 0 matches]
+- [x] CHK-016 [P1] G-05: FS Documentation row has `validate_document.py` [EVIDENCE: Grep `validate_document.py` in Quick Reference returns 4/4]
+- [x] CHK-017 [P1] GPT-5.4 ultra-think cross-AI review completed (Analytical 88, Critical 92, Holistic 88) [EVIDENCE: review session documented]
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-018 [P0] No secrets or credentials introduced [EVIDENCE: documentation-only changes]
+- [x] CHK-019 [P1] Barter git policy preserved across all edits [EVIDENCE: Grep `GIT POLICY: READ-ONLY` returns 1 match]
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [x] CHK-020 [P1] Universal skill section references sk-code--opencode with system-spec-kit + memory system [EVIDENCE: verified via grep]
+- [x] CHK-021 [P1] FS skill section references sk-code--full-stack with 3-phase lifecycle + stack verification [EVIDENCE: verified via grep]
+- [x] CHK-022 [P1] Both files reference sk-git with full workflow (Worktree / Commit / Finish) [EVIDENCE: verified via grep]
+- [x] CHK-023 [P1] Changelog v2.2.0.0 created [EVIDENCE: file exists at .opencode/changelog/02--agents-md/]
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-024 [P1] Write scope stayed inside the canonical 014 packet plus the 3 AGENTS.md files [EVIDENCE: scoped edits only]
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | 7 | 7/7 |
+| P1 Items | 11 | 11/11 |
+| P2 Items | 2 | 2/2 |
+
+**Verification Date**: 2026-03-16
+<!-- /ANCHOR:summary -->
+
+---

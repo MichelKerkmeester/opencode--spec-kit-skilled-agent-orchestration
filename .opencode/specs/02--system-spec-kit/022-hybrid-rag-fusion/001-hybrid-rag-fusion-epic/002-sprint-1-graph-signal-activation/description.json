@@ -9,7 +9,7 @@
     "signal",
     "activation"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.113Z",
+  "lastUpdated": "2026-03-24T08:34:20.521Z",
   "specId": "002",
   "folderSlug": "sprint-1-graph-signal-activation",
   "parentChain": [
@@ -18,9 +18,5 @@
     "001-hybrid-rag-fusion-epic"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Sprint 1 — Graph Signal Activation",
-  "status": "Complete (Conditional Proceed)",
-  "importance_tier": "critical",
-  "short_description": "Feature Specification: Sprint 1 — Graph Signal Activation"
+  "memoryNameHistory": []
 }

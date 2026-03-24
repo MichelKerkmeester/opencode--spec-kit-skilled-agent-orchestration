@@ -92,6 +92,44 @@ Tester reads playbook → Issues MCP tool call or triggers startup sequence → 
 - [ ] Verify guard fires correctly and emits a clear diagnostic message on incompatibility
 - [ ] Record verdict: PASS / PARTIAL / FAIL
 
+#### EX-041 — Memory content update via memory_update
+- [ ] Identify an existing memory ID in the sandbox corpus
+- [ ] Invoke `memory_update` with updated content, title, or importance tier
+- [ ] Capture full tool output (confirmation response)
+- [ ] Invoke `memory_list` or `memory_search` to retrieve the updated memory
+- [ ] Verify the updated fields reflect the new values and `updated_at` is refreshed
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+#### EX-042 — Memory deletion via memory_delete
+- [ ] Identify a memory ID to delete (use a sandbox/test memory)
+- [ ] Invoke `memory_delete` with the target memory ID
+- [ ] Capture full tool output (deletion confirmation)
+- [ ] Invoke `memory_list` to confirm the memory no longer appears
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+#### EX-043 — Bulk delete with filter criteria
+- [ ] Create a checkpoint before executing (for rollback safety)
+- [ ] Invoke `memory_bulk_delete` with a filter targeting a specific `specFolder` or `importanceTier` in the sandbox
+- [ ] Capture full tool output (deletion count and confirmation)
+- [ ] Verify reported deletion count matches expected number of targeted memories
+- [ ] Verify non-matching memories are unaffected via `memory_list`
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+#### EX-044 — Health check diagnostics
+- [ ] Invoke `memory_health(reportMode: "full")`
+- [ ] Capture full tool output
+- [ ] Verify the diagnostic report includes status for: database connectivity, embedding provider, FTS integrity, alias conflicts
+- [ ] Verify any detected issues are clearly flagged with severity
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
+#### EX-045 — Index scan and repair
+- [ ] Create a checkpoint before executing (for rollback safety)
+- [ ] Invoke `memory_index_scan` with `force: true` to trigger full re-index
+- [ ] Capture full tool output (indexed, updated, failed, staleDeleted counts)
+- [ ] Invoke `memory_health(reportMode: "full")` to verify post-scan index integrity
+- [ ] Verify health check shows no FTS mismatches or index corruption
+- [ ] Record verdict: PASS / PARTIAL / FAIL
+
 ### Phase 3: Verification
 - [ ] Transfer verdicts and evidence to implementation-summary.md
 - [ ] Check all P0 items in checklist.md
@@ -107,6 +145,11 @@ Tester reads playbook → Issues MCP tool call or triggers startup sequence → 
 |-----------|-------|-------|
 | Manual | EX-014: memory_index_scan incremental mode | MCP tool call |
 | Manual | EX-035: startup runtime compatibility guard | Server startup / Node.js process |
+| Manual | EX-041: memory_update on existing memory | MCP tool call (mutating) |
+| Manual | EX-042: memory_delete on a known ID | MCP tool call (mutating) |
+| Manual | EX-043: memory_bulk_delete with filter | MCP tool call (mutating, sandbox) |
+| Manual | EX-044: memory_health full diagnostics | MCP tool call |
+| Manual | EX-045: memory_index_scan force + health check | MCP tool call (two calls, mutating) |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -154,9 +197,10 @@ Phase 1 (Setup) ──► Phase 2 (Execution) ──► Phase 3 (Verification)
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
 | Setup | Low | 5-10 minutes |
-| Scenario Execution | Low-Medium | 20-30 minutes |
+| Scenario Execution (EX-014, EX-035) | Low-Medium | 20-30 minutes |
+| Scenario Execution (EX-041 to EX-045) | Medium | 30-45 minutes |
 | Verification | Low | 5-10 minutes |
-| **Total** | | **30-50 minutes** |
+| **Total** | | **60-95 minutes** |
 <!-- /ANCHOR:effort -->
 
 ---

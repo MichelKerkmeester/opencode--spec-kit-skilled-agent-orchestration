@@ -7,7 +7,7 @@
     "tooling",
     "scripts"
   ],
-  "lastUpdated": "2026-03-22T17:41:14.717Z",
+  "lastUpdated": "2026-03-24T08:34:20.632Z",
   "specId": "016",
   "folderSlug": "tooling-and-scripts",
   "parentChain": [
@@ -15,8 +15,6 @@
     "022-hybrid-rag-fusion",
     "007-code-audit-per-feature-catalog"
   ],
-  "status": "Complete",
-  "importance_tier": "normal",
   "memorySequence": 0,
   "memoryNameHistory": []
 }

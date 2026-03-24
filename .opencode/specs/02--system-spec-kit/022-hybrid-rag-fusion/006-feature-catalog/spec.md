@@ -38,8 +38,8 @@ The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 his
 - All `NEW-NNN` provisional markers removed from both catalog and playbook individual files and index files.
 - Playbook section renamed from "8. NEW FEATURES" to "8. FEATURES".
 - `G-NEW-1`, `G-NEW-2`, `G-NEW-3` proper nouns preserved (evaluation framework feature IDs).
-- New feature catalog entries: `16-json-mode-hybrid-enrichment.md` (phase 016), `17-json-primary-deprecation-posture.md` (phase 017).
-- New playbook entries: `153-json-mode-hybrid-enrichment.md`, `154-json-primary-deprecation-posture.md`.
+- New feature catalog entries: 16-json-mode-hybrid-enrichment (phase 016), 17-json-primary-deprecation-posture (phase 017).
+- New playbook entries: 153-json-mode-hybrid-enrichment, 154-json-primary-deprecation-posture.
 - Both index files updated with new entries and cross-reference table rows.
 
 ## CURRENT-STATE NOTE (2026-03-23)

@@ -1,10 +1,10 @@
 ---
 name: sk-deep-research
-description: "Autonomous deep research loop protocol with iterative investigation, externalized state, convergence detection, and fresh context per iteration"
+description: "Autonomous deep research and review loop protocol with iterative investigation or code quality auditing, externalized state, convergence detection, and fresh context per iteration"
 allowed-tools: [Read, Write, Edit, Bash, Grep, Glob, Task, WebFetch, memory_context, memory_search]
 # Note: Task tool is for the command executor (loop management). The @deep-research agent itself does NOT have Task (LEAF-only).
-argument-hint: "[topic] [:auto|:confirm] [--max-iterations=N] [--convergence=N]"
-version: 1.1.0
+argument-hint: "[topic|target] [:auto|:confirm|:review|:review:auto|:review:confirm] [--max-iterations=N] [--convergence=N]"
+version: 1.2.0
 ---
 
 <!-- Keywords: autoresearch, deep-research, iterative-research, autonomous-loop, convergence-detection, externalized-state, fresh-context, research-agent, JSONL-state, strategy-file -->
@@ -39,9 +39,18 @@ Use this skill when:
 - Quick codebase searches (use `@context` or direct Grep/Glob)
 - Fewer than 3 sources needed (single-pass research suffices)
 
+### Review Mode Triggers
+
+Use the review mode variant when:
+- "review code quality" or "audit this code"
+- "audit spec folder" or "validate spec completeness"
+- "release readiness check" or "pre-release review"
+- "find misalignments" between spec and implementation
+- "verify cross-references" across documentation and code
+
 ### Keyword Triggers
 
-`autoresearch`, `deep research`, `autonomous research`, `research loop`, `iterative research`, `multi-round research`, `deep investigation`, `comprehensive research`
+`autoresearch`, `deep research`, `autonomous research`, `research loop`, `iterative research`, `multi-round research`, `deep investigation`, `comprehensive research`, `review code quality`, `audit spec folder`, `release readiness check`, `find misalignments`, `verify cross-references`
 
 ---
 
@@ -229,6 +238,9 @@ Save --> generate-context.js --> verify memory artifact
 10. **Document ruled-out directions per iteration** -- Every iteration must include what was tried and failed
 11. **Report newInfoRatio + 1-sentence novelty justification** -- Every JSONL iteration record must include both
 12. **Quality guards must pass before convergence** -- Source diversity, focus alignment, and no single-weak-source checks must pass before STOP can trigger
+13. **Review target files are read-only** -- Never modify code under review; review mode is observation-only
+14. **Run adversarial self-check on P0 findings before recording** -- Re-read cited code to confirm P0 severity is genuine
+15. **Report severity counts (P0/P1/P2) in every review iteration JSONL record** -- `findingsSummary` and `findingsNew` are required fields
 
 ### NEVER
 
@@ -285,6 +297,22 @@ These concepts remain documented for future design work, but they are not part o
 | [deep_research_config.json](assets/deep_research_config.json) | Loop configuration | Copied to scratch/ during init |
 | [deep_research_strategy.md](assets/deep_research_strategy.md) | Strategy file | Copied to scratch/ during init |
 | [deep_research_dashboard.md](assets/deep_research_dashboard.md) | Dashboard template | Auto-generated each iteration |
+| [deep_review_strategy.md](assets/deep_review_strategy.md) | Review strategy file | Copied to scratch/ during review init |
+| [deep_review_dashboard.md](assets/deep_review_dashboard.md) | Review dashboard template | Auto-generated each review iteration |
+
+### Review Mode Resources
+
+| Resource | Purpose |
+|----------|---------|
+| `@deep-review` agent | Single review iteration executor (LEAF) |
+| Review auto YAML | `.opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml` |
+| Review confirm YAML | `.opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml` |
+
+Agent runtime paths:
+- OpenCode/Copilot: `.opencode/agent/deep-review.md`
+- ChatGPT: `.opencode/agent/chatgpt/deep-review.md`
+- Claude: `.claude/agents/deep-review.md`
+- Codex: `.codex/agents/deep-review.toml`
 
 ---
 
@@ -315,6 +343,16 @@ Every completed loop produces a convergence report:
 - Total iterations completed
 - Questions answered ratio
 - Average newInfoRatio trend
+
+### Review Mode Success Criteria
+
+| Criteria | Requirement |
+|----------|-------------|
+| Dimension coverage | All configured review dimensions reviewed with evidence |
+| Finding citations | P0/P1 findings include `file:line` citations |
+| Report completeness | `review-report.md` has all 11 sections |
+| Verdict justification | Release readiness verdict (PASS/PASS WITH NOTES/CONDITIONAL/FAIL) is justified with score and findings |
+| Adversarial recheck | P0 findings confirmed via adversarial self-check before final report |
 
 ---
 

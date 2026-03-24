@@ -105,7 +105,7 @@ TEMPLATE_HEADERS delegates to `template-structure.js compare <level> <filename> 
 
 ### 2.4 Phase Addendum Merging
 
-`loadTemplateContractForDocument()` auto-detects phase parent/child relationships and merges addendum contracts. A phase-parent spec.md gets additional optional anchors (e.g., `phase-map`) from `addendum/phase/phase-parent-section.md`. Static prompt injection must document this dynamic behavior separately.
+`loadTemplateContractForDocument()` auto-detects phase parent/child relationships and merges addendum contracts. A phase-parent spec.md gets additional optional anchors (e.g., `phase-map`) from the addendum phase-parent-section template. Static prompt injection must document this dynamic behavior separately.
 
 ### 2.5 Contract Compactness for Prompt Injection
 
@@ -117,7 +117,7 @@ The full Level 2 contract for all 5 documents fits in ~45 lines of compact markd
 
 ### 3.1 Current State: Partial Scaffold in @speckit Only
 
-The @speckit agent definition (`speckit.md`, section 8) contains an "Inline Scaffold Contract" with a quick reference for **Level 2 spec.md only**. The other 4 document types (plan.md, tasks.md, checklist.md, implementation-summary.md) have NO inline scaffold. This explains why agents fail more frequently on non-spec.md documents.
+The @speckit agent definition (speckit agent file, section 8) contains an "Inline Scaffold Contract" with a quick reference for **Level 2 spec.md only**. The other 4 document types (plan.md, tasks.md, checklist.md, implementation-summary.md) have NO inline scaffold. This explains why agents fail more frequently on non-spec.md documents.
 
 ### 3.2 Multi-CLI Agent Surface
 
@@ -143,7 +143,7 @@ Any prompt injection strategy must either: (a) be applied to all 4 surfaces inde
 
 **Decision**: Use a HYBRID approach combining strategies 1 and 3.
 
-- **Canonical source**: Create `.opencode/skill/system-spec-kit/references/template-compliance-contract.md` containing the full contract with examples, rationale, and version metadata
+- **Canonical source**: Create .opencode/skill/system-spec-kit/references/template-compliance-contract.md (proposed) containing the full contract with examples, rationale, and version metadata
 - **Agent inline**: Embed a compact 49-line summary (anchor-to-H2 tables only) in all 4 CLI @speckit agent definitions
 - **Sync mechanism**: Version stamp in the shared file; checklist item in template update workflow to verify agent definitions are updated
 
@@ -438,7 +438,7 @@ The 3-layer architecture provides defense-in-depth. No single layer is sufficien
 
 | Deliverable | Action | Key Detail |
 |---|---|---|
-| Shared compliance reference file | CREATE | `.opencode/skill/system-spec-kit/references/template-compliance-contract.md` -- canonical source with version metadata, full contract, sync protocol |
+| Shared compliance reference file | CREATE | .opencode/skill/system-spec-kit/references/template-compliance-contract.md (proposed) -- canonical source with version metadata, full contract, sync protocol |
 | @speckit agent definition update | EDIT x4 | Replace 12-line spec.md-only scaffold (lines 318-339) with 49-line full contract across all 4 CLI agent defs |
 | Timing directive consolidation | EDIT x4 | Collapse 3 conflicting directives (lines 109, 238, 325) into one: "validate after EACH file write" |
 | Post-write validation protocol | ADD x4 | New section in all agent defs: exit code parsing, fix loop (max 3 attempts), proceed/stop logic |
@@ -526,7 +526,7 @@ ln -sf ../../.opencode/skill/system-spec-kit/scripts/spec/pre-commit-spec-valida
 
 | Step | Action | Impact | Effort |
 |------|--------|--------|--------|
-| A1 | Create `references/template-compliance-contract.md` | Canonical source of truth | 15 min |
+| A1 | Create references/template-compliance-contract.md | Canonical source of truth | 15 min |
 | A2 | Install pre-commit hook (`ln -sf` of existing script) | Layer 3 gate -- catches 100% at commit | 5 min |
 | A3 | Change `.speckit-enforce.yaml` mode from `warn` to `block` | Hard enforcement | 2 min |
 
@@ -568,7 +568,7 @@ The `template-structure.js contract <level> <basename>` CLI (at `scripts/utils/t
 
 ### 11.3 Key Artifact
 
-The complete, copy-pasteable content for `references/template-compliance-contract.md` (~140 lines) is documented in `scratch/iteration-009.md`, Finding 2. This is the primary deliverable from this research -- the single file an implementer needs to create to begin Phase A.
+The complete, copy-pasteable content for references/template-compliance-contract.md (~140 lines) is documented in `scratch/iteration-009.md`, Finding 2. This is the primary deliverable from this research -- the single file an implementer needs to create to begin Phase A.
 
 ### 11.4 Agent Surface Completeness
 

@@ -7,7 +7,7 @@
     "phase",
     "classification"
   ],
-  "lastUpdated": "2026-03-21T13:24:03.930Z",
+  "lastUpdated": "2026-03-24T08:34:20.681Z",
   "specId": "007",
   "folderSlug": "phase-classification",
   "parentChain": [
@@ -15,8 +15,6 @@
     "022-hybrid-rag-fusion",
     "009-perfect-session-capturing"
   ],
-  "status": "Complete",
-  "importance_tier": "normal",
   "memorySequence": 3,
   "memoryNameHistory": [
     "16-03-26_20-16__phase-classification.md",
