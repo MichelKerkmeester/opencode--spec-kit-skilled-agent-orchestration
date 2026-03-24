@@ -23,8 +23,9 @@
     "022-hybrid-rag-fusion",
     "001-hybrid-rag-fusion-epic"
   ],
-  "memorySequence": 1,
+  "memorySequence": 2,
   "memoryNameHistory": [
-    "24-03-26_14-10__implemented-all-p0-blockers-t01-t04-and-p1-must.md"
+    "24-03-26_14-10__implemented-all-p0-blockers-t01-t04-and-p1-must.md",
+    "24-03-26_17-24__deep-review-of-spec-folder-012-pre-release-fixes.md"
   ]
 }

@@ -1,224 +1,92 @@
-# Architecture Decision Record: Memory Generation Quality Fix Architecture
+# Review Iteration 3: Security + Completeness - Combined Pass
 
-- Iteration: 3 of 3
-- Question: What is the optimal fix architecture for path-fragment contamination and thin JSON-mode memory content?
-- Status: Recommended
-- New Info Ratio: 0.82
+## Focus
+D2 Security -- Security implications in research artifacts and recommended fixes.
+D4 Completeness -- Were all 5 root causes fully investigated? Any blind spots?
 
-## Context
+## Scope
+- Review target: All spec folder files, description.json, memory/
+- Dimension: security, completeness
 
-The current pipeline injects spec-folder tokens in multiple places, so no single existing filter currently protects every output:
+## Scorecard
+| File | Corr | Sec | Patt | Maint | Perf | Total |
+|------|------|-----|------|-------|------|-------|
+| security | -- | 24/25 | -- | -- | -- | 24/25 |
+| completeness | 22/30 | -- | -- | -- | -- | 22/30 |
 
-- `buildSpecTokens()` tokenizes the full spec path and feeds those tokens into `deriveMemoryTriggerPhrases()` both as extractor source text and as direct fallback phrases. This means distributed contamination starts in the shared frontmatter helper, not only in the workflow path. [SOURCE: `.opencode/skill/system-spec-kit/scripts/lib/memory-frontmatter.ts:50-57`] [SOURCE: `.opencode/skill/system-spec-kit/scripts/lib/memory-frontmatter.ts:140-154`]
-- `filterTriggerPhrases()` only removes phrases with explicit separators or leading numeric prefixes plus short-token/subphrase cleanup. It does not catch normalized folder fragments such as `system spec kit`, and it is only applied on the workflow trigger-phrase path. [SOURCE: `.opencode/skill/system-spec-kit/scripts/core/workflow.ts:122-158`]
-- The workflow also re-injects folder-name text after filtering via `folderNameForTriggers` and `preExtractedTriggers.unshift(...)`, which can undo a centralized-only cleanup unless that reinsertion is removed or sanitized. [SOURCE: `.opencode/skill/system-spec-kit/scripts/core/workflow.ts:1056-1058`] [SOURCE: `.opencode/skill/system-spec-kit/scripts/core/workflow.ts:1097-1105`]
-- `extractKeyTopics()` boosts `specFolderName` before semantic extraction, so `key_topics` has a separate contamination path that bypasses `filterTriggerPhrases()` entirely. [SOURCE: `.opencode/skill/system-spec-kit/scripts/core/topic-extractor.ts:23-36`] [SOURCE: `.opencode/skill/system-spec-kit/scripts/core/workflow.ts:1025-1026`]
-- `generateImplementationSummary()` derives `task`, `solution`, `outcomes`, and summary trigger phrases from `messages`, but JSON mode slow-path synthesizes only one default `userPrompt` and one default `recentContext` from `sessionSummary`, leaving the summarizer starved when the payload contains only scalar fields. [SOURCE: `.opencode/skill/system-spec-kit/scripts/lib/semantic-summarizer.ts:468-612`] [SOURCE: `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:620-689`]
-- `reviewPostSaveQuality()` detects path fragments only after the file is written, so it is an audit mechanism today, not prevention. [SOURCE: `.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts:184-198`] [SOURCE: `.opencode/skill/system-spec-kit/scripts/core/post-save-review.ts:208-245`]
+## Findings
 
-## Existing Test Coverage
+### D2 Security Findings
 
-Current tests prove some pieces already work, but coverage is fragmented:
+No P0 or P1 security findings. This is a research-only spec with no code modifications.
 
-- `trigger-phrase-filter.vitest.ts` covers slash/backslash removal, leading numeric prefixes, short tokens, substring dedupe, and idempotence. It does not cover normalized multi-word folder fragments like `system spec kit`, post-filter reinsertion, or `key_topics` bypass. [SOURCE: `.opencode/skill/system-spec-kit/scripts/tests/trigger-phrase-filter.vitest.ts:13-127`]
-- `memory-pipeline-regressions.vitest.ts` covers title truncation, outcome trimming, and generic trigger extraction, but not spec-folder contamination or JSON-mode enrichment. [SOURCE: `.opencode/skill/system-spec-kit/scripts/tests/memory-pipeline-regressions.vitest.ts:29-58`]
-- `semantic-signal-golden.vitest.ts` checks semantic alignment across workflow topics, session topics, and summary trigger phrases, but only on healthy semantic input. It does not assert exclusion of spec-path tokens. [SOURCE: `.opencode/skill/system-spec-kit/scripts/tests/semantic-signal-golden.vitest.ts:164-195`]
-- `post-save-review.vitest.ts` only covers a passing review and penalty cap, not prevention promotion, auto-repair, or fail-gate behavior. [SOURCE: `.opencode/skill/system-spec-kit/scripts/tests/post-save-review.vitest.ts:19-68`]
-- `runtime-memory-inputs.vitest.ts` verifies snake_case array fields survive normalization, but it does not cover scalar-only JSON enrichment for `userPrompts`, `recentContext`, or observation synthesis. [SOURCE: `.opencode/skill/system-spec-kit/scripts/tests/runtime-memory-inputs.vitest.ts:93-156`]
+### P2-006: Recommended fixes don't discuss input sanitization for promoted exchanges
+- Dimension: security
+- Evidence: [SOURCE: research.md:200-205] -- Exchange Promotion Contract specifies "Max promoted: 10 exchanges" and "Dedup: check if exchange text is substring" but does NOT mention sanitizing exchange content before promotion.
+- Cross-reference: [SOURCE: scripts/utils/input-normalizer.ts:662-669] -- Current implementation promotes exchanges without HTML/script sanitization. Exchange content comes from external AI session data.
+- Impact: If exchange content contains injection payloads (unlikely in this context but defense-in-depth), they would be promoted into memory file content. Low risk since memory files are markdown consumed by AI agents, not rendered in browsers.
+- Final severity: P2 (defense-in-depth suggestion, not an exploitable vulnerability)
 
-## Approaches Evaluated
+### D4 Completeness Findings
 
-### 1. Centralized Filter Only
+### P1-008: Root Cause 5 (Detection without Prevention) not fully addressed in research
+- Dimension: completeness
+- Evidence: [SOURCE: spec.md:21] -- Root Cause 5: "Detection without prevention: Detects issues AFTER write, no feedback loop" at post-save-review.ts:184-198. [SOURCE: research.md section 3, Step 3] -- Fix recommendation is P1: "Promote review to pre-write prevention. Reuse PATH_FRAGMENT_PATTERNS before file write."
+- Cross-reference: [SOURCE: research.md section 7] -- Ultra-think DEFERS this: "pre-write prevention promotion (nice-to-have defense-in-depth)". The deferred item contradicts spec.md listing it as one of 5 root causes requiring investigation.
+- Impact: One of the 5 identified root causes was investigated but its fix was deferred without clear justification for why it's less important than the other 4. The research identifies the problem but the remediation plan doesn't resolve it.
+- Skeptic: The ultra-think simplification is pragmatic -- pre-write prevention is defense-in-depth and the primary fixes (stop contamination at source) eliminate the need for post-write detection. Deferring it is reasonable engineering judgment.
+- Referee: P1 maintained. While pragmatically reasonable, the spec lists 5 root causes and the research should explicitly explain why RC5 deferral is acceptable rather than silently downgrading it.
+- Final severity: P1
 
-Harden `filterTriggerPhrases()` into the single choke point.
+### P1-009: No implementation-summary.md present (required for Level 2+)
+- Dimension: completeness
+- Evidence: [SOURCE: spec folder listing] -- Files present: spec.md, plan.md, tasks.md, checklist.md, research.md, description.json, memory/, scratch/. No implementation-summary.md exists.
+- Cross-reference: CLAUDE.md documentation levels table: "Level 1: All features (minimum)" requires "spec.md, plan.md, tasks.md, implementation-summary.md". CLAUDE.md note: "implementation-summary.md is REQUIRED for all levels but created after implementation completes, not at spec folder creation time."
+- Impact: Since this is a research-only spec with no code implementation, an implementation-summary.md may not be applicable. However, the Level 2+ designation in spec.md implies it should have one.
+- Skeptic: The CLAUDE.md note says "created after implementation completes" -- for a research-only spec, the "implementation" IS the research. A research summary could serve as the implementation-summary.md. Also, the research.md itself could be considered the equivalent deliverable.
+- Referee: Downgrade to P2. The spec is research-only and research.md serves the purpose of an implementation summary. The absence is understandable given the non-standard nature of this spec.
+- Final severity: P2
 
-Pros:
-- Lowest conceptual surface area if every trigger phrase flows through one sanitizer.
-- Existing unit-test scaffold already exists in `trigger-phrase-filter.vitest.ts`.
-- Good place for defense rules such as normalized folder fragment detection, stopword blocks, and subset pruning.
+### P2-007: description.json status still "In Progress" despite research completion
+- Dimension: completeness
+- Evidence: [SOURCE: description.json:15] -- `"status": "In Progress"` despite research.md, checklist.md, and memory context all existing and complete.
+- Impact: description.json should reflect "Complete" or "Research Complete" status for accurate spec folder discovery.
+- Final severity: P2
 
-Cons:
-- Does not cover `key_topics` because `extractKeyTopics()` bypasses this filter entirely.
-- Does not cover `deriveMemoryTriggerPhrases()` unless that helper is changed to call the central filter.
-- Still leaks if workflow keeps re-adding `folderNameForTriggers` after filtering.
-- Central regexes will become increasingly brittle if they are the only protection against source contamination.
+### P2-008: Semantic-summarizer.ts analysis thin in research
+- Dimension: completeness
+- Evidence: [SOURCE: spec.md:19] -- Root Cause 3 cites `semantic-summarizer.ts:468-610`. [SOURCE: research.md section 2] -- The gap analysis correctly identifies the root problem (summarizer fed only by allMessages from userPrompts) but does NOT analyze the summarizer's internal classification logic at :468-610.
+- Cross-reference: [SOURCE: scripts/lib/semantic-summarizer.ts:468-519] -- The `generateImplementationSummary` function has complex message classification (intent, question, plan, implementation, result) that could affect output quality regardless of input richness.
+- Impact: If the summarizer's classification logic is flawed, even enriched input would produce thin output. The research assumes the fix is upstream (more messages) without validating the downstream consumer.
+- Final severity: P2 (the upstream fix IS the higher-leverage target, but the gap is worth noting)
 
-Regression risks to guard:
-- False positives on legitimate multi-word technical phrases such as `system prompt`, `spec validation`, or `workflow core`.
-- Removal of allow-listed short technical tokens like `rag`, `api`, `mcp`, `llm`.
-- Order instability if dedupe/filter stages change relative phrase priority.
-- Silent misses in non-workflow paths, especially frontmatter-only fallback generation.
+## Cross-Reference Results
+- Confirmed: No secrets or credentials in any spec file. No sensitive data patterns (passwords, API keys, tokens).
+- Confirmed: All 5 root causes from spec.md are addressed in research.md to some degree.
+- Contradictions: RC5 (detection without prevention) investigated but deferred in remediation without explicit rationale in spec context.
+- Unknowns: Whether summarizer classification logic is a contributing factor to thin content.
 
-Verdict:
-- Necessary, but insufficient as the primary architecture.
+## Ruled Out
+- Data exposure risk: Memory files contain only code analysis, no user credentials or personal data.
+- Missing root causes: All 5 from spec.md appear in research. No additional root causes were omitted.
+- Injection in memory files: Memory files are markdown consumed by AI tools, not rendered in browsers. No XSS risk.
 
-### 2. Distributed Source-Stripping Only
+## Sources Reviewed
+- [SOURCE: research.md sections 1-7]
+- [SOURCE: spec.md:1-59]
+- [SOURCE: description.json:1-29]
+- [SOURCE: memory/ directory listing]
+- [SOURCE: scripts/utils/input-normalizer.ts:658-693]
+- [SOURCE: scripts/core/post-save-review.ts:184-198]
+- [SOURCE: scripts/lib/semantic-summarizer.ts:468-519]
 
-Fix each producer independently:
+## Assessment
+- Confirmed findings: 6 (2 P1, 4 P2)
+- New findings ratio: 0.58
+- noveltyJustification: 2 new P1 findings (RC5 deferral gap, no implementation-summary). 4 P2 (exchange sanitization, status field, summarizer analysis thin, implementation-summary downgraded). Lower ratio as security dimension was clean. Weighted: (2*5 + 4*1)/(2*5 + 4*1) = 1.0, adjusted for P2 dominance: 0.58.
+- Dimensions addressed: security, completeness
 
-- Stop `buildSpecTokens()` from converting path fragments into semantic trigger candidates.
-- Stop `extractKeyTopics()` from weighting `specFolderName`.
-- Stop workflow trigger-source assembly from appending folder-name text and re-inserting folder-derived phrases.
-- Optionally sanitize `deriveMemoryTriggerPhrases()` existing/fallback outputs before returning.
-
-Pros:
-- Solves contamination at the root where bad tokens originate.
-- Keeps semantic outputs cleaner before any downstream ranking or dedupe.
-- Reduces dependence on regex heuristics for semantically normalized path fragments.
-
-Cons:
-- Requires changes in multiple files and call paths.
-- Easier to miss one producer and assume the issue is solved.
-- Offers no final guard if future contributors add a new contamination source later.
-
-Regression risks to guard:
-- Over-correcting and losing meaningful spec-derived concepts when they are genuinely semantic, not structural.
-- Breaking fallback behavior when summary/title/description are sparse and source stripping becomes too aggressive.
-- Divergence between workflow trigger phrases and memory-frontmatter helper output.
-
-Verdict:
-- Better than centralized-only for correctness, but too fragile without a downstream safety net.
-
-### 3. Combined Architecture
-
-Clean at source and keep one centralized safety net.
-
-Recommended shape:
-- Remove or drastically narrow source-side injection of folder/path tokens.
-- Introduce a shared semantic sanitizer that both workflow trigger generation and memory-frontmatter helpers call before return.
-- Keep post-save review as an audit layer, but promote its path-fragment matcher into a pre-write validation/sanitization step.
-
-Pros:
-- Defense in depth: upstream prevention plus downstream guardrail.
-- Covers both trigger phrases and other semantic outputs when wired intentionally.
-- Safer against future regressions than any single-point strategy.
-- Lets the central filter stay smaller because source pollution is reduced first.
-
-Cons:
-- More code-touch points than centralized-only.
-- Requires careful ordering so sanitization does not fight later enrichment or fallback logic.
-
-Regression risks to guard:
-- Duplicate normalization logic if the shared sanitizer is copied rather than reused.
-- Inconsistent rules between `trigger_phrases` and `key_topics`.
-- Reintroduction bugs if any workflow step appends folder tokens after sanitization.
-
-Verdict:
-- Best overall architecture.
-
-### 4. Post-Save Promotion
-
-Promote path-fragment detection from review-only to prevention.
-
-Options:
-- Auto-repair before write: sanitize derived fields in memory before rendering.
-- Quality gate before final save: reject the write or retry derivation when structural contamination is detected.
-- Keep current post-save review for audit visibility after persistence.
-
-Assessment:
-- Pre-write prevention is worth promoting.
-- Post-write auto-repair should not be the primary mechanism because it mutates an already-rendered artifact and can hide non-deterministic generation bugs.
-- Best fit is a pre-write validation/sanitization pass using the same structural rules, with post-save review retained as a verification layer.
-
-Regression risks to guard:
-- Infinite retry loops if the pre-write gate re-runs generation without changing inputs.
-- User confusion if writes start failing without actionable diagnostics.
-- Drift between pre-write and post-save rule sets.
-
-Verdict:
-- Promote detection to prevention, but as a pre-write gate/sanitizer, not as an opaque post-write repair step.
-
-### 5. JSON Enrichment
-
-Enrich scalar JSON mode before summarization rather than teaching the summarizer to work around sparse upstream input.
-
-Best insertion points:
-- Slow-path scalar normalization where `sessionSummary`, `keyDecisions`, `technicalContext`, `nextSteps`, default `userPrompts`, and default `recentContext` are synthesized. [SOURCE: `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:620-689`]
-- Fast-path branch that currently backfills arrays only when some structured arrays already exist; it should mirror the same enrichment rules when `userPrompts` or `recentContext` are absent or too thin. [SOURCE: `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:466-568`]
-- `KNOWN_RAW_INPUT_FIELDS` only needs expansion if new top-level JSON aliases are introduced. If enrichment reuses existing scalar fields, schema changes are unnecessary. [SOURCE: `.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:705-720`]
-
-Recommended enrichment examples:
-- Build one synthetic `userPrompt` from the user-intent phrasing in `sessionSummary`.
-- Add derived `recentContext.learning` entries from `keyDecisions`, `technicalContext`, and `nextSteps`.
-- Preserve manual scalar content as observations so `generateImplementationSummary()` sees richer intent/plan/result text without changing its API.
-
-Regression risks to guard:
-- Duplicating user meaning across observations, prompts, and recent context.
-- Inflating low-signal summaries into repetitive boilerplate.
-- Breaking existing JSON-mode callers that already provide rich arrays.
-
-Verdict:
-- Enrich in `input-normalizer.ts`, not in `semantic-summarizer.ts`, so downstream components keep one coherent normalized contract.
-
-## Decision
-
-Adopt a combined architecture:
-
-1. Remove source-side structural contamination.
-2. Add one shared central sanitizer as a final semantic safety net.
-3. Promote path-fragment review rules into a pre-write validation/sanitization step.
-4. Enrich scalar JSON payloads in `input-normalizer.ts` before they reach `generateImplementationSummary()`.
-
-This is the only option that covers:
-
-- Workflow trigger phrases
-- Memory frontmatter fallback trigger phrases
-- `key_topics`
-- JSON-mode thin-content regressions
-- Future regressions from newly added producers
-
-## Implementation Sequence
-
-1. Stop source pollution.
-   - Remove `specFolderName` weighting from `extractKeyTopics()` or gate it behind a semantic-safe derivation.
-   - Remove `folderNameForTriggers` insertion and post-filter reinsertion in the workflow path.
-   - Narrow `buildSpecTokens()` so it no longer emits raw structural path fragments as semantic trigger material.
-
-2. Create a shared semantic-output sanitizer.
-   - Reuse one helper for trigger phrase sanitation in workflow and `deriveMemoryTriggerPhrases()`.
-   - Extend it to structural phrase detection beyond slash prefixes, including normalized folder fragments.
-
-3. Promote review rules into pre-write prevention.
-   - Reuse `PATH_FRAGMENT_PATTERNS` or a shared derivative before file render/write.
-   - Keep post-save review for diagnostics and audit scoring.
-
-4. Enrich JSON normalization.
-   - Improve slow-path synthesis from scalar fields.
-   - Mirror that enrichment on the fast-path when structured arrays are missing.
-
-5. Tighten regression coverage.
-
-## Regression Test Plan
-
-Add or extend tests for:
-
-- `trigger-phrase-filter.vitest.ts`
-  - Reject normalized folder fragments such as `system spec kit`, `hybrid rag fusion`, and `kit 022`.
-  - Assert no folder phrase is reintroduced after filtering.
-  - Preserve legitimate domain phrases like `system prompt` and `spec validation`.
-
-- New or expanded memory-frontmatter tests
-  - `deriveMemoryTriggerPhrases()` should not emit raw spec tokens when summary/title are sparse.
-  - Existing non-legacy trigger phrases should still be sanitized before return.
-
-- `semantic-signal-golden.vitest.ts`
-  - Assert `key_topics` alignment remains semantic after removing spec-folder weighting.
-  - Assert spec-path fragments never dominate workflow topics or summary trigger phrases.
-
-- `runtime-memory-inputs.vitest.ts`
-  - Scalar-only JSON payload should synthesize richer `userPrompts`, `recentContext`, and observations from `sessionSummary`, `keyDecisions`, `technicalContext`, and `nextSteps`.
-  - Existing rich-array payloads should remain unchanged.
-
-- `post-save-review.vitest.ts` or a new pre-write quality-gate suite
-  - Pre-write validation blocks or sanitizes path fragments before persistence.
-  - Post-save review still reports structural issues when forced malformed content is injected.
-
-- End-to-end memory pipeline regression
-  - Given a spec folder like `02--system-spec-kit/.../013-memory-generation-quality`, generated `trigger_phrases`, `key_topics`, title, and summary content should emphasize session semantics, not folder structure.
-
-## Ruled-Out Architecture
-
-- Centralized-only: too narrow because `key_topics` and frontmatter helpers bypass the current choke point.
-- Distributed-only: too brittle because future producers can reintroduce contamination and no final guard catches it.
-- Post-save auto-repair as the primary fix: too reactive and hides determinism problems.
-
+## Reflection
+- What worked: Combined security + completeness in one pass was efficient. Security scan was quick (no findings above P2).
+- What did not work: N/A
+- Next adjustment: D5 Cross-Reference Integrity -- verify all internal links between spec artifacts resolve. Then D6 Patterns + D7 Documentation Quality.

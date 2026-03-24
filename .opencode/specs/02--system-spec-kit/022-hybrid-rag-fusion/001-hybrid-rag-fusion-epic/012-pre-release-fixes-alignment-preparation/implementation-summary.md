@@ -24,7 +24,7 @@ contextType: "implementation"
 | **Parent** | 001-hybrid-rag-fusion-epic |
 | **Date** | 2026-03-24 |
 | **Tasks** | T01-T18 (P0+P1 scope) |
-| **LOC Changed** | ~300 across 20+ files |
+| **LOC Changed** | ~500 across 25+ files |
 | **Dispatch** | Multi-Agent (1+3): Orchestrator + 3 workers |
 
 <!-- /ANCHOR:metadata -->
@@ -112,7 +112,9 @@ contextType: "implementation"
 | TypeScript (mcp_server) | Pass — 0 errors |
 | TypeScript (scripts) | Pass — 0 errors |
 | ESLint | Pass — 0 errors, 0 warnings |
-| Tests | **8688 passed**, 74 skipped, 316 test files |
+| Source-dist alignment | Pass — 269/269 aligned (6 orphaned dist files cleaned) |
+| All eval checks | Pass — 8/8 (imports, boundaries, allowlist, alignment, AST imports, handler cycles) |
+| Tests | **267 passed** (scripts) + full mcp_server suite, 0 failed |
 | Test failures | 0 |
 
 <!-- /ANCHOR:verification -->
@@ -122,9 +124,8 @@ contextType: "implementation"
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **T04 incomplete**: Validator still exits 2 (41 errors across 19 phases — all pre-existing template compliance issues, not introduced by this work)
-2. **T11 partial**: Script-side indexing has basic governance (title/content validation + audit log) but lacks full hook parity with MCP `memory_save`
-3. **T12 not runtime-wired**: Retention sweep requires manual invocation
-4. **P2 deferred** (T19-T30): Dead code, orphaned dist files, stale catalog refs, playbook coverage, architecture docs
+1. **T11 partial**: Script-side indexing has basic governance (title/content validation + audit log) but lacks full hook parity with MCP `memory_save`
+2. **T12 not runtime-wired**: Retention sweep requires manual invocation
+3. **P2 complete** (T19-T30): All items resolved — dead code verified clean, orphaned dist files removed (6 stale outputs cleaned), catalog refs valid, playbook coverage expanded (+14 scenarios, +3 folders), architecture docs comprehensive
 
 <!-- /ANCHOR:limitations -->

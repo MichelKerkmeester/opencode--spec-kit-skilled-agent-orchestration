@@ -3,6 +3,7 @@
 > **Level 2+ | Phase 13 of 022-hybrid-rag-fusion Epic**
 
 <!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
 
 ---
 
@@ -51,8 +52,8 @@ Deep research investigation into systematic quality issues in `generate-context.
 ## Success Criteria
 
 - [x] 5 root causes documented with file:line evidence
-- [ ] Q1: Complete contamination map of path fragment entry points
-- [ ] Q2: Field-by-field gap analysis of JSON mode vs pipeline expectations
-- [ ] Q3: Architecture decision record with pros/cons/regression risks
-- [ ] Fix recommendations prioritized P0/P1/P2 with exact code locations
-- [ ] Regression test plan for existing test suites
+- [x] Q1: Complete contamination map of path fragment entry points — [EVIDENCE: research.md §1, 7-row table]
+- [x] Q2: Field-by-field gap analysis of JSON mode vs pipeline expectations — [EVIDENCE: research.md §2, 10-row table]
+- [x] Q3: Architecture decision record with pros/cons/regression risks — [EVIDENCE: research.md §3+§5+§7]
+- [x] Fix recommendations prioritized P0/P1/P2 with exact code locations — [EVIDENCE: research.md §3, 5-step sequence]
+- [x] Regression test plan for existing test suites — [EVIDENCE: research.md §4, 6 test suites]

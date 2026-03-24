@@ -12,21 +12,21 @@
 
 ## Phase 2: Deep Research
 
-- [ ] **Iteration 1**: Agent 1 — Path fragment contamination tracing (Q1)
-- [ ] **Iteration 2**: Agent 2 — JSON mode content thinness analysis (Q2)
-- [ ] **Iteration 3**: Agent 3 — Fix architecture design (Q3)
+- [x] **Iteration 1**: Agent 1 — Path fragment contamination tracing (Q1) — [EVIDENCE: scratch/iteration-001.md, newInfoRatio 0.67]
+- [x] **Iteration 2**: Agent 2 — JSON mode content thinness analysis (Q2) — [EVIDENCE: scratch/iteration-002.md, newInfoRatio 0.72]
+- [x] **Iteration 3**: Agent 3 — Fix architecture design (Q3) — [EVIDENCE: scratch/iteration-003.md, newInfoRatio 0.82]
 
 ---
 
 ## Phase 3: Synthesis
 
-- [ ] Compile research.md from 3 iteration files
-- [ ] Prioritize fix recommendations (P0/P1/P2)
-- [ ] Document regression test plan
+- [x] Compile research.md from 3 iteration files — [EVIDENCE: research.md, 7 sections including ultra-think review]
+- [x] Prioritize fix recommendations (P0/P1/P2) — [EVIDENCE: research.md §3 and §7, 3-step/2-PR plan]
+- [x] Document regression test plan — [EVIDENCE: research.md §4, 6 test suites]
 
 ---
 
 ## Phase 4: Context Preservation
 
-- [ ] Save context via generate-context.js
-- [ ] Patch memory file if post-save review flags issues
+- [x] Save context via generate-context.js — [EVIDENCE: memory/24-03-26_15-30__completed-deep-research-on-memory-generation.md]
+- [x] Patch memory file if post-save review flags issues — [EVIDENCE: path fragments removed from trigger_phrases]

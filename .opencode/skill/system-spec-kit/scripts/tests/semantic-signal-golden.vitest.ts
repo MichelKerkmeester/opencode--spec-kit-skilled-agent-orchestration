@@ -187,7 +187,9 @@ describe('semantic signal extractor golden coverage', () => {
       ],
     );
 
-    expect(workflowTopics.join(' ')).toContain('signal extraction');
+    // T09: specFolderName no longer injected into topics, so 'signal extraction' bigram
+    // may not form. Accept either 'signal extractor' (from decision title) or 'signal extraction'.
+    expect(workflowTopics.join(' ')).toMatch(/signal (extractor|extraction)/);
     expect(sessionTopics.join(' ')).toMatch(/signal (extractor|extraction)/);
     expect(implementationSummary.triggerPhrases.join(' ')).toMatch(/signal (extractor|extraction)/);
     expect(workflowTopics.join(' ')).toContain('workspace identity');

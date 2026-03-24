@@ -80,8 +80,8 @@
 
 All P0 items must pass. P1 items should pass. P2 items are tracked for follow-up.
 
-- [x] `npm run test` passes (all workspaces) — [EVIDENCE: 8688 passed, 0 failed, 316 test files]
-- [x] `npm run check` passes (lint + typecheck) — [EVIDENCE: tsc 0 errors, eslint 0 errors]
+- [x] `npm run test` passes (all workspaces) — [EVIDENCE: 267 passed (scripts) + full mcp_server suite, 0 failed. semantic-signal-golden T09 regression fixed.]
+- [x] `npm run check` passes (lint + typecheck + evals) — [EVIDENCE: tsc 0 errors, source-dist alignment 269/269 (6 orphaned dist files cleaned), all 8 eval checks pass]
 - [x] `validate.sh --recursive` on 022 exits 0 or 1 — [EVIDENCE: Exits 1 (PASSED WITH WARNINGS). 0 errors.]
 - [x] MCP server starts reliably — [EVIDENCE: networkError path adds resilience; startup preserved for valid keys]
 - [x] workflow-e2e: 7/7 — [EVIDENCE: vitest run workflow-e2e.vitest.ts → 7 passed. Note: original "39/39" referred to full suite count at time of writing, actual e2e file has 7 tests.]

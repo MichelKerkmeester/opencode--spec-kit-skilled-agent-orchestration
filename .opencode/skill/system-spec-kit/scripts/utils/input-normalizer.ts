@@ -657,6 +657,8 @@ function normalizeInputData(data: RawInputData): NormalizedData | RawInputData {
 
   // T09b: Promote exchanges to multi-message userPrompts for richer semantic input
   const promotedPrompts: Array<{ prompt: string; timestamp: string }> = [];
+  // T09b fast-path guard: slow-path and fast-path are separate functions, so this guards
+  // against rich payloads that already populated userPrompts via earlier normalization steps
   if (Array.isArray(data.exchanges) && (!normalized.userPrompts || normalized.userPrompts.length < 3)) {
     const sessionSummaryLower = (sessionSummary || '').toLowerCase();
     for (const exchange of data.exchanges.slice(0, 10)) {

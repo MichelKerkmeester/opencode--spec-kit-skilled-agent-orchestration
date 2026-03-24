@@ -121,7 +121,11 @@ export function ensureMinTriggerPhrases(existing: string[], enhancedFiles: FileC
   }
 
   if (combined.length === 1) {
-    return [combined[0], topicFromFolder.replace(/-/g, ' ').toLowerCase() || 'session'];
+    // CG-04: Filter compound folder phrase through FOLDER_STOPWORDS to prevent folder-derived fallback contamination
+    const compoundPhrase = topicFromFolder.replace(/-/g, ' ').toLowerCase();
+    const compoundTokens = compoundPhrase.split(/\s+/);
+    const hasNonStopword = compoundTokens.some((t) => t.length >= 3 && !FOLDER_STOPWORDS.has(t));
+    return [combined[0], hasNonStopword ? compoundPhrase : 'session'];
   }
 
   return ['session', 'context'];

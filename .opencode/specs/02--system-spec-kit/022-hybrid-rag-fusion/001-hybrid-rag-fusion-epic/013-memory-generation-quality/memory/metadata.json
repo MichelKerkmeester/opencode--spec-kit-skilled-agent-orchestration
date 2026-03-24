@@ -1,7 +1,7 @@
 {
-  "timestamp": "24-03-26 15-30",
+  "timestamp": "24-03-26 17-23",
   "messageCount": 1,
-  "decisionCount": 5,
+  "decisionCount": 4,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
@@ -9,11 +9,11 @@
     "totalProcessed": 1,
     "noiseFiltered": 0,
     "duplicatesRemoved": 0,
-    "qualityScore": 50,
+    "qualityScore": 40,
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-03-24T14:30:34.546Z",
+        "timestamp": "2026-03-24T16:23:19.399Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-03-24T14:30:34.508Z",
+      "timestamp": "2026-03-24T16:23:19.363Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:48"
+        "processed_fields:53"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-03-24T14:30:34.546Z",
+      "timestamp": "2026-03-24T16:23:19.399Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -174,7 +174,7 @@
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-03-24T14:30:34.648Z",
+      "timestamp": "2026-03-24T16:23:19.482Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -191,17 +191,17 @@
       ],
       "passedThrough": [
         "current_spec:013-memory-generation-quality",
-        "trigger_phrases:36",
+        "trigger_phrases:32",
         "key_topics:12",
-        "captured_file_count:0",
-        "filesystem_file_count:0"
+        "captured_file_count:9",
+        "filesystem_file_count:9"
       ]
     }
   ],
   "semanticSummary": {
     "task": "Development session",
     "filesCreated": 0,
-    "filesModified": 1,
+    "filesModified": 0,
     "decisions": 0,
     "messageStats": {
       "intent": 0,
@@ -213,9 +213,9 @@
     }
   },
   "fileCounts": {
-    "fileCount": 0,
-    "capturedFileCount": 0,
-    "filesystemFileCount": 0,
+    "fileCount": 9,
+    "capturedFileCount": 9,
+    "filesystemFileCount": 9,
     "gitChangedFileCount": 0
   },
   "sourceProvenance": {
@@ -228,9 +228,9 @@
     "status": "indexed",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 1,
-    "updatedAt": "2026-03-24T14:30:37.210Z",
-    "generatedAt": "2026-03-24T14:30:37.210Z",
+    "memoryId": 2,
+    "updatedAt": "2026-03-24T16:23:20.167Z",
+    "generatedAt": "2026-03-24T16:23:20.167Z",
     "reason": "Indexed after all write and semantic-index gates passed."
   }
 }

@@ -71,102 +71,55 @@
   - Fixes: P1-5
   - Phase 2 finding: Agent 13 found `skill_advisor` also missing from resolved path
 
-- [ ] **T09** Fix path-fragment trigger phrase generation (JSON mode quality)
-  - Files: `scripts/core/workflow.ts:1056-1128`, `scripts/core/topic-extractor.ts:29-36`, `scripts/core/frontmatter-editor.ts:96-136`
+- [x] **T09** Fix path-fragment trigger phrase generation (JSON mode quality)
+  - Files: `scripts/core/workflow.ts`, `scripts/core/topic-extractor.ts`, `scripts/core/frontmatter-editor.ts`
   - Fixes: P1-7
-  - 013 deep research findings (3-agent investigation):
-    - **Root cause is NOT `deriveMemoryTriggerPhrases()`** — that helper is latent, not called by active JSON-mode path
-    - **Active contamination**: workflow.ts:1101-1106 re-adds full folder phrase AFTER `filterTriggerPhrases()` runs
-    - **Post-filter token injection**: workflow.ts:1107-1125 appends individual folder tokens not in `FOLDER_STOPWORDS` (misses `generation`, `epic`)
-    - **Fallback reintroduction**: `ensureMinTriggerPhrases()` in frontmatter-editor.ts:96-115 backfills from leaf folder tokens WITHOUT stopword checks
-    - **Key topics also contaminated**: `extractKeyTopics()` in topic-extractor.ts:31-36 pushes `specFolderName` into weighted segments
-    - **Post-save review detects but doesn't prevent**: post-save-review.ts:184-198 catches path fragments AFTER write only
-  - Fix architecture (combined, simplified per ultra-think review — see 013/research.md §7):
-    - **PR1 — Stop contamination (~40 LOC)**:
-      1. Delete post-filter folder reinsertion in workflow.ts:1101-1106
-      2. Expand `FOLDER_STOPWORDS` (add `generation`, `epic`, `audit`, `alignment`, `enforcement`, `remediation`)
-      3. Apply `FOLDER_STOPWORDS` inside `ensureMinTriggerPhrases()` (frontmatter-editor.ts:96-115) — CRITICAL: omitted from original plan
-      4. Apply `FOLDER_STOPWORDS` inside `ensureMinSemanticTopics()` (frontmatter-editor.ts:118-136)
-      5. Reduce/gate `specFolderName` weight in `extractKeyTopics()` (topic-extractor.ts:31-36)
-    - **Deferred** (premature): shared semantic sanitizer, pre-write prevention promotion
-    - **Risk**: retrieval regression — let folder phrases survive naturally through extraction, remove only FORCED reinsertion. `spec_folder` frontmatter enables `memory_search` by folder.
+  - Fix applied (per 013/research.md §7, simplified 3-step/2-PR):
+    - **PR1**: Deleted post-filter reinsertion, expanded FOLDER_STOPWORDS (+5 words), applied stopwords in ensureMinTriggerPhrases/Topics, removed specFolderName from extractKeyTopics
+    - **Deferred**: shared semantic sanitizer, pre-write prevention promotion
 
-- [ ] **T10** Restore Stage 1 vector fallback on hybrid failure
-  - File: `lib/search/hybrid-search.ts:1344`
+- [x] **T10** Restore Stage 1 vector fallback on hybrid failure
+  - File: `lib/search/hybrid-search.ts`
   - Fixes: P1-16
 
 ### Batch A2: JSON Mode Content Quality (from 013 deep research)
-- [ ] **T09b** Enrich JSON mode normalization for richer semantic summaries
-  - File: `scripts/utils/input-normalizer.ts:571-689`
+- [x] **T09b** Enrich JSON mode normalization for richer semantic summaries
+  - File: `scripts/utils/input-normalizer.ts`
   - Fixes: Thin content, truncated titles, generic fallback text in memory files
-  - 013 deep research findings:
-    - **Root cause**: Semantic summarizer fed ONLY by `userPrompts` — Step 7.5 builds `allMessages` from this one channel
-    - **JSON mode produces 1 synthetic entry** from `sessionSummary` → summarizer starved → falls back to "Development session"
-    - **`exchanges` (user/assistant dialogue) never promoted to messages** — highest enrichment target
-    - **`toolCalls` never promoted** — contains implementation evidence
-    - **`nextSteps`/`technicalContext` stay as observations** — never reach plan/implementation message classes
-    - **`sessionSummary` observation truncated to 200 chars** in `buildSessionSummaryObservation()` at :272-287
-  - Fix (enrich in input-normalizer.ts, not semantic-summarizer.ts — **PR2, ~25 LOC**):
-    1. Promote `exchanges` to multi-message `userPrompts` with intent/result classification
-    2. Promote `toolCalls` to implementation/result messages (summarized, not verbatim JSON)
-    3. Promote `nextSteps` and `technicalContext` to plan/implementation message classes
-    4. Convert `filesModified` to implementation change messages (not just file-list metadata)
-    5. Extend slow-path synthesis to mirror fast-path enrichment when structured arrays missing
-  - Exchange promotion contract (from ultra-think review):
-    - Max promoted: 10 exchanges
-    - Dedup: check if exchange text is substring of existing sessionSummary prompt
-    - Fast-path guard: if `userPrompts` already has 3+ entries, skip promotion
-  - Regression guard: existing rich-array payloads (fast path) must remain unchanged
+  - Applied: exchanges→userPrompts (10-cap, dedup), toolCalls→observations, truncation 200→500 chars
 
 ### Batch B: Pipeline Integrity
-- [ ] **T11** Add governance/preflight to script-side indexing path
-  - Files: `scripts/core/memory-indexer.ts:72-171`, `scripts/core/workflow.ts:1655-1675`
-  - Fixes: P1-11
-  - Phase 2 finding: Script path bypasses 10/11 MCP governance hooks. Parity exists only at raw vector storage layer (vector-index-mutations.ts). Full hook-by-hook comparison in research.md Phase 2 and scratch/iteration-003.md
+- [x] **T11** Add governance/preflight to script-side indexing path
+  - Files: `scripts/core/memory-indexer.ts`
+  - Applied: title/content validation + audit trail log (basic governance, not full hook parity)
 
-- [ ] **T12** Wire retention sweep into runtime or remove dead implementation
-  - File: `lib/governance/retention.ts:41`
-  - Fixes: P1-12
+- [x] **T12** Wire retention sweep into runtime or remove dead implementation
+  - File: `lib/governance/retention.ts`
+  - Applied: documented as manual-only trigger (not wired to runtime)
 
 ### Batch C: Documentation Fixes
-- [ ] **T13** Update tools/README.md tool count (28 → 33)
-  - File: `mcp_server/tools/README.md:38`
-  - Fixes: P1-10
+- [x] **T13** Update tools/README.md tool count (28 → 33)
+- [x] **T14** Fix root 022 packet contradictory counts and phantom phase
+- [x] **T15** Update server README architecture map
+- [x] **T16** Fix stale DB path examples in server README
 
-- [ ] **T14** Fix root 022 packet contradictory counts and phantom phase
-  - File: `022-hybrid-rag-fusion/spec.md:20`
-  - Fixes: P1-13
-
-- [ ] **T15** Update server README architecture map
-  - File: `mcp_server/README.md:186`
-  - Add: `api/`, `core/`, `formatters/`, `schemas/`
-  - Fix: pipeline directory layout → flat file layout
-  - Fixes: P1-14
-
-- [ ] **T16** Fix stale DB path examples in server README
-  - File: `mcp_server/README.md:912`
-  - Fixes: P1-15
-
-### Batch D: Session Capturing Gaps (deferred)
-- [ ] **T17** Complete 016-json-mode-hybrid-enrichment container files
-  - Fixes: P1-6b (missing plan.md, tasks.md, implementation-summary.md)
-
-- [ ] **T18** Document 009/000/005 and 009/019 status honestly
-  - Fixes: P1-6a, P1-6c (open work acknowledged, not blocked)
+### Batch D: Session Capturing Gaps
+- [x] **T17** Complete 016-json-mode-hybrid-enrichment container files
+- [x] **T18** Document 009/000/005 and 009/019 status honestly
 
 ---
 
 ## Phase 4: P2 Triage (deferred — post-release cleanup)
 
-- [ ] **T19** Remove dead code from MCP server (P2-1, P2-3, P2-12, P2-13)
-- [ ] **T20** Clean orphaned dist files — `tsc --build --clean && tsc --build` (P2-4)
-- [ ] **T21** Update stale catalog entries referencing deleted test files (P2-5, P2-17)
-- [ ] **T22** Add 54 missing playbook scenarios, prioritize ux-hooks (14) and graph-signal (7) (P2-11)
-- [ ] **T23** Update sprint metadata for sprints 5, 6, 11 (P2-14)
-- [ ] **T24** Document 10 undocumented architecture components (P2-15)
-- [ ] **T25** Migrate 5 Python CLI scripts to argparse (P2-8)
-- [ ] **T26** Fix shell strict mode placement in 3 scripts (P2-9)
-- [ ] **T27** Add catalog entries for 3 audit-only categories (P2-6)
-- [ ] **T28** Fix stale playbook count contract (231 → 230) (P2-11)
+- [x] **T19** Remove dead code — already clean (verified: `_scheduleLlmBackfill` IS called at :556)
+- [x] **T20** Clean orphaned dist files — already clean (both dist/ verified)
+- [x] **T21** Update stale catalog refs — already clean (22 folders verified)
+- [x] **T22** Add playbook scenarios — 14 new scenarios across 003/004/007 + 3 new playbook folders (020/021/022)
+- [x] **T23** Update sprint metadata — Sprint 5/6 → "Implemented", SPECKIT_PIPELINE_V2 annotated as superseded
+- [x] **T24** Document architecture components — MODULE_MAP.md comprehensive (27 modules)
+- [x] **T25** Python scripts — no CLI scripts exist (only pytest test)
+- [x] **T26** Shell strict mode — all scripts already compliant
+- [x] **T27** Add audit-only catalog playbooks — 3 new folders with 9 scenarios
+- [x] **T28** Fix playbook count contract — "272" → "265" (8 occurrences)
 - [ ] **T29** Remove 31 orphan playbook scenarios or add catalog backlinks (P2-11)
 - [ ] **T30** Fix incomplete test refactor for Stage 1 mocks (P2-16)

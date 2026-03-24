@@ -1,84 +1,94 @@
-# Iteration 001 - Build System & Module Resolution Verification (Q1)
+# Review Iteration 1: Correctness - Core P0/P1 Implementation Fixes
 
 ## Focus
-Build system and module-resolution verification for `@spec-kit/mcp-server` package exports versus the compiled `dist/` layout.
+D1 Correctness -- Review implementation files for logic errors, incorrect return values, broken invariants. Focus on the highest-risk P0 fixes (T01, T02) and P1 code fixes (T05, T07, T09, T09b, T10).
 
-## Summary
-The current `exports` map is only partially aligned with the compiled package layout. A targeted `./api -> ./dist/api/index.js` fix is sufficient to resolve the documented public-surface breakage behind P0-4, because the real public consumers currently use either `@spec-kit/mcp-server/api` or leaf `api/*` modules. However, the broader wildcard rule is still structurally wrong for every directory-barrel subpath, not just `api`: it also mis-resolves `core`, `formatters`, `handlers`, `hooks`, `tools`, `utils`, and nested barrels like `handlers/save`, because the build preserves directory structure and emits `dist/<dir>/index.js`, not `dist/<dir>.js`. Evidence: `.opencode/skill/system-spec-kit/mcp_server/package.json:6-9`, `.opencode/skill/system-spec-kit/mcp_server/tsconfig.json:5-6`, `.opencode/skill/system-spec-kit/mcp_server/api/index.ts:4-5`, `.opencode/skill/system-spec-kit/mcp_server/core/index.ts:5-35`, `.opencode/skill/system-spec-kit/mcp_server/formatters/index.ts:5-31`, `.opencode/skill/system-spec-kit/mcp_server/handlers/index.ts:23-32`, `.opencode/skill/system-spec-kit/mcp_server/hooks/index.ts:4-18`, `.opencode/skill/system-spec-kit/mcp_server/tools/index.ts:4-16`, `.opencode/skill/system-spec-kit/mcp_server/utils/index.ts:4-20`, `.opencode/skill/system-spec-kit/mcp_server/handlers/save/index.ts:4-6`.
+## Scope
+- Review target: P0/P1 implementation files
+- Spec refs: spec.md, plan.md, tasks.md, checklist.md
+- Dimension: correctness
+
+## Scorecard
+| File | Corr | Sec | Patt | Maint | Perf | Total |
+|------|------|-----|------|-------|------|-------|
+| mcp_server/package.json | 29/30 | -- | -- | -- | -- | 29 |
+| shared/types.ts | 30/30 | -- | -- | -- | -- | 30 |
+| shared/embeddings/factory.ts | 30/30 | -- | -- | -- | -- | 30 |
+| mcp_server/context-server.ts | 29/30 | -- | -- | -- | -- | 29 |
+| mcp_server/handlers/quality-loop.ts | 30/30 | -- | -- | -- | -- | 30 |
+| scripts/memory/generate-context.ts | 30/30 | -- | -- | -- | -- | 30 |
+| scripts/core/workflow.ts | 28/30 | -- | -- | -- | -- | 28 |
+| scripts/core/frontmatter-editor.ts | 27/30 | -- | -- | -- | -- | 27 |
+| scripts/core/topic-extractor.ts | 30/30 | -- | -- | -- | -- | 30 |
+| scripts/utils/input-normalizer.ts | 28/30 | -- | -- | -- | -- | 28 |
 
 ## Findings
 
-### Finding 1
-The build is directory-preserving, while the wildcard `exports` rule assumes flat `dist/*.js` artifacts. `package.json` maps both `./*.js` and `./*` to `./dist/*.js`, but `tsconfig.json` compiles with `rootDir: "."` and `outDir: "./dist"`, which preserves nested source paths under `dist/` instead of flattening them. This means a directory barrel such as `api/index.ts` compiles to `dist/api/index.js`, not `dist/api.js`. Evidence: `.opencode/skill/system-spec-kit/mcp_server/package.json:6-9`, `.opencode/skill/system-spec-kit/mcp_server/tsconfig.json:5-6`, `.opencode/skill/system-spec-kit/mcp_server/api/index.ts:4-5`, `.opencode/skill/system-spec-kit/mcp_server/dist/api/index.js:1-6`.
+### P2-001: ensureMinTriggerPhrases fallback can re-inject full folder phrase with stopwords
+- Dimension: correctness
+- Evidence: [SOURCE: scripts/core/frontmatter-editor.ts:124]
+- Impact: When `combined.length === 1` after stopword filtering, the fallback at line 124 returns `[combined[0], topicFromFolder.replace(/-/g, ' ').toLowerCase()]`. The `topicFromFolder` is the full folder name minus the leading number prefix (e.g., "pre release fixes alignment preparation"). This compound phrase contains "alignment" and other words that are individually in FOLDER_STOPWORDS. While these are filtered as individual tokens at line 117, the full compound phrase is NOT filtered.
+- Skeptic: This is an edge case that only triggers when fewer than 2 non-stopword tokens exist in the folder name AND fewer than 2 triggers were extracted from content. In practice, content-derived triggers usually exceed 2, so `existing.length >= 2` at line 109 short-circuits. However, the contamination contract (T09 spec) explicitly aims to prevent path fragment injection, and this is a residual path.
+- Referee: Confirmed P2. The fallback is rarely triggered and the compound phrase is less harmful than individual stopword tokens, but it represents incomplete application of the T09 contamination fix. Not a correctness bug -- a completeness gap in the fix.
+- Final severity: P2
 
-### Finding 2
-The immediate public breakage is the bare `@spec-kit/mcp-server/api` entrypoint. The public API README explicitly recommends `@spec-kit/mcp-server/api` as the preferred import surface, and several real script consumers use that exact path, including `rebuild-auto-entities.ts`, `generate-description.ts`, and `run-performance-benchmarks.ts`. From the current `exports` rule, `./api` is inferred to resolve to `./dist/api.js`, which does not match the compiled barrel at `dist/api/index.js`. Evidence: `.opencode/skill/system-spec-kit/mcp_server/api/README.md:46-49`, `.opencode/skill/system-spec-kit/scripts/memory/rebuild-auto-entities.ts:25-30`, `.opencode/skill/system-spec-kit/scripts/spec-folder/generate-description.ts:16-23`, `.opencode/skill/system-spec-kit/scripts/evals/run-performance-benchmarks.ts:17-25`, `.opencode/skill/system-spec-kit/mcp_server/package.json:6-9`, `.opencode/skill/system-spec-kit/mcp_server/dist/api/index.js:1-6`.
+### P2-002: Duplicated FOLDER_STOPWORDS constant across workflow.ts and frontmatter-editor.ts
+- Dimension: correctness
+- Evidence: [SOURCE: scripts/core/workflow.ts:1106-1115] and [SOURCE: scripts/core/frontmatter-editor.ts:12-21]
+- Impact: The same FOLDER_STOPWORDS set is duplicated in two files with a comment "duplicated from workflow.ts to avoid circular imports." If one is updated without the other, filtering diverges. Currently they are identical.
+- Skeptic: The duplication is documented and intentional (avoid circular imports). Both are in the same codebase under the same team's control. The task spec T09 explicitly chose this approach.
+- Referee: P2. The duplication is a known tech debt item, not a bug. The files are currently in sync. A shared constant module would be cleaner but was explicitly deferred.
+- Final severity: P2
 
-### Finding 3
-The leaf `api/*` imports that are actually in use appear structurally correct under the existing wildcard rule. Real consumers import `@spec-kit/mcp-server/api/indexing`, `@spec-kit/mcp-server/api/search`, and `@spec-kit/mcp-server/api/providers`, and the corresponding compiled files exist at `dist/api/indexing.js`, `dist/api/search.js`, and `dist/api/providers.js`. Because these are file-like leaf subpaths rather than directory barrels, the current `./* -> ./dist/*.js` rule lines up with their emitted locations. Evidence: `.opencode/skill/system-spec-kit/scripts/memory/reindex-embeddings.ts:12-18`, `.opencode/skill/system-spec-kit/scripts/core/memory-indexer.ts:15-18`, `.opencode/skill/system-spec-kit/scripts/core/workflow.ts:59-60`, `.opencode/skill/system-spec-kit/mcp_server/dist/api/indexing.js:1-18`, `.opencode/skill/system-spec-kit/mcp_server/dist/api/search.js:1-7`, `.opencode/skill/system-spec-kit/mcp_server/dist/api/providers.js:1-6`.
+### P2-003: T09b exchange promotion overwrites userPrompts instead of merging
+- Dimension: correctness
+- Evidence: [SOURCE: scripts/utils/input-normalizer.ts:691-693]
+- Impact: At line 691-693, when `promotedPrompts.length > 0`, the code replaces `normalized.userPrompts` entirely with `[...promotedPrompts, { prompt: sessionSummary }]`. If the slow-path had previously set any userPrompts from other sources (e.g., from data.userPrompts), they are overwritten. However, checking the slow-path flow: `normalized.userPrompts` is not set before this point in the slow path -- it's first assigned here. So this is not a bug in the current flow.
+- Skeptic: The overwrite is the FIRST assignment of userPrompts in the slow path. The fast-path guard at line 660 (`normalized.userPrompts.length < 3`) is checked before promotion, but at that point normalized.userPrompts is undefined/empty. So the guard actually checks the input data's userPrompts, not previously-set ones. Wait -- `normalized.userPrompts` is not set yet at line 660. In JavaScript, checking `.length` on undefined would throw. Let me re-check.
+- Referee: Investigating -- the guard at line 660 checks `!normalized.userPrompts || normalized.userPrompts.length < 3`. The `!normalized.userPrompts` clause handles the undefined case correctly via short-circuit. No runtime error. The overwrite at 691 is the first assignment. Not a bug.
+- Final severity: Ruled out (not a bug)
 
-### Finding 4
-There are additional broken directory-barrel paths beyond `api`. The source tree defines other barrel entrypoints at `core/index.ts`, `formatters/index.ts`, `handlers/index.ts`, `hooks/index.ts`, `tools/index.ts`, `utils/index.ts`, and `handlers/save/index.ts`. Under the current wildcard export, these would be inferred to resolve as `dist/core.js`, `dist/formatters.js`, `dist/handlers.js`, `dist/hooks.js`, `dist/tools.js`, `dist/utils.js`, and `dist/handlers/save.js` respectively, but the build layout implies `dist/<dir>/index.js` instead. Evidence: `.opencode/skill/system-spec-kit/mcp_server/package.json:6-9`, `.opencode/skill/system-spec-kit/mcp_server/tsconfig.json:5-6`, `.opencode/skill/system-spec-kit/mcp_server/core/index.ts:5-35`, `.opencode/skill/system-spec-kit/mcp_server/formatters/index.ts:5-31`, `.opencode/skill/system-spec-kit/mcp_server/handlers/index.ts:23-32`, `.opencode/skill/system-spec-kit/mcp_server/hooks/index.ts:4-18`, `.opencode/skill/system-spec-kit/mcp_server/tools/index.ts:4-16`, `.opencode/skill/system-spec-kit/mcp_server/utils/index.ts:4-20`, `.opencode/skill/system-spec-kit/mcp_server/handlers/save/index.ts:4-6`.
+### P1-001: T09b exchange promotion guard checks wrong source for fast-path detection
+- Dimension: correctness
+- Evidence: [SOURCE: scripts/utils/input-normalizer.ts:660]
+- Impact: The fast-path guard `!normalized.userPrompts || normalized.userPrompts.length < 3` is intended to skip promotion if "userPrompts already has 3+ entries" (per checklist T09b). But at line 660 in the slow-path normalizer, `normalized.userPrompts` has NOT been set yet -- it is always undefined at this point. So the guard ALWAYS evaluates to true (`!undefined` is truthy), meaning the fast-path guard never actually prevents promotion. The spec intent was: "if the input data already provides 3+ userPrompts via the fast path, skip promotion." But this code is in the slow path, not the fast path.
+- Skeptic: The slow path and fast path are DIFFERENT functions. The fast path has its own normalizer function that is NOT modified (per checklist: "fast-path function not modified"). The guard at line 660 is only in the slow path. In the slow path, `normalized.userPrompts` is indeed always undefined before line 691. So the guard is vacuous -- it always allows promotion. But is this harmful? The slow path by definition handles JSON-mode input where the original data lacks structured userPrompts. Promotion is ALWAYS desirable in the slow path. The fast-path guard protection happens at a higher level: fast-path data goes through a different function entirely. The checklist claim "skip promotion if userPrompts already has 3+ entries" is slightly misleading -- it should say "fast-path inputs never reach this code."
+- Referee: The guard is vacuous but not harmful. The intent is preserved because fast-path and slow-path are separate code paths. However, the vacuous guard is dead code -- it creates false confidence that there's runtime protection. Downgrade from P1 to P2 (misleading dead guard, not a correctness bug).
+- Final severity: P2
 
-### Finding 5
-Those additional broken barrel paths are mostly latent/internal rather than part of the intended public API. The API README prohibits package imports from `lib`, `core`, and `handlers`, and the import-policy tests explicitly mark `@spec-kit/mcp-server/core`, `@spec-kit/mcp-server/core/db-state`, `@spec-kit/mcp-server/handlers`, and `@spec-kit/mcp-server/handlers/memory-index` as prohibited while allowing only `@spec-kit/mcp-server/api` and `@spec-kit/mcp-server/api/indexing`. So the broader wildcard mismatch is real, but it only becomes release-critical if those internal barrels are meant to be external entrypoints. Evidence: `.opencode/skill/system-spec-kit/mcp_server/api/README.md:46-49`, `.opencode/skill/system-spec-kit/scripts/tests/import-policy-rules.vitest.ts:8-12`, `.opencode/skill/system-spec-kit/scripts/tests/import-policy-rules.vitest.ts:28-33`.
-
-## Dist Structure vs Exports
-
-Observed top-level `dist/` shape from local filesystem listing:
-
-```text
-dist/
-  api/
-  configs/
-  core/
-  database/
-  formatters/
-  handlers/
-  hooks/
-  lib/
-  schemas/
-  scripts/
-  tests/
-  tools/
-  utils/
-  cli.js
-  context-server.js
-  startup-checks.js
-  tool-schemas.js
-  vitest.config.js
-```
-
-Representative subpath verification:
-
-| Package subpath | Current export target (inferred from `package.json`) | Actual compiled artifact | Status |
-| --- | --- | --- | --- |
-| `.` | `dist/context-server.js` | `dist/context-server.js` | Correct |
-| `./api` | `dist/api.js` | `dist/api/index.js` | Broken |
-| `./api/indexing` | `dist/api/indexing.js` | `dist/api/indexing.js` | Correct |
-| `./api/search` | `dist/api/search.js` | `dist/api/search.js` | Correct |
-| `./api/providers` | `dist/api/providers.js` | `dist/api/providers.js` | Correct |
-| `./core` | `dist/core.js` | `dist/core/index.js` | Broken but internal/prohibited |
-| `./formatters` | `dist/formatters.js` | `dist/formatters/index.js` | Broken but undocumented |
-| `./handlers` | `dist/handlers.js` | `dist/handlers/index.js` | Broken but internal/prohibited |
-| `./hooks` | `dist/hooks.js` | `dist/hooks/index.js` | Broken but undocumented |
-| `./tools` | `dist/tools.js` | `dist/tools/index.js` | Broken but undocumented |
-| `./utils` | `dist/utils.js` | `dist/utils/index.js` | Broken but undocumented |
-| `./handlers/save` | `dist/handlers/save.js` | `dist/handlers/save/index.js` | Broken nested barrel |
-
-Inference basis for the table: `.opencode/skill/system-spec-kit/mcp_server/package.json:6-9`, `.opencode/skill/system-spec-kit/mcp_server/tsconfig.json:5-6`, `.opencode/skill/system-spec-kit/mcp_server/api/index.ts:4-5`, `.opencode/skill/system-spec-kit/mcp_server/core/index.ts:5-35`, `.opencode/skill/system-spec-kit/mcp_server/formatters/index.ts:5-31`, `.opencode/skill/system-spec-kit/mcp_server/handlers/index.ts:23-32`, `.opencode/skill/system-spec-kit/mcp_server/hooks/index.ts:4-18`, `.opencode/skill/system-spec-kit/mcp_server/tools/index.ts:4-16`, `.opencode/skill/system-spec-kit/mcp_server/utils/index.ts:4-20`, `.opencode/skill/system-spec-kit/mcp_server/handlers/save/index.ts:4-6`, `.opencode/skill/system-spec-kit/mcp_server/dist/api/index.js:1-6`, `.opencode/skill/system-spec-kit/mcp_server/dist/api/indexing.js:1-18`, `.opencode/skill/system-spec-kit/mcp_server/dist/api/search.js:1-7`, `.opencode/skill/system-spec-kit/mcp_server/dist/api/providers.js:1-6`.
-
-## Answer to Q1
-Yes, the explicit `./api -> ./dist/api/index.js` fix is sufficient for the immediate P0-4 problem because the documented public surface and the real failing consumers use `@spec-kit/mcp-server/api`, while the actively used leaf imports already resolve correctly through `./*`. But no, `api` is not the only broken barrel-style path. The current wildcard `exports` map is globally inaccurate for directory barrels, and it would also mis-resolve `core`, `formatters`, `handlers`, `hooks`, `tools`, `utils`, and nested barrels such as `handlers/save` if those were ever treated as supported package entrypoints. Evidence: `.opencode/skill/system-spec-kit/mcp_server/api/README.md:46-49`, `.opencode/skill/system-spec-kit/mcp_server/package.json:6-9`, `.opencode/skill/system-spec-kit/mcp_server/tsconfig.json:5-6`, `.opencode/skill/system-spec-kit/scripts/tests/import-policy-rules.vitest.ts:8-12`, `.opencode/skill/system-spec-kit/scripts/tests/import-policy-rules.vitest.ts:28-33`.
+## Cross-Reference Results
+- Confirmed: T01 (package.json exports) correctly adds `./api` before wildcard -- matches plan.md Fix 1
+- Confirmed: T02 (networkError field + non-fatal startup) matches plan.md Fix 2 and checklist evidence
+- Confirmed: T05 (quality-loop returns bestContent) at :657-661 matches plan.md and checklist
+- Confirmed: T07 (sessionId forwarding) at generate-context.ts:550 matches plan.md
+- Confirmed: T09 (post-filter reinsertion deleted, FOLDER_STOPWORDS expanded, applied in ensureMin functions)
+- Confirmed: T09b (exchange promotion, toolCalls promotion, truncation 200->500 chars)
+- Contradictions: None
+- Unknowns: T10 (vector fallback) not yet reviewed in detail at the exact line
 
 ## Ruled Out
-- The "api-only anomaly" hypothesis is ruled out. The mismatch comes from a package-wide pattern (`./* -> ./dist/*.js`) colliding with directory-preserving compilation, so any directory barrel has the same shape mismatch. Evidence: `.opencode/skill/system-spec-kit/mcp_server/package.json:6-9`, `.opencode/skill/system-spec-kit/mcp_server/tsconfig.json:5-6`, `.opencode/skill/system-spec-kit/mcp_server/core/index.ts:5-35`, `.opencode/skill/system-spec-kit/mcp_server/formatters/index.ts:5-31`.
+- T09b exchange overwrite of userPrompts: Not a bug -- first assignment in slow path, fast path is separate function
+- T02 process.exit scope: Confirmed confined to context-server.ts only as documented
 
-## Dead Ends
-- Initial `src/`-based barrel search was a dead end because this package compiles from the project root, not from a `src/` directory. Evidence: `.opencode/skill/system-spec-kit/mcp_server/tsconfig.json:5-6`.
+## Sources Reviewed
+- [SOURCE: mcp_server/package.json:1-30]
+- [SOURCE: shared/types.ts:110-118]
+- [SOURCE: shared/embeddings/factory.ts:420-463]
+- [SOURCE: mcp_server/context-server.ts:730-789]
+- [SOURCE: mcp_server/handlers/quality-loop.ts:640-663]
+- [SOURCE: scripts/memory/generate-context.ts:540-566]
+- [SOURCE: scripts/core/workflow.ts:195-204, 1090-1139]
+- [SOURCE: scripts/core/frontmatter-editor.ts:10-148]
+- [SOURCE: scripts/core/topic-extractor.ts:25-44]
+- [SOURCE: scripts/utils/input-normalizer.ts:270-289, 645-719]
 
-## Iteration Metrics
-- `findingsCount`: 5
-- `newInfoRatio`: 0.83
-- `newInfoRatio justification`: This pass fully answered Q1, mapped the real consumer import set, and uncovered several additional latent barrel mismatches beyond the previously known `api` problem. Some information overlapped with known P0-4 context, so the ratio is high but not 1.0.
-- `status`: `complete`
+## Assessment
+- Confirmed findings: 3 (P2-001, P2-002, P2-003/P2 downgraded from P1)
+- New findings ratio: 0.19
+- noveltyJustification: 3 new P2 findings from reviewing 10 files; P1 candidate downgraded to P2 after skeptic/referee pass; all P0 fixes verified correct; no P0/P1 issues found
+- Dimensions addressed: [correctness]
+
+## Reflection
+- What worked: Starting with highest-risk P0/P1 fixes and verifying the fix logic against spec claims. Reading actual code at claimed line numbers to verify.
+- What did not work: N/A (first iteration)
+- Next adjustment: Move to D2 Security, focusing on factory.ts validation paths and process.exit sites for injection/bypass risks.
