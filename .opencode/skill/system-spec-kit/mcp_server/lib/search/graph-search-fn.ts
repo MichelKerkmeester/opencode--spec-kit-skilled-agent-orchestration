@@ -307,7 +307,7 @@ function queryCausalEdgesLikeFallback(
  *     insert/update/delete so the next batch recomputes from current DB state.
  */
 // H20 FIX: Scope degree cache per database instance to prevent cross-DB score leaks
-const degreeCachePerDb = new WeakMap<Database.Database, Map<string, number>>();
+let degreeCachePerDb = new WeakMap<Database.Database, Map<string, number>>();
 function getDegreeCacheForDb(database: Database.Database): Map<string, number> {
   let cache = degreeCachePerDb.get(database);
   if (!cache) {
@@ -500,9 +500,7 @@ function computeDegreeScores(
  */
 // H20 FIX: Clear degree cache — clears for all DB instances
 function clearDegreeCache(): void {
-  // WeakMap doesn't support iteration, so we can only discard
-  // by letting GC reclaim entries. For explicit invalidation,
-  // callers should pass the database to clearDegreeCacheForDb().
+  degreeCachePerDb = new WeakMap<Database.Database, Map<string, number>>();
 }
 
 /** Clear degree cache for a specific database instance. */

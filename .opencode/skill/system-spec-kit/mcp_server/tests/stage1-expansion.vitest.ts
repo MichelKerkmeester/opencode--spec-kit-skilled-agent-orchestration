@@ -49,9 +49,13 @@ vi.mock('../lib/providers/embeddings', () => ({
 }));
 
 // Mock hybrid-search
-vi.mock('../lib/search/hybrid-search', () => ({
-  searchWithFallback: vi.fn(async () => []),
-}));
+vi.mock('../lib/search/hybrid-search', () => {
+  const mockHybridStage1Search = vi.fn(async () => []);
+  return {
+    searchWithFallback: mockHybridStage1Search,
+    collectRawCandidates: mockHybridStage1Search,
+  };
+});
 
 // Mock search-flags
 const mockIsEmbeddingExpansionEnabled = vi.fn(() => true);

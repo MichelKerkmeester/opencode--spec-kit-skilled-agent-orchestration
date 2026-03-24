@@ -34,7 +34,15 @@ const TEST_DB_PATH = path.join(TEST_DB_DIR, 'speckit-memory.db');
 let moduleDb: Database.Database | null = null;
 try {
   fs.mkdirSync(TEST_DB_DIR, { recursive: true });
-  moduleDb = vectorIndex.initializeDb(TEST_DB_PATH);
+  const previousMemoryDbPath = process.env.MEMORY_DB_PATH;
+  process.env.MEMORY_DB_PATH = TEST_DB_PATH;
+  try { vectorIndex.closeDb(); } catch { /* ignore */ }
+  moduleDb = vectorIndex.initializeDb();
+  if (previousMemoryDbPath === undefined) {
+    delete process.env.MEMORY_DB_PATH;
+  } else {
+    process.env.MEMORY_DB_PATH = previousMemoryDbPath;
+  }
 } catch {
   moduleDb = null;
 }

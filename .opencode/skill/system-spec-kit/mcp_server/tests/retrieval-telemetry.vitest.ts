@@ -382,7 +382,7 @@ describe('C136-12: retrieval-telemetry', () => {
 
     expect(t.architecture.phase).toBe('adaptive');
     expect(t.architecture.capabilities.adaptiveRanking).toBe(true);
-    expect(t.architecture.capabilities.sharedMemory).toBe(true);
+    expect(t.architecture.capabilities.sharedMemory).toBe(false);
     expect(t.architecture.scopeDimensionsTracked).toBe(6);
   });
 

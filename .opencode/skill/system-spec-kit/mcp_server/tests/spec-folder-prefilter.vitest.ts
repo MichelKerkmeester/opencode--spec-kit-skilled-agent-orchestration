@@ -37,18 +37,20 @@ vi.mock('../lib/search/vector-index', () => ({
   }),
 }));
 
-// Capture call arguments for searchWithFallback.
+// Capture call arguments for the Stage 1 hybrid raw-collector path.
 // Use importOriginal to keep init, structuralSearch, and other real exports.
 const mockHybridSearchCalls: Array<[unknown, unknown, unknown]> = [];
 
 vi.mock('../lib/search/hybrid-search', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../lib/search/hybrid-search')>();
+  const mockStage1HybridSearch = vi.fn(async (...args) => {
+    mockHybridSearchCalls.push(args as [unknown, unknown, unknown]);
+    return [];
+  });
   return {
     ...actual,
-    searchWithFallback: vi.fn(async (...args) => {
-      mockHybridSearchCalls.push(args as [unknown, unknown, unknown]);
-      return [];
-    }),
+    searchWithFallback: mockStage1HybridSearch,
+    collectRawCandidates: mockStage1HybridSearch,
   };
 });
 
@@ -86,6 +88,7 @@ vi.mock('../lib/search/search-flags', () => ({
   isMultiQueryEnabled: vi.fn(() => false),
   isEmbeddingExpansionEnabled: vi.fn(() => false),
   isSearchFallbackEnabled: vi.fn(() => false),
+  isTemporalContiguityEnabled: vi.fn(() => false),
   isTRMEnabled: vi.fn(() => false),
   isNegativeFeedbackEnabled: vi.fn(() => false),
   isMemorySummariesEnabled: vi.fn(() => false),
@@ -158,6 +161,7 @@ function createTestDb(): Database.Database {
       importance_tier TEXT DEFAULT 'normal',
       importance_weight REAL DEFAULT 0.5,
       spec_folder TEXT,
+      is_archived INTEGER DEFAULT 0,
       created_at TEXT DEFAULT (datetime('now'))
     )
   `);

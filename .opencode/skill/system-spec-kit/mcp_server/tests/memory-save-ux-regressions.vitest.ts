@@ -167,6 +167,12 @@ function cleanupFixtureRows(): void {
   }
 
   const likePattern = '%999-memory-save-ux-fixtures%';
+  db.prepare(`DELETE FROM active_memory_projection WHERE active_memory_id IN (
+    SELECT id FROM memory_index WHERE file_path LIKE ? OR spec_folder LIKE ?
+  )`).run(likePattern, likePattern);
+  db.prepare(`DELETE FROM memory_lineage WHERE memory_id IN (
+    SELECT id FROM memory_index WHERE file_path LIKE ? OR spec_folder LIKE ?
+  )`).run(likePattern, likePattern);
   db.prepare('DELETE FROM memory_conflicts WHERE spec_folder LIKE ?').run(likePattern);
   // Delete history rows before memory_index to satisfy FK constraint
   db.prepare(`DELETE FROM memory_history WHERE memory_id IN (
@@ -177,7 +183,16 @@ function cleanupFixtureRows(): void {
 
 beforeAll(() => {
   fs.mkdirSync(TEST_DB_DIR, { recursive: true });
-  vectorIndex.initializeDb(TEST_DB_PATH);
+  const previousMemoryDbPath = process.env.MEMORY_DB_PATH;
+  process.env.MEMORY_DB_PATH = TEST_DB_PATH;
+  try {
+    vectorIndex.closeDb();
+  } catch {
+    // Ignore cleanup errors in tests
+  }
+  vectorIndex.initializeDb();
+  if (previousMemoryDbPath === undefined) delete process.env.MEMORY_DB_PATH;
+  else process.env.MEMORY_DB_PATH = previousMemoryDbPath;
   resetFixtureDir();
 });
 
@@ -234,6 +249,7 @@ describe('Memory save UX regressions', () => {
     const response = await handler.handleMemorySave({
       filePath: duplicatePath,
       skipPreflight: true,
+      asyncEmbedding: true,
     });
 
     const parsed = parseResponse(response);
@@ -250,10 +266,11 @@ describe('Memory save UX regressions', () => {
     const response = await handler.handleMemorySave({
       filePath: savePath,
       skipPreflight: true,
+      asyncEmbedding: true,
     });
 
     const parsed = parseResponse(response);
-    expect(['indexed', 'created', 'updated']).toContain(parsed.data.status);
+    expect(['indexed', 'created', 'updated', 'deferred']).toContain(parsed.data.status);
     expect(parsed.data.postMutationHooks).toBeDefined();
     expect(parsed.data.postMutationHooks).toMatchObject({
       latencyMs: expect.any(Number),

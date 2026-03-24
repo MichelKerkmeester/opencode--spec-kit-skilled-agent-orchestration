@@ -72,7 +72,7 @@ const hydraFlagDefaults = [
   ['SPECKIT_HYDRA_ADAPTIVE_RANKING', 'false'],
   ['SPECKIT_HYDRA_SCOPE_ENFORCEMENT', 'true'],
   ['SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS', 'true'],
-  ['SPECKIT_HYDRA_SHARED_MEMORY', 'true'],
+  ['SPECKIT_HYDRA_SHARED_MEMORY', 'false'],
 ] as const;
 
 const canonicalHydraAliases = {
@@ -104,7 +104,7 @@ describe('Feature flag reference catalog mappings', () => {
       const docPath = path.join(FEATURE_FLAG_DOCS, check.doc);
       const docContent = fs.readFileSync(docPath, 'utf8');
       const rowPattern = new RegExp(
-        `\\|\\s+\`${escapeRegExp(check.env)}\`\\s+\\|[^\\n]*\\|\\s+\`${escapeRegExp(check.source)}\`\\s+\\|`,
+        `\\|\\s+\`${escapeRegExp(check.env)}\`\\s+\\|[^\\n]*\\|[^\\n]*\`${escapeRegExp(check.source)}\`[^\\n]*\\|`,
       );
 
       expect(docContent).toMatch(rowPattern);

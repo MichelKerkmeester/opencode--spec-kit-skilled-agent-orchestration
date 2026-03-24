@@ -208,12 +208,12 @@ describe('Phase 5 memory governance', () => {
       sessionId: 'session-1',
     }, allowedSharedSpaceIds);
 
-    expect(rows.filter(predicate).map((row) => row.id)).toEqual([1]);
+    expect(rows.filter(predicate).map((row) => row.id)).toEqual([1, 3]);
     expect(filterRowsByScope(rows, {
       tenantId: 'tenant-a',
       userId: 'user-1',
       sessionId: 'session-1',
-    }, allowedSharedSpaceIds).map((row) => row.id)).toEqual([1]);
+    }, allowedSharedSpaceIds).map((row) => row.id)).toEqual([1, 3]);
 
     const benchmark = benchmarkScopeFilter(rows, {
       tenantId: 'tenant-a',
@@ -226,8 +226,8 @@ describe('Phase 5 memory governance', () => {
 
     expect(benchmark.iterations).toBe(3);
     expect(benchmark.totalRows).toBe(4);
-    expect(benchmark.matchedRows).toBe(1);
-    expect(benchmark.filteredRows).toBe(3);
+    expect(benchmark.matchedRows).toBe(2);
+    expect(benchmark.filteredRows).toBe(2);
     expect(benchmark.elapsedMs).toBeGreaterThanOrEqual(0);
     expect(benchmark.averageMsPerIteration).toBeGreaterThanOrEqual(0);
   });

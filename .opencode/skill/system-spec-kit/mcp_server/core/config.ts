@@ -42,8 +42,13 @@ export interface DatabasePaths {
 }
 
 export function resolveDatabasePaths(): DatabasePaths {
-  // shared/paths.ts is the single source of truth for DB directory resolution.
-  const databaseDir = path.dirname(DB_PATH);
+  // H8 FIX: Re-check SPEC_KIT_DB_DIR at call time to support runtime overrides
+  // (e.g. tests that set the env var after module import). Fall back to the
+  // import-time DB_PATH when no runtime override is present.
+  const runtimeDbDir = process.env.SPEC_KIT_DB_DIR?.trim() || process.env.SPECKIT_DB_DIR?.trim();
+  const databaseDir = runtimeDbDir
+    ? path.resolve(process.cwd(), runtimeDbDir)
+    : path.dirname(DB_PATH);
 
   // F4.04: Reject paths that escape the project root (allow homedir and tmpdir for tests).
   // Use realpathSync to handle macOS /var -> /private/var symlinks.

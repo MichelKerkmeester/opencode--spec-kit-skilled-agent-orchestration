@@ -216,15 +216,18 @@ function applyLengthPenalty(
    6. CACHE
 ----------------------------------------------------------------*/
 
-// H19 FIX: Include provider, document order, and option bits in cache key
-// to prevent false cache hits across different providers/options.
+// H19 FIX: Include provider and option bits in the cache key while
+// canonicalizing document IDs so equivalent document sets hit the same cache entry.
 function generateCacheKey(
   query: string,
   docIds: Array<number | string>,
   provider?: string,
   optionBits?: string,
 ): string {
-  const key = `${provider || 'default'}:${optionBits || ''}:${query}:${docIds.join(',')}`;
+  const sortedDocIds = [...docIds]
+    .map(id => String(id))
+    .sort();
+  const key = `${provider || 'default'}:${optionBits || ''}:${query}:${sortedDocIds.join(',')}`;
   // Simple hash
   let hash = 0;
   for (let i = 0; i < key.length; i++) {

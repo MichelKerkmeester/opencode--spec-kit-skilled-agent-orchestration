@@ -361,7 +361,8 @@ function fuseResultsRsfCrossVariant(variantLists: RankedList[][]): RsfResult[] {
 
   for (const variantResults of perVariantFused) {
     for (const result of variantResults) {
-      const existing = mergedMap.get(result.id);
+      const canonicalId = canonicalRrfId(result.id);
+      const existing = mergedMap.get(canonicalId);
       if (existing) {
         existing.scoreSum += result.rsfScore;
         existing.variantCount++;
@@ -378,7 +379,7 @@ function fuseResultsRsfCrossVariant(variantLists: RankedList[][]): RsfResult[] {
           existing.sourceScoreCounts[key] = (existing.sourceScoreCounts[key] ?? 0) + 1;
         }
       } else {
-        mergedMap.set(result.id, {
+        mergedMap.set(canonicalId, {
           result: { ...result, sources: [...result.sources], sourceScores: { ...result.sourceScores } },
           scoreSum: result.rsfScore,
           variantCount: 1,

@@ -13,7 +13,7 @@
 //   - hybrid (deep mode): Query expansion + multi-variant hybrid search + dedup
 //   - hybrid (R12):       Embedding-based query expansion (SPECKIT_EMBEDDING_EXPANSION)
 // Suppressed when R15 classifies query as "simple" (mutual exclusion)
-//   - hybrid: searchWithFallback → falls back to vector on failure
+//   - hybrid: collectRawCandidates → falls back to vector on failure
 //   - vector: Direct vectorSearch
 //
 // Post-channel operations:
@@ -382,18 +382,6 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
 
   // -- Channel: Hybrid (with optional deep-mode query expansion) ---------------
   //
-  // TODO(CRITICAL — double-processing): Stage 1 calls searchWithFallback() from
-  // hybrid-search.ts, which already performs RRF fusion, MMR diversity pruning,
-  // co-activation boosts, confidence truncation, token budget truncation, and
-  // channel enforcement. Stage 2 then re-applies fusion signals (session boost,
-  // causal boost, co-activation, intent weights, etc.) on top of the already-
-  // processed results, causing double-processing. The correct fix is to create
-  // a `collectRawCandidates()` function that gathers raw per-channel hits
-  // (vector, FTS, BM25, graph) with provenance metadata but WITHOUT fusion,
-  // reranking, or truncation, and have Stage 1 call that instead. Until then,
-  // the pipeline adds redundant scoring passes. See hybrid-search.ts for the
-  // lower-level channel functions: vectorSearchFn(), ftsSearch(), bm25Search().
-
   else if (searchType === 'hybrid') {
     // Resolve the query embedding — either pre-computed in config or generate now
     // Fix #16 — Cache this embedding for reuse in constitutional injection path
@@ -431,7 +419,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
                 allQueries.map(async (q): Promise<PipelineRow[]> => {
                   const facetEmbedding = await embeddings.generateQueryEmbedding(q);
                   if (!facetEmbedding) return [];
-                  return hybridSearch.searchWithFallback(
+                  return hybridSearch.collectRawCandidates(
                     q,
                     facetEmbedding,
                     { limit, specFolder, includeArchived }
@@ -491,7 +479,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
               queryVariants.map(async (variant): Promise<PipelineRow[]> => {
                 const variantEmbedding = await embeddings.generateQueryEmbedding(variant);
                 if (!variantEmbedding) return [];
-                const variantResults = await hybridSearch.searchWithFallback(
+                const variantResults = await hybridSearch.collectRawCandidates(
                   variant,
                   variantEmbedding,
                   { limit, specFolder, includeArchived }
@@ -530,7 +518,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
           );
           // Fall through to single hybrid search below
           channelCount = 1;
-          candidates = (await hybridSearch.searchWithFallback(
+          candidates = (await hybridSearch.collectRawCandidates(
             query,
             effectiveEmbedding,
             { limit, specFolder, includeArchived }
@@ -539,7 +527,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
       } else {
         // ExpandQuery returned only the original; treat as standard hybrid
         channelCount = 1;
-        candidates = (await hybridSearch.searchWithFallback(
+        candidates = (await hybridSearch.collectRawCandidates(
           query,
           effectiveEmbedding,
           { limit, specFolder, includeArchived }
@@ -578,7 +566,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
           if (expanded.expanded.length > 0 && expanded.combinedQuery !== query) {
             // Run the baseline and the expanded query in parallel
             const [baselineResults, expansionResults] = await Promise.all([
-              hybridSearch.searchWithFallback(
+              hybridSearch.collectRawCandidates(
                 query,
                 effectiveEmbedding,
                 { limit, specFolder, includeArchived }
@@ -586,7 +574,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
               embeddings.generateQueryEmbedding(expanded.combinedQuery).then(
                 async (expandedEmb): Promise<PipelineRow[]> => {
                   if (!expandedEmb) return [];
-                  return hybridSearch.searchWithFallback(
+                  return hybridSearch.collectRawCandidates(
                     expanded.combinedQuery,
                     expandedEmb,
                     { limit, specFolder, includeArchived }
@@ -631,7 +619,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
       if (!r12ExpansionApplied) {
         try {
           channelCount = 1;
-          const hybridResults = (await hybridSearch.searchWithFallback(
+          const hybridResults = (await hybridSearch.collectRawCandidates(
             query,
             effectiveEmbedding,
             { limit, specFolder, includeArchived }
@@ -860,7 +848,7 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
               // Reuse cached embedding for original query (idx 0); generate fresh for variants
               const emb = idx === 0 ? reformEmbedding : await embeddings.generateQueryEmbedding(q);
               if (!emb) return [];
-              return hybridSearch.searchWithFallback(
+              return hybridSearch.collectRawCandidates(
                 q,
                 emb,
                 { limit, specFolder, includeArchived }

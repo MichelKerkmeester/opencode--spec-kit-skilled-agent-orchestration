@@ -19,6 +19,7 @@ function makeTempDir(prefix: string): string {
 afterEach(() => {
   delete process.env.SPEC_KIT_DB_DIR;
   delete process.env.MEMORY_ALLOWED_PATHS;
+  delete process.env.MEMORY_DB_PATH;
 
   for (const dir of tempDirs.splice(0)) {
     try {
@@ -349,8 +350,21 @@ describe('R7 integration wiring', () => {
 
     const vectorIndex = await import('../lib/search/vector-index');
     const memorySave = await import('../handlers/memory-save');
+    const embeddings = await import('../lib/providers/embeddings');
 
-    vectorIndex.initializeDb(dbPath);
+    const previousMemoryDbPath = process.env.MEMORY_DB_PATH;
+    process.env.MEMORY_DB_PATH = dbPath;
+    try { vectorIndex.closeDb(); } catch { /* ignore */ }
+    vectorIndex.initializeDb();
+    if (previousMemoryDbPath === undefined) {
+      delete process.env.MEMORY_DB_PATH;
+    } else {
+      process.env.MEMORY_DB_PATH = previousMemoryDbPath;
+    }
+
+    const embeddingSpy = vi
+      .spyOn(embeddings, 'generateDocumentEmbedding')
+      .mockResolvedValue(new Float32Array(1024).fill(0.1));
 
     const lowSignalSection = '# Low Signal\n\n' + '<!-- filler -->\n'.repeat(420);
     const highSignalSection =
@@ -380,14 +394,18 @@ describe('R7 integration wiring', () => {
       qualityFlags: [],
     };
 
-    const result = await memorySave.indexChunkedMemoryFile(filePath, parsed);
-    const db = vectorIndex.getDb();
-    expect(db).toBeTruthy();
+    try {
+      const result = await memorySave.indexChunkedMemoryFile(filePath, parsed);
+      const db = vectorIndex.getDb();
+      expect(db).toBeTruthy();
 
-    const childCountRow = db.prepare('SELECT COUNT(*) as count FROM memory_index WHERE parent_id = ?').get(result.id) as { count: number };
-    expect(childCountRow.count).toBe(thinning.retained.length);
+      const childCountRow = db.prepare('SELECT COUNT(*) as count FROM memory_index WHERE parent_id = ?').get(result.id) as { count: number };
+      expect(childCountRow.count).toBe(thinning.retained.length);
 
-    expect(result.message).toContain(`${thinning.retained.length}`);
-    vectorIndex.closeDb();
+      expect(result.message).toContain(`${thinning.retained.length}`);
+    } finally {
+      embeddingSpy.mockRestore();
+      vectorIndex.closeDb();
+    }
   }, 60_000);
 });

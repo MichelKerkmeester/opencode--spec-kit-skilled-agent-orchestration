@@ -3,13 +3,13 @@ import { describe, it, expect, afterEach, vi } from 'vitest';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
+import BetterSqlite3 from 'better-sqlite3';
 
 // DB-dependent imports - commented out for deferred test suite
 import * as handler from '../handlers/memory-save';
 import { escapeLikePattern } from '../handlers/handler-utils';
 import { getCanonicalPathKey } from '../lib/utils/canonical-path';
 
-const MEMORY_SAVE_SOURCE = fs.readFileSync(path.join(__dirname, '..', 'handlers', 'memory-save.ts'), 'utf8');
 const { handleMemorySave } = handler;
 
 describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', () => {
@@ -51,20 +51,6 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
       expect(handleMemorySave.length).toBeGreaterThanOrEqual(1);
     });
 
-    /**
-     * Source-level regression guards: these assertions intentionally verify that
-     * key integration points remain wired in the handler source. They are not
-     * behavioral tests and exist to catch accidental removal during refactors.
-     */
-    it('T518-6b: indexMemoryFile integrates runQualityLoop in save flow', () => {
-      expect(MEMORY_SAVE_SOURCE).toContain('const qualityLoopResult = runQualityLoop(');
-    });
-
-    it('T518-6c: same-path supersedes route through append-only lineage helpers', () => {
-      expect(MEMORY_SAVE_SOURCE).toContain('createAppendOnlyMemoryRecord');
-      expect(MEMORY_SAVE_SOURCE).toContain('recordLineageVersion');
-      expect(MEMORY_SAVE_SOURCE).toContain("predecessorMemoryId: existing.id");
-    });
   });
 
   describe('Input Validation', () => {
@@ -105,12 +91,21 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
   });
 
   describe('atomic-save failure injection', () => {
+    type TestDatabase = InstanceType<typeof BetterSqlite3>;
+
     const tempDirs: string[] = [];
+    const tempDbs: TestDatabase[] = [];
 
     function createAtomicSaveTargetPath(fileName: string): string {
       const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'atomic-save-fi-'));
       tempDirs.push(dir);
       return path.join(dir, fileName);
+    }
+
+    function createInMemoryDb(): TestDatabase {
+      const database = new BetterSqlite3(':memory:');
+      tempDbs.push(database);
+      return database;
     }
 
     function buildParsedMemory(targetPath: string) {
@@ -199,6 +194,165 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         message: 'Indexed successfully',
         embeddingStatus: 'success',
         ...overrides,
+      };
+    }
+
+    async function loadBehavioralIndexHarness(options: {
+      existingSamePathMemory?: { id: number; content_hash: string };
+      qualityLoopResult?: Record<string, unknown>;
+      parsedContentHash?: string;
+    } = {}) {
+      vi.resetModules();
+
+      const database = createInMemoryDb();
+      const parseMemoryFileMock = vi.fn((targetPath: string) => ({
+        ...buildParsedMemory(targetPath),
+        contentHash: options.parsedContentHash ?? 'fi-hash',
+      }));
+      const validateParsedMemoryMock = vi.fn(() => ({ valid: true, errors: [], warnings: [] }));
+      const runQualityGateMock = vi.fn(() => ({ pass: true, warnOnly: false, reasons: [], layers: {} }));
+
+      vi.doMock('../lib/parsing/memory-parser', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../lib/parsing/memory-parser')>();
+        return {
+          ...actual,
+          parseMemoryFile: parseMemoryFileMock,
+          validateParsedMemory: validateParsedMemoryMock,
+        };
+      });
+
+      vi.doMock('../lib/validation/save-quality-gate', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../lib/validation/save-quality-gate')>();
+        return {
+          ...actual,
+          runQualityGate: runQualityGateMock,
+          isQualityGateEnabled: vi.fn(() => true),
+        };
+      });
+
+      vi.doMock('../lib/search/search-flags', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../lib/search/search-flags')>();
+        return {
+          ...actual,
+          isSaveQualityGateEnabled: vi.fn(() => false),
+          isQualityLoopEnabled: vi.fn(() => false),
+        };
+      });
+
+      vi.doMock('@spec-kit/shared/parsing/memory-sufficiency', () => ({
+        MEMORY_SUFFICIENCY_REJECTION_CODE: 'INSUFFICIENT_CONTEXT_ABORT',
+        evaluateMemorySufficiency: vi.fn(() => ({
+          pass: true,
+          rejectionCode: 'INSUFFICIENT_CONTEXT_ABORT',
+          reasons: [],
+          evidenceCounts: {
+            primary: 2,
+            support: 2,
+            total: 4,
+            semanticChars: 420,
+            uniqueWords: 72,
+            anchors: 2,
+            triggerPhrases: 4,
+          },
+          score: 0.92,
+        })),
+      }));
+
+      vi.doMock('../utils', async (importOriginal) => {
+        const actual = await importOriginal<typeof import('../utils')>();
+        return {
+          ...actual,
+          requireDb: vi.fn(() => database),
+        };
+      });
+
+      const dedupModule = await import('../handlers/save/dedup');
+      const checkExistingRowSpy = vi.spyOn(dedupModule, 'checkExistingRow').mockReturnValue(null);
+      const checkContentHashDedupSpy = vi.spyOn(dedupModule, 'checkContentHashDedup').mockReturnValue(null);
+
+      const qualityLoopModule = await import('../handlers/quality-loop');
+      const runQualityLoopSpy = vi.spyOn(qualityLoopModule, 'runQualityLoop').mockReturnValue({
+        score: { total: 0.85, issues: [] },
+        fixes: [],
+        passed: true,
+        rejected: false,
+        ...options.qualityLoopResult,
+      } as Awaited<ReturnType<typeof qualityLoopModule.runQualityLoop>>);
+
+      const embeddingPipelineModule = await import('../handlers/save/embedding-pipeline');
+      const generateOrCacheEmbeddingSpy = vi.spyOn(embeddingPipelineModule, 'generateOrCacheEmbedding').mockResolvedValue({
+        embedding: new Float32Array([0.1, 0.2, 0.3]),
+        status: 'success',
+        failureReason: null,
+        pendingCacheWrite: null,
+      });
+      const persistPendingEmbeddingCacheWriteSpy = vi.spyOn(embeddingPipelineModule, 'persistPendingEmbeddingCacheWrite').mockImplementation(() => {});
+
+      const peOrchestrationModule = await import('../handlers/save/pe-orchestration');
+      const evaluateAndApplyPeDecisionSpy = vi.spyOn(peOrchestrationModule, 'evaluateAndApplyPeDecision').mockReturnValue({
+        decision: { action: 'CREATE', similarity: 0 },
+        earlyReturn: null,
+        supersededId: null,
+      } as Awaited<ReturnType<typeof peOrchestrationModule.evaluateAndApplyPeDecision>>);
+
+      const reconsolidationModule = await import('../handlers/save/reconsolidation-bridge');
+      const runReconsolidationIfEnabledSpy = vi.spyOn(reconsolidationModule, 'runReconsolidationIfEnabled').mockResolvedValue({
+        earlyReturn: null,
+        warnings: [],
+      } as Awaited<ReturnType<typeof reconsolidationModule.runReconsolidationIfEnabled>>);
+
+      const createRecordModule = await import('../handlers/save/create-record');
+      const findSamePathExistingMemorySpy = vi.spyOn(createRecordModule, 'findSamePathExistingMemory').mockReturnValue(
+        options.existingSamePathMemory
+      );
+      const createMemoryRecordSpy = vi.spyOn(createRecordModule, 'createMemoryRecord').mockReturnValue(701);
+
+      const lineageStateModule = await import('../lib/storage/lineage-state');
+      const createAppendOnlyMemoryRecordSpy = vi.spyOn(lineageStateModule, 'createAppendOnlyMemoryRecord').mockReturnValue(702);
+      const recordLineageVersionSpy = vi.spyOn(lineageStateModule, 'recordLineageVersion').mockImplementation(() => {});
+
+      const postInsertModule = await import('../handlers/save/post-insert');
+      const runPostInsertEnrichmentSpy = vi.spyOn(postInsertModule, 'runPostInsertEnrichment').mockResolvedValue({
+        causalLinksResult: null,
+        enrichmentStatus: 'skipped',
+      });
+
+      const responseBuilderModule = await import('../handlers/save/response-builder');
+      const buildIndexResultSpy = vi.spyOn(responseBuilderModule, 'buildIndexResult').mockImplementation(({ id, parsed, embeddingStatus }: any) =>
+        buildIndexResult({
+          id,
+          specFolder: parsed.specFolder,
+          title: parsed.title,
+          triggerPhrases: parsed.triggerPhrases,
+          embeddingStatus,
+        }) as any
+      );
+
+      const chunkingModule = await import('../handlers/chunking-orchestrator');
+      const needsChunkingSpy = vi.spyOn(chunkingModule, 'needsChunking').mockReturnValue(false);
+
+      const module = await import('../handlers/memory-save');
+
+      return {
+        module,
+        database,
+        parseMemoryFileMock,
+        validateParsedMemoryMock,
+        runQualityGateMock,
+        checkExistingRowSpy,
+        checkContentHashDedupSpy,
+        runQualityLoopSpy,
+        generateOrCacheEmbeddingSpy,
+        persistPendingEmbeddingCacheWriteSpy,
+        evaluateAndApplyPeDecisionSpy,
+        runReconsolidationIfEnabledSpy,
+        findSamePathExistingMemorySpy,
+        createMemoryRecordSpy,
+        createAppendOnlyMemoryRecordSpy,
+        recordLineageVersionSpy,
+        runPostInsertEnrichmentSpy,
+        buildIndexResultSpy,
+        needsChunkingSpy,
       };
     }
 
@@ -400,6 +554,12 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
     }
 
     afterEach(() => {
+      for (const database of tempDbs.splice(0, tempDbs.length)) {
+        try {
+          database.close();
+        } catch {}
+      }
+
       for (const dir of tempDirs.splice(0, tempDirs.length)) {
         fs.rmSync(dir, { recursive: true, force: true });
       }
@@ -422,6 +582,55 @@ describe('Handler Memory Save (T518) [deferred - requires DB test fixtures]', ()
         vi.doUnmock('../core');
         vi.restoreAllMocks();
         vi.resetModules();
+    });
+
+    it('T518-6b: indexMemoryFile calls runQualityLoop during behavioral save flow', async () => {
+      const harness = await loadBehavioralIndexHarness();
+      const filePath = createAtomicSaveTargetPath('behavioral-quality-loop.md');
+
+      const result = await harness.module.indexMemoryFile(filePath, { force: true, asyncEmbedding: false });
+
+      expect(result.status).toBe('indexed');
+      expect(harness.runQualityLoopSpy).toHaveBeenCalledTimes(1);
+      expect(harness.runQualityLoopSpy).toHaveBeenCalledWith(
+        buildParsedMemory(filePath).content,
+        expect.objectContaining({
+          title: 'Atomic Save FI',
+          triggerPhrases: ['atomic-save-fi'],
+          specFolder: 'specs/999-atomic-save-fi',
+          filePath,
+        })
+      );
+    });
+
+    it('T518-6c: same-path supersedes route through append-only lineage helpers', async () => {
+      const existingSamePathMemory = { id: 42, content_hash: 'older-hash' };
+      const harness = await loadBehavioralIndexHarness({
+        existingSamePathMemory,
+        parsedContentHash: 'newer-hash',
+      });
+      const filePath = createAtomicSaveTargetPath('behavioral-supersede.md');
+
+      const result = await harness.module.indexMemoryFile(filePath, { force: false, asyncEmbedding: false });
+
+      expect(result.status).toBe('indexed');
+      expect(harness.findSamePathExistingMemorySpy).toHaveBeenCalledTimes(1);
+      expect(harness.createMemoryRecordSpy).not.toHaveBeenCalled();
+      expect(harness.createAppendOnlyMemoryRecordSpy).toHaveBeenCalledTimes(1);
+      expect(harness.createAppendOnlyMemoryRecordSpy).toHaveBeenCalledWith(expect.objectContaining({
+        predecessorMemoryId: existingSamePathMemory.id,
+        filePath,
+        actor: 'mcp:memory_save',
+      }));
+      expect(harness.recordLineageVersionSpy).toHaveBeenCalledWith(
+        harness.database,
+        expect.objectContaining({
+          memoryId: 702,
+          predecessorMemoryId: existingSamePathMemory.id,
+          actor: 'mcp:memory_save',
+          transitionEvent: 'SUPERSEDE',
+        })
+      );
     });
 
     it('retries when indexMemoryFile throws once then succeeds', async () => {

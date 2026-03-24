@@ -90,6 +90,11 @@ interface HybridSearchOptions {
    * enable all retrieval channels for this search call.
    */
   forceAllChannels?: boolean;
+  /**
+   * Internal raw-candidate mode used by the Stage 1 pipeline.
+   * When true, stop after channel collection and return pre-fusion candidates.
+   */
+  skipFusion?: boolean;
 }
 
 interface HybridSearchResult {
@@ -457,6 +462,164 @@ function combinedLexicalSearch(
     .slice(0, options.limit || DEFAULT_LIMIT);
 }
 
+type RawChannelList = {
+  source: string;
+  results: Array<{ id: number | string; [key: string]: unknown }>;
+};
+
+function resolveRawCandidateScore(result: { score?: unknown; similarity?: unknown }): number {
+  if (typeof result.score === 'number' && Number.isFinite(result.score)) {
+    return result.score;
+  }
+  if (typeof result.similarity === 'number' && Number.isFinite(result.similarity)) {
+    return result.similarity / 100;
+  }
+  return 0;
+}
+
+function getCandidateSources(result: HybridSearchResult): string[] {
+  const sourceList = (result as { sources?: unknown }).sources;
+  if (Array.isArray(sourceList)) {
+    return sourceList.filter((value): value is string => typeof value === 'string');
+  }
+  return typeof result.source === 'string' && result.source.length > 0
+    ? [result.source]
+    : [];
+}
+
+function getCandidateSourceScores(result: HybridSearchResult): Record<string, number> {
+  const sourceScores = (result as { sourceScores?: unknown }).sourceScores;
+  if (sourceScores && typeof sourceScores === 'object' && !Array.isArray(sourceScores)) {
+    const normalizedScores: Record<string, number> = {};
+    for (const [source, score] of Object.entries(sourceScores as Record<string, unknown>)) {
+      if (typeof score === 'number' && Number.isFinite(score)) {
+        normalizedScores[source] = score;
+      }
+    }
+    return normalizedScores;
+  }
+
+  const fallbackScores: Record<string, number> = {};
+  const resultScore = typeof result.score === 'number' && Number.isFinite(result.score)
+    ? result.score
+    : 0;
+  for (const source of getCandidateSources(result)) {
+    fallbackScores[source] = resultScore;
+  }
+  return fallbackScores;
+}
+
+function mergeRawCandidate(
+  existing: HybridSearchResult | undefined,
+  incoming: HybridSearchResult
+): HybridSearchResult {
+  if (!existing) {
+    const sources = getCandidateSources(incoming);
+    return {
+      ...incoming,
+      sources,
+      sourceScores: getCandidateSourceScores(incoming),
+      channelAttribution: sources,
+    };
+  }
+
+  const existingScore = typeof existing.score === 'number' && Number.isFinite(existing.score)
+    ? existing.score
+    : 0;
+  const incomingScore = typeof incoming.score === 'number' && Number.isFinite(incoming.score)
+    ? incoming.score
+    : 0;
+  const primary = incomingScore > existingScore ? incoming : existing;
+  const secondary = primary === incoming ? existing : incoming;
+  const sources = Array.from(new Set([
+    ...getCandidateSources(existing),
+    ...getCandidateSources(incoming),
+  ]));
+
+  return {
+    ...(secondary ?? {}),
+    ...primary,
+    score: Math.max(existingScore, incomingScore),
+    source: typeof primary.source === 'string' ? primary.source : (sources[0] ?? 'hybrid'),
+    sources,
+    sourceScores: {
+      ...getCandidateSourceScores(existing),
+      ...getCandidateSourceScores(incoming),
+    },
+    channelAttribution: sources,
+  };
+}
+
+function collectCandidatesFromLists(
+  lists: RawChannelList[],
+  limit?: number
+): HybridSearchResult[] {
+  const deduped = new Map<string, HybridSearchResult>();
+
+  for (const list of lists) {
+    if (!Array.isArray(list.results) || list.results.length === 0) continue;
+
+    const scored = list.results.map((result) => {
+      const rawScore = resolveRawCandidateScore(result as { score?: unknown; similarity?: unknown });
+      return { result, rawScore };
+    });
+
+    let min = Infinity;
+    let max = -Infinity;
+    for (const { rawScore } of scored) {
+      if (rawScore < min) min = rawScore;
+      if (rawScore > max) max = rawScore;
+    }
+    const range = max - min;
+
+    for (const { result, rawScore } of scored) {
+      const normalizedScore = range > 0 ? (rawScore - min) / range : (rawScore > 0 ? 1.0 : 0);
+      const candidate: HybridSearchResult = {
+        ...result,
+        id: result.id,
+        source: list.source,
+        score: normalizedScore,
+        sources: [list.source],
+        sourceScores: { [list.source]: normalizedScore },
+        channelAttribution: [list.source],
+      };
+      const key = canonicalResultId(candidate.id);
+      deduped.set(key, mergeRawCandidate(deduped.get(key), candidate));
+    }
+  }
+
+  return applyResultLimit(
+    Array.from(deduped.values()).sort((a, b) => {
+      const aScore = typeof a.score === 'number' && Number.isFinite(a.score) ? a.score : 0;
+      const bScore = typeof b.score === 'number' && Number.isFinite(b.score) ? b.score : 0;
+      return bScore - aScore;
+    }),
+    limit
+  );
+}
+
+function mergeRawCandidateSets(
+  existing: HybridSearchResult[],
+  incoming: HybridSearchResult[],
+  limit?: number
+): HybridSearchResult[] {
+  const merged = new Map<string, HybridSearchResult>();
+
+  for (const result of [...existing, ...incoming]) {
+    const key = canonicalResultId(result.id);
+    merged.set(key, mergeRawCandidate(merged.get(key), result));
+  }
+
+  return applyResultLimit(
+    Array.from(merged.values()).sort((a, b) => {
+      const aScore = typeof a.score === 'number' && Number.isFinite(a.score) ? a.score : 0;
+      const bScore = typeof b.score === 'number' && Number.isFinite(b.score) ? b.score : 0;
+      return bScore - aScore;
+    }),
+    limit
+  );
+}
+
 // 11. HYBRID SEARCH
 
 /**
@@ -770,6 +933,13 @@ async function hybridSearchEnhanced(
       ...ftsChannelResults,
       ...bm25ChannelResults,
     ];
+
+    if (options.skipFusion) {
+      return collectCandidatesFromLists(
+        lists.filter((list) => list.source !== 'degree'),
+        options.limit ?? DEFAULT_LIMIT
+      );
+    }
 
     if (lists.length > 0) {
       // Track multi-source and graph-only results
@@ -1176,7 +1346,89 @@ async function hybridSearchEnhanced(
     console.warn(`[hybrid-search] Enhanced search failed, falling back: ${msg}`);
   }
 
+  if (options.skipFusion) {
+    return [];
+  }
+
   return hybridSearch(query, embedding, options);
+}
+
+async function collectRawCandidates(
+  query: string,
+  embedding: Float32Array | number[] | null,
+  options: HybridSearchOptions = {}
+): Promise<HybridSearchResult[]> {
+  if (isSearchFallbackEnabled()) {
+    const tier1Options = {
+      ...options,
+      minSimilarity: options.minSimilarity ?? 0.3,
+      skipFusion: true,
+    };
+    let results = await hybridSearchEnhanced(query, embedding, tier1Options);
+    const tier1Trigger = checkDegradation(results);
+    if (!tier1Trigger) {
+      return applyResultLimit(results, options.limit);
+    }
+
+    const tier2Options: HybridSearchOptions = {
+      ...options,
+      minSimilarity: 0.1,
+      useBm25: true,
+      useFts: true,
+      useVector: true,
+      useGraph: true,
+      forceAllChannels: true,
+      skipFusion: true,
+    };
+    const tier2Results = await hybridSearchEnhanced(query, embedding, tier2Options);
+    results = mergeRawCandidateSets(results, tier2Results, options.limit);
+    if (results.length > 0) return results;
+  } else {
+    const PRIMARY_THRESHOLD = 0.3;
+    const FALLBACK_THRESHOLD = 0.17;
+
+    const primaryOptions = {
+      ...options,
+      minSimilarity: options.minSimilarity ?? PRIMARY_THRESHOLD,
+      skipFusion: true,
+    };
+    let results = await hybridSearchEnhanced(query, embedding, primaryOptions);
+
+    if (
+      results.length === 0
+      && (primaryOptions.minSimilarity ?? PRIMARY_THRESHOLD) >= FALLBACK_THRESHOLD
+    ) {
+      const fallbackOptions = {
+        ...options,
+        minSimilarity: FALLBACK_THRESHOLD,
+        skipFusion: true,
+      };
+      results = await hybridSearchEnhanced(query, embedding, fallbackOptions);
+      if (results.length > 0) {
+        results = results.map((result) => ({
+          ...result,
+          fallbackRetry: true,
+        }));
+      }
+    }
+
+    if (results.length > 0) return applyResultLimit(results, options.limit);
+  }
+
+  const ftsFallback = collectCandidatesFromLists(
+    [{ source: 'fts', results: ftsSearch(query, options) }],
+    options.limit
+  );
+  if (ftsFallback.length > 0) return ftsFallback;
+
+  const bm25Fallback = collectCandidatesFromLists(
+    [{ source: 'bm25', results: bm25Search(query, options) }],
+    options.limit
+  );
+  if (bm25Fallback.length > 0) return bm25Fallback;
+
+  console.warn('[hybrid-search] Raw candidate collection returned empty results');
+  return [];
 }
 
 /**
@@ -1831,6 +2083,7 @@ export {
   bm25Search,
   isBm25Available,
   combinedLexicalSearch,
+  collectRawCandidates,
   isFtsAvailable,
   ftsSearch,
   hybridSearch,

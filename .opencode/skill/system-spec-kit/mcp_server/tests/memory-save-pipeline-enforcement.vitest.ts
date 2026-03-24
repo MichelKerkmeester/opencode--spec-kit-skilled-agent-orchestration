@@ -311,7 +311,16 @@ const ORIGINAL_ENV = { ...process.env };
 
 beforeAll(() => {
   fs.mkdirSync(TEST_DB_DIR, { recursive: true });
-  vectorIndex.initializeDb(TEST_DB_PATH);
+  const previousMemoryDbPath = process.env.MEMORY_DB_PATH;
+  process.env.MEMORY_DB_PATH = TEST_DB_PATH;
+  try {
+    vectorIndex.closeDb();
+  } catch {
+    // Ignore cleanup errors
+  }
+  vectorIndex.initializeDb();
+  if (previousMemoryDbPath === undefined) delete process.env.MEMORY_DB_PATH;
+  else process.env.MEMORY_DB_PATH = previousMemoryDbPath;
   resetFixtureDir();
 });
 

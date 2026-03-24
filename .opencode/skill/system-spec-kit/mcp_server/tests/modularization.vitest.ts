@@ -22,7 +22,7 @@ const EXTENDED_LIMITS: Record<string, number> = {
   'tool-schemas.js': 750,           // actual: 728 — Expanded MCP schema set + Sprint 019: Zod schema integration, ingest tools
   'formatters/search-results.js': 535, // actual: 531 — Search result formatting + Sprint 019/020 trace and session-transition envelope support
   'handlers/memory-search.js': 1450, // actual: 762 — Complex search logic with multiple strategies + Pipeline V2 integration
-  'handlers/memory-triggers.js': 400, // actual: 374 — Trigger matching with cognitive features
+  'handlers/memory-triggers.js': 440, // actual: 430 — Trigger matching with cognitive features + governance/scope wiring
   'handlers/memory-crud.js': 40,    // actual: 32 — Re-export barrel (decomposed into memory-crud-{health,update,delete,stats,list,utils,types}.js)
   'handlers/memory-save.js': 2200,  // actual: 1210 — Save logic with parsing, validation, indexing + quality gate + reconsolidation
   'handlers/memory-index.js': 700,  // actual: 421 — Index operations with scanning + spec document discovery (Spec 126)

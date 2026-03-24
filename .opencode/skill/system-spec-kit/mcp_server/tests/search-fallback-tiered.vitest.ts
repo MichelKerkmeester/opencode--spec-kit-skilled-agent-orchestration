@@ -56,6 +56,7 @@ function createTestDb(): Database.Database {
       importance_tier TEXT DEFAULT 'normal',
       importance_weight REAL DEFAULT 0.5,
       spec_folder TEXT,
+      is_archived INTEGER DEFAULT 0,
       created_at TEXT DEFAULT (datetime('now'))
     )
   `);

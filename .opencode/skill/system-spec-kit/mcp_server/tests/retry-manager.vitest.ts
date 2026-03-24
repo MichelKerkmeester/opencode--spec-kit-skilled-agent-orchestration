@@ -233,7 +233,15 @@ describe('retry-manager [deferred - requires DB test fixtures]', () => {
       if (!vectorIndex || typeof vectorIndex.initializeDb !== 'function') return;
       if (!db) {
         testDbPath = path.join(os.tmpdir(), `retry-mgr-test-${Date.now()}.sqlite`);
-        const initializedDb = vectorIndex.initializeDb(testDbPath);
+        const previousMemoryDbPath = process.env.MEMORY_DB_PATH;
+        process.env.MEMORY_DB_PATH = testDbPath;
+        try { vectorIndex.closeDb(); } catch { /* ignore */ }
+        const initializedDb = vectorIndex.initializeDb();
+        if (previousMemoryDbPath === undefined) {
+          delete process.env.MEMORY_DB_PATH;
+        } else {
+          process.env.MEMORY_DB_PATH = previousMemoryDbPath;
+        }
         if (!initializedDb) {
           throw new Error('Failed to initialize retry-manager test database');
         }

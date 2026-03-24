@@ -7,28 +7,45 @@ import path from 'path';
 
 import { getDbDir } from './config';
 
-function findUp(filename: string, startDir: string): string | undefined {
+function findUp(startDir: string, predicate: (dir: string) => boolean): string | undefined {
   let dir = startDir;
   while (true) {
-    if (fs.existsSync(path.join(dir, filename))) return dir;
+    if (predicate(dir)) return dir;
     const parent = path.dirname(dir);
     if (parent === dir) return undefined;
     dir = parent;
   }
 }
 
+function hasPackageJson(dir: string): boolean {
+  return fs.existsSync(path.join(dir, 'package.json'));
+}
+
+function hasWorkspaceDirectories(dir: string): boolean {
+  return (
+    fs.existsSync(path.join(dir, 'mcp_server')) &&
+    fs.existsSync(path.join(dir, 'shared'))
+  );
+}
+
 export function resolvePackageRoot(): string {
-  const fromPackageJson = findUp('package.json', __dirname);
-  if (fromPackageJson && fs.existsSync(path.join(fromPackageJson, 'mcp_server', 'database'))) {
+  const fromWorkspaceDirs = findUp(__dirname, hasWorkspaceDirectories);
+  if (fromWorkspaceDirs) {
+    return fromWorkspaceDirs;
+  }
+
+  const fromWorkspaceDirsCwd = findUp(process.cwd(), hasWorkspaceDirectories);
+  if (fromWorkspaceDirsCwd) {
+    return fromWorkspaceDirsCwd;
+  }
+
+  const fromPackageJson = findUp(__dirname, hasPackageJson);
+  if (fromPackageJson) {
     return fromPackageJson;
   }
 
-  const fromCwd = findUp('package.json', process.cwd());
-  if (fromCwd && fs.existsSync(path.join(fromCwd, 'mcp_server', 'database'))) {
-    return fromCwd;
-  }
-
-  return fromPackageJson || path.resolve(__dirname, '..');
+  const fromCwd = findUp(process.cwd(), hasPackageJson);
+  return fromCwd || path.resolve(__dirname, '..');
 }
 
 export function resolveDatabaseDir(): string {
