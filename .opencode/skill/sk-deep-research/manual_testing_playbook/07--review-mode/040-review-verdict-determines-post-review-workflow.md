@@ -44,7 +44,7 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| DR-040 | Review verdict determines post-review workflow | Verify that FAIL / CONDITIONAL / PASS WITH NOTES / PASS verdict is correct and next-command recommendation matches. | Validate review verdict logic. Confirm `phase_synthesis` produces correct verdict from findings severity and each verdict includes next-command, per the review YAML and quick reference. | 1. `bash: rg -n 'verdict|FAIL|CONDITIONAL|PASS WITH NOTES|PASS|next.command|P0|P1|P2' .opencode/command/spec_kit/assets/spec_kit_deep-research_review-auto.yaml` -> 2. `bash: rg -n 'verdict|FAIL|CONDITIONAL|PASS|next.command|review' .opencode/skill/sk-deep-research/references/quick_reference.md` | Four verdict levels defined with correct severity thresholds, each maps to next command, YAML and quick reference agree. | Capture verdict definitions from `phase_synthesis` and quick reference mapping and compare. | PASS if all four verdict levels correctly defined with matching next-command; FAIL if any level missing, thresholds wrong, or next-command absent. | Start with `phase_synthesis` for verdict determination, then verify quick reference maps each verdict to the right next command. |
+| DR-040 | Review verdict determines post-review workflow | Verify that FAIL / CONDITIONAL / PASS WITH NOTES / PASS verdict is correct and next-command recommendation matches. | Validate review verdict logic. Confirm `phase_synthesis` produces correct verdict from findings severity and each verdict includes next-command, per the review YAML and quick reference. | 1. `bash: rg -n 'verdict|FAIL|CONDITIONAL|PASS WITH NOTES|PASS|next.command|P0|P1|P2' .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml` -> 2. `bash: rg -n 'verdict|FAIL|CONDITIONAL|PASS|next.command|review' .opencode/skill/sk-deep-research/references/quick_reference.md` | Four verdict levels defined with correct severity thresholds, each maps to next command, YAML and quick reference agree. | Capture verdict definitions from `phase_synthesis` and quick reference mapping and compare. | PASS if all four verdict levels correctly defined with matching next-command; FAIL if any level missing, thresholds wrong, or next-command absent. | Start with `phase_synthesis` for verdict determination, then verify quick reference maps each verdict to the right next command. |
 
 ---
 
@@ -61,7 +61,7 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 | File | Role |
 |---|---|
-| `.opencode/command/spec_kit/assets/spec_kit_deep-research_review-auto.yaml` | Review workflow contract; inspect `phase_synthesis` for verdict determination logic |
+| `.opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml` | Review workflow contract; inspect `phase_synthesis` for verdict determination logic |
 | `.opencode/skill/sk-deep-research/references/quick_reference.md` | Quick reference; use review section for verdict-to-next-command mapping |
 
 ---
