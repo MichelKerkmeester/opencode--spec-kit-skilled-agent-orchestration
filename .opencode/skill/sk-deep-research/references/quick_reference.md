@@ -279,4 +279,20 @@ Signals: RollingAvg=STOP MAD=CONTINUE Entropy=CONTINUE
 
 **Key defaults:** maxIterations=7, convergenceThreshold=0.10, stuckThreshold=2
 
+### review-report.md Sections
+
+| # | Section | Purpose |
+|---|---------|---------|
+| 1 | Executive Summary | Verdict, score, band, P0/P1/P2 counts, scope |
+| 2 | Score Breakdown | 5-dimension scores with band and driver |
+| 3 | P0 Findings (Blockers) | Stop-ship evidence with file:line, impact, fix |
+| 4 | P1 Findings (Required) | Must-fix issues with evidence and impact |
+| 5 | P2 Findings (Suggestions) | Advisory follow-up items |
+| 6 | Cross-Reference Results | Spec/code/checklist alignment verification |
+| 7 | Coverage Map | Files and dimensions reviewed, gaps |
+| 8 | Positive Observations | What is well-implemented |
+| 9 | Convergence Report | Iteration trend, stop reason, confidence |
+| 10 | Remediation Priority | Ordered action items by severity and dependency |
+| 11 | Release Readiness Verdict | PASS / PASS WITH NOTES / CONDITIONAL / FAIL + rationale |
+
 <!-- /ANCHOR:review-mode -->

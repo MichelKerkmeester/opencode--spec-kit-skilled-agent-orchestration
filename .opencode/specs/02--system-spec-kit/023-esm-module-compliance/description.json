@@ -1,7 +1,19 @@
 {
   "specFolder": "02--system-spec-kit/023-esm-module-compliance",
-  "description": "Reframe this spec around the real mcp_server ESM-runtime compliance refactor: compiler/package changes, relative import migration, verification, and follow-on standards docs.",
-  "keywords": ["esm", "module", "typescript", "mcp_server", "refactor", "nodenext", "specifiers"],
-  "status": "In Progress",
-  "importance_tier": "standard"
+  "description": "Feature Specification: ESM Module Compliance",
+  "keywords": [
+    "feature",
+    "specification",
+    "esm",
+    "module",
+    "compliance"
+  ],
+  "lastUpdated": "2026-03-24T08:34:20.757Z",
+  "specId": "023",
+  "folderSlug": "esm-module-compliance",
+  "parentChain": [
+    "02--system-spec-kit"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

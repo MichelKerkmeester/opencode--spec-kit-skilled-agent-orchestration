@@ -1,0 +1,682 @@
+# ─────────────────────────────────────────────────────────────────
+# DEEP REVIEW: AUTONOMOUS DEEP REVIEW LOOP (AUTO MODE)
+# ─────────────────────────────────────────────────────────────────
+# DEEP REVIEW: AUTONOMOUS DEEP REVIEW LOOP (AUTO MODE)
+# ─────────────────────────────────────────────────────────────────
+role: Deep Review Loop Manager
+purpose: Iterative code/spec review with convergence detection across review dimensions
+action: Run deep-review loop from initialization through synthesis
+operating_mode:
+  workflow: iterative_loop
+  workflow_compliance: MANDATORY
+  workflow_execution: autonomous
+  approvals: none
+  tracking: progressive_review_state
+  validation: convergence_detection
+
+# ─────────────────────────────────────────────────────────────────
+# OPERATING PRINCIPLES
+# ─────────────────────────────────────────────────────────────────
+operating_principles:
+  core: "Fresh context per iteration + externalized state = no context degradation"
+  approach: "Dispatch focused review agent per dimension, evaluate convergence, repeat or stop"
+  mandate: "Never hold findings in memory; write everything to files. Review target is READ-ONLY."
+
+# ─────────────────────────────────────────────────────────────────
+# USER INPUTS (from setup phase)
+# ─────────────────────────────────────────────────────────────────
+user_inputs:
+  review_target: "[REVIEW_TARGET] - What to review. REQUIRED."
+  review_target_type: "[spec-folder|skill|agent|track|files] - Target type for scope derivation. REQUIRED."
+  review_dimensions: "[all|correctness,security,spec-alignment,completeness,cross-ref-integrity,patterns,documentation-quality] - Dimensions to check. Default: all."
+  spec_folder: "[SPEC_FOLDER] - Spec folder path for state files. REQUIRED."
+  max_iterations: 7
+  convergence_threshold: 0.10
+
+# ─────────────────────────────────────────────────────────────────
+# CONTEXT LOADING
+# ─────────────────────────────────────────────────────────────────
+context_loading:
+  trigger: "At workflow START, before phase_init"
+  purpose: "Load prior review context for the target and buffer it until strategy.md exists"
+  mcp_integration:
+    tool: memory_context
+    note: "Call MCP tools directly - NEVER through Code Mode"
+    parameters: { input: "{review_target}", mode: "focused", intent: "understand", includeContent: true }
+  when_to_skip: ["User says 'skip context' or 'fresh start'"]
+  behavior:
+    if_context_found: "Store full results as prior_context plus a concise prior_context_summary; inject after strategy.md is created."
+    if_no_context: "Set prior_context and prior_context_summary to 'None' and continue."
+
+# ─────────────────────────────────────────────────────────────────
+# SKILL REFERENCE
+# ─────────────────────────────────────────────────────────────────
+skill_reference:
+  skill: sk-deep-research
+  skill_md: .opencode/skill/sk-deep-research/SKILL.md
+  references:
+    loop_protocol: .opencode/skill/sk-deep-research/references/loop_protocol.md
+    state_format: .opencode/skill/sk-deep-research/references/state_format.md
+    convergence: .opencode/skill/sk-deep-research/references/convergence.md
+  templates:
+    config: .opencode/skill/sk-deep-research/assets/deep_research_config.json
+    strategy: .opencode/skill/sk-deep-research/assets/deep_review_strategy.md
+
+# ─────────────────────────────────────────────────────────────────
+# AGENT CONFIGURATION
+# ─────────────────────────────────────────────────────────────────
+agent_config:
+  agent: deep-review
+  agent_file: ".claude/agents/deep-review.md"
+  # Claude runtime; other runtimes resolve own agent directory
+  mode: subagent
+  model: opus
+  leaf_only: true
+  tools: [Read, Write, Edit, Bash, Grep, Glob]
+  mcp_servers: [spec_kit_memory]
+  tool_call_budget: { target: 9, soft_max: 12, hard_max: 13 }
+
+# ─────────────────────────────────────────────────────────────────
+# STATE FILE PATHS
+# ─────────────────────────────────────────────────────────────────
+state_paths:
+  config: "{spec_folder}/scratch/deep-research-config.json"
+  state_log: "{spec_folder}/scratch/deep-research-state.jsonl"
+  strategy: "{spec_folder}/scratch/deep-review-strategy.md"
+  dashboard: "{spec_folder}/scratch/deep-review-dashboard.md"
+  iteration_pattern: "{spec_folder}/scratch/iteration-{NNN}.md"
+  review_output: "{spec_folder}/review-report.md"
+
+# ─────────────────────────────────────────────────────────────────
+# WORKFLOW
+# ─────────────────────────────────────────────────────────────────
+workflow:
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 1: INITIALIZATION
+  # ═══════════════════════════════════════════════════════════════
+  phase_init:
+    purpose: Create all state files for the review session and resolve review scope
+    steps:
+
+      step_preflight_contract:
+        action: "Validate required setup bindings and executable workflow contract before any file writes"
+        verify:
+          - required_values_present: [review_target, review_target_type, review_dimensions, spec_folder, max_iterations, convergence_threshold]
+          - spec_folder_is_within: ".opencode/specs/"
+          - unresolved_placeholders: "FAIL if any user-facing template references placeholders not produced by earlier steps"
+          - tool_contract: "FAIL if executable steps reference tools outside the command allowlist"
+        on_fail: "Halt with STATUS=FAIL and report the missing binding or unsupported contract reference"
+
+      step_create_directories:
+        action: "Create spec folder and scratch directory if they don't exist"
+        command: "mkdir -p {spec_folder}/scratch"
+
+      step_classify_session:
+        action: "Classify the session before writing files"
+        inspect:
+          - "{spec_folder}/scratch/deep-research-config.json"
+          - "{spec_folder}/scratch/deep-research-state.jsonl"
+          - "{spec_folder}/scratch/deep-review-strategy.md"
+        classify:
+          fresh: "None of the three state artifacts exist"
+          resume: "Config, JSONL, and strategy all exist and config.mode == 'review' and agree on target/spec folder"
+          completed-session: "Resume artifacts exist and config.status == 'complete'"
+          invalid-state: "Any partial, missing, or contradictory combination"
+        outputs:
+          - session_state: "fresh | resume | completed-session | invalid-state"
+        on_resume:
+          log: "Auto-resume: state artifacts are complete and consistent. Skip initialization writes and continue from phase_loop."
+          skip_to: phase_loop
+        on_completed_session:
+          log: "Prior session already completed. Reuse existing artifacts unless the user starts a new session explicitly."
+          skip_to: phase_synthesis
+        on_invalid_state:
+          halt: true
+          message: "Existing deep-review state is incomplete or contradictory. Repair or archive the invalid scratch state before continuing."
+        on_fresh:
+          action: "Proceed with a new session"
+
+      step_scope_discovery:
+        action: "Resolve review target to a concrete file list based on target type"
+        resolve:
+          spec-folder: |
+            1. Read spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md
+            2. Discover implementation files referenced in spec artifacts
+            3. Discover test files associated with implementation
+            4. Set scope = all discovered files
+          skill: |
+            1. Read SKILL.md from .opencode/skill/{skill_name}/
+            2. Discover references/, assets/, scripts/ contents
+            3. Find agent definitions referencing this skill across runtimes
+            4. Find command entry points referencing this skill
+            5. Set scope = all discovered files
+          agent: |
+            1. Find agent definition across all runtimes (.claude/agents/, .opencode/agent/, .codex/agents/, .agents/, .gemini/agents/)
+            2. Compare agent definitions for consistency
+            3. Set scope = all discovered agent files
+          track: |
+            1. List all child spec folders under .opencode/specs/{track}/
+            2. For each: read spec.md + checklist.md
+            3. Set scope = all child spec artifacts
+          files: |
+            1. Expand glob patterns from review_target
+            2. Validate all files exist
+            3. Discover immediate cross-references (imports, links)
+            4. Set scope = expanded file list + cross-references
+        outputs:
+          - review_scope_files: "List of all files in review scope"
+          - cross_reference_targets: "{ spec_paths: [...], code_paths: [...], test_paths: [...] }"
+
+      step_order_dimensions:
+        action: "Order review dimensions based on risk priority"
+        algorithm: |
+          1. Iteration 0 (inventory pass): Build artifact map, identify file types, estimate complexity
+          2. Subsequent iterations follow risk-ordered deep passes:
+             correctness → security → spec-alignment → completeness → cross-ref-integrity → patterns → documentation-quality
+          3. If review_dimensions != "all", filter to only requested dimensions
+          4. Store ordered list as dimension_queue
+        outputs:
+          - dimension_queue: "Ordered list of dimensions to review"
+          - inventory_pass: true
+
+      step_create_config:
+        action: "Create deep-research-config.json from template with review-specific fields"
+        template: .opencode/skill/sk-deep-research/assets/deep_research_config.json
+        populate:
+          topic: "Review: {review_target}"
+          mode: "review"
+          reviewTarget: "{review_target}"
+          reviewTargetType: "{review_target_type}"
+          reviewDimensions: "{review_dimensions}"
+          reviewScopeFiles: "{review_scope_files}"
+          severityThreshold: "P2"
+          crossReference: { spec: true, checklist: true, agentConsistency: true }
+          qualityGateThreshold: 70
+          maxIterations: "{max_iterations}"
+          convergenceThreshold: "{convergence_threshold}"
+          stuckThreshold: 2
+          maxDurationMinutes: 120
+          specFolder: "{spec_folder}"
+          createdAt: "{ISO_8601_NOW}"
+          status: "initialized"
+          executionMode: "auto"
+        output: "{spec_folder}/scratch/deep-research-config.json"
+
+      step_create_state_log:
+        action: "Initialize JSONL state log with config record including review fields"
+        content: '{"type":"config","mode":"review","reviewTarget":"{review_target}","reviewTargetType":"{review_target_type}","reviewDimensions":"{review_dimensions}","maxIterations":{max_iterations},"convergenceThreshold":{convergence_threshold},"createdAt":"{ISO_8601_NOW}","specFolder":"{spec_folder}"}'
+        output: "{spec_folder}/scratch/deep-research-state.jsonl"
+
+      step_create_strategy:
+        action: "Create review strategy file from deep_review_strategy.md template"
+        template: .opencode/skill/sk-deep-research/assets/deep_review_strategy.md
+        populate:
+          review_target: "{review_target}"
+          review_target_type: "{review_target_type}"
+          dimensions: "{dimension_queue}"
+          scope_files: "{review_scope_files}"
+          cross_reference_targets: "{cross_reference_targets}"
+          max_iterations: "{max_iterations}"
+          convergence_threshold: "{convergence_threshold}"
+        output: "{spec_folder}/scratch/deep-review-strategy.md"
+
+      step_enrich_strategy_context:
+        action: "Ensure Known Context is written only after strategy.md exists"
+        condition: "prior_context_found"
+        edit: "{spec_folder}/scratch/deep-review-strategy.md"
+        note: "Append or replace the Known Context section with prior_context_summary and retained detail from prior_context"
+
+      step_init_complete:
+        log: "Initialization complete. Config, state, and strategy files created. Review scope: {review_scope_files_count} files, {dimension_queue_count} dimensions."
+        set: { current_iteration: 1, stuck_count: 0, p0_count: 0, p1_count: 0, p2_count: 0 }
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 2: ITERATION LOOP
+  # ═══════════════════════════════════════════════════════════════
+  phase_loop:
+    purpose: Dispatch review agent iterations until convergence
+    repeat: true
+    max_repeats: "{max_iterations}"
+    steps:
+
+      step_read_state:
+        action: "Read current state from JSONL, strategy, and config"
+        read:
+          - "{spec_folder}/scratch/deep-research-state.jsonl"
+          - "{spec_folder}/scratch/deep-review-strategy.md"
+          - "{spec_folder}/scratch/deep-research-config.json"
+        extract:
+          - iteration_count: "Count lines where type === 'iteration'"
+          - current_iteration: "iteration_count + 1"
+          - last_newFindingsRatio: "Extract newFindingsRatio from last iteration record"
+          - last_focus: "Extract focus/dimension from latest iteration record, else 'none yet'"
+          - ratio_prev: "Extract newFindingsRatio from second-latest iteration record, else 'N/A'"
+          - ratio_latest: "Extract newFindingsRatio from latest iteration record, else 'N/A'"
+          - next_dimension: "Next uncovered dimension from dimension_queue in strategy.md"
+          - dimensions_covered: "List of dimensions already reviewed"
+          - dimensions_remaining: "List of dimensions not yet reviewed"
+          - dimension_coverage: "covered / total dimensions"
+          - p0_count: "Count P0 findings across all iterations"
+          - p1_count: "Count P1 findings across all iterations"
+          - p2_count: "Count P2 findings across all iterations"
+          - last_3_summaries: "Summarize the latest 3 iteration records as 'run N: dimension (ratio, P0/P1/P2)'"
+          - latest_status: "Extract status from latest iteration record, else 'none yet'"
+
+      step_check_pause_sentinel:
+        action: "Check for pause sentinel file"
+        check: "Does {spec_folder}/scratch/.deep-research-pause exist?"
+        if_exists:
+          log_event: '{"type":"event","event":"paused","reason":"sentinel file detected"}'
+          message: "Review paused. Delete scratch/.deep-research-pause to resume."
+          halt: true
+        if_not_exists:
+          proceed: true
+
+      step_check_convergence:
+        action: "Evaluate review-specific stop conditions"
+        algorithm: |
+          1. HARD STOPS:
+             a) if iteration_count >= max_iterations: STOP (max_iterations_reached)
+             b) if all dimensions clean AND p0_count == 0 AND p1_count == 0: STOP (all_dimensions_clean)
+          2. STUCK DETECTION (threshold 2):
+             if stuck_count >= 2: STUCK_RECOVERY
+          3. COMPOSITE CONVERGENCE (3-signal weighted vote):
+               signals = []
+               a) Rolling average (w=0.30, window=2, needs 2+ iterations):
+                  avg = mean(last 2 newFindingsRatios)
+                  stop if avg < convergence_threshold (0.08)
+               b) MAD noise floor (w=0.25, needs 3+ iterations):
+                  noiseFloor = MAD(all ratios) * 1.4826
+                  stop if latest ratio <= noiseFloor
+               c) Dimension coverage (w=0.45):
+                  coverage = dimensions_covered / total_dimensions
+                  stop if coverage >= 1.0 (100%)
+               Redistribute weights for unavailable signals.
+               if weighted_stop_score > 0.60: check quality guards
+          4. QUALITY GUARDS (5 binary checks — ALL must pass to allow STOP):
+               a) Evidence Completeness: Every P0/P1 finding has file:line evidence
+               b) Scope Alignment: All findings within declared review scope
+               c) No Inference-Only: No P0/P1 based solely on inference without file evidence
+               d) Severity Coverage: Security + Correctness dimensions reviewed
+               e) Cross-Reference (optional, 5+ iters): At least one multi-dimension iteration
+             if not all guards passed:
+               log: "Quality guard failed: {violations}. Overriding STOP to CONTINUE."
+               decision = "CONTINUE"
+          5. else: CONTINUE
+        outputs:
+          - decision: "STOP | STUCK_RECOVERY | CONTINUE"
+          - reason: "Human-readable stop reason"
+
+      step_handle_convergence:
+        action: "Act on convergence decision"
+        if_stop:
+          log: "Loop stopping. Reason: {reason}"
+          skip_to: phase_synthesis
+        if_stuck_recovery:
+          log: "Stuck detected ({stuck_count} consecutive no-progress). Entering recovery."
+          recovery_strategies:
+            - "Change granularity: file-level → function-level → line-level review"
+            - "Cross-reference analysis: review across dimensions instead of single dimension"
+            - "Escalate severity review: re-examine P2 findings for potential P1 upgrades"
+          set: { next_dimension: "RECOVERY: {recovery_strategy}. Least-explored dimension: {least_explored}" }
+          reset: { stuck_count: 0 }
+        if_continue:
+          log: "Iteration {current_iteration}: Continuing. Dimension: {next_dimension}"
+
+      step_generate_state_summary:
+        action: "Generate compact state summary for dispatch context (~200 tokens)"
+        generate: |
+          STATE SUMMARY (auto-generated):
+          Iteration: {current_iteration} of {max_iterations}
+          Dimension: {next_dimension}
+          Prior Findings: P0={p0_count} P1={p1_count} P2={p2_count}
+          Dimension Coverage: {dimensions_covered_list} ({dimension_coverage})
+          Last 2 ratios: {ratio_prev} -> {ratio_latest}
+          Stuck count: {stuck_count}
+
+      step_dispatch_iteration:
+        action: "Dispatch @deep-review agent for one review iteration"
+        dispatch:
+          agent: deep-review
+          model: opus
+          context: |
+            {state_summary}
+
+            REVIEW ITERATION {current_iteration} of {max_iterations}
+            MODE: review
+            DIMENSION: {next_dimension}
+            REVIEW TARGET: {review_target}
+            REVIEW SCOPE FILES: {review_scope_files}
+            PRIOR FINDINGS: P0={p0_count} P1={p1_count} P2={p2_count}
+            CROSS-REFERENCE TARGETS:
+            - Spec: {cross_reference_targets.spec_paths}
+            - Code: {cross_reference_targets.code_paths}
+            - Tests: {cross_reference_targets.test_paths}
+            SCORING RUBRIC: Correctness=30 Security=25 Patterns=20 Maintainability=15 Performance=10
+            SEVERITY THRESHOLDS:
+            - P0: exploitable security, auth bypass, destructive data loss, false blocker completion
+            - P1: correctness bug, spec mismatch, must-fix gate issue, missing required feature
+            - P2: non-blocking improvement, style drift, documentation polish
+
+            State Files (ALL paths relative to repo root):
+              Config: {spec_folder}/scratch/deep-research-config.json
+              State Log: {spec_folder}/scratch/deep-research-state.jsonl
+              Strategy: {spec_folder}/scratch/deep-review-strategy.md
+              Write findings to: {spec_folder}/scratch/iteration-{NNN}.md
+
+            CONSTRAINT: You are a LEAF agent. Do NOT dispatch sub-agents.
+            CONSTRAINT: Target 9 tool calls. Soft max 12, hard max 13.
+            CONSTRAINT: Write ALL findings to files. Do not hold in context.
+            CONSTRAINT: Review target is READ-ONLY. Do not modify reviewed files.
+            CONSTRAINT: Append JSONL record with dimension, severityCounts, reviewedArtifacts, newFindingsRatio.
+            CONSTRAINT: Update strategy.md dimension coverage and running findings.
+        wait_for_completion: true
+
+      step_evaluate_results:
+        action: "Verify iteration outputs and extract metrics"
+        verify:
+          - file_exists: "{spec_folder}/scratch/iteration-{NNN}.md"
+          - jsonl_appended: "New iteration record in state.jsonl"
+          - strategy_updated: "Strategy.md has been modified"
+        extract:
+          - newFindingsRatio: "From latest JSONL iteration record"
+          - findings_count: "From latest JSONL iteration record"
+          - severity_counts: "From latest JSONL iteration record (p0, p1, p2)"
+          - dimension: "From latest JSONL iteration record"
+          - status: "From latest JSONL iteration record"
+          - reviewed_artifacts: "From latest JSONL iteration record"
+        on_missing_outputs:
+          action: "Mark iteration as 'error', continue to next"
+          append_jsonl: '{"type":"iteration","run":{N},"mode":"review","status":"error","dimension":"{next_dimension}","findingsCount":0,"severityCounts":{"p0":0,"p1":0,"p2":0},"newFindingsRatio":0.0,"timestamp":"{ISO_8601_NOW}"}'
+
+      step_generate_dashboard:
+        action: "Generate or refresh the review dashboard"
+        read:
+          - "{spec_folder}/scratch/deep-research-state.jsonl"
+          - "{spec_folder}/scratch/deep-review-strategy.md"
+        content: |
+          # Deep Review Dashboard - Session Overview
+
+          Auto-generated from JSONL state log and strategy file. Regenerated after every iteration evaluation.
+
+          ## Status
+          - Review Target: {review_target} ({review_target_type})
+          - Status: [ITERATING | CONVERGING | STUCK_RECOVERY | COMPLETE]
+          - Iteration: {current_iteration} of {max_iterations}
+
+          ## Findings Summary
+          | Severity | Count | Trend |
+          |----------|------:|-------|
+          | P0 (Blockers) | {p0_count} | {p0_trend} |
+          | P1 (Required) | {p1_count} | {p1_trend} |
+          | P2 (Suggestions) | {p2_count} | {p2_trend} |
+
+          ## Dimension Coverage
+          | Dimension | Status | Iteration | Findings |
+          |-----------|--------|-----------|----------|
+          | [per dimension from strategy + JSONL] |
+
+          ## Progress
+          | # | Dimension | Ratio | P0/P1/P2 | Status |
+          |---|-----------|-------|----------|--------|
+          | [per iteration from JSONL] |
+
+          ## Score Trend
+          - Last 3 ratios: [{ratios}] [{trend}]
+          - Stuck count: {stuck_count}
+          - Guard violations: {guard_violations}
+
+          ## Next Focus
+          {next_dimension}
+        output: "{spec_folder}/scratch/deep-review-dashboard.md"
+        note: "Auto-generated from JSONL + strategy. Never manually edited."
+
+      step_update_tracking:
+        action: "Update loop tracking variables"
+        set:
+          current_iteration: "{current_iteration + 1}"
+          p0_count: "Accumulate from severity_counts"
+          p1_count: "Accumulate from severity_counts"
+          p2_count: "Accumulate from severity_counts"
+          stuck_count: |
+            if status == 'thought': unchanged (skip)
+            if status == 'insight': 0 (reset)
+            if newFindingsRatio < convergence_threshold: stuck_count + 1
+            else: 0
+        log: "Iteration {N} complete. Dimension: {dimension}. newFindingsRatio: {newFindingsRatio}. Findings: P0={severity_counts.p0} P1={severity_counts.p1} P2={severity_counts.p2}. Stuck count: {stuck_count}."
+
+      step_loop_decision:
+        action: "Return to step_read_state for next iteration"
+        goto: step_read_state
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 3: SYNTHESIS
+  # ═══════════════════════════════════════════════════════════════
+  phase_synthesis:
+    purpose: Compile all iteration findings into review-report.md
+    steps:
+
+      step_hydrate_summary_metrics:
+        action: "Hydrate summary metrics before synthesis, including completed-session resume paths"
+        read:
+          - "{spec_folder}/scratch/deep-research-config.json"
+          - "{spec_folder}/scratch/deep-research-state.jsonl"
+          - "{spec_folder}/scratch/deep-review-strategy.md"
+        extract:
+          - iteration_count: "Count lines where type === 'iteration'"
+          - p0_count: "Total P0 findings across all iterations (deduped)"
+          - p1_count: "Total P1 findings across all iterations (deduped)"
+          - p2_count: "Total P2 findings across all iterations (deduped)"
+          - dimensions_covered: "List of reviewed dimensions"
+          - dimension_coverage: "covered / total"
+          - last_3_summaries: "Summarize the latest 3 iteration records"
+          - reason: "Use the latest stop reason if present, else 'completed_session_resume'"
+
+      step_read_all_iterations:
+        action: "Read all iteration files and strategy"
+        read_pattern: "{spec_folder}/scratch/iteration-*.md"
+        read_also: "{spec_folder}/scratch/deep-review-strategy.md"
+
+      step_build_finding_registry:
+        action: "Build deduplicated finding registry from all iterations"
+        algorithm: |
+          1. Extract all findings from iteration files
+          2. Deduplicate by key: file:line + normalized_title
+             - Same file:line, multiple dimensions → single finding, multiple dimension tags
+             - Keep highest severity on duplicates
+          3. Track finding lifecycle:
+             - status: active | duplicate | upgraded | downgraded | contested | resolved_false_positive
+             - Record first_seen, upgraded_in, previous_severity for severity changes
+          4. Resolve contradictions:
+             - Findings marked contested across iterations → referee pass
+             - Determine final severity and status
+          5. Count only 'active' findings for totals
+        outputs:
+          - finding_registry: "Deduplicated list of all findings with metadata"
+          - active_p0: "Count of active P0 findings"
+          - active_p1: "Count of active P1 findings"
+          - active_p2: "Count of active P2 findings"
+
+      step_adversarial_selfcheck:
+        action: "Final adversarial self-check on all P0 and P1 findings"
+        algorithm: |
+          For each active P0/P1 finding:
+            1. Hunter: Re-verify finding against source code (re-read file:line)
+            2. Skeptic: Challenge severity — is this really P0/P1? Could it be P2?
+            3. Referee: Final call — confirm, downgrade, or mark false_positive
+          Update finding_registry with adjudicated results.
+
+      step_compile_review_report:
+        action: "Compile review-report.md with 11 sections"
+        instructions: |
+          Create review-report.md with the following sections:
+
+          1. **Executive Summary**
+             - Overall verdict: PASS | CONDITIONAL | PASS WITH NOTES | FAIL
+             - Composite score (0-100) and band
+             - P0/P1/P2 counts (active only)
+             - Review scope summary
+
+          2. **Score Breakdown**
+             | Dimension | Weight | Score | Band | Primary Driver |
+             - Correctness (30), Security (25), Patterns (20), Maintainability (15), Performance (10)
+
+          3. **P0 Findings (Blockers)**
+             For each: ID, title, file:line, evidence, impact, fix recommendation, dimension(s)
+
+          4. **P1 Findings (Required)**
+             Same structure as P0
+
+          5. **P2 Findings (Suggestions)**
+             Compact cards: ID, title, file:line, suggestion, dimension
+
+          6. **Cross-Reference Results**
+             | Check | Source → Target | Result | Evidence | Status |
+             For each of the 6 cross-reference protocols
+
+          7. **Coverage Map**
+             | File/Artifact | Dimensions Reviewed | Gaps |
+             Mark any unreviewed files or dimensions
+
+          8. **Positive Observations**
+             Well-implemented patterns, good practices, strong areas
+
+          9. **Convergence Report**
+             - Stop reason, total iterations, dimension coverage
+             - newFindingsRatio trend
+             - Quality guard results
+
+          10. **Remediation Priority**
+              Ordered action items: P0 first, then P1, grouped by effort/impact
+
+          11. **Release Readiness Verdict**
+              - FAIL: Active P0 or composite score < 70
+              - CONDITIONAL: No P0, active P1 remaining
+              - PASS WITH NOTES: Only P2 findings remain
+              - PASS: No active findings
+              - Rationale for verdict
+        output: "{spec_folder}/review-report.md"
+
+      step_convergence_report:
+        action: "Append convergence report to JSONL"
+        append_to_jsonl: '{"type":"event","event":"synthesis_complete","mode":"review","totalIterations":{iteration_count},"activeP0":{active_p0},"activeP1":{active_p1},"activeP2":{active_p2},"dimensionCoverage":"{dimension_coverage}","verdict":"{verdict}","stopReason":"{reason}","timestamp":"{ISO_8601_NOW}"}'
+
+      step_update_config_status:
+        action: "Mark config as complete"
+        edit: "{spec_folder}/scratch/deep-research-config.json"
+        set_field: { status: "complete" }
+
+  # ═══════════════════════════════════════════════════════════════
+  # PHASE 4: SAVE
+  # ═══════════════════════════════════════════════════════════════
+  phase_save:
+    purpose: Preserve review context to memory system
+    steps:
+
+      step_generate_context:
+        action: "Save memory context via generate-context.js"
+        command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {spec_folder}"
+        critical_rule: "NEVER use Write tool directly for memory/ paths"
+
+      step_index_memory:
+        action: "No additional indexing step in the live contract"
+        note: "generate-context.js is the supported save boundary for this workflow"
+
+      step_verify_save:
+        action: "Verify memory file was created"
+        check: "Does {spec_folder}/memory/*.md exist?"
+        on_fail: "Log warning but do not block completion"
+
+  # ═══════════════════════════════════════════════════════════════
+  # COMPLETION
+  # ═══════════════════════════════════════════════════════════════
+  completion:
+    message: |
+      Deep review complete.
+      Iterations: {iteration_count} | Stop reason: {reason}
+      Findings: P0={active_p0} P1={active_p1} P2={active_p2}
+      Verdict: {verdict} | Score: {composite_score}
+
+      Artifacts:
+        - review-report.md (compiled from {iteration_count} iterations)
+        - {iteration_count} iteration files in scratch/
+        - State files: config.json, state.jsonl, strategy.md, dashboard.md
+        - Memory context saved
+
+      STATUS=OK PATH={spec_folder}
+    next_steps:
+      - "/spec_kit:plan [remediation] (if FAIL or CONDITIONAL verdict)"
+      - "/create:changelog (if PASS or PASS WITH NOTES)"
+      - "/spec_kit:deep-research:review [target] (for another review)"
+      - "/memory:save {spec_folder} (manual memory save)"
+
+# ─────────────────────────────────────────────────────────────────
+# ERROR RECOVERY
+# ─────────────────────────────────────────────────────────────────
+error_recovery:
+  agent_dispatch_timeout: "Retry once with reduced scope (fewer files per iteration). If second timeout, mark as 'timeout' and continue."
+  state_file_missing: "If JSONL missing during loop, reconstruct from iteration files. If strategy missing, create minimal version."
+  consecutive_failures: "After 3 consecutive errors, halt loop and enter synthesis with partial findings."
+  memory_save_failure: "Save to scratch/ as backup. Log warning."
+
+# ─────────────────────────────────────────────────────────────────
+# RULES
+# ─────────────────────────────────────────────────────────────────
+rules:
+  ALWAYS:
+    - follow_workflow_phases_in_order
+    - dispatch_deep_review_agent_per_iteration
+    - check_convergence_before_each_iteration
+    - write_all_state_to_files
+    - save_memory_context_after_synthesis
+    - respect_max_iterations_cap
+    - treat_review_target_as_read_only
+    - deduplicate_findings_before_synthesis
+    - run_adversarial_selfcheck_on_p0_p1
+  NEVER:
+    - skip_convergence_check
+    - dispatch_non_leaf_agents
+    - hold_iteration_findings_in_memory_only
+    - modify_config_after_initialization
+    - overwrite_jsonl_state_log
+    - proceed_without_state_file_verification
+    - modify_files_under_review
+    - report_p0_without_file_line_evidence
+
+# ─────────────────────────────────────────────────────────────────
+# REFERENCE-ONLY APPENDIX
+# ─────────────────────────────────────────────────────────────────
+reference_only_appendix:
+  checkpoint_commit:
+    note: "Checkpoint commits are intentionally excluded from workflow.steps."
+    commands:
+      - "git add {spec_folder}/scratch/iteration-{NNN}.md {spec_folder}/scratch/deep-research-state.jsonl {spec_folder}/scratch/deep-review-strategy.md {spec_folder}/review-report.md"
+      - 'git commit -m "chore(deep-review): iteration {NNN} complete"'
+  severity_weights:
+    note: "Severity weights for newFindingsRatio calculation"
+    weights:
+      P0: 10.0
+      P1: 5.0
+      P2: 1.0
+    p0_override: "If ANY new P0 discovered → newFindingsRatio = max(calculated, 0.50). A single new P0 blocks convergence."
+    clean_pass: "If total_findings == 0 (clean pass) → newFindingsRatio = 0.0"
+  review_dimensions:
+    note: "All 7 default review dimensions with priority ordering"
+    dimensions:
+      - { priority: 1, name: "correctness", checks: "Logic, state flow, edge cases, error handling" }
+      - { priority: 2, name: "security", checks: "Auth, input/output safety, data exposure, permissions" }
+      - { priority: 3, name: "spec-alignment", checks: "Spec/plan/tasks/checklist claims vs shipped reality" }
+      - { priority: 4, name: "completeness", checks: "Required files, sections, tests, checklist coverage" }
+      - { priority: 5, name: "cross-ref-integrity", checks: "IDs, links, root-to-snippet alignment, runtime anchors" }
+      - { priority: 6, name: "patterns", checks: "Baseline+overlay compliance, template shape, conventions" }
+      - { priority: 7, name: "documentation-quality", checks: "Current-reality honesty, operator clarity" }
+  cross_reference_protocols:
+    note: "6 cross-reference verification protocols"
+    protocols:
+      - { check: "Spec vs Code", source: "spec.md claims", target: "implementation" }
+      - { check: "Checklist vs Evidence", source: "[x] items", target: "cited evidence" }
+      - { check: "SKILL.md vs Agent", source: "Skill contracts", target: "agent files" }
+      - { check: "Agent Cross-Runtime", source: ".claude", target: ".codex/.opencode/.agents/.gemini" }
+      - { check: "Feature Catalog vs Code", source: "Catalog claims", target: "implementation" }
+      - { check: "Playbook vs Capability", source: "Scenario preconditions", target: "actual capability" }

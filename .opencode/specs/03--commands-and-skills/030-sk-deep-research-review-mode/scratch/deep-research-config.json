@@ -1,0 +1,22 @@
+{
+  "type": "config",
+  "topic": "Design of review mode for sk-deep-research: an auto, iterative deep review flow that analyzes spec folders, code, skills, and cross-references to find misalignments, bugs, and incomplete features for release readiness",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "progressiveSynthesis": false,
+  "createdAt": "2026-03-24T13:30:00Z",
+  "specFolder": ".opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode",
+  "status": "active",
+  "mode": "research",
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "deep-research-dashboard.md": "auto-generated",
+    "iteration-*.md": "write-once",
+    "research.md": "mutable"
+  }
+}

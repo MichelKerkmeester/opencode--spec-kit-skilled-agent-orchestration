@@ -25,8 +25,8 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that review iteration checks spec claims vs code, checklist [x] vs evidence, and SKILL.md vs agent files.
 - Real user request: Will the review catch it if my spec says something is done but the code doesn't match?
-- Orchestrator prompt: Validate cross-reference verification for sk-deep-research review mode. Confirm that the @deep-review agent checks spec claims against code, checklist [x] items against evidence, and SKILL.md content against agent files, per the deep-review agent §1, `loop_protocol.md` §6, and `research.md` §4.
-- Expected execution process: Inspect the deep-review agent section 1 for cross-reference rules, then `loop_protocol.md` section 6 for cross-reference iteration dispatch, then `research.md` section 4 for the review cross-reference output format.
+- Orchestrator prompt: Validate cross-reference verification for sk-deep-research review mode. Confirm that the @deep-review agent checks spec claims against code, checklist [x] items against evidence, and SKILL.md content against agent files, per the deep-review agent §1 and §5, `loop_protocol.md` §6 (Step 3a), and the review auto YAML `step_compile_review_report` Section 6.
+- Expected execution process: Inspect the deep-review agent section 1 for cross-reference rules, then `loop_protocol.md` section 6 (Step 3a) for 6 cross-reference protocols, then the deep-review agent section 5 for the iteration Cross-Reference Results output format.
 - Desired user-facing outcome: The user understands that the review actively verifies documentation claims against code reality and will flag any misalignment as a finding.
 - Expected signals: Cross-reference checks are defined for spec-vs-code, checklist-vs-evidence, and SKILL.md-vs-agent; misalignments produce findings with file:line evidence.
 - Pass/fail posture: PASS if all three cross-reference check types are defined and produce actionable findings; FAIL if any check type is missing or produces vague output.
@@ -44,7 +44,7 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| DR-037 | Cross-reference verification detects spec-code misalignment | Verify that review iteration checks spec claims vs code, checklist [x] vs evidence, and SKILL.md vs agent files. | Validate cross-reference verification. Confirm the @deep-review agent checks spec-vs-code, checklist-vs-evidence, and SKILL.md-vs-agent per the agent §1, `loop_protocol.md` §6, and `research.md` §4. | 1. `bash: rg -n 'cross.reference|spec.*code|checklist.*evidence|SKILL.md.*agent' .opencode/agent/deep-review.md` -> 2. `bash: rg -n 'cross.reference|spec.*code|checklist|SKILL.md' .opencode/skill/sk-deep-research/references/loop_protocol.md` -> 3. `bash: rg -n 'cross.reference|misalignment|verification' .opencode/skill/sk-deep-research/references/research.md` | Cross-reference checks defined for all three types, misalignments produce findings with file:line evidence. | Capture cross-reference rules from the agent, dispatch rules from `loop_protocol.md` §6, and output format from `research.md` §4. | PASS if all three cross-reference check types are defined and produce actionable findings; FAIL if any check type is missing or output is vague. | Start with the deep-review agent §1 for cross-reference rules, then check `loop_protocol.md` §6 for dispatch, then `research.md` §4 for output format. |
+| DR-037 | Cross-reference verification detects spec-code misalignment | Verify that review iteration checks spec claims vs code, checklist [x] vs evidence, and SKILL.md vs agent files. | Validate cross-reference verification. Confirm the @deep-review agent checks spec-vs-code, checklist-vs-evidence, and SKILL.md-vs-agent per the agent §1/§5, `loop_protocol.md` §6 (Step 3a), and the review auto YAML `step_compile_review_report` §6. | 1. `bash: rg -n 'cross.reference|spec.*code|checklist.*evidence|SKILL.md.*agent' .opencode/agent/deep-review.md` -> 2. `bash: rg -n 'cross.reference|spec.*code|checklist|SKILL.md' .opencode/skill/sk-deep-research/references/loop_protocol.md` -> 3. `bash: rg -n 'cross.reference|misalignment|verification' .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml` | Cross-reference checks defined for all three types, misalignments produce findings with file:line evidence. | Capture cross-reference rules from the agent §1/§5, 6 protocols from `loop_protocol.md` §6 Step 3a, and output format from review auto YAML `step_compile_review_report` §6. | PASS if all three cross-reference check types are defined and produce actionable findings; FAIL if any check type is missing or output is vague. | Start with the deep-review agent §1 for cross-reference rules, then check `loop_protocol.md` §6 Step 3a for 6 protocols, then the agent §5 for iteration output format. |
 
 ---
 
@@ -63,7 +63,7 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 |---|---|
 | `.opencode/agent/deep-review.md` | Deep-review agent definition; use §1 for cross-reference verification rules |
 | `.opencode/skill/sk-deep-research/references/loop_protocol.md` | Loop protocol; use §6 for cross-reference iteration dispatch |
-| `.opencode/skill/sk-deep-research/references/research.md` | Research output reference; use §4 for review cross-reference output format |
+| `.opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml` | Review auto YAML workflow; use `step_compile_review_report` §6 for cross-reference output format |
 
 ---
 

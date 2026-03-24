@@ -237,7 +237,7 @@ Save --> generate-context.js --> verify memory artifact
 9. **Treat research.md as workflow-owned** -- Iteration findings feed synthesis; the workflow owns the canonical `research.md`
 10. **Document ruled-out directions per iteration** -- Every iteration must include what was tried and failed
 11. **Report newInfoRatio + 1-sentence novelty justification** -- Every JSONL iteration record must include both
-12. **Quality guards must pass before convergence** -- Source diversity, focus alignment, and no single-weak-source checks must pass before STOP can trigger
+12. **Quality guards must pass before convergence** -- Research mode: source diversity, focus alignment, and no single-weak-source checks must pass before STOP can trigger. Review mode: evidence completeness, scope alignment, no inference-only, severity coverage, and cross-reference checks must pass (see convergence.md Section 10.4)
 13. **Review target files are read-only** -- Never modify code under review; review mode is observation-only
 14. **Run adversarial self-check on P0 findings before recording** -- Re-read cited code to confirm P0 severity is genuine
 15. **Report severity counts (P0/P1/P2) in every review iteration JSONL record** -- `findingsSummary` and `findingsNew` are required fields
