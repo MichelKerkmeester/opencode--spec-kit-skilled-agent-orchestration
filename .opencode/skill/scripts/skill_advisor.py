@@ -256,6 +256,11 @@ INTENT_BOOSTERS = {
     "iterative research": ("sk-deep-research", 1.2),
     "convergence": ("sk-deep-research", 0.8),
     "autonomous research": ("sk-deep-research", 1.5),
+    "deep review": ("sk-deep-research", 1.5),
+    "review mode": ("sk-deep-research", 1.2),
+    "iterative review": ("sk-deep-research", 1.2),
+    "code audit": ("sk-deep-research", 1.0),
+    "review loop": ("sk-deep-research", 1.2),
 
     # ─────────────────────────────────────────────────────────────────
     # WORKFLOWS-GIT: Version control operations
@@ -526,6 +531,18 @@ PHRASE_INTENT_BOOSTERS = {
     "how is.*implemented": [("mcp-coco-index", 1.2)],
     "how does.*work": [("mcp-coco-index", 1.0)],
     "convergence detection": [("sk-deep-research", 2.0)],
+    # --- Deep review mode (iterative code audit) ---
+    "deep review": [("sk-deep-research", 2.5)],
+    "review loop": [("sk-deep-research", 2.5)],
+    "iterative review": [("sk-deep-research", 2.5)],
+    "code audit loop": [("sk-deep-research", 2.5)],
+    "review mode": [("sk-deep-research", 2.0)],
+    "release readiness review": [("sk-deep-research", 2.0)],
+    "spec folder review": [("sk-deep-research", 2.0), ("sk-code--review", 0.8)],
+    "review convergence": [("sk-deep-research", 2.5)],
+    ":review": [("sk-deep-research", 3.0)],
+    ":review:auto": [("sk-deep-research", 3.0)],
+    ":review:confirm": [("sk-deep-research", 3.0)],
     "figma css": [("mcp-figma", 0.8), ("sk-code--web", 0.4)],
     "full stack typescript": [("sk-code--opencode", 0.8)],
     "sk-code--review": [("sk-code--review", 2.8)],
