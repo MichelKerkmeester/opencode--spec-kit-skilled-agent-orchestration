@@ -23,7 +23,7 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P1 |
-| **Status** | Complete |
+| **Status** | In Progress (tasks tracker pending completion evidence) |
 | **Created** | 2026-03-15 |
 | **Branch** | `main` |
 | **Parent** | `022-hybrid-rag-fusion` (Phase 017) |
@@ -133,7 +133,7 @@ Verify every installation step against the current `package.json` and build syst
 
 <!--
 SPEC: 017-update-install-guide
-Level 1 — Complete (2026-03-15)
+Level 1 — In Progress (tasks tracker not yet reconciled, 2026-03-24)
 Target: Update (not rewrite) the install guide against current deps
 -->
 

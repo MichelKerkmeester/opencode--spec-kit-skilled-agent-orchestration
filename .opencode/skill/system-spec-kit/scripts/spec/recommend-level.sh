@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # ───────────────────────────────────────────────────────────────
 # SPEC-KIT: RECOMMEND LEVEL
 # ───────────────────────────────────────────────────────────────
@@ -59,8 +60,6 @@
 #   Score 35-44: 3 phases suggested
 #   Score 45+:   4+ phases suggested
 #
-
-set -euo pipefail
 
 # ───────────────────────────────────────────────────────────────
 # 1. CONFIGURATION

@@ -22,7 +22,7 @@ import {
   CATEGORY_FOLDER_PATTERN,
   findChildFolderSync,
 } from '../core';
-import { runWorkflow } from '../core/workflow';
+import { runWorkflow, releaseFilesystemLock } from '../core/workflow';
 import { loadCollectedData } from '../loaders';
 import { collectSessionData } from '../extractors/collect-session-data';
 
@@ -131,21 +131,31 @@ if (process.argv.includes('--help') || process.argv.includes('-h')) {
 
 // 2.1 SIGNAL HANDLERS
 let signalHandlersInstalled = false;
+let shuttingDown = false;
+
+// Robustness: signal handler releases locks before reporting
+function handleSignalShutdown(signal: string): void {
+  if (shuttingDown) return; // prevent re-entrant handling
+  shuttingDown = true;
+
+  let lockReleaseFailed = false;
+  try {
+    releaseFilesystemLock();
+  } catch (_err: unknown) {
+    lockReleaseFailed = true;
+  }
+
+  console.log(`\nWarning: Received ${signal} signal, shutting down gracefully...`);
+  process.exit(lockReleaseFailed ? 1 : 0);
+}
 
 function installSignalHandlers(): void {
   if (signalHandlersInstalled) {
     return;
   }
 
-  process.on('SIGTERM', () => {
-    console.log('\nWarning: Received SIGTERM signal, shutting down gracefully...');
-    process.exit(0);
-  });
-
-  process.on('SIGINT', () => {
-    console.log('\nWarning: Received SIGINT signal, shutting down gracefully...');
-    process.exit(0);
-  });
+  process.on('SIGTERM', () => handleSignalShutdown('SIGTERM'));
+  process.on('SIGINT', () => handleSignalShutdown('SIGINT'));
 
   signalHandlersInstalled = true;
 }
@@ -347,6 +357,12 @@ async function parseStructuredModeArguments(
 
   if (mode === '--json' && rawJson === undefined) {
     throw new Error('--json requires an inline JSON string argument');
+  }
+
+  // Validation: empty --json is a user error, not a crash
+  if (mode === '--json' && (rawJson === undefined || rawJson.trim().length === 0)) {
+    console.log(JSON.stringify({ error: 'VALIDATION_ERROR', message: 'Empty --json input' }));
+    process.exit(1);
   }
 
   const payload = parseStructuredJson(rawJson ?? '', mode);

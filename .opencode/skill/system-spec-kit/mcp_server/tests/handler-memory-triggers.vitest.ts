@@ -226,6 +226,7 @@ describe('Sprint-0 reliability fixes', () => {
     vi.spyOn(attentionDecay, 'activateMemory').mockImplementation(() => false);
 
     vi.spyOn(coActivation, 'isEnabled').mockReturnValue(false);
+    vi.spyOn(workingMemory, 'sessionExists').mockReturnValue(true);
 
     const tierLimitSpy = vi.spyOn(tierClassifier, 'filterAndLimitByState')
       .mockImplementation((memories, _state, limit = 20) => memories.slice(0, limit));

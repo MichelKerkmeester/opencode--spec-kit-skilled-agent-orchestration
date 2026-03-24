@@ -1,5 +1,5 @@
 // TEST: HYBRID SEARCH
-import { afterEach, beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import type Database from 'better-sqlite3';
 import * as hybridSearch from '../lib/search/hybrid-search';
 import * as bm25Index from '../lib/search/bm25-index';
@@ -232,6 +232,52 @@ describe('Hybrid Search Unit Tests (T031+)', () => {
       const authDocIds = MOCK_DOCS.filter(d => d.spec_folder === 'specs/auth').map(d => String(d.id));
       const allMatch = results.every((r: Record<string, unknown>) => authDocIds.includes(String(r.id)));
       expect(allMatch).toBe(true);
+    });
+
+    it('T031-BM25-07: bm25_search() fails closed when scoped lookup throws', () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      const failingDb = {
+        prepare(sql: string) {
+          if (sql.includes('memory_fts')) {
+            return {
+              get() {
+                return { count: 1 };
+              },
+            };
+          }
+
+          if (sql.includes('SELECT id, spec_folder FROM memory_index')) {
+            return {
+              all() {
+                throw new Error('scope lookup failed');
+              },
+            };
+          }
+
+          return {
+            get() {
+              return null;
+            },
+            all() {
+              return [];
+            },
+          };
+        },
+      } as unknown as Database.Database;
+
+      hybridSearch.init(failingDb, mockVectorSearch, mockGraphSearch);
+      const bm25 = bm25Index.getIndex();
+      for (const doc of MOCK_DOCS) {
+        bm25.addDocument(String(doc.id), doc.content);
+      }
+
+      const results = hybridSearch.bm25Search('module', { limit: 10, specFolder: 'specs/auth' });
+
+      expect(results).toEqual([]);
+      expect(warnSpy).toHaveBeenCalledWith(
+        '[BM25] Spec-folder scope lookup failed, returning empty scoped results:',
+        expect.any(Error),
+      );
     });
   });
 

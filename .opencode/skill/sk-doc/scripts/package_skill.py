@@ -22,6 +22,7 @@ Example:
     python package_skill.py .opencode/skill/my-skill --check
 """
 
+import argparse
 import json
 import re
 import sys
@@ -498,23 +499,36 @@ def check_only(skill_path_str: str) -> bool:
 
 def main() -> None:
     """CLI entry point for skill packaging."""
-    if len(sys.argv) < 2:
-        print("Usage: python package_skill.py <path/to/skill-folder> [output-directory]")
-        print("       python package_skill.py <path/to/skill-folder> --check")
-        print("\nOptions:")
-        print("  --check    Validate only, don't create package")
-        print("  --json     Output validation results as JSON")
-        print("\nExample:")
-        print("  python package_skill.py .opencode/skill/my-skill")
-        print("  python package_skill.py .opencode/skill/my-skill ./dist")
-        print("  python package_skill.py .opencode/skill/my-skill --check")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(
+        description="Validate and optionally package a skill folder into a zip archive."
+    )
+    parser.add_argument(
+        'skill_path',
+        help="Path to the skill folder",
+    )
+    parser.add_argument(
+        'output_dir',
+        nargs='?',
+        default=None,
+        help="Optional output directory for the zip package",
+    )
+    parser.add_argument(
+        '--check',
+        action='store_true',
+        help="Validate only; do not create a package",
+    )
+    parser.add_argument(
+        '--json',
+        dest='json_mode',
+        action='store_true',
+        help="Output validation results as JSON",
+    )
+    args = parser.parse_args()
 
-    check_mode = '--check' in sys.argv
-    json_mode = '--json' in sys.argv
-    args = [arg for arg in sys.argv[1:] if not arg.startswith('--')]
-    skill_path = args[0]
-    output_dir = args[1] if len(args) > 1 else None
+    check_mode = args.check
+    json_mode = args.json_mode
+    skill_path = args.skill_path
+    output_dir = args.output_dir
 
     if json_mode:
         skill_path_obj = Path(skill_path).resolve()

@@ -23,7 +23,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Not Started |
+| **Status** | Draft — placeholder content, not yet a full testing packet |
 | **Created** | 2026-03-24 |
 | **Branch** | `main` |
 | **Parent Spec** | [../spec.md](../spec.md) |
@@ -41,6 +41,8 @@ The implement-and-remove-deprecated-features phase (catalog phase 022) targets 6
 
 ### Purpose
 Provide a single implement-and-remove-deprecated-features-focused specification that maps three Phase 022 test scenarios to their feature context and acceptance criteria so manual execution and review remain consistent with the canonical playbook and the catalog phase scope.
+
+**Draft Status Note:** This packet requires full testing scenarios before it can be considered complete.
 <!-- /ANCHOR:problem -->
 
 ---

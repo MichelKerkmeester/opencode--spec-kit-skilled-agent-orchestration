@@ -39,7 +39,7 @@ Execute the two Phase 004 maintenance scenarios: a workspace index scan via MCP 
 ### Definition of Ready
 - [ ] MCP server is running and reachable
 - [ ] Target spec folder for EX-014 identified (at least one markdown file present)
-- [ ] Playbook context file read: `../scratch/context-playbook.md` §04--maintenance
+- [ ] Playbook context file read: `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` §04--maintenance
 - [ ] Feature catalog context file read: `../scratch/context-feature-catalog.md` §04--maintenance
 
 ### Definition of Done
@@ -60,7 +60,7 @@ Sequential manual execution — each scenario is an isolated tool call or server
 ### Key Components
 - **MCP runtime**: Hosts memory_index_scan tool (EX-014)
 - **Server startup**: Node.js process startup sequence (EX-035)
-- **Playbook context**: `../scratch/context-playbook.md` — source of truth for prompts and pass criteria
+- **Playbook context**: `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` — source of truth for prompts and pass criteria
 - **This spec folder**: Records tasks, checklist, and results
 
 ### Data Flow
@@ -73,7 +73,7 @@ Tester reads playbook → Issues MCP tool call or triggers startup sequence → 
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
-- [ ] Read `../scratch/context-playbook.md` section 04--maintenance for both scenario definitions
+- [ ] Read `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` section 04--maintenance for both scenario definitions
 - [ ] Read `../scratch/context-feature-catalog.md` section 04--maintenance for feature background
 - [ ] Verify MCP server is running and accepting tool calls
 - [ ] Identify a target spec folder with at least one markdown file for EX-014
@@ -161,7 +161,7 @@ Tester reads playbook → Issues MCP tool call or triggers startup sequence → 
 |------------|------|--------|-------------------|
 | MCP server runtime | Internal | Verify before start | Cannot execute EX-014 |
 | Node.js runtime version info | Internal | Verify before start | Cannot execute EX-035 |
-| `../scratch/context-playbook.md` | Internal | Available | Cannot confirm pass criteria without it |
+| `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` | Internal | Available | Cannot confirm pass criteria without it |
 <!-- /ANCHOR:dependencies -->
 
 ---

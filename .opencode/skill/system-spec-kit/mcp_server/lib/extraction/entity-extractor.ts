@@ -54,6 +54,12 @@ interface CatalogEntityRow {
   entity_type: ExtractedEntity['type'];
 }
 
+export interface RefreshAutoEntitiesForMemoryResult {
+  removed: number;
+  stored: number;
+  catalogRebuilt: boolean;
+}
+
 // ───────────────────────────────────────────────────────────────
 // 2. EXTRACTION RULES
 
@@ -186,6 +192,51 @@ export function storeEntities(
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[entity-extractor] storeEntities failed: ${msg}`);
     return { stored: 0 };
+  }
+}
+
+export function refreshAutoEntitiesForMemory(
+  db: Database.Database,
+  memoryId: number,
+  entities: ExtractedEntity[],
+): RefreshAutoEntitiesForMemoryResult {
+  try {
+    const deleteStmt = db.prepare(`
+      DELETE FROM memory_entities
+      WHERE memory_id = ?
+        AND created_by = 'auto'
+    `);
+    const insertStmt = db.prepare(`
+      INSERT OR REPLACE INTO memory_entities
+        (memory_id, entity_text, entity_type, frequency, created_by)
+      VALUES (?, ?, ?, ?, 'auto')
+    `);
+
+    let removed = 0;
+    let stored = 0;
+    const runInTransaction = db.transaction(() => {
+      removed = deleteStmt.run(memoryId).changes;
+      for (const entity of entities) {
+        insertStmt.run(memoryId, entity.text, entity.type, entity.frequency);
+        stored++;
+      }
+    });
+    runInTransaction();
+
+    if (removed > 0) {
+      rebuildEntityCatalog(db);
+      return { removed, stored, catalogRebuilt: true };
+    }
+
+    if (entities.length > 0) {
+      updateEntityCatalog(db, entities);
+    }
+
+    return { removed, stored, catalogRebuilt: false };
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.warn(`[entity-extractor] refreshAutoEntitiesForMemory failed: ${msg}`);
+    return { removed: 0, stored: 0, catalogRebuilt: false };
   }
 }
 

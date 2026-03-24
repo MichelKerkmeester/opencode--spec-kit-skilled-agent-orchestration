@@ -10,6 +10,7 @@ import * as predictionErrorGate from '../../lib/cognitive/prediction-error-gate'
 import * as fsrsScheduler from '../../lib/cognitive/fsrs-scheduler';
 import * as incrementalIndex from '../../lib/storage/incremental-index';
 import type * as memoryParser from '../../lib/parsing/memory-parser';
+import { sanitizeEmbeddingFailureMessage } from '../../lib/providers/retry-manager';
 import { getCanonicalPathKey } from '../../lib/utils/canonical-path';
 import { recordLineageTransition } from '../../lib/storage/lineage-state';
 import { toErrorMessage } from '../../utils';
@@ -98,6 +99,8 @@ export function createMemoryRecord(
     ? classifyEncodingIntent(parsed.content)
     : undefined;
   const canonicalFilePath = getCanonicalPathKey(filePath);
+  // Security: raw provider errors sanitized before persistence/response
+  const persistedEmbeddingFailureReason = sanitizeEmbeddingFailureMessage(embeddingFailureReason);
 
   const indexWithMetadata = database.transaction(() => {
     // Determine importance weight based on document type.
@@ -138,7 +141,7 @@ export function createMemoryRecord(
           title: parsed.title,
           triggerPhrases: parsed.triggerPhrases,
           importanceWeight,
-          failureReason: embeddingFailureReason,
+          failureReason: persistedEmbeddingFailureReason,
           encodingIntent,
           documentType: parsed.documentType || 'memory',
           specLevel,

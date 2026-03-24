@@ -35,6 +35,8 @@ Systematic code audit of 11 Query Intelligence features in the Spec Kit Memory M
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
 
+Parent: 007-code-audit-per-feature-catalog
+
 ---
 
 ## 2. PROBLEM & PURPOSE

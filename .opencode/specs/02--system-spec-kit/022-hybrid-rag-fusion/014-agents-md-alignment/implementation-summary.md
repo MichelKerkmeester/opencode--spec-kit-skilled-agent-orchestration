@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: 014-agents-md-alignment"
-description: "Summary of changes made to align AGENTS.md Quick Reference tables with the 7-command memory suite."
+description: "Summary of changes made to align AGENTS.md Quick Reference tables with the 6-command memory suite."
 trigger_phrases:
   - "014 summary"
   - "014 implementation"
@@ -31,7 +31,7 @@ contextType: "implementation-summary"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Updated Quick Reference workflow tables in all 3 AGENTS.md governance framework files to reflect the complete 7-command memory suite established by Phase 012 (command alignment).
+Updated Quick Reference workflow tables in all 3 AGENTS.md governance framework files to reflect the complete 6-command memory suite established by Phase 012 (command alignment).
 
 ### Changes by File
 
@@ -112,7 +112,7 @@ Refinement pass (2026-03-16): Fixed G-01 through G-06 consistency gaps, added sk
 ## Known Limitations
 
 - LOC: approximately 36 lines modified/added across 3 files
-- Commands visible: 7 (was 5)
+- Commands visible: 6 (was 5)
 - No code changes: documentation-only updates to markdown tables
 - No breaking changes: additive content only; existing rows preserved
 - Alignment changes from this phase were partially reverted by a subsequent AGENTS.md restructuring

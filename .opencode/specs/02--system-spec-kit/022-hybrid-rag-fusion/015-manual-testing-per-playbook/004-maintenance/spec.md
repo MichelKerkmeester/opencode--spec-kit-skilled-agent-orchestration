@@ -54,13 +54,13 @@ Execute all seven Phase 004 maintenance scenarios, record verdicts and evidence,
 
 | Test ID | Scenario Name | Playbook File |
 |---------|---------------|---------------|
-| EX-014 | Workspace scanning and indexing (memory_index_scan) | `../../manual_testing_playbook/04--maintenance/014-workspace-scanning-and-indexing-memory-index-scan.md` |
-| EX-035 | Startup runtime compatibility guards | `../../manual_testing_playbook/04--maintenance/035-startup-runtime-compatibility-guards.md` |
-| EX-041 | Memory content update via memory_update | `../../manual_testing_playbook/04--maintenance/041-memory-content-update-via-memory-update.md` |
-| EX-042 | Memory deletion via memory_delete | `../../manual_testing_playbook/04--maintenance/042-memory-deletion-via-memory-delete.md` |
-| EX-043 | Bulk delete with filter criteria | `../../manual_testing_playbook/04--maintenance/043-bulk-delete-with-filter-criteria.md` |
-| EX-044 | Health check diagnostics | `../../manual_testing_playbook/04--maintenance/044-health-check-diagnostics.md` |
-| EX-045 | Index scan and repair | `../../manual_testing_playbook/04--maintenance/045-index-scan-and-repair.md` |
+| EX-014 | Workspace scanning and indexing (memory_index_scan) | `.opencode/skill/system-spec-kit/manual_testing_playbook/04--maintenance/014-workspace-scanning-and-indexing-memory-index-scan.md` |
+| EX-035 | Startup runtime compatibility guards | `.opencode/skill/system-spec-kit/manual_testing_playbook/04--maintenance/035-startup-runtime-compatibility-guards.md` |
+| EX-041 | Memory content update via memory_update | `.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/041-pre-flight-token-budget-validation-pi-a3.md` |
+| EX-042 | Memory deletion via memory_delete | `.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/042-spec-folder-description-discovery-pi-b3.md` |
+| EX-043 | Bulk delete with filter criteria | `.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/043-pre-storage-quality-gate-tm-04.md` |
+| EX-044 | Health check diagnostics | `.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/044-reconsolidation-on-save-tm-06.md` |
+| EX-045 | Index scan and repair | `.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/045-smarter-memory-content-generation-s1.md` |
 
 ### Out of Scope
 - Scenarios from other phases (retrieval, mutation, discovery, lifecycle, etc.)
@@ -125,7 +125,7 @@ Execute all seven Phase 004 maintenance scenarios, record verdicts and evidence,
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Canonical playbook: `../scratch/context-playbook.md` §04--maintenance | Source of truth for exact prompts and pass criteria | Treat as read-only; do not invent alternate criteria |
+| Dependency | Canonical playbook: `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` §04--maintenance | Source of truth for exact prompts and pass criteria | Treat as read-only; do not invent alternate criteria |
 | Dependency | Feature catalog: `../scratch/context-feature-catalog.md` §04--maintenance | Feature context for each scenario | Read before execution |
 | Dependency | MCP runtime with indexed memory corpus | Required for EX-014 tool invocation | Verify MCP server is running before starting |
 | Risk | EX-014 `force: true` re-indexes all files and may be slow on large corpora | Low | Use incremental (default) mode unless the playbook explicitly requires force mode |

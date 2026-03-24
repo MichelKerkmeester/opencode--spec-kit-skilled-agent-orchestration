@@ -32,7 +32,7 @@ Each phase child (002-004) addresses a specific domain cluster from the research
 ## Dependencies
 
 - Research findings: `research.md` (74 findings from Round 2)
-- Related spec: `013-memory-generation-quality` (foundational PR1/PR2 architecture)
+- Related provenance: [Deleted — 013-memory-generation-quality was removed from the tree]; foundational PR1/PR2 architecture notes were retained in surviving research artifacts.
 - Child phase 001 (initial enrichment): Complete
 
 ## Milestones

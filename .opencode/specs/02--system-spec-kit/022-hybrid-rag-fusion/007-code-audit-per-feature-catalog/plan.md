@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: Code Audit per Feature Catalog"
-description: "Master plan for auditing all 220+ features across 19 categories of the Spec Kit Memory MCP server"
+description: "Master plan for auditing the 218-feature live catalog across 19 categories of the Spec Kit Memory MCP server"
 trigger_phrases:
   - "audit plan"
   - "feature catalog"
@@ -28,7 +28,7 @@ contextType: "general"
 | **Testing** | Manual code audit + cross-reference |
 
 ### Overview
-Comprehensive code audit of the entire Spec Kit Memory MCP server organized by 19 feature catalog categories totaling 220+ features. Each category is audited in its own phase folder (001-021), with two meta-phases for cross-cutting decisions (019) and remediation tracking (021).
+Comprehensive code audit of the entire Spec Kit Memory MCP server organized by 19 feature catalog categories totaling 218 live features. Each category is audited in its own child folder (`001-022`): category audit packets, two meta-phases for synthesis/remediation, and a downstream follow-up child for deprecated-feature implementation/removal.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -37,14 +37,14 @@ Comprehensive code audit of the entire Spec Kit Memory MCP server organized by 1
 ## 2. QUALITY GATES
 
 ### Definition of Ready
-- [x] Feature catalog current (19 categories, 220+ features)
+- [x] Feature catalog current (19 categories, 218 live features)
 - [x] Source code accessible
-- [x] All 21 phase folders created with Level 3 specs
+- [x] All 22 child phase folders created with Level 3 specs
 
 ### Definition of Done
-- [x] All 21 phase audits complete
+- [x] All completed audit packets truth-synced to live inventories, with any residual gaps explicitly tracked
 - [x] Cross-phase synthesis delivered
-- [x] Remediation tracking initialized
+- [x] Remediation tracking initialized, including downstream child `022-implement-and-remove-deprecated-features`
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -57,11 +57,11 @@ Parallel phase-based audit: each category audited independently, results synthes
 
 ### Key Components
 - **Feature Catalog** (`feature_catalog/`): 19 categories, source of truth
-- **Phase Folders** (`001-021`): Independent audit workstreams
-- **Synthesis**: Cross-phase findings and remediation tracking
+- **Phase Folders** (`001-022`): Independent audit workstreams plus downstream implementation/removal follow-up
+- **Synthesis**: Cross-phase findings, remediation tracking, and downstream deprecated-feature execution ownership
 
 ### Data Flow
-Feature Catalog → Phase Audits (parallel) → Findings → Synthesis → Remediation
+Feature Catalog → Phase Audits (parallel) → Findings → Synthesis → Remediation → `022-implement-and-remove-deprecated-features`
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -70,11 +70,11 @@ Feature Catalog → Phase Audits (parallel) → Findings → Synthesis → Remed
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Baseline Setup
-- [x] Create Level 3 spec docs in all 22 folders
+- [x] Create Level 3 spec docs in all 23 spec folders (parent + 22 children)
 - [x] Verify feature catalog currency
 
 ### Phase 2: Parallel Category Audits (001-018, 020)
-- [x] 001-retrieval (10 features) — 8 MATCH, 2 PARTIAL
+- [x] 001-retrieval (11 live features; 10 audited, 1 pending coverage sync) — 8 MATCH, 2 PARTIAL
 - [x] 002-mutation (10 features) — 8 MATCH, 2 PARTIAL
 - [x] 003-discovery (3 features) — 2 MATCH, 1 PARTIAL
 - [x] 004-maintenance (2 features) — 1 MATCH, 1 PARTIAL
@@ -82,9 +82,9 @@ Feature Catalog → Phase Audits (parallel) → Findings → Synthesis → Remed
 - [x] 006-analysis (7 features) — 5 MATCH, 2 PARTIAL
 - [x] 007-evaluation (2 features) — 1 MATCH, 1 PARTIAL
 - [x] 008-bug-fixes-and-data-integrity (11 features) — 9 MATCH, 2 PARTIAL
-- [x] 009-evaluation-and-measurement (16 features) — 12 MATCH, 4 PARTIAL
+- [x] 009-evaluation-and-measurement (14 features) — 11 MATCH, 3 PARTIAL
 - [x] 010-graph-signal-activation (16 features) — 12 MATCH, 4 PARTIAL
-- [x] 011-scoring-and-calibration (23 features) — 20 MATCH, 3 PARTIAL
+- [x] 011-scoring-and-calibration (22 features) — 20 MATCH, 2 PARTIAL
 - [x] 012-query-intelligence (11 features) — 8 MATCH, 3 PARTIAL
 - [x] 013-memory-quality-and-indexing (24 features) — 20 MATCH, 4 PARTIAL
 - [x] 014-pipeline-architecture (22 features) — 19 MATCH, 3 PARTIAL
@@ -97,10 +97,22 @@ Feature Catalog → Phase Audits (parallel) → Findings → Synthesis → Remed
 ### Phase 3: Cross-Cutting Analysis
 - [x] 019-decisions-and-deferrals — 4 decisions, 4 deferrals, 4 deprecated modules documented
 - [x] 021-remediation-revalidation — synthesis complete, remediation backlog prioritized
+- [x] 022-implement-and-remove-deprecated-features — live downstream child inventoried under umbrella ownership
 
 ### Phase 4: Final Synthesis
-- [x] Compile cross-phase findings — ~179 MATCH, ~41 PARTIAL, 0 MISMATCH
-- [x] Generate master audit report — implementation-summary.md in all 22 folders
+- [x] Compile cross-phase findings — 178 MATCH, 39 PARTIAL, 1 pending coverage sync, 0 MISMATCH
+- [x] Generate master audit report — implementation-summary.md in all 23 spec folders
+
+## 4A. TRACEABILITY CONTRACT
+
+Phases `012-022` remain owned by `007-code-audit-per-feature-catalog`. Each child packet consumes a live catalog slice or synthesized upstream findings and returns a phase-local output back to the umbrella packet.
+
+| Child | Inputs | Outputs | Ownership |
+|-------|--------|---------|-----------|
+| `012-018`, `020` | Category-specific live feature catalog entries + 007 audit method | Phase findings + implementation-summary.md | Umbrella-owned child audit packets |
+| `019` | Outputs from completed category audit packets | Cross-phase decisions/deferrals synthesis | Umbrella-owned synthesis packet |
+| `021` | Outputs from phases `001-020` | Prioritized remediation and revalidation summary | Umbrella-owned synthesis packet |
+| `022-implement-and-remove-deprecated-features` | Deprecated-feature findings from `009`, `011`, `019`, and `021` | Downstream implementation/removal packet tracked back to the umbrella | Umbrella-owned follow-up child |
 <!-- /ANCHOR:phases -->
 
 ---
@@ -111,7 +123,7 @@ Feature Catalog → Phase Audits (parallel) → Findings → Synthesis → Remed
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Cross-reference | Feature-to-code traceability | Grep, Read, Glob |
-| Completeness | All 220+ features covered | Checklist verification |
+| Completeness | Live inventory and residual gaps truth-synced | Checklist verification |
 | Consistency | Uniform methodology across phases | Template adherence |
 <!-- /ANCHOR:testing -->
 
@@ -141,7 +153,7 @@ Feature Catalog → Phase Audits (parallel) → Findings → Synthesis → Remed
 ## L3: DEPENDENCY GRAPH
 
 ```
-Phase 1 (Setup) ──► Phase 2 (19 parallel audits) ──► Phase 3 (Cross-cutting) ──► Phase 4 (Synthesis)
+Phase 1 (Setup) ──► Phase 2 (19 parallel audits) ──► Phase 3 (Cross-cutting) ──► Phase 4 (Synthesis) ──► Phase 5 (022 follow-up)
 ```
 
 ---
@@ -150,7 +162,7 @@ Phase 1 (Setup) ──► Phase 2 (19 parallel audits) ──► Phase 3 (Cross-
 
 | Milestone | Description | Success Criteria |
 |-----------|-------------|------------------|
-| M1 | All 22 spec folders created | Level 3 docs in every folder |
-| M2 | All 19 category audits complete | 220+ features verified |
+| M1 | All 23 spec folders created | Level 3 docs in every parent/child folder |
+| M2 | All 19 category audits truth-synced | 218 live features inventoried; any gaps explicitly tracked |
 | M3 | Cross-cutting analysis done | Decisions and remediations documented |
-| M4 | Final synthesis delivered | Master audit report complete |
+| M4 | Final synthesis delivered | Master audit report complete, with child 022 traceability recorded |

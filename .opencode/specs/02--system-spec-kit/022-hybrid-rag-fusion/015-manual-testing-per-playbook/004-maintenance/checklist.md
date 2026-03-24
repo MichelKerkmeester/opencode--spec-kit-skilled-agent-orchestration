@@ -30,7 +30,7 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Playbook context read for 04--maintenance — both scenario files in `manual_testing_playbook/04--maintenance/` read
+- [x] CHK-001 [P0] Playbook context read for 04--maintenance — both scenario files in `.opencode/skill/system-spec-kit/manual_testing_playbook/04--maintenance/` read
 - [x] CHK-002 [P0] Feature catalog context read for 04--maintenance — both catalog files in `feature_catalog/04--maintenance/` read
 - [x] CHK-003 [P0] MCP server verified running before first tool call — `npx vitest run` confirms server module imports cleanly; 14/14 startup-checks tests pass
 - [x] CHK-004 [P0] Target spec folder for EX-014 identified (at least one markdown file) — `02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/004-maintenance/` contains multiple markdown files

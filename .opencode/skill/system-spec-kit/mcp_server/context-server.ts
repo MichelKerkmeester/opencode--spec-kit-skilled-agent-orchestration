@@ -58,6 +58,10 @@ import { getTokenBudget } from './lib/architecture/layer-definitions';
 
 // T303: Startup checks (extracted from this file)
 import { detectNodeVersionMismatch, checkSqliteVersion } from './startup-checks';
+import {
+  getStartupEmbeddingDimension,
+  validateConfiguredEmbeddingsProvider,
+} from '@spec-kit/shared/embeddings/factory';
 
 // Lib modules (for initialization only)
 import * as vectorIndex from './lib/search/vector-index';
@@ -739,6 +743,12 @@ process.on('unhandledRejection', (reason: unknown, promise: Promise<unknown>) =>
 async function main(): Promise<void> {
   // Node version mismatch detection (non-blocking)
   detectNodeVersionMismatch();
+
+  validateConfiguredEmbeddingsProvider();
+
+  if (!process.env.EMBEDDING_DIM) {
+    process.env.EMBEDDING_DIM = String(getStartupEmbeddingDimension());
+  }
 
   console.error('[context-server] Initializing database...');
   vectorIndex.initializeDb();

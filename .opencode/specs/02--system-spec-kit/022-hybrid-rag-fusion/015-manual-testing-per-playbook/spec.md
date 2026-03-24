@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: manual-testing-per-playbook"
-description: "Execute manual testing across 233 scenario files (265 exact IDs) in 19 categories from the manual testing playbook, tracking coverage and verdicts per phase folder."
+description: "Execute manual testing across 231 scenario files (272 exact IDs) in 19 categories from the manual testing playbook, tracking coverage and verdicts per phase folder."
 trigger_phrases:
   - "manual testing"
   - "testing playbook"
@@ -23,7 +23,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Complete |
+| **Status** | In Progress (4/22 child phases complete, 18 pending) |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
@@ -37,10 +37,10 @@ contextType: "general"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The manual testing playbook contains 233 scenario files expanding to 265 exact IDs across 19 categories. Each scenario defines prompts, expected behavior, pass/fail criteria, and evidence requirements for verifying Spec Kit Memory features. This spec folder tracks manual test execution across all scenarios, organized into 19 phase folders that mirror the playbook categories.
+The manual testing playbook contains 231 scenario files expanding to 272 exact IDs across 19 categories. Each scenario defines prompts, expected behavior, pass/fail criteria, and evidence requirements for verifying Spec Kit Memory features. This spec folder tracks manual test execution across all scenarios, organized into 24 top-level subdirectories (22 numbered phase folders plus `memory/` and `scratch/`).
 
 ### Purpose
-Execute and record manual test results for all 265 exact scenario IDs, producing per-phase verdicts (PASS/PARTIAL/FAIL) and an aggregate coverage report across the full playbook.
+Execute and record manual test results for all 272 exact scenario IDs, producing per-phase verdicts (PASS/PARTIAL/FAIL) and an aggregate coverage report across the full playbook.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -49,9 +49,9 @@ Execute and record manual test results for all 265 exact scenario IDs, producing
 ## 3. SCOPE
 
 ### In Scope
-- Manual test execution for all 19 phase folders (001 through 019)
+- Manual test execution across 24 top-level subdirectories (001 through 022 plus `memory/` and `scratch/`)
 - Per-scenario verdict recording (PASS / PARTIAL / FAIL) with evidence
-- Aggregate coverage reporting across 265 exact IDs
+- Aggregate coverage reporting across 272 exact IDs
 - Bug and playbook-error tracking discovered during test execution
 
 ### Out of Scope
@@ -69,7 +69,7 @@ Execute and record manual test results for all 265 exact scenario IDs, producing
 | `tasks.md` | Modify | Per-phase task tracking |
 | `checklist.md` | Modify | Quality gates and verification evidence |
 | `implementation-summary.md` | Create | Post-execution summary (after testing completes) |
-| `001-retrieval/` through `019-feature-flag-reference/` | Modify | Per-phase test execution docs |
+| `001-retrieval/` through `022-implement-and-remove-deprecated-features/` | Modify | Per-phase test execution docs |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -97,7 +97,11 @@ Execute and record manual test results for all 265 exact scenario IDs, producing
 | 017 | `017-governance/` | Governance | 5 | 5 |
 | 018 | `018-ux-hooks/` | UX Hooks | 11 | 11 |
 | 019 | `019-feature-flag-reference/` | Feature Flag Reference | 8 | 8 |
-| **TOTAL** | | | **233** | **265** |
+| **TOTAL** | | | **231** | **272** |
+
+Current child-phase status snapshot (2026-03-24):
+- Complete: `009-evaluation-and-measurement`, `011-scoring-and-calibration`, `014-pipeline-architecture`, `016-tooling-and-scripts`
+- Pending (`Not Started`/`Draft`): `001`, `002`, `003`, `004`, `005`, `006`, `007`, `008`, `010`, `012`, `013`, `015`, `017`, `018`, `019`, `020`, `021`, `022`
 
 ### Sub-Scenario Breakdown
 
@@ -112,7 +116,7 @@ Categories 013 and 016 have more exact IDs than scenario files due to sub-scenar
 | 016 | 153-json-mode-hybrid-enrichment.md | 153 | 153-A through 153-O | +15 |
 | | | | **Sub-scenario surplus** | **+39** |
 
-> 233 scenario files + 32 sub-scenario surplus = 265 total exact IDs
+> Scenario-file and sub-scenario tallies combine to the live exact-ID denominator (272).
 
 ---
 
@@ -123,8 +127,8 @@ Categories 013 and 016 have more exact IDs than scenario files due to sub-scenar
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | All 19 phase folders contain executed test results | Each phase folder has recorded verdicts for every scenario in its category |
-| REQ-002 | Every exact scenario ID (265 total) has a verdict | Aggregate report shows 265 verdicts with zero unexecuted IDs |
+| REQ-001 | All 24 top-level subdirectories contain executed test results | Each phase folder has recorded verdicts for every scenario in its category |
+| REQ-002 | Every exact scenario ID (272 total) has a verdict | Aggregate report shows 272 verdicts with zero unexecuted IDs |
 | REQ-003 | Per-phase execution summaries are recorded | Each phase folder contains pass/partial/fail counts with evidence |
 
 ### P1 - Required (complete OR user-approved deferral)
@@ -141,8 +145,8 @@ Categories 013 and 016 have more exact IDs than scenario files due to sub-scenar
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 265 exact scenario IDs have recorded verdicts (PASS, PARTIAL, or FAIL)
-- **SC-002**: Per-phase summaries are complete for all 19 phases
+- **SC-001**: All 272 exact scenario IDs have recorded verdicts (PASS, PARTIAL, or FAIL)
+- **SC-002**: Per-phase summaries are complete for all 24 subdirectories
 - **SC-003**: Aggregate coverage report shows overall pass rate and identifies any FAIL scenarios requiring follow-up
 <!-- /ANCHOR:success-criteria -->
 
@@ -153,7 +157,7 @@ Categories 013 and 016 have more exact IDs than scenario files due to sub-scenar
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Manual testing playbook (233 scenario files) | Source of all prompts, commands, and pass/fail criteria | Treat playbook as read-only source of truth |
+| Dependency | Manual testing playbook (231 scenario files) | Source of all prompts, commands, and pass/fail criteria | Treat playbook as read-only source of truth |
 | Dependency | Feature catalog (19 categories, 222 features) | Provides feature context for each test scenario | Symlinked into spec folder for reference |
 | Risk | Test environment state drift between phases | Medium -- results may not be comparable | Reset test environment between phases or document state |
 | Risk | Playbook errors blocking test execution | Medium | Document errors and proceed with corrected interpretation |
@@ -170,7 +174,7 @@ Categories 013 and 016 have more exact IDs than scenario files due to sub-scenar
 
 ### Performance
 - **NFR-P01**: Each phase should complete within a single session
-- **NFR-P02**: Total execution across all 19 phases should complete within 5 working days
+- **NFR-P02**: Total execution across all 24 subdirectories should complete within 5 working days
 
 ### Reliability
 - **NFR-R01**: Test results must be reproducible given the same environment state
@@ -202,7 +206,7 @@ Categories 013 and 016 have more exact IDs than scenario files due to sub-scenar
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 20/25 | 19 phases, 233 scenario files, 265 exact IDs |
+| Scope | 20/25 | 24 subdirectories, 231 scenario files, 272 exact IDs |
 | Risk | 10/25 | Manual testing only, no production changes |
 | Research | 5/20 | Playbook provides all prompts and criteria |
 | **Total** | **35/70** | **Level 2** |

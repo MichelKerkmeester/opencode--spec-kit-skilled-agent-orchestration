@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Code Audit — Retrieval"
-description: "Systematic code audit of 10 Retrieval features against source code to verify implementation accuracy and catalog alignment."
+description: "Systematic code audit of 11 live Retrieval features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
   - "code audit"
   - "retrieval"
@@ -17,7 +17,7 @@ contextType: "general"
 
 ## EXECUTIVE SUMMARY
 
-Systematic code audit of 10 Retrieval features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/01--retrieval/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.
+Systematic code audit of the 11-feature live Retrieval category in the Spec Kit Memory MCP server. This packet currently preserves detailed findings for 10 audited features and explicitly tracks the remaining live-catalog delta for follow-up coverage sync.
 
 **Key Decisions**: Audit against current feature catalog as source of truth, document findings per feature
 
@@ -31,7 +31,7 @@ Systematic code audit of 10 Retrieval features in the Spec Kit Memory MCP server
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Complete |
+| **Status** | Partial |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
 
@@ -40,10 +40,10 @@ Systematic code audit of 10 Retrieval features in the Spec Kit Memory MCP server
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The feature catalog for Retrieval has evolved significantly. Existing audit documentation was stale and no longer reflected the current 10-feature inventory. A fresh audit baseline is needed to verify each feature's implementation against its catalog description.
+The feature catalog for Retrieval has evolved significantly. Existing audit documentation was stale and no longer reflected the current 11-feature inventory. This packet now truth-syncs the live count while documenting that the preserved findings cover 10 audited features and one newer live entry still needs packet-level coverage.
 
 ### Purpose
-Verify that all 10 Retrieval features are accurately documented in the feature catalog and correctly implemented in source code.
+Truth-sync the Retrieval audit packet to the live 11-feature inventory, preserve the 10 audited findings already captured here, and make the remaining coverage gap explicit instead of overstating completion.
 
 ---
 
@@ -60,6 +60,7 @@ Verify that all 10 Retrieval features are accurately documented in the feature c
 - Quality-aware 3-tier search fallback
 - Tool-result extraction to working memory
 - Fast delegated search (memory_quick_search)
+- Session recovery via `/memory:continue`
 
 ### Out of Scope
 - Implementing new features or fixing bugs discovered during audit
@@ -95,8 +96,8 @@ Verify that all 10 Retrieval features are accurately documented in the feature c
 
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 10 features audited with findings documented
-- **SC-002**: Zero unverified features remaining in this category
+- **SC-001**: 10 of 11 live Retrieval features have findings documented in this packet
+- **SC-002**: The remaining live-catalog delta is explicitly called out instead of being implied complete
 
 ---
 
@@ -136,7 +137,7 @@ Verify that all 10 Retrieval features are accurately documented in the feature c
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 15/25 | Features: 10 |
+| Scope | 15/25 | Features: 11 |
 | Risk | 8/25 | Read-only audit, no breaking changes |
 | Research | 11/20 | Must trace each feature to source |
 | Multi-Agent | 5/15 | Single-phase audit |
@@ -174,7 +175,7 @@ Verify that all 10 Retrieval features are accurately documented in the feature c
 
 ## 13. AUDIT FINDINGS
 
-Audit completed 2026-03-22. Overall result: **8 MATCH, 2 PARTIAL**.
+Audit completed 2026-03-22. Current packet coverage: **8 MATCH, 2 PARTIAL, 1 pending coverage sync** across the 11-feature live Retrieval inventory.
 
 ### Feature 01 — Unified context retrieval (memory_context): MATCH
 - All 164 source files confirmed to exist.
@@ -217,11 +218,16 @@ Audit completed 2026-03-22. Overall result: **8 MATCH, 2 PARTIAL**.
 ### Feature 10 — Fast delegated search (memory_quick_search): MATCH
 - No discrepancies found.
 
+### Coverage Delta — Feature 11: Session recovery via `/memory:continue`
+- Live catalog entry `11-session-recovery-memory-continue.md` is now part of the Retrieval family.
+- This packet's preserved findings still cover the earlier audited baseline, so `/memory:continue` remains pending a dedicated audit finding in this document.
+
 ### Cross-Cutting Observations
 - Feature 02 catalog entry has the largest source-file gap (15+ files).
 - Feature 08 contains the only incorrect source-file reference (`stage4-filter.ts`).
 - Several undocumented constants surfaced: `MENTION_BOOST_FACTOR=0.05`, Stage 4 per-tier limits, `TURN_DECAY_RATE=0.98`.
 - Features 06, 07, 10 are cleanly documented with no gaps.
+- Live Retrieval inventory now contains an 11th entry (`/memory:continue`), so this packet should no longer be read as full-category completion.
 
 ---
 

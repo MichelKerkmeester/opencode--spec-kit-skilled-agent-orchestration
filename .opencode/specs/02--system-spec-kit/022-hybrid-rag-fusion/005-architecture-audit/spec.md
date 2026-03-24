@@ -211,3 +211,14 @@ Archived review notes scored the completed audit at **87/100**, which remains a 
 - **Decision Records**: See `decision-record.md`
 - **Research**: See `research.md`
 - **Evidence**: See `scratch/` and `memory/`
+
+---
+
+## NAVIGATION & TRACEABILITY
+
+- **Parent**: `022-hybrid-rag-fusion`
+- **Scope**: Architecture audit of the Spec Kit Memory MCP server
+- **Upstream**: Root 022 coordination packet
+- **Downstream**: Implementation packages in `mcp_server/`, `scripts/`, and `shared/`
+- **Current MCP server surface**: `api/`, `core/`, `configs/`, `formatters/`, `handlers/`, `hooks/`, `lib/`, `schemas/`, `shared/`, `shared-spaces/`, `tools/`, and `utils/`
+- **Current `lib/` runtime domains**: `search/` plus `architecture/`, `cache/`, `chunking/`, `cognitive/`, `collab/`, `config/`, `contracts/`, `errors/`, `eval/`, `extraction/`, `feedback/`, `governance/`, `graph/`, `interfaces/`, `learning/`, `manage/`, `ops/`, `parsing/`, `providers/`, `response/`, `scoring/`, `session/`, `spec/`, `storage/`, `telemetry/`, `utils/`, and `validation/`

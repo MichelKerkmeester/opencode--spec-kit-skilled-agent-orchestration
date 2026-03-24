@@ -11,7 +11,11 @@ import {
   isMemorySummariesEnabled,
   isEntityLinkingEnabled,
 } from '../../lib/search/search-flags';
-import { extractEntities, filterEntities, storeEntities, updateEntityCatalog } from '../../lib/extraction/entity-extractor';
+import {
+  extractEntities,
+  filterEntities,
+  refreshAutoEntitiesForMemory,
+} from '../../lib/extraction/entity-extractor';
 import { generateAndStoreSummary } from '../../lib/search/memory-summaries';
 import { runEntityLinking } from '../../lib/search/entity-linker';
 import { onIndex, isGraphRefreshEnabled } from '../../lib/search/graph-lifecycle';
@@ -96,9 +100,9 @@ export async function runPostInsertEnrichment(
     try {
       const rawEntities = extractEntities(parsed.content);
       const filtered = filterEntities(rawEntities);
-      if (filtered.length > 0) {
-        const entityResult = storeEntities(database, id, filtered);
-        updateEntityCatalog(database, filtered);
+      // Data integrity: clean stale auto-entities before re-extraction on update
+      const entityResult = refreshAutoEntitiesForMemory(database, id, filtered);
+      if (entityResult.stored > 0) {
         console.error(`[entity-extraction] Extracted ${entityResult.stored} entities for memory #${id}`);
       }
       enrichmentStatus.entityExtraction = true;

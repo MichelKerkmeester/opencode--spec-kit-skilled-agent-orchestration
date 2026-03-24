@@ -397,10 +397,14 @@ export function buildEntityCatalog(
   const catalogSets = new Map<string, { memoryIdSet: Set<number>; specFolderSet: Set<string> }>();
 
   try {
+    // Data integrity: clean stale auto-entities before re-extraction on update
+    // Exclude deprecated (superseded) memories from entity catalog to prevent
+    // stale entity rows from polluting cross-document linking decisions.
     const rows = (db.prepare(`
       SELECT me.memory_id, me.entity_text, mi.spec_folder
       FROM memory_entities me
       JOIN memory_index mi ON me.memory_id = mi.id
+      WHERE mi.importance_tier != 'deprecated'
     `) as Database.Statement).all() as Array<{
       memory_id: number;
       entity_text: string;

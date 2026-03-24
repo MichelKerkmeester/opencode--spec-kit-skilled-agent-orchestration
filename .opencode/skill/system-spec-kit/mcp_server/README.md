@@ -204,15 +204,15 @@ mcp_server/
 ├── lib/
 │   ├── search/                # 4-stage hybrid search pipeline
 │   │   ├── README.md          # Per-stage module mapping
-│   │   ├── stage1-candidates/ # Channel retrieval (vector, FTS5, BM25, graph)
-│   │   ├── stage2-fusion/     # RRF fusion, signals integration
-│   │   ├── stage3-rerank/     # Cross-encoder reranking, MPAB aggregation
-│   │   └── stage4-filter/     # Score invariants, state filtering, TRM
+│   │   ├── pipeline/          # Orchestrator + stage1/stage2/stage2b/stage3/stage4 modules
+│   │   ├── hybrid-search.ts   # End-to-end search entry point
+│   │   ├── confidence-scoring.ts
+│   │   └── vector-index*.ts   # Vector index storage, query, mutation, and schema helpers
 │   ├── architecture/, cache/, chunking/, cognitive/, collab/, config/
 │   ├── contracts/, errors/, eval/, extraction/, feedback/, governance/
 │   ├── graph/, interfaces/, learning/, manage/, ops/, parsing/
-│   └── providers/, response/, scoring/, session/, storage/, telemetry/, utils/, validation/
-│                              # 26 additional runtime subdirectories under lib/
+│   └── providers/, response/, scoring/, session/, spec/, storage/, telemetry/, utils/, validation/
+│                              # 27 additional runtime subdirectories under lib/
 ├── hooks/
 │   ├── README.md              # Lifecycle hook documentation
 │   └── ...                    # Post-mutation hooks, UX payload builders
@@ -221,7 +221,10 @@ mcp_server/
 ├── shared/                    # Types and utilities shared with CLI scripts
 ├── shared-spaces/             # Shared memory space management
 ├── scripts/                   # Internal server-side scripts
+├── specs/                     # Runtime-local documentation and package notes
+├── startup-checks.ts          # Startup validation and environment checks
 ├── utils/                     # Server utility modules
+├── tmp-test-fixtures/         # Fixture data used by test suites
 ├── tests/                     # Vitest test suites
 │   └── *.vitest.ts
 ├── INSTALL_GUIDE.md           # Full installation walkthrough

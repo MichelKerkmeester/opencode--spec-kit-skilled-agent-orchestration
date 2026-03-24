@@ -92,7 +92,8 @@ The remediation program has four active layers:
 ### Phase 2: v1 Remediation (complete)
 
 **What was fixed**
-- Cleared the original P0 blockers and most of the required follow-up work through `T01-T30`
+- Cleared the original P0 blockers through `T01-T04` and advanced the wider `T01-T30` follow-up set
+- `T04` completed during the Phase 2 v1 remediation cycle
 - Repaired the earlier startup, validation, workflow, and documentation blockers identified by the original audit
 - Reached the v2 checkpoint of **84/100 PASS WITH NOTES**
 

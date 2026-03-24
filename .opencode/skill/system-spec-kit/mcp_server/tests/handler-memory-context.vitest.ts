@@ -470,9 +470,8 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
       expect(parsed.meta.sessionLifecycle).not.toHaveProperty('transition');
     });
 
-    it('T027ka: caller sessionId starts a new caller-scoped session when none exists', async () => {
+    it('T027ka: rejects caller sessionId when it is not server-managed', async () => {
       vi.spyOn(workingMemory, 'sessionExists').mockReturnValue(false);
-      const getSessionEventCounterSpy = vi.spyOn(workingMemory, 'getSessionEventCounter');
 
       const result = await withTimeout(
         handler.handleMemoryContext({
@@ -483,15 +482,19 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
         'T027ka-caller-new-session'
       );
 
-      const parsed = parseResponse(result);
-      expect(parsed.error).not.toBe(true);
-      expect(parsed.meta.sessionLifecycle.sessionScope).toBe('caller');
-      expect(parsed.meta.sessionLifecycle.requestedSessionId).toBe('session-new');
-      expect(parsed.meta.sessionLifecycle.effectiveSessionId).toBe('session-new');
-      expect(parsed.meta.sessionLifecycle.resumed).toBe(false);
-      expect(parsed.meta.sessionLifecycle.eventCounterStart).toBe(0);
-      expect(parsed.meta.sessionLifecycle).not.toHaveProperty('transition');
-      expect(getSessionEventCounterSpy).not.toHaveBeenCalled();
+      const parsed = JSON.parse(result.content[0].text) as {
+        data: {
+          code?: string;
+          error?: string;
+        };
+        hints?: string[];
+      };
+      expect(result.isError).toBe(true);
+      expect(parsed.data.code).toBe('E_SESSION_SCOPE');
+      expect(parsed.data.error).toContain('does not match a server-managed session');
+      expect(parsed.hints).toContain(
+        'Retry without sessionId to let the server mint a trusted session, then reuse the returned effectiveSessionId.'
+      );
     });
 
     it('T027l/T027m: caller session resume reports counter and injects top-5 context', async () => {
@@ -530,6 +533,7 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
     });
 
     it('injects session transition into traced nested results when includeTrace=true', async () => {
+      vi.spyOn(workingMemory, 'sessionExists').mockReturnValue(true);
       vi.mocked(handleMemorySearch).mockResolvedValueOnce({
         content: [
           {
@@ -571,8 +575,8 @@ describe('Handler Memory Context (T524) [deferred - requires DB test fixtures]',
           previousState: null,
           currentState: 'resume',
           confidence: 1,
-          signalSources: ['explicit-mode'],
-          reason: 'explicit mode request selected resume mode',
+          signalSources: ['session-resume', 'explicit-mode'],
+          reason: 'resumed session inferred resume mode',
         },
       }));
     });

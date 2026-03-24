@@ -40,6 +40,8 @@ import { logSearchQuery, logFinalResult } from '../lib/eval/eval-logger';
 import type { MCPResponse } from './types';
 // C2 FIX: Import DB access for scope filtering
 import { initialize_db } from '../lib/search/vector-index-store';
+// T73: Import session manager for trusted session validation (IDOR prevention)
+import * as sessionManager from '../lib/session/session-manager';
 
 /* ───────────────────────────────────────────────────────────────
    2. TYPES
@@ -183,7 +185,7 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
   const {
     prompt,
     limit: rawLimit = 3,
-    session_id: sessionId,
+    session_id: rawSessionId,
     turnNumber: rawTurnNumber = 1,
     include_cognitive: includeCognitive = true
   } = args;
@@ -199,6 +201,27 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
         hint: 'Provide a non-empty string for the prompt parameter'
       }
     });
+  }
+
+  // T73 SECURITY: Validate caller-supplied sessionId through server-side session
+  // manager to prevent IDOR. Callers cannot read/write working memory for
+  // arbitrary sessions — only server-minted or previously tracked sessions.
+  let sessionId: string | undefined = rawSessionId;
+  if (rawSessionId) {
+    const trustedSession = sessionManager.resolveTrustedSession(rawSessionId);
+    if (trustedSession.error) {
+      console.warn(`[memory_match_triggers] SECURITY: Rejected untrusted sessionId "${rawSessionId}" — ${trustedSession.error}`);
+      return createMCPErrorResponse({
+        tool: 'memory_match_triggers',
+        error: trustedSession.error,
+        code: 'E_SESSION_SCOPE',
+        details: { requestedSessionId: rawSessionId },
+        recovery: {
+          hint: 'Omit session_id to start a new server-generated session, or reuse the effectiveSessionId returned by memory_context.',
+        },
+      });
+    }
+    sessionId = trustedSession.effectiveSessionId;
   }
 
   const limit = (typeof rawLimit === 'number' && Number.isFinite(rawLimit) && rawLimit > 0)

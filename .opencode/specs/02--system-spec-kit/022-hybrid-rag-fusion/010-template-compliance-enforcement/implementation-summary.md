@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: Template Compliance Enforcement"
-description: "Post-implementation summary for 3-layer template compliance enforcement. To be completed after implementation."
+description: "Current implementation summary for 2-layer template compliance enforcement with delivered A-C phases and pending verification."
 trigger_phrases:
   - "template compliance summary"
   - "enforcement summary"
@@ -22,7 +22,7 @@ contextType: "implementation"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 010-template-compliance-enforcement |
-| **Completed** | Not yet completed |
+| **Completed** | In Progress (Phases A-C delivered, Phase D pending) |
 | **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
@@ -31,13 +31,17 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Not yet implemented. This section will be completed after implementation of the 3-layer template compliance enforcement architecture (Phases A-D).
+The 2-layer enforcement implementation is partially delivered. Shared contract infrastructure and cross-CLI prompt updates are shipped; end-to-end generation verification remains open.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| -- | -- | Implementation not yet started |
+| `.opencode/skill/system-spec-kit/references/template-compliance-contract.md` | Created | Canonical contract source for Levels 1-3 template structure and sync guidance |
+| `.claude/agents/speckit.md` | Modified | Injected compact inline contract and explicit post-write validation protocol |
+| `.opencode/agent/speckit.md` | Modified | Mirrored compact inline contract and validation protocol for OpenCode/Copilot |
+| `.opencode/agent/chatgpt/speckit.md` | Modified | Mirrored compact inline contract and validation protocol for ChatGPT profile |
+| `.codex/agents/speckit.toml` | Modified | Mirrored compact inline contract and validation protocol in TOML agent format |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -45,7 +49,11 @@ Not yet implemented. This section will be completed after implementation of the 
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Not yet implemented. Delivery details will be documented after completion.
+Delivery followed the planned sequence for implementation work:
+1. Built the shared reference contract.
+2. Replicated the compact inline contract across all four @speckit agent definitions.
+3. Consolidated per-file validation behavior and explicit post-write validation protocol wording.
+4. Deferred final end-to-end proof tasks (fresh generated Level 2 packet + conversation-log evidence) to the remaining verification phase.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -65,8 +73,11 @@ Not yet implemented. Delivery details will be documented after completion.
 
 | Check | Result |
 |-------|--------|
-| validate.sh --strict | Not yet run |
-| Agent generation test | Not yet run |
+| Contract reference file exists at planned path | Pass |
+| Inline contract present in all 4 @speckit agent definitions | Pass |
+| Post-write validation protocol section present in all 4 agent definitions | Pass |
+| Fresh Level 2 packet first-pass generation (`validate.sh --strict`) | Pending |
+| Agent log evidence for per-file validation execution | Pending |
 <!-- /ANCHOR:verification -->
 
 ---

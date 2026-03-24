@@ -5,10 +5,13 @@ import path from 'path';
 import type Database from 'better-sqlite3';
 
 import * as embeddings from '../../lib/providers/embeddings';
+import {
+  sanitizeAndLogEmbeddingFailure,
+  sanitizeEmbeddingFailureMessage,
+} from '../../lib/providers/retry-manager';
 import { computeContentHash, lookupEmbedding, storeEmbedding } from '../../lib/cache/embedding-cache';
 import { normalizeContentForEmbedding } from '../../lib/parsing/content-normalizer';
 import type { ParsedMemory } from '../../lib/parsing/memory-parser';
-import { toErrorMessage } from '../../utils';
 import type { WeightedDocumentSections } from '@spec-kit/shared/index';
 
 // Feature catalog: Memory indexing (memory_save)
@@ -132,7 +135,7 @@ export async function generateOrCacheEmbedding(
       embeddingStatus = 'success';
       console.error(`[memory-save] Embedding cache HIT for ${path.basename(filePath)} (async mode)`);
     } else {
-      embeddingFailureReason = 'Deferred: async_embedding requested';
+      embeddingFailureReason = sanitizeEmbeddingFailureMessage('Deferred: async_embedding requested');
       console.error(`[memory-save] T306: Async embedding mode - deferring embedding for ${path.basename(filePath)}`);
     }
   } else {
@@ -165,14 +168,17 @@ export async function generateOrCacheEmbedding(
             },
           };
         } else {
-          embeddingFailureReason = 'Embedding generation returned null';
+          embeddingFailureReason = sanitizeEmbeddingFailureMessage('Embedding generation returned null');
           console.warn(`[memory-save] Embedding failed for ${path.basename(filePath)}: ${embeddingFailureReason}`);
         }
       }
     } catch (embedding_error: unknown) {
-      const message = toErrorMessage(embedding_error);
-      embeddingFailureReason = message;
-      console.warn(`[memory-save] Embedding failed for ${path.basename(filePath)}: ${embeddingFailureReason}`);
+      // Security: raw provider errors sanitized before persistence/response
+      embeddingFailureReason = sanitizeAndLogEmbeddingFailure(
+        `[memory-save] Embedding failed for ${path.basename(filePath)}`,
+        embedding_error,
+        { provider: modelId, force: true },
+      );
     }
   }
 

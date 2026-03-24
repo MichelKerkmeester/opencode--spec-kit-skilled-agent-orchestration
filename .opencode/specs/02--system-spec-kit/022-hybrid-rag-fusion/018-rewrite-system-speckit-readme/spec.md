@@ -23,7 +23,7 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P1 |
-| **Status** | Complete |
+| **Status** | In Progress (tasks tracker pending completion evidence) |
 | **Created** | 2026-03-15 |
 | **Branch** | `main` |
 | **Parent** | `022-hybrid-rag-fusion` (Phase 018) |
@@ -39,7 +39,7 @@ contextType: "implementation"
 
 ### Problem Statement
 
-The system-spec-kit README (`README.md`, ~872 lines) was written before the 22-category feature catalog, 14-command suite (8 spec_kit + 5 memory), and phase decomposition system existed. It describes an earlier, smaller version of the skill that does not reflect the current capability surface: 33 MCP tools, 4 documentation levels, CORE+ADDENDUM template architecture, validation scripts, and the full memory system.
+The system-spec-kit README (`README.md`, ~872 lines) was written before the 22-category feature catalog, 14-command suite (8 spec_kit + 6 memory), and phase decomposition system existed. It describes an earlier, smaller version of the skill that does not reflect the current capability surface: 33 MCP tools, 4 documentation levels, CORE+ADDENDUM template architecture, validation scripts, and the full memory system.
 
 ### Purpose
 
@@ -94,7 +94,7 @@ Produce a complete rewrite that documents the Spec Kit skill holistically — co
 |----|-------------|---------------------|
 | SR-004 | No banned HVR words | Zero matches for sk-doc banned word list |
 | SR-005 | Links to MCP README for depth | MCP tool details link to mcp_server/README.md rather than duplicating them |
-| SR-006 | Command inventory complete | All 8 spec_kit commands and 5 memory commands listed with brief descriptions |
+| SR-006 | Command inventory complete | All 8 spec_kit commands and 6 memory commands listed with brief descriptions |
 | SR-007 | Template architecture documented | CORE + ADDENDUM system (v2.2) explained with examples |
 | SR-008 | Cross-references consistent | Links to MCP README, root README, and SKILL.md are valid |
 <!-- /ANCHOR:requirements -->
@@ -135,7 +135,7 @@ Produce a complete rewrite that documents the Spec Kit skill holistically — co
 
 <!--
 SPEC: 018-rewrite-system-speckit-readme
-Level 1 — Complete (2026-03-15)
+Level 1 — In Progress (tasks tracker not yet reconciled, 2026-03-24)
 Target: Complete rewrite of Spec Kit README covering all components
 -->
 

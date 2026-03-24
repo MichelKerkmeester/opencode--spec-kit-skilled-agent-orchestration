@@ -1,6 +1,6 @@
 ---
 title: "013 — Agent Alignment: Runtime Lineage Truth Reconciliation"
-description: "Reconcile the 013 agents-alignment packet and the last runtime-facing agent-doc drift to the live multi-runtime lineage used by OpenCode, ChatGPT, Claude, Codex, and Gemini."
+description: "Reconcile the 013 agents-alignment packet and remaining runtime-facing agent-doc drift to the live multi-runtime lineage used by OpenCode, ChatGPT, Claude, Codex, and Gemini."
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
@@ -15,9 +15,9 @@ description: "Reconcile the 013 agents-alignment packet and the last runtime-fac
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Complete (truth-reconciled) |
+| **Status** | In Progress (lineage truth-reconciled; write-agent routing follow-up pending) |
 | **Created** | 2026-03-15 |
-| **Updated** | 2026-03-21 |
+| **Updated** | 2026-03-24 |
 | **Parent** | `022-hybrid-rag-fusion` |
 | **Complexity** | 42/70 |
 | **Parent Spec** | ../spec.md |
@@ -39,7 +39,7 @@ The original `013-agents-alignment` packet described a simpler runtime model tha
 - `.codex/agents/*.toml` is generated from the ChatGPT family, not from the base markdown family.
 - `.gemini/agents/*.md` is the runtime-facing Gemini path, while `.gemini -> .agents` exposes the backing storage at `.agents/agents/*.md`.
 
-The older packet also carried stale naming (research.md), a bulk-runtime-sync story that no longer matches the state of the repo, and it did not account for the remaining runtime-facing drift in `.gemini/workflows/delegate_agent.md` and the write-agent projections.
+The older packet also carried stale naming (research.md), a bulk-runtime-sync story that no longer matches the state of the repo, and it did not account for the runtime-facing drift in `.gemini/workflows/delegate_agent.md` plus partially reconciled write-agent projection guidance.
 
 ---
 
@@ -53,7 +53,7 @@ The older packet also carried stale naming (research.md), a bulk-runtime-sync st
 
 ### Purpose
 
-Reconcile the `013` packet so it accurately documents the current runtime lineage, path conventions, and naming rules, while also closing the last runtime-facing agent-doc drift without claiming a full bulk sync.
+Reconcile the `013` packet so it accurately documents the current runtime lineage, path conventions, and naming rules, while documenting write-agent routing closeout as partial rather than fully complete and avoiding any bulk-sync claim.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -68,7 +68,7 @@ Reconcile the `013` packet so it accurately documents the current runtime lineag
 - Record Codex generation from the ChatGPT family.
 - Document Gemini's runtime-facing path together with the `.gemini -> .agents` storage detail.
 - Normalize the packet on deep-research.md naming.
-- Fix the remaining runtime-facing path and writer-surface drift in the scoped Gemini, Claude, ChatGPT, and Codex docs.
+- Reconcile runtime-facing path drift in the scoped Gemini, Claude, ChatGPT, and Codex docs, and explicitly mark write-agent routing items that remain pending.
 
 ### Out of Scope
 
@@ -114,7 +114,7 @@ Reconcile the `013` packet so it accurately documents the current runtime lineag
 - **SC-002**: The packet uses deep-research.md naming throughout its active docs.
 - **SC-003**: Codex lineage from ChatGPT markdown is explicit.
 - **SC-004**: Gemini runtime-facing and storage-facing paths are both documented without ambiguity.
-- **SC-005**: The packet avoids claiming bulk runtime sync work while accurately recording the scoped runtime-doc closeout performed in this pass.
+- **SC-005**: The packet avoids claiming bulk runtime sync work and clearly labels write-agent routing as partially reconciled where evidence is incomplete.
 <!-- /ANCHOR:success-criteria -->
 
 ---

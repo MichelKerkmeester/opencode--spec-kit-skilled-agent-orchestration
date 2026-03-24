@@ -192,6 +192,40 @@ describe('Phase 5 memory governance', () => {
     });
   });
 
+  it('blocks unscoped governance audit enumeration unless allowUnscoped=true', () => {
+    const db = new Database(':memory:');
+    db.exec(`
+      CREATE TABLE memory_index (
+        id INTEGER PRIMARY KEY,
+        spec_folder TEXT,
+        file_path TEXT,
+        session_id TEXT
+      )
+    `);
+    ensureGovernanceRuntime(db);
+    recordGovernanceAudit(db, {
+      action: 'memory_save',
+      decision: 'allow',
+      tenantId: 'tenant-a',
+      userId: 'user-1',
+      sessionId: 'session-1',
+      reason: 'governed_ingest',
+    });
+
+    const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    const blocked = reviewGovernanceAudit(db, {});
+
+    expect(blocked.rows).toEqual([]);
+    expect(blocked.summary.totalMatching).toBe(0);
+    expect(warnSpy).toHaveBeenCalledWith(
+      '[scope-governance] Unscoped governance audit enumeration blocked; explicit filters or allowUnscoped=true required.'
+    );
+
+    const allowed = reviewGovernanceAudit(db, { allowUnscoped: true, limit: 10 });
+    expect(allowed.summary.totalMatching).toBe(1);
+    expect(allowed.rows).toHaveLength(1);
+  });
+
   it('reuses cached scope predicates and benchmarks scoped filtering', () => {
     process.env.SPECKIT_MEMORY_SCOPE_ENFORCEMENT = 'true';
     const rows = [

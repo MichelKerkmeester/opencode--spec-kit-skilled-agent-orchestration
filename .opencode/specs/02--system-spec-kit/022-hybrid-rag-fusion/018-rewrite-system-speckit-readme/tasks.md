@@ -29,7 +29,7 @@ description: "Task breakdown for complete rewrite of the system-spec-kit README.
 
 - [ ] T001 Catalog all skill components from SKILL.md and directory structure
 - [ ] T002 [P] Extract documentation level definitions from template files
-- [ ] T003 [P] List all 13 commands with descriptions from command directory
+- [ ] T003 [P] List all 14 commands with descriptions from command directory
 - [ ] T004 [P] Inventory scripts and validation tools
 - [ ] T005 Write research brief to `scratch/research-brief.md`
 <!-- /ANCHOR:phase-1 -->
@@ -44,7 +44,7 @@ description: "Task breakdown for complete rewrite of the system-spec-kit README.
 - [ ] T008 Write Components section (directory structure, key files)
 - [ ] T009 Write Documentation Levels section (Level 1-3+ with CORE+ADDENDUM)
 - [ ] T010 Write Memory System section (overview with link to MCP README)
-- [ ] T011 Write Commands section (all 13 commands with brief descriptions)
+- [ ] T011 Write Commands section (all 14 commands with brief descriptions)
 - [ ] T012 Write Templates section (CORE+ADDENDUM v2.2 architecture)
 - [ ] T013 Write Scripts section (validation, generation, memory tools)
 - [ ] T014 Write Troubleshooting, FAQ, and Related Resources
@@ -58,7 +58,7 @@ description: "Task breakdown for complete rewrite of the system-spec-kit README.
 
 - [ ] T016 Run DQI scoring (target >= 75)
 - [ ] T017 [P] Run HVR banned-word check
-- [ ] T018 [P] Verify all 13 commands present
+- [ ] T018 [P] Verify all 14 commands present
 - [ ] T019 [P] Verify cross-references to MCP README and root README resolve
 - [ ] T020 [P] Check for content duplication with MCP README
 - [ ] T021 Apply review fixes

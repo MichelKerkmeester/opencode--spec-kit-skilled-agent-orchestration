@@ -321,10 +321,21 @@ function bm25Search(
     // R.id against specFolder which never matched. Use DB lookup to resolve spec_folder.
 
     // B7 FIX: Batch-resolve spec folders for all result IDs (was N+1 individual queries)
+    // T72 SECURITY: Spec-folder scope MUST fail closed — any error in scope
+    // resolution returns [] rather than leaking unscoped BM25 candidates.
     let specFolderMap: Map<number, string | null> | null = null;
-    if (specFolder && db) {
+    if (specFolder) {
+      if (!db) {
+        const error = new Error('Database unavailable for spec-folder scope lookup');
+        console.warn('[BM25] Spec-folder scope lookup failed, returning empty scoped results:', error);
+        return [];
+      }
+
       try {
         const ids = results.map((r: { id: string }) => Number(r.id));
+        if (ids.length === 0) {
+          return [];
+        }
         const placeholders = ids.map(() => '?').join(',');
         const rows = db.prepare(
           `SELECT id, spec_folder FROM memory_index WHERE id IN (${placeholders})`
@@ -333,16 +344,25 @@ function bm25Search(
         for (const row of rows) {
           specFolderMap.set(row.id, row.spec_folder);
         }
-      } catch (_error: unknown) {
-        // Fail open — return all results unfiltered
-        specFolderMap = null;
+      } catch (error: unknown) {
+        console.warn('[BM25] Spec-folder scope lookup failed, returning empty scoped results:', error);
+        return [];
+      }
+
+      // T72 DEFENSE-IN-DEPTH: If specFolder was requested but specFolderMap
+      // is still null after the resolution block, something unexpected happened.
+      // Fail closed rather than falling through to unscoped results.
+      if (!specFolderMap) {
+        const error = new Error('specFolderMap unexpectedly null after scope resolution');
+        console.warn('[BM25] Spec-folder scope lookup failed, returning empty scoped results:', error);
+        return [];
       }
     }
 
     return results
       .filter((r: { id: string }) => {
         if (!specFolder) return true;
-        if (specFolderMap === null) return true; // no DB or query failed
+        if (!specFolderMap) return false;
         const folder = specFolderMap.get(Number(r.id));
         if (!folder) return false;
         return folder === specFolder || folder.startsWith(specFolder + '/');

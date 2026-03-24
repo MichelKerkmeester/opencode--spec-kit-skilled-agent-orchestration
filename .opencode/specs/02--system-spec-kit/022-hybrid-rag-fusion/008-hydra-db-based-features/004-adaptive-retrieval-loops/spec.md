@@ -19,7 +19,7 @@ contextType: "decision"
 
 ## EXECUTIVE SUMMARY
 
-Phase 4 introduces bounded retrieval learning without letting the system self-modify blindly. It captures access, outcome, and correction signals, runs adaptive ranking in shadow mode first, and only permits promotion after clear regression, rollback, and governance gates pass.
+Phase 4 introduces bounded retrieval learning without letting the system self-modify blindly. It captures access, outcome, and correction signals and defines a shadow-mode adaptive path, but shadow scoring remains disabled by default and has not been promoted into live ranking.
 
 **Key Decisions**: start in shadow mode only; keep adaptive updates bounded, auditable, and easy to disable.
 

@@ -73,7 +73,7 @@ contextType: "decision"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Parent docs, phase docs, and closure summary now tell one consistent story about the shipped Hydra roadmap [EVIDENCE:spec.md|plan.md|tasks.md|implementation-summary.md]
+- [x] CHK-040 [P1] Parent docs, phase docs, and closure summary now tell one consistent story about the Hydra roadmap, including pending sign-off and activation caveats [EVIDENCE:spec.md|plan.md|tasks.md|implementation-summary.md]
 - [x] CHK-041 [P1] March 17 2026 evidence totals are synchronized in authoritative closure docs as `283` files, `7790` tests, `11` skipped, and `28` todo [EVIDENCE:implementation-summary.md]
 - [x] CHK-042 [P2] Live prompt proof was captured for all five CLIs with timestamps, exit codes, and payload evidence [EVIDENCE:implementation-summary.md]
 <!-- /ANCHOR:docs -->
@@ -100,7 +100,7 @@ contextType: "decision"
 | P2 Items | 10 | 10/10 |
 
 **Verification Date**: 2026-03-20
-**Status**: Hydra follow-up verification passed across targeted governed-retrieval, shared-space admin, graph-ranking, and retention regressions plus `npx tsc --noEmit`. The March 17 2026 full `mcp_server` closure rerun remains the authoritative broad baseline at `283` passed files, `7790` passed tests, `11` skipped, and `28` todo.
+**Status**: Hydra follow-up verification passed across targeted governed-retrieval, shared-space admin, graph-ranking, and retention regressions plus `npx tsc --noEmit`, while the packet still carries pending external sign-off and deferred drill evidence in the live child state. Live upstream phase-gate counts are Phase 1 `P0 0/0`, Phase 2 `P0 1/1`, Phase 3 `P0 1/1`, Phase 5 `P0 7/8`, and Phase 6 `P0 6/8`. The March 17 2026 full `mcp_server` closure rerun remains the authoritative broad baseline at `283` passed files, `7790` passed tests, `11` skipped, and `28` todo.
 <!-- /ANCHOR:summary -->
 
 ---

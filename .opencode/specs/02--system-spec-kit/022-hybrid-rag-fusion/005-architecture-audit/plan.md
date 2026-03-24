@@ -259,6 +259,15 @@ Boundary Contract
 <!-- ANCHOR:milestones -->
 ## L3: MILESTONES
 
+---
+
+## NAVIGATION & TRACEABILITY
+
+- **Parent**: `022-hybrid-rag-fusion`
+- **Scope**: Architecture audit planning and closure mapping for the Spec Kit Memory MCP server
+- **Upstream**: Root 022 coordination packet
+- **Downstream**: Implementation packages in `mcp_server/`, `scripts/`, and `shared/`, with runtime emphasis on `api/`, `core/`, `configs/`, `formatters/`, `handlers/`, `hooks/`, `lib/`, `schemas/`, `shared-spaces/`, `tools/`, and `utils/`
+
 | Milestone | Description | Success Criteria |
 |-----------|-------------|------------------|
 | M1 | Boundary contract published | Ownership rules documented and discoverable |

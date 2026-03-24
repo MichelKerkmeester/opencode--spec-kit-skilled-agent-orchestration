@@ -106,15 +106,14 @@ The 022-hybrid-rag-fusion spec tree is **not release-ready**. Six P0 blockers re
 15. 015 executed second-half packets still say Not Started (iter 13)
 16. All four rewrite packets claim Complete with 0/N task completion (iter 14)
 
-### Missing Docs/Evidence (8 findings)
+### Missing Docs/Evidence (7 findings)
 1. 005-architecture-audit missing root navigation contract (iter 3)
 2. 005/010 auxiliary artifacts have broken evidence links (iter 3)
 3. Completed 007 second-half phases lack traceability contract (iter 6)
 4. 016-json-mode-hybrid-enrichment missing Level 3+ companion docs (iter 9)
-5. Deleted 013-memory-generation-quality left orphaned refs (iter 10)
-6. 011/001 child points at wrong parent, misroutes ownership (iter 11)
-7. 015 children 003/004/007 cite nonexistent playbook paths (iter 12)
-8. 015 children 020-022 are placeholders, not full testing packets (iter 13)
+5. 011/001 child points at wrong parent, misroutes ownership (iter 11)
+6. 015 children 003/004/007 cite nonexistent playbook paths (iter 12)
+7. 015 children 020-022 are placeholders, not full testing packets (iter 13)
 
 ### Code Correctness/Security (12 findings)
 1. BM25 spec-folder filtering fails open on lookup errors (iter 15)
@@ -237,9 +236,8 @@ Top themes:
 - Resolve 012 T04 triple contradiction
 - Update rewrite packets' tasks.md completion tracking
 
-### Priority 4: Fix Missing Docs/Evidence (8 items)
+### Priority 4: Fix Missing Docs/Evidence (7 items)
 - Add navigation metadata to 005-architecture-audit
-- Clean orphaned 013 references
 - Complete 015 placeholder packets (020-022) or demote to drafts
 
 ### Priority 5: Address Code P1s (12 items)

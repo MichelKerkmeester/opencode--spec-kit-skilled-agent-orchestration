@@ -1,6 +1,6 @@
 # 001 — Post Session Capturing Alignment
 
-**Level:** 2 | **Priority:** P1 | **Status:** Complete (superseded by parent 010 reconciliation passes)
+**Level:** 2 | **Priority:** P1 | **Status:** Complete (superseded by parent 011-skill-alignment reconciliation passes)
 
 ## 1. Problem
 

@@ -33,7 +33,7 @@ Phase 1 establishes the safe operating baseline for the Hydra roadmap. It harden
 |-------|-------|
 | **Level** | 3+ |
 | **Priority** | P0 |
-| **Status** | Complete |
+| **Status** | Complete - pending sign-off |
 | **Created** | 2026-03-13 |
 | **Updated** | 2026-03-14 |
 | **Branch** | `022-hybrid-rag-fusion` |

@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Code Audit — Scoring and Calibration"
-description: "Systematic code audit of 23 Scoring and Calibration features against source code to verify implementation accuracy and catalog alignment."
+description: "Systematic code audit of 22 live Scoring and Calibration features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
   - "code audit"
   - "scoring and calibration"
@@ -17,7 +17,7 @@ contextType: "general"
 
 ## EXECUTIVE SUMMARY
 
-Systematic code audit of 23 Scoring and Calibration features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/11--scoring-and-calibration/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.
+Systematic code audit of 22 live Scoring and Calibration features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/11--scoring-and-calibration/` category is verified against source code to confirm accuracy, completeness, and catalog alignment.
 
 **Key Decisions**: Audit against current feature catalog as source of truth, document findings per feature
 
@@ -40,10 +40,10 @@ Systematic code audit of 23 Scoring and Calibration features in the Spec Kit Mem
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The feature catalog for Scoring and Calibration has evolved significantly. Existing audit documentation was stale and no longer reflected the current 23-feature inventory. A fresh audit baseline is needed to verify each feature's implementation against its catalog description.
+The feature catalog for Scoring and Calibration has evolved significantly. Existing audit documentation was stale and no longer reflected the current 22-feature inventory. This packet truth-syncs the certified live count after the deprecated shadow-evaluation entry dropped out of the active inventory.
 
 ### Purpose
-Verify that all 23 Scoring and Calibration features are accurately documented in the feature catalog and correctly implemented in source code.
+Verify that all 22 live Scoring and Calibration features are accurately documented in the feature catalog and correctly implemented in source code.
 
 ---
 
@@ -72,7 +72,6 @@ Verify that all 23 Scoring and Calibration features are accurately documented in
 - Shadow feedback holdout evaluation
 - Calibrated overlap bonus
 - RRF K experimental tuning
-- Fusion policy shadow evaluation V2
 
 ### Out of Scope
 - Implementing new features or fixing bugs discovered during audit
@@ -108,7 +107,7 @@ Verify that all 23 Scoring and Calibration features are accurately documented in
 
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 23 features audited with findings documented
+- **SC-001**: All 22 live features audited with findings documented
 - **SC-002**: Zero unverified features remaining in this category
 
 ---
@@ -149,7 +148,7 @@ Verify that all 23 Scoring and Calibration features are accurately documented in
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 20/25 | Features: 23 |
+| Scope | 20/25 | Features: 22 |
 | Risk | 8/25 | Read-only audit, no breaking changes |
 | Research | 15/20 | Must trace each feature to source |
 | Multi-Agent | 5/15 | Single-phase audit |
@@ -180,9 +179,9 @@ Verify that all 23 Scoring and Calibration features are accurately documented in
 
 ## 12. AUDIT FINDINGS
 
-Audit completed 2026-03-22. 23 features verified. Result: **20 MATCH, 3 PARTIAL**.
+Audit completed 2026-03-22. 22 live features verified. Result: **20 MATCH, 2 PARTIAL**.
 
-### MATCH (20/23)
+### MATCH (20/22)
 
 | ID | Feature | Finding |
 |----|---------|---------|
@@ -207,16 +206,15 @@ Audit completed 2026-03-22. 23 features verified. Result: **20 MATCH, 3 PARTIAL*
 | F20 | Shadow feedback holdout evaluation | Confirmed in source |
 | F21 | Calibrated overlap bonus | Confirmed in source |
 
-### PARTIAL (3/23)
+### PARTIAL (2/22)
 
 | ID | Feature | Issue |
 |----|---------|-------|
 | F13 | Scoring and fusion corrections | Catalog lists file paths without `pipeline/` prefix — paths should be `pipeline/<file>` |
 | F22 | RRF K experimental tuning | Function name mismatch: catalog says `perIntentKSweep`, implementation uses `runJudgedKSweep` |
-| F23 | Fusion policy shadow evaluation V2 | Flag accessor `isShadowFeedbackEnabled()` confirmed in `search-flags.ts:397`. Corrected per deep research iteration 3+9 verification. |
 
 ### Systemic Patterns
-All behavioral descriptions are accurate. The three PARTIAL findings are limited to file path and naming precision (no functional discrepancies). No deprecated features detected. No undocumented features identified.
+All behavioral descriptions are accurate. The two PARTIAL findings are limited to file path and naming precision (no functional discrepancies). Deprecated fusion-policy shadow evaluation is no longer part of the certified live inventory. No undocumented live features identified.
 
 ---
 
@@ -224,7 +222,6 @@ All behavioral descriptions are accurate. The three PARTIAL findings are limited
 
 - F13: Confirm canonical path prefix for scoring/fusion correction files (`pipeline/` vs root).
 - F22: Determine whether `perIntentKSweep` is an alias or whether the catalog should be updated to `runJudgedKSweep`.
-- F23: Resolved — flag accessor `isShadowFeedbackEnabled()` is in `search-flags.ts:397`. Corrected per deep research iteration 3+9 verification.
 
 ---
 

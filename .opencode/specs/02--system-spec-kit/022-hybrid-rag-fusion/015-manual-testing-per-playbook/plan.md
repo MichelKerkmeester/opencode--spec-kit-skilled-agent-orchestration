@@ -1,6 +1,6 @@
 ---
 title: "Implementation Plan: manual-testing-per-playbook"
-description: "Execute manual testing across 19 phase folders covering 233 scenario files (272 exact IDs) from the manual testing playbook, with pre-execution setup, phased execution, and aggregate result reporting."
+description: "Execute manual testing across 24 top-level subdirectories covering 231 scenario files (272 exact IDs) from the manual testing playbook, with pre-execution setup, phased execution, and aggregate result reporting."
 trigger_phrases:
   - "manual testing plan"
   - "testing phases"
@@ -29,7 +29,7 @@ contextType: "general"
 | **Testing** | Manual scenario execution per playbook |
 
 ### Overview
-Execute manual testing across 19 phase folders, each covering one playbook category. Each phase runs its test scenarios using the prompts, commands, and pass/fail criteria defined in the playbook scenario files. Results are recorded as per-scenario verdicts (PASS/PARTIAL/FAIL) with evidence, then aggregated into a coverage report.
+Execute manual testing across 24 top-level subdirectories. The 22 numbered phase folders map to playbook categories, while `memory/` and `scratch/` hold supporting artifacts. Results are recorded as per-scenario verdicts (PASS/PARTIAL/FAIL) with evidence, then aggregated into a coverage report.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -45,7 +45,7 @@ Execute manual testing across 19 phase folders, each covering one playbook categ
 
 ### Definition of Done
 - [ ] All 272 exact scenario IDs have recorded verdicts
-- [ ] Per-phase summaries are complete for all 19 phases
+- [ ] Per-phase summaries are complete for all 24 subdirectories
 - [ ] Aggregate coverage report is produced
 - [ ] Bugs and playbook errors are documented
 <!-- /ANCHOR:quality-gates -->
@@ -59,9 +59,9 @@ Execute manual testing across 19 phase folders, each covering one playbook categ
 Phased manual test execution with verdict recording.
 
 ### Key Components
-- **Playbook**: 233 scenario files across 19 categories providing prompts, expected behavior, and pass/fail criteria
+- **Playbook**: 231 scenario files across 19 categories providing prompts, expected behavior, and pass/fail criteria
 - **Feature Catalog**: 220 feature definitions across 19 categories providing feature context
-- **Phase Folders**: 19 child folders (001 through 019) where test results are recorded
+- **Phase Folders**: 24 top-level subdirectories (22 numbered phase folders plus `memory/` and `scratch/`)
 - **Aggregate Report**: Summary of all phase results with overall coverage metrics
 
 ### Data Flow
@@ -79,9 +79,9 @@ Playbook scenario file -> Read prompts/criteria -> Execute against MCP server ->
 - [ ] Verify playbook and feature catalog are accessible
 - [ ] Verify MCP server is running and healthy (`memory_health`)
 - [ ] Document test environment baseline (database state, feature flags, server version)
-- [ ] Confirm all 19 phase folders exist with scenario files
+- [ ] Confirm all 24 top-level subdirectories exist with scenario files
 
-### Phase 2: Execute 19 Phases
+### Phase 2: Execute Numbered Phase Folders
 Execute each phase by running its test scenarios per playbook. Phases can be run independently or in sequence.
 
 | Phase | Folder | Scenarios | Exact IDs |
@@ -128,9 +128,9 @@ For each phase:
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
-| Manual scenario execution | All 272 exact IDs across 19 phases | MCP tool calls, CLI commands |
+| Manual scenario execution | All 272 exact IDs across 24 subdirectories | MCP tool calls, CLI commands |
 | Verdict recording | Per-scenario pass/fail with evidence | Inline documentation in phase folders |
-| Coverage aggregation | All 19 phases | Summary table in implementation-summary.md |
+| Coverage aggregation | All 24 subdirectories | Summary table in implementation-summary.md |
 <!-- /ANCHOR:testing -->
 
 ---
@@ -162,7 +162,7 @@ For each phase:
 ## L2: PHASE DEPENDENCIES
 
 ```
-Phase 1 (Setup) ──► Phase 2 (Execute 19 Phases) ──► Phase 3 (Aggregate)
+Phase 1 (Setup) ──► Phase 2 (Execute Numbered Phase Folders) ──► Phase 3 (Aggregate)
 ```
 
 | Phase | Depends On | Blocks |
@@ -171,7 +171,7 @@ Phase 1 (Setup) ──► Phase 2 (Execute 19 Phases) ──► Phase 3 (Aggrega
 | Execute (001-019) | Setup | Aggregate |
 | Aggregate | Execute | None |
 
-Note: Within Phase 2, individual phases (001-019) are independent and can be executed in any order or in parallel.
+Note: Within Phase 2, individual phase folders (001-022) are independent and can be executed in any order or in parallel.
 <!-- /ANCHOR:phase-deps -->
 
 ---
@@ -182,7 +182,7 @@ Note: Within Phase 2, individual phases (001-019) are independent and can be exe
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
 | Setup | Low | 1 hour |
-| Execute (19 phases) | High | 3-4 days |
+| Execute (24 subdirectories) | High | 3-4 days |
 | Aggregate | Low | 2 hours |
 | **Total** | | **4-5 days** |
 <!-- /ANCHOR:effort -->

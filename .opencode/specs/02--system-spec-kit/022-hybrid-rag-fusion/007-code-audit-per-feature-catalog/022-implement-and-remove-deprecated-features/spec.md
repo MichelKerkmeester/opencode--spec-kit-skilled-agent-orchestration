@@ -8,6 +8,10 @@ description: "Wire graph calibration, temporal contiguity, and consumption logge
 
 ---
 
+Parent: 007-code-audit-per-feature-catalog
+
+---
+
 ## Scope
 
 ### IMPLEMENT (wire into production pipeline)

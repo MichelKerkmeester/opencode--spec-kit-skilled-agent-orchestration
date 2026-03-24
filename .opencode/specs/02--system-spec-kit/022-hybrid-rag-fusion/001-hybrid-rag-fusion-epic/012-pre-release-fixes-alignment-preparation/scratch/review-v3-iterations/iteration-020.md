@@ -121,9 +121,6 @@
 - **`016-json-mode-hybrid-enrichment` declares `Level 3+` but lacks the companion docs that level implies** — notably no container-level `checklist.md` or `decision-record.md`.  
   **Iteration(s):** 009
 
-- **Deleting `013-memory-generation-quality` left broken cross-spec references behind** — surviving docs still point at a removed sibling for research/architecture provenance.  
-  **Iteration(s):** 010
-
 - **`011-skill-alignment/001-post-session-capturing-alignment` points at the wrong parent and misroutes downstream ownership** — the child is structurally under `011` but human-facing docs still route through the wrong phase chain.  
   **Iteration(s):** 011
 

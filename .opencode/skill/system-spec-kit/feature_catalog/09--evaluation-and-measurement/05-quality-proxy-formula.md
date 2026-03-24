@@ -35,8 +35,9 @@ The weights were chosen to prioritize relevance over speed while still penalizin
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/ceiling-quality.vitest.ts` | Ceiling and quality proxy formula tests |
 | `mcp_server/tests/retrieval-telemetry.vitest.ts` | Quality proxy telemetry computation |
+
+Test file removed: `mcp_server/tests/ceiling-quality.vitest.ts`.
 
 ---
 

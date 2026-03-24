@@ -26,7 +26,7 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Repository README rewritten as the top-level entry point to the OpenCode system. Documents all 18 skills, 11 agents, 33 MCP tools, the gate system, and code mode with role-based navigation paths for newcomers, developers, and administrators. Links to component READMEs for depth.
+Repository README rewritten as the top-level entry point to the OpenCode system. Documents all 18 skills, 12 agents, and the MCP surface as 33 Spec Kit Memory tools / 40 total MCP tools including Code Mode, alongside the gate system and role-based navigation paths for newcomers, developers, and administrators. Links to component READMEs for depth.
 
 ### Files Changed
 
@@ -64,7 +64,7 @@ Research inventoried agents, skills, commands, and gate system from live directo
 |-------|--------|
 | DQI scoring | PASS (>= 75) |
 | HVR banned-word check | PASS |
-| All 18 skills and 11 agents listed | PASS |
+| All 18 skills and 12 agents listed | PASS |
 | Cross-references to D1 and D3 | PASS |
 <!-- /ANCHOR:verification -->
 

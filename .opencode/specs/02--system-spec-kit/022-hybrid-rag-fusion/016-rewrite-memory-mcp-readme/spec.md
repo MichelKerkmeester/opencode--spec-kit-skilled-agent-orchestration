@@ -23,7 +23,7 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P1 |
-| **Status** | Complete |
+| **Status** | In Progress (tasks tracker pending completion evidence) |
 | **Created** | 2026-03-15 |
 | **Branch** | `main` |
 | **Parent** | `022-hybrid-rag-fusion` (Phase 016) |
@@ -39,11 +39,11 @@ contextType: "implementation"
 
 ### Problem Statement
 
-The MCP server README (mcp_server/README.md, ~1281 lines) was written incrementally as features were added across 16 phases of the 022-hybrid-rag-fusion epic. It now mixes API reference, architecture, configuration, and troubleshooting concerns with no clear reader path. Some sections reference 28 tools when 32 exist. The hybrid search pipeline, cognitive memory (6-tier, 5-state, FSRS decay), and feature flag system are not cohesively documented.
+The MCP server README (mcp_server/README.md, ~1281 lines) was written incrementally as features were added across 16 phases of the 022-hybrid-rag-fusion epic. It now mixes API reference, architecture, configuration, and troubleshooting concerns with no clear reader path. Some sections reference 28 tools when 33 exist. The hybrid search pipeline, cognitive memory (6-tier, 5-state, FSRS decay), and feature flag system are not cohesively documented.
 
 ### Purpose
 
-Produce a complete rewrite grounded in the feature catalog that serves both newcomers (quick start, overview) and power users (full tool reference, architecture depth), with all 32 MCP tools accurately documented and DQI >= 75.
+Produce a complete rewrite grounded in the feature catalog that serves both newcomers (quick start, overview) and power users (full tool reference, architecture depth), with all 33 MCP tools accurately documented and DQI >= 75.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -56,7 +56,7 @@ Produce a complete rewrite grounded in the feature catalog that serves both newc
 | Category | Items |
 |----------|-------|
 | **Full rewrite** | `.opencode/skill/system-spec-kit/mcp_server/README.md` |
-| **Section structure** | Overview, Quick Start, Architecture, MCP Tools (all 32), Search System, Configuration, Usage Examples, Troubleshooting, FAQ, Related Resources |
+| **Section structure** | Overview, Quick Start, Architecture, MCP Tools (all 33), Search System, Configuration, Usage Examples, Troubleshooting, FAQ, Related Resources |
 | **Content grounding** | Feature catalog (feature_catalog.md) as authoritative source |
 | **Quality gates** | DQI >= 75, no banned HVR words, template alignment with readme_template.md |
 
@@ -84,7 +84,7 @@ Produce a complete rewrite grounded in the feature catalog that serves both newc
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| MR-001 | All 32 MCP tools documented | Every tool in `TOOL_DEFINITIONS` appears with name, description, parameters, and layer annotation |
+| MR-001 | All 33 MCP tools documented | Every tool in `TOOL_DEFINITIONS` appears with name, description, parameters, and layer annotation |
 | MR-002 | Feature catalog grounding | All 22 feature categories from the catalog are represented in relevant sections |
 | MR-003 | DQI >= 75 | `validate_document.py` scores the final document at 75 or above |
 
@@ -135,7 +135,7 @@ Produce a complete rewrite grounded in the feature catalog that serves both newc
 
 <!--
 SPEC: 016-rewrite-memory-mcp-readme
-Level 1 — Complete (2026-03-15)
+Level 1 — In Progress (tasks tracker not yet reconciled, 2026-03-24)
 Target: Complete rewrite of MCP README covering all 33 tools
 Source: feature_catalog.md + tool-schemas.ts
 -->

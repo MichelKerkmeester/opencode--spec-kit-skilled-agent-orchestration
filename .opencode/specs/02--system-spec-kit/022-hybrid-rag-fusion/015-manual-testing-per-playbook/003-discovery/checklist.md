@@ -30,7 +30,7 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Playbook context read for 03--discovery — Read all three scenario files from `manual_testing_playbook/03--discovery/`
+- [x] CHK-001 [P0] Playbook context read for 03--discovery — Read all three scenario files from `.opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/`
 - [x] CHK-002 [P0] Feature catalog context read for 03--discovery — Read `feature_catalog/03--discovery/` (01, 02, 03)
 - [x] CHK-003 [P0] MCP server verified running before first tool call — Confirmed via handler code analysis and tool registration in `memory-tools.ts`
 <!-- /ANCHOR:pre-impl -->

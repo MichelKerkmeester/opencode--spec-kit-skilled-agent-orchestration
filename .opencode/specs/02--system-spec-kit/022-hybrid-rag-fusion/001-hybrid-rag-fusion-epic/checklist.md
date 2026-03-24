@@ -30,7 +30,7 @@ contextType: "implementation"
 
 - [x] CHK-001 [P0] Parent packet scope identified [EVIDENCE: work scoped to `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/` and sprint-child navigation]
 - [x] CHK-002 [P0] Existing parent packet read before editing [EVIDENCE: prior parent docs, child metadata tables, and parent validator output reviewed before rewriting]
-- [x] CHK-003 [P1] Sprint-child packet inventory verified [EVIDENCE: all 10 live sprint-child folders were inventoried and mapped in the parent phase table]
+- [x] CHK-003 [P1] Sprint-child packet inventory verified [EVIDENCE: all 12 live child packets were inventoried from the epic folder and mapped in `plan.md`]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -40,7 +40,7 @@ contextType: "implementation"
 
 - [x] CHK-010 [P0] Markdown changes stay inside parent docs, archival metadata, and sprint navigation [EVIDENCE: only parent docs, `implementation-summary-sprints.md`, and sprint-child packet metadata were edited]
 - [x] CHK-011 [P0] No runtime code edits performed [EVIDENCE: all touched files are under `.opencode/specs/`]
-- [x] CHK-012 [P1] Sprint-child navigation uses live folder names [EVIDENCE: parent validation now reports `PHASE_LINKS: Phase links valid (10 phases verified)`]
+- [x] CHK-012 [P1] Sprint-child navigation uses live folder names [EVIDENCE: `validate.sh --no-recursive` now reports `PHASE_LINKS: Phase links valid (12 phases verified)` after the `010 -> 011 -> 012` tail repair]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -48,9 +48,9 @@ contextType: "implementation"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] Focused parent validation run [EVIDENCE: `validate.sh --no-recursive .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic` passed on 2026-03-21]
-- [x] CHK-021 [P0] Sprint-child phase-link validation rerun [EVIDENCE: parent validation now reports `PHASE_LINKS: Phase links valid (10 phases verified)`]
-- [x] CHK-022 [P1] Residual child-level warnings reviewed for truthfulness [EVIDENCE: final parent validation completed with 0 warnings]
+- [x] CHK-020 [P0] Focused parent validation run [EVIDENCE: `validate.sh --no-recursive .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic` passed on 2026-03-24]
+- [x] CHK-021 [P0] Sprint-child phase-link validation rerun [EVIDENCE: `validate.sh --no-recursive` now reports `PHASE_LINKS: Phase links valid (12 phases verified)`]
+- [x] CHK-022 [P1] Residual child-level warnings reviewed for truthfulness [EVIDENCE: final parent validation completed with 0 warnings on 2026-03-24]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -68,7 +68,7 @@ contextType: "implementation"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Parent docs now describe the live 10-sprint subtree [EVIDENCE: parent `spec.md` contains the live 10-sprint phase map]
+- [x] CHK-040 [P1] Parent docs now describe the live 12-child subtree [EVIDENCE: parent `plan.md` contains the live 12-child phase map with verbatim child status labels]
 - [x] CHK-041 [P1] Parent docs no longer rely on the consolidated-merge format as the active packet contract [EVIDENCE: parent core docs were rewritten to current template-based packet docs]
 - [x] CHK-042 [P2] Obvious stale parent metadata in the archival sprint summary bundle was patched
 <!-- /ANCHOR:docs -->
@@ -94,5 +94,5 @@ contextType: "implementation"
 | P1 Items | 8 | 8/8 |
 | P2 Items | 2 | 2/2 |
 
-**Verification Date**: 2026-03-21
+**Verification Date**: 2026-03-24
 <!-- /ANCHOR:summary -->

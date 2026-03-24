@@ -26,8 +26,8 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 8 |
-| **Predecessor** | 007-phase-classification |
-| **Successor** | 009-embedding-optimization |
+| **Predecessor** | 006-description-enrichment |
+| **Successor** | 007-phase-classification, 009-embedding-optimization |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-08 |
 | **Sequence** | B1 |
@@ -40,7 +40,7 @@ This document records the current verified state for this scope. Use [spec.md](s
 This is **Phase 8** of the Perfect Session Capturing specification.
 
 **Scope Boundary**: The pipeline uses 3 real extraction engines plus 1 wrapper, each with different stopwords, weighting, and placeholder rules.
-**Dependencies**: 006-description-enrichment
+**Dependencies**: 006-description-enrichment (upstream context input); strict downstream handoff to 007-phase-classification for signal-contract consumption
 **Deliverables**: Created SemanticSignalExtractor with mode-aware extraction (topics/triggers/summary/all); consolidated 3 divergent stopword lists into a single profile
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
@@ -130,7 +130,7 @@ Build a unified script-side `SemanticSignalExtractor` with mode-aware extraction
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | None -- can be built independently | N/A | This is a foundational change; other phases (R-07 phase classification) depend on it |
+| Dependency | 006-description-enrichment (upstream context input) | Low | Build can proceed independently, but 007-phase-classification depends strictly on this signal-contract output |
 | Risk | Unified stopword list changes ranked output for existing sessions | Medium | Golden tests lock expected output; differences are reviewed and accepted during migration |
 | Risk | Adapter pattern adds an indirection layer that could affect performance on large sessions | Low | Unified engine is a direct replacement, not an additional layer; adapters are thin wrappers |
 | Risk | Shared trigger extraction has accumulated edge-case handling that should not be destabilized during script-side unification | Medium | Keep the shared trigger extractor as the ranking baseline and lock parity with frozen golden tests before changing script-side callers |

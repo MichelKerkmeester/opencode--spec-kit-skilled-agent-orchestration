@@ -36,9 +36,9 @@ The 023 refinement program built a sophisticated 5-channel hybrid retrieval pipe
 | **Created** | 2026-03-03 |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Phase** | 10 of 11 |
+| **Phase** | 10 of 12 |
 | **Predecessor** | ../009-sprint-8-deferred-features/spec.md |
-| **Successor** | None (final phase) |
+| **Successor** | ../011-research-based-refinement/spec.md |
 | **Research** | `006-extra-features/research/` (16 files) |
 <!-- /ANCHOR:metadata -->
 
@@ -396,8 +396,8 @@ interface PipelineRow {
 ## Phase Navigation
 
 | **Parent Spec** | ../spec.md |
-- Predecessor: `007-combined-bug-fixes` *(deleted 2026-03-16)* (includes folded historical continuity from retired `008-architecture-audit` *(now 005-architecture-audit)*)
-- Successor: `005-architecture-audit`
+- Predecessor: `009-sprint-8-deferred-features`
+- Successor: `011-research-based-refinement`
 
 ## Acceptance Scenarios (Validator Coverage)
 1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

@@ -165,11 +165,11 @@ Next: Continue implementation
 | decision-record.md | EXISTS |
 
 **Related Documentation:**
-- [`spec.md`](./spec.md) - Requirements specification
-- [`plan.md`](./plan.md) - Implementation plan
-- [`tasks.md`](./tasks.md) - Task breakdown
-- [`checklist.md`](./checklist.md) - QA checklist
-- [`decision-record.md`](./decision-record.md) - Architecture decisions
+- [`spec.md`](../spec.md) - Requirements specification
+- [`plan.md`](../plan.md) - Implementation plan
+- [`tasks.md`](../tasks.md) - Task breakdown
+- [`checklist.md`](../checklist.md) - QA checklist
+- [`decision-record.md`](../decision-record.md) - Architecture decisions
 
 **Key Topics:** `cross-ai review` | `fusion/005 architecture` | `architecture audit` | `kit/022 hybrid` | `rag fusion/005` | `spec kit/022` | `system spec` | `hybrid rag` | `source-dist alignment` | `enforcement script` | `hardening cross-ai` | `audit system` |
 

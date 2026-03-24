@@ -76,8 +76,8 @@
 - **Files**: `scripts/core/workflow.ts:1056-1128`, `scripts/core/topic-extractor.ts:29-36`, `scripts/core/frontmatter-editor.ts:96-136`, `scripts/utils/input-normalizer.ts:571-689`
 - **Issue (trigger contamination)**: `specFolderName` gets fed into trigger extraction, AND the workflow re-injects the full folder phrase AFTER `filterTriggerPhrases()` runs at `:1101-1106`. Individual folder tokens not in `FOLDER_STOPWORDS` are appended at `:1107-1125`. `ensureMinTriggerPhrases()` can reintroduce blocked tokens. `extractKeyTopics()` also contaminated via separate path. `deriveMemoryTriggerPhrases()` is NOT the active JSON-mode writer path (latent only).
 - **Issue (content thinness)**: Semantic summarizer consumes only `userPrompts` — JSON mode produces 1 synthetic entry from `sessionSummary`. `exchanges` (user/assistant dialogue) and `toolCalls` (implementation evidence) are retained raw but never promoted to messages. Summarizer falls back to "Development session" generic text.
-- **Fix architecture (combined — from 013/research.md ADR)**: (1) Remove post-filter folder reinsertion, (2) Create shared semantic sanitizer, (3) Promote detection to pre-write prevention, (4) Enrich JSON normalization (promote exchanges/toolCalls), (5) Fix ensureMin fallback contamination.
-- **Full investigation**: See `013-memory-generation-quality/research.md` for contamination map, gap analysis table, and regression test plan.
+- **Fix architecture (combined — migrated ADR notes)**: (1) Remove post-filter folder reinsertion, (2) Create shared semantic sanitizer, (3) Promote detection to pre-write prevention, (4) Enrich JSON normalization (promote exchanges/toolCalls), (5) Fix ensureMin fallback contamination.
+- **Full investigation**: [Deleted — 013-memory-generation-quality was removed from the tree]. Contamination map, gap analysis table, and regression test plan must be sourced from surviving parent research artifacts.
 
 ### P1-8: Missing decision-record.md for Level 3 Spec (007)
 - **Agent**: 7 (Validators)

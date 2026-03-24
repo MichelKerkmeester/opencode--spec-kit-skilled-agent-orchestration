@@ -23,7 +23,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Not Started |
+| **Status** | Draft — placeholder content, not yet a full testing packet |
 | **Created** | 2026-03-24 |
 | **Branch** | `main` |
 | **Parent Spec** | [../spec.md](../spec.md) |
@@ -42,6 +42,8 @@ The code audit for feature flag reference (catalog phase 020) identified that 7 
 
 ### Purpose
 Provide a single feature-flag-reference-audit-focused specification that maps three Phase 020 test scenarios to their feature context and acceptance criteria so manual execution and review remain consistent with the canonical playbook and the catalog audit findings.
+
+**Draft Status Note:** This packet requires full testing scenarios before it can be considered complete.
 <!-- /ANCHOR:problem -->
 
 ---

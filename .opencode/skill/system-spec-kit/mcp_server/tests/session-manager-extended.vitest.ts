@@ -264,6 +264,38 @@ describe('Session Manager Extended Tests', () => {
     });
   });
 
+  describe('5a. resolveTrustedSession', () => {
+    it('accepts server-tracked sessions', () => {
+      resetDb();
+      sm.saveSessionState('trusted-session', { currentTask: 'tracked by server' });
+
+      const result = sm.resolveTrustedSession('trusted-session');
+
+      expect(result.requestedSessionId).toBe('trusted-session');
+      expect(result.effectiveSessionId).toBe('trusted-session');
+      expect(result.trusted).toBe(true);
+      expect(result.error).toBeUndefined();
+    });
+
+    it('rejects untracked caller-supplied session IDs', () => {
+      resetDb();
+      const result = sm.resolveTrustedSession('invented-session');
+
+      expect(result.trusted).toBe(false);
+      expect(result.error).toContain('does not match a server-managed session');
+    });
+
+    it('generates a server session when caller omits sessionId', () => {
+      resetDb();
+      const result = sm.resolveTrustedSession(null);
+
+      expect(result.requestedSessionId).toBeNull();
+      expect(result.trusted).toBe(false);
+      expect(result.effectiveSessionId).toEqual(expect.any(String));
+      expect(result.effectiveSessionId.length).toBeGreaterThan(20);
+    });
+  });
+
   // ───────────────────────────────────────────────────────────────
   // 6. MARKRESULTSSENT
   // ───────────────────────────────────────────────────────────────

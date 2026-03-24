@@ -29,7 +29,7 @@ contextType: "implementation"
 ## Phase 1: Setup
 
 - [x] T001 Read the current parent packet and validation output
-- [x] T002 Inventory the 10 live sprint-child folders
+- [x] T002 Inventory the 12 live child packet folders
 - [x] T003 Gather current sprint status values from the child specs
 <!-- /ANCHOR:phase-1 -->
 
@@ -60,7 +60,7 @@ contextType: "implementation"
 ## Completion Criteria
 
 - [x] Parent packet is concise and current-state focused
-- [x] Parent phase map reflects the live 10-sprint subtree
+- [x] Parent phase map reflects the live 12-child subtree
 - [x] Sprint-child navigation uses live folder names
 - [x] Parent validation is rerun and recorded
 <!-- /ANCHOR:completion -->

@@ -57,14 +57,14 @@ Execute all eight Phase 003 discovery scenarios, record verdicts and evidence, a
 
 | Test ID | Scenario Name | Playbook File |
 |---------|---------------|---------------|
-| EX-011 | Memory browser (memory_list) | `../../manual_testing_playbook/03--discovery/011-memory-browser-memory-list.md` |
-| EX-012 | System statistics (memory_stats) | `../../manual_testing_playbook/03--discovery/012-system-statistics-memory-stats.md` |
-| EX-013 | Health diagnostics (memory_health) | `../../manual_testing_playbook/03--discovery/013-health-diagnostics-memory-health.md` |
-| EX-036 | Discovery by folder name filter | `../../manual_testing_playbook/03--discovery/036-discovery-by-folder-name-filter.md` |
-| EX-037 | Discovery by trigger phrase matching | `../../manual_testing_playbook/03--discovery/037-discovery-by-trigger-phrase-matching.md` |
-| EX-038 | Discovery by date range (before/after) | `../../manual_testing_playbook/03--discovery/038-discovery-by-date-range.md` |
-| EX-039 | Discovery by importance tier filter | `../../manual_testing_playbook/03--discovery/039-discovery-by-importance-tier-filter.md` |
-| EX-040 | Discovery by causal link traversal | `../../manual_testing_playbook/03--discovery/040-discovery-by-causal-link-traversal.md` |
+| EX-011 | Memory browser (memory_list) | `.opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/011-memory-browser-memory-list.md` |
+| EX-012 | System statistics (memory_stats) | `.opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/012-system-statistics-memory-stats.md` |
+| EX-013 | Health diagnostics (memory_health) | `.opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/013-health-diagnostics-memory-health.md` |
+| EX-036 | Discovery by folder name filter | `.opencode/skill/system-spec-kit/manual_testing_playbook/12--query-intelligence/036-confidence-based-result-truncation-r15-ext.md` |
+| EX-037 | Discovery by trigger phrase matching | `.opencode/skill/system-spec-kit/manual_testing_playbook/12--query-intelligence/037-dynamic-token-budget-allocation-fut-7.md` |
+| EX-038 | Discovery by date range (before/after) | `.opencode/skill/system-spec-kit/manual_testing_playbook/12--query-intelligence/038-query-expansion-r12.md` |
+| EX-039 | Discovery by importance tier filter | `.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/039-verify-fix-verify-memory-quality-loop-pi-a5.md` |
+| EX-040 | Discovery by causal link traversal | `.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/040-signal-vocabulary-expansion-tm-08.md` |
 
 ### Out of Scope
 - Scenarios from other phases (retrieval, mutation, maintenance, lifecycle, etc.)
@@ -131,7 +131,7 @@ Execute all eight Phase 003 discovery scenarios, record verdicts and evidence, a
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Canonical playbook: `../scratch/context-playbook.md` §03--discovery | Source of truth for exact prompts and pass criteria | Treat as read-only; do not invent alternate criteria |
+| Dependency | Canonical playbook: `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` §03--discovery | Source of truth for exact prompts and pass criteria | Treat as read-only; do not invent alternate criteria |
 | Dependency | Feature catalog: `../scratch/context-feature-catalog.md` §03--discovery | Feature context for each scenario | Read before execution for background |
 | Dependency | MCP runtime with indexed memory corpus | Required for all three tool invocations | Verify MCP server is running before starting |
 | Risk | EX-013 `autoRepair: true` can mutate index state | Medium | Never pass `autoRepair: true` or `confirmed: true` during verification runs |

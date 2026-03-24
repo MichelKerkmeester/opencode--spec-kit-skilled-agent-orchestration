@@ -24,13 +24,13 @@ contextType: "decision"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Draft |
+| **Status** | Implemented |
 | **Created** | 2026-03-21 |
 | **Parent Spec** | `../spec.md` |
 | **Parent Plan** | `../plan.md` |
-| **Phase** | 11 of epic |
+| **Phase** | 11 of 12 |
 | **Predecessor** | `../010-sprint-9-extra-features/spec.md` |
-| **Successor** | None (latest phase) |
+| **Successor** | `../012-pre-release-fixes-alignment-preparation/spec.md` |
 | **Children** | 5 sub-phase folders |
 <!-- /ANCHOR:metadata -->
 
@@ -74,11 +74,11 @@ All recommendations come from `019-deep-research-rag-improvement/research/resear
 
 | Phase | Folder | Focus | Recommendations | Status |
 |-------|--------|-------|-----------------|--------|
-| 1 | `001-fusion-scoring-intelligence/` | Fusion calibration, shadow labs, learned weights | #1, #8, #9, #22, #23, #28 | Draft |
-| 2 | `002-query-intelligence-reformulation/` | Decomposition, concept routing, LLM reformulation | #10, #11, #12, #24, #25 | Draft |
-| 3 | `003-graph-augmented-retrieval/` | Typed traversal, graph lifecycle, signal calibration | #4, #5, #13, #14, #15, #29 | Draft |
-| 4 | `004-feedback-quality-learning/` | Event ledger, FSRS hybrid, reconsolidation, shadow scoring | #2, #3, #7, #19, #20, #21 | Draft |
-| 5 | `005-retrieval-ux-presentation/` | Recovery UX, explainability, confidence, progressive disclosure | #6, #16, #17, #18, #26, #27 | Draft |
+| 1 | `001-fusion-scoring-intelligence/` | Fusion calibration, shadow labs, learned weights | #1, #8, #9, #22, #23, #28 | Implemented |
+| 2 | `002-query-intelligence-reformulation/` | Decomposition, concept routing, LLM reformulation | #10, #11, #12, #24, #25 | Implemented |
+| 3 | `003-graph-augmented-retrieval/` | Typed traversal, graph lifecycle, signal calibration | #4, #5, #13, #14, #15, #29 | Implemented |
+| 4 | `004-feedback-quality-learning/` | Event ledger, FSRS hybrid, reconsolidation, shadow scoring | #2, #3, #7, #19, #20, #21 | Implemented |
+| 5 | `005-retrieval-ux-presentation/` | Recovery UX, explainability, confidence, progressive disclosure | #6, #16, #17, #18, #26, #27 | Implemented |
 <!-- /ANCHOR:phase-map -->
 
 <!-- ANCHOR:requirements -->

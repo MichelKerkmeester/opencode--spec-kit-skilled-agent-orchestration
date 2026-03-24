@@ -7,7 +7,13 @@
 import crypto from 'crypto';
 
 // Internal modules
-import { createEmbeddingsProvider, getProviderInfo, validateApiKey, VALIDATION_TIMEOUT_MS } from './embeddings/factory';
+import {
+  createEmbeddingsProvider,
+  getProviderInfo,
+  getStartupEmbeddingDimension,
+  validateApiKey,
+  VALIDATION_TIMEOUT_MS,
+} from './embeddings/factory';
 import { semanticChunk, MAX_TEXT_LENGTH, RESERVED_OVERVIEW, RESERVED_OUTCOME, MIN_SECTION_LENGTH } from './chunking';
 import type {
   IEmbeddingProvider,
@@ -629,14 +635,7 @@ function getEmbeddingDimension(): number {
     return providerInstance.getProfile().dim;
   }
 
-  const provider = process.env.EMBEDDINGS_PROVIDER?.toLowerCase();
-  if (provider === 'voyage') return 1024;
-  if (provider === 'openai') return 1536;
-
-  if (process.env.VOYAGE_API_KEY && !process.env.OPENAI_API_KEY) return 1024;
-  if (process.env.OPENAI_API_KEY && !process.env.VOYAGE_API_KEY) return 1536;
-
-  return 768;
+  return getStartupEmbeddingDimension();
 }
 
 function getModelName(): string {

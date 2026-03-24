@@ -141,7 +141,7 @@ Next: Run /spec_kit:plan to create implementation plan from research findings
 | research.md | EXISTS |
 
 **Related Documentation:**
-- [`research.md`](./research.md) - Research findings
+- [`research.md`](../research.md) - Research findings
 
 **Key Topics:** `compliance enforcement` | `template compliance` | `fusion/020 template` | `enforcement across` | `enforcement deep` | `research speckit` | `speckit template` | `kit/022 hybrid` | `rag fusion/020` | `deep research` | `across agents` | `spec kit/022` |
 

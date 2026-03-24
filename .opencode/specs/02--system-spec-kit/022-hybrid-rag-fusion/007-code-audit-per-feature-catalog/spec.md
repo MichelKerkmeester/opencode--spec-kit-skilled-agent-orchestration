@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Code Audit per Feature Catalog"
-description: "Comprehensive code audit of the Spec Kit Memory MCP server organized by the 19-category feature catalog covering 220+ features across 21 phase folders."
+description: "Comprehensive code audit of the Spec Kit Memory MCP server organized by the 19-category feature catalog covering 218 live features across 22 child folders."
 trigger_phrases:
   - "code audit"
   - "feature catalog audit"
@@ -18,7 +18,7 @@ contextType: "general"
 
 ## EXECUTIVE SUMMARY
 
-Comprehensive code audit of the Spec Kit Memory MCP server, systematically verifying all 220+ features documented in the 19-category feature catalog against the actual source code. The audit is decomposed into 21 phase folders (001-021), each covering one feature catalog category, enabling parallel execution by AI agents.
+Comprehensive code audit of the Spec Kit Memory MCP server, systematically verifying the 218-feature live catalog against the actual source code. The work is decomposed into 22 child folders (001-022): 19 category audits, 2 synthesis/remediation meta-phases, and 1 downstream implementation/removal follow-up tracked under the same umbrella packet.
 
 **Key Decisions**: Organize audit by feature catalog categories (not by source file), use phase decomposition for parallel execution
 
@@ -45,7 +45,7 @@ Comprehensive code audit of the Spec Kit Memory MCP server, systematically verif
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The feature catalog for the Spec Kit Memory MCP server has evolved significantly through multiple refinement phases, now documenting 220+ features across 19 categories. No systematic audit has verified whether each documented feature accurately reflects the current source code. Gaps between documentation and implementation create risk of incorrect AI agent behavior, stale references, and undetected regressions.
+The feature catalog for the Spec Kit Memory MCP server has evolved significantly through multiple refinement phases, now documenting 218 live features across 19 categories. No systematic audit has verified whether each documented feature accurately reflects the current source code. Gaps between documentation and implementation create risk of incorrect AI agent behavior, stale references, and undetected regressions.
 
 ### Purpose
 Establish a verified baseline where every feature in the catalog has been audited against source code, with findings documented per category and cross-phase dependencies mapped.
@@ -57,7 +57,7 @@ Establish a verified baseline where every feature in the catalog has been audite
 ## 3. SCOPE
 
 ### In Scope
-- Audit all 220+ features across 19 feature catalog categories
+- Audit all 218 live features across 19 feature catalog categories
 - Verify each feature's documented behavior against source code
 - Document findings (confirmed, divergent, missing, deprecated) per phase
 - Map cross-phase dependencies and shared code paths
@@ -73,7 +73,7 @@ Establish a verified baseline where every feature in the catalog has been audite
 
 | Phase | Folder | Feature Count | Category |
 |-------|--------|---------------|----------|
-| 1 | `001-retrieval/` | 10 | Retrieval |
+| 1 | `001-retrieval/` | 11 | Retrieval |
 | 2 | `002-mutation/` | 10 | Mutation |
 | 3 | `003-discovery/` | 3 | Discovery |
 | 4 | `004-maintenance/` | 2 | Maintenance |
@@ -81,9 +81,9 @@ Establish a verified baseline where every feature in the catalog has been audite
 | 6 | `006-analysis/` | 7 | Analysis |
 | 7 | `007-evaluation/` | 2 | Evaluation |
 | 8 | `008-bug-fixes-and-data-integrity/` | 11 | Bug Fixes and Data Integrity |
-| 9 | `009-evaluation-and-measurement/` | 16 | Evaluation and Measurement |
+| 9 | `009-evaluation-and-measurement/` | 14 | Evaluation and Measurement |
 | 10 | `010-graph-signal-activation/` | 16 | Graph Signal Activation |
-| 11 | `011-scoring-and-calibration/` | 23 | Scoring and Calibration |
+| 11 | `011-scoring-and-calibration/` | 22 | Scoring and Calibration |
 | 12 | `012-query-intelligence/` | 11 | Query Intelligence |
 | 13 | `013-memory-quality-and-indexing/` | 24 | Memory Quality and Indexing |
 | 14 | `014-pipeline-architecture/` | 22 | Pipeline Architecture |
@@ -94,7 +94,15 @@ Establish a verified baseline where every feature in the catalog has been audite
 | 19 | `019-decisions-and-deferrals/` | cross-cutting | Decisions and Deferrals |
 | 20 | `020-feature-flag-reference/` | 7 | Feature Flag Reference |
 | 21 | `021-remediation-revalidation/` | meta-phase | Remediation and Revalidation |
+| 22 | `022-implement-and-remove-deprecated-features/` | follow-up | Implementation and removal follow-up |
 <!-- /ANCHOR:scope -->
+
+### Catalog/Audit Matching Contract
+
+Matching between feature-catalog categories and audit phases is **slug-based**, not ordinal-based.
+
+- Compare the text portion after the numeric prefix (for example, `feature-flag-reference`).
+- Do not require numeric prefixes to match (for example, `19--feature-flag-reference` may map to `020-feature-flag-reference`).
 
 ---
 
@@ -104,7 +112,7 @@ Establish a verified baseline where every feature in the catalog has been audite
 
 | Phase | Folder | Scope | Dependencies | Status |
 |-------|--------|-------|--------------|--------|
-| 1 | `001-retrieval/` | Audit 10 retrieval features (memory_context, memory_search, etc.) | None | Complete (8M/2P) |
+| 1 | `001-retrieval/` | Audit 11 retrieval features (memory_context, memory_search, memory_continue, etc.) | None | Coverage sync required (8M/2P + 1 pending) |
 | 2 | `002-mutation/` | Audit 10 mutation features (memory_save, memory_update, etc.) | None | Complete (8M/2P) |
 | 3 | `003-discovery/` | Audit 3 discovery features (memory_list, memory_stats, memory_health) | None | Complete (2M/1P) |
 | 4 | `004-maintenance/` | Audit 2 maintenance features (index_scan, startup guards) | None | Complete (1M/1P) |
@@ -112,9 +120,9 @@ Establish a verified baseline where every feature in the catalog has been audite
 | 6 | `006-analysis/` | Audit 7 analysis features (causal_link, drift_why, etc.) | None | Complete (5M/2P) |
 | 7 | `007-evaluation/` | Audit 2 evaluation features (eval_run_ablation, etc.) | None | Complete (1M/1P) |
 | 8 | `008-bug-fixes-and-data-integrity/` | Audit 11 bug fix features | None | Complete (9M/2P) |
-| 9 | `009-evaluation-and-measurement/` | Audit 16 eval/measurement features | None | Complete (12M/4P) |
+| 9 | `009-evaluation-and-measurement/` | Audit 14 eval/measurement features | None | Complete (11M/3P) |
 | 10 | `010-graph-signal-activation/` | Audit 16 graph signal features | None | Complete (12M/4P) |
-| 11 | `011-scoring-and-calibration/` | Audit 23 scoring/calibration features | None | Complete (20M/3P) |
+| 11 | `011-scoring-and-calibration/` | Audit 22 scoring/calibration features | None | Complete (20M/2P) |
 | 12 | `012-query-intelligence/` | Audit 11 query intelligence features | None | Complete (8M/3P) |
 | 13 | `013-memory-quality-and-indexing/` | Audit 24 memory quality features | None | Complete (20M/4P) |
 | 14 | `014-pipeline-architecture/` | Audit 22 pipeline architecture features | None | Complete (19M/3P) |
@@ -125,6 +133,7 @@ Establish a verified baseline where every feature in the catalog has been audite
 | 19 | `019-decisions-and-deferrals/` | Cross-cutting decisions and deferrals synthesis | 001-018 | Complete |
 | 20 | `020-feature-flag-reference/` | Audit 7 feature flag references | None | Complete (6M/1P) |
 | 21 | `021-remediation-revalidation/` | Synthesize findings, plan remediation | 001-020 | Complete |
+| 22 | `022-implement-and-remove-deprecated-features/` | Apply downstream implementation/removal work surfaced by deprecated-feature audits | 009, 011, 019, 021 | Live child tracked under umbrella |
 
 ### Phase Transition Rules
 
@@ -135,6 +144,7 @@ Establish a verified baseline where every feature in the catalog has been audite
 - Phases 001-018 and 020 can execute in parallel (no inter-dependencies)
 - Phase 019 requires phases 001-018 to complete (cross-cutting analysis)
 - Phase 021 requires all other phases to complete (remediation synthesis)
+- Phase 022 consumes deprecated-feature findings from phases 009, 011, 019, and 021 under umbrella ownership
 
 ### Phase Handoff Criteria
 
@@ -142,6 +152,25 @@ Establish a verified baseline where every feature in the catalog has been audite
 |------|-----|----------|--------------|
 | 001-018, 020 (parallel) | 019-decisions-and-deferrals | All category audits complete with findings documented | Each phase folder has implementation-summary.md |
 | 001-020 | 021-remediation-revalidation | All audits and cross-cutting analysis complete | All phase folders pass validate.sh |
+| 009, 011, 019, 021 | 022-implement-and-remove-deprecated-features | Deprecated-feature decisions translated into a scoped implementation/removal packet | Child spec records parent ownership and downstream outputs |
+
+## TRACEABILITY
+
+Completed second-half phases 012-022 remain owned by this umbrella packet. Each child phase declares parent ownership in its local `spec.md`, consumes the inputs listed below, and returns its outputs back to `007-code-audit-per-feature-catalog`.
+
+| Phase | Scope | Upstream Inputs | Downstream Outputs | Parent |
+|-------|-------|-----------------|--------------------|--------|
+| `012-query-intelligence/` | Query-intelligence audit packet | Live Query Intelligence catalog + 007 audit method | Phase findings and implementation summary | `007-code-audit-per-feature-catalog` |
+| `013-memory-quality-and-indexing/` | Memory quality/indexing audit packet | Live Memory Quality and Indexing catalog + 007 audit method | Phase findings and implementation summary | `007-code-audit-per-feature-catalog` |
+| `014-pipeline-architecture/` | Pipeline architecture audit packet | Live Pipeline Architecture catalog + 007 audit method | Phase findings and implementation summary | `007-code-audit-per-feature-catalog` |
+| `015-retrieval-enhancements/` | Retrieval enhancements audit packet | Live Retrieval Enhancements catalog + 007 audit method | Phase findings and implementation summary | `007-code-audit-per-feature-catalog` |
+| `016-tooling-and-scripts/` | Tooling/scripts audit packet | Live Tooling and Scripts catalog + 007 audit method | Phase findings and implementation summary | `007-code-audit-per-feature-catalog` |
+| `017-governance/` | Governance audit packet | Live Governance catalog + 007 audit method | Phase findings and implementation summary | `007-code-audit-per-feature-catalog` |
+| `018-ux-hooks/` | UX hooks audit packet | Live UX Hooks catalog + 007 audit method | Phase findings and implementation summary | `007-code-audit-per-feature-catalog` |
+| `019-decisions-and-deferrals/` | Cross-cutting decisions/deferrals synthesis | Outputs from category audit phases | Cross-phase decisions, deferrals, and implementation-summary.md | `007-code-audit-per-feature-catalog` |
+| `020-feature-flag-reference/` | Feature-flag audit packet | Live Feature Flag Reference catalog + 007 audit method | Phase findings and implementation summary | `007-code-audit-per-feature-catalog` |
+| `021-remediation-revalidation/` | Remediation synthesis packet | Outputs from phases 001-020 | Prioritized remediation backlog and revalidation summary | `007-code-audit-per-feature-catalog` |
+| `022-implement-and-remove-deprecated-features/` | Downstream implementation/removal follow-up | Deprecated-feature findings from phases 009, 011, 019, and 021 | Applied follow-up scope tracked under umbrella ownership | `007-code-audit-per-feature-catalog` |
 
 ---
 
@@ -170,7 +199,7 @@ Establish a verified baseline where every feature in the catalog has been audite
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 220+ features verified against source code with explicit status per feature
+- **SC-001**: 217 of 218 live-catalog features have explicit packet status, with the remaining Retrieval delta called out for follow-up
 - **SC-002**: Every phase folder contains a completed implementation-summary.md with findings
 - **SC-003**: Cross-phase dependency map identifies shared code paths between categories
 - **SC-004**: Remediation backlog prioritized by severity (P0/P1/P2) for follow-up work
@@ -195,7 +224,7 @@ Establish a verified baseline where every feature in the catalog has been audite
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Scalability
-- **NFR-S01**: Audit methodology must support parallel execution across all 21 phases by independent AI agents
+- **NFR-S01**: Audit methodology must support parallel execution across the 21 audit/synthesis child phases while preserving umbrella traceability for follow-up child 022
 
 ### Consistency
 - **NFR-C01**: All phases must use identical finding classification (confirmed/divergent/missing/deprecated)
@@ -222,7 +251,7 @@ Establish a verified baseline where every feature in the catalog has been audite
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 22/25 | Files: 50+, Features: 220+, Categories: 19 |
+| Scope | 22/25 | Files: 50+, Features: 218, Categories: 19 |
 | Risk | 15/25 | Catalog evolution, cross-dependencies |
 | Research | 15/20 | Source code investigation per feature |
 | Multi-Agent | 12/15 | 21 parallel phase workstreams |
@@ -266,9 +295,11 @@ Establish a verified baseline where every feature in the catalog has been audite
 
 | Metric | Value |
 |--------|-------|
-| Total features audited | 220+ |
-| MATCH (exact accuracy) | ~179 (~81%) |
-| PARTIAL (minor issues) | ~41 (~19%) |
+| Live features inventoried | 218 |
+| Features with explicit findings | 217 |
+| MATCH (exact accuracy) | 178 |
+| PARTIAL (minor issues) | 39 |
+| Pending coverage sync | 1 |
 | MISMATCH (wrong) | 0 (0%) |
 
 **Top remediation priorities:**
@@ -298,7 +329,7 @@ A post-audit deep research cycle (10 iterations, 11 questions answered) identifi
 
 - ~~Should deprecated features be removed from the catalog or marked in-place?~~ Mark in-place with @deprecated tag (Phase 019 recommendation)
 - ~~What commit SHA should serve as the audit baseline?~~ Current HEAD on main branch at 2026-03-22
-- ~~Should the remediation phase (021) create individual fix specs or a single batch spec?~~ Single remediation tracking phase (021) with prioritized backlog
+- ~~Should the remediation phase (021) create individual fix specs or a single batch spec?~~ Single remediation tracking phase (021) with prioritized backlog, plus downstream child `022-implement-and-remove-deprecated-features/` for deprecated-feature execution
 <!-- /ANCHOR:questions -->
 
 ---
@@ -314,7 +345,7 @@ A post-audit deep research cycle (10 iterations, 11 questions answered) identifi
 
 <!--
 LEVEL 3 SPEC - Parent Phase Spec
-- 21 phase folders for parallel audit execution
-- 220+ features across 19 categories
-- Cross-phase synthesis in phases 019 and 021
+- 22 child folders under umbrella ownership
+- 218 live-catalog features across 19 categories
+- Cross-phase synthesis in phases 019 and 021, with downstream follow-up in phase 022
 -->

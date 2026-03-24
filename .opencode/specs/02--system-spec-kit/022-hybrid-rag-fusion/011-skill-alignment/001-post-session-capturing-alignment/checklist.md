@@ -2,7 +2,7 @@
 
 ## P0 (Must Pass)
 
-- [x] CHK-001: All bare positional `generate-context.js [spec-folder]` replaced with JSON-primary or `--recovery` syntax [Evidence: verified in parent 010 reconciliation]
+- [x] CHK-001: All bare positional `generate-context.js [spec-folder]` replaced with JSON-primary or `--recovery` syntax [Evidence: verified in parent 011-skill-alignment reconciliation]
 - [x] CHK-002: SKILL.md structured JSON fields documented with correct field names matching session-types.ts [Evidence: SKILL.md updated in T001-T004]
 - [x] CHK-003: memory_system.md tool count updated to 33 with all tools including memory_quick_search [Evidence: 33 rows in tool table, verified 2026-03-22]
 - [x] CHK-004: Zero runtime TypeScript changes [Evidence: all edits are documentation-only]
@@ -18,4 +18,4 @@
 
 ## P2 (Optional)
 
-- [x] CHK-011: All --json and --stdin flags documented in reference files [Evidence: verified in parent reconciliation pass]
+- [x] CHK-011: All --json and --stdin flags documented in reference files [Evidence: verified in parent 011-skill-alignment reconciliation pass]

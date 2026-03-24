@@ -14,7 +14,7 @@ updated: "2026-03-23"
 
 ## EXECUTIVE SUMMARY
 
-The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 historical snapshot** of 180 snippet files across 20 categories. That snapshot captured documentation drift: inaccurate descriptions, invalid code paths, and 55 undocumented capabilities discovered by a prior 10-agent scan. A **2026-03-16 current-state addendum** tracks live-tree drift to 189 snippet files and classifies 14 omitted current snippets. A **2026-03-21 normalization addendum** removes all provisional `NEW-NNN` markers, adds phase 016/017 coverage, and brings the catalog to 194 files and the playbook to 200 files.
+The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 historical snapshot** of 180 snippet files across 21 categories. That snapshot captured documentation drift: inaccurate descriptions, invalid code paths, and 55 undocumented capabilities discovered by a prior 10-agent scan. A **2026-03-16 current-state addendum** tracks live-tree drift to 189 snippet files and classifies 14 omitted current snippets. A **2026-03-21 normalization addendum** removes all provisional `NEW-NNN` markers, adds phase 016/017 coverage, and brings the catalog to 194 files and the playbook to 200 files.
 
 **Key Decisions**: 30-agent partitioned research (20 verification + 10 gap investigation), 3-tier significance classification
 
@@ -44,7 +44,7 @@ The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 his
 
 ## CURRENT-STATE NOTE (2026-03-23)
 
-- Live filesystem count now reports **222** feature catalog snippet files under `.opencode/skill/system-spec-kit/feature_catalog/`.
+- Live filesystem count now reports **224** feature catalog snippet files under `.opencode/skill/system-spec-kit/feature_catalog/`.
 - Live filesystem count now reports **233** manual testing playbook scenario files under `.opencode/skill/system-spec-kit/manual_testing_playbook/`.
 - Treat the earlier addendum counts above as historical milestones, not the current denominator.
 
@@ -87,7 +87,7 @@ Preserve the March 8 snapshot as historical record while extending documentation
 
 ### Out of Scope
 - Actual remediation edits to snippet files (separate follow-up phase)
-- Restructuring the 20-category taxonomy
+- Restructuring the 21-category taxonomy
 - Changes to MCP server source code
 - Updating the monolithic `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` (done after snippet remediation)
 
@@ -114,7 +114,7 @@ Preserve the March 8 snapshot as historical record while extending documentation
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-001 | Every snippet file verified by at least one agent | 20 verification reports covering all 20 categories |
+| REQ-001 | Every snippet file verified by at least one agent | 20 verification reports covering all 21 categories |
 | REQ-002 | All `## Source Files` paths validated | Zero paths pointing to non-existent files |
 | REQ-003 | All 55 known gaps investigated | Each gap classified as CONFIRMED_GAP, NEW_GAP, or FALSE_POSITIVE |
 | REQ-004 | Remediation manifest produced | Prioritized action items with P0/P1/P2 classification |
@@ -158,7 +158,7 @@ Preserve the March 8 snapshot as historical record while extending documentation
 - **NFR-A02**: 100% of file paths must resolve to existing files
 
 ### Coverage
-- **NFR-C01**: All 20 historical-snapshot categories verified by at least one agent
+- **NFR-C01**: All 21 historical-snapshot categories verified by at least one agent
 - **NFR-C02**: All 55 known gaps addressed (no gap left uninvestigated)
 - **NFR-C03**: Current-tree drift documented with explicit omitted-snippet accounting
 
@@ -188,7 +188,7 @@ Preserve the March 8 snapshot as historical record while extending documentation
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
-| Scope | 20/25 | Historical snapshot: 180 snippet files, ~216 source files, 20 categories |
+| Scope | 20/25 | Historical snapshot: 180 snippet files, ~216 source files, 21 categories |
 | Risk | 10/25 | No code changes, documentation-only, reversible |
 | Research | 18/20 | Deep source code verification across entire codebase |
 | Multi-Agent | 15/15 | 30 concurrent agents in 2 streams |

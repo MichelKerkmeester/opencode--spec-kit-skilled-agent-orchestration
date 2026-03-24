@@ -95,6 +95,7 @@ import {
 
 import { markMemorySuperseded } from './pe-gating';
 import { resolveMemoryReference } from './causal-links-processor';
+import { refreshAutoEntitiesForMemory } from '../lib/extraction/entity-extractor';
 
 // Feature catalog: Memory indexing (memory_save)
 // Feature catalog: Verify-fix-verify memory quality loop
@@ -480,6 +481,27 @@ async function processPreparedMemory(
     } catch (txErr: unknown) {
       if (useTx) try { database.exec('ROLLBACK'); } catch (rbErr: unknown) { console.warn('[memory-save] ROLLBACK failed after transaction error:', rbErr instanceof Error ? rbErr.message : String(rbErr)); }
       throw txErr;
+    }
+
+    // Data integrity: clean stale auto-entities before re-extraction on update
+    // When a memory is superseded or replaced in-place, purge the predecessor's
+    // auto-entity rows so the entity catalog reflects only active content.
+    if (existing && existing.id !== id) {
+      try {
+        refreshAutoEntitiesForMemory(database, existing.id, []);
+        console.error(`[memory-save] Cleaned stale auto-entities for superseded memory #${existing.id}`);
+      } catch (entityCleanupErr: unknown) {
+        // Entity cleanup failure must not block save — log and continue
+        console.warn(`[memory-save] Auto-entity cleanup for #${existing.id} failed:`, entityCleanupErr instanceof Error ? entityCleanupErr.message : String(entityCleanupErr));
+      }
+    }
+    if (peResult.supersededId != null && peResult.supersededId !== existing?.id) {
+      try {
+        refreshAutoEntitiesForMemory(database, peResult.supersededId, []);
+        console.error(`[memory-save] Cleaned stale auto-entities for PE-superseded memory #${peResult.supersededId}`);
+      } catch (entityCleanupErr: unknown) {
+        console.warn(`[memory-save] Auto-entity cleanup for PE #${peResult.supersededId} failed:`, entityCleanupErr instanceof Error ? entityCleanupErr.message : String(entityCleanupErr));
+      }
     }
 
     // POST-INSERT ENRICHMENT: causal links, entities, summaries, entity linking

@@ -213,7 +213,7 @@ The closure feature consists of these distinct shipped capabilities:
 | `scripts/tests/semantic-signal-golden.vitest.ts` | Trigger-phrase quality regression coverage for the phase-018 output-quality fixes |
 | `scripts/tests/test-extractors-loaders.js` | Dist/export regression suite for extractors and loader |
 | `scripts/tests/test-bug-fixes.js` | Bug-fix verification stack |
-| `scripts/tests/test-integration.vitest.ts` | End-to-end script workflows (migrated from `test-integration.js`) |
+| `scripts/tests/test-integration.vitest.ts` | End-to-end script workflows; legacy `test-integration.js` test file removed |
 | `scripts/tests/workflow-e2e.vitest.ts` | Real save-pipeline E2E coverage with temp-repo factory and the failed-embedding harness regression |
 | `scripts/tests/test-memory-quality-lane.js` | **[LEGACY]** v2 diagnostic quality and insufficiency regression suite (kept for regression coverage only) |
 

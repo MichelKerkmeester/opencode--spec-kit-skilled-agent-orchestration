@@ -19,6 +19,7 @@ Extracts structured data from markdown documents for AI consumption:
 Output: JSON to stdout for AI agent processing
 """
 
+import argparse
 import json
 import re
 import sys
@@ -1232,14 +1233,16 @@ def extract_structure(filepath: str) -> Dict[str, Any]:
 
 def main() -> None:
     """CLI entry point for document structure extraction."""
-    if len(sys.argv) < 2:
-        print(json.dumps({
-            'error': 'Usage: python extract_structure.py <path-to-markdown-file>'
-        }), file=sys.stderr)
-        sys.exit(1)
-    
-    filepath = sys.argv[1]
-    result = extract_structure(filepath)
+    parser = argparse.ArgumentParser(
+        description="Extract structured analysis data from a markdown document."
+    )
+    parser.add_argument(
+        'filepath',
+        help="Path to the markdown file to analyze",
+    )
+    args = parser.parse_args()
+
+    result = extract_structure(args.filepath)
     
     # Output JSON to stdout
     print(json.dumps(result, indent=2))

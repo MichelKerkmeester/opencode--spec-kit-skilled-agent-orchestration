@@ -45,7 +45,7 @@
 
 AI coding assistants have amnesia. Every session starts from zero. You explain your architecture Monday. By Wednesday, it's gone. This framework fixes that.
 
-OpenCode is a multi-agent AI development framework built on top of the [OpenCode](https://github.com/sst/opencode) platform. It adds structured documentation (Spec Kit), a cognitive memory engine (MCP server), 11 coordinated agents, 22 commands and 18 specialized skills. Every session is documented, searchable, recoverable and auditable — across four AI runtimes.
+OpenCode is a multi-agent AI development framework built on top of the [OpenCode](https://github.com/sst/opencode) platform. It adds structured documentation (Spec Kit), a cognitive memory engine (MCP server), 12 coordinated agents, 22 commands and 18 specialized skills. Every session is documented, searchable, recoverable and auditable — across four AI runtimes.
 
 **Who it's for:** Developers using AI assistants who are tired of re-explaining context every session and watching decisions disappear into chat history.
 
@@ -53,9 +53,9 @@ OpenCode is a multi-agent AI development framework built on top of the [OpenCode
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Agents | 11 | 2 built-in + 9 custom (multi-runtime) |
+| Agents | 12 | 2 built-in + 10 custom (multi-runtime) |
 | Skills | 18 | Code, docs, git, prompts, MCP, research, cross-AI |
-| Commands | 22 | 8 spec_kit + 6 memory + 7 create + 1 utility |
+| Commands | 22 | 8 spec_kit + 6 memory + 7 create + 1 utility (`agent_router.md`) |
 | MCP tools | 40 | 33 memory + 7 code mode |
 | Gates | 3 | Understanding, Skill Routing, Spec Folder |
 | Runtimes | 4 | OpenCode, Claude Code, ChatGPT, Gemini CLI |
@@ -80,7 +80,7 @@ OpenCode is a multi-agent AI development framework built on top of the [OpenCode
          ▼                            ▼
 ┌─────────────────┐        ┌─────────────────────┐
 │  AGENT NETWORK  │        │  SKILLS LIBRARY     │
-│  11 specialized │        │  18 domain skills   │
+│  12 specialized │        │  18 domain skills   │
 │  agents with    │◄──────►│  auto-loaded by     │
 │  routing logic  │        │  task keywords      │
 └────────┬────────┘        └──────────┬──────────┘
@@ -195,8 +195,8 @@ This creates a spec folder, runs research, builds a plan and begins implementati
 ```
 opencode-spec-kit-framework/
 ├── .opencode/                    # OpenCode runtime (source of truth)
-│   ├── agent/                   # Agent definitions (OpenCode + ChatGPT)
-│   ├── command/                 # 22 commands (.md entry points)
+│   ├── agent/                   # 10 custom agent definitions (+ ChatGPT adapters)
+│   ├── command/                 # 22 command entry files across 3 namespaces + 1 utility route
 │   │   ├── spec_kit/            # 8 spec workflow commands
 │   │   ├── memory/              # 7 memory commands
 │   │   └── create/              # 5 creation commands
@@ -306,9 +306,9 @@ For the complete memory API (33 tools), pipeline architecture and retrieval conf
 <!-- ANCHOR:agent-network -->
 ## 6. AGENT NETWORK
 
-11 agents total: 2 built-in OpenCode agents and 9 custom agents. Custom agents are defined in `.opencode/agent/` (source of truth) and adapted for Claude Code (`.claude/agents/`), ChatGPT (`.opencode/agent/chatgpt/`) and Gemini CLI (`.gemini/agents/`).
+12 agents total: 2 built-in OpenCode agents and 10 custom agents. Custom agents are defined in `.opencode/agent/` (source of truth) and adapted for Claude Code (`.claude/agents/`), ChatGPT (`.opencode/agent/chatgpt/`) and Gemini CLI (`.gemini/agents/`).
 
-### All 11 Agents
+### All 12 Agents
 
 | Agent | Model | Type | Role |
 |-------|-------|------|------|
@@ -319,6 +319,7 @@ For the complete memory API (33 tools), pipeline architecture and retrieval conf
 | `@speckit` | sonnet | Custom | Spec folder documentation specialist — EXCLUSIVE agent for writing `*.md` inside spec folders. Template-first, CORE + ADDENDUM architecture |
 | `@debug` | opus | Custom | Fresh-perspective debugging specialist — 5-phase methodology (Observe, Analyze, Hypothesize, Validate, Fix). Starts with no prior context to prevent bias |
 | `@deep-research` | opus | Custom | Autonomous deep research loop specialist — iterative evidence gathering with externalized state. May write `research.md` inside spec folders |
+| `@deep-review` | opus | Custom | Autonomous deep review specialist — converges on P0/P1/P2 findings, review dimensions, and evidence-backed quality risks without modifying code |
 | `@review` | opus | Custom | Code quality guardian — READ-ONLY. Findings-first severity analysis, security assessment, baseline + overlay standards contract |
 | `@write` | sonnet | Custom | Documentation generation specialist — template-first, DQI-compliant. Creates READMEs, skills, guides. Must NOT write inside spec folders |
 | `@handover` | sonnet | Custom | Session continuation specialist — creates `handover.md` for context preservation across sessions |
@@ -329,9 +330,9 @@ For the complete memory API (33 tools), pipeline architecture and retrieval conf
 | Runtime | Directory | Notes |
 |---------|-----------|-------|
 | OpenCode (default) | `.opencode/agent/` | Source of truth |
-| Claude Code | `.claude/agents/` | 9 adapter files |
-| ChatGPT | `.opencode/agent/chatgpt/` | 9 adapter files |
-| Gemini CLI | `.gemini/agents/` | 9 adapter files |
+| Claude Code | `.claude/agents/` | 10 adapter files |
+| ChatGPT | `.opencode/agent/chatgpt/` | 10 adapter files |
+| Gemini CLI | `.gemini/agents/` | 10 adapter files |
 
 <!-- /ANCHOR:agent-network -->
 
@@ -340,7 +341,7 @@ For the complete memory API (33 tools), pipeline architecture and retrieval conf
 <!-- ANCHOR:command-architecture -->
 ## 7. COMMAND ARCHITECTURE
 
-22 commands across 4 namespaces. Each command is a two-layer system: a Markdown entry point (`.opencode/command/*.md`) for input collection and routing, backed by a behavioral execution spec.
+22 commands across 4 namespaces. Each command is a two-layer system: a Markdown entry point under `.opencode/command/**/*.md` for input collection and routing, backed by a behavioral execution spec. At the root, `.opencode/command/` currently contains 2 top-level files (`README.txt` and `agent_router.md`) plus the `spec_kit/`, `memory/`, and `create/` namespaces.
 
 ### spec_kit/ — 8 Commands
 
@@ -817,4 +818,4 @@ A: Define the agent in `.opencode/agent/` (the source of truth), then copy the a
 
 ---
 
-*Documentation version: 3.0 | Last updated: 2026-03-15 | Framework: 11 agents, 18 skills, 22 commands, 33 MCP tools*
+*Documentation version: 3.0 | Last updated: 2026-03-24 | Framework: 12 agents, 18 skills, 22 commands, 33 memory MCP tools (40 total including Code Mode)*

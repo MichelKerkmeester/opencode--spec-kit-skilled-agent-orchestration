@@ -14,6 +14,14 @@ contextType: "architecture"
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 
+## Packet Reference
+
+| Field | Value |
+|-------|-------|
+| **Parent** | `022-hybrid-rag-fusion` |
+| **Spec Folder** | `005-architecture-audit` |
+| **Upstream** | Root 022 coordination packet |
+
 ## ADR-001: API-First Boundary Contract for Cross-Area Consumption
 <!-- ANCHOR:adr-001 -->
 

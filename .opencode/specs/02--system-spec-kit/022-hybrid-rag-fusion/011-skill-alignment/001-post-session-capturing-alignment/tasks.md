@@ -17,6 +17,6 @@
 
 ## Sprint 3: Verification
 
-- [x] T010: Run validate.sh [Evidence: parent 010 passed strict validation 2026-03-21]
-- [x] T011: Grep for remaining bare positional syntax [Evidence: verified in parent 010 reconciliation pass]
+- [x] T010: Run validate.sh [Evidence: parent 011-skill-alignment passed strict validation 2026-03-21]
+- [x] T011: Grep for remaining bare positional syntax [Evidence: verified in parent 011-skill-alignment reconciliation pass]
 - [x] T012: Verify tool counts match live repo [Evidence: 33 tools in tool-schemas.ts, 33 rows in memory_system.md, verified 2026-03-22]

@@ -80,6 +80,7 @@ export interface GovernanceAuditReviewFilters extends ScopeContext {
   action?: string;
   decision?: GovernanceAuditEntry['decision'];
   limit?: number;
+  allowUnscoped?: boolean;
 }
 
 /**
@@ -444,6 +445,19 @@ function buildGovernanceAuditWhereClause(filters: GovernanceAuditReviewFilters):
   };
 }
 
+function hasGovernanceAuditFilters(filters: GovernanceAuditReviewFilters): boolean {
+  const normalized = normalizeScopeContext(filters);
+  return Boolean(
+    filters.action
+    || filters.decision
+    || normalized.tenantId
+    || normalized.userId
+    || normalized.agentId
+    || normalized.sessionId
+    || normalized.sharedSpaceId
+  );
+}
+
 /**
  * Build a reusable row predicate for scope filtering without re-normalizing each row scan.
  *
@@ -503,6 +517,21 @@ export function reviewGovernanceAudit(
   filters: GovernanceAuditReviewFilters = {},
 ): GovernanceAuditReviewResult {
   ensureGovernanceRuntime(database);
+  const allowUnscoped = filters.allowUnscoped === true;
+  // Security: audit enumeration requires explicit scope filters or admin override
+  if (!allowUnscoped && !hasGovernanceAuditFilters(filters)) {
+    console.warn('[scope-governance] Unscoped governance audit enumeration blocked; explicit filters or allowUnscoped=true required.');
+    return {
+      rows: [],
+      summary: {
+        totalMatching: 0,
+        returnedRows: 0,
+        byAction: {},
+        byDecision: {},
+        latestCreatedAt: null,
+      },
+    };
+  }
   const { whereSql, params } = buildGovernanceAuditWhereClause(filters);
   const limit = Number.isInteger(filters.limit) && (filters.limit ?? 0) > 0
     ? Math.trunc(filters.limit as number)

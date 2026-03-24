@@ -15,6 +15,19 @@ const DEFAULT_DIM: number = 1024;
 const DEFAULT_BASE_URL: string = 'https://api.voyageai.com/v1';
 const REQUEST_TIMEOUT: number = 30000;
 
+// Config: honor VOYAGE_BASE_URL for startup validation, not just runtime
+export function resolveVoyageBaseUrl(baseUrl?: string): string {
+  if (typeof baseUrl === 'string' && baseUrl.trim().length > 0) {
+    return baseUrl.trim();
+  }
+
+  if (typeof process.env.VOYAGE_BASE_URL === 'string' && process.env.VOYAGE_BASE_URL.trim().length > 0) {
+    return process.env.VOYAGE_BASE_URL.trim();
+  }
+
+  return DEFAULT_BASE_URL;
+}
+
 /** Defines model dimensions. */
 export const MODEL_DIMENSIONS: ModelDimensions = {
   // Voyage 4 family (Shared embedding space)
@@ -105,7 +118,7 @@ export class VoyageProvider implements IEmbeddingProvider {
 
   constructor(options: VoyageOptions = {}) {
     this.apiKey = options.apiKey || process.env.VOYAGE_API_KEY || '';
-    this.baseUrl = options.baseUrl || process.env.VOYAGE_BASE_URL || DEFAULT_BASE_URL;
+    this.baseUrl = resolveVoyageBaseUrl(options.baseUrl);
     this.modelName = options.model || process.env.VOYAGE_EMBEDDINGS_MODEL || DEFAULT_MODEL;
     this.dim = options.dim || MODEL_DIMENSIONS[this.modelName] || DEFAULT_DIM;
     this.timeout = options.timeout || REQUEST_TIMEOUT;

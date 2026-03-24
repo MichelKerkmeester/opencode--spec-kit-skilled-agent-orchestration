@@ -3,8 +3,8 @@
 // ---------------------------------------------------------------
 
 import { HfLocalProvider } from './providers/hf-local';
-import { OpenAIProvider } from './providers/openai';
-import { VoyageProvider } from './providers/voyage';
+import { OpenAIProvider, MODEL_DIMENSIONS as OPENAI_MODEL_DIMENSIONS } from './providers/openai';
+import { VoyageProvider, MODEL_DIMENSIONS as VOYAGE_MODEL_DIMENSIONS, resolveVoyageBaseUrl } from './providers/voyage';
 import type {
   IEmbeddingProvider,
   ProviderResolution,
@@ -50,6 +50,137 @@ function parseValidationErrorBody(payload: unknown): ValidationErrorBody {
   };
 }
 
+type SupportedProviderName = 'voyage' | 'openai' | 'hf-local';
+type ConfiguredProviderName = SupportedProviderName | 'auto';
+
+export const SUPPORTED_PROVIDERS = ['openai', 'voyage', 'hf-local', 'auto'] as const;
+const SUPPORTED_PROVIDER_SET: ReadonlySet<string> = new Set(SUPPORTED_PROVIDERS);
+
+const DEFAULT_PROVIDER_MODELS: Readonly<Record<SupportedProviderName, string>> = {
+  voyage: 'voyage-4',
+  openai: 'text-embedding-3-small',
+  'hf-local': 'nomic-ai/nomic-embed-text-v1.5',
+};
+
+// Correctness: one canonical dimension map for startup and runtime
+export const VALID_PROVIDER_DIMENSIONS = Object.freeze({
+  voyage: Object.freeze({ ...VOYAGE_MODEL_DIMENSIONS }),
+  openai: Object.freeze({ ...OPENAI_MODEL_DIMENSIONS }),
+  'hf-local': Object.freeze({
+    'nomic-ai/nomic-embed-text-v1.5': 768,
+  }),
+} satisfies Record<SupportedProviderName, Readonly<Record<string, number>>>);
+
+function normalizeProviderName(value: string | undefined | null): string | null {
+  if (typeof value !== 'string') {
+    return null;
+  }
+
+  const normalized = value.trim().toLowerCase();
+  return normalized.length > 0 ? normalized : null;
+}
+
+function getExplicitProviderOverride(): ConfiguredProviderName | null {
+  const explicitProvider = normalizeProviderName(process.env.EMBEDDINGS_PROVIDER);
+  if (!explicitProvider) {
+    return null;
+  }
+
+  return validateConfiguredEmbeddingsProvider(explicitProvider);
+}
+
+function getValidDimensionsForProvider(provider: SupportedProviderName): number[] {
+  return Array.from(new Set(Object.values(VALID_PROVIDER_DIMENSIONS[provider]))).sort((left, right) => left - right);
+}
+
+function resolveConfiguredModel(provider: SupportedProviderName, model?: string): string {
+  if (typeof model === 'string' && model.trim().length > 0) {
+    return model.trim();
+  }
+
+  switch (provider) {
+    case 'voyage':
+      return process.env.VOYAGE_EMBEDDINGS_MODEL || DEFAULT_PROVIDER_MODELS.voyage;
+    case 'openai':
+      return process.env.OPENAI_EMBEDDINGS_MODEL || DEFAULT_PROVIDER_MODELS.openai;
+    case 'hf-local':
+    default:
+      return process.env.HF_EMBEDDINGS_MODEL || DEFAULT_PROVIDER_MODELS['hf-local'];
+  }
+}
+
+function isSupportedProviderName(value: string): value is ConfiguredProviderName {
+  return SUPPORTED_PROVIDER_SET.has(value);
+}
+
+function toSupportedProviderName(provider: string): SupportedProviderName {
+  const normalized = normalizeProviderName(provider);
+  if (!normalized || normalized === 'auto' || !isSupportedProviderName(normalized)) {
+    throw new Error(`Invalid EMBEDDINGS_PROVIDER "${provider}". Supported: ${SUPPORTED_PROVIDERS.join(', ')}`);
+  }
+  return normalized as SupportedProviderName;
+}
+
+function allowsAutomaticFallback(provider: string | undefined): boolean {
+  const normalized = normalizeProviderName(provider);
+  return normalized === null || normalized === 'auto';
+}
+
+export function validateConfiguredEmbeddingsProvider(value: string | undefined = process.env.EMBEDDINGS_PROVIDER): ConfiguredProviderName | null {
+  const normalized = normalizeProviderName(value);
+  if (!normalized) {
+    return null;
+  }
+
+  // Startup: fail-fast on unsupported provider names
+  if (!isSupportedProviderName(normalized)) {
+    throw new Error(`Invalid EMBEDDINGS_PROVIDER "${value}". Supported: ${SUPPORTED_PROVIDERS.join(', ')}`);
+  }
+
+  return normalized;
+}
+
+export function resolveProviderDimension(
+  provider: string,
+  options: Pick<CreateProviderOptions, 'model' | 'dim'> = {},
+): number {
+  const supportedProvider = toSupportedProviderName(provider);
+  const dimensionsByModel: Readonly<Record<string, number>> = VALID_PROVIDER_DIMENSIONS[supportedProvider];
+  const configuredDim = typeof options.dim === 'number' && Number.isFinite(options.dim) && options.dim > 0
+    ? Math.trunc(options.dim)
+    : null;
+
+  if (configuredDim !== null) {
+    return configuredDim;
+  }
+
+  const configuredModel = resolveConfiguredModel(supportedProvider, options.model);
+  const modelDimension = dimensionsByModel[configuredModel];
+  if (typeof modelDimension === 'number') {
+    return modelDimension;
+  }
+
+  const [fallbackDimension] = getValidDimensionsForProvider(supportedProvider);
+  return dimensionsByModel[DEFAULT_PROVIDER_MODELS[supportedProvider]] ?? fallbackDimension;
+}
+
+export function getStartupEmbeddingDimension(): number {
+  if (process.env.EMBEDDING_DIM) {
+    const explicitDimension = parseInt(process.env.EMBEDDING_DIM, 10);
+    if (Number.isFinite(explicitDimension) && explicitDimension > 0) {
+      return explicitDimension;
+    }
+  }
+
+  const explicitProvider = getExplicitProviderOverride();
+  if (explicitProvider && explicitProvider !== 'auto') {
+    return resolveProviderDimension(explicitProvider);
+  }
+
+  const resolution = resolveProvider();
+  return resolveProviderDimension(resolution.name);
+}
+
 // ---------------------------------------------------------------
 // 1. PROVIDER RESOLUTION
 // ---------------------------------------------------------------
@@ -73,7 +204,7 @@ function isPlaceholderKey(key: string): boolean {
  * Precedence: 1) EMBEDDINGS_PROVIDER, 2) VOYAGE_API_KEY, 3) OPENAI_API_KEY, 4) hf-local
  */
 export function resolveProvider(): ProviderResolution {
-  const explicitProvider = process.env.EMBEDDINGS_PROVIDER;
+  const explicitProvider = getExplicitProviderOverride();
   if (explicitProvider && explicitProvider !== 'auto') {
     return {
       name: explicitProvider,
@@ -120,7 +251,7 @@ export async function createEmbeddingsProvider(options: CreateProviderOptions = 
   const resolution = resolveProvider();
   const providerName = options.provider === 'auto' || !options.provider
     ? resolution.name
-    : options.provider;
+    : toSupportedProviderName(options.provider);
 
   console.error(`[factory] Using provider: ${providerName} (${resolution.reason})`);
 
@@ -195,7 +326,7 @@ export async function createEmbeddingsProvider(options: CreateProviderOptions = 
         console.warn(`[factory] Warmup failed for ${providerName}`);
 
         // Fallback to hf-local for cloud providers when auto-detected (not explicitly set)
-        if ((providerName === 'openai' || providerName === 'voyage') && !options.provider) {
+        if ((providerName === 'openai' || providerName === 'voyage') && allowsAutomaticFallback(options.provider)) {
           const originalDim = provider.getMetadata().dim;
           console.warn(`[factory] Attempting fallback from ${providerName} to hf-local...`);
           provider = new HfLocalProvider({
@@ -231,8 +362,11 @@ export async function createEmbeddingsProvider(options: CreateProviderOptions = 
     console.error(`[factory] Error creating provider ${providerName}:`, getErrorMessage(error));
 
     // Fallback to hf-local for cloud providers when auto-detected (not explicitly set)
-    if ((providerName === 'openai' || providerName === 'voyage') && !options.provider) {
-      const failedProviderDim = providerName === 'openai' ? 1536 : 1024;
+    if ((providerName === 'openai' || providerName === 'voyage') && allowsAutomaticFallback(options.provider)) {
+      const failedProviderDim = resolveProviderDimension(providerName, {
+        model: options.model,
+        dim: options.dim,
+      });
       console.warn(`[factory] Fallback to hf-local due to ${providerName} error`);
       provider = new HfLocalProvider({
         model: options.model,
@@ -272,12 +406,13 @@ export async function createEmbeddingsProvider(options: CreateProviderOptions = 
 /** Get configuration information without creating the provider */
 export function getProviderInfo(): ProviderInfo {
   const resolution = resolveProvider();
+  const explicitProvider = validateConfiguredEmbeddingsProvider();
 
   return {
     provider: resolution.name,
     reason: resolution.reason,
     config: {
-      EMBEDDINGS_PROVIDER: process.env.EMBEDDINGS_PROVIDER || 'auto',
+      EMBEDDINGS_PROVIDER: explicitProvider || 'auto',
       VOYAGE_API_KEY: process.env.VOYAGE_API_KEY ? '***set***' : 'not set',
       VOYAGE_EMBEDDINGS_MODEL: process.env.VOYAGE_EMBEDDINGS_MODEL || 'voyage-4',
       OPENAI_API_KEY: process.env.OPENAI_API_KEY ? '***set***' : 'not set',
@@ -343,7 +478,7 @@ export async function validateApiKey(options: { timeout?: number } = {}): Promis
 
   try {
     const baseUrl = providerName === 'voyage'
-      ? 'https://api.voyageai.com/v1'
+      ? resolveVoyageBaseUrl()
       : (process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1');
 
     const model = providerName === 'voyage'

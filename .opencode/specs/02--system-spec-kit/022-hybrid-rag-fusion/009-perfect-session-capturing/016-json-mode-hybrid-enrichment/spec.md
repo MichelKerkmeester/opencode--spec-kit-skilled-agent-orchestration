@@ -1,10 +1,10 @@
 # Phase 016: JSON Mode Hybrid Enrichment — Phase Container
 
-**Status**: Complete
+**Status**: In Progress
 **Priority**: P0
 **Level**: 3+
 **Created**: 2026-03-20
-**Updated**: 2026-03-22
+**Updated**: 2026-03-24
 **Parent**: [009-perfect-session-capturing](../spec.md)
 **Predecessor**: [015-runtime-contract-and-indexability](../015-runtime-contract-and-indexability/spec.md)
 **Successor**: [017-json-primary-deprecation](../017-json-primary-deprecation/spec.md)
@@ -13,7 +13,12 @@
 
 ## Overview
 
-Phase container for JSON-mode memory capturing quality improvements. Houses the original enrichment implementation (001) plus follow-up improvement phases derived from a 10-agent deep-research investigation (74 findings, 20 actionable recommendations).
+Phase container for JSON-mode memory capturing quality improvements. Houses the original enrichment implementation (001) plus follow-up improvement phases derived from a 10-agent deep-research investigation (74 findings, 20 actionable recommendations). The child phases are complete, but the container remains open while remaining P1/P2 follow-on tasks are closed.
+
+## Container Status Truth
+
+- `plan.md` and `implementation-summary.md` both record this packet as active/in-progress.
+- `tasks.md` still tracks open follow-on items (`T-009`, `T-011`, `T-012`), so this container is not yet truthfully closed.
 
 ## Phase Tree
 

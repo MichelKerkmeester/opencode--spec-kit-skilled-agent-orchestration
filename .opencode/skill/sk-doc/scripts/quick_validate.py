@@ -22,6 +22,7 @@ Output formats:
 - JSON (with --json flag)
 """
 
+import argparse
 import sys
 import json
 import re
@@ -117,19 +118,23 @@ def validate_skill(skill_path: Union[str, Path]) -> Tuple[bool, str, List[str]]:
 # ───────────────────────────────────────────────────────────────
 
 def main() -> None:
-    json_output = '--json' in sys.argv
-    args = [arg for arg in sys.argv[1:] if not arg.startswith('--')]
-    
-    if len(args) != 1:
-        if json_output:
-            print(json.dumps({
-                'error': 'Usage: python quick_validate.py <skill_directory> [--json]'
-            }))
-        else:
-            print("Usage: python quick_validate.py <skill_directory> [--json]")
-        sys.exit(1)
-    
-    skill_path = args[0]
+    parser = argparse.ArgumentParser(
+        description="Quick validator for SKILL.md frontmatter and structure."
+    )
+    parser.add_argument(
+        'skill_directory',
+        help="Path to the skill directory to validate",
+    )
+    parser.add_argument(
+        '--json',
+        dest='json_output',
+        action='store_true',
+        help="Output result as JSON",
+    )
+    args = parser.parse_args()
+
+    json_output = args.json_output
+    skill_path = args.skill_directory
     valid, message, warnings = validate_skill(skill_path)
     
     if json_output:

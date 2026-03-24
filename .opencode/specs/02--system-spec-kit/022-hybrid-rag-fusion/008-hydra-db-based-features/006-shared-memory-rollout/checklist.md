@@ -33,7 +33,7 @@ contextType: "general"
 - [x] CHK-601 [P0] Collaboration scope, rollout gates, and kill-switch rules documented [EVIDENCE:spec.md]
 - [x] CHK-602 [P0] Dependencies on Phases 3, 4, and 5 documented [EVIDENCE:plan.md]
 - [x] CHK-603 [P1] Phase-local ADR captured [EVIDENCE:decision-record.md]
-- [x] CHK-604 [P0] Phase 5 governance technical gate verified [EVIDENCE:../005-hierarchical-scope-governance/checklist.md P0 9/9; validate.sh pass]
+- [ ] CHK-604 [P0] Phase 5 governance technical gate still carries deferred rollback drill evidence [EVIDENCE:../005-hierarchical-scope-governance/checklist.md P0 7/8; rollback drill evidence pending]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -44,7 +44,7 @@ contextType: "general"
 - [x] CHK-610 [P0] Shared-memory spaces implemented [EVIDENCE:implementation-summary.md]
 - [x] CHK-611 [P0] Membership and conflict rules validated [EVIDENCE:implementation-summary.md]
 - [x] CHK-612 [P0] Governance reuse verified [EVIDENCE:implementation-summary.md]
-- [x] CHK-613 [P0] Kill-switch and rollback drills pass [EVIDENCE:implementation-summary.md]
+- [ ] [DEFERRED] Rollback/kill-switch drill — drill artifacts not yet produced; evidence required before release sign-off
 - [x] CHK-614 [P0] Staged rollout procedure validated [EVIDENCE:implementation-summary.md]
 <!-- /ANCHOR:code-quality -->
 
@@ -62,7 +62,7 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security
 
-- Deny-by-default membership, governance reuse, and rollback protections remain covered by `CHK-611`, `CHK-612`, and `CHK-613` above.
+- Deny-by-default membership and governance reuse remain covered by `CHK-611` and `CHK-612` above. Rollback drill evidence is still deferred pending artifact capture.
 <!-- /ANCHOR:security -->
 
 ---
@@ -93,7 +93,7 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
+| P0 Items | 8 | 6/8 |
 | P1 Items | 14 | 14/14 |
 | P2 Items | 3 | 3/3 |
 

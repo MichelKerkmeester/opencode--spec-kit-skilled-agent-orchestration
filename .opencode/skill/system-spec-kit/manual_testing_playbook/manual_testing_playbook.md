@@ -147,8 +147,9 @@ Release is `READY` only when:
 1. No feature verdict is `FAIL`.
 2. All critical scenarios are `PASS`.
 3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-scenario files (`COVERED_SCENARIOS == TOTAL_SCENARIOS`).
-4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 231 scenario files (270 exact IDs) while the feature catalog contains 220 feature files.
+4. Feature-catalog cross-reference coverage has been reviewed separately; scenario coverage does not imply a 1:1 feature-file count because the playbook currently contains 230 scenario files while the feature catalog contains 220 feature files.
 5. No unresolved blocking triage item remains.
+6. Orphan scenario count is zero (every scenario file is linked in Section 12).
 
 Otherwise release is `NOT READY`.
 
@@ -167,13 +168,14 @@ count = sum(
 print(count)
 PY
 )
-if [ "$TOTAL_FEATURES" -ne 231 ]; then
-  echo "Expected 231 scenario files, found $TOTAL_FEATURES" >&2
+if [ "$TOTAL_FEATURES" -ne 230 ]; then
+  echo "Expected 230 scenario files, found $TOTAL_FEATURES" >&2
   exit 1
 fi
 ```
 
 Final verdict report must include `COVERED_SCENARIOS/TOTAL_SCENARIOS` and should call out any remaining feature-catalog entries that are automated-only, indirect, or intentionally operator-only.
+As of 2026-03-24, the root index links all current scenario files (0 orphan scenario files).
 
 ### Destructive Scenario Rules
 
@@ -3648,6 +3650,12 @@ This split playbook keeps automated coverage references in three places:
 | 153 | Features | JSON mode structured summary hardening | [153](16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md) | [16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md](../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md) |
 | 154 | Features | JSON-primary deprecation posture | [154](16--tooling-and-scripts/154-json-primary-deprecation-posture.md) | [16--tooling-and-scripts/17-json-primary-deprecation-posture.md](../feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md) |
 | 181 | Features | Template Compliance Contract Enforcement | [181](16--tooling-and-scripts/181-template-compliance-contract-enforcement.md) | [16--tooling-and-scripts/18-template-compliance-contract-enforcement.md](../feature_catalog/16--tooling-and-scripts/18-template-compliance-contract-enforcement.md) |
+| M-009 | Dedicated Memory/Spec-Kit Scenarios | Runtime Family Count Census | [M-009](16--tooling-and-scripts/182-runtime-family-count-census.md) | *(test-only, no catalog entry)* |
+| M-010 | Dedicated Memory/Spec-Kit Scenarios | Runtime Lineage Naming Parity | [M-010](16--tooling-and-scripts/183-runtime-lineage-naming-parity.md) | *(test-only, no catalog entry)* |
+| M-011 | Dedicated Memory/Spec-Kit Scenarios | Gemini Runtime Path Resolution | [M-011](16--tooling-and-scripts/184-gemini-runtime-path-resolution.md) | *(test-only, no catalog entry)* |
+| 185 | Features | /memory:analyze command routing | [185](01--retrieval/185-memory-analyze-command-routing.md) | [feature_catalog.md#command-surface-contract](../feature_catalog/feature_catalog.md#command-surface-contract) |
+| 186 | Features | /memory:manage command routing | [186](16--tooling-and-scripts/186-memory-manage-command-routing.md) | [feature_catalog.md#command-surface-contract](../feature_catalog/feature_catalog.md#command-surface-contract) |
+| 187 | Features | Quick search (memory_quick_search) | [187](01--retrieval/187-quick-search-memory-quick-search.md) | [01--retrieval/10-fast-delegated-search-memory-quick-search.md](../feature_catalog/01--retrieval/10-fast-delegated-search-memory-quick-search.md) |
 | 155 | Features | Post-save quality review | [155](13--memory-quality-and-indexing/155-post-save-quality-review.md) | [13--memory-quality-and-indexing/19-post-save-quality-review.md](../feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md) |
 | 156 | Features | Graph refresh mode (SPECKIT_GRAPH_REFRESH_MODE) | [156](10--graph-signal-activation/156-graph-refresh-mode-speckit-graph-refresh-mode.md) | [10--graph-signal-activation/13-graph-lifecycle-refresh.md](../feature_catalog/10--graph-signal-activation/13-graph-lifecycle-refresh.md) |
 | 157 | Features | LLM graph backfill (SPECKIT_LLM_GRAPH_BACKFILL) | [157](10--graph-signal-activation/157-llm-graph-backfill-speckit-llm-graph-backfill.md) | [10--graph-signal-activation/14-llm-graph-backfill.md](../feature_catalog/10--graph-signal-activation/14-llm-graph-backfill.md) |
@@ -3688,7 +3696,6 @@ This split playbook keeps automated coverage references in three places:
 | M-008 | Dedicated Memory/Spec-Kit Scenarios | Feature 09 Direct Manual Scenario (Per-memory History Log) | [M-008](02--mutation/008-feature-09-direct-manual-scenario-per-memory-history-log.md) | [02--mutation/10-per-memory-history-log.md](../feature_catalog/02--mutation/10-per-memory-history-log.md) |
 | Catalog only | Features | AST-level section retrieval tool | No dedicated scenario - covered by parent category tests | [01--retrieval/07-ast-level-section-retrieval-tool.md](../feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md) |
 | Catalog only | Features | Tool-result extraction to working memory | No dedicated scenario - covered by parent category tests | [01--retrieval/09-tool-result-extraction-to-working-memory.md](../feature_catalog/01--retrieval/09-tool-result-extraction-to-working-memory.md) |
-| Catalog only | Features | Fast delegated search (memory_quick_search) | No dedicated scenario - covered by parent category tests | [01--retrieval/10-fast-delegated-search-memory-quick-search.md](../feature_catalog/01--retrieval/10-fast-delegated-search-memory-quick-search.md) |
 | Catalog only | Features | Namespace management CRUD tools | No dedicated scenario - covered by parent category tests | [02--mutation/07-namespace-management-crud-tools.md](../feature_catalog/02--mutation/07-namespace-management-crud-tools.md) |
 | Catalog only | Features | Correction tracking with undo | No dedicated scenario - covered by parent category tests | [02--mutation/09-correction-tracking-with-undo.md](../feature_catalog/02--mutation/09-correction-tracking-with-undo.md) |
 | Catalog only | Features | ANCHOR tags as graph nodes | No dedicated scenario - covered by parent category tests | [10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md](../feature_catalog/10--graph-signal-activation/09-anchor-tags-as-graph-nodes.md) |

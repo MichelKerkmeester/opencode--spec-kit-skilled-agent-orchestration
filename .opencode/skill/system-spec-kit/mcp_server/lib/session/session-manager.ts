@@ -150,6 +150,13 @@ interface ContinueSessionInput {
   data?: Record<string, unknown> | null;
 }
 
+interface TrustedSessionResolution {
+  requestedSessionId: string | null;
+  effectiveSessionId: string;
+  trusted: boolean;
+  error?: string;
+}
+
 /* ───────────────────────────────────────────────────────────────
    2. CONFIGURATION
 ──────────────────────────────────────────────────────────────── */
@@ -240,6 +247,93 @@ function init(database: Database): InitResult {
 
 function getDb(): Database | null {
   return db;
+}
+
+function hasTable(tableName: string): boolean {
+  if (!db) return false;
+
+  try {
+    const row = db.prepare(
+      "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = ? LIMIT 1"
+    ).get(tableName) as { 1?: number } | undefined;
+    return Boolean(row);
+  } catch {
+    return false;
+  }
+}
+
+function hasSessionStateRecord(sessionId: string): boolean {
+  if (!db || !hasTable('session_state')) return false;
+
+  try {
+    const row = db.prepare(
+      'SELECT 1 FROM session_state WHERE session_id = ? LIMIT 1'
+    ).get(sessionId) as { 1?: number } | undefined;
+    return Boolean(row);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`[session-manager] hasSessionStateRecord failed: ${message}`);
+    return false;
+  }
+}
+
+function hasSentMemoryRecord(sessionId: string): boolean {
+  if (!db || !hasTable('session_sent_memories')) return false;
+
+  try {
+    const row = db.prepare(
+      'SELECT 1 FROM session_sent_memories WHERE session_id = ? LIMIT 1'
+    ).get(sessionId) as { 1?: number } | undefined;
+    return Boolean(row);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.warn(`[session-manager] hasSentMemoryRecord failed: ${message}`);
+    return false;
+  }
+}
+
+function isTrackedSession(sessionId: string): boolean {
+  if (!sessionId || typeof sessionId !== 'string') {
+    return false;
+  }
+
+  const normalizedSessionId = sessionId.trim();
+  if (normalizedSessionId.length === 0) {
+    return false;
+  }
+
+  return workingMemory.sessionExists(normalizedSessionId)
+    || hasSessionStateRecord(normalizedSessionId)
+    || hasSentMemoryRecord(normalizedSessionId);
+}
+
+function resolveTrustedSession(requestedSessionId: string | null = null): TrustedSessionResolution {
+  const normalizedSessionId = typeof requestedSessionId === 'string' && requestedSessionId.trim().length > 0
+    ? requestedSessionId.trim()
+    : null;
+
+  if (!normalizedSessionId) {
+    return {
+      requestedSessionId: null,
+      effectiveSessionId: crypto.randomUUID(),
+      trusted: false,
+    };
+  }
+
+  if (!isTrackedSession(normalizedSessionId)) {
+    return {
+      requestedSessionId: normalizedSessionId,
+      effectiveSessionId: '',
+      trusted: false,
+      error: `sessionId "${normalizedSessionId}" does not match a server-managed session. Omit sessionId to start a new server-generated session and reuse the effectiveSessionId returned by the server.`,
+    };
+  }
+
+  return {
+    requestedSessionId: normalizedSessionId,
+    effectiveSessionId: normalizedSessionId,
+    trusted: true,
+  };
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -1156,6 +1250,8 @@ export {
   cleanupStaleSessions,
   clearSession,
   getSessionStats,
+  isTrackedSession,
+  resolveTrustedSession,
 
   // Integration helpers (T004)
   filterSearchResults,

@@ -101,8 +101,8 @@ function upsert_active_projection(
   `).run(logicalKey, memoryId, memoryId, updatedAt);
 }
 
-// TODO(vector-index): Keep these mutation-local extensions until appendOnly and
-// canonicalFilePath semantics are shared across the query/store type surface.
+// These mutation-local extensions are intentional until the shared query/store
+// contract adopts appendOnly and canonicalFilePath semantics.
 type IndexMemoryParams = Readonly<SharedIndexMemoryParams> & {
   readonly appendOnly?: boolean;
 };

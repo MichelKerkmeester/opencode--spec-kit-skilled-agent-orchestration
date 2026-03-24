@@ -34,7 +34,7 @@ contextType: "general"
 - [x] CHK-401 [P1] Scope, shadow-mode rules, and promotion gates documented [EVIDENCE:spec.md]
 - [x] CHK-402 [P1] Dependencies on Phase 3 documented [EVIDENCE:plan.md]
 - [x] CHK-403 [P1] Phase-local ADR captured [EVIDENCE:decision-record.md]
-- [x] CHK-404 [P1] Phase 3 technical gate verified [EVIDENCE:../003-unified-graph-retrieval/checklist.md P0 9/9; validate.sh pass]
+- [x] CHK-404 [P1] Phase 3 technical gate verified [EVIDENCE:../003-unified-graph-retrieval/checklist.md P0 1/1; validate.sh pass]
 
 <!-- /ANCHOR:pre-impl -->
 

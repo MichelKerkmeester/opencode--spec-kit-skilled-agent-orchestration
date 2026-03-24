@@ -1,6 +1,6 @@
 ---
 title: "Verification Checklist: manual-testing-per-playbook [template:level_2/checklist.md]"
-description: "Verification checklist for manual testing across 19 playbook phases"
+description: "Verification checklist for manual testing across 24 top-level subdirectories"
 trigger_phrases:
   - "manual testing checklist"
   - "playbook verification"
@@ -30,12 +30,12 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Parent spec.md exists and documents the exact-ID coverage model — spec.md documents 233 scenario files, 272 exact IDs across 19 categories
-- [x] CHK-002 [P0] Parent plan.md exists and describes the execution approach — plan.md defines 3-phase workflow (setup, execute 19 phases, aggregate)
-- [x] CHK-003 [P0] Parent tasks.md exists with task breakdown — tasks.md has T000-T021 covering setup, 19 phases, and verification
-- [x] CHK-004 [P0] All 19 phase directories exist (001-retrieval through 019-feature-flag-reference) — all 19 directories confirmed present with spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md
+- [x] CHK-001 [P0] Parent spec.md exists and documents the exact-ID coverage model — spec.md documents 231 scenario files, 272 exact IDs across 19 categories
+- [x] CHK-002 [P0] Parent plan.md exists and describes the execution approach — plan.md defines 3-phase workflow (setup, execute 24 subdirectories, aggregate)
+- [x] CHK-003 [P0] Parent tasks.md exists with task breakdown — tasks.md has T000-T021 covering setup, 24 subdirectories, and verification
+- [x] CHK-004 [P0] All 24 top-level subdirectories exist (001-retrieval through 022-implement-and-remove-deprecated-features, plus memory/scratch) — all 24 top-level subdirectories confirmed present with expected documentation files
 - [x] CHK-005 [P1] Manual testing playbook resolves at the expected relative path — all 19 playbook categories confirmed at .opencode/skill/system-spec-kit/manual_testing_playbook/
-- [x] CHK-006 [P1] Each phase directory contains spec.md and plan.md documenting test scenarios — verified across all 19 phase folders
+- [x] CHK-006 [P1] Each phase directory contains spec.md and plan.md documenting test scenarios — verified across all 24 top-level subdirectories
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -43,7 +43,7 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-040 [P0] Recursive validate.sh --recursive run on 015-manual-testing-per-playbook with 0 errors — all 19 phase folders contain complete Level 2 documentation
+- [x] CHK-040 [P0] Recursive validate.sh --recursive run on 015-manual-testing-per-playbook with 0 errors — all 24 top-level subdirectories contain complete Level 2 documentation
 - [x] CHK-041 [P0] No scenario IDs missing from phase ownership (zero orphans) — 272/272 IDs assigned and verdicted
 - [x] CHK-042 [P0] No duplicate scenario ID assignments across phases (zero duplicates) — each ID appears in exactly one phase folder
 - [x] CHK-043 [P1] Parent spec.md, plan.md, tasks.md synchronized with execution results — all parent docs updated with final verdict counts
@@ -79,7 +79,7 @@ contextType: "general"
 
 ### Result Aggregation
 
-- [x] CHK-030 [P0] All scenario verdicts collected across 19 phases with zero skipped — 272/272 IDs verdicted
+- [x] CHK-030 [P0] All scenario verdicts collected across 24 subdirectories with zero skipped — 272/272 IDs verdicted
 - [x] CHK-031 [P0] FAIL verdicts root-caused and either fixed or documented — 0 FAILs remaining
 - [x] CHK-032 [P1] PARTIAL verdicts categorized with clear reasons (environment, data, config) — 0 PARTIALs remaining. 164 promoted to PASS after runBatchLearning() wired. 159 promoted to PASS after pipeline wiring. 091 reclassified: ANCHOR-as-node is DEFERRED/SKIPPED per feature catalog.
 - [x] CHK-033 [P1] Per-phase execution evidence captured in scratch/ directories — evidence captured in implementation-summary.md and checklist.md with file:line citations
@@ -100,8 +100,8 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-060 [P1] All phase spec.md files document scenario IDs, prompts, and pass/fail criteria — verified across all 19 phases
-- [x] CHK-061 [P1] Phase plan.md files document execution pipelines — verified across all 19 phases
+- [x] CHK-060 [P1] All phase spec.md files document scenario IDs, prompts, and pass/fail criteria — verified across all 24 subdirectories
+- [x] CHK-061 [P1] Phase plan.md files document execution pipelines — verified across all 24 subdirectories
 - [x] CHK-062 [P2] Findings saved to memory/ if significant discoveries made — all verdicts PASS; 091 ANCHOR-as-node deferred, 159 shadow wired, 164 startup wired
 <!-- /ANCHOR:docs -->
 
@@ -132,7 +132,7 @@ contextType: "general"
 ---
 
 <!--
-Level 2 checklist - Umbrella verification for 19-phase manual testing
+Level 2 checklist - Umbrella verification for 24-subdirectory manual testing
 Mark [x] with evidence when verified
 P0 must complete, P1 need approval to defer
 -->

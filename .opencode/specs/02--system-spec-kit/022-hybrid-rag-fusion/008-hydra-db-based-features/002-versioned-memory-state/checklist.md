@@ -34,7 +34,7 @@ contextType: "general"
 - [x] CHK-201 [P1] Scope, lineage contract goals, and migration risks documented [EVIDENCE:spec.md]
 - [x] CHK-202 [P1] Dependencies on Phase 1 and later phases documented [EVIDENCE:plan.md]
 - [x] CHK-203 [P1] Phase-specific ADR captured [EVIDENCE:decision-record.md]
-- [x] CHK-204 [P1] Phase 1 technical gate verified [EVIDENCE:../001-baseline-and-safety-rails/checklist.md P0 8/8; validate.sh pass]
+- [x] CHK-204 [P1] Phase 1 technical gate verified [EVIDENCE:../001-baseline-and-safety-rails/checklist.md P0 0/0; validate.sh pass]
 
 <!-- /ANCHOR:pre-impl -->
 
@@ -57,7 +57,7 @@ contextType: "general"
 - [x] CHK-210 [P1] Append-first lineage writes implemented [EVIDENCE:implementation-summary.md]
 - [x] CHK-211 [P1] Active projection validated [EVIDENCE:implementation-summary.md]
 - [x] CHK-212 [P1] `asOf` semantics validated [EVIDENCE:implementation-summary.md]
-- [x] CHK-213 [P1] Backfill and rollback drills pass [EVIDENCE:implementation-summary.md]
+- [ ] [DEFERRED] Rollback/kill-switch drill — drill artifacts not yet produced; evidence required before release sign-off
 - [x] CHK-214 [P1] Integrity test suite passes [EVIDENCE:implementation-summary.md]
 
 <!-- /ANCHOR:testing -->
@@ -106,7 +106,7 @@ contextType: "general"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 1 | 1/1 |
-| P1 Items | 24 | 24/24 |
+| P1 Items | 24 | 23/24 |
 | P2 Items | 0 | 0/0 |
 
 **Verification Date**: 2026-03-14

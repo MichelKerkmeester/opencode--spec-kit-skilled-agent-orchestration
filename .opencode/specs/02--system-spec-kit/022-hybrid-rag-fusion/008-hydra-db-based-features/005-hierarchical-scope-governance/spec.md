@@ -19,7 +19,7 @@ contextType: "decision"
 
 ## EXECUTIVE SUMMARY
 
-Phase 5 makes the Hydra roadmap safe enough for collaboration. It enforces tenant, user, agent, and session boundaries; requires provenance and temporal markers on governed ingest; and introduces retention, deletion, and audit flows that later shared-memory features depend on.
+Phase 5 implements the governance controls intended to make Hydra collaboration-safe. It enforces tenant, user, agent, and session boundaries; requires provenance and temporal markers on governed ingest; and introduces retention, deletion, and audit flows, but release readiness still depends on deferred rollback drill evidence.
 
 **Key Decisions**: centralize scope enforcement instead of scattering checks; sequence governance before shared-memory rollout.
 
@@ -33,7 +33,7 @@ Phase 5 makes the Hydra roadmap safe enough for collaboration. It enforces tenan
 |-------|-------|
 | **Level** | 3+ |
 | **Priority** | P0 |
-| **Status** | Complete |
+| **Status** | In Progress |
 | **Created** | 2026-03-13 |
 | **Updated** | 2026-03-13 |
 | **Branch** | `022-hybrid-rag-fusion` |
@@ -42,7 +42,7 @@ Phase 5 makes the Hydra roadmap safe enough for collaboration. It enforces tenan
 | **Phase** | 5 of 6 |
 | **Predecessor** | ../004-adaptive-retrieval-loops/spec.md |
 | **Successor** | ../006-shared-memory-rollout/spec.md |
-| **Handoff Criteria** | Scope enforcement, provenance gates, retention/deletion lifecycle, and audit evidence verified |
+| **Handoff Criteria** | Scope enforcement, provenance gates, retention/deletion lifecycle, and audit evidence documented; rollback drill evidence still required before release sign-off |
 
 ### Phase Context
 

@@ -28,7 +28,7 @@ contextType: "implementation"
 | **LOC estimate** | ~36 |
 | **Epic** | 022-hybrid-rag-fusion |
 | **Phase** | 014 |
-| **Dependencies** | 012-command-alignment (source of truth for 7-command suite) |
+| **Dependencies** | 012-command-alignment (source of truth for 6-command suite) |
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../013-agents-alignment/spec.md |
 | **Successor** | ../015-manual-testing-per-playbook/spec.md |
@@ -39,12 +39,12 @@ contextType: "implementation"
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
-The three AGENTS.md governance framework files reference outdated Quick Reference workflow tables that show 5 memory commands instead of the current 7. The `/memory:learn` constitutional memory row only documents the `[rule]` creation subcommand, missing `list`, `edit`, `remove`, and `budget`. The `/memory:manage` database maintenance row is missing the `ingest` subcommand. Two entirely new commands (`/memory:analyze`, `/memory:shared`) have no rows at all. Additionally, the FS-Enterprises variant has a stale Research/exploration row missing the `memory_context()` unified alternative.
+The three AGENTS.md governance framework files reference outdated Quick Reference workflow tables that show 5 memory commands instead of the current 6. The `/memory:learn` constitutional memory row only documents the `[rule]` creation subcommand, missing `list`, `edit`, `remove`, and `budget`. The `/memory:manage` database maintenance row is missing the `ingest` subcommand. Two entirely new commands (`/memory:analyze`, `/memory:shared`) have no rows at all. Additionally, the FS-Enterprises variant has a stale Research/exploration row missing the `memory_context()` unified alternative.
 
 **Key Metrics**
 - 3 target files across 2 repositories (Public, Barter)
 - 5 gaps identified and fixed
-- 7 memory commands now represented in Quick Reference tables (was 5)
+- 6 memory commands now represented in Quick Reference tables (was 5)
 - ~36 LOC total change
 <!-- /ANCHOR:problem -->
 
@@ -109,7 +109,7 @@ The three AGENTS.md governance framework files reference outdated Quick Referenc
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 3 AGENTS.md files contain 7 memory command rows in Quick Reference tables
+- **SC-001**: All 3 AGENTS.md files contain 6 memory command rows in Quick Reference tables
 - **SC-002**: Verification greps confirm all 6 checks pass
 - **SC-003**: Barter READ-ONLY git policy and FS-Enterprises stack detection table remain preserved
 <!-- /ANCHOR:success-criteria -->
@@ -122,7 +122,7 @@ The three AGENTS.md governance framework files reference outdated Quick Referenc
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Risk | Accidental removal of variant-specific rows | Medium | Verify row counts before and after edit |
-| Dependency | 012-command-alignment source of truth | Low | 7-command suite already established |
+| Dependency | 012-command-alignment source of truth | Low | 6-command suite already established |
 <!-- /ANCHOR:risks -->
 
 ---

@@ -23,7 +23,7 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft |
+| **Status** | In Progress |
 | **Created** | 2026-03-22 |
 | **Branch** | `010-template-compliance-enforcement` |
 | **Parent Spec** | ../spec.md |
@@ -40,7 +40,7 @@ contextType: "implementation"
 Agents across all 4 CLI surfaces (Claude Code, Copilot, ChatGPT, Codex) produce structurally non-compliant spec folder documents. A clean-slate rewrite of 20 spec folders (commit b88c07f82) revealed 637 header/anchor structural changes across 54 errors, requiring approximately 270 fix edits. The three dominant failure modes are TEMPLATE_HEADERS (wrong section names, numbering, or order), ANCHORS_VALID (missing, misspelled, or unclosed anchor tags), and SPEC_DOC_INTEGRITY (broken cross-file references). The current validation system runs only after files are written.
 
 ### Purpose
-Achieve 100% structural template compliance at generation time through a 2-layer defense-in-depth architecture: pre-generation contract injection and post-write validation loop. Eliminate the need for multi-wave post-hoc remediation entirely.
+Achieve 100% structural template compliance at generation time through a 2-layer enforcement architecture: pre-generation contract injection and a post-write validation loop. Core contract and directive changes are in place; end-to-end verification and closure evidence are still pending.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -106,6 +106,13 @@ Achieve 100% structural template compliance at generation time through a 2-layer
 - **SC-001**: All 5 Level 2 document types have inline structural contracts in all @speckit agent definitions (4 CLIs confirmed)
 - **SC-002**: Only 1 validation timing directive exists per agent definition (zero conflicting directives)
 - **SC-003**: A fresh Level 2 spec folder created by @speckit passes `validate.sh --strict` with exit code 0 on first generation (no post-hoc fixes needed)
+
+### Acceptance Scenarios
+
+1. **Given** a @speckit agent definition without full Level 2 contract coverage, **When** the contract injection phase runs, **Then** the file includes all required Level 2 structures plus Level 3 decision-record support.
+2. **Given** conflicting validation timing directives in an agent definition, **When** directive consolidation runs, **Then** only "validate after each file write" remains.
+3. **Given** a newly generated Level 2 spec folder, **When** strict validation executes immediately after generation, **Then** it passes without structural remediation edits.
+4. **Given** contract changes in shared templates, **When** maintainers review the shared compliance reference file, **Then** sync metadata and update guidance are present.
 <!-- /ANCHOR:success-criteria -->
 
 ---

@@ -19,7 +19,7 @@ contextType: "decision"
 
 ## EXECUTIVE SUMMARY
 
-Phase 6 is the final rollout phase for the Hydra roadmap. It introduces shared-memory spaces, deny-by-default membership policy, conflict strategies, and staged release controls, but only after graph retrieval, adaptive guardrails, and governance enforcement have all produced trustworthy evidence.
+Phase 6 documents and implements the shared-memory collaboration surfaces for Hydra. Shared-memory spaces, deny-by-default membership policy, conflict strategies, and rollout controls exist as code and documentation artifacts, but live access remains opt-in and inert by default, and the staged rollout describes development sequencing rather than an active production deployment.
 
 **Key Decisions**: keep shared memory opt-in and deny-by-default; stage rollout behind hard kill switches and governance gates.
 
@@ -33,7 +33,7 @@ Phase 6 is the final rollout phase for the Hydra roadmap. It introduces shared-m
 |-------|-------|
 | **Level** | 3+ |
 | **Priority** | P1 |
-| **Status** | Complete |
+| **Status** | In Progress |
 | **Created** | 2026-03-13 |
 | **Updated** | 2026-03-13 |
 | **Branch** | `022-hybrid-rag-fusion` |
@@ -42,11 +42,11 @@ Phase 6 is the final rollout phase for the Hydra roadmap. It introduces shared-m
 | **Phase** | 6 of 6 |
 | **Predecessor** | ../005-hierarchical-scope-governance/spec.md |
 | **Successor** | None |
-| **Handoff Criteria** | Shared spaces, membership policy, conflict handling, staged rollout, and kill switches all verified |
+| **Handoff Criteria** | Shared-space implementation is documented, but rollout claims remain pending drill artifacts and release sign-off |
 
 ### Phase Context
 
-This phase turns the roadmap into a collaboration product, but only after the platform is safe enough to share memory across actors and spaces. It must preserve strong governance while introducing rollout discipline and conflict management that operators can understand and reverse.
+This phase packages the roadmap's collaboration surfaces as code and documentation, but live shared-memory use remains opt-in and gated until the platform has evidence-backed rollback readiness. It must preserve strong governance while documenting rollout discipline and conflict management that operators can understand and reverse.
 
 **Scope Boundary**: shared-space model, membership and role policy, conflict strategy, staged rollout, and operator-facing controls. No new governance-first shortcuts or pre-release bypasses.
 
@@ -70,7 +70,7 @@ This phase turns the roadmap into a collaboration product, but only after the pl
 The roadmap aims to support cross-agent and collaborative memory, but sharing memory safely requires stronger controls than the current system provides today. Without governance, rollout discipline, and conflict handling, collaboration creates more risk than value.
 
 ### Purpose
-Launch shared memory through an opt-in, policy-guarded rollout that operators can control, observe, and reverse safely.
+Deliver shared memory as an opt-in, policy-guarded capability that operators can control, observe, and reverse safely once release evidence exists.
 <!-- /ANCHOR:problem -->
 
 ---

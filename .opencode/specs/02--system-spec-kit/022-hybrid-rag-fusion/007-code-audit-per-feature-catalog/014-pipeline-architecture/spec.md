@@ -35,6 +35,8 @@ Systematic code audit of 22 Pipeline Architecture features in the Spec Kit Memor
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
 
+Parent: 007-code-audit-per-feature-catalog
+
 ---
 
 ## 2. PROBLEM & PURPOSE

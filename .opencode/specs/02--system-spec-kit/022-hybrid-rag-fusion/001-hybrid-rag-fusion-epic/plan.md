@@ -27,7 +27,7 @@ contextType: "implementation"
 | **Testing** | Focused parent validation |
 
 ### Overview
-This pass replaces the old consolidated parent docs with a concise Level 3 packet, syncs the parent packet to the current 10-sprint subtree, and normalizes sprint-child navigation to the live folder names.
+This pass replaces the old consolidated parent docs with a concise Level 3 packet, syncs the parent packet to the live 12-child subtree, and normalizes child-packet navigation to the live folder names.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -82,10 +82,27 @@ Parent-packet documentation normalization with sprint-child navigation repair
 ### Key Components
 - **Parent docs**: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`
 - **Archival summary bundle**: `implementation-summary-sprints.md`
-- **Sprint-child packets**: `001-sprint-0-*` through `010-sprint-9-*`
+- **Child packets**: `001-sprint-0-measurement-foundation/` through `012-pre-release-fixes-alignment-preparation/`
 
 ### Data Flow
 Read live sprint subtree -> rewrite parent docs to current truth -> normalize sprint-child navigation -> validate the parent packet.
+
+### Live Child Phase Map
+
+| Phase | Folder | Status |
+|-------|--------|--------|
+| 001 | `001-sprint-0-measurement-foundation/` | Complete |
+| 002 | `002-sprint-1-graph-signal-activation/` | Complete (Conditional Proceed) |
+| 003 | `003-sprint-2-scoring-calibration/` | Complete (Conditional Proceed) |
+| 004 | `004-sprint-3-query-intelligence/` | Complete (5 PASS / 2 Conditional) |
+| 005 | `005-sprint-4-feedback-and-quality/` | Complete |
+| 006 | `006-sprint-5-pipeline-refactor/` | Implemented |
+| 007 | `007-sprint-6-indexing-and-graph/` | Implemented (Sprint 6a complete, Sprint 6b deferred) |
+| 008 | `008-sprint-7-long-horizon/` | Completed |
+| 009 | `009-sprint-8-deferred-features/` | In Progress |
+| 010 | `010-sprint-9-extra-features/` | Complete |
+| 011 | `011-research-based-refinement/` | Implemented |
+| 012 | `012-pre-release-fixes-alignment-preparation/` | In Progress |
 <!-- /ANCHOR:architecture -->
 
 ---
@@ -95,7 +112,7 @@ Read live sprint subtree -> rewrite parent docs to current truth -> normalize sp
 
 ### Phase 1: Parent Packet Truth
 - [x] Replace merged-history parent docs with concise packet docs
-- [x] Record the live 10-sprint phase map
+- [x] Record the live 12-child phase map with verbatim child status labels
 - [x] Keep the current root relationship explicit
 
 ### Phase 2: Sprint Navigation

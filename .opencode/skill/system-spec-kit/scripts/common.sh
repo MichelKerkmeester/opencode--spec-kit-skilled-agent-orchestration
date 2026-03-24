@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # ───────────────────────────────────────────────────────────────
 # SPECKIT: COMMON UTILITIES
 # ───────────────────────────────────────────────────────────────
 # Repository detection, branch management, and path resolution.
 # NOTE: lib/common.sh provides LOW-LEVEL utilities (colors, logging).
 #       This file provides HIGH-LEVEL repo/branch/path utilities.
-
-set -euo pipefail
 
 # ───────────────────────────────────────────────────────────────
 # 1. REPOSITORY ROOT DETECTION

@@ -43,8 +43,6 @@ export interface EmbeddingRetryStats {
   queueDepth: number;
 }
 
-type RetryHealthSnapshot = EmbeddingRetryStats;
-
 interface RetryResult {
   success: boolean;
   id?: number;
@@ -89,6 +87,244 @@ type RetryMemoryRow = Partial<MemoryDbRow> & Record<string, unknown> & {
 };
 
 type ContentLoader = (memory: RetryMemoryRow) => Promise<string | null>;
+type RetryQueueStatus = 'pending' | 'retry';
+
+type EmbeddingFailureCode =
+  | 'EMBEDDING_PROVIDER_ERROR'
+  | 'EMBEDDING_TIMEOUT'
+  | 'EMBEDDING_RATE_LIMIT';
+
+interface SanitizeEmbeddingFailureOptions {
+  provider?: string | null;
+  force?: boolean;
+}
+
+interface SanitizedEmbeddingFailure {
+  code: EmbeddingFailureCode | null;
+  provider: string | null;
+  errorType: string | null;
+  publicMessage: string;
+  sanitized: boolean;
+}
+
+interface RetryClaimResult {
+  claimed: boolean;
+  previousStatus: RetryQueueStatus | null;
+}
+
+function getRetryStatus(memory: RetryMemoryRow): RetryQueueStatus | null {
+  const status = typeof memory.embedding_status === 'string'
+    ? memory.embedding_status
+    : typeof memory.embeddingStatus === 'string'
+      ? memory.embeddingStatus
+      : null;
+
+  return status === 'pending' || status === 'retry' ? status : null;
+}
+
+function getRetryCountValue(memory: RetryMemoryRow): number {
+  return Number(memory.retry_count ?? memory.retryCount ?? 0) || 0;
+}
+
+function getLastRetryAtValue(memory: RetryMemoryRow): string | null {
+  const value = typeof memory.last_retry_at === 'string'
+    ? memory.last_retry_at
+    : typeof memory.lastRetryAt === 'string'
+      ? memory.lastRetryAt
+      : null;
+  return value && value.trim().length > 0 ? value : null;
+}
+
+function detectEmbeddingProviderName(source: string | null | undefined): string | null {
+  if (typeof source !== 'string' || source.trim().length === 0) {
+    return null;
+  }
+
+  const explicitProvider = source.match(/provider=([a-z0-9._-]+)/i);
+  if (explicitProvider?.[1]) {
+    return explicitProvider[1].toLowerCase();
+  }
+
+  const lower = source.toLowerCase();
+  if (lower.includes('voyage')) return 'voyage';
+  if (lower.includes('azure')) return 'azure-openai';
+  if (lower.includes('openai') || lower.includes('text-embedding')) return 'openai';
+  if (lower.includes('system')) return 'system';
+
+  return null;
+}
+
+function shouldSanitizeEmbeddingFailure(message: string): boolean {
+  const lower = message.toLowerCase();
+  return (
+    /^embedding_[a-z_]+/.test(lower) ||
+    lower.includes('openai') ||
+    lower.includes('voyage') ||
+    lower.includes('azure') ||
+    lower.includes('text-embedding') ||
+    lower.includes('rate limit') ||
+    lower.includes('too many requests') ||
+    lower.includes('429') ||
+    lower.includes('timeout') ||
+    lower.includes('timed out') ||
+    lower.includes('api key') ||
+    lower.includes('unauthorized') ||
+    lower.includes('forbidden') ||
+    lower.includes('quota') ||
+    lower.includes('embedding provider')
+  );
+}
+
+function inferEmbeddingFailure(message: string): { code: EmbeddingFailureCode; errorType: string } {
+  const explicitType = message.match(/type=([a-z0-9._-]+)/i)?.[1]?.toLowerCase();
+  const lower = message.toLowerCase();
+
+  if (lower.includes('embedding_timeout') || lower.includes('timeout') || lower.includes('timed out')) {
+    return {
+      code: 'EMBEDDING_TIMEOUT',
+      errorType: explicitType ?? 'timeout',
+    };
+  }
+
+  if (
+    lower.includes('embedding_rate_limit') ||
+    lower.includes('rate limit') ||
+    lower.includes('too many requests') ||
+    lower.includes('429')
+  ) {
+    return {
+      code: 'EMBEDDING_RATE_LIMIT',
+      errorType: explicitType ?? 'rate_limit',
+    };
+  }
+
+  if (
+    explicitType === 'auth' ||
+    lower.includes('api key') ||
+    lower.includes('unauthorized') ||
+    lower.includes('forbidden')
+  ) {
+    return {
+      code: 'EMBEDDING_PROVIDER_ERROR',
+      errorType: 'auth',
+    };
+  }
+
+  return {
+    code: 'EMBEDDING_PROVIDER_ERROR',
+    errorType: explicitType ?? 'provider_error',
+  };
+}
+
+function sanitizeEmbeddingFailure(
+  raw: unknown,
+  options: SanitizeEmbeddingFailureOptions = {},
+): SanitizedEmbeddingFailure {
+  const publicMessage = raw instanceof Error
+    ? raw.message.trim()
+    : String(raw ?? '').trim();
+
+  if (publicMessage.length === 0) {
+    return {
+      code: null,
+      provider: null,
+      errorType: null,
+      publicMessage,
+      sanitized: false,
+    };
+  }
+
+  if (!options.force && !shouldSanitizeEmbeddingFailure(publicMessage)) {
+    return {
+      code: null,
+      provider: null,
+      errorType: null,
+      publicMessage,
+      sanitized: false,
+    };
+  }
+
+  const provider = detectEmbeddingProviderName(options.provider ?? publicMessage) ?? 'unknown';
+  const { code, errorType } = inferEmbeddingFailure(publicMessage);
+
+  return {
+    code,
+    provider,
+    errorType,
+    publicMessage: `${code} (provider=${provider}, type=${errorType})`,
+    sanitized: true,
+  };
+}
+
+export function sanitizeEmbeddingFailureMessage(
+  raw: unknown,
+  options: SanitizeEmbeddingFailureOptions = {},
+): string | null {
+  const failure = sanitizeEmbeddingFailure(raw, options);
+  return failure.publicMessage.length > 0 ? failure.publicMessage : null;
+}
+
+export function sanitizeAndLogEmbeddingFailure(
+  context: string,
+  raw: unknown,
+  options: SanitizeEmbeddingFailureOptions = {},
+): string | null {
+  const failure = sanitizeEmbeddingFailure(raw, options);
+  if (failure.publicMessage.length === 0) {
+    return null;
+  }
+
+  if (failure.sanitized) {
+    console.error(context, {
+      sanitized: {
+        code: failure.code,
+        provider: failure.provider,
+        errorType: failure.errorType,
+      },
+      rawError: raw instanceof Error ? (raw.stack ?? raw.message) : String(raw),
+    });
+  }
+
+  return failure.publicMessage;
+}
+
+function claimRetryCandidate(memory: RetryMemoryRow): RetryClaimResult {
+  const db = vectorIndex.getDb();
+  const previousStatus = getRetryStatus(memory);
+  if (!db || previousStatus === null) {
+    return { claimed: false, previousStatus };
+  }
+
+  const now = new Date().toISOString();
+  const retryCount = getRetryCountValue(memory);
+  const lastRetryAt = getLastRetryAtValue(memory);
+  // Concurrency: atomic claim prevents double-processing of retry jobs
+  const result = previousStatus === 'pending'
+    ? db.prepare(`
+        UPDATE memory_index
+        SET embedding_status = 'retry',
+            last_retry_at = ?,
+            updated_at = ?
+        WHERE id = ?
+          AND embedding_status = 'pending'
+          AND retry_count = ?
+          AND ((? IS NULL AND last_retry_at IS NULL) OR last_retry_at = ?)
+      `).run(now, now, memory.id, retryCount, lastRetryAt, lastRetryAt)
+    : db.prepare(`
+        UPDATE memory_index
+        SET last_retry_at = ?,
+            updated_at = ?
+        WHERE id = ?
+          AND embedding_status = 'retry'
+          AND retry_count = ?
+          AND ((? IS NULL AND last_retry_at IS NULL) OR last_retry_at = ?)
+      `).run(now, now, memory.id, retryCount, lastRetryAt, lastRetryAt);
+
+  return {
+    claimed: result.changes > 0,
+    previousStatus,
+  };
+}
 
 /* ───────────────────────────────────────────────────────────────
    2. CONFIGURATION
@@ -117,7 +353,7 @@ let backgroundJobRunning = false;
 // In-memory retry telemetry (never persisted to DB — read by getEmbeddingRetryStats)
 let lastBackgroundRunAt: string | null = null;
 let totalRetryAttempts = 0;
-const retryHealthSnapshot: RetryHealthSnapshot = {
+const retryHealthSnapshot: EmbeddingRetryStats = {
   pending: 0,
   failed: 0,
   retryAttempts: 0,
@@ -317,7 +553,11 @@ function getEmbeddingRetryStats(): EmbeddingRetryStats {
    4. RETRY OPERATIONS
 ──────────────────────────────────────────────────────────────── */
 
-async function retryEmbedding(id: number, content: string): Promise<RetryResult> {
+async function retryEmbedding(
+  id: number,
+  content: string,
+  claimedPreviousStatus: RetryQueueStatus | null = null,
+): Promise<RetryResult> {
   const db = vectorIndex.getDb();
   if (!db) return { success: false, error: 'Database not initialized. Server may still be starting up.' };
 
@@ -326,11 +566,13 @@ async function retryEmbedding(id: number, content: string): Promise<RetryResult>
   try {
     const memory = vectorIndex.getMemory(id);
     if (!memory) return { success: false, error: 'Memory not found' };
-    const previousStatus = typeof memory.embedding_status === 'string'
-      ? memory.embedding_status
-      : typeof (memory as { embeddingStatus?: unknown }).embeddingStatus === 'string'
-        ? (memory as { embeddingStatus?: string }).embeddingStatus ?? null
-        : null;
+    const previousStatus = claimedPreviousStatus ?? (
+      typeof memory.embedding_status === 'string'
+        ? memory.embedding_status
+        : typeof (memory as { embeddingStatus?: unknown }).embeddingStatus === 'string'
+          ? (memory as { embeddingStatus?: string }).embeddingStatus ?? null
+          : null
+    );
 
     if ((memory.retry_count as number) >= MAX_RETRIES) {
       markAsFailed(id, 'Maximum retry attempts exceeded');
@@ -359,7 +601,20 @@ async function retryEmbedding(id: number, content: string): Promise<RetryResult>
         return { success: false, error: 'Embedding provider circuit breaker open — skipping API call' };
       }
 
-      embedding = await generateDocumentEmbedding(normalizedContent);
+      try {
+        embedding = await generateDocumentEmbedding(normalizedContent);
+      } catch (providerError: unknown) {
+        const sanitizedError = sanitizeAndLogEmbeddingFailure(
+          `[retry-manager] Embedding retry failed for #${id}`,
+          providerError,
+          { provider: modelId, force: true },
+        ) ?? 'EMBEDDING_PROVIDER_ERROR (provider=unknown, type=provider_error)';
+        recordProviderFailure();
+        // Security: raw provider errors sanitized before persistence/response
+        incrementRetryCount(id, sanitizedError);
+        return { success: false, error: sanitizedError };
+      }
+
       if (embedding) {
         recordProviderSuccess();
         storeEmbedding(
@@ -404,15 +659,21 @@ async function retryEmbedding(id: number, content: string): Promise<RetryResult>
       applyRetryHealthTransition(previousStatus, 'success');
       return { success: true, id, dimensions: embedding.length };
     } catch (tx_error: unknown) {
-      const message = tx_error instanceof Error ? tx_error.message : String(tx_error);
-      incrementRetryCount(id, `Transaction failed: ${message}`);
-      return { success: false, error: `Transaction failed: ${message}` };
+      // Security: raw provider errors sanitized before persistence/response
+      console.error(`[retry-manager] Transaction error for #${id}:`, tx_error instanceof Error ? tx_error.message : String(tx_error));
+      incrementRetryCount(id, 'EMBEDDING_PROVIDER_ERROR (provider=system, type=transaction_failed)');
+      return { success: false, error: 'EMBEDDING_PROVIDER_ERROR (provider=system, type=transaction_failed)' };
     }
   } catch (error: unknown) {
     recordProviderFailure();
-    const message = error instanceof Error ? error.message : String(error);
-    incrementRetryCount(id, message);
-    return { success: false, error: message };
+    // Security: raw provider errors sanitized before persistence/response
+    const sanitizedMessage = sanitizeAndLogEmbeddingFailure(
+      `[retry-manager] Unexpected retry error for #${id}`,
+      error,
+      { provider: null, force: true },
+    ) ?? 'EMBEDDING_PROVIDER_ERROR (provider=unknown, type=provider_error)';
+    incrementRetryCount(id, sanitizedMessage);
+    return { success: false, error: sanitizedMessage };
   }
 }
 
@@ -429,6 +690,8 @@ function incrementRetryCount(id: number, reason: string): void {
   }
 
   const newRetryCount = (Number(memory.retry_count) || 0) + 1;
+  // Security: raw provider errors sanitized before persistence/response
+  const persistedReason = sanitizeEmbeddingFailureMessage(reason) ?? reason;
   const previousStatus = typeof memory.embedding_status === 'string'
     ? memory.embedding_status
     : typeof (memory as { embeddingStatus?: unknown }).embeddingStatus === 'string'
@@ -446,7 +709,7 @@ function incrementRetryCount(id: number, reason: string): void {
           failure_reason = ?,
           updated_at = ?
       WHERE id = ?
-    `).run(newRetryCount, now, reason, now, id);
+    `).run(newRetryCount, now, persistedReason, now, id);
     applyRetryHealthTransition(previousStatus, 'retry');
   }
 }
@@ -459,6 +722,8 @@ function markAsFailed(id: number, reason: string): void {
   }
   const now = new Date().toISOString();
   const memory = vectorIndex.getMemory(id);
+  // Security: raw provider errors sanitized before persistence/response
+  const persistedReason = sanitizeEmbeddingFailureMessage(reason) ?? reason;
   const previousStatus = memory && typeof memory.embedding_status === 'string'
     ? memory.embedding_status
     : memory && typeof (memory as { embeddingStatus?: unknown }).embeddingStatus === 'string'
@@ -471,7 +736,7 @@ function markAsFailed(id: number, reason: string): void {
         failure_reason = ?,
         updated_at = ?
     WHERE id = ?
-  `).run(reason, now, id);
+  `).run(persistedReason, now, id);
   applyRetryHealthTransition(previousStatus, 'failed');
 }
 
@@ -523,6 +788,11 @@ async function processRetryQueue(limit = 3, contentLoader: ContentLoader | null 
   const details = results.details ?? (results.details = []);
 
   for (const memory of queue) {
+    const claim = claimRetryCandidate(memory);
+    if (!claim.claimed) {
+      continue;
+    }
+
     let content: string | null = null;
 
     if (contentLoader) {
@@ -543,7 +813,7 @@ async function processRetryQueue(limit = 3, contentLoader: ContentLoader | null 
       continue;
     }
 
-    const result = await retryEmbedding(memory.id, content);
+    const result = await retryEmbedding(memory.id, content, claim.previousStatus);
     results.processed++;
 
     if (result.success) {
@@ -666,6 +936,29 @@ async function loadContentFromFile(filePath: string): Promise<string | null> {
   }
 }
 
+async function claimAndRetryEmbedding(
+  id: number,
+  content: string,
+  expectedStatus: RetryQueueStatus = 'pending',
+): Promise<RetryResult | null> {
+  const memory = vectorIndex.getMemory(id) as RetryMemoryRow | undefined;
+  if (!memory) {
+    return { success: false, error: 'Memory not found' };
+  }
+
+  const parsedMemory = parseRow(memory);
+  if (getRetryStatus(parsedMemory) !== expectedStatus) {
+    return null;
+  }
+
+  const claim = claimRetryCandidate(parsedMemory);
+  if (!claim.claimed) {
+    return null;
+  }
+
+  return retryEmbedding(id, content, claim.previousStatus);
+}
+
 /* ───────────────────────────────────────────────────────────────
    8. EXPORTS
 ──────────────────────────────────────────────────────────────── */
@@ -676,6 +969,7 @@ export {
   getRetryStats,
   getEmbeddingRetryStats,
   retryEmbedding,
+  claimAndRetryEmbedding,
   markAsFailed,
   resetForRetry,
   processRetryQueue,

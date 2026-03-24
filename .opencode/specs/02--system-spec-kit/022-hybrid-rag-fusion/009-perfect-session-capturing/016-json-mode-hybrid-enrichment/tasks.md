@@ -5,8 +5,8 @@
 | Status | Count |
 |--------|-------|
 | Complete | 10 |
-| In Progress | 2 |
-| Planned | 3 |
+| In Progress | 1 |
+| Planned | 2 |
 
 ## P0 — Critical Tasks
 
@@ -40,5 +40,5 @@
 ## Notes
 
 - Research source: `research.md` (Round 2: 74 findings, 10-agent investigation)
-- PR1/PR2 architecture from spec 013-memory-generation-quality
+- PR1/PR2 architecture provenance retained in surviving research artifacts [Deleted — 013-memory-generation-quality was removed from the tree]
 - All 4 phase children are complete; remaining tasks are tracked at container level

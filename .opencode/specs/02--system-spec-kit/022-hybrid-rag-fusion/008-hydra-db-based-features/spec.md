@@ -19,9 +19,9 @@ contextType: "decision"
 
 ## EXECUTIVE SUMMARY
 
-This parent spec-pack now acts as the Level 3 coordination record for the delivered Hydra roadmap. It summarizes the shipped six-phase runtime, points readers to the authoritative child phase folders for detailed implementation history, and records the March 20 2026 follow-up hardening pass on top of the March 17 2026 broad verification baseline.
+This parent spec-pack now acts as the Level 3 coordination record for the Hydra roadmap code and documentation set. It summarizes the six-phase packet, points readers to the authoritative child phase folders for detailed implementation history, and records the March 20 2026 follow-up hardening pass on top of the March 17 2026 broad verification baseline without implying broader activation than the live evidence supports.
 
-**Key Decisions**: keep the root pack as a coordination layer instead of a second implementation log; document lineage and `asOf` as internal storage and integration surfaces rather than a standalone public MCP query tool; describe shared-memory rollout as shipped but live access as opt-in.
+**Key Decisions**: keep the root pack as a coordination layer instead of a second implementation log; document lineage and `asOf` as internal storage and integration surfaces rather than a standalone public MCP query tool; describe shared-memory rollout as implemented but opt-in and inert by default until a human administrator enables it.
 
 **Critical Dependencies**: the six child phase folders in this spec-pack, `decision-record.md`, the Hydra runtime modules in `mcp_server/`, the recorded 2026-03-17 verification totals, and the 2026-03-20 targeted regression rerun for governed retrieval, shared-space admin auth, and graph ranking.
 
@@ -33,7 +33,7 @@ This parent spec-pack now acts as the Level 3 coordination record for the delive
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P0 |
-| **Status** | Complete |
+| **Status** | Complete - pending external sign-off |
 | **Created** | 2026-03-13 |
 | **Updated** | 2026-03-20 |
 | **Branch** | `022-hybrid-rag-fusion` |
@@ -78,15 +78,15 @@ Keep the root Hydra pack truthful, template-aligned, and easy to audit while pre
 <!-- ANCHOR:phase-map -->
 | Phase | Folder | Scope | Status |
 |-------|--------|-------|--------|
-| 1 | `001-baseline-and-safety-rails/` | Baseline correctness, rollout defaults, checkpoints, and runtime safety rails | Complete |
-| 2 | `002-versioned-memory-state/` | Append-first lineage, active projection, and temporal resolution | Complete |
-| 3 | `003-unified-graph-retrieval/` | Deterministic graph-aware retrieval fusion and regression coverage | Complete |
+| 1 | `001-baseline-and-safety-rails/` | Baseline correctness, rollout defaults, checkpoints, and runtime safety rails | Complete - pending sign-off |
+| 2 | `002-versioned-memory-state/` | Append-first lineage, active projection, and temporal resolution | In Progress |
+| 3 | `003-unified-graph-retrieval/` | Deterministic graph-aware retrieval fusion and regression coverage | In Progress |
 | 4 | `004-adaptive-retrieval-loops/` | Bounded adaptive ranking and shadow-mode learning | Complete |
-| 5 | `005-hierarchical-scope-governance/` | Scope isolation, governed ingest, retention, deletion, and auditability | Complete |
-| 6 | `006-shared-memory-rollout/` | Shared spaces, deny-by-default membership, conflict handling, and staged rollout | Complete |
+| 5 | `005-hierarchical-scope-governance/` | Scope isolation, governed ingest, retention, deletion, and auditability | In Progress |
+| 6 | `006-shared-memory-rollout/` | Shared spaces, deny-by-default membership, conflict handling, and staged rollout | In Progress |
 <!-- /ANCHOR:phase-map -->
 
-> **Note:** "Complete" above means *code and documentation delivered*, not necessarily *active in production*. Shadow scoring (Phase 4) is disabled, `asOf` queries (Phase 2) are internal-only, and the phased rollout was a development methodology. See **§12 Current Status — Reality Check** for details.
+> **Note:** "Complete" above means *code and documentation delivered*, not necessarily *active in production*. "Complete - pending sign-off" and "In Progress" reflect the live child checklist state, including pending maintainer or external release steps. Shadow scoring (Phase 4) is disabled, `asOf` queries (Phase 2) are internal-only, and the phased rollout was a development methodology. See **§12 Current Status — Reality Check** for details.
 
 ### Representative Runtime Surfaces
 

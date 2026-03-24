@@ -27,6 +27,7 @@ import {
 } from '../lib/cognitive/pressure-monitor';
 import * as workingMemory from '../lib/cognitive/working-memory';
 import { isIdentityInRollout } from '../lib/cognitive/rollout-policy';
+import * as sessionManager from '../lib/session/session-manager';
 
 // Telemetry
 import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
@@ -135,6 +136,7 @@ interface SessionLifecycleResolution {
   resumed: boolean;
   priorMode: string | null;
   counter: number;
+  error?: string;
 }
 
 interface EffectiveModeIntentClassification {
@@ -653,16 +655,27 @@ function resolveSessionLifecycle(
 ): SessionLifecycleResolution {
   void db;
 
-  const requestedSessionId = typeof args.sessionId === 'string' && args.sessionId.trim().length > 0
-    ? args.sessionId.trim()
+  // Security: session scope derived from server context, not caller input
+  const trustedSession = sessionManager.resolveTrustedSession(args.sessionId ?? null);
+  if (trustedSession.error) {
+    return {
+      requestedSessionId: trustedSession.requestedSessionId,
+      effectiveSessionId: '',
+      resumed: false,
+      priorMode: null,
+      counter: 0,
+      error: trustedSession.error,
+    };
+  }
+
+  const requestedSessionId = trustedSession.requestedSessionId;
+  const effectiveSessionId = trustedSession.effectiveSessionId;
+  const resumed = trustedSession.trusted;
+  const priorMode = resumed
+    ? workingMemory.getSessionInferredMode(effectiveSessionId)
     : null;
-  const resumed = requestedSessionId ? workingMemory.sessionExists(requestedSessionId) : false;
-  const effectiveSessionId = requestedSessionId ?? randomUUID();
-  const priorMode = requestedSessionId
-    ? workingMemory.getSessionInferredMode(requestedSessionId)
-    : null;
-  const counter = resumed && requestedSessionId
-    ? workingMemory.getSessionEventCounter(requestedSessionId)
+  const counter = resumed
+    ? workingMemory.getSessionEventCounter(effectiveSessionId)
     : 0;
 
   return {
@@ -947,7 +960,19 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     resumed: resumedSession,
     priorMode: previousState,
     counter: eventCounterStart,
+    error: sessionScopeError,
   } = resolveSessionLifecycle(args, null);
+  if (sessionScopeError) {
+    return createMCPErrorResponse({
+      tool: 'memory_context',
+      error: sessionScopeError,
+      code: 'E_SESSION_SCOPE',
+      details: { requestId, layer: 'L1:Orchestration', requestedSessionId: args.sessionId ?? null },
+      recovery: {
+        hint: 'Retry without sessionId to let the server mint a trusted session, then reuse the returned effectiveSessionId.',
+      },
+    });
+  }
   const sessionLifecycle: SessionLifecycleMetadata = {
     sessionScope: requestedSessionId ? 'caller' : 'ephemeral',
     requestedSessionId,
@@ -1086,8 +1111,8 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     ) as ContextResult
     : result;
 
-  if (autoResumeEnabled && effectiveMode === 'resume' && requestedSessionId) {
-    const resumeContextItems = workingMemory.getSessionPromptContext(requestedSessionId, workingMemory.DECAY_FLOOR, 5);
+  if (autoResumeEnabled && effectiveMode === 'resume' && resumedSession) {
+    const resumeContextItems = workingMemory.getSessionPromptContext(effectiveSessionId, workingMemory.DECAY_FLOOR, 5);
     if (resumeContextItems.length > 0) {
       sessionLifecycle.resumedContextCount = resumeContextItems.length;
       (tracedResult0 as Record<string, unknown>).systemPromptContext = resumeContextItems.map((item) => ({
@@ -1163,7 +1188,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
         mode: effectiveMode,
         result_count: resultCount,
         result_ids: resultIds,
-        session_id: requestedSessionId,
+        session_id: effectiveSessionId,
         latency_ms: Date.now() - _contextStartTime,
         spec_folder_filter: spec_folder ?? null,
       });

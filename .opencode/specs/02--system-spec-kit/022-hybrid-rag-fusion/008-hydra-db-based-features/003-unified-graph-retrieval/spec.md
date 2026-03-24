@@ -19,7 +19,7 @@ contextType: "decision"
 
 ## EXECUTIVE SUMMARY
 
-Phase 3 unifies the current fragmented graph-related retrieval signals into one deterministic retrieval path. It combines causal, entity, and summary context with explainable scoring, graph-health metrics, and regression gates so retrieval quality improves without turning ranking behavior into a black box.
+Phase 3 implements the deterministic graph-aware retrieval path for Hydra. It combines causal, entity, and summary context with explainable scoring, graph-health metrics, and regression gates, but release readiness still depends on rollback or kill-switch drill artifacts rather than documentation alone.
 
 **Key Decisions**: integrate graph fusion inside the current MCP retrieval pipeline rather than building a separate service; make tie-break and score tracing explicit so regressions can be explained and reversed.
 
@@ -33,7 +33,7 @@ Phase 3 unifies the current fragmented graph-related retrieval signals into one 
 |-------|-------|
 | **Level** | 3+ |
 | **Priority** | P0 |
-| **Status** | Complete |
+| **Status** | In Progress |
 | **Created** | 2026-03-13 |
 | **Updated** | 2026-03-13 |
 | **Branch** | `022-hybrid-rag-fusion` |
@@ -42,7 +42,7 @@ Phase 3 unifies the current fragmented graph-related retrieval signals into one 
 | **Phase** | 3 of 6 |
 | **Predecessor** | ../002-versioned-memory-state/spec.md |
 | **Successor** | ../004-adaptive-retrieval-loops/spec.md |
-| **Handoff Criteria** | Unified graph scoring, deterministic ranking, explainability traces, and regression benchmarks verified |
+| **Handoff Criteria** | Unified graph scoring, deterministic ranking, explainability traces, and regression benchmarks are documented, but rollback drill evidence is still required before release sign-off |
 
 ### Phase Context
 

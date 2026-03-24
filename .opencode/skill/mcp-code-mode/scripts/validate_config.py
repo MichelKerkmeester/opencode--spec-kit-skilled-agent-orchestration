@@ -17,6 +17,7 @@ Usage:
     python3 validate_config.py <path-to-.utcp_config.json> --check-env <path-to-.env>
 """
 
+import argparse
 import json
 import re
 import sys
@@ -372,17 +373,21 @@ class ConfigValidator:
 
 def main() -> None:
     """Parse CLI arguments and run configuration validation."""
-    if len(sys.argv) < 2:
-        print(__doc__)
-        sys.exit(1)
+    parser = argparse.ArgumentParser(
+        description="Validate a Code Mode .utcp_config.json file."
+    )
+    parser.add_argument(
+        'config_path',
+        help="Path to .utcp_config.json",
+    )
+    parser.add_argument(
+        '--check-env',
+        dest='env_path',
+        help="Optional path to .env file for environment variable validation",
+    )
+    args = parser.parse_args()
 
-    config_path = sys.argv[1]
-    env_path = None
-
-    if len(sys.argv) >= 4 and sys.argv[2] == '--check-env':
-        env_path = sys.argv[3]
-
-    validator = ConfigValidator(config_path, env_path)
+    validator = ConfigValidator(args.config_path, args.env_path)
     success = validator.validate()
 
     sys.exit(0 if success else 1)

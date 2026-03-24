@@ -1,6 +1,6 @@
 ---
 title: "Tasks: Code Audit per Feature Catalog"
-description: "Master task list for the full code audit across 21 phase folders"
+description: "Master task list for the full code audit across 22 child folders"
 trigger_phrases:
   - "tasks"
   - "code audit"
@@ -29,8 +29,8 @@ contextType: "general"
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Create Level 3 spec folders for all 22 folders
-- [x] T002 Verify feature catalog currency — 19 categories, 220+ features confirmed
+- [x] T001 Create Level 3 spec folders for all 23 spec folders (parent + 22 children)
+- [x] T002 Verify feature catalog currency — 19 categories, 218 live features confirmed
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -38,7 +38,7 @@ contextType: "general"
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T003 Audit 001-retrieval (10 features) — 8 MATCH, 2 PARTIAL
+- [x] T003 Audit 001-retrieval (11 live features; 10 audited, 1 pending coverage sync) — 8 MATCH, 2 PARTIAL
 - [x] T004 Audit 002-mutation (10 features) — 8 MATCH, 2 PARTIAL
 - [x] T005 Audit 003-discovery (3 features) — 2 MATCH, 1 PARTIAL
 - [x] T006 Audit 004-maintenance (2 features) — 1 MATCH, 1 PARTIAL
@@ -46,9 +46,9 @@ contextType: "general"
 - [x] T008 Audit 006-analysis (7 features) — 5 MATCH, 2 PARTIAL
 - [x] T009 Audit 007-evaluation (2 features) — 1 MATCH, 1 PARTIAL
 - [x] T010 Audit 008-bug-fixes-and-data-integrity (11 features) — 9 MATCH, 2 PARTIAL
-- [x] T011 Audit 009-evaluation-and-measurement (16 features) — 12 MATCH, 4 PARTIAL
+- [x] T011 Audit 009-evaluation-and-measurement (14 features) — 11 MATCH, 3 PARTIAL
 - [x] T012 Audit 010-graph-signal-activation (16 features) — 12 MATCH, 4 PARTIAL
-- [x] T013 Audit 011-scoring-and-calibration (23 features) — 20 MATCH, 3 PARTIAL
+- [x] T013 Audit 011-scoring-and-calibration (22 features) — 20 MATCH, 2 PARTIAL
 - [x] T014 Audit 012-query-intelligence (11 features) — 8 MATCH, 3 PARTIAL
 - [x] T015 Audit 013-memory-quality-and-indexing (24 features) — 20 MATCH, 4 PARTIAL
 - [x] T016 Audit 014-pipeline-architecture (22 features) — 19 MATCH, 3 PARTIAL
@@ -66,13 +66,14 @@ contextType: "general"
 
 - [x] T022 Complete 019-decisions-and-deferrals analysis — 4 decisions, 4 deferrals, 4 deprecated modules
 - [x] T023 Complete 021-remediation-revalidation tracking — prioritized backlog documented
+- [x] T024 Inventory 022-implement-and-remove-deprecated-features under umbrella ownership — downstream child tracked
 
 ---
 
 ## Phase 4: Synthesis
 
-- [x] T024 Cross-phase dependency analysis — shared patterns identified across all phases
-- [x] T025 Master audit findings report — implementation-summary.md in all 22 folders
+- [x] T025 Cross-phase dependency analysis — shared patterns identified across all phases
+- [x] T026 Master audit findings report — implementation-summary.md in all 23 spec folders
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -80,9 +81,9 @@ contextType: "general"
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [x] All 21 phase audits complete
+- [x] All completed audit packets truth-synced to live inventories, with the remaining Retrieval gap explicitly tracked
 - [x] Cross-cutting analysis done
-- [x] Master report delivered
+- [x] Master report delivered and live child `022-implement-and-remove-deprecated-features` inventoried
 <!-- /ANCHOR:completion -->
 
 ---

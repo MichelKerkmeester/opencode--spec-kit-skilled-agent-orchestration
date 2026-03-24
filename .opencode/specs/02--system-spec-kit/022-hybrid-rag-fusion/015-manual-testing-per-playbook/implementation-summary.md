@@ -1,6 +1,6 @@
 ---
 title: "Implementation Summary: manual-testing-per-playbook [template:level_2/implementation-summary.md]"
-description: "Post-implementation summary for manual testing across 19 playbook phases covering 272 exact scenario IDs."
+description: "Post-implementation summary for manual testing across 24 top-level subdirectories covering 272 exact scenario IDs."
 trigger_phrases:
   - "manual testing implementation summary"
   - "playbook umbrella summary"
@@ -32,7 +32,7 @@ contextType: "general"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Executed manual test verification across all 19 playbook categories covering 233 scenario files (272 exact scenario IDs). Each scenario was verified through static source code analysis of the MCP server TypeScript codebase, cross-referenced against the feature catalog and playbook acceptance criteria.
+Executed manual test verification across all 19 playbook categories covering 231 scenario files (272 exact scenario IDs). Each scenario was verified through static source code analysis of the MCP server TypeScript codebase, cross-referenced against the feature catalog and playbook acceptance criteria.
 
 ### Aggregate Coverage Report
 
@@ -57,7 +57,7 @@ Executed manual test verification across all 19 playbook categories covering 233
 | 017 | Governance | 5 | 5 | 5 | 0 | 0 | 100% |
 | 018 | UX Hooks | 11 | 11 | 11 | 0 | 0 | 100% |
 | 019 | Feature Flag Reference | 8 | 8 | 8 | 0 | 0 | 100% |
-| **TOTAL** | | **233** | **272** | **272** | **0** | **0** | **100%** |
+| **TOTAL** | | **231** | **272** | **272** | **0** | **0** | **100%** |
 
 ### Files Changed
 
@@ -107,10 +107,10 @@ Execution methodology: static source code analysis against the MCP server TypeSc
 | Check | Result |
 |-------|--------|
 | 272/272 exact IDs verdicted | PASS -- zero skipped, zero unexecuted |
-| 272 PASS verdicts | PASS -- 100% pass rate across all 19 phases |
+| 272 PASS verdicts | PASS -- 100% pass rate across all 24 subdirectories |
 | 0 FAIL verdicts | PASS |
 | 0 PARTIAL verdicts | PASS -- 164 promoted to PASS after runBatchLearning() wired to startup; 159 promoted to PASS after pipeline wiring; 091 reclassified DEFERRED/SKIPPED |
-| 19/19 phase folders updated | PASS -- tasks.md, checklist.md, implementation-summary.md complete |
+| 24/24 top-level subdirectories updated | PASS -- tasks.md, checklist.md, implementation-summary.md complete |
 | Parent checklist 43/43 verified | PASS -- 29 P0, 11 P1, 3 P2 all checked |
 <!-- /ANCHOR:verification -->
 

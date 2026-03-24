@@ -142,7 +142,8 @@ export function buildIndexResult({
   }
 
   if (embeddingStatus === 'pending' && embeddingFailureReason) {
-    result.embeddingFailureReason = embeddingFailureReason;
+    // Security: raw provider errors sanitized before persistence/response
+    result.embeddingFailureReason = retryManager.sanitizeEmbeddingFailureMessage(embeddingFailureReason) ?? undefined;
     result.message = 'Memory saved with deferred indexing - searchable via BM25/FTS5';
   }
 
@@ -150,10 +151,16 @@ export function buildIndexResult({
     const memoryId = id;
     const memoryContent = parsed.content;
     setImmediate(() => {
-      retryManager.retryEmbedding(memoryId, memoryContent).catch((err: unknown) => {
-        const message = toErrorMessage(err);
-        console.warn(`[memory-save] T306: Immediate async embedding attempt failed for #${memoryId}: ${message}`);
-      });
+      retryManager.claimAndRetryEmbedding(memoryId, memoryContent, 'pending')
+        .then((retryResult) => {
+          if (retryResult && !retryResult.success && retryResult.error) {
+            console.warn(`[memory-save] T306: Immediate async embedding attempt failed for #${memoryId}: ${retryResult.error}`);
+          }
+        })
+        .catch((err: unknown) => {
+          const message = toErrorMessage(err);
+          console.warn(`[memory-save] T306: Immediate async embedding attempt failed for #${memoryId}: ${message}`);
+        });
     });
   }
 
@@ -310,7 +317,7 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
     if (result.embeddingStatus === 'pending') {
       response.message = `${response.message} (deferred indexing - searchable via BM25/FTS5)`;
       if (result.embeddingFailureReason) {
-        response.embeddingFailureReason = result.embeddingFailureReason;
+        response.embeddingFailureReason = retryManager.sanitizeEmbeddingFailureMessage(result.embeddingFailureReason);
       }
     } else if (result.embeddingStatus === 'partial') {
       // Chunked indexing result

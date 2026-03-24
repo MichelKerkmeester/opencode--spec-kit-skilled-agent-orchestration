@@ -1,6 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Rsf Fusion
 // ───────────────────────────────────────────────────────────────
+/** @module rsf-fusion - DORMANT: Not active in production. Retained for offline evaluation and future reactivation use only. */
 /**
  * @module rsf-fusion
  *
@@ -425,6 +426,7 @@ function fuseResultsRsfCrossVariant(variantLists: RankedList[][]): RsfResult[] {
 
 /* --- 6. EXPORTS --- */
 
+// @internal - dormant module exports are retained for offline evaluation and test harnesses only.
 export {
   fuseResultsRsf,
   fuseResultsRsfMulti,

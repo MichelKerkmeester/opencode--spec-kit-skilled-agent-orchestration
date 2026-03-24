@@ -1758,5 +1758,6 @@ export { stripWorkflowHtmlOutsideCodeFences } from './content-cleaner';
 
 export {
   filterTriggerPhrases,
+  releaseFilesystemLock,
   runWorkflow,
 };

@@ -19,7 +19,7 @@ contextType: "decision"
 
 ## EXECUTIVE SUMMARY
 
-Phase 2 is the first true Hydra data-plane phase. It introduces append-first memory lineage, active projection, temporal resolution semantics, and the migration/backfill contracts required to ask what was true at any point in time.
+Phase 2 is the first true Hydra data-plane phase. It implements append-first memory lineage, active projection, and temporal resolution semantics for internal storage and integration flows, while keeping `asOf` behavior internal-only rather than exposing it as a public MCP query surface. Release readiness still depends on rollback drill evidence and final sign-off.
 
 **Key Decisions**: preserve the current MCP storage architecture and extend it with lineage tables and transition contracts; separate immutable lineage history from active projection reads.
 
@@ -33,7 +33,7 @@ Phase 2 is the first true Hydra data-plane phase. It introduces append-first mem
 |-------|-------|
 | **Level** | 3+ |
 | **Priority** | P0 |
-| **Status** | Complete |
+| **Status** | In Progress |
 | **Created** | 2026-03-13 |
 | **Updated** | 2026-03-13 |
 | **Branch** | `022-hybrid-rag-fusion` |
@@ -42,7 +42,7 @@ Phase 2 is the first true Hydra data-plane phase. It introduces append-first mem
 | **Phase** | 2 of 6 |
 | **Predecessor** | ../001-baseline-and-safety-rails/spec.md |
 | **Successor** | ../003-unified-graph-retrieval/spec.md |
-| **Handoff Criteria** | Append-first lineage, active projection, `asOf` semantics, backfill coverage, and rollback drills verified |
+| **Handoff Criteria** | Append-first lineage, active projection, and `asOf` semantics are documented, but rollback drill evidence and release sign-off are still required |
 
 ### Phase Context
 

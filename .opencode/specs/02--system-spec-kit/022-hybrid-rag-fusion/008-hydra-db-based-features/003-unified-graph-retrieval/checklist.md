@@ -34,7 +34,7 @@ contextType: "general"
 - [x] CHK-301 [P1] Scope, retrieval contract, and rollback needs documented [EVIDENCE:spec.md]
 - [x] CHK-302 [P1] Dependencies on Phase 2 and Phase 4 documented [EVIDENCE:plan.md]
 - [x] CHK-303 [P1] Phase-local ADR captured [EVIDENCE:decision-record.md]
-- [x] CHK-304 [P1] Phase 2 technical gate verified [EVIDENCE:../002-versioned-memory-state/checklist.md P0 9/9; validate.sh pass]
+- [x] CHK-304 [P1] Phase 2 technical gate verified [EVIDENCE:../002-versioned-memory-state/checklist.md P0 1/1; validate.sh pass]
 
 <!-- /ANCHOR:pre-impl -->
 
@@ -58,7 +58,7 @@ contextType: "general"
 - [x] CHK-311 [P1] Deterministic tie-break coverage passes [EVIDENCE:implementation-summary.md]
 - [x] CHK-312 [P1] Explainability traces validated [EVIDENCE:implementation-summary.md]
 - [x] CHK-313 [P1] Latency and regression benchmarks pass [EVIDENCE:implementation-summary.md]
-- [x] CHK-314 [P1] Rollback or kill-switch path validated [EVIDENCE:implementation-summary.md]
+- [ ] [DEFERRED] Rollback/kill-switch drill — drill artifacts not yet produced; evidence required before release sign-off
 
 <!-- /ANCHOR:testing -->
 
@@ -106,7 +106,7 @@ contextType: "general"
 | Category | Total | Verified |
 |----------|-------|----------|
 | P0 Items | 1 | 1/1 |
-| P1 Items | 24 | 24/24 |
+| P1 Items | 24 | 23/24 |
 | P2 Items | 0 | 0/0 |
 
 **Verification Date**: 2026-03-14

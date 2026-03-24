@@ -39,6 +39,14 @@ This document combines two complementary views of the Spec Kit Memory system int
 
 Use this catalog as the canonical inventory for both current behavior and delivered refinements. The numbered sections below group the live system by capability area so operators can move from the top-level reference into the per-feature files without losing implementation, validation, or rollout context.
 
+### Audit Phase Coverage Notes (020-022)
+
+| Audit phase | Catalog coverage |
+|---|---|
+| `020-feature-flag-reference` | Covered by [`19--feature-flag-reference/`](19--feature-flag-reference/01-1-search-pipeline-features-speckit.md) via slug match (`feature-flag-reference`) |
+| `021-remediation-revalidation` | Covered as cross-category remediation records (for example: [08--bug-fixes-and-data-integrity/06](08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md), [14--pipeline-architecture/07](14--pipeline-architecture/07-search-pipeline-safety.md), [16--tooling-and-scripts/05](16--tooling-and-scripts/05-code-standards-alignment.md)) |
+| `022-implement-and-remove-deprecated-features` | Covered by implementation/deprecation closure records ([16--tooling-and-scripts/04](16--tooling-and-scripts/04-dead-code-removal.md), [17--governance/02](17--governance/02-feature-flag-sunset-audit.md)) |
+
 ### Command-Surface Contract
 
 The Spec Kit Memory MCP server exposes **33 tools** organized under **6 slash commands**. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for this matrix is the `allowed-tools` field in each command file under `.opencode/command/memory/`.

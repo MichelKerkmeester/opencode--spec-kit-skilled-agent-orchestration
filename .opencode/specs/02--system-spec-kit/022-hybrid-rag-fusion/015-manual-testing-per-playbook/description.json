@@ -1,6 +1,6 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
-  "description": "Feature Specification: manual-testing-per-playbook",
+  "description": "Umbrella packet coordinating manual testing playbook creation for all feature catalog categories.",
   "keywords": [
     "feature",
     "specification",

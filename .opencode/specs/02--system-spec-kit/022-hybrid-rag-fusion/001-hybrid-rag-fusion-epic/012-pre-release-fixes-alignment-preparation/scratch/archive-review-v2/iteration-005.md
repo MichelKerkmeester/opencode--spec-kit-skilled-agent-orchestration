@@ -26,7 +26,6 @@ D5 Cross-Reference Integrity -- Verify internal links, import paths, schema refs
 - spec.md references `research.md`, `tasks.md`, `plan.md`, `checklist.md` -- all exist in folder. PASS.
 - spec.md lists 10 raw agent reports `scratch/agent-NN-*.md` -- verified 10 files exist in scratch/. PASS.
 - plan.md references file paths with line numbers (e.g., `k-value-analysis.ts:692`, `quality-loop.ts:597`) -- these matched the pre-fix state. After implementation, the line numbers may have shifted slightly. This is expected and acceptable for historical documentation.
-- tasks.md references `013-memory-generation-quality/research.md` for T09 -- this is an external reference to a sibling spec folder. Cross-reference integrity depends on that folder existing.
 
 **Import path integrity (post-T01 fix):**
 - 18 files across scripts/ import from `@spec-kit/mcp-server/api` or its sub-paths (api/search, api/indexing, api/providers). All resolve correctly via the explicit `./api` export in package.json:8.
@@ -50,7 +49,7 @@ D5 Cross-Reference Integrity -- Verify internal links, import paths, schema refs
 - Confirmed: All @spec-kit/mcp-server imports resolve after T01 fix
 - Confirmed: TypeScript module patterns consistent (ES modules, typed error handling)
 - Contradictions: None
-- Unknowns: External reference to 013-memory-generation-quality/research.md not verified
+- Unknowns: None
 
 ## Ruled Out
 - Broken import paths: All 18 @spec-kit/mcp-server/api imports verified resolving

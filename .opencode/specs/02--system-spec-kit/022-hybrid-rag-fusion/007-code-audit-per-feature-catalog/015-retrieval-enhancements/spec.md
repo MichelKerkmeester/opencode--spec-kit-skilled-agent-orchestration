@@ -38,6 +38,8 @@ Systematic code audit of 9 Retrieval Enhancements features in the Spec Kit Memor
 | **Completed** | 2026-03-22 |
 | **Branch** | `main` |
 
+Parent: 007-code-audit-per-feature-catalog
+
 ---
 
 ## 2. PROBLEM & PURPOSE

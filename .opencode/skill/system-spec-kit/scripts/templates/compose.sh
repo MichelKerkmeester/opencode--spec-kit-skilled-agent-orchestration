@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 # ───────────────────────────────────────────────────────────────
 # SPEC-KIT: TEMPLATE COMPOSER
 # ───────────────────────────────────────────────────────────────
@@ -48,8 +49,6 @@
 #   <!-- SPECKIT_TEMPLATE_SOURCE: -->  Preserved from core
 #   <!-- SPECKIT_ADDENDUM: -->         Stripped from output
 #
-
-set -euo pipefail
 
 # ───────────────────────────────────────────────────────────────
 # 1. CONFIGURATION

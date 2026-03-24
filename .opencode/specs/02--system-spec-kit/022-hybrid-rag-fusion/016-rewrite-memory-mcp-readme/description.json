@@ -1,6 +1,6 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/016-rewrite-memory-mcp-readme",
-  "description": "Specification: 016-rewrite-memory-mcp-readme",
+  "description": "Documentation rewrite of the Memory MCP server README to reflect the current 33-tool inventory.",
   "keywords": [
     "specification",
     "016-rewrite-memory-mcp-readme"

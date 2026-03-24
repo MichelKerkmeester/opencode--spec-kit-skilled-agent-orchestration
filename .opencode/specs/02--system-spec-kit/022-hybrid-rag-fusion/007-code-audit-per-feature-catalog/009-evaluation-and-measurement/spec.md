@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: Code Audit — Evaluation and Measurement"
-description: "Systematic code audit of 16 Evaluation and Measurement features against source code to verify implementation accuracy and catalog alignment."
+description: "Systematic code audit of 14 live Evaluation and Measurement features against source code to verify implementation accuracy and catalog alignment."
 trigger_phrases:
   - "code audit"
   - "evaluation and measurement"
@@ -17,7 +17,7 @@ contextType: "general"
 
 ## EXECUTIVE SUMMARY
 
-Systematic code audit of 16 Evaluation and Measurement features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/09--evaluation-and-measurement/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.
+Systematic code audit of 14 live Evaluation and Measurement features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/09--evaluation-and-measurement/` category is verified against source code to confirm accuracy, completeness, and catalog alignment.
 
 **Key Decisions**: Audit against current feature catalog as source of truth, document findings per feature
 
@@ -40,10 +40,10 @@ Systematic code audit of 16 Evaluation and Measurement features in the Spec Kit 
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The feature catalog for Evaluation and Measurement has evolved significantly. Existing audit documentation was stale and no longer reflected the current 16-feature inventory. A fresh audit baseline is needed to verify each feature's implementation against its catalog description.
+The feature catalog for Evaluation and Measurement has evolved significantly. Existing audit documentation was stale and no longer reflected the current 14-feature inventory. This packet truth-syncs the certified live count after deprecated entries were removed from the active inventory.
 
 ### Purpose
-Verify that all 16 Evaluation and Measurement features are accurately documented in the feature catalog and correctly implemented in source code.
+Verify that all 14 live Evaluation and Measurement features are accurately documented in the feature catalog and correctly implemented in source code.
 
 ---
 
@@ -53,14 +53,12 @@ Verify that all 16 Evaluation and Measurement features are accurately documented
 - Evaluation database and schema
 - Core metric computation
 - Observer effect mitigation
-- Full-context ceiling evaluation
 - Quality proxy formula
 - Synthetic ground truth corpus
 - BM25-only baseline
 - Agent consumption instrumentation
 - Scoring observability
 - Full reporting and ablation study framework
-- Shadow scoring and channel attribution
 - Test quality improvements
 - Evaluation and housekeeping fixes
 - Cross-AI validation fixes
@@ -101,7 +99,7 @@ Verify that all 16 Evaluation and Measurement features are accurately documented
 
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 16 features audited with findings documented
+- **SC-001**: All 14 live features audited with findings documented
 - **SC-002**: Zero unverified features remaining in this category
 
 ---
@@ -142,7 +140,7 @@ Verify that all 16 Evaluation and Measurement features are accurately documented
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
-| Scope | 20/25 | Features: 16 |
+| Scope | 20/25 | Features: 14 |
 | Risk | 8/25 | Read-only audit, no breaking changes |
 | Research | 13/20 | Must trace each feature to source |
 | Multi-Agent | 5/15 | Single-phase audit |
@@ -174,14 +172,14 @@ Verify that all 16 Evaluation and Measurement features are accurately documented
 ## 12. OPEN QUESTIONS
 
 - ~~Are there undocumented features in this category not yet in the catalog?~~ Resolved: no undocumented features found.
-- ~~Have any features been deprecated since the last catalog update?~~ Resolved: F04 (ceiling-eval) is `@deprecated` but accurately documented as such; F11 (shadow-scoring channel attribution) is `@deprecated` in code but catalog still describes it as "active" — see PARTIAL finding below.
+- ~~Have any features been deprecated since the last catalog update?~~ Resolved: deprecated entries F04 and F11 are no longer part of the certified 14-feature live inventory.
 
 ---
 
 ## 13. AUDIT FINDINGS
 
 **Audit Date**: 2026-03-22
-**Result**: 12 MATCH, 4 PARTIAL — audit complete
+**Result**: 11 MATCH, 3 PARTIAL — audit complete for the 14-feature live inventory
 
 ### PARTIAL Findings
 
@@ -189,7 +187,6 @@ Verify that all 16 Evaluation and Measurement features are accurately documented
 |----|---------|-------|
 | F01 | eval-db-schema | `eval-logger.ts` is absent from the catalog's source file list despite being a primary implementation file |
 | F02 | core-metrics | Catalog states 11 metrics; source code implements 12 — MAP (Mean Average Precision) is uncounted in the catalog |
-| F11 | shadow-scoring | Catalog describes channel attribution as "active"; code marks the implementation `@deprecated` |
 | F13 | eval-housekeeping | Source file list covers only 2 of 6 actual fix locations — 4 files with housekeeping changes are unlisted |
 
 ### MATCH Findings (summary)
@@ -197,7 +194,6 @@ Verify that all 16 Evaluation and Measurement features are accurately documented
 | ID | Feature | Notes |
 |----|---------|-------|
 | F03 | observer-effect | Full match |
-| F04 | ceiling-eval | `@deprecated` flag present and accurately documented |
 | F05 | quality-proxy | Formula weights confirmed in source |
 | F06 | ground-truth | 110 queries and diversity gates confirmed |
 | F07 | bm25-baseline | Contingency matrix confirmed |
@@ -213,8 +209,8 @@ Verify that all 16 Evaluation and Measurement features are accurately documented
 
 - **F01**: Add `eval-logger.ts` to the `eval-db-schema` catalog source list
 - **F02**: Increment metric count to 12 and add MAP to the metric inventory in `core-metrics`
-- **F11**: Update `shadow-scoring` catalog to reflect `@deprecated` status for channel attribution
 - **F13**: Expand the `eval-housekeeping` source file list to cover all 6 fix locations
+- Deprecated entries F04 and F11 are now handled outside the certified live inventory and downstream removal tracking.
 
 ---
 

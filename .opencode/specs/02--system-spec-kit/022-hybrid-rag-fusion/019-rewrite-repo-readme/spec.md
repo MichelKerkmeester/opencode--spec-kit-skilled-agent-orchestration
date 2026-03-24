@@ -1,6 +1,6 @@
 ---
 title: "Rewrite Repo README"
-description: "Complete rewrite of the repository root README to provide a top-level overview of the OpenCode system: 11 agents, 18 skills, 33 MCP tools, gate system, and code mode."
+description: "Complete rewrite of the repository root README to provide a top-level overview of the OpenCode system: 12 agents, 18 skills, 40 MCP tools, gate system, and code mode."
 trigger_phrases:
   - "repo readme rewrite"
   - "019 repo readme"
@@ -23,7 +23,7 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P1 |
-| **Status** | Complete |
+| **Status** | In Progress (tasks tracker pending completion evidence) |
 | **Created** | 2026-03-15 |
 | **Branch** | `main` |
 | **Parent** | `022-hybrid-rag-fusion` (Phase 019) |
@@ -38,7 +38,7 @@ contextType: "implementation"
 
 ### Problem Statement
 
-The root README (`README.md`, ~1040 lines) tries to cover every aspect of the OpenCode system in a single document with no clear navigation path for different user types. At ~35K words, it overwhelms newcomers and frustrates power users looking for specific component references. It predates the current 18-skill, 11-agent, 33-MCP-tool system and does not reflect the gate system, code mode, or phase decomposition capabilities.
+The root README (`README.md`, ~1040 lines) tries to cover every aspect of the OpenCode system in a single document with no clear navigation path for different user types. At ~35K words, it overwhelms newcomers and frustrates power users looking for specific component references. It predates the current 18-skill, 12-agent, 40-MCP-tool system and does not reflect the gate system, code mode, or phase decomposition capabilities.
 
 ### Purpose
 
@@ -84,7 +84,7 @@ Produce a complete rewrite that serves as the top-level entry point to the OpenC
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | RR-001 | All 18 skills listed | Every skill in `.opencode/skill/` appears with name and brief description |
-| RR-002 | All 11 agents documented | Every agent definition appears with name, role, and capabilities summary |
+| RR-002 | All 12 agents documented | Every agent definition appears with name, role, and capabilities summary |
 | RR-003 | DQI >= 75 | `validate_document.py` scores at 75 or above |
 
 ### P1 - Required
@@ -104,7 +104,7 @@ Produce a complete rewrite that serves as the top-level entry point to the OpenC
 <!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
-- **SC-001**: All 18 skills and 11 agents listed with descriptions
+- **SC-001**: All 18 skills and 12 agents listed with descriptions
 - **SC-002**: DQI >= 75 with zero banned HVR words
 - **SC-003**: Three navigation paths work: newcomer, developer, administrator
 - **SC-004**: No content duplicated from component READMEs
@@ -136,7 +136,7 @@ Produce a complete rewrite that serves as the top-level entry point to the OpenC
 
 <!--
 SPEC: 019-rewrite-repo-readme
-Level 1 — Complete (2026-03-15)
+Level 1 — In Progress (tasks tracker not yet reconciled, 2026-03-24)
 Target: Complete rewrite of root README as system overview
 -->
 

@@ -33,7 +33,7 @@ contextType: "general"
 - [x] CHK-501 [P0] Scope, governance, and lifecycle requirements documented [EVIDENCE:spec.md]
 - [x] CHK-502 [P0] Dependencies on Phase 2 and Phase 6 documented [EVIDENCE:plan.md]
 - [x] CHK-503 [P1] Phase-local ADR captured [EVIDENCE:decision-record.md]
-- [x] CHK-504 [P0] Phase 2 lineage technical gate verified [EVIDENCE:../002-versioned-memory-state/checklist.md P0 9/9; validate.sh pass]
+- [x] CHK-504 [P0] Phase 2 lineage technical gate verified [EVIDENCE:../002-versioned-memory-state/checklist.md P0 1/1; validate.sh pass]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -45,7 +45,7 @@ contextType: "general"
 - [x] CHK-511 [P0] Governed ingest rejects malformed provenance [EVIDENCE:implementation-summary.md]
 - [x] CHK-512 [P0] Retention and cascade deletion workflows validated [EVIDENCE:implementation-summary.md]
 - [x] CHK-513 [P0] Audit evidence is inspectable [EVIDENCE:implementation-summary.md]
-- [x] CHK-514 [P0] Rollback and isolation drills pass [EVIDENCE:implementation-summary.md]
+- [ ] [DEFERRED] Rollback/kill-switch drill — drill artifacts not yet produced; evidence required before release sign-off
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -93,7 +93,7 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
+| P0 Items | 8 | 7/8 |
 | P1 Items | 14 | 14/14 |
 | P2 Items | 3 | 3/3 |
 

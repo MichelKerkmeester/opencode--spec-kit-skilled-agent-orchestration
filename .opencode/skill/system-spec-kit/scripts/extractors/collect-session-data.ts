@@ -359,8 +359,16 @@ function determineSessionStatus(
       || observations.some(obs => /^next\s*steps?\b/i.test(obs.title || ''));
     const isFileSource = collectedData._source === 'file';
 
+    // Correctness: unresolved nextSteps prevent completion claim
+    const hasUnresolvedNextSteps = Array.isArray(collectedData.nextSteps) &&
+      collectedData.nextSteps.length > 0;
+
     // If explicit JSON data has summary + decisions + next steps, session is complete
+    // But if there are pending nextSteps, downgrade to partial (IN_PROGRESS)
     if (isFileSource && hasSessionSummary && (hasKeyDecisions || hasNextSteps)) {
+      if (hasUnresolvedNextSteps) {
+        return 'IN_PROGRESS';
+      }
       return 'COMPLETED';
     }
   }

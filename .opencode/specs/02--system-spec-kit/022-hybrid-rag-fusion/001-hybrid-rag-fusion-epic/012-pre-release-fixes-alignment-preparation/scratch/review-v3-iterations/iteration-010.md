@@ -1,6 +1,6 @@
 # Iteration 010 Review
 
-Scope: `001-hybrid-rag-fusion-epic` parent packet, `012-pre-release-fixes-alignment-preparation`, and deleted `013-memory-generation-quality`
+Scope: `001-hybrid-rag-fusion-epic` parent packet, `012-pre-release-fixes-alignment-preparation`, and [Deleted — 013-memory-generation-quality was removed from the tree]
 
 Dimensions: `D3 Spec-Alignment` + `D5 Cross-Ref Integrity`
 
@@ -16,7 +16,7 @@ Dimensions: `D3 Spec-Alignment` + `D5 Cross-Ref Integrity`
   - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/implementation-summary.md:31`
   - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md:3`
 - Evidence: The parent packet still describes the epic as a `10`/`11`-sprint subtree only. `spec.md` repeatedly claims an "11-sprint" family and "11 live sprint folders," while the companion parent docs downgrade that to a "10-sprint subtree." None of those parent docs mention `012-pre-release-fixes-alignment-preparation`, even though that child still exists on disk and self-identifies as `Phase 12 of 022-hybrid-rag-fusion Epic`.
-- Evidence: Filesystem state under the parent currently includes `001`-`012` child directories, plus `memory`, `research`, and `scratch`; `013-memory-generation-quality` is absent from the working tree but still present as a deleted tracked path in git status.
+- Evidence: Filesystem state under the parent currently includes `001`-`012` child directories, plus `memory`, `research`, and `scratch`; the removed sibling packet is absent from the working tree and only appears as deleted tracked history.
 - Risk: Release readers get no authoritative parent-level explanation for how the epic handles its non-sprint follow-up children. That makes the current parent packet incomplete as a coordination document and leaves `013`'s disappearance undocumented.
 - Recommendation: Update the parent packet to explicitly distinguish sprint children (`001`-`011`) from non-sprint children (`012`, and either `013` if retained or a removal note if deleted). The phase map, metadata counts, and checklist/summary language should all use the same classification model.
 
@@ -32,15 +32,15 @@ Dimensions: `D3 Spec-Alignment` + `D5 Cross-Ref Integrity`
 - Risk: This is the same false-ready pattern previously flagged in v1: the packet simultaneously says `T04` is open, fully verified, and only partially delivered. That makes the release-readiness story for spec validation non-auditable.
 - Recommendation: Reconcile the three docs around one truth. Either reopen `T04` everywhere with the remaining scope, or split the delivered piece into a narrower completed task and reserve unresolved integrity/template work for a separate follow-up item.
 
-### P1-003 [P1] Deleting `013-memory-generation-quality` leaves broken cross-spec references behind
+### P1-003 [P1] Deleting the former packet leaves broken cross-spec references behind
 
 - Files:
   - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/research.md:80`
   - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/plan.md:35`
   - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/tasks.md:43`
-- Evidence: `012` still tells readers to "See `013-memory-generation-quality/research.md` for contamination map, gap analysis table, and regression test plan."
-- Evidence: `016-json-mode-hybrid-enrichment` still names `013-memory-generation-quality` as the source of the foundational `PR1/PR2` architecture in both `plan.md` and `tasks.md`.
-- Evidence: The entire `013-memory-generation-quality` folder is currently removed from the working tree and appears only as tracked deletions in git diff/status, including its `spec.md`, `tasks.md`, `research.md`, `review-report.md`, `checklist.md`, and scratch/memory artifacts.
+- Evidence: `012` still pointed readers to a removed sibling research document. [Deleted — 013-memory-generation-quality was removed from the tree]
+- Evidence: `016-json-mode-hybrid-enrichment` still named the removed sibling as the source of foundational `PR1/PR2` architecture in both `plan.md` and `tasks.md`.
+- Evidence: The entire sibling packet folder is removed from the working tree and appears only as tracked deletions in git diff/status.
 - Risk: Cross-reference integrity is now broken beyond the local epic parent: surviving docs still depend on a sibling spec folder that no longer exists, so review trails and design provenance become dangling references.
 - Recommendation: Before finalizing the deletion, either preserve the essential `013` research/ADR material in a durable surviving location and repoint the references, or keep a minimal archival stub for `013` that explains the merge/removal outcome.
 
@@ -50,10 +50,9 @@ Dimensions: `D3 Spec-Alignment` + `D5 Cross-Ref Integrity`
 |---|---|---|
 | `001-hybrid-rag-fusion-epic` parent | Drifted | Parent docs disagree on `10` vs `11` sprint children and still model the family as sprint-only. |
 | `012-pre-release-fixes-alignment-preparation` | Exists, but doc story is inconsistent | The prior `T04` contradiction remains unresolved across tasks/checklist/implementation-summary. |
-| `013-memory-generation-quality` | Deleted in git, absent from working tree | Cleanup is incomplete because live docs in `012` and `009/016` still point to it. |
 
 ## Review Summary
 
-- Files reviewed: epic parent core docs, `012` core docs, repo-wide cross-references for `013`, and git deletion state for `013`
+- Files reviewed: epic parent core docs, `012` core docs, repo-wide cross-references for the removed sibling packet, and git deletion state history
 - Overall assessment: `REQUEST_CHANGES`
-- Main blockers: parent packet omits non-sprint child accounting, `012` still has unresolved internal status drift on `T04`, and `013` deletion leaves orphaned references
+- Main blockers: parent packet omits non-sprint child accounting, and `012` still has unresolved internal status drift on `T04`

@@ -29,8 +29,8 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] All 22 spec folders created with Level 3 docs — 22 folders, 6 files each
-- [x] CHK-002 [P0] Feature catalog verified current — 19 categories, 220+ features confirmed
+- [x] CHK-001 [P0] All 23 spec folders created with Level 3 docs — parent plus 22 child folders present
+- [x] CHK-002 [P0] Feature catalog verified current — 19 categories, 218 live features confirmed
 - [x] CHK-003 [P1] Audit methodology consistent across phases — MATCH/PARTIAL/MISMATCH classification used uniformly
 <!-- /ANCHOR:pre-impl -->
 
@@ -39,7 +39,7 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-CQ1 [P0] Audit methodology consistent classification [Evidence: MATCH/PARTIAL/MISMATCH used uniformly across all 21 phases]
+- [x] CHK-CQ1 [P0] Audit methodology consistent classification [Evidence: MATCH/PARTIAL/MISMATCH used uniformly across all completed audit phases; child 022 tracked as downstream follow-up]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -47,7 +47,7 @@ contextType: "general"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-TST1 [P0] All 220+ features verified [Evidence: every feature has explicit audit status]
+- [x] CHK-TST1 [P0] Live inventory truth-synced [Evidence: 217 of 218 live features have explicit findings and the remaining Retrieval delta is called out]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -67,12 +67,13 @@ contextType: "general"
 - [x] CHK-012 [P1] Cross-phase consistency verified — uniform template and classification
 - [x] CHK-013 [P1] 019-decisions-and-deferrals complete — 4 decisions, 4 deferrals, 4 deprecated modules
 - [x] CHK-014 [P1] 021-remediation-revalidation initialized — prioritized backlog documented
+- [x] CHK-015 [P1] 022-implement-and-remove-deprecated-features inventoried under umbrella ownership — live child included in parent packet tracking
 
 ---
 
 ## Quality
 
-- [x] CHK-020 [P0] All 220+ features audited — ~179 MATCH, ~41 PARTIAL, 0 MISMATCH
+- [x] CHK-020 [P0] Live catalog totals synchronized — 178 MATCH, 39 PARTIAL, 1 pending coverage sync, 0 MISMATCH
 - [x] CHK-021 [P0] Zero features skipped without reason — every feature has explicit audit status
 - [x] CHK-022 [P1] Findings actionable and specific — each PARTIAL includes root cause and file references
 - [x] CHK-023 [P2] Recommendations prioritized — P0/P1/P2 severity in Phase 021
@@ -82,9 +83,10 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] All spec folders synchronized — spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md in all 22 folders
+- [x] CHK-040 [P1] All spec folders synchronized — spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md aligned across the parent and 22 child folders
 - [x] CHK-041 [P1] Master synthesis report delivered — parent implementation-summary.md with full results
-- [x] CHK-042 [P2] Implementation-summary.md created per phase — 22/22 folders complete
+- [x] CHK-042 [P2] Implementation-summary.md created per phase — 23/23 spec folders complete
+- [x] CHK-043 [P1] Traceability contract recorded for phases 012-022 — parent traceability section plus child parent references present
 <!-- /ANCHOR:docs -->
 
 ---
@@ -92,7 +94,7 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-FO1 [P1] All audit outputs in phase-specific folders [Evidence: 22 folders each with spec docs]
+- [x] CHK-FO1 [P1] All audit outputs in phase-specific folders [Evidence: parent packet plus 22 child folders tracked with spec docs]
 <!-- /ANCHOR:file-org -->
 
 ---
