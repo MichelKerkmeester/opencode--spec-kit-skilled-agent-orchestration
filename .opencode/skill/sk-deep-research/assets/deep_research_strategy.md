@@ -1,30 +1,84 @@
 ---
 title: Deep Research Strategy Template
-description: Strategy file template copied to scratch/ during initialization to track research progress across iterations.
+description: Runtime template copied to scratch/ during initialization to track research progress, focus decisions, and outcomes across iterations.
 ---
 
-# Research Strategy
+# Deep Research Strategy - Session Tracking Template
 
-## Topic
+Runtime template copied to `{spec_folder}/scratch/` during initialization. Tracks research progress across iterations.
+
+<!-- ANCHOR:overview -->
+## 1. Overview
+
+### Purpose
+
+Serves as the "persistent brain" for a deep research session. Records what to investigate, what worked, what failed, and where to focus next. Read by the orchestrator and agents at every iteration.
+
+### Usage
+
+- **Init:** Orchestrator copies this template to `{spec_folder}/scratch/deep-research-strategy.md` and populates Topic, Key Questions, Known Context, and Research Boundaries from config and memory context.
+- **Per iteration:** Agent reads Next Focus, updates What Worked/Failed, marks questions answered, and sets new Next Focus.
+- **Mutability:** Mutable — updated by both orchestrator and agents throughout the session.
+- **Protection:** None (shared mutable state). Orchestrator validates consistency on resume.
+
+---
+
+<!-- /ANCHOR:overview -->
+<!-- ANCHOR:topic -->
+## 2. Topic
 [Research topic from config -- set during initialization]
 
-## Key Questions (remaining)
+---
+
+<!-- /ANCHOR:topic -->
+<!-- ANCHOR:key-questions -->
+## 3. Key Questions (remaining)
 - [ ] [Question 1 -- identified during initialization or iteration 1]
 - [ ] [Question 2]
 - [ ] [Question 3]
 
-## Answered Questions
+---
+
+<!-- /ANCHOR:key-questions -->
+<!-- ANCHOR:non-goals -->
+## 4. Non-Goals
+[What this research session is NOT trying to answer -- populated during initialization]
+
+---
+
+<!-- /ANCHOR:non-goals -->
+<!-- ANCHOR:stop-conditions -->
+## 5. Stop Conditions
+[Explicit conditions beyond convergence that should end the session -- populated during initialization]
+
+---
+
+<!-- /ANCHOR:stop-conditions -->
+<!-- ANCHOR:answered-questions -->
+## 6. Answered Questions
 [None yet -- populated as iterations answer questions]
 
-## What Worked
+---
+
+<!-- /ANCHOR:answered-questions -->
+<!-- ANCHOR:what-worked -->
+## 7. What Worked
 [First iteration -- populated after iteration 1 completes]
 - [Approach]: [Why it worked] (iteration N)
 
-## What Failed
+---
+
+<!-- /ANCHOR:what-worked -->
+<!-- ANCHOR:what-failed -->
+## 8. What Failed
 [First iteration -- populated after iteration 1 completes]
 - [Approach]: [Why it failed] (iteration N)
 
-## Exhausted Approaches (do not retry)
+---
+
+<!-- /ANCHOR:what-failed -->
+<!-- ANCHOR:exhausted-approaches -->
+## 9. Exhausted Approaches (do not retry)
 [Populated when an approach has been tried from multiple angles without success]
 
 ### [Category Name] -- BLOCKED (iteration N, N attempts)
@@ -36,17 +90,39 @@ description: Strategy file template copied to scratch/ during initialization to 
 - What worked: [successful approaches in this category]
 - Prefer for: [related questions where this category may help]
 
-## Next Focus
+---
+
+<!-- /ANCHOR:exhausted-approaches -->
+<!-- ANCHOR:ruled-out-directions -->
+## 10. Ruled Out Directions
+[Approaches that were investigated and definitively eliminated -- consolidated from iteration dead-end data]
+- [Approach]: [Why ruled out] (iteration N, evidence: [source])
+
+---
+
+<!-- /ANCHOR:ruled-out-directions -->
+<!-- ANCHOR:next-focus -->
+## 11. Next Focus
 [Recommended focus area for the next iteration -- updated at end of each iteration]
 
-## Known Context
+---
+
+<!-- /ANCHOR:next-focus -->
+<!-- ANCHOR:known-context -->
+## 12. Known Context
 [Populated during initialization from memory_context() results, if any prior work exists]
 
-## Research Boundaries
+---
+
+<!-- /ANCHOR:known-context -->
+<!-- ANCHOR:research-boundaries -->
+## 13. Research Boundaries
 - Max iterations: [from config]
 - Convergence threshold: [from config]
+- Per-iteration budget: [from config.maxToolCallsPerIteration] tool calls, [from config.maxMinutesPerIteration] minutes
 - Progressive synthesis: true (default)
 - research.md ownership: workflow-owned canonical synthesis output
 - Reference-only modes: `:restart`, segment partitioning, wave pruning, checkpoint commits, alternate `claude -p` dispatch
 - Current segment: 1
 - Started: [timestamp]
+<!-- /ANCHOR:research-boundaries -->

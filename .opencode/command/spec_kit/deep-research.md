@@ -144,8 +144,8 @@ Run an iterative research loop: initialize state, dispatch `@deep-research` agen
 
 | Phase | Name | Purpose | Outputs |
 |-------|------|---------|---------|
-| Init | Initialize | Create config, strategy, state files | State files in scratch/ |
-| Loop | Iterate | Dispatch agent, evaluate, decide | iteration-NNN.md files |
+| Init | Initialize | Create config, strategy (with research charter), state files | State files in scratch/ |
+| Loop | Iterate | Dispatch agent, evaluate convergence + quality guards, generate dashboard | iteration-NNN.md files, dashboard.md |
 | Synth | Synthesize | Compile final research.md | research.md (17 sections) |
 | Save | Preserve | Save memory context | memory/*.md |
 
@@ -252,7 +252,10 @@ Key references:
 - Iterative (multi-pass) vs. single-pass research
 - Dispatches LEAF agent per iteration (fresh context each time)
 - Externalized state via JSONL + strategy files
-- Automatic convergence detection (stop when diminishing returns)
+- Automatic convergence detection with quality guards (3 binary checks before STOP)
+- Persistent dashboard auto-generated each iteration for progress tracking
+- Negative knowledge (ruled-out directions) as first-class research output
+- Research charter (non-goals, stop conditions) validated at init
 - Does NOT proceed to implementation
 
 ---

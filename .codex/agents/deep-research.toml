@@ -100,6 +100,8 @@ Perform 3-5 research actions using available tools:
 - `[SOURCE: memory:spec-folder]` for memory hits
 - `[INFERENCE: based on X and Y]` when deriving from multiple sources
 
+**Source Diversity Rule** : Aim to cite **>=2 independent sources** per key finding. The orchestrator runs quality guards before accepting convergence that check source diversity, focus alignment, and single-weak-source answers. Findings backed by only one source are flagged.
+
 #### Step 4: Write Findings
 Create `scratch/iteration-NNN.md` with this structure:
 
@@ -113,6 +115,12 @@ Create `scratch/iteration-NNN.md` with this structure:
 1. [Finding with source citation]
 2. [Finding with source citation]
 3. [Finding with source citation]
+
+## Ruled Out
+[Approaches tried this iteration that did not yield results. Document what was attempted and why it failed, so future iterations do not repeat them.]
+
+## Dead Ends
+[Paths definitively eliminated -- not just unproductive this iteration, but proven to be fundamentally unviable. These should be promoted to strategy.md "Exhausted Approaches" if not already there.]
 
 ## Sources Consulted
 - [URL or file:line reference]
@@ -146,8 +154,23 @@ Edit `scratch/deep-research-strategy.md`:
 Append ONE line to `scratch/deep-research-state.jsonl`:
 
 ```json
-{"type":"iteration","run":N,"status":"complete","focus":"[focus area]","findingsCount":N,"newInfoRatio":0.XX,"keyQuestions":["q1","q2"],"answeredQuestions":["q1"],"timestamp":"ISO-8601","durationMs":NNNNN}
+{"type":"iteration","run":N,"status":"complete","focus":"[focus area]","findingsCount":N,"newInfoRatio":0.XX,"noveltyJustification":"1-sentence explanation of newInfoRatio","keyQuestions":["q1","q2"],"answeredQuestions":["q1"],"ruledOut":["approach1","approach2"],"focusTrack":"optional-track-label","timestamp":"ISO-8601","durationMs":NNNNN}
 ```
+
+**Status values**: `complete | timeout | error | stuck | insight | thought`
+- `complete`: Normal iteration with evidence gathering and new findings
+- `timeout`: Iteration exceeded time/tool budget before finishing
+- `error`: Unrecoverable failure during iteration
+- `stuck`: No productive research avenues remain for current focus
+- `insight`: Low newInfoRatio but important conceptual breakthrough discovered (e.g., a synthesis that reframes prior findings)
+- `thought`: Analytical-only iteration with no external evidence gathering (e.g., consolidation, contradiction resolution, model-building)
+
+**Required fields** :
+- `noveltyJustification`: 1-sentence explanation of how newInfoRatio was calculated (e.g., "2 of 4 findings were new, 1 partially new")
+- `ruledOut`: Array of approaches tried and failed this iteration (may be empty `[]`)
+
+**Optional fields** :
+- `focusTrack`: Label tagging this iteration to a research track (e.g., "architecture", "performance", "security"). Useful for multi-track research where iterations alternate between topics.
 
 > **Note:** The orchestrator enriches each iteration record with optional `segment` (default: 1) and `convergenceSignals` fields after the agent writes it. The agent does not write these fields.
 
@@ -171,6 +194,9 @@ Read `scratch/deep-research-config.json` before touching `research.md`.
 - If `progressiveSynthesis == false`:
   - Do not create or update `research.md` during the iteration.
   - Leave `research.md` ownership to the synthesis phase.
+
+#### Dashboard Awareness
+The orchestrator generates a research dashboard after each iteration, summarizing progress, coverage, and convergence trends. The agent does not need to produce or update this dashboard -- it is generated automatically from the JSONL state. However, be aware that your iteration data (newInfoRatio, status, focus, ruledOut, focusTrack) feeds directly into the dashboard visualization.
 
 ---
 
@@ -322,7 +348,7 @@ Return this summary to the dispatcher after completing the iteration:
 - scratch/deep-research-strategy.md (updated)
 - research.md (updated, if applicable)
 
-**Status**: [complete | stuck | error | timeout]
+**Status**: [complete | timeout | error | stuck | insight | thought]
 ```
 
 ---

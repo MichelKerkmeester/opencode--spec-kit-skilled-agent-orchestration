@@ -84,6 +84,21 @@ One-page cheat sheet for the autonomous deep research loop.
 ---
 
 <!-- /ANCHOR:state-files -->
+<!-- ANCHOR:iteration-status-legend -->
+## Iteration Status Legend
+
+| Status | Meaning |
+|--------|---------|
+| `complete` | Normal iteration with findings |
+| `timeout` | Exceeded time/tool budget |
+| `error` | Failed to produce outputs |
+| `stuck` | No new information found |
+| `insight` | Low ratio but conceptual breakthrough |
+| `thought` | Analytical-only, no evidence |
+
+---
+
+<!-- /ANCHOR:iteration-status-legend -->
 <!-- ANCHOR:convergence-decision-tree -->
 ## Convergence Decision Tree
 
@@ -104,6 +119,8 @@ Composite convergence (3-signal weighted > 0.60)?
 
 Otherwise --> CONTINUE
 ```
+
+Quality guards (source diversity, focus alignment, no single-weak-source) must pass before STOP.
 
 ---
 

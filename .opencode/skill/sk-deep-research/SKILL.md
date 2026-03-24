@@ -4,7 +4,7 @@ description: "Autonomous deep research loop protocol with iterative investigatio
 allowed-tools: [Read, Write, Edit, Bash, Grep, Glob, Task, WebFetch, memory_context, memory_search]
 # Note: Task tool is for the command executor (loop management). The @deep-research agent itself does NOT have Task (LEAF-only).
 argument-hint: "[topic] [:auto|:confirm] [--max-iterations=N] [--convergence=N]"
-version: 1.0.0
+version: 1.1.0
 ---
 
 <!-- Keywords: autoresearch, deep-research, iterative-research, autonomous-loop, convergence-detection, externalized-state, fresh-context, research-agent, JSONL-state, strategy-file -->
@@ -139,18 +139,18 @@ User invokes: /spec_kit:deep-research "topic"
                    v
     ┌─────────────────────────────────┐
     │     YAML Loop Engine            │  Layer 2: Workflow
-    │  - Init (config, strategy)      │  Dispatch, evaluate, decide
+    │  - Init (config, strategy)       │  Dispatch, evaluate, decide
     │  - Loop (dispatch + converge)   │
-    │  - Synthesize (final output)    │
+    │  - Synthesize (final output)     │
     │  - Save (memory context)        │
     └──────────────┬──────────────────┘
                    |  dispatches per iteration
                    v
     ┌─────────────────────────────────┐
-    │    @deep-research (LEAF agent)   │  Layer 3: Agent
+    │    @deep-research (LEAF agent)  │  Layer 3: Agent
     │  - Reads: state + strategy      │  Fresh context each time
     │  - Executes ONE research cycle  │
-    │  - Writes: findings + state     │
+    │  - Writes: findings + state      │
     │  - Tools: WebFetch, Grep, etc.  │
     └──────────────┬──────────────────┘
                    |
@@ -158,10 +158,10 @@ User invokes: /spec_kit:deep-research "topic"
     ┌─────────────────────────────────┐
     │        State Files (disk)       │  Externalized State
     │  deep-research-config.json       │  Persists across iterations
-    │  deep-research-state.jsonl       │
-    │  deep-research-strategy.md       │
+    │  deep-research-state.jsonl      │
+    │  deep-research-strategy.md      │
     │  scratch/iteration-NNN.md       │
-    │  research.md (workflow-owned    │
+    │  research.md (workflow-owned     │
     │  progressive synthesis)         │
     └─────────────────────────────────┘
 ```
@@ -226,6 +226,9 @@ Save --> generate-context.js --> verify memory artifact
 7. **Cite sources** -- Every finding must cite `[SOURCE: url]` or `[SOURCE: file:line]`
 8. **Use generate-context.js for memory saves** -- Never manually create memory files
 9. **Treat research.md as workflow-owned** -- Iteration findings feed synthesis; the workflow owns the canonical `research.md`
+10. **Document ruled-out directions per iteration** -- Every iteration must include what was tried and failed
+11. **Report newInfoRatio + 1-sentence novelty justification** -- Every JSONL iteration record must include both
+12. **Quality guards must pass before convergence** -- Source diversity, focus alignment, and no single-weak-source checks must pass before STOP can trigger
 
 ### NEVER
 
@@ -236,6 +239,13 @@ Save --> generate-context.js --> verify memory artifact
 5. **Skip convergence checks** -- Every iteration must be evaluated
 6. **Modify config after init** -- Config is read-only after initialization
 7. **Overwrite prior findings** -- Append to research.md, never replace
+
+### Iteration Status Enum
+
+`complete | timeout | error | stuck | insight | thought`
+
+- `insight`: Low newInfoRatio but important conceptual breakthrough
+- `thought`: Analytical-only iteration, no evidence gathering
 
 ### EXPERIMENTAL / REFERENCE-ONLY FEATURES
 
@@ -274,6 +284,7 @@ These concepts remain documented for future design work, but they are not part o
 |----------|---------|-------|
 | [deep_research_config.json](assets/deep_research_config.json) | Loop configuration | Copied to scratch/ during init |
 | [deep_research_strategy.md](assets/deep_research_strategy.md) | Strategy file | Copied to scratch/ during init |
+| [deep_research_dashboard.md](assets/deep_research_dashboard.md) | Dashboard template | Auto-generated each iteration |
 
 ---
 
@@ -294,6 +305,7 @@ These concepts remain documented for future design work, but they are not part o
 | **Pre-loop** | Config valid, strategy initialized, state log created | Yes |
 | **Per-iteration** | iteration-NNN.md written, JSONL appended, strategy updated | Yes |
 | **Post-loop** | research.md exists with content, convergence report generated | Yes |
+| **Quality guards** | Source diversity (>=2), focus alignment, no single-weak-source | Yes |
 | **Memory save** | memory/*.md created via generate-context.js | No |
 
 ### Convergence Report

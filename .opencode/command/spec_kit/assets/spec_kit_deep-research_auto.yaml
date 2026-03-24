@@ -1,6 +1,8 @@
 # ─────────────────────────────────────────────────────────────────
 # DEEP RESEARCH: AUTONOMOUS DEEP RESEARCH LOOP (AUTO MODE)
 # ─────────────────────────────────────────────────────────────────
+# DEEP RESEARCH: AUTONOMOUS DEEP RESEARCH LOOP (AUTO MODE)
+# ─────────────────────────────────────────────────────────────────
 role: Deep Research Loop Manager
 purpose: Iterative deep research with convergence detection
 action: Run deep-research loop from initialization through synthesis
@@ -234,6 +236,11 @@ workflow:
                Redistribute weights for unavailable signals.
                if weighted_stop_score > 0.60: STOP (composite_converged)
           5. else: CONTINUE
+          6. if decision == "STOP":
+               guardResult = checkQualityGuards(state, strategy)
+               if not guardResult.passed:
+                 log: "Quality guard failed: {guardResult.violations}. Overriding STOP to CONTINUE."
+                 decision = "CONTINUE"
           See convergence.md for full pseudocode and signal definitions.
           Segment-aware convergence is experimental/reference-only; live workflow uses the current session as a single segment.
         outputs:
@@ -299,11 +306,20 @@ workflow:
           action: "Mark iteration as 'error', continue to next"
           append_jsonl: '{"type":"iteration","run":{N},"status":"error","focus":"{focus}","findingsCount":0,"newInfoRatio":0.0,"timestamp":"{ISO_8601_NOW}"}'
 
+      step_generate_dashboard:
+        action: "Generate or refresh the human-readable dashboard"
+        read:
+          - "{spec_folder}/scratch/deep-research-state.jsonl"
+          - "{spec_folder}/scratch/deep-research-strategy.md"
+        template: .opencode/skill/sk-deep-research/assets/deep_research_dashboard.md
+        output: "{spec_folder}/scratch/deep-research-dashboard.md"
+        note: "Auto-generated from JSONL + strategy. Never manually edited."
+
       step_update_tracking:
         action: "Update loop tracking variables"
         set:
           current_iteration: "{current_iteration + 1}"
-          stuck_count: "if newInfoRatio < convergence_threshold: stuck_count + 1, else: 0"
+          stuck_count: "if status == 'thought': unchanged (skip). if status == 'insight': 0 (reset). if newInfoRatio < convergence_threshold: stuck_count + 1, else: 0"
         log: "Iteration {N} complete. newInfoRatio: {newInfoRatio}. Findings: {findings_count}. Stuck count: {stuck_count}."
 
       step_loop_decision:

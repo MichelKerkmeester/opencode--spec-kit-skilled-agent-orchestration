@@ -58,21 +58,27 @@ Three independent signals each cast a stop/continue vote. Stop when weighted sto
 | Question Entropy | 0.35 | 1 | Coverage of research questions |
 
 ```
+  // Filter: exclude "thought" iterations from convergence signals
+  // Thought iterations (analytical-only, no evidence) should not affect
+  // rolling average, MAD noise floor, or stuck detection.
+  // Insight iterations ARE included — they have low ratios but are not stuck.
+  evidenceIterations = [i for i in iterations if i.status != "thought"]
+
   // Composite convergence: 3-signal weighted vote
   signals = []
   totalWeight = 0
 
-  // Signal 1: Rolling average of last N newInfoRatios
-  if len(iterations) >= 3:
-    recent = iterations[-3:]
+  // Signal 1: Rolling average of last N newInfoRatios (excludes thought)
+  if len(evidenceIterations) >= 3:
+    recent = evidenceIterations[-3:]
     avgNewInfo = mean(i.newInfoRatio for i in recent)
     rollingStop = avgNewInfo < config.convergenceThreshold
     signals.push({ name: "rollingAvg", value: avgNewInfo, stop: rollingStop, weight: 0.30 })
     totalWeight += 0.30
 
-  // Signal 2: MAD noise floor (needs 4+ data points)
-  if len(iterations) >= 4:
-    allRatios = [i.newInfoRatio for i in iterations]
+  // Signal 2: MAD noise floor (needs 4+ data points, excludes thought)
+  if len(evidenceIterations) >= 4:
+    allRatios = [i.newInfoRatio for i in evidenceIterations]
     med = median(allRatios)
     mad = median([abs(r - med) for r in allRatios])
     noiseFloor = mad * 1.4826  // consistent estimator for normal distribution
@@ -101,6 +107,59 @@ Three independent signals each cast a stop/continue vote. Stop when weighted sto
   return { action: "CONTINUE", unansweredCount: unanswered, signals }
 ```
 
+### 2.4 Quality Guard Protocol
+
+After composite convergence votes STOP but before the decision is finalized, three binary guards must pass. If any guard fails, the STOP is overridden to CONTINUE and violations are logged.
+
+| Guard | Rule | Fail Action |
+|-------|------|-------------|
+| Source Diversity | Every answered question must cite >= 2 independent sources | Block STOP, log `guard_violation` |
+| Focus Alignment | Answered questions must map to original key questions from initialization | Block STOP, log `guard_violation` |
+| No Single-Weak-Source | No answered question can rely solely on one source with `sourceStrength == "tentative"` | Block STOP, log `guard_violation` |
+
+**Checks:**
+
+- **Source Diversity**: For each question marked answered in strategy.md, count distinct sources from iteration JSONL records. Require >= 2.
+- **Focus Alignment**: Compare answered question labels against the initial key questions stored in strategy.md at initialization. Flag any answered question not in the original set.
+- **No Single-Weak-Source**: For questions answered by exactly one source, verify that source's strength is not `"tentative"`.
+
+```
+function checkQualityGuards(state, strategy):
+  violations = []
+  for q in strategy.answeredQuestions:
+    sources = collectSources(state.iterations, q)
+    if len(sources) < 2:
+      violations.push({ guard: "source_diversity", question: q })
+    if q not in strategy.originalKeyQuestions:
+      violations.push({ guard: "focus_alignment", question: q })
+    if len(sources) == 1 and sources[0].strength == "tentative":
+      violations.push({ guard: "single_weak_source", question: q })
+
+  if len(violations) > 0:
+    for v in violations:
+      appendToJSONL({ type: "event", event: "guard_violation", ...v })
+    return { passed: false, violations }
+  return { passed: true }
+```
+
+When the composite convergence returns STOP, invoke `checkQualityGuards()`. If it returns `passed: false`, override the action to CONTINUE and resume the loop. The orchestrator should target the violated questions in the next iteration's focus area.
+
+### Dead-End Coverage Signal (REFERENCE-ONLY)
+
+> **This section is REFERENCE-ONLY** — not part of the live algorithm. Included for future implementation consideration.
+
+When the proportion of identified approaches that have been either validated or eliminated reaches a high threshold, this could serve as an additional convergence signal indicating the research space has been thoroughly explored.
+
+```
+deadEndCoverage = (validated + eliminated) / totalIdentifiedApproaches
+```
+
+- `validated`: approaches that produced confirmed, well-sourced findings
+- `eliminated`: approaches explicitly marked as exhausted or fruitless
+- `totalIdentifiedApproaches`: all approaches recorded in strategy.md
+
+A threshold of 0.80 would mean 80% of known avenues have been resolved one way or another. This signal could complement the existing composite vote but is not currently wired into `shouldContinue()`.
+
 ### Graceful Degradation
 
 | Iterations Completed | Active Signals | Behavior |
@@ -117,6 +176,7 @@ Checks are evaluated in this order (first match wins):
 2. **All questions answered** (hard stop)
 3. **Stuck detection** (3+ consecutive no-progress)
 4. **Composite convergence** (3-signal weighted vote, threshold 0.60)
+4.5. **Quality guards** (binary checks — if composite says STOP but guards fail, override to CONTINUE)
 5. **Default continue** (none of the above triggered)
 
 ---
@@ -154,6 +214,14 @@ Computed by the orchestrator from JSONL records.
 function countConsecutiveStuck(iterations):
   count = 0
   for i in reversed(iterations):
+    // Skip thought iterations — they don't produce evidence, so they
+    // should neither increment nor reset the stuck counter
+    if i.status == "thought":
+      continue
+    // Insight iterations have low ratios but represent genuine progress —
+    // they reset the stuck counter rather than incrementing it
+    if i.status == "insight":
+      break
     if i.newInfoRatio < config.convergenceThreshold or i.status == "stuck":
       count += 1
     else:
@@ -164,6 +232,10 @@ function countConsecutiveStuck(iterations):
 A stuck iteration is one where:
 - `newInfoRatio < config.convergenceThreshold` (below the configured no-progress threshold)
 - OR `status == "stuck"` (agent self-reported as stuck)
+
+**Status exclusions:**
+- `insight`: Resets stuck counter (conceptual breakthrough counts as progress even with low ratio)
+- `thought`: Skipped entirely (analytical iterations don't produce evidence to measure)
 
 ### MAD Noise Score
 
@@ -203,6 +275,8 @@ function computeEntropyCoverage(strategy):
 | 0.85-1.0 | Near-complete or complete | Stop |
 
 The 0.85 threshold accounts for questions that may be unanswerable or out of scope. Research that has answered 85%+ of its questions is likely saturated.
+
+> **Source-Hygiene Note:** Tentative findings (`sourceStrength == "tentative"`) do not count toward answered-question coverage unless confirmed by an independent source in a later iteration. When computing `answered / total`, exclude any question whose only supporting evidence has tentative strength. This prevents premature convergence based on unverified or low-confidence information.
 
 ### Reading JSONL State (Fault-Tolerant)
 
@@ -258,6 +332,20 @@ Read strategy.md to understand:
 - What questions remain unanswered?
 - What has NOT been tried?
 
+### Step 1.5: Classify Failure Mode
+
+Before widening focus, diagnose the specific failure pattern to select a targeted recovery prompt.
+
+| Failure Mode | Detection | Recovery Prompt |
+|-------------|-----------|----------------|
+| Shallow sources | Last N iterations all have <= 1 source per finding | "Seek authoritative primary sources: official docs, academic papers, original implementations" |
+| Contradictory evidence | Strategy shows conflicting findings on same question | "Isolate the contradiction. Find a tiebreaker source or document both positions with evidence quality" |
+| Topic too broad | Focus area unchanged for 3+ iterations with declining ratio | "Decompose into 2-3 sub-questions. Pick the most specific one" |
+| Repetitive findings | Last 2 iterations have > 70% overlap in source URLs | "Shift to a fundamentally different source domain: if using web, try code; if using docs, try forums" |
+| Source exhaustion | All known source types consulted, no new sources found | "Declare ceiling. Document what is known and what remains unknowable from available sources" |
+
+Integrate failure classification into the selection logic (Step 2a) by checking these patterns before choosing a recovery strategy. If a failure mode is detected, prepend the corresponding recovery prompt to the dispatch message.
+
 ### Step 2: Widen Focus
 Modify the dispatch prompt to the agent:
 ```
@@ -304,20 +392,25 @@ Choose a targeted recovery strategy based on the nature of the stuck condition:
 #### Selection Logic
 
 ```
-function selectRecoveryStrategy(stuckIterations, allIterations):
+function selectRecoveryStrategy(stuckIterations, allIterations, strategy):
+  // Step 1.5: Classify failure mode first
+  failureMode = classifyFailureMode(stuckIterations, strategy)
+  if failureMode != null:
+    recoveryPrompt = failureMode.recoveryPrompt  // prepend to dispatch
+
   lastFocuses = [i.focus for i in stuckIterations[-3:]]
 
   // Same focus repeated? Try opposites
   if len(set(lastFocuses)) <= 1:
-    return "try_opposites"
+    return { strategy: "try_opposites", failureMode, recoveryPrompt }
 
   // Mid-range plateau? Combine
   recentRatios = [i.newInfoRatio for i in stuckIterations[-3:]]
   if all(config.convergenceThreshold <= r <= 0.20 for r in recentRatios):
-    return "combine_prior_findings"
+    return { strategy: "combine_prior_findings", failureMode, recoveryPrompt }
 
   // General plateau
-  return "audit_low_value"
+  return { strategy: "audit_low_value", failureMode, recoveryPrompt }
 ```
 
 ### Step 3: Evaluate Recovery

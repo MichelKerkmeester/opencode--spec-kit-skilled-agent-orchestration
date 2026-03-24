@@ -17,6 +17,7 @@ Canonical package artifacts:
 - `04--convergence-and-recovery/`
 - `05--pause-resume-and-fault-tolerance/`
 - `06--synthesis-save-and-guardrails/`
+- `07--v1.1.0-quality-and-observability/`
 
 ---
 
@@ -41,9 +42,9 @@ Canonical package artifacts:
 
 ## 1. OVERVIEW
 
-This playbook provides 19 deterministic scenarios across 6 categories validating the current `sk-deep-research` skill surface. Each scenario maps to a dedicated feature file with a realistic user request, orchestrator prompt, expected process, desired user-facing outcome, one primary 9-column execution row, and source anchors into the live skill, command, YAML, and runtime docs.
+This playbook provides 30 deterministic scenarios across 7 categories validating the current `sk-deep-research` skill surface. Each scenario maps to a dedicated feature file with a realistic user request, orchestrator prompt, expected process, desired user-facing outcome, one primary 9-column execution row, and source anchors into the live skill, command, YAML, and runtime docs.
 
-Coverage note for 2026-03-19: no `feature_catalog/` package exists under `.opencode/skill/sk-deep-research/`, and no dedicated automated test suite was found under the skill folder. This playbook therefore anchors directly to the live `sk-deep-research` docs plus the active command and runtime definitions.
+Coverage note for 2026-03-24: no `feature_catalog/` package exists under `.opencode/skill/sk-deep-research/`, and no dedicated automated test suite was found under the skill folder. This playbook therefore anchors directly to the live `sk-deep-research` docs plus the active command and runtime definitions.
 
 ### REALISTIC TEST MODEL
 
@@ -91,7 +92,7 @@ Coverage note for 2026-03-19: no `feature_catalog/` package exists under `.openc
 ### INPUTS REQUIRED
 
 1. `manual_testing_playbook.md`
-2. All 19 referenced per-feature files in the numbered category folders
+2. All 30 referenced per-feature files in the numbered category folders
 3. Command transcripts or inspection output for each executed scenario
 4. Notes for any scenario that required interpretation because behavior is documentation-defined rather than fully executable
 5. Triage notes for every non-pass outcome
@@ -188,6 +189,12 @@ Verify that partial or contradictory scratch artifacts trigger a halt for repair
 
 Feature file: [DR-006](02--initialization-and-state-setup/006-invalid-or-contradictory-state-halts-for-repair.md)
 
+### DR-027 | Research charter validated at init
+
+Verify strategy.md contains Non-Goals and Stop Conditions sections after initialization.
+
+Feature file: [DR-027](02--initialization-and-state-setup/027-research-charter-validation.md)
+
 ---
 
 ## 9. ITERATION EXECUTION AND STATE DISCIPLINE
@@ -218,6 +225,24 @@ Verify that `research.md` remains workflow-owned while progressive updates are a
 
 Feature file: [DR-010](03--iteration-execution-and-state-discipline/010-progressive-synthesis-behavior-for-research-md.md)
 
+### DR-024 | Dashboard generation after iteration
+
+Verify dashboard.md is auto-generated after iteration evaluation with correct content.
+
+Feature file: [DR-024](03--iteration-execution-and-state-discipline/024-dashboard-generation-after-iteration.md)
+
+### DR-025 | Novelty justification present in JSONL
+
+Verify every iteration JSONL record includes noveltyJustification alongside newInfoRatio.
+
+Feature file: [DR-025](03--iteration-execution-and-state-discipline/025-novelty-justification-in-jsonl.md)
+
+### DR-028 | Focus track labels in dashboard
+
+Verify optional focusTrack labels appear in JSONL and dashboard iteration table.
+
+Feature file: [DR-028](03--iteration-execution-and-state-discipline/028-focus-track-labels-in-dashboard.md)
+
 ---
 
 ## 10. CONVERGENCE AND RECOVERY
@@ -247,6 +272,42 @@ Feature file: [DR-013](04--convergence-and-recovery/013-composite-convergence-st
 Verify that stuck detection triggers a recovery path that widens focus before giving up.
 
 Feature file: [DR-014](04--convergence-and-recovery/014-stuck-recovery-widens-focus-and-continues.md)
+
+### DR-020 | Quality Guard -- Source Diversity
+
+Verify that convergence STOP is blocked when an answered question cites fewer than 2 independent sources.
+
+Feature file: [DR-020](04--convergence-and-recovery/020-quality-guard-source-diversity.md)
+
+### DR-021 | Quality Guard -- Focus Alignment
+
+Verify that convergence STOP is blocked when answered questions do not map to original key questions.
+
+Feature file: [DR-021](04--convergence-and-recovery/021-quality-guard-focus-alignment.md)
+
+### DR-022 | Quality Guard -- No Single-Weak-Source
+
+Verify that convergence STOP is blocked when an answered question relies solely on a tentative source.
+
+Feature file: [DR-022](04--convergence-and-recovery/022-quality-guard-no-single-weak-source.md)
+
+### DR-023 | Composite convergence passes but guard fails -- CONTINUE
+
+Verify the full override path: composite score >0.60 triggers STOP, guards check runs, guard fails, override to CONTINUE.
+
+Feature file: [DR-023](04--convergence-and-recovery/023-convergence-passes-guard-fails-override.md)
+
+### DR-029 | Insight status prevents false stuck detection
+
+Verify that an iteration with status "insight" does not increment stuck count despite low newInfoRatio.
+
+Feature file: [DR-029](04--convergence-and-recovery/029-insight-status-prevents-false-stuck.md)
+
+### DR-030 | Thought status handling in convergence
+
+Verify that "thought" iterations are handled correctly in convergence and do not count as stuck or toward rolling average.
+
+Feature file: [DR-030](04--convergence-and-recovery/030-thought-status-convergence-handling.md)
 
 ---
 
@@ -290,6 +351,12 @@ Verify final synthesis, supported memory save, LEAF-only agent behavior, and the
 
 Feature file: [DR-019](06--synthesis-save-and-guardrails/019-final-synthesis-memory-save-and-guardrail-behavior.md)
 
+### DR-026 | Ruled-out directions synthesized
+
+Verify that iteration ruledOut data is consolidated into an Eliminated Alternatives section in research.md.
+
+Feature file: [DR-026](06--synthesis-save-and-guardrails/026-ruled-out-directions-in-synthesis.md)
+
 ---
 
 ## 13. AUTOMATED TEST CROSS-REFERENCE
@@ -302,6 +369,6 @@ If a future automated suite is added, this section should map scenario IDs to co
 
 ## 14. FEATURE CATALOG CROSS-REFERENCE INDEX
 
-No dedicated `feature_catalog/` package exists under `.opencode/skill/sk-deep-research/` as of 2026-03-19. This playbook intentionally does not fabricate catalog links or placeholder catalog IDs.
+No dedicated `feature_catalog/` package exists under `.opencode/skill/sk-deep-research/` as of 2026-03-24. This playbook intentionally does not fabricate catalog links or placeholder catalog IDs.
 
 Until a feature catalog exists, use the live source anchors inside each per-feature file as the canonical implementation cross-reference surface.

@@ -52,6 +52,12 @@ Set up all state files for a new research session.
    - Initial key questions (3-5, from topic analysis)
    - Known context from `memory_context()` results (if any), injected only after the strategy file exists
    - Research boundaries from config
+5a. **Validate Research Charter**:
+   - Verify strategy.md contains a "Non-Goals" section (may be empty but must exist)
+   - Verify strategy.md contains a "Stop Conditions" section (may be empty but must exist)
+   - If either section is missing, append it as an empty placeholder before proceeding
+   - In **confirm mode**: present the charter (topic, key questions, non-goals, stop conditions) for user review before proceeding
+   - In **auto mode**: accept the charter automatically and continue
 6. **Resume only if config, JSONL, and strategy agree**; otherwise halt for repair instead of guessing
 
 ### Outputs
@@ -87,6 +93,18 @@ Run the convergence algorithm (see convergence.md):
 - Average newInfoRatio < threshold? STOP
 - All questions answered? STOP
 - Otherwise: CONTINUE
+
+#### Step 2c: Quality Guard Check
+
+When the convergence algorithm returns STOP:
+1. Run quality guard checks (see convergence.md §2.4)
+2. Verify minimum coverage, source diversity, and question resolution thresholds
+3. If **all guards pass**: proceed with STOP, exit to synthesis
+4. If **any guard fails**: override decision to CONTINUE
+   - Log each violation: `{"type":"event","event":"guard_violation","guard":"<name>","iteration":N,"detail":"<reason>"}`
+   - Append failed guard details to strategy.md "Active Risks" section
+5. The loop continues until BOTH convergence AND quality guards pass simultaneously
+6. Guard checks apply only to STOP decisions — CONTINUE and STUCK_RECOVERY bypass this step
 
 #### Step 2a: Check Pause Sentinel
 
@@ -140,15 +158,47 @@ Output: Write findings to {spec_folder}/scratch/iteration-{NNN}.md
 CONSTRAINT: LEAF agent -- do NOT dispatch sub-agents
 ```
 
+The dispatch context may include a suggested `focusTrack` label (e.g., `"focusTrack": "performance"`, `"focusTrack": "security"`). Agents may tag their iteration with this track label for post-hoc grouping and analysis. Track labels are metadata only — the orchestrator does not use them for loop decisions.
+
+#### Step 3a: Per-Iteration Budget
+
+After dispatch, the orchestrator monitors the running iteration against budget limits:
+- **Tool call count**: tracked against `config.maxToolCallsPerIteration` (default: 12)
+- **Elapsed time**: tracked against `config.maxMinutesPerIteration` (default: 10)
+- If either limit is exceeded and no iteration file has been written yet:
+  1. Mark the iteration as `"status": "timeout"` in the JSONL record
+  2. Log event: `{"type":"event","event":"iteration_timeout","iteration":N,"reason":"tool_calls|elapsed_time"}`
+  3. Continue to the next iteration (do not retry the timed-out iteration)
+- Budget limits are soft caps — if the agent is actively writing its iteration file when the limit is reached, allow completion
+
 #### Step 4: Evaluate Results
 After agent completes:
 1. Verify `scratch/iteration-{NNN}.md` was created
 2. Verify JSONL was appended with iteration record
 3. Verify strategy.md was updated
 4. Extract `newInfoRatio` from JSONL record
-5. Track stuck count (increment if `newInfoRatio < config.convergenceThreshold`, reset otherwise)
+5. Track stuck count: skip if `status == "thought"` (no change), reset to 0 if `status == "insight"` (breakthrough counts as progress), increment if `newInfoRatio < config.convergenceThreshold`, reset otherwise
 
-#### Step 4a: Checkpoint Commit (REFERENCE-ONLY)
+#### Step 4a: Generate Dashboard
+
+After evaluating iteration results, generate a human-readable dashboard:
+
+1. Read JSONL state log (all iteration records) and strategy.md (current state)
+2. Generate or regenerate `scratch/deep-research-dashboard.md` with the following sections:
+   - **Iteration table**: `| run | focus | newInfoRatio | findings count | status |`
+   - **Question status**: `X/Y answered` with itemized list (answered vs remaining)
+   - **Trend**: Last 3 newInfoRatio values with direction indicator (ascending, descending, flat)
+   - **Dead ends**: Consolidated from all iteration `ruledOut` data
+   - **Next focus**: Current value from strategy.md
+   - **Active risks**: Guard violations, stuck count, budget warnings
+3. Log event: `{"type":"event","event":"dashboard_generated","iteration":N}`
+4. The dashboard is **auto-generated only** — never manually edited
+5. The dashboard file is overwritten each iteration (not appended)
+6. Dashboard generation is non-blocking: if it fails, log a warning and continue the loop
+
+In **confirm mode**, the dashboard is displayed to the user at each iteration approval gate. In **auto mode**, it is written silently for post-hoc review.
+
+#### Step 4b: Checkpoint Commit (REFERENCE-ONLY)
 
 This checkpointing pattern is documented for reference, but current runtimes should not assume it is available.
 
@@ -201,9 +251,23 @@ Users can edit `research-ideas.md` between sessions to steer future iterations. 
 
 ### Stuck Recovery Protocol
 When stuckThreshold consecutive iterations show no progress (default: 3, configurable via config.json):
+
+**Step 0: Classify Failure Mode**
+Before selecting a recovery strategy, classify why progress stalled:
+1. Read the last N iteration files (where N = stuckThreshold) to determine the failure pattern
+2. Classify into one of the following modes:
+   - `shallow_sources` — iterations find content but lack depth or authoritative sources
+   - `contradictory` — iterations return conflicting information without resolution
+   - `too_broad` — focus area is too wide, producing scattered low-value findings
+   - `repetitive` — iterations keep rediscovering the same information
+   - `exhausted` — the topic area has been thoroughly explored with diminishing returns
+3. Select a targeted recovery prompt based on the classification (see convergence.md §4 for category-specific strategies)
+4. Log classification: `{"type":"event","event":"stuck_classified","mode":"<classification>","iteration":N}`
+
+**Steps 1-5: Execute Recovery**
 1. Read strategy.md "What Worked" section
 2. Identify least-explored question from "Key Questions"
-3. Set next focus to: "RECOVERY: Widen scope to {least-explored-area}. Try a fundamentally different approach."
+3. Set next focus to: "RECOVERY: Widen scope to {least-explored-area}. Try a fundamentally different approach." (refined by classification)
 4. Reset stuck counter
 5. If recovery iteration also shows no progress: exit to synthesis with gaps documented
 
@@ -359,6 +423,13 @@ Compile all iteration findings into final research.md. The synthesis workflow ow
    - Organize by section topic
    - Add citations from iteration files
    - Note unanswered questions in Section 12 (Open Questions)
+   - **Include a mandatory "## Eliminated Alternatives" section** as primary research output:
+     - Consolidate all `ruledOut` entries from iteration JSONL records
+     - Consolidate all `## Dead Ends` sections from iteration files
+     - Format as a table: `| Approach | Reason Eliminated | Evidence | Iteration(s) |`
+     - This section documents negative knowledge (what was tried and why it failed)
+     - Treat as primary research output — not an appendix or afterthought
+     - Place after Section 11 (Recommendations) and before Section 12 (Open Questions)
 4. **Update config status**: Set `status: "complete"` in config.json
 5. **Final JSONL entry**: `{"type":"event","event":"synthesis_complete","totalIterations":N,"answeredCount":A,"totalQuestions":Q,"stopReason":"converged"}`
 

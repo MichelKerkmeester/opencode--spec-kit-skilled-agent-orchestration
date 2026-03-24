@@ -1,6 +1,8 @@
 # ─────────────────────────────────────────────────────────────────
 # DEEP RESEARCH: AUTONOMOUS DEEP RESEARCH LOOP (CONFIRM MODE)
 # ─────────────────────────────────────────────────────────────────
+# DEEP RESEARCH: AUTONOMOUS DEEP RESEARCH LOOP (CONFIRM MODE)
+# ─────────────────────────────────────────────────────────────────
 role: Deep Research Loop Manager
 purpose: Iterative deep research with convergence detection and user approval gates
 action: Run deep-research loop with user confirmation at each phase transition
@@ -120,6 +122,9 @@ workflow:
         outputs:
           - session_state: "fresh | resume | completed-session | invalid-state"
         on_resume:
+          show_dashboard: "{spec_folder}/scratch/deep-research-dashboard.md"
+          ask: "Resume, restart (archive old state), or fork (new angle from current state)?"
+          options: [resume, restart, fork]
           log: "Interactive resume: existing state is consistent. Review current files before restarting the loop."
           skip_to: gate_init_approval
         on_completed_session:
@@ -254,6 +259,11 @@ workflow:
                Redistribute weights for unavailable signals.
                if weighted_stop_score > 0.60: STOP (composite_converged)
           5. else: CONTINUE
+          6. if decision == "STOP":
+               guardResult = checkQualityGuards(state, strategy)
+               if not guardResult.passed:
+                 log: "Quality guard failed: {guardResult.violations}. Overriding STOP to CONTINUE."
+                 decision = "CONTINUE"
           See convergence.md for full pseudocode and signal definitions.
           Segment-aware convergence is experimental/reference-only; live workflow uses the current session as a single segment.
         outputs:
@@ -369,11 +379,20 @@ workflow:
         on_C: { proceed_to: gate_pre_synthesis }
         on_D: { action: "Cancel workflow", status: "CANCELLED" }
 
+      step_generate_dashboard:
+        action: "Generate or refresh the human-readable dashboard"
+        read:
+          - "{spec_folder}/scratch/deep-research-state.jsonl"
+          - "{spec_folder}/scratch/deep-research-strategy.md"
+        template: .opencode/skill/sk-deep-research/assets/deep_research_dashboard.md
+        output: "{spec_folder}/scratch/deep-research-dashboard.md"
+        note: "Auto-generated from JSONL + strategy. Never manually edited."
+
       step_update_tracking:
         action: "Update loop tracking variables"
         set:
           current_iteration: "{current_iteration + 1}"
-          stuck_count: "if newInfoRatio < convergence_threshold: stuck_count + 1, else: 0"
+          stuck_count: "if status == 'thought': unchanged (skip). if status == 'insight': 0 (reset). if newInfoRatio < convergence_threshold: stuck_count + 1, else: 0"
 
       step_loop_decision:
         action: "Return to step_read_state for next iteration"

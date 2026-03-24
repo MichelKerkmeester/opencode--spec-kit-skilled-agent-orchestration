@@ -1,6 +1,7 @@
 ---
 title: sk-deep-research
 description: Autonomous deep research loop with iterative investigation, externalized state, and convergence detection
+version: 1.1.0
 ---
 
 <!-- ANCHOR:overview -->
@@ -13,16 +14,26 @@ Autonomous deep research loop that runs multi-iteration investigations with fres
 | Metric | Value |
 |--------|-------|
 | Architecture | 3-layer (Command, Workflow, Agent) |
-| State files | 5 (config, JSONL, strategy, iterations, research.md) |
-| Convergence signals | 3 (rolling avg, MAD noise, question entropy) |
+| State files | 6 (config, JSONL, strategy, dashboard, iterations, research.md) |
+| Convergence signals | 3 (rolling avg, MAD noise, question entropy) + quality guards |
 | Agent type | LEAF-only (no sub-agent dispatch) |
-| Tool budget | 8-11 per iteration (max 12) |
+| Tool budget | 8-11 per iteration (max 12, per-iteration time/tool budget) |
 
 ### Key Features
 
 - Fresh context per iteration prevents context degradation
 - Externalized state via JSONL + strategy.md for cross-iteration continuity
 - 3-signal composite convergence detection with configurable thresholds
+- Quality guards (source diversity, focus alignment, no single-weak-source) must pass before convergence STOP
+- Persistent dashboard auto-generated after each iteration for at-a-glance progress
+- Negative knowledge (ruled-out directions) tracked as first-class research output
+- Extended iteration statuses (`insight`, `thought`) prevent premature convergence on conceptual breakthroughs
+- Novelty justification required on every iteration record
+- Track labels for focus grouping and post-hoc analysis
+- Per-iteration time/tool budget enforcement
+- Research charter with explicit non-goals and stop conditions in strategy.md
+- Source-hygiene confirmation (tentative findings excluded from coverage until independently confirmed)
+- Diagnosis-led recovery with failure mode classification for stuck iterations
 - Progressive synthesis is enabled by default via `progressiveSynthesis: true`; the agent may update `research.md` incrementally and the orchestrator always finalizes it
 - Auto-resume from interrupted sessions
 - Reference-only notes cover `:restart`, segment partitioning, wave pruning, checkpoint commits, and alternate `claude -p` dispatch
@@ -61,6 +72,7 @@ sk-deep-research/
   assets/
     deep_research_config.json           # Loop configuration template
     deep_research_strategy.md           # Strategy file template
+    deep_research_dashboard.md          # Dashboard template (auto-generated each iteration)
 ```
 
 ### Runtime Path Resolution
@@ -104,7 +116,7 @@ Three independent signals cast weighted stop/continue votes:
 | MAD Noise Floor | 0.35 | 4 | Signal vs noise in newInfoRatio |
 | Question Entropy | 0.35 | 1 | Coverage of research questions |
 
-Loop stops when weighted stop-score exceeds 0.60.
+Loop stops when weighted stop-score exceeds 0.60, **but only after quality guards pass**. Three binary checks run before any convergence STOP: source diversity (>=2 distinct sources), focus alignment (iteration matched its assigned focus), and no single-weak-source reliance. If any guard fails, the STOP is overridden to CONTINUE.
 
 ### Execution Modes
 
@@ -132,9 +144,10 @@ All state files are created in `{spec_folder}/scratch/` during initialization.
 | File | Format | Mutability | Purpose |
 |------|--------|-----------|---------|
 | `deep-research-config.json` | JSON | Immutable after init | Loop parameters |
-| `deep-research-state.jsonl` | JSONL | Append-only | Structured iteration log |
-| `deep-research-strategy.md` | Markdown | Mutable | What worked/failed, next focus |
-| `iteration-NNN.md` | Markdown | Write-once | Per-iteration detailed findings |
+| `deep-research-state.jsonl` | JSONL | Append-only | Structured iteration log (includes novelty justification, track labels, ruledOut) |
+| `deep-research-strategy.md` | Markdown | Mutable | What worked/failed, next focus, non-goals, stop conditions (research charter) |
+| `deep-research-dashboard.md` | Markdown | Auto-generated | Human-readable progress summary, regenerated each iteration |
+| `iteration-NNN.md` | Markdown | Write-once | Per-iteration detailed findings (includes Ruled Out / Dead Ends sections) |
 | `research.md` | Markdown | Mutable | Workflow-owned canonical synthesis output; agent may update it incrementally when `progressiveSynthesis` is true |
 
 ### Tuning Guide
@@ -229,3 +242,23 @@ A: It is self-assessed by the agent. A simplicity bonus (+0.10) rewards iteratio
 | JSONL state | pi-autoresearch | deep-research-state.jsonl |
 | Stuck detection | AGR | Configurable consecutive-no-progress recovery |
 | Context injection | autoresearch-opencode | Strategy file as agent context |
+
+<!-- ANCHOR:version-history -->
+## 10. VERSION HISTORY
+
+### v1.1.0
+
+- **Persistent dashboard**: Auto-generated `deep-research-dashboard.md` refreshed after every iteration from JSONL + strategy data
+- **Quality guards**: 3 binary checks (source diversity, focus alignment, no single-weak-source) must pass before convergence STOP can trigger
+- **Negative knowledge**: Ruled-out directions and dead ends tracked as first-class output in iteration files and JSONL `ruledOut` field
+- **Extended iteration statuses**: `insight` (conceptual breakthrough despite low ratio) and `thought` (analytical-only, no evidence gathering) prevent premature convergence
+- **Novelty justification**: Every JSONL iteration record requires a 1-sentence explanation of what was genuinely new
+- **Track labels**: Free-form `focusTrack` labels on iterations for grouping and dashboard filtering
+- **Per-iteration time/tool budget**: Configurable budget enforcement per iteration
+- **Diagnosis-led recovery**: Failure mode classification for stuck iterations guides targeted recovery actions
+- **Research charter**: Strategy.md now includes Non-Goals and Stop Conditions sections validated at init
+- **Source-hygiene confirmation**: Tentative findings excluded from answered-question coverage until independently confirmed
+
+### v1.0.0
+
+- Initial release: 3-layer architecture, JSONL state, 3-signal composite convergence, auto/confirm modes, progressive synthesis, auto-resume

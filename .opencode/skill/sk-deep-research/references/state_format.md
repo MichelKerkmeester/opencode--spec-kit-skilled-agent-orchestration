@@ -12,13 +12,14 @@ Canonical specification for all state files used by the deep research loop.
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The deep research loop uses 5 state files to maintain continuity across fresh-context iterations:
+The deep research loop uses 6 state files to maintain continuity across fresh-context iterations:
 
 | File | Format | Purpose | Mutability |
 |------|--------|---------|------------|
 | `deep-research-config.json` | JSON | Loop parameters | Set at init, read-only after |
 | `deep-research-state.jsonl` | JSON Lines | Structured iteration log | Append-only |
 | `deep-research-strategy.md` | Markdown | Agent context ("persistent brain") | Updated each iteration |
+| `deep-research-dashboard.md` | Markdown | Auto-generated session summary | Auto-generated (read-only) |
 | `scratch/iteration-NNN.md` | Markdown | Detailed findings per iteration | Write-once |
 | `research.md` | Markdown | Workflow-owned canonical synthesis output | Updated incrementally only when `progressiveSynthesis` is enabled |
 
@@ -85,6 +86,7 @@ The config file may include a `fileProtection` map declaring mutability constrai
 | append-only | New content added at end only | Orchestrator rejects overwrite/edit |
 | mutable | Can be read, edited, overwritten | No restrictions |
 | write-once | Created once, never modified | Orchestrator rejects edits to existing |
+| auto-generated | System-managed, overwritten each refresh | Orchestrator rejects agent writes |
 
 The orchestrator validates agent outputs against these declarations before writing. If no `fileProtection` map is present, the default protections from the table above apply implicitly.
 
@@ -112,7 +114,7 @@ Append-only JSON Lines file. One JSON object per line.
 |-------|------|----------|-------------|
 | type | "config", "iteration", or "event" | Yes | Record type discriminator |
 | run | number | iteration only | 1-indexed iteration number |
-| status | string | iteration only | complete, timeout, error, stuck |
+| status | string | iteration only | complete, timeout, error, stuck, insight, thought |
 | focus | string | iteration only | What this iteration investigated |
 | findingsCount | number | iteration only | Number of distinct findings |
 | newInfoRatio | number | iteration only | Fraction of new vs redundant info (0.0-1.0) |
@@ -122,6 +124,9 @@ Append-only JSON Lines file. One JSON object per line.
 | durationMs | number | iteration only | Iteration execution time in milliseconds |
 | segment | number | No | Segment number (default: 1). Groups iterations into logical phases |
 | convergenceSignals | object | No | Composite convergence signal values (see below) |
+| ruledOut | array | No | Approaches eliminated this iteration (see Negative Knowledge below) |
+| noveltyJustification | string | No | Human-readable explanation of what newInfoRatio represents (see below) |
+| focusTrack | string | No | Post-hoc grouping label, e.g. `"browser-support"`. Not used for orchestration |
 
 ### Convergence Signal Fields
 
@@ -139,6 +144,69 @@ When the composite convergence algorithm runs (see convergence.md), signal value
 | compositeStop | number | Weighted stop score (stop if > 0.60) |
 
 All fields are optional. Omitted when fewer than 3 iterations exist (insufficient data for composite). Backward compatible: old records without this field parse normally.
+
+### Negative Knowledge (ruledOut)
+
+Iteration records may include a `ruledOut` array documenting approaches that were investigated and eliminated:
+
+```json
+{"type":"iteration","run":3,"status":"complete","focus":"Connection pooling","findingsCount":3,"newInfoRatio":0.4,"ruledOut":[{"approach":"HTTP/3 multiplexing","reason":"No server-side support in target environment","evidence":"docs.example.com/protocols#supported"}],"keyQuestions":["What causes latency?"],"answeredQuestions":[],"timestamp":"2026-03-18T10:15:00Z","durationMs":52000}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| approach | string | Yes | The approach or hypothesis that was eliminated |
+| reason | string | Yes | Why it was ruled out |
+| evidence | string | No | Source reference supporting the elimination |
+
+Iteration files (`scratch/iteration-NNN.md`) MUST include `## Ruled Out` and `## Dead Ends` sections when negative knowledge is captured. These sections feed strategy updates and prevent future iterations from re-exploring eliminated paths.
+
+### Novelty Justification
+
+The optional `noveltyJustification` field provides a human-readable breakdown of what the `newInfoRatio` represents:
+
+```json
+{"type":"iteration","run":3,"status":"complete","focus":"Reconnection strategies","findingsCount":4,"newInfoRatio":0.7,"noveltyJustification":"2 new findings on reconnection backoff, 1 refinement of prior keepalive finding","keyQuestions":["How to handle reconnection?"],"answeredQuestions":[],"timestamp":"2026-03-18T10:15:00Z","durationMs":48000}
+```
+
+This field aids post-hoc analysis and helps subsequent iterations calibrate expectations. It is not used in convergence computation.
+
+### Focus Track Labels
+
+The optional `focusTrack` field assigns a grouping label to an iteration for post-hoc analysis:
+
+```json
+{"type":"iteration","run":4,...,"focusTrack":"browser-support",...}
+```
+
+Track labels are free-form strings used for filtering and grouping in dashboards and analysis. They are not used for orchestration or convergence decisions. Multiple iterations may share the same track label.
+
+### Source Strength
+
+Iteration files may annotate individual findings with a `sourceStrength` classification:
+
+| Strength | Meaning | Convergence Impact |
+|----------|---------|-------------------|
+| `primary` | Authoritative, verified by multiple sources | Counts toward question coverage |
+| `secondary` | Corroborating evidence, supports a primary finding | Counts toward question coverage |
+| `tentative` | Single source, unverified | Does NOT count toward question coverage |
+
+In iteration file findings sections, annotate inline: `[Finding text] (sourceStrength: primary)`. In JSONL records, source strength is tracked implicitly through the `newInfoRatio` -- tentative findings contribute less to the ratio. The convergence algorithm excludes tentative-only findings when computing `entropyCoverage`.
+
+### Extended Status Values
+
+The iteration `status` field supports the following values:
+
+| Status | When to Use |
+|--------|-------------|
+| `complete` | Normal iteration that gathered evidence and produced findings |
+| `timeout` | Iteration exceeded its time budget before completing |
+| `error` | Iteration failed due to tool error, parse failure, or unexpected exception |
+| `stuck` | Iteration found no new information and no clear next direction |
+| `insight` | Low `newInfoRatio` but contains an important conceptual breakthrough worth preserving |
+| `thought` | Analytical-only iteration with reasoning or synthesis but no evidence gathering |
+
+The `insight` status prevents premature convergence when a conceptually significant iteration would otherwise trigger the stuck counter. The `thought` status marks planning or meta-reasoning iterations that should not affect convergence signals.
 
 ### Event Records
 
@@ -158,6 +226,15 @@ Events are written by the YAML workflow or diagnostics layer for lifecycle track
 | ratio_within_noise | diagnostics | active | Latest ratio fell within MAD floor | iteration, ratio, noiseFloor, timestamp |
 | segment_start | workflow | reference-only | Start of a new segment | segment, reason, timestamp |
 | synthesis_complete | workflow | active | Final synthesis finished | totalIterations, answeredCount, totalQuestions, stopReason, timestamp |
+| guard_violation | guard system | active | Research guard constraint violated | guard, question, detail, timestamp |
+
+Guard violation events are emitted when a research guard detects a quality constraint breach. The `guard` field identifies which guard fired:
+
+```json
+{"type":"event","event":"guard_violation","guard":"source_diversity","question":"Q1","detail":"Only 1 source for Q1","timestamp":"2026-03-18T10:20:00Z"}
+```
+
+Supported guard values: `source_diversity`, `focus_alignment`, `single_weak_source`. These events are informational and do not halt the loop, but the orchestrator may use them to adjust subsequent iteration focus.
 
 Additional event-specific fields may appear on the JSON line, but the table above is the canonical coverage for emitted events.
 
@@ -323,8 +400,56 @@ Progressive synthesis updated after each iteration when `progressiveSynthesis` i
 ---
 
 <!-- /ANCHOR:research-output -->
+<!-- ANCHOR:dashboard -->
+## 7. DASHBOARD (scratch/deep-research-dashboard.md)
+
+Auto-generated summary view of the research session. Never manually edited.
+
+### Location and Lifecycle
+
+- **Path**: `{spec_folder}/scratch/deep-research-dashboard.md`
+- **Generated from**: JSONL state log + strategy data only
+- **Refresh**: Regenerated after every iteration evaluation
+- **Protection**: `"deep-research-dashboard.md": "auto-generated"` in `fileProtection`
+
+### Content Sections
+
+| Section | Source | Description |
+|---------|--------|-------------|
+| Iteration Table | JSONL iteration records | Run, status, focus, newInfoRatio, findings count, duration |
+| Question Status | Strategy + JSONL | Each key question with answered/open status and coverage % |
+| Convergence Trend | JSONL convergenceSignals | Rolling average, composite stop score, trajectory |
+| Dead Ends | JSONL ruledOut + strategy | Accumulated ruled-out approaches with reasons |
+| Next Focus | Strategy file | Current recommended direction for next iteration |
+| Source Diversity | JSONL + iteration files | Source count per question, tentative vs primary breakdown |
+
+### Generation Rules
+
+1. Read `deep-research-state.jsonl` and `deep-research-strategy.md` as sole inputs
+2. Compute all derived values (coverage %, trend direction) from raw data
+3. Overwrite the entire file on each refresh (not append)
+4. If JSONL is missing or empty, write a minimal dashboard noting "No iteration data available"
+5. The dashboard is read-only for all agents -- modifications are discarded on next refresh
+
+### File Protection
+
+Add to the config `fileProtection` map:
+
+```json
+{
+  "fileProtection": {
+    "deep-research-dashboard.md": "auto-generated"
+  }
+}
+```
+
+The `auto-generated` protection level means the file is system-managed and overwritten by the orchestrator. Agent writes are rejected.
+
+---
+
+<!-- /ANCHOR:dashboard -->
 <!-- ANCHOR:file-location-summary -->
-## 7. FILE LOCATION SUMMARY
+## 8. FILE LOCATION SUMMARY
 
 ```
 {spec_folder}/
@@ -333,6 +458,7 @@ Progressive synthesis updated after each iteration when `progressiveSynthesis` i
     deep-research-config.json           # Loop configuration
     deep-research-state.jsonl           # Structured iteration log
     deep-research-strategy.md           # Agent context / persistent brain
+    deep-research-dashboard.md          # Auto-generated session summary (read-only)
     iteration-001.md                   # Iteration 1 findings
     iteration-002.md                   # Iteration 2 findings
     ...
