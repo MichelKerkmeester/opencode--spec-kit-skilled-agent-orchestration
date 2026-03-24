@@ -8,7 +8,7 @@ description: Template for the auto-generated dashboard file regenerated after ev
 Auto-generated from JSONL state log and strategy file. Regenerated after every iteration evaluation. Never manually edited.
 
 <!-- ANCHOR:overview -->
-## 1. Overview
+## 1. OVERVIEW
 
 ### Purpose
 
@@ -28,7 +28,7 @@ Provides a compact, human-readable summary of the current research session. Serv
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:status -->
-## 2. Status
+## 2. STATUS
 - Topic: [from config]
 - Started: [from config.createdAt]
 - Status: [ITERATING | CONVERGING | STUCK_RECOVERY | COMPLETE]
@@ -38,7 +38,7 @@ Provides a compact, human-readable summary of the current research session. Serv
 
 <!-- /ANCHOR:status -->
 <!-- ANCHOR:progress -->
-## 3. Progress
+## 3. PROGRESS
 
 | # | Focus | Track | Ratio | Findings | Status |
 |---|-------|-------|-------|----------|--------|
@@ -48,7 +48,7 @@ Provides a compact, human-readable summary of the current research session. Serv
 
 <!-- /ANCHOR:progress -->
 <!-- ANCHOR:questions -->
-## 4. Questions
+## 4. QUESTIONS
 - Answered: [X/Y]
 - [x] Q1: [summary] (iteration N)
 - [ ] Q2: [remaining]
@@ -57,7 +57,7 @@ Provides a compact, human-readable summary of the current research session. Serv
 
 <!-- /ANCHOR:questions -->
 <!-- ANCHOR:trend -->
-## 5. Trend
+## 5. TREND
 - Last 3 ratios: [0.XX -> 0.XX -> 0.XX] [improving | stable | declining]
 - Stuck count: [N]
 - Guard violations: [none | list]
@@ -66,20 +66,20 @@ Provides a compact, human-readable summary of the current research session. Serv
 
 <!-- /ANCHOR:trend -->
 <!-- ANCHOR:dead-ends -->
-## 6. Dead Ends
+## 6. DEAD ENDS
 - [approach]: [reason] (iteration N)
 
 ---
 
 <!-- /ANCHOR:dead-ends -->
 <!-- ANCHOR:next-focus -->
-## 7. Next Focus
+## 7. NEXT FOCUS
 [from strategy.md "Next Focus" section]
 
 ---
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:active-risks -->
-## 8. Active Risks
+## 8. ACTIVE RISKS
 - [guard violations, high stuck count, declining trend, etc.]
 <!-- /ANCHOR:active-risks -->
