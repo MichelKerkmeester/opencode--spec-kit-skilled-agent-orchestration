@@ -1,256 +1,69 @@
-# Review Iteration 4: LEAF Agent Design & Dispatch Protocol
+# Iteration 4: Q3 Convergence Threshold Validation
 
 ## Focus
-Q4: Should review mode use @review, create @deep-review, or adapt @deep-research dispatch context?
+Validate whether the current review-mode convergence logic still behaves correctly after the Q2 simplification from 7 review dimensions to 4, using replay data from the real review runs in spec `012` and spec `013` plus the archived v1 threshold proposals. [SOURCE: .opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/scratch/deep-research-strategy.md:28-32] [SOURCE: .opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/scratch/deep-research-strategy.md:62] [SOURCE: .opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/scratch/archive-research-v1/iteration-002.md:89-220]
+
+## Replay Method
+1. Replayed the actual `newFindingsRatio` sequences from the completed review runs in spec `012` and spec `013`. [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/scratch/deep-research-state.jsonl:2-8] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/013-memory-generation-quality/scratch/deep-research-state.jsonl:2-6]
+2. Replayed the live review-mode contract exactly as currently documented: `convergenceThreshold = 0.10`, `stuckThreshold = 2`, rolling stop at `< 0.08`, MAD weight `0.25`, dimension coverage weight `0.45`, and stop score `> 0.60`. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml:31-34] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml:193-198] [SOURCE: .opencode/skill/sk-deep-research/references/convergence.md:681-737] [SOURCE: .opencode/skill/sk-deep-research/references/quick_reference.md:236-280]
+3. Ran the replay twice per dataset: once with the current 7-dimension coverage accounting, and once with the Q2 simplified 4-dimension mapping (`correctness`, `security`, `traceability`, `maintainability`). This 4-dimension replay is an inference from the Q2 mapping already recorded in strategy. [SOURCE: .opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/scratch/deep-research-strategy.md:62]
+4. Tested threshold-only variants, then tested one structural variant: delay the coverage stop vote until one post-coverage stabilization pass has occurred.
 
 ## Findings
+1. The current review-mode thresholds were never empirically calibrated; they were carried forward from archived v1 proposal work. v1 recommended rolling stop at `0.08`, 100% dimension coverage, and heavier emphasis on coverage than MAD, while a later v1 synthesis still described a reused `convergenceThreshold = 0.10`. That means the current contract already mixes at least two proposal layers rather than one validated baseline. [SOURCE: .opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/scratch/archive-research-v1/iteration-002.md:91-109] [SOURCE: .opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/scratch/archive-research-v1/iteration-002.md:166-220] [SOURCE: .opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/scratch/archive-research-v1/iteration-005.md:92-99]
+2. Replaying the live 7-dimension contract against the real runs produces plausible stop behavior, but it also exposes a tension in spec `012`: run 5 is a clean combined pass at `0.0`, yet run 6 still finds a real late P2 at `0.06`. Under the current 7-dimension contract this does not prematurely STOP at run 5 because only `6/7` dimensions are covered there, and run 6 records the late documentation-quality finding `P2-010`. [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/scratch/deep-research-state.jsonl:6-8] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/scratch/iteration-006.md:22-23] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/scratch/iteration-006.md:57-60]
+3. The 4-dimension simplification changes convergence behavior materially even when the ratios stay identical. In spec `012`, collapsing `spec-alignment`, `completeness`, and `cross-ref-integrity` into `traceability`, and collapsing `patterns` plus `documentation-quality` into `maintainability`, makes the unchanged algorithm hit full coverage one iteration earlier. That causes a false STOP at run 5 because rolling average, MAD, and coverage all vote stop simultaneously. This is the core empirical regression introduced by the reduced taxonomy. [SOURCE: .opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/scratch/deep-research-strategy.md:62] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/scratch/deep-research-state.jsonl:5-7]
+4. Threshold-only refits are insufficient for the simplified model. Once spec `012` reaches 4/4 simplified dimensions at run 5, the live stop conditions all align: `rollingAvg = 0.05`, latest ratio is within the MAD floor, and coverage is already `1.0`. Changing only `rolling` or only the consensus threshold cannot prevent that early STOP without also delaying the correct run-4 STOP in spec `013`. This is an inference from the replay grid, not a literal repo fact. [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/scratch/deep-research-state.jsonl:5-7] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/013-memory-generation-quality/scratch/deep-research-state.jsonl:4-6] [SOURCE: .opencode/skill/sk-deep-research/references/convergence.md:702-737]
+5. The smallest calibrated change that fits both real runs is structural, not purely numeric: let dimension coverage vote STOP only after one post-coverage stabilization pass, and decouple stuck/no-progress from rolling stop. With `rollingAvg < 0.08` preserved, a dedicated no-progress threshold of `0.05`, and coverage only voting stop after one additional pass beyond first full coverage, spec `012` continues through run 5 and stops at run 6, while spec `013` still stops at run 4. That keeps the simplification without losing the late-finding behavior visible in `012`. [SOURCE: .opencode/skill/sk-deep-research/references/convergence.md:681-737] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/scratch/deep-research-state.jsonl:5-8] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/013-memory-generation-quality/scratch/deep-research-state.jsonl:4-6]
 
-### Part 1: Agent Strategy Evaluation (3 Options)
+## Proposed Calibration
+### Recommended replay harness
+- Use a deterministic JSONL replay over completed review sessions as the first validation layer. Inputs should be: iteration order, `newFindingsRatio`, `findingsCount`, per-iteration dimensions completed, and final synthesis reason. That is enough to regression-test convergence behavior without inventing synthetic data too early. [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/scratch/deep-research-state.jsonl:2-8] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/013-memory-generation-quality/scratch/deep-research-state.jsonl:2-6]
+- Seed the replay corpus with both archived v1 proposal cases and real review runs, but treat the real runs as the calibration target and the v1 archive as prior-art context only. [SOURCE: .opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/scratch/archive-research-v1/iteration-002.md:91-220]
 
-**Recommendation: Option B — create a new `@deep-review` LEAF agent.**
+### Thresholds and gates to keep
+- Keep rolling-stop threshold at `< 0.08`. The real runs do not provide evidence that this specific cutoff is the failure mode. [SOURCE: .opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/scratch/archive-research-v1/iteration-002.md:93-110] [SOURCE: .opencode/skill/sk-deep-research/references/convergence.md:702-707]
+- Keep composite consensus threshold at `> 0.60`. The replay regression comes from coverage arriving earlier, not from the vote threshold itself. [SOURCE: .opencode/skill/sk-deep-research/references/convergence.md:732-737]
+- Keep MAD weight reduced relative to research mode; the real runs still use it effectively as a late-pass confirmation signal in spec `013`. [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/013-memory-generation-quality/scratch/deep-research-state.jsonl:5-6] [SOURCE: .opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/scratch/archive-research-v1/iteration-002.md:166-171]
 
-The current review agents are explicitly read-only and limited to `Read/Bash/Grep/Glob`, while the deep-research agents are explicitly iteration-writers that update strategy and JSONL state; the loop YAML also already assumes that writable contract. Key anchors: `review.md:24`, `review.toml:3` (sandbox_mode = "read-only"), `deep-research.md:27`, `deep-research.toml:3` (sandbox_mode = "workspace-write"), `spec_kit_deep-research_auto.yaml:262` (step_dispatch_iteration).
+### Thresholds and gates to change
+- Split the current overloaded `convergenceThreshold` concept into:
+  - `rollingStopThreshold = 0.08`
+  - `noProgressThreshold = 0.05` for stuck counting only
 
-#### Option A: Reuse @review as LEAF in deep-research loop
-
-- **Gap**: It is contractually read-only and only exposes `Read/Bash/Grep/Glob`; scratch-only `Write` is not enough because review iterations also need `Edit` on strategy and append semantics for JSONL. See `review.md:4`, `review.md:24`, `review.md:76`.
-- It can learn JSONL/strategy management technically, but only by weakening the current reviewer identity from "observe only" to "observe plus mutate state."
-- **Needed changes**: add `Write` and `Edit`, redefine "read-only" to "read-only on review target, writable on state files," and switch Codex from `read-only` to `workspace-write`.
-- **Pros**: lowest file-count increase, strongest reuse of existing review rubric/self-check.
-- **Cons**: muddies the meaning of `@review`, raises risk of accidental target-file edits, and makes gate review and iteration review harder to distinguish.
-
-#### Option B: Create new @deep-review LEAF agent
-
-- Hybrid composition works well.
-- **Take from @review**: rubric, P0/P1/P2 severity, gate-validation posture, overlay loading, output verification, Hunter/Skeptic/Referee. See `review.md:94`, `review.md:107`, `review.md:357`.
-- **Take from @deep-research**: single-iteration loop shape, state-first workflow, write safety, append-only JSONL, strategy updates, LEAF-only rule, budget discipline. See `deep-research.md:45`, `deep-research.md:152`, `deep-research.md:283`.
-- **Maintenance burden**: moderate, because it means one more agent definition across the 5 runtimes, but the current runtime files are already near-isomorphic so drift is manageable.
-- **Suggested outline**:
-  1. Identity and permissions
-  2. Single review-iteration workflow
-  3. Capability scan
-  4. Review rubric and severity contract
-  5. State management and write safety
-  6. Iteration file format
-  7. Adversarial self-check
-  8. Output verification and anti-patterns
-- **Pros**: architecturally clean, easiest to reason about, preserves `@review` purity, easiest YAML dispatch target.
-- **Cons**: extra agent surface to maintain.
-
-#### Option C: Mode-switch @deep-research via dispatch context
-
-- **Best case**: fastest prototype. Enrich the YAML dispatch payload with review scope, dimension, thresholds, and self-check instructions.
-- **Risk**: the underlying agent still says "research-focused," assumes 3-5 research actions, includes `WebFetch`, and discusses `research.md`, so the dispatch is fighting the base contract instead of extending it. See `deep-research.md:23`, `deep-research.md:50`, `deep-research.md:199`.
-- Clean mode switch would require explicit `MODE: review` branches inside the agent contract. If you do not change the agent file, this stays brittle.
-- **Pros**: fastest MVP, smallest immediate file diff.
-- **Cons**: hidden behavior, weaker review fidelity, higher chance of research-style output in review mode.
-
-#### Final Recommendation
-
-- **Permanent architecture**: Option B.
-- **Fast spike only**: Option C.
-- Avoid Option A.
-
----
-
-### Part 2: Tool Budget for Review Iterations
-
-Proposed default budget: `9-12` total calls, hard max `13`.
-
-**Suggested split:**
-- `2` state reads: JSONL + strategy.
-- `1-2` scope/cross-reference discovery calls.
-- `3-4` evidence calls: mostly `Read`/`Grep`, sometimes `Glob`.
-- `3` state writes: iteration file, strategy update, JSONL append.
-- `0-1` extra verification call when a candidate P0 or gate-relevant P1 appears.
-
-**Dimension tuning:**
-- Security: `10-13`.
-- Correctness: `9-12`.
-- Performance: `9-11`.
-- Patterns/Maintainability: `8-10`.
-
-Vary budget by dimension. Security and correctness usually need more cross-file verification than patterns or maintainability.
-
----
-
-### Part 3: Dispatch Context Template
-
-```text
-REVIEW ITERATION {current_iteration} of {max_iterations}
-MODE: review
-DIMENSION: {dimension_focus}
-REVIEW TARGET: {review_scope}
-TARGET BASELINE: {changed_files_or_explicit_scope}
-PRIOR FINDINGS: P0={prior_p0} P1={prior_p1} P2={prior_p2}; unresolved={unresolved_ids}
-LAST ITERATIONS: {last_3_summaries}
-CROSS-REFERENCE TARGETS:
-- Spec: {spec_paths}
-- Code: {code_paths}
-- Tests: {test_paths}
-- Prior strategy focus: {next_focus}
-SCORING RUBRIC: Correctness=30 Security=25 Patterns=20 Maintainability=15 Performance=10
-SEVERITY THRESHOLDS:
-- P0: exploitable security flaw, auth bypass, destructive data-loss/regression
-- P1: correctness bug, spec mismatch, missing guard, must-fix gate issue
-- P2: non-blocking maintainability/pattern/perf improvement
-STATE FILES:
-- Config: {spec_folder}/scratch/deep-review-config.json
-- State Log: {spec_folder}/scratch/deep-review-state.jsonl
-- Strategy: {spec_folder}/scratch/deep-review-strategy.md
-OUTPUT CONTRACT:
-- Write {spec_folder}/scratch/iteration-{NNN}.md
-- Edit strategy.md
-- Append one JSONL iteration record
-CONSTRAINTS:
-- LEAF-only; no sub-agents
-- Review target is read-only
-- Write/Edit only state artifacts
-- Run Hunter/Skeptic/Referee for candidate P0s and gate-relevant P1s
-- Target 9-12 tool calls; max 13
-```
-
-**Field purpose:**
-- `DIMENSION`: tells the leaf where to spend its limited budget.
-- `REVIEW TARGET`: exact code/files under review.
-- `PRIOR FINDINGS`: dedupe and carry-forward control.
-- `CROSS-REFERENCE TARGETS`: what must be checked against what.
-- `SCORING RUBRIC`: keeps scoring stable across iterations.
-- `SEVERITY THRESHOLDS`: prevents severity drift.
-- `STATE FILES`: authoritative read/write boundary.
-- `OUTPUT CONTRACT`: artifact contract for the evaluator.
-- `CONSTRAINTS`: permission and budget guardrails.
-
----
-
-### Part 4: Iteration File Format for Review
-
-```markdown
-# Review Iteration 003: Security - auth boundary
-
-## Focus
-Verify whether auth-sensitive handlers in `src/api/*` match `spec.md` admin-only requirements.
-
-## Scope
-- Review target: `src/api/users.ts`, `src/auth/policy.ts`
-- Spec refs: `spec.md`, `plan.md`
-- Dimension: Security
-
-## Scorecard
-| File | Corr | Sec | Patt | Maint | Perf | Total |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| src/api/users.ts | 24 | 14 | 17 | 12 | 8 | 75 |
-| src/auth/policy.ts | 28 | 22 | 18 | 13 | 9 | 90 |
-
-## Findings
-
-### P1-001: Missing authorization check on admin delete path
-- Dimension: Security
-- Evidence: [SOURCE: src/api/users.ts:118]
-- Cross-reference: [SOURCE: spec.md:44]
-- Impact: Non-admin callers can reach a code path the spec marks admin-only.
-- Hunter: Candidate P0 because access control is missing.
-- Skeptic: Route may already be protected upstream in middleware.
-- Referee: Downgrade to P1 because middleware exists for most routes, but this handler bypasses the shared wrapper.
-- Final severity: P1
-
-### P2-002: Inline policy string duplicates canonical enum
-- Dimension: Patterns
-- Evidence: [SOURCE: src/auth/policy.ts:27]
-- Cross-reference: [SOURCE: src/auth/constants.ts:8]
-- Impact: Drift risk, not an immediate defect.
-- Final severity: P2
-
-## Cross-Reference Results
-- Confirmed: admin-only requirement exists in spec and is only partially enforced in code.
-- Contradictions: none beyond P1-001.
-- Unknowns: integration tests do not cover this path.
+  The live config currently reuses `0.10` for convergence/no-progress bookkeeping, but spec `012` shows a real late finding at `0.06`; treating that as "no progress" is too aggressive once the taxonomy is simplified. [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml:34] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml:197-198] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/scratch/deep-research-state.jsonl:7]
+- Replace `coverage >= 1.0` as an immediate stop vote with `coverage >= 1.0 AND coverageAge >= 1`. In other words: first full-coverage pass proves breadth; the next pass proves stability. This is the calibration that resolves the 4-dimension replay regression without breaking spec `013`. [SOURCE: .opencode/skill/sk-deep-research/references/convergence.md:721-737] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/scratch/deep-research-state.jsonl:6-8] [SOURCE: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/013-memory-generation-quality/scratch/deep-research-state.jsonl:4-6]
+- Leave `stuckThreshold = 2` only if the new `noProgressThreshold = 0.05` split is added. If the implementation insists on reusing one numeric threshold for both rolling stop and stuck detection, then `stuckThreshold` should be re-fit upward to `3` to avoid false stuck recovery after the first full-coverage clean pass. This is a replay-based recommendation rather than a literal current contract requirement. [SOURCE: .opencode/skill/sk-deep-research/references/convergence.md:688-689] [SOURCE: .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml:197-198]
 
 ## Ruled Out
-- SQL injection concern in `users.ts` was investigated and not supported by the actual query builder usage.
-- Suspected dead code in `policy.ts` is referenced by tests.
+- Re-fitting only the rolling threshold while leaving coverage as an immediate stop vote.
+- Re-fitting only the composite stop-score threshold while leaving coverage and stuck logic unchanged.
+- Keeping one shared threshold for both "rolling convergence" and "no-progress/stuck" in the simplified 4-dimension model.
 
-## Sources Reviewed
-- [SOURCE: src/api/users.ts:1]
-- [SOURCE: src/auth/policy.ts:1]
-- [SOURCE: spec.md:44]
-- [SOURCE: tests/api/users.test.ts:1]
+## Sources Consulted
+- `.opencode/skill/sk-deep-research/references/convergence.md`
+- `.opencode/skill/sk-deep-research/references/quick_reference.md`
+- `.opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml`
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/scratch/deep-research-state.jsonl`
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/scratch/iteration-006.md`
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/013-memory-generation-quality/scratch/deep-research-state.jsonl`
+- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/013-memory-generation-quality/scratch/iteration-004.md`
+- `.opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/scratch/archive-research-v1/iteration-002.md`
+- `.opencode/specs/03--commands-and-skills/030-sk-deep-research-review-mode/scratch/archive-research-v1/iteration-005.md`
 
 ## Assessment
-- Confirmed findings: 2
-- New findings ratio: 0.75
-- newFindingsExplanation: 1 new finding + 1 partially new nuance over prior strategy notes
-- Questions addressed: auth boundary enforcement
-- Questions answered: spec mismatch confirmed
+- `newInfoRatio`: `0.56`
+- Addressed: `Q3`
+- Answered this iteration: `Q3`. We now have an empirical replay method, a concrete regression caused by the 7 -> 4 dimension collapse, and a calibrated fix that preserves both observed review-run endpoints.
 
 ## Reflection
-- What worked: spec-to-handler cross-checking found the real gap quickly.
-- What did not work: broad grep for "admin" was noisy.
-- Next adjustment: inspect middleware bypasses directly.
+- Worked: replaying the real JSONL traces was much more informative than inventing synthetic ratios first.
+- Worked: comparing the same ratios under 7-dimension and 4-dimension coverage made it obvious that coverage timing, not just threshold tuning, is the fragile part.
+- Failed: threshold-only grid search did not produce a safe fix for both real runs.
+- Caution: the replay corpus is still small, so the next implementation pass should codify the replay harness and add more historical review sessions before treating these numbers as final forever.
 
 ## Recommended Next Focus
-Check whether the same wrapper bypass exists in `src/api/projects.ts`.
-```
-
-**Format notes:**
-- P0/P1/P2 should be grouped inside `## Findings`, not split into separate files.
-- `Scorecard` should include per-file and iteration-level totals.
-- `Cross-Reference Results` should explicitly mark `confirmed`, `contradiction`, and `unknown`.
-- `newFindingsRatio` should use only confirmed findings after self-check: `(new + 0.5 * partially_new) / confirmed_findings`.
-
----
-
-### Part 5: Permission Model
-
-**Required tools:**
-- Required: `Read`, `Grep`, `Glob`, `Bash`, `Write`, `Edit`.
-- Optional: `memory_search` for prior related review context.
-- Not needed: `WebFetch`, `Task`.
-
-**Codex sandbox:**
-- Use `workspace-write`, not `read-only`, because the agent must write iteration artifacts.
-- Enforce path-level read-only by contract plus verifier: after each iteration, fail if any modified path is outside the allowlist of iteration file, strategy file, and JSONL. The current YAML already verifies those expected outputs (`spec_kit_deep-research_auto.yaml:294`).
-
-**Permission matrix:**
-
-| Tool | Review Target | Scratch/ | Strategy.md | JSONL |
-| --- | --- | --- | --- | --- |
-| `Read` | RO | RO | RO | RO |
-| `Grep`/`Glob`/`Bash` | RO inspect only | RO inspect only | RO inspect only | RO inspect only |
-| `Write` | No | Create `iteration-NNN.md` only | No | Append-only |
-| `Edit` | No | No | Section-scoped edits only | No |
-
-Drop progressive `research.md` updates for review mode. The loop evaluator only needs iteration file, JSONL append, and strategy update, so omitting a root-level mutable artifact keeps permissions tighter.
-
----
-
-### Part 6: Adversarial Self-Check Integration
-
-Do not run Hunter/Skeptic/Referee on every iteration by default; that is too expensive.
-
-**Recommended policy:**
-1. Gather candidate findings normally.
-2. If there is a candidate P0, run full Hunter/Skeptic/Referee in the same iteration before writing outputs.
-3. If there is a candidate P1 that would fail the gate or materially change next focus, run a compact skeptic/referee pass in-iteration.
-4. At synthesis, rerun full self-check on every carried-forward P0/P1 before the final report.
-
-**Why:**
-- This preserves the reviewer contract, which requires self-check on P0/P1 (`review.md:361`), without paying that cost on every harmless P2-only pass.
-- It also avoids logging unvetted P0s into JSONL, which would pollute convergence and priority logic.
-
----
-
-### Part 7: Ruled Out Approaches
-
-- **Reusing `@review` with only scratch `Write`**: rejected because strategy edits and JSONL append still require broader mutation semantics.
-- **Pure YAML-only mode switch on current `@deep-research`**: rejected as the permanent design because the base agent remains research-shaped, not review-shaped.
-- **Full self-check on every finding, every iteration**: rejected as too costly for little gain.
-- **Allowing writes to reviewed code paths under `workspace-write`**: rejected; state-file-only writes are the clean security boundary.
-
-**Note:** Spec Kit memory MCP was unavailable in the source session due to handshake failure, so this analysis is based on the repository contracts only, not prior saved memory context.
-
-## Assessment
-newFindingsRatio: 1.0 (first iteration for this question, all findings new)
-
-## Recommended Next Focus
-Design the `@deep-review` agent file structure (Option B) — determine which sections from `@review` and `@deep-research` compose the hybrid, draft the agent frontmatter for each runtime, and define the YAML `agent_config` block that targets it.
+Q4: redesign cross-reference verification so it becomes machine-verifiable loop state instead of appendix prose. In particular:
+1. Decide which cross-reference checks belong in the core review contract versus target-specific overlays.
+2. Define how cross-reference results should be stored in JSONL/strategy/dashboard state.
+3. Specify which checks should gate convergence versus only enrich the final review report.

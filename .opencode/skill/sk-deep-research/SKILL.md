@@ -350,8 +350,8 @@ Every completed loop produces a convergence report:
 |----------|-------------|
 | Dimension coverage | All configured review dimensions reviewed with evidence |
 | Finding citations | P0/P1 findings include `file:line` citations |
-| Report completeness | `review-report.md` has all 11 sections |
-| Verdict justification | Release readiness verdict (PASS/PASS WITH NOTES/CONDITIONAL/FAIL) is justified with score and findings |
+| Report completeness | `review-report.md` has all 9 sections |
+| Verdict justification | Release readiness verdict (PASS/CONDITIONAL/FAIL) is justified with findings; PASS includes hasAdvisories metadata when P2 findings exist |
 | Adversarial recheck | P0 findings confirmed via adversarial self-check before final report |
 
 ---

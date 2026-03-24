@@ -28,7 +28,7 @@ operating_principles:
 user_inputs:
   review_target: "[REVIEW_TARGET] - What to review. REQUIRED."
   review_target_type: "[spec-folder|skill|agent|track|files] - Target type for scope derivation. REQUIRED."
-  review_dimensions: "[all|correctness,security,spec-alignment,completeness,cross-ref-integrity,patterns,documentation-quality] - Dimensions to check. Default: all."
+  review_dimensions: "[all|correctness,security,traceability,maintainability] - Dimensions to check. Default: all."
   spec_folder: "[SPEC_FOLDER] - Spec folder path for state files. REQUIRED."
   max_iterations: 7
   convergence_threshold: 0.10
@@ -176,9 +176,12 @@ workflow:
         algorithm: |
           1. Iteration 0 (inventory pass): Build artifact map, identify file types, estimate complexity
           2. Subsequent iterations follow risk-ordered deep passes:
-             correctness → security → spec-alignment → completeness → cross-ref-integrity → patterns → documentation-quality
+             correctness → security → traceability → maintainability
           3. If review_dimensions != "all", filter to only requested dimensions
-          4. Store ordered list as dimension_queue
+          4. Derive traceability protocol plan:
+             - core: spec_code, checklist_evidence
+             - overlay: skill_agent, agent_cross_runtime, feature_catalog_code, playbook_capability
+          5. Store ordered list as dimension_queue
         outputs:
           - dimension_queue: "Ordered list of dimensions to review"
           - inventory_pass: true
@@ -194,8 +197,9 @@ workflow:
           reviewDimensions: "{review_dimensions}"
           reviewScopeFiles: "{review_scope_files}"
           severityThreshold: "P2"
-          crossReference: { spec: true, checklist: true, agentConsistency: true }
-          qualityGateThreshold: 70
+          crossReference:
+            core: ["spec_code", "checklist_evidence"]
+            overlay: ["skill_agent", "agent_cross_runtime", "feature_catalog_code", "playbook_capability"]
           maxIterations: "{max_iterations}"
           convergenceThreshold: "{convergence_threshold}"
           stuckThreshold: 2
@@ -285,6 +289,7 @@ workflow:
           - dimensions_covered: "List of dimensions already reviewed"
           - dimensions_remaining: "List of dimensions not yet reviewed"
           - dimension_coverage: "covered / total dimensions"
+          - coverage_age: "Iterations since dimension coverage last changed; require >= 1 before STOP"
           - p0_count: "Count P0 findings across all iterations"
           - p1_count: "Count P1 findings across all iterations"
           - p2_count: "Count P2 findings across all iterations"
@@ -306,28 +311,27 @@ workflow:
         algorithm: |
           1. HARD STOPS:
              a) if iteration_count >= max_iterations: STOP (max_iterations_reached)
-             b) if all dimensions clean AND p0_count == 0 AND p1_count == 0: STOP (all_dimensions_clean)
+             b) if all dimensions clean AND required traceability protocols are covered AND p0_count == 0 AND p1_count == 0 AND coverage_age >= 1: STOP (all_dimensions_clean)
           2. STUCK DETECTION (threshold 2):
              if stuck_count >= 2: STUCK_RECOVERY
-          3. COMPOSITE CONVERGENCE (3-signal weighted vote):
+          3. COMPOSITE CONVERGENCE (3-signal weighted vote with split thresholds):
                signals = []
                a) Rolling average (w=0.30, window=2, needs 2+ iterations):
                   avg = mean(last 2 newFindingsRatios)
-                  stop if avg < convergence_threshold (0.08)
+                  stop if avg <= 0.08
                b) MAD noise floor (w=0.25, needs 3+ iterations):
                   noiseFloor = MAD(all ratios) * 1.4826
                   stop if latest ratio <= noiseFloor
                c) Dimension coverage (w=0.45):
                   coverage = dimensions_covered / total_dimensions
-                  stop if coverage >= 1.0 (100%)
+                  stop if coverage >= 1.0 AND required traceability protocols are covered AND coverage_age >= 1
                Redistribute weights for unavailable signals.
-               if weighted_stop_score > 0.60: check quality guards
-          4. QUALITY GUARDS (5 binary checks — ALL must pass to allow STOP):
-               a) Evidence Completeness: Every P0/P1 finding has file:line evidence
-               b) Scope Alignment: All findings within declared review scope
-               c) No Inference-Only: No P0/P1 based solely on inference without file evidence
-               d) Severity Coverage: Security + Correctness dimensions reviewed
-               e) Cross-Reference (optional, 5+ iters): At least one multi-dimension iteration
+               if latest ratio <= 0.05: mark no_progress_threshold_reached
+               if weighted_stop_score >= 0.60: check binary gates
+          4. QUALITY GUARDS (3 binary checks — ALL must pass to allow STOP):
+               a) Evidence: Every active finding has concrete file:line evidence and no active P0/P1 relies only on inference
+               b) Scope: All findings stay within declared review scope and target boundaries
+               c) Coverage: Configured dimensions and required traceability protocols covered, with coverage_age >= 1
              if not all guards passed:
                log: "Quality guard failed: {violations}. Overriding STOP to CONTINUE."
                decision = "CONTINUE"
@@ -345,7 +349,7 @@ workflow:
           log: "Stuck detected ({stuck_count} consecutive no-progress). Entering recovery."
           recovery_strategies:
             - "Change granularity: file-level → function-level → line-level review"
-            - "Cross-reference analysis: review across dimensions instead of single dimension"
+            - "Traceability protocol replay: re-run unresolved core or overlay checks"
             - "Escalate severity review: re-examine P2 findings for potential P1 upgrades"
           set: { next_dimension: "RECOVERY: {recovery_strategy}. Least-explored dimension: {least_explored}" }
           reset: { stuck_count: 0 }
@@ -363,6 +367,7 @@ workflow:
           **Dimensions Covered**: {dimensions_covered} ({dimension_coverage})
           **Findings So Far**: P0={p0_count} P1={p1_count} P2={p2_count}
           **Last newFindingsRatio**: {last_newFindingsRatio}
+          **Traceability**: core={core_protocol_status} overlay={overlay_protocol_status}
           **Stuck Count**: {stuck_count}
 
           Options:
@@ -388,8 +393,11 @@ workflow:
               Dimension: {next_dimension}
               Prior Findings: P0={p0_count} P1={p1_count} P2={p2_count}
               Dimension Coverage: {dimensions_covered_list} ({dimension_coverage})
+              Traceability: core={core_protocol_status} overlay={overlay_protocol_status}
+              Coverage Age: {coverage_age}
               Last 2 ratios: {ratio_prev} -> {ratio_latest}
               Stuck count: {stuck_count}
+              Provisional Verdict: {PASS|CONDITIONAL|FAIL|PENDING} hasAdvisories={has_advisories}
           context: |
             {state_summary}
 
@@ -399,15 +407,14 @@ workflow:
             REVIEW TARGET: {review_target}
             REVIEW SCOPE FILES: {review_scope_files}
             PRIOR FINDINGS: P0={p0_count} P1={p1_count} P2={p2_count}
-            CROSS-REFERENCE TARGETS:
-            - Spec: {cross_reference_targets.spec_paths}
-            - Code: {cross_reference_targets.code_paths}
-            - Tests: {cross_reference_targets.test_paths}
-            SCORING RUBRIC: Correctness=30 Security=25 Patterns=20 Maintainability=15 Performance=10
-            SEVERITY THRESHOLDS:
-            - P0: exploitable security, auth bypass, destructive data loss, false blocker completion
-            - P1: correctness bug, spec mismatch, must-fix gate issue, missing required feature
-            - P2: non-blocking improvement, style drift, documentation polish
+            SHARED DOCTRINE: Load .opencode/skill/sk-code--review/references/review_core.md before final severity calls.
+            REVIEW DIMENSIONS: correctness, security, traceability, maintainability
+            TRACEABILITY PROTOCOLS:
+            - Core: spec_code, checklist_evidence
+            - Overlay: skill_agent, agent_cross_runtime, feature_catalog_code, playbook_capability
+            QUALITY GATES: evidence, scope, coverage
+            VERDICTS: FAIL | CONDITIONAL | PASS (PASS may set hasAdvisories=true when only P2 remain)
+            CLAIM ADJUDICATION: Every new P0/P1 must include claim, evidenceRefs, counterevidenceSought, alternativeExplanation, finalSeverity, confidence, and downgradeTrigger.
 
             State Files (ALL paths relative to repo root):
               Config: {spec_folder}/scratch/deep-research-config.json
@@ -419,8 +426,8 @@ workflow:
             CONSTRAINT: Target 9 tool calls. Soft max 12, hard max 13.
             CONSTRAINT: Write ALL findings to files. Do not hold in context.
             CONSTRAINT: Review target is READ-ONLY. Do not modify reviewed files.
-            CONSTRAINT: Append JSONL record with dimension, severityCounts, reviewedArtifacts, newFindingsRatio.
-            CONSTRAINT: Update strategy.md dimension coverage and running findings.
+            CONSTRAINT: Append JSONL record with dimensions, filesReviewed, findingsSummary, findingsNew, traceabilityChecks, and newFindingsRatio.
+            CONSTRAINT: Update strategy.md dimension coverage, traceability status, and running findings.
         wait_for_completion: true
 
       step_evaluate_results:
@@ -432,12 +439,23 @@ workflow:
         extract:
           - newFindingsRatio: "From latest JSONL iteration record"
           - findings_count: "From latest JSONL iteration record"
-          - severity_counts: "From latest JSONL iteration record (p0, p1, p2)"
-          - dimension: "From latest JSONL iteration record"
+          - severity_counts: "From latest JSONL iteration record (P0, P1, P2)"
+          - dimensions: "From latest JSONL iteration record"
+          - files_reviewed: "From latest JSONL iteration record"
           - status: "From latest JSONL iteration record"
           - reviewed_artifacts: "From latest JSONL iteration record"
+          - traceability_checks: "From latest JSONL iteration record when present"
         on_missing_outputs:
           action: "Mark iteration as 'error', continue to next"
+
+      step_post_iteration_claim_adjudication:
+        action: "Validate typed claim-adjudication packets for any new P0/P1 findings"
+        verify:
+          - typed_packets_present: "Every new P0/P1 finding in iteration-{NNN}.md contains a claim-adjudication JSON block"
+          - packet_fields: "Each packet includes claim, evidenceRefs, counterevidenceSought, alternativeExplanation, finalSeverity, confidence, downgradeTrigger"
+        on_fail:
+          action: "Mark the iteration as invalid for convergence and require rewrite before STOP is permitted"
+          log: "Claim adjudication incomplete for new P0/P1 findings. Continue loop until packets are present."
 
       # ─── APPROVAL GATE: Post-Iteration ───
       gate_post_iteration:
@@ -446,12 +464,13 @@ workflow:
         present: |
           ## Review Iteration {current_iteration} Results
 
-          **Dimension**: {dimension}
-          **New Findings**: {findings_count} (P0={severity_counts.p0} P1={severity_counts.p1} P2={severity_counts.p2})
+          **Dimensions**: {dimensions}
+          **New Findings**: {findings_count} (P0={severity_counts.P0} P1={severity_counts.P1} P2={severity_counts.P2})
           **newFindingsRatio**: {newFindingsRatio}
           **Status**: {status}
           **Cumulative Findings**: P0={p0_count} P1={p1_count} P2={p2_count}
           **Dimension Coverage**: {dimensions_covered} ({dimension_coverage})
+          **Traceability**: {traceability_checks.summary}
           **Stuck Count**: {stuck_count}
 
           **Recent Iteration Summary**:
@@ -482,6 +501,8 @@ workflow:
           - Review Target: {review_target} ({review_target_type})
           - Status: [ITERATING | CONVERGING | STUCK_RECOVERY | COMPLETE]
           - Iteration: {current_iteration} of {max_iterations}
+          - Provisional Verdict: [PASS | CONDITIONAL | FAIL | PENDING]
+          - hasAdvisories: {has_advisories}
 
           ## Findings Summary
           | Severity | Count | Trend |
@@ -495,15 +516,20 @@ workflow:
           |-----------|--------|-----------|----------|
           | [per dimension from strategy + JSONL] |
 
+          ## Traceability Coverage
+          | Protocol | Level | Status | Findings |
+          |----------|-------|--------|----------|
+          | [per protocol from traceabilityChecks] |
+
           ## Progress
           | # | Dimension | Ratio | P0/P1/P2 | Status |
           |---|-----------|-------|----------|--------|
           | [per iteration from JSONL] |
 
-          ## Score Trend
+          ## Trend
           - Last 3 ratios: [{ratios}] [{trend}]
           - Stuck count: {stuck_count}
-          - Guard violations: {guard_violations}
+          - Gate violations: {guard_violations}
 
           ## Next Focus
           {next_dimension}
@@ -520,7 +546,7 @@ workflow:
           stuck_count: |
             if status == 'thought': unchanged (skip)
             if status == 'insight': 0 (reset)
-            if newFindingsRatio < convergence_threshold: stuck_count + 1
+            if newFindingsRatio <= 0.05: stuck_count + 1
             else: 0
 
       step_loop_decision:
@@ -609,54 +635,44 @@ workflow:
           Update finding_registry with adjudicated results.
 
       step_compile_review_report:
-        action: "Compile review-report.md with 11 sections"
+        action: "Compile review-report.md with 9 sections and an embedded Planning Packet"
         instructions: |
           Create review-report.md with the following sections:
 
           1. **Executive Summary**
-             - Overall verdict: PASS | CONDITIONAL | PASS WITH NOTES | FAIL
-             - Composite score (0-100) and band
+             - Overall verdict: PASS | CONDITIONAL | FAIL
+             - hasAdvisories: true when PASS carries active P2 items
              - P0/P1/P2 counts (active only)
              - Review scope summary
 
-          2. **Score Breakdown**
-             | Dimension | Weight | Score | Band | Primary Driver |
-             - Correctness (30), Security (25), Patterns (20), Maintainability (15), Performance (10)
+          2. **Planning Trigger**
+             - State whether `/spec_kit:plan` is required
+             - Include a fenced `json` block labeled `Planning Packet`
+             - The packet MUST include: `triggered`, `verdict`, `hasAdvisories`, `activeFindings`, `remediationWorkstreams`, `specSeed`, `planSeed`
 
-          3. **P0 Findings (Blockers)**
-             For each: ID, title, file:line, evidence, impact, fix recommendation, dimension(s)
+          3. **Active Finding Registry**
+             - Unified registry for active P0/P1/P2 findings
+             - For each: ID, severity, title, dimension, file:line, evidence, impact, fix recommendation, disposition
 
-          4. **P1 Findings (Required)**
-             Same structure as P0
+          4. **Remediation Workstreams**
+             - Ordered action groups: P0 first, then P1, with P2 advisories separated
 
-          5. **P2 Findings (Suggestions)**
-             Compact cards: ID, title, file:line, suggestion, dimension
+          5. **Spec Seed**
+             - Concrete seed bullets for follow-on spec updates
 
-          6. **Cross-Reference Results**
-             | Check | Source → Target | Result | Evidence | Status |
-             For each of the 6 cross-reference protocols
+          6. **Plan Seed**
+             - Concrete starter tasks for `/spec_kit:plan`
 
-          7. **Coverage Map**
-             | File/Artifact | Dimensions Reviewed | Gaps |
-             Mark any unreviewed files or dimensions
+          7. **Traceability Status**
+             - Summarize required core protocols first, then applicable overlay protocols
+             - Include status, evidence, and any unresolved drift per protocol
 
-          8. **Positive Observations**
-             Well-implemented patterns, good practices, strong areas
+          8. **Deferred Items**
+             - Advisory-only or backlog-worthy follow-ups that do not block the current verdict
 
-          9. **Convergence Report**
-             - Stop reason, total iterations, dimension coverage
-             - newFindingsRatio trend
-             - Quality guard results
-
-          10. **Remediation Priority**
-              Ordered action items: P0 first, then P1, grouped by effort/impact
-
-          11. **Release Readiness Verdict**
-              - FAIL: Active P0 or composite score < 70
-              - CONDITIONAL: No P0, active P1 remaining
-              - PASS WITH NOTES: Only P2 findings remain
-              - PASS: No active findings
-              - Rationale for verdict
+          9. **Audit Appendix**
+             - Convergence summary, coverage summary, ruled-out claims, sources reviewed
+             - Cross-reference appendix MUST be split into `Core Protocols` and `Overlay Protocols`
         output: "{spec_folder}/review-report.md"
 
       step_convergence_report:
@@ -676,7 +692,7 @@ workflow:
           ## Review Synthesis Complete
 
           **review-report.md** has been compiled with findings from {iteration_count} iterations.
-          **Verdict**: {verdict} | **Score**: {composite_score}
+          **Verdict**: {verdict} | **hasAdvisories**: {has_advisories}
           **Active Findings**: P0={active_p0} P1={active_p1} P2={active_p2}
           **Dimension Coverage**: {dimension_coverage}
 
@@ -722,7 +738,7 @@ workflow:
       Deep review complete.
       Iterations: {iteration_count} | Stop reason: {reason}
       Findings: P0={active_p0} P1={active_p1} P2={active_p2}
-      Verdict: {verdict} | Score: {composite_score}
+      Verdict: {verdict} | hasAdvisories={has_advisories}
 
       Artifacts:
         - review-report.md (compiled from {iteration_count} iterations)
@@ -733,7 +749,7 @@ workflow:
       STATUS=OK PATH={spec_folder}
     next_steps:
       - "/spec_kit:plan [remediation] (if FAIL or CONDITIONAL verdict)"
-      - "/create:changelog (if PASS or PASS WITH NOTES)"
+      - "/create:changelog (if PASS, including PASS with hasAdvisories=true)"
       - "/spec_kit:deep-research:review [target] (for another review)"
       - "/memory:save {spec_folder} (manual memory save)"
 
@@ -755,20 +771,18 @@ reference_only_appendix:
     p0_override: "If ANY new P0 discovered → newFindingsRatio = max(calculated, 0.50). A single new P0 blocks convergence."
     clean_pass: "If total_findings == 0 (clean pass) → newFindingsRatio = 0.0"
   review_dimensions:
-    note: "All 7 default review dimensions with priority ordering"
+    note: "All 4 default review dimensions with priority ordering"
     dimensions:
       - { priority: 1, name: "correctness", checks: "Logic, state flow, edge cases, error handling" }
       - { priority: 2, name: "security", checks: "Auth, input/output safety, data exposure, permissions" }
-      - { priority: 3, name: "spec-alignment", checks: "Spec/plan/tasks/checklist claims vs shipped reality" }
-      - { priority: 4, name: "completeness", checks: "Required files, sections, tests, checklist coverage" }
-      - { priority: 5, name: "cross-ref-integrity", checks: "IDs, links, root-to-snippet alignment, runtime anchors" }
-      - { priority: 6, name: "patterns", checks: "Baseline+overlay compliance, template shape, conventions" }
-      - { priority: 7, name: "documentation-quality", checks: "Current-reality honesty, operator clarity" }
+      - { priority: 3, name: "traceability", checks: "Spec/checklist alignment, cross-reference integrity, evidence coverage" }
+      - { priority: 4, name: "maintainability", checks: "Patterns, documentation quality, safe follow-on change clarity" }
   cross_reference_protocols:
-    note: "6 cross-reference verification protocols"
-    protocols:
+    note: "Cross-reference verification protocols split into core and overlay classes"
+    core_protocols:
       - { check: "Spec vs Code", source: "spec.md claims", target: "implementation" }
       - { check: "Checklist vs Evidence", source: "[x] items", target: "cited evidence" }
+    overlay_protocols:
       - { check: "SKILL.md vs Agent", source: "Skill contracts", target: "agent files" }
       - { check: "Agent Cross-Runtime", source: ".claude", target: ".codex/.opencode/.agents/.gemini" }
       - { check: "Feature Catalog vs Code", source: "Catalog claims", target: "implementation" }

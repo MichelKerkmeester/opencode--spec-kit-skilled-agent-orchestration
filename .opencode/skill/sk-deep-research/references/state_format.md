@@ -469,9 +469,9 @@ The `auto-generated` protection level means the file is system-managed and overw
 ---
 
 <!-- ANCHOR:review-mode-state -->
-## 8. REVIEW MODE STATE
+## 9. REVIEW MODE STATE
 
-When `config.mode == "review"`, the state system adapts to track findings, dimensions, and severity instead of research questions and newInfoRatio.
+When `config.mode == "review"`, the state system adapts to track findings, dimensions, traceability coverage, and adjudicated severity instead of research questions and `newInfoRatio`.
 
 ### Review-Specific JSONL Iteration Record
 
@@ -481,18 +481,44 @@ When `config.mode == "review"`, the state system adapts to track findings, dimen
   "run": 3,
   "mode": "review",
   "status": "complete",
-  "focus": "D2 Security — auth module",
-  "dimensions": ["security"],
-  "filesReviewed": ["src/auth/login.ts", "src/auth/session.ts"],
+  "focus": "D3 Traceability - skill/runtime alignment",
+  "dimensions": ["traceability", "maintainability"],
+  "filesReviewed": [
+    ".opencode/skill/sk-deep-research/README.md",
+    ".opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml"
+  ],
   "findingsCount": 4,
-  "newFindingsRatio": 0.75,
-  "findingsSummary": { "P0": 1, "P1": 2, "P2": 1 },
-  "findingsNew": { "P0": 1, "P1": 1, "P2": 0 },
-  "findingsRefined": { "P0": 0, "P1": 1, "P2": 1 },
-  "scoreEstimate": 45,
+  "newFindingsRatio": 0.32,
+  "findingsSummary": { "P0": 0, "P1": 1, "P2": 3 },
+  "findingsNew": { "P0": 0, "P1": 1, "P2": 1 },
+  "findingsRefined": { "P0": 0, "P1": 0, "P2": 2 },
+  "traceabilityChecks": {
+    "summary": {
+      "required": 2,
+      "executed": 3,
+      "pass": 1,
+      "partial": 1,
+      "fail": 1,
+      "blocked": 0,
+      "notApplicable": 0,
+      "gatingFailures": 1
+    },
+    "results": [
+      {
+        "protocolId": "spec_code",
+        "status": "fail",
+        "gateClass": "hard",
+        "applicable": true,
+        "counts": { "pass": 0, "partial": 0, "fail": 1 },
+        "evidence": ["README.md:48", "spec_kit_deep-research_review_auto.yaml:511"],
+        "findingRefs": ["F004"],
+        "summary": "README claimed the old report contract while the workflow still emitted the legacy section set."
+      }
+    ]
+  },
   "timestamp": "2026-03-24T14:30:00Z",
   "durationMs": 52000,
-  "noveltyJustification": "1 new P0 auth bypass, 1 new P1 input validation, 1 refined P1 session handling"
+  "noveltyJustification": "1 new P1 contract drift, 1 new P2 template inconsistency, 2 advisory refinements"
 }
 ```
 
@@ -503,10 +529,89 @@ When `config.mode == "review"`, the state system adapts to track findings, dimen
 | filesReviewed | string[] | Yes | Files examined in this iteration |
 | findingsSummary | object | Yes | Total active findings by severity: `{ P0, P1, P2 }` |
 | findingsNew | object | Yes | Net-new findings this iteration by severity |
-| findingsRefined | object | Yes | Refined/upgraded findings this iteration by severity |
+| findingsRefined | object | No | Refined or reclassified findings this iteration by severity |
 | newFindingsRatio | number | Yes | Severity-weighted new findings ratio (0.0-1.0) |
-| scoreEstimate | number | No | Provisional quality score (0-100) |
+| traceabilityChecks | object | Yes | Summary counts plus per-protocol traceability results for this iteration |
 | noveltyJustification | string | No | Human-readable breakdown of what was found |
+
+### Review Synthesis Event
+
+The final review synthesis appends a review-mode event with machine-verifiable verdict state:
+
+```json
+{
+  "type": "event",
+  "event": "synthesis_complete",
+  "mode": "review",
+  "totalIterations": 6,
+  "verdict": "PASS",
+  "activeP0": 0,
+  "activeP1": 0,
+  "activeP2": 2,
+  "dimensionCoverage": 1.0,
+  "stopReason": "composite_converged",
+  "timestamp": "2026-03-24T15:02:00Z"
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| activeP0 | number | Yes | Active blocker findings at synthesis time |
+| activeP1 | number | Yes | Active required findings at synthesis time |
+| activeP2 | number | Yes | Active advisory findings at synthesis time |
+| dimensionCoverage | number | Yes | Final dimension coverage ratio (0.0-1.0) |
+
+### traceabilityChecks Schema
+
+`traceabilityChecks` is the machine-verifiable traceability payload stored on each review iteration.
+
+```json
+{
+  "traceabilityChecks": {
+    "summary": {
+      "required": 2,
+      "executed": 3,
+      "pass": 1,
+      "partial": 1,
+      "fail": 1,
+      "blocked": 0,
+      "notApplicable": 0,
+      "gatingFailures": 1
+    },
+    "results": [
+      {
+        "protocolId": "checklist_evidence",
+        "status": "partial",
+        "gateClass": "hard",
+        "applicable": true,
+        "counts": { "pass": 3, "partial": 1, "fail": 0 },
+        "evidence": ["checklist.md:18", "tasks.md:42"],
+        "findingRefs": ["F007"],
+        "summary": "Most checklist claims were evidenced, but one checked item remained weakly linked."
+      }
+    ]
+  }
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| summary.required | number | Yes | Required protocols for this target |
+| summary.executed | number | Yes | Protocols executed in this iteration |
+| summary.pass | number | Yes | Protocols that passed |
+| summary.partial | number | Yes | Protocols that partially passed |
+| summary.fail | number | Yes | Protocols that failed |
+| summary.blocked | number | Yes | Protocols blocked by missing context or artifacts |
+| summary.notApplicable | number | Yes | Protocols skipped as not applicable |
+| summary.gatingFailures | number | Yes | Hard-gate failures that would block STOP |
+| results[].protocolId | string | Yes | Canonical protocol identifier |
+| results[].status | string | Yes | `pass`, `partial`, `fail`, `blocked`, or `notApplicable` |
+| results[].gateClass | string | Yes | `hard` or `advisory` |
+| results[].applicable | boolean | Yes | Whether the protocol applied to the target |
+| results[].counts | object | Yes | Protocol-local summary counts |
+| results[].evidence | string[] | No | Supporting file:line or artifact refs |
+| results[].findingRefs | string[] | No | Related finding identifiers |
+| results[].summary | string | Yes | Human-readable one-line result |
 
 ### Review Config Fields
 
@@ -518,16 +623,16 @@ When `mode == "review"`, additional config fields are present:
   "reviewTarget": "specs/030-sk-deep-research-review-mode",
   "reviewTargetType": "spec-folder",
   "reviewDimensions": [
-    "correctness", "security", "spec-alignment", "completeness",
-    "cross-ref-integrity", "patterns", "documentation-quality"
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability"
   ],
   "severityThreshold": "P2",
   "crossReference": {
-    "spec": true,
-    "checklist": true,
-    "agentConsistency": true
-  },
-  "qualityGateThreshold": 70
+    "core": ["spec_code", "checklist_evidence"],
+    "overlay": ["feature_catalog_code", "playbook_capability"]
+  }
 }
 ```
 
@@ -536,10 +641,10 @@ When `mode == "review"`, additional config fields are present:
 | mode | `"research"` or `"review"` | `"research"` | Session mode discriminator |
 | reviewTarget | string or null | null | Path or identifier of the review target |
 | reviewTargetType | string | `"spec-folder"` | Type: `spec-folder`, `skill`, `agent`, `track`, `files` |
-| reviewDimensions | string[] | all 7 | Dimensions to evaluate |
+| reviewDimensions | string[] | all 4 | Dimensions to evaluate |
 | severityThreshold | string | `"P2"` | Minimum severity to report (`P0`, `P1`, `P2`) |
-| crossReference | object | `{ spec: true, checklist: true, agentConsistency: true }` | Which cross-reference checks to perform |
-| qualityGateThreshold | number | 70 | Minimum score (0-100) for PASS verdict |
+| crossReference.core | string[] | `["spec_code", "checklist_evidence"]` | Hard-gated traceability protocols |
+| crossReference.overlay | string[] | target-dependent | Advisory protocols enabled for matching targets |
 
 ### Review Strategy Sections Mapping
 
@@ -548,9 +653,9 @@ The review strategy file (`deep-review-strategy.md`) uses adapted sections:
 | Strategy Section | Research Equivalent | Purpose |
 |-----------------|--------------------:|---------|
 | Review Dimensions (remaining) | Key Questions (remaining) | Unchecked dimensions drive next focus |
-| Completed Dimensions | Answered Questions | Checked dimensions with score summary |
+| Completed Dimensions | Answered Questions | Checked dimensions with verdict summary |
 | Running Findings | (none) | P0/P1/P2 active counts + deltas |
-| Cross-Reference Status | (none) | Alignment checks completed |
+| Cross-Reference Status | (none) | Core vs overlay protocol status |
 | Files Under Review | (none) | Per-file coverage state table |
 | Review Boundaries | Research Boundaries | Max iterations, thresholds, config |
 
@@ -558,21 +663,19 @@ Sections carried forward unchanged: Topic, Non-Goals, Stop Conditions, What Work
 
 ### review-report.md Section List
 
-The review synthesis output (`{spec_folder}/review-report.md`) contains 11 sections:
+The review synthesis output (`{spec_folder}/review-report.md`) contains 9 sections:
 
 | # | Section | Description |
 |---|---------|-------------|
-| 1 | Executive Summary | Verdict (PASS/CONDITIONAL/PASS WITH NOTES/FAIL), score, P0/P1/P2 counts, review scope summary |
-| 2 | Score Breakdown | Per-dimension weight, score, band, and primary driver table |
-| 3 | P0 Findings (Blockers) | Detailed P0 writeups with ID, file:line, evidence, impact, fix recommendation, dimension(s) |
-| 4 | P1 Findings (Required) | Same structure as P0 |
-| 5 | P2 Findings (Suggestions) | Compact cards with ID, title, file:line, suggestion, dimension |
-| 6 | Cross-Reference Results | Results from the 6 cross-reference protocols with check, source, target, result, evidence, status |
-| 7 | Coverage Map | Per-file/artifact dimensions reviewed and gaps identified |
-| 8 | Positive Observations | Well-implemented patterns, good practices, strong areas |
-| 9 | Convergence Report | Stop reason, total iterations, dimension coverage, newFindingsRatio trend, quality guard results |
-| 10 | Remediation Priority | Ordered action items: P0 first, then P1, grouped by effort/impact |
-| 11 | Release Readiness Verdict | Final verdict (FAIL/CONDITIONAL/PASS WITH NOTES/PASS) with rationale |
+| 1 | Executive Summary | Verdict (`PASS`, `CONDITIONAL`, `FAIL`), active P0/P1/P2 counts, scope summary, `hasAdvisories` |
+| 2 | Planning Trigger | Why the result routes to planning or changelog follow-up |
+| 3 | Active Finding Registry | Deduped active findings with evidence, severity, and dimension tags |
+| 4 | Remediation Workstreams | Ordered remediation lanes grouped by dependency or area |
+| 5 | Spec Seed | Minimal spec updates implied by the findings |
+| 6 | Plan Seed | Initial remediation tasks derived from the findings |
+| 7 | Traceability Status | Core vs overlay protocol outcomes and unresolved gaps |
+| 8 | Deferred Items | Advisory findings, blocked items, and follow-up checks |
+| 9 | Audit Appendix | Coverage, convergence replay, and supporting audit detail |
 
 ### Finding Registry
 

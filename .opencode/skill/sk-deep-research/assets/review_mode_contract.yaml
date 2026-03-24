@@ -1,0 +1,418 @@
+# Canonical review-mode contract for sk-deep-research.
+# This file is the single source of truth for review-mode taxonomy,
+# convergence settings, cross-reference protocols, downstream render targets,
+# and validation expectations.
+
+meta:
+  ownerSkill: sk-deep-research
+  reviewModeVersion: 1
+  generatedNotice:
+    warning: "Generated from review_mode_contract.yaml. Do not manually edit generated sections."
+    beginMarker: "<!-- BEGIN GENERATED: review-mode-contract -->"
+    endMarker: "<!-- END GENERATED: review-mode-contract -->"
+  sourceOfTruth: .opencode/skill/sk-deep-research/assets/review_mode_contract.yaml
+
+# Core contract definitions consumed by workflows, agents, docs, and validators.
+contract:
+  defaultTargetType: spec-folder
+
+  # Review target taxonomy.
+  targetTypes:
+    - id: spec-folder
+      cliValue: spec-folder
+      label: Spec Folder
+      description: Review a single spec folder and its referenced implementation, tests, and release artifacts.
+    - id: skill
+      cliValue: skill
+      label: Skill
+      description: Review a skill package including SKILL.md, references, assets, scripts, and runtime integrations.
+    - id: agent
+      cliValue: agent
+      label: Agent
+      description: Review a named agent across runtime-specific definitions and capability parity surfaces.
+    - id: track
+      cliValue: track
+      label: Track
+      description: Review a spec track spanning multiple child spec folders and shared coordination artifacts.
+    - id: files
+      cliValue: files
+      label: Files
+      description: Review an explicit file set plus immediate cross-references required to evaluate shipped behavior.
+
+  # Simplified review dimensions. Traceability and maintainability absorb the
+  # prior seven-dimension model's overlap.
+  dimensions:
+    - id: correctness
+      priority: 1
+      label: Correctness
+      checks: Validate logic, invariants, state transitions, edge cases, and behavior against observable intent.
+      requiredForSeverityCoverage: true
+    - id: security
+      priority: 2
+      label: Security
+      checks: Validate trust boundaries, authz/authn behavior, input handling, secrets exposure, and exploit paths.
+      requiredForSeverityCoverage: true
+    - id: traceability
+      priority: 3
+      label: Traceability
+      checks: Validate spec alignment, completeness, checklist evidence, and cross-reference integrity across linked artifacts.
+      requiredForSeverityCoverage: false
+    - id: maintainability
+      priority: 4
+      label: Maintainability
+      checks: Validate codebase patterns, documentation quality, clarity, and ease of safe follow-on changes.
+      requiredForSeverityCoverage: false
+
+  # Severity contract stays stable across review outputs.
+  severities:
+    - id: P0
+      weight: 10.0
+      label: Blocker
+      requiresFileLineEvidence: true
+    - id: P1
+      weight: 5.0
+      label: Required
+      requiresFileLineEvidence: true
+    - id: P2
+      weight: 1.0
+      label: Suggestion
+      requiresFileLineEvidence: true
+
+  # Verdicts collapse PASS WITH NOTES into PASS + hasAdvisories metadata.
+  verdicts:
+    - id: FAIL
+      label: Fail
+      condition: "activeP0 > 0 OR any required quality gate fails"
+      nextCommand: /spec_kit:plan
+    - id: CONDITIONAL
+      label: Conditional
+      condition: "activeP0 == 0 AND activeP1 > 0"
+      nextCommand: /spec_kit:plan
+    - id: PASS
+      label: Pass
+      condition: "activeP0 == 0 AND activeP1 == 0"
+      hasAdvisoriesMetadata: "Set hasAdvisories=true when activeP2 > 0."
+      nextCommand: /create:changelog
+
+  # Binary gates applied after convergence math votes STOP.
+  qualityGates:
+    - id: evidence
+      label: Evidence
+      binary: true
+      combines:
+        - evidence-completeness
+        - no-inference-only
+      rule: Every active finding must be backed by concrete file:line evidence and may not rely only on inference.
+    - id: scope
+      label: Scope
+      binary: true
+      combines:
+        - scope-alignment
+      rule: Reviewed files, targets, and conclusions must stay inside the declared review scope.
+    - id: coverage
+      label: Coverage
+      binary: true
+      combines:
+        - severity-coverage
+        - cross-reference
+      rule: Required dimensions and required traceability protocols must be covered before STOP is allowed.
+
+  # Review-specific convergence settings calibrated from the v2 research.
+  convergence:
+    defaults:
+      maxIterations: 7
+      convergenceThreshold: 0.10
+      stuckThreshold: 2
+    signals:
+      - id: rolling-average
+        weight: 0.30
+        description: Rolling average of severity-weighted new findings across recent evidence-bearing iterations.
+      - id: mad-noise-floor
+        weight: 0.25
+        description: Robust noise-floor test comparing the latest severity-weighted ratio against MAD-derived churn.
+      - id: dimension-coverage
+        weight: 0.45
+        description: Coverage vote based on required dimension completion plus required protocol coverage stability.
+    severityMath:
+      refinementMultiplier: 0.5
+      p0OverrideMinRatio: 0.50
+      noFindingsRatio: 0.0
+    coverageAge:
+      minStabilizationPasses: 1
+    thresholds:
+      rollingStopThreshold: 0.08
+      noProgressThreshold: 0.05
+      compositeStopScore: 0.60
+
+  # Cross-reference protocols are typed traceability checks. Core protocols are
+  # hard gates; overlay protocols apply only to matching target types.
+  crossReferenceProtocols:
+    - id: spec_code
+      dimension: traceability
+      level: core
+      appliesTo: [spec-folder, skill, agent, track, files]
+      gateClass: hard
+      passCriteria: All normative claims resolve to shipped behavior or explicitly documented non-applicability with evidence.
+      partialCriteria: Some claims resolve, but one or more claims remain ambiguous or blocked by missing evidence.
+      failCriteria: A normative claim contradicts shipped behavior, references missing implementation, or cannot be reconciled.
+    - id: checklist_evidence
+      dimension: traceability
+      level: core
+      appliesTo: [spec-folder, skill, agent, track, files]
+      gateClass: hard
+      passCriteria: Every checked checklist-style claim has supporting evidence and no unsupported completion marks remain.
+      partialCriteria: Evidence exists for part of the checked set, but some checked items remain unproven or weakly linked.
+      failCriteria: Checked items are unsupported, contradicted by evidence, or materially overstate completion.
+    - id: skill_agent
+      dimension: traceability
+      level: overlay
+      appliesTo: [skill]
+      gateClass: advisory
+      passCriteria: SKILL.md contracts, routing guidance, and referenced runtime agents agree on capabilities and boundaries.
+      partialCriteria: Shared intent is consistent, but one or more runtime contracts drift in wording, tools, or expectations.
+      failCriteria: SKILL.md and runtime agents materially disagree on capability, routing, permissions, or operating contract.
+    - id: agent_cross_runtime
+      dimension: traceability
+      level: overlay
+      appliesTo: [agent]
+      gateClass: advisory
+      passCriteria: Runtime-specific agent definitions express equivalent behavior, constraints, and evidence requirements.
+      partialCriteria: Runtime definitions are broadly aligned but contain non-blocking drift in examples, labels, or metadata.
+      failCriteria: Runtime definitions materially diverge in contract, permissions, workflow, or severity/evidence rules.
+    - id: feature_catalog_code
+      dimension: traceability
+      level: overlay
+      appliesTo: [skill, spec-folder, track, files]
+      gateClass: advisory
+      passCriteria: Feature catalog claims match current capability, entry points, and discoverable implementation surfaces.
+      partialCriteria: Catalog coverage is incomplete or stale, but no confirmed contradiction to shipped behavior is present.
+      failCriteria: Catalog claims are materially false, missing required features, or point to absent implementation.
+    - id: playbook_capability
+      dimension: traceability
+      level: overlay
+      appliesTo: [skill, agent, spec-folder]
+      gateClass: advisory
+      passCriteria: Playbook scenario preconditions, steps, and expected signals are executable against current capability.
+      partialCriteria: Scenarios mostly match reality, but one or more steps need updates, clarifications, or narrower scoping.
+      failCriteria: Playbook scenarios assume capabilities that do not exist or cannot be executed as documented.
+
+  # Output contracts consumed by synthesis and replay tooling.
+  outputs:
+    reviewReport:
+      pathPattern: "{spec_folder}/review-report.md"
+      sections:
+        - executive-summary
+        - planning-trigger
+        - active-finding-registry
+        - remediation-workstreams
+        - spec-seed
+        - plan-seed
+        - traceability-status
+        - deferred-items
+        - audit-appendix
+    strategy:
+      pathPattern: "{spec_folder}/scratch/deep-review-strategy.md"
+      requiredSections:
+        - topic
+        - review-dimensions
+        - completed-dimensions
+        - running-findings
+        - what-worked
+        - what-failed
+        - exhausted-approaches
+        - ruled-out-directions
+        - next-focus
+        - known-context
+        - cross-reference-status
+        - files-under-review
+        - review-boundaries
+    jsonl:
+      pathPattern: "{spec_folder}/scratch/deep-research-state.jsonl"
+      iterationRecord:
+        required:
+          - type
+          - mode
+          - run
+          - status
+          - focus
+          - dimensions
+          - filesReviewed
+          - findingsCount
+          - findingsSummary
+          - findingsNew
+          - newFindingsRatio
+          - timestamp
+          - durationMs
+        optional:
+          - findingsRefined
+          - findingRefs
+          - traceabilityChecks
+          - coverage
+          - noveltyJustification
+          - ruledOut
+          - focusTrack
+          - scoreEstimate
+          - segment
+          - convergenceSignals
+      synthesisEvent:
+        required:
+          - type
+          - event
+          - mode
+          - totalIterations
+          - verdict
+          - activeP0
+          - activeP1
+          - activeP2
+          - dimensionCoverage
+          - stopReason
+          - timestamp
+
+# Render targets define where generated or mixed-authored contract fragments land.
+render:
+  artifacts:
+    - id: workflow-auto
+      path: .opencode/command/spec_kit/assets/spec_kit_deep-research_review_auto.yaml
+      ownership: mixed
+      format: yaml
+      markers:
+        begin: "<!-- BEGIN GENERATED: review-mode-contract/workflow-auto -->"
+        end: "<!-- END GENERATED: review-mode-contract/workflow-auto -->"
+      sections:
+        - target-types
+        - dimensions
+        - verdicts
+        - quality-gates
+        - convergence
+        - cross-reference-protocols
+    - id: workflow-confirm
+      path: .opencode/command/spec_kit/assets/spec_kit_deep-research_review_confirm.yaml
+      ownership: mixed
+      format: yaml
+      markers:
+        begin: "<!-- BEGIN GENERATED: review-mode-contract/workflow-confirm -->"
+        end: "<!-- END GENERATED: review-mode-contract/workflow-confirm -->"
+      sections:
+        - target-types
+        - dimensions
+        - verdicts
+        - quality-gates
+        - convergence
+        - cross-reference-protocols
+    - id: agent-opencode
+      path: .opencode/agent/deep-review.md
+      ownership: mixed
+      format: markdown
+      markers:
+        begin: "<!-- BEGIN GENERATED: review-mode-contract/agent-opencode -->"
+        end: "<!-- END GENERATED: review-mode-contract/agent-opencode -->"
+      sections:
+        - dimensions
+        - severities
+        - quality-gates
+        - cross-reference-protocols
+        - outputs
+    - id: agent-claude
+      path: .claude/agents/deep-review.md
+      ownership: mixed
+      format: markdown
+      markers:
+        begin: "<!-- BEGIN GENERATED: review-mode-contract/agent-claude -->"
+        end: "<!-- END GENERATED: review-mode-contract/agent-claude -->"
+      sections:
+        - dimensions
+        - severities
+        - quality-gates
+        - cross-reference-protocols
+        - outputs
+    - id: agent-codex
+      path: .codex/agents/deep-review.toml
+      ownership: mixed
+      format: toml
+      markers:
+        begin: "# BEGIN GENERATED: review-mode-contract/agent-codex"
+        end: "# END GENERATED: review-mode-contract/agent-codex"
+      sections:
+        - dimensions
+        - severities
+        - quality-gates
+        - cross-reference-protocols
+        - outputs
+    - id: agent-gemini
+      path: .gemini/agents/deep-review.md
+      ownership: mixed
+      format: markdown
+      markers:
+        begin: "<!-- BEGIN GENERATED: review-mode-contract/agent-gemini -->"
+        end: "<!-- END GENERATED: review-mode-contract/agent-gemini -->"
+      sections:
+        - dimensions
+        - severities
+        - quality-gates
+        - cross-reference-protocols
+        - outputs
+    - id: agent-chatgpt
+      path: .opencode/agent/chatgpt/deep-review.md
+      ownership: mixed
+      format: markdown
+      markers:
+        begin: "<!-- BEGIN GENERATED: review-mode-contract/agent-chatgpt -->"
+        end: "<!-- END GENERATED: review-mode-contract/agent-chatgpt -->"
+      sections:
+        - dimensions
+        - severities
+        - quality-gates
+        - cross-reference-protocols
+        - outputs
+    - id: quick-reference-review-mode
+      path: .opencode/skill/sk-deep-research/references/quick_reference.md
+      ownership: mixed
+      format: markdown
+      markers:
+        begin: "<!-- BEGIN GENERATED: review-mode-contract/quick-reference-review-mode -->"
+        end: "<!-- END GENERATED: review-mode-contract/quick-reference-review-mode -->"
+      sections:
+        - target-types
+        - dimensions
+        - verdicts
+        - quality-gates
+        - outputs
+    - id: review-contract-snapshot
+      path: .opencode/skill/sk-deep-research/assets/review_mode_contract_snapshot.md
+      ownership: generated
+      format: markdown
+      markers:
+        begin: "<!-- BEGIN GENERATED: review-mode-contract/snapshot -->"
+        end: "<!-- END GENERATED: review-mode-contract/snapshot -->"
+      sections:
+        - meta
+        - target-types
+        - dimensions
+        - severities
+        - verdicts
+        - quality-gates
+        - convergence
+        - cross-reference-protocols
+        - outputs
+        - validation
+
+# Validator contract for CI, render verification, and drift detection.
+validation:
+  schemaVersion: 1
+  checks:
+    - id: schema
+      description: Validate this manifest against the canonical review-mode contract schema.
+    - id: render-verify
+      description: Re-render downstream artifacts in verify mode and fail on drift.
+    - id: marker-integrity
+      description: Ensure every render target contains intact begin/end markers with no overlapping generated blocks.
+    - id: enum-parity
+      description: Ensure target types, dimensions, severities, verdicts, and quality gates match across rendered artifacts.
+    - id: jsonl-parity
+      description: Ensure JSONL iteration and synthesis-event fields match the outputs contract.
+    - id: duplicate-literal-lint
+      description: Detect duplicated hard-coded review taxonomy literals outside generated sections.
+    - id: runtime-coverage
+      description: Ensure every supported runtime deep-review agent has a declared render artifact and parity coverage.
+    - id: playbook-assertions
+      description: Assert manual testing playbook scenarios reference the canonical simplified contract where applicable.

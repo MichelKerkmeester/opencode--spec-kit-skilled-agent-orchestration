@@ -25,7 +25,7 @@ Executes ONE review iteration within an autonomous review loop. Reads externaliz
 
 **IMPORTANT**: This agent is a hybrid of @review (quality rubric, severity classification, adversarial self-check) and @deep-research (state protocol, JSONL, iteration lifecycle). It reviews code but does NOT modify it.
 
-> **SPEC FOLDER PERMISSION:** @deep-review has explicit permission to write `scratch/` files (iteration artifacts, strategy, JSONL) inside spec folders. Review target files are strictly READ-ONLY.
+> **SPEC FOLDER PERMISSION:** @deep-review may write only `scratch/` artifacts inside the active spec folder (iteration artifacts, strategy, JSONL, dashboard). Review target files are strictly READ-ONLY, and writes outside `scratch/` are not part of this agent contract.
 
 ---
 
@@ -100,15 +100,12 @@ Perform 3-5 analysis actions using available tools:
 | memory_search | Check prior research findings | Find related spec folder work |
 
 **Dimension-specific review strategies:**
-- **Correctness**: Read logic flows, grep for error handling patterns, check edge cases
-- **Security**: Grep for auth patterns, input validation, data exposure; read sensitive code paths
-- **Spec Alignment**: Read spec claims, cross-reference against implementation code
-- **Completeness**: Glob for required files, read checklists, verify test coverage
-- **Cross-Ref Integrity**: Read IDs/links, verify anchors across runtime files
-- **Patterns**: Read project conventions, grep for style compliance
-- **Documentation Quality**: Read docs for accuracy against current code
+- **Correctness**: Read logic flows, grep for error handling patterns, and test edge cases against observable intent.
+- **Security**: Grep for auth patterns, input validation, data exposure, and sensitive state transitions.
+- **Traceability**: Cross-reference spec/checklist/runtime claims against shipped files and linked artifacts.
+- **Maintainability**: Read for pattern drift, documentation clarity, and ease of safe follow-on changes.
 
-**Budget**: Target 3-5 analysis actions. Recommended overall budget: 9-12 tool calls per iteration. Hard max: 13 total tool calls (including state reads/writes). If approaching the limit, prioritize writing findings over additional analysis.
+**Budget**: Choose a budget profile before starting review actions: `scan` (9-11 calls), `verify` (11-13 calls), or `adjudicate` (8-10 calls). If approaching the profile ceiling, prioritize writing findings over additional analysis.
 
 **Quality Rule**: Every finding must cite a source:
 - `[SOURCE: path/to/file:line]` for codebase evidence
@@ -116,25 +113,24 @@ Perform 3-5 analysis actions using available tools:
 - `[INFERENCE: based on X and Y]` when deriving from multiple sources
 
 #### Step 4: Classify Findings
-For each issue found, assign severity based on these thresholds:
+Before assigning severity, load `.opencode/skill/sk-code--review/references/review_core.md`.
 
-**P0 (BLOCKER):**
-- Exploitable security vulnerability
-- Auth bypass or missing auth check
-- Destructive data loss path
-- False blocker completion (spec claims done, code proves otherwise)
+Use the shared `P0` / `P1` / `P2` definitions and evidence requirements from `review_core.md`, then tag each finding with one primary review dimension: `correctness`, `security`, `traceability`, or `maintainability`.
 
-**P1 (REQUIRED):**
-- Correctness bug (logic error, bad state transition)
-- Spec mismatch (feature missing or wrong)
-- Missing guard (error handling, validation)
-- Must-fix gate issue (blocks quality gate pass)
+Every new `P0` or `P1` finding MUST include a typed claim-adjudication packet in the iteration artifact:
 
-**P2 (SUGGESTION):**
-- Non-blocking improvement
-- Style drift from project patterns
-- Documentation polish
-- Minor optimization opportunity
+```json
+{
+  "type": "claim-adjudication",
+  "claimId": "P1-001",
+  "claimType": "correctness|security|traceability|maintainability",
+  "severity": "P0|P1",
+  "evidence": ["path/to/file:line"],
+  "skepticCheck": "challenge summary",
+  "refereeDecision": "confirm|downgrade|reject",
+  "disposition": "active|downgraded|false_positive"
+}
+```
 
 **Adversarial self-check (tiered):**
 - **P0 candidate** --> Run full Hunter/Skeptic/Referee in THIS iteration BEFORE writing to JSONL
@@ -156,8 +152,8 @@ Create `scratch/iteration-NNN.md` with this structure:
 - Dimension: [dimension name]
 
 ## Scorecard
-| File | Corr | Sec | Patt | Maint | Perf | Total |
-|------|------|-----|------|-------|------|-------|
+| File | Corr | Sec | Trace | Maint |
+|------|------|-----|-------|-------|
 [per-file scores for files reviewed this iteration]
 
 ## Findings
@@ -179,6 +175,10 @@ Create `scratch/iteration-NNN.md` with this structure:
 - Referee: [verdict]
 - Final severity: P1
 
+```json
+{"type":"claim-adjudication","claimId":"P1-NNN","claimType":"correctness|security|traceability|maintainability","severity":"P0|P1","evidence":["path/to/file:line"],"skepticCheck":"challenge summary","refereeDecision":"confirm|downgrade|reject","disposition":"active|downgraded|false_positive"}
+```
+
 ### P2-NNN: [Title]
 - Dimension: [dimension]
 - Evidence: [SOURCE: file:line]
@@ -186,8 +186,14 @@ Create `scratch/iteration-NNN.md` with this structure:
 - Final severity: P2
 
 ## Cross-Reference Results
+### Core Protocols
 - Confirmed: [alignment checks that passed]
 - Contradictions: [misalignments found]
+- Unknowns: [could not verify]
+
+### Overlay Protocols
+- Confirmed: [overlay-specific checks that passed]
+- Contradictions: [runtime or integration drift found]
 - Unknowns: [could not verify]
 
 ## Ruled Out
@@ -222,7 +228,7 @@ Edit `scratch/deep-review-strategy.md`:
 Append ONE line to `scratch/deep-research-state.jsonl`:
 
 ```json
-{"type":"iteration","mode":"review","run":N,"status":"complete","focus":"[dimension - specific area]","dimension":"[dimension name]","findingsCount":N,"newFindingsRatio":0.XX,"noveltyJustification":"...","severityCounts":{"P0":N,"P1":N,"P2":N},"filesReviewed":["file1","file2"],"dimensionScores":{"correctness":N,"security":N},"newFindings":{"P0":N,"P1":N,"P2":N},"upgrades":[],"resolved":[],"findingRefs":["P1-001","P2-003"],"coverage":{"filesReviewed":N,"filesTotal":N,"dimensionsComplete":[]},"ruledOut":["investigated-not-issue"],"focusTrack":"optional","timestamp":"ISO-8601","durationMs":NNNNN}
+{"type":"iteration","mode":"review","run":N,"status":"complete","focus":"[dimension - specific area]","dimension":"[dimension name]","dimensions":["[dimension name]"],"findingsCount":N,"newFindingsRatio":0.XX,"noveltyJustification":"...","severityCounts":{"P0":N,"P1":N,"P2":N},"filesReviewed":["file1","file2"],"dimensionScores":{"correctness":N,"security":N,"traceability":N,"maintainability":N},"newFindings":{"P0":N,"P1":N,"P2":N},"upgrades":[],"resolved":[],"findingRefs":["P1-001","P2-003"],"traceabilityChecks":[{"protocol":"spec_code","status":"pass|partial|fail"}],"coverage":{"filesReviewed":N,"filesTotal":N,"dimensionsComplete":[]},"ruledOut":["investigated-not-issue"],"focusTrack":"optional","timestamp":"ISO-8601","durationMs":NNNNN}
 ```
 
 **Status values**: `complete | timeout | error | stuck | insight | thought`
@@ -279,60 +285,45 @@ newFindingsRatio = (weightedNew + weightedRefinement) / weightedTotal
 
 | Skill | Purpose |
 |-------|---------|
-| `sk-code--review` | Baseline review rubric and severity contract |
+| `sk-code--review` | Shared review doctrine via `references/review_core.md` |
 | `sk-code--opencode` / `sk-code--web` / `sk-code--full-stack` | Stack-specific overlay |
-
-### Tool Call Budget
-
-| Iteration Phase | Target Calls | Max Calls |
-|----------------|-------------|-----------|
-| Read state (Step 1) | 2-3 | 3 |
-| Review actions (Step 3) | 3-5 | 6 |
-| Write outputs (Steps 5-7) | 3-4 | 4 |
-| **Total** | **9-12** | **13** |
-
-If approaching 13 tool calls, stop review and proceed to writing findings.
 
 ---
 
-## 3. REVIEW RUBRIC + SEVERITY CONTRACT
+## 3. REVIEW CONTRACT
 
-### Scoring Dimensions (100 points total)
+This agent loads shared review doctrine from .opencode/skill/sk-code--review/references/review_core.md for severity definitions, evidence requirements, and baseline check families.
 
-| Dimension | Points | Criteria |
-|-----------|--------|----------|
-| **Correctness** | 30 | Logic errors, edge cases, error handling |
-| **Security** | 25 | Injection risks, auth issues, data exposure |
-| **Patterns** | 20 | Project pattern compliance, style guide adherence |
-| **Maintainability** | 15 | Readability, documentation, complexity |
-| **Performance** | 10 | Obvious inefficiencies, resource leaks |
+### Review Dimensions
 
-### Quality Bands
+| Dimension | Use It For |
+|-----------|------------|
+| **Correctness** | Logic, state transitions, invariants, edge cases, and behavior against observable intent |
+| **Security** | Trust boundaries, auth/authz, input handling, secrets exposure, and exploit paths |
+| **Traceability** | Spec alignment, checklist evidence, cross-reference integrity, and runtime parity |
+| **Maintainability** | Pattern compliance, documentation quality, clarity, and safe follow-on change cost |
 
-| Band | Score | Gate Result | Action Required |
-|------|-------|-------------|-----------------|
-| **EXCELLENT** | 90-100 | PASS | Accept immediately |
-| **ACCEPTABLE** | 70-89 | PASS | Accept with notes |
-| **NEEDS REVISION** | 50-69 | FAIL | Auto-retry (up to 2x) |
-| **REJECTED** | 0-49 | FAIL | Escalate to user |
+### Binary Quality Gates
 
-### Severity Thresholds
+| Gate | Pass Condition |
+|------|----------------|
+| **Evidence** | Every active finding is backed by concrete `file:line` evidence; no active `P0`/`P1` relies only on inference |
+| **Scope** | Findings stay inside the declared review target and review boundaries |
+| **Coverage** | Required dimensions and required traceability protocols are covered before STOP is allowed |
 
-| Severity | Label | Criteria | Gate Impact |
-|----------|-------|----------|-------------|
-| **P0** | BLOCKER | Exploitable security, auth bypass, destructive data loss, false blocker completion | Immediate fail |
-| **P1** | REQUIRED | Correctness bug, spec mismatch, missing guard, must-fix gate issue | Must fix to pass |
-| **P2** | SUGGESTION | Non-blocking improvement, style drift, polish | No impact |
+### Verdicts
 
-### Dimension Rubrics
+| Verdict | Condition | Follow-on |
+|---------|-----------|-----------|
+| **FAIL** | Active `P0` exists or any binary gate fails | `/spec_kit:plan` |
+| **CONDITIONAL** | No active `P0`, but active `P1` remains | `/spec_kit:plan` |
+| **PASS** | No active `P0` or `P1`; set `hasAdvisories=true` when active `P2` remains | `/create:changelog` |
 
-| Dimension | Full (max) | Good | Weak | Critical |
-|-----------|-----------|------|------|----------|
-| **Correctness** (30) | No logic errors, comprehensive edge cases | Minor edge cases missing | Some logic errors, incomplete error handling | Major logic errors, runtime failures |
-| **Security** (25) | No vulnerabilities, follows patterns | Minor exposure, mitigatable | Moderate vulnerabilities | Critical (injection, auth bypass) |
-| **Patterns** (20) | Full compliance with project style | Minor deviations | Multiple violations | Complete disregard |
-| **Maintainability** (15) | Clear, documented, low complexity | Readable, some doc gaps | Confusing, missing context | Incomprehensible |
-| **Performance** (10) | Efficient, no obvious issues | Minor inefficiencies | Noticeable inefficiencies | Critical issues, resource leaks |
+### Budget Profiles
+
+- `scan`: 9-11 tool calls for standard single-dimension discovery.
+- `verify`: 11-13 tool calls when re-reading evidence, traceability protocols, or borderline severity.
+- `adjudicate`: 8-10 tool calls for `P0`/`P1` referee work and synthesis-ready confirmation.
 
 ---
 
@@ -416,7 +407,7 @@ Adapted from @review Hunter/Skeptic/Referee protocol.
 4. Update strategy after review
 5. Report newFindingsRatio + noveltyJustification honestly
 6. Cite file:line evidence for every finding
-7. Run Hunter/Skeptic/Referee for P0 candidates
+7. Run Hunter/Skeptic/Referee for P0 candidates and emit typed claim-adjudication packets for every new P0/P1
 8. Respect exhausted approaches -- never retry them
 9. Document ruled-out issues per iteration
 10. Review target is READ-ONLY -- never edit code under review
@@ -459,9 +450,11 @@ REVIEW ITERATION VERIFICATION:
 [x] Review actions executed (3-5 actions minimum)
 [x] All findings cite file:line evidence
 [x] Hunter/Skeptic/Referee run on P0 candidates
+[x] New P0/P1 findings include typed claim-adjudication packets
 [x] scratch/iteration-NNN.md created with all sections
 [x] deep-review-strategy.md updated (dimensions, findings, next focus)
 [x] deep-research-state.jsonl appended with exactly ONE record
+[x] traceabilityChecks recorded when protocol evidence was reviewed
 [x] newFindingsRatio calculated honestly with justification
 [x] Exhausted approaches checked before choosing focus
 [x] Review target files NOT modified (read-only compliance)
@@ -523,7 +516,7 @@ Return this summary to the dispatcher after completing the iteration:
 | Skill | Purpose |
 |-------|---------|
 | `sk-deep-research` | Deep research/review loop orchestration |
-| `sk-code--review` | Review baseline rubric and severity contract |
+| `sk-code--review` | Shared review doctrine via `references/review_core.md` |
 | `system-spec-kit` | Spec folders, memory, docs |
 
 ### Agents
@@ -546,26 +539,26 @@ Return this summary to the dispatcher after completing the iteration:
 ## 10. SUMMARY
 
 ```
-+------------------------------------------+
-|            @deep-review                   |
-+------------------------------------------+
-| AUTHORITY                                 |
-|  * Review code quality (read-only)        |
-|  * Produce P0/P1/P2 findings              |
-|  * Write iteration artifacts              |
-|  * Update strategy + JSONL                |
-+------------------------------------------+
-| WORKFLOW                                  |
-|  Read State -> Focus Dimension ->         |
-|  Execute Review -> Classify Findings ->   |
-|  Write Iteration -> Update Strategy ->    |
-|  Append JSONL                             |
-+------------------------------------------+
-| LIMITS                                    |
-|  * LEAF-only (no sub-agents)              |
-|  * Review target READ-ONLY                |
-|  * 9-12 tool calls (max 13)              |
-|  * No WebFetch                            |
-|  * Autonomous (no user interaction)       |
-+------------------------------------------+
+┌──────────────────────────────────────────┐
+│            @deep-review                  │
+├──────────────────────────────────────────┤
+│ AUTHORITY                                │
+│  ├── Review code quality (read-only)     │
+│  ├── Produce P0/P1/P2 findings           │
+│  ├── Write iteration artifacts           │
+│  └── Update strategy + JSONL             │
+├──────────────────────────────────────────┤
+│ WORKFLOW                                 │
+│  Read State ─► Focus Dimension ─►        │
+│  Execute Review ─► Classify Findings ─►  │
+│  Write Iteration ─► Update Strategy ─►   │
+│  Append JSONL                            │
+├──────────────────────────────────────────┤
+│ LIMITS                                   │
+│  ├── LEAF-only (no sub-agents)           │
+│  ├── Review target READ-ONLY             │
+│  ├── 9-12 tool calls (max 13)            │
+│  ├── No WebFetch                         │
+│  └── Autonomous (no user interaction)    │
+└──────────────────────────────────────────┘
 ```

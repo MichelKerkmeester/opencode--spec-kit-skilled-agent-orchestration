@@ -8,7 +8,7 @@ description: Auto-generated review session overview, refreshed after each iterat
 Auto-generated from JSONL state log and strategy file. Regenerated after every iteration evaluation. Never manually edited.
 
 <!-- ANCHOR:overview -->
-## 1. Overview
+## 1. OVERVIEW
 
 ### Purpose
 
@@ -28,20 +28,20 @@ Provides a compact, human-readable summary of the current review session. Serves
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:status -->
-## 2. Status
+## 2. STATUS
 - Target: [from config.reviewTarget]
 - Target Type: [from config.reviewTargetType]
 - Started: [from config.createdAt]
 - Status: [ITERATING | CONVERGING | STUCK_RECOVERY | COMPLETE]
 - Iteration: [N] of [maxIterations]
-- Provisional Verdict: [PASS | PASS WITH NOTES | CONDITIONAL | FAIL | PENDING]
-- Score Band: [0-100]
+- Provisional Verdict: [PASS | CONDITIONAL | FAIL | PENDING]
+- hasAdvisories: [true | false]
 
 ---
 
 <!-- /ANCHOR:status -->
 <!-- ANCHOR:findings-summary -->
-## 3. Findings Summary
+## 3. FINDINGS SUMMARY
 - **P0 (Critical):** [N] active, [N] new this iteration, [N] upgrades, [N] resolved
 - **P1 (Major):** [N] active, [N] new this iteration, [N] upgrades, [N] resolved
 - **P2 (Minor):** [N] active, [N] new this iteration, [N] upgrades, [N] resolved
@@ -50,35 +50,36 @@ Provides a compact, human-readable summary of the current review session. Serves
 
 <!-- /ANCHOR:findings-summary -->
 <!-- ANCHOR:progress -->
-## 4. Progress
+## 4. PROGRESS
 
-| # | Focus | Files | Dimensions | New P0/P1/P2 | Score | Ratio | Status |
-|---|-------|-------|------------|---------------|-------|-------|--------|
+| # | Focus | Files | Dimensions | New P0/P1/P2 | Ratio | Status |
+|---|-------|-------|------------|---------------|-------|--------|
 | [per iteration from JSONL] |
 
 ---
 
 <!-- /ANCHOR:progress -->
 <!-- ANCHOR:coverage -->
-## 5. Coverage
+## 5. COVERAGE
 - Files reviewed: [X] / [Y] total
-- Dimensions complete: [X] / 7 total
-- Cross-reference checks: [X] / [Y] configured
+- Dimensions complete: [X] / 4 total
+- Core protocols complete: [X] / [Y] required
+- Overlay protocols complete: [X] / [Y] applicable
 
 ---
 
 <!-- /ANCHOR:coverage -->
 <!-- ANCHOR:trend -->
-## 6. Trend
-- Score trend (last 3): [N -> N -> N] [improving | stable | declining]
+## 6. TREND
 - Severity trend (last 3): [P0:N P1:N P2:N -> P0:N P1:N P2:N -> P0:N P1:N P2:N]
 - New findings trend (last 3): [N -> N -> N] [increasing | stable | decreasing]
+- Traceability trend (last 3): [pass/partial/fail counts -> ...]
 
 ---
 
 <!-- /ANCHOR:trend -->
 <!-- ANCHOR:resolved -->
-## 7. Resolved / Ruled Out
+## 7. RESOLVED / RULED OUT
 - **Disproved findings:** [findings investigated and determined to be false positives]
 - **Dead-end review paths:** [review approaches that yielded no actionable results]
 
@@ -86,13 +87,13 @@ Provides a compact, human-readable summary of the current review session. Serves
 
 <!-- /ANCHOR:resolved -->
 <!-- ANCHOR:next-focus -->
-## 8. Next Focus
+## 8. NEXT FOCUS
 [from strategy.md "Next Focus" section — next dimension, file set, or review lens]
 
 ---
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:active-risks -->
-## 9. Active Risks
-- [blockers, missing coverage, unresolved contradictions, guard violations, high stuck count, declining trend, etc.]
+## 9. ACTIVE RISKS
+- [blockers, missing coverage, unresolved contradictions, gate violations, high stuck count, declining trend, etc.]
 <!-- /ANCHOR:active-risks -->

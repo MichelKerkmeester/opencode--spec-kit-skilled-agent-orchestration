@@ -19,9 +19,9 @@ Two functional modes: **Research** (investigate external topics via WebFetch) an
 | Agent | `@deep-research` (LEAF) | `@deep-review` (LEAF) |
 | State files | 6 (config, JSONL, strategy, dashboard, iterations, research.md) | 6 (config, JSONL, strategy, dashboard, iterations, review-report.md) |
 | Convergence signals | 3 (rolling avg 0.30, MAD 0.35, question entropy 0.35) | 3 (rolling avg 0.30, MAD 0.25, dimension coverage 0.45) |
-| Quality guards | 3 (source diversity, focus alignment, no single-weak-source) | 5 (evidence completeness, scope alignment, no inference-only, severity coverage, cross-reference) |
+| Quality guards | 3 (source diversity, focus alignment, no single-weak-source) | 3 binary gates (evidence, scope, coverage) |
 | Tool budget | 8-11 per iteration (max 12) | 9-12 per iteration (max 13) |
-| Output | research.md (17-section synthesis) | review-report.md (11-section findings-first report) |
+| Output | research.md (17-section synthesis) | review-report.md (9-section findings-first report) |
 
 ### Key Features
 
@@ -46,12 +46,12 @@ Two functional modes: **Research** (investigate external topics via WebFetch) an
 
 **Review mode specific:**
 - Severity-weighted `newFindingsRatio` with P0 override rule (single new P0 blocks convergence)
-- 7 review dimensions: Correctness, Security, Spec Alignment, Completeness, Cross-Ref Integrity, Patterns, Documentation Quality
-- 6 cross-reference verification protocols (spec vs code, checklist vs evidence, SKILL.md vs agent, cross-runtime, feature catalog, playbook)
+- 4 review dimensions: Correctness, Security, Traceability, Maintainability
+- 6 cross-reference verification protocols split into core vs overlay coverage
 - P0/P1/P2 severity classification with file:line evidence
 - Hunter/Skeptic/Referee adversarial self-check (tiered: P0 in-iteration, P1 compact, full at synthesis)
-- 5 quality guards (evidence completeness, scope alignment, no inference-only, severity coverage, cross-reference)
-- 11-section review-report.md with release readiness verdict (PASS/PASS WITH NOTES/CONDITIONAL/FAIL)
+- 3 binary gates (evidence, scope, coverage) applied after convergence votes STOP
+- 9-section review-report.md with verdict contract `FAIL`, `CONDITIONAL`, or `PASS` plus `hasAdvisories`
 - Review target is strictly read-only — never modifies code under review
 
 <!-- ANCHOR:quick-start -->
@@ -154,7 +154,7 @@ Loop stops when weighted stop-score exceeds 0.60, **but only after quality guard
 | Review Auto | `:review` or `:review:auto` | None (fully autonomous) |
 | Review Confirm | `:review:confirm` | After init, before/after each iteration, before/after synthesis |
 
-### Review Mode: 7 Dimensions
+### Review Mode: 4 Dimensions
 
 When invoked with `:review`, iterations focus on one dimension at a time:
 
@@ -162,11 +162,8 @@ When invoked with `:review`, iterations focus on one dimension at a time:
 |----------|-----------|--------|
 | 1 | Correctness | Logic, edge cases, error handling |
 | 2 | Security | Auth, injection, data exposure |
-| 3 | Spec Alignment | Spec claims vs actual code |
-| 4 | Completeness | Required files, tests, checklist items |
-| 5 | Cross-Ref Integrity | IDs, links, runtime anchors |
-| 6 | Patterns | Coding standards, template compliance |
-| 7 | Documentation Quality | Accuracy, clarity, completeness |
+| 3 | Traceability | Spec/code alignment, checklist evidence, cross-reference integrity |
+| 4 | Maintainability | Patterns, clarity, documentation quality, safe follow-on change cost |
 
 <!-- ANCHOR:configuration -->
 ## 5. CONFIGURATION
@@ -236,10 +233,10 @@ All state files are created in `{spec_folder}/scratch/` during initialization.
 1. `/spec_kit:deep-research:review ".opencode/specs/03--commands-and-skills/029-sk-deep-research-first-upgrade/"`
 2. Init discovers target files, orders dimensions (correctness → security → ...)
 3. Iteration 1 (inventory): Maps artifact structure, identifies cross-reference targets
-4. Iterations 2-4: Correctness, Security, Spec Alignment passes
-5. Iteration 5: Cross-reference check finds checklist item marked [x] but missing evidence (P1)
-6. Iteration 6-7: Remaining dimensions, no new P0/P1 findings
-7. Convergence: all dimensions covered, newFindingsRatio < 0.08 for 2 iterations
+4. Iterations 2-4: Correctness, Security, and Traceability passes
+5. Iteration 5: Traceability check finds checklist item marked [x] but missing evidence (P1)
+6. Iteration 6-7: Maintainability and stabilization pass, no new P0/P1 findings
+7. Convergence: all dimensions covered, required protocols satisfied, and `minStabilizationPasses >= 1`
 8. Synthesis: review-report.md with verdict CONDITIONAL (1 P1 remaining)
 
 ### Review: Skill Quality Audit
@@ -248,7 +245,7 @@ All state files are created in `{spec_folder}/scratch/` during initialization.
 2. Scope discovery finds SKILL.md, references/, assets/, agents across 5 runtimes
 3. Iterations focus on agent cross-runtime consistency, SKILL.md vs agent alignment
 4. Finds P2: Codex agent TOML has slightly different wording in workflow step 3
-5. All dimensions clean otherwise → verdict PASS WITH NOTES
+5. All dimensions clean otherwise -> verdict PASS with `hasAdvisories=true`
 
 <!-- ANCHOR:troubleshooting -->
 ## 7. TROUBLESHOOTING
@@ -284,7 +281,7 @@ A: Wave mode is currently reference-only. The live executable workflow stays seq
 A: It is self-assessed by the agent. A simplicity bonus (+0.10) rewards iterations that consolidate findings. The MAD noise floor signal helps detect when ratios are indistinguishable from noise.
 
 **Q: What is review mode?**
-A: Review mode (`/spec_kit:deep-research:review`) reuses the iterative loop but audits code quality instead of researching external topics. It dispatches `@deep-review` agents that produce P0/P1/P2 findings with file:line evidence across 7 review dimensions.
+A: Review mode (`/spec_kit:deep-research:review`) reuses the iterative loop but audits code quality instead of researching external topics. It dispatches `@deep-review` agents that produce P0/P1/P2 findings with file:line evidence across 4 review dimensions.
 
 **Q: Does review mode modify the code it reviews?**
 A: No. The review target is strictly read-only. The agent only writes to scratch/ state files (iteration files, strategy, JSONL).
@@ -332,14 +329,14 @@ A: The verdict is FAIL and release is blocked. Run `/spec_kit:plan` to create a 
 ### v1.2.0
 
 - **Review mode**: New `:review` functional mode for iterative code quality auditing (`/spec_kit:deep-research:review`)
-- **@deep-review agent**: Hybrid LEAF agent combining @review rubric (P0/P1/P2, 5-dimension scoring, Hunter/Skeptic/Referee) with @deep-research state protocol (JSONL, strategy, iteration lifecycle)
-- **7 review dimensions**: Correctness, Security, Spec Alignment, Completeness, Cross-Ref Integrity, Patterns, Documentation Quality
+- **@deep-review agent**: Hybrid LEAF agent combining @review rubric (P0/P1/P2, 4-dimension scoring, Hunter/Skeptic/Referee) with @deep-research state protocol (JSONL, strategy, iteration lifecycle)
+- **4 review dimensions**: Correctness, Security, Traceability, Maintainability
 - **6 cross-reference protocols**: Spec vs code, checklist vs evidence, SKILL.md vs agent, cross-runtime, feature catalog, playbook
 - **Severity-weighted convergence**: `newFindingsRatio` with P0 override rule; adapted signal weights (rolling avg 0.30, MAD 0.25, dimension coverage 0.45)
-- **5 review quality guards**: Evidence completeness, scope alignment, no inference-only, severity coverage, cross-reference
-- **11-section review-report.md**: Findings-first output with release readiness verdict (PASS/PASS WITH NOTES/CONDITIONAL/FAIL)
+- **3 review quality gates**: Evidence, scope, coverage
+- **9-section review-report.md**: Findings-first output with verdict contract (PASS/CONDITIONAL/FAIL plus `hasAdvisories`)
 - **Review strategy + dashboard templates**: Dimension tracking, running findings, cross-reference status, coverage map
-- **Post-review workflow**: 4 verdicts with next-command recommendations
+- **Post-review workflow**: 3 verdicts (FAIL/CONDITIONAL/PASS + hasAdvisories) with next-command recommendations
 
 ### v1.1.0
 

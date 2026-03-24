@@ -8,7 +8,7 @@ description: Runtime template copied to scratch/ during initialization to track 
 Runtime template copied to `{spec_folder}/scratch/` during initialization. Tracks review progress across iterations.
 
 <!-- ANCHOR:overview -->
-## 1. Overview
+## 1. OVERVIEW
 
 ### Purpose
 
@@ -25,52 +25,49 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:topic -->
-## 2. Topic
+## 2. TOPIC
 [Review target description from config -- set during initialization]
 
 ---
 
 <!-- /ANCHOR:topic -->
 <!-- ANCHOR:review-dimensions -->
-## 3. Review Dimensions (remaining)
+## 3. REVIEW DIMENSIONS (remaining)
 - [ ] D1 Correctness — Logic errors, off-by-one, wrong return types, broken invariants
 - [ ] D2 Security — Injection, auth bypass, secrets exposure, unsafe deserialization
-- [ ] D3 Spec Alignment — Implementation matches spec.md, plan.md, and decision records
-- [ ] D4 Completeness — Missing edge cases, unhandled error paths, TODO/FIXME items
-- [ ] D5 Cross-Reference Integrity — Internal links, import paths, schema refs all resolve
-- [ ] D6 Patterns — Consistency with codebase conventions, anti-pattern detection
-- [ ] D7 Documentation Quality — Docstrings, comments, README accuracy, changelog entries
+- [ ] D3 Traceability — Spec/code alignment, checklist evidence, cross-reference integrity
+- [ ] D4 Maintainability — Patterns, clarity, documentation quality, safe follow-on change cost
 
 ---
 
 <!-- /ANCHOR:review-dimensions -->
 <!-- ANCHOR:non-goals -->
-## 4. Non-Goals
+## 4. NON-GOALS
 [What this review session is NOT trying to assess -- populated during initialization]
 
 ---
 
 <!-- /ANCHOR:non-goals -->
 <!-- ANCHOR:stop-conditions -->
-## 5. Stop Conditions
+## 5. STOP CONDITIONS
 [Explicit conditions beyond convergence that should end the session -- populated during initialization]
 
 ---
 
 <!-- /ANCHOR:stop-conditions -->
 <!-- ANCHOR:completed-dimensions -->
-## 6. Completed Dimensions
+## 6. COMPLETED DIMENSIONS
 [None yet -- populated as iterations complete dimension reviews]
 
-| Dimension | Score | Iteration | Summary |
-|-----------|-------|-----------|---------|
+| Dimension | Verdict | Iteration | Summary |
+|-----------|---------|-----------|---------|
 | [D1 Correctness] | [PASS/CONDITIONAL/FAIL] | [N] | [1-sentence result] |
 
 ---
 
 <!-- /ANCHOR:completed-dimensions -->
 <!-- ANCHOR:running-findings -->
-## 7. Running Findings
+## 7. RUNNING FINDINGS
 - **P0 (Critical):** 0 active
 - **P1 (Major):** 0 active
 - **P2 (Minor):** 0 active
@@ -82,7 +79,7 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 
 <!-- /ANCHOR:running-findings -->
 <!-- ANCHOR:what-worked -->
-## 8. What Worked
+## 8. WHAT WORKED
 [First iteration -- populated after iteration 1 completes]
 - [Approach]: [Why it worked] (iteration N)
 
@@ -90,7 +87,7 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 
 <!-- /ANCHOR:what-worked -->
 <!-- ANCHOR:what-failed -->
-## 9. What Failed
+## 9. WHAT FAILED
 [First iteration -- populated after iteration 1 completes]
 - [Approach]: [Why it failed] (iteration N)
 
@@ -98,7 +95,7 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 
 <!-- /ANCHOR:what-failed -->
 <!-- ANCHOR:exhausted-approaches -->
-## 10. Exhausted Approaches (do not retry)
+## 10. EXHAUSTED APPROACHES (do not retry)
 [Populated when a review approach has been tried from multiple angles without yielding new findings]
 
 ### [Category Name] -- BLOCKED (iteration N, N attempts)
@@ -114,7 +111,7 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 
 <!-- /ANCHOR:exhausted-approaches -->
 <!-- ANCHOR:ruled-out-directions -->
-## 11. Ruled Out Directions
+## 11. RULED OUT DIRECTIONS
 [Review angles that were investigated and definitively eliminated -- consolidated from iteration dead-end data]
 - [Approach]: [Why ruled out] (iteration N, evidence: [source])
 
@@ -122,34 +119,37 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 
 <!-- /ANCHOR:ruled-out-directions -->
 <!-- ANCHOR:next-focus -->
-## 12. Next Focus
+## 12. NEXT FOCUS
 [Recommended focus area for the next iteration -- updated at end of each iteration. Includes target dimension and/or specific files to review.]
 
 ---
 
 <!-- /ANCHOR:next-focus -->
 <!-- ANCHOR:known-context -->
-## 13. Known Context
+## 13. KNOWN CONTEXT
 [Populated during initialization from memory_context() results, if any prior work exists]
 
 ---
 
 <!-- /ANCHOR:known-context -->
 <!-- ANCHOR:cross-reference-status -->
-## 14. Cross-Reference Status
-[Alignment checks completed across spec, checklist, and agent definitions]
+## 14. CROSS-REFERENCE STATUS
+[Alignment checks completed across core and overlay protocols]
 
-| Check | Status | Iteration | Notes |
-|-------|--------|-----------|-------|
-| Spec vs Implementation | [pending/pass/fail] | [N] | [details] |
-| Checklist vs Code | [pending/pass/fail] | [N] | [details] |
-| Agent Consistency | [pending/pass/fail] | [N] | [details] |
+| Protocol | Level | Status | Iteration | Notes |
+|----------|-------|--------|-----------|-------|
+| `spec_code` | core | [pending/pass/partial/fail/blocked] | [N] | [details] |
+| `checklist_evidence` | core | [pending/pass/partial/fail/blocked] | [N] | [details] |
+| `skill_agent` | overlay | [pending/pass/partial/fail/blocked/notApplicable] | [N] | [details] |
+| `agent_cross_runtime` | overlay | [pending/pass/partial/fail/blocked/notApplicable] | [N] | [details] |
+| `feature_catalog_code` | overlay | [pending/pass/partial/fail/blocked/notApplicable] | [N] | [details] |
+| `playbook_capability` | overlay | [pending/pass/partial/fail/blocked/notApplicable] | [N] | [details] |
 
 ---
 
 <!-- /ANCHOR:cross-reference-status -->
 <!-- ANCHOR:files-under-review -->
-## 15. Files Under Review
+## 15. FILES UNDER REVIEW
 [Per-file coverage state table -- populated during initialization from scope discovery]
 
 | File | Dimensions Reviewed | Last Iteration | Findings | Status |
@@ -160,13 +160,15 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 
 <!-- /ANCHOR:files-under-review -->
 <!-- ANCHOR:review-boundaries -->
-## 16. Review Boundaries
+## 16. REVIEW BOUNDARIES
 - Max iterations: [from config]
 - Convergence threshold: [from config]
+- Rolling STOP threshold: 0.08
+- No-progress threshold: 0.05
+- Coverage stabilization passes required: 1
 - Per-iteration budget: [from config.maxToolCallsPerIteration] tool calls, [from config.maxMinutesPerIteration] minutes
 - Severity threshold: [from config.severityThreshold]
-- Quality gate threshold: [from config.qualityGateThreshold]
 - Review target type: [from config.reviewTargetType]
-- Cross-reference checks: spec=[from config], checklist=[from config], agentConsistency=[from config]
+- Cross-reference checks: core=[from config.crossReference.core], overlay=[from config.crossReference.overlay]
 - Started: [timestamp]
 <!-- /ANCHOR:review-boundaries -->

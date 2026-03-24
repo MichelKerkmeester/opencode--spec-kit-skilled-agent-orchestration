@@ -531,14 +531,14 @@ In confirm mode, the YAML workflow adds approval gates:
 ---
 
 <!-- ANCHOR:review-mode-loop -->
-## 6. REVIEW MODE LOOP
+## 9. REVIEW MODE LOOP
 
-When `config.mode == "review"`, the loop protocol adapts from research to code/spec review. The 4-phase structure (init, loop, synthesis, save) is preserved, but each phase has review-specific behavior.
+When `config.mode == "review"`, the loop protocol adapts from research to code/spec review. The 4-phase structure (init, loop, synthesis, save) is preserved, but review mode uses the simplified four-dimension taxonomy, three binary gates, and machine-verifiable traceability state.
 
 ### 6.1 Review Initialization
 
 #### Purpose
-Set up all state files for a new review session. Discover the scope, order dimensions, and create review-specific state.
+Set up all state files for a new review session. Discover the scope, order dimensions, and establish the traceability protocol plan.
 
 #### Steps
 
@@ -551,18 +551,23 @@ Set up all state files for a new review session. Discover the scope, order dimen
    - `track`: List all child spec folders under the track, read spec.md + checklist.md for each
    - `files`: Expand glob patterns, validate existence, discover cross-references
    - Store resolved file list in strategy.md "Files Under Review"
-4. **Dimension ordering**: Order the 7 review dimensions for iteration:
+4. **Dimension ordering**: Order the 4 review dimensions for iteration:
    - Priority: correctness and security first (highest-impact dimensions)
-   - Default order: D1 Correctness, D2 Security, D3 Spec Alignment, D4 Completeness, D5 Cross-Reference Integrity, D6 Patterns, D7 Documentation Quality
-5. **Write config**: `scratch/deep-research-config.json` with `mode: "review"` and review fields
-6. **Initialize state log**: First JSONL line with config record including `mode: "review"`
-7. **Initialize strategy**: `scratch/deep-review-strategy.md` from review template with:
+   - Default order: D1 Correctness, D2 Security, D3 Traceability, D4 Maintainability
+5. **Traceability protocol plan**: Partition protocols into:
+   - **Core**: `spec_code`, `checklist_evidence`
+   - **Overlay**: `skill_agent`, `agent_cross_runtime`, `feature_catalog_code`, `playbook_capability`
+   Only schedule overlay protocols that apply to the target type.
+6. **Write config**: `scratch/deep-research-config.json` with `mode: "review"` and review fields
+7. **Initialize state log**: First JSONL line with config record including `mode: "review"`
+8. **Initialize strategy**: `scratch/deep-review-strategy.md` from review template with:
    - Topic (review target description)
    - Review Dimensions checklist
    - Files Under Review table
+   - Cross-Reference Status table grouped by core vs overlay
    - Known Context from `memory_context()` results
    - Review Boundaries from config
-8. **Validate review charter**:
+9. **Validate review charter**:
    - Verify strategy.md contains Non-Goals and Stop Conditions sections
    - In **confirm mode**: present the charter (target, dimensions, scope, non-goals) for user review
    - In **auto mode**: accept automatically and continue
@@ -577,16 +582,20 @@ Set up all state files for a new review session. Discover the scope, order dimen
 The iteration loop follows the same Step 1-5 structure as research mode with these adaptations:
 
 #### Step 1: Read State (adapted)
-- Read JSONL — count iterations, get last newFindingsRatio, count active findings by severity
-- Read `deep-review-strategy.md` — get next focus dimension/files, remaining dimensions
+- Read JSONL to count iterations and extract `newFindingsRatio`, `findingsSummary`, `findingsNew`, and `traceabilityChecks`
+- Read `deep-review-strategy.md` to get next focus dimension/files, remaining dimensions, and protocol gaps
 
 #### Step 2: Check Convergence (adapted)
 Run `shouldContinue_review()` (see convergence.md Section 10.3):
-- Max iterations reached? STOP
-- All dimensions clean with 2+ clean passes? STOP
-- Stuck count >= 2? STUCK_RECOVERY
-- Composite convergence (3-signal, review-adapted weights)? STOP (after guard check)
-- Otherwise: CONTINUE
+- Max iterations reached? `STOP`
+- Stuck count `>= 2` using `noProgressThreshold = 0.05`? `STUCK_RECOVERY`
+- Composite convergence votes `STOP` only after:
+  - rolling average uses `rollingStopThreshold = 0.08`
+  - dimension coverage reaches 100% across the 4-dimension model
+  - coverage has aged through `minStabilizationPasses >= 1`
+  - required traceability protocols are covered
+  - evidence, scope, and coverage gates pass
+- Otherwise: `CONTINUE`
 
 #### Step 2b: Generate State Summary (adapted)
 ```
@@ -595,8 +604,9 @@ Iteration: {N} of {max} | Mode: review
 Target: {config.reviewTarget} ({config.reviewTargetType})
 Dimensions: {reviewed}/{total} complete | Next: {nextDimension}
 Findings: P0:{count} P1:{count} P2:{count} active
+Traceability: core={core_status} overlay={overlay_status}
 Last 2 ratios: {ratio_N-1} -> {ratio_N} | Stuck count: {stuck_count}
-Provisional verdict: {PASS|PASS WITH NOTES|CONDITIONAL|FAIL|PENDING}
+Provisional verdict: {PASS|CONDITIONAL|FAIL|PENDING} | hasAdvisories={hasAdvisories}
 Next focus: {strategy.nextFocus}
 ```
 
@@ -611,6 +621,9 @@ Iteration: {N} of {maxIterations}
 Focus Dimension: {strategy.nextFocus.dimension}
 Focus Files: {strategy.nextFocus.files}
 Remaining Dimensions: {strategy.remainingDimensions}
+Traceability Protocols:
+  - Core: {core_protocols}
+  - Overlay: {overlay_protocols}
 Active Findings: {findingsSummary}
 State Files:
   - Config: {spec_folder}/scratch/deep-research-config.json
@@ -621,39 +634,57 @@ CONSTRAINT: LEAF agent -- do NOT dispatch sub-agents
 CONSTRAINT: Target files are READ-ONLY -- never modify code under review
 ```
 
-#### Step 3a: Cross-Reference Verification
+#### Step 3a: Cross-Reference Protocols
 
-When a review iteration's focus dimension is `cross-ref-integrity` or when `config.crossReference` flags are enabled, the agent applies 6 cross-reference protocols:
+Traceability checks are split into core vs overlay protocols.
 
-| # | Check | Source | Target | Description |
-|---|-------|--------|--------|-------------|
-| 1 | Spec vs Code | spec.md claims | Implementation files | Verify spec claims match shipped reality |
-| 2 | Checklist vs Evidence | `[x]` items in checklist.md | Cited evidence | Verify checked items have supporting evidence |
-| 3 | SKILL.md vs Agent | Skill contracts | Agent definition files | Verify skill references match agent capabilities |
-| 4 | Agent Cross-Runtime | `.claude` agents | `.codex`/`.opencode`/`.agents`/`.gemini` agents | Verify agent consistency across runtimes |
-| 5 | Feature Catalog vs Code | Catalog claims | Implementation | Verify catalog entries match actual features |
-| 6 | Playbook vs Capability | Scenario preconditions | Actual capability | Verify playbook scenarios are executable |
+| Level | Protocol | Applies To | Gate Class | Purpose |
+|-------|----------|------------|------------|---------|
+| Core | `spec_code` | all targets | hard | Verify normative claims resolve to shipped behavior |
+| Core | `checklist_evidence` | all targets | hard | Verify checked completion claims have evidence |
+| Overlay | `skill_agent` | skill | advisory | Verify SKILL.md and runtime agents agree |
+| Overlay | `agent_cross_runtime` | agent | advisory | Verify runtime agent parity |
+| Overlay | `feature_catalog_code` | skill, spec-folder, track, files | advisory | Verify catalog claims match capability |
+| Overlay | `playbook_capability` | skill, agent, spec-folder | advisory | Verify playbook scenarios match executable reality |
 
-Each protocol produces a result entry in the iteration file's Cross-Reference section with status (PASS/FAIL/PARTIAL) and evidence. Results are aggregated in the review-report.md Cross-Reference Results section during synthesis.
+Each protocol produces a structured result in `traceabilityChecks.results[]` with `protocolId`, `status`, `gateClass`, `applicable`, counts, evidence, finding refs, and summary text.
 
 #### Step 4: Evaluate Results (adapted)
 After agent completes:
 1. Verify `scratch/iteration-{NNN}.md` was created
-2. Verify JSONL was appended with review iteration record (includes `findingsSummary`, `findingsNew`)
-3. Verify strategy.md was updated (dimension progress, findings count)
+2. Verify JSONL was appended with review iteration fields: `dimensions`, `filesReviewed`, `findingsSummary`, `findingsNew`, and `traceabilityChecks`
+3. Verify strategy.md was updated (dimension progress, findings count, protocol status)
 4. Extract `newFindingsRatio` from JSONL record
-5. Track stuck count: increment if `newFindingsRatio < 0.08`, reset otherwise (threshold 2)
-6. Run adversarial self-check on any new P0 findings:
-   - Re-read the cited code to verify the P0 is genuine
-   - If the P0 cannot be confirmed, downgrade to P1 with note
+5. Update stuck tracking using `noProgressThreshold = 0.05`
 
-#### Step 4a: Generate Dashboard (adapted)
+#### Step 4a: Claim Adjudication
+
+Before the next convergence pass, the orchestrator adjudicates every new P0/P1.
+
+Each new P0/P1 must record:
+- `claim`
+- `evidenceRefs`
+- `counterevidenceSought`
+- `alternativeExplanation`
+- `finalSeverity`
+- `confidence`
+- `downgradeTrigger`
+
+Protocol:
+1. Re-read the cited evidence.
+2. Seek counterevidence in adjacent code, docs, or prior iteration history.
+3. Record an alternative explanation even if it is rejected.
+4. Confirm or downgrade severity before the finding becomes convergence-visible.
+
+This adjudication step happens after iteration evaluation and before the next convergence math run.
+
+#### Step 4b: Generate Dashboard (adapted)
 Generate `scratch/deep-review-dashboard.md` with review-specific sections:
-- Status with provisional verdict and score band
+- Status with provisional verdict and `hasAdvisories`
 - Findings summary (P0/P1/P2 counts with deltas)
 - Progress table with dimension column
-- Coverage (files and dimensions)
-- Trend (score, severity, new-findings)
+- Coverage (files, dimensions, traceability protocols)
+- Trend (`newFindingsRatio`, severity, traceability stability)
 
 ### 6.3 Review Synthesis
 
@@ -663,28 +694,29 @@ Compile all iteration findings into the final `review-report.md`.
 #### Steps
 
 1. **Read all iteration files**: `scratch/iteration-*.md`
-2. **Read strategy**: Final state of dimensions, findings, coverage
+2. **Read strategy**: Final state of dimensions, findings, coverage, and protocol status
 3. **Finding registry dedup**: Consolidate findings across iterations:
    - Group findings by file + line range + root cause
    - Merge duplicates, keeping the highest severity and all evidence
    - Assign final findingIds (F001, F002, ...)
-4. **Severity reconciliation**: For findings with severity transitions:
-   - Use the final (most recent) severity
-   - Document the transition history in the finding entry
-5. **Adversarial recheck**: For each P0 finding in the final registry:
-   - Re-read the cited code one more time
-   - Verify the finding is reproducible and correctly classified
-   - If a P0 cannot be confirmed, downgrade to P1 with explanation
-6. **Compile review-report.md**: Generate all 11 sections (see state_format.md Section 8)
-   - Executive Summary with verdict:
-     - FAIL: Active P0 findings present OR overall score < 70
-     - CONDITIONAL: No P0, but active P1 findings remain
-     - PASS WITH NOTES: Only P2 findings remain (no active P0 or P1)
-     - PASS: No active findings
-   - Dimension summaries with per-dimension scores
-   - Prioritized remediation recommendations
-7. **Update config status**: Set `status: "complete"` in config.json
-8. **Final JSONL entry**: `{"type":"event","event":"synthesis_complete","mode":"review","totalIterations":N,"verdict":"PASS|PASS WITH NOTES|CONDITIONAL|FAIL","score":N,"findingsActive":{"P0":N,"P1":N,"P2":N}}`
+4. **Severity reconciliation**: Use adjudicated `finalSeverity` for any P0/P1 that changed during review
+5. **Replay validation**: Recompute the convergence outcome from JSONL state before finalizing the report
+6. **Compile review-report.md**: Generate the 9-section contract (see state_format.md Section 8):
+   - Executive Summary
+   - Planning Trigger
+   - Active Finding Registry
+   - Remediation Workstreams
+   - Spec Seed
+   - Plan Seed
+   - Traceability Status
+   - Deferred Items
+   - Audit Appendix
+7. **Verdict contract**:
+   - `FAIL`: active P0 remains or any binary gate fails
+   - `CONDITIONAL`: no active P0, but active P1 remains
+   - `PASS`: no active P0/P1; set `hasAdvisories=true` when active P2 remains
+8. **Update config status**: Set `status: "complete"` in config.json
+9. **Final JSONL entry**: `{"type":"event","event":"synthesis_complete","mode":"review","totalIterations":N,"verdict":"PASS|CONDITIONAL|FAIL","activeP0":N,"activeP1":N,"activeP2":N,"dimensionCoverage":X,"stopReason":"..." }`
 
 ### 6.4 Review Save
 

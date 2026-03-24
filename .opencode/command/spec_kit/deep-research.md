@@ -116,9 +116,9 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
      D) track — All child spec folders in a feature track
      E) files — Arbitrary file paths or globs
 
-   Q_dims. Which review dimensions? (default: all 7)
-     All: correctness, security, spec-alignment, completeness, cross-ref-integrity, patterns, documentation-quality
-     Or specify a subset (e.g., "correctness, security, spec-alignment")
+   Q_dims. Which review dimensions? (default: all 4)
+     All: correctness, security, traceability, maintainability
+     Or specify a subset (e.g., "correctness, security, traceability")
 
    Q1. Spec Folder (required):
      A) Use existing [suggest if found]
@@ -239,7 +239,7 @@ Run an iterative loop for deep research or code review:
 |-------|------|---------|---------|
 | Init | Initialize | Scope discovery, resolve files, create config + strategy with review dimensions | State files in scratch/ |
 | Loop | Iterate | Dispatch @deep-review agent per dimension, evaluate review convergence + quality guards | iteration-NNN.md files, dashboard.md |
-| Synth | Synthesize | Build finding registry, deduplicate, compile review-report.md | review-report.md (11 sections) |
+| Synth | Synthesize | Build finding registry, deduplicate, compile review-report.md | review-report.md (9 sections) |
 | Save | Preserve | Save memory context | memory/*.md |
 
 ### Execution Modes
@@ -286,7 +286,7 @@ STATUS=OK PATH=[spec-folder-path]
 ```
 Deep review complete.
 Iterations: [N] | Stop reason: [converged|max_iterations|all_dimensions_clean]
-Findings: P0=[N] P1=[N] P2=[N] | Verdict: [PASS|CONDITIONAL|PASS WITH NOTES|FAIL]
+Findings: P0=[N] P1=[N] P2=[N] | Verdict: [PASS|CONDITIONAL|FAIL] [PASS may include hasAdvisories=true]
 Artifacts: review-report.md, [N] iteration files, memory/*.md
 Ready for: /spec_kit:plan [remediation] (if FAIL/CONDITIONAL)
 STATUS=OK PATH=[spec-folder-path]
@@ -385,13 +385,13 @@ Key references:
 - Does NOT proceed to implementation
 
 ### Review Mode
-- Iterative (multi-pass) code/spec audit across 7 dimensions
+- Iterative (multi-pass) code/spec audit across 4 dimensions
 - Dispatches `@deep-review` LEAF agent per iteration (fresh context each time)
 - Severity-weighted `newFindingsRatio` with P0 override (blocks convergence on new P0)
 - Dimension coverage as convergence signal (all dimensions must be reviewed)
 - Cross-reference verification across spec/code/test boundaries
 - Finding deduplication and progressive synthesis
-- 11-section review-report.md with 4-verdict release readiness assessment
+- 9-section review-report.md with 3-verdict release readiness assessment
 - Does NOT proceed to implementation (outputs remediation plan for `/spec_kit:plan`)
 
 ---

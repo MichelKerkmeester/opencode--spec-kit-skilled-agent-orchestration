@@ -621,7 +621,7 @@ This report is included in the final JSONL entry and displayed to the user.
 <!-- ANCHOR:review-mode-convergence -->
 ## 10. REVIEW MODE CONVERGENCE
 
-Review mode uses a severity-weighted variant of the convergence algorithm. Instead of measuring "new information" against research questions, it measures "new findings" against review dimensions and applies severity weighting.
+Review mode uses a severity-weighted variant of the convergence algorithm. Instead of measuring "new information" against research questions, it measures "new findings" against the simplified four-dimension review model and machine-verifiable traceability coverage.
 
 ### 10.1 newFindingsRatio (Severity-Weighted)
 
@@ -647,171 +647,158 @@ If total_findings == 0 → newFindingsRatio = 0.0
 
 **P0 Override rationale:** A new critical finding always signals significant remaining work, regardless of the overall new-to-total ratio. Setting a floor of 0.50 prevents premature convergence when critical issues are still being discovered.
 
-### 10.2 Adapted Signal Weights
+### 10.2 Review Taxonomy and Thresholds
 
-Review mode uses a 3-signal composite with adapted weights that prioritize dimension coverage over rolling average.
+The simplified review model uses four dimensions and three binary quality gates.
 
-| Signal | Weight | Window | Threshold | Min Iterations |
-|--------|--------|--------|-----------|----------------|
-| Rolling Average | 0.30 | 2 | 0.08 | 2 |
-| MAD Noise Floor | 0.25 | all | 1.4826 | 3 |
-| Dimension Coverage | 0.45 | n/a | 1.0 (100%) | 1 |
+| Dimension | Role in Convergence | Notes |
+|-----------|----------------------|-------|
+| Correctness | Required coverage | Logic, invariants, state transitions, observable behavior |
+| Security | Required coverage | Trust boundaries, authz/authn, input handling, exploit paths |
+| Traceability | Coverage signal + traceability protocols | Spec alignment, checklist evidence, cross-reference integrity |
+| Maintainability | Coverage signal | Patterns, clarity, documentation quality, safe follow-on change cost |
 
-**Key differences from research mode:**
-- **Rolling Average** uses a window of 2 (not 3) for faster signal response
-- **Rolling Average** threshold is 0.08 (not `convergenceThreshold`) to account for severity weighting
-- **MAD Noise Floor** weight reduced to 0.25 (from 0.35) — review findings are less noisy
-- **Dimension Coverage** replaces Question Entropy — measures reviewed-dimensions / total-dimensions
-- **Dimension Coverage** requires 1.0 (100%) — all dimensions must be reviewed before convergence
-- **Dimension Coverage** weight increased to 0.45 (from 0.35) to enforce thorough coverage
+| Setting | Value | Purpose |
+|---------|-------|---------|
+| `rollingStopThreshold` | `0.08` | STOP vote threshold for the rolling-average signal |
+| `noProgressThreshold` | `0.05` | Stuck/no-progress threshold for recovery classification |
+| `dimensionCoverage.weight` | `0.45` | Highest-weight convergence signal |
+| `coverageAge.minStabilizationPasses` | `1` | Coverage can vote STOP only after at least one stabilization pass |
+| `compositeStopScore` | `0.60` | Weighted stop-score needed before guard evaluation |
 
 ### 10.3 shouldContinue_review() Pseudocode
 
 ```
 function shouldContinue_review(state, config):
   iterations = state.iterations
+  evidenceIterations = [i for i in iterations if i.status != "thought"]
 
-  // --- Hard Stops (checked first, always apply) ---
-
-  // Hard stop: max iterations
   if len(iterations) >= config.maxIterations:
     return { action: "STOP", reason: "max_iterations_reached" }
 
-  // Hard stop: all dimensions clean (no findings above threshold in any dimension)
-  allDimensionsReviewed = countReviewedDimensions(state.strategy) == len(config.reviewDimensions)
-  hasActivePOorP1 = countActiveFindings(state, ["P0", "P1"]) > 0
-  if allDimensionsReviewed and not hasActivePOorP1:
-    cleanPasses = countConsecutiveCleanPasses(iterations)
-    if cleanPasses >= 2:
-      return { action: "STOP", reason: "all_dimensions_clean" }
+  activeP0 = countActiveFindings(state, ["P0"])
+  activeP1 = countActiveFindings(state, ["P1"])
+  coverage = computeReviewCoverage(state, config)
+  stabilizationPasses = countCoverageStabilizationPasses(evidenceIterations, coverage)
 
-  // --- Stuck Detection (threshold: 2, not 3) ---
+  if coverage.dimensionCoverage == 1.0 and activeP0 == 0 and activeP1 == 0:
+    if stabilizationPasses >= config.coverageAge.minStabilizationPasses:
+      gateResult = checkReviewQualityGates(state, config, coverage)
+      if gateResult.passed:
+        return { action: "STOP", reason: "all_dimensions_clean", coverage, stabilizationPasses }
 
-  stuckCount = countConsecutiveStuck_review(iterations)
-  if stuckCount >= 2:
+  stuckCount = countConsecutiveStuck_review(evidenceIterations, config.thresholds.noProgressThreshold)
+  if stuckCount >= config.stuckThreshold:
     return { action: "STUCK_RECOVERY", reason: "stuck_detected", stuckCount }
-
-  // --- Composite Convergence (3-Signal Weighted Vote) ---
-
-  // Filter: exclude "thought" iterations from convergence signals
-  evidenceIterations = [i for i in iterations if i.status != "thought"]
 
   signals = []
   totalWeight = 0
 
-  // Signal 1: Rolling average of last 2 newFindingsRatios (severity-weighted)
   if len(evidenceIterations) >= 2:
     recent = evidenceIterations[-2:]
-    avgNewFindings = mean(i.newFindingsRatio for i in recent)
-    rollingStop = avgNewFindings < 0.08
-    signals.push({ name: "rollingAvg", value: avgNewFindings, stop: rollingStop, weight: 0.30 })
+    avgRatio = mean(i.newFindingsRatio for i in recent)
+    rollingStop = avgRatio < config.thresholds.rollingStopThreshold
+    signals.push({ name: "rollingAvg", value: avgRatio, stop: rollingStop, weight: 0.30 })
     totalWeight += 0.30
 
-  // Signal 2: MAD noise floor (needs 3+ data points)
   if len(evidenceIterations) >= 3:
     allRatios = [i.newFindingsRatio for i in evidenceIterations]
     med = median(allRatios)
     mad = median([abs(r - med) for r in allRatios])
     noiseFloor = mad * 1.4826
-    latestRatio = iterations[-1].newFindingsRatio
+    latestRatio = evidenceIterations[-1].newFindingsRatio
     madStop = latestRatio <= noiseFloor
     signals.push({ name: "madScore", value: noiseFloor, stop: madStop, weight: 0.25 })
     totalWeight += 0.25
 
-  // Signal 3: Dimension coverage
-  reviewedCount = countReviewedDimensions(state.strategy)
-  totalDimensions = len(config.reviewDimensions)
-  if totalDimensions > 0:
-    coverage = reviewedCount / totalDimensions
-    dimensionStop = coverage >= 1.0  // 100% — all dimensions must be reviewed
-    signals.push({ name: "dimensionCoverage", value: coverage, stop: dimensionStop, weight: 0.45 })
-    totalWeight += 0.45
+  coverageStop = (
+    coverage.dimensionCoverage == 1.0 and
+    coverage.requiredProtocolsCovered and
+    stabilizationPasses >= config.coverageAge.minStabilizationPasses
+  )
+  signals.push({
+    name: "dimensionCoverage",
+    value: coverage.dimensionCoverage,
+    stop: coverageStop,
+    weight: 0.45,
+    metadata: {
+      requiredProtocolsCovered: coverage.requiredProtocolsCovered,
+      stabilizationPasses: stabilizationPasses,
+    },
+  })
+  totalWeight += 0.45
 
-  // Compute weighted stop score
   if totalWeight > 0:
     stopScore = sum(s.weight * (1 if s.stop else 0) for s in signals) / totalWeight
-    if stopScore > 0.60:
-      // Quality guard check before finalizing STOP
-      guardResult = checkReviewQualityGuards(state, config)
-      if guardResult.passed:
+    if stopScore >= config.thresholds.compositeStopScore:
+      gateResult = checkReviewQualityGates(state, config, coverage)
+      if gateResult.passed:
         return { action: "STOP", reason: "composite_converged", stopScore, signals }
-      else:
-        // Override STOP — guards failed
-        for v in guardResult.violations:
-          appendToJSONL({ type: "event", event: "guard_violation", ...v })
-        return { action: "CONTINUE", reason: "guard_override", violations: guardResult.violations }
+      for violation in gateResult.violations:
+        appendToJSONL({ type: "event", event: "guard_violation", ...violation })
+      return { action: "CONTINUE", reason: "guard_override", violations: gateResult.violations, signals }
 
-  // --- Default: Continue ---
-  return { action: "CONTINUE", reviewedDimensions: reviewedCount, signals }
+  return { action: "CONTINUE", coverage, stabilizationPasses, signals }
 ```
 
-### 10.4 Review Quality Guards
+### 10.4 Review Quality Gates
 
-Five binary guards that must pass before a STOP decision is finalized. If any guard fails, the STOP is overridden to CONTINUE.
+Three binary gates must pass before a STOP decision is finalized. If any gate fails, the STOP is overridden to CONTINUE.
 
-| Guard | Rule | Fail Action |
-|-------|------|-------------|
-| Evidence Completeness | Every P0/P1 finding has `file:line` citation | Block STOP, log `guard_violation` |
-| Scope Alignment | All findings are within the declared review scope | Block STOP, log `guard_violation` |
-| No Inference-Only | No P0/P1 finding based solely on inference without code evidence | Block STOP, log `guard_violation` |
-| Severity Coverage | Security + Correctness dimensions have been reviewed | Block STOP, log `guard_violation` |
-| Cross-Reference (optional) | At least one multi-dimension iteration (5+ iterations only) | Block STOP, log `guard_violation` |
+| Gate | Rule | Fail Action |
+|------|------|-------------|
+| Evidence | Every active finding has concrete `file:line` evidence and is not inference-only | Block STOP, log `guard_violation` |
+| Scope | Findings and reviewed files stay within the declared review scope | Block STOP, log `guard_violation` |
+| Coverage | Configured dimensions and required traceability protocols must be covered before STOP is allowed | Block STOP, log `guard_violation` |
 
 ```
-function checkReviewQualityGuards(state, config):
+function checkReviewQualityGates(state, config, coverage):
   violations = []
 
-  // Guard 1: Evidence Completeness
-  for f in state.findings where f.severity in ["P0", "P1"] and f.status == "active":
-    if not f.hasFileLineCitation:
-      violations.push({ guard: "evidence_completeness", findingId: f.id,
-                        detail: "P0/P1 finding lacks file:line citation" })
+  for f in state.findings where f.status == "active":
+    if not f.hasFileLineCitation or f.evidenceType == "inference-only":
+      violations.push({ gate: "evidence", findingId: f.id,
+                        detail: "Active finding lacks concrete evidence or relies only on inference" })
 
-  // Guard 2: Scope Alignment
   reviewScope = resolveReviewScope(config.reviewTarget, config.reviewTargetType)
   for f in state.findings where f.status == "active":
     if f.filePath not in reviewScope:
-      violations.push({ guard: "scope_alignment", findingId: f.id,
+      violations.push({ gate: "scope", findingId: f.id,
                         detail: "Finding outside declared review scope" })
 
-  // Guard 3: No Inference-Only
-  for f in state.findings where f.severity in ["P0", "P1"] and f.status == "active":
-    if f.evidenceType == "inference-only":
-      violations.push({ guard: "no_inference_only", findingId: f.id,
-                        detail: "P0/P1 finding based solely on inference" })
-
-  // Guard 4: Severity Coverage
-  reviewedDims = getReviewedDimensions(state.strategy)
-  if "correctness" not in reviewedDims:
-    violations.push({ guard: "severity_coverage",
-                      detail: "Correctness dimension not yet reviewed" })
-  if "security" not in reviewedDims:
-    violations.push({ guard: "severity_coverage",
-                      detail: "Security dimension not yet reviewed" })
-
-  // Guard 5: Cross-Reference (optional, 5+ iterations only)
-  if len(state.iterations) >= 5:
-    hasMultiDimIteration = any(len(i.dimensions) > 1 for i in state.iterations)
-    if not hasMultiDimIteration:
-      violations.push({ guard: "cross_reference",
-                        detail: "No multi-dimension iteration performed" })
+  if coverage.dimensionCoverage < 1.0:
+    violations.push({ gate: "coverage", detail: "Not all configured review dimensions are covered" })
+  if not coverage.requiredProtocolsCovered:
+    violations.push({ gate: "coverage", detail: "Required traceability protocols are incomplete" })
 
   if len(violations) > 0:
     return { passed: false, violations }
   return { passed: true }
 ```
 
-### 10.5 Review Stuck Recovery
+### 10.5 Replay Validation
 
-**Threshold:** 2 consecutive no-progress iterations (not 3 as in research mode). Review sessions are shorter and must detect stuck states faster.
+Replay validation verifies that convergence decisions are reproducible from disk state alone.
+
+1. Read `deep-research-state.jsonl` and select review-mode iteration records in run order.
+2. Recompute `newFindingsRatio`, rolling-average votes, MAD votes, and coverage votes from the stored JSONL fields only.
+3. Recompute `traceabilityChecks.summary` and confirm required protocol statuses match the recorded coverage vote.
+4. Re-run the evidence, scope, and coverage gates against the stored findings and scope data.
+5. Compare the replayed decision and stop reason to the recorded synthesis event.
+
+Replay passes only when the recomputed decision, thresholds, and gate outcomes agree with the persisted result.
+
+### 10.6 Review Stuck Recovery
+
+**Threshold:** 2 consecutive no-progress iterations. Review mode uses `noProgressThreshold = 0.05`, not the rolling stop threshold.
 
 #### Failure Modes and Recovery Strategies
 
 | Failure Mode | Detection | Recovery Strategy |
 |-------------|-----------|-------------------|
-| Same dimension stuck | Last 2 iterations reviewed the same dimension with no new findings | **Change granularity:** if reviewing at file level, zoom into functions; if reviewing functions, zoom out to module level |
-| Multiple clean dimensions | 2+ dimensions marked clean in a row with no findings | **Cross-reference analysis:** look for issues that span multiple dimensions (e.g., a correctness bug that is also a spec-alignment violation) |
-| Low-value iterations | Last 2 iterations found only P2 findings | **Escalate severity review:** explicitly search for P0/P1 patterns — injection vectors, auth bypasses, broken invariants |
+| Same dimension stuck | Last 2 iterations reviewed the same dimension and both ratios are `< 0.05` | **Change granularity:** if reviewing at file level, zoom into functions; if reviewing functions, zoom out to module level |
+| Traceability plateau | Required protocols remain partial while ratios stay `< 0.05` | **Protocol-first replay:** re-run the unresolved traceability protocol directly against the conflicting artifacts |
+| Low-value advisory churn | Last 2 iterations found only P2 work | **Escalate severity review:** explicitly search for P0/P1 patterns or downgrade unsupported severity claims |
 
 #### Selection Logic
 
@@ -823,44 +810,42 @@ function selectReviewRecoveryStrategy(stuckIterations, state, config):
   if len(set(lastFocuses)) <= 1:
     return { strategy: "change_granularity", dimension: lastFocuses[0] }
 
-  // Multiple clean dimensions? Cross-reference
-  recentDims = getCompletedDimensionsSince(state, stuckIterations[0].run)
-  if len(recentDims) >= 2:
-    return { strategy: "cross_reference_analysis", dimensions: recentDims }
+  if hasRequiredProtocolPlateau(state.traceabilityChecks):
+    return { strategy: "protocol_first_replay" }
 
   // Default: escalate severity
   return { strategy: "escalate_severity_review" }
 ```
 
 #### Recovery Evaluation
-- If recovery iteration finds any P0/P1: Recovery successful. Reset stuck count. Continue.
-- If recovery iteration finds only P2 or nothing: Recovery failed. If all dimensions reviewed, exit to synthesis. Otherwise, move to next unreviewed dimension.
+- If recovery iteration finds any new P0/P1 or materially advances required traceability coverage: recovery successful. Reset stuck count. Continue.
+- If recovery iteration finds only P2 or nothing: recovery failed. If all dimensions are already covered, exit to synthesis. Otherwise, move to the next unreviewed dimension.
 
-### 10.6 Review Edge Cases
+### 10.7 Review Edge Cases
 
 #### Clean Codebase
 When the review target has no significant issues:
-- Continue until ALL dimensions have been reviewed (dimension coverage = 1.0)
-- After all dimensions reviewed, require 2+ consecutive clean passes before converging
-- This ensures thoroughness even when no issues are found
+- Continue until all 4 dimensions have been reviewed
+- Require `minStabilizationPasses >= 1` before the coverage signal can vote STOP
+- Require evidence, scope, and coverage gates to pass
 
 #### Huge Scope
 When the review target contains many files:
 - Use `maxFilesPerIteration` to limit files reviewed per iteration (default: 10)
-- Batch dimensions: review 1-2 dimensions per iteration rather than all 7
+- Batch dimensions: review 1-2 dimensions per iteration rather than all 4
 - Prioritize security and correctness dimensions first
 
 #### Late P0 Discovery
 When a P0 is found in a late iteration:
-- The P0 override rule sets `newFindingsRatio = max(calculated, 0.50)`, blocking convergence
+- The P0 override rule is unchanged: `newFindingsRatio = max(calculated, 0.50)`
 - All dimensions that could be affected by the P0 root cause must be re-checked
 - Convergence cannot occur with active P0 findings
 
 #### False Convergence
 When convergence signals fire but review is incomplete:
-- The cross-reference guard (Guard 5) acts as a safety net for sessions with 5+ iterations
-- The dimension coverage signal requires 100%, preventing premature stops
-- The severity coverage guard ensures security and correctness are always reviewed
+- Coverage cannot vote STOP until `minStabilizationPasses >= 1`
+- Replay validation must reproduce the same stop reason from JSONL state
+- Binary gates prevent STOP when evidence, scope, or required traceability coverage is incomplete
 
 ---
 

@@ -74,11 +74,14 @@ The router discovers markdown resources recursively from `references/` and `asse
 Knowledge is organized by domain mapping:
 
 ```text
-references/review-core/...
-references/review-risk/...
+references/review_core.md
+references/review_ux_single_pass.md
+references/*_checklist.md
 assets/review/...
 ```
 
+- `references/review_core.md` for shared doctrine consumed by both `@review` and `@deep-review`.
+- `references/review_ux_single_pass.md` for interactive single-pass review behavior.
 - `references/` for baseline review flow, severity contracts, and risk checklists.
 - `assets/` for optional reusable templates/checklists (if present in this skill).
 
@@ -86,7 +89,7 @@ assets/review/...
 
 | Level | When to Load | Resources |
 | --- | --- | --- |
-| ALWAYS | Every invocation | `references/quick_reference.md`, `references/security_checklist.md`, `references/code_quality_checklist.md` |
+| ALWAYS | Every invocation | `references/review_core.md`, `references/review_ux_single_pass.md`, `references/security_checklist.md`, `references/code_quality_checklist.md` |
 | CONDITIONAL | Intent score indicates need | `references/solid_checklist.md`, `references/code_quality_checklist.md`, `references/removal_plan.md`, `references/test_quality_checklist.md` |
 | ON_DEMAND | Explicit deep-dive request | Full mapped reference set |
 
@@ -118,7 +121,8 @@ SKILL_ROOT = Path(__file__).resolve().parent
 # Discover resources recursively across references and assets.
 RESOURCE_BASES = (SKILL_ROOT / "references", SKILL_ROOT / "assets")
 DEFAULT_RESOURCES = [
-    "references/quick_reference.md",
+    "references/review_core.md",
+    "references/review_ux_single_pass.md",
     "references/security_checklist.md",
     "references/code_quality_checklist.md",
 ]
@@ -291,7 +295,7 @@ def route_review_resources(task, workspace_files=None, changed_files=None):
 2. Analyze quality/performance, test adequacy, contract safety, and architecture concerns.
 3. Analyze KISS/DRY and SOLID violations (SRP/OCP/LSP/ISP/DIP) with evidence.
 4. Analyze removal opportunities with safe-now vs deferred classification.
-5. Produce findings ordered by severity (`P0`, `P1`, `P2`, `P3`).
+5. Produce findings ordered by severity (`P0`, `P1`, `P2`).
 
 ### Phase 4: Output and Next Action
 
@@ -359,7 +363,9 @@ After reporting findings, request explicit next action before any implementation
 
 ### Core References
 
-- [quick_reference.md](./references/quick_reference.md) - Baseline review flow, severity rubric, output checklist.
+- [review_core.md](./references/review_core.md) - Shared review doctrine: severity model, evidence rules, precedence, and finding schema.
+- [review_ux_single_pass.md](./references/review_ux_single_pass.md) - Interactive single-pass review flow, presentation modes, and PR/pre-commit behavior.
+- [quick_reference.md](./references/quick_reference.md) - Lightweight index for routing between shared doctrine and single-pass UX guidance.
 - [security_checklist.md](./references/security_checklist.md) - Mandatory security and reliability checks.
 - [code_quality_checklist.md](./references/code_quality_checklist.md) - Correctness, performance, KISS, and DRY checks.
 - [solid_checklist.md](./references/solid_checklist.md) - SOLID (SRP/OCP/LSP/ISP/DIP) and architecture assessment prompts.

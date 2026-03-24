@@ -233,10 +233,9 @@ Signals: RollingAvg=STOP MAD=CONTINUE Entropy=CONTINUE
 | Parameter | Default | Description |
 |-----------|---------|-------------|
 | `--max-iterations` | 7 | Maximum review iterations |
-| `--convergence` | 0.10 | Stop when severity-weighted newFindingsRatio below this |
+| `--convergence` | 0.10 | Base sensitivity for review convergence; STOP still uses the contract thresholds below |
 | `--spec-folder` | auto | Target spec folder path |
 | `--severity-threshold` | P2 | Minimum severity to report |
-| `--quality-gate` | 70 | Minimum score (0-100) for PASS verdict |
 
 ### Review Dimensions
 
@@ -244,55 +243,47 @@ Signals: RollingAvg=STOP MAD=CONTINUE Entropy=CONTINUE
 |----|-----------|-------------|
 | D1 | Correctness | Logic errors, off-by-one, wrong return types, broken invariants |
 | D2 | Security | Injection, auth bypass, secrets exposure, unsafe deserialization |
-| D3 | Spec Alignment | Implementation matches spec.md, plan.md, and decision records |
-| D4 | Completeness | Missing edge cases, unhandled error paths, TODO/FIXME items |
-| D5 | Cross-Reference Integrity | Internal links, import paths, schema refs all resolve |
-| D6 | Patterns | Consistency with codebase conventions, anti-pattern detection |
-| D7 | Documentation Quality | Docstrings, comments, README accuracy, changelog entries |
+| D3 | Traceability | Spec/code alignment, checklist evidence, cross-reference integrity |
+| D4 | Maintainability | Patterns, clarity, documentation quality, ease of safe follow-on changes |
 
 ### Review Verdicts
 
 | Verdict | Condition | Meaning | Next Command |
 |---------|-----------|---------|--------------|
-| FAIL | Active P0 findings present OR overall score < 70 | Review target does not meet quality standards | `/spec_kit:plan` for remediation |
+| FAIL | Active P0 findings remain OR any binary gate fails | Review target does not meet quality standards | `/spec_kit:plan` for remediation |
 | CONDITIONAL | No P0, but active P1 findings remain | Meets threshold but has required fixes | `/spec_kit:plan` for fixes |
-| PASS WITH NOTES | Only P2 findings remain (no active P0 or P1) | Meets standards with minor suggestions | `/create:changelog` |
-| PASS | No active findings | Review target fully meets quality standards | `/create:changelog` |
+| PASS | No active P0/P1 findings | Review target is shippable; set `hasAdvisories=true` when P2 findings remain | `/create:changelog` |
 
 ### Review Quality Guards
 
-| Guard | Rule |
-|-------|------|
-| Evidence Completeness | Every P0/P1 has file:line citation |
-| Scope Alignment | Findings within declared review scope |
-| No Inference-Only | No P0/P1 based solely on inference |
-| Severity Coverage | Security + Correctness dimensions reviewed |
-| Cross-Reference | At least one multi-dimension iteration (5+ iters) |
+| Gate | Rule |
+|------|------|
+| Evidence | Every active finding has file:line evidence and is not inference-only |
+| Scope | Findings and reviewed files stay within declared review scope |
+| Coverage | Configured dimensions plus required traceability protocols are covered before STOP |
 
 ### Review Convergence
 
 | Signal | Weight | Description |
 |--------|--------|-------------|
-| Rolling Average | 0.30 | Last 2 severity-weighted newFindingsRatios < 0.08 |
+| Rolling Average | 0.30 | Last 2 severity-weighted `newFindingsRatio` values average below `0.08` |
 | MAD Noise Floor | 0.25 | Latest ratio within noise floor |
-| Dimension Coverage | 0.45 | All dimensions reviewed (100% required) |
+| Dimension Coverage | 0.45 | All 4 dimensions plus required traceability protocols covered, with `minStabilizationPasses >= 1` |
 
-**Key defaults:** maxIterations=7, convergenceThreshold=0.10, stuckThreshold=2
+**Key defaults:** `maxIterations=7`, `convergenceThreshold=0.10`, `rollingStopThreshold=0.08`, `noProgressThreshold=0.05`, `stuckThreshold=2`, `minStabilizationPasses=1`
 
 ### review-report.md Sections
 
 | # | Section | Purpose |
 |---|---------|---------|
-| 1 | Executive Summary | Verdict, score, band, P0/P1/P2 counts, scope |
-| 2 | Score Breakdown | 5-dimension scores with band and driver |
-| 3 | P0 Findings (Blockers) | Stop-ship evidence with file:line, impact, fix |
-| 4 | P1 Findings (Required) | Must-fix issues with evidence and impact |
-| 5 | P2 Findings (Suggestions) | Advisory follow-up items |
-| 6 | Cross-Reference Results | Spec/code/checklist alignment verification |
-| 7 | Coverage Map | Files and dimensions reviewed, gaps |
-| 8 | Positive Observations | What is well-implemented |
-| 9 | Convergence Report | Iteration trend, stop reason, confidence |
-| 10 | Remediation Priority | Ordered action items by severity and dependency |
-| 11 | Release Readiness Verdict | PASS / PASS WITH NOTES / CONDITIONAL / FAIL + rationale |
+| 1 | Executive Summary | Verdict, active P0/P1/P2 counts, scope, `hasAdvisories` |
+| 2 | Planning Trigger | Why the verdict routes to planning or changelog follow-up |
+| 3 | Active Finding Registry | Deduped active findings with evidence and final severity |
+| 4 | Remediation Workstreams | Grouped action lanes derived from active findings |
+| 5 | Spec Seed | Minimal spec delta derived from review results |
+| 6 | Plan Seed | Action-ready plan starter for remediation |
+| 7 | Traceability Status | Core vs overlay protocol status and unresolved gaps |
+| 8 | Deferred Items | P2 advisories, blocked checks, and follow-up items |
+| 9 | Audit Appendix | Coverage, replay validation, and convergence evidence |
 
 <!-- /ANCHOR:review-mode -->
