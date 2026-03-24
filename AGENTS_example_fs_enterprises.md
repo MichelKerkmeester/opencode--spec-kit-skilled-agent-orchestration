@@ -84,11 +84,13 @@
 | **React verification**    | `npm test` → `npx eslint .` → `npm run build`                                                                            |
 | **React Native verify**   | `npm test` → `npx eslint .` → `npx expo export`                                                                          |
 | **Swift verification**    | `swift test` → `swiftlint` → `swift build`                                                                               |
-| **Phase workflow**        | `/spec_kit:phase` → Decompose → `create.sh --phase` → Populate parent/children → `validate.sh --recursive`               |
+| **Phase workflow**        | `/spec_kit:phase` → Decompose → `create.sh --phase` → Populate parent/children → `validate.sh --recursive`                         |
 | **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint, ingest operations                                                           |
+| **Deep research**         | `/spec_kit:deep-research` → Init state → Loop (@deep-research iterations) → Convergence → Synthesize → Memory save                            |
+| **Deep review**           | `/spec_kit:deep-research:review` → Scope discovery → Loop (@deep-review iterations) → Review convergence → review-report.md → Memory save      |
 | **Analysis/evaluation**   | `/memory:analyze` → preflight, postflight, causal graph, ablation, dashboard, history                                            |
 | **Constitutional memory** | `/memory:learn` → Constitutional memory manager: create, list, edit, remove, budget                                               |
-| **Shared memory**         | `/memory:shared` → Shared-memory lifecycle: create spaces, manage memberships, inspect rollout                                    |
+| **Shared memory**         | `/memory:shared` → Shared-memory lifecycle: create spaces, manage memberships, inspect rollout                                     |
 
 ### Code Search Protocol
 
