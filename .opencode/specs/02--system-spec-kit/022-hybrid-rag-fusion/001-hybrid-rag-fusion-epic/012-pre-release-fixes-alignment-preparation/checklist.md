@@ -1,89 +1,436 @@
-# Checklist: Pre-Release Fixes & Alignment
+---
+title: "Verification Checklist: Pre-Release Fixes & Alignment"
+description: "Verification Date: 2026-03-24"
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "v3"
+  - "release readiness"
+importance_tier: "high"
+contextType: "general"
+---
+# Verification Checklist: Pre-Release Fixes & Alignment
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
 
-## P0 — Blocker Verification
+<!-- ANCHOR:protocol -->
+## Verification Protocol
 
-### T01: Module Resolution
-- [x] `node -e "require('@spec-kit/mcp-server/api')"` succeeds — [EVIDENCE: "PASS: ./api export resolves"]
-- [x] `node scripts/dist/spec-folder/generate-description.js --help` runs without module error — [EVIDENCE: outputs usage line]
-- [x] workflow-e2e tests pass: 7/7 — [EVIDENCE: vitest run tests/workflow-e2e.vitest.ts → 7 passed]
-- [x] `memorySequence` increments correctly on save — [EVIDENCE: memory #4456 indexed in implementation session]
+| Priority | Handling in this packet | Completion Impact |
+|----------|-------------------------|-------------------|
+| **[P0]** | Must be cleared before any release claim | Hard blocker |
+| **[P1]** | Required for tree truth-sync and evidence integrity | Release gate remains closed until complete |
+| **[P2]** | Polish items needed for the target `100/100` score | Release gate remains below 100/100 if deferred |
 
-### T02: Server Startup
-- [x] MCP server starts with network disabled (no `process.exit(1)`) — [EVIDENCE: context-server.ts:762-773 logs warn + continues on networkError:true]
-- [x] Server logs warning on transient validation failure (not fatal error) — [EVIDENCE: context-server.ts:764 "API KEY VALIDATION SKIPPED (network error)"]
-- [x] Server starts normally when API key is valid and network is up — [EVIDENCE: pre-existing behavior preserved, only networkError branch added]
-- [x] `factory.ts` validation result distinguishes `networkError` from `invalid` — [EVIDENCE: factory.ts:436,453 set networkError:true; shared/types.ts:117 has field]
-
-### T03: Lint Gate
-- [x] `npm run check` passes (was failing on prefer-const, unused imports/interfaces) — [EVIDENCE: tsc --noEmit 0 errors, eslint 0 errors]
-- [x] No ESLint errors in `k-value-analysis.ts`, `archival-manager.ts`, `retry-manager.ts`, `causal-edges.ts`, `checkpoints.ts` — [EVIDENCE: eslint . --ext .ts → 0 errors]
-
-### T04: Spec Validation
-- [x] `validate.sh` on 022 tree exits 0 or 1 (was exit 2) — [EVIDENCE: Exits 1 (PASSED WITH WARNINGS). 0 errors, 50 warnings. Fixed 41→0 errors across 16 phases.]
-- [x] Error count < 10 (was 43) — [EVIDENCE: 0 errors (was 43). All TEMPLATE_HEADERS, ANCHORS_VALID, SPEC_DOC_INTEGRITY, TEMPLATE_SOURCE errors resolved.]
-- [x] `007-code-audit-per-feature-catalog/decision-record.md` exists — [EVIDENCE: created with 2 ADRs]
-- [x] No `SPEC_DOC_INTEGRITY` failures for broken markdown references in 011, 010, 016 — [EVIDENCE: integrity issues are in other phases, not in 011/010/016 specifically]
+- Historical v1/v2 verification remains visible below as completed reference only.
+- The authoritative release gate is the **V3 Full-Tree Remediation Verification** section in `Verification Summary`.
+- Every active item requires both an evidence note and the listed command/check to pass.
+<!-- /ANCHOR:protocol -->
 
 ---
 
-## P1 — Must-Fix Verification
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
 
-### Code Fixes (T05-T10)
-- [x] T05: Quality loop returns `bestContent` on rejection path — [EVIDENCE: quality-loop.ts:657-661 returns bestContent/bestMetadata]
-- [x] T06: `preflight`/`postflight` fields pass through input normalizer without warning — [EVIDENCE: input-normalizer.ts:753-759 KNOWN_RAW_INPUT_FIELDS + :724-731 object passthrough]
-- [x] T07: `--session-id` value reaches `collectSessionData` function — [EVIDENCE: generate-context.ts:550 sessionId forwarded, workflow.ts:203 WorkflowOptions.sessionId added]
-- [x] T08: `opencode-capture` removed from `scripts-registry.json` — [EVIDENCE: removed from libraries.javascript + skill_advisor from scripts + metadata.categories.routing emptied]
-- [x] T09: Trigger phrases don't contain path fragments after save — [EVIDENCE: workflow.ts post-filter reinsertion deleted, FOLDER_STOPWORDS applied in ensureMin functions]
-- [x] T09: No post-filter reinsertion of folder phrases in workflow.ts — [EVIDENCE: unshift(folderNameForTriggers) block deleted]
-- [x] T09: `key_topics` don't contain spec folder path fragments — [EVIDENCE: topic-extractor.ts:33-35 specFolderName no longer pushed into weightedSegments]
-- [x] T09: `ensureMinTriggerPhrases()` applies FOLDER_STOPWORDS before backfilling — [EVIDENCE: frontmatter-editor.ts:117 filter added]
-- [x] T09: `ensureMinSemanticTopics()` applies FOLDER_STOPWORDS before backfilling — [EVIDENCE: frontmatter-editor.ts:139 filter added]
-- [x] T09: `FOLDER_STOPWORDS` expanded with `generation`, `epic`, `audit`, `alignment`, `enforcement`, `remediation` — [EVIDENCE: workflow.ts:1115 + frontmatter-editor.ts:20]
-- [x] T09b: JSON mode memory files have non-generic title (not "Development session") — [EVIDENCE: exchange promotion feeds richer content to title builder]
-- [x] T09b: JSON mode memory files have substantive overview/summary (not truncated to 1 sentence) — [EVIDENCE: truncation raised 200→500 chars at input-normalizer.ts:278]
-- [x] T09b: `exchanges` field promoted to `userPrompts` messages in normalizer — [EVIDENCE: input-normalizer.ts:658-671]
-- [x] T09b: `toolCalls` field promoted to implementation messages in normalizer — [EVIDENCE: input-normalizer.ts:673-688]
-- [x] T09b: Exchange promotion capped at 10, deduped vs sessionSummary — [EVIDENCE: .slice(0,10) at :662, dedup at :667]
-- [x] T09b: Fast-path guard: skip promotion if `userPrompts` already has 3+ entries — [EVIDENCE: :660 condition `normalized.userPrompts.length < 3`]
-- [x] T09b: Existing rich-array JSON payloads (fast path) unchanged after enrichment changes — [EVIDENCE: slow-path only; fast-path function not modified]
-- [x] T10: Stage 1 falls back to vector search when hybrid fails with `skipFusion` — [EVIDENCE: hybrid-search.ts `if (options.skipFusion) return []` removed, always falls through to hybridSearch()]
-
-### Pipeline Integrity (T11-T12)
-- [x] T11: Script-side indexing applies equivalent governance checks as MCP `memory_save` — [EVIDENCE: memory-indexer.ts:148-157 adds title/content validation + audit trail. Basic governance, not full hook parity — documented as acceptable in review.]
-- [x] T12: Retention sweep either wired to runtime schedule or implementation removed — [EVIDENCE: retention.ts:36-39 JSDoc documents manual-only trigger. Not wired to automatic runtime — documented decision.]
-
-### Documentation (T13-T18)
-- [x] T13: `tools/README.md` says "33 tools" — [EVIDENCE: tools/README.md:38]
-- [x] T14: Root 022 spec.md has consistent phase/directory counts, no phantom 020 — [EVIDENCE: 20→19 phases, phantom 020 row removed, 119 dirs standardized]
-- [x] T15: Server README structure map includes `api/`, `core/`, `formatters/`, `schemas/` — [EVIDENCE: README.md:188-218 updated]
-- [x] T16: DB path examples reference `mcp_server/database/` — [EVIDENCE: README.md:912,1288,1291 updated]
-- [x] T17: `016-json-mode-hybrid-enrichment/` has plan.md, tasks.md, implementation-summary.md — [EVIDENCE: 3 files created by Worker 3]
-- [x] T18: 009/000/005 and 009/019 status documented accurately — [EVIDENCE: 005 → Blocked, 019 → Analysis Complete]
+- [x] CHK-001 [P0] Primary evidence source loaded from `review-report.md` [EVIDENCE: review-report.md read before rewrite]
+  - **Evidence:** `[EVIDENCE: review-report.md read before rewrite]`
+  - **Verify:** Confirm the v3 checklist/tasks map back to all deep-review categories.
+- [x] CHK-002 [P0] Current `tasks.md` and `checklist.md` were read before rewrite [EVIDENCE: existing packet docs reviewed before replacement]
+  - **Evidence:** `[EVIDENCE: existing packet docs reviewed before replacement]`
+  - **Verify:** Compare historical section content against the prior v1/v2 checklist state.
+- [x] CHK-003 [P1] Historical v1/v2 verification has been retained as superseded reference [EVIDENCE: Historical Verification section kept below]
+  - **Evidence:** `[EVIDENCE: Historical Verification section kept below]`
+  - **Verify:** Scroll to `Historical Verification (v1/v2 — completed, superseded)` in this file.
+<!-- /ANCHOR:pre-impl -->
 
 ---
 
-## P2 — Should-Fix Verification (post-release)
+<!-- ANCHOR:code-quality -->
+## Code Quality
 
-- [x] T19: `rebuildVectorOnUnarchive`, empty `RetryHealthSnapshot`, `clearDegreeCache` import, `deleteRowsByClauses` removed — [EVIDENCE: All removed in T03 lint fixes. RetryHealthSnapshot changed to type alias. `_scheduleLlmBackfill` confirmed NOT dead (called at :556).]
-- [x] T20: `dist/` has no orphaned files after clean rebuild — [EVIDENCE: Exploration verified both dist/ directories clean]
-- [x] T21: No catalog/playbook entries reference deleted test files — [EVIDENCE: All 22 catalog checklist files verified, no broken test refs]
-- [x] T22: Playbook coverage improved — [EVIDENCE: 14 new scenarios (003:+5, 004:+5, 007:+4) + 3 new playbook folders (020,021,022) with 9 scenarios]
-- [x] T23: Sprint 5 spec annotates `SPECKIT_PIPELINE_V2` as superseded; Sprint 5/6 status → Implemented; Sprint 11 verified Draft — [EVIDENCE: 4 SPECKIT_PIPELINE_V2 refs annotated, description.json files updated]
-- [x] T24: `MODULE_MAP.md` covers all live `lib/` modules — [EVIDENCE: 27 modules documented, comprehensive with dependency maps]
-- [x] T25-T26: Python scripts use argparse; shell scripts have `set -euo pipefail` before line 10 — [EVIDENCE: No Python CLI scripts exist (only pytest test). All shell scripts already compliant.]
+- [ ] CHK-010 [P0] All v3 code-correctness/security checks `CHK-360` through `CHK-371` pass.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** Complete the `Code Correctness & Security` subsection under `V3 Full-Tree Remediation Verification`.
+- [ ] CHK-011 [P0] `npm run check` passes after the full remediation sweep.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `npm run check`
+- [ ] CHK-012 [P1] No newly introduced spec/doc contradictions remain in the rewritten release surface.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** Complete `CHK-301` through `CHK-357` below and rerun validator/review checks.
+<!-- /ANCHOR:code-quality -->
 
 ---
 
-## Release Gate
+<!-- ANCHOR:testing -->
+## Testing
 
-All P0 items must pass. P1 items should pass. P2 items are tracked for follow-up.
+- [ ] CHK-020 [P0] Full post-remediation test rerun passes.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `npm run test`
+- [ ] CHK-021 [P0] Recursive spec validation rerun passes without unresolved errors in the release surface.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion --recursive --strict`
+- [ ] CHK-022 [P1] Fresh review re-verification confirms the tree is release-ready.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** Run a fresh deep review or equivalent recheck against the 022 tree and compare against the current `review-report.md`.
+<!-- /ANCHOR:testing -->
 
-- [x] `npm run test` passes (all workspaces) — [EVIDENCE: 267 passed (scripts) + full mcp_server suite, 0 failed. semantic-signal-golden T09 regression fixed.]
-- [x] `npm run check` passes (lint + typecheck + evals) — [EVIDENCE: tsc 0 errors, source-dist alignment 269/269 (6 orphaned dist files cleaned), all 8 eval checks pass]
-- [x] `validate.sh --recursive` on 022 exits 0 or 1 — [EVIDENCE: Exits 1 (PASSED WITH WARNINGS). 0 errors.]
-- [x] MCP server starts reliably — [EVIDENCE: networkError path adds resilience; startup preserved for valid keys]
-- [x] workflow-e2e: 7/7 — [EVIDENCE: vitest run workflow-e2e.vitest.ts → 7 passed. Note: original "39/39" referred to full suite count at time of writing, actual e2e file has 7 tests.]
-- [x] No merge conflict markers in codebase — [EVIDENCE: grep found 0 actual conflict markers]
+---
 
+<!-- ANCHOR:security -->
+## Security
+
+- [ ] CHK-030 [P0] Scope, session, and provider-startup defects are all closed by evidence.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** Complete `CHK-360`, `CHK-361`, `CHK-362`, `CHK-369`, `CHK-370`, and `CHK-371`.
+- [ ] CHK-031 [P0] No raw provider/internal stack traces leak through save or CLI validation paths.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** Complete `CHK-363` and `CHK-368`.
+- [ ] CHK-032 [P1] Hydra safety-rail verification is evidence-backed rather than inferred.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** Complete `CHK-306`, `CHK-333`, and `CHK-334`.
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [ ] CHK-040 [P1] Parent/umbrella packets are truth-synced to live child state.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** Complete `CHK-301` through `CHK-345`.
+- [ ] CHK-041 [P1] Missing-doc, broken-link, and orphan-reference findings are resolved or honestly downgraded.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** Complete `CHK-350` through `CHK-357`.
+- [ ] CHK-042 [P2] README/catalog/playbook polish items are complete for the 100/100 target.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** Complete `CHK-380` through `CHK-393`.
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [x] CHK-050 [P1] This rewrite only targets the two requested spec documents [EVIDENCE: only tasks.md and checklist.md were edited in this operation]
+  - **Evidence:** `[EVIDENCE: only tasks.md and checklist.md were edited in this operation]`
+  - **Verify:** Review the changed-file set before release sign-off.
+- [ ] CHK-051 [P1] All v3 evidence references point at live files/folders or are explicitly marked pending.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** Run the validator plus spot-check the commands in the v3 section below.
+- [ ] CHK-052 [P2] Historical references remain visible but clearly marked superseded.
+  - **Evidence:** `[EVIDENCE: present in Historical Verification and Historical Release Gate blocks]`
+  - **Verify:** Review the historical subsections in `Verification Summary`.
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total Checkpoints | Verified |
+|----------|-------------------|----------|
+| P0 V3 items | 6 | 0/6 |
+| P1 V3 items | 47 | 0/47 |
+| P2 V3 items | 14 | 0/14 |
+
+**Verification Date**: 2026-03-24
+
+### V3 Full-Tree Remediation Verification
+
+#### P0 Blockers
+
+- [ ] CHK-301 [P0] Root 022 no longer marks phase 015 complete unless the child tree supports it.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "015-manual-testing-per-playbook|Complete|In Progress|Not Started" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/spec.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/spec.md`
+- [ ] CHK-302 [P0] Epic parent certifies the live 11-child subtree rather than the stale 10-sprint view.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `find .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic -maxdepth 1 -type d | sort`
+- [ ] CHK-303 [P0] Sprint 010 points to `011-research-based-refinement` instead of calling itself the final phase.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "Successor|final phase|011-research-based-refinement" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features/spec.md`
+- [ ] CHK-304 [P0] Retrieval audit coverage is truth-synced to the live 11-feature inventory.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "10-feature|11-feature|coverage" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/001-retrieval/spec.md`
+- [ ] CHK-305 [P0] `021-remediation-revalidation` no longer certifies completion while this packet remains open.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "complete|complete[d]?|release|012-pre-release-fixes-alignment-preparation|022-hybrid-rag-fusion" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/021-remediation-revalidation/spec.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/{tasks.md,checklist.md}`
+- [ ] CHK-306 [P0] Hydra safety-rail drills are evidence-backed or honestly marked pending.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "rollback|kill-switch|drill|EVIDENCE|DEFERRED" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/checklist.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/001-baseline-and-safety-rails/checklist.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/005-hierarchical-scope-governance/checklist.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/006-shared-memory-rollout/checklist.md`
+
+#### Count Drift
+
+- [ ] CHK-310 [P1] Root 022 direct/recursive directory totals are derived from one fresh scan.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `find .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion -type d | wc -l`
+- [ ] CHK-311 [P1] `006-feature-catalog` snippet totals no longer claim `222`.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "222|219|220|221|snippet" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/spec.md`
+- [ ] CHK-312 [P1] `006-feature-catalog` category totals no longer claim `20` when the live total is `19`.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `find .opencode/skill/system-spec-kit/feature_catalog -maxdepth 1 -type d | tail -n +2 | wc -l`
+- [ ] CHK-313 [P1] The 007 umbrella inventory includes live child `022`.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `find .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog -maxdepth 1 -type d | sort`
+- [ ] CHK-314 [P1] `007/009-evaluation-and-measurement` uses the live `14` inventory, not the stale `16`.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "16|14|inventory|feature" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/009-evaluation-and-measurement/spec.md`
+- [ ] CHK-315 [P1] `007/011-scoring-and-calibration` uses the live `22` inventory, not the stale `23`.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "23|22|inventory|feature" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/011-scoring-and-calibration/spec.md`
+- [ ] CHK-316 [P1] The 015 umbrella totals and child-packet counts match the live testing tree.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `find .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook -maxdepth 1 -type d | sort && find .opencode/skill/system-spec-kit/manual_testing_playbook -type f | wc -l`
+- [ ] CHK-317 [P1] `014-agents-md-alignment` reflects the live 6-command inventory.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "7 command|7-command|6 command|6-command" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment/{spec.md,tasks.md,implementation-summary.md}`
+- [ ] CHK-318 [P1] `018-rewrite-system-speckit-readme` validates against the live 14-command inventory.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "13 command|13-command|14 command|14-command" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/018-rewrite-system-speckit-readme/{spec.md,tasks.md,implementation-summary.md}`
+- [ ] CHK-319 [P1] `016-rewrite-memory-mcp-readme` reflects the live 33-tool inventory.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "32 tools|32-tool|33 tools|33-tool" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-rewrite-memory-mcp-readme/{spec.md,tasks.md,implementation-summary.md}`
+- [ ] CHK-320 [P1] Root README and the rewrite packet agree on agent/MCP totals and include `@deep-review`.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "@deep-review|agent|MCP|command|tool" README.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/019-rewrite-repo-readme/{spec.md,implementation-summary.md}`
+
+#### Status Drift
+
+- [ ] CHK-330 [P1] Root 022 checklist evidence matches the current validator state.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion --recursive --strict`
+- [ ] CHK-331 [P1] Epic phase-map statuses mirror child labels verbatim.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "Status|Complete|In Progress|Blocked|Not Started|Draft" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/plan.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/*/spec.md`
+- [ ] CHK-332 [P1] `010-template-compliance-enforcement` no longer contradicts itself on shipped/final state.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "final|shipped|pending|follow-up|remaining" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-template-compliance-enforcement/{spec.md,plan.md,implementation-summary.md}`
+- [ ] CHK-333 [P1] Hydra umbrella checklist no longer cites impossible upstream blocker totals.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "P0|P1|blocker|upstream|total" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/checklist.md`
+- [ ] CHK-334 [P1] Hydra child packets are not marked complete while sign-off/evidence is still pending.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "Complete|sign-off|pending approval|pending evidence|blocked" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/*/{spec.md,checklist.md}`
+- [ ] CHK-335 [P1] Hydra child summaries no longer overstate activation beyond umbrella caveats.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "activated|rollout|enabled|caveat|deferred|staged" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/spec.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features/*/spec.md`
+- [ ] CHK-336 [P1] Session phases 007 and 008 agree on sequencing and dependency order.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "depends|dependency|predecessor|successor|Phase 7|Phase 8" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/007-phase-classification/spec.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction/spec.md`
+- [ ] CHK-337 [P1] `016-json-mode-hybrid-enrichment` uses truthful open/closed status language.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "Complete|Closed|Done|pending|missing|follow-up" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/spec.md`
+- [ ] CHK-338 [P1] `017-json-primary-deprecation` matches the shipped runtime contract.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "deprecated|default|runtime|fallback|json-primary" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation/spec.md`
+- [ ] CHK-339 [P1] This packet no longer carries the T04 triple contradiction.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "T04|Spec Validation|complete|pending|blocking|resolved" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/{spec.md,plan.md}`
+- [ ] CHK-340 [P1] `012-command-alignment` says one coherent thing about done vs not-done work.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "Complete|done|not done|pending|remaining" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/{spec.md,checklist.md}`
+- [ ] CHK-341 [P1] `013-agents-alignment` no longer over-claims write-agent closeout.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "write-agent|write agent|complete|closed|routing" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/spec.md`
+- [ ] CHK-342 [P1] The 015 umbrella status matches the real state of its children.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "Complete|Not Started|In Progress|Blocked" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/spec.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/*/spec.md`
+- [ ] CHK-343 [P1] `013-memory-quality-and-indexing` no longer claims a verified P1 checklist without evidence.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "P1|verified|evidence|pending|deferred" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/013-memory-quality-and-indexing/checklist.md`
+- [ ] CHK-344 [P1] 015 packets 020-022 no longer say `Not Started` if they were already executed.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "Not Started|In Progress|Complete|Executed|evidence" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/{020-feature-flag-reference,021-remediation-revalidation,022-implement-and-remove-deprecated-features}/spec.md`
+- [ ] CHK-345 [P1] The four rewrite packets do not claim `Complete` with `0/N` tasks remaining.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "0/[0-9]+|Complete|Not Started|In Progress" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/{016-rewrite-memory-mcp-readme,017-update-install-guide,018-rewrite-system-speckit-readme,019-rewrite-repo-readme}/tasks.md`
+
+#### Missing Docs & Evidence
+
+- [ ] CHK-350 [P1] `005-architecture-audit` has an explicit root navigation/traceability contract.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "parent|child|navigation|traceability|022-hybrid-rag-fusion" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit/{spec.md,plan.md,decision-record.md}`
+- [ ] CHK-351 [P1] Broken evidence links in `005-architecture-audit` and `010-template-compliance-enforcement` are repaired or removed.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "\\]\\([^)]*\\)" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit/{spec.md,plan.md,checklist.md,implementation-summary.md,research.md} .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/010-template-compliance-enforcement/{spec.md,plan.md,checklist.md,implementation-summary.md,research.md}`
+- [ ] CHK-352 [P1] Completed 007 second-half phases have an explicit traceability contract.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "traceability|parent|upstream|downstream|umbrella" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/spec.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/plan.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/checklist.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/{012-query-intelligence,013-memory-quality-and-indexing,014-pipeline-architecture,015-retrieval-enhancements,016-tooling-and-scripts,017-governance,018-ux-hooks,019-feature-flag-reference,020-feature-flag-reference,021-remediation-revalidation,022-implement-and-remove-deprecated-features}/spec.md`
+- [ ] CHK-353 [P1] `016-json-mode-hybrid-enrichment` has the required companion planning/verification docs for its actual level.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment --strict`
+- [ ] CHK-354 [P1] Orphaned references to deleted `013-memory-generation-quality` are removed from the 022 tree.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "013-memory-generation-quality" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion`
+- [ ] CHK-355 [P1] `011-skill-alignment/001-post-session-capturing-alignment` points at the correct parent.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "Parent|parent|ownership|011-skill-alignment|009-perfect-session-capturing" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/001-post-session-capturing-alignment/{spec.md,plan.md,tasks.md,checklist.md,implementation-summary.md}`
+- [ ] CHK-356 [P1] 015 child packets 003/004/007 no longer cite nonexistent playbook paths.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "manual_testing_playbook|playbook" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/{003-discovery,004-maintenance,007-evaluation}/{spec.md,plan.md,tasks.md,checklist.md}`
+- [ ] CHK-357 [P1] 015 packets 020-022 are full testing packets or are honestly marked draft/incomplete.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook --recursive --strict`
+
+#### Code Correctness & Security
+
+- [ ] CHK-360 [P1] BM25 scope filtering fails closed on lookup errors.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "spec-folder|scope|BM25|fail|fallback|return \\[\\]" .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts && npm run test`
+- [ ] CHK-361 [P1] Working-memory scope is bound to trusted server-side session context rather than caller-controlled `sessionId`.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "sessionId|effectiveSession|scope|working-memory" .opencode/skill/system-spec-kit/mcp_server/lib/cognitive/working-memory.ts .opencode/skill/system-spec-kit/mcp_server/lib/session/session-manager.ts .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts && npm run test`
+- [ ] CHK-362 [P1] Governance audit enumeration is scoped by default.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "enumerat|scope|filter|override|audit" .opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts && npm run test`
+- [ ] CHK-363 [P1] Raw embedding-provider failures are sanitized before persistence/response.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "Error|provider|message|response|retry" .opencode/skill/system-spec-kit/mcp_server/handlers/save/embedding-pipeline.ts .opencode/skill/system-spec-kit/mcp_server/handlers/save/create-record.ts .opencode/skill/system-spec-kit/mcp_server/handlers/save/response-builder.ts .opencode/skill/system-spec-kit/mcp_server/lib/providers/retry-manager.ts && npm run test`
+- [ ] CHK-364 [P1] Retry work is atomically claimed before processing.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "claim|retry|pending|atomic|lock" .opencode/skill/system-spec-kit/mcp_server/lib/providers/retry-manager.ts .opencode/skill/system-spec-kit/mcp_server/handlers/save/response-builder.ts && npm run test`
+- [ ] CHK-365 [P1] In-place memory updates no longer leave stale auto-entity rows behind.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "entity|update|delete|recompute|stale" .opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-mutations.ts .opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts .opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts .opencode/skill/system-spec-kit/mcp_server/lib/extraction/entity-extractor.ts .opencode/skill/system-spec-kit/mcp_server/lib/search/entity-linker.ts && npm run test`
+- [ ] CHK-366 [P1] SIGINT/SIGTERM cleanup clears workflow locks before any success result is emitted.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "SIGINT|SIGTERM|lock|cleanup|success" .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts .opencode/skill/system-spec-kit/scripts/core/workflow.ts && npm run test`
+- [ ] CHK-367 [P1] Structured JSON saves do not report complete while `nextSteps` remain pending.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "nextSteps|complete|completed|pending" .opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts && npm run test`
+- [ ] CHK-368 [P1] Empty `--json` input returns a bounded validation error without stack leakage.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "json|stack|validation|error" .opencode/skill/system-spec-kit/scripts/memory/generate-context.ts && npm run test`
+- [ ] CHK-369 [P1] Startup dimension validation and runtime fallback rules match.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "dimension|fallback|provider|startup|validate" .opencode/skill/system-spec-kit/shared/embeddings.ts .opencode/skill/system-spec-kit/shared/embeddings/factory.ts .opencode/skill/system-spec-kit/mcp_server/context-server.ts && npm run test`
+- [ ] CHK-370 [P1] Invalid `EMBEDDINGS_PROVIDER` values are rejected at startup.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "EMBEDDINGS_PROVIDER|provider|invalid|supported" .opencode/skill/system-spec-kit/shared/embeddings.ts .opencode/skill/system-spec-kit/shared/embeddings/factory.ts .opencode/skill/system-spec-kit/mcp_server/context-server.ts && npm run test`
+- [ ] CHK-371 [P1] Startup validation honors configured `VOYAGE_BASE_URL`.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "VOYAGE_BASE_URL|voyage|base url|startup|validate" .opencode/skill/system-spec-kit/shared/embeddings/providers/voyage.ts .opencode/skill/system-spec-kit/shared/embeddings/factory.ts .opencode/skill/system-spec-kit/mcp_server/context-server.ts && npm run test`
+
+#### P2 Polish
+
+- [ ] CHK-380 [P2] Dead/unused MCP-server code identified by research has been removed or justified.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "rebuildVectorOnUnarchive|RetryHealthSnapshot|clearDegreeCache|deleteRowsByClauses" .opencode/skill/system-spec-kit/mcp_server/lib/cognitive/archival-manager.ts .opencode/skill/system-spec-kit/mcp_server/lib/providers/retry-manager.ts .opencode/skill/system-spec-kit/mcp_server/lib/storage/causal-edges.ts .opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts && npm run check`
+- [ ] CHK-381 [P2] `npm run check` stays green after the full v3 remediation sweep.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `npm run check`
+- [ ] CHK-382 [P2] The production TODO marker in vector-index mutations is gone or resolved.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "TODO\\(vector-index\\)" .opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-mutations.ts`
+- [ ] CHK-383 [P2] Orphaned dist artifacts are removed or regenerated from real source.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `npm run check`
+- [ ] CHK-384 [P2] Feature catalog entries no longer point at deleted code/tests.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "ceiling-quality\\.vitest\\.ts|test-integration\\.js" .opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/05-quality-proxy-formula.md .opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md`
+- [ ] CHK-385 [P2] The three uncataloged audit categories now have feature-catalog coverage.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `find .opencode/skill/system-spec-kit/feature_catalog -maxdepth 1 -type d | sort && rg -n "020-feature-flag-reference|021-remediation-revalidation|022-implement-and-remove-deprecated-features" .opencode/skill/system-spec-kit/feature_catalog .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog`
+- [ ] CHK-386 [P2] Catalog/audit matching no longer depends on brittle ordinal formatting alone.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "01--|001-|slug|number-based|category matching" .opencode/skill/system-spec-kit/feature_catalog .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog`
+- [ ] CHK-387 [P2] Python CLI scripts use `argparse` rather than manual `sys.argv` parsing.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "sys\\.argv|argparse" .opencode/skill/mcp-code-mode/scripts/validate_config.py .opencode/skill/sk-doc/scripts/{init_skill.py,package_skill.py,quick_validate.py,extract_structure.py}`
+- [ ] CHK-388 [P2] Shell strict mode is enabled at the top of the affected scripts.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "set -euo pipefail" .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh .opencode/skill/system-spec-kit/scripts/templates/compose.sh .opencode/skill/system-spec-kit/scripts/common.sh`
+- [ ] CHK-389 [P2] Umbrella `description.json` files contain meaningful descriptions/keywords.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "\"description\"|\"keywords\"" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/description.json .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/016-rewrite-memory-mcp-readme/description.json`
+- [ ] CHK-390 [P2] Playbook coverage exceeds the current 75% baseline and orphan scenarios are reconciled.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "75%|75\\.3|54|31 orphan|231|230" .opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook`
+- [ ] CHK-391 [P2] Dormant modules are clearly removed, guarded, or documented as non-production paths.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "offline|manual-only|unused|retention|rsf-fusion|runRetentionSweep|parseValidatedArgs|getWatcherMetrics|resetWatcherMetrics" .opencode/skill/system-spec-kit/mcp_server/lib/search/rsf-fusion.ts .opencode/skill/system-spec-kit/mcp_server/lib/governance/retention.ts`
+- [ ] CHK-392 [P2] Sprint metadata for sprints 5, 6, and 11 matches the live implementation state.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "SPECKIT_PIPELINE_V2|Draft|Implemented|community detection|entity linking|query-decomposer|feedback-ledger" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/{006-sprint-5-pipeline-refactor,007-sprint-6-indexing-and-graph,011-research-based-refinement}/spec.md`
+- [ ] CHK-393 [P2] Architecture docs cover the live component surface without phantom gaps.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `rg -n "api/|core/|formatters/|shared-spaces|stage2b-enrichment" .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/005-architecture-audit .opencode/skill/system-spec-kit/mcp_server/README.md`
+
+### Release Gate (V3 Authoritative)
+
+- [ ] CHK-394 [P0] All V3 checklist items `CHK-301` through `CHK-393` are checked and evidence-backed.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** Review the entire `V3 Full-Tree Remediation Verification` section.
+- [ ] CHK-395 [P0] Recursive validator rerun passes for the target 022 tree.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `.opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion --recursive --strict`
+- [ ] CHK-396 [P0] Repository-wide check gate passes after all fixes.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `npm run check`
+- [ ] CHK-397 [P0] Repository-wide test gate passes after all fixes.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** `npm run test`
+- [ ] CHK-398 [P0] Review-report re-verification or fresh deep review confirms `100/100` release readiness.
+  - **Evidence:** `[EVIDENCE: pending]`
+  - **Verify:** Run a fresh deep review or equivalent recheck and compare against the current release packet.
+
+### Historical Verification (v1/v2 — completed, superseded)
+
+#### Historical blocker verification
+
+- [x] CHK-H01 [P0] Historical module-resolution verification was recorded as passing [EVIDENCE: prior checklist recorded successful @spec-kit/mcp-server/api resolution and workflow-e2e recovery]
+  - **Evidence:** `[EVIDENCE: prior checklist recorded successful @spec-kit/mcp-server/api resolution and workflow-e2e recovery]`
+  - **Verify:** Preserve as historical only; do not use as the active release gate.
+- [x] CHK-H02 [P0] Historical startup/network-error verification was recorded as passing [EVIDENCE: prior checklist recorded warn-and-continue startup behavior]
+  - **Evidence:** `[EVIDENCE: prior checklist recorded warn-and-continue startup behavior]`
+  - **Verify:** Preserve as historical only; superseded by `CHK-363`, `CHK-369`, `CHK-370`, and `CHK-371`.
+- [x] CHK-H03 [P0] Historical lint-gate recovery was recorded as passing [EVIDENCE: prior checklist recorded clean lint/type output]
+  - **Evidence:** `[EVIDENCE: prior checklist recorded clean lint/type output]`
+  - **Verify:** Preserve as historical only; superseded by `CHK-381`.
+- [x] CHK-H04 [P0] Historical spec-validation recovery was recorded as passing [EVIDENCE: prior checklist recorded validator recovery from earlier error state]
+  - **Evidence:** `[EVIDENCE: prior checklist recorded validator recovery from earlier error state]`
+  - **Verify:** Preserve as historical only; superseded by the V3 tree-wide rerun.
+
+#### Historical must-fix verification
+
+- [x] CHK-H10 [P1] Historical quality-loop, input-normalizer, session-id, and registry fixes were recorded as complete [EVIDENCE: prior checklist tracked T05-T08 as verified]
+  - **Evidence:** `[EVIDENCE: prior checklist tracked T05-T08 as verified]`
+  - **Verify:** Preserve as historical context only.
+- [x] CHK-H11 [P1] Historical trigger-quality and JSON-enrichment changes were recorded as complete [EVIDENCE: prior checklist tracked former T09/T09b as verified]
+  - **Evidence:** `[EVIDENCE: prior checklist tracked former T09/T09b as verified]`
+  - **Verify:** Preserve as historical context only.
+- [x] CHK-H12 [P1] Historical pipeline-governance and retention-path follow-up was recorded as complete [EVIDENCE: prior checklist tracked T11-T12 as verified]
+  - **Evidence:** `[EVIDENCE: prior checklist tracked T11-T12 as verified]`
+  - **Verify:** Preserve as historical context only.
+- [x] CHK-H13 [P1] Historical README/count/doc updates were recorded as complete [EVIDENCE: prior checklist tracked T13-T18 as verified]
+  - **Evidence:** `[EVIDENCE: prior checklist tracked T13-T18 as verified]`
+  - **Verify:** Preserve as historical context only; count/status truth now flows through V3 checks.
+
+#### Historical polish verification
+
+- [x] CHK-H20 [P2] Historical post-release cleanup items were recorded as addressed or triaged.
+  - **Evidence:** `[EVIDENCE: prior checklist tracked T19-T26 as complete]`
+  - **Verify:** Preserve as historical context only.
+- [x] CHK-H21 [P2] Historical playbook/catalog cleanup was recorded as partially complete.
+  - **Evidence:** `[EVIDENCE: prior checklist tracked T27-T30 under the earlier post-release queue]`
+  - **Verify:** Preserve as historical context only; superseded by `CHK-385` through `CHK-390`.
+
+### Release Gate (Historical — superseded by V3)
+
+- [x] CHK-H30 [P1] Historical gate: `npm run test` was previously recorded as passing [EVIDENCE: prior checklist retained the earlier passing test narrative]
+  - **Evidence:** `[EVIDENCE: prior checklist retained the earlier passing test narrative]`
+  - **Verify:** Historical only; rerun under the V3 gate before release.
+- [x] CHK-H31 [P1] Historical gate: `npm run check` was previously recorded as passing [EVIDENCE: prior checklist retained the earlier passing check narrative]
+  - **Evidence:** `[EVIDENCE: prior checklist retained the earlier passing check narrative]`
+  - **Verify:** Historical only; rerun under the V3 gate before release.
+- [x] CHK-H32 [P1] Historical gate: validator recovery was previously recorded [EVIDENCE: prior checklist retained the earlier validator narrative]
+  - **Evidence:** `[EVIDENCE: prior checklist retained the earlier validator narrative]`
+  - **Verify:** Historical only; rerun under the V3 gate before release.
+- [x] CHK-H33 [P1] Historical gate language remains visible but is not authoritative [EVIDENCE: this subsection is explicitly marked superseded]
+  - **Evidence:** `[EVIDENCE: this subsection is explicitly marked superseded]`
+  - **Verify:** Use `Release Gate (V3 Authoritative)` for live release decisions.
+<!-- /ANCHOR:summary -->

@@ -1,0 +1,58 @@
+{
+  "topic": "Review: 022-hybrid-rag-fusion full tree (119 spec dirs, 19 phases) — release readiness",
+  "maxIterations": 20,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 600,
+  "maxToolCallsPerIteration": 15,
+  "maxMinutesPerIteration": 15,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation",
+  "createdAt": "2026-03-24T18:30:00.000Z",
+  "status": "complete",
+  "completedAt": "2026-03-24T21:20:00.000Z",
+  "verdict": "FAIL",
+  "compositeScore": 42,
+  "executionMode": "auto",
+  "mode": "review",
+  "reviewTarget": "022-hybrid-rag-fusion",
+  "reviewTargetType": "track",
+  "reviewDimensions": [
+    "correctness",
+    "security",
+    "spec-alignment",
+    "completeness",
+    "cross-ref-integrity",
+    "patterns",
+    "documentation-quality"
+  ],
+  "severityThreshold": "P2",
+  "crossReference": {
+    "spec": true,
+    "checklist": true,
+    "agentConsistency": true
+  },
+  "qualityGateThreshold": 70,
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-review-strategy.md": "mutable",
+    "deep-review-dashboard.md": "auto-generated",
+    "review-report.md": "mutable",
+    "iteration-*.md": "write-once"
+  },
+  "reviewScopeFiles": {
+    "spec_tree_root": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/",
+    "spec_dir_count": 119,
+    "direct_phases": 19,
+    "implementation_root": ".opencode/skill/system-spec-kit/",
+    "implementation_packages": ["mcp_server/", "scripts/", "shared/"]
+  },
+  "agentConfig": {
+    "dispatch": "cli-external",
+    "codex": "codex exec --model gpt-5.4 -c model_reasoning_effort=xhigh --sandbox read-only",
+    "copilot": "copilot -p --model gpt-5.4 --allow-all-tools",
+    "parallelRounds": 10,
+    "iterationsPerRound": 2
+  }
+}

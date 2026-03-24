@@ -3,94 +3,200 @@
 > **Level 2+ | Phase 12 of 022-hybrid-rag-fusion Epic**
 
 <!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
 
 ---
 
-## Objective
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-Two-phase pre-release quality gate for the 022-hybrid-rag-fusion system:
-1. **Audit** (complete) — 10-agent deep investigation identifying all broken, untested, misaligned, or non-compliant code and documentation
-2. **Remediation** (pending) — Fix the 4 P0 blockers, 19 P1 must-fix, and triage 26 P2 should-fix items to reach release readiness
+| Field | Value |
+|-------|-------|
+| **Level** | 2+ |
+| **Status** | In Progress |
+| **Priority** | P0 |
+| **Packet Role** | Release-readiness control packet for the full `022-hybrid-rag-fusion` tree |
+| **Completed Work Phases** | 3 |
+| **Active Work Phase** | Phase 4: Full-Tree Remediation |
+| **v1 Original Audit** | 49 findings total: 4 P0, 19 P1, 26 P2 |
+| **v2 Narrow Review** | 84/100 PASS WITH NOTES |
+| **v3 Full-Tree Review** | 42/100 FAIL, 58 findings total: 6 P0, 38 P1, 14 P2 |
+| **Live Review Scope** | 119 spec directories, 19 direct phases |
 
-## Audit Results Summary
+<!-- /ANCHOR:metadata -->
 
-| Severity | Count | Description |
-|----------|-------|-------------|
-| **P0** | 4 | Release blockers — server crash, failing tests, broken module resolution, validation red |
-| **P1** | 19 | Wrong behavior, data loss, dead features, stale docs, incomplete phases |
-| **P2** | 26 | Code quality, hygiene, coverage gaps, architecture drift |
+---
 
-**Total: 49 findings** across 10 investigation areas. See `research.md` for full evidence.
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
-## Scope
+### Problem Statement
 
-### Audit scope (complete)
-- Memory MCP server (33 tools, all handlers, pipeline, startup)
-- generate-context.js and system-spec-kit scripts (save pipeline, validators)
-- Feature catalog (219 snippets) vs code audit (22 categories)
-- Manual testing playbook (230 scenarios) vs feature catalog (75% coverage)
-- Session capturing (009) — 20 sub-phases, 3 incomplete
-- Architecture audit (005) vs actual implementation (41 documented vs 51 in code)
-- sk-code--opencode compliance (190 files audited)
-- Recent commits regression (5 code-touching commits analyzed)
-- Validator and template compliance (43 errors, 40 warnings)
+The original 012 packet was written for a targeted pre-release audit and remediation cycle. That scope is no longer sufficient.
 
-### Remediation scope (pending)
-- **P0 fixes**: Module resolution, startup error handling, lint blockers, spec validation
-- **P1 fixes**: Quality loop, pipeline integrity, dead flags, stale docs, search regression
-- **P2 triage**: Dead code cleanup, playbook coverage, architecture docs, standards compliance
+The v1 remediation work fixed the original blockers and improved the score to **84/100 PASS WITH NOTES**, but the later full-tree review showed that the broader 022 documentation tree still carries severe **spec-truth, evidence, count, and status drift**. Parent and umbrella packets cannot yet be treated as authoritative release evidence.
+
+### Purpose
+
+This packet now governs the full release-readiness program for the 022 tree. It must preserve the truth of the completed work while defining the remaining remediation needed to clear all v3 findings and reach a verified **100/100** release-readiness score.
+
+### Work History
+
+1. **Phase 1: Original audit** (complete) — 10-agent deep research established the first release-risk backlog.
+2. **Phase 2: v1 remediation** (complete) — `T01-T30` cleared the original blockers and repaired the first release packet.
+3. **Phase 3: Full-tree deep review** (complete) — a 20-iteration review of the full 022 tree verified the major v1 code fixes, but exposed broad documentation and evidence drift.
+4. **Phase 4: Full-Tree Remediation** (pending) — truth-sync the documentation tree, repair the evidence layer, clear the remaining code P1 items, and close the release gate.
+
+<!-- /ANCHOR:problem -->
+
+---
+
+<!-- ANCHOR:scope -->
+## 3. SCOPE
+
+### Historical scope (complete)
+- Original 012 audit of runtime code, scripts, validators, catalogs, playbooks, and release docs
+- v1 remediation of the original 49 findings through `T01-T30`
+- Prior verification captured in `checklist.md`
+
+### Active scope: full 022 tree remediation
+- Clear all **6 P0 blockers** from the v3 full-tree review
+- Resolve all **11 count and inventory drift** findings
+- Resolve all **16 status and completion drift** findings
+- Repair all **8 missing docs and evidence** findings
+- Fix all **12 code correctness and security P1** findings across `mcp_server/`, `scripts/`, and `shared/`
+- Triage and close or defer all **14 P2** findings honestly
+- Re-run validation, tests, and release review against the full 022 tree
+
+### Phase 4: Full-Tree Remediation
+- Truth-sync root, epic, umbrella, and child packets against the live tree
+- Repair missing docs, evidence gaps, broken links, orphaned refs, and unsupported completion claims
+- Clear the remaining 12 runtime correctness/security P1 items after documentation truth is restored
+- Re-run release verification and drive the tree back to trustworthy sign-off
+
+### In-scope tree areas
+- Root `022-hybrid-rag-fusion` coordination packet
+- `001-hybrid-rag-fusion-epic` and its sprint subtree
+- `005-architecture-audit`
+- `006-feature-catalog`
+- `007-code-audit-per-feature-catalog`
+- `008-hydra-db-based-features`
+- `009-perfect-session-capturing`
+- `010` through `018` alignment and rewrite packets
+- `015-manual-testing-per-playbook`
+- Runtime code under `.opencode/skill/system-spec-kit/{mcp_server,scripts,shared}`
+
+### Deliverables
+
+| Deliverable | Status | Content |
+|-------------|--------|---------|
+| `research.md` | Complete | Original 49-finding audit with file-backed evidence |
+| `review-report.md` | Complete | Full-tree 20-iteration review with 58 active findings |
+| `tasks.md` | Complete, requires follow-up updates | Historical remediation backlog and verification tasks |
+| `checklist.md` | Complete, requires follow-up updates | Historical verification evidence plus remaining release gate items |
+| `plan.md` | Rewritten | Full 7-phase remediation plan covering historical work and remaining phases |
+| `spec.md` | Rewritten | Updated objective, scope, findings history, and full-tree remediation target |
+| `scratch/agent-NN-*.md` | Complete | Original deep-research raw outputs |
+| Full-tree truth-sync edits across 022 | Pending | Parent-child status, count, and navigation corrections |
+| Evidence and companion-doc repairs across 022 | Pending | Missing docs, fixed links, orphan cleanup, verification evidence |
+| Runtime remediation patches in `mcp_server/`, `scripts/`, `shared/` | Pending | Code correctness and security fixes required by v3 |
 
 ### Out of scope
-- New feature development
-- Playbook scenario creation for the 54 untested features (separate task)
-- Implementation of unfinished session capturing sub-phases (009/019 remediation sprints)
+- New feature development unrelated to the review findings
+- Playbook expansion beyond what is required to close the documented evidence gaps
+- Refactors not required to clear a v3 finding or reach release sign-off
 
-## Method
+<!-- /ANCHOR:scope -->
 
-### Phase 1: Deep Research (complete)
-10 GPT-5.4 agents via `codex exec` (read-only sandbox, high reasoning):
+---
 
-| # | Agent Focus | P0 | P1 | P2 |
-|---|-------------|----|----|-----|
-| 1 | MCP Server Health | 1 | 2 | 6 |
-| 2 | Scripts & generate-context | 0 | 5 | 1 |
-| 3 | Feature Catalog vs Code Audit | 0 | 0 | 4 |
-| 4 | Playbook vs Catalog Alignment | 0 | 0 | 2 |
-| 5 | Pipeline Architecture | 0 | 2 | 3 |
-| 6 | Session Capturing (009) | 1 | 2 | 0 |
-| 7 | Validators & Templates | 1 | 3 | 2 |
-| 8 | Recent Commits Regression | 0 | 1 | 2 |
-| 9 | sk-code--opencode Compliance | 0 | 0 | 3 |
-| 10 | Architecture vs Implementation | 0 | 4 | 3 |
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
 
-### Phase 2: Synthesis (complete)
-- Findings compiled into `research.md` with cross-agent correlation
-- Remediation priorities established in `tasks.md`
-- Cascade dependencies mapped (P0-4 → P0-3, P0-1 ← P1-2)
+### P0 - Blockers (must complete)
 
-### Phase 3: Remediation (pending)
-- Execute fixes per `tasks.md` priority order
-- Verify each fix with targeted tests
-- Re-run `validate.sh` after spec doc fixes
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | The packet must describe the full release-readiness program, not only the original 012 audit | Objective and scope explicitly cover original audit, v1 remediation, full-tree deep review, and Phase 4 remediation |
+| REQ-002 | The packet must preserve both v1 and v3 finding totals | `49 findings` and `58 findings` are both recorded accurately with severity breakdowns |
+| REQ-003 | The active scope must cover the full 022 remediation surface | Scope includes tree-wide documentation drift, evidence drift, and runtime P1 fixes |
+| REQ-004 | A dedicated `Phase 4: Full-Tree Remediation` workstream must be defined | Problem and purpose, plan, and success criteria all describe the new remediation phase |
+| REQ-005 | Historical passed criteria must stay visible | Existing passed release criteria remain recorded as achieved work |
+| REQ-006 | New release criteria must address the v3 review | Success criteria explicitly cover P0, P1, P2, validation, and final 100/100 re-review |
 
-## Deliverables
+### Acceptance Scenarios
 
-| File | Status | Content |
-|------|--------|---------|
-| `research.md` | Complete | 49 findings with file:line evidence, severity, cross-agent correlations |
-| `tasks.md` | Complete | Prioritized remediation items aligned with P0/P1/P2 |
-| `checklist.md` | Complete | Verification criteria per severity tier |
-| `plan.md` | Complete | 3-phase workflow with dependency chain |
-| `scratch/agent-NN-*.md` | Complete | 10 raw agent reports |
+1. **Audit continuity**: A maintainer can read this packet and understand both the original 49-finding audit and the later 58-finding full-tree review without opening older versions of the spec.
+2. **Scope continuity**: A maintainer can see that the packet now governs the whole 022 remediation effort, not only the original 012 fixes.
+3. **Plan continuity**: A maintainer can move from this spec into `plan.md` and find the exact Phase 4-7 remediation sequence.
+4. **Release continuity**: A reviewer can tell which criteria are already achieved and which criteria still block a 100/100 release score.
 
-## Success Criteria
+<!-- /ANCHOR:requirements -->
 
-- [x] All 10 investigation areas audited
-- [x] Findings categorized by severity (P0/P1/P2)
-- [x] No P0 issues without documented remediation path
-- [x] Feature catalog and playbook gaps quantified (75% coverage, 54 untested)
-- [x] All P0 blockers resolved — [EVIDENCE: T01-T04 all verified in checklist.md]
-- [x] `validate.sh` passes (exit 0 or 1, not 2) — [EVIDENCE: exits 1, 0 errors, 50 warnings]
-- [x] `npm run check` passes — [EVIDENCE: tsc 0 errors, eslint 0 errors]
-- [x] workflow-e2e tests pass (7/7) — [EVIDENCE: vitest run workflow-e2e.vitest.ts → 7 passed]
-- [x] MCP server starts reliably on flaky networks — [EVIDENCE: networkError path added in T02]
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+### Historical criteria already achieved
+- [x] All 10 original investigation areas were audited
+- [x] Original findings were categorized by severity (P0/P1/P2)
+- [x] No original P0 issue was left without a documented remediation path
+- [x] Feature catalog and playbook gaps were quantified during the original audit
+- [x] All original P0 blockers were resolved during v1 remediation — [EVIDENCE: `T01-T04` verified in `checklist.md`]
+- [x] `validate.sh` reached a non-error state during the v1 remediation cycle — [EVIDENCE: prior pass recorded as exit 1 with 0 errors]
+- [x] `npm run check` passed during the v1 remediation cycle — [EVIDENCE: prior checklist evidence records 0 lint errors and 0 TypeScript errors]
+- [x] `workflow-e2e` passed during the v1 remediation cycle — [EVIDENCE: prior checklist evidence records 7/7 passing]
+- [x] The MCP server startup path was hardened for flaky-network validation during v1 remediation — [EVIDENCE: prior checklist evidence for `T02`]
+
+### Phase 4 release criteria
+- [ ] All **6 v3 P0 blockers** are cleared with file-backed evidence
+- [ ] All **11 count and inventory drift** findings are truth-synced to the live tree
+- [ ] All **16 status and completion drift** findings are reconciled across parent packets, child packets, tasks, and checklists
+- [ ] All **8 missing docs and evidence** findings are resolved, or downgraded honestly with no false verification claims left in place
+- [ ] All **12 code correctness and security P1** findings are fixed and verified
+- [ ] All **14 P2** findings are either closed or explicitly deferred with rationale
+- [ ] `validate.sh --recursive` on the 022 tree exits 0 or 1 with no error-level issues
+- [ ] Workspace verification passes for the live implementation (`npm run -s lint`, `npm run -s typecheck`, `npm test` from `.opencode/skill/system-spec-kit`)
+- [ ] A follow-up release review reports **100/100** with **no active P0 or P1 findings**
+
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Risk | Parent packets keep false `Complete` claims | Release sign-off stays untrustworthy | Phase 4 truth-sync work must happen before any new certification |
+| Risk | Evidence links remain stale after rewrite work | Review artifacts stay non-authoritative | Phase 5 repairs every evidence path before final verification |
+| Risk | Runtime fixes land without matching packet updates | Code and docs drift again | Phase 6 depends on the corrected documentation baseline from Phases 4 and 5 |
+| Dependency | `review-report.md` remains the source of truth for the active blocker set | Remediation can miss findings if the packet drifts from the report | Keep plan and tasks aligned to the v3 finding set |
+| Dependency | Existing 022 child packets must tell the truth about their own status | Parent summaries cannot be fixed from historical prose alone | Use live child packet state as the authority during truth-sync work |
+
+### Additional operating constraints
+- Documentation truth must take priority over optimistic completion wording.
+- All release claims must be backed by live files, live status, or live verification evidence.
+- The packet must stay concise enough to serve as the control document for the wider remediation program.
+
+### Edge conditions
+- The v1 remediation evidence remains valid historical evidence, even though the v3 review opened a broader full-tree remediation scope.
+- Some v3 findings may be resolved by downgrading false claims instead of adding new implementation work.
+- Hydra drill evidence may require either new artifacts or honest demotion of unsupported verification claims.
+
+### Complexity signal
+This packet remains high-complexity coordination work because it spans tree-wide documentation truth, evidence quality, and runtime release gates at the same time.
+
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+1. Which unsupported Hydra drill claims should be backed with new evidence, and which should be downgraded to unverified status?
+2. Are all rewrite-packet count drifts best fixed in place, or should some packets be marked historical and explicitly superseded?
+3. Will the final 100/100 release review be executed as a full-tree review again, or as a narrower verification pass against the v3 finding list?
+
+<!-- /ANCHOR:questions -->
