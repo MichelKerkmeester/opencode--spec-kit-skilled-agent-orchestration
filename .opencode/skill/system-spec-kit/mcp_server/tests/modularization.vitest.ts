@@ -26,7 +26,7 @@ const EXTENDED_LIMITS: Record<string, number> = {
   'handlers/memory-crud.js': 40,    // actual: 32 — Re-export barrel (decomposed into memory-crud-{health,update,delete,stats,list,utils,types}.js)
   'handlers/memory-save.js': 2200,  // actual: 1210 — Save logic with parsing, validation, indexing + quality gate + reconsolidation
   'handlers/memory-index.js': 700,  // actual: 421 — Index operations with scanning + spec document discovery (Spec 126)
-  'handlers/checkpoints.js': 520,   // actual: 506 — Checkpoint operations plus scoped metadata guards and restore/delete safety checks
+  'handlers/checkpoints.js': 560,   // actual: 547 — Checkpoint operations plus scoped metadata guards, restore/delete safety checks, and SEC-002 scope enforcement
 };
 
 function countLines(filePath: string): number {
