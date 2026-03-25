@@ -27,7 +27,7 @@ Together, the three layers mean agents know structure before writing, validate a
 
 The system comprises 4 components spanning references, agent definitions, and validation workflow:
 
-**1. Shared reference file (`references/template-compliance-contract.md`):** Canonical source of truth for structural contracts at all documentation levels (L1, L2, L3, L3+). Generated from `template-structure.js loadTemplateContract()` output. Defines the exact heading hierarchy, required anchors, and enforcement rules that all agents must follow. Versioned at 1.0.0.
+**1. Shared reference file (`references/validation/template_compliance_contract.md`):** Canonical source of truth for structural contracts at all documentation levels (L1, L2, L3, L3+). Generated from `template-structure.js loadTemplateContract()` output. Defines the exact heading hierarchy, required anchors, and enforcement rules that all agents must follow. Versioned at 1.0.0.
 
 **2. Compact structural contract in 5 CLI @speckit agent definitions:** A 49-line compact version of the structural contract is embedded in each of the five `@speckit` agent definitions — Claude Code (`.claude/agents/speckit.md`), Copilot (`.opencode/agent/speckit.md`), ChatGPT (`.opencode/agent/chatgpt/speckit.md`), Codex (`.codex/agents/speckit.toml`), and Gemini (`.gemini/agents/speckit.md`). This gives every agent pre-write knowledge of anchor-to-H2 mappings for each document type at each level.
 
@@ -44,7 +44,7 @@ The system comprises 4 components spanning references, agent definitions, and va
 
 | File | Layer | Role |
 |------|-------|------|
-| `.opencode/skill/system-spec-kit/references/template-compliance-contract.md` | Reference | Canonical structural contract for L1-L3+ |
+| `.opencode/skill/system-spec-kit/references/validation/template_compliance_contract.md` | Reference | Canonical structural contract for L1-L3+ |
 | `.claude/agents/speckit.md` | Agent Def | Claude Code @speckit with embedded contract |
 | `.opencode/agent/speckit.md` | Agent Def | Copilot @speckit with embedded contract |
 | `.opencode/agent/chatgpt/speckit.md` | Agent Def | ChatGPT @speckit with embedded contract |

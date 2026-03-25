@@ -93,7 +93,7 @@ The router discovers markdown resources recursively from `references/` and `asse
 
 - `references/memory/` for context retrieval, save workflows, trigger behavior, and indexing.
 - `references/templates/` for level selection, template composition, and structure guides.
-- `references/validation/` for checklist policy, verification rules, and decision formats.
+- `references/validation/` for checklist policy, verification rules, decision formats, and template compliance contracts.
 - `references/structure/` for folder organization and sub-folder versioning.
 - `references/workflows/` for command workflows and worked examples.
 - `references/debugging/` for troubleshooting and root-cause methodology.
@@ -154,6 +154,7 @@ RESOURCE_MAP = {
     "PLAN": [
         "references/templates/level_specifications.md",
         "references/templates/template_guide.md",
+        "references/validation/template_compliance_contract.md",
     ],
     "RESEARCH": [
         "references/workflows/quick_reference.md",
@@ -162,6 +163,7 @@ RESOURCE_MAP = {
     ],
     "IMPLEMENT": [
         "references/validation/validation_rules.md",
+        "references/validation/template_compliance_contract.md",
         "references/templates/template_guide.md",
     ],
     "DEBUG": [
