@@ -17,8 +17,9 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 1,
+  "memorySequence": 2,
   "memoryNameHistory": [
-    "16-03-26_11-32__verified-and-refined-spec-017-agents-alignment.md"
+    "16-03-26_11-32__verified-and-refined-spec-017-agents-alignment.md",
+    "25-03-26_12-55__deep-review-of-10-agent-definitions-across-5.md"
   ]
 }

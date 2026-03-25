@@ -116,7 +116,7 @@ This Codex CLI enforces **single-hop delegation**. Nested sub-agent dispatch is 
 | Tier             | Dispatch Authority               | Who                                                                                                 |
 | ---------------- | -------------------------------- | --------------------------------------------------------------------------------------------------- |
 | **ORCHESTRATOR** | Can dispatch LEAF agents         | Top-level orchestrator only                                                                         |
-| **LEAF**         | MUST NOT dispatch any sub-agents | @context, @general, @ultra-think, @write, @review, @speckit, @debug, @handover, @explore, @deep-research |
+| **LEAF**         | MUST NOT dispatch any sub-agents | @context, @general, @ultra-think, @write, @review, @speckit, @debug, @handover, @deep-research, @deep-review |
 
 #### Absolute Depth Rules
 
@@ -146,7 +146,7 @@ LEGAL: Orchestrator(0) → @general(1)
 #### ❌ Illegal Chains
 
 ```
-ILLEGAL: Orch(0) → @context(1) → @explore(2)
+ILLEGAL: Orch(0) → @context(1) → @review(2)
 ILLEGAL: Orch(0) → @speckit(1) → @general(2)
 ILLEGAL: Orch(0) → Sub-Orch(1) → @leaf(2)
 ```
@@ -622,7 +622,12 @@ When ANY context pressure signal fires:
 | Need formal research before planning   | `/spec_kit:deep-research` | Iterative investigation with convergence |
 | Claiming task completion               | `/spec_kit:complete` | Verification workflow with checklist   |
 | Need to save important context         | `/memory:save`       | Preserve decisions and findings        |
-| Resuming prior work                    | `/spec_kit:resume`   | Load context from spec folder          |
+| Resuming prior work (known spec)       | `/spec_kit:resume`   | Load context from spec folder          |
+| Resuming interrupted work (unknown)    | `/memory:continue`   | Crash recovery and context restoration |
+| Need retrieval, analysis, or eval      | `/memory:analyze`    | Unified knowledge retrieval            |
+| Memory maintenance or ingest           | `/memory:manage`     | Stats, health, cleanup, ingest ops     |
+| Constitutional memory rules            | `/memory:learn`      | Create/list/edit/remove always-surface rules |
+| Shared-memory spaces                   | `/memory:shared`     | Create spaces, manage memberships      |
 
 ---
 
@@ -768,7 +773,7 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 - Nested chains are illegal in this profile. Every dispatch must include `Depth: N` and respect single-hop NDP rules: only depth-0 orchestrator dispatches; depth-1 agents MUST NOT dispatch. If a task cannot be completed at depth 1, return partial results and escalate to the parent. See §2.
 
 ❌ **Never let LEAF agents dispatch sub-agents**
-- LEAF agents (@context, @general, @ultra-think, @write, @review, @speckit, @debug, @handover, @explore, @deep-research) execute work directly. If a LEAF agent spawns a sub-agent, it violates NDP. When dispatching LEAF agents, ALWAYS include the LEAF Enforcement Instruction (§2).
+- LEAF agents (@context, @general, @ultra-think, @write, @review, @speckit, @debug, @handover, @deep-research, @deep-review) execute work directly. If a LEAF agent spawns a sub-agent, it violates NDP. When dispatching LEAF agents, ALWAYS include the LEAF Enforcement Instruction (§2).
 
 ❌ **Never read 4+ large files back-to-back in main context**
 - Loading multiple large files floods the orchestrator's context window. Delegate bulk file reads to `@context` and receive summarized Context Packages. See §8 Self-Protection Rules.
@@ -804,8 +809,13 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 | `/spec_kit:complete`  | Verification workflow                          | `.opencode/command/spec_kit/complete.md` |
 | `/spec_kit:deep-research` | Iterative investigation                    | `.opencode/command/spec_kit/deep-research.md` |
 | `/memory:save`        | Context preservation                           | `.opencode/command/memory/save.md`       |
+| `/memory:continue`    | Crash recovery, context restoration            | `.opencode/command/memory/continue.md`   |
+| `/memory:analyze`     | Unified retrieval, analysis, eval              | `.opencode/command/memory/analyze.md`    |
+| `/memory:manage`      | Stats, health, cleanup, ingest                 | `.opencode/command/memory/manage.md`     |
+| `/memory:learn`       | Constitutional memory manager                  | `.opencode/command/memory/learn.md`      |
+| `/memory:shared`      | Shared-memory lifecycle                        | `.opencode/command/memory/shared.md`     |
 | `system-spec-kit`     | Spec folders, memory, validation               | `.opencode/skill/system-spec-kit/`       |
-| `sk-code`             | Review baseline lifecycle                      | `.opencode/skill/sk-code/`               |
+| `sk-code`             | Review baseline lifecycle                      | `.opencode/skill/sk-code--review/`               |
 | `sk-code--*`          | Stack overlay lifecycle (auto-detects variant) | `.opencode/skill/sk-code--*/`            |
 | `sk-git`              | Version control workflows                      | `.opencode/skill/sk-git/`                |
 | `sk-doc`              | Doc quality, DQI scoring, skill creation       | `.opencode/skill/sk-doc/`                |

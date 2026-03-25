@@ -127,13 +127,13 @@ Every new `P0` or `P1` finding MUST include a typed claim-adjudication packet in
 ```json
 {
   "type": "claim-adjudication",
-  "claimId": "P1-001",
-  "claimType": "correctness|security|traceability|maintainability",
-  "severity": "P0|P1",
-  "evidence": ["path/to/file:line"],
-  "skepticCheck": "challenge summary",
-  "refereeDecision": "confirm|downgrade|reject",
-  "disposition": "active|downgraded|false_positive"
+  "claim": "One-sentence statement of the finding being adjudicated.",
+  "evidenceRefs": ["path/to/file:line"],
+  "counterevidenceSought": "What contradictory evidence was checked before confirming the finding.",
+  "alternativeExplanation": "Plausible non-bug explanation that was considered and rejected or retained.",
+  "finalSeverity": "P0|P1",
+  "confidence": 0.90,
+  "downgradeTrigger": "What evidence would justify downgrading or dismissing this finding."
 }
 ```
 
@@ -181,7 +181,7 @@ Create `scratch/iteration-NNN.md` with this structure:
 - Final severity: P1
 
 ```json
-{"type":"claim-adjudication","claimId":"P1-NNN","claimType":"correctness|security|traceability|maintainability","severity":"P0|P1","evidence":["path/to/file:line"],"skepticCheck":"challenge summary","refereeDecision":"confirm|downgrade|reject","disposition":"active|downgraded|false_positive"}
+{"type":"claim-adjudication","claim":"One-sentence statement of the P0/P1 finding being adjudicated.","evidenceRefs":["path/to/file:line"],"counterevidenceSought":"Adjacent code, docs, and prior iterations checked for contradictory evidence.","alternativeExplanation":"Most plausible non-bug explanation considered during skeptic/referee review.","finalSeverity":"P0|P1","confidence":0.90,"downgradeTrigger":"What evidence would justify reducing severity or marking this a false positive."}
 ```
 
 ### P2-NNN: [Title]
@@ -233,7 +233,7 @@ Edit `scratch/deep-review-strategy.md`:
 Append ONE line to `scratch/deep-research-state.jsonl`:
 
 ```json
-{"type":"iteration","mode":"review","run":N,"status":"complete","focus":"[dimension - specific area]","dimension":"[dimension name]","dimensions":["[dimension name]"],"findingsCount":N,"newFindingsRatio":0.XX,"noveltyJustification":"...","severityCounts":{"P0":N,"P1":N,"P2":N},"filesReviewed":["file1","file2"],"dimensionScores":{"correctness":N,"security":N,"traceability":N,"maintainability":N},"newFindings":{"P0":N,"P1":N,"P2":N},"upgrades":[],"resolved":[],"findingRefs":["P1-001","P2-003"],"traceabilityChecks":[{"protocol":"spec_code","status":"pass|partial|fail"}],"coverage":{"filesReviewed":N,"filesTotal":N,"dimensionsComplete":[]},"ruledOut":["investigated-not-issue"],"focusTrack":"optional","timestamp":"ISO-8601","durationMs":NNNNN}
+{"type":"iteration","mode":"review","run":N,"status":"complete","focus":"[dimension - specific area]","dimension":"[dimension name]","dimensions":["[dimension name]"],"findingsCount":N,"newFindingsRatio":0.XX,"noveltyJustification":"...","findingsSummary":{"P0":N,"P1":N,"P2":N},"filesReviewed":["file1","file2"],"dimensionScores":{"correctness":N,"security":N,"traceability":N,"maintainability":N},"findingsNew":{"P0":N,"P1":N,"P2":N},"findingsRefined":{"P0":N,"P1":N,"P2":N},"upgrades":[],"resolved":[],"findingRefs":["P1-001","P2-003"],"traceabilityChecks":{"summary":{"required":N,"executed":N,"pass":N,"partial":N,"fail":N,"blocked":N,"notApplicable":N,"gatingFailures":N},"results":[{"protocolId":"spec_code","status":"pass|partial|fail","gateClass":"hard|advisory","applicable":true,"counts":{"pass":N,"partial":N,"fail":N},"evidence":["path/to/file:line"],"findingRefs":["P1-001"],"summary":"One-line traceability result."}]},"coverage":{"filesReviewed":N,"filesTotal":N,"dimensionsComplete":[]},"ruledOut":["investigated-not-issue"],"focusTrack":"optional","timestamp":"ISO-8601","durationMs":NNNNN}
 ```
 
 **Status values**: `complete | timeout | error | stuck | insight | thought`

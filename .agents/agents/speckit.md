@@ -518,6 +518,7 @@ Use this template for completion reports:
 | `/memory:learn`       | Constitutional memory manager | `.opencode/command/memory/learn.md`       |
 | `/memory:save`        | Save session context        | `.opencode/command/memory/save.md`        |
 | `/memory:manage`      | Memory management           | `.opencode/command/memory/manage.md`      |
+| `/memory:shared`      | Shared-memory lifecycle     | `.opencode/command/memory/shared.md`      |
 
 ### Skills
 
