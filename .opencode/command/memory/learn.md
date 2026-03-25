@@ -36,6 +36,8 @@ IF $ARGUMENTS contains recognized input:
 - **DO NOT** assume what the user wants based on screenshots or open files
 - When no arguments: show the dashboard, do NOT ask a question
 
+> SECURITY: Constitutional memories are high-impact global rules. In multi-agent or shared environments, create/edit/remove operations should verify actor identity and require owner or admin role before proceeding.
+
 ---
 
 # /memory:learn — Constitutional Memory Manager
@@ -414,6 +416,8 @@ MEMORY:LEARN REMOVE
 **HARD STOP:** Do NOT delete until user explicitly confirms.
 
 ### Step 3: Delete + Re-index
+
+SECURITY: Validate filename is basename-only (no /, .., or absolute paths). Reject if validation fails. Only delete files from the constitutional memory directory.
 
 ```text
 1. Delete file via Bash: rm "<path>"

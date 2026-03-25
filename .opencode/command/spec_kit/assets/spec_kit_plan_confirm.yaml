@@ -483,9 +483,12 @@ workflow:
       - { label: "Done", description: "Complete the planning workflow" }
       - { label: "View Summary", description: "Show planning summary" }
     post_save_indexing:
+      pre_index_instruction:
+        command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {spec_path}"
+        note: "First run generate-context.js before MCP indexing"
       mcp_tool: memory_save
       invocation: 'spec_kit_memory_memory_save({ filePath: "[SPEC_FOLDER]/memory/[DD-MM-YY_HH-MM]__planning_session.md" })'
-      critical_note: "Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
+      critical_note: "Then index via memory_save or memory_index_scan. Call semantic memory MCP DIRECTLY - NEVER through Code Mode"
       when: "Immediately after memory file written to disk"
     anchor_requirements:
       enforcement: MANDATORY

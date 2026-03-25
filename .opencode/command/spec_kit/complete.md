@@ -1,15 +1,18 @@
 ---
 description: Full end-to-end SpecKit workflow (14+ steps) - supports :auto, :confirm, :with-research, and :auto-debug modes
 argument-hint: "<feature-description> [:auto|:confirm] [:with-research] [:auto-debug] [--phase-folder=<path>]"
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, mcp__cocoindex_code__search
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, spec_kit_memory_memory_save, spec_kit_memory_memory_index_scan, mcp__cocoindex_code__search
 ---
 
 > ⚠️ **EXECUTION PROTOCOL — READ FIRST**
 >
 > This command runs a structured YAML workflow. Do NOT dispatch agents from this document.
 >
+> **Note:** This command uses an inline setup protocol rather than the standard Unified Setup Phase. The :auto/:confirm mode, :with-research flag, and :auto-debug flag are parsed directly from the command suffix.
+>
 > **YOUR FIRST ACTION:**
 > 1. Determine execution mode from user input (`:auto`, `:confirm`, `:with-research`, `:auto-debug`)
+>    Note: :with-research and :auto-debug are feature flags, not execution modes. They modify the :auto or :confirm workflow but do not change the base execution mode.
 > 2. Load the corresponding YAML file from `assets/`:
 >    - Auto mode → `spec_kit_complete_auto.yaml`
 >    - Confirm mode → `spec_kit_complete_confirm.yaml`
@@ -95,7 +98,7 @@ When `--phase-folder=<path>` is provided or spec folder selection includes a pha
 |------|-----------|----------|
 | `:auto` | `/spec_kit:complete :auto "feature"` | Execute all steps without approval gates |
 | `:confirm` | `/spec_kit:complete :confirm "feature"` | Pause at each step for approval |
-| `:with-research` | `/spec_kit:complete :with-research "feature"` | Insert 9-step research phase at Step 6 |
+| `:with-research` | `/spec_kit:complete :with-research "feature"` | Insert research phase after Step 2 (before specification) |
 | `:auto-debug` | `/spec_kit:complete :auto-debug "feature"` | Auto-delegate to debug agent on 3+ failures |
 | (combined) | `/spec_kit:complete :auto :with-research :auto-debug` | All options combined |
 | (default) | `/spec_kit:complete "feature"` | Ask user to choose mode during setup |
@@ -128,10 +131,10 @@ IF any artifact missing -> STOP -> Return to appropriate step -> Complete -> Re-
 ### Optional Research Phase
 
 When `:with-research` flag present or research_triggered == TRUE:
-- Execute 9-step research workflow using same spec_path and execution_mode
+- Execute research workflow after Step 2, before Step 3 (Specification), using same spec_path and execution_mode
 - Display checkpoint with key findings summary
 - User responds: Y (continue) / n (pause) / review (see research.md first)
-- If research_triggered == FALSE, skip directly to workflow execution
+- If research_triggered == FALSE, continue directly to Step 3 (Specification)
 
 ---
 

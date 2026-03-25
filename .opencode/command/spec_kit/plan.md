@@ -1,12 +1,14 @@
 ---
 description: Planning workflow (7 steps) - spec through plan only, no implementation. Supports :auto and :confirm modes
 argument-hint: "<feature-description> [:auto|:confirm] [--phase-folder=<path>]"
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory_search, mcp__cocoindex_code__search
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory_search, spec_kit_memory_memory_save, spec_kit_memory_memory_index_scan, mcp__cocoindex_code__search
 ---
 
 > ⚠️ **EXECUTION PROTOCOL — READ FIRST**
 >
 > This command runs a structured YAML workflow. Do NOT dispatch agents from this document.
+>
+> **Ownership:** Markdown owns setup (resolves all inputs). YAML owns execution (dispatches steps). Setup values resolved here are passed to the YAML workflow.
 >
 > **YOUR FIRST ACTION:**
 > 1. Determine execution mode from user input (`:auto` or `:confirm`)
@@ -148,16 +150,16 @@ operating_mode:
 
 ## 1. PURPOSE
 
-Run the planning workflow: specification, clarification, and technical planning. Creates spec.md, plan.md, and checklists without implementation. Use when planning needs review before coding.
+Run the planning workflow: specification, clarification, and technical planning. Creates spec.md, plan.md, tasks.md, and checklists without implementation. Use when planning needs review before coding.
 
 ---
 
 ## 2. CONTRACT
 
 **Inputs:** `$ARGUMENTS` — Feature description with optional parameters (branch, scope, context)
-**Outputs:** Spec folder with: spec.md, plan.md, checklist.md (Level 2+), memory/*.md
+**Outputs:** Spec folder with: spec.md, plan.md, tasks.md, checklist.md (Level 2+), memory/*.md
 
-> **Level 1 Note:** /spec_kit:plan creates spec.md and plan.md but NOT tasks.md. For complete Level 1 baseline, run /spec_kit:implement after or use /spec_kit:complete instead.
+> **Level 1 Note:** /spec_kit:plan creates spec.md, plan.md, and tasks.md. For complete Level 1 baseline implementation execution, run /spec_kit:implement after planning or use /spec_kit:complete instead.
 
 ```text
 $ARGUMENTS
@@ -195,7 +197,7 @@ The YAML contains detailed step-by-step workflow, field extraction rules, comple
 **Success:**
 ```
 ✅ SpecKit Planning Complete — All 7 steps executed.
-Artifacts: spec.md, plan.md, checklist.md (L2+), memory/*.md
+Artifacts: spec.md, plan.md, tasks.md, checklist.md (L2+), memory/*.md
 Ready for: /spec_kit:implement [spec-folder-path]
 STATUS=OK PATH=[spec-folder-path]
 ```
@@ -321,7 +323,17 @@ Record results in decision-record.md for architectural changes.
 
 ---
 
-## 10. KEY DIFFERENCES FROM /SPEC_KIT:COMPLETE
+## 10. ERROR HANDLING
+
+| Error | Action |
+|-------|--------|
+| Spec folder not found | Verify path exists; offer to create via /spec_kit:plan |
+| Memory context load failure | Proceed without prior context; note gap |
+| YAML workflow dispatch error | Retry once; if persistent, report error and halt |
+
+---
+
+## 11. KEY DIFFERENCES FROM /SPEC_KIT:COMPLETE
 
 - **Terminates after planning** — no task breakdown, analysis, or implementation
 - **Next step guidance** — recommends `/spec_kit:implement` when ready
@@ -329,7 +341,7 @@ Record results in decision-record.md for architectural changes.
 
 ---
 
-## 11. EXAMPLES
+## 12. EXAMPLES
 
 ```
 /spec_kit:plan:auto Add dark mode toggle to the settings page
@@ -339,7 +351,7 @@ Record results in decision-record.md for architectural changes.
 
 ---
 
-## 12. COMMAND CHAIN
+## 13. COMMAND CHAIN
 
 ```
 [/spec_kit:deep-research] → /spec_kit:plan → [/spec_kit:implement]
@@ -349,7 +361,7 @@ Next step: `/spec_kit:implement [spec-folder-path]`
 
 ---
 
-## 13. NEXT STEPS
+## 14. NEXT STEPS
 
 | Condition                    | Suggested Command                        | Reason                    |
 | ---------------------------- | ---------------------------------------- | ------------------------- |

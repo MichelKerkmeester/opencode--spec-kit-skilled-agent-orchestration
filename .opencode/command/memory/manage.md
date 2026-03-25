@@ -569,11 +569,11 @@ MEMORY:HEALTH
 
   Status      <healthy|degraded|error>
   Size        <size>
-  Schema      v13
+  Schema      v23
   Total       <N>
 
 → Tables ───────────────────────────────────────────
-  PASS  memory_index (v13)
+  PASS  memory_index (v23)
   PASS  memory_history
   PASS  checkpoints
   PASS  memory_conflicts
@@ -644,6 +644,8 @@ STATUS=OK CHECKPOINT=<name> ACTION=create
 #### Restore Workflow
 
 1. Verify checkpoint exists via `checkpoint_list()`
+   
+   **INTEGRITY:** After listing checkpoints, verify the target checkpoint still exists immediately before calling checkpoint_restore. If the checkpoint was modified or deleted between check and restore, abort and notify the user.
 2. Create pre-restore snapshot: `checkpoint_create({ name: "pre-restore-{timestamp}", metadata: { type: "rollback-snapshot" } })`
 3. Execute restore: `checkpoint_restore({ name: "<name>", clearExisting: false })`
 4. On success: delete pre-restore snapshot, show confirmation
@@ -726,6 +728,8 @@ STATUS=OK ACTION=list
 
 **Trigger:** `/memory:manage checkpoint delete <name>`
 
+**CONFIRMATION GATE:** Before calling checkpoint_delete, display the checkpoint name and ask for explicit user confirmation. Do not proceed without a confirmed response.
+
 ```javascript
 spec_kit_memory_checkpoint_delete({ name: "<checkpoint_name>", confirmName: "<checkpoint_name>" })
 ```
@@ -767,6 +771,8 @@ spec_kit_memory_memory_ingest_start({
 |-----------|------|----------|-------------|
 | `paths` | string[] | Yes | Absolute file paths (min 1, max 50) |
 | `specFolder` | string | No | Spec folder label for the job |
+
+**SCOPE:** Ingest paths should be within the repository root or known spec directories. Reject paths outside the workspace. Individual files should not exceed 100KB to prevent resource exhaustion.
 
 Returns a `jobId` immediately. Use `ingest status <jobId>` to check progress.
 

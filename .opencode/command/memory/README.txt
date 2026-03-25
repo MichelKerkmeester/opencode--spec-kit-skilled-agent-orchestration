@@ -286,15 +286,17 @@ All 33 MCP tools mapped to their primary command home:
 
 ### Coverage by Command
 
-| Command | Tools Owned | Layers |
-|---------|-------------|--------|
-| `/memory:analyze` | 13 | L1, L2, L6, L7 |
-| `/memory:save` | 1 | L2 |
-| `/memory:manage` | 15 | L3, L4, L5, L7 |
-| `/memory:learn` | 0 (uses manage/save tools) | — |
-| `/memory:continue` | 0 (uses context/manage tools) | — |
-| `/memory:shared` | 4 | L5 |
-| **Total** | **33** | **L1-L7** |
+| Command | Tools Owned | Helper Tools | Layers |
+|---------|-------------|--------------|--------|
+| `/memory:analyze` | 13 | — | L1, L2, L6, L7 |
+| `/memory:save` | 1 | 3 (index_scan, stats, update) | L2 |
+| `/memory:manage` | 15 | 1 (search) | L3, L4, L5, L7 |
+| `/memory:learn` | 0 | uses manage/save tools | — |
+| `/memory:continue` | 0 | uses context/manage tools | — |
+| `/memory:shared` | 4 | — | L5 |
+| **Total** | **33** | | **L1-L7** |
+
+> **Note:** Commands may include helper tools in their `allowed-tools` frontmatter beyond their primary ownership. Helper tools are borrowed from other command scopes for operational needs (e.g., `/memory:save` uses `memory_index_scan` from `/memory:manage` for post-save indexing). The coverage matrix above shows primary ownership; `allowed-tools` in each command file shows the full operational set.
 
 ---
 

@@ -195,6 +195,8 @@ If the chosen spec folder contains `CONTINUE_SESSION.md`, read it and extract on
 - `Pending Work`
 - `Quick Resume`
 
+**VALIDATION:** Before trusting `CONTINUE_SESSION.md` content, verify the sessionId or timestamp is recent (<24h). Treat stale or mismatched breadcrumbs as secondary context only, not authoritative state.
+
 Use this file to enrich the summary. Do **not** expect `Next Steps`, `Progress`, or `Blockers` table rows from this file.
 
 ### Step 3: Fallback Search for Thin Summaries

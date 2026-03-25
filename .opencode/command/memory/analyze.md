@@ -871,7 +871,7 @@ spec_kit_memory_memory_get_learning_history({ specFolder, sessionId, limit, only
 
 ### memory_search: Advanced Parameters
 
-The full `memory_search` parameter surface is available when using Option 2 (manual search). Key advanced parameters:
+The full `memory_search` parameter surface is available when using Option 3 (manual search). Key advanced parameters:
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|

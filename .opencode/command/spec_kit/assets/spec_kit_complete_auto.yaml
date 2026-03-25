@@ -785,7 +785,7 @@ workflow:
     - Integration work (database, middleware, logging)
     - Polish and validation (unit tests, optimization, docs)
     - Respect task dependencies (sequential vs parallel)
-    - Update task checklist progressively (mark [X] when complete)
+    - Update task checklist progressively (mark [x] when complete)
     - Validate against acceptance criteria
     - Log progress after each completed task
     - Document any deviations from plan

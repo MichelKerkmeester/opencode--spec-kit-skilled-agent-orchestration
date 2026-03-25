@@ -67,8 +67,8 @@ session_detection:
 # CONTEXT LOADING
 # ─────────────────────────────────────────────────────────────────
 context_loading_priority:
-  order: ["handover.md (<24h old)", "CONTINUE_SESSION.md", "checklist.md", "Recent memory/*.md (embedded Project State Snapshot)"]
-  note: "Use handover.md for fast resume, fall through in priority order"
+  order: ["Primary: handover.md (<24h old)", "Primary: Recent memory/*.md (embedded Project State Snapshot)", "Secondary: checklist.md for progress", "Secondary: CONTINUE_SESSION.md for crash recovery"]
+  note: "Prompt around primary sources first; use secondary sources only as fallback context when primary data is unavailable"
 
 memory_loading:
   mode: interactive

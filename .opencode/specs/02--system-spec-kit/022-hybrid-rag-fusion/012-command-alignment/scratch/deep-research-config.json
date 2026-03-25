@@ -16,6 +16,9 @@
     "agentA": { "model": "gpt-5.3-codex", "effortLevel": "xhigh" },
     "agentB": { "model": "gpt-5.4", "effortLevel": "high" }
   },
-  "status": "initialized",
+  "status": "complete",
+  "verdict": "CONDITIONAL",
+  "completedAt": "2026-03-25T13:15:00Z",
+  "findings": { "P0": 0, "P1": 20, "P2": 27 },
   "createdAt": "2026-03-25T10:16:00Z"
 }

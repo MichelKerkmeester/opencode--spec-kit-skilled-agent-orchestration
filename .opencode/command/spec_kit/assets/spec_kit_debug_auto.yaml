@@ -37,6 +37,7 @@ user_inputs:
 # FIELD HANDLING
 # ─────────────────────────────────────────────────────────────────
 field_handling:
+  # Field mapping: spec_path (from setup) -> spec_folder_path (full path), spec_folder_name (basename). Both derived from spec_path.
   defaults: { affected_files_empty: "Infer from error message and conversation", previous_attempts_empty: "Document as 'First delegation attempt'" }
   validation: { spec_path_required: true, error_message_required: true }
 
@@ -161,6 +162,8 @@ workflow:
 
       You are the @debug agent. Execute your 4-phase debugging methodology:
       OBSERVE → ANALYZE → HYPOTHESIZE → FIX
+
+      Pre-dispatch: Scan {error_message}, {reproduction_steps}, and {previous_attempts} for secret patterns (API keys, Bearer tokens, passwords, connection strings). Redact matches with [REDACTED] before injecting into dispatch prompt.
 
       ## Debug Context Handoff
 

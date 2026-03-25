@@ -51,7 +51,7 @@ Each command loads a YAML workflow from `assets/` and executes it step by step. 
 |---------|------------|-------|-------------|
 | **plan** | `/spec_kit:plan <description> [:auto\|:confirm]` | 7 | Create spec folder and plan without implementation |
 | **implement** | `/spec_kit:implement <spec-folder> [:auto\|:confirm]` | 9 | Execute pre-planned work (requires existing plan.md) |
-| **deep-research** | `/spec_kit:deep-research <topic> [:auto\|:confirm]` | iterative | Autonomous deep research loop with convergence detection |
+| **deep-research** | `/spec_kit:deep-research <topic> [:auto\|:confirm\|:review\|:review:auto\|:review:confirm]` | iterative | Autonomous deep research loop with convergence detection |
 | **debug** | `/spec_kit:debug [spec-folder]` | varies | Delegate debugging to a specialized sub-agent |
 | **handover** | `/spec_kit:handover [spec-folder]` | varies | Create session handover document for continuation |
 | **resume** | `/spec_kit:resume [spec-folder] [:auto\|:confirm]` | varies | Resume work on an existing spec folder |
@@ -101,6 +101,8 @@ spec_kit/
     ├── spec_kit_plan_confirm.yaml
     ├── spec_kit_deep-research_auto.yaml
     ├── spec_kit_deep-research_confirm.yaml
+    ├── spec_kit_deep-research_review_auto.yaml
+    ├── spec_kit_deep-research_review_confirm.yaml
     ├── spec_kit_resume_auto.yaml
     └── spec_kit_resume_confirm.yaml
 ```

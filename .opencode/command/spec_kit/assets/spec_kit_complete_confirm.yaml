@@ -4,6 +4,7 @@
 role: Expert Developer using Smart SpecKit with user confirmation
 purpose: Spec-driven development with mandatory compliance and step-by-step approval
 action: Run full SpecKit from spec to implementation with user checkpoints
+# NOTE: Confirm variant adds approval gates but maintains the same step output contract as auto. Minor output field differences (e.g., location, alignment_check) should be normalized when both variants are expected to produce identical downstream data.
 
 # ─────────────────────────────────────────────────────────────────
 # OPERATING MODE
@@ -861,7 +862,7 @@ workflow:
     - Follow TDD approach where applicable
     - Core development (models, services, endpoints)
     - Integration work (database, middleware, logging)
-    - Update task checklist progressively (mark [X])
+    - Update task checklist progressively (mark [x])
     - Log progress after each task
     approach: incremental_implementation_with_reviews
     requirements:

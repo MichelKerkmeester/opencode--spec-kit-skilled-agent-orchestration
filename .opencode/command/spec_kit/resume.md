@@ -34,12 +34,14 @@ This workflow gathers ALL inputs in ONE prompt. Mode defaults to INTERACTIVE unl
 
 ---
 
-## 1. UNIFIED SETUP PHASE
+## 0. UNIFIED SETUP PHASE
+
+**FIRST MESSAGE PROTOCOL**: This prompt MUST be your FIRST response. No implementation or file-modifying tool calls before asking. Lightweight read-only discovery is allowed, then ask ALL questions immediately and wait.
 
 **STATUS: BLOCKED**
 
 ```
-WITHIN YAML EXECUTION, RUN THIS SINGLE CONSOLIDATED PROMPT TEMPLATE:
+EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
 1. CHECK mode suffix:
    ├─ ":auto"    → execution_mode = "AUTONOMOUS"
@@ -73,7 +75,7 @@ WITHIN YAML EXECUTION, RUN THIS SINGLE CONSOLIDATED PROMPT TEMPLATE:
    - Not detected → continuation_detected = FALSE
 
 4b. Check for CONTINUE_SESSION.md crash recovery:
-    - Exists in project root AND modified <24h → crash_recovery_available = TRUE
+    - Exists in spec folder AND modified <24h → crash_recovery_available = TRUE
     - Parse spec folder, Last, Next values (fallback for unexpected termination)
 
 5. Validate artifacts in spec folder:

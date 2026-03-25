@@ -32,7 +32,7 @@ Use `[runtime_agent_path]` based on the active runtime profile:
 
 - Default/Copilot: `.opencode/agent`
 - ChatGPT: `.opencode/agent/chatgpt`
-- Claude: `/.claude/agents`
+- Claude: `.claude/agents/`
 
 # SINGLE CONSOLIDATED PROMPT - ONE USER INTERACTION
 
@@ -40,7 +40,9 @@ This workflow uses a SINGLE consolidated prompt to gather ALL required inputs in
 
 ---
 
-## 1. UNIFIED SETUP PHASE
+## 0. UNIFIED SETUP PHASE
+
+**FIRST MESSAGE PROTOCOL**: This prompt MUST be your FIRST response. No implementation or file-modifying tool calls before asking. Lightweight read-only discovery is allowed, then ask ALL questions immediately and wait.
 
 **STATUS: BLOCKED**
 
@@ -64,6 +66,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    - Scan for: error messages, stack traces, affected files, previous attempts
    - Found: store as error_message, affected_files, previous_attempts
    - Not found: include Q1 in prompt
+   - SECURITY: Before including error output in the debug delegation document, redact common secret patterns (API keys, tokens, passwords, connection strings, auth headers). Include only the relevant error message and minimal stack trace context needed for debugging.
 
 5. ASK user (include only applicable questions):
 

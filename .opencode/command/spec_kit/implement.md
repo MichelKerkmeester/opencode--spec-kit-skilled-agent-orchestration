@@ -1,7 +1,7 @@
 ---
 description: Implementation workflow (9 steps) - execute pre-planned work. Requires existing plan.md. Supports :auto and :confirm modes
 argument-hint: "<spec-folder> [:auto|:confirm] [--phase-folder=<path>]"
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory_search, mcp__cocoindex_code__search
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory_search, spec_kit_memory_memory_save, spec_kit_memory_memory_index_scan, mcp__cocoindex_code__search
 ---
 
 > ⚠️ **EXECUTION PROTOCOL — READ FIRST**
@@ -33,6 +33,8 @@ This workflow uses a SINGLE consolidated prompt to gather ALL required inputs in
 ---
 
 ## 0. UNIFIED SETUP PHASE
+
+**FIRST MESSAGE PROTOCOL**: This prompt MUST be your FIRST response. No implementation or file-modifying tool calls before asking. Lightweight read-only discovery is allowed, then ask ALL questions immediately and wait.
 
 **STATUS: BLOCKED**
 
@@ -182,6 +184,8 @@ Missing prerequisites -> guide user to `/spec_kit:plan` first.
 | 8    | Save Context           | Preserve conversation                         | memory/*.md               |
 | 9    | Session Handover Check | Prompt for handover document                  | handover.md (optional)    |
 
+> **Note:** This step validates checklist structure and item presence. Evidence verification occurs after implementation in the completion phase.
+
 ### Code Search During Plan Review (Step 1)
 
 When reviewing plan.md references to codebase patterns, use CocoIndex semantic search (`mcp__cocoindex_code__search`) to verify that referenced code still exists and find related patterns. Use 2-5 word concept queries. Reserve Grep for exact token verification.
@@ -288,8 +292,8 @@ Example: `[E:evidence/test-output.log]` or `[EVIDENCE: hero.js:45-67 verified]`
 Capture epistemic baseline before implementation. Execute after Step 5, before Step 6. Skip for quick fixes (<10 LOC) or continuation with existing PREFLIGHT.
 
 ```
-task_preflight(): specFolder, taskId, knowledgeScore[0-100], uncertaintyScore[0-100],
-                  contextScore[0-100], knowledgeGaps[optional]
+task_preflight(): specFolder, taskId, knowledgeScore[0-10], uncertaintyScore[0-10],
+                  contextScore[0-10], knowledgeGaps[optional]
 ```
 
 Skip: `"skip preflight"`, `"quick fix"` (auto if LOC<10), `"continuation"` (auto if prior exists)
@@ -301,13 +305,13 @@ Skip: `"skip preflight"`, `"quick fix"` (auto if LOC<10), `"continuation"` (auto
 Capture learning delta after implementation. Execute after Step 7, before Step 8. Skip if no PREFLIGHT captured.
 
 ```
-task_postflight(): specFolder, taskId (must match), knowledgeScore[0-100],
-                   uncertaintyScore[0-100], contextScore[0-100],
+task_postflight(): specFolder, taskId (must match), knowledgeScore[0-10],
+                   uncertaintyScore[0-10], contextScore[0-10],
                    gapsClosed[list], newGapsDiscovered[list]
 ```
 
-**Learning Index** = (Knowledge Delta x 0.4) + (Uncertainty Reduction x 0.35) + (Context Improvement x 0.25)
-Interpretation: 40+ significant, 15-40 moderate, 5-15 incremental, <5 execution-focused, negative = regression.
+**Learning Index** = (Knowledge Delta + Uncertainty Reduction + Context Improvement) / 3
+Interpretation: 4+ significant, 1.5-4 moderate, 0.5-1.5 incremental, <0.5 execution-focused, negative = regression.
 
 Reference: `.opencode/skill/system-spec-kit/references/memory/epistemic_vectors.md`
 

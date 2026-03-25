@@ -261,6 +261,8 @@ STATUS=OK ACTION=member SPACE=<spaceId>
 
 Inspects current shared-memory rollout and the spaces accessible to a user or agent.
 
+> SECURITY: When querying with --user or --agent filters, the caller should provide their own actor identity. Status queries without actor binding may expose cross-principal visibility.
+
 ### Parameters
 
 | Parameter | Type | Required | Description |

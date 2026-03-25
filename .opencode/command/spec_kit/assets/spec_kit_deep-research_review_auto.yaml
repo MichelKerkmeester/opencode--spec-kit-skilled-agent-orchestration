@@ -68,7 +68,7 @@ skill_reference:
 agent_config:
   agent: deep-review
   agent_file: ".claude/agents/deep-review.md"
-  # Claude runtime; other runtimes resolve own agent directory
+  # Runtime-agnostic: resolve agent from active runtime directory (see AGENTS.md). Default shown is Claude runtime.
   mode: subagent
   model: opus
   leaf_only: true
@@ -191,6 +191,7 @@ workflow:
           mode: "review"
           reviewTarget: "{review_target}"
           reviewTargetType: "{review_target_type}"
+          # Normalize to JSON array before writing (expand "all" to ["correctness","security","traceability","maintainability"]).
           reviewDimensions: "{review_dimensions}"
           reviewScopeFiles: "{review_scope_files}"
           severityThreshold: "P2"
@@ -283,7 +284,7 @@ workflow:
         algorithm: |
           1. HARD STOPS:
              a) if iteration_count >= max_iterations: STOP (max_iterations_reached)
-             b) if all dimensions clean AND required traceability protocols are covered AND p0_count == 0 AND p1_count == 0 AND coverage_age >= 1: STOP (all_dimensions_clean)
+             b) if all dimensions clean AND required traceability protocols are covered AND p0_count == 0 AND p1_count == 0 AND coverage_age >= 1 AND all quality gates pass (evidence: every P0/P1 has file:line; scope: all findings within target; coverage: all dimensions reviewed): STOP (all_dimensions_clean)
           2. STUCK DETECTION (threshold 2):
              if stuck_count >= 2: STUCK_RECOVERY
           3. COMPOSITE CONVERGENCE (3-signal weighted vote with split thresholds):
@@ -300,10 +301,11 @@ workflow:
                Redistribute weights for unavailable signals.
                if latest ratio <= 0.05: mark no_progress_threshold_reached
                if weighted_stop_score >= 0.60: check binary gates
-          4. QUALITY GUARDS (3 binary checks — ALL must pass to allow STOP):
+          4. QUALITY GUARDS (4 binary checks — ALL must pass to allow STOP):
                a) Evidence: Every active finding has concrete file:line evidence and no active P0/P1 relies only on inference
                b) Scope: All findings stay within declared review scope and target boundaries
                c) Coverage: Configured dimensions and required traceability protocols covered, with coverage_age >= 1
+               d) Claim adjudication: claim_adjudication_passed != false (STOP is blocked while claim_adjudication_passed == false)
              if not all guards passed:
                log: "Quality guard failed: {violations}. Overriding STOP to CONTINUE."
                decision = "CONTINUE"
@@ -396,7 +398,7 @@ workflow:
           - traceability_checks: "From latest JSONL iteration record when present"
         on_missing_outputs:
           action: "Mark iteration as 'error', continue to next"
-          append_jsonl: '{"type":"iteration","run":{N},"mode":"review","status":"error","focus":"{next_dimension}","dimensions":["{next_dimension}"],"filesReviewed":[],"findingsCount":0,"findingsSummary":{"P0":0,"P1":0,"P2":0},"findingsNew":{"P0":0,"P1":0,"P2":0},"traceabilityChecks":{"summary":{"required":0,"executed":0,"pass":0,"partial":0,"fail":0,"blocked":0,"notApplicable":0,"gatingFailures":0},"results":[]},"newFindingsRatio":0.0,"timestamp":"{ISO_8601_NOW}"}'
+          append_jsonl: '{"type":"iteration","run":{current_iteration},"mode":"review","status":"error","focus":"{next_dimension}","dimensions":["{next_dimension}"],"filesReviewed":[],"findingsCount":0,"findingsSummary":{"P0":0,"P1":0,"P2":0},"findingsNew":{"P0":0,"P1":0,"P2":0},"traceabilityChecks":{"summary":{"required":0,"executed":0,"pass":0,"partial":0,"fail":0,"blocked":0,"notApplicable":0,"gatingFailures":0},"results":[]},"newFindingsRatio":0.0,"timestamp":"{ISO_8601_NOW}"}'
 
       step_post_iteration_claim_adjudication:
         action: "Validate typed claim-adjudication packets for any new P0/P1 findings"
@@ -405,7 +407,9 @@ workflow:
           - packet_fields: "Each packet includes claim, evidenceRefs, counterevidenceSought, alternativeExplanation, finalSeverity, confidence, downgradeTrigger"
         on_fail:
           action: "Mark the iteration as invalid for convergence and require rewrite before STOP is permitted"
-          log: "Claim adjudication incomplete for new P0/P1 findings. Continue loop until packets are present."
+          set:
+            claim_adjudication_passed: false
+          log: "Claim adjudication incomplete for new P0/P1 findings. Continue loop until packets are present. Set claim_adjudication_passed = false. This flag MUST be checked in convergence evaluation — STOP is blocked while claim_adjudication_passed == false."
 
       step_generate_dashboard:
         action: "Generate or refresh the review dashboard"
@@ -574,7 +578,8 @@ workflow:
 
       step_convergence_report:
         action: "Append convergence report to JSONL"
-        append_to_jsonl: '{"type":"event","event":"synthesis_complete","mode":"review","totalIterations":{iteration_count},"activeP0":{active_p0},"activeP1":{active_p1},"activeP2":{active_p2},"dimensionCoverage":"{dimension_coverage}","verdict":"{verdict}","stopReason":"{reason}","timestamp":"{ISO_8601_NOW}"}'
+        append_to_jsonl: '{"type":"event","event":"synthesis_complete","mode":"review","totalIterations":{iteration_count},"activeP0":{active_p0},"activeP1":{active_p1},"activeP2":{active_p2},"dimensionCoverage":{dimension_coverage},"verdict":"{verdict}","stopReason":"{reason}","timestamp":"{ISO_8601_NOW}"}'
+        note: "Emit as numeric ratio (e.g., 0.75), not quoted string. Compute: dimensions_covered / total_dimensions."
 
       step_update_config_status:
         action: "Mark config as complete"

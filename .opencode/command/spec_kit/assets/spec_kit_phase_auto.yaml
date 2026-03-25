@@ -220,7 +220,7 @@ workflow:
       - Preserve dependency mappings
       - Index memory file
     tool_invocation:
-      command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {parent_spec_path}"
+      command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {parent_folder}"
       note: "ALWAYS use generate-context.js script - NEVER manually create memory files"
     outputs: { memory_file: path }
     validation: context_saved

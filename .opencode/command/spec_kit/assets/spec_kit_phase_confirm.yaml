@@ -278,14 +278,14 @@ workflow:
       - Preserve dependency mappings
       - Index memory file
     tool_invocation:
-      command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {parent_spec_path}"
+      command: "node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {parent_folder}"
       note: "ALWAYS use generate-context.js script - NEVER manually create memory files"
     outputs: { memory_file: path }
     validation: context_saved
     checkpoint:
       question: "Step 6 Complete: Context saved. Proceed to next steps?"
       options:
-        - { label: "Done", description: "Complete the phase workflow" }
+        - { label: "Continue to validation", description: "Proceed to recursive validation in Step 7" }
         - { label: "View Memory", description: "Show saved context file" }
     anchor_requirements:
       enforcement: MANDATORY

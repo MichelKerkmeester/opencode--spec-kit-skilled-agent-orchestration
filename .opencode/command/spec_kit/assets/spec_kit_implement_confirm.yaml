@@ -458,7 +458,7 @@ workflow:
     - Follow TDD where applicable
     - Core development (models, services, endpoints)
     - Integration (database, middleware, logging)
-    - Update task checklist progressively (mark [X])
+    - Update task checklist progressively (mark [x])
     - Log progress after each task
     debug_delegation:
       trigger: "Same error 3+ times after fix attempts"

@@ -66,7 +66,7 @@ skill_reference:
 agent_config:
   agent: deep-research
   agent_file: ".claude/agents/deep-research.md"
-  # Claude runtime; other runtimes resolve own agent directory
+  # Runtime-agnostic: resolve agent from active runtime directory (see AGENTS.md). Default shown is Claude runtime.
   model: opus
   leaf_only: true
   tools: [Read, Write, Edit, Bash, Grep, Glob, WebFetch, mcp__cocoindex_code__search]
@@ -247,6 +247,7 @@ workflow:
           3. if stuck_count >= config.stuckThreshold: STUCK_RECOVERY
           4. COMPOSITE CONVERGENCE (3-signal weighted vote):
                signals = []
+               Filter: exclude iterations where status == thought from signal inputs (use only evidence iterations)
                a) Rolling average (w=0.30, needs 3+ iterations):
                   avg = mean(last 3 newInfoRatios)
                   stop if avg < convergence_threshold

@@ -301,11 +301,13 @@ Content...
 
 > **Cross-Platform Note:** `${TMPDIR:-/tmp}` uses the system temp directory. On macOS/Linux this resolves to `/tmp` or `$TMPDIR`. On Windows (Git Bash/WSL), use `$TEMP` or `%TEMP%`.
 
-Write JSON to temp file, then execute:
+> SECURITY: When using heredoc or --stdin, ensure JSON content is properly escaped. Prefer --json flag with single-quoted inline JSON or write to /tmp/save-context-data.json via Write tool first (exception to the Write tool exclusion: writing the intermediate JSON data file is permitted).
+
+Write to `/tmp/save-context-data.json` (Write tool exception: intermediate JSON data file only) or use `--json`/`--stdin`, then execute:
 ```bash
 TEMP_FILE="${TMPDIR:-/tmp}/save-context-data.json"
 
-# 1. Write JSON data to temp file (use Write tool or heredoc)
+# 1. Write JSON data to the temp file
 cat > "$TEMP_FILE" << 'EOF'
 { "specFolder": "...", "sessionSummary": "...", ... }
 EOF
@@ -503,6 +505,8 @@ spec_kit_memory_memory_save({
 })
 ```
 
+`memory_update({ id, triggerPhrases })`: Update trigger phrases on an existing memory file. Used by the `[t]` edit triggers action in the post-save review.
+
 ---
 
 ## APPENDIX B: ADVANCED REFERENCE
@@ -540,14 +544,16 @@ When MCP is unavailable or embedding fails, the system uses deferred indexing:
 **Manual Retry:**
 ```javascript
 // Single file
-spec_kit_memory_memory_save({ filePath: "specs/.../memory/context.md", force: true })
+spec_kit_memory_memory_save({ filePath: ".opencode/specs/.../memory/context.md", force: true })
 
 // Single file (non-blocking embedding)
-spec_kit_memory_memory_save({ filePath: "specs/.../memory/context.md", asyncEmbedding: true })
+spec_kit_memory_memory_save({ filePath: ".opencode/specs/.../memory/context.md", asyncEmbedding: true })
 
 // Entire folder
 spec_kit_memory_memory_index_scan({ specFolder: "011-memory", force: true })
 ```
+
+Note: `filePath` should be specified relative to the repository root (e.g., `.opencode/specs/.../memory/context.md`).
 
 **Recovery Options:**
 
@@ -556,7 +562,7 @@ spec_kit_memory_memory_index_scan({ specFolder: "011-memory", force: true })
 | MCP server unreachable | Restart OpenCode to restart MCP server                                                                                         |
 | Embedding timeout      | Use `memory_index_scan` with smaller batch                                                                                     |
 | Corrupted file         | Read file, verify ANCHOR tags, re-save with corrections                                                                        |
-| Database locked        | Delete `.opencode/skill/system-spec-kit/mcp_server/dist/database/context-index.sqlite` (and `-wal` / `-shm` sidecars), restart |
+| Database locked        | For database recovery, use `/memory:manage health` to diagnose issues and `/memory:manage checkpoint restore` to recover from a known-good state. Avoid manual file deletion. |
 
 #### Full Parameter Reference: memory_save
 
@@ -666,7 +672,7 @@ The `memory_save` tool schema advertises advanced governance parameters for mult
 | `retentionPolicy` | string | Retention class: `keep` (permanent), `ephemeral` (short-lived), `shared` (shared-space lifecycle) |
 | `deleteAfter` | string | Optional ISO timestamp after which retention sweep may delete the memory |
 
-> **Note:** These parameters are present in the tool schema definition but not all are validated in strict mode. They are documented here for future-readiness and to reflect the live tool surface.
+> **Note:** Governance parameters (tenantId, userId, agentId, sharedSpaceId) are validated by the memorySaveSchema when provided. All governance fields must pass schema validation.
 
 #### Async Bulk Ingestion
 

@@ -175,7 +175,7 @@ template: |
 agent_availability:
   handover:
     available_at_step: 3
-    condition: "ONLY dispatch when Step 3 (Create Handover) is actively executing"
+    condition: "ONLY dispatch when the Generate handover.md step is actively executing"
     agent_file: "[runtime_agent_path]/handover.md"
     model: sonnet
     fallback: "general"
@@ -225,6 +225,7 @@ execution:
     - "Document decisions made"
     - "Note blockers and risks"
     - "Generate handover.md using template"
+    - "Pre-write gate: Before writing handover.md, scan the generated content for secret patterns (API keys, Bearer tokens, passwords, connection strings, .env values). Replace any matches with [REDACTED]. This gate is BLOCKING - do not write handover.md until redaction pass completes."
     - "Write file to spec folder"
     - "Return file path and summary"
 

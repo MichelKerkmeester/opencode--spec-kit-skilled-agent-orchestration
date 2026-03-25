@@ -28,7 +28,7 @@ Use `[runtime_agent_path]` based on the active runtime profile:
 
 - Default/Copilot: `.opencode/agent`
 - ChatGPT: `.opencode/agent/chatgpt`
-- Claude: `/.claude/agents`
+- Claude: `.claude/agents/`
 
 # SINGLE CONSOLIDATED PROMPT - ONE USER INTERACTION
 
@@ -36,12 +36,14 @@ This workflow uses a SINGLE consolidated prompt to gather ALL required inputs in
 
 ---
 
-## 1. UNIFIED SETUP PHASE
+## 0. UNIFIED SETUP PHASE
+
+**FIRST MESSAGE PROTOCOL**: This prompt MUST be your FIRST response. No implementation or file-modifying tool calls before asking. Lightweight read-only discovery is allowed, then ask ALL questions immediately and wait.
 
 **STATUS: BLOCKED**
 
 ```
-WITHIN YAML EXECUTION, RUN THIS SINGLE CONSOLIDATED PROMPT TEMPLATE:
+EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
 
 1. CHECK for spec folder in $ARGUMENTS:
    - IF has path -> validate path exists
@@ -207,7 +209,7 @@ Show created file path and continuation instructions.
 
 **Output Location:** `[spec_folder]/handover.md` (NOT in memory/)
 
-> **Crash Recovery:** For emergency scenarios, same format can be saved as `CONTINUE_SESSION.md` in project root. Checked by `/spec_kit:resume` and `/memory:continue`.
+> **Crash Recovery:** For emergency scenarios, same format can be saved as `CONTINUE_SESSION.md` in the spec folder. Checked by `/spec_kit:resume` and `/memory:continue`.
 
 > **MANDATORY:** After creating handover, run:
 > `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder-path]`
