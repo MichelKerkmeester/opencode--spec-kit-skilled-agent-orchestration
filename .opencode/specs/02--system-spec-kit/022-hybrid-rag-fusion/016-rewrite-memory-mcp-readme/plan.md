@@ -23,7 +23,7 @@ description: "Implementation plan for a complete rewrite of the MCP server READM
 
 ### Overview
 
-Complete rewrite of the MCP server README. Research extracts all 32 tools, architecture details, and feature categories from the catalog. Drafting follows the readme template structure. Review validates DQI, HVR, and accuracy.
+Complete rewrite of the MCP server README in **simple-terms voice** modeled after `feature_catalog_in_simple_terms.md`. Two-tier architecture: narrative explanations use analogies and plain language, tool parameter tables stay technical. Research extracts all 33 tools, architecture details, and feature categories from the catalog. Shared memory logic references `SHARED_MEMORY_DATABASE.md`. Drafting follows the readme template 9-section structure. Review validates DQI, HVR, and accuracy.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -37,7 +37,7 @@ Complete rewrite of the MCP server README. Research extracts all 32 tools, archi
 - [x] Dependencies identified (feature catalog, template, tool schemas)
 
 ### Definition of Done
-- [ ] All 32 tools documented with parameters
+- [ ] All 33 tools documented with parameters
 - [ ] DQI >= 75 verified by `validate_document.py`
 - [ ] No banned HVR words
 - [ ] Section structure matches readme template
@@ -53,9 +53,11 @@ Complete rewrite of the MCP server README. Research extracts all 32 tools, archi
 Documentation rewrite — single output file grounded in multiple source files.
 
 ### Key Components
-- **Feature catalog**: Authoritative feature inventory (22 categories, 189 features)
-- **Tool schemas**: Canonical tool definitions (32 tools, L1-L7 layers)
-- **README template**: Section structure and ordering guide
+- **Feature catalog**: Authoritative feature inventory (21 categories, 222 features)
+- **Simple-terms catalog**: Voice and tone reference (`feature_catalog_in_simple_terms.md`)
+- **Tool schemas**: Canonical tool definitions (33 tools, L1-L7 layers)
+- **Shared memory guide**: `SHARED_MEMORY_DATABASE.md` for shared-space documentation
+- **README template**: 9-section structure and ordering guide
 - **sk-doc HVR**: Voice and word-choice rules
 
 ### Data Flow
@@ -77,7 +79,7 @@ feature_catalog.md + tool-schemas.ts → research brief → draft → review →
 
 ### Phase 2: Draft
 - [ ] Write new README from scratch following readme template section order
-- [ ] Document all 32 tools with parameters and layer annotations
+- [ ] Document all 33 tools with parameters and layer annotations
 - [ ] Write newcomer-friendly Overview and Quick Start
 - [ ] Add architecture section covering hybrid search pipeline
 - [ ] Add configuration, troubleshooting, and FAQ sections
@@ -85,7 +87,7 @@ feature_catalog.md + tool-schemas.ts → research brief → draft → review →
 ### Phase 3: Review
 - [ ] DQI scoring via `validate_document.py`
 - [ ] HVR banned-word check
-- [ ] Accuracy: verify all 32 tools present, parameters correct
+- [ ] Accuracy: verify all 33 tools present, parameters correct
 - [ ] Template compliance: section headers match readme template
 - [ ] Cross-reference check: links to sibling docs resolve
 
@@ -104,7 +106,7 @@ feature_catalog.md + tool-schemas.ts → research brief → draft → review →
 |-----------|-------|-------|
 | Quality | DQI score >= 75 | `validate_document.py` |
 | Compliance | No banned HVR words | grep / sk-doc rules |
-| Accuracy | All 32 tools present | Compare against `tool-schemas.ts` |
+| Accuracy | All 33 tools present | Compare against `tool-schemas.ts` |
 | Structure | Section headers match template | Manual comparison |
 | Links | Cross-references resolve | Path existence check |
 <!-- /ANCHOR:testing -->

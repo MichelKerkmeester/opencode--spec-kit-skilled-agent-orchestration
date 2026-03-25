@@ -12,6 +12,8 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "25-03-26_18-12__complete-rewrite-of-mcp-server-readme-from.md"
+  ]
 }

@@ -1,0 +1,62 @@
+{
+  "topic": "Review: Feature catalog alignment with 022-hybrid-rag-fusion reality",
+  "mode": "review",
+  "reviewTarget": "Feature catalog at .opencode/skill/system-spec-kit/feature_catalog/ vs current MCP server implementation and 022-hybrid-rag-fusion spec changes",
+  "reviewTargetType": "files",
+  "reviewDimensions": ["correctness", "security", "traceability", "maintainability"],
+  "reviewScopeFiles": {
+    "featureCatalog": {
+      "masterIndex": ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md",
+      "simpleIndex": ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md",
+      "categories": [
+        "01--retrieval", "02--mutation", "03--discovery", "04--maintenance",
+        "05--lifecycle", "06--analysis", "07--evaluation",
+        "08--bug-fixes-and-data-integrity", "09--evaluation-and-measurement",
+        "10--graph-signal-activation", "11--scoring-and-calibration",
+        "12--query-intelligence", "13--memory-quality-and-indexing",
+        "14--pipeline-architecture", "15--retrieval-enhancements",
+        "16--tooling-and-scripts", "17--governance", "18--ux-hooks",
+        "19--feature-flag-reference", "20--remediation-revalidation",
+        "21--implement-and-remove-deprecated-features"
+      ],
+      "totalFiles": 224
+    },
+    "specFolders": {
+      "parent": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/",
+      "children": ["001", "002", "003", "004", "005", "006", "007", "008", "009", "010", "011", "012", "013", "014", "015", "016", "017", "018", "019"],
+      "totalChildren": 19
+    },
+    "implementation": {
+      "mcpServer": ".opencode/skill/system-spec-kit/shared/mcp_server/",
+      "scripts": ".opencode/skill/system-spec-kit/scripts/"
+    }
+  },
+  "severityThreshold": "P2",
+  "crossReference": {
+    "core": ["spec_code", "checklist_evidence"],
+    "overlay": ["feature_catalog_code"]
+  },
+  "maxIterations": 10,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "maxDurationMinutes": 120,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "specFolder": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog",
+  "createdAt": "2026-03-25T17:15:00Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "agentStrategy": {
+    "maxParallelAgents": 15,
+    "agentType": "cli-copilot GPT 5.4 high (fallback: cli-codex)",
+    "categoryPartitioning": true
+  },
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-review-strategy.md": "mutable",
+    "deep-review-dashboard.md": "auto-generated",
+    "review-report.md": "mutable",
+    "iteration-*.md": "write-once"
+  }
+}

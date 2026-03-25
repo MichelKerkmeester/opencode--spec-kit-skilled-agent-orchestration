@@ -1,0 +1,1 @@
+{"type":"config","mode":"review","reviewTarget":"Feature catalog vs 022-hybrid-rag-fusion reality","reviewTargetType":"files","reviewDimensions":["correctness","security","traceability","maintainability"],"maxIterations":10,"convergenceThreshold":0.10,"createdAt":"2026-03-25T17:15:00Z","specFolder":".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog"}
