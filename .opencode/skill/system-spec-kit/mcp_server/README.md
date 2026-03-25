@@ -235,15 +235,18 @@ mcp_server/
 
 Tools are organized into layers based on what they do. Lower layers handle everyday operations. Higher layers handle specialized tasks.
 
-| Layer | Name | Tools | Purpose |
-|-------|------|-------|---------|
-| L1 | Orchestration | 1 | Smart entry point that figures out what you need |
-| L2 | Core | 4 | The main search and save operations |
-| L3 | Discovery | 3 | Browse what is stored, check system health |
-| L4 | Mutation | 4 | Update, delete, validate and bulk cleanup |
-| L5 | Lifecycle | 8 | Checkpoints, shared spaces and enable/disable |
-| L6 | Analysis | 8 | Trace decisions, measure learning, run evaluations |
-| L7 | Maintenance | 5 | Re-index files, review history, run bulk imports |
+| Layer | Name | Tools | Token Budget | Purpose |
+|-------|------|-------|-------------|---------|
+| L1 | Orchestration | 1 | 2,000 | Smart entry point that figures out what you need |
+| L2 | Core | 4 | 1,500 | The main search and save operations |
+| L3 | Discovery | 3 | 800 | Browse what is stored, check system health |
+| L4 | Mutation | 4 | 500 | Update, delete, validate and bulk cleanup |
+| L5 | Lifecycle | 8 | 600 | Checkpoints, shared spaces and enable/disable |
+| L6 | Analysis | 8 | 1,200 | Trace decisions, measure learning, run evaluations |
+| L7 | Maintenance | 5 | 1,000 | Re-index files, review history, run bulk imports |
+| | **Total** | **33** | **7,600** | |
+
+Token budgets control how much content each tool can return per call. The budget prevents any single tool from flooding the AI's context window. When a response exceeds its budget, results are truncated from the bottom up until they fit.
 
 <!-- /ANCHOR:structure -->
 

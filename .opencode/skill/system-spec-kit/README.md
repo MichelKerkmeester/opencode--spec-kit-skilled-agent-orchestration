@@ -57,7 +57,7 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 
 | Category | Count | Details |
 |----------|-------|---------|
-| **MCP Tools** | 33 | Across 7 layers (L1-L7) |
+| **MCP Tools** | 33 | Across 7 layers (L1-L7), 7,600 total token budget |
 | **Commands** | 14 | 8 spec_kit + 6 memory |
 | **Documentation Levels** | 4 | Levels 1, 2, 3, 3+ |
 | **Feature Catalog Entries** | 222 | Across 21 categories |
