@@ -26,8 +26,8 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 8 |
-| **Predecessor** | 006-description-enrichment |
-| **Successor** | 007-phase-classification, 009-embedding-optimization |
+| **Predecessor** | [006-description-enrichment](../006-description-enrichment/spec.md) |
+| **Successor** | [007-phase-classification](../007-phase-classification/spec.md), [009-embedding-optimization](../009-embedding-optimization/spec.md) |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-08 |
 | **Sequence** | B1 |

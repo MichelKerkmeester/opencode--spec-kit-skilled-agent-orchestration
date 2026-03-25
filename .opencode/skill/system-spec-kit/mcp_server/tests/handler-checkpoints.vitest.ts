@@ -9,7 +9,7 @@ import * as bm25IndexMod from '../lib/search/bm25-index';
 import * as triggerMatcherMod from '../lib/parsing/trigger-matcher';
 import * as checkpointStorageMod from '../lib/storage/checkpoints';
 import * as core from '../core';
-import type { CheckpointInfo, RestoreResult } from '../lib/storage/checkpoints';
+import type { CheckpointEntry, CheckpointInfo, RestoreResult } from '../lib/storage/checkpoints';
 
 // Track which optional modules loaded
 const vectorIndexAvailable = false;
@@ -154,6 +154,45 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
         spy.mockRestore();
       }
     });
+
+    it('T521-C7: Explicit scope is merged into checkpoint metadata on create', async () => {
+      const spy = vi.spyOn(checkpointStorageMod, 'createCheckpoint').mockReturnValue({
+        id: 8,
+        name: 'scoped-checkpoint',
+        specFolder: 'specs/example',
+        createdAt: '2026-03-25T12:00:00.000Z',
+        gitBranch: null,
+        snapshotSize: 123,
+        metadata: {
+          reason: 'scope-test',
+          userId: 'user-1',
+          agentId: 'agent-1',
+          sharedSpaceId: 'space-1',
+        },
+      });
+      try {
+        await handler.handleCheckpointCreate({
+          name: 'scoped-checkpoint',
+          specFolder: 'specs/example',
+          metadata: { reason: 'scope-test' },
+          userId: 'user-1',
+          agentId: 'agent-1',
+          sharedSpaceId: 'space-1',
+        });
+        expect(spy).toHaveBeenCalledWith({
+          name: 'scoped-checkpoint',
+          specFolder: 'specs/example',
+          metadata: {
+            reason: 'scope-test',
+            userId: 'user-1',
+            agentId: 'agent-1',
+            sharedSpaceId: 'space-1',
+          },
+        });
+      } finally {
+        spy.mockRestore();
+      }
+    });
   });
 
   // ───────────────────────────────────────────────────────────────
@@ -194,6 +233,42 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
         expect(listSpy).toHaveBeenNthCalledWith(1, null, 50);
         expect(listSpy).toHaveBeenNthCalledWith(2, null, 50);
         expect(listSpy).toHaveBeenNthCalledWith(3, null, 100);
+      } finally {
+        listSpy.mockRestore();
+      }
+    });
+
+    it('T521-L4: Optional scope filters checkpoint list results by metadata', async () => {
+      const listSpy = vi.spyOn(checkpointStorageMod, 'listCheckpoints').mockReturnValue([
+        {
+          id: 1,
+          name: 'matching-checkpoint',
+          specFolder: 'specs/example',
+          createdAt: '2026-03-25T12:00:00.000Z',
+          gitBranch: null,
+          snapshotSize: 50,
+          metadata: { userId: 'user-1', sharedSpaceId: 'space-1' },
+        },
+        {
+          id: 2,
+          name: 'other-checkpoint',
+          specFolder: 'specs/example',
+          createdAt: '2026-03-25T12:01:00.000Z',
+          gitBranch: null,
+          snapshotSize: 50,
+          metadata: { userId: 'user-2', sharedSpaceId: 'space-1' },
+        },
+      ]);
+      try {
+        const result = await handler.handleCheckpointList({
+          userId: 'user-1',
+          sharedSpaceId: 'space-1',
+        });
+        const parsed = JSON.parse(result.content[0].text);
+        expect(parsed.data?.count).toBe(1);
+        expect(parsed.data?.checkpoints).toHaveLength(1);
+        expect(parsed.data?.checkpoints[0]?.name).toBe('matching-checkpoint');
+        expect(listSpy).toHaveBeenCalledWith(null, 50);
       } finally {
         listSpy.mockRestore();
       }
@@ -262,6 +337,33 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
         expect(parsed.summary).toMatch(/with warnings/i);
       } finally {
         spy.mockRestore();
+      }
+    });
+
+    it('T521-R6: Scope mismatch blocks restore before storage mutation', async () => {
+      const getSpy = vi.spyOn(checkpointStorageMod, 'getCheckpoint').mockReturnValue({
+        id: 1,
+        name: 'scoped-restore',
+        created_at: '2026-03-25T12:00:00.000Z',
+        spec_folder: 'specs/example',
+        git_branch: null,
+        memory_snapshot: Buffer.from(''),
+        file_snapshot: null,
+        metadata: JSON.stringify({ userId: 'user-2' }),
+      } satisfies CheckpointEntry);
+      const restoreSpy = vi.spyOn(checkpointStorageMod, 'restoreCheckpoint');
+      try {
+        const result = await handler.handleCheckpointRestore({
+          name: 'scoped-restore',
+          userId: 'user-1',
+        });
+        expect(result.isError).toBe(true);
+        const parsed = JSON.parse(result.content[0].text);
+        expect(parsed.data?.code).toBe('CHECKPOINT_SCOPE_MISMATCH');
+        expect(restoreSpy).not.toHaveBeenCalled();
+      } finally {
+        getSpy.mockRestore();
+        restoreSpy.mockRestore();
       }
     });
   });
@@ -333,6 +435,34 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
         expect(parsed.data?.deletedAt).toBeUndefined();
       } finally {
         spy.mockRestore();
+      }
+    });
+
+    it('T521-DEL7: Scope mismatch blocks delete before storage mutation', async () => {
+      const getSpy = vi.spyOn(checkpointStorageMod, 'getCheckpoint').mockReturnValue({
+        id: 2,
+        name: 'scoped-delete',
+        created_at: '2026-03-25T12:00:00.000Z',
+        spec_folder: 'specs/example',
+        git_branch: null,
+        memory_snapshot: Buffer.from(''),
+        file_snapshot: null,
+        metadata: JSON.stringify({ sharedSpaceId: 'space-2' }),
+      } satisfies CheckpointEntry);
+      const deleteSpy = vi.spyOn(checkpointStorageMod, 'deleteCheckpoint');
+      try {
+        const result = await handler.handleCheckpointDelete({
+          name: 'scoped-delete',
+          confirmName: 'scoped-delete',
+          sharedSpaceId: 'space-1',
+        });
+        expect(result.isError).toBe(true);
+        const parsed = JSON.parse(result.content[0].text);
+        expect(parsed.data?.code).toBe('CHECKPOINT_SCOPE_MISMATCH');
+        expect(deleteSpy).not.toHaveBeenCalled();
+      } finally {
+        getSpy.mockRestore();
+        deleteSpy.mockRestore();
       }
     });
   });

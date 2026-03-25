@@ -10,7 +10,7 @@ contextType: "general"
 ---
 # Implementation Summary: Code Audit — Governance
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
@@ -21,9 +21,9 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 007-code-audit-per-feature-catalog/017-governance |
+| **Spec Folder** | 017-governance |
 | **Completed** | 2026-03-22 |
-| **Level** | 3 |
+| **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
 ---

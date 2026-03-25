@@ -221,24 +221,36 @@ export interface SharedMemoryStatusArgs {
 export interface CheckpointCreateArgs {
   name: string;
   specFolder?: string;
+  userId?: string;
+  agentId?: string;
+  sharedSpaceId?: string;
   metadata?: Record<string, unknown>;
 }
 
 /** Arguments for checkpoint listing requests. */
 export interface CheckpointListArgs {
   specFolder?: string;
+  userId?: string;
+  agentId?: string;
+  sharedSpaceId?: string;
   limit?: number;
 }
 
 /** Arguments for checkpoint restore requests. */
 export interface CheckpointRestoreArgs {
   name: string;
+  userId?: string;
+  agentId?: string;
+  sharedSpaceId?: string;
   clearExisting?: boolean;
 }
 
 /** Arguments for checkpoint deletion requests. */
 export interface CheckpointDeleteArgs {
   name: string;
+  userId?: string;
+  agentId?: string;
+  sharedSpaceId?: string;
   confirmName: string;
 }
 

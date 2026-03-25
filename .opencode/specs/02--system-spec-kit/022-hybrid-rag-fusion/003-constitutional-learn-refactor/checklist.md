@@ -10,7 +10,6 @@ created: 2025-12-01
 updated: 2026-03-14
 ---
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- ANCHOR:checklist -->
 # Verification Checklist: Constitutional Learn Refactor
 
 <!-- ANCHOR:protocol -->
@@ -92,7 +91,7 @@ updated: 2026-03-14
 
 ---
 
-## P0 — Must Pass
+### P0 — Must Pass
 - [x] learn.md rewritten with constitutional focus [EVIDENCE: learn command document is 550 lines, all sections reference constitutional memory management]
 - [x] Old learning types (pattern, mistake, insight, optimization, constraint) removed [EVIDENCE: grep confirms 0 matches except "constraint" in a qualification question (safe context)]
 - [x] Old subcommands (correct, undo, history) removed [EVIDENCE: grep confirms 0 matches]
@@ -107,7 +106,7 @@ updated: 2026-03-14
 - [x] Active stale `/memory:learn` references were remediated across command/workspace/agent surfaces [EVIDENCE: updated in `.opencode/command/README.txt`, `.opencode/command/spec_kit/debug.md`, `.opencode/command/spec_kit/complete.md`, `README.md`, `.opencode/README.md`, `.opencode/agent/speckit.md`, `.opencode/agent/chatgpt/speckit.md`]
 - [x] Regression test added for command/doc alignment drift [EVIDENCE: `.opencode/skill/system-spec-kit/scripts/tests/memory-learn-command-docs.vitest.ts` (2 tests)]
 
-## P1 — Should Pass
+### P1 — Should Pass
 - [x] README.txt updated with new description [EVIDENCE: line 50: learn command, lines 68-74: subcommands table, lines 116-122: examples]
 - [x] CLAUDE.md Quick Reference updated [EVIDENCE: line 53: constitutional memory workflow]
 - [x] system-spec-kit README.md updated [EVIDENCE: line 542: constitutional memory manager description]
@@ -116,4 +115,3 @@ updated: 2026-03-14
 - [x] Feature catalog documentation added for this command refactor [EVIDENCE: `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md` and `../../../../skill/system-spec-kit/feature_catalog/feature_catalog.md` section "Constitutional memory manager command"]
 - [x] Manual testing coverage added for this command refactor [EVIDENCE: `../../../../skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md` includes NEW-147 and cross-reference mapping to feature catalog]
 - [x] Verification command evidence captured [EVIDENCE: `npm run typecheck` PASS in `.opencode/skill/system-spec-kit`; vitest doc regression PASS 2/2; targeted MCP suite PASS 581/581]
-<!-- /ANCHOR:checklist -->

@@ -22,7 +22,7 @@ The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 his
 
 ---
 
-## CURRENT-STATE ADDENDUM (2026-03-16)
+**Current-State Addendum (2026-03-16)**
 
 - Historical snapshot remains unchanged: 2026-03-08 audit verified 180 snippets and produced the 202-item remediation base.
 - Current tree now contains 189 snippets (net +9 versus snapshot baseline after taxonomy/category drift and post-snapshot additions).
@@ -31,7 +31,7 @@ The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 his
   - 2 require follow-up (`.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md`, `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md`) for source-path normalization/correction.
 - Tooling narrative is clarified as planned-vs-executed: some plan text says Copilot for Stream 1, but execution artifacts are Codex-based.
 
-## NORMALIZATION ADDENDUM (2026-03-21)
+**Normalization Addendum (2026-03-21)**
 
 - **Feature catalog**: 194 snippet files (net +5 since 2026-03-16 addendum). Two new entries added for phases 016/017.
 - **Manual testing playbook**: 200 scenario files. Two new entries added (153, 154) for phases 016/017.
@@ -42,7 +42,7 @@ The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 his
 - New playbook entries: 153-json-mode-hybrid-enrichment, 154-json-primary-deprecation-posture.
 - Both index files updated with new entries and cross-reference table rows.
 
-## CURRENT-STATE NOTE (2026-03-23)
+**Current-State Note (2026-03-23)**
 
 - Live filesystem count now reports **224** feature catalog snippet files under `.opencode/skill/system-spec-kit/feature_catalog/`.
 - Live filesystem count now reports **233** manual testing playbook scenario files under `.opencode/skill/system-spec-kit/manual_testing_playbook/`.
@@ -66,16 +66,19 @@ The Spec Kit Memory MCP server's feature catalog had a verified **2026-03-08 his
 ---
 
 ## 2. PROBLEM & PURPOSE
+<!-- ANCHOR:problem -->
 
 ### Problem Statement
 As-of 2026-03-08, the historical audit baseline covered 180 features and found 55 genuine undocumented gaps (17 high, 25 medium, 13 low significance). As-of 2026-03-16, the live tree has 189 snippets and includes 14 current entries that were outside the executed March 8 ranges. Without explicit addendum accounting, completeness claims become ambiguous.
 
 ### Purpose
 Preserve the March 8 snapshot as historical record while extending documentation with an explicit March 16 current-state addendum that tracks live-tree drift, omitted-snippet classification, and follow-up remediation priorities.
+<!-- /ANCHOR:problem -->
 
 ---
 
 ## 3. SCOPE
+<!-- ANCHOR:scope -->
 
 ### In Scope
 - Preserve and reference the 2026-03-08 180-feature historical snapshot
@@ -105,10 +108,12 @@ Preserve the March 8 snapshot as historical record while extending documentation
 | `006-feature-catalog/scratch/investigation-X*.md` | Create | 10 agent outputs |
 | `scratch/remediation-manifest.md` | Create | Synthesis output |
 | `scratch/analysis-summary.md` | Create | Statistics |
+<!-- /ANCHOR:scope -->
 
 ---
 
 ## 4. REQUIREMENTS
+<!-- ANCHOR:requirements -->
 
 ### P0 - Blockers (MUST complete)
 
@@ -127,20 +132,24 @@ Preserve the March 8 snapshot as historical record while extending documentation
 | REQ-006 | Cross-validation between verification and gap streams | Overlapping findings reconciled |
 | REQ-007 | Analysis summary with aggregate statistics | Category-level pass/fail counts |
 | REQ-008 | 2026-03-16 omitted-snippet addendum | All 14 omitted snippets explicitly listed and classified with evidence |
+<!-- /ANCHOR:requirements -->
 
 ---
 
 ## 5. SUCCESS CRITERIA
+<!-- ANCHOR:success-criteria -->
 
 - **SC-001**: All 180 historical-snapshot snippets (2026-03-08) have been read and verified against source code
 - **SC-002**: All 55 gaps have a confirmed status (gap/false-positive) with evidence
 - **SC-003**: Remediation manifest exists with zero unclassified findings
 - **SC-004**: All file paths in existing snippets resolve to real files on disk
 - **SC-005**: All 14 omitted current snippets (2026-03-16 addendum) are explicitly classified with remediation status
+<!-- /ANCHOR:success-criteria -->
 
 ---
 
 ## 6. RISKS & DEPENDENCIES
+<!-- ANCHOR:risks -->
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
@@ -148,6 +157,7 @@ Preserve the March 8 snapshot as historical record while extending documentation
 | Risk | Agent rate limiting (30 concurrent) | Partial results | Stagger launches 3-5s apart |
 | Risk | Source files moved since last annotation | False invalid paths | Agents report both invalid and new paths |
 | Risk | Context window overflow in agents | Incomplete verification | Partition into manageable chunks per agent |
+<!-- /ANCHOR:risks -->
 
 ---
 
@@ -240,8 +250,10 @@ Preserve the March 8 snapshot as historical record while extending documentation
 ---
 
 ## 12. OPEN QUESTIONS
+<!-- ANCHOR:questions -->
 
 - None currently. Historical (2026-03-08) and addendum (2026-03-16) boundaries are now explicit.
+<!-- /ANCHOR:questions -->
 
 ---
 
@@ -255,7 +267,7 @@ Preserve the March 8 snapshot as historical record while extending documentation
 
 ---
 
-## Merged Section: 016-feature-catalog-code-references
+**Merged Section: 016-feature-catalog-code-references**
 
 > **Merge note (2026-03-14)**: The content below was originally in the 016 spec document (Level 2, Complete). It documents the code-to-catalog traceability work that is a direct downstream remediation action from 011's audit findings. The 016 spec folder has been absorbed into 011 to reduce folder count.
 
@@ -265,8 +277,7 @@ Preserve the March 8 snapshot as historical record while extending documentation
 
 ---
 
-<!-- ANCHOR:metadata -->
-## 1. METADATA
+### Metadata
 
 | Field | Value |
 |-------|-------|
@@ -278,12 +289,10 @@ Preserve the March 8 snapshot as historical record while extending documentation
 | **Parent Spec** | `022-hybrid-rag-fusion` |
 | **Previous Phase** | `008-hydra-db-based-features` |
 | **Next Phase** | TBD |
-<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:problem -->
-## 2. PROBLEM & PURPOSE
+### Problem & Purpose
 
 ### Problem Statement
 The MCP server codebase contains inline comments that reference old spec folder numbers (e.g., "Sprint 8", "Phase 017", "spec 013") and sprint identifiers. These references become stale as the project evolves and folder names change. Meanwhile, the feature catalog provides a stable, name-based inventory of every implemented behavior, but the code itself does not link back to it.
@@ -309,12 +318,10 @@ All feature catalog references in code MUST use the feature name only, never fol
 - `// Sprint 8: added score normalization` (references sprint)
 - `// Phase 017: removed legacy pipeline` (references phase number)
 - `// Spec 013: code audit fix` (references spec folder number)
-<!-- /ANCHOR:problem -->
 
 ---
 
-<!-- ANCHOR:scope -->
-## 3. SCOPE
+### Scope
 
 ### In Scope
 - All TypeScript source files under `mcp_server/` (handlers, lib, shared, scripts)
@@ -346,12 +353,10 @@ Analysis required to build the full file list. The scope covers all `.ts` files 
 | `mcp_server/lib/` | ~60 | Core library modules |
 | `mcp_server/scripts/` | ~15 | Build and utility scripts |
 | `shared/` | ~10 | Shared algorithms and types |
-<!-- /ANCHOR:scope -->
 
 ---
 
-<!-- ANCHOR:requirements -->
-## 4. REQUIREMENTS
+### Requirements
 
 ### P0 - Blockers (MUST complete)
 
@@ -370,12 +375,10 @@ Analysis required to build the full file list. The scope covers all `.ts` files 
 | REQ-006 | Add feature catalog references to shared algorithm modules | [x] Shared scoring, fusion and pipeline modules reference their feature catalog entries |
 | REQ-007 | Preserve all existing general-purpose code comments | [x] No non-reference comments are removed or altered |
 | REQ-008 | Comments are concise (single line where possible) | [x] References follow the `// Feature catalog: <name>` convention |
-<!-- /ANCHOR:requirements -->
 
 ---
 
-<!-- ANCHOR:success-criteria -->
-## 5. SUCCESS CRITERIA
+### Success Criteria
 
 - [x] **SC-001**: Zero inline comments reference specific spec folder numbers, sprint numbers or phase numbers in source `.ts` files
 - [x] **SC-002**: All handler files have feature catalog name references
@@ -390,12 +393,10 @@ Analysis required to build the full file list. The scope covers all `.ts` files 
 2. **Given** any handler file, **When** opened by a developer, **Then** a feature catalog reference identifies which feature the handler implements.
 3. **Given** the feature catalog, **When** a reader looks up a feature by name, **Then** they can grep the codebase for that name and find the implementing code.
 4. **Given** all `// Feature catalog:` references in scope, **When** validated against feature catalog H1 headings, **Then** zero invalid feature names are found.
-<!-- /ANCHOR:success-criteria -->
 
 ---
 
-<!-- ANCHOR:risks -->
-## 6. RISKS & DEPENDENCIES
+### Risks & Dependencies
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
@@ -403,12 +404,10 @@ Analysis required to build the full file list. The scope covers all `.ts` files 
 | Risk | Stale sprint references embedded in string literals (not comments) | Could accidentally change runtime output | Only modify comment lines, never string content |
 | Risk | Feature names that are ambiguous or too long for inline comments | Comments become unwieldy | Use the shortest unambiguous feature name from the catalog heading |
 | Risk | Folder renumbering invalidates number-based references | Stale references mislead future developers | Name-only convention prevents this by design |
-<!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:nfr -->
-## L2: NON-FUNCTIONAL REQUIREMENTS
+### Non-Functional Requirements
 
 ### Performance
 - N/A. Comment-only changes have zero runtime impact.
@@ -418,12 +417,10 @@ Analysis required to build the full file list. The scope covers all `.ts` files 
 
 ### Reliability
 - N/A. No behavioral changes.
-<!-- /ANCHOR:nfr -->
 
 ---
 
-<!-- ANCHOR:edge-cases -->
-## L2: EDGE CASES
+### Edge Cases
 
 ### Data Boundaries
 - Files implementing multiple features get multiple `// Feature catalog:` references.
@@ -434,12 +431,10 @@ Analysis required to build the full file list. The scope covers all `.ts` files 
 
 ### State Transitions
 - N/A. Comment-only changes.
-<!-- /ANCHOR:edge-cases -->
 
 ---
 
-<!-- ANCHOR:complexity -->
-## L2: COMPLEXITY ASSESSMENT
+### Complexity Assessment
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
@@ -447,19 +442,16 @@ Analysis required to build the full file list. The scope covers all `.ts` files 
 | Risk | 8/25 | Low risk since changes are comment-only with no behavioral impact |
 | Research | 14/20 | Requires mapping every source file to its feature catalog entry |
 | **Total** | **40/70** | **Level 2** |
-<!-- /ANCHOR:complexity -->
 
 ---
 
-<!-- ANCHOR:questions -->
-## 10. OPEN QUESTIONS
+### Open Questions
 
 - None.
-<!-- /ANCHOR:questions -->
 
 ---
 
-## Phase Navigation
+**Phase Navigation**
 
 | Field | Value |
 |-------|-------|

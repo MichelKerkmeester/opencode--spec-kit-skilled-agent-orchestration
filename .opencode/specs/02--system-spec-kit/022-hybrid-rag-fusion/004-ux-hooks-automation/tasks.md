@@ -73,8 +73,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Review-Driven Fixes
+### Review-Driven Fixes
 
 - [x] T021 [P] Apply M1+M2: Add `sanitizeErrorForHint()` and `redactPath()` in `memory-crud-health.ts`; sanitize 4 hint call sites and redact 3 path exposures. Add Windows path regex per review P1 finding. Sanitize `repair.errors` per review P1 finding. (`handlers/memory-crud-health.ts`)
 - [x] T022 [P] Apply M3: Wrap `toolCache.invalidateOnWrite()` in try/catch in `mutation-hooks.ts`; wrap file-watcher `runPostMutationHooks` in try/catch in `context-server.ts` (`handlers/mutation-hooks.ts`, `context-server.ts`)
@@ -87,7 +86,6 @@ contextType: "general"
 - [x] T029 Verify: TypeScript type-check passes (`npx tsc --noEmit` PASS)
 - [x] T030 Verify: 416/416 tests pass across 4 affected test suites
 - [x] T031 Review: 2-agent parallel review confirms no P0 blockers. Score: R1=90/100, R2=98/100. Two P1 findings (Windows path regex, unsanitized repair.errors) fixed immediately.
-<!-- /ANCHOR:phase-4 -->
 
 ---
 

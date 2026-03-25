@@ -277,21 +277,33 @@ const memoryHealthSchema = getSchema({
 const checkpointCreateSchema = getSchema({
   name: z.string().min(1),
   specFolder: optionalPathString(),
+  userId: z.string().min(1).optional(),
+  agentId: z.string().min(1).optional(),
+  sharedSpaceId: z.string().min(1).optional(),
   metadata: z.record(z.string(), z.unknown()).optional(),
 });
 
 const checkpointListSchema = getSchema({
   specFolder: optionalPathString(),
+  userId: z.string().min(1).optional(),
+  agentId: z.string().min(1).optional(),
+  sharedSpaceId: z.string().min(1).optional(),
   limit: positiveIntMax(100).optional(),
 });
 
 const checkpointRestoreSchema = getSchema({
   name: z.string().min(1),
+  userId: z.string().min(1).optional(),
+  agentId: z.string().min(1).optional(),
+  sharedSpaceId: z.string().min(1).optional(),
   clearExisting: z.boolean().optional(),
 });
 
 const checkpointDeleteSchema = getSchema({
   name: z.string().min(1),
+  userId: z.string().min(1).optional(),
+  agentId: z.string().min(1).optional(),
+  sharedSpaceId: z.string().min(1).optional(),
   confirmName: z.string().min(1),
 });
 
@@ -494,10 +506,10 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_update: ['id', 'title', 'triggerPhrases', 'importanceWeight', 'importanceTier', 'allowPartialUpdate'],
   memory_validate: ['id', 'wasUseful', 'queryId', 'queryTerms', 'resultRank', 'totalResultsShown', 'searchMode', 'intent', 'sessionId', 'notes'],
   memory_bulk_delete: ['tier', 'specFolder', 'confirm', 'olderThanDays', 'skipCheckpoint'],
-  checkpoint_create: ['name', 'specFolder', 'metadata'],
-  checkpoint_list: ['specFolder', 'limit'],
-  checkpoint_restore: ['name', 'clearExisting'],
-  checkpoint_delete: ['name', 'confirmName'],
+  checkpoint_create: ['name', 'specFolder', 'userId', 'agentId', 'sharedSpaceId', 'metadata'],
+  checkpoint_list: ['specFolder', 'userId', 'agentId', 'sharedSpaceId', 'limit'],
+  checkpoint_restore: ['name', 'userId', 'agentId', 'sharedSpaceId', 'clearExisting'],
+  checkpoint_delete: ['name', 'userId', 'agentId', 'sharedSpaceId', 'confirmName'],
   task_preflight: ['specFolder', 'taskId', 'knowledgeScore', 'uncertaintyScore', 'contextScore', 'knowledgeGaps', 'sessionId'],
   task_postflight: ['specFolder', 'taskId', 'knowledgeScore', 'uncertaintyScore', 'contextScore', 'gapsClosed', 'newGapsDiscovered'],
   memory_drift_why: ['memoryId', 'maxDepth', 'direction', 'relations', 'includeMemoryDetails'],

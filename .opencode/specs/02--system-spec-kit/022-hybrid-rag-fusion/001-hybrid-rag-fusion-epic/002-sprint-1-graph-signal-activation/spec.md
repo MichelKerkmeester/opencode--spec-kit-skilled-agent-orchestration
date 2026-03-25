@@ -1,7 +1,6 @@
 ---
 title: "Feature Specification: Sprint 1 — Graph Signal Activation"
 description: "Activate typed-weighted degree as 5th RRF channel and measure graph signal contribution."
-# SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2
 trigger_phrases:
   - "sprint 1"
   - "graph signal"
@@ -36,7 +35,6 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 2** of the Hybrid RAG Fusion Refinement specification.
@@ -54,7 +52,6 @@ This is **Phase 2** of the Hybrid RAG Fusion Refinement specification.
 - Typed-weighted degree computation as 5th RRF channel (R4)
 - Edge density measurement from R13 data
 - Agent-as-consumer UX analysis and consumption instrumentation (G-NEW-2)
-<!-- /ANCHOR:phase-context -->
 
 ---
 
@@ -155,7 +152,7 @@ Activate the graph's structural connectivity signal as a 5th RRF channel, measur
 ---
 
 <!-- ANCHOR:nfr -->
-## 7. NON-FUNCTIONAL REQUIREMENTS
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: R4 degree computation adds <10ms p95 to search latency (dark-run overhead budget)
@@ -172,7 +169,7 @@ Activate the graph's structural connectivity signal as a 5th RRF channel, measur
 ---
 
 <!-- ANCHOR:edge-cases -->
-## 8. EDGE CASES
+## L2: EDGE CASES
 
 ### Data Boundaries
 - **Zero edges for a memory**: R4 returns 0 — no boost applied; correct behavior
@@ -191,7 +188,7 @@ Activate the graph's structural connectivity signal as a 5th RRF channel, measur
 ---
 
 <!-- ANCHOR:complexity -->
-## 9. COMPLEXITY ASSESSMENT
+## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
@@ -231,13 +228,13 @@ Activate the graph's structural connectivity signal as a 5th RRF channel, measur
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See ../000-feature-overview/spec.md
-- **Parent Plan**: See ../000-feature-overview/plan.md
+- **Parent Spec**: See ../spec.md
+- **Parent Plan**: See ../plan.md
 - **Predecessor**: See ../006-measurement-foundation/
 
 ---
@@ -251,11 +248,11 @@ LEVEL 2 SPEC — Phase 2 of 11
 
 ---
 
-## Phase Navigation
+#### Phase Navigation
 
 - Successor: 012-scoring-calibration
 
-## Acceptance Scenarios (Validator Coverage)
+#### Acceptance Scenarios (Validator Coverage)
 1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

@@ -5,6 +5,7 @@ import type { Stage2Input } from '../lib/search/pipeline/types';
 const mockRequireDb = vi.fn();
 const mockQueryLearnedTriggers = vi.fn();
 const mockApplyGraphSignals = vi.fn();
+const mockApplyCommunityBoost = vi.fn();
 
 vi.mock('../utils/db-helpers', () => ({
   requireDb: mockRequireDb,
@@ -19,7 +20,7 @@ vi.mock('../lib/graph/graph-signals', () => ({
 }));
 
 vi.mock('../lib/graph/community-detection', () => ({
-  applyCommunityBoost: <T>(rows: T[]) => rows,
+  applyCommunityBoost: mockApplyCommunityBoost,
 }));
 
 vi.mock('../lib/cognitive/co-activation', () => ({
@@ -85,10 +86,12 @@ describe('Stage 2 fusion regression coverage', () => {
     mockRequireDb.mockReset();
     mockQueryLearnedTriggers.mockReset();
     mockApplyGraphSignals.mockReset();
+    mockApplyCommunityBoost.mockReset();
 
     mockRequireDb.mockReturnValue({} as Record<string, unknown>);
     mockQueryLearnedTriggers.mockReturnValue([]);
     mockApplyGraphSignals.mockImplementation((rows: Array<Record<string, unknown>>) => rows);
+    mockApplyCommunityBoost.mockImplementation((rows: Array<Record<string, unknown>>) => rows);
 
     process.env = {
       ...originalEnv,
@@ -251,5 +254,37 @@ describe('Stage 2 fusion regression coverage', () => {
       { id: 1, score: 0.9 },
       { id: 2, score: 0.8 },
     ]);
+  });
+
+  it('hydrates memoryState for community-injected rows from memory_index', async () => {
+    process.env.SPECKIT_GRAPH_SIGNALS = 'false';
+    mockApplyCommunityBoost.mockImplementation((rows: Array<Record<string, unknown>>) => [
+      ...rows,
+      { id: 2, score: 0.3, similarity: 30, _communityBoosted: true },
+    ]);
+
+    const mockDb = {
+      prepare: vi.fn().mockReturnValue({
+        all: vi.fn().mockReturnValue([
+          { id: 2, memory_state: 'ARCHIVED' },
+        ]),
+      }),
+    };
+    mockRequireDb.mockReturnValue(mockDb);
+
+    const { executeStage2 } = await import('../lib/search/pipeline/stage2-fusion');
+    const result = await executeStage2(createStage2Input([
+      { id: 1, score: 0.9, similarity: 90, memoryState: 'HOT' },
+    ]));
+
+    const injected = result.scored.find((row) => row.id === 2);
+
+    expect(mockApplyCommunityBoost).toHaveBeenCalled();
+    expect(mockDb.prepare).toHaveBeenCalledWith(
+      'SELECT id, memory_state FROM memory_index WHERE id IN (?)'
+    );
+    expect(injected).toBeDefined();
+    expect(injected?.memoryState).toBe('ARCHIVED');
+    expect((injected?.graphContribution as Record<string, unknown>)?.injected).toBe(true);
   });
 });

@@ -21,7 +21,8 @@ function createTestDb(): Database.Database {
       id INTEGER PRIMARY KEY,
       spec_folder TEXT,
       file_path TEXT,
-      title TEXT
+      title TEXT,
+      memory_state TEXT
     );
 
     CREATE TABLE causal_edges (
@@ -575,6 +576,8 @@ describe('applyCommunityBoost', () => {
     db.exec(`
       INSERT INTO community_assignments (memory_id, community_id, algorithm) VALUES (1, 0, 'bfs');
       INSERT INTO community_assignments (memory_id, community_id, algorithm) VALUES (2, 0, 'bfs');
+      INSERT INTO memory_index (id, spec_folder, file_path, title, memory_state)
+      VALUES (2, 'test', 'memory-2.md', 'Memory 2', 'COLD');
     `);
     const rows: Array<{ id: number; score: number; _communityBoosted?: boolean }> = [{ id: 1, score: 0.5 }];
     const result = applyCommunityBoost(rows, db);
@@ -583,6 +586,7 @@ describe('applyCommunityBoost', () => {
     expect(injected[0]).toHaveProperty('_communityBoosted', true);
     expect(injected[0].id).toBe(2);
     expect(injected[0].score).toBeCloseTo(0.15); // 0.3 * 0.5
+    expect(injected[0]).toHaveProperty('memoryState', 'COLD');
   });
 });
 

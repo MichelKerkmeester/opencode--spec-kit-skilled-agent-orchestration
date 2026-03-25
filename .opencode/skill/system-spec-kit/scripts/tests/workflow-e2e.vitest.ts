@@ -36,6 +36,12 @@ const TEST_TEMPLATES_DIR = path.resolve(
   '..',
   'templates',
 );
+const WORKFLOW_LOCK_DIR = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '..',
+  '..',
+  '.workflow-lock',
+);
 const createdTempRoots = new Set<string>();
 const originalCwd = process.cwd();
 const originalEnv = {
@@ -357,6 +363,7 @@ afterEach(() => {
   }
 
   process.chdir(originalCwd);
+  fs.rmSync(WORKFLOW_LOCK_DIR, { recursive: true, force: true });
 
   for (const root of createdTempRoots) {
     try {
@@ -405,6 +412,28 @@ describe('workflow E2E save pipeline', { timeout: 30_000 }, () => {
     expect(
       warnSpy.mock.calls.some(([message]) => String(message).includes('Missing template data for'))
     ).toBe(false);
+  });
+
+  it('clears an abandoned legacy workflow lock before starting a new run', async () => {
+    const harness = createHarness();
+    configureHarnessEnvironment(harness);
+    const dataFile = writeInputFile(harness, 'stale-lock.json', createExplicitJsonInput());
+    const workflowModule = await importWorkflowForHarness(harness);
+
+    fs.mkdirSync(WORKFLOW_LOCK_DIR, { recursive: true });
+    const staleAt = new Date(Date.now() - 10_000);
+    fs.utimesSync(WORKFLOW_LOCK_DIR, staleAt, staleAt);
+
+    const result = await workflowModule.runWorkflow({
+      dataFile,
+      specFolderArg: harness.specFolderPath,
+      collectSessionDataFn: async (_collectedData, specFolderName) => buildRichSessionData(specFolderName || harness.specRelativePath),
+      silent: true,
+    });
+
+    expect(fs.existsSync(path.join(result.contextDir, result.contextFilename))).toBe(true);
+    expect(fs.existsSync(path.join(result.contextDir, 'metadata.json'))).toBe(true);
+    expect(fs.existsSync(WORKFLOW_LOCK_DIR)).toBe(false);
   });
 
   it('writes but skips indexing when validation metadata marks a failure as index-blocking only', async () => {

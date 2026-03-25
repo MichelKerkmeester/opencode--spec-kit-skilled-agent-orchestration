@@ -103,7 +103,7 @@ contextType: "general"
 - **Playbook**: `../scratch/context-playbook.md` §05--lifecycle
 <!-- /ANCHOR:cross-refs -->
 
-## Audit Follow-up Additions (2026-03-23)
+**Audit Follow-up Additions (2026-03-23)**
 
 - [ ] T029 Execute post-audit follow-up for M6 lineage transition validation — exercise `validateTransitionInput` with non-ISO and timezone-variant timestamps after the parsed epoch comparison change
 - [ ] T030 Verify lineage transition ordering no longer depends on raw string sorting; equivalent/later instants from timezone variants do not misorder lifecycle decisions

@@ -26,8 +26,8 @@ contextType: "general"
 | **Created** | 2026-03-18 |
 | **Branch** | `004-source-capabilities-and-structured-preference` |
 | **Parent Spec** | `../spec.md` |
-| **Predecessor** | `003-multi-cli-parity` |
-| **Successor** | `005-live-proof-and-parity-hardening` |
+| **Predecessor** | [003-multi-cli-parity](../003-multi-cli-parity/spec.md) |
+| **Successor** | [005-live-proof-and-parity-hardening](../005-live-proof-and-parity-hardening/spec.md) |
 <!-- /ANCHOR:metadata -->
 
 ---

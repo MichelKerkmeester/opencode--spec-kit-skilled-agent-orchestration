@@ -28,8 +28,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:verdict-table -->
-## Verdict Table
+### Verdict Table
 
 | Scenario | Feature | Verdict | Pass Rate |
 |----------|---------|---------|-----------|
@@ -37,7 +36,6 @@ contextType: "general"
 | EX-012 | System statistics (memory_stats) | **PASS** | 1/1 |
 | EX-013 | Health diagnostics (memory_health) | **PASS** | 1/1 |
 | **Phase 003 Total** | | | **3/3 (100%)** |
-<!-- /ANCHOR:verdict-table -->
 
 ---
 

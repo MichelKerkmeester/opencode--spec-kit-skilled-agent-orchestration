@@ -148,6 +148,16 @@ Categories 013 and 016 have more exact IDs than scenario files due to sub-scenar
 - **SC-001**: All 272 exact scenario IDs have recorded verdicts (PASS, PARTIAL, or FAIL)
 - **SC-002**: Per-phase summaries are complete for all 24 subdirectories
 - **SC-003**: Aggregate coverage report shows overall pass rate and identifies any FAIL scenarios requiring follow-up
+### Acceptance Scenarios
+
+**Given** the umbrella playbook packet, **when** a reviewer opens the phase map, **then** all numbered child folders from `001` through `022` appear in the documented execution sequence.
+
+**Given** the umbrella packet, **when** a reviewer checks coverage expectations, **then** the packet records the exact-ID denominator and the per-phase verdict-tracking intent without inventing missing execution.
+
+**Given** a reviewer checks the execution controls, **when** they read the packet and checklist, **then** evidence, bug tracking, and playbook-error tracking expectations are explicit.
+
+**Given** recursive validation runs on the umbrella packet, **when** the packet is audited structurally, **then** the parent spec remains template-compatible and points readers to the child execution packets.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -221,6 +231,3 @@ Categories 013 and 016 have more exact IDs than scenario files due to sub-scenar
 
 ---
 
-<!-- ANCHOR:phase-nav -->
-> **Parent Spec:** `../spec.md`
-<!-- /ANCHOR:phase-nav -->

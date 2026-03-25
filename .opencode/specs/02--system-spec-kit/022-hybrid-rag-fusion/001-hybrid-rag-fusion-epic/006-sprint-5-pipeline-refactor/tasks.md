@@ -32,8 +32,8 @@ contextType: "implementation" # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 
 ---
 
-<!-- ANCHOR:phase-a -->
-## Phase A: R6 Pipeline Refactor
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
 - [x] T001 Create checkpoint: `memory_checkpoint_create("pre-pipeline-refactor")` [0h]
 - [x] T002 Implement 4-stage pipeline refactor — Stage 1 (Candidate Gen), Stage 2 (Fusion + Signal Integration), Stage 3 (Rerank + Aggregate), Stage 4 (Filter + Annotate — NO score changes), behind `SPECKIT_PIPELINE_V2` flag [40-55h] {T001} — R6
@@ -53,24 +53,22 @@ contextType: "implementation" # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 - [x] T003 Verify R6 dark-run: 0 ordering differences on full eval corpus [included] {T002}
 - [x] T004 Verify all 158+ tests pass with `SPECKIT_PIPELINE_V2` enabled [included] {T002}
 - [x] T004b Record p95 simple query latency baseline on eval corpus before R12 implementation [1-2h] {T004} — R12 baseline (UT-7 R3)
-<!-- /ANCHOR:phase-a -->
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
-<!-- ANCHOR:phase-b -->
-## Phase B: Search + Spec-Kit (after Phase A passes)
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
 - [x] T005 [P] Implement spec folder pre-filter [5-8h] {T004} — R9
 - [x] T006 [P] Implement query expansion with R15 mutual exclusion, behind `SPECKIT_EMBEDDING_EXPANSION` flag [10-15h] {T004} — R12
 - [x] T007 [P] Implement template anchor optimization [5-8h] {T004} — S2
 - [x] T008 [P] Implement validation signals as retrieval metadata [4-6h] {T004} — S3
 - [x] T009a [P] Add memory auto-surface hooks at tool dispatch and session compaction lifecycle points in `hooks/memory-surface.ts` — per-point token budget 4000 max; config/logic change in Spec-Kit integration layer [4-6h] {T004} — TM-05 (REQ-S5-006)
-<!-- /ANCHOR:phase-b -->
 
 ---
 
-<!-- ANCHOR:pageindex -->
-## PageIndex Tasks
+##### PageIndex Tasks
 
 - [x] T011 Implement PI-B1 tree thinning for spec folder consolidation — extend generate-context.js with bottom-up merge logic: files < 200 tokens merge summary into parent, files < 500 tokens use content as summary; memory thresholds: 300 tokens (thinning), 100 tokens (text is summary); operates pre-pipeline before Stage 1 candidate generation [10-14h] — PI-B1
   - Thinning runs in context loading step (before pipeline, does not affect stage boundaries)
@@ -83,16 +81,16 @@ contextType: "implementation" # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
   - All auto-fixes must log before/after diff (primary mitigation for silent corruption)
   - Dry-run mode: show proposed auto-fixes without applying them
   - Exit code compatibility: exit 0 = pass, exit 1 = warnings, exit 2 = errors (unchanged)
-<!-- /ANCHOR:pageindex -->
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
-<!-- ANCHOR:phase-c -->
-## Phase C: Verification
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
 - [x] T-FS5 Feature flag sunset review at Sprint 5 exit — review all active feature flags; permanently enable flags with positive metrics, remove flags with negative metrics, extend measurement window (max 14 days) for inconclusive flags; ensure ≤6 simultaneous active flags [0.5-1h] {T009a} — NFR-O01/O02/O03
 - [x] T010 [GATE] Sprint 5 exit gate verification [0h] {T002, T003, T004, T005, T006, T007, T008, T009a, T-FS5}
-<!-- /ANCHOR:phase-c -->
+<!-- /ANCHOR:phase-3 -->
 
 ---
 
@@ -113,10 +111,9 @@ contextType: "implementation" # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 
 ---
 
-<!-- ANCHOR:task-id-mapping -->
-## Task ID Mapping (Child → Parent)
+##### Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent ../tasks.md uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -135,7 +132,6 @@ Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global I
 | T013 | PI-A4 | Constitutional memory as retrieval directives (PI-A4) |
 | T-FS5 | T-FS5 | Feature flag sunset review (Sprint 5 exit) |
 | T010 | T040 | Sprint 5 exit gate verification |
-<!-- /ANCHOR:task-id-mapping -->
 
 ---
 
@@ -145,8 +141,8 @@ Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global I
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See ../000-feature-overview/spec.md
-- **Parent Plan**: See ../000-feature-overview/plan.md
+- **Parent Spec**: See ../spec.md
+- **Parent Plan**: See ../plan.md
 <!-- /ANCHOR:cross-refs -->
 
 ---

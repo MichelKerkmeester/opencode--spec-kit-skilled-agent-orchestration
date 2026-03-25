@@ -223,11 +223,3 @@ CORE TEMPLATE (~80 lines)
 -->
 
 ---
-
-## Phase Navigation
-
-| Field | Value |
-|-------|-------|
-| **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../003-constitutional-learn-refactor/spec.md |
-| **Next Phase** | ../005-architecture-audit/spec.md |

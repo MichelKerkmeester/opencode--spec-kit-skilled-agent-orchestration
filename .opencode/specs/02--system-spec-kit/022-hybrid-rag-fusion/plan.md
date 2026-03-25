@@ -48,7 +48,7 @@ This pass normalizes the 022 root packet and its direct-child navigation layer. 
 
 ---
 
-### AI Execution Protocol
+## L3+: AI EXECUTION FRAMEWORK
 
 ### Pre-Task Checklist
 - Confirm the edit scope is limited to the 022 packet family and requested child packet layers.
@@ -144,8 +144,36 @@ Acceptance rule: the root packet must pass without structural errors, and any re
 
 ---
 
-## 8. COMMUNICATION PLAN
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Root packet normalization | Low | 1-2 hours |
+| Direct-child reconciliation | Medium | 2-4 hours |
+| Deep subtree cleanup | High | 1-2 follow-up cleanup passes |
+| **Total** | | **Packet-dependent follow-up after root truth-sync** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Root packet truth sync | Low | Completed during current normalization pass |
+| Direct child navigation alignment | Medium | Completed during current normalization pass |
+| Recursive validator convergence | High | Ongoing across child packet families |
+| **Total** | | **Multi-pass release normalization effort across the 022 tree** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:communication -->
+## L3+: COMMUNICATION PLAN
 
 - Record root validator results in the root packet checklist and implementation summary.
 - Keep residual subtree warnings scoped to the affected child packet family instead of inflating the root status.
 - Use the root packet as the entry point for future normalization passes in `001`, `009`, and `015`.
+<!-- /ANCHOR:communication -->

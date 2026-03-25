@@ -1,7 +1,6 @@
 ---
 title: "Implementation Plan: Sprint 7 — Long Horizon"
 description: "Memory summaries, smarter content generation, cross-document entity linking, full reporting with ablation studies, and R5 INT8 quantization evaluation."
-# SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2
 trigger_phrases:
   - "sprint 7 plan"
   - "long horizon plan"
@@ -268,8 +267,7 @@ T-PI-S7 (2-4h) ───┘
 
 ---
 
-<!-- ANCHOR:pageindex-xrefs -->
-## PageIndex Cross-References
+##### PageIndex Cross-References
 
 Builds on PageIndex integration from Sprints 0, 5 (PI-A5 quality verification, PI-B1 tree thinning).
 
@@ -277,16 +275,15 @@ Builds on PageIndex integration from Sprints 0, 5 (PI-A5 quality verification, P
 - **PI-B1 (Sprint 5 — Tree thinning)**: R8 memory summaries (gated on >5K memories) and the R13-S3 ablation framework both involve traversing large accumulated spec folders. The tree thinning pattern from Sprint 5 should inform how the summary generation module and the reporting dashboard scope their traversal to avoid loading unbounded context trees.
 
 Research evidence: See research documents `9 - analysis-pageindex-systems-architecture.md`, `9 - recommendations-pageindex-patterns-for-speckit.md`, `9 - pageindex-tree-search-analysis.md` in the parent research/ folder.
-<!-- /ANCHOR:pageindex-xrefs -->
 
 ---
 
-## RELATED DOCUMENTS
+#### Related Documents
 
 - **Specification**: See `spec.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md
+- **Parent Plan**: See `../plan.md
 
 ---
 
@@ -298,11 +295,11 @@ LEVEL 2 PLAN — Phase 8 of 8 (FINAL)
 - R5 INT8: custom quantized BLOB, NOT vec_quantize_i8
 -->
 
-## Phase 1: Validation Alignment
+##### Phase 1: Validation Alignment
 - Normalize checklist metadata and evidence syntax.
 - Re-run validator and resolve residual warnings.
 
-## Phase 2: Validation Alignment
+##### Phase 2: Validation Alignment
 - Normalize checklist metadata and evidence syntax.
 - Re-run validator and resolve residual warnings.
 

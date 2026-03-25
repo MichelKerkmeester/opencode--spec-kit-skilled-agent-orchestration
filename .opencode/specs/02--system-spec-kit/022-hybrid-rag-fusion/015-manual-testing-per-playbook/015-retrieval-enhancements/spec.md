@@ -115,6 +115,16 @@ Execute all 11 playbook scenarios for the retrieval enhancements category and re
 - **SC-001**: All 11 scenarios executed (PASS, FAIL, or SKIP — no "Not Started" remaining)
 - **SC-002**: Every result has an evidence note (observation, command output, or explicit skip reason)
 - **SC-003**: All FAIL results have a defect note capturing the observed vs expected behaviour
+### Acceptance Scenarios
+
+**Given** the `015-retrieval-enhancements` phase packet, **when** a reviewer opens the scenario mapping, **then** every scenario listed for the phase has a bounded execution target and a documented acceptance rule.
+
+**Given** the `015-retrieval-enhancements` phase packet, **when** execution evidence is reviewed, **then** verdict notes can be traced through `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+
+**Given** the `015-retrieval-enhancements` phase packet, **when** a reviewer checks neighboring navigation, **then** the packet points back to the parent and to the adjacent numbered phase where one exists.
+
+**Given** strict validation runs on the `015-retrieval-enhancements` phase packet, **when** the validator checks structure, **then** the packet satisfies Level 2 requirement and acceptance-scenario minimums.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

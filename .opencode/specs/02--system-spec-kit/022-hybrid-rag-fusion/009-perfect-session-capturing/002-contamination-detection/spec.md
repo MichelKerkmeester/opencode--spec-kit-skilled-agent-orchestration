@@ -26,8 +26,8 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 2 |
-| **Predecessor** | 001-quality-scorer-unification |
-| **Successor** | 003-data-fidelity |
+| **Predecessor** | [001-quality-scorer-unification](../001-quality-scorer-unification/spec.md) |
+| **Successor** | [003-data-fidelity](../003-data-fidelity/spec.md) |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-02 |
 | **Sequence** | B2 |

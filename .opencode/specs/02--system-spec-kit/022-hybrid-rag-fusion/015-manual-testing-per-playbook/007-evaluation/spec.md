@@ -121,6 +121,16 @@ Execute all six evaluation scenarios from the manual testing playbook, producing
 - **SC-005**: EX-047 ablation runs only for the specified channel subset
 - **SC-006**: EX-048 demonstrates baseline progression across two dashboard snapshots
 - **SC-007**: EX-049 returns chronological learning history for the specified folder
+### Acceptance Scenarios
+
+**Given** the `007-evaluation` phase packet, **when** a reviewer opens the scenario mapping, **then** every scenario listed for the phase has a bounded execution target and a documented acceptance rule.
+
+**Given** the `007-evaluation` phase packet, **when** execution evidence is reviewed, **then** verdict notes can be traced through `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+
+**Given** the `007-evaluation` phase packet, **when** a reviewer checks neighboring navigation, **then** the packet points back to the parent and to the adjacent numbered phase where one exists.
+
+**Given** strict validation runs on the `007-evaluation` phase packet, **when** the validator checks structure, **then** the packet satisfies Level 2 requirement and acceptance-scenario minimums.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

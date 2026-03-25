@@ -45,7 +45,7 @@ contextType: "general"
 - [x] CHK-511 [P0] Governed ingest rejects malformed provenance [EVIDENCE:implementation-summary.md]
 - [x] CHK-512 [P0] Retention and cascade deletion workflows validated [EVIDENCE:implementation-summary.md]
 - [x] CHK-513 [P0] Audit evidence is inspectable [EVIDENCE:implementation-summary.md]
-- [ ] [DEFERRED] Rollback/kill-switch drill — drill artifacts not yet produced; evidence required before release sign-off
+- [ ] CHK-514 [P2] Rollback or kill-switch drill deferred — drill artifacts not yet produced; evidence required before release sign-off
 <!-- /ANCHOR:code-quality -->
 
 ---

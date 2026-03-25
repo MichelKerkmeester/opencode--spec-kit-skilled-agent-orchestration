@@ -1,6 +1,6 @@
 {
-  "specFolder": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment",
-  "description": "Phase 001: Initial JSON Mode Hybrid Enrichment — structured JSON support, Wave 2/3 hardening, RC1-RC5 field propagation fixes, post-save quality review",
+  "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment",
+  "description": "Feature Specification: JSON Mode Hybrid Enrichment (Phase 1B)",
   "keywords": [
     "feature",
     "specification",
@@ -10,7 +10,7 @@
     "enrichment",
     "phase"
   ],
-  "lastUpdated": "2026-03-21T13:24:03.947Z",
+  "lastUpdated": "2026-03-25T10:14:59.495Z",
   "specId": "001",
   "folderSlug": "initial-enrichment",
   "parentChain": [

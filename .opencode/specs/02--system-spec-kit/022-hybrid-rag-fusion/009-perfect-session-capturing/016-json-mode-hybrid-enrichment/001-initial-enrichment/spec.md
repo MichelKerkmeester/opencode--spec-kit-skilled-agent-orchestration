@@ -38,8 +38,8 @@ JSON-mode saves became the safe path for multi-spec sessions, but the implementa
 | **Spec Folder** | `009-perfect-session-capturing/016-json-mode-hybrid-enrichment` |
 | **Parent Spec** | `../spec.md` |
 | **Parent Plan** | `../plan.md` |
-| **Predecessor** | `015-runtime-contract-and-indexability` |
-| **Successor** | `017-json-primary-deprecation` |
+| **Predecessor** | [015-runtime-contract-and-indexability](../../015-runtime-contract-and-indexability/spec.md) |
+| **Successor** | [002-scoring-and-filter](../002-scoring-and-filter/spec.md) |
 
 ---
 
@@ -115,7 +115,7 @@ Correct the phase record so it matches the shipped implementation, preserve the 
 | REQ-006 | Wave 2 decision confidence behavior remains documented accurately | Explicit confidence handling is preserved in the implementation narrative and verification notes |
 | REQ-007 | Wave 2 changed-file count behavior remains documented accurately | The stable priority chain for `git_changed_file_count` is preserved in the implementation narrative and verification notes |
 | REQ-008 | Template output honors explicit message and tool counts | Session-level overrides survive template assembly for JSON mode |
-| REQ-009 | Research artifacts that target the abandoned design are explicitly marked archival | `research.md` makes its historical/non-shipped scope unambiguous |
+| REQ-009 | Research artifacts that target the abandoned design are explicitly marked archival | The shared research note makes its historical and non-shipped scope unambiguous |
 | REQ-010 | The phase pack validates as a truthful record of shipped work | Plan, tasks, checklist, ADR, summary, and research note no longer conflict about what landed |
 
 ### P0 - Wave 3 (MUST complete)

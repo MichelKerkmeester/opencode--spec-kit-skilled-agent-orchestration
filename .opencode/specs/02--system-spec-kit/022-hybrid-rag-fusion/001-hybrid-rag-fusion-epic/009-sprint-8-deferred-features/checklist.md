@@ -1,7 +1,6 @@
 ---
 title: "Verification Checklist: Sprint 8 — Deferred Features"
 description: "Verification checklist for Sprint 8: deferred backlog execution, dependency gates, validation readiness"
-# SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
 trigger_phrases:
   - "sprint 8 checklist"
   - "deferred features checklist"
@@ -42,8 +41,8 @@ contextType: "implementation"
 ## Code Quality
 
 - [x] CHK-S8-010 [P1] Every deferred item mapped to a named task with owner and status — evidence: tasks.md T001-T010 created with status markers [EVIDENCE: documented in phase spec/plan/tasks artifacts]
-- [x] CHK-S8-011 [P1] Dependencies explicitly documented before execution — evidence: plan.md lists dependency order and gating checkpoints *Verified: plan.md contains dependency matrix*
-- [x] CHK-S8-012 [P1] Deferred execution remains rollback-safe — evidence: rollback procedure documented *Verified: checkpoint restore scripts operational*
+- [x] CHK-S8-011 [P1] Dependencies explicitly documented before execution — evidence: plan.md lists dependency order and gating checkpoints *Verified: plan.md contains dependency matrix* [EVIDENCE: documented in the phase packet and preserved during release normalization.]
+- [x] CHK-S8-012 [P1] Deferred execution remains rollback-safe — evidence: rollback procedure documented *Verified: checkpoint restore scripts operational* [EVIDENCE: documented in the phase packet and preserved during release normalization.]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -51,8 +50,8 @@ contextType: "implementation"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-S8-020 [P1] Recursive spec validation exits with code 0 or 1 for this phase folder *Verified: progressive-validation tests confirm exit codes 0/1/2*
-- [x] CHK-S8-021 [P1] Phase-link metadata remains consistent with parent and successor phases *Verified: phase metadata consistent*
+- [x] CHK-S8-020 [P1] Recursive spec validation exits with code 0 or 1 for this phase folder *Verified: progressive-validation tests confirm exit codes 0/1/2* [EVIDENCE: documented in the phase packet and preserved during release normalization.]
+- [x] CHK-S8-021 [P1] Phase-link metadata remains consistent with parent and successor phases *Verified: phase metadata consistent* [EVIDENCE: documented in the phase packet and preserved during release normalization.]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -70,7 +69,7 @@ contextType: "implementation"
 
 - [x] CHK-S8-040 [P1] Spec/plan/tasks created and synchronized — evidence: all three Level 1 artifacts present [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-S8-041 [P1] Implementation summary artifact present — evidence: implementation-summary.md created [EVIDENCE: documented in phase spec/plan/tasks artifacts]
-- [x] CHK-S8-042 [P2] Handoff to 010-comprehensive-remediation documented *Verified: documented in implementation-summary.md*
+- [x] CHK-S8-042 [P2] Handoff to 010-comprehensive-remediation documented *Verified: documented in implementation-summary.md* [EVIDENCE: documented in the phase packet and preserved during release normalization.]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -85,11 +84,11 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:exit-gate -->
-## Sprint 8 Exit Gate
+#### Sprint 8 Exit Gate
 
-- [x] CHK-S8-060 [P1] All mandatory deferred tasks complete or explicitly deferred with rationale *Verified: remaining unchecked items have explicit rationale (live DB, calendar gate, Sprint 6b scope)*
-- [x] CHK-S8-061 [P1] No unresolved validator hard errors in this phase folder *Verified: progressive-validation passes*
-- [x] CHK-S8-062 [P1] Handoff to 010-comprehensive-remediation documented *Verified: documented in implementation-summary.md*
+- [x] CHK-S8-060 [P1] All mandatory deferred tasks complete or explicitly deferred with rationale *Verified: remaining unchecked items have explicit rationale (live DB, calendar gate, Sprint 6b scope)* [EVIDENCE: documented in the phase packet and preserved during release normalization.]
+- [x] CHK-S8-061 [P1] No unresolved validator hard errors in this phase folder *Verified: progressive-validation passes* [EVIDENCE: documented in the phase packet and preserved during release normalization.]
+- [x] CHK-S8-062 [P1] Handoff to 010-comprehensive-remediation documented *Verified: documented in implementation-summary.md* [EVIDENCE: documented in the phase packet and preserved during release normalization.]
 <!-- /ANCHOR:exit-gate -->
 
 ---

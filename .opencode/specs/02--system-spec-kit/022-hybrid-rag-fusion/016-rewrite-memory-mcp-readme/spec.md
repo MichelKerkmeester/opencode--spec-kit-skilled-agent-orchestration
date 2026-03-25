@@ -58,12 +58,12 @@ Produce a complete rewrite grounded in the feature catalog that serves both newc
 | **Full rewrite** | `.opencode/skill/system-spec-kit/mcp_server/README.md` |
 | **Section structure** | Overview, Quick Start, Architecture, MCP Tools (all 33), Search System, Configuration, Usage Examples, Troubleshooting, FAQ, Related Resources |
 | **Content grounding** | Feature catalog (feature_catalog.md) as authoritative source |
-| **Quality gates** | DQI >= 75, no banned HVR words, template alignment with readme_template.md |
+| **Quality gates** | DQI >= 75, no banned HVR words, template alignment with the README template |
 
 ### Out of Scope
 
 - MCP server runtime code changes
-- INSTALL_GUIDE.md (owned by sibling spec `017-update-install-guide`)
+- The install guide document (owned by sibling spec `017-update-install-guide`)
 - Spec Kit README (owned by `018-rewrite-system-speckit-readme`)
 - Command documentation (completed by `012-command-alignment`)
 
@@ -84,19 +84,19 @@ Produce a complete rewrite grounded in the feature catalog that serves both newc
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| MR-001 | All 33 MCP tools documented | Every tool in `TOOL_DEFINITIONS` appears with name, description, parameters, and layer annotation |
-| MR-002 | Feature catalog grounding | All 22 feature categories from the catalog are represented in relevant sections |
-| MR-003 | DQI >= 75 | `validate_document.py` scores the final document at 75 or above |
+| REQ-001 | All 33 MCP tools are documented (legacy `MR-001`) | Every tool in `TOOL_DEFINITIONS` appears with name, description, parameters, and layer annotation |
+| REQ-002 | The rewrite is grounded in the feature catalog (legacy `MR-002`) | All 22 feature categories from the catalog are represented in relevant sections |
+| REQ-003 | DQI is at least 75 (legacy `MR-003`) | `validate_document.py` scores the final document at 75 or above |
 
 ### P1 - Required
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| MR-004 | No banned HVR words | Zero matches for sk-doc banned word list across the document |
-| MR-005 | Template alignment | Section headers match readme_template.md structure |
-| MR-006 | Newcomer-friendly intro | Overview and Quick Start sections are self-contained and require no prior knowledge |
-| MR-007 | Architecture section covers hybrid search | Describes BM25 + vector fusion, FSRS decay, 6-tier importance, 5-state lifecycle |
-| MR-008 | Cross-references to sibling docs | Links to INSTALL_GUIDE.md, Spec Kit README, and command docs without duplicating content |
+| REQ-004 | The rewrite contains no banned HVR words (legacy `MR-004`) | Zero matches for sk-doc banned word list across the document |
+| REQ-005 | The rewrite follows the README template structure (legacy `MR-005`) | Section headers match the active README template structure |
+| REQ-006 | The intro is newcomer-friendly (legacy `MR-006`) | Overview and Quick Start sections are self-contained and require no prior knowledge |
+| REQ-007 | The architecture section covers hybrid search (legacy `MR-007`) | The README describes BM25 plus vector fusion, FSRS decay, 6-tier importance, and the 5-state lifecycle |
+| REQ-008 | Cross-references to sibling docs stay accurate (legacy `MR-008`) | Links to the install guide, the Spec Kit README, and command docs work without duplicating their content |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -108,6 +108,12 @@ Produce a complete rewrite grounded in the feature catalog that serves both newc
 - **SC-002**: DQI >= 75 with zero banned HVR words
 - **SC-003**: A newcomer can set up the MCP server using only Overview + Quick Start
 - **SC-004**: A power user can find any tool's full parameter reference within 2 TOC clicks
+
+### Acceptance Scenarios
+
+**Given** the rewritten MCP README, **when** a reviewer audits it against `TOOL_DEFINITIONS`, **then** all 33 tools appear with the expected reference detail.
+
+**Given** a newcomer opens only the Overview and Quick Start sections, **when** they follow the guidance, **then** they can understand the MCP server and begin setup without outside context.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -118,7 +124,7 @@ Produce a complete rewrite grounded in the feature catalog that serves both newc
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Feature catalog accuracy | High | Cross-reference catalog against `tool-schemas.ts` during research |
-| Dependency | readme_template.md structure | Medium | Load template before drafting |
+| Dependency | README template structure | Medium | Load the active template before drafting |
 | Risk | Document too long for single-page reading | Medium | Use collapsible sections and clear TOC hierarchy |
 | Risk | Tool descriptions duplicate command docs | Medium | Link to command docs for workflow details, keep README focused on reference |
 <!-- /ANCHOR:risks -->
@@ -142,7 +148,7 @@ Source: feature_catalog.md + tool-schemas.ts
 
 ---
 
-## Phase Navigation
+### Phase Navigation
 
 | Field | Value |
 |-------|-------|

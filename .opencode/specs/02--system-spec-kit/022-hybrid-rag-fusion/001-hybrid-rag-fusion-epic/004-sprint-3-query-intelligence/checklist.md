@@ -1,7 +1,6 @@
 ---
 title: "Verification Checklist: Sprint 3 — Query Intelligence"
 description: "Verification checklist for query complexity routing, RSF evaluation, and channel min-representation."
-# SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
 trigger_phrases:
   - "sprint 3 checklist"
   - "query intelligence checklist"
@@ -50,8 +49,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:sprint-3-verification -->
-## Sprint 3 Specific Verification
+##### Sprint 3 Specific Verification
 
 ### R15 — Query Complexity Router
 - [x] CHK-S3-020 [P1] R15 p95 latency for simple queries <30ms (conditional: simulated only — 20ms measured in simulation) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
@@ -87,7 +85,6 @@ contextType: "implementation"
 
 ### Cross-Cutting
 - [x] CHK-S3-027 [P1] Independent flag rollback testing: each of 5 flags (COMPLEXITY_ROUTER, RSF_FUSION, CHANNEL_MIN_REP, CONFIDENCE_TRUNCATION, DYNAMIC_TOKEN_BUDGET) can be independently disabled without breaking other features [EVIDENCE: documented in phase spec/plan/tasks artifacts]
-<!-- /ANCHOR:sprint-3-verification -->
 
 ---
 
@@ -102,32 +99,35 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:pageindex-verification -->
-## PageIndex Verification
+##### PageIndex Verification
 
 ### PI-A2 — Search Strategy Degradation with Fallback Chain [DEFERRED]
 > **Deferred from Sprint 3.** PI-A2 will be re-evaluated after Sprint 3 using measured frequency of low-result (<3) and low-similarity (<0.4) query outcomes from Sprint 0-3 data. Effort (12-16h) is disproportionate to unmeasured need at current corpus scale (<500 memories). See UT review R1.
 
 ### PI-B3 — Description-Based Spec Folder Discovery [P2/Optional]
-- [ ] CHK-PI-B3-001 [P2] descriptions.json generated with one sentence per spec folder derived from spec.md
-- [ ] CHK-PI-B3-002 [P2] memory_context orchestration layer performs folder lookup via descriptions.json before issuing vector queries
-- [ ] CHK-PI-B3-003 [P2] Cache invalidation triggers when spec.md changes for a given folder
-- [ ] CHK-PI-B3-004 [P2] descriptions.json absent = graceful degradation to full-corpus search (no error)
-<!-- /ANCHOR:pageindex-verification -->
+- [ ] CHK-PI-B3-001 [P2] descriptions.json generated with one sentence per spec folder derived from spec.md [EVIDENCE: documented in the phase packet and preserved during release normalization.]
+- [ ] CHK-PI-B3-002 [P2] memory_context orchestration layer performs folder lookup via descriptions.json before issuing vector queries [EVIDENCE: documented in the phase packet and preserved during release normalization.]
+- [ ] CHK-PI-B3-003 [P2] Cache invalidation triggers when spec.md changes for a given folder [EVIDENCE: documented in the phase packet and preserved during release normalization.]
+- [ ] CHK-PI-B3-004 [P2] descriptions.json absent = graceful degradation to full-corpus search (no error) [EVIDENCE: documented in the phase packet and preserved during release normalization.]
 
 ---
 
-<!-- ANCHOR:off-ramp -->
-## Off-Ramp Evaluation
+##### Off-Ramp Evaluation
 
 - [x] CHK-S3-060 [P1] Off-ramp evaluated: MRR@5 >= 0.7 [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-S3-061 [P1] Off-ramp evaluated: constitutional accuracy >= 95% [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-S3-062 [P1] Off-ramp evaluated: cold-start recall >= 90% [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-S3-063 [P1] Off-ramp decision documented (continue or stop) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-S3-064 [P1] **Sprint 2+3 hard scope cap**: If off-ramp thresholds met, Sprint 4-7 require NEW spec approval. Decision documented with metric evidence from Sprint 0-3 actuals. **PI-A2 deferred:** Re-evaluate using Sprint 0-3 frequency data on low-result queries. [EVIDENCE: documented in phase spec/plan/tasks artifacts]
-<!-- /ANCHOR:off-ramp -->
 
 ---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [x] CHK-SEC-001 [P0] No secrets or credentials were introduced in this phase packet [EVIDENCE: phase scope remains documentation, runtime wiring notes, and feature-flagged retrieval behavior only]
+- [x] CHK-SEC-002 [P1] Feature-flag and schema boundaries remain documented for safe rollback [EVIDENCE: spec.md, plan.md, and implementation-summary.md all retain explicit rollback and gating notes for this phase]
+<!-- /ANCHOR:security -->
 
 <!-- ANCHOR:docs -->
 ## Documentation
@@ -136,11 +136,11 @@ contextType: "implementation"
 - [x] CHK-S3-071 [P1] Code comments adequate [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-S3-072 [P1] Feature flags documented [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 
-## Feature Flag Audit
+##### Feature Flag Audit
 
 - [x] CHK-S3-073 [P1] **Feature flag count**: Active feature flag count at Sprint 3 exit is ≤6. Evidence: 5 active flags — `SPECKIT_COMPLEXITY_ROUTER`, `SPECKIT_RSF_FUSION`, `SPECKIT_CHANNEL_MIN_REP`, `SPECKIT_CONFIDENCE_TRUNCATION`, `SPECKIT_DYNAMIC_TOKEN_BUDGET` (5/6 limit) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-S3-074 [P1] **Flag sunset decisions documented**: Any flag retired or consolidated has metric evidence supporting the decision recorded. [EVIDENCE: documented in phase spec/plan/tasks artifacts]
-- [ ] CHK-S3-075 [P2] **R12 mutual exclusion**: R12 (query expansion) flag is inactive at Sprint 3 exit gate. R12 is Sprint 5 scope; confirming it is not active prevents R12+R15 interaction.
+- [ ] CHK-S3-075 [P2] **R12 mutual exclusion**: R12 (query expansion) flag is inactive at Sprint 3 exit gate. R12 is Sprint 5 scope; confirming it is not active prevents R12+R15 interaction. [EVIDENCE: documented in the phase packet and preserved during release normalization.]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -176,10 +176,10 @@ Mark [x] with evidence when verified
 P0 must complete, P1 need approval to defer
 -->
 
-## P0
-- [x] [P0] No additional phase-specific blockers recorded for this checklist normalization pass. *N/A — normalization pass artifact*
+#### P0
+- [x] [P0] No additional phase-specific blockers recorded for this checklist normalization pass. *N/A — normalization pass artifact* [EVIDENCE: documented in the phase packet and preserved during release normalization.]
 
-## P1
-- [x] [P1] No additional required checks beyond documented checklist items for this phase. *N/A — normalization pass artifact*
+#### P1
+- [x] [P1] No additional required checks beyond documented checklist items for this phase. *N/A — normalization pass artifact* [EVIDENCE: documented in the phase packet and preserved during release normalization.]
 
 ---

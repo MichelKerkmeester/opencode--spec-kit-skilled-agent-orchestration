@@ -53,6 +53,39 @@ This plan addresses two defects identified in Domain C (Quality Scoring Accuracy
 - [ ] `npx vitest run` passes (no regressions)
 - [ ] quality-scorer-calibration.vitest.ts imports extractors/quality-scorer.ts and passes
 - [ ] checklist.md P0 items all marked [x] with evidence
+
+### AI Execution Protocol
+
+- [ ] Pre-Task Checklist documented for this implementation pass.
+- [ ] Execution Rules documented for this implementation pass.
+- [ ] Status Reporting Format documented for this implementation pass.
+- [ ] Blocked Task Protocol documented for this implementation pass.
+
+### Pre-Task Checklist
+
+- [ ] Re-read `extractors/quality-scorer.ts`, `core/workflow.ts`, and `post-save-review.ts` before editing.
+- [ ] Confirm the live scorer import path and dead-code scorer path before changing tests or calibration logic.
+- [ ] Keep edits scoped to the seven target files listed in `spec.md`.
+- [ ] Re-check acceptance criteria in `spec.md` before marking implementation tasks complete.
+
+### Execution Rules
+
+| Rule | Requirement |
+|------|-------------|
+| Scope Lock | Edit only the files listed in `spec.md`; do not reopen sibling packets. |
+| Read First | Re-read each target function in full before editing. |
+| Verify Per Phase | Re-run the relevant Vitest or manual validation after each implementation phase. |
+| Evidence First | Do not mark checklist items complete without explicit evidence. |
+
+### Status Reporting Format
+
+`Phase 002: <status> -> <artifact or validation result>`
+
+### Blocked Task Protocol
+
+1. Stop if the live scorer or workflow import path does not match the documented scope.
+2. Document any user-approved deferral before continuing with later phases.
+3. Re-run the affected verification step before resuming work after a blocker is cleared.
 <!-- /ANCHOR:quality-gates -->
 
 ---

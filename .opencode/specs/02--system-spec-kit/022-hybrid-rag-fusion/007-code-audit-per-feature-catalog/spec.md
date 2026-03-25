@@ -26,7 +26,6 @@ Comprehensive code audit of the Spec Kit Memory MCP server, systematically verif
 
 ---
 
-<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -40,7 +39,6 @@ Comprehensive code audit of the Spec Kit Memory MCP server, systematically verif
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../006-feature-catalog/spec.md |
 | **Successor** | ../008-hydra-db-based-features/spec.md |
-<!-- /ANCHOR:metadata -->
 
 ---
 
@@ -157,7 +155,7 @@ Matching between feature-catalog categories and audit phases is **slug-based**, 
 | 001-020 | 021-remediation-revalidation | All audits and cross-cutting analysis complete | All phase folders pass validate.sh |
 | 009, 011, 019, 021 | 022-implement-and-remove-deprecated-features | Deprecated-feature decisions translated into a scoped implementation/removal packet | Child spec records parent ownership and downstream outputs |
 
-## TRACEABILITY
+### Traceability
 
 Completed second-half phases 012-022 remain owned by this umbrella packet. Each child phase declares parent ownership in its local `spec.md`, consumes the inputs listed below, and returns its outputs back to `007-code-audit-per-feature-catalog`.
 
@@ -195,6 +193,8 @@ Completed second-half phases 012-022 remain owned by this umbrella packet. Each 
 | REQ-004 | Cross-phase dependency mapping | Phase 019 documents shared code paths and cross-category interactions |
 | REQ-005 | Aggregate synthesis report | Phase 021 produces summary statistics and prioritized remediation backlog |
 | REQ-006 | Consistent audit methodology across all phases | All phases follow the same finding format and severity classification |
+| REQ-007 | Umbrella packet preserves parent-child traceability for the late audit phases | Parent spec, plan, tasks, and checklist all reference the `012-022` umbrella contract |
+| REQ-008 | Recursive strict validation can evaluate the full phase tree without child-level structural drift | All 22 child packets pass packet validation under the recursive umbrella run |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -206,6 +206,15 @@ Completed second-half phases 012-022 remain owned by this umbrella packet. Each 
 - **SC-002**: Every phase folder contains a completed implementation-summary.md with findings
 - **SC-003**: Cross-phase dependency map identifies shared code paths between categories
 - **SC-004**: Remediation backlog prioritized by severity (P0/P1/P2) for follow-up work
+
+### Acceptance Scenarios
+
+- **Given** the 22-child audit tree, **when** recursive validation runs, **then** every child packet resolves as a structurally valid phase document.
+- **Given** a maintainer reviewing the umbrella packet, **when** they inspect the phase map, **then** each late-phase child has explicit parent ownership and downstream outputs.
+- **Given** the aggregate findings tables, **when** release-control uses them, **then** MATCH, PARTIAL, pending, and remediation states are easy to distinguish.
+- **Given** a remediation session revisits this packet, **when** it follows the cross-phase contract, **then** the correct synthesis phases and downstream child packet are identified.
+- **Given** a validator checks the Level 3 packet, **when** it counts requirements and scenarios, **then** the umbrella packet meets the Level 3 content minimums.
+- **Given** future audit refresh work, **when** the umbrella packet is reused, **then** the methodology, dependency map, and remediation ownership remain discoverable in one place.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -294,7 +303,7 @@ Completed second-half phases 012-022 remain owned by this umbrella packet. Each 
 
 ---
 
-## 11. AUDIT RESULTS
+### Audit Results
 
 | Metric | Value |
 |--------|-------|

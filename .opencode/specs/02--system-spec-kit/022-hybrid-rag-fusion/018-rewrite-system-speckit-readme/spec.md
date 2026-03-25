@@ -57,7 +57,7 @@ Produce a complete rewrite that documents the Spec Kit skill holistically — co
 |----------|-------|
 | **Full rewrite** | `.opencode/skill/system-spec-kit/README.md` |
 | **Section structure** | Overview, Quick Start, Components, Documentation Levels, Memory System, MCP Tools, Commands, Templates, Scripts, Troubleshooting, FAQ, Related Resources |
-| **Content grounding** | Feature catalog, SKILL.md, command files, template directory |
+| **Content grounding** | Feature catalog, the skill instructions document, command files, and the template directory |
 | **Quality gates** | DQI >= 75, no banned HVR words, template alignment |
 
 ### Out of Scope
@@ -84,19 +84,19 @@ Produce a complete rewrite that documents the Spec Kit skill holistically — co
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| SR-001 | All major components documented | Documentation levels (1-3+), memory system, MCP tools (summary), commands (all 14), templates, scripts, validation |
-| SR-002 | Documentation levels accurate | Level 1-3+ descriptions match current template architecture |
-| SR-003 | DQI >= 75 | `validate_document.py` scores at 75 or above |
+| REQ-001 | All major components are documented (legacy `SR-001`) | Documentation levels, the memory system, MCP tools summary, commands, templates, scripts, and validation are all covered |
+| REQ-002 | Documentation-level guidance is accurate (legacy `SR-002`) | Level 1 through 3+ descriptions match the current template architecture |
+| REQ-003 | DQI is at least 75 (legacy `SR-003`) | `validate_document.py` scores at 75 or above |
 
 ### P1 - Required
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| SR-004 | No banned HVR words | Zero matches for sk-doc banned word list |
-| SR-005 | Links to MCP README for depth | MCP tool details link to mcp_server/README.md rather than duplicating them |
-| SR-006 | Command inventory complete | All 8 spec_kit commands and 6 memory commands listed with brief descriptions |
-| SR-007 | Template architecture documented | CORE + ADDENDUM system (v2.2) explained with examples |
-| SR-008 | Cross-references consistent | Links to MCP README, root README, and SKILL.md are valid |
+| REQ-004 | The README contains no banned HVR words (legacy `SR-004`) | Zero matches for the sk-doc banned word list |
+| REQ-005 | MCP depth links point to the MCP README (legacy `SR-005`) | MCP tool details link to the MCP README rather than duplicating them |
+| REQ-006 | The command inventory is complete (legacy `SR-006`) | All spec-kit and memory commands are listed with brief descriptions |
+| REQ-007 | The template architecture is documented (legacy `SR-007`) | The CORE plus ADDENDUM system is explained with relevant examples |
+| REQ-008 | Cross-references stay consistent (legacy `SR-008`) | Links to the MCP README, root README, and the skill instructions remain valid |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -108,6 +108,12 @@ Produce a complete rewrite that documents the Spec Kit skill holistically — co
 - **SC-002**: DQI >= 75 with zero banned HVR words
 - **SC-003**: A new user understands the Spec Kit skill's purpose and components from Overview + Quick Start
 - **SC-004**: Documentation levels section matches current template files
+
+### Acceptance Scenarios
+
+**Given** the rewritten Spec Kit README, **when** a new user reads the Overview and Quick Start sections, **then** they understand the skill’s purpose, major components, and where to go next.
+
+**Given** a reviewer checks the documentation-level guidance, **when** they compare it against the live templates, **then** the README matches the current Level 1 through 3+ structure.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -119,7 +125,7 @@ Produce a complete rewrite that documents the Spec Kit skill holistically — co
 |------|------|--------|------------|
 | Dependency | MCP README rewrite (D1) | Medium | D3 should link to D1, so coordinate cross-references |
 | Dependency | Feature catalog | High | Ground content in catalog categories |
-| Risk | Overlap with SKILL.md content | Medium | README covers what/how, SKILL.md covers when/rules |
+| Risk | Overlap with the skill instructions document | Medium | The README covers what and how, while the skill instructions cover when and rules |
 | Risk | Document too long | Medium | Summarize MCP tools; link to MCP README for details |
 <!-- /ANCHOR:risks -->
 
@@ -141,7 +147,7 @@ Target: Complete rewrite of Spec Kit README covering all components
 
 ---
 
-## Phase Navigation
+### Phase Navigation
 
 | Field | Value |
 |-------|-------|

@@ -1,358 +1,71 @@
-● memory_match_triggers
-  └ {"summary":"Matched 3 memories via trigger phrases","data":{"matchType":"trig...
-
-● Search (glob)
-  │ "**/.opencode/skill/system-spec-kit/feature_catalog/**/*"
-  └ 5 files found
-
-● Run skill advisor (shell)
-  │ python3 .opencode/skill/scripts/skill_advisor.py "Cross-verify snippet files against the MASTER
-  │ feature_catalog.md for categories 11-21. Compare master section vs per-category snippet files
-  │ for feature name, status, description, and missing/extra snippets. Produce a traceability
-  │ consistency report." --threshold 0.8
-  └ 2 lines...
-
-I’m mapping the catalog structure first so I can compare the same slices on both sides rather than spot-checking blindly. After that I’ll run a structured diff for categories `11` through `21`.
-
-● Search (grep)
-  │ "^##\s+1[1-9]--|^##\s+20--|^##\s+21--"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
-  └ No matches found
-
-● Search (grep)
-  │ "^#|^##|^###" in *.md (.opencode/skill/system-spec-kit/feature_catalog)
-  └ 5 lines found
-
-● Search (glob)
-  │ ".opencode/skill/system-spec-kit/feature_catalog/{11--*,12--*,13--*,14--*,15--*,16--*,17--*,18--
-  │ *,19--*,20--*,21--*}"
-  └ No matches found
-
-● List directory .opencode/skill/system-spec-kit/feature_catalog
-  └ 24 files found
-
-● Search (grep)
-  │ "11--|12--|13--|14--|15--|16--|17--|18--|19--|20--|21--"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
-  └ 5 lines found
-
-● List catalog entries (shell)
-  │ python3 - <<'PY'
-  │ from pathlib import Path
-  │ base = Path('/Users/michelkerkmeester/MEGA/Development/Opencode
-  │ Env/Public/.opencode/skill/system-spec-kit/feature_catalog')
-  │ for p in sorted(base.iterdir()):…
-  └ 27 lines...
-
-I’ve confirmed the per-category directories exist. Next I’m pulling the exact master anchors and the files inside each category folder so I can compare feature-for-feature instead of just folder-by-folder.
-
-● Read copilot-tool-output-1774423091536-ulc0pa.txt
-  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1774423091536-ulc0pa.txt
-  └ L1:200 (67 lines read)
-
-● Search (grep)
-  │ "11--scoring-and-calibration|12--query-intelligence|13--memory-quality-and-indexing|14--pipeline
-  │ -architecture|15--retrieval-enhancements|16--tooling-and-scripts|17--governance|18--ux-hooks|19-
-  │ -feature-flag-reference|20--remediation-revalidation|21--implement-and-remove-deprecated-feature
-  │ s" (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
-  └ 5 lines found
-
-● List snippet markdown files (shell)
-  │ python3 - <<'PY'
-  │ from pathlib import Path
-  │ base = Path('/Users/michelkerkmeester/MEGA/Development/Opencode
-  │ Env/Public/.opencode/skill/system-spec-kit/feature_catalog')
-  │ for name in […
-  └ 160 lines...
-
-I found one structural clue already: the master table of contents numbers don’t line up cleanly with the snippet folder names starting at this range, so I’m checking the actual section bodies next to separate a TOC numbering issue from real content drift.
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L1768:1868 (100 lines read)
-
-● Read 01-score-normalization.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/01-score-normalizati
-  │ on.md
-  └ L1:120 (77 lines read)
-
-● Read 01-category-stub.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md
-  └ L1:120 (10 lines read)
-
-● Read 01-category-stub.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/01-
-  │ category-stub.md
-  └ L1:120 (10 lines read)
-
-● Search (grep)
-  │ "^##\s+\d+\." (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
-  └ 21 lines found
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L1:60 (60 lines read)
-
-● Read copilot-tool-output-1774423101620-lnv8dz.txt
-  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1774423101620-lnv8dz.txt
-  └ L1:220 (63 lines read)
-
-I’ve narrowed this to a structural alignment problem, not just text drift: the master categories and snippet folders diverge in numbering and category coverage in this range. I’m validating whether that causes missing/extra category groups before I summarize feature-level matches.
-
-● Search (glob)
-  │ "**/20--spec-kit-phase-workflows" in .opencode/skill/system-spec-kit/feature_catalog
-  └ No matches found
-
-● Search (glob)
-  │ "**/21--feature-flag-reference" in .opencode/skill/system-spec-kit/feature_catalog
-  └ No matches found
-
-● Search (grep)
-  │ "spec-kit-phase-workflows|feature-flag-reference" in *.md
-  │ (.opencode/skill/system-spec-kit/feature_catalog)
-  └ 16 lines found
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L4298:4660 (133 lines read)
-
-● Read 01-1-search-pipeline-features-speckit.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-
-  │ features-speckit.md
-  └ L1:80 (80 lines read)
-
-● Read 08-audit-phase-020-mapping-note.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/08-audit-phase-020-ma
-  │ pping-note.md
-  └ L1:80 (10 lines read)
-
-● Search (grep)
-  │ "19--feature-flag-reference/08-audit-phase-020-mapping-note.md|20--remediation-revalidation/01-c
-  │ ategory-stub.md|21--implement-and-remove-deprecated-features/01-category-stub.md"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
-  └ No matches found
-
-● Compare master refs and snippets (shell)
-  │ python3 - <<'PY'
-  │ import re, json
-  │ from pathlib import Path
-  │ base = Path('/Users/michelkerkmeester/MEGA/Development/Opencode
-  │ Env/Public/.opencode/skill/system-spec-kit/feature_catalog')…
-  └ 134 lines...
-
-● Compare master refs and snippets (shell)
-  │ python3 - <<'PY'
-  │ import re, json
-  │ from pathlib import Path
-  │ base = Path('/Users/michelkerkmeester/MEGA/Development/Opencode
-  │ Env/Public/.opencode/skill/system-spec-kit/feature_catalog')…
-  └ 140 lines...
-
-● Read copilot-tool-output-1774423221834-bm22xk.txt
-  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1774423221834-bm22xk.txt
-  └ L1:260 (260 lines read)
-
-● Read copilot-tool-output-1774423221834-bm22xk.txt
-  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1774423221834-bm22xk.txt
-  └ L261:520 (260 lines read)
-
-● Read copilot-tool-output-1774423221834-bm22xk.txt
-  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1774423221834-bm22xk.txt
-  └ L521:780 (260 lines read)
-
-● Read copilot-tool-output-1774423221834-bm22xk.txt
-  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1774423221834-bm22xk.txt
-  └ L781:1040 (93 lines read)
-
-I’ve got the full comparison matrix now. I’m spot-checking a few flagged mismatches so the final findings distinguish real content drift from harmless formatting differences.
-
-● Read 02-cold-start-novelty-boost.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/02-cold-start-novelt
-  │ y-boost.md
-  └ L1:80 (73 lines read)
-
-● Read 17-outsourced-agent-memory-capture.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/17-outsourced-ag
-  │ ent-memory-capture.md
-  └ L1:80 (66 lines read)
-
-● Read 17-json-primary-deprecation-posture.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/17-json-primary-deprecat
-  │ ion-posture.md
-  └ L1:80 (80 lines read)
-
-● Read 01-1-search-pipeline-features-speckit.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/01-1-search-pipeline-
-  │ features-speckit.md
-  └ L1:90 (90 lines read)
-
-● Summarize category mismatch counts (shell)
-  │ python3 - <<'PY'
-  │ import json
-  │ from pathlib import Path
-  │ p = Path('/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1774423221834-b
-  │ m22xk.txt')…
-  └ 19 lines...
-
-● Search (grep)
-  │ "Outsourced agent memory capture|Stateless enrichment and alignment guards|JSON-primary
-  │ deprecation posture|Session capturing pipeline quality"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
-  └ 5 lines found
-
-● Read 12-session-capturing-pipeline-quality.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pip
-  │ eline-quality.md
-  └ L1:40 (40 lines read)
-
-● Read 18-session-enrichment-and-alignment-guards.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/18-session-enric
-  │ hment-and-alignment-guards.md
-  └ L1:50 (50 lines read)
-
-● List title mismatches (shell)
-  │ python3 - <<'PY'
-  │ import json
-  │ from pathlib import Path
-  │ p = Path('/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1774423221834-b
-  │ m22xk.txt')…
-  └ 18 lines...
-
-# Iteration 012: Snippet vs Master Catalog Consistency (Categories 11-21)
-
-## Agent: copilot / gpt-5.4 / high
-
-## Dimension: traceability
-
-## Files Reviewed
-
-- `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`
-- `.opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/*.md` (22)
-- `.opencode/skill/system-spec-kit/feature_catalog/12--query-intelligence/*.md` (11)
-- `.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/*.md` (24)
-- `.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/*.md` (22)
-- `.opencode/skill/system-spec-kit/feature_catalog/15--retrieval-enhancements/*.md` (9)
-- `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/*.md` (18)
-- `.opencode/skill/system-spec-kit/feature_catalog/17--governance/*.md` (4)
-- `.opencode/skill/system-spec-kit/feature_catalog/18--ux-hooks/*.md` (19)
-- `.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/*.md` (8)
-- `.opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/*.md` (1)
-- `.opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/*.md` (1)
-
-## Consistency Check
-
-_Status was compared through each snippet’s `CURRENT REALITY` / explicit status wording, because regular snippets do not carry a separate structured `status:` field._
-
-### 11--scoring-and-calibration
-- Maps to master `## 12. SCORING AND CALIBRATION`
-- Master lists 22 features, snippets: 22 files
-- Mismatches: 7 content/status drifts
-- Affected: `02-cold-start-novelty-boost.md`, `08-rrf-k-value-sensitivity-analysis.md`, `13-scoring-and-fusion-corrections.md`, `19-learned-stage2-weight-combiner.md`, `20-shadow-feedback-holdout-evaluation.md`, `21-calibrated-overlap-bonus.md`, `22-rrf-k-experimental.md`
-
-### 12--query-intelligence
-- Maps to master `## 13. QUERY INTELLIGENCE`
-- Master lists 11 features, snippets: 11 files
-- Mismatches: 7 description/status drifts
-- Affected: `02-relative-score-fusion-in-shadow-mode.md`, `05-dynamic-token-budget-allocation.md`, `07-llm-query-reformulation.md`, `08-hyde-hypothetical-document-embeddings.md`, `09-index-time-query-surrogates.md`, `10-query-decomposition.md`, `11-graph-concept-routing.md`
-
-### 13--memory-quality-and-indexing
-- Maps to master `## 14. MEMORY QUALITY AND INDEXING`
-- Master lists 24 features, snippets: 24 files
-- Mismatches: 11
-- Title drift:
-  - master `Outsourced agent memory capture` vs snippet `Outsourced agent handback protocol`
-  - master `Stateless enrichment and alignment guards` vs snippet `Session enrichment and alignment guards`
-- Additional description/status drift in 9 more files, including `01`, `05`, `16`, `19`, `20`, `21`, `22`, `23`, `24`
-
-### 14--pipeline-architecture
-- Maps to master `## 15. PIPELINE ARCHITECTURE`
-- Master lists 22 features, snippets: 22 files
-- Mismatches: 3
-- Affected: `10-legacy-v1-pipeline-removal.md`, `18-atomic-write-then-index-api.md`, `19-embedding-retry-orchestrator.md`
-
-### 15--retrieval-enhancements
-- Maps to master `## 16. RETRIEVAL ENHANCEMENTS`
-- Master lists 9 features, snippets: 9 files
-- Mismatches: 2
-- Affected: `02-constitutional-memory-as-expert-knowledge-injection.md`, `04-lightweight-consolidation.md`
-
-### 16--tooling-and-scripts
-- Maps to master `## 17. TOOLING AND SCRIPTS`
-- Master lists 17 features, snippets: 18 files
-- Extra snippet: `18-template-compliance-contract-enforcement.md`
-- Mismatches: 11
-- Title drift:
-  - master `JSON-primary deprecation posture` vs snippet `JSON-only save contract`
-  - minor heading drift on `12-session-capturing-pipeline-quality.md` (capitalization)
-- Additional description/status drift in 9 more files, including `01`, `04`, `05`, `06`, `11`, `13`, `14`, `15`, `16`
-
-### 17--governance
-- Maps to master `## 18. GOVERNANCE`
-- Master lists 4 features, snippets: 4 files
-- Mismatches: 3
-- Affected: `02-feature-flag-sunset-audit.md`, `03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md`, `04-shared-memory-rollout-deny-by-default-membership-and-kill-switch.md`
-
-### 18--ux-hooks
-- Maps to master `## 19. UX HOOKS`
-- Master lists 19 features, snippets: 19 files
-- Mismatches: 10
-- Affected: `02`, `09`, `10`, `11`, `14`, `15`, `16`, `17`, `18`, `19`
-
-### 19--feature-flag-reference
-- Maps to master `## 21. FEATURE FLAG REFERENCE`
-- Master lists 7 features, snippets: 8 files
-- Extra snippet: `08-audit-phase-020-mapping-note.md`
-- Mismatches: 6 of 7 master-backed files
-- `01-1-search-pipeline-features-speckit.md` also has a title-format mismatch (`1. Search Pipeline Features...` in master vs unnumbered snippet title)
-
-### 20--remediation-revalidation
-- No standalone master feature section maps to this directory
-- Master-backed features: 0, snippets: 1 file
-- Extra snippet: `01-category-stub.md`
-- Master overview says audit phase `021-remediation-revalidation` is covered by cross-category records, not by a standalone category folder
-
-### 21--implement-and-remove-deprecated-features
-- No standalone master feature section maps to this directory
-- Master-backed features: 0, snippets: 1 file
-- Extra snippet: `01-category-stub.md`
-- Master overview says audit phase `022-implement-and-remove-deprecated-features` is covered by closure records elsewhere, not by a standalone category folder
+# Iteration 012: Spec-Code Traceability
 
 ## Findings
 
-### P1-001: Category-to-folder traceability breaks for master categories 20-21
-Master `## 20. SPEC KIT PHASE WORKFLOWS` has no corresponding snippet folder, while master `## 21. FEATURE FLAG REFERENCE` maps to `19--feature-flag-reference/`. Meanwhile `20--remediation-revalidation/` and `21--implement-and-remove-deprecated-features/` exist as standalone stubs even though the master only references those audit phases in overview coverage notes.
+### 1. Root packet: `022-hybrid-rag-fusion/spec.md`
 
-### P1-002: Feature-flag reference snippets are materially stale against master
-`19--feature-flag-reference/01-1-search-pipeline-features-speckit.md` diverges from the master flag table on live behavior/status. Examples include `SPECKIT_ASSISTIVE_RECONSOLIDATION`, `SPECKIT_CONSUMPTION_LOG`, `SPECKIT_CONTEXT_HEADERS`, and `SPECKIT_GRAPH_CONCEPT_ROUTING`, where the master now reflects newer runtime posture than the snippet.
+| Claim | Verdict | Evidence |
+| --- | --- | --- |
+| Root Level 3+ companion docs exist | PASS | `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` are all present under `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/`. |
+| Directory totals `399` / `21` are current | FAIL | `spec.md:38` claims `399` total directories under `022` and `21` top-level directories. Live audit on 2026-03-25 found `403` directories under `022` and `23` top-level child directories (`24` if the root directory itself is included). |
+| Key numbered child counts `001=12`, `007=22`, `008=6`, `009=20`, `011=1`, `015=22` are current | PASS | Live counts match exactly: `001=12`, `007=22`, `008=6`, `009=20`, `011=1`, `015=22`. |
+| Feature Catalog Count `222 feature files` is accurate | PASS (qualified) | Raw markdown count under `.opencode/skill/system-spec-kit/feature_catalog/` is `224`, but excluding `feature_catalog.md` and `feature_catalog_in_simple_terms.md` leaves `222` feature docs, which matches the spec wording. |
+| Root phase map statuses are truthful | FAIL | The phase map in `spec.md:91-109` drifts from child spec status fields. Material mismatches include `006-feature-catalog` (`In Progress` vs `Completed — all 13 checks passed...`), `010-template-compliance-enforcement` (`Draft` vs `In Progress`), `013-agents-alignment` (`Complete` vs `In Progress ... pending`), and `016-019` (`Complete` vs `In Progress ... pending completion evidence`). |
+| Phase `009` and phase `015` truth is preserved | PASS | Phase `009` still has `20` numbered children. Phase `015` still has `22` numbered children with `4 Complete`, `15 Not Started`, and `3 Draft` child specs, so the root packet is correct that `015` remains in progress. |
+| `spec_validate_local.out` is described honestly | PASS | Root spec `REQ-006` (`spec.md:130`), edge-case note (`spec.md:183`), and acceptance scenario 6 (`spec.md:243`) consistently describe `spec_validate_local.out` as historical/debugging context rather than pass evidence. |
+| Root packet includes acceptance-scenario coverage | PASS | `spec.md:236-243` contains 6 acceptance scenarios, satisfying `REQ-008`. |
 
-### P1-003: Several snippet feature names no longer match master feature names
-Confirmed title drift exists in at least:
-- `13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md`
-- `13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md`
-- `16--tooling-and-scripts/17-json-primary-deprecation-posture.md`
+### 2. Epic packet: `001-hybrid-rag-fusion-epic/spec.md`
 
-These are not just formatting issues; they rename the underlying feature concept.
+| Claim | Verdict | Evidence |
+| --- | --- | --- |
+| Parent Level 3 companion docs exist | PASS | `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` all exist in the epic folder. |
+| Epic currently has 12 direct children | PASS | Live subtree count is 12 numbered child folders, matching `spec.md:41` and `REQ-002`. |
+| Parent/root relationship is current | PASS | `spec.md:38-40` points to `../spec.md` and successor `../002-indexing-normalization/spec.md`; those targets exist. |
+| Sprint-child specs point to the live parent and siblings | PASS | Recursive validation of the epic reports `PHASE_LINKS: Phase links valid (12 phases verified)`, so the parent/sibling navigation contract is structurally satisfied. |
+| Parent phase map statuses are truthful | PARTIAL / FAIL | The phase map in `spec.md:93-104` materially drifts on at least two rows: `007-sprint-6-indexing-and-graph` is claimed `Draft` but child `spec.md:28` says `Implemented (Sprint 6a complete, Sprint 6b deferred)`, and `011-research-based-refinement` is claimed `Draft` but child `spec.md:27` says `Implemented`. |
+| Parent packet includes validator coverage scenarios | PASS | `spec.md:231-238` contains 6 acceptance scenarios, satisfying `REQ-008`. |
 
-### P2-004: Broad description/current-reality drift exists across master-backed snippets
-Across categories `11--19`, I found 60 master-backed snippet files whose description and/or current-reality text no longer matches the master section content. The heaviest drift is in `13--memory-quality-and-indexing`, `16--tooling-and-scripts`, `18--ux-hooks`, and `19--feature-flag-reference`.
+### 3. Release-control packet: `012-pre-release-fixes-alignment-preparation/spec.md`
 
-### P2-005: Orphan snippet files exist without master-backed feature entries
-Extra snippet files not backed by a master feature entry in this range:
-- `16--tooling-and-scripts/18-template-compliance-contract-enforcement.md`
-- `19--feature-flag-reference/08-audit-phase-020-mapping-note.md`
-- `20--remediation-revalidation/01-category-stub.md`
-- `21--implement-and-remove-deprecated-features/01-category-stub.md`
+| Claim | Verdict | Evidence |
+| --- | --- | --- |
+| Status line is current: “code gates are green, but release-control validation is still blocked by unresolved recursive validator debt across the `007` child packet family” | FAIL / STALE | `spec.md:16` is outdated. A live strict recursive validation run on 2026-03-25 now reports `Errors: 0  Warnings: 44` with `RESULT: FAILED (strict)`, not `91 errors and 72 warnings`. The current strict failure is also not isolated to `007`; the root packet and other phase packets (for example `002`, `003`, `004`, and `007`) all emit warnings. The “code gates are green” half of the status line could not be re-verified live because a current root `npm test` run did not finish within the audit window. |
+| Completed Work Phases `7 (Phases 1-7 complete)` and Active Work Phase `None — all phases complete` are accurate | FAIL | `spec.md:22-23` contradicts the same file’s work history and scope. `spec.md:51` explicitly says “Phase 4: Full-Tree Remediation (in progress)”, and `plan.md` states Phases `4-7` remain the release path. |
+| `v1`, `v2`, and `v3` review figures are preserved accurately | PASS (historical) | `spec.md:24-26` is corroborated by `research.md` (49 findings / 10-agent audit), `plan.md` (84/100 and 42/100 review history), archived review state, and packet memory artifacts. These are historically backed review snapshots. |
+| Live Review Scope `119 spec directories, 19 direct phases` is current | PARTIAL / STALE | `19` direct phases is still correct, but a live audit now finds `124` spec directories under the `022` tree, so `spec.md:27` is stale as a current-state claim. |
+
+### 4. 012 deliverables
+
+| Deliverable claim | Verdict | Evidence |
+| --- | --- | --- |
+| `research.md` — “Original 49-finding audit with file-backed evidence” | PASS | File exists and records the original 10-agent / 49-finding audit, including `49 findings (4 P0, 19 P1, 26 P2)`. |
+| `review-report.md` — “Complete, current” | FAIL / STALE | File exists, but it is not current. `review-report.md:20` still claims recursive strict validation fails with `91 errors and 72 warnings` isolated to `007`; the live run now reports `0 errors, 44 warnings` and broader warning scope. |
+| `tasks.md` — “Complete, requires follow-up updates” | PASS | File exists and matches the described historical-plus-active remediation backlog structure, including the `58 findings -> 67 concrete release tasks` execution model. |
+| `checklist.md` — “Complete, requires follow-up updates” | PARTIAL | File exists and contains both historical verification evidence and open gate items, but it also repeats stale recursive-validation evidence (`91 errors and 72 warnings` tied to `007`). |
+| `plan.md` — “Rewritten” | PASS | File exists and lays out the remaining Phases `4 -> 7`, consistent with the broadened release-control scope. |
+| `spec.md` — “Rewritten” | PASS | File exists and the objective/scope sections were rewritten for the full-tree remediation program, but several status/count claims inside the rewritten packet are now stale. |
+| `scratch/agent-NN-*.md` — “Complete” | PASS | Archived raw agent outputs exist under `scratch/archive-audit-agents/agent-01-...md` through `agent-10-...md`. |
+
+### 5. Requirements claimed as met inside the 012 packet
+
+| Claimed-as-met item | Verdict | Evidence |
+| --- | --- | --- |
+| “All 6 v3 P0 blockers are cleared with file-backed evidence” | FAIL / NOT TRUSTWORTHY | The same packet still contains stale live-state claims (`119` spec dirs, “all phases complete”), the root packet still has stale directory totals and phase-map statuses, and the current strict validator failure is broader than the packet says. The blanket P0-clearance claim is therefore not traceable to the current live tree. |
+| “All 12 code correctness and security P1 findings are fixed and verified” | UNVERIFIED LIVE | Current file evidence does not directly refute this, but the audit could not re-confirm it through a completed live workspace test run. The supporting claim currently depends on historical review artifacts, not a fresh completed live test pass during this audit. |
+| “Workspace verification passes for the live implementation” | UNVERIFIED LIVE | `review-report.md:26` says a workspace `npm run test` passed on 2026-03-25, and the CLI smoke command `node scripts/dist/memory/generate-context.js --help` still works. However, a fresh root `npm test` launched during this audit did not complete within an extended wait and was stopped, so the claim is not freshly re-verified. |
+| “Recursive validation ... still reports 91 errors and 72 warnings inside the `007` child packet family” (unchecked criterion evidence) | FAIL / STALE EVIDENCE | The criterion is still correctly unchecked, but its evidence text is stale. The current live strict recursive validation result is `Errors: 0  Warnings: 44`, and the warning debt is not limited to `007`. |
 
 ## Summary
 
-- Categories checked: 11
-- Consistent: 0, Inconsistent: 11
-- Total findings: 5 (P0: 0, P1: 3, P2: 2)
+The three specs are only partially traceable to the live tree.
 
+The strongest matches are structural: root and epic companion docs exist, the root numbered-child counts are mostly correct, the epic still has 12 direct children, and the 012 packet’s core deliverables are present.
 
-Total usage est:        1 Premium request
-API time spent:         4m 47s
-Total session time:     5m 15s
-Total code changes:     +0 -0
-Breakdown by AI model:
- gpt-5.4                  1.2m in, 18.9k out, 1.2m cached (Est. 1 Premium request)
+The biggest drifts are current-state claims. The root packet still overstates directory totals and has a stale phase-status map. The epic packet still marks sprint `007` and `011` as `Draft` even though their child specs now say `Implemented`. The 012 release-control packet is the most stale: it says all phases are complete while Phase 4 is still in progress, its “119 spec directories” count is behind the live tree (`124`), and its blocker/evidence language still cites `91 errors / 72 warnings` even though the current strict recursive validator reports `0 errors / 44 warnings`.
+
+Bottom line: the documentation tree is usable for orientation, but not yet trustworthy as a live release-control authority without another truth-sync pass.
+
+## JSONL
+
+{"type":"iteration","run":12,"dimensions":["traceability"],"strict_validation":{"result":"failed","mode":"--recursive --strict","errors":0,"warnings":44},"workspace_test":{"status":"unverified_live","note":"root npm test did not complete within audit window"},"root":{"directory_totals":"fail","numbered_child_counts":"pass","feature_catalog_count":"pass_with_qualifier","phase_map_statuses":"fail"},"epic":{"direct_child_count":"pass","phase_map_statuses":"partial_fail","navigation":"pass"},"phase012":{"status_line":"fail_stale","completed_work_phases":"fail","live_review_scope":"partial_fail","deliverables":{"research":"pass","review_report":"fail_stale","tasks":"pass","checklist":"partial","plan":"pass","spec":"pass","scratch_agent_archives":"pass"},"claimed_met":{"p0_blockers_cleared":"fail","code_p1_fixed":"unverified_live","workspace_verification_passes":"unverified_live"}}}

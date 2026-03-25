@@ -1,7 +1,6 @@
 ---
 title: "Feature Specification: Sprint 3 — Query Intelligence"
 description: "Add query complexity routing, evaluate Relative Score Fusion alternative, and enforce channel diversity."
-# SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2
 trigger_phrases:
   - "sprint 3"
   - "query intelligence"
@@ -36,7 +35,6 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 4** of the Hybrid RAG Fusion Refinement specification.
@@ -51,7 +49,6 @@ This is **Phase 4** of the Hybrid RAG Fusion Refinement specification.
 - Relative Score Fusion evaluation with all 3 variants (R14/N1)
 - Channel min-representation constraint (R2)
 - Off-ramp evaluation checkpoint
-<!-- /ANCHOR:phase-context -->
 
 ---
 
@@ -142,7 +139,7 @@ Route simple queries to fewer channels for speed improvement, evaluate RSF as a 
 ---
 
 <!-- ANCHOR:nfr -->
-## 7. NON-FUNCTIONAL REQUIREMENTS
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: Simple queries <30ms p95 latency
@@ -169,7 +166,7 @@ Sprint 3 introduces 5 feature flags (all disabled by default):
 ---
 
 <!-- ANCHOR:edge-cases -->
-## 8. EDGE CASES
+## L2: EDGE CASES
 
 ### Data Boundaries
 - **R15 minimum 2 channels for simple queries**: Even the simplest query must route to at least 2 channels to preserve R2 channel diversity guarantee
@@ -188,7 +185,7 @@ Sprint 3 introduces 5 feature flags (all disabled by default):
 ---
 
 <!-- ANCHOR:complexity -->
-## 9. COMPLEXITY ASSESSMENT
+## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
@@ -215,7 +212,6 @@ Sprint 3 introduces 5 feature flags (all disabled by default):
 
 ---
 
-<!-- ANCHOR:pageindex-integration -->
 ### PageIndex Integration
 
 Sprint 3 incorporates two PageIndex recommendations that extend the existing query intelligence features.
@@ -243,17 +239,16 @@ Transition thresholds: top result similarity < 0.4 OR result count < 3 triggers 
 **Relationship to existing work**: PI-B3 is a low-risk addition to the folder routing layer. It complements the R9 spec folder pre-filter (Sprint 5) by providing a discovery step before the pre-filter applies.
 
 **Effort**: 4-8h | **Risk**: Low
-<!-- /ANCHOR:pageindex-integration -->
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See ../000-feature-overview/spec.md
-- **Parent Plan**: See `../000-feature-overview/plan.md
+- **Parent Spec**: See ../spec.md
+- **Parent Plan**: See `../plan.md
 
 ---
 
@@ -275,7 +270,7 @@ LEVEL 2 SPEC — Phase 4 of 11
 - Sprint 3: Query Intelligence
 -->
 
-## Acceptance Scenarios (Validator Coverage)
+#### Acceptance Scenarios (Validator Coverage)
 1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

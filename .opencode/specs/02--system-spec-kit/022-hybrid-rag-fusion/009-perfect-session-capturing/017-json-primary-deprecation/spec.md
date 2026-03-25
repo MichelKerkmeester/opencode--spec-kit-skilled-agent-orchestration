@@ -27,8 +27,8 @@ contextType: "implementation"
 | **Branch** | `017-json-primary-deprecation` |
 | **Parent Spec** | `../spec.md` |
 | **Parent Plan** | `../plan.md` |
-| **Predecessor** | `016-json-mode-hybrid-enrichment` |
-| **Successor** | `018-memory-save-quality-fixes` |
+| **Predecessor** | [016-json-mode-hybrid-enrichment](../016-json-mode-hybrid-enrichment/spec.md) |
+| **Successor** | [018-memory-save-quality-fixes](../018-memory-save-quality-fixes/spec.md) |
 <!-- /ANCHOR:metadata -->
 
 ---

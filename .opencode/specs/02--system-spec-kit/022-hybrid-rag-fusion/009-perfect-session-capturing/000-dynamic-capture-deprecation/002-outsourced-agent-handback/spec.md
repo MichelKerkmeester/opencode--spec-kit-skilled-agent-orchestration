@@ -28,8 +28,8 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 2 of 5 (000-dynamic-capture-deprecation branch) |
-| **Predecessor** | 001-session-source-validation |
-| **Successor** | 003-multi-cli-parity |
+| **Predecessor** | [001-session-source-validation](../001-session-source-validation/spec.md) |
+| **Successor** | [003-multi-cli-parity](../003-multi-cli-parity/spec.md) |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-002 |
 | **Sequence** | B5 (after 011) |

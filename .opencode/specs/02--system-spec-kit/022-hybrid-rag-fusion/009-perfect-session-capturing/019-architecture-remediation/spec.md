@@ -51,7 +51,7 @@ Global architecture, bug fix, and alignment deep dive across the entire `009-per
 | **Parent** | `009-perfect-session-capturing` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Predecessor** | `018-memory-save-quality-fixes` |
+| **Predecessor** | [018-memory-save-quality-fixes](../018-memory-save-quality-fixes/spec.md) |
 | **Successor** | None |
 
 ---

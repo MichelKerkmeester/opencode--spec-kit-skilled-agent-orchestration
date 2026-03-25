@@ -33,7 +33,7 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-This phase improves the reliability of what gets indexed and what survives into the final memory file. It adds embedding retry visibility to `memory_health`, introduces a three-stage trigger phrase filter that removes low-signal tokens before manual merge, cleans up phantom OPTIONAL_PLACEHOLDERS entries in `context_template.md`, and adds two deduplication mechanisms — observation-level string equality at normalization time and a pre-save fingerprint overlap check — to prevent near-duplicate memories from accumulating in a spec folder.
+This phase improves the reliability of what gets indexed and what survives into the final memory file. It adds embedding retry visibility to `memory_health`, introduces a three-stage trigger phrase filter that removes low-signal tokens before manual merge, cleans up phantom OPTIONAL_PLACEHOLDERS entries in the context template, and adds two deduplication mechanisms — observation-level string equality at normalization time and a pre-save fingerprint overlap check — to prevent near-duplicate memories from accumulating in a spec folder.
 
 ### Embedding Visibility
 
@@ -45,7 +45,7 @@ This phase improves the reliability of what gets indexed and what survives into 
 
 ### Template Sections
 
-`toolCalls` and `exchanges` fields rendered as compact strings (`TOOL_CALLS_COMPACT`, `EXCHANGES_COMPACT`) in `context_template.md`. Context builder binds `hasToolCalls` and `hasExchanges` boolean flags to guard optional sections. This prevents empty placeholder blocks from appearing in rendered memory files.
+`toolCalls` and `exchanges` fields are rendered as compact strings (`TOOL_CALLS_COMPACT`, `EXCHANGES_COMPACT`) in the context template. Context builder binds `hasToolCalls` and `hasExchanges` boolean flags to guard optional sections. This prevents empty placeholder blocks from appearing in rendered memory files.
 
 ### OPTIONAL_PLACEHOLDERS Cleanup
 
@@ -69,7 +69,7 @@ SHA1 fingerprint comparison of the last 20 memories for the spec folder, enabled
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Changes distributed across `retry-manager.ts`, `trigger-filter.ts` (new file), `context_template.md`, `input-normalizer.ts`, and `post-save-review.ts`. TypeScript compiled after each change group. `memory_health` embedding block verified via agent call. Trigger filter verified via code review against TRIGGER_ALLOW_LIST entries and shingle subset logic.
+Changes distributed across `retry-manager.ts`, `trigger-filter.ts` (new file), the context template, `input-normalizer.ts`, and `post-save-review.ts`. TypeScript compiled after each change group. `memory_health` embedding block verified via agent call. Trigger filter verified via code review against `TRIGGER_ALLOW_LIST` entries and shingle subset logic.
 <!-- /ANCHOR:how-delivered -->
 
 ---

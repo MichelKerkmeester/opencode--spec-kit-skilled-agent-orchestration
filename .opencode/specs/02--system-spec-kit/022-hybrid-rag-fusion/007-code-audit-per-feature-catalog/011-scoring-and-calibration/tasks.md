@@ -9,11 +9,12 @@ contextType: "general"
 ---
 # Tasks: Code Audit — Scoring and Calibration
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -25,16 +26,22 @@ contextType: "general"
 
 **Task Format**: `T### [P?] Description`
 
+<!-- /ANCHOR:notation -->
+
 ---
 
-## Phase 1: Preparation
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
 - [x] T000 Verify feature catalog currency for Scoring and Calibration
 - [x] T000a [P] Identify source code root paths
 
+<!-- /ANCHOR:phase-1 -->
+
 ---
 
-## Phase 2: Feature Audit
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
 - [x] T001 [P] Audit: Score normalization — MATCH
 - [x] T002 [P] Audit: Cold-start novelty boost — MATCH
@@ -60,26 +67,37 @@ contextType: "general"
 - [x] T022 [P] Audit: RRF K experimental tuning — PARTIAL (wrong function name in catalog; implementation found under different name)
 - [x] T023 [P] Audit: Fusion policy shadow evaluation V2 — PARTIAL (wrong flag location in catalog; flag confirmed in codebase at different path)
 
+<!-- /ANCHOR:phase-2 -->
+
 ---
 
-## Phase 3: Synthesis
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
 - [x] T900 Cross-reference findings across features
 - [x] T901 Compile audit summary report
 - [x] T902 Update implementation-summary.md
 
+<!-- /ANCHOR:phase-3 -->
+
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All feature audit tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
 - [x] Summary report completed
 
+<!-- /ANCHOR:completion -->
+
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
+
+<!-- /ANCHOR:cross-refs -->

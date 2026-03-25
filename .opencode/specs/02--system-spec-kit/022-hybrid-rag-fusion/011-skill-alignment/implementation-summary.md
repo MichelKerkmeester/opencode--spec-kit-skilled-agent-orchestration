@@ -72,8 +72,7 @@ description: "Summary of the 2026-03-21 truth-reconciliation pass for the 011 sk
 
 ---
 
-<!-- ANCHOR:pass-2 -->
-## 6. POST-RESEARCH-REFINEMENT ALIGNMENT (2026-03-22)
+### Post-Research-Refinement Alignment (2026-03-22)
 
 After spec-011 (research-based refinement) graduated 9 new feature flags and the feature catalog/playbook grew, a second alignment pass was needed.
 
@@ -91,10 +90,6 @@ After spec-011 (research-based refinement) graduated 9 new feature flags and the
 - Command files (all 6 memory commands + README): all clean
 - Command configs (27 YAML + 22 TOML): no stale references
 - sk-doc alignment: zero HVR violations, zero em dashes, zero semicolons, table columns consistent
-<!-- /ANCHOR:pass-2 -->
-
----
-
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 

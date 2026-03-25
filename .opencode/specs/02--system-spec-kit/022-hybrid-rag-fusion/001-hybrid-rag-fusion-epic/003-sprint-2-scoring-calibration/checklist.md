@@ -1,7 +1,6 @@
 ---
 title: "Verification Checklist: Sprint 2 — Scoring Calibration"
 description: "Verification checklist for Sprint 2: embedding cache, cold-start boost, G2 investigation, score normalization"
-# SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
 trigger_phrases:
   - "sprint 2 checklist"
   - "scoring calibration checklist"
@@ -95,13 +94,13 @@ contextType: "implementation"
 
 ---
 
-## PageIndex Integration
+#### PageIndex Integration
 
 - [x] PI-A1 [P1]: Folder-level relevance scoring active in reranker — FolderScore computed as `(1/sqrt(M+1)) * SUM(MemoryScore(m))` per spec_folder using [0,1]-normalized memory scores; large folders do not dominate by volume (damping factor verified); FolderScore exposed as result metadata; two-phase retrieval path (folder selection then within-folder search) operational [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 
 ---
 
-## Sprint 2 Exit Gate
+#### Sprint ### Sprint 2 Exit Gate
 
 - [x] CHK-S2-060 [P1] R18 embedding cache hit rate >90% on re-index of unchanged content [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-S2-061 [P1] N4 dark-run: new memories (<48h) surface when relevant without displacing highly relevant older results (implementation verified; live dark-run deferred) — **DEPRECATED**: N4 novelty boost superseded; `calculateNoveltyBoost()` always returns 0 as of Sprint 10 [EVIDENCE: documented in phase spec/plan/tasks artifacts]
@@ -138,10 +137,10 @@ P0 must complete, P1 need approval to defer
 Off-ramp: Recommended minimum viable stop after Sprint 2+3 (phases 3+4)
 -->
 
-## P0
-- [x] [P0] No additional phase-specific blockers recorded for this checklist normalization pass. *N/A — normalization pass artifact*
+### Normalization Pass P0
+- [x] [P0] No additional phase-specific blockers recorded for this checklist normalization pass. [EVIDENCE: checklist normalization pass note retained during template cleanup]
 
-## P1
-- [x] [P1] No additional required checks beyond documented checklist items for this phase. *N/A — normalization pass artifact*
+### Normalization Pass P1
+- [x] [P1] No additional required checks beyond documented checklist items for this phase. [EVIDENCE: checklist normalization pass note retained during template cleanup]
 
 ---

@@ -113,6 +113,16 @@ No P1 items are defined for this phase; all eleven UX-hooks scenarios are mandat
 - **SC-002**: Each scenario has a PASS, PARTIAL, or FAIL verdict with explicit rationale.
 - **SC-003**: Coverage is reported as 11/11 with no skipped test IDs.
 - **SC-004**: Flag-based scenarios (166–169, 179, 180) include evidence for both enabled and disabled flag states.
+### Acceptance Scenarios
+
+**Given** the `018-ux-hooks` phase packet, **when** a reviewer opens the scenario mapping, **then** every scenario listed for the phase has a bounded execution target and a documented acceptance rule.
+
+**Given** the `018-ux-hooks` phase packet, **when** execution evidence is reviewed, **then** verdict notes can be traced through `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+
+**Given** the `018-ux-hooks` phase packet, **when** a reviewer checks neighboring navigation, **then** the packet points back to the parent and to the adjacent numbered phase where one exists.
+
+**Given** strict validation runs on the `018-ux-hooks` phase packet, **when** the validator checks structure, **then** the packet satisfies Level 2 requirement and acceptance-scenario minimums.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

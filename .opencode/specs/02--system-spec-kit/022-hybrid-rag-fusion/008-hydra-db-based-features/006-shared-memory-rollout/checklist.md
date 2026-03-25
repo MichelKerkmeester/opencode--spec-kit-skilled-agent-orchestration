@@ -44,7 +44,7 @@ contextType: "general"
 - [x] CHK-610 [P0] Shared-memory spaces implemented [EVIDENCE:implementation-summary.md]
 - [x] CHK-611 [P0] Membership and conflict rules validated [EVIDENCE:implementation-summary.md]
 - [x] CHK-612 [P0] Governance reuse verified [EVIDENCE:implementation-summary.md]
-- [ ] [DEFERRED] Rollback/kill-switch drill — drill artifacts not yet produced; evidence required before release sign-off
+- [ ] CHK-613 [P2] Rollback or kill-switch drill deferred — drill artifacts not yet produced; evidence required before release sign-off
 - [x] CHK-614 [P0] Staged rollout procedure validated [EVIDENCE:implementation-summary.md]
 <!-- /ANCHOR:code-quality -->
 

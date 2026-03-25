@@ -243,7 +243,7 @@ onQuery(q) => search(q + matchedSurrogates(q));
 - [Parent Plan](../plan.md) — Cross-phase implementation waves
 - [Predecessor: D1](../001-fusion-scoring-intelligence/spec.md) — Fusion Scoring Intelligence
 - [Successor: D3](../003-graph-augmented-retrieval/spec.md) — Graph-Augmented Retrieval
-- [Research Source](../../../019-deep-research-rag-improvement/research/research.md) — Full 29-recommendation synthesis
+- Research Source (historical, path removed) — Full 29-recommendation synthesis
 - [Plan](plan.md) — D2 implementation phases
 - [Tasks](tasks.md) — D2 task breakdown
 - [Checklist](checklist.md) — Level 2 verification

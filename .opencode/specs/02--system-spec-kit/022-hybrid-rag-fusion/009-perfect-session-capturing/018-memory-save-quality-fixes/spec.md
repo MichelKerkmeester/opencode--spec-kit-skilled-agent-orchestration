@@ -32,8 +32,8 @@ contextType: "implementation"
 | **Branch** | `018-memory-save-quality-fixes` |
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
-| **Predecessor** | 017-json-primary-deprecation |
-| **Successor** | 019-architecture-remediation |
+| **Predecessor** | [017-json-primary-deprecation](../017-json-primary-deprecation/spec.md) |
+| **Successor** | [019-architecture-remediation](../019-architecture-remediation/spec.md) |
 <!-- /ANCHOR:metadata -->
 
 ---

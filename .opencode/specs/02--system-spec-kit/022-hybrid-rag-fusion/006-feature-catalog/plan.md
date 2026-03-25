@@ -50,7 +50,7 @@ Historical plan: verify ~180 feature snippets and investigate 55 known gaps, the
 
 ---
 
-## AI EXECUTION PROTOCOL
+**AI EXECUTION PROTOCOL**
 
 ### Pre-Task Checklist
 
@@ -260,7 +260,7 @@ Phase A (Spec Upgrade) ──► Phase B (30 Agents) ──► Phase C (Synthesi
 
 ---
 
-## L3: AGENT PARTITIONING
+**L3: AGENT PARTITIONING**
 
 ### Stream 1: Verification Agents (C01-C20)
 
@@ -291,7 +291,7 @@ Phase A (Spec Upgrade) ──► Phase B (30 Agents) ──► Phase C (Synthesi
 
 ---
 
-## 2026-03-16 Addendum: Reality Alignment
+**2026-03-16 Addendum: Reality Alignment**
 
 ### Snapshot vs Current Tree
 
@@ -324,7 +324,7 @@ Phase A (Spec Upgrade) ──► Phase B (30 Agents) ──► Phase C (Synthesi
 
 ---
 
-## Merged Section: 016-feature-catalog-code-references Plan
+**Merged Section: 016-feature-catalog-code-references Plan**
 
 > **Merge note (2026-03-14)**: Originally the 016 plan document in the prior folder layout.
 
@@ -334,8 +334,7 @@ Phase A (Spec Upgrade) ──► Phase B (30 Agents) ──► Phase C (Synthesi
 
 ---
 
-<!-- ANCHOR:approach -->
-## 1. APPROACH
+### Approach
 
 Comment-only pass across all MCP server source files in two phases:
 
@@ -344,42 +343,34 @@ Scan all `.ts` source files for inline comments referencing specific sprint numb
 
 **Phase B: Annotate** (add feature catalog references)
 Map each source file to its feature catalog entry and add concise `// Feature catalog: <feature-name>` comments at module level and key function boundaries.
-<!-- /ANCHOR:approach -->
 
 ---
 
-<!-- ANCHOR:technical-context -->
-## 2. TECHNICAL CONTEXT
+### Technical Context
 
 - Scope: comment-only updates in `.opencode/skill/system-spec-kit/mcp_server/` and `.opencode/skill/system-spec-kit/shared/`
 - Source of truth for names: feature catalog H1 headings in `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`
 - Verification inputs: non-test stale-reference grep, handler coverage (40/40), script coverage (3/3), exact-name validation (0 invalid names), and `npm run typecheck`
-<!-- /ANCHOR:technical-context -->
 
 ---
 
-<!-- ANCHOR:architecture-016 -->
-## 3. ARCHITECTURE
+### Architecture
 
 - Inline traceability model: add `// Feature catalog: <feature-name>` at handler/module boundaries
 - Change boundary: comments only; no runtime behavior, API contracts, or logic paths changed
 - Validation model: static compile check, grep-based audits, and comment-only diff classification
-<!-- /ANCHOR:architecture-016 -->
 
 ---
 
-<!-- ANCHOR:implementation -->
-## 4. IMPLEMENTATION
+### Implementation
 
 - Cleanup pass: remove or reword stale numbered-history comments in non-test TypeScript source
 - Annotation pass: add feature-catalog comments to all handlers and strong-match modules, including all in-scope scripts
 - Verification pass: run typecheck plus coverage and exact-name validation checks; record evidence in spec docs
-<!-- /ANCHOR:implementation -->
 
 ---
 
-<!-- ANCHOR:execution -->
-## 5. EXECUTION STEPS
+### Execution Steps
 
 ### Phase A: Cleanup stale references
 
@@ -403,12 +394,10 @@ Map each source file to its feature catalog entry and add concise `// Feature ca
 | B5 | Annotate script modules | Add references where scripts implement specific feature behavior |
 | B6 | Verify format consistency | Grep for all `Feature catalog:` comments and verify they use name-only format |
 | B7 | Compile check | Run `tsc --noEmit` to confirm no syntax issues from comment changes |
-<!-- /ANCHOR:execution -->
 
 ---
 
-<!-- ANCHOR:dependencies-016 -->
-## 6. ORDERING AND DEPENDENCIES
+### Ordering and Dependencies
 
 ```
 A1-A3 (parallel scans)
@@ -418,12 +407,10 @@ A1-A3 (parallel scans)
         -> B2-B5 (parallel annotation by directory)
           -> B6-B7 (verify)
 ```
-<!-- /ANCHOR:dependencies-016 -->
 
 ---
 
-<!-- ANCHOR:scope-estimate -->
-## 7. ESTIMATED SCOPE
+### Estimated Scope
 
 | Category | File Count | Effort |
 |----------|------------|--------|
@@ -432,4 +419,3 @@ A1-A3 (parallel scans)
 | Shared modules | ~10 | Small |
 | Scripts | ~15 | Small |
 | **Total** | **~105** | **Comment-only, no behavioral changes** |
-<!-- /ANCHOR:scope-estimate -->

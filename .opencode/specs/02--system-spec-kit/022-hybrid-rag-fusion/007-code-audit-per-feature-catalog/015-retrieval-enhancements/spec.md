@@ -11,11 +11,11 @@ contextType: "general"
 # Feature Specification: Code Audit — Retrieval Enhancements
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
-## EXECUTIVE SUMMARY
+### Executive Summary
 
 Systematic code audit of 9 Retrieval Enhancements features in the Spec Kit Memory MCP server. Each feature from `feature_catalog/15--retrieval-enhancements/` was verified against source code implementation to confirm accuracy, completeness, and catalog alignment.
 
@@ -27,6 +27,7 @@ Systematic code audit of 9 Retrieval Enhancements features in the Spec Kit Memor
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -42,8 +43,11 @@ Systematic code audit of 9 Retrieval Enhancements features in the Spec Kit Memor
 | **Successor** | ../016-tooling-and-scripts/spec.md |
 
 
+<!-- /ANCHOR:metadata -->
+
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -52,8 +56,11 @@ The feature catalog for Retrieval Enhancements had evolved significantly. Existi
 ### Purpose
 Verify that all 9 Retrieval Enhancements features are accurately documented in the feature catalog and correctly implemented in source code.
 
+<!-- /ANCHOR:problem -->
+
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -86,8 +93,11 @@ Verify that all 9 Retrieval Enhancements features are accurately documented in t
 | `mcp_server/lib/search/hybrid-search.ts` | F07 + F09 primary implementation |
 | `mcp_server/formatters/search-results.ts` | F08 primary implementation |
 
+<!-- /ANCHOR:scope -->
+
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -103,16 +113,23 @@ Verify that all 9 Retrieval Enhancements features are accurately documented in t
 |----|-------------|--------|----------|
 | REQ-003 | Source file references validated | DONE | All primary source files confirmed to exist |
 | REQ-004 | Feature interactions mapped | DONE | F06 depends on R10 entity catalog; F07 wired into hybrid-search pipeline |
+| REQ-005 | Audit results reusable for release-control follow-up | DONE | Summary stats and companion-doc cross-references recorded in this packet |
+
+<!-- /ANCHOR:requirements -->
 
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: All 9 features audited with findings documented — ACHIEVED
 - **SC-002**: Zero unverified features remaining in this category — ACHIEVED
 
+<!-- /ANCHOR:success-criteria -->
+
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Resolution |
@@ -121,9 +138,11 @@ Verify that all 9 Retrieval Enhancements features are accurately documented in t
 | Risk | Source code changed since catalog update | Med | All primary source files confirmed to exist |
 | Risk | Some features span multiple source files | Low | F01 and F09 are broad; primary files identified |
 
+<!-- /ANCHOR:risks -->
+
 ---
 
-## 7. NON-FUNCTIONAL REQUIREMENTS
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: Audit completable by AI agent in single session — ACHIEVED
@@ -133,7 +152,7 @@ Verify that all 9 Retrieval Enhancements features are accurately documented in t
 
 ---
 
-## 8. EDGE CASES
+## L2: EDGE CASES
 
 ### Data Boundaries
 - Feature with no source files listed: None found — all 9 features have source file lists
@@ -144,7 +163,7 @@ Verify that all 9 Retrieval Enhancements features are accurately documented in t
 
 ---
 
-## 9. COMPLEXITY ASSESSMENT
+## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
@@ -157,7 +176,7 @@ Verify that all 9 Retrieval Enhancements features are accurately documented in t
 
 ---
 
-## 10. RISK MATRIX
+### Risk Matrix
 
 | Risk ID | Description | Impact | Likelihood | Resolution |
 |---------|-------------|--------|------------|------------|
@@ -166,7 +185,7 @@ Verify that all 9 Retrieval Enhancements features are accurately documented in t
 
 ---
 
-## 11. USER STORIES
+### User Stories
 
 ### US-001: Feature Verification (Priority: P0)
 
@@ -177,7 +196,7 @@ Verify that all 9 Retrieval Enhancements features are accurately documented in t
 
 ---
 
-## 12. AUDIT FINDINGS
+### Audit Findings
 
 | ID | Feature | Result | Notes |
 |----|---------|--------|-------|
@@ -193,7 +212,22 @@ Verify that all 9 Retrieval Enhancements features are accurately documented in t
 
 ---
 
-## RELATED DOCUMENTS
+<!-- ANCHOR:questions -->
+### Acceptance Scenarios
+
+- **Given** a feature catalog entry in this phase, **when** the packet is reviewed, **then** the primary implementation or discrepancy is explicitly documented.
+- **Given** the listed source files for a feature, **when** maintainers spot-check them against the repo, **then** the packet either confirms them or records the drift.
+- **Given** a release-control follow-up session, **when** the packet is reopened, **then** the category verdict and summary statistics remain easy to find.
+- **Given** the companion packet documents, **when** a validator checks cross-references, **then** the phase remains reusable inside the recursive `007` validation run.
+
+## 10. OPEN QUESTIONS
+
+- None. F09 source-list trimming remains a catalog follow-up and does not block this audit packet.
+<!-- /ANCHOR:questions -->
+
+---
+
+### Related Documents
 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`

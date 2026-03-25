@@ -26,8 +26,8 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 9 |
-| **Predecessor** | 008-signal-extraction |
-| **Successor** | 010-integration-testing |
+| **Predecessor** | [008-signal-extraction](../008-signal-extraction/spec.md) |
+| **Successor** | [010-integration-testing](../010-integration-testing/spec.md) |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-09 |
 | **Sequence** | B3 |

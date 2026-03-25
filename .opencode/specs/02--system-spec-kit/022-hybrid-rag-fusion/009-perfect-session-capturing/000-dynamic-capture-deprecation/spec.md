@@ -28,7 +28,7 @@ contextType: "general"
 | **Parent Spec** | `../spec.md` |
 | **Parent Plan** | `../plan.md` |
 | **Predecessor** | None |
-| **Successor** | `001-quality-scorer-unification` |
+| **Successor** | [001-quality-scorer-unification](../001-quality-scorer-unification/spec.md) |
 <!-- /ANCHOR:metadata -->
 
 ---

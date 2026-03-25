@@ -26,8 +26,8 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 3 |
-| **Predecessor** | 002-contamination-detection |
-| **Successor** | 004-type-consolidation |
+| **Predecessor** | [002-contamination-detection](../002-contamination-detection/spec.md) |
+| **Successor** | [004-type-consolidation](../004-type-consolidation/spec.md) |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-03 |
 | **Sequence** | A2, D1, D2 |

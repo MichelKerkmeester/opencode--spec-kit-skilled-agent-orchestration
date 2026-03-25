@@ -10,7 +10,7 @@ contextType: "general"
 ---
 # Implementation Summary: Code Audit — Memory Quality & Indexing
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
@@ -21,9 +21,9 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 007-code-audit-per-feature-catalog/013-memory-quality-and-indexing |
+| **Spec Folder** | 013-memory-quality-and-indexing |
 | **Completed** | 2026-03-22 |
-| **Level** | 3 |
+| **Level** | 2 |
 <!-- /ANCHOR:metadata -->
 
 ---

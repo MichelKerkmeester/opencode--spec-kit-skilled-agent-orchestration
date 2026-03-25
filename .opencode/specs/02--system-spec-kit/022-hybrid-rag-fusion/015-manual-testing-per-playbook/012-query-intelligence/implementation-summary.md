@@ -31,8 +31,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:verdict-table -->
-## Verdict Table
+### Verdict Table
 
 | Test ID | Scenario | Verdict | Key Evidence |
 |---------|----------|---------|--------------|
@@ -48,7 +47,6 @@ contextType: "general"
 | 173 | Query Decomposition (SPECKIT_QUERY_DECOMPOSITION) | **PASS** | `query-decomposer.ts:22` — `MAX_FACETS=3`; `query-decomposer.ts:97-119` — multi-facet detection; `stage1-candidate-gen.ts:393-441` — deep-mode gate, graceful fallback; no LLM calls |
 
 **Overall: 10 PASS / 0 PARTIAL / 0 FAIL (10/10 scenarios)**
-<!-- /ANCHOR:verdict-table -->
 
 ---
 

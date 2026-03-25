@@ -26,8 +26,8 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 6 |
-| **Predecessor** | 005-confidence-calibration |
-| **Successor** | 007-phase-classification |
+| **Predecessor** | [005-confidence-calibration](../005-confidence-calibration/spec.md) |
+| **Successor** | [007-phase-classification](../007-phase-classification/spec.md) |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-06 |
 | **Sequence** | A1 |

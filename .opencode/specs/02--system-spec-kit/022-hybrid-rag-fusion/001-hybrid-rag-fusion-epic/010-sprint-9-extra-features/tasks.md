@@ -23,7 +23,7 @@
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Hardening & Ergonomics
+## Phase 1: Setup
 
 ### P0-1: Strict Zod Schema Validation
 
@@ -122,7 +122,7 @@
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Operational Reliability
+## Phase 2: Implementation
 
 ### P0-3: Async Ingestion Job Lifecycle
 
@@ -202,7 +202,7 @@
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Retrieval Excellence
+### Phase 3: Verification
 
 ### P1-5: Local GGUF Reranker
 
@@ -234,8 +234,7 @@
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Innovation (Deferred)
+##### Phase 4: Innovation (Deferred)
 
 ### P2-8: Warm Server / Daemon Mode
 - [B] T099 [B:MCP SDK HTTP transport standardization] Research MCP SDK transport negotiation patterns
@@ -256,7 +255,7 @@
 - [B] T110 [B:T109] Wire namespace selection into all existing tools
 
 ### P2-11: ANCHOR Tags as Graph Nodes
-- [B] T111 2-day spike: parse `<!-- ANCHOR:name -->` tags from indexed markdown
+- [B] T111 2-day spike: parse `` tags from indexed markdown
 - [B] T112 [B:T111] Convert parsed anchors to typed graph nodes (e.g., `ArchitectureNode`, `DecisionNode`)
 - [B] T113 [B:T112] Create edges between anchor nodes based on co-occurrence and spec folder hierarchy
 - [B] T114 [B:T113] Evaluate: does graph-based anchor retrieval outperform current S2 annotation approach?
@@ -266,12 +265,9 @@
 - [B] T116 [B:T115] Implement `read_spec_section(filePath, heading)` tool: parse AST, extract section by heading match
 - [B] T117 [B:T116] Support nested headings: `## Requirements > ### P0 Blockers` returns only P0 subsection
 - [B] T118 [B:T117] Test with real spec files — verify section extraction accuracy
-<!-- /ANCHOR:phase-4 -->
-
 ---
 
-<!-- ANCHOR:cross-ai-review-remediation -->
-## Cross-AI Review Remediation (2026-03-06)
+##### Cross-AI Review Remediation (2026-03-06)
 
 > 26 findings from an 8-agent multi-AI review (3 Gemini, 3 Opus, 2 Codex). 21 actionable, 5 not-actionable (already fixed or confirmed safe). Applied in a single remediation pass.
 
@@ -283,7 +279,7 @@
 - [x] T134 [M4] Trace data gating — `extraData` spread in response envelope now gated behind `includeTrace` flag (`formatters/search-results.ts`) [DONE: Object.assign only when includeTrace && extraData]
 - [x] T135 [M5] Ingest schema constraints — added `minItems: 1`, `maxItems: 50`, `minLength: 1` to ingest paths in JSON Schema (`tool-schemas.ts`) [DONE: constraints match Zod schema]
 - [x] T136 [L2] Sanitized error leak — catch-all in `validateToolArgs()` now throws generic message instead of raw error (`schemas/tool-input-schemas.ts`) [DONE: 'Schema validation encountered an unexpected error']
-- [x] T137 [L3] ADR-003 `includeTrace` documentation — added gating behavior section to `decision-record.md` [DONE: per-result envelope, response-level extraData, env override documented]
+- [x] T137 [L3] ADR-003 `includeTrace` documentation — added gating behavior section to `plan.md` [DONE: per-result envelope, response-level extraData, env override documented]
 - [x] T138 [L6] Documented ingest as always-on — updated `implementation-summary.md` feature flags table [DONE: P0-3 always enabled, gated by tool availability not env var]
 - [x] T139 ANCHOR spike promotion — promoted P2-11 to P1-8 in `implementation-summary.md` deferred table [DONE: per O3 research validation consensus]
 - [x] T140 [OP5] Integration tests — created `tests/review-fixes.vitest.ts` with 12 tests verifying C1, H1, H2, H5, M5 fixes [DONE: 5 describe blocks, 12 tests, all passing]
@@ -305,12 +301,9 @@
 **Verification:**
 - [x] T153 TypeScript compilation — `npx tsc --noEmit` passes (pre-existing errors in unrelated files only) [DONE]
 - [x] T154 Integration tests — 12/12 tests pass in `tests/review-fixes.vitest.ts` [DONE]
-<!-- /ANCHOR:cross-ai-review-remediation -->
-
 ---
 
-<!-- ANCHOR:orphan-remediation-follow-up -->
-## Orphan Remediation Follow-up (2026-03-13)
+##### Orphan Remediation Follow-up (2026-03-13)
 
 - [x] T155 Isolate `handler-memory-stats-edge` to an in-memory DB test fixture and mock `checkDatabaseUpdated=false` [DONE: edge harness now stays in-memory and no longer depends on live DB metadata updates]
 - [x] T156 Seed `handler-memory-stats-edge` fixtures as `pending` (instead of `success`) [DONE: queue-status assertions now exercise the intended pre-update branch deterministically]
@@ -321,12 +314,9 @@
 - [x] T161 Execute live DB cleanup and capture post-clean integrity metrics [DONE: removed `2885` dead `/tmp` rows and `15138` orphaned vectors; resulting counters `totalMemories=544`, `totalVectors=508`, `orphanedVectors=0`, `missingVectors=0`, `tmpOrphanRows=0`]
 - [x] T162 Run runtime smoke on `mcp_server/dist/context-server.js` and verify integrity log [DONE: smoke passed and logs `Integrity check: 544/544 valid entries` with no orphan warning]
 - [B] T163 Re-run `npm run check:full` for full-workspace confirmation [BLOCKED: unrelated dirty-worktree failure in `tests/unit-rrf-fusion.vitest.ts`, test `C138-CV13`, from shared RRF work outside orphan-remediation scope]
-<!-- /ANCHOR:orphan-remediation-follow-up -->
-
 ---
 
-<!-- ANCHOR:verification -->
-## Verification & Documentation
+## Phase 3: Verification
 
 **Regression gates (HARD BLOCKER per phase):**
 - [ ] T119 Run `eval_run_ablation` baseline BEFORE any changes — record all 9 metrics as reference
@@ -346,10 +336,6 @@
 
 **Memory save:**
 - [ ] T129 Save session context via `generate-context.js` to 004 memory folder
-<!-- /ANCHOR:verification -->
-
----
-
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
@@ -371,6 +357,6 @@
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
-- **Decision Record**: See `decision-record.md`
+- **Plan**: See `plan.md`
 - **Research**: See `research/016 - synthesis-final-v2.md` (definitive source)
 <!-- /ANCHOR:cross-refs -->

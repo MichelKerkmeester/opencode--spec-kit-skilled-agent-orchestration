@@ -54,7 +54,7 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 
 ---
 
-## Agent Research Completeness
+**Agent Research Completeness**
 
 - [x] CHK-010 [P0] All 20 verification agents (C01-C20) produced reports — [Evidence: 20 files, 44-139KB each]
 - [x] CHK-011 [P0] All 10 investigation agents (X01-X10) produced reports — [Evidence: 10 files, 39-110KB each]
@@ -64,7 +64,7 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 
 ---
 
-## Data Integrity
+**Data Integrity**
 
 - [x] CHK-020 [P0] All file paths in existing snippets validated — [Evidence: 3 invalid paths found out of 393 unique (0.76%), documented in manifest PV-001/002/003]
 - [x] CHK-021 [P0] All 55 known gaps have a classification — [Evidence: 48 CONFIRMED_GAP, 7 FALSE_POSITIVE]
@@ -74,7 +74,7 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 
 ---
 
-## Synthesis Quality
+**Synthesis Quality**
 
 - [x] CHK-030 [P0] Remediation manifest exists with all findings classified — [Evidence: scratch/remediation-manifest.md, 202 items]
 - [x] CHK-031 [P0] Every finding has an action category — [Evidence: P0 (3 batch), P1 (173 updates), P2 (29 new)]
@@ -131,7 +131,7 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 
 ---
 
-## Phase G: Normalization & Phase 016/017 Coverage (2026-03-21)
+**Phase G: Normalization & Phase 016/017 Coverage (2026-03-21)**
 
 - [x] CHK-200 [P0] All `NEW-NNN` markers removed from feature catalog files — [Evidence: grep returns 0 matches excluding G-NEW- proper nouns, verified by E1 agent]
 - [x] CHK-201 [P0] All `NEW-NNN` markers removed from playbook files — [Evidence: grep returns 0 matches excluding G-NEW- proper nouns, verified by E2 agent]
@@ -147,7 +147,7 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 
 ---
 
-## Merged Section: 016-feature-catalog-code-references Checklist
+**Merged Section: 016-feature-catalog-code-references Checklist**
 
 > **Merge note (2026-03-14)**: Originally the 016 checklist document in the prior folder layout.
 
@@ -157,30 +157,24 @@ title: "Verification Checklist: Feature Catalog Audit & Remediation"
 
 ---
 
-<!-- ANCHOR:p0 -->
-## P0 - Blockers
+**P0 - Blockers**
 
-- [x] **CHK-001**: Zero inline comments reference `Sprint \d+` in non-test `.ts` files [Evidence: Non-test source grep for stale refs returned no matches]
-- [x] **CHK-002**: Zero inline comments reference `Phase \d+` in non-test `.ts` files [Evidence: Non-test source grep for stale refs returned no matches]
-- [x] **CHK-003**: Zero inline comments reference specific spec folder numbers (e.g., `spec 013`, `specs/NNN`) [Evidence: Non-test source grep for stale refs returned no matches]
-- [x] **CHK-004**: All handler files have at least one `// Feature catalog: <name>` reference [Evidence: 40 handler `.ts` files and 40 handler files containing a `// Feature catalog:` comment]
-- [x] **CHK-005**: All `Feature catalog:` references use feature name only, no folder numbers [Evidence: Stable name-based wording + zero numbered-history comment matches]
-<!-- /ANCHOR:p0 -->
+- [x] **CHK-001 [P0]**: Zero inline comments reference `Sprint \d+` in non-test `.ts` files [Evidence: Non-test source grep for stale refs returned no matches]
+- [x] **CHK-002 [P0]**: Zero inline comments reference `Phase \d+` in non-test `.ts` files [Evidence: Non-test source grep for stale refs returned no matches]
+- [x] **CHK-003 [P0]**: Zero inline comments reference specific spec folder numbers (e.g., `spec 013`, `specs/NNN`) [Evidence: Non-test source grep for stale refs returned no matches]
+- [x] **CHK-004 [P0]**: All handler files have at least one `// Feature catalog: <name>` reference [Evidence: 40 handler `.ts` files and 40 handler files containing a `// Feature catalog:` comment]
+- [x] **CHK-005 [P0]**: All `Feature catalog:` references use feature name only, no folder numbers [Evidence: Stable name-based wording + zero numbered-history comment matches]
 
-<!-- ANCHOR:p1 -->
-## P1 - Required
+**P1 - Required**
 
-- [x] **CHK-006**: Core lib modules in `lib/search/`, `lib/scoring/`, `lib/cognitive/` have feature catalog references [Evidence: Additional mapped files in `mcp_server` received feature catalog comments where mapping was strong]
-- [x] **CHK-007**: Shared algorithm modules have feature catalog references [Evidence: Additional mapped files in `shared` received feature catalog comments where mapping was strong]
-- [x] **CHK-008**: No existing general-purpose comments were removed [Evidence: Comment-only diff audit for `mcp_server` + `shared` returned `{"comment_only": true}`]
-- [x] **CHK-009**: References follow the `// Feature catalog: <name>` format consistently [Evidence: Implementation used stable `// Feature catalog: <feature-name>` references]
-<!-- /ANCHOR:p1 -->
+- [x] **CHK-006 [P1]**: Core lib modules in `lib/search/`, `lib/scoring/`, `lib/cognitive/` have feature catalog references [Evidence: Additional mapped files in `mcp_server` received feature catalog comments where mapping was strong]
+- [x] **CHK-007 [P1]**: Shared algorithm modules have feature catalog references [Evidence: Additional mapped files in `shared` received feature catalog comments where mapping was strong]
+- [x] **CHK-008 [P1]**: No existing general-purpose comments were removed [Evidence: Comment-only diff audit for `mcp_server` + `shared` returned `{"comment_only": true}`]
+- [x] **CHK-009 [P1]**: References follow the `// Feature catalog: <name>` format consistently [Evidence: Implementation used stable `// Feature catalog: <feature-name>` references]
 
-<!-- ANCHOR:p2 -->
-## P2 - Quality
+**P2 - Quality**
 
-- [x] **CHK-010**: TypeScript compiles cleanly (`tsc --noEmit`) [Evidence: `npm run typecheck` in `.opencode/skill/system-spec-kit` exited 0]
-- [x] **CHK-011**: Comments are concise (single line where possible) [Evidence: Stable single-line `// Feature catalog: <feature-name>` format applied]
-- [x] **CHK-012**: Files implementing multiple features list all applicable catalog entries [Evidence: 91 additional annotations added across lib/cognitive, lib/search, lib/eval, lib/telemetry, lib/storage, shared/, and other modules. Cross-validation confirmed 124 unique annotation names, 0 invalid (all match catalog H3 headings)]
-- [x] **CHK-013**: No feature catalog references point to non-existent feature names [Evidence: Exact-name validation against feature catalog H1 headings passed with zero invalid names]
-<!-- /ANCHOR:p2 -->
+- [x] **CHK-010 [P2]**: TypeScript compiles cleanly (`tsc --noEmit`) [Evidence: `npm run typecheck` in `.opencode/skill/system-spec-kit` exited 0]
+- [x] **CHK-011 [P2]**: Comments are concise (single line where possible) [Evidence: Stable single-line `// Feature catalog: <feature-name>` format applied]
+- [x] **CHK-012 [P2]**: Files implementing multiple features list all applicable catalog entries [Evidence: 91 additional annotations added across lib/cognitive, lib/search, lib/eval, lib/telemetry, lib/storage, shared/, and other modules. Cross-validation confirmed 124 unique annotation names, 0 invalid (all match catalog H3 headings)]
+- [x] **CHK-013 [P2]**: No feature catalog references point to non-existent feature names [Evidence: Exact-name validation against feature catalog H1 headings passed with zero invalid names]

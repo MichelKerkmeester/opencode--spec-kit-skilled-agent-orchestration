@@ -1,44 +1,124 @@
+---
+title: "Implementation Plan: 016-json-mode-hybrid-enrichment"
+description: "Level 1 normalization plan for the JSON-mode hybrid-enrichment phase container, focused on container-doc repair and child metadata integrity inside the 009 packet family."
+trigger_phrases:
+  - "016 json mode plan"
+  - "json mode hybrid enrichment plan"
+importance_tier: "important"
+contextType: "implementation"
+---
 # Implementation Plan: 016-json-mode-hybrid-enrichment
 
-## Overview
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
-Phase container for JSON-mode memory capturing quality improvements. Implementation follows two priority tiers derived from the 10-agent deep-research investigation (74 findings, 20 actionable recommendations).
+---
 
-## Implementation Architecture
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-### PR1: Critical Fixes (P0)
+### Technical Context
 
-1. **Extend contamination filter** to cover `_JSON_SESSION_SUMMARY`, `_manualDecisions`, `recentContext`, `technicalContext` (currently only covers observations + SUMMARY)
-2. **Recalibrate quality scorer** — bonus system (+0.20) masks all penalties, making `quality_score` always ~1.00
-3. **Fix fast-path `filesModified` drop** — add conversion to `FILES` array on fast path
-4. **Surface RetryStats** through `memory_health` MCP tool for embedding visibility monitoring
-5. **Fix Vitest calibration test import** — point to extractors scorer, not dead-code core scorer
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown packet docs only |
+| **Framework** | system-spec-kit Level 1 phase-container template |
+| **Testing** | `validate.sh --strict` against the `016` subtree |
 
-### PR2: High-Priority Improvements (P1)
+### Overview
 
-1. **Add `resolveProjectPhase()` explicit override** following contextType/importanceTier pattern
-2. **Add trigger phrase quality filtering** — suppress path fragments, n-gram shingles, generic tokens
-3. **Add template consumption** for `toolCalls` and `exchanges` fields (currently ingested but never rendered)
-4. **Add unknown-field warnings** in `validateInputData` for typo detection
-5. **Increase truncation limit** to prevent premature content loss
+This pass repairs the `016-json-mode-hybrid-enrichment` phase container so it behaves like a real phase packet instead of a historical holding document. The work is documentation-only: rewrite the top-level container docs into the active Level 1 structure, restore the missing child phase-link metadata, and remove the dead local markdown references that block strict validation.
+<!-- /ANCHOR:summary -->
 
-## Phase Children
+---
 
-Each phase child (002-004) addresses a specific domain cluster from the research findings:
-- **002-scoring-and-filter**: Quality scorer recalibration + contamination filter scope expansion
-- **003-field-integrity-and-schema**: Fast-path field drops, validation gaps, V-rule coverage
-- **004-indexing-and-coherence**: Trigger phrase quality, template consumption, cross-session dedup
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-## Dependencies
+### Definition of Ready
 
-- Research findings: `research.md` (74 findings from Round 2)
-- Related provenance: [Deleted — 013-memory-generation-quality was removed from the tree]; foundational PR1/PR2 architecture notes were retained in surviving research artifacts.
-- Child phase 001 (initial enrichment): Complete
+- [x] The failing recursive validator output for `016-json-mode-hybrid-enrichment` has been captured.
+- [x] The top-level container docs have been read.
+- [x] The affected child specs and implementation summaries have been identified.
 
-## Milestones
+### Definition of Done
 
-| Milestone | Target | Status |
-|-----------|--------|--------|
-| Phase children 001-004 complete | 2026-03-22 | Complete |
-| All P0 critical fixes landed | 2026-03-22 | Complete |
-| P1 improvements tracked | 2026-03-23 | In Progress |
+- [ ] The top-level container docs pass template, anchor, and section checks as a Level 1 packet.
+- [ ] Child phases `001`, `003`, and `004` have clean parent or sibling metadata.
+- [ ] Dead local markdown-file references in the affected child docs are removed or corrected.
+- [ ] Recursive strict validation for `016-json-mode-hybrid-enrichment` reports no remaining structural errors.
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+
+Phase-container normalization with targeted child metadata repair.
+
+### Key Components
+
+- **Top-level container docs**: `spec.md`, `plan.md`, `tasks.md`, `implementation-summary.md`
+- **Child metadata repairs**: `001-initial-enrichment/spec.md`, `003-field-integrity-and-schema/spec.md`, `004-indexing-and-coherence/spec.md`
+- **Child integrity repairs**: `001-initial-enrichment/implementation-summary.md`, `004-indexing-and-coherence/implementation-summary.md`
+
+### Data Flow
+
+Read the current container and child docs -> rewrite the top-level container into a template-compliant Level 1 shape -> repair child phase-link and local-reference issues -> run recursive validation -> record residual warning debt honestly if it remains.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Container Rewrite
+
+- Rebuild the top-level container docs around the active Level 1 template.
+- Preserve the live child-phase map and current open-task truth.
+
+### Phase 2: Child Metadata and Integrity
+
+- Restore missing parent or successor metadata in the affected child specs.
+- Repair stale spec-folder metadata and local dead markdown references in child implementation summaries.
+
+### Phase 3: Verification
+
+- Run strict validation on the `016` subtree.
+- Capture any remaining recursive warning debt for follow-on cleanup.
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural validation | Top-level `016` packet | `validate.sh --strict` |
+| Recursive validation | Full `016` subtree | `validate.sh --strict` |
+| Spot readback | Child metadata and implementation summaries | `sed`, `rg` |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Child phases `001` through `004` | Internal | Green | Container truth would drift if their metadata is inaccurate |
+| Shared research artifact | Internal | Green | Historical provenance notes would lose context |
+| system-spec-kit validator | Internal | Green | Completion could not be claimed honestly |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: The container rewrite misstates child-phase status or breaks subtree links.
+- **Procedure**: Revert only the touched markdown files inside `016-json-mode-hybrid-enrichment`, then reapply the metadata and template fixes from the validated readback.
+<!-- /ANCHOR:rollback -->

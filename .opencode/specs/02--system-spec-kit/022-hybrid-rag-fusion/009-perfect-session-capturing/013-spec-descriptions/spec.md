@@ -34,8 +34,8 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 13 |
-| **Predecessor** | 012-auto-detection-fixes |
-| **Successor** | 014-stateless-quality-gates |
+| **Predecessor** | [012-auto-detection-fixes](../012-auto-detection-fixes/spec.md) |
+| **Successor** | [014-stateless-quality-gates](../014-stateless-quality-gates/spec.md) |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-14 |
 | **Sequence** | B4 (after 006, 008, 009) |

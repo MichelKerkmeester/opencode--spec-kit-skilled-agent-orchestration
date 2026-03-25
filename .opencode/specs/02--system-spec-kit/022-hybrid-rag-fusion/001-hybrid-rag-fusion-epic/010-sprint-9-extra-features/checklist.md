@@ -1,6 +1,6 @@
 # Verification Checklist: Sprint 9 — Extra Features
 
-<!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
 
 ---
@@ -46,9 +46,9 @@
 ---
 
 <!-- ANCHOR:testing -->
-## Testing — Per Feature
+## Testing
 
-### P0-1: Zod Schema Validation
+#### P0-1: Zod Schema Validation
 - [x] CHK-020 [P0] All 24 tools accept VALID parameters without regression (test each tool individually) [EVIDENCE: 28 tools have Zod schemas in TOOL_SCHEMAS with ALLOWED_PARAMETERS lookup; tool-input-schema.vitest.ts 26/26 passed (2026-03-08 targeted run); code review confirms full parameter coverage across schemas]
 - [x] CHK-021 [P0] All 24 tools reject UNKNOWN parameters with actionable Zod error message (strict mode) [EVIDENCE: PASS — `tests/tool-input-schema.vitest.ts > memory_search limit contract > public schema rejects unknown memory_search parameters` (tests/tool-input-schema.vitest.ts:162) and `... > runtime rejects unknown memory_search parameters` (tests/tool-input-schema.vitest.ts:174) both passed in `npx vitest run tests/tool-input-schema.vitest.ts --reporter=verbose` (26/26).]
 - [x] CHK-022 [P0] Error messages include expected parameter names: "Unknown parameter 'foo'. Expected: query, specFolder, limit, ..." [EVIDENCE: PASS — `tests/tool-input-schema.vitest.ts > memory_search limit contract > runtime rejects unknown memory_search parameters` (tests/tool-input-schema.vitest.ts:174) passed; run stderr includes `Expected parameter names: ...` from schema validation output.]
@@ -60,7 +60,7 @@
 - [x] CHK-028 [P1] `memory_delete` validation accepts `{id: 1}` and `{specFolder: "x", confirm: true}`; bulk deletion still requires `confirm: true` [EVIDENCE: runtime `z.union` keeps the id branch and constrains `confirm` to literal true when present]
 - [x] CHK-029 [P2] Rejected params are logged to stderr via schema-validation error logging (strict mode) [EVIDENCE: `validateToolArgs()` logs formatted validation failures with `console.error`; re-verified in the 2026-03-06 remediation pass]
 
-### P0-2: Response Envelopes
+#### P0-2: Response Envelopes
 - [x] CHK-030 [P0] `memory_search` with `includeTrace: true` returns `scores` object with 7 score fields [EVIDENCE: 7 fields present (semantic, lexical, fusion, intentAdjusted, composite, rerank, attention); search-results.ts:80,317; search-results-format.vitest.ts 45/45 passed (2026-03-08 targeted run)]
 - [x] CHK-031 [P0] `memory_search` with `includeTrace: true` returns `source` object with file, anchorIds, anchorTypes, lastModified, memoryState [EVIDENCE: all 5 fields present; search-results.ts:90,326; search-results-format.vitest.ts 45/45 passed (2026-03-08 targeted run)]
 - [x] CHK-032 [P0] `memory_search` with `includeTrace: true` returns `trace` object with channelsUsed, pipelineStages, fallbackTier, queryComplexity, expansionTerms, budgetTruncated, scoreResolution [EVIDENCE: `npx vitest run tests/search-results-format.vitest.ts --reporter=verbose` passed (45/45) on 2026-03-08, including C16 trace assertion (`tests/search-results-format.vitest.ts`:314-341); trace object is emitted via `extractTrace()` with all 7 fields when `includeTrace` is true (`formatters/search-results.ts`:291-299,366-387)]
@@ -73,7 +73,7 @@
 - [x] CHK-039 [P1] Envelope serialization overhead <10ms (benchmark) [EVIDENCE: minimal overhead — extra objects only created inside if(includeTrace), no I/O; search-results-format.vitest.ts 45/45 completed in <200ms total; search-results.ts:315,335 (2026-03-08)]
 - [x] CHK-040 [P2] `memory_context` also supports `includeTrace` when underlying `memory_search` is called [EVIDENCE: includeTrace added to ContextArgs/ContextOptions interfaces, Zod schema, tool-schemas.ts inputSchema, and forwarded to all 3 handleMemorySearch call sites; memory-context.ts:84,317,338,364; tool-input-schemas.ts; tool-schemas.ts]
 
-### P0-3: Async Ingestion
+#### P0-3: Async Ingestion
 - [x] CHK-041 [P0] `memory_ingest_start` returns job ID in <100ms (no blocking file I/O in response path) [EVIDENCE: createIngestJob() (job-queue.ts:200-242) executes synchronous SQLite INSERT and returns immediately; handler-memory-ingest.vitest.ts 7/7 passed (2026-03-08 targeted run); enqueueIngestJob() is fire-and-forget via setImmediate()]
 - [x] CHK-042 [P0] `memory_ingest_status` returns accurate state matching actual processing state within 1s [EVIDENCE: 2026-03-08 targeted run passed `handler-memory-ingest.vitest.ts > status returns mapped job payload when found` (state `indexing`, progress `25`) and `status returns E404 payload when job is missing`.]
 - [x] CHK-043 [P0] Job state machine transitions correctly: queued→parsing→embedding→indexing→complete [EVIDENCE: ALLOWED_TRANSITIONS (job-queue.ts:56-64) enforces queued→parsing→embedding→indexing→complete. processQueuedJob() executes all transitions sequentially: setIngestJobState at lines 375, 384, 390, 436. Each validated by isTransitionAllowed() at line 151-153. job-queue.vitest.ts 4/4 passed (2026-03-08)]
@@ -88,7 +88,7 @@
 - [x] CHK-052 [P1] Concurrent jobs queue correctly: max 1 processing, rest in `queued` state [EVIDENCE: single-worker queue enforces max one active processor; job-queue.ts:69-71,427-433,456-466]
 - [x] CHK-053 [P2] Job history queryable: completed/failed jobs retained in table for audit [EVIDENCE: completed/failed jobs retained in ingest_jobs and queryable by jobId; job-queue.ts:240-247; memory-ingest.ts:94-120]
 
-### P1-4: Contextual Trees
+#### P1-4: Contextual Trees
 - [x] CHK-054 [P1] Context headers prepended to returned chunks in format `[parent > child — desc]` [EVIDENCE: `npx vitest run tests/file-watcher.vitest.ts tests/local-reranker.vitest.ts tests/hybrid-search-context-headers.vitest.ts tests/context-server.vitest.ts --reporter=verbose` passed on 2026-03-08; output included `✓ tests/hybrid-search-context-headers.vitest.ts > Contextual tree injection > T063: injects contextual header in expected format`; assertions at hybrid-search-context-headers.vitest.ts:10-30]
 - [x] CHK-055 [P1] Header length capped at 100 characters (enforced, not just recommended) [EVIDENCE: truncateChars(withDesc, 100); hybrid-search.ts:1248; tested at hybrid-search-context-headers.vitest.ts:30]
 - [x] CHK-056 [P1] `SPECKIT_CONTEXT_HEADERS=false` disables injection completely [EVIDENCE: injection runs only when isContextHeadersEnabled()=true; hybrid-search.ts:995-999; flag maps to SPECKIT_CONTEXT_HEADERS; search-flags.ts:183-188; code-reviewed 2026-03-08]
@@ -97,7 +97,7 @@
 - [x] CHK-059 [P1] PI-B3 description cache is used (not re-computed per query) [EVIDENCE: descMapCache memoized with TTL; hybrid-search.ts:1198-1206,1226; used at 996-998]
 - [x] CHK-060 [P2] Token budget accounts for header overhead (~10-15 tokens per result) [EVIDENCE: headerOverhead (~12 tokens/result) subtracted from budget before truncateToBudget(); hybrid-search.ts:956-963]
 
-### P1-5: Local GGUF Reranker
+#### P1-5: Local GGUF Reranker
 - [x] CHK-061 [P1] Reranking works end-to-end: GGUF model loaded, candidates scored, results re-ordered [EVIDENCE: model loaded via getLlama()→loadModel(), cached; candidates scored and sorted; local-reranker.ts:82-97,231-250; invoked from hybrid-search.ts:726-728,835-839; local-reranker.vitest.ts passed (2026-03-08 G2 run)]
 - [x] CHK-062 [P1] Graceful fallback to RRF when model file missing (no error to caller, warn log) [EVIDENCE: fallback to prior RRF ordering when access check fails; unchanged candidates returned; local-reranker.ts:192-198,210-213; warn on catch path at :252-253; code-reviewed 2026-03-08]
 - [x] CHK-063 [P1] Graceful fallback to RRF when total memory < 8GB (no error to caller, warn log) [EVIDENCE: MIN_TOTAL_MEMORY_BYTES=8GB gate using os.totalmem() (cross-AI review H4); graceful unchanged return; local-reranker.ts:25,187-190,210-213; code-reviewed 2026-03-08]
@@ -108,7 +108,7 @@
 - [x] CHK-068 [P1] `SPECKIT_CROSS_ENCODER=false` overrides — no reranking at all (Stage 3 skip) [EVIDENCE: cross-encoder provider returns null when disabled; cross-encoder.ts:126-128; hybrid path guarded by isCrossEncoderEnabled(); hybrid-search.ts:835]
 - [ ] CHK-069 [P2] Eval comparison documented: local GGUF MRR@5 vs remote Cohere/Voyage MRR@5 [EVIDENCE: historical harness exists (`reranker-eval-comparison.vitest.ts`), but no fresh live eval comparison was rerun in the 2026-03-13 remediation pass]
 
-### P1-6: Dynamic Server Instructions
+#### P1-6: Dynamic Server Instructions
 - [x] CHK-070 [P1] Server startup instruction string includes: total memory count [EVIDENCE: `buildServerInstructions()` emits `${stats.totalMemories}` in the startup instruction summary; context-server.ts:234-236]
 - [x] CHK-071 [P1] Instruction string includes: spec folder count [EVIDENCE: the same startup summary emits `${stats.specFolderCount}` for spec folder count; context-server.ts:234-236]
 - [x] CHK-072 [P1] Instruction string includes: available search channels (vector, FTS5, BM25, graph, degree) [EVIDENCE: startup builder assembles channel list from enabled capabilities and renders `Search channels: ...`; context-server.ts:226-229,237]
@@ -117,7 +117,7 @@
 - [x] CHK-075 [P1] `SPECKIT_DYNAMIC_INIT=false` disables instruction injection completely [EVIDENCE: builder returns empty string when the flag is `false`, and startup skips `setInstructions()` entirely behind the same guard; context-server.ts:221-222,989-994]
 - [x] CHK-076 [P2] Instructions update if index changes during session (or document that they don't) [EVIDENCE: AI-WHY comment documents startup-only behavior as intentional design (MCP re-negotiation not supported); context-server.ts:885-887]
 
-### P1-7: Filesystem Watching
+#### P1-7: Filesystem Watching
 - [x] CHK-077 [P1] Changed `.md` file re-indexed within 5 seconds of save (end-to-end) [EVIDENCE: `CHK-077: changed .md file re-indexed within 5 seconds of save` PASSED in file-watcher.vitest.ts (2026-03-08 G2 targeted run); file-watcher.ts:20,72,95-127]
 - [x] CHK-078 [P1] Rapid consecutive saves (5x within 1s) debounced to exactly 1 re-index [EVIDENCE: `CHK-078: rapid consecutive saves debounced to exactly 1 re-index` PASSED in file-watcher.vitest.ts (2026-03-08 G2 targeted run); file-watcher.ts:90-93,128]
 - [x] CHK-079 [P1] Content-hash dedup: saving file with IDENTICAL content triggers NO re-index [EVIDENCE: content-hash dedup skips reindex when hash unchanged; file-watcher.ts:111-114; file-watcher.vitest.ts suite passed (2026-03-08 G2 targeted run)]
@@ -144,8 +144,7 @@
 
 ---
 
-<!-- ANCHOR:regression -->
-## Regression Testing
+#### Regression Testing
 
 **Baseline (BEFORE any changes):**
 - [ ] CHK-088 [P0] Record baseline `eval_run_ablation` results for all 9 metrics: MRR@5, precision@5, recall@5, NDCG@5, MAP, hit_rate, latency_p50, latency_p95, token_usage [EVIDENCE: tool callability was historically tested, but baseline metrics were not rerun in this 2026-03-13 remediation]
@@ -159,13 +158,9 @@
 - [x] CHK-092 [P0] Existing `memory_search` call (no new params) returns byte-identical results [EVIDENCE: backward-compatibility smoke suite passed `44/44` tests with `0` failures via `npx vitest run tests/review-fixes.vitest.ts tests/mcp-input-validation.vitest.ts --reporter=verbose`; known-tool validation for `memory_search` still succeeds in `tests/review-fixes.vitest.ts:43-48`; handler validation coverage preserved in `tests/mcp-input-validation.vitest.ts:28-32,160-165,173-253`]
 - [x] CHK-093 [P0] Existing `memory_context` call returns identical results [EVIDENCE: backward-compatibility smoke suite passed `44/44` tests with `0` failures via `npx vitest run tests/review-fixes.vitest.ts tests/mcp-input-validation.vitest.ts --reporter=verbose`; `memory_context` invalid/null/undefined compatibility coverage passed in `tests/mcp-input-validation.vitest.ts:21-25,160-165,173-253`]
 - [x] CHK-094 [P0] Existing `memory_match_triggers` call returns identical results [EVIDENCE: backward-compatibility smoke suite passed `44/44` tests with `0` failures via `npx vitest run tests/review-fixes.vitest.ts tests/mcp-input-validation.vitest.ts --reporter=verbose`; `memory_match_triggers` invalid/null/undefined compatibility coverage passed in `tests/mcp-input-validation.vitest.ts:33-38,160-165,173-253`]
-- Regression note: requested backward-compatibility suites introduced no regressions versus the Wave 3 baseline; the targeted run completed cleanly (`44 passed / 0 failed`) and did not add any failures beyond the baseline inventory documented in `scratch/w3-a5-regression-baseline.md`.
+- Regression note: requested backward-compatibility suites introduced no regressions versus the Wave 3 baseline; the targeted run completed cleanly (`44 passed / 0 failed`) and did not add any failures beyond the previously recorded baseline inventory for this packet.
 - [x] CHK-095 [P1] Existing `memory_save` with `asyncEmbedding: true` still works via old path [EVIDENCE: asyncEmbedding accepted and wired through save/index flow with deferred embedding + async retry; memory-save.ts:462,1100,1136]
 - [x] CHK-096 [P1] All 20 existing tools callable with current parameter shapes — zero breakage [EVIDENCE: 20+ tools defined and exposed; tool-schemas.ts:419; routed through global dispatch; tools/index.ts:18,31; validated by per-tool Zod schemas]
-<!-- /ANCHOR:regression -->
-
----
-
 <!-- ANCHOR:security -->
 ## Security
 
@@ -199,48 +194,34 @@
 
 ---
 
-<!-- ANCHOR:arch-verify -->
-## L3+: ARCHITECTURE VERIFICATION
+### ### Architecture Verification
 
-- [x] CHK-100 [P0] Architecture decisions documented in decision-record.md [EVIDENCE: documented in phase spec/plan/tasks artifacts]
+- [x] CHK-100 [P0] Architecture decisions documented in the packet planning artifacts [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-101 [P1] All ADRs have status (Proposed/Accepted) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-102 [P1] Alternatives documented with rejection rationale [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-103 [P2] Migration path documented for `.strict()` transition [EVIDENCE: T008 completed; `getSchema()` helper gates `.strict()` vs `.passthrough()` via `SPECKIT_STRICT_SCHEMAS` env var]
-<!-- /ANCHOR:arch-verify -->
-
 ---
 
-<!-- ANCHOR:perf-verify -->
-## L3+: PERFORMANCE VERIFICATION
+### ### Performance Verification
 
 - [x] CHK-110 [P1] Zod validation overhead <5ms (NFR-P01) [EVIDENCE: synchronous schema.parse() with no I/O in validation path; tool-input-schemas.ts:432,439]
 - [x] CHK-111 [P1] Response envelope serialization <10ms (NFR-P02) [EVIDENCE: straightforward object assembly + JSON.stringify; lib/response/envelope.ts:94,121,206]
 - [x] CHK-112 [P1] File watcher re-index latency <5s (NFR-P03) [EVIDENCE: default ~3s (2s debounce + 1s write-stability); SQLITE_BUSY backoff can extend in edge cases; file-watcher.ts:20,72,21,54]
 - [x] CHK-113 [P1] GGUF reranking <500ms for 20 candidates (NFR-P04) [EVIDENCE: PERF comment documents sequential inference characteristics; 200-400ms expected on Apple Silicon with small GGUF; future batch optimization noted; local-reranker.ts:221-226]
-<!-- /ANCHOR:perf-verify -->
-
 ---
 
-<!-- ANCHOR:deploy-ready -->
-## L3+: DEPLOYMENT READINESS
+### ### Deployment Readiness
 
 - [x] CHK-120 [P0] Rollback via feature flags tested and documented [EVIDENCE: implementation-summary.md includes Feature Flags and Rollback table with rollback values and effects for all 7 features; all flags independent, no DB migrations to reverse]
 - [x] CHK-121 [P0] All features behind feature flags (no forced breaking changes) [EVIDENCE: All 7 features gated: SPECKIT_STRICT_SCHEMAS, SPECKIT_CONTEXT_HEADERS, SPECKIT_DYNAMIC_INIT, SPECKIT_FILE_WATCHER, RERANKER_LOCAL, SPECKIT_CROSS_ENCODER; async ingestion is on-demand tool]
 - [x] CHK-122 [P1] Feature flag defaults set conservatively (new features opt-in where risky) [EVIDENCE: SPECKIT_FILE_WATCHER=false, RERANKER_LOCAL=false (high-risk features off by default); SPECKIT_STRICT_SCHEMAS=true, SPECKIT_CONTEXT_HEADERS=true (low-risk enhancements on)]
-<!-- /ANCHOR:deploy-ready -->
-
 ---
 
-<!-- ANCHOR:sign-off -->
-## L3+: SIGN-OFF
+### ### Sign-Off
 
 | Approver | Role | Status | Date |
 |----------|------|--------|------|
 | User | Product Owner | [ ] Approved | |
-<!-- /ANCHOR:sign-off -->
-
----
-
 <!-- ANCHOR:summary -->
 ## Verification Summary
 

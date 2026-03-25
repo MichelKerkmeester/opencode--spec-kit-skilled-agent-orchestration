@@ -39,11 +39,11 @@ The original `013-agents-alignment` packet described a simpler runtime model tha
 - `.codex/agents/*.toml` is generated from the ChatGPT family, not from the base markdown family.
 - `.gemini/agents/*.md` is the runtime-facing Gemini path, while `.gemini -> .agents` exposes the backing storage at `.agents/agents/*.md`.
 
-The older packet also carried stale naming (research.md), a bulk-runtime-sync story that no longer matches the state of the repo, and it did not account for the runtime-facing drift in `.gemini/workflows/delegate_agent.md` plus partially reconciled write-agent projection guidance.
+The older packet also carried stale naming (the older `research` filename convention), a bulk-runtime-sync story that no longer matches the state of the repo, and it did not account for the runtime-facing drift in `.gemini/workflows/delegate_agent.md` plus partially reconciled write-agent projection guidance.
 
 ---
 
-## Phase Navigation
+### Phase Navigation
 
 | Field | Value |
 |-------|-------|
@@ -67,7 +67,7 @@ Reconcile the `013` packet so it accurately documents the current runtime lineag
 - Document the two markdown source families and their downstream runtime targets.
 - Record Codex generation from the ChatGPT family.
 - Document Gemini's runtime-facing path together with the `.gemini -> .agents` storage detail.
-- Normalize the packet on deep-research.md naming.
+- Normalize the packet on `deep-research` naming.
 - Reconcile runtime-facing path drift in the scoped Gemini, Claude, ChatGPT, and Codex docs, and explicitly mark write-agent routing items that remain pending.
 
 ### Out of Scope
@@ -93,16 +93,23 @@ Reconcile the `013` packet so it accurately documents the current runtime lineag
 <!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
-| ID | Priority | Requirement |
-|----|----------|-------------|
-| AA-001 | P0 | The packet must describe **two source families**, not one |
-| AA-002 | P0 | The packet must document `.opencode/agent/*.md` as the base markdown family for OpenCode/Copilot and the closest markdown lineage for Claude/Gemini |
-| AA-003 | P0 | The packet must document `.opencode/agent/chatgpt/*.md` as the ChatGPT family that feeds `.codex/agents/*.toml` |
-| AA-004 | P0 | The packet must use deep-research.md naming consistently |
-| AA-005 | P0 | The packet must document `.gemini/agents/*.md` as the runtime-facing path and `.gemini -> .agents` as the storage detail |
-| AA-006 | P1 | The packet must normalize runtime path-convention guidance |
-| AA-007 | P1 | The packet must distinguish scoped runtime-doc closeout from bulk runtime sync work |
-| AA-008 | P1 | The packet must verify the 9-file family counts across base, ChatGPT, Claude, Codex, and Gemini runtimes |
+### P0 - Blockers
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | The packet must describe two source families, not one (legacy `AA-001`) | The active docs distinguish the base markdown family from the ChatGPT family |
+| REQ-002 | The packet must document `.opencode/agent/*.md` as the base markdown family for OpenCode/Copilot and the closest markdown lineage for Claude/Gemini (legacy `AA-002`) | The packet names the base family and its downstream relationship explicitly |
+| REQ-003 | The packet must document `.opencode/agent/chatgpt/*.md` as the ChatGPT family that feeds `.codex/agents/*.toml` (legacy `AA-003`) | Codex lineage is described as generated from the ChatGPT family |
+| REQ-004 | The packet must use `deep-research` naming consistently (legacy `AA-004`) | No active packet docs rely on the older `research` naming for this scope |
+| REQ-005 | The packet must document `.gemini/agents/*.md` as the runtime-facing path and `.gemini -> .agents` as the storage detail (legacy `AA-005`) | Gemini runtime-facing and storage-facing paths are both described without ambiguity |
+
+### P1 - Required
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-006 | The packet must normalize runtime path-convention guidance (legacy `AA-006`) | Runtime-facing paths are described first, with storage details called out separately where needed |
+| REQ-007 | The packet must distinguish scoped runtime-doc closeout from bulk runtime sync work (legacy `AA-007`) | The packet records the scoped Gemini/write-agent closeout without claiming a global runtime resync |
+| REQ-008 | The packet must verify the 9-file family counts across base, ChatGPT, Claude, Codex, and Gemini runtimes (legacy `AA-008`) | The packet retains the verified file-family count evidence used in the reconciliation pass |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -111,10 +118,20 @@ Reconcile the `013` packet so it accurately documents the current runtime lineag
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: The packet consistently models dual-source lineage rather than a single canonical copy model.
-- **SC-002**: The packet uses deep-research.md naming throughout its active docs.
+- **SC-002**: The packet uses `deep-research` naming throughout its active docs.
 - **SC-003**: Codex lineage from ChatGPT markdown is explicit.
 - **SC-004**: Gemini runtime-facing and storage-facing paths are both documented without ambiguity.
 - **SC-005**: The packet avoids claiming bulk runtime sync work and clearly labels write-agent routing as partially reconciled where evidence is incomplete.
+
+### Acceptance Scenarios
+
+**Given** the packet is read as the source of truth for runtime lineage, **when** a reviewer compares the described families, **then** they see separate base and ChatGPT authoring families rather than one flat canonical-copy model.
+
+**Given** a reviewer checks Codex lineage, **when** they read the packet, **then** `.codex/agents/*.toml` is described as downstream of `.opencode/agent/chatgpt/*.md`.
+
+**Given** a reviewer checks Gemini path guidance, **when** they read the packet, **then** `.gemini/agents/*.md` is presented as the runtime-facing path and `.gemini -> .agents` is presented as the storage detail.
+
+**Given** a reviewer checks the scope notes, **when** they read the packet, **then** the write-agent routing work is described as scoped closeout rather than a full runtime sync claim.
 <!-- /ANCHOR:success-criteria -->
 
 ---

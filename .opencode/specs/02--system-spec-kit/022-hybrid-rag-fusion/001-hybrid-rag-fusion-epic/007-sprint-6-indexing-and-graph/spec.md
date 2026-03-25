@@ -37,7 +37,6 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 7** of the Hybrid RAG Fusion Refinement specification.
@@ -69,7 +68,6 @@ This is **Phase 7** of the Hybrid RAG Fusion Refinement specification.
 *Sprint 6b (GATED on feasibility spike):*
 - Graph centrality + community detection (N2 items 4-6)
 - Auto entity extraction gated on density (R10)
-<!-- /ANCHOR:phase-context -->
 
 ---
 
@@ -194,7 +192,7 @@ Maximize graph channel contribution through centrality and community detection, 
 ---
 
 <!-- ANCHOR:nfr -->
-## 7. NON-FUNCTIONAL REQUIREMENTS
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: R7 chunk thinning must not degrade Recall@20 by more than 10%
@@ -212,7 +210,7 @@ Maximize graph channel contribution through centrality and community detection, 
 ---
 
 <!-- ANCHOR:edge-cases -->
-## 8. EDGE CASES
+## L2: EDGE CASES
 
 ### Data Boundaries
 - **Edge density >=1.0**: R10 auto entity extraction is skipped entirely (gating condition not met)
@@ -231,7 +229,7 @@ Maximize graph channel contribution through centrality and community detection, 
 ---
 
 <!-- ANCHOR:complexity -->
-## 9. COMPLEXITY ASSESSMENT
+## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
@@ -253,7 +251,6 @@ Maximize graph channel contribution through centrality and community detection, 
 
 ---
 
-<!-- ANCHOR:pageindex-xrefs -->
 ### PageIndex Cross-References
 
 Builds on PageIndex integration from Sprints 2-3 (PI-A1 folder scoring, PI-A2 fallback chain).
@@ -264,17 +261,16 @@ Builds on PageIndex integration from Sprints 2-3 (PI-A1 folder scoring, PI-A2 fa
 | **PI-A2** (Fallback chain) | Sprint 3 | Graph queries that return empty results should integrate into the fallback chain established in Sprint 3 |
 
 Research evidence: See research documents `9 - analysis-pageindex-systems-architecture.md`, `9 - recommendations-pageindex-patterns-for-speckit.md`, `9 - pageindex-tree-search-analysis.md` in the parent research/ folder.
-<!-- /ANCHOR:pageindex-xrefs -->
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See ../000-feature-overview/spec.md
-- **Parent Plan**: See ../000-feature-overview/plan.md
+- **Parent Spec**: See ../spec.md
+- **Parent Plan**: See ../plan.md
 
 ---
 
@@ -287,7 +283,7 @@ LEVEL 2 SPEC — Phase 7 of 11
 - UT-8 amendments applied: OQ-S6-002 resolved, REQ-S6-004 density-conditional, attribution weighting specified
 -->
 
-## Acceptance Scenarios (Validator Coverage)
+##### Acceptance Scenarios (Validator Coverage)
 1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

@@ -1,7 +1,6 @@
 ---
 title: "Tasks: Sprint 2 — Scoring Calibration"
 description: "Task breakdown for Sprint 2: embedding cache, cold-start boost, G2 investigation, score normalization"
-# SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 trigger_phrases:
   - "sprint 2 tasks"
   - "scoring calibration tasks"
@@ -33,7 +32,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Embedding Cache (R18)
+## Phase 1: Setup
 
 - [x] T001 [P] Create `embedding_cache` table with migration — schema: `content_hash TEXT, model_id TEXT, embedding BLOB, dimensions INT, created_at TEXT, last_used_at TEXT, PRIMARY KEY (content_hash, model_id)` [8-12h] — R18 (REQ-S2-001)
   - [x] T001a Create table migration with backup protocol — Implementation hint: Use `db.exec('CREATE TABLE IF NOT EXISTS embedding_cache ...')` pattern from existing migrations in `db.ts`
@@ -46,7 +45,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Cold-Start Boost (N4)
+## Phase 2: Implementation
 
 - [x] T002 [P] Implement cold-start boost with exponential decay behind `SPECKIT_NOVELTY_BOOST` flag (`composite-scoring.ts`) [3-5h] — N4 (REQ-S2-002)
   - Formula: `boost = 0.15 * exp(-elapsed_hours / 12)`
@@ -60,7 +59,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: G2 Investigation
+### G2 Investigation
 
 - [x] T003 [P] Investigate double intent weighting — trace intent weight application through full pipeline (`hybrid-search.ts`) [4-6h] — G2 (REQ-S2-003)
   - [x] T003a Identify all locations where intent weights are applied — Implementation hint: Search for `intent` weight application in 3 files: `hybrid-search.ts`, `intent-classifier.ts`, `adaptive-fusion.ts`. Trace the data flow from classification through to final scoring.
@@ -71,35 +70,28 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Score Normalization (depends on Phase 3)
+### Score Normalization (depends on Phase 3)
 
 - [x] T004 Implement score normalization — both RRF and composite to [0,1] range (`rrf-fusion.ts`, `composite-scoring.ts`) [4-6h] {T003} — Calibration (REQ-S2-004)
   - Note: Normalization approach may depend on G2 outcome
 - [x] T004a [P] Investigate RRF K-value sensitivity — grid search K ∈ {20, 40, 60, 80, 100}, measure MRR@5 delta per value [2-3h] {T004} — Calibration (REQ-S2-005)
-<!-- /ANCHOR:phase-4 -->
 
 ---
 
-<!-- ANCHOR:phase-5 -->
-## Phase 5: Interference Scoring (TM-01)
+### Interference Scoring (TM-01)
 
 - [x] T005 [P] Implement interference scoring — add `interference_score` column to `memory_index` (migration), compute at index time by counting memories with cosine similarity > 0.75 in same `spec_folder`, apply as `-0.08 * interference_score` in `composite-scoring.ts` behind `SPECKIT_INTERFERENCE_SCORE` flag [4-6h] — TM-01 (REQ-S2-006)
   - Note: 0.75 similarity threshold and -0.08 penalty coefficient are initial calibration values, subject to tuning after 2 eval cycles. N4 boost is applied BEFORE TM-01 penalty in composite scoring pipeline (N4 establishes floor, TM-01 penalizes cluster density).
-<!-- /ANCHOR:phase-5 -->
 
 ---
 
-<!-- ANCHOR:phase-6 -->
-## Phase 6: Classification-Based Decay (TM-03)
+### Classification-Based Decay (TM-03)
 
 - [x] T006 [P] Implement classification-based decay in `fsrs-scheduler.ts` — decay policy multipliers by `context_type` (decisions: no decay, research: 2x stability, implementation/discovery/general: standard) and `importance_tier` (constitutional/critical: no decay, important: 1.5x, normal: standard, temporary: 0.5x) [3-5h] — TM-03 (REQ-S2-007)
-<!-- /ANCHOR:phase-6 -->
 
 ---
 
-<!-- ANCHOR:phase-7 -->
-## Phase 7: Verification
+## Phase 3: Verification
 
 - [x] T007 Verify dark-run results for N4, normalization, and TM-01 — new memories visible, old not displaced, MRR@5 not regressed, interference penalty correct [included] {T002, T004, T005}
 - [x] T-FS2 Feature flag sunset review at Sprint 2 exit — review all active feature flags; permanently enable flags with positive metrics, remove flags with negative metrics, extend measurement window (max 14 days) for inconclusive flags; ensure ≤6 simultaneous active flags [0.5-1h] {T007} — NFR-O01/O02/O03
@@ -111,12 +103,10 @@ contextType: "implementation"
   - [x] RRF K-value investigation completed; optimal K documented
   - [x] TM-01 interference penalty active; high-similarity cluster scores reduced; no false penalties
   - [x] TM-03 classification-based decay verified — constitutional/critical memories not decaying; temporary memories decaying faster
-<!-- /ANCHOR:phase-7 -->
 
 ---
 
-<!-- ANCHOR:phase-8 -->
-## Phase 8 (PI-A1): Folder-Level Relevance Scoring via DocScore Aggregation
+### PI-A1: Folder-Level Relevance Scoring via DocScore Aggregation
 
 - [x] T009 [P] Implement folder-level relevance scoring in reranker — compute `FolderScore(F) = (1/sqrt(M+1)) * SUM(MemoryScore(m))` by grouping normalized memory scores by `spec_folder`; expose FolderScore as metadata on each search result; implement two-phase retrieval path (top-K folders by FolderScore then within-folder search) [4-8h] {T004} — PI-A1
   - Formula: `FolderScore = (1 / sqrt(M + 1)) * SUM(MemoryScore(m) for m in folder F)` where M = memory count in F
@@ -125,7 +115,6 @@ contextType: "implementation"
   - Requires [0,1]-normalized MemoryScore values from score normalization (T004) to be meaningful
   - Extends R-006 (weight rebalancing surface) and R-007 (post-reranker stage in scoring pipeline)
 - [x] T010 [P] Add lightweight observability — log N4 boost values and TM-01 interference scores at query time, sampled at 5% of queries [2-4h] {T002, T005} — Observability (P2)
-<!-- /ANCHOR:phase-8 -->
 
 ---
 
@@ -143,10 +132,9 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:task-id-mapping -->
-## Task ID Mapping (Child → Parent)
+##### Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent ../tasks.md uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -162,7 +150,6 @@ Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global I
 | T008 | T020 | Sprint 2 exit gate verification |
 | T009 | PI-A1 | Folder-level DocScore aggregation (PI-A1) |
 | T010 | *(not in parent)* | Observability logging (N4/TM-01 query-time) |
-<!-- /ANCHOR:task-id-mapping -->
 
 ---
 
@@ -172,7 +159,7 @@ Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global I
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Tasks**: See ../000-feature-overview/tasks.md
+- **Parent Tasks**: See ../tasks.md
 - **Predecessor Tasks**: See ../006-measurement-foundation/tasks.md (direct dependency — Sprint 1 is a parallel sibling)
 <!-- /ANCHOR:cross-refs -->
 

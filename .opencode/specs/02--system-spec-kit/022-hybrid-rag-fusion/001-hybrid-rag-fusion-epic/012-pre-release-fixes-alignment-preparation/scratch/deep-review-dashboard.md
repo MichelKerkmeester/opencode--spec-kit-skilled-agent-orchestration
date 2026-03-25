@@ -1,67 +1,79 @@
-# Deep Review Dashboard - v5 Session Overview
+# Deep Review Dashboard - v6 Session Overview
 
-Auto-generated. Regenerated after synthesis.
+Auto-generated from JSONL state log and strategy file. Updated during iteration processing.
 
 ## Status
-- Review Target: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion (track)
-- Status: COMPLETE
-- Iteration: 20 of 20
-- Verdict: **CONDITIONAL**
+- Review Target: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion (full track + feature catalog)
+- Status: ITERATING
+- Completed Iterations: 7 of 20 (Wave 1: 7/10, Wave 2: 0/10)
+- Provisional Verdict: CONDITIONAL (active P1 findings)
 - hasAdvisories: true
 
-## Findings Summary
-| Severity | Count | Trend |
+## Findings Summary (from 7 completed iterations)
+| Severity | Count | Notes |
 |----------|------:|-------|
-| P0 (Blockers) | 0 | stable |
-| P1 (Required) | 10 | +8 vs v4 |
-| P2 (Suggestions) | 11 | +7 vs v4 |
+| P0 (Blockers) | 0 | None found |
+| P1 (Required) | 13 | 1 duplicate (T79 x2 agents) = 12 unique |
+| P2 (Suggestions) | 8 | Mostly catalog/doc drift |
+
+## Unique P1 Registry (12 findings)
+| ID | Title | Dimension | Source |
+|----|-------|-----------|--------|
+| P1-001-T79 | T79 nextSteps completion bug not fully fixed | correctness | iter 001+003 |
+| P1-002-SCAN | Startup indexing ignores constitutional/allowed roots | correctness | iter 001 |
+| P1-002-1 | Live Stage 1 hybrid path never executes RRF/adaptive fusion | correctness | iter 002 |
+| P1-002-2 | Stage 3 does not apply MPAB aggregation formula | correctness | iter 002 |
+| P1-002-3 | Community injection bypasses min-state filtering | correctness | iter 002 |
+| P1-002-4 | MMR demotes non-embedded results behind embedded | correctness | iter 002 |
+| P1-004-1 | Release packet still tracks deleted fusion-lab.js | correctness | iter 004 |
+| SEC-001 | Shared-space admin trusts caller-supplied actor IDs | security | iter 005 |
+| SEC-002 | Checkpoint tools bypass tenant/shared-space isolation | security | iter 005 |
+| SEC-003 | memory_match_triggers fails open on scope-filter errors | security | iter 005 |
+| SCR-002 | --dry-run still writes mapping artifact | correctness | iter 003 |
+| SCR-003 | Redaction calibration depends on caller CWD | correctness | iter 003 |
+
+## P2 Registry (8 findings)
+| ID | Title | Dimension | Source |
+|----|-------|-----------|--------|
+| P2-002-5 | Degree channel built then discarded in live path | correctness | iter 002 |
+| P2-004-2 | Shadow-mode flag naming confusion | correctness | iter 004 |
+| P2-004-3 | Empty anchors array suppresses fallback extraction | correctness | iter 004 |
+| SEC-004 | Internal exception messages echoed to callers | security | iter 005 |
+| SEC-005 | Unbounded duplicate-content detection | security | iter 005 |
+| SCR-004 | Description metadata uses unresolved paths | correctness | iter 003 |
+| SCR-005 | Fixture generation lacks error handling | correctness | iter 003 |
+| P2-009-1 | Missing audit phase coverage notes in simple terms | traceability | iter 009 |
 
 ## Dimension Coverage
 | Dimension | Status | Iterations | Findings |
 |-----------|--------|-----------|----------|
-| correctness | REVIEWED | 001-004, 017-018 | P1: 5, P2: 5 |
-| security | REVIEWED | 005 | P1: 0, P2: 0 |
-| traceability | REVIEWED | 006-013, 015-016, 019-020 | P1: 5, P2: 4 |
-| maintainability | REVIEWED | 014 | P1: 0, P2: 0 |
-
-## Agent Pool
-| Type | Count | Model | Reasoning | Structured Output |
-|------|-------|-------|-----------|------------------|
-| codex | 10 | gpt-5.4 | high | 5/10 |
-| copilot | 10 | gpt-5.4 | high | 5/10 |
+| correctness | IN PROGRESS | 001-004 | 9 P1, 5 P2 |
+| security | COVERED | 005 | 3 P1, 2 P2 |
+| traceability | IN PROGRESS | 007, 009 | 1 P1, 2 P2 |
+| maintainability | PENDING | -- | -- |
 
 ## Progress
-| # | Agent | Focus | P0/P1/P2 | Status |
+| # | Focus | Ratio | P0/P1/P2 | Status |
 |---|-------|-------|----------|--------|
-| 001 | codex | MCP server correctness | 0/3/0 | insight |
-| 002 | codex | Scripts correctness | 0/1/4 | insight |
-| 003 | copilot | Shared modules correctness | 0/1/2 | insight |
-| 004 | copilot | P1 verification | 0/1/0 | insight |
-| 005 | codex | Security audit | 0/0/0 | thought |
-| 006 | codex | spec_code traceability | 0/0/0 | thought |
-| 007 | copilot | checklist_evidence | 0/0/0 | thought |
-| 008 | copilot | feature_catalog_code | 0/0/0 | thought |
-| 009 | codex | Catalog categories 01-10 | 0/0/0 | thought |
-| 010 | codex | Catalog categories 11-21 | 0/0/0 | thought |
-| 011 | copilot | Snippet vs master 01-10 | 0/0/0 | thought |
-| 012 | copilot | Snippet vs master 11-21 | 0/3/2 | insight |
-| 013 | codex | Simple terms alignment | 0/0/1 | insight |
-| 014 | codex | Code maintainability | 0/0/0 | thought |
-| 015 | copilot | Sprint + playbook verify | 0/0/0 | thought |
-| 016 | copilot | Spec tree + dir counts | 0/1/1 | insight |
-| 017 | codex | Adversarial recheck | 0/0/0 | thought |
-| 018 | codex | npm test + lint + typecheck | 0/0/1 | insight |
-| 019 | copilot | Cross-reference sweep | 0/0/0 | thought |
-| 020 | copilot | Release readiness verdict | 0/3/0 | insight |
+| 001 | MCP server core correctness | 1.00 | 0/2/0 | insight |
+| 002 | MCP pipeline correctness | 1.00 | 0/4/1 | insight |
+| 003 | Scripts correctness | 0.80 | 0/3/2 | insight |
+| 004 | Shared modules correctness | 1.00 | 0/1/2 | insight |
+| 005 | Security audit | 1.00 | 0/3/2 | insight |
+| 006 | Feature catalog 01-07 | -- | pending | running |
+| 007 | Feature catalog 08-14 | 0.50 | 0/1/1 | insight |
+| 008 | Feature catalog 15-21 | -- | pending | running |
+| 009 | Simple terms alignment | 1.00 | 0/0/1 | insight |
+| 010 | Snippets 01-10 consistency | -- | pending | running |
 
-## v4 -> v5 Comparison
-| Finding | v4 | v5 |
-|---------|-----|-----|
-| T79 nextSteps bug | P1 OPEN | **FIXED** |
-| T37 dir count drift | P1 OPEN | P1 OPEN (398->399) |
-| New code P1s | 0 | 4 (fusion-lab, memory-save, index-scan, redaction) |
-| New catalog P1s | 0 | 4 (stubs, flags, names, epic count) |
-| Package.json P1 | 0 | 1 (@spec-kit/shared) |
+## Direct Verifications (by orchestrator)
+- Root dir count: 399 (CORRECT after excluding v6 archive dir)
+- Epic child count: 12 numbered (CORRECT)
+- Tool count: 33 (CORRECT)
+- Command-surface contract: 6 commands, all tool lists match (CORRECT)
+- T79 code review: confirmed P1 (2 agents + direct inspection)
+- fusion-lab.js: DELETED (v5 NaN finding moot)
+- RSF: Only comment references remain (implementation removed)
 
 ## Next Focus
-Remediation: 5 code fixes + 5 documentation truth-syncs -> re-verify -> /create:changelog
+Complete Wave 1 (006, 008, 010) + Wave 2 (011-018). Then launch iterations 019 (adversarial recheck) and 020 (release verdict).

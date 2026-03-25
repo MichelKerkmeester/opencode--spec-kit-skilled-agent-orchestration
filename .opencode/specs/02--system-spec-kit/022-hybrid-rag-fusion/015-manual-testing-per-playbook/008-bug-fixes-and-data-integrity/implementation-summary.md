@@ -60,7 +60,7 @@ Code-analysis execution of all 11 bug-fixes-and-data-integrity manual test scena
 | implementation-summary.md | Modified | Filled in with verdict table and results |
 | `lib/search/pipeline/stage2-fusion.ts` | Fixed | Wired R17 fan-effect divisor into Stage 2 co-activation hot-path |
 | `lib/cognitive/co-activation.ts` | Unchanged | `boostScore()` divisor verified; `getRelatedMemories` now imported by stage2 |
-| `feature_catalog/08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md` | Updated | Current Reality updated to reflect Stage 2 divisor is now applied |
+| Co-activation fan-effect divisor catalog entry | Updated | Current Reality updated to reflect Stage 2 divisor is now applied |
 <!-- /ANCHOR:what-built -->
 
 ---

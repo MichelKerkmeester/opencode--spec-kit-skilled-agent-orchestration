@@ -33,10 +33,14 @@ export type AdminActorResult =
   | { ok: false; response: MCPResponse };
 
 /**
- * SECURITY: This function validates format only. Transport-level authentication
- * MUST verify that the caller is the claimed actor before this handler is
- * reached. See P1-1 review finding.
+ * Resolve and validate the admin actor identity from caller-supplied parameters.
+ * SECURITY MODEL: Format validation only. Spec Kit Memory uses stdio transport
+ * (local process communication), so the caller is always the local AI assistant
+ * on the same machine. Actor IDs are self-asserted. If shared-memory is ever
+ * exposed over a network transport, transport-level authentication MUST be added.
  */
+let _localOnlyWarned = false;
+
 export function resolveAdminActor(
   tool: 'shared_space_upsert' | 'shared_space_membership_set',
   actorUserId?: string,
@@ -75,6 +79,11 @@ export function resolveAdminActor(
         },
       }),
     };
+  }
+
+  if (!_localOnlyWarned) {
+    console.error('[shared-memory] Actor identity is self-asserted (local-only trust model)');
+    _localOnlyWarned = true;
   }
 
   return {

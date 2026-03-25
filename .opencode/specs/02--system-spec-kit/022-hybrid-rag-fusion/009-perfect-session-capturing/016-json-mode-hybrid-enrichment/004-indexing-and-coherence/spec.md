@@ -28,7 +28,6 @@ Four structural gaps in the generate-context.js memory pipeline degrade indexing
 
 ---
 
-<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -39,10 +38,9 @@ Four structural gaps in the generate-context.js memory pipeline degrade indexing
 | **Created** | 2026-03-21 |
 | **Branch** | `016-json-mode-hybrid-enrichment` |
 | **Phase** | 004 of 004 in `016-json-mode-hybrid-enrichment` |
-| **Parent** | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/` |
+| **Parent Spec** | `../spec.md` |
 | **Siblings** | 001-initial-enrichment (done), 002-scoring-and-filter, 003-field-integrity-and-schema |
 | **Research** | `../research.md` Round 2, Domain D + F (74 findings, 20 recommendations) |
-<!-- /ANCHOR:metadata -->
 
 ---
 
@@ -139,6 +137,20 @@ Establish operator visibility into embedding pipeline health, enforce signal qua
 - **SC-003**: A session with non-empty `toolCalls` and `exchanges` produces memory output that includes those fields — zero silent data loss for AI-composed rich data
 - **SC-004**: All 8 phantom V2.2 OPTIONAL_PLACEHOLDER tokens removed with no regression in any existing memory render test
 - **SC-005**: Observation arrays with duplicate entries at normalization time produce deduplicated output — intra-document render dedup is not the sole safeguard
+
+### Acceptance Scenarios
+
+**Given** a retry manager with pending or failed embedding work, **when** an operator calls `memory_health`, **then** the response includes the `embeddingRetry` block with the live retry-state fields.
+
+**Given** a session whose auto-extracted phrases include spec-folder path fragments or short filler tokens, **when** trigger-phrase filtering runs, **then** those low-signal phrases are removed before final merge.
+
+**Given** a save with manually authored trigger phrases, **when** the filter pipeline runs, **then** the manual phrases remain unchanged in the final output.
+
+**Given** a collected session with non-empty `toolCalls` or `exchanges`, **when** the Mustache renderer builds the memory output, **then** the corresponding optional sections appear in the rendered memory.
+
+**Given** a session with duplicate observations in the input payload, **when** normalization completes, **then** duplicate observation strings are removed before render time.
+
+**Given** a save whose fingerprint overlaps with recent memories for the same spec folder, **when** the pre-save overlap check runs, **then** the workflow emits a warning without blocking the save.
 <!-- /ANCHOR:success-criteria -->
 
 ---

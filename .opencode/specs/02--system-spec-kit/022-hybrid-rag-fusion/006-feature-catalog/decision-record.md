@@ -97,8 +97,7 @@ We need to verify ~180 feature snippets against source code AND investigate 55 u
 ---
 
 <!-- /ANCHOR:adr-001 -->
-<!-- ANCHOR:adr-002 -->
-## ADR-002: Gap Classification Methodology
+### ADR-002: Gap Classification Methodology
 
 ### Metadata
 
@@ -177,9 +176,7 @@ The prior 10-agent scan found 55 gaps with 3 significance tiers (high/medium/low
 
 ---
 
-<!-- /ANCHOR:adr-002 -->
-<!-- ANCHOR:adr-003 -->
-## ADR-003: Catalog Structure Preservation
+### ADR-003: Catalog Structure Preservation
 
 ### Metadata
 
@@ -255,4 +252,3 @@ The prior scan recommended creating new categories (Server Operations, Save Path
 - Remediation manifest maps new features to existing categories
 
 **How to roll back**: Create new categories if the 20-category structure proves inadequate during remediation.
-<!-- /ANCHOR:adr-003 -->

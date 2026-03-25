@@ -147,7 +147,7 @@ contextType: "implementation"
 - **Checklist**: See `checklist.md`
 <!-- /ANCHOR:cross-refs -->
 
-## Audit Follow-up Additions (2026-03-23)
+**Audit Follow-up Additions (2026-03-23)**
 
 - [ ] T067 Execute post-audit follow-up for M5 — validate `validateHalfLifeConfig` rejects `halfLifeDays: 0` and preserves the positive-number-or-null contract
 - [ ] T068 Verify zero-value half-life input is rejected with the same contract boundary as other non-positive values while `null` remains allowed

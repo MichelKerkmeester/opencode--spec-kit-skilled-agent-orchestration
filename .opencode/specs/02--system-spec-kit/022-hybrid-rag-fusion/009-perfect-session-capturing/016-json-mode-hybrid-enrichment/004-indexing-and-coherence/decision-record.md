@@ -120,8 +120,7 @@ The retry manager (retry-manager.ts:86-233) maintains embedding retry state enti
 
 ---
 
-<!-- ANCHOR:adr-002 -->
-## ADR-002: Trigger Phrase Filter as Post-Extraction Stage, Not Extraction Replacement
+### ADR-002: Trigger Phrase Filter as Post-Extraction Stage, Not Extraction Replacement
 
 ### Metadata
 
@@ -133,7 +132,6 @@ The retry manager (retry-manager.ts:86-233) maintains embedding retry state enti
 
 ---
 
-<!-- ANCHOR:adr-002-context -->
 ### Context
 
 Auto-extraction at workflow.ts:940-1018 uses n-gram depth 4 to generate 15-30 trigger phrases per memory. Real-session output contains path fragments like "system spec kit/022 hybrid rag fusion", n-gram shingles like "roots contribute identical files", and generic tokens like "and missing" — all of which produce binary score=1.0 matches when they appear in any query prompt, creating false positives and diluting recall quality. The RC2 fix (workflow.ts:978-988) already ensures manually-authored `_manualTriggerPhrases` survive, but the problem is the volume and quality of the auto-extracted set, not the merge logic.
@@ -144,21 +142,17 @@ Auto-extraction at workflow.ts:940-1018 uses n-gram depth 4 to generate 15-30 tr
 - Must not modify the n-gram extraction algorithm — changes to extraction depth could affect all sessions
 - Must preserve manually-authored phrases unchanged — they are the highest-quality signal
 - Filter must be idempotent — safe to apply more than once without loss of additional signal
-<!-- /ANCHOR:adr-002-context -->
 
 ---
 
-<!-- ANCHOR:adr-002-decision -->
 ### Decision
 
 **We chose**: Insert a 3-stage filter function (`filterTriggerPhrases()`) between auto-extraction output and the merge step, applied only to auto-extracted phrases.
 
 **How it works**: After the n-gram extractor produces its phrase list, and before merging with `_manualTriggerPhrases`, we pass the auto-extracted list through three sequential stages: (1) remove entries containing path separators or matching multi-word path segment patterns, (2) remove entries where all word tokens are under 3 characters (with an allow-list for technical acronyms like RAG, BM25, MCP), (3) remove n-gram phrases that are strict substrings of any retained longer phrase. Manual phrases skip this filter entirely and are merged after filtering.
-<!-- /ANCHOR:adr-002-decision -->
 
 ---
 
-<!-- ANCHOR:adr-002-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -169,11 +163,9 @@ Auto-extraction at workflow.ts:940-1018 uses n-gram depth 4 to generate 15-30 tr
 | Raise minimum phrase frequency threshold | Reduces low-signal phrases | Shared threshold across all sessions may cut valid rare but important phrases | 6/10 |
 
 **Why this one**: A post-extraction filter is the only approach that is (a) additive and reversible, (b) does not change extraction for all sessions, and (c) applies deterministic rules that can be unit-tested. The root-cause fix (reduce n-gram depth) is a separate concern tracked for a future sprint after we have baseline metrics on phrase quality.
-<!-- /ANCHOR:adr-002-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-002-consequences -->
 ### Consequences
 
 **What improves**:
@@ -191,11 +183,9 @@ Auto-extraction at workflow.ts:940-1018 uses n-gram depth 4 to generate 15-30 tr
 | Filter over-aggressively removes valid short phrases | M | 3-char minimum (not 4); allow-list for RAG, BM25, MCP, ADR, JWT, API |
 | Stage 3 (shingle removal) removes valid n-grams that happen to be substrings | L | Stage 3 only removes exact substring matches of longer retained phrases — not substring of any query string |
 | Filter adds latency to high-volume saves | L | Pure string operations on <50 phrases; negligible O(n^2) in practice |
-<!-- /ANCHOR:adr-002-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-002-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -207,11 +197,9 @@ Auto-extraction at workflow.ts:940-1018 uses n-gram depth 4 to generate 15-30 tr
 | 5 | **Open Horizons?** | PASS | Filter is independent of extraction algorithm; root-cause fix can be tackled separately |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-002-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-002-impl -->
 ### Implementation
 
 **What changes**:
@@ -219,13 +207,10 @@ Auto-extraction at workflow.ts:940-1018 uses n-gram depth 4 to generate 15-30 tr
 - Optional: separate utility file if function exceeds ~40 lines
 
 **How to roll back**: Remove the `filterTriggerPhrases()` call from the merge flow — auto-extracted phrases pass through unfiltered, reverting to current noisy state. No data is lost (filtering is output-side only).
-<!-- /ANCHOR:adr-002-impl -->
-<!-- /ANCHOR:adr-002 -->
 
 ---
 
-<!-- ANCHOR:adr-003 -->
-## ADR-003: toolCalls/exchanges as Optional Mustache Sections with Context Builder Guards
+### ADR-003: toolCalls/exchanges as Optional Mustache Sections with Context Builder Guards
 
 ### Metadata
 
@@ -237,7 +222,6 @@ Auto-extraction at workflow.ts:940-1018 uses n-gram depth 4 to generate 15-30 tr
 
 ---
 
-<!-- ANCHOR:adr-003-context -->
 ### Context
 
 CollectedDataBase contains `toolCalls: ToolCallSummary[]` and `exchanges: ExchangeSummary[]` fields that AI agents populate during session capture. These fields hold structured, AI-composed data: tool usage patterns and conversation exchange summaries. They are ingested into the pipeline but never bound to any Mustache template section — the data is silently discarded at render time. This is one of 15+ fields identified in the research (Domain F) that are collected but never rendered, representing permanent information loss for sessions with non-trivial tool usage.
@@ -248,21 +232,17 @@ CollectedDataBase contains `toolCalls: ToolCallSummary[]` and `exchanges: Exchan
 - Empty arrays must produce no output (no section header without content)
 - Must not add verbosity for sessions where toolCalls/exchanges are absent (majority of current sessions)
 - toolCallsSummary output should be bounded in length — top-3 by frequency to avoid bloat
-<!-- /ANCHOR:adr-003-context -->
 
 ---
 
-<!-- ANCHOR:adr-003-decision -->
 ### Decision
 
 **We chose**: Add optional `{{#hasToolCalls}}...{{/hasToolCalls}}` and `{{#hasExchanges}}...{{/hasExchanges}}` sections to the Mustache template, with context builder guards in workflow.ts that pre-compute `hasToolCalls` (boolean), `toolCallsSummary` (top-3 entries), `hasExchanges` (boolean), and `exchangesSummary` (count + topics).
 
 **How it works**: The workflow.ts context builder already assembles a flat object for the Mustache renderer. We add four new keys: `hasToolCalls` is true when toolCalls.length > 0, `toolCallsSummary` is an array of the top 3 ToolCallSummary entries by call count (or all if fewer than 3), `hasExchanges` is true when exchanges.length > 0, and `exchangesSummary` contains a count and a deduplicated topics array. In the Mustache template, the two new sections are gated on the boolean flags, ensuring empty arrays produce zero output.
-<!-- /ANCHOR:adr-003-decision -->
 
 ---
 
-<!-- ANCHOR:adr-003-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -273,11 +253,9 @@ CollectedDataBase contains `toolCalls: ToolCallSummary[]` and `exchanges: Exchan
 | Aggregate counts only (no per-entry rendering) | Minimal verbosity | Loses per-tool signal; not useful for retrieval beyond "N tools used" | 5/10 |
 
 **Why this one**: The optional section pattern already exists in the Mustache template for other conditional fields. Using the same guard pattern keeps the template consistent and ensures zero regression for sessions without toolCalls or exchanges. The top-3 cap prevents verbosity regression for sessions with many tool calls.
-<!-- /ANCHOR:adr-003-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-003-consequences -->
 ### Consequences
 
 **What improves**:
@@ -295,11 +273,9 @@ CollectedDataBase contains `toolCalls: ToolCallSummary[]` and `exchanges: Exchan
 | ToolCallSummary field shape differs from assumed | L | Read session-types.ts before T017 — confirmed shape before template design |
 | Top-3 cap excludes relevant tool calls for power-user sessions | L | Cap is configurable via context builder; start at 3, adjust if feedback received |
 | Mustache section insertion point conflicts with 003-sibling template changes | M | Coordinate: insert at end of optional sections block, after any 003 additions |
-<!-- /ANCHOR:adr-003-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-003-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -311,11 +287,9 @@ CollectedDataBase contains `toolCalls: ToolCallSummary[]` and `exchanges: Exchan
 | 5 | **Open Horizons?** | PASS | Pattern extensible to other silently-discarded fields from Domain F research list |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-003-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-003-impl -->
 ### Implementation
 
 **What changes**:
@@ -323,8 +297,6 @@ CollectedDataBase contains `toolCalls: ToolCallSummary[]` and `exchanges: Exchan
 - workflow.ts context builder: Add hasToolCalls, toolCallsSummary, hasExchanges, exchangesSummary key bindings
 
 **How to roll back**: Remove the four context builder keys from workflow.ts and remove the two Mustache sections. The fields return to being silently discarded — same as current state. No data is permanently affected.
-<!-- /ANCHOR:adr-003-impl -->
-<!-- /ANCHOR:adr-003 -->
 
 ---
 

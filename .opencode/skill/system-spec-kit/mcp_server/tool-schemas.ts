@@ -323,19 +323,52 @@ const memoryBulkDelete: ToolDefinition = {
 const checkpointCreate: ToolDefinition = {
   name: 'checkpoint_create',
   description: '[L5:Lifecycle] Create a named checkpoint of current memory state for later restoration. Token Budget: 600.',
-  inputSchema: { type: 'object', additionalProperties: false, properties: { name: { type: 'string', description: 'Unique checkpoint name' }, specFolder: { type: 'string', description: 'Limit to specific spec folder' }, metadata: { type: 'object', description: 'Additional metadata' } }, required: ['name'] },
+  inputSchema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      name: { type: 'string', description: 'Unique checkpoint name' },
+      specFolder: { type: 'string', description: 'Limit to specific spec folder' },
+      userId: { type: 'string', description: 'Scope to this user (optional, defense-in-depth)' },
+      agentId: { type: 'string', description: 'Scope to this agent (optional, defense-in-depth)' },
+      sharedSpaceId: { type: 'string', description: 'Scope to this shared space (optional, defense-in-depth)' },
+      metadata: { type: 'object', description: 'Additional metadata' }
+    },
+    required: ['name']
+  },
 };
 
 const checkpointList: ToolDefinition = {
   name: 'checkpoint_list',
   description: '[L5:Lifecycle] List all available checkpoints. Token Budget: 600.',
-  inputSchema: { type: 'object', additionalProperties: false, properties: { specFolder: { type: 'string', description: 'Filter by spec folder' }, limit: { type: 'number', default: 50 } } },
+  inputSchema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      specFolder: { type: 'string', description: 'Filter by spec folder' },
+      userId: { type: 'string', description: 'Scope to this user (optional, defense-in-depth)' },
+      agentId: { type: 'string', description: 'Scope to this agent (optional, defense-in-depth)' },
+      sharedSpaceId: { type: 'string', description: 'Scope to this shared space (optional, defense-in-depth)' },
+      limit: { type: 'number', default: 50 }
+    }
+  },
 };
 
 const checkpointRestore: ToolDefinition = {
   name: 'checkpoint_restore',
   description: '[L5:Lifecycle] Restore memory state from a checkpoint. Token Budget: 600.',
-  inputSchema: { type: 'object', additionalProperties: false, properties: { name: { type: 'string', description: 'Checkpoint name to restore' }, clearExisting: { type: 'boolean', default: false } }, required: ['name'] },
+  inputSchema: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      name: { type: 'string', description: 'Checkpoint name to restore' },
+      userId: { type: 'string', description: 'Scope to this user (optional, defense-in-depth)' },
+      agentId: { type: 'string', description: 'Scope to this agent (optional, defense-in-depth)' },
+      sharedSpaceId: { type: 'string', description: 'Scope to this shared space (optional, defense-in-depth)' },
+      clearExisting: { type: 'boolean', default: false }
+    },
+    required: ['name']
+  },
 };
 
 const checkpointDelete: ToolDefinition = {
@@ -346,6 +379,9 @@ const checkpointDelete: ToolDefinition = {
     additionalProperties: false,
     properties: {
       name: { type: 'string', description: 'Checkpoint name to delete' },
+      userId: { type: 'string', description: 'Scope to this user (optional, defense-in-depth)' },
+      agentId: { type: 'string', description: 'Scope to this agent (optional, defense-in-depth)' },
+      sharedSpaceId: { type: 'string', description: 'Scope to this shared space (optional, defense-in-depth)' },
       confirmName: {
         type: 'string',
         description: 'Required safety confirmation. It must exactly match name.'

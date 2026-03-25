@@ -58,7 +58,7 @@ contextType: "general"
 - [x] CHK-311 [P1] Deterministic tie-break coverage passes [EVIDENCE:implementation-summary.md]
 - [x] CHK-312 [P1] Explainability traces validated [EVIDENCE:implementation-summary.md]
 - [x] CHK-313 [P1] Latency and regression benchmarks pass [EVIDENCE:implementation-summary.md]
-- [ ] [DEFERRED] Rollback/kill-switch drill — drill artifacts not yet produced; evidence required before release sign-off
+- [ ] CHK-314 [P2] Rollback or kill-switch drill deferred — drill artifacts not yet produced; evidence required before release sign-off
 
 <!-- /ANCHOR:testing -->
 

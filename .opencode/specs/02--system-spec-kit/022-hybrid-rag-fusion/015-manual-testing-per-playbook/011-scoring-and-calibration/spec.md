@@ -123,7 +123,7 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 | REQ-121 | Execute 121 (Adaptive shadow proposal and rollback (Phase 4)) with the exact prompt, execution sequence, evidence capture, and feature link. | PASS: Shadow proposal emitted without mutating live order; disable flag removes proposal cleanly; FAIL: Live order changes under shadow mode or proposal persists after disable |
 | REQ-159 | Execute 159 (Learned Stage 2 Combiner) with exact prompt, execution sequence, evidence capture, and feature link. Feature flag: `SPECKIT_LEARNED_STAGE2_COMBINER` (default: OFF). | PASS when flag ON: shadow scoring output emitted alongside live Stage 2 combiner, shadow weights logged, live ranking not affected; PASS when flag OFF: no shadow scoring output. FAIL when shadow output mutates live ranking |
 | REQ-160 | Execute 160 (Shadow Feedback Holdout) with exact prompt, execution sequence, evidence capture, and feature link. Feature flag: `SPECKIT_SHADOW_FEEDBACK` (default: OFF). | PASS when flag ON: holdout pipeline runs on configured percentage, holdout results logged separately, live retrieval unaffected; PASS when flag OFF: no holdout pipeline runs. FAIL when holdout affects live results |
-| REQ-170 | Document 170 (Fusion Policy Shadow v2) as retired/removed from the active MCP server with evidence from the current codebase audit. | PASS: Phase docs explicitly state that `SPECKIT_FUSION_POLICY_SHADOW_V2`, `fusion-lab.js`, `isShadowFusionV2Enabled`, `runShadowComparison`, `minmax_linear`, and `zscore_linear` have no active `mcp_server` matches; FAIL: Phase docs still claim scenario 170 is active |
+| REQ-170 | Document 170 (Fusion Policy Shadow v2) as verified-retired/removed from the active MCP server with evidence from the current codebase audit. | PASS: Phase docs explicitly state that `SPECKIT_FUSION_POLICY_SHADOW_V2`, `fusion-lab.js`, `isShadowFusionV2Enabled`, `runShadowComparison`, `minmax_linear`, and `zscore_linear` are verified-retired, with `fusion-lab.js` deleted in commit `56c67030f` and no active `mcp_server` matches; FAIL: Phase docs still claim scenario 170 is active |
 | REQ-171 | Execute 171 (Calibrated Overlap Bonus) with exact prompt, execution sequence, evidence capture, and feature link. Feature flag: `SPECKIT_CALIBRATED_OVERLAP_BONUS` (default: OFF). | PASS when flag ON: calibrated overlap bonus replaces flat convergence bonus with beta=0.15 scaling and 0.06 cap; trace shows capped calibrated value; FAIL when cap is exceeded or calibrated scaling absent |
 | REQ-172 | Execute 172 (RRF K Experimental) with exact prompt, execution sequence, evidence capture, and feature link. Feature flag: `SPECKIT_RRF_K_EXPERIMENTAL` (default: OFF). | PASS when flag ON: per-intent K optimization evaluates sweep grid, selects best K using NDCG@10, records winning K; FAIL when sweep grid is skipped or chosen K lacks NDCG@10 evidence |
 <!-- /ANCHOR:requirements -->
@@ -137,6 +137,16 @@ Provide a canonical phase packet that maps every assigned scoring-and-calibratio
 - **SC-002**: Every test row links to the correct scoring-and-calibration feature catalog file by relative path.
 - **SC-003**: Destructive scenarios (025, 026, 028, 031, 032, 121) are executed in an isolated sandbox with pre/post state documented.
 - **SC-004**: Reviewers can apply the review protocol verdict rules without reopening the monolithic playbook for missing scenario details.
+### Acceptance Scenarios
+
+**Given** the `011-scoring-and-calibration` phase packet, **when** a reviewer opens the scenario mapping, **then** every scenario listed for the phase has a bounded execution target and a documented acceptance rule.
+
+**Given** the `011-scoring-and-calibration` phase packet, **when** execution evidence is reviewed, **then** verdict notes can be traced through `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+
+**Given** the `011-scoring-and-calibration` phase packet, **when** a reviewer checks neighboring navigation, **then** the packet points back to the parent and to the adjacent numbered phase where one exists.
+
+**Given** strict validation runs on the `011-scoring-and-calibration` phase packet, **when** the validator checks structure, **then** the packet satisfies Level 2 requirement and acceptance-scenario minimums.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

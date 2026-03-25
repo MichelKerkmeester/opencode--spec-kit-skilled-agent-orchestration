@@ -7,6 +7,12 @@
 <!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
+### Technical Context
+
+- Scope: release-control remediation for the live `022-hybrid-rag-fusion` tree
+- Primary surfaces: spec packets under `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/` plus runtime code in `.opencode/skill/system-spec-kit/{mcp_server,scripts,shared}`
+- Verification gates: recursive spec validation, workspace tests, and final release review
+
 This plan keeps the original 012 work history intact and extends the packet into a full-tree release-readiness plan for the live `022-hybrid-rag-fusion` tree.
 
 - **Phase 1** is complete: original deep audit and backlog creation
@@ -122,7 +128,7 @@ The remediation program has four active layers:
 
 **Verification completed**
 - 20 review iterations completed
-- 119 spec directories and 19 direct phases reviewed
+- 123 spec directories and 19 direct phases reviewed
 - All P0 and P1 findings backed by file evidence in `review-report.md`
 
 ### Phase 4: Spec Truth Remediation

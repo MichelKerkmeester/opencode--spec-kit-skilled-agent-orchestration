@@ -26,8 +26,8 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 4 |
-| **Predecessor** | 003-data-fidelity |
-| **Successor** | 005-confidence-calibration |
+| **Predecessor** | [003-data-fidelity](../003-data-fidelity/spec.md) |
+| **Successor** | [005-confidence-calibration](../005-confidence-calibration/spec.md) |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-04 |
 | **Sequence** | A1 |

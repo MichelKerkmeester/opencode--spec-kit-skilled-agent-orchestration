@@ -29,8 +29,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:verdict-table -->
-## Verdict Table
+### Verdict Table
 
 | Test ID | Scenario | Verdict | Key Evidence |
 |---------|----------|---------|--------------|
@@ -44,7 +43,6 @@ contextType: "general"
 | 124 | Automatic archival lifecycle coverage | **PASS** | `lib/cognitive/archival-manager.ts:517-547` — `is_archived=1` set, BM25 removed (`syncBm25OnArchive`), vec row deleted (`syncVectorOnArchive`). Unarchive restores BM25 (`syncBm25OnUnarchive`). `syncVectorOnUnarchive` (line 510-519) logs deferred vector re-embedding notice and does NOT rebuild immediately — deferred to next index scan. Protected tiers `['constitutional','critical']` excluded. Test T059-012b verifies no embedding calls and deferred log emission on unarchive. |
 | 134 | Startup pending-file recovery lifecycle coverage | **PASS** | `context-server.ts:422-505` — scans memory roots, `ALLOWED_BASE_PATHS`, `specs/`, `.opencode/specs/`, constitutional dirs; committed pending files renamed via `transactionManager.recoverAllPendingFiles()`; stale files (no DB row) left with `console.warn` at `transaction-manager.ts:359-361` |
 | 144 | Advisory ingest lifecycle forecast | **PASS** | `handlers/memory-ingest.ts:78-122` — `forecast` object always present in response; `getIngestForecast()` (`job-queue.ts:461-561`) returns null/caveat on sparse/early states, updates ETA on progress; extended telemetry via `retrievalTelemetry.recordLifecycleForecastDiagnostics()` is additive |
-<!-- /ANCHOR:verdict-table -->
 
 ---
 

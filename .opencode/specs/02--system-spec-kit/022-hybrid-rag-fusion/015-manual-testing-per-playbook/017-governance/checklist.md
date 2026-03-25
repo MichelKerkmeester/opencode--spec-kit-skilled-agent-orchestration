@@ -33,8 +33,8 @@ contextType: "general"
 
 - [x] CHK-001 [P0] Playbook source and review protocol loaded before execution begins [Evidence: read all 5 scenario files from `manual_testing_playbook/17--governance/`]
 - [x] CHK-002 [P0] All 5 scenario prompts and command sequences verified against playbook [Evidence: exact prompts and command sequences cross-referenced from playbook files]
-- [x] CHK-003 [P1] MCP runtime confirmed operational — all handlers present: `handlers/shared-memory.ts`, `handlers/memory-save.ts`, `lib/governance/scope-governance.ts`, `lib/collab/shared-spaces.ts`
-- [x] CHK-004 [P1] Baseline DB config state documented — `governance_audit` created on demand via `ensureGovernanceRuntime()`; `config.shared_memory_enabled` defaults absent (disabled by default)
+- [x] CHK-003 [P1] MCP runtime confirmed operational — all handlers present: `handlers/shared-memory.ts`, `handlers/memory-save.ts`, `lib/governance/scope-governance.ts`, `lib/collab/shared-spaces.ts` [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-004 [P1] Baseline DB config state documented — `governance_audit` created on demand via `ensureGovernanceRuntime()`; `config.shared_memory_enabled` defaults absent (disabled by default) [EVIDENCE: tasks.md; implementation-summary.md]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -42,11 +42,11 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-020 [P0] All 5 scenarios have a PASS, PARTIAL, or FAIL verdict with explicit rationale [063=PASS, 064=PASS, 122=PASS, 123=PASS, 148=PASS]
-- [x] CHK-021 [P0] Evidence for 122: rejection (`scope-governance.ts:261-265`, `memory-save.ts:643-656`), success (`scope-governance.ts:229-287`, `memory-save.ts:813-827`), scope isolation (`scope-governance.ts:360-363, 461-465`), audit rows (`scope-governance.ts:337-358`)
-- [x] CHK-022 [P0] Evidence for 123: non-member denial (`shared-spaces.ts:520-523`), member access (`shared-spaces.ts:451-473`), kill-switch block (`shared-spaces.ts:507-509`)
-- [x] CHK-023 [P0] Evidence for 148: default-off (`shared-spaces.ts:184-205`), enable response (`shared-memory.ts:287-322`), idempotent call (`shared-memory.ts:299-307`), README on disk (`shared-memory.ts:329-369`), DB persistence (`shared-spaces.ts:212-216`)
-- [x] CHK-024 [P1] Evidence is direct code-audit citations with file:line references; no fabrication
+- [x] CHK-020 [P0] All 5 scenarios have a PASS, PARTIAL, or FAIL verdict with explicit rationale [063=PASS, 064=PASS, 122=PASS, 123=PASS, 148=PASS] [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-021 [P0] Evidence for 122: rejection (`scope-governance.ts:261-265`, `memory-save.ts:643-656`), success (`scope-governance.ts:229-287`, `memory-save.ts:813-827`), scope isolation (`scope-governance.ts:360-363, 461-465`), audit rows (`scope-governance.ts:337-358`) [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-022 [P0] Evidence for 123: non-member denial (`shared-spaces.ts:520-523`), member access (`shared-spaces.ts:451-473`), kill-switch block (`shared-spaces.ts:507-509`) [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-023 [P0] Evidence for 148: default-off (`shared-spaces.ts:184-205`), enable response (`shared-memory.ts:287-322`), idempotent call (`shared-memory.ts:299-307`), README on disk (`shared-memory.ts:329-369`), DB persistence (`shared-spaces.ts:212-216`) [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-024 [P1] Evidence is direct code-audit citations with file:line references; no fabrication [EVIDENCE: tasks.md; implementation-summary.md]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -66,9 +66,9 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] Disposable sandbox tenant/user IDs used for 122 — code-audit mode: no actual DB mutations made; validation rejects missing provenance before any persist
-- [x] CHK-031 [P0] DB config state — code-audit mode: no runtime calls made; no DB mutations to restore
-- [x] CHK-032 [P1] 122 scoped memory records — code-audit mode: no actual records created; provenance rejection confirmed at code level before any write
+- [x] CHK-030 [P0] Disposable sandbox tenant/user IDs used for 122 — code-audit mode: no actual DB mutations made; validation rejects missing provenance before any persist [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-031 [P0] DB config state — code-audit mode: no runtime calls made; no DB mutations to restore [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-032 [P1] 122 scoped memory records — code-audit mode: no actual records created; provenance rejection confirmed at code level before any write [EVIDENCE: tasks.md; implementation-summary.md]
 <!-- /ANCHOR:security -->
 
 ---
@@ -76,8 +76,8 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Phase coverage reported as 5/5 scenarios with verdict summary — 5 PASS (063, 064, 122, 123, 148), 0 PARTIAL, 0 FAIL
-- [x] CHK-041 [P1] `implementation-summary.md` updated with execution results and verdict table
+- [x] CHK-040 [P1] Phase coverage reported as 5/5 scenarios with verdict summary — 5 PASS (063, 064, 122, 123, 148), 0 PARTIAL, 0 FAIL [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-041 [P1] `implementation-summary.md` updated with execution results and verdict table [EVIDENCE: tasks.md; implementation-summary.md]
 - [ ] CHK-042 [P2] Findings saved to `memory/` via generate-context.js
 <!-- /ANCHOR:docs -->
 
@@ -86,8 +86,8 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Evidence artifacts stored inline in tasks.md (code-audit mode; no scratch files needed)
-- [x] CHK-051 [P2] `scratch/` — no intermediate drafts generated in code-audit mode
+- [x] CHK-050 [P1] Evidence artifacts stored inline in tasks.md (code-audit mode; no scratch files needed) [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-051 [P2] `scratch/` — no intermediate drafts generated in code-audit mode [EVIDENCE: tasks.md; implementation-summary.md]
 <!-- /ANCHOR:file-org -->
 
 ---

@@ -151,7 +151,7 @@ Search Query
 - [Tasks](tasks.md) — D4 task tracking
 - [Parent Spec](../spec.md) — Research-Based Refinement coordination
 - [Parent Plan](../plan.md) — Cross-phase implementation waves
-- [Research](../../../019-deep-research-rag-improvement/research/research.md) — Full 29-recommendation synthesis
+- Research (historical, path removed) — Full 29-recommendation synthesis
 
 <!-- ANCHOR:dependencies -->
 <!-- /ANCHOR:dependencies -->

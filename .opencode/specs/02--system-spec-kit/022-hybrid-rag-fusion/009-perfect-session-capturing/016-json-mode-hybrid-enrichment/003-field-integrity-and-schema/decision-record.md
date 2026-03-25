@@ -120,8 +120,7 @@ contextType: "decision"
 
 ---
 
-<!-- ANCHOR:adr-002 -->
-## ADR-002: Real YAML Parser for Frontmatter Extraction
+### ADR-002: Real YAML Parser for Frontmatter Extraction
 
 ### Metadata
 
@@ -133,7 +132,6 @@ contextType: "decision"
 
 ---
 
-<!-- ANCHOR:adr-002-context -->
 ### Context
 
 `extractFrontMatter` in `validate-memory-quality.ts` (lines 183-191) used a regex to parse YAML frontmatter blocks. YAML is not a regular language; the regex accepted malformed YAML (unclosed quotes, bad indentation, duplicate keys) without error and produced silently incorrect parsed values. This meant V-rules operating on frontmatter data could be making decisions on corrupted input. The `js-yaml` package is already a transitive dependency of the project.
@@ -143,21 +141,17 @@ contextType: "decision"
 - The replacement must handle the subset of YAML actually used in memory file frontmatter (string scalars, arrays of strings, simple key-value).
 - Parse errors must not propagate as thrown exceptions; they must become structured V-rule failures so the caller can handle them without crashing.
 - Performance must be acceptable for typical frontmatter size (<50 lines).
-<!-- /ANCHOR:adr-002-context -->
 
 ---
 
-<!-- ANCHOR:adr-002-decision -->
 ### Decision
 
 **We chose**: Replace the regex with `yaml.load()` from `js-yaml`, wrapped in a try/catch. Any `YAMLException` is caught and converted to a structured V-rule failure object with `ruleId: "V-FRONTMATTER-PARSE"` and the original error message included. The caller receives either a parsed object or a failure; it never receives silently-corrupt data.
 
 **How it works**: Import `* as yaml from 'js-yaml'` at the top of `validate-memory-quality.ts`. In `extractFrontMatter`, strip the `---` delimiters, pass the body to `yaml.load({ schema: yaml.DEFAULT_SAFE_SCHEMA })`, and return the result. Wrap the call in try/catch; on `YAMLException`, return a structured failure object instead of rethrowing.
-<!-- /ANCHOR:adr-002-decision -->
 
 ---
 
-<!-- ANCHOR:adr-002-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -168,11 +162,9 @@ contextType: "decision"
 | Custom YAML subset parser | No dependency | Significant implementation effort; likely to be a worse YAML regex | 1/10 |
 
 **Why this one**: `js-yaml` is already present, covers all valid frontmatter syntax, and the synchronous API matches the existing function signature. There is no engineering cost beyond adding the import and the try/catch.
-<!-- /ANCHOR:adr-002-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-002-consequences -->
 ### Consequences
 
 **What improves**:
@@ -189,11 +181,9 @@ contextType: "decision"
 |------|--------|------------|
 | `yaml.DEFAULT_SAFE_SCHEMA` rejects YAML features used in existing memories | M | Audit existing memory files for non-scalar YAML features before merging |
 | `js-yaml` parse is slower than regex for very large frontmatter | L | Benchmark; typical frontmatter (<50 lines) parses in <2 ms |
-<!-- /ANCHOR:adr-002-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-002-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -205,24 +195,19 @@ contextType: "decision"
 | 5 | **Open Horizons?** | PASS | Does not constrain future frontmatter schema changes |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-002-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-002-impl -->
 ### Implementation
 
 **What changes**:
 - `validate-memory-quality.ts`: Add `import * as yaml from 'js-yaml'`; replace regex body in `extractFrontMatter` with `yaml.load()` + try/catch
 
 **How to roll back**: Remove the import, restore the original regex block. The original regex is preserved in git history; revert is a clean restore.
-<!-- /ANCHOR:adr-002-impl -->
-<!-- /ANCHOR:adr-002 -->
 
 ---
 
-<!-- ANCHOR:adr-003 -->
-## ADR-003: Strict Enum Validation for contextType (Error Not Warn)
+### ADR-003: Strict Enum Validation for contextType (Error Not Warn)
 
 ### Metadata
 
@@ -234,7 +219,6 @@ contextType: "decision"
 
 ---
 
-<!-- ANCHOR:adr-003-context -->
 ### Context
 
 `importanceTier` is correctly validated against its enum values in `validateInputData`. `contextType` is defined as an enum type in the TypeScript source but receives no runtime validation — any string passes. Memories tagged with invalid `contextType` values corrupt the search index's faceting behavior and make retrieval filtering unreliable. Unlike unknown field names (ADR-001), an invalid `contextType` is not an ambiguous extension field; it is unambiguously wrong data.
@@ -243,21 +227,17 @@ contextType: "decision"
 
 - Must match the existing `importanceTier` validation pattern for consistency.
 - Must not break callers that omit `contextType` (the field is optional).
-<!-- /ANCHOR:adr-003-context -->
 
 ---
 
-<!-- ANCHOR:adr-003-decision -->
 ### Decision
 
 **We chose**: Validate `contextType` as a hard error (return a validation error object) when the field is present and the value is not in `VALID_CONTEXT_TYPES`. This matches the behavior of `importanceTier` validation and treats invalid enum values as unambiguously incorrect, not as extension field candidates.
 
 **How it works**: Define `VALID_CONTEXT_TYPES` as a `const` array mirroring the TypeScript `contextType` union. In `validateInputData`, after the existing `importanceTier` check, add: `if (input.contextType && !VALID_CONTEXT_TYPES.includes(input.contextType)) return { error: "invalid contextType", value: input.contextType, accepted: VALID_CONTEXT_TYPES }`.
-<!-- /ANCHOR:adr-003-decision -->
 
 ---
 
-<!-- ANCHOR:adr-003-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -267,11 +247,9 @@ contextType: "decision"
 | Warn-not-error | Non-breaking | Invalid values still reach storage; index corruption continues | 2/10 |
 
 **Why this one**: `contextType` is a closed enum, not an extension point. An invalid value is categorically different from an unknown field name; it will corrupt downstream behavior. The `importanceTier` precedent in the same file establishes the correct pattern.
-<!-- /ANCHOR:adr-003-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-003-consequences -->
 ### Consequences
 
 **What improves**:
@@ -286,11 +264,9 @@ contextType: "decision"
 | Risk | Impact | Mitigation |
 |------|--------|------------|
 | `VALID_CONTEXT_TYPES` constant drifts from TypeScript union definition | M | Add lint rule or unit test comparing constant to type |
-<!-- /ANCHOR:adr-003-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-003-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -302,24 +278,19 @@ contextType: "decision"
 | 5 | **Open Horizons?** | PASS | `VALID_CONTEXT_TYPES` constant can be extended when new values are added to the type |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-003-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-003-impl -->
 ### Implementation
 
 **What changes**:
 - `input-normalizer.ts`: Add `VALID_CONTEXT_TYPES` constant; add enum check in `validateInputData` mirroring `importanceTier` pattern
 
 **How to roll back**: Remove the constant and the check block. Clean additive revert.
-<!-- /ANCHOR:adr-003-impl -->
-<!-- /ANCHOR:adr-003 -->
 
 ---
 
-<!-- ANCHOR:adr-004 -->
-## ADR-004: Content Density Threshold of 50 Non-Whitespace Characters
+### ADR-004: Content Density Threshold of 50 Non-Whitespace Characters
 
 ### Metadata
 
@@ -331,7 +302,6 @@ contextType: "decision"
 
 ---
 
-<!-- ANCHOR:adr-004-context -->
 ### Context
 
 The quality flag `short_content` exists in the codebase but no V-rule enforces a minimum content requirement. An empty payload `{}` combined with a CLI `spec-folder` argument produces a valid but useless memory: a frontmatter block with no body. These degenerate saves pollute the search index and consume storage without providing retrieval value. We needed to choose a threshold value that rejects genuinely trivial content without rejecting legitimate short memories such as tag collections or single-line decision records.
@@ -341,21 +311,17 @@ The quality flag `short_content` exists in the codebase but no V-rule enforces a
 - The threshold must not reject valid short memories (e.g., a brief decision record with 2-3 sentences).
 - The threshold must reject degenerate saves: empty body, title-only body, whitespace-only body.
 - Measurement must be taken after frontmatter is stripped (frontmatter itself is not content).
-<!-- /ANCHOR:adr-004-context -->
 
 ---
 
-<!-- ANCHOR:adr-004-decision -->
 ### Decision
 
 **We chose**: Reject memories whose body (after frontmatter strip) contains fewer than 50 non-whitespace characters, measured by removing all whitespace and counting remaining characters. Whitespace includes spaces, tabs, and newlines.
 
 **How it works**: In the content density V-rule in `validate-memory-quality.ts`, after calling `extractFrontMatter`, take the body string, apply `.replace(/\s/g, '')`, count `.length`. If < 50, emit V-rule failure `{ ruleId: "V-CONTENT-DENSITY", message: "body has X non-whitespace characters; minimum is 50" }`.
-<!-- /ANCHOR:adr-004-decision -->
 
 ---
 
-<!-- ANCHOR:adr-004-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -366,11 +332,9 @@ The quality flag `short_content` exists in the codebase but no V-rule enforces a
 | Configurable via env var | Flexible | Adds config surface; premature for a first pass | 6/10 |
 
 **Why this one**: 50 non-whitespace characters is roughly 8-10 words — enough for a one-sentence observation. A `# Title` heading contains 5 non-whitespace chars (the title text without the hash and space); any real content sentence adds well over 50. The threshold is intentionally conservative to avoid false positives.
-<!-- /ANCHOR:adr-004-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-004-consequences -->
 ### Consequences
 
 **What improves**:
@@ -386,11 +350,9 @@ The quality flag `short_content` exists in the codebase but no V-rule enforces a
 |------|--------|------------|
 | Legitimate short memories rejected | M | Threshold 50 is deliberately low; monitor for false positives in first week |
 | Unicode multi-byte characters counted incorrectly | L | `.length` counts code units, not graphemes; acceptable for this use case |
-<!-- /ANCHOR:adr-004-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-004-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -402,16 +364,12 @@ The quality flag `short_content` exists in the codebase but no V-rule enforces a
 | 5 | **Open Horizons?** | PASS | Threshold is a named constant; easy to adjust or make configurable later |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-004-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-004-impl -->
 ### Implementation
 
 **What changes**:
 - `validate-memory-quality.ts`: Add content density V-rule using `CONTENT_DENSITY_MIN = 50` constant; compute non-whitespace length after frontmatter strip
 
 **How to roll back**: Remove the V-rule function and its call site. Clean additive revert.
-<!-- /ANCHOR:adr-004-impl -->
-<!-- /ANCHOR:adr-004 -->

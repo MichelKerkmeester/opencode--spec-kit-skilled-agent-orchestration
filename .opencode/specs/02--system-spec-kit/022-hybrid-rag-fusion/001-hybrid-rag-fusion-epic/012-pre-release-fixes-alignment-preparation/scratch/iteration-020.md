@@ -1,245 +1,101 @@
-● skill(sk-code--review)
-
-I’m pulling the core spec packet and review rubric together first, then I’ll synthesize a final PASS/CONDITIONAL/FAIL verdict against consistency, credibility, and release health.
-
-● Read README.md
-  │ .agents/skills/sk-code--review/README.md
-  └ 79 lines read
-
-● Read review_core.md
-  │ .agents/skills/sk-code--review/references/review_core.md
-  └ 98 lines read
-
-● memory_match_triggers
-  └ {"summary":"Matched 3 memories via trigger phrases","data":{"matchType":"trig...
-
-● Read review_ux_single_pass.md
-  │ .agents/skills/sk-code--review/references/review_ux_single_pass.md
-  └ 82 lines read
-
-● Read security_checklist.md
-  │ .agents/skills/sk-code--review/references/security_checklist.md
-  └ 206 lines read
-
-● Read code_quality_checklist.md
-  │ .agents/skills/sk-code--review/references/code_quality_checklist.md
-  └ 162 lines read
-
-● Read spec.md
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/spec.md
-  └ 324 lines read
-
-● Read spec.md
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md
-  └ 254 lines read
-
-● Read spec.md
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-rel
-  │ ease-fixes-alignment-preparation/spec.md
-  └ 205 lines read
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L1:500 (190 lines read)
-
-● Create session plan file (shell)
-  │ cat >
-  │ '/Users/michelkerkmeester/.copilot/session-state/faf5d469-dca2-4647-b0e6-0c106b13f749/plan.md'
-  │ <<'EOF'
-  │ # Plan
-  │ 1. Read the requested specs and review-skill guidance.…
-  └ 4 lines...
-
-I found at least one likely cross-packet mismatch already, so I’m doing a quick evidence pass against the live tree and command/tool surfaces before I lock the final verdict.
-
-● Search (glob)
-  │ "**/*" in .opencode/command/memory
-  └ 7 files found
-
-● Search (grep)
-  │ "allowed-tools:|^name:|^description:" in *.md (.opencode/command/memory)
-  └ 12 lines found
-
-● Search (grep)
-  │ "33 tools|6 slash commands|267 tests passed|397/21|398|12 children|11 sprint children|100/100|no
-  │ active P0 or P1" in **/*.md (.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion)
-  └ 5 lines found
-
-✗ Read review-report.md
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/review-repo
-  │ rt.md
-  └ Path does not exist
-
-● Verify live directory counts (shell)
-  │ cd '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' && printf '022_total_dirs='
-  │ && find '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion' -type d | wc -l | tr -d '
-  │ ' && printf '022_top_level_dirs=' && find
-  │ '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion' -maxdepth 1 -type d | wc -l | tr
-  │ -d ' ' && printf '001_child_dirs=' && find …
-  └ 6 lines...
-
-The live tree check makes the picture clearer: the release packet claims don’t just disagree with each other, they also disagree with the filesystem. I’m narrowing that into precise evidence now.
-
-● Read analyze.md
-  │ .opencode/command/memory/analyze.md
-  └ L1:80 (80 lines read)
-
-● Search (grep)
-  │ "397/21|398 total directories|398|399|11 sprint children|12 children|12 live sprint|11 live
-  │ sprint|100/100|no active P0 or P1|267 tests passed" in **/*.md
-  │ (.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion)
-  └ 5 lines found
-
-● Read manage.md
-  │ .opencode/command/memory/manage.md
-  └ L1:80 (80 lines read)
-
-● Read continue.md
-  │ .opencode/command/memory/continue.md
-  └ L1:60 (60 lines read)
-
-● Read save.md
-  │ .opencode/command/memory/save.md
-  └ L1:60 (59 lines read)
-
-● Read shared.md
-  │ .opencode/command/memory/shared.md
-  └ L1:60 (59 lines read)
-
-● Read learn.md
-  │ .opencode/command/memory/learn.md
-  └ L1:60 (60 lines read)
-
-● Count numbered child folders (shell)
-  │ cd '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' && printf
-  │ 'root_numbered_children=' && find '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion'
-  │ -maxdepth 1 -type d -name '[0-9][0-9][0-9]-*' | wc -l | tr -d ' ' && printf
-  │ 'epic_numbered_children=' && find
-  │ '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic' …
-  └ 19 lines...
-
-One more pass: the epic packet is internally inconsistent on its own child count, and I’m checking whether the root packet’s “19 direct phases” also lags the live tree.
-
-● Search (grep)
-  │ "^## 1\. METADATA|\*\*Sprint Children\*\*|\*\*Live Review Scope\*\*|\*\*Status\*\*|PHASE
-  │ DOCUMENTATION MAP|\| 012 \|"
-  │ (.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md)
-  └ 4 lines found
-
-● Search (grep)
-  │ "Directory Totals|Key Numbered Child Counts|Feature Catalog Count|PHASE DOCUMENTATION MAP|\| 019
-  │ \||\| 020 \|" (.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/spec.md)
-  └ 6 lines found
-
-● Search (grep)
-  │ "Command-Surface Contract|33 tools|6 slash commands|/memory:analyze|/memory:continue|/memory:lea
-  │ rn|/memory:manage|/memory:save|/memory:shared"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
-  └ 19 lines found
-
-● List root numbered phase folders (shell)
-  │ cd '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' && find
-  │ '.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion' -maxdepth 1 -type d -name
-  │ '[0-9][0-9][0-9]-*' -print | sort
-  └ 21 lines...
-
-● search feature catalog source files or docs describing memory command surface tool counts and com…
-  └ {"success":true,"results":[],"total_returned":0,"offset":0,"message":null}
-
-I’ve got enough to judge the packet tree now; I’m just spot-checking whether the root’s feature-catalog count is also grounded in the filesystem before I finalize.
-
-● Search (grep)
-  │ "Feature Catalog Count|feature files|Command-Surface Contract|Unified context retrieval|Semantic
-  │ and lexical search|Fast delegated search|Trigger phrase matching|Hybrid search pipeline"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
-  └ 7 lines found
-
-● Count feature catalog markdown files (shell)
-  │ cd '/Users/michelkerkmeester/MEGA/Development/Opencode Env/Public' && printf
-  │ 'feature_catalog_md_files=' && find '.opencode/skill/system-spec-kit/feature_catalog' -type f
-  │ -name '*.md' | wc -l | tr -d ' ' && printf 'feature_catalog_child_md_files=' && find
-  │ '.opencode/skill/system-spec-kit/feature_catalog' -mindepth 2 -type f -name '*.md' | wc -l | tr
-  │ -d ' '
-  └ 3 lines...
-
-● memory_quick_search 022 hybrid rag fusion release readiness review findings full-tree review 58 f…
-  └ {"summary":"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathematic...
-
-I’ve got the live counts I needed. The remaining question is whether the release-control packet itself overclaims closure, so I’m extracting the exact success-criteria lines now.
-
-● Read spec.md
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-rel
-  │ ease-fixes-alignment-preparation/spec.md
-  └ L150:165 (15 lines read)
-
-● Read spec.md
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/spec.md
-  └ L32:42 (11 lines read)
-
-● Read spec.md
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md
-  └ L32:42 (10 lines read)
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L50:63 (14 lines read)
-
-I have the core contradictions. I’m pulling one last citation on the control packet’s own “pending re-verification” wording so the final verdict cleanly distinguishes code health from release-certification health.
-
-● Read spec.md
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-rel
-  │ ease-fixes-alignment-preparation/spec.md
-  └ L13:18 (6 lines read)
-
-✗ Memory stored documentation
-  └ The feature catalog command-surface contract matches six memory command files an…
-
 # Iteration 020: Release Readiness Verdict
-## Agent: copilot / gpt-5.4 / high
-## Dimension: all (correctness, security, traceability, maintainability)
 
-## Files Reviewed
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/spec.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/spec.md`
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md`
-- `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md` (lines 1-500)
-- `.opencode/command/memory/{analyze,continue,learn,manage,save,shared}.md`
-- Live tree spot-checks for 022/001 directory counts
+## Active Finding Registry
 
-## Release Readiness Assessment
-### Spec Tree Consistency
-- **Not internally consistent yet.** The root packet says `398` directories, the 012 control packet says root counts were updated to `397/21`, and the live tree currently resolves to `399/21`.
-- The epic packet says `11 live sprint folders`, but the live subtree contains **12** numbered children and 012 explicitly cites “epic expanded to 12 children.”
-- 012 also marks the release as `100/100` / `no active P0 or P1`, while its own status remains `Complete — pending final deep review re-verification`.
+Scope note: `iteration-012.md`, `iteration-013.md`, `iteration-017.md`, and `iteration-019.md` are not present in the target folder. This verdict is computed from all available iterations (`001-011`, `014-016`, `018`) and deduplicated by canonicalized file:line.
 
-### Feature Catalog Credibility
-- **Credible in the reviewed slice.** The command-surface contract matches the six `/memory:*` command files and their `allowed-tools` frontmatter.
-- The root’s `222 feature files` claim is also credible; the catalog subtree contains 222 child markdown feature files.
-- The reviewed retrieval sections are detailed, source-linked, and materially believable.
+| Canonical ID | Sev | Canonical file:line | Finding (deduped) | Source iteration(s) | Status |
+|---|---|---|---|---|---|
+| RR-001 | P1 | `.opencode/skill/system-spec-kit/scripts/dist/extractors/collect-session-data.js:271-282` | Completed next-steps still force `IN_PROGRESS` (T79 not fixed) | 001 (`P1-001-T79`), 003 (`SCR-001`) | Active |
+| RR-002 | P1 | `.opencode/skill/system-spec-kit/mcp_server/dist/context-server.js:447-450` | Startup indexing/watch scope excludes allowed roots + constitutional directories | 001 (`P1-002-SCAN-SCOPE`) | Active |
+| RR-003 | P1 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:641-648` | Live Stage 1 path bypasses RRF/adaptive fusion | 002 (`P1-002-1`) | Active |
+| RR-004 | P1 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:489-523` | Stage 3 does not apply documented MPAB aggregation formula | 002 (`P1-002-2`) | Active |
+| RR-005 | P1 | `.opencode/skill/system-spec-kit/mcp_server/lib/graph/community-detection.ts:527-555` | Community injection can bypass min-state via partial rows | 002 (`P1-002-3`) | Active |
+| RR-006 | P1 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:163-223` | MMR appends non-embedded rows, causing systematic demotion | 002 (`P1-002-4`) | Active |
+| RR-007 | P2 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:909-941` | Degree channel constructed then discarded in raw-candidate path | 002 (`P2-002-5`) | Active |
+| RR-008 | P1 | `.opencode/skill/system-spec-kit/scripts/dist/evals/map-ground-truth-ids.js:58` | `--dry-run` still writes mapping artifact | 003 (`SCR-002`) | Active |
+| RR-009 | P1 | `.opencode/skill/system-spec-kit/scripts/dist/evals/run-redaction-calibration.js:55` | Redaction calibration path depends on caller CWD | 003 (`SCR-003`) | Active |
+| RR-010 | P2 | `.opencode/skill/system-spec-kit/scripts/dist/spec-folder/generate-description.js:56` | Metadata relative path uses unresolved paths post-canonical validation | 003 (`SCR-004`) | Active |
+| RR-011 | P2 | `.opencode/skill/system-spec-kit/scripts/dist/tests/fixtures/generate-phase1-5-dataset.js:21` | Fixture generator aborts on raw sync I/O/JSON errors | 003 (`SCR-005`) | Active |
+| RR-012 | P1 | `.opencode/skill/system-spec-kit/shared/dist/algorithms/index.js:20-22` | Release packet references `fusion-lab.js` artifact not present in compiled set | 004 (`P1-004-1`) | Active |
+| RR-013 | P2 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:429-436` | Shadow-flag naming ambiguity can disable wrong path operationally | 004 (`P2-004-2`) | Active |
+| RR-014 | P2 | `.opencode/skill/system-spec-kit/shared/dist/parsing/memory-sufficiency.js:200-208` | Empty `anchors: []` suppresses fallback extraction | 004 (`P2-004-3`) | Active |
+| RR-015 | P1 | `.opencode/skill/system-spec-kit/mcp_server/handlers/shared-memory.ts:35-39` | Shared-space admin operations trust caller-supplied actor identity | 005 (`SEC-001`, High) | Active |
+| RR-016 | P1 | `.opencode/skill/system-spec-kit/mcp_server/handlers/checkpoints.ts:194-205` | Checkpoint operations bypass tenant/shared-space isolation | 005 (`SEC-002`, High) | Active |
+| RR-017 | P1 | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-triggers.ts:287-322` | `memory_match_triggers` fails open on scope-filter errors | 005 (`SEC-003`, High) | Active |
+| RR-018 | P2 | `.opencode/skill/system-spec-kit/mcp_server/handlers/shared-memory.ts:185-199` | Shared-memory handlers expose raw internal errors to callers | 005 (`SEC-004`, Medium) | Active |
+| RR-019 | P2 | `.opencode/skill/system-spec-kit/scripts/dist/core/file-writer.js:123-155` | Duplicate-content check performs unbounded read+hash work | 005 (`SEC-005`, Medium) | Active |
+| RR-020 | P2 | `feature_catalog/feature_catalog.md:119-134` | Master catalog omits snippet linkage for `memory_quick_search` | 006 (`TRC-006-001`, Medium) | Active |
+| RR-021 | P1 | `feature_catalog/feature_catalog.md:951-955` | `eval_run_ablation` master status/gating is outdated vs code (`k_sensitivity`) | 006 (`TRC-006-002`, High) | Active |
 
-### Code Health
-- **Healthy enough from this review’s scope.** Per your assumption and 012’s recorded evidence, lint/typecheck/tests were green (`267` tests passed).
-- I found no new runtime/security blocker in this documentation-focused pass.
+**Unique active findings (deduped):**
+- P0: **0**
+- P1: **13**
+- P2: **8**
 
-### Documentation Quality
-- Strongly structured, but **not yet authoritative** for release certification because key inventory and closure claims still conflict across root, epic, and control-packet layers.
+## Resolved/Downgraded Findings
+
+- **Downgraded framing (v5 → current):** shadow-mode flag issue is no longer the prior direct default-OFF/default-ON contradiction; it now persists as an operator-facing naming ambiguity (tracked as `RR-013`, P2). Evidence: iteration-004 finding narrative.
+- **Superseded target artifact:** prior `fusion-lab.js` normalizer follow-up is no longer directly verifiable because `fusion-lab.js` is absent from compiled artifacts; this is now tracked as alignment/blocker `RR-012` (P1).
+- **Deduplication applied:** `P1-001-T79` and `SCR-001` were merged into `RR-001` because both report the same completion-classification defect in the same function region.
+
+## Feature Catalog Status
+
+**Status: AMBER (implementation mostly present, traceability/alignment debt remains).**
+
+Evidence:
+- Iteration-007 (sections 08-14): 120/120 snippet existence and valid links; however 20 description mismatches, 39 current-reality mismatches, and 1 implementation-status mismatch.
+- Iteration-008 (sections 15-21): C1 78 PASS / 4 FAIL, C2 71 PASS / 11 FAIL, C3 82 PASS / 0 FAIL; major issue class is section/category traceability drift.
+- Iteration-009: simple-terms catalog missing `Audit Phase Coverage Notes (020-022)` section.
+- Iteration-010/011: metadata drift (`Group` vs parent category) and stale/deleted-path references in snippet source tables.
+- Iteration-018: broad cross-reference debt (`6` broken spec/plan links, `133` invalid predecessor/parent/successor refs, `1553` missing feature-catalog file targets, `5` stale checklist evidence paths).
+
+Net assessment: **code-reality alignment is stronger than documentation/cross-reference alignment**, but catalog traceability is not release-clean.
 
 ## Verdict
-- **Overall**: CONDITIONAL
-- **hasAdvisories**: false
-- **Blocking items**:
-  - Root inventory/count mismatch (`397` vs `398` vs live `399`)
-  - Epic child-count mismatch (`11` vs live `12`)
-  - 012 final-certification claim is still provisional pending re-verification
-- **Rationale**: The feature catalog and code-health signals are strong, but the release-control evidence is not self-consistent. Until the root/epic/012 packet set agrees with the live tree and the final-review status is no longer provisional, this should not be promoted to PASS.
 
-## Summary
-- Total findings: 3 (P0: 0, P1: 3, P2: 0)
+**CONDITIONAL**
 
+Criterion evidence:
+- **PASS criterion (no P0/P1): not met** — there are active P1 findings.
+- **FAIL criterion (any P0): not met** — no active P0 findings identified in available iterations.
+- **CONDITIONAL criterion (P1 present, no P0): met** — active P1 count is **13**.
 
-Total usage est:        1 Premium request
-API time spent:         2m 30s
-Total session time:     2m 52s
-Total code changes:     +0 -0
-Breakdown by AI model:
- gpt-5.4                  645.7k in, 9.5k out, 601.7k cached (Est. 1 Premium request)
+P1 evidence clusters:
+- Retrieval correctness: `RR-003`..`RR-006`.
+- Security/governance boundaries: `RR-015`..`RR-017`.
+- Completion-state correctness and script behavior: `RR-001`, `RR-008`, `RR-009`.
+- Release/catalog alignment blockers: `RR-002`, `RR-012`, `RR-021`.
+
+## Remediation Workstreams
+
+1. **WS-A: Retrieval scoring correctness hardening (P1)**
+   - Findings: `RR-003`, `RR-004`, `RR-005`, `RR-006`
+   - Deliverables: enforce true fusion path, apply MPAB in runtime, hydrate community injections pre-filter, preserve non-embedded rank boundaries post-MMR.
+   - Exit criteria: targeted regression suite for Stage1-4 ranking invariants passes.
+
+2. **WS-B: Authorization boundary hardening (P1)**
+   - Findings: `RR-015`, `RR-016`, `RR-017`
+   - Deliverables: bind actor identity to authenticated principal, scope checkpoint ops by tenant/shared-space or admin-only gate, fail-closed trigger-scope filtering.
+   - Exit criteria: negative auth tests prove no cross-tenant/shared-space escalation or fail-open leakage.
+
+3. **WS-C: Session/completion correctness and script contract fixes (P1)**
+   - Findings: `RR-001`, `RR-008`, `RR-009`
+   - Deliverables: resolve next-step completion classification, enforce true dry-run semantics, make redaction calibration path root-stable.
+   - Exit criteria: unit + CLI contract tests for completion state and dry-run side effects pass.
+
+4. **WS-D: Startup corpus completeness + artifact alignment (P1)**
+   - Findings: `RR-002`, `RR-012`
+   - Deliverables: align startup indexing/watch roots with allowed roots + constitutional dirs; reconcile release packet artifact references with shipped compiled modules.
+   - Exit criteria: startup index parity check and release packet artifact check both green.
+
+5. **WS-E: Feature catalog release contract alignment (P1)**
+   - Findings: `RR-021` (plus supporting P2/doc drift from `RR-020` and iteration 007-011/018 evidence)
+   - Deliverables: update master status/gating text for `eval_run_ablation`, close snippet-link gaps, fix section/folder mapping notes and stale cross-references.
+   - Exit criteria: traceability audit rerun shows zero high-severity catalog status contradictions.
+
+## JSONL
+
+```jsonl
+{"type":"iteration","run":20,"mode":"release_readiness_verdict","status":"CONDITIONAL","counts":{"active":{"P0":0,"P1":13,"P2":8},"total_active_unique":21},"coverage":{"requested_iterations":["001","002","003","004","005","006","007","008","009","010","011","012","013","014","015","016","017","018","019"],"present":["001","002","003","004","005","006","007","008","009","010","011","014","015","016","018"],"missing":["012","013","017","019"]},"feature_catalog_status":"AMBER","evidence":{"p1_clusters":["retrieval_correctness","security_governance","session_script_contracts","artifact_alignment","catalog_status_alignment"],"no_p0_in_available_iterations":true},"workstreams":["WS-A","WS-B","WS-C","WS-D","WS-E"]}
+```

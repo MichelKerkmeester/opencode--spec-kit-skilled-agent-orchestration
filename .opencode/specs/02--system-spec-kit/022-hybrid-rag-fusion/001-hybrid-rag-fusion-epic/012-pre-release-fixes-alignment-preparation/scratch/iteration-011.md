@@ -1,430 +1,93 @@
-● skill(sk-doc)
-
-● List directory .opencode/skill/system-spec-kit/feature_catalog
-  └ 24 files found
-
-● memory_match_triggers
-  └ {"summary":"Matched 5 memories via trigger phrases","data":{"matchType":"trig...
-
-● Run skill advisor (shell)
-  │ python3 .opencode/skill/scripts/skill_advisor.py "Cross-verify snippet files against the MASTER
-  │ feature_catalog.md for categories 01-10 and report consistency mismatches." --threshold 0.8
-  └ 2 lines...
-
-I’ve got the catalog tree. Next I’m sampling the master and snippet formats so I can compare names, statuses, and feature coverage systematically instead of doing a brittle filename-only check.
-
-● Search (glob)
-  │ "01--retrieval/*.md" in .opencode/skill/system-spec-kit/feature_catalog
-  └ No matches found
-
-● Search (glob)
-  │ "02--mutation/*.md" in .opencode/skill/system-spec-kit/feature_catalog
-  └ No matches found
-
-● Search (glob)
-  │ "03--discovery/*.md" in .opencode/skill/system-spec-kit/feature_catalog
-  └ No matches found
-
-● Search (glob)
-  │ "04--maintenance/*.md" in .opencode/skill/system-spec-kit/feature_catalog
-  └ No matches found
-
-● Search (glob)
-  │ "05--lifecycle/*.md" in .opencode/skill/system-spec-kit/feature_catalog
-  └ No matches found
-
-● Search (glob)
-  │ "06--analysis/*.md" in .opencode/skill/system-spec-kit/feature_catalog
-  └ No matches found
-
-● Search (glob)
-  │ "07--evaluation/*.md" in .opencode/skill/system-spec-kit/feature_catalog
-  └ No matches found
-
-● Search (glob)
-  │ "08--bug-fixes-and-data-integrity/*.md" in .opencode/skill/system-spec-kit/feature_catalog
-  └ No matches found
-
-● Search (glob)
-  │ "09--evaluation-and-measurement/*.md" in .opencode/skill/system-spec-kit/feature_catalog
-  └ No matches found
-
-● Search (glob)
-  │ "10--graph-signal-activation/*.md" in .opencode/skill/system-spec-kit/feature_catalog
-  └ No matches found
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L1:240 (190 lines read)
-
-✗ Read RET-001-memory_context-unified-entry-point.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/01--retrieval/RET-001-memory_context-unified-ent
-  │ ry-point.md
-  └ Path does not exist
-
-✗ Read MUT-001-memory_delete-single-bulk-deletion.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/02--mutation/MUT-001-memory_delete-single-bulk-d
-  │ eletion.md
-  └ Path does not exist
-
-The root catalog is clear enough to start mapping, but the snippet filenames use a different scheme than I guessed. I’m listing the category folders directly now so I can compare against the actual snippet inventory instead of assumptions.
-
-● List directory .opencode/skill/system-spec-kit/feature_catalog/01--retrieval
-  └ 11 files found
-
-● List directory .opencode/skill/system-spec-kit/feature_catalog/02--mutation
-  └ 10 files found
-
-● List directory .opencode/skill/system-spec-kit/feature_catalog/03--discovery
-  └ 3 files found
-
-● List directory .opencode/skill/system-spec-kit/feature_catalog/04--maintenance
-  └ 2 files found
-
-● List directory .opencode/skill/system-spec-kit/feature_catalog/05--lifecycle
-  └ 7 files found
-
-● List directory .opencode/skill/system-spec-kit/feature_catalog/06--analysis
-  └ 7 files found
-
-● List directory .opencode/skill/system-spec-kit/feature_catalog/07--evaluation
-  └ 2 files found
-
-● List directory .opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity
-  └ 11 files found
-
-● List directory .opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement
-  └ 14 files found
-
-● List directory .opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation
-  └ 16 files found
-
-● Read 01-unified-context-retrieval-memorycontext.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/01--retrieval/01-unified-context-retrieval-memor
-  │ ycontext.md
-  └ L1:220 (220 lines read)
-
-● Read 10-fast-delegated-search-memory-quick-search.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/01--retrieval/10-fast-delegated-search-memory-qu
-  │ ick-search.md
-  └ L1:220 (57 lines read)
-
-● Read 03-single-and-folder-delete-memorydelete.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/02--mutation/03-single-and-folder-delete-memoryd
-  │ elete.md
-  └ L1:220 (220 lines read)
-
-● Read 12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/12-unified-graph-ret
-  │ rieval-deterministic-ranking-explainability-and-rollback.md
-  └ L1:220 (55 lines read)
-
-I’ve confirmed the snippets mirror the master section structure closely for sampled entries. Now I’m switching to a scripted comparison so I can catch subtle drift like omitted features, title mismatches, and missing categories across all 10 sections in one pass.
-
-● Search (grep)
-  │ "status|implemented|planned|deferred" in *.md (.opencode/skill/system-spec-kit/feature_catalog)
-  └ 61 files found
-
-● Create plan and inspect master status terms (shell)
-  │ cat >
-  │ '/Users/michelkerkmeester/.copilot/session-state/bb1bf878-73cf-4ec0-ba5f-3893755ba1db/plan.md'
-  │ <<'EOF'
-  │ 1. Inspect master catalog section structure for categories 01-10.
-  │ 2. Enumerate snippet files for categories 01-10.…
-  └ 20 lines...
-
-I found at least one real drift already: the `memory_context` snippet includes extra trace/session-transition details that aren’t in the master section. I’m running a full structured diff now to separate true drift from formatting-only differences.
-
-● Compare master sections to snippets (shell)
-  │ python3 - <<'PY'
-  │ from pathlib import Path
-  │ import re, json, difflib
-  │
-  │ root = Path('/Users/michelkerkmeester/MEGA/Development/Opencode …
-  └ 186 lines...
-
-● Summarize master-snippet mismatches (shell)
-  │ python3 - <<'PY'
-  │ from pathlib import Path
-  │ import re, difflib, json
-  │
-  │ root = Path('/Users/michelkerkmeester/MEGA/Development/Opencode …
-  └ 241 lines...
-
-Coverage looks clean so far: no missing snippet files and no extra snippet files in categories 01–10. The real question is content drift, so I’m spot-checking the low-similarity pairs to separate parser noise from actual documentation divergence.
-
-● Search (grep)
-  │ "^### Fast delegated search \(memory_quick_search\)|^### Session recovery via
-  │ /memory:continue|^### Namespace management CRUD tools|^### Learning history
-  │ \(memory_get_learning_history\)|^### Ablation studies \(eval_run_ablation\)|^### Reporting
-  │ dashboard \(eval_reporting_dashboard\)|^### Agent consumption instrumentation|^### ANCHOR tags
-  │ as graph nodes|^### Typed traversal|^### Graph lifecycle refresh|^### Async LLM graph
-  │ backfill|^### Graph calibration profiles and community thresholds"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
-  └ 12 lines found
-
-● Read 11-session-recovery-memory-continue.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-memory-continu
-  │ e.md
-  └ L1:120 (69 lines read)
-
-● Read 07-namespace-management-crud-tools.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/02--mutation/07-namespace-management-crud-tools.
-  │ md
-  └ L1:140 (62 lines read)
-
-● Read 07-learning-history-memorygetlearninghistory.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/06--analysis/07-learning-history-memorygetlearni
-  │ nghistory.md
-  └ L1:120 (120 lines read)
-
-● Read 01-ablation-studies-evalrunablation.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/07--evaluation/01-ablation-studies-evalrunablati
-  │ on.md
-  └ L1:120 (68 lines read)
-
-● Read 08-agent-consumption-instrumentation.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/08-agent-consumpt
-  │ ion-instrumentation.md
-  └ L1:120 (50 lines read)
-
-● Read 09-anchor-tags-as-graph-nodes.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/09-anchor-tags-as-gr
-  │ aph-nodes.md
-  └ L1:140 (55 lines read)
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L284:330 (47 lines read)
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L119:170 (52 lines read)
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L468:510 (42 lines read)
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L921:980 (59 lines read)
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L1315:1338 (23 lines read)
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L1661:1805 (145 lines read)
-
-● Read 14-llm-graph-backfill.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/14-llm-graph-backfil
-  │ l.md
-  └ L1:120 (46 lines read)
-
-● Read 16-typed-traversal.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/16-typed-traversal.m
-  │ d
-  └ L1:120 (51 lines read)
-
-● Read 13-graph-lifecycle-refresh.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/13-graph-lifecycle-r
-  │ efresh.md
-  └ L1:120 (50 lines read)
-
-● Read 15-graph-calibration-profiles.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/15-graph-calibration
-  │ -profiles.md
-  └ L1:120 (47 lines read)
-
-● Read 10-fast-delegated-search-memory-quick-search.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/01--retrieval/10-fast-delegated-search-memory-qu
-  │ ick-search.md
-  └ L1:80 (57 lines read)
-
-● Read 02-reporting-dashboard-evalreportingdashboard.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/07--evaluation/02-reporting-dashboard-evalreport
-  │ ingdashboard.md
-  └ L1:100 (63 lines read)
-
-● Count substantial drift by category (shell)
-  │ python3 - <<'PY'
-  │ from pathlib import Path
-  │ import re, difflib
-  │ root = Path('/Users/michelkerkmeester/MEGA/Development/Opencode
-  │ Env/Public/.opencode/skill/system-spec-kit/feature_catalog')…
-  └ 110 lines...
-
-I’m narrowing the final report to true traceability problems, not harmless elaboration. A lot of snippet drift is just “same feature, more detail,” so I’m spot-checking the few places where the behavior contract might actually differ.
-
-● Read 03-co-activation-fan-effect-divisor.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/03-co-activatio
-  │ n-fan-effect-divisor.md
-  └ L1:120 (47 lines read)
-
-● Read 09-session-manager-transaction-gap-fixes.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/09-session-mana
-  │ ger-transaction-gap-fixes.md
-  └ L1:120 (62 lines read)
-
-● Read 09-tool-result-extraction-to-working-memory.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/01--retrieval/09-tool-result-extraction-to-worki
-  │ ng-memory.md
-  └ L1:120 (53 lines read)
-
-● Read 02-reporting-dashboard-evalreportingdashboard.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/07--evaluation/02-reporting-dashboard-evalreport
-  │ ingdashboard.md
-  └ L1:80 (63 lines read)
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L1492:1546 (54 lines read)
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L1265:1330 (65 lines read)
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L236:284 (49 lines read)
-
-● Search (grep)
-  │ "^### Tool-result extraction to working memory|^### Co-activation fan-effect divisor|^###
-  │ Session-manager transaction gap fixes"
-  │ (.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)
-  └ 3 lines found
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L1096:1170 (74 lines read)
-
-● Read feature_catalog.md
-  │ .opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md
-  └ L1019:1044 (25 lines read)
-
-# Iteration 011: Snippet vs Master Catalog Consistency (Categories 01-10)
-
-## Agent: copilot / gpt-5.4 / high
-
-## Dimension: traceability
-
-## Files Reviewed
-
-- `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`
-- `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/*.md` (11)
-- `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/*.md` (10)
-- `.opencode/skill/system-spec-kit/feature_catalog/03--discovery/*.md` (3)
-- `.opencode/skill/system-spec-kit/feature_catalog/04--maintenance/*.md` (2)
-- `.opencode/skill/system-spec-kit/feature_catalog/05--lifecycle/*.md` (7)
-- `.opencode/skill/system-spec-kit/feature_catalog/06--analysis/*.md` (7)
-- `.opencode/skill/system-spec-kit/feature_catalog/07--evaluation/*.md` (2)
-- `.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/*.md` (11)
-- `.opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/*.md` (14)
-- `.opencode/skill/system-spec-kit/feature_catalog/10--graph-signal-activation/*.md` (16)
-
-## Consistency Check
-
-### 01--retrieval
-- Master lists 11 features, snippets: 11 files
-- Feature-name coverage: complete
-- Mismatches:
-  - No missing or orphan snippet files
-  - Narrative drift in `10-fast-delegated-search-memory-quick-search.md`, `11-session-recovery-memory-continue.md`, and `09-tool-result-extraction-to-working-memory.md`: same feature identity, but snippet overview/current-reality text is rewritten or expanded rather than staying 1:1 with master
-
-### 02--mutation
-- Master lists 10 features, snippets: 10 files
-- Feature-name coverage: complete
-- Mismatches:
-  - No missing or orphan snippet files
-  - `07-namespace-management-crud-tools.md` is materially rephrased and expanded relative to master, though the tool surface still aligns
-
-### 03--discovery
-- Master lists 3 features, snippets: 3 files
-- Mismatches: none material; coverage and behavior align
-
-### 04--maintenance
-- Master lists 2 features, snippets: 2 files
-- Mismatches: none material; coverage and behavior align
-
-### 05--lifecycle
-- Master lists 7 features, snippets: 7 files
-- Mismatches: no missing/orphan files; only minor wording/detail expansion
-
-### 06--analysis
-- Master lists 7 features, snippets: 7 files
-- Mismatches: no missing/orphan files; `07-learning-history-memorygetlearninghistory.md` adds detail, but behavior remains aligned
-
-### 07--evaluation
-- Master lists 2 features, snippets: 2 files
-- Feature-name coverage: complete
-- Mismatches:
-  - `01-ablation-studies-evalrunablation.md` includes dual-mode (`ablation` + `k_sensitivity`) detail not reflected in the master section
-  - `02-reporting-dashboard-evalreportingdashboard.md` clarifies read-only-after-init behavior, while master describes it as purely read-only
-
-### 08--bug-fixes-and-data-integrity
-- Master lists 11 features, snippets: 11 files
-- Feature-name coverage: complete
-- Mismatches:
-  - `03-co-activation-fan-effect-divisor.md` contradicts master on whether the fan-effect divisor is already applied in Stage 2 hot-path scoring
-  - `09-session-manager-transaction-gap-fixes.md` says 3 call sites were fixed; master says 2 instances
-
-### 09--evaluation-and-measurement
-- Master lists 14 features, snippets: 14 files
-- Mismatches: none material; coverage and behavior align
-
-### 10--graph-signal-activation
-- Master lists 16 features, snippets: 16 files
-- Mismatches:
-  - No missing or orphan snippet files
-  - Several snippets are more explicit than master about rollout/status, but I did not find a clear behavior contradiction in this category
+# Iteration 011: Snippets 11-21 Consistency
 
 ## Findings
 
-### P1-001: Contradictory fan-effect implementation state
-`feature_catalog.md` says the fan-effect divisor exists in `co-activation.ts` but Stage 2 hot-path boosting still applies spread scores directly, with guard logic only in the helper path.
+Audit scope covered all snippet markdown files under numeric categories `11` through `21` in `.opencode/skill/system-spec-kit/feature_catalog` (**139 files total**).
 
-`08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md` says the same divisor is now also applied in `stage2-fusion.ts`.
+1. **Category/master taxonomy is not 1:1 in this range**
+   - The filesystem categories under review are `11--scoring-and-calibration` through `21--implement-and-remove-deprecated-features`.
+   - The master catalog does **not** expose those as a clean `11`-through-`21` section mapping. Instead, the numbered master sections begin at `## 12. SCORING AND CALIBRATION` and run through `## 21. FEATURE FLAG REFERENCE`, while folders `20--remediation-revalidation` and `21--implement-and-remove-deprecated-features` are only covered in the top-level **Audit Phase Coverage Notes** table.
+   - Evidence: `feature_catalog.md:42-48,1801,2227,2427,2939,3366,3544,3887,3985,4302,4368`.
+   - Result: per-folder review is still possible, but master traceability in this range is structurally offset and partially indirect.
 
-These cannot both be true and should be reconciled.
+2. **Frontmatter/category matching is only partially enforceable; `Group:` drift is widespread**
+   - Frontmatter contains `title` and `description`, but no explicit category key, so strict frontmatter-to-parent-category equality is not directly testable.
+   - Using `## 4. SOURCE METADATA` `Group:` as the category proxy, **38/139** files drift from their parent folder name.
+   - Drift counts by folder:
+     - `11--scoring-and-calibration`: **4**
+     - `13--memory-quality-and-indexing`: **3**
+     - `14--pipeline-architecture`: **11**
+     - `15--retrieval-enhancements`: **3**
+     - `16--tooling-and-scripts`: **4**
+     - `18--ux-hooks`: **13**
+   - Typical pattern: provenance/review labels are being used where category labels would be expected, for example:
+     - `11--scoring-and-calibration/13-scoring-and-fusion-corrections.md` uses `Group: Opus review remediation (Phase 017)`.
+     - `16--tooling-and-scripts/04-dead-code-removal.md` uses `Group: Comprehensive remediation (Sprint 8)`.
+     - All 13 reviewed files in `18--ux-hooks` use `Group: UX hooks automation (Phase 014)` rather than the parent category label.
 
-### P1-002: Session-manager fix scope disagrees between master and snippet
-`feature_catalog.md` says **two** `enforceEntryLimit()` instances were moved inside transactions.
+3. **Implementation status vs code reality is only directly verifiable on a small subset, but the explicit status files checked were aligned**
+   - Most files in this range still do **not** use a consistent explicit `Implemented/Planned/Deprecated` status field, so status verification is largely inferred from `CURRENT REALITY` prose rather than a formal snippet status taxonomy.
+   - Explicit status samples that were directly checked:
+     - `13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md` says `Status: Implemented` and is backed by live scripts/tests including `scripts/loaders/data-loader.ts`, `scripts/utils/input-normalizer.ts`, and `scripts/tests/outsourced-agent-handback-docs.vitest.ts`.
+     - `13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md` says `Status: Implemented and covered by targeted Vitest regressions` and is backed by live implementation/test files such as `scripts/core/workflow.ts` and `scripts/tests/session-enrichment.vitest.ts`.
+     - `16--tooling-and-scripts/12-session-capturing-pipeline-quality.md` says `Status: Implemented and strongly verified` and all cited core script/test files still exist.
+     - `14--pipeline-architecture/15-warm-server-daemon-mode.md` says `PLANNED (Sprint 019): DEFERRED`; that matches live code reality because the server still initializes `StdioServerTransport` in `mcp_server/context-server.ts:15-17`, and no shipped HTTP daemon transport surfaced in the reviewed source tree.
+   - Result: no direct contradiction was found in the explicit status snippets reviewed, but status coverage remains weak/informal at category scale.
 
-`08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md` says **three** call sites now run inside transactional boundaries.
+4. **Source-file traceability is mostly good, but 6 current file-path references are stale/missing**
+   - Checked **3,319** referenced file paths across backticked source-file entries and markdown links.
+   - **6** references do not resolve on disk:
+     - `11--scoring-and-calibration/13-scoring-and-fusion-corrections.md`
+       - `mcp_server/lib/search/rsf-fusion.ts`
+       - `mcp_server/tests/rsf-fusion-edge-cases.vitest.ts`
+       - `mcp_server/tests/rsf-fusion.vitest.ts`
+     - `16--tooling-and-scripts/04-dead-code-removal.md`
+       - `mcp_server/lib/search/rsf-fusion.ts`
+     - `16--tooling-and-scripts/05-code-standards-alignment.md`
+       - `mcp_server/lib/search/rsf-fusion.ts`
+     - `17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md`
+       - `mcp_server/lib/governance/retention.ts`
+   - Important nuance: several of these are intentionally described as **deleted** historical modules. They are still valid audit history, but they fail the strict “referenced code files exist” check as currently written and should be reframed or separated from live source inventories.
+   - Supporting evidence:
+     - The deleted RSF path is still cited in the snippet files above, but no `mcp_server/lib/search/rsf-fusion.ts` exists in the live tree.
+     - The governance snippet explicitly marks `retention.ts` as deleted, and only `mcp_server/lib/governance/scope-governance.ts` exists under `mcp_server/lib/governance/`.
 
-This is a concrete scope mismatch, not just paraphrase.
+5. **Actual MCP tool names stayed aligned; no real tool-name mismatches were found**
+   - Cross-checked snippet tool references against the live MCP tool registry in `mcp_server/tool-schemas.ts` (**33 tool definitions** from `memory_context` through `memory_ingest_cancel`).
+   - **26** files in this range mention real MCP tool names, totaling **41** actual tool mentions.
+   - No snippet in this scope was found to misname a real MCP tool.
+   - A few backticked underscore identifiers look tool-like at first glance but are **not** tools:
+     - `shared_memory_enabled` is a persisted config key, not a tool.
+     - `memory_index`, `memory_entities`, `memory_count`, `memory_id`, `memory_history`, `memory_conflicts`, and `memory_summaries` are internal/storage identifiers, not tool names.
+   - Result: tool-name consistency is a **pass** in this review window.
 
-### P2-003: Retrieval/mutation snippets drift from master phrasing enough to weaken 1:1 traceability
-Affected examples:
-- `01--retrieval/10-fast-delegated-search-memory-quick-search.md`
-- `01--retrieval/11-session-recovery-memory-continue.md`
-- `01--retrieval/09-tool-result-extraction-to-working-memory.md`
-- `02--mutation/07-namespace-management-crud-tools.md`
+6. **Master catalog link coverage is incomplete for 4 files**
+   - These snippet files are not linked directly from `feature_catalog.md`:
+     - `16--tooling-and-scripts/18-template-compliance-contract-enforcement.md`
+     - `19--feature-flag-reference/08-audit-phase-020-mapping-note.md`
+     - `20--remediation-revalidation/01-category-stub.md`
+     - `21--implement-and-remove-deprecated-features/01-category-stub.md`
+   - Notes:
+     - `16--tooling-and-scripts/18-template-compliance-contract-enforcement.md` is referenced elsewhere (for example from `16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md`, `17--governance/01-feature-flag-governance.md`, and the manual testing playbook), so this looks like a real master-catalog omission rather than an unused file.
+     - The `20` and `21` stub files are semantically represented by the top-level **Audit Phase Coverage Notes** table (`feature_catalog.md:42-48`), but the stub files themselves are still orphaned at direct per-file master-link level.
 
-These still describe the same features, but the snippet text is rewritten/expanded enough that master-to-snippet traceability is no longer exact.
-
-### P2-004: Evaluation snippets contain behavior detail not mirrored in master
-Affected examples:
-- `07--evaluation/01-ablation-studies-evalrunablation.md` adds the `k_sensitivity` path and snapshot-storage nuances
-- `07--evaluation/02-reporting-dashboard-evalreportingdashboard.md` documents first-call DB initialization, softening the master's absolute read-only wording
-
-This looks like master lag rather than snippet error, but it is still a consistency gap.
+7. **Most stale-claim risk in this slice is traceability-oriented, not tool/status-oriented**
+   - The strongest stale patterns are:
+     - live source tables mixing current implementation files with deleted historical files;
+     - metadata `Group:` values drifting from parent category names;
+     - master catalog coverage that points at category families but omits a few concrete snippet files.
+   - I did **not** find a comparable class of hard contradictions in actual MCP tool naming or in the explicit status snippets that were directly testable.
 
 ## Summary
 
-- Categories checked: 10
-- Features checked: 83
-- Consistent: 6, Inconsistent: 4
-- Naming alignment: 83/83 matched
-- Missing snippet files: 0
-- Orphan snippet files: 0
-- Total findings: 4 (P0: 0, P1: 2, P2: 2)
+- Files reviewed: **139**.
+- Parent/master taxonomy: **partial alignment**; the master catalog is offset in this range and handles folders `20` and `21` indirectly through audit-phase coverage notes.
+- Header/frontmatter category compliance: **partially enforceable only**; frontmatter lacks a category field, and `Group:` metadata mismatches occur in **38** files.
+- Implementation status compliance: **limited direct coverage**; explicit status language is sparse, but sampled explicit status files matched live code reality.
+- Source-file traceability: **mostly pass** with **6 missing references** concentrated in deleted-history/retirement evidence.
+- MCP tool-name correctness: **pass**; no actual MCP tool names were misdocumented in this slice.
+- Master-link completeness: **4 snippet files** are not linked directly from `feature_catalog.md`.
 
+## JSONL (type:iteration, run:11, dimensions:[traceability])
 
-Total usage est:        1 Premium request
-API time spent:         4m 56s
-Total session time:     5m 29s
-Total code changes:     +0 -0
-Breakdown by AI model:
- gpt-5.4                  1.3m in, 19.8k out, 1.3m cached (Est. 1 Premium request)
+{"type":"iteration","run":11,"dimensions":["traceability"],"result":"needs_update","scope":{"catalog_root":".opencode/skill/system-spec-kit/feature_catalog","categories":["11--scoring-and-calibration","12--query-intelligence","13--memory-quality-and-indexing","14--pipeline-architecture","15--retrieval-enhancements","16--tooling-and-scripts","17--governance","18--ux-hooks","19--feature-flag-reference","20--remediation-revalidation","21--implement-and-remove-deprecated-features"],"files_reviewed":139},"checks":{"master_taxonomy":{"status":"partial","details":"master section numbering is offset relative to folder numbering in this range; categories 20-21 are covered indirectly via Audit Phase Coverage Notes"},"frontmatter_category":{"status":"partial","details":"frontmatter lacks explicit category field; SOURCE METADATA Group used as proxy","group_category_mismatch_count":38,"mismatch_breakdown":{"11--scoring-and-calibration":4,"13--memory-quality-and-indexing":3,"14--pipeline-architecture":11,"15--retrieval-enhancements":3,"16--tooling-and-scripts":4,"18--ux-hooks":13}},"implementation_status":{"status":"partial","details":"explicit status taxonomy is sparse; directly checked explicit status files aligned with code reality"},"source_file_existence":{"status":"needs_attention","references_checked":3319,"missing_references":6,"files_with_missing_refs":4},"tool_name_consistency":{"status":"pass","tool_definitions_checked":33,"files_with_actual_tool_mentions":26,"actual_tool_mentions":41,"invalid_actual_tool_names":0},"master_link_coverage":{"status":"needs_attention","missing_direct_links":4}},"findings":[{"id":"master-section-offset-11-21","severity":"medium","category":"traceability-structure","evidence":{"master":".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:42-48,1801,2227,2427,2939,3366,3544,3887,3985,4302,4368"}},{"id":"group-category-drift-38-files","severity":"medium","category":"metadata-alignment","count":38},{"id":"deleted-rsf-and-retention-paths-still-listed","severity":"high","category":"source-traceability","count":6,"files":[".opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md",".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/04-dead-code-removal.md",".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/05-code-standards-alignment.md",".opencode/skill/system-spec-kit/feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md"]},{"id":"master-missing-direct-links","severity":"medium","category":"catalog-coverage","count":4,"files":[".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/18-template-compliance-contract-enforcement.md",".opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/08-audit-phase-020-mapping-note.md",".opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md",".opencode/skill/system-spec-kit/feature_catalog/21--implement-and-remove-deprecated-features/01-category-stub.md"]},{"id":"tool-names-pass","severity":"info","category":"tool-surface","invalid_actual_tool_names":0}]}

@@ -39,6 +39,16 @@ This document combines two complementary views of the Spec Kit Memory MCP server
 
 Use this simplified catalog as the plain-language companion to the full feature catalog. The numbered sections below keep the same capability grouping as the canonical reference, but explain the system in operator-friendly terms so readers can understand what each part does before diving into implementation details.
 
+### Audit Phase Coverage Notes (020-022)
+
+The last three code-audit phases map to existing catalog categories rather than having their own dedicated sections:
+
+| Audit phase | Where to find it |
+|---|---|
+| `020-feature-flag-reference` | Covered by `19--feature-flag-reference/` (slug match) |
+| `021-remediation-revalidation` | Spread across bug-fix, pipeline-safety, and code-standards categories |
+| `022-implement-and-remove-deprecated-features` | Covered by dead-code-removal and feature-flag-sunset entries |
+
 ### Command-Surface Contract
 
 The memory system exposes **33 tools** through **6 slash commands**. Think of commands as doors into the system. Each door only opens access to the tools it needs. The source of truth for which tools each command can use is the `allowed-tools` field in each command file under `.opencode/command/memory/`.

@@ -244,6 +244,61 @@ let workflowRunQueue: Promise<void> = Promise.resolve();
 
 /** Filesystem lock directory for cross-process serialization. */
 const WORKFLOW_LOCK_DIR = path.resolve(__dirname, '../../.workflow-lock');
+const WORKFLOW_LOCK_OWNER_PATH = path.join(WORKFLOW_LOCK_DIR, 'owner.json');
+const LEGACY_LOCK_STALE_MS = 5_000;
+
+interface WorkflowLockOwner {
+  pid: number;
+  acquiredAt: string;
+}
+
+function writeWorkflowLockOwner(): void {
+  const owner: WorkflowLockOwner = {
+    pid: process.pid,
+    acquiredAt: new Date().toISOString(),
+  };
+  fsSync.writeFileSync(WORKFLOW_LOCK_OWNER_PATH, JSON.stringify(owner, null, 2), 'utf8');
+}
+
+function isProcessAlive(pid: number): boolean {
+  if (!Number.isInteger(pid) || pid <= 0) {
+    return false;
+  }
+
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (err: unknown) {
+    const code = (err as NodeJS.ErrnoException)?.code;
+    return code !== 'ESRCH';
+  }
+}
+
+function clearWorkflowLockDir(): void {
+  try {
+    fsSync.rmSync(WORKFLOW_LOCK_DIR, { recursive: true, force: true });
+  } catch (_err: unknown) {
+    // Best-effort stale lock cleanup.
+  }
+}
+
+function shouldClearStaleWorkflowLock(): boolean {
+  try {
+    const ownerRaw = fsSync.existsSync(WORKFLOW_LOCK_OWNER_PATH)
+      ? fsSync.readFileSync(WORKFLOW_LOCK_OWNER_PATH, 'utf8')
+      : null;
+
+    if (ownerRaw) {
+      const owner = JSON.parse(ownerRaw) as Partial<WorkflowLockOwner>;
+      return !isProcessAlive(typeof owner.pid === 'number' ? owner.pid : NaN);
+    }
+
+    const lockStats = fsSync.statSync(WORKFLOW_LOCK_DIR);
+    return (Date.now() - lockStats.mtimeMs) >= LEGACY_LOCK_STALE_MS;
+  } catch (_err: unknown) {
+    return true;
+  }
+}
 
 /**
  * Acquire the filesystem lock via atomic mkdir.
@@ -257,11 +312,16 @@ async function acquireFilesystemLock(): Promise<boolean> {
   while (waited < MAX_TOTAL_MS) {
     try {
       fsSync.mkdirSync(WORKFLOW_LOCK_DIR, { recursive: false });
+      writeWorkflowLockOwner();
       return true; // lock acquired
     } catch (err: unknown) {
       if ((err as NodeJS.ErrnoException).code !== 'EEXIST') {
         // Unexpected error (permissions, etc.) -- skip fs lock
         return false;
+      }
+      if (shouldClearStaleWorkflowLock()) {
+        clearWorkflowLockDir();
+        continue;
       }
       // Lock held by another process -- wait with backoff
       await new Promise<void>((resolve) => setTimeout(resolve, delay));
@@ -276,7 +336,7 @@ async function acquireFilesystemLock(): Promise<boolean> {
 
 function releaseFilesystemLock(): void {
   try {
-    fsSync.rmdirSync(WORKFLOW_LOCK_DIR);
+    clearWorkflowLockDir();
   } catch (_err: unknown) {
     // Lock dir already removed or never created -- benign
   }

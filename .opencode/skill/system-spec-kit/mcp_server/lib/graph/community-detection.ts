@@ -537,6 +537,16 @@ export function applyCommunityBoost(
       if (injected.length >= MAX_INJECTED) break;
 
       const coMembers = getCommunityMembers(db, row.id);
+      const stateByMemberId = new Map<number, string | null>();
+      if (coMembers.length > 0) {
+        const placeholders = coMembers.map(() => '?').join(', ');
+        const stateRows = db.prepare(
+          `SELECT id, memory_state FROM memory_index WHERE id IN (${placeholders})`
+        ).all(...coMembers) as Array<{ id: number; memory_state: string | null }>;
+        for (const stateRow of stateRows) {
+          stateByMemberId.set(stateRow.id, stateRow.memory_state);
+        }
+      }
       const rawScore = row.score !== undefined ? row.score : 1.0;
       const baseScore = Number.isFinite(rawScore) ? rawScore : 1.0;
       const boostScore = COMMUNITY_EDGE_WEIGHT_THRESHOLD * baseScore;
@@ -549,6 +559,7 @@ export function applyCommunityBoost(
         injected.push({
           id: memberId,
           score: boostScore,
+          memoryState: stateByMemberId.get(memberId) ?? undefined,
           _communityBoosted: true,
         });
       }

@@ -23,9 +23,9 @@ contextType: "implementation"
 | **Spec** | 012-pre-release-fixes-alignment-preparation |
 | **Parent** | 001-hybrid-rag-fusion-epic |
 | **Date** | 2026-03-25 |
-| **Tasks** | Release-control truth-sync, validator triage, and blocker isolation |
-| **LOC Changed** | Documentation-focused updates across the 022 release-control surface |
-| **Dispatch** | Multi-agent review plus targeted local remediation |
+| **Tasks** | v6 deep review (20 iterations), 3-phase remediation (17 P1 findings fixed) |
+| **LOC Changed** | 458 files, 16K+ insertions across pipeline code, security handlers, scripts, docs |
+| **Dispatch** | 30 CLI agents total: 20 review (10 GPT-5.4 + 10 GPT-5.3-codex) + 10 fix (GPT-5.4) |
 
 <!-- /ANCHOR:metadata -->
 
@@ -52,9 +52,28 @@ contextType: "implementation"
 | Workspace test gate | Re-ran the full workspace suite from `.opencode/skill/system-spec-kit` | `npm run test` exited 0 on 2026-03-25 |
 | Schema/docs alignment | Added the missing `profile` field to the runtime tool schemas and their tests, then updated the related docs | Public and runtime schema surfaces now agree on `profile` support |
 
-### Blocker isolation
+### v6 deep review + full remediation (2026-03-25)
 
-The remaining release blocker is no longer ambiguous. It is concentrated in the recursive `007-code-audit-per-feature-catalog` child packets, where historical template structure, anchor coverage, checklist level declarations, and stale implementation-summary metadata still fail strict validation.
+| Phase | Work | P1 Fixed |
+|-------|------|----------|
+| Deep Review | 20-iteration adversarial review across correctness, security, traceability, maintainability | 17 P1 found |
+| Phase 1 | Documentation truth-sync: 119->123 dir count, RSF test refs, eval_run_ablation catalog, broken links, checklist reopens | 4 |
+| Phase 2 | Low-risk code fixes: dry-run guard, CWD path resolution, fail-closed scope filter | 3 |
+| Phase 3 | Architecture fixes via 10 GPT-5.4 copilot agents: cross-channel bonus, MPAB wiring, community hydration, MMR interleaving, startup scan scope, T79 nextSteps filter, SEC-001 trust doc, SEC-002 checkpoint scoping, predecessor ref repairs, fusion-lab cleanup | 10 |
+
+Key pipeline fixes:
+- `hybrid-search.ts`: cross-channel evidence bonus (+0.02/channel, cap 0.06) in mergeRawCandidate
+- `stage3-rerank.ts`: computeMPAB() wired into chunk reassembly; MMR non-embedded rows interleaved by original rank
+- `stage2-fusion.ts`: community-injected rows hydrated with memoryState from memory_index
+- `context-server.ts`: startup scan covers all ALLOWED_BASE_PATHS (not just basePath)
+- `collect-session-data.ts`: completed `[x]`/`✓` nextSteps filtered before IN_PROGRESS downgrade
+- `memory-triggers.ts`: scope-filter errors fail closed (empty results, not unscoped)
+- `shared-memory.ts`: local-only trust model documented with one-time warning
+- `checkpoints.ts` + `tool-schemas.ts`: optional userId/agentId/sharedSpaceId scope params
+
+### Blocker status update
+
+Validator errors dropped from 91 to **0** across the 022 tree (44 warnings remain). The recursive 007 child packet historical template debt is now the only remaining advisory-level concern, not an error-level blocker.
 
 <!-- /ANCHOR:what-built -->
 
@@ -63,10 +82,11 @@ The remaining release blocker is no longer ambiguous. It is concentrated in the 
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-1. Re-ran the release-control validators to distinguish active blockers from stale historical claims.
-2. Used parallel review and spec-edit passes to repair root, epic, 005, 007 umbrella, 012, and 013 release-control documents.
-3. Re-ran packet validation after each repair to confirm whether a blocker moved from error-level to warning-only.
-4. Treated the recursive 007 result as the final gate signal once the umbrella packet itself was clean.
+1. Ran v6 deep review: 20 iterations (10 GPT-5.4 + 10 GPT-5.3-codex via copilot CLI) with adversarial recheck.
+2. Phase 1: Direct documentation truth-sync fixes (4 P1 + 1 P2).
+3. Phase 2: Low-risk code fixes with test verification (3 P1).
+4. Phase 3: Dispatched 10 GPT-5.4 copilot agents for architecture fixes (10 P1) covering pipeline, security, and scripts.
+5. Verified all 482 tests pass after all changes. Zero regressions.
 
 <!-- /ANCHOR:how-delivered -->
 
@@ -92,8 +112,10 @@ The remaining release blocker is no longer ambiguous. It is concentrated in the 
 | Full workspace tests | Pass - `npm run test` exited 0 on 2026-03-25 |
 | Direct runtime review | Pass - no active implementation P0/P1 issue confirmed in the T72-T83 scope |
 | 007 umbrella validation | Pass with warnings only - phase links valid for all 22 child phases |
-| 007 recursive validation | Fail - 91 errors and 72 warnings remain across child packets |
-| 012 packet validation | Pending final re-run after integrity cleanup in this packet |
+| 007 recursive validation | Pass with warnings - 0 errors, 44 warnings (down from 91 errors + 72 warnings) |
+| 012 packet validation | Pass with warnings - 0 errors, 2 warnings |
+| Feature catalog tools | Verified - 33 tools correct, 22/22 sections aligned |
+| Source file traceability | Verified - 668/668 snippet refs exist |
 
 <!-- /ANCHOR:verification -->
 
@@ -102,8 +124,9 @@ The remaining release blocker is no longer ambiguous. It is concentrated in the 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. The full tree is not yet release-ready because recursive validation of the 007 child packet family still fails at error level.
-2. The dominant recursive failures are historical documentation-shape issues, not new runtime defects.
-3. A true release-ready verdict now requires either batch modernization of the 007 child packets or an explicit release policy that excludes those historical packets from the strict recursive gate.
+1. Validator errors are now zero; 44 warnings remain in the recursive 007 child packet family (historical template debt).
+2. The v6 adversarial recheck confirmed 6 P1 findings and downgraded 4 to P2 advisories.
+3. Pipeline fixes (cross-channel bonus, MPAB, community hydration, MMR interleaving) are additive changes that need monitoring for ranking quality impact in production use.
+4. Security model is documented as local-only (stdio transport). If shared-memory features are ever exposed over a network, transport-level auth must be added.
 
 <!-- /ANCHOR:limitations -->

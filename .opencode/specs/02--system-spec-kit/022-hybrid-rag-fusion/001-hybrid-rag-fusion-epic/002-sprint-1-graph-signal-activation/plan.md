@@ -1,7 +1,6 @@
 ---
 title: "Implementation Plan: Sprint 1 — Graph Signal Activation"
 description: "Implement typed-weighted degree as 5th RRF channel, measure edge density, and add agent consumption instrumentation."
-# SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2
 trigger_phrases:
   - "sprint 1 plan"
   - "graph signal plan"
@@ -235,12 +234,12 @@ Phase 6 (PI-A3) ─── (independent, no blockers from Phase 5)
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - **Specification**: See `spec.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Plan**: See ../000-feature-overview/plan.md
+- **Parent Plan**: See ../plan.md
 - **Predecessor Plan**: See `../006-measurement-foundation/plan.md
 
 ---

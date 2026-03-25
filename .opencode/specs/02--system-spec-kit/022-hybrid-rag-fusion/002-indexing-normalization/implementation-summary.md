@@ -91,7 +91,7 @@ This consolidated spec combined two delivered streams: canonical-path deduplicat
 
 ---
 
-## Completion Status
+**Completion Status**
 
 **Status:** Closed out on 2026-03-08. Remediation pass completed on 2026-03-20.
 
@@ -99,7 +99,7 @@ Functional implementation for both consolidated child specs is complete: canonic
 
 ---
 
-## P0+P1 Remediation Pass (2026-03-20)
+### P0+P1 Remediation Pass (2026-03-20)
 
 ### Overview
 

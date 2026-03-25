@@ -27,7 +27,6 @@ This completed Level 3 spec captures the architecture audit of `.opencode/skill/
 
 ---
 
-<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -40,8 +39,6 @@ This completed Level 3 spec captures the architecture audit of `.opencode/skill/
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../004-ux-hooks-automation/spec.md |
 | **Successor** | ../006-feature-catalog/spec.md |
-<!-- /ANCHOR:metadata -->
-
 ---
 
 <!-- ANCHOR:problem -->
@@ -200,6 +197,15 @@ Archived review notes scored the completed audit at **87/100**, which remains a 
 
 **As a** tooling owner, **I want** automated import and structure checks, **so that** new boundary violations fail fast instead of becoming tribal knowledge.
 
+### Acceptance Scenarios
+
+1. **Given** a scripts consumer needs runtime functionality, **when** the maintainer checks the boundary contract, **then** the supported API path is explicit and discoverable.
+2. **Given** a direct `scripts -> lib/*` import is introduced, **when** enforcement runs, **then** the check fails or requires an explicit allowlisted exception.
+3. **Given** duplicate helper logic exists across scripts and runtime modules, **when** consolidation work lands, **then** both call sites use the shared implementation rather than private copies.
+4. **Given** handler-level utility cycles are present, **when** the structural cleanup completes, **then** the documented cycle is removed without changing the ownership contract.
+5. **Given** transitional wrapper entry points still exist, **when** a maintainer reads the README surfaces, **then** the canonical runbook ownership points to the root scripts docs.
+6. **Given** later audit follow-up work closes naming, symlink, or source-dist drift, **when** the packet is reviewed, **then** those closures are represented as completed audit addenda rather than separate feature work.
+
 ---
 
 ## 12. OPEN QUESTIONS
@@ -217,7 +223,7 @@ Archived review notes scored the completed audit at **87/100**, which remains a 
 
 ---
 
-## NAVIGATION & TRACEABILITY
+**Navigation & Traceability**
 
 - **Parent**: `022-hybrid-rag-fusion`
 - **Scope**: Architecture audit of the Spec Kit Memory MCP server

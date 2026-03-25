@@ -1,7 +1,6 @@
 ---
 title: "Tasks: Sprint 4 — Feedback and Quality"
 description: "Task breakdown for MPAB chunk aggregation, learned relevance feedback, and shadow scoring."
-# SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 trigger_phrases:
   - "sprint 4 tasks"
   - "feedback and quality tasks"
@@ -34,8 +33,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:checkpoint -->
-## Safety Gate
+### Foundation Checkpoint
 
 - [ ] T-S4-PRE [GATE-PRE] Create checkpoint: `memory_checkpoint_create("pre-r11-feedback")` [0h] {} — Safety gate for R11 mutations and feedback data
 
@@ -44,12 +42,11 @@ contextType: "implementation"
 > **RECOMMENDED SPLIT — S4a / S4b (F3)**:
 > - **S4a tasks**: T001 + T001a (R1 MPAB) + T003 + T003a (R13-S2 eval) + T007 (TM-04 quality gate) — estimated 33-49h. No schema change. Delivers A/B infra + save quality gating.
 > - **S4b tasks**: T002 + T002a + T002b (R11 learned feedback) + T008 (TM-06 reconsolidation) — estimated 31-48h. Requires S4a verification + 28-day calendar window.
-<!-- /ANCHOR:checkpoint -->
 
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: R1 MPAB Chunk Aggregation
+## Phase 1: Setup
 
 - [x] T001 [P] Implement MPAB chunk-to-memory aggregation — `computeMPAB(scores)` with N=0/N=1 guards, index-based max removal, `_chunkHits` metadata, behind `SPECKIT_DOCSCORE_AGGREGATION` flag [8-12h] — R1
   - [x] T001a Preserve chunk ordering within documents — sort collapsed chunks by original document position before reassembly in `collapseAndReassembleChunkResults()` [2-4h] — B2
@@ -58,7 +55,9 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: R11 Learned Relevance Feedback
+## Phase 2: Implementation
+
+### R11 Learned Relevance Feedback
 
 - [x] T002 Implement learned relevance feedback — schema migration (`learned_triggers` column) + separate column isolation + 10 safeguards (denylist 100+, rate cap 3/8h, TTL 30d decay, FTS5 isolation, noise floor top-3, rollback mechanism, provenance/audit log, shadow period 1 week, eligibility 72h, sprint gate review) + 0.7x query weight, behind `SPECKIT_LEARN_FROM_SELECTION` flag [16-24h] — R11
   - [x] T002a Implement memory importance auto-promotion — threshold-based tier promotion when validation count exceeds configurable threshold (default: 5 validations → promote normal→important, 10 → important→critical) [5-8h] — R11 extension
@@ -68,7 +67,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: R13-S2 Shadow Scoring
+### R13-S2 Shadow Scoring
 
 - [x] T003 Implement R13-S2 — shadow scoring + channel attribution + ground truth Phase B [15-20h] — R13-S2
   - [x] T003a Implement Exclusive Contribution Rate metric — measure how often each channel is the SOLE source for a result in top-K [2-3h] — R13-S2 extension
@@ -76,20 +75,17 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-4-tm04 -->
-## Phase 4: TM-04 Pre-Storage Quality Gate
+#### Phase 4: TM-04 Pre-Storage Quality Gate
 
 - [x] T007 [P] Implement multi-layer pre-storage quality gate in `memory_save` handler behind `SPECKIT_SAVE_QUALITY_GATE` flag [6-10h] — TM-04 (REQ-S4-004)
   - [x] T007a Layer 1: structural validation (existing checks, formalised)
   - [x] T007b Layer 2: content quality scoring — title, triggers, length, anchors, metadata, signal density; threshold >= 0.4
   - [x] T007c Layer 3: semantic dedup — cosine similarity > 0.92 against existing memories = reject
   - [x] T007d Warn-only mode (MR12): for first 2 weeks, log quality scores and would-reject decisions but do NOT block saves; tune thresholds based on false-rejection rate before enforcement
-<!-- /ANCHOR:phase-4-tm04 -->
 
 ---
 
-<!-- ANCHOR:phase-5-tm06 -->
-## Phase 5: TM-06 Reconsolidation-on-Save
+#### Phase 5: TM-06 Reconsolidation-on-Save
 
 - [x] T008 [P] Implement reconsolidation-on-save in `memory_save` handler behind `SPECKIT_RECONSOLIDATION` flag; create checkpoint before enabling [6-10h] — TM-06 (REQ-S4-005)
   - [x] T008a Checkpoint: `memory_checkpoint_create("pre-reconsolidation")` before first enable
@@ -97,32 +93,26 @@ contextType: "implementation"
   - [x] T008c Merge path (similarity >=0.88): merge content, increment frequency counter
   - [x] T008d Conflict path (0.75–0.88): replace memory, add causal `supersedes` edge
   - [x] T008e Complement path (<0.75): store new memory unchanged
-<!-- /ANCHOR:phase-5-tm06 -->
 
 ---
 
-<!-- ANCHOR:gnew3 -->
-## G-NEW-3: Ground Truth Diversification
+#### G-NEW-3: Ground Truth Diversification
 
 - [x] T027a [W-C] Implement G-NEW-3 Phase B: implicit feedback collection from user selections for ground truth [4-6h] {T-S4-PRE, R13 2-cycle prerequisite} — G-NEW-3
   - Acceptance: user selection events tracked and stored; selection data available for ground truth expansion
 - [ ] T027b [W-C] Implement G-NEW-3 Phase C: LLM-judge ground truth generation — minimum 200 query-selection pairs before R11 activation [4-6h] {T027a} — G-NEW-3
   - Acceptance: LLM-judge generates relevance labels for query-selection pairs; ground truth corpus expanded to ≥200 pairs
   - Prerequisite: minimum 200 query-selection pairs accumulated before R11 mutations enabled (REQ-017)
-<!-- /ANCHOR:gnew3 -->
 
 ---
 
-<!-- ANCHOR:pageindex -->
-## PageIndex Tasks
+##### PageIndex Tasks
 
 > **T009 (PI-A4) deferred to Sprint 5** — Constitutional memory as expert knowledge injection (8-12h) has no Sprint 4 dependency. Moved to Sprint 5 per ultra-think review REC-07.
-<!-- /ANCHOR:pageindex -->
 
 ---
 
-<!-- ANCHOR:phase-6 -->
-## Phase 6: Verification
+## Phase 3: Verification
 
 - [ ] T004 Verify R1 dark-run: MRR@5 within 2%, N=1 no regression [included] {T001}
 - [ ] T005 Analyze R11 shadow log: noise rate <5% [included] {T002}
@@ -135,7 +125,6 @@ contextType: "implementation"
   - [x] B2 chunk ordering: multi-chunk memories reassembled in document order, not score order [evidence: mpab-aggregation.ts line 163 sorts by chunkIndex ascending; test "T001a: chunks maintain document position order" passes]
   - [x] TM-04 quality gate: low-quality saves blocked (signal density <0.4); semantic near-duplicates (>0.92) rejected [evidence: save-quality-gate.ts `SIGNAL_DENSITY_THRESHOLD = 0.4`, `SEMANTIC_DEDUP_THRESHOLD = 0.92`; ~90 tests in save-quality-gate.vitest.ts]
   - [x] TM-06 reconsolidation: merge/replace/store paths verified; checkpoint created before enable [evidence: reconsolidation.ts `MERGE_THRESHOLD = 0.88`, `CONFLICT_THRESHOLD = 0.75`; memory-save.ts `hasReconsolidationCheckpoint()` safety gate; sprint4-integration tests cover all 3 paths]
-<!-- /ANCHOR:phase-6 -->
 
 ---
 
@@ -153,10 +142,9 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:task-id-mapping -->
-## Task ID Mapping (Child → Parent)
+##### Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent ../tasks.md uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -177,7 +165,6 @@ Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global I
 | T-IP-S4 | *(not in parent)* | Interaction pair test R1+N4 (CHK-035) |
 | T-FS4 | T-FS4 | Feature flag sunset review (Sprint 4 exit) |
 | T006 | T031 | Sprint 4 exit gate verification |
-<!-- /ANCHOR:task-id-mapping -->
 
 ---
 
@@ -187,8 +174,8 @@ Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global I
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See ../000-feature-overview/spec.md
-- **Parent Plan**: See ../000-feature-overview/plan.md
+- **Parent Spec**: See ../spec.md
+- **Parent Plan**: See ../plan.md
 <!-- /ANCHOR:cross-refs -->
 
 ---

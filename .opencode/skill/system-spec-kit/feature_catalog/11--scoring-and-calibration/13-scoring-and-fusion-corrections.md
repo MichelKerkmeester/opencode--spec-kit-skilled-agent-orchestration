@@ -47,8 +47,8 @@ In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent p
 |------|-------|
 | `mcp_server/tests/mpab-aggregation.vitest.ts` | MPAB aggregation tests |
 | `mcp_server/tests/rrf-fusion.vitest.ts` | RRF fusion validation |
-| `mcp_server/tests/rsf-fusion-edge-cases.vitest.ts` | RSF fusion edge cases |
-| `mcp_server/tests/rsf-fusion.vitest.ts` | RSF fusion scoring |
+| ~~`mcp_server/tests/rsf-fusion-edge-cases.vitest.ts`~~ | Deleted — RSF tests removed with RSF module |
+| ~~`mcp_server/tests/rsf-fusion.vitest.ts`~~ | Deleted — RSF tests removed with RSF module |
 | `mcp_server/tests/unit-rrf-fusion.vitest.ts` | RRF unit tests |
 
 ### Fix Traceability Matrix

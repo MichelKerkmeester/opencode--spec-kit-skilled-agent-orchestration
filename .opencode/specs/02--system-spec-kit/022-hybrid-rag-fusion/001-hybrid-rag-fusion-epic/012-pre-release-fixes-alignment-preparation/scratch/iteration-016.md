@@ -1,169 +1,62 @@
-● Search (grep)
-  │ "\d+" (.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/spec.md)
-  └ 117 lines found
-
-● Read spec.md
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/spec.md
-  └ 324 lines read
-
-● memory_match_triggers
-  └ {"summary":"Matched 3 memories via trigger phrases","data":{"matchType":"trig...
-
-● Count root spec lines (shell)
-  │ wc -l .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/spec.md
-  └ 2 lines...
-
-● Compute spec tree counts (shell)
-  │ find .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion -type d | wc -l && find
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion -mindepth 1 -maxdepth 1 -type d | wc
-  │ -l && find .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion -type f -name "spec.md" |
-  │ wc -l
-  └ 4 lines...
-
-● Run skill advisor (shell)
-  │ python3 .opencode/skill/scripts/skill_advisor.py "Verify the spec tree structure and directory
-  │ counts for .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion by comparing live
-  │ filesystem counts against numeric claims in the root spec.md" --threshold 0.8
-  └ 27 lines...
-
-I’ve got the headline counts, and there’s already one likely drift: the root spec claims `21` top-level directories, but the requested child-directory command returns `20`. I’m doing one quick pass to verify whether that’s a root-included counting artifact and to confirm the direct-phase structure.
-
-● skill(system-spec-kit)
-
-● Check root-inclusive and child dirs (shell)
-  │ find .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion -maxdepth 1 -type d | wc -l &&
-  │ find .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion -mindepth 1 -maxdepth 1 -type d
-  │ -print | sort
-  └ 22 lines...
-
-● Count direct phase dirs (shell)
-  │ find .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion -mindepth 1 -maxdepth 1 -type d
-  │ -name '[0-9][0-9][0-9]-*' | wc -l && find
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion -mindepth 1 -maxdepth 1 -type d -name
-  │ '[0-9][0-9][0-9]-*' | sort
-  └ 21 lines...
-
-● Count claimed child families (shell)
-  │ for d in 001 007 008 009 011 015; do c=$(find
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion -type d -name "$d-*" | wc -l | tr -d '
-  │ '); printf "%s=%s\n" "$d" "$c"; done
-  └ 7 lines...
-
-One count I ran for the numbered child families was too naive, so I’m correcting that before I hand this off. I’m now counting numbered children inside each claimed phase folder directly, which is the right basis for `001=12`, `009=20`, `015=22`, and similar assertions.
-
-✗ Check phase 015 status counts (shell)
-  │ phase_dir=$(find .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion -mindepth 1
-  │ -maxdepth 1 -type d -name '015-*' | head -n 1); printf '015-complete=%s\n' "$(rg -n '^\|
-  │ [0-9]{3} \|' "$phase_dir/spec.md" | wc -l | tr -d ' ')"; printf '015-not-started=%s\n' "$(rg
-  │ -n '\| Not Started \|' "$phase_dir/spec.md" | wc -l | tr -d ' ')"; printf
-  │ '015-complete-status=%s\n' "$(rg -n '\| Complete \|' "$phase_dir/spec.md" | wc -l | tr -d ' …
-  └ Command blocked: contains dangerous shell expansion patterns (e.g., parameter transformation,
-    indirect expansion, or nested command substitution) that could enable arbitrary code execution.
-    Please rewrite the command without these expansion patterns.
-
-✗ Check phase 009 child count (shell)
-  │ phase_dir=$(find .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion -mindepth 1 -maxdepth
-  │ 1 -type d -name '009-*' | head -n 1); printf '009-numbered-children=%s\n' "$(find "$phase_dir"
-  │ -mindepth 1 -maxdepth 1 -type d -name '[0-9][0-9][0-9]-*' | wc -l | tr -d ' ')"
-  └ Command blocked: contains dangerous shell expansion patterns (e.g., parameter transformation,
-    indirect expansion, or nested command substitution) that could enable arbitrary code execution.
-    Please rewrite the command without these expansion patterns.
-
-✗ Count acceptance scenarios (shell)
-  │ printf 'acceptance-scenarios=%s\n' "$(rg -n '^\d+\. \*\*Given\*\*'
-  │ .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/spec.md | wc -l | tr -d ' ')"
-  └ Command blocked: contains dangerous shell expansion patterns (e.g., parameter transformation,
-    indirect expansion, or nested command substitution) that could enable arbitrary code execution.
-    Please rewrite the command without these expansion patterns.
-
-● Count numbered children per phase (shell)
-  │ base='.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion'; for phase in 001 007 008 009
-  │ 011 015; do phase_dir=$(find "$base" -mindepth 1 -maxdepth 1 -type d -name "$phase-*" | head -n
-  │ 1); count=$(find "$phase_dir" -mindepth 1 -maxdepth 1 -type d -name '[0-9][0-9][0-9]-*' | wc -l
-  │ | tr -d ' '); printf '%s %s %s\n' "$phase" "$count" "$phase_dir"; done
-  └ 7 lines...
-
-The family counts are now confirmed, and those key child-count claims actually line up. I’m doing one last targeted check on the remaining numeric claims in `spec.md` so the comparison table reflects only genuine drift.
-
-● Check companion docs exist (shell)
-  │ python3 - <<'PY'
-  │ from pathlib import Path
-  │ root = Path('.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion')
-  │ for name in
-  │ ['plan.md','tasks.md','checklist.md','decision-record.md','implementation-summary.md']:…
-  └ 8 lines...
-
-● Check 015 and scenario counts (shell)
-  │ python3 - <<'PY'
-  │ from pathlib import Path
-  │ import re
-  │ phase_spec = Path('.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testin
-  │ g-per-playbook/spec.md')…
-  └ 12 lines...
-
-I’ve confirmed the structural claims. The only remaining ambiguity is whether to include non-structural numeric assertions like the `015` status breakdown; I’m checking the child spec files directly so I can either verify that cleanly or keep the report strictly scoped to tree structure.
-
-● Search (grep)
-  │ "\*\*Status\*\*|^status:|\| \*\*Status\*\* \|" in [0-9][0-9][0-9]-*/spec.md
-  │ (.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook)
-  └ No matches found
-
-● Search (glob)
-  │ ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook/[0-9]
-  │ [0-9][0-9]-*/spec.md"
-  └ 22 files found
-
-# Iteration 016: Spec Tree Structure Verification
-## Agent: copilot / gpt-5.4 / high
-## Dimension: traceability
-
-## Files Reviewed
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/spec.md`
-
-## Live Counts
-- Total directories: `399`
-- Top-level directories: `20`
-- `spec.md` files: `124`
-- Direct phase directories (`001`-`019`): `19`
-
-## Claimed Counts (from root `spec.md`)
-- Total directories claimed: `398` (lines `20`, `38`)
-- Top-level directories claimed: `21` (lines `20`, `38`)
-- Direct phases claimed: `19` (lines `20`, `53`, `64`, `124`)
-- Key numbered child counts claimed: `001=12`, `007=22`, `008=6`, `009=20`, `011=1`, `015=22` (lines `39`, `121`)
-
-## Comparison
-
-| Metric | Claimed | Actual | Delta | Status |
-|--------|---------|--------|-------|--------|
-| Total directories under `022` | 398 | 399 | +1 | DRIFT |
-| Top-level directories (child dirs only; requested command) | 21 | 20 | -1 | DRIFT |
-| Direct phase directories | 19 | 19 | 0 | MATCH |
-| `001` numbered child dirs | 12 | 12 | 0 | MATCH |
-| `007` numbered child dirs | 22 | 22 | 0 | MATCH |
-| `008` numbered child dirs | 6 | 6 | 0 | MATCH |
-| `009` numbered child dirs | 20 | 20 | 0 | MATCH |
-| `011` numbered child dirs | 1 | 1 | 0 | MATCH |
-| `015` numbered child dirs | 22 | 22 | 0 | MATCH |
+# Iteration 016: Code Maintainability
 
 ## Findings
 
-### P1-001: Total directory count is stale
-The root spec claims `398` total directories, but the live tree contains `399`.
+1. **Overly complex orchestration function (`runWorkflow`) increases change risk and review cost**
+   - File: `.opencode/skill/system-spec-kit/scripts/dist/core/workflow.js:324-1486`
+   - The function is ~1,162 lines and mixes loading, alignment checks, contamination cleaning, extraction, scoring, rendering, and output orchestration in one body.
+   - Heuristic branch-density pass flagged this as the highest hotspot (decision-token proxy: `133`), making safe modifications difficult without regressions.
 
-### P2-001: Top-level directory claim is root-inclusive, not child-only
-The root spec claims `21` top-level directories. The requested child-only command returns `20`.  
-Interpretation note: `find ... -maxdepth 1 -type d | wc -l` returns `21` only because it includes the root directory itself. The actual child dirs are `20` (`19` phase dirs + `.github`).
+2. **Stage-1 retrieval pipeline is a single high-cyclomatic block with many feature-flag branches**
+   - File: `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:285-1160`
+   - `executeStage1` handles concept routing, hybrid mode, decomposition, variant expansion, fallback behavior, tracing, and channel-specific logic in one large function.
+   - Heuristic branch-density pass flagged decision-token proxy `114`; this is high maintenance overhead for future ranking changes.
+
+3. **`memory_search` handler remains too large and policy-dense for safe incremental edits**
+   - File: `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:396-1069`
+   - `handleMemorySearch` spans validation, cursor handling, cache policy, intent classification, pipeline execution, adaptive logic, telemetry, and response shaping.
+   - Heuristic branch-density proxy: `81`, indicating substantial cognitive load and high chance of side effects when changing behavior.
+
+4. **Duplicated traversal logic should be shared (sync/async child-folder search)**
+   - File: `.opencode/skill/system-spec-kit/scripts/dist/core/subfolder-utils.js:63-163` and `:165-270`
+   - `findChildFolderSync` and `findChildFolderAsync` duplicate the same algorithm (root dedup, recursive traversal, ambiguity handling, warning strategy), differing mostly in sync vs async fs APIs.
+   - This duplication creates parallel bug-fix surfaces and increases divergence risk.
+
+5. **Duplicated directory-discovery logic exists in workspace identity utilities**
+   - File: `.opencode/skill/system-spec-kit/scripts/dist/utils/workspace-identity.js:89-110` and `:111-132`
+   - `findNearestOpencodeDirectoryRaw` and `findNearestOpencodeDirectory` are near-identical loops with only normalization differences.
+   - Consolidating shared traversal and injecting normalization strategy would reduce maintenance overhead.
+
+6. **Inconsistent naming patterns inside TypeScript schema module reduce readability and convention clarity**
+   - File: `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts:155`, `:1270`, `:1290`, `:1512`
+   - Mixed naming styles (`run_migrations`, `safe_get_schema_version`, `migrate_confidence_columns`, `ensure_canonical_file_path_support`) coexist with surrounding camelCase conventions.
+   - This inconsistency raises friction for navigation and makes refactoring/search less predictable.
+
+7. **No-op catch branches behave like dead code paths and obscure intent**
+   - File: `.opencode/skill/system-spec-kit/scripts/dist/core/subfolder-utils.js:80-83`, `:100-103`, `:146-149`, `:182-185`, `:192-195`, `:253-256`
+   - Multiple catch blocks contain `if (_error instanceof Error) { void _error.message; }`, which has no behavioral effect.
+   - Similar non-action branch appears in folder detection (`.opencode/skill/system-spec-kit/scripts/dist/spec-folder/folder-detector.js:966-969`).
+   - These branches are reachable but functionally inert, and they add noise without improving diagnostics.
+
+8. **Comment/structure drift signals transitional tech debt in memory search handler**
+   - File: `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:383-390`, `:634`, `:715-718`
+   - The file carries legacy-structure comments (e.g., removed sections and shifted numbering), while runtime logic now routes through the V2 pipeline plus compatibility-shaped payload aliases.
+   - Not a functional bug, but this “transition residue” increases onboarding time and makes intent of current vs legacy concerns less clear.
+
+9. **Source + committed transpiled output creates mirrored maintenance surfaces**
+   - Examples: 
+     - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts` and `.opencode/skill/system-spec-kit/mcp_server/dist/handlers/memory-search.js`
+     - `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts` and `.opencode/skill/system-spec-kit/mcp_server/dist/lib/search/vector-index-schema.js`
+   - Large mirrored files increase review noise and drift risk unless regeneration discipline is strict.
 
 ## Summary
-- Claims checked: `9`
-- MATCH: `7`, DRIFT: `2`
-- Total findings: `2` (`P0: 0`, `P1: 1`, `P2: 1`)
 
+- **Dead/unreachable review:** no hard `if (false)`-style unreachable branches found in reviewed production paths; however, several no-op catch branches act as dead-weight logic.
+- **Complexity:** three major hotspots dominate maintainability risk (`runWorkflow`, `executeStage1`, `handleMemorySearch`).
+- **Naming/comments:** inconsistent naming style and transitional comments reduce readability.
+- **Duplication:** algorithm duplication exists in folder traversal and workspace identity logic.
+- **Tech debt:** mirrored source/dist code and legacy-compatibility residue increase future change cost.
 
-Total usage est:        1 Premium request
-API time spent:         1m 38s
-Total session time:     1m 51s
-Total code changes:     +0 -0
-Breakdown by AI model:
- gpt-5.4                  384.3k in, 6.6k out, 352.3k cached (Est. 1 Premium request)
+## JSONL (type:iteration, run:16, dimensions:[maintainability])
+
+{"type":"iteration","run":16,"dimensions":["maintainability"],"result":"issues_found","highlights":{"complexity_hotspots":[{"file":".opencode/skill/system-spec-kit/scripts/dist/core/workflow.js","symbol":"runWorkflow","lines":"324-1486","decision_proxy":133},{"file":".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts","symbol":"executeStage1","lines":"285-1160","decision_proxy":114},{"file":".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts","symbol":"handleMemorySearch","lines":"396-1069","decision_proxy":81}],"duplication":[{"file":".opencode/skill/system-spec-kit/scripts/dist/core/subfolder-utils.js","lines":["63-163","165-270"],"issue":"sync/async traversal logic duplicated"},{"file":".opencode/skill/system-spec-kit/scripts/dist/utils/workspace-identity.js","lines":["89-110","111-132"],"issue":"near-identical nearest .opencode search loops"}],"naming":[{"file":".opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-schema.ts","symbols":["run_migrations","safe_get_schema_version","migrate_confidence_columns","ensure_canonical_file_path_support"],"issue":"mixed snake_case in camelCase-heavy module"}],"dead_weight_code":[{"file":".opencode/skill/system-spec-kit/scripts/dist/core/subfolder-utils.js","lines":["80-83","100-103","146-149","182-185","192-195","253-256"],"issue":"no-op catch blocks with `void _error.message`"},{"file":".opencode/skill/system-spec-kit/scripts/dist/spec-folder/folder-detector.js","lines":"966-969","issue":"catch branch with no meaningful action"}],"comment_debt":[{"file":".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts","lines":["383-390","634","715-718"],"issue":"legacy-structure comments and compatibility residue increase cognitive load"}],"structural_tech_debt":[{"scope":"mcp_server source+dist","issue":"mirrored TS/JS maintenance surfaces increase drift and review overhead"}]}}

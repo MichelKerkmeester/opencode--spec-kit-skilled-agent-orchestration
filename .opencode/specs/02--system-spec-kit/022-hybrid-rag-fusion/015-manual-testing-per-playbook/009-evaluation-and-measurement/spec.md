@@ -112,6 +112,16 @@ All 16 scenarios must be executed and pass before this phase is marked complete.
 - **SC-002**: All 16 P0 checklist items are checked with evidence
 - **SC-003**: No scenario produces a regression finding that was not already tracked
 - **SC-004**: implementation-summary.md is filled in with pass/fail results and date
+### Acceptance Scenarios
+
+**Given** the `009-evaluation-and-measurement` phase packet, **when** a reviewer opens the scenario mapping, **then** every scenario listed for the phase has a bounded execution target and a documented acceptance rule.
+
+**Given** the `009-evaluation-and-measurement` phase packet, **when** execution evidence is reviewed, **then** verdict notes can be traced through `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+
+**Given** the `009-evaluation-and-measurement` phase packet, **when** a reviewer checks neighboring navigation, **then** the packet points back to the parent and to the adjacent numbered phase where one exists.
+
+**Given** strict validation runs on the `009-evaluation-and-measurement` phase packet, **when** the validator checks structure, **then** the packet satisfies Level 2 requirement and acceptance-scenario minimums.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

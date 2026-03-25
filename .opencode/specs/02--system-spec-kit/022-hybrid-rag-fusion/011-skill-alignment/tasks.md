@@ -57,7 +57,7 @@ contextType: "implementation"
 
 ---
 
-## Phase 4: Asset Closeout
+### Phase 4: Asset Closeout
 
 - [x] T008 Add campaign/shared-space/cross-phase dispatch guidance to assets/parallel_dispatch_config
 - [x] T009 Add campaign/shared-space/cross-phase scoring guidance to assets/complexity_decision_matrix and assets/level_decision_matrix
@@ -65,7 +65,7 @@ contextType: "implementation"
 
 ---
 
-## Phase 5: Post-Research-Refinement Alignment (2026-03-22)
+### Phase 5: Post-Research-Refinement Alignment (2026-03-22)
 
 Drift reconciliation after session-capturing (009) and research-based-refinement (epic/011) phases.
 

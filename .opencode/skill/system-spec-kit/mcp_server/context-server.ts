@@ -33,6 +33,7 @@ import {
   indexSingleFile,
   handleMemoryStats,
 } from './handlers';
+import * as memoryIndexDiscovery from './handlers/memory-index-discovery';
 import { runPostMutationHooks } from './handlers/mutation-hooks';
 
 // Utils
@@ -423,6 +424,36 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
 
 let startupScanInProgress = false;
 
+function getStartupWorkspaceRoots(basePath: string): string[] {
+  const configuredMemoryRoot = process.env.MEMORY_BASE_PATH?.trim();
+  const derivedMemoryRoot = configuredMemoryRoot ? path.resolve(process.cwd(), configuredMemoryRoot) : null;
+  return Array.from(new Set(
+    [basePath, derivedMemoryRoot, ...ALLOWED_BASE_PATHS]
+      .filter((root): root is string => typeof root === 'string' && root.trim().length > 0)
+      .map((root) => path.resolve(root))
+  ));
+}
+
+function getPendingRecoveryLocations(basePath: string): string[] {
+  const scanLocations: string[] = [];
+  for (const root of getStartupWorkspaceRoots(basePath)) {
+    scanLocations.push(path.join(root, 'specs'));
+    scanLocations.push(path.join(root, '.opencode', 'specs'));
+    const skillDir = path.join(root, '.opencode', 'skill');
+    try {
+      if (!fs.existsSync(skillDir)) continue;
+      for (const entry of fs.readdirSync(skillDir, { withFileTypes: true })) {
+        if (!entry.isDirectory() || entry.name.startsWith('.')) continue;
+        const constDir = path.join(skillDir, entry.name, 'constitutional');
+        if (fs.existsSync(constDir)) scanLocations.push(constDir);
+      }
+    } catch (_error: unknown) {
+      // Non-fatal: constitutional directory discovery failed
+    }
+  }
+  return Array.from(new Set(scanLocations.filter((location) => fs.existsSync(location))));
+}
+
 /**
  * T107: Recover pending memory files on MCP startup.
  * CHK-188: Pending files processed by recovery job on next startup.
@@ -435,46 +466,8 @@ async function recoverPendingFiles(basePath: string): Promise<PendingRecoveryRes
 
   try {
     // BUG-028 FIX: Restrict scan to known memory file locations to prevent OOM when scanning large workspaces.
-    // P1 follow-up: derive those known locations from all allowed memory roots so startup recovery matches ingest roots.
-    const configuredMemoryRoot = process.env.MEMORY_BASE_PATH;
-    const derivedMemoryRoot = configuredMemoryRoot && configuredMemoryRoot.trim().length > 0
-      ? path.resolve(process.cwd(), configuredMemoryRoot)
-      : null;
-    const recoveryRoots = Array.from(
-      new Set(
-        [basePath, derivedMemoryRoot, ...ALLOWED_BASE_PATHS]
-          .filter((root): root is string => typeof root === 'string' && root.trim().length > 0)
-          .map((root) => path.resolve(root))
-      )
-    );
-
-    const scanLocations: string[] = [];
-    for (const root of recoveryRoots) {
-      scanLocations.push(path.join(root, 'specs'));
-      scanLocations.push(path.join(root, '.opencode', 'specs'));
-
-      // Also scan constitutional directories (.opencode/skill/*/constitutional/)
-      const skillDir = path.join(root, '.opencode', 'skill');
-      try {
-        if (fs.existsSync(skillDir)) {
-          const entries = fs.readdirSync(skillDir, { withFileTypes: true });
-          for (const entry of entries) {
-            if (entry.isDirectory() && !entry.name.startsWith('.')) {
-              const constDir = path.join(skillDir, entry.name, 'constitutional');
-              if (fs.existsSync(constDir)) {
-                scanLocations.push(constDir);
-              }
-            }
-          }
-        }
-      } catch (_error: unknown) {
-        // Non-fatal: constitutional directory discovery failed
-      }
-    }
-
-    const existingScanLocations = Array.from(
-      new Set(scanLocations.filter((location) => fs.existsSync(location)))
-    );
+    // P1-002-SCAN: share the same allowed-root expansion that startup indexing uses.
+    const existingScanLocations = getPendingRecoveryLocations(basePath);
 
     // P1 FIX: Wire isCommittedInDb callback so stale pending files are detected at startup.
     // VectorIndex.getDb() is an initializing accessor — always returns a valid DB after initializeDb().
@@ -536,16 +529,45 @@ async function startupScan(basePath: string): Promise<void> {
     await recoverPendingFiles(basePath);
 
     console.error('[context-server] Starting background scan for new memory files...');
-    const files: string[] = memoryParser.findMemoryFiles(basePath);
-    if (files.length === 0) {
+    const scanRoots = Array.from(
+      new Set(
+        [basePath, ...ALLOWED_BASE_PATHS]
+          .filter((root): root is string => typeof root === 'string' && root.trim().length > 0)
+          .map((root) => path.resolve(root))
+      )
+    );
+    const allFiles: string[] = [];
+    const seen = new Set<string>();
+
+    for (const root of scanRoots) {
+      try {
+        const rootFiles = [
+          ...memoryParser.findMemoryFiles(root),
+          ...memoryIndexDiscovery.findConstitutionalFiles(root),
+          ...memoryIndexDiscovery.findSpecDocuments(root),
+        ];
+
+        for (const filePath of rootFiles) {
+          const resolved = path.resolve(filePath);
+          if (!seen.has(resolved)) {
+            seen.add(resolved);
+            allFiles.push(filePath);
+          }
+        }
+      } catch (_error: unknown) {
+        // Non-fatal: skip inaccessible startup roots.
+      }
+    }
+
+    if (allFiles.length === 0) {
       console.error('[context-server] No memory files found in workspace');
       return;
     }
 
-    console.error(`[context-server] Found ${files.length} memory files, checking for changes...`);
+    console.error(`[context-server] Found ${allFiles.length} memory files, checking for changes...`);
     let indexed = 0, updated = 0, unchanged = 0, failed = 0;
 
-    for (const filePath of files) {
+    for (const filePath of allFiles) {
       try {
         const result: IndexResult = await indexSingleFile(filePath, false);
         if (result.status === 'indexed') indexed++;

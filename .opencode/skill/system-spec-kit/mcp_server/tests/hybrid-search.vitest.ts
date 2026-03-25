@@ -811,6 +811,86 @@ describe('C138-P0: Adaptive Fallback in searchWithFallback', () => {
   });
 });
 
+describe('P1-002-1 raw candidate merge scoring', () => {
+  const { mergeRawCandidate } = hybridSearch.__testables;
+
+  it('keeps the base score unchanged for a single-channel candidate and records channelCount', () => {
+    const incoming = {
+      id: 2,
+      score: 0.5,
+      source: 'vector',
+      sources: ['vector'],
+      sourceScores: { vector: 0.5 },
+      channelAttribution: ['vector'],
+    } as HybridSearchResult;
+
+    const merged = mergeRawCandidate(undefined, incoming);
+
+    expect(merged.score).toBeCloseTo(0.5, 6);
+    expect((merged as Record<string, unknown>).channelCount).toBe(1);
+    expect((merged as Record<string, unknown>).sources).toEqual(['vector']);
+  });
+
+  it('adds a +0.02 bonus for a second contributing channel', () => {
+    const merged = mergeRawCandidate(
+      {
+        id: 2,
+        score: 0.5,
+        source: 'vector',
+        sources: ['vector'],
+        sourceScores: { vector: 0.5 },
+        channelAttribution: ['vector'],
+      } as HybridSearchResult,
+      {
+        id: 2,
+        score: 0.5,
+        source: 'graph',
+        sources: ['graph'],
+        sourceScores: { graph: 0.5 },
+        channelAttribution: ['graph'],
+      } as HybridSearchResult
+    );
+
+    expect(merged.score).toBeCloseTo(0.52, 6);
+    expect((merged as Record<string, unknown>).channelCount).toBe(2);
+    expect((merged as Record<string, unknown>).sources).toEqual(
+      expect.arrayContaining(['vector', 'graph'])
+    );
+  });
+
+  it('caps the cross-channel bonus at +0.06 and clamps the merged score to 1', () => {
+    const merged = mergeRawCandidate(
+      {
+        id: 'shared-doc',
+        score: 0.97,
+        source: 'vector',
+        sources: ['vector', 'fts', 'bm25', 'graph'],
+        sourceScores: {
+          vector: 0.97,
+          fts: 0.96,
+          bm25: 0.95,
+          graph: 0.94,
+        },
+        channelAttribution: ['vector', 'fts', 'bm25', 'graph'],
+      } as HybridSearchResult,
+      {
+        id: 'shared-doc',
+        score: 0.96,
+        source: 'trigger',
+        sources: ['trigger'],
+        sourceScores: { trigger: 0.96 },
+        channelAttribution: ['trigger'],
+      } as HybridSearchResult
+    );
+
+    expect(merged.score).toBe(1);
+    expect((merged as Record<string, unknown>).channelCount).toBe(5);
+    expect((merged as Record<string, unknown>).sources).toEqual(
+      expect.arrayContaining(['vector', 'fts', 'bm25', 'graph', 'trigger'])
+    );
+  });
+});
+
 describe('Degree channel fusion regression coverage', () => {
   it('keeps degree ranking in the final fusion when graph returns no results', async () => {
     const degreeAwareDb = createDegreeAwareMockDb();

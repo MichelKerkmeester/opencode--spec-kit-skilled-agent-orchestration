@@ -1,75 +1,210 @@
 ---
-title: "Implement 3 Deprecated Features + Remove 3 Others"
-description: "Wire graph calibration, temporal contiguity, and consumption logger into production. Remove channel attribution, fusion shadow V2, and eval ceiling from entire codebase."
+title: "Feature Specification: Implement and Remove Deprecated Features"
+description: "Release-control packet for the six deprecated-feature remediation targets identified by the hybrid-RAG audit: three implementation candidates and three retirement candidates."
+trigger_phrases:
+  - "deprecated feature remediation"
+  - "022 implement and remove deprecated features"
+  - "graph calibration"
+  - "temporal contiguity"
+  - "consumption logger"
+importance_tier: "normal"
+contextType: "general"
 ---
-# Implement 3 Deprecated Features + Remove 3 Others
+# Feature Specification: Implement and Remove Deprecated Features
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
-## Metadata
+### Executive Summary
+
+This packet preserves the six remediation targets that closed the `007-code-audit-per-feature-catalog` phase chain: three previously deprecated capabilities that needed release-level verification and three obsolete evaluation/shadow artifacts targeted for retirement. During the 2026-03-25 release-alignment pass, the packet was normalized to reflect its actual role as a release-control tracker, while execution status remains coordinated with the parent release packet at `../../001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md`.
+
+**Outcome**: Packet normalized and cross-linked for release control; underlying runtime/remove work remains partially complete.
+
+**Key Decisions**: Keep this child packet focused on scoped remediation ownership, not fresh implementation work; use the parent `012` packet for end-to-end release verification.
+
+**Critical Dependencies**: `../021-remediation-revalidation/spec.md`, `../../001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md`, and the current repository state for the six targeted features.
+
+---
+
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
 | Field | Value |
 |-------|-------|
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | Partially Complete |
+| **Created** | 2026-03-23 |
+| **Completed** | Release verification pending |
+| **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../021-remediation-revalidation/spec.md |
+| **Release Packet** | ../../001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md |
+<!-- /ANCHOR:metadata -->
 
 ---
 
-Predecessor: 021-remediation-revalidation/spec.md
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+The final audit phase identified a small set of deprecated-feature decisions that sat between documentation cleanup and runtime release readiness. Without a packet dedicated to those six targets, the audit chain ended with remediation intent but no validator-compliant record tying the targets to the release packet that now owns final verification.
+
+### Purpose
+Track the six deprecated-feature remediation targets, record their release-control ownership, and keep this phase packet truthful and validator-compliant while final execution status is verified elsewhere.
+<!-- /ANCHOR:problem -->
 
 ---
 
-## Scope
+<!-- ANCHOR:scope -->
+## 3. SCOPE
 
-### IMPLEMENT (wire into production pipeline)
+### In Scope
+- Record the three implementation candidates and three retirement candidates that closed the audit chain.
+- Cross-link this phase packet to the release-control packet in `012-pre-release-fixes-alignment-preparation`.
+- Preserve the intended integration and removal surfaces for later verification.
+- Normalize this child packet so it can participate in recursive spec validation.
 
-| # | Feature | Source File | Integration Point | Flag |
-|---|---------|-----------|-------------------|------|
-| 1 | Graph Calibration Profiles | `lib/search/graph-calibration.ts` | `stage2-fusion.ts` after graph signals (~L635) | `isGraphCalibrationProfileEnabled()` exists |
-| 2 | Temporal Contiguity Layer | `lib/cognitive/temporal-contiguity.ts` | `stage1-candidate-gen.ts` vector channel (before fusion) | Must create `isTemporalContiguityEnabled()` |
-| 3 | Consumption Logger | `lib/telemetry/consumption-logger.ts` | Handler wiring exists; un-hardcode flag | Change `return false` to `isFeatureEnabled()` |
+### Out of Scope
+- Claiming new runtime behavior that has not been re-verified in the current release pass.
+- Performing broad implementation or removal work from this packet during documentation normalization.
+- Rewriting adjacent audit phases outside this packet.
 
-### REMOVE (delete code, catalog, playbook, all references)
+### Files Referenced
 
-| # | Feature | Source File | Catalog | Playbook |
-|---|---------|-----------|---------|----------|
-| 4 | Channel Attribution | `lib/eval/channel-attribution.ts` | `09.../11-shadow-scoring-and-channel-attribution.md` | `09.../015-shadow-scoring...md` |
-| 5 | Fusion Policy Shadow V2 | `shared/algorithms/fusion-lab.ts` | `11.../23-fusion-policy-shadow-v2.md` | `11.../170-fusion-policy-shadow-v2...md` |
-| 6 | Full-Context Ceiling Eval | `lib/eval/eval-ceiling.ts` | `09.../04-full-context-ceiling-evaluation.md` | `09.../008-full-context-ceiling...md` |
-
----
-
-## Constraints
-
-- All implementations must be feature-flag gated (graduated, default ON)
-- Temporal contiguity integrates at Stage 1 (NOT Stage 2 — needs raw vector results)
-- Removal must be exhaustive: source, tests, catalog, playbook, index files, READMEs
-- Test files importing removed modules must have imports cleaned (not just deleted)
-- Existing tests for implemented features must pass after wiring
-
----
-
-## Delegation Plan
-
-5 GPT-5.4 high cli-codex agents in one parallel wave:
-
-| Agent | Task | Scope |
-|-------|------|-------|
-| 1 | REMOVE channel attribution | Delete files + clean all refs |
-| 2 | REMOVE fusion shadow V2 + eval ceiling | Delete files + clean all refs |
-| 3 | IMPLEMENT graph calibration | Wire into Stage 2, update catalog |
-| 4 | IMPLEMENT temporal contiguity | Wire into Stage 1, create flag, update catalog |
-| 5 | IMPLEMENT consumption logger | Un-hardcode flag, update catalog |
+| File Path | Role |
+|-----------|------|
+| `mcp_server/lib/search/graph-calibration.ts` | Graph calibration implementation candidate |
+| `mcp_server/lib/cognitive/temporal-contiguity.ts` | Temporal contiguity implementation candidate |
+| `mcp_server/lib/telemetry/consumption-logger.ts` | Consumption logging implementation candidate |
+| `mcp_server/lib/eval/channel-attribution.ts` | Retirement candidate |
+| `mcp_server/lib/eval/eval-ceiling.ts` | Retirement candidate |
+| ~~`mcp_server/shared/algorithms/fusion-lab.ts`~~ Deleted | Retirement candidate (historical - fusion-lab.js deleted in commit 56c67030f) |
+| `../../001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md` | Parent release-control packet |
+<!-- /ANCHOR:scope -->
 
 ---
 
-## Success Criteria
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
 
-- [ ] 3 deprecated modules wired into production with feature flags
-- [ ] 3 removed modules have zero references in codebase
-- [ ] All existing tests pass (vitest)
-- [ ] Feature catalog entries updated (3 active, 3 deleted)
-- [ ] Testing playbook entries updated (3 deleted)
-- [ ] Index files (feature_catalog.md, simple_terms, playbook index) cleaned
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | The packet records all six remediation targets | Three implementation targets and three retirement targets are listed with current intent |
+| REQ-002 | Release-control ownership is explicit | The packet links to the parent `012` packet for final verification |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-003 | Packet-local markdown references resolve cleanly | Recursive validation does not fail on broken child-packet links |
+| REQ-004 | The packet distinguishes documentation normalization from runtime execution | Readers can tell that this pass did not newly claim implementation completion |
+| REQ-005 | Implementation-summary coverage exists for this child packet | `implementation-summary.md` records the normalization outcome and remaining dependency on the parent release packet |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: All six remediation targets are preserved in a validator-compliant child packet.
+- **SC-002**: The packet clearly hands off final ship/no-ship verification to the `012` release packet.
+- **SC-003**: Broken packet-local markdown references are eliminated.
+- **SC-004**: Recursive validation can evaluate this phase without structural failures.
+
+### Acceptance Scenarios
+
+- **Given** a reviewer opening the last phase of the `007` audit chain, **when** they read this packet, **then** they can see the six targeted remediation items without relying on stale shorthand paths.
+- **Given** the release packet in `012`, **when** a maintainer follows the link from this child packet, **then** they arrive at the packet that owns final release verification.
+- **Given** a validator run against this phase, **when** anchors and template headers are checked, **then** the packet behaves like a Level 2 packet rather than an ad hoc scratch note.
+- **Given** a future implementation pass, **when** engineers reuse this packet, **then** they can separate already-normalized documentation work from still-pending runtime verification.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Parent release packet in `012` | Final execution status may drift if `012` is not kept current | Treat `012` as the authoritative release-control source |
+| Risk | Legacy remediation intent predates the current repo state | This child packet could over-claim completion | Keep status as Partially Complete and avoid unsupported runtime claims |
+| Risk | Retirement targets may still surface in docs or tests | Release readiness could be overstated | Require follow-up verification in the parent packet before ship |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: Packet readers should understand the six-target scope without scanning unrelated audit phases.
+
+### Reliability
+- **NFR-R01**: This packet must stay structurally valid under recursive spec validation.
+
+### Maintainability
+- **NFR-M01**: Release-control ownership must remain explicit so later sessions do not split truth between `007` and `012`.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Historical Drift
+- Some targets in this packet were originally framed as fresh implementation/removal work but are now better treated as release-verification targets.
+
+### Mixed Status
+- The three implementation candidates and three retirement candidates may not all converge at the same time; this packet keeps them grouped without assuming identical completion states.
+
+### Cross-Packet Ownership
+- This packet belongs to the audit chain, while the final decision to ship belongs to the parent release packet.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 12/25 | Six remediation targets plus release-control cross-linking |
+| Risk | 11/25 | Misstating runtime/remove status would mislead release decisions |
+| Research | 10/20 | Requires reconciling older remediation intent with current packet ownership |
+| **Total** | **33/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---
+
+### Remediation Targets
+
+| Target | Category | Intended Outcome | Current Packet Role |
+|--------|----------|------------------|---------------------|
+| Graph calibration profiles | Implement | Verify production wiring and flag handling | Tracked for release verification |
+| Temporal contiguity layer | Implement | Verify Stage 1 wiring and rollout flag handling | Tracked for release verification |
+| Consumption logger | Implement | Verify logging enablement path | Tracked for release verification |
+| Channel attribution | Remove | Confirm retirement from code/docs/tests | Tracked for release verification |
+| Fusion policy shadow V2 | Remove | Confirm retirement from code/docs/tests | Tracked for release verification |
+| Full-context ceiling eval | Remove | Confirm retirement from code/docs/tests | Tracked for release verification |
+
+### Related Documents
+
+- **Parent Audit Phase**: See `../021-remediation-revalidation/spec.md`
+- **Release-Control Packet**: See `../../001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md`
+- **Implementation Plan**: See `plan.md`
+- **Verification Checklist**: See `checklist.md`
+
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+- Q1 open: Which of the six targets still require code changes, versus documentation-only confirmation, after the latest `012` release-alignment pass?
+- Q2 open: Should a future session split implementation candidates from retirement candidates into separate child packets once final verification is complete?
+<!-- /ANCHOR:questions -->

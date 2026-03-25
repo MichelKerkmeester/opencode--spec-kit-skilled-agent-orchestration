@@ -11,11 +11,11 @@ contextType: "general"
 # Feature Specification: Code Audit — UX Hooks
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
-## EXECUTIVE SUMMARY
+### Executive Summary
 
 Systematic code audit of 19 UX Hooks features in the Spec Kit Memory MCP server. Each feature from the `feature_catalog/18--ux-hooks/` category will be verified against its source code implementation to confirm accuracy, completeness, and catalog alignment.
 
@@ -25,6 +25,7 @@ Systematic code audit of 19 UX Hooks features in the Spec Kit Memory MCP server.
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -39,8 +40,11 @@ Systematic code audit of 19 UX Hooks features in the Spec Kit Memory MCP server.
 | **Successor** | ../019-decisions-and-deferrals/spec.md |
 
 
+<!-- /ANCHOR:metadata -->
+
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -49,8 +53,11 @@ The feature catalog for UX Hooks has evolved significantly. Existing audit docum
 ### Purpose
 Verify that all 19 UX Hooks features are accurately documented in the feature catalog and correctly implemented in source code.
 
+<!-- /ANCHOR:problem -->
+
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -86,8 +93,11 @@ Verify that all 19 UX Hooks features are accurately documented in the feature ca
 | `feature_catalog/18--ux-hooks/*.md` | Reference | Feature catalog source files |
 | `007-code-audit-per-feature-catalog/018-ux-hooks/` | Create | Audit documentation |
 
+<!-- /ANCHOR:scope -->
+
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -103,16 +113,23 @@ Verify that all 19 UX Hooks features are accurately documented in the feature ca
 |----|-------------|---------------------|
 | REQ-003 | Source file references validated | All listed source files confirmed to exist |
 | REQ-004 | Feature interactions mapped | Cross-feature dependencies documented |
+| REQ-005 | Audit results reusable for release-control follow-up | Summary stats and companion-doc cross-references recorded in this packet |
+
+<!-- /ANCHOR:requirements -->
 
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: All 19 features audited with findings documented
 - **SC-002**: Zero unverified features remaining in this category
 
+<!-- /ANCHOR:success-criteria -->
+
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -121,9 +138,11 @@ Verify that all 19 UX Hooks features are accurately documented in the feature ca
 | Risk | Source code changed since catalog update | Med | Cross-reference git history |
 | Risk | Some features span multiple source files | Low | Follow import chains |
 
+<!-- /ANCHOR:risks -->
+
 ---
 
-## 7. NON-FUNCTIONAL REQUIREMENTS
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: Audit completable by AI agent in single session
@@ -133,7 +152,7 @@ Verify that all 19 UX Hooks features are accurately documented in the feature ca
 
 ---
 
-## 8. EDGE CASES
+## L2: EDGE CASES
 
 ### Data Boundaries
 - Feature with no source files listed: Flag as catalog gap
@@ -145,7 +164,7 @@ Verify that all 19 UX Hooks features are accurately documented in the feature ca
 
 ---
 
-## 9. COMPLEXITY ASSESSMENT
+## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
@@ -158,7 +177,7 @@ Verify that all 19 UX Hooks features are accurately documented in the feature ca
 
 ---
 
-## 10. RISK MATRIX
+### Risk Matrix
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
 |---------|-------------|--------|------------|------------|
@@ -167,7 +186,7 @@ Verify that all 19 UX Hooks features are accurately documented in the feature ca
 
 ---
 
-## 11. USER STORIES
+### User Stories
 
 ### US-001: Feature Verification (Priority: P0)
 
@@ -178,7 +197,7 @@ Verify that all 19 UX Hooks features are accurately documented in the feature ca
 
 ---
 
-## 12. AUDIT FINDINGS
+### Audit Findings
 
 **Audit Date**: 2026-03-22
 **Result**: 17 MATCH, 2 PARTIAL (out of 19 features)
@@ -207,15 +226,25 @@ Verify that all 19 UX Hooks features are accurately documented in the feature ca
 
 ---
 
-## 13. OPEN QUESTIONS
+<!-- ANCHOR:questions -->
+### Acceptance Scenarios
+
+- **Given** a feature catalog entry in this phase, **when** the packet is reviewed, **then** the primary implementation or discrepancy is explicitly documented.
+- **Given** the listed source files for a feature, **when** maintainers spot-check them against the repo, **then** the packet either confirms them or records the drift.
+- **Given** a release-control follow-up session, **when** the packet is reopened, **then** the category verdict and summary statistics remain easy to find.
+- **Given** the companion packet documents, **when** a validator checks cross-references, **then** the phase remains reusable inside the recursive `007` validation run.
+
+## 10. OPEN QUESTIONS
 
 - F12: Should the catalog source-file list for Hooks README/export alignment be pruned to the primary files only, or is the broad list intentional?
 - F17: Is the retrieval-session-state feature intentionally enabled at runtime despite the module header marking it OFF, or should the header be updated to reflect the live default?
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
+
+<!-- /ANCHOR:questions -->

@@ -31,7 +31,6 @@ The `generate-context.js` pipeline contains two categories of correctness gap di
 
 ---
 
-<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -42,8 +41,7 @@ The `generate-context.js` pipeline contains two categories of correctness gap di
 | **Created** | 2026-03-21 |
 | **Branch** | `003-field-integrity-and-schema` |
 | **Phase** | 003 of 016-json-mode-hybrid-enrichment |
-| **Parent** | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/` |
-<!-- /ANCHOR:metadata -->
+| **Parent Spec** | `../spec.md` |
 
 ---
 

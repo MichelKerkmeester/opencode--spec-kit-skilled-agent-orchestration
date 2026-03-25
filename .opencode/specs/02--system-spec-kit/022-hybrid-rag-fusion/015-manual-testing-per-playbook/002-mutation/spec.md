@@ -101,6 +101,17 @@ All 9 scenarios below are P0. Each must receive a PASS, FAIL, or PARTIAL verdict
 | REQ-M01 | Evidence captured per scenario | Each executed scenario has a recorded observation or output excerpt |
 | REQ-M02 | Feature catalog cross-reference verified | Each scenario's catalog reference confirmed present and accurate |
 | REQ-M03 | Destructive scenario safety gates documented | EX-008 and EX-009 each have a named checkpoint confirmed before the destructive step runs |
+
+### P1 - Packet Governance Requirements
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-901 | 002-mutation packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 002-mutation |
+| REQ-902 | 002-mutation packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 002-mutation |
+| REQ-903 | 002-mutation packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 002-mutation |
+| REQ-904 | 002-mutation packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 002-mutation |
+| REQ-905 | 002-mutation packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 002-mutation |
+
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -113,6 +124,16 @@ All 9 scenarios below are P0. Each must receive a PASS, FAIL, or PARTIAL verdict
 - **SC-003**: Destructive tests EX-008 and EX-009 executed only in a scoped sandbox with checkpoints confirmed in advance
 - **SC-004**: tasks.md reflects final execution status for every scenario task
 - **SC-005**: implementation-summary.md completed with aggregate results
+### Acceptance Scenarios
+
+**Given** the `002-mutation` phase packet, **when** a reviewer opens the scenario mapping, **then** every scenario listed for the phase has a bounded execution target and a documented acceptance rule.
+
+**Given** the `002-mutation` phase packet, **when** execution evidence is reviewed, **then** verdict notes can be traced through `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+
+**Given** the `002-mutation` phase packet, **when** a reviewer checks neighboring navigation, **then** the packet points back to the parent and to the adjacent numbered phase where one exists.
+
+**Given** strict validation runs on the `002-mutation` phase packet, **when** the validator checks structure, **then** the packet satisfies Level 2 requirement and acceptance-scenario minimums.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

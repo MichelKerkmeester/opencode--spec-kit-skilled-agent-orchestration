@@ -26,8 +26,8 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 12 |
-| **Predecessor** | 011-template-compliance |
-| **Successor** | 013-spec-descriptions |
+| **Predecessor** | [011-template-compliance](../011-template-compliance/spec.md) |
+| **Successor** | [013-spec-descriptions](../013-spec-descriptions/spec.md) |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-13 |
 | **Sequence** | A0.6-A0.8, B9 |

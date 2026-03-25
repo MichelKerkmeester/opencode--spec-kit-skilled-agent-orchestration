@@ -14,7 +14,7 @@ contextType: "architecture"
 <!-- SPECKIT_LEVEL: 3 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
 
-## Packet Reference
+### Packet Reference
 
 | Field | Value |
 |-------|-------|
@@ -81,8 +81,7 @@ Evidence shows scripts consumers currently import runtime internals (`@spec-kit/
 - Add check preventing new `scripts -> lib/*` imports without allowlisted exception.
 <!-- /ANCHOR:adr-001 -->
 
-<!-- ANCHOR:adr-002 -->
-## ADR-002: Keep Compatibility Wrappers Transitional, Not Canonical
+### ADR-002: Keep Compatibility Wrappers Transitional, Not Canonical
 
 ### Metadata
 
@@ -138,10 +137,7 @@ Evidence shows scripts consumers currently import runtime internals (`@spec-kit/
 
 - Reframe wrapper README scope to compatibility-only.
 - Add canonical pointer links in runtime-side docs.
-<!-- /ANCHOR:adr-002 -->
-
-<!-- ANCHOR:adr-003 -->
-## ADR-003: Consolidate Duplicate Helper Logic Into Shared Modules
+### ADR-003: Consolidate Duplicate Helper Logic Into Shared Modules
 
 ### Metadata
 
@@ -201,10 +197,7 @@ Audit found duplicated concerns in **token estimation** (`estimateTokenCount` / 
 ### Review Addendum (2026-03-04)
 
 Triple ultra-think review (Claude Opus) noted that ADR-003 Five Checks item 1 only names `extractQualityScore`/`extractQualityFlags` but omits `estimateTokenCount` which was also consolidated into `shared/utils/token-estimate.ts`. The context section above has been updated to reflect both concerns. See T036 for Five Checks update.
-<!-- /ANCHOR:adr-003 -->
-
-<!-- ANCHOR:adr-004 -->
-## ADR-004: Enforcement Script Hardening Based on Cross-AI Review
+### ADR-004: Enforcement Script Hardening Based on Cross-AI Review
 
 ### Metadata
 
@@ -278,10 +271,7 @@ Additionally, allowlist governance gaps were identified: no TTL/expiry enforceme
 
 - Phase 4 tasks T021-T038 in `tasks.md`.
 - Verification via checklist items CHK-200 through CHK-225 in `checklist.md`.
-<!-- /ANCHOR:adr-004 -->
-
-<!-- ANCHOR:adr-005 -->
-## ADR-005: Handler-Utils Structural Consolidation
+### ADR-005: Handler-Utils Structural Consolidation
 
 ### Metadata
 
@@ -350,10 +340,7 @@ The implementation happened during audit remediation, but the architectural rati
 - Governance guardrail added via `T033` (documented `handler-utils.ts` growth policy).
 - Reinforced by `T039` and checklist verification `CHK-203` for `escapeLikePattern` correctness in the consolidated module.
 - Verified through checklist items `CHK-013` (cycle removed) and `CHK-223` (growth policy documented).
-<!-- /ANCHOR:adr-005 -->
-
-<!-- ANCHOR:adr-006 -->
-## ADR-006: Regex Evasion Risk Acceptance with Time-Bounded AST Hardening
+### ADR-006: Regex Evasion Risk Acceptance with Time-Bounded AST Hardening
 
 ### Metadata
 
@@ -446,10 +433,7 @@ These vectors cannot be caught by static analysis and are accepted as inherent l
 
 - Merged from former scratch/merged-005-architecture-audit/decision-record.md ADR-001.
 - Execution tracked via Phase 7 tasks `T074-T090` and checklist items `CHK-500` through `CHK-522`.
-<!-- /ANCHOR:adr-006 -->
-
-<!-- ANCHOR:adr-007 -->
-## ADR-007: Eliminate lib/cache/cognitive Symlink, Restore Canonical Paths
+### ADR-007: Eliminate lib/cache/cognitive Symlink, Restore Canonical Paths
 
 ### Metadata
 
@@ -507,10 +491,7 @@ These vectors cannot be caught by static analysis and are accepted as inherent l
 ### Implementation
 
 - Phase 15A tasks T130-T132 in `tasks.md`.
-<!-- /ANCHOR:adr-007 -->
-
-<!-- ANCHOR:adr-008 -->
-## ADR-008: Add Source-Dist Alignment CI Check
+### ADR-008: Add Source-Dist Alignment CI Check
 
 ### Metadata
 
@@ -570,4 +551,3 @@ ARCHITECTURE.md section 4 states dist/ policy, but no automated enforcement exis
 ### Implementation
 
 - Phase 15B tasks T133-T135 in `tasks.md`.
-<!-- /ANCHOR:adr-008 -->

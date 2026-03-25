@@ -1,7 +1,6 @@
 ---
 title: "Tasks: Sprint 3 — Query Intelligence"
 description: "Task breakdown for query complexity routing, RSF evaluation, and channel min-representation."
-# SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 trigger_phrases:
   - "sprint 3 tasks"
   - "query intelligence tasks"
@@ -34,7 +33,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: R15 Query Complexity Router
+## Phase 1: Setup
 
 ### R15 Subtask Decomposition
 
@@ -54,7 +53,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: R14/N1 Relative Score Fusion
+## Phase 2: Implementation
 
 - [x] T002a [P] Implement RSF single-pair variant — foundation implementation of Relative Score Fusion for a single pair of ranked lists, behind `SPECKIT_RSF_FUSION` flag [4-5h] — R14/N1
   - **Acceptance**: Single-pair RSF produces valid fused ranking; output clamped to [0,1]
@@ -69,7 +68,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: R2 Channel Min-Representation
+### Phase 3: Verification
 
 - [x] T003a [P] Implement post-fusion channel representation check — scan top-k results for channel diversity, identify under-represented channels that returned results [2-4h] {T001d} — R2
   - **Acceptance**: Representation check correctly identifies channels with <1 result in top-k
@@ -83,8 +82,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-3b -->
-## Phase 3b: Query Optimization
+#### Phase 3b: Query Optimization
 
 - [x] T006 Implement confidence-based result truncation — adaptive top-K cutoff based on score confidence gap between consecutive results [5-8h] {T001d} — R15 extension
   - Score gap threshold: if gap between rank N and N+1 exceeds 2x median gap, truncate at N
@@ -92,27 +90,22 @@ contextType: "implementation"
 - [x] T007 [P] Implement dynamic token budget allocation — adjust returned context size by query complexity tier [3-5h] {T001d} — R15 extension (FUT-7)
   - Simple: 1500 tokens | Moderate: 2500 tokens | Complex: 4000 tokens
   - Budget applies to total returned content, not per-result
-<!-- /ANCHOR:phase-3b -->
 
 ---
 
-<!-- ANCHOR:pageindex -->
-## PageIndex Tasks
+##### PageIndex Tasks
 
 - [ ] ~~T008~~ **DEFERRED** — PI-A2 search strategy degradation fallback chain deferred from Sprint 3. Will be re-evaluated after Sprint 3 using measured frequency of low-result (<3) and low-similarity (<0.4) query outcomes from Sprint 0-3 data. See UT review R1.
 - [x] T009 [P] [P2] Implement PI-B3 description-based spec folder discovery — generate 1-sentence descriptions from spec.md per folder, cache in descriptions.json, integrate lookup into memory_context orchestration layer before vector queries [4-8h] — PI-B3
-<!-- /ANCHOR:pageindex -->
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Shadow Comparison + Verification
+## Phase 3: Verification
 
 - [x] T004 Run shadow comparison: RSF vs RRF on 100+ queries, compute Kendall tau [included] {T002c}
 - [x] T-IP-S3 [P0] **Interaction pair test: R15+R2** — verify R15 minimum = 2 channels even for "simple" tier; R2 channel-minimum representation not violated by R15 routing [1-2h] {T001d, T003c} — CHK-037
 - [x] T-FS3 Feature flag sunset review at Sprint 3 exit — review all active feature flags; permanently enable flags with positive metrics, remove flags with negative metrics, extend measurement window (max 14 days) for inconclusive flags; ensure ≤6 simultaneous active flags [0.5-1h] {T004} — NFR-O01/O02/O03
 - [x] T005 [GATE] Sprint 3 exit gate + off-ramp evaluation [0h] {T001d, T002c, T003c, T004, T006, T007, T-FS3}
-<!-- /ANCHOR:phase-4 -->
 
 ---
 
@@ -130,10 +123,9 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:task-id-mapping -->
-## Task ID Mapping (Child → Parent)
+##### Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent ../tasks.md uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -148,7 +140,6 @@ Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global I
 | T-IP-S3 | *(not in parent)* | Interaction pair test R15+R2 (CHK-037) |
 | T-FS3 | T-FS3 | Feature flag sunset review (Sprint 3 exit) |
 | T005 | T025 | Sprint 3 exit gate + off-ramp evaluation |
-<!-- /ANCHOR:task-id-mapping -->
 
 ---
 
@@ -158,8 +149,8 @@ Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global I
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See ../000-feature-overview/spec.md
-- **Parent Plan**: See ../000-feature-overview/plan.md
+- **Parent Spec**: See ../spec.md
+- **Parent Plan**: See ../plan.md
 <!-- /ANCHOR:cross-refs -->
 
 ---

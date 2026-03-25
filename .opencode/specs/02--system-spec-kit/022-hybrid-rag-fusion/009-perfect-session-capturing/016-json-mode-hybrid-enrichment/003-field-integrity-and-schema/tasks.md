@@ -80,8 +80,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## Phase 4: P2 — Secondary Rules (validate-memory-quality.ts)
+### Phase 4: P2 - Secondary Rules (validate-memory-quality.ts)
 
 **Goal**: Add V12 path normalization and status/percentage contradiction V-rule.
 
@@ -90,12 +89,10 @@ contextType: "implementation"
 - [x] T024 Read existing V-rule warning patterns (non-blocking rules) for status/contradiction pattern (`validate-memory-quality.ts`)
 - [x] T025 Add status/percentage contradiction V-rule: if `status === "complete"` and `percentage` field is present and < 100, emit a V-rule warning (not error) (`validate-memory-quality.ts`)
 - [x] T026 Run `tsc --noEmit` — must exit 0
-<!-- /ANCHOR:phase-4 -->
 
 ---
 
-<!-- ANCHOR:phase-5 -->
-## Phase 5: Verification
+### Final Verification
 
 **Goal**: Confirm all 8 changes work correctly and no regressions in existing scenarios.
 
@@ -107,7 +104,6 @@ contextType: "implementation"
 - [x] T032 Manual test — content density: run with body `# Title\n\n`; confirm V-rule rejection
 - [x] T033 Regression test — replay 001-initial-enrichment test scenarios; confirm no behavioral change
 - [x] T034 [P] Update `implementation-summary.md` with actual changes, outcomes, and any deviations from plan (implementation-summary.md updated via agent)
-<!-- /ANCHOR:phase-5 -->
 
 ---
 

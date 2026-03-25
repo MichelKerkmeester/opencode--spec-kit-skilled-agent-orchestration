@@ -116,6 +116,16 @@ No P1 items defined for this phase; all 10 query-intelligence scenarios are mand
 - **SC-002**: `plan.md` defines how evidence, verdicts, and coverage for 033, 034, 035, 036, 037, 038, 161, 162, 163, and 173 will be collected.
 - **SC-003**: Reviewers can audit every Phase 012 scenario using this folder plus the linked playbook and review protocol.
 - **SC-004**: The phase packet contains no placeholder or template text and is ready for manual execution.
+### Acceptance Scenarios
+
+**Given** the `012-query-intelligence` phase packet, **when** a reviewer opens the scenario mapping, **then** every scenario listed for the phase has a bounded execution target and a documented acceptance rule.
+
+**Given** the `012-query-intelligence` phase packet, **when** execution evidence is reviewed, **then** verdict notes can be traced through `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+
+**Given** the `012-query-intelligence` phase packet, **when** a reviewer checks neighboring navigation, **then** the packet points back to the parent and to the adjacent numbered phase where one exists.
+
+**Given** strict validation runs on the `012-query-intelligence` phase packet, **when** the validator checks structure, **then** the packet satisfies Level 2 requirement and acceptance-scenario minimums.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

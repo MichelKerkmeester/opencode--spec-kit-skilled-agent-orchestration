@@ -203,8 +203,7 @@ Phase A (R6 Pipeline) ──[0 ordering diff GATE]──► Phase B (R9, R12, S2
 
 ---
 
-<!-- ANCHOR:pageindex-phases -->
-## PageIndex Tasks
+#### PageIndex Tasks
 
 ### PI-B1: Tree Thinning for Spec Folder Consolidation (10-14h)
 - [ ] Implement bottom-up merge logic in `generate-context.js` for files under 200 tokens (merge summary into parent)
@@ -225,7 +224,6 @@ Phase A (R6 Pipeline) ──[0 ordering diff GATE]──► Phase B (R9, R12, S2
 - [ ] Verify auto-fix log captures all before/after diffs (primary mitigation for silent corruption)
 - [ ] Verify exit code compatibility: exit 0 = pass, exit 1 = warnings, exit 2 = errors
 - **Effort**: 16-24h | **Risk**: Medium | **Mitigation**: Mandatory before/after diff logging for all auto-fixes
-<!-- /ANCHOR:pageindex-phases -->
 
 ---
 

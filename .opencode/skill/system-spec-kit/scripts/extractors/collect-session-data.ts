@@ -335,6 +335,16 @@ function generateLearningSummary(
    3. CONTINUE SESSION DATA
 ------------------------------------------------------------------*/
 
+function isCompletedNextStep(step: unknown): boolean {
+  const text = typeof step === 'string'
+    ? step
+    : (typeof step === 'object' && step !== null && 'text' in step)
+      ? String((step as Record<string, unknown>).text)
+      : JSON.stringify(step);
+
+  return /^\s*\[x\]/i.test(text) || /^\s*[✓✔]/i.test(text) || /^\s*~~/.test(text);
+}
+
 function determineSessionStatus(
   blockers: string,
   observations: Observation[],
@@ -359,10 +369,14 @@ function determineSessionStatus(
       || observations.some(obs => /^next\s*steps?\b/i.test(obs.title || ''));
     const isFileSource = collectedData._source === 'file';
 
-    // Correctness: unresolved nextSteps prevent completion claim
-    const hasUnresolvedNextSteps = (Array.isArray(collectedData.nextSteps) &&
-      collectedData.nextSteps.length > 0) ||
-      observations.some(obs => /^next\s*steps?\b/i.test(obs.title || ''));
+    const unresolvedNextSteps = Array.isArray(collectedData.nextSteps)
+      ? collectedData.nextSteps.filter(step => !isCompletedNextStep(step))
+      : [];
+    const hasUnresolvedNextSteps = unresolvedNextSteps.length > 0
+      || (
+        (!Array.isArray(collectedData.nextSteps) || collectedData.nextSteps.length === 0)
+        && observations.some(obs => /^next\s*steps?\b/i.test(obs.title || ''))
+      );
 
     // If explicit JSON data has summary + decisions + next steps, session is complete
     // But if there are pending nextSteps, downgrade to partial (IN_PROGRESS)
@@ -418,6 +432,14 @@ function determineSessionStatus(
     ? collectedData.nextSteps.map((step) => JSON.stringify(step)).join(' ')
     : '';
   const summaryText = collectedData?.sessionSummary || '';
+  const pendingObservationTexts = (
+    Array.isArray(collectedData?.nextSteps) && collectedData.nextSteps.length > 0
+      ? observations
+        .filter((obs) => !/^next\s*steps?\b/i.test(obs.title || ''))
+        .map((obs) => `${obs.title || ''} ${obs.narrative || ''}`.trim())
+        .filter(Boolean)
+      : observationTexts
+  );
   const combinedActivityCount = messageCount + toolCallCount + exchangeCount + observations.length;
   const highActivity = (
     toolCallCount >= 6 ||
@@ -425,7 +447,7 @@ function determineSessionStatus(
     (messageCount >= 5 && (toolCallCount >= 2 || exchangeCount >= 2 || observations.length >= 4)) ||
     (combinedActivityCount >= 10 && (toolCallCount > 0 || exchangeCount > 0))
   );
-  const hasPendingWorkIndicators = [summaryText, nextStepsText, ...observationTexts]
+  const hasPendingWorkIndicators = [summaryText, nextStepsText, ...pendingObservationTexts]
     .some((text) => pendingWorkKeywords.test(text));
   const hasNoBlockers = !blockers || blockers === 'None';
 

@@ -1,16 +1,23 @@
-# Deep Review Strategy: v5 Release Readiness + Feature Catalog Alignment
+# Deep Review Strategy: v6 Release Readiness + Feature Catalog Alignment
 
 ## Review Target
 `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` (full track)
 + `.opencode/skill/system-spec-kit/feature_catalog/` (all snippets, master catalog, simple terms)
++ `.opencode/skill/system-spec-kit/{mcp_server,scripts,shared}/` (runtime code)
 
 ## Review Target Type
 track
 
 ## Prior Review Context
-- **v4 verdict**: CONDITIONAL (2 P1, 4 P2)
-- **Open P1s**: T79 nextSteps completion detection bug, T37 root directory count drift
-- **Open P2s**: ADV-001 eval path containment, ADV-002 Hydra drill, ADV-003 dir count drift, ADV-004 embedding config
+- **v5 verdict**: CONDITIONAL (0 P0, 10 P1, 11 P2)
+- **Key open items**:
+  - Root/epic/012 inventory count three-way mismatch (397 vs 398 vs 399)
+  - Epic child-count mismatch (11 claimed vs 12 live)
+  - 007 child packet validator debt (91 errors, 72 warnings recursive)
+  - Score normalizer NaN corruption in fusion-lab.js:49-55
+  - Snippet vs master catalog drift in categories 11-21
+  - Shadow fusion flag default-ON vs documented default-OFF
+  - 012 certification claim provisional while status says pending re-verification
 
 ## Dimensions
 1. **correctness** (priority 1) — Logic, state flow, edge cases, error handling
@@ -18,37 +25,31 @@ track
 3. **traceability** (priority 3) — Spec/checklist alignment, cross-reference integrity, evidence coverage
 4. **maintainability** (priority 4) — Patterns, documentation quality, safe follow-on change clarity
 
-## Wave Structure (5 waves x 4 agents = 20 iterations)
+## Wave Structure (2 waves x 10 agents = 20 iterations)
 
-### Wave 1: Correctness + P1 Verification (iterations 001-004)
-- **001** (codex): MCP server code correctness — mcp_server/*.js
-- **002** (codex): Scripts code correctness — scripts/dist/**/*.js
-- **003** (copilot): Shared modules correctness — shared/**/*.js
-- **004** (copilot): P1-001 (T79 nextSteps) + P1-002 (T37 count) verification
+### Wave 1: Correctness + Security + Feature Catalog Code (iterations 001-010)
+- **001** (copilot GPT-5.4): MCP server correctness — core handlers (memory_save, memory_search, memory_context, memory_update, memory_delete)
+- **002** (copilot GPT-5.4): MCP server correctness — pipeline/retrieval (search pipeline, fusion, scoring, graph channels)
+- **003** (copilot GPT-5.4): Scripts correctness — memory scripts, validators, generate-context, extractors
+- **004** (copilot GPT-5.4): Shared modules correctness — algorithms (fusion-lab, rrf-fusion, adaptive-fusion), scoring, normalization
+- **005** (copilot GPT-5.4): Security audit — input validation, path traversal, data exposure, permissions across all code
+- **006** (codex GPT-5.3): Feature catalog categories 01-07 vs live code (correctness + traceability)
+- **007** (codex GPT-5.3): Feature catalog categories 08-14 vs live code (correctness + traceability)
+- **008** (codex GPT-5.3): Feature catalog categories 15-21 vs live code (correctness + traceability)
+- **009** (codex GPT-5.3): feature_catalog_in_simple_terms.md vs feature_catalog.md alignment (section-by-section)
+- **010** (codex GPT-5.3): Snippet files categories 01-10 internal consistency + code cross-reference
 
-### Wave 2: Security + Traceability (iterations 005-008)
-- **005** (codex): Full security audit — all code paths
-- **006** (codex): spec_code protocol — spec claims vs implementation
-- **007** (copilot): checklist_evidence protocol — [x] items vs cited evidence
-- **008** (copilot): feature_catalog_code protocol — catalog claims vs code
-
-### Wave 3: Feature Catalog Deep Verification (iterations 009-012)
-- **009** (codex): feature_catalog.md categories 01-10 vs live code
-- **010** (codex): feature_catalog.md categories 11-21 vs live code
-- **011** (copilot): Snippet files 01-10 vs master catalog + code
-- **012** (copilot): Snippet files 11-21 vs master catalog + code
-
-### Wave 4: Simple Terms + Maintainability (iterations 013-016)
-- **013** (codex): feature_catalog_in_simple_terms.md vs feature_catalog.md alignment
-- **014** (codex): Code maintainability patterns review
-- **015** (copilot): Playbook capability + sprint status verification
-- **016** (copilot): Spec tree structure + directory count verification
-
-### Wave 5: Final Sweep + Verdict (iterations 017-020)
-- **017** (codex): Adversarial recheck of all prior findings
-- **018** (codex): npm test + lint + typecheck regression
-- **019** (copilot): Cross-reference comprehensive sweep
-- **020** (copilot): Release readiness verdict with full evidence
+### Wave 2: Traceability + Maintainability + Verdict (iterations 011-020)
+- **011** (copilot GPT-5.4): Snippet files categories 11-21 vs master catalog + code cross-reference
+- **012** (copilot GPT-5.4): spec_code traceability — spec.md claims vs implementation across 022 tree
+- **013** (copilot GPT-5.4): checklist_evidence traceability — [x] items vs cited evidence in 012 packet
+- **014** (copilot GPT-5.4): Spec tree inventory + directory count verification (root/epic/012 alignment)
+- **015** (copilot GPT-5.4): 007 child packet validator compliance + template migration assessment
+- **016** (codex GPT-5.3): Code maintainability — patterns, dead code, tech debt in mcp_server + scripts
+- **017** (codex GPT-5.3): npm test + TypeScript check + lint regression verification
+- **018** (codex GPT-5.3): Cross-reference sweep — broken links, orphaned refs, stale paths
+- **019** (codex GPT-5.3): Adversarial recheck — challenge all findings, test false positive rate
+- **020** (codex GPT-5.3): Release readiness verdict — comprehensive evidence-backed final assessment
 
 ## Convergence Parameters
 - maxIterations: 20
@@ -60,43 +61,32 @@ track
 |-----------|--------|-----------|----------|
 | correctness | PENDING | — | — |
 | security | PENDING | — | — |
-| traceability | IN PROGRESS | 021 | Structural validator blockers confirmed across `007-evaluation` through `012-query-intelligence` |
-| maintainability | IN PROGRESS | 021 | Template migration debt confirmed as follow-on maintainability risk |
+| traceability | PENDING | — | — |
+| maintainability | PENDING | — | — |
 
 ## Running Findings
 | ID | Severity | Title | Dimension | Status |
 |----|----------|-------|-----------|--------|
-| P1-021-001 | P1 | Level 2 specs vs Level 3 plan/tasks/checklist split in `007` slice | traceability | active |
-| P1-021-002 | P1 | Missing required anchors across `007` child docs | traceability | active |
-| P1-021-003 | P1 | Stale implementation-summary Spec Folder metadata in `007` child docs | traceability | active |
+| (none yet) | — | — | — | — |
 
 ## Known Context
-Prior v4 review verified 56/58 v3 findings remediated. Two P1 items remain open:
-1. T79: `determineSessionStatus()` asymmetric nextSteps detection in collect-session-data.js:270-283
-2. T37: Root spec claims 397 dirs, live count showed 398
+Prior v5 review ran 21 iterations (20 + 1 follow-up) and returned CONDITIONAL verdict with 0 P0, 10 P1, 11 P2 active findings. Key unresolved areas:
+1. Inventory count mismatches between root/epic/012 packets
+2. 007 child packet family validator debt (91 errors, 72 warnings)
+3. Score normalizer NaN risk in fusion-lab.js
+4. Feature catalog snippet drift in categories 11-21
+5. 012 packet internal truth/integrity gaps (plan.md, research.md stale)
 
-Feature catalog alignment was marked PASS in v4 but with limited depth. This v5 review performs comprehensive snippet-by-snippet verification.
-
-## Follow-up Iterations
-- **021**: Packet-local validator/truth sweep for `012-pre-release-fixes-alignment-preparation` found three active P1s concentrated in `plan.md` and `research.md`, with `review-report.md` and `checklist.md` now materially aligned to the narrowed blocker set.
-
-## What Worked
-- **021**: Fresh packet-level validator rerun plus direct line audit isolated the still-active integrity failures without re-reporting already-reconciled checklist/report issues.
-
-## What Failed
-- **021**: Relying on the original v5 synthesis alone was misleading because the live packet changed after that synthesis completed.
-
-## Next Focus
-- Repair `plan.md` and `research.md` so the 012 packet itself reaches warning-only validation, then reassess whether the recursive `007` child-packet debt is the sole remaining release blocker.
+This v6 review aims to determine current release readiness after any fixes applied since v5.
 
 ## What Worked
-- Iteration 021: slicing recursive validator output to `007-evaluation` through `012-query-intelligence` exposed the repeated child-packet blocker pattern quickly.
+(none yet)
 
 ## What Failed
-- Iteration 021: umbrella-only `007` review is no longer sufficient once phase links are fixed; the remaining release debt lives in child packet templates.
+(none yet)
 
 ## Exhausted Approaches
-- BLOCKED: reviewing only umbrella metadata or phase-link contracts for `007`; that path no longer changes the release decision without child packet normalization.
+(none yet)
 
 ## Next Focus
-- Confirm whether `001`-`006` and `013`-`022` show the same Level/anchor/template migration debt, then decide whether batch normalization or explicit historical downgrade is the smallest honest release path.
+Wave 1: Correctness + Security + Feature Catalog Code verification (iterations 001-010)

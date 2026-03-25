@@ -474,7 +474,7 @@ Phase 1 (Hardening) ────────────────────
 
 ---
 
-## L3: CRITICAL PATH
+### Critical Path
 
 1. **P0-1: Zod schemas** — 2-3 days — CRITICAL (blocks P0-3 schema reuse)
 2. **P0-2: Response envelopes** — 4-5 days — CRITICAL (blocks P1-4 format)
@@ -489,7 +489,7 @@ Phase 1 (Hardening) ────────────────────
 
 ---
 
-## L3: MILESTONES
+### Milestones
 
 | Milestone | Description | Success Criteria | Target |
 |-----------|-------------|------------------|--------|
@@ -500,7 +500,7 @@ Phase 1 (Hardening) ────────────────────
 
 ---
 
-## L3+: AI EXECUTION FRAMEWORK
+### AI Execution Framework
 
 ### Tier 1: Sequential Foundation
 **Files**: tool-schemas.ts (Zod schemas)
@@ -523,7 +523,7 @@ Phase 1 (Hardening) ────────────────────
 
 ---
 
-## L3+: WORKSTREAM COORDINATION
+### Workstream Coordination
 
 ### Workstream Definition
 
@@ -540,7 +540,7 @@ Phase 1 (Hardening) ────────────────────
 - lib/ops/*.ts owned by W-C
 - lib/search/local-reranker.ts owned by W-D
 
-## AI Execution Protocol
+##### AI Execution Protocol
 
 ### Pre-Task Checklist
 - Confirm scope lock for this phase folder before edits.

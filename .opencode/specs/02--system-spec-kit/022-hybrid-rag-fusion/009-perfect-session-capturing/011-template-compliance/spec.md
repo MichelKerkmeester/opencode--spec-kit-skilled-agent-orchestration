@@ -31,8 +31,8 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 11 |
-| **Predecessor** | 010-integration-testing |
-| **Successor** | 012-auto-detection-fixes |
+| **Predecessor** | [010-integration-testing](../010-integration-testing/spec.md) |
+| **Successor** | [012-auto-detection-fixes](../012-auto-detection-fixes/spec.md) |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-12 follow-up |
 | **Sequence** | 012 |

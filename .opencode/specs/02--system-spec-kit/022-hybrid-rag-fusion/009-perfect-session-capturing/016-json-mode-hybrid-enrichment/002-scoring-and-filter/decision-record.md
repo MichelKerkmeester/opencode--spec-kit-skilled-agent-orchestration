@@ -119,8 +119,7 @@ The extractors quality scorer (extractors/quality-scorer.ts:113-205) applies bon
 
 ---
 
-<!-- ANCHOR:adr-002 -->
-## ADR-002: Extend filterContamination to All Uncleaned Text Fields
+### ADR-002: Extend filterContamination to All Uncleaned Text Fields
 
 ### Metadata
 
@@ -132,7 +131,6 @@ The extractors quality scorer (extractors/quality-scorer.ts:113-205) applies bon
 
 ---
 
-<!-- ANCHOR:adr-002-context -->
 ### Context
 
 The `filterContamination` function is called in workflow.ts at lines 548-602 but only against observation strings and the SUMMARY block. Round 2 research (Domain E, finding #1) identified four text field locations that bypass cleaning entirely:
@@ -149,21 +147,17 @@ Additionally, the contamination-filter.ts pattern list covers 29 actual patterns
 - filterContamination is a pure string-transformation function; extending its call sites does not require changing its signature
 - Array fields (recentContext, manualDecisions) require looped application
 - undefined-safety is required for optional fields (_JSON_SESSION_SUMMARY may be absent)
-<!-- /ANCHOR:adr-002-context -->
 
 ---
 
-<!-- ANCHOR:adr-002-decision -->
 ### Decision
 
 **We chose**: Extend filterContamination call sites in workflow.ts to cover all four uncleaned field locations, and add the 7 missing pattern categories to contamination-filter.ts.
 
 **How it works**: Each new call site applies the existing filterContamination function to the field's string value(s) before they reach template assembly. The function signature is unchanged. Pattern additions follow the existing array-of-strings structure in contamination-filter.ts.
-<!-- /ANCHOR:adr-002-decision -->
 
 ---
 
-<!-- ANCHOR:adr-002-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -173,11 +167,9 @@ Additionally, the contamination-filter.ts pattern list covers 29 actual patterns
 | Add a pre-assembly cleaning pass that covers all fields | Comprehensive | Significant refactoring; new component with its own bugs | 5/10 |
 
 **Why this one**: Targeted call-site extension is the safest, most reviewable change. Each field gets one explicit call, making the coverage auditable by reading workflow.ts.
-<!-- /ANCHOR:adr-002-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-002-consequences -->
 ### Consequences
 
 **What improves**:
@@ -194,11 +186,9 @@ Additionally, the contamination-filter.ts pattern list covers 29 actual patterns
 |------|--------|------------|
 | Safety disclaimer pattern strips "I cannot reproduce the bug" | High (data loss) | Test pattern against representative phrases; use anchored start-of-sentence matching |
 | Hedging pattern strips "it seems the build is broken" (valid diagnosis) | Medium | Use precise pattern matching, not substring match for short words |
-<!-- /ANCHOR:adr-002-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-002-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -210,11 +200,9 @@ Additionally, the contamination-filter.ts pattern list covers 29 actual patterns
 | 5 | **Open Horizons?** | PASS | Future fields can be added by extending call sites using the same pattern |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-002-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-002-impl -->
 ### Implementation
 
 **What changes**:
@@ -222,13 +210,10 @@ Additionally, the contamination-filter.ts pattern list covers 29 actual patterns
 - extractors/contamination-filter.ts: 7 new pattern category additions to the existing array
 
 **How to roll back**: Revert the two files; contamination cleaning returns to observations + SUMMARY only
-<!-- /ANCHOR:adr-002-impl -->
-<!-- /ANCHOR:adr-002 -->
 
 ---
 
-<!-- ANCHOR:adr-003 -->
-## ADR-003: Post-Save Review Findings Feed Back into quality_score
+### ADR-003: Post-Save Review Findings Feed Back into quality_score
 
 ### Metadata
 
@@ -240,7 +225,6 @@ Additionally, the contamination-filter.ts pattern list covers 29 actual patterns
 
 ---
 
-<!-- ANCHOR:adr-003-context -->
 ### Context
 
 The post-save review module (post-save-review.ts) runs after a memory is saved and compares the saved frontmatter against the original JSON payload. It produces findings at HIGH, MEDIUM, and LOW severity. Currently these findings are surfaced as console output only — they have no effect on the numeric quality_score written to the memory frontmatter. This means a save that produces a HIGH post-save finding (e.g., importance_tier was silently overridden) retains the same quality_score as a clean save. Research Round 2, Domain C, finding #20 identified this as a P2 improvement.
@@ -250,21 +234,17 @@ The post-save review module (post-save-review.ts) runs after a memory is saved a
 - post-save-review.ts runs after the memory file is written; a score adjustment would require either re-writing the file or storing the delta separately
 - The adjustment must not re-trigger the full save pipeline
 - Penalty values must be defined as named constants, not inline magic numbers
-<!-- /ANCHOR:adr-003-context -->
 
 ---
 
-<!-- ANCHOR:adr-003-decision -->
 ### Decision
 
 **We chose**: Apply a fixed penalty to quality_score based on the highest-severity post-save finding: HIGH = -0.10, MEDIUM = -0.05, LOW = no penalty. The adjusted score is written back to the frontmatter of the already-saved file as a lightweight patch operation.
 
 **How it works**: post-save-review.ts collects findings, computes the maximum severity, applies the corresponding penalty to the quality_score extracted from the saved frontmatter, and patches the frontmatter in-place. The patch is a single YAML key replacement — no full re-parse or re-write.
-<!-- /ANCHOR:adr-003-decision -->
 
 ---
 
-<!-- ANCHOR:adr-003-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -274,11 +254,9 @@ The post-save review module (post-save-review.ts) runs after a memory is saved a
 | No score change; only console output | Zero risk of file corruption | Post-save review findings remain invisible in the stored record | 2/10 |
 
 **Why this one**: Fixed penalty per severity level is simple, immediately understandable when reading a memory file, and testable with a single case per severity level. Scaling by count adds complexity without clear benefit for the typical case.
-<!-- /ANCHOR:adr-003-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-003-consequences -->
 ### Consequences
 
 **What improves**:
@@ -294,11 +272,9 @@ The post-save review module (post-save-review.ts) runs after a memory is saved a
 |------|--------|------------|
 | Frontmatter patch corrupts the YAML | High | Unit test the patch operation; include a parse-verify step after patching |
 | Penalty values need recalibration after production use | Low | Constants are named and documented; easy to adjust |
-<!-- /ANCHOR:adr-003-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-003-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -310,11 +286,9 @@ The post-save review module (post-save-review.ts) runs after a memory is saved a
 | 5 | **Open Horizons?** | PASS | Penalty constants are named; easy to evolve the model |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-003-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-003-impl -->
 ### Implementation
 
 **What changes**:
@@ -322,8 +296,6 @@ The post-save review module (post-save-review.ts) runs after a memory is saved a
 - extractors/quality-scorer.ts or a new utility: expose named penalty constants (HIGH_FINDING_PENALTY = -0.10, MEDIUM_FINDING_PENALTY = -0.05)
 
 **How to roll back**: Remove the patch call from post-save-review.ts; quality_score returns to pre-review value as before
-<!-- /ANCHOR:adr-003-impl -->
-<!-- /ANCHOR:adr-003 -->
 
 ---
 

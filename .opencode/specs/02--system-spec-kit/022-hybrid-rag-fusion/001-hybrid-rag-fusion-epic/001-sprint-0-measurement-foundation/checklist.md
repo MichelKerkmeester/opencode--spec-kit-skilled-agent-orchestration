@@ -1,7 +1,6 @@
 ---
 title: "Verification Checklist: Sprint 0 — Measurement Foundation"
 description: "Verification checklist for Sprint 0: graph ID fix, chunk collapse, eval infrastructure, BM25 baseline"
-# SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
 trigger_phrases:
   - "sprint 0 checklist"
   - "measurement foundation checklist"
@@ -99,13 +98,13 @@ contextType: "implementation"
 
 ---
 
-## PageIndex Integration
+#### PageIndex Integration
 
 - [x] PI-A5 [P1]: DEFERRED TO SPRINT 1 per Ultra-Think Review REC-09. Verify-Fix-Verify quality gate — not in Sprint 0 scope. (verified: deferral confirmed, not in Sprint 0 scope) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 
 ---
 
-## Sprint 0 Exit Gate
+#### Sprint ### Sprint 0 Exit Gate
 
 - [x] CHK-S0-060 [P0] Graph hit rate > 0% — verified via eval telemetry or manual query inspection (verified: numeric IDs in graph-search-fn.ts fix resolves 0% hit rate — Gate 1 PASS) [EVIDENCE: graph-search-fn.ts:157-160,:221-224 — Number() cast on source_id/target_id produces integer IDs matching memory_index.id column; comment at :147-149 documents the fix rationale]
 - [x] CHK-S0-061 [P0] No duplicate chunk rows in default search mode (`includeContent=false`) (verified: T002 unconditional dedup — Gate 2 PASS) [EVIDENCE: graph-search-fn.ts:100-111 dedup Map keyed by memory id runs on all code paths; memory-search.ts:559,:905,:935 session dedup applied in both live and cached response paths regardless of includeContent]
@@ -144,10 +143,10 @@ Mark [x] with evidence when verified
 P0 must complete, P1 need approval to defer
 -->
 
-## P0
-- [x] [P0] No additional phase-specific blockers recorded for this checklist normalization pass. *N/A — normalization pass artifact*
+### Normalization Pass P0
+- [x] [P0] No additional phase-specific blockers recorded for this checklist normalization pass. [EVIDENCE: checklist normalization pass note retained during template cleanup]
 
-## P1
-- [x] [P1] No additional required checks beyond documented checklist items for this phase. *N/A — normalization pass artifact*
+### Normalization Pass P1
+- [x] [P1] No additional required checks beyond documented checklist items for this phase. [EVIDENCE: checklist normalization pass note retained during template cleanup]
 
 ---

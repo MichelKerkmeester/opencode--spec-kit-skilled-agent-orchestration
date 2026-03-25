@@ -1,7 +1,6 @@
 ---
 title: "Feature Specification: Sprint 8 - Deferred Features"
 description: "Execute deferred items from prior sprints with strict scope, safety, and validation gates."
-# SPECKIT_TEMPLATE_SOURCE: spec-core + phase-child-header | v2.2
 trigger_phrases:
   - "sprint 8"
   - "deferred features"
@@ -119,11 +118,11 @@ Define a contained implementation phase for deferred work, with explicit depende
 
 ---
 
-## Phase Navigation
+##### Phase Navigation
 
 - Successor: `012-command-alignment`
 
-## Acceptance Scenarios (Validator Coverage)
+##### Acceptance Scenarios (Validator Coverage)
 1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 

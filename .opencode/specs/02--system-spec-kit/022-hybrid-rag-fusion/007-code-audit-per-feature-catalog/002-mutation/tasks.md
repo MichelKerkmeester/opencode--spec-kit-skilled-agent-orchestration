@@ -9,11 +9,12 @@ contextType: "general"
 ---
 # Tasks: Code Audit — Mutation
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -25,16 +26,22 @@ contextType: "general"
 
 **Task Format**: `T### [P?] Description`
 
+<!-- /ANCHOR:notation -->
+
 ---
 
-## Phase 1: Preparation
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
 - [x] T000 Verify feature catalog currency for Mutation
 - [x] T000a [P] Identify source code root paths
 
+<!-- /ANCHOR:phase-1 -->
+
 ---
 
-## Phase 2: Feature Audit
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
 - [x] T001 [P] Audit: Memory indexing (memory_save) — PARTIAL: 10+ source files missing from catalog list; list over-inclusive
 - [x] T002 [P] Audit: Memory metadata update (memory_update) — MATCH: only history.ts missing from source list
@@ -47,26 +54,37 @@ contextType: "general"
 - [x] T009 [P] Audit: Correction tracking with undo — MATCH: no discrepancies
 - [x] T010 [P] Audit: Per-memory history log — MATCH: minor wording ambiguity only
 
+<!-- /ANCHOR:phase-2 -->
+
 ---
 
-## Phase 3: Synthesis
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
 - [x] T900 Cross-reference findings across features — 8 MATCH, 2 PARTIAL; history.ts absent from all features
 - [x] T901 Compile audit summary report
 - [x] T902 Update implementation-summary.md
 
+<!-- /ANCHOR:phase-3 -->
+
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All feature audit tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
 - [x] Summary report completed
 
+<!-- /ANCHOR:completion -->
+
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
+
+<!-- /ANCHOR:cross-refs -->

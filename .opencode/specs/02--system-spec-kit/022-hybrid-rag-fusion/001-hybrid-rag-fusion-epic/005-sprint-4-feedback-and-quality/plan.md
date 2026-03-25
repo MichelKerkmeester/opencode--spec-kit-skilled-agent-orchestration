@@ -1,7 +1,6 @@
 ---
 title: "Implementation Plan: Sprint 4 — Feedback and Quality"
 description: "MPAB chunk aggregation, learned relevance feedback, and shadow scoring infrastructure implementation plan."
-# SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2
 trigger_phrases:
   - "sprint 4 plan"
   - "feedback and quality plan"
@@ -256,11 +255,9 @@ Phase 5 (TM-06 Reconsolidation) ─────┘
 
 ---
 
-<!-- ANCHOR:pageindex-phases -->
-## PageIndex Tasks
+#### PageIndex Tasks
 
 > **PI-A4 deferred to Sprint 5** — Constitutional Memory as Expert Knowledge Injection (8-12h) has no Sprint 4 dependency and is retrieval-pipeline work that fits Sprint 5's theme (pipeline refactor + query expansion). See Sprint 5 spec ../015-pipeline-refactor/spec.md for updated placement. Rationale: ultra-think review REC-07.
-<!-- /ANCHOR:pageindex-phases -->
 
 ---
 

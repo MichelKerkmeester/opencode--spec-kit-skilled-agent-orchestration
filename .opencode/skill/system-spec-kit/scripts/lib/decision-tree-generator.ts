@@ -8,54 +8,16 @@
 // ───────────────────────────────────────────────────────────────
 // 2. IMPORTS
 // ───────────────────────────────────────────────────────────────
+import {
+  padText,
+  formatDecisionHeader,
+  formatOptionBox,
+  formatChosenBox,
+  formatCaveatsBox,
+  formatFollowUpBox,
+} from './ascii-boxes';
 import type { OptionRecord, EvidenceRecord, CaveatRecord, FollowUpRecord } from './ascii-boxes';
 import type { DecisionRecord } from '../types/session-types';
-import { structuredLog } from '../utils/logger';
-
-// NOTE: require() is intentionally kept here instead of dynamic import().
-// Reason: generateDecisionTree() is a synchronous function called synchronously by
-// External callers (decision-extractor.ts, diagram-extractor.ts, and tests).
-// Converting to dynamic import() would require making generateDecisionTree() async,
-// Which would break all callers that expect a synchronous string return value.
-// CommonJS does not support top-level await, so eager async initialization is not viable either.
-
-let padText: (text: string, width: number, align?: string) => string;
-let formatDecisionHeader: (
-  title: string,
-  context: string,
-  confidence: number,
-  timestamp: string,
-  choiceConfidence?: number,
-  rationaleConfidence?: number
-) => string;
-let formatOptionBox: (option: OptionRecord, isChosen: boolean, maxWidth?: number) => string;
-let formatChosenBox: (chosen: string, rationale: string, evidence: Array<EvidenceRecord | string>) => string;
-let formatCaveatsBox: (caveats: Array<CaveatRecord | string>) => string;
-let formatFollowUpBox: (followup: Array<FollowUpRecord | string>) => string;
-let asciiBoxesAvailable: boolean = false;
-
-try {
-  const asciiBoxes = require('./ascii-boxes');
-  ({
-    padText,
-    formatDecisionHeader,
-    formatOptionBox,
-    formatChosenBox,
-    formatCaveatsBox,
-    formatFollowUpBox
-  } = asciiBoxes);
-  asciiBoxesAvailable = true;
-} catch (err: unknown) {
-  const errMsg = err instanceof Error ? err.message : String(err);
-  structuredLog('warn', 'ascii-boxes library not available, using fallback formatting', { error: errMsg });
-  // Provide minimal fallback implementations
-  padText = (text: string, length: number): string => String(text || '').substring(0, length).padEnd(length);
-  formatDecisionHeader = (title: string): string => `[DECISION: ${title}]`;
-  formatOptionBox = (opt: OptionRecord, isChosen: boolean): string => `[${isChosen ? '\u2713' : ' '} ${opt?.LABEL || 'Option'}]`;
-  formatChosenBox = (chosen: string): string => `[CHOSEN: ${chosen}]`;
-  formatCaveatsBox = (caveats: Array<CaveatRecord | string>): string => `[CAVEATS: ${caveats?.length || 0}]`;
-  formatFollowUpBox = (followup: Array<FollowUpRecord | string>): string => `[FOLLOWUP: ${followup?.length || 0}]`;
-}
 
 // ───────────────────────────────────────────────────────────────
 // 3. TYPES

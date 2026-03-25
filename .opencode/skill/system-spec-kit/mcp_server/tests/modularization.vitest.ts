@@ -18,7 +18,7 @@ const MAX_MODULE_LINES = 320; // 300 target with 20-line tolerance
 // 2026-03-03: Thresholds audited — memory-crud.js tightened from 760→40 after decomposition into sub-modules.
 // TODO: Extract quality gate, reconsolidation, chunked-indexing from memory-save (2,553 LOC source).
 const EXTENDED_LIMITS: Record<string, number> = {
-  'context-server.js': 1035,        // actual: 1023 — Main entry point wiring for tools, hooks, startup lifecycle, Sprint 019 remediation hooks, T02 networkError handling
+  'context-server.js': 1065,        // actual: 1050 — Main entry point wiring for tools, hooks, startup lifecycle, startup root discovery, and remediation hooks
   'tool-schemas.js': 750,           // actual: 728 — Expanded MCP schema set + Sprint 019: Zod schema integration, ingest tools
   'formatters/search-results.js': 535, // actual: 531 — Search result formatting + Sprint 019/020 trace and session-transition envelope support
   'handlers/memory-search.js': 1450, // actual: 762 — Complex search logic with multiple strategies + Pipeline V2 integration
@@ -26,7 +26,7 @@ const EXTENDED_LIMITS: Record<string, number> = {
   'handlers/memory-crud.js': 40,    // actual: 32 — Re-export barrel (decomposed into memory-crud-{health,update,delete,stats,list,utils,types}.js)
   'handlers/memory-save.js': 2200,  // actual: 1210 — Save logic with parsing, validation, indexing + quality gate + reconsolidation
   'handlers/memory-index.js': 700,  // actual: 421 — Index operations with scanning + spec document discovery (Spec 126)
-  'handlers/checkpoints.js': 400,   // actual: 359 — Checkpoint operations
+  'handlers/checkpoints.js': 520,   // actual: 506 — Checkpoint operations plus scoped metadata guards and restore/delete safety checks
 };
 
 function countLines(filePath: string): number {

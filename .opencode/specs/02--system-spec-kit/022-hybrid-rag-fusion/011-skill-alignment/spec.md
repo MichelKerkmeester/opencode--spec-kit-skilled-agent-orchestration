@@ -86,6 +86,14 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 
 ---
 
+## PHASE DOCUMENTATION MAP
+
+| Phase | Folder | Focus | Status |
+|-------|--------|-------|--------|
+| 001 | `001-post-session-capturing-alignment/` | Post-session-capturing documentation alignment for `system-spec-kit` surfaces | Complete |
+
+---
+
 <!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
@@ -130,9 +138,13 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 
 ### Acceptance Scenarios
 
-- **AS-001**: A reviewer can read any one of the five canonical docs and get the same story about current state and closeout scope.
-- **AS-002**: A future implementer can identify the live memory-surface source of truth without relying on stale command counts.
-- **AS-003**: A future implementer can distinguish already-landed documentation work from the still-open backlog without re-reading the earlier audit scratch files.
+**Given** a reviewer opens any canonical 011 doc, **when** they read the current-state framing, **then** they get the same documentation-only closeout story.
+
+**Given** a future maintainer needs the live memory-surface source of truth, **when** they read this packet, **then** they are directed to `mcp_server/tool-schemas.ts` and `.opencode/command/memory/`.
+
+**Given** a reviewer checks for stale command-surface framing, **when** they inspect the packet, **then** they do not see the retired standalone retrieval-command model presented as current state.
+
+**Given** future work resumes, **when** a maintainer reads the packet, **then** they can distinguish already-landed documentation work from any genuinely new drift.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -205,7 +217,7 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 
 ---
 
-## Phase Navigation
+### Phase Navigation
 
 | Field | Value |
 |-------|-------|

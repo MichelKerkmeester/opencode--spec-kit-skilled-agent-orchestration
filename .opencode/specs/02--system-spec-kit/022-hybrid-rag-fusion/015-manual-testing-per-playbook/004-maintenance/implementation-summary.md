@@ -28,8 +28,7 @@ contextType: "general"
 
 ---
 
-<!-- ANCHOR:verdict-table -->
-## Verdict Table
+### Verdict Table
 
 | Test ID | Scenario Name | Verdict | Pass Rate |
 |---------|---------------|---------|-----------|
@@ -37,7 +36,6 @@ contextType: "general"
 | EX-035 | Startup runtime compatibility guards | **PASS** | 14/14 tests |
 
 **Overall Phase Pass Rate**: 2/2 scenarios PASS (100%)
-<!-- /ANCHOR:verdict-table -->
 
 ---
 

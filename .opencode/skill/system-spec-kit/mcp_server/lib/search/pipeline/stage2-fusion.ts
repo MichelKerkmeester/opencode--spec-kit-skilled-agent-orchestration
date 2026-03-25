@@ -818,12 +818,12 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
   // Inject community co-members into result set before graph signals
   // So injected rows also receive momentum/depth adjustments.
   if (isCommunityDetectionEnabled() && isGraphUnifiedEnabled()) {
+    const beforeCommunityIds = new Set(results.map((row) => row.id));
     try {
       const db = requireDb();
-      const beforeIds = new Set(results.map((row) => row.id));
       const boosted = applyCommunityBoost(results, db);
       if (boosted.length > results.length) {
-        results = (boosted as PipelineRow[]).map((row) => beforeIds.has(row.id)
+        results = (boosted as PipelineRow[]).map((row) => beforeCommunityIds.has(row.id)
           ? row
           : withGraphContribution(row, 'communityDelta', 0, 'community', true));
         (metadata as Record<string, unknown>).communityBoostApplied = true;
@@ -831,6 +831,33 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : String(err);
       console.warn(`[stage2-fusion] community boost failed: ${message}`);
+    }
+
+    const injectedIds = results
+      .filter((row) => !beforeCommunityIds.has(row.id) && typeof row.id === 'number')
+      .map((row) => row.id);
+    if (injectedIds.length > 0) {
+      try {
+        const db = requireDb();
+        const placeholders = injectedIds.map(() => '?').join(',');
+        const stateRows = db.prepare(
+          `SELECT id, memory_state FROM memory_index WHERE id IN (${placeholders})`
+        ).all(...injectedIds) as Array<{ id: number; memory_state?: string }>;
+        const stateMap = new Map(stateRows.map((row) => [row.id, row.memory_state]));
+        const injectedIdSet = new Set(injectedIds);
+        for (const row of results) {
+          const rowId = typeof row.id === 'number' ? row.id : null;
+          if (rowId === null || !injectedIdSet.has(rowId)) {
+            continue;
+          }
+          const hydratedState = stateMap.get(rowId);
+          if (typeof hydratedState === 'string') {
+            row.memoryState = hydratedState;
+          }
+        }
+      } catch (err: unknown) {
+        console.warn('[stage2] Community state hydration failed:', err instanceof Error ? err.message : err);
+      }
     }
   }
 

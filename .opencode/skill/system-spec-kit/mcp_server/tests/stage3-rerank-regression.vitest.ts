@@ -10,6 +10,8 @@ const flagState = {
 
 const rerankResultsMock = vi.fn();
 const rerankLocalMock = vi.fn();
+const applyMMRMock = vi.fn();
+const requireDbMock = vi.fn();
 
 vi.mock('../lib/search/search-flags', () => ({
   isCrossEncoderEnabled: () => flagState.crossEncoder,
@@ -25,7 +27,17 @@ vi.mock('../lib/search/local-reranker', () => ({
   rerankLocal: (...args: unknown[]) => rerankLocalMock(...args),
 }));
 
+vi.mock('@spec-kit/shared/algorithms/mmr-reranker', () => ({
+  applyMMR: (...args: unknown[]) => applyMMRMock(...args),
+}));
+
+vi.mock('../utils', () => ({
+  requireDb: () => requireDbMock(),
+  toErrorMessage: (error: unknown) => error instanceof Error ? error.message : String(error),
+}));
+
 import { __testables } from '../lib/search/pipeline/stage3-rerank';
+import { executeStage3 } from '../lib/search/pipeline/stage3-rerank';
 
 const RERANK_OPTIONS = {
   rerank: true,
@@ -40,6 +52,8 @@ describe('stage3-rerank regression (F-16)', () => {
     flagState.localReranker = false;
     rerankResultsMock.mockReset();
     rerankLocalMock.mockReset();
+    applyMMRMock.mockReset();
+    requireDbMock.mockReset();
   });
 
   it('floors negative cross-encoder scores at rerank output boundary', async () => {
@@ -105,5 +119,55 @@ describe('stage3-rerank regression (F-16)', () => {
     expect(result.rows[0]?.score).toBe(0.92);
     expect(result.rows[0]?.rerankerScore).toBe(0.92);
     expect(result.rows[0]?.attentionScore).toBe(0.17);
+  });
+
+  it('keeps non-embedded rows near their original rank after MMR diversification', async () => {
+    flagState.crossEncoder = false;
+    flagState.mmr = true;
+    applyMMRMock.mockReturnValue([
+      { id: 30, score: 0.74, embedding: new Float32Array([0.3, 0.3]) },
+      { id: 10, score: 0.93, embedding: new Float32Array([0.1, 0.1]) },
+    ]);
+    requireDbMock.mockReturnValue({
+      prepare: () => ({
+        all: (...ids: number[]) => ids
+          .filter((id) => id !== 20)
+          .map((id) => ({
+            rowid: id,
+            embedding: Buffer.from(new Float32Array([id / 100, id / 100]).buffer),
+          })),
+      }),
+    });
+
+    const result = await executeStage3({
+      scored: [
+        { id: 20, score: 0.91, content: 'lexical-only-hit' },
+        { id: 10, score: 0.93, content: 'embedded-alpha' },
+        { id: 30, score: 0.74, content: 'embedded-beta' },
+      ],
+      config: {
+        query: 'query',
+        searchType: 'hybrid',
+        limit: 5,
+        includeArchived: false,
+        includeConstitutional: false,
+        includeContent: false,
+        minState: 'WARM',
+        applyStateLimits: false,
+        useDecay: true,
+        rerank: false,
+        applyLengthPenalty: false,
+        enableDedup: false,
+        enableSessionBoost: false,
+        enableCausalBoost: false,
+        trackAccess: false,
+        detectedIntent: null,
+        intentConfidence: 0,
+        intentWeights: null,
+      },
+    });
+
+    expect(applyMMRMock).toHaveBeenCalledOnce();
+    expect(result.reranked.map((row) => row.id)).toEqual([30, 20, 10]);
   });
 });

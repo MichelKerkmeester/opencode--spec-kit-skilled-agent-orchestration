@@ -19,7 +19,7 @@ contextType: "implementation"
 | **Completed** | 2026-03-13 |
 | **Level** | 2 |
 
-## Overview
+### Overview
 
 This phase implemented shared post-mutation automation for memory mutation flows, added explicit UX hook modules, tightened checkpoint-delete safety, and aligned success-response hint behavior at the context-server boundary. Verification evidence is now synchronized across the spec documents, and checklist close-out is complete.
 <!-- /ANCHOR:metadata -->

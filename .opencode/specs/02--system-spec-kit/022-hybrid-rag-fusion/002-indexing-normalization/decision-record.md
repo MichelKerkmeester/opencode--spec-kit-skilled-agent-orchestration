@@ -14,7 +14,7 @@ This document consolidates source documents from:
 - `former child spec 002-index-tier-anomalies -> decision-record.md`
 - `former child spec 004-frontmatter-indexing -> decision-record.md`
 
-## Source: `former child spec 002-index-tier-anomalies -> decision-record.md`
+**Source: `former child spec 002-index-tier-anomalies -> decision-record.md`**
 
 ---
 title: "Decision Record: Memory Index Deduplication and Tier Normalization [former child spec 002-index-tier-anomalies -> decision-record]"
@@ -144,7 +144,7 @@ We need deterministic indexing even when `specs/` and `.opencode/specs/` referen
 
 ---
 
-## ADR-002: Deterministic Tier Precedence
+### ADR-002: Deterministic Tier Precedence
 
 ### Metadata
 
@@ -178,7 +178,7 @@ Use one precedence chain: explicit YAML tier metadata first, inline tier markers
 - Inline markers over metadata, rejected because metadata should be explicit source of truth.
 - Default-only mapping, rejected because it ignores intentional per-document overrides.
 
-## Source: `former child spec 004-frontmatter-indexing -> decision-record.md`
+**Source: `former child spec 004-frontmatter-indexing -> decision-record.md`**
 
 ---
 title: "Decision Record: 004-frontmatter-indexing [former child spec 004-frontmatter-indexing -> decision-record]"
@@ -202,8 +202,7 @@ contextType: "decision"
 
 ---
 
-<!-- ANCHOR:adr-001 -->
-## ADR-001: Canonical Frontmatter Contract Before Reindex
+### ADR-001: Canonical Frontmatter Contract Before Reindex
 
 <!-- ANCHOR:adr-001-context -->
 ### Metadata
@@ -228,17 +227,14 @@ We need one predictable metadata contract before rebuilding indexes. Legacy docu
 
 ---
 
-<!-- ANCHOR:adr-001-decision -->
 ### Decision
 
 **We chose**: canonical frontmatter normalization as a blocking step before index rebuild.
 
 **How it works**: parser and compose tooling will map legacy keys to canonical keys, coerce values to canonical types, and emit deterministic frontmatter ordering. Reindex runs only after migration reports zero hard errors.
-<!-- /ANCHOR:adr-001-decision -->
 
 ---
 
-<!-- ANCHOR:adr-001-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
@@ -247,11 +243,9 @@ We need one predictable metadata contract before rebuilding indexes. Legacy docu
 | Reindex legacy metadata as-is | Faster initial delivery | Preserves drift, and parser complexity is harder to debug | 4/10 |
 
 **Why this one**: it creates a durable contract that simplifies indexing, testing, and future template evolution.
-<!-- /ANCHOR:adr-001-alternatives -->
 
 ---
 
-<!-- ANCHOR:adr-001-consequences -->
 ### Consequences
 
 **What improves**:
@@ -267,11 +261,9 @@ We need one predictable metadata contract before rebuilding indexes. Legacy docu
 |------|--------|------------|
 | Legacy edge cases fail migration | M | Add compatibility mapping + explicit error reporting |
 | Large rewrite hides accidental changes | M | Restrict rewrite scope to frontmatter and validate idempotency |
-<!-- /ANCHOR:adr-001-consequences -->
 
 ---
 
-<!-- ANCHOR:adr-001-five-checks -->
 ### Five Checks Evaluation
 
 | # | Check | Result | Evidence |
@@ -283,11 +275,9 @@ We need one predictable metadata contract before rebuilding indexes. Legacy docu
 | 5 | **Open Horizons?** | PASS | Enables stable future schema evolution and validation tooling. |
 
 **Checks Summary**: 5/5 PASS
-<!-- /ANCHOR:adr-001-five-checks -->
 
 ---
 
-<!-- ANCHOR:adr-001-impl -->
 ### Implementation
 
 **What changes**:
@@ -295,5 +285,3 @@ We need one predictable metadata contract before rebuilding indexes. Legacy docu
 - Add migration + reindex execution flow with regression tests.
 
 **How to roll back**: revert migration outputs and parser changes, restore prior index snapshot, rerun baseline tests.
-<!-- /ANCHOR:adr-001-impl -->
-<!-- /ANCHOR:adr-001 -->

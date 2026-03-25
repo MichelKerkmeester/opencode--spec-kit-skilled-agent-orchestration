@@ -1840,9 +1840,36 @@ describe('Context Server', () => {
       expect(sourceCode).toMatch(/async\s+function\s+recoverPendingFiles/)
     })
 
+    it('T63b: startup root expansion helper is defined', () => {
+      expect(sourceCode).toMatch(/function\s+getStartupWorkspaceRoots\(basePath:\s*string\)/)
+    })
+
+    it('T63c: pending recovery location helper is defined', () => {
+      expect(sourceCode).toMatch(/function\s+getPendingRecoveryLocations\(basePath:\s*string\)/)
+    })
+
     // T64: Recovery called during startup scan
     it('T64: recoverPendingFiles called in startupScan', () => {
       expect(sourceCode).toMatch(/await\s+recoverPendingFiles\(basePath\)/)
+    })
+
+    it('T64b: startupScan expands across configured workspace roots', () => {
+      expect(sourceCode).toMatch(/const\s+scanRoots\s*=\s*Array\.from\(\s*new\s+Set\(\s*\[basePath,\s*\.\.\.ALLOWED_BASE_PATHS\]/)
+    })
+
+    it('T64c: startupScan includes constitutional and spec document discovery for each root', () => {
+      expect(sourceCode).toMatch(/for\s*\(const\s+root\s+of\s+scanRoots\)/)
+      expect(sourceCode).toMatch(/memoryIndexDiscovery\.findConstitutionalFiles\(root\)/)
+      expect(sourceCode).toMatch(/memoryIndexDiscovery\.findSpecDocuments\(root\)/)
+    })
+
+    it('T64cc: startupScan skips inaccessible roots and deduplicates resolved paths', () => {
+      expect(sourceCode).toMatch(/catch\s*\(_error:\s*unknown\)\s*\{\s*\/\/ Non-fatal: skip inaccessible startup roots\./)
+      expect(sourceCode).toMatch(/const\s+resolved\s*=\s*path\.resolve\(filePath\)/)
+    })
+
+    it('T64d: pending recovery reuses shared startup root expansion', () => {
+      expect(sourceCode).toMatch(/const\s+existingScanLocations\s*=\s*getPendingRecoveryLocations\(basePath\)/)
     })
 
     // T65: Recovery returns structured result
@@ -1870,6 +1897,7 @@ describe('Context Server', () => {
       { module: './tool-schemas', name: 'Tool schemas (T303)' },
       { module: './tools', name: 'Tool dispatch (T303)' },
       { module: './handlers', name: 'Handlers module' },
+      { module: './handlers/memory-index-discovery', name: 'Memory index discovery helpers' },
       { module: './utils', name: 'Utils module' },
       { module: './hooks', name: 'Hooks module' },
       { module: './startup-checks', name: 'Startup checks (T303)' },

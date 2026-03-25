@@ -14,7 +14,7 @@ This document consolidates source documents from:
 - `former child spec 002-index-tier-anomalies -> plan.md`
 - `former child spec 004-frontmatter-indexing -> plan.md`
 
-## Source: `former child spec 002-index-tier-anomalies -> plan.md`
+**Source: `former child spec 002-index-tier-anomalies -> plan.md`**
 
 ---
 title: "Implementation Plan: Memory Index Deduplication and Tier Normalization [former child spec 002-index-tier-anomalies -> plan]"
@@ -280,7 +280,7 @@ Phase 1 (Setup) ---> Phase 2 (Core) ---> Phase 3 (Verify)
 
 ---
 
-## AI EXECUTION PROTOCOL
+### AI EXECUTION PROTOCOL
 
 ### Pre-Task Checklist
 - [ ] Confirm active file list matches `tasks.md` scope.
@@ -304,7 +304,7 @@ Phase 1 (Setup) ---> Phase 2 (Core) ---> Phase 3 (Verify)
 - Record blocker reason and immediate next action.
 - Do not continue to downstream blocked tasks until blocker is resolved or deferred with approval.
 
-## Source: `former child spec 004-frontmatter-indexing -> plan.md`
+**Source: `former child spec 004-frontmatter-indexing -> plan.md`**
 
 ---
 title: "Implementation Plan: 004-frontmatter-indexing [former child spec 004-frontmatter-indexing -> plan]"
@@ -326,8 +326,7 @@ contextType: "decision"
 
 ---
 
-<!-- ANCHOR:summary -->
-## 1. SUMMARY
+### 1. SUMMARY
 
 ### Technical Context
 
@@ -340,12 +339,10 @@ contextType: "decision"
 
 ### Overview
 This plan standardizes frontmatter across templates, spec docs, and memory markdown, then rebuilds indexes from normalized metadata. The approach is parser-first: define canonical schema, add compose/migration tooling, run dry-run validation, then apply migration and reindex. Verification covers idempotency, parser correctness, and retrieval stability.
-<!-- /ANCHOR:summary -->
 
 ---
 
-<!-- ANCHOR:quality-gates -->
-## 2. QUALITY GATES
+### 2. QUALITY GATES
 
 ### Definition of Ready
 - [x] Problem statement clear and scope documented
@@ -356,12 +353,10 @@ This plan standardizes frontmatter across templates, spec docs, and memory markd
 - [x] All acceptance criteria met
 - [x] Tests passing (if applicable)
 - [x] Docs updated (spec/plan/tasks)
-<!-- /ANCHOR:quality-gates -->
 
 ---
 
-<!-- ANCHOR:architecture -->
-## 3. ARCHITECTURE
+### 3. ARCHITECTURE
 
 ### Pattern
 Pipeline with staged migration and index rebuild
@@ -374,12 +369,10 @@ Pipeline with staged migration and index rebuild
 
 ### Data Flow
 Input markdown files pass through parse and normalize steps, then compose writes canonical frontmatter back to disk. The reindex step consumes normalized files and rebuilds index artifacts. Tests validate parser behavior, idempotency, and retrieval outcomes.
-<!-- /ANCHOR:architecture -->
 
 ---
 
-<!-- ANCHOR:phases -->
-## 4. IMPLEMENTATION PHASES
+### 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup
 - [x] Finalize canonical frontmatter schema and mapping table.
@@ -395,45 +388,37 @@ Input markdown files pass through parse and normalize steps, then compose writes
 - [x] Run parser, migration, and idempotency tests.
 - [x] Run integration reindex + retrieval checks.
 - [x] Update checklist and implementation summary with evidence.
-<!-- /ANCHOR:phases -->
 
 ---
 
-<!-- ANCHOR:testing -->
-## 5. TESTING STRATEGY
+### 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Unit | Frontmatter parser, coercion, compose functions | Vitest |
 | Integration | Migration runner + index rebuild + retrieval fixtures | Vitest and CLI commands |
 | Manual | Dry-run diff inspection, sampled post-migration documents | Terminal + git diff |
-<!-- /ANCHOR:testing -->
 
 ---
 
-<!-- ANCHOR:dependencies -->
-## 6. DEPENDENCIES
+### 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
 | Existing markdown corpus under spec templates/docs/memories | Internal | Green | Migration coverage is incomplete. |
 | Memory indexing commands and test harness | Internal | Green | Reindex cannot be verified end-to-end. |
 | Stable canonical schema decision | Internal | Yellow | Parser and migration implementation can drift. |
-<!-- /ANCHOR:dependencies -->
 
 ---
 
-<!-- ANCHOR:rollback -->
-## 7. ROLLBACK PLAN
+### 7. ROLLBACK PLAN
 
 - **Trigger**: reindex regression, parser failures on migrated docs, or unacceptable retrieval drift.
 - **Procedure**: revert migration commit set, restore previous index snapshot, rerun baseline tests.
-<!-- /ANCHOR:rollback -->
 
 ---
 
-<!-- ANCHOR:phase-deps -->
-## L2: PHASE DEPENDENCIES
+### L2: PHASE DEPENDENCIES
 
 ```text
 Schema Definition ──► Parser/Compose ──► Migration Apply ──► Reindex ──► Verification
@@ -446,12 +431,10 @@ Schema Definition ──► Parser/Compose ──► Migration Apply ──► R
 | Migration Apply | Parser/Compose | Reindex |
 | Reindex | Migration Apply | Verification |
 | Verification | Reindex | None |
-<!-- /ANCHOR:phase-deps -->
 
 ---
 
-<!-- ANCHOR:effort -->
-## L2: EFFORT ESTIMATION
+### L2: EFFORT ESTIMATION
 
 | Phase | Complexity | Estimated Effort |
 |-------|------------|------------------|
@@ -459,12 +442,10 @@ Schema Definition ──► Parser/Compose ──► Migration Apply ──► R
 | Core Implementation | High | 6-10 hours |
 | Verification | Medium | 2-4 hours |
 | **Total** | | **10-18 hours** |
-<!-- /ANCHOR:effort -->
 
 ---
 
-<!-- ANCHOR:enhanced-rollback -->
-## L2: ENHANCED ROLLBACK
+### L2: ENHANCED ROLLBACK
 
 ### Pre-deployment Checklist
 - [ ] Backup created for targeted markdown scope
@@ -480,12 +461,10 @@ Schema Definition ──► Parser/Compose ──► Migration Apply ──► R
 ### Data Reversal
 - **Has data migrations?** Yes
 - **Reversal procedure**: restore pre-migration markdown snapshot, rerun index rebuild, rerun regression suite.
-<!-- /ANCHOR:enhanced-rollback -->
 
 ---
 
-<!-- ANCHOR:dependency-graph -->
-## L3: DEPENDENCY GRAPH
+### L3: DEPENDENCY GRAPH
 
 ```text
 ┌───────────────────┐    ┌───────────────────┐    ┌───────────────────┐
@@ -511,12 +490,10 @@ Schema Definition ──► Parser/Compose ──► Migration Apply ──► R
 | Migration Runner | Parser + Compose | Rewritten markdown files | Reindex Pipeline |
 | Reindex Pipeline | Migration Runner | Refreshed index | Validation |
 | Validation | Reindex Pipeline | Pass/fail evidence | None |
-<!-- /ANCHOR:dependency-graph -->
 
 ---
 
-<!-- ANCHOR:critical-path -->
-## L3: CRITICAL PATH
+### L3: CRITICAL PATH
 
 1. **Schema contract freeze** - 1 day - CRITICAL
 2. **Parser/compose and migration implementation** - 2 days - CRITICAL
@@ -527,19 +504,16 @@ Schema Definition ──► Parser/Compose ──► Migration Apply ──► R
 **Parallel Opportunities**:
 - Fixture authoring and template updates can run in parallel with parser refactor.
 - Retrieval regression assertions can be prepared while migration dry-run executes.
-<!-- /ANCHOR:critical-path -->
 
 ---
 
-<!-- ANCHOR:milestones -->
-## L3: MILESTONES
+### L3: MILESTONES
 
 | Milestone | Description | Success Criteria | Target |
 |-----------|-------------|------------------|--------|
 | M1 | Schema Locked | Canonical key/value rules approved and documented | Day 1 |
 | M2 | Migration Ready | Dry-run shows deterministic rewrites with no schema violations | Day 3 |
 | M3 | Release Ready | Reindex + regression suite pass on normalized corpus | Day 4 |
-<!-- /ANCHOR:milestones -->
 
 ---
 
@@ -562,7 +536,7 @@ Schema Definition ──► Parser/Compose ──► Migration Apply ──► R
 
 ---
 
-## AI EXECUTION PROTOCOL
+### AI EXECUTION PROTOCOL
 
 ### Pre-Task Checklist
 - Confirm target files and migration scope before edits.

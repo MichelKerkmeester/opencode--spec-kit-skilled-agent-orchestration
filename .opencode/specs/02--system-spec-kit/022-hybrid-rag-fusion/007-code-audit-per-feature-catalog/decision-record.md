@@ -46,8 +46,7 @@ Audit each of the 22 categories as a separate sub-phase folder (001-retrieval th
 
 ---
 
-<!-- ANCHOR:adr-002 -->
-## ADR-002: Remediation Priority Classification (P0/P1/P2)
+### ADR-002: Remediation Priority Classification (P0/P1/P2)
 
 ### Metadata
 
@@ -72,5 +71,3 @@ Adopt 3-tier priority: P0 (blocker â€” must fix before release), P1 (must-fix â€
 - P0 items (4 total) block release gate
 - P1 items (19 total) tracked in 012-pre-release-fixes spec
 - P2 items (26 total) deferred to post-release cleanup sprints
-
-<!-- /ANCHOR:adr-002 -->

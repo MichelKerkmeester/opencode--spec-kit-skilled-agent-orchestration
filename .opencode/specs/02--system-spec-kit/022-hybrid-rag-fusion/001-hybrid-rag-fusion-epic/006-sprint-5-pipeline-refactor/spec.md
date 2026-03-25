@@ -35,7 +35,6 @@ contextType: "implementation" # SPECKIT_TEMPLATE_SOURCE: spec-core + level2-veri
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 6** of the Hybrid RAG Fusion Refinement specification.
@@ -58,7 +57,6 @@ This is **Phase 6** of the Hybrid RAG Fusion Refinement specification.
 - Dual-scope memory auto-surface hooks at tool dispatch and session compaction (TM-05)
 
 **Internal Phasing**: Phase A (Pipeline) MUST pass before Phase B (Search + Spec-Kit) begins.
-<!-- /ANCHOR:phase-context -->
 
 ---
 
@@ -168,7 +166,7 @@ Establish a clean 4-stage pipeline with an architectural invariant (Stage 4 cann
 ---
 
 <!-- ANCHOR:nfr -->
-## 7. NON-FUNCTIONAL REQUIREMENTS
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: R6 pipeline must not degrade p95 latency vs current implementation
@@ -187,7 +185,7 @@ Establish a clean 4-stage pipeline with an architectural invariant (Stage 4 cann
 ---
 
 <!-- ANCHOR:edge-cases -->
-## 8. EDGE CASES
+## L2: EDGE CASES
 
 ### Data Boundaries
 - **R9 with no spec folder**: Pre-filter is a no-op — full corpus search
@@ -206,7 +204,7 @@ Establish a clean 4-stage pipeline with an architectural invariant (Stage 4 cann
 ---
 
 <!-- ANCHOR:complexity -->
-## 9. COMPLEXITY ASSESSMENT
+## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
@@ -229,7 +227,6 @@ Establish a clean 4-stage pipeline with an architectural invariant (Stage 4 cann
 
 ---
 
-<!-- ANCHOR:pageindex-integration -->
 ### PageIndex Integration
 
 Sprint 5 incorporates two PageIndex recommendations that extend the pipeline refactor and validation infrastructure.
@@ -262,17 +259,16 @@ All auto-fixes are logged with before/after diffs as the primary mitigation agai
 **Relationship to existing work**: PI-B2 extends `validate.sh` from the Sprint 5 verification infrastructure. It does not affect the pipeline stages, scoring logic, or any Sprint 5 feature flags. Exit codes remain compatible: exit 0 = pass, exit 1 = warnings, exit 2 = errors (must fix).
 
 **Effort**: 16-24h | **Risk**: Medium | **Mitigation**: Log all auto-fixes with before/after diff; dry-run mode available
-<!-- /ANCHOR:pageindex-integration -->
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See ../000-feature-overview/spec.md
-- **Parent Plan**: See ../000-feature-overview/plan.md
+- **Parent Spec**: See ../spec.md
+- **Parent Plan**: See ../plan.md
 
 ---
 

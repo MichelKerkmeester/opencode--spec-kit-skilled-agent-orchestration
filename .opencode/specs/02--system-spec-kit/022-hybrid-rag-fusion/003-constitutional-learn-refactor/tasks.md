@@ -9,7 +9,6 @@ level: 2
 created: 2025-12-01
 updated: 2026-03-14
 ---
-<!-- ANCHOR:tasks -->
 # Tasks
 
 <!-- ANCHOR:notation -->
@@ -42,12 +41,12 @@ updated: 2026-03-14
 - [x] Write examples and error handling — Sections 12-13, lines 489-540
 - [x] Write quick reference — Section 14, lines 543-550
 
-## T2: Update README.txt [P1] — COMPLETE
+### T2: Update README.txt [P1] — COMPLETE
 - [x] Update learn command description — line 50
 - [x] Replace learn subcommands table — lines 68-74
 - [x] Update usage examples — lines 116-122
 
-## T3: Update CLAUDE.md [P1] — COMPLETE
+### T3: Update CLAUDE.md [P1] — COMPLETE
 - [x] Update Quick Reference table entry — line 53: constitutional memory workflow
 - [x] Verify no other stale references — confirmed clean
 
@@ -115,4 +114,3 @@ updated: 2026-03-14
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
 <!-- /ANCHOR:cross-refs -->
-<!-- /ANCHOR:tasks -->

@@ -39,7 +39,13 @@ contextType: "implementation"
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
+### Problem Statement
+
 The three AGENTS.md governance framework files reference outdated Quick Reference workflow tables that show 5 memory commands instead of the current 6. The `/memory:learn` constitutional memory row only documents the `[rule]` creation subcommand, missing `list`, `edit`, `remove`, and `budget`. The `/memory:manage` database maintenance row is missing the `ingest` subcommand. Two entirely new commands (`/memory:analyze`, `/memory:shared`) have no rows at all. Additionally, the FS-Enterprises variant has a stale Research/exploration row missing the `memory_context()` unified alternative.
+
+### Purpose
+
+Reconcile the AGENTS.md quick-reference governance docs to the live 6-command memory suite while preserving variant-specific policy and stack-detection content.
 
 **Key Metrics**
 - 3 target files across 2 repositories (Public, Barter)
@@ -85,23 +91,22 @@ The three AGENTS.md governance framework files reference outdated Quick Referenc
 <!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
-### 3.1 Functional
+### P0 - Blockers
 
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| F1 | Constitutional memory row shows all 5 subcommands | P0 |
-| F2 | Database maintenance row includes `ingest` | P0 |
-| F3 | New Analysis/evaluation row present in all 3 files | P0 |
-| F4 | New Shared memory row present in all 3 files | P0 |
-| F5 | FS-Enterprises Research/exploration row matches Universal/Barter | P1 |
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Constitutional memory row shows all 5 subcommands (legacy `F1`) | All three governance files document `list`, `edit`, `remove`, and `budget` alongside rule creation |
+| REQ-002 | Database maintenance row includes `ingest` (legacy `F2`) | All three governance files document `ingest` under `/memory:manage` |
+| REQ-003 | New Analysis or evaluation row is present in all 3 files (legacy `F3`) | All three governance files include `/memory:analyze` in their quick-reference tables |
+| REQ-004 | New Shared memory row is present in all 3 files (legacy `F4`) | All three governance files include `/memory:shared` in their quick-reference tables |
+| REQ-005 | Barter READ-ONLY git policy and FS-Enterprises stack-detection guidance stay preserved (legacy `NF1` and `NF2`) | Existing variant-specific governance content remains present after the table updates |
 
-### 3.2 Non-Functional
+### P1 - Required
 
-| ID | Requirement | Priority |
-|----|-------------|----------|
-| NF1 | Barter READ-ONLY git policy preserved | P0 |
-| NF2 | FS-Enterprises stack detection table preserved | P0 |
-| NF3 | Table column alignment consistent within each file | P1 |
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-006 | FS-Enterprises Research or exploration row matches Universal and Barter guidance (legacy `F5`) | The FS-Enterprises variant documents `memory_context()` as the unified alternative |
+| REQ-007 | Table column alignment stays consistent within each file (legacy `NF3`) | The quick-reference tables remain readable and internally aligned after the edits |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -112,6 +117,16 @@ The three AGENTS.md governance framework files reference outdated Quick Referenc
 - **SC-001**: All 3 AGENTS.md files contain 6 memory command rows in Quick Reference tables
 - **SC-002**: Verification greps confirm all 6 checks pass
 - **SC-003**: Barter READ-ONLY git policy and FS-Enterprises stack detection table remain preserved
+
+### Acceptance Scenarios
+
+**Given** a reviewer opens any of the three governance files, **when** they inspect the Quick Reference table, **then** they see `/memory:analyze`, `/memory:shared`, and `/memory:manage ingest` represented.
+
+**Given** a reviewer opens the FS-Enterprises variant, **when** they inspect the Research or exploration row, **then** it includes `memory_context()` as the unified alternative.
+
+**Given** a reviewer opens the Barter governance file, **when** they inspect git policy guidance, **then** the READ-ONLY rule remains intact.
+
+**Given** a reviewer compares the three quick-reference tables, **when** they scan the edited rows, **then** the tables stay aligned and variant-specific content outside the targeted rows remains preserved.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -135,7 +150,7 @@ The three AGENTS.md governance framework files reference outdated Quick Referenc
 
 ---
 
-## Phase Navigation
+### Phase Navigation
 
 | Field | Value |
 |-------|-------|

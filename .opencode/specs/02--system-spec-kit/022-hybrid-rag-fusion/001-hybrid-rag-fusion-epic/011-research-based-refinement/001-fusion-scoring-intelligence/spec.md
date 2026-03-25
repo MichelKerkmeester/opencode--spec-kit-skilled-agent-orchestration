@@ -98,7 +98,7 @@ Replace flat fusion heuristics with data-driven, query-aware scoring across the 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
 | `shared/algorithms/rrf-fusion.ts` | Modify | Calibrated overlap bonus, K parameterization, fusion policy types |
-| `shared/algorithms/fusion-lab.ts` | Create | Shadow fusion comparison infrastructure (minmax_linear, zscore_linear) |
+| ~~`shared/algorithms/fusion-lab.ts`~~ Deleted | Historical shadow fusion comparison infrastructure (minmax_linear, zscore_linear) |
 | `shared/algorithms/k-value-analysis.ts` | Modify | Extend with judged relevance evaluation, per-intent K testing |
 | `shared/search/hybrid-search.ts` | Modify | Query-aware graph weight gating |
 | `shared/search/adaptive-fusion.ts` | Modify | Fusion policy router, QPP feature extraction |
@@ -123,7 +123,7 @@ Replace flat fusion heuristics with data-driven, query-aware scoring across the 
 
 | ID | Requirement | Size | Feature Flag | Acceptance Criteria |
 |----|-------------|------|-------------|---------------------|
-| REQ-D1-002 | **Shadow Fusion Lab** — Evaluate RRF vs minmax_linear vs zscore_linear on judged queries with telemetry recording. | M | `SPECKIT_FUSION_POLICY_SHADOW_V2` | Shadow comparison infrastructure operational, 3 policies evaluable, telemetry recorded per query |
+| REQ-D1-002 | **Shadow Fusion Lab** — Verified-retired; retained here as historical design context only. | M | `SPECKIT_FUSION_POLICY_SHADOW_V2` | Verified-retired: `fusion-lab.js` deleted in commit `56c67030f`; no active shadow comparison infrastructure remains |
 | REQ-D1-004 | **Query-Aware Graph Weight** — Promote graph channel for multi-hop/causal queries (understand, find_decision), demote for literal lookups. Cross-dep: needs D3 Phase A typed traversal for graph quality signals. | M | `SPECKIT_GRAPH_QUERY_GATING_V1` | Graph weight varies by intent class (0.2 for literal, 0.6-1.6 for graph-eligible), eval shows +2-6 NDCG@10 on graph queries |
 | REQ-D1-005 | **Intent Router Selects Fusion Family** — Route between RRF, score fusion, and graph-heavy fusion based on QPP features (score spread, channel agreement). Cross-dep: needs D1-002 shadow lab results. | M | `SPECKIT_FUSION_POLICY_ROUTER` | Fusion family selection active for all query types, fallback to RRF preserved, eval shows improvement over static RRF |
 | REQ-D1-006 | **Learned Stage 2 Weights** — Train regularized linear ranker from judged relevance data using 8-feature vector. Cross-dep: needs D4 Phase A event ledger for training data. | M->L | `SPECKIT_LEARNED_STAGE2_COMBINER` | Linear ranker trained with LOOCV validation, SHAP feature importance documented, shadow-only deployment initially |
@@ -144,19 +144,19 @@ score += clamp(overlapScore, 0, 0.06);
 
 The `beta` parameter controls the strength of the overlap signal. The cap at 0.06 prevents any single convergence signal from dominating the fusion score. `meanTopNormScore(id)` anchors the bonus to the actual retrieval quality of the candidate across channels.
 
-#### REQ-D1-002: Shadow Fusion Lab
+#### REQ-D1-002: Shadow Fusion Lab (verified-retired)
 
 **Research Source**: Recommendation #8
-**Files**: `shared/algorithms/rrf-fusion.ts`, `shared/algorithms/fusion-lab.ts` (new)
+**Files**: `shared/algorithms/rrf-fusion.ts`, `shared/algorithms/fusion-lab.ts` (historical - fusion-lab.js deleted in commit 56c67030f)
 
 ```typescript
 type FusionPolicy = 'rrf' | 'minmax_linear' | 'zscore_linear';
 
-// fusion-lab.ts — shadow comparison infrastructure
+// fusion-lab.ts — shadow comparison infrastructure (historical - fusion-lab.js deleted in commit 56c67030f)
 shadow.compare(['rrf', 'minmax_linear', 'zscore_linear']);
 ```
 
-The shadow lab runs all three fusion policies in parallel on each query but only returns the active policy's results. Telemetry captures per-policy NDCG@10, MRR@5, and latency for later analysis.
+Historical design note: the shadow lab was planned to run all three fusion policies in parallel on each query but only return the active policy's results. Telemetry would have captured per-policy NDCG@10, MRR@5, and latency for later analysis.
 
 #### REQ-D1-003: K-Optimization with Judged Relevance
 
@@ -321,7 +321,7 @@ The 8-feature vector captures all Stage 2 signals. A regularized linear model (L
 - [Sibling: D2 Query Intelligence](../002-query-intelligence-reformulation/spec.md) -- Successor phase
 - [Sibling: D3 Graph Retrieval](../003-graph-augmented-retrieval/spec.md) -- Provides graph quality signals for Phase C
 - [Sibling: D4 Feedback Learning](../004-feedback-quality-learning/spec.md) -- Provides training data for Phase D
-- [Research Source](../../../019-deep-research-rag-improvement/research/research.md) -- Recommendations #1, #8, #9, #22, #23, #28
+- Research Source (historical, path removed) -- Recommendations #1, #8, #9, #22, #23, #28
 
 <!--
 LEVEL 2 SPEC — Phase 1 of 5 (Research-Based Refinement)

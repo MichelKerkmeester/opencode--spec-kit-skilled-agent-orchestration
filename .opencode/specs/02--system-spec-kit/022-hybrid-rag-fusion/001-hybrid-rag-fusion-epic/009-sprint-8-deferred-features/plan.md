@@ -1,7 +1,6 @@
 ---
 title: "Implementation Plan: Sprint 8 - Deferred Features"
 description: "Plan deferred-feature execution with dependency gates, verification checkpoints, and rollback controls."
-# SPECKIT_TEMPLATE_SOURCE: plan-core + phase-child-header | v2.2
 trigger_phrases:
   - "sprint 8 plan"
   - "deferred implementation"

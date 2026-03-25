@@ -261,7 +261,7 @@ Boundary Contract
 
 ---
 
-## NAVIGATION & TRACEABILITY
+**Navigation & Traceability**
 
 - **Parent**: `022-hybrid-rag-fusion`
 - **Scope**: Architecture audit planning and closure mapping for the Spec Kit Memory MCP server

@@ -154,6 +154,17 @@ All 34 exact IDs below are P0. Each must receive a PASS, FAIL, or PARTIAL verdic
 | REQ-M01 | Evidence captured per scenario | Each executed scenario has a recorded observation or output excerpt |
 | REQ-M02 | Feature catalog cross-reference verified | Each scenario's catalog reference confirmed present and accurate |
 | REQ-M03 | Sub-scenario results tracked independently | M-005a/b/c, M-006a/b/c, and 155-F each have individual verdicts |
+
+### P1 - Packet Governance Requirements
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-901 | 013-memory-quality-and-indexing packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 013-memory-quality-and-indexing |
+| REQ-902 | 013-memory-quality-and-indexing packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 013-memory-quality-and-indexing |
+| REQ-903 | 013-memory-quality-and-indexing packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 013-memory-quality-and-indexing |
+| REQ-904 | 013-memory-quality-and-indexing packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 013-memory-quality-and-indexing |
+| REQ-905 | 013-memory-quality-and-indexing packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 013-memory-quality-and-indexing |
+
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -166,6 +177,16 @@ All 34 exact IDs below are P0. Each must receive a PASS, FAIL, or PARTIAL verdic
 - **SC-003**: tasks.md reflects final execution status for every scenario task including sub-scenarios
 - **SC-004**: implementation-summary.md completed with aggregate results
 - **SC-005**: Sub-scenario results (M-005a/b/c, M-006a/b/c, 155-F) individually tracked and verdicted
+### Acceptance Scenarios
+
+**Given** the `013-memory-quality-and-indexing` phase packet, **when** a reviewer opens the scenario mapping, **then** every scenario listed for the phase has a bounded execution target and a documented acceptance rule.
+
+**Given** the `013-memory-quality-and-indexing` phase packet, **when** execution evidence is reviewed, **then** verdict notes can be traced through `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+
+**Given** the `013-memory-quality-and-indexing` phase packet, **when** a reviewer checks neighboring navigation, **then** the packet points back to the parent and to the adjacent numbered phase where one exists.
+
+**Given** strict validation runs on the `013-memory-quality-and-indexing` phase packet, **when** the validator checks structure, **then** the packet satisfies Level 2 requirement and acceptance-scenario minimums.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

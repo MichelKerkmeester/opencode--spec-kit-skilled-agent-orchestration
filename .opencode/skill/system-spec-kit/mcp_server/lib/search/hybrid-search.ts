@@ -95,6 +95,12 @@ interface HybridSearchOptions {
    * When true, stop after channel collection and return pre-fusion candidates.
    */
   skipFusion?: boolean;
+  /**
+   * Internal pipeline handoff mode.
+   * When true, return immediately after adaptive/RRF fusion so Stage 2/3 can
+   * apply the remaining pipeline scoring and aggregation steps.
+   */
+  stopAfterFusion?: boolean;
 }
 
 interface HybridSearchResult {
@@ -533,9 +539,11 @@ function mergeRawCandidate(
 ): HybridSearchResult {
   if (!existing) {
     const sources = getCandidateSources(incoming);
+    const channelCount = sources.length;
     return {
       ...incoming,
       sources,
+      channelCount,
       sourceScores: getCandidateSourceScores(incoming),
       channelAttribution: sources,
     };
@@ -553,13 +561,17 @@ function mergeRawCandidate(
     ...getCandidateSources(existing),
     ...getCandidateSources(incoming),
   ]));
+  const channelCount = sources.length;
+  const crossChannelBonus = Math.min(0.06, 0.02 * Math.max(0, channelCount - 1));
+  const mergedScore = Math.max(0, Math.min(1, Math.max(existingScore, incomingScore) + crossChannelBonus));
 
   return {
     ...(secondary ?? {}),
     ...primary,
-    score: Math.max(existingScore, incomingScore),
+    score: mergedScore,
     source: typeof primary.source === 'string' ? primary.source : (sources[0] ?? 'hybrid'),
     sources,
+    channelCount,
     sourceScores: {
       ...getCandidateSourceScores(existing),
       ...getCandidateSourceScores(incoming),
@@ -1017,6 +1029,10 @@ async function hybridSearchEnhanced(
         };
       });
 
+      if (options.stopAfterFusion) {
+        return applyResultLimit(fusedHybridResults, options.limit);
+      }
+
       // -- Aggregation stage: MPAB chunk-to-memory aggregation (after fusion, before state filter) --
       // When enabled, collapses chunk-level results back to their parent memory
       // Documents using MPAB scoring (sMax + 0.3 * sum(remaining) / sqrt(N)). This prevents
@@ -1368,8 +1384,9 @@ async function hybridSearchEnhanced(
 }
 
 /**
- * Collect raw candidates prior to fusion, using the adaptive fallback chain
- * and lexical fallbacks when needed.
+ * Collect pipeline candidates through the adaptive fallback chain, returning
+ * immediately after intra-query fusion and before downstream aggregation,
+ * reranking, or post-processing.
  *
  * @param query - The search query string.
  * @param embedding - Optional embedding vector for semantic search.
@@ -1385,7 +1402,7 @@ async function collectRawCandidates(
     const tier1Options = {
       ...options,
       minSimilarity: options.minSimilarity ?? 0.3,
-      skipFusion: true,
+      stopAfterFusion: true,
     };
     let results = await hybridSearchEnhanced(query, embedding, tier1Options);
     const tier1Trigger = checkDegradation(results);
@@ -1401,7 +1418,7 @@ async function collectRawCandidates(
       useVector: true,
       useGraph: true,
       forceAllChannels: true,
-      skipFusion: true,
+      stopAfterFusion: true,
     };
     const tier2Results = await hybridSearchEnhanced(query, embedding, tier2Options);
     results = mergeRawCandidateSets(results, tier2Results, options.limit);
@@ -1413,7 +1430,7 @@ async function collectRawCandidates(
     const primaryOptions = {
       ...options,
       minSimilarity: options.minSimilarity ?? PRIMARY_THRESHOLD,
-      skipFusion: true,
+      stopAfterFusion: true,
     };
     let results = await hybridSearchEnhanced(query, embedding, primaryOptions);
 
@@ -1424,7 +1441,7 @@ async function collectRawCandidates(
       const fallbackOptions = {
         ...options,
         minSimilarity: FALLBACK_THRESHOLD,
-        skipFusion: true,
+        stopAfterFusion: true,
       };
       results = await hybridSearchEnhanced(query, embedding, fallbackOptions);
       if (results.length > 0) {
@@ -2099,6 +2116,7 @@ export const __testables = {
   calibrateTier3Scores,
   checkDegradation,
   mergeResults,
+  mergeRawCandidate,
 };
 
 export {

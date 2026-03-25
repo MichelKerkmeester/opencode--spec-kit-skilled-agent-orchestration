@@ -1,7 +1,6 @@
 ---
 title: "Tasks: Sprint 1 — Graph Signal Activation"
 description: "Task breakdown for Sprint 1: typed-weighted degree as 5th RRF channel, edge density, agent UX"
-# SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 trigger_phrases:
   - "sprint 1 tasks"
   - "graph signal tasks"
@@ -42,7 +41,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 1: Degree Computation
+## Phase 1: Setup
 
 - [x] T001 Implement typed-weighted degree computation — SQL query against `causal_edges` + TypeScript normalization (`graph-search-fn.ts`) [8-10h] — R4 (REQ-S1-001)
   - Formula: `typed_degree(node) = SUM(weight_t * count_t)`
@@ -64,7 +63,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: RRF Integration
+## Phase 2: Implementation
 
 - [x] T002 Integrate degree as 5th RRF channel behind `SPECKIT_DEGREE_BOOST` feature flag (`rrf-fusion.ts`, `hybrid-search.ts`) [4-6h] {T001} — R4 (REQ-S1-001)
   - Acceptance: 5-channel RRF fusion produces rankings; flag=false yields identical results to 4-channel; flag=true shows degree influence in results
@@ -74,7 +73,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Measurement
+### Measurement
 
 - [x] T003 [P] Measure edge density (edges/node) from `causal_edges` data; document R10 escalation decision if density < 0.5 [2-3h] — Edge density (REQ-S1-002)
   - Acceptance: Density ratio computed; if < 0.5, R10 escalation documented with timeline recommendation
@@ -86,8 +85,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Agent UX + Signal Vocabulary
+### Agent UX + Signal Vocabulary
 
 - [x] T004 [P] Agent-as-consumer UX analysis + consumption instrumentation — log consumption patterns, generate initial report [8-12h] — G-NEW-2 (REQ-S1-003)
   - Acceptance: Consumption patterns logged with query text, result count, selected IDs, ignored IDs; pattern report generated
@@ -97,11 +95,10 @@ contextType: "implementation"
     3. Collect initial data and analyze patterns (2-3h)
     4. Generate pattern report with >=5 identified consumption categories (2-3h)
 - [x] T005a [P] Expand importance signal vocabulary in `trigger-matcher.ts` — add CORRECTION signals ("actually", "wait", "I was wrong") and PREFERENCE signals ("prefer", "like", "want") from true-mem's 8-category vocabulary [2-4h] — TM-08 (REQ-S1-005)
-<!-- /ANCHOR:phase-4 -->
 
 ---
 
-## Phase 5: Dark-Run and Verification
+## Phase 3: Verification
 
 - [x] T005 Enable R4 in dark-run mode — three-measurement sequence: (a) Sprint 0 baseline MRR@5, (b) R4-only with A7 at 0.1x, (c) R4+A7 with A7 at 0.25-0.3x; verify MRR@5 delta >+2% and no single memory >60% presence [included] {T002, T003, T003a, T004, T005a} — R4 (REQ-S1-001)
   - WHY sequential: R4 and A7 are both graph-derived signals; dual activation conflates attribution. Sequential passes add one extra eval run but provide clean causal data for rollback decisions.
@@ -114,7 +111,7 @@ contextType: "implementation"
 
 ---
 
-## Phase 6: PI-A3 — Pre-Flight Token Budget Validation
+### PI-A3 — Pre-Flight Token Budget Validation
 
 - [x] T007 [P] Implement pre-flight token budget validation — estimate total tokens across candidate result set before response assembly; truncate to highest-scoring candidates if total exceeds configured budget; handle `includeContent=true` single-result overflow with summary fallback; log all overflow events (query_id, candidate_count, total_tokens, budget_limit, truncated_to_count) to eval infrastructure (`hybrid-search.ts` or result assembler) [4-6h] — PI-A3
   - Truncation strategy: greedy highest-scoring first (never round-robin)
@@ -123,7 +120,7 @@ contextType: "implementation"
 
 ---
 
-## Phase 7: PI-A5 — Verify-Fix-Verify Memory Quality Loop (Deferred from Sprint 0)
+### PI-A5 — Verify-Fix-Verify Memory Quality Loop (Deferred from Sprint 0)
 
 > **Source**: REQ-057 (PI-A5). Deferred from Sprint 0 per Ultra-Think Review REC-09.
 
@@ -147,10 +144,9 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:task-id-mapping -->
-## Task ID Mapping (Child → Parent)
+##### Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent ../tasks.md uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -165,7 +161,6 @@ Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global I
 | T006 | T014 | Sprint 1 exit gate verification |
 | T007 | PI-A3 | Pre-flight token budget validation (PI-A3) |
 | T008 | PI-A5 | Verify-fix-verify memory quality loop (PI-A5) |
-<!-- /ANCHOR:task-id-mapping -->
 
 ---
 
@@ -175,7 +170,7 @@ Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global I
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Tasks**: See ../000-feature-overview/tasks.md
+- **Parent Tasks**: See ../tasks.md
 - **Predecessor Tasks**: See ../006-measurement-foundation/tasks.md
 <!-- /ANCHOR:cross-refs -->
 

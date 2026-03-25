@@ -18,7 +18,7 @@ This document consolidates source documents from:
 - `former child spec 002-index-tier-anomalies -> spec.md`
 - `former child spec 004-frontmatter-indexing -> spec.md`
 
-## Source: `former child spec 002-index-tier-anomalies -> spec.md`
+**Source: `former child spec 002-index-tier-anomalies -> spec.md`**
 
 ---
 title: "Feature Specification: Memory Index Deduplication and Tier Normalization [former child spec 002-index-tier-anomalies -> spec]"
@@ -42,7 +42,6 @@ contextType: "decision"
 
 ---
 
-<!-- ANCHOR:executive-summary -->
 ## EXECUTIVE SUMMARY
 
 `memory_index_scan` can index the same logical files twice when both `specs/` and `.opencode/specs/` resolve to the same tree through symlinks or mirrored paths. This inflates scan counts, can create duplicate memory records, and makes retrieval behavior noisy.
@@ -52,11 +51,9 @@ The same workflow also shows tier inconsistencies when parsed metadata and docum
 **Key Decisions**: canonical path dedup before indexing; deterministic tier precedence for all indexed markdown docs.
 
 **Critical Dependencies**: existing incremental-index metadata and memory parser behavior must remain backward compatible.
-<!-- /ANCHOR:executive-summary -->
 
 ---
 
-<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -68,7 +65,6 @@ The same workflow also shows tier inconsistencies when parsed metadata and docum
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../001-hybrid-rag-fusion-epic/spec.md |
 | **Successor** | ../003-constitutional-learn-refactor/spec.md |
-<!-- /ANCHOR:metadata -->
 
 ---
 
@@ -161,7 +157,6 @@ Make indexing deterministic by deduplicating canonical file paths before indexin
 
 ---
 
-<!-- ANCHOR:nfr -->
 ## 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
@@ -172,11 +167,9 @@ Make indexing deterministic by deduplicating canonical file paths before indexin
 
 ### Reliability
 - **NFR-R01**: Re-running scans on unchanged trees remains idempotent.
-<!-- /ANCHOR:nfr -->
 
 ---
 
-<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Data Boundaries
@@ -186,11 +179,9 @@ Make indexing deterministic by deduplicating canonical file paths before indexin
 ### Error Scenarios
 - Broken symlink entries are skipped without aborting full scan.
 - Invalid tier metadata falls back to documented default tier.
-<!-- /ANCHOR:edge-cases -->
 
 ---
 
-<!-- ANCHOR:complexity -->
 ## 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
@@ -201,11 +192,9 @@ Make indexing deterministic by deduplicating canonical file paths before indexin
 | Multi-Agent | 8/15 | Single implementation stream, multiple verification artifacts |
 | Coordination | 9/15 | Cross-file coupling between parser, scanner, and scoring |
 | **Total** | **73/100** | **Level 3** |
-<!-- /ANCHOR:complexity -->
 
 ---
 
-<!-- ANCHOR:risk-matrix -->
 ## 10. RISK MATRIX
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
@@ -213,11 +202,9 @@ Make indexing deterministic by deduplicating canonical file paths before indexin
 | R-001 | Canonicalization mismatch across platforms | H | M | Add path-normalization tests for POSIX and escaped separators |
 | R-002 | Tier normalization changes ranking unexpectedly | H | M | Snapshot-like ranking assertions on representative fixtures |
 | R-003 | Dedup reduces scan logs needed for debugging | M | M | Add explicit dedup summary counters in scan response metadata |
-<!-- /ANCHOR:risk-matrix -->
 
 ---
 
-<!-- ANCHOR:user-stories -->
 ## 11. USER STORIES
 
 ### US-001: Deterministic Indexing (Priority: P0)
@@ -235,12 +222,10 @@ Make indexing deterministic by deduplicating canonical file paths before indexin
 
 **Acceptance Criteria**:
 1. Given conflicting metadata signals, when a file is parsed, then tier resolution follows one documented precedence chain.
-<!-- /ANCHOR:user-stories -->
 
 ---
 
-<!-- ANCHOR:acceptance-scenarios -->
-## 11.5 ACCEPTANCE SCENARIOS
+### Acceptance Scenarios
 
 1. **Alias roots deduped**
    **Given** `specs/` and `.opencode/specs/` resolve to the same tree
@@ -271,7 +256,6 @@ Make indexing deterministic by deduplicating canonical file paths before indexin
    **Given** malformed tier metadata
    **When** parser normalizes the tier
    **Then** a valid default tier is applied without crashing.
-<!-- /ANCHOR:acceptance-scenarios -->
 
 ---
 
@@ -292,7 +276,7 @@ Make indexing deterministic by deduplicating canonical file paths before indexin
 
 ---
 
-## Phase Navigation
+**Phase Navigation**
 
 | Field | Value |
 |-------|-------|
@@ -302,7 +286,7 @@ Make indexing deterministic by deduplicating canonical file paths before indexin
 
 ---
 
-## Deferred Items (Close-Out 2026-03-08)
+**Deferred Items (Close-Out 2026-03-08)**
 
 The following 6 P1 checklist items were formally deferred at spec close-out. All core implementation work (P0 requirements, functional tests, code changes) is complete. These items represent operational hardening and compliance artifacts that were excluded from the 002 scope by remediation plan approval (2026-02-22).
 
@@ -319,7 +303,7 @@ The following 6 P1 checklist items were formally deferred at spec close-out. All
 
 ---
 
-## Source: `former child spec 004-frontmatter-indexing -> spec.md`
+**Source: `former child spec 004-frontmatter-indexing -> spec.md`**
 
 ---
 title: "Feature Specification: 004-frontmatter-indexing [former child spec 004-frontmatter-indexing -> spec]"
@@ -342,20 +326,17 @@ contextType: "decision"
 
 ---
 
-<!-- ANCHOR:executive-summary -->
-## EXECUTIVE SUMMARY
+### EXECUTIVE SUMMARY
 
 This child spec defines a focused Level 3 implementation for frontmatter normalization and index rebuild. The goal is to standardize metadata across templates, spec docs, and memory artifacts so retrieval quality and indexing consistency improve. The work includes parser/compose/migration tooling, deterministic rewrite rules, and reindex plus regression validation.
 
 **Key Decisions**: enforce one canonical frontmatter schema, run idempotent migrations before reindex.
 
 **Critical Dependencies**: existing memory parser/index pipeline and template source files.
-<!-- /ANCHOR:executive-summary -->
 
 ---
 
-<!-- ANCHOR:metadata -->
-## 1. METADATA
+### 1. METADATA
 
 | Field | Value |
 |-------|-------|
@@ -363,24 +344,20 @@ This child spec defines a focused Level 3 implementation for frontmatter normali
 | **Priority** | P0 |
 | **Status** | Complete |
 | **Created** | 2026-02-22 |
-<!-- /ANCHOR:metadata -->
 
 ---
 
-<!-- ANCHOR:problem -->
-## 2. PROBLEM & PURPOSE
+### 2. PROBLEM & PURPOSE
 
 ### Problem Statement
 Frontmatter keys and value shapes are currently inconsistent across templates, spec documents, and memory records. This causes parse edge cases, indexing drift, and uneven retrieval signals in hybrid search. Without normalization, migration and reindex operations are brittle and hard to validate.
 
 ### Purpose
 Define and execute a deterministic normalization plus reindex workflow that produces stable metadata across all targeted document classes.
-<!-- /ANCHOR:problem -->
 
 ---
 
-<!-- ANCHOR:scope -->
-## 3. SCOPE
+### 3. SCOPE
 
 ### In Scope
 - Define canonical frontmatter key set, casing rules, and value normalization policy.
@@ -400,12 +377,10 @@ Define and execute a deterministic normalization plus reindex workflow that prod
 | `.opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts` | Modify | Enforce normalized parse + compose behavior. |
 | `.opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js` | Modify | Add migration pass and trigger reindex flow. |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/full-spec-doc-indexing.vitest.ts` | Modify | Expand tests for normalized frontmatter indexing. |
-<!-- /ANCHOR:scope -->
 
 ---
 
-<!-- ANCHOR:requirements -->
-## 4. REQUIREMENTS
+### 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
 
@@ -424,32 +399,26 @@ Define and execute a deterministic normalization plus reindex workflow that prod
 | REQ-006 | Canonical key ordering is deterministic in composed output. | Repeated compose runs produce byte-stable frontmatter ordering. |
 | REQ-007 | Migration tooling supports dry-run and apply modes. | Dry-run reports planned changes without writing files; apply mode writes expected changes. |
 | REQ-008 | Reindex workflow emits structured success/failure metadata. | Command output includes counts for scanned, migrated, indexed, and failed records. |
-<!-- /ANCHOR:requirements -->
 
 ---
 
-<!-- ANCHOR:success-criteria -->
-## 5. SUCCESS CRITERIA
+### 5. SUCCESS CRITERIA
 
 - **SC-001**: All targeted files conform to canonical frontmatter shape after migration.
 - **SC-002**: Index rebuild + test suite completes with no parser regressions.
-<!-- /ANCHOR:success-criteria -->
 
 ---
 
-<!-- ANCHOR:risks -->
-## 6. RISKS & DEPENDENCIES
+### 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
 | Dependency | Existing parser/index contracts | Incorrect assumptions can break indexing. | Add compatibility adapter and staged tests before full migration. |
 | Risk | Bulk migration touches many markdown files | High churn can hide mistakes. | Use dry-run diff mode and idempotency checks before write mode. |
-<!-- /ANCHOR:risks -->
 
 ---
 
-<!-- ANCHOR:nfr -->
-## 7. NON-FUNCTIONAL REQUIREMENTS
+### 7. NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: Full migration + reindex for targeted scope completes within established CI timeout budget.
@@ -459,12 +428,10 @@ Define and execute a deterministic normalization plus reindex workflow that prod
 
 ### Reliability
 - **NFR-R01**: Migration is deterministic and safe to re-run without data loss.
-<!-- /ANCHOR:nfr -->
 
 ---
 
-<!-- ANCHOR:edge-cases -->
-## 8. EDGE CASES
+### 8. EDGE CASES
 
 ### Data Boundaries
 - Empty frontmatter block: parser emits explicit defaults and non-fatal warning.
@@ -473,12 +440,10 @@ Define and execute a deterministic normalization plus reindex workflow that prod
 ### Error Scenarios
 - Parse failure on malformed YAML: file is skipped, logged, and reported for manual correction.
 - Reindex interruption: rerun resumes safely because migration and compose are idempotent.
-<!-- /ANCHOR:edge-cases -->
 
 ---
 
-<!-- ANCHOR:complexity -->
-## 9. COMPLEXITY ASSESSMENT
+### 9. COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
@@ -488,24 +453,20 @@ Define and execute a deterministic normalization plus reindex workflow that prod
 | Multi-Agent | 8/15 | Workstreams can split by templates/parser/tests. |
 | Coordination | 9/15 | Requires ordered migration then reindex then verification. |
 | **Total** | **67/100** | **Level 3** |
-<!-- /ANCHOR:complexity -->
 
 ---
 
-<!-- ANCHOR:risk-matrix -->
-## 10. RISK MATRIX
+### 10. RISK MATRIX
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
 |---------|-------------|--------|------------|------------|
 | R-001 | Frontmatter rewrite drops required metadata fields | H | M | Enforce schema validation and pre/post migration diff checks. |
 | R-002 | Reindex pipeline consumes stale composed values | M | M | Couple migration completion to explicit rebuild trigger and assertions. |
 | R-003 | Parser strictness breaks legacy documents | M | H | Provide compatibility mapping and clear error reports for unsupported cases. |
-<!-- /ANCHOR:risk-matrix -->
 
 ---
 
-<!-- ANCHOR:user-stories -->
-## 11. USER STORIES
+### 11. USER STORIES
 
 ### US-001: Normalize Metadata at Scale (Priority: P0)
 
@@ -524,11 +485,10 @@ Define and execute a deterministic normalization plus reindex workflow that prod
 **Acceptance Criteria**:
 1. Given normalized files, when reindex executes, then indexed frontmatter fields match the canonical schema.
 2. Given regression tests, when suite runs, then expected retrieval fixtures continue to pass.
-<!-- /ANCHOR:user-stories -->
 
 ---
 
-## ACCEPTANCE SCENARIOS
+### ACCEPTANCE SCENARIOS
 
 1. **Given** a template file with mixed-case frontmatter keys, **When** migration runs, **Then** keys are rewritten to canonical casing.
 2. **Given** a spec file already compliant with canonical schema, **When** migration runs, **Then** no file diff is produced.
@@ -539,16 +499,14 @@ Define and execute a deterministic normalization plus reindex workflow that prod
 
 ---
 
-<!-- ANCHOR:questions -->
-## 12. OPEN QUESTIONS
+### 12. OPEN QUESTIONS
 
 - Should migration auto-fix unknown custom keys into `x_`-prefixed extension fields, or fail closed?
 - Should index rebuild run in one global pass or in ordered template/spec/memory stages with checkpoints?
-<!-- /ANCHOR:questions -->
 
 ---
 
-## RELATED DOCUMENTS
+### RELATED DOCUMENTS
 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`

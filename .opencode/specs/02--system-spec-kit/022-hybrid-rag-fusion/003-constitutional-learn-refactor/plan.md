@@ -9,7 +9,6 @@ level: 2
 created: 2025-12-01
 updated: 2026-03-08
 ---
-<!-- ANCHOR:plan -->
 # Implementation Plan
 
 <!-- ANCHOR:summary -->
@@ -85,7 +84,7 @@ Complete replacement of the 620-line generic learning capture with a ~250-line c
 11. Error handling
 12. Quick reference
 
-## Phase 2: Cross-Reference Updates and Verification
+### Phase 2: Cross-Reference Updates and Verification
 
 ### Step 2: Update `.opencode/command/memory/README.txt`
 
@@ -142,16 +141,15 @@ Complete replacement of the 620-line generic learning capture with a ~250-line c
 
 ---
 
-## Implementation Notes
+### Implementation Notes
 
 - The rewrite is a complete replacement — no incremental migration needed
 - The old learn.md content is discarded entirely; it provided negligible value over `/memory:save`
 - Constitutional memory files already have proper MCP indexing support via `memory_save()`
 - No database schema changes or new MCP tools required
 
-## Risk and Dependencies
+### Risk and Dependencies
 
 - **Risk**: Existing users may expect old `/memory:learn` behavior — mitigated by updating all cross-references
 - **Dependency**: `.opencode/skill/system-spec-kit/constitutional/` directory must exist (already does)
 - **Dependency**: `memory_save()` MCP handler must support constitutional tier (already does)
-<!-- /ANCHOR:plan -->

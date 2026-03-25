@@ -41,8 +41,8 @@ This parent pack now carries one stable audit baseline and one repaired direct-c
 | **Updated** | 2026-03-18 |
 | **Branch** | `022-hybrid-rag-fusion/009-perfect-session-capturing` |
 | **Parent Spec** | ../spec.md |
-| **Predecessor** | ../008-hydra-db-based-features/spec.md |
-| **Successor** | ../010-template-compliance-enforcement/spec.md |
+| **Predecessor** | [008-hydra-db-based-features](../008-hydra-db-based-features/spec.md) |
+| **Successor** | [010-template-compliance-enforcement](../010-template-compliance-enforcement/spec.md) |
 
 ---
 
@@ -310,7 +310,7 @@ Extend the pack truthfully through phase `018`, with `019` serving as an archite
 
 ---
 
-## Phase Navigation
+### Phase Navigation
 
 | Field | Value |
 |-------|-------|

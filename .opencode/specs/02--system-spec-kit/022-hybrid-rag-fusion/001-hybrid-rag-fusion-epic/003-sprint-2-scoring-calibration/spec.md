@@ -1,7 +1,6 @@
 ---
 title: "Feature Specification: Sprint 2 — Scoring Calibration"
 description: "Resolve dual scoring magnitude mismatch, add cold-start boost, embedding cache, and investigate double intent weighting."
-# SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2
 trigger_phrases:
   - "sprint 2"
   - "scoring calibration"
@@ -36,7 +35,6 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 3** of the Hybrid RAG Fusion Refinement specification.
@@ -55,7 +53,6 @@ This is **Phase 3** of the Hybrid RAG Fusion Refinement specification.
 - Cold-start boost with exponential decay (N4)
 - G2 double intent weighting resolution
 - Score normalization — both RRF and composite in [0,1]
-<!-- /ANCHOR:phase-context -->
 
 ---
 
@@ -158,7 +155,7 @@ Calibrate the scoring pipeline so both systems contribute proportionally to fina
 ---
 
 <!-- ANCHOR:nfr -->
-## 7. NON-FUNCTIONAL REQUIREMENTS
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: R18 cache lookup adds <1ms p95 to re-index path
@@ -180,7 +177,7 @@ Calibrate the scoring pipeline so both systems contribute proportionally to fina
 ---
 
 <!-- ANCHOR:edge-cases -->
-## 8. EDGE CASES
+## L2: EDGE CASES
 
 ### Data Boundaries
 - **R18 content_hash collision**: Astronomically unlikely with SHA-256; if occurs, embedding regenerated (correct but wasteful)
@@ -203,7 +200,7 @@ Calibrate the scoring pipeline so both systems contribute proportionally to fina
 ---
 
 <!-- ANCHOR:complexity -->
-## 9. COMPLEXITY ASSESSMENT
+## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
@@ -251,13 +248,13 @@ where M is the number of memories in the folder. The damping factor `1/sqrt(M+1)
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See ../000-feature-overview/spec.md
-- **Parent Plan**: See ../000-feature-overview/plan.md
+- **Parent Spec**: See ../spec.md
+- **Parent Plan**: See ../plan.md
 - **Predecessor**: See ../006-measurement-foundation/ (direct dependency — Sprint 1 is a parallel sibling)
 
 ---
@@ -272,11 +269,11 @@ LEVEL 2 SPEC — Phase 3 of 11
 
 ---
 
-## Phase Navigation
+#### Phase Navigation
 
 - Predecessor: `011-graph-signal-activation
 
-## Acceptance Scenarios (Validator Coverage)
+#### Acceptance Scenarios (Validator Coverage)
 1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

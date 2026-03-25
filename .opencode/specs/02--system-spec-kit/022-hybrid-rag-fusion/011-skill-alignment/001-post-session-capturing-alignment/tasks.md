@@ -1,22 +1,80 @@
-# Tasks — Post Session Capturing Alignment
+---
+title: "Tasks: 001-post-session-capturing-alignment"
+description: "Task list for the documentation-only post-session-capturing alignment packet."
+trigger_phrases:
+  - "011 child 001 tasks"
+  - "post session capturing alignment tasks"
+importance_tier: "important"
+contextType: "implementation"
+---
+# Tasks: 001-post-session-capturing-alignment
 
-## Sprint 1: SKILL.md
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
-- [x] T001: Add structured JSON fields documentation (toolCalls, exchanges, preflight, postflight)
-- [x] T002: Update handler count ~30 → ~40
-- [x] T003: Add 6-command structure note
-- [x] T004: Add quality-fix Key Concepts from 018
+---
 
-## Sprint 2: References
+<!-- ANCHOR:notation -->
+## Task Notation
 
-- [x] T005: Fix template_guide.md bare positional syntax
-- [x] T006: Reorder execution_methods.md JSON-first
-- [x] T007: Fix save_workflow.md bare positional examples
-- [x] T008: Add JSON-mode example to environment_variables.md
-- [x] T009: Update memory_system.md tool count 23→33
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[P]` | Parallelizable |
+| `[B]` | Blocked |
 
-## Sprint 3: Verification
+**Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
-- [x] T010: Run validate.sh [Evidence: parent 011-skill-alignment passed strict validation 2026-03-21]
-- [x] T011: Grep for remaining bare positional syntax [Evidence: verified in parent 011-skill-alignment reconciliation pass]
-- [x] T012: Verify tool counts match live repo [Evidence: 33 tools in tool-schemas.ts, 33 rows in memory_system.md, verified 2026-03-22]
+---
+
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+- [x] T001 Confirm the child packet scope is documentation-only and subordinate to `011-skill-alignment`
+- [x] T002 Read the existing child docs before rebuilding them
+- [x] T003 Capture the historical alignment themes: JSON-first save guidance, tool-count truth, and parent roll-up ownership
+<!-- /ANCHOR:phase-1 -->
+
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [x] T004 Rebuild `spec.md` with template-compliant Level 2 sections
+- [x] T005 Rebuild `plan.md` with template-compliant Level 2 sections
+- [x] T006 Rebuild `tasks.md`, `checklist.md`, and `implementation-summary.md` with template-compliant structure
+- [x] T007 Restore explicit parent references so recursive phase validation resolves cleanly
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [x] T008 Run strict validation for the child packet
+- [x] T009 Re-run parent validation expectations for `011-skill-alignment`
+- [x] T010 Confirm the child packet remains truthful and documentation-only
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] Manual verification passed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See `spec.md`
+- **Plan**: See `plan.md`
+- **Checklist**: See `checklist.md`
+- **Implementation Summary**: See `implementation-summary.md`
+<!-- /ANCHOR:cross-refs -->

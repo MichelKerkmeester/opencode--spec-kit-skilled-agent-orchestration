@@ -23,7 +23,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft — placeholder content, not yet a full testing packet |
+| **Status** | Draft — Level 2 packet scaffold created; execution pending |
 | **Created** | 2026-03-24 |
 | **Branch** | `main` |
 | **Parent Spec** | [../spec.md](../spec.md) |
@@ -54,7 +54,7 @@ Provide a single implement-and-remove-deprecated-features-focused specification 
 
 | Test ID | Scenario Name | Feature Catalog | Exact Prompt | Exact Command Sequence |
 |---------|---------------|-----------------|--------------|------------------------|
-| PB-022-01 | Deprecated feature identification | [`../../007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/spec.md`](../../007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/spec.md) | `Identify all deprecated flags and functions targeted for implementation or removal.` | `1) List the 3 IMPLEMENT targets: graph-calibration.ts, temporal-contiguity.ts, consumption-logger.ts 2) Verify each has @deprecated marker or hardcoded disabled flag in source 3) List the 3 REMOVE targets: channel-attribution.ts, fusion-lab.ts (shadow V2), eval-ceiling.ts 4) Verify each REMOVE target still exists in codebase (or confirm already removed) 5) Record inventory as evidence` |
+| PB-022-01 | Deprecated feature identification | [`../../007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/spec.md`](../../007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/spec.md) | `Identify all deprecated flags and functions targeted for implementation or removal.` | `1) List the 3 IMPLEMENT targets: graph-calibration.ts, temporal-contiguity.ts, consumption-logger.ts 2) Verify each has @deprecated marker or hardcoded disabled flag in source 3) List the 3 REMOVE targets: channel-attribution.ts, fusion-lab.ts (shadow V2; historical - fusion-lab.js deleted in commit 56c67030f), eval-ceiling.ts 4) Verify each REMOVE target still exists in codebase (or confirm already removed) 5) Record inventory as evidence` |
 | PB-022-02 | Safe removal process verification | [`../../007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/spec.md`](../../007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/spec.md) | `Verify safe removal process: feature flag off, tests pass, remove code.` | `1) For one REMOVE target (e.g., channel-attribution.ts), confirm its feature flag is OFF or absent 2) Run vitest to confirm all tests pass with the module present but disabled 3) Verify the source file, test file, catalog entry, and playbook entry have been removed (or mark as pending) 4) Run vitest again to confirm tests still pass after removal 5) Record pre/post test results as evidence` |
 | PB-022-03 | No runtime references remain after removal | [`../../007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/spec.md`](../../007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/spec.md) | `Verify no runtime references remain after deprecated feature removal.` | `1) For each REMOVE target, grep -r the module name across entire codebase 2) Check import statements: no file should import the removed module 3) Check feature catalog index files for stale references 4) Check playbook index for stale references 5) Check README files for stale mentions 6) Record any remaining references as evidence gaps` |
 
@@ -69,6 +69,10 @@ Provide a single implement-and-remove-deprecated-features-focused specification 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
 | `spec.md` | Create | Phase 022 implement-and-remove-deprecated-features requirements, test inventory, and acceptance criteria |
+| `plan.md` | Create | Phase 022 execution order, evidence flow, and rollback guidance |
+| `tasks.md` | Create | Phase 022 task tracker for PB-022-01 through PB-022-03 |
+| `checklist.md` | Create | Phase 022 verification gates and evidence checklist |
+| `implementation-summary.md` | Create | Packet scaffold status until manual execution completes |
 | `description.json` | Create | Phase 022 metadata |
 <!-- /ANCHOR:scope -->
 
@@ -86,6 +90,14 @@ Provide a single implement-and-remove-deprecated-features-focused specification 
 | REQ-003 | Execute PB-022-03 no runtime references remain: grep confirms zero imports and zero index references for removed modules. | PASS if grep returns zero runtime references (imports, requires, catalog entries, playbook entries) for all REMOVE targets |
 
 No P1 items are defined for this phase; all three deprecated-feature scenarios are mandatory for coverage.
+
+### P1 - Packet Governance Requirements
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-901 | 022-implement-and-remove-deprecated-features packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 022-implement-and-remove-deprecated-features |
+| REQ-902 | 022-implement-and-remove-deprecated-features packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 022-implement-and-remove-deprecated-features |
+
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -97,6 +109,16 @@ No P1 items are defined for this phase; all three deprecated-feature scenarios a
 - **SC-002**: Each scenario has a PASS, PARTIAL, or FAIL verdict with explicit rationale.
 - **SC-003**: Coverage is reported as 3/3 with no skipped test IDs.
 - **SC-004**: Any remaining references discovered during PB-022-03 are recorded for follow-up remediation.
+### Acceptance Scenarios
+
+**Given** the `022-implement-and-remove-deprecated-features` phase packet, **when** a reviewer opens the scenario mapping, **then** every scenario listed for the phase has a bounded execution target and a documented acceptance rule.
+
+**Given** the `022-implement-and-remove-deprecated-features` phase packet, **when** execution evidence is reviewed, **then** verdict notes can be traced through `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+
+**Given** the `022-implement-and-remove-deprecated-features` phase packet, **when** a reviewer checks neighboring navigation, **then** the packet points back to the parent and to the adjacent numbered phase where one exists.
+
+**Given** strict validation runs on the `022-implement-and-remove-deprecated-features` phase packet, **when** the validator checks structure, **then** the packet satisfies Level 2 requirement and acceptance-scenario minimums.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

@@ -1,6 +1,7 @@
 {
-  "topic": "Review: 022-hybrid-rag-fusion v5 release readiness + feature catalog alignment",
+  "topic": "Review: 022-hybrid-rag-fusion v6 release readiness + feature catalog alignment verification",
   "mode": "review",
+  "version": "v6",
   "reviewTarget": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion",
   "reviewTargetType": "track",
   "reviewDimensions": [
@@ -23,58 +24,50 @@
   ],
   "severityThreshold": "P2",
   "crossReference": {
-    "core": [
-      "spec_code",
-      "checklist_evidence"
-    ],
-    "overlay": [
-      "feature_catalog_code",
-      "feature_catalog_simple_terms",
-      "playbook_capability"
-    ]
+    "core": ["spec_code", "checklist_evidence"],
+    "overlay": ["feature_catalog_code", "feature_catalog_simple_terms", "playbook_capability"]
   },
   "maxIterations": 20,
-  "convergenceThreshold": 0.1,
+  "convergenceThreshold": 0.10,
   "stuckThreshold": 2,
-  "maxDurationMinutes": 180,
-  "maxToolCallsPerIteration": 12,
-  "maxMinutesPerIteration": 10,
-  "progressiveSynthesis": true,
+  "maxDurationMinutes": 240,
   "specFolder": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation",
-  "createdAt": "2026-03-25T09:00:00.000Z",
+  "createdAt": "2026-03-25T12:00:00.000Z",
   "status": "complete",
   "executionMode": "auto",
   "agentPool": {
-    "codex": {
-      "count": 10,
+    "copilot_gpt54": {
+      "count": 5,
+      "cli": "copilot",
       "model": "gpt-5.4",
       "reasoning": "high"
     },
-    "copilot": {
-      "count": 10,
-      "model": "gpt-5.4",
+    "copilot_gpt53codex": {
+      "count": 5,
+      "cli": "copilot",
+      "model": "gpt-5.3-codex",
       "reasoning": "high"
     }
   },
   "priorReview": {
-    "version": "v4",
+    "version": "v5",
     "verdict": "CONDITIONAL",
     "findings": {
       "P0": 0,
-      "P1": 2,
-      "P2": 4
+      "P1": 10,
+      "P2": 11
     },
-    "openP1": [
-      "T79-nextSteps-completion-detection",
-      "T37-root-directory-count-drift"
+    "keyOpenItems": [
+      "Root/epic/012 inventory count three-way mismatch",
+      "Epic child-count mismatch (11 vs 12)",
+      "007 child packet validator debt (91 errors, 72 warnings)",
+      "Score normalizer NaN corruption in fusion-lab.js",
+      "Snippet vs master catalog drift in categories 11-21"
     ]
   },
   "waveStructure": {
-    "wave1": "Correctness + P1 verification (iterations 001-004)",
-    "wave2": "Security + Traceability (iterations 005-008)",
-    "wave3": "Feature Catalog Deep Verification (iterations 009-012)",
-    "wave4": "Simple Terms + Maintainability (iterations 013-016)",
-    "wave5": "Final Sweep + Verdict (iterations 017-020)"
+    "wave1": "Correctness + Security + Feature Catalog Code (iterations 001-010)",
+    "wave2": "Traceability + Maintainability + Verdict (iterations 011-020)"
   },
   "fileProtection": {
     "deep-research-config.json": "immutable",

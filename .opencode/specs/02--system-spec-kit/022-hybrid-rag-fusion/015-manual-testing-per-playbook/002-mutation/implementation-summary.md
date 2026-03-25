@@ -54,9 +54,9 @@ All 9 mutation-category playbook scenarios were executed via thorough static cod
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `002-mutation/tasks.md` | Modified | Per-scenario verdicts, status, and evidence citations added |
-| `002-mutation/checklist.md` | Modified | All 22 P0 and 8 P1 items marked with evidence; summary updated |
-| `002-mutation/implementation-summary.md` | Modified | Rewritten with verdict table, pass rate, and evidence |
+| `tasks.md` | Modified | Per-scenario verdicts, status, and evidence citations added |
+| `checklist.md` | Modified | All 22 P0 and 8 P1 items marked with evidence; summary updated |
+| `implementation-summary.md` | Modified | Rewritten with verdict table, pass rate, and evidence |
 <!-- /ANCHOR:what-built -->
 
 ---

@@ -54,7 +54,9 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Contamination Filter Extension (P0)
+## Phase 3: Verification
+
+### Contamination Filter Extension (P0)
 
 - [x] T009 Read workflow.ts lines 548-602 and map all existing filterContamination call sites
 - [x] T010 Add filterContamination call for `_JSON_SESSION_SUMMARY` with undefined guard (core/workflow.ts)
@@ -63,12 +65,10 @@ contextType: "implementation"
 - [x] T013 Add filterContamination call for `technicalContext` KEY strings (core/workflow.ts)
 - [x] T014 Add filterContamination call for `technicalContext` VALUE strings (core/workflow.ts)
 - [x] T015 Manual test: save a JSON payload with "I think this is important" in sessionSummary; confirm saved memory does not contain that phrase
-<!-- /ANCHOR:phase-3 -->
 
 ---
 
-<!-- ANCHOR:phase-4 -->
-## Phase 4: Missing Contamination Categories (P1)
+### Missing Contamination Categories (P1)
 
 - [x] T016 [P] Read contamination-filter.ts and enumerate current 29 patterns; confirm count
 - [x] T017 [P] Add hedging phrases category: "I think", "it seems", "perhaps", "might be", "could be" (extractors/contamination-filter.ts)
@@ -79,12 +79,10 @@ contextType: "implementation"
 - [x] T022 [P] Add safety disclaimer patterns: "I'm not able to", "I cannot", "Please consult" (extractors/contamination-filter.ts)
 - [x] T023 [P] Add redundant certainty markers: "It is important to note", "It is worth mentioning" (extractors/contamination-filter.ts)
 - [x] T024 Run contamination filter unit tests; confirm no over-stripping of valid content
-<!-- /ANCHOR:phase-4 -->
 
 ---
 
-<!-- ANCHOR:phase-5 -->
-## Phase 5: projectPhase Override (P1)
+### projectPhase Override (P1)
 
 - [x] T025 Read session-extractor.ts lines 188-207 to understand resolveContextType() and resolveImportanceTier() explicit-override pattern
 - [x] T026 Implement resolveProjectPhase() following the same pattern (scripts/extractors/session-extractor.ts)
@@ -93,24 +91,20 @@ contextType: "implementation"
 - [x] T029 Add projectPhase propagation in slow-path normalization branch (scripts/utils/input-normalizer.ts)
 - [x] T030 Manual test: JSON save with `"projectPhase": "IMPLEMENTATION"` produces `PROJECT_PHASE: IMPLEMENTATION` in saved memory frontmatter (tested via resolveProjectPhase unit verification)
 - [x] T031 Manual test: JSON save without projectPhase field produces `PROJECT_PHASE: RESEARCH` (inferred default, unchanged) (tested via resolveProjectPhase unit verification)
-<!-- /ANCHOR:phase-5 -->
 
 ---
 
-<!-- ANCHOR:phase-6 -->
-## Phase 6: Post-Save Review Score Feedback (P1)
+### Post-Save Review Score Feedback (P1)
 
 - [x] T032 Read post-save-review.ts to understand finding severity output structure (HIGH / MEDIUM / LOW)
 - [x] T033 Define penalty values per severity level (document decision in decision-record.md ADR-003 before implementing)
 - [x] T034 Add score adjustment in post-save-review.ts: compute total penalty from findings, pass to scorer (scripts/core/post-save-review.ts)
 - [x] T035 Add adjustment hook in extractors/quality-scorer.ts or apply post-review delta at call site
 - [x] T036 Manual test: trigger a HIGH post-save finding and confirm quality_score in saved file is lower than pre-review value (advisory logging verified; file patching removed to preserve dedup)
-<!-- /ANCHOR:phase-6 -->
 
 ---
 
-<!-- ANCHOR:phase-3-verify -->
-## Phase 3: Verification
+### Final Verification
 
 - [x] T037 Run full `npx vitest run`; confirm zero regressions against baseline from T001
 - [x] T038 End-to-end save with deliberately low-quality JSON payload (short summary, few observations, vague decisions); confirm quality_score < 0.80
@@ -118,7 +112,7 @@ contextType: "implementation"
 - [x] T040 End-to-end save with contaminated text in all 4 newly covered fields; inspect saved memory for absence of contamination
 - [x] T041 Confirm PROJECT_PHASE behaves correctly for both supplied and absent projectPhase inputs
 - [x] T042 Mark all checklist.md P0 items [x] with evidence references
-<!-- /ANCHOR:phase-3-verify -->
+<!-- /ANCHOR:phase-3 -->
 
 ---
 

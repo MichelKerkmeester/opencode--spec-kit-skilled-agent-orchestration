@@ -57,7 +57,7 @@ contextType: "general"
 - [x] CHK-210 [P1] Append-first lineage writes implemented [EVIDENCE:implementation-summary.md]
 - [x] CHK-211 [P1] Active projection validated [EVIDENCE:implementation-summary.md]
 - [x] CHK-212 [P1] `asOf` semantics validated [EVIDENCE:implementation-summary.md]
-- [ ] [DEFERRED] Rollback/kill-switch drill — drill artifacts not yet produced; evidence required before release sign-off
+- [ ] CHK-213 [P2] Rollback or kill-switch drill deferred — drill artifacts not yet produced; evidence required before release sign-off
 - [x] CHK-214 [P1] Integrity test suite passes [EVIDENCE:implementation-summary.md]
 
 <!-- /ANCHOR:testing -->

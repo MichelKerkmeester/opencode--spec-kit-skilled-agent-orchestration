@@ -83,20 +83,20 @@ Produce a complete rewrite that serves as the top-level entry point to the OpenC
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| RR-001 | All 18 skills listed | Every skill in `.opencode/skill/` appears with name and brief description |
-| RR-002 | All 12 agents documented | Every agent definition appears with name, role, and capabilities summary |
-| RR-003 | DQI >= 75 | `validate_document.py` scores at 75 or above |
+| REQ-001 | All skills are listed (legacy `RR-001`) | Every skill in `.opencode/skill/` appears with name and brief description |
+| REQ-002 | All agents are documented (legacy `RR-002`) | Every agent definition appears with name, role, and capabilities summary |
+| REQ-003 | DQI is at least 75 (legacy `RR-003`) | `validate_document.py` scores at 75 or above |
 
 ### P1 - Required
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| RR-004 | No banned HVR words | Zero matches for sk-doc banned word list |
-| RR-005 | Quick start works | A new user can understand the system and start using it from Overview + Quick Start alone |
-| RR-006 | Role-based navigation | Separate paths for newcomers, developers, and administrators |
-| RR-007 | Links to component READMEs | Detailed content links to MCP README, Spec Kit README, and skill READMEs without duplication |
-| RR-008 | Gate system documented | The 3-gate system from CLAUDE.md is accurately summarized |
-| RR-009 | Cross-references consistent | Links between D4, D3, and D1 are valid and non-circular |
+| REQ-004 | The README contains no banned HVR words (legacy `RR-004`) | Zero matches for the sk-doc banned word list |
+| REQ-005 | The quick start works for new users (legacy `RR-005`) | A new user can understand the system and start from the Overview plus Quick Start alone |
+| REQ-006 | Role-based navigation is present (legacy `RR-006`) | Separate paths exist for newcomers, developers, and administrators |
+| REQ-007 | Links to component READMEs stay accurate (legacy `RR-007`) | Detailed content links to the MCP README, Spec Kit README, and skill READMEs without duplication |
+| REQ-008 | The gate system is documented (legacy `RR-008`) | The gate system from `CLAUDE.md` is accurately summarized |
+| REQ-009 | Cross-references stay consistent (legacy `RR-009`) | Links between sibling README packets remain valid and non-circular |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -108,6 +108,12 @@ Produce a complete rewrite that serves as the top-level entry point to the OpenC
 - **SC-002**: DQI >= 75 with zero banned HVR words
 - **SC-003**: Three navigation paths work: newcomer, developer, administrator
 - **SC-004**: No content duplicated from component READMEs
+
+### Acceptance Scenarios
+
+**Given** the rewritten root README, **when** a newcomer reads the Overview and Quick Start sections, **then** they can understand the system and choose an appropriate next path.
+
+**Given** a reviewer audits the root README against the live directories, **when** they count agents and skills, **then** the listed inventories match the repo and the README links outward for deeper detail instead of duplicating it.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -142,7 +148,7 @@ Target: Complete rewrite of root README as system overview
 
 ---
 
-## Phase Navigation
+### Phase Navigation
 
 | Field | Value |
 |-------|-------|

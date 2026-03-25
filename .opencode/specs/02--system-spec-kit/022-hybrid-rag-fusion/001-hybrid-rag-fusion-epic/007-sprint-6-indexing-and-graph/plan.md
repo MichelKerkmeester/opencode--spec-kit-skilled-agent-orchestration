@@ -96,7 +96,7 @@ Two sequential sub-sprints: Sprint 6a (practical, no graph-scale dependency) →
 <!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
-### Sprint 6a: Practical Improvements (R7, R16, S4, T001d, N3-lite) — 33-51h
+### Phase 1: Sprint 6a Practical Improvements (R7, R16, S4, T001d, N3-lite) — 33-51h
 
 - [ ] T001d: weight_history audit tracking — log weight changes for N3-lite Hebbian modifications (2-3h)
   - Dependency justification: REQUIRED before any N3-lite Hebbian cycle runs. Enables rollback independent of edge creation.
@@ -105,7 +105,7 @@ Two sequential sub-sprints: Sprint 6a (practical, no graph-scale dependency) →
 - [ ] S4: Implement spec folder hierarchy as retrieval structure (6-10h)
 - [ ] N3-lite: Implement contradiction scan + Hebbian strengthening + staleness detection with edge caps (10-15h) {T001d}
 
-### Sprint 6b: Graph Sophistication (N2, R10) — 37-53h heuristic (GATED)
+### Phase 2: Sprint 6b Graph Sophistication (N2, R10) — 37-53h heuristic (GATED)
 
 > **Sprint 6b Entry Gates (ALL REQUIRED):**
 > 1. Feasibility spike completed (8-16h)
@@ -119,7 +119,7 @@ Two sequential sub-sprints: Sprint 6a (practical, no graph-scale dependency) →
   - N2c (Community Detection): start with connected components (BFS, ~20 LOC); only escalate to Louvain if connected-components provides insufficient separation
 - [ ] R10: Implement auto entity extraction behind `SPECKIT_AUTO_ENTITIES` flag — gated on density <1.0 (12-18h)
 
-### R10 Gating
+### Phase 3: R10 Gating
 - Only implement if Sprint 1 exit showed edge density <1.0 edges/node
 - If density >=1.0, skip R10 and document decision
 
@@ -252,23 +252,21 @@ Sprint 6b (Graph, GATED) ──────────────────�
 
 ---
 
-<!-- ANCHOR:pageindex-xrefs -->
-## PageIndex Cross-References
+##### PageIndex Cross-References
 
 Builds on PageIndex integration from Sprints 2-3 (PI-A1 folder scoring, PI-A2 fallback chain).
 
 - **PI-A1 (Sprint 2 — DocScore aggregation)**: Consider folder-level scoring as a pre-filter before graph traversal in Sprint 6b.
 - **PI-A2 (Sprint 3 — Fallback chain)**: Graph queries returning empty results should route into the Sprint 3 fallback chain rather than returning empty-handed.
-<!-- /ANCHOR:pageindex-xrefs -->
 
 ---
 
-## RELATED DOCUMENTS
+#### Related Documents
 
 - **Specification**: See `spec.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md`
+- **Parent Plan**: See `../plan.md`
 
 ---
 

@@ -1,44 +1,82 @@
-# Task Tracker: 016-json-mode-hybrid-enrichment
+---
+title: "Tasks: 016-json-mode-hybrid-enrichment"
+description: "Task tracker for normalizing the JSON-mode hybrid-enrichment phase container and repairing the metadata and integrity issues blocking recursive strict validation."
+trigger_phrases:
+  - "016 json mode tasks"
+  - "json mode hybrid enrichment tasks"
+importance_tier: "important"
+contextType: "implementation"
+---
+# Tasks: 016-json-mode-hybrid-enrichment
 
-## Status Summary
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
-| Status | Count |
-|--------|-------|
-| Complete | 10 |
-| In Progress | 1 |
-| Planned | 2 |
+---
 
-## P0 — Critical Tasks
+<!-- ANCHOR:notation -->
+## Task Notation
 
-- [x] T-001: Extend contamination filter to cover all text fields (Domain E)
-- [x] T-002: Recalibrate quality scorer bonus system (Domain C)
-- [x] T-003: Fix fast-path `filesModified` drop (Domain A)
-- [x] T-004: Surface RetryStats through `memory_health` tool (Domain D)
-- [x] T-005: Fix Vitest calibration test import (Domain C)
+| Prefix | Meaning |
+|--------|---------|
+| `[ ]` | Pending |
+| `[x]` | Completed |
+| `[B]` | Blocked |
 
-## P1 — High-Priority Tasks
+**Task Format**: `T### Description`
+<!-- /ANCHOR:notation -->
 
-- [x] T-006: Add trigger phrase quality filtering (Domain D)
-- [x] T-007: Promote `toolCalls` field to template consumption (Domain F)
-- [x] T-008: Promote `exchanges` field to template consumption (Domain F)
-- [ ] T-009: Add `resolveProjectPhase()` explicit override (Domain E) — In Progress
-- [x] T-010: Add unknown-field warnings in `validateInputData` (Domain B)
+---
 
-## P2 — Improvement Tasks
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
-- [ ] T-011: Remove phantom V2.2 placeholders (Domain F) — Planned
-- [ ] T-012: Un-suppress 9 OPTIONAL_PLACEHOLDERS with active data sources (Domain F) — Planned
-- [x] T-013: Increase truncation limit for content density (Domain B)
+- [x] T001 Capture the current recursive validator failures for `016-json-mode-hybrid-enrichment`
+- [x] T002 Read the top-level container docs and identify the missing template markers, anchors, and required sections
+- [x] T003 Identify the child phase-link and local-reference issues that block recursive strict validation
+<!-- /ANCHOR:phase-1 -->
 
-## Phase Child Tasks
+---
 
-- [x] 001-initial-enrichment: Complete
-- [x] 002-scoring-and-filter: Complete
-- [x] 003-field-integrity-and-schema: Complete
-- [x] 004-indexing-and-coherence: Complete
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
-## Notes
+- [x] T004 Rewrite the top-level `spec.md` as a template-compliant Level 1 phase container
+- [x] T005 Rewrite the top-level `plan.md` and `tasks.md` to match the active template
+- [x] T006 Rewrite the top-level `implementation-summary.md` to match the active template and preserve current truth
+- [ ] T007 Restore the missing child phase-link metadata in `001`, `003`, and `004`
+- [ ] T008 Repair stale spec-folder metadata and dead local markdown references in the affected child implementation summaries
+- [ ] T009 Preserve the remaining open follow-on tasks (`T-009`, `T-011`, `T-012`) as the reason the container remains in progress
+<!-- /ANCHOR:phase-2 -->
 
-- Research source: `research.md` (Round 2: 74 findings, 10-agent investigation)
-- PR1/PR2 architecture provenance retained in surviving research artifacts [Deleted — 013-memory-generation-quality was removed from the tree]
-- All 4 phase children are complete; remaining tasks are tracked at container level
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [ ] T010 Run strict validation on the top-level `016` packet and fix any remaining structural errors
+- [ ] T011 Run recursive strict validation on the full `016` subtree
+- [ ] T012 Record any residual warning debt that cannot be honestly cleared in this pass
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [ ] The top-level container docs pass strict validation.
+- [ ] The affected child metadata and integrity issues are repaired.
+- [ ] Recursive strict validation for the `016` subtree no longer reports structural errors.
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: `spec.md`
+- **Plan**: `plan.md`
+- **Implementation Summary**: `implementation-summary.md`
+- **Child Phases**: `001-initial-enrichment/`, `002-scoring-and-filter/`, `003-field-integrity-and-schema/`, `004-indexing-and-coherence/`
+- **Research Artifact**: `research.md`
+<!-- /ANCHOR:cross-refs -->

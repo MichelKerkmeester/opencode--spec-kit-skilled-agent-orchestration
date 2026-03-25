@@ -315,7 +315,7 @@ These caveats do not invalidate the design work; they clarify the gap between *s
 
 ---
 
-## Phase Navigation
+### Phase Navigation
 
 | Field | Value |
 |-------|-------|

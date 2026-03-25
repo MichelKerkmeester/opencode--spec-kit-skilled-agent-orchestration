@@ -119,6 +119,16 @@ Execute all ten Phase 005 lifecycle scenarios, record verdicts and evidence, and
 - **SC-005**: Scenarios 124 and 134 verify archival and startup recovery respectively
 - **SC-006**: Scenario 144 returns an advisory ingest forecast
 - **SC-007**: All 10 verdicts are recorded and all P0 checklist items are checked
+### Acceptance Scenarios
+
+**Given** the `005-lifecycle` phase packet, **when** a reviewer opens the scenario mapping, **then** every scenario listed for the phase has a bounded execution target and a documented acceptance rule.
+
+**Given** the `005-lifecycle` phase packet, **when** execution evidence is reviewed, **then** verdict notes can be traced through `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+
+**Given** the `005-lifecycle` phase packet, **when** a reviewer checks neighboring navigation, **then** the packet points back to the parent and to the adjacent numbered phase where one exists.
+
+**Given** strict validation runs on the `005-lifecycle` phase packet, **when** the validator checks structure, **then** the packet satisfies Level 2 requirement and acceptance-scenario minimums.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

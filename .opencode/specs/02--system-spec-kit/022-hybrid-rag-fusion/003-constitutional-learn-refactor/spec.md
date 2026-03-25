@@ -77,7 +77,6 @@ Complete rewrite of `.opencode/command/memory/learn.md` with:
 - `memory_save()` MCP handler — already supports constitutional indexing
 - `tier-classifier.ts` — already handles constitutional (no decay, always HOT)
 - No new MCP tools needed
-<!-- /ANCHOR:scope -->
 
 ---
 
@@ -93,8 +92,7 @@ Complete rewrite of `.opencode/command/memory/learn.md` with:
 
 ---
 
-<!-- ANCHOR:acceptance -->
-## 5. ACCEPTANCE CRITERIA
+### Acceptance Scenarios
 
 **Given** the learn command is invoked with no subcommand, **When** a user provides a rule, **Then** the CREATE workflow triggers with qualification, structuring, budget-check, and write+index steps.
 
@@ -103,13 +101,6 @@ Complete rewrite of `.opencode/command/memory/learn.md` with:
 **Given** the learn command is invoked with `budget`, **When** constitutional memories exist, **Then** current token usage vs ~2000 limit is displayed.
 
 **Given** the old learning types (pattern, mistake, insight), **When** grepping the learn command document, **Then** zero matches are found (except safe contextual uses).
-<!-- /ANCHOR:acceptance -->
-
----
-
-<!-- ANCHOR:scope -->
-## 6. SCOPE
-
 ### In Scope
 - Rewrite learn.md command definition
 - Update cross-references in README.txt, CLAUDE.md, README.md
@@ -121,12 +112,8 @@ Complete rewrite of `.opencode/command/memory/learn.md` with:
 - Changes to importance-tiers.ts or tier-classifier.ts
 - New MCP tools
 - Migration of existing "learnings" saved via old command
-<!-- /ANCHOR:scope -->
 
----
-
-<!-- ANCHOR:files -->
-## 7. FILES
+### Files Changed
 
 | File | Action | LOC Est. |
 |------|--------|----------|
@@ -134,7 +121,7 @@ Complete rewrite of `.opencode/command/memory/learn.md` with:
 | `.opencode/command/memory/README.txt` | Edit | ~15 |
 | `CLAUDE.md` | Edit | ~5 |
 | `.opencode/skill/system-spec-kit/README.md` | Edit | ~3 |
-<!-- /ANCHOR:files -->
+<!-- /ANCHOR:scope -->
 
 ---
 
@@ -167,11 +154,3 @@ No open questions remain. All were resolved during implementation.
 <!-- /ANCHOR:questions -->
 
 ---
-
-## Phase Navigation
-
-| Field | Value |
-|-------|-------|
-| **Parent Spec** | ../spec.md |
-| **Previous Phase** | ../002-indexing-normalization/spec.md |
-| **Next Phase** | ../004-ux-hooks-automation/spec.md |

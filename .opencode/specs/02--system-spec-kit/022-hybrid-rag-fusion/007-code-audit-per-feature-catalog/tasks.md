@@ -70,7 +70,7 @@ contextType: "general"
 
 ---
 
-## Phase 4: Synthesis
+### Phase 4: Synthesis
 
 - [x] T025 Cross-phase dependency analysis — shared patterns identified across all phases
 - [x] T026 Master audit findings report — implementation-summary.md in all 23 spec folders

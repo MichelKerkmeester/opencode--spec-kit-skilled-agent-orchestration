@@ -1,78 +1,90 @@
 ---
-title: "Plan: Implement + Remove Deprecated Features"
+title: "Plan: Implement and Remove Deprecated Features"
 ---
-# Plan
+# Plan: Implement and Remove Deprecated Features
 
-## Execution: 5 GPT-5.4 Agents (Single Wave, Parallel)
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
-### Agent 1 — REMOVE: Channel Attribution
+---
 
-**Delete files:**
-- `mcp_server/lib/eval/channel-attribution.ts`
-- `mcp_server/tests/channel.vitest.ts`
-- `feature_catalog/09--evaluation-and-measurement/11-shadow-scoring-and-channel-attribution.md`
-- `manual_testing_playbook/09--evaluation-and-measurement/015-shadow-scoring-and-channel-attribution-r13-s2.md`
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-**Clean imports:**
-- `tests/shadow-scoring.vitest.ts:26` — remove import line
-- `tests/mpab-quality-gate-integration.vitest.ts:43-44` — remove import lines
+This packet now acts as a release-control phase record rather than an active multi-agent implementation plan. The immediate objective is to keep the six deprecated-feature targets traceable, aligned with the parent `012` release packet, and structurally valid for recursive spec validation.
+<!-- /ANCHOR:summary -->
 
-**Clean references in:**
-- `feature_catalog/feature_catalog.md` — remove shadow scoring section
-- `feature_catalog/feature_catalog_in_simple_terms.md` — remove section
-- `mcp_server/lib/eval/README.md` — remove channel-attribution entries
+---
 
-### Agent 2 — REMOVE: Fusion Shadow V2 + Eval Ceiling
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-**Delete files:**
-- `shared/algorithms/fusion-lab.ts`
-- `mcp_server/tests/fusion-lab.vitest.ts`
-- `mcp_server/lib/eval/eval-ceiling.ts`
-- `mcp_server/tests/ceiling-quality.vitest.ts`
-- `feature_catalog/11--scoring-and-calibration/23-fusion-policy-shadow-v2.md`
-- `feature_catalog/09--evaluation-and-measurement/04-full-context-ceiling-evaluation.md`
-- `manual_testing_playbook/11.../170-fusion-policy-shadow-v2...md`
-- `manual_testing_playbook/09.../008-full-context-ceiling-evaluation-a2.md`
+- Packet-level spec validation passes without structural errors.
+- Cross-packet links to `../021-remediation-revalidation/spec.md` and `../../001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md` resolve cleanly.
+- Documentation normalization does not claim code completion that has not been re-verified.
+<!-- /ANCHOR:quality-gates -->
 
-**Clean:**
-- `shared/algorithms/index.ts:8-10` — delete commented export lines
-- `feature_catalog/feature_catalog.md` — remove both sections
-- `feature_catalog/feature_catalog_in_simple_terms.md` — remove both sections
-- `manual_testing_playbook/manual_testing_playbook.md` — remove both entries
-- `mcp_server/lib/eval/README.md` — remove eval-ceiling entries
+---
 
-### Agent 3 — IMPLEMENT: Graph Calibration Profiles
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-1. Remove `@deprecated` from `graph-calibration.ts:14`
-2. Import + wire `applyCalibrationProfile()` in `stage2-fusion.ts` after graph signals (~L635)
-3. Guard with `if (isGraphCalibrationProfileEnabled()) { ... }`
-4. Update `feature_catalog/10.../15-graph-calibration-profiles.md` — remove DEPRECATED, describe as active
-5. Update `feature_catalog.md` + `feature_catalog_in_simple_terms.md`
-6. Run `npx vitest run tests/graph-calibration.vitest.ts`
+This phase sits at the boundary between the `007` audit chain and the `012` pre-release alignment packet:
 
-### Agent 4 — IMPLEMENT: Temporal Contiguity Layer
+- `007/.../022-implement-and-remove-deprecated-features/` preserves the scoped remediation set.
+- `001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/` owns final release verification and ship readiness.
+- The six targets remain grouped here so the audit chain ends with explicit ownership instead of an undocumented handoff.
 
-1. Remove `@deprecated` from `temporal-contiguity.ts:7`
-2. Add `isTemporalContiguityEnabled()` to `search-flags.ts` (graduated, default ON)
-3. Import + wire `vectorSearchWithContiguity()` in `stage1-candidate-gen.ts` (vector channel, before fusion)
-4. Guard with `if (isTemporalContiguityEnabled()) { ... }`
-5. Update `feature_catalog/10.../11-temporal-contiguity-layer.md` — remove DEPRECATED, describe as active
-6. Update `feature_catalog.md` + `feature_catalog_in_simple_terms.md`
-7. Run `npx vitest run tests/temporal-contiguity.vitest.ts`
+### Technical Context
 
-### Agent 5 — IMPLEMENT: Consumption Logger
+- The implementation candidates and retirement candidates were originally captured as a remediation wave, but this packet now functions as the audit-chain handoff into the release packet.
+- Runtime and test verification for the six targets is intentionally centralized in the `012` packet so the release decision stays in one place.
+<!-- /ANCHOR:architecture -->
 
-1. In `consumption-logger.ts:23`, change `return false` to `return isFeatureEnabled('SPECKIT_CONSUMPTION_LOG')`
-2. Import `isFeatureEnabled` from rollout-policy
-3. Add to rollout-policy or search-flags as graduated (default ON)
-4. Verify handler wiring at `memory-search.ts:969`, `memory-context.ts:1155`, `memory-triggers.ts:449`
-5. Update `feature_catalog/09.../08-agent-consumption-instrumentation.md` — describe as active
-6. Update `feature_catalog.md` + `feature_catalog_in_simple_terms.md`
-7. Run `npx vitest run tests/consumption-logger.vitest.ts`
+---
 
-## Post-Wave Verification
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
-1. Run full test suite
-2. Grep for deleted module names (expect 0 hits)
-3. Grep for new imports (verify wiring)
-4. Spot-check 3 catalog entries
+### Phase 1: Setup
+- Re-read this child packet and its predecessor packet.
+- Re-link the packet to the parent release packet in `012`.
+
+### Phase 2: Implementation
+- Normalize `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` to Level 2 template structure.
+- Add `implementation-summary.md` so the phase has a truthful closeout record.
+
+### Phase 3: Verification
+- Run packet validation on this child packet.
+- Re-run recursive validation on the `007` umbrella packet to confirm this phase no longer contributes structural errors.
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+- Primary check: `scripts/spec/validate.sh <packet> --strict`
+- Secondary check: recursive validation on `007-code-audit-per-feature-catalog`
+- Supporting verification: inspect parent `012` packet when release ownership or status language needs confirmation
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Why It Matters |
+|------------|----------------|
+| `../021-remediation-revalidation/spec.md` | Supplies predecessor context and remediation handoff |
+| `../../001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation/spec.md` | Owns final release-control verification |
+| System Spec Kit validator | Enforces packet structure and link integrity |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+If this normalization introduces misleading status language, revert only the packet-document edits and preserve the broader release packet state in `012`. No runtime code changes are coupled to this documentation pass.
+<!-- /ANCHOR:rollback -->

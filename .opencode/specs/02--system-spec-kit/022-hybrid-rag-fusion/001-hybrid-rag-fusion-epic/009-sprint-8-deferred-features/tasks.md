@@ -1,7 +1,6 @@
 ---
 title: "Tasks: Sprint 8 - Deferred Features"
 description: "Task Format: T### [P?] Description (file path)"
-# SPECKIT_TEMPLATE_SOURCE: tasks-core + phase-child-header | v2.2
 trigger_phrases:
   - "sprint 8 tasks"
   - "deferred backlog"

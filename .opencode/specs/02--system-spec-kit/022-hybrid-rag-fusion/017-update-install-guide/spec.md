@@ -85,18 +85,18 @@ Verify every installation step against the current `package.json` and build syst
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| IG-001 | All installation steps verified against current `package.json` | Every dependency name and version referenced in the guide exists in the current `package.json` |
-| IG-002 | 5-phase gate structure preserved | The existing phase structure is intact with no phases removed or reordered |
-| IG-003 | DQI >= 75 | `validate_document.py` scores the final document at 75 or above |
+| REQ-001 | All installation steps are verified against the current `package.json` (legacy `IG-001`) | Every dependency name and version referenced in the guide exists in the current `package.json` |
+| REQ-002 | The 5-phase gate structure is preserved (legacy `IG-002`) | The existing phase structure remains intact with no phases removed or reordered |
+| REQ-003 | DQI is at least 75 (legacy `IG-003`) | `validate_document.py` scores the final document at 75 or above |
 
 ### P1 - Required
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| IG-004 | Rollback procedure added | A dedicated section explains how to cleanly revert a failed installation |
-| IG-005 | Platform configs refreshed | macOS, Linux, and Windows sections reflect current build requirements |
-| IG-006 | Verification commands current | All test/build commands in the guide produce expected output with current codebase |
-| IG-007 | No banned HVR words | Zero matches for sk-doc banned word list |
+| REQ-004 | A rollback procedure is added (legacy `IG-004`) | A dedicated section explains how to cleanly revert a failed installation |
+| REQ-005 | Platform configs are refreshed (legacy `IG-005`) | macOS, Linux, and Windows sections reflect current build requirements |
+| REQ-006 | Verification commands are current (legacy `IG-006`) | All test and build commands in the guide produce expected output with the current codebase |
+| REQ-007 | The guide contains no banned HVR words (legacy `IG-007`) | Zero matches for the sk-doc banned word list |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -107,6 +107,12 @@ Verify every installation step against the current `package.json` and build syst
 - **SC-001**: A fresh installation following the guide succeeds end-to-end on macOS
 - **SC-002**: DQI >= 75 with zero banned HVR words
 - **SC-003**: Rollback procedure documented and reachable from failure points
+
+### Acceptance Scenarios
+
+**Given** the updated install guide, **when** a reviewer compares it against the current `package.json` and build scripts, **then** dependency names and verification commands match the live repo.
+
+**Given** an installation failure midway through setup, **when** a user follows the rollback section, **then** they can return the environment to a clean pre-install state.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -139,7 +145,7 @@ Target: Update (not rewrite) the install guide against current deps
 
 ---
 
-## Phase Navigation
+### Phase Navigation
 
 | Field | Value |
 |-------|-------|

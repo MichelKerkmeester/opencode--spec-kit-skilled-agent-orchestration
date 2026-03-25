@@ -1,6 +1,6 @@
 ---
 title: "Plan: 014-agents-md-alignment"
-description: "Implementation plan for aligning AGENTS.md Quick Reference tables with the 7-command memory suite."
+description: "Implementation plan for aligning AGENTS.md Quick Reference tables with the 6-command memory suite."
 trigger_phrases:
   - "014 plan"
   - "agents md plan"
@@ -36,7 +36,7 @@ Direct edit of 3 AGENTS.md files to close 5 identified gaps in Quick Reference w
 
 ### Definition of Ready
 - [x] All 3 AGENTS.md files read and gaps confirmed
-- [x] 7-command suite established by 012-command-alignment
+- [x] 6-command suite established by 012-command-alignment
 
 ### Definition of Done
 - [x] All 5 gaps closed across 3 files
@@ -99,7 +99,7 @@ Documentation-only table updates.
 
 | Dependency | Type | Status | Impact if Blocked |
 |------------|------|--------|-------------------|
-| 012-command-alignment | Internal | Green | Source of truth for 7-command suite |
+| 012-command-alignment | Internal | Green | Source of truth for 6-command suite |
 <!-- /ANCHOR:dependencies -->
 
 ---

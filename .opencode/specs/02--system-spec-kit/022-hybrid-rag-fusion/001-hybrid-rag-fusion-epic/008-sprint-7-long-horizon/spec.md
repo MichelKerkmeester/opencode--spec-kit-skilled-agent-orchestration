@@ -1,7 +1,6 @@
 ---
 title: "Feature Specification: Sprint 7 — Long Horizon"
 description: "Address scale-dependent features (memory summaries, content generation, entity linking), complete evaluation infrastructure, and evaluate INT8 quantization."
-# SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2
 trigger_phrases:
   - "sprint 7"
   - "long horizon"
@@ -37,7 +36,6 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 8** of the Hybrid RAG Fusion Refinement specification.
@@ -59,7 +57,6 @@ This is **Phase 8** of the Hybrid RAG Fusion Refinement specification.
 - Cross-document entity linking (S5)
 - Full reporting + ablation study framework (R13-S3)
 - R5 INT8 quantization evaluation decision
-<!-- /ANCHOR:phase-context -->
 
 ---
 
@@ -176,7 +173,7 @@ Address scale-dependent optimizations that become valuable at maturity, complete
 ---
 
 <!-- ANCHOR:nfr -->
-## 7. NON-FUNCTIONAL REQUIREMENTS
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: R8 summary pre-filtering must reduce search space (measured reduction in candidate set)
@@ -194,7 +191,7 @@ Address scale-dependent optimizations that become valuable at maturity, complete
 ---
 
 <!-- ANCHOR:edge-cases -->
-## 8. EDGE CASES
+## L2: EDGE CASES
 
 ### Data Boundaries
 - **Memory count <5K**: R8 memory summaries skipped entirely (gating condition not met)
@@ -215,7 +212,7 @@ Address scale-dependent optimizations that become valuable at maturity, complete
 ---
 
 <!-- ANCHOR:complexity -->
-## 9. COMPLEXITY ASSESSMENT
+## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
@@ -237,7 +234,6 @@ Address scale-dependent optimizations that become valuable at maturity, complete
 
 ---
 
-<!-- ANCHOR:pageindex-xrefs -->
 ### PageIndex Cross-References
 
 Builds on PageIndex integration from Sprints 0, 5 (PI-A5 quality verification, PI-B1 tree thinning).
@@ -250,17 +246,16 @@ Builds on PageIndex integration from Sprints 0, 5 (PI-A5 quality verification, P
 These are cross-references only — Sprint 7 does not own PI-A5 or PI-B1. Integration points should be considered during R8 memory summary design and R13-S3 quality reporting but are not blocking requirements for the Sprint 7 exit gate.
 
 Research evidence: See research documents `9 - analysis-pageindex-systems-architecture.md`, `9 - recommendations-pageindex-patterns-for-speckit.md`, `9 - pageindex-tree-search-analysis.md` in the parent research/ folder.
-<!-- /ANCHOR:pageindex-xrefs -->
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See ../000-feature-overview/spec.md
-- **Parent Plan**: See ../000-feature-overview/plan.md
+- **Parent Spec**: See ../spec.md
+- **Parent Plan**: See ../plan.md
 
 ---
 
@@ -275,11 +270,11 @@ LEVEL 2 SPEC — Phase 8 of 11
 
 ---
 
-## Phase Navigation
+##### Phase Navigation
 
 - Successor: 018-deferred-features
 
-## Acceptance Scenarios (Validator Coverage)
+##### Acceptance Scenarios (Validator Coverage)
 1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

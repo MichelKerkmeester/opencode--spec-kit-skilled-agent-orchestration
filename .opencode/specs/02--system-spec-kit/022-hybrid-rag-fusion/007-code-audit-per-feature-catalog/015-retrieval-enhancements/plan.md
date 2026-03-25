@@ -9,11 +9,12 @@ contextType: "general"
 ---
 # Implementation Plan: Code Audit — Retrieval Enhancements
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -30,8 +31,11 @@ Audit each of the 9 Retrieval Enhancements features by reading the feature catal
 
 **Completed 2026-03-22. Result: 8 MATCH, 1 PARTIAL (F09).**
 
+<!-- /ANCHOR:summary -->
+
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -44,8 +48,11 @@ Audit each of the 9 Retrieval Enhancements features by reading the feature catal
 - [x] Findings documented per feature
 - [x] Summary report completed
 
+<!-- /ANCHOR:quality-gates -->
+
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -59,8 +66,11 @@ Read-only audit: Feature Catalog → Source Code → Findings Report
 ### Data Flow
 Read feature catalog entry → Locate source files → Compare description to implementation → Document findings
 
+<!-- /ANCHOR:architecture -->
+
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Preparation
@@ -84,8 +94,11 @@ Read feature catalog entry → Locate source files → Compare description to im
 - [x] Identify systemic patterns
 - [x] Compile summary report (see spec.md §12)
 
+<!-- /ANCHOR:phases -->
+
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools | Status |
@@ -94,8 +107,11 @@ Read feature catalog entry → Locate source files → Compare description to im
 | Completeness | All 9 features covered | Checklist verification | Done |
 | Accuracy | Catalog matches implementation | Manual review | Done — 8/9 MATCH |
 
+<!-- /ANCHOR:testing -->
+
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -103,11 +119,16 @@ Read feature catalog entry → Locate source files → Compare description to im
 | Feature catalog | Internal | Green | Cannot audit without reference |
 | Source code access | Internal | Green | Cannot verify implementation |
 
+<!-- /ANCHOR:dependencies -->
+
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - Not applicable — audit completed successfully.
+
+<!-- /ANCHOR:rollback -->
 
 ---
 
@@ -130,7 +151,7 @@ Phase 1 (Prep) ──► Phase 2 (Audit 9 features) ──► Phase 3 (Synthesis
 
 ---
 
-## L3: MILESTONES
+### Milestones
 
 | Milestone | Description | Success Criteria | Status |
 |-----------|-------------|------------------|--------|

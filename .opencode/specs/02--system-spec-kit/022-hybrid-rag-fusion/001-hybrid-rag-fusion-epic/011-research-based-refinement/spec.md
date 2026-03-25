@@ -1,7 +1,6 @@
 ---
 title: "Feature Specification: Research-Based Refinement"
 description: "Parent phase coordinating 5 sub-phases of research-driven improvements to the Hybrid RAG Fusion system across fusion scoring, query intelligence, graph retrieval, feedback learning, and retrieval UX."
-# SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-parent | v2.2
 trigger_phrases:
   - "research refinement"
   - "D1 D2 D3 D4 D5"
@@ -11,7 +10,6 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "decision"
 ---
-
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-parent | v2.2 -->
 
@@ -66,7 +64,7 @@ Turn the 29 research recommendations into 5 implementable sub-phases, each with 
 
 ### Research Source
 
-All recommendations come from `019-deep-research-rag-improvement/research/research.md` and 5 agent outputs in `019-deep-research-rag-improvement/scratch/agent-D{1-5}-*.md`.
+All recommendations come from the Phase 11 research output (historical, original path `019-deep-research-rag-improvement` no longer exists).
 <!-- /ANCHOR:scope -->
 
 <!-- ANCHOR:phase-map -->
@@ -105,6 +103,14 @@ All recommendations come from `019-deep-research-rag-improvement/research/resear
 - SC-011-004: MRR@5, NDCG@10, Recall@20, HitRate@1 measured pre/post per dimension
 - SC-011-005: Simple-query p95 latency unchanged (regression test)
 - SC-011-006: All existing tests pass (4876+ test suite)
+
+### Acceptance Scenarios
+
+- **Given** the refinement packet is validated, **when** a reviewer opens the parent spec, **then** all 29 recommendations map cleanly to child phases with no orphan work.
+- **Given** the refinement fixes are delivered, **when** feature flags remain enabled selectively, **then** graduated behavior stays server-gated and reversible.
+- **Given** runtime and test updates changed across waves, **when** verification evidence is reviewed, **then** the packet still points to current tests and build outputs.
+- **Given** release alignment normalizes this packet, **when** strict validation runs, **then** the documentation structure matches the active Level 2 template.
+
 <!-- /ANCHOR:success-criteria -->
 
 <!-- ANCHOR:risks -->
@@ -120,11 +126,11 @@ All recommendations come from `019-deep-research-rag-improvement/research/resear
 | Risk | Graph enrichment may flood graph with noise | Medium | Density guards, denylists, `created_by='auto'` tagging |
 <!-- /ANCHOR:risks -->
 
-## 8. RELATED DOCUMENTS
+### Related Documents
 
 - [Parent Spec](../spec.md) — Epic coordination
 - [Parent Plan](../plan.md) — Epic plan
-- [Research Source](../../019-deep-research-rag-improvement/research/research.md) — Full 29-recommendation synthesis
+- Research source was in the Phase 11 scratch artifacts (original path `019-deep-research-rag-improvement/scratch/` no longer exists).
 - [Plan](plan.md) — Cross-phase implementation waves
 - [Tasks](tasks.md) — Cross-phase tracking
 - [Checklist](checklist.md) — Parent verification

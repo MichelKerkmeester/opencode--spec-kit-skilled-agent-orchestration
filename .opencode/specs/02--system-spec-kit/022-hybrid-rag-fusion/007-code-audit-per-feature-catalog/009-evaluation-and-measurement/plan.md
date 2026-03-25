@@ -9,11 +9,12 @@ contextType: "general"
 ---
 # Implementation Plan: Code Audit — Evaluation and Measurement
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -28,8 +29,11 @@ contextType: "general"
 ### Overview
 Audit each of the 16 Evaluation and Measurement features by reading the feature catalog entry, locating the referenced source files, and verifying that the implementation matches the documented behavior.
 
+<!-- /ANCHOR:summary -->
+
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -42,8 +46,11 @@ Audit each of the 16 Evaluation and Measurement features by reading the feature 
 - [x] Findings documented per feature
 - [x] Summary report completed
 
+<!-- /ANCHOR:quality-gates -->
+
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -57,8 +64,11 @@ Read-only audit: Feature Catalog → Source Code → Findings Report
 ### Data Flow
 Read feature catalog entry → Locate source files → Compare description to implementation → Document findings
 
+<!-- /ANCHOR:architecture -->
+
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Preparation
@@ -89,8 +99,11 @@ Read feature catalog entry → Locate source files → Compare description to im
 - [x] Identify systemic patterns
 - [x] Compile summary report
 
+<!-- /ANCHOR:phases -->
+
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -99,8 +112,11 @@ Read feature catalog entry → Locate source files → Compare description to im
 | Completeness | All 16 features covered | Checklist verification |
 | Accuracy | Catalog matches implementation | Manual review |
 
+<!-- /ANCHOR:testing -->
+
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -108,12 +124,17 @@ Read feature catalog entry → Locate source files → Compare description to im
 | Feature catalog | Internal | Green | Cannot audit without reference |
 | Source code access | Internal | Green | Cannot verify implementation |
 
+<!-- /ANCHOR:dependencies -->
+
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Audit methodology proves inadequate
 - **Procedure**: Revise approach and restart from Phase 1
+
+<!-- /ANCHOR:rollback -->
 
 ---
 
@@ -135,7 +156,7 @@ Phase 1 (Prep) ──► Phase 2 (Audit 16 features) ──► Phase 3 (Synthesi
 
 ---
 
-## L3: MILESTONES
+### Milestones
 
 | Milestone | Description | Success Criteria |
 |-----------|-------------|------------------|
@@ -145,7 +166,7 @@ Phase 1 (Prep) ──► Phase 2 (Audit 16 features) ──► Phase 3 (Synthesi
 
 ---
 
-## FINDINGS SUMMARY
+### Findings Summary
 
 **Audit Date**: 2026-03-22
 **Overall Result**: 12 MATCH, 4 PARTIAL

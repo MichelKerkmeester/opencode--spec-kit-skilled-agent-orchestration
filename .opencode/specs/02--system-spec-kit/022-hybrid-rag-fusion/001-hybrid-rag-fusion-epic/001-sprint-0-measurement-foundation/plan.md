@@ -1,7 +1,6 @@
 ---
 title: "Implementation Plan: Sprint 0 — Measurement Foundation"
 description: "Fix graph channel ID format, chunk collapse dedup, co-activation hub domination, and build evaluation infrastructure with BM25 baseline."
-# SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2
 trigger_phrases:
   - "sprint 0 plan"
   - "measurement foundation plan"
@@ -220,12 +219,12 @@ Phase 2 (Eval Infrastructure) ──────────┤
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - **Specification**: See `spec.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Plan**: See `../000-feature-overview/plan.md
+- **Parent Plan**: See `../plan.md
 
 ---
 

@@ -102,6 +102,17 @@ All 13 scenarios below are P0. Each must receive a PASS, FAIL, or PARTIAL verdic
 |----|-------------|---------------------|
 | REQ-R01 | Evidence captured per scenario | Each executed scenario has a recorded observation or output excerpt |
 | REQ-R02 | Feature catalog cross-reference verified | Each scenario's catalog reference confirmed present and accurate |
+
+### P1 - Packet Governance Requirements
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-901 | 001-retrieval packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 001-retrieval |
+| REQ-902 | 001-retrieval packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 001-retrieval |
+| REQ-903 | 001-retrieval packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 001-retrieval |
+| REQ-904 | 001-retrieval packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 001-retrieval |
+| REQ-905 | 001-retrieval packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 001-retrieval |
+
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -113,6 +124,16 @@ All 13 scenarios below are P0. Each must receive a PASS, FAIL, or PARTIAL verdic
 - **SC-002**: All P0 checklist items marked with evidence
 - **SC-003**: tasks.md reflects final execution status for every scenario task
 - **SC-004**: implementation-summary.md completed with aggregate results
+### Acceptance Scenarios
+
+**Given** the `001-retrieval` phase packet, **when** a reviewer opens the scenario mapping, **then** every scenario listed for the phase has a bounded execution target and a documented acceptance rule.
+
+**Given** the `001-retrieval` phase packet, **when** execution evidence is reviewed, **then** verdict notes can be traced through `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+
+**Given** the `001-retrieval` phase packet, **when** a reviewer checks neighboring navigation, **then** the packet points back to the parent and to the adjacent numbered phase where one exists.
+
+**Given** strict validation runs on the `001-retrieval` phase packet, **when** the validator checks structure, **then** the packet satisfies Level 2 requirement and acceptance-scenario minimums.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

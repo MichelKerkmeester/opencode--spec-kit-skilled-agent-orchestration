@@ -1,7 +1,6 @@
 ---
 title: "Feature Specification: Sprint 4 — Feedback and Quality"
 description: "Close the feedback loop with chunk aggregation, learned relevance feedback, and shadow scoring infrastructure."
-# SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2
 trigger_phrases:
   - "sprint 4"
   - "feedback and quality"
@@ -37,7 +36,6 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 5** of the Hybrid RAG Fusion Refinement specification.
@@ -54,7 +52,6 @@ This is **Phase 5** of the Hybrid RAG Fusion Refinement specification.
 - MPAB chunk-to-memory aggregation with N=0/N=1 guards (R1)
 - Learned relevance feedback with separate column and 10 safeguards (R11)
 - Shadow scoring + channel attribution + ground truth Phase B (R13-S2)
-<!-- /ANCHOR:phase-context -->
 
 ---
 
@@ -113,7 +110,7 @@ R13 must have completed at least 2 full eval cycles before R11 mutations are ena
 
 **Rationale for split**: R11 has CRITICAL severity — an FTS5 contamination mistake (adding `learned_triggers` to the FTS5 index) is irreversible without a full re-index of all memories. Isolating R11 into S4b means S4a's A/B infrastructure is operational before R11 mutations begin, enabling immediate detection of any regression. Risk concentration is eliminated by ensuring R1 and R13-S2 are verified clean before R11 is enabled.
 
-> **NOTE — TM-04 S4a/S4b placement divergence**: This child spec places TM-04 in **S4a** (quality gate before feedback mutations). The parent spec (../000-feature-overview/spec.md line 128) places TM-04 in S4b. The child spec's S4a placement is correct: TM-04 is a pre-storage quality gate with no schema change that should be operational before R11 feedback mutations begin in S4b. The parent spec should be updated to move TM-04 from S4b to S4a to match this child spec's authoritative Sprint 4 phasing.
+> **NOTE — TM-04 S4a/S4b placement divergence**: This child spec places TM-04 in **S4a** (quality gate before feedback mutations). The parent spec (../spec.md line 128) places TM-04 in S4b. The child spec's S4a placement is correct: TM-04 is a pre-storage quality gate with no schema change that should be operational before R11 feedback mutations begin in S4b. The parent spec should be updated to move TM-04 from S4b to S4a to match this child spec's authoritative Sprint 4 phasing.
 
 ### Files to Change
 
@@ -182,7 +179,7 @@ R13 must have completed at least 2 full eval cycles before R11 mutations are ena
 ---
 
 <!-- ANCHOR:nfr -->
-## 7. NON-FUNCTIONAL REQUIREMENTS
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: R11 dark-run overhead must not exceed +15ms p95
@@ -200,7 +197,7 @@ R13 must have completed at least 2 full eval cycles before R11 mutations are ena
 ---
 
 <!-- ANCHOR:edge-cases -->
-## 8. EDGE CASES
+## L2: EDGE CASES
 
 ### Data Boundaries
 - **N=0 chunks**: Return score 0 — no chunks means no signal
@@ -223,7 +220,7 @@ R13 must have completed at least 2 full eval cycles before R11 mutations are ena
 ---
 
 <!-- ANCHOR:complexity -->
-## 9. COMPLEXITY ASSESSMENT
+## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
@@ -247,21 +244,19 @@ R13 must have completed at least 2 full eval cycles before R11 mutations are ena
 
 ---
 
-<!-- ANCHOR:pageindex-integration -->
 ### PageIndex Integration
 
 > **PI-A4 deferred to Sprint 5** — Constitutional Memory as Expert Knowledge Injection (8-12h) has no Sprint 4 dependency and does not affect any Sprint 4 exit criterion. It is retrieval-pipeline work that fits Sprint 5's theme (pipeline refactor + query expansion R12). See ../015-pipeline-refactor/spec.md for updated placement. Rationale: ultra-think review REC-07.
-<!-- /ANCHOR:pageindex-integration -->
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See ../000-feature-overview/spec.md
-- **Parent Plan**: See ../000-feature-overview/plan.md
+- **Parent Spec**: See ../spec.md
+- **Parent Plan**: See ../plan.md
 
 ---
 
@@ -282,7 +277,7 @@ LEVEL 2 SPEC — Phase 5 of 11
 - Sprint 4: Feedback and Quality
 -->
 
-## Acceptance Scenarios (Validator Coverage)
+#### Acceptance Scenarios (Validator Coverage)
 1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

@@ -31,11 +31,11 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Playbook source and review protocol loaded before execution begins — all 8 scenario files read from `manual_testing_playbook/19--feature-flag-reference/`
-- [x] CHK-002 [P0] All 8 scenario prompts and command sequences verified against `../../manual_testing_playbook/manual_testing_playbook.md` — exact prompts and commands loaded per playbook scenario files
-- [x] CHK-003 [P0] MCP runtime confirmed operational for `memory_search` and `memory_context` — EX-028 through EX-034 triaged via feature catalog cross-reference per playbook fallback protocol; EVIDENCE GAP documented for corpus-based retrieval
-- [x] CHK-004 [P1] Flag documentation indexed or feature catalog triage path documented — triage path applied: all 7 flag-group catalogs read directly; EVIDENCE GAP noted (memory search corpus not indexed at execution time)
-- [x] CHK-005 [P1] Dist build at `capability-flags.js` confirmed current before 125 runs — `dist/lib/config/capability-flags.js` present and executed successfully; both node invocations completed without error
+- [x] CHK-001 [P0] Playbook source and review protocol loaded before execution begins — all 8 scenario files read from `manual_testing_playbook/19--feature-flag-reference/` [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-002 [P0] All 8 scenario prompts and command sequences verified against `../../manual_testing_playbook/manual_testing_playbook.md` — exact prompts and commands loaded per playbook scenario files [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-003 [P0] MCP runtime confirmed operational for `memory_search` and `memory_context` — EX-028 through EX-034 triaged via feature catalog cross-reference per playbook fallback protocol; EVIDENCE GAP documented for corpus-based retrieval [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-004 [P1] Flag documentation indexed or feature catalog triage path documented — triage path applied: all 7 flag-group catalogs read directly; EVIDENCE GAP noted (memory search corpus not indexed at execution time) [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-005 [P1] Dist build at `capability-flags.js` confirmed current before 125 runs — `dist/lib/config/capability-flags.js` present and executed successfully; both node invocations completed without error [EVIDENCE: tasks.md; implementation-summary.md]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -43,11 +43,11 @@ contextType: "general"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-020 [P0] All 8 scenarios have a PASS, PARTIAL, or FAIL verdict with explicit rationale — all 8 PASS; rationale cited per scenario in tasks.md T019-T026
+- [x] CHK-020 [P0] All 8 scenarios have a PASS, PARTIAL, or FAIL verdict with explicit rationale — all 8 PASS; rationale cited per scenario in tasks.md T019-T026 [EVIDENCE: tasks.md; implementation-summary.md]
 - [x] CHK-021 [P0] 125 step 1 confirms `phase:"shared-rollout"` with `capabilities.graphUnified:true` (live flag did not alter roadmap) — [Evidence: `dist/lib/config/capability-flags.js` node execution; output: `{"phase":"shared-rollout","capabilities":{"graphUnified":true,...}}`; SPECKIT_GRAPH_UNIFIED=false is a runtime retrieval gate that does not affect `SPECKIT_MEMORY_GRAPH_UNIFIED` or `SPECKIT_HYDRA_GRAPH_UNIFIED` roadmap env vars]
 - [x] CHK-022 [P0] 125 step 2 confirms `phase:"graph"` with `capabilities.graphUnified:false` (SPECKIT_HYDRA_* prefix opts out) — [Evidence: `dist/lib/config/capability-flags.js` node execution with SPECKIT_HYDRA_PHASE=graph SPECKIT_HYDRA_GRAPH_UNIFIED=false; output: `{"phase":"graph","capabilities":{"graphUnified":false,...}}`; `hasExplicitDisableFlag()` at capability-flags.ts:58-67 detected 'false' value and returned false for graphUnified]
-- [x] CHK-023 [P1] EX-028 through EX-034 zero-result cases have EVIDENCE GAP documented with feature catalog triage applied — all 7 scenarios used feature catalog triage path; EVIDENCE GAP documented in T014 (memory_search corpus not indexed at execution time); catalog triage confirmed PASS verdicts
-- [x] CHK-024 [P1] No fabricated or inferred evidence; all outputs captured verbatim or triaged via feature catalog cross-reference per playbook instructions — all verdicts based on direct code analysis (file:line citations) or feature catalog catalog tables; no evidence fabricated
+- [x] CHK-023 [P1] EX-028 through EX-034 zero-result cases have EVIDENCE GAP documented with feature catalog triage applied — all 7 scenarios used feature catalog triage path; EVIDENCE GAP documented in T014 (memory_search corpus not indexed at execution time); catalog triage confirmed PASS verdicts [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-024 [P1] No fabricated or inferred evidence; all outputs captured verbatim or triaged via feature catalog cross-reference per playbook instructions — all verdicts based on direct code analysis (file:line citations) or feature catalog catalog tables; no evidence fabricated [EVIDENCE: tasks.md; implementation-summary.md]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -70,9 +70,9 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No real API keys (COHERE_API_KEY, OPENAI_API_KEY, VOYAGE_API_KEY) in evidence artifacts — only variable names referenced throughout; no key values captured
-- [x] CHK-031 [P0] SPECKIT_HYDRA_* env vars unset after 125 completes — env vars were scoped as inline prefix injection to single shell commands (`SPECKIT_HYDRA_PHASE=graph SPECKIT_HYDRA_GRAPH_UNIFIED=false node -e ...`); they were never set persistently in the environment
-- [x] CHK-032 [P1] EX-029 and EX-032 credential env var names referenced only by name, not value — all evidence artifacts reference only variable names (COHERE_API_KEY, OPENAI_API_KEY, VOYAGE_API_KEY)
+- [x] CHK-030 [P0] No real API keys (COHERE_API_KEY, OPENAI_API_KEY, VOYAGE_API_KEY) in evidence artifacts — only variable names referenced throughout; no key values captured [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-031 [P0] SPECKIT_HYDRA_* env vars unset after 125 completes — env vars were scoped as inline prefix injection to single shell commands (`SPECKIT_HYDRA_PHASE=graph SPECKIT_HYDRA_GRAPH_UNIFIED=false node -e ...`); they were never set persistently in the environment [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-032 [P1] EX-029 and EX-032 credential env var names referenced only by name, not value — all evidence artifacts reference only variable names (COHERE_API_KEY, OPENAI_API_KEY, VOYAGE_API_KEY) [EVIDENCE: tasks.md; implementation-summary.md]
 <!-- /ANCHOR:security -->
 
 ---
@@ -80,8 +80,8 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Phase coverage reported as 8/8 scenarios with verdict summary — all 8 PASS; see implementation-summary.md verdict table
-- [x] CHK-041 [P1] `implementation-summary.md` updated with execution results and verdict table — rewritten with 8/8 PASS, pass rate 100%, evidence citations
+- [x] CHK-040 [P1] Phase coverage reported as 8/8 scenarios with verdict summary — all 8 PASS; see implementation-summary.md verdict table [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-041 [P1] `implementation-summary.md` updated with execution results and verdict table — rewritten with 8/8 PASS, pass rate 100%, evidence citations [EVIDENCE: tasks.md; implementation-summary.md]
 - [ ] CHK-042 [P2] Findings saved to `memory/` via generate-context.js
 - Follow-up note (2026-03-23): Before closing any M4 cleanup that changes roadmap-default semantics or telemetry wording, rerun scenario 125 and confirm the evidence only claims shared memory is enabled when the explicit-enable path is exercised.
 <!-- /ANCHOR:docs -->
@@ -91,8 +91,8 @@ contextType: "general"
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Evidence artifacts stored in `scratch/` only during execution — all evidence embedded inline in tasks.md and checklist.md per artifact capture pattern; no separate scratch files needed
-- [x] CHK-051 [P2] `scratch/` cleaned of intermediate drafts after completion — scratch directory contains no intermediate drafts from this execution
+- [x] CHK-050 [P1] Evidence artifacts stored in `scratch/` only during execution — all evidence embedded inline in tasks.md and checklist.md per artifact capture pattern; no separate scratch files needed [EVIDENCE: tasks.md; implementation-summary.md]
+- [x] CHK-051 [P2] `scratch/` cleaned of intermediate drafts after completion — scratch directory contains no intermediate drafts from this execution [EVIDENCE: tasks.md; implementation-summary.md]
 <!-- /ANCHOR:file-org -->
 
 ---

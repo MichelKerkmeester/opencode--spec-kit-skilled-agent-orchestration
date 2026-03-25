@@ -1,13 +1,15 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/016-tooling-and-scripts",
-  "description": "Code Audit: Tooling and Scripts",
+  "description": "Feature Specification: Code Audit — Tooling and Scripts",
   "keywords": [
+    "feature",
+    "specification",
     "code",
     "audit",
     "tooling",
     "scripts"
   ],
-  "lastUpdated": "2026-03-25T06:40:39.314Z",
+  "lastUpdated": "2026-03-25T10:14:59.436Z",
   "specId": "016",
   "folderSlug": "tooling-and-scripts",
   "parentChain": [

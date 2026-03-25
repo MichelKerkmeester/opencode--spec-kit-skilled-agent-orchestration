@@ -9,11 +9,12 @@ contextType: "general"
 ---
 # Tasks: Code Audit — Graph Signal Activation
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -25,16 +26,22 @@ contextType: "general"
 
 **Task Format**: `T### [P?] Description`
 
+<!-- /ANCHOR:notation -->
+
 ---
 
-## Phase 1: Preparation
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
 - [x] T000 Verify feature catalog currency for Graph Signal Activation
 - [x] T000a [P] Identify source code root paths
 
+<!-- /ANCHOR:phase-1 -->
+
 ---
 
-## Phase 2: Feature Audit
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
 - [x] T001 [P] Audit: Typed-weighted degree channel — MATCH (F01)
 - [x] T002 [P] Audit: Co-activation boost strength increase — MATCH (F02)
@@ -53,26 +60,37 @@ contextType: "general"
 - [x] T015 [P] Audit: Graph calibration profiles — PARTIAL (F15 deprecated; profile loading removed in favor of inline config)
 - [x] T016 [P] Audit: Typed traversal — MATCH (F16)
 
+<!-- /ANCHOR:phase-2 -->
+
 ---
 
-## Phase 3: Synthesis
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
 - [x] T900 Cross-reference findings across features
 - [x] T901 Compile audit summary report
 - [x] T902 Update implementation-summary.md
 
+<!-- /ANCHOR:phase-3 -->
+
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All feature audit tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
 - [x] Summary report completed
 
+<!-- /ANCHOR:completion -->
+
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
+
+<!-- /ANCHOR:cross-refs -->

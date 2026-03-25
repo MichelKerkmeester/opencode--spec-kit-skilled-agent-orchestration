@@ -124,7 +124,7 @@ Verification approach per feature:
 
 ---
 
-## Deep Research Gap Analysis
+### Deep Research Gap Analysis
 
 A 10-iteration deep research cycle (11 questions answered) was conducted post-audit to stress-test audit coverage, accuracy, and durability. Core findings:
 
@@ -150,7 +150,7 @@ A 10-iteration deep research cycle (11 questions answered) was conducted post-au
 
 ---
 
-## Re-Audit Results (2026-03-23)
+### Re-Audit Results (2026-03-23)
 
 A full re-audit was conducted on 2026-03-23 using a three-agent triangulation methodology: GPT-5.4 analyst + GPT-5.3-Codex verifier (via cli-codex, both at high reasoning effort) + Opus 4.6 adjudicator review per phase.
 
@@ -232,7 +232,7 @@ All re-audit outputs are in `scratch/reaudit-2026-03-23/` per phase:
 
 ---
 
-## Deep Review Remediation (2026-03-25)
+### Deep Review Remediation (2026-03-25)
 
 - **20-iteration deep review verdict: CONDITIONAL (0 P0, 22 P1, 35 P2)**
 

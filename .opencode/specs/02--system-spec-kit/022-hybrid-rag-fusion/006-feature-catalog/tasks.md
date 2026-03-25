@@ -87,7 +87,7 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 
 ---
 
-## Phase C: Analysis & Synthesis — COMPLETE
+**Phase C: Analysis & Synthesis — COMPLETE**
 
 - [x] T040 Parse all 30 scratch files and extract structured findings
 - [x] T041 Create remediation-manifest.md (scratch/remediation-manifest.md)
@@ -103,7 +103,7 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 
 ---
 
-## Phase D: Documentation Update — COMPLETE
+**Phase D: Documentation Update — COMPLETE**
 
 - [x] T050 Update tasks.md with concrete remediation items (this file)
 - [x] T051 Update checklist.md with verification results
@@ -111,7 +111,7 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 
 ---
 
-## Phase E: Current-State Addendum (2026-03-16) — COMPLETE
+**Phase E: Current-State Addendum (2026-03-16) — COMPLETE**
 
 - [x] T172 Reconcile snapshot vs live-tree counts (180 historical vs 189 current)
 - [x] T173 Audit 14 omitted current snippets and classify remediation status
@@ -123,7 +123,7 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 
 ---
 
-## Phase G: Normalization & Phase 016/017 Coverage (2026-03-21) — COMPLETE
+**Phase G: Normalization & Phase 016/017 Coverage (2026-03-21) — COMPLETE**
 
 - [x] T180 Remove all `NEW-NNN` markers from individual feature catalog files (194 files across 19 categories)
 - [x] T181 Remove all `NEW-NNN` markers from individual playbook files (200 files across 19 categories)
@@ -222,7 +222,7 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 
 ---
 
-## Merged Section: 016-feature-catalog-code-references Tasks
+**Merged Section: 016-feature-catalog-code-references Tasks**
 
 > **Merge note (2026-03-14)**: Originally the 016 tasks document in the prior folder layout.
 
@@ -232,8 +232,7 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 
 ---
 
-<!-- ANCHOR:phase-a -->
-## Phase A: Cleanup Stale References
+**Phase A: Cleanup Stale References**
 
 - [x] **T-A1**: Scan all `.ts` source files for sprint number references in comments [Evidence: Non-test source grep for stale refs returned no matches]
 - [x] **T-A2**: Scan all `.ts` source files for phase number references in comments [Evidence: Non-test source grep for stale refs returned no matches]
@@ -241,10 +240,8 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - [x] **T-A4**: Review and categorize each stale reference (remove vs rewrite) [Evidence: Stale project-history references in non-test source comments were removed or reworded]
 - [x] **T-A5**: Remove or rewrite all stale references [Evidence: Stale project-history references in non-test source comments were removed or reworded]
 - [x] **T-A6**: Verify zero stale references remain [Evidence: Non-test source grep for stale refs returned no matches]
-<!-- /ANCHOR:phase-a -->
 
-<!-- ANCHOR:phase-b -->
-## Phase B: Add Feature Catalog References
+**Phase B: Add Feature Catalog References**
 
 - [x] **T-B1**: Build file-to-feature catalog mapping from SOURCE FILES tables [Evidence: Mapping used for handler-wide and strong-match module annotations]
 - [x] **T-B2**: Annotate handler files with `// Feature catalog: <name>` comments [Evidence: 40 handler `.ts` files and 40 handler files containing a `// Feature catalog:` comment]
@@ -253,18 +250,14 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - [x] **T-B5**: Annotate script modules with feature catalog references [Evidence: `mcp_server/scripts` coverage check passed (3 TypeScript scripts, all 3 annotated with `// Feature catalog:`)]
 - [x] **T-B6**: Verify all references use name-only format (no numbers) [Evidence: Exact-name validation against feature catalog H1 headings passed with zero invalid names]
 - [x] **T-B7**: TypeScript compile check (`tsc --noEmit`) [Evidence: `npm run typecheck` in `.opencode/skill/system-spec-kit` exited 0]
-<!-- /ANCHOR:phase-b -->
 
-<!-- ANCHOR:verification -->
-## Verification
+**Verification**
 
 - [x] **T-V1**: Grep confirms zero sprint/phase/spec-number references in comments [Evidence: Non-test source grep for stale refs returned no matches]
 - [x] **T-V2**: Grep confirms all `Feature catalog:` references use name-only format [Evidence: Exact-name validation against feature catalog H1 headings passed with zero invalid names]
 - [x] **T-V3**: No runtime behavior changes (comment-only diff) [Evidence: Comment-only diff audit for `mcp_server` + `shared` returned `{"comment_only": true}`]
-<!-- /ANCHOR:verification -->
 
-<!-- ANCHOR:phase-c -->
-## Phase C: CHK-012 Resolution, MODULE: Alignment, and Documentation
+**Phase C: CHK-012 Resolution, MODULE: Alignment, and Documentation**
 
 - [x] **T-C1**: Transform `// 1. NAME` headers to `// MODULE: Name` in all 228 non-test mcp_server .ts files [Evidence: Python batch transform applied; verify_alignment_drift.py returns 0 TS-MODULE-HEADER findings]
 - [x] **T-C2**: Add `// MODULE: Name` headers to 82 scripts/ .ts files [Evidence: Headers added; verify_alignment_drift.py PASS]
@@ -278,4 +271,3 @@ title: "Tasks: Feature Catalog Audit & Remediation"
 - [x] **T-C10**: Add traceability mention to system-spec-kit/README.md [Evidence: Brief mention added in MCP Server component description]
 - [x] **T-C11**: Mark CHK-012 as complete in checklist.md [Evidence: CHK-012 marked [x] with 91 annotations and 0 invalid names evidence]
 - [x] **T-C12**: TypeScript compile check (`tsc --noEmit`) [Evidence: `npx tsc --noEmit` in system-spec-kit exited 0]
-<!-- /ANCHOR:phase-c -->

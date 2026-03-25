@@ -952,7 +952,7 @@ This tool runs controlled ablation studies across the retrieval pipeline's searc
 
 The framework uses dependency injection for the search function, making it testable without the full pipeline. Each channel ablation wraps in a try-catch so a failure in one channel's ablation produces partial results rather than a total failure. Statistical significance is assessed via a sign test (exact binomial distribution) because it is reliable with small query sets where a t-test would be unreliable. Verdict classification ranges from CRITICAL (channel removal causes significant regression) through negligible to HARMFUL (channel removal actually improves results). Token-usage summaries now ignore non-positive values, which prevents synthetic zeroes from appearing when a run has no real token-usage samples.
 
-Results are stored in `eval_metric_snapshots` with negative timestamp IDs to distinguish ablation runs from production evaluation runs. The tool requires `SPECKIT_ABLATION=true` to activate. When the flag is off, the MCP handler returns an explicit disabled-flag error and does not execute an ablation run.
+Results are stored in `eval_metric_snapshots` with negative timestamp IDs to distinguish ablation runs from production evaluation runs. The tool supports two modes: `mode: 'ablation'` (default) requires `SPECKIT_ABLATION=true` to activate and runs controlled channel ablations; `mode: 'k_sensitivity'` runs RRF K-value sensitivity analysis and does not require the ablation flag. When the ablation flag is off and mode is `'ablation'`, the MCP handler returns an explicit disabled-flag error and does not execute an ablation run.
 
 #### Source Files
 

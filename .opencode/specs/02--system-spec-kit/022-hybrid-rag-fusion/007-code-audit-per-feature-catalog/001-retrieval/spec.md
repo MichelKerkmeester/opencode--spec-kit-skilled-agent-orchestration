@@ -11,11 +11,11 @@ contextType: "general"
 # Feature Specification: Code Audit — Retrieval
 
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
-## EXECUTIVE SUMMARY
+### Executive Summary
 
 Systematic code audit of the 11-feature live Retrieval category in the Spec Kit Memory MCP server. This packet currently preserves detailed findings for 10 audited features and explicitly tracks the remaining live-catalog delta for follow-up coverage sync.
 
@@ -25,6 +25,7 @@ Systematic code audit of the 11-feature live Retrieval category in the Spec Kit 
 
 ---
 
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -37,8 +38,11 @@ Systematic code audit of the 11-feature live Retrieval category in the Spec Kit 
 | **Parent Spec** | ../spec.md |
 | **Successor** | ../002-mutation/spec.md |
 
+<!-- /ANCHOR:metadata -->
+
 ---
 
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -47,8 +51,11 @@ The feature catalog for Retrieval has evolved significantly. Existing audit docu
 ### Purpose
 Truth-sync the Retrieval audit packet to the live 11-feature inventory, preserve the 10 audited findings already captured here, and make the remaining coverage gap explicit instead of overstating completion.
 
+<!-- /ANCHOR:problem -->
+
 ---
 
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
@@ -76,8 +83,11 @@ Truth-sync the Retrieval audit packet to the live 11-feature inventory, preserve
 | `feature_catalog/01--retrieval/*.md` | Reference | Feature catalog source files |
 | `007-code-audit-per-feature-catalog/001-retrieval/` | Create | Audit documentation |
 
+<!-- /ANCHOR:scope -->
+
 ---
 
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -93,16 +103,23 @@ Truth-sync the Retrieval audit packet to the live 11-feature inventory, preserve
 |----|-------------|---------------------|
 | REQ-003 | Source file references validated | All listed source files confirmed to exist |
 | REQ-004 | Feature interactions mapped | Cross-feature dependencies documented |
+| REQ-005 | Audit results reusable for release-control follow-up | Summary stats and companion-doc cross-references recorded in this packet |
+
+<!-- /ANCHOR:requirements -->
 
 ---
 
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: 10 of 11 live Retrieval features have findings documented in this packet
 - **SC-002**: The remaining live-catalog delta is explicitly called out instead of being implied complete
 
+<!-- /ANCHOR:success-criteria -->
+
 ---
 
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -111,9 +128,11 @@ Truth-sync the Retrieval audit packet to the live 11-feature inventory, preserve
 | Risk | Source code changed since catalog update | Med | Cross-reference git history |
 | Risk | Some features span multiple source files | Low | Follow import chains |
 
+<!-- /ANCHOR:risks -->
+
 ---
 
-## 7. NON-FUNCTIONAL REQUIREMENTS
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: Audit completable by AI agent in single session
@@ -123,7 +142,7 @@ Truth-sync the Retrieval audit packet to the live 11-feature inventory, preserve
 
 ---
 
-## 8. EDGE CASES
+## L2: EDGE CASES
 
 ### Data Boundaries
 - Feature with no source files listed: Flag as catalog gap
@@ -135,7 +154,7 @@ Truth-sync the Retrieval audit packet to the live 11-feature inventory, preserve
 
 ---
 
-## 9. COMPLEXITY ASSESSMENT
+## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
@@ -148,7 +167,7 @@ Truth-sync the Retrieval audit packet to the live 11-feature inventory, preserve
 
 ---
 
-## 10. RISK MATRIX
+### Risk Matrix
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
 |---------|-------------|--------|------------|------------|
@@ -157,7 +176,7 @@ Truth-sync the Retrieval audit packet to the live 11-feature inventory, preserve
 
 ---
 
-## 11. USER STORIES
+### User Stories
 
 ### US-001: Feature Verification (Priority: P0)
 
@@ -168,14 +187,22 @@ Truth-sync the Retrieval audit packet to the live 11-feature inventory, preserve
 
 ---
 
-## 12. OPEN QUESTIONS
+<!-- ANCHOR:questions -->
+### Acceptance Scenarios
+
+- **Given** a feature catalog entry in this phase, **when** the packet is reviewed, **then** the primary implementation or discrepancy is explicitly documented.
+- **Given** the listed source files for a feature, **when** maintainers spot-check them against the repo, **then** the packet either confirms them or records the drift.
+- **Given** a release-control follow-up session, **when** the packet is reopened, **then** the category verdict and summary statistics remain easy to find.
+- **Given** the companion packet documents, **when** a validator checks cross-references, **then** the phase remains reusable inside the recursive `007` validation run.
+
+## 10. OPEN QUESTIONS
 
 - ~~Are there undocumented features in this category not yet in the catalog?~~ **Answered**: No new features found; 15+ source files are missing from the Feature 02 catalog entry (see AUDIT FINDINGS).
 - ~~Have any features been deprecated since the last catalog update?~~ **Answered**: No deprecations found. Feature 07 (AST-level section retrieval) is correctly documented as DEFERRED, not deprecated.
 
 ---
 
-## 13. AUDIT FINDINGS
+### Audit Findings
 
 Audit completed 2026-03-22. Current packet coverage: **8 MATCH, 2 PARTIAL, 1 pending coverage sync** across the 11-feature live Retrieval inventory.
 
@@ -221,7 +248,7 @@ Audit completed 2026-03-22. Current packet coverage: **8 MATCH, 2 PARTIAL, 1 pen
 - No discrepancies found.
 
 ### Coverage Delta — Feature 11: Session recovery via `/memory:continue`
-- Live catalog entry `11-session-recovery-memory-continue.md` is now part of the Retrieval family.
+- Live catalog entry `11-session-recovery-memory-continue` is now part of the Retrieval family.
 - This packet's preserved findings still cover the earlier audited baseline, so `/memory:continue` remains pending a dedicated audit finding in this document.
 
 ### Cross-Cutting Observations
@@ -233,8 +260,10 @@ Audit completed 2026-03-22. Current packet coverage: **8 MATCH, 2 PARTIAL, 1 pen
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
+
+<!-- /ANCHOR:questions -->

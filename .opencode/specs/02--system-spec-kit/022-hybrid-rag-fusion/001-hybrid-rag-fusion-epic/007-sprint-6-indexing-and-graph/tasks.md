@@ -32,16 +32,16 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:checkpoint -->
-## Safety Gate
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
 - [x] T-S6-PRE [GATE-PRE] Create checkpoint: `memory_checkpoint_create("pre-graph-mutations")` [0h] {} — Safety gate for N3-lite edge mutations
-<!-- /ANCHOR:checkpoint -->
+<!-- /ANCHOR:phase-1 -->
 
 ---
 
-<!-- ANCHOR:sprint-6a -->
-## Sprint 6a: Practical Improvements (R7, R16, S4, T001d, N3-lite) — 33-51h
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
 - [x] T001d **MR10 mitigation: weight_history audit tracking** — add `weight_history` column or log weight changes to eval DB for N3-lite Hebbian modifications; enables rollback of weight changes independent of edge creation [2-3h] — MR10 (REQUIRED — promoted from risk mitigation)
   - Acceptance: all N3-lite weight modifications logged with before/after values, timestamps, and affected edge IDs; rollback script can restore weights from history
@@ -79,12 +79,11 @@ contextType: "implementation"
     - When contradiction detected (similarity >0.85), surface ALL cluster members (not just flagged pair) to agent for resolution (~25 LOC)
     - Acceptance criteria: all members of contradiction cluster returned, not just the detected pair.
     - **EVIDENCE**: `consolidation.ts:buildContradictionClusters()` expands via 1-hop causal neighbors. Tests T-CLUSTER-01/02 verify full cluster surfacing.
-<!-- /ANCHOR:sprint-6a -->
+<!-- /ANCHOR:phase-2 -->
 
 ---
 
-<!-- ANCHOR:sprint-6b -->
-## Sprint 6b: Graph Sophistication (N2, R10) — 37-53h (GATED)
+##### Sprint 6b: Graph Sophistication (N2, R10) — 37-53h (GATED)
 
 - [ ] T-S6-SPIKE Algorithm feasibility spike — validate N2c and R10 approaches on actual data [8-16h] {T007a}
   - Determine: (a) whether Louvain is appropriate at current graph density, or whether connected components suffices; (b) whether rule-based entity extraction meets the <20% FP threshold on a representative sample
@@ -108,12 +107,11 @@ contextType: "implementation"
   - Sub-steps: (1) Measure current edge density (gate check). (2) Implement noun-phrase NER using rule-based library. (3) Tag extracted entities with `created_by='auto'`, strength=0.5. (4) Manual FP review on sample of >=50 entities. (5) Disable flag and remove auto-entities if FP >20%.
   - Algorithm references: Rule-based — `compromise` npm (lightweight, no model download). ML-based — `wink-nlp` or `node-nlp`. Python bridge — `spaCy` en_core_web_sm for higher accuracy.
   - Acceptance criteria: FP rate <20% verified on manual review of >=50 randomly sampled auto-extracted entities; all entities tagged `created_by='auto'`.
-<!-- /ANCHOR:sprint-6b -->
 
 ---
 
-<!-- ANCHOR:verification -->
-## Verification
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
 - [x] T-IP-S6 [P0] **Interaction pair test: R4+N3** — verify edge caps (MAX_TOTAL_DEGREE=50), strength caps (MAX_STRENGTH_INCREASE=0.05/cycle), provenance tracking active; no feedback loop amplification [1-2h] {T001d, T002} — CHK-036
   - **EVIDENCE**: MAX_EDGES_PER_NODE=20 (total degree), MAX_STRENGTH_INCREASE_PER_CYCLE=0.05, MAX_AUTO_STRENGTH=0.5, `created_by` provenance on all edges. Hebbian cycle capped — no feedback amplification. Tests T-BOUNDS-01/02, T-HEB-01/05 verify.
@@ -143,7 +141,7 @@ contextType: "implementation"
   - [ ] R10 FP rate <20% on manual review of >=50 entities (if implemented)
   - [ ] Active feature flag count <=6 (including `SPECKIT_AUTO_ENTITIES` if R10 enabled)
   - [ ] All health dashboard targets checked
-<!-- /ANCHOR:verification -->
+<!-- /ANCHOR:phase-3 -->
 
 ---
 
@@ -163,22 +161,19 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:pageindex-xrefs -->
-## PageIndex Cross-References (from Earlier Sprints)
+##### PageIndex Cross-References (from Earlier Sprints)
 
 - [ ] T-PI-S6 Review and integrate PageIndex patterns from earlier sprints [2-4h] — Cross-reference (non-blocking)
   - PI-A1 (Sprint 2): Evaluate folder-level DocScore aggregation as a pre-filter before graph traversal
   - PI-A2 (Sprint 3): Ensure graph queries with empty results emit a signal into the Sprint 3 fallback chain
   - Status: Pending
   - Research evidence: See `9 - analysis-pageindex-systems-architecture.md`, `9 - recommendations-pageindex-patterns-for-speckit.md`, `9 - pageindex-tree-search-analysis.md` in the parent research/ folder
-<!-- /ANCHOR:pageindex-xrefs -->
 
 ---
 
-<!-- ANCHOR:task-id-mapping -->
-## Task ID Mapping (Child → Parent)
+###### Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent ../tasks.md uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -196,7 +191,6 @@ Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global I
 | T001a-c | T041a-c | N2 sub-tasks (momentum, depth, community) |
 | T005 | T045 | R10 auto entity extraction |
 | T007b | T047b | Sprint 6b exit gate |
-<!-- /ANCHOR:task-id-mapping -->
 
 ---
 
@@ -206,7 +200,7 @@ Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global I
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Tasks**: See ../000-feature-overview/tasks.md
+- **Parent Tasks**: See ../tasks.md
 <!-- /ANCHOR:cross-refs -->
 
 ---

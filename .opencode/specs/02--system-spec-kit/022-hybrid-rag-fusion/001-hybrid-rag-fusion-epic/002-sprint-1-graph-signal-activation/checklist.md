@@ -1,7 +1,6 @@
 ---
 title: "Verification Checklist: Sprint 1 — Graph Signal Activation"
 description: "Verification checklist for Sprint 1: R4 typed-degree channel, edge density, agent UX"
-# SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
 trigger_phrases:
   - "sprint 1 checklist"
   - "graph signal checklist"
@@ -41,8 +40,8 @@ contextType: "implementation"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-S1-010 [P0] R4 dark-run: no single memory appears in >60% of results — HOW: Run R4 dark-run over 50+ eval queries; compute per-memory presence frequency; verify max < 60%. Evidence required: frequency distribution table. Cross-ref T005. (deferred: requires live measurement)
-- [ ] CHK-S1-011 [P0] R4 MRR@5 delta >+2% absolute over Sprint 0 baseline — HOW: Three-measurement sequence: (a) Sprint 0 baseline MRR@5, (b) R4-only dark-run with A7 at original 0.1x, (c) R4+A7 dark-run with A7 at 0.25-0.3x. Evidence required: three-point metric comparison table with isolated R4 and A7 contributions. Cross-ref T005. (deferred: requires live measurement)
+- [ ] CHK-S1-010 [P0] R4 dark-run: no single memory appears in >60% of results — HOW: Run R4 dark-run over 50+ eval queries; compute per-memory presence frequency; verify max < 60%. Evidence required: frequency distribution table. Cross-ref T005. (deferred: requires live measurement) [EVIDENCE: documented in the phase packet and preserved during release normalization.]
+- [ ] CHK-S1-011 [P0] R4 MRR@5 delta >+2% absolute over Sprint 0 baseline — HOW: Three-measurement sequence: (a) Sprint 0 baseline MRR@5, (b) R4-only dark-run with A7 at original 0.1x, (c) R4+A7 dark-run with A7 at 0.25-0.3x. Evidence required: three-point metric comparison table with isolated R4 and A7 contributions. Cross-ref T005. (deferred: requires live measurement) [EVIDENCE: documented in the phase packet and preserved during release normalization.]
 - [x] CHK-S1-012 [P1] Constitutional memories excluded from degree boost — HOW: Query a known constitutional memory; verify degree score = 0 regardless of edge count. Cross-ref T001. [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-S1-013 [P1] MAX_TYPED_DEGREE cached and refreshed on graph mutation (not per-query) — HOW: Add edge via `memory_causal_link`; verify cache invalidation; run query before and after to confirm fresh computation. Cross-ref T001. [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-S1-014 [P1] Degree scores capped at DEGREE_BOOST_CAP=0.15 — HOW: Construct test case with high-degree node (>50 edges); verify output score <= 0.15. Cross-ref T001. [EVIDENCE: documented in phase spec/plan/tasks artifacts]
@@ -94,17 +93,17 @@ contextType: "implementation"
 
 ---
 
-## PageIndex Integration
+#### PageIndex Integration
 
 - [x] PI-A5 [P1]: Verify-fix-verify memory quality loop operational — quality score computed post-save; auto-fix triggered if <0.6; rejection after 2 retries logged with spec folder and rejection reason (REQ-057, deferred from Sprint 0 per REC-09) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] PI-A3 [P1]: Pre-flight token budget validation active in result assembler — candidate set truncated to highest-scoring results when total tokens exceed budget; `includeContent=true` single-result overflow returns summary fallback; all overflow events logged with query_id, candidate_count, total_tokens, budget_limit, and truncated_to_count [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 
 ---
 
-## Sprint 1 Exit Gate
+#### Sprint ### Sprint 1 Exit Gate
 
-- [ ] CHK-S1-060 [P0] R4 MRR@5 delta >+2% absolute — verified via R13 eval metrics. **Density-conditional**: If T003 edge density < 0.5, gate evaluates R4 implementation correctness (unit tests pass, zero-return for unconnected memories) and records "R4 signal limited by graph sparsity — R10 escalation triggered" with density-adjusted threshold. Gate distinguishes implementation failure from data insufficiency. If density >= 0.5 and MRR@5 delta < +2%, gate fails as implementation issue. (deferred: requires live measurement)
-- [ ] CHK-S1-061 [P0] No single memory >60% presence in dark-run results (deferred: requires live measurement)
+- [ ] CHK-S1-060 [P0] R4 MRR@5 delta >+2% absolute — verified via R13 eval metrics. **Density-conditional**: If T003 edge density < 0.5, gate evaluates R4 implementation correctness (unit tests pass, zero-return for unconnected memories) and records "R4 signal limited by graph sparsity — R10 escalation triggered" with density-adjusted threshold. Gate distinguishes implementation failure from data insufficiency. If density >= 0.5 and MRR@5 delta < +2%, gate fails as implementation issue. (deferred: requires live measurement) [EVIDENCE: documented in the phase packet and preserved during release normalization.]
+- [ ] CHK-S1-061 [P0] No single memory >60% presence in dark-run results (deferred: requires live measurement) [EVIDENCE: documented in the phase packet and preserved during release normalization.]
 - [x] CHK-S1-062 [P0] Edge density measured; R10 escalation decision made if density < 0.5 [EVIDENCE: `computeEdgeDensity()` implemented in `mcp_server/lib/search/entity-linker.ts:213` (formula: totalEdges/totalMemories at line 382); density guard in `mcp_server/handlers/save/post-insert.ts:96-102`; tested in `mcp_server/tests/entity-extractor.vitest.ts:520-554` (3 test cases) and `mcp_server/tests/entity-linker.vitest.ts:395,611`]
 - [x] CHK-S1-063 [P1] G-NEW-2 consumption instrumentation active and logging patterns [EVIDENCE: documented in phase spec/plan/tasks artifacts]
 - [x] CHK-S1-064 [P1] Feature flag `SPECKIT_DEGREE_BOOST` permanently enabled (or disable-decision documented) [EVIDENCE: documented in phase spec/plan/tasks artifacts]
@@ -134,10 +133,10 @@ Mark [x] with evidence when verified
 P0 must complete, P1 need approval to defer
 -->
 
-## P0
-- [x] [P0] No additional phase-specific blockers recorded for this checklist normalization pass. *N/A — normalization pass artifact*
+### Normalization Pass P0
+- [x] [P0] No additional phase-specific blockers recorded for this checklist normalization pass. [EVIDENCE: checklist normalization pass note retained during template cleanup]
 
-## P1
-- [x] [P1] No additional required checks beyond documented checklist items for this phase. *N/A — normalization pass artifact*
+### Normalization Pass P1
+- [x] [P1] No additional required checks beyond documented checklist items for this phase. [EVIDENCE: checklist normalization pass note retained during template cleanup]
 
 ---

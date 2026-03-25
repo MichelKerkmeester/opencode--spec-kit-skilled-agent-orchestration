@@ -122,6 +122,16 @@ Execute all eight Phase 003 discovery scenarios, record verdicts and evidence, a
 - **SC-007**: EX-039 returns only memories matching the requested importance tier
 - **SC-008**: EX-040 returns causal link stats and downstream linked memories
 - **SC-009**: All eight verdicts are recorded and all P0 checklist items are checked
+### Acceptance Scenarios
+
+**Given** the `003-discovery` phase packet, **when** a reviewer opens the scenario mapping, **then** every scenario listed for the phase has a bounded execution target and a documented acceptance rule.
+
+**Given** the `003-discovery` phase packet, **when** execution evidence is reviewed, **then** verdict notes can be traced through `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+
+**Given** the `003-discovery` phase packet, **when** a reviewer checks neighboring navigation, **then** the packet points back to the parent and to the adjacent numbered phase where one exists.
+
+**Given** strict validation runs on the `003-discovery` phase packet, **when** the validator checks structure, **then** the packet satisfies Level 2 requirement and acceptance-scenario minimums.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

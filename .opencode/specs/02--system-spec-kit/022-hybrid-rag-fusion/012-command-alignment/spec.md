@@ -17,7 +17,7 @@ contextType: "implementation"
 
 ---
 
-## EXECUTIVE SUMMARY
+### Executive Summary
 
 The live Spec Kit Memory command surface no longer matches the original 012 planning story. The repo now ships **33 MCP tools** across L1-L7 and a **6-command** memory suite: `analyze`, `continue`, `learn`, `manage`, `save`, and `shared`. Retrieval is no longer owned by a standalone context.md; that responsibility now lives inside `/memory:analyze`, which also documents `memory_quick_search`, analysis/eval tooling, and learning history.
 
@@ -126,26 +126,26 @@ Bring the 012 planning docs into line with live repo truth so that:
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|-------------------|
-| CA-001 | The spec pack uses the live 33-tool inventory | `spec.md`, `plan.md`, and `tasks.md` no longer claim a 32-tool surface |
-| CA-002 | The spec pack uses the live 6-command suite | The pack no longer claims a 7-command target surface |
-| CA-003 | The spec pack removes the standalone context.md assumption | Retrieval ownership is documented under `/memory:analyze`, not under a missing command file |
-| CA-004 | `/memory:analyze` is documented as the command home for retrieval plus `memory_quick_search` | The pack explicitly assigns `memory_context`, `memory_quick_search`, `memory_search`, and `memory_match_triggers` to `/memory:analyze` |
+| REQ-001 | The spec pack uses the live 33-tool inventory (legacy `CA-001`) | `spec.md`, `plan.md`, and `tasks.md` no longer claim a 32-tool surface |
+| REQ-002 | The spec pack uses the live 6-command suite (legacy `CA-002`) | The pack no longer claims a 7-command target surface |
+| REQ-003 | The spec pack removes the standalone context.md assumption (legacy `CA-003`) | Retrieval ownership is documented under `/memory:analyze`, not under a missing command file |
+| REQ-004 | `/memory:analyze` is documented as the command home for retrieval plus `memory_quick_search` (legacy `CA-004`) | The pack explicitly assigns `memory_context`, `memory_quick_search`, `memory_search`, and `memory_match_triggers` to `/memory:analyze` |
 
 ### P1 - Required
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|-------------------|
-| CA-005 | The pack distinguishes shipped work from resolved drift | shared.md, analyze.md, `/memory:manage ingest`, and README coverage are treated as existing, not planned; former drift is recorded as resolved |
-| CA-006 | The pack preserves true ownership decisions | `/memory:analyze history <specFolder>` remains the documented home for `memory_get_learning_history`; `/memory:manage ingest` remains the async ingest home |
-| CA-007 | Source-of-truth guidance remains explicit | The pack names both `tool-schemas.ts` and `schemas/tool-input-schemas.ts` as validation inputs |
-| CA-008 | Runtime drift was resolved in this pass | The pack records that the analyze.md and shared.md mismatches were resolved during the 2026-03-21 reconciliation pass |
+| REQ-005 | The pack distinguishes shipped work from resolved drift (legacy `CA-005`) | shared.md, analyze.md, `/memory:manage ingest`, and README coverage are treated as existing, not planned; former drift is recorded as resolved |
+| REQ-006 | The pack preserves true ownership decisions (legacy `CA-006`) | `/memory:analyze history <specFolder>` remains the documented home for `memory_get_learning_history`; `/memory:manage ingest` remains the async ingest home |
+| REQ-007 | Source-of-truth guidance remains explicit (legacy `CA-007`) | The pack names both `tool-schemas.ts` and `schemas/tool-input-schemas.ts` as validation inputs |
+| REQ-008 | Runtime drift was resolved in this pass (legacy `CA-008`) | The pack records that the analyze.md and shared.md mismatches were resolved during the 2026-03-21 reconciliation pass |
 
 ### P2 - Desired
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|-------------------|
-| CA-009 | Historical context remains understandable | The pack explains that 012 originally targeted a 7-command transition before retrieval was merged into analyze.md |
-| CA-010 | Verification guidance is grep-friendly | The pack includes concrete stale-string checks for `32`, `7 commands`, and context.md assumptions |
+| REQ-009 | Historical context remains understandable (legacy `CA-009`) | The pack explains that 012 originally targeted a 7-command transition before retrieval was merged into analyze.md |
+| REQ-010 | Verification guidance is grep-friendly (legacy `CA-010`) | The pack includes concrete stale-string checks for `32`, `7 commands`, and context.md assumptions |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -162,33 +162,24 @@ Bring the 012 planning docs into line with live repo truth so that:
 
 ### Scenario A: Count Audit
 
-Given the live schema sources,
-when a reviewer compares 012 against `tool-schemas.ts`,
-then the pack describes a 33-tool surface and does not repeat the older 32-tool count.
+**Given** the live schema sources, **when** a reviewer compares 012 against `tool-schemas.ts`, **then** the pack describes a 33-tool surface and does not repeat the older 32-tool count.
 
 ### Scenario B: Command-Surface Audit
 
-Given `.opencode/command/memory/`,
-when a reviewer compares 012 against the live command directory,
-then the pack describes a 6-command suite and does not assume a standalone context.md.
+**Given** `.opencode/command/memory/`, **when** a reviewer compares 012 against the live command directory, **then** the pack describes a 6-command suite and does not assume a standalone context.md.
 
 ### Scenario C: Ownership Audit
 
-Given analyze.md and `README.txt`,
-when a reviewer checks retrieval ownership,
-then `/memory:analyze` is documented as the command home for retrieval, `memory_quick_search`, analysis/eval tooling, and learning history.
+**Given** analyze.md and `README.txt`, **when** a reviewer checks retrieval ownership, **then** `/memory:analyze` is documented as the command home for retrieval, `memory_quick_search`, analysis/eval tooling, and learning history.
 
 ### Scenario D: Remaining-Gap Audit
 
-Given the live memory command docs,
-when a reviewer compares them against the reconciled 012 pack,
-then already-shipped alignment work is not restated as missing and the former drift cluster is recorded as resolved.
+**Given** the live memory command docs, **when** a reviewer compares them against the reconciled 012 pack, **then** already-shipped alignment work is not restated as missing and the former drift cluster is recorded as resolved.
 <!-- /ANCHOR:success-criteria -->
 
 ---
 
-<!-- ANCHOR:gap-analysis -->
-## 6. GAP ANALYSIS
+### Gap Analysis
 
 ### 6.1 Live Command-Surface Snapshot
 
@@ -228,12 +219,9 @@ The following runtime-doc drift was identified and resolved during the 2026-03-2
 - `tool-schemas.ts` is the canonical ordered tool inventory and property-definition source.
 - `schemas/tool-input-schemas.ts` is the command-facing validation mirror and should be consulted for alias/parameter parity.
 - `README.txt` is current evidence for 33-tool command ownership, but 012 should still defer to the schema files when counts change.
-<!-- /ANCHOR:gap-analysis -->
-
 ---
 
-<!-- ANCHOR:implementation-decisions -->
-## 7. RECONCILED DECISIONS
+### Reconciled Decisions
 
 The following decisions remain authoritative after truth reconciliation:
 
@@ -243,12 +231,9 @@ The following decisions remain authoritative after truth reconciliation:
 4. Shared-memory lifecycle tools belong to `/memory:shared`.
 5. Async ingestion tools belong to `/memory:manage ingest`.
 6. The spec pack describes already-shipped command docs as existing; formerly open drift items are recorded as resolved.
-<!-- /ANCHOR:implementation-decisions -->
-
 ---
 
-<!-- ANCHOR:approach -->
-## 8. APPROACH
+### Approach
 
 ### Phase 0: Verify Live Reality
 
@@ -265,10 +250,6 @@ Reduce the old "missing command" narrative, resolve the runtime-doc drift in ana
 ### Phase 3: Verify the Reconciled Pack
 
 Run targeted stale-string checks and spec validation so the 012 pack no longer reintroduces 32-tool, 7-command, or context.md assumptions.
-<!-- /ANCHOR:approach -->
-
----
-
 <!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
@@ -290,7 +271,7 @@ Run targeted stale-string checks and spec validation so the 012 pack no longer r
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - **Parent Epic**: ../spec.md
 - **Tool Inventory**: `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`
@@ -309,7 +290,7 @@ Drift cluster resolved: analyze.md updated to 13 tools, shared.md contract updat
 
 ---
 
-## Phase Navigation
+### Phase Navigation
 
 | Field | Value |
 |-------|-------|

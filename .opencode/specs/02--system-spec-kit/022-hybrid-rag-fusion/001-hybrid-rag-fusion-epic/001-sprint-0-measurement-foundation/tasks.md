@@ -1,7 +1,6 @@
 ---
 title: "Tasks: Sprint 0 — Measurement Foundation"
 description: "Task breakdown for Sprint 0: graph ID fix, chunk collapse, eval infrastructure, BM25 baseline"
-# SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 trigger_phrases:
   - "sprint 0 tasks"
   - "measurement foundation tasks"
@@ -33,7 +32,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-1 -->
-## Phase 0: Pre-Foundation
+## Phase 1: Setup
 
 - [x] T000a [P] Record pre-Sprint-0 performance baseline — current p95 search latency, memory count, existing system behavior snapshot [1-2h] — Baseline
 - [x] T000b [P] Establish feature flag governance rules — document 6-flag max, 90-day lifespan, naming convention, monthly sunset audit process, and INCONCLUSIVE state (extend measurement window by max 14 days, one extension per flag, mandatory hard-deadline decision date) [1-2h] — NFR-O01/O02/O03
@@ -45,7 +44,7 @@ contextType: "implementation"
 
 ---
 
-## Phase 1: Bug Fixes (Track 1)
+### Bug Fixes (Track 1)
 
 - [x] T001 [P] Fix graph channel ID format — convert `mem:${edgeId}` to numeric memory IDs at BOTH locations (`graph-search-fn.ts` lines 110 AND 151) [3-5h] — G1 (REQ-S0-001)
   - Acceptance: Graph hit rate > 0% in retrieval telemetry; parseInt or regex extraction verified at both locations
@@ -68,7 +67,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-2 -->
-## Phase 2: Eval Infrastructure (Track 2)
+## Phase 2: Implementation
 
 - [x] T004 Create `speckit-eval.db` with 5-table schema: `eval_queries`, `eval_channel_results`, `eval_final_results`, `eval_ground_truth`, `eval_metric_snapshots` [8-10h] — R13-S1 (REQ-S0-003)
 - [x] T004b Implement R13 observer effect mitigation — health check measuring search p95 with eval logging on vs off; trigger if >10% increase [2-4h] {T004} — D4 (REQ-S0-003)
@@ -86,7 +85,7 @@ contextType: "implementation"
 
 ---
 
-## Phase 2b: Agent Consumption Pre-Analysis
+### Agent Consumption Pre-Analysis
 
 - [x] T007b [P] G-NEW-2 pre-analysis: Lightweight agent consumption pattern survey — analyze how AI agents currently consume memory search results (query patterns, selection behavior, ignored results). Examine recent agent query logs, CLAUDE.md routing patterns, and skill definitions. Document top 5-10 consumption patterns. Findings feed into ground truth query design (T007). [3-4h] — G-NEW-2 pre-analysis
   - Acceptance: Pattern report produced with >=5 identified consumption patterns
@@ -96,7 +95,7 @@ contextType: "implementation"
 ---
 
 <!-- ANCHOR:phase-3 -->
-## Phase 3: Baseline
+### Baseline
 
 - [x] T007 Generate synthetic ground truth from trigger phrases — minimum 100 query-relevance pairs (50 minimum for initial baseline metrics, >=100 required for BM25 contingency decision per REQ-S0-004) with DIVERSITY REQUIREMENT: >=5 queries per intent type (add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision), >=3 query complexity tiers (simple single-concept, moderate multi-concept, complex cross-document). Include >=30 manually curated natural-language queries NOT derived from trigger phrases (per REQ-S0-004 hard gate, raised per REC-10). Incorporate G-NEW-2 pre-analysis findings into query design. [2-4h] {T004, T007b} — G-NEW-1 / G-NEW-3 (REQ-S0-004)
   - Acceptance: 100+ queries with intent type and complexity tier tags; diversity thresholds met; >=30 queries MUST be manually curated natural-language queries NOT derived from trigger phrases (per REQ-S0-004 hard gate); document manual vs synthetic query split in query distribution table
@@ -117,7 +116,7 @@ contextType: "implementation"
 
 ---
 
-## Phase 4: Verification
+## Phase 3: Verification
 
 - [x] T-FS0 Feature flag sunset review at Sprint 0 exit — review all active feature flags; permanently enable flags with positive metrics, remove flags with negative metrics, extend measurement window (max 14 days) for inconclusive flags; ensure ≤6 simultaneous active flags [0.5-1h] {T008} — NFR-O01/O02/O03
 - [x] T009 [GATE] Sprint 0 exit gate verification [0h] {T000a, T000b, T000c, T000d, T001, T002, T003, T004, T005, T006, T007, T007b, T008, T013, T054, T-FS0}
@@ -145,10 +144,9 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:task-id-mapping -->
-## Task ID Mapping (Child → Parent)
+##### Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent ../tasks.md uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -170,7 +168,6 @@ Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global I
 | T008 | T008 | BM25-only baseline measurement |
 | T-FS0 | T-FS0 | Feature flag sunset review (Sprint 0 exit) |
 | T009 | T009 | Sprint 0 exit gate verification |
-<!-- /ANCHOR:task-id-mapping -->
 
 ---
 
@@ -180,7 +177,7 @@ Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global I
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Tasks**: See ../000-feature-overview/tasks.md
+- **Parent Tasks**: See ../tasks.md
 <!-- /ANCHOR:cross-refs -->
 
 ---

@@ -21,7 +21,7 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 016-json-mode-hybrid-enrichment |
+| **Spec Folder** | 001-initial-enrichment |
 | **Completed** | 2026-03-20 |
 | **Level** | 3 |
 <!-- /ANCHOR:metadata -->

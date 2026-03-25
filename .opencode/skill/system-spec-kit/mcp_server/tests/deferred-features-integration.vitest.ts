@@ -46,6 +46,7 @@ function createIntegrationDb(): Database.Database {
       file_path TEXT NOT NULL DEFAULT 'test.md',
       title TEXT,
       content_text TEXT,
+      memory_state TEXT,
       importance_tier TEXT DEFAULT 'normal',
       importance_weight REAL DEFAULT 0.5,
       quality_score REAL DEFAULT 0.8,

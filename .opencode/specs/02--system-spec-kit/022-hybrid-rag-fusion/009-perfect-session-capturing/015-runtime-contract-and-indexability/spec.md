@@ -26,8 +26,8 @@ contextType: "general"
 | **Created** | 2026-03-18 |
 | **Branch** | `015-runtime-contract-and-indexability` |
 | **Parent Spec** | `../spec.md` |
-| **Predecessor** | `014-stateless-quality-gates` |
-| **Successor** | `016-json-mode-hybrid-enrichment` |
+| **Predecessor** | [014-stateless-quality-gates](../014-stateless-quality-gates/spec.md) |
+| **Successor** | [016-json-mode-hybrid-enrichment](../016-json-mode-hybrid-enrichment/spec.md) |
 <!-- /ANCHOR:metadata -->
 
 ---

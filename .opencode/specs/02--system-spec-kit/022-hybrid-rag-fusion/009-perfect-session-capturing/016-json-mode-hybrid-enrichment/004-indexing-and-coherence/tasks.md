@@ -33,8 +33,7 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:ai-exec -->
-## AI Execution Protocol
+### AI Execution Protocol
 
 ### Pre-Task Checklist
 Before starting any task, verify:
@@ -72,7 +71,6 @@ If a task is blocked:
 3. Proceed to next unblocked task in a different phase
 4. Re-evaluate blocked task when dependency resolves
 
-<!-- /ANCHOR:ai-exec -->
 
 ---
 

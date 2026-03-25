@@ -30,6 +30,7 @@ import type { Stage3Input, Stage3Output, PipelineRow } from './types';
 import * as crossEncoder from '../cross-encoder';
 import { rerankLocal } from '../local-reranker';
 import { isCrossEncoderEnabled, isMMREnabled, isLocalRerankerEnabled } from '../search-flags';
+import { computeMPAB } from '../../scoring/mpab-aggregation';
 import { applyMMR } from '@spec-kit/shared/algorithms/mmr-reranker';
 import type { MMRCandidate } from '@spec-kit/shared/algorithms/mmr-reranker';
 import { INTENT_LAMBDA_MAP } from '../intent-classifier';
@@ -108,6 +109,8 @@ interface ChunkGroup {
   chunks: PipelineRow[];
   /** The chunk with the highest similarity/score — the representative row. */
   bestChunk: PipelineRow;
+  /** Parent-level score derived from all chunk scores with a best-chunk floor. */
+  parentScore: number;
 }
 
 // -- Stage 3 Entry Point ----------------------------------------
@@ -197,6 +200,8 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
         }
 
         if (mmrCandidates.length >= MMR_MIN_CANDIDATES) {
+          const originalPositionMap = new Map<number | string, number>();
+          results.forEach((row, index) => originalPositionMap.set(row.id, index));
           const intent = config.detectedIntent ?? '';
           const mmrLambda = (INTENT_LAMBDA_MAP as Record<string, number>)[intent] ?? MMR_DEFAULT_LAMBDA;
           const diversified = applyMMR(mmrCandidates, { lambda: mmrLambda, limit: config.limit });
@@ -217,9 +222,15 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
             return { id: candidate.id as number, score: candidate.score };
           });
 
-          // Merge: diversified embedded rows first (MMR-ordered), then non-embedded
-          // rows in their original relative order.
-          results = [...diversifiedRows, ...nonEmbeddedRows];
+          const positioned: Array<{ row: PipelineRow; pos: number }> = [];
+          diversifiedRows.forEach((row, index) => positioned.push({ row, pos: index }));
+          nonEmbeddedRows.forEach((row) => {
+            const originalPosition = originalPositionMap.get(row.id) ?? results.length;
+            positioned.push({ row, pos: originalPosition });
+          });
+
+          positioned.sort((left, right) => left.pos - right.pos);
+          results = positioned.map(({ row }) => row);
         }
       }
     } catch (mmrErr: unknown) {
@@ -490,6 +501,10 @@ async function collapseAndReassembleChunkResults(
   const chunkGroups: ChunkGroup[] = [];
   for (const [parentId, chunks] of chunksByParent) {
     const bestChunk = electBestChunk(chunks);
+    const bestChunkScore = resolveEffectiveScore(bestChunk);
+    const chunkScores = chunks.map(c => resolveEffectiveScore(c));
+    const mpabScore = computeMPAB(chunkScores);
+    const parentScore = Math.max(mpabScore, bestChunkScore);
     // Sort chunks by chunk_index (document order) for correct reassembly,
     // Not by score order which is the default from upstream stages (A8-P2-1)
     chunks.sort((a, b) => {
@@ -497,7 +512,7 @@ async function collapseAndReassembleChunkResults(
       const bIdx = ((b.chunk_index ?? b.chunkIndex) as number | undefined) ?? 0;
       return aIdx - bIdx;
     });
-    chunkGroups.push({ parentId, chunks, bestChunk });
+    chunkGroups.push({ parentId, chunks, bestChunk, parentScore });
     // All chunks beyond the best one are collapsed
     stats.collapsedChunkHits += chunks.length - 1;
   }
@@ -574,7 +589,7 @@ async function reassembleParentRow(
   group: ChunkGroup,
   stats: ChunkReassemblyStats
 ): Promise<PipelineRow> {
-  const { parentId, bestChunk } = group;
+  const { parentId, bestChunk, parentScore } = group;
 
   try {
     const db = requireDb();
@@ -593,7 +608,7 @@ async function reassembleParentRow(
     if (!parentRow) {
       // Parent not found in DB — use best chunk as fallback
       stats.fallback++;
-      return markFallback(bestChunk);
+      return markFallback(bestChunk, parentScore);
     }
 
     const reassembledContent =
@@ -616,6 +631,9 @@ async function reassembleParentRow(
       content: reassembledContent,
       precomputedContent: reassembledContent,
       contentSource: 'reassembled_chunks',
+      score: parentScore,
+      rrfScore: parentScore,
+      intentAdjustedScore: parentScore,
       // Clear chunk-specific fields on the reassembled parent
       parent_id: null,
       parentId: null,
@@ -634,7 +652,7 @@ async function reassembleParentRow(
       `[stage3-rerank] MPAB DB reassembly failed for parent ${parentId}: ${toErrorMessage(err)} — using chunk fallback`
     );
     stats.fallback++;
-    return markFallback(bestChunk);
+    return markFallback(bestChunk, parentScore);
   }
 }
 
@@ -643,9 +661,10 @@ async function reassembleParentRow(
  * Clears chunk-specific identity fields and marks the content source.
  *
  * @param chunk - The elected best-chunk row.
+ * @param parentScore - Parent-level score after MPAB aggregation.
  * @returns A new PipelineRow annotated as a fallback parent representation.
  */
-function markFallback(chunk: PipelineRow): PipelineRow {
+function markFallback(chunk: PipelineRow, parentScore: number): PipelineRow {
   const parentId =
     chunk.parent_id ??
     chunk.parentId ??
@@ -656,6 +675,9 @@ function markFallback(chunk: PipelineRow): PipelineRow {
     ...chunk,
     id: parentId,
     contentSource: 'file_read_fallback',
+    score: parentScore,
+    rrfScore: parentScore,
+    intentAdjustedScore: parentScore,
     // Promote chunk to parent-level identity by clearing chunk markers
     parent_id: null,
     parentId: null,

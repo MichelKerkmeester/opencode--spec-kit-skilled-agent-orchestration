@@ -70,7 +70,7 @@ Pipeline Extension -- modifications to existing 4-stage retrieval pipeline with 
 ### Key Components
 
 - **rrf-fusion.ts**: Core fusion algorithm -- receives calibrated overlap bonus (Phase A), parameterized K (Phase A), fusion policy type system (Phase B)
-- **fusion-lab.ts** (new): Shadow comparison infrastructure -- runs multiple fusion policies in parallel, captures telemetry, returns active policy result only
+- **fusion-lab.ts** (historical - fusion-lab.js deleted in commit 56c67030f): Shadow comparison infrastructure -- runs multiple fusion policies in parallel, captures telemetry, returns active policy result only
 - **k-value-analysis.ts**: Existing K analysis module -- extended with judged relevance evaluation and per-intent segmentation
 - **hybrid-search.ts**: Search orchestrator -- receives query-aware graph weight gating (Phase C)
 - **adaptive-fusion.ts**: Fusion configuration -- receives QPP feature extraction and fusion policy router (Phase C)
@@ -139,8 +139,8 @@ Stage 4 (Filtering) — unchanged
 **Wave**: 3 (after Wave 1 foundations)
 
 - [ ] Design `FusionPolicy` type system and policy registry
-- [ ] Implement minmax_linear score normalizer in `fusion-lab.ts`
-- [ ] Implement zscore_linear score normalizer in `fusion-lab.ts`
+- [ ] Implement minmax_linear score normalizer in `fusion-lab.ts` (historical - fusion-lab.js deleted in commit 56c67030f)
+- [ ] Implement zscore_linear score normalizer in `fusion-lab.ts` (historical - fusion-lab.js deleted in commit 56c67030f)
 - [ ] Build shadow comparison runner (parallel execution, telemetry capture)
 - [ ] Add `SPECKIT_FUSION_POLICY_SHADOW_V2` feature flag
 - [ ] Write integration tests for shadow lab (3 policies, telemetry recording)
@@ -295,7 +295,7 @@ D4.A (external) ─────────────────────�
 - [Parent Plan](../plan.md) -- Cross-phase implementation waves
 - [Sibling: D3 Graph Retrieval](../003-graph-augmented-retrieval/spec.md) -- Provides graph quality signals for Phase C
 - [Sibling: D4 Feedback Learning](../004-feedback-quality-learning/spec.md) -- Provides training data for Phase D
-- [Research Source](../../../019-deep-research-rag-improvement/research/research.md) -- Recommendations #1, #8, #9, #22, #23, #28
+- Research Source (historical, path removed) -- Recommendations #1, #8, #9, #22, #23, #28
 
 <!--
 LEVEL 2 PLAN — Phase 1 of 5 (Research-Based Refinement)

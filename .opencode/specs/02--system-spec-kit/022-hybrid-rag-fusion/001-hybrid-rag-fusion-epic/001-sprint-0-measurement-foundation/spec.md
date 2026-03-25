@@ -1,7 +1,6 @@
 ---
 title: "Feature Specification: Sprint 0 — Measurement Foundation"
 description: "Fix graph channel (0% hit rate), chunk collapse dedup, co-activation hub domination, and establish evaluation infrastructure with BM25 baseline."
-# SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-child-header | v2.2
 trigger_phrases:
   - "sprint 0"
   - "measurement foundation"
@@ -36,7 +35,6 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:phase-context -->
 ### Phase Context
 
 This is **Phase 1** of the Hybrid RAG Fusion Refinement specification.
@@ -52,7 +50,6 @@ This is **Phase 1** of the Hybrid RAG Fusion Refinement specification.
 - Fan-effect divisor for co-activation hub domination (R17)
 - Evaluation infrastructure with 5-table schema (R13-S1)
 - BM25-only baseline measurement (G-NEW-1)
-<!-- /ANCHOR:phase-context -->
 
 ---
 
@@ -178,7 +175,7 @@ When BM25 baseline results fall in the 50-80% range ("rationalize" path):
 ---
 
 <!-- ANCHOR:nfr -->
-## 7. NON-FUNCTIONAL REQUIREMENTS
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: Eval logging adds ≤5ms p95 to search latency — measured before/after (D4 observer effect check)
@@ -196,7 +193,7 @@ When BM25 baseline results fall in the 50-80% range ("rationalize" path):
 ---
 
 <!-- ANCHOR:edge-cases -->
-## 8. EDGE CASES
+## L2: EDGE CASES
 
 ### Data Boundaries
 - **Empty graph after G1 fix**: Correct behavior — R4 produces zero scores for all memories; graph channel returns empty results
@@ -214,7 +211,7 @@ When BM25 baseline results fall in the 50-80% range ("rationalize" path):
 ---
 
 <!-- ANCHOR:complexity -->
-## 9. COMPLEXITY ASSESSMENT
+## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Notes |
 |-----------|-------|-------|
@@ -244,13 +241,13 @@ Bounded quality loop after embedding generation: verify (cosine self-similarity 
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Spec**: See ../000-feature-overview/spec.md
-- **Parent Plan**: See ../000-feature-overview/plan.md
+- **Parent Spec**: See ../spec.md
+- **Parent Plan**: See ../plan.md
 
 ---
 
@@ -261,7 +258,7 @@ LEVEL 2 SPEC — Phase 1 of 11
 - Sprint 0: BLOCKING foundation sprint
 -->
 
-## Acceptance Scenarios (Validator Coverage)
+#### Acceptance Scenarios (Validator Coverage)
 1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.

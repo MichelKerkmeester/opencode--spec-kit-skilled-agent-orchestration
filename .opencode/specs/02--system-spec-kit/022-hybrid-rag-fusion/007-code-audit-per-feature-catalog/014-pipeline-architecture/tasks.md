@@ -9,11 +9,12 @@ contextType: "general"
 ---
 # Tasks: Code Audit — Pipeline Architecture
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
 
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -25,16 +26,22 @@ contextType: "general"
 
 **Task Format**: `T### [P?] Description`
 
+<!-- /ANCHOR:notation -->
+
 ---
 
-## Phase 1: Preparation
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
 - [x] T000 Verify feature catalog currency for Pipeline Architecture
 - [x] T000a [P] Identify source code root paths
 
+<!-- /ANCHOR:phase-1 -->
+
 ---
 
-## Phase 2: Feature Audit
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
 - [x] T001 [P] Audit: 4-stage pipeline refactor — MATCH
 - [x] T002 [P] Audit: MPAB chunk-to-memory aggregation — MATCH
@@ -59,26 +66,37 @@ contextType: "general"
 - [x] T021 [P] Audit: Atomic pending-file recovery — MATCH
 - [x] T022 [P] Audit: Lineage state active projection and asOf resolution — MATCH
 
+<!-- /ANCHOR:phase-2 -->
+
 ---
 
-## Phase 3: Synthesis
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
 - [x] T900 Cross-reference findings across features
 - [x] T901 Compile audit summary report — 19 MATCH, 3 PARTIAL (F07, F12, F14)
 - [x] T902 Update implementation-summary.md
 
+<!-- /ANCHOR:phase-3 -->
+
 ---
 
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [x] All feature audit tasks marked `[x]`
 - [x] No `[B]` blocked tasks remaining
 - [x] Summary report completed
 
+<!-- /ANCHOR:completion -->
+
 ---
 
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Checklist**: See `checklist.md`
+
+<!-- /ANCHOR:cross-refs -->

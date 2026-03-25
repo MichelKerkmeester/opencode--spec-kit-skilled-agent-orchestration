@@ -29,6 +29,24 @@ contextType: "general"
 
 ### Overview
 Comprehensive code audit of the entire Spec Kit Memory MCP server organized by 19 feature catalog categories totaling 218 live features. Each category is audited in its own child folder (`001-022`): category audit packets, two meta-phases for synthesis/remediation, and a downstream follow-up child for deprecated-feature implementation/removal.
+
+### AI Execution Protocol
+
+#### Pre-Task Checklist
+- Confirm the live feature catalog inventory before recording umbrella-level totals.
+- Verify child-packet validation status before updating the umbrella synthesis language.
+
+#### Execution Rules
+| Rule | Meaning |
+|------|---------|
+| `TASK-SEQ` | Update child packets before changing umbrella totals or status language |
+| `TASK-SCOPE` | Keep umbrella edits focused on synthesis, ownership, and validation state |
+
+#### Status Reporting Format
+- Report changes in `MATCH/PARTIAL/pending/remediation` language tied to the phase map or implementation summary.
+
+#### Blocked Task Protocol
+- If a child packet fails validation, stop umbrella truth-sync changes until the child packet is repaired.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -103,7 +121,7 @@ Feature Catalog → Phase Audits (parallel) → Findings → Synthesis → Remed
 - [x] Compile cross-phase findings — 178 MATCH, 39 PARTIAL, 1 pending coverage sync, 0 MISMATCH
 - [x] Generate master audit report — implementation-summary.md in all 23 spec folders
 
-## 4A. TRACEABILITY CONTRACT
+### Traceability Contract
 
 Phases `012-022` remain owned by `007-code-audit-per-feature-catalog`. Each child packet consumes a live catalog slice or synthesized upstream findings and returns a phase-local output back to the umbrella packet.
 

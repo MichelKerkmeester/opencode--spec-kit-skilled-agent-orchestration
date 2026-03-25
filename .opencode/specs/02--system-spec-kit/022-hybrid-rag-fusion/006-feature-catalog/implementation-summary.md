@@ -8,7 +8,7 @@ title: "Implementation Summary: Feature Catalog Audit & Remediation"
 
 ---
 
-## Merged Section: 016-feature-catalog-code-references Implementation Summary
+**Merged Section: 016-feature-catalog-code-references Implementation Summary**
 
 > **Merge note (2026-03-14)**: Originally the 016 implementation summary document in the prior folder layout.
 
@@ -101,8 +101,7 @@ Implementation used a comment-only pass: map files to feature catalog names, app
 
 ---
 
-<!-- ANCHOR:phase-c -->
-## Phase C: CHK-012 Resolution, MODULE: Alignment, and Documentation
+**Phase C: CHK-012 Resolution, MODULE: Alignment, and Documentation**
 
 ### MODULE: Header Alignment
 
@@ -144,12 +143,10 @@ Cross-validation: 124 unique annotation names in code, 0 invalid (all match cata
 | Annotation name cross-validation | PASS (124 unique names, 0 invalid) |
 | New catalog snippet exists | PASS |
 | Playbook scenarios 135..138 exist | PASS |
-<!-- /ANCHOR:phase-c -->
 
 ---
 
-<!-- ANCHOR:phase-g -->
-## Phase G: Normalization & Phase 016/017 Coverage (2026-03-21)
+**Phase G: Normalization & Phase 016/017 Coverage (2026-03-21)**
 
 ### What Was Done
 
@@ -178,4 +175,3 @@ All provisional `NEW-NNN` markers were removed from both the feature catalog (19
 | New playbook entries in section body + cross-ref table | PASS (lines 2802/2816 + 3244/3245) |
 | G-NEW-* proper nouns preserved | PASS (25 occurrences intact) |
 | Spot-check of previously-marked files | PASS (all sampled files clean) |
-<!-- /ANCHOR:phase-g -->

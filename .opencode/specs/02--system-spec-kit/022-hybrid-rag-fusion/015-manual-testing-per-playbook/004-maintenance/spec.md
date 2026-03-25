@@ -116,6 +116,16 @@ Execute all seven Phase 004 maintenance scenarios, record verdicts and evidence,
 - **SC-006**: EX-044 returns a structured health diagnostic covering all subsystems
 - **SC-007**: EX-045 completes a force re-index and subsequent health check shows clean state
 - **SC-008**: All seven verdicts are recorded and all P0 checklist items are checked
+### Acceptance Scenarios
+
+**Given** the `004-maintenance` phase packet, **when** a reviewer opens the scenario mapping, **then** every scenario listed for the phase has a bounded execution target and a documented acceptance rule.
+
+**Given** the `004-maintenance` phase packet, **when** execution evidence is reviewed, **then** verdict notes can be traced through `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+
+**Given** the `004-maintenance` phase packet, **when** a reviewer checks neighboring navigation, **then** the packet points back to the parent and to the adjacent numbered phase where one exists.
+
+**Given** strict validation runs on the `004-maintenance` phase packet, **when** the validator checks structure, **then** the packet satisfies Level 2 requirement and acceptance-scenario minimums.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

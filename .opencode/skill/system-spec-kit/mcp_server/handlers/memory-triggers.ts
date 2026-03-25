@@ -318,7 +318,8 @@ async function handleMemoryMatchTriggers(args: TriggerArgs): Promise<MCPResponse
         });
       }
     } catch (scopeErr: unknown) {
-      console.warn('[memory_match_triggers] Scope filtering failed, returning unscoped results:', toErrorMessage(scopeErr));
+      console.error('[memory_match_triggers] Scope filtering failed, returning empty results (fail-closed):', toErrorMessage(scopeErr));
+      results = [];
     }
   }
   const detectedSignals = Array.isArray(triggerMatchResult.stats?.signals)

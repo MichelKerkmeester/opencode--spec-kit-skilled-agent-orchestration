@@ -11,6 +11,14 @@ description: "Reconciliation plan for updating the 013 packet and the scoped run
 <!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
+### Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown packet docs plus runtime-facing agent docs |
+| **Framework** | system-spec-kit Level 2 packet workflow |
+| **Testing** | Strict spec validation plus targeted grep/path verification |
+
 This pass rewrites the `013-agents-alignment` packet so it matches the current runtime lineage instead of preserving the obsolete "single canonical source copied to every runtime" story. It also fixes the scoped runtime-facing drift in Gemini delegation guidance and the write-agent projections.
 <!-- /ANCHOR:summary -->
 

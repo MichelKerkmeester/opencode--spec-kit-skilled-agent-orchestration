@@ -1,7 +1,6 @@
 ---
 title: "Tasks: Sprint 7 — Long Horizon"
 description: "Task breakdown for Sprint 7: Long Horizon — COMPLETED. R8/S5 skipped (scale gates), S1/R13-S3/R5/T005a/DEF-014 completed. Exit gate and program completion verification passed."
-# SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 trigger_phrases:
   - "sprint 7 tasks"
   - "long horizon tasks"
@@ -32,8 +31,14 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:implementation -->
-## Implementation (all parallelizable)
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+- [x] T000 Confirm Sprint 0-6 exit gates and scale thresholds before optional Sprint 7 work begins.
+<!-- /ANCHOR:phase-1 -->
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
 > **SPRINT GATE NOTE**: Sprint 7 is entirely P2/P3 and optional. Before beginning any task, confirm: Sprint 0-6 exit gates all passed AND scale thresholds met. All tasks below are conditional on these prerequisites.
 
@@ -84,14 +89,17 @@ contextType: "implementation"
   - Disposition: CLOSED — the concept was discussed in spec/design phase but never materialized as code
   - No dead code to remove; no implementation to evaluate
   - DEF-014 status: resolved as out-of-scope — never existed beyond design discussion
+<!-- /ANCHOR:phase-2 -->
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
 - [x] T006 [GATE] Sprint 7 exit gate verification: R8 skipped (scale gate), S1 content normalizer operational, S5 skipped (no entity infrastructure), R13-S3 dashboard + ablation operational, R5 NO-GO documented, feature flag sunset audit completed, DEF-014 closed [0h] {T001-T006a}
   - **PASSED — final verification completed; evidence reconciled across tasks/checklist/implementation-summary**
-<!-- /ANCHOR:implementation -->
-
+<!-- /ANCHOR:phase-3 -->
 ---
 
-<!-- ANCHOR:completion -->
-## Program Completion
+### Program Completion Verification
 
 - [x] T007 Program completion verification [0h] {T001, T002, T003, T004, T005, T006}
   - [x] R13-S3 full reporting operational — `reporting-dashboard.ts` created, 34 tests passing
@@ -103,9 +111,7 @@ contextType: "implementation"
   - [x] All health dashboard targets reviewed — reporting dashboard outputs and completion checklist reviewed
   - [x] Final feature flag audit complete — 61 flags inventoried; 27 GRADUATE, 9 REMOVE, 3 KEEP
 
----
-
-## Completion Criteria
+### Verification Notes
 
 - [x] All tasks T001-T006a marked `[x]` (or documented as skipped due to gating condition not met) — T001 skipped (scale gate), T002 completed, T003 skipped (no entities), T004 completed, T005 completed (NO-GO), T005a completed, T006a completed (CLOSED)
 - [x] No `[B]` blocked tasks remaining — confirmed, zero blocked tasks
@@ -115,26 +121,24 @@ contextType: "implementation"
 - [x] Feature flag sunset audit (T005a) complete — 61 flags inventoried, dispositions assigned
 - [x] All health dashboard targets reviewed — verified via reporting outputs and checklist evidence
 - [x] Scale gate documented: 2,411 active memories with embeddings (query result recorded in T001)
-<!-- /ANCHOR:completion -->
 
 ---
 
-<!-- ANCHOR:pageindex-xrefs -->
-## PageIndex Cross-References (from Earlier Sprints)
+<!-- ANCHOR:completion -->
+## Completion Criteria
 
 - [x] T-PI-S7 Review and integrate PageIndex patterns from earlier sprints [2-4h] — Cross-reference (non-blocking)
   - PI-A5 (Sprint 0): Verify-fix-verify pattern — existing eval infrastructure already provides this capability; no new code needed
   - PI-B1 (Sprint 5): Tree thinning — already implemented in Sprint 5; no new code needed for Sprint 7
   - Status: **COMPLETED** — both patterns verified as already present in codebase
   - Research evidence: See `9 - analysis-pageindex-systems-architecture.md`, `9 - recommendations-pageindex-patterns-for-speckit.md`, `9 - pageindex-tree-search-analysis.md` in the parent research/ folder
-<!-- /ANCHOR:pageindex-xrefs -->
+<!-- /ANCHOR:completion -->
 
 ---
 
-<!-- ANCHOR:task-id-mapping -->
-## Task ID Mapping (Child → Parent)
+### Task ID Mapping (Child → Parent)
 
-Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global IDs. Cross-reference table:
+Child tasks use local IDs; parent ../tasks.md uses global IDs. Cross-reference table:
 
 | Child Task ID | Parent Task ID | Description |
 |---------------|----------------|-------------|
@@ -147,7 +151,6 @@ Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global I
 | T006a | *(not in parent)* | structuralFreshness() disposition (DEF-014) |
 | T006 | T053 | Sprint 7 exit gate verification |
 | T007 | *(not in parent)* | Program completion verification |
-<!-- /ANCHOR:task-id-mapping -->
 
 ---
 
@@ -157,7 +160,7 @@ Child tasks use local IDs; parent ../000-feature-overview/tasks.md uses global I
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Tasks**: See ../000-feature-overview/tasks.md
+- **Parent Tasks**: See ../tasks.md
 <!-- /ANCHOR:cross-refs -->
 
 ---

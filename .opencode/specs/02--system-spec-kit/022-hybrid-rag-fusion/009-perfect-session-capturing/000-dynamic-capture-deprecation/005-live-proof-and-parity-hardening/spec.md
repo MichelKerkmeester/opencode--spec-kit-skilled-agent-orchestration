@@ -26,7 +26,7 @@ contextType: "general"
 | **Created** | 2026-03-18 |
 | **Branch** | `005-live-proof-and-parity-hardening` |
 | **Parent Spec** | `../spec.md` |
-| **Predecessor** | `004-source-capabilities-and-structured-preference` |
+| **Predecessor** | [004-source-capabilities-and-structured-preference](../004-source-capabilities-and-structured-preference/spec.md) |
 | **Successor** | None |
 <!-- /ANCHOR:metadata -->
 

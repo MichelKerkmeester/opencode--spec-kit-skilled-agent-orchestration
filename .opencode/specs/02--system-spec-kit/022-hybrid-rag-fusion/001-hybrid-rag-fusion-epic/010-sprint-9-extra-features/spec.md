@@ -10,11 +10,11 @@ contextType: "implementation"
 <!-- SPECKIT_LEVEL: 2 -->
 # Feature Specification: Sprint 9 — Extra Features (Productization & Operational Tooling)
 
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-govern | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->
 
 ---
 
-## EXECUTIVE SUMMARY
+#### Executive Summary
 
 The 023 refinement program built a sophisticated 5-channel hybrid retrieval pipeline, causal graph overlay, and evaluation infrastructure. A cross-AI research effort (6 agents: 3 Codex gpt-5.3-codex, 3 Gemini 3.1-pro-preview) analyzed external systems (Cognee, QMD, ArtemXTech) and produced 16 recommendations. After triple-verification against the feature catalog, 4 were fully implemented, 7 partially implemented, and 5 genuinely new. This sprint completes the bounded gaps and builds the net-new operational tooling.
 
@@ -192,10 +192,18 @@ interface PipelineRow {
 | Dependency | sqlite-vec, FTS5 | Blocks search | Green — stable, already in production |
 | Dependency | node-llama-cpp (P1-5 only) | Blocks local reranking | Yellow — npm package, needs testing on target hardware |
 <!-- /ANCHOR:risks -->
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+- No additional open questions remain; deferred follow-up work is tracked in tasks.md and checklist.md.
+<!-- /ANCHOR:questions -->
+
 
 ---
 
-## 7. NON-FUNCTIONAL REQUIREMENTS
+## L2: NON-FUNCTIONAL REQUIREMENTS
 
 ### Performance
 - **NFR-P01**: Zod validation adds <5ms overhead per tool call
@@ -213,7 +221,7 @@ interface PipelineRow {
 
 ---
 
-## 8. EDGE CASES
+## L2: EDGE CASES
 
 ### Data Boundaries
 - Empty query string: Zod rejects with `min(2)` constraint on `query` field
@@ -242,7 +250,7 @@ interface PipelineRow {
 
 ---
 
-## 9. COMPLEXITY ASSESSMENT
+## L2: COMPLEXITY ASSESSMENT
 
 | Dimension | Score | Triggers |
 |-----------|-------|----------|
@@ -255,7 +263,7 @@ interface PipelineRow {
 
 ---
 
-## 10. RISK MATRIX
+### RISK MATRIX
 
 | Risk ID | Description | Impact | Likelihood | Mitigation |
 |---------|-------------|--------|------------|------------|
@@ -267,7 +275,7 @@ interface PipelineRow {
 
 ---
 
-## 11. USER STORIES
+### USER STORIES
 
 ### US-001: Strict Schema Validation (Priority: P0)
 
@@ -337,7 +345,7 @@ interface PipelineRow {
 
 ---
 
-## 12. APPROVAL WORKFLOW
+### APPROVAL WORKFLOW
 
 | Checkpoint | Approver | Status | Date |
 |------------|----------|--------|------|
@@ -349,7 +357,7 @@ interface PipelineRow {
 
 ---
 
-## 13. COMPLIANCE CHECKPOINTS
+### COMPLIANCE CHECKPOINTS
 
 ### Code Compliance
 - [ ] Existing eval metrics pass after each phase (`eval_run_ablation`)
@@ -359,7 +367,7 @@ interface PipelineRow {
 
 ---
 
-## 14. STAKEHOLDER MATRIX
+### STAKEHOLDER MATRIX
 
 | Stakeholder | Role | Interest | Communication |
 |-------------|------|----------|---------------|
@@ -368,38 +376,30 @@ interface PipelineRow {
 
 ---
 
-## 15. CHANGE LOG
+### CHANGE LOG
 
 ### v1.0 (2026-03-03)
 **Initial specification** — Derived from 016 definitive synthesis (6-agent cross-AI research, triple-verified against feature catalog). 12 items scoped: 3 P0, 4 P1, 5 P2 (deferred).
 
 ---
 
-## 16. OPEN QUESTIONS
-
-- OQ-1: What does `formatSearchResults()` currently return? Need code-level audit before P0-2 implementation to avoid duplicate work.
-- OQ-2: Does `node-llama-cpp` work reliably on macOS ARM64 with the target GGUF model? Need hardware test.
-- OQ-3: Should `.strict()` enforcement be immediate or phased via `.passthrough()` transition period?
-
----
-
-## RELATED DOCUMENTS
+### Related Documents
 
 - **Implementation Plan**: See `plan.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Decision Records**: See `decision-record.md`
+- **Decision Records**: See `plan.md`
 - **Research**: See `research/` (16 files: 001-012 raw, 013-016 synthesis)
 
 ---
 
-## Phase Navigation
+###### Phase Navigation
 
 | **Parent Spec** | ../spec.md |
 - Predecessor: `009-sprint-8-deferred-features`
 - Successor: `011-research-based-refinement`
 
-## Acceptance Scenarios (Validator Coverage)
+##### Acceptance Scenarios
 1. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 2. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 3. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
@@ -407,7 +407,7 @@ interface PipelineRow {
 5. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 6. **Given** the existing documented scope is retained, **When** validation is run, **Then** structural checks pass without introducing new implementation claims.
 
-## Requirement Traceability Matrix
+###### Requirement Traceability Matrix
 
 | REQ | Description | Task(s) | CHK Item(s) | Status |
 |-----|-------------|---------|-------------|--------|

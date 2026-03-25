@@ -60,7 +60,7 @@ contextType: "general"
 
 - [x] CHK-020 [P0] Structured summary fields remain supported [Evidence: the implementation summary and CLI help both document shipped `toolCalls` and `exchanges` support.]
 - [x] CHK-021 [P0] File-backed JSON stays on the authoritative structured path [Evidence: the implementation summary records that `_source: 'file'` does not enter stateless enrichment.]
-- [x] CHK-022 [P1] Historical hybrid-enrichment research is clearly marked as archival [Evidence: `research.md` now states it analyzed the non-shipped design and should not be read as the live phase behavior.]
+- [x] CHK-022 [P1] Historical hybrid-enrichment research is clearly marked as archival [Evidence: the archived research note now states it analyzed the non-shipped design and should not be read as the live phase behavior.]
 - [x] CHK-023 [P1] Wave 2 fixes cover counts, confidence, and outcomes behavior [Evidence: Wave 2 delivery explicitly covers confidence, counts, and truncated outcome handling.]
 - [x] CHK-064 [P0] RC2 fix: Manual trigger phrases merged into `preExtractedTriggers` before folder token dedup [Evidence: `workflow.ts` — `collectedData._manualTriggerPhrases` unshifted with dedup]
 - [x] CHK-068 [P0] Post-save review integrated at Step 10.5 in workflow [Evidence: `workflow.ts` — runs after file write, before indexing, skips for stateless mode]

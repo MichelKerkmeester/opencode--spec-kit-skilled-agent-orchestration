@@ -26,8 +26,8 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 5 |
-| **Predecessor** | 004-type-consolidation |
-| **Successor** | 006-description-enrichment |
+| **Predecessor** | [004-type-consolidation](../004-type-consolidation/spec.md) |
+| **Successor** | [006-description-enrichment](../006-description-enrichment/spec.md) |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-05 |
 | **Sequence** | C1 |

@@ -1,7 +1,6 @@
 ---
 title: "Implementation Plan: Research-Based Refinement"
 description: "Cross-phase coordination plan for 5 sub-phases implementing 29 research recommendations across fusion, query, graph, feedback, and UX dimensions."
-# SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2
 trigger_phrases:
   - "research refinement plan"
   - "implementation waves"
@@ -9,8 +8,12 @@ trigger_phrases:
 importance_tier: "important"
 contextType: "implementation"
 ---
-
 # Implementation Plan: Research-Based Refinement
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+---
 
 <!-- ANCHOR:summary -->
 ## 1. SUMMARY
@@ -81,9 +84,9 @@ D5.A (Recovery UX) ──────┤               │
 <!-- /ANCHOR:architecture -->
 
 <!-- ANCHOR:phases -->
-## 4. IMPLEMENTATION WAVES
+## 4. IMPLEMENTATION PHASES
 
-### Wave 1 — Foundations (parallel, no inter-dependencies)
+### Phase 1 — Foundations (parallel, no inter-dependencies)
 All sub-phases can start their Phase A simultaneously:
 
 | Child | Phase | Items | Effort | Focus |
@@ -93,7 +96,7 @@ All sub-phases can start their Phase A simultaneously:
 | D1 | A | #1, #9 | 1S+1M | Calibrated overlap, K-optimization |
 | D5 | A | #6, #18 | 1S+1M | Recovery UX, per-result confidence |
 
-### Wave 2 — Core Improvements (after Wave 1)
+### Phase 2 — Core Improvements (after Phase 1)
 
 | Child | Phase | Items | Effort | Focus |
 |-------|-------|-------|--------|-------|
@@ -101,7 +104,7 @@ All sub-phases can start their Phase A simultaneously:
 | D3 | B | #13, #14 | 2M | Graph refresh on write, save-time enrichment |
 | D4 | B | #19, #20 | 2M | Batch learning, assistive reconsolidation |
 
-### Wave 3 — Advanced Features (after Wave 2)
+### Phase 3 — Advanced Features (after Phase 2)
 
 | Child | Phase | Items | Effort | Focus |
 |-------|-------|-------|--------|-------|
@@ -110,7 +113,7 @@ All sub-phases can start their Phase A simultaneously:
 | D5 | B | #16, #17 | 2M | Explainability, mode-aware response |
 | D2 | B | #12, #24 | 2M | LLM reformulation, HyDE shadow |
 
-### Wave 4 — Final Items (after Wave 3)
+### Phase 4 — Final Items (after Phase 3)
 
 | Child | Phase | Items | Effort | Focus |
 |-------|-------|-------|--------|-------|
@@ -134,7 +137,7 @@ All sub-phases can start their Phase A simultaneously:
 <!-- /ANCHOR:testing -->
 
 <!-- ANCHOR:effort -->
-## 6. EFFORT ESTIMATION
+## L2: EFFORT ESTIMATION
 
 | Child | S Items | M Items | L Items | Estimated Total |
 |-------|---------|---------|---------|-----------------|
@@ -148,22 +151,22 @@ All sub-phases can start their Phase A simultaneously:
 With Wave parallelization (4 waves, 2-3 children per wave), critical path is ~14-16 weeks.
 <!-- /ANCHOR:effort -->
 
-## 7. RELATED DOCUMENTS
+### Related Documents
 
 - [Spec](spec.md) — Phase coordination spec
 - [Tasks](tasks.md) — Cross-phase tracking
 - [Checklist](checklist.md) — Parent verification
 - [Parent Plan](../plan.md) — Epic plan
-- [Research](../../019-deep-research-rag-improvement/research/research.md) — Full synthesis
+- Research source preserved in the Phase 19 scratch artifacts
 
 <!-- ANCHOR:dependencies -->
-## DEPENDENCIES
+## 6. DEPENDENCIES
 
 See §3 Architecture for cross-phase dependency graph.
 <!-- /ANCHOR:dependencies -->
 
 <!-- ANCHOR:rollback -->
-## ROLLBACK PLAN
+## 7. ROLLBACK PLAN
 
 - **Trigger:** Eval regression > 5% on any core metric
 - **Procedure:** Disable feature flags for affected wave, revert to previous flag state

@@ -1,20 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/005-sprint-4-feedback-and-quality",
-  "description": "Sprint 4 closes the feedback loop with MPAB chunk aggregation, learned relevance feedback (R11) with 10 safeguards, shadow scoring infrastructure (R13-S2), and pre-storage quality gates (TM-04/TM-06).",
+  "description": "Feature Specification: Sprint 4 — Feedback and Quality",
   "keywords": [
     "feature",
     "specification",
     "sprint",
     "feedback",
-    "quality",
-    "MPAB",
-    "learned relevance",
-    "R11",
-    "shadow scoring"
+    "quality"
   ],
-  "status": "Complete",
-  "importance_tier": "important",
-  "lastUpdated": "2026-03-23T00:00:00.000Z",
+  "lastUpdated": "2026-03-25T10:14:59.246Z",
   "specId": "005",
   "folderSlug": "sprint-4-feedback-and-quality",
   "parentChain": [

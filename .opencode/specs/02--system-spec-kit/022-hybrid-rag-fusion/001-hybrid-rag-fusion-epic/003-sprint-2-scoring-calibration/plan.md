@@ -1,7 +1,6 @@
 ---
 title: "Implementation Plan: Sprint 2 — Scoring Calibration"
 description: "Implement embedding cache, cold-start boost, G2 investigation, and score normalization to resolve 15:1 magnitude mismatch."
-# SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2
 trigger_phrases:
   - "sprint 2 plan"
   - "scoring calibration plan"
@@ -258,12 +257,12 @@ Phase 6 (TM-03 Decay) ───────────────────�
 
 ---
 
-## RELATED DOCUMENTS
+### Related Documents
 
 - **Specification**: See `spec.md`
 - **Task Breakdown**: See `tasks.md`
 - **Verification Checklist**: See `checklist.md`
-- **Parent Plan**: See ../000-feature-overview/plan.md
+- **Parent Plan**: See ../plan.md
 - **Predecessor Plan**: See `../006-measurement-foundation/plan.md (direct dependency — Sprint 1 is a parallel sibling)
 
 ---

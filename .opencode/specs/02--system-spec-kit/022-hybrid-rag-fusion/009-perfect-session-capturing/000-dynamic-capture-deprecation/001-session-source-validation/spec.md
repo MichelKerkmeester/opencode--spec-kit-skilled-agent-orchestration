@@ -25,8 +25,8 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 1 of 5 (000-dynamic-capture-deprecation branch) |
-| **Predecessor** | 010-integration-testing |
-| **Successor** | 002-outsourced-agent-handback |
+| **Predecessor** | [010-integration-testing](../../010-integration-testing/spec.md) |
+| **Successor** | [002-outsourced-agent-handback](../002-outsourced-agent-handback/spec.md) |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-001 |
 | **Sequence** | A0.1-A0.5 |

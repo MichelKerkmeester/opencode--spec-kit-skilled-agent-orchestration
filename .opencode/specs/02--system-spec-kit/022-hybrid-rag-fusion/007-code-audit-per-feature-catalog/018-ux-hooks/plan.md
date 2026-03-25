@@ -9,11 +9,12 @@ contextType: "general"
 ---
 # Implementation Plan: Code Audit — UX Hooks
 
-<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
 
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -28,8 +29,11 @@ contextType: "general"
 ### Overview
 Audit each of the 19 UX Hooks features by reading the feature catalog entry, locating the referenced source files, and verifying that the implementation matches the documented behavior.
 
+<!-- /ANCHOR:summary -->
+
 ---
 
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -42,8 +46,11 @@ Audit each of the 19 UX Hooks features by reading the feature catalog entry, loc
 - [x] Findings documented per feature
 - [x] Summary report completed
 
+<!-- /ANCHOR:quality-gates -->
+
 ---
 
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -57,8 +64,11 @@ Read-only audit: Feature Catalog → Source Code → Findings Report
 ### Data Flow
 Read feature catalog entry → Locate source files → Compare description to implementation → Document findings
 
+<!-- /ANCHOR:architecture -->
+
 ---
 
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Preparation
@@ -94,7 +104,7 @@ Read feature catalog entry → Locate source files → Compare description to im
 
 ---
 
-## FINDINGS SUMMARY
+### Findings Summary
 
 **Audit Date**: 2026-03-22
 **Total Features**: 19 | **MATCH**: 17 | **PARTIAL**: 2 | **MISMATCH**: 0
@@ -107,8 +117,11 @@ The catalog's source-file list is inflated: 40+ files are listed for what is fun
 **F17 — Retrieval session state**
 The module header documents the feature as OFF (disabled), but the runtime default is ON (enabled). This is a catalog/header inconsistency — the live behavior differs from the documented toggle state.
 
+<!-- /ANCHOR:phases -->
+
 ---
 
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -117,8 +130,11 @@ The module header documents the feature as OFF (disabled), but the runtime defau
 | Completeness | All 19 features covered | Checklist verification |
 | Accuracy | Catalog matches implementation | Manual review |
 
+<!-- /ANCHOR:testing -->
+
 ---
 
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -126,12 +142,17 @@ The module header documents the feature as OFF (disabled), but the runtime defau
 | Feature catalog | Internal | Green | Cannot audit without reference |
 | Source code access | Internal | Green | Cannot verify implementation |
 
+<!-- /ANCHOR:dependencies -->
+
 ---
 
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Audit methodology proves inadequate
 - **Procedure**: Revise approach and restart from Phase 1
+
+<!-- /ANCHOR:rollback -->
 
 ---
 
@@ -153,7 +174,7 @@ Phase 1 (Prep) ──► Phase 2 (Audit 19 features) ──► Phase 3 (Synthesi
 
 ---
 
-## L3: MILESTONES
+### Milestones
 
 | Milestone | Description | Success Criteria |
 |-----------|-------------|------------------|

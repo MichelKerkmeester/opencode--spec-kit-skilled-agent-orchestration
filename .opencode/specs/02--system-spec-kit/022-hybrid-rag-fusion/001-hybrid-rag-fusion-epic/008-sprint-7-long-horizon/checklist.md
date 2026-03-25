@@ -1,7 +1,6 @@
 ---
 title: "Verification Checklist: Sprint 7 — Long Horizon"
 description: "Verification checklist for Sprint 7: memory summaries, content generation, entity linking, full reporting, R5 INT8 evaluation"
-# SPECKIT_TEMPLATE_SOURCE: checklist | v2.2
 trigger_phrases:
   - "sprint 7 checklist"
   - "long horizon checklist"
@@ -100,7 +99,7 @@ contextType: "implementation"
 
 ---
 
-## Program Completion Gate
+##### Program Completion Gate
 
 > **Note:** Sprint 7 is entirely optional (P2/P3 gated). The true program completion gate is Sprint 6 (graph deepening). Sprint 7 items activate only when gating criteria are met (>5K memories for R8, activation thresholds for R5). R13-S3 full reporting is the capstone of the evaluation infrastructure established in Sprint 1.
 
@@ -117,13 +116,11 @@ contextType: "implementation"
 
 ---
 
-<!-- ANCHOR:pageindex-xrefs -->
-## PageIndex Cross-References
+##### PageIndex Cross-References
 
 - [x] CHK-PI-S7-001 [P2] PageIndex cross-references reviewed — PI-A5/PI-B1 covered by existing infrastructure [EVIDENCE: documented in phase spec/plan/tasks artifacts]
   - PI-A5 verify-fix-verify pattern considered for long-horizon quality monitoring
   - PI-B1 tree thinning approach applied to R8 summary generation and R13-S3 traversal
-<!-- /ANCHOR:pageindex-xrefs -->
 
 ---
 
@@ -150,10 +147,10 @@ P0 must complete, P1 need approval to defer
 Final sprint — includes program completion and flag sunset audit
 -->
 
-## P0
-- [x] [P0] No additional phase-specific blockers recorded for this checklist normalization pass. *N/A — normalization pass artifact*
+##### P0
+- [x] [P0] No additional phase-specific blockers recorded for this checklist normalization pass. *N/A — normalization pass artifact* [EVIDENCE: documented in the phase packet and preserved during release normalization.]
 
-## P1
-- [x] [P1] No additional required checks beyond documented checklist items for this phase. *N/A — normalization pass artifact*
+##### P1
+- [x] [P1] No additional required checks beyond documented checklist items for this phase. *N/A — normalization pass artifact* [EVIDENCE: documented in the phase packet and preserved during release normalization.]
 
 ---

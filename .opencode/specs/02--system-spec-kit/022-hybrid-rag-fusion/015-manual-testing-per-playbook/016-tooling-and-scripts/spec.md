@@ -213,6 +213,16 @@ Playbook-only operator audits without dedicated feature catalog entries: M-009, 
 - **SC-001**: All 65 exact scenario IDs executed with individual pass/fail evidence
 - **SC-002**: Zero untested scenarios remaining in 16--tooling-and-scripts
 - **SC-003**: Checklist fully populated with evidence references for each scenario group
+### Acceptance Scenarios
+
+**Given** the `016-tooling-and-scripts` phase packet, **when** a reviewer opens the scenario mapping, **then** every scenario listed for the phase has a bounded execution target and a documented acceptance rule.
+
+**Given** the `016-tooling-and-scripts` phase packet, **when** execution evidence is reviewed, **then** verdict notes can be traced through `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+
+**Given** the `016-tooling-and-scripts` phase packet, **when** a reviewer checks neighboring navigation, **then** the packet points back to the parent and to the adjacent numbered phase where one exists.
+
+**Given** strict validation runs on the `016-tooling-and-scripts` phase packet, **when** the validator checks structure, **then** the packet satisfies Level 2 requirement and acceptance-scenario minimums.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

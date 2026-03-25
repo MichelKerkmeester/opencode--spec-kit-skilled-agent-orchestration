@@ -142,6 +142,16 @@ Provide a single Phase 010 specification that maps every graph-signal-activation
 - **SC-002**: The packet preserves the parent phase-map coverage for `10--graph-signal-activation` with no missing IDs and no duplicate scenario mappings.
 - **SC-003**: Reviewers can evaluate every scenario against the playbook verdict model using prompts, commands or inspections, evidence notes, and PASS/PARTIAL/FAIL outcomes.
 - **SC-004**: Release-readiness review for this phase can confirm 100% feature coverage with no scenario left undocumented.
+### Acceptance Scenarios
+
+**Given** the `010-graph-signal-activation` phase packet, **when** a reviewer opens the scenario mapping, **then** every scenario listed for the phase has a bounded execution target and a documented acceptance rule.
+
+**Given** the `010-graph-signal-activation` phase packet, **when** execution evidence is reviewed, **then** verdict notes can be traced through `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+
+**Given** the `010-graph-signal-activation` phase packet, **when** a reviewer checks neighboring navigation, **then** the packet points back to the parent and to the adjacent numbered phase where one exists.
+
+**Given** strict validation runs on the `010-graph-signal-activation` phase packet, **when** the validator checks structure, **then** the packet satisfies Level 2 requirement and acceptance-scenario minimums.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

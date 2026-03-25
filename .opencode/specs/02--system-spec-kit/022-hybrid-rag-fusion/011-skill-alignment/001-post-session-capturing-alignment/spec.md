@@ -1,38 +1,174 @@
-# 001 — Post Session Capturing Alignment
+---
+title: "Feature Specification: 001-post-session-capturing-alignment"
+description: "Level 2 child packet for the documentation-only alignment that rolled post-session-capturing guidance into the broader 011 skill-alignment closeout."
+trigger_phrases:
+  - "post session capturing alignment"
+  - "011 child 001"
+  - "json-first save docs"
+importance_tier: "important"
+contextType: "implementation"
+---
+# Feature Specification: 001-post-session-capturing-alignment
 
-**Level:** 2 | **Priority:** P1 | **Status:** Complete (superseded by parent 011-skill-alignment reconciliation passes)
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
-## 1. Problem
+---
 
-Six completed specs within the 022-hybrid-rag-fusion epic introduced changes that were not fully propagated to the system-spec-kit skill documentation surface:
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-- **016-json-mode-hybrid-enrichment**: Structured JSON summary fields (toolCalls, exchanges, preflight, postflight)
-- **017-json-primary-deprecation**: JSON as primary save contract, recovery-only gating
-- **018-memory-save-quality-fixes**: Tree-thinning threshold, conversation synthesis, decision deduplication
-- **012-command-alignment**: 6-command structure (context merged into analyze), 33-tool coverage
-- **013-agents-alignment**: Multi-runtime agent sync (18 files across Claude/Gemini)
-- **014-agents-md-alignment**: AGENTS.md Quick Reference tables, Gate 3 ordering fix
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | Complete |
+| **Created** | 2026-03-22 |
+| **Branch** | `011-skill-alignment/001-post-session-capturing-alignment` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../../009-perfect-session-capturing/spec.md |
+| **Successor** | None |
+<!-- /ANCHOR:metadata -->
 
-## 2. Scope
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+Several completed packets under `009-perfect-session-capturing` introduced documentation drift in `system-spec-kit` guidance that had not yet been folded into the skill, references, and tool-surface summaries. The affected docs still needed to describe JSON-first save patterns, the live 33-tool memory surface, and the current six-command structure without reopening runtime work.
+
+### Purpose
+Capture the narrow documentation-only alignment that imported the relevant post-session-capturing guidance into the `011-skill-alignment` closeout and preserve a validator-friendly child packet for that work.
+<!-- /ANCHOR:problem -->
+
+---
+
+<!-- ANCHOR:scope -->
+## 3. SCOPE
 
 ### In Scope
-- SKILL.md: Structured JSON fields, 6-command note, handler count, quality-fix Key Concepts
-- template_guide.md: Fix bare positional syntax
-- execution_methods.md: Reorder JSON-first, add --json/--stdin
-- save_workflow.md: Add --recovery to bare positional examples, add --json/--stdin
-- environment_variables.md: Add JSON-mode usage example
-- memory_system.md: Update tool count 23→33, add missing tool rows including memory_quick_search
+- Document the JSON-first save guidance updates that were folded into `system-spec-kit`.
+- Record the alignment of the memory-system reference surface to the live 33-tool state.
+- Capture the skill-guide and reference updates that came directly from the post-session-capturing follow-through.
 
 ### Out of Scope
-- Runtime TypeScript changes (NFR-C01)
-- Command files (handled by 011)
-- AGENTS.md files (handled by 013)
-- Agent definitions (handled by 012)
+- Runtime TypeScript changes or MCP implementation changes.
+- Reopening parent packet `009-perfect-session-capturing`.
+- Rewriting unrelated command or agent docs already owned by sibling packets.
 
-## 3. Requirements
+### Files to Change
 
-- SA-001: All bare positional generate-context.js examples use --recovery or JSON-primary syntax
-- SA-002: SKILL.md documents structured JSON fields matching session-types.ts
-- SA-003: memory_system.md tool count matches live 33-tool surface
-- SA-004: execution_methods.md and save_workflow.md show JSON mode as primary path
-- SA-005: Zero runtime TypeScript files modified
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `../../../../../skill/system-spec-kit/SKILL.md` | Modify | Capture JSON-first save guidance and current command-surface wording |
+| `../../../../../skill/system-spec-kit/references/templates/template_guide.md` | Modify | Remove stale bare-positional save syntax |
+| `../../../../../skill/system-spec-kit/references/workflows/execution_methods.md` | Modify | Show JSON mode as the primary save path |
+| `../../../../../skill/system-spec-kit/references/memory/save_workflow.md` | Modify | Align examples to JSON-first and `--recovery` usage |
+| `../../../../../skill/system-spec-kit/references/config/environment_variables.md` | Modify | Add JSON-mode usage guidance |
+| `../../../../../skill/system-spec-kit/references/memory/memory_system.md` | Modify | Align the tool table to the live 33-tool surface |
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | Save guidance must present JSON-first or `--recovery` syntax | No scoped reference doc presents the old bare-positional `generate-context.js [spec-folder]` form as the primary path |
+| REQ-002 | The child packet must reflect the live 33-tool surface | The scoped memory-system reference and related wording align to the current tool count |
+| REQ-003 | The child packet must remain documentation-only | No runtime TypeScript or MCP behavior changes are claimed or required |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-004 | The skill guide must record the current six-command structure | The scoped skill guide documents the six-command memory surface and the current save guidance |
+| REQ-005 | The packet must leave a validator-friendly historical record | This child folder contains template-compliant spec docs that roll up cleanly under `011-skill-alignment` |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The packet describes the post-session-capturing alignment as documentation-only work.
+- **SC-002**: Save guidance in the scoped docs no longer leads with the retired bare-positional syntax.
+- **SC-003**: The packet preserves the live 33-tool memory-surface story without reopening runtime work.
+
+### Acceptance Scenarios
+
+**Given** a maintainer opens this child packet, **when** they read the scope, **then** they see a documentation-only alignment pass rather than a runtime implementation phase.
+
+**Given** a reviewer checks save guidance after this pass, **when** they inspect the scoped docs, **then** JSON-first or `--recovery` usage is presented instead of the old bare-positional form.
+
+**Given** a reviewer checks the memory-system reference surface, **when** they compare it to the live repo, **then** the packet describes the 33-tool state consistently.
+
+**Given** recursive validation runs under `011-skill-alignment`, **when** this child packet is included, **then** it validates as a proper Level 2 spec folder.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Parent `011-skill-alignment` packet | Child wording must stay aligned with the parent closeout story | Keep the child explicitly subordinate to the parent packet |
+| Dependency | Live `system-spec-kit` docs | Future wording drift could make this historical record stale | Treat this child as a snapshot of the 2026-03-22 alignment |
+| Risk | Reviewers mistake this for runtime work | Scope confusion | Keep runtime behavior explicitly out of scope |
+| Risk | Old save syntax returns in later docs | Medium | Use the parent packet as the current verification source of truth |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 10. OPEN QUESTIONS
+
+- None. This child packet records a completed documentation alignment that now rolls up to the parent `011-skill-alignment` closeout.
+<!-- /ANCHOR:questions -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Documentation Quality
+- **NFR-D01**: The child packet must stay consistent with the parent `011-skill-alignment` narrative.
+
+### Reliability
+- **NFR-R01**: Parent and child references must resolve cleanly under recursive validation.
+
+### Change Control
+- **NFR-C01**: This packet does not authorize runtime code changes.
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Documentation Boundaries
+- Historical mentions of old save syntax can remain as contrast, but not as current guidance.
+- The live tool count may change again later; this packet records the aligned 33-tool state that existed when it closed.
+
+### Verification Edge Cases
+- Parent validation should treat this child as part of the `011` documentation lineage, not the `009` implementation lineage.
+- A future reconciliation pass may supersede this child again, but it should still remain structurally valid.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | 10/25 | One historical child packet with documentation-only scope |
+| Risk | 8/25 | Main risk is misrepresenting scope or reintroducing stale syntax |
+| Research | 12/20 | Requires alignment to parent closeout and live doc state |
+| **Total** | **30/70** | **Level 2** |
+<!-- /ANCHOR:complexity -->

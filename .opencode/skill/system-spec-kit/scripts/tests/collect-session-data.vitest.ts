@@ -158,6 +158,30 @@ describe('determineSessionStatus', () => {
 
     expect(status).toBe('IN_PROGRESS');
   });
+
+  it('returns COMPLETED when all explicit next steps are marked complete', () => {
+    const status = determineSessionStatus(
+      'None',
+      [
+        makeObservation({
+          title: 'Next Steps',
+          narrative: '[x] Deploy to staging. [x] Notify the release channel.',
+        }),
+      ],
+      5,
+      {
+        _source: 'file',
+        sessionSummary: 'Wrapped up the release work and recorded the final follow-through items.',
+        keyDecisions: [{ decision: 'Treat the remaining checklist entries as completed.' }],
+        nextSteps: [
+          '[x] Deploy to staging.',
+          '[x] Notify the release channel.',
+        ] as unknown as Array<Record<string, unknown>>,
+      },
+    );
+
+    expect(status).toBe('COMPLETED');
+  });
 });
 
 /* ───────────────────────────────────────────────────────────────

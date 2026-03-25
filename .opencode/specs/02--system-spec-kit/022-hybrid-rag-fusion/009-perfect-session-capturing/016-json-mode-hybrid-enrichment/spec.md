@@ -1,50 +1,139 @@
-# Phase 016: JSON Mode Hybrid Enrichment — Phase Container
+---
+title: "Feature Specification: 016-json-mode-hybrid-enrichment"
+description: "Level 1 phase-container record for the JSON-mode hybrid-enrichment packet under 009-perfect-session-capturing, capturing the live child-phase map, shipped fixes, and remaining follow-on work."
+trigger_phrases:
+  - "016 json mode hybrid enrichment"
+  - "json mode hybrid enrichment container"
+  - "phase 016 packet"
+importance_tier: "important"
+contextType: "implementation"
+---
+# Feature Specification: 016-json-mode-hybrid-enrichment
 
-**Status**: In Progress
-**Priority**: P0
-**Level**: 3+
-**Created**: 2026-03-20
-**Updated**: 2026-03-24
-**Parent**: [009-perfect-session-capturing](../spec.md)
-**Predecessor**: [015-runtime-contract-and-indexability](../015-runtime-contract-and-indexability/spec.md)
-**Successor**: [017-json-primary-deprecation](../017-json-primary-deprecation/spec.md)
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
 
-## Overview
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-Phase container for JSON-mode memory capturing quality improvements. Houses the original enrichment implementation (001) plus follow-up improvement phases derived from a 10-agent deep-research investigation (74 findings, 20 actionable recommendations). The child phases are complete, but the container remains open while remaining P1/P2 follow-on tasks are closed.
+| Field | Value |
+|-------|-------|
+| **Level** | 1 |
+| **Priority** | P0 |
+| **Status** | In Progress |
+| **Created** | 2026-03-20 |
+| **Updated** | 2026-03-25 |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | [015-runtime-contract-and-indexability](../015-runtime-contract-and-indexability/spec.md) |
+| **Successor** | [017-json-primary-deprecation](../017-json-primary-deprecation/spec.md) |
+| **Container Truth** | Child phases `001` through `004` are complete; container follow-on tasks `T-009`, `T-011`, and `T-012` remain open |
+<!-- /ANCHOR:metadata -->
 
-## Container Status Truth
+---
 
-- `plan.md` and `implementation-summary.md` both record this packet as active/in-progress.
-- `tasks.md` still tracks open follow-on items (`T-009`, `T-011`, `T-012`), so this container is not yet truthfully closed.
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
-## Phase Tree
+### Problem Statement
 
-| Phase | Name | Focus | Status |
-|-------|------|-------|--------|
-| 001 | [Initial Enrichment](001-initial-enrichment/spec.md) | Structured JSON support, Wave 2/3 hardening, RC1-RC5 fixes, post-save review | Complete |
-| 002 | [Scoring & Filter](002-scoring-and-filter/spec.md) | Quality scorer recalibration + contamination filter scope expansion (Domains C+E) | Complete |
-| 003 | [Field Integrity & Schema](003-field-integrity-and-schema/spec.md) | Fast-path field drops, validation gaps, V-rule coverage (Domains A+B) | Complete |
-| 004 | [Indexing & Coherence](004-indexing-and-coherence/spec.md) | Trigger phrase quality, template consumption, cross-session dedup (Domains D+F) | Complete |
+This packet had drifted into a historical phase container that no longer matched active system-spec-kit template rules. The top-level docs lacked template markers, anchors, and required section structure, which prevented recursive strict validation even though the child phases capture real implementation work.
 
-## Shared Resources
+### Purpose
 
-- [research.md](research.md) — Deep research findings (Round 1 archived + Round 2 active: 74 findings)
-- [prompts/](prompts/) — CRAFT research prompt used for the 10-agent investigation
+Provide a validator-compliant phase container for `016-json-mode-hybrid-enrichment` that truthfully records the four completed child phases, the shared research foundation, and the remaining follow-on tasks still keeping the container open.
+<!-- /ANCHOR:problem -->
 
-## Research Summary
+---
 
-Round 2 (2026-03-21) dispatched 10 Claude Opus 4.6 agents across 2 waves investigating 6 domains. Top 5 critical findings:
+<!-- ANCHOR:scope -->
+## 3. SCOPE
 
-1. Quality scorer bonus system masks all penalties (score always ~1.00)
-2. Contamination filter covers only observations + SUMMARY, missing 6+ text fields
-3. 15+ AI-composed fields ingested but never template-rendered
-4. Trigger phrase auto-extraction produces path fragment noise
-5. Zero automated cross-session contradiction detection
+### In Scope
 
-## Navigation
+- Normalize the top-level `016-json-mode-hybrid-enrichment` container docs to the active Level 1 template.
+- Preserve the live child-phase map for `001-initial-enrichment` through `004-indexing-and-coherence`.
+- Record the shared research basis and the remaining follow-on tasks that keep the container open.
+- Repair container-level phase-link metadata so child phases point back to this packet cleanly.
 
-- **Parent**: [009-perfect-session-capturing](../spec.md)
-- **Siblings**: [017-json-primary-deprecation](../017-json-primary-deprecation/spec.md), [018-memory-save-quality-fixes](../018-memory-save-quality-fixes/spec.md)
+### Out of Scope
+
+- Rewriting completed child-phase implementation history beyond the metadata and integrity fixes needed for validation.
+- Runtime code changes.
+- Reopening sibling packets outside `009-perfect-session-capturing`.
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| `spec.md` | Modify | Rebuild the phase container as a template-compliant Level 1 spec |
+| `plan.md` | Modify | Record the validation and follow-on closure plan |
+| `tasks.md` | Modify | Track remaining container-level work and validation tasks |
+| `implementation-summary.md` | Modify | Summarize shipped child phases and open follow-on items |
+| `001-initial-enrichment/spec.md` | Modify | Restore successor metadata and dead-reference hygiene |
+| `003-field-integrity-and-schema/spec.md` | Modify | Restore parent back-reference metadata |
+| `004-indexing-and-coherence/spec.md` | Modify | Restore parent back-reference metadata |
+| `001-initial-enrichment/implementation-summary.md` | Modify | Repair stale spec-folder metadata |
+| `004-indexing-and-coherence/implementation-summary.md` | Modify | Remove dead local markdown-file references |
+
+### PHASE DOCUMENTATION MAP
+
+| Phase | Folder | Focus | Status |
+|-------|--------|-------|--------|
+| 001 | `001-initial-enrichment/` | Structured JSON support, Wave 2 and Wave 3 hardening, post-save review integration | Complete |
+| 002 | `002-scoring-and-filter/` | Quality scorer recalibration and contamination-filter expansion | Complete |
+| 003 | `003-field-integrity-and-schema/` | Fast-path field integrity and validation hardening | Complete |
+| 004 | `004-indexing-and-coherence/` | Trigger quality, template consumption, and coherence safeguards | Complete |
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | The phase container must validate as a Level 1 packet | `spec.md`, `plan.md`, `tasks.md`, and `implementation-summary.md` contain the required template markers, anchors, and section structure |
+| REQ-002 | The phase container must preserve the live child-phase map | The spec includes a `PHASE DOCUMENTATION MAP` covering child phases `001` through `004` with truthful status values |
+| REQ-003 | The phase container must record why it remains open | The container docs explicitly track the remaining follow-on tasks `T-009`, `T-011`, and `T-012` |
+| REQ-004 | Child phase metadata must point back to the container cleanly | The affected child specs carry valid parent, predecessor, and successor references |
+| REQ-005 | Shared research references must be described without dead local markdown links | Container and child docs refer to the shared research artifact truthfully without broken local file references |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: The `016-json-mode-hybrid-enrichment` top-level packet validates structurally as a Level 1 phase container.
+- **SC-002**: Readers can see all four child phases and understand that implementation work is complete while container follow-on tasks remain open.
+- **SC-003**: Parent and sibling navigation inside the `016` subtree is internally consistent.
+
+### Acceptance Scenarios
+
+**Given** a reviewer opens the phase container, **when** they read `spec.md`, **then** they see a valid Level 1 packet with the current child-phase map and open follow-on tasks.
+
+**Given** a reviewer follows links from child phases `001`, `003`, and `004`, **when** they inspect the metadata rows, **then** each packet points back to the `016-json-mode-hybrid-enrichment` container correctly.
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | Child phases `001` through `004` remain the source of implementation truth | The container could misstate shipped work if it diverges from them | Keep the container concise and defer phase details to the child packets |
+| Dependency | Shared research note remains available for provenance | Readers could lose context for why follow-on items exist | Reference the research artifact as shared background, not as a local hard dependency |
+| Risk | The container is read as complete because all child phases are complete | Reviewers could miss open follow-on work | Keep container status `In Progress` until `T-009`, `T-011`, and `T-012` are closed |
+| Risk | Historical wording drifts back into non-template headings | Recursive strict validation will fail again | Keep the container aligned to the active Level 1 template only |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- Should `T-009`, `T-011`, and `T-012` be closed inside this container or split into a later cleanup packet once their owning runtime work is scheduled?
+<!-- /ANCHOR:questions -->

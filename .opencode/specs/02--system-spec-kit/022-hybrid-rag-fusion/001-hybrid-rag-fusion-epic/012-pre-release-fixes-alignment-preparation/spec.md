@@ -24,7 +24,7 @@
 | **v1 Original Audit** | 49 findings total: 4 P0, 19 P1, 26 P2 |
 | **v2 Narrow Review** | 84/100 PASS WITH NOTES |
 | **v3 Full-Tree Review** | 42/100 FAIL, 58 findings total: 6 P0, 38 P1, 14 P2 |
-| **Live Review Scope** | 119 spec directories, 19 direct phases |
+| **Live Review Scope** | 123 spec directories, 19 direct phases |
 
 <!-- /ANCHOR:metadata -->
 
@@ -129,10 +129,10 @@ This packet now governs the full release-readiness program for the 022 tree. It 
 
 ### Acceptance Scenarios
 
-1. **Audit continuity**: A maintainer can read this packet and understand both the original 49-finding audit and the later 58-finding full-tree review without opening older versions of the spec.
-2. **Scope continuity**: A maintainer can see that the packet now governs the whole 022 remediation effort, not only the original 012 fixes.
-3. **Plan continuity**: A maintainer can move from this spec into `plan.md` and find the exact Phase 4-7 remediation sequence.
-4. **Release continuity**: A reviewer can tell which criteria are already achieved and which criteria still block final release sign-off.
+- **Given** the original 49-finding audit and the later 58-finding full-tree review, **when** a maintainer reads this packet, **then** both audit histories are understandable without reopening older packet versions.
+- **Given** the live 022 remediation program, **when** a maintainer reviews this packet, **then** it is clear that the packet now governs the whole 022 release effort rather than only the original 012 fixes.
+- **Given** the current remediation sequence, **when** a maintainer moves from this spec into `plan.md`, **then** the Phase 4-7 execution order is explicit.
+- **Given** the current blocker set, **when** a reviewer reads the success criteria, **then** they can distinguish already-achieved criteria from the criteria that still block final release sign-off.
 
 <!-- /ANCHOR:requirements -->
 

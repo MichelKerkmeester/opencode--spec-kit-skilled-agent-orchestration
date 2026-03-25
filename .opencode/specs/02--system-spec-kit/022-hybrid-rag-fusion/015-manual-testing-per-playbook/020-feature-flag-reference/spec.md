@@ -23,7 +23,7 @@ contextType: "general"
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P0 |
-| **Status** | Draft — placeholder content, not yet a full testing packet |
+| **Status** | Draft — Level 2 packet scaffold created; execution pending |
 | **Created** | 2026-03-24 |
 | **Branch** | `main` |
 | **Parent Spec** | [../spec.md](../spec.md) |
@@ -70,6 +70,10 @@ Provide a single feature-flag-reference-audit-focused specification that maps th
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
 | `spec.md` | Create | Phase 020 feature-flag-reference audit requirements, test inventory, and acceptance criteria |
+| `plan.md` | Create | Phase 020 execution order, preconditions, and rollback guidance |
+| `tasks.md` | Create | Phase 020 task tracker for PB-020-01 through PB-020-03 |
+| `checklist.md` | Create | Phase 020 verification gates and evidence checklist |
+| `implementation-summary.md` | Create | Packet scaffold status until manual execution completes |
 | `description.json` | Create | Phase 020 metadata |
 <!-- /ANCHOR:scope -->
 
@@ -87,6 +91,14 @@ Provide a single feature-flag-reference-audit-focused specification that maps th
 | REQ-003 | Execute PB-020-03 flag removal process: demonstrate toggle-off and toggle-on lifecycle for a graduated flag. | PASS if toggling off disables the feature and toggling on re-enables it, with evidence captured |
 
 No P1 items are defined for this phase; all three flag-reference audit scenarios are mandatory for coverage.
+
+### P1 - Packet Governance Requirements
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-901 | 020-feature-flag-reference packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 020-feature-flag-reference |
+| REQ-902 | 020-feature-flag-reference packet keeps execution evidence and verdict documentation synchronized | `tasks.md`, `checklist.md`, and `implementation-summary.md` stay aligned for 020-feature-flag-reference |
+
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -98,6 +110,16 @@ No P1 items are defined for this phase; all three flag-reference audit scenarios
 - **SC-002**: Each scenario has a PASS, PARTIAL, or FAIL verdict with explicit rationale.
 - **SC-003**: Coverage is reported as 3/3 with no skipped test IDs.
 - **SC-004**: Any flag inventory deltas are recorded before cleanup.
+### Acceptance Scenarios
+
+**Given** the `020-feature-flag-reference` phase packet, **when** a reviewer opens the scenario mapping, **then** every scenario listed for the phase has a bounded execution target and a documented acceptance rule.
+
+**Given** the `020-feature-flag-reference` phase packet, **when** execution evidence is reviewed, **then** verdict notes can be traced through `tasks.md`, `checklist.md`, and `implementation-summary.md`.
+
+**Given** the `020-feature-flag-reference` phase packet, **when** a reviewer checks neighboring navigation, **then** the packet points back to the parent and to the adjacent numbered phase where one exists.
+
+**Given** strict validation runs on the `020-feature-flag-reference` phase packet, **when** the validator checks structure, **then** the packet satisfies Level 2 requirement and acceptance-scenario minimums.
+
 <!-- /ANCHOR:success-criteria -->
 
 ---

@@ -1,15 +1,18 @@
 ---
 title: "Tasks: Research-Based Refinement"
 description: "Cross-phase coordination tasks for 5 sub-phases implementing 29 research recommendations."
-# SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 trigger_phrases:
   - "research refinement tasks"
   - "cross-phase tasks"
 importance_tier: "important"
 contextType: "implementation"
 ---
-
 # Tasks: Research-Based Refinement
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+
+---
 
 <!-- ANCHOR:notation -->
 ## Task Notation
@@ -22,16 +25,16 @@ contextType: "implementation"
 | `[B]` | Blocked |
 <!-- /ANCHOR:notation -->
 
-<!-- ANCHOR:phase-0 -->
-## Phase 0: Setup & Baseline
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
 
 - [ ] T001 Record eval baseline (MRR@5, NDCG@10, Recall@20, HitRate@1) per intent class
 - [ ] T002 Verify all 28 feature flag names are unique (no collision with existing ~15 flags)
 - [ ] T003 Create feature flag documentation entry in environment_variables.md
-<!-- /ANCHOR:phase-0 -->
+<!-- /ANCHOR:phase-1 -->
 
-<!-- ANCHOR:wave-1 -->
-## Wave 1: Foundations (Parallel)
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
 - [x] T004 [P] Execute D4 Phase A — Event ledger, FSRS hybrid, quality gate exception (#2, #3, #7)
   - See: `004-feedback-quality-learning/tasks.md`
@@ -47,10 +50,9 @@ contextType: "implementation"
   - Evidence: recovery-payload.ts + confidence-scoring.ts created, formatters + handlers extended, 74 tests
 - [ ] T008 Run eval after Wave 1 — compare MRR@5/NDCG@10 vs baseline
 - [ ] T009 Run latency regression — verify simple-query p95 < 1s
-<!-- /ANCHOR:wave-1 -->
+<!-- /ANCHOR:phase-2 -->
 
-<!-- ANCHOR:wave-2 -->
-## Wave 2: Core Improvements (After Wave 1)
+### Wave 2: Core Improvements (After Wave 1)
 
 - [x] T010 [P] Execute D2 Phase A — Query decomposition, graph concept routing (#10, #11)
   - See: `002-query-intelligence-reformulation/tasks.md`
@@ -62,10 +64,8 @@ contextType: "implementation"
   - See: `004-feedback-quality-learning/tasks.md`
   - Evidence: batch-learning.ts (528 lines), reconsolidation-bridge.ts +179 lines, 53+15 tests
 - [ ] T013 Run eval after Wave 2
-<!-- /ANCHOR:wave-2 -->
 
-<!-- ANCHOR:wave-3 -->
-## Wave 3: Advanced Features (After Wave 2)
+#### Wave 3 — Advanced Features (After Wave 2)
 
 - [x] T014 [P] Execute D1 Phases B+C — Shadow fusion lab, query-aware graph, fusion router (#8, #22, #23)
   - See: `001-fusion-scoring-intelligence/tasks.md`
@@ -77,10 +77,8 @@ contextType: "implementation"
   - See: `002-query-intelligence-reformulation/tasks.md`
   - Evidence: llm-reformulation.ts (451 lines), hyde.ts (459 lines), llm-cache.ts (199 lines), stage1 wired
 - [ ] T017 Run eval after Wave 3
-<!-- /ANCHOR:wave-3 -->
 
-<!-- ANCHOR:wave-4 -->
-## Wave 4: Final Items (After Wave 3)
+#### Wave 4 — Final Items (After Wave 3)
 
 - [x] T018 [P] Execute D1 Phase D — Learned Stage 2 weights (#28)
   - Evidence: learned-combiner.ts (380 lines), ridge regression + LOOCV + SHAP, 51 tests
@@ -105,16 +103,11 @@ contextType: "implementation"
   - Evidence: Fixed modularization line limit, stdio-logging safety (console.info→warn), reconsolidation schema/SQL, RRF fusion env setup
 - [x] T029 Review: Ultra-think quality audit + fix broken playbook links
   - Evidence: Fixed ID 174 directory mismatch, reordered IDs 175-180 to match actual per-feature files
-<!-- /ANCHOR:wave-4 -->
 
-<!-- ANCHOR:phase-1 -->
-<!-- Phase A content above -->
-<!-- /ANCHOR:phase-1 -->
-<!-- ANCHOR:phase-2 -->
-<!-- Phase B content above -->
-<!-- /ANCHOR:phase-2 -->
 <!-- ANCHOR:phase-3 -->
-<!-- Phase C content above -->
+## Phase 3: Verification
+
+- [x] T030 Release-alignment verification confirms the parent packet keeps child-wave execution, feature-flag gating, and post-fix evidence synchronized.
 <!-- /ANCHOR:phase-3 -->
 
 <!-- ANCHOR:completion -->

@@ -26,8 +26,8 @@ This document records the current verified state for this scope. Use [spec.md](s
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 1 |
-| **Predecessor** | 000-dynamic-capture-deprecation |
-| **Successor** | 002-contamination-detection |
+| **Predecessor** | [000-dynamic-capture-deprecation](../000-dynamic-capture-deprecation/spec.md) |
+| **Successor** | [002-contamination-detection](../002-contamination-detection/spec.md) |
 | **Handoff Criteria** | validate.sh + test suite passing |
 | **R-Item** | R-01 |
 | **Sequence** | A3 |

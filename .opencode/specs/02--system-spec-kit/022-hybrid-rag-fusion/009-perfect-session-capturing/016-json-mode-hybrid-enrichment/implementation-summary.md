@@ -1,43 +1,88 @@
+---
+title: "Implementation Summary: 016-json-mode-hybrid-enrichment"
+description: "Top-level phase-container summary for the JSON-mode hybrid-enrichment packet, recording the shipped child phases, remaining follow-on tasks, and current validation-focused normalization work."
+trigger_phrases:
+  - "016 json mode implementation summary"
+  - "json mode hybrid enrichment summary"
+importance_tier: "important"
+contextType: "implementation"
+---
 # Implementation Summary: 016-json-mode-hybrid-enrichment
 
-## Status: In Progress
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 
-**Started**: 2026-03-20
-**Updated**: 2026-03-24
+---
 
-## What Was Done
+<!-- ANCHOR:metadata -->
+## Metadata
 
-### Phase Children (All Complete)
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | 016-json-mode-hybrid-enrichment |
+| **Updated** | 2026-03-25 |
+| **Level** | 1 |
+| **Status** | In Progress |
+<!-- /ANCHOR:metadata -->
 
-1. **001-initial-enrichment** — Structured JSON support, Wave 2/3 hardening, RC1-RC5 fixes, post-save review integration
-2. **002-scoring-and-filter** — Quality scorer recalibration removing the bonus system that masked all penalties; contamination filter expanded from 2 fields to 8+ text fields (Domains C+E)
-3. **003-field-integrity-and-schema** — Fast-path field drops fixed, validation gap closures, V-rule coverage expanded (Domains A+B)
-4. **004-indexing-and-coherence** — Trigger phrase quality filtering added, template consumption for `toolCalls` and `exchanges`, cross-session dedup improvements (Domains D+F)
+---
 
-### Research Foundation
+<!-- ANCHOR:what-built -->
+## What Was Built
 
-- Round 2 deep research: 10 Claude Opus 4.6 agents across 2 waves
-- 74 concrete findings with source-level citations
-- 20 actionable recommendations organized into P0/P1/P2 tiers
+This container now serves as the truthful top-level record for the `016-json-mode-hybrid-enrichment` subtree. It maps the four completed child phases and keeps the remaining container-level follow-on tasks visible rather than implying the subtree is fully closed.
 
-## What Remains
+### Completed Child Phases
 
-- T-009: `resolveProjectPhase()` explicit override (in progress)
-- T-011: Remove phantom V2.2 placeholders
-- T-012: Un-suppress OPTIONAL_PLACEHOLDERS with active data sources
+- `001-initial-enrichment`: structured JSON support, Wave 2 and Wave 3 hardening, and post-save review integration
+- `002-scoring-and-filter`: quality scorer recalibration and contamination-filter expansion
+- `003-field-integrity-and-schema`: fast-path field integrity and validation hardening
+- `004-indexing-and-coherence`: trigger quality, template consumption, and coherence safeguards
 
-## Files Changed
+### Remaining Container Work
 
-Primary changes across the generate-context.js pipeline:
-- `scripts/core/workflow.ts` — Contamination filter expansion, trigger phrase filtering
-- `scripts/extractors/quality-scorer.ts` — Bonus system recalibration
-- `scripts/lib/input-normalizer.ts` — Fast-path field fixes, unknown-field warnings
-- `scripts/lib/template-renderer.ts` — Template consumption for toolCalls/exchanges
-- `mcp_server/handlers/memory-save.ts` — Quality gate integration
+- `T-009`: `resolveProjectPhase()` explicit override follow-on
+- `T-011`: phantom placeholder cleanup follow-on
+- `T-012`: un-suppress active optional placeholders follow-on
+<!-- /ANCHOR:what-built -->
 
-## Impact
+---
 
-- Quality scores now have discriminative power (previously always ~1.00)
-- Contamination filter covers all text fields instead of 2
-- 15+ previously-silenced fields now rendered in memory output
-- Trigger phrase noise reduced significantly
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+The work in this pass is documentation-only. The historical container docs were replaced with the active Level 1 system-spec-kit structure, and the subtree was then targeted for the specific metadata and integrity fixes reported by recursive strict validation.
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+| Decision | Why |
+|----------|-----|
+| Normalize the container as Level 1 | The top-level packet is a coordination container, while implementation depth lives in child phases `001` through `004` |
+| Keep the container `In Progress` | The child phases are complete, but the container still tracks open follow-on tasks |
+| Repair only the specific child metadata and integrity issues surfaced by validation | The goal is strict validation for the `009` subtree, not a rewrite of already-detailed child implementation history |
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
+## Verification
+
+| Check | Result |
+|-------|--------|
+| Top-level container files rewritten to active template shape | Complete |
+| Child metadata and integrity issues identified from recursive validation | Complete |
+| Recursive strict validation for `016` rerun after the container rewrite | Pending in this pass |
+<!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+1. The `016` subtree still carries historical Level 3 child packets whose remaining warning debt must be cleared packet by packet.
+2. This pass does not close the container-level follow-on tasks; it only preserves them truthfully.
+<!-- /ANCHOR:limitations -->

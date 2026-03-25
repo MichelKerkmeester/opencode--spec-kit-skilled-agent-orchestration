@@ -28,7 +28,6 @@ Two interrelated defects undermine memory quality in the generate-context.js pip
 
 ---
 
-<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -42,7 +41,6 @@ Two interrelated defects undermine memory quality in the generate-context.js pip
 | **Parent Spec** | `../spec.md` |
 | **Sibling (complete)** | `../001-initial-enrichment/spec.md` |
 | **Research Source** | `../research.md` (Round 2, Domains C + E) |
-<!-- /ANCHOR:metadata -->
 
 ---
 
@@ -134,6 +132,20 @@ Restore discriminative power to quality_score by removing the bonus system and r
 - **SC-003**: A JSON save with AI-hedging text ("I think", "it seems") in sessionSummary, recentContext, or technicalContext does not produce those phrases in the saved memory
 - **SC-004**: A JSON save with `projectPhase: "IMPLEMENTATION"` writes `PROJECT_PHASE: IMPLEMENTATION` in the memory frontmatter
 - **SC-005**: Post-save review HIGH findings reduce quality_score by a documented, consistent amount
+
+### Acceptance Scenarios
+
+**Given** a session with five simultaneous medium-severity issues, **when** the recalibrated live scorer runs, **then** the resulting `quality_score` is materially lower than a clean-session score.
+
+**Given** the calibration Vitest file, **when** a maintainer inspects its import path, **then** it targets `extractors/quality-scorer.ts` instead of the dead `core/quality-scorer.ts`.
+
+**Given** a JSON save with hedging text in `sessionSummary`, **when** the save pipeline completes, **then** the saved memory does not retain the hedging phrase.
+
+**Given** a JSON save with contaminated text inside `recentContext` or `technicalContext`, **when** the workflow filters those fields, **then** the rendered memory contains the cleaned versions only.
+
+**Given** a JSON payload with `"projectPhase": "IMPLEMENTATION"`, **when** normalization and extraction complete, **then** the saved frontmatter records `PROJECT_PHASE: IMPLEMENTATION`.
+
+**Given** a save that produces a HIGH post-save review finding, **when** review feedback is applied to the stored result, **then** the resulting `quality_score` is lower than it would be without that finding.
 <!-- /ANCHOR:success-criteria -->
 
 ---

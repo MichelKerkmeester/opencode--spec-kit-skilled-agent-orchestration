@@ -60,7 +60,7 @@ contextType: "general"
 
 ---
 
-## Phase Completion
+### Phase Completion
 
 - [x] CHK-010 [P0] All 19 category audits complete — phases 001-018, 020 all verified [EVIDENCE: the umbrella phase map records the 19 category audit phases as completed.]
 - [x] CHK-011 [P0] Each phase has documented findings — AUDIT FINDINGS section in every spec.md [EVIDENCE: the category audit child specs preserve documented findings per phase.]
@@ -71,7 +71,7 @@ contextType: "general"
 
 ---
 
-## Quality
+### Quality
 
 - [x] CHK-020 [P0] Live catalog totals synchronized — 178 MATCH, 39 PARTIAL, 1 pending coverage sync, 0 MISMATCH [EVIDENCE: the umbrella checklist and implementation summary preserve the synchronized audit totals.]
 - [x] CHK-021 [P0] Zero features skipped without reason — every feature has explicit audit status [EVIDENCE: the umbrella audit tracks the lone remaining Retrieval coverage delta explicitly instead of leaving skipped features implicit.]
@@ -99,7 +99,7 @@ contextType: "general"
 
 ---
 
-## Post-Audit Deep Research
+### Post-Audit Deep Research
 
 - [x] CHK-050 [P1] Deep research completed — 10 iterations, 11 questions answered, 5 systemic gap findings documented [EVIDENCE: the parent audit packet preserves the post-audit deep research summary and its systemic findings.]
 - [x] CHK-051 [P1] Wave 1 corrections applied — P001-F02 reclassified MATCH→PARTIAL, P013-F23 reclassified PARTIAL→MATCH (net zero change) [EVIDENCE: the umbrella packet records the wave-1 reclassification corrections in its remediation history.]
@@ -107,7 +107,7 @@ contextType: "general"
 
 ---
 
-## Deep Review Remediation
+### Deep Review Remediation
 
 - [ ] CHK-060 [P1] All governance bypass fixes applied (4 P1)
 - [ ] CHK-061 [P1] All stale audit verdicts refreshed (10 P1)

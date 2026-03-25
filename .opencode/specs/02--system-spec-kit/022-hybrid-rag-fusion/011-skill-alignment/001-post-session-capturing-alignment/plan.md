@@ -1,24 +1,166 @@
-# Plan — Post Session Capturing Alignment
+---
+title: "Implementation Plan: 001-post-session-capturing-alignment"
+description: "Level 2 plan for documenting the post-session-capturing alignment work that was later absorbed into the parent 011 skill-alignment closeout."
+trigger_phrases:
+  - "011 child 001 plan"
+  - "post session capturing alignment plan"
+importance_tier: "important"
+contextType: "implementation"
+---
+# Implementation Plan: 001-post-session-capturing-alignment
 
-## Approach
-Documentation-only alignment pass using parallel agent dispatch for independent file edits.
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
-## Sprints
+---
 
-### Sprint 1: SKILL.md Updates
-- A1: Add structured JSON fields after Context Preservation section
-- A2: Add 6-command structure note near Spec Kit Memory System section
-- A3: Add quality-fix Key Concepts from 018
-- A4: Update handler count ~30 → ~40
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-### Sprint 2: References Updates
-- B1: template_guide.md — fix bare positional syntax
-- B2: execution_methods.md — reorder JSON-first
-- B3: save_workflow.md — add --recovery and JSON examples
-- B4: environment_variables.md — add JSON-mode example
-- B6: memory_system.md — update tool count to 33
+### Technical Context
 
-### Sprint 3: Verification
-- validate.sh on spec folder
-- Grep for bare positional syntax
-- Verify tool counts match live repo
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | Markdown documentation only |
+| **Framework** | system-spec-kit Level 2 packet workflow |
+| **Storage** | Spec folder markdown plus scoped `system-spec-kit` docs |
+| **Testing** | Strict packet validation plus targeted doc checks |
+
+### Overview
+This child packet records the documentation-only alignment that followed the session-capturing work. It focuses on JSON-first save guidance, tool-count truth, and skill or reference wording updates that were later incorporated into the parent `011-skill-alignment` closeout.
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [x] Scope limited to documentation-only follow-through
+- [x] Parent `011-skill-alignment` packet identified as the roll-up owner
+- [x] Live tool-count and command-surface truth available from the repo
+
+### Definition of Done
+- [x] Child docs record the historical alignment scope accurately
+- [x] Save-guidance and tool-count themes are preserved truthfully
+- [x] Strict validation passes for this child packet
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+Documentation alignment snapshot.
+
+### Key Components
+- **Child packet docs**: this packet's five canonical markdown files
+- **Parent packet**: `../spec.md` and companion docs under `011-skill-alignment`
+- **Scoped doc surfaces**: the skill guide, memory references, and memory-system summaries affected by the alignment
+
+### Data Flow
+Live `system-spec-kit` doc state informed this child alignment pass, then the resulting truth was rolled up into the parent `011-skill-alignment` packet for long-term closure tracking.
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [x] Confirm the packet is documentation-only and subordinate to parent `011`
+- [x] Identify the scoped save-guidance and tool-surface themes
+
+### Phase 2: Implementation
+- [x] Record the JSON-first save-guidance alignment story
+- [x] Record the 33-tool memory-surface alignment story
+- [x] Preserve the parent roll-up relationship explicitly
+
+### Phase 3: Verification
+- [x] Restore template-compliant child packet files
+- [x] Re-run strict validation for this child packet
+- [x] Confirm parent references resolve cleanly
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Structural validation | Child packet only | `validate.sh --strict` |
+| Parent-link verification | Child `spec.md` metadata | `sed`, validator phase-link check |
+| Truth audit | Alignment summary wording | Manual readback |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| `../spec.md` | Internal | Green | Parent roll-up relationship would be unclear |
+| Live `system-spec-kit` docs | Internal | Green | The child history would lose factual grounding |
+| `validate.sh` | Internal | Green | Completion could not be claimed honestly |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: The rebuilt child packet misstates the historical scope or breaks parent recursion.
+- **Procedure**: Revert only this child packet's markdown files and rebuild the packet around the same documentation-only truth.
+<!-- /ANCHOR:rollback -->
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+```
+Phase 1 (Setup) ──► Phase 2 (Implementation) ──► Phase 3 (Verification)
+```
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | None | Implementation |
+| Implementation | Setup | Verification |
+| Verification | Implementation | Completion |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | Low | <1 hour |
+| Implementation | Low | <1 hour |
+| Verification | Low | <1 hour |
+| **Total** | | **1-3 hours** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+- [x] Parent relationship verified
+- [x] Documentation-only scope preserved
+- [x] Validation command identified
+
+### Rollback Procedure
+1. Revert the child markdown files.
+2. Re-read the parent `011` packet.
+3. Reapply the same documentation-only summary using template-compliant sections.
+
+### Data Reversal
+- **Has data migrations?** No
+- **Reversal procedure**: N/A
+<!-- /ANCHOR:enhanced-rollback -->

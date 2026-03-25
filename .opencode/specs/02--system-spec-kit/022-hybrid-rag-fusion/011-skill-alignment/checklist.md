@@ -23,11 +23,11 @@ contextType: "general"
 
 ---
 
-## P0 Items
+### P0 Items
 
 Critical pack-consistency, scope, and validation items.
 
-## P1 Items
+### P1 Items
 
 Required evidence that the pack now reflects live repo truth.
 
@@ -92,7 +92,7 @@ Required evidence that the pack now reflects live repo truth.
 
 ---
 
-## Post-Research-Refinement Alignment (2026-03-22)
+### Post-Research-Refinement Alignment (2026-03-22)
 
 - [x] CHK-060 [P0] SKILL.md feature flags table includes all graduated spec-011 flags (33 search/pipeline flags; 47 total including roadmap env vars) [EVIDENCE: diff shows the reconciled total count line for the live table and clarifies the separate roadmap env var section]
 - [x] CHK-061 [P0] SKILL.md feature catalog count updated 194 → 221 [EVIDENCE: actual per-feature file count verified at 221 via find command]

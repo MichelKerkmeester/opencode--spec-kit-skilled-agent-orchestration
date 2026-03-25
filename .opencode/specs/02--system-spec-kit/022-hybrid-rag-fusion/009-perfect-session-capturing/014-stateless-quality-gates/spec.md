@@ -40,8 +40,8 @@ Stateless mode (`node generate-context.js "014-stateless-quality-gates"`) is blo
 | **Parent Spec** | ../spec.md |
 | **Parent Plan** | ../plan.md |
 | **Phase** | 14 |
-| **Predecessor** | 013-spec-descriptions |
-| **Successor** | 015-runtime-contract-and-indexability |
+| **Predecessor** | [013-spec-descriptions](../013-spec-descriptions/spec.md) |
+| **Successor** | [015-runtime-contract-and-indexability](../015-runtime-contract-and-indexability/spec.md) |
 | **Handoff Criteria** | validate.sh + test suite passing; SC-001 through SC-006 verified |
 | **R-Item** | R-17 |
 
