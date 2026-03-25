@@ -123,17 +123,14 @@ The parent `spec.md` includes a Phase Documentation Map section that lists all c
 
 ### Child spec.md: Parent Back-Reference
 
-Each child phase `spec.md` includes a metadata back-reference to its parent:
+Each child phase `spec.md` includes a metadata table linking it to the parent and adjacent phases:
 
 ```markdown
----
-title: Foundation Phase
-created: 2026-02-20
-status: active
-level: 3
-parent: specs/###-parent-feature/
-phase: 1 of 3
----
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | `../spec.md` |
+| **Predecessor** | `../NNN-previous-phase/spec.md` |
+| **Successor** | `../NNN-next-phase/spec.md` |
 ```
 
 This back-reference enables:

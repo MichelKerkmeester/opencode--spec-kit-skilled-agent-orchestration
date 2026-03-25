@@ -169,7 +169,7 @@ cp .opencode/skill/system-spec-kit/templates/level_2/checklist.md specs/###-name
 **Copy commands:**
 ```bash
 # First copy all Level 2 files from level_3/, then add:
-cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/###-name/decision-record-[topic].md
+cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/###-name/decision-record.md
 ```
 
 **Optional Templates:**
@@ -186,7 +186,7 @@ cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research
 
 **All Level 2 sections PLUS:**
 
-**decision-record-[topic].md sections to fill:**
+**decision-record.md sections to fill:**
 - Context and problem
 - Options considered (2-4 typically)
 - Decision made
@@ -216,7 +216,7 @@ cp .opencode/skill/system-spec-kit/templates/level_3+/plan.md specs/###-name/pla
 cp .opencode/skill/system-spec-kit/templates/level_3+/tasks.md specs/###-name/tasks.md
 cp .opencode/skill/system-spec-kit/templates/level_3+/implementation-summary.md specs/###-name/implementation-summary.md
 cp .opencode/skill/system-spec-kit/templates/level_3+/checklist.md specs/###-name/checklist.md
-cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/###-name/decision-record-[topic].md
+cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/###-name/decision-record.md
 ```
 
 **When to use:**
@@ -481,7 +481,7 @@ cp .opencode/skill/system-spec-kit/templates/level_2/checklist.md specs/###-name
 
 ---
 
-### decision-record-[name].md - Architecture Decision Record (ADR)
+### decision-record.md - Architecture Decision Record (ADR)
 
 **When to use:** Major technical decisions
 
@@ -491,10 +491,10 @@ cp .opencode/skill/system-spec-kit/templates/level_2/checklist.md specs/###-name
 
 **Copy command:**
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/###-name/decision-record-[topic].md
+cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/###-name/decision-record.md
 ```
 
-**Use descriptive name:** `decision-record-database.md`, `decision-record-auth-library.md`
+**Required filename:** `decision-record.md` (topic-specific ADR files are supplemental)
 
 **Sections to fill:**
 - Context and problem
@@ -716,7 +716,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tm
 2. **Preserve numbering and emojis** - Maintain visual scanning pattern
 3. **Fill every placeholder** - Replace `[PLACEHOLDER]` with actual content
 4. **Remove instructional comments** - Delete `<!-- SAMPLE -->` blocks
-5. **Use descriptive filenames** - `decision-record-[topic].md`, not `decision-record-final.md`
+5. **Use the canonical required filename** - `decision-record.md` (topic-specific ADR files are supplemental)
 6. **Keep sections relevant** - State "N/A" instead of deleting sections
 7. **Link sibling documents** - Cross-reference spec.md ↔ plan.md ↔ tasks.md
 8. **Document level changes** - Use `upgrade-level.sh` for level upgrades (recommended), then auto-populate placeholder content. Note changes in changelog

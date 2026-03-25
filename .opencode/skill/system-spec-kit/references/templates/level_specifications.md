@@ -357,14 +357,14 @@ specs/012-user-profile-api/
 
 **All Level 2 adaptations PLUS:**
 
-**decision-record-[topic].md:**
+**decision-record.md:**
 1. Document context and problem clearly
 2. Present 2-4 viable options (not every possible choice)
 3. Fair comparison (pros/cons for each)
 4. State clear decision with rationale
 5. Document trade-offs honestly
 6. Note what was sacrificed for chosen path
-7. Use descriptive filename (e.g., `decision-record-database-choice.md`)
+7. Use the canonical required filename `decision-record.md` (topic-specific ADR files are supplemental)
 8. Remove all sample content
 
 ---

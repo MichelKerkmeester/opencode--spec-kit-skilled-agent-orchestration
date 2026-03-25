@@ -791,7 +791,7 @@ Automated validation of spec folder contents via `validate.sh`.
 
 ### User Approval
 
-- [ ] Asked user for A/B/C/D choice when file modification detected
+- [ ] Asked user for A/B/C/D/E choice when file modification detected
 - [ ] Documentation level presented with rationale
 - [ ] Spec folder path shown before creation
 - [ ] Templates to be used listed

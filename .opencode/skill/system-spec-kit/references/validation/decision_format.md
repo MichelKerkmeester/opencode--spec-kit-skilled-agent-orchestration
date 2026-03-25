@@ -177,7 +177,7 @@ EVIDENCE: [no citation]
 **Example:**
 ```
 RESOLUTION_PATH:
-1. Ask user to select spec folder (A/B/C/D)
+1. Ask user to select spec folder (A/B/C/D/E)
 2. Wait for response
 3. Re-evaluate gate with selected path
 ```
@@ -236,7 +236,7 @@ EVIDENCE: User request "fix the bug" - multiple spec folders could apply:
 
 RESOLUTION_PATH:
 1. Present options to user with brief description of each
-2. Wait for user selection (A/B/C/D)
+2. Wait for user selection (A/B/C/D/E)
 3. Re-evaluate with selected spec folder
 
 ALTERNATIVE: If bug is new/unrelated, suggest Option B (create new spec folder)

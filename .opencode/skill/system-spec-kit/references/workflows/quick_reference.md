@@ -82,7 +82,7 @@ cp .opencode/skill/system-spec-kit/templates/level_3/plan.md specs/###-name/plan
 cp .opencode/skill/system-spec-kit/templates/level_3/tasks.md specs/###-name/tasks.md
 cp .opencode/skill/system-spec-kit/templates/level_3/implementation-summary.md specs/###-name/implementation-summary.md
 cp .opencode/skill/system-spec-kit/templates/level_3/checklist.md specs/###-name/checklist.md
-cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/###-name/decision-record-[topic].md
+cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/###-name/decision-record.md
 ```
 
 ### Level 3+: Extended Documentation (complete set)
@@ -93,7 +93,7 @@ cp .opencode/skill/system-spec-kit/templates/level_3+/plan.md specs/###-name/pla
 cp .opencode/skill/system-spec-kit/templates/level_3+/tasks.md specs/###-name/tasks.md
 cp .opencode/skill/system-spec-kit/templates/level_3+/implementation-summary.md specs/###-name/implementation-summary.md
 cp .opencode/skill/system-spec-kit/templates/level_3+/checklist.md specs/###-name/checklist.md
-cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/###-name/decision-record-[topic].md
+cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/###-name/decision-record.md
 ```
 
 ### Optional Templates (Level 3 Only)
@@ -492,7 +492,7 @@ Only load root memory when updating coordination snapshots.
 
 **Save location:**
 - Primary: `specs/###-folder/memory/`
-- Fallback: `memory/` (workspace root)
+- No workspace-root fallback; save memory only in the active spec folder's `memory/` directory
 
 **Filename pattern:** `DD-MM-YY_HH-MM__short-description.md`
 
@@ -569,7 +569,7 @@ specs/###-parent/
   - Level 2: Level 1 + checklist.md
   - Level 3: Level 2 + decision-record.md
 - **ALWAYS fill ALL placeholders** - No `<PLACEHOLDER>` marker in final docs
-- **ALWAYS respond to workflow prompts** - Ask user for A/B/C/D choice
+- **ALWAYS respond to workflow prompts** - Ask user for A/B/C/D/E choice
 - **ALWAYS get user approval** - Explicit "yes" before file changes
 - **ONLY @speckit creates spec documentation** — Never route spec.md/plan.md/tasks.md/etc. to @general/@write. Exceptions: @handover (handover.md), @deep-research (research.md)
 

@@ -63,7 +63,7 @@ Full definitions: **AGENTS.md § 2 — MANDATORY GATES**
 | ---------- | -------------- | --------------------------------------------------------- |
 | **Gate 1** | SOFT           | Understanding + context surfacing on each user message    |
 | **Gate 2** | REQUIRED       | Skill routing via `skill_advisor.py` or user direction    |
-| **Gate 3** | **HARD BLOCK** | Spec folder A/B/C/D question before ANY file modification |
+| **Gate 3** | **HARD BLOCK** | Spec folder A/B/C/D/E question before ANY file modification |
 
 **Critical:** Gate 3 overrides Gates 1-2. If file modification detected → ask spec folder FIRST, analyze after.
 
