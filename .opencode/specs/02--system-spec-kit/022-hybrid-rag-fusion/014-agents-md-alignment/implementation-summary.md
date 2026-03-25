@@ -11,7 +11,7 @@ contextType: "implementation-summary"
 <!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary-core | v2.2 -->
 # Implementation Summary: 014-agents-md-alignment
 
-> **Note:** The alignment changes from this phase were partially reverted by a subsequent AGENTS.md restructuring.
+> **Note:** Subsequent AGENTS.md restructuring (post 2026-03-16) modified surrounding content but the 6-command Quick Reference alignment rows from this phase remain intact. Verified 2026-03-25 via deep review (all 8 grep checks pass against current files).
 
 ---
 
@@ -115,7 +115,7 @@ Refinement pass (2026-03-16): Fixed G-01 through G-06 consistency gaps, added sk
 - Commands visible: 6 (was 5)
 - No code changes: documentation-only updates to markdown tables
 - No breaking changes: additive content only; existing rows preserved
-- Alignment changes from this phase were partially reverted by a subsequent AGENTS.md restructuring
+- Subsequent AGENTS.md restructuring shifted line numbers but all alignment rows remain present (verified 2026-03-25)
 
 **Status**: CLOSED -- All tasks complete (14/14), all checklist items verified, changelog created.
 <!-- /ANCHOR:limitations -->

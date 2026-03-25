@@ -1,8 +1,11 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment",
-  "description": "Specification: 014-agents-md-alignment",
+  "description": "AGENTS.md Alignment: Quick Reference Tables -- align 3 AGENTS.md + CLAUDE.md governance files with the 6-command memory suite, fix G-01 through G-06 consistency gaps, overhaul skill sections.",
   "keywords": [
-    "specification",
+    "agents-md",
+    "quick-reference",
+    "memory-commands",
+    "governance",
     "014-agents-md-alignment"
   ],
   "lastUpdated": "2026-03-25T10:14:59.535Z",

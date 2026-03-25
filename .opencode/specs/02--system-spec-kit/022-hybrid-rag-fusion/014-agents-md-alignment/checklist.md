@@ -27,11 +27,11 @@ contextType: "checklist"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Constitutional memory row updated in all 3 files -- shows `list | edit | remove | budget` subcommands [EVIDENCE: Grep `list.*edit.*remove.*budget` returns 3 matches (AGENTS.md:53, FS:80, Barter:89)]
-- [x] CHK-002 [P0] Database maintenance row includes `ingest` in all 3 files [EVIDENCE: Grep `ingest operations` returns 3 matches (AGENTS.md:55, FS:82, Barter:91)]
-- [x] CHK-003 [P0] Analysis/evaluation row (`/memory:analyze`) present in all 3 files [EVIDENCE: Grep `/memory:analyze` returns 3 matches (AGENTS.md:56, FS:83, Barter:92)]
-- [x] CHK-004 [P0] Shared memory row (`/memory:shared`) present in all 3 files [EVIDENCE: Grep `/memory:shared` returns 3 matches (AGENTS.md:57, FS:84, Barter:93)]
-- [x] CHK-005 [P0] Barter READ-ONLY git policy preserved [EVIDENCE: Grep `GIT POLICY: READ-ONLY` returns 1 match (Barter:63)]
+- [x] CHK-001 [P0] Constitutional memory row updated in all 3 files -- shows `list | edit | remove | budget` subcommands [EVIDENCE: Grep `list.*edit.*remove.*budget` returns 3 matches (AGENTS.md:66, FS:92, Barter:98)]
+- [x] CHK-002 [P0] Database maintenance row includes `ingest` in all 3 files [EVIDENCE: Grep `ingest operations` returns 3 matches (AGENTS.md:62, FS:88, Barter:94)]
+- [x] CHK-003 [P0] Analysis/evaluation row (`/memory:analyze`) present in all 3 files [EVIDENCE: Grep `/memory:analyze` returns 3 matches (AGENTS.md:65, FS:91, Barter:97)]
+- [x] CHK-004 [P0] Shared memory row (`/memory:shared`) present in all 3 files [EVIDENCE: Grep `/memory:shared` returns 3 matches (AGENTS.md:67, FS:93, Barter:99)]
+- [x] CHK-005 [P0] Barter READ-ONLY git policy preserved [EVIDENCE: Grep `Read-only` returns matches (Barter:67, 87, 400)]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -39,7 +39,7 @@ contextType: "checklist"
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-006 [P1] FS-Enterprises Research/exploration row includes `memory_context()` unified alternative [EVIDENCE: Grep `memory_context.*unified` returns 1 match (FS:64)]
+- [x] CHK-006 [P1] FS-Enterprises Research/exploration row includes `memory_context()` unified alternative [EVIDENCE: Grep `memory_context.*unified` returns 1 match (FS:71)]
 - [x] CHK-007 [P1] FS-Enterprises stack detection table preserved (lines 11-19 unchanged) [EVIDENCE: verified via diff]
 - [x] CHK-008 [P1] Quick Reference table row order consistent across all 3 files [EVIDENCE: manual comparison]
 - [x] CHK-009 [P1] No accidental removal of variant-specific rows (Go/Angular/Swift verification, Git analysis) [EVIDENCE: verified via diff]
@@ -59,7 +59,7 @@ contextType: "checklist"
 - [x] CHK-014 [P0] G-06: File modification row shows `Gate 3 -> Gate 1 -> Gate 2` in all 4 files [EVIDENCE: Grep `Gate 3.*ask spec folder.*Gate 1.*Gate 2` returns 4/4; old ordering returns 0 matches]
 - [x] CHK-015 [P1] G-03/G-04: No trailing extra pipe on Claim completion rows [EVIDENCE: Grep returns 0 matches]
 - [x] CHK-016 [P1] G-05: FS Documentation row has `validate_document.py` [EVIDENCE: Grep `validate_document.py` in Quick Reference returns 4/4]
-- [x] CHK-017 [P1] GPT-5.4 ultra-think cross-AI review completed (Analytical 88, Critical 92, Holistic 88) [EVIDENCE: review session documented]
+- [x] CHK-017 [P1] GPT-5.4 ultra-think cross-AI review completed (Analytical 88, Critical 92, Holistic 88) [EVIDENCE: live session scores, no preserved artifact in packet]
 <!-- /ANCHOR:testing -->
 
 ---

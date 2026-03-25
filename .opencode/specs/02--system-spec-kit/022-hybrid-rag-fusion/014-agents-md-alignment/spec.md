@@ -25,7 +25,7 @@ contextType: "implementation"
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Complexity** | ~35/100 |
-| **LOC estimate** | ~36 |
+| **LOC estimate** | ~50+ |
 | **Epic** | 022-hybrid-rag-fusion |
 | **Phase** | 014 |
 | **Dependencies** | 012-command-alignment (source of truth for 6-command suite) |
@@ -69,13 +69,14 @@ Reconcile the AGENTS.md quick-reference governance docs to the live 6-command me
 | 3 | Add Analysis/evaluation row (`/memory:analyze`) | All 3 files |
 | 4 | Add Shared memory row (`/memory:shared`) | All 3 files |
 | 5 | Fix Research/exploration row (add `memory_context()`) | FS-Enterprises only |
+| 6 | Fix G-01 through G-06 consistency gaps (refinement pass) | All 3 AGENTS.md + CLAUDE.md |
+| 7 | Overhaul skill sections (sk-code--opencode, sk-code--full-stack, sk-git) | Universal + FS-Enterprises |
 
 ### 2.2 Out of Scope
 
 - Agent definitions (Section 6) - identical, no changes needed
 - MCP Configuration (Section 7) - tool counts owned by command docs
 - Feature catalog - belongs in SKILL.md
-- CLAUDE.md - separate governance file, synced independently
 - Stack detection tables - FS-Enterprises and Barter specific, no changes needed
 
 ### 2.3 Target Files
@@ -85,6 +86,7 @@ Reconcile the AGENTS.md quick-reference governance docs to the live 6-command me
 | 1 | `AGENTS.md` | `Opencode Env/Public/AGENTS.md` |
 | 2 | `AGENTS_example_fs_enterprises.md` | `Opencode Env/Public/AGENTS_example_fs_enterprises.md` |
 | 3 | `AGENTS.md` | `Opencode Env/Barter/coder/AGENTS.md` |
+| 4 | `CLAUDE.md` | `Opencode Env/Public/CLAUDE.md` (Gate 3 ordering, refinement pass) |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -143,6 +145,38 @@ Reconcile the AGENTS.md quick-reference governance docs to the live 6-command me
 
 ---
 
+<!-- ANCHOR:nfr -->
+## 7. NON-FUNCTIONAL REQUIREMENTS
+
+- **NF-001**: Barter READ-ONLY git policy must remain intact after table edits (REQ-005)
+- **NF-002**: FS-Enterprises stack-detection guidance must remain intact (REQ-005)
+- **NF-003**: Table column alignment must stay visually consistent within each file (REQ-007)
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## 8. EDGE CASES
+
+- Variant-specific rows (Go/Angular/Swift verification in FS, Git analysis in Barter) must not be accidentally removed when inserting new rows into the Quick Reference table.
+- CLAUDE.md Gate 3 ordering must match AGENTS.md ordering after refinement pass.
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## 9. COMPLEXITY ASSESSMENT
+
+| Factor | Score | Notes |
+|--------|-------|-------|
+| File count | Low | 4 target files (3 AGENTS.md + CLAUDE.md) |
+| Cross-repo | Medium | Barter repo is a separate checkout |
+| Variant drift risk | Medium | 3 AGENTS.md variants must stay consistent |
+| Overall | ~35/100 | Documentation-only, low technical risk |
+<!-- /ANCHOR:complexity -->
+
+---
+
 <!-- ANCHOR:questions -->
 ## 10. OPEN QUESTIONS
 
@@ -151,6 +185,7 @@ Reconcile the AGENTS.md quick-reference governance docs to the live 6-command me
 
 ---
 
+<!-- ANCHOR:phase-navigation -->
 ### Phase Navigation
 
 | Field | Value |
@@ -158,3 +193,4 @@ Reconcile the AGENTS.md quick-reference governance docs to the live 6-command me
 | **Parent Spec** | ../spec.md |
 | **Previous Phase** | ../013-agents-alignment/spec.md |
 | **Next Phase** | ../015-manual-testing-per-playbook/spec.md |
+<!-- /ANCHOR:phase-navigation -->
