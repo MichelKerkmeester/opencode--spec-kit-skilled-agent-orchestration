@@ -1,7 +1,6 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/015-runtime-contract-and-indexability",
   "description": "Feature Specification: Runtime Contract And Indexability",
-  "status": "Complete",
   "keywords": [
     "feature",
     "specification",
@@ -9,7 +8,7 @@
     "contract",
     "indexability"
   ],
-  "lastUpdated": "2026-03-20T18:07:10.400Z",
+  "lastUpdated": "2026-03-25T11:05:25.382Z",
   "specId": "015",
   "folderSlug": "runtime-contract-and-indexability",
   "parentChain": [
@@ -18,8 +17,5 @@
     "009-perfect-session-capturing"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Runtime Contract and Indexability",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: Runtime Contract And Indexability"
+  "memoryNameHistory": []
 }

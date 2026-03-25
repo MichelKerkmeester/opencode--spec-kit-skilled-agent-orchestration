@@ -8,7 +8,7 @@
     "description",
     "infrastructure"
   ],
-  "lastUpdated": "2026-03-20T13:22:44.246Z",
+  "lastUpdated": "2026-03-25T11:05:25.372Z",
   "specId": "013",
   "folderSlug": "spec-descriptions",
   "parentChain": [
@@ -16,14 +16,10 @@
     "022-hybrid-rag-fusion",
     "009-perfect-session-capturing"
   ],
-  "status": "Complete",
   "memorySequence": 3,
   "memoryNameHistory": [
     "08-03-26_13-58__spec-folder-description-system-refactor.md",
     "08-03-26_16-50__spec-descriptions.md",
     "17-03-26_16-44__strict-closeout-evidence-refreshed.md"
-  ],
-  "title": "Per-Folder Description Infrastructure",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: Per-Folder Description Infrastructure"
+  ]
 }

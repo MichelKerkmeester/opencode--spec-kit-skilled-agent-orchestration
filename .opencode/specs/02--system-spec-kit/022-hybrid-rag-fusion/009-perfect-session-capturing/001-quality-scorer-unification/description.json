@@ -1,7 +1,6 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/001-quality-scorer-unification",
   "description": "Feature Specification: Quality Scorer Unification",
-  "status": "Complete",
   "keywords": [
     "feature",
     "specification",
@@ -9,7 +8,7 @@
     "scorer",
     "unification"
   ],
-  "lastUpdated": "2026-03-20T13:22:44.223Z",
+  "lastUpdated": "2026-03-25T11:05:25.316Z",
   "specId": "001",
   "folderSlug": "quality-scorer-unification",
   "parentChain": [
@@ -22,8 +21,5 @@
     "16-03-26_18-04__quality-scorer-unification.md",
     "17-03-26_15-40__next-steps.md",
     "17-03-26_19-49__bimodal-quality-distribution-in-historical-memory.md"
-  ],
-  "title": "Feature Specification: Quality Scorer Unification",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: Quality Scorer Unification"
+  ]
 }

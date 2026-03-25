@@ -1,14 +1,13 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/003-data-fidelity",
   "description": "Feature Specification: Data Fidelity",
-  "status": "Complete",
   "keywords": [
     "feature",
     "specification",
     "data",
     "fidelity"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.375Z",
+  "lastUpdated": "2026-03-25T11:05:25.325Z",
   "specId": "003",
   "folderSlug": "data-fidelity",
   "parentChain": [
@@ -19,8 +18,5 @@
   "memorySequence": 1,
   "memoryNameHistory": [
     "17-03-26_16-44__strict-closeout-evidence-refreshed.md"
-  ],
-  "title": "Feature Specification: Data Fidelity",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: Data Fidelity"
+  ]
 }

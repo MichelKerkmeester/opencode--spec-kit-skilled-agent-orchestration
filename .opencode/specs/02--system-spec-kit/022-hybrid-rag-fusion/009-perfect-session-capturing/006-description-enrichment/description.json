@@ -1,14 +1,13 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/006-description-enrichment",
   "description": "Feature Specification: Description Enrichment",
-  "status": "Complete",
   "keywords": [
     "feature",
     "specification",
     "description",
     "enrichment"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.391Z",
+  "lastUpdated": "2026-03-25T11:05:25.339Z",
   "specId": "006",
   "folderSlug": "description-enrichment",
   "parentChain": [
@@ -19,8 +18,5 @@
   "memorySequence": 1,
   "memoryNameHistory": [
     "17-03-26_15-40__next-steps.md"
-  ],
-  "title": "Feature Specification: Description Enrichment",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: Description Enrichment"
+  ]
 }

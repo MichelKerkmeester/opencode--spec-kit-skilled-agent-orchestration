@@ -9,7 +9,7 @@
     "gate",
     "fixes"
   ],
-  "lastUpdated": "2026-03-21T13:24:03.941Z",
+  "lastUpdated": "2026-03-25T11:05:25.377Z",
   "specId": "014",
   "folderSlug": "stateless-quality-gates",
   "parentChain": [
@@ -17,8 +17,6 @@
     "022-hybrid-rag-fusion",
     "009-perfect-session-capturing"
   ],
-  "status": "Complete",
-  "importance_tier": "normal",
   "memorySequence": 0,
   "memoryNameHistory": []
 }

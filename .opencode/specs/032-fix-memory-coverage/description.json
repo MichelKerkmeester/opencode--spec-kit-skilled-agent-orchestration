@@ -1,0 +1,19 @@
+{
+  "specFolder": "032-fix-memory-coverage",
+  "description": "Feature Specification: Memory README Coverage Ownership Remediation",
+  "keywords": [
+    "feature",
+    "specification",
+    "memory",
+    "readme",
+    "coverage",
+    "ownership",
+    "remediation"
+  ],
+  "lastUpdated": "2026-03-25T13:02:31.678Z",
+  "specId": "032",
+  "folderSlug": "fix-memory-coverage",
+  "parentChain": [],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

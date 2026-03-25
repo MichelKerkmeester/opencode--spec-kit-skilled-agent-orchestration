@@ -9,7 +9,7 @@
     "structured",
     "preference"
   ],
-  "lastUpdated": "2026-03-20T13:22:44.212Z",
+  "lastUpdated": "2026-03-25T11:05:25.308Z",
   "specId": "004",
   "folderSlug": "source-capabilities-and-structured-preference",
   "parentChain": [
@@ -19,9 +19,5 @@
     "000-dynamic-capture-deprecation"
   ],
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Source Capabilities And Structured Preference [template:level_1/spec.md]",
-  "status": "Complete",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: Source Capabilities And Structured Preference"
+  "memoryNameHistory": []
 }

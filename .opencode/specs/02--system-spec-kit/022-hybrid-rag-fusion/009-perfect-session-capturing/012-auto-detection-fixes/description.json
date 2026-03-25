@@ -7,7 +7,7 @@
     "auto-detection",
     "fixes"
   ],
-  "lastUpdated": "2026-03-20T13:22:44.241Z",
+  "lastUpdated": "2026-03-25T11:05:25.367Z",
   "specId": "012",
   "folderSlug": "auto-detection-fixes",
   "parentChain": [
@@ -15,10 +15,6 @@
     "022-hybrid-rag-fusion",
     "009-perfect-session-capturing"
   ],
-  "status": "Complete",
   "memorySequence": 0,
-  "memoryNameHistory": [],
-  "title": "Feature Specification: Auto-Detection Fixes",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: Auto-Detection Fixes"
+  "memoryNameHistory": []
 }

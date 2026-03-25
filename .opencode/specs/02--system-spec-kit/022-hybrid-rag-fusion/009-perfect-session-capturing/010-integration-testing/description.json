@@ -7,7 +7,7 @@
     "integration",
     "testing"
   ],
-  "lastUpdated": "2026-03-20T13:22:44.230Z",
+  "lastUpdated": "2026-03-25T11:05:25.358Z",
   "specId": "010",
   "folderSlug": "integration-testing",
   "parentChain": [
@@ -15,13 +15,9 @@
     "022-hybrid-rag-fusion",
     "009-perfect-session-capturing"
   ],
-  "status": "Complete",
   "memorySequence": 2,
   "memoryNameHistory": [
     "17-03-26_14-47__focused-phase-010-proof-rerun.md",
     "17-03-26_16-44__strict-closeout-evidence-refreshed.md"
-  ],
-  "title": "Feature Specification: Integration Testing",
-  "importance_tier": "normal",
-  "short_description": "Feature Specification: Integration Testing"
+  ]
 }
