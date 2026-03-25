@@ -4259,7 +4259,7 @@ Mode-aware response profiles route search and context results through one of fou
 
 #### Current Reality
 
-Four profiles are implemented: quick (topResult + oneLineWhy + omittedCount + tokenReduction), research (results + evidenceDigest + followUps), resume (state + nextSteps + blockers), and debug (full trace + tokenStats). Backward compatible: when the flag is OFF or profile is omitted, the original response is unchanged. Default ON, set `SPECKIT_RESPONSE_PROFILE_V1=false` to disable. **Note:** Runtime wiring is partial: `memory_search` applies the selected profile formatter, but `memory_context` only declares `profile?: string` without using it. The public tool schemas do not currently expose the `profile` parameter for either tool.
+Four profiles are implemented: quick (topResult + oneLineWhy + omittedCount + tokenReduction), research (results + evidenceDigest + followUps), resume (state + nextSteps + blockers), and debug (full trace + tokenStats). Backward compatible: when the flag is OFF or profile is omitted, the original response is unchanged. Default ON, set `SPECKIT_RESPONSE_PROFILE_V1=false` to disable. **Note:** Runtime wiring is partial: `memory_search` applies the selected profile formatter, and the public tool schemas now expose `profile` for both tools, but `memory_context` still declares `profile?: string` without using it.
 
 #### Source Files
 

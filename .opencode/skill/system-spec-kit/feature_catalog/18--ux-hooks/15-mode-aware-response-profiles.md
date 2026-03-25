@@ -1,13 +1,13 @@
 ---
 title: "Mode-aware response profiles"
-description: "Mode-aware response profile formatters define four named presentation profiles (quick, research, resume, debug) behind the SPECKIT_RESPONSE_PROFILE_V1 flag, but live runtime wiring is partial: `memory_search` applies them while `memory_context` still carries a dead `profile` declaration."
+description: "Mode-aware response profile formatters define four named presentation profiles (quick, research, resume, debug) behind the SPECKIT_RESPONSE_PROFILE_V1 flag. `memory_search` applies them today, while `memory_context` still carries a dead `profile` declaration."
 ---
 
 # Mode-aware response profiles
 
 ## 1. OVERVIEW
 
-Mode-aware response profile formatters define four named presentation profiles (quick, research, resume, debug) behind the `SPECKIT_RESPONSE_PROFILE_V1` flag, but live runtime wiring is partial: `memory_search` applies them while `memory_context` still carries a dead `profile` declaration.
+Mode-aware response profile formatters define four named presentation profiles (quick, research, resume, debug) behind the `SPECKIT_RESPONSE_PROFILE_V1` flag. Live runtime wiring is still partial: `memory_search` applies them while `memory_context` still carries a dead `profile` declaration.
 
 Different situations call for different response shapes. A quick question needs just the top result and a one-line explanation. A research session needs the full list with an evidence digest and follow-up suggestions. Resuming prior work needs state, next steps, and blockers. The formatter layer supports those shapes, but the live integration is incomplete: `memory_search` can apply response profiles, while `memory_context` only declares `profile?: string` and never consumes it. When the flag is off, the original full response is returned unchanged.
 
@@ -23,7 +23,7 @@ Four profiles are implemented in the formatter layer:
 
 The formatter uses `estimateTokens()` from `formatters/token-metrics.ts` for token accounting. Score resolution supports both `score` and `similarity` fields with normalization. Evidence digest and follow-ups are contextually generated based on matched anchors, score thresholds, and spec folder patterns.
 
-Runtime wiring is partial: `memory_search` applies the formatter, but `memory_context` only declares `profile?: string` and never uses it, and the public tool schemas do not expose `profile` for either tool. In practice, the context-side profile path is dead code.
+Runtime wiring is partial: `memory_search` applies the formatter, `memory_context` now accepts the same `profile` parameter at the schema level, but `memory_context` still declares `profile?: string` without using it. In practice, the context-side profile path remains dead code until the handler consumes it.
 
 Backward compatible: when the flag is OFF or profile is omitted, the original response is unchanged. Default ON (graduated), controlled by `SPECKIT_RESPONSE_PROFILE_V1`.
 
@@ -39,7 +39,7 @@ Backward compatible: when the flag is OFF or profile is omitted, the original re
 | `mcp_server/formatters/token-metrics.ts` | Formatter | Token estimation utility |
 | `mcp_server/handlers/memory-search.ts` | Handler | Applies response profiles on live search responses |
 | `mcp_server/handlers/memory-context.ts` | Handler | Declares `profile?: string` but does not consume it |
-| `mcp_server/tool-schemas.ts` | Schema | Public tool schemas omit `profile` for `memory_context` and `memory_search` |
+| `mcp_server/tool-schemas.ts` | Schema | Public tool schemas now expose `profile` for `memory_context` and `memory_search` |
 
 ### Tests
 

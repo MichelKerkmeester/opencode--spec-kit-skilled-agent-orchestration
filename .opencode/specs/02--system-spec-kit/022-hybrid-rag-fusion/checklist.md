@@ -69,7 +69,7 @@ contextType: "implementation"
 ## Documentation
 
 - [x] CHK-040 [P1] Root docs now exist and cross-reference each other [EVIDENCE: root `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` are present and validate for existence]
-- [x] CHK-041 [P1] Root spec preserves the verified count and status truths [EVIDENCE: root packet now records `397` total directories, `21` top-level directories, `009=20` numbered child dirs, and `015` as `In Progress` with 22 numbered child dirs (4 `Complete`, 18 `Not Started`)]
+- [x] CHK-041 [P1] Root spec preserves the verified count and status truths [EVIDENCE: root packet now records `398` total directories, `21` top-level directories, `009=20` numbered child dirs, and `015` as `In Progress` with 22 numbered child dirs (4 `Complete`, 18 `Not Started`)]
 - [x] CHK-042 [P2] Implementation summary replaced with concise current-state wording
 <!-- /ANCHOR:docs -->
 

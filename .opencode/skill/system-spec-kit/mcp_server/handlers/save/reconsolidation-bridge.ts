@@ -26,7 +26,6 @@ import { calculateDocumentWeight, isSpecDocumentType } from '../pe-gating';
 import { detectSpecLevelFromParsed } from '../handler-utils';
 import { applyPostInsertMetadata, hasReconsolidationCheckpoint } from './db-helpers';
 import type {
-  AssistiveClassification,
   AssistiveRecommendation,
   IndexResult,
   ReconWarningList,

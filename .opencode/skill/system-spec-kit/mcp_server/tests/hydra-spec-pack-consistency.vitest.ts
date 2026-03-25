@@ -24,7 +24,7 @@ const parentDocs = {
 
 const runtimeReferences = [
   'mcp_server/lib/collab/shared-spaces.ts',
-  'mcp_server/lib/governance/retention.ts',
+  'mcp_server/lib/governance/scope-governance.ts',
   'mcp_server/lib/search/vector-index-mutations.ts',
   'mcp_server/tests/shared-spaces.vitest.ts',
   'mcp_server/tests/memory-governance.vitest.ts',
@@ -70,7 +70,7 @@ describe('Hydra spec-pack truth sync', () => {
 
     expect(specContent).toContain('acts as the Level 3 coordination record for the delivered Hydra roadmap');
     expect(specContent).toContain('Live five-CLI proof capture plus CLI-proof wording alignment');
-    expect(specContent).toContain('describe shared memory as opt-in live access');
+    expect(specContent).toContain('describe shared memory as opt-in live access rather than universally enabled rollout');
     expect(specContent).toMatch(/`\d+` files, `\d+` tests, `\d+` skipped, and `\d+` todo/);
     expect(specContent).not.toContain('root-only normalization pass');
     expect(specContent).not.toContain('Editing any phase subfolder under `001-` through `006-`');

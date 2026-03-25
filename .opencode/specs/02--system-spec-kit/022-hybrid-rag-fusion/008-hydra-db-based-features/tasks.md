@@ -58,7 +58,7 @@ contextType: "implementation"
 ### Runtime and Proof Corrections
 
 - [x] T020 [W:RUNTIME] Fix owner-only shared-space access enforcement (`mcp_server/lib/collab/shared-spaces.ts`, `mcp_server/tests/shared-spaces.vitest.ts`)
-- [x] T021 [W:RUNTIME] Fix retention sweeps so deletion uses the passed database handle (`mcp_server/lib/governance/retention.ts`, `mcp_server/lib/search/vector-index-mutations.ts`, `mcp_server/tests/memory-governance.vitest.ts`)
+- [x] T021 [W:RUNTIME] Fix retention sweeps so deletion uses the passed database handle (`mcp_server/lib/governance/scope-governance.ts`, `mcp_server/lib/search/vector-index-mutations.ts`, `mcp_server/tests/memory-governance.vitest.ts`)
 - [x] T022 [W:PROOF] Execute and capture live prompt proof for all five CLIs, then align operator docs with the recorded outcomes (`.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md`, `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`, `implementation-summary.md`)
 - [x] T023 [W:PROOF] Tighten Hydra truth-sync regression coverage for dates, totals, and CLI-proof wording (`mcp_server/tests/hydra-spec-pack-consistency.vitest.ts`)
 <!-- /ANCHOR:phase-2 -->

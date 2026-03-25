@@ -61,7 +61,7 @@ Documentation-first closure over an already shipped modular runtime. The parent 
 ### Key Components
 - **Parent pack**: root `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `implementation-summary.md`
 - **Phase packs**: `001-` through `006-`, each normalized to active Level 3+ structure
-- **Runtime fixes**: `shared-spaces.ts`, `retention.ts`, `vector-index-mutations.ts`
+- **Runtime fixes**: `shared-spaces.ts`, `scope-governance.ts`, `vector-index-mutations.ts`
 - **Regression tests**: Hydra truth-sync, shared-space, and retention-governance suites
 - **Operator docs**: `.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` and `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`
 

@@ -19,9 +19,9 @@ contextType: "decision"
 
 ## EXECUTIVE SUMMARY
 
-This parent spec-pack now acts as the Level 3 coordination record for the Hydra roadmap code and documentation set. It summarizes the six-phase packet, points readers to the authoritative child phase folders for detailed implementation history, and records the March 20 2026 follow-up hardening pass on top of the March 17 2026 broad verification baseline without implying broader activation than the live evidence supports.
+This parent spec-pack now acts as the Level 3 coordination record for the delivered Hydra roadmap. It summarizes the six-phase packet, points readers to the authoritative child phase folders for detailed implementation history, and records the March 20 2026 follow-up hardening pass on top of the March 17 2026 broad verification baseline without implying broader activation than the live evidence supports.
 
-**Key Decisions**: keep the root pack as a coordination layer instead of a second implementation log; document lineage and `asOf` as internal storage and integration surfaces rather than a standalone public MCP query tool; describe shared-memory rollout as implemented but opt-in and inert by default until a human administrator enables it.
+**Key Decisions**: keep the root pack as a coordination layer instead of a second implementation log; document lineage and `asOf` as internal storage and integration surfaces rather than a standalone public MCP query tool; describe shared memory as opt-in live access rather than universally enabled rollout.
 
 **Critical Dependencies**: the six child phase folders in this spec-pack, `decision-record.md`, the Hydra runtime modules in `mcp_server/`, the recorded 2026-03-17 verification totals, and the 2026-03-20 targeted regression rerun for governed retrieval, shared-space admin auth, and graph ranking.
 

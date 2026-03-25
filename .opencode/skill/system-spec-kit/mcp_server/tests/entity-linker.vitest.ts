@@ -32,7 +32,8 @@ function createTestDb(): InstanceType<typeof Database> {
       id INTEGER PRIMARY KEY,
       spec_folder TEXT NOT NULL DEFAULT 'test',
       file_path TEXT NOT NULL DEFAULT 'test.md',
-      title TEXT
+      title TEXT,
+      importance_tier TEXT NOT NULL DEFAULT 'normal'
     );
   `);
 
