@@ -17,7 +17,7 @@ contextType: "implementation"
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 018-rewrite-system-speckit-readme |
-| **Completed** | 2026-03-15 |
+| **Completed** | 2026-03-25 |
 | **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
@@ -41,7 +41,7 @@ System Spec Kit README rewritten to document the full skill surface: documentati
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-Research cataloged all skill components from SKILL.md, template files, command directory, and scripts. Draft followed the readme template structure with deliberate links to the MCP README for tool details. DQI validation confirmed the target score.
+Research cataloged all skill components from SKILL.md, feature catalog, command directories (8 spec_kit + 6 memory), template files (core + 4 addendum layers), and scripts (12 spec + 10 memory). Draft followed the 9-section readme template structure with simple-terms voice calibrated against the MCP server README. Memory system coverage uses summarize-and-link approach: 1-2 paragraph overviews per capability with links to `mcp_server/README.md` for the full 33-tool API reference. Final output: 1,043 lines across 9 sections with ANCHOR markers.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -53,6 +53,9 @@ Research cataloged all skill components from SKILL.md, template files, command d
 |----------|-----|
 | Summarized MCP tools with link to MCP README | Avoids duplicating the detailed tool reference maintained in 016 |
 | Documented CORE+ADDENDUM v2.2 architecture | This is the current template system and central to understanding the skill |
+| Simple-terms voice with technical reference tables | Matches MCP README voice: analogies for narrative sections, precise tables for structured data |
+| 10 FAQ entries covering both halves | Addresses the most common boundary questions (Level 2 vs 3, README vs MCP README, SKILL.md vs README) |
+| Used 222 features / 21 categories | Matches task spec numbers; feature catalog may update independently |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -60,12 +63,15 @@ Research cataloged all skill components from SKILL.md, template files, command d
 <!-- ANCHOR:verification -->
 ## Verification
 
-| Check | Result |
-|-------|--------|
-| DQI scoring | PASS (>= 75) |
-| HVR banned-word check | PASS |
-| All 14 commands listed | PASS |
-| Cross-references to MCP README | PASS |
+| Check | Result | Evidence |
+|-------|--------|----------|
+| Line count | PASS | 1,043 lines (target 800-1,200) |
+| Section structure | PASS | 9 sections with ANCHOR markers, matches readme_template |
+| All 14 commands listed | PASS | 8 spec_kit + 6 memory, each with description |
+| Cross-references to MCP README | PASS | 4 links to mcp_server/README.md verified |
+| No content duplication | PASS | Memory system summarized at high level, linked for details |
+| Simple-terms voice | PASS | Active voice, analogies, explain-why-before-how throughout |
+| Documentation levels accurate | PASS | Level 1-3+ matches template files in templates/core/ and addendum/ |
 <!-- /ANCHOR:verification -->
 
 ---

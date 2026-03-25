@@ -15,8 +15,9 @@
     "02--system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 1,
+  "memorySequence": 2,
   "memoryNameHistory": [
-    "08-03-26_19-28__feature-catalog-comprehensive-audit-remediation.md"
+    "08-03-26_19-28__feature-catalog-comprehensive-audit-remediation.md",
+    "25-03-26_18-33__deep-review-of-feature-catalog-alignment-224.md"
   ]
 }

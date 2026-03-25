@@ -1,6 +1,6 @@
 ---
 title: "Feature catalog code references"
-description: "Feature catalog code references embed inline traceability comments in a measured majority of non-test TypeScript source files, linking implementation code back to the feature catalog by name. Annotated files declare which catalog features they implement via `// Feature catalog: <feature-name>` comments near the top of the file."
+description: "Feature catalog code references embed inline traceability comments in a measured majority of audited non-test TypeScript source files, linking implementation code back to the feature catalog by name. Annotated files declare which catalog features they implement via `// Feature catalog: <feature-name>` comments near the top of the file."
 ---
 
 # Feature catalog code references
@@ -15,7 +15,7 @@ This feature works like a label on a warehouse box — instead of tracking items
 
 ## 2. CURRENT REALITY
 
-Measured audit coverage at HEAD is approximately 74%: `191` of `257` non-test TypeScript files under `mcp_server/` and `shared/` carry one or more `// Feature catalog: <feature-name>` comments whose name must exactly match an H3 heading in `feature_catalog/feature_catalog.md`. Files implementing multiple catalog features list all applicable entries. Some pure utility, type, and barrel-export files are treated as exempt, but the convention is not yet universal across the live tree.
+Measured audit coverage at HEAD is approximately 69%: `192` of `280` non-test TypeScript files under `mcp_server/` and `shared/` carry one or more `// Feature catalog: <feature-name>` comments whose name must exactly match an H3 heading in `feature_catalog/feature_catalog.md`. Files implementing multiple catalog features list all applicable entries. Some pure utility, type, and barrel-export files are treated as exempt, and the convention is still only partial rather than universal across the live tree.
 
 The `// MODULE: Name` header convention provides a standardized 3-line block at the top of every `.ts` file (separator → module name → separator) using box-drawing characters (`───`) in `mcp_server/` and dashes (`---`) in `shared/` and `scripts/`.
 

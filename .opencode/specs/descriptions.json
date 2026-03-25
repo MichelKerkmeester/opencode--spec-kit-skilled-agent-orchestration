@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-03-25T17:13:17.718Z",
+  "generated": "2026-03-25T17:50:07.926Z",
   "folders": [
     {
       "specFolder": "00--ai-systems-non-dev/001-global-shared/001-hvr-refinement-repo-analysis",
@@ -114,7 +114,7 @@
         "canonical",
         "diff"
       ],
-      "lastUpdated": "2026-03-25T17:13:17.718Z"
+      "lastUpdated": "2026-03-25T17:50:07.926Z"
     },
     {
       "specFolder": "01--anobel.com/029-anobel-performance-analysis",
@@ -755,7 +755,7 @@
         "scoring",
         "intelligence"
       ],
-      "lastUpdated": "2026-03-25T17:13:17.718Z"
+      "lastUpdated": "2026-03-25T17:50:07.926Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/002-query-intelligence-reformulation",
@@ -767,7 +767,7 @@
         "intelligence",
         "reformulation"
       ],
-      "lastUpdated": "2026-03-25T17:13:17.718Z"
+      "lastUpdated": "2026-03-25T17:50:07.926Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/003-graph-augmented-retrieval",
@@ -778,7 +778,7 @@
         "graph-augmented",
         "retrieval"
       ],
-      "lastUpdated": "2026-03-25T17:13:17.718Z"
+      "lastUpdated": "2026-03-25T17:50:07.926Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/004-feedback-quality-learning",
@@ -790,7 +790,7 @@
         "quality",
         "learning"
       ],
-      "lastUpdated": "2026-03-25T17:13:17.718Z"
+      "lastUpdated": "2026-03-25T17:50:07.926Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/005-retrieval-ux-presentation",
@@ -802,7 +802,7 @@
         "result",
         "presentation"
       ],
-      "lastUpdated": "2026-03-25T17:13:17.718Z"
+      "lastUpdated": "2026-03-25T17:50:07.926Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation",
@@ -1167,7 +1167,7 @@
         "deprecated",
         "features"
       ],
-      "lastUpdated": "2026-03-25T17:13:17.718Z"
+      "lastUpdated": "2026-03-25T17:50:07.926Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",

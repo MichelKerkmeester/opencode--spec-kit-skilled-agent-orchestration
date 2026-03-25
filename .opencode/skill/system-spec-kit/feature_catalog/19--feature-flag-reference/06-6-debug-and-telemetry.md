@@ -29,7 +29,7 @@ These settings control diagnostic visibility. They adjust log verbosity and opti
 | `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the scope-enforcement roadmap flag. Roadmap metadata is default-on unless explicitly opted out with `false` or `0`. Used by roadmap snapshots and governed-scope compatibility checks. |
 | `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the governance-guardrail roadmap flag. Roadmap metadata is default-on unless explicitly opted out with `false` or `0`. Used by roadmap snapshots and governed-ingest compatibility checks. |
 | `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the shared-memory roadmap flag. Roadmap metadata now defaults this flag to off unless explicitly enabled with `true` or `1`, matching the live shared-spaces runtime gate. This keeps diagnostic snapshots from claiming shared memory is live before runtime rollout enables it. |
-| `SPECKIT_CONSUMPTION_LOG` | inert | boolean | `lib/telemetry/consumption-logger.ts` | (Also listed under Search Pipeline.) Deprecated and inert. See category 1 for full description. |
+| `SPECKIT_CONSUMPTION_LOG` | `true` | boolean | `lib/telemetry/consumption-logger.ts` | (Also listed under Search Pipeline.) **Default ON (graduated via rollout policy).** `isConsumptionLogEnabled()` delegates to `isFeatureEnabled('SPECKIT_CONSUMPTION_LOG')`, so consumption logging stays active unless explicitly disabled or rollout policy gates it off. |
 
 ---
 

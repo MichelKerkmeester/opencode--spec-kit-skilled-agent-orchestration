@@ -53,7 +53,7 @@ The server works across sessions, models and tools. Switch from Claude to GPT to
 | What | Count | Details |
 |------|-------|---------|
 | **MCP tools** | 33 | Organized across 7 layers (L1 through L7) |
-| **Search channels** | 5 | Vector, FTS5, BM25, Skill Graph, Degree |
+| **Search channels** | 5 | Vector, FTS5, BM25, Causal Graph, Degree |
 | **Pipeline stages** | 4 | Gather, Score, Rerank, Filter |
 | **Importance tiers** | 6 | constitutional, critical, important, normal, temporary, deprecated |
 | **Memory states** | 5 | HOT, WARM, COLD, DORMANT, ARCHIVED |
@@ -256,88 +256,308 @@ Tools are organized into layers based on what they do. Lower layers handle every
 
 This section explains the main ideas behind the memory system in plain language. For the full tool reference with parameters, skip to [4.2 Tool Reference](#42-tool-reference).
 
-#### Hybrid Search: Checking Both the Index and the Shelves
+---
 
-When you search for something, the system does not just look in one place. It checks several sources at once, like a librarian who checks the card catalog, the shelf labels, the reading room sign-out sheet and the recommendation board all at the same time. Then it combines everything and ranks results so the best match shows up first.
+#### 4.1.1 Hybrid Search
 
-Five search channels work together:
+When you search for something, the system does not just look in one place. It checks several sources at once, like a librarian who checks the card catalog, the shelf labels, the reading room sign-out sheet and the recommendation board all at the same time.
+
+**Five search channels** work together:
 
 | Channel | How It Works | Good For |
 |---------|-------------|----------|
 | **Vector** | Compares the meaning of your query against stored embeddings | Finding related content even when the words are different |
 | **FTS5** | Full-text search on exact words and phrases | Looking up specific terms or error messages |
 | **BM25** | Keyword relevance scoring (like a search engine) | Ranking results when you know roughly what you want |
-| **Skill Graph** | Follows causal links between memories | "Why did we choose this?" questions |
-| **Degree** | Counts how connected a memory is to others | Finding important hub memories |
+| **Causal Graph** | Follows causal links between memories | "Why did we choose this?" questions |
+| **Degree** | Scores memories by graph connectivity, weighted by edge type (`caused`=1.0, `enabled`=0.75, `supports`=0.5) | Finding important hub memories (capped to prevent over-influence) |
 
-Results from all channels merge through Reciprocal Rank Fusion. If a memory scores well in multiple channels, it rises to the top. If the first search comes back empty, the system automatically widens its net and tries again so you almost never get zero results.
+**Reciprocal Rank Fusion (RRF)** combines all channel results using the formula `1/(K + rank)`. The K parameter is tuned per query intent through sensitivity analysis across K values {10, 20, 40, 60, 80, 100, 120}. A memory that scores well in multiple channels rises to the top because RRF gives exponential weight to high-ranking items while still including lower-ranked contributions.
 
-Every search goes through four stages like an assembly line:
+**Channel min-representation** guarantees every active channel gets at least one result in the final set, preventing a single dominant channel from drowning out useful evidence.
 
-1. **Gather candidates** from active channels
-2. **Score and fuse** results with decay, boost and penalty signals
-3. **Rerank** for precision using a cross-encoder model
-4. **Filter and annotate** to remove noise and add metadata
+**Quality-aware 3-tier fallback** escalates automatically when results are weak:
 
-#### Memory Lifecycle: How Memories Age
+| Fallback Tier | Channels Active | When It Kicks In |
+|---------------|----------------|------------------|
+| Tier 1 | Vector only | Default fast path for simple queries |
+| Tier 2 | Vector + BM25 | Results below confidence floor |
+| Tier 3 | All 5 channels | Still poor results after Tier 2 |
 
-Not all memories are equally useful forever. The system tracks how fresh each memory is using a model called FSRS (Free Spaced Repetition Scheduler). Think of it like how your own brain works: things you reviewed recently are easy to recall, while things you have not thought about in months fade into the background.
+**Confidence truncation** cuts off results at 2x the median score gap so you never get a long tail of irrelevant items.
 
-Each memory has an importance tier that controls how quickly it fades:
+**Evidence gap detection** (TRM Z-score) flags when retrieved memories do not adequately cover the query and suggests broadening the search.
 
-| Tier | What It Means | Decay Speed |
-|------|--------------|-------------|
-| **constitutional** | Rules that never change (coding standards, architecture constraints) | Never fades |
-| **critical** | Key decisions and architectural choices | Very slow |
-| **important** | Significant findings and context | Slow |
-| **normal** | Regular session notes and observations | Normal |
-| **temporary** | Scratch work, debugging notes | Fast |
-| **deprecated** | Outdated information kept for history | Fastest |
+**Calibrated overlap bonus** rewards memories found by multiple channels at once. The bonus scales based on how many channels found the result and how confidently they scored it, rather than applying a flat bonus.
 
-Memories also move through five states based on how recently they were accessed:
+**Tool-level TTL cache** remembers recent results for 60 seconds. When you save, update or delete a memory, the cache for affected searches clears automatically. You never see stale results.
+
+---
+
+#### 4.1.2 Search Pipeline
+
+Every search goes through four stages. Each stage has one clear job and cannot change results from earlier stages.
+
+**Stage 1 -- Gather candidates** from active channels in parallel. Constitutional-tier memories are always injected regardless of score.
+
+**Stage 2 -- Score and fuse** using RRF plus eight post-fusion scoring signals:
+
+| Signal | What It Does | Magnitude |
+|--------|-------------|-----------|
+| Co-activation boost | Memories co-occurring with matched results get a lift. Fan-effect divisor `1/sqrt(neighbors)` prevents hubs from dominating | +0.25 |
+| FSRS decay | Adjusts score by memory retrievability `R(t,S)`. Recently accessed memories score higher | multiplicative |
+| Interference penalty | Suppresses clusters of near-identical memories (>0.75 Jaccard similarity) | -0.08 per neighbor |
+| Cold-start boost | Fresh memories (<48h) get `0.15 * exp(-elapsed/12)`, 12h half-life, capped at 0.95 | +0.15 max |
+| Session recency | Memories accessed in the current session get a recency bump | cap 0.20 |
+| Causal 2-hop | Memories 1-2 hops from retrieved causal neighbors get a contextual boost | variable |
+| Intent weights | Each of the 7 task intents has its own channel weight profile | variable |
+| Channel min-rep | Floor ensures each active channel has at least one result in the fused set | 0.005 |
+
+All channel scores are normalized to 0-1 before fusion so no single channel wins just because its scale is bigger.
+
+**Stage 3 -- Rerank** using a cross-encoder model that runs locally via node-llama-cpp (GGUF format). No cloud API needed. If your machine lacks VRAM, the reranker gracefully skips and Stage 2 order stands. MPAB (Multi-Pass Aggregation with Boundary) collapses individual chunks back to their parent memory -- the best chunk counts most, but documents with multiple matching chunks rank higher than a single lucky hit.
+
+**Stage 4 -- Filter and annotate**. Enforces score immutability (no score changes after Stage 2). Applies state filtering by minimum state parameter. Annotates results with confidence labels (high/medium/low) and feature flag states.
+
+---
+
+#### 4.1.3 Query Intelligence
+
+Before any search runs, the system figures out what kind of help you need. Think of it like a triage nurse who reads your symptoms and routes you to the right specialist.
+
+**Complexity routing** sizes up your question and picks the right amount of effort:
+
+| Complexity | Channels | Token Budget | When |
+|-----------|----------|-------------|------|
+| Simple | 2 | 800 tokens | Quick lookups, single-topic questions |
+| Moderate | 4 | 1,500 tokens | Multi-factor questions, debugging |
+| Complex | All 5 | 2,000 tokens | Research, architecture decisions |
+
+**Intent classification** maps your query to one of 7 task types (`add_feature`, `fix_bug`, `refactor`, `security_audit`, `understand`, `find_spec`, `find_decision`). Each type has its own channel weight profile. A `find_decision` query boosts the causal graph channel. A `fix_bug` query boosts exact-match channels.
+
+**Query decomposition** splits multi-topic questions into focused sub-queries. Each searches separately and results merge. No LLM call needed.
+
+**Query expansion** automatically adds related terms when the question is complex, so you find relevant results even when the exact wording differs. Only kicks in for complex queries to avoid bloating simple lookups.
+
+**Index-time query surrogates** pre-generate alternative names, summaries and likely questions about content when a memory is first saved. These are stored alongside the original so future searches match against them too. Like a library cataloger adding subject headings and cross-references to a new book.
+
+**Context pressure monitoring** watches how full your context window is getting. Above 60% usage the system downgrades to focused mode. Above 80% it switches to quick mode.
+
+For low-confidence deep searches, the system has two additional fallback strategies:
+
+- **LLM query reformulation** -- asks the LLM to rephrase the query more abstractly, grounding in actual knowledge base content. Reformulated hits pass through the same scope, context and quality checks as ordinary results
+- **HyDE (Hypothetical Document Embeddings)** -- writes a hypothetical answer to your question, then searches for real documents matching that imaginary answer. Surfaces content your original wording missed
+
+---
+
+#### 4.1.4 Memory Lifecycle and Scoring
+
+Not all memories are equally useful forever. The system tracks how fresh each memory is using FSRS (Free Spaced Repetition Scheduler), a model validated on 100M+ Anki flashcard users. The formula `R(t, S) = (1 + (19/81) x t/S)^(-0.5)` calculates a retrievability score where `t` is time since last access and `S` is a stability parameter.
+
+Think of it like how your own brain works: things you reviewed recently are easy to recall, while things you have not thought about in months fade into the background.
+
+**Two-dimensional decay matrix** -- decay speed is controlled by context type AND importance tier:
+
+| | constitutional | critical | important | normal | temporary | deprecated |
+|---|---|---|---|---|---|---|
+| **Decisions** | Never | Never | 1.5x | 1x | 0.5x | 0.25x |
+| **Research** | Never | 2x slower | 1.5x | 1x | 0.5x | 0.25x |
+| **General** | Never | 1.5x slower | Slow | Normal | Fast | Fastest |
+
+A critical decision never fades. A temporary debugging note fades within days.
+
+**Cold-start novelty boost** -- fresh memories (under 48 hours) get an exponential boost of `0.15 * exp(-elapsed_hours / 12)` with a 12-hour half-life, capped at 0.95. This counteracts FSRS's natural tendency to underrank brand-new content.
+
+**Interference penalty** -- prevents similar memories from flooding results together. If several memories in the same spec folder share more than 75% Jaccard similarity, each additional neighbor costs -0.08 points. Enforces diversity at the similarity level, not just the ranking level.
+
+**Auto-promotion** -- memories earn their way up. After 5 positive validation marks, a normal memory promotes to important. After 10, important promotes to critical. Rate-limited to prevent bulk promotion during busy sessions.
+
+**Negative feedback with 30-day decay** -- demotes unhelpful memories, but the penalty fades over time. This prevents permanent blacklisting and allows memories to recover relevance as the project evolves.
+
+**Five cognitive states** based on access patterns:
 
 **HOT** (just used) >> **WARM** (recently relevant) >> **COLD** (not accessed lately) >> **DORMANT** (inactive) >> **ARCHIVED** (stored but rarely surfaced)
 
 When you search, HOT memories get full content in results. WARM memories appear as summaries. COLD and below only show up if they score well enough to earn a spot.
 
-#### Causal Graph: Connecting the Dots
+---
 
-The system can track how decisions relate to each other. Think of it like a corkboard with sticky notes connected by string. One note says "we chose JWT tokens." A string connects it to another note that says "because the session store was too slow." Another string connects that to "the Redis outage on March 5th."
+#### 4.1.5 Causal Graph
 
-Six types of relationships link memories together:
+The system tracks how decisions relate to each other. Think of it like a corkboard with sticky notes connected by string. One note says "we chose JWT tokens." A string connects it to "because the session store was too slow." Another string connects that to "the Redis outage on March 5th."
 
-- **caused**: A led directly to B
-- **enabled**: A made B possible
-- **supersedes**: B replaces A
-- **contradicts**: A and B conflict
-- **derived_from**: B is based on A
-- **supports**: A provides evidence for B
+**Six types of causal relationships** link memories together:
 
-When you ask "why did we make this decision?", the system follows these links backwards to show the chain of reasoning.
+| Relation | Weight | Meaning |
+|----------|--------|---------|
+| **caused** | 1.0 | A led directly to B |
+| **enabled** | 0.75 | A made B possible |
+| **supersedes** | -- | B replaces A |
+| **contradicts** | -- | A and B conflict |
+| **derived_from** | -- | B is based on A |
+| **supports** | 0.5 | A provides evidence for B |
 
-#### Shared Memory: A Shared Office With a Keycard Lock
+**Typed-weighted degree channel** -- uses these weights to rank memories by their graph importance. Hub caps (`MAX_TYPED_DEGREE`=15, `MAX_TOTAL_DEGREE`=50) and a `DEGREE_BOOST_CAP` of 0.15 prevent any single highly-connected memory from dominating results.
+
+**Co-activation spreading** -- boosts memories connected to ones you already found relevant. A fan-effect divisor (`1/sqrt(neighbor_count)`) prevents popular hub memories from getting an outsized boost just because they connect to everything.
+
+**Community detection** (Louvain algorithm) -- automatically clusters related memories into groups. When one memory in a cluster is relevant, its neighbors get a small boost. This surfaces related context you might not have thought to ask for.
+
+**Graph momentum** -- tracks how quickly a memory is gaining new connections. Trending knowledge (recently gaining links) surfaces higher than static nodes. Actively evolving decisions get more visibility.
+
+**Temporal contiguity** -- gives a time-proximity boost to memories created around the same time. If one memory from a Tuesday afternoon session is relevant, others from that same session probably are too. The boost fades as the time gap grows.
+
+**Typed traversal** -- pays attention to what kind of connection it follows based on your question. A "what caused this bug?" query prioritizes cause-and-effect links. A "what supports this decision?" query prioritizes evidence links. In smaller knowledge bases, the system takes shorter, more targeted steps.
+
+**Causal depth signals** -- measure how deep each memory sits in the decision tree. Root decisions (with many descendants) get different tiebreaker boosts than leaf tasks.
+
+**Async LLM graph backfill** -- uses an AI to read important documents after they are saved and suggest additional causal connections that pattern matching missed. Runs in the background after initial save.
+
+**Edge density measurement** -- tracks the average links per memory. Too few means graph features add little value. Too many triggers a hold on new link creation to prevent a tangled mess.
+
+**Unified graph retrieval** -- all graph features run through one consistent path with reproducible results and full explainability. A single switch turns off all graph features if anything goes wrong.
+
+---
+
+#### 4.1.6 Save Intelligence
+
+When you save new knowledge, the system does not just append it to the pile. It runs a sophisticated arbitration process to decide what to do with incoming content.
+
+**Prediction Error gating** compares new content against existing memories and picks one of four outcomes:
+
+| Outcome | When | What Happens |
+|---------|------|-------------|
+| **CREATE** | No similar memory exists | Stored as new knowledge |
+| **REINFORCE** | Similar exists, new one adds value | Both kept, old one gets a confidence boost |
+| **UPDATE** | Similar exists, new one is clearly better | Old version replaced in place |
+| **SUPERSEDE** | New knowledge contradicts the old | New version active, old one demoted to deprecated |
+
+This is session-scoped to prevent cross-session interference.
+
+**Reconsolidation-on-save** -- handles near-duplicates intelligently. Nearly identical content gets merged. Contradictions retire the old version. Clearly different content keeps both. Like a filing clerk who reads the new document, checks the cabinet and makes an informed decision instead of just stuffing it in.
+
+**Semantic sufficiency gating** -- rejects memories too thin or lacking real evidence. Short documents with strong structural signals (clear title, proper labels) get an exception.
+
+**Verify-fix-verify loop** -- runs quality checks before saving. If the memory falls short, the system tries to fix problems automatically and checks again before storing.
+
+**Content normalization** -- strips formatting clutter (bullet markers, code fences, header symbols) before generating embeddings. Cleaner fingerprints match your questions more accurately.
+
+**Auto-entity extraction** -- spots tool names, project names and concept names when you save and adds them to a shared catalog. Connects memories mentioning the same things even when surrounding text differs completely.
+
+**Signal vocabulary expansion** -- recognizes correction signals ("actually", "wait") and preference signals ("prefer", "want") in your language, shaping quality scoring.
+
+**Correction tracking** -- records what changed when a newer memory replaces an older one. Creates a paper trail of how knowledge evolved.
+
+**SHA-256 content-hash deduplication** -- recognizes unchanged files instantly and skips expensive reprocessing.
+
+---
+
+#### 4.1.7 Session Awareness
+
+The system keeps track of what happened during your current conversation so it does not repeat itself or lose context mid-session.
+
+**Working memory with attention decay** -- stores findings from the current session. Each result's relevance decays by `0.85^distance` per event (where distance is how many tool calls ago it was found). Floor is 0.05, eviction at 0.01. Recent findings stay prominent while older ones fade gracefully.
+
+**Session deduplication** -- pushes down results you already saw. If you got a result 3 turns ago, new searches rank it lower. Saves approximately 50% of tokens on follow-up queries.
+
+**Context pressure monitoring** -- watches how full your AI's context window is getting. Above 60% usage: downgrades to focused mode. Above 80%: switches to quick mode. Prevents memory retrieval from overwhelming the conversation.
+
+---
+
+#### 4.1.8 Shared Memory
 
 By default, every memory is private to the user or agent that created it. Shared memory adds controlled access so multiple people or agents can read and write to a common knowledge pool.
 
-Think of it like a shared office. The office stays locked until an admin activates it. Only people on the access list can enter. And management can lock it down instantly if something goes wrong.
+Think of it like a shared office with a keycard lock. The office stays locked until an admin activates it. Only people on the access list can enter. Management can lock it down instantly if something goes wrong.
 
-Key concepts:
-- **Spaces** are named containers for shared knowledge (like rooms in the office)
-- **Roles** control what members can do: `owner` (full control), `editor` (read/write), `viewer` (read-only)
-- **Deny-by-default** means nobody gets access unless explicitly granted
-- **Kill switch** immediately blocks all access for emergencies
+- **Spaces** -- named containers for shared knowledge (like rooms in the office)
+- **Roles** -- `owner` (full control), `editor` (read/write), `viewer` (read-only)
+- **Deny-by-default** -- nobody gets access unless explicitly granted
+- **Kill switch** -- immediately blocks all access for emergencies
 
-For the full shared memory guide including setup, use cases and troubleshooting, see [SHARED_MEMORY_DATABASE.md](../SHARED_MEMORY_DATABASE.md).
+For the full shared memory guide, see [SHARED_MEMORY_DATABASE.md](../SHARED_MEMORY_DATABASE.md).
 
-#### Quality Gates: The Bouncer at the Door
+---
 
-Not everything deserves to be stored. Before a new memory enters the system, it goes through three checks:
+#### 4.1.9 Quality Gates and Learning
 
-1. **Structure check**: Does the file have the required format, headings and metadata?
-2. **Semantic check**: Is there enough real content to be useful, or is it too thin?
-3. **Duplicate check**: Does this information already exist in a different form?
+Not everything deserves to be stored. Before a new memory enters the system, it goes through three layered checks:
 
-If a file fails any check, the system rejects it with a clear explanation of what went wrong. You can preview these checks without actually saving by using the `dryRun` parameter. Think of it like a dress rehearsal before opening night.
+1. **Structure gate** -- does the file have the required format, headings and metadata?
+2. **Semantic sufficiency gate** -- is there enough real content to be useful?
+3. **Duplicate gate** -- does this already exist? If so, run Prediction Error arbitration (create, reinforce, update or supersede)
+
+If a file fails any gate, the system rejects it with a clear explanation. Preview all checks without saving using `dryRun: true`.
+
+The system also learns from how you use search results:
+
+**Learned relevance feedback** -- watches when you mark results as useful or not. Helpful results get a boost in future queries. 10 safeguards prevent noise: denylist, rate limits, 30-day decay, per-cycle caps, minimum session thresholds, one-week trial period before boosts go live.
+
+**Result confidence scoring** -- tags each result as high, medium or low confidence using fast heuristics (no LLM needed). Checks: top-K separation, multi-channel agreement, quality score and source document structure.
+
+**Two-tier explainability** -- basic mode shows a plain-language reason ("matched strongly on meaning, boosted by causal graph connection"). Debug mode shows exact channel contributions and weights.
+
+**Mode-aware response profiles** -- formats results differently by situation. Quick lookup returns top answer only. Research returns full results with evidence. Resume returns state plus next-steps. Debug returns the full retrieval trace.
+
+**Empty result recovery** -- diagnoses why a search came back empty (too narrow filter, unclear question, missing knowledge) and suggests next steps.
+
+---
+
+#### 4.1.10 Retrieval Enhancements
+
+Beyond the core search pipeline, several enhancements make retrieval smarter at finding what you actually need.
+
+**Constitutional memory as expert knowledge injection** -- tags high-priority memories with instructions about when to surface. They appear whenever relevant without you asking, like sticky notes on a filing cabinet that say "pull this file whenever someone asks about X." Constitutional injections obey global scope enforcement so the wrong tenant's rules never leak.
+
+**Spec folder hierarchy search** -- uses your project folder organization as a retrieval signal. If you are looking at a child folder, the system also checks parent and sibling folders for related information.
+
+**Dual-scope memory auto-surface** -- watches for tool use and context compression events and automatically brings up important memories without being asked.
+
+**Cross-document entity linking** -- connects memories across folders when they reference the same concept, even if the surrounding text is completely different.
+
+**Memory summary search channel** -- creates a short summary of each memory when saved and searches against those summaries. Like reading the back-cover blurb of a book.
+
+**Contextual tree injection** -- labels each result with its position in the project hierarchy ("Project > Feature > Detail") so you always know where it belongs.
+
+**ANCHOR-based section retrieval** -- memory files can include `<!-- ANCHOR:name -->` markers. The search system indexes individual sections separately, allowing retrieval of just "decisions" or "next-steps" from a large document (~93% token savings). Files above 50K characters are always chunk-split.
+
+**Provenance-rich response envelopes** (when `includeTrace` is enabled) -- show exactly how each result was found: which channels contributed, how scores were calculated and where the information originated.
+
+---
+
+#### 4.1.11 Indexing and Infrastructure
+
+The system keeps the index accurate and performant as your project evolves.
+
+**Real-time filesystem watching** (chokidar) -- monitors your project folder continuously. When you save, rename or delete a file, the index updates automatically.
+
+**Incremental indexing with content hashing** -- tracks SHA-256 hashes of every indexed file. Unchanged files get skipped instantly during scans.
+
+**Embedding retry orchestrator** -- when the embedding service is temporarily unavailable, the memory is saved without a vector and queued for retry. A background worker retries until it succeeds. A temporary outage never permanently blocks full searchability.
+
+**Deferred lexical-only indexing** -- saves memories in a simpler text-searchable form when the embedding service is down. Keyword search still works. When the service returns, the system upgrades to full vector searchability automatically.
+
+**Atomic write-then-index** -- writes files to a temporary location first and only moves them once confirmed. Crash-safe with pending-file recovery on startup.
+
+**Dynamic server instructions** -- at startup, tells the calling AI how many memories are stored, how many folders exist and which search methods are available.
+
+---
+
+#### 4.1.12 Evaluation Infrastructure
+
+Research-grade infrastructure for measuring and improving search quality over time.
+
+**12-metric core computation** -- grades every query across twelve quality dimensions (MRR@1/3/10, NDCG@10, MAP and more). Together they pinpoint exactly where search is struggling, like a doctor running multiple tests instead of just asking "do you feel sick?"
+
+**Synthetic ground truth corpus** -- 110 test questions with known correct answers in everyday language plus trick questions. Makes it possible to measure objectively whether changes improve or hurt quality.
+
+**Ablation study framework** -- turns off each search channel one at a time and measures quality degradation (Recall@20 delta). Identifies which components are critical.
+
+**Shadow scoring with holdout evaluation** -- tests proposed ranking improvements on a fixed test set before they go live. A new approach only reaches production after it proves itself.
+
+**Learned Stage 2 weight combiner** -- learns the best combination of scoring signals from actual usage data. Runs in shadow mode only, without affecting live results.
+
+**Scoring observability** -- randomly samples scoring events and saves before-and-after snapshots for debugging.
 
 ---
 

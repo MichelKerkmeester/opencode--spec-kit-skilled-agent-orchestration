@@ -1,6 +1,6 @@
 ---
 title: "Session Capturing Pipeline Quality"
-description: "Session capturing pipeline quality is the current reality-alignment feature for `009-perfect-session-capturing`. It covers the shipped JSON-only save path for `generate-context.js` and all associated quality gates, sufficiency enforcement, and template-contract validation."
+description: "Session capturing pipeline quality is the current reality-alignment feature for `009-perfect-session-capturing`. It covers the shipped JSON-primary save path for `generate-context.js`, continued positional JSON file support on the same structured path, and the associated quality gates, sufficiency enforcement, and template-contract validation."
 ---
 
 # Session Capturing Pipeline Quality
@@ -52,8 +52,8 @@ The shipped session-capture pipeline enforces the following behavior:
 19. Rendered memory files preserve `<!-- ANCHOR:id -->` and `<!-- /ANCHOR:id -->` comments through post-render cleanup while still stripping non-anchor workflow comments.
 20. Frontmatter `trigger_phrases` now render the same session-specific values as the trailing metadata block and fall back to `[]` instead of generic placeholders.
 21. Explicit JSON mode accepts the documented snake_case save contract as well as the existing camelCase fields.
-22. Structured JSON mode accepts both `generate-context.js --stdin` and `generate-context.js --json <string>`. These are the only save paths.
-22a. Direct positional saves now exit non-zero with operator-facing migration guidance to the structured JSON contract.
+22. Structured JSON mode accepts both `generate-context.js --stdin` and `generate-context.js --json <string>` as the preferred AI-composed save paths.
+22a. Positional JSON file input remains supported and routes through the same structured loader path.
 24. The structured JSON contract explicitly preserves summary fields such as `toolCalls` and `exchanges`, while older payloads that omit them remain backward compatible.
 25. File-backed JSON remains on the authoritative structured path and does not reopen the abandoned runtime-derived enrichment branch.
 25a. Decision confidence and truncated outcome handling respect explicit input values; template assembly preserves explicit session-level message and tool counts when conversation arrays are sparse.
@@ -93,7 +93,7 @@ The closure feature consists of these distinct shipped capabilities:
 
 ### 3.1 JSON-mode authority
 
-- `--stdin` and `--json` are the only save paths. All saves route through structured JSON input.
+- `--stdin` and `--json` are the preferred save paths for AI-composed input. Positional JSON file input remains supported on the same structured path.
 - JSON-mode accepts the documented snake_case fields such as `user_prompts`, `recent_context`, and `trigger_phrases` in addition to the existing camelCase keys.
 - Structured JSON summaries also preserve shipped fields such as `toolCalls` and `exchanges`.
 - File-backed JSON remains on the structured path and does not fall back into hybrid reconstruction.
@@ -123,6 +123,7 @@ The closure feature consists of these distinct shipped capabilities:
 
 - `generate-context.js --stdin` reads structured JSON from stdin and routes it through the same workflow contract as file input.
 - `generate-context.js --json <string>` does the same for inline structured JSON payloads.
+- Positional JSON file input still routes through `loadCollectedData()` and preserves the same structured contract.
 - Explicit CLI target authority still outranks payload `specFolder` in those structured-input modes.
 - `workflow.ts` now resolves validation outcomes into explicit `abort_write`, `write_skip_index`, and `write_and_index` dispositions instead of treating `qualityValidation.valid` as the only indexing gate.
 - `QUALITY_GATE_WARN` preserves V10 diagnostic visibility without causing false-positive aborts or write-only saves for V10-only saves.
@@ -147,8 +148,8 @@ The closure feature consists of these distinct shipped capabilities:
 
 ### 3.10 Operator expectations
 
-- `--stdin` / `--json` is the only save path. There is no transcript fallback.
-- Operator-facing guidance in SKILL.md and the save command documents the JSON-only save contract.
+- `--stdin` / `--json` is the preferred save path for routine structured saves. Positional JSON file input remains supported, and there is no transcript fallback.
+- Operator-facing guidance in SKILL.md and the save command documents a JSON-primary save contract rather than an exclusive JSON-only ban on positional file input.
 - A successful save requires all of the following:
   - target-spec affinity
   - contamination safety
@@ -172,7 +173,7 @@ The closure feature consists of these distinct shipped capabilities:
 | File | Role |
 |------|------|
 | `scripts/loaders/data-loader.ts` | Structured-input routing enforcement |
-| `scripts/memory/generate-context.ts` | CLI entrypoint; `--stdin` / `--json` structured-input authority |
+| `scripts/memory/generate-context.ts` | CLI entrypoint; `--stdin`, `--json`, and positional JSON file input all resolve through the structured-input contract |
 | `scripts/types/session-types.ts` | Structured JSON contract types for fields such as `toolCalls` and `exchanges` |
 | `scripts/utils/workspace-identity.ts` | Canonical `.opencode` workspace identity and path equivalence |
 | `scripts/utils/spec-affinity.ts` | Shared target-spec anchor evaluation for alignment and normalization |
@@ -209,7 +210,7 @@ The closure feature consists of these distinct shipped capabilities:
 | `scripts/tests/quality-scorer-calibration.vitest.ts` | Rich vs thin score differentiation |
 | `scripts/tests/task-enrichment.vitest.ts` | Task and summary enrichment behavior |
 | `scripts/tests/memory-render-fixture.vitest.ts` | Rendered-memory regression coverage |
-| `scripts/tests/generate-context-cli-authority.vitest.ts` | Explicit CLI root-spec authority coverage plus `--stdin` / `--json` structured-input precedence |
+| `scripts/tests/generate-context-cli-authority.vitest.ts` | Explicit CLI root-spec authority coverage plus `--stdin`, `--json`, and positional JSON file-input structured-path behavior |
 | `scripts/tests/semantic-signal-golden.vitest.ts` | Trigger-phrase quality regression coverage for the phase-018 output-quality fixes |
 | `scripts/tests/test-extractors-loaders.js` | Dist/export regression suite for extractors and loader |
 | `scripts/tests/test-bug-fixes.js` | Bug-fix verification stack |
@@ -263,7 +264,7 @@ Manual coverage lives in `M-007` and is expected to explicitly cover:
 10. `generate-context.js --json <string>` with payload-target fallback when no explicit CLI override exists and file-backed JSON authority preserved.
 11. Claude `tool title with path` downgrade proof, paired with the unchanged non-Claude capped path.
 12. Phase 018 output-quality hardening for decision deduplication, completion-status recovery, blocker filtering, trigger cleanup, separator parsing, tree-thinning safeguards, and structured-data conversation synthesis.
-13. Direct positional saves that reject with migration guidance to the structured JSON contract.
+13. Positional JSON file input that remains on the structured file-backed path alongside `--stdin` and `--json`.
 
 ---
 

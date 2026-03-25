@@ -85,26 +85,33 @@ Is this a project root?
 <!-- ANCHOR:readme-types -->
 ## 3. README TYPES
 
-| Type | Purpose | Location | Audience | Key Focus |
-|------|---------|----------|----------|-----------|
-| **Project** | Root-level documentation for the entire project | `/README.md` | New contributors, evaluators, users | What is this project? How do I get started? Where do I find things? |
-| **Component** | Documentation for a reusable module or library | `/src/components/[component]/README.md` or `/packages/[pkg]/README.md` | Developers using the component | What does this component do? How do I use it? What are the options? |
-| **Feature** | Documentation for a specific feature or system | `/docs/features/[feature]/README.md` or `/src/features/[feature]/README.md` | Developers implementing or maintaining the feature | How does this feature work? How do I configure it? |
-| **Skill** | Supplementary documentation for an AI skill (alongside SKILL.md) | `.opencode/skill/[skill-name]/README.md` | Humans who want to understand the skill before using it | What does this skill do? When should I use it? What are common patterns? |
+| Type | Purpose | Location | Audience | Voice | Key Focus |
+|------|---------|----------|----------|-------|-----------|
+| **Project** | Root-level documentation for the entire project | `/README.md` | New contributors, evaluators, users | Two-tier (narrative + reference) | What is this project? How do I get started? |
+| **Skill** | Supplementary documentation for an AI skill | `.opencode/skill/[skill-name]/README.md` | Humans who want to understand the skill | Two-tier (narrative + reference) | What does this skill do? When should I use it? |
+| **Feature** | Documentation for a specific feature or system | `/docs/features/[feature]/README.md` | Developers implementing or maintaining | Two-tier (narrative + reference) | How does this feature work? How do I configure it? |
+| **Component** | Documentation for a reusable module or library | `/src/components/[component]/README.md` | Developers using the component | Technical (reference only) | What does this do? API surface, options, examples |
+| **Code Folder** | Orientation for a code directory | `[code-dir]/README.md` | Developers reading or modifying code | Technical (reference only) | Module purpose, exports, dependencies, architecture |
 
 ### Section Requirements by Type
 
-| Section | Project | Component | Feature | Skill |
-|---------|---------|-----------|---------|-------|
-| 1. Overview | ✅ Required | ✅ Required | ✅ Required | ✅ Required |
-| 2. Quick Start | ✅ Required | ✅ Required | ✅ Required | ✅ Required |
-| 3. Structure | ✅ Required | ⚠️ Optional | ⚠️ Optional | ⚠️ Optional |
-| 4. Features | ⚠️ Optional | ✅ Required | ✅ Required | ✅ Required |
-| 5. Configuration | ⚠️ Optional | ⚠️ Optional | ✅ Required | ⚠️ Optional |
-| 6. Usage Examples | ⚠️ Optional | ✅ Required | ✅ Required | ✅ Required |
-| 7. Troubleshooting | ✅ Required | ✅ Required | ✅ Required | ✅ Required |
-| 8. FAQ | ⚠️ Optional | ⚠️ Optional | ⚠️ Optional | ✅ Required |
-| 9. Related Documents | ✅ Required | ⚠️ Optional | ⚠️ Optional | ⚠️ Optional |
+| Section | Project | Skill | Feature | Component | Code Folder |
+|---------|---------|-------|---------|-----------|-------------|
+| 1. Overview | ✅ Required | ✅ Required | ✅ Required | ✅ Required | ✅ Required |
+| 2. Quick Start | ✅ Required | ✅ Required | ✅ Required | ✅ Required | ❌ Skip |
+| 3. Structure | ✅ Required | ⚠️ Optional | ⚠️ Optional | ⚠️ Optional | ✅ Required |
+| 4. Features | ⚠️ Optional | ✅ Required | ✅ Required | ✅ Required | ❌ Skip |
+| 5. Configuration | ⚠️ Optional | ⚠️ Optional | ✅ Required | ⚠️ Optional | ❌ Skip |
+| 6. Usage Examples | ⚠️ Optional | ✅ Required | ✅ Required | ✅ Required | ❌ Skip |
+| 7. Troubleshooting | ✅ Required | ✅ Required | ✅ Required | ✅ Required | ❌ Skip |
+| 8. FAQ | ⚠️ Optional | ✅ Required | ⚠️ Optional | ⚠️ Optional | ❌ Skip |
+| 9. Related Documents | ✅ Required | ⚠️ Optional | ⚠️ Optional | ⚠️ Optional | ⚠️ Optional |
+
+### Voice by Type
+
+**Two-tier voice** (narrative + reference) applies to **Project, Skill and Feature** READMEs. These serve mixed audiences (newcomers through experts) and benefit from analogies in explanations alongside precise reference tables.
+
+**Technical voice** (reference only) applies to **Component and Code Folder** READMEs. These serve developers who are already in the codebase. Use direct technical language: module purpose, exports, dependencies, architecture notes. No analogies needed. Keep it terse and precise.
 
 ---
 
@@ -147,19 +154,21 @@ Every README follows a 9-section structure. Use what's needed, remove what's not
 **Purpose**: Establish what this is, why it exists, and key metrics at a glance.
 
 **Must include**:
-- Brief description (2-3 sentences)
+- Brief description (2-3 sentences, plain language, lead with what it does for the user)
 - Key statistics table (if metrics exist)
-- Key features table (3-6 items)
+- "How This Compares" table (what you get vs. the alternative without this project)
+- Key features table (3-8 items)
 - Requirements/prerequisites
 
 **Writing Tips**:
-- Lead with value proposition (why should I care?)
+- Lead with the user's problem, then how this solves it ("Your AI assistant has amnesia. This server fixes that.")
 - Keep descriptions action-oriented ("enables X" not "is designed for X")
 - Statistics build credibility. Include if available.
+- The comparison table is the single most persuasive element. Show concrete differences, not marketing claims.
 
-### Advanced Overview Patterns
+### Additional Overview Patterns
 
-These patterns appear in mature project READMEs and go beyond the basic template:
+These patterns appear in mature project READMEs:
 
 **Badge Shields**: Display project status badges above the H1 title using a left-aligned wrapper:
 ```markdown
@@ -227,14 +236,26 @@ These patterns appear in mature project READMEs and go beyond the basic template
 
 ### Features Section (4)
 
-**Purpose**: Comprehensive feature documentation with examples.
+**Purpose**: Comprehensive feature documentation. For complex systems, split into a narrative tier and a reference tier.
 
 **Must include**:
+- Numbered subsections (4.1, 4.2, etc.) separated by `---` dividers for scannable navigation
 - Feature groupings by category
-- Usage examples for each feature
+- Usage examples for key features
 - Options/flags tables where applicable
 
+**Two-Tier Structure** (recommended for complex systems):
+- **Narrative subsection** (e.g., "4.1 How It Works"): Plain-language explanations with analogies. Explain the "why" before the "how." No parameter tables here.
+- **Reference subsection** (e.g., "4.2 API Reference"): Precise parameter tables, configuration options, technical specifics. Terse and scannable.
+
+Newcomers read the narrative. Power users jump to the reference. Both tiers live in the same Features section.
+
+**Subsection Numbering**: Use `#### 4.1.1 Topic Name` for sub-subsections within a Feature subsection. Add `---` horizontal rules between subsections for visual separation.
+
 **Writing Tips**:
+- Each subsection should open with 1-2 sentences explaining what this capability does in plain language
+- Bold key term names on first use (e.g., **Reciprocal Rank Fusion**)
+- Use tables for structured data (parameters, comparisons, options)
 - Show before/after or input/output examples
 - Include comparison tables when multiple options exist
 
@@ -270,13 +291,15 @@ These patterns appear in mature project READMEs and go beyond the basic template
 **Purpose**: Self-service problem resolution.
 
 **Must include**:
-- Common issues with symptom/cause/solution
-- Quick fixes table
+- Common issues using "What you see / Common causes / Fix" format
+- Quick fixes table (one-liner solutions for frequent problems)
 - Diagnostic commands
 
 **Writing Tips**:
-- Lead with user-visible symptoms (what they SEE)
-- Provide copy-paste solutions
+- Lead with what the user sees in their own words, not internal error names
+- Provide copy-paste solutions (commands they can run immediately)
+- Separate issues with `---` dividers for scannable navigation
+- Keep each issue self-contained (do not reference other issues)
 
 ### FAQ Section (8)
 
@@ -309,6 +332,47 @@ These patterns appear in mature project READMEs and go beyond the basic template
 <!-- /ANCHOR:section-deep-dives -->
 <!-- ANCHOR:writing-patterns -->
 ## 6. WRITING PATTERNS
+
+### Two-Tier Voice
+
+For **Project, Skill and Feature** READMEs, use two writing voices in the same document. (Component and Code Folder READMEs use technical voice only -- skip the narrative tier.)
+
+**Narrative tier** -- explains what things do and why they matter. Uses analogies, plain language and active voice. Appears in section intros, Overview, Quick Start and the narrative half of Features (e.g., "4.1 How It Works"). The goal is that someone with no prior knowledge can understand the system.
+
+**Reference tier** -- precise parameter tables, configuration flags, tool signatures. Terse and scannable. Appears in the reference half of Features (e.g., "4.2 Tool Reference"), Configuration and Related Documents. No analogies needed here.
+
+The two tiers complement each other. The narrative explains the "why." The reference answers the "what exactly."
+
+**Example -- narrative tier:**
+> When you search for something, the system does not just look in one place. It checks several sources at once, like a librarian who checks the card catalog, the shelf labels and the reading room sign-out sheet all at the same time.
+
+**Example -- reference tier:**
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `query` | string | Free-text search query |
+| `limit` | number | 1-100 results (default 10) |
+
+### Analogy Patterns
+
+Analogies make technical concepts stick. Use them in narrative sections of **Project, Skill and Feature** READMEs. Do not use analogies in Component or Code Folder READMEs. Keep them grounded in everyday experience.
+
+**Effective analogy patterns**:
+- **Librarian** -- for search, retrieval, filing, organization
+- **Filing cabinet** -- for storage, folders, organization, hierarchy
+- **Bouncer at the door** -- for quality gates, validation, rejection
+- **Save point in a video game** -- for checkpoints, snapshots, rollback
+- **Triage nurse** -- for routing, classification, priority
+- **Assembly line** -- for pipelines, stages, sequential processing
+- **Corkboard with string** -- for graphs, connections, relationships
+- **Phone autocomplete** -- for trigger matching, fast lookup
+- **Dress rehearsal** -- for dry runs, previews, validation without commitment
+
+**Rules for analogies**:
+- One analogy per concept (do not stack multiple analogies for the same thing)
+- Place the analogy after the technical statement, not before
+- Do not use analogies in parameter tables or configuration sections
+- Drop the analogy if the concept is already clear from plain language
 
 ### Progressive Disclosure
 
@@ -809,6 +873,14 @@ description: "[Brief description]"
 | [Category 1] | [N] | [Brief detail] |
 | [Category 2] | [N] | [Brief detail] |
 
+### How This Compares
+
+| Capability | Without [PROJECT_NAME] | With [PROJECT_NAME] |
+|------------|------------------------|---------------------|
+| [Capability 1] | [What users do today] | [What they get instead] |
+| [Capability 2] | [Current limitation] | [How this solves it] |
+| [Capability 3] | [Pain point] | [Improvement] |
+
 ### Key Features
 
 | Feature | Description |
@@ -887,23 +959,47 @@ description: "[Brief description]"
 <!-- ANCHOR:features -->
 ## 4. FEATURES
 
-### [Feature Category 1]
+### 4.1 [Narrative Subsection: How It Works]
 
-**[Feature Name]**: [Description of what it does]
+[1-2 paragraphs in plain language explaining what this system does and why it matters. Use an analogy if it helps.]
 
-| Aspect | Details |
-|--------|---------|
-| **Purpose** | [Why this feature exists] |
-| **Usage** | [How to use it] |
-| **Options** | [Available options/flags] |
+---
 
-### [Feature Category 2]
+#### 4.1.1 [Topic Name]
 
-**[Feature Name]**: [Description]
+[Plain-language explanation of this capability. Lead with what it does for the user.]
 
-```bash
+| [Column 1] | [Column 2] | [Column 3] |
+|-------------|------------|------------|
+| [Data] | [Data] | [Data] |
+
+**[Key concept name]** -- [short explanation of how it works and why it matters].
+
+---
+
+#### 4.1.2 [Topic Name]
+
+[Next capability explained in simple terms.]
+
+---
+
+### 4.2 [Reference Subsection: Technical Reference]
+
+[Brief intro: what this section covers, who it is for.]
+
+#### [Category 1]
+
+##### `[tool_or_api_name]`
+
+[1-2 sentence plain-language description.]
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `[param]` | [type] | [description] |
+
+```[language]
 # Example usage
-[command or code example]
+[code example]
 ```
 
 <!-- /ANCHOR:features -->
@@ -980,22 +1076,25 @@ description: "[Brief description]"
 
 #### [Issue 1: Descriptive Name]
 
-**Symptom**: [What the user sees/experiences]
+**What you see**: [What the user experiences in their own words]
 
-**Cause**: [Why this happens]
+**Common causes**: [Why this happens, in plain language]
 
-**Solution**:
+**Fix**: [Direct action to take]
+
 ```bash
 [fix command]
 ```
 
+---
+
 #### [Issue 2: Descriptive Name]
 
-**Symptom**: [What the user sees]
+**What you see**: [What the user sees]
 
-**Cause**: [Why this happens]
+**Common causes**: [Why this happens]
 
-**Solution**: [Step-by-step fix]
+**Fix**: [Step-by-step solution]
 
 ### Quick Fixes
 
@@ -1086,6 +1185,8 @@ A: [Answer with code if applicable.]
 ### Examples
 - Project READMEs in `/specs/` folders
 - Skill READMEs in `.opencode/skill/` folders
+- [Spec Kit Memory MCP Server README](../../system-spec-kit/mcp_server/README.md) - Reference implementation of two-tier voice, numbered Feature subsections, comparison tables and analogy patterns
+- [Feature Catalog in Simple Terms](../../system-spec-kit/feature_catalog/feature_catalog_in_simple_terms.md) - Voice and tone calibration reference for plain-language technical writing
 
 ### Skill Reference
 - [sk-doc SKILL.md](../../SKILL.md) - Parent skill documentation

@@ -1,13 +1,13 @@
 ---
 title: "Code standards alignment"
-description: "Code standards alignment fixed 45 violations across AI-intent comments, MODULE/COMPONENT headers, import ordering and constant naming to match sk-code--opencode standards."
+description: "Code standards alignment brought comments, MODULE/COMPONENT headers, import ordering, and constant naming into line with sk-code--opencode standards."
 ---
 
 # Code standards alignment
 
 ## 1. OVERVIEW
 
-Code standards alignment fixed 45 violations across AI-intent comments, MODULE/COMPONENT headers, import ordering and constant naming to match sk-code--opencode standards.
+Code standards alignment brought comments, MODULE/COMPONENT headers, import ordering, and constant naming into line with sk-code--opencode standards.
 
 This was a cleanup pass that made the code follow a consistent style across the project. It fixed 45 places where comments, file headers, naming patterns or import ordering did not match the agreed-upon rules. Think of it like an editor going through a document to make sure every chapter uses the same formatting and citation style.
 
@@ -15,26 +15,20 @@ This was a cleanup pass that made the code follow a consistent style across the 
 
 ## 2. CURRENT REALITY
 
-All modified files were reviewed against sk-code--opencode standards. 45 violations found and fixed: 26 AI-intent comment conversions (AI-WHY, AI-TRACE, AI-GUARD prefixes), 10 MODULE/COMPONENT headers added, import ordering corrections and constant naming (`specFolderLocks` → `SPEC_FOLDER_LOCKS`) in the extracted save mutex module.
+All modified files were reviewed against sk-code--opencode standards. At HEAD, the live codebase uses MODULE/COMPONENT headers plus purposeful inline comments where explanation adds value. Legacy AI-intent prefixes (`AI-WHY`, `AI-TRACE`, `AI-GUARD`) are no longer part of the active convention, and `rg "AI-(WHY|TRACE|GUARD):" .opencode/skill/system-spec-kit/mcp_server` returns no matches.
 
 ---
 
 ## 3. SOURCE EVIDENCE
 
-### 1) AI-intent comments (AI-WHY / AI-TRACE / AI-GUARD)
+### 1) Purposeful comments and retired AI-intent prefixes
 
 - **Rule mapping**
-  - `sk-code--opencode/SKILL.md:357` (stale — AI-WHY/AI-TRACE/AI-GUARD prefix policy no longer present in SKILL.md at HEAD; superseded by generic purposeful-comment rule at line 357)
-  - `sk-code--opencode/SKILL.md:437` (P0 checklist: "File header present and correct format" — was line 444)
-- **File-level fix counts (auditable)**
-  - From `git show 18a0f9548` AI-intent additions:
-    - `mcp_server/lib/search/hybrid-search.ts` → `10`
-    - `mcp_server/lib/search/folder-discovery.ts` → `7`
-    - `mcp_server/lib/search/rsf-fusion.ts` (deleted) → was `5`
-    - `mcp_server/lib/cognitive/co-activation.ts` → `4`
-  - These four files account for `26` AI-intent conversions (matching the catalog claim).
+  - `sk-code--opencode/SKILL.md:357` documents the purposeful-comment rule used at HEAD.
+  - `sk-code--opencode/SKILL.md:437` keeps file headers as a P0 compliance check.
 - **HEAD evidence**
-  - `rg "AI-(WHY|TRACE|GUARD):" mcp_server/lib` — NOTE: these prefixes are no longer enforced by SKILL.md at HEAD; existing occurrences in code may reflect a deprecated convention.
+  - `rg "AI-(WHY|TRACE|GUARD):" .opencode/skill/system-spec-kit/mcp_server` returns no matches at HEAD.
+  - The live alignment posture uses standardized `// MODULE:` / `// COMPONENT:` headers and targeted explanatory comments rather than AI-intent marker prefixes.
 
 ### 2) MODULE/COMPONENT headers
 
