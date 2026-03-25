@@ -34,6 +34,9 @@ Systematic code audit of 7 Lifecycle features in the Spec Kit Memory MCP server.
 | **Status** | Complete |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../004-maintenance/spec.md |
+| **Successor** | ../006-analysis/spec.md |
 
 ---
 

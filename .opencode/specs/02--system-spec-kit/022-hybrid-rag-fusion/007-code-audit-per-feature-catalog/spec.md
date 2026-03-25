@@ -37,6 +37,9 @@ Comprehensive code audit of the Spec Kit Memory MCP server, systematically verif
 | **Completed** | 2026-03-22 |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../006-feature-catalog/spec.md |
+| **Successor** | ../008-hydra-db-based-features/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

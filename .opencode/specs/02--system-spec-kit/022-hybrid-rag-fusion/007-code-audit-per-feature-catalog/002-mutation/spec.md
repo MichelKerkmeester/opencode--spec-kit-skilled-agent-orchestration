@@ -34,6 +34,9 @@ Systematic code audit of 10 Mutation features in the Spec Kit Memory MCP server.
 | **Status** | Complete |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../001-retrieval/spec.md |
+| **Successor** | ../003-discovery/spec.md |
 
 ---
 

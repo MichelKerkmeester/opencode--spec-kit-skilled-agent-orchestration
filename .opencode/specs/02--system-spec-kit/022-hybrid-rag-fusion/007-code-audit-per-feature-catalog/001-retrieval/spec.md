@@ -34,6 +34,8 @@ Systematic code audit of the 11-feature live Retrieval category in the Spec Kit 
 | **Status** | Partial |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Successor** | ../002-mutation/spec.md |
 
 ---
 

@@ -34,8 +34,10 @@ Systematic code audit of 19 UX Hooks features in the Spec Kit Memory MCP server.
 | **Status** | Complete |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../017-governance/spec.md |
+| **Successor** | ../019-decisions-and-deferrals/spec.md |
 
-Parent: 007-code-audit-per-feature-catalog
 
 ---
 

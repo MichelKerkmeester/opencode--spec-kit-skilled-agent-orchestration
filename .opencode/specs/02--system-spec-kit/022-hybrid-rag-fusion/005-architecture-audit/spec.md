@@ -37,6 +37,9 @@ This completed Level 3 spec captures the architecture audit of `.opencode/skill/
 | **Status** | Complete |
 | **Created** | 2026-03-04 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../004-ux-hooks-automation/spec.md |
+| **Successor** | ../006-feature-catalog/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

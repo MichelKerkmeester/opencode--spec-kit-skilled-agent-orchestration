@@ -34,6 +34,9 @@ Systematic code audit of 16 Graph Signal Activation features in the Spec Kit Mem
 | **Status** | Complete |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../009-evaluation-and-measurement/spec.md |
+| **Successor** | ../011-scoring-and-calibration/spec.md |
 
 ---
 

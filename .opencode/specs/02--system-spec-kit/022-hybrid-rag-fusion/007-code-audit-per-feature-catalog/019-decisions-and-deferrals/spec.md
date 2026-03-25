@@ -35,8 +35,10 @@ Systematic code audit of 5 Decisions and Deferrals features in the Spec Kit Memo
 | **Created** | 2026-03-22 |
 | **Completed** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../018-ux-hooks/spec.md |
+| **Successor** | ../020-feature-flag-reference/spec.md |
 
-Parent: 007-code-audit-per-feature-catalog
 
 ---
 

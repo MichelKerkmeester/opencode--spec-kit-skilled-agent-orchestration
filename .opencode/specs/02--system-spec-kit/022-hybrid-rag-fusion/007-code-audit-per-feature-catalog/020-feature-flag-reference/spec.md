@@ -34,8 +34,10 @@ Systematic code audit of 7 Feature Flag Reference features in the Spec Kit Memor
 | **Status** | Complete |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../019-decisions-and-deferrals/spec.md |
+| **Successor** | ../021-remediation-revalidation/spec.md |
 
-Parent: 007-code-audit-per-feature-catalog
 
 ---
 

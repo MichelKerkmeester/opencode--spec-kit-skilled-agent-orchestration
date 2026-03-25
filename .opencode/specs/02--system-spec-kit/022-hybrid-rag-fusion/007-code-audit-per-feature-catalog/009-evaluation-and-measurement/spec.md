@@ -34,6 +34,9 @@ Systematic code audit of 14 live Evaluation and Measurement features in the Spec
 | **Status** | Complete |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../008-bug-fixes-and-data-integrity/spec.md |
+| **Successor** | ../010-graph-signal-activation/spec.md |
 
 ---
 

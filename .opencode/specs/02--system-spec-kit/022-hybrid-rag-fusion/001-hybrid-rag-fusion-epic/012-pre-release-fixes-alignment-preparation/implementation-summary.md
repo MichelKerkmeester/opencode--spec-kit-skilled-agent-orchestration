@@ -1,10 +1,10 @@
 ---
 title: "Implementation Summary: Pre-Release Fixes & Alignment"
-description: "Implementation of P0 blockers and P1 must-fix items for the 022-hybrid-rag-fusion pre-release milestone"
+description: "2026-03-25 release-control truth-sync and validation recheck for the 022-hybrid-rag-fusion tree"
 trigger_phrases:
   - "pre-release fixes"
   - "implementation summary"
-  - "P0 P1 remediation"
+  - "release control"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -22,10 +22,10 @@ contextType: "implementation"
 |-------|-------|
 | **Spec** | 012-pre-release-fixes-alignment-preparation |
 | **Parent** | 001-hybrid-rag-fusion-epic |
-| **Date** | 2026-03-24 |
-| **Tasks** | T01-T18 (P0+P1 scope) |
-| **LOC Changed** | ~500 across 25+ files |
-| **Dispatch** | Multi-Agent (1+3): Orchestrator + 3 workers |
+| **Date** | 2026-03-25 |
+| **Tasks** | Release-control truth-sync, validator triage, and blocker isolation |
+| **LOC Changed** | Documentation-focused updates across the 022 release-control surface |
+| **Dispatch** | Multi-agent review plus targeted local remediation |
 
 <!-- /ANCHOR:metadata -->
 
@@ -34,44 +34,27 @@ contextType: "implementation"
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-### P0 Blockers (T01-T04)
+### Release-control truth sync
 
-| Task | Fix | File(s) |
-|------|-----|---------|
-| **T01** | Module resolution: added explicit `./api` export before wildcard | `mcp_server/package.json` |
-| **T02** | Network error handling: added `networkError` field, non-fatal startup on transient failure | `shared/types.ts`, `shared/embeddings/factory.ts`, `mcp_server/context-server.ts` |
-| **T03** | Lint fixes: prefer-const, removed dead code/imports/empty interfaces | 6 files in `mcp_server/lib/` |
-| **T04** | Spec validation: created `decision-record.md` for 007-code-audit | `007-code-audit-per-feature-catalog/decision-record.md` |
+| Area | Update | Outcome |
+|------|--------|---------|
+| Root 022 packet | Recounted the live tree and corrected point-in-time totals and status rollups | Root counts and the 015 status contract now match the live tree snapshot |
+| Epic 001 packet | Synced direct-child inventory to 12 children and aligned summary wording | Epic release-control docs no longer undercount the subtree |
+| 012 packet | Rewrote spec and checklist around current truth instead of legacy v5 assumptions | The packet now separates green code gates from still-open documentation gates |
+| 005 and 013 packets | Repaired checklist evidence formatting and integrity issues | Both packets now pass their evidence gate and no longer overclaim verification |
+| 007 umbrella packet | Repaired dead refs, repaired umbrella evidence, and completed the 22-phase parent/predecessor/successor contract | Non-recursive 007 validation is now phase-link clean and warning-only |
 
-### P1 Code Fixes (T05-T10)
+### Runtime verification carried forward
 
-| Task | Fix | File(s) |
-|------|-----|---------|
-| **T05** | Quality loop returns `bestContent`/`bestMetadata` on rejection (not last-attempted) | `handlers/quality-loop.ts` |
-| **T06** | Added 12 preflight/postflight field names to `KNOWN_RAW_INPUT_FIELDS` | `scripts/utils/input-normalizer.ts` |
-| **T07** | Forwarded `--session-id` to `runWorkflow()` options | `scripts/memory/generate-context.ts`, `scripts/core/workflow.ts` |
-| **T08** | Removed `opencode-capture` and `skill_advisor` from scripts registry | `scripts/scripts-registry.json` |
-| **T09** | Path fragment contamination (PR1): deleted post-filter reinsertion, expanded FOLDER_STOPWORDS (+5 words), applied stopwords in ensureMinTriggerPhrases/Topics, removed specFolderName from extractKeyTopics | `scripts/core/workflow.ts`, `scripts/core/frontmatter-editor.ts`, `scripts/core/topic-extractor.ts` |
-| **T09b** | JSON mode enrichment (PR2): promoted exchanges to userPrompts (max 10, dedup), promoted toolCalls to observations, increased sessionSummary truncation 200→500 chars | `scripts/utils/input-normalizer.ts` |
-| **T10** | Removed `if (skipFusion) return []` — always falls back to hybridSearch | `mcp_server/lib/search/hybrid-search.ts` |
+| Area | Update | Outcome |
+|------|--------|---------|
+| Runtime correctness/security scope | Rechecked the previously remediated T72-T83 area, including the T79 regression | No active implementation P0/P1 regression was confirmed in the live code |
+| Workspace test gate | Re-ran the full workspace suite from `.opencode/skill/system-spec-kit` | `npm run test` exited 0 on 2026-03-25 |
+| Schema/docs alignment | Added the missing `profile` field to the runtime tool schemas and their tests, then updated the related docs | Public and runtime schema surfaces now agree on `profile` support |
 
-### P1 Pipeline (T11-T12)
+### Blocker isolation
 
-| Task | Fix | File(s) |
-|------|-----|---------|
-| **T11** | Added governance checks (empty title/content, audit trail) to script-side indexing | `scripts/core/memory-indexer.ts` |
-| **T12** | Documented retention sweep as not wired to runtime (manual trigger only) | `mcp_server/lib/governance/retention.ts` |
-
-### P1 Documentation (T13-T18)
-
-| Task | Fix | File(s) |
-|------|-----|---------|
-| **T13** | Tool count 28→33 | `mcp_server/tools/README.md` |
-| **T14** | Fixed 022 spec.md: 20→19 phases, removed phantom 020, standardized 119 dirs | `022-hybrid-rag-fusion/spec.md` |
-| **T15** | Added api/, core/, formatters/, schemas/ to server README structure map | `mcp_server/README.md` |
-| **T16** | Fixed DB path examples to `mcp_server/database/` | `mcp_server/README.md` |
-| **T17** | Created plan.md, tasks.md, implementation-summary.md for 016-json-mode-hybrid-enrichment | 3 new files |
-| **T18** | Updated 005 status to Blocked, 019 status to Analysis Complete | `description.json`, `spec.md` in both folders |
+The remaining release blocker is no longer ambiguous. It is concentrated in the recursive `007-code-audit-per-feature-catalog` child packets, where historical template structure, anchor coverage, checklist level declarations, and stale implementation-summary metadata still fail strict validation.
 
 <!-- /ANCHOR:what-built -->
 
@@ -80,12 +63,10 @@ contextType: "implementation"
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-1. **P0 sequential** (T01→T02→T03→T04): Dependency chain executed by orchestrator
-2. **P1 parallel dispatch** via 3 background agents:
-   - Worker 1 [W:IMPL-1]: T05, T07, T09, T10 (core code fixes)
-   - Worker 2 [W:IMPL-2]: T06, T08, T09b, T12 (JSON enrichment + registry)
-   - Worker 3 [W:DOCS]: T11, T13-T18 (governance + docs)
-3. **Post-worker lint fix**: Resolved 2 remaining ESLint errors from Worker 1 and Worker 3 interactions
+1. Re-ran the release-control validators to distinguish active blockers from stale historical claims.
+2. Used parallel review and spec-edit passes to repair root, epic, 005, 007 umbrella, 012, and 013 release-control documents.
+3. Re-ran packet validation after each repair to confirm whether a blocker moved from error-level to warning-only.
+4. Treated the recursive 007 result as the final gate signal once the umbrella packet itself was clean.
 
 <!-- /ANCHOR:how-delivered -->
 
@@ -94,11 +75,10 @@ contextType: "implementation"
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
-1. **T09 simplified from 5-step to 3-step/2-PR** per ultra-think review. Deferred: shared semantic sanitizer (premature), pre-write prevention (nice-to-have).
-2. **T09b exchange promotion contract**: Max 10, dedup vs sessionSummary (first 50 chars), fast-path guard (skip if 3+ userPrompts).
-3. **T04 partial**: Created decision-record.md but deferred full template compliance across 19 phases (P2 scope).
-4. **T11 lightweight governance**: Added sanity checks only, not full MCP hook parity (performance concern).
-5. **T12 documented, not wired**: Retention sweep left as manual trigger to avoid startup performance impact.
+1. The live validator state takes precedence over the older v5 report whenever they disagree.
+2. Green implementation gates do not justify a release-ready verdict if the release-control packet family still fails recursive validation.
+3. The 007 umbrella packet and the 007 child packet family are tracked separately: the umbrella is now structurally aligned, but the child packets still carry historical template debt.
+4. The current packet records the blocker honestly instead of stretching the definition of "release ready."
 
 <!-- /ANCHOR:decisions -->
 
@@ -109,13 +89,11 @@ contextType: "implementation"
 
 | Check | Result |
 |-------|--------|
-| TypeScript (mcp_server) | Pass — 0 errors |
-| TypeScript (scripts) | Pass — 0 errors |
-| ESLint | Pass — 0 errors, 0 warnings |
-| Source-dist alignment | Pass — 269/269 aligned (6 orphaned dist files cleaned) |
-| All eval checks | Pass — 8/8 (imports, boundaries, allowlist, alignment, AST imports, handler cycles) |
-| Tests | **267 passed** (scripts) + full mcp_server suite, 0 failed |
-| Test failures | 0 |
+| Full workspace tests | Pass - `npm run test` exited 0 on 2026-03-25 |
+| Direct runtime review | Pass - no active implementation P0/P1 issue confirmed in the T72-T83 scope |
+| 007 umbrella validation | Pass with warnings only - phase links valid for all 22 child phases |
+| 007 recursive validation | Fail - 91 errors and 72 warnings remain across child packets |
+| 012 packet validation | Pending final re-run after integrity cleanup in this packet |
 
 <!-- /ANCHOR:verification -->
 
@@ -124,8 +102,8 @@ contextType: "implementation"
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **T11 partial**: Script-side indexing has basic governance (title/content validation + audit log) but lacks full hook parity with MCP `memory_save`
-2. **T12 not runtime-wired**: Retention sweep requires manual invocation
-3. **P2 complete** (T19-T30): All items resolved — dead code verified clean, orphaned dist files removed (6 stale outputs cleaned), catalog refs valid, playbook coverage expanded (+14 scenarios, +3 folders), architecture docs comprehensive
+1. The full tree is not yet release-ready because recursive validation of the 007 child packet family still fails at error level.
+2. The dominant recursive failures are historical documentation-shape issues, not new runtime defects.
+3. A true release-ready verdict now requires either batch modernization of the 007 child packets or an explicit release policy that excludes those historical packets from the strict recursive gate.
 
 <!-- /ANCHOR:limitations -->

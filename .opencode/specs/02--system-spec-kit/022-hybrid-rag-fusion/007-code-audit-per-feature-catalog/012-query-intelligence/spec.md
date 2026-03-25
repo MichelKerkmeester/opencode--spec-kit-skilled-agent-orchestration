@@ -34,8 +34,10 @@ Systematic code audit of 11 Query Intelligence features in the Spec Kit Memory M
 | **Status** | Complete |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../011-scoring-and-calibration/spec.md |
+| **Successor** | ../013-memory-quality-and-indexing/spec.md |
 
-Parent: 007-code-audit-per-feature-catalog
 
 ---
 

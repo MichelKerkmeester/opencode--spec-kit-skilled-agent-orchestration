@@ -3,7 +3,12 @@
   "mode": "review",
   "reviewTarget": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion",
   "reviewTargetType": "track",
-  "reviewDimensions": ["correctness", "security", "traceability", "maintainability"],
+  "reviewDimensions": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability"
+  ],
   "reviewScopeFiles": [
     ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/**/*.md",
     ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/**/*.json",
@@ -18,11 +23,18 @@
   ],
   "severityThreshold": "P2",
   "crossReference": {
-    "core": ["spec_code", "checklist_evidence"],
-    "overlay": ["feature_catalog_code", "feature_catalog_simple_terms", "playbook_capability"]
+    "core": [
+      "spec_code",
+      "checklist_evidence"
+    ],
+    "overlay": [
+      "feature_catalog_code",
+      "feature_catalog_simple_terms",
+      "playbook_capability"
+    ]
   },
   "maxIterations": 20,
-  "convergenceThreshold": 0.10,
+  "convergenceThreshold": 0.1,
   "stuckThreshold": 2,
   "maxDurationMinutes": 180,
   "maxToolCallsPerIteration": 12,
@@ -30,17 +42,32 @@
   "progressiveSynthesis": true,
   "specFolder": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation",
   "createdAt": "2026-03-25T09:00:00.000Z",
-  "status": "initialized",
+  "status": "complete",
   "executionMode": "auto",
   "agentPool": {
-    "codex": { "count": 10, "model": "gpt-5.4", "reasoning": "high" },
-    "copilot": { "count": 10, "model": "gpt-5.4", "reasoning": "high" }
+    "codex": {
+      "count": 10,
+      "model": "gpt-5.4",
+      "reasoning": "high"
+    },
+    "copilot": {
+      "count": 10,
+      "model": "gpt-5.4",
+      "reasoning": "high"
+    }
   },
   "priorReview": {
     "version": "v4",
     "verdict": "CONDITIONAL",
-    "findings": { "P0": 0, "P1": 2, "P2": 4 },
-    "openP1": ["T79-nextSteps-completion-detection", "T37-root-directory-count-drift"]
+    "findings": {
+      "P0": 0,
+      "P1": 2,
+      "P2": 4
+    },
+    "openP1": [
+      "T79-nextSteps-completion-detection",
+      "T37-root-directory-count-drift"
+    ]
   },
   "waveStructure": {
     "wave1": "Correctness + P1 verification (iterations 001-004)",

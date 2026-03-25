@@ -42,7 +42,7 @@ function runCommand(spec: CommandSpec): string {
   ].join('\n');
 }
 
-function buildCommandMatrix(workspaceRoot: string): CommandSpec[] {
+function buildCommandMatrix(workspaceRoot: string, specFolder: string): CommandSpec[] {
   const specs: CommandSpec[] = [
     { command: 'git', args: ['status', '--short'], cwd: workspaceRoot },
     { command: 'git', args: ['branch', '--show-current'], cwd: workspaceRoot },
@@ -53,7 +53,7 @@ function buildCommandMatrix(workspaceRoot: string): CommandSpec[] {
     { command: 'ls', args: ['-la'], cwd: workspaceRoot },
     { command: 'ls', args: ['-la', '.opencode/skill/system-spec-kit'], cwd: workspaceRoot },
     { command: 'ls', args: ['-la', '.opencode/skill/system-spec-kit/mcp_server'], cwd: workspaceRoot },
-    { command: 'ls', args: ['-la', '.opencode/specs/02--system-spec-kit/020-mcp-working-memory-hybrid-rag/scratch'], cwd: workspaceRoot },
+    { command: 'ls', args: ['-la', specFolder], cwd: workspaceRoot },
   ];
 
   const outputs: CommandSpec[] = [];
@@ -69,7 +69,7 @@ function main(): void {
   const outputDir = path.join(specFolder, 'scratch', 'redaction-calibration-inputs');
   fs.mkdirSync(outputDir, { recursive: true });
 
-  const commands = buildCommandMatrix(workspaceRoot);
+  const commands = buildCommandMatrix(workspaceRoot, specFolder);
   const manifest: Array<{ file: string; command: string }> = [];
 
   commands.forEach((spec, index) => {

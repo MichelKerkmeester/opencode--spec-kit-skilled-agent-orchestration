@@ -34,6 +34,9 @@ Systematic code audit of 2 Evaluation features in the Spec Kit Memory MCP server
 | **Status** | Complete |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../006-analysis/spec.md |
+| **Successor** | ../008-bug-fixes-and-data-integrity/spec.md |
 
 ---
 

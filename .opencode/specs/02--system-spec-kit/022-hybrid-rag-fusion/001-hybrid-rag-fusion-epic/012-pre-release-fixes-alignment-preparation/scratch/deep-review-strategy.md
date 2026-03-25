@@ -60,13 +60,15 @@ track
 |-----------|--------|-----------|----------|
 | correctness | PENDING | — | — |
 | security | PENDING | — | — |
-| traceability | PENDING | — | — |
-| maintainability | PENDING | — | — |
+| traceability | IN PROGRESS | 021 | Structural validator blockers confirmed across `007-evaluation` through `012-query-intelligence` |
+| maintainability | IN PROGRESS | 021 | Template migration debt confirmed as follow-on maintainability risk |
 
 ## Running Findings
 | ID | Severity | Title | Dimension | Status |
 |----|----------|-------|-----------|--------|
-| (populated during review) | | | | |
+| P1-021-001 | P1 | Level 2 specs vs Level 3 plan/tasks/checklist split in `007` slice | traceability | active |
+| P1-021-002 | P1 | Missing required anchors across `007` child docs | traceability | active |
+| P1-021-003 | P1 | Stale implementation-summary Spec Folder metadata in `007` child docs | traceability | active |
 
 ## Known Context
 Prior v4 review verified 56/58 v3 findings remediated. Two P1 items remain open:
@@ -74,3 +76,27 @@ Prior v4 review verified 56/58 v3 findings remediated. Two P1 items remain open:
 2. T37: Root spec claims 397 dirs, live count showed 398
 
 Feature catalog alignment was marked PASS in v4 but with limited depth. This v5 review performs comprehensive snippet-by-snippet verification.
+
+## Follow-up Iterations
+- **021**: Packet-local validator/truth sweep for `012-pre-release-fixes-alignment-preparation` found three active P1s concentrated in `plan.md` and `research.md`, with `review-report.md` and `checklist.md` now materially aligned to the narrowed blocker set.
+
+## What Worked
+- **021**: Fresh packet-level validator rerun plus direct line audit isolated the still-active integrity failures without re-reporting already-reconciled checklist/report issues.
+
+## What Failed
+- **021**: Relying on the original v5 synthesis alone was misleading because the live packet changed after that synthesis completed.
+
+## Next Focus
+- Repair `plan.md` and `research.md` so the 012 packet itself reaches warning-only validation, then reassess whether the recursive `007` child-packet debt is the sole remaining release blocker.
+
+## What Worked
+- Iteration 021: slicing recursive validator output to `007-evaluation` through `012-query-intelligence` exposed the repeated child-packet blocker pattern quickly.
+
+## What Failed
+- Iteration 021: umbrella-only `007` review is no longer sufficient once phase links are fixed; the remaining release debt lives in child packet templates.
+
+## Exhausted Approaches
+- BLOCKED: reviewing only umbrella metadata or phase-link contracts for `007`; that path no longer changes the release decision without child packet normalization.
+
+## Next Focus
+- Confirm whether `001`-`006` and `013`-`022` show the same Level/anchor/template migration debt, then decide whether batch normalization or explicit historical downgrade is the smallest honest release path.

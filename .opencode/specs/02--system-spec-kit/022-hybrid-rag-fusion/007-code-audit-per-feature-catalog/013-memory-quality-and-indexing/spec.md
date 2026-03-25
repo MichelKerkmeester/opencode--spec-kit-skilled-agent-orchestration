@@ -34,8 +34,10 @@ Systematic code audit of 24 Memory Quality and Indexing features in the Spec Kit
 | **Status** | Complete |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../012-query-intelligence/spec.md |
+| **Successor** | ../014-pipeline-architecture/spec.md |
 
-Parent: 007-code-audit-per-feature-catalog
 
 ---
 

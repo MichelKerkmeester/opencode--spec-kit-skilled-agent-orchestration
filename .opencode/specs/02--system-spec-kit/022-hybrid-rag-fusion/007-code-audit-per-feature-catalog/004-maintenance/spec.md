@@ -34,6 +34,9 @@ Systematic code audit of 2 Maintenance features in the Spec Kit Memory MCP serve
 | **Status** | Complete |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../003-discovery/spec.md |
+| **Successor** | ../005-lifecycle/spec.md |
 
 ---
 

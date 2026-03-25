@@ -8,7 +8,16 @@ description: "Wire graph calibration, temporal contiguity, and consumption logge
 
 ---
 
-Parent: 007-code-audit-per-feature-catalog
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../021-remediation-revalidation/spec.md |
+
+---
+
+Predecessor: 021-remediation-revalidation/spec.md
 
 ---
 

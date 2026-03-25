@@ -133,7 +133,7 @@ The remediation program has four active layers:
 - Resolve the **16 status and completion drift** findings so parent packets, child packets, tasks, and checklists describe the same live state
 
 **Files to change**
-- `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/spec.md`
+- Root 022 coordination packet
 - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/{spec.md,plan.md,tasks.md,checklist.md}`
 - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features/spec.md`
 - `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog/**`
@@ -224,6 +224,31 @@ The remediation program has four active layers:
 - Confirm no active P0 or P1 findings remain
 - Confirm all remaining P2 items are either fixed or explicitly deferred with rationale
 - Run the final release-readiness review and do not close the packet until it scores **100/100**
+
+### Phase 8: v5 Deep Review Remediation (2026-03-25)
+
+**Context**: The v5 20-iteration deep review (10 codex + 10 copilot GPT-5.4) produced a **CONDITIONAL** verdict with **0 P0, 10 P1, 11 P2** findings. T79 (nextSteps bug) is FIXED. This phase remediates the 10 P1 items.
+
+**Control-packet fixes**
+1. Reconcile the release packet to the current code/test and validator state.
+2. Keep root and epic release-control claims aligned with the live tree.
+3. Remove stale blocker claims inherited from the earlier v5 review narrative.
+
+**Packet-family fixes**
+4. Repair the 007 umbrella parent and sibling navigation contract.
+5. Re-run non-recursive and recursive validation to separate umbrella-level repairs from child-packet legacy debt.
+6. Record the recursive 007 child-packet failures as the remaining blocker set unless they are fully remediated.
+
+**Files to change**
+- Release-control packet files in the current 012 folder
+- Root and epic control packets when their live-count or status claims drift
+- The 007 umbrella packet and any child packet metadata needed for the sibling chain
+
+**Verification steps**
+- Re-run the workspace test gate from `.opencode/skill/system-spec-kit`
+- Re-run non-recursive validation on the 007 umbrella packet
+- Re-run recursive validation on the 007 packet family
+- Re-run validation on the 012 release packet and keep the verdict honest
 
 <!-- /ANCHOR:phases -->
 

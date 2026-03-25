@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: 022-hybrid-rag-fusion"
-description: "Root Level 3+ coordination packet for the Hybrid RAG Fusion program, tracking the live 19-phase tree, 398 total directories under the 022 subtree, and 21 top-level directories at the root."
+description: "Root Level 3+ coordination packet for the Hybrid RAG Fusion program, tracking the live 19-phase tree, a point-in-time snapshot of 399 total directories under the 022 subtree, and 21 top-level directories at the root."
 trigger_phrases:
   - "022 hybrid rag fusion"
   - "hybrid rag fusion root packet"
@@ -17,7 +17,7 @@ contextType: "implementation"
 
 ## EXECUTIVE SUMMARY
 
-This root packet is the coordination layer for the Hybrid RAG Fusion program. It records the live 19 direct phases under `022`, the current 398 total directories on disk beneath the 022 subtree, the 21 top-level directories visible at the root, and the remaining subtree normalization work without overstating completion.
+This root packet is the coordination layer for the Hybrid RAG Fusion program. It records the live 19 direct phases under `022`, a point-in-time snapshot of 399 total directories on disk beneath the 022 subtree, the 21 top-level directories visible at the root, and the remaining subtree normalization work without overstating completion.
 
 **Key Decisions**: treat the on-disk tree as the authority for counts and status, use the live `find` totals as the canonical directory counts, and keep the root packet concise while deeper subtree rewrites remain outstanding.
 
@@ -33,9 +33,9 @@ This root packet is the coordination layer for the Hybrid RAG Fusion program. It
 | **Priority** | P0 |
 | **Status** | In Progress |
 | **Created** | 2025-12-01 |
-| **Updated** | 2026-03-24 |
+| **Updated** | 2026-03-25 |
 | **Branch** | `main` |
-| **Directory Totals** | `398` total directories under `022`; `21` top-level directories from `find ... -maxdepth 1 -type d` |
+| **Directory Totals** | Point-in-time snapshot on `2026-03-25`: `399` total directories under `022`; `21` top-level directories from `find ... -maxdepth 1 -type d` |
 | **Key Numbered Child Counts** | `001=12`, `007=22`, `008=6`, `009=20`, `011=1`, `015=22` |
 | **Feature Catalog Count** | 222 feature files |
 
@@ -118,8 +118,8 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Root packet includes the required companion docs for Level 3+ work | `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` exist under the 022 root |
-| REQ-002 | Root status claims use verified current tree counts | Root docs state `398` total directories under `022`, `21` top-level directories at the root, and numbered child counts `001=12`, `007=22`, `008=6`, `009=20`, `011=1`, `015=22` |
-| REQ-003 | Root packet preserves the current truth of phases `009` and `015` | Root docs state that phase `009` has 20 numbered child directories and phase `015` remains in progress because 18 of its 22 numbered child specs are still `Not Started` |
+| REQ-002 | Root status claims use verified current tree counts | Root docs state a point-in-time snapshot of `399` total directories under `022`, `21` top-level directories at the root, and numbered child counts `001=12`, `007=22`, `008=6`, `009=20`, `011=1`, `015=22` |
+| REQ-003 | Root packet preserves the current truth of phases `009` and `015` | Root docs state that phase `009` has 20 numbered child directories and phase `015` remains in progress because only 4 of its 22 numbered child specs are `Complete`, while 15 remain `Not Started` and 3 remain `Draft` placeholders |
 | REQ-004 | Direct child phase refs use validator-friendly forms | Direct child packet specs use a parent link plus explicit neighboring phase references |
 | REQ-005 | Root packet includes a live direct-phase map | `PHASE DOCUMENTATION MAP` lists all 19 direct phases with truthful status values |
 
@@ -138,7 +138,7 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: The 022 root packet acts as a valid coordination layer with the required companion docs.
-- **SC-002**: Root docs consistently use the verified `398` / `21` directory totals and the current numbered child counts.
+- **SC-002**: Root docs consistently use the verified point-in-time `399` / `21` directory totals and the current numbered child counts.
 - **SC-003**: Direct child packets `002-019` keep explicit root-facing phase navigation entries.
 - **SC-004**: The root packet clearly distinguishes clean facts from unresolved subtree debt.
 <!-- /ANCHOR:success-criteria -->
@@ -177,7 +177,7 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 
 ### Structural Edge Cases
 - Phase `001` remains a special case because it owns a nested sprint subtree and needs a deeper normalization pass than the other direct children.
-- Phase `015` is not complete despite its umbrella spec metadata: the live subtree has 22 numbered child directories, with 4 `Complete` child specs and 18 `Not Started` child specs.
+- Phase `015` is not complete despite its umbrella spec metadata: the live subtree has 22 numbered child directories, with 4 `Complete` child specs, 15 `Not Started` child specs, and 3 `Draft` placeholder child specs.
 
 ### Evidence Edge Cases
 - `spec_validate_local.out` remains useful as historical debugging context, but not as pass evidence.
@@ -215,7 +215,7 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 **As a** maintainer, **I want** the 022 root packet to show the current phase map and counts, **so that** I can trust it as the entry point to the packet family.
 
 **Acceptance Criteria**:
-1. Given the root packet, when I open it, then I see the current 19 direct phases plus the live `398` total-directory and `21` top-level-directory counts.
+1. Given the root packet, when I open it, then I see the current 19 direct phases plus the point-in-time `399` total-directory and `21` top-level-directory counts.
 
 ### US-002: Follow Phase Links Reliably (Priority: P0)
 
@@ -235,10 +235,10 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 
 ### Acceptance Scenarios
 
-1. **Given** the root packet is opened, **When** the metadata table is reviewed, **Then** it reports `398` total directories, `21` top-level directories, and the verified numbered child counts.
+1. **Given** the root packet is opened, **When** the metadata table is reviewed, **Then** it reports the point-in-time snapshot of `399` total directories, `21` top-level directories, and the verified numbered child counts.
 2. **Given** the direct phase map is opened, **When** the user scans phases `001` through `019`, **Then** every live direct child appears exactly once with a truthful status.
 3. **Given** a reader checks phase `009`, **When** they read the root packet, **Then** they can see that the session-capturing subtree currently has 20 children.
-4. **Given** a reader checks phase `015`, **When** they read the root packet, **Then** they see that the umbrella remains `In Progress` because 18 of 22 numbered child specs are still `Not Started`.
+4. **Given** a reader checks phase `015`, **When** they read the root packet, **Then** they see that the umbrella remains `In Progress` because only 4 of 22 numbered child specs are `Complete`, while 15 remain `Not Started` and 3 remain `Draft`.
 5. **Given** a validator inspects the root packet, **When** it evaluates phase-documentation coverage, **Then** the packet includes the expected phase map and acceptance-scenario sections.
 6. **Given** a maintainer reads the root verification notes, **When** they encounter `spec_validate_local.out`, **Then** it is clearly described as a failed local snapshot rather than pass evidence.
 

@@ -556,20 +556,14 @@ async function processPreparedMemory(
           : 'CREATE',
       });
 
+      // WS-2 fix: finalize file BEFORE DB commit so a write failure triggers
+      // transaction rollback and the DB never references unwritten content.
+      if (persistQualityLoopContent && finalizedFileContent) {
+        await finalizeMemoryFileContent(filePath, finalizedFileContent);
+      }
+
       if (useTx) database.exec('COMMIT');
       transactionCommitted = true;
-
-      if (persistQualityLoopContent && finalizedFileContent) {
-        try {
-          await finalizeMemoryFileContent(filePath, finalizedFileContent);
-        } catch (writeErr: unknown) {
-          console.error(
-            '[memory-save] Auto-fix file finalize failed after commit:',
-            writeErr instanceof Error ? writeErr.message : String(writeErr),
-          );
-          throw writeErr;
-        }
-      }
     } catch (txErr: unknown) {
       if (useTx && !transactionCommitted) {
         try {

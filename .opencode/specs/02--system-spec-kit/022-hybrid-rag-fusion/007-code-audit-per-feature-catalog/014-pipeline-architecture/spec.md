@@ -34,8 +34,10 @@ Systematic code audit of 22 Pipeline Architecture features in the Spec Kit Memor
 | **Status** | Complete |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../013-memory-quality-and-indexing/spec.md |
+| **Successor** | ../015-retrieval-enhancements/spec.md |
 
-Parent: 007-code-audit-per-feature-catalog
 
 ---
 

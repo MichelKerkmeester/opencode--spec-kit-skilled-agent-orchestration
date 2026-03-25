@@ -403,7 +403,8 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
           result.status === 'updated' ||
           result.status === 'unchanged' ||
           result.status === 'reinforced' ||
-          result.status === 'duplicate';
+          result.status === 'duplicate' ||
+          result.status === 'deferred';
         if (!isSuccessfulStatus) {
           results.failed++;
         }
@@ -422,6 +423,9 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
           successfullyIndexedFiles.push(filePath);
         } else if (result.status === 'duplicate') {
           results.unchanged++;
+          successfullyIndexedFiles.push(filePath);
+        } else if (result.status === 'deferred') {
+          results.indexed++;
           successfullyIndexedFiles.push(filePath);
         }
 

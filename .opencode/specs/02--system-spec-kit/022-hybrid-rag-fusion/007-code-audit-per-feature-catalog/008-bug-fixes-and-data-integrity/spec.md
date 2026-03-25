@@ -34,6 +34,9 @@ Systematic code audit of 11 Bug Fixes and Data Integrity features in the Spec Ki
 | **Status** | Complete |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../007-evaluation/spec.md |
+| **Successor** | ../009-evaluation-and-measurement/spec.md |
 
 ---
 

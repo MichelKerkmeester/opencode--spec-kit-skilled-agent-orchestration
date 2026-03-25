@@ -1,13 +1,13 @@
 ---
-title: "Session enrichment and alignment guards"
-description: "Session enrichment and alignment guards enrich thin OpenCode session data with spec-folder and git context while blocking saves that belong to a different task."
+title: "Stateless enrichment and alignment guards"
+description: "Stateless enrichment and alignment guards enrich thin OpenCode session data with spec-folder and git context while blocking saves that belong to a different task."
 ---
 
-# Session enrichment and alignment guards
+# Stateless enrichment and alignment guards
 
 ## 1. OVERVIEW
 
-Session enrichment and alignment guards enrich thin OpenCode session data with spec-folder and git context while blocking saves that belong to a different task.
+Stateless enrichment and alignment guards enrich thin OpenCode session data with spec-folder and git context while blocking saves that belong to a different task.
 
 When a memory is saved with minimal context, the system fills in the gaps by pulling relevant details from the project folder and recent changes. At the same time, it checks that the memory actually belongs to the project it claims to be part of and blocks saves that clearly belong somewhere else. Think of it as an assistant who fills out missing form fields for you but refuses to file the form in the wrong cabinet.
 
@@ -57,5 +57,5 @@ Status: Implemented and covered by targeted Vitest regressions.
 ## 4. SOURCE METADATA
 
 - Group: Memory quality and indexing
-- Source feature title: Session enrichment and alignment guards
+- Source feature title: Stateless enrichment and alignment guards
 - Current reality source: spec 009-perfect-session-capturing / archived phase 014 quality gates

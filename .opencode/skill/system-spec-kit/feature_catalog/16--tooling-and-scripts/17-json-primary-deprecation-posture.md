@@ -1,9 +1,9 @@
 ---
-title: "JSON-only save contract"
+title: "JSON-primary deprecation posture"
 description: "Routine saves require --json or --stdin structured input; direct positional saves are rejected; operator guidance documents JSON as the sole save contract."
 ---
 
-# JSON-only save contract
+# JSON-primary deprecation posture
 
 ## TABLE OF CONTENTS
 
@@ -16,7 +16,7 @@ description: "Routine saves require --json or --stdin structured input; direct p
 
 ## 1. OVERVIEW
 
-Phase 017 established the JSON-only save contract for `generate-context.js`. Runtime-derived capture for routine saves proved unreliable: wrong-session selection, contamination, and thin-evidence failures persisted across multiple research and fix rounds. The resolution: AI-composed JSON via `--json` or `--stdin` is now the sole save contract for routine use.
+Phase 017 established the JSON-primary deprecation posture for `generate-context.js`. Runtime-derived capture for routine saves proved unreliable: wrong-session selection, contamination, and thin-evidence failures persisted across multiple research and fix rounds. The resolution: AI-composed JSON via `--json` or `--stdin` is now the sole save contract for routine use.
 
 The obsolete follow-up phases now live in the archived branch for this workstream.
 
@@ -69,7 +69,7 @@ The shipped posture enforces the following behavior:
 | `scripts/memory/generate-context.ts` | CLI argument parsing, JSON-only enforcement, migration guidance |
 | `scripts/loaders/data-loader.ts` | Structured-input routing enforcement |
 | `scripts/types/session-types.ts` | Structured JSON enrichment types |
-| `SKILL.md` | Operator guidance: JSON-only save contract |
+| `SKILL.md` | Operator guidance: JSON-primary deprecation posture |
 | `.opencode/command/memory/save.md` | Save command alignment with JSON-only contract |
 
 ### Tests

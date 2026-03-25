@@ -34,8 +34,10 @@ Systematic code audit of 4 Governance features in the Spec Kit Memory MCP server
 | **Status** | Complete |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../016-tooling-and-scripts/spec.md |
+| **Successor** | ../018-ux-hooks/spec.md |
 
-Parent: 007-code-audit-per-feature-catalog
 
 ---
 

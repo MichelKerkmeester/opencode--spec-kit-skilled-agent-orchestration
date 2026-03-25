@@ -29,9 +29,9 @@ contextType: "general"
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] All 23 spec folders created with Level 3 docs — parent plus 22 child folders present
-- [x] CHK-002 [P0] Feature catalog verified current — 19 categories, 218 live features confirmed
-- [x] CHK-003 [P1] Audit methodology consistent across phases — MATCH/PARTIAL/MISMATCH classification used uniformly
+- [x] CHK-001 [P0] All 23 spec folders created with Level 3 docs — parent plus 22 child folders present [EVIDENCE: the umbrella packet tracks 22 numbered child folders under `007-code-audit-per-feature-catalog/` plus the parent packet docs.]
+- [x] CHK-002 [P0] Feature catalog verified current — 19 categories, 218 live features confirmed [EVIDENCE: parent spec.md records the 19-category, 218-feature audit baseline used for the umbrella audit.]
+- [x] CHK-003 [P1] Audit methodology consistent across phases — MATCH/PARTIAL/MISMATCH classification used uniformly [EVIDENCE: the umbrella packet and child audits use the shared MATCH/PARTIAL/MISMATCH methodology across the completed audit phases.]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -62,20 +62,20 @@ contextType: "general"
 
 ## Phase Completion
 
-- [x] CHK-010 [P0] All 19 category audits complete — phases 001-018, 020 all verified
-- [x] CHK-011 [P0] Each phase has documented findings — AUDIT FINDINGS section in every spec.md
-- [x] CHK-012 [P1] Cross-phase consistency verified — uniform template and classification
-- [x] CHK-013 [P1] 019-decisions-and-deferrals complete — 4 decisions, 4 deferrals, 4 deprecated modules
-- [x] CHK-014 [P1] 021-remediation-revalidation initialized — prioritized backlog documented
-- [x] CHK-015 [P1] 022-implement-and-remove-deprecated-features inventoried under umbrella ownership — live child included in parent packet tracking
+- [x] CHK-010 [P0] All 19 category audits complete — phases 001-018, 020 all verified [EVIDENCE: the umbrella phase map records the 19 category audit phases as completed.]
+- [x] CHK-011 [P0] Each phase has documented findings — AUDIT FINDINGS section in every spec.md [EVIDENCE: the category audit child specs preserve documented findings per phase.]
+- [x] CHK-012 [P1] Cross-phase consistency verified — uniform template and classification [EVIDENCE: the umbrella audit uses a uniform classification and packet structure across the category phases.]
+- [x] CHK-013 [P1] 019-decisions-and-deferrals complete — 4 decisions, 4 deferrals, 4 deprecated modules [EVIDENCE: the umbrella packet tracks phase 019 as completed with the decisions/deferrals synthesis delivered.]
+- [x] CHK-014 [P1] 021-remediation-revalidation initialized — prioritized backlog documented [EVIDENCE: phase 021 exists under the umbrella and is referenced as the remediation/revalidation meta-phase.]
+- [x] CHK-015 [P1] 022-implement-and-remove-deprecated-features inventoried under umbrella ownership — live child included in parent packet tracking [EVIDENCE: the umbrella phase map includes phase 022 as the live downstream implementation/removal follow-up.]
 
 ---
 
 ## Quality
 
-- [x] CHK-020 [P0] Live catalog totals synchronized — 178 MATCH, 39 PARTIAL, 1 pending coverage sync, 0 MISMATCH
-- [x] CHK-021 [P0] Zero features skipped without reason — every feature has explicit audit status
-- [x] CHK-022 [P1] Findings actionable and specific — each PARTIAL includes root cause and file references
+- [x] CHK-020 [P0] Live catalog totals synchronized — 178 MATCH, 39 PARTIAL, 1 pending coverage sync, 0 MISMATCH [EVIDENCE: the umbrella checklist and implementation summary preserve the synchronized audit totals.]
+- [x] CHK-021 [P0] Zero features skipped without reason — every feature has explicit audit status [EVIDENCE: the umbrella audit tracks the lone remaining Retrieval coverage delta explicitly instead of leaving skipped features implicit.]
+- [x] CHK-022 [P1] Findings actionable and specific — each PARTIAL includes root cause and file references [EVIDENCE: the child audit packets preserve file-backed findings for partial or divergent results.]
 - [x] CHK-023 [P2] Recommendations prioritized — P0/P1/P2 severity in Phase 021
 
 ---
@@ -83,10 +83,10 @@ contextType: "general"
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] All spec folders synchronized — spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md aligned across the parent and 22 child folders
-- [x] CHK-041 [P1] Master synthesis report delivered — parent implementation-summary.md with full results
+- [x] CHK-040 [P1] All spec folders synchronized — spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md aligned across the parent and 22 child folders [EVIDENCE: the umbrella packet and child folders each include the expected companion docs for the audit pass.]
+- [x] CHK-041 [P1] Master synthesis report delivered — parent implementation-summary.md with full results [EVIDENCE: the umbrella implementation-summary.md serves as the parent synthesis artifact.]
 - [x] CHK-042 [P2] Implementation-summary.md created per phase — 23/23 spec folders complete
-- [x] CHK-043 [P1] Traceability contract recorded for phases 012-022 — parent traceability section plus child parent references present
+- [x] CHK-043 [P1] Traceability contract recorded for phases 012-022 — parent traceability section plus child parent references present [EVIDENCE: the umbrella packet records the later-phase traceability contract and references the live child phases through the phase map.]
 <!-- /ANCHOR:docs -->
 
 ---
@@ -101,8 +101,8 @@ contextType: "general"
 
 ## Post-Audit Deep Research
 
-- [x] CHK-050 [P1] Deep research completed — 10 iterations, 11 questions answered, 5 systemic gap findings documented
-- [x] CHK-051 [P1] Wave 1 corrections applied — P001-F02 reclassified MATCH→PARTIAL, P013-F23 reclassified PARTIAL→MATCH (net zero change)
+- [x] CHK-050 [P1] Deep research completed — 10 iterations, 11 questions answered, 5 systemic gap findings documented [EVIDENCE: the parent audit packet preserves the post-audit deep research summary and its systemic findings.]
+- [x] CHK-051 [P1] Wave 1 corrections applied — P001-F02 reclassified MATCH→PARTIAL, P013-F23 reclassified PARTIAL→MATCH (net zero change) [EVIDENCE: the umbrella packet records the wave-1 reclassification corrections in its remediation history.]
 - [x] CHK-052 [P2] Gap analysis integrated — findings added to parent spec.md and implementation-summary.md
 
 ---

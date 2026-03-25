@@ -1,6 +1,6 @@
 ---
 title: "Feature Specification: 001-hybrid-rag-fusion-epic"
-description: "Parent Level 3 packet for the Hybrid RAG Fusion sprint family, tracking the live 11-sprint subtree and its current closure state."
+description: "Parent Level 3 packet for the Hybrid RAG Fusion epic, tracking the live 12-child subtree: 11 sprint packets plus the phase-012 release-control child."
 trigger_phrases:
   - "001 hybrid rag fusion epic"
   - "hybrid rag sprint family"
@@ -17,7 +17,7 @@ contextType: "implementation"
 
 ## EXECUTIVE SUMMARY
 
-This parent packet is the entry point for the 11-sprint Hybrid RAG Fusion epic. It replaces the previous consolidation-heavy parent docs with a current-state coordination packet that points at the live sprint children, records their current statuses, and keeps remaining sprint-family drift explicit.
+This parent packet is the entry point for the Hybrid RAG Fusion epic. It replaces the previous consolidation-heavy parent docs with a current-state coordination packet that points at the live 12 direct children, records their current statuses, and keeps remaining sprint-family drift explicit.
 
 **Key Decisions**: use the live sprint folders as the authority, keep the parent packet concise, and normalize child navigation to the current folder names before deeper sprint-doc cleanup.
 
@@ -33,12 +33,12 @@ This parent packet is the entry point for the 11-sprint Hybrid RAG Fusion epic. 
 | **Priority** | P0 |
 | **Status** | In Progress |
 | **Created** | 2025-12-01 |
-| **Updated** | 2026-03-21 |
+| **Updated** | 2026-03-25 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | None (first direct phase) |
 | **Successor** | ../002-indexing-normalization/spec.md |
-| **Sprint Children** | 11 live sprint folders |
+| **Direct Children** | 12 numbered child folders: 11 sprint packets plus `012-pre-release-fixes-alignment-preparation` |
 
 ---
 
@@ -47,11 +47,11 @@ This parent packet is the entry point for the 11-sprint Hybrid RAG Fusion epic. 
 
 ### Problem Statement
 
-The `001` parent packet had become a merged historical archive instead of a usable coordination document. It referenced retired folder names, mixed multiple generations of planning and verification into single files, and no longer matched the live sprint subtree or current template expectations.
+The `001` parent packet had become a merged historical archive instead of a usable coordination document. It referenced retired folder names, mixed multiple generations of planning and verification into single files, and no longer matched the live direct-child subtree or current template expectations.
 
 ### Purpose
 
-Provide a concise parent packet for the 11-sprint epic so the sprint subtree can be navigated, validated, and normalized against the live folder structure.
+Provide a concise parent packet for the 12-child epic so the sprint subtree and the phase-012 release-control child can be navigated, validated, and normalized against the live folder structure.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -61,7 +61,7 @@ Provide a concise parent packet for the 11-sprint epic so the sprint subtree can
 
 ### In Scope
 - Parent packet docs for `001-hybrid-rag-fusion-epic`
-- Truthful status recording for the 11 live sprint folders
+- Truthful status recording for the 11 live sprint folders plus the phase-012 release-control child
 - Sprint-child parent, predecessor, and successor navigation alignment
 - Cleanup of obvious stale parent-level summary metadata
 
@@ -101,6 +101,7 @@ Provide a concise parent packet for the 11-sprint epic so the sprint subtree can
 | 009 | `009-sprint-8-deferred-features/` | Deferred and follow-on features | In Progress |
 | 010 | `010-sprint-9-extra-features/` | Productization and operational tooling | Complete |
 | 011 | `011-research-based-refinement/` | Research-based calibration & improvements (5 sub-phases: D1 Fusion, D2 Query, D3 Graph, D4 Feedback, D5 UX) | Draft |
+| 012 | `012-pre-release-fixes-alignment-preparation/` | Pre-release fixes, alignment, and release-readiness control | In Progress |
 
 ---
 
@@ -112,7 +113,7 @@ Provide a concise parent packet for the 11-sprint epic so the sprint subtree can
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Parent packet includes the required Level 3 companion docs | `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` exist and match the parent level |
-| REQ-002 | Parent packet reports the live sprint subtree | Parent docs state that the epic currently has 11 sprint children |
+| REQ-002 | Parent packet reports the live direct-child subtree | Parent docs state that the epic currently has 12 numbered direct children: 11 sprint packets plus `012-pre-release-fixes-alignment-preparation` |
 | REQ-003 | Parent packet uses the current root relationship | Parent metadata points to `../spec.md` and the direct-phase successor `../002-indexing-normalization/spec.md` |
 | REQ-004 | Sprint-child specs use current parent links | Sprint children point back to `../spec.md` from their own folder context |
 | REQ-005 | Sprint-child phase navigation uses live sibling names | Sprint children use the current `001` through `011` sprint folder names in predecessor and successor references |
@@ -132,7 +133,7 @@ Provide a concise parent packet for the 11-sprint epic so the sprint subtree can
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: The `001` parent packet becomes a usable coordination layer for the sprint subtree.
-- **SC-002**: The parent packet reports the current 11-sprint tree without retired folder-name drift.
+- **SC-002**: The parent packet reports the current 12-child tree without retired folder-name drift.
 - **SC-003**: Sprint-child phase navigation points at the live parent and current sibling folders.
 - **SC-004**: Parent validation failures caused by consolidated merge drift are removed.
 <!-- /ANCHOR:success-criteria -->
@@ -185,7 +186,7 @@ Provide a concise parent packet for the 11-sprint epic so the sprint subtree can
 |-----------|-------|----------|
 | Scope | 19/25 | Parent packet rewrite plus sprint-child navigation fixes |
 | Risk | 15/25 | High drift risk from retired folder names and merged-history docs |
-| Research | 12/20 | Requires reconciliation against 11 live sprint child folders |
+| Research | 12/20 | Requires reconciliation against 12 live direct child folders, including the non-sprint phase-012 release packet |
 | Coordination | 11/15 | Parent truth must stay aligned with the root packet |
 | Validation | 9/15 | Parent-level validator cleanup plus phase-link verification |
 | **Total** | **66/100** | **Level 3 parent coordination work** |
@@ -209,7 +210,7 @@ Provide a concise parent packet for the 11-sprint epic so the sprint subtree can
 **As a** maintainer, **I want** the `001` parent packet to show the live sprint family, **so that** I can trust it as the entry point for the epic subtree.
 
 **Acceptance Criteria**:
-1. Given the parent packet, when I open it, then I see all 11 live sprint folders with current status values.
+1. Given the parent packet, when I open it, then I see all 12 live direct children with current status values and can distinguish the 11 sprint packets from the phase-012 release-control child.
 
 ### US-002: Follow Sprint Links Reliably (Priority: P0)
 
@@ -229,8 +230,8 @@ Provide a concise parent packet for the 11-sprint epic so the sprint subtree can
 
 ### Acceptance Scenarios
 
-1. **Given** the parent packet is opened, **When** the metadata table is reviewed, **Then** it shows 11 live sprint children and the current root relationship.
-2. **Given** the phase map is opened, **When** the user scans phases `001` through `011`, **Then** every live sprint child appears once with a truthful status.
+1. **Given** the parent packet is opened, **When** the metadata table is reviewed, **Then** it shows 12 numbered direct children and the current root relationship.
+2. **Given** the phase map is opened, **When** the user scans phases `001` through `012`, **Then** every live direct child appears once with a truthful status.
 3. **Given** sprint child `001-sprint-0-measurement-foundation` is reviewed, **When** its navigation metadata is read, **Then** it points to the live parent packet and the current sprint-1 sibling.
 4. **Given** sprint child `005-sprint-4-feedback-and-quality` is reviewed, **When** its navigation metadata is read, **Then** it uses current predecessor and successor sprint names rather than retired slugs.
 5. **Given** the archival sprint summary bundle is reviewed, **When** it exposes parent metadata, **Then** that metadata no longer misidentifies the active parent folder.

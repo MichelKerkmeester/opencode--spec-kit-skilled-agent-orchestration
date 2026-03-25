@@ -79,19 +79,19 @@
 - **Fix architecture (combined — migrated ADR notes)**: (1) Remove post-filter folder reinsertion, (2) Create shared semantic sanitizer, (3) Promote detection to pre-write prevention, (4) Enrich JSON normalization (promote exchanges/toolCalls), (5) Fix ensureMin fallback contamination.
 - **Full investigation**: [Deleted — 013-memory-generation-quality was removed from the tree]. Contamination map, gap analysis table, and regression test plan must be sourced from surviving parent research artifacts.
 
-### P1-8: Missing decision-record.md for Level 3 Spec (007)
+### P1-8: Missing decision record for Level 3 Spec (007)
 - **Agent**: 7 (Validators)
 - **File**: `007-code-audit-per-feature-catalog/`
-- **Issue**: Declared Level 3 spec is missing required `decision-record.md`. Validator `FILE_EXISTS` and `LEVEL_MATCH` both fail. Also 64 `PHASE_LINKS` issues.
+- **Issue**: At audit time, the declared Level 3 packet was missing its required decision record. Validator `FILE_EXISTS` and `LEVEL_MATCH` both failed, along with 64 phase-link issues.
 
 ### P1-9: Multiple Broken Markdown References in Spec Docs
 - **Agent**: 7 (Validators)
-- **Files**: `011-research-based-refinement/spec.md#L69`, `010-template-compliance-enforcement/research.md`, `011-skill-alignment/checklist.md`, `016-rewrite-memory-mcp-readme/implementation-summary.md`
-- **Issue**: Dead markdown references to non-existent paths: `019-deep-research-rag-improvement/research/research.md`, `addendum/phase/phase-parent-section.md`, `speckit.md`, `references/template-compliance-contract.md`. Validator reported 32+ integrity errors across these packs.
+- **Files**: research-based refinement packet, template-compliance research packet, skill-alignment checklist packet, and rewrite-memory summary packet
+- **Issue**: Dead markdown references pointed at removed research artifacts, old addendum/template documents, and agent-definition files. Validator reported 32+ integrity errors across these packs.
 
-### P1-10: Stale Tool Count in tools/README.md
+### P1-10: Stale Tool Count in the tools README
 - **Agent**: 10 (Architecture)
-- **File**: `mcp_server/tools/README.md`
+- **File**: MCP server tools README
 - **Issue**: Documents "28 tools across 5 dispatch modules" but runtime registers 33 tools. Stale documentation.
 
 ### P1-11: Script-Side Indexing Bypasses MCP Pipeline
@@ -107,12 +107,12 @@
 
 ### P1-13: Root 022 Packet Contradicts Itself on Counts
 - **Agent**: 10 (Architecture)
-- **File**: `022-hybrid-rag-fusion/spec.md#L20`
+- **File**: root 022 packet
 - **Issue**: Says "20 direct phases" and "119 directories" in executive summary, but requires "19 direct phases" and "118 directories" later. Also lists `020-hydra-review-and-fix` as a direct phase, but no such folder exists.
 
 ### P1-14: Server README Architecture Map Stale
 - **Agent**: 10 (Architecture)
-- **File**: `mcp_server/README.md#L186`
+- **File**: MCP server README architecture section
 - **Issue**: Structure map omits live top-level surfaces (`api/`, `core/`, `formatters/`, `schemas/`) and still documents non-existent/renamed ones. Also documents search pipeline as directory-based (`stage1-candidates/`, etc.) but live code uses flat files (`stage1-candidate-gen.ts`).
 
 ### P1-16: Stage 1 Vector Fallback Regression (Commit 54ee622)
@@ -123,7 +123,7 @@
 
 ### P1-15: DB Path Examples in README Stale
 - **Agent**: 10 (Architecture)
-- **File**: `mcp_server/README.md#L912`
+- **File**: MCP server README database path examples
 - **Issue**: Documents `DB_PATH = shared/mcp_server/database/spec-kit.db` but live constants come from `core/index.ts` under `mcp_server/database/`.
 
 ---
@@ -244,7 +244,7 @@
 
 1. **Module resolution cascade**: P0-4 (broken `@spec-kit/mcp-server/api` exports) is the root cause of P0-3 (5 failing workflow-e2e tests) and contributes to stale description.json metadata across the spec tree.
 
-2. **Validation cascade**: P0-2 (validate.sh exit 2) aggregates findings from P1-8 (missing decision-record.md), P1-9 (broken markdown refs), and P2-11 (template violations). Fixing individual spec folders will reduce the 43-error count.
+2. **Validation cascade**: P0-2 (validate.sh exit 2) aggregates findings from P1-8 (missing decision record), P1-9 (broken markdown refs), and P2-11 (template violations). Fixing individual spec folders will reduce the 43-error count.
 
 3. **Error handling pattern**: P0-1 (startup abort) and P1-2 (error conflation) share the same root in `factory.ts` — the validation result type lacks a `networkError` state.
 
@@ -258,7 +258,7 @@
 1. Fix `mcp_server/package.json` exports to resolve `api/index.ts` correctly → unblocks P0-3, P0-4
 2. Add network-error handling to API key validation → fixes P0-1, P1-2
 3. Fix lint failures → unblocks P2-2 (npm run check)
-4. Add missing `decision-record.md` to 007 → fixes P1-8
+4. Add the missing 007 decision record → fixes P1-8
 
 ### Short-term (release hardening)
 5. Fix quality loop to actually use bestContent → P1-1

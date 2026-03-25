@@ -34,6 +34,9 @@ Systematic code audit of 22 live Scoring and Calibration features in the Spec Ki
 | **Status** | Complete |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../010-graph-signal-activation/spec.md |
+| **Successor** | ../012-query-intelligence/spec.md |
 
 ---
 

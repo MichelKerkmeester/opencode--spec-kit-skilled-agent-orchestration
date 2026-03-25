@@ -35,8 +35,10 @@ META-PHASE synthesizing remediation needs identified across all 20 preceding aud
 | **Created** | 2026-03-22 |
 | **Completed** | Final verification pending `012-pre-release-fixes-alignment-preparation` |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../020-feature-flag-reference/spec.md |
+| **Successor** | ../022-implement-and-remove-deprecated-features/spec.md |
 
-Parent: 007-code-audit-per-feature-catalog
 
 ---
 

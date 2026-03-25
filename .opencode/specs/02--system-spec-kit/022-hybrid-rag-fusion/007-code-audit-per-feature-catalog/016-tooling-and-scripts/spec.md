@@ -33,11 +33,13 @@ contextType: "general"
 | **Status** | Complete |
 | **Created** | 2026-03-22 |
 | **Branch** | `main` |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../015-retrieval-enhancements/spec.md |
+| **Successor** | ../017-governance/spec.md |
 | **Parent** | [`../description.json`](../description.json) |
 | **Feature Catalog** | `feature_catalog/16--tooling-and-scripts/` (17 features) |
 <!-- /ANCHOR:metadata -->
 
-Parent: 007-code-audit-per-feature-catalog
 
 ---
 
