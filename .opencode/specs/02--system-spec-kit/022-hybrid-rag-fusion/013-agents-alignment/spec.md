@@ -15,11 +15,11 @@ description: "Reconcile the 013 agents-alignment packet and remaining runtime-fa
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | Complete (lineage truth-reconciled + content alignment remediated) |
+| **Status** | Complete (lineage truth-reconciled + content aligned + reality-verified) |
 | **Created** | 2026-03-15 |
 | **Updated** | 2026-03-25 |
 | **Parent** | `022-hybrid-rag-fusion` |
-| **Complexity** | 42/70 |
+| **Complexity** | 48/70 (re-justified after Pass 2 scope expansion: 50-file review + 15-file remediation across 5 runtimes; Level 2 remains appropriate as this is documentation reconciliation, not architectural change) |
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../012-command-alignment/spec.md |
 | **Successor** | ../014-agents-md-alignment/spec.md |
@@ -48,6 +48,7 @@ The older packet also carried stale naming (the older `research` filename conven
 | Field | Value |
 |-------|-------|
 | **Parent Spec** | ../spec.md |
+| **Parent Plan** | ../plan.md |
 | **Previous Phase** | ../012-command-alignment/spec.md |
 | **Next Phase** | ../014-agents-md-alignment/spec.md |
 
@@ -119,7 +120,7 @@ Reconcile the `013` packet so it accurately documents the current runtime lineag
 |----|-------------|---------------------|
 | REQ-006 | The packet must normalize runtime path-convention guidance (legacy `AA-006`) | Runtime-facing paths are described first, with storage details called out separately where needed |
 | REQ-007 | The packet must distinguish scoped runtime-doc closeout from bulk runtime sync work (legacy `AA-007`) | The packet records the scoped Gemini/write-agent closeout without claiming a global runtime resync |
-| REQ-008 | The packet must verify the 9-file family counts across base, ChatGPT, Claude, Codex, and Gemini runtimes (legacy `AA-008`) | The packet retains the verified file-family count evidence used in the reconciliation pass |
+| REQ-008 | The packet must verify the 10-file family counts across base, ChatGPT, Claude, Codex, and Gemini runtimes (legacy `AA-008`) | The packet retains the verified file-family count evidence used in the reconciliation pass |
 <!-- /ANCHOR:requirements -->
 
 ---

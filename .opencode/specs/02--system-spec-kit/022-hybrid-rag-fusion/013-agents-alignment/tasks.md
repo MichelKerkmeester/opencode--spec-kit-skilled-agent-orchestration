@@ -28,7 +28,7 @@ description: "Truth-reconciliation tasks for updating the 013 packet and the sco
 - [x] T001 Read the canonical `013` packet and identify stale copy-model language (`./spec.md`, `./plan.md`, `./tasks.md`, `./checklist.md`, `./implementation-summary.md`)
 - [x] T002 Verify the two source families at `.opencode/agent/*.md` and `.opencode/agent/chatgpt/*.md`
 - [x] T003 Verify runtime targets for Claude, Codex, and Gemini, including `.gemini -> .agents`
-- [x] T004 Confirm 9-file family counts across base, ChatGPT, Claude, Codex, and Gemini paths
+- [x] T004 Confirm 10-file family counts across base, ChatGPT, Claude, Codex, and Gemini paths
 - [x] T004a Identify scoped runtime-facing drift in Gemini delegation guidance and write-agent projections
 <!-- /ANCHOR:phase-1 -->
 
@@ -83,10 +83,10 @@ description: "Truth-reconciliation tasks for updating the 013 packet and the sco
 ## Completion Criteria
 
 - [x] The packet documents dual-source lineage clearly
-- [x] The packet uses deep-research.md naming only
+- [x] Active lineage naming standardized on deep-research; legacy naming appears only in historical discussion
 - [x] The packet documents Codex and Gemini runtime lineage accurately
 - [x] The packet distinguishes scoped runtime-doc closeout from bulk runtime sync
-- [x] All 7 P1 content alignment findings remediated across 25 agent files
+- [x] 6 of 7 P1 content alignment findings remediated across 15 agent files (1 P1 deferred: memory/ EXCLUSIVITY wording tightening)
 - [x] Deep-review schemas aligned with canonical loop_protocol.md and state_format.md
 - [x] Memory command surface complete (6 commands) in orchestrate and speckit agents
 <!-- /ANCHOR:completion -->

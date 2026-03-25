@@ -1,173 +1,172 @@
-# Deep Review Report: system-spec-kit Post-022 Root-Packet Normalization
+---
+title: "Deep Review Report: 011-skill-alignment Alignment with Current Reality"
+description: "5-iteration deep review checking 011-skill-alignment spec folder alignment with current repo state and 021-spec-kit-phase-system conventions."
+trigger_phrases: ["review report", "011 skill alignment review", "deep review 011"]
+importance_tier: "important"
+contextType: "decision"
+---
+# Deep Review Report: 011-skill-alignment
 
 ## 1. Executive Summary
 
 | Field | Value |
 |-------|-------|
-| **Verdict** | **CONDITIONAL** |
+| **Verdict** | CONDITIONAL |
 | **hasAdvisories** | true |
-| **Active Findings** | P0=0, P1=21, P2=12 |
-| **Iterations** | 7 (all complete; A7 finished late after 18min) |
+| **Active P0** | 0 |
+| **Active P1** | 7 |
+| **Active P2** | 2 |
+| **Iterations** | 5 |
 | **Stop Reason** | max_iterations_reached |
-| **Dimensions Covered** | 4/4 (correctness, security, traceability, maintainability) |
-| **Review Target** | `.opencode/skill/system-spec-kit/` (SKILL.md, references/, assets/, templates/) |
-| **Review Context** | 022-hybrid-rag-fusion root-packet normalization (2026-03-25) |
+| **Review Target** | `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment` |
+| **Cross-Reference** | `.opencode/specs/02--system-spec-kit/021-spec-kit-phase-system` |
+| **Dimensions** | correctness, security, traceability, maintainability |
 
-The system-spec-kit skill documentation has **21 P1 findings** across all 4 dimensions. The core theme: after 022 normalized its root packet to a coordination document with direct-child phase navigation, the skill docs still teach pre-normalization patterns — flat spec folder definitions, YAML-style phase back-references, numeric routing fallbacks, and Level 3+ guidance that omits coordination-root contracts. Additionally, 3 security findings address missing redaction controls, undocumented governance parameters, and understated filesystem boundaries. Late-arriving A7 findings (templates + assets) added 4 P1: phase-parent-section schema divergence, decision-record routing conflict, complexity matrix under-classification, and stale compliance contract.
+The spec folder's **foundational truth claims hold** — 33 tools, 6 commands, and `/memory:analyze` ownership are all verified against current repo state. All referenced implementation files exist on disk.
+
+However, 7 P1 findings block a clean PASS verdict. The primary issues are:
+- **Scope narration drift**: The 5 canonical docs no longer tell one consistent story after a 2026-03-22 post-refinement pass was added to tasks/checklist/impl-summary but not to spec.md or plan.md
+- **Phase topology stale**: The 002-skill-review-post-022 child folder is not reflected in the parent phase map
+- **Checklist evidence fragility**: Post-refinement checklist items use non-durable evidence that has already drifted
+- **Documentation accuracy**: SKILL.md overstates shared-memory rollout default
 
 ---
 
 ## 2. Planning Trigger
+
+`/spec_kit:plan` is **required** to remediate the 7 P1 findings before this spec folder can be considered fully aligned.
 
 ```json
 {
   "triggered": true,
   "verdict": "CONDITIONAL",
   "hasAdvisories": true,
-  "activeFindings": { "P0": 0, "P1": 21, "P2": 12 },
+  "activeFindings": { "P0": 0, "P1": 7, "P2": 2 },
   "remediationWorkstreams": [
-    "WS-1: SKILL.md core updates (Gate 3, spec definition, ADR-001)",
-    "WS-2: Structure references normalization (4 files)",
-    "WS-3: Template references Level 3+ coordination (4 files)",
-    "WS-4: Validation references modernization (5 files)",
-    "WS-5: Security hardening (3 files)",
-    "WS-6: Workflow references phase-aware update (4 files)"
+    "WS-1: Scope narration alignment (F-001, F-002, F-006)",
+    "WS-2: Phase topology repair (F-003, F-005)",
+    "WS-3: Checklist evidence hardening (F-007)",
+    "WS-4: SKILL.md shared-memory default correction (F-004)"
   ],
-  "specSeed": "Remediate 17 P1 findings across 6 workstreams in system-spec-kit skill docs to align with 022 root-packet normalization patterns",
-  "planSeed": "Phase the remediation: WS-1+WS-2 first (highest drift risk), then WS-3+WS-4, finally WS-5+WS-6"
+  "specSeed": "011-skill-alignment needs a reconciliation pass to align all 5 canonical docs with the post-refinement scope and repair phase metadata after 002 addition",
+  "planSeed": "4 workstreams: (1) fold 2026-03-22 scope into spec.md/plan.md or split into child, (2) update phase map and phase links, (3) replace fragile checklist evidence with file:line anchors, (4) fix SKILL.md shared-memory default"
 }
 ```
-
-**`/spec_kit:plan` is required** to plan and implement the 17 P1 remediations.
 
 ---
 
 ## 3. Active Finding Registry
 
-### P1 Findings (17 active)
+### F-001 [P1, correctness]: Strict validation no longer passes
+- **Source**: COR-001 (iteration 2)
+- **File**: `checklist.md:60`
+- **Evidence**: CHK-020 claims `validate.sh --strict` passes with exit 0 (dated 2026-03-21). Current recursive validation exits with code 2 due to PHASE_LINKS warnings between 001 and 002, and ANCHORS/TEMPLATE failures in 002.
+- **Impact**: SC-005 and CHK-020 are factually incorrect against current folder state.
+- **Fix**: Restore validation compliance by repairing phase metadata in 002, or downgrade completion claims until validation passes again.
+- **Disposition**: Active
 
-| ID | Dimension | File | Title | Adjudication |
-|----|-----------|------|-------|-------------|
-| 001-F1 | correctness | SKILL.md:336 | Gate 3 missing Option E (phase folder) | Confirmed; CLAUDE.md already has E |
-| 001-F2 | correctness | SKILL.md:20 | Spec-folder definition too narrow for parent/child topology | Confirmed |
-| 002-F2 | traceability | folder_routing.md:254 | Fallback routing uses numeric heuristics, not phase-aware | Confirmed |
-| 002-F4 | traceability | phase_definitions.md:207 | PHASE_LINKS rules omit predecessor/successor checks | Confirmed |
-| 003-F1 | correctness | template_style_guide.md:52 | Level metadata format excludes Level 3+ | Confirmed |
-| 003-F3 | correctness | level_specifications.md:374 | Level 3+ spec requirements omit coordination-root contract | Confirmed |
-| 003-F4 | correctness | template_guide.md:227 | Level 3+ adaptation lacks coordination-root branch | Confirmed |
-| 004-F1 | traceability | validation_rules.md:888 | PHASE_LINKS documents obsolete `parent:` frontmatter | Confirmed |
-| 004-F3 | traceability | path_scoped_rules.md:57 | Path-scoped rules only describe shallow `specs/*/` | Confirmed |
-| 004-F4 | traceability | decision_format.md:30 | Decision format models gate logs, not ADR records | Confirmed |
-| 004-F5 | traceability | five_checks.md:32 | Five Checks wrongly exempt doc-only coordination decisions | Confirmed |
-| 005-F1 | security | save_workflow.md:320 | Full-dialogue snapshot guidance lacks redaction controls | Confirmed |
-| 005-F2 | security | memory_system.md:161 | Governance scope params omitted from memory_search() ref | Confirmed |
-| 005-F3 | security | environment_variables.md:27 | MEMORY_ALLOWED_PATHS default understates read boundary | Confirmed |
-| 006-F1 | maintainability | quick_reference.md:231 | Update/create guidance no phase distinction | Confirmed |
-| 006-F2 | maintainability | quick_reference.md:481 | Resume/memory assumes single active packet | Confirmed |
-| 006-F3 | maintainability | execution_methods.md:118 | Execution methods teach legacy subfolder creation | Confirmed |
-| 007-F2 | traceability | phase-parent-section.md:23 | PHASE DOCUMENTATION MAP schema diverges from 022 (Scope/Dependencies vs Focus) | Confirmed |
-| 007-F4 | traceability | template_mapping.md:130 | Decision-record routing conflicts with canonical filename | Confirmed |
-| 007-F5 | maintainability | complexity_decision_matrix.md:40 | Coordination-root under-classified by 3+ threshold (75 vs 80 gate) | Confirmed |
-| 007-F6 | maintainability | template-compliance-contract.md:36 | Compliance contract stale vs live template section numbering | Confirmed |
+### F-002 [P1, correctness+traceability]: Implementation summary scope contradicts delivered work
+- **Source**: COR-002 (iteration 2), TR-006 (iteration 4)
+- **File**: `implementation-summary.md:17-20` and `:28-35`
+- **Evidence**: Metadata says "Scope: Five canonical docs only" but "What Was Built" describes changes to SKILL.md, save_workflow, embedding_resilience, and asset docs. The "How It Was Delivered" table lists only canonical files while the narrative claims external deliverables.
+- **Impact**: Breaks REQ-001 (one consistent story) and makes the summary unreliable as a trace document.
+- **Fix**: Update metadata scope to cover full closeout surface, or split into clearly scoped passes.
+- **Disposition**: Active
 
-### P2 Advisories (9 active)
+### F-003 [P1, correctness+traceability+maintainability]: Phase map missing 002-skill-review-post-022
+- **Source**: COR-003 (iteration 2, upgraded from P2), TR-001 (iteration 4), M-002 (iteration 5)
+- **File**: `spec.md:89-94`
+- **Evidence**: Phase Documentation Map lists only 001-post-session-capturing-alignment. Folder contains 002-skill-review-post-022 with a full spec set declaring the same parent. Parent `022-hybrid-rag-fusion/spec.md` child-count metadata also stale.
+- **Impact**: Bidirectional traceability broken. Phase-aware tooling cannot navigate the full child set.
+- **Fix**: Add 002 to phase map. Update parent spec child-count. Align predecessor/successor metadata between 001 and 002.
+- **Disposition**: Active
 
-| ID | Dimension | File | Title | Notes |
-|----|-----------|------|-------|-------|
-| 001-F3 | correctness | SKILL.md:22 | No ADR-001 coordination-document mention | Enhancement |
-| 002-F1 | traceability | folder_structure.md:252 | Sub-folder examples flatten phased packets | Enhancement |
-| 002-F3 | traceability | phase_definitions.md:124 | Child phase example teaches YAML format | Downgraded from P1; verify 022 child format |
-| 002-F5 | traceability | sub_folder_versioning.md:205 | Nested-path guidance stops at parent/child | Enhancement |
-| 003-F2 | correctness | level_selection_guide.md:93 | Level 3+ hard-tied to 80-100 complexity | Downgraded from P1; needs override note |
-| 004-F2 | traceability | phase_checklists.md:122 | Phase completion checklist omits recursive verification | Enhancement |
-| 005-F4 | security | environment_variables.md:339 | Shared-memory governance env docs stale | Enhancement |
-| 005-F5 | security | trigger_config.md:195 | Root-level fallback save contradicts governance | Enhancement |
-| 006-F4 | maintainability | worked_examples.md:153 | No coordination-root worked example | Enhancement |
-| 007-F1 | traceability | phase-child-header.md:22 | Neighbor refs use FOLDER tokens not spec links | Enhancement |
-| 007-F3 | maintainability | spec-core.md:25 | Core level placeholder omits 3+ | Enhancement |
-| 007-F7 | maintainability | parallel_dispatch_config.md:56 | Dispatch policy and Task API example inconsistent | Enhancement |
+### F-004 [P1, security]: Shared-memory rollout default overstated in SKILL.md
+- **Source**: SEC-003 (iteration 3)
+- **File**: `SKILL.md:687`
+- **Evidence**: SKILL.md documents `SPECKIT_MEMORY_SHARED_MEMORY` as `true`. Runtime gate keeps shared memory default-OFF (`shared-spaces.ts:177-190`). Flag reference doc says OFF (`environment_variables.md:339`). Doc-validation test encodes default as `false`.
+- **Impact**: Misleads operators into believing shared-memory is enabled by default, weakening governance expectations.
+- **Fix**: Align SKILL.md with runtime/default-off model. Clarify shared memory requires opt-in enablement.
+- **Disposition**: Active
+
+### F-005 [P1, traceability]: Child checklist overstates phase-link completeness
+- **Source**: TR-002 (iteration 4)
+- **File**: `001-post-session-capturing-alignment/checklist.md:44`
+- **Evidence**: CHK-012 claims parent references resolve cleanly, but child spec only provides Parent Spec, Predecessor, and Successor. The 021-spec-kit-phase-system spec requires parent-plan link and handoff criteria.
+- **Impact**: Checked verification item claims compliance that does not exist, weakening checklist trust.
+- **Fix**: Add missing parent-plan/handoff linkage, or narrow CHK-012 to only claim references that actually exist.
+- **Disposition**: Active
+
+### F-006 [P1, traceability]: CHK-050 contradicts packet's own scope
+- **Source**: TR-003 (iteration 4)
+- **File**: `checklist.md:88`
+- **Evidence**: CHK-050 says "canonical packet edits stayed in scope while live-doc closeout landed separately." But spec.md section 3 explicitly lists SKILL.md and reference/asset docs in "Files to Change," and tasks T004-T017 treat those updates as work delivered by this packet.
+- **Impact**: Readers cannot determine whether the packet delivered the live-doc changes or only recorded them.
+- **Fix**: Rewrite CHK-050 to match actual packet scope, or restructure ownership.
+- **Disposition**: Active
+
+### F-007 [P1, traceability]: Post-refinement checklist evidence is not durable
+- **Source**: TR-004 (iteration 4)
+- **File**: `checklist.md:97`
+- **Evidence**: CHK-060 through CHK-065 use "diff shows," "actual count verified via find command," and "3 parallel explore agents found" instead of file:line anchors. During this review, feature-catalog count is 224 (not 221) and testing-playbook count is 231 (not 227). Evidence has already drifted.
+- **Impact**: Checklist items are no longer auditable from the packet itself.
+- **Fix**: Replace with stable file:line citations or explicitly mark as point-in-time counts with dated command output preserved in scratch/.
+- **Disposition**: Active
+
+### F-008 [P2, traceability]: REQ-009 has no explicit task-level trace
+- **Source**: TR-005 (iteration 4)
+- **File**: `spec.md:117`
+- **Evidence**: REQ-009 requires documenting the canonical verification method. No dedicated task covers this; it was satisfied incidentally through broader rewrite work.
+- **Impact**: Requirement-to-task coverage incomplete.
+- **Fix**: Add a task or completion criterion explicitly covering verification method documentation.
+- **Disposition**: Active (advisory)
+
+### F-009 [P2, maintainability]: Open Questions section is stale guidance
+- **Source**: M-003 (iteration 5)
+- **File**: `spec.md:166-170`
+- **Evidence**: Section 10 contains closure statements rather than actual unresolved questions. Guidance predates the 002-skill-review-post-022 follow-up.
+- **Impact**: Future maintainers get a mislabeled section that hides the current follow-up structure.
+- **Fix**: Replace with real unresolved questions, or rename to "Maintenance Notes" with pointers to child packets.
+- **Disposition**: Active (advisory)
 
 ---
 
 ## 4. Remediation Workstreams
 
-### WS-1: SKILL.md Core Updates (3 findings: 2 P1 + 1 P2)
-**Priority: HIGH** — SKILL.md is the entry point for all spec-kit users.
-1. **001-F1** (P1): Add Option E (Phase folder) to Gate 3 options, aligning with CLAUDE.md
-2. **001-F2** (P1): Broaden spec-folder definition to include parent/child/coordination-root topology
-3. **001-F3** (P2): Add ADR-001 coordination-document and snapshot truth model subsection
+### WS-1: Scope Narration Alignment [P1, 3 findings]
+**Findings**: F-001, F-002, F-006
+**Action**: Fold the 2026-03-22 post-refinement pass into spec.md and plan.md as first-class scope, OR split it into a dedicated child phase. Update implementation-summary.md metadata to match actual delivered scope. Rewrite CHK-050 to match actual ownership. Re-run strict validation after changes.
 
-### WS-2: Structure References Normalization (5 findings: 2 P1 + 3 P2)
-**Priority: HIGH** — Structure refs are the second resource loaded after SKILL.md.
-1. **002-F2** (P1): Replace numeric fallback routing with phase-aware guidance in folder_routing.md
-2. **002-F4** (P1): Expand PHASE_LINKS to include predecessor/successor checks in phase_definitions.md
-3. **002-F1** (P2): Add coordination-root phased packet example in folder_structure.md
-4. **002-F3** (P2): Verify and update child phase spec example format in phase_definitions.md
-5. **002-F5** (P2): Add three-level nested path example in sub_folder_versioning.md
+### WS-2: Phase Topology Repair [P1, 2 findings]
+**Findings**: F-003, F-005
+**Action**: Add 002-skill-review-post-022 to parent phase map. Update predecessor/successor metadata between 001 and 002. Update parent spec child-count. Add missing parent-plan link in 001 child spec, or narrow CHK-012.
 
-### WS-3: Template References Level 3+ Coordination (4 findings: 3 P1 + 1 P2)
-**Priority: MEDIUM** — Affects Level 3+ template composition.
-1. **003-F1** (P1): Update metadata format to include 3+ in template_style_guide.md
-2. **003-F3** (P1): Add coordination-root content contract to level_specifications.md
-3. **003-F4** (P1): Add coordination-root adaptation branch in template_guide.md
-4. **003-F2** (P2): Add coordination-root override rule in level_selection_guide.md
+### WS-3: Checklist Evidence Hardening [P1, 1 finding]
+**Findings**: F-007
+**Action**: Replace opaque "diff shows" / "count verified via find" evidence with stable file:line anchors. Either update counts to current reality (224 features, 231 tests) or explicitly mark as point-in-time with dated preservation in scratch/.
 
-### WS-4: Validation References Modernization (5 findings: 4 P1 + 1 P2)
-**Priority: MEDIUM** — Ensures validators enforce the right patterns.
-1. **004-F1** (P1): Rewrite PHASE_LINKS examples in validation_rules.md to metadata-table format
-2. **004-F3** (P1): Replace shallow `specs/*/` with recursive patterns in path_scoped_rules.md
-3. **004-F4** (P1): Add ADR section to decision_format.md
-4. **004-F5** (P1): Narrow Five Checks doc-only exemption in five_checks.md
-5. **004-F2** (P2): Add recursive phase-link verification to phase_checklists.md
-
-### WS-5: Security Hardening (5 findings: 3 P1 + 2 P2)
-**Priority: HIGH** — Security findings should not wait.
-1. **005-F1** (P1): Add redaction controls to save_workflow.md
-2. **005-F2** (P1): Document governance scope params in memory_system.md
-3. **005-F3** (P1): Update MEMORY_ALLOWED_PATHS defaults in environment_variables.md
-4. **005-F4** (P2): Correct shared-memory governance env docs
-5. **005-F5** (P2): Remove workspace-root fallback from trigger_config.md
-
-### WS-7: Templates + Assets Normalization (7 findings: 4 P1 + 3 P2)
-**Priority: MEDIUM** — Late-arriving A7 findings on template files and asset configs.
-1. **007-F2** (P1): Align phase-parent-section.md PHASE DOCUMENTATION MAP to 022's 4-column Focus schema
-2. **007-F4** (P1): Standardize template_mapping.md decision-record routing to canonical filename
-3. **007-F5** (P1): Add coordination-root override rule to complexity_decision_matrix.md
-4. **007-F6** (P1): Regenerate template-compliance-contract.md from template-structure.js
-5. **007-F1** (P2): Change phase-child-header.md FOLDER tokens to SPEC links
-6. **007-F3** (P2): Update spec-core.md level placeholder to include 3+
-7. **007-F7** (P2): Reconcile parallel_dispatch_config.md policy/example inconsistency
-
-### WS-6: Workflow References Phase-Aware Update (4 findings: 3 P1 + 1 P2)
-**Priority: MEDIUM** — Guides operators through phased work correctly.
-1. **006-F1** (P1): Add phase distinction to update/create guidance in quick_reference.md
-2. **006-F2** (P1): Add phased resume/save flow in quick_reference.md
-3. **006-F3** (P1): Add phase creation and recursive validation examples in execution_methods.md
-4. **006-F4** (P2): Add coordination-root worked example in worked_examples.md
+### WS-4: SKILL.md Shared-Memory Default [P1, 1 finding]
+**Findings**: F-004
+**Action**: Change SKILL.md to document SPECKIT_MEMORY_SHARED_MEMORY as default-OFF with opt-in enablement via `/memory:shared` or env/database configuration.
 
 ---
 
 ## 5. Spec Seed
 
-Bullets for follow-on spec updates:
-- SKILL.md Gate 3 must include Option E; spec-folder definition must support coordination-root + nested packet topology
-- All structure references (4 files) need phase-aware routing, predecessor/successor in PHASE_LINKS, and coordination-root examples
-- Level 3+ template references (4 files) need coordination-root content contract and override rules
-- Validation references (5 files) need metadata-table format, recursive path patterns, ADR support, and narrowed exemptions
-- Security references (3 files) need redaction controls, governance param documentation, and accurate filesystem boundaries
-- Workflow references (4 files) need phase-aware resume/update flows and coordination-root worked examples
-- Tool count (33) and feature catalog count (221) verified as accurate — no changes needed
+- 011-skill-alignment needs a reconciliation pass to bring all 5 canonical docs into alignment with the post-2026-03-22 expanded scope
+- Phase map must reflect the 002 child folder that now exists on disk
+- Strict validation must pass again before any completion claim can stand
+- SKILL.md shared-memory default documentation needs correction independent of the spec pack
 
 ---
 
 ## 6. Plan Seed
 
-Starter tasks for `/spec_kit:plan`:
-1. **Phase 1 (WS-1 + WS-2)**: SKILL.md Gate 3 + spec definition + structure refs normalization (7 findings, ~200 LOC)
-2. **Phase 2 (WS-3 + WS-4)**: Template refs Level 3+ coordination + validation refs modernization (9 findings, ~300 LOC)
-3. **Phase 3 (WS-5)**: Security hardening across memory/config refs (5 findings, ~100 LOC)
-4. **Phase 4 (WS-6)**: Workflow refs phase-aware update + worked example (4 findings, ~150 LOC)
-5. **Verify**: Run `validate.sh --recursive` on all modified files; verify no regression in existing Level 1-3 template composition
+1. **Scope alignment pass** (WS-1): Update spec.md scope/requirements and plan.md phases to include the 2026-03-22 post-refinement work. Fix impl-summary metadata. Rewrite CHK-050.
+2. **Phase metadata repair** (WS-2): Add 002 to phase map, align predecessor/successor links, update parent child-count.
+3. **Evidence hardening** (WS-3): Replace fragile checklist evidence with file:line anchors or dated scratch/ artifacts.
+4. **SKILL.md correction** (WS-4): Fix shared-memory default from `true` to `false` with opt-in wording.
+5. **Validation gate**: Re-run `validate.sh --strict --recursive` and confirm exit 0.
 
 ---
 
@@ -177,25 +176,28 @@ Starter tasks for `/spec_kit:plan`:
 
 | Protocol | Status | Evidence |
 |----------|--------|----------|
-| spec_code | partial | SKILL.md and reference files checked against 022 spec.md/decision-record.md; templates/assets iteration timed out |
-| checklist_evidence | partial | 022 checklist.md reviewed in iteration 004; evidence-based findings cite file:line |
+| spec_code | PARTIAL | Core truth claims verified (33 tools, 6 commands). Implementation files exist. But checklist evidence has drifted and scope narration diverges. |
+| checklist_evidence | FAIL | 3 checklist items cite non-durable evidence (CHK-060-065). 1 item contradicts actual scope (CHK-050). 1 item is factually stale (CHK-020). |
 
 ### Overlay Protocols
 
-| Protocol | Status | Notes |
-|----------|--------|-------|
-| skill_agent | not_applicable | No agent definitions reviewed in this review (focus was skill docs, not agent files) |
+| Protocol | Status | Evidence |
+|----------|--------|----------|
+| skill_agent | PARTIAL | SKILL.md shared-memory default overstated (F-004). Otherwise, skill guide correctly describes the memory surface. |
+| agent_cross_runtime | N/A | No agent definitions in scope for this review. |
+| feature_catalog_code | N/A | Feature catalog not in scope. |
+| playbook_capability | N/A | No testing playbook in scope. |
 
 ---
 
 ## 8. Deferred Items
 
-| Item | Reason | Suggested Follow-up |
-|------|--------|---------------------|
-| Templates + assets deep review (A7 late) | A7 completed 18min after synthesis; findings incorporated | No further action needed |
-| SKILL.md sections 4-7 count verification | Not covered in this review | Counts verified in 011-skill-alignment (2026-03-22); low drift risk |
-| Template compliance contract review | A7 read but did not report | Include in WS-3 remediation scope |
-| Debugging references (2 files) | Low drift risk from spec-only changes | Skip unless bugs reported |
+| ID | Description | Reason for Deferral |
+|----|-------------|---------------------|
+| F-008 | REQ-009 has no explicit task-level trace | P2 advisory: requirement satisfied incidentally; adding a task is a documentation nicety |
+| F-009 | Open Questions section contains stale guidance | P2 advisory: mislabeled but not misleading enough to block |
+| ADV-001 | Feature catalog count drift (221 to 224) | Already captured in F-007; will be fixed when evidence is hardened |
+| ADV-002 | Testing playbook count drift (227 to 231) | Already captured in F-007; will be fixed when evidence is hardened |
 
 ---
 
@@ -203,61 +205,62 @@ Starter tasks for `/spec_kit:plan`:
 
 ### Convergence Summary
 
-| Iteration | Agent | Model | Effort | Dimension | newFindingsRatio | P1 New | P2 New |
-|-----------|-------|-------|--------|-----------|-----------------|--------|--------|
-| 001 | A1 | gpt-5.3-codex | xhigh | Correctness | 0.647 | 2 | 1 |
-| 002 | A2 | gpt-5.4 | high | Traceability | 0.607 | 3 | 2 |
-| 003 | A3 | gpt-5.3-codex | xhigh | Correctness | 0.417 | 4 | 0 |
-| 004 | A4 | gpt-5.4 | high | Traceability | 0.304 | 4 | 1 |
-| 005 | A5 | gpt-5.3-codex | xhigh | Security | 0.198 | 3 | 2 |
-| 006 | A6 | gpt-5.4 | high | Maintainability | 0.188 | 3 | 1 |
-| 007 | A7 | gpt-5.3-codex | xhigh | Traceability+Maint | 0.184 | 4 | 3 |
+| Iteration | Dimension | Findings | newFindingsRatio |
+|-----------|-----------|----------|------------------|
+| 1 | inventory + correctness | P0=0 P1=0 P2=1 | 0.10 |
+| 2 | correctness (deep) | P0=0 P1=2 P2=1 | 1.00 |
+| 3 | security | P0=0 P1=1 P2=0 | 1.00 |
+| 4 | traceability | P0=0 P1=5 P2=1 | 1.00 |
+| 5 | maintainability | P0=0 P1=2 P2=1 | 1.00 |
 
-**Trend**: 0.647 → 0.607 → 0.417 → 0.304 → 0.198 → 0.188 → 0.184 (declining, approaching convergence)
+**Note**: High newFindingsRatio across iterations is expected -- each iteration covered a different dimension, so most findings were genuinely new. Convergence was not reached within 5 iterations; the review stopped at max_iterations.
 
 ### Coverage Summary
 
-| Dimension | Iterations | Pass Count | Final Status |
-|-----------|-----------|------------|--------------|
-| Correctness | 001, 003 | 2 | Reviewed (6 P1, 2 P2) |
-| Security | 005 | 1 | Reviewed (3 P1, 2 P2) |
-| Traceability | 002, 004 | 2 | Reviewed (5 P1, 4 P2) |
-| Maintainability | 006 | 1 | Reviewed (3 P1, 1 P2) |
+| Dimension | Covered | Iterations |
+|-----------|---------|------------|
+| correctness | Yes | 1, 2 |
+| security | Yes | 3 |
+| traceability | Yes | 4 |
+| maintainability | Yes | 5 |
 
-### Adversarial Self-Check
+All 4 dimensions covered. Coverage age: 1 (all dimensions covered as of iteration 5).
 
-| Finding | Original | Final | Reason |
-|---------|----------|-------|--------|
-| 002-F3 | P1 | P2 | 022 child format needs on-disk verification; grep didn't find Parent Spec/Predecessor/Successor in child specs |
-| 003-F2 | P1 | P2 | Complexity override is a documentation note, not a core structural defect |
-| All other P1s | P1 | P1 | Confirmed with file:line evidence |
+### Deduplication Log
+
+| Original IDs | Merged Into | Reason |
+|--------------|-------------|--------|
+| COR-003, TR-001, M-002 | F-003 | Same issue: phase map missing 002. Severity upgraded to P1. |
+| COR-002, TR-006 | F-002 | Same issue: impl summary scope contradiction. |
+| INV-003 | excluded | Process error during this review, not a spec finding. |
+
+### Adversarial Self-Check Results
+
+All 7 P1 findings survived Hunter/Skeptic/Referee adjudication:
+- **F-001**: Stale validation claim confirmed -- 002 addition broke it. Legitimate drift.
+- **F-002**: Metadata vs body contradiction is clear and not a framing issue. Confirmed.
+- **F-003**: 002 exists on disk, not in map. Objective fact. Confirmed.
+- **F-004**: Runtime code, env doc, and test all say `false`; SKILL.md says `true`. Confirmed.
+- **F-005**: 021 requires parent-plan link; child lacks it; checklist claims compliance. Confirmed.
+- **F-006**: Spec/tasks list external files in scope; checklist implies separation. Confirmed.
+- **F-007**: Counts already drifted (224 vs 221, 231 vs 227). Evidence non-reproducible. Confirmed.
 
 ### Cross-Reference Appendix
 
-**Core Protocols:**
-- spec_code: SKILL.md vs 022/spec.md (iteration 001), structure refs vs 022/spec.md (iteration 002), validation refs vs 022/checklist.md (iteration 004)
-- checklist_evidence: All P1 findings cite file:line evidence from reviewed docs
+#### Core Protocols
+- **spec_code**: spec.md requirements REQ-001 through REQ-009 traced against implementation files. REQ-001 (consistent story) fails due to scope divergence. REQ-002 through REQ-005 pass. REQ-006 through REQ-008 pass (docs exist). REQ-009 has no task trace (P2).
+- **checklist_evidence**: CHK-001 through CHK-003 pass. CHK-011 through CHK-013 pass. CHK-014 partially fails (scope inconsistency). CHK-020 fails (stale). CHK-021 through CHK-022 pass. CHK-030 through CHK-031 pass. CHK-040 through CHK-041 partially fail. CHK-050 fails. CHK-060 through CHK-066 evidence fragile.
 
-**Overlay Protocols:**
-- skill_agent: Not applicable (agent files not in scope)
+#### Overlay Protocols
+- **skill_agent**: SKILL.md reviewed for memory-surface accuracy. Tool count (33) and command count (6) confirmed. Shared-memory default documentation incorrect (F-004).
 
 ### Sources Reviewed
+- 22 files in review scope (see strategy.md for full list)
+- 5 iterations, 4 dimensions covered
+- Cross-reference with 021-spec-kit-phase-system/spec.md for phase system conventions
+- Live verification against tool-schemas.ts and command/memory/ directory
 
-**Primary review targets (20 files examined):**
-- SKILL.md (sections 1-3)
-- references/structure/ (4 files)
-- references/templates/ (4 files)
-- references/validation/ (5 files)
-- references/memory/ (5 files)
-- references/config/ (1 file)
-- references/workflows/ (4 files)
-
-**022 reference docs (for comparison):**
-- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/spec.md
-- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/decision-record.md
-- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/checklist.md
-- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalization/spec.md
-
-**Agents used:** 7 dispatched via cli-copilot (4 codex 5.3 xhigh, 3 gpt 5.4 high; all completed)
-**Total API time:** ~52 minutes across 7 agents (A7 took 18min alone)
-**Total premium requests:** 7
+### Ruled-Out Claims
+- No evidence of runtime TypeScript changes introduced by this spec (security boundary holds)
+- No evidence of stale tool/command counts in the core narrative (33/6 still accurate)
+- No missing implementation files -- all "Files to Change" targets exist on disk

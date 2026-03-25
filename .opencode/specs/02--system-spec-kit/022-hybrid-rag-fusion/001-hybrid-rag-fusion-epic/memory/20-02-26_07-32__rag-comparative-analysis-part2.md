@@ -7,7 +7,7 @@ trigger_phrases:
   - "retrieval precision"
   - "feature flags"
   - "phased rollout"
-importance_tier: "critical"
+importance_tier: "normal"
 contextType: "research"
 quality_score: 1.00
 quality_flags: []

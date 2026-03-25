@@ -20,7 +20,7 @@ contextType: "implementation"
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-03-14 |
-| **Updated** | 2026-03-21 |
+| **Updated** | 2026-03-25 |
 | **Branch** | `main` |
 | **Parent** | `022-hybrid-rag-fusion` |
 | **Complexity** | 36/70 |
@@ -58,6 +58,7 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 - Replace stale command-surface references with the live memory model: 33 tools, 6 commands, retrieval in `/memory:analyze`.
 - Record the now-closed `system-spec-kit` documentation gaps that were still observable on disk at the start of this pass.
 - Record the canonical verification method for future memory-surface count checks.
+- Post-research-refinement alignment (2026-03-22): reconcile SKILL.md feature flags, feature catalog count (221), testing playbook count, memory_system tool table row, and graduated spec-011 environment variable flags.
 
 ### Out of Scope
 - Runtime TypeScript or MCP behavior changes.
@@ -91,6 +92,7 @@ Record 011 as the completed documentation-only reconciliation for the remaining 
 | Phase | Folder | Focus | Status |
 |-------|--------|-------|--------|
 | 001 | `001-post-session-capturing-alignment/` | Post-session-capturing documentation alignment for `system-spec-kit` surfaces | Complete |
+| 002 | `002-skill-review-post-022/` | Deep review of 011-skill-alignment alignment with current reality | Complete |
 
 ---
 

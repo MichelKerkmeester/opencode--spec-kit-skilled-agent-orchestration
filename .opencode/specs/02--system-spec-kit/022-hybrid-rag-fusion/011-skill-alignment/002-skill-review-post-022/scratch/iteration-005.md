@@ -1,64 +1,23 @@
-# Iteration 005 — Security, references/memory/ + config/
-
-**Agent**: A5 (codex 5.3, xhigh)
-**Dimension**: Security
-**Model**: gpt-5.3-codex
-**Duration**: ~12m 25s
-
-## Findings
-
-### Finding 005-F1
+### Finding M-001: Canonical docs no longer describe the same closeout scope
 - **Severity**: P1
-- **Dimension**: security
-- **File**: `.opencode/skill/system-spec-kit/references/memory/save_workflow.md:320`
-- **Title**: Full-dialogue snapshot guidance lacks redaction controls
-- **Evidence**: Requires `## Conversation Flow` with "Full dialogue with timestamps" as required
-- **Expected**: Redaction/sanitization of secrets before persistence; summary-first default
-- **Impact**: Point-in-time snapshots can persist API keys/tokens/credentials
-- **Fix**: Add mandatory redaction policy; mark raw full-dialogue as opt-in
+- **Dimension**: maintainability
+- **File**: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/spec.md:41-45`
+- **Evidence**: `spec.md` and `plan.md` frame 011 as a narrow documentation-only closeout for skill-guide, memory-reference, and asset drift, but `tasks.md:68-77`, `checklist.md:95-104`, and `implementation-summary.md:75-92` add a second 2026-03-22 "Post-Research-Refinement Alignment" pass with extra count reconciliations, environment-variable work, and verification across agent definitions, command files, and command configs.
+- **Impact**: Future maintainers cannot tell whether phase 011 is a single 2026-03-21 closeout or a broader packet that also owns the later spec-011 follow-up. That weakens traceability and makes future drift reviews harder to scope correctly.
+- **Fix**: Either fold the 2026-03-22 follow-up into `spec.md` and `plan.md` as first-class scope/requirements, or move the later pass into its own child packet and remove the extra tasks/checklist/summary sections from the canonical docs.
 
-### Finding 005-F2
+### Finding M-002: Phase navigation is stale after the review child packet was added
 - **Severity**: P1
-- **Dimension**: security
-- **File**: `.opencode/skill/system-spec-kit/references/memory/memory_system.md:161`
-- **Title**: Governance scope parameters omitted from memory_search() reference
-- **Evidence**: No tenantId, userId, agentId, sharedSpaceId in parameter list
-- **Expected**: Document governed retrieval parameters for shared/multi-actor deployments
-- **Impact**: Users perform unscoped retrieval; cross-scope data exposure risk
-- **Fix**: Add governance parameter rows with secure usage examples
+- **Dimension**: maintainability
+- **File**: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/spec.md:89-94`
+- **Evidence**: The `PHASE DOCUMENTATION MAP` lists only `001-post-session-capturing-alignment`, but the folder now also contains `002-skill-review-post-022/`. The parent packet is stale too: `../spec.md:39` still reports `011=1`, even though `011-skill-alignment` now has two numbered child folders.
+- **Impact**: Maintainers following the packet tree will miss the review phase, and parent-level directory counts no longer match the on-disk structure. That makes future normalization work and packet navigation less trustworthy.
+- **Fix**: Add `002-skill-review-post-022/` to the 011 phase map, then update the parent `022-hybrid-rag-fusion/spec.md` child-count metadata to reflect the live `011=2` state (or clearly document why review packets are excluded if that is intentional).
 
-### Finding 005-F3
-- **Severity**: P1
-- **Dimension**: security
-- **File**: `.opencode/skill/system-spec-kit/references/config/environment_variables.md:27`
-- **Title**: MEMORY_ALLOWED_PATHS default documentation understates actual read boundary
-- **Evidence**: Default shown as `specs/,.opencode/` only
-- **Expected**: Document effective default including runtime roots (process.cwd(), ~/.claude)
-- **Impact**: Operators assume tighter filesystem boundaries than enforced
-- **Fix**: Update default to full effective set; add hardening note
-
-### Finding 005-F4
+### Finding M-003: The Open Questions section is a stale guidance note, not an actionable question list
 - **Severity**: P2
-- **Dimension**: security
-- **File**: `.opencode/skill/system-spec-kit/references/config/environment_variables.md:339`
-- **Title**: Shared-memory governance env docs stale/incomplete
-- **Evidence**: SPECKIT_MEMORY_SHARED_MEMORY shown as ON; missing admin identity env vars
-- **Expected**: Reflect default-off state; document SPECKIT_SHARED_MEMORY_ADMIN_USER_ID/AGENT_ID
-- **Impact**: Misconfigured governance rollout/admin controls
-- **Fix**: Correct defaults and add admin identity variable section
-
-### Finding 005-F5
-- **Severity**: P2
-- **Dimension**: security
-- **File**: `.opencode/skill/system-spec-kit/references/memory/trigger_config.md:195`
-- **Title**: Root-level fallback save location contradicts governed save boundary
-- **Evidence**: Fallback to `memory/ (workspace root)`
-- **Expected**: Spec/phase-folder scoped only
-- **Impact**: Unscoped storage of sensitive session data outside governed boundaries
-- **Fix**: Remove workspace-root fallback; align with spec-folder-only save policy
-
-**Note**: Tool count (33) verified as accurate — no finding.
-
-## Summary
-- P0: 0, P1: 3, P2: 2
-- newFindingsRatio: 0.198
+- **Dimension**: maintainability
+- **File**: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/spec.md:166-170`
+- **Evidence**: Section 10 contains only closure statements ("this pack records completed documentation reconciliation work", "future reviews should prefer live-file verification", "create a fresh reconciliation pass if the memory surface changes again") rather than actual unresolved questions. That guidance also predates the current `002-skill-review-post-022` follow-up already present under the folder.
+- **Impact**: Future maintainers looking for unresolved decisions or next-step triggers get a mislabeled section that hides the current follow-up structure instead of clarifying it.
+- **Fix**: Replace Section 10 with real unresolved questions, or rename it to something like `Maintenance Notes` and explicitly point readers to the existing child packets/review phases for subsequent work.

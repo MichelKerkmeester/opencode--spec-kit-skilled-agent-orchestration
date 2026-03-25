@@ -36,31 +36,6 @@ quality_flags: []
 
 ---
 
-<!-- ANCHOR:preflight -->
-
-## PREFLIGHT BASELINE
-
-**Epistemic state captured at session start for learning delta calculation.**
-
-| Metric | Value | Assessment |
-|--------|-------|------------|
-| Knowledge Score | N/A | Auto-generated session |
-| Uncertainty Score | N/A | Auto-generated session |
-| Context Score | N/A | Auto-generated session |
-| Timestamp | N/A | Session start |
-
-**Initial Gaps Identified:**
-
-- No significant gaps identified at session start
-
-**Dual-Threshold Status at Start:**
-- Confidence: N/A
-- Uncertainty: N/A
-- Readiness: N/A
-<!-- /ANCHOR:preflight -->
-
----
-
 ## TABLE OF CONTENTS
 
 - [CONTINUE SESSION](#continue-session)
@@ -500,44 +475,6 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js 02-
 
 ---
 
-<!-- ANCHOR:postflight -->
-<a id="postflight-learning-delta"></a>
-
-## POSTFLIGHT LEARNING DELTA
-
-**Epistemic state comparison showing knowledge gained during session.**
-
-<!-- Delta Calculation Formulas:
-  DELTA_KNOW_SCORE = POSTFLIGHT_KNOW_SCORE - PREFLIGHT_KNOW_SCORE (positive = improvement)
-  DELTA_UNCERTAINTY_SCORE = PREFLIGHT_UNCERTAINTY_SCORE - POSTFLIGHT_UNCERTAINTY_SCORE (positive = reduction, which is good)
-  DELTA_CONTEXT_SCORE = POSTFLIGHT_CONTEXT_SCORE - PREFLIGHT_CONTEXT_SCORE (positive = improvement)
-  DELTA_*_TREND = "↑" if delta > 0, "↓" if delta < 0, "→" if delta == 0
--->
-
-| Metric | Before | After | Delta | Trend |
-|--------|--------|-------|-------|-------|
-| Knowledge |  |  |  | → |
-| Uncertainty |  |  |  | → |
-| Context |  |  |  | → |
-
-**Learning Index:** /100
-
-> Learning Index = (Knowledge Delta × 0.4) + (Uncertainty Reduction × 0.35) + (Context Improvement × 0.25)
-> Higher is better. Target: ≥25 for productive sessions.
-
-**Gaps Closed:**
-
-- No gaps explicitly closed during session
-
-**New Gaps Discovered:**
-
-- No new gaps discovered
-
-**Session Learning Summary:**
-Learning metrics will be calculated when both preflight and postflight data are provided.
-<!-- /ANCHOR:postflight -->
-
----
 <!-- ANCHOR:metadata -->
 <a id="memory-metadata"></a>
 

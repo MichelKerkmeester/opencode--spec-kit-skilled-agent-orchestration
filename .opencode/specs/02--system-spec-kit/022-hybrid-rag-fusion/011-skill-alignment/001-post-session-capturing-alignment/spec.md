@@ -27,7 +27,7 @@ contextType: "implementation"
 | **Branch** | `011-skill-alignment/001-post-session-capturing-alignment` |
 | **Parent Spec** | ../spec.md |
 | **Predecessor** | ../../009-perfect-session-capturing/spec.md |
-| **Successor** | None |
+| **Successor** | ../002-skill-review-post-022/spec.md |
 <!-- /ANCHOR:metadata -->
 
 ---

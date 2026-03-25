@@ -5,8 +5,8 @@ trigger_phrases:
   - "ultra-think review sprint 3"
   - "pi-a2 deferred"
   - "query intelligence fixes"
-  - "t001 decomposition"
-  - "t002 decomposition"
+  - "stratified eval corpus"
+  - "pi-a2 deferral effort"
 importance_tier: "normal"
 contextType: "general"
 quality_score: 1.00
@@ -622,8 +622,8 @@ trigger_phrases:
   - "ultra-think review sprint 3"
   - "pi-a2 deferred"
   - "query intelligence fixes"
-  - "t001 decomposition"
-  - "t002 decomposition"
+  - "stratified eval corpus"
+  - "pi-a2 deferral effort"
 
 parent_spec: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence"
 child_sessions:

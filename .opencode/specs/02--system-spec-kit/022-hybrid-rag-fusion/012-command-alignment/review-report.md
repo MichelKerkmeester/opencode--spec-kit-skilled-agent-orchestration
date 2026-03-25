@@ -1,50 +1,48 @@
-# Review Report: Command Alignment Post Hybrid-RAG-Fusion
+# Review Report: 012-command-alignment — Alignment with Current Reality
 
 **Generated:** 2026-03-25
 **Spec Folder:** `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/`
-**Review Target:** `.opencode/command/spec_kit/` + `.opencode/command/memory/`
-**Verdict:** **CONDITIONAL** (0 P0, 22 P1, 29 P2 — after dedup: 0 P0, 20 P1, 27 P2)
+**Review Target:** Spec folder 012-command-alignment (spec-folder review type)
+**Cross-Reference:** `.opencode/specs/02--system-spec-kit/021-spec-kit-phase-system/`
+**Agents:** GPT 5.4 high via cli-copilot (5 iterations)
 
 ---
 
 ## 1. Executive Summary
 
-This deep review audited 33 files (~16,200 lines) across the spec_kit command suite (8 commands + 17 YAML assets) and the memory command suite (6 commands + README) for alignment with the hybrid-rag-fusion program changes. The review used 10 cli-copilot agents (5 Codex 5.3 xhigh + 5 GPT 5.4 high) across 5 waves covering all 4 dimensions.
+**Verdict: PASS** | hasAdvisories=true
 
-**Key Metrics:**
-- Iterations: 10 | Waves: 5 | Stop reason: converged (newFindingsRatio 0.06)
-- Raw findings: 62 | After dedup: ~59 unique
-- Severity: P0=0, P1=20 (unique), P2=27 (unique)
-- Dimensions: correctness (16), security (10), traceability (8), maintainability (13)
+| Severity | Count |
+|----------|------:|
+| P0 (Blockers) | 0 |
+| P1 (Required) | 0 |
+| P2 (Advisories) | 6 |
 
-**Verdict Rationale:** CONDITIONAL because:
-- No P0 blockers
-- 20 P1 findings require remediation before release
-- Several P1s affect workflow correctness (missing YAML assets, contradictory prerequisites, non-binding safety gates)
-- Security P1s need hardening (shell injection paths, missing authorization, heredoc injection risk)
+The 012-command-alignment spec folder is **correctly aligned with current reality** as of 2026-03-25. All five canonical docs (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md) accurately describe the live 33-tool MCP surface, 6-command memory suite, and `/memory:analyze` retrieval ownership.
+
+Two initial P1 findings (shared.md status governance caveat, checklist scope contradiction) were **downgraded to P2** after adversarial self-check with claim adjudication, because:
+- The shared.md status caveat is intentionally documented, not hidden
+- The checklist scope contradiction is localized wording, not a major traceability break
+
+Cross-reference with 021-spec-kit-phase-system confirmed: no blocking phase-system mismatches found. The "Phase 0/1/2/3" headings in 012 are ordinary work-plan sections, not `/spec_kit:phase` references.
+
+Six P2 advisories remain for optional follow-up improvement.
 
 ---
 
 ## 2. Planning Trigger
 
+No `/spec_kit:plan` remediation is required. All findings are P2 (advisory).
+
 ```json
 {
-  "triggered": true,
-  "verdict": "CONDITIONAL",
+  "triggered": false,
+  "verdict": "PASS",
   "hasAdvisories": true,
-  "activeFindings": { "P0": 0, "P1": 20, "P2": 27 },
-  "remediationWorkstreams": [
-    "WS-1: Tool ownership reconciliation (F-001, F-002)",
-    "WS-2: Missing/broken asset references (F-007, F-039)",
-    "WS-3: Workflow contract alignment (F-008, F-009/F-019, F-010/F-020, F-017, F-018, F-021)",
-    "WS-4: Convergence algorithm fixes (F-011, F-013, F-014)",
-    "WS-5: Security hardening (F-024, F-025, F-026, F-027, F-028)",
-    "WS-6: Information disclosure mitigation (F-036, F-037)",
-    "WS-7: Cross-runtime path normalization (F-034, F-038, F-040)",
-    "WS-8: Structural consistency (F-050, F-051-053, F-058-062)"
-  ],
-  "specSeed": "012-command-alignment remediation",
-  "planSeed": "Fix 20 P1 findings across 8 workstreams"
+  "activeFindings": { "P0": 0, "P1": 0, "P2": 6 },
+  "remediationWorkstreams": [],
+  "specSeed": "Optional: address P2 advisories in a future maintenance pass",
+  "planSeed": "No plan required — PASS verdict"
 }
 ```
 
@@ -52,168 +50,126 @@ This deep review audited 33 files (~16,200 lines) across the spec_kit command su
 
 ## 3. Active Finding Registry
 
-### P1 Findings (20 unique, sorted by workstream)
+### P2-001: Stale historical memory artifacts with obsolete counts
+- **Dimension:** correctness
+- **File:** `012-command-alignment/memory/15-03-26_08-26__implemented-016-command-alignment-aligned-the.md:85`
+- **Description:** Historical memory artifacts inside the 012 spec folder still describe the memory command surface as a 31-tool/8-command system with context.md references. The canonical docs are correct; only indexed memory artifacts preserve superseded assumptions.
+- **Impact:** Future retrieval could surface obsolete claims, risking reintroduction of already-resolved alignment errors.
+- **Fix:** Archive, de-index, or annotate these memory artifacts as historical.
+- **Disposition:** Advisory — canonical docs are correct.
 
-#### WS-1: Tool Ownership Reconciliation
-| ID | Title | File | Dimension |
-|----|-------|------|-----------|
-| F-001 | `/memory:save` tool ownership conflicts with canonical coverage matrix | save.md:4 | correctness |
-| F-002 | `/memory:manage` includes `memory_search`, breaking 15-tool ownership contract | manage.md:4 | correctness |
+### P2-002: Prose-only evidence for process checklist items
+- **Dimension:** traceability
+- **File:** `012-command-alignment/checklist.md:36-37`
+- **Description:** CHK-003 and CHK-024 are marked verified with prose attestation only — no captured command output, timestamped validator log, or artifact path independently proves the steps happened.
+- **Impact:** Evidence strength is overstated; reviewers cannot independently validate process claims.
+- **Fix:** Attach durable evidence (validator transcript, command output) or downgrade wording from "verified" to "attested."
+- **Disposition:** Advisory — packet remains understandable.
 
-#### WS-2: Missing/Broken Asset References
-| ID | Title | File | Dimension |
-|----|-------|------|-----------|
-| F-007 | `:with-research` wired to nonexistent `spec_kit_research_*.yaml` | complete.md:98 | correctness |
-| F-039 | Broken skill path to sk-code--review in deep-review YAMLs | review_auto.yaml:359 | traceability |
+### P2-003: spec.md supplemental sections misnumbered and partially unanchored
+- **Dimension:** maintainability
+- **File:** `012-command-alignment/spec.md:182-267`
+- **Description:** After `## 5. SUCCESS CRITERIA`, spec.md switches to unanchored supplemental sections (Gap Analysis, Reconciled Decisions, Approach), then jumps from `## 6` to `## 10`. By comparison, 021 keeps contiguous numbered sections throughout.
+- **Impact:** Future editors cannot rely on section numbers for stable navigation; cross-spec comparison is brittle.
+- **Fix:** Promote supplemental material to anchored numbered sections or demote to labeled appendices.
+- **Disposition:** Advisory — functionally correct but structurally loose.
 
-#### WS-3: Workflow Contract Alignment
-| ID | Title | File | Dimension |
-|----|-------|------|-----------|
-| F-008 | Plan→implement handoff contradicts `tasks.md` prerequisite | plan.md:160 | correctness |
-| F-017 | Plan save-context never invokes `generate-context.js` | plan_auto.yaml:419 | correctness |
-| F-018 | Command tool allowlists don't permit memory tools YAMLs require | plan.md:1-4, implement.md:1-4 | correctness |
-| F-019 | Implement PRE/POSTFLIGHT 0-100 vs 0-10 score mismatch | implement.md:282 | correctness |
-| F-020 | `:with-research` inserted before specification, not at Step 6 | complete.md:98 | correctness |
-| F-021 | Checklist evidence required before implementation exists | implement_auto.yaml:352 | correctness |
-| F-045 | Phase workflows use undefined `parent_spec_path` token | phase_auto.yaml:186,223 | traceability |
-| F-046 | Resume advertises 4-source context priority but implements only 2 | resume_auto.yaml:70 | traceability |
-| F-047 | Handover binds agent dispatch to wrong workflow shape/step | handover_full.yaml:178 | traceability |
+### P2-004: Mutable live-state facts duplicated across all five canonical docs
+- **Dimension:** maintainability
+- **File:** `012-command-alignment/spec.md:22-32`
+- **Description:** The same mutable facts (33 tools, 6 commands, `/memory:analyze` ownership, 2026-03-21 closeout) are independently restated in all five canonical docs. A future count change (e.g., 33→34) requires at least five coordinated edits.
+- **Impact:** Follow-on changes are expensive and drift-prone.
+- **Fix:** Centralize mutable facts in one canonical snapshot/table; have other docs reference it.
+- **Disposition:** Advisory — correct today but fragile for future changes.
 
-#### WS-4: Convergence Algorithm Fixes
-| ID | Title | File | Dimension |
-|----|-------|------|-----------|
-| F-011 | Review hard-stop bypasses quality-gate check | review_auto.yaml:286 | correctness |
-| F-013 | Research convergence omits thought-iteration filtering | deep-research_auto.yaml:227 | correctness |
-| F-014 | Claim-adjudication failure is non-binding (no STOP block) | review_auto.yaml:401 | correctness |
+### P2-005: Shared status governance caveat omitted from closeout (downgraded from P1-001)
+- **Dimension:** security
+- **File:** `012-command-alignment/implementation-summary.md:91-100`
+- **Description:** The closeout says no drift remains, but `shared.md:260-272` still warns that actor-unbound status queries may expose cross-principal visibility. Downgraded because the caveat is intentionally documented in the live command doc, not hidden.
+- **Impact:** Reviewers using 012 as closure record may miss a documented governance caveat.
+- **Fix:** Scope the closeout language to the specific drift cluster that was resolved, excluding the intentional status caveat.
+- **Disposition:** Advisory — informational, not a security gap.
+- **Claim Adjudication:** confidence=0.89, downgradeTrigger="If closeout explicitly scopes resolved drift to analyze.md plus shared.md create/member contract"
 
-#### WS-5: Security Hardening
-| ID | Title | File | Dimension |
-|----|-------|------|-----------|
-| F-024 | Unsafe filename-to-shell delete path in `/memory:learn remove` | learn.md:385 | security |
-| F-025 | Conversation content can reach shell heredoc in `/memory:save` | save.md:179 | security |
-| F-026 | Governance/provenance parameters not strictly validated | save.md:644 | security |
-| F-027 | `/memory:shared status` allows principal probing without actor binding | shared.md:260 | security |
-| F-028 | Constitutional memory mutation lacks authorization model | learn.md:77 | security |
-
-#### WS-6: Information Disclosure Mitigation
-| ID | Title | File | Dimension |
-|----|-------|------|-----------|
-| F-036 | Debug delegation forwards raw diagnostics without redaction | debug.md:63 | security |
-| F-037 | Handover auto-persists conversation context without secret-scrub | handover_full.yaml:37 | security |
-
-#### WS-7: Cross-Runtime Path Normalization
-| ID | Title | File | Dimension |
-|----|-------|------|-----------|
-| F-034 | CONTINUE_SESSION.md location inconsistent (root vs spec folder) | resume.md:75 | correctness |
-| F-040 | Deep-research YAMLs hardcode Claude agent paths | deep-research_auto.yaml:68 | traceability |
-
-#### WS-8: Structural Consistency (P1 subset)
-| ID | Title | File | Dimension |
-|----|-------|------|-----------|
-| F-050 | Spec_kit files don't share one structural skeleton | complete.md:29 | maintainability |
-| F-054 | complete.md mixes execution modes with feature flags | complete.md:12 | maintainability |
-| F-058 | Markdown-to-YAML ownership contract not uniformly defined | plan.md:11-18 | maintainability |
-
-### P2 Findings (27 unique)
-
-| ID | Title | Dimension |
-|----|-------|-----------|
-| F-003 | Trigger-edit workflow in save.md lacks concrete memory_update path | correctness |
-| F-004/F-055 | save.md contradictory Write tool instructions | correctness/maintainability |
-| F-005 | Stale validation claim for governance params in save.md | correctness |
-| F-006 | analyze.md mislabels manual search option number | correctness |
-| F-009/F-010 | (Subsumed by P1 F-019/F-020 with more evidence) | correctness |
-| F-012 | dimensionCoverage emitted as string, not numeric | correctness |
-| F-015 | Error JSONL uses unresolved placeholders | correctness |
-| F-016 | reviewDimensions type may drift from array schema | correctness |
-| F-022 | Complete auto/confirm variants emit different outputs | correctness |
-| F-023 | Task completion markers inconsistent ([X] vs [x]) | correctness |
-| F-029 | Checkpoint delete without second confirmation | security |
-| F-030 | TOCTOU window in checkpoint restore | security |
-| F-031 | continue.md trusts CONTINUE_SESSION.md without integrity checks | security |
-| F-032 | Ingest accepts arbitrary paths with weak scope controls | security |
-| F-033 | Internal DB path disclosure in save.md | security |
-| F-035 | Phase-link validation only greps names, doesn't parse metadata | correctness |
-| F-038 | Claude runtime agent path rooted at `/` not repository | traceability |
-| F-041 | README.txt omits review YAML files from inventory | traceability |
-| F-042 | README.txt omits deep-review mode suffixes | traceability |
-| F-043 | manage.md health shows stale schema version (v13 vs v23) | traceability |
-| F-044 | save.md filePath examples conflict with absolute-path contract | traceability |
-| F-048 | Debug workflows split spec reference across placeholder families | maintainability |
-| F-049 | phase_confirm premature "Done" exit before Step 7 | maintainability |
-| F-051 | Setup phase numbering inconsistent (0 vs 1) | maintainability |
-| F-052 | Consolidated prompt phrase not standardized | maintainability |
-| F-053 | FIRST MESSAGE PROTOCOL only in subset of files | maintainability |
-| F-056 | Error-handling sections consistent in memory, fragmented in spec_kit | maintainability |
-| F-057 | Formatting conventions not uniform | maintainability |
-| F-059 | YAML node naming uses three different schemas | maintainability |
-| F-060 | Spec-folder concept named four different ways | maintainability |
-| F-061 | Auto/confirm variant symmetry not uniform | maintainability |
-| F-062 | handover_full missing recovery-section contract | maintainability |
+### P2-006: Checklist scope evidence contradicts recorded edit scope (downgraded from P1-002)
+- **Dimension:** traceability
+- **File:** `012-command-alignment/checklist.md:67-69`
+- **Description:** CHK-030 says the pass "edits only spec-pack markdown" and confines edits to five files, but the same packet records analyze.md and shared.md patches. The higher-level claim ("no runtime behavior changed") is still true. Downgraded because the contradiction is localized wording, not a major scope failure.
+- **Impact:** Auditors cannot trust the checklist as source-of-truth for which files were actually touched.
+- **Fix:** Rewrite CHK-030 to distinguish "no runtime behavior changed" from "which files were edited."
+- **Disposition:** Advisory — localized evidence defect.
+- **Claim Adjudication:** confidence=0.95, downgradeTrigger="If CHK-030 is rewritten to distinguish behavior safety from edited-file scope"
 
 ---
 
 ## 4. Remediation Workstreams
 
-| Workstream | P1 Count | P2 Count | Estimated LOC | Priority |
-|------------|----------|----------|---------------|----------|
-| WS-1: Tool ownership | 2 | 0 | ~50 | High |
-| WS-2: Asset references | 2 | 0 | ~30 | Critical |
-| WS-3: Contract alignment | 9 | 4 | ~200 | Critical |
-| WS-4: Convergence fixes | 3 | 2 | ~80 | High |
-| WS-5: Security hardening | 5 | 5 | ~150 | High |
-| WS-6: Info disclosure | 2 | 0 | ~60 | High |
-| WS-7: Path normalization | 2 | 2 | ~40 | Medium |
-| WS-8: Structural consistency | 3 | 14 | ~200 | Low |
+No P0 or P1 remediation required. Optional P2 advisory improvements:
 
-**Recommended order:** WS-2 → WS-3 → WS-5 → WS-4 → WS-1 → WS-6 → WS-7 → WS-8
+**Workstream A: Evidence Quality (P2-002, P2-006)**
+- Rewrite CHK-030 scope evidence
+- Attach durable evidence for process checklist items
+
+**Workstream B: Structural Maintenance (P2-003, P2-004)**
+- Renumber spec.md sections or add appendix labels
+- Consider centralizing mutable live-state facts
+
+**Workstream C: Closeout Precision (P2-005)**
+- Narrow closeout language to scope the specific drift cluster resolved
+
+**Workstream D: Memory Hygiene (P2-001)**
+- Archive or annotate stale historical memory artifacts
 
 ---
 
 ## 5. Spec Seed
 
-```
-Title: Remediate 012 command alignment review findings
-Trigger: Deep review verdict CONDITIONAL with 20 P1 findings
-Scope: .opencode/command/spec_kit/ + .opencode/command/memory/
-Predecessor: 012-command-alignment (this review)
-```
+Optional improvements for future maintenance:
+- Centralize the "33 tools / 6 commands / analyze ownership" baseline in one table
+- Add anchored appendix sections for Gap Analysis and Reconciled Decisions
+- Attach validator output artifacts to strengthen checklist evidence
+- Scope the drift-closeout language more precisely to the resolved cluster
 
 ---
 
 ## 6. Plan Seed
 
-```
-Phase 1: Fix critical asset references (WS-2) — create/rename missing YAML files
-Phase 2: Align workflow contracts (WS-3) — resolve contradictions between .md and YAML
-Phase 3: Harden security (WS-5 + WS-6) — add input validation, redaction gates
-Phase 4: Fix convergence algorithm (WS-4) — quality gates, thought filtering
-Phase 5: Reconcile tool ownership (WS-1) — update README coverage matrix
-Phase 6: Normalize paths (WS-7) — standardize CONTINUE_SESSION.md location, runtime paths
-Phase 7: Structural cleanup (WS-8) — template standardization (can be deferred)
-```
+No `/spec_kit:plan` required — PASS verdict. If advisories are addressed later:
+- T1: Rewrite CHK-030 scope evidence (P2-006)
+- T2: Attach durable evidence for CHK-003, CHK-024 (P2-002)
+- T3: Renumber spec.md post-success-criteria sections (P2-003)
+- T4: Narrow implementation-summary.md closeout language (P2-005)
+- T5: Archive stale memory artifacts (P2-001)
 
 ---
 
 ## 7. Traceability Status
 
+### Core Protocols
+
 | Protocol | Status | Evidence |
 |----------|--------|----------|
-| spec_code (commands → tool-schemas.ts) | VERIFIED | A4 confirmed 33-tool mapping holds |
-| checklist_evidence | N/A | No checklist verification in scope |
-| command_yaml (commands → YAML assets) | PARTIAL | F-007 broken; F-041/F-042 README gaps |
-| skill_agent (YAML → skill/agent paths) | PARTIAL | F-039 broken; F-040 hardcoded |
-| cross_runtime (agent paths across runtimes) | FAILED | F-040 Claude-only paths in YAMLs |
+| `spec_code` | **PASS** | All REQ-001 through REQ-010 verified against live 33-tool/6-command surface. Tool counts, command ownership, retrieval ownership all match. |
+| `checklist_evidence` | **PASS** (with advisories) | All 18 checklist items checked; evidence exists but CHK-030 has localized scope contradiction and CHK-003/CHK-024 rely on prose attestation. |
+
+### Overlay Protocols
+
+| Protocol | Status | Notes |
+|----------|--------|-------|
+| `skill_agent` | Not Applicable | 012 is documentation-only, no skill/agent contracts |
+| `agent_cross_runtime` | Not Applicable | No agent definitions in scope |
+| `feature_catalog_code` | Not Applicable | No feature catalog in scope |
+| `playbook_capability` | Not Applicable | No playbook in scope |
 
 ---
 
 ## 8. Deferred Items
 
-| Item | Reason | When to Address |
-|------|--------|-----------------|
-| F-057 (formatting) | Cosmetic only | Next documentation pass |
-| F-059-062 (YAML schema drift) | Low risk | Architecture review of YAML workflow engine |
-| WS-8 structural consistency | Large scope, low urgency | Dedicated template standardization project |
+These items are advisory-only and do not block the current verdict:
+
+1. **Memory artifact hygiene** — Historical memory files in `012-command-alignment/memory/` reference superseded 31-tool/8-command topology. Consider archiving during next memory maintenance pass.
+2. **Fact centralization** — A future spec-pack template improvement could reduce duplication by introducing a "Live Baseline" section that other docs reference. This is a template-level concern, not specific to 012.
+3. **021 alignment** — No blocking mismatches found between 012 and 021. The phase system conventions in 021 do not apply to 012's work-plan structure.
 
 ---
 
@@ -221,28 +177,47 @@ Phase 7: Structural cleanup (WS-8) — template standardization (can be deferred
 
 ### Convergence Summary
 
-| Wave | Agents | Dimension | Findings | newFindingsRatio |
-|------|--------|-----------|----------|-----------------|
-| 1 | A1 (Codex), B1 (GPT) | correctness | 10 | 0.86, 1.00 |
-| 2 | A2 (Codex), B2 (GPT) | correctness | 13 | 0.83, 0.71 |
-| 3 | A3 (Codex), B3 (GPT) | security + correctness | 15 | 0.30, 0.13 |
-| 4 | A4 (Codex), B4 (GPT) | traceability + maint. | 11 | 0.14, 0.10 |
-| 5 | A5 (Codex), B5 (GPT) | maintainability | 13 | 0.16, 0.06 |
+| Iteration | Dimension | newFindingsRatio | P0/P1/P2 | Status |
+|-----------|-----------|-----------------|----------|--------|
+| 1 | D1 Correctness | 1.000 | 0/0/1 | insight |
+| 2 | D2 Security | 0.750 | 0/1/0 | insight |
+| 3 | D3 Traceability | 0.500 | 0/1/1 | insight |
+| 4 | D4 Maintainability | 0.143 | 0/0/2 | insight |
+| 5 | Consolidation | 0.000 | 0/0/0 (2 downgrades) | insight |
 
-### Duplicate Findings (merged)
-- F-009 ≈ F-019 (implement PREFLIGHT/POSTFLIGHT) → kept as single P1
-- F-010 ≈ F-020 (research step placement) → kept as single P1
-- F-004 ≈ F-055 (save.md Write tool) → kept as single P2
+**Stop reason:** max_iterations_reached (5/5)
+**Convergence trajectory:** 1.0 → 0.75 → 0.50 → 0.14 → 0.00 (monotonically decreasing)
 
-### Agent Resource Usage
-- 5 Codex 5.3 (xhigh): ~5.4M tokens in, ~181K tokens out
-- 5 GPT 5.4 (high): ~8.6M tokens in, ~91K tokens out
-- Total: ~14M tokens processed across 10 agents
-- API time: ~93 minutes cumulative
+### Coverage Summary
 
-### Sources
-- Canonical tool inventory: `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` (33 tools)
-- Parameter schemas: `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts`
-- Prior spec: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/spec.md`
-- Convergence reference: `.opencode/skill/sk-deep-research/references/convergence.md`
-- State format reference: `.opencode/skill/sk-deep-research/references/state_format.md`
+| Dimension | Iterations | Verdict |
+|-----------|-----------|---------|
+| Correctness | 1, 5 | Clean (1 advisory) |
+| Security | 2, 5 | Clean (1 advisory, downgraded from P1) |
+| Traceability | 3, 5 | Clean (2 advisories, 1 downgraded from P1) |
+| Maintainability | 4 | Clean (2 advisories) |
+
+### Ruled-Out Claims
+
+- No canonical 012 doc currently depends on 021 phase-system mechanics
+- No correctness drift found in live command ownership matrix
+- No stale 32-tool/7-command references in the five canonical docs (only in historical memory artifacts)
+- No credentials, API keys, or secrets found in any spec folder files
+
+### Sources Reviewed
+
+- 5 canonical spec artifacts (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md)
+- 7 live command docs (analyze.md, continue.md, learn.md, manage.md, save.md, shared.md, README.txt)
+- 2 schema files (tool-schemas.ts, tool-input-schemas.ts)
+- 1 cross-reference spec (021-spec-kit-phase-system/spec.md)
+- 2 historical memory artifacts
+- 1 description.json
+
+### Cross-Reference Appendix
+
+**Core Protocols:**
+- `spec_code`: Verified REQ-001–REQ-010 against live tool-schemas.ts (33 tools), command directory (6 commands), analyze.md (retrieval ownership), README.txt (ownership matrix). All claims hold.
+- `checklist_evidence`: All 18 items (8 P0, 10 P1) marked verified. Two advisory-level evidence quality issues identified (CHK-030 scope wording, CHK-003/CHK-024 prose attestation).
+
+**Overlay Protocols:**
+- All 4 overlay protocols (skill_agent, agent_cross_runtime, feature_catalog_code, playbook_capability) marked Not Applicable — 012 is a documentation-only spec folder with no runtime components.

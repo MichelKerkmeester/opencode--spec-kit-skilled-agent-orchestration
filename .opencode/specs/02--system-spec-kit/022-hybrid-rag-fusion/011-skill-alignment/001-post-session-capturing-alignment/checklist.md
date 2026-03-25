@@ -41,7 +41,7 @@ contextType: "general"
 
 - [x] CHK-010 [P0] Child packet matches Level 2 template structure [EVIDENCE: all five child docs now contain the required anchors and headers]
 - [x] CHK-011 [P0] Documentation-only boundary preserved [EVIDENCE: runtime code changes remain out of scope in `spec.md`]
-- [x] CHK-012 [P1] Parent references resolve cleanly [EVIDENCE: `Parent Spec` now points to `../spec.md` and recursive validation uses that link]
+- [x] CHK-012 [P1] Parent references resolve cleanly [EVIDENCE: `Parent Spec` points to `../spec.md`; `Successor` points to `../002-skill-review-post-022/spec.md`]
 - [x] CHK-013 [P1] Historical alignment themes remain truthful [EVIDENCE: spec and summary preserve JSON-first save guidance and 33-tool alignment as the recorded child scope]
 <!-- /ANCHOR:code-quality -->
 

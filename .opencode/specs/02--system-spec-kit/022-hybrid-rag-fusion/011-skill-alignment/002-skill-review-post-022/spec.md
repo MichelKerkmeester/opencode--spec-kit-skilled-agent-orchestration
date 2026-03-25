@@ -48,6 +48,7 @@ After the 022-hybrid-rag-fusion root-packet normalization (2026-03-25) rewrote t
 |------------|------|--------|
 | 022-hybrid-rag-fusion root normalization | Predecessor | Complete (2026-03-25) |
 | 011-skill-alignment reconciliation | Predecessor | Complete (2026-03-22) |
+| 001-post-session-capturing-alignment | Predecessor (sibling phase) | Complete |
 
 ## 6. OPEN QUESTIONS
 

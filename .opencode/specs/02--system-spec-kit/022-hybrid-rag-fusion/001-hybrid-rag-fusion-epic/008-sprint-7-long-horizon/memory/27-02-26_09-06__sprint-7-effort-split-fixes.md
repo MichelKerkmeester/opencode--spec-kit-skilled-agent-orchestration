@@ -7,7 +7,7 @@ trigger_phrases:
   - "s5 scale gate"
   - "entity linking threshold"
   - "conditional effort scenarios"
-importance_tier: "normal"
+importance_tier: "important"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
@@ -508,7 +508,7 @@ spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-ep
 channel: "main"
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)

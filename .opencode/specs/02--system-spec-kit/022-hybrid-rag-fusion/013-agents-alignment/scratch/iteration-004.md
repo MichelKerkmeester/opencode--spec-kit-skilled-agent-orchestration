@@ -1,70 +1,35 @@
-# Iteration 004 — Waves 3-5 Consolidated: Cross-Agent Pattern Analysis
+# Iteration 004 — D4 Maintainability + 021 Alignment
 
-**Method**: Direct grep analysis across all 50 agent files (all 5 runtimes × 10 agents)
-**Status**: Complete
-**Agents Covered**: @deep-research, @handover, @review, @debug, @ultra-think, @write
+**Agent:** GPT-5.4 (high) via cli-copilot
+**Dimension:** maintainability
+**Status:** complete
+**Timestamp:** 2026-03-25T15:30:00Z
 
----
+## Findings
 
-## Cross-Agent Findings
+### F-001 [P1] Hybrid child spec matches neither full Level 2 template nor 021 child-phase template
+- **File:line:** spec.md:5-6,21-26,150-168
+- **Evidence:** spec.md declares SPECKIT_LEVEL: 2 but only has sections 1-6 and then jumps to 10 (missing 7-NFR, 8-Edge Cases, 9-Complexity). Simultaneously, 021 phase-child template expects Parent Plan, Phase, Handoff Criteria, Phase Context — 013 only partially includes these.
+- **Recommendation:** Either compose full Level 2 template + phase-child addendum, or explicitly document reduced variant usage.
 
-### CROSS-001
-- **Severity**: P1
-- **Dimension**: traceability
-- **Agents Affected**: @orchestrate (all 5 runtimes)
-- **Finding**: `@explore` referenced in LEAF lists and NDP examples across all 5 orchestrate runtimes, but no `explore.md`/`explore.toml` exists in any runtime family.
-- **Evidence**:
-  - `.opencode/agent/orchestrate.md:112,142,747`
-  - `.opencode/agent/chatgpt/orchestrate.md:127,157,779`
-  - `.claude/agents/orchestrate.md:107,137,742`
-  - `.codex/agents/orchestrate.toml:119,149,771`
-  - `.agents/agents/orchestrate.md:107,137,742`
-- **Fix**: Replace `@explore` with `@context` in all LEAF lists and NDP examples.
+### F-002 [P1] Pass 2 completion claims contradict remediation state
+- **File:line:** tasks.md:83-91, implementation-summary.md:98-108
+- **Duplicate of:** iter-003 F-002
+- **Evidence:** Same finding — "all P1 remediated" but one P1 only "noted for follow-up."
 
-### CROSS-002
-- **Severity**: P1
-- **Dimension**: traceability
-- **Agents Affected**: @orchestrate (all 5 runtimes)
-- **Finding**: `@general` referenced in LEAF lists across orchestrate agents, but no `general.md`/`general.toml` exists in any runtime family.
-- **Evidence**: `@general` appears in orchestrate LEAF list at same locations as @explore. Also referenced in speckit, debug, and context agents (8 files total across base and chatgpt runtimes).
-- **Fix**: Remove `@general` from LEAF lists or add it as an actual agent definition.
+### F-003 [P2] Machine-readable metadata still pre-Pass 2
+- **File:line:** description.json:2-11, checklist.md:2-3
+- **Evidence:** description.json describes only "Runtime Lineage Truth Reconciliation." Checklist frontmatter says "Verification Date: 2026-03-21" but contains Pass 2 block dated 2026-03-25.
+- **Recommendation:** Update description.json title/description/keywords; refresh checklist frontmatter date.
 
-### CROSS-003
-- **Severity**: P1
-- **Dimension**: correctness
-- **Agents Affected**: @review (all 5 runtimes)
-- **Finding**: All review agents reference `sk-code` as a baseline skill to load, but `.opencode/skill/sk-code/` does not exist. The actual skill is `sk-code--review`.
-- **Evidence**:
-  - `.opencode/agent/review.md:32,48,75,221,285` — "load sk-code baseline"
-  - `.opencode/agent/chatgpt/review.md:32,48,77,223,287`
-  - `.claude/agents/review.md:26,42,69,215,279`
-  - `.codex/agents/review.toml:19,35,64,210,274`
-  - `.agents/agents/review.md:26,42,69,215,279`
-  - `.opencode/skill/sk-code--review/` exists; `.opencode/skill/sk-code/` does NOT
-- **Fix**: Replace `sk-code` with `sk-code--review` as the baseline. Update the overlay detection pattern.
+### F-004 [P2] Level/complexity not re-justified after Pass 2 expansion
+- **File:line:** spec.md:16-22
+- **Evidence:** Complexity 42/70 unchanged since Pass 1. Pass 2 added deep review of 50 files and remediation across multiple runtimes. No justification for keeping Level 2.
+- **Recommendation:** Recalculate complexity or add explicit justification for Level 2.
 
-### CROSS-004
-- **Severity**: P2
-- **Dimension**: maintainability
-- **Agents Affected**: ALL agents (all runtimes)
-- **Finding**: No agent file across any runtime references `/memory:shared`. The 6-command memory surface is underdocumented.
-- **Evidence**: `grep -r "/memory:shared" .opencode/agent/ .claude/agents/ .codex/agents/ .agents/agents/` returns 0 matches.
-- **Fix**: Add /memory:shared to command surface enumerations where memory commands are listed.
-
-### CROSS-005
-- **Severity**: P2
-- **Dimension**: correctness
-- **Agents Affected**: @deep-research, @handover, @debug, @ultra-think, @write (all runtimes)
-- **Finding**: These agents have no specific content drift from 022-hybrid-rag-fusion. Their core behavioral instructions, state protocols, and permission boundaries are aligned with current system. The missing /memory:shared reference is the only cross-cutting issue.
-- **Evidence**: Behavioral instructions (LEAF constraints, write permissions, state formats) match current system protocols. Core tools (memory_context, memory_search) are correctly referenced where needed.
-- **Fix**: No agent-specific fixes needed beyond CROSS-004.
-
-## Summary
-
-| Severity | Count |
-|----------|-------|
-| P0 | 0 |
-| P1 | 3 |
-| P2 | 2 |
-
-**Convergence Assessment**: Strong convergence. The same 3 P1 patterns (@explore stale, @general stale, sk-code dead path) account for all material drift. The remaining 7 agents (waves 3-5) show no agent-specific alignment issues beyond the cross-cutting /memory:shared gap.
+## Verified OK
+- Template compliance: all 5 files have SPECKIT_LEVEL: 2 and SPECKIT_TEMPLATE_SOURCE v2.2
+- ANCHOR tags present and properly closed in spec.md
+- Internal consistency: spec.md, plan.md, tasks.md, checklist.md tell same lineage story
+- Known limitations section documents follow-on work
+- Gemini write-agent path divergence documented in Known Limitations

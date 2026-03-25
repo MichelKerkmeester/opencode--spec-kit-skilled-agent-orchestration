@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-03-25T13:02:31.615Z",
+  "generated": "2026-03-25T15:07:43.866Z",
   "folders": [
     {
       "specFolder": "00--ai-systems-non-dev/001-global-shared/001-hvr-refinement-repo-analysis",
@@ -114,7 +114,7 @@
         "canonical",
         "diff"
       ],
-      "lastUpdated": "2026-03-25T13:02:31.615Z"
+      "lastUpdated": "2026-03-25T15:07:43.866Z"
     },
     {
       "specFolder": "01--anobel.com/029-anobel-performance-analysis",
@@ -755,7 +755,7 @@
         "scoring",
         "intelligence"
       ],
-      "lastUpdated": "2026-03-25T13:02:31.615Z"
+      "lastUpdated": "2026-03-25T15:07:43.866Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/002-query-intelligence-reformulation",
@@ -767,7 +767,7 @@
         "intelligence",
         "reformulation"
       ],
-      "lastUpdated": "2026-03-25T13:02:31.615Z"
+      "lastUpdated": "2026-03-25T15:07:43.866Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/003-graph-augmented-retrieval",
@@ -778,7 +778,7 @@
         "graph-augmented",
         "retrieval"
       ],
-      "lastUpdated": "2026-03-25T13:02:31.615Z"
+      "lastUpdated": "2026-03-25T15:07:43.866Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/004-feedback-quality-learning",
@@ -790,7 +790,7 @@
         "quality",
         "learning"
       ],
-      "lastUpdated": "2026-03-25T13:02:31.615Z"
+      "lastUpdated": "2026-03-25T15:07:43.866Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/005-retrieval-ux-presentation",
@@ -802,7 +802,7 @@
         "result",
         "presentation"
       ],
-      "lastUpdated": "2026-03-25T13:02:31.615Z"
+      "lastUpdated": "2026-03-25T15:07:43.866Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation",
@@ -1167,7 +1167,7 @@
         "deprecated",
         "features"
       ],
-      "lastUpdated": "2026-03-25T13:02:31.615Z"
+      "lastUpdated": "2026-03-25T15:07:43.866Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
@@ -1635,6 +1635,19 @@
       "lastUpdated": "2026-03-25T10:14:59.520Z"
     },
     {
+      "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022",
+      "description": "002 — Post-022 Skill Documentation Review and Remediation",
+      "keywords": [
+        "002",
+        "post-022",
+        "skill",
+        "documentation",
+        "review",
+        "remediation"
+      ],
+      "lastUpdated": "2026-03-25T15:07:43.866Z"
+    },
+    {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment",
       "description": "Specification: 012-command-alignment",
       "keywords": [
@@ -1655,7 +1668,7 @@
         "truth",
         "reconciliation"
       ],
-      "lastUpdated": "2026-03-25T10:14:59.530Z"
+      "lastUpdated": "2026-03-25T15:07:27.699Z"
     },
     {
       "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/014-agents-md-alignment",
@@ -3930,7 +3943,7 @@
         "ownership",
         "remediation"
       ],
-      "lastUpdated": "2026-03-25T13:02:31.615Z"
+      "lastUpdated": "2026-03-25T13:02:31.678Z"
     },
     {
       "specFolder": "04--agent-orchestration/018-opencode-agent-path-only",

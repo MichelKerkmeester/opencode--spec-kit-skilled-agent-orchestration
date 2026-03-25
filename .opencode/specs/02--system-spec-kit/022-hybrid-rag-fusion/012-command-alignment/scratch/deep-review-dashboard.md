@@ -1,57 +1,54 @@
-# Deep Review Dashboard
+# Deep Review Dashboard - Session Overview
 
-**Target:** spec_kit + memory commands | **Verdict:** CONDITIONAL | **Date:** 2026-03-25
+Auto-generated from JSONL state log and strategy file.
 
 ## Status
+- Review Target: 012-command-alignment (spec-folder)
+- Cross-Reference: 021-spec-kit-phase-system
+- Status: COMPLETE
+- Iteration: 5 of 5
+- Verdict: **PASS** | hasAdvisories=true
+- Agents: GPT 5.4 high via cli-copilot
 
-| Metric | Value |
-|--------|-------|
-| Iterations | 10/10 |
-| Waves | 5/5 |
-| Stop Reason | Converged (ratio 0.06 < 0.10) |
-| P0 | 0 |
-| P1 | 20 |
-| P2 | 27 |
-| Total (deduped) | 47 |
+## Findings Summary
+| Severity | Count | Trend |
+|----------|------:|-------|
+| P0 (Blockers) | 0 | — |
+| P1 (Required) | 0 | 2→0 (downgraded in iter 5) |
+| P2 (Suggestions) | 6 | +1, +0, +1, +2, +0 (2 downgrades) |
 
 ## Dimension Coverage
+| Dimension | Status | Iteration | Findings |
+|-----------|--------|-----------|----------|
+| D1 Correctness | Complete | 1, 5 | 1 P2 |
+| D2 Security | Complete | 2, 5 | 1 P2 (downgraded from P1) |
+| D3 Traceability | Complete | 3, 5 | 2 P2 (1 downgraded from P1) |
+| D4 Maintainability | Complete | 4 | 2 P2 |
 
-| Dimension | Status | Findings |
-|-----------|--------|----------|
-| correctness | COMPLETE | 16 |
-| security | COMPLETE | 10 |
-| traceability | COMPLETE | 8 |
-| maintainability | COMPLETE | 13 |
+## Traceability Coverage
+| Protocol | Level | Status | Findings |
+|----------|-------|--------|----------|
+| spec_code | core | PASS | All REQ claims verified |
+| checklist_evidence | core | PASS (advisories) | CHK-030 wording, CHK-003/024 attestation |
+| skill_agent | overlay | N/A | No skill/agent contracts |
+| agent_cross_runtime | overlay | N/A | No agent definitions |
+| feature_catalog_code | overlay | N/A | No feature catalog |
+| playbook_capability | overlay | N/A | No playbook |
 
-## Convergence Trend
+## Progress
+| # | Dimension | Ratio | P0/P1/P2 | Status |
+|---|-----------|-------|----------|--------|
+| 1 | D1 Correctness | 1.000 | 0/0/1 | insight |
+| 2 | D2 Security | 0.750 | 0/1/0 | insight |
+| 3 | D3 Traceability | 0.500 | 0/1/1 | insight |
+| 4 | D4 Maintainability | 0.143 | 0/0/2 | insight |
+| 5 | Consolidation | 0.000 | 0/0/0 | insight (2 downgrades) |
 
-```
-Wave  Ratio
-  1   ████████████████████████████████████████░░░░  0.86, 1.00
-  2   ██████████████████████████████████░░░░░░░░░░  0.83, 0.71
-  3   ████████████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0.30, 0.13
-  4   █████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0.14, 0.10
-  5   ██████░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0.16, 0.06 ← converged
-```
+## Trend
+- Ratios: [1.0, 0.75, 0.50, 0.14, 0.00] — monotonically decreasing
+- Stuck count: 0
+- Gate violations: none
+- Stop reason: max_iterations_reached (5/5)
 
-## Agent Summary
-
-| Agent | Model | Effort | Wave | Findings |
-|-------|-------|--------|------|----------|
-| A1 | gpt-5.3-codex | xhigh | 1 | P1=2, P2=4 |
-| B1 | gpt-5.4 | high | 1 | P1=2, P2=2 |
-| A2 | gpt-5.3-codex | xhigh | 2 | P1=4, P2=2 |
-| B2 | gpt-5.4 | high | 2 | P1=5, P2=2 |
-| A3 | gpt-5.3-codex | xhigh | 3 | P1=5, P2=5 |
-| B3 | gpt-5.4 | high | 3 | P1=4, P2=1 |
-| A4 | gpt-5.3-codex | xhigh | 4 | P1=2, P2=4 |
-| B4 | gpt-5.4 | high | 4 | P1=3, P2=2 |
-| A5 | gpt-5.3-codex | xhigh | 5 | P1=4, P2=5 |
-| B5 | gpt-5.4 | high | 5 | P1=0, P2=4 |
-
-## Next Steps
-
-| Condition | Action |
-|-----------|--------|
-| CONDITIONAL verdict | `/spec_kit:plan` for remediation |
-| Recommended order | WS-2 → WS-3 → WS-5 → WS-4 → WS-1 → WS-6 → WS-7 → WS-8 |
+## Next Focus
+Synthesis complete. No further iterations needed.

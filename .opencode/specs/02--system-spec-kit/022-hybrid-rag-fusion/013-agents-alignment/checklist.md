@@ -1,6 +1,6 @@
 ---
 title: "Checklist: 013 — Agent Alignment"
-description: "Verification Date: 2026-03-21"
+description: "Verification Date: 2026-03-25"
 ---
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
@@ -44,10 +44,10 @@ description: "Verification Date: 2026-03-21"
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] Family counts verified — 9 files each for base, ChatGPT, Claude, Codex, and Gemini runtime paths [EVIDENCE: runtime lineage review counted 9 canonical packet files for each of the five runtime families.]
+- [x] CHK-020 [P0] Family counts verified — 10 files each for base, ChatGPT, Claude, Codex, and Gemini runtime paths [EVIDENCE: `find .opencode/agent -maxdepth 1 -name '*.md' | wc -l` = 10 across all 5 runtimes (context, debug, deep-research, deep-review, handover, orchestrate, review, speckit, ultra-think, write).]
 - [x] CHK-021 [P0] Gemini symlink verified — `.gemini/agents/*.md` resolves through `.gemini -> .agents` [EVIDENCE: the packet documents the live symlinked Gemini runtime path explicitly.]
 - [x] CHK-022 [P1] Stale research naming removed from canonical packet docs [EVIDENCE: canonical packet docs now use deep-research naming consistently.]
-- [x] CHK-023 [P1] Strict spec validation executed [EVIDENCE: the packet was checked with strict spec validation during the reconciliation pass.]
+- [x] CHK-023 [P1] Strict spec validation executed [EVIDENCE: `validate.sh --strict` exits with 0 errors, 2 non-blocking warnings (custom Pass 2 section headers). SPEC_DOC_INTEGRITY passes. Run on 2026-03-25 after Pass 3 fixes.]
 <!-- /ANCHOR:testing -->
 
 ---

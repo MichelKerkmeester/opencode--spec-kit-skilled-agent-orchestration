@@ -13,9 +13,9 @@ description: "Truth-reconciled summary of the 013 agent-alignment packet against
 
 | Field | Value |
 |-------|-------|
-| Scope | Canonical 013 packet + content alignment across 25 agent files |
+| Scope | Canonical 013 packet + content alignment across 15 agent files (3 agents × 5 runtimes) |
 | Date | 2026-03-25 |
-| Status | Complete (truth-reconciled + content aligned) |
+| Status | Complete (truth-reconciled + content aligned + reality-verified) |
 | Type | Documentation reconciliation + content remediation |
 <!-- /ANCHOR:metadata -->
 
@@ -67,14 +67,14 @@ This pass did not perform a fresh runtime bulk sync. It reconciled the `013-agen
 
 | Check | Result |
 |-------|--------|
-| Base family count (`.opencode/agent/*.md`) | PASS |
-| ChatGPT family count (`.opencode/agent/chatgpt/*.md`) | PASS |
-| Claude runtime count (`.claude/agents/*.md`) | PASS |
-| Codex runtime count (`.codex/agents/*.toml`) | PASS |
-| Gemini runtime count (`find -L .gemini/agents`) | PASS |
+| Base family count (`.opencode/agent/*.md`) | PASS (10 files) |
+| ChatGPT family count (`.opencode/agent/chatgpt/*.md`) | PASS (10 files) |
+| Claude runtime count (`.claude/agents/*.md`) | PASS (10 files) |
+| Codex runtime count (`.codex/agents/*.toml`) | PASS (10 files) |
+| Gemini runtime count (`find -L .gemini/agents`) | PASS (10 files) |
 | Gemini symlink/runtime-path verification | PASS |
 | Stale research.md naming removed from packet docs | PASS |
-| Strict spec validation | PASS |
+| Strict spec validation | PASS (0 errors, 2 non-blocking warnings for custom Pass 2 sections) |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -93,9 +93,9 @@ This pass did not perform a fresh runtime bulk sync. It reconciled the `013-agen
 <!-- ANCHOR:pass2 -->
 ## Pass 2: Content Alignment Remediation (2026-03-25)
 
-Deep review of all 10 agent definitions across 5 runtimes (50 files) for content alignment with 022-hybrid-rag-fusion changes. Used 3 copilot agents (GPT-5.4 high) + cross-agent grep analysis. Verdict: CONDITIONAL → remediated to PASS.
+Deep review of all 10 agent definitions across 5 runtimes (50 files reviewed, 15 files changed) for content alignment with 022-hybrid-rag-fusion changes. Used 3 copilot agents (GPT-5.4 high) + cross-agent grep analysis. Verdict: CONDITIONAL → 6 of 7 P1 remediated (1 deferred).
 
-### Findings (7 P1, 7 P2 → all P1 remediated)
+### Findings (7 P1, 7 P2 → 6 P1 remediated, 1 P1 deferred)
 
 | Finding | Severity | Fix |
 |---------|----------|-----|
@@ -104,10 +104,10 @@ Deep review of all 10 agent definitions across 5 runtimes (50 files) for content
 | Dead `sk-code` path in orchestrate resource tables | P1 | Fixed → `sk-code--review` across 5 runtimes |
 | Memory command surface only /memory:save in orchestrate | P1 | Added all 6 commands to 5 runtimes |
 | /memory:shared missing from speckit | P1 | Added to all 5 runtimes |
-| memory/ EXCLUSIVITY exception too broad in speckit | P1 | Noted for follow-up (wording tightening) |
+| memory/ EXCLUSIVITY exception too broad in speckit | P1 | **Deferred** — noted for follow-up (wording tightening); not counted as remediated |
 | Stale claim-adjudication + JSONL schema in deep-review | P1 | Ported canonical schemas to all 5 runtimes |
 
-### Files Changed (25 agent files)
+### Files Changed (15 agent files)
 
 | Agent | Runtimes | Change |
 |-------|----------|--------|
@@ -127,8 +127,8 @@ Deep review of all 10 agent definitions across 5 runtimes (50 files) for content
 
 ### Review Artifacts
 
-- `scratch/review-report.md` — 9-section review report
-- `scratch/iteration-001.md` through `iteration-004.md` — per-wave findings
+- `scratch/archive-pass2/review-report.md` — 9-section review report
+- `scratch/archive-pass2/iteration-001.md` through `scratch/archive-pass2/iteration-004.md` — per-wave findings
 - `memory/25-03-26_12-55__deep-review-of-10-agent-definitions-across-5.md` — indexed memory
 <!-- /ANCHOR:pass2 -->
 

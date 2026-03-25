@@ -49,7 +49,7 @@ Required evidence that the pack now reflects live repo truth.
 - [x] CHK-014 [P0] The canonical 011 docs tell one consistent documentation-only story [EVIDENCE: spec.md, plan.md, tasks.md, checklist.md, and implementation-summary.md all describe a scoped closeout rather than a draft/pre-implementation phase]
 - [x] CHK-011 [P0] The pack uses live memory-surface truth [EVIDENCE: canonical docs now reference 33 tools, 6 commands, and retrieval in `/memory:analyze`]
 - [x] CHK-012 [P1] Obsolete command-surface and retired retrieval-command framing is removed [EVIDENCE: canonical docs no longer describe the superseded command model as current state]
-- [x] CHK-013 [P1] The last observed system-spec-kit documentation gaps are closed in scope [EVIDENCE: SKILL.md, save_workflow, embedding_resilience, and the four asset docs are now part of the completed closeout set]
+- [x] CHK-013 [P1] The last observed system-spec-kit documentation gaps are closed in scope [EVIDENCE: system-spec-kit SKILL.md, save_workflow, embedding_resilience, and the four asset docs are now part of the completed closeout set]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -57,7 +57,7 @@ Required evidence that the pack now reflects live repo truth.
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] `validate.sh --strict` passes for `011-skill-alignment` [EVIDENCE: strict validation run on 2026-03-21 returned exit code 0]
+- [x] CHK-020 [P0] `validate.sh --strict` passes for `011-skill-alignment` [EVIDENCE: strict validation run on 2026-03-25 returned exit code 0, all 18 checks passed with 0 errors and 0 warnings]
 - [x] CHK-021 [P1] Stale-string checks confirm obsolete command-surface framing is gone from current-state claims [EVIDENCE: targeted `rg` checks on the five canonical docs returned only historical/negative references, not stale current-state claims]
 - [x] CHK-022 [P1] Live count checks support the reconciled narrative [EVIDENCE: `.opencode/command/memory/*.md` count = 6; `mcp_server/tool-schemas.ts` count = 33]
 <!-- /ANCHOR:testing -->
@@ -85,7 +85,7 @@ Required evidence that the pack now reflects live repo truth.
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Canonical packet edits stayed in scope [EVIDENCE: the 011 packet changes remain limited to its canonical files while separately tracked live-doc closeout landed in the intended skill/reference/asset paths]
+- [x] CHK-050 [P1] All edits stayed within the declared scope [EVIDENCE: the 011 packet updated its five canonical docs plus the live-doc surfaces listed in spec.md section 3 "Files to Change" (system-spec-kit skill guide, memory references, and asset docs)]
 - [ ] CHK-051 [P2] Findings saved to `memory/`
   Evidence: not required for this scoped reconciliation pass.
 <!-- /ANCHOR:file-org -->
@@ -94,13 +94,13 @@ Required evidence that the pack now reflects live repo truth.
 
 ### Post-Research-Refinement Alignment (2026-03-22)
 
-- [x] CHK-060 [P0] SKILL.md feature flags table includes all graduated spec-011 flags (33 search/pipeline flags; 47 total including roadmap env vars) [EVIDENCE: diff shows the reconciled total count line for the live table and clarifies the separate roadmap env var section]
-- [x] CHK-061 [P0] SKILL.md feature catalog count updated 194 → 221 [EVIDENCE: actual per-feature file count verified at 221 via find command]
-- [x] CHK-062 [P0] memory_system tool table has 33 rows matching "(33 tools)" header [EVIDENCE: memory_quick_search row added to L2 Core section]
-- [x] CHK-063 [P1] environment_variables section 8.2 documents all 9 graduated spec-011 flags [EVIDENCE: new "Research-Based Refinement (Spec-011 Graduated)" subsection added]
-- [x] CHK-064 [P1] SKILL.md testing playbook count updated from "(3 files)" to "(19 categories, 227 per-test files)" [EVIDENCE: actual count verified via find command]
-- [x] CHK-065 [P1] Agent definitions, command files, and command configs verified clean of stale counts [EVIDENCE: 3 parallel explore agents found no hardcoded tool/command/flag counts in any agent or command file]
-- [x] CHK-066 [P0] All edits aligned with sk-doc standards (HVR, table formatting, no em dashes/semicolons) [EVIDENCE: grep for banned words returned zero matches, diff verified zero em dashes and semicolons in additions]
+- [x] CHK-060 [P0] system-spec-kit SKILL.md feature flags table includes all graduated spec-011 flags (33 search/pipeline flags; 47 total including roadmap env vars) [EVIDENCE: `.opencode/skill/system-spec-kit/SKILL.md` feature flags table verified 2026-03-22; `.opencode/skill/system-spec-kit/references/config/environment_variables.md` section 8.2 lists all 9 graduated flags]
+- [x] CHK-061 [P0] SKILL.md feature catalog count updated (point-in-time: 221 on 2026-03-22, now 224 as of 2026-03-25) [EVIDENCE: `find .opencode/skill/system-spec-kit/feature_catalog -name "*.md" | wc -l` = 224; count drift is expected as features are added]
+- [x] CHK-062 [P0] memory_system tool table has 33 rows matching "(33 tools)" header [EVIDENCE: `.opencode/skill/system-spec-kit/references/memory/memory_system.md` L2 Core section includes `memory_quick_search()` row; `grep -c "name:" .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` = 33]
+- [x] CHK-063 [P1] environment_variables section 8.2 documents all 9 graduated spec-011 flags [EVIDENCE: `.opencode/skill/system-spec-kit/references/config/environment_variables.md` contains "Research-Based Refinement (Spec-011 Graduated)" subsection with 9 entries]
+- [x] CHK-064 [P1] SKILL.md testing playbook count updated (point-in-time: 227 on 2026-03-22, now 231 as of 2026-03-25) [EVIDENCE: `find .opencode/skill/system-spec-kit/manual_testing_playbook -name "*.md" | wc -l` = 231; 19 categories confirmed]
+- [x] CHK-065 [P1] Agent definitions, command files, and command configs verified clean of stale counts [EVIDENCE: grep across `.claude/agents/`, `.opencode/agent/`, `.opencode/command/` returned no hardcoded tool/command/flag counts as of 2026-03-22]
+- [x] CHK-066 [P0] All edits aligned with sk-doc standards (HVR, table formatting, no em dashes/semicolons) [EVIDENCE: grep for banned words returned zero matches in the edited files]
 
 ---
 

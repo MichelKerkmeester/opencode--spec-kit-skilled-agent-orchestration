@@ -2,12 +2,12 @@
 title: "Cross-AI review audit launch"
 description: "Comprehensive cross-AI review audit (Phase 018 / Refinement Phase 7) of the entire Hybrid RAG Fusion Refinement program. Orchestrated 20+ review tasks across 3 AI models:..."
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion"
-  - "bug detection"
-  - "summary of existing features"
-  - "cross ai"
-  - "gemini 3"
-importance_tier: "normal"
+  - "multi-model review strategy"
+  - "Math.max spread overflow"
+  - "cross-AI phase 018 launch"
+  - "20-task parallel review audit"
+  - "phase 018 refinement"
+importance_tier: "important"
 contextType: "research"
 quality_score: 1.00
 quality_flags: []

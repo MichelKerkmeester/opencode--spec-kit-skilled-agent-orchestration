@@ -1,5 +1,5 @@
 ---
-title: "Executed a comprehensive"
+title: "Executed comprehensive post-review remediation for spec 010"
 description: "Executed post-review remediation for 005-architecture-audit, fixed all P0/P1 issues plus minor findings, and re-validated the spec with zero warnings."
 trigger_phrases:
   - "post-review remediation"

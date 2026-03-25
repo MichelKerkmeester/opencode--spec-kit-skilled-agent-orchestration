@@ -92,7 +92,15 @@ Live repo truth informs the reconciled spec pack. The reconciled pack then acts 
 - [x] Add campaign/shared-space/cross-phase guidance to the complexity and level decision assets
 - [x] Add campaign/shared-space/cross-phase template-routing guidance to template_mapping
 
-### Phase 5: Verification
+### Phase 5: Post-Research-Refinement Alignment (2026-03-22)
+- [x] Reconcile SKILL.md feature flags table count (25 to 33 search/pipeline flags; 47 total including roadmap env vars)
+- [x] Update feature catalog count in SKILL.md (194 to 221)
+- [x] Update testing playbook count in SKILL.md
+- [x] Add `memory_quick_search()` row to memory_system tool reference table
+- [x] Add 9 graduated spec-011 flags to environment_variables section 8.2
+- [x] Verify agent definitions, command files, and command configs have no stale references
+
+### Phase 6: Verification
 - [x] Run strict validation for the reconciled 011 pack
 - [x] Re-run stale-string checks for obsolete command-surface language
 <!-- /ANCHOR:phases -->

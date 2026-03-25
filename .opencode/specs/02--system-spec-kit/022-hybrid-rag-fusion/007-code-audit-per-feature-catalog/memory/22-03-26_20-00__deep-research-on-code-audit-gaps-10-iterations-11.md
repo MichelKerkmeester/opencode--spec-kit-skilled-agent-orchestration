@@ -12,7 +12,7 @@ trigger_phrases:
   - "session manager blind spot"
   - "flag graduation impact"
   - "per-phase risk model"
-importance_tier: "critical"
+importance_tier: "important"
 contextType: "general"
 _sourceTranscriptPath: ""
 _sourceSessionId: ""
@@ -292,7 +292,7 @@ repository_state: "unavailable"
 is_detached_head: No
 
 # Classification
-importance_tier: "critical"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)

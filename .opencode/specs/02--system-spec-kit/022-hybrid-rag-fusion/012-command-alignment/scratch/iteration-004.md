@@ -1,57 +1,41 @@
-# Review Findings: Wave 2, Agent B2
-
-## Metadata
-- Dimension: correctness
-- Files Reviewed: 9 (6 YAMLs + 3 command docs)
-- Model: gpt-5.4
-- Effort: high
-- Wave: 2 of 5
+# Iteration 004 — D4 Maintainability
+## Dimension: Maintainability
+## Focus: Assess clarity, template resilience, duplication risk, historical/current separation, and 021 alignment
 
 ## Findings
+### P2-003: `spec.md` keeps required anchors but its supplemental sections are misnumbered and partially unanchored
+- Severity: P2
+- Dimension: maintainability
+- File: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/spec.md:182-267
+- Claim: The canonical spec still satisfies the core Level 2 anchors, but after `## 5. SUCCESS CRITERIA` it switches into unanchored supplemental material (`### Gap Analysis`, `### Reconciled Decisions`, `### Approach`) and then jumps from `## 6. RISKS & DEPENDENCIES` to `## 10. OPEN QUESTIONS`.
+- Reality: A new reviewer can still follow the packet, but the numbering no longer forms a stable navigation contract; by comparison, 021 keeps its executive-summary anchor and contiguous numbered sections through `## 16. OPEN QUESTIONS` (`021/spec.md:39-52`, `170-226`, `373-374`).
+- Evidence: `spec.md:182-252` introduces four `6.x`-style subsections plus additional unnumbered sections with no anchors; `spec.md:254-267` resumes numbered sections at `## 6` and `## 10`; `spec.md:293-299` adds `### Phase Navigation` outside the numbered flow.
+- Impact: Future editors and reviewers cannot rely on section numbers or anchors to find the same concepts consistently, which makes cross-spec comparison, scripted navigation, and template upkeep more brittle than the 021 baseline.
+- Fix: Either promote the post-success-criteria material into anchored, monotonic numbered sections that match the template conventions, or demote it into clearly labeled appendices so the main section numbering remains stable.
 
-### [F-017] [P1] Plan save-context never invokes the required memory-generation step
-- **File**: `spec_kit_plan_auto.yaml:419-430`, `spec_kit_plan_confirm.yaml:460-477`
-- **Evidence**: plan.md:277-283 requires generate-context.js after Step 6. But YAMLs only Read SKILL.md, assume output filename, and call memory_save on assumed path.
-- **Impact**: Step 6 can claim success without ever creating the memory file it tries to index.
-- **Fix**: Add explicit generate-context.js call and index the actual emitted file.
+### P2-004: Mutable live-state facts are duplicated across all five canonical docs, so a simple surface change requires coordinated multi-file edits
+- Severity: P2
+- Dimension: maintainability
+- File: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/spec.md:22-32
+- Claim: The packet repeatedly restates the same mutable facts: 33 tools, 6 commands, `/memory:analyze` ownership, and the 2026-03-21 drift closeout.
+- Reality: Those facts are not centralized. If the live surface changes again (for example, 33 -> 34 tools), maintainers must update at least the five canonical docs, and likely any derived review artifacts, to avoid recreating drift.
+- Evidence: `spec.md:22-32,81-85,129-141,156-159,200-221`; `plan.md:26,43,56-57,73-74,81-92,108-112,203-204`; `tasks.md:54-63,76-78,92-101,141-143`; `checklist.md:44-58,77-79`; `implementation-summary.md:27-37,47-53,86-100` all restate the same current-truth values in slightly different forms.
+- Impact: The packet is readable today, but it is not resilient to follow-on change: a one-line reality update fans out into at least five canonical file edits, which is exactly the kind of independently drifting duplication this spec was meant to retire.
+- Fix: Centralize mutable live-state facts in one canonical snapshot/table (or generate them from a single source), and have the other docs reference that snapshot instead of re-encoding the counts and ownership narrative in every artifact.
 
-### [F-018] [P1] Command tool allowlists do not permit the memory tools their YAMLs require
-- **File**: `plan.md:1-4`, `implement.md:1-4`, `complete.md:1-4`
-- **Evidence**: plan/implement allow memory_context/memory_search but not memory_save; complete allows no memory tools. YAMLs require them for context load/index steps.
-- **Impact**: A compliant executor cannot perform documented context load/index steps.
-- **Fix**: Align frontmatter allowed-tools with YAML contract.
-
-### [F-019] [P1] Implement PRE/POSTFLIGHT definitions no longer match MCP contract
-- **File**: `implement.md:282-305`, `spec_kit_implement_auto.yaml:370-389,469-489`
-- **Evidence**: implement.md requires 0-100 scores and weighted learning index. YAMLs use 0-10 narrative scorecards and /3 averaging.
-- **Impact**: Implementation mode cannot produce the learning records the command doc specifies.
-- **Fix**: Replace narrative blocks with actual MCP-call schema from implement.md.
-- **Note**: Overlaps with F-009 (same root cause, different evidence angle).
-
-### [F-020] [P1] `:with-research` is inserted before specification instead of at planning Step 6
-- **File**: `complete.md:98`, `spec_kit_complete_auto.yaml:37-38,462-476`
-- **Evidence**: complete.md says research at Step 6. YAMLs run phase_3_research before step_3_specification.
-- **Impact**: Workflow order contradicts documented lifecycle; research starts before spec artifacts exist.
-- **Fix**: Move research insertion to planning boundary.
-- **Note**: Overlaps with F-010 (same root cause, more evidence).
-
-### [F-021] [P1] Checklist evidence is required before implementation exists
-- **File**: `spec_kit_implement_auto.yaml:352-360`, `spec_kit_complete_auto.yaml:539-549`
-- **Evidence**: YAMLs require verifying checklist items and marking evidence before development step. Docs reserve verification for post-implementation.
-- **Impact**: Forces premature pass/fail decisions before code/tests exist.
-- **Fix**: Split checklist generation from post-implementation verification.
-
-### [F-022] [P2] Complete auto/confirm variants do not emit identical step outputs
-- **File**: `spec_kit_complete_auto.yaml:512-515` vs `spec_kit_complete_confirm.yaml:549-551`
-- **Evidence**: Auto includes Step 3 location output that confirm omits. Multiple output shape differences.
-- **Fix**: Normalize outputs between variants.
-
-### [F-023] [P2] Task completion markers are internally inconsistent
-- **File**: `spec_kit_implement_auto.yaml:409` vs `spec_kit_implement_auto.yaml:290`
-- **Evidence**: Development steps use [X], enforcement checks count [x].
-- **Fix**: Standardize on one checkbox form.
+## Files Reviewed
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/spec.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/plan.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/tasks.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/checklist.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/implementation-summary.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/scratch/deep-review-strategy.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/scratch/deep-research-state.jsonl
+- .opencode/specs/02--system-spec-kit/021-spec-kit-phase-system/spec.md
 
 ## Summary
-- Total findings: 7 (P0=0, P1=5, P2=2)
-- Duplicate overlaps: F-019≈F-009, F-020≈F-010
-- newFindingsRatio: 0.71 (5 unique new P1s after dedup)
+- New findings: P0=0 P1=0 P2=2
+- Files reviewed: 8
+- Dimension status: complete
+- The 012 packet remains understandable to a new reviewer and still carries the required Level 2 anchors, but it is only moderately self-sustaining: `spec.md`'s numbering/anchor pattern is looser than 021's, and the same live-state facts are duplicated across the full canonical packet.
+- Safe follow-on change cost is at least five canonical files (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`) for any future count/ownership change, with additional review artifacts likely needing cleanup if they are treated as current references.

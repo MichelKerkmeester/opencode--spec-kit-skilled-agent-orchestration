@@ -1,21 +1,37 @@
 {
   "functional_mode": "REVIEW",
   "execution_mode": "AUTONOMOUS",
-  "review_target": "10 agent definitions across 5 runtimes (base, chatgpt, claude, codex, gemini) vs 022-hybrid-rag-fusion changes",
-  "review_target_type": "agent",
+  "mode": "review",
+  "review_target": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment",
+  "review_target_type": "spec-folder",
   "review_dimensions": ["correctness", "security", "traceability", "maintainability"],
+  "review_focus": "Perfect alignment with current reality and with 021-spec-kit-phase-system",
+  "cross_reference": ".opencode/specs/02--system-spec-kit/021-spec-kit-phase-system",
   "spec_folder": ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment",
   "maxIterations": 5,
   "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
   "agent_strategy": "cli-copilot",
-  "wave_size": 2,
-  "waves": [
-    {"wave": 1, "agentA": {"target": "@context", "model": "gpt-5.3-codex", "effort": "xhigh"}, "agentB": {"target": "@orchestrate", "model": "gpt-5.4", "effort": "high"}},
-    {"wave": 2, "agentA": {"target": "@speckit", "model": "gpt-5.3-codex", "effort": "xhigh"}, "agentB": {"target": "@deep-review", "model": "gpt-5.4", "effort": "high"}},
-    {"wave": 3, "agentA": {"target": "@deep-research", "model": "gpt-5.3-codex", "effort": "xhigh"}, "agentB": {"target": "@handover", "model": "gpt-5.4", "effort": "high"}},
-    {"wave": 4, "agentA": {"target": "@review", "model": "gpt-5.3-codex", "effort": "xhigh"}, "agentB": {"target": "@debug", "model": "gpt-5.4", "effort": "high"}},
-    {"wave": 5, "agentA": {"target": "@ultra-think", "model": "gpt-5.3-codex", "effort": "xhigh"}, "agentB": {"target": "@write", "model": "gpt-5.4", "effort": "high"}}
+  "agent_model": "gpt-5.4",
+  "agent_effort": "high",
+  "severityThreshold": "P2",
+  "crossReference": {
+    "core": ["spec_code", "checklist_evidence"],
+    "overlay": ["agent_cross_runtime"]
+  },
+  "reviewScopeFiles": [
+    ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/spec.md",
+    ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/plan.md",
+    ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/tasks.md",
+    ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/checklist.md",
+    ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment/implementation-summary.md",
+    ".opencode/specs/02--system-spec-kit/021-spec-kit-phase-system/spec.md",
+    ".opencode/agent/*.md",
+    ".opencode/agent/chatgpt/*.md",
+    ".claude/agents/*.md",
+    ".codex/agents/*.toml",
+    ".gemini/agents/*.md"
   ],
-  "created": "2026-03-25",
-  "prior_work": "013-agents-alignment lineage truth reconciliation (completed 2026-03-21)"
+  "createdAt": "2026-03-25T15:10:00Z",
+  "status": "complete"
 }

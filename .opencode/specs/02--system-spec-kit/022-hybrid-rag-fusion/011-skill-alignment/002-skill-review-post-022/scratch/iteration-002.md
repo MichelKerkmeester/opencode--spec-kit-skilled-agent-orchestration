@@ -1,65 +1,23 @@
-# Iteration 002 — Traceability, references/structure/
+### Finding COR-001: Current packet no longer satisfies its own strict-validation completion claim
+- **Severity**: P1
+- **Dimension**: correctness
+- **File**: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/checklist.md:60
+- **Evidence**: `checklist.md` marks CHK-020 complete with the claim that `validate.sh --strict` passes, but the current recursive validation run exits with code 2. The parent packet now reports PHASE_LINKS warnings between phases `001-post-session-capturing-alignment` and `002-skill-review-post-022`, and the `002-skill-review-post-022` child fails ANCHORS/TEMPLATE validation.
+- **Impact**: Reviewers are told SC-005 / CHK-020 is satisfied when the current folder state fails strict validation. That makes the packet's present-tense verification evidence incorrect.
+- **Fix**: Either restore recursive compliance in `002-skill-review-post-022` and repair the 001↔002 phase metadata links, or downgrade the completion claims in `plan.md`/`checklist.md` until validation passes again.
 
-**Agent**: A2 (gpt 5.4, high)
-**Dimension**: Traceability
-**Model**: gpt-5.4
-**Duration**: ~3m 10s
+### Finding COR-002: Implementation summary scope contradicts the work it says was delivered
+- **Severity**: P1
+- **Dimension**: correctness
+- **File**: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/implementation-summary.md:20
+- **Evidence**: The metadata block says the scope was `Five canonical docs only`, but the same file later says the pass closed drift in `SKILL.md`, `save_workflow`, `embedding_resilience`, and the asset docs, then adds a second pass touching `references/config/environment_variables` and `references/memory/memory_system`.
+- **Impact**: This breaks REQ-001's requirement that the canonical packet tell one consistent story. A reviewer cannot rely on the summary metadata to understand what was actually changed.
+- **Fix**: Update the metadata scope to cover the full closeout surface, or split the summary into clearly scoped passes with accurate per-pass scope labels.
 
-## Findings
-
-### Finding 002-F1
+### Finding COR-003: Phase topology documentation is stale after the review child packet was added
 - **Severity**: P2
-- **Dimension**: traceability
-- **File**: `.opencode/skill/system-spec-kit/references/structure/folder_structure.md:252`
-- **Title**: Sub-folder examples flatten phased packets into generic iterations
-- **Evidence**: "Iterative Work (Sub-folders)" shows flat `001-endpoint-analysis/` pattern
-- **Expected**: Show 022 pattern: root coordination packet with point-in-time spec.md + numbered child phase packets
-- **Impact**: Readers won't model coordination-root + phase-packet topology correctly
-- **Fix**: Add phased coordination packet example showing root docs + 001-019 direct phases
-
-### Finding 002-F2
-- **Severity**: P1
-- **Dimension**: traceability
-- **File**: `.opencode/skill/system-spec-kit/references/structure/folder_routing.md:254`
-- **Title**: Fallback routing uses numeric heuristics instead of explicit root-or-phase targeting
-- **Evidence**: "Suggests highest-numbered" via `ls specs/ | grep "^[0-9]" | sort -rn | head -1`
-- **Expected**: Phase-aware guidance: prefer explicit root packet or explicit full phase path
-- **Impact**: In 19-phase tree, highest-numbered misroutes context into wrong packet
-- **Fix**: Replace highest-numbered fallback with phase-aware routing guidance + 022-style examples
-
-### Finding 002-F3
-- **Severity**: P1
-- **Dimension**: traceability
-- **File**: `.opencode/skill/system-spec-kit/references/structure/phase_definitions.md:124`
-- **Title**: Child phase spec example teaches pre-normalization YAML back-reference format
-- **Evidence**: Uses YAML `parent: specs/###-parent-feature/` and `phase: 1 of 3`
-- **Expected**: Match 022 reality: in-document metadata table with Parent Spec, Predecessor, Successor
-- **Impact**: Teaches obsolete child navigation contract; authors will omit neighboring-phase links
-- **Fix**: Replace YAML example with 022-style metadata table as canonical pattern
-
-### Finding 002-F4
-- **Severity**: P1
-- **Dimension**: traceability
-- **File**: `.opencode/skill/system-spec-kit/references/structure/phase_definitions.md:207`
-- **Title**: PHASE_LINKS rules omit neighboring-phase navigation requirements
-- **Evidence**: Only checks parent back-reference, status consistency, naming convention
-- **Expected**: Include predecessor/successor checks per 022 normalization
-- **Impact**: Newly standardized neighbor navigation invisible; same drift can recur
-- **Fix**: Expand PHASE_LINKS to include predecessor/successor checks
-
-### Finding 002-F5
-- **Severity**: P2
-- **Dimension**: traceability
-- **File**: `.opencode/skill/system-spec-kit/references/structure/sub_folder_versioning.md:205`
-- **Title**: Nested-path guidance stops at parent/child, not 022-style deeper packet families
-- **Evidence**: Examples only show two-level nesting: `003-parent/121-child`
-- **Expected**: Cover deeper trees like 022->001-epic->010-sprint (3+ levels)
-- **Impact**: Future deep-nested packet families documented as if only one child level exists
-- **Fix**: Add three-level 022-style example distinguishing root, phase, and deeper descendants
-
-## Summary
-- P0: 0
-- P1: 3
-- P2: 2
-- Files reviewed: folder_structure.md, folder_routing.md, phase_definitions.md, sub_folder_versioning.md, 022/spec.md, 022/002-indexing-normalization/spec.md
-- newFindingsRatio: 0.607
+- **Dimension**: correctness
+- **File**: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/spec.md:91
+- **Evidence**: The parent phase map lists only `001-post-session-capturing-alignment`, while the current folder also contains `002-skill-review-post-022`. The `001-post-session-capturing-alignment` child does exist with a full Level 2 artifact set (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`) and validates cleanly, but its `spec.md` still says `Successor | None`, which is now stale.
+- **Impact**: The parent packet no longer accurately describes its child-phase structure, which weakens navigability and contributes to the PHASE_LINKS warnings surfaced by strict validation.
+- **Fix**: Add `002-skill-review-post-022` to the parent phase map and align predecessor/successor metadata between the 001 and 002 child packets.

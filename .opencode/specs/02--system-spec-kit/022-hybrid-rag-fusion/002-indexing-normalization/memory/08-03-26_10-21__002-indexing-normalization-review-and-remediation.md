@@ -2,12 +2,10 @@
 title: "002-indexing-normalization"
 description: "Code review PASS confirmed — no P0 bugs across 5 reviewed files (memory-parser.ts, canonical-path.ts, memory-index.ts, memory-crud-list.ts, importance-tiers.ts)."
 trigger_phrases:
-  - "find memory files"
   - "find spec documents"
-  - "memory parser"
   - "memory index"
   - "memory crud list"
-importance_tier: "normal"
+importance_tier: "important"
 contextType: "general"
 quality_score: 1.00
 quality_flags: []
@@ -285,7 +283,7 @@ spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/002-indexing-normalizati
 channel: "main"
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)

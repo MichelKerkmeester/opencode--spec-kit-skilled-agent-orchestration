@@ -1,51 +1,23 @@
-# Iteration 003 — Wave 2A: @speckit Agent Review
+# Iteration 003 — D2 Security
 
-**Agent**: GPT-5.4 (high) via copilot CLI
-**Status**: Complete
-**Duration**: ~12 min
-
----
+**Agent:** GPT-5.4 (high) via cli-copilot
+**Dimension:** security
+**Status:** complete
+**Timestamp:** 2026-03-25T15:25:00Z
 
 ## Findings
 
-### WAVE-2A-001
-- **Severity**: P1
-- **Dimension**: correctness
-- **Files**: All 5 runtimes (speckit.md/.toml)
-- **Finding**: Unqualified paths (`templates/level_N/`, `scripts/spec/create.sh`, `scripts/spec/validate.sh`, `scripts/templates/compose.sh`) that don't resolve from repo root and aren't the canonical locations.
-- **Evidence**: Live assets at `.opencode/skill/system-spec-kit/templates/{level_1,level_2,level_3,level_3+}` and `.opencode/skill/system-spec-kit/scripts/spec/...`. Repo-root `templates/` and `scripts/spec/` do not exist.
-- **Fix**: Replace with canonical repo-rooted paths or state paths are relative to skill root.
+### F-001 [P1] CHK-030 overstates Pass 2 scope and file count
+- **File:line:** checklist.md:58, implementation-summary.md:16,110; tasks.md:89
+- **Evidence:** CHK-030 says "only scoped live runtime agent docs were modified" but git shows 15 agent files plus 11 spec-folder artifacts. The "25 agent files" claim in implementation-summary.md and tasks.md is internally inconsistent with the 3×5=15 file breakdown.
+- **Recommendation:** Distinguish 15 runtime agent files from additional packet/memory/scratch artifacts.
 
-### WAVE-2A-002
-- **Severity**: P1
-- **Dimension**: security
-- **Files**: All 5 runtimes (speckit.md/.toml)
-- **Finding**: EXCLUSIVITY exception for `memory/` is too broad — permits inference that memory/ writes are generally exempt rather than enforcing generate-context.js only.
-- **Evidence**: Files say "Files in memory/ (uses generate-context.js) ... are also excepted." Current command docs mandate memory files MUST be created via generate-context.js.
-- **Fix**: Explicitly allow only /memory:save or generate-context.js, add hard prohibition on direct Write/Edit into memory/.
+### F-002 [P1] memory/ EXCLUSIVITY exception not actually remediated
+- **File:line:** implementation-summary.md:98,107
+- **Evidence:** Summary claims "7 P1, 7 P2 → all P1 remediated" and "CONDITIONAL → remediated to PASS." But row 107 says: "memory/ EXCLUSIVITY exception too broad in speckit | P1 | Noted for follow-up (wording tightening)." The broad exception is still live in all 5 speckit agents. This P1 was NOT remediated.
+- **Recommendation:** Either tighten the exception wording now, or change completion language to reflect one open P1.
 
-### WAVE-2A-003
-- **Severity**: P2
-- **Dimension**: traceability
-- **Files**: All 5 runtimes (speckit.md/.toml)
-- **Finding**: Memory-surface docs list only 5 commands, omit `/memory:shared`.
-- **Evidence**: None mention /memory:shared. Current surface is 6 commands.
-- **Fix**: Add /memory:shared to command surface enumeration.
-
-### WAVE-2A-004
-- **Severity**: P2
-- **Dimension**: correctness
-- **File**: `.codex/agents/speckit.toml` only
-- **Finding**: Codex runtime labels /memory:learn as "Explicit learning" (stale post-constitutional refactor).
-- **Evidence**: `.codex/agents/speckit.toml` ~536 says "Explicit learning" vs current "Constitutional Memory Manager".
-- **Fix**: Rename to "Constitutional memory manager".
-
-## Summary
-
-| Severity | Count |
-|----------|-------|
-| P0 | 0 |
-| P1 | 2 |
-| P2 | 2 |
-
-**Overall Assessment**: Level definitions aligned, but runtime docs need cleanup on canonical paths, memory-write governance, and post-022 memory command surface.
+## Verified OK (No Finding)
+- **CHK-031:** No credential patterns found in spec folder or agent files (searched for api key, token, secret, private key, AWS/OpenAI/GitHub patterns). PASS.
+- **CHK-032:** Packet does NOT over-claim fresh runtime sync work. Language consistently frames as reconciliation/remediation. PASS.
+- **Scope boundaries:** Changes limited to documentation packets and agent definitions. No runtime config introduced. PASS.

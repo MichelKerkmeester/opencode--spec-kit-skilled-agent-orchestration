@@ -684,13 +684,13 @@ Context preservation across sessions via hybrid search (vector similarity + BM25
 | `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | Canonical capability flag for adaptive-ranking experiments; remains dormant unless explicitly enabled |
 | `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | `true` | Canonical capability flag for scope-enforcement rollout tracking |
 | `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | `true` | Canonical capability flag for governance-guardrail rollout tracking |
-| `SPECKIT_MEMORY_SHARED_MEMORY` | `true` | Canonical capability flag for the shared-memory milestone |
+| `SPECKIT_MEMORY_SHARED_MEMORY` | `false` | Shared-memory capability flag; default OFF, requires opt-in via `/memory:shared` or explicit env enablement |
 | `SPECKIT_HYDRA_LINEAGE_STATE` | `true` | Legacy alias for `SPECKIT_MEMORY_LINEAGE_STATE` |
 | `SPECKIT_HYDRA_GRAPH_UNIFIED` | `true` | Legacy alias for `SPECKIT_MEMORY_GRAPH_UNIFIED` |
 | `SPECKIT_HYDRA_ADAPTIVE_RANKING` | `false` | Legacy alias for `SPECKIT_MEMORY_ADAPTIVE_RANKING`; dormant unless explicitly enabled |
 | `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `true` | Legacy alias for `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` |
 | `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `true` | Legacy alias for `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` |
-| `SPECKIT_HYDRA_SHARED_MEMORY` | `true` | Legacy alias for `SPECKIT_MEMORY_SHARED_MEMORY` |
+| `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | Legacy alias for `SPECKIT_MEMORY_SHARED_MEMORY`; default OFF |
 
 > **47 flags total across both tables.** Set via environment variable before starting the MCP server (e.g., `SPECKIT_ADAPTIVE_FUSION=1`).
 

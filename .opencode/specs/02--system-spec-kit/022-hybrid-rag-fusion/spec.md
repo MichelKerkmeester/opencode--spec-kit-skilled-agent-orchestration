@@ -36,7 +36,7 @@ This root packet is the coordination layer for the Hybrid RAG Fusion program. It
 | **Updated** | 2026-03-25 |
 | **Branch** | `main` |
 | **Directory Totals** | Point-in-time snapshot on `2026-03-25`: `399` total directories under `022`; `21` top-level directories from `find ... -maxdepth 1 -type d` |
-| **Key Numbered Child Counts** | `001=12`, `007=22`, `008=6`, `009=20`, `011=1`, `015=22` |
+| **Key Numbered Child Counts** | `001=12`, `007=22`, `008=6`, `009=20`, `011=2`, `015=22` |
 | **Feature Catalog Count** | 222 feature files |
 
 ---
@@ -118,7 +118,7 @@ Provide a concise root packet that records the current 022 tree truth, anchors t
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | Root packet includes the required companion docs for Level 3+ work | `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md` exist under the 022 root |
-| REQ-002 | Root status claims use verified current tree counts | Root docs state a point-in-time snapshot of `399` total directories under `022`, `21` top-level directories at the root, and numbered child counts `001=12`, `007=22`, `008=6`, `009=20`, `011=1`, `015=22` |
+| REQ-002 | Root status claims use verified current tree counts | Root docs state a point-in-time snapshot of `399` total directories under `022`, `21` top-level directories at the root, and numbered child counts `001=12`, `007=22`, `008=6`, `009=20`, `011=2`, `015=22` |
 | REQ-003 | Root packet preserves the current truth of phases `009` and `015` | Root docs state that phase `009` has 20 numbered child directories and phase `015` remains in progress because only 4 of its 22 numbered child specs are `Complete`, while 15 remain `Not Started` and 3 remain `Draft` placeholders |
 | REQ-004 | Direct child phase refs use validator-friendly forms | Direct child packet specs use a parent link plus explicit neighboring phase references |
 | REQ-005 | Root packet includes a live direct-phase map | `PHASE DOCUMENTATION MAP` lists all 19 direct phases with truthful status values |

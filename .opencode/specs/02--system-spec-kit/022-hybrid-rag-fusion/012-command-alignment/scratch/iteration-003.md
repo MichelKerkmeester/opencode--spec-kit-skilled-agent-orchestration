@@ -1,52 +1,47 @@
-# Review Findings: Wave 2, Agent A2
-
-## Metadata
-- Dimension: correctness
-- Files Reviewed: 8
-- Model: gpt-5.3-codex
-- Effort: xhigh
-- Wave: 2 of 5
+# Iteration 003 — D3 Traceability
+## Dimension: Traceability
+## Focus: Verify REQ alignment, checklist evidence, cross-references, and source-of-truth paths
 
 ## Findings
+### P1-002: Checklist scope evidence contradicts the packet's own closeout record
+- Severity: P1
+- Dimension: traceability
+- File: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/checklist.md:67-69
+- Claim: CHK-030 marks the pass as verified because it "edits only spec-pack markdown" and says all edits were confined to the five scoped markdown files.
+- Reality: The same packet says the reconciliation scope included runtime-doc drift patches to `analyze.md` and `shared.md`, so CHK-030's evidence is false as written even though the higher-level claim about "no runtime behavior changed" can still be true.
+- Evidence: `checklist.md:34-36` says the pass covered the five canonical docs plus runtime-doc drift patches to `analyze.md` and `shared.md`; `implementation-summary.md:16,45-53` repeats that scope and lists `analyze.md` and `shared.md` among changed files; `checklist.md:69-70,87-88` also acknowledges intended live command-doc edits elsewhere in the same checklist.
+- Impact: Auditors cannot trust the checklist as a source-of-truth for what files were actually touched, so the closeout trail weakens the spec pack's provenance and makes scope verification internally inconsistent.
+- Fix: Rewrite CHK-030 (and any dependent scope language) so it distinguishes "no runtime behavior changed" from "which files were edited," and align the evidence text with the packet's documented scope.
 
-### [F-011] [P1] Review hard-stop path bypasses required quality-gate check
-- **File**: `spec_kit_deep-research_review_auto.yaml:286` (mirror: `review_confirm.yaml:314`)
-- **Evidence**: YAML hard-stops on `all_dimensions_clean` directly, while quality guards are only evaluated later in a separate branch. Reference pseudocode requires gate check before `all_dimensions_clean` STOP (`convergence.md:684-688`).
-- **Impact**: STOP can occur without enforcing evidence/scope/coverage gates in that hard-stop branch.
-- **Fix**: Move gate evaluation into the `all_dimensions_clean` hard-stop branch.
-- **Claim Adjudication**: Confidence 0.91. Downgrade if runtime engine injects implicit gate enforcement.
+### P2-002: Several completed checklist items rely on self-asserted process evidence instead of durable artifacts
+- Severity: P2
+- Dimension: traceability
+- File: .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/checklist.md:36-37
+- Claim: CHK-003 and CHK-024 are marked verified because live runtime docs were re-read before writing and `validate.sh --strict` was rerun after reconciliation.
+- Reality: Inside the 012 packet, those checks are supported only by prose assertions in the checklist/summary docs; there is no captured command output, timestamped validator log, or artifact path that independently proves the reread/validation steps happened.
+- Evidence: `checklist.md:36-37` and `checklist.md:59-60` provide assertion-only evidence; the other on-disk `validate.sh --strict` references are still narrative planning/summary mentions at `plan.md:22,102` and `implementation-summary.md:92`, not executable evidence records.
+- Impact: The packet remains understandable, but reviewers cannot independently validate process-heavy [x] items from the spec artifacts alone, so evidence strength is overstated.
+- Fix: Attach durable evidence for process claims (for example, a validator transcript path, timestamped command output, or explicit evidence note pointing at a saved artifact) or downgrade the checklist wording from "verified" to "attested."
 
-### [F-012] [P1] `dimensionCoverage` emitted as string, violating numeric state contract
-- **File**: `spec_kit_deep-research_review_auto.yaml:577` (mirror: `review_confirm.yaml:680`)
-- **Evidence**: Synthesis event appends `"dimensionCoverage":"{dimension_coverage}"` (quoted string), contract requires numeric ratio (`state_format.md:551,562`).
-- **Impact**: Replay validation and downstream numeric comparisons can miscompute or fail.
-- **Fix**: Compute numeric ratio and emit unquoted numeric JSON field.
-- **Claim Adjudication**: Confidence 0.95.
-
-### [F-013] [P1] Research convergence signals omit required "exclude thought iterations" rule
-- **File**: `spec_kit_deep-research_auto.yaml:227` (mirror: `confirm.yaml:250`)
-- **Evidence**: Composite signal logic uses `mean(last 3 newInfoRatios)` / `MAD(all ratios)` with no thought-status filtering. Canonical convergence requires thought-filtered input (`convergence.md:61-66,72-81`).
-- **Impact**: Thought-only iterations can distort convergence signals and trigger premature stop.
-- **Fix**: Explicitly filter out `status == "thought"` in research signal inputs.
-- **Claim Adjudication**: Confidence 0.86.
-
-### [F-014] [P1] Claim-adjudication failure branch is non-binding (no enforceable STOP block)
-- **File**: `spec_kit_deep-research_review_auto.yaml:401` (mirror: `review_confirm.yaml:451`)
-- **Evidence**: On adjudication failure, YAML only logs and says "require rewrite before STOP", but no state flag is wired into convergence checks.
-- **Impact**: Iterations missing required P0/P1 claim packets may still contribute to convergence/termination.
-- **Fix**: Persist `claim_adjudication_passed=false` and add it as a required convergence guard.
-- **Claim Adjudication**: Confidence 0.84.
-
-### [F-015] [P2] Auto-mode error JSONL append uses unresolved placeholders (`{N}`, `{focus}`)
-- **File**: `spec_kit_deep-research_auto.yaml:307` (mirror: `review_auto.yaml:399`)
-- **Evidence**: Error append uses `run:{N}` while workflow variables are named `current_iteration`/`next_focus`.
-- **Fix**: Replace with defined bindings consistently.
-
-### [F-016] [P2] Review config `reviewDimensions` type may drift from canonical array schema
-- **File**: `spec_kit_deep-research_review_auto.yaml:194` (mirror: `review_confirm.yaml:197`)
-- **Evidence**: Config writes scalar placeholder, while canonical schema expects string array.
-- **Fix**: Normalize to array before config write.
+## Files Reviewed
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/spec.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/plan.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/tasks.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/checklist.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/implementation-summary.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/description.json
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/scratch/deep-review-strategy.md
+- .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/012-command-alignment/scratch/deep-research-state.jsonl
+- .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts
+- .opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts
+- .opencode/command/memory/analyze.md
+- .opencode/command/memory/manage.md
+- .opencode/command/memory/shared.md
+- .opencode/command/memory/README.txt
+- .opencode/specs/02--system-spec-kit/021-spec-kit-phase-system/spec.md
 
 ## Summary
-- Total findings: 6 (P0=0, P1=4, P2=2)
-- newFindingsRatio: 0.83
+- New findings: P0=0 P1=1 P2=1
+- Files reviewed: 15
+- Dimension status: complete
+- REQ-001 through REQ-010 still align with the live 33-tool / 6-command surface, the source-of-truth paths resolve, and both predecessor/successor spec files (`011`, `013`) exist; the residual traceability issues are in checklist evidence quality, not in the spec's factual alignment.

@@ -1,150 +1,84 @@
-# Deep Review Strategy - Session Tracking
+# Deep Review Strategy: 011-skill-alignment Alignment with Current Reality
 
-## 2. TOPIC
-Review system-spec-kit skill documentation files (SKILL.md, references/, assets/, templates/) for drift introduced by the 022-hybrid-rag-fusion root-packet normalization (2026-03-25). The 022 root was rewritten from synthesis prose to a coordination document with point-in-time snapshots, standardized direct-child navigation (parent links + neighboring phase references), and ADR-001 ("current tree truth trumps historical synthesis").
+## Review Target
+- **Target**: `.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment`
+- **Type**: spec-folder
+- **Cross-reference**: `.opencode/specs/02--system-spec-kit/021-spec-kit-phase-system`
+- **Purpose**: Verify perfect alignment between 011-skill-alignment spec claims and current repository reality, plus alignment with 021-spec-kit-phase-system
 
----
+## Dimensions
+1. **correctness** — Are the spec claims (33 tools, 6 commands, file references, counts) still true?
+2. **security** — Does the spec maintain proper docs-only boundary? No runtime changes leaking?
+3. **traceability** — Do spec claims trace to actual implementation files? Do checklist evidence items verify?
+4. **maintainability** — Is the spec pack internally consistent and useful for future maintainers?
 
-## 3. REVIEW DIMENSIONS (remaining)
-- [ ] D1 Correctness -- Logic errors, inaccurate descriptions, wrong counts, broken invariants
-- [ ] D2 Security -- Secrets exposure, unsafe patterns, governance framing issues
-- [ ] D3 Traceability -- Spec/code alignment, checklist evidence, cross-reference integrity
-- [ ] D4 Maintainability -- Patterns, clarity, documentation quality, safe follow-on change cost
+## Dimension Queue
+`[inventory] → correctness → security → traceability → maintainability`
 
----
+## Dimension Coverage
+| Dimension | Status | Iteration |
+|-----------|--------|-----------|
+| inventory | pending | - |
+| correctness | pending | - |
+| security | pending | - |
+| traceability | pending | - |
+| maintainability | pending | - |
 
-## 4. NON-GOALS
-- No runtime TypeScript or MCP behavior review
-- No re-verification of 011-skill-alignment P0/P1 items already closed (2026-03-22)
-- No deep subtree normalization of 022 child phases
-- No review of scripts/, mcp_server/, feature_catalog/, or manual_testing_playbook/
-- No modification of reviewed files (READ-ONLY review)
+## Review Scope Files (22 files)
 
----
+### Spec Artifacts (target)
+1. `011-skill-alignment/spec.md`
+2. `011-skill-alignment/plan.md`
+3. `011-skill-alignment/tasks.md`
+4. `011-skill-alignment/checklist.md`
+5. `011-skill-alignment/implementation-summary.md`
 
-## 5. STOP CONDITIONS
-- All 4 dimensions covered AND newFindingsRatio < 0.10
-- Max 7 iterations reached
-- All dimensions clean (no P0/P1, only P2 advisories)
-- 3+ consecutive iteration errors
+### Sub-Phase 001
+6. `011-skill-alignment/001-post-session-capturing-alignment/spec.md`
+7. `011-skill-alignment/001-post-session-capturing-alignment/plan.md`
+8. `011-skill-alignment/001-post-session-capturing-alignment/tasks.md`
+9. `011-skill-alignment/001-post-session-capturing-alignment/checklist.md`
+10. `011-skill-alignment/001-post-session-capturing-alignment/implementation-summary.md`
 
----
+### Implementation Files
+11. `.opencode/skill/system-spec-kit/SKILL.md`
+12. `.opencode/skill/system-spec-kit/references/memory/save_workflow.md`
+13. `.opencode/skill/system-spec-kit/references/memory/embedding_resilience.md`
+14. `.opencode/skill/system-spec-kit/references/memory/memory_system.md`
+15. `.opencode/skill/system-spec-kit/references/config/environment_variables.md`
+16. `.opencode/skill/system-spec-kit/assets/parallel_dispatch_config.md`
+17. `.opencode/skill/system-spec-kit/assets/complexity_decision_matrix.md`
+18. `.opencode/skill/system-spec-kit/assets/level_decision_matrix.md`
+19. `.opencode/skill/system-spec-kit/assets/template_mapping.md`
 
-## 6. COMPLETED DIMENSIONS
+### Cross-Reference
+20. `.opencode/specs/02--system-spec-kit/021-spec-kit-phase-system/spec.md`
 
-| Dimension | Verdict | Iteration | Summary |
-|-----------|---------|-----------|---------|
+### Verification Sources
+21. `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`
+22. `.opencode/command/memory/` (directory listing)
 
----
+## Traceability Protocols
+- **Core**: spec_code, checklist_evidence
+- **Overlay**: skill_agent
 
-## 7. RUNNING FINDINGS
-- **P0 (Critical):** 0 active
-- **P1 (Major):** 0 active
-- **P2 (Minor):** 0 active
-- **Delta this iteration:** +0 P0, +0 P1, +0 P2
+## Known Context
+- Prior session (002-skill-review-post-022) reviewed the system-spec-kit **skill** (SKILL.md + references + assets). Verdict: CONDITIONAL, P0=0, P1=21, P2=12.
+- This new session reviews the **spec folder** 011-skill-alignment for alignment with current reality.
+- Key claims to verify: 33 tools, 6 commands, retrieval in `/memory:analyze`, docs-only boundary.
+- Cross-reference with 021-spec-kit-phase-system: check phase system alignment.
 
----
-
-## 8. WHAT WORKED
-[First iteration -- populated after iteration 1 completes]
-
----
-
-## 9. WHAT FAILED
-[First iteration -- populated after iteration 1 completes]
-
----
-
-## 10. EXHAUSTED APPROACHES (do not retry)
-[None yet]
-
----
-
-## 11. RULED OUT DIRECTIONS
-[None yet]
-
----
-
-## 12. NEXT FOCUS
-Wave 1, Iteration 001: A1 (codex 5.3, xhigh) reviews SKILL.md sections 1-3 for correctness against 022 coordination-document pattern. Focus on phase navigation descriptions, how-it-works narrative accuracy.
-
-Wave 1, Iteration 002: A2 (gpt 5.4, high) reviews references/structure/ (4 files) for traceability against 022 reality. Focus on folder routing, folder structure, phase definitions, sub-folder versioning.
-
----
-
-## 13. KNOWN CONTEXT
-**Prior 011-skill-alignment (complete 2026-03-22):**
-- All P0/P1 items verified: 33 tools, 6 commands, 221 feature catalog entries, 227 playbook files
-- 9 graduated feature flags documented
-- Two reconciliation passes: initial truth-reconciliation + post-research-refinement
-- SKILL.md, save_workflow.md, embedding_resilience.md, environment_variables.md all aligned
-
-**022 root-packet normalization (2026-03-25):**
-- spec.md rewritten from synthesis to coordination document
-- Point-in-time snapshots: 399 total dirs, 21 top-level, 122 numbered
-- ADR-001: current tree truth trumps historical synthesis
-- Direct-child navigation standardized with parent links + neighboring phase references
-- 6 PHASE_LINKS validation warnings noted in checklist
-
----
-
-## 14. CROSS-REFERENCE STATUS
-
-| Protocol | Level | Status | Iteration | Notes |
-|----------|-------|--------|-----------|-------|
-| `spec_code` | core | pending | - | - |
-| `checklist_evidence` | core | pending | - | - |
-| `skill_agent` | overlay | pending | - | - |
-
----
-
-## 15. FILES UNDER REVIEW
-
-| File | Dimensions Reviewed | Last Iteration | Findings | Status |
-|------|-------------------|----------------|----------|--------|
-| SKILL.md | - | - | - | pending |
-| references/structure/folder_structure.md | - | - | - | pending |
-| references/structure/folder_routing.md | - | - | - | pending |
-| references/structure/phase_definitions.md | - | - | - | pending |
-| references/structure/sub_folder_versioning.md | - | - | - | pending |
-| references/templates/level_specifications.md | - | - | - | pending |
-| references/templates/template_guide.md | - | - | - | pending |
-| references/templates/template_style_guide.md | - | - | - | pending |
-| references/templates/level_selection_guide.md | - | - | - | pending |
-| references/validation/validation_rules.md | - | - | - | pending |
-| references/validation/phase_checklists.md | - | - | - | pending |
-| references/validation/path_scoped_rules.md | - | - | - | pending |
-| references/validation/decision_format.md | - | - | - | pending |
-| references/validation/five_checks.md | - | - | - | pending |
-| references/memory/memory_system.md | - | - | - | pending |
-| references/memory/save_workflow.md | - | - | - | pending |
-| references/memory/trigger_config.md | - | - | - | pending |
-| references/memory/embedding_resilience.md | - | - | - | pending |
-| references/memory/epistemic_vectors.md | - | - | - | pending |
-| references/config/environment_variables.md | - | - | - | pending |
-| references/workflows/quick_reference.md | - | - | - | pending |
-| references/workflows/worked_examples.md | - | - | - | pending |
-| references/workflows/execution_methods.md | - | - | - | pending |
-| references/workflows/rollback_runbook.md | - | - | - | pending |
-| references/template-compliance-contract.md | - | - | - | pending |
-| assets/complexity_decision_matrix.md | - | - | - | pending |
-| assets/level_decision_matrix.md | - | - | - | pending |
-| assets/parallel_dispatch_config.md | - | - | - | pending |
-| assets/template_mapping.md | - | - | - | pending |
-| templates/core/spec-core.md | - | - | - | pending |
-| templates/addendum/phase/phase-child-header.md | - | - | - | pending |
-| templates/addendum/phase/phase-parent-section.md | - | - | - | pending |
-
----
-
-## 16. REVIEW BOUNDARIES
-- Max iterations: 7
+## Convergence Parameters
+- Max iterations: 5
 - Convergence threshold: 0.10
-- Rolling STOP threshold: 0.08
-- No-progress threshold: 0.05
-- Coverage stabilization passes required: 1
-- Per-iteration budget: 12 tool calls, 10 minutes
-- Severity threshold: P2
-- Review target type: skill
-- Cross-reference checks: core=[spec_code, checklist_evidence], overlay=[skill_agent]
-- Started: 2026-03-25T11:06:00.000Z
+- Stuck threshold: 2
+
+## Running Findings
+(Updated after each iteration)
+
+## Key Questions
+1. Are the "33 tools, 6 commands" counts still accurate against current `tool-schemas.ts` and `command/memory/`?
+2. Does the spec correctly describe what was actually implemented in the referenced files?
+3. Is the phase system (001-post-session-capturing-alignment) properly documented and cross-referenced?
+4. Does the spec align with 021-spec-kit-phase-system expectations for phase folder structure?
+5. Are all checklist evidence items verifiable against current repo state?

@@ -48,10 +48,11 @@ The three AGENTS.md governance framework files reference outdated Quick Referenc
 Reconcile the AGENTS.md quick-reference governance docs to the live 6-command memory suite while preserving variant-specific policy and stack-detection content.
 
 **Key Metrics**
-- 3 target files across 2 repositories (Public, Barter)
-- 5 gaps identified and fixed
+- 4 target files across 2 repositories (Public, Barter) -- 3 AGENTS.md + CLAUDE.md
+- 6 gaps identified and fixed (original 5 + G-01 through G-06 refinement gaps)
 - 6 memory commands now represented in Quick Reference tables (was 5)
-- ~36 LOC total change
+- 2 skill-section overhauls (Universal + FS-Enterprises)
+- ~50+ LOC total change (initial ~36 + refinement passes)
 <!-- /ANCHOR:problem -->
 
 ---

@@ -2,11 +2,11 @@
 title: "Cross-AI final review audit"
 description: "Session 8: Cross-AI final review of Phase 018 (Refinement Phase 7) using 8 parallel agents — 5 Codex gpt-5.3-codex (xhigh reasoning) and 3 Gemini gemini-3.1-pro-preview. All 8..."
 trigger_phrases:
-  - "system spec kit/022 hybrid rag fusion"
+  - "Gemini ETIMEDOUT sandbox workaround"
+  - "7085 test baseline"
+  - "phase 018 clean"
+  - "cross-AI final review"
   - "resolve effective score"
-  - "cross ai"
-  - "gpt 5"
-  - "gemini 3"
 importance_tier: "important"
 contextType: "research"
 quality_score: 1.00

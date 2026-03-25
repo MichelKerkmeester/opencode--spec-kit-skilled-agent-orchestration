@@ -7,7 +7,7 @@ trigger_phrases:
   - "response builder"
   - "memory save"
   - "ultra-think verification"
-importance_tier: "normal"
+importance_tier: "important"
 contextType: "general"
 quality_score: 0.90
 quality_flags: []
@@ -421,7 +421,7 @@ spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/004-ux-hooks-automation"
 channel: "main"
 
 # Classification
-importance_tier: "normal"  # constitutional|critical|important|normal|temporary|deprecated
+importance_tier: "important"  # constitutional|critical|important|normal|temporary|deprecated
 context_type: "general"        # research|implementation|decision|discovery|general
 
 # Memory Classification (v2.2)

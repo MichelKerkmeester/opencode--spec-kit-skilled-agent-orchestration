@@ -15,9 +15,9 @@ description: "Summary of the 2026-03-21 truth-reconciliation pass for the 011 sk
 | Field | Value |
 |-------|-------|
 | **Phase** | `011-skill-alignment` |
-| **Work Type** | Spec-pack truth reconciliation |
-| **Date** | 2026-03-21 |
-| **Scope** | Five canonical docs only |
+| **Work Type** | Spec-pack truth reconciliation + live-doc closeout |
+| **Date** | 2026-03-21 (initial), 2026-03-22 (post-refinement alignment) |
+| **Scope** | Five canonical docs + SKILL.md, memory references, and asset docs |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -46,6 +46,15 @@ description: "Summary of the 2026-03-21 truth-reconciliation pass for the 011 sk
 | `tasks.md` | Removed obsolete command-surface framing and kept only genuine remaining backlog items |
 | `checklist.md` | Replaced old verification evidence with pack-reconciliation checks |
 | `implementation-summary.md` | Replaced the superseded implementation story with this reconciliation summary |
+| `.opencode/skill/system-spec-kit/SKILL.md` | Memory-surface wording (33 tools, 6 commands), save-workflow/shared-memory governance framing |
+| `.opencode/skill/system-spec-kit/references/memory/save_workflow.md` | Shared-memory governance and save-routing framing |
+| `.opencode/skill/system-spec-kit/references/memory/embedding_resilience.md` | Shared-space and governance framing |
+| `.opencode/skill/system-spec-kit/references/memory/memory_system.md` | Added `memory_quick_search()` row (32 to 33 rows) |
+| `.opencode/skill/system-spec-kit/references/config/environment_variables.md` | Graduated spec-011 flag documentation (9 flags) |
+| `.opencode/skill/system-spec-kit/assets/parallel_dispatch_config.md` | Campaign/shared-space/cross-phase dispatch guidance |
+| `.opencode/skill/system-spec-kit/assets/complexity_decision_matrix.md` | Campaign/shared-space scoring guidance |
+| `.opencode/skill/system-spec-kit/assets/level_decision_matrix.md` | Campaign/shared-space level-selection guidance |
+| `.opencode/skill/system-spec-kit/assets/template_mapping.md` | Campaign/shared-space/cross-phase template-routing guidance |
 <!-- /ANCHOR:how-delivered -->
 
 ---
