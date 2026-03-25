@@ -96,3 +96,48 @@ I found the target snippets and the likely source drift points. Next I’m check
   │ (.opencode/skill/system-spec-kit)
   └ 2 lines found
 
+I’ve narrowed the remaining work to a few concrete doc drifts: one source-file list for entity linking, one for fallback forcing, the eval-logger scope, and two wording mismatches in the cross-AI fixes note. I’m checking the exact file-level evidence now so the edits stay minimal.
+
+● Read post-insert.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts
+  └ L1:220 (194 lines read)
+
+● Read hybrid-search.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts
+  └ L780:850 (71 lines read)
+
+● Read hybrid-search.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts
+  └ L1400:1435 (36 lines read)
+
+● Read hybrid-search.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts
+  └ L1884:1905 (22 lines read)
+
+● Read eval-logger.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/eval/eval-logger.ts
+  └ L1:260 (252 lines read)
+
+● Read memory-search.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts
+  └ L560:650 (91 lines read)
+
+● Read vector-index-queries.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-queries.ts
+  └ L1348:1372 (25 lines read)
+
+● Search (grep)
+  │ "runEntityLinking|post-insert|entity linking" in **/*.vitest.ts
+  │ (.opencode/skill/system-spec-kit/mcp_server/tests)
+  └ 20 lines found
+
+● Search (grep)
+  │ "forceAllChannels: true|Tier-2|fallback" in **/*.{vitest.ts,ts}
+  │ (.opencode/skill/system-spec-kit/mcp_server/tests)
+  └ 5 lines found
+
+● Search (grep)
+  │ "logSearchQuery|logChannelResult|logFinalResult|eval-logger" in **/*.vitest.ts
+  │ (.opencode/skill/system-spec-kit/mcp_server/tests)
+  └ 73 lines found
+
