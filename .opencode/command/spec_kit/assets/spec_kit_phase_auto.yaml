@@ -134,6 +134,7 @@ circuit_breaker:
 workflow:
   step_1_analyze_scope:
     purpose: Evaluate task complexity and recommend phase decomposition
+    code_search_note: "If feature description references code concepts, use CocoIndex (mcp__cocoindex_code__search) to discover scope breadth before recommending phase count."
     activities:
       - "Run recommend-level.sh --json --recommend-phases --phase-threshold with estimated LOC, files, and domain flags"
       - Parse phase recommendation from JSON output

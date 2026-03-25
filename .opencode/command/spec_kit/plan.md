@@ -1,7 +1,7 @@
 ---
 description: Planning workflow (7 steps) - spec through plan only, no implementation. Supports :auto and :confirm modes
 argument-hint: "<feature-description> [:auto|:confirm] [--phase-folder=<path>]"
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory_search
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory_search, mcp__cocoindex_code__search
 ---
 
 > ⚠️ **EXECUTION PROTOCOL — READ FIRST**
@@ -251,6 +251,17 @@ After agents return, verify hypotheses by reading identified files.
 - Auto-decide: "auto-decide", "auto mode", "decide for me" (1hr preference)
 
 **Workstream Prefix:** `[W:PLAN]` for all planning dispatch tracking.
+
+### Code Search Routing
+
+| Need | Tool | Example |
+|------|------|---------|
+| Exact text/token | Grep | `function authenticate(` |
+| File name/path | Glob | `**/*auth*.ts` |
+| Concept/intent | CocoIndex (`mcp__cocoindex_code__search`) | "authentication middleware" |
+| Prior decisions | memory_search | `{ query: "auth decisions" }` |
+
+**Rule**: When exact function name or text is unknown, use CocoIndex FIRST (2-5 word natural language queries), then verify with Grep/Read. Do NOT Grep to guess at patterns when semantic search can find the concept directly.
 
 ---
 

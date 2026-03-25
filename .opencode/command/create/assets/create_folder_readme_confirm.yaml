@@ -107,6 +107,7 @@ confidence_framework:
 # REQUEST ANALYSIS FRAMEWORK
 # ─────────────────────────────────────────────────────────────────
 request_analysis_framework:
+  code_search_note: "Use CocoIndex (mcp__cocoindex_code__search) for discovering existing patterns before creating. Use Grep only for exact known tokens."
   solution_flow:
     - "Parse carefully: What is ACTUALLY requested?"
     - "Gather Context: Scan directory structure"

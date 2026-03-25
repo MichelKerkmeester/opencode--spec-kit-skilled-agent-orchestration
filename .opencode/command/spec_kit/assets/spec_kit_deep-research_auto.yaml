@@ -69,8 +69,8 @@ agent_config:
   # Claude runtime; other runtimes resolve own agent directory
   model: opus
   leaf_only: true
-  tools: [Read, Write, Edit, Bash, Grep, Glob, WebFetch]
-  mcp_servers: [spec_kit_memory]
+  tools: [Read, Write, Edit, Bash, Grep, Glob, WebFetch, mcp__cocoindex_code__search]
+  mcp_servers: [spec_kit_memory, cocoindex_code]
   tool_call_budget: { target: 8, max: 12 }
 
 # ─────────────────────────────────────────────────────────────────

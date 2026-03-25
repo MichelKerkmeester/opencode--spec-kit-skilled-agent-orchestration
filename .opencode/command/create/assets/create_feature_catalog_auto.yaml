@@ -59,6 +59,7 @@ confidence_framework:
     action: "Stop before generation and ask one consolidated clarification"
 
 request_analysis_framework:
+  code_search_note: "Use CocoIndex (mcp__cocoindex_code__search) for discovering existing patterns before creating. Use Grep only for exact known tokens."
   solution_flow:
     - "Parse command arguments and normalize execution mode"
     - "Verify create/update semantics against the real target path"

@@ -1,7 +1,7 @@
 ---
 description: Create and manage phase decomposition for complex spec folders
 argument-hint: "[feature-description] [--phases N] [--phase-names list] [--parent specs/NNN-name/] [:auto|:confirm]"
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, memory_context, memory_search
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, memory_context, memory_search, mcp__cocoindex_code__search
 ---
 
 > ⚠️ **EXECUTION PROTOCOL — READ FIRST**

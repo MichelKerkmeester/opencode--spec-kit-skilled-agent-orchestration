@@ -1,7 +1,7 @@
 ---
 description: Implementation workflow (9 steps) - execute pre-planned work. Requires existing plan.md. Supports :auto and :confirm modes
 argument-hint: "<spec-folder> [:auto|:confirm] [--phase-folder=<path>]"
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory_search
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory_search, mcp__cocoindex_code__search
 ---
 
 > ⚠️ **EXECUTION PROTOCOL — READ FIRST**
@@ -181,6 +181,10 @@ Missing prerequisites -> guide user to `/spec_kit:plan` first.
 | 7.5  | POSTFLIGHT Capture     | Learning delta and improvement calculation    | postflight_delta          |
 | 8    | Save Context           | Preserve conversation                         | memory/*.md               |
 | 9    | Session Handover Check | Prompt for handover document                  | handover.md (optional)    |
+
+### Code Search During Plan Review (Step 1)
+
+When reviewing plan.md references to codebase patterns, use CocoIndex semantic search (`mcp__cocoindex_code__search`) to verify that referenced code still exists and find related patterns. Use 2-5 word concept queries. Reserve Grep for exact token verification.
 
 **Execute steps IN ORDER. Mark each ONLY after completing ALL activities. DO NOT SKIP.**
 

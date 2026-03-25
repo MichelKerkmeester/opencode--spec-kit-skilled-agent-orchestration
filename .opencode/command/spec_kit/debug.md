@@ -1,7 +1,7 @@
 ---
 description: Delegate debugging to a specialized sub-agent with full context handoff.
 argument-hint: "[spec-folder-path]"
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, mcp__cocoindex_code__search
 ---
 
 > ⚠️ **EXECUTION PROTOCOL — READ FIRST**

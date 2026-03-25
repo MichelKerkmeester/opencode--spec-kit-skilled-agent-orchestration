@@ -179,6 +179,10 @@ workflow:
       ### Environment
       - Spec Folder: {spec_path}
 
+      ## Code Search
+      Use CocoIndex semantic search (mcp__cocoindex_code__search) to find similar working code patterns.
+      Use Grep only for exact error text or known function names.
+
       ## Instructions
       - Follow your 4-phase methodology exactly
       - Form 2-3 ranked hypotheses with evidence

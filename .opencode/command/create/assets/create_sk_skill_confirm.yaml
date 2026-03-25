@@ -46,6 +46,7 @@ confidence_framework:
     action: "Return to setup gate or current step with explicit correction options"
 
 request_analysis_framework:
+  code_search_note: "Use CocoIndex (mcp__cocoindex_code__search) for discovering existing patterns before creating. Use Grep only for exact known tokens."
   solution_flow:
     - "Parse request shape and normalize fields"
     - "Enforce operation/type compatibility"

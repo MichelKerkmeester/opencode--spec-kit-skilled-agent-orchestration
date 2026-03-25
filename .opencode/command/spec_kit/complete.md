@@ -1,7 +1,7 @@
 ---
 description: Full end-to-end SpecKit workflow (14+ steps) - supports :auto, :confirm, :with-research, and :auto-debug modes
 argument-hint: "<feature-description> [:auto|:confirm] [:with-research] [:auto-debug] [--phase-folder=<path>]"
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, mcp__cocoindex_code__search
 ---
 
 > ⚠️ **EXECUTION PROTOCOL — READ FIRST**
@@ -268,6 +268,17 @@ Steps 3 (Specification), 6 (Planning + auto 4-agent), 8 (Analysis), 10 (Developm
 ### Workstream Prefixes
 
 `[W:ARCH]` Architecture | `[W:FEAT]` Feature | `[W:DEPS]` Dependency | `[W:TEST]` Test | `[W:IMPL-N]` Implementation workstream N
+
+### Code Search Routing
+
+| Need | Tool | Example |
+|------|------|---------|
+| Exact text/token | Grep | `function authenticate(` |
+| File name/path | Glob | `**/*auth*.ts` |
+| Concept/intent | CocoIndex (`mcp__cocoindex_code__search`) | "authentication middleware" |
+| Prior decisions | memory_search | `{ query: "auth decisions" }` |
+
+**Rule**: When exact function name or text is unknown, use CocoIndex FIRST (2-5 word natural language queries), then verify with Grep/Read. Do NOT Grep to guess at patterns when semantic search can find the concept directly.
 
 ---
 

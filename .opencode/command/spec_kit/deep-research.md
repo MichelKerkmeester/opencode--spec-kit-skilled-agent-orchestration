@@ -1,7 +1,7 @@
 ---
 description: Autonomous deep research/review loop - iterative investigation or code audit with convergence detection. Supports :auto, :confirm, :review, :review:auto, :review:confirm modes
 argument-hint: "<topic-or-target> [:auto|:confirm|:review|:review:auto|:review:confirm] [--max-iterations=N] [--convergence=N]"
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, WebFetch, memory_context, memory_search
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, WebFetch, memory_context, memory_search, mcp__cocoindex_code__search
 ---
 
 > **EXECUTION PROTOCOL -- READ FIRST**
@@ -305,6 +305,11 @@ STATUS=FAIL ERROR="[message]"
 ### Before Starting
 - `memory_context({ input: topic, intent: "understand" })` -- Load prior research
 - Inject results into strategy.md "Known Context" section
+
+### Code Context Bootstrap
+- Use CocoIndex (`mcp__cocoindex_code__search`) to find relevant code examples before starting research
+- Query: 2-5 word concept descriptions related to the research topic
+- Inject discovered code patterns into strategy.md "Known Context" section alongside memory findings
 
 ### After Completing
 - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js [spec-folder]`

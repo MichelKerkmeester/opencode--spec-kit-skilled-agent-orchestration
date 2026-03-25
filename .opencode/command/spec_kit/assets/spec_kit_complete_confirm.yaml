@@ -34,7 +34,7 @@ optional_workflows:
       smart_detect: true
       uncertainty_threshold: 60
     insert_point: "after_phase_2"
-    workflow_reference: "spec_kit_research_confirm.yaml"
+    workflow_reference: "spec_kit_deep-research_confirm.yaml"
     checkpoint:
       enabled: true
       prompt: |
@@ -521,7 +521,7 @@ workflow:
     actions:
       if_triggered:
       - log: "Initiating research phase (reason: {trigger_reason})"
-      - execute_workflow: "spec_kit_research_confirm.yaml"
+      - execute_workflow: "spec_kit_deep-research_confirm.yaml"
       - on_complete: "show_checkpoint"
       if_skipped:
       - log: "Research phase skipped"
@@ -635,24 +635,36 @@ workflow:
           focus: "Project structure, entry points, component connections"
           prompt: |
             Explore codebase architecture for: {task_description}
+            Use CocoIndex semantic search (mcp__cocoindex_code__search) for concept-based discovery.
+            Query: 2-5 word natural language (e.g., "project architecture entry points").
+            Use Grep only for exact known tokens. Use CocoIndex first when the exact name is unknown.
             Return: 1) Architecture hypothesis 2) Full file paths 3) Patterns noticed
             Do NOT draw conclusions - just report findings.
         feature_explorer:
           focus: "Similar features, related patterns"
           prompt: |
             Explore codebase for similar features/patterns for: {task_description}
+            Use CocoIndex semantic search (mcp__cocoindex_code__search) for concept-based discovery.
+            Query: 2-5 word natural language (e.g., "similar feature implementation patterns").
+            Use Grep only for exact known tokens. Use CocoIndex first when the exact name is unknown.
             Return: 1) Similar features hypothesis 2) Full file paths 3) Patterns noticed
             Do NOT draw conclusions - just report findings.
         dependency_explorer:
           focus: "Imports, modules, affected areas"
           prompt: |
             Explore dependencies and integration points for: {task_description}
+            Use CocoIndex semantic search (mcp__cocoindex_code__search) for concept-based discovery.
+            Query: 2-5 word natural language (e.g., "module imports dependencies").
+            Use Grep only for exact known tokens. Use CocoIndex first when the exact name is unknown.
             Return: 1) Affected modules hypothesis 2) Full file paths 3) Patterns noticed
             Do NOT draw conclusions - just report findings.
         test_explorer:
           focus: "Test patterns, testing infrastructure"
           prompt: |
             Explore test patterns and testing infrastructure.
+            Use CocoIndex semantic search (mcp__cocoindex_code__search) for concept-based discovery.
+            Query: 2-5 word natural language (e.g., "test infrastructure patterns").
+            Use Grep only for exact known tokens. Use CocoIndex first when the exact name is unknown.
             Return: 1) Testing hypothesis 2) Full test file paths 3) Patterns noticed
             Do NOT draw conclusions - just report findings.
       verification:

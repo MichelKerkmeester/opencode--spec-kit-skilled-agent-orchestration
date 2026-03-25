@@ -1,7 +1,7 @@
 ---
 description: Create or update manual testing playbook packages through one unified command with explicit operation routing and mode support (:auto | :confirm)
 argument-hint: "<skill-name> [create|update] [--path <dir>] [:auto|:confirm]"
-allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite
+allowed-tools: Read, Write, Edit, Bash, Glob, Grep, TodoWrite, mcp__cocoindex_code__search
 ---
 
 > ⚠️ **EXECUTION PROTOCOL - READ FIRST**
