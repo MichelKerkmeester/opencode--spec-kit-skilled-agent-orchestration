@@ -277,6 +277,7 @@ const memoryHealthSchema = getSchema({
 const checkpointCreateSchema = getSchema({
   name: z.string().min(1),
   specFolder: optionalPathString(),
+  tenantId: z.string().min(1).optional(),
   userId: z.string().min(1).optional(),
   agentId: z.string().min(1).optional(),
   sharedSpaceId: z.string().min(1).optional(),
@@ -285,6 +286,7 @@ const checkpointCreateSchema = getSchema({
 
 const checkpointListSchema = getSchema({
   specFolder: optionalPathString(),
+  tenantId: z.string().min(1).optional(),
   userId: z.string().min(1).optional(),
   agentId: z.string().min(1).optional(),
   sharedSpaceId: z.string().min(1).optional(),
@@ -293,6 +295,7 @@ const checkpointListSchema = getSchema({
 
 const checkpointRestoreSchema = getSchema({
   name: z.string().min(1),
+  tenantId: z.string().min(1).optional(),
   userId: z.string().min(1).optional(),
   agentId: z.string().min(1).optional(),
   sharedSpaceId: z.string().min(1).optional(),
@@ -301,6 +304,7 @@ const checkpointRestoreSchema = getSchema({
 
 const checkpointDeleteSchema = getSchema({
   name: z.string().min(1),
+  tenantId: z.string().min(1).optional(),
   userId: z.string().min(1).optional(),
   agentId: z.string().min(1).optional(),
   sharedSpaceId: z.string().min(1).optional(),
@@ -442,14 +446,6 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
   }).superRefine((value, ctx) => {
     const hasActorUser = typeof value.actorUserId === 'string' && value.actorUserId.trim().length > 0;
     const hasActorAgent = typeof value.actorAgentId === 'string' && value.actorAgentId.trim().length > 0;
-    if (!hasActorUser && !hasActorAgent) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Exactly one of "actorUserId" or "actorAgentId" is required.',
-        path: ['actorUserId'],
-      });
-      return;
-    }
     if (hasActorUser && hasActorAgent) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -469,14 +465,6 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
   }).superRefine((value, ctx) => {
     const hasActorUser = typeof value.actorUserId === 'string' && value.actorUserId.trim().length > 0;
     const hasActorAgent = typeof value.actorAgentId === 'string' && value.actorAgentId.trim().length > 0;
-    if (!hasActorUser && !hasActorAgent) {
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        message: 'Exactly one of "actorUserId" or "actorAgentId" is required.',
-        path: ['actorUserId'],
-      });
-      return;
-    }
     if (hasActorUser && hasActorAgent) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
@@ -506,10 +494,10 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_update: ['id', 'title', 'triggerPhrases', 'importanceWeight', 'importanceTier', 'allowPartialUpdate'],
   memory_validate: ['id', 'wasUseful', 'queryId', 'queryTerms', 'resultRank', 'totalResultsShown', 'searchMode', 'intent', 'sessionId', 'notes'],
   memory_bulk_delete: ['tier', 'specFolder', 'confirm', 'olderThanDays', 'skipCheckpoint'],
-  checkpoint_create: ['name', 'specFolder', 'userId', 'agentId', 'sharedSpaceId', 'metadata'],
-  checkpoint_list: ['specFolder', 'userId', 'agentId', 'sharedSpaceId', 'limit'],
-  checkpoint_restore: ['name', 'userId', 'agentId', 'sharedSpaceId', 'clearExisting'],
-  checkpoint_delete: ['name', 'userId', 'agentId', 'sharedSpaceId', 'confirmName'],
+  checkpoint_create: ['name', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'metadata'],
+  checkpoint_list: ['specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'limit'],
+  checkpoint_restore: ['name', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'clearExisting'],
+  checkpoint_delete: ['name', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'confirmName'],
   task_preflight: ['specFolder', 'taskId', 'knowledgeScore', 'uncertaintyScore', 'contextScore', 'knowledgeGaps', 'sessionId'],
   task_postflight: ['specFolder', 'taskId', 'knowledgeScore', 'uncertaintyScore', 'contextScore', 'gapsClosed', 'newGapsDiscovered'],
   memory_drift_why: ['memoryId', 'maxDepth', 'direction', 'relations', 'includeMemoryDetails'],

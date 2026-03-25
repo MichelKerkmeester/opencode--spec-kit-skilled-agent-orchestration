@@ -329,9 +329,10 @@ const checkpointCreate: ToolDefinition = {
     properties: {
       name: { type: 'string', description: 'Unique checkpoint name' },
       specFolder: { type: 'string', description: 'Limit to specific spec folder' },
+      tenantId: { type: 'string', description: 'Tenant boundary for governed checkpoint scope.' },
       userId: { type: 'string', description: 'Scope to this user (optional, defense-in-depth)' },
       agentId: { type: 'string', description: 'Scope to this agent (optional, defense-in-depth)' },
-      sharedSpaceId: { type: 'string', description: 'Scope to this shared space (optional, defense-in-depth)' },
+      sharedSpaceId: { type: 'string', description: 'Scope to this shared space (requires tenantId).' },
       metadata: { type: 'object', description: 'Additional metadata' }
     },
     required: ['name']
@@ -346,9 +347,10 @@ const checkpointList: ToolDefinition = {
     additionalProperties: false,
     properties: {
       specFolder: { type: 'string', description: 'Filter by spec folder' },
+      tenantId: { type: 'string', description: 'Tenant boundary for governed checkpoint scope.' },
       userId: { type: 'string', description: 'Scope to this user (optional, defense-in-depth)' },
       agentId: { type: 'string', description: 'Scope to this agent (optional, defense-in-depth)' },
-      sharedSpaceId: { type: 'string', description: 'Scope to this shared space (optional, defense-in-depth)' },
+      sharedSpaceId: { type: 'string', description: 'Scope to this shared space (requires tenantId).' },
       limit: { type: 'number', default: 50 }
     }
   },
@@ -362,9 +364,10 @@ const checkpointRestore: ToolDefinition = {
     additionalProperties: false,
     properties: {
       name: { type: 'string', description: 'Checkpoint name to restore' },
+      tenantId: { type: 'string', description: 'Tenant boundary for governed checkpoint scope.' },
       userId: { type: 'string', description: 'Scope to this user (optional, defense-in-depth)' },
       agentId: { type: 'string', description: 'Scope to this agent (optional, defense-in-depth)' },
-      sharedSpaceId: { type: 'string', description: 'Scope to this shared space (optional, defense-in-depth)' },
+      sharedSpaceId: { type: 'string', description: 'Scope to this shared space (requires tenantId).' },
       clearExisting: { type: 'boolean', default: false }
     },
     required: ['name']
@@ -379,9 +382,10 @@ const checkpointDelete: ToolDefinition = {
     additionalProperties: false,
     properties: {
       name: { type: 'string', description: 'Checkpoint name to delete' },
+      tenantId: { type: 'string', description: 'Tenant boundary for governed checkpoint scope.' },
       userId: { type: 'string', description: 'Scope to this user (optional, defense-in-depth)' },
       agentId: { type: 'string', description: 'Scope to this agent (optional, defense-in-depth)' },
-      sharedSpaceId: { type: 'string', description: 'Scope to this shared space (optional, defense-in-depth)' },
+      sharedSpaceId: { type: 'string', description: 'Scope to this shared space (requires tenantId).' },
       confirmName: {
         type: 'string',
         description: 'Required safety confirmation. It must exactly match name.'
@@ -393,17 +397,16 @@ const checkpointDelete: ToolDefinition = {
 
 const sharedSpaceUpsert: ToolDefinition = {
   name: 'shared_space_upsert',
-  description: '[L5:Lifecycle] Create or update a shared-memory space. First create auto-grants the caller owner access. Later updates require an existing owner identity.',
+  description: '[L5:Lifecycle] Create or update a shared-memory space. Admin mutations run as the server-configured shared-memory admin identity. Optional actor fields are corroboration hints only and must match that configured identity when provided.',
   inputSchema: {
     type: 'object',
     additionalProperties: false,
-    'x-requiredAnyOf': [['actorUserId'], ['actorAgentId']],
     properties: {
       spaceId: { type: 'string', description: 'Stable shared-space identifier.' },
       tenantId: { type: 'string', description: 'Owning tenant for the shared space.' },
       name: { type: 'string', description: 'Display name for the shared space.' },
-      actorUserId: { type: 'string', description: 'Caller identity for a user-initiated admin mutation. Provide exactly one actor identity.' },
-      actorAgentId: { type: 'string', description: 'Caller identity for an agent-initiated admin mutation. Provide exactly one actor identity.' },
+      actorUserId: { type: 'string', description: 'Optional user actor hint. If provided, it must match SPECKIT_SHARED_MEMORY_ADMIN_USER_ID.' },
+      actorAgentId: { type: 'string', description: 'Optional agent actor hint. If provided, it must match SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID.' },
       rolloutEnabled: { type: 'boolean', default: false, description: 'Enable this space for rollout.' },
       rolloutCohort: { type: 'string', description: 'Optional rollout cohort label.' },
       killSwitch: { type: 'boolean', default: false, description: 'Immediately disable access for this space.' },
@@ -414,16 +417,15 @@ const sharedSpaceUpsert: ToolDefinition = {
 
 const sharedSpaceMembershipSet: ToolDefinition = {
   name: 'shared_space_membership_set',
-  description: '[L5:Lifecycle] Set deny-by-default shared-space membership for a user or agent. Caller must already own the shared space.',
+  description: '[L5:Lifecycle] Set deny-by-default shared-space membership for a user or agent. Admin mutations run as the server-configured shared-memory admin identity. Optional actor fields are corroboration hints only and must match that configured identity when provided.',
   inputSchema: {
     type: 'object',
     additionalProperties: false,
-    'x-requiredAnyOf': [['actorUserId'], ['actorAgentId']],
     properties: {
       spaceId: { type: 'string', description: 'Shared-space identifier.' },
       tenantId: { type: 'string', description: 'Tenant boundary for the membership mutation.' },
-      actorUserId: { type: 'string', description: 'Caller identity for a user-initiated admin mutation. Provide exactly one actor identity.' },
-      actorAgentId: { type: 'string', description: 'Caller identity for an agent-initiated admin mutation. Provide exactly one actor identity.' },
+      actorUserId: { type: 'string', description: 'Optional user actor hint. If provided, it must match SPECKIT_SHARED_MEMORY_ADMIN_USER_ID.' },
+      actorAgentId: { type: 'string', description: 'Optional agent actor hint. If provided, it must match SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID.' },
       subjectType: { type: 'string', enum: ['user', 'agent'], description: 'Membership subject type.' },
       subjectId: { type: 'string', description: 'Membership subject identifier.' },
       role: { type: 'string', enum: ['owner', 'editor', 'viewer'], description: 'Access role inside the shared space.' },

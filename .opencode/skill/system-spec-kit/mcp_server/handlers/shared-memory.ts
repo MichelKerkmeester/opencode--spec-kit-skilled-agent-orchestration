@@ -33,34 +33,53 @@ export type AdminActorResult =
   | { ok: false; response: MCPResponse };
 
 /**
- * Resolve and validate the admin actor identity from caller-supplied parameters.
- * SECURITY MODEL: Format validation only. Spec Kit Memory uses stdio transport
- * (local process communication), so the caller is always the local AI assistant
- * on the same machine. Actor IDs are self-asserted. If shared-memory is ever
- * exposed over a network transport, transport-level authentication MUST be added.
+ * Resolve the shared-memory admin identity from server-owned configuration.
+ * Caller-supplied actor IDs are treated only as optional corroboration hints.
  */
-let _localOnlyWarned = false;
 
 export function resolveAdminActor(
   tool: 'shared_space_upsert' | 'shared_space_membership_set',
   actorUserId?: string,
   actorAgentId?: string,
 ): AdminActorResult {
+  const configuredUserId = typeof process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID === 'string'
+    ? process.env.SPECKIT_SHARED_MEMORY_ADMIN_USER_ID.trim()
+    : '';
+  const configuredAgentId = typeof process.env.SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID === 'string'
+    ? process.env.SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID.trim()
+    : '';
+  const hasConfiguredUser = configuredUserId.length > 0;
+  const hasConfiguredAgent = configuredAgentId.length > 0;
   const normalizedUserId = typeof actorUserId === 'string' ? actorUserId.trim() : '';
   const normalizedAgentId = typeof actorAgentId === 'string' ? actorAgentId.trim() : '';
   const hasUser = normalizedUserId.length > 0;
   const hasAgent = normalizedAgentId.length > 0;
 
-  if (!hasUser && !hasAgent) {
+  if (!hasConfiguredUser && !hasConfiguredAgent) {
     return {
       ok: false,
       response: createMCPErrorResponse({
         tool,
-        error: 'Exactly one actor identity is required.',
-        code: 'E_VALIDATION',
-        details: { reason: 'actor_identity_required' },
+        error: 'Shared-memory admin identity is not configured on the server.',
+        code: 'E_AUTHORIZATION',
+        details: { reason: 'shared_memory_admin_unconfigured' },
         recovery: {
-          hint: 'Provide actorUserId or actorAgentId.',
+          hint: 'Configure exactly one of SPECKIT_SHARED_MEMORY_ADMIN_USER_ID or SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID on the MCP server.',
+        },
+      }),
+    };
+  }
+
+  if (hasConfiguredUser && hasConfiguredAgent) {
+    return {
+      ok: false,
+      response: createMCPErrorResponse({
+        tool,
+        error: 'Shared-memory admin identity is ambiguously configured on the server.',
+        code: 'E_INTERNAL',
+        details: { reason: 'shared_memory_admin_ambiguous' },
+        recovery: {
+          hint: 'Configure only one server admin identity: SPECKIT_SHARED_MEMORY_ADMIN_USER_ID or SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID.',
         },
       }),
     };
@@ -71,7 +90,7 @@ export function resolveAdminActor(
       ok: false,
       response: createMCPErrorResponse({
         tool,
-        error: 'Provide only one actor identity.',
+        error: 'Provide only one actor identity hint.',
         code: 'E_VALIDATION',
         details: { reason: 'actor_identity_ambiguous' },
         recovery: {
@@ -81,16 +100,31 @@ export function resolveAdminActor(
     };
   }
 
-  if (!_localOnlyWarned) {
-    console.error('[shared-memory] Actor identity is self-asserted (local-only trust model)');
-    _localOnlyWarned = true;
+  if (hasConfiguredUser) {
+    if (hasAgent || (hasUser && normalizedUserId !== configuredUserId)) {
+      return {
+        ok: false,
+        response: createMCPErrorResponse({
+          tool,
+          error: 'Caller actor hint does not match the server-configured shared-memory admin.',
+          code: 'E_AUTHORIZATION',
+          details: { reason: 'shared_memory_admin_identity_mismatch' },
+          recovery: {
+            hint: 'Omit actorUserId/actorAgentId or send the same identity configured on the MCP server.',
+          },
+        }),
+      };
+    }
+
+    return {
+      ok: true,
+      actor: { subjectType: 'user', subjectId: configuredUserId },
+    };
   }
 
   return {
     ok: true,
-    actor: hasUser
-      ? { subjectType: 'user', subjectId: normalizedUserId }
-      : { subjectType: 'agent', subjectId: normalizedAgentId },
+    actor: { subjectType: 'agent', subjectId: configuredAgentId },
   };
 }
 

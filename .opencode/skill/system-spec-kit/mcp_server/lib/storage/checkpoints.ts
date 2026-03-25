@@ -12,7 +12,14 @@ import type Database from 'better-sqlite3';
 
 // Internal utils
 import { toErrorMessage } from '../../utils/db-helpers';
+import { getAllowedSharedSpaceIds } from '../collab/shared-spaces';
 import { rebuildAutoEntities } from '../extraction/entity-extractor';
+import {
+  createScopeFilterPredicate,
+  hasScopeConstraints,
+  normalizeScopeContext,
+  type ScopeContext,
+} from '../governance/scope-governance';
 import { detectCommunities, storeCommunityAssignments } from '../graph/community-detection';
 import { snapshotDegrees } from '../graph/graph-signals';
 import { deleteEdgesForMemory } from './causal-edges';
@@ -158,6 +165,7 @@ interface CreateCheckpointOptions {
   specFolder?: string | null;
   includeEmbeddings?: boolean;
   metadata?: Record<string, unknown>;
+  scope?: ScopeContext;
 }
 
 interface RestoreResult {
@@ -191,6 +199,10 @@ interface CheckpointSnapshot {
   vectors?: SnapshotVectorRow[];
   causalEdges?: Array<Record<string, unknown>>;
   timestamp: string;
+}
+
+interface CheckpointScopeOptions {
+  scope?: ScopeContext;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -351,6 +363,107 @@ function getSharedSpaceIdsFromMemories(memories: Array<Record<string, unknown>>)
   return Array.from(ids);
 }
 
+function parseCheckpointMetadata(value: unknown): Record<string, unknown> {
+  if (!value) {
+    return {};
+  }
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value) as unknown;
+      return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
+        ? parsed as Record<string, unknown>
+        : {};
+    } catch (_error: unknown) {
+      return {};
+    }
+  }
+  return typeof value === 'object' && !Array.isArray(value)
+    ? value as Record<string, unknown>
+    : {};
+}
+
+function checkpointMetadataMatchesScope(rawMetadata: unknown, scope: ScopeContext): boolean {
+  const normalizedScope = normalizeScopeContext(scope);
+  if (!hasScopeConstraints(normalizedScope)) {
+    return true;
+  }
+
+  const metadata = parseCheckpointMetadata(rawMetadata);
+  return (
+    (normalizedScope.tenantId === undefined || metadata.tenantId === normalizedScope.tenantId)
+    && (normalizedScope.userId === undefined || metadata.userId === normalizedScope.userId)
+    && (normalizedScope.agentId === undefined || metadata.agentId === normalizedScope.agentId)
+    && (normalizedScope.sharedSpaceId === undefined || metadata.sharedSpaceId === normalizedScope.sharedSpaceId)
+  );
+}
+
+function hasDirectScopeColumns(columns: ReadonlySet<string>): boolean {
+  return (
+    columns.has('tenant_id')
+    || columns.has('user_id')
+    || columns.has('agent_id')
+    || columns.has('session_id')
+    || columns.has('shared_space_id')
+  );
+}
+
+function getScopeFilterContext(
+  database: Database.Database,
+  scope: ScopeContext = {},
+): {
+  normalizedScope: ScopeContext;
+  allowedSharedSpaceIds: Set<string>;
+  predicate: ((row: Record<string, unknown>) => boolean) | null;
+} {
+  const normalizedScope = normalizeScopeContext(scope);
+  if (!hasScopeConstraints(normalizedScope)) {
+    return {
+      normalizedScope,
+      allowedSharedSpaceIds: new Set<string>(),
+      predicate: null,
+    };
+  }
+
+  const allowedSharedSpaceIds = getAllowedSharedSpaceIds(database, normalizedScope);
+  return {
+    normalizedScope,
+    allowedSharedSpaceIds,
+    predicate: createScopeFilterPredicate<Record<string, unknown>>(normalizedScope, allowedSharedSpaceIds),
+  };
+}
+
+function getScopedMemories(
+  database: Database.Database,
+  specFolder: string | null,
+  scope: ScopeContext = {},
+): {
+  memories: Array<Record<string, unknown>>;
+  memoryIds: number[];
+  allowedSharedSpaceIds: Set<string>;
+  normalizedScope: ScopeContext;
+} {
+  const { normalizedScope, allowedSharedSpaceIds, predicate } = getScopeFilterContext(database, scope);
+  const baseMemories = specFolder
+    ? database.prepare('SELECT * FROM memory_index WHERE spec_folder = ?').all(specFolder) as Array<Record<string, unknown>>
+    : database.prepare('SELECT * FROM memory_index').all() as Array<Record<string, unknown>>;
+  const memories = predicate ? baseMemories.filter((row) => predicate(row)) : baseMemories;
+
+  return {
+    memories,
+    memoryIds: getMemoryIds(memories),
+    allowedSharedSpaceIds,
+    normalizedScope,
+  };
+}
+
+function getCurrentScopedMemoryIds(
+  database: Database.Database,
+  specFolder: string | null,
+  scope: ScopeContext = {},
+): number[] {
+  return getScopedMemories(database, specFolder, scope).memoryIds;
+}
+
 function getEdgeIds(edges: Array<Record<string, unknown>>): number[] {
   const ids = new Set<number>();
   for (const edge of edges) {
@@ -459,45 +572,115 @@ function selectTableRows(
     specFolder: string | null;
     memoryIds: number[];
     sharedSpaceIds: string[];
+    scope?: ScopeContext;
+    allowedSharedSpaceIds?: ReadonlySet<string>;
   },
 ): Array<Record<string, unknown>> {
-  const { specFolder, memoryIds, sharedSpaceIds } = options;
+  const { specFolder, memoryIds, sharedSpaceIds, scope = {}, allowedSharedSpaceIds } = options;
+  const normalizedScope = normalizeScopeContext(scope);
+  const hasScope = hasScopeConstraints(normalizedScope);
+  const scopePredicate = hasScope
+    ? createScopeFilterPredicate<Record<string, unknown>>(normalizedScope, allowedSharedSpaceIds)
+    : null;
 
   if (tableName === 'memory_index') {
-    if (!specFolder) {
-      return database.prepare('SELECT * FROM memory_index').all() as Array<Record<string, unknown>>;
-    }
-    return database.prepare(
-      'SELECT * FROM memory_index WHERE spec_folder = ?'
-    ).all(specFolder) as Array<Record<string, unknown>>;
+    const rows = specFolder
+      ? database.prepare(
+        'SELECT * FROM memory_index WHERE spec_folder = ?'
+      ).all(specFolder) as Array<Record<string, unknown>>
+      : database.prepare('SELECT * FROM memory_index').all() as Array<Record<string, unknown>>;
+    return scopePredicate ? rows.filter((row) => scopePredicate(row)) : rows;
   }
 
   if (tableName === 'vec_memories') {
-    if (!specFolder) {
-      return database.prepare(
-        'SELECT rowid AS rowid, embedding FROM vec_memories'
-      ).all() as Array<Record<string, unknown>>;
+    if (memoryIds.length > 0) {
+      return batchedInQuery<Record<string, unknown>>(
+        database,
+        'SELECT rowid AS rowid, embedding FROM vec_memories WHERE rowid IN (__PLACEHOLDERS__)',
+        memoryIds,
+      );
     }
-    return database.prepare(`
+    if (specFolder) {
+      return database.prepare(`
       SELECT v.rowid AS rowid, v.embedding AS embedding
       FROM vec_memories v
       JOIN memory_index m ON m.id = v.rowid
       WHERE m.spec_folder = ?
     `).all(specFolder) as Array<Record<string, unknown>>;
+    }
+    return hasScope ? [] : database.prepare(
+      'SELECT rowid AS rowid, embedding FROM vec_memories'
+    ).all() as Array<Record<string, unknown>>;
   }
 
   if (tableName === 'causal_edges') {
-    return specFolder
-      ? snapshotCausalEdgesForMemoryIds(database, memoryIds)
-      : database.prepare('SELECT * FROM causal_edges').all() as Array<Record<string, unknown>>;
+    if (memoryIds.length > 0) {
+      return snapshotCausalEdgesForMemoryIds(database, memoryIds);
+    }
+    return hasScope ? [] : database.prepare('SELECT * FROM causal_edges').all() as Array<Record<string, unknown>>;
   }
 
   const columns = new Set(getTableColumns(database, tableName));
-  if (!specFolder) {
-    return database.prepare(`SELECT * FROM ${tableName}`).all() as Array<Record<string, unknown>>;
+
+  if (tableName === 'shared_spaces') {
+    if (sharedSpaceIds.length > 0) {
+      return batchedInQuery<Record<string, unknown>>(
+        database,
+        'SELECT * FROM shared_spaces WHERE space_id IN (__PLACEHOLDERS__)',
+        sharedSpaceIds,
+      );
+    }
+    if (normalizedScope.tenantId) {
+      return database.prepare(
+        'SELECT * FROM shared_spaces WHERE tenant_id = ?'
+      ).all(normalizedScope.tenantId) as Array<Record<string, unknown>>;
+    }
+    return hasScope ? [] : database.prepare('SELECT * FROM shared_spaces').all() as Array<Record<string, unknown>>;
   }
 
-  if (columns.has('spec_folder')) {
+  if (tableName === 'shared_space_members') {
+    if (sharedSpaceIds.length > 0) {
+      return batchedInQuery<Record<string, unknown>>(
+        database,
+        'SELECT * FROM shared_space_members WHERE space_id IN (__PLACEHOLDERS__)',
+        sharedSpaceIds,
+      );
+    }
+    return hasScope ? [] : database.prepare('SELECT * FROM shared_space_members').all() as Array<Record<string, unknown>>;
+  }
+
+  if (tableName === 'shared_space_conflicts') {
+    if (memoryIds.length > 0) {
+      return dedupeRowsById([
+        ...batchedInQuery<Record<string, unknown>>(
+          database,
+          `
+            SELECT * FROM shared_space_conflicts
+            WHERE existing_memory_id IN (__PLACEHOLDERS__)
+          `,
+          memoryIds,
+        ),
+        ...batchedInQuery<Record<string, unknown>>(
+          database,
+          `
+            SELECT * FROM shared_space_conflicts
+            WHERE incoming_memory_id IN (__PLACEHOLDERS__)
+          `,
+          memoryIds,
+        ),
+      ]);
+    }
+    if (sharedSpaceIds.length > 0) {
+      return batchedInQuery<Record<string, unknown>>(
+        database,
+        'SELECT * FROM shared_space_conflicts WHERE space_id IN (__PLACEHOLDERS__)',
+        sharedSpaceIds,
+      );
+    }
+    return hasScope ? [] : database.prepare('SELECT * FROM shared_space_conflicts').all() as Array<Record<string, unknown>>;
+  }
+
+  if (specFolder && columns.has('spec_folder')) {
     return database.prepare(
       `SELECT * FROM ${tableName} WHERE spec_folder = ?`
     ).all(specFolder) as Array<Record<string, unknown>>;
@@ -532,37 +715,16 @@ function selectTableRows(
     ]);
   }
 
-  if (memoryIds.length > 0 && tableName === 'shared_space_conflicts') {
-    return dedupeRowsById([
-      ...batchedInQuery<Record<string, unknown>>(
-        database,
-        `
-          SELECT * FROM shared_space_conflicts
-          WHERE existing_memory_id IN (__PLACEHOLDERS__)
-        `,
-        memoryIds,
-      ),
-      ...batchedInQuery<Record<string, unknown>>(
-        database,
-        `
-          SELECT * FROM shared_space_conflicts
-          WHERE incoming_memory_id IN (__PLACEHOLDERS__)
-        `,
-        memoryIds,
-      ),
-    ]);
+  const allRows = database.prepare(`SELECT * FROM ${tableName}`).all() as Array<Record<string, unknown>>;
+  if (!scopePredicate) {
+    return allRows;
   }
 
-  if (sharedSpaceIds.length > 0 && (tableName === 'shared_spaces' || tableName === 'shared_space_members')) {
-    const columnName = tableName === 'shared_spaces' ? 'space_id' : 'space_id';
-    return batchedInQuery<Record<string, unknown>>(
-      database,
-      `SELECT * FROM ${tableName} WHERE ${columnName} IN (__PLACEHOLDERS__)`,
-      sharedSpaceIds,
-    );
+  if (hasDirectScopeColumns(columns)) {
+    return allRows.filter((row) => scopePredicate(row));
   }
 
-  return database.prepare(`SELECT * FROM ${tableName}`).all() as Array<Record<string, unknown>>;
+  return [];
 }
 
 function createTableSnapshot(
@@ -572,6 +734,8 @@ function createTableSnapshot(
     specFolder: string | null;
     memoryIds: number[];
     sharedSpaceIds: string[];
+    scope?: ScopeContext;
+    allowedSharedSpaceIds?: ReadonlySet<string>;
   },
 ): TableSnapshot | null {
   if (!tableExists(database, tableName)) {
@@ -669,14 +833,17 @@ function clearTableForRestoreScope(
     memoryIds: number[];
     sharedSpaceIds: string[];
     edgeIds: number[];
+    scope?: ScopeContext;
   },
 ): void {
-  const { checkpointSpecFolder, memoryIds, sharedSpaceIds, edgeIds } = options;
+  const { checkpointSpecFolder, memoryIds, sharedSpaceIds, edgeIds, scope = {} } = options;
+  const normalizedScope = normalizeScopeContext(scope);
+  const hasScope = hasScopeConstraints(normalizedScope);
   if (!tableExists(database, tableName)) {
     return;
   }
 
-  if (!checkpointSpecFolder) {
+  if (!checkpointSpecFolder && !hasScope) {
     clearTable(database, tableName);
     return;
   }
@@ -732,6 +899,34 @@ function clearTableForRestoreScope(
   }
 
   const columns = new Set(getTableColumns(database, tableName));
+  if (sharedSpaceIds.length > 0 && columns.has('shared_space_id')) {
+    deleteRowsByStringIds(database, tableName, 'shared_space_id', sharedSpaceIds);
+    return;
+  }
+
+  const scopedClauses: string[] = [];
+  const scopedParams: Array<string> = [];
+  if (normalizedScope.tenantId && columns.has('tenant_id')) {
+    scopedClauses.push('tenant_id = ?');
+    scopedParams.push(normalizedScope.tenantId);
+  }
+  if (normalizedScope.userId && columns.has('user_id')) {
+    scopedClauses.push('user_id = ?');
+    scopedParams.push(normalizedScope.userId);
+  }
+  if (normalizedScope.agentId && columns.has('agent_id')) {
+    scopedClauses.push('agent_id = ?');
+    scopedParams.push(normalizedScope.agentId);
+  }
+  if (normalizedScope.sharedSpaceId && columns.has('shared_space_id')) {
+    scopedClauses.push('shared_space_id = ?');
+    scopedParams.push(normalizedScope.sharedSpaceId);
+  }
+  if (scopedClauses.length > 0) {
+    database.prepare(`DELETE FROM ${tableName} WHERE ${scopedClauses.join(' AND ')}`).run(...scopedParams);
+    return;
+  }
+
   if (columns.has('spec_folder')) {
     database.prepare(`DELETE FROM ${tableName} WHERE spec_folder = ?`).run(checkpointSpecFolder);
     return;
@@ -747,7 +942,9 @@ function clearTableForRestoreScope(
     return;
   }
 
-  clearTable(database, tableName);
+  if (!hasScope) {
+    clearTable(database, tableName);
+  }
 }
 
 function clearDerivedTablesForRestore(
@@ -755,16 +952,18 @@ function clearDerivedTablesForRestore(
   options: {
     checkpointSpecFolder: string | null;
     memoryIds: number[];
+    scope?: ScopeContext;
   },
 ): void {
-  const { checkpointSpecFolder, memoryIds } = options;
+  const { checkpointSpecFolder, memoryIds, scope = {} } = options;
+  const hasScope = hasScopeConstraints(normalizeScopeContext(scope));
 
   for (const tableName of CHECKPOINT_MANIFEST.rebuild) {
     if (!tableExists(database, tableName)) {
       continue;
     }
 
-    if (!checkpointSpecFolder) {
+    if (!checkpointSpecFolder && !hasScope) {
       clearTable(database, tableName);
       continue;
     }
@@ -783,7 +982,9 @@ function clearDerivedTablesForRestore(
       continue;
     }
 
-    clearTable(database, tableName);
+    if (!hasScope) {
+      clearTable(database, tableName);
+    }
   }
 }
 
@@ -1094,16 +1295,22 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
     specFolder = null,
     includeEmbeddings: _includeEmbeddings = true,
     metadata = {},
+    scope = {},
   } = options;
 
   try {
     // Wrap snapshot SELECTs + INSERT + overflow DELETE in a transaction for atomicity
     const checkpointInfo = database.transaction(() => {
-      const memories = specFolder
-        ? database.prepare('SELECT * FROM memory_index WHERE spec_folder = ?').all(specFolder) as Array<Record<string, unknown>>
-        : database.prepare('SELECT * FROM memory_index').all() as Array<Record<string, unknown>>;
-      const scopedMemoryIds = getMemoryIds(memories);
-      const sharedSpaceIds = getSharedSpaceIdsFromMemories(memories);
+      const {
+        memories,
+        memoryIds: scopedMemoryIds,
+        allowedSharedSpaceIds,
+        normalizedScope,
+      } = getScopedMemories(database, specFolder, scope);
+      const sharedSpaceIds = Array.from(new Set([
+        ...getSharedSpaceIdsFromMemories(memories),
+        ...allowedSharedSpaceIds,
+      ]));
       const tables: Record<string, TableSnapshot> = {};
 
       for (const tableName of CHECKPOINT_MANIFEST.snapshot) {
@@ -1115,6 +1322,8 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
           specFolder,
           memoryIds: scopedMemoryIds,
           sharedSpaceIds,
+          scope: normalizedScope,
+          allowedSharedSpaceIds,
         });
         if (!tableSnapshot) {
           continue;
@@ -1157,6 +1366,10 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
         compressed,
         JSON.stringify({
           ...metadata,
+          ...(normalizedScope.tenantId ? { tenantId: normalizedScope.tenantId } : {}),
+          ...(normalizedScope.userId ? { userId: normalizedScope.userId } : {}),
+          ...(normalizedScope.agentId ? { agentId: normalizedScope.agentId } : {}),
+          ...(normalizedScope.sharedSpaceId ? { sharedSpaceId: normalizedScope.sharedSpaceId } : {}),
           memoryCount: memories.length,
           vectorCount: vectors.length,
           includeEmbeddings: _includeEmbeddings,
@@ -1184,7 +1397,14 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
         specFolder,
         gitBranch,
         snapshotSize: compressed.length,
-        metadata: { ...metadata, memoryCount: memories.length },
+        metadata: {
+          ...metadata,
+          ...(normalizedScope.tenantId ? { tenantId: normalizedScope.tenantId } : {}),
+          ...(normalizedScope.userId ? { userId: normalizedScope.userId } : {}),
+          ...(normalizedScope.agentId ? { agentId: normalizedScope.agentId } : {}),
+          ...(normalizedScope.sharedSpaceId ? { sharedSpaceId: normalizedScope.sharedSpaceId } : {}),
+          memoryCount: memories.length,
+        },
       };
     })();
 
@@ -1198,7 +1418,11 @@ function createCheckpoint(options: CreateCheckpointOptions = {}): CheckpointInfo
   }
 }
 
-function listCheckpoints(specFolder: string | null = null, limit: number = 50): CheckpointInfo[] {
+function listCheckpoints(
+  specFolder: string | null = null,
+  limit: number = 50,
+  scope: ScopeContext = {},
+): CheckpointInfo[] {
   const database = getDatabase();
 
   try {
@@ -1213,7 +1437,9 @@ function listCheckpoints(specFolder: string | null = null, limit: number = 50): 
       LIMIT ?
     `).all(...params) as Array<Record<string, unknown>>;
 
-    return rows.map(row => ({
+    return rows
+      .filter((row) => checkpointMetadataMatchesScope(row.metadata, scope))
+      .map(row => ({
       id: row.id as number,
       name: row.name as string,
       createdAt: row.created_at as string,
@@ -1221,7 +1447,7 @@ function listCheckpoints(specFolder: string | null = null, limit: number = 50): 
       gitBranch: row.git_branch as string | null,
       snapshotSize: (row.snapshot_size as number) || 0,
       metadata: row.metadata ? JSON.parse(row.metadata as string) : {},
-    }));
+      }));
   } catch (error: unknown) {
     const msg = toErrorMessage(error);
     console.warn(`[checkpoints] listCheckpoints error: ${msg}`);
@@ -1229,7 +1455,7 @@ function listCheckpoints(specFolder: string | null = null, limit: number = 50): 
   }
 }
 
-function getCheckpoint(nameOrId: string | number): CheckpointEntry | null {
+function getCheckpoint(nameOrId: string | number, scope: ScopeContext = {}): CheckpointEntry | null {
   const database = getDatabase();
 
   try {
@@ -1237,7 +1463,11 @@ function getCheckpoint(nameOrId: string | number): CheckpointEntry | null {
       ? database.prepare('SELECT * FROM checkpoints WHERE id = ?').get(nameOrId)
       : database.prepare('SELECT * FROM checkpoints WHERE name = ?').get(nameOrId);
 
-    return (row as CheckpointEntry) || null;
+    const checkpoint = (row as CheckpointEntry) || null;
+    if (checkpoint && !checkpointMetadataMatchesScope(checkpoint.metadata, scope)) {
+      return null;
+    }
+    return checkpoint;
   } catch (error: unknown) {
     const msg = toErrorMessage(error);
     console.warn(`[checkpoints] getCheckpoint error: ${msg}`);
@@ -1245,12 +1475,16 @@ function getCheckpoint(nameOrId: string | number): CheckpointEntry | null {
   }
 }
 
-function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = false): RestoreResult {
+function restoreCheckpoint(
+  nameOrId: string | number,
+  clearExisting: boolean = false,
+  scope: ScopeContext = {},
+): RestoreResult {
   const database = getDatabase();
   const result: RestoreResult = { restored: 0, skipped: 0, errors: [], workingMemoryRestored: 0 };
 
   try {
-    const checkpoint = getCheckpoint(nameOrId);
+    const checkpoint = getCheckpoint(nameOrId, scope);
     if (!checkpoint || !checkpoint.memory_snapshot) {
       result.errors.push('Checkpoint not found or empty');
       return result;
@@ -1270,13 +1504,23 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
 
     const checkpointSpecFolder = checkpoint.spec_folder ?? null;
     const snapshotMemoryIds = getMemoryIds(memoryRows);
+    const { normalizedScope, allowedSharedSpaceIds } = getScopeFilterContext(database, scope);
     const currentScopedMemoryIds = checkpointSpecFolder
       ? getCurrentMemoryIdsForSpecFolder(database, checkpointSpecFolder)
-      : [];
+      : getCurrentScopedMemoryIds(database, null, normalizedScope);
     const scopedMemoryIdsToReplace = Array.from(
       new Set([...currentScopedMemoryIds, ...snapshotMemoryIds])
     );
-    const sharedSpaceIds = getSharedSpaceIdsFromMemories(memoryRows);
+    const currentScopedSharedSpaceIds = checkpointSpecFolder
+      ? []
+      : getSharedSpaceIdsFromMemories(
+        getScopedMemories(database, null, normalizedScope).memories,
+      );
+    const sharedSpaceIds = Array.from(new Set([
+      ...getSharedSpaceIdsFromMemories(memoryRows),
+      ...currentScopedSharedSpaceIds,
+      ...allowedSharedSpaceIds,
+    ]));
     const edgeIds = getEdgeIds(tableSnapshots.causal_edges?.rows ?? []);
 
     // T107 FIX: Validate every row BEFORE any DB mutations.
@@ -1341,6 +1585,7 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
           clearDerivedTablesForRestore(database, {
             checkpointSpecFolder,
             memoryIds: scopedMemoryIdsToReplace,
+            scope: normalizedScope,
           });
           for (const tableName of CHECKPOINT_CLEAR_ORDER) {
             if (!tableSnapshots[tableName]) {
@@ -1352,6 +1597,7 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
                 memoryIds: scopedMemoryIdsToReplace,
                 sharedSpaceIds,
                 edgeIds,
+                scope: normalizedScope,
               });
             } catch (tableError: unknown) {
               throw new Error(`${tableName}: ${toErrorMessage(tableError)}`);
@@ -1530,10 +1776,15 @@ function restoreCheckpoint(nameOrId: string | number, clearExisting: boolean = f
   return result;
 }
 
-function deleteCheckpoint(nameOrId: string | number): boolean {
+function deleteCheckpoint(nameOrId: string | number, scope: ScopeContext = {}): boolean {
   const database = getDatabase();
 
   try {
+    const checkpoint = getCheckpoint(nameOrId, scope);
+    if (!checkpoint) {
+      return false;
+    }
+
     const result = typeof nameOrId === 'number'
       ? (database.prepare('DELETE FROM checkpoints WHERE id = ?') as Database.Statement).run(nameOrId)
       : (database.prepare('DELETE FROM checkpoints WHERE name = ?') as Database.Statement).run(nameOrId);

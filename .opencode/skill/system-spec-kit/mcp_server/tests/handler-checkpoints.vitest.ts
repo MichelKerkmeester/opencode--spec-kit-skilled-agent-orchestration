@@ -175,6 +175,7 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
           name: 'scoped-checkpoint',
           specFolder: 'specs/example',
           metadata: { reason: 'scope-test' },
+          tenantId: 'tenant-a',
           userId: 'user-1',
           agentId: 'agent-1',
           sharedSpaceId: 'space-1',
@@ -184,6 +185,13 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
           specFolder: 'specs/example',
           metadata: {
             reason: 'scope-test',
+            tenantId: 'tenant-a',
+            userId: 'user-1',
+            agentId: 'agent-1',
+            sharedSpaceId: 'space-1',
+          },
+          scope: {
+            tenantId: 'tenant-a',
             userId: 'user-1',
             agentId: 'agent-1',
             sharedSpaceId: 'space-1',
@@ -192,6 +200,16 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
       } finally {
         spy.mockRestore();
       }
+    });
+
+    it('T521-C8: Governed checkpoint create requires tenant scope when actor scope is provided', async () => {
+      const response = await handler.handleCheckpointCreate({
+        name: 'missing-tenant',
+        userId: 'user-1',
+      });
+      const parsed = JSON.parse(response.content[0].text);
+      expect(response.isError).toBe(true);
+      expect(parsed.data?.code).toBe('CHECKPOINT_SCOPE_TENANT_REQUIRED');
     });
   });
 
@@ -217,7 +235,7 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
         const parsed = JSON.parse(result.content[0].text);
         expect(parsed.data?.count).toBe(0);
         expect(parsed.data?.checkpoints).toEqual([]);
-        expect(listSpy).toHaveBeenCalledWith(null, 50);
+        expect(listSpy).toHaveBeenCalledWith(null, 50, {});
       } finally {
         listSpy.mockRestore();
       }
@@ -230,9 +248,9 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
         await handler.handleCheckpointList({ limit: -1 });
         await handler.handleCheckpointList({ limit: 999 });
 
-        expect(listSpy).toHaveBeenNthCalledWith(1, null, 50);
-        expect(listSpy).toHaveBeenNthCalledWith(2, null, 50);
-        expect(listSpy).toHaveBeenNthCalledWith(3, null, 100);
+        expect(listSpy).toHaveBeenNthCalledWith(1, null, 50, {});
+        expect(listSpy).toHaveBeenNthCalledWith(2, null, 50, {});
+        expect(listSpy).toHaveBeenNthCalledWith(3, null, 100, {});
       } finally {
         listSpy.mockRestore();
       }
@@ -261,6 +279,7 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
       ]);
       try {
         const result = await handler.handleCheckpointList({
+          tenantId: 'tenant-a',
           userId: 'user-1',
           sharedSpaceId: 'space-1',
         });
@@ -268,10 +287,21 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
         expect(parsed.data?.count).toBe(1);
         expect(parsed.data?.checkpoints).toHaveLength(1);
         expect(parsed.data?.checkpoints[0]?.name).toBe('matching-checkpoint');
-        expect(listSpy).toHaveBeenCalledWith(null, 50);
+        expect(listSpy).toHaveBeenCalledWith(null, 50, {
+          tenantId: 'tenant-a',
+          userId: 'user-1',
+          sharedSpaceId: 'space-1',
+        });
       } finally {
         listSpy.mockRestore();
       }
+    });
+
+    it('T521-L5: Governed checkpoint list requires tenant scope when actor scope is provided', async () => {
+      const response = await handler.handleCheckpointList({ userId: 'user-1' });
+      const parsed = JSON.parse(response.content[0].text);
+      expect(response.isError).toBe(true);
+      expect(parsed.data?.code).toBe('CHECKPOINT_SCOPE_TENANT_REQUIRED');
     });
   });
 
@@ -355,6 +385,7 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
       try {
         const result = await handler.handleCheckpointRestore({
           name: 'scoped-restore',
+          tenantId: 'tenant-a',
           userId: 'user-1',
         });
         expect(result.isError).toBe(true);
@@ -365,6 +396,16 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
         getSpy.mockRestore();
         restoreSpy.mockRestore();
       }
+    });
+
+    it('T521-R7: Governed checkpoint restore requires tenant scope when actor scope is provided', async () => {
+      const response = await handler.handleCheckpointRestore({
+        name: 'missing-tenant-restore',
+        userId: 'user-1',
+      });
+      const parsed = JSON.parse(response.content[0].text);
+      expect(response.isError).toBe(true);
+      expect(parsed.data?.code).toBe('CHECKPOINT_SCOPE_TENANT_REQUIRED');
     });
   });
 
@@ -454,6 +495,7 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
         const result = await handler.handleCheckpointDelete({
           name: 'scoped-delete',
           confirmName: 'scoped-delete',
+          tenantId: 'tenant-a',
           sharedSpaceId: 'space-1',
         });
         expect(result.isError).toBe(true);
@@ -464,6 +506,17 @@ describe('Handler Checkpoints (T521, T102) [deferred - requires DB test fixtures
         getSpy.mockRestore();
         deleteSpy.mockRestore();
       }
+    });
+
+    it('T521-DEL8: Governed checkpoint delete requires tenant scope when actor scope is provided', async () => {
+      const response = await handler.handleCheckpointDelete({
+        name: 'missing-tenant-delete',
+        confirmName: 'missing-tenant-delete',
+        sharedSpaceId: 'space-1',
+      });
+      const parsed = JSON.parse(response.content[0].text);
+      expect(response.isError).toBe(true);
+      expect(parsed.data?.code).toBe('CHECKPOINT_SCOPE_TENANT_REQUIRED');
     });
   });
 

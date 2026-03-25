@@ -64,15 +64,32 @@ const sharedSpacesReadmePath = path.resolve(__dirname, '../../shared-spaces/READ
 describe('shared-memory admin handlers', () => {
   beforeEach(() => {
     process.env.SPECKIT_MEMORY_SHARED_MEMORY = 'true';
+    process.env.SPECKIT_MEMORY_ALLOW_SELF_ASSERTED_SHARED_ADMIN = 'true';
     dbHolder.current = new Database(':memory:');
     mockRequireDb.mockClear();
   });
 
   afterEach(() => {
     delete process.env.SPECKIT_MEMORY_SHARED_MEMORY;
+    delete process.env.SPECKIT_MEMORY_ALLOW_SELF_ASSERTED_SHARED_ADMIN;
     vi.restoreAllMocks();
     dbHolder.current?.close();
     dbHolder.current = null;
+  });
+
+  it('rejects self-asserted admin mutations when the explicit local-only override is disabled', async () => {
+    delete process.env.SPECKIT_MEMORY_ALLOW_SELF_ASSERTED_SHARED_ADMIN;
+
+    const response = await handleSharedSpaceUpsert({
+      spaceId: 'space-locked',
+      tenantId: 'tenant-a',
+      name: 'Locked',
+      actorUserId: 'user-owner',
+    });
+
+    const envelope = parseEnvelope(response);
+    expect(response.isError).toBe(true);
+    expect(envelope.data.details?.reason).toBe('self_asserted_admin_disabled');
   });
 
   it('auto-bootstraps the creator as owner when creating a shared space', async () => {

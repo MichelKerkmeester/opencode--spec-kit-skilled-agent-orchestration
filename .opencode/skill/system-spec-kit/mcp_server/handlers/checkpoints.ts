@@ -39,6 +39,7 @@ import type { MCPResponse } from './types';
 interface CheckpointCreateArgs {
   name: string;
   specFolder?: string;
+  tenantId?: string;
   userId?: string;
   agentId?: string;
   sharedSpaceId?: string;
@@ -47,6 +48,7 @@ interface CheckpointCreateArgs {
 
 interface CheckpointListArgs {
   specFolder?: string;
+  tenantId?: string;
   userId?: string;
   agentId?: string;
   sharedSpaceId?: string;
@@ -55,6 +57,7 @@ interface CheckpointListArgs {
 
 interface CheckpointRestoreArgs {
   name: string;
+  tenantId?: string;
   userId?: string;
   agentId?: string;
   sharedSpaceId?: string;
@@ -63,6 +66,7 @@ interface CheckpointRestoreArgs {
 
 interface CheckpointDeleteArgs {
   name: string;
+  tenantId?: string;
   userId?: string;
   agentId?: string;
   sharedSpaceId?: string;
@@ -70,6 +74,7 @@ interface CheckpointDeleteArgs {
 }
 
 interface CheckpointScopeArgs {
+  tenantId?: string;
   userId?: string;
   agentId?: string;
   sharedSpaceId?: string;
@@ -145,6 +150,7 @@ function validateCheckpointScope(args: CheckpointScopeArgs): CheckpointScopeArgs
   };
 
   return {
+    tenantId: validateValue(args.tenantId, 'tenantId'),
     userId: validateValue(args.userId, 'userId'),
     agentId: validateValue(args.agentId, 'agentId'),
     sharedSpaceId: validateValue(args.sharedSpaceId, 'sharedSpaceId'),
@@ -152,7 +158,20 @@ function validateCheckpointScope(args: CheckpointScopeArgs): CheckpointScopeArgs
 }
 
 function hasCheckpointScope(scope: CheckpointScopeArgs): boolean {
-  return scope.userId !== undefined || scope.agentId !== undefined || scope.sharedSpaceId !== undefined;
+  return (
+    scope.tenantId !== undefined
+    || scope.userId !== undefined
+    || scope.agentId !== undefined
+    || scope.sharedSpaceId !== undefined
+  );
+}
+
+function requiresCheckpointTenant(scope: CheckpointScopeArgs): boolean {
+  return scope.tenantId === undefined && (
+    scope.userId !== undefined
+    || scope.agentId !== undefined
+    || scope.sharedSpaceId !== undefined
+  );
 }
 
 function mergeCheckpointScopeMetadata(
@@ -161,6 +180,7 @@ function mergeCheckpointScopeMetadata(
 ): Record<string, unknown> {
   return {
     ...(metadata ?? {}),
+    ...(scope.tenantId !== undefined ? { tenantId: scope.tenantId } : {}),
     ...(scope.userId !== undefined ? { userId: scope.userId } : {}),
     ...(scope.agentId !== undefined ? { agentId: scope.agentId } : {}),
     ...(scope.sharedSpaceId !== undefined ? { sharedSpaceId: scope.sharedSpaceId } : {}),
@@ -170,6 +190,7 @@ function mergeCheckpointScopeMetadata(
 function checkpointMatchesScope(rawMetadata: unknown, scope: CheckpointScopeArgs): boolean {
   const metadata = parseCheckpointMetadata(rawMetadata);
   return (
+    (scope.tenantId === undefined || metadata.tenantId === scope.tenantId) &&
     (scope.userId === undefined || metadata.userId === scope.userId) &&
     (scope.agentId === undefined || metadata.agentId === scope.agentId) &&
     (scope.sharedSpaceId === undefined || metadata.sharedSpaceId === scope.sharedSpaceId)
@@ -178,6 +199,9 @@ function checkpointMatchesScope(rawMetadata: unknown, scope: CheckpointScopeArgs
 
 function checkpointScopeDetails(scope: CheckpointScopeArgs): Record<string, string> {
   const details: Record<string, string> = {};
+  if (scope.tenantId !== undefined) {
+    details.tenantId = scope.tenantId;
+  }
   if (scope.userId !== undefined) {
     details.userId = scope.userId;
   }
@@ -188,6 +212,22 @@ function checkpointScopeDetails(scope: CheckpointScopeArgs): Record<string, stri
     details.sharedSpaceId = scope.sharedSpaceId;
   }
   return details;
+}
+
+function createCheckpointScopeValidationError(
+  tool: 'checkpoint_create' | 'checkpoint_list' | 'checkpoint_restore' | 'checkpoint_delete',
+): MCPResponse {
+  return createMCPErrorResponse({
+    tool,
+    error: 'tenantId is required when userId, agentId, or sharedSpaceId is provided.',
+    code: 'CHECKPOINT_SCOPE_TENANT_REQUIRED',
+    details: {
+      reason: 'checkpoint_scope_tenant_required',
+    },
+    recovery: {
+      hint: 'Retry with tenantId included for governed checkpoint access.',
+    },
+  });
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -203,6 +243,9 @@ async function handleCheckpointCreate(args: CheckpointCreateArgs): Promise<MCPRe
   await checkDatabaseUpdated();
   const { name, specFolder: spec_folder, metadata } = args;
   const scope = validateCheckpointScope(args);
+  if (requiresCheckpointTenant(scope)) {
+    return createCheckpointScopeValidationError('checkpoint_create');
+  }
 
   if (!name || typeof name !== 'string') {
     throw new Error('name is required and must be a string');
@@ -216,6 +259,7 @@ async function handleCheckpointCreate(args: CheckpointCreateArgs): Promise<MCPRe
     name,
     specFolder: spec_folder,
     metadata: mergeCheckpointScopeMetadata(metadata, scope),
+    scope,
   });
 
   if (!result) {
@@ -260,6 +304,9 @@ async function handleCheckpointList(args: CheckpointListArgs): Promise<MCPRespon
   await checkDatabaseUpdated();
   const { specFolder: spec_folder, limit: raw_limit = 50 } = args;
   const scope = validateCheckpointScope(args);
+  if (requiresCheckpointTenant(scope)) {
+    return createCheckpointScopeValidationError('checkpoint_list');
+  }
 
   if (spec_folder !== undefined && typeof spec_folder !== 'string') {
     throw new Error('specFolder must be a string');
@@ -269,7 +316,7 @@ async function handleCheckpointList(args: CheckpointListArgs): Promise<MCPRespon
     ? Math.min(Math.floor(raw_limit), 100)
     : 50;
 
-  const results = checkpoints.listCheckpoints(spec_folder ?? null, limit);
+  const results = checkpoints.listCheckpoints(spec_folder ?? null, limit, scope);
   const filteredResults = hasCheckpointScope(scope)
     ? results.filter((checkpoint) => checkpointMatchesScope(checkpoint.metadata, scope))
     : results;
@@ -302,13 +349,16 @@ async function handleCheckpointRestore(args: CheckpointRestoreArgs): Promise<MCP
   await checkDatabaseUpdated();
   const { name, clearExisting: clear_existing = false } = args;
   const scope = validateCheckpointScope(args);
+  if (requiresCheckpointTenant(scope)) {
+    return createCheckpointScopeValidationError('checkpoint_restore');
+  }
 
   if (!name || typeof name !== 'string') {
     throw new Error('name is required and must be a string');
   }
 
   if (hasCheckpointScope(scope)) {
-    const checkpoint = checkpoints.getCheckpoint(name);
+    const checkpoint = checkpoints.getCheckpoint(name, scope);
     if (checkpoint && !checkpointMatchesScope(checkpoint.metadata, scope)) {
       return createMCPErrorResponse({
         tool: 'checkpoint_restore',
@@ -327,7 +377,7 @@ async function handleCheckpointRestore(args: CheckpointRestoreArgs): Promise<MCP
     }
   }
 
-  const result = checkpoints.restoreCheckpoint(name, clear_existing);
+  const result = checkpoints.restoreCheckpoint(name, clear_existing, scope);
   const hasRestoreErrors = result.errors.length > 0;
   const hasRestoredData = result.restored > 0 || result.workingMemoryRestored > 0;
 
@@ -413,6 +463,9 @@ async function handleCheckpointDelete(args: CheckpointDeleteArgs): Promise<MCPRe
   await checkDatabaseUpdated();
   const { name, confirmName } = args;
   const scope = validateCheckpointScope(args);
+  if (requiresCheckpointTenant(scope)) {
+    return createCheckpointScopeValidationError('checkpoint_delete');
+  }
 
   if (!name || typeof name !== 'string') {
     throw new Error('name is required and must be a string');
@@ -425,7 +478,7 @@ async function handleCheckpointDelete(args: CheckpointDeleteArgs): Promise<MCPRe
   }
 
   if (hasCheckpointScope(scope)) {
-    const checkpoint = checkpoints.getCheckpoint(name);
+    const checkpoint = checkpoints.getCheckpoint(name, scope);
     if (checkpoint && !checkpointMatchesScope(checkpoint.metadata, scope)) {
       return createMCPErrorResponse({
         tool: 'checkpoint_delete',
@@ -444,7 +497,7 @@ async function handleCheckpointDelete(args: CheckpointDeleteArgs): Promise<MCPRe
     }
   }
 
-  const success: boolean = checkpoints.deleteCheckpoint(name);
+  const success: boolean = checkpoints.deleteCheckpoint(name, scope);
 
   const summary = success
     ? `Checkpoint "${name}" deleted successfully`
