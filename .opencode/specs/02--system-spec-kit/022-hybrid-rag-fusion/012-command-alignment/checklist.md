@@ -33,7 +33,7 @@ contextType: "general"
 
 - [x] CHK-001 [P0] Canonical pack scope confirmed — reconciliation covered `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`, and runtime-doc drift patches to analyze.md and shared.md [EVIDENCE: scoped edits inside the canonical 012 packet plus targeted runtime-doc fixes]
 - [x] CHK-002 [P0] Source of truth identified — `tool-schemas.ts` and `schemas/tool-input-schemas.ts` used together with live memory command docs [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` and `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts` were used as count and parameter baselines]
-- [x] CHK-003 [P1] Live runtime evidence loaded before writing — `README.txt`, `.opencode/command/memory/analyze.md`, and the memory command directory were read first [EVIDENCE: live command docs and the memory command directory were re-read before reconciliation edits]
+- [x] CHK-003 [P1] Live runtime evidence loaded before writing — `README.txt`, `.opencode/command/memory/analyze.md`, and the memory command directory were read first [EVIDENCE: `.opencode/command/memory/README.txt` (33-tool ownership matrix), `.opencode/command/memory/analyze.md` (13-tool Appendix A), and directory listing of `.opencode/command/memory/` (6 command files) were verified on disk before reconciliation edits]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -56,7 +56,7 @@ contextType: "general"
 - [x] CHK-021 [P0] Live command count verified — `.opencode/command/memory/` confirmed 6 commands plus `README.txt` [EVIDENCE: live directory listing shows `analyze`, `continue`, `learn`, `manage`, `save`, `shared`, plus `README.txt`]
 - [x] CHK-022 [P1] README ownership verified — README coverage matrix maps all 33 tools and assigns `memory_quick_search` to `/memory:analyze` [EVIDENCE: `.opencode/command/memory/README.txt` remains the live ownership matrix]
 - [x] CHK-023 [P1] Runtime-doc drift resolved — the analyze.md and shared.md mismatches were fixed during the 2026-03-21 reconciliation pass [EVIDENCE: analyze.md updated to 13 tools with governed retrieval params documented; shared.md updated with tenantId, actor identity, and auto-grant behavior]
-- [x] CHK-024 [P1] Strict spec validation executed — validator run with `--strict` after reconciliation [EVIDENCE: `validate.sh --strict` rerun after pack alignment]
+- [x] CHK-024 [P1] Strict spec validation executed — validator run with `--strict` after reconciliation [EVIDENCE: `validate.sh --strict` run 2026-03-25: 0 errors, 0 warnings, PASSED — all 19 checks passed including ANCHORS_VALID, EVIDENCE_CITED, LEVEL_MATCH, SECTIONS_PRESENT, TEMPLATE_HEADERS]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -64,7 +64,7 @@ contextType: "general"
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No runtime behavior changed — this pass edits only spec-pack markdown [EVIDENCE: all edits are confined to the five scoped markdown files]
+- [x] CHK-030 [P0] No runtime behavior changed — this pass is documentation-only; no server code, config, or executable behavior was modified [EVIDENCE: edits covered the five canonical 012 spec-pack files plus targeted runtime-doc text fixes in analyze.md and shared.md; no runtime behavior was introduced or altered]
 - [x] CHK-031 [P0] No credentials or secrets introduced — documentation-only edits [EVIDENCE: no config, env, or secret-bearing files were touched]
 - [x] CHK-032 [P1] Other collaborators' work respected — no unrelated files were reverted or rewritten [EVIDENCE: only the canonical 012 packet plus the intended live command docs were modified in this pass]
 <!-- /ANCHOR:security -->

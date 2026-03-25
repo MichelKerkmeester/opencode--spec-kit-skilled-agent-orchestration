@@ -1,6 +1,6 @@
 ---
 title: "Implemented sk-doc DQI alignment"
-description: "Implemented sk-doc DQI alignment across all 8 memory command files (README.txt, shared.md, analyze.md, context.md, continue.md, learn.md, save.md, manage.md). Added language..."
+description: "HISTORICAL (superseded 2026-03-21): Implemented sk-doc DQI alignment across the then-current 8 memory command files including context.md. The live suite is now 6 commands (context.md merged into analyze.md). Do not use this memory as current-state evidence."
 trigger_phrases:
   - "sk doc"
   - "implemented sk-doc dqi alignment"

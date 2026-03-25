@@ -179,9 +179,9 @@ Bring the 012 planning docs into line with live repo truth so that:
 
 ---
 
-### Gap Analysis
+### Appendix: Gap Analysis & Reconciliation Record
 
-### 6.1 Live Command-Surface Snapshot
+#### A.1 Live Command-Surface Snapshot
 
 | Command | Live Status | Notes |
 |---------|-------------|-------|
@@ -193,7 +193,7 @@ Bring the 012 planning docs into line with live repo truth so that:
 | `/memory:shared` | PRESENT | Shared-memory lifecycle command |
 | context.md | ABSENT BY DESIGN | Retrieval was merged into analyze.md; do not treat this as a missing file |
 
-### 6.2 Current Tool-Ownership Reality
+#### A.2 Current Tool-Ownership Reality
 
 | Surface | Current Reality | Reconciliation Outcome |
 |---------|-----------------|------------------------|
@@ -205,7 +205,7 @@ Bring the 012 planning docs into line with live repo truth so that:
 | Async ingest home | `/memory:manage ingest` | Treat as already shipped |
 | README coverage matrix | Present and already maps 33 tools | Treat as existing evidence, not future work |
 
-### 6.3 Drift Resolved in This Pass
+#### A.3 Drift Resolved in This Pass
 
 The following runtime-doc drift was identified and resolved during the 2026-03-21 reconciliation pass:
 
@@ -214,14 +214,14 @@ The following runtime-doc drift was identified and resolved during the 2026-03-2
 | `.opencode/command/memory/analyze.md` Appendix A and retrieval notes | Intro sentence said the command owned 12 tools, while the tool-coverage table listed 13 and included `memory_quick_search`; governed retrieval parameters were under-documented | Updated to 13 tools; governed retrieval parameters now documented |
 | `.opencode/command/memory/shared.md` create/member contract | Create/member docs omitted required `tenantId` and actor identity, and denied the first-create owner auto-grant behavior present in the live schema | tenantId and actor identity now present; auto-grant behavior documented |
 
-### 6.4 Source-of-Truth Notes
+#### A.4 Source-of-Truth Notes
 
 - `tool-schemas.ts` is the canonical ordered tool inventory and property-definition source.
 - `schemas/tool-input-schemas.ts` is the command-facing validation mirror and should be consulted for alias/parameter parity.
 - `README.txt` is current evidence for 33-tool command ownership, but 012 should still defer to the schema files when counts change.
 ---
 
-### Reconciled Decisions
+#### A.5 Reconciled Decisions
 
 The following decisions remain authoritative after truth reconciliation:
 
@@ -233,7 +233,7 @@ The following decisions remain authoritative after truth reconciliation:
 6. The spec pack describes already-shipped command docs as existing; formerly open drift items are recorded as resolved.
 ---
 
-### Approach
+#### A.6 Approach
 
 ### Phase 0: Verify Live Reality
 
@@ -264,7 +264,7 @@ Run targeted stale-string checks and spec validation so the 012 pack no longer r
 ---
 
 <!-- ANCHOR:questions -->
-## 10. OPEN QUESTIONS
+## 7. OPEN QUESTIONS
 
 - None. The runtime-doc drift in analyze.md and shared.md was resolved during the 2026-03-21 reconciliation pass.
 <!-- /ANCHOR:questions -->

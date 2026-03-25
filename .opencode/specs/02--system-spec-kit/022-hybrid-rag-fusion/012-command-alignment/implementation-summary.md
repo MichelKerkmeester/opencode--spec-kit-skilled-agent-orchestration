@@ -88,7 +88,7 @@ This reconciliation pass updated the canonical 012 pack so it reflects what is a
 | Retrieval ownership | PASS | analyze.md frontmatter and Appendix A include `memory_quick_search`; README maps retrieval tools to `/memory:analyze` |
 | Learning-history ownership | PASS | README maps `memory_get_learning_history` to `/memory:analyze`; command docs use `/memory:analyze history <specFolder>` |
 | Async ingest ownership | PASS | README maps ingest tools to `/memory:manage ingest` |
-| Runtime-doc drift audit | PASS | The analyze.md and shared.md mismatches were resolved during the 2026-03-21 reconciliation pass; no remaining drift observed |
+| Runtime-doc drift audit | PASS | The analyze.md Appendix A count (12→13) and governed retrieval params, plus the shared.md create/member contract (tenantId, actor identity, auto-grant), were resolved during the 2026-03-21 reconciliation pass. Note: the live `/memory:shared status` flow retains an intentionally documented governance caveat about actor-unbound queries; this is not classified as unresolved drift |
 | Strict spec validation | PASS | `validate.sh --strict` run after pack reconciliation |
 <!-- /ANCHOR:verification -->
 
@@ -97,7 +97,7 @@ This reconciliation pass updated the canonical 012 pack so it reflects what is a
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-The analyze.md and shared.md runtime-doc drift was resolved during the 2026-03-21 reconciliation pass. No open drift items remain for this phase.
+The identified drift cluster — analyze.md Appendix A tool count and governed retrieval params, plus shared.md create/member contract details — was resolved during the 2026-03-21 reconciliation pass. The live `/memory:shared status` flow retains an intentionally documented governance caveat (actor-unbound query visibility); this is preserved as live documentation, not unresolved drift.
 <!-- /ANCHOR:limitations -->
 
 ---

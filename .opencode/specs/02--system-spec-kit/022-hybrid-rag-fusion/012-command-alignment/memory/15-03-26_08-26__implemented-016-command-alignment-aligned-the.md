@@ -1,6 +1,6 @@
 ---
 title: "Implemented 012-command-alignment"
-description: "Implemented 012-command-alignment: aligned the memory command documentation suite with the current 31-tool Spec Kit Memory MCP surface. Updated 5 existing command files..."
+description: "HISTORICAL (superseded 2026-03-21): Originally aligned the memory command documentation suite with the then-current 31-tool Spec Kit Memory MCP surface. The live surface is now 33 tools / 6 commands. Do not use this memory as current-state evidence."
 trigger_phrases:
   - "command alignment"
   - "implemented 012-command-alignment aligned memory"
