@@ -21,7 +21,7 @@ trigger_phrases:
   - "022-hybrid-rag-fusion spec"
   - "copilot agents"
   - "agents waves"
-  - "verdict conditional"
+  - "verdict pass"
   - "findings false"
   - "false deprecation"
   - "deprecation claim"
@@ -93,23 +93,23 @@ spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 
 | Field | Value |
 |-------|-------|
-| Session Status | IN_PROGRESS |
-| Completion % | 11% |
+| Session Status | COMPLETE |
+| Completion % | 100% |
 | Last Activity | 2026-03-25T17:33:18.424Z |
 | Time in Session | 0m |
 | Continuation Count | 1 |
 
 ### Context Summary
 
-**Phase:** RESEARCH
+**Phase:** COMPLETE
 
-**Recent:** Deep review of feature catalog alignment (224 files, 21 categories) against MCP server code and..., Next Steps
+**Recent:** Deep review + full remediation of feature catalog (224 files, 21 categories). 28 GPT 5.4 copilot agents dispatched. All 48 findings (1 P0, 21 P1, 26 P2) fixed. Verdict: PASS.
 
 ### Pending Work
 
-- [ ] **T000**: Fix P0-01: update 17-json-primary-deprecation-posture.md (Priority: P0)
-
-- [ ] **T001**: Fix P0-01: update 17-json-primary-deprecation-posture (Priority: P2)
+- [x] **T000**: Fix P0-01: update 17-json-primary-deprecation-posture.md (DONE)
+- [x] **T001**: Fix all P1 findings — stale counts, wrong behavior descriptions, missing index entries (DONE)
+- [x] **T002**: Fix all P2 findings — over-broad source lists, description drifts, template orphans (DONE)
 
 ### Quick Resume
 
@@ -143,10 +143,10 @@ Next: Fix P0-01: update 17-json-primary-deprecation-posture.md
 
 | Field | Value |
 |-------|-------|
-| Phase | RESEARCH |
-| Active File | N/A |
-| Last Action | Next Steps |
-| Next Action | Fix P0-01: update 17-json-primary-deprecation-posture.md |
+| Phase | COMPLETE |
+| Active File | review-report.md |
+| Last Action | Full remediation — 82 edits across 44 files |
+| Next Action | None — all findings resolved |
 | Blockers | None |
 
 ### File Progress
@@ -179,11 +179,12 @@ Next: Fix P0-01: update 17-json-primary-deprecation-posture.md
 
 ## 1. OVERVIEW
 
-Deep review of feature catalog alignment (224 files, 21 categories) against MCP server code and 022-hybrid-rag-fusion spec changes. Dispatched 15 GPT 5.4 copilot agents in 8 waves. Verdict: CONDITIONAL. Findings: 1 P0 (false deprecation claim in 17-json-primary-deprecation-posture.md), 22 P1 (stale counts, wrong behavior descriptions, incomplete flag inventories), 25 P2 (over-broad source lists, minor mismatches). Categories 14-pipeline scored 22/22 aligned. Categories 01-02 need re-review (agents searched wrong directory). Key insight: actual MCP server code is in mcp_server/ (1107 TS files), not scripts/ (439 TS files).
+Deep review + full remediation of feature catalog alignment (224 files, 21 categories) against MCP server code and 022-hybrid-rag-fusion spec changes. 28 GPT 5.4 copilot agents dispatched across 3 review iterations + 4 fix waves + 1 verification pass. Found 48 findings (1 P0, 21 P1, 26 P2) — all remediated. 82 edits across 44 files. Final verdict: PASS (no advisories). Key insight: actual MCP server code is in mcp_server/ (1107 TS files), not scripts/ (439 TS files). Category 14 (pipeline-architecture) scored 22/22 perfect alignment.
 
 **Key Outcomes**:
-- Deep review of feature catalog alignment (224 files, 21 categories) against MCP server code and...
-- Next Steps
+- All 224 feature catalog files verified against code reality
+- 48 findings found and fixed (1 P0 false deprecation claim, 21 P1 stale descriptions/counts, 26 P2 over-broad source lists)
+- Verdict upgraded CONDITIONAL → PASS after full remediation
 
 <!-- /ANCHOR:summary -->
 
@@ -400,7 +401,7 @@ key_topics:
   - "alignment categories"
   - "findings deprecation"
   - "categories re-review"
-  - "verdict conditional"
+  - "verdict pass"
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
@@ -423,7 +424,7 @@ trigger_phrases:
   - "022-hybrid-rag-fusion spec"
   - "copilot agents"
   - "agents waves"
-  - "verdict conditional"
+  - "verdict pass"
   - "findings false"
   - "false deprecation"
   - "deprecation claim"

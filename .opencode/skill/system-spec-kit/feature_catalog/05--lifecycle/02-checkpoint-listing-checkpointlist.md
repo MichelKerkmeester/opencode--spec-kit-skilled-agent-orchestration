@@ -1,13 +1,13 @@
 ---
 title: "Checkpoint listing (checkpoint_list)"
-description: "Covers the checkpoint listing tool that returns paginated metadata for available snapshots."
+description: "Covers the checkpoint listing tool that returns limit-based metadata for available snapshots."
 ---
 
 # Checkpoint listing (checkpoint_list)
 
 ## 1. OVERVIEW
 
-Covers the checkpoint listing tool that returns paginated metadata for available snapshots.
+Covers the checkpoint listing tool that returns limit-based metadata for available snapshots.
 
 This shows you all available snapshots so you can see when each one was taken and what it covers. Think of it like looking at a list of backup dates on your phone before deciding which one to restore from.
 
@@ -15,7 +15,7 @@ This shows you all available snapshots so you can see when each one was taken an
 
 ## 2. CURRENT REALITY
 
-Returns a paginated list of available checkpoints with metadata: name, creation date, spec folder scope, git branch and compressed snapshot size. The actual snapshot data is not included. Results are ordered by creation date, most recent first. Default limit is 50, maximum 100. You can filter by spec folder to see only checkpoints that cover a specific area.
+Returns a limit-based list of available checkpoints with metadata: name, creation date, spec folder scope, git branch and compressed snapshot size. The actual snapshot data is not included. Results are ordered by creation date, most recent first. The runtime exposes `limit` for truncation, but no offset, page, or cursor parameter. Default limit is 50, maximum 100. You can filter by spec folder to see only checkpoints that cover a specific area.
 
 ---
 

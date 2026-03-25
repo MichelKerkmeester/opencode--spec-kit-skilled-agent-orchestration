@@ -1,13 +1,13 @@
 ---
 title: "Test quality improvements"
-description: "Covers four targeted test quality fixes (timeout hardening, handle leak prevention, tautological test rewrites and duplicate removal) plus 18+ test file updates for changed source behavior."
+description: "Covers four targeted test quality fixes (timeout hardening, handle leak prevention, tautological test rewrites and duplicate removal) plus a specific test-alignment cleanup in `memory-parser.ts`."
 ---
 
 # Test quality improvements
 
 ## 1. OVERVIEW
 
-Covers four targeted test quality fixes (timeout hardening, handle leak prevention, tautological test rewrites and duplicate removal) plus 18+ test file updates for changed source behavior.
+Covers four targeted test quality fixes (timeout hardening, handle leak prevention, tautological test rewrites and duplicate removal) plus a specific test-alignment cleanup in `memory-parser.ts`.
 
 Tests are supposed to catch bugs, but some of these tests had their own problems. A few would pass even when the thing they tested was broken, others would leak resources and some were testing the wrong thing entirely. This round of fixes made the tests themselves more trustworthy, because a test suite you cannot trust is worse than no tests at all.
 
@@ -25,7 +25,7 @@ Four test quality issues were addressed:
 
 **P2d:** A duplicate T007 test block was identified as pre-resolved (not present in current file).
 
-**Additional fixes:** `memory-parser.ts` gained a `/z_archive/` exclusion in `isMemoryFile()` spec doc detection. 18+ test files were updated to match changed source behavior (reconsolidation, five-factor-scoring, working-memory, session-cleanup, channel tests, entity tests, extraction-adapter, intent-routing and others). Test count adjusted from 7,027 to 7,003 (24 tests for removed dead-code features were deleted).
+**Additional fixes:** `memory-parser.ts` gained a `/z_archive/` exclusion in `isMemoryFile()` spec doc detection during the same test-alignment work.
 
 ---
 

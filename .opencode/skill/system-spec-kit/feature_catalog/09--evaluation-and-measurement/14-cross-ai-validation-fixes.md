@@ -20,7 +20,7 @@ Independent reviews by Gemini 3.1 Pro and Codex gpt-5.3-codex identified 14 issu
 - **CR-P0-1:** Test suite false-pass patterns. 21 silent-return guards converted to `it.skipIf()`, fail-fast imports with throw on required handler/vectorIndex missing.
 - **CR-P1-1:** Deletion exception propagation. Causal edge cleanup errors in single-delete now propagate (previously swallowed).
 - **CR-P1-2:** Re-sort after feedback mutations before top-K slice in Stage 2 fusion.
-- **CR-P1-3:** Dedup queries gained `AND parent_id IS NULL` to exclude chunk rows.
+- **CR-P1-3:** Dedup/orphan queries gained parent-scoped filters, including `AND parent.parent_id IS NULL`, to exclude chunk rows.
 - **CR-P1-4:** Session dedup `id != null` guards against undefined collapse.
 - **CR-P1-5:** Cache lookup moved before embedding readiness gate in search handler.
 - **CR-P1-6:** Partial-update DB mutations wrapped inside transaction.
@@ -39,12 +39,12 @@ All 14 items verified through 3-stage review: Codex implemented, Gemini reviewed
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/lib/search/pipeline/stage2-fusion.ts` | Lib | Re-sort behavior after feedback mutations before top-K slicing |
-| `mcp_server/lib/search/vector-index-queries.ts` | Lib | Dedup query hardening with `parent_id IS NULL` filters |
+| `mcp_server/lib/search/vector-index-queries.ts` | Lib | Dedup/orphan query hardening with `parent.parent_id IS NULL` filters |
 | `mcp_server/lib/search/evidence-gap-detector.ts` | Lib | `Number.isFinite` guards for score safety |
 | `mcp_server/lib/eval/reporting-dashboard.ts` | Lib | Dashboard row-limit configurability (`SPECKIT_DASHBOARD_LIMIT`) |
 | `mcp_server/lib/storage/transaction-manager.ts` | Lib | Transaction safety for partial-update mutation paths |
 | `mcp_server/lib/storage/causal-edges.ts` | Lib | Deletion-path error propagation hardening |
-| `mcp_server/lib/search/hybrid-search.ts` | Lib | Search-handler flow fixes including cache-path ordering remediation |
+| `mcp_server/handlers/memory-search.ts` | Handler | Search-handler flow fix moving cache lookup ahead of the embedding-readiness wait |
 
 ### Tests
 

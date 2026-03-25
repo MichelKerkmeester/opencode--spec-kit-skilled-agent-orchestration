@@ -45,9 +45,9 @@ The last three code-audit phases map to existing catalog categories rather than 
 
 | Audit phase | Where to find it |
 |---|---|
-| `020-feature-flag-reference` | Covered by `19--feature-flag-reference/` (slug match) |
-| `021-remediation-revalidation` | Spread across bug-fix, pipeline-safety, and code-standards categories |
-| `022-implement-and-remove-deprecated-features` | Covered by dead-code-removal and feature-flag-sunset entries |
+| `020-feature-flag-reference` | [`19--feature-flag-reference/08-audit-phase-020-mapping-note.md`](./19--feature-flag-reference/08-audit-phase-020-mapping-note.md) |
+| `021-remediation-revalidation` | [`20--remediation-revalidation/01-category-stub.md`](./20--remediation-revalidation/01-category-stub.md) plus the linked bug-fix, pipeline-safety, and code-standards records |
+| `022-implement-and-remove-deprecated-features` | [`21--implement-and-remove-deprecated-features/01-category-stub.md`](./21--implement-and-remove-deprecated-features/01-category-stub.md) plus the linked dead-code-removal and feature-flag-sunset records |
 
 ### Command-Surface Contract
 

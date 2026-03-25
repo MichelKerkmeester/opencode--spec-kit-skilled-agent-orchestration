@@ -15,7 +15,7 @@ Measuring performance can sometimes slow down the thing you are measuring, like 
 
 ## 2. CURRENT REALITY
 
-Measurement infrastructure is implemented as fail-safe and best-effort rather than SLO-enforced runtime monitoring. The eval database and shadow-scoring helpers are designed so evaluation paths do not block production query flow, and shadow scoring write paths are disabled (`runShadowScoring` returns `null`, `logShadowComparison` returns `false`).
+Evaluation logging is implemented as fail-safe and best-effort rather than SLO-enforced runtime monitoring. The `eval-logger` hooks no-op unless `SPECKIT_EVAL_LOGGING=true` and degrade to non-fatal warnings on write failures, so evaluation paths do not block production query flow.
 
 A formal p95 latency comparison (eval logging enabled vs disabled) and an automated ">10% overhead" alert are not implemented in the current code. Observer-effect control currently relies on fail-safe degradation and non-fatal handling in evaluation and observability paths.
 
@@ -27,16 +27,13 @@ A formal p95 latency comparison (eval logging enabled vs disabled) and an automa
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/eval/eval-db.ts` | Lib | Evaluation database |
-| `mcp_server/lib/eval/shadow-scoring.ts` | Lib | Shadow scoring system |
+| `mcp_server/lib/eval/eval-logger.ts` | Lib | Non-fatal evaluation logging hooks for query, per-channel, and final-result events |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/eval-db.vitest.ts` | Eval database operations |
-| `mcp_server/tests/scoring.vitest.ts` | General scoring tests |
-| `mcp_server/tests/shadow-scoring.vitest.ts` | Shadow scoring tests |
+| `mcp_server/tests/eval-logger.vitest.ts` | Disabled/no-op behavior plus non-fatal logging-path coverage |
 
 ---
 

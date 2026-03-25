@@ -35,18 +35,15 @@ A density guard prevents runaway edge creation: current global edge density is c
 
 | File | Layer | Role |
 |------|-------|------|
-| `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | Feature rollout gating |
-| `mcp_server/lib/search/entity-linker.ts` | Lib | Cross-document entity linking |
-| `mcp_server/lib/search/search-flags.ts` | Lib | Feature flag registry |
+| `mcp_server/lib/search/entity-linker.ts` | Lib | Builds the entity catalog, finds cross-document matches, and creates `supports` edges with density-guard enforcement |
+| `mcp_server/handlers/save/post-insert.ts` | Handler | Save-time enrichment path that invokes entity linking after entity extraction succeeds |
 
 ### Tests
 
 | File | Focus |
 |------|-------|
-| `mcp_server/tests/entity-linker.vitest.ts` | Entity linking tests |
-| `mcp_server/tests/hybrid-search-flags.vitest.ts` | Hybrid search flag behavior |
-| `mcp_server/tests/rollout-policy.vitest.ts` | Rollout policy tests |
-| `mcp_server/tests/search-flags.vitest.ts` | Feature flag behavior |
+| `mcp_server/tests/entity-linker.vitest.ts` | Unit coverage for catalog build, match discovery, link creation, and density-guard behavior |
+| `mcp_server/tests/deferred-features-integration.vitest.ts` | End-to-end entity-linking integration through `runEntityLinking()` |
 
 ---
 

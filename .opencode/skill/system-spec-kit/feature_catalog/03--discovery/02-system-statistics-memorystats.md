@@ -21,7 +21,7 @@ Folder ranking supports four modes: `count`, `recency`, `importance`, and `compo
 
 The response now reports `totalSpecFolders` from the full filtered/scored set before pagination slicing, so the summary stays accurate when `limit` truncates `topFolders`. The payload also includes the resolved `limit`, which makes truncation behavior explicit for callers and tests.
 
-Direct handler validation failures return MCP error envelopes with `E_INVALID_INPUT` and `data.details.requestId` for invalid `folderRanking`, invalid `excludePatterns`, invalid `includeScores`/`includeArchived`, or non-finite `limit` values. Aggregate-query and folder-ranking failures return MCP error envelopes instead of raw throws.
+Direct handler validation failures return MCP error envelopes with `E_INVALID_INPUT` and `data.details.requestId` for invalid `folderRanking`, invalid `excludePatterns`, invalid `includeScores`/`includeArchived`, or non-finite `limit` values. Although the validation text still says "regex pattern strings," the runtime treats `excludePatterns` as plain string patterns and applies case-insensitive substring matching when filtering folders. Aggregate-query and folder-ranking failures return MCP error envelopes instead of raw throws.
 
 Embedding-status totals now treat `partial` as a first-class state instead of silently dropping it. `get_status_counts()` initializes and returns a `partial` bucket, and `get_stats()` includes that bucket in the headline total. That keeps `memory_stats` aligned with chunked and partially indexed rows that already exist elsewhere in the vector-index state model.
 

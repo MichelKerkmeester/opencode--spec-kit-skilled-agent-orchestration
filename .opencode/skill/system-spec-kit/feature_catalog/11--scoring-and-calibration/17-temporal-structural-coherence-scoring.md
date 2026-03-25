@@ -1,23 +1,23 @@
 ---
 title: "Temporal-structural coherence scoring"
-description: "Describes the coherence dimension in the quality loop that measures whether a memory's content structure aligns with its temporal context, penalizing references to future events or non-existent predecessors."
+description: "Describes the coherence dimension in the quality loop that scores basic content structure, future-dated completion claims, and unresolved or self-referential causal links."
 ---
 
 # Temporal-structural coherence scoring
 
 ## 1. OVERVIEW
 
-Describes the coherence dimension in the quality loop that measures whether a memory's content structure aligns with its temporal context, penalizing references to future events or non-existent predecessors.
+Describes the coherence dimension in the quality loop that scores basic content structure, future-dated completion claims, and unresolved or self-referential causal links.
 
-This checks whether a memory's claims make sense in the order things actually happened. If a memory says it was caused by something that did not exist yet at the time, that is a red flag. Think of it like a fact-checker catching a biography that references events before the person was born. Memories that fail this time-logic check get a lower quality score and may be rejected from the index.
+This checks whether a memory clears a few structural basics and avoids a narrow set of temporal and causal-link problems. If content is empty, too short, missing headings, or claims completion dates that are later than its last-modified time, the score drops. Self-referential or unresolved causal links also reduce the score. Think of it like a lightweight intake checklist rather than a full chronology engine.
 
 ---
 
 ## 2. CURRENT REALITY
 
-The quality loop handler (`handlers/quality-loop.ts`) includes a coherence dimension in its quality score breakdown. The coherence score measures how well a memory's content structure aligns with its temporal context, specifically whether the claimed relationships (references to other memories, spec folder associations, causal links) are consistent with the chronological ordering of events. Incoherent memories that reference future events or claim relationships with non-existent predecessors receive a lower coherence score, which reduces their overall quality assessment.
+The quality loop handler (`handlers/quality-loop.ts`) includes a coherence dimension in its quality score breakdown. The implementation starts with four structural checks: non-empty content, length over 50 characters, at least one Markdown heading, and length over 200 characters. It then applies bounded penalties for future-dated completion claims and for causal-link metadata that points back to the same memory or to unresolved references. The handler does not perform broader spec-folder chronology analysis or predecessor inference.
 
-The coherence signal feeds into the composite quality score alongside trigger coverage, anchor density and token budget efficiency. A low coherence score can trigger a quality loop rejection, preventing temporally inconsistent content from entering the index.
+The coherence signal feeds into the composite quality score alongside trigger coverage, anchor density and token budget efficiency. A low coherence score can trigger a quality loop rejection, preventing structurally weak or narrowly inconsistent content from entering the index.
 
 ---
 

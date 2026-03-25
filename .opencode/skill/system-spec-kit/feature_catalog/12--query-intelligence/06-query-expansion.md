@@ -1,15 +1,15 @@
 ---
 title: "Query expansion"
-description: "Query expansion broadens retrieval for complex queries by mining related terms from the vector index and appending them to the original query."
+description: "Covers the embedding-based query expansion path and distinguishes it from the separate rule-based deep-mode query-variant expansion path."
 ---
 
 # Query expansion
 
 ## 1. OVERVIEW
 
-Query expansion broadens retrieval for complex queries by mining related terms from the vector index and appending them to the original query.
+This entry covers the embedding-based query expansion path, which broadens retrieval for complex queries by mining related terms from the vector index and appending them to the original query. It is separate from the rule-based `query-expander.ts` path used to build deep-mode synonym variants.
 
-Sometimes the words you use in a question do not match the words stored in the system, even though they mean the same thing. This feature automatically adds related terms to your search so you find relevant results even when the exact wording differs. It only kicks in for complex questions because simple lookups do not benefit from the extra breadth.
+Sometimes the words you use in a question do not match the words stored in the system, even though they mean the same thing. This embedding-driven path automatically adds related terms to your search so you find relevant results even when the exact wording differs. Separately, deep-mode query expansion can generate rule-based synonym variants without mining the vector index.
 
 ---
 
@@ -17,7 +17,7 @@ Sometimes the words you use in a question do not match the words stored in the s
 
 Embedding-based query expansion broadens retrieval for complex queries by mining similar memories from the vector index and extracting related terms to append to the original query, producing an enriched combined query string. Stop-words are filtered out and tokens shorter than 3 characters are discarded.
 
-When R15 classifies a query as "simple", expansion is suppressed because expanding a trigger-phrase lookup would add noise. If expansion produces no additional terms, the original query proceeds unchanged. In the 4-stage pipeline, Stage 1 runs the baseline and expanded-query searches in parallel with deduplication (baseline-first). Runs behind the `SPECKIT_EMBEDDING_EXPANSION` flag (default ON).
+When R15 classifies a query as "simple", the embedding-based expansion path is suppressed because expanding a trigger-phrase lookup would add noise. If embedding expansion produces no additional terms, the original query proceeds unchanged. Separately, `query-expander.ts` provides rule-based synonym variants for deep-mode retrieval; that is a distinct path and should not be conflated with vector-mined expansion. In the 4-stage pipeline, Stage 1 runs the baseline and expanded-query searches in parallel with deduplication (baseline-first). Runs behind the `SPECKIT_EMBEDDING_EXPANSION` flag (default ON).
 
 ---
 
