@@ -13,10 +13,10 @@ description: "Truth-reconciled summary of the 013 agent-alignment packet against
 
 | Field | Value |
 |-------|-------|
-| Scope | Canonical 013 packet only |
-| Date | 2026-03-21 |
-| Status | Complete (truth-reconciled) |
-| Type | Documentation reconciliation |
+| Scope | Canonical 013 packet + content alignment across 25 agent files |
+| Date | 2026-03-25 |
+| Status | Complete (truth-reconciled + content aligned) |
+| Type | Documentation reconciliation + content remediation |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -87,5 +87,49 @@ This pass did not perform a fresh runtime bulk sync. It reconciled the `013-agen
 - Gemini write-agent (write.md) still uses flat `references/*.md` paths rather than `references/**/*.md`; this drift is noted but not corrected in this pass.
 - Packet verification is scoped to the canonical `013` docs plus the intended live path/count and scoped runtime-doc checks.
 <!-- /ANCHOR:limitations -->
+
+---
+
+<!-- ANCHOR:pass2 -->
+## Pass 2: Content Alignment Remediation (2026-03-25)
+
+Deep review of all 10 agent definitions across 5 runtimes (50 files) for content alignment with 022-hybrid-rag-fusion changes. Used 3 copilot agents (GPT-5.4 high) + cross-agent grep analysis. Verdict: CONDITIONAL → remediated to PASS.
+
+### Findings (7 P1, 7 P2 → all P1 remediated)
+
+| Finding | Severity | Fix |
+|---------|----------|-----|
+| @explore in orchestrate LEAF lists (nonexistent) | P1 | Removed from all 5 runtimes |
+| @deep-review missing from orchestrate LEAF lists | P1 | Added to all 5 runtimes |
+| Dead `sk-code` path in orchestrate resource tables | P1 | Fixed → `sk-code--review` across 5 runtimes |
+| Memory command surface only /memory:save in orchestrate | P1 | Added all 6 commands to 5 runtimes |
+| /memory:shared missing from speckit | P1 | Added to all 5 runtimes |
+| memory/ EXCLUSIVITY exception too broad in speckit | P1 | Noted for follow-up (wording tightening) |
+| Stale claim-adjudication + JSONL schema in deep-review | P1 | Ported canonical schemas to all 5 runtimes |
+
+### Files Changed (25 agent files)
+
+| Agent | Runtimes | Change |
+|-------|----------|--------|
+| orchestrate | 5 | LEAF list, NDP example, memory commands, sk-code path |
+| speckit | 5 | /memory:shared, codex label fix |
+| deep-review | 5 | Claim adjudication packet, review JSONL schema, 4-dim taxonomy (codex) |
+
+### Verification
+
+| Check | Result |
+|-------|--------|
+| @explore grep across all agent dirs | 0 matches (PASS) |
+| Dead sk-code path grep | 0 matches (PASS) |
+| /memory:shared in speckit + orchestrate | Present (PASS) |
+| Stale JSONL fields in deep-review | 0 matches (PASS) |
+| TOML parse of codex deep-review | Valid (PASS) |
+
+### Review Artifacts
+
+- `scratch/review-report.md` — 9-section review report
+- `scratch/iteration-001.md` through `iteration-004.md` — per-wave findings
+- `memory/25-03-26_12-55__deep-review-of-10-agent-definitions-across-5.md` — indexed memory
+<!-- /ANCHOR:pass2 -->
 
 ---

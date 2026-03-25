@@ -77,9 +77,24 @@ description: "Verification Date: 2026-03-21"
 
 - [x] CHK-050 [P1] Write scope stayed inside the canonical `013` packet plus the intended scoped runtime-facing docs [EVIDENCE: the reconciliation stayed inside the canonical `013` packet and the intended runtime-facing agent-doc surfaces.]
 - [x] CHK-051 [P1] No temporary files were added outside the packet [EVIDENCE: no extra scratch or temporary artifacts were introduced outside the packet scope.]
-- [ ] CHK-052 [P2] Findings saved to `memory/`
-  Evidence: optional for this documentation reconciliation pass.
+- [x] CHK-052 [P2] Findings saved to `memory/` [EVIDENCE: memory context saved via generate-context.js on 2026-03-25, indexed as memory #10]
 <!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:content-alignment -->
+## Content Alignment (Pass 2 — 2026-03-25)
+
+- [x] CHK-060 [P0] @explore removed from all orchestrate LEAF lists and NDP examples (5 runtimes) [EVIDENCE: grep confirms 0 matches for @explore across all agent dirs]
+- [x] CHK-061 [P0] @deep-review added to orchestrate LEAF lists (5 runtimes) [EVIDENCE: grep confirms @deep-review present in all 5 orchestrate files]
+- [x] CHK-062 [P0] Dead sk-code path replaced with sk-code--review in orchestrate resource tables (5 runtimes) [EVIDENCE: grep confirms 0 matches for `.opencode/skill/sk-code/` across all agent dirs]
+- [x] CHK-063 [P1] All 6 memory commands present in orchestrate suggestion tables (5 runtimes) [EVIDENCE: /memory:shared, /memory:continue, /memory:analyze, /memory:manage, /memory:learn added alongside existing /memory:save]
+- [x] CHK-064 [P1] /memory:shared added to speckit command tables (5 runtimes) [EVIDENCE: grep confirms /memory:shared in speckit and orchestrate agents]
+- [x] CHK-065 [P1] Codex speckit /memory:learn label corrected to "Constitutional memory manager" [EVIDENCE: .codex/agents/speckit.toml updated]
+- [x] CHK-066 [P0] Canonical claim-adjudication packet ported to all 5 deep-review agents [EVIDENCE: copilot verified 0 matches for stale claimId/skepticCheck/refereeDecision across all 5 files]
+- [x] CHK-067 [P0] Canonical review JSONL schema ported to all 5 deep-review agents [EVIDENCE: copilot verified findingsSummary/findingsNew/findingsRefined present, old severityCounts absent]
+- [x] CHK-068 [P1] Codex deep-review 5-dimension scorecard replaced with 4-dimension canonical taxonomy [EVIDENCE: copilot replaced Correctness/Security/Patterns/Maintainability/Performance with correctness/security/traceability/maintainability]
+<!-- /ANCHOR:content-alignment -->
 
 ---
 
@@ -88,9 +103,11 @@ description: "Verification Date: 2026-03-21"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 8 | 8/8 |
-| P1 Items | 8 | 8/8 |
-| P2 Items | 1 | 0/1 |
+| P0 Items (Pass 1) | 8 | 8/8 |
+| P1 Items (Pass 1) | 8 | 8/8 |
+| P0 Items (Pass 2) | 4 | 4/4 |
+| P1 Items (Pass 2) | 5 | 5/5 |
+| P2 Items | 1 | 1/1 |
 <!-- /ANCHOR:summary -->
 
 ---

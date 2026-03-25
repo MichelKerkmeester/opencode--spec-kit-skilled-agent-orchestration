@@ -60,6 +60,25 @@ description: "Truth-reconciliation tasks for updating the 013 packet and the sco
 
 ---
 
+<!-- ANCHOR:phase-4 -->
+## Phase 4: Content Alignment Review & Remediation (2026-03-25)
+<!-- alias: Deep review of agent content vs 022-hybrid-rag-fusion changes -->
+
+- [x] T015 Deep review of 10 agents × 5 runtimes via cli-copilot (GPT-5.4 high + GPT-5.3-Codex xhigh) — review-report.md in scratch/
+- [x] T016 Remove @explore from orchestrate LEAF lists and NDP examples (all 5 runtimes)
+- [x] T017 Add @deep-review to orchestrate LEAF lists (all 5 runtimes)
+- [x] T018 Fix dead `sk-code` path → `sk-code--review` in orchestrate resource tables (all 5 runtimes)
+- [x] T019 Add all 6 memory commands to orchestrate suggestion and resource tables (all 5 runtimes)
+- [x] T020 Add `/memory:shared` to speckit command tables (all 5 runtimes)
+- [x] T021 Fix `/memory:learn` label in codex speckit ("Explicit learning" → "Constitutional memory manager")
+- [x] T022 Port canonical claim-adjudication packet into all 5 deep-review agents (via copilot Wave A+B)
+- [x] T023 Port canonical review JSONL schema into all 5 deep-review agents (via copilot Wave A+B)
+- [x] T024 Replace 5-dimension scorecard with 4-dimension canonical taxonomy in codex deep-review
+- [x] T025 Update spec folder docs to reflect content alignment pass
+<!-- /ANCHOR:phase-4 -->
+
+---
+
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
@@ -67,6 +86,9 @@ description: "Truth-reconciliation tasks for updating the 013 packet and the sco
 - [x] The packet uses deep-research.md naming only
 - [x] The packet documents Codex and Gemini runtime lineage accurately
 - [x] The packet distinguishes scoped runtime-doc closeout from bulk runtime sync
+- [x] All 7 P1 content alignment findings remediated across 25 agent files
+- [x] Deep-review schemas aligned with canonical loop_protocol.md and state_format.md
+- [x] Memory command surface complete (6 commands) in orchestrate and speckit agents
 <!-- /ANCHOR:completion -->
 
 ---

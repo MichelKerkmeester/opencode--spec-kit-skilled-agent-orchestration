@@ -15,9 +15,9 @@ description: "Reconcile the 013 agents-alignment packet and remaining runtime-fa
 |-------|-------|
 | **Level** | 2 |
 | **Priority** | P1 |
-| **Status** | In Progress (lineage truth-reconciled; write-agent routing follow-up pending) |
+| **Status** | Complete (lineage truth-reconciled + content alignment remediated) |
 | **Created** | 2026-03-15 |
-| **Updated** | 2026-03-24 |
+| **Updated** | 2026-03-25 |
 | **Parent** | `022-hybrid-rag-fusion` |
 | **Complexity** | 42/70 |
 | **Parent Spec** | ../spec.md |
@@ -63,17 +63,27 @@ Reconcile the `013` packet so it accurately documents the current runtime lineag
 
 ### In Scope
 
+**Pass 1 — Lineage Truth Reconciliation (completed 2026-03-21):**
 - Rewrite the canonical `013` packet to reflect the live runtime lineage.
 - Document the two markdown source families and their downstream runtime targets.
 - Record Codex generation from the ChatGPT family.
 - Document Gemini's runtime-facing path together with the `.gemini -> .agents` storage detail.
 - Normalize the packet on `deep-research` naming.
-- Reconcile runtime-facing path drift in the scoped Gemini, Claude, ChatGPT, and Codex docs, and explicitly mark write-agent routing items that remain pending.
+- Reconcile runtime-facing path drift in the scoped Gemini, Claude, ChatGPT, and Codex docs.
+
+**Pass 2 — Content Alignment Remediation (completed 2026-03-25):**
+- Deep review of all 10 agent definitions across 5 runtimes (50 files) for content alignment with 022-hybrid-rag-fusion changes.
+- Remove stale @explore references from orchestrate LEAF lists and NDP examples.
+- Add @deep-review to orchestrate LEAF lists (existed but was missing from dispatch).
+- Fix dead `sk-code` path → `sk-code--review` in orchestrate resource tables.
+- Add all 6 memory commands to orchestrate suggestion and resource tables.
+- Add `/memory:shared` to speckit command tables.
+- Fix stale `/memory:learn` label in codex speckit.
+- Port canonical claim-adjudication packet and review JSONL schema into all 5 deep-review agents.
 
 ### Out of Scope
 
-- Bulk-resynchronizing every runtime agent body
-- Rewriting unrelated agent personas outside the scoped delegation/write surfaces
+- Bulk-resynchronizing every runtime agent body beyond the targeted remediations
 - MCP server, command, or skill changes
 - Re-running historical bulk sync work
 
