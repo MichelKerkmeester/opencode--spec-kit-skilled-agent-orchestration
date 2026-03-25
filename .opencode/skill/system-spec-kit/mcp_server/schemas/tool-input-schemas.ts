@@ -112,6 +112,7 @@ const memoryContextSchema = getSchema({
   includeTrace: z.boolean().optional(), // CHK-040: Forward to internal memory_search
   tokenUsage: boundedNumber(0, 1).optional(),
   anchors: optionalStringArray,
+  profile: z.enum(['quick', 'research', 'resume', 'debug']).optional(),
 });
 
 const memorySearchSchema = getSchema({
@@ -148,6 +149,7 @@ const memorySearchSchema = getSchema({
   includeArchived: z.boolean().optional(),
   mode: z.enum(['auto', 'deep']).optional(),
   includeTrace: z.boolean().optional(),
+  profile: z.enum(['quick', 'research', 'resume', 'debug']).optional(),
 }).superRefine((value, ctx) => {
   const hasCursor = typeof value.cursor === 'string' && value.cursor.trim().length > 0;
   const hasQuery = typeof value.query === 'string' && value.query.trim().length > 0;
@@ -480,8 +482,8 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
 };
 
 const ALLOWED_PARAMETERS: Record<string, string[]> = {
-  memory_context: ['input', 'mode', 'intent', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'limit', 'sessionId', 'enableDedup', 'includeContent', 'includeTrace', 'tokenUsage', 'anchors'],
-  memory_search: ['cursor', 'query', 'concepts', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'limit', 'sessionId', 'enableDedup', 'tier', 'contextType', 'useDecay', 'includeContiguity', 'includeConstitutional', 'enableSessionBoost', 'enableCausalBoost', 'includeContent', 'anchors', 'min_quality_score', 'minQualityScore', 'bypassCache', 'rerank', 'applyLengthPenalty', 'applyStateLimits', 'minState', 'intent', 'autoDetectIntent', 'trackAccess', 'includeArchived', 'mode', 'includeTrace'],
+  memory_context: ['input', 'mode', 'intent', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'limit', 'sessionId', 'enableDedup', 'includeContent', 'includeTrace', 'tokenUsage', 'anchors', 'profile'],
+  memory_search: ['cursor', 'query', 'concepts', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId', 'limit', 'sessionId', 'enableDedup', 'tier', 'contextType', 'useDecay', 'includeContiguity', 'includeConstitutional', 'enableSessionBoost', 'enableCausalBoost', 'includeContent', 'anchors', 'min_quality_score', 'minQualityScore', 'bypassCache', 'rerank', 'applyLengthPenalty', 'applyStateLimits', 'minState', 'intent', 'autoDetectIntent', 'trackAccess', 'includeArchived', 'mode', 'includeTrace', 'profile'],
   memory_quick_search: ['query', 'limit', 'specFolder', 'tenantId', 'userId', 'agentId', 'sharedSpaceId'],
   memory_match_triggers: ['prompt', 'limit', 'session_id', 'turnNumber', 'include_cognitive'],
   memory_save: ['filePath', 'force', 'dryRun', 'skipPreflight', 'asyncEmbedding', 'tenantId', 'userId', 'agentId', 'sessionId', 'sharedSpaceId', 'provenanceSource', 'provenanceActor', 'governedAt', 'retentionPolicy', 'deleteAfter'],

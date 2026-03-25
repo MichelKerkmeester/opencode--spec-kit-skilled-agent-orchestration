@@ -60,7 +60,7 @@ Your AI assistant has amnesia. Every conversation starts fresh. You explain your
 | **Causal relation types** | 6 | caused, enabled, supersedes, contradicts, derived_from, supports |
 | **Retrieval modes** | 5 | auto, quick, deep, focused, resume |
 | **Embedding providers** | 3 | Voyage AI, OpenAI, HuggingFace local |
-| **Database tables** | 12 | memory_index, vec_memories, checkpoints, causal_edges and more |
+| **Database tables** | 25 | memory_index, vec_memories, checkpoints, causal_edges and more |
 | **Feature flag categories** | 7 | Search, Session/Cache, MCP Config, Memory/Storage, Embedding, Debug, CI |
 
 ### What Makes This Different
@@ -188,6 +188,7 @@ Save your first memory file to the index:
 ```
 mcp_server/
 ├── context-server.ts          # MCP server entry point, tool registration
+├── dist/                      # Compiled JavaScript build output
 ├── cli.ts                     # CLI entry point
 ├── tool-schemas.ts            # All 33 tool definitions (Zod schemas)
 ├── api/                       # Public API surface (search, indexing)
@@ -218,7 +219,6 @@ mcp_server/
 │   └── ...                    # Post-mutation hooks, UX payload builders
 ├── tools/                     # Tool dispatch layer (5 domain dispatchers)
 ├── database/                  # SQLite database files
-├── shared/                    # Types and utilities shared with CLI scripts
 ├── shared-spaces/             # Shared memory space management
 ├── scripts/                   # Internal server-side scripts
 ├── specs/                     # Runtime-local documentation and package notes
@@ -944,7 +944,7 @@ The global rollout gate `SPECKIT_ROLLOUT_PERCENT` (default `100`) applies a perc
 
 ### Database Schema
 
-12 tables in the SQLite database:
+The SQLite database currently defines 25 tables. Key tables include:
 
 | Table | Purpose |
 |-------|---------|
@@ -1416,4 +1416,4 @@ A: The rollback runbook at `../references/workflows/rollback_runbook.md` walks t
 
 ---
 
-*Documentation version: 2.0 | Last updated: 2026-03-15 | Server version: @spec-kit/mcp-server*
+*Documentation version: 2.0 | Last updated: 2026-03-25 | Server version: @spec-kit/mcp-server*

@@ -288,6 +288,18 @@ describe('memory_search limit contract', () => {
       });
     }).not.toThrow();
   });
+
+  it('public and runtime schemas accept response profiles for memory_search', () => {
+    const args = {
+      query: 'valid query',
+      profile: 'quick',
+    };
+
+    expect(() => {
+      validateToolInputSchema('memory_search', args, TOOL_DEFINITIONS);
+    }).not.toThrow();
+    expect(validateToolArgs('memory_search', args)).toEqual(args);
+  });
 });
 
 describe('governed retrieval schema propagation', () => {
@@ -298,6 +310,18 @@ describe('governed retrieval schema propagation', () => {
       userId: 'user-1',
       agentId: 'agent-1',
       sharedSpaceId: 'shared-1',
+    };
+
+    expect(() => {
+      validateToolInputSchema('memory_context', args, TOOL_DEFINITIONS);
+    }).not.toThrow();
+    expect(validateToolArgs('memory_context', args)).toEqual(args);
+  });
+
+  it('public and runtime schemas accept response profiles for memory_context', () => {
+    const args = {
+      input: 'resume auth work',
+      profile: 'resume',
     };
 
     expect(() => {

@@ -340,7 +340,7 @@ vector-index-impl.ts     (3333 LOC)
 2. PARALLEL RETRIEVAL (5 channels)
    vector-index.ts (-> vector-index-impl.ts) -> Vector search (semantic)
    bm25-index.ts -> BM25 search (keyword)
-   graph (via co-activation.ts) -> Relationship search
+   graph (via ../cognitive/co-activation.ts) -> Relationship search
    graph-search-fn.ts (graph structure) -> Structural graph search
 
          |

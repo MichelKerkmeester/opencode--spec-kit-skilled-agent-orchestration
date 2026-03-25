@@ -39,13 +39,13 @@ The MCP Server Library provides the core functionality for the Spec Kit Memory M
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Module Categories | 26 | architecture, cache, chunking, cognitive, collab, config, errors, eval, extraction, feedback, governance, graph, interfaces, learning, manage, ops, parsing, providers, response, scoring, search, session, storage, telemetry, utils, validation; plus proxy docs in `contracts/` |
+| Module Categories | 28 | architecture, cache, chunking, cognitive, collab, config, contracts, errors, eval, extraction, feedback, governance, graph, interfaces, learning, manage, ops, parsing, providers, response, scoring, search, session, spec, storage, telemetry, utils, validation |
 | Cognitive Features | 10+ | FSRS scheduler, attention decay, PE gating, working memory, tier classification, co-activation, temporal contiguity, archival manager, causal graph, corrections |
 | Search Intents | 7 | add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision |
 | Index Sources | 3 | spec memories, constitutional files, spec documents (`includeSpecDocs`) |
 | Schema Milestones | v13+ | v13 introduced `document_type` and `spec_level` for spec-doc indexing and scoring |
-| Total Modules | 171 | Recursive `.ts` files under `lib/`, organized into 26 top-level module folders plus `contracts/` proxy docs |
-| Last Verified | 2026-03-22 | Module category and total counts revalidated against the live source tree |
+| Total Modules | 167 | Recursive `.ts` files under `lib/`, spanning 28 top-level directories plus top-level `errors.ts` |
+| Last Verified | 2026-03-25 | Module category and TypeScript file counts revalidated against the live source tree |
 
 ### Key Features
 
@@ -61,7 +61,6 @@ The MCP Server Library provides the core functionality for the Spec Kit Memory M
 | **Batch Processing** | Utilities for batch operations, retry logic and rate limiting |
 | **Embedding Cache** | Persistent SQLite cache for embedding reuse with LRU eviction |
 | **Query Routing** | Complexity classifier routes simple/moderate/complex queries to optimal pipelines |
-| **RSF Fusion (Eval Path)** | Reciprocal Similarity Fusion retained for evaluation/comparison runs (single-pair, multi-list, cross-variant) |
 | **Interference Scoring** | TM-01 penalizes high-similarity near-duplicates in result sets |
 | **Confidence Truncation** | Removes low-confidence tail results using 2x median gap detection |
 | **Dynamic Token Budget** | Tier-aware budgets (1500/2500/4000) for result delivery |
@@ -132,14 +131,12 @@ console.log(getCanonicalPathKey('context-index.sqlite'));
 
 ```
 lib/                            # TypeScript source files
-├── search/                     # Search and retrieval (30 modules)
+├── search/                     # Search and retrieval (62 modules)
 │   ├── vector-index.ts         # Vector similarity search with SQLite
 │   ├── vector-index-impl.ts    # Core vector index implementation
 │   ├── hybrid-search.ts        # Combined semantic + keyword search + token budget
 │   ├── rrf-fusion.ts           # Reciprocal Rank Fusion scoring (5 channels incl. degree)
-│   ├── rsf-fusion.ts           # Reciprocal Similarity Fusion (evaluation/comparison path)
 │   ├── reranker.ts             # Result reranking
-│   ├── mmr-reranker.ts         # MMR diversity reranking
 │   ├── bm25-index.ts           # BM25 lexical indexing
 │   ├── sqlite-fts.ts           # SQLite FTS5 full-text search
 │   ├── cross-encoder.ts        # Cross-encoder reranking
@@ -148,7 +145,6 @@ lib/                            # TypeScript source files
 │   ├── query-expander.ts       # Multi-query RAG fusion expansion
 │   ├── query-router.ts         # Query routing based on complexity
 │   ├── artifact-routing.ts     # 9 artifact classes with per-type retrieval strategies
-│   ├── adaptive-fusion.ts      # Intent-aware weighted RRF with dark-run mode
 │   ├── causal-boost.ts         # Causal relationship boosting
 │   ├── session-boost.ts        # Session-aware relevance boosting
 │   ├── graph-search-fn.ts      # Typed-weighted degree computation (Sprint 1)
@@ -292,8 +288,7 @@ lib/                            # TypeScript source files
 │   ├── rank-metrics.ts         # Rank comparison metrics
 │   └── shadow-scoring.ts       # Shadow evaluation and promotion gating
 │
-├── governance/                 # Scope and retention governance (2 modules)
-│   ├── retention.ts            # Scoped retention sweeps and audit entries
+├── governance/                 # Scope governance (1 module)
 │   └── scope-governance.ts     # Hierarchical scope enforcement and governed ingest
 │
 ├── graph/                      # Graph scoring helpers (2 modules)
@@ -341,7 +336,6 @@ dist/lib/                       # Compiled JavaScript + type definitions
 | `scoring/importance-tiers.ts` | Six-tier importance classification system |
 | `scoring/interference-scoring.ts` | TM-01 interference penalty for near-duplicates |
 | `search/query-classifier.ts` | Query complexity routing (simple/moderate/complex) |
-| `search/rsf-fusion.ts` | Reciprocal Similarity Fusion evaluation/comparison module |
 | `search/confidence-truncation.ts` | Low-confidence tail removal (2x median gap) |
 | `search/dynamic-token-budget.ts` | Per-tier token budgets (1500/2500/4000) |
 | `search/graph-search-fn.ts` | Typed-weighted degree computation for RRF 5th channel |
@@ -742,4 +736,4 @@ console.log('Embedding dimensions:', embedding.length);
 
 ---
 
-*Documentation version: 1.6 | Last updated: 2026-03-01*
+*Documentation version: 1.6 | Last updated: 2026-03-25*

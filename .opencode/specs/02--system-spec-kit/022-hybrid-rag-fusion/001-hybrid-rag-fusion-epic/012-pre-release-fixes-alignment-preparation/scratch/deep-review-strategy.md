@@ -1,195 +1,76 @@
-# Deep Review Strategy — v4 Verification of 022-hybrid-rag-fusion
+# Deep Review Strategy: v5 Release Readiness + Feature Catalog Alignment
 
-<!-- ANCHOR:overview -->
-## 1. OVERVIEW
+## Review Target
+`.opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion` (full track)
++ `.opencode/skill/system-spec-kit/feature_catalog/` (all snippets, master catalog, simple terms)
 
-### Purpose
-Verify that all 58 findings from the v3 full-tree review (6 P0, 38 P1, 14 P2) have been properly remediated via T31-T97. This is a verification review, not a fresh audit. The goal is to confirm release readiness and drive the score from 42/100 FAIL to 100/100 PASS.
+## Review Target Type
+track
 
-### Usage
-- **Init:** Populated from config + prior review-report.md
-- **Per iteration:** Agent reads Next Focus, verifies remediation status, updates findings
-- **Mutability:** Mutable — updated by both orchestrator and agents
+## Prior Review Context
+- **v4 verdict**: CONDITIONAL (2 P1, 4 P2)
+- **Open P1s**: T79 nextSteps completion detection bug, T37 root directory count drift
+- **Open P2s**: ADV-001 eval path containment, ADV-002 Hydra drill, ADV-003 dir count drift, ADV-004 embedding config
 
----
+## Dimensions
+1. **correctness** (priority 1) — Logic, state flow, edge cases, error handling
+2. **security** (priority 2) — Auth, input/output safety, data exposure, permissions
+3. **traceability** (priority 3) — Spec/checklist alignment, cross-reference integrity, evidence coverage
+4. **maintainability** (priority 4) — Patterns, documentation quality, safe follow-on change clarity
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:topic -->
-## 2. TOPIC
-v4 verification review of the full 022-hybrid-rag-fusion spec tree release readiness. Prior v3 review scored 42/100 FAIL with 58 active findings. Full remediation claimed via T31-T97. This review verifies those remediations and checks for regressions.
+## Wave Structure (5 waves x 4 agents = 20 iterations)
 
----
+### Wave 1: Correctness + P1 Verification (iterations 001-004)
+- **001** (codex): MCP server code correctness — mcp_server/*.js
+- **002** (codex): Scripts code correctness — scripts/dist/**/*.js
+- **003** (copilot): Shared modules correctness — shared/**/*.js
+- **004** (copilot): P1-001 (T79 nextSteps) + P1-002 (T37 count) verification
 
-<!-- /ANCHOR:topic -->
-<!-- ANCHOR:review-dimensions -->
-## 3. REVIEW DIMENSIONS (remaining)
-- [ ] D1 Correctness — Logic errors, off-by-one, wrong return types, broken invariants. Focus: verify 12 code P1 fixes in mcp_server/, scripts/, shared/
-- [ ] D2 Security — Injection, auth bypass, secrets exposure, unsafe deserialization. Focus: verify BM25 fail-closed, session IDOR fix, error sanitization, startup validation
-- [ ] D3 Traceability — Spec/code alignment, checklist evidence, cross-reference integrity. Focus: verify 6 P0 false completion fixes, 16 status drift fixes, 11 count drift fixes
-- [ ] D4 Maintainability — Patterns, clarity, documentation quality, safe follow-on change cost. Focus: verify 8 missing docs/evidence repairs, README updates
+### Wave 2: Security + Traceability (iterations 005-008)
+- **005** (codex): Full security audit — all code paths
+- **006** (codex): spec_code protocol — spec claims vs implementation
+- **007** (copilot): checklist_evidence protocol — [x] items vs cited evidence
+- **008** (copilot): feature_catalog_code protocol — catalog claims vs code
 
----
+### Wave 3: Feature Catalog Deep Verification (iterations 009-012)
+- **009** (codex): feature_catalog.md categories 01-10 vs live code
+- **010** (codex): feature_catalog.md categories 11-21 vs live code
+- **011** (copilot): Snippet files 01-10 vs master catalog + code
+- **012** (copilot): Snippet files 11-21 vs master catalog + code
 
-<!-- /ANCHOR:review-dimensions -->
-<!-- ANCHOR:non-goals -->
-## 4. NON-GOALS
-- New feature development or scope expansion
-- Refactoring beyond what was required by v3 findings
-- Expanding playbooks or catalogs beyond evidence gap closure
-- Re-auditing areas not covered by v3 findings
-- Performance optimization or benchmarking
+### Wave 4: Simple Terms + Maintainability (iterations 013-016)
+- **013** (codex): feature_catalog_in_simple_terms.md vs feature_catalog.md alignment
+- **014** (codex): Code maintainability patterns review
+- **015** (copilot): Playbook capability + sprint status verification
+- **016** (copilot): Spec tree structure + directory count verification
 
----
+### Wave 5: Final Sweep + Verdict (iterations 017-020)
+- **017** (codex): Adversarial recheck of all prior findings
+- **018** (codex): npm test + lint + typecheck regression
+- **019** (copilot): Cross-reference comprehensive sweep
+- **020** (copilot): Release readiness verdict with full evidence
 
-<!-- /ANCHOR:non-goals -->
-<!-- ANCHOR:stop-conditions -->
-## 5. STOP CONDITIONS
-- All 4 dimensions reviewed and all v3 findings verified as resolved → STOP (release ready)
-- All 20 iterations consumed → STOP (max iterations)
-- 3+ consecutive iterations with 0 new findings and all dimensions covered → STOP (converged)
-- New P0 blocker discovered that requires implementation work → continue but flag
+## Convergence Parameters
+- maxIterations: 20
+- convergenceThreshold: 0.10
+- stuckThreshold: 2
 
----
+## Dimension Coverage
+| Dimension | Status | Iterations | Findings |
+|-----------|--------|-----------|----------|
+| correctness | PENDING | — | — |
+| security | PENDING | — | — |
+| traceability | PENDING | — | — |
+| maintainability | PENDING | — | — |
 
-<!-- /ANCHOR:stop-conditions -->
-<!-- ANCHOR:completed-dimensions -->
-## 6. COMPLETED DIMENSIONS
-[None yet — populated as iterations complete dimension reviews]
+## Running Findings
+| ID | Severity | Title | Dimension | Status |
+|----|----------|-------|-----------|--------|
+| (populated during review) | | | | |
 
-| Dimension | Verdict | Iteration | Summary |
-|-----------|---------|-----------|---------|
+## Known Context
+Prior v4 review verified 56/58 v3 findings remediated. Two P1 items remain open:
+1. T79: `determineSessionStatus()` asymmetric nextSteps detection in collect-session-data.js:270-283
+2. T37: Root spec claims 397 dirs, live count showed 398
 
----
-
-<!-- /ANCHOR:completed-dimensions -->
-<!-- ANCHOR:running-findings -->
-## 7. RUNNING FINDINGS
-- **P0 (Critical):** 0 active
-- **P1 (Major):** 0 active
-- **P2 (Minor):** 0 active
-- **Delta this iteration:** +0 P0, +0 P1, +0 P2
-
----
-
-<!-- /ANCHOR:running-findings -->
-<!-- ANCHOR:what-worked -->
-## 8. WHAT WORKED
-[First iteration — populated after iteration 1 completes]
-
----
-
-<!-- /ANCHOR:what-worked -->
-<!-- ANCHOR:what-failed -->
-## 9. WHAT FAILED
-[First iteration — populated after iteration 1 completes]
-
----
-
-<!-- /ANCHOR:what-failed -->
-<!-- ANCHOR:exhausted-approaches -->
-## 10. EXHAUSTED APPROACHES (do not retry)
-[None yet]
-
----
-
-<!-- /ANCHOR:exhausted-approaches -->
-<!-- ANCHOR:ruled-out-directions -->
-## 11. RULED OUT DIRECTIONS
-[None yet]
-
----
-
-<!-- /ANCHOR:ruled-out-directions -->
-<!-- ANCHOR:next-focus -->
-## 12. NEXT FOCUS
-**Iteration 1: Inventory pass + D3 Traceability (P0 verification)**
-- Verify all 6 v3 P0 blockers (T31-T36) are truly resolved
-- Check root 022 spec.md phase statuses against live children
-- Check epic parent now certifies correct sprint count
-- Check sprint 010 successor navigation
-- Check 001-retrieval audit count matches live catalog
-- Check 021-remediation vs 022 reconciliation
-- Check Hydra safety-rail drill evidence status
-
----
-
-<!-- /ANCHOR:next-focus -->
-<!-- ANCHOR:known-context -->
-## 13. KNOWN CONTEXT
-
-### Prior v3 Review (2026-03-24)
-- **Verdict:** FAIL (42/100)
-- **Findings:** 6 P0, 38 P1, 14 P2 (58 total)
-- **Iterations:** 20 of 20
-- **Agents:** copilot + codex (GPT-5.4)
-- **Key risk:** Trust failure in release evidence layer — parent/umbrella packets not authoritative
-
-### Claimed Remediation (T31-T97)
-- T31-T36: 6 P0 blockers cleared
-- T37-T47: 11 count/inventory drift fixed
-- T48-T63: 16 status/completion drift reconciled
-- T64-T71: 8 missing docs/evidence resolved
-- T72-T83: 12 code correctness/security P1 fixed
-- T84-T97: 14 P2 closed or deferred
-
-### Prior v1 Review
-- Original 49-finding audit, all P0 verified fixed
-- v2 narrow review: 84/100 PASS WITH NOTES
-
----
-
-<!-- /ANCHOR:known-context -->
-<!-- ANCHOR:cross-reference-status -->
-## 14. CROSS-REFERENCE STATUS
-
-| Protocol | Level | Status | Iteration | Notes |
-|----------|-------|--------|-----------|-------|
-| `spec_code` | core | pending | — | Verify spec claims match implementation |
-| `checklist_evidence` | core | pending | — | Verify checklist [x] items have backing evidence |
-| `skill_agent` | overlay | pending | — | Verify skill contracts match agent files |
-| `agent_cross_runtime` | overlay | pending | — | Verify agent consistency across runtimes |
-| `feature_catalog_code` | overlay | pending | — | Verify catalog claims match implementation |
-| `playbook_capability` | overlay | pending | — | Verify playbook preconditions match capabilities |
-
----
-
-<!-- /ANCHOR:cross-reference-status -->
-<!-- ANCHOR:files-under-review -->
-## 15. FILES UNDER REVIEW
-
-### Spec Tree (19 top-level phases, 70+ children)
-| Area | Key Files | Focus |
-|------|-----------|-------|
-| Root 022 | spec.md, checklist.md | Phase status accuracy, dir counts |
-| 001-epic + 12 sprints | spec.md, plan.md, tasks.md, checklist.md | Sprint count, phase map, navigation |
-| 005-architecture-audit | spec.md, checklist.md | Navigation contract |
-| 006-feature-catalog | spec.md, checklist.md | Snippet/category counts |
-| 007-code-audit (22 children) | spec.md, checklist.md per child | Feature inventory counts, umbrella totals |
-| 008-hydra-db (6 children) | spec.md, checklist.md per child | Safety-rail evidence, completion claims |
-| 009-session-capturing (19 children) | spec.md, checklist.md per child | Status consistency, sequencing |
-| 010-018 alignment/rewrite | spec.md, tasks.md | Completion vs live state |
-| 015-manual-testing (22 children) | spec.md, checklist.md per child | Playbook paths, umbrella totals |
-
-### Implementation Code
-| Area | Key Files | Focus |
-|------|-----------|-------|
-| mcp_server/lib/ | memory-search.js, memory-save.js, handlers/ | BM25 fail-closed, session scope, governance |
-| scripts/dist/ | generate-context.js, core/*.js | Signal handling, JSON input validation |
-| shared/ | embedding handlers, startup validation | Provider validation, Voyage URL, retry atomicity |
-
----
-
-<!-- /ANCHOR:files-under-review -->
-<!-- ANCHOR:review-boundaries -->
-## 16. REVIEW BOUNDARIES
-- Max iterations: 20
-- Convergence threshold: 0.10
-- Rolling STOP threshold: 0.08
-- No-progress threshold: 0.05
-- Coverage stabilization passes required: 1
-- Per-iteration budget: 12 tool calls, 10 minutes
-- Severity threshold: P2
-- Review target type: track
-- Cross-reference checks: core=[spec_code, checklist_evidence], overlay=[skill_agent, agent_cross_runtime, feature_catalog_code, playbook_capability]
-- Started: 2026-03-25T06:42:00.000Z
-<!-- /ANCHOR:review-boundaries -->
+Feature catalog alignment was marked PASS in v4 but with limited depth. This v5 review performs comprehensive snippet-by-snippet verification.

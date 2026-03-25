@@ -31,7 +31,8 @@ This directory contains the shell and TypeScript tooling that powers spec creati
 ## 2. INVENTORY SNAPSHOT
 
 
-Top-level files:
+Top-level files with extensions (10 including this README):
+- `README.md`
 - `check-api-boundary.sh`
 - `check-links.sh`
 - `common.sh`
@@ -45,8 +46,8 @@ Top-level files:
 Primary script directories:
 - `spec/` - 12 lifecycle scripts (`create.sh`, `upgrade-level.sh`, `check-placeholders.sh`, `validate.sh`, `progressive-validate.sh`, `test-validation.sh`, `check-completion.sh`, `calculate-completeness.sh`, `recommend-level.sh`, `archive.sh`, `check-template-staleness.sh`, `quality-audit.sh`)
 - `spec-folder/` - 5 TypeScript modules (`generate-description.ts`, `folder-detector.ts`, `alignment-validator.ts`, `directory-setup.ts`, `index.ts`)
-- `rules/` - 18 modular validation rules used by `spec/validate.sh` (`LINKS_VALID` runs only when `SPECKIT_VALIDATE_LINKS=true`)
-- `memory/` - 9 TypeScript/JS CLIs (`generate-context.ts`, `rank-memories.ts`, `cleanup-orphaned-vectors.ts`, `validate-memory-quality.ts`, `reindex-embeddings.ts`, `ast-parser.ts`, `backfill-frontmatter.ts`, `rebuild-auto-entities.ts`, `fix-memory-h1.mjs`)
+- `rules/` - 20 files total: 19 shell validation rules plus directory README (`0` TypeScript rule files; `LINKS_VALID` runs only when `SPECKIT_VALIDATE_LINKS=true`)
+- `memory/` - 8 TypeScript/JS CLIs (`generate-context.ts`, `rank-memories.ts`, `cleanup-orphaned-vectors.ts`, `validate-memory-quality.ts`, `reindex-embeddings.ts`, `ast-parser.ts`, `backfill-frontmatter.ts`, `rebuild-auto-entities.ts`)
 - `core/` - 17 TypeScript workflow modules plus barrel export
 - `config/` - 1 TypeScript configuration module (`index.ts`)
 - `extractors/` - 14 files total (12 TypeScript extraction modules, barrel export, and directory README)
@@ -54,14 +55,14 @@ Primary script directories:
 - `renderers/` - 1 TypeScript rendering module (`template-renderer.ts`) plus barrel export
 - `utils/` - 19 TypeScript utility modules plus barrel export
 - `types/` - TypeScript type definitions (`session-types.ts`)
-- `lib/` - 12 TypeScript libraries plus 3 shell helper libraries
-- `evals/` - 18 evaluation and audit scripts plus policy allowlist
+- `lib/` - 17 TypeScript libraries plus 3 shell helper libraries
+- `evals/` - 16 evaluation assets including 14 scripts, policy allowlist, and directory README
 - `ops/` - 5 shell healing/runbook scripts plus shared helper (`ops-common.sh`)
-- `setup/` - 4 prerequisite and native-module check scripts
+- `setup/` - 6 setup files including prerequisite checks, native-module rebuild helpers, installer, Node version recorder, and directory README
 - `scratch/` - empty-by-default workspace for temporary script artifacts and local debugging notes
 - `kpi/` - shell KPI scripts (`quality-kpi.sh`)
 - `tests/` - JS, shell, Python, and Vitest regression suites for scripts and modules
-- `test-fixtures/` - 51 numbered fixture directories for validation rule testing
+- `test-fixtures/` - 62 numbered fixture directories for validation rule testing
 - `templates/` - wrapper/composition helpers for template packaging workflows
 
 

@@ -137,6 +137,27 @@ describe('determineSessionStatus', () => {
 
     expect(status).toBe('COMPLETED');
   });
+
+  it('returns IN_PROGRESS when next steps were normalized into observations', () => {
+    const status = determineSessionStatus(
+      'None',
+      [
+        makeObservation({
+          title: 'Next Steps',
+          narrative: 'Deploy to staging after the remaining checks pass.',
+        }),
+      ],
+      5,
+      {
+        _source: 'file',
+        sessionSummary: 'Wrapped up the current implementation pass.',
+        keyDecisions: [{ decision: 'Ship after staging validation.' }],
+        nextSteps: [],
+      },
+    );
+
+    expect(status).toBe('IN_PROGRESS');
+  });
 });
 
 /* ───────────────────────────────────────────────────────────────

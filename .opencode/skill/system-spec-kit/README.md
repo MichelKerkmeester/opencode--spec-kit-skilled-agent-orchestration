@@ -99,8 +99,9 @@ bash .opencode/skill/system-spec-kit/scripts/spec/create.sh 042-my-feature
 ### Save Context During a Session
 
 ```bash
-# Save current conversation context to a spec folder
+# Save current conversation context to a spec folder (JSON mode)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
+  --json '{"specFolder":"042-my-feature","sessionSummary":"..."}' \
   .opencode/specs/[project]/042-my-feature/
 
 # Output: memory/DD-MM-YY_HH-MM__topic.md (auto-indexed in MCP)
@@ -109,11 +110,11 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
 ### Validate a Spec Folder
 
 ```bash
-# Run all 13 validation rules on a spec folder
+# Run all 20 validation rules on a spec folder
 bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
   .opencode/specs/[project]/042-my-feature/
 
-# Expected: 13/13 rules pass, exit 0
+# Expected: 20/20 rules pass, exit 0
 ```
 
 ### Verify the MCP is Running
@@ -175,7 +176,8 @@ The response should return relevant memory entries. If it returns an error, see 
 ├── references/                 # Reference documentation (26 files)
 ├── assets/                     # Decision matrices, YAML configs
 ├── constitutional/             # Always-surface rules (never decay)
-└── feature_catalog/            # Feature documentation (22 categories, 224 features)
+├── feature_catalog/            # Feature documentation (22 categories, 224 features)
+└── manual_testing_playbook/    # Manual validation scenarios (19 categories)
 ```
 
 ### Key Files
@@ -186,10 +188,10 @@ The response should return relevant memory entries. If it returns an error, see 
 | `ARCHITECTURE.md` | API boundary contract between `scripts/` and `mcp_server/` |
 | `templates/core/` | Four foundation templates used at all documentation levels |
 | `scripts/spec/create.sh` | Create spec folders with level-appropriate template files |
-| `scripts/spec/validate.sh` | Run 13-rule validation on any spec folder |
+| `scripts/spec/validate.sh` | Run 20-rule validation on any spec folder |
 | `scripts/memory/generate-context.ts` (source) / `scripts/dist/memory/generate-context.js` (runtime) | Primary workflow for saving session context to memory |
 | `mcp_server/context-server.ts` | MCP server entry point exposing 33 tools |
-| `feature_catalog/feature_catalog.md` | Complete catalog of 222 implemented features |
+| `feature_catalog/feature_catalog.md` | Complete catalog of 224 implemented features |
 | `references/memory/memory_system.md` | Detailed memory system reference |
 
 <!-- /ANCHOR:structure -->
@@ -271,7 +273,7 @@ Spec Kit Memory stores context from each working session and retrieves it across
 
 **How it works:**
 
-1. During a session, the AI calls `generate-context.js` to write a memory file to `memory/`
+1. During a session, the AI calls `generate-context.js` in structured JSON mode to write a memory file to `memory/`
 2. The MCP server indexes the file (vector + BM25 + graph)
 3. In the next session, `memory_match_triggers()` or `memory_context()` retrieves relevant context
 4. Retrieved context is injected before the AI starts working
@@ -296,7 +298,7 @@ Active memories are now also checked against a rendered-memory contract before w
 
 ### MCP Tools
 
-The Spec Kit Memory MCP exposes **33 tools** across 7 functional groups. All tools use the `spec_kit_memory_` prefix in MCP calls.
+The Spec Kit Memory MCP exposes **33 tools** across 9 functional groups. MCP calls use the tool names directly, with prefixes such as `memory_*`, `checkpoint_*`, `task_*`, `eval_*`, `shared_space_*`, and `shared_memory_*`.
 
 | Group | Tools | Count |
 |-------|-------|-------|
@@ -440,8 +442,9 @@ Then fill `spec.md`, `plan.md`, `tasks.md` and `checklist.md` using the pre-merg
 After implementing the first phase of a feature, save context so the next session can resume:
 
 ```bash
-# Generate a memory file (direct path mode)
+# Generate a memory file (JSON mode)
 node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js \
+  --json '{"specFolder":"043-user-profile-update","sessionSummary":"..."}' \
   .opencode/specs/[project]/043-user-profile-update/
 
 # Force immediate MCP indexing
@@ -490,7 +493,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/check-placeholders.sh \
 | New feature, small scope | `create.sh NNN-name` | <100 LOC, single file |
 | New feature, needs QA | `create.sh NNN-name` + Level 2 templates | 100-499 LOC |
 | Architecture change | `create.sh NNN-name` + Level 3 templates | 500+ LOC, multiple systems |
-| Save session progress | `generate-context.js [folder]` | Before ending any session |
+| Save session progress | `generate-context.js --json '<payload>' [folder]` | Before ending any session |
 | Recover after crash | `/memory:continue` | Session interrupted unexpectedly |
 | Check prior decisions | `/memory:analyze "query"` | Starting a related task |
 
@@ -525,7 +528,7 @@ Verify `system-spec-kit` appears in your `opencode.json` or equivalent MCP confi
 
 **Symptom**: `generate-context.js` runs but creates an empty memory file or exits with an error.
 
-**Cause**: Usually a missing spec folder path or uncompiled TypeScript.
+**Cause**: Usually invalid or incomplete structured JSON input, or uncompiled TypeScript.
 
 **Solution**:
 ```bash
@@ -533,9 +536,9 @@ Verify `system-spec-kit` appears in your `opencode.json` or equivalent MCP confi
 cd .opencode/skill/system-spec-kit
 npm run build
 
-# Then retry with an absolute path
+# Then retry with structured JSON input
 node scripts/dist/memory/generate-context.js \
-  /absolute/path/to/specs/[project]/NNN-feature/
+  --json '{"specFolder":"/absolute/path/to/specs/[project]/NNN-feature","sessionSummary":"Resume-ready implementation snapshot"}'
 ```
 
 #### Validation Fails with "Missing Required Files"
@@ -676,10 +679,10 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md) | API boundary contract between `scripts/` and `mcp_server/` |
 | [`mcp_server/README.md`](./mcp_server/README.md) | Full MCP architecture, 33-tool API reference, search system, cognitive memory, configuration |
 | [`references/memory/memory_system.md`](./references/memory/memory_system.md) | Detailed memory system reference |
-| [`references/validation/validation_rules.md`](./references/validation/validation_rules.md) | All 13 validation rules and their fixes |
+| [`references/validation/validation_rules.md`](./references/validation/validation_rules.md) | All 20 validation rules and their fixes |
 | [`references/validation/five_checks.md`](./references/validation/five_checks.md) | Five Checks evaluation framework |
 | [`references/workflows/rollback_runbook.md`](./references/workflows/rollback_runbook.md) | Feature-flag rollback and smoke-test procedures |
-| [`feature_catalog/feature_catalog.md`](./feature_catalog/feature_catalog.md) | Complete catalog of 222 implemented features across 19 categories |
+| [`feature_catalog/feature_catalog.md`](./feature_catalog/feature_catalog.md) | Complete catalog of 224 implemented features across 22 categories |
 
 ### Cross-Skill Alignment
 
@@ -699,4 +702,4 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
 
 ---
 
-*Documentation version: 2.2 | Last updated: 2026-03-22 | Skill version: 2.2.26.0*
+*Documentation version: 2.2 | Last updated: 2026-03-25 | Skill version: 2.2.26.0*
