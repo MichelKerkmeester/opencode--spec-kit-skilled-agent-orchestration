@@ -25,7 +25,13 @@ import { appendMutationLedgerSafe } from '../memory-crud-utils';
 import { calculateDocumentWeight, isSpecDocumentType } from '../pe-gating';
 import { detectSpecLevelFromParsed } from '../handler-utils';
 import { applyPostInsertMetadata, hasReconsolidationCheckpoint } from './db-helpers';
-import type { IndexResult } from './types';
+import type {
+  AssistiveClassification,
+  AssistiveRecommendation,
+  IndexResult,
+  ReconWarningList,
+} from './types';
+export type { AssistiveClassification, AssistiveRecommendation } from './types';
 
 // Feature catalog: Reconsolidation-on-save
 // Feature catalog: Memory indexing (memory_save)
@@ -47,24 +53,6 @@ export const ASSISTIVE_AUTO_MERGE_THRESHOLD = 0.96;
  * destructive action is taken.
  */
 export const ASSISTIVE_REVIEW_THRESHOLD = 0.88;
-
-/**
- * Classification for a borderline pair in the assistive reconsolidation tier.
- *
- * - 'supersede': newer memory clearly replaces the older one
- * - 'complement': newer memory adds distinct information
- * - 'keep_separate': memories are sufficiently different
- */
-export type AssistiveClassification = 'supersede' | 'complement' | 'keep_separate';
-
-/** A recommendation record written when similarity is in the review tier. */
-export interface AssistiveRecommendation {
-  olderMemoryId: number;
-  newerMemoryId: number;
-  similarity: number;
-  classification: AssistiveClassification;
-  recommendedAt: number;
-}
 
 /**
  * Check whether the assistive reconsolidation feature is enabled.
@@ -128,7 +116,7 @@ export function logAssistiveRecommendation(
   console.warn(
     `[reconsolidation-bridge] assistive recommendation: ` +
     `${recommendation.classification} — ` +
-    `older=${recommendation.olderMemoryId} newer=${recommendation.newerMemoryId} ` +
+    `older=${recommendation.olderMemoryId} newer=${recommendation.newerMemoryId ?? 'pending'} ` +
     `similarity=${recommendation.similarity.toFixed(3)}`
   );
 }
@@ -138,7 +126,7 @@ export function logAssistiveRecommendation(
  */
 export interface ReconsolidationBridgeResult {
   earlyReturn: IndexResult | null;
-  warnings: string[];
+  warnings: ReconWarningList;
   /** Populated when SPECKIT_ASSISTIVE_RECONSOLIDATION is enabled and a
    *  borderline pair is detected (review tier). */
   assistiveRecommendation?: AssistiveRecommendation | null;
@@ -157,7 +145,7 @@ export async function runReconsolidationIfEnabled(
   scope?: { tenantId?: string | null; userId?: string | null; agentId?: string | null; sessionId?: string | null; sharedSpaceId?: string | null },
 ): Promise<ReconsolidationBridgeResult> {
   // BUG-2 fix: Track reconsolidation warnings for structured MCP response (not just console.warn)
-  const reconWarnings: string[] = [];
+  const reconWarnings = [] as ReconWarningList;
 
   // T-04: search-flags.ts is the canonical caller-visible opt-in gate.
   // Reconsolidation.ts keeps an internal guard as a defensive fallback for
@@ -383,12 +371,20 @@ export async function runReconsolidationIfEnabled(
           // Review tier: classify and surface as recommendation (no mutations)
           const classification = classifySupersededOrComplement(topContent, parsed.content);
           assistiveRecommendation = {
+            action: 'review',
+            candidateMemoryIds: [topId],
+            description:
+              `Review borderline similarity ${similarity.toFixed(3)} between the pending save ` +
+              `and existing memory #${topId}; heuristic suggests ${classification}.`,
             olderMemoryId: topId,
-            newerMemoryId: 0, // Not yet inserted; caller owns create
+            newerMemoryId: null,
             similarity,
             classification,
             recommendedAt: Date.now(),
           };
+          // Preserve the advisory payload on the warning carrier so the normal save
+          // path can forward it without widening the handler signature.
+          reconWarnings.assistiveRecommendation = assistiveRecommendation;
           logAssistiveRecommendation(assistiveRecommendation);
         }
         // 'keep_separate' → no action, fall through to normal save

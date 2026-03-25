@@ -8,7 +8,7 @@
 // 2. Goal-aware refinement — boost results aligned with session goal
 // 3. Stateful session tracking — questions, anchors, seen items
 //
-// FEATURE FLAG: SPECKIT_SESSION_RETRIEVAL_STATE_V1 (default OFF, opt-in)
+// FEATURE FLAG: SPECKIT_SESSION_RETRIEVAL_STATE_V1 (default ON, graduated; set false to disable)
 //
 // STORAGE: In-memory only (ephemeral by design, no SQLite persistence).
 // Sessions expire after 30 minutes of inactivity, LRU eviction at 100 capacity.

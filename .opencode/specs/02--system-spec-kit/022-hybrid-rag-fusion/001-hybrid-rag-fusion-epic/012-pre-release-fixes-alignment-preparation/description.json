@@ -1,21 +1,14 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/012-pre-release-fixes-alignment-preparation",
-  "description": "Pre-release audit (complete: 49 findings — 4 P0, 19 P1, 26 P2) and remediation planning for 022-hybrid-rag-fusion. 10-agent deep research identified module resolution break, startup crash, validation failures, pipeline bypass, and architecture drift. Remediation tasks T01-T30 prioritized.",
+  "description": "012 — Pre-Release Fixes & Alignment Preparation",
   "keywords": [
+    "012",
     "pre-release",
-    "audit",
-    "remediation",
-    "P0-blockers",
-    "module-resolution",
-    "validate-sh",
-    "workflow-e2e",
-    "pipeline-integrity",
-    "architecture-drift",
-    "quality-gate"
+    "fixes",
+    "alignment",
+    "preparation"
   ],
-  "status": "In Progress",
-  "importance_tier": "critical",
-  "lastUpdated": "2026-03-24T00:00:00.000Z",
+  "lastUpdated": "2026-03-25T06:40:39.259Z",
   "specId": "012",
   "folderSlug": "pre-release-fixes-alignment-preparation",
   "parentChain": [
@@ -23,10 +16,11 @@
     "022-hybrid-rag-fusion",
     "001-hybrid-rag-fusion-epic"
   ],
-  "memorySequence": 3,
+  "memorySequence": 4,
   "memoryNameHistory": [
     "24-03-26_14-10__implemented-all-p0-blockers-t01-t04-and-p1-must.md",
     "24-03-26_17-24__deep-review-of-spec-folder-012-pre-release-fixes.md",
-    "24-03-26_19-57__20-iteration-deep-review-v3-of-entire-022-hybrid.md"
+    "24-03-26_19-57__20-iteration-deep-review-v3-of-entire-022-hybrid.md",
+    "25-03-26_08-02__v4-20-iteration-deep-review-verification-of-022.md"
   ]
 }

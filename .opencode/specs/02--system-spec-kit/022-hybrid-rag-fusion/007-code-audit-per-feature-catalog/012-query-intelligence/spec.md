@@ -173,37 +173,42 @@ Verify that all 11 Query Intelligence features are accurately documented in the 
 - Are there undocumented features in this category not yet in the catalog?
 - Have any features been deprecated since the last catalog update?
 
-**Resolved by audit (2026-03-22):**
-- No undocumented features found; all 11 catalog entries map to source code.
-- F07: `llm-reformulation.ts` header (line 17) says "default: FALSE, opt-in" but `isLlmReformulationEnabled()` (search-flags.ts:323) delegates to `isFeatureEnabled('SPECKIT_LLM_REFORMULATION')` (rollout-policy.ts:42) which treats undefined env vars as enabled at rollout=100%. Runtime default is ON.
-- F08: `hyde.ts` header (line 23) says "default: FALSE, opt-in" but `isHyDEEnabled()` (search-flags.ts:332) uses the same `isFeatureEnabled()` pattern — runtime default is ON. Additionally, `query-surrogates.ts` line 93 has a local `isQuerySurrogatesEnabled()` with the same header-vs-runtime contradiction.
-- F09: `matchSurrogates()` is defined in `query-surrogates.ts` (line 460), NOT in `surrogate-storage.ts`. A TODO comment at lines 405-408 explicitly states it is not wired into the search pipeline. Grep confirms it is only called from test files (`query-surrogates.vitest.ts`), never from `stage1-candidate-gen.ts` or `hybrid-search.ts`.
+**Resolved by audit (2026-03-22; refreshed 2026-03-25):**
+- No undocumented features found; all 11 catalog entries still map conceptually to the codebase.
+- F02: RSF has been removed from the live implementation, but stale references still remain in the catalog and packet cross-references.
+- F07: `llm-reformulation.ts` runtime default is TRUE and now aligns with the catalog.
+- F08: `hyde.ts` runtime default is TRUE and now aligns with the catalog.
+- F09: Query surrogate matching is wired into Stage 1; the prior dead-code finding is stale.
+- F10: Deep-mode candidate generation bypasses the faceted decomposition helper, so the feature is only PARTIAL in production.
 
 ---
 
 ## 13. AUDIT FINDINGS
 
 **Audit Date**: 2026-03-22
-**Overall Result**: 8 MATCH, 3 PARTIAL — audit complete.
+**Overall Result**: 9 MATCH, 2 PARTIAL — audit complete.
+
+**Deep Review Update (2026-03-25)**: F07-F09 are restored to MATCH because runtime defaults now align with the catalog and surrogate matching is wired into Stage 1. F02 is downgraded to PARTIAL because RSF was removed while stale catalog references remain. F10 is downgraded to PARTIAL because deep-mode search bypasses faceted decomposition.
 
 | # | Feature | Result | Notes |
 |---|---------|--------|-------|
 | F01 | Query complexity router | MATCH | Implementation aligns with catalog |
-| F02 | Relative score fusion (shadow mode) | MATCH | RSF shadow wiring confirmed |
+| F02 | Relative score fusion (shadow mode) | PARTIAL | RSF implementation was removed; stale references remain in the catalog and audit cross-references |
 | F03 | Channel min-representation | MATCH | Min-rep guard verified |
 | F04 | Confidence-based result truncation | MATCH | Truncation threshold logic confirmed |
 | F05 | Dynamic token budget allocation | MATCH | Budget allocation confirmed |
 | F06 | Query expansion | MATCH | Expansion paths verified |
-| F07 | LLM query reformulation | PARTIAL | `llm-reformulation.ts` header (line 17) says "default: FALSE" but `isLlmReformulationEnabled()` (search-flags.ts:323) delegates to `isFeatureEnabled()` (rollout-policy.ts:42) which defaults ON for undefined env vars at rollout=100%. |
-| F08 | HyDE (Hypothetical Document Embeddings) | PARTIAL | `hyde.ts` header (line 23) says "default: FALSE" but `isHyDEEnabled()` (search-flags.ts:332) uses same `isFeatureEnabled()` pattern — defaults ON. Same contradiction as F07. |
-| F09 | Index-time query surrogates | PARTIAL | `matchSurrogates()` defined in `query-surrogates.ts` (line 460), not `surrogate-storage.ts`. TODO at lines 405-408 confirms it is not wired into the search pipeline. Only called from tests. |
-| F10 | Query decomposition | MATCH | Decomposition pipeline confirmed |
+| F07 | LLM query reformulation | MATCH | Runtime default TRUE now matches the catalog |
+| F08 | HyDE (Hypothetical Document Embeddings) | MATCH | Runtime default TRUE now matches the catalog |
+| F09 | Index-time query surrogates | MATCH | Surrogate matching is wired into Stage 1 and now matches the catalog |
+| F10 | Query decomposition | PARTIAL | Deep-mode bypasses faceted decomposition |
 | F11 | Graph concept routing | MATCH | Graph routing wiring verified |
 
 ### Systemic Findings
 
-1. **Flag default contradiction (F07, F08)**: Module headers in `llm-reformulation.ts` (line 17) and `hyde.ts` (line 23) both document "default: FALSE, opt-in," but the runtime accessor functions `isLlmReformulationEnabled()` (search-flags.ts:323) and `isHyDEEnabled()` (search-flags.ts:332) delegate to `isFeatureEnabled()` (rollout-policy.ts:42), which treats undefined env vars as enabled when `SPECKIT_ROLLOUT_PERCENT` is 100 (the default). This means both features default to ON at runtime, contradicting their headers. The `query-surrogates.ts` local flag (line 93, `isQuerySurrogatesEnabled()`) has the same contradiction pattern — header says "default OFF" but the function only disables on explicit `'false'`/`'0'`. Either the headers or the runtime logic should be corrected.
-2. **Dead/unwired code (F09)**: `matchSurrogates()` is defined in `query-surrogates.ts` (line 460), not in `surrogate-storage.ts` as previously noted. A TODO comment at lines 405-408 in `query-surrogates.ts` explicitly states: "Query-time surrogate matching is implemented but not wired into the search pipeline." Grep confirms it is called only from `query-surrogates.vitest.ts` (test file), never from `stage1-candidate-gen.ts` or `hybrid-search.ts`. Recommend wiring it into Stage 1 or marking as deferred.
+1. **Deep Review Update (2026-03-25)**: F07-F09 were stale audit verdicts rather than current implementation gaps. Runtime defaults for F07 and F08 are TRUE, and F09 surrogate matching is now wired into Stage 1, so all three features return to MATCH.
+2. **RSF traceability drift (F02)**: Relative score fusion was removed from the live implementation, but stale catalog references still describe it as a live shadow-mode feature. The audit packet now reflects that drift as PARTIAL rather than MATCH.
+3. **Deep-mode decomposition gap (F10)**: Production deep-mode search bypasses the faceted decomposition helper and falls back to the basic split path, so the catalog currently overstates live behavior.
 
 ---
 

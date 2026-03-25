@@ -107,6 +107,17 @@ contextType: "general"
 
 ---
 
+## Deep Review Remediation
+
+- [ ] CHK-060 [P1] All governance bypass fixes applied (4 P1)
+- [ ] CHK-061 [P1] All stale audit verdicts refreshed (10 P1)
+- [ ] CHK-062 [P1] Pipeline wiring gaps addressed (4 P1)
+- [ ] CHK-063 [P1] Traceability reconciliation complete (4 P1)
+- [ ] CHK-064 [P2] Code standards alignment applied
+- [ ] CHK-065 [P2] Feature catalog entries corrected
+
+---
+
 ## L3+: SIGN-OFF
 
 | Approver | Role | Status | Date |
@@ -120,9 +131,9 @@ contextType: "general"
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 6 | 6/6 |
-| P1 Items | 8 | 8/8 |
-| P2 Items | 3 | 3/3 |
+| P0 Items | 8 | 8/8 |
+| P1 Items | 16 | 12/16 |
+| P2 Items | 5 | 3/5 |
 
-**Verification Date**: 2026-03-22
+**Verification Date**: 2026-03-25
 <!-- /ANCHOR:summary -->

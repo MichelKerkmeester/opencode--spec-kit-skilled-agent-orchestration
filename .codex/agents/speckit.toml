@@ -1,5 +1,6 @@
 # Agent: speckit
 # Converted from: .opencode/agent/chatgpt/speckit.md
+name = "speckit"
 profile = "speckit"
 sandbox_mode = "workspace-write"
 model = "gpt-5.4"

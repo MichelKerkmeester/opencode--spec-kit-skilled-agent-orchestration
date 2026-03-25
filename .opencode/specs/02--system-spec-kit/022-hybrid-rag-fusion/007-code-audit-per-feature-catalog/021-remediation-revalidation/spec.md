@@ -17,7 +17,7 @@ contextType: "general"
 
 ## EXECUTIVE SUMMARY
 
-META-PHASE synthesizing remediation needs identified across all 20 preceding audit phases. This phase collects cross-cutting catalog hygiene issues, classifies them by severity, and tracks their resolution. Across 220+ features audited: ~175 MATCH, ~45 PARTIAL, 0 MISMATCH. Primary remediation need is catalog hygiene (source file list inflation, stale references, deprecated flag states, and behavioral description mismatches), not source code changes.
+META-PHASE synthesizing remediation needs identified across all 20 preceding audit phases. This phase collects cross-cutting catalog hygiene issues, classifies them by severity, and tracks their resolution. The original zero-MISMATCH baseline is superseded by the re-audit/deep-review state: 222 audited features, 133 MATCH, 84 PARTIAL, and 5 MISMATCH. Remediation now spans both catalog hygiene and audit/runtime-path drift. Full remediation plan pending — 22 P1 findings documented in `review-report.md`.
 
 **Key Decisions**: Audit against current feature catalog as source of truth, document findings per feature. Remediation is partially complete; final verification remains pending until `012-pre-release-fixes-alignment-preparation` closes under `001-hybrid-rag-fusion-epic`.
 
@@ -96,7 +96,7 @@ Collect, classify, and resolve all catalog-accuracy issues surfaced across the 2
 - **SC-001**: All 20 prior audit phases reviewed for cross-cutting remediation items — COMPLETE
 - **SC-002**: All issue categories classified by type and severity — COMPLETE
 - **SC-003**: Critical items (P0) remediated or explicitly deferred — PARTIAL
-- **SC-004**: Overall audit result documented: ~175 MATCH, ~45 PARTIAL, 0 MISMATCH — PARTIAL, pending final verification packet closure
+- **SC-004**: Overall audit result documented: 133 MATCH, 84 PARTIAL, 5 MISMATCH — PARTIAL, pending deep-review remediation closure
 
 ---
 
@@ -106,11 +106,11 @@ Collect, classify, and resolve all catalog-accuracy issues surfaced across the 2
 
 | Result | Count | Notes |
 |--------|-------|-------|
-| MATCH | ~175 | Feature description accurately matches source code |
-| PARTIAL | ~45 | Description mostly correct with minor inaccuracies |
-| MISMATCH | 0 | No features with outright contradictions |
+| MATCH | 133 | Re-audit-confirmed exact matches across 222 audited features |
+| PARTIAL | 84 | Description mostly correct but requires source-list, wiring, or behavior corrections |
+| MISMATCH | 5 | Re-audit found outright contradictions that must remain in backlog until remediated |
 
-Primary remediation need: **catalog hygiene** — not source code changes.
+Primary remediation need: **catalog hygiene plus re-audit remediation** — not just source-list cleanup.
 
 ---
 
@@ -192,6 +192,16 @@ Primary remediation need: **catalog hygiene** — not source code changes.
 | P2 (Hygiene) | 2 | Source file list inflation + stale references |
 
 All P0 items have been identified and documented. Catalog updates for P0 items are the immediate next action for the catalog maintainer, but release-level verification remains open until `012-pre-release-fixes-alignment-preparation` completes under the `001-hybrid-rag-fusion-epic`.
+
+### Deep Review Update (2026-03-25)
+
+| Finding Class | Count | Status |
+|---------------|-------|--------|
+| P0 | 0 | No new deep-review blockers |
+| P1 | 22 | Active remediation backlog documented in `review-report.md` |
+| P2 | 35 | Advisory follow-up items documented in `review-report.md` |
+
+Full remediation plan pending — 22 P1 findings documented in `review-report.md`.
 
 ---
 
@@ -314,6 +324,7 @@ These require new catalog feature entries before any re-audit can consider them 
 
 - Are there undocumented features in this category not yet in the catalog?
 - Have any features been deprecated since the last catalog update?
+- **[Deep Review Update (2026-03-25)]** Should the 22 active P1 findings be executed as one remediation packet or split by workstream (governance, stale verdicts, pipeline wiring, traceability)?
 - **[Deep Research]** DR-002 re-audit plan requires 27-38 hours — should this be executed as a single campaign or phased across sprints?
 - **[Deep Research]** DR-004 identifies 6 uncataloged files — should new catalog entries be created before or during the re-audit?
 - **[Deep Research]** DR-005's 22 graduated flags may have invalidated early-phase audit verdicts — what is the threshold for re-auditing those features?

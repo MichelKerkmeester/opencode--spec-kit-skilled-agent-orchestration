@@ -1,7 +1,7 @@
 // ───────────────────────────────────────────────────────────────
 // MODULE: Community Detection
 // ───────────────────────────────────────────────────────────────
-// Deferred feature — gated via SPECKIT_COMMUNITY_DETECTION
+// Active runtime feature — default ON via SPECKIT_COMMUNITY_DETECTION (set false to disable)
 // ───────────────────────────────────────────────────────────────
 // 1. IMPORTS
 

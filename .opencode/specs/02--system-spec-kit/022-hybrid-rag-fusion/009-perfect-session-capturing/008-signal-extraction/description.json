@@ -7,7 +7,7 @@
     "signal",
     "extraction"
   ],
-  "lastUpdated": "2026-03-21T13:24:03.935Z",
+  "lastUpdated": "2026-03-25T06:40:39.394Z",
   "specId": "008",
   "folderSlug": "signal-extraction",
   "parentChain": [
@@ -15,8 +15,6 @@
     "022-hybrid-rag-fusion",
     "009-perfect-session-capturing"
   ],
-  "status": "Complete",
-  "importance_tier": "normal",
   "memorySequence": 3,
   "memoryNameHistory": [
     "16-03-26_19-54__signal-extraction.md",

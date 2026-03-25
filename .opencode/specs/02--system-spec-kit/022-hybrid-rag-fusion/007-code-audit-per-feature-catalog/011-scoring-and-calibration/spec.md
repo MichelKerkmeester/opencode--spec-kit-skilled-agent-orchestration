@@ -40,7 +40,7 @@ Systematic code audit of 22 live Scoring and Calibration features in the Spec Ki
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The feature catalog for Scoring and Calibration has evolved significantly. Existing audit documentation was stale and no longer reflected the current 22-feature inventory. This packet truth-syncs the certified live count after the deprecated shadow-evaluation entry dropped out of the active inventory.
+The feature catalog for Scoring and Calibration has evolved significantly. Existing audit documentation was stale and no longer reflected the current 22 live-feature inventory. This packet truth-syncs the certified live count and explicitly treats F23 as retired and out of scope for the active inventory.
 
 ### Purpose
 Verify that all 22 live Scoring and Calibration features are accurately documented in the feature catalog and correctly implemented in source code.
@@ -179,9 +179,11 @@ Verify that all 22 live Scoring and Calibration features are accurately document
 
 ## 12. AUDIT FINDINGS
 
-Audit completed 2026-03-22. 22 live features verified. Result: **20 MATCH, 2 PARTIAL**.
+Audit completed 2026-03-22. 22 live features verified. Result: **19 MATCH, 3 PARTIAL**.
 
-### MATCH (20/22)
+**Deep Review Update (2026-03-25)**: F19 and F20 are downgraded to PARTIAL because the live pipeline does not currently produce learned Stage 2 scores or run shadow holdout evaluation in production. F22 is restored to MATCH because the catalog function-name mismatch has been remediated. Certified inventory remains 22 live features; F23 is retired and excluded from this child audit.
+
+### MATCH (19/22)
 
 | ID | Feature | Finding |
 |----|---------|---------|
@@ -202,26 +204,26 @@ Audit completed 2026-03-22. 22 live features verified. Result: **20 MATCH, 2 PAR
 | F16 | Access-driven popularity scoring | Confirmed in source |
 | F17 | Temporal-structural coherence scoring | Confirmed in source |
 | F18 | Adaptive shadow ranking | Confirmed in source |
-| F19 | Learned Stage 2 weight combiner | Confirmed in source |
-| F20 | Shadow feedback holdout evaluation | Confirmed in source |
 | F21 | Calibrated overlap bonus | Confirmed in source |
+| F22 | RRF K experimental tuning | Catalog function name now matches implementation |
 
-### PARTIAL (2/22)
+### PARTIAL (3/22)
 
 | ID | Feature | Issue |
 |----|---------|-------|
-| F13 | Scoring and fusion corrections | Catalog lists file paths without `pipeline/` prefix — paths should be `pipeline/<file>` |
-| F22 | RRF K experimental tuning | Function name mismatch: catalog says `perIntentKSweep`, implementation uses `runJudgedKSweep` |
+| F13 | Scoring and fusion corrections | Catalog still cites retired `rsf-fusion` files in the scoring/fusion corrections references |
+| F19 | Learned Stage 2 weight combiner | Pipeline hard-codes `null` model; learned score never produced in live Stage 2 |
+| F20 | Shadow feedback holdout evaluation | No production entrypoint; `runShadowEvaluation()` only called in tests |
 
 ### Systemic Patterns
-All behavioral descriptions are accurate. The two PARTIAL findings are limited to file path and naming precision (no functional discrepancies). Deprecated fusion-policy shadow evaluation is no longer part of the certified live inventory. No undocumented live features identified.
+Behavioral drift is limited but real: F19 and F20 document capabilities that exist in code or test scaffolding but are not active on the live production path. F13 remains a traceability issue because the catalog still cites retired `rsf-fusion` files. F22 is now aligned after catalog remediation. Certified scope remains 22 live features, with F23 retired from the active inventory. No undocumented live features identified.
 
 ---
 
 ## 13. OPEN QUESTIONS
 
-- F13: Confirm canonical path prefix for scoring/fusion correction files (`pipeline/` vs root).
-- F22: Determine whether `perIntentKSweep` is an alias or whether the catalog should be updated to `runJudgedKSweep`.
+- F13: Remove retired `rsf-fusion` references from the scoring/fusion corrections catalog entry.
+- F19/F20: Decide whether to wire learned/shadow evaluation paths into production or narrow catalog language to shadow/test-only behavior.
 
 ---
 

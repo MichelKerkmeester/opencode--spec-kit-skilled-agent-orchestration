@@ -137,7 +137,12 @@ describe('Save Quality Gate (TM-04)', () => {
       expect(isQualityGateEnabled()).toBe(false);
     });
 
-    it('FF5: Gate OFF means passthrough result', () => {
+    it('FF5: Gate is disabled for "0"', () => {
+      process.env.SPECKIT_SAVE_QUALITY_GATE = '0';
+      expect(isQualityGateEnabled()).toBe(false);
+    });
+
+    it('FF6: Gate OFF means passthrough result', () => {
       process.env.SPECKIT_SAVE_QUALITY_GATE = 'false';
       const result = runQualityGate({
         title: null,

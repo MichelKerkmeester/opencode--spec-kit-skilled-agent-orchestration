@@ -9,7 +9,7 @@
 // - REQ-D3-006: Community detection thresholds --- Louvain activation
 //   gates (density + size), community score capping (secondary-only).
 //
-// All features gated behind SPECKIT_GRAPH_CALIBRATION_PROFILE (default OFF).
+// All features gated behind SPECKIT_GRAPH_CALIBRATION_PROFILE (default ON, graduated; set false to disable).
 
 /* ---------------------------------------------------------------
    1. IMPORTS

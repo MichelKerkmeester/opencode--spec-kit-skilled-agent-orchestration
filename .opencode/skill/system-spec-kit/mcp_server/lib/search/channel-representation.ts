@@ -11,11 +11,9 @@
  * compatible with both raw RRF scores and normalized [0,1] scores. */
 
 // Feature catalog: Channel min-representation
+import { isChannelMinRepEnabled } from './search-flags';
 
 export const QUALITY_FLOOR = 0.005;
-
-/** Env-var name for the feature flag. */
-const FEATURE_FLAG = 'SPECKIT_CHANNEL_MIN_REP';
 
 /* --- 2. INTERFACES --- */
 
@@ -59,20 +57,7 @@ export interface ChannelRepresentationResult {
   channelCounts: Record<string, number>;
 }
 
-/* --- 3. FEATURE FLAG --- */
-
-/**
- * Return true when the channel min-representation feature is enabled.
- * Default: TRUE (graduated). Set SPECKIT_CHANNEL_MIN_REP=false to disable.
- *
- * @returns True when SPECKIT_CHANNEL_MIN_REP is not explicitly disabled.
- */
-export function isChannelMinRepEnabled(): boolean {
-  const raw = process.env[FEATURE_FLAG]?.toLowerCase();
-  return raw !== 'false';
-}
-
-/* --- 4. CORE FUNCTION --- */
+/* --- 3. CORE FUNCTION --- */
 
 /**
  * Analyse a post-fusion top-k result set and, when the feature flag is
@@ -201,3 +186,5 @@ function computeChannelCounts(items: Array<TopKItem>): Record<string, number> {
   }
   return counts;
 }
+
+export { isChannelMinRepEnabled };

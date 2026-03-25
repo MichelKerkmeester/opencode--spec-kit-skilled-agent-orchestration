@@ -2,7 +2,7 @@
 // MODULE: Graph Signals
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: Typed-weighted degree channel
-// Deferred feature — gated via SPECKIT_GRAPH_SIGNALS
+// Active runtime feature — default ON via SPECKIT_GRAPH_SIGNALS (set false to disable)
 // ───────────────────────────────────────────────────────────────
 // 1. IMPORTS
 

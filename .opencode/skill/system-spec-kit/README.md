@@ -51,8 +51,8 @@ Every time an AI assistant modifies files, Spec Kit ensures the work is document
 | MCP Tools | 33 | Across 7 layers (L1-L7) |
 | Commands | 14 | 8 spec_kit + 6 memory |
 | Documentation Levels | 4 | Levels 1, 2, 3 and 3+ |
-| Script Modules | 13 spec + 9 memory | TypeScript, JavaScript and Bash |
-| Feature Entries | 222 | Across 19 categories in feature catalog |
+| Script Modules | 12 spec + 8 memory | TypeScript, JavaScript and Bash |
+| Feature Entries | 224 | Across 22 categories in feature catalog |
 | Template LOC | ~455 to ~1350 | Scales with documentation level |
 | Requirements | Node.js 18+ | TypeScript 5.0+, OpenCode 1.0.190+ |
 
@@ -64,7 +64,7 @@ Every time an AI assistant modifies files, Spec Kit ensures the work is document
 | **CORE + ADDENDUM Templates** | Composable template architecture where each level inherits from lower levels |
 | **Spec Kit Memory MCP** | 33 MCP tools providing hybrid multi-channel retrieval (Vector, FTS5/BM25, Graph, Degree) |
 | **Session Continuity** | Context preserved across session boundaries via `generate-context.js` and semantic indexing |
-| **Validation Scripts** | 13-rule validation orchestrator, completeness checks and placeholder detection |
+| **Validation Scripts** | 20-rule validation orchestrator, completeness checks and placeholder detection |
 | **Hybrid RAG Fusion** | Intent-weighted adaptive RRF with co-activation, causal lineage and FSRS spaced repetition |
 | **Constitutional Memory** | Always-surface rules with 3.0x boost that never decay across sessions |
 
@@ -147,8 +147,8 @@ The response should return relevant memory entries. If it returns an error, see 
 │   ├── handover.md             # Session continuity template
 │   └── debug-delegation.md     # Debug delegation template
 ├── scripts/                    # CLI tools (TypeScript source + Bash)
-│   ├── spec/                   # Spec folder management (13 scripts)
-│   ├── memory/                 # Memory system scripts (9 scripts)
+│   ├── spec/                   # Spec folder management (12 scripts)
+│   ├── memory/                 # Memory system scripts (8 scripts)
 │   ├── templates/              # Template composition (compose.sh)
 │   ├── core/                   # Core library (17 modules: workflow, post-save-review, etc.)
 │   ├── extractors/             # Session data extractors (12 extractors)
@@ -158,7 +158,7 @@ The response should return relevant memory entries. If it returns an error, see 
 │   └── dist/                   # Compiled JavaScript output
 ├── mcp_server/                 # Spec Kit Memory MCP (TypeScript)
 │   ├── context-server.ts       # MCP server entry (~1073 lines, 33 tools)
-│   ├── handlers/               # Tool handlers (11 functional + 2 infra)
+│   ├── handlers/               # Tool handlers (31 .ts files + 13 in handlers/save/)
 │   ├── lib/                    # cognitive/, search/, cache/, storage/, providers/
 │   ├── tests/                  # MCP test suite
 │   └── database/               # SQLite + vector search
@@ -172,10 +172,10 @@ The response should return relevant memory entries. If it returns an error, see 
 │   ├── ranking/                # Learned combiner and matrix math
 │   ├── scoring/                # Folder scoring logic
 │   └── utils/                  # Path security, retry, token estimation
-├── references/                 # Reference documentation (25 files)
+├── references/                 # Reference documentation (26 files)
 ├── assets/                     # Decision matrices, YAML configs
 ├── constitutional/             # Always-surface rules (never decay)
-└── feature_catalog/            # Feature documentation (19 categories, 222 features)
+└── feature_catalog/            # Feature documentation (22 categories, 224 features)
 ```
 
 ### Key Files
@@ -355,7 +355,7 @@ The spec management scripts in `scripts/spec/` cover the full lifecycle of a spe
 | Script | Purpose |
 |--------|---------|
 | `create.sh` | Create spec folder with level-appropriate template files. `--phase` creates parent + child phase folders |
-| `validate.sh` | Run 13 validation rules. `--recursive` validates parent and all child phase folders |
+| `validate.sh` | Run 20 validation rules. `--recursive` validates parent and all child phase folders |
 | `calculate-completeness.sh` | Calculate spec folder completeness percentage |
 | `check-placeholders.sh` | Verify zero placeholders remain after level upgrade |
 | `recommend-level.sh` | Recommend documentation level based on scope and risk |

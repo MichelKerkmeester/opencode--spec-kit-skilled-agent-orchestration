@@ -159,11 +159,9 @@ Verify that all 2 Evaluation features are accurately documented in the feature c
 
 ## 12. AUDIT FINDINGS
 
-### F01 — eval_run_ablation: PARTIAL
+### F01 — eval_run_ablation: MATCH
 
-Behavioral descriptions are accurate: 5 measurement channels, sign test, verdict spectrum, and `SPECKIT_ABLATION` gating are all confirmed in source. However, the source file list in the catalog is severely bloated — approximately 90 implementation files are listed when only ~15 are directly relevant to this feature.
-
-**Action required**: Trim catalog source list to the ~15 primary implementation files.
+Behavioral descriptions are accurate: 5 measurement channels, sign test, verdict spectrum, and `SPECKIT_ABLATION` gating are all confirmed in source. Deep Review Update (2026-03-25): the source list is now correctly scoped to 13 files rather than the previously overstated ~90-file inventory, so the catalog and implementation align.
 
 ### F02 — eval_reporting_dashboard: MATCH
 
@@ -173,14 +171,14 @@ Sprint grouping, metric summaries, trend analysis, `SPECKIT_DASHBOARD_LIMIT`, an
 
 | Feature | Verdict | Key Finding |
 |---------|---------|-------------|
-| eval_run_ablation | PARTIAL | Source file list bloated (~90 vs ~15 relevant) |
+| eval_run_ablation | MATCH | Deep Review Update (2026-03-25): source list corrected to 13 files; catalog now aligned |
 | eval_reporting_dashboard | MATCH | Fully aligned; source list correctly scoped |
 
 ---
 
 ## 13. OPEN QUESTIONS
 
-- Source file list for `eval_run_ablation` should be trimmed — who owns the catalog update?
+- ~~Source file list for `eval_run_ablation` should be trimmed — who owns the catalog update?~~ Resolved: Deep Review Update (2026-03-25) confirmed the catalog source list is now correctly scoped to 13 files.
 
 ---
 

@@ -6,7 +6,7 @@
     "specification",
     "001-baseline-and-safety-rails"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.324Z",
+  "lastUpdated": "2026-03-25T06:40:39.350Z",
   "specId": "001",
   "folderSlug": "baseline-and-safety-rails",
   "parentChain": [
@@ -17,9 +17,5 @@
   "memorySequence": 1,
   "memoryNameHistory": [
     "13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-1.md"
-  ],
-  "title": "Feature Specification: 001-baseline-and-safety-rails",
-  "status": "Complete",
-  "importance_tier": "critical",
-  "short_description": "Feature Specification: 001-baseline-and-safety-rails"
+  ]
 }

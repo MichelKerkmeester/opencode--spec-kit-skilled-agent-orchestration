@@ -26,7 +26,6 @@ import {
   type RuntimeContextStats,
 } from '../lib/cognitive/pressure-monitor';
 import * as workingMemory from '../lib/cognitive/working-memory';
-import { isIdentityInRollout } from '../lib/cognitive/rollout-policy';
 import * as sessionManager from '../lib/session/session-manager';
 
 // Telemetry
@@ -47,7 +46,11 @@ import type { MCPResponse, IntentClassification } from './types';
 
 // PI-B3: Folder discovery integration
 import { discoverSpecFolder, getSpecsBasePaths } from '../lib/search/folder-discovery';
-import { isFolderDiscoveryEnabled } from '../lib/search/search-flags';
+import {
+  isAutoResumeEnabled,
+  isFolderDiscoveryEnabled,
+  isPressurePolicyEnabled,
+} from '../lib/search/search-flags';
 
 // Feature catalog: Unified context retrieval (memory_context)
 // Feature catalog: Dual-scope memory auto-surface
@@ -546,6 +549,11 @@ const INTENT_TO_MODE: Record<string, string> = {
 async function executeQuickStrategy(input: string, options: ContextOptions): Promise<ContextResult> {
   const result = await handleMemoryMatchTriggers({
     prompt: input,
+    specFolder: options.specFolder,
+    tenantId: options.tenantId,
+    userId: options.userId,
+    agentId: options.agentId,
+    sharedSpaceId: options.sharedSpaceId,
     limit: options.limit || 5,
     session_id: options.sessionId,
     include_cognitive: true
@@ -996,11 +1004,8 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   }
 
   // Resolve token pressure (caller -> estimator -> unavailable)
-  const rolloutEnabled = process.env.SPECKIT_ROLLOUT_PERCENT
-    ? isIdentityInRollout(effectiveSessionId)
-    : true;
-  const pressurePolicyEnabled = process.env.SPECKIT_PRESSURE_POLICY !== 'false' && rolloutEnabled;
-  const autoResumeEnabled = process.env.SPECKIT_AUTO_RESUME !== 'false' && rolloutEnabled;
+  const pressurePolicyEnabled = isPressurePolicyEnabled(effectiveSessionId);
+  const autoResumeEnabled = isAutoResumeEnabled(effectiveSessionId);
 
   const pressurePolicy = pressurePolicyEnabled
     ? getPressureLevel(tokenUsage, runtimeContextStats)

@@ -45,6 +45,8 @@
 // for downstream consumer compatibility.
 
 import type Database from 'better-sqlite3';
+import path from 'path';
+import { readFile } from 'fs/promises';
 
 import { resolveEffectiveScore } from './types';
 import type { Stage2Input, Stage2Output, PipelineRow, IntentWeightsConfig, ArtifactRoutingConfig } from './types';
@@ -65,7 +67,8 @@ import {
   isLearnedStage2CombinerEnabled,
 } from '../search-flags';
 import { applyCalibrationProfile } from '../graph-calibration';
-import { shadowScore, extractFeatureVector } from '@spec-kit/shared/ranking/learned-combiner';
+import { shadowScore, extractFeatureVector, loadModel } from '@spec-kit/shared/ranking/learned-combiner';
+import type { LearnedModel } from '@spec-kit/shared/ranking/learned-combiner';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/db-helpers';
 import { computeRecencyScore } from '../../scoring/folder-scoring';
@@ -106,15 +109,91 @@ interface ValidationMetadataLike {
 
 /** Number of top results used as seeds for co-activation spreading. */
 const SPREAD_ACTIVATION_TOP_N = 5;
+const DEFAULT_LEARNED_STAGE2_MODEL_RELATIVE_PATH = path.join('models', 'learned-stage2-combiner.json');
 
 const MIN_VALIDATION_MULTIPLIER = 0.8;
 const MAX_VALIDATION_MULTIPLIER = 1.2;
+
+type LearnedStage2ModelCacheEntry = {
+  path: string;
+  model: LearnedModel | null;
+};
+
+let cachedLearnedStage2Model: LearnedStage2ModelCacheEntry | null = null;
+let learnedStage2ModelLoadPromise: Promise<LearnedStage2ModelCacheEntry> | null = null;
+let learnedStage2ModelLoadPromisePath: string | null = null;
 
 function clampMultiplier(value: number): number {
   if (!Number.isFinite(value)) return 1;
   if (value < MIN_VALIDATION_MULTIPLIER) return MIN_VALIDATION_MULTIPLIER;
   if (value > MAX_VALIDATION_MULTIPLIER) return MAX_VALIDATION_MULTIPLIER;
   return value;
+}
+
+function isShadowLearningModelLoadEnabled(): boolean {
+  return process.env.SPECKIT_SHADOW_LEARNING?.toLowerCase().trim() === 'true';
+}
+
+function resolveLearnedStage2ModelPath(): string {
+  const configured = process.env.SPECKIT_LEARNED_STAGE2_MODEL?.trim();
+  if (!configured) {
+    return path.resolve(process.cwd(), DEFAULT_LEARNED_STAGE2_MODEL_RELATIVE_PATH);
+  }
+  if (path.isAbsolute(configured)) {
+    return configured;
+  }
+  return path.resolve(process.cwd(), configured);
+}
+
+async function loadPersistedLearnedStage2Model(): Promise<LearnedModel | null> {
+  if (!isShadowLearningModelLoadEnabled()) {
+    return null;
+  }
+
+  const modelPath = resolveLearnedStage2ModelPath();
+  if (cachedLearnedStage2Model?.path === modelPath) {
+    return cachedLearnedStage2Model.model;
+  }
+
+  if (learnedStage2ModelLoadPromise && learnedStage2ModelLoadPromisePath === modelPath) {
+    return (await learnedStage2ModelLoadPromise).model;
+  }
+
+  if (learnedStage2ModelLoadPromisePath !== modelPath) {
+    learnedStage2ModelLoadPromise = null;
+    learnedStage2ModelLoadPromisePath = null;
+  }
+
+  learnedStage2ModelLoadPromisePath = modelPath;
+  learnedStage2ModelLoadPromise = (async (): Promise<LearnedStage2ModelCacheEntry> => {
+    try {
+      const json = await readFile(modelPath, 'utf8');
+      const model = loadModel(json);
+      if (!model) {
+        console.warn(`[stage2-fusion] learned stage2 model at ${modelPath} is invalid; shadow scoring will use manual-only fallback`);
+      }
+      const entry = { path: modelPath, model };
+      cachedLearnedStage2Model = entry;
+      return entry;
+    } catch (err: unknown) {
+      const entry = { path: modelPath, model: null };
+      cachedLearnedStage2Model = entry;
+
+      const code = typeof err === 'object' && err !== null && 'code' in err
+        ? String((err as { code?: unknown }).code)
+        : '';
+      if (code !== 'ENOENT') {
+        const message = err instanceof Error ? err.message : String(err);
+        console.warn(`[stage2-fusion] learned stage2 model load failed: ${message}`);
+      }
+      return entry;
+    } finally {
+      learnedStage2ModelLoadPromise = null;
+      learnedStage2ModelLoadPromisePath = null;
+    }
+  })();
+
+  return (await learnedStage2ModelLoadPromise).model;
 }
 
 /**
@@ -852,6 +931,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
   // Gated behind SPECKIT_LEARNED_STAGE2_COMBINER (default ON, graduated).
   if (isLearnedStage2CombinerEnabled()) {
     try {
+      const learnedShadowModel = await loadPersistedLearnedStage2Model();
       for (const row of results) {
         const features = extractFeatureVector({
           rrfScore: row.rrfScore,
@@ -872,7 +952,7 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
             ? Math.min(1, row.artifactBoostApplied / 2)
             : undefined,
         });
-        const shadow = shadowScore(null, features, resolveBaseScore(row), true);
+        const shadow = shadowScore(learnedShadowModel, features, resolveBaseScore(row), true);
         if (shadow) {
           console.warn(
             `[stage2-fusion] shadow-learned id=${row.id} manual=${shadow.manualScore.toFixed(4)} learned=${shadow.learnedScore.toFixed(4)} delta=${shadow.delta.toFixed(4)}`

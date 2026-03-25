@@ -113,6 +113,7 @@ interface PreparedParsedMemory {
   sufficiencyResult: MemorySufficiencyResult;
   templateContract: MemoryTemplateContractResult;
   specDocHealth: SpecDocHealthResult | null;
+  finalizedFileContent: string | null;
 }
 
 function buildQualityLoopMetadata(
@@ -174,6 +175,7 @@ function prepareParsedMemoryForIndexing(
         },
         templateContract: { valid: false, violations: [], missingAnchors: [], unexpectedTemplateArtifacts: [] } as MemoryTemplateContractResult,
         specDocHealth: null,
+        finalizedFileContent: null,
       };
     }
     if (vRuleDisposition && vRuleDisposition.disposition === 'write_skip_index') {
@@ -191,8 +193,12 @@ function prepareParsedMemoryForIndexing(
   if (qualityLoopResult.fixedTriggerPhrases) {
     parsed.triggerPhrases = qualityLoopResult.fixedTriggerPhrases;
   }
-  if (qualityLoopResult.fixedContent && qualityLoopResult.passed) {
-    parsed.content = qualityLoopResult.fixedContent;
+  const finalizedFileContent = qualityLoopResult.fixedContent
+    && qualityLoopResult.passed
+    ? qualityLoopResult.fixedContent
+    : null;
+  if (finalizedFileContent) {
+    parsed.content = finalizedFileContent;
     parsed.contentHash = memoryParser.computeContentHash(parsed.content);
   }
 
@@ -217,8 +223,9 @@ function prepareParsedMemoryForIndexing(
       if (fs.existsSync(specMdPath)) {
         specDocHealth = evaluateSpecDocHealth(parentDir);
       }
-    } catch {
-      // Health check failure must not block memory save
+    } catch (error: unknown) {
+      void error;
+      /* spec-doc-health check failure is non-fatal */
     }
   }
 
@@ -229,7 +236,71 @@ function prepareParsedMemoryForIndexing(
     sufficiencyResult,
     templateContract,
     specDocHealth,
+    finalizedFileContent,
   };
+}
+
+async function finalizeMemoryFileContent(
+  filePath: string,
+  content: string,
+): Promise<void> {
+  const backupPath = `${filePath}.${randomUUID().slice(0, 8)}.bak`;
+  const tempPath = `${filePath}.${randomUUID().slice(0, 8)}.tmp`;
+  let backupCreated = false;
+  let tempCreated = false;
+
+  try {
+    try {
+      await fs.promises.copyFile(filePath, backupPath);
+      backupCreated = true;
+    } catch (backupErr: unknown) {
+      const errCode = typeof backupErr === 'object' && backupErr !== null && 'code' in backupErr
+        ? String((backupErr as NodeJS.ErrnoException).code)
+        : '';
+      if (errCode !== 'ENOENT') {
+        throw backupErr;
+      }
+    }
+
+    await fs.promises.writeFile(tempPath, content, 'utf-8');
+    tempCreated = true;
+    await fs.promises.rename(tempPath, filePath);
+    tempCreated = false;
+  } catch (writeErr: unknown) {
+    if (tempCreated) {
+      try {
+        await fs.promises.unlink(tempPath);
+      } catch {
+        // Best-effort cleanup only.
+      }
+    }
+    if (backupCreated) {
+      try {
+        await fs.promises.copyFile(backupPath, filePath);
+      } catch (restoreErr: unknown) {
+        console.warn(
+          '[memory-save] Auto-fix file restore failed after finalize error:',
+          restoreErr instanceof Error ? restoreErr.message : String(restoreErr),
+        );
+      }
+    }
+    throw writeErr;
+  } finally {
+    if (tempCreated) {
+      try {
+        await fs.promises.unlink(tempPath);
+      } catch {
+        // Best-effort cleanup only.
+      }
+    }
+    if (backupCreated) {
+      try {
+        await fs.promises.unlink(backupPath);
+      } catch {
+        // Best-effort cleanup only.
+      }
+    }
+  }
 }
 
 async function processPreparedMemory(
@@ -248,7 +319,14 @@ async function processPreparedMemory(
     persistQualityLoopContent = true,
     scope = {},
   } = options;
-  const { parsed, validation, qualityLoopResult, sufficiencyResult, templateContract } = prepared;
+  const {
+    parsed,
+    validation,
+    qualityLoopResult,
+    sufficiencyResult,
+    templateContract,
+    finalizedFileContent,
+  } = prepared;
 
   if (!qualityLoopResult.passed && qualityLoopResult.rejected) {
     return {
@@ -303,11 +381,10 @@ async function processPreparedMemory(
 
       if (
         persistQualityLoopContent &&
-        qualityLoopResult.passed &&
-        qualityLoopResult.fixedContent &&
+        finalizedFileContent &&
         (chunkedResult.status === 'indexed' || chunkedResult.status === 'updated')
       ) {
-        await fs.promises.writeFile(filePath, parsed.content, 'utf-8');
+        await finalizeMemoryFileContent(filePath, finalizedFileContent);
       }
 
       return chunkedResult;
@@ -388,22 +465,19 @@ async function processPreparedMemory(
     );
     if (peResult.earlyReturn) return peResult.earlyReturn;
 
-    // -- the rollout: TM-06 Reconsolidation-on-Save --
-    const reconResult = await runReconsolidationIfEnabled(database, parsed, filePath, force, embedding);
-    if (reconResult.earlyReturn) return reconResult.earlyReturn;
-
     // A4 FIX: Wrap dedup-check + insert in BEGIN IMMEDIATE transaction for
     // DB-level atomicity. withSpecFolderLock handles in-process serialization;
-    // this transaction provides defense-in-depth against multi-process races.
-    // F01-004 NOTE: PE and reconsolidation run before this transaction. Their
-    // similarity decisions may become stale if another save completes between
-    // evaluation and BEGIN IMMEDIATE. The content-hash dedup inside the
-    // transaction (C5-1) catches the most common race. For PE/recon staleness,
-    // scope filtering (F01-001/F01-002) limits cross-tenant races.
+    // this transaction provides defense-in-depth against multi-process races,
+    // and keeps reconsolidation archives atomic with the subsequent insert.
     let id: number;
     let existing: { id: number; content_hash: string } | undefined;
+    let reconResult: Awaited<ReturnType<typeof runReconsolidationIfEnabled>> = {
+      earlyReturn: null,
+      warnings: [],
+    };
 
     const useTx = typeof database.exec === 'function';
+    let transactionCommitted = false;
     if (useTx) database.exec('BEGIN IMMEDIATE');
     try {
       // C5-1: Content-hash dedup moved inside transaction to prevent TOCTOU race
@@ -414,6 +488,22 @@ async function processPreparedMemory(
       if (dupResult) {
         if (useTx) database.exec('ROLLBACK');
         return dupResult;
+      }
+
+      // TM-06 fix: run reconsolidation inside the save transaction so any
+      // archive/update performed by the bridge rolls back with the save.
+      reconResult = await runReconsolidationIfEnabled(
+        database,
+        parsed,
+        filePath,
+        force,
+        embedding,
+        scope,
+      );
+      if (reconResult.earlyReturn) {
+        if (useTx) database.exec('COMMIT');
+        transactionCommitted = true;
+        return reconResult.earlyReturn;
       }
 
       // CREATE NEW MEMORY
@@ -466,20 +556,28 @@ async function processPreparedMemory(
           : 'CREATE',
       });
 
-      // F01-005: Write auto-fixed content BEFORE commit so failure triggers rollback
-      if (persistQualityLoopContent && qualityLoopResult.passed && qualityLoopResult.fixedContent) {
+      if (useTx) database.exec('COMMIT');
+      transactionCommitted = true;
+
+      if (persistQualityLoopContent && finalizedFileContent) {
         try {
-          await fs.promises.writeFile(filePath, parsed.content, 'utf-8');
+          await finalizeMemoryFileContent(filePath, finalizedFileContent);
         } catch (writeErr: unknown) {
-          console.error('[memory-save] Auto-fix file write failed, rolling back:', writeErr instanceof Error ? writeErr.message : String(writeErr));
-          if (useTx) database.exec('ROLLBACK');
+          console.error(
+            '[memory-save] Auto-fix file finalize failed after commit:',
+            writeErr instanceof Error ? writeErr.message : String(writeErr),
+          );
           throw writeErr;
         }
       }
-
-      if (useTx) database.exec('COMMIT');
     } catch (txErr: unknown) {
-      if (useTx) try { database.exec('ROLLBACK'); } catch (rbErr: unknown) { console.warn('[memory-save] ROLLBACK failed after transaction error:', rbErr instanceof Error ? rbErr.message : String(rbErr)); }
+      if (useTx && !transactionCommitted) {
+        try {
+          database.exec('ROLLBACK');
+        } catch (rbErr: unknown) {
+          console.warn('[memory-save] ROLLBACK failed after transaction error:', rbErr instanceof Error ? rbErr.message : String(rbErr));
+        }
+      }
       throw txErr;
     }
 
@@ -593,6 +691,65 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   const validatedPath: string = validateFilePathLocal(file_path);
   const database = requireDb();
 
+  if (!memoryParser.isMemoryFile(validatedPath)) {
+    throw new Error('File must be a .md or .txt file in: specs/**/memory/, specs/**/ (spec docs), or .opencode/skill/*/constitutional/');
+  }
+
+  if (typeof database.exec === 'function') {
+    ensureGovernanceRuntime(database);
+  }
+
+  const governanceDecision = validateGovernedIngest({
+    tenantId,
+    userId,
+    agentId,
+    sessionId,
+    sharedSpaceId,
+    provenanceSource,
+    provenanceActor,
+    governedAt,
+    retentionPolicy,
+    deleteAfter,
+  });
+
+  if (!governanceDecision.allowed) {
+    recordGovernanceAudit(database, {
+      action: 'memory_save',
+      decision: 'deny',
+      tenantId,
+      userId,
+      agentId,
+      sessionId,
+      sharedSpaceId,
+      reason: governanceDecision.reason ?? 'governance_rejected',
+      metadata: { issues: governanceDecision.issues },
+    });
+    throw new Error(`Governed ingest rejected: ${governanceDecision.issues.join('; ')}`);
+  }
+
+  if (sharedSpaceId) {
+    const access = assertSharedSpaceAccess(database, {
+      tenantId,
+      userId,
+      agentId,
+      sessionId,
+      sharedSpaceId,
+    }, sharedSpaceId, 'editor');
+    if (!access.allowed) {
+      recordGovernanceAudit(database, {
+        action: 'memory_save_shared_space',
+        decision: 'deny',
+        tenantId,
+        userId,
+        agentId,
+        sessionId,
+        sharedSpaceId,
+        reason: access.reason ?? 'shared_space_denied',
+      });
+      throw new Error(`Shared-memory save denied: ${access.reason ?? 'shared_space_denied'}`);
+    }
+  }
+
   // DryRun must remain non-mutating even when preflight is explicitly skipped.
   if (dryRun && skipPreflight) {
     const parsedForDryRun = memoryParser.parseMemoryFile(validatedPath);
@@ -648,63 +805,6 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
             'Not enough context was available to save a durable memory',
           ],
     });
-  }
-
-  ensureGovernanceRuntime(database);
-
-  const governanceDecision = validateGovernedIngest({
-    tenantId,
-    userId,
-    agentId,
-    sessionId,
-    sharedSpaceId,
-    provenanceSource,
-    provenanceActor,
-    governedAt,
-    retentionPolicy,
-    deleteAfter,
-  });
-
-  if (!governanceDecision.allowed) {
-    recordGovernanceAudit(database, {
-      action: 'memory_save',
-      decision: 'deny',
-      tenantId,
-      userId,
-      agentId,
-      sessionId,
-      sharedSpaceId,
-      reason: governanceDecision.reason ?? 'governance_rejected',
-      metadata: { issues: governanceDecision.issues },
-    });
-    throw new Error(`Governed ingest rejected: ${governanceDecision.issues.join('; ')}`);
-  }
-
-  if (sharedSpaceId) {
-    const access = assertSharedSpaceAccess(database, {
-      tenantId,
-      userId,
-      agentId,
-      sessionId,
-      sharedSpaceId,
-    }, sharedSpaceId, 'editor');
-    if (!access.allowed) {
-      recordGovernanceAudit(database, {
-        action: 'memory_save_shared_space',
-        decision: 'deny',
-        tenantId,
-        userId,
-        agentId,
-        sessionId,
-        sharedSpaceId,
-        reason: access.reason ?? 'shared_space_denied',
-      });
-      throw new Error(`Shared-memory save denied: ${access.reason ?? 'shared_space_denied'}`);
-    }
-  }
-
-  if (!memoryParser.isMemoryFile(validatedPath)) {
-    throw new Error('File must be a .md or .txt file in: specs/**/memory/, specs/**/ (spec docs), or .opencode/skill/*/constitutional/');
   }
 
   const saveScope: MemoryScopeMatch = {

@@ -229,6 +229,20 @@ The audit was executed against a moving HEAD revision throughout all 20 phases, 
 
 32 source files (11% of the 290-file codebase) were never referenced in any catalog feature file across all 20 audit phases. These files may contain unaudited behavior, dead code, or features not yet cataloged.
 
+### Deep Review Update (2026-03-25)
+
+The original cross-cutting synthesis treated the audit packet as a zero-MISMATCH baseline. That conclusion is now superseded by the 2026-03-23 re-audit and 2026-03-25 deep review, which identified 5 active MISMATCH verdicts across the audit packet.
+
+| Re-Audit Phase | Feature | Updated Status | Note |
+|----------------|---------|----------------|------|
+| 009 | F11 | MISMATCH | Deprecated/shadow-scoring attribution path described as active |
+| 010 | F15 | MISMATCH | Dead graph-calibration profile path described as live |
+| 011 | F23 | MISMATCH | Deprecated shadow-eval V2 described as exported and consumed |
+| 013 | F21 | MISMATCH | Catalog/audit describe auto-merge while code performs shadow-archive behavior |
+| 016 | F11 | MISMATCH | "Every non-test TS file" claim does not match actual code-comment coverage |
+
+These re-audit mismatches should be treated as authoritative over the original zero-MISMATCH synthesis and carried forward into remediation planning.
+
 ---
 
 ## 13. OPEN QUESTIONS
@@ -236,6 +250,7 @@ The audit was executed against a moving HEAD revision throughout all 20 phases, 
 - All catalog undocumented-feature questions resolved: no new features found outside catalog inventory.
 - No active deprecations remain unresolved; all 4 deprecated modules confirmed removed or superseded.
 - Deferred items DEF-001 through DEF-004 remain open for future scheduling; no blocking dependency on current system.
+- **[Deep Review Update (2026-03-25)]** The original zero-MISMATCH synthesis is superseded: 5 MISMATCHes are now active in phases 009, 010, 011, 013, and 016.
 - **[Deep Research]** BS-001 through BS-005 represent structural blind spots that require a cross-cutting re-audit pass to resolve. These are not addressable within any single per-feature phase.
 - **[Deep Research]** The 32 unreferenced source files (BS-005) need triage: dead code candidates vs. uncataloged features.
 

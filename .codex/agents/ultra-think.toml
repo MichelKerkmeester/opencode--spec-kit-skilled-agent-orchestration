@@ -1,5 +1,6 @@
 # Agent: ultra-think
 # Converted from: .opencode/agent/chatgpt/ultra-think.md
+name = "ultra-think"
 sandbox_mode = "read-only"
 model = "gpt-5.4"
 model_reasoning_effort = "high"

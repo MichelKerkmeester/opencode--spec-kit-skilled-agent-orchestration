@@ -183,7 +183,9 @@ Verify that all 24 Memory Quality and Indexing features are accurately documente
 
 ## 12. AUDIT FINDINGS
 
-Audit completed 2026-03-22. 24 features verified. Overall result: **20 MATCH, 4 PARTIAL**.
+Audit completed 2026-03-22. 24 features verified. Overall result: **19 MATCH, 5 PARTIAL**.
+
+**Deep Review Update (2026-03-25)**: F21 is downgraded to PARTIAL. The live code performs shadow-archive, not auto-merge; the feature defaults ON, not OFF; review-tier recommendations remain internal and are not surfaced to the caller. The review also identified a pre-transaction archive bug: archival begins before the save transaction is committed.
 
 ### Feature Results
 
@@ -209,7 +211,7 @@ Audit completed 2026-03-22. 24 features verified. Overall result: **20 MATCH, 4 
 | F18 | Session enrichment and alignment guards | MATCH | |
 | F19 | Post-save quality review | MATCH | |
 | F20 | Weekly batch feedback learning | MATCH | |
-| F21 | Assistive reconsolidation | MATCH | |
+| F21 | Assistive reconsolidation | PARTIAL | Code does shadow-archive not auto-merge; default ON not OFF; review recommendations not surfaced to caller |
 | F22 | Implicit feedback log | MATCH | |
 | F23 | Hybrid decay policy | MATCH | `applyHybridDecayPolicy` IS a named export in `fsrs-scheduler.ts` (line 478); catalog is accurate |
 | F24 | Save quality gate exceptions | MATCH | |
@@ -224,6 +226,8 @@ Audit completed 2026-03-22. 24 features verified. Overall result: **20 MATCH, 4 
 
 **F14 — Quality gate timer persistence source list inflated**: The catalog lists significantly more source files than actually implement the timer persistence logic. Many listed files touch the quality gate tangentially or not at all.
 
+**F21 — Assistive reconsolidation is only partially aligned**: Deep review confirmed the implementation performs shadow-archive behavior rather than auto-merge, the feature defaults ON rather than OFF, and review-tier recommendations stay inside the reconsolidation bridge instead of being returned to the MCP caller. The same path also has a pre-transaction archive bug: the old memory can be archived before the replacement save transaction successfully commits.
+
 **F23 — CORRECTED (now MATCH)**: Original audit claimed `applyHybridDecayPolicy` was not a named export. Verification shows it IS explicitly exported at line 478 of `fsrs-scheduler.ts` via `export { ... applyHybridDecayPolicy ... }`. The catalog description is accurate. This finding was a hallucinated audit error.
 
 ---
@@ -233,6 +237,7 @@ Audit completed 2026-03-22. 24 features verified. Overall result: **20 MATCH, 4 
 - Should `entity-linker.ts` (F13) be added to the catalog source list, or is it intentionally omitted?
 - Should the bloated source lists for F12 and F14 be trimmed in a follow-on catalog-cleanup pass?
 - F12: Should `scripts/core/file-writer.ts` be added as the primary source file in the catalog?
+- F21: Should assistive reconsolidation archive be moved inside the save transaction, and should recommendation payloads be surfaced to callers?
 
 ---
 

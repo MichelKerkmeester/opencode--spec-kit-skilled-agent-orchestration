@@ -2,6 +2,8 @@
 // MODULE: Confidence Truncation
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: Confidence-based result truncation
+import { isConfidenceTruncationEnabled } from './search-flags';
+
 /* --- 1. TYPES & CONSTANTS --- */
 
 /** Generic scored result for truncation — supports both numeric and string IDs. */
@@ -36,20 +38,7 @@ const DEFAULT_MIN_RESULTS = 3;
  * 2x median is the elbow heuristic — a gap twice the typical spread signals a relevance cliff. */
 const GAP_THRESHOLD_MULTIPLIER = 2;
 
-/* --- 2. FEATURE FLAG --- */
-
-/**
- * Check whether confidence-based truncation is enabled.
- * Default: TRUE (graduated). Set SPECKIT_CONFIDENCE_TRUNCATION=false to disable.
- *
- * @returns True when SPECKIT_CONFIDENCE_TRUNCATION is not explicitly disabled.
- */
-function isConfidenceTruncationEnabled(): boolean {
-  const raw = process.env.SPECKIT_CONFIDENCE_TRUNCATION?.toLowerCase()?.trim();
-  return raw !== 'false';
-}
-
-/* --- 3. GAP ANALYSIS HELPERS --- */
+/* --- 2. GAP ANALYSIS HELPERS --- */
 
 /**
  * Compute consecutive score gaps for a sorted (descending) score array.
@@ -88,7 +77,7 @@ function computeMedian(values: number[]): number {
   return (sorted[mid - 1] + sorted[mid]) / 2;
 }
 
-/* --- 4. CORE TRUNCATION LOGIC --- */
+/* --- 3. CORE TRUNCATION LOGIC --- */
 
 /**
  * Truncate results based on confidence gap analysis.

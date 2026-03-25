@@ -21,6 +21,30 @@ import { isFeatureEnabled } from '../cognitive/rollout-policy';
 ──────────────────────────────────────────────────────────────── */
 
 /**
+ * Dynamic startup instruction injection for the MCP server.
+ * Default: TRUE (graduated). Set SPECKIT_DYNAMIC_INIT=false to disable.
+ */
+export function isDynamicInitEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_DYNAMIC_INIT');
+}
+
+/**
+ * Token-pressure policy for memory_context.
+ * Default: TRUE (graduated). Set SPECKIT_PRESSURE_POLICY=false to disable.
+ */
+export function isPressurePolicyEnabled(identity?: string): boolean {
+  return isFeatureEnabled('SPECKIT_PRESSURE_POLICY', identity);
+}
+
+/**
+ * Automatic session resume context injection for memory_context.
+ * Default: TRUE (graduated). Set SPECKIT_AUTO_RESUME=false to disable.
+ */
+export function isAutoResumeEnabled(identity?: string): boolean {
+  return isFeatureEnabled('SPECKIT_AUTO_RESUME', identity);
+}
+
+/**
  * Graph-guided MMR diversity reranking.
  * Default: TRUE (enabled). Set SPECKIT_MMR=false to disable.
  */
@@ -84,6 +108,30 @@ export function isDocscoreAggregationEnabled(): boolean {
  */
 export function isSaveQualityGateEnabled(): boolean {
   return isFeatureEnabled('SPECKIT_SAVE_QUALITY_GATE');
+}
+
+/**
+ * Dynamic token budget allocation by query complexity.
+ * Default: TRUE (graduated). Set SPECKIT_DYNAMIC_TOKEN_BUDGET=false to disable.
+ */
+export function isDynamicTokenBudgetEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_DYNAMIC_TOKEN_BUDGET');
+}
+
+/**
+ * Confidence-gap truncation for low-confidence tails.
+ * Default: TRUE (graduated). Set SPECKIT_CONFIDENCE_TRUNCATION=false to disable.
+ */
+export function isConfidenceTruncationEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_CONFIDENCE_TRUNCATION');
+}
+
+/**
+ * Channel minimum-representation promotion after fusion.
+ * Default: TRUE (graduated). Set SPECKIT_CHANNEL_MIN_REP=false to disable.
+ */
+export function isChannelMinRepEnabled(): boolean {
+  return isFeatureEnabled('SPECKIT_CHANNEL_MIN_REP');
 }
 
 /**

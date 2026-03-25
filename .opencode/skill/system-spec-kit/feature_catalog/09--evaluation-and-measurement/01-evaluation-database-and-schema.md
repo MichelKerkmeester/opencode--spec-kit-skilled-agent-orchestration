@@ -28,6 +28,7 @@ Logging hooks in the search, context and trigger handlers are best-effort and fa
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/lib/eval/eval-db.ts` | Lib | Evaluation database |
+| `mcp_server/lib/telemetry/eval-channel-tracking.ts` | Lib | Collects per-channel attribution payloads and graph-walk diagnostics emitted into eval logging |
 
 ### Tests
 
@@ -42,6 +43,7 @@ Logging hooks in the search, context and trigger handlers are best-effort and fa
 - Group: Evaluation and measurement
 - Source feature title: Evaluation database and schema
 - Current reality source: feature_catalog.md
+- Source list updated 2026-03-25 per deep review
 
 ---
 

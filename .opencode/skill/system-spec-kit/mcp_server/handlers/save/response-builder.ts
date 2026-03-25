@@ -14,7 +14,12 @@ import { appendMutationLedgerSafe } from '../memory-crud-utils';
 import { runPostMutationHooks } from '../mutation-hooks';
 import type { MCPResponse } from '../types';
 import { buildMutationHookFeedback } from '../../hooks/mutation-feedback';
-import type { IndexResult } from './types';
+import type {
+  AssistiveRecommendation,
+  IndexResult,
+  PeDecision,
+  ReconWarningList,
+} from './types';
 import type { EnrichmentStatus } from './post-insert';
 import { MEMORY_SUFFICIENCY_REJECTION_CODE } from '@spec-kit/shared/parsing/memory-sufficiency';
 
@@ -28,8 +33,6 @@ interface ValidationResult {
   errors: string[];
   warnings: string[];
 }
-
-import type { PeDecision } from './types';
 
 interface CausalLinksResult {
   processed: number;
@@ -46,7 +49,7 @@ interface BuildIndexResultParams {
   id: number;
   parsed: ReturnType<typeof memoryParser.parseMemoryFile>;
   validation: ValidationResult;
-  reconWarnings: string[];
+  reconWarnings: ReconWarningList;
   peDecision: PeDecision;
   embeddingFailureReason: string | null;
   asyncEmbedding: boolean;
@@ -60,6 +63,51 @@ interface BuildSaveResponseParams {
   filePath: string;
   asyncEmbedding: boolean;
   requestId: string;
+}
+
+function buildAssistiveReviewDescription(
+  recommendation: Pick<
+    AssistiveRecommendation,
+    'classification' | 'olderMemoryId' | 'newerMemoryId' | 'similarity'
+  >,
+): string {
+  const newerLabel = recommendation.newerMemoryId != null
+    ? `saved memory #${recommendation.newerMemoryId}`
+    : 'the pending save';
+  return (
+    `Review borderline similarity ${recommendation.similarity.toFixed(3)} between ` +
+    `${newerLabel} and existing memory #${recommendation.olderMemoryId}; ` +
+    `heuristic suggests ${recommendation.classification}.`
+  );
+}
+
+function finalizeAssistiveRecommendation(
+  reconWarnings: ReconWarningList,
+  savedMemoryId: number,
+): AssistiveRecommendation | undefined {
+  const rawRecommendation = reconWarnings.assistiveRecommendation;
+  if (!rawRecommendation) return undefined;
+
+  const candidateMemoryIds = Array.from(
+    new Set([
+      ...rawRecommendation.candidateMemoryIds,
+      rawRecommendation.olderMemoryId,
+      savedMemoryId,
+    ].filter((memoryId) => Number.isInteger(memoryId) && memoryId > 0)),
+  );
+
+  const newerMemoryId = rawRecommendation.newerMemoryId ?? savedMemoryId;
+  return {
+    ...rawRecommendation,
+    newerMemoryId,
+    candidateMemoryIds,
+    description: buildAssistiveReviewDescription({
+      classification: rawRecommendation.classification,
+      olderMemoryId: rawRecommendation.olderMemoryId,
+      newerMemoryId,
+      similarity: rawRecommendation.similarity,
+    }),
+  };
 }
 
 export function buildIndexResult({
@@ -127,6 +175,11 @@ export function buildIndexResult({
     qualityScore: parsed.qualityScore,
     qualityFlags: parsed.qualityFlags,
   };
+
+  const assistiveRecommendation = finalizeAssistiveRecommendation(reconWarnings, id);
+  if (assistiveRecommendation) {
+    result.assistiveRecommendation = assistiveRecommendation;
+  }
 
   if (peDecision.action !== predictionErrorGate.ACTION.CREATE) {
     result.pe_action = peDecision.action;
@@ -282,6 +335,9 @@ export function buildSaveResponse({ result, filePath, asyncEmbedding, requestId 
     qualityFlags: result.qualityFlags,
     message: result.message ?? (result.status === 'duplicate' ? 'Memory skipped (duplicate content)' : `Memory ${result.status} successfully`),
   };
+  if (result.assistiveRecommendation) {
+    response.assistiveRecommendation = result.assistiveRecommendation;
+  }
   if (postMutationFeedback) {
     response.postMutationHooks = postMutationFeedback.data;
   }

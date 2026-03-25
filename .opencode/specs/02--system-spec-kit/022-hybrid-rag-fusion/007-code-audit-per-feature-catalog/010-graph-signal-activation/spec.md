@@ -173,7 +173,7 @@ Verify that all 16 Graph Signal Activation features are accurately documented in
 
 ## 12. AUDIT FINDINGS
 
-**Result: 12 MATCH, 4 PARTIAL across 16 features.**
+**Result: 14 MATCH, 2 PARTIAL across 16 features.**
 
 | ID | Feature | Status | Finding |
 |----|---------|--------|---------|
@@ -187,29 +187,26 @@ Verify that all 16 Graph Signal Activation features are accurately documented in
 | F08 | graph-cognitive-fixes | MATCH | All 7 fixes verified; minor file attribution imprecision — negligible |
 | F09 | anchor-tags | MATCH | Correctly documented as DEFERRED; no implementation expected |
 | F10 | causal-neighbor-boost | MATCH | Constants and multipliers confirmed |
-| F11 | temporal-contiguity | PARTIAL | CONFIRMED @deprecated — "Never wired into production pipeline. Superseded by FSRS v4 decay." Catalog must be updated to reflect deprecated status |
+| F11 | temporal-contiguity | MATCH | Deep Review Update (2026-03-25): temporal contiguity is live on Stage 1 vector paths and remains graduated/default-on; catalog and implementation now agree |
 | F12 | unified-graph | MATCH | Deterministic ranking and explainability confirmed |
-| F13 | graph-lifecycle | PARTIAL | Inline comment is misleading relative to actual default behavior in source |
+| F13 | graph-lifecycle | MATCH | Deep Review Update (2026-03-25): catalog and implementation now agree on default behavior |
 | F14 | llm-graph-backfill | PARTIAL | Catalog contains self-contradictory default messaging; needs reconciliation |
-| F15 | graph-calibration | PARTIAL | CONFIRMED @deprecated — "Fully implemented and tested but never wired into Stage 2 pipeline." Catalog must be updated to reflect deprecated status |
+| F15 | graph-calibration | PARTIAL | Graph calibration profiles are wired into Stage 2 via `stage2-fusion.ts:776`, but the community-threshold half is not connected |
 | F16 | typed-traversal | MATCH | All constants and intent-priority logic confirmed |
 
 ### Key Issues Requiring Follow-up
 
-1. **F11 / F15 — CONFIRMED @deprecated modules presented as active**: Both `temporal-contiguity` (deprecated: "Never wired into production pipeline. Superseded by FSRS v4 decay.") and `graph-calibration` (deprecated: "Fully implemented and tested but never wired into Stage 2 pipeline.") carry explicit `@deprecated` annotations in source code and are not wired into any active pipeline path. The catalog entries incorrectly describe them as graduated active features. These entries must be updated to DEPRECATED status to match the source code reality.
+1. **F15 — Partial graph calibration wiring**: Graph calibration profiles are wired into Stage 2 via `stage2-fusion.ts:776`, but the community-threshold half is not connected end-to-end. The catalog should keep this feature marked partial until both halves align.
 
 2. **F14 — Self-contradictory catalog entry**: The `llm-graph-backfill` catalog entry contains conflicting statements about its default behavior. The entry must be reconciled to a single authoritative description.
-
-3. **F13 — Misleading inline comment**: The `graph-lifecycle` source contains an inline comment that does not match actual default behavior. Low severity but should be corrected to prevent future confusion.
 
 ---
 
 ## 13. OPEN QUESTIONS
 
-- **RESOLVED**: 14 of 16 features confirmed as accurately documented (MATCH).
-- **OPEN — F11, F15**: Both modules are CONFIRMED @deprecated in source code (F11: superseded by FSRS v4 decay; F15: never wired into Stage 2 pipeline). Catalog entries must be corrected from active to DEPRECATED status. Recommend a follow-up task to update those two catalog entries.
+- **RESOLVED**: 14 of 16 features are confirmed as accurately documented (MATCH).
+- **OPEN — F15**: Graph calibration profiles are wired into Stage 2, but community-threshold integration remains incomplete.
 - **OPEN — F14**: Which of the two conflicting defaults in the `llm-graph-backfill` catalog entry is authoritative?
-- **OPEN — F13**: Inline comment in `graph-lifecycle` source should be corrected in a future maintenance pass.
 
 ---
 

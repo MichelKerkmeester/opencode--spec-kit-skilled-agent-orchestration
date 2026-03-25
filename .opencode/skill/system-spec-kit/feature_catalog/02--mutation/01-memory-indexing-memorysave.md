@@ -57,6 +57,8 @@ Document type affects importance weighting automatically: constitutional files g
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/handlers/memory-save.ts` | Handler | Save entry point and orchestration for validation, quality gating, PE arbitration, reconsolidation, and persistence |
+| `mcp_server/handlers/save/markdown-evidence-builder.ts` | Handler | Extracts structured markdown evidence snapshots used by save-time semantic sufficiency checks |
+| `mcp_server/handlers/save/validation-responses.ts` | Handler | Builds insufficiency, template-contract, and dry-run response payloads for the save path |
 | `mcp_server/handlers/save/embedding-pipeline.ts` | Handler | Embedding cache lookup, provider generation, and async/deferred pending behavior |
 | `mcp_server/handlers/save/pe-orchestration.ts` | Handler | Save-path PE decision evaluation and early-return handling |
 | `mcp_server/handlers/save/create-record.ts` | Handler | Record creation, BM25 insert, lineage transition, and save-time history writes |
@@ -83,3 +85,4 @@ Document type affects importance weighting automatically: constitutional files g
 - Group: Mutation
 - Source feature title: Memory indexing (memory_save)
 - Current reality source: feature_catalog.md
+- Source list updated 2026-03-25 per deep review

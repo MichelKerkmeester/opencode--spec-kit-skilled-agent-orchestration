@@ -310,6 +310,9 @@ describe('T024 Channel Representation Check', () => {
     setEnv(FEATURE_FLAG, 'false');
     expect(isChannelMinRepEnabled()).toBe(false);
 
+    setEnv(FEATURE_FLAG, '0');
+    expect(isChannelMinRepEnabled()).toBe(false);
+
     setEnv(FEATURE_FLAG, undefined);
     expect(isChannelMinRepEnabled()).toBe(true); // graduated: default ON
   });

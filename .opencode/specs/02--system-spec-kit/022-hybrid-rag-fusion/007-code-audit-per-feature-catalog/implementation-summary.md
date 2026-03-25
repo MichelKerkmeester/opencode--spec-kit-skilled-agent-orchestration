@@ -232,6 +232,21 @@ All re-audit outputs are in `scratch/reaudit-2026-03-23/` per phase:
 
 ---
 
+## Deep Review Remediation (2026-03-25)
+
+- **20-iteration deep review verdict: CONDITIONAL (0 P0, 22 P1, 35 P2)**
+
+### Remediation Workstreams
+
+- Governance bypass fixes
+- Stale audit verdicts
+- Pipeline wiring
+- Traceability reconciliation
+
+**Verification Note**: All 3 pipelines verified connected. 3,144+ tests passing. No security vulnerabilities found.
+
+---
+
 <!--
 Post-implementation documentation for the comprehensive code audit.
 Re-audit section added 2026-03-23 with three-agent triangulation results.

@@ -72,17 +72,22 @@ describe('T030-01: Feature Flag (SPECKIT_DYNAMIC_TOKEN_BUDGET)', () => {
     expect(isDynamicTokenBudgetEnabled()).toBe(false);
   });
 
-  it('T3: enabled when env var is empty string (graduated flag)', () => {
+  it('T3: disabled when env var is "0"', () => {
+    process.env[FLAG] = '0';
+    expect(isDynamicTokenBudgetEnabled()).toBe(false);
+  });
+
+  it('T4: enabled when env var is empty string (graduated flag)', () => {
     process.env[FLAG] = '';
     expect(isDynamicTokenBudgetEnabled()).toBe(true);
   });
 
-  it('T4: enabled when env var is "true"', () => {
+  it('T5: enabled when env var is "true"', () => {
     process.env[FLAG] = 'true';
     expect(isDynamicTokenBudgetEnabled()).toBe(true);
   });
 
-  it('T5: enabled when env var is "TRUE" (case-insensitive)', () => {
+  it('T6: enabled when env var is "TRUE" (case-insensitive)', () => {
     process.env[FLAG] = 'TRUE';
     expect(isDynamicTokenBudgetEnabled()).toBe(true);
   });

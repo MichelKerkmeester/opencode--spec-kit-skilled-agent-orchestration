@@ -9,10 +9,9 @@
     "parity",
     "hardening"
   ],
-  "lastUpdated": "2026-03-21T13:24:03.923Z",
+  "lastUpdated": "2026-03-25T06:40:39.385Z",
   "specId": "005",
   "folderSlug": "live-proof-and-parity-hardening",
-  "status": "Blocked",
   "parentChain": [
     "02--system-spec-kit",
     "022-hybrid-rag-fusion",

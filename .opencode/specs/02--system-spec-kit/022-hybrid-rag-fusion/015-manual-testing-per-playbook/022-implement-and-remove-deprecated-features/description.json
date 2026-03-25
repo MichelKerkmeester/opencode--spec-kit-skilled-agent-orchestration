@@ -6,10 +6,9 @@
     "specification",
     "manual-testing-per-playbook",
     "implement-and-remove-deprecated-features",
-    "deprecated",
     "phase"
   ],
-  "lastUpdated": "2026-03-24T00:00:00.000Z",
+  "lastUpdated": "2026-03-25T06:40:39.469Z",
   "specId": "022",
   "folderSlug": "implement-and-remove-deprecated-features",
   "parentChain": [

@@ -485,3 +485,53 @@ The exploration result overreached and contradicted direct source reads, so I’
   │ .opencode/skill/system-spec-kit/README.md
   └ L1:120 (119 lines read)
 
+## Summary
+
+- **P0:** 0
+- **P1:** 2
+- **P2:** 2
+- **Files reviewed:** 24 direct file reads plus targeted catalog/code searches across `feature_catalog/` and `mcp_server/`
+- **Dimensions covered:** correctness, security, traceability, maintainability
+- **Primary conclusion:** the biggest live traceability issue is **catalog self-contradiction around code-reference coverage**; several March 23 re-audit mismatch claims are **stale on current HEAD**.
+
+## Findings
+
+### P1-001 [P1] Section 16 overstates universal `Feature catalog:` coverage and cites a verifier that does not enforce it
+
+- **Evidence:** `feature_catalog/feature_catalog.md:3862-3866` says “every source file” carries `// Feature catalog:` comments. The child spec downgrades this to **~74%** coverage: `feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md:18-22`. The cited verifier only checks `MODULE:` headers, not feature annotations: `.opencode/skill/sk-code--opencode/scripts/verify_alignment_drift.py:266-274`. A representative script file has a `MODULE:` header but no `Feature catalog:` tag: `scripts/utils/workspace-identity.ts:1-4`.
+- **Impact:** operators and auditors cannot rely on grep-based feature tracing as a complete inventory; the catalog currently presents partial coverage as universal coverage.
+- **Fix recommendation:** change the main catalog wording to match the measured partial-coverage claim, or add enforcement for `// Feature catalog:` annotations if universal coverage is intended.
+
+### P1-002 [P1] Section 21 still misdescribes `SESSION_MAX_ENTRIES` behavior
+
+- **Evidence:** `feature_catalog/feature_catalog.md:4511` says entries beyond the cap “are not tracked.” The child flag reference says the opposite: `feature_catalog/19--feature-flag-reference/02-2-session-and-cache.md:24` documents **LRU eviction**. Code confirms eviction of oldest rows via `DELETE ... ORDER BY sent_at ASC LIMIT ?`: `mcp_server/lib/session/session-manager.ts:610-628`.
+- **Impact:** debugging session dedup behavior from the top-level catalog will be wrong; readers may expect silent overflow dropping instead of eviction churn.
+- **Fix recommendation:** align the top-level feature-flag row with the child spec and code: oldest tracked entries are evicted when the cap is exceeded.
+
+### P2-001 [P2] The “32 unreferenced files” gap-analysis claim is stale for at least the named `history.ts` examples
+
+- **Evidence:** the audit strategy still reports `32/286` unreferenced files: `.../scratch/deep-review-strategy.md:137-142`. Cross-cutting notes specifically say `history.ts` must be added to mutation/lifecycle features: `.../gpt54-cross-cutting.md:22,33,65`. On current HEAD, `history.ts` is already referenced in multiple catalog entries, including `02--mutation/01-memory-indexing-memorysave.md:67`, `02--mutation/02-memory-metadata-update-memoryupdate.md:46`, and `02--mutation/10-per-memory-history-log.md:20,30`.
+- **Impact:** the old gap-analysis should not be reused as current evidence without a fresh recount.
+- **Fix recommendation:** rerun the orphan/unreferenced-file inventory against current HEAD before carrying the “32 files” number forward.
+
+### P2-002 [P2] The March 23 claim that graph calibration is “never wired into Stage 2” is not reproducible on current HEAD
+
+- **Evidence:** the re-audit notes mark 010/F15 as a mismatch: `.../scratch/deep-review-strategy.md:135` and `.../gpt54-cross-cutting.md:19,50`. Current child catalog says Stage 2 applies calibration: `feature_catalog/10--graph-signal-activation/15-graph-calibration-profiles.md:18-22`. Code matches: `mcp_server/lib/search/pipeline/stage2-fusion.ts:253-279` calls `applyCalibrationProfile(...)`; the flag accessor exists at `mcp_server/lib/search/search-flags.ts:368-375`; the implementation is live at `mcp_server/lib/search/graph-calibration.ts:405-415`; tests cover the enabled path at `mcp_server/tests/graph-calibration.vitest.ts:516-529`.
+- **Impact:** this is a stale false positive in the re-audit trail and can misdirect remediation work.
+- **Fix recommendation:** downgrade/remove the 010/F15 mismatch unless it was scoped to an older commit.
+
+## Cross-references checked
+
+- `16--tooling-and-scripts/11-feature-catalog-code-references.md` ↔ `verify_alignment_drift.py`, `handlers/index.ts`, `shared/trigger-extractor.ts`, `scripts/utils/workspace-identity.ts`
+- `19--feature-flag-reference/02-2-session-and-cache.md` ↔ `lib/session/session-manager.ts`
+- Mutation history references ↔ `lib/storage/history.ts`
+- Session recovery / transaction-gap child docs ↔ `lib/session/session-manager.ts`
+- Graph calibration child doc ↔ `stage2-fusion.ts`, `graph-calibration.ts`, `search-flags.ts`, `graph-calibration.vitest.ts`
+
+## Dimension-specific notes
+
+- **Correctness:** the March 23 mismatch list is partly stale on current HEAD. Graph calibration is wired; assistive reconsolidation now explicitly documents “shadow-archive, not merge” in `13--memory-quality-and-indexing/21-assistive-reconsolidation.md:8,20-29`, matching `handlers/save/reconsolidation-bridge.ts:334-377`.
+- **Security:** no security-critical traceability break surfaced in this pass.
+- **Traceability:** the main problem is **catalog drift between top-level and child entries**, especially where broad claims are only backed by representative files.
+- **Maintainability:** representative source files are useful examples, but they are not sufficient proof for repo-wide percentage or “every file” claims.
+

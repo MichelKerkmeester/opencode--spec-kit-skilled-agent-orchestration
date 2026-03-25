@@ -408,7 +408,29 @@ export async function executeStage1(input: Stage1Input): Promise<Stage1Output> {
 
       if (isQueryDecompositionEnabled() && isMultiFacet(query)) {
         try {
-          const facets = decompose(query).slice(0, 3); // cap at 3
+          const normalizedQuery = normalizeFacetText(query);
+          let facets: string[] = [];
+
+          try {
+            facets = buildQueryDecompositionPool(query, mode)
+              .filter((facet) => facet !== normalizedQuery)
+              .map(normalizeFacetText)
+              .filter((facet) => facet.length > 0);
+          } catch (facetErr: unknown) {
+            const facetMsg = facetErr instanceof Error ? facetErr.message : String(facetErr);
+            console.warn(
+              `[stage1-candidate-gen] D2 faceted query decomposition failed, falling back to basic decomposition: ${facetMsg}`
+            );
+          }
+
+          if (facets.length === 0) {
+            facets = decompose(query)
+              .map(normalizeFacetText)
+              .filter((facet) => facet.length > 0 && facet !== normalizedQuery);
+          }
+
+          facets = [...new Set(facets)].slice(0, MAX_QUERY_DECOMPOSITION_FACETS);
+
           if (facets.length > 0) {
             // Run hybrid for the original query plus each facet, in parallel
             const allQueries = [query, ...facets];

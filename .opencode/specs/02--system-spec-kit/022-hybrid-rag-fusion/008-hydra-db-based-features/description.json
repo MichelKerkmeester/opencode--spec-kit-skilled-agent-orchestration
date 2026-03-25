@@ -1,5 +1,4 @@
 {
-  "status": "Complete",
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
   "description": "Feature Specification: 008-hydra-db-based-features",
   "keywords": [
@@ -7,7 +6,7 @@
     "specification",
     "008-hydra-db-based-features"
   ],
-  "lastUpdated": "2026-03-21T13:24:03.901Z",
+  "lastUpdated": "2026-03-25T06:40:39.345Z",
   "specId": "008",
   "folderSlug": "hydra-db-based-features",
   "parentChain": [

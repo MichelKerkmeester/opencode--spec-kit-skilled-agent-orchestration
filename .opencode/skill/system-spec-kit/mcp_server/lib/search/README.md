@@ -224,7 +224,7 @@ score(D, Q) = Sum IDF(qi) * (tf(qi,D) * (k1+1)) / (tf(qi,D) + k1 * (1-b + b*|D|/
 | -------------------- | -------------------------------------------------------------------------------------------- |
 | **TypeScript**       | `hybrid-search.ts`, `cross-encoder.ts`, `intent-classifier.ts`, `bm25-index.ts`             |
 | **TypeScript**       | `vector-index.ts` (typed facade) -> `vector-index-impl.ts` (full implementation)             |
-| **TypeScript**       | `reranker.ts`, `rsf-fusion.ts` (local fusion); `rrf-fusion.ts`, `adaptive-fusion.ts`, `mmr-reranker.ts` relocated to `shared/algorithms/` |
+| **TypeScript**       | `reranker.ts` (local reranking utility); `rrf-fusion.ts`, `adaptive-fusion.ts`, `mmr-reranker.ts` relocated to `shared/algorithms/` |
 | **TypeScript**       | `query-classifier.ts`, `query-router.ts`, `query-expander.ts` (query pipeline)               |
 | **TypeScript**       | `channel-representation.ts`, `channel-enforcement.ts`, `confidence-truncation.ts` (quality)   |
 | **TypeScript**       | `dynamic-token-budget.ts`, `folder-discovery.ts`, `folder-relevance.ts` (budget & discovery)  |
@@ -269,7 +269,6 @@ vector-index-impl.ts     (3333 LOC)
 | `intent-classifier.ts`     | ~500   | TypeScript | 7 intent types with keyword patterns                |
 | `bm25-index.ts`            | ~280   | TypeScript | Pure TypeScript BM25 (REQ-028, v1.2.0)              |
 | `reranker.ts`              | -      | TypeScript | Score-based reranking utility (sort + truncate)     |
-| `rsf-fusion.ts`            | -      | TypeScript | Relative Score Fusion used for evaluation and comparison runs |
 | `artifact-routing.ts`      | -      | TypeScript | 9 artifact classes with per-type retrieval strategy routing |
 | `causal-boost.ts`          | -      | TypeScript | Causal-neighbor score boosting for graph traversal  |
 | `session-boost.ts`         | -      | TypeScript | Session-attention score boosting                    |
@@ -324,7 +323,7 @@ vector-index-impl.ts     (3333 LOC)
 | `session-transition.ts`    | -      | TypeScript | Handles session-state transition rules during retrieval flows |
 | `surrogate-storage.ts`     | -      | TypeScript | Persists generated query surrogates and related metadata |
 
-**Total**: ~10,000+ LOC across 64 root files + 7 pipeline files (all TypeScript)
+**Total**: ~10,000+ LOC across 62 root files + 9 pipeline files (all TypeScript)
 
 **Relocated to `shared/algorithms/`**: `rrf-fusion.ts`, `adaptive-fusion.ts`, `mmr-reranker.ts` -- these are now imported from `@spec-kit/shared/algorithms/`.
 
@@ -927,9 +926,9 @@ Sprint 8 delivered a comprehensive remediation pass across the search subsystem:
 **Maintainer**: system-spec-kit MCP server
 
 **Migration Status**:
-- TypeScript migration is **complete**: all 47 root + 7 pipeline code files are TypeScript (0 `.js` source files)
+- TypeScript migration is **complete**: all 62 root + 9 pipeline code files are TypeScript (0 `.js` source files)
 - `vector-index.ts` is a typed facade. `vector-index-impl.ts` is the full implementation. 6 additional vector-index split modules handle types, schema, mutations, queries, aliases, and store
-- `rrf-fusion.ts`, `adaptive-fusion.ts`, and `mmr-reranker.ts` relocated to `shared/algorithms/`. `rsf-fusion.ts` remains local
+- `rrf-fusion.ts`, `adaptive-fusion.ts`, and `mmr-reranker.ts` relocated to `shared/algorithms/`
 - Query pipeline additions: query complexity routing, channel representation, confidence truncation, dynamic token budgets, folder discovery
 - Implemented: TF-IDF memory summaries (R8), cross-document entity linking (S5), graph signals (N2a/N2b/N2c), 4-stage pipeline (R6)
 - Sprint 8 remediation: 15 bug fixes, ~360 lines dead code removed, 13 performance improvements

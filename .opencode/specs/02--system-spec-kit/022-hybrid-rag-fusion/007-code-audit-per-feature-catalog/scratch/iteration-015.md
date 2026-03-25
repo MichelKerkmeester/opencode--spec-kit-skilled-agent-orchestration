@@ -540,4 +540,21 @@ This pass found several **audit inaccuracies and documentation drifts**, but no 
 
 - Evidence: `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:3746-3750`; `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md:17-18,27-33`; `.opencode/skill/system-spec-kit/mcp_server/lib/MODULE_MAP.md:21-24,179,337`; `.opencode/skill/system-spec-kit/mcp_server/lib/MODULE_MAP.md` has 28 top-level `### \`...\`` entries
 - Impact: The main catalog says `26` lib subdirectories, while the leaf page and the actual module map say `28` including `feedback/` and `spec/`. This is architecture-document drift and should have blocked a `MATCH`.
-- Fix recommendation: Update the monolithic catalog to
+- Fix recommendation: Update the monolithic catalog to `28` and re-check any audit notes that cite the older count.
+
+## Cross-references checked
+
+- `lib/eval/shadow-scoring.ts` vs `lib/feedback/shadow-scoring.ts` vs catalog entries for observer-effect and holdout evaluation
+- `lib/search/graph-calibration.ts` vs `lib/search/pipeline/stage2-fusion.ts` vs `search-flags.ts` vs `graph-calibration.vitest.ts`
+- `lib/cognitive/temporal-contiguity.ts` vs `lib/search/pipeline/stage1-candidate-gen.ts` vs `search-flags.ts` vs `temporal-contiguity.vitest.ts`
+- `handlers/save/reconsolidation-bridge.ts` vs `search-flags.ts` vs `assistive-reconsolidation.vitest.ts` vs monolithic/leaf catalog docs
+- `lib/MODULE_MAP.md` vs `ARCHITECTURE.md` vs feature-catalog leaf/main entries
+- `mcp_server/api/index.ts`, `tests/README.md`, `package.json`, and `tsconfig.json` for boundary/test/tooling compliance
+
+## Dimension-specific notes
+
+- Maintainability: TypeScript strict mode and package/module structure look aligned (`.opencode/skill/system-spec-kit/tsconfig.json:6`; `mcp_server/api/index.ts:4-6`). Sampled public APIs in reviewed files do have JSDoc; the dominant problem is **documentation drift**, not missing typing.
+- Traceability: This is the weakest area. The monolithic catalog, leaf feature pages, and child audit specs are no longer fully synchronized.
+- Correctness: The two biggest audit misses are pipeline wiring facts, not prose nuance: temporal contiguity and graph calibration are both live in the pipeline paths inspected.
+- Security: No security-specific defect surfaced in this maintainability slice. Test naming/documentation also align with repo standards (`mcp_server/tests/README.md:37-39`).
+

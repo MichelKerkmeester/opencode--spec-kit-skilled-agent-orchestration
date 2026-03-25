@@ -1,5 +1,7 @@
 # Agent: deep-review
 # Converted from: .opencode/agent/chatgpt/deep-review.md
+name = "deep-review"
+description = "LEAF review agent for sk-deep-research review mode. Performs single review iteration: reads state, reviews one dimension with P0/P1/P2 findings, updates strategy and JSONL."
 sandbox_mode = "workspace-write"
 model = "gpt-5.4"
 model_reasoning_effort = "high"

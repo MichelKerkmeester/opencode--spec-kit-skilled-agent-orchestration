@@ -34,6 +34,23 @@ export interface PeDecision {
   contradiction?: { detected: boolean; type: string | null; description: string | null; confidence: number } | null;
 }
 
+export type AssistiveClassification = 'supersede' | 'complement' | 'keep_separate';
+
+export interface AssistiveRecommendation {
+  action: 'review';
+  similarity: number;
+  candidateMemoryIds: number[];
+  description: string;
+  olderMemoryId: number;
+  newerMemoryId: number | null;
+  classification: AssistiveClassification;
+  recommendedAt: number;
+}
+
+export type ReconWarningList = string[] & {
+  assistiveRecommendation?: AssistiveRecommendation | null;
+};
+
 export interface IndexResult extends Record<string, unknown> {
   status: string;
   id: number;
@@ -63,6 +80,7 @@ export interface IndexResult extends Record<string, unknown> {
   rejectionReason?: string;
   rejectionCode?: string;
   sufficiency?: MemorySufficiencyResult;
+  assistiveRecommendation?: AssistiveRecommendation;
   qualityGate?: {
     pass: boolean;
     reasons: string[];

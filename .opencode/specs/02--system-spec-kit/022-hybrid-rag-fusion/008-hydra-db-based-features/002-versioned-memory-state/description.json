@@ -6,7 +6,7 @@
     "specification",
     "002-versioned-memory-state"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.329Z",
+  "lastUpdated": "2026-03-25T06:40:39.355Z",
   "specId": "002",
   "folderSlug": "versioned-memory-state",
   "parentChain": [
@@ -17,9 +17,5 @@
   "memorySequence": 1,
   "memoryNameHistory": [
     "13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-2.md"
-  ],
-  "title": "Feature Specification: 002-versioned-memory-state",
-  "status": "Complete",
-  "importance_tier": "critical",
-  "short_description": "Feature Specification: 002-versioned-memory-state"
+  ]
 }

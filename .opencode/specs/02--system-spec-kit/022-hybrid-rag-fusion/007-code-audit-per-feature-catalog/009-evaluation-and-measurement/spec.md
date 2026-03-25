@@ -172,32 +172,32 @@ Verify that all 14 live Evaluation and Measurement features are accurately docum
 ## 12. OPEN QUESTIONS
 
 - ~~Are there undocumented features in this category not yet in the catalog?~~ Resolved: no undocumented features found.
-- ~~Have any features been deprecated since the last catalog update?~~ Resolved: deprecated entries F04 and F11 are no longer part of the certified 14-feature live inventory.
+- ~~Have any features been deprecated since the last catalog update?~~ Resolved: deprecated entry F04 is no longer part of the certified 14-feature live inventory, and F11 is retired/migrated to `eval-channel-tracking.ts`.
 
 ---
 
 ## 13. AUDIT FINDINGS
 
 **Audit Date**: 2026-03-22
-**Result**: 11 MATCH, 3 PARTIAL — audit complete for the 14-feature live inventory
+**Result**: 12 MATCH, 2 PARTIAL — audit complete for the 14-feature live inventory
 
 ### PARTIAL Findings
 
 | ID | Feature | Issue |
 |----|---------|-------|
 | F01 | eval-db-schema | `eval-logger.ts` is absent from the catalog's source file list despite being a primary implementation file |
-| F02 | core-metrics | Catalog states 11 metrics; source code implements 12 — MAP (Mean Average Precision) is uncounted in the catalog |
 | F13 | eval-housekeeping | Source file list covers only 2 of 6 actual fix locations — 4 files with housekeeping changes are unlisted |
 
 ### MATCH Findings (summary)
 
 | ID | Feature | Notes |
 |----|---------|-------|
+| F02 | core-metrics | Deep Review Update (2026-03-25): 12 metrics are now documented correctly |
 | F03 | observer-effect | Full match |
 | F05 | quality-proxy | Formula weights confirmed in source |
 | F06 | ground-truth | 110 queries and diversity gates confirmed |
 | F07 | bm25-baseline | Contingency matrix confirmed |
-| F08 | agent-consumption | Hardcoded disabled, fail-safe behavior confirmed |
+| F08 | agent-consumption | ACTIVE. Consumption logger delegates to rollout policy; default-on behavior via rollout-policy.ts:53 |
 | F09 | scoring-observability | Sampling rate 0.05 confirmed |
 | F10 | reporting-ablation | Both MCP tools confirmed present |
 | F12 | test-quality | Full match |
@@ -208,9 +208,9 @@ Verify that all 14 live Evaluation and Measurement features are accurately docum
 ### Recommended Follow-up Actions
 
 - **F01**: Add `eval-logger.ts` to the `eval-db-schema` catalog source list
-- **F02**: Increment metric count to 12 and add MAP to the metric inventory in `core-metrics`
 - **F13**: Expand the `eval-housekeeping` source file list to cover all 6 fix locations
-- Deprecated entries F04 and F11 are now handled outside the certified live inventory and downstream removal tracking.
+- Deprecated entry F04 remains outside the certified live inventory.
+- Deep Review Update (2026-03-25): F11 is retired/migrated to `eval-channel-tracking.ts` and should remain tracked as migration history rather than as a live finding.
 
 ---
 

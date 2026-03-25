@@ -18,6 +18,7 @@
 //
 // Activation timestamp is persisted to SQLite config table so
 // The 14-day graduation countdown survives server restarts.
+import { isSaveQualityGateEnabled } from '../search/search-flags';
 import * as vectorIndex from '../search/vector-index';
 
 // ───────────────────────────────────────────────────────────────
@@ -226,7 +227,7 @@ let qualityGateActivatedAt: number | null = null;
  * @returns true if SPECKIT_SAVE_QUALITY_GATE is not explicitly disabled
  */
 export function isQualityGateEnabled(): boolean {
-  return process.env.SPECKIT_SAVE_QUALITY_GATE?.toLowerCase() !== 'false';
+  return isSaveQualityGateEnabled();
 }
 
 /**

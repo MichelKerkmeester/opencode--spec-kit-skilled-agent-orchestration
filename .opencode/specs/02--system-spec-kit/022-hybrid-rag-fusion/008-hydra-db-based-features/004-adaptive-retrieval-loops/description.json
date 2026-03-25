@@ -6,7 +6,7 @@
     "specification",
     "004-adaptive-retrieval-loops"
   ],
-  "lastUpdated": "2026-03-19T15:45:43.339Z",
+  "lastUpdated": "2026-03-25T06:40:39.365Z",
   "specId": "004",
   "folderSlug": "adaptive-retrieval-loops",
   "parentChain": [
@@ -17,9 +17,5 @@
   "memorySequence": 1,
   "memoryNameHistory": [
     "13-03-26_20-56__2026-03-13-verification-pass-confirmed-phase-4.md"
-  ],
-  "title": "Feature Specification: 004-adaptive-retrieval-loops",
-  "status": "Complete",
-  "importance_tier": "critical",
-  "short_description": "Feature Specification: 004-adaptive-retrieval-loops"
+  ]
 }

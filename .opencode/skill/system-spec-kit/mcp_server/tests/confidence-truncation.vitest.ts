@@ -80,17 +80,22 @@ describe('T029-01: Feature Flag (SPECKIT_CONFIDENCE_TRUNCATION)', () => {
     expect(isConfidenceTruncationEnabled()).toBe(false);
   });
 
-  it('T3: enabled when env var is empty string (graduated flag)', () => {
+  it('T3: disabled when env var is "0"', () => {
+    process.env[FLAG] = '0';
+    expect(isConfidenceTruncationEnabled()).toBe(false);
+  });
+
+  it('T4: enabled when env var is empty string (graduated flag)', () => {
     process.env[FLAG] = '';
     expect(isConfidenceTruncationEnabled()).toBe(true);
   });
 
-  it('T4: enabled when env var is "true"', () => {
+  it('T5: enabled when env var is "true"', () => {
     process.env[FLAG] = 'true';
     expect(isConfidenceTruncationEnabled()).toBe(true);
   });
 
-  it('T5: enabled when env var is "TRUE" (case-insensitive)', () => {
+  it('T6: enabled when env var is "TRUE" (case-insensitive)', () => {
     process.env[FLAG] = 'TRUE';
     expect(isConfidenceTruncationEnabled()).toBe(true);
   });

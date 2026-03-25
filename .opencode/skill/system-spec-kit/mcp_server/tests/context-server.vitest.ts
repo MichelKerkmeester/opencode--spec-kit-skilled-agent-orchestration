@@ -537,10 +537,15 @@ describe('Context Server', () => {
       vi.doMock('../lib/search/graph-search-fn', () => ({
         createUnifiedGraphSearchFn: vi.fn(() => null),
       }))
-      vi.doMock('../lib/search/search-flags', () => ({
-        isDegreeBoostEnabled: vi.fn(() => options?.degreeBoostEnabled ?? false),
-        isFileWatcherEnabled: vi.fn(() => false),
-      }))
+      vi.doMock('../lib/search/search-flags', async () => {
+        const actual = await vi.importActual('../lib/search/search-flags') as Record<string, unknown>;
+        return {
+          ...actual,
+          isDegreeBoostEnabled: vi.fn(() => options?.degreeBoostEnabled ?? false),
+          isDynamicInitEnabled: vi.fn(() => process.env.SPECKIT_DYNAMIC_INIT !== 'false'),
+          isFileWatcherEnabled: vi.fn(() => false),
+        };
+      })
 
       vi.doMock('../lib/search/vector-index', () => ({
         initializeDb: vi.fn(),
@@ -2020,9 +2025,9 @@ describe('Context Server', () => {
       const result = buildServerInstructionsReplica(stats, { dynamicInitDisabled: true })
       expect(result).toBe('')
 
-      // Verify the source code checks SPECKIT_DYNAMIC_INIT env var
-      expect(sourceCode).toMatch(/process\.env\.SPECKIT_DYNAMIC_INIT\s*===\s*['"]false['"]/)
-      expect(sourceCode).toMatch(/if\s*\(\s*process\.env\.SPECKIT_DYNAMIC_INIT\s*===\s*['"]false['"]\s*\)\s*\{[\s\S]*?return\s+['"]["'];/)
+      // Verify the source code routes through the canonical helper
+      expect(sourceCode).toMatch(/isDynamicInitEnabled/)
+      expect(sourceCode).toMatch(/if\s*\(\s*!isDynamicInitEnabled\(\)\s*\)\s*\{[\s\S]*?return\s+['"]["'];/)
     })
 
     // Structural verification: buildServerInstructions exists in source
@@ -2082,7 +2087,7 @@ describe('Context Server', () => {
       const fnBody = fnMatch![1]
 
       // The env var check must be the FIRST conditional (before any stats call)
-      const dynamicInitCheck = fnBody.indexOf("SPECKIT_DYNAMIC_INIT")
+      const dynamicInitCheck = fnBody.indexOf("isDynamicInitEnabled")
       const statsCall = fnBody.indexOf("getMemoryStats")
       expect(dynamicInitCheck).toBeGreaterThan(-1)
       expect(statsCall).toBeGreaterThan(-1)
@@ -2090,7 +2095,7 @@ describe('Context Server', () => {
       expect(dynamicInitCheck).toBeLessThan(statsCall)
 
       // Must return empty string when disabled
-      expect(fnBody).toMatch(/SPECKIT_DYNAMIC_INIT.*===.*'false'[\s\S]*?return\s*''/)
+      expect(fnBody).toMatch(/isDynamicInitEnabled\(\)[\s\S]*?return\s*''/)
     })
   })
 })

@@ -30,6 +30,7 @@ Key constants: `DEFAULT_LOCAL_RECOMPUTE_THRESHOLD = 50`, `LOCAL_RECOMPUTE_EDGE_L
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/lib/search/graph-lifecycle.ts` | Lib | Dirty-node tracking, component estimation, onWrite orchestration |
+| `mcp_server/lib/search/deterministic-extractor.ts` | Lib | Deterministic save-time extraction and typed-edge creation reused by graph lifecycle orchestration |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `getGraphRefreshMode()` and `isLlmGraphBackfillEnabled()` flag accessors |
 | `mcp_server/handlers/save/post-insert.ts` | Handler | Post-insert wiring that invokes graph refresh |
 
@@ -46,3 +47,4 @@ Key constants: `DEFAULT_LOCAL_RECOMPUTE_THRESHOLD = 50`, `LOCAL_RECOMPUTE_EDGE_L
 - Group: Graph signal activation
 - Source feature title: Graph lifecycle refresh
 - Current reality source: graph-lifecycle.ts module header and implementation
+- Source list updated 2026-03-25 per deep review

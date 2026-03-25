@@ -1367,6 +1367,15 @@ async function hybridSearchEnhanced(
   return hybridSearch(query, embedding, options);
 }
 
+/**
+ * Collect raw candidates prior to fusion, using the adaptive fallback chain
+ * and lexical fallbacks when needed.
+ *
+ * @param query - The search query string.
+ * @param embedding - Optional embedding vector for semantic search.
+ * @param options - Hybrid search configuration options.
+ * @returns Unfused candidate results from the first non-empty collection stage.
+ */
 async function collectRawCandidates(
   query: string,
   embedding: Float32Array | number[] | null,

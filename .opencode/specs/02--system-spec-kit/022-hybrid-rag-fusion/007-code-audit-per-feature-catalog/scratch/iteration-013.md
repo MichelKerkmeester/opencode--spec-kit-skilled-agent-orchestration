@@ -475,3 +475,96 @@ I’ve got enough structure to start validating the claimed mismatches directly.
   │ (.opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts)
   └ 3 lines found
 
+✗ Memory stored validation pipeline
+  └ MCP runtime validation happens in schemas/tool-input-schemas.ts via validateTool…
+
+## 1. Summary
+
+`P0: 0`, `P1: 1`, `P2: 2`.
+
+Reviewed `27` files across spec/audit docs, MCP dispatch, handler validation, governance filtering, shared-memory auth paths, file-path security, and representative tests.
+
+Dimension coverage: `correctness`, `security`, `traceability`, `maintainability`.
+
+## 2. Findings
+
+### AG3-F01 — P1 — Shared-memory admin/status flows are not bound to an authenticated caller
+
+**Evidence**
+
+- `mcp_server/context-server.ts:278-281` reads tool args from the request and ignores `_extra`.
+- `mcp_server/handlers/shared-memory.ts:35-39` explicitly says transport auth **must** verify the claimed actor before the handler.
+- `mcp_server/handlers/shared-memory.ts:222-226` and `382-386` derive admin identity solely from `args.actorUserId` / `args.actorAgentId`.
+- `mcp_server/handlers/shared-memory.ts:475-490` returns `allowedSharedSpaceIds` for whatever `tenantId/userId/agentId` the caller supplies.
+- `mcp_server/handlers/shared-memory.ts:510-539` enables shared memory with no caller identity check at all.
+
+**Impact**
+
+Any client that can call the MCP server can spoof `actorUserId`/`actorAgentId` for `shared_space_upsert` and `shared_space_membership_set`, query another principal’s shared-space visibility via `shared_memory_status`, or globally enable shared memory. The deny-by-default membership logic is present, but the caller identity boundary is not enforced in-process.
+
+**Fix recommendation**
+
+Bind requests to a transport-authenticated subject in `context-server.ts`, pass that trusted identity into handlers, and reject caller-supplied admin/status identities except as optional assertions that must match the authenticated subject. Gate `shared_memory_enable` behind the same trusted admin identity.
+
+---
+
+### AG3-F02 — P2 — Published tool schema is weaker than runtime validation for shared-space admin tools
+
+**Evidence**
+
+- `mcp_server/tool-schemas.ts:356-370` and `377-390` publish `x-requiredAnyOf: [['actorUserId'], ['actorAgentId']]`, which permits both fields to be present.
+- `mcp_server/schemas/tool-input-schemas.ts:428-445` and `455-472` runtime-validate the same tools with Zod and reject the “both present” case.
+- `mcp_server/tools/lifecycle-tools.ts:60-62` shows runtime dispatch uses `validateToolArgs(...)`, not the JSON schema helper.
+
+**Impact**
+
+Generated clients and audit tooling that trust the published schema can accept payloads that the server later rejects. That is a traceability/pipeline-contract drift issue and makes input-sanitization reviews look better at the schema layer than they are in the real runtime path.
+
+**Fix recommendation**
+
+Make `tool-schemas.ts` express true one-of semantics, or derive the published JSON schema directly from the Zod schemas so the contract is single-sourced.
+
+---
+
+### AG3-F03 — P2 — Phase 022 catalog coverage is internally inconsistent and links to a missing audit target
+
+**Evidence**
+
+- `015-manual-testing-per-playbook/022-implement-and-remove-deprecated-features/spec.md:30-31` points its “Catalog Phase” link at `../../007-code-audit-per-feature-catalog/022-implement-and-remove-deprecated-features/spec.md`.
+- `feature_catalog/feature_catalog.md:42-48` claims audit phase `022-implement-and-remove-deprecated-features` is already covered by `16--tooling-and-scripts/04` and `17--governance/02`.
+- `feature_catalog/21--implement-and-remove-deprecated-features/01-category-stub.md:8-10` says the category is still a “documentation stub only” with no standalone entries.
+
+**Impact**
+
+The 022 review trail is not navigable from the phase spec, and the catalog’s top-level coverage note overstates completion. That makes the re-audit mismatch on 022/016 traceability credible: reviewers are being pointed at mutually inconsistent sources of truth.
+
+**Fix recommendation**
+
+Pick one canonical 022 source of truth. Either create the missing audit/spec target and real catalog entries, or change the phase spec and top-level catalog note to point only at the closure records/stub that actually exist.
+
+## 3. Cross-references checked
+
+- `tool-schemas.ts` ↔ `schemas/tool-input-schemas.ts` ↔ `tools/lifecycle-tools.ts`
+- `context-server.ts` ↔ `handlers/shared-memory.ts`
+- `scope-governance.ts` ↔ `lib/search/pipeline/stage1-candidate-gen.ts`
+- `shared/utils/path-security.ts` ↔ `handlers/memory-save.ts` ↔ `handlers/memory-ingest.ts`
+- `feature_catalog/feature_catalog.md` ↔ `feature_catalog/21--implement-and-remove-deprecated-features/01-category-stub.md` ↔ `015-manual-testing-per-playbook/022-implement-and-remove-deprecated-features/spec.md`
+
+## 4. Dimension-specific notes
+
+**Security**
+
+I did **not** find a runtime SQL-injection issue in the reviewed server code. `scope-governance.ts:540-601` uses bound parameters, and `stage1-candidate-gen.ts:976-979` builds placeholder count dynamically but still binds values with `.all(...newSummaryIds)`. I also did **not** find a path-traversal bug in reviewed file operations: `shared/utils/path-security.ts:17-92`, `handlers/memory-ingest.ts:159-203`, and `handlers/memory-save.ts:593-655` all use canonical containment checks.
+
+**Correctness**
+
+Scope filtering itself looks sound in the reviewed path: `scope-governance.ts:468-505` and `stage1-candidate-gen.ts:730-805` do apply governed shared-space filtering consistently once a scope is supplied.
+
+**Traceability**
+
+`utils/tool-input-schema.ts` appears to be test/support code; runtime validation is the Zod path. That split is the main reason schema drift is easy to introduce here.
+
+**Maintainability**
+
+The dual contract surface (`tool-schemas.ts` for publication, Zod for runtime) is the main maintainability risk I saw in the MCP input-validation pipeline.
+

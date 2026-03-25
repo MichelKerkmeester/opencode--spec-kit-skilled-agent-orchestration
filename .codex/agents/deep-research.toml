@@ -1,5 +1,6 @@
 # Agent: deep-research
 # Converted from: .opencode/agent/chatgpt/deep-research.md
+name = "deep-research"
 sandbox_mode = "workspace-write"
 model = "gpt-5.4"
 model_reasoning_effort = "high"

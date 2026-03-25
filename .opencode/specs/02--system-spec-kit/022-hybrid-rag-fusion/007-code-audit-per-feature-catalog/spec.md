@@ -295,18 +295,30 @@ Completed second-half phases 012-022 remain owned by this umbrella packet. Each 
 
 | Metric | Value |
 |--------|-------|
-| Live features inventoried | 218 |
-| Features with explicit findings | 217 |
-| MATCH (exact accuracy) | 178 |
-| PARTIAL (minor issues) | 39 |
-| Pending coverage sync | 1 |
-| MISMATCH (wrong) | 0 (0%) |
+| Live features inventoried | 222 |
+| Features with explicit findings | 222 |
+| MATCH (exact accuracy) | 133 |
+| PARTIAL (minor issues) | 84 |
+| Pending coverage sync | 0 |
+| MISMATCH (wrong) | 5 (2%) |
 
 **Top remediation priorities:**
-1. Trim bloated source file lists across 12+ phases
-2. Mark deprecated modules (temporal-contiguity, graph-calibration) in catalog
-3. Fix flag default contradictions (header vs runtime)
-4. Add missing source files (history.ts, graph-signals.ts) to catalog entries
+1. Governance bypass fixes
+2. Stale audit verdict refresh
+3. Pipeline wiring completion
+4. Traceability reconciliation
+
+### Deep Review (2026-03-25)
+
+**Deep Review Update (2026-03-25)**: The parent audit packet is now tracked against the 2026-03-25 deep review rather than the original zero-MISMATCH baseline.
+
+| Metric | Value |
+|--------|-------|
+| Verdict | CONDITIONAL |
+| P0 (Blockers) | 0 |
+| P1 (Required) | 22 |
+| P2 (Suggestions) | 35 |
+| Tests Executed | 3,144+ passing |
 
 ### Deep Research Gap Analysis
 

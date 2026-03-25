@@ -76,7 +76,11 @@ import * as causalBoost from './lib/search/causal-boost';
 import * as bm25Index from './lib/search/bm25-index';
 import * as memoryParser from './lib/parsing/memory-parser';
 import { getSpecsBasePaths } from './lib/search/folder-discovery';
-import { isDegreeBoostEnabled, isFileWatcherEnabled } from './lib/search/search-flags';
+import {
+  isDegreeBoostEnabled,
+  isDynamicInitEnabled,
+  isFileWatcherEnabled,
+} from './lib/search/search-flags';
 import { disposeLocalReranker } from './lib/search/local-reranker';
 import * as workingMemory from './lib/cognitive/working-memory';
 import * as attentionDecay from './lib/cognitive/attention-decay';
@@ -89,6 +93,7 @@ import * as retryManager from './lib/providers/retry-manager';
 import { buildErrorResponse } from './lib/errors';
 // T001-T004: Session deduplication
 import * as sessionManager from './lib/session/session-manager';
+import * as shadowEvaluationRuntime from './lib/feedback/shadow-evaluation-runtime';
 
 // P4-12/P4-19: Incremental index (passed to db-state for stale handle refresh)
 import * as incrementalIndex from './lib/storage/incremental-index';
@@ -226,7 +231,7 @@ async function getMemoryStats(): Promise<DynamicMemoryStats> {
 // This is by design — instruction updates require MCP protocol re-negotiation which most clients
 // Don't support. If index changes significantly, restart the server to refresh instructions.
 async function buildServerInstructions(): Promise<string> {
-  if (process.env.SPECKIT_DYNAMIC_INIT === 'false') {
+  if (!isDynamicInitEnabled()) {
     return '';
   }
 
@@ -626,6 +631,7 @@ async function fatalShutdown(reason: string, exitCode: number): Promise<void> {
   runCleanupStep('sessionManager', () => sessionManager.shutdown());
   runCleanupStep('archivalManager', () => archivalManager.cleanup());
   runCleanupStep('retryManager', () => retryManager.stopBackgroundJob());
+  runCleanupStep('shadowEvaluationRuntime', () => shadowEvaluationRuntime.stopShadowEvaluationScheduler());
   runCleanupStep('accessTracker', () => accessTracker.reset());
   runCleanupStep('toolCache', () => toolCache.shutdown());
 
@@ -993,6 +999,21 @@ async function main(): Promise<void> {
       console.warn('[context-server] Background retry job failed to start:', message);
     }
 
+    // REQ-D4-006: Shadow feedback holdout evaluation background scheduler.
+    // Replays recent production queries through a shadow-only path once the
+    // weekly holdout cycle is due. Fail-safe and gated by SPECKIT_SHADOW_FEEDBACK.
+    try {
+      const shadowSchedulerStarted = shadowEvaluationRuntime.startShadowEvaluationScheduler(database);
+      if (shadowSchedulerStarted) {
+        console.error('[context-server] Shadow feedback evaluation scheduler started');
+      } else {
+        console.error('[context-server] Shadow feedback evaluation scheduler not started (already running or disabled)');
+      }
+    } catch (shadowEvalErr: unknown) {
+      const message = shadowEvalErr instanceof Error ? shadowEvalErr.message : String(shadowEvalErr);
+      console.warn('[context-server] Shadow feedback evaluation scheduler failed to start:', message);
+    }
+
     // REQ-D4-004: Batch feedback learning — runs one cycle at startup (shadow-only, no live ranking mutations).
     // Feature-flag gated by SPECKIT_BATCH_LEARNED_FEEDBACK (default ON, graduated).
     try {
@@ -1092,7 +1113,7 @@ async function main(): Promise<void> {
   }
 
   // P1-09: Assign to module-level transport (not const) so shutdown handlers can close it
-  if (process.env.SPECKIT_DYNAMIC_INIT !== 'false') {
+  if (isDynamicInitEnabled()) {
     try {
       const dynamicInstructions = await buildServerInstructions();
       if (dynamicInstructions.length > 0) {

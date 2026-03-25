@@ -1,6 +1,6 @@
 {
   "specFolder": "02--system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features",
-  "description": "Sprint 9 completes Memory MCP productization: Zod schema validation, provenance-rich response envelopes, async ingestion job lifecycle, contextual tree headers, local GGUF reranker, dynamic server instructions, and filesystem watching.",
+  "description": "Feature Specification: Sprint 9 — Extra Features (Productization & Operational Tooling)",
   "keywords": [
     "feature",
     "specification",
@@ -9,14 +9,9 @@
     "features",
     "productization",
     "operational",
-    "tooling",
-    "Zod",
-    "async ingestion",
-    "GGUF reranker"
+    "tooling"
   ],
-  "status": "Complete",
-  "importance_tier": "normal",
-  "lastUpdated": "2026-03-23T00:00:00.000Z",
+  "lastUpdated": "2026-03-25T06:40:39.248Z",
   "specId": "010",
   "folderSlug": "sprint-9-extra-features",
   "parentChain": [

@@ -44,6 +44,7 @@ The `CHARS_PER_TOKEN` ratio defaults to `4` and is shared with `preflight.ts` th
 |------|-------|------|
 | `mcp_server/handlers/quality-loop.ts` | Handler | Quality scoring, retry loop, auto-fix logic, and actual-attempt reporting |
 | `mcp_server/handlers/memory-save.ts` | Handler | Save-path integration, rejected status handling, fixed-content persistence, sufficiency handoff, and template-contract enforcement |
+| `mcp_server/handlers/v-rule-bridge.ts` | Handler | Loads compiled V-rule validation and disposition logic consumed by save-time quality enforcement |
 | `shared/parsing/memory-sufficiency.ts` | Shared | Shared semantic sufficiency evaluation that runs after quality-loop fixes |
 | `shared/parsing/memory-template-contract.ts` | Shared | Rendered-memory structural contract that runs after quality-loop fixes |
 
@@ -61,3 +62,4 @@ The `CHARS_PER_TOKEN` ratio defaults to `4` and is shared with `preflight.ts` th
 - Group: Memory quality and indexing
 - Source feature title: Verify-fix-verify memory quality loop
 - Current reality source: feature_catalog.md
+- Source list updated 2026-03-25 per deep review

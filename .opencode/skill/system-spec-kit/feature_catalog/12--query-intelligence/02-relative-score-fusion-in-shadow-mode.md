@@ -7,7 +7,7 @@ description: "Relative score fusion (RSF) was fully removed — module, tests, a
 
 ## 1. OVERVIEW
 
-Removed from live ranking in Sprint 8. The RSF module, its dedicated test files, and the `rsfShadow` metadata field were fully deleted during the v3 remediation sweep.
+Removed from live ranking in Sprint 8. RSF implementation code, dedicated test files, and the `rsfShadow` metadata field were fully deleted during the v3 remediation sweep (updated 2026-03-25 per deep review).
 
 When multiple search methods return ranked lists, RSF was one alternative way to merge them. RRF won the evaluation and RSF was deprecated. The module was retained temporarily for offline comparison but was never reactivated — it was removed as dead code.
 
@@ -17,7 +17,7 @@ When multiple search methods return ranked lists, RSF was one alternative way to
 
 RRF remains the sole live fusion method. RSF has been fully removed from the codebase.
 
-The standalone RSF fusion module (`rsf-fusion.ts`) and its dedicated test files (`rsf-fusion.vitest.ts`, `rsf-fusion-edge-cases.vitest.ts`, `rsf-vs-rrf-kendall.vitest.ts`, `rsf-multi.vitest.ts`) have been deleted. RSF references in mixed test files (`cross-feature-integration-eval`, `feature-eval-query-intelligence`, `dead-code-regression`) have been surgically removed. The `rsfShadow` metadata field in `Sprint3PipelineMeta` has been removed from `hybrid-search.ts`.
+The standalone RSF implementation and dedicated RSF test files have been deleted. RSF references in mixed test files (`cross-feature-integration-eval`, `feature-eval-query-intelligence`, `dead-code-regression`) have been surgically removed. The `rsfShadow` metadata field in `Sprint3PipelineMeta` has been removed from `hybrid-search.ts`.
 
 `SPECKIT_RSF_FUSION` may still appear as an inert config surface in documentation but has no runtime effect.
 
@@ -29,7 +29,6 @@ The standalone RSF fusion module (`rsf-fusion.ts`) and its dedicated test files 
 
 | File | Layer | Role |
 |------|-------|------|
-| ~~`mcp_server/lib/search/rsf-fusion.ts`~~ | ~~Lib~~ | Deleted — RSF fusion removed as dead code |
 | `shared/algorithms/rrf-fusion.ts` | Shared | RRF fusion algorithm (sole live method) |
 
 ### Tests
@@ -38,7 +37,6 @@ The standalone RSF fusion module (`rsf-fusion.ts`) and its dedicated test files 
 |------|-------|
 | `mcp_server/tests/rrf-fusion.vitest.ts` | RRF fusion validation |
 | `mcp_server/tests/unit-rrf-fusion.vitest.ts` | RRF unit tests |
-| ~~`mcp_server/tests/rsf-fusion*.vitest.ts`~~ | Deleted — RSF test files removed |
 
 ---
 
@@ -47,3 +45,4 @@ The standalone RSF fusion module (`rsf-fusion.ts`) and its dedicated test files 
 - Group: Query intelligence
 - Source feature title: Relative score fusion in shadow mode
 - Current reality source: feature_catalog.md
+- Retirement note updated 2026-03-25 per deep review

@@ -8,6 +8,7 @@
 // Are solely responsible for respecting it (e.g. by trimming
 // Result sets or truncating content before sending to the LLM).
 import { type QueryComplexityTier } from './query-classifier';
+import { isDynamicTokenBudgetEnabled } from './search-flags';
 
 // Feature catalog: Dynamic token budget allocation
 
@@ -47,17 +48,6 @@ const DEFAULT_TOKEN_BUDGET_CONFIG: TokenBudgetConfig = {
 };
 
 /* --- 2. FEATURE FLAG --- */
-
-/**
- * Check whether dynamic token budget allocation is enabled.
- * Default: TRUE (graduated). Set SPECKIT_DYNAMIC_TOKEN_BUDGET=false to disable.
- *
- * @returns True when SPECKIT_DYNAMIC_TOKEN_BUDGET is not explicitly disabled.
- */
-function isDynamicTokenBudgetEnabled(): boolean {
-  const raw = process.env.SPECKIT_DYNAMIC_TOKEN_BUDGET?.toLowerCase()?.trim();
-  return raw !== 'false';
-}
 
 /* --- 3. BUDGET RESOLUTION --- */
 

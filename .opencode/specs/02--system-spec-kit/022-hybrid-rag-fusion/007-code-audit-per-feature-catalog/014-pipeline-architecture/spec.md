@@ -182,9 +182,13 @@ Verify that all 22 Pipeline Architecture features are accurately documented in t
 ## 11b. AUDIT FINDINGS
 
 **Audit Date**: 2026-03-22
-**Overall Result**: 19 MATCH, 3 PARTIAL (out of 22 features)
+**Overall Result**: 15 MATCH, 7 PARTIAL (out of 22 features)
 
-### MATCH (19 features)
+### Deep Review Update (2026-03-25)
+
+Phase 014 was revalidated against the 2026-03-25 deep review findings. Five verdicts were updated: F10, F11, F18, and F21 are downgraded to PARTIAL; F12 is upgraded to MATCH.
+
+### MATCH (15 features)
 
 | ID | Feature | Result |
 |----|---------|--------|
@@ -196,30 +200,30 @@ Verify that all 22 Pipeline Architecture features are accurately documented in t
 | F06 | Learned relevance feedback | MATCH — feedback loop and weight update confirmed |
 | F08 | Performance improvements | MATCH — batch processing and caching paths verified |
 | F09 | Activation window persistence | MATCH — window state stored and resumed correctly |
-| F10 | Legacy V1 pipeline removal | MATCH — V1 code paths absent from codebase |
-| F11 | Pipeline and mutation hardening | MATCH — guard clauses and rollback paths present |
+| F12 | DB_PATH extraction and import standardization | MATCH — `.ts` vs `.js` source-path discrepancy is resolved |
 | F13 | Strict Zod schema validation | MATCH — Zod schemas applied at all input boundaries |
 | F15 | Warm server daemon mode | MATCH — daemon lifecycle and keep-alive logic verified |
 | F16 | Backend storage adapter abstraction | MATCH — adapter interface and SQLite implementation confirmed |
 | F17 | Cross-process DB hot rebinding | MATCH — rebind trigger and reconnection logic verified |
-| F18 | Atomic write-then-index API | MATCH — write + index atomicity enforced |
 | F19 | Embedding retry orchestrator | MATCH — retry loop, backoff, and failure handling confirmed |
 | F20 | 7-layer tool architecture metadata | MATCH — all 7 metadata layers present in tool definitions |
-| F21 | Atomic pending-file recovery | MATCH — recovery scan and commit logic verified |
 | F22 | Lineage state active projection and asOf resolution | MATCH — projection queries and asOf logic confirmed |
 
-### PARTIAL (3 features)
+### PARTIAL (7 features)
 
 | ID | Feature | Result | Issue |
 |----|---------|--------|-------|
 | F07 | Search pipeline safety | PARTIAL | Source list bloated: catalog lists broad file set for what is a 3-bug fix; behavioral description is accurate |
-| F12 | DB_PATH extraction and import standardization | PARTIAL | Source list references `.ts` files that only exist as compiled `.js`; runtime behavior is correct |
+| F10 | Legacy V1 pipeline removal | PARTIAL | Eval retrieval still bypasses the 4-stage orchestrator |
+| F11 | Pipeline and mutation hardening | PARTIAL | File-write-before-commit ordering issue remains in the mutation path |
 | F14 | Dynamic server instructions at MCP initialization | PARTIAL | Source list contains ~200 files; the actual initialization hook is narrow; behavioral description is accurate |
+| F18 | Atomic write-then-index API | PARTIAL | Atomic helper is not on the runtime tool path |
+| F21 | Atomic pending-file recovery | PARTIAL | Pending-file recovery cannot find UUID-suffixed files created by the save path |
 
 ### Summary
 
-- All behavioral descriptions are accurate across all 22 features
-- Issues are limited to source list hygiene (F07 bloat, F14 bloat) and TypeScript/JavaScript path discrepancy (F12)
+- Most behavioral descriptions remain accurate, but deep review identified four runtime-path gaps that require PARTIAL verdicts
+- Remaining issues are a mix of source list hygiene (F07, F14) and pipeline/mutation traceability gaps (F10, F11, F18, F21)
 - No catalog gaps or missing features detected
 - No deprecated features found
 
@@ -229,7 +233,7 @@ Verify that all 22 Pipeline Architecture features are accurately documented in t
 
 - ~~Are there undocumented features in this category not yet in the catalog?~~ **Resolved**: No gaps found.
 - ~~Have any features been deprecated since the last catalog update?~~ **Resolved**: No deprecations found.
-- F12: Catalog source lists should reference compiled `.js` paths or note that `.ts` sources are the canonical reference — low-priority catalog hygiene item.
+- **[Deep Review Update (2026-03-25)]** F10, F11, F18, and F21 now require remediation follow-up before this phase can return to an all-MATCH baseline.
 
 ---
 

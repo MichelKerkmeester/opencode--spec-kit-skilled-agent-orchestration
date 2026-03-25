@@ -1126,20 +1126,19 @@ See [`08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md`](08--
 
 #### Description
 
-A common way of finding the largest or smallest number in a list was crashing the system when the list got too big. Seven places in the code used this risky approach. All were replaced with a safer method that works no matter how large the list grows, preventing crashes on big knowledge bases.
+A common way of finding the largest or smallest number in a list was crashing the system when the list got too big. Several places in the code used this risky approach. All were replaced with a safer method that works no matter how large the list grows, preventing crashes on big knowledge bases.
 
 #### Current Reality
 
-`Math.max(...array)` and `Math.min(...array)` push all elements onto the call stack, causing `RangeError` on arrays exceeding ~100K elements. Seven production files were converted from spread patterns to `reduce()`:
+`Math.max(...array)` and `Math.min(...array)` push all elements onto the call stack, causing `RangeError` on arrays exceeding ~100K elements. The remaining live production files converted from spread patterns to `reduce()` are:
 
-- `rsf-fusion.ts`: 6 instances (4 + 2)
 - `causal-boost.ts`: 1 instance
 - `evidence-gap-detector.ts`: 1 instance
 - `prediction-error-gate.ts`: 2 instances
 - `retrieval-telemetry.ts`: 1 instance
 - `reporting-dashboard.ts`: 2 instances
 
-Each replacement uses `scores.reduce((a, b) => Math.max(a, b), -Infinity)` with an `AI-WHY` comment explaining the safety rationale.
+Each replacement uses `scores.reduce((a, b) => Math.max(a, b), -Infinity)` with an `AI-WHY` comment explaining the safety rationale. Historical RSF-path conversions are no longer listed because the RSF implementation was removed (updated 2026-03-25 per deep review).
 
 #### Source Files
 
@@ -1317,13 +1316,13 @@ See [`09--evaluation-and-measurement/07-bm25-only-baseline.md`](09--evaluation-a
 
 #### Description
 
-This is the wiring that lets the system record how AI agents actually use search results in practice. It is currently turned off but kept in place so it can be switched back on later. The earlier data it collected helped shape better test questions by showing real usage patterns instead of guessed ones.
+This is the wiring that lets the system record how AI agents actually use search results in practice. It now delegates to the graduated rollout policy for `SPECKIT_CONSUMPTION_LOG`, so the default behavior is ON unless rollout or environment settings disable it. The earlier data it collected helped shape better test questions by showing real usage patterns instead of guessed ones (updated 2026-03-25 per deep review).
 
 #### Current Reality
 
-Instrumentation wiring remains present in retrieval handlers (`memory_search`, `memory_context`, `memory_match_triggers`), but the runtime logger is currently inert/deprecated (`isConsumptionLogEnabled()` hardcoded `false`). Calls remain fail-safe no-ops for compatibility while telemetry paths stay structurally available.
+Instrumentation wiring remains present in retrieval handlers (`memory_search`, `memory_context`, `memory_match_triggers`), and the runtime logger is active through `isConsumptionLogEnabled()`, which delegates to rollout policy via `isFeatureEnabled('SPECKIT_CONSUMPTION_LOG')`.
 
-The earlier pattern-analysis outcome from this workstream still informed ground-truth design, but current production runtime does not actively write new consumption-log rows unless instrumentation is reactivated.
+Calls remain fail-safe so instrumentation errors never break the handlers, while production runtime can actively write new `consumption_log` rows whenever rollout policy leaves the flag enabled (default ON; updated 2026-03-25 per deep review).
 
 #### Source Files
 
@@ -2253,15 +2252,13 @@ See [`12--query-intelligence/01-query-complexity-router.md`](12--query-intellige
 
 #### Description
 
-When you search for something, multiple search methods each return their own ranked lists of results. This used to be an alternative way to merge those lists into one final ranking. Today it is retired runtime code kept only as a shadow/test artifact for compatibility and evaluation references.
+When you search for something, multiple search methods each return their own ranked lists of results. This used to be an alternative way to merge those lists into one final ranking. Today RSF is removed from the shipped codebase; only retirement notes and inert documentation/config references remain (updated 2026-03-25 per deep review).
 
 #### Current Reality
 
-RRF remains the live fusion method. RSF no longer runs in the shipped hybrid-search ranking path.
+RRF remains the sole live fusion method. RSF has been removed from the codebase and no shipped ranking path or live feature-flag branch calls it.
 
-The repository still contains the standalone RSF fusion module and tests for three variants: single-pair (fusing two ranked lists), multi-list (fusing N lists with proportional penalties for missing sources) and cross-variant (fusing results across query expansions with a +0.10 convergence bonus). Those artifacts can still be exercised in isolation, but no shipped ranking path or live feature-flag branch calls them.
-
-Sprint 8 removed the dead `isRsfEnabled()` helper and the dead hybrid-search branch that had been guarded behind it. A typed `rsfShadow` metadata slot still exists for compatibility in pipeline types, and `SPECKIT_RSF_FUSION` remains as an inert config/documentation surface, but production ranking behavior stays on RRF unless a future implementation reintroduces a real runtime path.
+Sprint 8 removed the dead `isRsfEnabled()` helper, the dead hybrid-search branch guarded behind it, the RSF implementation/tests, and the old `rsfShadow` metadata slot. `SPECKIT_RSF_FUSION` may still appear as an inert config/documentation surface, but production ranking behavior stays on RRF (updated 2026-03-25 per deep review).
 
 #### Source Files
 
@@ -2927,11 +2924,11 @@ See [`13--memory-quality-and-indexing/20-weekly-batch-feedback-learning.md`](13-
 
 #### Description
 
-Three-tier assistive reconsolidation classifies memory pairs by cosine similarity into auto-merge, review, or keep-separate tiers, providing non-destructive recommendations for near-duplicates and borderline pairs.
+Three-tier assistive reconsolidation classifies memory pairs by cosine similarity into shadow-archive, review, or keep-separate tiers, providing non-destructive recommendations for near-duplicates and borderline pairs (updated 2026-03-25 per deep review).
 
 #### Current Reality
 
-The assistive reconsolidation module operates in three tiers: auto-merge (similarity >= 0.96, near-duplicates automatically merged), review (similarity >= 0.88, recommendation logged but no destructive action), and keep-separate (similarity < 0.88). Review-tier classification uses a heuristic: if the newer memory content is longer by > 20%, it is classified as complement; otherwise as supersede. Default OFF, set `SPECKIT_ASSISTIVE_RECONSOLIDATION=true` to enable.
+The assistive reconsolidation module operates in three tiers: shadow-archive (similarity >= 0.96, the internal `auto_merge` tier label archives the older record while the new save proceeds normally), review (similarity >= 0.88, recommendation logged but no destructive action), and keep-separate (similarity < 0.88). Review-tier classification uses a heuristic: if the newer memory content is longer by > 20%, it is classified as complement; otherwise as supersede. Default ON (graduated), set `SPECKIT_ASSISTIVE_RECONSOLIDATION=false` to disable (updated 2026-03-25 per deep review).
 
 #### Source Files
 
@@ -3621,7 +3618,7 @@ Approximately 360 lines of dead code were removed across four categories:
 
 **Hot-path dead branches:** Dead RSF branch and dead shadow-scoring branch removed from `hybrid-search.ts`. Both were guarded by feature flag functions that always returned `false`.
 
-**Dead feature flag functions:** `isShadowScoringEnabled()` removed from `shadow-scoring.ts` and `search-flags.ts`. `isRsfEnabled()` function was removed from `rsf-fusion.ts` (the name remains only in explanatory module comments). `isInShadowPeriod()` in `learned-feedback.ts` remains active as the R11 shadow-period safeguard and was not removed.
+**Dead feature flag functions:** `isShadowScoringEnabled()` was removed from `shadow-scoring.ts` and `search-flags.ts`. The former `isRsfEnabled()` helper was removed as part of RSF retirement. `isInShadowPeriod()` in `learned-feedback.ts` remains active as the R11 shadow-period safeguard and was not removed.
 
 **Dead module-level state:** `stmtCache` Map (archival-manager.ts, never populated), `lastComputedAt` (community-detection.ts, set but never read), `activeProvider` cache (cross-encoder.ts, never populated), `flushCount` (access-tracker.ts, never incremented), 3 dead config fields in working-memory.ts (`decayInterval`, `attentionDecayRate`, `minAttentionScore`).
 
@@ -4388,7 +4385,7 @@ These flags are the main control panel for how search works. They turn major ret
 |---|---|---|---|---|
 | `SPECKIT_ABLATION` | `false` | boolean | `lib/eval/ablation-framework.ts` | Activates the ablation study framework. Must be explicitly set to `'true'` to run controlled channel ablations via MCP; when `false`, the handler rejects `eval_run_ablation` calls with a disabled-flag error. |
 | `SPECKIT_ARCHIVAL` | `true` | boolean | `lib/cognitive/archival-manager.ts` | Enables the archival manager which promotes DORMANT memories to the ARCHIVED state based on access patterns. Disable to keep all memories in active tiers. |
-| `SPECKIT_ASSISTIVE_RECONSOLIDATION` | `true` | boolean | `handlers/save/reconsolidation-bridge.ts` | **Default ON (graduated).** Three-tier assistive reconsolidation. Classifies memory pairs by cosine similarity: auto-merge (>=0.96), review (>=0.88), or keep-separate (<0.88). Review-tier pairs receive a logged recommendation (supersede or complement) but no destructive action. |
+| `SPECKIT_ASSISTIVE_RECONSOLIDATION` | `true` | boolean | `handlers/save/reconsolidation-bridge.ts` | **Default ON (graduated).** Three-tier assistive reconsolidation. Classifies memory pairs by cosine similarity: shadow-archive (>=0.96; the internal `auto_merge` tier archives the older record), review (>=0.88), or keep-separate (<0.88). Review-tier pairs receive a logged recommendation (supersede or complement) but no destructive action (updated 2026-03-25 per deep review). |
 | `SPECKIT_AUTO_ENTITIES` | `true` | boolean | `lib/search/search-flags.ts` | Enables R10 automatic noun-phrase entity extraction at index time. Extracted entities feed the entity linking channel (S5). Requires `SPECKIT_ENTITY_LINKING` to create graph edges. |
 | `SPECKIT_AUTO_RESUME` | `true` | boolean | `handlers/memory-context.ts` | In resume mode, automatically injects working-memory context items as `systemPromptContext` into the response. Also subject to `SPECKIT_ROLLOUT_PERCENT`. |
 | `SPECKIT_BATCH_LEARNED_FEEDBACK` | `true` | boolean | `lib/feedback/batch-learning.ts` | **Default ON (graduated).** Weekly batch feedback learning pipeline. Aggregates implicit feedback events, computes confidence-weighted signal scores (strong=1.0, medium=0.5, weak=0.1), enforces min-support (3 sessions) and boost-cap (0.10) guards. Shadow-only: records would-have-been shadow rank deltas. |
@@ -4404,7 +4401,7 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_COMPLEXITY_ROUTER` | `true` | boolean | `lib/search/query-classifier.ts` | Sprint 3 Stage A: routes queries to channel subsets based on complexity tier. Simple queries use vector + FTS only; moderate adds BM25; complex uses all five channels. When disabled, all channels run for every query. |
 | `SPECKIT_CONFIDENCE_TRUNCATION` | `true` | boolean | `lib/search/confidence-truncation.ts` | Sprint 3 Stage D: trims the low-confidence tail from fused results. A consecutive score gap exceeding 2× the median gap triggers truncation. Always returns at least 3 results. |
 | `SPECKIT_CONSOLIDATION` | `true` | boolean | `lib/search/search-flags.ts` | Enables the N3-lite consolidation engine which runs after every successful save. Scans for contradictions (>0.85 cosine similarity with negation conflicts), applies Hebbian strengthening (+0.05/cycle, 30-day decay), detects stale edges (>90 days unfetched) and enforces 20 edges per node. Runs weekly. |
-| `SPECKIT_CONSUMPTION_LOG` | inert | boolean | `lib/telemetry/consumption-logger.ts` | **Deprecated.** Eval complete (Sprint 7 audit). Telemetry is baked into core. The env var is accepted but has no effect; the function always returns `false`. |
+| `SPECKIT_CONSUMPTION_LOG` | `true` | boolean | `lib/telemetry/consumption-logger.ts` | **Default ON (graduated via rollout policy).** Agent consumption instrumentation remains live. `isConsumptionLogEnabled()` delegates to `isFeatureEnabled('SPECKIT_CONSUMPTION_LOG')`, so the logger stays active unless explicitly disabled or rollout policy gates it off. Logging stays fail-safe (updated 2026-03-25 per deep review). |
 | `SPECKIT_CONTEXT_HEADERS` | `true` | boolean | `lib/search/hybrid-search.ts` | **IMPLEMENTED (Sprint 019).** P1-4: Contextual tree injection into returned chunks. When enabled, `injectContextualTree()` string-prepends hierarchical context headers (`[parent > child — description]`, max 100 chars) using PI-B3 cached spec folder descriptions. Token budget adjusted for calibrated header overhead (~26 tokens/result) before truncation (CHK-060). |
 | `SPECKIT_CROSS_ENCODER` | `true` | boolean | `lib/search/search-flags.ts` | Enables cross-encoder reranking in Stage 3 of the 4-stage pipeline. When enabled, the reranker rescores candidates using a more expensive cross-attention model. Disabling falls back to vector-only ranking from fusion. |
 | `SPECKIT_DASHBOARD_LIMIT` | `10000` | number | `lib/eval/reporting-dashboard.ts` | Maximum number of rows fetched for the reporting dashboard. Parsed as integer with NaN guard (`|| 10000`). Replaces a previously hardcoded limit of 1000. Added in Phase 018 (CR-P2-3). |
@@ -4624,7 +4621,7 @@ These settings control diagnostic visibility. They adjust log verbosity and opti
 | `SPECKIT_HYDRA_SCOPE_ENFORCEMENT` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the scope-enforcement roadmap flag. Used by default-on roadmap snapshots and governed-scope compatibility checks; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS` | `true` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the governance-guardrail roadmap flag. Used by default-on roadmap snapshots and governed-ingest compatibility checks; set it to `false` or `0` to opt out explicitly. |
 | `SPECKIT_HYDRA_SHARED_MEMORY` | `false` | boolean | `lib/config/capability-flags.ts` | Legacy compatibility alias for the shared-memory roadmap flag. Used by roadmap snapshots and shared-memory rollout compatibility checks, but now defaults off until explicitly enabled with `true` or `1` so metadata cannot get ahead of the live rollout gate. |
-| `SPECKIT_CONSUMPTION_LOG` | inert | boolean | `lib/telemetry/consumption-logger.ts` | (Also listed under Search Pipeline.) Deprecated and inert. See category 1 for full description. |
+| `SPECKIT_CONSUMPTION_LOG` | `true` | boolean | `lib/telemetry/consumption-logger.ts` | (Also listed under Search Pipeline.) Default ON via rollout policy; active unless explicitly disabled. See category 1 for full description (updated 2026-03-25 per deep review). |
 
 #### Source Files
 

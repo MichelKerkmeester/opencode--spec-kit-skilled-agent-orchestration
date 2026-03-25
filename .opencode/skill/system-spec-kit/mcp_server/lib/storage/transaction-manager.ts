@@ -14,6 +14,7 @@ import { resolveDatabasePaths } from '../../core/config';
 
 const PENDING_SUFFIX = '_pending';
 const TEMP_SUFFIX = '.tmp';
+const PENDING_UNIQUE_SUFFIX_PATTERN = /^(?:[0-9a-f]{8}|[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12})$/i;
 
 /* ───────────────────────────────────────────────────────────────
    2. INTERFACES
@@ -91,17 +92,55 @@ function getPendingPath(filePath: string): string {
   return path.join(dir, `${base}${PENDING_SUFFIX}${ext}`);
 }
 
+interface PendingPathInfo {
+  originalPath: string;
+  basePendingPath: string;
+  uniqueSuffix: string | null;
+}
+
+function parsePendingPath(filePath: string): PendingPathInfo | null {
+  const parseBasePendingPath = (candidatePath: string): PendingPathInfo | null => {
+    const dir = path.dirname(candidatePath);
+    const ext = path.extname(candidatePath);
+    const base = path.basename(candidatePath, ext);
+    if (!base.endsWith(PENDING_SUFFIX)) {
+      return null;
+    }
+
+    const originalBase = base.slice(0, -PENDING_SUFFIX.length);
+    return {
+      originalPath: path.join(dir, `${originalBase}${ext}`),
+      basePendingPath: candidatePath,
+      uniqueSuffix: null,
+    };
+  };
+
+  const suffixExt = path.extname(filePath);
+  if (suffixExt) {
+    const uniqueSuffix = suffixExt.slice(1);
+    const basePendingPath = filePath.slice(0, -suffixExt.length);
+    const suffixedMatch = parseBasePendingPath(basePendingPath);
+    if (
+      suffixedMatch &&
+      path.extname(suffixedMatch.basePendingPath) &&
+      PENDING_UNIQUE_SUFFIX_PATTERN.test(uniqueSuffix)
+    ) {
+      return {
+        ...suffixedMatch,
+        uniqueSuffix,
+      };
+    }
+  }
+
+  return parseBasePendingPath(filePath);
+}
+
 function isPendingFile(filePath: string): boolean {
-  const base = path.basename(filePath, path.extname(filePath));
-  return base.endsWith(PENDING_SUFFIX);
+  return parsePendingPath(filePath) !== null;
 }
 
 function getOriginalPath(pendingPath: string): string {
-  const dir = path.dirname(pendingPath);
-  const ext = path.extname(pendingPath);
-  const base = path.basename(pendingPath, ext);
-  const originalBase = base.replace(new RegExp(`${PENDING_SUFFIX}$`), '');
-  return path.join(dir, `${originalBase}${ext}`);
+  return parsePendingPath(pendingPath)?.originalPath ?? pendingPath;
 }
 
 function runInTransaction<T>(database: Database.Database, callback: () => T): T {
@@ -311,7 +350,7 @@ function findPendingFiles(dirPath: string): string[] {
       files = listFilesRecursive(dirPath);
     }
 
-    return files.filter((f) => isPendingFile(f) && fs.statSync(f).isFile());
+    return files.filter((filePath) => parsePendingPath(filePath) !== null && fs.statSync(filePath).isFile());
   } catch (error: unknown) {
     const msg = error instanceof Error ? error.message : String(error);
     console.warn(`[transaction-manager] findPendingFiles error: ${msg}`);
@@ -332,7 +371,12 @@ function recoverPendingFile(
     if (!fs.existsSync(pendingPath)) {
       return { path: pendingPath, recovered: false, error: 'Pending file no longer exists' };
     }
-    const originalPath = getOriginalPath(pendingPath);
+    const pendingInfo = parsePendingPath(pendingPath);
+    if (!pendingInfo) {
+      return { path: pendingPath, recovered: false, error: 'File does not match pending-file naming contract' };
+    }
+
+    const originalPath = pendingInfo.originalPath;
     const originalExists = fs.existsSync(originalPath);
     let committedInDb: boolean | null = null;
     if (isCommittedInDb) {
