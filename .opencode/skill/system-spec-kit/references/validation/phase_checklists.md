@@ -122,6 +122,7 @@ Priority-based checklists for each phase of the SpecKit workflow.
 **Before Claiming Complete:**
 - [ ] All P0 items verified with evidence
 - [ ] Browser tested if frontend (Completion Verification Rule requirement)
+- [ ] For phased packets: recursive PHASE_LINKS validation passed, residual warnings reviewed against live folder/status truth
 - [ ] Save context if significant progress: `/memory:save` or `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' specs/###-folder/`
 
 ### Debug Escalation Protocol

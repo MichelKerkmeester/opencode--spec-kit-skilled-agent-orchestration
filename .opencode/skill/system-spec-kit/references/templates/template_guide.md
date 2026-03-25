@@ -231,6 +231,8 @@ cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/#
 
 **Enforcement:** Hard block if required Level 3 files are missing; quality gates rely on checklist completion and validation scripts
 
+**If spec is a coordination-root packet**: Replace the executive summary with a coordination overview. Include point-in-time snapshot metadata, a direct-phase documentation map, and cross-reference the governing ADR. Skip dependency graphs in favor of phase navigation links.
+
 ---
 
 <!-- /ANCHOR:template-selection-by-level-progressive-enhancement -->

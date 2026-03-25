@@ -255,7 +255,7 @@ When no spec folder is provided, the AI agent:
 
 1. **Checks recent memory files** - `ls -t specs/*/memory/*.{md,txt} | head -1`
 2. **Asks user** - "Which spec folder should I save to?"
-3. **Suggests highest-numbered** - `ls specs/ | grep "^[0-9]" | sort -rn | head -1`
+3. **Suggests phase-aware path** - When the target is a phased packet tree, prefer the explicit root packet or an explicit child phase path. For phased packets like `022-hybrid-rag-fusion`, navigate to the specific child phase (e.g., `022-hybrid-rag-fusion/011-skill-alignment/`) rather than the root.
 
 ---
 

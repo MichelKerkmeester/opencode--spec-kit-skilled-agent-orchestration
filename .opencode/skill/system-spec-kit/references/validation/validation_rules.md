@@ -885,7 +885,7 @@ This rule only applies when a spec folder contains numbered child folders (match
 | Check | Severity | Description |
 |-------|----------|-------------|
 | Phase Documentation Map | WARNING | Parent spec.md should contain a Phase Documentation Map section |
-| Child back-reference | WARNING | Child spec.md should include `parent:` metadata referencing the parent folder |
+| Child back-reference | WARNING | Direct-child spec.md should include a metadata table with Parent Spec, Predecessor, and Successor references |
 | Child folder naming | ERROR | Phase child folders must follow `###-name/` naming convention |
 | Status consistency | WARNING | Phase status in parent map should match child spec.md status |
 
@@ -895,26 +895,31 @@ This rule only applies when a spec folder contains numbered child folders (match
 ```
 specs/042-payment-system/
 ├── spec.md                     # Contains Phase Documentation Map
-│                                 with entries for 001 and 002
-├── 001-data-models/
-│   └── spec.md                 # parent: specs/042-payment-system/
-└── 002-api-endpoints/
-    └── spec.md                 # parent: specs/042-payment-system/
+│                                 with entries for 009, 010, and 011
+├── 009-session-capturing/
+├── 010-phase-links/
+│   └── spec.md                 # Includes metadata table with Parent Spec,
+│                               # Predecessor, and Successor links
+└── 011-skill-alignment/
+    └── spec.md                 # Includes metadata table with Parent Spec,
+                                # Predecessor, and Successor links
 ```
 
 **Warning (missing map):**
 ```
 specs/042-payment-system/
 ├── spec.md                     # No Phase Documentation Map section
-├── 001-data-models/            ← WARNING: parent has no phase map
-└── 002-api-endpoints/
+├── 009-session-capturing/
+├── 010-phase-links/            ← WARNING: parent has no phase map
+└── 011-skill-alignment/
 ```
 
 **Warning (missing back-reference):**
 ```
-specs/042-payment-system/001-data-models/
-└── spec.md                     # No parent: field in metadata
-                                  ← WARNING: no parent back-reference
+specs/042-payment-system/010-phase-links/
+└── spec.md                     # No metadata table with Parent Spec,
+                                # Predecessor, and Successor references
+                                   ← WARNING: no phase navigation back-reference
 ```
 
 ### How to Fix
@@ -925,17 +930,18 @@ specs/042-payment-system/001-data-models/
 
 | Phase | Folder | Status | Description |
 |-------|--------|--------|-------------|
-| 1 | `001-data-models/` | active | Core data models and schema |
-| 2 | `002-api-endpoints/` | draft | REST API endpoint definitions |
+| 9 | `009-session-capturing/` | done | Session capture and handoff flow |
+| 10 | `010-phase-links/` | active | Phase-link validation guidance |
+| 11 | `011-skill-alignment/` | draft | Skill alignment follow-up work |
 ```
 
-**Add parent back-reference to child spec.md:**
+**Add phase navigation metadata table to child spec.md:**
 ```markdown
----
-title: Data Models Phase
-parent: specs/042-payment-system/
-phase: 1 of 2
----
+| Field | Value |
+|-------|-------|
+| **Parent Spec** | `../spec.md` |
+| **Predecessor** | `../009-session-capturing/spec.md` |
+| **Successor** | `../011-skill-alignment/spec.md` |
 ```
 
 ### Recursive Validation

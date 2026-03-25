@@ -320,6 +320,10 @@ specs/049-oauth-implementation/
 ## Conversation Flow
 [Full dialogue with timestamps]
 
+> **Redaction Policy**: Before persisting conversation flow data, scrub API keys, tokens, credentials, and PII.
+> Summary-first is the recommended default.
+> Raw full-dialogue capture should be opt-in only and must pass the redaction filter before write.
+
 ## Files Modified
 [List of changed files]
 

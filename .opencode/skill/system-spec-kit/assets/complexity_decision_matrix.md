@@ -39,6 +39,10 @@ For cross-phase campaigns or shared-memory coordination work, treat boundary-man
 | 56-79       | 3     | Full         | Level 2 + decision-record                   | dep-graph (ASCII), effort-est |
 | 80-100      | 3+    | Extended     | Level 3 + AI protocols + extended checklist | All features                  |
 
+**Coordination-Root Override**: Root coordination packets governing multi-phase efforts
+(phase maps, ADR records, tree-truth governance) should be classified as Level 3+
+regardless of complexity score, as they require governance artifacts not covered by Level 3.
+
 ---
 
 <!-- /ANCHOR:level-selection-by-score -->

@@ -160,12 +160,18 @@ Six-tier system for prioritizing memory relevance:
 
 **Optional Parameters:**
 - `specFolder`: Limit search to specific spec folder
+- `tenantId` (string, optional): Tenant boundary for governed retrieval
+- `userId` (string, optional): User boundary for governed retrieval
+- `agentId` (string, optional): Agent boundary for governed retrieval
+- `sharedSpaceId` (string, optional): Shared-space boundary for governed retrieval
 - `includeContent`: Include full file content in results
 - `includeConstitutional`: Include constitutional tier memories
 - `anchors`: Array of anchor IDs for targeted section retrieval (token-efficient)
 - `tier`: Filter by importance tier
 - `limit`: Maximum results to return
 - `useDecay`: Apply temporal decay scoring
+
+When operating in shared or multi-actor deployments, always provide scope parameters to prevent cross-scope data exposure.
 
 ### Parameter Reference
 
@@ -174,6 +180,10 @@ Six-tier system for prioritizing memory relevance:
 | `query` | string | One of query/concepts | - | Natural language search query |
 | `concepts` | string[] | One of query/concepts | - | 2-5 concepts for AND search (results must match ALL) |
 | `specFolder` | string | No | - | Filter to specific spec folder |
+| `tenantId` | string | No | - | Tenant boundary for governed retrieval |
+| `userId` | string | No | - | User boundary for governed retrieval |
+| `agentId` | string | No | - | Agent boundary for governed retrieval |
+| `sharedSpaceId` | string | No | - | Shared-space boundary for governed retrieval |
 | `includeConstitutional` | boolean | No | true | Include constitutional memories |
 | `includeContent` | boolean | No | false | Embed full file content in results |
 | `includeContiguity` | boolean | No | false | Include adjacent memories |

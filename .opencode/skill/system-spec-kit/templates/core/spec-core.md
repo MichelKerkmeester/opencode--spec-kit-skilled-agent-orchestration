@@ -22,7 +22,7 @@ contextType: "general"
 
 | Field | Value |
 |-------|-------|
-| **Level** | [1/2/3] |
+| **Level** | [1/2/3/3+] |
 | **Priority** | [P0/P1/P2] |
 | **Status** | [Draft/In Progress/Review/Complete] |
 | **Created** | [YYYY-MM-DD] |

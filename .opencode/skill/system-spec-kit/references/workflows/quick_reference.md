@@ -244,6 +244,11 @@ Before making ANY file changes, verify:
 ❌ Complete redesign (starting over)
 ❌ Unrelated work (no connection)
 
+**Phased Packets**: If the target spec already has child phase folders,
+resume/update in the active child phase - not the coordination root.
+Use the root only for coordination snapshots, phase-map updates,
+and tree-truth verification.
+
 ---
 
 <!-- /ANCHOR:update-vs-create-decision -->
@@ -479,6 +484,11 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tm
 ❌ DO NOT use Write/Edit tools to create memory files directly.
 
 > **Memory Context Loading Integration:** Memory loading implements AGENTS.md Memory Context Loading. When resuming work on an existing spec folder with memory files, display options: `[1] [2] [3] [all] [skip]` for memory selection.
+
+**Phased Resume**: When the target folder has child phases, first resolve
+whether you need the coordination root or an active child.
+Load/save memory in the child packet by default.
+Only load root memory when updating coordination snapshots.
 
 **Save location:**
 - Primary: `specs/###-folder/memory/`

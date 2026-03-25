@@ -68,7 +68,7 @@ This guidance also applies to cross-phase documentation campaigns and shared-spa
 | Dependency Explorer   | Imports, modules, affected areas | Identify integration points      |
 | Test Explorer         | Test patterns, infrastructure    | Understand verification approach |
 
-**Execution:** All 4 agents spawn in single message using Task tool with `subagent_type: explore`.
+**Execution:** All 4 agents spawn in single message using Task tool with `agent_type: explore`.
 
 ---
 
@@ -89,7 +89,7 @@ This guidance also applies to cross-phase documentation campaigns and shared-spa
 ```yaml
 spec_creation_parallel:
   enabled: true
-  auto_dispatch_mode: true
+  auto_dispatch_mode: false
 
   # Tier 1: Sequential Foundation (~60s)
   tier1:

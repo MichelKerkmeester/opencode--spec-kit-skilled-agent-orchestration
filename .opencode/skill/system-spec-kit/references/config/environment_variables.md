@@ -24,7 +24,7 @@ These variables control memory system behavior, token budgets, script execution,
 |----------|---------|---------|
 | `MEMORY_DB_PATH` | `mcp_server/dist/database/context-index.sqlite` | Override database location |
 | `MEMORY_BASE_PATH` | Current working directory | Workspace root path |
-| `MEMORY_ALLOWED_PATHS` | `specs/,.opencode/` | Additional allowed paths (colon-separated) |
+| `MEMORY_ALLOWED_PATHS` | `specs/,.opencode/` (Note: effective read boundary also includes `process.cwd()` and `~/.claude/` at runtime. For tighter isolation, explicitly set this variable to restrict filesystem access.) | Additional allowed paths (colon-separated) |
 | `DEBUG_TRIGGER_MATCHER` | `false` | Enable verbose trigger matching logs |
 | `ENABLE_RERANKER` | `false` | Enable experimental ML reranking (requires Python) |
 | `SPECKIT_STRICT_SCHEMAS` | `true` | Enforce strict Zod MCP tool input validation for all 33 tools (`false` allows unknown passthrough keys) |
@@ -336,8 +336,10 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_MEMORY_ADAPTIVE_RANKING` | OFF | S7 | Canonical alias for `SPECKIT_HYDRA_ADAPTIVE_RANKING`; dormant unless explicitly enabled |
 | `SPECKIT_MEMORY_SCOPE_ENFORCEMENT` | ON | S7 | Canonical alias for SPECKIT_HYDRA_SCOPE_ENFORCEMENT |
 | `SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS` | ON | S7 | Canonical alias for SPECKIT_HYDRA_GOVERNANCE_GUARDRAILS |
-| `SPECKIT_MEMORY_SHARED_MEMORY` | ON | S7 | Canonical alias for SPECKIT_HYDRA_SHARED_MEMORY |
+| `SPECKIT_MEMORY_SHARED_MEMORY` | OFF | S7 | Canonical alias for SPECKIT_HYDRA_SHARED_MEMORY (default-off shared-memory state) |
 | `SPECKIT_MEMORY_GRAPH_UNIFIED` | ON | S7 | Canonical alias for SPECKIT_HYDRA_GRAPH_UNIFIED |
+| `SPECKIT_SHARED_MEMORY_ADMIN_USER_ID` | string | S7 | Admin user identity for shared-memory governance mutations; must resolve to a single configured identity |
+| `SPECKIT_SHARED_MEMORY_ADMIN_AGENT_ID` | string | S7 | Admin agent identity for shared-memory governance mutations; must resolve to a single configured identity |
 | `SPECKIT_MEMORY_ROADMAP_PHASE` | `shared-rollout` | S7 | Canonical phase label for Hydra roadmap tracking |
 | `SPECKIT_MEMORY_ADAPTIVE_MODE` | string | S7 | Adaptive ranking mode selector |
 

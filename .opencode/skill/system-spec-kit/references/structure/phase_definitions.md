@@ -212,6 +212,8 @@ The `PHASE_LINKS` validation rule checks the integrity of parent-child phase rel
 |-------|----------|-------------|
 | Parent has Phase Documentation Map | WARNING | Parent spec.md should list all child phases |
 | Child has parent back-reference | WARNING | Child spec.md metadata should reference parent |
+| Child has predecessor reference | WARNING | Direct-child spec.md should reference predecessor phase |
+| Child has successor reference | WARNING | Direct-child spec.md should reference successor phase (except last) |
 | Phase folder naming | ERROR | Child folders must follow `###-name/` convention |
 | Phase status consistency | WARNING | Parent map status should match child spec.md status |
 

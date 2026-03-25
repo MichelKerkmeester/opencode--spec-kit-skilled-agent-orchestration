@@ -209,6 +209,7 @@ When using subfolder versioning, the memory save script (`generate-context.js`) 
 | Input                                  | Resolution                                        |
 | -------------------------------------- | ------------------------------------------------- |
 | `003-parent/121-child`                 | Resolves to `{specsDir}/003-parent/121-child/`    |
+| `002-track/022-feature/011-phase`      | Resolves three-level nested packet path           |
 | `121-child` (bare)                     | Searches all parents, requires unique match        |
 | `specs/003-parent/121-child`           | Strips prefix, resolves nested                     |
 | `.opencode/specs/003-parent/121-child` | Strips prefix, resolves nested                     |

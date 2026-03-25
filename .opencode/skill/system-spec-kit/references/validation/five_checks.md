@@ -32,7 +32,7 @@ Every significant decision must earn its existence through five explicit checks:
 **Not Required:**
 - Level 1 spec folders (<100 LOC)
 - Bug fixes with obvious solutions
-- Documentation-only changes
+- Trivial documentation changes (typos, formatting, copy edits) — NOT coordination-contract or ADR-governed documentation changes
 
 ---
 

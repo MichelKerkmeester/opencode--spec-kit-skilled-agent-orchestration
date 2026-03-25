@@ -49,10 +49,12 @@ Use bulleted list format for metadata sections in all templates:
 ```markdown
 ### Metadata
 - **Created:** [FORMAT: YYYY-MM-DD]
-- **Level:** [FORMAT: 1 / 2 / 3]
+- **Level:** [FORMAT: 1 / 2 / 3 / 3+]
 - **Status:** [YOUR_VALUE_HERE: Planning / In Progress / Complete]
 - **Owner:** [YOUR_VALUE_HERE: team or person]
 ```
+
+> **Note:** Level 3+ coordination-root packets may use a metadata table format with point-in-time snapshot fields.
 
 ### Format Exceptions
 

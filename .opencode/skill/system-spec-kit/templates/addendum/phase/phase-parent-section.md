@@ -20,9 +20,9 @@ contextType: "general"
 
 > This spec uses phased decomposition. Each phase is an independently executable child spec folder.
 
-| Phase | Folder | Scope | Dependencies | Status |
-|-------|--------|-------|--------------|--------|
-<!-- [YOUR_VALUE_HERE: PHASE_ROW] — Replaced by create.sh with full 5-column table rows (e.g., "| 1 | 001-name/ | [scope] | [deps] | Pending |") -->
+| Phase | Folder | Focus | Status |
+|-------|--------|-------|--------|
+<!-- [YOUR_VALUE_HERE: PHASE_ROW] — Replaced by create.sh with full 4-column table rows (e.g., "| 1 | 001-name/ | [focus] | Pending |") -->
 
 ### Phase Transition Rules
 

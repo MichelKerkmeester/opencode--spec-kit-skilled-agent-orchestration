@@ -36,7 +36,7 @@ Fix ALL errors before proceeding to the next file or workflow step.
 Level 1 uses the same headers/anchors as Level 2 for the 4 shared doc types
 (spec.md, plan.md, tasks.md, implementation-summary.md), minus the L2 addenda
 sections. Refer to the Level 2 tables below -- include only the core rows
-(not the "L2 addenda" lines).
+(not the "L2 addenda" lines), and use the per-level OPEN QUESTIONS numbering note.
 
 ---
 
@@ -56,9 +56,15 @@ Do NOT reorder, rename, or omit required sections. Custom sections go AFTER requ
 | requirements | ## 4. REQUIREMENTS |
 | success-criteria | ## 5. SUCCESS CRITERIA |
 | risks | ## 6. RISKS & DEPENDENCIES |
-| questions | ## 10. OPEN QUESTIONS |
+| questions | ## OPEN QUESTIONS (number varies by level; see note below) |
 
 L2 addenda (after core): `nfr` (## L2: NON-FUNCTIONAL REQUIREMENTS), `edge-cases` (## L2: EDGE CASES), `complexity` (## L2: COMPLEXITY ASSESSMENT)
+
+OPEN QUESTIONS numbering varies by level:
+- Level 1: `## 7. OPEN QUESTIONS`
+- Level 2: `## 7. OPEN QUESTIONS`
+- Level 3: `## 12. OPEN QUESTIONS`
+- Level 3+: `## 16. OPEN QUESTIONS`
 
 ### plan.md -- `# Implementation Plan: [Title]`
 

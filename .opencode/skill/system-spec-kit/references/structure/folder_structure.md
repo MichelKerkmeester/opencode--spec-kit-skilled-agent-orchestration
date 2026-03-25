@@ -267,6 +267,16 @@ specs/018-api-refactor/
     └── plan.md
 ```
 
+```
+specs/022-hybrid-rag-fusion/        <- Coordination root (point-in-time snapshot)
+├── spec.md                          <- Phase map + current tree truth
+├── decision-record.md               <- ADR-001: tree truth > historical synthesis
+├── 001-epic/                        <- Child phase packet
+├── 002-indexing/                    <- Child phase packet
+└── 011-skill-alignment/             <- Child phase packet
+    └── 002-skill-review/            <- Nested child
+```
+
 ---
 
 <!-- /ANCHOR:example-structures -->

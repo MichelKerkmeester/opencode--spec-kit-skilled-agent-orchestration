@@ -127,7 +127,7 @@ cp .opencode/skill/system-spec-kit/templates/level_3/plan.md specs/###-name/plan
 cp .opencode/skill/system-spec-kit/templates/level_3/tasks.md specs/###-name/tasks.md
 cp .opencode/skill/system-spec-kit/templates/level_3/implementation-summary.md specs/###-name/implementation-summary.md
 cp .opencode/skill/system-spec-kit/templates/level_3/checklist.md specs/###-name/checklist.md
-cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/###-name/decision-record-[topic].md
+cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/###-name/decision-record.md
 # Optional:
 cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research.md
 ```
@@ -139,7 +139,7 @@ cp .opencode/skill/system-spec-kit/templates/level_3+/plan.md specs/###-name/pla
 cp .opencode/skill/system-spec-kit/templates/level_3+/tasks.md specs/###-name/tasks.md
 cp .opencode/skill/system-spec-kit/templates/level_3+/implementation-summary.md specs/###-name/implementation-summary.md
 cp .opencode/skill/system-spec-kit/templates/level_3+/checklist.md specs/###-name/checklist.md
-cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/###-name/decision-record-[topic].md
+cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/###-name/decision-record.md
 # Optional:
 cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research.md
 ```
@@ -159,6 +159,7 @@ These templates are OPTIONAL and only apply to Level 3 documentation:
 **Notes:**
 - These are OPTIONAL - only copy when research is needed
 - `decision-record.md` is REQUIRED at Level 3, not optional
+- Topic-specific ADR files can be added as supplemental artifacts, but the required canonical file is always `decision-record.md`
 
 ---
 
@@ -216,7 +217,7 @@ specs/045-user-dashboard/
 ├── tasks.md                     (REQUIRED - from Level 2)
 ├── implementation-summary.md    (REQUIRED - from Level 2)
 ├── checklist.md                 (REQUIRED - from Level 2)
-├── decision-record-[topic].md   (REQUIRED - architecture decisions)
+├── decision-record.md           (REQUIRED - architecture decisions)
 ├── research.md                  (OPTIONAL - comprehensive research)
 └── memory/                      (OPTIONAL - context preservation)
     └── *.md                     (auto-generated via generate-context.js)
@@ -238,7 +239,7 @@ specs/046-enterprise-migration/
 ├── tasks.md                     (REQUIRED - from Level 3, +3-tier format, +AI protocol, +workstreams)
 ├── implementation-summary.md    (REQUIRED - from Level 3)
 ├── checklist.md                 (REQUIRED - from Level 3, +extended items 100-150, +sign-offs, +compliance)
-├── decision-record-[topic].md   (REQUIRED - from Level 3, +decision authority, +review requirements)
+├── decision-record.md           (REQUIRED - from Level 3, +decision authority, +review requirements)
 ├── research.md                  (OPTIONAL - comprehensive research)
 └── memory/                      (OPTIONAL - context preservation)
     └── *.md                     (auto-generated via generate-context.js)
@@ -332,7 +333,7 @@ Content that will be indexed...
 2. **Preserve numbering and emojis** - Maintain visual scanning pattern
 3. **Fill every placeholder** - Replace `[PLACEHOLDER]` with actual content
 4. **Remove instructional comments** - Delete `<!-- SAMPLE -->` blocks
-5. **Use descriptive filenames** - `decision-record-[topic].md`, not `decision-record-final.md`
+5. **Use canonical required filenames** - `decision-record.md` is required; topic-specific ADR files are supplemental artifacts, not replacements
 6. **Keep sections relevant** - State "N/A" instead of deleting sections
 7. **Link sibling documents** - Cross-reference spec.md ↔ plan.md ↔ tasks.md
 8. **Document level changes** - Note upgrades/downgrades in changelog
@@ -387,7 +388,7 @@ cp .opencode/skill/system-spec-kit/templates/level_3/plan.md specs/###-name/plan
 cp .opencode/skill/system-spec-kit/templates/level_3/tasks.md specs/###-name/tasks.md
 cp .opencode/skill/system-spec-kit/templates/level_3/implementation-summary.md specs/###-name/implementation-summary.md
 cp .opencode/skill/system-spec-kit/templates/level_3/checklist.md specs/###-name/checklist.md
-cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/###-name/decision-record-[topic].md
+cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/###-name/decision-record.md
 ```
 
 **Level 3+ (Extended) - Complete set:**
@@ -397,7 +398,7 @@ cp .opencode/skill/system-spec-kit/templates/level_3+/plan.md specs/###-name/pla
 cp .opencode/skill/system-spec-kit/templates/level_3+/tasks.md specs/###-name/tasks.md
 cp .opencode/skill/system-spec-kit/templates/level_3+/implementation-summary.md specs/###-name/implementation-summary.md
 cp .opencode/skill/system-spec-kit/templates/level_3+/checklist.md specs/###-name/checklist.md
-cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/###-name/decision-record-[topic].md
+cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/###-name/decision-record.md
 ```
 
 ### Step 5: Copy Optional Templates (Level 3/3+ - If Needed)

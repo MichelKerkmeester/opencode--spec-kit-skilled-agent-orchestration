@@ -92,6 +92,8 @@ Measures dependency complexity:
 | 56-79     | 3     | Full         | Complete documentation + ADR             |
 | 80-100    | 3+    | Extended     | Full + AI protocols + dependency graphs  |
 
+**Override**: Coordination-root packets governing multi-phase efforts should use Level 3+ regardless of complexity score, as they require governance artifacts (phase maps, ADR records) not covered by Level 3.
+
 ### Level 3+ (Extended) Features
 
 Level 3+ includes everything from Level 3 plus:

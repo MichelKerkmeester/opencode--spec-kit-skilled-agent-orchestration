@@ -54,7 +54,8 @@ ENVIRONMENT OVERRIDES (runtime control)
 | `**/scratch/**`                                | Skip all validation          |
 | `**/memory/**`                                 | Minimal validation (memory files validated by ANCHORS_VALID rule only) |
 | `.opencode/skill/system-spec-kit/templates/**` | Skip content validation      |
-| `specs/*/`                                     | Level-appropriate validation |
+| `specs/**/`                                    | Level-appropriate validation (recursive through nested packet families) |
+| `.opencode/specs/**/`                          | Level-appropriate validation (recursive through nested packet families) |
 
 ### By Level
 

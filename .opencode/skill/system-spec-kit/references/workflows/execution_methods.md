@@ -119,6 +119,11 @@ bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 2 --name "fe
 bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --subfolder specs/001-parent/ --topic "iteration-2"
 ```
 
+**Phase creation**: `bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --phase specs/022-feature/ --topic 'skill-review'`
+**Recursive validation**: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/022-feature/ --recursive`
+These commands create/validate direct-child phase packets
+under a coordination root.
+
 **Flags:**
 | Flag | Purpose |
 |------|---------|

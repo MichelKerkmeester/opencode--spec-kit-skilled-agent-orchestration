@@ -507,6 +507,13 @@ Level 3+ is auto-detected via complexity scoring for highly complex tasks:
 8. Organize workstreams if parallel work streams exist
 9. Remove all sample content and placeholders
 
+### Coordination-Root Profile
+
+When the spec folder serves as a coordination root for a multi-phase effort, Level 3+ additionally requires:
+- Point-in-time directory snapshot (total dirs, top-level, numbered)
+- Direct-phase documentation map with current status values
+- ADR record establishing source-of-truth precedence (e.g., current tree truth over historical synthesis)
+
 ---
 
 <!-- /ANCHOR:level-3-extended-documentation-complexity-score-80-100 -->

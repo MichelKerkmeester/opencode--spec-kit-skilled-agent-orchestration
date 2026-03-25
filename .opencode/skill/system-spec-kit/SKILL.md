@@ -17,10 +17,12 @@ Orchestrates mandatory spec folder creation for all conversations involving file
 
 ### What is a Spec Folder?
 
-A **spec folder** is a numbered directory (e.g., `specs/007-auth-feature/`) that contains all documentation for a single feature or task:
+A **spec folder** is a numbered directory (e.g., `specs/007-auth-feature/`) that contains documentation for a single feature/task or a coordinated packet of related phase work:
+
+Spec folders may also be nested as coordination-root packets with direct-child phase folders (e.g., `specs/02--track/022-feature/011-phase/002-child/`).
 
 - **Purpose**: Track specifications, plans, tasks, and decisions for one unit of work
-- **Location**: Always under `specs/` directory with format `###-short-name/`
+- **Location**: Under `specs/` using either `###-short-name/` at the root or nested packet paths for phased coordination
 - **Contents**: Markdown files (spec.md, plan.md, tasks.md) plus optional memory/ and scratch/ subdirectories
 
 Think of it as a "project folder" for AI-assisted development - it keeps context organized and enables session continuity.
@@ -37,7 +39,7 @@ Think of it as a "project folder" for AI-assisted development - it keeps context
 - "Add/implement/create [feature]"
 - "Fix/update/refactor [code]"
 - "Modify/change [configuration]"
-- Any keyword: add, implement, fix, update, create, modify, rename, delete, configure, analyze
+- Any keyword: add, implement, fix, update, create, modify, rename, delete, configure, analyze, phase
 
 **Example triggers:**
 - "Add email validation to the signup form" → Level 1-2
@@ -333,7 +335,7 @@ def route_speckit_resources(task):
 When file modification detected, AI MUST ask:
 
 ```
-**Spec Folder** (required): A) Existing | B) New | C) Update related | D) Skip
+**Spec Folder** (required): A) Existing | B) New | C) Update related | D) Skip | E) Phase folder (e.g., specs/NNN-name/001-phase/)
 ```
 
 | Option          | Description                        | Best For                        |
@@ -344,6 +346,9 @@ When file modification detected, AI MUST ask:
 | **D) Skip**     | No spec folder (creates tech debt) | Trivial changes only            |
 
 **Enforcement:** Constitutional-tier memory surfaces automatically via `memory_match_triggers()`.
+
+**Coordination Roots**: For large multi-phase efforts, the root `spec.md` serves as a coordination document with point-in-time snapshots of directory counts and phase status.
+Current tree truth takes precedence over historical synthesis (ref: ADR-001 pattern).
 
 ### Complexity Detection (Option B Flow)
 

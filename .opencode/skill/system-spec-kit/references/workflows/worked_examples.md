@@ -224,6 +224,16 @@ specs/010-graphql-migration/
 | Rollback Planning | Checklist includes rollback validation |
 | Future Reference | ADR serves as historical documentation |
 
+### Phased Coordination Root (Level 3+)
+
+Scenario: Large multi-phase effort requiring root coordination.
+1. Create root spec folder (Level 3+): `specs/022-feature/`
+2. Root `spec.md` is a coordination document with point-in-time snapshot: directory counts, phase status
+3. Create child phases: `specs/022-feature/001-epic/`, `specs/022-feature/002-indexing/`
+4. Each child has Parent Spec, Predecessor, Successor navigation metadata
+5. Implementation/resume happens in the active child - root is coordination-only
+6. Completion: validate recursively, verify root phase-map matches live children
+
 ---
 
 <!-- /ANCHOR:architecture-change-level-3 -->

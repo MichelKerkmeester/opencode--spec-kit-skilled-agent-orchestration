@@ -45,6 +45,18 @@ ALTERNATIVE: [Suggested alternative approach if applicable]
 GATE: [NAME] | DECISION: [PASS/BLOCK] | CONFIDENCE: [H/M/L] | EVIDENCE: [brief]
 ```
 
+### Architectural Decision Records (ADR)
+
+For Level 3+ spec folders, `decision-record.md` may also contain ADR entries:
+- **ADR-NNN**: Unique identifier (e.g., ADR-001)
+- **Status**: proposed | accepted | superseded | deprecated
+- **Context**: Problem statement and constraints
+- **Decision**: The chosen approach
+- **Alternatives Considered**: Other options evaluated
+- **Consequences**: Impact of the decision
+
+ADR entries are particularly important for coordination-root decisions that establish source-of-truth policy.
+
 ---
 
 <!-- /ANCHOR:the-format -->

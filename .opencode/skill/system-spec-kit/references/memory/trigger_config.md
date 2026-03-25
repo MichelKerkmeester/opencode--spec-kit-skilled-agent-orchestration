@@ -191,8 +191,7 @@ Include any of these phrases in your message:
 
 ### Save Location
 
-- **Primary:** `specs/###-folder/memory/`
-- **Fallback:** `memory/` (workspace root)
+- **Save location:** `{spec_folder}/memory/` (spec-folder boundary enforced)
 
 **Filename pattern:** `DD-MM-YY_HH-MM__short-description.md`
 
