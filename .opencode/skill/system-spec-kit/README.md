@@ -373,6 +373,8 @@ Run with `--verbose` to see the details behind each rule, or `--recursive` to va
 
 ---
 
+<!-- divider:4.2 -->
+
 ### 4.2 Memory System
 
 The memory system lives in an MCP server that gives AI assistants persistent memory across sessions, models and tools. It stores context in a local SQLite database and retrieves exactly what is relevant when a new session starts.
@@ -472,6 +474,8 @@ The memory system includes built-in tools for measuring search quality:
 
 ---
 
+<!-- divider:4.3 -->
+
 ### 4.3 Commands
 
 Spec Kit exposes 14 commands: 8 for spec folder workflows and 6 for memory operations. Each command opens access to a specific set of tools. Think of commands as doors into the system -- each door opens only the tools it needs.
@@ -516,6 +520,8 @@ Some commands own their tools (they are the primary home) while others borrow to
 **Command source files**: `.opencode/command/memory/`
 
 ---
+
+<!-- divider:4.4 -->
 
 ### 4.4 Templates
 
@@ -576,6 +582,8 @@ After editing core or addendum templates, run `templates/compose.sh` to regenera
 Templates use ANCHOR markers (`<!-- ANCHOR:section --> ... <!-- /ANCHOR:section -->`) to mark logical sections. Validation checks for required anchors, proper section ordering and template version alignment. The `template_compliance_contract.md` reference defines which anchors are required at each level.
 
 ---
+
+<!-- divider:4.5 -->
 
 ### 4.5 Scripts and Validation
 
@@ -810,9 +818,9 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
 
 ### MCP Tools Return "Tool Not Found"
 
-**Symptom**: Calling `memory_match_triggers()` returns an error or the tool is not recognized.
+**What you see**: Calling `memory_match_triggers()` returns an error or the tool is not recognized.
 
-**Cause**: The MCP server is not running or not registered in your MCP config.
+**Common causes**: The MCP server is not running or not registered in your MCP config.
 
 **Fix**:
 ```bash
@@ -825,11 +833,13 @@ node --version
 
 Verify `spec-kit-memory` appears in your `opencode.json` or equivalent MCP config file (see [Configuration](#5-configuration)).
 
+---
+
 ### Memory Save Fails or Creates an Empty File
 
-**Symptom**: `generate-context.js` runs but the output file is empty or the script exits with an error.
+**What you see**: `generate-context.js` runs but the output file is empty or the script exits with an error.
 
-**Cause**: Invalid JSON input, or TypeScript source not compiled to `dist/`.
+**Common causes**: Invalid JSON input, or TypeScript source not compiled to `dist/`.
 
 **Fix**:
 ```bash
@@ -841,19 +851,23 @@ node scripts/dist/memory/generate-context.js \
   --json '{"specFolder":"NNN-feature","sessionSummary":"Brief summary of what happened"}'
 ```
 
+---
+
 ### Memory Save Rejected by Quality Gate
 
-**Symptom**: The save completes but reports the memory was rejected by the semantic sufficiency gate or structure gate.
+**What you see**: The save completes but reports the memory was rejected by the semantic sufficiency gate or structure gate.
 
-**Cause**: The content is too thin (not enough substance) or missing required structure (headings, metadata).
+**Common causes**: The content is too thin (not enough substance) or missing required structure (headings, metadata).
 
 **Fix**: Add more detail to the session summary. Use `dryRun: true` in the `memory_save` tool call to preview gate results without saving. Check the post-save quality review output for specific issues.
 
+---
+
 ### Validation Fails With "Missing Required Files"
 
-**Symptom**: `validate.sh` reports missing files like `spec.md` or `plan.md`.
+**What you see**: `validate.sh` reports missing files like `spec.md` or `plan.md`.
 
-**Cause**: The spec folder was created manually without `create.sh`, or the wrong level templates were applied.
+**Common causes**: The spec folder was created manually without `create.sh`, or the wrong level templates were applied.
 
 **Fix**:
 ```bash
@@ -869,11 +883,13 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
   .opencode/specs/[project]/NNN-feature/ [target-level]
 ```
 
+---
+
 ### Memory Search Returns Poor Results
 
-**Symptom**: `memory_context()` returns irrelevant results or misses content you know exists.
+**What you see**: `memory_context()` returns irrelevant results or misses content you know exists.
 
-**Cause**: The embedding index is stale, or the query is too vague for intent classification.
+**Common causes**: The embedding index is stale, or the query is too vague for intent classification.
 
 **Fix**:
 ```bash
@@ -1040,4 +1056,4 @@ A: Shared memory adds controlled access boundaries between users or agents. You 
 
 ---
 
-*Documentation version: 2.2 | Last updated: 2026-03-25 | Skill version: 2.2.27.0*
+*Documentation version: 3.0 | Last updated: 2026-03-25 | Skill version: 2.2.27.0*

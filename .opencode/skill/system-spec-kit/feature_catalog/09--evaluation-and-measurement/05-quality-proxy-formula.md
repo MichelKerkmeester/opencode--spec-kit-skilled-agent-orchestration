@@ -19,7 +19,7 @@ Manual evaluation does not scale. You cannot hand-review every query across ever
 
 The quality proxy formula produces a single 0-1 score from four components: `avgRelevance * 0.40 + topResult * 0.25 + countSaturation * 0.20 + latencyPenalty * 0.15`. It runs automatically on logged data and flags regressions without human review.
 
-The weights were chosen to prioritize relevance over speed while still penalizing latency spikes. Correlation testing against the manual ground truth corpus confirmed the proxy tracks real quality well enough for regression detection.
+The weights were chosen to prioritize relevance over speed while still penalizing latency spikes. The proxy is designed to correlate with manual assessment well enough to act as a regression signal, but this feature entry should not claim a separately verified correlation study against the manual ground-truth corpus.
 
 ---
 

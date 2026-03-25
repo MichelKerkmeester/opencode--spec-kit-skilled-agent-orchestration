@@ -23,7 +23,7 @@ contextType: "implementation"
 |-------|-------|
 | **Level** | 1 |
 | **Priority** | P1 |
-| **Status** | In Progress (tasks tracker pending completion evidence) |
+| **Status** | Complete (2026-03-25) |
 | **Created** | 2026-03-15 |
 | **Branch** | `main` |
 | **Parent** | `022-hybrid-rag-fusion` (Phase 018) |
@@ -141,7 +141,7 @@ Produce a complete rewrite that documents the Spec Kit skill holistically — co
 
 <!--
 SPEC: 018-rewrite-system-speckit-readme
-Level 1 — In Progress (tasks tracker not yet reconciled, 2026-03-24)
+Level 1 — Complete (2026-03-25)
 Target: Complete rewrite of Spec Kit README covering all components
 -->
 

@@ -1,21 +1,21 @@
 ---
-title: "Math.max/min stack overflow elimination"
-description: "Tracks the replacement of `Math.max(...array)` spread patterns with `reduce()` to prevent stack overflows on large arrays."
+title: "Math.max/min stack overflow hardening"
+description: "Tracks targeted replacement of `Math.max(...array)` spread patterns with stack-safe extrema logic, while noting residual production sites that still remain."
 ---
 
-# Math.max/min stack overflow elimination
+# Math.max/min stack overflow hardening
 
 ## 1. OVERVIEW
 
-Tracks the replacement of `Math.max(...array)` spread patterns with `reduce()` to prevent stack overflows on large arrays.
+Tracks targeted replacement of `Math.max(...array)` spread patterns with stack-safe extrema logic to reduce stack-overflow risk on large arrays.
 
-A common way of finding the largest or smallest number in a list was crashing the system when the list got too big. Seven places in the code used this risky approach. All were replaced with a safer method that works no matter how large the list grows, preventing crashes on big knowledge bases.
+A common way of finding the largest or smallest number in a list was crashing the system when the list got too big. A prior remediation pass replaced several of the riskiest spread-based extrema sites with safer logic, but the cleanup is not complete. Residual production spread sites still remain and are called out below.
 
 ---
 
 ## 2. CURRENT REALITY
 
-`Math.max(...array)` and `Math.min(...array)` push all elements onto the call stack, causing `RangeError` on arrays exceeding ~100K elements. Seven production files were converted from spread patterns to `reduce()`:
+`Math.max(...array)` and `Math.min(...array)` push all elements onto the call stack, causing `RangeError` on arrays exceeding ~100K elements. Several production sites were converted from spread patterns to `reduce()` or equivalent stack-safe extrema logic:
 
 - `rsf-fusion.ts` (deleted): 6 instances were fixed before module removal
 - `causal-boost.ts`: 1 instance
@@ -74,5 +74,5 @@ Two residual production spread sites still remain outside that converted set: `m
 ## 4. SOURCE METADATA
 
 - Group: Multi-agent deep review remediation (Phase 018)
-- Source feature title: Math.max/min stack overflow elimination
+- Source feature title: Math.max/min stack overflow hardening
 - Current reality source: feature_catalog.md

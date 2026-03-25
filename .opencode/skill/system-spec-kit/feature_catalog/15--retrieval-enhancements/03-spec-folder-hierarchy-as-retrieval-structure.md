@@ -29,6 +29,7 @@ The `queryHierarchyMemories()` function returns parent, sibling and ancestor mem
 
 | File | Layer | Role |
 |------|-------|------|
+| `mcp_server/lib/search/graph-search-fn.ts` | Lib | Augments graph retrieval with hierarchy rows when `specFolder` is provided |
 | `mcp_server/lib/search/spec-folder-hierarchy.ts` | Lib | Spec folder hierarchy traversal |
 
 ### Tests

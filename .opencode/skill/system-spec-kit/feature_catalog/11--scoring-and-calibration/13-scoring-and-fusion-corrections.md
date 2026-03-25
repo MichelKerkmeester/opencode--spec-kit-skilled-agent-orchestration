@@ -1,13 +1,13 @@
 ---
 title: "Scoring and fusion corrections"
-description: "Covers nine scoring fixes including intent weight recency, five-factor weight normalization, stack overflow prevention, BM25 specFolder filter, shared `resolveEffectiveScore` consolidation, and RSF ID canonicalization."
+description: "Covers nine scoring fixes including intent weight recency, five-factor weight normalization, stack overflow prevention, BM25 specFolder filter, shared `resolveEffectiveScore` consolidation, and RRF ID canonicalization."
 ---
 
 # Scoring and fusion corrections
 
 ## 1. OVERVIEW
 
-Covers nine scoring fixes including intent weight recency, five-factor weight normalization, stack overflow prevention, BM25 specFolder filter, shared `resolveEffectiveScore` consolidation, and RSF ID canonicalization.
+Covers nine scoring fixes including intent weight recency, five-factor weight normalization, stack overflow prevention, BM25 specFolder filter, shared `resolveEffectiveScore` consolidation, and RRF ID canonicalization.
 
 These nine fixes address problems in how scores are calculated and combined. Issues ranged from weights that did not add up to 100% to a method that crashed when processing large batches and a filter that compared apples to oranges. Each fix makes the scoring math more accurate and stable, ensuring the final ranking truly reflects which results are most relevant to your question.
 
@@ -25,7 +25,7 @@ Nine scoring issues were fixed:
 - **Adaptive fusion normalization (#10):** Core weights (semantic + keyword + recency) now normalize to sum 1.0 after doc-type adjustments. Only applied when doc-type shifts alter the balance.
 - **Shared resolveEffectiveScore (#11):** A single function in `pipeline/types.ts` replaces both Stage 2's `resolveBaseScore()` and Stage 3's local `effectiveScore()`. Uses the canonical fallback chain: `intentAdjustedScore -> rrfScore -> score -> similarity/100`, all clamped [0,1].
 - **Configurable interference threshold (#12):** `computeInterferenceScoresBatch()` now accepts an optional `threshold` parameter (defaults to `INTERFERENCE_SIMILARITY_THRESHOLD`).
-- **RSF ID canonicalization (#13):** `fuseResultsRsfMulti()` and `fuseResultsRsfCrossVariant()` now use `canonicalRrfId()` for map keys and variant appearance tracking, preventing numeric/string ID splits such as `42` vs "42" from surfacing as duplicate RSF items.
+- **RRF ID canonicalization (#13):** `fuseResultsMulti()` and `fuseResultsCrossVariant()` now use `canonicalRrfId()` for map keys and variant appearance tracking, preventing numeric/string ID splits such as `42` vs "42" from surfacing as duplicate fused items.
 
 In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent pipeline steps (artifact routing, feedback signals, session boost, and causal boost) can mutate `score`. Since `resolveEffectiveScore()` prefers `intentAdjustedScore` over `score`, later modifications were invisible in final ranking. A synchronization pass now flat-overwrites the score aliases by clamping the current value and writing the same number into `score`, `rrfScore`, and `intentAdjustedScore` via `withSyncedScoreAliases()` and `syncScoreAliasesInPlace()`. This keeps downstream ranking consistent with the latest pipeline score; it does not preserve the prior value with `Math.max(...)`.
 

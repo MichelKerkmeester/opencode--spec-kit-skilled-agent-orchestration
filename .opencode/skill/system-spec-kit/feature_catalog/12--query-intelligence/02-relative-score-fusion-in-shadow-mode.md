@@ -1,13 +1,13 @@
 ---
 title: "Relative score fusion in shadow mode"
-description: "Relative score fusion (RSF) was fully removed — module, tests, and shadow metadata deleted. RRF is the sole fusion method."
+description: "Relative score fusion (RSF) runtime code was removed, while residual test references and Stage 2 comments remain for regression coverage. RRF is the sole live fusion method."
 ---
 
 # Relative score fusion in shadow mode
 
 ## 1. OVERVIEW
 
-Removed from live ranking in Sprint 8. RSF implementation code, dedicated test files, and the `rsfShadow` metadata field were fully deleted during the v3 remediation sweep (updated 2026-03-25 per deep review).
+Removed from live ranking in Sprint 8. RSF implementation code and the `rsfShadow` metadata field were deleted during the v3 remediation sweep, while residual test references and Stage 2 comments remain as regression/historical breadcrumbs (updated 2026-03-25 per deep review).
 
 When multiple search methods return ranked lists, RSF was one alternative way to merge them. RRF won the evaluation and RSF was deprecated. The module was retained temporarily for offline comparison but was never reactivated — it was removed as dead code.
 
@@ -15,9 +15,9 @@ When multiple search methods return ranked lists, RSF was one alternative way to
 
 ## 2. CURRENT REALITY
 
-RRF remains the sole live fusion method. RSF has been fully removed from the codebase.
+RRF remains the sole live fusion method. RSF runtime code has been removed, but residual test references and Stage 2 comments still remain in the codebase.
 
-The standalone RSF implementation and dedicated RSF test files have been deleted. RSF references in mixed test files (`cross-feature-integration-eval`, `feature-eval-query-intelligence`, `dead-code-regression`) have been surgically removed. The `rsfShadow` metadata field in `Sprint3PipelineMeta` has been removed from `hybrid-search.ts`.
+The standalone RSF implementation and dedicated RSF test files have been deleted. The `rsfShadow` metadata field in `Sprint3PipelineMeta` has been removed from `hybrid-search.ts`. Residual mentions still exist in mixed regression files such as `cross-feature-integration-eval.vitest.ts`, `feature-eval-query-intelligence.vitest.ts`, and `search-fallback-tiered.vitest.ts`, and Stage 2 comments in `pipeline/stage2-fusion.ts` still say `RRF / RSF` even though the runtime path is RRF-only.
 
 `SPECKIT_RSF_FUSION` may still appear as an inert config surface in documentation but has no runtime effect.
 
@@ -30,6 +30,7 @@ The standalone RSF implementation and dedicated RSF test files have been deleted
 | File | Layer | Role |
 |------|-------|------|
 | `shared/algorithms/rrf-fusion.ts` | Shared | RRF fusion algorithm (sole live method) |
+| `mcp_server/lib/search/pipeline/stage2-fusion.ts` | Lib | Residual comments still mention `RRF / RSF`; runtime fusion flow is RRF-only |
 
 ### Tests
 
@@ -37,6 +38,9 @@ The standalone RSF implementation and dedicated RSF test files have been deleted
 |------|-------|
 | `mcp_server/tests/rrf-fusion.vitest.ts` | RRF fusion validation |
 | `mcp_server/tests/unit-rrf-fusion.vitest.ts` | RRF unit tests |
+| `mcp_server/tests/cross-feature-integration-eval.vitest.ts` | Residual `SPECKIT_RSF_FUSION` references kept in mixed regression coverage |
+| `mcp_server/tests/feature-eval-query-intelligence.vitest.ts` | Residual `SPECKIT_RSF_FUSION` env backup for evaluation coverage |
+| `mcp_server/tests/search-fallback-tiered.vitest.ts` | Residual `SPECKIT_RSF_FUSION` env backup for fallback regression coverage |
 
 ---
 

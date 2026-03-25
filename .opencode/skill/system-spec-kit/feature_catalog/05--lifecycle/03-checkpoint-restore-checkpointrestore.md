@@ -1,15 +1,15 @@
 ---
 title: "Checkpoint restore (checkpoint_restore)"
-description: "Covers the checkpoint restore tool that decompresses snapshots and merges or replaces memory state atomically."
+description: "Covers the checkpoint restore tool that decompresses snapshots and either replaces memory state atomically with `clearExisting=true` or merges with best-effort partial restore semantics by default."
 ---
 
 # Checkpoint restore (checkpoint_restore)
 
 ## 1. OVERVIEW
 
-Covers the checkpoint restore tool that decompresses snapshots and merges or replaces memory state atomically.
+Covers the checkpoint restore tool that decompresses snapshots and either replaces memory state atomically with `clearExisting=true` or merges with best-effort partial restore semantics by default.
 
-This brings your knowledge base back to a previous snapshot, like using the undo button on a massive scale. If the restore fails partway through, nothing changes and your current data stays safe. Restored memories are immediately searchable without any extra steps.
+This brings your knowledge base back to a previous snapshot, like using the undo button on a massive scale. If a replace-style restore fails partway through, nothing changes and your current data stays safe. In merge mode, successful rows can still commit while failures are reported as warnings. Restored memories are immediately searchable without any extra steps.
 
 ---
 
@@ -19,7 +19,7 @@ Restoring from a named checkpoint decompresses the gzip snapshot, validates ever
 
 The `clearExisting` mode deserves explanation. When true, the entire restore runs inside a database transaction. If the restore encounters an error halfway through, the transaction rolls back and existing data is untouched. This atomicity guarantee (a T101 fix) is critical because clearing existing data and then failing to restore would leave you with an empty database and no way back.
 
-When merging (the default), the system checks for duplicates using a logical key of `spec_folder + file_path + anchor_id`. Existing memories that match the logical key are skipped rather than duplicated.
+When merging (the default), the system checks for duplicates using a logical key of `spec_folder + file_path + anchor_id`. Existing memories that match the logical key are skipped rather than duplicated, but row-level/table-level errors are accumulated and the successful subset can still commit. In other words, merge mode is intentionally best-effort and may return a partial-restore warning instead of full rollback semantics.
 
 After restore, vectors are restored from the checkpoint snapshot when vector payloads are present. The restore handler then clears in-memory search/constitutional caches, rebuilds BM25 from live DB content when BM25 is enabled and refreshes the trigger cache. This keeps restored memories immediately discoverable without forcing a full re-embedding pass.
 

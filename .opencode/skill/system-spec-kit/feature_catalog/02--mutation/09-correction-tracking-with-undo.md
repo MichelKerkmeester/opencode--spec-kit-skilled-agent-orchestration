@@ -15,11 +15,13 @@ When a newer memory replaces or refines an older one, the system records what ch
 
 ## 2. CURRENT REALITY
 
-The corrections module (`lib/learning/corrections.ts`) tracks inter-memory relationship signals during the learning pipeline. When a memory supersedes, deprecates, refines, or merges with another, the correction is recorded with before/after stability scores and applied penalty/boost values. Four correction types are supported: `superseded`, `deprecated`, `refined`, and `merged`.
+The corrections module (`lib/learning/corrections.ts`) implements inter-memory relationship recording and stability-adjustment logic as a library module. When a caller invokes it, a correction can record before/after stability scores plus applied penalty/boost values for four correction types: `superseded`, `deprecated`, `refined`, and `merged`.
 
 Each correction adjusts the stability scores of both the original and correcting memories: the original receives a penalty while the correction receives a boost. Stability changes are tracked in a `StabilityChanges` structure for audit purposes. The feature is gated by `SPECKIT_RELATIONS` (default `true`). When disabled, relational learning corrections are skipped and no stability adjustments are applied.
 
-Undo is part of the live behavior, not just the schema. `undo_correction()` runs inside a transaction with three steps:
+This module is implemented and tested, but it is **not** currently wired to any MCP tool endpoint or mutation-handler hot path. `record_correction()`, `undo_correction()`, and the correction history/stat helpers are exported through `lib/learning/index.ts`, yet no handler or tool dispatcher calls them today. Treat the behavior below as library capability rather than live end-user MCP behavior.
+
+Undo logic exists in the module. `undo_correction()` runs inside a transaction with three steps:
 
 1. **Stability rollback** -- restores the pre-correction stability values for both the original memory and the correcting memory using the `before_stability` and `after_stability` values stored on the correction row at record time.
 2. **`is_undone` marking** -- sets `is_undone = 1` and records `undone_at = datetime('now')` on the correction row so the correction is permanently flagged as reversed without deleting the audit trail.

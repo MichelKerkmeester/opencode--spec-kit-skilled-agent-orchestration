@@ -7,18 +7,18 @@ description: "Reconstructs interrupted session state using resume-mode memory re
 
 ## 1. OVERVIEW
 
-When a session is interrupted by a crash, context compaction, or timeout, `/memory:continue` reconstructs the most likely previous session state and routes the user to the best next step. It is one of the 6 shipped memory commands and uses 4 shared MCP tools borrowed from `/memory:analyze` and `/memory:manage`.
+When a session is interrupted by a crash, context compaction, or timeout, `/memory:continue` reconstructs the most likely previous session state and routes the user to the best next step. It is one of the 6 shipped memory commands and exposes 4 shared MCP tools borrowed from `/memory:analyze` and `/memory:manage`.
 
 ---
 
 ## 2. CURRENT REALITY
 
-**SHIPPED.** `/memory:continue` is live and uses 4 shared MCP tools:
+**SHIPPED.** `/memory:continue` is live and exposes 4 shared MCP tools:
 
-- **`memory_context`** (from `/memory:analyze`) -- Called in `resume` mode as the primary recovery path. Uses anchors `["state", "next-steps", "summary", "blockers"]` with a 1200-token budget, `minState=WARM`, `includeContent=true`, dedup and decay both disabled.
+- **`memory_context`** (from `/memory:analyze`) -- Called in `resume` mode as the primary recovery path. In `mcp_server/handlers/memory-context.ts`, resume mode is a dedicated `memory_search`-backed strategy with anchors `["state", "next-steps", "summary", "blockers"]`, default `limit=5`, a 1200-token budget, `minState=WARM`, `includeContent=true`, and both dedup and decay disabled. When auto-resume is enabled and the caller resumes a reusable working-memory session, `systemPromptContext` is injected before token-budget enforcement.
 - **`memory_search`** (from `/memory:analyze`) -- Fallback for thin summaries when `memory_context` returns the right folder but insufficient state detail. Uses the same resume anchors.
 - **`memory_list`** (from `/memory:manage`) -- Recent-candidate discovery when no clear session candidate exists. Returns the 5 most recently updated memories.
-- **`memory_stats`** (from `/memory:manage`) -- Available for system health context during recovery.
+- **`memory_stats`** (from `/memory:manage`) -- Exposed on the command surface, but not part of the primary recovery chain documented in the live `/memory:continue` workflow.
 
 ### Recovery Modes
 

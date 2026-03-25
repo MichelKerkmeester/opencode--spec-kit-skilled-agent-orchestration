@@ -37,11 +37,11 @@ Complete rewrite of the Spec Kit README. Research catalogs all skill components 
 - [x] Dependencies identified (SKILL.md, feature catalog, commands, templates)
 
 ### Definition of Done
-- [ ] All components documented (levels, memory, tools, commands, templates, scripts)
-- [ ] DQI >= 75 verified
-- [ ] No banned HVR words
-- [ ] Links to MCP README verified
-- [ ] No content duplication with MCP README
+- [x] All components documented (levels, memory, tools, commands, templates, scripts)
+- [x] DQI >= 75 verified
+- [x] No banned HVR words
+- [x] Links to MCP README verified
+- [x] No content duplication with MCP README
 <!-- /ANCHOR:quality-gates -->
 
 ---
@@ -139,6 +139,6 @@ SKILL.md + feature_catalog + commands + templates → research brief → draft �
 
 <!--
 PLAN: 018-rewrite-system-speckit-readme
-In Progress (2026-03-15)
+Complete (2026-03-25)
 4-phase: Research → Draft → Review → Assembly
 -->

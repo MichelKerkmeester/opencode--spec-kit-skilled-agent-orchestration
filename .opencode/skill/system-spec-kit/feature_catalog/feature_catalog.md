@@ -11,27 +11,27 @@ This document combines two complementary views of the Spec Kit Memory system int
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. RETRIEVAL](#2--retrieval)
-- [3. MUTATION](#3--mutation)
-- [4. DISCOVERY](#4--discovery)
-- [5. MAINTENANCE](#5--maintenance)
-- [6. LIFECYCLE](#6--lifecycle)
-- [7. ANALYSIS](#7--analysis)
-- [8. EVALUATION](#8--evaluation)
-- [9. BUG FIXES AND DATA INTEGRITY](#9--bug-fixes-and-data-integrity)
-- [10. EVALUATION AND MEASUREMENT](#10--evaluation-and-measurement)
-- [11. GRAPH SIGNAL ACTIVATION](#11--graph-signal-activation)
-- [12. SCORING AND CALIBRATION](#12--scoring-and-calibration)
-- [13. QUERY INTELLIGENCE](#13--query-intelligence)
-- [14. MEMORY QUALITY AND INDEXING](#14--memory-quality-and-indexing)
-- [15. PIPELINE ARCHITECTURE](#15--pipeline-architecture)
-- [16. RETRIEVAL ENHANCEMENTS](#16--retrieval-enhancements)
-- [17. TOOLING AND SCRIPTS](#17--tooling-and-scripts)
-- [18. GOVERNANCE](#18--governance)
-- [19. UX HOOKS](#19--ux-hooks)
-- [20. SPEC KIT PHASE WORKFLOWS](#20--spec-kit-phase-workflows)
-- [21. FEATURE FLAG REFERENCE](#21--feature-flag-reference)
+- [1. OVERVIEW](#1-overview)
+- [2. RETRIEVAL](#2-retrieval)
+- [3. MUTATION](#3-mutation)
+- [4. DISCOVERY](#4-discovery)
+- [5. MAINTENANCE](#5-maintenance)
+- [6. LIFECYCLE](#6-lifecycle)
+- [7. ANALYSIS](#7-analysis)
+- [8. EVALUATION](#8-evaluation)
+- [9. BUG FIXES AND DATA INTEGRITY](#9-bug-fixes-and-data-integrity)
+- [10. EVALUATION AND MEASUREMENT](#10-evaluation-and-measurement)
+- [11. GRAPH SIGNAL ACTIVATION](#11-graph-signal-activation)
+- [12. SCORING AND CALIBRATION](#12-scoring-and-calibration)
+- [13. QUERY INTELLIGENCE](#13-query-intelligence)
+- [14. MEMORY QUALITY AND INDEXING](#14-memory-quality-and-indexing)
+- [15. PIPELINE ARCHITECTURE](#15-pipeline-architecture)
+- [16. RETRIEVAL ENHANCEMENTS](#16-retrieval-enhancements)
+- [17. TOOLING AND SCRIPTS](#17-tooling-and-scripts)
+- [18. GOVERNANCE](#18-governance)
+- [19. UX HOOKS](#19-ux-hooks)
+- [20. SPEC KIT PHASE WORKFLOWS](#20-spec-kit-phase-workflows)
+- [21. FEATURE FLAG REFERENCE](#21-feature-flag-reference)
 
 ---
 
@@ -43,9 +43,9 @@ Use this catalog as the canonical inventory for both current behavior and delive
 
 | Audit phase | Catalog coverage |
 |---|---|
-| `020-feature-flag-reference` | Covered by [`19--feature-flag-reference/`](19--feature-flag-reference/01-1-search-pipeline-features-speckit.md) via slug match (`feature-flag-reference`) |
-| `021-remediation-revalidation` | Covered as cross-category remediation records (for example: [08--bug-fixes-and-data-integrity/06](08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md), [14--pipeline-architecture/07](14--pipeline-architecture/07-search-pipeline-safety.md), [16--tooling-and-scripts/05](16--tooling-and-scripts/05-code-standards-alignment.md)) |
-| `022-implement-and-remove-deprecated-features` | Covered by implementation/deprecation closure records ([16--tooling-and-scripts/04](16--tooling-and-scripts/04-dead-code-removal.md), [17--governance/02](17--governance/02-feature-flag-sunset-audit.md)) |
+| `020-feature-flag-reference` | Covered by [`19--feature-flag-reference/`](19--feature-flag-reference/01-1-search-pipeline-features-speckit.md) via slug match (`feature-flag-reference`). See [`19--feature-flag-reference/08-audit-phase-020-mapping-note.md`](19--feature-flag-reference/08-audit-phase-020-mapping-note.md). |
+| `021-remediation-revalidation` | Covered as cross-category remediation records (for example: [08--bug-fixes-and-data-integrity/06](08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md), [14--pipeline-architecture/07](14--pipeline-architecture/07-search-pipeline-safety.md), [16--tooling-and-scripts/05](16--tooling-and-scripts/05-code-standards-alignment.md)). See [`20--remediation-revalidation/01-category-stub.md`](20--remediation-revalidation/01-category-stub.md). |
+| `022-implement-and-remove-deprecated-features` | Covered by implementation/deprecation closure records ([16--tooling-and-scripts/04](16--tooling-and-scripts/04-dead-code-removal.md), [17--governance/02](17--governance/02-feature-flag-sunset-audit.md)). See [`21--implement-and-remove-deprecated-features/01-category-stub.md`](21--implement-and-remove-deprecated-features/01-category-stub.md). |
 
 ### Command-Surface Contract
 
@@ -128,10 +128,7 @@ This is the lightweight search entry point for callers that want the main semant
 
 #### Source Files
 
-- `mcp_server/tools/memory-tools.ts`
-- `mcp_server/tool-schemas.ts`
-- `mcp_server/schemas/tool-input-schemas.ts`
-- `mcp_server/README.md`
+See [`01--retrieval/10-fast-delegated-search-memory-quick-search.md`](01--retrieval/10-fast-delegated-search-memory-quick-search.md) for full implementation and test file listings.
 
 ---
 
@@ -3884,6 +3881,24 @@ See [`16--tooling-and-scripts/12-session-capturing-pipeline-quality.md`](16--too
 
 ---
 
+### Template compliance contract enforcement
+
+#### Description
+
+Template compliance contract enforcement is a 3-layer defense-in-depth system that helps spec folder documents pass structural validation on first write. It gives `@speckit` agents the exact required structure before they write, validates immediately after write, and backs that with section-depth minimums so thin documents do not slip through on headings alone.
+
+#### Current Reality
+
+The canonical structural contract lives in `references/validation/template_compliance_contract.md`. A compact anchor-to-H2 contract is embedded in all five CLI `@speckit` agent definitions so each runtime knows the required section order, anchors, and minimum structure before writing spec folder markdown.
+
+After any spec folder `.md` write, the workflow runs `validate.sh --strict` against the spec folder. Exit code `2` flags concrete violations for repair, while the contract's section-count minimums provide a third safeguard against documents that are structurally valid but not substantive enough for their level.
+
+#### Source Files
+
+See [`16--tooling-and-scripts/18-template-compliance-contract-enforcement.md`](16--tooling-and-scripts/18-template-compliance-contract-enforcement.md) for full implementation and verification file listings.
+
+---
+
 ## 18. GOVERNANCE
 
 ### Feature flag governance
@@ -3922,7 +3937,7 @@ The current active flag-helper inventory in `search-flags.ts` is 24 exported `is
 
 **Phase 017 update:** The legacy V1 pipeline code was removed, leaving the 4-stage pipeline as the only supported path. `SPECKIT_PIPELINE_V2` remains part of historical audit context but is no longer consumed by runtime code.
 
-**Sprint 8 update:** Flag graduation and dead code removal have been completed. The Sprint 8 comprehensive remediation removed a large dead-code slice including: dead feature flag branches in `hybrid-search.ts` (RSF and shadow-scoring), dead feature flag functions (`isShadowScoringEnabled`, `isRsfEnabled`), dead module-level state (`stmtCache`, `lastComputedAt`, `activeProvider`, `flushCount`, 3 dead config fields in `working-memory.ts`) and dead functions/exports (`computeCausalDepth` single-node variant, `getSubgraphWeights`, `RECOVERY_HALF_LIFE_DAYS`, `logCoActivationEvent`). `isInShadowPeriod` in learned feedback remains active as Safeguard #6. See [Comprehensive remediation (Sprint 8)](#comprehensive-remediation-sprint-8) for the full accounting.
+**Sprint 8 update:** Flag graduation and dead code removal have been completed. The Sprint 8 comprehensive remediation removed a large dead-code slice including: dead feature flag branches in `hybrid-search.ts` (RSF and shadow-scoring), dead feature flag functions (`isShadowScoringEnabled`, `isRsfEnabled`), dead module-level state (`stmtCache`, `lastComputedAt`, `activeProvider`, `flushCount`, 3 dead config fields in `working-memory.ts`) and dead functions/exports (`computeCausalDepth` single-node variant, `getSubgraphWeights`, `RECOVERY_HALF_LIFE_DAYS`, `logCoActivationEvent`). `isInShadowPeriod` in learned feedback remains active as Safeguard #6. See Comprehensive remediation (Sprint 8) for the full accounting.
 
 #### Source Files
 
@@ -4535,7 +4550,7 @@ These are guardrail settings for save-time validation. They define size limits, 
 | `MCP_CHARS_PER_TOKEN` | `4` | number | `lib/validation/preflight.ts` | Characters-per-token ratio used for save-time token budget estimation during pre-flight validation. The same ratio is also shared by the quality loop when trimming to its default token budget. |
 | `MCP_DUPLICATE_THRESHOLD` | `0.95` | number | `lib/validation/preflight.ts` | Cosine similarity threshold above which a new memory is considered a near-duplicate of an existing one during pre-flight validation. Duplicates above this threshold are rejected by the quality gate Layer 3. |
 | `MCP_MAX_CONTENT_LENGTH` | `250000` | number | `lib/validation/preflight.ts` | Maximum allowed content length in characters for a memory file. Files exceeding this limit are rejected at pre-flight validation before any embedding generation or database writes. |
-| `MCP_MAX_MEMORY_TOKENS` | `8000` | number | `lib/validation/preflight.ts` | Maximum token budget per memory (estimated via `MCP_CHARS_PER_TOKEN`). Pre-flight validation warns when a memory exceeds this limit. |
+| `MCP_MAX_MEMORY_TOKENS` | `8000` | number | `lib/validation/preflight.ts` | Maximum token budget per memory (estimated via `MCP_CHARS_PER_TOKEN`). Pre-flight hard-fails with PF020 (`TOKEN_BUDGET_EXCEEDED`) when a memory exceeds this limit. |
 | `MCP_MIN_CONTENT_LENGTH` | `10` | number | `lib/validation/preflight.ts` | Minimum content length in characters for a valid memory file. Files shorter than this are rejected at pre-flight. The quality gate Layer 1 requires at least 50 characters, so this lower floor catches truly empty files. |
 | `MCP_TOKEN_WARNING_THRESHOLD` | `0.8` | number | `lib/validation/preflight.ts` | Fraction of `MCP_MAX_MEMORY_TOKENS` at which a token budget warning is emitted. At 0.8, a warning fires when estimated tokens exceed 80% of the max. |
 
@@ -4585,10 +4600,10 @@ These settings pick which embedding and reranking providers the system uses and 
 | Name | Default | Type | Source File | Description |
 |---|---|---|---|---|
 | `COHERE_API_KEY` | _(none)_ | string | `tests/search-limits-scoring.vitest.ts` | API key for the Cohere reranker provider. When present, the cross-encoder reranker uses Cohere's rerank API. Falls back to local or Voyage reranker when absent. |
-| `EMBEDDING_DIM` | _(provider default)_ | number | `lib/search/vector-index-store.ts` | Compatibility check for the stored vector dimension. Runtime dimension selection comes from the active provider profile (Voyage 1024, OpenAI 1536, local 768 fallback); the env var only short-circuits confirmation when explicitly set to `'768'`. |
+| `EMBEDDING_DIM` | _(provider default)_ | number | `lib/search/vector-index-store.ts`, `shared/embeddings/factory.ts` | Compatibility check and startup override for the stored vector dimension. Any positive explicit `EMBEDDING_DIM` value is honored first; otherwise runtime dimension selection comes from the active provider profile (Voyage 1024, OpenAI 1536, local 768 fallback). |
 | `EMBEDDINGS_PROVIDER` | `'auto'` | string | `shared/embeddings/factory.ts` | Selects the embedding provider. Valid values include `'auto'`, `'openai'`, `'hf-local'`, and `'voyage'`. In `'auto'` mode, resolution precedence is explicit `EMBEDDINGS_PROVIDER` -> `VOYAGE_API_KEY` -> `OPENAI_API_KEY` -> local fallback. |
 | `OPENAI_API_KEY` | _(none)_ | string | `tests/embeddings.vitest.ts` | API key for the OpenAI embeddings provider. Required when `EMBEDDINGS_PROVIDER` is `'openai'` or when `'auto'` mode selects OpenAI as the available provider. |
-| `RERANKER_LOCAL` | `false` | boolean | `lib/search/local-reranker.ts` | **IMPLEMENTED (Sprint 019).** When set to `'true'` (strict string equality, not truthy), enables the local GGUF reranker via `node-llama-cpp`. Requires model file on disk and sufficient total system memory (8GB default, 2GB with custom `SPECKIT_RERANKER_MODEL`). Sequential per-candidate inference; expect 200-400ms for top-20 on Apple Silicon (CHK-113). Falls back silently to algorithmic RRF scoring on any precondition failure. |
+| `RERANKER_LOCAL` | `false` | boolean | `lib/search/local-reranker.ts` | **IMPLEMENTED (Sprint 019).** When set to `'true'` (strict string equality, not truthy), enables the local GGUF reranker via `node-llama-cpp`. Requires model file on disk and sufficient total system memory (8GB default, 2GB with custom `SPECKIT_RERANKER_MODEL`). Sequential per-candidate inference; expect 200-400ms for top-20 on Apple Silicon (CHK-113). Falls back to the original candidate ordering on precondition failure or runtime inference error. |
 | `VOYAGE_API_KEY` | _(none)_ | string | `tests/embeddings.vitest.ts` | API key for the Voyage AI embeddings and reranker provider. In `'auto'` mode, Voyage is preferred over OpenAI when this key is present. |
 
 #### Source Files
