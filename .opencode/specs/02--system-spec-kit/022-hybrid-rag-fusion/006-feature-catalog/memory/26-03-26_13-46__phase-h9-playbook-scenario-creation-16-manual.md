@@ -1,12 +1,12 @@
 ---
 title: "Phase H9 Playbook Scenario [006-feature-catalog/26-03-26_13-46__phase-h9-playbook-scenario-creation-16-manual]"
-description: "Phase H9 playbook scenario creation: 16 manual testing playbook files (IDs 217-232) created via 4...; Split 16 files across 4 parallel GPT-5.; Used TIDD-EC delegation prompt..."
+description: "Phase H9 playbook scenario creation: 16 manual testing playbook files (IDs 217-232) created via 4 parallel GPT-5.4 codex agents across categories 09, 14, 17, 19, 20, 21. Spec folder updated with tasks T256-T271, playbook count 233→275."
 trigger_phrases:
   - "remediation revalidation"
   - "implement and remove deprecated features"
   - "feature catalog"
   - "t256 t271"
-  - "tree thinning"
+  - "playbook scenarios"
   - "system spec kit"
   - "hybrid rag fusion"
   - "split files"
@@ -35,9 +35,9 @@ _sourceTranscriptPath: ""
 _sourceSessionId: ""
 _sourceSessionCreated: 0
 _sourceSessionUpdated: 0
-captured_file_count: 4
-filesystem_file_count: 4
-git_changed_file_count: 0
+captured_file_count: 20
+filesystem_file_count: 20
+git_changed_file_count: 23
 quality_score: 1.00
 quality_flags: []
 spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
@@ -93,15 +93,15 @@ spec_folder_health: {"pass":true,"score":1,"errors":0,"warnings":0}
 
 | Field | Value |
 |-------|-------|
-| Session Status | IN_PROGRESS |
-| Completion % | 23% |
+| Session Status | COMPLETE |
+| Completion % | 100% |
 | Last Activity | 2026-03-26T12:46:04.608Z |
 | Time in Session | 0m |
 | Continuation Count | 1 |
 
 ### Context Summary
 
-**Phase:** PLANNING
+**Phase:** IMPLEMENTATION (complete)
 
 **Recent:** Created new playbook category directories 20--remediation-revalidation and 21--implement-and-remove-deprecated-features, Committed only 006-feature-catalog changes, excluding unrelated 033 work, Next Steps
 
@@ -147,7 +147,7 @@ Next: Update MANUAL_TESTING_PLAYBOOK.md root index with new entries 217-232
 
 | Field | Value |
 |-------|-------|
-| Phase | PLANNING |
+| Phase | IMPLEMENTATION (complete) |
 | Active File | .opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/tasks.md |
 | Last Action | Next Steps |
 | Next Action | Update MANUAL_TESTING_PLAYBOOK.md root index with new entries 217-232 |
@@ -172,7 +172,7 @@ Next: Update MANUAL_TESTING_PLAYBOOK.md root index with new entries 217-232
 - [`decision-record.md`](./decision-record.md) - Architecture decisions
 - [`handover.md`](./handover.md) - Session handover notes
 
-**Key Topics:** `tidd-ec delegation` | `delegation prompt` | `across parallel` | `/create prompt` | `split across` | `prompt clear` | `clear prior` | `via /create` | `prior via` | `20--remediation-revalidation 21--implement-and-remove-deprecated-features` | `directories 20--remediation-revalidation` | `committed 006-feature-catalog` |
+**Key Topics:** `playbook scenario creation` | `manual testing playbook IDs 217-232` | `parallel GPT-5.4 codex agents` | `TIDD-EC delegation prompt` | `feature catalog remediation Phase H9` | `categories 09 14 17 19 20 21` | `playbook count 233 to 275` | `tasks T256-T271` |
 
 <!-- /ANCHOR:project-state-snapshot -->
 
@@ -185,7 +185,7 @@ Next: Update MANUAL_TESTING_PLAYBOOK.md root index with new entries 217-232
 
 **What Was Built**:
 
-- **Phase H9 playbook scenario creation: 16 manual testing playbook files (IDs 217-232) created via 4...** - Phase H9 playbook scenario creation: 16 manual testing playbook files (IDs 217-232) created via 4 parallel GPT-5.
+- **16 playbook scenario files (IDs 217-232)** created via 4 parallel GPT-5.4 codex agents across categories 09, 14, 17, 19, 20, 21. Playbook count 233→275.
 
 **Key Files and Their Roles**:
 
@@ -216,15 +216,14 @@ Next: Update MANUAL_TESTING_PLAYBOOK.md root index with new entries 217-232
 
 ## 2. OVERVIEW
 
-Phase H9 playbook scenario creation: 16 manual testing playbook files (IDs 217-232) created via 4...; Split 16 files across 4 parallel GPT-5.; Used TIDD-EC delegation prompt (CLEAR 45/50) created in prior session via /create:prompt
+Phase H9 playbook scenario creation: 16 manual testing playbook files (IDs 217-232) created via 4 parallel GPT-5.4 codex agents for new feature catalog entries from deep research remediation. Categories covered: 09, 14, 17, 19, 20, 21. Total counts: 255 catalog entries, 275 playbook scenarios.
 
 **Key Outcomes**:
-- Phase H9 playbook scenario creation: 16 manual testing playbook files (IDs 217-232) created via 4...
-- Split 16 files across 4 parallel GPT-5.
-- Used TIDD-EC delegation prompt (CLEAR 45/50) created in prior session via /create:prompt
-- Created new playbook category directories 20--remediation-revalidation and 21--implement-and-remove-deprecated-features
-- Committed only 006-feature-catalog changes, excluding unrelated 033 work
-- Next Steps
+- 16 playbook scenario files created (IDs 217-232) across 6 categories
+- Split across 4 parallel GPT-5.4 agents (4 files each) using TIDD-EC delegation prompt (CLEAR 45/50)
+- New playbook category directories created: 20--remediation-revalidation, 21--implement-and-remove-deprecated-features
+- Spec folder updated: tasks.md (T256-T271), spec.md (playbook count 233→275), plan.md (storage row), implementation-summary.md
+- Committed and pushed as `fa349d1c5`
 
 **Key Files:**
 
@@ -242,9 +241,9 @@ Phase H9 playbook scenario creation: 16 manual testing playbook files (IDs 217-2
 ## 3. DETAILED CHANGES
 
 <!-- ANCHOR:implementation-phase-playbook-scenario-creation-0b84b6d1 -->
-### FEATURE: Phase H9 playbook scenario creation: 16 manual testing playbook files (IDs 217-232) created via 4...
+### FEATURE: Phase H9 playbook scenario creation (16 files, IDs 217-232)
 
-Phase H9 playbook scenario creation: 16 manual testing playbook files (IDs 217-232) created via 4 parallel GPT-5.4 codex agents for new feature catalog entries from deep research remediation. Categories covered: 09, 14, 17, 19, 20, 21. New playbook directories created for cats 20 and 21. All files template-compliant (5 sections, 9-column table, correct cross-references). Spec folder updated: tasks.md (T256-T271), spec.md (playbook count 233→275), plan.md (storage row), implementation-summary.md...
+16 manual testing playbook files created via 4 parallel GPT-5.4 codex agents for new feature catalog entries from deep research remediation. Categories covered: 09, 14, 17, 19, 20, 21. New playbook directories created for cats 20 and 21. All files template-compliant (5 sections, 9-column table, correct cross-references). Spec folder updated: tasks.md (T256-T271), spec.md (playbook count 233→275), plan.md (storage row), implementation-summary.md (Phase H playbook section). Total counts: 255 catalog entries, 275 playbook scenarios. Committed as `fa349d1c5`.
 
 <!-- /ANCHOR:implementation-phase-playbook-scenario-creation-0b84b6d1 -->
 
@@ -472,9 +471,9 @@ spec_folder: "02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog"
 channel: "main"
 
 # Git Provenance (M-007d)
-head_ref: ""
-commit_ref: ""
-repository_state: "unavailable"
+head_ref: "main"
+commit_ref: "fa349d1c5"
+repository_state: "clean"
 is_detached_head: No
 
 # Classification
@@ -532,10 +531,10 @@ expires_at_epoch: 0  # 0 for critical (never expires)
 message_count: 1
 decision_count: 4
 tool_count: 0
-file_count: 4
-captured_file_count: 4
-filesystem_file_count: 4
-git_changed_file_count: 0
+file_count: 20
+captured_file_count: 20
+filesystem_file_count: 20
+git_changed_file_count: 23
 followup_count: 0
 
 # Access Analytics
@@ -545,18 +544,14 @@ relevance_boost: 1  # 1.0 default, increased by access patterns
 
 # Content Indexing
 key_topics:
-  - "tidd-ec delegation"
-  - "delegation prompt"
-  - "across parallel"
-  - "/create prompt"
-  - "split across"
-  - "prompt clear"
-  - "clear prior"
-  - "via /create"
-  - "prior via"
-  - "20--remediation-revalidation 21--implement-and-remove-deprecated-features"
-  - "directories 20--remediation-revalidation"
-  - "committed 006-feature-catalog"
+  - "playbook scenario creation"
+  - "manual testing playbook IDs 217-232"
+  - "parallel GPT-5.4 codex agents"
+  - "TIDD-EC delegation prompt"
+  - "feature catalog remediation Phase H9"
+  - "categories 09 14 17 19 20 21"
+  - "playbook count 233 to 275"
+  - "tasks T256-T271"
 
 # Trigger Phrases (auto-extracted for fast <50ms matching)
 trigger_phrases:
@@ -564,7 +559,7 @@ trigger_phrases:
   - "implement and remove deprecated features"
   - "feature catalog"
   - "t256 t271"
-  - "tree thinning"
+  - "playbook scenarios"
   - "system spec kit"
   - "hybrid rag fusion"
   - "split files"
@@ -593,6 +588,22 @@ key_files:
   - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/spec.md"
   - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/plan.md"
   - ".opencode/specs/02--system-spec-kit/022-hybrid-rag-fusion/006-feature-catalog/implementation-summary.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/09--evaluation-and-measurement/217-evaluation-api-surface.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/14--pipeline-architecture/218-mcp-server-public-api-barrel.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/14--pipeline-architecture/219-embeddings-and-retry-api.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/17--governance/220-constitutional-gate-enforcement-rule-pack.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/17--governance/221-shared-memory-admin-identity-governance.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/17--governance/222-governance-audit-review-and-rollout-metrics.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/19--feature-flag-reference/223-runtime-config-contract.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/19--feature-flag-reference/224-filter-config-contract.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/20--remediation-revalidation/225-remediation-runtime-surface.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/20--remediation-revalidation/226-memory-health-auto-repair.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/20--remediation-revalidation/227-feedback-driven-revalidation.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/21--implement-and-remove-deprecated-features/228-retired-runtime-shims.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/21--implement-and-remove-deprecated-features/229-lazy-loading-migration.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/21--implement-and-remove-deprecated-features/230-shadow-scoring-retirement.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/21--implement-and-remove-deprecated-features/231-inert-scoring-flags.md"
+  - ".opencode/skill/system-spec-kit/manual_testing_playbook/21--implement-and-remove-deprecated-features/232-adaptive-fusion-flag-drift.md"
 
 # Relationships
 related_sessions:
