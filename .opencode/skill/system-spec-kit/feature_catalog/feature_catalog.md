@@ -4316,7 +4316,7 @@ See [`18--ux-hooks/17-retrieval-session-state.md`](18--ux-hooks/17-retrieval-ses
 
 ---
 
-## 20--remediation-revalidation
+## 20. SPEC KIT PHASE WORKFLOWS
 
 ### Phase detection and scoring (recommend-level.sh --recommend-phases)
 
@@ -4382,7 +4382,7 @@ Shell script: `.opencode/skill/system-spec-kit/scripts/rules/check-phase-links.s
 
 ---
 
-## 21--implement-and-remove-deprecated-features
+## 21. FEATURE FLAG REFERENCE
 
 The tables below catalogue the documented environment-variable surface that is still read by code or intentionally retained as a live compatibility shim. The "Default" column reflects the value in effect when the variable is absent from the environment.
 

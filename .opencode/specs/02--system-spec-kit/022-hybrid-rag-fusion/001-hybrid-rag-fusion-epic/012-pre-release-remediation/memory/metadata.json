@@ -1,7 +1,7 @@
 {
-  "timestamp": "26-03-26 18-27",
+  "timestamp": "26-03-26 18-47",
   "messageCount": 1,
-  "decisionCount": 4,
+  "decisionCount": 5,
   "diagramCount": 0,
   "skillVersion": "1.7.2",
   "autoTriggered": false,
@@ -13,7 +13,7 @@
     "contaminationAudit": [
       {
         "stage": "content-filter",
-        "timestamp": "2026-03-26T17:27:46.701Z",
+        "timestamp": "2026-03-26T17:47:27.237Z",
         "patternsChecked": [
           "/^User message$/i",
           "/^User prompt$/i",
@@ -66,7 +66,7 @@
   "contaminationAudit": [
     {
       "stage": "extractor-scrub",
-      "timestamp": "2026-03-26T17:27:46.666Z",
+      "timestamp": "2026-03-26T17:47:27.170Z",
       "patternsChecked": [
         "step-by-step orchestration",
         "analysis preamble",
@@ -126,12 +126,12 @@
         "removed_phrases:0"
       ],
       "passedThrough": [
-        "processed_fields:36"
+        "processed_fields:43"
       ]
     },
     {
       "stage": "content-filter",
-      "timestamp": "2026-03-26T17:27:46.701Z",
+      "timestamp": "2026-03-26T17:47:27.237Z",
       "patternsChecked": [
         "/^User message$/i",
         "/^User prompt$/i",
@@ -174,7 +174,7 @@
     },
     {
       "stage": "post-render",
-      "timestamp": "2026-03-26T17:27:46.794Z",
+      "timestamp": "2026-03-26T17:47:27.395Z",
       "patternsChecked": [
         "frontmatter:trigger_phrases",
         "frontmatter:key_topics",
@@ -193,15 +193,15 @@
         "current_spec:012-pre-release-remediation",
         "trigger_phrases:31",
         "key_topics:12",
-        "captured_file_count:9",
-        "filesystem_file_count:9"
+        "captured_file_count:10",
+        "filesystem_file_count:10"
       ]
     }
   ],
   "semanticSummary": {
     "task": "Development session",
-    "filesCreated": 3,
-    "filesModified": 0,
+    "filesCreated": 0,
+    "filesModified": 1,
     "decisions": 0,
     "messageStats": {
       "intent": 0,
@@ -213,9 +213,9 @@
     }
   },
   "fileCounts": {
-    "fileCount": 9,
-    "capturedFileCount": 9,
-    "filesystemFileCount": 9,
+    "fileCount": 10,
+    "capturedFileCount": 10,
+    "filesystemFileCount": 10,
     "gitChangedFileCount": 0
   },
   "sourceProvenance": {
@@ -228,9 +228,9 @@
     "status": "indexed",
     "model": "voyage-4",
     "dimensions": 768,
-    "memoryId": 27,
-    "updatedAt": "2026-03-26T17:27:49.455Z",
-    "generatedAt": "2026-03-26T17:27:49.455Z",
+    "memoryId": 28,
+    "updatedAt": "2026-03-26T17:47:28.008Z",
+    "generatedAt": "2026-03-26T17:47:28.008Z",
     "reason": "Indexed after all write and semantic-index gates passed."
   }
 }

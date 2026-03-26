@@ -1000,7 +1000,7 @@ The system remembers what it already showed you during this conversation so it d
 
 ---
 
-## 20--remediation-revalidation
+## 20. SPEC KIT PHASE WORKFLOWS
 
 ### Phase detection and scoring (recommend-level.sh --recommend-phases)
 
@@ -1020,7 +1020,7 @@ Phase folders are supposed to link to each other: each child links back to its p
 
 ---
 
-## 21--implement-and-remove-deprecated-features
+## 21. FEATURE FLAG REFERENCE
 
 ### 1. Search Pipeline Features (SPECKIT_*)
 
